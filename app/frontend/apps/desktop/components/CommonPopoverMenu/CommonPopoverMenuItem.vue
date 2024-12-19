@@ -44,7 +44,7 @@ const iconColor = computed(() => {
   >
     <slot name="leading" />
     <CommonLabel
-      class="gap-2"
+      class="gap-2 text-left"
       :class="[labelClass, variantClass]"
       :prefix-icon="icon"
       :icon-color="iconColor"
