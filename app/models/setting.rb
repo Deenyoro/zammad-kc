@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2024 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 # Class variables are used here as performance optimization.
 # Technically it is not thread-safe, but it never caused issues.

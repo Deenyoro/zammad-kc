@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2024 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import { initializeFileClasses } from '#shared/components/Form/fields/FieldFile/initializeFileClasses.ts'
 import { initializeToggleClasses } from '#shared/components/Form/fields/FieldToggle/initializeToggleClasses.ts'

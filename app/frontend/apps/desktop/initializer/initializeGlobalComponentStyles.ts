@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2024 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import { initializeEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/FieldEditorColorMenu/initializeEditorColorMenu.ts'
 import { initializeAlertClasses } from '#shared/initializer/initializeAlertClasses.ts'

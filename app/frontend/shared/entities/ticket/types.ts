@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2024 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import type { FileUploaded } from '#shared/components/Form/fields/FieldFile/types.ts'
 import type { SecurityValue } from '#shared/components/Form/fields/FieldSecurity/types.ts'

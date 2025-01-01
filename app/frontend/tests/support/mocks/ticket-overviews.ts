@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2024 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import { TicketOverviewsDocument } from '#shared/entities/ticket/graphql/queries/ticket/overviews.api.ts'
 import type { TicketOverviewsQuery } from '#shared/graphql/types.ts'
