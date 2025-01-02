@@ -230,6 +230,29 @@
       "note": ""
     },
     {
+      "warning_type": "Remote Code Execution",
+      "warning_code": 25,
+      "fingerprint": "4de4e9e3a023616489b5ae24a6cad8500e0c82f40963828bc73fd07cc69e0ac1",
+      "check_name": "Deserialize",
+      "message": "Use of `Marshal.load` may be dangerous",
+      "file": "app/models/core_workflow/attributes.rb",
+      "line": 106,
+      "link": "https://brakemanscanner.org/docs/warning_types/unsafe_deserialization",
+      "code": "Marshal.load(Marshal.dump(payload_class.find_by(:id => @payload[\"params\"][\"id\"])))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "CoreWorkflow::Attributes",
+        "method": "saved_only"
+      },
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        502
+      ],
+      "note": ""
+    },
+    {
       "warning_type": "Denial of Service",
       "warning_code": 76,
       "fingerprint": "4ea1b96c11cdde309b0f31defd8af9dc39dd7605a7bb18b13b122469a74a5a70",
@@ -440,6 +463,29 @@
     },
     {
       "warning_type": "Remote Code Execution",
+      "warning_code": 25,
+      "fingerprint": "89ac258e481395b8687e1a3607cf2c6c7f4bd77c8bde7a570c39f6dc3488110d",
+      "check_name": "Deserialize",
+      "message": "Use of `Marshal.load` may be dangerous",
+      "file": "app/models/core_workflow/result.rb",
+      "line": 20,
+      "link": "https://brakemanscanner.org/docs/warning_types/unsafe_deserialization",
+      "code": "Marshal.load(Marshal.dump(payload.permit!.to_h))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "CoreWorkflow::Result",
+        "method": "initialize"
+      },
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        502
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Remote Code Execution",
       "warning_code": 24,
       "fingerprint": "8db3b4731daa1ef96c53729b2fca4cc91b47af058564f61cba24833aacaa55ae",
       "check_name": "UnsafeReflection",
@@ -515,7 +561,7 @@
       "check_name": "UnsafeReflection",
       "message": "Unsafe reflection method `constantize` called on model attribute",
       "file": "app/models/link/triggers_subscriptions.rb",
-      "line": 19,
+      "line": 20,
       "link": "https://brakemanscanner.org/docs/warning_types/remote_code_execution/",
       "code": "Link::Object.find(link_object_id).name.constantize",
       "render_path": null,
@@ -530,29 +576,6 @@
         470
       ],
       "note": ""
-    },
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "9ec74dbe0ca90264aab31f05df4f0565f53e28477c93ced418e0249913c519fc",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/models/organization/search.rb",
-      "line": 133,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "Organization.select(\"DISTINCT(organizations.id), #{::SqlHelper.new(:object => (self)).get_order_select(::SqlHelper.new(:object => (self)).get_sort_by(params, [\"active\", \"updated_at\"]), ::SqlHelper.new(:object => (self)).get_order_by(params, [\"desc\", \"desc\"]), \"organizations.updated_at\")}\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Organization",
-        "method": "search"
-      },
-      "user_input": "::SqlHelper.new(:object => (self)).get_order_select(::SqlHelper.new(:object => (self)).get_sort_by(params, [\"active\", \"updated_at\"]), ::SqlHelper.new(:object => (self)).get_order_by(params, [\"desc\", \"desc\"]), \"organizations.updated_at\")",
-      "confidence": "Medium",
-      "cwe_id": [
-        89
-      ],
-      "note": "SqlHelper does properly escape table and column names."
     },
     {
       "warning_type": "Cross-Site Scripting",
@@ -844,6 +867,53 @@
     },
     {
       "warning_type": "Remote Code Execution",
+      "warning_code": 25,
+      "fingerprint": "f4f4cba4803223bb1c6a3b61140050f188912dde06d3c3d08959772701ab7936",
+      "check_name": "Deserialize",
+      "message": "Use of `Marshal.load` may be dangerous",
+      "file": "app/models/core_workflow/result.rb",
+      "line": 207,
+      "link": "https://brakemanscanner.org/docs/warning_types/unsafe_deserialization",
+      "code": "Marshal.load(Marshal.dump(@result.except(:rerun_count)))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "CoreWorkflow::Result",
+        "method": "consider_rerun"
+      },
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        502
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Dangerous Eval",
+      "warning_code": 13,
+      "fingerprint": "f7980b20d0d9119e081ff8116bd049a42529a40e2ccbdd4a32e8d6146a8d39fe",
+      "check_name": "Evaluation",
+      "message": "Dynamic code evaluation",
+      "file": "lib/background_services/service/process_scheduled_jobs/job_executor.rb",
+      "line": 52,
+      "link": "https://brakemanscanner.org/docs/warning_types/dangerous_eval/",
+      "code": "eval(job.method)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "BackgroundServices::Service::ProcessScheduledJobs::JobExecutor",
+        "method": "eval_job_method"
+      },
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        913,
+        95
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Remote Code Execution",
       "warning_code": 24,
       "fingerprint": "fc299f57cedf226dc79a25c6bca84ceb85d5896a86820648d49c0e59d865575a",
       "check_name": "UnsafeReflection",
@@ -935,6 +1005,5 @@
       "note": "Mysql arguments are internal / from config."
     }
   ],
-  "updated": "2024-10-28 11:40:22 +0100",
-  "brakeman_version": "6.2.2"
+  "brakeman_version": "7.0.0"
 }
