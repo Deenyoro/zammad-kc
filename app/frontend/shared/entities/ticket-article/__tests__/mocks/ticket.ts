@@ -60,6 +60,7 @@ export const defaultState = {
   name: 'open',
   stateType: {
     __typename: 'TicketStateType',
+    id: convertToGraphQLId('Ticket::StateType', 2),
     name: 'open',
   },
 }

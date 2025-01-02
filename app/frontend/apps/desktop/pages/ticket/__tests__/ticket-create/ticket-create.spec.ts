@@ -411,7 +411,6 @@ describe('ticket create view', async () => {
           expect(router.currentRoute.value.path).toBe('/error-tab'),
         )
 
-        // :TODO is this supposed to be correct? It was before as a not found page. -> Multitasking update
         expect(view.getByText('Forbidden')).toBeInTheDocument()
         expect(
           view.getByText('Creating new tickets via web is disabled.'),

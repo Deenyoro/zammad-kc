@@ -78,6 +78,7 @@ const labels = computed(() => ({
       :aria-expanded="!collapsed"
       variant="none"
       :aria-controls="ownerId"
+      :data-test-id="`controls-${ownerId}`"
       :aria-label="
         collapsed ? $t('Expand this element') : $t('Collapse this element')
       "

@@ -111,6 +111,7 @@ watch(
       <div
         v-show="!isCollapsed || noHeader"
         :id="id"
+        :data-test-id="id"
         :class="{ 'overflow-y-auto': scrollable }"
       >
         <slot :header-id="headerId" />

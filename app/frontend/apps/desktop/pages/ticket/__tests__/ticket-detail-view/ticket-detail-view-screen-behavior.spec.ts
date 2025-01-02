@@ -223,8 +223,6 @@ describe('Ticket detail view screen behavior', () => {
 
     const view = await visitView('/tickets/1')
 
-    await getNode('form-ticket-edit')?.settled
-
     const ticketMetaSidebar = within(view.getByLabelText('Content sidebar'))
 
     await view.events.click(await ticketMetaSidebar.findByLabelText('State'))
