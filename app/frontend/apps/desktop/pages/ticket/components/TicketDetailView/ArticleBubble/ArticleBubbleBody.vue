@@ -110,7 +110,7 @@ onMounted(() => {
       class="overflow-hidden text-sm"
     >
       <!--    eslint-disable vue/no-v-html-->
-      <div v-html="body" />
+      <div class="inner-article-body" v-html="body" />
     </div>
     <div
       v-if="hasShowMore"
@@ -132,6 +132,21 @@ onMounted(() => {
 </template>
 
 <style scoped>
+/*
+ * Currently, we only set the style for img and svg elements.
+ * If necessary, this may need to be extended with other elements listed bellow.
+ *
+ * Relevant elements include:
+ * - img, svg, canvas, audio, iframe, embed, object
+ *
+ * These elements inherit a `display: block` style from the root stylesheet.
+ */
+.inner-article-body {
+  :deep(img, svg) {
+    display: inline;
+  }
+}
+
 .BubbleGradient::before {
   content: '';
   position: absolute;
