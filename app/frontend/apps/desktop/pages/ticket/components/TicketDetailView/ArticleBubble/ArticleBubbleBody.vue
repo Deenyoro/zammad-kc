@@ -41,6 +41,13 @@ const body = computed(() => {
   return props.article.bodyWithUrls
 })
 
+const showAuthorInformation = computed(() => {
+  const author = props.article.author.fullname // `-` => system message
+  return (
+    !props.showMetaInformation && author !== '-' && (author?.length ?? 0) > 0
+  )
+})
+
 const { setupLinksHandlers } = useHtmlLinks('/desktop')
 const { populateInlineImages } = useHtmlInlineImages(
   toRef(props, 'inlineImages'),
@@ -68,23 +75,27 @@ onMounted(() => {
 
 <template>
   <div
-    class="Content -:pt-9 -:p-3 relative transition-[padding]"
+    class="Content -:p-3 relative transition-[padding]"
     :class="[
       bodyClasses,
       {
         'pt-3': showMetaInformation,
+        '-:pt-9': showAuthorInformation,
       },
     ]"
   >
     <div
-      v-if="!showMetaInformation"
+      v-if="showAuthorInformation"
       class="absolute top-3 flex w-full px-3 ltr:left-0 rtl:right-0"
+      role="group"
+      aria-describedby="author-name-and-creation-date"
     >
+      <p id="author-name-and-creation-date" class="sr-only">
+        {{ $t('Author name and article creation date') }}
+      </p>
+
       <CommonLabel class="font-bold" size="small" variant="neutral">
-        {{
-          article.author.fullname ||
-          `${article.author.firstname} ${article.author.lastname}`
-        }}
+        {{ article.author.fullname }}
       </CommonLabel>
 
       <CommonDateTime
