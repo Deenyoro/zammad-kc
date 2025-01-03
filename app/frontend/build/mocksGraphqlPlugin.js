@@ -70,6 +70,7 @@ module.exports.plugin = (schema, documents, config) => {
     prepend: [
       "import * as Mocks from '#tests/graphql/builders/mocks.ts'",
       `import * as Operations from './${baseFile}'`,
+      "import * as ErrorTypes from '#shared/types/error.ts'",
     ],
     content: [
       node.operation === 'subscription'
@@ -85,6 +86,10 @@ export function mock${operationName}(defaults: Mocks.MockDefaultsValue<${operati
 
 export function waitFor${operationName}Calls() {
   return Mocks.waitForGraphQLMockCalls<${operationResultType}>(Operations.${documentVariableName})
+}
+
+export function mock${operationName}Error(message: string, extensions: {type: ErrorTypes.GraphQLErrorTypes }) {
+  return Mocks.mockGraphQLResultWithError(Operations.${documentVariableName}, message, extensions);
 }
 `,
     ],
