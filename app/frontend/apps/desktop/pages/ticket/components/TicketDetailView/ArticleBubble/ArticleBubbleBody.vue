@@ -107,7 +107,7 @@ onMounted(() => {
       :class="{
         BubbleGradient: hasShowMore && !shownMore,
       }"
-    ></div>
+    />
     <CommonButton
       v-if="hasShowMore"
       class="!p-0 !outline-transparent"

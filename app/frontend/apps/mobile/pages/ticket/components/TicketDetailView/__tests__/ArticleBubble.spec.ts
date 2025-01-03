@@ -1,6 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import { getByAltText, queryByAltText } from '@testing-library/vue'
+import { flushPromises } from '@vue/test-utils'
 
 import { renderComponent } from '#tests/support/components/index.ts'
 import { getTestRouter } from '#tests/support/components/renderComponent.ts'
@@ -151,6 +152,7 @@ describe('component for displaying text article', () => {
     const seeMoreButton = view.getByText('See more')
     expect(seeMoreButton).toBeInTheDocument()
 
+    await flushPromises()
     expect(content, 'has maximum height').toHaveStyle({ height: '320px' })
 
     await view.events.click(seeMoreButton)
@@ -186,6 +188,7 @@ describe('component for displaying text article', () => {
     const seeMoreButton = view.getByText('See more')
     expect(seeMoreButton).toBeInTheDocument()
 
+    await flushPromises()
     expect(content, 'has maximum height').toHaveStyle({ height: '65px' })
 
     await view.events.click(seeMoreButton)
