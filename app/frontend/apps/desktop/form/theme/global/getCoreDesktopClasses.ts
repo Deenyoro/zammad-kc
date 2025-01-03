@@ -49,6 +49,9 @@ export const getCoreDesktopClasses: FormThemeExtension = (
       messages: 'mb-2.5 flex-wrap space-y-2',
     }),
     text: textInputClasses(classes.text),
+    textarea: extendClasses(textInputClasses(classes.textarea), {
+      inner: 'h-full',
+    }),
     password: textInputClasses(classes.password),
     email: textInputClasses(classes.email),
     url: textInputClasses(classes.url),

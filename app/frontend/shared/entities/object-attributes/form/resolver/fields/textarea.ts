@@ -11,6 +11,7 @@ export class FieldResolverTextarea extends FieldResolver {
     return {
       props: {
         maxlength: this.attributeConfig.maxlength,
+        rows: this.attributeConfig.rows,
       },
     }
   }
