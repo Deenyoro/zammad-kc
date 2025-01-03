@@ -3,6 +3,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { useSessionStore } from '#shared/stores/session.ts'
+import emitter from '#shared/utils/emitter.ts'
+
 import ChecklistBadge from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ChecklistBadge.vue'
 import ReferencingTicketsBadgePopover from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ReferencingTicketsBadgePopover.vue'
 import type { ReferencingTicket } from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/types.ts'
@@ -24,8 +27,11 @@ const totalItemsCount = computed(() => checklist.value?.total)
 
 const isCompleted = computed(() => checklist.value?.completed)
 
+const { userId } = useSessionStore()
+
 const openChecklistInSidebar = () => {
   ticketSidebar.switchSidebar('checklist')
+  emitter.emit('expand-collapsed-content', `${userId}-ticket-detail`)
 }
 </script>
 

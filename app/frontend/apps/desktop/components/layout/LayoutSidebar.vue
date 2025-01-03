@@ -5,7 +5,8 @@ import { useActiveElement } from '@vueuse/core'
 import { computed, useTemplateRef, watch } from 'vue'
 
 import CollapseButton from '#desktop/components/CollapseButton/CollapseButton.vue'
-import { useCollapseHandler } from '#desktop/components/CollapseButton/composables/useCollapseHandler.ts'
+import type { CollapseOptions } from '#desktop/components/CollapseButton/types.ts'
+import { useCollapseHandler } from '#desktop/components/CollapseButton/useCollapseHandler.ts'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import ResizeLine from '#desktop/components/ResizeLine/ResizeLine.vue'
 import { useResizeLine } from '#desktop/components/ResizeLine/useResizeLine.ts'
@@ -51,7 +52,9 @@ const emit = defineEmits<{
   expand: [boolean]
 }>()
 
-const collapseOptions: { storageKey?: string } = {}
+const collapseOptions: CollapseOptions = {
+  name: props.name,
+}
 
 if (props.rememberCollapse)
   collapseOptions.storageKey = `${props.name}-sidebar-collapsed`

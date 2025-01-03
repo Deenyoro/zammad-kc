@@ -4,7 +4,7 @@
 import { computed, watch } from 'vue'
 
 import CollapseButton from '#desktop/components/CollapseButton/CollapseButton.vue'
-import { useCollapseHandler } from '#desktop/components/CollapseButton/composables/useCollapseHandler.ts'
+import { useCollapseHandler } from '#desktop/components/CollapseButton/useCollapseHandler.ts'
 import { useTransitionCollapse } from '#desktop/composables/useTransitionCollapse.ts'
 
 export interface Props {

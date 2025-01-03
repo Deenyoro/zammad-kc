@@ -3,18 +3,17 @@
 import { useLocalStorage } from '@vueuse/core'
 import { onMounted, type Ref, ref, watch } from 'vue'
 
-interface Emits {
-  (event: 'collapse', arg: boolean): void
-  (event: 'expand', arg: boolean): void
-}
+import emitter from '#shared/utils/emitter.ts'
+
+import type { CollapseOptions, CollapseEmit } from './types.ts'
 
 /**
  * @args emit - The emit function from the setup function
  * @args options.storageKey - The key to store the collapse state in local storage
  * * */
 export const useCollapseHandler = (
-  emit: Emits,
-  options?: { storageKey?: string },
+  emit: CollapseEmit,
+  options?: CollapseOptions,
 ) => {
   let isCollapsed: Ref<boolean>
 
@@ -24,29 +23,26 @@ export const useCollapseHandler = (
     isCollapsed = ref(false)
   }
 
+  const callEmit = () =>
+    isCollapsed.value ? emit('collapse', true) : emit('expand', true)
+
   const toggleCollapse = () => {
     isCollapsed.value = !isCollapsed.value
 
-    if (isCollapsed.value) {
-      emit('collapse', true)
-      return
-    }
-
-    emit('expand', true)
+    callEmit()
   }
+
+  emitter.on('expand-collapsed-content', (name: string) => {
+    if (options?.name === name && isCollapsed.value) toggleCollapse()
+  })
 
   onMounted(() => {
     // Set up watcher on the local storage value, so other browser tabs can sync their collapse states.
     if (options?.storageKey) {
       watch(
         isCollapsed,
-        (newValue) => {
-          if (newValue) {
-            emit('collapse', true)
-            return
-          }
-
-          emit('expand', true)
+        () => {
+          callEmit()
         },
         {
           immediate: true,
