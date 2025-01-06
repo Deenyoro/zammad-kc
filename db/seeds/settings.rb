@@ -1946,7 +1946,7 @@ Setting.create_if_not_exists(
           false => 'no',
         },
         default: true,
-        help:    __('Turning off SSL verification is a security risk and should be used only temporary. Use this option at your own risk!'),
+        help:    __('Verification of the TLS connection to the IDP SSO target URL. Only relevant during setting up SAML authentication.'),
       },
       {
         display: __('Signing & Encrypting'),
