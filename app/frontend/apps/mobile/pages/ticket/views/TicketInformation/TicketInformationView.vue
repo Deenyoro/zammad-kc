@@ -67,7 +67,7 @@ const router = useRouter()
   <LayoutHeader
     ref="headerElement"
     :refetch="refetchingStatus"
-    :back-title="`#${internalId}`"
+    :back-title="`#${ticket?.number}`"
     :title="$t('Ticket information')"
     :back-url="`/tickets/${internalId}`"
     :style="stickyStyles.header"
