@@ -2,7 +2,7 @@
 
 ## Development Environment
 
-Please make sure that you setup your system correctly by following our "[**How to set up a development environment**](development_environment/index.md)" guide.
+Please make sure that you setup your system correctly by following our "[**How to set up a development environment**](how-to-set-up-a-development-environment.md)" guide.
 
 We emphasize to set following environment variables for developing Zammad.
 
