@@ -51,9 +51,7 @@ const submitLink = async (data: SubmitData) => {
 
   await props.onSubmit(link)
 
-  return () => {
-    closeFlyout(props.name)
-  }
+  return () => closeFlyout(props.name)
 }
 </script>
 
