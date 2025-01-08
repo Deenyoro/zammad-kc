@@ -21,7 +21,6 @@ import { AutocompleteSearchIdoitObjectTypesDocument } from '#desktop/pages/ticke
 import { useTicketExternalReferencesIdoitObjectSearchQuery } from '#desktop/pages/ticket/graphql/queries/ticketExternalReferencesIdoitObjectSearch.api.ts'
 
 interface Props {
-  name: string
   objectIds: number[]
   onSubmit: (formData: FormDataRecords) => Promise<unknown>
   icon: string
@@ -34,6 +33,8 @@ const { form, values, updateFieldValues, onChangedField, formSetErrors } =
 
 const FETCH_LIMIT = 10
 const FETCH_DEBOUNCE = 300
+
+const flyoutName = 'idoit'
 
 const objectSearchQuery = new QueryHandler(
   useTicketExternalReferencesIdoitObjectSearchQuery(
@@ -169,7 +170,7 @@ const isValid = computed(
 const submitObjects = async (data: FormDataRecords) => {
   await props.onSubmit(data)
 
-  return () => closeFlyout(props.name)
+  return () => closeFlyout(flyoutName)
 }
 </script>
 
@@ -177,7 +178,7 @@ const submitObjects = async (data: FormDataRecords) => {
   <CommonFlyout
     :header-icon="icon"
     :header-title="__('i-doit: Link objects')"
-    :name="name"
+    :name="flyoutName"
     no-close-on-action
     :footer-action-options="{
       actionLabel: $t('Link Objects'),

@@ -41,7 +41,7 @@ const persistentStates = defineModel<ObjectLike>({ required: true })
 
 const skipNextObjectUpdate = ref(false)
 
-const { open, name: FLYOUT_NAME } = useFlyout({
+const { open } = useFlyout({
   name: 'idoit',
   component: () => import('./IdoitFlyout.vue'),
 })
@@ -138,7 +138,6 @@ const addObjects = async (formData: FormDataRecords) => {
 
 const openFlyout = () =>
   open({
-    name: FLYOUT_NAME,
     objectIds: props.objectIds,
     ticketId: props.ticketId,
     onSubmit: addObjects,
