@@ -11,8 +11,13 @@ environment ENV.fetch('RAILS_ENV', 'development')
 
 preload_app!
 
-on_booted do
-  AppVersion.start_maintenance_thread(process_name: 'puma')
+begin
+  on_booted do
+    AppVersion.start_maintenance_thread(process_name: 'puma')
+  end
+rescue NoMethodError
+  # Workaround for https://github.com/puma/puma/issues/3356, can be removed after this is
+  #   solved and a new puma version is released where 'pumactl status' works again.
 end
 
 if worker_count.positive?
