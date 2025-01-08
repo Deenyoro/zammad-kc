@@ -8,13 +8,17 @@ const pageHelpDialog = useDialog({
   name: 'page-help',
   component: () => import('./CommonPageHelpDialog.vue'),
 })
+
+defineSlots<{
+  default(): never // any
+}>()
 </script>
 
 <template>
   <CommonButton
     prefix-icon="question-circle"
     size="medium"
-    @click="pageHelpDialog.open({ content: $slots.default })"
+    @click="pageHelpDialog.open({ content: $slots?.default })"
     >{{ $t('Help') }}</CommonButton
   >
 </template>

@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { computed, toRefs, useSlots } from 'vue'
+import { computed, type SetupContext, toRefs, useSlots } from 'vue'
 
 import type { CommonPopoverInstance } from '#shared/components/CommonPopover/types.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
@@ -25,7 +25,12 @@ const { items, entity } = toRefs(props)
 
 const { filteredMenuItems } = usePopoverMenu(items, entity)
 
-const slots = useSlots()
+/**
+ * Workaround to satisfy linter
+ * @bug https://github.com/vuejs/language-tools/issues/5082
+ * Wait to be closed
+ * */
+const slots: SetupContext['slots'] = useSlots()
 
 const showHeaderLabel = computed(() => {
   if (!filteredMenuItems.value && !slots.default) return false
