@@ -130,7 +130,7 @@ RSpec.describe 'Manage > Checklists', current_user_id: 1, type: :system do
       find('.js-table-action-menu .js-delete').click
 
       in_modal do
-        click_on('delete')
+        click_on('Delete')
       end
 
       expect(page).to have_no_content('Test Checklist')

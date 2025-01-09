@@ -79,7 +79,7 @@ RSpec.describe 'Manage > Public Links', type: :system do
         row.find('.js-delete').click
 
         in_modal do
-          click_on 'delete'
+          click_on 'Delete'
         end
 
         expect(page).to have_no_text('Zammad Homepage')

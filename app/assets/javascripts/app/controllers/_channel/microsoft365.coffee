@@ -1,10 +1,10 @@
 class App.ChannelMicrosoft365 extends App.ControllerTabs
   @requiredPermission: 'admin.channel_microsoft365'
-  header: __('Microsoft 365')
+  header: __('Microsoft 365 IMAP Email')
   constructor: ->
     super
 
-    @title __('Microsoft 365'), true
+    @title __('Microsoft 365 IMAP Email'), true
 
     @tabs = [
       {
@@ -123,17 +123,21 @@ class ChannelAccountOverview extends App.ControllerSubContent
     # is already correct for them.
     if @channel_id
       item = App.Channel.find(@channel_id)
-      if item && item.area == 'Microsoft365::Account' && item.options && item.options.backup_imap_classic is undefined
-        @editInbound(undefined, @channel_id, true)
+      if item && item.area == 'Microsoft365::Account' && item.options && item.options.backup_imap_classic is undefined && not @error_code
+        @editInbound(undefined, @channel_id, true, true)
         @channel_id = undefined
 
     if @error_code is 'AADSTS65004'
       @error_code = undefined
-      new App.AdminConsentInfo(container: @container)
+      new App.AdminConsentInfo(container: @container, type: 'microsoft365')
 
     if @error_code is 'user_mismatch'
       @error_code = undefined
-      new App.UserMismatchInfo(container: @container)
+      new App.UserMismatchInfo(container: @container, type: 'microsoft365', item: item)
+
+    if @error_code is 'duplicate_email_address'
+      @error_code = undefined
+      new App.DuplicateEmailAddressInfo(container: @container, type: 'microsoft365', emailAddress: if @param then decodeURIComponent(@param))
 
   show: (params) =>
     for key, value of params
@@ -203,7 +207,7 @@ class ChannelAccountOverview extends App.ControllerSubContent
         @load()
     )
 
-  editInbound: (e, channel_id, set_active) =>
+  editInbound: (e, channel_id, set_active, redirect = false) =>
     if !channel_id
       e.preventDefault()
       channel_id = $(e.target).closest('.action').data('id')
@@ -213,6 +217,7 @@ class ChannelAccountOverview extends App.ControllerSubContent
       item: item
       callback: @load
       set_active: set_active,
+      redirect: redirect,
     )
 
   rollbackMigration: (e) =>
@@ -331,14 +336,16 @@ class ChannelInboundEdit extends App.ControllerModal
         @callback(true)
         @close()
       error: (xhr) =>
+        data = JSON.parse(xhr.responseText)
         @stopLoading()
         @formEnable(e)
-        details = xhr.responseJSON || {}
-        @notify
-          type:    'error'
-          msg:     details.error_human || details.error || __('The changes could not be saved.')
-          timeout: 6000
+        @el.find('.alert--danger').removeClass('hide').text(data.error_human || data.error || __('The changes could not be saved.'))
     )
+
+  onCancel: =>
+    return if not @redirect
+
+    @navigate '#channels/microsoft365'
 
 class ChannelGroupEdit extends App.ControllerModal
   buttonClose: true
@@ -388,7 +395,7 @@ class ChannelGroupEdit extends App.ControllerModal
       error: (xhr) =>
         data = JSON.parse(xhr.responseText)
         @formEnable(e)
-        @el.find('.alert').removeClass('hidden').text(data.error || __('The changes could not be saved.'))
+        @el.find('.alert--danger').removeClass('hide').text(data.error || __('The changes could not be saved.'))
     )
 
 class AppConfig extends App.ControllerModal
@@ -434,11 +441,11 @@ class AppConfig extends App.ControllerModal
               @isChanged = true
               @close()
             fail: =>
-              @el.find('.alert').removeClass('hidden').text(__('The entry could not be created.'))
+              @el.find('.alert--danger').removeClass('hide').text(__('The entry could not be created.'))
           )
           return
         @formEnable(e)
-        @el.find('.alert').removeClass('hidden').text(data.error || __('App could not be verified.'))
+        @el.find('.alert--danger').removeClass('hide').text(data.error || __('App could not be verified.'))
     )
 
 class App.AdminConsentInfo extends App.ControllerModal
@@ -453,6 +460,11 @@ class App.AdminConsentInfo extends App.ControllerModal
   onSubmit: =>
     @close()
 
+  onClosed: =>
+    return if not @type
+
+    @navigate "#channels/#{@type}"
+
 class App.UserMismatchInfo extends App.ControllerModal
   buttonClose: true
   small: true
@@ -460,9 +472,31 @@ class App.UserMismatchInfo extends App.ControllerModal
   head: __('User Mismatch')
 
   content: ->
-    App.view('microsoft365/user_mismatch')()
+    App.view('microsoft365/user_mismatch')(item: @item)
 
   onSubmit: =>
     @close()
 
-App.Config.set('microsoft365', { prio: 5000, name: __('Microsoft 365'), parent: '#channels', target: '#channels/microsoft365', controller: App.ChannelMicrosoft365, permission: ['admin.channel_microsoft365'] }, 'NavBarAdmin')
+  onClosed: =>
+    return if not @type
+
+    @navigate "#channels/#{@type}"
+
+class App.DuplicateEmailAddressInfo extends App.ControllerModal
+  buttonClose: true
+  small: true
+  buttonSubmit: __('Close')
+  head: __('Duplicate Email Address')
+
+  content: ->
+    App.view('microsoft365/duplicate_email_address')(emailAddress: @emailAddress)
+
+  onSubmit: =>
+    @close()
+
+  onClosed: =>
+    return if not @type
+
+    @navigate "#channels/#{@type}"
+
+App.Config.set('microsoft365', { prio: 5000, name: __('Microsoft 365 IMAP Email'), parent: '#channels', target: '#channels/microsoft365', controller: App.ChannelMicrosoft365, permission: ['admin.channel_microsoft365'] }, 'NavBarAdmin')

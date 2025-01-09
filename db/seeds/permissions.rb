@@ -157,6 +157,12 @@ Permission.create_if_not_exists(
   preferences: { prio: 1250 }
 )
 Permission.create_if_not_exists(
+  name:        'admin.channel_microsoft_graph',
+  label:       __('Microsoft Graph'),
+  description: __('Manage Microsoft Graph mail channel of your system.'),
+  preferences: { prio: 1255 }
+)
+Permission.create_if_not_exists(
   name:        'admin.channel_twitter',
   label:       __('Twitter'),
   description: __('Manage Twitter channel of your system.'),

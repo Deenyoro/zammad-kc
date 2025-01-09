@@ -331,6 +331,47 @@ FactoryBot.define do
       end
     end
 
+    factory :microsoft_graph_channel do
+      transient do
+        microsoft_user           { ENV['MICROSOFT365_USER'] || Faker::Internet.unique.email }
+        microsoft_shared_mailbox { nil }
+        inbound_options          { {} }
+      end
+
+      area { 'MicrosoftGraph::Account' }
+      options do
+        {
+          'inbound'  => {
+            'adapter' => 'microsoft_graph_inbound',
+            'options' => {
+              'user'           => microsoft_user,
+              'shared_mailbox' => microsoft_shared_mailbox,
+            }.merge(inbound_options),
+          },
+          'outbound' => {
+            'adapter' => 'microsoft_graph_outbound',
+            'options' => {
+              'user' => microsoft_user,
+            },
+          },
+          'auth'     => {
+            'type'          => 'XOAUTH2',
+            'provider'      => 'microsoft_graph',
+            'access_token'  => 'xxx',
+            'expires_in'    => 3599,
+            'refresh_token' => ENV['MICROSOFTGRAPH_REFRESH_TOKEN'],
+            'scope'         => 'offline_access openid profile email mail.readwrite mail.readwrite.shared mail.send mail.send.shared',
+            'token_type'    => 'Bearer',
+            'id_token'      => 'xxx',
+            'created_at'    => 30.days.ago,
+            'client_id'     => ENV['MICROSOFT365_CLIENT_ID'],
+            'client_secret' => ENV['MICROSOFT365_CLIENT_SECRET'],
+            'client_tenant' => ENV['MICROSOFT365_CLIENT_TENANT'],
+          }
+        }
+      end
+    end
+
     factory :sms_message_bird_channel do
       area { 'Sms::Account' }
       status_in { 'ok' }

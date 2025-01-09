@@ -23,6 +23,6 @@ class SignaturePolicy < ApplicationPolicy
   private
 
   def admin?
-    user.permissions?(['admin.channel_email', 'admin.channel_google', 'admin.channel_microsoft365'])
+    user.permissions?(['admin.channel_email', 'admin.channel_google', 'admin.channel_microsoft365', 'admin.channel_microsoft_graph'])
   end
 end

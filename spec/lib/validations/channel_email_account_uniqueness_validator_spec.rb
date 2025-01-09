@@ -82,5 +82,35 @@ RSpec.describe Validations::ChannelEmailAccountUniquenessValidator do
         )
       end
     end
+
+    context 'with existing microsoft shared mailbox channel' do
+      before do
+        create(:microsoft_graph_channel, microsoft_user: 'email@example.com', microsoft_shared_mailbox: 'shared@example.com')
+      end
+
+      it 'record with user mailbox passes' do
+        channel = build(:microsoft_graph_channel, microsoft_user: 'email@example.com')
+
+        validator.validate(channel)
+
+        expect(channel.errors).to be_blank
+      end
+
+      it 'record with a diffeen shared mailbox passes' do
+        channel = build(:microsoft_graph_channel, microsoft_user: 'email@example.com', microsoft_shared_mailbox: 'another-shared@example.com')
+
+        validator.validate(channel)
+
+        expect(channel.errors).to be_blank
+      end
+
+      it 'record with same shared mailbox fails' do
+        channel = build(:microsoft_graph_channel, microsoft_user: 'email@example.com', microsoft_shared_mailbox: 'shared@example.com')
+
+        validator.validate(channel)
+
+        expect(channel.errors).to be_present
+      end
+    end
   end
 end

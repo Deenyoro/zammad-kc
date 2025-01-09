@@ -14,7 +14,7 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
         ssl_verify: false,
       }
 
-      result = described_class.new.fetch(params, nil, 'check')
+      result = described_class.new.check(params)
 
       expect(result[:result]).to eq 'ok'
     end
@@ -65,12 +65,6 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
     it 'does not raise error when given nil' do
       expect { described_class.extract_rfc822_headers(nil) }.not_to raise_error
     end
-  end
-
-  def expect_imap_fetch_check_results(result_params_to_compare = {})
-    driver_call_result = {}
-    expect { channel.fetch(true, driver_call_result) }.not_to change(Ticket::Article, :count)
-    expect(driver_call_result).to include(result_params_to_compare)
   end
 
   describe '.fetch', :aggregate_failures do
@@ -149,7 +143,6 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
             folder:         folder,
             keep_on_server: false,
           },
-          args:    ['check']
         }
       end
       let(:email_without_date) do
@@ -185,20 +178,24 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
         EMAIL
       end
 
+      def check_state
+        described_class.new.check(channel.options.dig(:inbound, :options))
+      end
+
       context 'with support for imap sort by date' do
         it 'with dateless mail' do
           imap.append(folder, email_without_date, [], Time.zone.now)
-          expect_imap_fetch_check_results({ archive_possible: false, archive_possible_is_fallback: false })
+          expect(check_state).to include({ archive_possible: false, archive_possible_is_fallback: false })
         end
 
         it 'with now dated mail' do
           imap.append(folder, email_now_date, [], Time.zone.now)
-          expect_imap_fetch_check_results({ archive_possible: false, archive_possible_is_fallback: false })
+          expect(check_state).to include({ archive_possible: false, archive_possible_is_fallback: false })
         end
 
         it 'with old dated mail' do
           imap.append(folder, email_old_date, [], Time.zone.now)
-          expect_imap_fetch_check_results({ archive_possible: true, archive_possible_is_fallback: false })
+          expect(check_state).to include({ archive_possible: true, archive_possible_is_fallback: false })
         end
       end
 
@@ -209,17 +206,17 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
 
         it 'with dateless mail' do
           imap.append(folder, email_without_date, [], Time.zone.now)
-          expect_imap_fetch_check_results({ archive_possible: true, archive_possible_is_fallback: true })
+          expect(check_state).to include({ archive_possible: true, archive_possible_is_fallback: true })
         end
 
         it 'with now dated mail' do
           imap.append(folder, email_now_date, [], Time.zone.now)
-          expect_imap_fetch_check_results({ archive_possible: true, archive_possible_is_fallback: true })
+          expect(check_state).to include({ archive_possible: true, archive_possible_is_fallback: true })
         end
 
         it 'with old dated mail' do
           imap.append(folder, email_old_date, [], Time.zone.now)
-          expect_imap_fetch_check_results({ archive_possible: true, archive_possible_is_fallback: false })
+          expect(check_state).to include({ archive_possible: true, archive_possible_is_fallback: false })
         end
       end
 
@@ -230,17 +227,17 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
 
         it 'with dateless mail' do
           imap.append(folder, email_without_date, [], Time.zone.now)
-          expect_imap_fetch_check_results({ archive_possible: true, archive_possible_is_fallback: true })
+          expect(check_state).to include({ archive_possible: true, archive_possible_is_fallback: true })
         end
 
         it 'with now dated mail' do
           imap.append(folder, email_now_date, [], Time.zone.now)
-          expect_imap_fetch_check_results({ archive_possible: true, archive_possible_is_fallback: true })
+          expect(check_state).to include({ archive_possible: true, archive_possible_is_fallback: true })
         end
 
         it 'with old dated mail' do
           imap.append(folder, email_old_date, [], Time.zone.now)
-          expect_imap_fetch_check_results({ archive_possible: true, archive_possible_is_fallback: false })
+          expect(check_state).to include({ archive_possible: true, archive_possible_is_fallback: false })
         end
       end
     end

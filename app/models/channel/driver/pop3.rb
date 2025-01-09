@@ -2,7 +2,7 @@
 
 require 'net/pop'
 
-class Channel::Driver::Pop3 < Channel::EmailParser
+class Channel::Driver::Pop3 < Channel::Driver::BaseEmailInbound
 
 =begin
 
@@ -44,93 +44,10 @@ returns
 
 =end
 
-  def fetch(options, channel, check_type = '', verify_string = '')
-    ssl = true
-    if options[:ssl] == 'off'
-      ssl = false
-    end
-    ssl_verify = options.fetch(:ssl_verify, true)
-
-    port = if options.key?(:port) && options[:port].present?
-             options[:port].to_i
-           elsif ssl == true
-             995
-           else
-             110
-           end
-
-    Rails.logger.info "fetching pop3 (#{options[:host]}/#{options[:user]} port=#{port},ssl=#{ssl})"
-
-    @pop = ::Net::POP3.new(options[:host], port)
-    # @pop.set_debug_output $stderr
-
-    # on check, reduce open_timeout to have faster probing
-    @pop.open_timeout = 16
-    @pop.read_timeout = 45
-    if check_type == 'check'
-      @pop.open_timeout = 4
-      @pop.read_timeout = 6
-    end
-
-    if ssl
-      Certificate::ApplySSLCertificates.ensure_fresh_ssl_context
-      @pop.enable_ssl((ssl_verify ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE))
-    end
-    @pop.start(options[:user], options[:password])
+  def fetch(options, channel)
+    setup_connection(options)
 
     mails = @pop.mails
-
-    if check_type == 'check'
-      Rails.logger.info 'check only mode, fetch no emails'
-      content_max_check = 2
-      content_messages  = 0
-
-      # check messages
-      mails.each do |m|
-        mail = m.pop
-        next if !mail
-
-        # check how many content messages we have, for notice used
-        if !mail.match?(%r{(X-Zammad-Ignore: true|X-Zammad-Verify: true)})
-          content_messages += 1
-          break if content_max_check < content_messages
-        end
-      end
-      if content_messages >= content_max_check
-        content_messages = mails.count
-      end
-      disconnect
-      return {
-        result:           'ok',
-        content_messages: content_messages,
-      }
-    end
-
-    # reverse message order to increase performance
-    if check_type == 'verify'
-      Rails.logger.info 'verify mode, fetch no emails'
-      mails.reverse!
-
-      # check for verify message
-      mails.first(2000).each do |m|
-        mail = m.pop
-        next if !mail
-
-        # check if verify message exists
-        next if !mail.match?(%r{#{verify_string}})
-
-        Rails.logger.info " - verify email #{verify_string} found"
-        m.delete
-        disconnect
-        return {
-          result: 'ok',
-        }
-      end
-
-      return {
-        result: 'verify not ok',
-      }
-    end
 
     # fetch regular messages
     count_all             = mails.size
@@ -192,6 +109,9 @@ returns
       Rails.logger.info ' - no message'
     end
 
+    # Error is raised if one of the messages was too large AND postmaster_send_reject_if_mail_too_large is turned off.
+    # This effectivelly marks channels as stuck and gets highlighted for the admin.
+    # New emails are still processed! But large email is not touched, so error keeps being re-raised on every fetch.
     if too_large_messages.present?
       raise too_large_messages.join("\n")
     end
@@ -204,59 +124,106 @@ returns
     }
   end
 
-=begin
+  def check(options)
+    setup_connection(options, check: true)
 
-  instance = Channel::Driver::Pop3.new
-  instance.fetchable?(channel)
+    mails = @pop.mails
 
-=end
+    Rails.logger.info 'check only mode, fetch no emails'
+    content_max_check = 2
+    content_messages  = 0
 
-  def fetchable?(_channel)
-    true
-  end
+    # check messages
+    mails.each do |m|
+      mail = m.pop
+      next if !mail
 
-=begin
-
-  Channel::Driver::Pop3.streamable?
-
-returns
-
-  true|false
-
-=end
-
-  def self.streamable?
-    false
-  end
-
-=begin
-
-check if channel config has changed
-
-  Channel::Driver::IMAP.channel_has_changed?(channel)
-
-returns
-
-  true|false
-
-=end
-
-  def channel_has_changed?(channel)
-    current_channel = Channel.find_by(id: channel.id)
-    if !current_channel
-      Rails.logger.info "Channel with id #{channel.id} is deleted in the meantime. Stop fetching."
-      return true
+      # check how many content messages we have, for notice used
+      if !mail.match?(%r{(X-Zammad-Ignore: true|X-Zammad-Verify: true)})
+        content_messages += 1
+        break if content_max_check < content_messages
+      end
     end
-    return false if channel.updated_at == current_channel.updated_at
+    if content_messages >= content_max_check
+      content_messages = mails.count
+    end
+    disconnect
 
-    Rails.logger.info "Channel with id #{channel.id} has changed. Stop fetching."
-    true
+    {
+      result:           'ok',
+      content_messages: content_messages,
+    }
+  end
+
+  def verify(options, verify_string)
+    setup_connection(options)
+
+    mails = @pop.mails
+
+    Rails.logger.info 'verify mode, fetch no emails'
+    mails.reverse!
+
+    # check for verify message
+    mails.first(2000).each do |m|
+      mail = m.pop
+      next if !mail
+
+      # check if verify message exists
+      next if !mail.match?(%r{#{verify_string}})
+
+      Rails.logger.info " - verify email #{verify_string} found"
+      m.delete
+      disconnect
+      return {
+        result: 'ok',
+      }
+    end
+
+    {
+      result: 'verify not ok',
+    }
   end
 
   def disconnect
     return if !@pop
 
     @pop.finish
+  end
+
+  def setup_connection(options, check: false)
+    ssl = true
+    if options[:ssl] == 'off'
+      ssl = false
+    end
+    ssl_verify = options.fetch(:ssl_verify, true)
+
+    port = if options.key?(:port) && options[:port].present?
+             options[:port].to_i
+           elsif ssl == true
+             995
+           else
+             110
+           end
+
+    Rails.logger.info "fetching pop3 (#{options[:host]}/#{options[:user]} port=#{port},ssl=#{ssl})"
+
+    @pop = ::Net::POP3.new(options[:host], port)
+    # @pop.set_debug_output $stderr
+
+    # on check, reduce open_timeout to have faster probing
+    if check
+      @pop.open_timeout = 4
+      @pop.read_timeout = 6
+    else
+      @pop.open_timeout = 16
+      @pop.read_timeout = 45
+    end
+
+    if ssl
+      Certificate::ApplySSLCertificates.ensure_fresh_ssl_context
+      @pop.enable_ssl((ssl_verify ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE))
+    end
+    @pop.start(options[:user], options[:password])
   end
 
 end

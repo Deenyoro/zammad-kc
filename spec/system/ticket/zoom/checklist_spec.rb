@@ -68,7 +68,7 @@ RSpec.describe 'Ticket zoom > Checklist', authenticated_as: :authenticate, curre
 
     it 'does remove the checklist' do
       perform_checklist_action('Remove checklist')
-      click_on 'delete'
+      click_on 'Delete'
       expect(page).to have_text('Add empty checklist')
     end
 
@@ -149,7 +149,7 @@ RSpec.describe 'Ticket zoom > Checklist', authenticated_as: :authenticate, curre
 
     it 'does delete item' do
       perform_item_action(item.id, 'delete')
-      click_on 'delete'
+      click_on 'Delete'
       wait.until { Checklist::Item.find_by(id: item.id).blank? }
     end
 

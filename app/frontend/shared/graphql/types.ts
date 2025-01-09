@@ -655,6 +655,7 @@ export enum EnumChannelArea {
   FacebookAccount = 'Facebook__Account',
   GoogleAccount = 'Google__Account',
   Microsoft365Account = 'Microsoft365__Account',
+  MicrosoftGraphAccount = 'MicrosoftGraph__Account',
   SmsAccount = 'Sms__Account',
   SmsNotification = 'Sms__Notification',
   TelegramBot = 'Telegram__Bot',

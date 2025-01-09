@@ -1,10 +1,10 @@
 class App.ChannelGoogle extends App.ControllerTabs
   @requiredPermission: 'admin.channel_google'
-  header: __('Google')
+  header: __('Google Email')
   constructor: ->
     super
 
-    @title __('Google'), true
+    @title __('Google Email'), true
 
     @tabs = [
       {
@@ -429,4 +429,4 @@ class AppConfig extends App.ControllerModal
         @el.find('.alert').removeClass('hidden').text(data.error || __('App could not be verified.'))
     )
 
-App.Config.set('google', { prio: 5000, name: __('Google'), parent: '#channels', target: '#channels/google', controller: App.ChannelGoogle, permission: ['admin.channel_google'] }, 'NavBarAdmin')
+App.Config.set('google', { prio: 5000, name: __('Google Email'), parent: '#channels', target: '#channels/google', controller: App.ChannelGoogle, permission: ['admin.channel_google'] }, 'NavBarAdmin')

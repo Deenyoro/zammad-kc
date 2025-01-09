@@ -11,6 +11,7 @@ module Gql::Types::Enum
       'Facebook::Account',
       'Google::Account',
       'Microsoft365::Account',
+      'MicrosoftGraph::Account',
       'Sms::Account',
       'Sms::Notification',
       'Telegram::Bot',

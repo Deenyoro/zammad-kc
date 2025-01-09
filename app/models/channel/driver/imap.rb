@@ -2,17 +2,13 @@
 
 require 'net/imap'
 
-class Channel::Driver::Imap < Channel::EmailParser
+class Channel::Driver::Imap < Channel::Driver::BaseEmailInbound
 
   FETCH_METADATA_TIMEOUT = 2.minutes
   FETCH_MSG_TIMEOUT = 4.minutes
   EXPUNGE_TIMEOUT = 16.minutes
   DEFAULT_TIMEOUT = 45.seconds
   CHECK_ONLY_TIMEOUT = 8.seconds
-
-  def fetchable?(_channel)
-    true
-  end
 
 =begin
 
@@ -77,67 +73,16 @@ example
 
 =end
 
-  def fetch(options, channel, check_type = '', verify_string = '')
-    ssl            = true
-    ssl_verify     = options.fetch(:ssl_verify, true)
-    starttls       = false
+  def fetch(options, channel)
+    setup_connection(options)
+
     keep_on_server = false
-    folder         = 'INBOX'
     if options[:keep_on_server] == true || options[:keep_on_server] == 'true'
       keep_on_server = true
     end
 
-    case options[:ssl]
-    when 'off'
-      ssl = false
-    when 'starttls'
-      ssl = false
-      starttls = true
-    end
-
-    port = if options.key?(:port) && options[:port].present?
-             options[:port].to_i
-           elsif ssl == true
-             993
-           else
-             143
-           end
-
-    if options[:folder].present?
-      folder = options[:folder]
-    end
-
-    Rails.logger.info "fetching imap (#{options[:host]}/#{options[:user]} port=#{port},ssl=#{ssl},starttls=#{starttls},folder=#{folder},keep_on_server=#{keep_on_server},auth_type=#{options.fetch(:auth_type, 'LOGIN')})"
-
-    # on check, reduce open_timeout to have faster probing
-    check_type_timeout = check_type == 'check' ? CHECK_ONLY_TIMEOUT : DEFAULT_TIMEOUT
-
-    Certificate::ApplySSLCertificates.ensure_fresh_ssl_context if ssl || starttls
-
-    timeout(check_type_timeout) do
-      ssl_settings = false
-      ssl_settings = (ssl_verify ? true : { verify_mode: OpenSSL::SSL::VERIFY_NONE }) if ssl
-      @imap = ::Net::IMAP.new(options[:host], port: port, ssl: ssl_settings)
-      if starttls
-        @imap.starttls(verify_mode: ssl_verify ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE)
-      end
-    end
-
-    timeout(check_type_timeout) do
-      if options[:auth_type].present?
-        @imap.authenticate(options[:auth_type], options[:user], options[:password])
-      else
-        @imap.login(options[:user], options[:password].dup&.force_encoding('ascii-8bit'))
-      end
-    end
-
-    timeout(check_type_timeout) do
-      # select folder
-      @imap.select(folder)
-    end
-
-    message_ids_result = timeout(6.minutes) do
-      if keep_on_server && check_type != 'check' && check_type != 'verify'
+    message_ids_result = Timeout.timeout(6.minutes) do
+      if keep_on_server
         fetch_unread_message_ids
       else
         fetch_all_message_ids
@@ -145,142 +90,6 @@ example
     end
 
     message_ids = message_ids_result[:result]
-
-    # check mode only
-    if check_type == 'check'
-      Rails.logger.info 'check only mode, fetch no emails'
-      content_max_check = 2
-      content_messages  = 0
-
-      # check messages
-      message_ids.each do |message_id|
-
-        message_meta = nil
-        timeout(1.minute) do
-          message_meta = @imap.fetch(message_id, ['RFC822.HEADER'])[0]
-        end
-
-        # check how many content messages we have, for notice used
-        headers = self.class.extract_rfc822_headers(message_meta)
-        next if messages_is_verify_message?(headers)
-        next if messages_is_ignore_message?(headers)
-
-        content_messages += 1
-        break if content_max_check < content_messages
-      end
-      if content_messages >= content_max_check
-        content_messages = message_ids.count
-      end
-
-      archive_possible = false || message_ids_result[:is_fallback]
-      archive_possible_is_fallback = false || message_ids_result[:is_fallback]
-      archive_check      = 0
-      archive_max_check  = 500
-      archive_days_range = 14
-      archive_week_range = archive_days_range / 7
-
-      # use .each only if ordered response is ascending (from older to newer)
-      message_ids_iterator = message_ids.each
-
-      # since the correct loop order could improve performance, we should check even for less than 500 available messages
-      # starting with 5 messages, since we need 2 additional fetch requests to find the used order and it would not make sense with less messages
-      if !message_ids_result[:is_fallback] && content_messages > 4
-        message_0_meta = nil
-        message_1_meta = nil
-        timeout(1.minute) do
-          message_0_meta = @imap.fetch(message_ids[0], ['RFC822.HEADER'])[0]
-          message_1_meta = @imap.fetch(message_ids[1], ['RFC822.HEADER'])[0]
-        end
-        headers0 = self.class.extract_rfc822_headers(message_0_meta)
-        headers1 = self.class.extract_rfc822_headers(message_1_meta)
-
-        if headers0['Date'].present? && headers1['Date'].present?
-          begin
-            date0 = Time.zone.parse(headers0['Date'])
-            date1 = Time.zone.parse(headers1['Date'])
-
-            # change iterator to .reverse_each if order of the 2 probe messages is descending (from newer to older)
-            message_ids_iterator = message_ids.reverse_each if date0 > date1
-          rescue => e # rubocop:disable Metrics/BlockNesting
-            # no easy order decision possible due to a date parsing issue, continue with default iterator
-          end
-        end
-      end
-
-      message_ids_iterator.each do |message_id|
-        message_meta = nil
-        timeout(1.minute) do
-          message_meta = @imap.fetch(message_id, ['RFC822.HEADER'])[0]
-        end
-
-        headers = self.class.extract_rfc822_headers(message_meta)
-        next if messages_is_verify_message?(headers)
-        next if messages_is_ignore_message?(headers)
-        next if headers['Date'].blank?
-
-        archive_check += 1
-        break if archive_check >= archive_max_check
-
-        begin
-          date = Time.zone.parse(headers['Date'])
-        rescue => e
-          Rails.logger.error e
-          next
-        end
-        break if date >= Time.zone.now - archive_days_range.days
-
-        archive_possible = true
-
-        # even if it was fallback before, we just found a real old mail, so it's not fallback anymore
-        archive_possible_is_fallback = false
-
-        break
-      end
-
-      disconnect
-      return {
-        result:                       'ok',
-        content_messages:             content_messages,
-        archive_possible:             archive_possible,
-        archive_possible_is_fallback: archive_possible_is_fallback,
-        archive_week_range:           archive_week_range,
-      }
-    end
-
-    # reverse message order to increase performance
-    if check_type == 'verify'
-      Rails.logger.info "verify mode, fetch no emails #{verify_string}"
-
-      # check for verify message
-      message_ids.reverse_each do |message_id|
-
-        message_meta = nil
-        timeout(FETCH_METADATA_TIMEOUT) do
-          message_meta = @imap.fetch(message_id, ['RFC822.HEADER'])[0]
-        end
-
-        # check if verify message exists
-        headers = self.class.extract_rfc822_headers(message_meta)
-        subject = headers['Subject']
-        next if !subject
-        next if !subject.match?(%r{#{verify_string}})
-
-        Rails.logger.info " - verify email #{verify_string} found"
-        timeout(600) do
-          @imap.store(message_id, '+FLAGS', [:Deleted])
-          @imap.expunge
-        end
-        disconnect
-        return {
-          result: 'ok',
-        }
-      end
-
-      disconnect
-      return {
-        result: 'verify not ok',
-      }
-    end
 
     # fetch regular messages
     count_all             = message_ids.count
@@ -295,12 +104,12 @@ example
       count += 1
 
       break if (count % active_check_interval).zero? && channel_has_changed?(channel)
-      break if max_process_count_has_reached?(channel, count, count_max)
+      break if max_process_count_was_reached?(channel, count, count_max)
 
       Rails.logger.info " - message #{count}/#{count_all}"
 
       message_meta = nil
-      timeout(FETCH_METADATA_TIMEOUT) do
+      Timeout.timeout(FETCH_METADATA_TIMEOUT) do
         message_meta = @imap.fetch(message_id, ['RFC822.SIZE', 'FLAGS', 'INTERNALDATE', 'RFC822.HEADER'])[0]
       rescue Net::IMAP::ResponseParseError => e
         raise if e.message.exclude?('unknown token')
@@ -318,18 +127,25 @@ example
       next if message_meta.nil?
 
       # ignore verify messages
-      next if !messages_is_too_old_verify?(message_meta, count, count_all)
+      next if !messages_is_too_old_verify?(self.class.extract_rfc822_headers(message_meta), count, count_all)
 
       # ignore deleted messages
       next if deleted?(message_meta, count, count_all)
 
       # ignore already imported
-      next if already_imported?(message_id, message_meta, count, count_all, keep_on_server, channel)
+      if already_imported?(self.class.extract_rfc822_headers(message_meta), keep_on_server, channel)
+        Timeout.timeout(1.minute) do
+          @imap.store(message_id, '+FLAGS', [:Seen])
+        end
+        Rails.logger.info "  - ignore message #{count}/#{count_all} - because message message id already imported"
+
+        next
+      end
 
       # delete email from server after article was created
       msg = nil
       begin
-        timeout(FETCH_MSG_TIMEOUT) do
+        Timeout.timeout(FETCH_MSG_TIMEOUT) do
           key = fetch_message_body_key(options)
           msg = @imap.fetch(message_id, key)[0].attr[key]
         end
@@ -340,7 +156,7 @@ example
       next if !msg
 
       # do not process too big messages, instead download & send postmaster reply
-      too_large_info = too_large?(message_meta)
+      too_large_info = too_large?(message_meta.attr['RFC822.SIZE'])
       if too_large_info
         if Setting.get('postmaster_send_reject_if_mail_too_large') == true
           info = "  - download message #{count}/#{count_all} - ignore message because it's too large (is:#{too_large_info[0]} MB/max:#{too_large_info[1]} MB)"
@@ -359,7 +175,7 @@ example
       end
 
       begin
-        timeout(FETCH_MSG_TIMEOUT) do
+        Timeout.timeout(FETCH_MSG_TIMEOUT) do
           if keep_on_server
             @imap.store(message_id, '+FLAGS', [:Seen])
           else
@@ -375,7 +191,7 @@ example
 
     if !keep_on_server
       begin
-        timeout(EXPUNGE_TIMEOUT) do
+        Timeout.timeout(EXPUNGE_TIMEOUT) do
           @imap.expunge
         end
       rescue Timeout::Error => e
@@ -388,6 +204,9 @@ example
       Rails.logger.info ' - no message'
     end
 
+    # Error is raised if one of the messages was too large AND postmaster_send_reject_if_mail_too_large is turned off.
+    # This effectivelly marks channels as stuck and gets highlighted for the admin.
+    # New emails are still processed! But large email is not touched, so error keeps being re-raised on every fetch.
     if too_large_messages.present?
       raise too_large_messages.join("\n")
     end
@@ -396,6 +215,158 @@ example
       result:  result,
       fetched: count_fetched,
       notice:  notice,
+    }
+  end
+
+  def check(options)
+    setup_connection(options, check: true)
+
+    message_ids_result = Timeout.timeout(6.minutes) do
+      fetch_all_message_ids
+    end
+
+    message_ids = message_ids_result[:result]
+
+    Rails.logger.info 'check only mode, fetch no emails'
+    content_max_check = 2
+    content_messages  = 0
+
+    # check messages
+    message_ids.each do |message_id|
+
+      message_meta = nil
+      Timeout.timeout(1.minute) do
+        message_meta = @imap.fetch(message_id, ['RFC822.HEADER'])[0]
+      end
+
+      # check how many content messages we have, for notice used
+      headers = self.class.extract_rfc822_headers(message_meta)
+      next if messages_is_verify_message?(headers)
+      next if messages_is_ignore_message?(headers)
+
+      content_messages += 1
+      break if content_max_check < content_messages
+    end
+    if content_messages >= content_max_check
+      content_messages = message_ids.count
+    end
+
+    archive_possible = false || message_ids_result[:is_fallback]
+    archive_possible_is_fallback = false || message_ids_result[:is_fallback]
+    archive_check      = 0
+    archive_max_check  = 500
+    archive_days_range = 14
+    archive_week_range = archive_days_range / 7
+
+    # use .each only if ordered response is ascending (from older to newer)
+    message_ids_iterator = message_ids.each
+
+    # since the correct loop order could improve performance, we should check even for less than 500 available messages
+    # starting with 5 messages, since we need 2 additional fetch requests to find the used order and it would not make sense with less messages
+    if !message_ids_result[:is_fallback] && content_messages > 4
+      message_0_meta = nil
+      message_1_meta = nil
+      Timeout.timeout(1.minute) do
+        message_0_meta = @imap.fetch(message_ids[0], ['RFC822.HEADER'])[0]
+        message_1_meta = @imap.fetch(message_ids[1], ['RFC822.HEADER'])[0]
+      end
+      headers0 = self.class.extract_rfc822_headers(message_0_meta)
+      headers1 = self.class.extract_rfc822_headers(message_1_meta)
+
+      if headers0['Date'].present? && headers1['Date'].present?
+        begin
+          date0 = Time.zone.parse(headers0['Date'])
+          date1 = Time.zone.parse(headers1['Date'])
+
+          # change iterator to .reverse_each if order of the 2 probe messages is descending (from newer to older)
+          message_ids_iterator = message_ids.reverse_each if date0 > date1
+        rescue => e
+          # no easy order decision possible due to a date parsing issue, continue with default iterator
+        end
+      end
+    end
+
+    message_ids_iterator.each do |message_id|
+      message_meta = nil
+      Timeout.timeout(1.minute) do
+        message_meta = @imap.fetch(message_id, ['RFC822.HEADER'])[0]
+      end
+
+      headers = self.class.extract_rfc822_headers(message_meta)
+      next if messages_is_verify_message?(headers)
+      next if messages_is_ignore_message?(headers)
+      next if headers['Date'].blank?
+
+      archive_check += 1
+      break if archive_check >= archive_max_check
+
+      begin
+        date = Time.zone.parse(headers['Date'])
+      rescue => e
+        Rails.logger.error e
+        next
+      end
+      break if date >= Time.zone.now - archive_days_range.days
+
+      archive_possible = true
+
+      # even if it was fallback before, we just found a real old mail, so it's not fallback anymore
+      archive_possible_is_fallback = false
+
+      break
+    end
+
+    disconnect
+    {
+      result:                       'ok',
+      content_messages:             content_messages,
+      archive_possible:             archive_possible,
+      archive_possible_is_fallback: archive_possible_is_fallback,
+      archive_week_range:           archive_week_range,
+    }
+  end
+
+  # This method is used for custom IMAP only.
+  # It is not used in conjunction with Micrsofot365 or Gogle OAuth channels.
+  def verify(options, verify_string)
+    setup_connection(options)
+
+    message_ids_result = Timeout.timeout(6.minutes) do
+      fetch_all_message_ids
+    end
+
+    message_ids = message_ids_result[:result]
+
+    Rails.logger.info "verify mode, fetch no emails #{verify_string}"
+
+    # check for verify message
+    message_ids.reverse_each do |message_id|
+
+      message_meta = nil
+      Timeout.timeout(FETCH_METADATA_TIMEOUT) do
+        message_meta = @imap.fetch(message_id, ['RFC822.HEADER'])[0]
+      end
+
+      # check if verify message exists
+      headers = self.class.extract_rfc822_headers(message_meta)
+      subject = headers['Subject']
+      next if !subject
+      next if !subject.match?(%r{#{verify_string}})
+
+      Rails.logger.info " - verify email #{verify_string} found"
+      Timeout.timeout(600) do
+        @imap.store(message_id, '+FLAGS', [:Deleted])
+        @imap.expunge
+      end
+      disconnect
+      return {
+        result: 'ok',
+      }
+    end
+
+    disconnect
+    {
+      result: 'verify not ok',
     }
   end
 
@@ -431,23 +402,9 @@ example
   def disconnect
     return if !@imap
 
-    timeout(1.minute) do
+    Timeout.timeout(1.minute) do
       @imap.disconnect
     end
-  end
-
-=begin
-
-  Channel::Driver::Imap.streamable?
-
-returns
-
-  true|false
-
-=end
-
-  def self.streamable?
-    false
   end
 
   # Parses RFC822 header
@@ -477,74 +434,6 @@ returns
 
   private
 
-  def messages_is_too_old_verify?(message_meta, count, count_all)
-    headers = self.class.extract_rfc822_headers(message_meta)
-    return true if !messages_is_verify_message?(headers)
-    return true if headers['X-Zammad-Verify-Time'].blank?
-
-    begin
-      verify_time = Time.zone.parse(headers['X-Zammad-Verify-Time'])
-    rescue => e
-      Rails.logger.error e
-      return true
-    end
-    return true if verify_time < 30.minutes.ago
-
-    Rails.logger.info "  - ignore message #{count}/#{count_all} - because message has a verify message"
-
-    false
-  end
-
-  def messages_is_verify_message?(headers)
-    return true if headers['X-Zammad-Verify'] == 'true'
-
-    false
-  end
-
-  def messages_is_ignore_message?(headers)
-    return true if headers['X-Zammad-Ignore'] == 'true'
-
-    false
-  end
-
-=begin
-
-check if email is already impoted
-
-  Channel::Driver::IMAP.already_imported?(message_id, message_meta, count, count_all, keep_on_server, channel)
-
-returns
-
-  true|false
-
-=end
-
-  # rubocop:disable Metrics/ParameterLists
-  def already_imported?(message_id, message_meta, count, count_all, keep_on_server, channel)
-    # rubocop:enable Metrics/ParameterLists
-    return false if !keep_on_server
-
-    headers = self.class.extract_rfc822_headers(message_meta)
-    retrurn false if !headers
-
-    local_message_id = headers['Message-ID']
-    return false if local_message_id.blank?
-
-    local_message_id_md5 = Digest::MD5.hexdigest(local_message_id)
-    article = Ticket::Article.where(message_id_md5: local_message_id_md5).reorder('created_at DESC, id DESC').limit(1).first
-    return false if !article
-
-    # verify if message is already imported via same channel, if not, import it again
-    ticket = article.ticket
-    return false if ticket&.preferences && ticket.preferences[:channel_id].present? && channel.present? && ticket.preferences[:channel_id] != channel[:id]
-
-    timeout(1.minute) do
-      @imap.store(message_id, '+FLAGS', [:Seen])
-    end
-    Rails.logger.info "  - ignore message #{count}/#{count_all} - because message message id already imported"
-    true
-  end
-
 =begin
 
 check if email is already marked as deleted
@@ -566,55 +455,9 @@ returns
 
 =begin
 
-check if email is to big
-
-  Channel::Driver::IMAP.too_large?(message_meta, count, count_all)
-
-returns
-
-  true|false
-
-=end
-
-  def too_large?(message_meta)
-    max_message_size = Setting.get('postmaster_max_size').to_f
-    real_message_size = message_meta.attr['RFC822.SIZE'].to_f / 1024 / 1024
-    if real_message_size > max_message_size
-      return [real_message_size, max_message_size]
-    end
-
-    false
-  end
-
-=begin
-
-check if channel config has changed
-
-  Channel::Driver::IMAP.channel_has_changed?(channel)
-
-returns
-
-  true|false
-
-=end
-
-  def channel_has_changed?(channel)
-    current_channel = Channel.find_by(id: channel.id)
-    if !current_channel
-      Rails.logger.info "Channel with id #{channel.id} is deleted in the meantime. Stop fetching."
-      return true
-    end
-    return false if channel.updated_at == current_channel.updated_at
-
-    Rails.logger.info "Channel with id #{channel.id} has changed. Stop fetching."
-    true
-  end
-
-=begin
-
 check if maximal fetching email count has reached
 
-  Channel::Driver::IMAP.max_process_count_has_reached?(channel, count, count_max)
+  Channel::Driver::IMAP.max_process_count_was_reached?(channel, count, count_max)
 
 returns
 
@@ -622,15 +465,70 @@ returns
 
 =end
 
-  def max_process_count_has_reached?(channel, count, count_max)
+  def max_process_count_was_reached?(channel, count, count_max)
     return false if count < count_max
 
     Rails.logger.info "Maximal fetched emails (#{count_max}) reached for this interval for Channel with id #{channel.id}."
     true
   end
 
-  def timeout(seconds, &)
-    Timeout.timeout(seconds, &)
-  end
+  def setup_connection(options, check: false)
+    ssl            = true
+    ssl_verify     = options.fetch(:ssl_verify, true)
+    starttls       = false
+    keep_on_server = false
+    folder         = 'INBOX'
+    if options[:keep_on_server] == true || options[:keep_on_server] == 'true'
+      keep_on_server = true
+    end
 
+    case options[:ssl]
+    when 'off'
+      ssl = false
+    when 'starttls'
+      ssl = false
+      starttls = true
+    end
+
+    port = if options.key?(:port) && options[:port].present?
+             options[:port].to_i
+           elsif ssl == true
+             993
+           else
+             143
+           end
+
+    if options[:folder].present?
+      folder = options[:folder]
+    end
+
+    Rails.logger.info "fetching imap (#{options[:host]}/#{options[:user]} port=#{port},ssl=#{ssl},starttls=#{starttls},folder=#{folder},keep_on_server=#{keep_on_server},auth_type=#{options.fetch(:auth_type, 'LOGIN')})"
+
+    # on check, reduce open_timeout to have faster probing
+    check_type_timeout = check ? CHECK_ONLY_TIMEOUT : DEFAULT_TIMEOUT
+
+    Certificate::ApplySSLCertificates.ensure_fresh_ssl_context if ssl || starttls
+
+    Timeout.timeout(check_type_timeout) do
+      ssl_settings = false
+      ssl_settings = (ssl_verify ? true : { verify_mode: OpenSSL::SSL::VERIFY_NONE }) if ssl
+      @imap = ::Net::IMAP.new(options[:host], port: port, ssl: ssl_settings)
+      if starttls
+        @imap.starttls(verify_mode: ssl_verify ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE)
+      end
+    end
+
+    Timeout.timeout(check_type_timeout) do
+      if options[:auth_type].present?
+        @imap.authenticate(options[:auth_type], options[:user], options[:password])
+      else
+        @imap.login(options[:user], options[:password].dup&.force_encoding('ascii-8bit'))
+      end
+    end
+
+    Timeout.timeout(check_type_timeout) do
+      # select folder
+      @imap.select(folder)
+    end
+  end
 end

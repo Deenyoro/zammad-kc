@@ -205,6 +205,11 @@ const permissions = [
         description: 'To manage Microsoft 365 channel of your system.',
       },
       {
+        value: 'admin.channel_microsoft_graph',
+        label: ' Microsoft Graph',
+        description: 'To manage Microsoft Graph channel of your system.',
+      },
+      {
         value: 'admin.channel_twitter',
         label: 'Twitter',
         description: 'To manage Twitter channel of your system.',

@@ -131,7 +131,7 @@ RSpec.describe ExternalCredential::Microsoft365 do
         it 'generates a link to an error dialog & does not update the channel' do
           link_account_response = described_class.link_account(request_token, authorization_payload.merge(channel_id: existing_channel.id))
 
-          expect(link_account_response).to eq("#{Setting.get('http_type')}://#{Setting.get('fqdn')}/#channels/microsoft365/error/user_mismatch")
+          expect(link_account_response).to eq("#{Setting.get('http_type')}://#{Setting.get('fqdn')}/#channels/microsoft365/error/user_mismatch/channel/#{existing_channel.id}")
 
           expect(existing_channel.reload.options.dig(:inbound, :options, :user)).to eq('zammad@outlook.com')
           expect(existing_channel.reload.options.dig(:outbound, :options, :user)).to eq('zammad@outlook.com')

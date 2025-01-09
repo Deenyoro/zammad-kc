@@ -87,7 +87,6 @@ class ChannelWhatsapp extends App.ControllerSubContent
       id:   'whatsapp_disable'
       type: 'POST'
       url:  "#{@apiPath}/channels/admin/whatsapp/#{id}/disable"
-      data: JSON.stringify(id: id)
       processData: true
       success: =>
         @load()

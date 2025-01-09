@@ -2,8 +2,8 @@
 
 class Validations::ChannelEmailAccountUniquenessValidator < ActiveModel::Validator
   MATCHED_KEYS = %i[adapter].freeze
-  MATCHED_OPTIONS_KEYS = %i[host port user folder].freeze
-  MATCHED_AREAS = %w[Email::Account Google::Account Microsoft365::Account].freeze
+  MATCHED_OPTIONS_KEYS = %i[host port user folder shared_mailbox].freeze
+  MATCHED_AREAS = %w[Email::Account Google::Account Microsoft365::Account MicrosoftGraph::Account].freeze
 
   def validate(record)
     return if MATCHED_AREAS.exclude?(record.area)
