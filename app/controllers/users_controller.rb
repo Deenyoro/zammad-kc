@@ -765,9 +765,10 @@ curl http://localhost/api/v1/users/avatar -v -u #{login}:#{password} -H "Content
     Avatar.remove_one('User', current_user.id, params[:id])
 
     # update user link
-    avatar = Avatar.get_default('User', current_user.id)
-    user = User.find(current_user.id)
-    user.update!(image: avatar.store_hash)
+    if (avatar = Avatar.get_default('User', current_user.id))
+      user = User.find(current_user.id)
+      user.update!(image: avatar.store_hash)
+    end
 
     render json: {}, status: :ok
   end
