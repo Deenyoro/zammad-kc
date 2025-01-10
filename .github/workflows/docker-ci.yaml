@@ -45,5 +45,5 @@ jobs:
           cd zammad-docker-compose
           docker load --input /tmp/zammad-local.tar
           docker compose -f docker-compose.yml -f docker-compose.override-local.yml up --detach
-          docker cp .github/auto_wizard.json zammad-docker-compose-zammad-railsserver-1:/opt/zammad/tmp
+          docker compose cp .github/auto_wizard.json zammad-railsserver:/opt/zammad/tmp
           .github/tests.sh
