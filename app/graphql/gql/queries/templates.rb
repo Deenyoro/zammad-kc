@@ -14,7 +14,8 @@ module Gql::Queries
     end
 
     def resolve(only_active:)
-      only_active ? Template.active : Template.all
+      templates = only_active ? Template.active : Template.all
+      templates.sorted
     end
   end
 end

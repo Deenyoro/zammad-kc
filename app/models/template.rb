@@ -9,6 +9,7 @@ class Template < ApplicationModel
   include Template::TriggersSubscriptions
 
   scope :active, -> { where(active: true) }
+  scope :sorted, -> { order(:name) }
 
   store     :options
   validates :name, presence: true
