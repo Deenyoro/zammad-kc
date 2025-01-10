@@ -294,12 +294,12 @@ const closed = () => {
   --dp-month-year-row-height: theme(size.7);
   --dp-month-year-row-button-size: theme(size.7);
   --dp-button-icon-height: theme(height.4);
-  --dp-cell-size: theme(size.8);
+  --dp-cell-size: theme(size.6);
   --dp-cell-padding: theme(padding.2);
   --dp-common-padding: theme(padding.2);
   --dp-input-icon-padding: theme(padding.2);
   --dp-input-padding: var(--dp-common-padding);
-  --dp-menu-min-width: 260px;
+  --dp-menu-min-width: 210px;
   --dp-action-buttons-padding: theme(padding.3);
   --dp-row-margin: theme(margin.2) theme(margin.0);
   --dp-calendar-header-cell-padding: theme(padding.2);
@@ -436,11 +436,11 @@ const closed = () => {
     /* NB: Fix orientation of the popover arrow in RTL locales. */
     &__arrow {
       &_top:where([dir='rtl'], [dir='rtl'] *) {
-        transform: translate(-50%, -50%) rotate(45deg);
+        transform: translate(-50%, -50%) rotate(-45deg);
       }
 
       &_bottom:where([dir='rtl'], [dir='rtl'] *) {
-        transform: translate(-50%, 50%) rotate(-45deg);
+        transform: translate(-50%, 50%) rotate(45deg);
       }
     }
 
