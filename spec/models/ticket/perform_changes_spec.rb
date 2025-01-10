@@ -615,6 +615,33 @@ RSpec.describe 'Ticket::PerformChanges', :aggregate_failures do
     end
   end
 
+  context 'with a "ticket.subscribe" trigger for non-agent user', current_user_id: 1 do
+    let(:user) { create(:customer) }
+
+    let(:perform) do
+      { 'ticket.subscribe' => { 'pre_condition' => 'current_user.id', 'value' => '', 'value_completion' => '' } }
+    end
+
+    it 'does not subscribe customer to ticket' do
+      object.perform_changes(performable, 'trigger', object, user.id)
+
+      expect(Mention.exists?(mentionable: object, user: user)).to be false
+    end
+
+    context 'with specific user' do
+      let(:customer) { create(:customer) }
+      let(:perform) do
+        { 'ticket.subscribe' => { 'pre_condition' => 'specific', 'value' => customer.id, 'value_completion' => '' } }
+      end
+
+      it 'does not subscribe specific customer to ticket' do
+        object.perform_changes(performable, 'trigger', object, user.id)
+
+        expect(Mention.exists?(mentionable: object, user: customer)).to be false
+      end
+    end
+  end
+
   context 'with a "ticket.subscribe" trigger', current_user_id: 1 do
     let(:user) { create(:agent, groups: [group]) }
 

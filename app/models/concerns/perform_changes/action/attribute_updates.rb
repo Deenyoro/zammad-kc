@@ -66,11 +66,12 @@ class PerformChanges::Action::AttributeUpdates < PerformChanges::Action
   end
 
   def subscribe(value)
-    if value['pre_condition'] == 'specific'
-      Mention.subscribe! record, User.find_by(id: value['value'])
-    else
-      Mention.subscribe! record, User.find_by(id: user_id)
-    end
+    user = value['pre_condition'] == 'specific' ? User.find_by(id: value['value']) : User.find_by(id: user_id)
+
+    # Ignore it for non-agent users.
+    return true if !Mention.mentionable?(record, user)
+
+    Mention.subscribe! record, user
   end
 
   def unsubscribe(value)
