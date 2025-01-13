@@ -228,6 +228,26 @@ class App.UiElement.ApplicationUiElement
     else if (@isTreeRelation(attribute) || !attribute.relation) && attribute.filter && _.isArray(attribute.filter)
       @filterOptionArray(attribute)
 
+    # make sure only available values are set. For the tree selects
+    # we want also to render values which are not selectable but rendered as disabled
+    # e.g. child nodes where the parent node is disabled. Because of this we need
+    # to make sure to not render these values as selected
+    values = @optionSelectableValues(attribute.options)
+    if attribute.multiple
+      attribute.value = _.intersection(attribute.value, values)
+    else if !_.contains(values, attribute.value)
+      attribute.value = ''
+
+  @optionSelectableValues: (values) ->
+    result = []
+    for option in values
+      continue if option.inactive
+      continue if !_.isEmpty(option.disabled)
+
+      result.push(option.value.toString())
+      result = result.concat(@optionSelectableValues(option.children)) if _.isArray(option.children)
+    result
+
   @filterOptionArray: (attribute) ->
     result = []
     for option in attribute.options

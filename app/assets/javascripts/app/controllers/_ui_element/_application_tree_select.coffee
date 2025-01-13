@@ -9,16 +9,6 @@ class App.UiElement.ApplicationTreeSelect extends App.UiElement.ApplicationUiEle
     else
       attribute.multiple = ''
 
-    # make sure only available values are set. For the tree selects
-    # we want also to render values which are not selectable but rendered as disabled
-    # e.g. child nodes where the parent node is disabled. Because of this we need
-    # to make sure to not render these values as selected
-    if attribute.value && attribute.filter
-      if attribute.multiple
-        attribute.value = _.intersection(attribute.value, attribute.filter)
-      else if !_.contains(attribute.filter, attribute.value)
-        attribute.value = ''
-
     # add deleted historical options if required
     @addDeletedOptions(attribute, params)
 
