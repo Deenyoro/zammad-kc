@@ -6,6 +6,8 @@ class ExternalCredential < ApplicationModel
   validates :name, presence: true
   store     :credentials
 
+  after_update_commit :update_client_secret
+
   def self.app_verify(params)
     backend = load_backend(params[:provider])
     backend.app_verify(params)
@@ -36,6 +38,22 @@ class ExternalCredential < ApplicationModel
 
   def self.load_backend(provider)
     "ExternalCredential::#{provider.camelcase}".constantize
+  end
+
+  private
+
+  def update_client_secret
+    return if !saved_change_to_credentials?
+
+    previous_client_secret = saved_changes['credentials'].first['client_secret']
+    current_client_secret = saved_changes['credentials'].last['client_secret']
+    return if previous_client_secret.blank? || current_client_secret.blank?
+    return if previous_client_secret == current_client_secret
+
+    backend = ExternalCredential.load_backend(name)
+    return if !backend.respond_to?(:update_client_secret)
+
+    backend.update_client_secret(previous_client_secret, current_client_secret)
   end
 
 end

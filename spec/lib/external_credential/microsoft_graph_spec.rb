@@ -365,4 +365,42 @@ RSpec.describe ExternalCredential::MicrosoftGraph do
       expect(info[:email]).to eq(email_address)
     end
   end
+
+  describe '.update_client_secret' do
+    let(:channel) do
+      # TODO: change ENV
+      ENV['MICROSOFT365_USER'] = 'zammad@outlook.com'
+      ENV['MICROSOFT365_CLIENT_ID']     = 'id1337'
+      ENV['MICROSOFT365_CLIENT_SECRET'] = 'dummy'
+      ENV['MICROSOFT365_CLIENT_TENANT'] = 'xxx'
+
+      create(:microsoft_graph_channel)
+    end
+
+    let(:external_credential) { create(:external_credential, name: provider, credentials: { client_id: 'id1337', client_secret: 'dummy' }) }
+
+    context 'when client_secret was updated' do
+      context 'when secret is different' do
+        before do
+          channel.options[:auth][:client_secret] = 'dummy-other'
+          channel.save!
+        end
+
+        it 'does not update the channel' do
+          external_credential.update!(credentials: { client_id: 'id1337', client_secret: 'dummy-new' })
+
+          expect(channel.reload.options[:auth][:client_secret]).to eq('dummy-other')
+        end
+      end
+
+      context 'when secret is the same' do
+        it 'updates the setting' do
+          channel
+          external_credential.update!(credentials: { client_id: 'id1337', client_secret: 'dummy-new' })
+
+          expect(channel.reload.options[:auth][:client_secret]).to eq('dummy-new')
+        end
+      end
+    end
+  end
 end

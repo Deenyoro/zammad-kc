@@ -1,10 +1,6 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-class ExternalCredential::MicrosoftBase
-  def self.channel_area
-    raise NotImplementedError
-  end
-
+class ExternalCredential::MicrosoftBase < ExternalCredential::Base::ChannelXoauth2
   def self.provider_name
     name.demodulize.underscore
   end
