@@ -656,6 +656,14 @@ RSpec.describe 'Ticket::PerformChanges', :aggregate_failures do
         mentionable: object,
         user:        user,
       )
+
+      expect(History.last).to have_attributes(
+        o_id:            Mention.last.id,
+        related_o_id:    object.id,
+        sourceable_type: 'Trigger',
+        sourceable_id:   performable.id,
+        sourceable_name: performable.name,
+      )
     end
 
     context 'with specific user' do
@@ -695,6 +703,13 @@ RSpec.describe 'Ticket::PerformChanges', :aggregate_failures do
       object.perform_changes(performable, 'trigger', object, user.id)
 
       expect(Mention).not_to exist(mention.id)
+      expect(History.last).to have_attributes(
+        o_id:            mention.id,
+        related_o_id:    object.id,
+        sourceable_type: 'Trigger',
+        sourceable_id:   performable.id,
+        sourceable_name: performable.name,
+      )
     end
 
     context 'with specific user' do
@@ -718,6 +733,14 @@ RSpec.describe 'Ticket::PerformChanges', :aggregate_failures do
         expect { object.perform_changes(performable, 'trigger', object, user.id) }
           .to change { object.mentions.exists? }
           .to false
+
+        expect(History.last).to have_attributes(
+          o_id:            other_mention.id,
+          related_o_id:    object.id,
+          sourceable_type: 'Trigger',
+          sourceable_id:   performable.id,
+          sourceable_name: performable.name,
+        )
       end
     end
   end
