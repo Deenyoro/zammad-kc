@@ -1,7 +1,11 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import { TicketOverviewOrderDocument } from '#shared/entities/ticket/graphql/queries/ticket/overviewOrder.api.ts'
 import { TicketOverviewsDocument } from '#shared/entities/ticket/graphql/queries/ticket/overviews.api.ts'
-import type { TicketOverviewsQuery } from '#shared/graphql/types.ts'
+import type {
+  TicketOverviewOrderQuery,
+  TicketOverviewsQuery,
+} from '#shared/graphql/types.ts'
 import { EnumOrderDirection } from '#shared/graphql/types.ts'
 
 import { TicketOverviewUpdatesDocument } from '#mobile/entities/ticket/graphql/subscriptions/ticketOverviewUpdates.api.ts'
@@ -25,6 +29,8 @@ export const getApiTicketOverviews = (): TicketOverviewsQuery => ({
           ticketCount: 1,
           orderBy: 'created_at',
           orderDirection: EnumOrderDirection.Descending,
+          organizationShared: false,
+          outOfOffice: false,
           prio: 100,
           active: true,
           viewColumns: [
@@ -52,6 +58,8 @@ export const getApiTicketOverviews = (): TicketOverviewsQuery => ({
           ticketCount: 2,
           orderBy: 'created_at',
           orderDirection: EnumOrderDirection.Ascending,
+          organizationShared: false,
+          outOfOffice: false,
           prio: 200,
           active: true,
           viewColumns: [
@@ -78,6 +86,8 @@ export const getApiTicketOverviews = (): TicketOverviewsQuery => ({
           ticketCount: 3,
           orderBy: 'created_at',
           orderDirection: EnumOrderDirection.Ascending,
+          organizationShared: false,
+          outOfOffice: false,
           prio: 300,
           active: true,
           viewColumns: [
@@ -102,6 +112,16 @@ export const mockTicketOverviews = (overviews?: TicketOverviewsQuery) => {
   mockGraphQLSubscription(TicketOverviewUpdatesDocument)
 
   return mockGraphQLApi(TicketOverviewsDocument).willResolve(
+    overviews || getApiTicketOverviews(),
+  )
+}
+
+export const mockTicketOverviewOrder = (
+  overviews?: TicketOverviewOrderQuery,
+) => {
+  mockGraphQLSubscription(TicketOverviewUpdatesDocument)
+
+  return mockGraphQLApi(TicketOverviewOrderDocument).willResolve(
     overviews || getApiTicketOverviews(),
   )
 }

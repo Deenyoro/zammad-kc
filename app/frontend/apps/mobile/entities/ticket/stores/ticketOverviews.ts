@@ -73,28 +73,24 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
       .filter(Boolean)
   })
 
-  const saveOverviews = (overviews: TicketOverview[]) => {
-    const ids = overviews.map(({ id }) => id)
-    storage.saveOverviews(ids)
-    includedIds.value = new Set(ids)
-  }
-
   const populateIncludeIds = (overviews: TicketOverview[]) => {
     overviews.forEach((overview) => {
       includedIds.value.add(overview.id)
     })
-
-    saveOverviews(overviews)
   }
 
-  // store overviews in local storage when loaded
-  // force it to have something
+  // Do not store overviews in local storage when loaded, fallback to query response.
   if (!includedIds.value.size) {
     if (!overviews.value.length) {
       watchOnce(overviews, populateIncludeIds)
     } else {
       populateIncludeIds(overviews.value)
     }
+  }
+
+  const updateOverviews = (overviews: TicketOverview[]) => {
+    const ids = overviews.map(({ id }) => id)
+    includedIds.value = new Set(ids)
   }
 
   tryOnScopeDispose(() => {
@@ -108,6 +104,6 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
     includedOverviews,
     includedIds,
     overviewsByKey,
-    saveOverviews,
+    updateOverviews,
   }
 })

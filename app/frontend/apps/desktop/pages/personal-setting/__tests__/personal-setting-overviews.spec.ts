@@ -17,14 +17,20 @@ const userCurrentOverviewList = [
   {
     id: convertToGraphQLId('Overview', 1),
     name: 'Open Tickets',
+    organizationShared: false,
+    outOfOffice: false,
   },
   {
     id: convertToGraphQLId('Overview', 2),
     name: 'My Tickets',
+    organizationShared: false,
+    outOfOffice: false,
   },
   {
     id: convertToGraphQLId('Overview', 3),
     name: 'All Tickets',
+    organizationShared: false,
+    outOfOffice: false,
   },
 ]
 
@@ -113,6 +119,8 @@ describe('personal settings for token access', () => {
           {
             id: convertToGraphQLId('Overview', 4),
             name: 'New Overview',
+            organizationShared: false,
+            outOfOffice: false,
           },
         ],
       },

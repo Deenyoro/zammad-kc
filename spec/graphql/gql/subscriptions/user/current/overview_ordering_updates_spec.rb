@@ -32,7 +32,7 @@ RSpec.describe Gql::Subscriptions::User::Current::OverviewOrderingUpdates, type:
       create(:'user/overview_sorting', user: target)
       described_class.trigger_by(target)
 
-      all_overviews = Ticket::Overviews.all(current_user: target)
+      all_overviews = Ticket::Overviews.all(current_user: target, ignore_user_conditions: true)
       expect(mock_channel.mock_broadcasted_messages.first[:result]['data']['userCurrentOverviewOrderingUpdates']['overviews'].count)
         .to eq(all_overviews.count)
     end

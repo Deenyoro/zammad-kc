@@ -2,17 +2,14 @@
 
 class Ticket::OverviewsPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
-    def resolve
+    def resolve(ignore_user_conditions: false)
       return scope.none if !user.permissions?(%w[ticket.customer ticket.agent])
 
       scope = base_query
 
-      if !user.shared_organizations?
-        scope = scope.where(organization_shared: false)
-      end
-
-      if !user.someones_out_of_office_replacement?
-        scope = scope.where.not(out_of_office: true)
+      if !ignore_user_conditions
+        scope = scope.where(organization_shared: false) if !user.shared_organizations?
+        scope = scope.where.not(out_of_office: true) if !user.someones_out_of_office_replacement?
       end
 
       scope

@@ -16,8 +16,8 @@ module Gql::Types
     field :order_direction, Gql::Types::Enum::OrderDirectionType, null: false
     # field :group_by, String
     # field :group_direction, String
-    # field :organization_shared, Boolean, null: false
-    # field :out_of_office, Boolean, null: false
+    field :organization_shared, Boolean, null: true
+    field :out_of_office, Boolean, null: true
     # field :view, String, null: false
     field :active, Boolean, null: false
 

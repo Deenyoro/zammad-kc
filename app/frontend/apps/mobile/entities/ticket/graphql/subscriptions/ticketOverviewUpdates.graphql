@@ -1,5 +1,5 @@
-subscription ticketOverviewUpdates($withTicketCount: Boolean!) {
-  ticketOverviewUpdates {
+subscription ticketOverviewUpdates($ignoreUserConditions: Boolean = false, $withTicketCount: Boolean!) {
+  ticketOverviewUpdates(ignoreUserConditions: $ignoreUserConditions) {
     ticketOverviews {
       edges {
         node {

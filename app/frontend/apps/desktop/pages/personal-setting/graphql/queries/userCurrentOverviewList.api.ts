@@ -10,6 +10,8 @@ export const UserCurrentOverviewListDocument = gql`
   userCurrentOverviewList {
     id
     name
+    organizationShared
+    outOfOffice
   }
 }
     `;

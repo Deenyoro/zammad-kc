@@ -13555,6 +13555,30 @@
               "deprecationReason": null
             },
             {
+              "name": "organizationShared",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "outOfOffice",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "prio",
               "description": null,
               "args": [],
@@ -15933,6 +15957,16 @@
               "description": "Ticket overviews available in the system",
               "args": [
                 {
+                  "name": "ignoreUserConditions",
+                  "description": "Include additional overviews by ignoring user conditions",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "false"
+                },
+                {
                   "name": "after",
                   "description": "Returns the elements in the list that come after the specified cursor.",
                   "type": {
@@ -17504,7 +17538,18 @@
             {
               "name": "ticketOverviewUpdates",
               "description": "Updates to overviews",
-              "args": [],
+              "args": [
+                {
+                  "name": "ignoreUserConditions",
+                  "description": "Include additional overviews by ignoring user conditions",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "false"
+                }
+              ],
               "type": {
                 "kind": "NON_NULL",
                 "name": null,

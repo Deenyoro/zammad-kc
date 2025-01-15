@@ -5,7 +5,7 @@ class User::OverviewSortingsController < ApplicationController
 
   def index
     render json: {
-      overviews:         Ticket::Overviews.all(current_user: current_user),
+      overviews:         Ticket::Overviews.all(current_user: current_user, ignore_user_conditions: true),
       overview_sortings: User::OverviewSorting.where(user: current_user),
     }
   end
@@ -35,7 +35,7 @@ class User::OverviewSortingsController < ApplicationController
     overview_ids = params[:prios].map(&:first)
 
     authorized_overviews = Ticket::Overviews
-      .all(current_user:)
+      .all(current_user:, ignore_user_conditions: true)
       .where(id: overview_ids)
       .sort_by { |elem| overview_ids.index(elem.id) }
 

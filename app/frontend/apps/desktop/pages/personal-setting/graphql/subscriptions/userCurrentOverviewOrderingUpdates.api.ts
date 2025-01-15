@@ -11,6 +11,8 @@ export const UserCurrentOverviewOrderingUpdatesDocument = gql`
     overviews {
       id
       name
+      organizationShared
+      outOfOffice
     }
   }
 }

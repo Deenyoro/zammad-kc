@@ -1,5 +1,5 @@
-query ticketOverviews($withTicketCount: Boolean!) {
-  ticketOverviews(ignoreUserConditions: false) {
+query ticketOverviewOrder($withTicketCount: Boolean = false) {
+  ticketOverviews(ignoreUserConditions: true) {
     edges {
       node {
         ...overviewAttributes

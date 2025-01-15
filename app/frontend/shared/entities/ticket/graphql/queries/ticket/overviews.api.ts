@@ -8,7 +8,7 @@ export type ReactiveFunction<TParam> = () => TParam;
 
 export const TicketOverviewsDocument = gql`
     query ticketOverviews($withTicketCount: Boolean!) {
-  ticketOverviews {
+  ticketOverviews(ignoreUserConditions: false) {
     edges {
       node {
         ...overviewAttributes

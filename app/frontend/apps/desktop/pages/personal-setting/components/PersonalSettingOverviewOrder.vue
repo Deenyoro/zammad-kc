@@ -11,6 +11,8 @@ import { startAndEndEventsDNDPlugin } from '#shared/utils/startAndEndEventsDNDPl
 export interface OverviewItem {
   id: string
   name: string
+  organizationShared?: boolean | null
+  outOfOffice?: boolean | null
 }
 
 const localValue = defineModel<OverviewItem[]>('modelValue')
@@ -60,13 +62,25 @@ dragAndDrop({
         aria-describedby="drag-and-drop-ticket-overviews"
       >
         <CommonIcon
-          class="fill-stone-200 dark:fill-neutral-500"
+          class="mt-1 shrink-0 fill-stone-200 dark:fill-neutral-500"
           name="grip-vertical"
           size="tiny"
+          decorative
         />
-        <CommonLabel class="w-full text-black dark:text-white">
-          {{ $t(value.name) }}
-        </CommonLabel>
+        <div class="grow">
+          <CommonLabel class="inline text-black dark:text-white">
+            {{ $t(value.name) }}
+          </CommonLabel>
+          <CommonBadge
+            v-if="value.organizationShared"
+            variant="info"
+            class="ms-1.5"
+            >{{ $t('Only when shared organization member') }}</CommonBadge
+          >
+          <CommonBadge v-if="value.outOfOffice" variant="info" class="ms-1.5">{{
+            $t('Only when out of office replacement')
+          }}</CommonBadge>
+        </div>
       </li>
     </ul>
   </div>

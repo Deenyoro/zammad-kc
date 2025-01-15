@@ -11,6 +11,10 @@ certain overviews by user
 
   result = Ticket::Overviews.all(current_user: User.find(3), links: ['all_unassigned', 'my_assigned'])
 
+include additional overviews by ignoring user conditions
+
+  result = Ticket::Overviews.all(current_user: User.find(3), ignore_user_conditions: true)
+
 returns
 
   result = [overview1, overview2]
@@ -18,7 +22,7 @@ returns
 =end
 
   def self.all(data)
-    Ticket::OverviewsPolicy::Scope.new(data[:current_user], Overview).resolve
+    Ticket::OverviewsPolicy::Scope.new(data[:current_user], Overview).resolve(ignore_user_conditions: data[:ignore_user_conditions])
       .where({ link: data[:links] }.compact)
       .distinct
       .reorder(:prio, :name)
