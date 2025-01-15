@@ -2565,7 +2565,7 @@ wait untill text in selector disabppears
     await_empty_ajax_queue(params)
 
     # do not stay on tab
-    if params[:task_type] == 'closeTab' || params[:task_type] == 'closeNextInOverview'
+    if %w[closeTab closeNextInOverview].include?(params[:task_type])
       sleep 1
       return
     end

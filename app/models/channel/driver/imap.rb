@@ -77,7 +77,7 @@ example
     setup_connection(options)
 
     keep_on_server = false
-    if options[:keep_on_server] == true || options[:keep_on_server] == 'true'
+    if [true, 'true'].include?(options[:keep_on_server])
       keep_on_server = true
     end
 
@@ -478,7 +478,7 @@ returns
     starttls       = false
     keep_on_server = false
     folder         = 'INBOX'
-    if options[:keep_on_server] == true || options[:keep_on_server] == 'true'
+    if [true, 'true'].include?(options[:keep_on_server])
       keep_on_server = true
     end
 

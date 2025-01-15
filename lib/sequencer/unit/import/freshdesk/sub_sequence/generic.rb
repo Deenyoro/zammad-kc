@@ -53,7 +53,7 @@ class Sequencer::Unit::Import::Freshdesk::SubSequence::Generic < Sequencer::Unit
   end
 
   def iteration_should_stop?
-    return true if result[:action] == :failed || result[:action] == :skipped
+    return true if %i[failed skipped].include?(result[:action])
     return true if result[:response].header['link'].blank?
 
     false

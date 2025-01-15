@@ -183,7 +183,7 @@ returns
     end
 
     # check ignore header
-    if mail[:'x-zammad-ignore'] == 'true' || mail[:'x-zammad-ignore'] == true
+    if ['true', true].include?(mail[:'x-zammad-ignore'])
       Rails.logger.info "ignored email with msgid '#{mail[:message_id]}' from '#{mail[:from]}' because of x-zammad-ignore header"
 
       return [{}, nil, nil, mail]

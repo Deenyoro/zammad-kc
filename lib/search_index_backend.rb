@@ -855,7 +855,7 @@ helper method for making HTTP calls and raising error if response was not succes
         result[:properties][key] = {
           type: 'integer',
         }
-      elsif value.type == :datetime || value.type == :date
+      elsif value.type == :datetime || value.type == :date # rubocop:disable Style/MultipleComparison
         result[:properties][key] = {
           type: 'date',
         }

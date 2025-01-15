@@ -164,7 +164,7 @@ class Transaction::Notification
     return if @item[:type] == 'update' && !article && changes.blank?
 
     # check if today already notified
-    if @item[:type] == 'reminder_reached' || @item[:type] == 'escalation' || @item[:type] == 'escalation_warning'
+    if %w[reminder_reached escalation escalation_warning].include?(@item[:type])
       identifier = user.email
       if !identifier || identifier == ''
         identifier = user.login
@@ -194,7 +194,7 @@ class Transaction::Notification
         created_by_id = 1
         OnlineNotification.remove_by_type('Ticket', ticket.id, @item[:type], user)
 
-      elsif @item[:type] == 'escalation' || @item[:type] == 'escalation_warning'
+      elsif %w[escalation escalation_warning].include?(@item[:type])
         seen = false
         created_by_id = 1
         OnlineNotification.remove_by_type('Ticket', ticket.id, 'escalation', user)

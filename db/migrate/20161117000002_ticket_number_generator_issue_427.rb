@@ -25,7 +25,7 @@ class TicketNumberGeneratorIssue427 < ActiveRecord::Migration[4.2]
     }
 
     # just to make sure that value is saved correctly - https://github.com/zammad/zammad/issues/413
-    if setting.state_current['value'] == true || setting.state_current['value'] == false
+    if [true, false].include?(setting.state_current['value'])
       setting.state_current['value'] = { 'checksum' => setting.state_current['value'] }
     end
     setting.save!

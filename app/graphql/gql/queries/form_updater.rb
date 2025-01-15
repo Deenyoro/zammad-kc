@@ -33,7 +33,7 @@ module Gql::Queries
     def self.authorize(_obj, ctx)
       # Per default the queries require a authenticated user.
       if !ctx[:current_arguments][:form_updater_id].requires_authentication
-        true
+        return true
       end
 
       super
