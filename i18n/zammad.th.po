@@ -537,6 +537,7 @@ msgstr "%s ชัวโมงที่แล้ว"
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:58
 #: app/assets/javascripts/app/views/google/list.jst.eco:61
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:62
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:72
 msgid "%s is inactive, please select an active one."
 msgstr "%s ไม่ทำงาน, โปรดเลือกรายการที่ใช้งานอยู่."
 
@@ -1000,7 +1001,7 @@ msgstr ""
 "them!"
 
 #: app/assets/javascripts/app/controllers/api.coffee:3
-#: app/assets/javascripts/app/views/api.jst.eco:2 db/seeds/permissions.rb:227
+#: app/assets/javascripts/app/views/api.jst.eco:2 db/seeds/permissions.rb:233
 msgid "API"
 msgstr "API"
 
@@ -1048,57 +1049,57 @@ msgstr "Accept Data Privacy Policy & Acceptable Use Policy"
 msgid "Access denied"
 msgstr "เข้าถึง %s"
 
-#: db/seeds/permissions.rb:315
+#: db/seeds/permissions.rb:321
 msgid "Access the agent chat features."
 msgstr ""
 
-#: db/seeds/permissions.rb:330
+#: db/seeds/permissions.rb:336
 msgid "Access the agent phone features."
 msgstr ""
 
-#: db/seeds/permissions.rb:345
+#: db/seeds/permissions.rb:351
 msgid "Access the knowledge base editor features."
 msgstr ""
 
-#: db/seeds/permissions.rb:351
+#: db/seeds/permissions.rb:357
 msgid "Access the knowledge base reader features."
 msgstr ""
 
-#: db/seeds/permissions.rb:373
+#: db/seeds/permissions.rb:379
 #, fuzzy
 #| msgid "Access to Agent Tickets based on Group Access"
 msgid "Access the tickets as agent based on group access."
 msgstr "การเข้าถึง Tickets ของเจ้าหน้าที่ตามการเข้าถึงแบบกลุ่ม"
 
-#: db/seeds/permissions.rb:382
+#: db/seeds/permissions.rb:388
 #, fuzzy
 #| msgid "ticket.customer"
 msgid "Access tickets as customer."
 msgstr "ticket.customer"
 
-#: db/seeds/permissions.rb:306
+#: db/seeds/permissions.rb:312
 #, fuzzy
 #| msgid "Preview customer tickets"
 msgid "Access to the chat interface."
 msgstr "ดูตัวอย่าง tickets ลูกค้า"
 
-#: db/seeds/permissions.rb:336
+#: db/seeds/permissions.rb:342
 #, fuzzy
 #| msgid "Inserts knowledge base answer"
 msgid "Access to the knowledge base interface."
 msgstr "แทรกคำตอบศูนย์การเรียนรู้"
 
-#: db/seeds/permissions.rb:321
+#: db/seeds/permissions.rb:327
 #, fuzzy
 #| msgid "Preview customer tickets"
 msgid "Access to the phone interface."
 msgstr "ดูตัวอย่าง tickets ลูกค้า"
 
-#: db/seeds/permissions.rb:358
+#: db/seeds/permissions.rb:364
 msgid "Access to the report interface."
 msgstr ""
 
-#: db/seeds/permissions.rb:364
+#: db/seeds/permissions.rb:370
 #, fuzzy
 #| msgid "Preview customer tickets"
 msgid "Access to the ticket interface."
@@ -1129,7 +1130,7 @@ msgid "Account SID"
 msgstr "บัญชี SID"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:6
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:115
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:136
 msgid "Account Time"
 msgstr "เวลาบัญชี"
 
@@ -1148,7 +1149,7 @@ msgstr "บัญชีไม่ได้รับการยืนยัน"
 #: app/assets/javascripts/app/models/ticket.coffee:16
 #: app/assets/javascripts/app/views/ticket_zoom/time_unit.jst.eco:2
 #: app/assets/javascripts/app/views/time_accounting/accounted_time.jst.eco:2
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:70
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:83
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:136
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:18
 #: app/graphql/gql/types/overview_type.rb:69
@@ -1164,6 +1165,7 @@ msgstr "เวลาบัญชี"
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:11
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:11
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:11
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:13
 #: app/assets/javascripts/app/controllers/_channel/sms.coffee:10
 #: app/assets/javascripts/app/views/facebook/index.jst.eco:3
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:3
@@ -1171,6 +1173,8 @@ msgstr "เวลาบัญชี"
 #: app/assets/javascripts/app/views/google/list.jst.eco:3
 #: app/assets/javascripts/app/views/microsoft365/index.jst.eco:3
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:3
+#: app/assets/javascripts/app/views/microsoft_graph/index.jst.eco:4
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:3
 #: app/assets/javascripts/app/views/twitter/index.jst.eco:3
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:3
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:3
@@ -1298,7 +1302,7 @@ msgstr "กิจกรรม ที่เกิดขึ้น"
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:16
 #: app/assets/javascripts/app/views/time_accounting/types.jst.eco:4
 #: app/controllers/time_accountings_controller.rb:117
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:97
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:118
 msgid "Activity Type"
 msgstr "ชนิด กิจกรรม"
 
@@ -1335,6 +1339,7 @@ msgstr "อะแดปเตอร์"
 #: app/assets/javascripts/app/views/knowledge_base/sidebar/generic_list.jst.eco:7
 #: app/assets/javascripts/app/views/knowledge_base/sidebar/linked_tickets.jst.eco:8
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:8
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:8
 #: app/assets/javascripts/app/views/object_manager/attribute/multiselect.jst.eco:43
 #: app/assets/javascripts/app/views/object_manager/attribute/select.jst.eco:39
 #: app/assets/javascripts/app/views/profile/linked_accounts.jst.eco:15
@@ -1349,6 +1354,7 @@ msgstr "เพิ่ม"
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:8
 #: app/assets/javascripts/app/views/google/list.jst.eco:8
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:8
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:8
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:8
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:7
 msgid "Add Account"
@@ -1612,7 +1618,7 @@ msgstr "ที่อยู่ของพร็อกซีเซิร์ฟเ
 msgid "Admin"
 msgstr "แอดมิน"
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:448
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:455
 msgid "Admin Consent"
 msgstr "ความยินยอมของผู้ดูแลระบบ"
 
@@ -1756,7 +1762,7 @@ msgstr "ชื่อเจ้าหน้าที่"
 msgid "Agent Name + FromSeparator + System Address Display Name"
 msgstr "ชื่อเจ้าหน้าที่ + FromSeparator + System Address Display Name"
 
-#: db/seeds/permissions.rb:314
+#: db/seeds/permissions.rb:320
 #, fuzzy
 #| msgid "Agent Name"
 msgid "Agent chat"
@@ -1770,13 +1776,13 @@ msgstr "ระยะหมดเวลาของ เจ้าหน้าท�
 msgid "Agent limit exceeded, please check your account settings."
 msgstr "เกินขีดจำกัดเจ้าหน้าที่ โปรดตรวจสอบการตั้งค่าบัญชีของคุณ"
 
-#: db/seeds/permissions.rb:329
+#: db/seeds/permissions.rb:335
 #, fuzzy
 #| msgid "Agent Name"
 msgid "Agent phone"
 msgstr "ชื่อเจ้าหน้าที่"
 
-#: db/seeds/permissions.rb:372
+#: db/seeds/permissions.rb:378
 #, fuzzy
 #| msgid "Open Tickets"
 msgid "Agent tickets"
@@ -2046,7 +2052,8 @@ msgstr "เวอร์ชันแอป"
 
 #: app/assets/javascripts/app/controllers/_channel/facebook.coffee:186
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:429
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:441
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:448
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:369
 #: app/assets/javascripts/app/controllers/_channel/twitter.coffee:193
 #: app/assets/javascripts/app/controllers/_integration/exchange.coffee:721
 msgid "App could not be verified."
@@ -2072,7 +2079,7 @@ msgstr "รหัส แอป"
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/appearance.ts:9
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/appearance.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:59
-#: db/seeds/permissions.rb:395
+#: db/seeds/permissions.rb:401
 msgid "Appearance"
 msgstr "ลักษณะ"
 
@@ -2181,7 +2188,8 @@ msgstr "คุณแน่ใจหรือไม่ว่า ไม่ต้�
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:145
 #: app/assets/javascripts/app/controllers/_channel/facebook.coffee:98
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:148
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:160
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:164
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:91
 #: app/assets/javascripts/app/controllers/_channel/telegram.coffee:66
 #: app/assets/javascripts/app/controllers/_channel/twitter.coffee:105
 #: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:67
@@ -2496,6 +2504,12 @@ msgstr "สิงหา"
 msgid "August"
 msgstr "สิงหาคม"
 
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:375
+#, fuzzy
+#| msgid "Authentication"
+msgid "Authenticate"
+msgstr "การยึนยันตน"
+
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:4
 msgid "Authentication"
 msgstr "การยึนยันตน"
@@ -2638,7 +2652,7 @@ msgstr "ลิงค์บัญชีอัตโนมัติเมื่อ
 msgid "Automatic account linking notification"
 msgstr "ลิงค์บัญชีอัตโนมัติเมื่อเข้าสู่ระบบครั้งแรก"
 
-#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:181
+#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:180
 msgid "Automatic reminders"
 msgstr ""
 
@@ -2690,7 +2704,7 @@ msgstr "ประเภทที่มีสำหรับ ticket ใหม่"
 #: app/frontend/apps/mobile/pages/account/views/AccountOverview.vue:128
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:175
 #: app/frontend/shared/components/CommonUserAvatar/CommonUserAvatar.vue:119
-#: db/seeds/permissions.rb:409
+#: db/seeds/permissions.rb:415
 msgid "Avatar"
 msgstr "อวตาร"
 
@@ -2881,7 +2895,7 @@ msgid "Bots"
 msgstr "บอท"
 
 #: app/assets/javascripts/app/controllers/_manage/branding.coffee:3
-#: app/controllers/first_steps_controller.rb:54 db/seeds/permissions.rb:185
+#: app/controllers/first_steps_controller.rb:54 db/seeds/permissions.rb:191
 msgid "Branding"
 msgstr "การสร้างแบรนด์"
 
@@ -3063,7 +3077,7 @@ msgstr "ตัวกรองบันทึกผู้โทร"
 msgid "Caller log"
 msgstr "บันทึกผู้โทร"
 
-#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:238
+#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:240
 #: app/assets/javascripts/app/views/profile/avatar.jst.eco:7
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCameraFlyout.vue:119
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAvatar.vue:394
@@ -3267,7 +3281,7 @@ msgstr "การเปลี่ยนแปลงการสั่งซื้
 msgid "Change order"
 msgstr "การเปลี่ยนแปลงการสั่งซื้อ"
 
-#: db/seeds/permissions.rb:427
+#: db/seeds/permissions.rb:433
 #, fuzzy
 #| msgid "Change Your Password"
 msgid "Change personal account password."
@@ -3317,7 +3331,8 @@ msgstr "มีการเปลี่ยนแปลงที่จำเป็
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:258
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:275
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:287
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:292
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:264
 #: app/assets/javascripts/app/controllers/_integration/slack.coffee:33
 #: app/assets/javascripts/app/models/email_address.coffee:34
 #: app/assets/javascripts/app/models/postmaster_filter.coffee:8
@@ -3332,7 +3347,7 @@ msgstr "แชนเนล"
 msgid "Channel Distribution"
 msgstr "ช่องทางการรับบริการ"
 
-#: app/assets/javascripts/app/controllers/manage.coffee:36
+#: app/assets/javascripts/app/controllers/manage.coffee:38
 msgid "Channels"
 msgstr "แชนเนล"
 
@@ -3444,7 +3459,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/checklist_template.coffee:3
 #: app/assets/javascripts/app/views/checklist_template/index.jst.eco:7
-#: db/seeds/permissions.rb:299 db/seeds/settings.rb:5790
+#: db/seeds/permissions.rb:305 db/seeds/settings.rb:5790
 #, fuzzy
 #| msgid "Checksum"
 msgid "Checklists"
@@ -3633,12 +3648,14 @@ msgstr "คลิกที่นี่เพื่อตั้งค่าวิ
 #: app/assets/javascripts/app/views/exchange/token_information.jst.eco:28
 #: app/assets/javascripts/app/views/integration/idoit.jst.eco:21
 #: app/assets/javascripts/app/views/microsoft365/app_config.jst.eco:9
+#: app/assets/javascripts/app/views/microsoft_graph/app_config.jst.eco:9
 #: db/seeds/settings.rb:1490
 msgid "Client ID"
 msgstr "รหัสลูกค้า"
 
 #: app/assets/javascripts/app/views/exchange/app_config.jst.eco:17
 #: app/assets/javascripts/app/views/microsoft365/app_config.jst.eco:17
+#: app/assets/javascripts/app/views/microsoft_graph/app_config.jst.eco:17
 #: db/seeds/settings.rb:1496
 msgid "Client Secret"
 msgstr "Client ความลับ"
@@ -3653,7 +3670,7 @@ msgstr "ลอกแบบ"
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_description.coffee:4
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_error_modal.coffee:4
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:447
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:454
 #: app/assets/javascripts/app/controllers/_plugin/maintenance.coffee:27
 #: app/assets/javascripts/app/controllers/_settings/area_proxy.coffee:55
 #: app/assets/javascripts/app/controllers/translation.coffee:184
@@ -3845,6 +3862,7 @@ msgstr "ตั้งค่า"
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:7
 #: app/assets/javascripts/app/views/google/list.jst.eco:7
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:7
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:7
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:7
 msgid "Configure App"
 msgstr "กำหนดค่าแอพ"
@@ -3929,6 +3947,7 @@ msgstr "การยืนยัน"
 msgid "Confirmation failed."
 msgstr "การยืนยันล้มเหลว"
 
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:312
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:21
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:26
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:51
@@ -3963,8 +3982,10 @@ msgstr "เชื่อมต่อ Facebook App"
 msgid "Connect Google App"
 msgstr "เชื่อมต่อ Google App"
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:395
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:402
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:312
 #: app/assets/javascripts/app/views/microsoft365/index.jst.eco:10
+#: app/assets/javascripts/app/views/microsoft_graph/index.jst.eco:11
 msgid "Connect Microsoft 365 App"
 msgstr "เชื่อมต่อแอป Microsoft 365"
 
@@ -4153,6 +4174,7 @@ msgstr "คัดลอกหมายเลขวัตถุปัจจุบ
 msgid "Copy ticket number"
 msgstr "ticket.customer"
 
+#: app/assets/javascripts/app/views/microsoft_graph/app_config.jst.eco:35
 #: app/assets/javascripts/app/views/whatsapp/account_webhook.jst.eco:14
 #, fuzzy
 #| msgid "Copied to clipboard!"
@@ -4164,7 +4186,7 @@ msgid "Core Workflow Ajax Mode"
 msgstr "หมด Ajax เวิร์กโฟลว์หลัก"
 
 #: app/assets/javascripts/app/controllers/core_workflow.coffee:3
-#: db/seeds/permissions.rb:251
+#: db/seeds/permissions.rb:257
 msgid "Core Workflows"
 msgstr "Core Workflows"
 
@@ -4185,12 +4207,22 @@ msgstr ""
 msgid "Could not fetch security keys"
 msgstr ""
 
+#: app/controllers/channels_admin/microsoft_graph_controller.rb:74
+#, fuzzy
+#| msgid "Discard Changes"
+msgid "Could not find the channel."
+msgstr "ยกเลิกการเปลี่ยนแปลง"
+
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:37
 #: app/graphql/gql/mutations/user/current/two_factor/recovery_codes_generate.rb:19
 #, fuzzy
 #| msgid "Delete records"
 msgid "Could not generate recovery codes"
 msgstr "ลบบันทึก"
+
+#: app/controllers/channels_admin/microsoft_graph_controller.rb:77
+msgid "Could not identify the channel mailbox."
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/user/manage_two_factor.coffee:37
 #, fuzzy
@@ -4591,7 +4623,7 @@ msgstr "สร้างช่องทางสื่อสาร"
 msgid "Creation mask"
 msgstr "สร้างหน้ากาก"
 
-#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:154
+#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:156
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCropImageFlyout.vue:42
 msgid "Crop Image"
 msgstr "ตัดรูป"
@@ -4607,6 +4639,7 @@ msgstr "โทเค็นปัจจุบัน"
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:636
 #: app/assets/javascripts/app/models/signature.coffee:21
 #: app/assets/javascripts/app/models/text_module.coffee:21
+#: app/assets/javascripts/app/views/microsoft365/user_mismatch.jst.eco:7
 msgid "Current User"
 msgstr "ผู้ใช้ปัจจุบัน"
 
@@ -4698,7 +4731,7 @@ msgstr ""
 msgid "Customer selection based on sender and receiver list"
 msgstr "การเลือก ผู้ใช้บริการ ตามรายชื่อผู้ส่งและผู้รับ"
 
-#: db/seeds/permissions.rb:381
+#: db/seeds/permissions.rb:387
 #, fuzzy
 #| msgid "Preview customer tickets"
 msgid "Customer tickets"
@@ -4746,7 +4779,7 @@ msgstr "หน้าหลัก"
 
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:3
 #: app/assets/javascripts/app/views/data_privacy/index.jst.eco:3
-#: db/seeds/permissions.rb:263
+#: db/seeds/permissions.rb:269
 msgid "Data Privacy"
 msgstr "ความเป็นส่วนตัวของข้อมูล"
 
@@ -5804,6 +5837,7 @@ msgid ""
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_confirm_delete.coffee:4
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_destroy_confirm.coffee:4
 #: app/assets/javascripts/app/controllers/_application_controller/table.coffee:677
 #: app/assets/javascripts/app/controllers/_manage/knowledge_base.coffee:118
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:188
@@ -5823,6 +5857,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:55
 #: app/assets/javascripts/app/views/knowledge_base/public_menu_form_item.jst.eco:18
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:104
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:114
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:29
 #: app/assets/javascripts/app/views/profile/devices.jst.eco:25
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:21
@@ -5896,7 +5931,7 @@ msgstr "‎ลบ อวตาร‎"
 msgid "Delete column"
 msgstr "ลบ ไฟล์"
 
-#: db/seeds/permissions.rb:264
+#: db/seeds/permissions.rb:270
 #, fuzzy
 #| msgid "Delete all existing records first."
 msgid "Delete existing data of your system."
@@ -6067,10 +6102,12 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:262
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:339
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:351
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:358
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:268
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:88
 #: app/assets/javascripts/app/views/google/list.jst.eco:58
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:59
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:69
 #: app/models/channel/driver/sms/message_bird.rb:93
 #: app/models/channel/driver/sms/twilio.rb:107
 msgid "Destination Group"
@@ -6111,12 +6148,25 @@ msgstr "ไม่พบผลลัพธ์"
 #: app/assets/javascripts/app/views/profile/devices.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/devices.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:37
-#: db/seeds/permissions.rb:440
+#: db/seeds/permissions.rb:446
 msgid "Devices"
 msgstr "อุปกรณ์"
 
 #: app/frontend/apps/mobile/components/CommonSelect/CommonSelect.vue:185
 msgid "Dialog window with selections"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:462
+msgid ""
+"Did you check the validity of the configured mailbox? Or consider removing "
+"this channel and switch to using a different mailbox type. %l"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:460
+msgid ""
+"Did you confirm that the user has delegation permissions for the mailbox? Or "
+"consider removing this channel and switch to using a different mailbox type. "
+"%l"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/translation.coffee:325
@@ -6137,6 +6187,12 @@ msgstr "เธอรู้รึเปล่า? คุณสามารถช�
 
 #: app/frontend/shared/composables/form/useCheckBodyAttachmentReference.ts:51
 msgid "Did you plan to include attachments with this message?"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:458
+msgid ""
+"Did you verify that the user has access to the mailbox? Or consider removing "
+"this channel and switch to using a different mailbox type. %l"
 msgstr ""
 
 #: db/seeds/settings.rb:2074
@@ -6171,6 +6227,7 @@ msgstr "ทิศทาง"
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:31
 #: app/assets/javascripts/app/views/google/list.jst.eco:107
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:109
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:119
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:30
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:40
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:85
@@ -6192,7 +6249,7 @@ msgid ""
 "Instead, to disable the notifications use the settings above."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:279
+#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:281
 msgid "Discard"
 msgstr "ทิ้ง"
 
@@ -6444,7 +6501,7 @@ msgstr "ไม่สามารถสร้างผู้ใช้ได้"
 msgid "Drafts"
 msgstr "ร่าง"
 
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingOverviewOrder.vue:51
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingOverviewOrder.vue:53
 msgid "Drag and drop to reorder ticket overview list items."
 msgstr ""
 
@@ -6487,6 +6544,12 @@ msgstr "เนื่องจากไม่มีการใช้งาน �
 msgid "Duplicate Detection"
 msgstr "โปรแกรม"
 
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:489
+#, fuzzy
+#| msgid "Email Address"
+msgid "Duplicate Email Address"
+msgstr "ที่อยู่อีเมล"
+
 #: app/assets/javascripts/app/views/cti/caller_log.jst.eco:34
 msgid "Duration"
 msgstr "ความยาว"
@@ -6517,6 +6580,7 @@ msgstr "วันหยุดอีสเตอร์"
 #: app/assets/javascripts/app/views/knowledge_base/navigation.jst.eco:38
 #: app/assets/javascripts/app/views/knowledge_base/public_menu_manager.jst.eco:37
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:47
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:47
 #: app/assets/javascripts/app/views/profile/password.jst.eco:72
 #: app/assets/javascripts/app/views/sla/index.jst.eco:60
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:44
@@ -6724,10 +6788,12 @@ msgstr "บัญชีอีเมล"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:201
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:241
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:253
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:258
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:110
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:126
 #: app/assets/javascripts/app/views/google/list.jst.eco:81
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:82
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:92
 msgid "Email Address"
 msgstr "ที่อยู่อีเมล"
 
@@ -6823,6 +6889,7 @@ msgstr "ว่าง"
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:33
 #: app/assets/javascripts/app/views/google/list.jst.eco:109
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:111
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:121
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:31
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:42
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:87
@@ -7207,7 +7274,7 @@ msgid "Enter the security code generated by the authenticator app:"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:37
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:73
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:86
 #, fuzzy
 #| msgid "Please enter the time you want to record."
 msgid "Enter the time you want to record"
@@ -7225,6 +7292,7 @@ msgstr "ป้อนโทเค็น %s API ที่ได้รับจา�
 #: app/assets/javascripts/app/views/facebook/app_config.jst.eco:6
 #: app/assets/javascripts/app/views/google/app_config.jst.eco:6
 #: app/assets/javascripts/app/views/microsoft365/app_config.jst.eco:6
+#: app/assets/javascripts/app/views/microsoft_graph/app_config.jst.eco:6
 #: app/assets/javascripts/app/views/telegram/bot_add.jst.eco:6
 #: app/assets/javascripts/app/views/telegram/bot_edit.jst.eco:3
 #: app/assets/javascripts/app/views/twitter/app_config.jst.eco:6
@@ -7306,7 +7374,7 @@ msgstr "ข้อผิดพลาด"
 msgid "Error during execution of auto wizard."
 msgstr "เกิดข้อผิดพลาดขณะเรียกใช้ตัวช่วยสร้างอัตโนมัติ"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:64
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:65
 #, fuzzy
 #| msgid "The password could not be set. Please contact your administrator."
 msgid "Error fetching i-doit information. Please contact your administrator."
@@ -7599,7 +7667,7 @@ msgstr ""
 #: app/controllers/first_steps_controller.rb:31
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:19
 #: app/frontend/shared/entities/ticket-article/action/plugins/facebook.ts:48
-#: db/seeds/permissions.rb:167 db/seeds/settings.rb:1410
+#: db/seeds/permissions.rb:173 db/seeds/settings.rb:1410
 msgid "Facebook"
 msgstr "เฟสบุ๊ค"
 
@@ -7675,7 +7743,7 @@ msgid "Failed to load content."
 msgstr "สร้างลูกค้าใหม่"
 
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:223
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:235
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:240
 msgid "Failed to roll back the migration of the channel!"
 msgstr ""
 
@@ -7785,9 +7853,10 @@ msgstr "ระบบแฟ้ม"
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:16
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:16
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:16
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:18
 #: app/assets/javascripts/app/models/report_profile.js.coffee:7
 #: app/assets/javascripts/app/views/sla/index.jst.eco:28
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:132
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:133
 msgid "Filter"
 msgstr "ตัวกรอง"
 
@@ -7813,7 +7882,7 @@ msgstr "ค้นหาสิ่งที่ต้องการ เช่น \
 msgid "Fingerprint"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:260
+#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:259
 #: app/assets/javascripts/app/views/clues/clues_content.jst.eco:17
 #: app/assets/javascripts/app/views/getting_started/email_pre_configured.jst.eco:17
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmailPreConfigured.vue:79
@@ -7879,7 +7948,8 @@ msgstr "Flat Design"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:418
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:279
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:291
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:296
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:473
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:86
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:59
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:177
@@ -8289,11 +8359,6 @@ msgstr ""
 msgid "Given time zone is not valid."
 msgstr "ภาพที่ปรับขนาดไม่ถูกต้อง"
 
-#: app/assets/javascripts/app/views/google/index.jst.eco:3
-#: app/assets/javascripts/app/views/google/list.jst.eco:3
-msgid "Gmail"
-msgstr "Gmail"
-
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/method.coffee:21
 #: app/assets/javascripts/app/views/agent_ticket_view/bulk.jst.eco:11
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:96
@@ -8342,7 +8407,6 @@ msgstr "ลายเซ็น"
 msgid "Goodbye message"
 msgstr "ข้อความอำลา"
 
-#: app/assets/javascripts/app/controllers/_channel/google.coffee:3
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:96
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:61
 #: db/seeds/permissions.rb:149 db/seeds/settings.rb:1475
@@ -8377,6 +8441,14 @@ msgstr "รหัสลูกค้า"
 #| msgid "Client Secret"
 msgid "Google Client Secret"
 msgstr "Client ความลับ"
+
+#: app/assets/javascripts/app/controllers/_channel/google.coffee:3
+#: app/assets/javascripts/app/views/google/index.jst.eco:3
+#: app/assets/javascripts/app/views/google/list.jst.eco:3
+#, fuzzy
+#| msgid "Google Maps"
+msgid "Google Email"
+msgstr "Google Maps"
 
 #: app/assets/javascripts/app/views/clues/clues_content.jst.eco:17
 msgid "Got it!"
@@ -8643,7 +8715,7 @@ msgid ""
 "please reply to keep it open."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonPageHelp/CommonPageHelp.vue:18
+#: app/frontend/apps/desktop/components/CommonPageHelp/CommonPageHelp.vue:22
 #: app/frontend/apps/desktop/components/CommonPageHelp/CommonPageHelpDialog.vue:20
 msgid "Help"
 msgstr ""
@@ -8846,7 +8918,7 @@ msgid "How to use it"
 msgstr "วิธีใช้งาน"
 
 #: app/assets/javascripts/app/views/integration/idoit_object_result.jst.eco:8
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:218
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:217
 msgid "ID"
 msgstr "ID"
 
@@ -9241,6 +9313,7 @@ msgstr "ไม่ได้ใช้งาน"
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:39
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:16
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:45
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:45
 msgid "Inbound"
 msgstr "ขาเข้า"
 
@@ -9287,7 +9360,7 @@ msgstr ""
 msgid "Include your own tickets in subscription for pending tickets."
 msgstr ""
 
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:117
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:121
 msgid "Included ticket overviews"
 msgstr "ภาพรวม Ticket ทั้งหมด"
 
@@ -9475,7 +9548,7 @@ msgid "Integer field"
 msgstr "ฟิลด์จำนวนเต็ม"
 
 #: app/assets/javascripts/app/controllers/integrations.coffee:3
-#: db/seeds/permissions.rb:221
+#: db/seeds/permissions.rb:227
 msgid "Integrations"
 msgstr "การรวมตัวกัน"
 
@@ -9827,7 +9900,8 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:419
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:280
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:292
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:297
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:474
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:87
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:187
 msgid "Keep messages on server"
@@ -9876,7 +9950,7 @@ msgstr "ศูนย์การเรียนรู้"
 msgid "Knowledge Base Answer"
 msgstr "ศูนย์การเรียนรู้ คำตอบ"
 
-#: db/seeds/permissions.rb:344
+#: db/seeds/permissions.rb:350
 msgid "Knowledge Base Editor"
 msgstr "ศูนย์การเรียนรู้ แก้ไข"
 
@@ -9886,7 +9960,7 @@ msgstr "ศูนย์การเรียนรู้ แก้ไข"
 msgid "Knowledge Base Feed"
 msgstr "ศูนย์การเรียนรู้ อ่าน"
 
-#: db/seeds/permissions.rb:350
+#: db/seeds/permissions.rb:356
 msgid "Knowledge Base Reader"
 msgstr "ศูนย์การเรียนรู้ อ่าน"
 
@@ -9943,7 +10017,7 @@ msgstr "Landing page layout"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/locale.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLocale.vue:13
 #: app/frontend/apps/mobile/pages/account/views/AccountOverview.vue:157
-#: db/seeds/permissions.rb:402
+#: db/seeds/permissions.rb:408
 msgid "Language"
 msgstr "ภาษา"
 
@@ -10110,6 +10184,12 @@ msgstr "จำกัด tickets ตาม IP ต่อชั่วโมง"
 msgid "Limit tickets per day"
 msgstr ""
 
+#: app/frontend/apps/mobile/pages/home/components/TicketOverviewEditItem.vue:94
+#, fuzzy
+#| msgid "Visibility"
+msgid "Limited Visibility"
+msgstr "ความปรากฏเห็น"
+
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:267
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/embed_video_button.coffee:11
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/link_button.coffee:11
@@ -10146,7 +10226,7 @@ msgstr ""
 msgid "Link GitLab issues to your tickets."
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerLinkFlyout.vue:70
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerLinkFlyout.vue:68
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerList.vue:288
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitHub/TicketSidebarGitHub.vue:71
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitLab/TicketSidebarGitLab.vue:71
@@ -10155,8 +10235,8 @@ msgstr ""
 msgid "Link Issue"
 msgstr "ปัญหาเกี่ยวกับลิงค์"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:183
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:197
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:184
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:196
 #, fuzzy
 #| msgid "Objects"
 msgid "Link Objects"
@@ -10194,7 +10274,7 @@ msgstr "%{name} already exists"
 msgid "Link issue"
 msgstr "ปัญหาเกี่ยวกับลิงค์"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:153
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:152
 #, fuzzy
 #| msgid "Linked Tickets"
 msgid "Link objects"
@@ -10229,7 +10309,7 @@ msgstr "แม่แบบ"
 #: app/assets/javascripts/app/views/widget/user.jst.eco:34
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/linkedAccounts.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:56
-#: db/seeds/permissions.rb:454
+#: db/seeds/permissions.rb:460
 msgid "Linked Accounts"
 msgstr "บัญชีที่เชื่อมโยง"
 
@@ -10435,13 +10515,17 @@ msgid ""
 "executed with just one click."
 msgstr ""
 
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:380
+msgid "Mailbox type"
+msgstr ""
+
 #: app/frontend/apps/desktop/components/layout/LayoutPage.vue:47
 msgid "Main sidebar"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/maintenance.coffee:3
 #: app/assets/javascripts/app/views/maintenance.jst.eco:3
-#: db/seeds/permissions.rb:269
+#: db/seeds/permissions.rb:275
 msgid "Maintenance"
 msgstr "บำรุงรักษา"
 
@@ -10462,7 +10546,7 @@ msgstr "เปิดใช้งานโหมดบำรุงรักษา
 msgid "Manage"
 msgstr "จัดการ"
 
-#: db/seeds/permissions.rb:228
+#: db/seeds/permissions.rb:234
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage API of your system."
@@ -10478,7 +10562,7 @@ msgstr "แม่แบบ"
 msgid "Manage Checklist Templates"
 msgstr ""
 
-#: db/seeds/permissions.rb:168
+#: db/seeds/permissions.rb:174
 #, fuzzy
 #| msgid "Enter the Subdomain of your %s system"
 msgid "Manage Facebook channel of your system."
@@ -10494,6 +10578,12 @@ msgstr "ป้อนโดเมนย่อยของระบบ %s ขอ�
 msgid "Manage Microsoft 365 mail channel of your system."
 msgstr ""
 
+#: db/seeds/permissions.rb:162
+#, fuzzy
+#| msgid "Enter the Subdomain of your %s system"
+msgid "Manage Microsoft Graph mail channel of your system."
+msgstr "ป้อนโดเมนย่อยของระบบ %s ของคุณ"
+
 #: db/seeds/permissions.rb:138
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
@@ -10508,13 +10598,13 @@ msgstr ""
 msgid "Manage Tags"
 msgstr "จัดการแท็ก"
 
-#: db/seeds/permissions.rb:174
+#: db/seeds/permissions.rb:180
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage Telegram channel of your system."
 msgstr "ป้อน URL ของระบบ %s ของคุณ"
 
-#: db/seeds/permissions.rb:162
+#: db/seeds/permissions.rb:168
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage Twitter channel of your system."
@@ -10527,13 +10617,13 @@ msgstr "ป้อน URL ของระบบ %s ของคุณ"
 msgid "Manage Two-Factor Authentication"
 msgstr "การยึนยันตน"
 
-#: db/seeds/permissions.rb:180
+#: db/seeds/permissions.rb:186
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage WhatsApp channel of your system."
 msgstr "ป้อน URL ของระบบ %s ของคุณ"
 
-#: db/seeds/permissions.rb:288
+#: db/seeds/permissions.rb:294
 #, fuzzy
 #| msgid "Enter the Subdomain of your %s system"
 msgid "Manage active user sessions of your system."
@@ -10559,7 +10649,7 @@ msgstr ""
 "จัดการแอปพลิเคชันที่สามารถใช้ Zammad เป็นผู้ให้บริการ OAuth "
 "และแอปพลิเคชันที่คุณอนุญาตให้ใช้บัญชีของคุณ"
 
-#: db/seeds/permissions.rb:186
+#: db/seeds/permissions.rb:192
 msgid "Manage branding settings of your system."
 msgstr ""
 
@@ -10575,13 +10665,13 @@ msgstr "ป้อน URL ของระบบ %s ของคุณ"
 msgid "Manage chat channel of your system."
 msgstr "ป้อน URL ของระบบ %s ของคุณ"
 
-#: db/seeds/permissions.rb:192
+#: db/seeds/permissions.rb:198
 #, fuzzy
 #| msgid "Manage %s Settings"
 msgid "Manage core system settings."
 msgstr "จัดการ %s ตั้งค่า"
 
-#: db/seeds/permissions.rb:252
+#: db/seeds/permissions.rb:258
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage core workflows of your system."
@@ -10605,93 +10695,93 @@ msgstr "ป้อน URL ของระบบ %s ของคุณ"
 msgid "Manage groups of your system."
 msgstr "เพื่อกำหนดค่าระบบของคุณ"
 
-#: db/seeds/permissions.rb:222
+#: db/seeds/permissions.rb:228
 #, fuzzy
 #| msgid "Enter the Subdomain of your %s system"
 msgid "Manage integrations of your system."
 msgstr "ป้อนโดเมนย่อยของระบบ %s ของคุณ"
 
-#: db/seeds/permissions.rb:270
+#: db/seeds/permissions.rb:276
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage maintenance mode of your system."
 msgstr "ป้อน URL ของระบบ %s ของคุณ"
 
-#: db/seeds/permissions.rb:276
+#: db/seeds/permissions.rb:282
 #, fuzzy
 #| msgid "Enter the Subdomain of your %s system"
 msgid "Manage monitoring of your system."
 msgstr "ป้อนโดเมนย่อยของระบบ %s ของคุณ"
 
-#: db/seeds/permissions.rb:234
+#: db/seeds/permissions.rb:240
 msgid "Manage object attributes of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:282
+#: db/seeds/permissions.rb:288
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage packages of your system."
 msgstr "ป้อน URL ของระบบ %s ของคุณ"
 
-#: db/seeds/permissions.rb:448
+#: db/seeds/permissions.rb:454
 #, fuzzy
 #| msgid "Personal Access Tokens"
 msgid "Manage personal API tokens."
 msgstr "โทเค็นการเข้าถึงส่วนบุคคล"
 
-#: db/seeds/permissions.rb:396
+#: db/seeds/permissions.rb:402
 msgid "Manage personal appearance settings."
 msgstr ""
 
-#: db/seeds/permissions.rb:410
+#: db/seeds/permissions.rb:416
 #, fuzzy
 #| msgid "Manage %s Settings"
 msgid "Manage personal avatar settings."
 msgstr "จัดการ %s ตั้งค่า"
 
-#: db/seeds/permissions.rb:482
+#: db/seeds/permissions.rb:488
 msgid "Manage personal calendar."
 msgstr ""
 
-#: db/seeds/permissions.rb:441
+#: db/seeds/permissions.rb:447
 #, fuzzy
 #| msgid "Clean up dead sessions."
 msgid "Manage personal devices and sessions."
 msgstr "ล้างประวัติการเข้าสู่ระบบสิ้นสุด"
 
-#: db/seeds/permissions.rb:403
+#: db/seeds/permissions.rb:409
 #, fuzzy
 #| msgid "Manage %s Settings"
 msgid "Manage personal language settings."
 msgstr "จัดการ %s ตั้งค่า"
 
-#: db/seeds/permissions.rb:455
+#: db/seeds/permissions.rb:461
 msgid "Manage personal linked accounts."
 msgstr ""
 
-#: db/seeds/permissions.rb:462
+#: db/seeds/permissions.rb:468
 #, fuzzy
 #| msgid "Manage your notification settings"
 msgid "Manage personal notifications settings."
 msgstr "จัดการการตั้งค่าการแจ้งเตือนของคุณ"
 
-#: db/seeds/permissions.rb:417
+#: db/seeds/permissions.rb:423
 #, fuzzy
 #| msgid "Manage your notification settings"
 msgid "Manage personal out of office settings."
 msgstr "จัดการการตั้งค่าการแจ้งเตือนของคุณ"
 
-#: db/seeds/permissions.rb:472
+#: db/seeds/permissions.rb:478
 msgid "Manage personal overviews."
 msgstr ""
 
-#: db/seeds/permissions.rb:389
+#: db/seeds/permissions.rb:395
 #, fuzzy
 #| msgid "Manage %s Settings"
 msgid "Manage personal settings."
 msgstr "จัดการ %s ตั้งค่า"
 
-#: db/seeds/permissions.rb:434
+#: db/seeds/permissions.rb:440
 #, fuzzy
 #| msgid "Could not remove two-factor authentication method"
 msgid "Manage personal two-factor authentication methods."
@@ -10721,11 +10811,11 @@ msgstr "ป้อน URL ของระบบ %s ของคุณ"
 msgid "Manage schedulers of your system."
 msgstr "ป้อน URL ของระบบ %s ของคุณ"
 
-#: db/seeds/permissions.rb:198
+#: db/seeds/permissions.rb:204
 msgid "Manage security settings of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:294
+#: db/seeds/permissions.rb:300
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage system report of your system."
@@ -10737,19 +10827,19 @@ msgstr "ป้อน URL ของระบบ %s ของคุณ"
 msgid "Manage text modules of your system."
 msgstr "ป้อน URL ของระบบ %s ของคุณ"
 
-#: db/seeds/permissions.rb:210
+#: db/seeds/permissions.rb:216
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage ticket auto assignment settings of your system."
 msgstr "ป้อน URL ของระบบ %s ของคุณ"
 
-#: db/seeds/permissions.rb:300
+#: db/seeds/permissions.rb:306
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage ticket checklists of your system."
 msgstr "ป้อน URL ของระบบ %s ของคุณ"
 
-#: db/seeds/permissions.rb:216
+#: db/seeds/permissions.rb:222
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage ticket duplicate detection settings of your system."
@@ -10767,19 +10857,19 @@ msgstr "ป้อน URL ของระบบ %s ของคุณ"
 msgid "Manage ticket overviews of your system."
 msgstr "ภาพรวม Ticket ทั้งหมด"
 
-#: db/seeds/permissions.rb:246
+#: db/seeds/permissions.rb:252
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage ticket priorities of your system."
 msgstr "ป้อน URL ของระบบ %s ของคุณ"
 
-#: db/seeds/permissions.rb:204
+#: db/seeds/permissions.rb:210
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage ticket settings of your system."
 msgstr "ป้อน URL ของระบบ %s ของคุณ"
 
-#: db/seeds/permissions.rb:240
+#: db/seeds/permissions.rb:246
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage ticket states of your system."
@@ -10803,7 +10893,7 @@ msgstr "ป้อน URL ของระบบ %s ของคุณ"
 msgid "Manage time accounting settings of your system."
 msgstr "เปิดใช้งานtime accounting สำหรับ ticket เหล่านี้"
 
-#: db/seeds/permissions.rb:258
+#: db/seeds/permissions.rb:264
 #, fuzzy
 #| msgid "Enter the Subdomain of your %s system"
 msgid "Manage translations of your system."
@@ -11144,9 +11234,6 @@ msgstr "วิธี (AJAX endpoint)"
 msgid "Microsoft"
 msgstr "Microsoft"
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:3
-#: app/assets/javascripts/app/views/microsoft365/index.jst.eco:3
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:3
 #: db/seeds/permissions.rb:155
 msgid "Microsoft 365"
 msgstr "Microsoft 365"
@@ -11154,6 +11241,22 @@ msgstr "Microsoft 365"
 #: db/seeds/settings.rb:1746
 msgid "Microsoft 365 App Credentials"
 msgstr "Weibo App Credentials"
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:4
+#: app/assets/javascripts/app/views/microsoft_graph/index.jst.eco:4
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:3
+#, fuzzy
+#| msgid "Microsoft 365"
+msgid "Microsoft 365 Graph Email"
+msgstr "Microsoft 365"
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:3
+#: app/assets/javascripts/app/views/microsoft365/index.jst.eco:3
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:3
+#, fuzzy
+#| msgid "Microsoft 365"
+msgid "Microsoft 365 IMAP Email"
+msgstr "Microsoft 365"
 
 #: db/seeds/settings.rb:1739
 msgid "Microsoft Application Registration Portal"
@@ -11165,6 +11268,12 @@ msgstr ""
 #| msgid "Authentication"
 msgid "Microsoft Authenticator"
 msgstr "การยึนยันตน"
+
+#: db/seeds/permissions.rb:161
+#, fuzzy
+#| msgid "Microsoft"
+msgid "Microsoft Graph"
+msgstr "Microsoft"
 
 #: app/models/webhook/pre_defined/microsoft_teams.rb:5
 #, fuzzy
@@ -11272,7 +11381,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/monitoring.coffee:3
 #: app/assets/javascripts/app/views/monitoring.jst.eco:3
-#: db/seeds/permissions.rb:275
+#: db/seeds/permissions.rb:281
 msgid "Monitoring"
 msgstr "การตรวจเฝ้าระวัง"
 
@@ -11301,7 +11410,7 @@ msgstr ""
 msgid "More than 250 secondary organizations are not allowed."
 msgstr "ไม่อนุญาตให้มีองค์กรรองมากกว่า 250 แห่ง"
 
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:141
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:145
 msgid "More ticket overviews"
 msgstr "ภาพรวม Ticket ทั้งหมด"
 
@@ -11794,7 +11903,7 @@ msgstr ""
 msgid "New user?"
 msgstr "ผู้ใช้ใหม่?"
 
-#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:113
+#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:112
 #: app/assets/javascripts/app/controllers/webhook.coffee:126
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/password_check.coffee:2
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:106
@@ -11861,6 +11970,7 @@ msgstr "ไม่มี %s ที่กำหนดค่าไว้"
 #: app/assets/javascripts/app/views/integration/smime_group.jst.eco:12
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:6
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:37
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:37
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:6
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:3
 #: app/assets/javascripts/app/views/time_accounting/by_customer.jst.eco:3
@@ -11886,8 +11996,14 @@ msgstr "Exchange config"
 msgid "No Facebook app configured!"
 msgstr ""
 
-#: lib/external_credential/microsoft365.rb:12
+#: lib/external_credential/microsoft365.rb:9
 msgid "No Microsoft 365 app configured!"
+msgstr "เชื่อมต่อแอป Microsoft 365!"
+
+#: lib/external_credential/microsoft_graph.rb:9
+#, fuzzy
+#| msgid "No Microsoft 365 app configured!"
+msgid "No Microsoft Graph app configured!"
 msgstr "เชื่อมต่อแอป Microsoft 365!"
 
 #: db/seeds/settings.rb:553
@@ -11920,7 +12036,7 @@ msgstr "ไม่มีคำตอบ"
 msgid "No attached files"
 msgstr "%s ไฟล์แนบ"
 
-#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:325
+#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:327
 msgid "No camera found."
 msgstr "ไม่พบกล้อง"
 
@@ -11973,7 +12089,7 @@ msgstr "ไ่ม่ต้องแบบร่าง"
 msgid "No email!"
 msgstr "ไม่มีอีเมล!"
 
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:135
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:139
 #: app/frontend/apps/mobile/pages/online-notification/views/NotificationsList.vue:89
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:267
 #: app/frontend/apps/mobile/pages/ticket/components/TicketList/TicketList.vue:150
@@ -12098,7 +12214,7 @@ msgstr "ฉบับร่างที่ใช้ร่วมกัน"
 #: app/controllers/text_modules_controller.rb:75
 #: app/controllers/ticket_articles_controller.rb:232
 #: app/controllers/tickets_controller.rb:570
-#: app/controllers/users_controller.rb:578
+#: app/controllers/users_controller.rb:579
 msgid "No source data submitted!"
 msgstr ""
 
@@ -12300,6 +12416,7 @@ msgstr "ข้อสังเกต"
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:23
 #: app/assets/javascripts/app/views/google/list.jst.eco:16
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:17
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:17
 msgid "Notice:"
 msgstr "ข้อสังเกต:"
 
@@ -12373,7 +12490,7 @@ msgstr "เสียงแจ้งเตือน"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/notifications.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:34
 #: app/frontend/apps/mobile/pages/online-notification/routes.ts:8
-#: db/seeds/permissions.rb:461
+#: db/seeds/permissions.rb:467
 msgid "Notifications"
 msgstr "การแจ้งเตือน"
 
@@ -12471,7 +12588,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/object_manager.coffee:330
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoit.vue:56
-#: db/seeds/permissions.rb:233
+#: db/seeds/permissions.rb:239
 msgid "Objects"
 msgstr "วัตถุ"
 
@@ -12591,6 +12708,20 @@ msgstr "ใช้ภายใน เพื่อเผยแพร่เวอ�
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:102
 msgid "Only visible to editors"
 msgstr "เฉพาะบรรณาธิการเท่านั้นที่มองเห็นได้"
+
+#: app/assets/javascripts/app/models/user_overview_sorting_overview.coffee:19
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingOverviewOrder.vue:81
+#, fuzzy
+#| msgid "Out of office replacement"
+msgid "Only when out of office replacement"
+msgstr "ลางาน รับหน้าที่แทน"
+
+#: app/assets/javascripts/app/models/user_overview_sorting_overview.coffee:12
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingOverviewOrder.vue:78
+#, fuzzy
+#| msgid "Shared organization"
+msgid "Only when shared organization member"
+msgstr "แชร์ องค์กร"
 
 #: app/assets/javascripts/app/views/generic/error/not_found.jst.eco:3
 msgid "Oops.. I'm sorry, but I can't find this %s."
@@ -12898,7 +13029,7 @@ msgstr "ตั้งค่าอื่นๆ"
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/outOfOffice.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:126
-#: db/seeds/permissions.rb:416
+#: db/seeds/permissions.rb:422
 msgid "Out of Office"
 msgstr "ไม่อยู่ที่ทำงาน"
 
@@ -12940,6 +13071,7 @@ msgstr "ลางาน รับหน้าที่แทน"
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:66
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:19
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:71
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:81
 msgid "Outbound"
 msgstr "ขาออก"
 
@@ -13053,7 +13185,7 @@ msgid "Package"
 msgstr "แพกเกจ"
 
 #: app/assets/javascripts/app/controllers/package.coffee:3
-#: db/seeds/permissions.rb:281
+#: db/seeds/permissions.rb:287
 msgid "Packages"
 msgstr "แพ็คเกจ"
 
@@ -13115,7 +13247,7 @@ msgstr "หลัก"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/password.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:32
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:52
-#: db/seeds/object_manager_attributes.rb:1249 db/seeds/permissions.rb:426
+#: db/seeds/object_manager_attributes.rb:1249 db/seeds/permissions.rb:432
 msgid "Password"
 msgstr "รหัสผ่าน"
 
@@ -13294,7 +13426,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/cti.coffee:322
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/phone.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/phone.ts:12
-#: db/seeds/object_manager_attributes.rb:797 db/seeds/permissions.rb:320
+#: db/seeds/object_manager_attributes.rb:797 db/seeds/permissions.rb:326
 msgid "Phone"
 msgstr "โทรศัพท์"
 
@@ -13360,6 +13492,12 @@ msgstr ""
 #: app/frontend/shared/form/i18n/locales.ts:117
 msgid "Please accept the %s."
 msgstr "โปรดยอมรับ %s"
+
+#: app/assets/javascripts/app/views/microsoft365/duplicate_email_address.jst.eco:7
+msgid ""
+"Please add an account with a different mailbox or consider removing the "
+"duplicate first."
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/checklist_template.coffee:55
 msgid "Please add at least one item to the checklist."
@@ -13494,7 +13632,7 @@ msgstr "Ticket นี้ถูกรวมเข้ากับ"
 msgid "Please select at least one folder."
 msgstr ""
 
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:74
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:75
 msgid "Please select at least one ticket overview"
 msgstr ""
 
@@ -13753,7 +13891,7 @@ msgid "Profile language updated successfully."
 msgstr "การทดสอบดำเนินการสำเร็จ"
 
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/personal-settings.ts:7
-#: db/seeds/permissions.rb:388
+#: db/seeds/permissions.rb:394
 #, fuzzy
 #| msgid "Proxy Settings"
 msgid "Profile settings"
@@ -13907,6 +14045,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/exchange/token_information.jst.eco:39
 #: app/assets/javascripts/app/views/google/list.jst.eco:112
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:113
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:123
 msgid "Reauthenticate"
 msgstr "ตรวจสอบอีกครั้ง"
 
@@ -14294,6 +14433,7 @@ msgstr "ร้องขอ"
 
 #: app/assets/javascripts/app/views/exchange/token_information.jst.eco:8
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:9
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:9
 msgid "Request Admin Consent"
 msgstr ""
 
@@ -14646,11 +14786,12 @@ msgstr "บทบาท:"
 
 #: app/assets/javascripts/app/views/google/list.jst.eco:104
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:106
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:116
 msgid "Rollback migration"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:219
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:231
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:236
 msgid "Rollback of channel migration succeeded!"
 msgstr ""
 
@@ -14824,7 +14965,8 @@ msgstr "ส."
 msgid "Saturday"
 msgstr "วันเสาร์"
 
-#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:153
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:416
+#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:155
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:73
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:127
 #: app/assets/javascripts/app/views/integration/github.jst.eco:21
@@ -14845,7 +14987,7 @@ msgstr "วันเสาร์"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:226
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:136
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:292
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:69
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:70
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:89
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewActions.vue:100
 msgid "Save"
@@ -15099,7 +15241,7 @@ msgstr "เสียงแจ้งเตือน"
 #: app/assets/javascripts/app/views/generic/icon_picker.jst.eco:9
 #: app/assets/javascripts/app/views/translation/form.jst.eco:7
 #: app/frontend/apps/desktop/components/CommonInputSearch/CommonInputSearch.vue:20
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:133
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:134
 #: app/frontend/apps/mobile/pages/home/views/Home.vue:63
 #: app/frontend/shared/components/CommonInputSearch/CommonInputSearch.vue:23
 msgid "Search…"
@@ -15136,7 +15278,7 @@ msgstr "องค์กรรองจะได้รับอนุญาตก
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:129
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:285
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:203
-#: db/seeds/permissions.rb:197
+#: db/seeds/permissions.rb:203
 msgid "Security"
 msgstr "ระบบความปลอดภัย"
 
@@ -15485,7 +15627,7 @@ msgstr "สิ้นสุดช่วงเวลา (เข้าใช้ง�
 
 #: app/assets/javascripts/app/controllers/session.coffee:3
 #: app/assets/javascripts/app/views/session.jst.eco:2
-#: db/seeds/permissions.rb:287
+#: db/seeds/permissions.rb:293
 msgid "Sessions"
 msgstr "ช่วงเวลา (เข้าใช้งาน)"
 
@@ -15640,9 +15782,10 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:26
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:26
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:26
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:28
 #: app/assets/javascripts/app/controllers/_channel/web.coffee:11
 #: app/assets/javascripts/app/controllers/chat.coffee:869
-#: app/assets/javascripts/app/controllers/manage.coffee:37
+#: app/assets/javascripts/app/controllers/manage.coffee:39
 #: app/assets/javascripts/app/controllers/ticket_zoom/setting.coffee:20
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:18
 #: app/assets/javascripts/app/views/channel/form.jst.eco:13
@@ -15684,6 +15827,12 @@ msgstr "ฉบับร่างที่ใช้ร่วมกัน"
 msgid "Shared Drafts"
 msgstr "ฉบับร่างที่ใช้ร่วมกัน"
 
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:61
+#, fuzzy
+#| msgid "Shared Drafts"
+msgid "Shared Mailbox"
+msgstr "ฉบับร่างที่ใช้ร่วมกัน"
+
 #: app/controllers/tickets_controller.rb:90
 #: app/services/service/ticket/create.rb:180
 msgid "Shared draft cannot be selected for this ticket."
@@ -15715,6 +15864,12 @@ msgstr "การทดสอบดำเนินการสำเร็จ"
 msgid "Shared drafts are not activated for the selected group"
 msgstr "ไม่สามารถเลือกแบบร่างที่ใช้ร่วมกันสำหรับ ticket นี้ได้"
 
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:380
+#, fuzzy
+#| msgid "Send Email"
+msgid "Shared mailbox"
+msgstr "ส่งอีเมล"
+
 #: app/assets/javascripts/app/models/organization.coffee:7
 #: db/seeds/object_manager_attributes.rb:1547
 msgid "Shared organization"
@@ -15724,7 +15879,7 @@ msgstr "แชร์ องค์กร"
 msgid "Sharing draft…"
 msgstr "แบ่งปันร่าง…"
 
-#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:236
+#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:238
 msgid "Shoot"
 msgstr ""
 
@@ -15965,6 +16120,7 @@ msgstr "การตรวจสอบลายเซ็นล้มเหลว
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:21
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:21
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:21
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:23
 msgid "Signatures"
 msgstr "ลายเซ็น"
 
@@ -16088,7 +16244,7 @@ msgstr "ไซต์"
 #: app/assets/javascripts/app/views/getting_started/channel.jst.eco:21
 #: app/assets/javascripts/app/views/getting_started/email_notification.jst.eco:17
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:97
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:117
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:138
 msgid "Skip"
 msgstr "ข้าม"
 
@@ -16177,6 +16333,11 @@ msgstr "แหล่ง"
 
 #: db/seeds/settings.rb:2100
 msgid "Special character required"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:473
+msgid ""
+"Specify which folder to fetch from, or leave empty to fetch from ||inbox||."
 msgstr ""
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/split.ts:11
@@ -16316,7 +16477,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/idoit_object_result.jst.eco:10
 #: app/assets/javascripts/app/views/widget/http_log_show.jst.eco:14
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout/IdoitObjectList.vue:24
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:223
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:222
 msgid "Status"
 msgstr "สถานะ"
 
@@ -16539,10 +16700,10 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_manage/system.coffee:3
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:37
-#: app/assets/javascripts/app/controllers/manage.coffee:38
+#: app/assets/javascripts/app/controllers/manage.coffee:40
 #: app/assets/javascripts/app/views/generic/history.jst.eco:15
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/composables/useHistoryEvents.ts:32
-#: db/seeds/permissions.rb:191 db/seeds/ticket_article_senders.rb:5
+#: db/seeds/permissions.rb:197 db/seeds/ticket_article_senders.rb:5
 msgid "System"
 msgstr "ระบบ"
 
@@ -16563,7 +16724,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/system_report.coffee:3
 #: app/assets/javascripts/app/views/system_report.jst.eco:2
-#: db/seeds/permissions.rb:293
+#: db/seeds/permissions.rb:299
 #, fuzzy
 #| msgid "Information"
 msgid "System Report"
@@ -16663,7 +16824,7 @@ msgstr "ทดสอบสร้าง Ticket"
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:3
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/telegramPersonalMessage.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/telegram.ts:52
-#: db/seeds/permissions.rb:173
+#: db/seeds/permissions.rb:179
 msgid "Telegram"
 msgstr "Telegram"
 
@@ -16686,6 +16847,7 @@ msgstr "แม่แบบ"
 #: app/assets/javascripts/app/views/exchange/app_config.jst.eco:25
 #: app/assets/javascripts/app/views/exchange/token_information.jst.eco:31
 #: app/assets/javascripts/app/views/microsoft365/app_config.jst.eco:25
+#: app/assets/javascripts/app/views/microsoft_graph/app_config.jst.eco:25
 #, fuzzy
 #| msgid "App Tenant ID"
 msgid "Tenant UUID/Name"
@@ -16956,7 +17118,7 @@ msgstr ""
 msgid "The WhatsApp channel webhook configuration could not be verified."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:156
+#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:155
 #, fuzzy
 #| msgid "The changes could not be saved."
 msgid "The WhatsApp connection could not be saved."
@@ -17181,7 +17343,8 @@ msgstr "เสียงแจ้งเตือน"
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:302
 #: app/assets/javascripts/app/controllers/_channel/facebook.coffee:246
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:327
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:339
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:342
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:308
 #: app/assets/javascripts/app/controllers/_channel/telegram.coffee:211
 #: app/assets/javascripts/app/controllers/_channel/twitter.coffee:300
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_dialog.coffee:36
@@ -17280,6 +17443,10 @@ msgstr ""
 msgid "The email address is invalid."
 msgstr "ภาพที่ปรับขนาดไม่ถูกต้อง"
 
+#: app/assets/javascripts/app/views/microsoft365/duplicate_email_address.jst.eco:3
+msgid "The email address |%s| is already in use by another account."
+msgstr ""
+
 #: app/services/service/auth/send_admin_token.rb:39
 #: app/services/service/user/password_reset/send.rb:37
 #: app/services/service/user/password_reset/update.rb:42
@@ -17322,7 +17489,8 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_channel/facebook.coffee:182
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:425
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:437
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:444
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:365
 #: app/assets/javascripts/app/controllers/_channel/twitter.coffee:189
 #: app/assets/javascripts/app/controllers/_integration/exchange.coffee:716
 msgid "The entry could not be created."
@@ -17764,7 +17932,7 @@ msgstr ""
 msgid "The required PGP passphrase is missing."
 msgstr "ไม่มีค่าการจับคู่ที่จำเป็น"
 
-#: app/controllers/users_controller.rb:677
+#: app/controllers/users_controller.rb:678
 #: app/services/service/user/add_first_admin.rb:12
 #, fuzzy
 #| msgid "The required parameter 'payload->class_name' is missing."
@@ -17837,18 +18005,18 @@ msgstr ""
 msgid "The required parameter 'business_id' is missing."
 msgstr "ไม่มีพารามิเตอร์ที่จำเป็น 'payload->class_name'"
 
-#: lib/external_credential/exchange.rb:27 lib/external_credential/google.rb:23
-#: lib/external_credential/microsoft365.rb:27
+#: lib/external_credential/exchange.rb:27 lib/external_credential/google.rb:26
+#: lib/external_credential/microsoft_base.rb:51
 msgid "The required parameter 'client_id' is missing."
 msgstr ""
 
-#: lib/external_credential/exchange.rb:28 lib/external_credential/google.rb:24
-#: lib/external_credential/microsoft365.rb:28
+#: lib/external_credential/exchange.rb:28 lib/external_credential/google.rb:27
+#: lib/external_credential/microsoft_base.rb:52
 msgid "The required parameter 'client_secret' is missing."
 msgstr ""
 
-#: lib/external_credential/exchange.rb:43 lib/external_credential/google.rb:36
-#: lib/external_credential/microsoft365.rb:43
+#: lib/external_credential/exchange.rb:43 lib/external_credential/google.rb:39
+#: lib/external_credential/microsoft_base.rb:67
 #, fuzzy
 #| msgid "The required parameter 'payload->class_name' is missing."
 msgid "The required parameter 'code' is missing."
@@ -17944,7 +18112,7 @@ msgstr ""
 msgid "The required parameter 'request_token' is missing."
 msgstr "ไม่มีพารามิเตอร์ที่จำเป็น 'payload->class_name'"
 
-#: app/controllers/users_controller.rb:670
+#: app/controllers/users_controller.rb:671
 msgid "The required parameter 'signup' is missing."
 msgstr ""
 
@@ -18070,6 +18238,12 @@ msgstr "ตรวจสอบลายเซ็นเรียบร้อยแ
 #: app/controllers/tickets_controller.rb:392
 msgid "The source ticket could not be found."
 msgstr "ไม่พบ Tickets ต้นทาง"
+
+#: app/assets/javascripts/app/views/microsoft365/duplicate_email_address.jst.eco:5
+#, fuzzy
+#| msgid "The provided endpoint is invalid."
+msgid "The specified email address is already in use by another account."
+msgstr "ปลายทางที่ระบุไม่ถูกต้อง"
 
 #: app/frontend/shared/form/validation/rules/date-range.ts:18
 msgid "The start date must precede or match end date."
@@ -18212,7 +18386,7 @@ msgid "The user token could not be generated."
 msgstr "ไม่สามารถสร้างรายงานได้"
 
 #: lib/external_credential/exchange.rb:51
-#: lib/external_credential/microsoft365.rb:51
+#: lib/external_credential/microsoft_base.rb:75
 msgid "The user's 'preferred_username' could not be extracted from 'id_token'."
 msgstr "ไม่สามารถแยก 'preferred_username' ของผู้ใช้ออกจาก 'id_token'."
 
@@ -18231,14 +18405,14 @@ msgstr "ไม่สามารถส่งอีเมลยืนยันไ
 
 #: app/models/setting/validation/saml/tls.rb:37
 msgid ""
-"The verification of the TLS connection failed. Please check the SAML IDP "
-"certificate."
+"The verification of the TLS connection to the IDP SSO target URL failed. "
+"Please check the SAML IDP certificate."
 msgstr ""
 
 #: app/models/setting/validation/saml/tls.rb:39
 msgid ""
-"The verification of the TLS connection is not possible. Please check the "
-"SAML IDP connection."
+"The verification of the TLS connection to the IDP SSO target URL is not "
+"possible. Please check the connection."
 msgstr ""
 
 #: app/services/service/user/two_factor/verify_method_configuration.rb:21
@@ -18326,7 +18500,7 @@ msgstr "มีฉบับร่างอยู่แล้ว คุณต้�
 msgid "There is existing content. Do you want to overwrite it?"
 msgstr ""
 
-#: lib/external_credential/google.rb:12
+#: lib/external_credential/google.rb:15
 #, fuzzy
 #| msgid "There is no agent online."
 msgid "There is no Google app configured."
@@ -18594,6 +18768,7 @@ msgstr ""
 msgid "This field must contain a lowercase letter."
 msgstr "ช่องนี้ต้องมีอักขระไม่เกิน %s ตัว"
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:93
 #: app/frontend/shared/form/i18n/locales.ts:499
 msgid "This field must contain a number."
 msgstr ""
@@ -18778,6 +18953,16 @@ msgid ""
 "completed yet."
 msgstr ""
 
+#: app/frontend/apps/mobile/pages/home/components/TicketOverviewEditItem.vue:47
+msgid ""
+"This overview is visible only when you are a shared organization member."
+msgstr ""
+
+#: app/frontend/apps/mobile/pages/home/components/TicketOverviewEditItem.vue:55
+msgid ""
+"This overview is visible only when you are an out of office replacement."
+msgstr ""
+
 #: app/frontend/shared/router/error.ts:25
 #, fuzzy
 #| msgid "does not exist"
@@ -18918,7 +19103,7 @@ msgstr "วันพฤหัสบดี"
 #: app/frontend/apps/desktop/pages/ticket/routes.ts:10
 #: app/frontend/apps/mobile/pages/ticket/routes.ts:10
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/plugins/ticket.ts:6
-#: db/seeds/permissions.rb:203
+#: db/seeds/permissions.rb:209
 msgid "Ticket"
 msgstr "Ticket"
 
@@ -18955,7 +19140,7 @@ msgstr ""
 msgid "Ticket (censored):"
 msgstr "ผู้ใช้ (เซ็นเซอร์)"
 
-#: db/seeds/permissions.rb:209
+#: db/seeds/permissions.rb:215
 #, fuzzy
 #| msgid "Auto Assignment"
 msgid "Ticket Auto Assignment"
@@ -18979,7 +19164,7 @@ msgstr "จำนวน Ticket"
 msgid "Ticket Customer"
 msgstr "ticket.customer"
 
-#: db/seeds/permissions.rb:215
+#: db/seeds/permissions.rb:221
 #, fuzzy
 #| msgid "Application"
 msgid "Ticket Duplicate Detection"
@@ -19030,12 +19215,12 @@ msgid "Ticket Organization Reassignment"
 msgstr "Tickets ขององค์กร"
 
 #: app/frontend/apps/mobile/pages/home/routes.ts:35
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:66
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:67
 #: app/frontend/apps/mobile/pages/home/views/Home.vue:22
 msgid "Ticket Overview"
 msgstr "ภาพรวม Ticket ทั้งหมด"
 
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:83
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:87
 #, fuzzy
 #| msgid "Ticket Overviews"
 msgid "Ticket Overview settings are saved."
@@ -19054,7 +19239,7 @@ msgid "Ticket Owner"
 msgstr "ภาพรวม Ticket ทั้งหมด"
 
 #: app/assets/javascripts/app/controllers/ticket_priority.coffee:16
-#: db/seeds/permissions.rb:245
+#: db/seeds/permissions.rb:251
 #, fuzzy
 #| msgid "Ticket update"
 msgid "Ticket Priorities"
@@ -19089,7 +19274,7 @@ msgid "Ticket State"
 msgstr "Ticket อัปเดต"
 
 #: app/assets/javascripts/app/controllers/ticket_state.coffee:3
-#: db/seeds/permissions.rb:239
+#: db/seeds/permissions.rb:245
 #, fuzzy
 #| msgid "Ticket update"
 msgid "Ticket States"
@@ -19429,7 +19614,7 @@ msgstr "เวลา"
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:134
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:12
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:124
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:145
 #: db/seeds/permissions.rb:107 db/seeds/settings.rb:3931
 msgid "Time Accounting"
 msgstr ""
@@ -19699,7 +19884,7 @@ msgstr "Token"
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/tokenAccess.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:59
-#: db/seeds/permissions.rb:447
+#: db/seeds/permissions.rb:453
 msgid "Token Access"
 msgstr "Token Access"
 
@@ -19729,7 +19914,7 @@ msgstr "Token is invalid!"
 msgid "Token-based API access has been disabled by the administrator."
 msgstr ""
 
-#: lib/user_agent.rb:359
+#: lib/user_agent.rb:249
 msgid "Too many redirections for the original URL, halting."
 msgstr "มีการเปลี่ยนเส้นทางมากเกินไปสำหรับ URL เดิม กำลังหยุดชะงัก"
 
@@ -19802,7 +19987,7 @@ msgstr "การแปล"
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:414
 #: app/assets/javascripts/app/controllers/translation.coffee:3
 #: app/assets/javascripts/app/views/translation/index.jst.eco:4
-#: db/seeds/permissions.rb:257
+#: db/seeds/permissions.rb:263
 msgid "Translations"
 msgstr "การแปล"
 
@@ -19903,7 +20088,6 @@ msgstr "เปลี่ยนแชทเป็น ticket"
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:14
 #: app/assets/javascripts/app/views/object_manager/attribute/autocompletion_ajax_external_data_source.jst.eco:3
 #: app/frontend/apps/desktop/form/composables/useSSLVerificationWarningHandler.ts:24
-#: db/seeds/settings.rb:1949
 msgid ""
 "Turning off SSL verification is a security risk and should be used only "
 "temporary. Use this option at your own risk!"
@@ -19920,7 +20104,7 @@ msgstr "ทวีตที่มีข้อความค้นหาจะเ
 #: app/controllers/first_steps_controller.rb:27
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:26
 #: app/frontend/shared/entities/ticket-article/action/plugins/twitter.ts:124
-#: db/seeds/permissions.rb:161 db/seeds/settings.rb:766
+#: db/seeds/permissions.rb:167 db/seeds/settings.rb:766
 msgid "Twitter"
 msgstr "ทวิตเตอร์"
 
@@ -20008,7 +20192,7 @@ msgstr "ต้องการการยืนยันตัวบุคคล
 #: app/assets/javascripts/app/views/profile/password.jst.eco:22
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/twoFactorAuth.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:72
-#: db/seeds/permissions.rb:433
+#: db/seeds/permissions.rb:439
 #, fuzzy
 #| msgid "Authentication"
 msgid "Two-factor Authentication"
@@ -20094,8 +20278,8 @@ msgstr "การทดสอบดำเนินการสำเร็จ"
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:11
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:57
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:105
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:119
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:227
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:120
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:226
 #: db/seeds/object_manager_attributes.rb:124
 msgid "Type"
 msgstr "ชนิด"
@@ -20137,6 +20321,7 @@ msgstr "ไม่มีผู้รับผิดชอบ และ เปิ�
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:23
 #: app/assets/javascripts/app/views/google/list.jst.eco:16
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:17
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:17
 msgid "Unassigned email addresses, assign them to a channel or delete them."
 msgstr "ที่อยู่อีเมลที่ไม่ได้กำหนด กำหนดให้กับแชนเนลหรือลบออก"
 
@@ -20177,7 +20362,7 @@ msgstr ""
 msgid "Unlink issue"
 msgstr "ปัญหาเกี่ยวกับลิงค์"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:213
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:212
 #, fuzzy
 #| msgid "Link issue"
 msgid "Unlink object"
@@ -20673,7 +20858,13 @@ msgstr "ผู้ใช้ (เซ็นเซอร์)"
 msgid "User Filter"
 msgstr "กรองผู้ใช้"
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:460
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:64
+#, fuzzy
+#| msgid "User Filter"
+msgid "User Mailbox"
+msgstr "กรองผู้ใช้"
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:472
 #, fuzzy
 #| msgid "regex mismatch"
 msgid "User Mismatch"
@@ -20701,7 +20892,7 @@ msgstr "ไม่สามารถสร้างผู้ใช้ได้"
 msgid "User could not be updated."
 msgstr "ไม่สามารถสร้างผู้ใช้ได้"
 
-#: lib/external_credential/google.rb:44
+#: lib/external_credential/google.rb:47
 msgid "User email could not be extracted from 'id_token'."
 msgstr ""
 
@@ -20768,6 +20959,12 @@ msgstr ""
 #| msgid "Out of Office"
 msgid "User is out of office"
 msgstr "ไม่อยู่ที่ทำงาน"
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:380
+#, fuzzy
+#| msgid "Username / Email"
+msgid "User mailbox"
+msgstr "ชื่อผู้ใช้ / อีเมล"
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:201
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/AvatarMenu.vue:44
@@ -20906,6 +21103,12 @@ msgstr "ไม่พบอีเมลยืนยันในกล่องจ
 #: app/assets/javascripts/app/controllers/_plugin/user_signup_check.coffee:67
 msgid "Verification email could not be sent."
 msgstr "ไม่สามารถส่งอีเมลยืนยันได้"
+
+#: db/seeds/settings.rb:1949
+msgid ""
+"Verification of the TLS connection to the IDP SSO target URL. Only relevant "
+"during setting up SAML authentication."
+msgstr ""
 
 #: app/assets/javascripts/app/views/whatsapp/account_webhook.jst.eco:24
 #, fuzzy
@@ -21213,13 +21416,13 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:37
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:3
 #: app/frontend/shared/entities/ticket-article/action/plugins/whatsapp.ts:201
-#: db/seeds/permissions.rb:179
+#: db/seeds/permissions.rb:185
 #, fuzzy
 #| msgid "Chats"
 msgid "WhatsApp"
 msgstr "แชต"
 
-#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:111
+#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:110
 #, fuzzy
 #| msgid "Add Account"
 msgid "WhatsApp Account"
@@ -21454,6 +21657,7 @@ msgstr "กำหนดการตั้งค่าการสมัครร
 #: app/assets/javascripts/app/views/facebook/index.jst.eco:9
 #: app/assets/javascripts/app/views/google/index.jst.eco:9
 #: app/assets/javascripts/app/views/microsoft365/index.jst.eco:9
+#: app/assets/javascripts/app/views/microsoft_graph/index.jst.eco:10
 #: app/assets/javascripts/app/views/twitter/index.jst.eco:9
 msgid ""
 "You can connect %s with Zammad. But first, you will have to connect your "
@@ -21517,6 +21721,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/facebook/app_config.jst.eco:3
 #: app/assets/javascripts/app/views/google/app_config.jst.eco:3
 #: app/assets/javascripts/app/views/microsoft365/app_config.jst.eco:3
+#: app/assets/javascripts/app/views/microsoft_graph/app_config.jst.eco:3
 #: app/assets/javascripts/app/views/pre_defined_webhook.jst.eco:15
 #: app/assets/javascripts/app/views/telegram/bot_add.jst.eco:3
 #: app/assets/javascripts/app/views/twitter/app_config.jst.eco:3
@@ -21709,7 +21914,7 @@ msgstr "คุณไม่มีข้อความที่ยังไม่
 msgid "You have not created a ticket yet."
 msgstr "คุณยังไม่ได้สร้าง ticket"
 
-#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:324
+#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:326
 msgid "You have to allow access to your webcam."
 msgstr "คุณต้องอนุญาตการเข้าถึงเว็บแคมของคุณ"
 
@@ -21881,6 +22086,7 @@ msgstr "ไม่สามารถอัปโหลดไฟล์ได้"
 #: app/assets/javascripts/app/views/facebook/app_config.jst.eco:23
 #: app/assets/javascripts/app/views/google/app_config.jst.eco:23
 #: app/assets/javascripts/app/views/microsoft365/app_config.jst.eco:31
+#: app/assets/javascripts/app/views/microsoft_graph/app_config.jst.eco:31
 #: app/assets/javascripts/app/views/twitter/app_config.jst.eco:47
 #: db/seeds/settings.rb:1374
 msgid "Your callback URL"
@@ -21945,7 +22151,7 @@ msgstr "มูลนิธิ Zammad"
 msgid "Zammad Helpdesk"
 msgstr "Zammad Helpdesk"
 
-#: lib/user_agent.rb:251
+#: lib/user_agent.rb:141
 msgid "Zammad User Agent"
 msgstr "เจ้าหน้าที่ ผู้ใช้ Zammad"
 
@@ -22333,7 +22539,6 @@ msgstr "ยกเลิกการทำงาน"
 msgid "default"
 msgstr "ค่าปริยาย"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_destroy_confirm.coffee:4
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:191
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/delete.coffee:8
 #: app/assets/javascripts/app/views/data_privacy/preview.jst.eco:17
@@ -22580,7 +22785,7 @@ msgid "hour"
 msgstr "ชั่วโมง"
 
 #: app/assets/javascripts/app/lib/mixins/time_accounting_unit.coffee:9
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:44
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:52
 #: app/frontend/shared/entities/ticket/composables/useTicketAccountedTime.ts:21
 #, fuzzy
 #| msgid "Hour(s)"
@@ -22612,7 +22817,7 @@ msgstr "i-doit config"
 msgid "i-doit integration"
 msgstr "i-doit integration"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:179
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:180
 msgid "i-doit: Link objects"
 msgstr ""
 
@@ -22925,7 +23130,7 @@ msgid "minute"
 msgstr "นาที"
 
 #: app/assets/javascripts/app/lib/mixins/time_accounting_unit.coffee:17
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:48
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:56
 #: app/frontend/shared/entities/ticket/composables/useTicketAccountedTime.ts:25
 #, fuzzy
 #| msgid "Minute(s)"
@@ -23041,6 +23246,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/google/list.jst.eco:95
 #: app/assets/javascripts/app/views/integration/idoit_object_result.jst.eco:3
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:96
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:106
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:27
 #: app/assets/javascripts/app/views/widget/ticket_stats_list.jst.eco:7
 #: db/seeds/settings.rb:2231
@@ -23147,7 +23353,7 @@ msgid "published"
 msgstr "เผยแพร่"
 
 #: app/assets/javascripts/app/lib/mixins/time_accounting_unit.coffee:13
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:46
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:54
 #: app/frontend/shared/entities/ticket/composables/useTicketAccountedTime.ts:23
 msgid "quarter-hour(s)"
 msgstr ""
@@ -23523,6 +23729,12 @@ msgstr "ไม่ถูกแตะต้อง"
 msgid "updated"
 msgstr "อัพเดตแล้ว"
 
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:381
+#, fuzzy
+#| msgid "current user organization"
+msgid "user@your-organization.tld"
+msgstr "องค์กร ผู้ใช้ปัจจุบัน"
+
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/outOfOffice.ts:24
 msgid "vacation,holiday,replacement,time off"
 msgstr ""
@@ -23623,6 +23835,9 @@ msgstr "‎... ของพื้นที่ข้อความทั้ง�
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅ รอเวลาวันนี้"
+
+#~ msgid "Gmail"
+#~ msgstr "Gmail"
 
 #, fuzzy
 #~| msgid "Email could not be verified. Please contact your administrator."
@@ -24011,9 +24226,6 @@ msgstr "∅ รอเวลาวันนี้"
 
 #~ msgid "Zammad Image Service"
 #~ msgstr "Zammad Image Service"
-
-#~ msgid "Google Maps"
-#~ msgstr "Google Maps"
 
 #~ msgid "Access to Customer Tickets based on current_user and organization"
 #~ msgstr "การเข้าถึง Tickets ของลูกค้าตาม บน current_user และองค์กร"

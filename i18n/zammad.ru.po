@@ -524,6 +524,7 @@ msgstr "%s часа(-ов) назад"
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:58
 #: app/assets/javascripts/app/views/google/list.jst.eco:61
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:62
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:72
 msgid "%s is inactive, please select an active one."
 msgstr "%s неактивен, пожалуйста, выберите активный."
 
@@ -1004,7 +1005,7 @@ msgstr ""
 "забудьте их определить!"
 
 #: app/assets/javascripts/app/controllers/api.coffee:3
-#: app/assets/javascripts/app/views/api.jst.eco:2 db/seeds/permissions.rb:227
+#: app/assets/javascripts/app/views/api.jst.eco:2 db/seeds/permissions.rb:233
 msgid "API"
 msgstr "API"
 
@@ -1050,47 +1051,47 @@ msgstr ""
 msgid "Access denied"
 msgstr "Доступ запрещён"
 
-#: db/seeds/permissions.rb:315
+#: db/seeds/permissions.rb:321
 msgid "Access the agent chat features."
 msgstr "Доступ к функциям чата для агента."
 
-#: db/seeds/permissions.rb:330
+#: db/seeds/permissions.rb:336
 msgid "Access the agent phone features."
 msgstr "Доступ к функциям телефонии для агента."
 
-#: db/seeds/permissions.rb:345
+#: db/seeds/permissions.rb:351
 msgid "Access the knowledge base editor features."
 msgstr "Доступ к функциям редактора базы знаний."
 
-#: db/seeds/permissions.rb:351
+#: db/seeds/permissions.rb:357
 msgid "Access the knowledge base reader features."
 msgstr "Доступ к функциям чтения базы знаний."
 
-#: db/seeds/permissions.rb:373
+#: db/seeds/permissions.rb:379
 msgid "Access the tickets as agent based on group access."
 msgstr "Доступ к заявкам в качестве агента на основе группового доступа."
 
-#: db/seeds/permissions.rb:382
+#: db/seeds/permissions.rb:388
 msgid "Access tickets as customer."
 msgstr "Доступ к заявкам как клиент."
 
-#: db/seeds/permissions.rb:306
+#: db/seeds/permissions.rb:312
 msgid "Access to the chat interface."
 msgstr "Доступ к интерфейсу чата."
 
-#: db/seeds/permissions.rb:336
+#: db/seeds/permissions.rb:342
 msgid "Access to the knowledge base interface."
 msgstr "Доступ к интерфейсу базы знаний."
 
-#: db/seeds/permissions.rb:321
+#: db/seeds/permissions.rb:327
 msgid "Access to the phone interface."
 msgstr "Доступ к интерфейсу телефонии."
 
-#: db/seeds/permissions.rb:358
+#: db/seeds/permissions.rb:364
 msgid "Access to the report interface."
 msgstr "Доступ к интерфейсу отчётов."
 
-#: db/seeds/permissions.rb:364
+#: db/seeds/permissions.rb:370
 msgid "Access to the ticket interface."
 msgstr "Доступ к интерфейсу заявок."
 
@@ -1113,7 +1114,7 @@ msgid "Account SID"
 msgstr "Идентификатор безопасности (SID) учётной записи"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:6
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:115
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:136
 msgid "Account Time"
 msgstr "Время учётной записи"
 
@@ -1132,7 +1133,7 @@ msgstr "Учётная запись не подтверждена"
 #: app/assets/javascripts/app/models/ticket.coffee:16
 #: app/assets/javascripts/app/views/ticket_zoom/time_unit.jst.eco:2
 #: app/assets/javascripts/app/views/time_accounting/accounted_time.jst.eco:2
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:70
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:83
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:136
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:18
 #: app/graphql/gql/types/overview_type.rb:69
@@ -1146,6 +1147,7 @@ msgstr "Единица учётного времени"
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:11
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:11
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:11
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:13
 #: app/assets/javascripts/app/controllers/_channel/sms.coffee:10
 #: app/assets/javascripts/app/views/facebook/index.jst.eco:3
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:3
@@ -1153,6 +1155,8 @@ msgstr "Единица учётного времени"
 #: app/assets/javascripts/app/views/google/list.jst.eco:3
 #: app/assets/javascripts/app/views/microsoft365/index.jst.eco:3
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:3
+#: app/assets/javascripts/app/views/microsoft_graph/index.jst.eco:4
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:3
 #: app/assets/javascripts/app/views/twitter/index.jst.eco:3
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:3
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:3
@@ -1276,7 +1280,7 @@ msgstr "Действия в системе"
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:16
 #: app/assets/javascripts/app/views/time_accounting/types.jst.eco:4
 #: app/controllers/time_accountings_controller.rb:117
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:97
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:118
 msgid "Activity Type"
 msgstr "Тип деятельности"
 
@@ -1313,6 +1317,7 @@ msgstr "Адаптер"
 #: app/assets/javascripts/app/views/knowledge_base/sidebar/generic_list.jst.eco:7
 #: app/assets/javascripts/app/views/knowledge_base/sidebar/linked_tickets.jst.eco:8
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:8
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:8
 #: app/assets/javascripts/app/views/object_manager/attribute/multiselect.jst.eco:43
 #: app/assets/javascripts/app/views/object_manager/attribute/select.jst.eco:39
 #: app/assets/javascripts/app/views/profile/linked_accounts.jst.eco:15
@@ -1327,6 +1332,7 @@ msgstr "Добавить"
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:8
 #: app/assets/javascripts/app/views/google/list.jst.eco:8
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:8
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:8
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:8
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:7
 msgid "Add Account"
@@ -1561,7 +1567,7 @@ msgstr "Адрес прокси-сервера для HTTP и HTTPS ресурс
 msgid "Admin"
 msgstr "Администратор"
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:448
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:455
 msgid "Admin Consent"
 msgstr "Согласие администратора"
 
@@ -1686,7 +1692,7 @@ msgstr "Имя агента"
 msgid "Agent Name + FromSeparator + System Address Display Name"
 msgstr "Имя агента + Разделитель «От» + Отображаемое имя системной почты"
 
-#: db/seeds/permissions.rb:314
+#: db/seeds/permissions.rb:320
 msgid "Agent chat"
 msgstr "Агентский чат"
 
@@ -1698,11 +1704,11 @@ msgstr "Тайм-аут простоя агента"
 msgid "Agent limit exceeded, please check your account settings."
 msgstr "Превышен лимит агентов, проверьте настройки учётной записи."
 
-#: db/seeds/permissions.rb:329
+#: db/seeds/permissions.rb:335
 msgid "Agent phone"
 msgstr "Телефон агента"
 
-#: db/seeds/permissions.rb:372
+#: db/seeds/permissions.rb:378
 msgid "Agent tickets"
 msgstr "Заявки агента"
 
@@ -1979,7 +1985,8 @@ msgstr "Версия приложения"
 
 #: app/assets/javascripts/app/controllers/_channel/facebook.coffee:186
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:429
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:441
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:448
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:369
 #: app/assets/javascripts/app/controllers/_channel/twitter.coffee:193
 #: app/assets/javascripts/app/controllers/_integration/exchange.coffee:721
 msgid "App could not be verified."
@@ -2003,7 +2010,7 @@ msgstr "Пароль приложения"
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/appearance.ts:9
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/appearance.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:59
-#: db/seeds/permissions.rb:395
+#: db/seeds/permissions.rb:401
 msgid "Appearance"
 msgstr "Вид"
 
@@ -2105,7 +2112,8 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:145
 #: app/assets/javascripts/app/controllers/_channel/facebook.coffee:98
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:148
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:160
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:164
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:91
 #: app/assets/javascripts/app/controllers/_channel/telegram.coffee:66
 #: app/assets/javascripts/app/controllers/_channel/twitter.coffee:105
 #: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:67
@@ -2406,6 +2414,12 @@ msgstr "Авг"
 msgid "August"
 msgstr "Август"
 
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:375
+#, fuzzy
+#| msgid "Authentication"
+msgid "Authenticate"
+msgstr "Аутентификация"
+
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:4
 msgid "Authentication"
 msgstr "Аутентификация"
@@ -2526,7 +2540,7 @@ msgstr "Автоматическая привязка учётной запис�
 msgid "Automatic account linking notification"
 msgstr "Уведомление об автоматической привязке учётной записи"
 
-#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:181
+#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:180
 msgid "Automatic reminders"
 msgstr "Автоматические напоминания"
 
@@ -2578,7 +2592,7 @@ msgstr "Доступные типы для новой заявки"
 #: app/frontend/apps/mobile/pages/account/views/AccountOverview.vue:128
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:175
 #: app/frontend/shared/components/CommonUserAvatar/CommonUserAvatar.vue:119
-#: db/seeds/permissions.rb:409
+#: db/seeds/permissions.rb:415
 msgid "Avatar"
 msgstr "Аватар"
 
@@ -2766,7 +2780,7 @@ msgid "Bots"
 msgstr "Боты"
 
 #: app/assets/javascripts/app/controllers/_manage/branding.coffee:3
-#: app/controllers/first_steps_controller.rb:54 db/seeds/permissions.rb:185
+#: app/controllers/first_steps_controller.rb:54 db/seeds/permissions.rb:191
 msgid "Branding"
 msgstr "Брендирование"
 
@@ -2955,7 +2969,7 @@ msgstr "Фильтр журнала звонков"
 msgid "Caller log"
 msgstr "Журнал звонков"
 
-#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:238
+#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:240
 #: app/assets/javascripts/app/views/profile/avatar.jst.eco:7
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCameraFlyout.vue:119
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAvatar.vue:394
@@ -3150,7 +3164,7 @@ msgstr "Изменить дату"
 msgid "Change order"
 msgstr "Изменить порядок"
 
-#: db/seeds/permissions.rb:427
+#: db/seeds/permissions.rb:433
 msgid "Change personal account password."
 msgstr "Изменить пароль личной учетной записи."
 
@@ -3192,7 +3206,8 @@ msgstr "Были внесены изменения, которые требую�
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:258
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:275
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:287
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:292
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:264
 #: app/assets/javascripts/app/controllers/_integration/slack.coffee:33
 #: app/assets/javascripts/app/models/email_address.coffee:34
 #: app/assets/javascripts/app/models/postmaster_filter.coffee:8
@@ -3207,7 +3222,7 @@ msgstr "Канал"
 msgid "Channel Distribution"
 msgstr "Каналы"
 
-#: app/assets/javascripts/app/controllers/manage.coffee:36
+#: app/assets/javascripts/app/controllers/manage.coffee:38
 msgid "Channels"
 msgstr "Каналы"
 
@@ -3314,7 +3329,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/checklist_template.coffee:3
 #: app/assets/javascripts/app/views/checklist_template/index.jst.eco:7
-#: db/seeds/permissions.rb:299 db/seeds/settings.rb:5790
+#: db/seeds/permissions.rb:305 db/seeds/settings.rb:5790
 msgid "Checklists"
 msgstr "Чек-листы"
 
@@ -3495,12 +3510,14 @@ msgstr "Кликните сюда, чтобы настроить метод дв
 #: app/assets/javascripts/app/views/exchange/token_information.jst.eco:28
 #: app/assets/javascripts/app/views/integration/idoit.jst.eco:21
 #: app/assets/javascripts/app/views/microsoft365/app_config.jst.eco:9
+#: app/assets/javascripts/app/views/microsoft_graph/app_config.jst.eco:9
 #: db/seeds/settings.rb:1490
 msgid "Client ID"
 msgstr "Идентификатор клиента"
 
 #: app/assets/javascripts/app/views/exchange/app_config.jst.eco:17
 #: app/assets/javascripts/app/views/microsoft365/app_config.jst.eco:17
+#: app/assets/javascripts/app/views/microsoft_graph/app_config.jst.eco:17
 #: db/seeds/settings.rb:1496
 msgid "Client Secret"
 msgstr "Пароль клиента"
@@ -3515,7 +3532,7 @@ msgstr "Клонировать"
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_description.coffee:4
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_error_modal.coffee:4
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:447
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:454
 #: app/assets/javascripts/app/controllers/_plugin/maintenance.coffee:27
 #: app/assets/javascripts/app/controllers/_settings/area_proxy.coffee:55
 #: app/assets/javascripts/app/controllers/translation.coffee:184
@@ -3694,6 +3711,7 @@ msgstr "Настроить"
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:7
 #: app/assets/javascripts/app/views/google/list.jst.eco:7
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:7
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:7
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:7
 msgid "Configure App"
 msgstr "Настроить приложение"
@@ -3780,6 +3798,7 @@ msgstr "Подтверждение"
 msgid "Confirmation failed."
 msgstr "Не удалось подтвердить."
 
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:312
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:21
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:26
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:51
@@ -3812,8 +3831,10 @@ msgstr "Подключить приложение Facebook"
 msgid "Connect Google App"
 msgstr "Подключить приложение Google"
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:395
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:402
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:312
 #: app/assets/javascripts/app/views/microsoft365/index.jst.eco:10
+#: app/assets/javascripts/app/views/microsoft_graph/index.jst.eco:11
 msgid "Connect Microsoft 365 App"
 msgstr "Подключить приложение Microsoft 365"
 
@@ -3979,6 +4000,7 @@ msgstr "Скопировать текущий номер объекта (нап�
 msgid "Copy ticket number"
 msgstr "Скопировать номер заявки"
 
+#: app/assets/javascripts/app/views/microsoft_graph/app_config.jst.eco:35
 #: app/assets/javascripts/app/views/whatsapp/account_webhook.jst.eco:14
 msgid "Copy to clipboard"
 msgstr "Скопировать в буфер обмена"
@@ -3988,7 +4010,7 @@ msgid "Core Workflow Ajax Mode"
 msgstr "Основной рабочий процесс в режиме Ajax"
 
 #: app/assets/javascripts/app/controllers/core_workflow.coffee:3
-#: db/seeds/permissions.rb:251
+#: db/seeds/permissions.rb:257
 msgid "Core Workflows"
 msgstr "Основные рабочие процессы"
 
@@ -4010,10 +4032,20 @@ msgstr "Не удалось получить данные о номере тел
 msgid "Could not fetch security keys"
 msgstr "Не удалось получить ключи безопасности (security keys)"
 
+#: app/controllers/channels_admin/microsoft_graph_controller.rb:74
+#, fuzzy
+#| msgid "Could not find target ticket number!"
+msgid "Could not find the channel."
+msgstr "Не удалось найти целевой номер заявки!"
+
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:37
 #: app/graphql/gql/mutations/user/current/two_factor/recovery_codes_generate.rb:19
 msgid "Could not generate recovery codes"
 msgstr "Не удалось сгенерировать коды восстановления"
+
+#: app/controllers/channels_admin/microsoft_graph_controller.rb:77
+msgid "Could not identify the channel mailbox."
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/user/manage_two_factor.coffee:37
 msgid ""
@@ -4382,7 +4414,7 @@ msgstr "Создание каналов"
 msgid "Creation mask"
 msgstr "Маска создания"
 
-#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:154
+#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:156
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCropImageFlyout.vue:42
 msgid "Crop Image"
 msgstr "Обрезать изображение"
@@ -4398,6 +4430,7 @@ msgstr "Текущий ключ"
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:636
 #: app/assets/javascripts/app/models/signature.coffee:21
 #: app/assets/javascripts/app/models/text_module.coffee:21
+#: app/assets/javascripts/app/views/microsoft365/user_mismatch.jst.eco:7
 msgid "Current User"
 msgstr "Текущий пользователь"
 
@@ -4490,7 +4523,7 @@ msgstr "Соотношение клиентов и агентов (подсче�
 msgid "Customer selection based on sender and receiver list"
 msgstr "Выбор клиента на основе списка отправителей и получателей"
 
-#: db/seeds/permissions.rb:381
+#: db/seeds/permissions.rb:387
 msgid "Customer tickets"
 msgstr "Заявки клиентов"
 
@@ -4538,7 +4571,7 @@ msgstr "Показатели"
 
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:3
 #: app/assets/javascripts/app/views/data_privacy/index.jst.eco:3
-#: db/seeds/permissions.rb:263
+#: db/seeds/permissions.rb:269
 msgid "Data Privacy"
 msgstr "Защита информации"
 
@@ -5690,6 +5723,7 @@ msgstr ""
 "совпадения заявок."
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_confirm_delete.coffee:4
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_destroy_confirm.coffee:4
 #: app/assets/javascripts/app/controllers/_application_controller/table.coffee:677
 #: app/assets/javascripts/app/controllers/_manage/knowledge_base.coffee:118
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:188
@@ -5709,6 +5743,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:55
 #: app/assets/javascripts/app/views/knowledge_base/public_menu_form_item.jst.eco:18
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:104
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:114
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:29
 #: app/assets/javascripts/app/views/profile/devices.jst.eco:25
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:21
@@ -5774,7 +5809,7 @@ msgstr "Удалить аватар"
 msgid "Delete column"
 msgstr "Удалить столбец"
 
-#: db/seeds/permissions.rb:264
+#: db/seeds/permissions.rb:270
 msgid "Delete existing data of your system."
 msgstr "Удалить существующие данные в системе."
 
@@ -5925,10 +5960,12 @@ msgstr "Десктопная версия"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:262
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:339
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:351
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:358
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:268
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:88
 #: app/assets/javascripts/app/views/google/list.jst.eco:58
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:59
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:69
 #: app/models/channel/driver/sms/message_bird.rb:93
 #: app/models/channel/driver/sms/twilio.rb:107
 msgid "Destination Group"
@@ -5966,13 +6003,26 @@ msgstr "Устройство было отозвано."
 #: app/assets/javascripts/app/views/profile/devices.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/devices.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:37
-#: db/seeds/permissions.rb:440
+#: db/seeds/permissions.rb:446
 msgid "Devices"
 msgstr "Устройства"
 
 #: app/frontend/apps/mobile/components/CommonSelect/CommonSelect.vue:185
 msgid "Dialog window with selections"
 msgstr "Диалоговое окно с вариантами выбора"
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:462
+msgid ""
+"Did you check the validity of the configured mailbox? Or consider removing "
+"this channel and switch to using a different mailbox type. %l"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:460
+msgid ""
+"Did you confirm that the user has delegation permissions for the mailbox? Or "
+"consider removing this channel and switch to using a different mailbox type. "
+"%l"
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/translation.coffee:325
 msgid ""
@@ -5996,6 +6046,12 @@ msgstr "Вы знали? Вы можете помочь перевести %s н
 #: app/frontend/shared/composables/form/useCheckBodyAttachmentReference.ts:51
 msgid "Did you plan to include attachments with this message?"
 msgstr "Планировали ли Вы включить вложения в это сообщение?"
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:458
+msgid ""
+"Did you verify that the user has access to the mailbox? Or consider removing "
+"this channel and switch to using a different mailbox type. %l"
+msgstr ""
 
 #: db/seeds/settings.rb:2074
 msgid "Digit required"
@@ -6027,6 +6083,7 @@ msgstr "Направление"
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:31
 #: app/assets/javascripts/app/views/google/list.jst.eco:107
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:109
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:119
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:30
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:40
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:85
@@ -6053,7 +6110,7 @@ msgstr ""
 "Вместо этого, чтобы отключить уведомления, воспользуйтесь приведенными выше "
 "настройками."
 
-#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:279
+#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:281
 msgid "Discard"
 msgstr "Отмена"
 
@@ -6271,7 +6328,7 @@ msgstr "Не удалось обновить черновик."
 msgid "Drafts"
 msgstr "Черновики"
 
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingOverviewOrder.vue:51
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingOverviewOrder.vue:53
 msgid "Drag and drop to reorder ticket overview list items."
 msgstr ""
 "Перетаскивание для изменения порядка расположения элементов списка "
@@ -6312,6 +6369,12 @@ msgstr ""
 msgid "Duplicate Detection"
 msgstr "Обнаружение дубликатов"
 
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:489
+#, fuzzy
+#| msgid "Email Address"
+msgid "Duplicate Email Address"
+msgstr "Адрес электронной почты"
+
 #: app/assets/javascripts/app/views/cti/caller_log.jst.eco:34
 msgid "Duration"
 msgstr "Продолжительность"
@@ -6347,6 +6410,7 @@ msgstr "Рождественские каникулы"
 #: app/assets/javascripts/app/views/knowledge_base/navigation.jst.eco:38
 #: app/assets/javascripts/app/views/knowledge_base/public_menu_manager.jst.eco:37
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:47
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:47
 #: app/assets/javascripts/app/views/profile/password.jst.eco:72
 #: app/assets/javascripts/app/views/sla/index.jst.eco:60
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:44
@@ -6530,10 +6594,12 @@ msgstr "Учётные записи электронной почты"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:201
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:241
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:253
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:258
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:110
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:126
 #: app/assets/javascripts/app/views/google/list.jst.eco:81
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:82
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:92
 msgid "Email Address"
 msgstr "Адрес электронной почты"
 
@@ -6628,6 +6694,7 @@ msgstr "Пусто"
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:33
 #: app/assets/javascripts/app/views/google/list.jst.eco:109
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:111
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:121
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:31
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:42
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:87
@@ -7029,7 +7096,7 @@ msgid "Enter the security code generated by the authenticator app:"
 msgstr "Введите код, сгенерированный приложением-аутентификатором:"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:37
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:73
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:86
 msgid "Enter the time you want to record"
 msgstr "Введите время, которое Вы хотите зафиксировать"
 
@@ -7047,6 +7114,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/facebook/app_config.jst.eco:6
 #: app/assets/javascripts/app/views/google/app_config.jst.eco:6
 #: app/assets/javascripts/app/views/microsoft365/app_config.jst.eco:6
+#: app/assets/javascripts/app/views/microsoft_graph/app_config.jst.eco:6
 #: app/assets/javascripts/app/views/telegram/bot_add.jst.eco:6
 #: app/assets/javascripts/app/views/telegram/bot_edit.jst.eco:3
 #: app/assets/javascripts/app/views/twitter/app_config.jst.eco:6
@@ -7127,7 +7195,7 @@ msgstr "Ошибка"
 msgid "Error during execution of auto wizard."
 msgstr "Ошибка во время работы мастера автоматизации."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:64
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:65
 msgid "Error fetching i-doit information. Please contact your administrator."
 msgstr ""
 "Ошибка при получении информации об i-doit. Пожалуйста, свяжитесь с Вашим "
@@ -7417,7 +7485,7 @@ msgstr "Извлечение информации о вложениях zammad �
 #: app/controllers/first_steps_controller.rb:31
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:19
 #: app/frontend/shared/entities/ticket-article/action/plugins/facebook.ts:48
-#: db/seeds/permissions.rb:167 db/seeds/settings.rb:1410
+#: db/seeds/permissions.rb:173 db/seeds/settings.rb:1410
 msgid "Facebook"
 msgstr "Facebook"
 
@@ -7475,7 +7543,7 @@ msgid "Failed to load content."
 msgstr "Не удалось загрузить содержимое."
 
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:223
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:235
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:240
 msgid "Failed to roll back the migration of the channel!"
 msgstr "Не удалось откатить перенос канала!"
 
@@ -7578,9 +7646,10 @@ msgstr "Файловая система"
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:16
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:16
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:16
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:18
 #: app/assets/javascripts/app/models/report_profile.js.coffee:7
 #: app/assets/javascripts/app/views/sla/index.jst.eco:28
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:132
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:133
 msgid "Filter"
 msgstr "Фильтр"
 
@@ -7602,7 +7671,7 @@ msgstr "Найдите то, что Вы ищете, например: \"пои�
 msgid "Fingerprint"
 msgstr "Отпечаток"
 
-#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:260
+#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:259
 #: app/assets/javascripts/app/views/clues/clues_content.jst.eco:17
 #: app/assets/javascripts/app/views/getting_started/email_pre_configured.jst.eco:17
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmailPreConfigured.vue:79
@@ -7666,7 +7735,8 @@ msgstr "Плоский Дизайн"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:418
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:279
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:291
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:296
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:473
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:86
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:59
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:177
@@ -8047,11 +8117,6 @@ msgstr "Указанный объект не поддерживается сел
 msgid "Given time zone is not valid."
 msgstr "Указанный часовой пояс недействителен."
 
-#: app/assets/javascripts/app/views/google/index.jst.eco:3
-#: app/assets/javascripts/app/views/google/list.jst.eco:3
-msgid "Gmail"
-msgstr "Gmail"
-
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/method.coffee:21
 #: app/assets/javascripts/app/views/agent_ticket_view/bulk.jst.eco:11
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:96
@@ -8096,7 +8161,6 @@ msgstr "Хорошая подпись"
 msgid "Goodbye message"
 msgstr "Прощальное сообщение"
 
-#: app/assets/javascripts/app/controllers/_channel/google.coffee:3
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:96
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:61
 #: db/seeds/permissions.rb:149 db/seeds/settings.rb:1475
@@ -8123,6 +8187,14 @@ msgstr "Идентификатор клиента Google"
 #: app/assets/javascripts/app/views/google/app_config.jst.eco:17
 msgid "Google Client Secret"
 msgstr "Пароль клиента Google"
+
+#: app/assets/javascripts/app/controllers/_channel/google.coffee:3
+#: app/assets/javascripts/app/views/google/index.jst.eco:3
+#: app/assets/javascripts/app/views/google/list.jst.eco:3
+#, fuzzy
+#| msgid "Google Maps"
+msgid "Google Email"
+msgstr "Карты Google"
 
 #: app/assets/javascripts/app/views/clues/clues_content.jst.eco:17
 msgid "Got it!"
@@ -8376,7 +8448,7 @@ msgstr ""
 "Здравствуйте, срок действия окна обслуживания для этого разговора истекает, "
 "пожалуйста, ответьте, чтобы сохранить его открытым."
 
-#: app/frontend/apps/desktop/components/CommonPageHelp/CommonPageHelp.vue:18
+#: app/frontend/apps/desktop/components/CommonPageHelp/CommonPageHelp.vue:22
 #: app/frontend/apps/desktop/components/CommonPageHelp/CommonPageHelpDialog.vue:20
 msgid "Help"
 msgstr "Помощь"
@@ -8605,7 +8677,7 @@ msgid "How to use it"
 msgstr "Как это работает"
 
 #: app/assets/javascripts/app/views/integration/idoit_object_result.jst.eco:8
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:218
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:217
 msgid "ID"
 msgstr "Идентификатор (ID)"
 
@@ -9005,6 +9077,7 @@ msgstr "Неактивный"
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:39
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:16
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:45
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:45
 msgid "Inbound"
 msgstr "Входящие"
 
@@ -9051,7 +9124,7 @@ msgstr "Включить собственные заявки в подписку
 msgid "Include your own tickets in subscription for pending tickets."
 msgstr "Включить собственные заявки в подписку на ожидающие заявки."
 
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:117
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:121
 msgid "Included ticket overviews"
 msgstr "Включенные представления заявок"
 
@@ -9225,7 +9298,7 @@ msgid "Integer field"
 msgstr "Целочисленное поле"
 
 #: app/assets/javascripts/app/controllers/integrations.coffee:3
-#: db/seeds/permissions.rb:221
+#: db/seeds/permissions.rb:227
 msgid "Integrations"
 msgstr "Интеграции"
 
@@ -9573,7 +9646,8 @@ msgstr "Kayako"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:419
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:280
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:292
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:297
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:474
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:87
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:187
 msgid "Keep messages on server"
@@ -9618,7 +9692,7 @@ msgstr "База знаний"
 msgid "Knowledge Base Answer"
 msgstr "Ответ в базе знаний"
 
-#: db/seeds/permissions.rb:344
+#: db/seeds/permissions.rb:350
 msgid "Knowledge Base Editor"
 msgstr "Редактор базы знаний"
 
@@ -9626,7 +9700,7 @@ msgstr "Редактор базы знаний"
 msgid "Knowledge Base Feed"
 msgstr "Веб-канал базы знаний"
 
-#: db/seeds/permissions.rb:350
+#: db/seeds/permissions.rb:356
 msgid "Knowledge Base Reader"
 msgstr "Читатель базы знаний"
 
@@ -9683,7 +9757,7 @@ msgstr "Макет посадочной страницы"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/locale.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLocale.vue:13
 #: app/frontend/apps/mobile/pages/account/views/AccountOverview.vue:157
-#: db/seeds/permissions.rb:402
+#: db/seeds/permissions.rb:408
 msgid "Language"
 msgstr "Язык"
 
@@ -9838,6 +9912,12 @@ msgstr "Ограничение количество заявок с IP-адре�
 msgid "Limit tickets per day"
 msgstr "Ограничение количество заявок в день"
 
+#: app/frontend/apps/mobile/pages/home/components/TicketOverviewEditItem.vue:94
+#, fuzzy
+#| msgid "Visibility"
+msgid "Limited Visibility"
+msgstr "Видимость"
+
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:267
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/embed_video_button.coffee:11
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/link_button.coffee:11
@@ -9874,15 +9954,15 @@ msgstr "Связать проблемы GitHub с Вашими заявками.
 msgid "Link GitLab issues to your tickets."
 msgstr "Связать проблемы GitLab с Вашими заявками."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerLinkFlyout.vue:70
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerLinkFlyout.vue:68
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerList.vue:288
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitHub/TicketSidebarGitHub.vue:71
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitLab/TicketSidebarGitLab.vue:71
 msgid "Link Issue"
 msgstr "Ссылка проблемы"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:183
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:197
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:184
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:196
 msgid "Link Objects"
 msgstr "Связать объекты"
 
@@ -9910,7 +9990,7 @@ msgstr "Ссылка уже существует"
 msgid "Link issue"
 msgstr "Проблема со связью"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:153
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:152
 msgid "Link objects"
 msgstr "Связать объекты"
 
@@ -9935,7 +10015,7 @@ msgstr "Тип ссылки"
 #: app/assets/javascripts/app/views/widget/user.jst.eco:34
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/linkedAccounts.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:56
-#: db/seeds/permissions.rb:454
+#: db/seeds/permissions.rb:460
 msgid "Linked Accounts"
 msgstr "Связанные учётные записи"
 
@@ -10146,13 +10226,17 @@ msgstr ""
 "комбинированную последовательность действий над заявкой всего одним щелчком "
 "мыши."
 
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:380
+msgid "Mailbox type"
+msgstr ""
+
 #: app/frontend/apps/desktop/components/layout/LayoutPage.vue:47
 msgid "Main sidebar"
 msgstr "Главная боковая панель"
 
 #: app/assets/javascripts/app/controllers/maintenance.coffee:3
 #: app/assets/javascripts/app/views/maintenance.jst.eco:3
-#: db/seeds/permissions.rb:269
+#: db/seeds/permissions.rb:275
 msgid "Maintenance"
 msgstr "Обслуживание"
 
@@ -10173,7 +10257,7 @@ msgstr "Включен режим технического обслуживан�
 msgid "Manage"
 msgstr "Управление"
 
-#: db/seeds/permissions.rb:228
+#: db/seeds/permissions.rb:234
 msgid "Manage API of your system."
 msgstr "Управление API Вашей системы."
 
@@ -10185,7 +10269,7 @@ msgstr "Управление шаблоном чек-листа"
 msgid "Manage Checklist Templates"
 msgstr "Управление шаблонами чек-листа"
 
-#: db/seeds/permissions.rb:168
+#: db/seeds/permissions.rb:174
 msgid "Manage Facebook channel of your system."
 msgstr "Управление каналом Facebook Вашей системы."
 
@@ -10195,6 +10279,12 @@ msgstr "Управление почтовым каналом Google Вашей �
 
 #: db/seeds/permissions.rb:156
 msgid "Manage Microsoft 365 mail channel of your system."
+msgstr "Управление почтовым каналом Microsoft 365 Вашей системы."
+
+#: db/seeds/permissions.rb:162
+#, fuzzy
+#| msgid "Manage Microsoft 365 mail channel of your system."
+msgid "Manage Microsoft Graph mail channel of your system."
 msgstr "Управление почтовым каналом Microsoft 365 Вашей системы."
 
 #: db/seeds/permissions.rb:138
@@ -10209,11 +10299,11 @@ msgstr "Управление соглашениями об уровне обсл
 msgid "Manage Tags"
 msgstr "Управление тегами"
 
-#: db/seeds/permissions.rb:174
+#: db/seeds/permissions.rb:180
 msgid "Manage Telegram channel of your system."
 msgstr "Управление каналом Telegram Вашей системы."
 
-#: db/seeds/permissions.rb:162
+#: db/seeds/permissions.rb:168
 msgid "Manage Twitter channel of your system."
 msgstr "Управление каналом X (бывш. Twitter) Вашей системы."
 
@@ -10222,11 +10312,11 @@ msgstr "Управление каналом X (бывш. Twitter) Вашей с�
 msgid "Manage Two-Factor Authentication"
 msgstr "Управление двухфакторной аутентификацией"
 
-#: db/seeds/permissions.rb:180
+#: db/seeds/permissions.rb:186
 msgid "Manage WhatsApp channel of your system."
 msgstr "Управление каналом WhatsApp Вашей системы."
 
-#: db/seeds/permissions.rb:288
+#: db/seeds/permissions.rb:294
 msgid "Manage active user sessions of your system."
 msgstr "Управление активными сеансами пользователей Вашей системы."
 
@@ -10247,7 +10337,7 @@ msgstr ""
 "провайдера открытого протокола авторизации (OAuth), и приложениями, которые "
 "Вы разрешили использовать в своей учётной записи."
 
-#: db/seeds/permissions.rb:186
+#: db/seeds/permissions.rb:192
 msgid "Manage branding settings of your system."
 msgstr "Управление настройками брендирования Вашей системы."
 
@@ -10259,11 +10349,11 @@ msgstr "Управление календарями Вашей системы."
 msgid "Manage chat channel of your system."
 msgstr "Управление чат-каналом Вашей системы."
 
-#: db/seeds/permissions.rb:192
+#: db/seeds/permissions.rb:198
 msgid "Manage core system settings."
 msgstr "Управление основными настройками системы."
 
-#: db/seeds/permissions.rb:252
+#: db/seeds/permissions.rb:258
 msgid "Manage core workflows of your system."
 msgstr "Управление основными рабочими процессами Вашей системы."
 
@@ -10279,71 +10369,71 @@ msgstr "Управление каналом \"Форма\" Вашей систе
 msgid "Manage groups of your system."
 msgstr "Управление группами Вашей системы."
 
-#: db/seeds/permissions.rb:222
+#: db/seeds/permissions.rb:228
 msgid "Manage integrations of your system."
 msgstr "Управление интеграциями Вашей системы."
 
-#: db/seeds/permissions.rb:270
+#: db/seeds/permissions.rb:276
 msgid "Manage maintenance mode of your system."
 msgstr "Управление режимом обслуживания системы."
 
-#: db/seeds/permissions.rb:276
+#: db/seeds/permissions.rb:282
 msgid "Manage monitoring of your system."
 msgstr "Управление мониторингом Вашей системы."
 
-#: db/seeds/permissions.rb:234
+#: db/seeds/permissions.rb:240
 msgid "Manage object attributes of your system."
 msgstr "Управление атрибутами объектов Вашей системы."
 
-#: db/seeds/permissions.rb:282
+#: db/seeds/permissions.rb:288
 msgid "Manage packages of your system."
 msgstr "Управление пакетами Вашей системы."
 
-#: db/seeds/permissions.rb:448
+#: db/seeds/permissions.rb:454
 msgid "Manage personal API tokens."
 msgstr "Управление персональными токенами API."
 
-#: db/seeds/permissions.rb:396
+#: db/seeds/permissions.rb:402
 msgid "Manage personal appearance settings."
 msgstr "Управление персональными настройками внешнего вида."
 
-#: db/seeds/permissions.rb:410
+#: db/seeds/permissions.rb:416
 msgid "Manage personal avatar settings."
 msgstr "Управление персональными настройками аватара."
 
-#: db/seeds/permissions.rb:482
+#: db/seeds/permissions.rb:488
 msgid "Manage personal calendar."
 msgstr "Управление персональным календарем."
 
-#: db/seeds/permissions.rb:441
+#: db/seeds/permissions.rb:447
 msgid "Manage personal devices and sessions."
 msgstr "Управление персональными устройствами и сеансами."
 
-#: db/seeds/permissions.rb:403
+#: db/seeds/permissions.rb:409
 msgid "Manage personal language settings."
 msgstr "Управление персональными языковыми настройками."
 
-#: db/seeds/permissions.rb:455
+#: db/seeds/permissions.rb:461
 msgid "Manage personal linked accounts."
 msgstr "Управление персональными привязанными учетными записями."
 
-#: db/seeds/permissions.rb:462
+#: db/seeds/permissions.rb:468
 msgid "Manage personal notifications settings."
 msgstr "Управление персональными настройками уведомлений."
 
-#: db/seeds/permissions.rb:417
+#: db/seeds/permissions.rb:423
 msgid "Manage personal out of office settings."
 msgstr "Управление настройками персонала вне офиса."
 
-#: db/seeds/permissions.rb:472
+#: db/seeds/permissions.rb:478
 msgid "Manage personal overviews."
 msgstr "Управление персональными обзорами."
 
-#: db/seeds/permissions.rb:389
+#: db/seeds/permissions.rb:395
 msgid "Manage personal settings."
 msgstr "Управление персональными настройками."
 
-#: db/seeds/permissions.rb:434
+#: db/seeds/permissions.rb:440
 msgid "Manage personal two-factor authentication methods."
 msgstr "Управление персональными методами двухфакторной аутентификации."
 
@@ -10363,11 +10453,11 @@ msgstr "Управление ролями Вашей системы."
 msgid "Manage schedulers of your system."
 msgstr "Управление планировщиками Вашей системы."
 
-#: db/seeds/permissions.rb:198
+#: db/seeds/permissions.rb:204
 msgid "Manage security settings of your system."
 msgstr "Управление настройками безопасности Вашей системы."
 
-#: db/seeds/permissions.rb:294
+#: db/seeds/permissions.rb:300
 msgid "Manage system report of your system."
 msgstr "Управление системными отчетами Вашей системы."
 
@@ -10375,16 +10465,16 @@ msgstr "Управление системными отчетами Вашей с
 msgid "Manage text modules of your system."
 msgstr "Управление текстовыми модулями Вашей системы."
 
-#: db/seeds/permissions.rb:210
+#: db/seeds/permissions.rb:216
 msgid "Manage ticket auto assignment settings of your system."
 msgstr ""
 "Управление настройками автоматического назначения заявок в Вашей системе."
 
-#: db/seeds/permissions.rb:300
+#: db/seeds/permissions.rb:306
 msgid "Manage ticket checklists of your system."
 msgstr "Управление чек-листами заявок Вашей системы."
 
-#: db/seeds/permissions.rb:216
+#: db/seeds/permissions.rb:222
 msgid "Manage ticket duplicate detection settings of your system."
 msgstr "Управление настройками обнаружения дубликатов заявок в Вашей системе."
 
@@ -10396,15 +10486,15 @@ msgstr "Управление макросами заявок Вашей сист
 msgid "Manage ticket overviews of your system."
 msgstr "Управление представлениями заявок Вашей системы."
 
-#: db/seeds/permissions.rb:246
+#: db/seeds/permissions.rb:252
 msgid "Manage ticket priorities of your system."
 msgstr "Управление приоритетами заявок Вашей системы."
 
-#: db/seeds/permissions.rb:204
+#: db/seeds/permissions.rb:210
 msgid "Manage ticket settings of your system."
 msgstr "Управление настройками заявок Вашей системы."
 
-#: db/seeds/permissions.rb:240
+#: db/seeds/permissions.rb:246
 msgid "Manage ticket states of your system."
 msgstr "Управление состояниями заявок Вашей системы."
 
@@ -10420,7 +10510,7 @@ msgstr "Управление шаблонами заявок Вашей сист
 msgid "Manage time accounting settings of your system."
 msgstr "Управление настройками учета рабочего времени Вашей системы."
 
-#: db/seeds/permissions.rb:258
+#: db/seeds/permissions.rb:264
 msgid "Manage translations of your system."
 msgstr "Управление переводами Вашей системы."
 
@@ -10727,9 +10817,6 @@ msgstr "Метод (конечная точка (endpoint) AJAX)"
 msgid "Microsoft"
 msgstr "Microsoft"
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:3
-#: app/assets/javascripts/app/views/microsoft365/index.jst.eco:3
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:3
 #: db/seeds/permissions.rb:155
 msgid "Microsoft 365"
 msgstr "Microsoft 365"
@@ -10737,6 +10824,22 @@ msgstr "Microsoft 365"
 #: db/seeds/settings.rb:1746
 msgid "Microsoft 365 App Credentials"
 msgstr "Учётные данные приложения Microsoft 365"
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:4
+#: app/assets/javascripts/app/views/microsoft_graph/index.jst.eco:4
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:3
+#, fuzzy
+#| msgid "Microsoft 365"
+msgid "Microsoft 365 Graph Email"
+msgstr "Microsoft 365"
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:3
+#: app/assets/javascripts/app/views/microsoft365/index.jst.eco:3
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:3
+#, fuzzy
+#| msgid "Microsoft 365"
+msgid "Microsoft 365 IMAP Email"
+msgstr "Microsoft 365"
 
 #: db/seeds/settings.rb:1739
 msgid "Microsoft Application Registration Portal"
@@ -10746,6 +10849,12 @@ msgstr "Портал регистрации приложений Microsoft"
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:128
 msgid "Microsoft Authenticator"
 msgstr "Microsoft Authenticator"
+
+#: db/seeds/permissions.rb:161
+#, fuzzy
+#| msgid "Microsoft"
+msgid "Microsoft Graph"
+msgstr "Microsoft"
 
 #: app/models/webhook/pre_defined/microsoft_teams.rb:5
 msgid "Microsoft Teams Notifications"
@@ -10851,7 +10960,7 @@ msgstr "Интеграция с Monit"
 
 #: app/assets/javascripts/app/controllers/monitoring.coffee:3
 #: app/assets/javascripts/app/views/monitoring.jst.eco:3
-#: db/seeds/permissions.rb:275
+#: db/seeds/permissions.rb:281
 msgid "Monitoring"
 msgstr "Мониторинг"
 
@@ -10880,7 +10989,7 @@ msgstr "Более подробную информацию можно найти
 msgid "More than 250 secondary organizations are not allowed."
 msgstr "Не допускается наличие более 250 вторичных организаций."
 
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:141
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:145
 msgid "More ticket overviews"
 msgstr "Больше представлений заявок"
 
@@ -11367,7 +11476,7 @@ msgstr ""
 msgid "New user?"
 msgstr "Новый пользователь?"
 
-#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:113
+#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:112
 #: app/assets/javascripts/app/controllers/webhook.coffee:126
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/password_check.coffee:2
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:106
@@ -11426,6 +11535,7 @@ msgstr "%s не настроен(а/о)."
 #: app/assets/javascripts/app/views/integration/smime_group.jst.eco:12
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:6
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:37
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:37
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:6
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:3
 #: app/assets/javascripts/app/views/time_accounting/by_customer.jst.eco:3
@@ -11447,8 +11557,14 @@ msgstr "Нет настроенных приложений Exchange!"
 msgid "No Facebook app configured!"
 msgstr "Приложение Facebook не настроено!"
 
-#: lib/external_credential/microsoft365.rb:12
+#: lib/external_credential/microsoft365.rb:9
 msgid "No Microsoft 365 app configured!"
+msgstr "Приложение Microsoft 365 не настроено!"
+
+#: lib/external_credential/microsoft_graph.rb:9
+#, fuzzy
+#| msgid "No Microsoft 365 app configured!"
+msgid "No Microsoft Graph app configured!"
 msgstr "Приложение Microsoft 365 не настроено!"
 
 #: db/seeds/settings.rb:553
@@ -11481,7 +11597,7 @@ msgstr "Нет ответов"
 msgid "No attached files"
 msgstr "Нет прикрепленных файлов"
 
-#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:325
+#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:327
 msgid "No camera found."
 msgstr "Камера не обнаружена."
 
@@ -11528,7 +11644,7 @@ msgstr "Нет черновиков"
 msgid "No email!"
 msgstr "Нет электронной почты!"
 
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:135
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:139
 #: app/frontend/apps/mobile/pages/online-notification/views/NotificationsList.vue:89
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:267
 #: app/frontend/apps/mobile/pages/ticket/components/TicketList/TicketList.vue:150
@@ -11638,7 +11754,7 @@ msgstr "Пока нет общих черновиков"
 #: app/controllers/text_modules_controller.rb:75
 #: app/controllers/ticket_articles_controller.rb:232
 #: app/controllers/tickets_controller.rb:570
-#: app/controllers/users_controller.rb:578
+#: app/controllers/users_controller.rb:579
 msgid "No source data submitted!"
 msgstr "Исходные данные не представлены!"
 
@@ -11836,6 +11952,7 @@ msgstr "Замечание"
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:23
 #: app/assets/javascripts/app/views/google/list.jst.eco:16
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:17
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:17
 msgid "Notice:"
 msgstr "Замечание:"
 
@@ -11893,7 +12010,7 @@ msgstr "Звук уведомления"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/notifications.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:34
 #: app/frontend/apps/mobile/pages/online-notification/routes.ts:8
-#: db/seeds/permissions.rb:461
+#: db/seeds/permissions.rb:467
 msgid "Notifications"
 msgstr "Уведомления"
 
@@ -11993,7 +12110,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/object_manager.coffee:330
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoit.vue:56
-#: db/seeds/permissions.rb:233
+#: db/seeds/permissions.rb:239
 msgid "Objects"
 msgstr "Объекты"
 
@@ -12114,6 +12231,20 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:102
 msgid "Only visible to editors"
 msgstr "Видно только редакторам"
+
+#: app/assets/javascripts/app/models/user_overview_sorting_overview.coffee:19
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingOverviewOrder.vue:81
+#, fuzzy
+#| msgid "Out of office replacement"
+msgid "Only when out of office replacement"
+msgstr "Замена вне офиса"
+
+#: app/assets/javascripts/app/models/user_overview_sorting_overview.coffee:12
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingOverviewOrder.vue:78
+#, fuzzy
+#| msgid "Shared organization"
+msgid "Only when shared organization member"
+msgstr "Общий доступ"
 
 #: app/assets/javascripts/app/views/generic/error/not_found.jst.eco:3
 msgid "Oops.. I'm sorry, but I can't find this %s."
@@ -12383,7 +12514,7 @@ msgstr "Другие настройки"
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/outOfOffice.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:126
-#: db/seeds/permissions.rb:416
+#: db/seeds/permissions.rb:422
 msgid "Out of Office"
 msgstr "Вне Офиса"
 
@@ -12420,6 +12551,7 @@ msgstr "Замена вне офиса"
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:66
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:19
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:71
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:81
 msgid "Outbound"
 msgstr "Исходящие"
 
@@ -12527,7 +12659,7 @@ msgid "Package"
 msgstr "Пакет"
 
 #: app/assets/javascripts/app/controllers/package.coffee:3
-#: db/seeds/permissions.rb:281
+#: db/seeds/permissions.rb:287
 msgid "Packages"
 msgstr "Пакеты"
 
@@ -12583,7 +12715,7 @@ msgstr "Родительская группа"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/password.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:32
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:52
-#: db/seeds/object_manager_attributes.rb:1249 db/seeds/permissions.rb:426
+#: db/seeds/object_manager_attributes.rb:1249 db/seeds/permissions.rb:432
 msgid "Password"
 msgstr "Пароль"
 
@@ -12745,7 +12877,7 @@ msgstr "Личное представление было сброшено."
 #: app/assets/javascripts/app/controllers/cti.coffee:322
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/phone.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/phone.ts:12
-#: db/seeds/object_manager_attributes.rb:797 db/seeds/permissions.rb:320
+#: db/seeds/object_manager_attributes.rb:797 db/seeds/permissions.rb:326
 msgid "Phone"
 msgstr "Телефон"
 
@@ -12809,6 +12941,12 @@ msgstr "Звуковые эффекты пользовательского ин�
 #: app/frontend/shared/form/i18n/locales.ts:117
 msgid "Please accept the %s."
 msgstr "Пожалуйста, примите %s."
+
+#: app/assets/javascripts/app/views/microsoft365/duplicate_email_address.jst.eco:7
+msgid ""
+"Please add an account with a different mailbox or consider removing the "
+"duplicate first."
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/checklist_template.coffee:55
 msgid "Please add at least one item to the checklist."
@@ -12941,7 +13079,7 @@ msgstr "Пожалуйста, выберите заявку для объеди�
 msgid "Please select at least one folder."
 msgstr "Пожалуйста, выберите по крайней мере одну папку."
 
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:74
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:75
 msgid "Please select at least one ticket overview"
 msgstr "Пожалуйста, выберите по крайней мере одно представление заявок"
 
@@ -13190,7 +13328,7 @@ msgid "Profile language updated successfully."
 msgstr "Язык профиля успешно обновлен."
 
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/personal-settings.ts:7
-#: db/seeds/permissions.rb:388
+#: db/seeds/permissions.rb:394
 msgid "Profile settings"
 msgstr "Настройки профиля"
 
@@ -13331,6 +13469,7 @@ msgstr "Причина отсутствия"
 #: app/assets/javascripts/app/views/exchange/token_information.jst.eco:39
 #: app/assets/javascripts/app/views/google/list.jst.eco:112
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:113
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:123
 msgid "Reauthenticate"
 msgstr "Повторная аутентификация"
 
@@ -13668,6 +13807,7 @@ msgstr "Запрос"
 
 #: app/assets/javascripts/app/views/exchange/token_information.jst.eco:8
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:9
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:9
 msgid "Request Admin Consent"
 msgstr "Запрос согласия администратора"
 
@@ -13960,11 +14100,12 @@ msgstr "Роли:"
 
 #: app/assets/javascripts/app/views/google/list.jst.eco:104
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:106
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:116
 msgid "Rollback migration"
 msgstr "Откат переноса"
 
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:219
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:231
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:236
 msgid "Rollback of channel migration succeeded!"
 msgstr "Откат переноса канала выполнен успешно!"
 
@@ -14142,7 +14283,8 @@ msgstr "Сбт"
 msgid "Saturday"
 msgstr "Суббота"
 
-#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:153
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:416
+#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:155
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:73
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:127
 #: app/assets/javascripts/app/views/integration/github.jst.eco:21
@@ -14163,7 +14305,7 @@ msgstr "Суббота"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:226
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:136
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:292
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:69
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:70
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:89
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewActions.vue:100
 msgid "Save"
@@ -14399,7 +14541,7 @@ msgstr "Ключ значения результата поиска \"%s\" не 
 #: app/assets/javascripts/app/views/generic/icon_picker.jst.eco:9
 #: app/assets/javascripts/app/views/translation/form.jst.eco:7
 #: app/frontend/apps/desktop/components/CommonInputSearch/CommonInputSearch.vue:20
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:133
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:134
 #: app/frontend/apps/mobile/pages/home/views/Home.vue:63
 #: app/frontend/shared/components/CommonInputSearch/CommonInputSearch.vue:23
 msgid "Search…"
@@ -14434,7 +14576,7 @@ msgstr ""
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:129
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:285
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:203
-#: db/seeds/permissions.rb:197
+#: db/seeds/permissions.rb:203
 msgid "Security"
 msgstr "Безопасность"
 
@@ -14764,7 +14906,7 @@ msgstr "Время ожидания сеанса"
 
 #: app/assets/javascripts/app/controllers/session.coffee:3
 #: app/assets/javascripts/app/views/session.jst.eco:2
-#: db/seeds/permissions.rb:287
+#: db/seeds/permissions.rb:293
 msgid "Sessions"
 msgstr "Сеансы"
 
@@ -14902,9 +15044,10 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:26
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:26
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:26
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:28
 #: app/assets/javascripts/app/controllers/_channel/web.coffee:11
 #: app/assets/javascripts/app/controllers/chat.coffee:869
-#: app/assets/javascripts/app/controllers/manage.coffee:37
+#: app/assets/javascripts/app/controllers/manage.coffee:39
 #: app/assets/javascripts/app/controllers/ticket_zoom/setting.coffee:20
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:18
 #: app/assets/javascripts/app/views/channel/form.jst.eco:13
@@ -14944,6 +15087,12 @@ msgstr "Общий черновик"
 msgid "Shared Drafts"
 msgstr "Общие черновики"
 
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:61
+#, fuzzy
+#| msgid "Shared Draft"
+msgid "Shared Mailbox"
+msgstr "Общий черновик"
+
 #: app/controllers/tickets_controller.rb:90
 #: app/services/service/ticket/create.rb:180
 msgid "Shared draft cannot be selected for this ticket."
@@ -14967,6 +15116,12 @@ msgstr "Общий черновик успешно обновлен."
 msgid "Shared drafts are not activated for the selected group"
 msgstr "Общие черновики не активированы для выбранной группы"
 
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:380
+#, fuzzy
+#| msgid "Send Email"
+msgid "Shared mailbox"
+msgstr "Email"
+
 #: app/assets/javascripts/app/models/organization.coffee:7
 #: db/seeds/object_manager_attributes.rb:1547
 msgid "Shared organization"
@@ -14976,7 +15131,7 @@ msgstr "Общий доступ"
 msgid "Sharing draft…"
 msgstr "Совместное использование черновика…"
 
-#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:236
+#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:238
 msgid "Shoot"
 msgstr "Сделать снимок"
 
@@ -15208,6 +15363,7 @@ msgstr "Не удалось проверить подпись! %s"
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:21
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:21
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:21
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:23
 msgid "Signatures"
 msgstr "Подписи"
 
@@ -15316,7 +15472,7 @@ msgstr "Сайт"
 #: app/assets/javascripts/app/views/getting_started/channel.jst.eco:21
 #: app/assets/javascripts/app/views/getting_started/email_notification.jst.eco:17
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:97
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:117
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:138
 msgid "Skip"
 msgstr "Пропустить"
 
@@ -15412,6 +15568,11 @@ msgstr "Источники"
 #: db/seeds/settings.rb:2100
 msgid "Special character required"
 msgstr "Требуется специальный символ"
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:473
+msgid ""
+"Specify which folder to fetch from, or leave empty to fetch from ||inbox||."
+msgstr ""
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/split.ts:11
 msgid "Split"
@@ -15532,7 +15693,7 @@ msgstr "Серверная часть (backend) статистики"
 #: app/assets/javascripts/app/views/integration/idoit_object_result.jst.eco:10
 #: app/assets/javascripts/app/views/widget/http_log_show.jst.eco:14
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout/IdoitObjectList.vue:24
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:223
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:222
 msgid "Status"
 msgstr "Статус"
 
@@ -15744,10 +15905,10 @@ msgstr "Синхронизировать с компьютером"
 
 #: app/assets/javascripts/app/controllers/_manage/system.coffee:3
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:37
-#: app/assets/javascripts/app/controllers/manage.coffee:38
+#: app/assets/javascripts/app/controllers/manage.coffee:40
 #: app/assets/javascripts/app/views/generic/history.jst.eco:15
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/composables/useHistoryEvents.ts:32
-#: db/seeds/permissions.rb:191 db/seeds/ticket_article_senders.rb:5
+#: db/seeds/permissions.rb:197 db/seeds/ticket_article_senders.rb:5
 msgid "System"
 msgstr "Система"
 
@@ -15766,7 +15927,7 @@ msgstr "Инициализация системы завершена"
 
 #: app/assets/javascripts/app/controllers/system_report.coffee:3
 #: app/assets/javascripts/app/views/system_report.jst.eco:2
-#: db/seeds/permissions.rb:293
+#: db/seeds/permissions.rb:299
 msgid "System Report"
 msgstr "Отчет о системе"
 
@@ -15864,7 +16025,7 @@ msgstr "Целевая заявка"
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:3
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/telegramPersonalMessage.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/telegram.ts:52
-#: db/seeds/permissions.rb:173
+#: db/seeds/permissions.rb:179
 msgid "Telegram"
 msgstr "Telegram"
 
@@ -15885,6 +16046,7 @@ msgstr "Шаблоны"
 #: app/assets/javascripts/app/views/exchange/app_config.jst.eco:25
 #: app/assets/javascripts/app/views/exchange/token_information.jst.eco:31
 #: app/assets/javascripts/app/views/microsoft365/app_config.jst.eco:25
+#: app/assets/javascripts/app/views/microsoft_graph/app_config.jst.eco:25
 msgid "Tenant UUID/Name"
 msgstr "Идентификатор клиента (Tenant UUID/Name)"
 
@@ -16141,7 +16303,7 @@ msgstr "URL этой установки Zammad."
 msgid "The WhatsApp channel webhook configuration could not be verified."
 msgstr "Не удалось проверить конфигурацию вебхука канала WhatsApp."
 
-#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:156
+#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:155
 msgid "The WhatsApp connection could not be saved."
 msgstr "Не удалось сохранить WhatsApp соединение."
 
@@ -16334,7 +16496,8 @@ msgstr "Cертификаты для %s не найдены."
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:302
 #: app/assets/javascripts/app/controllers/_channel/facebook.coffee:246
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:327
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:339
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:342
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:308
 #: app/assets/javascripts/app/controllers/_channel/telegram.coffee:211
 #: app/assets/javascripts/app/controllers/_channel/twitter.coffee:300
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_dialog.coffee:36
@@ -16434,6 +16597,12 @@ msgstr "Разделитель между идентификатором и но
 msgid "The email address is invalid."
 msgstr "Адрес электронной почты недействителен."
 
+#: app/assets/javascripts/app/views/microsoft365/duplicate_email_address.jst.eco:3
+#, fuzzy
+#| msgid "Phone number is already in use by another WhatsApp account."
+msgid "The email address |%s| is already in use by another account."
+msgstr "Номер телефона уже используется другим аккаунтом WhatsApp."
+
 #: app/services/service/auth/send_admin_token.rb:39
 #: app/services/service/user/password_reset/send.rb:37
 #: app/services/service/user/password_reset/update.rb:42
@@ -16475,7 +16644,8 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_channel/facebook.coffee:182
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:425
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:437
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:444
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:365
 #: app/assets/javascripts/app/controllers/_channel/twitter.coffee:189
 #: app/assets/javascripts/app/controllers/_integration/exchange.coffee:716
 msgid "The entry could not be created."
@@ -16875,7 +17045,7 @@ msgstr ""
 msgid "The required PGP passphrase is missing."
 msgstr "Отсутствует обязательная парольная фраза (passphrase) PGP."
 
-#: app/controllers/users_controller.rb:677
+#: app/controllers/users_controller.rb:678
 #: app/services/service/user/add_first_admin.rb:12
 msgid "The required attribute 'email' is missing."
 msgstr "Отсутствует обязательный атрибут «email»."
@@ -16938,18 +17108,18 @@ msgstr "Отсутствует обязательный параметр «Об�
 msgid "The required parameter 'business_id' is missing."
 msgstr "Отсутствует обязательный параметр «business_id»."
 
-#: lib/external_credential/exchange.rb:27 lib/external_credential/google.rb:23
-#: lib/external_credential/microsoft365.rb:27
+#: lib/external_credential/exchange.rb:27 lib/external_credential/google.rb:26
+#: lib/external_credential/microsoft_base.rb:51
 msgid "The required parameter 'client_id' is missing."
 msgstr "Отсутствует обязательный параметр «идентификатор клиента» (client_id)."
 
-#: lib/external_credential/exchange.rb:28 lib/external_credential/google.rb:24
-#: lib/external_credential/microsoft365.rb:28
+#: lib/external_credential/exchange.rb:28 lib/external_credential/google.rb:27
+#: lib/external_credential/microsoft_base.rb:52
 msgid "The required parameter 'client_secret' is missing."
 msgstr "Отсутствует обязательный параметр «Пароль клиента» (client_secret)."
 
-#: lib/external_credential/exchange.rb:43 lib/external_credential/google.rb:36
-#: lib/external_credential/microsoft365.rb:43
+#: lib/external_credential/exchange.rb:43 lib/external_credential/google.rb:39
+#: lib/external_credential/microsoft_base.rb:67
 msgid "The required parameter 'code' is missing."
 msgstr "Отсутствует обязательный параметр «код» (code)."
 
@@ -17051,7 +17221,7 @@ msgstr "Отсутствует обязательный параметр «ра�
 msgid "The required parameter 'request_token' is missing."
 msgstr "Отсутствует обязательный параметр «request_token»."
 
-#: app/controllers/users_controller.rb:670
+#: app/controllers/users_controller.rb:671
 msgid "The required parameter 'signup' is missing."
 msgstr "Отсутствует обязательный параметр «регистрация» (signup)."
 
@@ -17168,6 +17338,12 @@ msgstr "Подпись успешно проверена."
 #: app/controllers/tickets_controller.rb:392
 msgid "The source ticket could not be found."
 msgstr "Не удалось найти исходную заявку."
+
+#: app/assets/javascripts/app/views/microsoft365/duplicate_email_address.jst.eco:5
+#, fuzzy
+#| msgid "Phone number is already in use by another WhatsApp account."
+msgid "The specified email address is already in use by another account."
+msgstr "Номер телефона уже используется другим аккаунтом WhatsApp."
 
 #: app/frontend/shared/form/validation/rules/date-range.ts:18
 msgid "The start date must precede or match end date."
@@ -17307,7 +17483,7 @@ msgid "The user token could not be generated."
 msgstr "Не удалось сгенерировать пользовательский токен."
 
 #: lib/external_credential/exchange.rb:51
-#: lib/external_credential/microsoft365.rb:51
+#: lib/external_credential/microsoft_base.rb:75
 msgid "The user's 'preferred_username' could not be extracted from 'id_token'."
 msgstr ""
 "«Предпочитаемое_имя_пользователя» (preferred_username) не может быть "
@@ -17323,17 +17499,25 @@ msgid "The verification email could not be resent."
 msgstr "Не удалось повторно отправить электронное письмо с подтверждением."
 
 #: app/models/setting/validation/saml/tls.rb:37
+#, fuzzy
+#| msgid ""
+#| "The verification of the TLS connection failed. Please check the SAML IDP "
+#| "certificate."
 msgid ""
-"The verification of the TLS connection failed. Please check the SAML IDP "
-"certificate."
+"The verification of the TLS connection to the IDP SSO target URL failed. "
+"Please check the SAML IDP certificate."
 msgstr ""
 "Проверка TLS-соединения не удалась. Пожалуйста, проверьте SAML IDP "
 "сертификат."
 
 #: app/models/setting/validation/saml/tls.rb:39
+#, fuzzy
+#| msgid ""
+#| "The verification of the TLS connection is not possible. Please check the "
+#| "SAML IDP connection."
 msgid ""
-"The verification of the TLS connection is not possible. Please check the "
-"SAML IDP connection."
+"The verification of the TLS connection to the IDP SSO target URL is not "
+"possible. Please check the connection."
 msgstr ""
 "Проверка TLS-соединения невозможна. Пожалуйста, проверьте SAML IDP "
 "соединение."
@@ -17422,7 +17606,7 @@ msgstr "Имеется действующий черновик. Вы хотит�
 msgid "There is existing content. Do you want to overwrite it?"
 msgstr "Есть существующий контент. Вы хотите перезаписать его?"
 
-#: lib/external_credential/google.rb:12
+#: lib/external_credential/google.rb:15
 msgid "There is no Google app configured."
 msgstr "Приложение Google не настроено."
 
@@ -17661,6 +17845,7 @@ msgstr "Это поле должно быть типа \"%s\"."
 msgid "This field must contain a lowercase letter."
 msgstr "Это поле должно содержать строчную букву."
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:93
 #: app/frontend/shared/form/i18n/locales.ts:499
 msgid "This field must contain a number."
 msgstr "Это поле должно содержать число."
@@ -17846,6 +18031,16 @@ msgstr ""
 "Эта операция не может быть продолжена, поскольку настройка системы еще не "
 "завершена."
 
+#: app/frontend/apps/mobile/pages/home/components/TicketOverviewEditItem.vue:47
+msgid ""
+"This overview is visible only when you are a shared organization member."
+msgstr ""
+
+#: app/frontend/apps/mobile/pages/home/components/TicketOverviewEditItem.vue:55
+msgid ""
+"This overview is visible only when you are an out of office replacement."
+msgstr ""
+
 #: app/frontend/shared/router/error.ts:25
 msgid "This page doesn't exist."
 msgstr "Этой страницы не существует."
@@ -17986,7 +18181,7 @@ msgstr "Четверг"
 #: app/frontend/apps/desktop/pages/ticket/routes.ts:10
 #: app/frontend/apps/mobile/pages/ticket/routes.ts:10
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/plugins/ticket.ts:6
-#: db/seeds/permissions.rb:203
+#: db/seeds/permissions.rb:209
 msgid "Ticket"
 msgstr "Заявка"
 
@@ -18034,7 +18229,7 @@ msgstr ""
 msgid "Ticket (censored):"
 msgstr "Заявка (зацензуренная):"
 
-#: db/seeds/permissions.rb:209
+#: db/seeds/permissions.rb:215
 msgid "Ticket Auto Assignment"
 msgstr "Автоматическое назначение заявок"
 
@@ -18054,7 +18249,7 @@ msgstr "Количество заявок"
 msgid "Ticket Customer"
 msgstr "Заявитель"
 
-#: db/seeds/permissions.rb:215
+#: db/seeds/permissions.rb:221
 msgid "Ticket Duplicate Detection"
 msgstr "Обнаружение дубликатов заявок"
 
@@ -18099,12 +18294,12 @@ msgid "Ticket Organization Reassignment"
 msgstr "Переназначение организации в заявке"
 
 #: app/frontend/apps/mobile/pages/home/routes.ts:35
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:66
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:67
 #: app/frontend/apps/mobile/pages/home/views/Home.vue:22
 msgid "Ticket Overview"
 msgstr "Представление заявок"
 
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:83
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:87
 msgid "Ticket Overview settings are saved."
 msgstr "Настройки представления заявок сохраняются."
 
@@ -18117,7 +18312,7 @@ msgid "Ticket Owner"
 msgstr "Владелец заявки"
 
 #: app/assets/javascripts/app/controllers/ticket_priority.coffee:16
-#: db/seeds/permissions.rb:245
+#: db/seeds/permissions.rb:251
 msgid "Ticket Priorities"
 msgstr "Приоритеты заявки"
 
@@ -18142,7 +18337,7 @@ msgid "Ticket State"
 msgstr "Состояние заявки"
 
 #: app/assets/javascripts/app/controllers/ticket_state.coffee:3
-#: db/seeds/permissions.rb:239
+#: db/seeds/permissions.rb:245
 msgid "Ticket States"
 msgstr "Состояния заявки"
 
@@ -18484,7 +18679,7 @@ msgstr "Время"
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:134
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:12
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:124
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:145
 #: db/seeds/permissions.rb:107 db/seeds/settings.rb:3931
 msgid "Time Accounting"
 msgstr "Учёт рабочего времени"
@@ -18752,7 +18947,7 @@ msgstr "Токен"
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/tokenAccess.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:59
-#: db/seeds/permissions.rb:447
+#: db/seeds/permissions.rb:453
 msgid "Token Access"
 msgstr "Доступ по ключу"
 
@@ -18780,7 +18975,7 @@ msgstr "Ключ недействителен!"
 msgid "Token-based API access has been disabled by the administrator."
 msgstr ""
 
-#: lib/user_agent.rb:359
+#: lib/user_agent.rb:249
 msgid "Too many redirections for the original URL, halting."
 msgstr "Сбой, слишком много перенаправлений для исходного URL."
 
@@ -18841,7 +19036,7 @@ msgstr "Источник перевода"
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:414
 #: app/assets/javascripts/app/controllers/translation.coffee:3
 #: app/assets/javascripts/app/views/translation/index.jst.eco:4
-#: db/seeds/permissions.rb:257
+#: db/seeds/permissions.rb:263
 msgid "Translations"
 msgstr "Переводы / Языки"
 
@@ -18935,7 +19130,6 @@ msgstr "Превратить чат в заявку"
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:14
 #: app/assets/javascripts/app/views/object_manager/attribute/autocompletion_ajax_external_data_source.jst.eco:3
 #: app/frontend/apps/desktop/form/composables/useSSLVerificationWarningHandler.ts:24
-#: db/seeds/settings.rb:1949
 msgid ""
 "Turning off SSL verification is a security risk and should be used only "
 "temporary. Use this option at your own risk!"
@@ -18956,7 +19150,7 @@ msgstr ""
 #: app/controllers/first_steps_controller.rb:27
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:26
 #: app/frontend/shared/entities/ticket-article/action/plugins/twitter.ts:124
-#: db/seeds/permissions.rb:161 db/seeds/settings.rb:766
+#: db/seeds/permissions.rb:167 db/seeds/settings.rb:766
 msgid "Twitter"
 msgstr "X (бывш. Twitter)"
 
@@ -19028,7 +19222,7 @@ msgstr "Требуется настройка двухфакторной аут�
 #: app/assets/javascripts/app/views/profile/password.jst.eco:22
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/twoFactorAuth.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:72
-#: db/seeds/permissions.rb:433
+#: db/seeds/permissions.rb:439
 msgid "Two-factor Authentication"
 msgstr "Двухфакторная аутентификация"
 
@@ -19094,8 +19288,8 @@ msgstr "Двухфакторный метод был успешно настро
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:11
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:57
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:105
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:119
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:227
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:120
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:226
 #: db/seeds/object_manager_attributes.rb:124
 msgid "Type"
 msgstr "Тип"
@@ -19135,6 +19329,7 @@ msgstr "Не назначенные и открытые заявки"
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:23
 #: app/assets/javascripts/app/views/google/list.jst.eco:16
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:17
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:17
 msgid "Unassigned email addresses, assign them to a channel or delete them."
 msgstr ""
 "Нераспределенные адреса электронной почты, назначить их каналу или удалить "
@@ -19175,7 +19370,7 @@ msgstr ""
 msgid "Unlink issue"
 msgstr "Убрать ссылку на проблему"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:213
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:212
 msgid "Unlink object"
 msgstr "Убрать ссылку на объект"
 
@@ -19684,7 +19879,13 @@ msgstr "Пользователь (цензура):"
 msgid "User Filter"
 msgstr "Фильтр пользователей"
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:460
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:64
+#, fuzzy
+#| msgid "User Filter"
+msgid "User Mailbox"
+msgstr "Фильтр пользователей"
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:472
 msgid "User Mismatch"
 msgstr "Несоответствие пользователя"
 
@@ -19706,7 +19907,7 @@ msgstr "Не удалось создать пользователя."
 msgid "User could not be updated."
 msgstr "Не удалось обновить пользователя."
 
-#: lib/external_credential/google.rb:44
+#: lib/external_credential/google.rb:47
 msgid "User email could not be extracted from 'id_token'."
 msgstr ""
 "Электронная почта пользователя не может быть извлечена из «идентификатора "
@@ -19763,6 +19964,12 @@ msgstr "Пользователь находится в мобильной вер
 #: app/frontend/shared/composables/useAvatarIndicator.ts:84
 msgid "User is out of office"
 msgstr "Пользователь вне офиса"
+
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:380
+#, fuzzy
+#| msgid "Username / Email"
+msgid "User mailbox"
+msgstr "Имя пользователя / Электронная почта"
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:201
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/AvatarMenu.vue:44
@@ -19906,6 +20113,12 @@ msgstr "Письмо с подтверждением не найдено в по
 #: app/assets/javascripts/app/controllers/_plugin/user_signup_check.coffee:67
 msgid "Verification email could not be sent."
 msgstr "Не удалось отправить электронное письмо с подтверждением."
+
+#: db/seeds/settings.rb:1949
+msgid ""
+"Verification of the TLS connection to the IDP SSO target URL. Only relevant "
+"during setting up SAML authentication."
+msgstr ""
 
 #: app/assets/javascripts/app/views/whatsapp/account_webhook.jst.eco:24
 msgid "Verify Token"
@@ -20195,11 +20408,11 @@ msgstr "Какие значения %s следует синхронизиров
 #: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:37
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:3
 #: app/frontend/shared/entities/ticket-article/action/plugins/whatsapp.ts:201
-#: db/seeds/permissions.rb:179
+#: db/seeds/permissions.rb:185
 msgid "WhatsApp"
 msgstr "WhatsApp"
 
-#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:111
+#: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:110
 msgid "WhatsApp Account"
 msgstr "Аккаунт WhatsApp"
 
@@ -20432,6 +20645,7 @@ msgstr "Настройки подписки на Ваш календарь об�
 #: app/assets/javascripts/app/views/facebook/index.jst.eco:9
 #: app/assets/javascripts/app/views/google/index.jst.eco:9
 #: app/assets/javascripts/app/views/microsoft365/index.jst.eco:9
+#: app/assets/javascripts/app/views/microsoft_graph/index.jst.eco:10
 #: app/assets/javascripts/app/views/twitter/index.jst.eco:9
 msgid ""
 "You can connect %s with Zammad. But first, you will have to connect your "
@@ -20499,6 +20713,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/facebook/app_config.jst.eco:3
 #: app/assets/javascripts/app/views/google/app_config.jst.eco:3
 #: app/assets/javascripts/app/views/microsoft365/app_config.jst.eco:3
+#: app/assets/javascripts/app/views/microsoft_graph/app_config.jst.eco:3
 #: app/assets/javascripts/app/views/pre_defined_webhook.jst.eco:15
 #: app/assets/javascripts/app/views/telegram/bot_add.jst.eco:3
 #: app/assets/javascripts/app/views/twitter/app_config.jst.eco:3
@@ -20681,7 +20896,7 @@ msgstr "У Вас нет непрочитанных сообщений"
 msgid "You have not created a ticket yet."
 msgstr "Вы ещё не создавали заявок."
 
-#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:324
+#: app/assets/javascripts/app/controllers/_profile/avatar.coffee:326
 msgid "You have to allow access to your webcam."
 msgstr "Вы должны разрешить доступ к Вашей веб-камере."
 
@@ -20857,6 +21072,7 @@ msgstr "Ваш аватар обновлён."
 #: app/assets/javascripts/app/views/facebook/app_config.jst.eco:23
 #: app/assets/javascripts/app/views/google/app_config.jst.eco:23
 #: app/assets/javascripts/app/views/microsoft365/app_config.jst.eco:31
+#: app/assets/javascripts/app/views/microsoft_graph/app_config.jst.eco:31
 #: app/assets/javascripts/app/views/twitter/app_config.jst.eco:47
 #: db/seeds/settings.rb:1374
 msgid "Your callback URL"
@@ -20920,7 +21136,7 @@ msgstr "Фонд Zammad"
 msgid "Zammad Helpdesk"
 msgstr "Служба поддержки Zammad"
 
-#: lib/user_agent.rb:251
+#: lib/user_agent.rb:141
 msgid "Zammad User Agent"
 msgstr "Пользовательский агент (User Agent) Zammad"
 
@@ -21306,7 +21522,6 @@ msgstr "отключено"
 msgid "default"
 msgstr "По умолчанию"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_destroy_confirm.coffee:4
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:191
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/delete.coffee:8
 #: app/assets/javascripts/app/views/data_privacy/preview.jst.eco:17
@@ -21536,7 +21751,7 @@ msgid "hour"
 msgstr "час"
 
 #: app/assets/javascripts/app/lib/mixins/time_accounting_unit.coffee:9
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:44
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:52
 #: app/frontend/shared/entities/ticket/composables/useTicketAccountedTime.ts:21
 msgid "hour(s)"
 msgstr "час(ы)"
@@ -21568,7 +21783,7 @@ msgstr "Настройки i-doit"
 msgid "i-doit integration"
 msgstr "Интеграция с i-doit"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:179
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:180
 msgid "i-doit: Link objects"
 msgstr "i-doit: Объекты ссылок"
 
@@ -21851,7 +22066,7 @@ msgid "minute"
 msgstr "минута"
 
 #: app/assets/javascripts/app/lib/mixins/time_accounting_unit.coffee:17
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:48
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:56
 #: app/frontend/shared/entities/ticket/composables/useTicketAccountedTime.ts:25
 msgid "minute(s)"
 msgstr "минут(а/ы)"
@@ -21962,6 +22177,7 @@ msgstr "без единицы измерения"
 #: app/assets/javascripts/app/views/google/list.jst.eco:95
 #: app/assets/javascripts/app/views/integration/idoit_object_result.jst.eco:3
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:96
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:106
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:27
 #: app/assets/javascripts/app/views/widget/ticket_stats_list.jst.eco:7
 #: db/seeds/settings.rb:2231
@@ -22064,7 +22280,7 @@ msgid "published"
 msgstr "опубликовано"
 
 #: app/assets/javascripts/app/lib/mixins/time_accounting_unit.coffee:13
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:46
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:54
 #: app/frontend/shared/entities/ticket/composables/useTicketAccountedTime.ts:23
 msgid "quarter-hour(s)"
 msgstr "15 минут"
@@ -22415,6 +22631,12 @@ msgstr "нетронутый"
 msgid "updated"
 msgstr "обновлен"
 
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:381
+#, fuzzy
+#| msgid "current user organization"
+msgid "user@your-organization.tld"
+msgstr "текущая организация пользователя"
+
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/outOfOffice.ts:24
 msgid "vacation,holiday,replacement,time off"
 msgstr "отпуск, праздник, замена, отгул"
@@ -22508,6 +22730,9 @@ msgstr "…всей текстовой области"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅ Время ожидания сегодня"
+
+#~ msgid "Gmail"
+#~ msgstr "Gmail"
 
 #~ msgid ""
 #~ "Some system settings have changed, please restart all Zammad processes! "
@@ -22927,9 +23152,6 @@ msgstr "∅ Время ожидания сегодня"
 
 #~ msgid "Zammad Image Service"
 #~ msgstr "Служба Zammad Image"
-
-#~ msgid "Google Maps"
-#~ msgstr "Карты Google"
 
 #, fuzzy
 #~| msgid "Test message from Zammad"
@@ -23564,9 +23786,6 @@ msgstr "∅ Время ожидания сегодня"
 
 #~ msgid "Could not find external_credential in cache!"
 #~ msgstr "Не удалось найти external_credential в кеше!"
-
-#~ msgid "Could not find target ticket number!"
-#~ msgstr "Не удалось найти целевой номер заявки!"
 
 #~ msgid "Could not read raw logo!"
 #~ msgstr "Не удалось прочитать необработанный логотип!"
