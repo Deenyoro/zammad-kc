@@ -77,8 +77,10 @@ example
 
     # Taking first page of messages only effectivelly applies 1000-messages-in-one-go limit
     begin
-      message_ids = @graph
-        .list_messages(unread_only: keep_on_server, folder_id:, follow_pagination: false)
+      messages_details = @graph.list_messages(unread_only: keep_on_server, folder_id:, follow_pagination: false)
+
+      message_ids = messages_details
+        .fetch(:items)
         .pluck(:id)
     rescue MicrosoftGraph::ApiError => e
       Rails.logger.error "Unable to list emails from Microsoft Graph server (#{options[:user]}): #{e.inspect}"
@@ -86,7 +88,7 @@ example
     end
 
     # fetch regular messages
-    count_all             = message_ids.count
+    count_all             = messages_details[:total_count]
     count                 = 0
     count_fetched         = 0
     too_large_messages    = []
@@ -184,7 +186,11 @@ example
     }
   end
 
-  def check(options)
+  # Checks if mailbox has any messages.
+  # It does not check if email is Zammad verification email or not like other drivers due to Graph API limitations.
+  # X-Zammad-Verify and X-Zammad-Ignore headers are removed from mails sent via Graph API.
+  # Thus it's not possible to verify Graph API connection by sending email with such header to yourself.
+  def check_configuration(options)
     setup_connection(options)
 
     Rails.logger.info 'check only mode, fetch no emails'
@@ -194,24 +200,16 @@ example
       verify_folder!(folder_id, options)
     end
 
-    # Simply try to list messages
-    # This will check if mailbox access is possible with the given credentials
     begin
-      @graph.list_messages folder_id:, follow_pagination: false
+      messages_details = @graph.list_messages(folder_id:, follow_pagination: false)
     rescue MicrosoftGraph::ApiError => e
       Rails.logger.error "Unable to list emails from Microsoft Graph server (#{options[:user]}): #{e.inspect}"
       raise e
     end
 
-    # Microsoft Graph API driver currently does not use archivation.
-    # Just like other OAuth channels (Google and Microsoft 365 IMAP).
-    # Once archivation is brought to Microsoft Graph API,
-    # it could be implemented with an API call checking if old messages are present in the mailbox.
-
     {
-      result:                       'ok',
-      archive_possible:             false,
-      archive_possible_is_fallback: false,
+      result:           'ok',
+      content_messages: messages_details[:total_count],
     }
   end
 

@@ -11,8 +11,6 @@ RSpec.describe Gql::Mutations::Channel::Email::ValidateConfigurationInbound, typ
           success
           mailboxStats {
             contentMessages
-            archivePossible
-            archiveWeekRange
           }
           errors {
             message
@@ -49,15 +47,13 @@ RSpec.describe Gql::Mutations::Channel::Email::ValidateConfigurationInbound, typ
     let(:admin) { create(:admin) }
 
     context 'with successful probe' do
-      let(:probe_full_response) { { result: 'ok', content_messages: 23, archive_possible: true, archive_week_range: 2 } }
+      let(:probe_full_response) { { result: 'ok', content_messages: 23 } }
 
       let(:expected_result) do
         {
           'success'      => true,
           'mailboxStats' => {
-            'contentMessages'  => 23,
-            'archivePossible'  => true,
-            'archiveWeekRange' => 2,
+            'contentMessages' => 23,
           },
           'errors'       => nil,
         }
@@ -73,7 +69,7 @@ RSpec.describe Gql::Mutations::Channel::Email::ValidateConfigurationInbound, typ
         {
           'success'      => false,
           'mailboxStats' => nil,
-          'errors'       => [{ 'field' => 'inbound.host', 'message' => 'There is no route to this host.' }],
+          'errors'       => [{ 'field' => 'inbound.host', 'message' => 'The hostname could not be found.' }],
         }
       end
 

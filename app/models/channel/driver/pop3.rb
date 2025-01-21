@@ -124,34 +124,29 @@ returns
     }
   end
 
-  def check(options)
+  # Checks if mailbox has anything besides Zammad verification emails.
+  # If any real messages exists, return the real count including messages to be ignored when importing.
+  # If only verification messages found, return 0.
+  def check_configuration(options)
     setup_connection(options, check: true)
 
     mails = @pop.mails
 
     Rails.logger.info 'check only mode, fetch no emails'
-    content_max_check = 2
-    content_messages  = 0
 
-    # check messages
-    mails.each do |m|
-      mail = m.pop
-      next if !mail
+    has_content_messages = mails
+      .first(2000)
+      .any? do |m|
+        mail = m.pop
 
-      # check how many content messages we have, for notice used
-      if !mail.match?(%r{(X-Zammad-Ignore: true|X-Zammad-Verify: true)})
-        content_messages += 1
-        break if content_max_check < content_messages
+        mail.present? && !mail.match?(%r{(X-Zammad-Ignore: true|X-Zammad-Verify: true)})
       end
-    end
-    if content_messages >= content_max_check
-      content_messages = mails.count
-    end
+
     disconnect
 
     {
       result:           'ok',
-      content_messages: content_messages,
+      content_messages: has_content_messages ? mails.count : 0,
     }
   end
 

@@ -15,7 +15,7 @@ RSpec.describe Channel::Driver::MicrosoftGraphInbound, :aggregate_failures, inte
   let(:client_access_token) { channel.options['inbound']['options']['password'] }
   let(:client)              { MicrosoftGraph.new(access_token: client_access_token, mailbox: ENV['MICROSOFT365_USER']) }
 
-  describe '.fetch' do
+  describe '#fetch' do
 
     context 'with valid token' do
       let(:mail_subject) { "CI test for #{described_class}" }
@@ -89,6 +89,57 @@ RSpec.describe Channel::Driver::MicrosoftGraphInbound, :aggregate_failures, inte
         expect(channel.reload.status_in).to eq('error')
         expect(Ticket).not_to have_received(:new)
       end
+    end
+  end
+
+  describe '#check_configuration' do
+    let(:mail_subject) { "CI test for #{described_class}" }
+    let(:folder_name) { "rspec-#{SecureRandom.uuid}" }
+    let(:folder)      do
+      VCR.configure do |c|
+        c.filter_sensitive_data('<FOLDER_NAME>') { folder_name }
+      end
+
+      client.create_message_folder(folder_name)
+    end
+    let(:options) { channel.options.dig('inbound', 'options').merge(folder_id: folder['id']) }
+
+    let(:message) do
+      {
+        subject:      mail_subject,
+        body:         { content: 'Test email' },
+        from:         {
+          emailAddress: { address: 'from@example.com' }
+        },
+        toRecipients: [
+          {
+            emailAddress: { address: 'test@example.com' }
+          }
+        ],
+      }
+    end
+
+    it 'returns zero with no messages in a folder' do
+      response = described_class.new.check_configuration(options)
+
+      expect(response).to include(
+        result:           'ok',
+        content_messages: 0,
+      )
+    end
+
+    it 'returns count of all messages in a folder' do
+      client.store_mocked_message(message, folder_id: folder['id'])
+
+      msg = client.store_mocked_message(message, folder_id: folder['id'])
+      client.mark_message_as_read(msg['id'])
+
+      response = described_class.new.check_configuration(options)
+
+      expect(response).to include(
+        result:           'ok',
+        content_messages: 2,
+      )
     end
   end
 end

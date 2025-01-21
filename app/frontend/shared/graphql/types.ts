@@ -385,6 +385,8 @@ export type ChannelEmailInboundConfigurationInput = {
   archive?: InputMaybe<Scalars['Boolean']['input']>;
   /** Import mails older than this date in archive mode */
   archiveBefore?: InputMaybe<Scalars['ISO8601DateTime']['input']>;
+  /** Archive ticket target state internal ID */
+  archiveStateId?: InputMaybe<Scalars['Int']['input']>;
   /** IMAP Mailbox folder to fetch emails from */
   folder?: InputMaybe<Scalars['String']['input']>;
   /** Hostname for the email service to connect to */
@@ -406,12 +408,6 @@ export type ChannelEmailInboundConfigurationInput = {
 /** Inbound mailbox statistics. */
 export type ChannelEmailInboundMailboxStats = {
   __typename?: 'ChannelEmailInboundMailboxStats';
-  /** Whether an archive import of the email account should be suggested. */
-  archivePossible?: Maybe<Scalars['Boolean']['output']>;
-  /** Whether the archive import suggestion is based on a fallback logic due to a missing DATE sort option on the mail server. */
-  archivePossibleIsFallback?: Maybe<Scalars['Boolean']['output']>;
-  /** There were emails found older than the specified amount of weeks, therefore an archive import should be suggested. */
-  archiveWeekRange?: Maybe<Scalars['Int']['output']>;
   /** Number of content emails found during account probing. */
   contentMessages?: Maybe<Scalars['Int']['output']>;
 };
@@ -684,6 +680,7 @@ export enum EnumChannelEmailSsl {
 
 /** All available form updaters */
 export enum EnumFormUpdaterId {
+  FormUpdaterUpdaterGuidedSetupEmailArchive = 'FormUpdater__Updater__GuidedSetup__EmailArchive',
   FormUpdaterUpdaterGuidedSetupEmailInbound = 'FormUpdater__Updater__GuidedSetup__EmailInbound',
   FormUpdaterUpdaterGuidedSetupEmailNotification = 'FormUpdater__Updater__GuidedSetup__EmailNotification',
   FormUpdaterUpdaterGuidedSetupEmailOutbound = 'FormUpdater__Updater__GuidedSetup__EmailOutbound',
@@ -5433,7 +5430,7 @@ export type ChannelEmailGuessConfigurationMutationVariables = Exact<{
 }>;
 
 
-export type ChannelEmailGuessConfigurationMutation = { __typename?: 'Mutations', channelEmailGuessConfiguration?: { __typename?: 'ChannelEmailGuessConfigurationPayload', result: { __typename?: 'ChannelEmailGuessConfigurationResult', inboundConfiguration?: { __typename?: 'ChannelEmailInboundConfiguration', adapter: EnumChannelEmailInboundAdapter, host?: string | null, port?: number | null, ssl?: EnumChannelEmailSsl | null, user?: string | null, password?: string | null, sslVerify?: boolean | null, folder?: string | null } | null, outboundConfiguration?: { __typename?: 'ChannelEmailOutboundConfiguration', adapter: EnumChannelEmailOutboundAdapter, host?: string | null, port?: number | null, user?: string | null, password?: string | null, sslVerify?: boolean | null } | null, mailboxStats?: { __typename?: 'ChannelEmailInboundMailboxStats', contentMessages?: number | null, archivePossible?: boolean | null, archivePossibleIsFallback?: boolean | null, archiveWeekRange?: number | null } | null }, errors?: Array<{ __typename?: 'UserError', message: string, field?: string | null, exception?: EnumUserErrorException | null }> | null } | null };
+export type ChannelEmailGuessConfigurationMutation = { __typename?: 'Mutations', channelEmailGuessConfiguration?: { __typename?: 'ChannelEmailGuessConfigurationPayload', result: { __typename?: 'ChannelEmailGuessConfigurationResult', inboundConfiguration?: { __typename?: 'ChannelEmailInboundConfiguration', adapter: EnumChannelEmailInboundAdapter, host?: string | null, port?: number | null, ssl?: EnumChannelEmailSsl | null, user?: string | null, password?: string | null, sslVerify?: boolean | null, folder?: string | null } | null, outboundConfiguration?: { __typename?: 'ChannelEmailOutboundConfiguration', adapter: EnumChannelEmailOutboundAdapter, host?: string | null, port?: number | null, user?: string | null, password?: string | null, sslVerify?: boolean | null } | null, mailboxStats?: { __typename?: 'ChannelEmailInboundMailboxStats', contentMessages?: number | null } | null }, errors?: Array<{ __typename?: 'UserError', message: string, field?: string | null, exception?: EnumUserErrorException | null }> | null } | null };
 
 export type ChannelEmailSetNotificationConfigurationMutationVariables = Exact<{
   outboundConfiguration: ChannelEmailOutboundConfigurationInput;
@@ -5447,7 +5444,7 @@ export type ChannelEmailValidateConfigurationInboundMutationVariables = Exact<{
 }>;
 
 
-export type ChannelEmailValidateConfigurationInboundMutation = { __typename?: 'Mutations', channelEmailValidateConfigurationInbound?: { __typename?: 'ChannelEmailValidateConfigurationInboundPayload', success?: boolean | null, mailboxStats?: { __typename?: 'ChannelEmailInboundMailboxStats', contentMessages?: number | null, archivePossible?: boolean | null, archivePossibleIsFallback?: boolean | null, archiveWeekRange?: number | null } | null, errors?: Array<{ __typename?: 'UserError', message: string, field?: string | null, exception?: EnumUserErrorException | null }> | null } | null };
+export type ChannelEmailValidateConfigurationInboundMutation = { __typename?: 'Mutations', channelEmailValidateConfigurationInbound?: { __typename?: 'ChannelEmailValidateConfigurationInboundPayload', success?: boolean | null, mailboxStats?: { __typename?: 'ChannelEmailInboundMailboxStats', contentMessages?: number | null } | null, errors?: Array<{ __typename?: 'UserError', message: string, field?: string | null, exception?: EnumUserErrorException | null }> | null } | null };
 
 export type ChannelEmailValidateConfigurationOutboundMutationVariables = Exact<{
   outboundConfiguration: ChannelEmailOutboundConfigurationInput;

@@ -218,7 +218,10 @@ example
     }
   end
 
-  def check(options)
+  # Checks if mailbox has anything besides Zammad verification emails.
+  # If any real messages exists, return the real count including messages to be ignored when importing.
+  # If only verification messages found, return 0.
+  def check_configuration(options)
     setup_connection(options, check: true)
 
     message_ids_result = Timeout.timeout(6.minutes) do
@@ -228,101 +231,25 @@ example
     message_ids = message_ids_result[:result]
 
     Rails.logger.info 'check only mode, fetch no emails'
-    content_max_check = 2
-    content_messages  = 0
 
-    # check messages
-    message_ids.each do |message_id|
-
-      message_meta = nil
-      Timeout.timeout(1.minute) do
-        message_meta = @imap.fetch(message_id, ['RFC822.HEADER'])[0]
-      end
-
-      # check how many content messages we have, for notice used
-      headers = self.class.extract_rfc822_headers(message_meta)
-      next if messages_is_verify_message?(headers)
-      next if messages_is_ignore_message?(headers)
-
-      content_messages += 1
-      break if content_max_check < content_messages
-    end
-    if content_messages >= content_max_check
-      content_messages = message_ids.count
-    end
-
-    archive_possible = false || message_ids_result[:is_fallback]
-    archive_possible_is_fallback = false || message_ids_result[:is_fallback]
-    archive_check      = 0
-    archive_max_check  = 500
-    archive_days_range = 14
-    archive_week_range = archive_days_range / 7
-
-    # use .each only if ordered response is ascending (from older to newer)
-    message_ids_iterator = message_ids.each
-
-    # since the correct loop order could improve performance, we should check even for less than 500 available messages
-    # starting with 5 messages, since we need 2 additional fetch requests to find the used order and it would not make sense with less messages
-    if !message_ids_result[:is_fallback] && content_messages > 4
-      message_0_meta = nil
-      message_1_meta = nil
-      Timeout.timeout(1.minute) do
-        message_0_meta = @imap.fetch(message_ids[0], ['RFC822.HEADER'])[0]
-        message_1_meta = @imap.fetch(message_ids[1], ['RFC822.HEADER'])[0]
-      end
-      headers0 = self.class.extract_rfc822_headers(message_0_meta)
-      headers1 = self.class.extract_rfc822_headers(message_1_meta)
-
-      if headers0['Date'].present? && headers1['Date'].present?
-        begin
-          date0 = Time.zone.parse(headers0['Date'])
-          date1 = Time.zone.parse(headers1['Date'])
-
-          # change iterator to .reverse_each if order of the 2 probe messages is descending (from newer to older)
-          message_ids_iterator = message_ids.reverse_each if date0 > date1
-        rescue => e
-          # no easy order decision possible due to a date parsing issue, continue with default iterator
+    has_content_messages = message_ids
+      .first(5000)
+      .any? do |message_id|
+        message_meta = Timeout.timeout(1.minute) do
+          @imap.fetch(message_id, ['RFC822.HEADER'])[0]
         end
+
+        # check how many content messages we have, for notice used
+        headers = self.class.extract_rfc822_headers(message_meta)
+
+        !messages_is_verify_message?(headers) && !messages_is_ignore_message?(headers)
       end
-    end
-
-    message_ids_iterator.each do |message_id|
-      message_meta = nil
-      Timeout.timeout(1.minute) do
-        message_meta = @imap.fetch(message_id, ['RFC822.HEADER'])[0]
-      end
-
-      headers = self.class.extract_rfc822_headers(message_meta)
-      next if messages_is_verify_message?(headers)
-      next if messages_is_ignore_message?(headers)
-      next if headers['Date'].blank?
-
-      archive_check += 1
-      break if archive_check >= archive_max_check
-
-      begin
-        date = Time.zone.parse(headers['Date'])
-      rescue => e
-        Rails.logger.error e
-        next
-      end
-      break if date >= Time.zone.now - archive_days_range.days
-
-      archive_possible = true
-
-      # even if it was fallback before, we just found a real old mail, so it's not fallback anymore
-      archive_possible_is_fallback = false
-
-      break
-    end
 
     disconnect
+
     {
-      result:                       'ok',
-      content_messages:             content_messages,
-      archive_possible:             archive_possible,
-      archive_possible_is_fallback: archive_possible_is_fallback,
-      archive_week_range:           archive_week_range,
+      result:           'ok',
+      content_messages: has_content_messages ? message_ids.count : 0,
     }
   end
 

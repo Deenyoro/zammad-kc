@@ -2676,6 +2676,16 @@
                 "ofType": null
               },
               "defaultValue": null
+            },
+            {
+              "name": "archiveStateId",
+              "description": "Archive ticket target state internal ID",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "defaultValue": null
             }
           ],
           "interfaces": null,
@@ -2687,42 +2697,6 @@
           "name": "ChannelEmailInboundMailboxStats",
           "description": "Inbound mailbox statistics.",
           "fields": [
-            {
-              "name": "archivePossible",
-              "description": "Whether an archive import of the email account should be suggested.",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "archivePossibleIsFallback",
-              "description": "Whether the archive import suggestion is based on a fallback logic due to a missing DATE sort option on the mail server.",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "archiveWeekRange",
-              "description": "There were emails found older than the specified amount of weeks, therefore an archive import should be suggested.",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
             {
               "name": "contentMessages",
               "description": "Number of content emails found during account probing.",
@@ -4247,6 +4221,12 @@
           "inputFields": null,
           "interfaces": null,
           "enumValues": [
+            {
+              "name": "FormUpdater__Updater__GuidedSetup__EmailArchive",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
             {
               "name": "FormUpdater__Updater__GuidedSetup__EmailInbound",
               "description": null,
