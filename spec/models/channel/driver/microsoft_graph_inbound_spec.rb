@@ -56,7 +56,8 @@ RSpec.describe Channel::Driver::MicrosoftGraphInbound, :aggregate_failures, inte
       context 'when fetching from the inbox' do
         before do
           # No special time-based treatment for existing verify messages. This might break VCR cassette handling.
-          allow_any_instance_of(described_class).to receive(:messages_is_too_old_verify?).and_return(true)
+          allow_any_instance_of(described_class::MessageValidator)
+            .to receive(:fresh_verify_message?).and_return(false)
         end
 
         include_examples 'fetches the test message'
@@ -73,6 +74,35 @@ RSpec.describe Channel::Driver::MicrosoftGraphInbound, :aggregate_failures, inte
         end
 
         include_examples 'fetches the test message'
+      end
+
+      context 'when fetching oversized emails' do
+        before do
+          client.store_mocked_message(message, folder_id: channel.options['inbound']['options']['folder_id'] || 'inbox')
+          Setting.set('postmaster_max_size', 0.00001)
+        end
+
+        context 'with email reply' do
+          it 'creates email reply correctly' do
+            expect_any_instance_of(described_class).to receive(:process_oversized_mail)
+
+            channel.fetch
+          end
+        end
+
+        context 'without email reply' do
+          before do
+            Setting.set('postmaster_send_reject_if_mail_too_large', false)
+          end
+
+          it 'does not create email reply' do
+            expect_any_instance_of(described_class).not_to receive(:process_oversized_mail)
+
+            channel.fetch
+
+            expect(channel.reload.status_in).to eq('error')
+          end
+        end
       end
     end
 

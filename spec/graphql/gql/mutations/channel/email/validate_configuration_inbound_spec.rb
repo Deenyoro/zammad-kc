@@ -36,10 +36,11 @@ RSpec.describe Gql::Mutations::Channel::Email::ValidateConfigurationInbound, typ
 
   let(:variables)           { { 'inboundConfiguration' => failing_configuration } }
   let(:probe_full_response) { nil }
+  let(:error)               { nil }
 
   before do
     allow(EmailHelper::Probe).to receive(:inbound).and_return(probe_full_response) if probe_full_response
-    allow_any_instance_of(Channel::Driver::Imap).to receive(:check).and_raise(Errno::EHOSTUNREACH)
+    allow_any_instance_of(Channel::Driver::Imap).to receive(:check_configuration).and_raise(error) if error
     gql.execute(query, variables: variables)
   end
 
@@ -65,6 +66,7 @@ RSpec.describe Gql::Mutations::Channel::Email::ValidateConfigurationInbound, typ
     end
 
     context 'with failed probe' do
+      let(:error) { SocketError.new('getaddrinfo: nodename nor servname provided, or not known') }
       let(:expected_result) do
         {
           'success'      => false,

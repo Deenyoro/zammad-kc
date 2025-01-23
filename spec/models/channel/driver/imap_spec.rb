@@ -385,14 +385,6 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
   describe '#check_configuration' do
     include_context 'with channel and server configuration'
 
-    let(:purge_inbox) do
-      imap.select('inbox')
-      imap.sort(['DATE'], ['ALL'], 'US-ASCII').each do |msg|
-        imap.store(msg, '+FLAGS', [:Deleted])
-      end
-      imap.expunge
-    end
-
     before do
       imap.create(folder)
       imap.select(folder)
@@ -400,23 +392,6 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
 
     after do
       imap.delete(folder)
-    end
-
-    def mock_a_message(verify: false)
-      attrs = {
-        from:         Faker::Internet.unique.email,
-        to:           Faker::Internet.unique.email,
-        body:         Faker::Lorem.sentence,
-        content_type: 'text/html',
-      }
-
-      if verify
-        attrs[:'X-Zammad-Ignore'] = 'true'
-        attrs[:'X-Zammad-Verify'] = 'true'
-        attrs[:'X-Zammad-Verify-Time'] = Time.current.to_s
-      end
-
-      Channel::EmailBuild.build(**attrs).to_s
     end
 
     context 'when no messages exist' do
@@ -477,5 +452,115 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
         )
       end
     end
+  end
+
+  describe '#verify_transport' do
+    include_context 'with channel and server configuration'
+
+    before do
+      imap.create(folder)
+      imap.select(folder)
+    end
+
+    after do
+      imap.delete(folder)
+    end
+
+    let(:verify_message) { Faker::Lorem.unique.sentence }
+
+    context 'when no messages exist' do
+      it 'returns falsy response' do
+        response = described_class
+          .new
+          .verify_transport(inbound_options[:options], verify_message)
+
+        expect(response).to include(result: 'verify not ok')
+      end
+    end
+
+    context 'when a content message exists' do
+      it 'returns falsy response' do
+        imap.append folder, mock_a_message
+
+        response = described_class
+          .new
+          .verify_transport(inbound_options[:options], verify_message)
+
+        expect(response).to include(result: 'verify not ok')
+      end
+    end
+
+    context 'when a verify message exists' do
+      before do
+        imap.append folder, mock_a_message(verify: verify_message)
+      end
+
+      it 'returns truthy response with the correct verify string' do
+        response = described_class
+          .new
+          .verify_transport(inbound_options[:options], verify_message)
+
+        expect(response).to include(result: 'ok')
+      end
+
+      it 'deletes the correct verify message' do
+        described_class
+          .new
+          .verify_transport(inbound_options[:options], verify_message)
+
+        message_ids = imap.sort(['DATE'], ['ALL'], 'US-ASCII')
+        message_meta = imap.fetch(message_ids.first, ['FLAGS'])[0].attr
+        expect(message_meta['FLAGS']).to include(:Deleted)
+      end
+
+      it 'returns falsy response with the wrong verify string' do
+        response = described_class
+          .new
+          .verify_transport(inbound_options[:options], 'another message')
+
+        expect(response).to include(result: 'verify not ok')
+      end
+
+      it 'does not delete not matching verify message' do
+        described_class
+          .new
+          .verify_transport(inbound_options[:options], 'another message')
+
+        message_ids = imap.sort(['DATE'], ['ALL'], 'US-ASCII')
+        message_meta = imap.fetch(message_ids.first, ['FLAGS'])[0].attr
+        expect(message_meta['FLAGS']).not_to include(:Deleted)
+      end
+    end
+
+    context 'when a content and a verify message exists' do
+      it 'returns truthy response' do
+        imap.append folder, mock_a_message(verify: verify_message)
+        imap.append folder, mock_a_message
+
+        response = described_class
+          .new
+          .verify_transport(inbound_options[:options], verify_message)
+
+        expect(response).to include(result: 'ok')
+      end
+    end
+  end
+
+  def mock_a_message(subject: nil, verify: false)
+    attrs = {
+      from:         Faker::Internet.unique.email,
+      to:           Faker::Internet.unique.email,
+      body:         Faker::Lorem.sentence,
+      subject:      verify.presence || subject.presence || Faker::Lorem.word,
+      content_type: 'text/html',
+    }
+
+    if verify.present?
+      attrs[:'X-Zammad-Ignore'] = 'true'
+      attrs[:'X-Zammad-Verify'] = 'true'
+      attrs[:'X-Zammad-Verify-Time'] = Time.current.to_s
+    end
+
+    Channel::EmailBuild.build(**attrs).to_s
   end
 end
