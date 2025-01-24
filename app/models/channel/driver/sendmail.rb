@@ -26,7 +26,7 @@ class Channel::Driver::Sendmail < Channel::Driver::BaseEmailOutbound
   def deliver_mail(attr, notification)
     if ENV['ZAMMAD_MAIL_TO_FILE'].present?
       super(attr, notification, :file, { location: Rails.root.join('tmp/mails'), extension: '.eml' })
-    elsif Rails.env.test?
+    elsif Rails.env.test? && ENV['ZAMMAD_MAIL_PRETEND_NOT_TEST'] != '1'
       # test
       super(attr, notification, :test)
     else

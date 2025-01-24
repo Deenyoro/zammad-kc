@@ -20,7 +20,7 @@ class Channel::Driver::BaseEmailOutbound
     prepare_idn_outbound(attr)
   end
 
-  def deliver_mail(attr, notification, method, options = nil)
+  def deliver_mail(attr, notification, method, options = {})
     mail = Channel::EmailBuild.build(attr, notification)
     mail.delivery_method method, options
     mail.deliver
