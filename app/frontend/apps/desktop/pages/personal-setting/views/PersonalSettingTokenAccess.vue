@@ -18,7 +18,6 @@ import { i18n } from '#shared/i18n/index.ts'
 import { ErrorRouteType, redirectErrorRoute } from '#shared/router/error.ts'
 import MutationHandler from '#shared/server/apollo/handler/MutationHandler.ts'
 import QueryHandler from '#shared/server/apollo/handler/QueryHandler.ts'
-import { useSessionStore } from '#shared/stores/session.ts'
 import { ErrorStatusCodes } from '#shared/types/error.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
@@ -54,8 +53,6 @@ defineOptions({
   },
 })
 
-const session = useSessionStore()
-
 const { breadcrumbItems } = useBreadcrumb(__('Token Access'))
 
 const newAccessTokenFlyout = useFlyout({
@@ -76,9 +73,6 @@ accessTokenListQuery.subscribeToMore<
   UserCurrentAccessTokenUpdatesSubscription
 >({
   document: UserCurrentAccessTokenUpdatesDocument,
-  variables: {
-    userId: session.user?.id || '',
-  },
   updateQuery: (prev, { subscriptionData }) => {
     if (!subscriptionData.data?.userCurrentAccessTokenUpdates.tokens) {
       return null as unknown as UserCurrentAccessTokenListQuery

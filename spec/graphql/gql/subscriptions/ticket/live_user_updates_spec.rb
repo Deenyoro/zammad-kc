@@ -10,11 +10,11 @@ RSpec.describe Gql::Subscriptions::Ticket::LiveUserUpdates, :aggregate_failures,
   let(:live_user_entry_customer)      { create(:taskbar, key: "Ticket-#{ticket.id}", user_id: customer.id, app: 'mobile', state: { editing: false }) }
 
   let(:mock_channel) { build_mock_channel }
-  let(:variables) { { userId: Gql::ZammadSchema.id_from_object(agent), key: "Ticket-#{ticket.id}", app: 'mobile' } }
+  let(:variables) { { key: "Ticket-#{ticket.id}", app: 'mobile' } }
   let(:subscription) do
     <<~QUERY
-      subscription ticketLiveUserUpdates($userId: ID!, $key: String!, $app: EnumTaskbarApp!) {
-        ticketLiveUserUpdates(userId: $userId, key: $key, app: $app) {
+      subscription ticketLiveUserUpdates($key: String!, $app: EnumTaskbarApp!) {
+        ticketLiveUserUpdates(key: $key, app: $app) {
           liveUsers {
             user {
               firstname

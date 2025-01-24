@@ -27,10 +27,10 @@ module Taskbar::TriggersSubscriptions
     Gql::Subscriptions::Ticket::LiveUserUpdates.trigger(
       self,
       arguments: {
-        user_id: Gql::ZammadSchema.id_from_internal_id('User', user_id),
-        key:     key,
-        app:     app,
-      }
+        key: key,
+        app: app,
+      },
+      scope:     user_id,
     )
   end
 

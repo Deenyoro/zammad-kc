@@ -16,7 +16,6 @@ import type {
 import { i18n } from '#shared/i18n/index.ts'
 import MutationHandler from '#shared/server/apollo/handler/MutationHandler.ts'
 import QueryHandler from '#shared/server/apollo/handler/QueryHandler.ts'
-import { useSessionStore } from '#shared/stores/session.ts'
 
 import CommonLoader from '#desktop/components/CommonLoader/CommonLoader.vue'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
@@ -31,8 +30,6 @@ import { useBreadcrumb } from '../composables/useBreadcrumb.ts'
 import { useUserCurrentDeviceDeleteMutation } from '../graphql/mutations/userCurrentDeviceDelete.api.ts'
 import { useUserCurrentDeviceListQuery } from '../graphql/queries/userCurrentDeviceList.api.ts'
 import { UserCurrentDevicesUpdatesDocument } from '../graphql/subscriptions/userCurrentDevicesUpdates.api.ts'
-
-const session = useSessionStore()
 
 const { breadcrumbItems } = useBreadcrumb(__('Devices'))
 
@@ -49,9 +46,6 @@ deviceListQuery.subscribeToMore<
   UserCurrentDevicesUpdatesSubscription
 >({
   document: UserCurrentDevicesUpdatesDocument,
-  variables: {
-    userId: session.user?.id || '',
-  },
   updateQuery: (prev, { subscriptionData }) => {
     if (!subscriptionData.data?.userCurrentDevicesUpdates.devices) {
       return null as unknown as UserCurrentDeviceListQuery

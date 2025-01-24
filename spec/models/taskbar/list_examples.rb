@@ -76,7 +76,7 @@ RSpec.shared_examples 'Taskbar::List' do
 
       expect(Gql::Subscriptions::User::Current::TaskbarItem::ListUpdates)
         .to have_received(:trigger)
-        .with(nil, arguments: { user_id: user.to_global_id.to_s, app: 'test' })
+        .with(nil, arguments: { app: 'test' }, scope: user.id)
     end
   end
 end

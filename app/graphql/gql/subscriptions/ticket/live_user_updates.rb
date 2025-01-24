@@ -5,21 +5,22 @@ module Gql::Subscriptions
 
     description 'Updates to ticket live users (for agents).'
 
-    argument :user_id, GraphQL::Types::ID, loads: Gql::Types::UserType, description: 'ID of the user to receive updates for'
+    subscription_scope :current_user_id
+
     argument :key, String, description: 'Taskbar key to filter for.'
     argument :app, Gql::Types::Enum::TaskbarAppType, description: 'Taskbar app to filter for.'
 
     field :live_users, [Gql::Types::Ticket::LiveUserType], description: 'Current live users from the ticket.'
 
-    def authorized?(user:, key:, app:)
-      context.current_user.permissions?('ticket.agent') && context.current_user == user
+    def authorized?(key:, app:)
+      context.current_user.permissions?('ticket.agent')
     end
 
-    def subscribe(user:, key:, app:)
+    def subscribe(key:, app:)
       response(Taskbar.find_by(key: key, user_id: context.current_user.id, app: app))
     end
 
-    def update(user:, key:, app:)
+    def update(key:, app:)
       response(object)
     end
 
