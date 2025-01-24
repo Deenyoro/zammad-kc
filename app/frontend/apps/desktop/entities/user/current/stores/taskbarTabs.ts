@@ -60,7 +60,16 @@ export const useUserCurrentTaskbarTabsStore = defineStore(
       userTaskbarTabPluginByType[tabEntityType]
 
     const taskbarTabsQuery = new QueryHandler(
-      useUserCurrentTaskbarItemListQuery({ app: EnumTaskbarApp.Desktop }),
+      useUserCurrentTaskbarItemListQuery(
+        { app: EnumTaskbarApp.Desktop },
+        {
+          context: {
+            batch: {
+              active: false,
+            },
+          },
+        },
+      ),
     )
 
     const taskbarTabsRaw = taskbarTabsQuery.result()

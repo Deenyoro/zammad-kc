@@ -1333,6 +1333,11 @@ const initializeFormSchema = () => {
         useFormUpdaterQuery(
           formUpdaterVariables as Ref<FormUpdaterQueryVariables>,
           {
+            context: {
+              batch: {
+                active: false,
+              },
+            },
             fetchPolicy: 'no-cache',
           },
         ),

@@ -74,7 +74,16 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
   )
 
   const ticketOverviewTicketCountHandler = new QueryHandler(
-    useTicketOverviewTicketCountQuery({ ignoreUserConditions: false }),
+    useTicketOverviewTicketCountQuery(
+      { ignoreUserConditions: false },
+      {
+        context: {
+          batch: {
+            active: false,
+          },
+        },
+      },
+    ),
   )
 
   const overviewsTicketCount = ticketOverviewTicketCountHandler.result()

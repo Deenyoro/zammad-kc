@@ -14,6 +14,7 @@ import debugLink from './link/debug.ts'
 import errorLink from './link/error.ts'
 import setAuthorizationLink from './link/setAuthorization.ts'
 import testFlagsLink from './link/testFlags.ts'
+import getBatchContext from './utils/getBatchContext.ts'
 
 import type { Operation } from '@apollo/client/core'
 import type { FragmentDefinitionNode, OperationDefinitionNode } from 'graphql'
@@ -63,10 +64,10 @@ const operationIsFormUpdater = (
 
 const requiresBatchLink = (op: Operation) => {
   if (!enableBatchLink) return false
-  const definition = getMainDefinition(op.query)
-  return (
-    !operationIsLoginLogout(definition) && !operationIsFormUpdater(definition)
-  )
+
+  const batchContext = getBatchContext(op)
+
+  return batchContext.active
 }
 
 const httpLink = ApolloLink.split(requiresBatchLink, batchLink, noBatchLink)

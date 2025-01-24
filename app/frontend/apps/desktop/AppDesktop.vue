@@ -72,8 +72,8 @@ watch(
   (newValue, oldValue) => {
     if (!newValue || oldValue) return
 
-    useTicketOverviewsStore()
     useUserCurrentTaskbarTabsStore()
+    useTicketOverviewsStore()
     initializeDefaultObjectAttributes()
   },
   { immediate: true },
