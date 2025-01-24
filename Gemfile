@@ -128,7 +128,6 @@ gem 'mime-types'
 gem 'rchardet', '>= 1.8.0'
 
 # networking libraries were removed from stdlib in ruby 3.1..
-gem 'net-ftp',  require: false
 gem 'net-http', require: false
 gem 'net-imap', require: false
 gem 'net-pop',  require: false
