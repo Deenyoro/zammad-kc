@@ -1337,6 +1337,9 @@ const initializeFormSchema = () => {
               batch: {
                 active: false,
               },
+              websocket: {
+                active: true,
+              },
             },
             fetchPolicy: 'no-cache',
           },

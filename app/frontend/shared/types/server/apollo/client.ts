@@ -20,6 +20,10 @@ export interface ClientBatchContext {
   active: boolean
 }
 
+export interface ClientWebsocketContext {
+  active: boolean
+}
+
 export interface DebugLinkRequestOutput {
   requestHeaders?: Record<string, string>
   printedDocument: string
