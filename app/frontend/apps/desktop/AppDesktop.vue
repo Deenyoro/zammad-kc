@@ -20,6 +20,7 @@ import { useSessionStore } from '#shared/stores/session.ts'
 import emitter from '#shared/utils/emitter.ts'
 
 import { initializeConfirmationDialog } from '#desktop/components/CommonConfirmationDialog/initializeConfirmationDialog.ts'
+import { useTicketOverviewsStore } from '#desktop/entities/ticket/stores/ticketOverviews.ts'
 import { useUserCurrentTaskbarTabsStore } from '#desktop/entities/user/current/stores/taskbarTabs.ts'
 
 const router = useRouter()
@@ -71,6 +72,7 @@ watch(
   (newValue, oldValue) => {
     if (!newValue || oldValue) return
 
+    useTicketOverviewsStore()
     useUserCurrentTaskbarTabsStore()
     initializeDefaultObjectAttributes()
   },

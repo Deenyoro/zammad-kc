@@ -24,7 +24,7 @@ module Taskbar::TriggersSubscriptions
   def trigger_live_user_subscriptions
     return if !saved_change_to_attribute?('preferences')
 
-    Gql::Subscriptions::TicketLiveUserUpdates.trigger(
+    Gql::Subscriptions::Ticket::LiveUserUpdates.trigger(
       self,
       arguments: {
         user_id: Gql::ZammadSchema.id_from_internal_id('User', user_id),

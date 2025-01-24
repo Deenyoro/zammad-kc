@@ -25,11 +25,11 @@ import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import { useFlyout } from '#desktop/components/CommonFlyout/useFlyout.ts'
 import CommonLoader from '#desktop/components/CommonLoader/CommonLoader.vue'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
-import CommonSimpleTable from '#desktop/components/CommonSimpleTable/CommonSimpleTable.vue'
+import CommonSimpleTable from '#desktop/components/CommonTable/CommonSimpleTable.vue'
 import type {
-  TableHeader,
+  TableSimpleHeader,
   TableItem,
-} from '#desktop/components/CommonSimpleTable/types.ts'
+} from '#desktop/components/CommonTable/types.ts'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 
 import { useCheckTokenAccess } from '../composables/permission/useCheckTokenAccess.ts'
@@ -91,7 +91,7 @@ accessTokenListQuery.subscribeToMore<
   },
 })
 
-const tableHeaders: TableHeader[] = [
+const tableHeaders: TableSimpleHeader[] = [
   {
     key: 'name',
     label: __('Name'),
@@ -217,7 +217,7 @@ const helpText = computed(() => [
           :headers="tableHeaders"
           :items="currentAccessTokens"
           :actions="tableActions"
-          :aria-label="$t('Personal Access Tokens')"
+          :caption="$t('Personal Access Tokens')"
           class="min-w-150"
         >
           <template #item-suffix-name="{ item }">
