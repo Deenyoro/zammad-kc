@@ -45,10 +45,6 @@ describe('OnlineNotification', () => {
         },
       },
     })
-
-    vi.stubGlobal('Notification', {
-      requestPermission: () => Promise.resolve('granted'),
-    })
   })
 
   it('displays notification logo without unseen notifications', async () => {
