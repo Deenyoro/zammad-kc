@@ -317,6 +317,7 @@ class ChannelInboundEdit extends App.ControllerModal
           new App.ChannelInboundEmailArchive(
             container: @el.closest('.content')
             item: @item
+            set_active: @set_active
             content_messages: data.content_messages
             inboundParams: params
             callback: @verify

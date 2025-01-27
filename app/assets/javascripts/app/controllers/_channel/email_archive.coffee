@@ -3,8 +3,17 @@ class App.ChannelInboundEmailArchive extends App.ControllerModal
   buttonClose: true
   buttonCancel: true
   buttonSubmit: true
+  leftButtons: [
+    {
+      className: 'js-skip'
+      text: __('Skip')
+    }
+  ]
   head: __('Archive Emails')
   small: true
+
+  events:
+    'click .js-skip': 'onSkip'
 
   content: ->
     content = $( App.view('channel/email_archive')(content_messages: @content_messages) )
@@ -36,11 +45,12 @@ class App.ChannelInboundEmailArchive extends App.ControllerModal
     ]
 
     options =
-      archive_before: @item.options.inbound.options.archive_before
-      archive_state_id: parseInt(@item.options.inbound.options.archive_state_id, 10)
+      archive_before: @item?.options.inbound.options.archive_before
+      archive_state_id: if @item?.options.inbound.options.archive_state_id then parseInt(@item.options.inbound.options.archive_state_id, 10)
 
-    if not _.isUndefined(@item.options.inbound.options.archive)
-      options.archive = @item.options.inbound.options.archive
+    # Honour the archive flag, if channel is already configured.
+    #   But not during the initial setup, i.e. via XOAUTH callback.
+    options.archive = @item.options.inbound.options.archive or false if @item and !@set_active
 
     @form = new App.ControllerForm(
       el: content.find('.js-archiveSettings')
@@ -74,4 +84,10 @@ class App.ChannelInboundEmailArchive extends App.ControllerModal
     $.extend(true, params, @inboundParams)
 
     @callback(params)
+    @close()
+
+  onSkip: (e) =>
+    e.preventDefault()
+
+    @callback(@inboundParams)
     @close()

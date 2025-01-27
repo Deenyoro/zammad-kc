@@ -693,10 +693,10 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
 
     options =
       archive_before: @channel?.options.inbound.options.archive_before
-      archive_state_id: parseInt(@channel?.options.inbound.options.archive_state_id, 10)
+      archive_state_id: if @channel?.options.inbound.options.archive_state_id then parseInt(@channel.options.inbound.options.archive_state_id, 10)
 
-    if not _.isUndefined(@channel?.options.inbound.options.archive)
-      options.archive = @channel.options.inbound.options.archive
+    # Honour the archive flag, if channel is already configured.
+    options.archive = @channel.options?.inbound?.options?.archive or false if @channel
 
     form = new App.ControllerForm(
       elReplace: @$('.js-archiveSettings'),
@@ -708,6 +708,18 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
       ]
       params: options
     )
+
+    verifyCallback = =>
+      if !verify
+        @$('.js-inbound-acknowledge .js-back').attr('data-slide', 'js-inbound')
+        @$('.js-inbound-acknowledge .js-next').off('click.verify')
+      else
+        @$('.js-inbound-acknowledge .js-back').attr('data-slide', 'js-intro')
+        @$('.js-inbound-acknowledge .js-next').attr('data-slide', '')
+        @$('.js-inbound-acknowledge .js-next').off('click.verify').on('click.verify', (e) =>
+          e.preventDefault()
+          @verify(@account)
+        )
 
     @$('.js-inbound-acknowledge .js-next').off('click.continue').on('click.continue', (e) =>
       e.preventDefault()
@@ -728,16 +740,17 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
       @account.inbound.options ||= {}
       @account.inbound.options = _.extend(@account.inbound.options, params)
 
-      if !verify
-        @$('.js-inbound-acknowledge .js-back').attr('data-slide', 'js-inbound')
-        @$('.js-inbound-acknowledge .js-next').off('click.verify')
-      else
-        @$('.js-inbound-acknowledge .js-back').attr('data-slide', 'js-intro')
-        @$('.js-inbound-acknowledge .js-next').attr('data-slide', '')
-        @$('.js-inbound-acknowledge .js-next').off('click.verify').on('click.verify', (e) =>
-          e.preventDefault()
-          @verify(@account)
-        )
+      verifyCallback()
+    )
+
+    @$('.js-inbound-acknowledge .js-skip').off('click.skip').on('click.skip', (e) =>
+      e.preventDefault()
+
+      @account.inbound         ||= {}
+      @account.inbound.options ||= {}
+      @account.inbound.options = _.extend(@account.inbound.options, options)
+
+      verifyCallback()
     )
 
   probleOutbound: (e) =>
