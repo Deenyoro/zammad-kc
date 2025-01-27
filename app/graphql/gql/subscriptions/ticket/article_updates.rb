@@ -72,9 +72,7 @@ module Gql::Subscriptions
 
     # Only send updates for articles with read permission.
     def article_permission?
-      Pundit.authorize context.current_user, object[:article], :show?
-    rescue Pundit::NotAuthorizedError
-      false
+      pundit_authorized? object[:article]
     end
   end
 end
