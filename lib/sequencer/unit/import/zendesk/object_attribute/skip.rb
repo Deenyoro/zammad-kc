@@ -2,7 +2,7 @@
 
 class Sequencer::Unit::Import::Zendesk::ObjectAttribute::Skip < Sequencer::Unit::Base
 
-  uses :model_class, :sanitized_name
+  uses :field_map, :model_class, :resource, :sanitized_name
   provides :action
 
   # Skip fields which already exists and not editable.
@@ -11,7 +11,11 @@ class Sequencer::Unit::Import::Zendesk::ObjectAttribute::Skip < Sequencer::Unit:
 
     return if !attribute || attribute.editable
 
+    field_map[model_class.name] ||= {}
+    field_map[model_class.name][ resource['key'] ] = sanitized_name
+
     logger.info { "Skipping. Default field '#{attribute}' found for field '#{sanitized_name}'." }
+
     state.provide(:action, :skipped)
   end
 
@@ -19,7 +23,7 @@ class Sequencer::Unit::Import::Zendesk::ObjectAttribute::Skip < Sequencer::Unit:
 
   def object_attribute_for_name
     ObjectManager::Attribute.get(
-      object: model_class.to_s,
+      object: model_class.name,
       name:   sanitized_name
     )
   end
