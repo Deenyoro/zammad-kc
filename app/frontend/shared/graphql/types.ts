@@ -638,6 +638,7 @@ export enum EnumAuthenticationProvider {
   GoogleOauth2 = 'google_oauth2',
   Linkedin = 'linkedin',
   MicrosoftOffice365 = 'microsoft_office365',
+  OpenidConnect = 'openid_connect',
   Saml = 'saml',
   Sso = 'sso',
   Twitter = 'twitter',
