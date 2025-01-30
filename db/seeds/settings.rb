@@ -180,6 +180,29 @@ Setting.create_if_not_exists(
   frontend:    true
 )
 Setting.create_if_not_exists(
+  title:       __('Language Detection Service'),
+  name:        'language_detection_article',
+  area:        'Ticket::LanguageDetection',
+  description: __('Defines the backend service for ticket article language detection.'),
+  options:     {
+    form: [
+      {
+        display: '',
+        null:    true,
+        name:    'language_detection_article',
+        tag:     'select',
+        options: {
+          ''    => '-',
+          'cld' => 'Compact Language Detector (CLD)', # rubocop:disable Zammad/DetectTranslatableString
+        },
+      },
+    ],
+  },
+  state:       '',
+  preferences: {},
+  frontend:    false
+)
+Setting.create_if_not_exists(
   title:       __('Timezone'),
   name:        'timezone_default',
   area:        'System::Branding',
