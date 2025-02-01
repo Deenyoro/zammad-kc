@@ -56,7 +56,7 @@ grant permission to role
     raise "Invalid permission #{key}" if !permission
     return true if permission_ids.include?(permission.id)
 
-    self.permission_ids = permission_ids.push permission.id # rubocop:disable Style/RedundantSelfAssignment
+    self.permission_ids = permission_ids.push permission.id
     true
   end
 
