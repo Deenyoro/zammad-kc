@@ -271,6 +271,9 @@ group :development, :test do
 
   # Debugging and profiling
   gem 'pry-doc' # This gem is very large, so don't include it in production.
+
+  # CLDR wrapper for i18n and l10n
+  gem 'twitter_cldr'
 end
 
 # To permanently extend Zammad with additional gems, you can specify them in Gemfile.local.

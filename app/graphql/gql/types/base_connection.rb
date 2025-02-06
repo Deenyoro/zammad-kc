@@ -13,6 +13,13 @@ module Gql::Types
     field :total_count, Integer, null: false, description: 'Indicates the total number of available records.'
 
     def total_count
+      if object.items&.group_values&.any?
+        return object.items
+          .unscope(:order)
+          .count(:all)
+          .count
+      end
+
       object.items&.count
     end
   end

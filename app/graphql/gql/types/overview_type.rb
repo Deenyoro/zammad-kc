@@ -54,7 +54,11 @@ module Gql::Types
     end
 
     def ticket_count
-      ::Ticket::Overviews.tickets_for_overview(object, context.current_user).limit(nil).count
+      ::Ticket::Overviews
+        .tickets_for_overview(object, context.current_user)
+        .unscope(:order)
+        .count(:all)
+        .count # double-count due to grouping in underlying scope
     end
 
     private

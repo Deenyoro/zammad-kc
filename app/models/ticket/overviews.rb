@@ -127,18 +127,16 @@ returns
   end
 
   def self.tickets_for_overview(overview, user, order_by: nil, order_direction: nil)
-    db_query_params = _db_query_params(overview, user, order_by: order_by, order_direction: order_direction)
-
-    scope = TicketPolicy::OverviewScope
-    if overview.condition['ticket.mention_user_ids'].present?
-      scope = TicketPolicy::ReadScope
-    end
-    scope.new(user).resolve
-      .distinct
-      .where(db_query_params.query_condition, *db_query_params.bind_condition)
-      .joins(db_query_params.tables)
-      .reorder(Arel.sql("#{db_query_params.order_by} #{db_query_params.direction}"))
-      .limit(limit_per_overview)
+    Ticket.raw_selectors(overview.condition, {
+                           current_user: user,
+                           order_by:     [
+                             {
+                               column:    order_by || overview.order[:by],
+                               direction: order_direction || overview.order[:direction],
+                             }
+                           ],
+                           locale:       user.preferences['locale'] || Locale.default,
+                         })
   end
 
   DB_QUERY_PARAMS = Struct.new(:query_condition, :bind_condition, :tables, :order_by, :direction)

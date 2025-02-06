@@ -14,7 +14,7 @@ module Gql::Queries
     def resolve(overview_id: nil, order_by: nil, order_direction: nil)
       overview = Gql::ZammadSchema.authorized_object_from_id(overview_id, type: ::Overview, user: context.current_user)
       # This will fetch tickets with 'overview' permissions, which logically include 'read' permissions.
-      ::Ticket::Overviews.tickets_for_overview(overview, context.current_user, order_by: order_by, order_direction: order_direction)
+      ::Ticket::Overviews.tickets_for_overview(overview, context.current_user, order_by:, order_direction:)
     end
   end
 end
