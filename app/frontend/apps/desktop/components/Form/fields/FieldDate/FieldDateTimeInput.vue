@@ -1,18 +1,26 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
+<!-- eslint-disable zammad/zammad-detect-translatable-string -->
+
 <script setup lang="ts">
+import { getNode, type FormKitNode } from '@formkit/core'
 import VueDatePicker, { type DatePickerInstance } from '@vuepic/vue-datepicker'
+import { isValid, format, parse } from 'date-fns'
+import { isEqual } from 'lodash-es'
 import { storeToRefs } from 'pinia'
-import { computed, nextTick, ref, toRef } from 'vue'
+import { computed, nextTick, ref, toRef, watch } from 'vue'
+import { IMask, useIMask } from 'vue-imask'
 
 import useValue from '#shared/components/Form/composables/useValue.ts'
 import type { DateTimeContext } from '#shared/components/Form/fields/FieldDate/types.ts'
 import { useDateTime } from '#shared/components/Form/fields/FieldDate/useDateTime.ts'
+import dateRange from '#shared/form/validation/rules/date-range.ts'
 import { EnumTextDirection } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n.ts'
 import testFlags from '#shared/utils/testFlags.ts'
 
 import { useThemeStore } from '#desktop/stores/theme.ts'
+
 import '@vuepic/vue-datepicker/dist/main.css'
 
 interface Props {
@@ -48,7 +56,7 @@ const actionRow = computed(() => ({
   showSelect: false,
   showCancel: false,
   // Do not show 'Today' for range selection, because it will close the picker
-  //  even if only one date was selected.
+  //   even if only one date was selected.
   showNow: !props.context.range,
   showPreview: false,
 }))
@@ -63,6 +71,203 @@ const picker = ref<DatePickerInstance>()
 
 const { isDarkMode } = storeToRefs(useThemeStore())
 
+const localeFormat = computed(() => {
+  if (timePicker.value) return i18n.getDateTimeFormat()
+  return i18n.getDateFormat()
+})
+
+// Date/time placeholders used in the locale format:
+// - 'dd' - 2-digit day
+// - 'd' - day
+// - 'mm' - 2-digit month
+// - 'm' - month
+// - 'yyyy' - year
+// - 'yy' - last 2 digits of year
+// - 'SS' - 2-digit second
+// - 'MM' - 2-digit minute
+// - 'HH' - 2-digit hour (24h)
+// - 'l' - hour (12h)
+// - 'P' - Meridian indicator ('am' or 'pm')
+const inputFormat = computed(() =>
+  localeFormat.value
+    .replace(/MM/, '2DigitMinute') // 'MM' is used for both minute and month
+    .replace(/mm/, 'MM')
+    .replace(/m/, 'M')
+    .replace(/SS/, 'ss')
+    .replace(/2DigitMinute/, 'mm')
+    .replace(/l/, 'hh')
+    .replace(/P/, 'aaa'),
+)
+
+const maskOptions = computed(() => ({
+  mask: contextReactive.value.range
+    ? `${localeFormat.value} - ${localeFormat.value}`
+    : localeFormat.value,
+  blocks: {
+    d: {
+      mask: IMask.MaskedRange,
+      from: 1,
+      to: 31,
+      placeholderChar: 'D',
+    },
+    dd: {
+      mask: IMask.MaskedRange,
+      from: 1,
+      to: 31,
+      placeholderChar: 'D',
+    },
+    m: {
+      mask: IMask.MaskedRange,
+      from: 1,
+      to: 12,
+      placeholderChar: 'M',
+    },
+    mm: {
+      mask: IMask.MaskedRange,
+      from: 1,
+      to: 12,
+      placeholderChar: 'M',
+    },
+    yyyy: {
+      mask: IMask.MaskedRange,
+      from: 1900,
+      to: 2100,
+      placeholderChar: 'Y',
+    },
+    yy: {
+      mask: IMask.MaskedRange,
+      from: 0,
+      to: 99,
+      placeholderChar: 'Y',
+    },
+    ss: {
+      mask: IMask.MaskedRange,
+      from: 0,
+      to: 59,
+      placeholderChar: 's',
+    },
+    MM: {
+      mask: IMask.MaskedRange,
+      from: 0,
+      to: 59,
+      placeholderChar: 'm',
+    },
+    HH: {
+      mask: IMask.MaskedRange,
+      from: 0,
+      to: 23,
+      placeholderChar: 'h',
+    },
+    l: {
+      mask: IMask.MaskedRange,
+      from: 1,
+      to: 12,
+      placeholderChar: 'h',
+    },
+    P: {
+      mask: IMask.MaskedEnum,
+      enum: ['am', 'pm'],
+      placeholderChar: 'p',
+    },
+  },
+  autofix: true,
+  lazy: false,
+  overwrite: true,
+}))
+
+const { el, masked, unmasked } = useIMask(maskOptions)
+
+const parseValue = (value: string) =>
+  parse(value, valueFormat.value, new Date())
+
+const formatValue = (value: Date) => format(value, valueFormat.value)
+
+watch(
+  localValue,
+  (newValue) => {
+    if (!newValue) {
+      masked.value = '' // clear input
+      return
+    }
+
+    if (contextReactive.value.range) {
+      const [startValue, endValue] = newValue
+      if (!startValue || !endValue) return
+
+      const startDate = parseValue(startValue)
+      const endDate = parseValue(endValue)
+      if (!isValid(startDate) || !isValid(endDate)) return
+
+      const value = `${format(startDate, inputFormat.value)} - ${format(endDate, inputFormat.value)}`
+      if (masked.value === value) return
+
+      masked.value = `${format(startDate, inputFormat.value)} - ${format(endDate, inputFormat.value)}`
+
+      return
+    }
+
+    const newDate = parseValue(newValue)
+    const maskedDate = parse(masked.value, inputFormat.value, new Date())
+
+    if (
+      isValid(maskedDate) &&
+      maskedDate.toISOString() === newDate.toISOString()
+    )
+      return
+
+    masked.value = format(newDate, inputFormat.value)
+  },
+  {
+    immediate: true,
+  },
+)
+
+const dateRangeValidation = (value: (string | undefined)[]) => {
+  if (value.includes(undefined)) return false
+  if (dateRange.rule({ value } as FormKitNode<string[]>)) return true
+
+  const node = getNode(contextReactive.value.id)
+  if (!node) return
+
+  // Manually set validation error message.
+  node.setErrors(i18n.t(dateRange.localeMessage()))
+
+  return false
+}
+
+watch(masked, (newValue) => {
+  // empty input
+  if (localValue.value && (!newValue || !unmasked.value)) {
+    localValue.value = null
+    return
+  }
+
+  if (contextReactive.value.range) {
+    const newValues = newValue.split(' - ').map((value) => {
+      const date = parse(value, inputFormat.value, new Date())
+      if (!isValid(date)) return
+      return formatValue(date)
+    })
+
+    if (!dateRangeValidation(newValues) || isEqual(localValue.value, newValues))
+      return
+
+    localValue.value = newValues
+
+    return
+  }
+
+  const newDate = parse(newValue, inputFormat.value, new Date())
+
+  if (
+    !isValid(newDate) ||
+    (isValid(newDate) && localValue.value === formatValue(newDate))
+  )
+    return
+
+  localValue.value = formatValue(newDate)
+})
+
 const open = () => {
   nextTick(() => {
     testFlags.set('field-date-time.opened')
@@ -73,6 +278,40 @@ const closed = () => {
   nextTick(() => {
     testFlags.set('field-date-time.closed')
   })
+
+  if (!localValue.value && masked.value) {
+    masked.value = '' // clear input
+    return
+  }
+
+  if (contextReactive.value.range) {
+    const maskedValues = masked.value.split(' - ').map((value: string) => {
+      const date = parse(value, inputFormat.value, new Date())
+      if (!isValid(date)) return
+      return formatValue(date)
+    })
+
+    if (isEqual(localValue.value, maskedValues)) return
+
+    const [startValue, endValue] = localValue.value
+    if (!startValue || !endValue) return
+
+    const startDate = parseValue(startValue)
+    const endDate = parseValue(endValue)
+    if (!isValid(startDate) || !isValid(endDate)) return
+
+    masked.value = `${format(startDate, inputFormat.value)} - ${format(endDate, inputFormat.value)}`
+
+    return
+  }
+
+  const maskedDate = parse(masked.value, inputFormat.value, new Date())
+
+  if (isValid(maskedDate) && localValue.value === formatValue(maskedDate))
+    return
+
+  const newDate = parseValue(localValue.value)
+  masked.value = format(newDate, inputFormat.value)
 }
 </script>
 
@@ -105,43 +344,32 @@ const closed = () => {
       :action-row="actionRow"
       :config="config"
       :aria-labels="ariaLabels"
-      :text-input="{ openMenu: 'toggle' }"
+      :text-input="{ openMenu: 'open' }"
       auto-apply
       offset="12"
       @open="open"
       @closed="closed"
       @blur="context.handlers.blur"
     >
-      <template
-        #dp-input="{
-          value,
-          onInput,
-          onEnter,
-          onTab,
-          onBlur,
-          onKeypress,
-          onPaste,
-        }"
-      >
+      <template #dp-input>
         <input
           :id="context.id"
-          :value="value"
+          ref="el"
           :name="context.node.name"
           :class="context.classes.input"
           :disabled="context.disabled"
           :aria-describedby="context.describedBy"
           v-bind="context.attrs"
           type="text"
-          @input="onInput"
-          @keypress.enter="onEnter"
-          @keypress.tab="onTab"
-          @keypress="onKeypress"
-          @paste="onPaste"
-          @blur="onBlur"
         />
       </template>
       <template #input-icon>
-        <CommonIcon :name="inputIcon" size="tiny" decorative />
+        <CommonIcon
+          :name="inputIcon"
+          size="tiny"
+          decorative
+          @click.stop="picker?.toggleMenu()"
+        />
       </template>
       <template #clear-icon>
         <CommonIcon

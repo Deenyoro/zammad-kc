@@ -12,7 +12,7 @@ export const useDateTime = (context: Ref<DateTimeContext>) => {
   const timePicker = computed(() => context.value.type === 'datetime')
 
   const valueFormat = computed(() => {
-    if (timePicker.value) return 'iso'
+    if (timePicker.value) return "yyyy-MM-dd'T'HH:mm:ss.SSSX"
     return 'yyyy-MM-dd'
   })
 

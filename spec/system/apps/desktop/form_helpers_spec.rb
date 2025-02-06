@@ -247,7 +247,7 @@ RSpec.describe 'Form helpers', app: :desktop_view, authenticated_as: :agent, db_
 
   context 'with date and datetime fields', authenticated_as: :authenticate, time_zone: 'Europe/London' do
     let(:date)     { Date.parse('2022-09-07') }
-    let(:datetime) { DateTime.parse('2023-09-07T08:00:00.000Z') }
+    let(:datetime) { DateTime.parse('2023-09-07T12:00:00.000Z') }
 
     def authenticate
       create(:object_manager_attribute_date, object_name: object_name, name: 'date', display: 'Date', screens: screens)
