@@ -22,20 +22,24 @@ class Selector::Base
   end
 
   def migrate
-    return if !selector[:conditions].nil?
+    @selector = self.class.migrate_selector(selector)
+  end
+
+  def self.migrate_selector(value)
+    return value if !value[:conditions].nil?
 
     result = {
       operator:   'AND',
       conditions: [],
     }
 
-    selector.each_key do |key|
+    value.each_key do |key|
       result[:conditions] << {
         name: key.to_s,
-      }.merge(selector[key])
+      }.merge(value[key])
     end
 
-    @selector = result
+    result
   end
 
   def set_static_conditions

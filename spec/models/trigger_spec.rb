@@ -1862,4 +1862,43 @@ RSpec.describe Trigger, type: :model do
       end
     end
   end
+
+  describe 'Organization is missing when used in expert mode conditions #5483' do
+    let(:conditions_orgs) { create_list(:organization, 3) }
+    let(:trigger)         { create(:trigger, condition: condition) }
+
+    context 'when old conditions' do
+      let(:condition) do
+        {
+          'ticket.organization_id' => {
+            'operator'         => 'is',
+            'pre_condition'    => 'specific',
+            'value'            => conditions_orgs.map { |row| row.id.to_s },
+            'value_completion' => ''
+          }
+        }
+      end
+
+      it 'does contain assets for the conditions' do
+        expect(trigger.assets({})[:Organization].keys.sort).to eq(conditions_orgs.map(&:id).sort)
+      end
+    end
+
+    context 'when new conditions' do
+      let(:condition) do
+        Selector::Base.migrate_selector({
+                                          'ticket.organization_id' => {
+                                            'operator'         => 'is',
+                                            'pre_condition'    => 'specific',
+                                            'value'            => conditions_orgs.map { |row| row.id.to_s },
+                                            'value_completion' => ''
+                                          }
+                                        })
+      end
+
+      it 'does contain assets for the conditions' do
+        expect(trigger.assets({})[:Organization].keys.sort).to eq(conditions_orgs.map(&:id).sort)
+      end
+    end
+  end
 end
