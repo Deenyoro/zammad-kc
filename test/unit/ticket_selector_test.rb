@@ -442,7 +442,7 @@ class TicketSelectorTest < ActiveSupport::TestCase
       'ticket.created_at' => {
         operator: 'within last (relative)',
         range:    'year', # minute|hour|day|month|
-        value:    '10',
+        value:    '20',
       },
     }
     ticket_count, = Ticket.selectors(condition, limit: 10, current_user: @agent1)
