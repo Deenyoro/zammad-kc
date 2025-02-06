@@ -7,6 +7,7 @@ class Report::Profile < ApplicationModel
   include HasSearchIndexBackend
   include CanSelector
   include CanSearch
+  include Report::Profile::Assets
 
   validates :name, presence: true
   store     :condition
