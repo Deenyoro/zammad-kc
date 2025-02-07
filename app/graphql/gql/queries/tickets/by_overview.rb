@@ -13,7 +13,7 @@ module Gql::Queries
 
     def resolve(overview:, order_by: nil, order_direction: nil)
       # This will fetch tickets with 'overview' permissions, which logically include 'read' permissions.
-      ::Ticket::Overviews.tickets_for_overview(overview, context.current_user, order_by: order_by, order_direction: order_direction).unscope(:limit)
+      ::Ticket::Overviews.tickets_for_overview(overview, context.current_user, order_by: order_by, order_direction: order_direction)
     end
   end
 end

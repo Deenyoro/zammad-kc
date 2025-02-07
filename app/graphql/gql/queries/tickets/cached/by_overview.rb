@@ -43,7 +43,7 @@ module Gql::Queries
     def maybe_cached_value(cache_ttl:, overview:, order_by:, order_direction:)
       cache_fragment(path_cache_key: filtered_path_cache_key, object_cache_key: object_cache_key(overview), expires_in: cache_ttl) do
         # This will fetch tickets with 'overview' permissions, which logically include 'read' permissions.
-        ::Ticket::Overviews.tickets_for_overview(overview, context.current_user, order_by: order_by, order_direction: order_direction).unscope(:limit)
+        ::Ticket::Overviews.tickets_for_overview(overview, context.current_user, order_by: order_by, order_direction: order_direction)
       end
     end
 
