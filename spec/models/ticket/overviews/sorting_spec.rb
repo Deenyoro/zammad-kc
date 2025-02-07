@@ -88,7 +88,6 @@ RSpec.describe 'Ticket::Overviews > Sorting' do # rubocop:disable RSpec/Describe
   context 'when sorting by customer_id' do
     let(:order_by)       { 'customer_id' }
     let(:locale)         { 'en-us' }
-    let(:sorted_tickets) { tickets.sort_by { |ticket| ticket.customer.fullname.downcase }.pluck(:id) }
 
     let(:tickets) do
       groups = create_list(:group, 10).tap { |gs| gs.each { |g| g.update!(name: Faker::App.unique.name) } }
@@ -99,6 +98,7 @@ RSpec.describe 'Ticket::Overviews > Sorting' do # rubocop:disable RSpec/Describe
 
     context 'when ascending' do
       let(:order_direction) { 'ASC' }
+      let(:sorted_tickets) { tickets.sort_by { |ticket| ticket.customer.fullname.downcase }.pluck(:id) }
 
       it_behaves_like 'it sorts correctly'
     end
@@ -106,6 +106,55 @@ RSpec.describe 'Ticket::Overviews > Sorting' do # rubocop:disable RSpec/Describe
     context 'when descending' do
       let(:order_direction) { 'DESC' }
       let(:sorted_tickets)  { tickets.sort_by { |ticket| ticket.customer.fullname.downcase }.pluck(:id).reverse }
+
+      it_behaves_like 'it sorts correctly'
+    end
+  end
+
+  context 'when grouping and sorting' do
+    let(:overview)  { super().tap { _1.update! group_by: 'customer_id', group_direction: 'ASC' } }
+    let(:customers) { create_list(:customer, 3) }
+    let(:order_by)  { 'title' }
+    let(:locale)    { 'en-us' }
+
+    let(:tickets) do
+      customers.flat_map do |customer|
+        Array.new(3) do
+          create(:ticket, customer:, group: Group.first, title: Faker::Lorem.sentence)
+        end
+      end
+    end
+
+    context 'when ascending' do
+      let(:order_direction) { 'ASC' }
+      let(:sorted_tickets)  do
+        tickets
+          .sort do |a, b|
+            initial = a.customer.fullname.downcase <=> b.customer.fullname.downcase
+
+            next initial if !initial.zero?
+
+            a.title.downcase <=> b.title.downcase
+          end
+          .pluck(:id)
+      end
+
+      it_behaves_like 'it sorts correctly'
+    end
+
+    context 'when descending' do
+      let(:order_direction) { 'DESC' }
+      let(:sorted_tickets)  do
+        tickets
+          .sort do |a, b|
+            initial = a.customer.fullname.downcase <=> b.customer.fullname.downcase
+
+            next initial if !initial.zero?
+
+            b.title.downcase <=> a.title.downcase
+          end
+          .pluck(:id)
+      end
 
       it_behaves_like 'it sorts correctly'
     end

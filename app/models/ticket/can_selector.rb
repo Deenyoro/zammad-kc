@@ -86,7 +86,7 @@ get count of tickets and tickets which match on selector
         order_clause.reduce(relation) do |memo, elem|
           case elem
           when String, Symbol
-            memo.reorder(Arel.sql(elem))
+            memo.order(Arel.sql(elem)) # rubocop:disable Zammad/ActiveRecordReorder
           when Hash
             memo = memo.select(Arel.sql(elem[:select])) if elem[:select]
             memo = memo.order(Arel.sql(elem[:order])) if elem[:order] # rubocop:disable Zammad/ActiveRecordReorder

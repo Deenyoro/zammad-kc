@@ -127,14 +127,21 @@ returns
   end
 
   def self.tickets_for_overview(overview, user, order_by: nil, order_direction: nil)
+    order_clause = [{
+      column:    order_by || overview.order[:by],
+      direction: order_direction || overview.order[:direction],
+    }]
+
+    if overview.group_by.present?
+      order_clause.unshift({
+                             column:    overview.group_by,
+                             direction: overview.group_direction || 'ASC'
+                           })
+    end
+
     Ticket.raw_selectors(overview.condition, {
                            current_user: user,
-                           order_by:     [
-                             {
-                               column:    order_by || overview.order[:by],
-                               direction: order_direction || overview.order[:direction],
-                             }
-                           ],
+                           order_by:     order_clause,
                            locale:       user.preferences['locale'] || Locale.default,
                          })
   end

@@ -10,7 +10,8 @@ export interface Props {
   onClickRow?: (tableItem: TableItem) => void
   isRowSelected?: boolean
   hasCheckbox?: boolean
-  withEvenStripes?: boolean
+  noAutoStriping?: boolean
+  isStriped?: boolean
 }
 
 const props = defineProps<Props>()
@@ -52,8 +53,8 @@ const hasScreenReaderHelpText = computed(
 <template>
   <tr
     :class="{
-      'odd:bg-blue-200 odd:dark:bg-gray-700': !withEvenStripes,
-      'even:bg-blue-200 even:dark:bg-gray-700': withEvenStripes,
+      'odd:bg-blue-200 odd:dark:bg-gray-700': !noAutoStriping,
+      'bg-blue-200 dark:bg-gray-700': isStriped === true,
       '!bg-blue-800': !hasCheckbox && isRowSelected,
     }"
     style="clip-path: xywh(0 0 100% 100% round 0.375rem)"

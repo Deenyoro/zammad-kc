@@ -369,6 +369,9 @@ const groupByRowCounts = computed(() => {
   }, [])
 })
 
+const groupIndexByRowId = (groupIndex: number, rowId: string) =>
+  groupByRowCounts.value?.[groupIndex]?.findIndex((id) => id === rowId) || 0
+
 const showGroupByRow = (item: TableAdvancedItem) => {
   if (!groupByAttribute.value || !groupByRowCounts.value) return false
 
@@ -601,7 +604,11 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
           "
           tabindex="-1"
           :has-checkbox="hasCheckboxColumn"
-          :with-even-stripes="!!groupByAttribute"
+          :no-auto-striping="!!groupByAttribute"
+          :is-striped="
+            !!groupByAttribute &&
+            groupIndexByRowId(currentGroupByValueIndex, item.id) % 2 === 0
+          "
           v-on="rowHandlers"
         >
           <template #default="{ isRowSelected }">
