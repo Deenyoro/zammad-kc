@@ -60,6 +60,7 @@ RSpec.describe SystemReport, current_user_id: 1, type: :model do
           'ui_sidebar_open_ticket_indicator_colored',
           'ui_table_group_by_show_count',
           'ui_ticket_overview_ticket_limit',
+          'ui_ticket_overview_query_polling',
           'ui_task_mananger_max_task_count',
           'user_create_account',
           'session_timeout',

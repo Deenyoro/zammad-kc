@@ -169,10 +169,10 @@ export default class QueryHandler<
   }
 
   public refetch(
-    variables?: TVariables,
+    variables?: Partial<TVariables>,
   ): Promise<{ data: Maybe<TResult>; error?: unknown }> {
     return new Promise((resolve, reject) => {
-      const refetch = this.operationResult.refetch(variables)
+      const refetch = this.operationResult.refetch(variables as TVariables)
 
       if (!refetch) {
         resolve({ data: null })
@@ -226,12 +226,15 @@ export default class QueryHandler<
   }
 
   public watchOnceOnResult(callback: WatchResultCallback<TResult>) {
-    const watchStopHandle = watch(
+    let watchStopHandle: WatchStopHandle | null = null
+
+    watchStopHandle = watch(
       this.result(),
       (result) => {
-        if (!result) {
+        if (!watchStopHandle || !result) {
           return
         }
+
         callback(result)
         watchStopHandle()
       },

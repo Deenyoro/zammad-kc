@@ -6,12 +6,13 @@ import { useTicketOverviewsStore } from '#desktop/entities/ticket/stores/ticketO
 
 export const useTicketOverviews = () => {
   const store = useTicketOverviewsStore()
-  const { setPreviousTicketOverviewLink } = store
+  const { setCurrentTicketOverviewLink, updateLastUsedOverview } = store
 
   const state = storeToRefs(store)
 
   return {
-    setPreviousTicketOverviewLink,
+    setCurrentTicketOverviewLink,
+    updateLastUsedOverview,
     ...state,
   }
 }

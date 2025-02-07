@@ -123,4 +123,6 @@ export interface AdvancedTableProps extends BaseTableProps {
 
   orderBy?: string
   orderDirection?: EnumOrderDirection
+
+  isSorting?: boolean
 }

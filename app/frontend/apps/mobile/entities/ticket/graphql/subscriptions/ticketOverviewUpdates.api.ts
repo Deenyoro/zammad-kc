@@ -1,7 +1,7 @@
 import * as Types from '#shared/graphql/types.ts';
 
 import gql from 'graphql-tag';
-import { OverviewAttributesFragmentDoc } from '../fragments/overviewAttributes.api';
+import { OverviewAttributesFragmentDoc } from '../../../../../../shared/entities/ticket/graphql/fragments/overviewAttributes.api';
 import * as VueApolloComposable from '@vue/apollo-composable';
 import * as VueCompositionApi from 'vue';
 export type ReactiveFunction<TParam> = () => TParam;
@@ -11,6 +11,14 @@ export const TicketOverviewUpdatesDocument = gql`
   ticketOverviewUpdates(ignoreUserConditions: $ignoreUserConditions) {
     ticketOverviews {
       ...overviewAttributes
+      viewColumns {
+        key
+        value
+      }
+      orderColumns {
+        key
+        value
+      }
     }
   }
 }

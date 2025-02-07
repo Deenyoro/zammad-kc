@@ -53,6 +53,15 @@ const operationIsLoginLogout = (
 const requiresBatchLink = (op: Operation) => {
   if (!enableBatchLink) return false
 
+  const definition = getMainDefinition(op.query)
+
+  if (
+    definition.kind === 'OperationDefinition' &&
+    definition.operation === 'mutation'
+  ) {
+    return false
+  }
+
   const batchContext = getBatchContext(op)
 
   return batchContext.active

@@ -22,8 +22,8 @@ defineOptions({
     const {
       overviews,
       overviewsLoading,
-      setPreviousTicketOverviewLink,
-      previousTicketOverviewLink,
+      setCurrentTicketOverviewLink,
+      currentTicketOverviewLink,
       overviewsByLink,
     } = useTicketOverviews()
 
@@ -32,13 +32,13 @@ defineOptions({
     const overviewLink = to.params.overviewLink as string
 
     if (overviewLink in overviewsByLink.value || overviews.value.length === 0) {
-      setPreviousTicketOverviewLink(overviewLink || '')
+      setCurrentTicketOverviewLink(overviewLink || '')
       return next()
     }
 
     const nextOverviewLink =
-      previousTicketOverviewLink.value || overviews.value[0].link
-    setPreviousTicketOverviewLink(nextOverviewLink)
+      currentTicketOverviewLink.value || overviews.value[0].link
+    setCurrentTicketOverviewLink(nextOverviewLink)
 
     next({
       name: 'TicketOverview',
@@ -47,19 +47,19 @@ defineOptions({
   },
   beforeRouteUpdate(to, _, next) {
     const {
-      previousTicketOverviewLink,
+      currentTicketOverviewLink,
       overviews,
-      setPreviousTicketOverviewLink,
+      setCurrentTicketOverviewLink,
     } = useTicketOverviews()
 
     if (to.params.overviewLink) {
-      setPreviousTicketOverviewLink(to.params.overviewLink as string)
+      setCurrentTicketOverviewLink(to.params.overviewLink as string)
       return next()
     }
 
     const nextOverviewLink =
-      previousTicketOverviewLink.value || overviews.value[0].link
-    setPreviousTicketOverviewLink(nextOverviewLink)
+      currentTicketOverviewLink.value || overviews.value[0].link
+    setCurrentTicketOverviewLink(nextOverviewLink)
 
     next({
       name: 'TicketOverview',
@@ -75,6 +75,10 @@ const currentOverview = computed(
   () => overviewsByLink.value[props.overviewLink],
 )
 
+const currentOverviewCount = computed(
+  () => overviewsTicketCountById.value[currentOverview.value?.id],
+)
+
 const breadcrumbItems = computed(() => [
   {
     label: __('Overviews'),
@@ -82,7 +86,7 @@ const breadcrumbItems = computed(() => [
   },
   {
     label: currentOverview.value?.name,
-    count: overviewsTicketCountById.value[currentOverview.value?.id],
+    count: currentOverviewCount.value,
   },
 ])
 </script>
@@ -110,10 +114,12 @@ const breadcrumbItems = computed(() => [
         v-if="currentOverview"
         class="px-4 pb-4"
         :overview-id="currentOverview.id"
+        :overview-name="currentOverview.name"
         :headers="currentOverview.viewColumnsRaw"
         :order-by="currentOverview.orderBy"
         :order-direction="currentOverview.orderDirection"
         :group-by="currentOverview.groupBy || undefined"
+        :overview-count="currentOverviewCount"
       />
       <TicketOverviewsEmptyText
         v-else

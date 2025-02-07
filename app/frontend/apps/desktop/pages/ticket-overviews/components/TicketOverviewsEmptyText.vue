@@ -4,6 +4,7 @@ interface Props {
   title: string
   text?: string
   icon?: string
+  withIllustration?: boolean
 }
 
 defineProps<Props>()
@@ -12,6 +13,12 @@ defineProps<Props>()
   <div
     class="absolute top-1/2 w-full -translate-y-1/2 text-center ltr:left-1/2 ltr:-translate-x-1/2 rtl:right-1/2 rtl:translate-x-1/2"
   >
+    <img
+      v-if="withIllustration"
+      class="mx-auto"
+      src="./assets/confetti.svg"
+      alt="confetti"
+    />
     <CommonLabel
       tag="h2"
       size="xl"

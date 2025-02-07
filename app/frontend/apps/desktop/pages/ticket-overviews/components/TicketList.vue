@@ -1,17 +1,29 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
+import { useWindowSize } from '@vueuse/core'
+import { isEqual } from 'lodash-es'
 import { storeToRefs } from 'pinia'
-import { computed, type Ref, toRef, useTemplateRef } from 'vue'
-import { onBeforeRouteUpdate, useRouter } from 'vue-router'
+import {
+  computed,
+  onActivated,
+  onDeactivated,
+  ref,
+  type Ref,
+  toRef,
+  useTemplateRef,
+  watch,
+} from 'vue'
+import { onBeforeRouteLeave, onBeforeRouteUpdate, useRouter } from 'vue-router'
 
 import { useSorting } from '#shared/composables/list/useSorting.ts'
-import { useDebouncedLoading } from '#shared/composables/useDebouncedLoading.ts'
 import { usePagination } from '#shared/composables/usePagination.ts'
+import { useQueryPolling } from '#shared/composables/useQueryPolling.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
 import {
   EnumObjectManagerObjects,
   EnumOrderDirection,
+  type TicketsCachedByOverviewQueryVariables,
 } from '#shared/graphql/types.ts'
 import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
@@ -28,7 +40,9 @@ import CommonTicketPriorityIndicatorIcon from '#desktop/components/CommonTicketP
 import CommonTicketStateIndicatorIcon from '#desktop/components/CommonTicketStateIndicator/CommonTicketStateIndicatorIcon.vue'
 import { useElementScroll } from '#desktop/composables/useElementScroll.ts'
 import { useScrollPosition } from '#desktop/composables/useScrollPosition.ts'
-import { useTicketsByOverviewQuery } from '#desktop/entities/ticket/graphql/queries/ticketsByOverview.api.ts'
+import { useTicketsCachedByOverviewCache } from '#desktop/entities/ticket/composables/useTicketsCachedByOverviewCache.ts'
+import { useTicketsCachedByOverviewQuery } from '#desktop/entities/ticket/graphql/queries/ticketsCachedByOverview.api.ts'
+import { useTicketOverviewsStore } from '#desktop/entities/ticket/stores/ticketOverviews.ts'
 import { useLifetimeCustomerTicketsCount } from '#desktop/entities/user/current/composables/useLifetimeCustomerTicketsCount.ts'
 import TicketOverviewsEmptyText from '#desktop/pages/ticket-overviews/components/TicketOverviewsEmptyText.vue'
 
@@ -37,33 +51,71 @@ interface Props {
   orderBy: string
   orderDirection: EnumOrderDirection
   headers: string[]
+  overviewName: string
   groupBy?: string
+  overviewCount?: number
 }
 
 const props = defineProps<Props>()
 
 const router = useRouter()
 
-const TICKETS_COUNT = 30
+const { readTicketsByOverviewCache, forceTicketsByOverviewCacheOnlyFirstPage } =
+  useTicketsCachedByOverviewCache()
 
-const ticketsQueryVariables = computed(() => ({
-  pageSize: TICKETS_COUNT,
-  overviewId: props.overviewId,
-  orderBy: props.orderBy,
-  orderDirection: props.orderDirection,
-  showUpdatedBy: true,
-  showPriority: true,
-}))
+const { queryPollingConfig } = storeToRefs(useTicketOverviewsStore())
+
+let lastFirstPageCollectionSignature: string
+const foreground = ref(true)
+const pollingInterval = computed(
+  () =>
+    (foreground.value
+      ? queryPollingConfig.value.foreground.interval_sec
+      : queryPollingConfig.value.background.interval_sec) * 1000,
+)
+
+const ticketsQueryVariables = computed<TicketsCachedByOverviewQueryVariables>(
+  (currentVariables) => {
+    const newVariables: TicketsCachedByOverviewQueryVariables = {
+      pageSize: queryPollingConfig.value.page_size,
+      overviewId: props.overviewId,
+      orderBy: props.orderBy,
+      orderDirection: props.orderDirection,
+      cacheTtl: queryPollingConfig.value.foreground.cache_ttl_sec,
+      renewCache: currentVariables?.overviewId !== props.overviewId,
+    }
+
+    const cachedTickets = readTicketsByOverviewCache(newVariables)
+
+    newVariables.knownCollectionSignature =
+      cachedTickets?.ticketsCachedByOverview?.collectionSignature
+
+    if (currentVariables && isEqual(currentVariables, newVariables)) {
+      return currentVariables
+    }
+
+    return newVariables
+  },
+)
 
 const ticketsQuery = new QueryHandler(
-  useTicketsByOverviewQuery(ticketsQueryVariables, {
+  useTicketsCachedByOverviewQuery(ticketsQueryVariables, {
     fetchPolicy: 'cache-and-network',
     nextFetchPolicy: 'cache-and-network',
+    context: {
+      batch: {
+        active: false,
+      },
+    },
   }),
 )
 
 const ticketsResult = ticketsQuery.result()
 const loading = ticketsQuery.loading()
+
+const currentCollectionSignature = computed(() => {
+  return ticketsResult.value?.ticketsCachedByOverview?.collectionSignature
+})
 
 const isLoadingTickets = computed(() => {
   if (ticketsResult.value !== undefined) return false
@@ -71,32 +123,136 @@ const isLoadingTickets = computed(() => {
   return loading.value
 })
 
-const { debouncedLoading } = useDebouncedLoading({
-  isLoading: isLoadingTickets,
+const tickets = computed(() =>
+  edgesToArray(ticketsResult.value?.ticketsCachedByOverview),
+)
+
+onActivated(() => {
+  if (foreground.value) return
+
+  ticketsQuery.refetch({
+    renewCache: true,
+  })
+  foreground.value = true
 })
 
-const tickets = computed(() =>
-  edgesToArray(ticketsResult.value?.ticketsByOverview),
+onDeactivated(() => {
+  foreground.value = false
+})
+
+const pagination = usePagination(
+  ticketsQuery,
+  'ticketsCachedByOverview',
+  queryPollingConfig.value.page_size,
+  () => ({
+    knownCollectionSignature: null,
+    renewCache: false,
+  }),
 )
 
-const totalCount = computed(
-  () => ticketsResult.value?.ticketsByOverview.totalCount || 0,
-)
+const scrollContainerElement = useTemplateRef('scroll-container')
 
 const {
   sort,
   orderBy: localOrderBy,
   orderDirection: localOrderDirection,
+  isSorting,
 } = useSorting(
   ticketsQuery,
   toRef(props, 'orderBy'),
   toRef(props, 'orderDirection'),
+  scrollContainerElement,
 )
 
-const pagination = usePagination(
+const resort = (column: string, direction: EnumOrderDirection) => {
+  forceTicketsByOverviewCacheOnlyFirstPage(
+    {
+      ...ticketsQueryVariables.value,
+      orderBy: localOrderBy.value,
+      orderDirection: localOrderDirection.value,
+    },
+    lastFirstPageCollectionSignature,
+    queryPollingConfig.value.page_size,
+  )
+
+  const cachedTickets = readTicketsByOverviewCache({
+    ...ticketsQueryVariables.value,
+    orderBy: column,
+    orderDirection: direction,
+  })
+
+  sort(column, direction, {
+    knownCollectionSignature:
+      cachedTickets?.ticketsCachedByOverview?.collectionSignature,
+    renewCache: false,
+  })
+}
+
+const { startPolling, stopPolling } = useQueryPolling(
   ticketsQuery,
-  'ticketsByOverview',
-  TICKETS_COUNT,
+  pollingInterval,
+  () => ({
+    knownCollectionSignature: currentCollectionSignature.value,
+    renewCache: false,
+    pageSize: queryPollingConfig.value.page_size * pagination.currentPage,
+  }),
+  () => ({
+    enabled: queryPollingConfig.value.enabled && !isSorting.value,
+  }),
+)
+
+ticketsQuery.watchOnceOnResult((result) => {
+  if (!queryPollingConfig.value.enabled) return
+
+  lastFirstPageCollectionSignature =
+    result.ticketsCachedByOverview.collectionSignature
+
+  startPolling()
+})
+
+onBeforeRouteLeave(() => {
+  forceTicketsByOverviewCacheOnlyFirstPage(
+    ticketsQueryVariables.value,
+    lastFirstPageCollectionSignature,
+    queryPollingConfig.value.page_size,
+  )
+})
+
+watch(
+  () => props.overviewId,
+  () => {
+    ticketsQuery.watchOnceOnResult((result) => {
+      if (!queryPollingConfig.value.enabled) return
+
+      lastFirstPageCollectionSignature =
+        result.ticketsCachedByOverview.collectionSignature
+
+      startPolling()
+    })
+  },
+)
+
+onBeforeRouteUpdate(() => {
+  forceTicketsByOverviewCacheOnlyFirstPage(
+    ticketsQueryVariables.value,
+    lastFirstPageCollectionSignature,
+    queryPollingConfig.value.page_size,
+  )
+
+  if (!queryPollingConfig.value.enabled) return
+
+  stopPolling()
+})
+
+ticketsQuery.onResult((result) => {
+  if (isSorting.value && !result.loading) {
+    // If sorting comes from the cache, we immediately dispose the loading state
+    isSorting.value = false
+  }
+})
+
+const totalCount = computed(
+  () => ticketsResult.value?.ticketsCachedByOverview.totalCount || 0,
 )
 
 const loadMore = async () => pagination.fetchNextPage()
@@ -107,8 +263,6 @@ const { user, userId } = storeToRefs(useSessionStore())
 const storageKeyId = computed(
   () => `${userId.value}-table-headers-${props.overviewId}`,
 )
-
-const scrollContainerElement = useTemplateRef('scroll-container')
 
 // Scrolling position is preserved when user visits another page and returns to overview page
 const { scrollPosition, restoreScrollPosition } = useScrollPosition(
@@ -156,6 +310,17 @@ const localHeaders = computed(() => {
 })
 
 const maxItems = computed(() => config.value.ui_ticket_overview_ticket_limit)
+
+const { height: screenHeight } = useWindowSize()
+
+const visibleOverviewCount = computed(() => {
+  const maxVisibleRowCount = Math.ceil(screenHeight.value / 40)
+
+  if (props.overviewCount && props.overviewCount > maxVisibleRowCount)
+    return maxVisibleRowCount
+
+  return props.overviewCount
+})
 </script>
 
 <template>
@@ -163,11 +328,11 @@ const maxItems = computed(() => config.value.ui_ticket_overview_ticket_limit)
     ref="scroll-container"
     class="overflow-y-auto focus-visible:outline-none"
   >
-    <div
-      v-if="debouncedLoading && !pagination.loadingNewPage"
-      class="p-4 text-center"
-    >
-      <CommonTableSkeleton data-test-id="table-skeleton" />
+    <div v-if="isLoadingTickets && !pagination.loadingNewPage">
+      <CommonTableSkeleton
+        data-test-id="table-skeleton"
+        :rows="visibleOverviewCount"
+      />
     </div>
 
     <template v-else-if="!isLoadingTickets && !tickets.length">
@@ -198,6 +363,7 @@ const maxItems = computed(() => config.value.ui_ticket_overview_ticket_limit)
         v-else
         :title="$t('Empty Overview')"
         :text="$t('No tickets in this state.')"
+        with-illustration
       />
     </template>
 
@@ -205,11 +371,12 @@ const maxItems = computed(() => config.value.ui_ticket_overview_ticket_limit)
       <CommonAdvancedTable
         v-model:order-by="localOrderBy"
         v-model:order-direction="localOrderDirection"
-        :caption="$t('Ticket Overview')"
+        :caption="$t('Overview: %s', overviewName)"
         :headers="localHeaders"
         :object="EnumObjectManagerObjects.Ticket"
         :group-by="groupBy"
         :reached-scroll-top="reachedTop"
+        :table-id="overviewId"
         :scroll-container="scrollContainerElement"
         :attributes="[
           {
@@ -252,9 +419,11 @@ const maxItems = computed(() => config.value.ui_ticket_overview_ticket_limit)
         :total-items="totalCount"
         :storage-key-id="storageKeyId"
         :max-items="maxItems"
+        :is-sorting="isSorting"
+        :is-loading="loading"
         @load-more="loadMore"
         @click-row="goToTicket"
-        @sort="sort"
+        @sort="resort"
       >
         <template #column-cell-priorityIcon="{ item, isRowSelected }">
           <CommonTicketPriorityIndicatorIcon

@@ -11,12 +11,19 @@ declare global {
     Router: import('vue-router').Router
     __(source: string): string
     setLogLevel(level: LogLevel, persistent: boolean): void
+    setQueryPollingConfig(
+      config?: Partial<QueryPollingConfig>,
+    ): QueryPollingConfig
   }
 }
 
 declare const Router: import('vue-router').Router
 declare function __(source: string): string
 declare function setLogLevel(level: LogLevel, persistent: boolean): void
+
+declare function setQueryPollingConfig(
+  config?: Partial<QueryPollingConfig>,
+): QueryPollingConfig
 
 // TODO: Workaround for current problem with formkit version, remove when fixed
 declare module '@formkit/themes'

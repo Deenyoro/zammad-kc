@@ -1,6 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import { isRef, ref, toValue, watch, type Ref } from 'vue'
+import { onBeforeRouteUpdate } from 'vue-router'
 
 import { EnumOrderDirection } from '#shared/graphql/types.ts'
 import type { QueryHandler } from '#shared/server/apollo/handler/index.ts'
@@ -18,6 +19,7 @@ export const useSorting = <
   query: QueryHandler<TQueryResult, TQueryVariables>,
   orderByParam: string | Ref<string>,
   orderDirectionParam: EnumOrderDirection | Ref<EnumOrderDirection>,
+  scrollContainer?: Ref<HTMLElement | null>,
 ) => {
   // Local refs that you'll work with inside this composable
   const orderBy = ref<string>(toValue(orderByParam))
@@ -35,20 +37,41 @@ export const useSorting = <
     })
   }
 
-  const sort = (column: string, direction: EnumOrderDirection) => {
-    // It's fine to parse only partial variables, in this case the orignal variables values are used for
+  const isSorting = ref(false)
+  const sort = (
+    column: string,
+    direction: EnumOrderDirection,
+    additionalVariables: Partial<TQueryVariables> = {},
+  ) => {
+    isSorting.value = true
+    // It's fine to parse only partial variables, in this case the original variables values are used for
     // not given variables.
-    query.refetch({
-      orderBy: column,
-      orderDirection: direction,
-    } as unknown as TQueryVariables)
+    query
+      .refetch({
+        orderBy: column,
+        orderDirection: direction,
+        ...additionalVariables,
+      })
+      .finally(() => {
+        isSorting.value = false
+
+        requestAnimationFrame(() => {
+          scrollContainer?.value?.scrollTo({ top: 0 })
+        })
+      })
 
     orderBy.value = column
     orderDirection.value = direction
   }
 
+  onBeforeRouteUpdate(() => {
+    orderBy.value = toValue(orderByParam)
+    orderDirection.value = toValue(orderDirectionParam)
+  })
+
   return {
     sort,
+    isSorting,
     orderBy,
     orderDirection,
   }

@@ -18,9 +18,9 @@ import {
   watch,
   type Ref,
 } from 'vue'
+import { onBeforeRouteUpdate } from 'vue-router'
 
 import ObjectAttributeContent from '#shared/components/ObjectAttributes/ObjectAttribute.vue'
-import { useDebouncedLoading } from '#shared/composables/useDebouncedLoading.ts'
 import { useObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
 import type { ObjectAttribute } from '#shared/entities/object-attributes/types/store.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
@@ -141,7 +141,6 @@ const tableAttributes = computed(() => {
 
     table.push(mergedAttribute)
   })
-
   return table
 })
 
@@ -164,11 +163,19 @@ const setHeaderWidths = (reset?: boolean) => {
 
   tableElement.value.style.width = `${tableWidth}px`
 
+  let shouldReset = reset
+
+  if (
+    tableAttributes.value.length !==
+    Object.keys(headerWidthsRelativeStorage.value).length
+  )
+    shouldReset = true
+
   tableAttributes.value.forEach((tableAttribute) => {
     const header = document.getElementById(`${tableAttribute.name}-header`)
     if (!header) return
 
-    if (reset) {
+    if (shouldReset) {
       if (tableAttribute.headerPreferences.displayWidth)
         header.style.width = `${tableAttribute.headerPreferences.displayWidth}px`
       else header.style.width = '' // reflow
@@ -228,7 +235,7 @@ const initializeHeaderWidths = (storageKeyId?: string) => {
 
   nextTick(() => {
     setHeaderWidths()
-    calculateHeaderWidths()
+    delay(calculateHeaderWidths, 500)
   })
 }
 
@@ -239,10 +246,9 @@ const resetHeaderWidths = () => {
 
 watch(() => props.storageKeyId, initializeHeaderWidths)
 
-watch(
-  () => props.headers,
-  () => initializeHeaderWidths,
-)
+watch(localHeaders, () => {
+  initializeHeaderWidths()
+})
 
 onMounted(() => {
   if (!props.storageKeyId) return
@@ -291,7 +297,6 @@ const localItems = computed(() => {
 const remainingItems = computed(() => {
   const itemCount =
     props.totalItems >= props.maxItems ? props.maxItems : props.totalItems
-
   return itemCount - localItems.value.length
 })
 
@@ -387,6 +392,10 @@ const showGroupByRow = (item: TableAdvancedItem) => {
 
 const hasLoadedMore = ref(false)
 
+onBeforeRouteUpdate(() => {
+  hasLoadedMore.value = false
+})
+
 const { isLoading } = useInfiniteScroll(
   toRef(props, 'scrollContainer'),
   async () => {
@@ -396,10 +405,11 @@ const { isLoading } = useInfiniteScroll(
   {
     distance: 100,
     canLoadMore: () => remainingItems.value > 0,
+    eventListenerOptions: {
+      passive: true,
+    },
   },
 )
-
-const { debouncedLoading } = useDebouncedLoading({ isLoading })
 
 whenever(
   isLoading,
@@ -413,15 +423,13 @@ const endOfListMessage = computed(() => {
   if (!hasLoadedMore.value) return ''
   if (remainingItems.value !== 0) return ''
 
-  if (props.totalItems > props.maxItems) {
-    return i18n.t(
-      'You reached the table limit of %s tickets (%s remaining).',
-      props.maxItems,
-      props.totalItems - localItems.value.length,
-    )
-  }
-
-  return i18n.t("You don't have more tickets to load.")
+  return props.totalItems > props.maxItems
+    ? i18n.t(
+        'You reached the table limit of %s tickets (%s remaining).',
+        props.maxItems,
+        props.totalItems - localItems.value.length,
+      )
+    : i18n.t("You don't have more tickets to load.")
 })
 
 const getLinkColorClasses = (item: TableAdvancedItem) => {
@@ -567,7 +575,14 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
     </thead>
     <!--    :TODO tabindex should be -1 re-evaluate when we work on bulk action with checkbox  -->
     <!--    SR should not be able to focus the row but each action node  -->
-    <tbody>
+    <tbody
+      class="relative"
+      :inert="isSorting"
+      :class="{
+        'opacity-50 before:absolute before:z-20 before:h-full before:w-full':
+          isSorting,
+      }"
+    >
       <template v-for="item in localItems" :key="item.id">
         <TableRowGroupBy
           v-if="groupByAttribute && showGroupByRow(item)"
@@ -703,7 +718,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
 
       <Transition leave-active-class="absolute">
         <div
-          v-if="debouncedLoading"
+          v-if="isLoading"
           :class="{ 'pt-10': localItems.length % 2 !== 0 }"
           class="absolute w-full pb-4"
         >

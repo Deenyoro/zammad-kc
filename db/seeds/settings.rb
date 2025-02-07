@@ -5603,6 +5603,35 @@ Setting.create_if_not_exists(
 )
 
 Setting.create_if_not_exists(
+  title:       __('Ticket Overview Query Polling'),
+  name:        'ui_ticket_overview_query_polling',
+  area:        'UI::TicketOverview::QueryPolling',
+  description: __('System-wide configuration of the query polling mechanism for ticket overviews.'),
+  options:     {},
+  state:       {
+    enabled:    true,
+    page_size:  30,
+    background: {
+      calculation_count: 3,
+      interval_sec:      10,
+      cache_ttl_sec:     10,
+    },
+    foreground: {
+      interval_sec:  5,
+      cache_ttl_sec: 5,
+    },
+    counts:     {
+      interval_sec:  60,
+      cache_ttl_sec: 60,
+    },
+  },
+  preferences: {
+    permission: ['admin.ui'],
+  },
+  frontend:    true
+)
+
+Setting.create_if_not_exists(
   title:       __('S/MIME integration'),
   name:        'smime_integration',
   area:        'Integration::Switch',

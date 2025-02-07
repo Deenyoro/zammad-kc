@@ -1,6 +1,13 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import { computed, reactive, readonly, ref } from 'vue'
+import {
+  computed,
+  reactive,
+  readonly,
+  ref,
+  type ComputedRef,
+  type Ref,
+} from 'vue'
 
 import type { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import type {
@@ -18,34 +25,35 @@ export const usePagination = <
   query: QueryHandler<TQueryResult, TQueryVariables>,
   resultKey: string,
   pageSize: number,
+  additionalVariables?:
+    | Ref<Partial<TQueryVariables>>
+    | ComputedRef<Partial<TQueryVariables>>
+    | (() => Partial<TQueryVariables>),
 ) => {
   const pageInfo = computed(() => {
     const result: OperationQueryResult = query.result().value || {}
-
     return (result[resultKey] as BaseConnection)?.pageInfo
   })
 
   const hasNextPage = computed(() => !!pageInfo.value?.hasNextPage)
   const hasPreviousPage = computed(() => !!pageInfo.value?.hasPreviousPage)
 
-  const getInitialCurrentPage = (): number => {
+  const currentPage = computed(() => {
     const result: OperationQueryResult = query.result().value || {}
     const data = result[resultKey] as BaseConnection
     if (!data) return 1
     const currentLength = data.edges?.length || 0
-    if (!currentLength) return 1
-    return Math.ceil(currentLength / pageSize)
-  }
+    return currentLength ? Math.ceil(currentLength / pageSize) : 1
+  })
 
   const loadingNewPage = ref(false)
-  const currentPage = ref(getInitialCurrentPage())
 
   return reactive({
     pageInfo: readonly(pageInfo),
     hasNextPage: readonly(hasNextPage),
     hasPreviousPage: readonly(hasPreviousPage),
     loadingNewPage: readonly(loadingNewPage),
-    currentPage: readonly(currentPage),
+    currentPage,
     async fetchPreviousPage() {
       try {
         loadingNewPage.value = true
@@ -56,21 +64,26 @@ export const usePagination = <
           } as Partial<TQueryVariables & PaginationVariables>,
         })
       } finally {
-        currentPage.value -= 1
         loadingNewPage.value = false
       }
     },
     async fetchNextPage() {
       try {
         loadingNewPage.value = true
+
+        const nextAdditionalVariables =
+          (typeof additionalVariables === 'function'
+            ? additionalVariables()
+            : additionalVariables?.value) || {}
+
         await query.fetchMore({
           variables: {
             pageSize,
             cursor: pageInfo.value?.endCursor,
+            ...nextAdditionalVariables,
           } as Partial<TQueryVariables & PaginationVariables>,
         })
       } finally {
-        currentPage.value += 1
         loadingNewPage.value = false
       }
     },

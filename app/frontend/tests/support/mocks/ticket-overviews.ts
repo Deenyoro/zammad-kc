@@ -1,13 +1,14 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import { TicketOverviewOrderDocument } from '#shared/entities/ticket/graphql/queries/ticket/overviewOrder.api.ts'
-import { TicketOverviewsDocument } from '#shared/entities/ticket/graphql/queries/ticket/overviews.api.ts'
-import { TicketOverviewUpdatesDocument } from '#shared/entities/ticket/graphql/subscriptions/ticketOverviewUpdates.api.ts'
 import type {
   TicketOverviewOrderQuery,
   TicketOverviewsQuery,
 } from '#shared/graphql/types.ts'
 import { EnumOrderDirection } from '#shared/graphql/types.ts'
+
+import { TicketOverviewOrderDocument } from '#mobile/entities/ticket/graphql/queries/overviewOrder.api.ts'
+import { TicketOverviewsDocument } from '#mobile/entities/ticket/graphql/queries/overviews.api.ts'
+import { TicketOverviewUpdatesDocument } from '#mobile/entities/ticket/graphql/subscriptions/ticketOverviewUpdates.api.ts'
 
 import { mockGraphQLApi, mockGraphQLSubscription } from '../mock-graphql-api.ts'
 
@@ -16,6 +17,7 @@ export const getApiTicketOverviews = (): TicketOverviewsQuery => ({
     {
       __typename: 'Overview',
       id: '1',
+      internalId: 1,
       name: __('Overview 1'),
       link: 'overview_1',
       ticketCount: 1,
@@ -38,18 +40,12 @@ export const getApiTicketOverviews = (): TicketOverviewsQuery => ({
         { key: 'created_at', value: 'Created at' },
         { key: 'updated_at', value: 'Updated at' },
       ],
-      viewColumnsRaw: [
-        'number',
-        'title',
-        'created_at',
-        'updated_at',
-        'priority',
-      ],
       groupBy: null,
     },
     {
       __typename: 'Overview',
       id: '2',
+      internalId: 2,
       name: __('Overview 2'),
       link: 'overview_2',
       ticketCount: 2,
@@ -71,12 +67,12 @@ export const getApiTicketOverviews = (): TicketOverviewsQuery => ({
         { key: 'created_at', value: 'Created at' },
         { key: 'updated_at', value: 'Updated at' },
       ],
-      viewColumnsRaw: ['number', 'title', 'created_at', 'updated_at'],
       groupBy: null,
     },
     {
       __typename: 'Overview',
       id: '3',
+      internalId: 3,
       name: __('Overview 3'),
       link: 'overview_3',
       ticketCount: 3,
@@ -98,7 +94,6 @@ export const getApiTicketOverviews = (): TicketOverviewsQuery => ({
         { key: 'created_at', value: 'Created at' },
         { key: 'updated_at', value: 'Updated at' },
       ],
-      viewColumnsRaw: ['number', 'title', 'created_at', 'updated_at'],
       groupBy: null,
     },
   ],

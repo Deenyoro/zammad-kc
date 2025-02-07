@@ -1,5 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import { faker } from '@faker-js/faker'
 import { waitFor, within } from '@testing-library/vue'
 import { vi } from 'vitest'
 import { ref } from 'vue'
@@ -9,9 +10,11 @@ import {
   type ExtendedMountingOptions,
   renderComponent,
 } from '#tests/support/components/index.ts'
+import { mockRouterHooks } from '#tests/support/mock-vue-router.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
 import { mockObjectManagerFrontendAttributesQuery } from '#shared/entities/object-attributes/graphql/queries/objectManagerFrontendAttributes.mocks.ts'
+import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
 import { EnumObjectManagerObjects } from '#shared/graphql/types.ts'
 import {
   convertToGraphQLId,
@@ -25,6 +28,8 @@ import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 import CommonAdvancedTable from '../CommonAdvancedTable.vue'
 
 import type { AdvancedTableProps, TableAdvancedItem } from '../types.ts'
+
+mockRouterHooks()
 
 const tableHeaders = ['title', 'owner', 'state', 'priority', 'created_at']
 
@@ -67,11 +72,26 @@ const tableActions: MenuItem[] = [
   },
 ]
 
+vi.mock('@vueuse/core', async (importOriginal) => {
+  const modules = await importOriginal<typeof import('@vueuse/core')>()
+  return {
+    ...modules,
+    useInfiniteScroll: (
+      scrollContainer: HTMLElement,
+      callback: () => Promise<void>,
+    ) => {
+      callback()
+      return { reset: vi.fn(), isLoading: ref(false) }
+    },
+  }
+})
+
 const renderTable = async (
   props: AdvancedTableProps,
   options: ExtendedMountingOptions<AdvancedTableProps> = { form: true },
 ) => {
   const wrapper = renderComponent(CommonAdvancedTable, {
+    router: true,
     ...options,
     props: {
       object: EnumObjectManagerObjects.Ticket,
@@ -275,7 +295,9 @@ describe('CommonAdvancedTable', () => {
             items: [item],
           }
         },
-        template: `<CommonAdvancedTable @click-row="mockedCallback" :headers="tableHeaders" :attributes="attributes" :items="items" :total-items="100" caption="Table caption" />`,
+        template: `
+          <CommonAdvancedTable @click-row="mockedCallback" :headers="tableHeaders" :attributes="attributes"
+                               :items="items" :total-items="100" caption="Table caption" />`,
       },
       { form: true },
     )
@@ -446,7 +468,7 @@ describe('CommonAdvancedTable', () => {
         id: convertToGraphQLId('Ticket', 2),
         checked: true,
         disabled: true,
-        label: 'selection data 1',
+        label: 'selection data 2',
       },
     ]
 
@@ -477,9 +499,130 @@ describe('CommonAdvancedTable', () => {
     expect(checkedRows.value).toEqual([])
   })
 
-  // TODO: ...
-  // it.todo('supports sorting')
-  // it.todo('supports grouping')
-  // it.todo('informs the user about reached limits')
-  // it.todo('informs the user about table end')
+  it('supports sorting', async () => {
+    mockObjectManagerFrontendAttributesQuery({
+      objectManagerFrontendAttributes: ticketObjectAttributes(),
+    })
+
+    const items = [
+      {
+        id: convertToGraphQLId('Ticket', 1),
+        checked: false,
+        disabled: false,
+        title: 'selection data 1',
+      },
+    ]
+
+    const wrapper = await renderTable({
+      headers: ['title'],
+      items,
+      hasCheckboxColumn: true,
+      totalItems: 100,
+      caption: 'Table caption',
+      orderBy: 'label',
+    })
+
+    const sortButton = await wrapper.findByRole('button', {
+      name: 'Sorted descending',
+    })
+
+    await wrapper.events.click(sortButton)
+
+    expect(wrapper.emitted('sort').at(-1)).toEqual(['title', 'ASCENDING'])
+  })
+
+  it('informs the user about reached limits', async () => {
+    const items = Array.from({ length: 30 }, () => ({
+      id: convertToGraphQLId('Ticket', faker.number.int()),
+      checked: false,
+      disabled: false,
+      title: faker.word.words(),
+    }))
+
+    const scrollContainer = document.createElement('div')
+    document.body.appendChild(scrollContainer)
+
+    const wrapper = await renderTable({
+      headers: ['title'],
+      items,
+      hasCheckboxColumn: true,
+      totalItems: 30,
+      maxItems: 20,
+      scrollContainer,
+      caption: 'Table caption',
+      orderBy: 'label',
+    })
+
+    expect(
+      wrapper.getByText(
+        'You reached the table limit of 20 tickets (10 remaining).',
+      ),
+    ).toBeInTheDocument()
+
+    scrollContainer.remove()
+  })
+
+  it('informs the user about table end', async () => {
+    const items = Array.from({ length: 30 }, () => ({
+      id: convertToGraphQLId('Ticket', faker.number.int()),
+      checked: false,
+      disabled: false,
+      title: faker.word.sample(),
+    }))
+
+    const scrollContainer = document.createElement('div')
+    document.body.appendChild(scrollContainer)
+
+    const wrapper = await renderTable({
+      headers: ['title'],
+      items,
+      hasCheckboxColumn: true,
+      totalItems: 30,
+      maxItems: 30,
+      scrollContainer,
+      caption: 'Table caption',
+      orderBy: 'label',
+    })
+
+    expect(
+      wrapper.getByText("You don't have more tickets to load."),
+    ).toBeInTheDocument()
+
+    scrollContainer.remove()
+  })
+
+  it('supports grouping and shows incomplete count', async () => {
+    mockObjectManagerFrontendAttributesQuery({
+      objectManagerFrontendAttributes: ticketObjectAttributes(),
+    })
+
+    const items = [
+      createDummyTicket(),
+      createDummyTicket({ ticketId: '2', title: faker.word.sample() }),
+    ]
+
+    const wrapper = await renderTable({
+      headers: [
+        'priorityIcon',
+        'stateIcon',
+        'title',
+        'customer',
+        'organization',
+        'group',
+        'owner',
+        'state',
+        'created_at',
+      ],
+      items,
+      hasCheckboxColumn: true,
+      totalItems: 30,
+      maxItems: 30,
+      groupBy: 'customer',
+      caption: 'Table caption',
+    })
+
+    expect(
+      wrapper.getByRole('row', { name: 'Nicole Braun 2+' }),
+    ).toBeInTheDocument()
+  })
 })

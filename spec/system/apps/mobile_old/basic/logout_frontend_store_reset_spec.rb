@@ -9,7 +9,7 @@ RSpec.describe 'Mobile > Basic > Logout Frontend Store Reset', app: :mobile, typ
 
     it 'check that overviews are resetet for a different user', authenticated_as: :agent do
       visit '/'
-      wait_for_gql 'shared/entities/ticket/graphql/queries/ticket/overviews.graphql'
+      wait_for_gql 'apps/mobile/entities/ticket/graphql/queries/overviews.graphql'
       expect(find_all('a[href^="/mobile/tickets/view/"]').length).to eq(7)
 
       logout
@@ -19,7 +19,7 @@ RSpec.describe 'Mobile > Basic > Logout Frontend Store Reset', app: :mobile, typ
         password: 'test',
       )
 
-      wait_for_gql 'shared/entities/ticket/graphql/queries/ticket/overviews.graphql'
+      wait_for_gql 'apps/mobile/entities/ticket/graphql/queries/overviews.graphql'
       expect(find_all('a[href^="/mobile/tickets/view/"]').length).to eq(1)
     end
   end

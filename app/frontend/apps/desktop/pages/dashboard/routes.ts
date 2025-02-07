@@ -4,6 +4,23 @@ import type { RouteRecordRaw } from 'vue-router'
 
 const route: RouteRecordRaw[] = [
   {
+    path: '/playground',
+    name: 'Playground',
+    props: true,
+    component: () => import('./views/Playground.vue'),
+    meta: {
+      title: 'Playground',
+      icon: 'logo-flat',
+      requiresAuth: true,
+      requiredPermission: ['*'],
+      order: 500,
+    },
+  },
+]
+
+// Temporary until we work on the dashboard
+if (import.meta.env.DEV || VITE_TEST_MODE) {
+  route.push({
     path: '/dashboard',
     name: 'Dashboard',
     alias: '/',
@@ -18,20 +35,7 @@ const route: RouteRecordRaw[] = [
       level: 1,
       permanentItem: true,
     },
-  },
-  {
-    path: '/playground',
-    name: 'Playground',
-    props: true,
-    component: () => import('./views/Playground.vue'),
-    meta: {
-      title: 'Playground',
-      icon: 'logo-flat',
-      requiresAuth: true,
-      requiredPermission: ['*'],
-      order: 500,
-    },
-  },
-]
+  })
+}
 
 export default route

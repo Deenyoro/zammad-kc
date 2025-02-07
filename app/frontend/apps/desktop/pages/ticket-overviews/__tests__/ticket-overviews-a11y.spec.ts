@@ -9,12 +9,11 @@ import { visitView } from '#tests/support/components/visitView.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
 import { mockObjectManagerFrontendAttributesQuery } from '#shared/entities/object-attributes/graphql/queries/objectManagerFrontendAttributes.mocks.ts'
-import { mockTicketOverviewTicketCountQuery } from '#shared/entities/ticket/graphql/queries/ticket/overviewTicketCount.mocks.ts'
 import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
 import { EnumOrderDirection } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
-import { mockTicketsByOverviewQuery } from '#desktop/entities/ticket/graphql/queries/ticketsByOverview.mocks.ts'
+import { mockTicketsCachedByOverviewQuery } from '#desktop/entities/ticket/graphql/queries/ticketsCachedByOverview.mocks.ts'
 import { mockUserCurrentTicketOverviewsQuery } from '#desktop/entities/ticket/graphql/queries/userCurrentTicketOverviews.mocks.ts'
 
 describe('ticket overviews view', () => {
@@ -30,8 +29,6 @@ describe('ticket overviews view', () => {
           prio: 1000,
           orderBy: 'created_at',
           orderDirection: EnumOrderDirection.Ascending,
-          viewColumns: [],
-          orderColumns: [],
           viewColumnsRaw: [],
           active: true,
         },
@@ -42,17 +39,8 @@ describe('ticket overviews view', () => {
       objectManagerFrontendAttributes: ticketCustomerObjectAttributes(),
     })
 
-    mockTicketOverviewTicketCountQuery({
-      ticketOverviews: [
-        {
-          id: convertToGraphQLId('Overview', 1),
-          ticketCount: 111,
-        },
-      ],
-    })
-
-    mockTicketsByOverviewQuery({
-      ticketsByOverview: generateObjectData('TicketConnection', {
+    mockTicketsCachedByOverviewQuery({
+      ticketsCachedByOverview: generateObjectData('TicketConnection', {
         edges: [
           {
             node: createDummyTicket(),

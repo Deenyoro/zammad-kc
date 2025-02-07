@@ -10,6 +10,7 @@ export const UserCurrentTicketOverviewsDocument = gql`
     query userCurrentTicketOverviews($ignoreUserConditions: Boolean!, $withTicketCount: Boolean!) {
   userCurrentTicketOverviews(ignoreUserConditions: $ignoreUserConditions) {
     ...overviewAttributes
+    viewColumnsRaw
   }
 }
     ${OverviewAttributesFragmentDoc}`;

@@ -96,6 +96,7 @@ export interface ConfigList {
   ui_ticket_create_available_types: ('phone-in' | 'phone-out' | 'email-out')[]
   ui_ticket_create_default_type: 'phone-in' | 'phone-out' | 'email-out'
   ui_ticket_create_notes: unknown
+  ui_ticket_overview_query_polling: unknown
   ui_ticket_overview_ticket_limit: number
   ui_ticket_priority_icons?: boolean | null
   ui_ticket_zoom_article_delete_timeframe: number

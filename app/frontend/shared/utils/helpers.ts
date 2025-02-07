@@ -13,7 +13,7 @@ export const truthy = <T>(value: Maybe<T>): value is IsTruthy<T> => {
 }
 
 export const edgesToArray = <T>(
-  object?: Maybe<{ edges?: { node: T }[] }>,
+  object?: Maybe<{ edges?: Maybe<{ node: T }[]> }>,
 ): T[] => {
   return object?.edges?.map((edge) => edge.node) || []
 }

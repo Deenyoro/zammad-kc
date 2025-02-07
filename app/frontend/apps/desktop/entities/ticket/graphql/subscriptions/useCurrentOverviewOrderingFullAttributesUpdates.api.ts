@@ -11,6 +11,7 @@ export const UserCurrentOverviewOrderingFullAttributesUpdatesDocument = gql`
   userCurrentOverviewOrderingUpdates(ignoreUserConditions: $ignoreUserConditions) {
     overviews {
       ...overviewAttributes
+      viewColumnsRaw
     }
   }
 }

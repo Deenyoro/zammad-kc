@@ -7,9 +7,8 @@ class Gql::ZammadSchema < GraphQL::Schema
   context_class Gql::Context::CurrentUserAware
 
   use GraphQL::Subscriptions::ActionCableSubscriptions, broadcast: true, default_broadcastable: false
-
-  # Enable batch loading
   use GraphQL::Batch
+  use GraphQL::FragmentCache
 
   description 'This is the Zammad GraphQL API'
 
@@ -18,8 +17,7 @@ class Gql::ZammadSchema < GraphQL::Schema
   default_page_size 100
   max_complexity 10_000
 
-  # Depth of 15 is needed for commmon introspection queries like Insomnia.
-  max_depth 15
+  max_depth 8, count_introspection_fields: false
 
   TYPE_MAP = {
     ::Store   => ::Gql::Types::StoredFileType,

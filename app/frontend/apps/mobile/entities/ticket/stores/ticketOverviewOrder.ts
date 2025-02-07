@@ -5,8 +5,6 @@ import { keyBy } from 'lodash-es'
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
-import { useTicketOverviewOrderQuery } from '#shared/entities/ticket/graphql/queries/ticket/overviewOrder.api.ts'
-import { TicketOverviewUpdatesDocument } from '#shared/entities/ticket/graphql/subscriptions/ticketOverviewUpdates.api.ts'
 import type {
   Overview,
   TicketOverviewsQuery,
@@ -14,6 +12,9 @@ import type {
   TicketOverviewUpdatesSubscriptionVariables,
 } from '#shared/graphql/types.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
+
+import { useTicketOverviewOrderQuery } from '#mobile/entities/ticket/graphql/queries/overviewOrder.api.ts'
+import { TicketOverviewUpdatesDocument } from '#mobile/entities/ticket/graphql/subscriptions/ticketOverviewUpdates.api.ts'
 
 import { getTicketOverviewStorage } from '../helpers/ticketOverviewStorage.ts'
 

@@ -2,6 +2,14 @@ subscription ticketOverviewUpdates($ignoreUserConditions: Boolean = false, $with
   ticketOverviewUpdates(ignoreUserConditions: $ignoreUserConditions) {
     ticketOverviews {
       ...overviewAttributes
+      viewColumns {
+        key
+        value
+      }
+      orderColumns {
+        key
+        value
+      }
     }
   }
 }

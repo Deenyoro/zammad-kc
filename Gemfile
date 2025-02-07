@@ -47,6 +47,7 @@ gem 'pundit'
 # core - graphql handling
 gem 'graphql'
 gem 'graphql-batch', require: 'graphql/batch'
+gem 'graphql-fragment_cache'
 
 # core - image processing
 gem 'rszr'

@@ -1,6 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import { waitFor, within } from '@testing-library/vue'
+import { afterEach, beforeEach } from 'vitest'
 
 import { generateObjectData } from '#tests/graphql/builders/index.ts'
 import { getTestRouter } from '#tests/support/components/renderComponent.ts'
@@ -9,17 +10,19 @@ import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
-import { mockTicketOverviewTicketCountQuery } from '#shared/entities/ticket/graphql/queries/ticket/overviewTicketCount.mocks.ts'
 import { mockCurrentUserQuery } from '#shared/graphql/queries/currentUser.mocks.ts'
 import { EnumOrderDirection } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
-import { mockTicketsByOverviewQuery } from '#desktop/entities/ticket/graphql/queries/ticketsByOverview.mocks.ts'
-import { mockUserCurrentTicketOverviewsQuery } from '#desktop/entities/ticket/graphql/queries/userCurrentTicketOverviews.mocks.ts'
+import { mockTicketsCachedByOverviewQuery } from '#desktop/entities/ticket/graphql/queries/ticketsCachedByOverview.mocks.ts'
+import {
+  mockUserCurrentTicketOverviewsQuery,
+  waitForUserCurrentTicketOverviewsQueryCalls,
+} from '#desktop/entities/ticket/graphql/queries/userCurrentTicketOverviews.mocks.ts'
 import { getUserCurrentOverviewOrderingFullAttributesUpdatesSubscriptionHandler } from '#desktop/entities/ticket/graphql/subscriptions/useCurrentOverviewOrderingFullAttributesUpdates.mocks.ts'
 import { getUserCurrentTicketOverviewFullAttributesUpdatesSubscriptionHandler } from '#desktop/entities/ticket/graphql/subscriptions/userCurrentTicketOverviewFullAttributesUpdates.mocks.ts'
 
-const mockDefaultOverviewQueries = () => {
+const mockDefaultOverviewQueries = () =>
   mockUserCurrentTicketOverviewsQuery({
     userCurrentTicketOverviews: [
       {
@@ -29,22 +32,10 @@ const mockDefaultOverviewQueries = () => {
         prio: 1000,
         orderBy: 'created_at',
         orderDirection: EnumOrderDirection.Ascending,
-        viewColumns: [],
-        orderColumns: [],
         active: true,
       },
     ],
   })
-
-  mockTicketOverviewTicketCountQuery({
-    ticketOverviews: [
-      generateObjectData('Overview', {
-        id: convertToGraphQLId('Overview', 1),
-        ticketCount: 111,
-      }),
-    ],
-  })
-}
 
 const getDefaultOverviews = () => [
   {
@@ -75,6 +66,17 @@ describe('TicketOverviews', async () => {
   it('redirects when overview does not exist', async () => {
     mockDefaultOverviewQueries()
 
+    mockTicketsCachedByOverviewQuery({
+      ticketsCachedByOverview: generateObjectData('TicketConnection', {
+        totalCount: 0,
+        edges: [],
+        pageInfo: {
+          endCursor: '',
+          hasNextPage: false,
+        },
+      }),
+    })
+
     await visitView('tickets/view/does_not_exist')
 
     const router = getTestRouter()
@@ -104,26 +106,28 @@ describe('TicketOverviews', async () => {
     })
 
     expect(secondaryNavigationSidebar).toHaveTextContent('My Assigned Tickets')
+
+    expect(
+      await view.findByRole('table', { name: 'Overview: My Assigned Tickets' }),
+    ).toHaveTextContent('My Assigned TicketsState Icon') //  deeper test is in TicketList
   })
 
   it('reorders overviews when subscription comes in', async () => {
     const overviews = getDefaultOverviews()
 
-    mockUserCurrentTicketOverviewsQuery({
-      userCurrentTicketOverviews: overviews,
+    mockCurrentUserQuery({
+      currentUser: {
+        preferences: {
+          overviews_last_used: {
+            '1': '2021-06-01T00:00:00.000Z',
+            '2': '2021-06-01T00:00:00.000Z',
+          },
+        },
+      },
     })
 
-    mockTicketOverviewTicketCountQuery({
-      ticketOverviews: [
-        {
-          id: convertToGraphQLId('Overview', 1),
-          ticketCount: 111,
-        },
-        {
-          id: convertToGraphQLId('Overview', 2),
-          ticketCount: 666,
-        },
-      ],
+    mockUserCurrentTicketOverviewsQuery({
+      userCurrentTicketOverviews: overviews,
     })
 
     const view = await visitView('tickets/view/my_assigned')
@@ -159,23 +163,11 @@ describe('TicketOverviews', async () => {
   })
 
   it('updates overviews when subscription comes in', async () => {
+    // ticketsCachedCountByOverview will be removed soon
     const overviews = getDefaultOverviews()
 
     mockUserCurrentTicketOverviewsQuery({
       userCurrentTicketOverviews: overviews,
-    })
-
-    mockTicketOverviewTicketCountQuery({
-      ticketOverviews: [
-        {
-          id: convertToGraphQLId('Overview', 1),
-          ticketCount: 111,
-        },
-        {
-          id: convertToGraphQLId('Overview', 2),
-          ticketCount: 666,
-        },
-      ],
     })
 
     const view = await visitView('tickets/view/my_assigned')
@@ -202,8 +194,6 @@ describe('TicketOverviews', async () => {
                 prio: 2000,
                 orderBy: 'created_at',
                 orderDirection: EnumOrderDirection.Ascending,
-                viewColumns: [],
-                orderColumns: [],
                 active: true,
               },
             ],
@@ -221,10 +211,6 @@ describe('TicketOverviews', async () => {
     it('displays a message to the agent when no overviews are available.', async () => {
       mockUserCurrentTicketOverviewsQuery({
         userCurrentTicketOverviews: [],
-      })
-
-      mockTicketOverviewTicketCountQuery({
-        ticketOverviews: [],
       })
 
       const view = await visitView('tickets/view')
@@ -245,150 +231,200 @@ describe('TicketOverviews', async () => {
         view.queryByLabelText('second level navigation sidebar'),
       ).not.toBeInTheDocument()
     })
+  })
 
-    it('displays a ticket create message to the customer when no tickets are available and no ticket history', async () => {
-      mockUserCurrentTicketOverviewsQuery({
-        userCurrentTicketOverviews: [
-          generateObjectData('Overview', {
-            id: convertToGraphQLId('Overview', 1),
-            name: 'My Tickets',
-            link: 'my_tickets',
-            prio: 9,
-            orderBy: 'created_at',
-            orderDirection: EnumOrderDirection.Ascending,
-            viewColumns: [],
-            orderColumns: [],
-            organizationShared: false,
-            outOfOffice: false,
-            active: true,
-          }),
-        ],
-      })
-
-      mockCurrentUserQuery({
-        currentUser: {
-          preferences: {
-            tickets_closed: 0,
-            tickets_open: 0,
-          },
-        },
-      })
-
-      mockTicketOverviewTicketCountQuery({
-        ticketOverviews: [],
-      })
-
-      mockTicketsByOverviewQuery({
-        ticketsByOverview: generateObjectData('TicketConnection', {
-          totalCount: 0,
-          edges: [],
-          pageInfo: {
-            endCursor: '',
-            hasNextPage: false,
-          },
-        }),
-      })
-
-      mockPermissions(['ticket.customer'])
-
-      await mockApplicationConfig({ customer_ticket_create: true })
-
-      const view = await visitView('tickets/view')
-
-      const secondaryNavigationSidebar = await view.findByRole(
-        'complementary',
-        {
-          name: 'second level navigation sidebar',
-        },
-      )
-
-      expect(
-        within(secondaryNavigationSidebar).getByRole('link', {
+  it('displays a ticket create message to the customer when no tickets are available and no ticket history', async () => {
+    mockUserCurrentTicketOverviewsQuery({
+      userCurrentTicketOverviews: [
+        generateObjectData('Overview', {
+          id: convertToGraphQLId('Overview', 1),
           name: 'My Tickets',
+          link: 'my_tickets',
+          prio: 9,
+          orderBy: 'created_at',
+          orderDirection: EnumOrderDirection.Ascending,
+          organizationShared: false,
+          outOfOffice: false,
+          active: true,
         }),
-      ).toBeInTheDocument()
-
-      expect(await view.findByRole('heading', { level: 2 })).toHaveTextContent(
-        'Welcome!',
-      )
-
-      expect(
-        view.getByText('You have not created a ticket yet.'),
-      ).toBeInTheDocument()
-      expect(
-        view.getByText(
-          'The way to communicate with us is this thing called "ticket".',
-        ),
-      ).toBeInTheDocument()
-      expect(
-        view.getByText(
-          'Please click on the button below to create your first one.',
-        ),
-      ).toBeInTheDocument()
-
-      await view.events.click(
-        view.getByRole('button', { name: 'Create your first ticket' }),
-      )
-
-      const router = getTestRouter()
-
-      await waitFor(() =>
-        expect(router.currentRoute.value.name).toBe('TicketCreate'),
-      )
+      ],
     })
 
-    it('displays a message indicating no tickets are available when the overview is empty', async () => {
-      mockUserCurrentTicketOverviewsQuery({
-        userCurrentTicketOverviews: [
-          generateObjectData('Overview', {
-            id: convertToGraphQLId('Overview', 1),
-            name: 'My Assigned Tickets',
-            link: 'my_assigned',
-            prio: 4,
-            orderBy: 'created_at',
-            orderDirection: EnumOrderDirection.Ascending,
-            viewColumns: [],
-            orderColumns: [],
-            organizationShared: false,
-            outOfOffice: false,
-            active: true,
-          }),
-        ],
-      })
+    mockCurrentUserQuery({
+      currentUser: {
+        preferences: {
+          tickets_closed: 0,
+          tickets_open: 0,
+        },
+      },
+    })
+
+    mockTicketsCachedByOverviewQuery({
+      ticketsCachedByOverview: generateObjectData('TicketConnection', {
+        totalCount: 0,
+        edges: [],
+        pageInfo: {
+          endCursor: '',
+          hasNextPage: false,
+        },
+      }),
+    })
+
+    mockPermissions(['ticket.customer'])
+
+    await mockApplicationConfig({ customer_ticket_create: true })
+
+    const view = await visitView('tickets/view')
+
+    const secondaryNavigationSidebar = await view.findByRole('complementary', {
+      name: 'second level navigation sidebar',
+    })
+
+    expect(
+      within(secondaryNavigationSidebar).getByRole('link', {
+        name: 'My Tickets 0', // 0 comes from the ticket count
+      }),
+    ).toBeInTheDocument()
+
+    expect(await view.findByRole('heading', { level: 2 })).toHaveTextContent(
+      'Welcome!',
+    )
+
+    expect(
+      view.getByText('You have not created a ticket yet.'),
+    ).toBeInTheDocument()
+    expect(
+      view.getByText(
+        'The way to communicate with us is this thing called "ticket".',
+      ),
+    ).toBeInTheDocument()
+    expect(
+      view.getByText(
+        'Please click on the button below to create your first one.',
+      ),
+    ).toBeInTheDocument()
+
+    await view.events.click(
+      view.getByRole('button', { name: 'Create your first ticket' }),
+    )
+
+    const router = getTestRouter()
+
+    await waitFor(() =>
+      expect(router.currentRoute.value.name).toBe('TicketCreate'),
+    )
+  })
+
+  it('displays a message indicating no tickets are available when the overview is empty', async () => {
+    mockUserCurrentTicketOverviewsQuery({
+      userCurrentTicketOverviews: [
+        generateObjectData('Overview', {
+          id: convertToGraphQLId('Overview', 1),
+          name: 'My Assigned Tickets',
+          link: 'my_assigned',
+          prio: 4,
+          orderBy: 'created_at',
+          orderDirection: EnumOrderDirection.Ascending,
+          organizationShared: false,
+          outOfOffice: false,
+          active: true,
+        }),
+      ],
+    })
+
+    mockCurrentUserQuery({
+      currentUser: {
+        preferences: {
+          tickets_closed: 1,
+          tickets_open: 2,
+        },
+      },
+    })
+
+    mockTicketsCachedByOverviewQuery({
+      ticketsCachedByOverview: generateObjectData('TicketConnection', {
+        totalCount: 0,
+        edges: [],
+        pageInfo: {
+          endCursor: '',
+          hasNextPage: false,
+        },
+      }),
+    })
+
+    mockPermissions(['ticket.agent'])
+
+    const view = await visitView('tickets/view')
+
+    expect(await view.findByRole('heading', { level: 2 })).toHaveTextContent(
+      'Empty Overview',
+    )
+
+    expect(view.getByText('No tickets in this state.')).toBeInTheDocument()
+  })
+
+  describe('polling overviews', () => {
+    beforeEach(vi.useFakeTimers)
+    afterEach(vi.useRealTimers)
+
+    it.todo('polls for the active overviews', async () => {
+      mockDefaultOverviewQueries()
+      await visitView('tickets/view/my_assigned')
+
+      const mocks = await waitForUserCurrentTicketOverviewsQueryCalls()
+
+      expect(mocks).toHaveLength(1)
+
+      const config = {
+        foreground: {
+          interval_sec: 5,
+          cache_ttl_sec: 5,
+        },
+      }
+      setQueryPollingConfig(config)
+
+      await vi.advanceTimersByTimeAsync(config.foreground.interval_sec * 1000)
+      await vi.advanceTimersToNextTimerAsync()
+
+      expect(mocks).toHaveLength(2)
+      // await waitFor(() => expect(mocks).toHaveLength(2))
+    })
+
+    it.todo('polls for the background overviews', async () => {
+      mockDefaultOverviewQueries()
 
       mockCurrentUserQuery({
         currentUser: {
           preferences: {
-            tickets_closed: 1,
-            tickets_open: 2,
+            overviews_last_used: {
+              '2': '2021-06-01T00:00:00.000Z',
+            },
           },
         },
       })
+      await visitView('tickets/view/my_assigned')
 
-      mockTicketOverviewTicketCountQuery({
-        ticketOverviews: [],
+      // const mocks = await waitForUserCurrentTicketOverviewsQueryCalls()
+    })
+
+    it('disables polling when the config is disabled', async () => {
+      mockDefaultOverviewQueries()
+
+      await visitView('tickets/view/my_assigned')
+
+      setQueryPollingConfig({
+        disabled: true,
       })
 
-      mockTicketsByOverviewQuery({
-        ticketsByOverview: generateObjectData('TicketConnection', {
-          totalCount: 0,
-          edges: [],
-          pageInfo: {
-            endCursor: '',
-            hasNextPage: false,
-          },
-        }),
-      })
+      const mocks = await waitForUserCurrentTicketOverviewsQueryCalls()
 
-      mockPermissions(['ticket.agent'])
+      expect(mocks).toHaveLength(1)
 
-      const view = await visitView('tickets/view')
+      // :TODO fix this
+      await vi.advanceTimersByTimeAsync(5 * 1000)
+      await vi.advanceTimersToNextTimerAsync()
 
-      expect(await view.findByRole('heading', { level: 2 })).toHaveTextContent(
-        'Empty Overview',
-      )
-
-      expect(view.getByText('No tickets in this state.')).toBeInTheDocument()
+      expect(mocks).toHaveLength(1)
     })
   })
 })

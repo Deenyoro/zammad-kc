@@ -11,6 +11,7 @@ export const UserCurrentTicketOverviewFullAttributesUpdatesDocument = gql`
   userCurrentTicketOverviewUpdates(ignoreUserConditions: $ignoreUserConditions) {
     ticketOverviews {
       ...overviewAttributes
+      viewColumnsRaw
     }
   }
 }

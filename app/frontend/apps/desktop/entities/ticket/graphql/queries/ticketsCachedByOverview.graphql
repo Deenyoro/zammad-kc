@@ -1,18 +1,22 @@
-query ticketsByOverview(
+query ticketsCachedByOverview(
   $overviewId: ID!
   $orderBy: String
   $orderDirection: EnumOrderDirection
   $cursor: String
-  $showPriority: Boolean!
-  $showUpdatedBy: Boolean!
   $pageSize: Int = 25
+  $cacheTtl: Int!
+  $renewCache: Boolean
+  $knownCollectionSignature: String
 ) {
-  ticketsByOverview(
+  ticketsCachedByOverview(
     overviewId: $overviewId
     orderBy: $orderBy
     orderDirection: $orderDirection
     after: $cursor
     first: $pageSize
+    cacheTtl: $cacheTtl
+    renewCache: $renewCache
+    knownCollectionSignature: $knownCollectionSignature
   ) {
     totalCount
     edges {
@@ -27,15 +31,15 @@ query ticketsByOverview(
           fullname
         }
         updatedAt
-        updatedBy @include(if: $showUpdatedBy) {
-          id
-          fullname
-        }
-        customer {
+        updatedBy {
           id
           fullname
         }
         owner {
+          id
+          fullname
+        }
+        customer {
           id
           fullname
         }
@@ -51,11 +55,12 @@ query ticketsByOverview(
             name
           }
         }
+        pendingTime
         group {
           id
           name
         }
-        priority @include(if: $showPriority) {
+        priority {
           id
           name
           uiColor
@@ -76,6 +81,10 @@ query ticketsByOverview(
         lastContactAt
         lastContactAgentAt
         lastContactCustomerAt
+        policy {
+          update
+          agentReadAccess
+        }
       }
       cursor
     }
@@ -83,5 +92,6 @@ query ticketsByOverview(
       endCursor
       hasNextPage
     }
+    collectionSignature
   }
 }

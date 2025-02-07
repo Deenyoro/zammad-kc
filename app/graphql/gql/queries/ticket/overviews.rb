@@ -6,12 +6,19 @@ module Gql::Queries
     description 'Ticket overviews available in the system'
 
     argument :ignore_user_conditions, Boolean, description: 'Include additional overviews by ignoring user conditions'
+    argument :filter_overview_ids, [GraphQL::Types::ID], required: false, loads: Gql::Types::OverviewType, description: 'Overview IDs to filter for'
 
     type [Gql::Types::OverviewType], null: false
 
-    def resolve(ignore_user_conditions:)
+    def resolve(ignore_user_conditions:, filter_overviews: nil)
       # This effectively scopes the overviews by `:use?` permission.
-      ::Ticket::Overviews.all(current_user: context.current_user, ignore_user_conditions:)
+      scope = ::Ticket::Overviews.all(current_user: context.current_user, ignore_user_conditions:)
+
+      if filter_overviews
+        return scope.where(id: filter_overviews.pluck(:id))
+      end
+
+      scope
     end
   end
 end

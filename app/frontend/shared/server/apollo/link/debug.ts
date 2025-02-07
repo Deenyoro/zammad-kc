@@ -3,7 +3,7 @@
 import { ApolloLink } from '@apollo/client/core'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { print } from 'graphql/language/printer'
-import { capitalize, isEmpty } from 'lodash-es'
+import { capitalize, cloneDeep, isEmpty } from 'lodash-es'
 
 import type {
   DebugLinkRequestOutput,
@@ -66,7 +66,7 @@ const debugLink = new ApolloLink((operation, forward) => {
 
     log.debug(
       `[GraphQL - Response] - ${operationType} - ${operation.operationName} (took ${duration}ms):`,
-      responseOutput,
+      cloneDeep(responseOutput),
     )
     return data
   })

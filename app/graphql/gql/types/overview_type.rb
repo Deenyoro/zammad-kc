@@ -3,7 +3,9 @@
 module Gql::Types
   class OverviewType < Gql::Types::BaseObject
     include Gql::Types::Concerns::IsModelObject
+    include Gql::Types::Concerns::HasInternalIdField
     include Gql::Types::Concerns::HasPunditAuthorization
+    include Gql::Concerns::HandlesOverviewCaching
 
     description 'Ticket overviews'
 
@@ -21,10 +23,19 @@ module Gql::Types
     # field :view, String, null: false
     field :active, Boolean, null: false
 
-    field :view_columns_raw, [String, { null: false }], null: false, description: 'Columns to be shown on screen'
+    field :view_columns_raw, [String, { null: false }], null: false, description: 'Columns to be shown on screen, mapped to actual internal field IDs'
     field :view_columns, [Gql::Types::KeyValueType, { null: false }], null: false, description: 'Columns to be shown on screen, with assigned label values'
     field :order_columns, [Gql::Types::KeyValueType, { null: false }], null: false, description: 'Columns that may be used as order_by of overview queries, with assigned label values'
+
     field :ticket_count, Integer, null: false, description: 'Count of tickets the authenticated user may see in this overview'
+
+    field :cached_ticket_count, Integer, null: false do
+      description 'Cached count of tickets the authenticated user may see in this overview'
+
+      argument :cache_ttl, Integer do
+        description 'How long to cache the overview data, in seconds. This will be part of the cache key so that different durations get different caches.'
+      end
+    end
 
     def order_by
       object.order['by']
@@ -35,11 +46,16 @@ module Gql::Types
     end
 
     def view_columns_raw
-      flatten_columns(object.view['s'])
+      # Overview column information is saved without the _id suffixes for internal Ticket relation fields.
+      # Map them back to the original field names to avoid issues in the front end, until the storage gets improved.
+      ticket_columns = ::Ticket.column_names
+      flatten_columns(object.view['s']).map do |field_name|
+        ticket_columns.include?(field_name) ? field_name : "#{field_name}_id"
+      end
     end
 
     def view_columns
-      view_columns_raw.map do |attribute|
+      flatten_columns(object.view['s']).map do |attribute|
         { key: attribute, value: label_for_attribute(attribute) }
       end
     end
@@ -59,6 +75,14 @@ module Gql::Types
         .unscope(:order)
         .count(:all)
         .count # double-count due to grouping in underlying scope
+    end
+
+    def cached_ticket_count(cache_ttl:)
+      cache_key = "OverviewType.cached_ticket_count(overview:#{object.id},cache_ttl:#{cache_ttl})-#{object_cache_key(object)}"
+
+      Rails.cache.fetch(cache_key, expires_in: cache_ttl) do
+        ticket_count
+      end
     end
 
     private

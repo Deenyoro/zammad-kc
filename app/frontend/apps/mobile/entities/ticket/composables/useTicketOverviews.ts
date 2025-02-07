@@ -3,8 +3,9 @@
 import { useTimeoutFn } from '@vueuse/shared'
 import { onMounted } from 'vue'
 
-import { useTicketOverviewTicketCountLazyQuery } from '#shared/entities/ticket/graphql/queries/ticket/overviewTicketCount.api.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
+
+import { useTicketOverviewTicketCountLazyQuery } from '#mobile/entities/ticket/graphql/queries/overviewTicketCount.api.ts'
 
 import { useTicketOverviewsStore } from '../stores/ticketOverviews.ts'
 

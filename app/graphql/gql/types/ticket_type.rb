@@ -14,6 +14,9 @@ module Gql::Types
     #   check that they always have 'read' permissions as well, as that is logicaly
     #   included in 'overview'.
     def self.scope_items(items, ctx)
+      # special handling for GraphQL fragment cache value
+      return items if items.is_a?(GraphQL::Execution::Interpreter::RawValue)
+
       TicketPolicy::ReadScope.new(ctx.current_user, items).resolve
     end
 

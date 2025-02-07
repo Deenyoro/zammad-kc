@@ -5,7 +5,6 @@ import { beforeEach } from 'vitest'
 import renderComponent from '#tests/support/components/renderComponent.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
-import { mockTicketOverviewTicketCountQuery } from '#shared/entities/ticket/graphql/queries/ticket/overviewTicketCount.mocks.ts'
 import { EnumOrderDirection } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
@@ -28,42 +27,6 @@ describe('TicketOverviewsSidebar', () => {
           prio: 1000,
           orderBy: 'created_at',
           orderDirection: EnumOrderDirection.Ascending,
-          viewColumns: [
-            {
-              key: 'title',
-              value: 'Title',
-            },
-            {
-              key: 'customer',
-              value: 'Customer',
-            },
-            {
-              key: 'group',
-              value: 'Group',
-            },
-            {
-              key: 'created_at',
-              value: 'Created at',
-            },
-          ],
-          orderColumns: [
-            {
-              key: 'title',
-              value: 'Title',
-            },
-            {
-              key: 'customer',
-              value: 'Customer',
-            },
-            {
-              key: 'group',
-              value: 'Group',
-            },
-            {
-              key: 'created_at',
-              value: 'Created at',
-            },
-          ],
           active: true,
           ticketCount: 2,
         },
@@ -74,23 +37,8 @@ describe('TicketOverviewsSidebar', () => {
           prio: 1010,
           orderBy: 'created_at',
           orderDirection: EnumOrderDirection.Ascending,
-          viewColumns: [],
-          orderColumns: [],
           active: true,
           ticketCount: 12,
-        },
-      ],
-    })
-
-    mockTicketOverviewTicketCountQuery({
-      ticketOverviews: [
-        {
-          id: convertToGraphQLId('Overview', 1),
-          ticketCount: 0,
-        },
-        {
-          id: convertToGraphQLId('Overview', 2),
-          ticketCount: 15,
         },
       ],
     })
@@ -125,11 +73,11 @@ describe('TicketOverviewsSidebar', () => {
     expect(wrapper.getByText('Unassigned & Open Tickets')).toBeInTheDocument()
 
     expect(
-      wrapper.getByRole('link', { name: 'My Assigned Tickets 0' }),
+      wrapper.getByRole('link', { name: 'My Assigned Tickets' }),
     ).toBeInTheDocument()
 
     expect(
-      wrapper.getByRole('link', { name: 'Unassigned & Open Tickets 15' }),
+      wrapper.getByRole('link', { name: 'Unassigned & Open Tickets' }),
     ).toBeInTheDocument()
   })
 })
