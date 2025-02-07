@@ -6,7 +6,7 @@ module CanSelector
       def self.applicable?(input, locale, object)
         return false if locale.blank?
 
-        attr = ObjectManager::Attribute.get(object: object.class_name, name: column_name(input, object))
+        attr = ObjectManager::Attribute.get(object: object.name, name: column_name(input, object))
         return false if attr.nil?
 
         attr.data_option[:relation].present? && attr.data_option[:translate]
