@@ -61,8 +61,8 @@ RSpec.describe 'Ticket::Overviews > Sorting' do # rubocop:disable RSpec/Describe
 
   context 'when sorting by group_id' do
     let(:order_by)       { 'group_id' }
-    let(:locale)         { 'de-de' }
-    let(:sorted_tickets) { tickets.sort_by { |ticket| ticket.group.name }.pluck(:id) }
+    let(:locale)         { 'en-us' }
+    let(:sorted_tickets) { tickets.sort_by { |ticket| ticket.group.name.downcase }.pluck(:id) }
 
     let(:tickets) do
       groups = create_list(:group, 10).tap { |gs| gs.each { |g| g.update!(name: Faker::App.unique.name) } }
@@ -79,7 +79,7 @@ RSpec.describe 'Ticket::Overviews > Sorting' do # rubocop:disable RSpec/Describe
 
     context 'when descending' do
       let(:order_direction) { 'DESC' }
-      let(:sorted_tickets)  { tickets.sort_by { |ticket| ticket.group.name }.pluck(:id).reverse }
+      let(:sorted_tickets)  { tickets.sort_by { |ticket| ticket.group.name.downcase }.pluck(:id).reverse }
 
       it_behaves_like 'it sorts correctly'
     end
@@ -87,7 +87,7 @@ RSpec.describe 'Ticket::Overviews > Sorting' do # rubocop:disable RSpec/Describe
 
   context 'when sorting by customer_id' do
     let(:order_by)       { 'customer_id' }
-    let(:locale)         { 'de-de' }
+    let(:locale)         { 'en-us' }
     let(:sorted_tickets) { tickets.sort_by { |ticket| ticket.customer.fullname.downcase }.pluck(:id) }
 
     let(:tickets) do
