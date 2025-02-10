@@ -30,7 +30,7 @@ const { fingerprint } = useFingerprint()
       <CommonThirdPartyAuthenticationButton
         v-for="provider of props.providers"
         :key="provider.name"
-        class="flex min-w-[calc(50%-theme(spacing.2))] grow"
+        class="grow basis-[calc(50%-theme(spacing.2))]"
         :url="`${provider.url}?fingerprint=${fingerprint}`"
         :button-prefix-icon="provider.icon"
         button-size="large"
