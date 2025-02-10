@@ -352,9 +352,9 @@ const groupByRowCounts = computed(() => {
   let lastValue: string | number
 
   return localItems.value.reduce((groupByRowIds: string[][], item) => {
-    const value = (isRelation ? (item[name] as ObjectLike).id : item[name]) as
-      | string
-      | number
+    const value = (
+      isRelation && item[name] ? (item[name] as ObjectLike).id : item[name]
+    ) as string | number
 
     if (lastValue && value !== lastValue) {
       groupByValueIndex += 1

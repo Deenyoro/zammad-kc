@@ -49,7 +49,7 @@ module Gql::Types
       # Overview column information is saved without the _id suffixes for internal Ticket relation fields.
       # Map them back to the original field names to avoid issues in the front end, until the storage gets improved.
       ticket_columns = ::Ticket.column_names
-      flatten_columns(object.view['s']).map do |field_name|
+      flatten_columns(object.view['s']).reject { |field_name| field_name == object.group_by }.map do |field_name|
         ticket_columns.include?(field_name) ? field_name : "#{field_name}_id"
       end
     end
