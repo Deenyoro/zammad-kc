@@ -20,6 +20,7 @@ class OmniAuth::Strategies::OidcDatabase < OmniAuth::Strategies::OpenIDConnect
     auth_openid_connect_credentials.compact_blank.merge(
       discovery:      true,
       response_type:  :code,
+      pkce:           ActiveModel::Type::Boolean.new.cast(auth_openid_connect_credentials['pkce']),
       client_options:,
     )
   end
