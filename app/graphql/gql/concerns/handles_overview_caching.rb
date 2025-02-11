@@ -22,7 +22,8 @@ module Gql::Concerns::HandlesOverviewCaching
     end
 
     def overview_is_personalized?(overview)
-      overview.condition.values.any? { |field_condition| field_condition['pre_condition']&.include?('current_user') }
+      # Stringify so that it works both with simple and expert mode conditions.
+      overview.condition.to_s.include?('current_user')
     end
 
   end

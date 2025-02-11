@@ -103,6 +103,20 @@ RSpec.describe Gql::Queries::Tickets::Cached::ByOverview, :aggregate_failures, t
 
       let(:agent) { create(:agent, groups: [ticket.group]) }
 
+      context 'with an overview with complex conditions' do
+        let(:overview) { create(:overview, :condition_expert) }
+
+        it 'creates a cache on first call' do
+          ensure_fragment_writes do
+            ensure_ticket_queries do
+              gql.execute(query, variables:)
+            end
+          end
+          expect(gql.result.nodes.first).to include('number' => ticket.number)
+          expect(gql.result.data).to include('totalCount' => 1, 'collectionSignature' => be_present)
+        end
+      end
+
       it 'creates a cache on first call' do
         ensure_fragment_writes do
           ensure_ticket_queries do
