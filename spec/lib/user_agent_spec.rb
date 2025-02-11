@@ -116,7 +116,9 @@ RSpec.describe UserAgent, :aggregate_failures, integration: true do
 
     describe '#get' do
       context 'without http basic auth' do
-        subject(:response) { described_class.get(request_url) }
+        subject(:response) { described_class.get(request_url, {}, options) }
+
+        let(:options) { {} }
 
         context 'with code 200' do
           let(:code)          { '200' }
@@ -146,6 +148,29 @@ RSpec.describe UserAgent, :aggregate_failures, integration: true do
           end
 
           include_examples 'successful get request'
+        end
+
+        context 'with code 301' do
+          let(:code)          { '200' }
+          let(:content_type)  { 'application/json; charset=utf-8' }
+          let(:request_url)   { "#{host}/test/redirect" }
+          let(:expected_body) do
+            {
+              'method'                 => 'get',
+              'submitted'              => 'abc',
+              'content_type_requested' => nil,
+            }
+          end
+
+          include_examples 'successful redirect request'
+        end
+
+        context 'with code 301, but suppressed redirection' do
+          let(:code)          { 0 }
+          let(:request_url)   { "#{host}/test/redirect" }
+          let(:options)       { { do_not_follow_redirects: true } }
+
+          include_examples 'unsuccessful request without body'
         end
 
         context 'with code 404' do

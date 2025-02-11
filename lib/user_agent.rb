@@ -240,7 +240,13 @@ class UserAgent
         header:  response.each_header.to_h,
       )
     when Net::HTTPRedirection
-      raise __('Too many redirections for the original URL, halting.') if count <= 0
+      if options[:do_not_follow_redirects]
+        raise __('The server returned a redirect response, but the current operation does not allow redirects.')
+      end
+
+      if count <= 0
+        raise __('Too many redirections for the original URL, halting.')
+      end
 
       url = response['location']
       return get(url, params, options, count - 1)
@@ -296,6 +302,7 @@ class UserAgent
   # @option options [String] :proxy_password
   # @option options [Integer] :open_timeout
   # @option options [Integer] :read_timeout
+  # @option options [Boolean] :do_not_follow_redirects
   # @option log [String] :facility is sub-key as in options[:log][:facility] providing name to use when logging in HttpLog
   # @param count [Integer] of redirects. Counts towards zero and then aborts
   #
