@@ -16,6 +16,14 @@ RSpec.describe EmailAddressValidation do
     end
   end
 
+  shared_examples 'email address validity exception' do |check_mx:, error_message: ''|
+    let(:email_address_validation) { described_class.new(email_address) }
+
+    it 'raises invalid email address error' do
+      expect { email_address_validation.valid!(check_mx: check_mx) }.to raise_error(EmailAddressValidation::InvalidEmailAddressError, "The email address is invalid: #{error_message}")
+    end
+  end
+
   describe 'Email address' do
     describe 'with MX record' do
       let(:email_address) { 'greetings@zammad.org' }
@@ -53,6 +61,19 @@ RSpec.describe EmailAddressValidation do
       include_examples 'email address validity', valid: true, check_mx: false
     end
 
+    describe 'when mailbox part is below the limit' do
+      let(:email_address) { 'verylonglocalparthere.verylonglocalparthere.verylonglocalparthere.verylonglocalparthere.verylonglocalparthere.verylonglocalparthere.verylonglocalparthere.verylonglocalparthere.verylonglocalparthere.verylonglocalparthere@domain.tld' }
+
+      include_examples 'email address validity', valid: true, check_mx: false
+    end
+
+    describe 'when mailbox part is above the limit' do
+      let(:email_address) { 'trulyverylonglocalparthere.trulyverylonglocalparthere.trulyverylonglocalparthere.trulyverylonglocalparthere.trulyverylonglocalparthere.trulyverylonglocalparthere.trulyverylonglocalparthere.trulyverylonglocalparthere.trulyverylonglocalparthere@domain.tld' }
+
+      include_examples 'email address validity', valid: false, check_mx: false
+      include_examples 'email address validity exception', error_message: 'Mailbox name too long', check_mx: false
+    end
+
     describe 'when max length' do
       let(:email_address) { 'trulyverylongpastasdomainnamehere.trulyverylongpastasdomain@trulyverylongpastasdomainnameheredoublethatloremipsumnamecodena.trulyverylongpastasdomainnameheredoublethatloremipsumnamecodena.trulyverylongpastasdomainnameheredoublethatloremipsumname.com' }
 
@@ -63,6 +84,7 @@ RSpec.describe EmailAddressValidation do
       let(:email_address) { 'trulyverylongpastasdomainnamehere.trulyverylongpastasdomainnamee@trulyverylongpastasdomainnameheredoublethatloremipsumnamecodena.trulyverylongpastasdomainnameheredoublethatloremipsumnamecodena.trulyverylongpastasdomainnameheredoublethatloremipsumname.com' }
 
       include_examples 'email address validity', valid: false, check_mx: false
+      include_examples 'email address validity exception', error_message: 'Address too long', check_mx: false
     end
 
     describe 'when max length with unicode characters' do
@@ -87,24 +109,28 @@ RSpec.describe EmailAddressValidation do
       let(:email_address) { 'zammad' }
 
       include_examples 'email address validity', valid: false, check_mx: false
+      include_examples 'email address validity exception', error_message: 'Invalid Domain Name', check_mx: false
     end
 
     describe 'when too long' do
       let(:email_address) { 'trulyverylongpastasdomainnamehere.trulyverylongpastasdomainnamee@trulyverylongpastasdomainnameheredoublethatloremipsumnamecodena.trulyverylongpastasdomainnameheredoublethatloremipsumnamecodena.trulyverylongpastasdomainnameheredoublethatloremipsumnametoolong.com' }
 
       include_examples 'email address validity', valid: false, check_mx: false
+      include_examples 'email address validity exception', error_message: 'Address too long', check_mx: false
     end
 
     describe 'with invalid domain format' do
       let(:email_address) { 'greetings@example..com' }
 
       include_examples 'email address validity', valid: false, check_mx: false
+      include_examples 'email address validity exception', error_message: 'Invalid Domain Name', check_mx: false
     end
 
     describe 'which is empty' do
       let(:email_address) { '' }
 
       include_examples 'email address validity', valid: false, check_mx: false
+      include_examples 'email address validity exception', error_message: 'Mailbox name too short', check_mx: false
     end
 
     describe 'which starts with +' do

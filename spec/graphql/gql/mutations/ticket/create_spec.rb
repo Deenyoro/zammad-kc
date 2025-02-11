@@ -188,7 +188,7 @@ RSpec.describe Gql::Mutations::Ticket::Create, :aggregate_failures, type: :graph
 
           it 'fails to create the ticket' do
             it_fails_to_create_ticket
-            expect(gql.result.error_message).to include('The email address is invalid.')
+            expect(gql.result.error_message).to include('The email address is invalid')
           end
         end
 
