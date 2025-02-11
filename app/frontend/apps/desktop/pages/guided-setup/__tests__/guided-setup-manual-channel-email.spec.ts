@@ -743,7 +743,7 @@ describe('guided setup manual channel email', () => {
             sslVerify: true,
             user: 'zammad@mail.test.dc.zammad.com',
             archive: true,
-            archiveBefore: '2025-01-01T00:00:00.000Z',
+            archiveBefore: '2025-01-01T00:00:00Z',
             archiveStateId: 4,
           },
           outboundConfiguration: {

@@ -183,10 +183,11 @@ describe('ticket create view', async () => {
           },
           groupId: 'gid://zammad/Group/1',
           objectAttributeValues: [],
-          pendingTime: '2024-11-29T00:00:00.000Z',
+          pendingTime: '2024-11-29T00:00:00Z',
           priorityId: 'gid://zammad/Ticket::Priority/2',
           stateId: 'gid://zammad/Ticket::State/3',
           title: 'Test Ticket',
+          sharedDraftId: undefined,
         },
       })
 

@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { getNode, type FormKitNode } from '@formkit/core'
 import VueDatePicker, { type DatePickerInstance } from '@vuepic/vue-datepicker'
-import { isValid, format, parse } from 'date-fns'
+import { isValid, format, formatISO, parse, parseISO } from 'date-fns'
 import { isEqual } from 'lodash-es'
 import { storeToRefs } from 'pinia'
 import { computed, nextTick, ref, toRef, watch } from 'vue'
@@ -177,10 +177,15 @@ const maskOptions = computed(() => ({
 
 const { el, masked, unmasked } = useIMask(maskOptions)
 
-const parseValue = (value: string) =>
-  parse(value, valueFormat.value, new Date())
+const parseValue = (value: string) => {
+  if (valueFormat.value === 'iso') return parseISO(value)
+  return parse(value, valueFormat.value, new Date())
+}
 
-const formatValue = (value: Date) => format(value, valueFormat.value)
+const formatValue = (value: Date) => {
+  if (valueFormat.value === 'iso') return formatISO(value)
+  return format(value, valueFormat.value)
+}
 
 watch(
   localValue,

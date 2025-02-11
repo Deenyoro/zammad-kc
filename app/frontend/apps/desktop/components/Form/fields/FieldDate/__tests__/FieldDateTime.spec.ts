@@ -270,7 +270,7 @@ describe('Fields - FieldDate', () => {
 
       const emittedInput = view.emitted().inputRaw as Array<Array<InputEvent>>
 
-      expect(emittedInput[0][0]).toBe('2021-04-13T11:10:00.000Z')
+      expect(emittedInput[0][0]).toBe('2021-04-13T11:10:00Z')
       expect(input).toHaveDisplayValue('2021-04-13 11:10')
     })
 
@@ -288,8 +288,30 @@ describe('Fields - FieldDate', () => {
 
       const emittedInput = view.emitted().inputRaw as Array<Array<InputEvent>>
 
-      expect(emittedInput[0][0]).toBe('2021-04-13T11:10:00.000Z')
+      expect(emittedInput[0][0]).toBe('2021-04-13T11:10:00Z')
       expect(input).toHaveDisplayValue('2021-04-13 11:10')
+    })
+
+    it.each([
+      {
+        name: 'without milliseconds',
+        value: '2024-07-08T11:00:00Z',
+        display: '2024-07-08 11:00',
+      },
+      {
+        name: 'with milliseconds',
+        value: '2024-07-08T11:00:00.000Z',
+        display: '2024-07-08 11:00',
+      },
+    ])('renders passed value - $name', async ({ value, display }) => {
+      const view = await renderDateField({
+        type: 'datetime',
+        value,
+      })
+
+      const input = view.getByLabelText('Date')
+
+      expect(input).toHaveDisplayValue(display)
     })
 
     it('renders AM/PM, if needed', async () => {
