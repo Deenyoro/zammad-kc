@@ -3,9 +3,9 @@
 import { waitFor } from '@testing-library/vue'
 import { setActivePinia, createPinia, storeToRefs } from 'pinia'
 
-import { mockCurrentUserQuery } from '#shared/graphql/queries/currentUser.mocks.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
+import type { UserData } from '#shared/types/store.ts'
 
 import { waitForUserCurrentTicketOverviewsQueryCalls } from '#desktop/entities/ticket/graphql/queries/userCurrentTicketOverviews.mocks.ts'
 import type { TicketOverviewQueryPollingConfig } from '#desktop/entities/ticket/stores/types.ts'
@@ -250,23 +250,13 @@ describe('useTicketOverviewsStore', () => {
         },
       ],
     })
-    mockCurrentUserQuery({
-      currentUser: {
-        preferences: {
-          overviews_last_used: {
-            2: '2021-09-02T00:00:00Z',
-          },
-        },
-      },
-    })
 
     const store = useTicketOverviewsStore()
     const { lastUsedOverviews, overviewsById } = storeToRefs(store)
 
     const { user } = storeToRefs(useSessionStore())
+
     // Skip mocking and write directly to the store
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     user.value = {
       ...(user.value || {}),
       preferences: {
@@ -274,7 +264,50 @@ describe('useTicketOverviewsStore', () => {
           2: '2021-09-02T00:00:00Z',
         },
       },
-    }
+    } as UserData
+
+    await waitFor(() => expect(overviewsById.value).not.toEqual({})) // wait for updates
+
+    await store.updateLastUsedOverview(convertToGraphQLId('Overview', 1))
+
+    // Check if the last used overview is updated correctly
+    await waitFor(() =>
+      expect(
+        lastUsedOverviews.value[convertToGraphQLId('Overview', 1)],
+      ).toBeDefined(),
+    )
+
+    expect(user.value!.preferences.overviews_last_used['1']).toBeDefined()
+  })
+
+  it('updates last used overview also for initial entry correctly', async () => {
+    mockUserCurrentOverviewListQuery({
+      userCurrentTicketOverviews: [
+        {
+          name: 'overview-1',
+          id: convertToGraphQLId('Overview', 1),
+          organizationShared: false,
+          outOfOffice: false,
+        },
+        {
+          name: 'overview-2',
+          id: convertToGraphQLId('Overview', 2),
+          organizationShared: false,
+          outOfOffice: false,
+        },
+      ],
+    })
+
+    const store = useTicketOverviewsStore()
+    const { lastUsedOverviews, overviewsById } = storeToRefs(store)
+
+    const { user } = storeToRefs(useSessionStore())
+
+    // Skip mocking and write directly to the store
+    user.value = {
+      ...(user.value || {}),
+      preferences: {},
+    } as UserData
 
     await waitFor(() => expect(overviewsById.value).not.toEqual({})) // wait for updates
 
