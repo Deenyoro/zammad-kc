@@ -251,7 +251,21 @@ class Selector::SearchIndex < Selector::Base
     # is/is not/contains/contains not
     elsif ['is', 'is not', 'contains', 'contains not', 'is any of', 'is none of'].include?(data[:operator])
       t[wildcard_or_term] = {}
-      t[wildcard_or_term][key_tmp] = data[:value]
+
+      # We need a special handling for external data sources, because of the sub-hash.
+      # Because of the automatic field map detection of ES, we need to use the integer or string way.
+      # This can currently lead to a not working condition (when ES detected the wrong data type, can normally be fixed with a reindex).
+      if (data[:value].is_a?(Array) && data[:value][0].is_a?(Hash)) || data[:value].is_a?(Hash)
+        key_value = "#{key_tmp}.value"
+        if (data[:value].is_a?(Hash) && data[:value][:value].is_a?(String)) || (data[:value].is_a?(Array) && data[:value].any? { |item| item[:value].is_a?(String) })
+          key_value += '.keyword'
+        end
+
+        t[wildcard_or_term][key_value] = data[:value].is_a?(Hash) ? data[:value][:value] : data[:value].pluck(:value)
+      else
+        t[wildcard_or_term][key_tmp] = data[:value]
+      end
+
       case data[:operator]
       when 'is', 'contains', 'is any of'
         query_must.push t

@@ -878,6 +878,23 @@ helper method for making HTTP calls and raising error if response was not succes
         result[:properties][key] = {
           type: 'float',
         }
+      elsif value.type == :jsonb
+        result[:properties][key] = {
+          properties: {
+            label: {
+              type:   string_type,
+              fields: {
+                keyword: string_raw
+              }
+            },
+            value: {
+              type:   string_type,
+              fields: {
+                keyword: string_raw
+              }
+            }
+          }
+        }
       end
     end
 
