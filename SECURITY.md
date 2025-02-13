@@ -2,10 +2,8 @@
 
 ## Supported Versions
 
-| Version  | Supported          |
-| -------- | ------------------ |
-| 6.4.x    | :white_check_mark: |
-| <= 6.3.x | :x:                |
+Security fixes are provided for the [current stable version of Zammad](https://zammad.com/releases) only.
+Any older version is not supported and needs to be updated first before reporting security issues.
 
 ## Reporting a Vulnerability
 
