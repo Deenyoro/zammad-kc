@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Gql::Subscriptions::Ticket::LiveUserUpdates, :aggregate_failures, authenticated_as: :agent, type: :graphql do
+RSpec.describe Gql::Subscriptions::Ticket::LiveUserUpdates, :aggregate_failures, authenticated_as: :agent, performs_jobs: true, type: :graphql do
   let(:agent)                         { create(:agent) }
   let(:customer)                      { create(:customer) }
   let(:ticket)                        { create(:ticket) }
@@ -33,6 +33,7 @@ RSpec.describe Gql::Subscriptions::Ticket::LiveUserUpdates, :aggregate_failures,
 
   before do
     live_user_entry && live_user_entry_customer
+    perform_enqueued_jobs
 
     gql.execute(subscription, variables: variables, context: { channel: mock_channel })
   end
@@ -42,6 +43,7 @@ RSpec.describe Gql::Subscriptions::Ticket::LiveUserUpdates, :aggregate_failures,
     # We need to work around this, otherwise this test would fail.
     UserInfo.current_user_id = agent_id
     taskbar_item.update!(state: state)
+    perform_enqueued_jobs
     UserInfo.current_user_id = agent.id
   end
 
