@@ -30,6 +30,10 @@ class Auth::TwoFactor::AuthenticationMethod::AuthenticatorApp < Auth::TwoFactor:
     }
   end
 
+  def without_client_config?
+    true
+  end
+
   private
 
   def issuer

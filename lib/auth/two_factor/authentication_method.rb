@@ -26,4 +26,8 @@ class Auth::TwoFactor::AuthenticationMethod < Auth::TwoFactor::Method
   def user_two_factor_preference
     user&.two_factor_preferences&.authentication_methods&.find_by(method: method_name)
   end
+
+  def without_client_config?
+    false
+  end
 end

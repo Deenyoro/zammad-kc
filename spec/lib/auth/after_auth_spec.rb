@@ -32,6 +32,10 @@ RSpec.describe Auth::AfterAuth do
       it 'returns the after auth type' do
         expect(described_class.run(customer, session)).to eq({ type: 'TwoFactorConfiguration', data: {} })
       end
+
+      it 'issues a password revalidation token on initial login' do
+        expect(described_class.run(customer, session, options: { initial: true })).to include({ type: 'TwoFactorConfiguration', data: { token: be_a(String) } })
+      end
     end
   end
 end

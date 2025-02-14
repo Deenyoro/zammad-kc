@@ -3,7 +3,7 @@
 import { useForceDesktop } from '#shared/composables/useForceDesktop.ts'
 
 defineProps<{
-  data?: unknown
+  data?: { token?: string }
 }>()
 
 defineEmits<{

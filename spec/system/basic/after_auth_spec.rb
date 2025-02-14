@@ -39,6 +39,9 @@ RSpec.describe 'After Auth', type: :system do
     context 'when already logged in' do
       before do
         visit '/'
+
+        fill_in 'Password', with: 'test'
+        click_on 'Next'
       end
 
       it_behaves_like 'showing the modal'

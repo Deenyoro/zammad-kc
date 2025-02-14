@@ -540,7 +540,7 @@ curl http://localhost/api/v1/users/password_change -v -u #{login}:#{password} -H
 
     password_check = Service::User::PasswordCheck.new(user: current_user, password: params[:password])
 
-    render json: { success: password_check.execute }, status: :ok
+    render json: password_check.execute, status: :ok
   end
 
 =begin

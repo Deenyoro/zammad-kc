@@ -17,6 +17,7 @@ const visitAfterAuthTwoFactorConfiguration = async () => {
 
   await ensureAfterAuth(getTestRouter(), {
     type: EnumAfterAuthType.TwoFactorConfiguration,
+    data: { token: 'foobar' },
   })
 
   return view

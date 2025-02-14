@@ -1886,18 +1886,20 @@ RSpec.describe 'User', performs_jobs: true, type: :request do
     context 'with wrong password' do
       let(:password) { 'wrong' }
 
-      it 'returns false' do
+      it 'returns false for success and does not include a token' do
         expect(response).to have_http_status(:ok)
         expect(json_response['success']).to be false
+        expect(json_response['token']).to be_nil
       end
     end
 
     context 'with correct password' do
       let(:password) { 'beer' }
 
-      it 'returns true' do
+      it 'returns true for success and includes a token' do
         expect(response).to have_http_status(:ok)
         expect(json_response['success']).to be true
+        expect(json_response['token']).to be_a String
       end
     end
   end

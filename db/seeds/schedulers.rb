@@ -87,7 +87,7 @@ Scheduler.create_or_update(
 Scheduler.create_or_update(
   name:          __('Delete old token entries.'),
   method:        'Token.cleanup',
-  period:        30.days,
+  period:        1.day,
   prio:          2,
   active:        true,
   updated_by_id: 1,

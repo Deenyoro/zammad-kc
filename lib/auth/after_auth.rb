@@ -3,11 +3,12 @@
 class Auth::AfterAuth
   include ::Mixin::HasBackends
 
-  def self.run(user, session)
+  def self.run(user, session, options: {})
     backends.each do |backend|
       result = backend.run(
         user:    user,
         session: session,
+        options: options,
       )
 
       return result if result.present?

@@ -21,10 +21,20 @@ class Service::User::AccessToken::Create < Service::Base
       .create!(
         name:        name,
         user:        user,
-        expires_at:  expires_at,
+        expires_at:  expires_at_as_time,
         preferences: {
           permission: permission
         }
       )
+  end
+
+  private
+
+  def expires_at_as_time
+    return if expires_at.blank?
+
+    date = Date.parse(expires_at.to_s)
+
+    Time.use_zone(Setting.get('timezone_default')) { date.beginning_of_day }
   end
 end

@@ -34,7 +34,7 @@ RSpec.describe 'Mobile > After Auth', :aggregate_failures, app: :mobile, authent
 
       click 'a', text: 'Click here to set up a two-factor authentication method.'
       expect_current_route('dashboard', app: :desktop)
-      expect(page).to have_content('You must protect your account with two-factor authentication.')
+      expect(page).to have_content('Set up two-factor authentication: Confirm Password')
     end
   end
 end

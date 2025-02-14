@@ -2,6 +2,8 @@
 
 module Gql::Mutations
   class User::Current::TwoFactor::RemoveMethodCredentials < BaseMutation
+    include Gql::Concerns::HandlesPasswordRevalidationToken
+
     description 'Removes given two factor authentication method'
 
     argument :method_name, String, description: 'Name of the method to remove'
@@ -13,7 +15,9 @@ module Gql::Mutations
       ctx.current_user.permissions?('user_preferences.two_factor_authentication')
     end
 
-    def resolve(method_name:, credential_id:)
+    def resolve(method_name:, token:, credential_id:)
+      verify_token!(token)
+
       Service::User::TwoFactor::RemoveMethodCredentials
         .new(user: context.current_user, method_name:, credential_id:)
         .execute

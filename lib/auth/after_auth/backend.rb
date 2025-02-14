@@ -9,11 +9,12 @@ class Auth::AfterAuth::Backend
     name.demodulize
   end
 
-  attr_accessor :user, :session, :data
+  attr_accessor :user, :session, :options, :data
 
-  def initialize(user:, session:)
+  def initialize(user:, session:, options:)
     @user = user
     @session = session
+    @options = options
     @data = {}
   end
 

@@ -11581,7 +11581,22 @@
             {
               "name": "userCurrentTwoFactorRecoveryCodesGenerate",
               "description": "Regenerates new two factor recovery codes",
-              "args": [],
+              "args": [
+                {
+                  "name": "token",
+                  "description": "Password revalidation token issued by the password check mutation.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "OBJECT",
                 "name": "UserCurrentTwoFactorRecoveryCodesGeneratePayload",
@@ -11594,6 +11609,20 @@
               "name": "userCurrentTwoFactorRemoveMethod",
               "description": "Removes given two factor authentication method",
               "args": [
+                {
+                  "name": "token",
+                  "description": "Password revalidation token issued by the password check mutation.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
                 {
                   "name": "methodName",
                   "description": "Name of the method to remove",
@@ -11621,6 +11650,20 @@
               "name": "userCurrentTwoFactorRemoveMethodCredentials",
               "description": "Removes given two factor authentication method",
               "args": [
+                {
+                  "name": "token",
+                  "description": "Password revalidation token issued by the password check mutation.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
                 {
                   "name": "methodName",
                   "description": "Name of the method to remove",
@@ -11689,6 +11732,20 @@
               "name": "userCurrentTwoFactorVerifyMethodConfiguration",
               "description": "Verifies two factor authentication method configuration.",
               "args": [
+                {
+                  "name": "token",
+                  "description": "Password revalidation token issued by the password check mutation.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
                 {
                   "name": "methodName",
                   "description": "Name of the method which should be verified.",
@@ -16796,8 +16853,22 @@
             },
             {
               "name": "userCurrentTwoFactorGetMethodConfiguration",
-              "description": "Fetch list of configured two factor authentication methods and .",
+              "description": "Fetch list of configured two factor authentication methods.",
               "args": [
+                {
+                  "name": "token",
+                  "description": "Password revalidation token issued by the password check mutation.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
                 {
                   "name": "methodName",
                   "description": "Name of the method to remove",
@@ -16825,6 +16896,20 @@
               "name": "userCurrentTwoFactorInitiateMethodConfiguration",
               "description": "Fetch needed initial configuration data to initiate a authentication method configuration.",
               "args": [
+                {
+                  "name": "token",
+                  "description": "Password revalidation token issued by the password check mutation.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
                 {
                   "name": "methodName",
                   "description": "Two factor authentication method",
@@ -27132,6 +27217,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "token",
+              "description": "One-time token which should be included in a subsequent request (where applicable)",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,

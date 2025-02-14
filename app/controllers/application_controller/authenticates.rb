@@ -85,10 +85,7 @@ module ApplicationController::Authenticates
         token.last_used_at = Time.zone.now
         token.save!
 
-        if token.expires_at &&
-           Time.zone.today >= token.expires_at
-          raise Exceptions::NotAuthorized, __('Not authorized (token expired)!')
-        end
+        raise Exceptions::NotAuthorized, __('Not authorized (token expired)!') if token.expired?
 
         @_token = token # remember for Pundit authorization / permit!
       end

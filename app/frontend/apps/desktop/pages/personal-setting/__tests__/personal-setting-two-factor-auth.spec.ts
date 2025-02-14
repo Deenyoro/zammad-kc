@@ -80,9 +80,12 @@ describe('password personal settings', () => {
         const calls =
           await waitForUserCurrentTwoFactorRemoveMethodMutationCalls()
 
-        expect(calls.at(-1)?.variables).toEqual({
-          methodName: 'authenticator_app',
-        })
+        expect(calls.at(-1)?.variables).toEqual(
+          expect.objectContaining({
+            methodName: 'authenticator_app',
+          }),
+        )
+
         expect(flyout).not.toBeInTheDocument()
       })
 

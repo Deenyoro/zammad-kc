@@ -129,9 +129,10 @@ const submitTwoFactorMethodRemoval = async (entity?: ObjectLike) => {
 
   return twoFactorConfigurationFlyout.open({
     type: 'removal_confirmation',
-    successCallback: async () => {
+    successCallback: async ({ token }: { token: string }) => {
       const data = await removeTwoFactorMethod.send({
         methodName: entity.name,
+        token,
       })
 
       if (data?.userCurrentTwoFactorRemoveMethod?.success) {

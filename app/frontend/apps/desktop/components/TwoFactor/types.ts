@@ -15,6 +15,7 @@ export type TwoFactorConfigurationType =
 export interface TwoFactorConfigurationActionPayload {
   nextState?: TwoFactorConfigurationType
   options?: ObjectLike
+  token?: string
 }
 
 export interface TwoFactorConfigurationProps {
@@ -25,9 +26,17 @@ export interface TwoFactorConfigurationProps {
 export interface TwoFactorConfigurationComponentProps {
   type: TwoFactorConfigurationType
   options?: ObjectLike
+  token?: string
   formSubmitCallback?: (payload: TwoFactorConfigurationActionPayload) => void
-  successCallback?: () => void
+  successCallback?: (payload?: unknown) => void
 }
+
+// Some components always require token to be passed via props.
+export type TwoFactorConfigurationComponentPropsWithRequiredToken = Omit<
+  TwoFactorConfigurationComponentProps,
+  'token'
+> &
+  Required<Pick<TwoFactorConfigurationComponentProps, 'token'>>
 
 export interface TwoFactorConfigurationComponentInstance {
   executeAction?: () => Promise<TwoFactorConfigurationActionPayload>

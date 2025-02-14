@@ -111,7 +111,7 @@ RSpec.describe 'Sessions endpoints', type: :request do
           end
 
           it 'returns the after auth information' do
-            expect(json_response['after_auth']).to eq({ 'data' => {}, 'type' => 'TwoFactorConfiguration' })
+            expect(json_response['after_auth']).to include({ 'data' => { 'token' => be_a(String) }, 'type' => 'TwoFactorConfiguration' })
           end
         end
       end

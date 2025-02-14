@@ -4,7 +4,7 @@
 import TwoFactorConfigurationWizard from '#desktop/components/TwoFactor/TwoFactorConfigurationWizard.vue'
 
 defineProps<{
-  data?: unknown
+  data?: { token?: string }
 }>()
 
 const emit = defineEmits<{
@@ -17,5 +17,5 @@ const redirect = (url: string) => {
 </script>
 
 <template>
-  <TwoFactorConfigurationWizard @redirect="redirect" />
+  <TwoFactorConfigurationWizard :token="data?.token" @redirect="redirect" />
 </template>

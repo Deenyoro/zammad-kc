@@ -27,6 +27,12 @@ class Service::User::TwoFactor::Base < Service::Base
   end
 
   def user_preference
+    return if !client_safe_config?
+
     @user_preference ||= method&.user_two_factor_preference
+  end
+
+  def client_safe_config?
+    !method.without_client_config?
   end
 end

@@ -24,9 +24,15 @@ class SessionsController < ApplicationController
     user = authenticate_with_password
     initiate_session_for(user)
 
+    output = SessionHelper
+      .json_hash(user)
+      .merge(
+        config:     config_frontend,
+        after_auth: Auth::AfterAuth.run(user, session, options: { initial: true })
+      )
+
     # return new session data
-    render status: :created,
-           json:   SessionHelper.json_hash(user).merge(config: config_frontend, after_auth: Auth::AfterAuth.run(user, session))
+    render status: :created, json: output
   rescue Auth::Error::TwoFactorRequired => e
     render json: {
       two_factor_required: {
