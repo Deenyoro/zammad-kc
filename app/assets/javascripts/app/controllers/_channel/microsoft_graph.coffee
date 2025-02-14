@@ -559,4 +559,4 @@ class ChannelInboundEdit extends App.ControllerModal
 
     @navigate '#channels/microsoft_graph'
 
-App.Config.set('microsoftGraph', { prio: 5000, name: __('Microsoft 365 Graph Email'), parent: '#channels', target: '#channels/microsoft_graph', controller: App.ChannelMicrosoftGraph, permission: ['admin.channel_microsoft_graph'] }, 'NavBarAdmin')
+App.Config.set('microsoftGraph', { prio: 5100, name: __('Microsoft 365 Graph Email'), parent: '#channels', target: '#channels/microsoft_graph', controller: App.ChannelMicrosoftGraph, permission: ['admin.channel_microsoft_graph'] }, 'NavBarAdmin')

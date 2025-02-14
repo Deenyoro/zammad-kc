@@ -283,7 +283,7 @@ class WhatsappAccountWebhookModal extends App.ControllerModal
     @copyToClipboardWithTooltip(value, e.target,'.modal-body', true)
 
 App.Config.set('Whatsapp', {
-  prio: 5100,
+  prio: 5600,
   name: __('WhatsApp'),
   parent: '#channels',
   target: '#channels/whatsapp',

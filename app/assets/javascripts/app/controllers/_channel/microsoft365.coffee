@@ -30,6 +30,11 @@ class App.ChannelMicrosoft365 extends App.ControllerTabs
       },
     ]
 
+    @alert = {
+      variant: 'info'
+      message: App.i18n.translateContent('Compared to the Microsoft 365 Graph API Email Channel, this is the traditional implementation using OAuth and IMAP. When setting up new channels, we suggest using the Graph API implementation instead. Please let us know in the Zammad Community %l when you think there are good reasons to keep the IMAP approach as an alternative in the future. More information can be found here %l.', 'https://community.zammad.org/t/microsoft-365-email-graphapi-vs-imap/16892', 'https://admin-docs.zammad.org/en/latest/channels/microsoft365-graph/index.html')
+    }
+
     @render()
 
 class ChannelAccountOverview extends App.ControllerSubContent
@@ -530,4 +535,4 @@ class App.DuplicateEmailAddressInfo extends App.ControllerModal
 
     @navigate "#channels/#{@type}"
 
-App.Config.set('microsoft365', { prio: 5000, name: __('Microsoft 365 IMAP Email'), parent: '#channels', target: '#channels/microsoft365', controller: App.ChannelMicrosoft365, permission: ['admin.channel_microsoft365'] }, 'NavBarAdmin')
+App.Config.set('microsoft365', { prio: 5200, name: __('Microsoft 365 IMAP Email'), parent: '#channels', target: '#channels/microsoft365', controller: App.ChannelMicrosoft365, permission: ['admin.channel_microsoft365'] }, 'NavBarAdmin')
