@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Manage > Channels > Email', type: :system do
+RSpec.describe 'Manage > Channels > Email', integration: true, type: :system do
 
   context 'when managing email channels', required_envs: %w[MAIL_ADDRESS MAIL_PASS] do
 

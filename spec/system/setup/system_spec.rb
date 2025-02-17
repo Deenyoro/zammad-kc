@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'System setup process', authenticated_as: false, required_envs: %w[MAIL_ADDRESS MAIL_PASS], set_up: false, type: :system do
+RSpec.describe 'System setup process', authenticated_as: false, integration: true, required_envs: %w[MAIL_ADDRESS MAIL_PASS], set_up: false, type: :system do
 
   before do
     # Import mail server CA certificate into the trust store.
