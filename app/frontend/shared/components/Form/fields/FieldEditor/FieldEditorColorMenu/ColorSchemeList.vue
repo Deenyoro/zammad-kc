@@ -60,7 +60,7 @@ const { colorSchemeList: colorSchemeListClasses } = getEditorColorMenuClasses()
       :aria-selected="checkActiveColor(schemeColor.value)"
       :aria-label="$t(schemeColor.label)"
       :class="[classes.actionBar.button.base, colorSchemeListClasses.button]"
-      class="relative shrink-0 rounded-sm"
+      class="relative shrink-0 rounded-xs"
       :style="{ backgroundColor: schemeColor.value }"
       @click="setColor(schemeColor)"
     >

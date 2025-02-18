@@ -30,7 +30,7 @@ export const useActivityMessage = (
 
   if (builder.value && !message) {
     log.error(
-      `Unknow action for (${activity.value.objectName}/${activity.value.typeName}), extend activityMessages() of model.`,
+      `Unknown action for (${activity.value.objectName}/${activity.value.typeName}), extend activityMessages() of model.`,
     )
   }
 

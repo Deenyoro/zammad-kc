@@ -35,10 +35,10 @@ const completedGroup = computed(() => {
 <template>
   <tr class="group">
     <td :colspan="tableColumnLength">
-      <CommonDivider class="mb-1 mt-2 group-first:mt-0" />
+      <CommonDivider class="mt-2 mb-1 group-first:mt-0" />
       <div class="h-10 p-2.5">
         <CommonLabel
-          class="cursor-default truncate text-stone-200 dark:text-neutral-500"
+          class="cursor-default truncate text-stone-200! dark:text-neutral-500!"
         >
           <ObjectAttributeContent
             mode="table"
@@ -46,7 +46,7 @@ const completedGroup = computed(() => {
             :object="item"
           />
           <CommonBadge
-            class="ms-0.5 font-bold leading-snug"
+            class="ms-0.5 leading-snug font-bold"
             rounded
             size="xs"
             variant="info"

@@ -269,7 +269,7 @@ const actions = computed<CommonButtonOption[]>(() => [
         class="flex w-full flex-col items-center justify-center"
       >
         <Cropper
-          class="mb-4 mt-4 !max-h-[250px] !max-w-[400px]"
+          class="mt-4 mb-4 !max-h-[250px] !max-w-[400px]"
           :src="avatarImage.content"
           :stencil-props="{
             aspectRatio: 1,

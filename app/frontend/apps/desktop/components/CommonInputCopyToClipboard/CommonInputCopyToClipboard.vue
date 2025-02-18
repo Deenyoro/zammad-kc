@@ -30,7 +30,7 @@ const { copyToClipboard } = useCopyToClipboard()
     readonly
   >
     <template #link="context">
-      <div class="mb-0.5 ms-2 flex h-full items-center">
+      <div class="ms-2 mb-0.5 flex h-full items-center">
         <CommonButton
           prefix-icon="files"
           size="medium"

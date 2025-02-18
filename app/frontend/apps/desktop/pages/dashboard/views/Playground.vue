@@ -1287,7 +1287,7 @@ const inlineEditValue = ref('Edit me inline')
         </div>
 
         <h3>Misc</h3>
-        <div class="flex-wrap space-x-3 space-y-2 py-2">
+        <div class="flex-wrap space-y-2 space-x-3 py-2">
           <CommonButton variant="submit" block>Block</CommonButton>
           <CommonButton variant="primary" disabled>Disabled</CommonButton>
           <CommonButton variant="secondary" disabled>Disabled</CommonButton>
@@ -1299,7 +1299,7 @@ const inlineEditValue = ref('Edit me inline')
         </div>
 
         <h3>Group</h3>
-        <div class="w-1/2 space-x-3 space-y-2 py-2">
+        <div class="w-1/2 space-y-2 space-x-3 py-2">
           <CommonButtonGroup :items="buttonGroupOptions" />
         </div>
       </div>
@@ -1325,10 +1325,10 @@ const inlineEditValue = ref('Edit me inline')
         </CommonAlert>
         <CommonAlert variant="success" class="mb-2.5">
           <div class="flex flex-col gap-1.5">
-            <CommonLabel class="text-yellow-600" size="large"
+            <CommonLabel class="text-yellow-600!" size="large"
               >Similar tickets found</CommonLabel
             >
-            <CommonLabel class="text-yellow-600"
+            <CommonLabel class="text-yellow-600!"
               >Tickets with the same attributes were found.</CommonLabel
             >
             <ul class="list-inside list-disc">
@@ -1435,7 +1435,7 @@ const inlineEditValue = ref('Edit me inline')
         </div>
       </div>
 
-      <h2 class="mb-2 mt-8">Table (Simple)</h2>
+      <h2 class="mt-8 mb-2">Table (Simple)</h2>
       <div class="mb-6 flex flex-col gap-4">
         <CommonButton variant="primary" @click="changeRowSimple()"
           >Change row</CommonButton
@@ -1448,7 +1448,7 @@ const inlineEditValue = ref('Edit me inline')
         ></CommonSimpleTable>
       </div>
 
-      <h2 class="mb-2 mt-8">Table (Advanced)</h2>
+      <h2 class="mt-8 mb-2">Table (Advanced)</h2>
       <div class="mb-6 flex flex-col gap-4">
         <!-- <CommonAdvancedTable
           :headers="tableHeaders"
@@ -1632,7 +1632,7 @@ const inlineEditValue = ref('Edit me inline')
           </CommonPopover>
           <button
             ref="popoverTarget"
-            class="-:outline-transparent hover:-:outline-blue-900 rounded-full outline outline-2 focus:outline-blue-800 hover:focus:outline-blue-800"
+            class="rounded-full outline outline-2 outline-transparent hover:outline-blue-900 focus:outline-blue-800 hover:focus:outline-blue-800"
             :class="{
               'outline-blue-800 hover:outline-blue-800': popoverIsOpen,
             }"
@@ -1697,7 +1697,7 @@ const inlineEditValue = ref('Edit me inline')
       </div>
 
       <div class="w-1/2">
-        <h2 class="mb-2 mt-8">Flyout and Dialog</h2>
+        <h2 class="mt-8 mb-2">Flyout and Dialog</h2>
         <div class="mb-6 flex gap-4">
           <CommonButton variant="tertiary" @click="dialog.open()"
             >Show Dialog
@@ -1714,7 +1714,7 @@ const inlineEditValue = ref('Edit me inline')
           </CommonButton>
         </div>
 
-        <h2 class="mb-2 mt-8">Input Copy To Clipboard</h2>
+        <h2 class="mt-8 mb-2">Input Copy To Clipboard</h2>
         <div class="mb-6">
           <CommonInputCopyToClipboard
             value="some text to copy"
@@ -1750,7 +1750,7 @@ const inlineEditValue = ref('Edit me inline')
           </template>
         </Form>
         <pre
-          class="flex flex-wrap gap-5 text-wrap rounded-lg bg-blue-200 p-5 font-mono text-sm text-gray-100 dark:bg-gray-700 dark:text-neutral-400"
+          class="flex flex-wrap gap-5 rounded-lg bg-blue-200 p-5 font-mono text-sm text-wrap text-gray-100 dark:bg-gray-700 dark:text-neutral-400"
           >{{ formValues }}</pre
         >
       </div>

@@ -24,7 +24,7 @@ const hasOverviewSortingPreference = computed(() =>
     >
       <CommonLabel
         size="small"
-        class="text-blue-800"
+        class="text-blue-800!"
         prefix-icon="list-columns-reverse"
       >
         {{ $t('reorder items') }}

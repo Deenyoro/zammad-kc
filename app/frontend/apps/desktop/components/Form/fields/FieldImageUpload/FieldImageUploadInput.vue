@@ -97,12 +97,9 @@ const { isOverDropZone } = useDropZone(dropZoneElement, {
   >
     <div
       v-if="isOverDropZone"
-      class="w-full rounded text-center outline-dashed outline-1 outline-blue-800"
+      class="w-full rounded text-center outline-1 outline-blue-800 outline-dashed"
     >
-      <CommonLabel
-        class="py-2 text-blue-800 dark:text-blue-800"
-        prefix-icon="upload"
-      >
+      <CommonLabel class="py-2 text-blue-800!" prefix-icon="upload">
         {{ $t('Drop image file here') }}
       </CommonLabel>
     </div>

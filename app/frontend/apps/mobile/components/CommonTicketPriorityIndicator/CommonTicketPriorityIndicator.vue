@@ -34,7 +34,7 @@ const priorityText = computed(() => {
   <div
     v-if="priorityText"
     :class="priorityClass"
-    class="leading-2 select-none whitespace-nowrap rounded px-2 py-1 text-xs uppercase"
+    class="rounded px-2 py-1 text-xs leading-2 whitespace-nowrap uppercase select-none"
   >
     {{ $t(priorityText) }}
   </div>

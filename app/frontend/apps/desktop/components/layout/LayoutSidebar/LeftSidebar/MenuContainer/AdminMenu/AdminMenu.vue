@@ -16,7 +16,7 @@ const defaultItem = computed(() =>
 
 <template>
   <CommonActionMenu
-    class="flex"
+    class="flex!"
     :actions="adminItems"
     orientation="autoVertical"
     :default-icon="defaultItem?.icon"

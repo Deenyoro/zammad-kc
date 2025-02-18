@@ -70,7 +70,7 @@ const confirmRemoveUserTaskbarTab = async () => {
     v-if="props.taskbarTab.taskbarTabId"
     v-tooltip="$t('Close this tab')"
     :class="{ 'opacity-0 transition-opacity': !isTouchDevice }"
-    class="absolute end-2 top-3 focus:opacity-100 group-hover/tab:opacity-100"
+    class="absolute end-2 top-3 group-hover/tab:opacity-100 focus:opacity-100"
     icon="x-lg"
     size="small"
     variant="remove"
@@ -80,6 +80,6 @@ const confirmRemoveUserTaskbarTab = async () => {
 
 <style scoped>
 .dragging-active button {
-  @apply invisible;
+  visibility: hidden;
 }
 </style>

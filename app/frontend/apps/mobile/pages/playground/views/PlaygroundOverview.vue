@@ -422,7 +422,7 @@ const logSubmit = console.log
       <CommonButton class="flex-1 py-2" variant="submit" />
       <CommonButton class="flex-1 py-2" variant="danger" />
     </div>
-    <h3 class="text-gray mb-2 mt-2 text-lg font-semibold">
+    <h3 class="text-gray mt-2 mb-2 text-lg font-semibold">
       With transparent background
     </h3>
     <div class="flex gap-3">

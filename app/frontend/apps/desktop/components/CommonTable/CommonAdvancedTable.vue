@@ -490,7 +490,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
               :attribute="tableAttribute"
             >
               <CommonLabel
-                class="-:font-normal -:text-gray-100 -:dark:text-neutral-400 block select-none truncate"
+                class="block truncate font-normal text-gray-100 select-none dark:text-neutral-400"
                 :class="[
                   cellAlignmentClasses[
                     tableAttribute.columnPreferences.alignContent || 'left'
@@ -498,8 +498,10 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                   tableAttribute.headerPreferences.labelClass || '',
                   {
                     'sr-only': tableAttribute.headerPreferences.hideLabel,
-                    'text-black dark:text-white': isSorted(tableAttribute.name),
-                    'hover:cursor-pointer hover:text-black focus-visible:rounded-sm focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-800 dark:hover:text-white':
+                    'text-black! dark:text-white!': isSorted(
+                      tableAttribute.name,
+                    ),
+                    'hover:cursor-pointer hover:text-black focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-800 dark:hover:text-white':
                       !tableAttribute.headerPreferences.noSorting,
                   },
                 ]"
@@ -569,7 +571,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
         </th>
         <th v-if="actions" class="h-10 w-0 p-2.5 text-center">
           <CommonLabel
-            class="font-normal text-stone-200 dark:text-neutral-500"
+            class="font-normal text-stone-200! dark:text-neutral-500!"
             size="small"
             >{{ $t('Actions') }}
           </CommonLabel>
@@ -675,7 +677,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                       },
                       getLinkColorClasses(item),
                     ]"
-                    class="block truncate text-sm hover:no-underline group-hover:text-black group-focus-visible:text-white group-active:text-white group-hover:dark:text-white"
+                    class="block truncate text-sm group-hover:text-black group-focus-visible:text-white group-active:text-white hover:no-underline! group-hover:dark:text-white"
                     @click.stop
                     @keydown.stop
                   >
@@ -688,10 +690,10 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                   <CommonLabel
                     v-else
                     v-tooltip.truncate="getTooltipText(item, tableAttribute)"
-                    class="-:text-gray-100 -:dark:text-neutral-400 block truncate group-hover:text-black group-focus-visible:text-white group-active:text-white group-hover:dark:text-white"
+                    class="block truncate text-gray-100! group-hover:text-black! group-focus-visible:text-white! group-active:text-white! dark:text-neutral-400! group-hover:dark:text-white!"
                     :class="[
                       {
-                        'text-black dark:text-white': isRowSelected,
+                        'text-black! dark:text-white!': isRowSelected,
                       },
                     ]"
                   >
@@ -712,7 +714,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
             <td v-if="actions" class="h-10 p-2.5 text-center">
               <slot name="actions" v-bind="{ actions, item }">
                 <CommonActionMenu
-                  class="flex items-center justify-center"
+                  class="flex! items-center justify-center"
                   :actions="actions"
                   :entity="item"
                   button-size="medium"
@@ -736,7 +738,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
   </table>
   <CommonLabel
     v-if="endOfListMessage"
-    class="py-2.5 text-stone-200 dark:text-neutral-500"
+    class="py-2.5 text-stone-200! dark:text-neutral-500!"
     size="small"
   >
     {{ endOfListMessage }}
@@ -745,10 +747,10 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
 
 <style scoped>
 [data-theme='dark'] .border-shadow-b {
-  box-shadow: 0 1px 0 0 theme('colors.gray.900');
+  box-shadow: 0 1px 0 0 var(--color-gray-900);
 }
 
 .border-shadow-b {
-  box-shadow: 0 1px 0 0 theme('colors.neutral.100');
+  box-shadow: 0 1px 0 0 var(--color-neutral-100);
 }
 </style>

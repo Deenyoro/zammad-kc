@@ -72,7 +72,7 @@ const backgroundVariantClass = computed(() => {
       return 'bg-blue-50 dark:bg-gray-800'
     case 'primary':
     default:
-      return '-:bg-neutral-950'
+      return 'bg-neutral-950'
   }
 })
 
@@ -127,7 +127,7 @@ const collapseButtonClass = computed(() => {
 <template>
   <aside
     :id="id"
-    class="-:max-h-screen relative flex flex-col overflow-y-clip border-neutral-100 dark:border-gray-900"
+    class="relative flex max-h-screen flex-col overflow-y-clip border-neutral-100 dark:border-gray-900"
     :class="[
       {
         'py-3': isCollapsed && !noPadding,

@@ -61,7 +61,7 @@ const getCoreClasses: FormThemeExtension = (classes: FormThemeClasses) => {
       wrapper: 'w-full select-none ltr:pl-2 rtl:pr-2',
       inner: 'ltr:mr-2 rtl:ml-2',
       input:
-        'focus:border-blue focus:bg-blue-highlight checked:focus:color-blue checked:bg-blue checked:border-blue checked:focus:bg-blue checked:hover:bg-blue h-4 w-4 rounded-sm border-[1.5px] border-white bg-transparent',
+        'focus:border-blue focus:bg-blue-highlight checked:focus:color-blue checked:bg-blue checked:border-blue checked:focus:bg-blue checked:hover:bg-blue h-4 w-4 rounded-xs border-[1.5px] border-white bg-transparent',
     }),
     radio: extendClasses(classes.radio, {
       inner: 'ltr:mr-2 rtl:ml-2',
@@ -84,7 +84,7 @@ const getCoreClasses: FormThemeExtension = (classes: FormThemeClasses) => {
     submit: addButtonVariants(classes.submit),
     security: addStaticFloatingLabel(
       extendClasses(classes.security, {
-        label: clean(`scale-80 -translate-y-[0.4rem] text-xs`),
+        label: clean(`-translate-y-[0.4rem] scale-80 text-xs`),
       }),
     ),
     file: {

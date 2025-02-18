@@ -52,10 +52,10 @@ const backgroundClass = computed(() => {
       textClass,
       backgroundClass,
       {
-        'rounded py-1 ltr:pl-1 ltr:pr-1.5 rtl:pl-1.5 rtl:pr-1': pill,
+        'rounded py-1 ltr:pr-1.5 ltr:pl-1 rtl:pr-1 rtl:pl-1.5': pill,
       },
     ]"
-    class="flex select-none items-center"
+    class="flex items-center select-none"
     role="group"
   >
     <CommonIcon
@@ -65,7 +65,7 @@ const backgroundClass = computed(() => {
     />
     <div
       v-if="pill"
-      class="text-xs uppercase leading-[14px] ltr:ml-[2px] rtl:mr-[2px]"
+      class="text-xs leading-[14px] uppercase ltr:ml-[2px] rtl:mr-[2px]"
       aria-hidden="true"
     >
       {{ $t(label) }}

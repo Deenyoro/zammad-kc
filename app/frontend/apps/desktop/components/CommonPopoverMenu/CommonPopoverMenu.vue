@@ -63,7 +63,7 @@ const getHoverFocusStyles = (variant?: Variant) => {
 </script>
 
 <template>
-  <section class="min-w-58 flex max-w-64 flex-col gap-0.5">
+  <section class="flex max-w-64 min-w-58 flex-col gap-0.5">
     <div
       v-if="showHeaderLabel"
       role="heading"
@@ -73,7 +73,7 @@ const getHoverFocusStyles = (variant?: Variant) => {
       <slot name="header">
         <CommonLabel
           size="small"
-          class="line-clamp-1 text-stone-200 dark:text-neutral-500"
+          class="line-clamp-1 text-stone-200! dark:text-neutral-500!"
           >{{ i18n.t(headerLabel) }}
         </CommonLabel>
       </slot>
@@ -90,7 +90,7 @@ const getHoverFocusStyles = (variant?: Variant) => {
             >
               <CommonLabel
                 size="small"
-                class="line-clamp-1 px-2 text-stone-200 dark:text-neutral-500"
+                class="line-clamp-1 px-2 text-stone-200! dark:text-neutral-500!"
                 role="heading"
                 aria-level="3"
                 >{{ item.groupLabel }}</CommonLabel

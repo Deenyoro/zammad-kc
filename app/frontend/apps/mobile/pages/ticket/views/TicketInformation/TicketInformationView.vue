@@ -85,7 +85,7 @@ const router = useRouter()
   </LayoutHeader>
   <div class="flex p-4" :style="stickyStyles.body">
     <h1
-      class="line-clamp-3 flex flex-1 items-center break-words text-xl font-bold leading-7"
+      class="line-clamp-3 flex flex-1 items-center text-xl leading-7 font-bold break-words"
     >
       <CommonLoader position="left" :loading="loadingTicket">
         {{ ticket?.title }}

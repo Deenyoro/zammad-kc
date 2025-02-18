@@ -89,7 +89,7 @@ export default {
           v-bind="$attrs"
           :placeholder="i18n.t(placeholder)"
           :aria-label="$t('Search…')"
-          class="w-full min-w-16 text-black outline-none dark:text-white"
+          class="w-full min-w-16 text-black outline-hidden dark:text-white"
           :class="{
             'bg-blue-200 dark:bg-gray-700': !alternativeBackground,
             'bg-neutral-50 dark:bg-gray-500': alternativeBackground,
@@ -116,7 +116,7 @@ export default {
     <div class="flex shrink-0 items-center gap-1">
       <slot name="controls" />
       <CommonIcon
-        class="fill-stone-200 hover:fill-black focus-visible:rounded-sm focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:fill-neutral-500 dark:hover:fill-white"
+        class="fill-stone-200 hover:fill-black focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:fill-neutral-500 dark:hover:fill-white"
         :class="{
           invisible: !filter?.length,
         }"

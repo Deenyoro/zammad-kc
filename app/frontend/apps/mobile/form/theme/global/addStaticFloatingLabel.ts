@@ -16,7 +16,7 @@ export const addStaticFloatingLabel = (classes: Classes = {}): Classes => {
     block: 'formkit-disabled:cursor-default flex min-h-[3.5rem] cursor-pointer',
     // text-base ensures there is no zoom when you click on the input on iOS
     input: clean(
-      `formkit-label-hidden:pt-4 w-full border-none bg-transparent pt-6 text-base placeholder:text-transparent focus:outline-none ltr:pl-2 rtl:pr-2`,
+      `formkit-label-hidden:pt-4 w-full border-none bg-transparent pt-6 text-base placeholder:text-transparent focus:outline-hidden ltr:pl-2 rtl:pr-2`,
     ),
     label: clean(
       `pointer-events-none absolute top-0 h-14 origin-left px-2 py-4 transition-all duration-100 ease-in-out ltr:left-0 rtl:right-0`,

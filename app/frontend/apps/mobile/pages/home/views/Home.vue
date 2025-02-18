@@ -56,7 +56,7 @@ const ticketOverview = computed<MenuItem[]>(() => {
 
 <template>
   <div class="p-4">
-    <CommonTicketCreateLink class="mb-3 mt-1.5" />
+    <CommonTicketCreateLink class="mt-1.5 mb-3" />
     <h1 class="mb-5 flex w-full items-center justify-center text-4xl font-bold">
       {{ $t('Home') }}
     </h1>

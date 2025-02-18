@@ -41,7 +41,7 @@ const dismissed = ref(false)
   <div
     v-if="!dismissed"
     :id="props.id"
-    class="-:rounded-lg gap-1.5 border-transparent p-2"
+    class="gap-1.5 rounded-lg border-transparent p-2"
     :class="[classMap.base, classMap[props.variant]]"
     role="alert"
     data-test-id="common-alert"

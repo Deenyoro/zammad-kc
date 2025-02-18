@@ -45,17 +45,17 @@ const router = useRouter()
               />
               <CommonLink
                 v-else
-                class="flex grow gap-2 rounded-md px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:text-white hover:no-underline"
+                class="flex grow gap-2 rounded-md px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:text-white! hover:no-underline!"
                 :class="{
-                  '!bg-blue-800 !text-white':
+                  'bg-blue-800! text-white!':
                     router.currentRoute.value.name === route.name, // $route.name is not detected by ts
                 }"
                 :link="route.path.replace(/\/:\w+/, '')"
-                exact-active-class="!bg-blue-800 w-full !text-white"
+                exact-active-class="bg-blue-800! w-full text-white!"
                 internal
               >
                 <CommonLabel
-                  class="gap-2 !text-sm text-current"
+                  class="gap-2 text-sm! text-current!"
                   size="large"
                   :prefix-icon="route.meta.icon"
                 >

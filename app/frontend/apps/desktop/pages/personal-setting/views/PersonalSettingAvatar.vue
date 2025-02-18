@@ -279,8 +279,8 @@ const confirmDeleteAvatar = async (avatar: Avatar) => {
 
 const avatarButtonClasses = [
   'cursor-pointer',
-  '-:outline-transparent',
-  'hover:-:outline-blue-900',
+  'outline-transparent',
+  'hover:outline-blue-900',
   'rounded-full',
   'outline',
   'outline-3',
@@ -350,7 +350,7 @@ const activeAvatarButtonClass = (active: boolean) => {
                   v-if="avatar.deletable"
                   :aria-label="$t('Delete this avatar')"
                   :class="{ 'opacity-0 transition-opacity': !isTouchDevice }"
-                  class="absolute -end-2 -top-1 text-white focus:opacity-100 group-hover/avatar:opacity-100"
+                  class="absolute -end-2 -top-1 text-white group-hover/avatar:opacity-100 focus:opacity-100"
                   icon="x-lg"
                   size="small"
                   variant="remove"

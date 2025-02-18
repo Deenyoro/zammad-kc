@@ -140,7 +140,7 @@ const hasEscalation = computed(() => {
   <FormKit
     v-if="ticketFormGroupNode?.context?.state.dirty"
     wrapper-class="mt-4 mb-4 flex grow justify-center items-center"
-    input-class="py-2 px-4 w-full h-14 text-base !text-red-bright formkit-variant-primary:bg-red-dark rounded-xl select-none"
+    input-class="py-2 px-4 w-full h-14 text-base text-red-bright! formkit-variant-primary:bg-red-dark rounded-xl select-none"
     type="button"
     name="discardTicketInformation"
     @click="discardTicketEditDialog"
@@ -199,10 +199,10 @@ const hasEscalation = computed(() => {
       :variants="variants"
       :disabled="isSubscriptionLoading"
       :outer-class="{
-        '!px-3': true,
+        'px-3!': true,
         'border-b border-white/10': subscribersWithoutMe.length,
       }"
-      wrapper-class="!px-0"
+      wrapper-class="px-0!"
       @input-raw="handleToggleInput"
     >
       <template #label="context">

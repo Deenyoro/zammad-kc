@@ -136,7 +136,7 @@ defineExpose({
           <template v-if="!item.ticketReference">
             <CommonIcon
               tabindex="0"
-              class="me-0.5 ms-1 mt-1 text-gray-100 outline-none focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-neutral-400"
+              class="ms-1 me-0.5 mt-1 text-gray-100 outline-hidden focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-neutral-400"
               size="xs"
               role="checkbox"
               aria-readonly="true"

@@ -288,7 +288,7 @@ const showPasswordLogin = computed(
 
       <CommonLabel
         v-if="loginFlow.state === '2fa-select'"
-        class="mb-3 mt-3 text-stone-200 dark:text-neutral-500"
+        class="mt-3 mb-3 text-stone-200 dark:text-neutral-500"
       >
         {{
           $t('Contact the administrator if you have any problems logging in.')

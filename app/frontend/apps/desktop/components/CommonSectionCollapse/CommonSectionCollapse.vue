@@ -70,7 +70,7 @@ watch(
       :id="headerId"
       class="group flex cursor-default items-center justify-between text-stone-200 dark:text-neutral-500"
       :class="{
-        'cursor-pointer rounded-md focus-within:outline focus-within:outline-1 focus-within:outline-offset-1 focus-within:outline-blue-800 hover:bg-blue-600 hover:text-black dark:hover:bg-blue-900 hover:dark:text-white':
+        'cursor-pointer rounded-md focus-within:outline-1 focus-within:outline-offset-1 focus-within:outline-blue-800 hover:bg-blue-600 hover:text-black dark:hover:bg-blue-900 hover:dark:text-white':
           !noCollapse,
         'px-1 py-0.5': size === 'small',
         '-mx-1': size === 'small' && !noNegativeMargin,
@@ -82,7 +82,7 @@ watch(
     >
       <slot name="title">
         <CommonLabel
-          class="grow select-none text-current"
+          class="grow text-current! select-none"
           :size="size"
           tag="h3"
         >
@@ -95,7 +95,7 @@ watch(
         :collapsed="isCollapsed"
         :owner-id="id"
         no-padded
-        class="focus-visible:bg-transparent focus-visible:text-black group-hover:text-black group-hover:opacity-100 dark:focus-visible:text-white dark:group-hover:text-white"
+        class="group-hover:text-black! group-hover:opacity-100 focus-visible:bg-transparent focus-visible:text-black dark:group-hover:text-white! dark:focus-visible:text-white"
         :class="{ 'opacity-100': isCollapsed }"
         orientation="vertical"
         @keydown.enter="toggleCollapse()"

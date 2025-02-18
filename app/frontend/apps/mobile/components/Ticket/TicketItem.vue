@@ -46,7 +46,7 @@ const customer = computed(() => {
           </template>
         </span>
         <span
-          class="mb-1 line-clamp-3 whitespace-normal text-lg font-bold leading-5"
+          class="mb-1 line-clamp-3 text-lg leading-5 font-bold whitespace-normal"
         >
           <slot>
             {{ entity.title }}

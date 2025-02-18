@@ -49,7 +49,7 @@ const sizeClasses = computed(() => {
 
         <CommonLink
           v-if="item.route"
-          class="focus:outline-none focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800"
+          class="focus:outline-hidden focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800"
           :link="item.route"
           internal
         >
@@ -70,7 +70,7 @@ const sizeClasses = computed(() => {
 
         <CommonBadge
           v-if="item.count !== undefined"
-          class="font-bold leading-snug ltr:ml-1.5 rtl:mr-1.5"
+          class="leading-snug font-bold ltr:ml-1.5 rtl:mr-1.5"
           size="xs"
           rounded
         >

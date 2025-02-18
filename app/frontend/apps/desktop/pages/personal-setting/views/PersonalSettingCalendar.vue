@@ -317,7 +317,7 @@ const tabs = [
         @update:model-value="formSubmit"
       />
 
-      <CommonLabel role="heading" aria-level="2" class="mb-2 mt-5" size="large">
+      <CommonLabel role="heading" aria-level="2" class="mt-5 mb-2" size="large">
         {{ $t('Subscription settings') }}
       </CommonLabel>
 

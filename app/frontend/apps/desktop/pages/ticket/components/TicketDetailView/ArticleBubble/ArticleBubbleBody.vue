@@ -75,12 +75,12 @@ onMounted(() => {
 
 <template>
   <div
-    class="Content -:p-3 relative transition-[padding]"
+    class="Content relative p-3 transition-[padding]"
     :class="[
       bodyClasses,
       {
-        'pt-3': showMetaInformation,
-        '-:pt-9': showAuthorInformation,
+        'pt-3!': showMetaInformation,
+        'pt-9!': showAuthorInformation,
       },
     ]"
   >
@@ -121,7 +121,7 @@ onMounted(() => {
     />
     <CommonButton
       v-if="hasShowMore"
-      class="!p-0 !outline-transparent"
+      class="p-0! outline-transparent!"
       size="medium"
       @click.prevent="toggleShowMore"
       @keydown.enter.prevent="toggleShowMore"
@@ -158,21 +158,18 @@ onMounted(() => {
 }
 
 .Content--agent .BubbleGradient::before {
-  background: linear-gradient(rgba(255, 255, 255, 0), theme('colors.white'));
+  background: linear-gradient(rgba(255, 255, 255, 0), var(--color-white));
 }
 
 [data-theme='dark'] .Content--agent .BubbleGradient::before {
-  background: linear-gradient(rgba(255, 255, 255, 0), theme('colors.gray.400'));
+  background: linear-gradient(rgba(255, 255, 255, 0), var(--color-gray-400));
 }
 
 .Content--customer .BubbleGradient::before {
-  background: linear-gradient(rgba(255, 255, 255, 0), theme('colors.blue.100'));
+  background: linear-gradient(rgba(255, 255, 255, 0), var(--color-blue-100));
 }
 
 [data-theme='dark'] .Content--customer .BubbleGradient::before {
-  background: linear-gradient(
-    rgba(255, 255, 255, 0),
-    theme('colors.stone.500')
-  );
+  background: linear-gradient(rgba(255, 255, 255, 0), var(--color-stone-500));
 }
 </style>

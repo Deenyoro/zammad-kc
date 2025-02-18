@@ -84,7 +84,7 @@ const handleRowClick = (row: TableItem) => {
     >
       <template #column-cell-createdAt="{ item, isRowSelected }">
         <CommonDateTime
-          class="-:text-gray-100 -:dark:text-neutral-400 group-hover:text-black group-focus-visible:text-white group-active:text-white group-hover:dark:text-white group-active:dark:text-white"
+          class="text-gray-100 group-hover:text-black group-focus-visible:text-white group-active:text-white dark:text-neutral-400 group-hover:dark:text-white group-active:dark:text-white"
           :class="{ 'text-black dark:text-white': isRowSelected }"
           :date-time="item['createdAt'] as string"
           type="absolute"

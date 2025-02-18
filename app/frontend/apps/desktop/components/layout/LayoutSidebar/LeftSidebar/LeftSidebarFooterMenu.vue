@@ -20,7 +20,7 @@ provide(
 <template>
   <section
     class="flex flex-row items-center justify-between"
-    :class="{ 'mx-auto mb-0.5 flex-col': collapsed }"
+    :class="{ 'mx-auto mb-0.5 flex-col!': collapsed }"
   >
     <AvatarMenu />
     <MenuContainer />

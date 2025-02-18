@@ -26,7 +26,7 @@ const detectedLanguageAttribute = computed(() =>
 </script>
 
 <template>
-  <CommonLabel class="text-black dark:text-white">
+  <CommonLabel class="text-black! dark:text-white!">
     <ObjectAttributeContent
       v-if="detectedLanguageAttribute"
       :attribute="detectedLanguageAttribute"

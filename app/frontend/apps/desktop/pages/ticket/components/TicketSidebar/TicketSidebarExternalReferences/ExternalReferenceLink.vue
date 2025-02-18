@@ -51,7 +51,7 @@ const { isTouchDevice } = useTouchDevice()
       size="small"
       variant="remove"
       :class="{
-        'opacity-0 focus-visible:opacity-100 group-hover:opacity-100':
+        'opacity-0 group-hover:opacity-100 focus-visible:opacity-100':
           !isTouchDevice,
       }"
       @click="$emit('remove', { id })"

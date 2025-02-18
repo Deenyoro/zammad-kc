@@ -39,13 +39,13 @@ const ticketColorCode = computed(() => {
   </div>
   <CommonLink
     v-else
-    class="flex grow items-start gap-2 break-words rounded-md hover:no-underline focus-visible:rounded-md focus-visible:outline-none group-hover/tab:bg-blue-600 group-hover/tab:dark:bg-blue-900"
+    class="flex! grow items-start gap-2 rounded-md break-words group-hover/tab:bg-blue-600 hover:no-underline! focus-visible:rounded-md focus-visible:outline-hidden group-hover/tab:dark:bg-blue-900"
     style="word-break: break-word"
     :link="`/tickets/${ticket?.internalId}`"
     internal
   >
     <CommonTicketStateIndicatorIcon
-      class="-:mt-1 ms-0.5 shrink-0"
+      class="ms-0.5 mt-1 shrink-0"
       :class="classes?.indicator || ''"
       :color-code="ticketColorCode"
       :label="ticketState"
@@ -54,7 +54,7 @@ const ticketColorCode = computed(() => {
     />
     <CommonLabel
       :id="ticketId"
-      class="-:mt-0.5 text-blue-800"
+      class="mt-0.5 text-blue-800"
       :class="classes?.label"
     >
       {{ ticket?.title }}

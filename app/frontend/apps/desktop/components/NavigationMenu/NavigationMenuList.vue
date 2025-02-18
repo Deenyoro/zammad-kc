@@ -34,16 +34,16 @@ const paddingClasses = computed(() =>
     <ul class="m-0 flex basis-full flex-col gap-1 p-0">
       <li v-for="entry in items" :key="entry.label">
         <CommonLink
-          class="flex items-center gap-2 rounded-md text-sm text-gray-100 hover:bg-blue-600 hover:text-black hover:no-underline focus:outline-none focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-neutral-400 dark:hover:bg-blue-900 dark:hover:text-white"
+          class="flex items-center gap-2 rounded-md text-sm text-gray-100 hover:bg-blue-600 hover:text-black hover:no-underline! focus:outline-hidden focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-neutral-400 dark:hover:bg-blue-900 dark:hover:text-white"
           :class="[paddingClasses]"
-          exact-active-class="!bg-blue-800 w-full !text-white"
+          exact-active-class="bg-blue-800! w-full text-white!"
           internal
           :link="entry.route"
         >
           <template #default="{ isActive }">
             <slot v-bind="entry">
               <CommonLabel
-                class="line-clamp-1 grow text-current"
+                class="line-clamp-1 grow text-current!"
                 :prefix-icon="entry.icon"
                 :icon-color="entry.iconColor"
               >
@@ -51,11 +51,11 @@ const paddingClasses = computed(() =>
               </CommonLabel>
               <CommonBadge
                 v-if="entry.count !== undefined"
-                class="font-bold leading-snug"
+                class="leading-snug font-bold"
                 :size="countSize"
                 :variant="countVariant"
                 :class="{
-                  '!bg-transparent !text-white': isActive,
+                  'bg-transparent! text-white!': isActive,
                 }"
                 rounded
               >

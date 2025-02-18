@@ -60,7 +60,7 @@ const actions: MenuItem[] = [
         :entity="organization as AvatarOrganization"
         size="normal"
       />
-      <CommonLabel size="large" class="dark:text-white"
+      <CommonLabel size="large" class="dark:text-white!"
         >{{ organization.name }}
       </CommonLabel>
     </CommonLink>

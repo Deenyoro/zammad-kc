@@ -85,7 +85,7 @@ const { showPreview } = useFilePreviewViewer(
 
 <template>
   <div
-    class="group/article backface-hidden relative rounded-t-xl"
+    class="group/article relative rounded-t-xl backface-hidden"
     :data-test-id="`article-bubble-container-${article.internalId}`"
     :class="[
       {
@@ -149,7 +149,7 @@ const { showPreview } = useFilePreviewViewer(
       <ArticleBubbleBody
         tabindex="0"
         :data-test-id="`article-bubble-body-${article.internalId}`"
-        class="last:rounded-b-xl focus:outline-none focus-visible:-outline-offset-2 focus-visible:outline-blue-800"
+        class="last:rounded-b-xl focus:outline-hidden focus-visible:-outline-offset-2 focus-visible:outline-blue-800"
         :class="[
           bodyClasses,
           {

@@ -39,7 +39,7 @@ const iconColor = computed(() => {
     :is="link ? 'CommonLink' : 'button'"
     :link="link"
     :external="link && linkExternal"
-    class="block cursor-pointer leading-snug hover:no-underline focus-visible:!outline-none"
+    class="block cursor-pointer leading-snug hover:no-underline! focus-visible:!outline-hidden"
     data-test-id="popover-menu-item"
   >
     <slot name="leading" />

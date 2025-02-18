@@ -19,7 +19,7 @@ const el = useTemplateRef('el')
 
 const colorClasses = computed(() => {
   if (props.active)
-    return 'bg-white text-black dark:bg-gray-200 dark:text-white'
+    return 'bg-white text-black! dark:bg-gray-200 dark:text-white!'
 
   if (props.disabled) return 'text-stone-200 dark:text-neutral-500'
 
@@ -41,7 +41,7 @@ const iconClassMap = {
   <span
     ref="el"
     v-tooltip="tooltip"
-    class="-:text-gray-100 -:dark:text-neutral-400 -:transition-colors inline-flex select-none items-center gap-1 text-nowrap rounded-full px-3.5 py-1 text-base outline-none focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800"
+    class="inline-flex items-center gap-1 rounded-full px-3.5 py-1 text-base text-nowrap text-gray-100 outline-hidden transition-colors select-none focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-neutral-400"
     :class="[
       colorClasses,
       fontSizeClassMap[props.size],

@@ -411,316 +411,308 @@ const closed = () => {
 
 <style scoped>
 :deep(.dp__theme_light) {
-  --dp-background-color: theme(colors.white);
-  --dp-text-color: theme(colors.black);
-  --dp-hover-color: theme(colors.blue.600);
-  --dp-hover-text-color: theme(colors.black);
-  --dp-hover-icon-color: theme(colors.blue.800);
-  --dp-primary-color: theme(colors.blue.800);
-  --dp-primary-disabled-color: theme(colors.blue.500);
-  --dp-primary-text-color: theme(colors.white);
-  --dp-secondary-color: theme(colors.stone.200);
-  --dp-border-color: theme(colors.transparent);
-  --dp-menu-border-color: theme(colors.neutral.100);
-  --dp-border-color-hover: theme(colors.transparent);
-  --dp-disabled-color: theme(colors.transparent);
-  --dp-disabled-color-text: theme(colors.stone.200);
-  --dp-scroll-bar-background: theme(colors.blue.200);
-  --dp-scroll-bar-color: theme(colors.stone.200);
-  --dp-success-color: theme(colors.green.500);
-  --dp-success-color-disabled: theme(colors.green.300);
-  --dp-icon-color: theme(colors.stone.200);
-  --dp-danger-color: theme(colors.red.500);
-  --dp-marker-color: theme(colors.blue.600);
-  --dp-tooltip-color: theme(colors.blue.200);
-  --dp-highlight-color: theme(colors.blue.800);
-  --dp-range-between-dates-background-color: theme(colors.blue.500);
-  --dp-range-between-dates-text-color: theme(colors.blue.800);
-  --dp-range-between-border-color: theme(colors.neutral.100);
-  --dp-input-background-color: theme(colors.blue.200);
+  --dp-background-color: var(--color-white);
+  --dp-text-color: var(--color-black);
+  --dp-hover-color: var(--color-blue-600);
+  --dp-hover-text-color: var(--color-black);
+  --dp-hover-icon-color: var(--color-blue-800);
+  --dp-primary-color: var(--color-blue-800);
+  --dp-primary-disabled-color: var(--color-blue-500);
+  --dp-primary-text-color: var(--color-white);
+  --dp-secondary-color: var(--color-stone-200);
+  --dp-border-color: transparent;
+  --dp-menu-border-color: var(--color-neutral-100);
+  --dp-border-color-hover: transparent;
+  --dp-disabled-color: transparent;
+  --dp-disabled-color-text: var(--color-stone-200);
+  --dp-scroll-bar-background: var(--color-blue-200);
+  --dp-scroll-bar-color: var(--color-stone-200);
+  --dp-success-color: var(--color-green-500);
+  --dp-success-color-disabled: var(--color-green-300);
+  --dp-icon-color: var(--color-stone-200);
+  --dp-danger-color: var(--color-red-500);
+  --dp-marker-color: var(--color-blue-600);
+  --dp-tooltip-color: var(--color-blue-200);
+  --dp-highlight-color: var(--color-blue-800);
+  --dp-range-between-dates-background-color: var(--color-blue-500);
+  --dp-range-between-dates-text-color: var(--color-blue-800);
+  --dp-range-between-border-color: var(--color-neutral-100);
+  --dp-input-background-color: var(--color-blue-200);
 
-  .dp {
-    &--clear-btn:hover {
-      color: theme(colors.black);
+  .dp--clear-btn:hover {
+    color: var(--color-black);
+  }
+
+  .dp__btn,
+  .dp__calendar_item,
+  .dp__action_button {
+    &:hover {
+      outline-color: var(--color-blue-600);
     }
 
-    &__btn,
-    &__calendar_item,
-    &__action_button {
-      &:hover {
-        outline-color: theme(colors.blue.600);
-      }
-
-      &:focus {
-        outline-color: theme(colors.blue.800);
-      }
+    &:focus {
+      outline-color: var(--color-blue-800);
     }
+  }
 
-    &__button,
-    &__action_button {
-      color: theme(colors.gray.300);
-      background: theme(colors.green.200);
-    }
+  .dp__button,
+  .dp__action_button {
+    color: var(--color-gray-300);
+    background: var(--color-green-200);
   }
 }
 
 :deep(.dp__theme_dark) {
-  --dp-background-color: theme(colors.gray.500);
-  --dp-text-color: theme(colors.white);
-  --dp-hover-color: theme(colors.blue.900);
-  --dp-hover-text-color: theme(colors.white);
-  --dp-hover-icon-color: theme(colors.blue.800);
-  --dp-primary-color: theme(colors.blue.800);
-  --dp-primary-disabled-color: theme(colors.blue.950);
-  --dp-primary-text-color: theme(colors.white);
-  --dp-secondary-color: theme(colors.neutral.500);
-  --dp-border-color: theme(colors.transparent);
-  --dp-menu-border-color: theme(colors.gray.900);
-  --dp-border-color-hover: theme(colors.transparent);
-  --dp-disabled-color: theme(colors.transparent);
-  --dp-disabled-color-text: theme(colors.neutral.500);
-  --dp-scroll-bar-background: theme(colors.gray.700);
-  --dp-scroll-bar-color: theme(colors.gray.400);
-  --dp-success-color: theme(colors.green.500);
-  --dp-success-color-disabled: theme(colors.green.900);
-  --dp-icon-color: theme(colors.neutral.500);
-  --dp-danger-color: theme(colors.red.500);
-  --dp-marker-color: theme(colors.blue.700);
-  --dp-tooltip-color: theme(colors.gray.700);
-  --dp-highlight-color: theme(colors.blue.800);
-  --dp-range-between-dates-background-color: theme(colors.blue.950);
-  --dp-range-between-dates-text-color: theme(colors.blue.800);
-  --dp-range-between-border-color: theme(colors.gray.900);
-  --dp-input-background-color: theme(colors.gray.700);
+  --dp-background-color: var(--color-gray-500);
+  --dp-text-color: var(--color-white);
+  --dp-hover-color: var(--color-blue-900);
+  --dp-hover-text-color: var(--color-white);
+  --dp-hover-icon-color: var(--color-blue-800);
+  --dp-primary-color: var(--color-blue-800);
+  --dp-primary-disabled-color: var(--color-blue-950);
+  --dp-primary-text-color: var(--color-white);
+  --dp-secondary-color: var(--color-neutral-500);
+  --dp-border-color: transparent;
+  --dp-menu-border-color: var(--color-gray-900);
+  --dp-border-color-hover: transparent;
+  --dp-disabled-color: transparent;
+  --dp-disabled-color-text: var(--color-neutral-500);
+  --dp-scroll-bar-background: var(--color-gray-900);
+  --dp-scroll-bar-color: var(--color-gray-400);
+  --dp-success-color: var(--color-green-500);
+  --dp-success-color-disabled: var(--color-green-900);
+  --dp-icon-color: var(--color-neutral-500);
+  --dp-danger-color: var(--color-red-500);
+  --dp-marker-color: var(--color-blue-700);
+  --dp-tooltip-color: var(--color-gray-900);
+  --dp-highlight-color: var(--color-blue-800);
+  --dp-range-between-dates-background-color: var(--color-blue-950);
+  --dp-range-between-dates-text-color: var(--color-blue-800);
+  --dp-range-between-border-color: var(--color-gray-900);
+  --dp-input-background-color: var(--color-gray-900);
 
-  .dp {
-    &--clear-btn:hover {
-      color: theme(colors.white);
+  .dp--clear-btn:hover {
+    color: var(--color-white);
+  }
+
+  .dp__btn,
+  .dp__calendar_item,
+  .dp__action_button {
+    &:hover {
+      outline-color: var(--color-blue-900);
     }
 
-    &__btn,
-    &__calendar_item,
-    &__action_button {
-      &:hover {
-        outline-color: theme(colors.blue.900);
-      }
-
-      &:focus {
-        outline-color: theme(colors.blue.800);
-      }
+    &:focus {
+      outline-color: var(--color-blue-800);
     }
+  }
 
-    &__button,
-    &__action_button {
-      color: theme(colors.neutral.400);
-      background: theme(colors.gray.600);
-    }
+  .dp__button,
+  .dp__action_button {
+    color: var(--color-neutral-400);
+    background: var(--color-gray-600);
   }
 }
 
 :deep(.dp__main) {
-  /* stylelint-disable value-keyword-case */
-  --dp-font-family: theme(fontFamily.sans);
-  --dp-border-radius: theme(borderRadius.lg);
-  --dp-cell-border-radius: theme(borderRadius.md);
-  --dp-button-height: theme(size.6);
-  --dp-month-year-row-height: theme(size.7);
-  --dp-month-year-row-button-size: theme(size.7);
-  --dp-button-icon-height: theme(height.4);
-  --dp-cell-size: theme(size.6);
-  --dp-cell-padding: theme(padding.2);
-  --dp-common-padding: theme(padding.2);
-  --dp-input-icon-padding: theme(padding.2);
+  --dp-font-family: var(--default-font-family);
+  --dp-border-radius: 0.5rem;
+  --dp-cell-border-radius: 0.375rem;
+  --dp-button-height: 1.5rem;
+  --dp-month-year-row-height: 1.75rem;
+  --dp-month-year-row-button-size: 1.75rem;
+  --dp-button-icon-height: 1rem;
+  --dp-cell-size: 1.5rem;
+  --dp-cell-padding: 0.5rem;
+  --dp-common-padding: 0.5rem;
+  --dp-input-icon-padding: 0.5rem;
   --dp-input-padding: var(--dp-common-padding);
   --dp-menu-min-width: 210px;
-  --dp-action-buttons-padding: theme(padding.3);
-  --dp-row-margin: theme(margin.2) theme(margin.0);
-  --dp-calendar-header-cell-padding: theme(padding.2);
-  --dp-two-calendars-spacing: theme(spacing[2.5]);
-  --dp-overlay-col-padding: theme(padding.2);
-  --dp-time-inc-dec-button-size: theme(size.7);
-  --dp-menu-padding: theme(padding.2);
-  --dp-font-size: theme(fontSize.sm);
-  --dp-preview-font-size: theme(fontSize.xs);
-  --dp-time-font-size: theme(fontSize.base);
+  --dp-action-buttons-padding: 0.75rem;
+  --dp-row-margin: 0.5rem 0;
+  --dp-calendar-header-cell-padding: 0.5rem;
+  --dp-two-calendars-spacing: 10px;
+  --dp-overlay-col-padding: 0.5rem;
+  --dp-time-inc-dec-button-size: 1.75rem;
+  --dp-menu-padding: 0.5rem;
+  --dp-font-size: 0.875rem;
+  --dp-preview-font-size: 0.75rem;
+  --dp-time-font-size: 1rem;
 
-  .dp {
-    &__input_wrap {
-      display: flex;
+  .dp__input_icon {
+    left: unset;
+    right: 0.625rem;
+
+    &:where([dir='rtl'], [dir='rtl'] *) {
+      left: 2.5rem;
+      right: unset;
+    }
+  }
+
+  .dp__input_icon_pad {
+    padding-inline-start: var(--dp-common-padding);
+    padding-inline-end: var(--dp-input-icon-padding);
+  }
+
+  .dp__input_wrap {
+    display: flex;
+  }
+
+  .dp--clear-btn {
+    right: 1.5rem;
+
+    &:where([dir='rtl'], [dir='rtl'] *) {
+      left: 1.5rem;
+      right: unset;
+    }
+  }
+
+  .dp--tp-wrap {
+    padding: var(--dp-common-padding);
+    max-width: none;
+  }
+
+  .dp__inner_nav:hover,
+  .dp__month_year_select:hover,
+  .dp__year_select:hover,
+  .dp__date_hover:hover,
+  .dp__inc_dec_button {
+    background: transparent;
+    transition: none;
+  }
+
+  .dp__date_hover.dp__cell_offset:hover {
+    color: var(--dp-secondary-color);
+  }
+
+  .dp__menu_inner {
+    padding-bottom: 0;
+  }
+
+  .dp__action_row {
+    padding-top: 0;
+    margin-top: 0.125rem;
+  }
+
+  .dp__btn,
+  .dp__button,
+  .dp__calendar_item,
+  .dp__action_button {
+    transition: none;
+    border-radius: 0.375rem;
+    outline-color: transparent;
+
+    &:hover {
+      outline-width: 1px;
+      outline-style: solid;
+      outline-offset: 1px;
     }
 
-    &__input_icon {
-      left: unset;
-      right: theme(space[2.5]);
-
-      &:where([dir='rtl'], [dir='rtl'] *) {
-        left: theme(space[2.5]);
-        right: unset;
-      }
-
-      &_pad {
-        padding-inline-start: var(--dp-common-padding);
-        padding-inline-end: var(--dp-input-icon-padding);
-      }
+    &:focus {
+      outline-width: 1px;
+      outline-style: solid;
+      outline-offset: 1px;
     }
+  }
 
-    &--clear-btn {
-      right: theme(space.6);
+  .dp__calendar_row {
+    gap: 0.375rem;
+  }
 
-      &:where([dir='rtl'], [dir='rtl'] *) {
-        left: theme(space.6);
-        right: unset;
-      }
+  .dp__month_year_wrap {
+    gap: 0.5rem;
+  }
+
+  .dp__time_col {
+    gap: 0.75rem;
+  }
+
+  .dp__today {
+    border: none;
+    color: var(--color-blue-800);
+
+    &.dp__range_start,
+    &.dp__range_end,
+    &.dp__active_date {
+      color: var(--color-white);
     }
+  }
 
-    &--tp-wrap {
-      padding: var(--dp-common-padding);
-      max-width: none;
+  .dp__action_buttons {
+    margin-inline-start: 0;
+    flex-grow: 1;
+  }
+
+  .dp__action_button {
+    margin-inline-start: 0;
+    transition: none;
+    flex-grow: 1;
+    display: inline-flex;
+    justify-content: center;
+    border-radius: 0.375rem;
+  }
+
+  .dp__action_cancel {
+    border: 0;
+  }
+
+  .dp--arrow-btn-nav .dp__inner_nav {
+    color: var(--color-blue-800);
+  }
+
+  /* NB: Fix orientation of the popover arrow in RTL locales. */
+
+  .dp__arrow_top:where([dir='rtl'], [dir='rtl'] *) {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  .dp__arrow_bottom:where([dir='rtl'], [dir='rtl'] *) {
+    transform: translate(-50%, 50%) rotate(45deg);
+  }
+
+  .dp__overlay_container {
+    padding-bottom: 0.5rem;
+  }
+
+  .dp__overlay_container + .dp__button,
+  .dp__overlay_row + .dp__button {
+    width: auto;
+    margin: 0.5rem;
+  }
+
+  .dp__overlay_container + .dp__button {
+    width: calc(var(--dp-menu-min-width));
+  }
+
+  .dp__time_display {
+    transition: none;
+    padding: 0.5rem;
+  }
+
+  .dp__range_start,
+  .dp__range_end,
+  .dp__range_between {
+    transition: none;
+    border: none;
+    border-radius: 0.375rem;
+  }
+
+  .dp__range_between:hover {
+    background: var(--dp-range-between-dates-background-color);
+    color: var(--dp-range-between-dates-text-color);
+  }
+
+  .dp__range_end,
+  .dp__range_start,
+  .dp__active_date {
+    &.dp__cell_offset {
+      color: var(--dp-primary-text-color);
     }
+  }
 
-    &__inner_nav:hover,
-    &__month_year_select:hover,
-    &__year_select:hover,
-    &__date_hover:hover,
-    &__inc_dec_button {
-      background: theme(colors.transparent);
-      transition: none;
-    }
-
-    &__date_hover.dp__cell_offset:hover {
-      color: var(--dp-secondary-color);
-    }
-
-    &__menu_inner {
-      padding-bottom: 0;
-    }
-
-    &__action_row {
-      padding-top: 0;
-      margin-top: theme(space[0.5]);
-    }
-
-    &__btn,
-    &__button,
-    &__calendar_item,
-    &__action_button {
-      transition: none;
-      border-radius: theme(borderRadius.md);
-      outline-color: theme(colors.transparent);
-
-      &:hover {
-        outline-width: 1px;
-        outline-style: solid;
-        outline-offset: 1px;
-      }
-
-      &:focus {
-        outline-width: 1px;
-        outline-style: solid;
-        outline-offset: 1px;
-      }
-    }
-
-    &__calendar_row {
-      gap: theme(gap[1.5]);
-    }
-
-    &__month_year_wrap {
-      gap: theme(gap.2);
-    }
-
-    &__time_col {
-      gap: theme(gap.3);
-    }
-
-    &__today {
-      border: none;
-      color: theme(colors.blue.800);
-
-      &.dp__range_start,
-      &.dp__range_end,
-      &.dp__active_date {
-        color: theme(colors.white);
-      }
-    }
-
-    &__action_buttons {
-      margin-inline-start: 0;
-      flex-grow: 1;
-    }
-
-    &__action_button {
-      margin-inline-start: 0;
-      transition: none;
-      flex-grow: 1;
-      display: inline-flex;
-      justify-content: center;
-      border-radius: theme(borderRadius.md);
-    }
-
-    &__action_cancel {
-      border: 0;
-    }
-
-    &--arrow-btn-nav .dp__inner_nav {
-      color: theme(colors.blue.800);
-    }
-
-    /* NB: Fix orientation of the popover arrow in RTL locales. */
-    &__arrow {
-      &_top:where([dir='rtl'], [dir='rtl'] *) {
-        transform: translate(-50%, -50%) rotate(-45deg);
-      }
-
-      &_bottom:where([dir='rtl'], [dir='rtl'] *) {
-        transform: translate(-50%, 50%) rotate(45deg);
-      }
-    }
-
-    &__overlay_container {
-      padding-bottom: theme(padding.2);
-    }
-
-    &__overlay_container + .dp__button,
-    &__overlay_row + .dp__button {
-      width: auto;
-      margin: theme(margin.2);
-    }
-
-    &__overlay_container + .dp__button {
-      width: calc(var(--dp-menu-min-width));
-    }
-
-    &__time_display {
-      transition: none;
-      padding: theme(padding.2);
-    }
-
-    &__range_start,
-    &__range_end,
-    &__range_between {
-      transition: none;
-      border: none;
-      border-radius: theme(borderRadius.md);
-    }
-
-    &__range_between:hover {
-      background: var(--dp-range-between-dates-background-color);
-      color: var(--dp-range-between-dates-text-color);
-    }
-
-    &__range_end,
-    &__range_start,
-    &__active_date {
-      &.dp__cell_offset {
-        color: var(--dp-primary-text-color);
-      }
-    }
-
-    &__calendar_header {
-      font-weight: 400;
-      text-transform: uppercase;
-    }
+  .dp__calendar_header {
+    font-weight: 400;
+    text-transform: uppercase;
   }
 }
 </style>

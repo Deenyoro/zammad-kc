@@ -218,7 +218,7 @@ defineExpose({
       class="flex h-full grow flex-col"
       data-test-id="article-reply-stripes-panel"
       :class="{
-        'bg-stripes relative z-10 rounded-xl outline outline-1 outline-blue-700 before:rounded-2xl':
+        'bg-stripes relative z-0 rounded-xl outline-1 outline-blue-700 before:rounded-2xl':
           hasInternalArticle && !pinned,
         'border-stripes': hasInternalArticle && pinned,
       }"
@@ -276,7 +276,7 @@ defineExpose({
   </div>
   <div
     v-else-if="newArticlePresent !== undefined"
-    class="-:border-t-transparent sticky bottom-0 z-20 flex w-full justify-center gap-2.5 border-t py-1.5"
+    class="sticky bottom-0 z-20 flex w-full justify-center gap-2.5 border-t border-t-transparent py-1.5"
     :class="{
       'border-t-neutral-100 bg-neutral-50 dark:border-t-gray-900 dark:bg-gray-500':
         parentReachedBottomScroll,
@@ -301,7 +301,7 @@ defineExpose({
 .border-stripes {
   position: relative;
   z-index: -10;
-  background-color: theme('colors.neutral.50');
+  background-color: var(--color-neutral-50);
 
   &::before {
     content: '';
@@ -313,10 +313,10 @@ defineExpose({
     border: 5px solid transparent;
     background-image: repeating-linear-gradient(
       45deg,
-      theme('colors.blue.400'),
-      theme('colors.blue.400') 5px,
-      theme('colors.blue.700') 5px,
-      theme('colors.blue.700') 10px
+      var(--color-blue-400),
+      var(--color-blue-400) 5px,
+      var(--color-blue-700) 5px,
+      var(--color-blue-700) 10px
     );
     background-position: -1px;
     background-attachment: fixed;
@@ -333,22 +333,22 @@ defineExpose({
     top: 40px;
     bottom: 0;
     right: 0;
-    outline: 1px solid theme('colors.blue.700');
+    outline: 1px solid var(--color-blue-700);
     outline-offset: -5px;
     pointer-events: none;
   }
 }
 
 [data-theme='dark'] .border-stripes {
-  background-color: theme('colors.gray.500');
+  background-color: var(--color-gray-500);
 
   &::before {
     background-image: repeating-linear-gradient(
       45deg,
-      theme('colors.blue.700'),
-      theme('colors.blue.700') 5px,
-      theme('colors.blue.900') 5px,
-      theme('colors.blue.900') 10px
+      var(--color-blue-700),
+      var(--color-blue-700) 5px,
+      var(--color-blue-900) 5px,
+      var(--color-blue-900) 10px
     );
   }
 }

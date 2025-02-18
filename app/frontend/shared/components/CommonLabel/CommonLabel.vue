@@ -36,7 +36,7 @@ const iconClassMap = {
 <template>
   <component
     :is="tag"
-    class="-:gap-1 -:text-gray-100 -:dark:text-neutral-400 -:inline-flex items-center justify-start"
+    class="inline-flex items-center justify-start gap-1 text-gray-100 dark:text-neutral-400"
     :class="fontSizeClassMap[props.size]"
     data-test-id="common-label"
   >

@@ -273,7 +273,7 @@ defineExpose({
             <div
               v-show="showSecretOverlay"
               id="qr-code-secret-overlay"
-              class="absolute bottom-0 left-0 right-0 top-0 flex flex-col items-center justify-center gap-1.5 rounded-lg bg-black bg-opacity-90"
+              class="bg-opacity-90 absolute top-0 right-0 bottom-0 left-0 flex flex-col items-center justify-center gap-1.5 rounded-lg bg-black"
               role="presentation"
             >
               <span

@@ -26,7 +26,7 @@ const roundedClass = computed(() =>
     aria-valuemax="100"
     :aria-label="$t(label)"
     :aria-valuetext="$t('Please wait until content is loaded')"
-    class="bg-primary animate-pulse bg-blue-200 focus:outline-none focus-visible:rounded-md focus-visible:outline-none focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:bg-gray-700"
+    class="bg-primary animate-pulse bg-blue-200 focus:outline-none focus-visible:rounded-md focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 focus-visible:outline-none dark:bg-gray-700"
     :class="[roundedClass]"
   />
 </template>

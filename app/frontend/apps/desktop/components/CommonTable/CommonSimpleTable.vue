@@ -98,7 +98,7 @@ const {
 
           <slot v-else :name="`column-header-${header.key}`" :header="header">
             <CommonLabel
-              class="-:font-normal -:text-stone-200 -:dark:text-neutral-500"
+              class="font-normal text-stone-200 dark:text-neutral-500"
               :class="[
                 cellAlignmentClasses[header.alignContent || 'left'],
                 header.labelClass || '',
@@ -113,7 +113,7 @@ const {
         </th>
         <th v-if="actions" class="h-10 w-0 p-2.5 text-center">
           <CommonLabel
-            class="font-normal text-stone-200 dark:text-neutral-500"
+            class="font-normal text-stone-200! dark:text-neutral-500!"
             size="small"
             >{{ $t('Actions') }}
           </CommonLabel>
@@ -180,7 +180,7 @@ const {
                   'ltr:text-black rtl:text-black dark:text-white':
                     isRowSelected,
                 }"
-                class="truncate text-sm hover:no-underline group-hover:text-black group-focus-visible:text-white group-active:text-white group-hover:dark:text-white"
+                class="truncate text-sm group-hover:text-black group-focus-visible:text-white group-active:text-white hover:no-underline! group-hover:dark:text-white"
                 @click.stop
                 @keydown.stop
                 >{{ (item[header.key] as TableItemLinkValue).label }}
@@ -188,7 +188,7 @@ const {
               <CommonLabel
                 v-else
                 v-tooltip.truncate="getTooltipText(item, header)"
-                class="-:text-gray-100 -:dark:text-neutral-400 inline group-hover:text-black group-focus-visible:text-white group-active:text-white group-hover:dark:text-white"
+                class="inline text-gray-100 group-hover:text-black group-focus-visible:text-white group-active:text-white dark:text-neutral-400 group-hover:dark:text-white"
                 :class="[
                   {
                     'text-black dark:text-white': isRowSelected,

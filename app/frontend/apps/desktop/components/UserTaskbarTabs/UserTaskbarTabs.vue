@@ -195,7 +195,7 @@ const getTaskbarTabDirtyFlag = (tabEntityKey: string) => {
         <CommonPopover
           id="user-taskbar-tabs-popover"
           ref="popover"
-          class="min-w-52 max-w-64"
+          class="max-w-64 min-w-52"
           :owner="popoverTarget"
           orientation="autoHorizontal"
           placement="start"
@@ -262,7 +262,7 @@ const getTaskbarTabDirtyFlag = (tabEntityKey: string) => {
                 :taskbar-tab="taskbarTabListByTabEntityKey[tabEntityKey]"
                 :taskbar-tab-link="getTaskbarTabLink(tabEntityKey)"
                 :class="{
-                  'group/link rounded-none focus-visible:bg-blue-800 focus-visible:outline-0 group-first/tab:rounded-t-[10px] group-last/tab:rounded-b-[10px]':
+                  'group/link rounded-none group-first/tab:rounded-t-[10px] group-last/tab:rounded-b-[10px] focus-visible:bg-blue-800 focus-visible:outline-0':
                     collapsed,
                   'active:cursor-grabbing': !collapsed,
                 }"

@@ -16,7 +16,7 @@ defineProps<Props>()
     class="flex gap-2 hover:no-underline"
   >
     <CommonUserAvatar :entity="entity" size="small" />
-    <CommonLabel class="text-blue-800 hover:underline"
+    <CommonLabel class="text-blue-800! hover:underline dark:text-neutral-400!"
       >{{ `${entity.fullname}` }}
     </CommonLabel>
   </CommonLink>

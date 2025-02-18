@@ -607,7 +607,7 @@ const {
               :key="`${isHidingTicketDetails}-top-bar`"
               v-model:hover="isHoveringOnTopBar"
               data-test-id="visible-ticket-detail-top-bar"
-              class="absolute left-0 right-0 top-0 w-full"
+              class="absolute! top-0 right-0 left-0 w-full"
               :hide-details="isHidingTicketDetails"
             />
           </Transition>

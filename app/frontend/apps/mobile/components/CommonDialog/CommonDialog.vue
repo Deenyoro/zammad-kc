@@ -116,22 +116,22 @@ export default {
     >
       <div class="bg-gray-150/40 mx-4 h-2.5 shrink-0 rounded-t-xl" />
       <div
-        class="relative flex h-16 shrink-0 select-none items-center justify-center rounded-t-xl bg-gray-600/80"
+        class="relative flex h-16 shrink-0 items-center justify-center rounded-t-xl bg-gray-600/80 select-none"
       >
         <div
-          class="absolute bottom-0 top-0 flex items-center ltr:left-0 ltr:pl-4 rtl:right-0 rtl:pr-4"
+          class="absolute top-0 bottom-0 flex items-center ltr:left-0 ltr:pl-4 rtl:right-0 rtl:pr-4"
         >
           <slot name="before-label" />
         </div>
         <div
-          class="line-clamp-2 max-w-[65%] text-center text-base font-semibold leading-[19px] text-white"
+          class="line-clamp-2 max-w-[65%] text-center text-base leading-[19px] font-semibold text-white"
         >
           <slot name="label">
             {{ $t(label) }}
           </slot>
         </div>
         <div
-          class="absolute bottom-0 top-0 flex items-center ltr:right-0 ltr:pr-4 rtl:left-0 rtl:pl-4"
+          class="absolute top-0 bottom-0 flex items-center ltr:right-0 ltr:pr-4 rtl:left-0 rtl:pl-4"
         >
           <slot name="after-label">
             <CommonButton

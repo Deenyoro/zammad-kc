@@ -189,7 +189,7 @@ const openFlyout = (sharedDraftStartId: string) => {
               >{{ sharedDraftStart.name }}</CommonLink
             >
             <CommonLabel
-              class="line-clamp-1 text-stone-200 dark:text-neutral-500"
+              class="line-clamp-1 text-stone-200! dark:text-neutral-500!"
               size="small"
             >
               <CommonDateTime :date-time="sharedDraftStart.updatedAt" />
@@ -212,7 +212,7 @@ const openFlyout = (sharedDraftStartId: string) => {
       </div>
       <CommonLabel
         v-else
-        class="text-stone-200 dark:text-neutral-500"
+        class="text-stone-200! dark:text-neutral-500!"
         size="small"
       >
         {{ $t('No shared drafts yet') }}

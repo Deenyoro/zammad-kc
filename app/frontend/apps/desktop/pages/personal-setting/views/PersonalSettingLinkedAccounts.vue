@@ -213,7 +213,7 @@ const tableActions = computed((): MenuItem[] => [
               v-else-if="action.onClick && action.show?.(item)"
               :icon="action.icon"
               :disabled="loading"
-              :class="{ '!bg-transparent': action.variant === 'danger' }"
+              :class="{ 'bg-transparent!': action.variant === 'danger' }"
               size="medium"
               :variant="action.variant"
               :aria-label="(action?.ariaLabel as Function)(item)"

@@ -148,7 +148,7 @@ const actionItems = computed(() => {
     </CommonButton>
     <CommonActionMenu
       v-if="isTicketAgent && actionItems"
-      class="flex"
+      class="flex!"
       button-size="large"
       no-single-action-mode
       placement="arrowEnd"

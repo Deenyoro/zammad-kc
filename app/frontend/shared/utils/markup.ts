@@ -12,7 +12,7 @@ export const markup = (source: string): string =>
 
 export const cleanupMarkup = (source: string): string =>
   source
-    .replace(/\|\|(.+?)\|\|/gm, '<i>$1</i>')
+    .replace(/\|\|(.+?)\|\|/gm, '$1')
     .replace(/\|(.+?)\|/gm, '$1')
     .replace(/_(.+?)_/gm, '$1')
     .replace(/\/\/(.+?)\/\//gm, '$1')

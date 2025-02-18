@@ -139,7 +139,7 @@ const ticketTitleSection = getFormSchemaGroupSection(
       innerClass: '$reset flex justify-center items-center px-8 w-full',
       messagesClass: 'pt-2',
       inputClass:
-        '$reset formkit-input block bg-transparent grow border-b-[0.5px] border-white outline-none text-center text-xl placeholder:text-white placeholder:text-opacity-50',
+        '$reset formkit-input block bg-transparent grow border-b-[0.5px] border-white outline-hidden text-center text-xl placeholder:text-white placeholder:text-opacity-50',
       props: {
         placeholder: __('Title'),
         onSubmit,
@@ -481,7 +481,7 @@ export default {
 <template>
   <LayoutHeader
     ref="headerElement"
-    class="!h-16"
+    class="h-16!"
     :style="stickyStyles.header"
     back-url="/"
     :title="__('Create Ticket')"
@@ -542,7 +542,7 @@ export default {
     <CommonStepper
       v-model="activeStep"
       :steps="allSteps"
-      class="mb-8 mt-4 px-8"
+      class="mt-4 mb-8 px-8"
     />
   </footer>
 </template>

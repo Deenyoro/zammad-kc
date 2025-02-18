@@ -6,11 +6,11 @@
     role="status"
     aria-live="polite"
     :aria-label="$t('Has update')"
-  ></div>
+  />
 </template>
 
 <style scoped>
 .router-link-active > * > .indicator {
-  @apply bg-white;
+  background-color: var(--color-white);
 }
 </style>

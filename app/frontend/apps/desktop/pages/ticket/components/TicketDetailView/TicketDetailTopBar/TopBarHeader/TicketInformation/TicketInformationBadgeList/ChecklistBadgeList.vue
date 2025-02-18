@@ -46,11 +46,11 @@ const openChecklistInSidebar = () => {
     @keydown.enter="openChecklistInSidebar"
   >
     <template #label>
-      <CommonLabel size="small" class="uppercase text-current">
+      <CommonLabel size="small" class="text-current! uppercase">
         {{ $t('checked') }}
       </CommonLabel>
     </template>
-    <CommonLabel size="small" class="text-black dark:text-white">
+    <CommonLabel size="small" class="text-black! dark:text-white!">
       {{ $t('%s of %s', completedItemsCount, totalItemsCount) }}
     </CommonLabel>
   </ChecklistBadge>

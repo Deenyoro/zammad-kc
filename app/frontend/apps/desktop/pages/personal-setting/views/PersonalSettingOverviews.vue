@@ -125,7 +125,7 @@ const confirmResetOverviewOrder = async () => {
 
 <template>
   <LayoutContent :breadcrumb-items="breadcrumbItems" width="narrow">
-    <CommonLoader class="mb-3 mt-5" :loading="overviewListQueryLoading">
+    <CommonLoader class="mt-5 mb-3" :loading="overviewListQueryLoading">
       <div class="mb-4">
         <CommonLabel
           id="label-ticket-overview-order"

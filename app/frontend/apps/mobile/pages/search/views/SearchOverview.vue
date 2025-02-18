@@ -230,7 +230,7 @@ export default {
       <h1 class="sr-only">{{ $t('Search') }}</h1>
       <CommonButtonGroup
         v-if="type"
-        class="border-b border-white/10 px-4 pb-4"
+        class="border-b border-[rgba(255,255,255,0.1)] px-4 pb-4"
         as="tabs"
         :options="searchPills"
         :model-value="type"

@@ -11,14 +11,14 @@ defineProps<Props>()
 
 <template>
   <div class="flex flex-col gap-0.5">
-    <CommonLabel size="small" class="text-stone-200 dark:text-neutral-500">
+    <CommonLabel size="small" class="text-stone-200! dark:text-neutral-500!">
       {{ $t(label) }}
     </CommonLabel>
 
     <CommonLabel
       tag="div"
       size="medium"
-      class="text-gray-100 dark:text-neutral-400"
+      class="text-gray-100! dark:text-neutral-400!"
     >
       <slot>{{ body }}</slot>
     </CommonLabel>

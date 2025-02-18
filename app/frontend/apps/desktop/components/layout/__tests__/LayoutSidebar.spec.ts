@@ -179,9 +179,9 @@ describe('LayoutSidebar', () => {
         if (variant === 'secondary') {
           expect(aside).toHaveClass('bg-blue-50 dark:bg-gray-800')
         } else if (variant === 'primary') {
-          expect(aside).toHaveClass('-:bg-neutral-950')
+          expect(aside).toHaveClass('bg-neutral-950')
         } else {
-          expect(aside).toHaveClass('-:bg-neutral-950') // default as primary
+          expect(aside).toHaveClass('bg-neutral-950') // default as primary
         }
       },
     )

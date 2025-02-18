@@ -117,7 +117,7 @@ useFormBlock(contextReactive, onInputClick)
       :id="context.id"
       role="combobox"
       :name="context.node.name"
-      class="formkit-disabled:pointer-events-none flex grow items-center focus:outline-none"
+      class="formkit-disabled:pointer-events-none flex grow items-center focus:outline-hidden"
       :aria-disabled="context.disabled ? 'true' : undefined"
       :aria-labelledby="`label-${context.id}`"
       aria-haspopup="dialog"

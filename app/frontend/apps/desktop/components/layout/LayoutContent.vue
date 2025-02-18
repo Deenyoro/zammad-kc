@@ -153,9 +153,9 @@ const { durations } = useTransitionConfig()
         :min-width="minSidebarWidth"
         no-padding
         no-scroll
-        class="bg-neutral-50 dark:bg-gray-500"
+        class="bg-neutral-50! dark:bg-gray-500!"
         :class="{
-          'max-h-[calc(100dvh-3.5rem)]': $slots.bottomBar,
+          'max-h-[calc(100dvh-3.5rem)]!': $slots.bottomBar,
         }"
         @collapse="collapseSidebar"
         @expand="expandSidebar"
