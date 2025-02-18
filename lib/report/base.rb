@@ -373,4 +373,15 @@ class Report::Base
 
     INTERVAL_LENGTH[interval]
   end
+
+  def self.without_merged_tickets_selector
+    merged_state_id = Ticket::StateType.where(name: 'merged').pick(:id)
+
+    {
+      self::TICKET_STATE_ATTRIBUTE => {
+        'operator' => 'is not',
+        'value'    => merged_state_id
+      }
+    }
+  end
 end

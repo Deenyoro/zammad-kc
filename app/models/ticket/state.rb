@@ -12,18 +12,24 @@ class Ticket::State < ApplicationModel
   belongs_to :next_state, class_name: 'Ticket::State', optional: true
 
   after_create  :ensure_defaults
+  before_update :prevent_merged_state_editing
   after_update  :ensure_defaults
+  before_destroy :prevent_merged_state_destruction
   after_destroy :ensure_defaults
 
   after_destroy :update_object_manager_attribute
-  after_save    :update_object_manager_attribute
+  after_save :update_object_manager_attribute
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
   validates :note, length: { maximum: 250 }
   sanitized_html :note
 
+  validates :state_type_id, uniqueness: { if: :state_type_solo? }
+
   attr_accessor :callback_loop
+
+  default_scope { order(id: :asc) }
 
 =begin
 
@@ -93,6 +99,11 @@ returns:
     attr.save!
   end
 
+  # Allow to lookup state by state type ID
+  def self.lookup_keys
+    @lookup_keys ||= super + [:state_type_id]
+  end
+
   private
 
   def update_object_manager_attribute
@@ -100,5 +111,30 @@ returns:
     return if callback_loop
 
     self.class.update_state_field_configuration
+  end
+
+  def state_type_solo?
+    # OTRS import creates a copy of all states, including merged, and that's OK
+    return false if Setting.get('import_mode')
+
+    state_type&.solo?
+  end
+
+  def prevent_merged_state_editing
+    # OTRS import creates a copy of all states, including merged, and that's OK
+    return if Setting.get('import_mode')
+
+    return if state_type.name != 'merged'
+
+    throw :abort
+  end
+
+  def prevent_merged_state_destruction
+    # OTRS import creates a copy of all states, including merged, and that's OK
+    return if Setting.get('import_mode')
+
+    return if state_type.name != 'merged'
+
+    throw :abort
   end
 end

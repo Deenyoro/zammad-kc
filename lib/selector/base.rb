@@ -43,7 +43,7 @@ class Selector::Base
   end
 
   def set_static_conditions
-    conditions = static_conditions_ticket + static_conditions_article + static_conditions_merged + static_conditions_ticket_update + static_conditions_user_one
+    conditions = static_conditions_ticket + static_conditions_article + static_conditions_ticket_update + static_conditions_user_one
     return if conditions.blank?
 
     @selector = {
@@ -72,18 +72,6 @@ class Selector::Base
         name:     'article.id',
         operator: 'is',
         value:    options[:article_id]
-      }
-    ]
-  end
-
-  def static_conditions_merged
-    return [] if options[:exclude_merged].blank?
-
-    [
-      {
-        name:     'ticket_state.name',
-        operator: 'is not',
-        value:    Ticket::StateType.find_by(name: 'merged').states.pluck(:name),
       }
     ]
   end

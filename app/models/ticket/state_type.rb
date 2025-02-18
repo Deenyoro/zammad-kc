@@ -31,6 +31,10 @@ class Ticket::StateType < ApplicationModel
     archivable_into:        %w[new open closed],
   }.with_indifferent_access.freeze
 
+  def solo?
+    name == 'merged'
+  end
+
   def self.names_in_category(category)
     CATEGORIES.fetch category
   rescue KeyError

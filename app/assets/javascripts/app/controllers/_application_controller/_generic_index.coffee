@@ -187,7 +187,9 @@ class App.ControllerGenericIndex extends App.Controller
         objects: objects
         bindRow:
           events:
-            click: @edit
+            click:
+              callback: @edit
+              available: @editAvailable
         container: @container
         explanation: @pageData.explanation
         groupBy: @groupBy
@@ -224,6 +226,8 @@ class App.ControllerGenericIndex extends App.Controller
 
   editControllerClass: ->
     App.ControllerGenericEdit
+
+  editAvailable: (id) -> true
 
   edit: (id, e) =>
     e.preventDefault()

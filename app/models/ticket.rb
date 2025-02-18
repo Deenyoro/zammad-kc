@@ -410,7 +410,8 @@ returns
       ExternalSync.migrate('Ticket', id, target_ticket.id)
 
       # set state to 'merged'
-      self.state_id = Ticket::State.lookup(name: 'merged').id
+      state_type = Ticket::StateType.lookup(name: 'merged')
+      self.state_id = Ticket::State.lookup(state_type_id: state_type.id).id
 
       # rest owner
       self.owner_id = 1
