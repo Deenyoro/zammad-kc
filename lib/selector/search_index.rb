@@ -347,9 +347,9 @@ class Selector::SearchIndex < Selector::Base
       t[:range] = {}
       t[:range][key_tmp] = {}
       if data[:operator] == 'before (absolute)'
-        t[:range][key_tmp][:lt] = (data[:value])
+        t[:range][key_tmp][:lt] = data[:value]
       else
-        t[:range][key_tmp][:gt] = (data[:value])
+        t[:range][key_tmp][:gt] = data[:value]
       end
       query_must.push t
     elsif data[:operator] == 'today'

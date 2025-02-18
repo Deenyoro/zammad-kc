@@ -1747,7 +1747,7 @@ RSpec.describe Ticket, type: :model do
         }
 
         expect(described_class.selectors(condition, limit: 100, access: 'full'))
-          .to contain_exactly(1, [ticket_mentions].to_a)
+          .to contain_exactly(1, [ticket_mentions])
       end
 
       it 'pre condition is not specific' do

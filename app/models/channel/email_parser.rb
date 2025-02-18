@@ -822,7 +822,7 @@ returns
         filename = if mail_local[:subject].present?
                      "#{mail_local[:subject]}.eml"
                    elsif headers_store['Content-Description'].present?
-                     "#{headers_store['Content-Description']}.eml".to_s.force_encoding('utf-8')
+                     "#{headers_store['Content-Description']}.eml".force_encoding('utf-8')
                    else
                      'Mail.eml'
                    end
@@ -873,7 +873,7 @@ returns
         next if !content_type.match?(%r{^#{Regexp.quote(type)}}i)
 
         filename = if headers_store['Content-Description'].present?
-                     "#{headers_store['Content-Description']}.#{ext[0]}".to_s.force_encoding('utf-8')
+                     "#{headers_store['Content-Description']}.#{ext[0]}".force_encoding('utf-8')
                    else
                      "#{ext[1]}.#{ext[0]}"
                    end

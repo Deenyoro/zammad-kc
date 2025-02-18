@@ -94,7 +94,7 @@ RSpec.describe Gql::Mutations::Channel::Email::Add, type: :graphql do
           keep_on_server:   true,
           ssl_verify:       false,
           archive:          true,
-          archive_before:   '2012-03-04T00:00:00'.to_time, # rubocop:disable Rails/TimeZone,
+          archive_before:   '2012-03-04T00:00:00'.to_time, # rubocop:disable Rails/TimeZone
           archive_state_id: Ticket::State.find_by(name: 'closed').id,
         }
       }
