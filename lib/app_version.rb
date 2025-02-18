@@ -99,7 +99,7 @@ returns
   private_class_method :restart_required?
 
   def self.redis
-    self._redis ||= ::Redis.new(driver: :hiredis, url: ENV['REDIS_URL'].presence || 'redis://localhost:6379')
+    self._redis ||= Zammad::Service::Redis.new
   end
   private_class_method :redis
 end

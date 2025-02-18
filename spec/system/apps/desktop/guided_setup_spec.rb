@@ -2,6 +2,8 @@
 
 require 'rails_helper'
 
+require_relative '../../../../lib/zammad/service/redis'
+
 RSpec.describe 'Desktop > Guided Setup', app: :desktop_view, authenticated_as: false, integration: true, required_envs: %w[MAIL_ADDRESS MAIL_PASS], set_up: false, type: :system do
 
   before do
@@ -13,7 +15,7 @@ RSpec.describe 'Desktop > Guided Setup', app: :desktop_view, authenticated_as: f
 
   after do
     # Make sure lock is lifted even on test errors.
-    Redis.new(driver: :hiredis, url: ENV['REDIS_URL'].presence || 'redis://localhost:6379').del('Zammad::System::Setup')
+    Zammad::Service::Redis.new.del('Zammad::System::Setup')
   end
 
   it 'Perform the basic system set-up' do

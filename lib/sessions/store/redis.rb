@@ -7,7 +7,7 @@ class Sessions::Store::Redis
   NODES_KEY = 'nodes'.freeze
 
   def initialize
-    @redis = Redis.new(driver: :hiredis)
+    @redis = Zammad::Service::Redis.new
   end
 
   def create(client_id, data)
