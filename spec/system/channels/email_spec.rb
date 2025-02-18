@@ -221,15 +221,13 @@ RSpec.describe 'Manage > Channels > Email', integration: true, type: :system do
   end
 
   context 'when editing inbound email settings' do
-    it 'the expert form fields are not shown' do
+    it 'does not display intro form fields' do
       visit '#channels/email'
       click '.js-channelEnable'
       click '.js-editInbound'
 
       in_modal do
         expect(page).to have_no_text 'ORGANIZATION & DEPARTMENT NAME'
-        expect(page).to have_no_text 'ORGANIZATION SUPPORT'
-        expect(page).to have_no_text 'EMAIL'
       end
     end
 

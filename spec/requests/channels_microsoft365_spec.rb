@@ -67,10 +67,13 @@ RSpec.describe 'Microsoft365 channel API endpoints', type: :request do
 
   describe 'POST /api/v1/channels_microsoft365/verify/ID', aggregate_failures: true, authenticated_as: :admin do
     let(:channel) { create(:microsoft365_channel) }
-    let(:group)   { create(:group) }
+    let(:group)         { create(:group, email_address_id: nil) }
+    let(:email_address) { create(:email_address, channel: channel) }
 
     before do
       Channel.where(area: 'Microsoft365::Account').each(&:destroy)
+
+      email_address
     end
 
     it 'updates inbound options of the channel' do
@@ -93,6 +96,35 @@ RSpec.describe 'Microsoft365 channel API endpoints', type: :request do
           )
         )
       )
+    end
+
+    context 'when group email address is used' do
+      it 'updates the group email address' do
+        post "/api/v1/channels_microsoft365_verify/#{channel.id}", params: { group_email_address: true, group_id: group.id, options: { folder_id: 'AAMkAD=', keep_on_server: 'true' } }
+
+        expect(response).to have_http_status(:ok)
+        expect(channel.group.reload.email_address_id).to eq(email_address.id)
+      end
+
+      context 'when group email should not be changed' do
+        it 'does not update the group email address' do
+          post "/api/v1/channels_microsoft365_verify/#{channel.id}", params: { group_email_address: false, group_id: group.id, options: { folder_id: 'AAMkAD=', keep_on_server: 'true' } }
+
+          expect(response).to have_http_status(:ok)
+          expect(channel.reload.group.email_address_id).to be_nil
+        end
+      end
+
+      context 'when group email should be changed to specific email address' do
+        let(:email_address2) { create(:email_address, channel: channel) }
+
+        it 'updates the group email address' do
+          post "/api/v1/channels_microsoft365_verify/#{channel.id}", params: { group_email_address: true, group_email_address_id: email_address2.id, group_id: group.id, options: { folder_id: 'AAMkAD=', keep_on_server: 'true' } }
+
+          expect(response).to have_http_status(:ok)
+          expect(channel.reload.group.email_address_id).to eq(email_address2.id)
+        end
+      end
     end
   end
 end

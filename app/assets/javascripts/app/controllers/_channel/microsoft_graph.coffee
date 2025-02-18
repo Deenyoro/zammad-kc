@@ -258,6 +258,8 @@ class ChannelAccountOverview extends App.ControllerSubContent
     )
 
 class ChannelGroupEdit extends App.ControllerModal
+  @include App.DestinationGroupEmailAddressesMixin
+
   buttonClose: true
   buttonCancel: true
   buttonSubmit: true
@@ -266,12 +268,14 @@ class ChannelGroupEdit extends App.ControllerModal
   content: =>
     configureAttributesBase = [
       { name: 'group_id', display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group', filter: { active: true } },
+      { name: 'group_email_address_id', display: __('Destination Group Email Address'), tag: 'select', options: @emailAddressOptions(@item.id, @item.group_id) },
     ]
     @form = new App.ControllerForm(
       model:
         configure_attributes: configureAttributesBase
         className: ''
       params: @item
+      handlers: [@destinationGroupEmailAddressFormHandler(@item)]
     )
     @form.form
 
@@ -288,6 +292,8 @@ class ChannelGroupEdit extends App.ControllerModal
       @log 'error', errors
       @formValidate(form: e.target, errors: errors)
       return false
+
+    @processDestinationGroupEmailAddressParams(params)
 
     # disable form
     @formDisable(e)
@@ -411,6 +417,8 @@ class ChannelInboundNew extends App.ControllerModal
     window.location.href = "#{@apiPath}/external_credentials/microsoft_graph/link_account#{query_string}"
 
 class ChannelInboundEdit extends App.ControllerModal
+  @include App.DestinationGroupEmailAddressesMixin
+
   buttonClose: true
   buttonCancel: true
   buttonSubmit: __('Save')
@@ -469,9 +477,10 @@ class ChannelInboundEdit extends App.ControllerModal
       return App.view('microsoft_graph/error_message')(error: @error)
 
     configureAttributesBase = [
-      { name: 'group_id',                 display: __('Destination Group'),       tag: 'tree_select', null: false, relation: 'Group', filter: { active: true } },
-      { name: 'options::folder_id',       display: __('Folder'),                  tag: 'tree_select', null: true, options: @folderOptions, nulloption: true, default: '', help: __('Specify which folder to fetch from, or leave empty to fetch from ||inbox||.') },
-      { name: 'options::keep_on_server',  display: __('Keep messages on server'), tag: 'boolean', null: true, options: { true: 'yes', false: 'no' }, translate: true, default: false },
+      { name: 'group_id',                display: __('Destination Group'),       tag: 'tree_select', null: false, relation: 'Group', filter: { active: true } },
+      { name: 'group_email_address_id',  display: __('Destination Group Email Address'), tag: 'select', null: false, options: @emailAddressOptions(@item.id, @item.group_id) },
+      { name: 'options::folder_id',      display: __('Folder'),                  tag: 'tree_select', null: true, options: @folderOptions, nulloption: true, default: '', help: __('Specify which folder to fetch from, or leave empty to fetch from ||inbox||.') },
+      { name: 'options::keep_on_server', display: __('Keep messages on server'), tag: 'boolean', null: true, options: { true: 'yes', false: 'no' }, translate: true, default: false },
     ]
     @form = new App.ControllerForm(
       model:
@@ -482,6 +491,7 @@ class ChannelInboundEdit extends App.ControllerModal
         options:
           folder_id: @item.options.inbound.options.folder_id,
           keep_on_server: @item.options.inbound.options.keep_on_server,
+      handlers: [@destinationGroupEmailAddressFormHandler(@item)]
     )
     @form.form
 
@@ -498,6 +508,9 @@ class ChannelInboundEdit extends App.ControllerModal
       @formValidate(form: e.target, errors: errors)
       return false
 
+    data =
+      options: params.options
+
     # disable form
     @formDisable(e)
 
@@ -508,7 +521,7 @@ class ChannelInboundEdit extends App.ControllerModal
       id:   'channel_email_inbound'
       type: 'POST'
       url:  "#{@apiPath}/channels/admin/microsoft_graph/inbound/#{@item.id}"
-      data: JSON.stringify(params)
+      data: JSON.stringify(data)
       processData: true
       success: (data, status, xhr) =>
         if data.content_messages or not @set_active
@@ -537,6 +550,8 @@ class ChannelInboundEdit extends App.ControllerModal
 
     if @set_active
       params['active'] = true
+
+    @processDestinationGroupEmailAddressParams(params)
 
     # update
     @ajax(

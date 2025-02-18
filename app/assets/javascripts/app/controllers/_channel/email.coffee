@@ -187,7 +187,7 @@ class ChannelEmailAccountOverview extends App.Controller
     e.preventDefault()
     id   = $(e.target).closest('.action').data('id')
     item = App.Channel.find(id)
-    new ChannelEmailEdit(
+    new ChannelGroupEdit(
       container: @el.closest('.content')
       item: item
       callback: @load
@@ -250,8 +250,9 @@ class ChannelEmailAccountOverview extends App.Controller
     id = $(e.target).closest('.action').data('id')
     @navigate "#channels/microsoft365/#{id}"
 
+class ChannelGroupEdit extends App.ControllerModal
+  @include App.DestinationGroupEmailAddressesMixin
 
-class ChannelEmailEdit extends App.ControllerModal
   buttonClose: true
   buttonCancel: true
   buttonSubmit: true
@@ -259,14 +260,18 @@ class ChannelEmailEdit extends App.ControllerModal
 
   content: =>
     configureAttributesBase = [
-      { name: 'group_id', display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group', nulloption: true, filter: { active: true } },
+      { name: 'group_id', display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group', filter: { active: true } },
+      { name: 'group_email_address_id', display: __('Destination Group Email Address'), tag: 'select', options: @emailAddressOptions(@item.id, @item.group_id) },
     ]
+
     @form = new App.ControllerForm(
       model:
         configure_attributes: configureAttributesBase
         className: ''
       params: @item
+      handlers: [@destinationGroupEmailAddressFormHandler(@item)]
     )
+
     @form.form
 
   onSubmit: (e) =>
@@ -282,6 +287,8 @@ class ChannelEmailEdit extends App.ControllerModal
       @log 'error', errors
       @formValidate(form: e.target, errors: errors)
       return false
+
+    @processDestinationGroupEmailAddressParams(params)
 
     # disable form
     @formDisable(e)
@@ -303,6 +310,8 @@ class ChannelEmailEdit extends App.ControllerModal
     )
 
 class ChannelEmailAccountWizard extends App.ControllerWizardModal
+  @include App.DestinationGroupEmailAddressesMixin
+
   elements:
     '.modal-body': 'body'
   events:
@@ -382,8 +391,10 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
       { name: 'realname', display: __('Organization & Department Name'), tag: 'input',  type: 'text', limit: 160, null: false, placeholder: __('Organization Support'), autocomplete: 'off' },
       { name: 'email',    display: __('Email'),    tag: 'input',  type: 'email', limit: 120, null: false, placeholder: 'support@example.com', autocapitalize: false, autocomplete: 'off' },
       { name: 'password', display: __('Password'), tag: 'input',  type: 'password', limit: 120, null: false, autocapitalize: false, autocomplete: 'new-password', single: true },
-      { name: 'group_id', display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group', nulloption: true },
+      { name: 'group_id', display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group' },
+      { name: 'group_email_address_id', display: __('Destination Group Email Address'), tag: 'select', null: false, options: @emailAddressOptions(@channel?.id, @channel?.group_id) },
     ]
+
     @formMeta = new App.ControllerForm(
       el:    @$('.base-settings'),
       model:
@@ -408,6 +419,8 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
 
     # inbound
     configureAttributesInbound = [
+      { name: 'group_id',                display: __('Destination Group'), tag: 'select', null: false, relation: 'Group' },
+      { name: 'group_email_address_id',  display: __('Destination Group Email Address'), tag: 'select', null: false, options: @emailAddressOptions(@channel?.id, @channel?.group_id) },
       { name: 'adapter',                 display: __('Type'),     tag: 'select', multiple: false, null: false, options: @channelDriver.email.inbound, translate: true },
       { name: 'options::host',           display: __('Host'),     tag: 'input',  type: 'text', limit: 120, null: false, autocapitalize: false },
       { name: 'options::user',           display: __('User'),     tag: 'input',  type: 'text', limit: 120, null: false, autocapitalize: false, autocomplete: 'off' },
@@ -419,14 +432,12 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
       { name: 'options::keep_on_server', display: __('Keep messages on server'), tag: 'boolean', null: true, options: { true: 'yes', false: 'no' }, translate: true, default: false, item_class: 'formGroup--halfSize' },
     ]
 
+    # If email inbound form is opened from the new email wizard, show additional fields on top.
     if !@channel
-      #Email Inbound form opened from new email wizard, show full settings
       configureAttributesInbound = [
         { name: 'options::realname', display: __('Organization & Department Name'), tag: 'input',  type: 'text', limit: 160, null: false, placeholder: __('Organization Support'), autocomplete: 'off' },
         { name: 'options::email',    display: __('Email'),    tag: 'input',  type: 'email', limit: 120, null: false, placeholder: 'support@example.com', autocapitalize: false, autocomplete: 'off' },
-        { name: 'options::group_id', display: __('Destination Group'), tag: 'select', null: false, relation: 'Group', nulloption: true },
       ].concat(configureAttributesInbound)
-
 
     showHideFolder = (params, attribute, attributes, classname, form, ui) ->
       return if !params
@@ -437,23 +448,29 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
       ui.hide('options::folder')
       ui.hide('options::keep_on_server')
 
-    form = new App.ControllerForm(
+    @form = new App.ControllerForm(
       el:    @$('.base-inbound-settings'),
       model:
         configure_attributes: configureAttributesInbound
         className: ''
-      params: @account.inbound
+      params: _.extend(
+        @account.inbound
+        group_id: @account?.meta?.group_id or @channel?.group_id
+        group_email_address_id: @account?.meta?.group_email_address_id
+      )
       handlers: [
-        showHideFolder,
+        showHideFolder
+        @destinationGroupEmailAddressFormHandler(@channel)
       ]
     )
+
     @toggleInboundAdapter()
 
-    form.el.find("select[name='options::ssl']").off('change').on('change', (e) ->
+    @form.el.find("select[name='options::ssl']").off('change').on('change', (e) =>
       if $(e.target).val() is 'ssl'
-        form.el.find("[name='options::port']").val('993')
+        @form.el.find("[name='options::port']").val('993')
       else if $(e.target).val() is 'off'
-        form.el.find("[name='options::port']").val('143')
+        @form.el.find("[name='options::port']").val('143')
     )
 
   toggleInboundAdapter: =>
@@ -537,7 +554,20 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
 
   probeBasedOnIntro: (e) =>
     e.preventDefault()
+
+    # get params
     params = @formParam(e.target)
+
+    if not $(e.currentTarget).hasClass('js-expert')
+
+      # validate form
+      errors = @formMeta.validate(params)
+
+      # show errors in form
+      if errors
+        @log 'error', errors
+        @formValidate(form: e.target, errors: errors)
+        return false
 
     # remember account settings
     @account.meta = params
@@ -552,18 +582,21 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
       @$('.js-inbound [name="options::password"]').val(params.password)
       @$('.js-inbound [name="options::email"]').val(params.email)
       @$('.js-inbound [name="options::realname"]').val(params.realname)
-      @$('.js-inbound [name="options::group_id"]').val(params.group_id)
+      @$('.js-inbound [name="group_id"]').val(params.group_id)
+      @$('.js-inbound [name="group_email_address_id"]').val(params.group_email_address_id)
       return
 
     @disable(e)
     @$('.js-probe .js-email').text(params.email)
     @showSlide('js-probe')
 
+    data = _.pick(params, 'email', 'password')
+
     @ajax(
       id:   'email_probe'
       type: 'POST'
       url:  "#{@apiPath}/channels_email_probe"
-      data: JSON.stringify(params)
+      data: JSON.stringify(data)
       processData: true
       success: (data, status, xhr) =>
         if data.result is 'ok'
@@ -586,7 +619,8 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
           @$('.js-inbound [name="options::password"]').val(@account['meta']['password'])
           @$('.js-inbound [name="options::email"]').val(@account['meta']['email'])
           @$('.js-inbound [name="options::realname"]').val(@account['meta']['realname'])
-          @$('.js-inbound [name="options::group_id"]').val(@account['meta']['group_id'])
+          @$('.js-inbound [name="group_id"]').val(@account['meta']['group_id'])
+          @$('.js-inbound [name="group_email_address_id"]').val(@account['meta']['group_email_address_id'])
 
         @enable(e)
       error: =>
@@ -600,13 +634,25 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
     # get params
     params = @formParam(e.target)
 
+    # validate form
+    errors = @form.validate(params)
+
+    # show errors in form
+    if errors
+      @log 'error', errors
+      @formValidate(form: e.target, errors: errors)
+      return false
+
     if params.options && params.options.password is @passwordPlaceholder
       params.options.password = @inboundPassword
 
     # Update meta as the one from AttributesBase could be outdated
     @account.meta.realname = params.options.realname
     @account.meta.email = params.options.email
-    @account.meta.group_id = params.options.group_id
+    @account.meta.group_id = params.group_id
+    @account.meta.group_email_address_id = params.group_email_address_id
+    delete params.group_id
+    delete params.group_email_address_id
 
     # let backend know about the channel
     if @channel
@@ -817,10 +863,17 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
     if @channel
       params.channel_id = @channel.id
 
-    if params.meta.group_id
+    if params.meta?.group_id
       params.group_id = params.meta.group_id
-    else if @channel.group_id
+    else if @channel?.group_id
       params.group_id = @channel.group_id
+
+    # Copy group email address parameter from meta key to the root.
+    if not _.isUndefined(params.meta?.group_email_address_id)
+      params.group_email_address = params.meta.group_email_address_id isnt 'false'
+
+      if params.group_email_address and params.meta.group_email_address_id isnt 'true'
+        params.group_email_address_id = params.meta.group_email_address_id
 
     if !params.email && @channel
       email_addresses = App.EmailAddress.search(filter: { channel_id: @channel.id })

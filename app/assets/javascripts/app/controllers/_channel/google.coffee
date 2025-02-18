@@ -269,6 +269,8 @@ class ChannelAccountOverview extends App.ControllerSubContent
     )
 
 class ChannelInboundEdit extends App.ControllerModal
+  @include App.DestinationGroupEmailAddressesMixin
+
   buttonClose: true
   buttonCancel: true
   buttonSubmit: true
@@ -276,14 +278,20 @@ class ChannelInboundEdit extends App.ControllerModal
 
   content: =>
     configureAttributesBase = [
-      { name: 'options::folder',          display: __('Folder'),   tag: 'input',  type: 'text', limit: 120, null: true, autocapitalize: false, placeholder: __('optional') },
-      { name: 'options::keep_on_server',  display: __('Keep messages on server'), tag: 'boolean', null: true, options: { true: 'yes', false: 'no' }, translate: true, default: false },
+      { name: 'group_id',                display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group', filter: { active: true } },
+      { name: 'group_email_address_id',  display: __('Destination Group Email Address'), tag: 'select', null: false, options: @emailAddressOptions(@item.id, @item.group_id) },
+      { name: 'options::folder',         display: __('Folder'),   tag: 'input',  type: 'text', limit: 120, null: true, autocapitalize: false, placeholder: __('optional') },
+      { name: 'options::keep_on_server', display: __('Keep messages on server'), tag: 'boolean', null: true, options: { true: 'yes', false: 'no' }, translate: true, default: false },
     ]
     @form = new App.ControllerForm(
       model:
         configure_attributes: configureAttributesBase
         className: ''
-      params: @item.options.inbound
+      params: _.extend(
+        @item.options.inbound
+        group_id: @item.group_id
+      )
+      handlers: [@destinationGroupEmailAddressFormHandler(@item)]
     )
     @form.form
 
@@ -302,6 +310,9 @@ class ChannelInboundEdit extends App.ControllerModal
       @formValidate(form: e.target, errors: errors)
       return false
 
+    data =
+      options: params.options
+
     # disable form
     @formDisable(e)
 
@@ -310,7 +321,7 @@ class ChannelInboundEdit extends App.ControllerModal
       id:   'channel_email_inbound'
       type: 'POST'
       url:  "#{@apiPath}/channels_google_inbound/#{@item.id}"
-      data: JSON.stringify(params)
+      data: JSON.stringify(data)
       processData: true
       success: (data, status, xhr) =>
         if data.content_messages or not @set_active
@@ -340,6 +351,8 @@ class ChannelInboundEdit extends App.ControllerModal
     if @set_active
       params['active'] = true
 
+    @processDestinationGroupEmailAddressParams(params)
+
     # update
     @ajax(
       id:   'channel_email_verify'
@@ -357,6 +370,8 @@ class ChannelInboundEdit extends App.ControllerModal
     )
 
 class ChannelGroupEdit extends App.ControllerModal
+  @include App.DestinationGroupEmailAddressesMixin
+
   buttonClose: true
   buttonCancel: true
   buttonSubmit: true
@@ -364,13 +379,15 @@ class ChannelGroupEdit extends App.ControllerModal
 
   content: =>
     configureAttributesBase = [
-      { name: 'group_id', display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group', nulloption: true, filter: { active: true } },
+      { name: 'group_id', display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group', filter: { active: true } },
+      { name: 'group_email_address_id', display: __('Destination Group Email Address'), tag: 'select', options: @emailAddressOptions(@item.id, @item.group_id) },
     ]
     @form = new App.ControllerForm(
       model:
         configure_attributes: configureAttributesBase
         className: ''
       params: @item
+      handlers: [@destinationGroupEmailAddressFormHandler(@item)]
     )
     @form.form
 
@@ -387,6 +404,8 @@ class ChannelGroupEdit extends App.ControllerModal
       @log 'error', errors
       @formValidate(form: e.target, errors: errors)
       return false
+
+    @processDestinationGroupEmailAddressParams(params)
 
     # disable form
     @formDisable(e)
@@ -413,6 +432,8 @@ class AppConfig extends App.ControllerModal
   button: 'Connect'
   buttonCancel: true
   small: true
+  events:
+    'click .js-copy': 'copyToClipboard'
 
   content: ->
     @external_credential = App.ExternalCredential.findByAttribute('name', 'google')
@@ -424,6 +445,15 @@ class AppConfig extends App.ControllerModal
       @selectAll(e)
     )
     content
+
+  copyToClipboard: (e) =>
+    e.preventDefault()
+
+    button = $(e.target).parents('[role="button"]')
+    field_name = button.data('targetField')
+    value = $(@container).find("input[name='#{jQuery.escapeSelector(field_name)}']").val()
+
+    @copyToClipboardWithTooltip(value, e.target,'.modal-body', true)
 
   onClosed: =>
     return if !@isChanged

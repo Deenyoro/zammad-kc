@@ -48,7 +48,7 @@ RSpec.describe 'Google channel API endpoints', type: :request do
     end
   end
 
-  describe 'POST /api/v1/channels_google/inbound/ID' do
+  describe 'POST /api/v1/channels_google_inbound/ID' do
     let(:channel) { create(:google_channel) }
     let(:group)   { create(:group) }
 
@@ -60,17 +60,20 @@ RSpec.describe 'Google channel API endpoints', type: :request do
 
     it 'does not update inbound options of the channel' do
       expect do
-        post "/api/v1/channels_google/inbound/#{channel.id}", params: { group_id: group.id, options: { folder: 'SomeFolder', keep_on_server: 'true' } }
+        post "/api/v1/channels_google_inbound/#{channel.id}", params: { group_id: group.id, options: { folder: 'SomeFolder', keep_on_server: 'true' } }
       end.not_to change(channel, :updated_at)
     end
   end
 
-  describe 'POST /api/v1/channels_google/verify/ID', aggregate_failures: true, authenticated_as: :admin do
-    let(:channel) { create(:google_channel) }
-    let(:group)   { create(:group) }
+  describe 'POST /api/v1/channels_google_verify/ID', aggregate_failures: true, authenticated_as: :admin do
+    let(:channel)        { create(:google_channel) }
+    let(:group)          { create(:group, email_address_id: nil) }
+    let(:email_address)  { create(:email_address, channel: channel) }
 
     before do
       Channel.where(area: 'Google::Account').each(&:destroy)
+
+      email_address
     end
 
     it 'updates inbound options of the channel' do
@@ -93,6 +96,35 @@ RSpec.describe 'Google channel API endpoints', type: :request do
           )
         )
       )
+    end
+
+    context 'when group email address is used' do
+      it 'updates the group email address' do
+        post "/api/v1/channels_google_verify/#{channel.id}", params: { group_email_address: true, group_id: group.id, options: { folder_id: 'AAMkAD=', keep_on_server: 'true' } }
+
+        expect(response).to have_http_status(:ok)
+        expect(channel.group.reload.email_address_id).to eq(email_address.id)
+      end
+
+      context 'when group email should not be changed' do
+        it 'does not update the group email address' do
+          post "/api/v1/channels_google_verify/#{channel.id}", params: { group_email_address: false, group_id: group.id, options: { folder_id: 'AAMkAD=', keep_on_server: 'true' } }
+
+          expect(response).to have_http_status(:ok)
+          expect(channel.reload.group.email_address_id).to be_nil
+        end
+      end
+
+      context 'when group email should be changed to specific email address' do
+        let(:email_address2) { create(:email_address, channel: channel) }
+
+        it 'updates the group email address' do
+          post "/api/v1/channels_google_verify/#{channel.id}", params: { group_email_address: true, group_email_address_id: email_address2.id, group_id: group.id, options: { folder_id: 'AAMkAD=', keep_on_server: 'true' } }
+
+          expect(response).to have_http_status(:ok)
+          expect(channel.reload.group.email_address_id).to eq(email_address2.id)
+        end
+      end
     end
   end
 end
