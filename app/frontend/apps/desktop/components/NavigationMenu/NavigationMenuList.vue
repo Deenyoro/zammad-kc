@@ -43,7 +43,7 @@ const paddingClasses = computed(() =>
           <template #default="{ isActive }">
             <slot v-bind="entry">
               <CommonLabel
-                class="line-clamp-1 grow text-current!"
+                class="line-clamp-1! grow text-current!"
                 :prefix-icon="entry.icon"
                 :icon-color="entry.iconColor"
               >

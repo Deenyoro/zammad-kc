@@ -32,7 +32,7 @@ defineProps<Props>()
     </CommonLabel>
 
     <slot>
-      <CommonLabel tag="p" class="block py-5">
+      <CommonLabel tag="p" class="block! py-5">
         {{ text }}
       </CommonLabel>
     </slot>
