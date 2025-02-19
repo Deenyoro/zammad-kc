@@ -289,7 +289,8 @@ class _i18nSingleton extends Spine.Module
               argNew = arg
             argNew
           else
-            "<a href=\"#{arg}\">🔗</a>"
+            target = if /https?:\/\//.test(arg) then ' target="_blank"' else ''
+            "<a href=\"#{arg}\"#{target}>🔗</a>"
         )
 
     # apply inline markup post
