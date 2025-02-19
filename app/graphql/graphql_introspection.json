@@ -707,7 +707,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "UNION",
-                  "name": "SearchResult",
+                  "name": "Item",
                   "ofType": null
                 }
               },
@@ -6273,6 +6273,32 @@
           "possibleTypes": null
         },
         {
+          "kind": "UNION",
+          "name": "Item",
+          "description": "Objects found by search",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": [
+            {
+              "kind": "OBJECT",
+              "name": "Organization",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "Ticket",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            }
+          ]
+        },
+        {
           "kind": "SCALAR",
           "name": "JSON",
           "description": "Represents untyped JSON",
@@ -11354,6 +11380,18 @@
               "deprecationReason": null
             },
             {
+              "name": "userCurrentRecentViewReset",
+              "description": "Reset recent view records of the current user",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "UserCurrentRecentViewResetPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "userCurrentRemoveLinkedAccount",
               "description": "Remove a linked account of the current user's profile",
               "args": [
@@ -15573,17 +15611,31 @@
                 },
                 {
                   "name": "onlyIn",
-                  "description": "Optionally restrict search to only_in one model",
+                  "description": "Which model to search in, e.g. Ticket",
                   "type": {
-                    "kind": "ENUM",
-                    "name": "EnumSearchableModels",
-                    "ofType": null
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "EnumSearchableModels",
+                      "ofType": null
+                    }
                   },
                   "defaultValue": null
                 },
                 {
                   "name": "limit",
-                  "description": "How many entries to find at maximum per model",
+                  "description": "How many entries to find at maximum",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "offset",
+                  "description": "Offset to use for pagination",
                   "type": {
                     "kind": "SCALAR",
                     "name": "Int",
@@ -15596,17 +15648,9 @@
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "UNION",
-                      "name": "SearchResult",
-                      "ofType": null
-                    }
-                  }
+                  "kind": "OBJECT",
+                  "name": "SearchResult",
+                  "ofType": null
                 }
               },
               "isDeprecated": false,
@@ -16766,6 +16810,41 @@
               "deprecationReason": null
             },
             {
+              "name": "userCurrentRecentViewList",
+              "description": "Fetch tickets recently viewed by the current user",
+              "args": [
+                {
+                  "name": "limit",
+                  "description": "Limit for the amount of entries",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "UNION",
+                      "name": "RecentView",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "userCurrentTaskbarItemList",
               "description": "Fetch available taskbar item list of the currently logged-in user",
               "args": [
@@ -16944,6 +17023,32 @@
           "possibleTypes": null
         },
         {
+          "kind": "UNION",
+          "name": "RecentView",
+          "description": "Objects recently viewed",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": [
+            {
+              "kind": "OBJECT",
+              "name": "Organization",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "Ticket",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            }
+          ]
+        },
+        {
           "kind": "OBJECT",
           "name": "Role",
           "description": "Roles",
@@ -17051,30 +17156,55 @@
           "possibleTypes": null
         },
         {
-          "kind": "UNION",
+          "kind": "OBJECT",
           "name": "SearchResult",
-          "description": "Objects found by search",
-          "fields": null,
-          "inputFields": null,
-          "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": [
+          "description": "Search result for one model",
+          "fields": [
             {
-              "kind": "OBJECT",
-              "name": "Organization",
-              "ofType": null
+              "name": "items",
+              "description": "Found items",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "UNION",
+                      "name": "Item",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             },
             {
-              "kind": "OBJECT",
-              "name": "Ticket",
-              "ofType": null
-            },
-            {
-              "kind": "OBJECT",
-              "name": "User",
-              "ofType": null
+              "name": "totalCount",
+              "description": "Total count of found entries across all pages",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
-          ]
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
         },
         {
           "kind": "OBJECT",
@@ -17986,6 +18116,22 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "UserCurrentOverviewOrderingUpdatesPayload",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "userCurrentRecentViewUpdates",
+              "description": "Updates to the recently viewed items of the current user",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "UserCurrentRecentViewUpdatesPayload",
                   "ofType": null
                 }
               },
@@ -27229,6 +27375,76 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "UserCurrentRecentViewResetPayload",
+          "description": "Autogenerated return type of UserCurrentRecentViewReset.",
+          "fields": [
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "success",
+              "description": "Was the reset successful?",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "UserCurrentRecentViewUpdatesPayload",
+          "description": "Autogenerated return type of UserCurrentRecentViewUpdates.",
+          "fields": [
+            {
+              "name": "recentViewsUpdated",
+              "description": "The recent view list of the user has changed.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,

@@ -102,6 +102,7 @@ const headerTitle = computed(() => {
     :content="currentConfirmationOptions?.text || confirmationVariant.content"
     :content-placeholder="currentConfirmationOptions?.textPlaceholder"
     :footer-action-options="confirmationVariant.footerActionOptions"
+    :fullscreen="currentConfirmationOptions?.fullscreen ?? false"
     global
     @close="handleConfirmation"
   />

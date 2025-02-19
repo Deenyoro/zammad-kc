@@ -186,7 +186,7 @@ const getTaskbarTabDirtyFlag = (tabEntityKey: string) => {
 </script>
 
 <template>
-  <CommonLoader :loading="loading">
+  <CommonLoader no-transition :loading="loading">
     <div
       v-if="hasTaskbarTabs"
       class="-m-1 flex flex-col overflow-y-hidden py-2"

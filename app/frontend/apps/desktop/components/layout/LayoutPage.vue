@@ -1,9 +1,15 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
+import {
+  type MaybeElementRef,
+  useCurrentElement,
+  type VueInstance,
+} from '@vueuse/core'
 import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
+import { ref, useTemplateRef, watch } from 'vue'
 
+import { useTrapTab } from '#shared/composables/useTrapTab.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 
@@ -12,12 +18,29 @@ import LeftSidebarHeader from '#desktop/components/layout/LayoutSidebar/LeftSide
 import LayoutSidebar from '#desktop/components/layout/LayoutSidebar.vue'
 import { numberOfPermanentItems } from '#desktop/components/PageNavigation/firstLevelRoutes.ts'
 import PageNavigation from '#desktop/components/PageNavigation/PageNavigation.vue'
+import QuickSearch from '#desktop/components/QuickSearch/QuickSearch.vue'
 import UserTaskbarTabs from '#desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue'
 import { useResizeGridColumns } from '#desktop/composables/useResizeGridColumns.ts'
 
 const { config } = storeToRefs(useApplicationStore())
 
 const noTransition = ref(false)
+
+const layoutSidebarInstance = useTemplateRef('layout-sidebar')
+
+const isQuickSearchActive = ref(false)
+const quickSearchValue = ref('')
+
+const { deactivateTabTrap, activateTabTrap } = useTrapTab(
+  useCurrentElement(
+    layoutSidebarInstance as MaybeElementRef<VueInstance> | undefined,
+  ),
+  true,
+)
+
+watch(isQuickSearchActive, (isActive) =>
+  isActive ? activateTabTrap() : deactivateTabTrap(),
+)
 
 const { userId } = useSessionStore()
 
@@ -43,6 +66,7 @@ const {
   >
     <LayoutSidebar
       id="main-sidebar"
+      ref="layout-sidebar"
       :name="storageKeyId"
       :aria-label="$t('Main sidebar')"
       :current-width="currentSidebarWidth"
@@ -52,9 +76,10 @@ const {
         collapseButton: 'z-60',
         resizeLine: 'z-60',
       }"
-      collapsible
+      :collapsible="!isQuickSearchActive"
       resizable
       no-scroll
+      :no-padding="isQuickSearchActive"
       remember-collapse
       @collapse="collapseSidebar"
       @expand="expandSidebar"
@@ -70,10 +95,31 @@ const {
           data-theme="dark"
           style="color-scheme: dark"
         >
-          <LeftSidebarHeader class="mb-2" :collapsed="isCollapsed" />
-          <PageNavigation :collapsed="isCollapsed" />
-          <UserTaskbarTabs :collapsed="isCollapsed" />
-          <LeftSidebarFooterMenu :collapsed="isCollapsed" class="mt-auto" />
+          <LeftSidebarHeader
+            v-model:search="quickSearchValue"
+            v-model:search-active="isQuickSearchActive"
+            class="mb-2"
+            :class="{ 'px-3 pt-2.5': isQuickSearchActive }"
+            :collapsed="isCollapsed"
+          />
+          <QuickSearch
+            v-show="isQuickSearchActive"
+            :search="quickSearchValue"
+            :collapsed="isCollapsed"
+          />
+          <PageNavigation
+            v-show="!isQuickSearchActive"
+            :collapsed="isCollapsed"
+          />
+          <UserTaskbarTabs
+            v-show="!isQuickSearchActive"
+            :collapsed="isCollapsed"
+          />
+          <LeftSidebarFooterMenu
+            v-show="!isQuickSearchActive"
+            :collapsed="isCollapsed"
+            class="mt-auto"
+          />
         </div>
       </template>
     </LayoutSidebar>

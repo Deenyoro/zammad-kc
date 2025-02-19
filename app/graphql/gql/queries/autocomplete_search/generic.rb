@@ -19,7 +19,7 @@ module Gql::Queries
       Service::Search
         .new(current_user: context.current_user,
              query:        query,
-             objects:      input[:only_in] || Gql::Types::SearchResultType.searchable_models,
+             objects:      input[:only_in] || Gql::Types::SearchResult::ItemType.searchable_models,
              options:      { limit: limit })
         .execute
         .flattened

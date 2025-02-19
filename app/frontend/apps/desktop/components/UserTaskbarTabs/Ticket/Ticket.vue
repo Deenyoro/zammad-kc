@@ -144,7 +144,7 @@ const currentViewTitle = computed(
       />
     </div>
     <CommonLabel
-      class="block truncate text-gray-300 group-focus-visible/link:text-white dark:text-neutral-400 group-hover/tab:dark:text-white"
+      class="block! truncate text-gray-300 group-focus-visible/link:text-white dark:text-neutral-400 group-hover/tab:dark:text-white"
       :class="{
         '!text-white': taskbarTabActive,
       }"

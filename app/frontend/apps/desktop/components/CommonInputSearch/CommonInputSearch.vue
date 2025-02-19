@@ -16,6 +16,10 @@ export interface CommonInputSearchExpose {
   focus(): void
 }
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 const props = withDefaults(defineProps<CommonInputSearchProps>(), {
   placeholder: __('Search…'),
 })
@@ -23,17 +27,19 @@ const props = withDefaults(defineProps<CommonInputSearchProps>(), {
 const emit = defineEmits<{
   'update:modelValue': [filter: string]
   keydown: [event: KeyboardEvent]
+  'focus-input': []
+  'blur-input': []
 }>()
 
 const filter = useVModel(props, 'modelValue', emit)
 
 const filterInput = useTemplateRef('filter-input')
 
-const focus = () => {
-  filterInput.value?.focus()
-}
+const focus = () => filterInput.value?.focus()
 
-defineExpose({ focus })
+const blur = () => filterInput.value?.blur()
+
+defineExpose({ focus, blur })
 
 const clearFilter = () => {
   filter.value = ''
@@ -59,20 +65,12 @@ const maybeAcceptSuggestion = (event: Event) => {
   filter.value = props.suggestion
 }
 
-const onKeydown = (event: KeyboardEvent) => {
-  emit('keydown', event)
-}
-</script>
-
-<script lang="ts">
-export default {
-  inheritAttrs: false,
-}
+const onKeydown = (event: KeyboardEvent) => emit('keydown', event)
 </script>
 
 <template>
   <div
-    class="inline-flex grow items-center justify-start gap-1"
+    class="inline-flex grow items-center justify-start gap-1 text-sm"
     :class="wrapperClass"
   >
     <CommonIcon
@@ -96,10 +94,13 @@ export default {
           }"
           type="text"
           role="searchbox"
+          autocomplete="off"
           @keydown.right="maybeAcceptSuggestion"
           @keydown.end="maybeAcceptSuggestion"
           @keydown.tab="maybeAcceptSuggestion"
           @keydown="onKeydown"
+          @focus="emit('focus-input')"
+          @blur="emit('blur-input')"
         />
       </div>
       <div
@@ -120,10 +121,10 @@ export default {
         :class="{
           invisible: !filter?.length,
         }"
-        :aria-label="i18n.t('Clear Search')"
+        :aria-label="$t('Clear Search')"
         :aria-hidden="!filter?.length ? 'true' : undefined"
         name="backspace2"
-        size="tiny"
+        size="xs"
         role="button"
         :tabindex="!filter?.length ? '-1' : '0'"
         @click.stop="clearFilter()"

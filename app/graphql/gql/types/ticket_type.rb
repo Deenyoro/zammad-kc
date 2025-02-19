@@ -17,6 +17,9 @@ module Gql::Types
       # special handling for GraphQL fragment cache value
       return items if items.is_a?(GraphQL::Execution::Interpreter::RawValue)
 
+      # special handling for Array values - scoping was done before
+      return items if items.is_a?(Array)
+
       TicketPolicy::ReadScope.new(ctx.current_user, items).resolve
     end
 

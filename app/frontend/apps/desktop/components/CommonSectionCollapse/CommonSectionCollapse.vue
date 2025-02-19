@@ -64,7 +64,10 @@ watch(
 
 <template>
   <!--  eslint-disable vuejs-accessibility/no-static-element-interactions-->
-  <div class="flex flex-col gap-1" :class="{ 'overflow-y-auto': scrollable }">
+  <div
+    class="flex flex-col gap-1"
+    :class="{ 'overflow-y-auto outline-none': scrollable }"
+  >
     <header
       v-if="!noHeader"
       :id="headerId"
@@ -112,7 +115,7 @@ watch(
         v-show="!isCollapsed || noHeader"
         :id="id"
         :data-test-id="id"
-        :class="{ 'overflow-y-auto': scrollable }"
+        :class="{ 'overflow-y-auto outline-none': scrollable }"
       >
         <slot :header-id="headerId" />
       </div>

@@ -6,7 +6,7 @@ import type { Ticket } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import type { DeepPartial } from '#shared/types/utils.ts'
 
-import type { ResolversMeta } from '../builders/index.ts'
+import type { ResolversMeta } from '../../builders/index.ts'
 
 export default (
   _parent: unknown,

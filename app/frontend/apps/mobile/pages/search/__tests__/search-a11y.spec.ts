@@ -13,7 +13,7 @@ describe('testing search a11y', () => {
   let mockSearchApi: MockGraphQLInstance
 
   beforeEach(() => {
-    mockSearchApi = mockSearchOverview([])
+    mockSearchApi = mockSearchOverview({ totalCount: 0, items: [] })
     mockPermissions(['ticket.agent'])
   })
 

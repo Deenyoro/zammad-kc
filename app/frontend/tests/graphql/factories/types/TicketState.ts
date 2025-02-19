@@ -9,7 +9,7 @@ import {
 } from '#shared/graphql/utils.ts'
 import type { DeepPartial } from '#shared/types/utils.ts'
 
-import { updateGeneratedIds } from '../builders/utils.ts'
+import { updateGeneratedIds } from '../../builders/utils.ts'
 
 const states: (() => DeepPartial<TicketState>)[] = [
   () => ({ id: convertToGraphQLId('TicketState', 1), name: 'new' }),

@@ -2,7 +2,7 @@
 
 import type { SearchResult } from '#shared/graphql/types.ts'
 
-import type { ResolversMeta } from '../builders/index.ts'
+import type { ResolversMeta } from '../../builders/index.ts'
 import type { DeepPartial } from '@apollo/client/utilities'
 
 export default (
@@ -12,6 +12,6 @@ export default (
 ): DeepPartial<SearchResult> => {
   return {
     // always generate types based on the query variable
-    __typename: meta.variables.onlyIn as 'Ticket',
+    __typename: meta.variables.onlyIn as 'SearchResult',
   }
 }

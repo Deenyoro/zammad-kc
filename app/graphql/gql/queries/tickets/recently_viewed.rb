@@ -10,12 +10,6 @@ module Gql::Queries
 
     type [Gql::Types::TicketType], null: false
 
-    # Disable field scoping, as no collection but an array is returned and scoping is performed
-    #   right here in the resolver.
-    def self.register_in_schema(schema)
-      schema.field graphql_field_name, resolver: self, scope: false
-    end
-
     def self.authorize(_obj, ctx)
       ctx.current_user.permissions?(['ticket.agent'])
     end

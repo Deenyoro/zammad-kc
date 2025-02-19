@@ -10,7 +10,9 @@ import { useRoute, useRouter } from 'vue-router'
 import type { CommonInputSearchExpose } from '#shared/components/CommonInputSearch/CommonInputSearch.vue'
 import CommonInputSearch from '#shared/components/CommonInputSearch/CommonInputSearch.vue'
 import { useStickyHeader } from '#shared/composables/useStickyHeader.ts'
+import { EnumSearchableModels } from '#shared/graphql/types.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
+import { useSessionStore } from '#shared/stores/session.ts'
 
 import CommonButtonGroup from '#mobile/components/CommonButtonGroup/CommonButtonGroup.vue'
 import type { CommonButtonOption } from '#mobile/components/CommonButtonGroup/types.ts'
@@ -43,11 +45,14 @@ const filter = ref(search.value)
 const canSearch = computed(() => filter.value.length >= 1)
 
 const found = reactive({} as Record<string, Record<string, unknown>[]>)
-const lastSearches = useLocalStorage<string[]>('lastSearches', [])
+const { userId } = useSessionStore()
+
+const recentSearches = useLocalStorage<string[]>(`${userId}-recentSearches`, [])
 
 const model = computed(() => {
-  if (!props.type) return undefined
-  return searchPlugins[props.type]?.model
+  return props.type
+    ? searchPlugins[props.type]?.model
+    : EnumSearchableModels.Ticket // default passed by router
 })
 
 const searchQuery = new QueryHandler(
@@ -64,8 +69,9 @@ const loading = searchQuery.loading()
 
 searchQuery.watchOnResult((data) => {
   if (!props.type) return
+  if (!data.search) return
 
-  found[props.type] = data.search
+  found[props.type] = data.search.items
 })
 
 const replaceQuery = (query: LocationQueryRaw) => {
@@ -104,15 +110,17 @@ const loadByFilter = async (filterQuery: string) => {
     return
   }
 
-  searchQuery.abort()
-
-  lastSearches.value = lastSearches.value.filter((item) => item !== filterQuery)
-  lastSearches.value.push(filterQuery)
-  if (lastSearches.value.length > LAST_SEARCHES_LENGTH_MAX) {
-    lastSearches.value.shift()
+  recentSearches.value = recentSearches.value.filter(
+    (item) => item !== filterQuery,
+  )
+  recentSearches.value.push(filterQuery)
+  if (recentSearches.value.length > LAST_SEARCHES_LENGTH_MAX) {
+    recentSearches.value.shift()
   }
 
-  searchQuery.load()
+  if (searchQuery.isFirstRun()) {
+    searchQuery.load()
+  }
 }
 
 // load data after a few ms to not overload the api
@@ -127,19 +135,19 @@ const { ignoreUpdates } = ignorableWatch(search, async (search) => {
   await debouncedLoad(search)
 })
 
-// load data immidiately when type changes or when last search selected
+// load data immidiately when type changes or when recent search selected
 watch(
   () => props.type,
   () => loadByFilter(search.value),
   { immediate: true },
 )
 
-const selectLastSearch = async (lastSearch: string) => {
+const selectRecentSearch = async (recentSearch: string) => {
   ignoreUpdates(() => {
-    search.value = lastSearch
+    search.value = recentSearch
   })
   focusSearch()
-  await loadByFilter(lastSearch)
+  await loadByFilter(recentSearch)
 }
 
 const pluginsArray = Object.entries(searchPlugins).map(([name, plugin]) => ({
@@ -269,19 +277,19 @@ export default {
       <div
         v-if="canShowLastSearches"
         class="px-4 pt-8"
-        data-test-id="lastSearches"
+        data-test-id="recentSearches"
       >
-        <div class="text-white/50">{{ $t('Last searches') }}</div>
+        <div class="text-white/50">{{ $t('Recent searches') }}</div>
         <ul class="pt-3">
           <li
-            v-for="searchItem in [...lastSearches].reverse()"
+            v-for="searchItem in [...recentSearches].reverse()"
             :key="searchItem"
             class="pb-4"
           >
             <button
               type="button"
               class="flex items-center"
-              @click="selectLastSearch(searchItem)"
+              @click="selectRecentSearch(searchItem)"
             >
               <span>
                 <CommonIcon
@@ -294,7 +302,7 @@ export default {
               <span class="text-left text-base">{{ searchItem }}</span>
             </button>
           </li>
-          <li v-if="!lastSearches.length">{{ $t('No previous searches') }}</li>
+          <li v-if="!recentSearches.length">{{ $t('No recent searches') }}</li>
         </ul>
       </div>
     </div>

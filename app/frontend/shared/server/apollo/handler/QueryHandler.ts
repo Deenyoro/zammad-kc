@@ -212,6 +212,10 @@ export default class QueryHandler<
     }
   }
 
+  public isFirstRun(): boolean {
+    return this.operationResult.forceDisabled.value
+  }
+
   public start(): void {
     this.operationResult.start()
   }

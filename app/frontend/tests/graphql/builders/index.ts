@@ -42,10 +42,13 @@ interface Resolvers {
   [key: string]: Resolver
 }
 
-const factoriesModules = import.meta.glob<Resolver>('../factories/*.ts', {
-  eager: true,
-  import: 'default',
-})
+const factoriesModules = import.meta.glob<Resolver>(
+  ['../factories/**/*.ts', '!../factories/fixtures/*.ts'],
+  {
+    eager: true,
+    import: 'default',
+  },
+)
 
 const storedObjects = new Map<string, any>()
 
@@ -64,8 +67,12 @@ const factories: Resolvers = {}
 
 // eslint-disable-next-line guard-for-in
 for (const key in factoriesModules) {
-  factories[key.replace(/\.\.\/factories\/(.*)\.ts$/, '$1')] =
-    factoriesModules[key]
+  factories[
+    key.replace(
+      /\.\.\/factories\/(?:mutations|subscriptions|queries|types)\/(.*)\.ts$/,
+      '$1',
+    )
+  ] = factoriesModules[key]
 }
 
 interface SchemaObjectType {
@@ -364,6 +371,14 @@ const buildObjectFromInformation = (
     }
     return builtList
   }
+
+  const factory = factories[fieldName]
+  if (factory) {
+    logger.log(`[MOCKER] using factory for "${fieldName}"`)
+
+    return factory(fieldName, defaults, meta)
+  }
+
   const typeDefinition = getObjectDefinitionFromUnion(field)
   const builtList = faker.helpers.multiple(
     () => generateGqlValue(parent, fieldName, typeDefinition, undefined, meta),

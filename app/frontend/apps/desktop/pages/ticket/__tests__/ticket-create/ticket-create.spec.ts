@@ -116,13 +116,21 @@ describe('ticket create view', async () => {
         }),
       )
 
+      const sidebar = view.getByLabelText('Content sidebar')
+
       // Sidebar CUSTOMER
-      expect(view.getByLabelText('Avatar (Nicole Braun)')).toBeInTheDocument()
-      expect(view.getByText('Zammad Foundation')).toBeInTheDocument()
-      expect(view.getByText('open tickets')).toBeInTheDocument()
-      expect(view.getByText('nicole.braun@zammad.org')).toBeInTheDocument()
-      expect(view.getByText('closed tickets')).toBeInTheDocument()
-      expect(view.getByLabelText('Open tickets')).toHaveTextContent('17')
+      expect(
+        within(sidebar).getByLabelText('Avatar (Nicole Braun)'),
+      ).toBeInTheDocument()
+      expect(within(sidebar).getByText('Zammad Foundation')).toBeInTheDocument()
+      expect(within(sidebar).getByText('open tickets')).toBeInTheDocument()
+      expect(
+        within(sidebar).getByText('nicole.braun@zammad.org'),
+      ).toBeInTheDocument()
+      expect(within(sidebar).getByText('closed tickets')).toBeInTheDocument()
+      expect(within(sidebar).getByLabelText('Open tickets')).toHaveTextContent(
+        '17',
+      )
 
       // Sidebar Organization
       handleMockOrganizationQuery()

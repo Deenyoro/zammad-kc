@@ -1,7 +1,11 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
+import { nextTick } from 'vue'
 import { useRouter } from 'vue-router'
+
+import { useSessionStore } from '#shared/stores/session.ts'
+import emitter from '#shared/utils/emitter.ts'
 
 import CommonSectionCollapse from '#desktop/components/CommonSectionCollapse/CommonSectionCollapse.vue'
 import { sortedFirstLevelRoutes } from '#desktop/components/PageNavigation/firstLevelRoutes.ts'
@@ -18,6 +22,13 @@ interface Props {
 defineProps<Props>()
 
 const router = useRouter()
+
+const { userId } = useSessionStore()
+
+const openSearch = () => {
+  emitter.emit('expand-collapsed-content', `${userId}-left`)
+  nextTick(() => emitter.emit('focus-quick-search-field'))
+}
 </script>
 
 <template>
@@ -30,6 +41,17 @@ const router = useRouter()
       <template #default="{ headerId }">
         <nav :aria-labelledby="headerId">
           <ul class="m-0 flex basis-full flex-col gap-1 p-0">
+            <li class="flex justify-center">
+              <CommonButton
+                v-if="collapsed"
+                class="flex-shrink-0 text-neutral-400 hover:outline-blue-900"
+                size="large"
+                variant="neutral"
+                :aria-label="$t('Open quick search')"
+                icon="search"
+                @click="openSearch"
+              />
+            </li>
             <li
               v-for="route in sortedFirstLevelRoutes"
               :key="route.path"

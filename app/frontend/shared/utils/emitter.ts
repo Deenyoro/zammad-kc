@@ -5,6 +5,8 @@ import mitt, { type Emitter } from 'mitt'
 type Events = {
   sessionInvalid: void
   'expand-collapsed-content': string
+  'focus-quick-search-field': void
+  'reset-quick-search-field': void
 }
 
 const emitter: Emitter<Events> = mitt<Events>()

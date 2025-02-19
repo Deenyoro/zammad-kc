@@ -6,21 +6,26 @@ module Gql::Queries
     description 'Generic object search'
 
     argument :search,  String, description: 'What to search for'
-    argument :only_in, Gql::Types::Enum::SearchableModelsType, required: false, description: 'Optionally restrict search to only_in one model'
-    argument :limit,   Integer, required: false, description: 'How many entries to find at maximum per model'
+    argument :only_in, Gql::Types::Enum::SearchableModelsType, description: 'Which model to search in, e.g. Ticket'
+    argument :limit,   Integer, required: false, description: 'How many entries to find at maximum'
+    argument :offset,  Integer, required: false, description: 'Offset to use for pagination'
 
-    type [Gql::Types::SearchResultType, { null: false }], null: false
+    type Gql::Types::SearchResultType, null: false
 
-    def resolve(search:, only_in: nil, limit: 10)
-      Service::Search
-        .new(
-          current_user: context.current_user,
-          query:        search,
-          objects:      only_in ? [only_in] : Gql::Types::SearchResultType.searchable_models,
-          options:      { limit: limit }
-        )
-        .execute
-        .flattened
+    def resolve(search:, only_in:, offset: 0, limit: 10)
+      search_result = Service::Search.new(
+        current_user: context.current_user,
+        query:        search,
+        objects:      [only_in],
+        options:      { offset:, limit:, }
+      ).execute.result[only_in]
+
+      return { total_count: 0, items: [] } if !search_result
+
+      {
+        total_count: search_result[:total_count],
+        items:       search_result[:objects],
+      }
     end
   end
 end
