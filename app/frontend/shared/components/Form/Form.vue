@@ -90,7 +90,7 @@ import type {
   FormKitMessageProps,
 } from '@formkit/core'
 import type { Except, SetRequired } from 'type-fest'
-import type { Component, Ref } from 'vue'
+import type { Component, Ref, SetupContext } from 'vue'
 
 export interface Props {
   id?: string
@@ -158,7 +158,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const formId = props.formId ? props.formId : getUuid()
 
-const slots = useSlots()
+const slots: SetupContext['slots'] = useSlots()
 
 const hasSchema = computed(
   () => Boolean(slots.default) || Boolean(props.schema),

@@ -15,7 +15,9 @@ export interface OverviewItem {
   outOfOffice?: boolean | null
 }
 
-const localValue = defineModel<OverviewItem[]>('modelValue')
+const localValue = defineModel<OverviewItem[]>({
+  required: true,
+})
 
 const dndEndCallback = (parent: HTMLElement) => {
   const parentData = parents.get(parent)

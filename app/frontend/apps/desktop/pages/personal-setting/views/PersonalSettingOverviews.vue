@@ -29,7 +29,7 @@ import { useUserCurrentOverviewListQuery } from '../graphql/queries/userCurrentO
 
 const { breadcrumbItems } = useBreadcrumb(__('Overviews'))
 
-const overviewList = ref<OverviewItem[]>()
+const overviewList = ref<OverviewItem[]>([])
 
 const overviewListQuery = new QueryHandler(
   useUserCurrentOverviewListQuery({ ignoreUserConditions: true }),
@@ -58,7 +58,7 @@ overviewListQuery.subscribeToMore<
 })
 
 watch(overviewListQuery.result(), (newValue) => {
-  overviewList.value = newValue?.userCurrentTicketOverviews
+  overviewList.value = newValue?.userCurrentTicketOverviews || []
 })
 
 const { notify } = useNotifications()
