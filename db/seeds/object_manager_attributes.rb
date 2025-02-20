@@ -2220,7 +2220,7 @@ ObjectManager::Attribute.add(
   force:       true,
   object:      'Group',
   name:        'email_address_id',
-  display:     __('Email'),
+  display:     __('Email Address'),
   data_type:   'select',
   data_option: {
     default:    '',
@@ -2229,6 +2229,7 @@ ObjectManager::Attribute.add(
     relation:   'EmailAddress',
     nulloption: true,
     do_not_log: true,
+    note:       __("A group's email address determines which address should be used for outgoing mails, e.g. when an agent is composing an email or a trigger is sending an auto-reply"),
   },
   editable:    false,
   active:      true,

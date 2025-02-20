@@ -134,7 +134,7 @@ class ChannelsEmailController < ApplicationController
         status_out:   'ok',
       )
 
-      handle_group_email_address(channel, params)
+      handle_group_email_address(channel)
 
       render json: result
       return
@@ -178,7 +178,7 @@ class ChannelsEmailController < ApplicationController
     channel.group_id = params[:group_id]
     channel.save!
 
-    handle_group_email_address(channel, params)
+    handle_group_email_address(channel)
 
     render json: {}
   end

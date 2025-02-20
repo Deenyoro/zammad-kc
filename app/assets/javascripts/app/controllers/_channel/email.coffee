@@ -260,8 +260,8 @@ class ChannelGroupEdit extends App.ControllerModal
 
   content: =>
     configureAttributesBase = [
-      { name: 'group_id', display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group', filter: { active: true } },
-      { name: 'group_email_address_id', display: __('Destination Group Email Address'), tag: 'select', options: @emailAddressOptions(@item.id, @item.group_id) },
+      { name: 'group_id',               display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group', filter: { active: true } },
+      { name: 'group_email_address_id', display: __('Destination Group Email Address'), tag: 'select', options: @emailAddressOptions(@item.id, @item.group_id), note: __("This will adjust the corresponding setting of the destination group within the group management. A group's email address determines which address should be used for outgoing mails, e.g. when an agent is composing an email or a trigger is sending an auto-reply.") },
     ]
 
     @form = new App.ControllerForm(
@@ -388,11 +388,11 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
 
     # base
     configureAttributesBase = [
-      { name: 'realname', display: __('Organization & Department Name'), tag: 'input',  type: 'text', limit: 160, null: false, placeholder: __('Organization Support'), autocomplete: 'off' },
-      { name: 'email',    display: __('Email'),    tag: 'input',  type: 'email', limit: 120, null: false, placeholder: 'support@example.com', autocapitalize: false, autocomplete: 'off' },
-      { name: 'password', display: __('Password'), tag: 'input',  type: 'password', limit: 120, null: false, autocapitalize: false, autocomplete: 'new-password', single: true },
-      { name: 'group_id', display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group' },
-      { name: 'group_email_address_id', display: __('Destination Group Email Address'), tag: 'select', null: false, options: @emailAddressOptions(@channel?.id, @channel?.group_id) },
+      { name: 'realname',               display: __('Organization & Department Name'), tag: 'input',  type: 'text', limit: 160, null: false, placeholder: __('Organization Support'), autocomplete: 'off' },
+      { name: 'email',                  display: __('Email'),    tag: 'input',  type: 'email', limit: 120, null: false, placeholder: 'support@example.com', autocapitalize: false, autocomplete: 'off' },
+      { name: 'password',               display: __('Password'), tag: 'input',  type: 'password', limit: 120, null: false, autocapitalize: false, autocomplete: 'new-password', single: true },
+      { name: 'group_id',               display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group', filter: { active: true } },
+      { name: 'group_email_address_id', display: __('Destination Group Email Address'), tag: 'select', null: false, options: @emailAddressOptions(@channel?.id, @channel?.group_id), note: __("This will adjust the corresponding setting of the destination group within the group management. A group's email address determines which address should be used for outgoing mails, e.g. when an agent is composing an email or a trigger is sending an auto-reply.") },
     ]
 
     @formMeta = new App.ControllerForm(
@@ -417,10 +417,12 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
     )
     @toggleOutboundAdapter()
 
-    # inbound
+    @initializeInboundForm(@account)
+
+  initializeInboundForm: (params) =>
     configureAttributesInbound = [
-      { name: 'group_id',                display: __('Destination Group'), tag: 'select', null: false, relation: 'Group' },
-      { name: 'group_email_address_id',  display: __('Destination Group Email Address'), tag: 'select', null: false, options: @emailAddressOptions(@channel?.id, @channel?.group_id) },
+      { name: 'group_id',                display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group', filter: { active: true } },
+      { name: 'group_email_address_id',  display: __('Destination Group Email Address'), tag: 'select', null: false, options: @emailAddressOptions(@channel?.id, @channel?.group_id), note: __("This will adjust the corresponding setting of the destination group within the group management. A group's email address determines which address should be used for outgoing mails, e.g. when an agent is composing an email or a trigger is sending an auto-reply.") },
       { name: 'adapter',                 display: __('Type'),     tag: 'select', multiple: false, null: false, options: @channelDriver.email.inbound, translate: true },
       { name: 'options::host',           display: __('Host'),     tag: 'input',  type: 'text', limit: 120, null: false, autocapitalize: false },
       { name: 'options::user',           display: __('User'),     tag: 'input',  type: 'text', limit: 120, null: false, autocapitalize: false, autocomplete: 'off' },
@@ -449,14 +451,20 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
       ui.hide('options::keep_on_server')
 
     @form = new App.ControllerForm(
-      el:    @$('.base-inbound-settings'),
+      elReplace: @$('.base-inbound-settings'),
       model:
         configure_attributes: configureAttributesInbound
         className: ''
       params: _.extend(
-        @account.inbound
-        group_id: @account?.meta?.group_id or @channel?.group_id
-        group_email_address_id: @account?.meta?.group_email_address_id
+        params.inbound or {
+          options:
+            user: params.email
+            password: params.password
+            email: params.email
+            realname: params.realname
+        }
+        group_id: params?.meta?.group_id or params.group_id or @channel?.group_id
+        group_email_address_id: params?.meta?.group_email_address_id or params.group_email_address_id
       )
       handlers: [
         showHideFolder
@@ -465,12 +473,16 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
     )
 
     @toggleInboundAdapter()
+    @toggleInboundPort()
 
-    @form.el.find("select[name='options::ssl']").off('change').on('change', (e) =>
+  toggleInboundPort: =>
+    form = @$('.base-inbound-settings')
+
+    form.find("select[name='options::ssl']").off('change').on('change', (e) ->
       if $(e.target).val() is 'ssl'
-        @form.el.find("[name='options::port']").val('993')
+        form.find("[name='options::port']").val('993')
       else if $(e.target).val() is 'off'
-        @form.el.find("[name='options::port']").val('143')
+        form.find("[name='options::port']").val('143')
     )
 
   toggleInboundAdapter: =>
@@ -577,13 +589,8 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
       params.channel_id = @channel.id
 
     if $(e.currentTarget).hasClass('js-expert')
+      @initializeInboundForm(params)
       @showSlide('js-inbound')
-      @$('.js-inbound [name="options::user"]').val(params.email)
-      @$('.js-inbound [name="options::password"]').val(params.password)
-      @$('.js-inbound [name="options::email"]').val(params.email)
-      @$('.js-inbound [name="options::realname"]').val(params.realname)
-      @$('.js-inbound [name="group_id"]').val(params.group_id)
-      @$('.js-inbound [name="group_email_address_id"]').val(params.group_email_address_id)
       return
 
     @disable(e)
@@ -613,14 +620,9 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
           @showSlide('js-intro')
           @showAlert('js-intro', __('Account already exists!'))
         else
+          @initializeInboundForm(params)
           @showSlide('js-inbound')
           @showAlert('js-inbound', __('The server settings could not be automatically detected. Please configure them manually.'))
-          @$('.js-inbound [name="options::user"]').val(@account['meta']['email'])
-          @$('.js-inbound [name="options::password"]').val(@account['meta']['password'])
-          @$('.js-inbound [name="options::email"]').val(@account['meta']['email'])
-          @$('.js-inbound [name="options::realname"]').val(@account['meta']['realname'])
-          @$('.js-inbound [name="group_id"]').val(@account['meta']['group_id'])
-          @$('.js-inbound [name="group_email_address_id"]').val(@account['meta']['group_email_address_id'])
 
         @enable(e)
       error: =>
@@ -904,8 +906,10 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
               @showAlert('js-verify', data.message_human || data.message)
               @delay(
                 =>
-                  @showSlide('js-intro')
-                  @showAlert('js-intro', __('Email sending and receiving could not be verified. Please check your settings.'))
+                  nextSlide = if @channel then 'js-inbound' else 'js-intro'
+
+                  @showSlide(nextSlide)
+                  @showAlert(nextSlide, __('Email sending and receiving could not be verified. Please check your settings.'))
 
                 2300
               )
@@ -914,6 +918,8 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
                 @account.subject = data.subject
               @verify(@account, count + 1)
       error: =>
+        nextSlide = if @channel then 'js-inbound' else 'js-intro'
+
         @showSlide('js-intro')
         @showAlert('js-intro', __('Email sending and receiving could not be verified. Please check your settings.'))
     )

@@ -5,6 +5,26 @@ require 'rails_helper'
 RSpec.describe 'Email channel API endpoints', type: :request do
   let(:admin) { create(:admin) }
 
+  describe 'POST /api/v1/channels_email_group/ID', aggregate_failures: true, authenticated_as: :admin do
+    let(:channel) { create(:email_channel) }
+    let(:email_address)       { create(:email_address, channel: channel) }
+    let(:group)               { create(:group) }
+    let(:group_email_address) { true }
+    let(:params) do
+      {
+        group_id:            group.id,
+        group_email_address: group_email_address,
+      }
+    end
+
+    it 'updates channel group' do
+      post "/api/v1/channels_email_group/#{channel.id}", params: params
+      expect(response).to have_http_status(:ok)
+
+      expect(channel.reload.group_id).to eq(group.id)
+    end
+  end
+
   describe 'POST /api/v1/channels_email/verify/ID', aggregate_failures: true, authenticated_as: :admin do
     let(:group) { create(:group) }
     let(:params) do
@@ -15,6 +35,7 @@ RSpec.describe 'Email channel API endpoints', type: :request do
         group_id:               group_id,
         group_email_address:    group_email_address,
         group_email_address_id: group_email_address_id,
+        channel_id:             channel_id,
       }
     end
 
@@ -60,6 +81,7 @@ RSpec.describe 'Email channel API endpoints', type: :request do
     let(:group_id)               { nil }
     let(:group_email_address)    { false }
     let(:group_email_address_id) { nil }
+    let(:channel_id)             { nil }
 
     before do
       Channel.where(area: 'Email::Account').each(&:destroy)
@@ -108,6 +130,20 @@ RSpec.describe 'Email channel API endpoints', type: :request do
           expect(response).to have_http_status(:ok)
 
           expect(Channel.last.group.email_address_id).to be_nil
+        end
+      end
+
+      context 'when channel is already created' do
+        let(:channel) { create(:email_channel) }
+        let(:channel_id)          { channel.id }
+        let!(:email_address)      { create(:email_address, channel: channel) }
+        let(:group_email_address) { true }
+
+        it 'updates channel' do
+          post '/api/v1/channels_email_verify', params: params
+          expect(response).to have_http_status(:ok)
+
+          expect(channel.reload.group.email_address_id).to eq(email_address.id)
         end
       end
     end
