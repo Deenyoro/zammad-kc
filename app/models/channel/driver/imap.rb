@@ -161,8 +161,8 @@ returns
     end
 
     Timeout.timeout(timeout) do
-      # select folder
-      @imap.select(server_settings[:folder])
+      # Select folder, but make sure to encode the string value as UTF-7 first (#5480).
+      @imap.select(Net::IMAP.encode_utf7(server_settings[:folder]))
     end
 
     @imap

@@ -126,12 +126,12 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
 
     before do
       purge_inbox
-      imap.create(folder)
-      imap.select(folder)
+      imap.create(Net::IMAP.encode_utf7(folder))
+      imap.select(Net::IMAP.encode_utf7(folder))
     end
 
     after do
-      imap.delete(folder)
+      imap.delete(Net::IMAP.encode_utf7(folder))
     end
 
     context 'when fetching regular emails' do
@@ -272,6 +272,23 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
 
           message_meta = imap.fetch(1, ['FLAGS'])[0].attr
           expect(message_meta['FLAGS']).to include(:Seen)
+        end
+      end
+
+      context 'when folder name contains special characters' do
+        let(:folder) { 'uat-bk-rsc-20250130-!"§$%&()=?ß`\ß_<' }
+
+        it 'handles messages correctly' do
+
+          imap.append(Net::IMAP.encode_utf7(folder), email1, [], Time.zone.now)
+
+          # verify if message is still on server
+          message_ids = imap.sort(['DATE'], ['ALL'], 'US-ASCII')
+          expect(message_ids.count).to be(1)
+
+          # fetch messages - will import
+          expect { channel.fetch(true) }.to change(Ticket::Article, :count)
+
         end
       end
     end
