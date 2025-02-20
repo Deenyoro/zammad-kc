@@ -71,15 +71,17 @@ RSpec.shared_examples 'pagination', authenticated_as: :authenticate do |model:, 
 
     it 'does filter results with the search bar' do
       page.find('.js-search').fill_in with: base_scope.last.try(main_column)
-      wait.until { page.all('.js-tableBody tr').count == 1 }
+      expect(page).to have_css('.js-tableBody tr', count: 1)
 
       # does stay after reload
       refresh
-      wait.until { page.find('.js-search').present? && page.all('.js-tableBody tr').count == 1 }
+      expect(page).to have_css('.js-search')
+      expect(page).to have_css('.js-tableBody tr', count: 1)
 
       # remove filter
-      page.find('.js-search').fill_in with: '', fill_options: { clear: :backspace }
-      wait.until { page.all('.js-tableBody tr').count != 1 }
+      page.find('.js-search').fill_in with: ' '
+
+      expect(page).to have_css('.js-tableBody tr', count: 50)
     end
 
     context 'when ES is enabled', authenticated_as: :authenticate, searchindex: true do
