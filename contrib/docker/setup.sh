@@ -5,7 +5,7 @@ apt-get update
 apt-get upgrade -y
 
 if [ "$1" = 'builder' ]; then
-  PACKAGES="build-essential curl git libimlib2-dev libpq-dev"
+  PACKAGES="build-essential curl git libimlib2-dev libpq-dev libyaml-dev"
 elif [ "$1" = 'runner' ]; then
   # Add official PostgreSQL apt repository to not depend on Debian's version.
   #   https://www.postgresql.org/download/linux/debian/
