@@ -55,16 +55,16 @@ const sizeClasses = computed(() => {
         >
           <CommonLabel size="large" class="line-clamp-1 hover:underline">{{
             item.noOptionLabelTranslation
-              ? $t(item.label as string)
-              : item.label
+              ? item.label
+              : $t(item.label as string)
           }}</CommonLabel>
         </CommonLink>
 
         <h1 v-else class="line-clamp-1" aria-current="page">
           {{
             item.noOptionLabelTranslation
-              ? $t(item.label as string)
-              : item.label
+              ? item.label
+              : $t(item.label as string)
           }}
         </h1>
 
