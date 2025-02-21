@@ -162,12 +162,13 @@ jobs:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: index
 
       - name: Create manifest list and push
+        # Build and run a complex command line with eval to avoid wrong word splitting on spaces in the annotations.
         run: |
-          docker buildx imagetools create \
+          eval "docker buildx imagetools create \
             $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
             $(jq -cr '.annotations | map("--annotation \"" + . + "\"") | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
             ${{ steps.meta_arch_amd64.outputs.tags }} \
-            ${{ steps.meta_arch_arm64.outputs.tags }}
+            ${{ steps.meta_arch_arm64.outputs.tags }}"
 
       - name: Inspect image
         run: |
