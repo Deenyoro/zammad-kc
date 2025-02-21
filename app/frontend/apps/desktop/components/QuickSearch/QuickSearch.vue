@@ -1,6 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
+import { refDebounced } from '@vueuse/shared'
 import { computed } from 'vue'
 
 import {
@@ -24,6 +25,8 @@ import { useUserCurrentRecentViewUpdatesSubscription } from '#desktop/entities/u
 import { useQuickSearchInput } from './composables/useQuickSearchInput.ts'
 import { lookupQuickSearchPluginComponent } from './plugins/index.ts'
 
+const DEBOUNCE_TIME = 400
+
 interface Props {
   collapsed?: boolean
   search: string
@@ -32,6 +35,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const hasSearchInput = computed(() => props.search?.length > 0)
+const debouncedHasSearchInput = refDebounced(hasSearchInput, DEBOUNCE_TIME)
 
 const { isTouchDevice } = useTouchDevice()
 
@@ -122,7 +126,11 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
 
 <template>
   <div class="overflow-x-hidden overflow-y-auto px-3 py-2.5 outline-none">
-    <QuickSearchResultList v-if="hasSearchInput" :search="search" />
+    <QuickSearchResultList
+      v-if="debouncedHasSearchInput && hasSearchInput"
+      :search="search"
+      :debounce-time="DEBOUNCE_TIME"
+    />
 
     <template
       v-else-if="recentSearches.length > 0 || recentViewListItems.length > 0"

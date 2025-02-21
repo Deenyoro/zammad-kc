@@ -1,9 +1,9 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import '#tests/graphql/builders/mocks.ts'
-import { createPinia, setActivePinia } from 'pinia'
 
 import renderComponent from '#tests/support/components/renderComponent.ts'
+import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
 import {
@@ -18,11 +18,13 @@ import { mockUserCurrentRecentViewResetMutation } from '#desktop/entities/user/c
 import { mockUserCurrentRecentViewListQuery } from '#desktop/entities/user/current/graphql/queries/userCurrentRecentViewList.mocks.ts'
 import { getUserCurrentRecentViewUpdatesSubscriptionHandler } from '#desktop/entities/user/current/graphql/subscriptions/userCurrentRecentViewUpdates.mocks.ts'
 
-const renderQuickSearch = async () => {
+import { mockQuickSearchQuery } from '../graphql/queries/quickSearch.mocks.ts'
+
+const renderQuickSearch = async (search: string = '') => {
   const wrapper = renderComponent(QuickSearch, {
     props: {
       collapsed: false,
-      search: '',
+      search,
     },
     router: true,
     store: true,
@@ -34,7 +36,7 @@ const renderQuickSearch = async () => {
   return wrapper
 }
 
-setActivePinia(createPinia()) // Because we haven't set up the store before useRecentSearches is called
+mockUserCurrent()
 
 describe('QuickSearch', () => {
   const { addSearch, removeSearch, clearSearches } = useRecentSearches()
@@ -205,6 +207,29 @@ describe('QuickSearch', () => {
       expect(
         wrapper.queryByRole('link', { name: 'Clear recently viewed' }),
       ).not.toBeInTheDocument()
+    })
+
+    it('display search results when typing', async () => {
+      mockQuickSearchQuery({
+        quickSearchUsers: {
+          totalCount: 0,
+          items: [],
+        },
+        quickSearchOrganizations: {
+          totalCount: 0,
+          items: [],
+        },
+        quickSearchTickets: {
+          totalCount: 0,
+          items: [],
+        },
+      })
+
+      const wrapper = await renderQuickSearch('test')
+
+      expect(
+        await wrapper.findByText('No results for this query.'),
+      ).toBeInTheDocument()
     })
   })
 })

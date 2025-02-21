@@ -18,6 +18,7 @@ const renderQuickSearchResultList = async (search: string) => {
   const wrapper = renderComponent(QuickSearchResultList, {
     props: {
       search,
+      debounceTime: 400,
     },
     router: true,
   })

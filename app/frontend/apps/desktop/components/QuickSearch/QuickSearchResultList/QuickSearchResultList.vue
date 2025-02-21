@@ -17,17 +17,20 @@ import { useQuickSearchInput } from '../composables/useQuickSearchInput.ts'
 import { sortedQuickSearchPlugins } from '../plugins/index.ts'
 
 const RESULT_LIMIT = 10
-const DEBOUNCE_TIME = 400
 
 interface Props {
   search: string
+  debounceTime: number
 }
 
 const props = defineProps<Props>()
 
 const userSearchInput = toRef(props, 'search')
 
-const debouncedSearch = refDebounced<string>(userSearchInput, DEBOUNCE_TIME)
+const debouncedSearch = refDebounced<string>(
+  userSearchInput,
+  props.debounceTime,
+)
 
 const quickSearchQuery = new QueryHandler(
   useQuickSearchLazyQuery(
