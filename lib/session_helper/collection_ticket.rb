@@ -40,7 +40,7 @@ module SessionHelper::CollectionTicket
         assets = item.assets(assets)
       end
       collections[ TextModule.to_app_model ] = []
-      TextModule.all.each do |item|
+      TextModulePolicy::Scope.new(user, TextModule).resolve.each do |item|
         assets = item.assets(assets)
       end
 

@@ -48,6 +48,9 @@ export const useTicketEditForm = (
 
   const editorMeta = computed(() => {
     return {
+      mentionText: {
+        groupNodeName: 'group_id',
+      },
       mentionUser: {
         groupNodeName: 'group_id',
       },

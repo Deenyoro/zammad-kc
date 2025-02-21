@@ -2966,8 +2966,10 @@ export type QueriesTemplatesArgs = {
 
 /** All available queries */
 export type QueriesTextModuleSuggestionsArgs = {
+  groupId?: InputMaybe<Scalars['ID']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   query: Scalars['String']['input'];
+  ticketId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
@@ -6338,6 +6340,7 @@ export type TextModuleSuggestionsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
   ticketId?: InputMaybe<Scalars['ID']['input']>;
   customerId?: InputMaybe<Scalars['ID']['input']>;
+  groupId?: InputMaybe<Scalars['ID']['input']>;
 }>;
 
 

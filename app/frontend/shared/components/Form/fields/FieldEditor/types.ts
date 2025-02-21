@@ -89,6 +89,8 @@ export interface FieldEditorProps {
       ticketNodeName?: string
       // where to get id for the current customer
       customerNodeName?: string
+      // where to get id for the current group
+      groupNodeName?: string
     }
     mentionKnowledgeBase?: {
       disabled?: boolean

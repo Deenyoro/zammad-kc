@@ -182,6 +182,7 @@ const formSchema = defineFormSchema([
               meta: {
                 mentionText: {
                   customerNodeName: 'customer_id',
+                  groupNodeName: 'group_id',
                 },
                 mentionUser: {
                   groupNodeName: 'group_id',
