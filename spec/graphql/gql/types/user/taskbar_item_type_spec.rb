@@ -3,14 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe Gql::Types::User::TaskbarItemType, :aggregate_failures do
-  let(:user)  { create(:agent) }
+  let(:user)  { create(:agent, groups: [Group.first]) }
   let(:owner) { user }
   let(:key) do
-    entity = create(:ticket, owner: owner)
+    entity = create(:ticket, owner:, group: Group.first)
 
     "#{entity.class.name}-#{entity.id}"
   end
-  let(:taskbar)  { create(:taskbar, user_id: user.id, key: key) }
+  let(:taskbar)  { create(:taskbar, user_id: user.id, key:) }
   let(:instance) { described_class.send(:new, taskbar, Hashie::Mash.new({ current_user: user })) }
 
   describe 'field: entity' do
@@ -32,7 +32,7 @@ RSpec.describe Gql::Types::User::TaskbarItemType, :aggregate_failures do
     end
 
     context 'when entity is found but user has no access' do
-      let(:owner) { create(:agent) }
+      let(:user) { create(:agent, groups: []) }
 
       it 'returns nil as well as an appropriate access information' do
         expect(instance.entity).to be_nil
