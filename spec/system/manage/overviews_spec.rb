@@ -45,7 +45,7 @@ RSpec.describe 'Manage > Overviews', type: :system do
   let(:overview) { create(:overview, condition: condition) }
 
   context 'when ajax pagination' do
-    include_examples 'pagination', model: :overview, klass: Overview, path: 'manage/overviews', sort_by: :prio
+    include_examples 'pagination', model: :overview, klass: Overview, path: 'manage/overviews'
   end
 
   shared_examples 'previewing the correct ticket for single selected object' do

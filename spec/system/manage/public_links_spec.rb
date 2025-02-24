@@ -5,7 +5,7 @@ require 'system/examples/pagination_examples'
 
 RSpec.describe 'Manage > Public Links', type: :system do
   context 'when ajax pagination' do
-    include_examples 'pagination', model: :public_link, klass: PublicLink, path: 'manage/public_links', sort_by: :prio, main_column: :title
+    include_examples 'pagination', model: :public_link, klass: PublicLink, path: 'manage/public_links', main_column: :title
   end
 
   context 'when creating a new public link' do

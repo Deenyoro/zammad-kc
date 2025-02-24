@@ -11,6 +11,9 @@ class ManageRouter extends App.ControllerPermanent
     # check authentication
     @authenticateCheckRedirect()
 
+    if params.search_query
+      params.search_query = decodeURIComponent(params.search_query)
+
     App.TaskManager.execute(
       key:        'Manage'
       controller: 'Manage'

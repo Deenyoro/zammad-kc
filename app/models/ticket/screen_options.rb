@@ -69,7 +69,6 @@ returns
       agent_role_ids = Role.with_permissions('ticket.agent').pluck(:id)
       agent_user_ids = User.joins(:roles).where(users: { active: true }).where('roles_users.role_id' => agent_role_ids).pluck(:id)
       groups.each do |group|
-        assets = group.assets(assets)
         dependencies[:group_id][group.id] = { owner_id: [] }
 
         group_agent_user_ids = User.joins(', groups_users').where("users.id = groups_users.user_id AND groups_users.access = 'full' AND groups_users.group_id = ? AND users.id IN (?)", group.id, agent_user_ids).pluck(:id)

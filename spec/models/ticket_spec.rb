@@ -2053,4 +2053,13 @@ RSpec.describe Ticket, type: :model do
       expect(ticket.get_references([articles.last.message_id])).not_to include(articles.last.message_id)
     end
   end
+
+  describe 'Performance: Remove assets which are present in collection assets #5495' do
+    let!(:ticket) { create(:ticket) }
+
+    it 'does not deliver global assets' do
+      expect(ticket.group).to be_present
+      expect(ticket.assets({}).deep_symbolize_keys.keys).not_to include(:TicketPriority, :Role, :TicketState, :Group)
+    end
+  end
 end

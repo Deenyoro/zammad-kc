@@ -25,26 +25,11 @@ class Taskbar
       return if !key.starts_with?('TicketCreateScreen')
 
       assets_user(data)
-      assets_state(data)
-      assets_priority(data)
-      assets_group(data)
     end
 
     def assets_user(data)
       User.find_by(id: state[:owner_id])&.assets(data)
       User.find_by(id: state[:customer_id])&.assets(data)
-    end
-
-    def assets_state(data)
-      Ticket::State.find_by(id: state[:state_id])&.assets(data)
-    end
-
-    def assets_priority(data)
-      Ticket::Priority.find_by(id: state[:priority_id])&.assets(data)
-    end
-
-    def assets_group(data)
-      Group.find_by(id: state[:group_id])&.assets(data)
     end
   end
 end

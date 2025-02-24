@@ -9,7 +9,6 @@ class CoreWorkflow::Attributes::TicketState < CoreWorkflow::Attributes::Base
       end
       Ticket::State.joins(:state_type).where(ticket_state_types: { name: state_types }).each do |state|
         state_ids.push state.id
-        assets(state)
       end
       state_ids
     end
@@ -30,12 +29,5 @@ class CoreWorkflow::Attributes::TicketState < CoreWorkflow::Attributes::Base
     return state_types if @attributes.payload['screen'] != 'create_middle'
 
     state_types.unshift('new')
-  end
-
-  def assets(state)
-    return if @attributes.assets == false
-    return if @attributes.assets[Ticket::State.to_app_model] && @attributes.assets[Ticket::State.to_app_model][state.id]
-
-    @attributes.assets = state.assets(@attributes.assets)
   end
 end

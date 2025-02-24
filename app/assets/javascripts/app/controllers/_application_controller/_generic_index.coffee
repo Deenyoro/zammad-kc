@@ -59,7 +59,7 @@ class App.ControllerGenericIndex extends App.Controller
       App[@genericObject].unsubscribe(@subscribeId)
 
   paginate: (page, params) =>
-    search_query = decodeURIComponent(params?.search_query || '')
+    search_query = params?.search_query || ''
     return if page is @pageData.pagerSelected && @searchQuery is search_query
 
     @pageData.pagerSelected = page

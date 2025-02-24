@@ -32,7 +32,6 @@ returns
 
     data[ app_model ][ id ] = attributes_with_association_ids
 
-    group.assets(data)
     organization&.assets(data)
     assets_user(data)
 
