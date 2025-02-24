@@ -27,7 +27,10 @@ type TableHeaderPreference = {
 }
 
 type TableColumnPreference = {
-  alignContent?: 'center' | 'right'
+  /**
+   * @default 'left'
+   * */
+  alignContent?: 'center' | 'right' | 'left'
 }
 
 export interface TableSimpleHeader<K = string>

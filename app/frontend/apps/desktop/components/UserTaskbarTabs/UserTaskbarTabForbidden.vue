@@ -34,9 +34,9 @@ const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTabLink(
     />
 
     <CommonLabel
-      class="block truncate text-gray-300 group-hover/tab:text-white group-focus-visible/link:text-white dark:text-neutral-400"
+      class="block! truncate text-gray-300 group-hover/tab:text-white group-focus-visible/link:text-white dark:text-neutral-400"
       :class="{
-        '!text-white': taskbarTabActive,
+        'text-white!': taskbarTabActive,
       }"
     >
       {{ $t('Access denied') }}

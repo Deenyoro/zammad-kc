@@ -26,9 +26,39 @@ const renderQuickSearch = async (search: string = '') => {
       collapsed: false,
       search,
     },
-    router: true,
     store: true,
     dialog: true,
+    router: true,
+    routerRoutes: [
+      {
+        name: 'Dashboard',
+        path: '/',
+        component: {
+          template: 'Welcome to zammad.',
+        },
+      },
+      {
+        name: 'Example',
+        path: '/example',
+        component: {
+          template: 'This is a example page.',
+        },
+      },
+      {
+        name: 'Error',
+        path: '/:pathMatch(.*)*',
+        component: {
+          template: 'Error page',
+        },
+      },
+      {
+        name: 'search',
+        path: '/search/:searchTerm',
+        component: {
+          template: 'search',
+        },
+      },
+    ],
   })
 
   await waitForNextTick()

@@ -53,8 +53,10 @@ import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 import CommonProgressBar from '#desktop/components/CommonProgressBar/CommonProgressBar.vue'
 // import CommonAdvancedTable from '#desktop/components/CommonTable/CommonAdvancedTable.vue'
 import CommonSkeleton from '#desktop/components/CommonSkeleton/CommonSkeleton.vue'
+import CommonAdvancedTable from '#desktop/components/CommonTable/CommonAdvancedTable.vue'
 import CommonSimpleTable from '#desktop/components/CommonTable/CommonSimpleTable.vue'
 import CommonTableSkeleton from '#desktop/components/CommonTable/Skeleton/CommonTableSkeleton.vue'
+import type { TableAdvancedItem } from '#desktop/components/CommonTable/types.ts'
 import CommonTabManager from '#desktop/components/CommonTabManager/CommonTabManager.vue'
 import { useTabManager } from '#desktop/components/CommonTabManager/useTabManager.ts'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
@@ -1031,6 +1033,8 @@ const tableHeaders = [
   },
 ]
 
+const tableHeadersAdvanced = ['name', 'title', 'email', 'role']
+
 const tableItems = reactive([
   {
     id: 1,
@@ -1101,6 +1105,84 @@ const tableItems = reactive([
   },
   {
     id: 10,
+    name: 'Floyd Miles5',
+    title:
+      'Principal Designer for a very long way to go to see the end of the title. It is a very long title, indeed.',
+    email: 'floyd.miles@example.com',
+    role: 'Member',
+  },
+])
+
+const tableItemsAdvanced = reactive<TableAdvancedItem[]>([
+  {
+    id: '1',
+    name: 'Lindsay Walton',
+    title: 'Front-end Developer',
+    email: 'lindsay.walton@example.com',
+    role: 'Member',
+  },
+  {
+    id: '2',
+    name: 'Courtney Henry',
+    title: 'Designer',
+    email: 'courtney.henry@example.com',
+    role: 'Admin',
+  },
+  {
+    id: '3',
+    name: 'Tom Cook',
+    title: 'Director of Product',
+    email: 'tom.cook@example.com',
+    role: 'Member',
+  },
+  {
+    id: '4',
+    name: 'Whitney Francis',
+    title: 'Copywriter',
+    email: 'whitney.francis@example.com',
+    role: 'Admin',
+  },
+  {
+    id: '5',
+    name: 'Leonard Krasner',
+    title: 'Senior Designer Principal Designer ',
+    email: 'leonard.krasner@example.com',
+    role: 'Owner',
+  },
+  {
+    id: '6',
+    name: 'Floyd Miles',
+    title:
+      'Principal Designer for a very long way to go to see the end of the title. It is a very long title, indeed.',
+    email: 'floyd.miles@example.com',
+    role: 'Member',
+  },
+  {
+    id: '7',
+    name: 'Floyd Miles2',
+    title:
+      'Principal Designer for a very long way to go to see the end of the title. It is a very long title, indeed.',
+    email: 'floyd.miles@example.com',
+    role: 'Member',
+  },
+  {
+    id: '8',
+    name: 'Floyd Miles3',
+    title:
+      'Principal Designer for a very long way to go to see the end of the title. It is a very long title, indeed.',
+    email: 'floyd.miles@example.com',
+    role: 'Member',
+  },
+  {
+    id: '9',
+    name: 'Floyd Miles4',
+    title:
+      'Principal Designer for a very long way to go to see the end of the title. It is a very long title, indeed.',
+    email: 'floyd.miles@example.com',
+    role: 'Member',
+  },
+  {
+    id: '10',
     name: 'Floyd Miles5',
     title:
       'Principal Designer for a very long way to go to see the end of the title. It is a very long title, indeed.',
@@ -1450,14 +1532,70 @@ const inlineEditValue = ref('Edit me inline')
 
       <h2 class="mt-8 mb-2">Table (Advanced)</h2>
       <div class="mb-6 flex flex-col gap-4">
-        <!-- <CommonAdvancedTable
-          :headers="tableHeaders"
-          :items="tableItems"
+        <CommonAdvancedTable
+          :headers="tableHeadersAdvanced"
+          :items="tableItemsAdvanced"
           :actions="tableActions"
           :max-items="5"
           :total-items="10"
           has-checkbox-column
-        ></CommonAdvancedTable> -->
+          caption="test advanced table"
+          table-id="2"
+          :attributes="[
+            {
+              name: 'name',
+              label: 'Name',
+              headerPreferences: {
+                noResize: false,
+                hideLabel: false,
+                displayWidth: 200,
+              },
+              columnPreferences: {
+                alignContent: 'left',
+              },
+              dataType: 'integer',
+            },
+            {
+              name: 'title',
+              label: 'Title',
+              headerPreferences: {
+                noResize: false,
+                hideLabel: false,
+                displayWidth: 200,
+              },
+              columnPreferences: {
+                alignContent: 'center',
+              },
+              dataType: 'integer',
+            },
+            {
+              name: 'email',
+              label: 'Email',
+              headerPreferences: {
+                noResize: false,
+                hideLabel: false,
+                displayWidth: 200,
+              },
+              columnPreferences: {
+                alignContent: 'right',
+              },
+              dataType: 'integer',
+            },
+            {
+              name: 'role',
+              label: 'Role',
+              headerPreferences: {
+                noResize: false,
+                hideLabel: false,
+                displayWidth: 200,
+              },
+              columnPreferences: {
+                alignContent: 'left',
+              },
+              dataType: 'integer',
+            },
+          ]"
+        />
       </div>
 
       <div class="w-1/2">

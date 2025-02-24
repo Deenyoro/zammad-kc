@@ -208,7 +208,7 @@ describe('TicketList', () => {
     expect(mock.at(-1)?.variables).toEqual({
       cacheTtl: 5,
       knownCollectionSignature: undefined,
-      orderBy: 'priorityIcon',
+      orderBy: 'created_at',
       orderDirection: EnumOrderDirection.Ascending,
       overviewId: convertToGraphQLId('Overview', 1),
       pageSize: 30,

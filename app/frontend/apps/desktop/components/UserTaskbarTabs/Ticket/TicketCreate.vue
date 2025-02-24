@@ -56,7 +56,7 @@ const { currentViewTitle } = useTicketCreateTitle(
     />
 
     <CommonLabel
-      class="block truncate text-gray-300 group-hover/tab:text-white group-focus-visible/link:text-white dark:text-neutral-400"
+      class="block! truncate text-gray-300 group-hover/tab:text-white group-focus-visible/link:text-white dark:text-neutral-400"
       :class="{
         'text-white!': taskbarTabActive,
       }"

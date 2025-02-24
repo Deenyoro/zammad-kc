@@ -128,7 +128,7 @@ const id = getUuid()
     v-tooltip="$t('Resize column')"
     :aria-describedby="id"
     tabindex="0"
-    class="!focus-visible:bg-blue-800 absolute end-0 top-1/2 h-5 w-1 -translate-y-2.5 cursor-col-resize! rounded-xs bg-neutral-100 hover:bg-blue-600 focus:outline-none dark:bg-gray-200 dark:hover:bg-blue-900"
+    class="absolute end-0 top-1/2 h-5 w-1 -translate-y-2.5 cursor-col-resize! rounded-xs bg-neutral-100 hover:bg-blue-600 focus:outline-none focus-visible:bg-blue-800! dark:bg-gray-200 dark:hover:bg-blue-900"
     :class="{
       '!bg-blue-800': resizing,
     }"

@@ -188,7 +188,7 @@ const {
               <CommonLabel
                 v-else
                 v-tooltip.truncate="getTooltipText(item, header)"
-                class="inline text-gray-100 group-hover:text-black group-focus-visible:text-white group-active:text-white dark:text-neutral-400 group-hover:dark:text-white"
+                class="inline! text-gray-100 group-hover:text-black group-focus-visible:text-white group-active:text-white dark:text-neutral-400 group-hover:dark:text-white"
                 :class="[
                   {
                     'text-black dark:text-white': isRowSelected,

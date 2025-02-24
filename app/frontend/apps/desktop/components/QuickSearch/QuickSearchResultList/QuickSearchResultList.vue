@@ -119,15 +119,16 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
     <CommonLink
       v-if="!isLoadingSearchResults"
       class="group/link mb-4 block"
-      link="#"
+      :link="{ name: 'search', params: { searchTerm: props.search } }"
     >
-      <CommonLabel
+      <CommonLink
+        link="#"
         class="text-blue-800! group-hover/link:underline"
         prefix-icon="search-detail"
         size="small"
       >
         {{ $t('detailed search') }}
-      </CommonLabel>
+      </CommonLink>
     </CommonLink>
 
     <div v-if="hasResults" class="space-y-1">

@@ -15,6 +15,7 @@ const renderQuickSearchInput = () => {
       modelValue,
       searchActive,
     },
+    router: true,
   })
 
   return { wrapper, modelValue, searchActive }

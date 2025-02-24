@@ -58,11 +58,11 @@ const emit = defineEmits<{
   sort: [string, EnumOrderDirection]
 }>()
 
-//  Styling
+//  justify-* applies to the table header, text-* applies to the table cell.
 const cellAlignmentClasses = {
-  right: 'ltr:text-right rtl:text-left',
-  center: 'text-center',
-  left: 'ltr:text-left rtl:text-right',
+  right: 'justify-end text-end',
+  center: 'justify-center text-center',
+  left: 'justify-start text-left',
 }
 
 const { attributesLookup: objectAttributesLookup } = props.object
@@ -141,6 +141,7 @@ const tableAttributes = computed(() => {
 
     table.push(mergedAttribute)
   })
+
   return table
 })
 
@@ -466,7 +467,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
           :class="[
             tableAttribute.headerPreferences.headerClass,
             cellAlignmentClasses[
-              tableAttribute.columnPreferences.alignContent || 'left'
+              tableAttribute.columnPreferences.alignContent ?? 'left'
             ],
           ]"
         >
@@ -489,27 +490,18 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
               :name="`column-header-${tableAttribute.name}`"
               :attribute="tableAttribute"
             >
-              <CommonLabel
-                class="block truncate font-normal text-gray-100 select-none dark:text-neutral-400"
+              <!-- eslint-disable vuejs-accessibility/no-static-element-interactions,vuejs-accessibility/mouse-events-have-key-events-->
+              <div
+                class="flex items-center gap-1"
                 :class="[
                   cellAlignmentClasses[
                     tableAttribute.columnPreferences.alignContent || 'left'
                   ],
-                  tableAttribute.headerPreferences.labelClass || '',
                   {
-                    'sr-only': tableAttribute.headerPreferences.hideLabel,
-                    'text-black! dark:text-white!': isSorted(
-                      tableAttribute.name,
-                    ),
-                    'hover:cursor-pointer hover:text-black focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-800 dark:hover:text-white':
+                    'hover:cursor-pointer focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-800':
                       !tableAttribute.headerPreferences.noSorting,
                   },
                 ]"
-                :aria-label="
-                  orderDirection === EnumOrderDirection.Ascending
-                    ? $t('Sorted ascending')
-                    : $t('Sorted descending')
-                "
                 :role="
                   tableAttribute.headerPreferences.noSorting
                     ? undefined
@@ -518,7 +510,11 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                 :tabindex="
                   tableAttribute.headerPreferences.noSorting ? undefined : '0'
                 "
-                size="small"
+                :aria-label="
+                  orderDirection === EnumOrderDirection.Ascending
+                    ? $t('Sorted ascending')
+                    : $t('Sorted descending')
+                "
                 @click="
                   tableAttribute.headerPreferences.noSorting
                     ? undefined
@@ -535,23 +531,39 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                     : sort(tableAttribute.name)
                 "
               >
-                {{
-                  $t(
-                    tableAttribute.label,
-                    ...(tableAttribute.labelPlaceholder || []),
-                  )
-                }}
+                <CommonLabel
+                  class="relative block! truncate font-normal text-gray-100! select-none dark:text-neutral-400!"
+                  :class="[
+                    tableAttribute.headerPreferences.labelClass,
+                    {
+                      'sr-only': tableAttribute.headerPreferences.hideLabel,
+                      'text-black! dark:text-white!': isSorted(
+                        tableAttribute.name,
+                      ),
+                      'hover:text-black! dark:hover:text-white!':
+                        !tableAttribute.headerPreferences.noSorting,
+                    },
+                  ]"
+                  size="small"
+                >
+                  {{
+                    $t(
+                      tableAttribute.label,
+                      ...(tableAttribute.labelPlaceholder || []),
+                    )
+                  }}
+                </CommonLabel>
                 <CommonIcon
                   v-if="
                     !tableAttribute.headerPreferences.noSorting &&
                     isSorted(tableAttribute.name)
                   "
-                  class="inline text-blue-800"
+                  class="shrink-0 text-blue-800"
                   :name="sortIcon"
                   size="xs"
                   decorative
                 />
-              </CommonLabel>
+              </div>
             </slot>
           </template>
 
@@ -591,7 +603,6 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
       <template v-for="item in localItems" :key="item.id">
         <TableRowGroupBy
           v-if="groupByAttribute && showGroupByRow(item)"
-          ref=""
           :item="item"
           :attribute="groupByAttribute"
           :table-column-length="tableColumnLength"
@@ -677,7 +688,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                       },
                       getLinkColorClasses(item),
                     ]"
-                    class="block truncate text-sm group-hover:text-black group-focus-visible:text-white group-active:text-white hover:no-underline! group-hover:dark:text-white"
+                    class="block! truncate text-sm group-hover:text-black group-focus-visible:text-white group-active:text-white hover:no-underline! group-hover:dark:text-white"
                     @click.stop
                     @keydown.stop
                   >
@@ -690,7 +701,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                   <CommonLabel
                     v-else
                     v-tooltip.truncate="getTooltipText(item, tableAttribute)"
-                    class="block truncate text-gray-100! group-hover:text-black! group-focus-visible:text-white! group-active:text-white! dark:text-neutral-400! group-hover:dark:text-white!"
+                    class="block! truncate text-gray-100! group-hover:text-black! group-focus-visible:text-white! group-active:text-white! dark:text-neutral-400! group-hover:dark:text-white!"
                     :class="[
                       {
                         'text-black! dark:text-white!': isRowSelected,

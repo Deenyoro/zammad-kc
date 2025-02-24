@@ -2,6 +2,7 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, useTemplateRef, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
 import emitter from '#shared/utils/emitter.ts'
 
@@ -13,6 +14,8 @@ const searchValue = defineModel<string>()
 const isSearchActive = defineModel<boolean>('search-active', {
   default: false,
 })
+
+const router = useRouter()
 
 const inputSearchInstance = useTemplateRef('input-search')
 
@@ -48,6 +51,9 @@ emitter.on('reset-quick-search-field', () => resetInput())
       v-model="searchValue"
       wrapper-class="rounded-lg bg-blue-200 px-2.5 py-2 outline-offset-1 outline-blue-800 focus-within:outline dark:bg-gray-700"
       @focus-input="isSearchActive = true"
+      @keydown.enter="
+        router.push({ name: 'search', params: { searchTerm: searchValue } })
+      "
     />
     <CommonButton
       v-if="isSearchActive"
