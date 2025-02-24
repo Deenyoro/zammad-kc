@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :template do
-    name          { Faker::Lorem.unique.word }
+    name          { Faker::Food.unique.fruits }
     options       { { 'ticket.title': { value: 'Some dummy title' } } }
     updated_by_id { 1 }
     created_by_id { 1 }
