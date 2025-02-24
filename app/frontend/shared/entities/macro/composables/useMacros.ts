@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import { computed, onBeforeUnmount, type Ref, ref } from 'vue'
+import { computed, onBeforeUnmount, type Ref, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 import type { MacroById } from '#shared/entities/macro/types.ts'
@@ -19,13 +19,20 @@ export const macroScreenBehaviourMapping: Record<
   none: EnumTicketScreenBehavior.StayOnTab,
 }
 
-export const useMacros = (groupId: Ref<ID | undefined>) => {
+export const useMacros = (
+  groupId: Ref<ID | undefined>,
+  isTicketEditable: Ref<boolean>,
+) => {
+  const macroFeatureActive = computed(() =>
+    Boolean(isTicketEditable.value && groupId.value),
+  )
+
   const macroQuery = new QueryHandler(
     useMacrosQuery(
       () => ({
         groupId: groupId.value as string,
       }),
-      () => ({ enabled: !!groupId.value }),
+      () => ({ enabled: macroFeatureActive.value }),
     ),
   )
 
@@ -37,7 +44,17 @@ export const useMacros = (groupId: Ref<ID | undefined>) => {
   //   More information: https://github.com/apollographql/apollo-client/issues/10117
   const usageKey = route.meta.taskbarTabEntityKey ?? 'apply-template'
 
-  activate(usageKey, macroQuery)
+  watch(
+    macroFeatureActive,
+    (active) => {
+      if (active) {
+        activate(usageKey, macroQuery)
+      } else {
+        deactivate(usageKey)
+      }
+    },
+    { immediate: true },
+  )
 
   onBeforeUnmount(() => {
     deactivate(usageKey)

@@ -33,6 +33,6 @@ class MacroPolicy < ApplicationPolicy
 
     return true if group_ids.blank?
 
-    group_ids.intersect? user.group_ids
+    group_ids.intersect?(user.group_ids_access('read'))
   end
 end

@@ -15,6 +15,7 @@ import { MutationHandler } from '#shared/server/apollo/handler/index.ts'
 import CommonActionMenu from '#desktop/components/CommonActionMenu/CommonActionMenu.vue'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import { useDialog } from '#desktop/components/CommonDialog/useDialog.ts'
+import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 import TicketScreenBehavior from '#desktop/pages/ticket/components/TicketDetailView/TicketScreenBehavior/TicketScreenBehavior.vue'
 import { useTicketSharedDraft } from '#desktop/pages/ticket/composables/useTicketSharedDraft.ts'
 
@@ -38,6 +39,7 @@ export interface Props {
 const props = defineProps<Props>()
 
 const groupId = toRef(props, 'groupId')
+const isTicketEditable = toRef(props, 'isTicketEditable')
 
 const emit = defineEmits<{
   submit: [MouseEvent]
@@ -45,7 +47,8 @@ const emit = defineEmits<{
   'execute-macro': [MacroById]
 }>()
 
-const { macros } = useMacros(groupId)
+// For now handover ticket editable, flag, maybe later we can move the action menu in an own component.
+const { macros } = useMacros(groupId, isTicketEditable)
 
 const { notify } = useNotifications()
 
@@ -62,53 +65,52 @@ const sharedDraftConflictDialog = useDialog({
 })
 
 const actionItems = computed(() => {
-  if (!macros.value) return null
+  const saveAsDraftAction: MenuItem = {
+    label: __('Save as draft'),
+    groupLabel: groupLabels.drafts,
+    icon: 'floppy',
+    key: 'save-draft',
+    show: () => props.canUseDraft,
+    onClick: () => {
+      if (props.sharedDraftId) {
+        sharedDraftConflictDialog.open({
+          sharedDraftId: props.sharedDraftId,
+          sharedDraftParams: mapSharedDraftParams(props.ticketId, props.form),
+          form: props.form,
+        })
 
-  const macroMenu = macros.value.map((macro) => ({
+        return
+      }
+
+      const draftCreateMutation = new MutationHandler(
+        useTicketSharedDraftZoomCreateMutation(),
+        {
+          errorNotificationMessage: __('Draft could not be saved.'),
+        },
+      )
+
+      draftCreateMutation
+        .send({ input: mapSharedDraftParams(props.ticketId, props.form) })
+        .then(() => {
+          notify({
+            id: 'shared-draft-detail-view-created',
+            type: NotificationTypes.Success,
+            message: __('Shared draft has been created successfully.'),
+          })
+        })
+    },
+  }
+
+  if (!macros.value) return [saveAsDraftAction]
+
+  const macroMenu: MenuItem[] = macros.value.map((macro) => ({
     key: macro.id,
     label: macro.name,
     groupLabel: groupLabels.macros,
     onClick: () => emit('execute-macro', macro),
   }))
 
-  return [
-    {
-      label: __('Save as draft'),
-      groupLabel: groupLabels.drafts,
-      icon: 'floppy',
-      key: 'save-draft',
-      show: () => props.canUseDraft,
-      onClick: () => {
-        if (props.sharedDraftId) {
-          sharedDraftConflictDialog.open({
-            sharedDraftId: props.sharedDraftId,
-            sharedDraftParams: mapSharedDraftParams(props.ticketId, props.form),
-            form: props.form,
-          })
-
-          return
-        }
-
-        const draftCreateMutation = new MutationHandler(
-          useTicketSharedDraftZoomCreateMutation(),
-          {
-            errorNotificationMessage: __('Draft could not be saved.'),
-          },
-        )
-
-        draftCreateMutation
-          .send({ input: mapSharedDraftParams(props.ticketId, props.form) })
-          .then(() => {
-            notify({
-              id: 'shared-draft-detail-view-created',
-              type: NotificationTypes.Success,
-              message: __('Shared draft has been created successfully.'),
-            })
-          })
-      },
-    },
-    ...(groupId.value ? macroMenu : []),
-  ]
+  return [saveAsDraftAction, ...(groupId.value ? macroMenu : [])]
 })
 </script>
 
@@ -146,8 +148,9 @@ const actionItems = computed(() => {
       @click="$emit('submit', $event)"
       >{{ $t('Update') }}
     </CommonButton>
+
     <CommonActionMenu
-      v-if="isTicketAgent && actionItems"
+      v-if="isTicketAgent"
       class="flex!"
       button-size="large"
       no-single-action-mode

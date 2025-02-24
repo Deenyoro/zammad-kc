@@ -5,6 +5,7 @@ import { ref } from 'vue'
 
 import renderComponent from '#tests/support/components/renderComponent.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
+import { waitForNextTick } from '#tests/support/utils.ts'
 
 import type { TicketLiveAppUser } from '#shared/entities/ticket/types.ts'
 import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
@@ -184,9 +185,13 @@ describe('TicketDetailBottomBar', () => {
         groupId: convertToGraphQLId('Group', 2),
       })
 
+      await waitForNextTick()
+
       await getMacrosUpdateSubscriptionHandler().trigger({
         macrosUpdate: {
-          macroUpdated: true,
+          macroId: convertToGraphQLId('Macro', 1),
+          groupIds: [],
+          removeMacroId: null,
         },
       })
 

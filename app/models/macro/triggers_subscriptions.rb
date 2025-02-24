@@ -5,10 +5,15 @@ module Macro::TriggersSubscriptions
   extend ActiveSupport::Concern
 
   included do
-    after_commit :trigger_subscriptions
+    after_save_commit :trigger_create_update_subscriptions
+    after_destroy_commit :trigger_destroy_subscriptions
   end
 
-  def trigger_subscriptions
-    Gql::Subscriptions::MacrosUpdate.trigger(self)
+  def trigger_create_update_subscriptions
+    Gql::Subscriptions::MacrosUpdate.trigger_after_create_or_update(self)
+  end
+
+  def trigger_destroy_subscriptions
+    Gql::Subscriptions::MacrosUpdate.trigger_after_destroy(self)
   end
 end
