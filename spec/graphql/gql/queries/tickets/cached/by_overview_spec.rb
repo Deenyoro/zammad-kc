@@ -151,6 +151,18 @@ RSpec.describe Gql::Queries::Tickets::Cached::ByOverview, :aggregate_failures, t
         expect(gql.result.data).to include('totalCount' => 1, 'collectionSignature' => be_present)
       end
 
+      it 'does not include renewCache in the cache key' do
+        gql.execute(query, variables: variables.merge({ renewCache: true }))
+
+        ensure_no_fragment_writes do
+          ensure_no_ticket_queries do
+            gql.execute(query, variables:)
+          end
+        end
+        expect(gql.result.nodes.first).to include('number' => ticket.number)
+        expect(gql.result.data).to include('totalCount' => 1, 'collectionSignature' => be_present)
+      end
+
       it 'recreates the cache on second call if cache has expired' do
         freeze_time
         gql.execute(query, variables:)

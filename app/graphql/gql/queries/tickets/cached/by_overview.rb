@@ -41,18 +41,10 @@ module Gql::Queries
     end
 
     def maybe_cached_value(cache_ttl:, overview:, order_by:, order_direction:)
-      cache_fragment(path_cache_key: filtered_path_cache_key, object_cache_key: object_cache_key(overview), expires_in: cache_ttl) do
+      cache_fragment(cache_key: { exclude_arguments: [:renew_cache] }, object_cache_key: object_cache_key(overview), expires_in: cache_ttl) do
         # This will fetch tickets with 'overview' permissions, which logically include 'read' permissions.
         ::Ticket::Overviews.tickets_for_overview(overview, context.current_user, order_by: order_by, order_direction: order_direction)
       end
-    end
-
-    # We need to arguments. This can currently only be achieved with a hack,
-    #   see https://github.com/DmitryTsepelev/graphql-ruby-fragment_cache/issues/133 (perhaps it can be improved
-    #   after this is solved).
-    def filtered_path_cache_key
-      GraphQL::FragmentCache::CacheKeyBuilder.new(query: context.query, path: context.current_path).send(:path_cache_key)
-        .sub(%r{,renew_cache:(?:true|false)?}, '')
     end
   end
 end
