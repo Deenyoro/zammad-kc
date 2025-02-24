@@ -137,12 +137,12 @@ const actions = computed(() => {
       class="order-1 flex items-center"
       :class="{
         '-order-1!': position === 'right',
-        'opacity-0 transition-opacity group-hover/article:opacity-100':
+        'opacity-0 transition-opacity group-hover/article:opacity-100 focus-within:opacity-100':
           !isTouchDevice,
       }"
     >
       <CommonButton
-        class="px-1 py-0.5! text-xs!"
+        class="px-1 py-0.5! text-xs! focus-visible:outline-offset-0! focus-visible:outline-blue-800!"
         :class="[buttonVariantClassExtension]"
         :prefix-icon="action.icon"
         size="large"

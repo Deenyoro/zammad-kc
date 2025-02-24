@@ -10,8 +10,6 @@ import { type ImageViewerFile } from '#shared/composables/useImageViewer.ts'
 import type { TicketArticle } from '#shared/entities/ticket/types.ts'
 import { textToHtml } from '#shared/utils/helpers.ts'
 
-import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
-
 interface Props {
   article: TicketArticle
   showMetaInformation: boolean
@@ -119,15 +117,17 @@ onMounted(() => {
         BubbleGradient: hasShowMore && !shownMore,
       }"
     />
-    <CommonButton
+    <CommonLink
       v-if="hasShowMore"
-      class="p-0! outline-transparent!"
+      class="mb-1 inline-block! outline-transparent! hover:no-underline! focus-visible:outline-blue-800!"
+      role="button"
+      link="#"
       size="medium"
       @click.prevent="toggleShowMore"
       @keydown.enter.prevent="toggleShowMore"
     >
       {{ shownMore ? $t('See less') : $t('See more') }}
-    </CommonButton>
+    </CommonLink>
   </div>
 </template>
 

@@ -149,7 +149,7 @@ const { showPreview } = useFilePreviewViewer(
       <ArticleBubbleBody
         tabindex="0"
         :data-test-id="`article-bubble-body-${article.internalId}`"
-        class="last:rounded-b-xl focus:outline-hidden focus-visible:-outline-offset-2 focus-visible:outline-blue-800"
+        class="last:rounded-b-xl focus:outline-hidden focus-visible:outline focus-visible:-outline-offset-1 focus-visible:outline-blue-800"
         :class="[
           bodyClasses,
           {
