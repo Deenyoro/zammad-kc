@@ -1279,7 +1279,8 @@ class App.TicketZoom extends App.Controller
     App.TaskManager.update(@taskKey, { 'state': @localTaskData, attachments: [] })
 
   renderOverviewNavigator: (parentEl) ->
-    new App.TicketZoomOverviewNavigator(
+    @overviewNavigatorController?.releaseController()
+    @overviewNavigatorController = new App.TicketZoomOverviewNavigator(
       el:          parentEl.find('.js-overviewNavigatorContainer')
       ticket_id:   @ticket_id
       overview_id: @overview_id
