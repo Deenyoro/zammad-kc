@@ -45,7 +45,8 @@ const checklistItems = computed({
   },
 })
 
-const checklistInstance = useTemplateRef('checklist')
+const checklistInstance =
+  useTemplateRef<InstanceType<typeof ChecklistItem>[]>('checklist')
 const containerElement = useTemplateRef<HTMLElement>('container')
 const checklistTitleInstance = useTemplateRef('title')
 
