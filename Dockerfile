@@ -7,6 +7,7 @@ FROM ruby:3.2.7-slim-bookworm AS builder
 ARG DEBIAN_FRONTEND=noninteractive
 ARG RAILS_ENV=production
 ARG ZAMMAD_DIR=/opt/zammad
+ARG COMMIT_SHA
 COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
 COPY --from=node /usr/local/bin /usr/local/bin
 SHELL ["/bin/bash", "-e", "-o", "pipefail", "-c"]

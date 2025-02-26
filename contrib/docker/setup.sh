@@ -5,6 +5,17 @@ apt-get update
 apt-get upgrade -y
 
 if [ "$1" = 'builder' ]; then
+  if [ -z "${COMMIT_SHA}" ]
+  then
+    echo "Error: the required build argument \$COMMIT_SHA is missing."
+    exit 1
+  fi
+
+  # Append build information to the Zammad VERSION.
+  echo "$(tr -d '\n' < VERSION)-${COMMIT_SHA:0:8}.docker" > VERSION
+  echo 'Updated build information in VERSION:'
+  cat VERSION
+
   PACKAGES="build-essential curl git libimlib2-dev libpq-dev libyaml-dev"
 elif [ "$1" = 'runner' ]; then
   # Add official PostgreSQL apt repository to not depend on Debian's version.
