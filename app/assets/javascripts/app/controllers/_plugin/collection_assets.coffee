@@ -8,5 +8,6 @@ class CollectionAssets extends App.Controller
     App.Group.subscribe(->)
     App.TicketState.subscribe(->)
     App.TicketPriority.subscribe(->)
+    App.ChecklistTemplate.subscribe(->)
 
 App.Config.set('collection_assets', CollectionAssets, 'Plugins')
