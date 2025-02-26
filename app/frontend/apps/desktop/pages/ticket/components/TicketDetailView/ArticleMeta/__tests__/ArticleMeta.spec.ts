@@ -92,7 +92,7 @@ describe('Article Meta', () => {
   })
 
   describe('Security', () => {
-    it('has PGB encrypted and signed', () => {
+    it('has PGP encrypted and signed', () => {
       const wrapper = renderComponent(
         {
           setup() {
@@ -132,7 +132,7 @@ describe('Article Meta', () => {
       expect(wrapper.getByIconName('lock')).toBeInTheDocument()
     })
 
-    it('has PGB decrypted and unsigned', () => {
+    it('has PGP decrypted and unsigned', () => {
       const wrapper = renderComponent(
         {
           setup() {

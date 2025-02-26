@@ -15,7 +15,10 @@ export default <ChannelModule>{
       name: 'securityState',
       order: 500,
       show: (article) => {
-        const { hasError } = useArticleSecurity(article)
+        const { hasError, isEncrypted, isSigned } = useArticleSecurity(article)
+
+        if (isEncrypted.value || isSigned.value) return true
+
         return hasError.value
       },
       component: ArticleMetaSecurity,

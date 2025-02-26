@@ -22,6 +22,8 @@ const {
   signedStatusMessage,
   encryptedStatusMessage,
   signingMessage,
+  isEncrypted,
+  isSigned,
 } = useArticleSecurity(toRef(props.context.article))
 </script>
 
@@ -30,7 +32,7 @@ const {
     <CommonLabel v-if="typeLabel">{{ typeLabel }}</CommonLabel>
 
     <CommonLabel
-      v-if="encryptionMessage"
+      v-if="isEncrypted"
       v-tooltip="encryptionMessage"
       :prefix-icon="encryptionIcon"
       class="text-black! dark:text-white!"
@@ -39,7 +41,7 @@ const {
     </CommonLabel>
 
     <CommonLabel
-      v-if="signingMessage"
+      v-if="isSigned"
       v-tooltip="signingMessage"
       :prefix-icon="signingIcon"
       class="text-black! dark:text-white!"
