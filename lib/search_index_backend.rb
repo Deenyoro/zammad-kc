@@ -342,6 +342,31 @@ remove whole data from index
 
 @return search result
 
+  result = SearchIndexBackend.search_by_index('Nicole', 'User', only_total_count: true)
+
+  { :total_count => 1 }
+
+  result = SearchIndexBackend.search_by_index('Nicole', 'User', with_total_count: true)
+
+  {
+    :total_count => 1,
+    :object_metadata => [
+      {
+        :id => "2",
+        :type => "User"
+      }
+    ]
+  }
+
+  result = SearchIndexBackend.search_by_index('Nicole', 'User')
+
+  [
+    {
+      :id => "2",
+      :type => "User"
+    }
+  ]
+
 =end
 
   def self.search_by_index(query, index, options = {})
