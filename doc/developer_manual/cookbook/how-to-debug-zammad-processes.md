@@ -6,6 +6,9 @@ signal to any Zammad service (railsserver, websocket or background worker)
 process, which will cause the process to print the state of its threads to
 STDOUT.
 
+Beware by default this is only available in a production environment. It can be
+forced by setting the environment variable ENFORCE_THREAD_STATUS_HANDLER to "true".
+
 - Find out process ID of Zammad webserver
 
 ```screen

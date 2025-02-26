@@ -12,8 +12,8 @@ environment ENV.fetch('RAILS_ENV', 'development')
 preload_app!
 
 # Teach pumactl to use 'SIGWINCH' instead of 'SIGINFO', because the latter is not available on Linux.
-if defined?(Puma::ControlCLI)
-  # Suppress const redefinition warning (can't use silcence_warnings from Rails here).
+if defined?(Puma::ControlCLI) && Zammad::ProcessDebug.enable_thread_status_handler?
+  # Suppress const redefinition warning (can't use silence_warnings from Rails here).
   old_verbose = $VERBOSE
   $VERBOSE = nil
   Puma::ControlCLI::CMD_PATH_SIG_MAP = Puma::ControlCLI::CMD_PATH_SIG_MAP.merge({ 'info' => 'SIGWINCH' }).freeze

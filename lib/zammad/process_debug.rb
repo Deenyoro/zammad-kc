@@ -18,9 +18,21 @@ module Zammad
     end
 
     def self.install_thread_status_handler
+      return if !enable_thread_status_handler?
+
       Signal.trap 'SIGWINCH' do
         Zammad::ProcessDebug.dump_thread_status
       end
+    end
+
+    def self.enable_thread_status_handler?
+      return true if %w[1 true].include?(ENV['ENFORCE_THREAD_STATUS_HANDLER'])
+
+      # Explicitly fetch env variable because Rails might not be initialized yet.
+      rails_env = ENV.fetch('RAILS_ENV', 'development')
+      return true if rails_env == 'production'
+
+      false
     end
   end
 end
