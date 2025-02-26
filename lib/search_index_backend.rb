@@ -314,6 +314,10 @@ remove whole data from index
     }
   ]
 
+  result = SearchIndexBackend.search('Nicole', 'User', only_total_count: true)
+
+  { :total_count => 1 }
+
 =end
 
   def self.search(query, index, options = {})
