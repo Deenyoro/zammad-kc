@@ -261,7 +261,7 @@ class ChannelGroupEdit extends App.ControllerModal
   content: =>
     configureAttributesBase = [
       { name: 'group_id',               display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group', filter: { active: true } },
-      { name: 'group_email_address_id', display: __('Destination Group Email Address'), tag: 'select', options: @emailAddressOptions(@item.id, @item.group_id), note: __("This will adjust the corresponding setting of the destination group within the group management. A group's email address determines which address should be used for outgoing mails, e.g. when an agent is composing an email or a trigger is sending an auto-reply.") },
+      { name: 'group_email_address_id', display: __('Destination group > Sending email address'), tag: 'select', options: @emailAddressOptions(@item.id, @item.group_id), note: __("This will adjust the corresponding setting of the destination group within the group management. A group's email address determines which address should be used for outgoing mails, e.g. when an agent is composing an email or a trigger is sending an auto-reply.") },
     ]
 
     @form = new App.ControllerForm(
@@ -392,7 +392,7 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
       { name: 'email',                  display: __('Email'),    tag: 'input',  type: 'email', limit: 120, null: false, placeholder: 'support@example.com', autocapitalize: false, autocomplete: 'off' },
       { name: 'password',               display: __('Password'), tag: 'input',  type: 'password', limit: 120, null: false, autocapitalize: false, autocomplete: 'new-password', single: true },
       { name: 'group_id',               display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group', filter: { active: true } },
-      { name: 'group_email_address_id', display: __('Destination Group Email Address'), tag: 'select', null: false, options: @emailAddressOptions(@channel?.id, @channel?.group_id), note: __("This will adjust the corresponding setting of the destination group within the group management. A group's email address determines which address should be used for outgoing mails, e.g. when an agent is composing an email or a trigger is sending an auto-reply.") },
+      { name: 'group_email_address_id', display: __('Destination group > Sending email address'), tag: 'select', null: false, options: @emailAddressOptions(@channel?.id, @channel?.group_id), note: __("This will adjust the corresponding setting of the destination group within the group management. A group's email address determines which address should be used for outgoing mails, e.g. when an agent is composing an email or a trigger is sending an auto-reply.") },
     ]
 
     @formMeta = new App.ControllerForm(
@@ -401,6 +401,7 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
         configure_attributes: configureAttributesBase
         className: ''
       params: @account.meta
+      handlers: [@destinationGroupEmailAddressFormHandler()]
     )
 
     # outbound
@@ -422,7 +423,7 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
   initializeInboundForm: (params) =>
     configureAttributesInbound = [
       { name: 'group_id',                display: __('Destination Group'), tag: 'tree_select', null: false, relation: 'Group', filter: { active: true } },
-      { name: 'group_email_address_id',  display: __('Destination Group Email Address'), tag: 'select', null: false, options: @emailAddressOptions(@channel?.id, @channel?.group_id), note: __("This will adjust the corresponding setting of the destination group within the group management. A group's email address determines which address should be used for outgoing mails, e.g. when an agent is composing an email or a trigger is sending an auto-reply.") },
+      { name: 'group_email_address_id',  display: __('Destination group > Sending email address'), tag: 'select', null: false, options: @emailAddressOptions(@channel?.id, @channel?.group_id), note: __("This will adjust the corresponding setting of the destination group within the group management. A group's email address determines which address should be used for outgoing mails, e.g. when an agent is composing an email or a trigger is sending an auto-reply.") },
       { name: 'adapter',                 display: __('Type'),     tag: 'select', multiple: false, null: false, options: @channelDriver.email.inbound, translate: true },
       { name: 'options::host',           display: __('Host'),     tag: 'input',  type: 'text', limit: 120, null: false, autocapitalize: false },
       { name: 'options::user',           display: __('User'),     tag: 'input',  type: 'text', limit: 120, null: false, autocapitalize: false, autocomplete: 'off' },

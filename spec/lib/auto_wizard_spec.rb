@@ -234,7 +234,7 @@ RSpec.describe AutoWizard do
                     host:     'mx1.example.com',
                     user:     'not_existing',
                     password: 'some_pass',
-                    ssl:      'ssl'
+                    ssl:      'ssl',
                   }
                 },
                 outbound: {
@@ -273,7 +273,7 @@ RSpec.describe AutoWizard do
                     host:     'mx1.example.com',
                     user:     'not_existing',
                     password: 'some_pass',
-                    ssl:      'ssl'
+                    ssl:      'ssl',
                   }
                 },
                 outbound: {

@@ -15,7 +15,7 @@ RSpec.describe EmailHelper::Verify, integration: true, required_envs: %w[MAIL_SE
           options: {
             host:       ENV['MAIL_SERVER'],
             port:       993,
-            ssl:        true,
+            ssl:        'true',
             user:       mailbox_user,
             password:   mailbox_password,
             ssl_verify: false,

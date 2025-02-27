@@ -2220,7 +2220,7 @@ ObjectManager::Attribute.add(
   force:       true,
   object:      'Group',
   name:        'email_address_id',
-  display:     __('Email Address'),
+  display:     __('Sending Email Address'),
   data_type:   'select',
   data_option: {
     default:    '',

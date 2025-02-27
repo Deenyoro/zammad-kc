@@ -10,7 +10,7 @@ RSpec.describe Issue3669FixDomain, type: :db_migration do
         options: {
           auth_type: 'XOAUTH2',
           host:      'imap.gmail.com',
-          ssl:       true,
+          ssl:       'ssl',
           user:      'example@gmail.com',
         },
       },

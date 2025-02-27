@@ -45,7 +45,7 @@ RSpec.describe 'Email channel API endpoints', type: :request do
         options: {
           host:             'nonexisting.host.local',
           port:             993,
-          ssl:              true,
+          ssl:              'ssl',
           user:             'some@example.com',
           password:         'xyz',
           ssl_verify:       true,

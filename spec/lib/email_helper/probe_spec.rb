@@ -33,7 +33,7 @@ RSpec.describe EmailHelper::Probe, integration: true, required_envs: %w[MAIL_SER
         options: {
           host:       host,
           port:       port,
-          ssl:        true,
+          ssl:        'ssl',
           user:       user,
           password:   password,
           ssl_verify: false,

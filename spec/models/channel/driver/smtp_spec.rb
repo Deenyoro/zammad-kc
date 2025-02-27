@@ -18,7 +18,7 @@ RSpec.describe Channel::Driver::Smtp, integration: true, required_envs: %w[MAIL_
                host:     'mx1.example.com',
                user:     'example',
                password: 'some_pw',
-               ssl:      true,
+               ssl:      'ssl',
              }
            })
   end

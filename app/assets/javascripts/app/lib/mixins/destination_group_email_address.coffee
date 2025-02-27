@@ -2,15 +2,16 @@
 App.DestinationGroupEmailAddressesMixin =
   destinationGroupEmailAddressFormHandler: (item) ->
     formHandler = (params, attribute, attributes, classname, form, ui) =>
-      return if not item?.id or attribute.name isnt 'group_id'
+      return if attribute.name isnt 'group_id'
 
       return if ui.FormHandlerGroupEmailAddressDone
       ui.FormHandlerGroupEmailAddressDone = true
+
       $(form).find('[name=group_id]').off('change.group_id').on('change.group_id', (e) =>
         group_id = $(e.target).val()
         for attr in attributes
           continue if attr.name isnt 'group_email_address_id'
-          attr.options = @emailAddressOptions(item.id, group_id)
+          attr.options = @emailAddressOptions(item?.id, group_id)
           newElement = ui.formGenItem(attr, classname, form)
           form.find('div.form-group[data-attribute-name="' + attr.name + '"]').replaceWith(newElement)
       )
@@ -18,13 +19,14 @@ App.DestinationGroupEmailAddressesMixin =
     formHandler
 
   emailAddressOptions: (id, group_id) ->
+    group = App.Group.find(group_id)
+
     if !id
       return {
-        false: App.i18n.translatePlain('Do not change email address')
+        false: App.i18n.translatePlain('Do not change email address (%s)', group?.email_address?.email or '-')
         true: App.i18n.translatePlain('Change to channel email address')
       }
 
-    group = App.Group.find(group_id)
     emailAddresses = App.EmailAddress.findAllByAttribute('channel_id', id)
 
     _.reduce(
@@ -33,7 +35,7 @@ App.DestinationGroupEmailAddressesMixin =
         return acc if emailAddress.id is group?.email_address_id
         acc[emailAddress.id] = App.i18n.translatePlain('Change to %s', emailAddress.email)
         acc
-      { false: App.i18n.translatePlain('Do not change email address') }
+      { false: App.i18n.translatePlain('Do not change email address (%s)', group?.email_address?.email or '-') }
     )
 
   processDestinationGroupEmailAddressParams: (params) ->
