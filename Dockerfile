@@ -1,5 +1,5 @@
 FROM node:20-bookworm-slim AS node
-RUN npm -g install pnpm
+RUN npm -g install corepack && corepack enable pnpm
 RUN rm /usr/local/bin/yarn /usr/local/bin/yarnpkg
 
 
