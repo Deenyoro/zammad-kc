@@ -32,7 +32,7 @@ class App.ChannelMicrosoft365 extends App.ControllerTabs
 
     @alert = {
       variant: 'info'
-      message: App.i18n.translateContent('Compared to the Microsoft 365 Graph API Email Channel, this is the traditional implementation using OAuth and IMAP. When setting up new channels, we suggest using the Graph API implementation instead. When you think there are good reasons to keep the IMAP approach as an alternative in the future, please let us know in the Zammad Community %l. More information can be found here %l.', 'https://community.zammad.org/t/microsoft-365-email-graphapi-vs-imap/16892', 'https://admin-docs.zammad.org/en/latest/channels/microsoft365/index.html')
+      message: App.i18n.translateContent('Compared to the Microsoft 365 Graph API Email Channel, this is the traditional implementation using OAuth and IMAP. When setting up new channels, we suggest using the Graph API implementation instead. More information can be found here %l.', 'https://admin-docs.zammad.org/en/latest/channels/microsoft365/index.html')
     }
 
     @render()
