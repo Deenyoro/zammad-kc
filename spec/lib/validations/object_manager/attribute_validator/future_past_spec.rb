@@ -12,6 +12,11 @@ RSpec.describe Validations::ObjectManager::AttributeValidator::FuturePast do
     )
   end
 
+  before do
+    freeze_time
+    travel_to Time.zone.parse('2025-02-27T10:01:44Z0')
+  end
+
   let(:record)    { build(:user) }
   let(:attribute) { build(:object_manager_attribute_datetime) }
 
