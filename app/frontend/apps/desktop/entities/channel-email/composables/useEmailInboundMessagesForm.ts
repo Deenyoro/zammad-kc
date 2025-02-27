@@ -1,6 +1,5 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import { useDateFormat } from '@vueuse/shared'
 import { shallowRef, reactive } from 'vue'
 
 import type { FormRef } from '#shared/components/Form/types.ts'
@@ -60,13 +59,6 @@ export const useEmailInboundMessagesForm = (
           help: __(
             'Emails before the cut-off time are imported as archived tickets. Emails after the cut-off time are imported as regular tickets.',
           ),
-          props: {
-            // With an extra hour on top, so the current selection works.
-            maxDate: useDateFormat(
-              new Date(new Date().getTime() + 60 * 60 * 1000),
-              'YYYY-MM-DDTHH:mm',
-            ).value,
-          },
         },
         {
           name: 'archive_state_id',

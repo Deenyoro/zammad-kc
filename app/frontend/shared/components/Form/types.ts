@@ -184,19 +184,18 @@ export type FormSchemaNode =
   | FormSchemaFieldsForObjectAttributeScreen
   | string
 
-export interface ReactiveFormSchemData {
-  fields: Record<
-    string,
-    {
-      show: boolean
-      staticCondition: boolean
-      updateFields: boolean
-      props: Except<
-        SetOptional<FormSchemaField, 'type'>,
-        'show' | 'props' | 'updateFields' | 'relation'
-      >
-    }
+export interface ReactiveFormSchemaDataField {
+  show: boolean
+  staticCondition: boolean
+  updateFields: boolean
+  props: Except<
+    SetOptional<FormSchemaField, 'type'>,
+    'show' | 'props' | 'updateFields' | 'relation'
   >
+}
+
+export interface ReactiveFormSchemData {
+  fields: Record<string, ReactiveFormSchemaDataField>
   flags: Record<string, boolean>
 
   [index: string]: unknown

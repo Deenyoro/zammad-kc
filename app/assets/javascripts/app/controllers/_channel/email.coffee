@@ -754,6 +754,7 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
         className: ''
       handlers: [
         App.FormHandlerChannelAccountArchiveMode.run
+        App.FormHandlerChannelAccountArchiveBefore.run
       ]
       params: options
     )

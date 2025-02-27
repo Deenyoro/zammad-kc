@@ -59,6 +59,7 @@ class App.ChannelInboundEmailArchive extends App.ControllerModal
         className: ''
       handlers: [
         App.FormHandlerChannelAccountArchiveMode.run
+        App.FormHandlerChannelAccountArchiveBefore.run
       ]
       attributePrefix: 'options::'
       params:

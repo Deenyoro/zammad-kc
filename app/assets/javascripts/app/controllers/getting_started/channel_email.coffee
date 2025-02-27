@@ -297,6 +297,7 @@ class GettingStartedChannelEmail extends App.ControllerWizardFullScreen
         className: ''
       handlers: [
         App.FormHandlerChannelAccountArchiveMode.run
+        App.FormHandlerChannelAccountArchiveBefore.run
       ]
     )
 

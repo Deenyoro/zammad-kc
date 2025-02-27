@@ -19,6 +19,7 @@ import type {
   EmailOutboundData,
   EmailInboundMessagesData,
 } from '#desktop/entities/channel-email/types/email-inbound-outbound.ts'
+import { useArchiveBeforeWarningHandler } from '#desktop/form/composables/useArchiveBeforeWarningHandler.ts'
 import { useSSLVerificationWarningHandler } from '#desktop/form/composables/useSSLVerificationWarningHandler.ts'
 
 import GuidedSetupActionFooter from '../../components/GuidedSetupActionFooter.vue'
@@ -222,6 +223,7 @@ const emailConfigurationCheck = computed(() => {
         ref="formEmailInboundMessages"
         data-test-id="channel-email-inbound-messages"
         form-class="mb-2.5"
+        :handlers="[useArchiveBeforeWarningHandler()]"
         :form-updater-id="
           EnumFormUpdaterId.FormUpdaterUpdaterGuidedSetupEmailArchive
         "
