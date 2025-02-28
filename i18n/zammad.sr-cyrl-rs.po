@@ -77,9 +77,9 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Отворено од стране "
-"#{current_user.longname} у #{ticket.updated_at}_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Отворено од стране #{current_user.longname} у "
+"#{ticket.updated_at}_\n"
 "* Група: #{ticket.group.name}\n"
 "* Власник: #{ticket.owner.fullname}\n"
 "* Стање: #{t(ticket.state.name)}\n"
@@ -103,8 +103,8 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Ескалиран у #{ticket.escalation_at}_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Ескалиран у #{ticket.escalation_at}_\n"
 "Тикет (#{ticket.title}) од „#{ticket.customer.longname}” је ескалиран од "
 "„#{ticket.escalation_at}”!\n"
 "\n"
@@ -128,9 +128,9 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Последњи пут измењено од стране "
-"#{current_user.longname} у #{ticket.updated_at}_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Последњи пут измењено од стране #{current_user."
+"longname} у #{ticket.updated_at}_\n"
 "* Група: #{ticket.group.name}\n"
 "* Власник: #{ticket.owner.fullname}\n"
 "* Стање: #{t(ticket.state.name)}\n"
@@ -154,8 +154,8 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Достигнуто време чекања!_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Достигнуто време чекања!_\n"
 "Тикет захтева пажњу: достигнуто је време чекања за (#{ticket.title}) са "
 "клијентом „*#{ticket.customer.longname}*”.\n"
 "\n"
@@ -182,9 +182,9 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Измењено од стране "
-"#{current_user.longname} у #{ticket.updated_at}_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Измењено од стране #{current_user.longname} у "
+"#{ticket.updated_at}_\n"
 "<% if @objects[:changes].present? %>\n"
 "  <% @objects[:changes].each do |key, value| %>\n"
 "  * <%= t key %>: <%= h value[0] %> -> <%= h value[1] %>\n"
@@ -210,9 +210,8 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Ескалираће у #{ticket.escalation_at}"
-"_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Ескалираће у #{ticket.escalation_at}_\n"
 "Тикет (#{ticket.title}) од „#{ticket.customer.longname}” ескалираће у "
 "„#{ticket.escalation_at}”!\n"
 "\n"
@@ -295,8 +294,8 @@ msgstr ""
 "<div>Држава је додата на вашу листу познатих уређаја, коју можете прегледати "
 "овде:</div>\n"
 "<br>\n"
-"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/devices\""
-">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
+"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/"
+"devices\">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
 "<br>\n"
 "<div>Уколико ово нисте били ви, молимо уклоните уређај, промените вашу "
 "лозинку и контактирајте свог администратора. Постоји могућност да је неко "
@@ -346,11 +345,11 @@ msgstr ""
 "Ваш IP: #{user_device.ip}<br>\n"
 "</div>\n"
 "<br>\n"
-"<div>Уређај је додат на листу познатих уређаја, коју можете прегледати "
-"овде:</div>\n"
+"<div>Уређај је додат на листу познатих уређаја, коју можете прегледати овде:"
+"</div>\n"
 "<br>\n"
-"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/devices\""
-">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
+"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/"
+"devices\">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
 "<br>\n"
 "<div>Уколико ово нисте били ви, молимо уклоните уређај, промените вашу "
 "лозинку и контактирајте свог администратора. Постоји могућност да је неко "
@@ -482,10 +481,10 @@ msgstr "%s креденцијали"
 msgid "%s days ago"
 msgstr "пре %s дан(а)"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:709
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:710
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:260
-#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:4
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:28
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:7
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:27
 msgid ""
 "%s email(s) were found in your mailbox. They will all be moved from your "
 "mailbox into Zammad."
@@ -724,8 +723,8 @@ msgstr ""
 "\n"
 "Када укључите снимање врсте активности, корисници ће бити у могућности да "
 "одаберу врсту из ове листе. Додатно, колона са снимљеном врстом активности "
-"ће бити приказана поред записа у табели **Активности** у језичку **"
-"Обрачунато време**."
+"ће бити приказана поред записа у табели **Активности** у језичку "
+"**Обрачунато време**."
 
 #: app/assets/javascripts/app/models/data_privacy_task.coffee
 msgid ""
@@ -1105,7 +1104,7 @@ msgstr "SID налога"
 msgid "Account Time"
 msgstr "Обрачунај време"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:621
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:622
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:197
 #: app/controllers/channels_email_controller.rb:211
 msgid "Account already exists!"
@@ -1121,7 +1120,7 @@ msgstr "Налог није потврђен"
 #: app/assets/javascripts/app/views/ticket_zoom/time_unit.jst.eco:2
 #: app/assets/javascripts/app/views/time_accounting/accounted_time.jst.eco:2
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:83
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:136
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:138
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:18
 #: app/graphql/gql/types/overview_type.rb:101
 msgid "Accounted Time"
@@ -1604,8 +1603,8 @@ msgstr ""
 "\n"
 "<div>Здраво #{user.firstname},</div>\n"
 "<br>\n"
-"<div>Примили смо захтев за администраторску пријаву за ваш "
-"#{config.product_name} налог <b>#{user.login}</b>.</div>\n"
+"<div>Примили смо захтев за администраторску пријаву за ваш #{config."
+"product_name} налог <b>#{user.login}</b>.</div>\n"
 "<br>\n"
 "<div>Молимо кликните на линк испод (или ископирајте URL у ваш претраживач) "
 "за наставак:</div>\n"
@@ -1906,8 +1905,8 @@ msgstr ""
 "<div>Hi #{recipient.firstname},</div>\n"
 "<br>\n"
 "<div>\n"
-"Тикет је спојен са тикетом (#{ticket.title}) од стране "
-"„<b>#{current_user.longname}</b>”.\n"
+"Тикет је спојен са тикетом (#{ticket.title}) од стране „<b>#{current_user."
+"longname}</b>”.\n"
 "</div>\n"
 "<br>\n"
 "<div>\n"
@@ -2056,24 +2055,24 @@ msgstr "Архива"
 msgid "Archive Emails"
 msgstr "Архивирање имејл порука"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:738
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:739
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:43
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:289
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:58
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:57
 msgid "Archive cut-off time"
 msgstr "Време престанка архивирања"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:737
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:738
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:42
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:288
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:44
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:43
 msgid "Archive emails"
 msgstr "Архивирај имејл поруке"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:739
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:740
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:44
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:290
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:74
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:66
 msgid "Archive ticket target state"
 msgstr "Циљно стање архивираног тикета"
 
@@ -2307,7 +2306,8 @@ msgstr ""
 
 #: app/models/postmaster_filter.rb:29
 msgid "At least one match rule is required, but none was provided."
-msgstr "Неопходно је бар једно правило подударања, али ниједно није обезбеђено."
+msgstr ""
+"Неопходно је бар једно правило подударања, али ниједно није обезбеђено."
 
 #: app/assets/javascripts/app/controllers/widget/ticket_bulk_form.coffee:155
 msgid "At least one object must be selected."
@@ -2390,7 +2390,8 @@ msgstr ""
 msgid ""
 "Attention: These will be your login and password after the import is "
 "completed."
-msgstr "Пажња: ово ће бити ваше корисничко име и лозинка након завршеног увоза."
+msgstr ""
+"Пажња: ово ће бити ваше корисничко име и лозинка након завршеног увоза."
 
 #: app/assets/javascripts/app/controllers/object_manager.coffee:154
 msgid "Attribute"
@@ -2410,7 +2411,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_overview/settings.coffee:31
 #: app/assets/javascripts/app/models/overview.coffee:15
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:101
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:103
 msgid "Attributes"
 msgstr "Атрибути"
 
@@ -3024,7 +3025,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show.jst.eco:23
 #: app/assets/javascripts/app/views/widget/invite_user.jst.eco:17
 #: app/frontend/apps/desktop/components/CommonInlineEdit/CommonInlineEdit.vue:343
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:202
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:203
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:125
 #: app/frontend/apps/mobile/components/CommonSectionPopup/CommonSectionPopup.vue:29
 #: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInputDialog.vue:259
@@ -3159,7 +3160,7 @@ msgid "Change Your Password"
 msgstr "Измените вашу лозинку"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:69
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:80
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:82
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:74
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:137
 msgid "Change customer"
@@ -3182,11 +3183,11 @@ msgstr "Измена личне лозинке налога."
 msgid "Change text color"
 msgstr "Измени боју текста"
 
-#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:34
+#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:36
 msgid "Change to %s"
 msgstr "Измени на %s"
 
-#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:24
+#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:27
 msgid "Change to channel email address"
 msgstr "Измени на имејл адресу канала"
 
@@ -3240,7 +3241,7 @@ msgstr "Канал"
 msgid "Channel Distribution"
 msgstr "Дистрибуција канала"
 
-#: app/assets/javascripts/app/controllers/manage.coffee:38
+#: app/assets/javascripts/app/controllers/manage.coffee:41
 msgid "Channels"
 msgstr "Канали"
 
@@ -3671,13 +3672,19 @@ msgid "Company Inc."
 msgstr "Предузеће д.о.о."
 
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:35
+#, fuzzy
+#| msgid ""
+#| "Compared to the Microsoft 365 Graph API Email Channel, this is the "
+#| "traditional implementation using OAuth and IMAP. When setting up new "
+#| "channels, we suggest using the Graph API implementation instead. When you "
+#| "think there are good reasons to keep the IMAP approach as an alternative "
+#| "in the future, please let us know in the Zammad Community %l. More "
+#| "information can be found here %l."
 msgid ""
 "Compared to the Microsoft 365 Graph API Email Channel, this is the "
 "traditional implementation using OAuth and IMAP. When setting up new "
-"channels, we suggest using the Graph API implementation instead. When you "
-"think there are good reasons to keep the IMAP approach as an alternative in "
-"the future, please let us know in the Zammad Community %l. More information "
-"can be found here %l."
+"channels, we suggest using the Graph API implementation instead. More "
+"information can be found here %l."
 msgstr ""
 "У поређењу са Microsoft 365 Graph API имејл каналом, ово је традиционална "
 "имплементација преко OAuth и IMAP протокола. Уколико подешавате нове канале, "
@@ -3879,7 +3886,7 @@ msgstr "Повежи Microsoft 365 апликацију"
 msgid "Connect Twitter App"
 msgstr "Повежи Twitter апликацију"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:134
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:135
 msgid "Connect and Continue"
 msgstr "Повежи се и настави"
 
@@ -3957,7 +3964,7 @@ msgstr "Контекст"
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:108
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:49
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSource.vue:53
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:142
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:143
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:541
 msgid "Continue"
 msgstr "Настави"
@@ -4111,7 +4118,8 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/user/manage_two_factor.coffee:100
 msgid "Could not remove the two-factor authentication method for this user."
-msgstr "Није било могуће уклонити метод двофакторске аутентификације корисника."
+msgstr ""
+"Није било могуће уклонити метод двофакторске аутентификације корисника."
 
 #: app/assets/javascripts/app/controllers/_profile/password.coffee:198
 msgid "Could not remove two-factor authentication method"
@@ -4238,8 +4246,8 @@ msgstr ""
 "\n"
 "Доступни објекти:\n"
 "* ticket (нпр. ticket.state, ticket.group)\n"
-"* ticket.customer (нпр. ticket.customer.firstname, ticket.customer.lastname)"
-"\n"
+"* ticket.customer (нпр. ticket.customer.firstname, ticket.customer."
+"lastname)\n"
 "* ticket.owner (нпр. ticket.owner.firstname, ticket.owner.lastname)\n"
 "* ticket.organization (нпр. ticket.organization.name)\n"
 "* user (нпр. user.firstname, user.email)\n"
@@ -4255,7 +4263,7 @@ msgstr "Отвори тикет"
 msgid "Create a Test Ticket"
 msgstr "Отвори пробни тикет"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:211
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:212
 msgid "Create a new checklist item"
 msgstr "Додај нови задатак"
 
@@ -4948,7 +4956,8 @@ msgstr ""
 
 #: db/seeds/settings.rb:2256
 msgid "Defines after how many failed logins accounts will be deactivated."
-msgstr "Одређује број неуспешних пријава након ког ће налози бити деактивирани."
+msgstr ""
+"Одређује број неуспешних пријава након ког ће налози бити деактивирани."
 
 #: db/seeds/settings.rb:3790
 msgid ""
@@ -5157,8 +5166,8 @@ msgid ""
 "Defines if the email should be displayed in the result of the user/"
 "organization widget."
 msgstr ""
-"Одређује да ли ће имејл адреса бити приказана у додатку "
-"корисника/организације."
+"Одређује да ли ће имејл адреса бити приказана у додатку корисника/"
+"организације."
 
 #: db/seeds/settings.rb:4943
 msgid ""
@@ -5517,9 +5526,9 @@ msgid ""
 "as a variable, #{setting.fqdn} which is found in all forms of messaging used "
 "by the application, to build links to the tickets within your system."
 msgstr ""
-"Одређује FQDN система. Ово подешавање се користи као променљива, "
-"#{setting.fqdn} коју је могуће пронаћи у свим типовима комуникације у "
-"апликацији, ради конструкције линкова на тикете вашег система."
+"Одређује FQDN система. Ово подешавање се користи као променљива, #{setting."
+"fqdn} коју је могуће пронаћи у свим типовима комуникације у апликацији, ради "
+"конструкције линкова на тикете вашег система."
 
 #: db/seeds/settings.rb:4678
 msgid "Defines the group of created tickets."
@@ -5672,8 +5681,8 @@ msgid ""
 "Defines the transaction backend which posts messages to Slack (http://www."
 "slack.com)."
 msgstr ""
-"Одређује позадински модул за постављање порука на Slack "
-"(http://www.slack.com)."
+"Одређује позадински модул за постављање порука на Slack (http://www.slack."
+"com)."
 
 #: db/seeds/settings.rb:5404
 msgid ""
@@ -5743,8 +5752,8 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:75
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:55
 #: app/assets/javascripts/app/views/knowledge_base/public_menu_form_item.jst.eco:18
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:104
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:114
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:109
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:119
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:29
 #: app/assets/javascripts/app/views/profile/devices.jst.eco:25
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:21
@@ -5978,13 +5987,6 @@ msgstr "Основни"
 msgid "Destination Group"
 msgstr "Одредишна група"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:264
-#: app/assets/javascripts/app/controllers/_channel/google.coffee:282
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:304
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:271
-msgid "Destination Group Email Address"
-msgstr "Имејл адреса одредишне групе"
-
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:58
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:74
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:61
@@ -5994,6 +5996,15 @@ msgstr "Одредишни ID позиваоца"
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:108
 msgid "Destination caller ID or queue"
 msgstr "Одредишни ID позиваоца или ред"
+
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:264
+#: app/assets/javascripts/app/controllers/_channel/google.coffee:282
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:304
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:271
+#, fuzzy
+#| msgid "Destination Group Email Address"
+msgid "Destination group > Sending email address"
+msgstr "Имејл адреса одредишне групе"
 
 #: app/assets/javascripts/app/views/settings/ticket_duplicate_detection.jst.eco:7
 #: db/seeds/settings.rb:2695
@@ -6114,8 +6125,8 @@ msgstr "Правац"
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:70
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:31
 #: app/assets/javascripts/app/views/google/list.jst.eco:107
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:109
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:119
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:105
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:115
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:30
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:40
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:85
@@ -6195,8 +6206,10 @@ msgstr "Прикажи"
 msgid "Display name"
 msgstr "Назив за приказ"
 
-#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:23
-msgid "Do not change email address"
+#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:26
+#, fuzzy
+#| msgid "Do not change email address"
+msgid "Do not change email address (%s)"
 msgstr "Без измене имејл адресе"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:662
@@ -6481,7 +6494,7 @@ msgstr "Измени организацију"
 msgid "Edit authenticator app"
 msgstr "Уреди апликацију за аутентификацију"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:122
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:123
 msgid "Edit checklist title"
 msgstr "Уреди наслов списка"
 
@@ -6628,7 +6641,6 @@ msgstr "Имејл налози"
 #: app/assets/javascripts/app/views/google/list.jst.eco:81
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:82
 #: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:92
-#: db/seeds/object_manager_attributes.rb:2222
 msgid "Email Address"
 msgstr "Имејл адреса"
 
@@ -6654,7 +6666,7 @@ msgstr "Имејл обавештење"
 msgid "Email Notifications"
 msgstr "Имејл обавештења"
 
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:137
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:140
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:105
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:71
 msgid "Email Outbound"
@@ -6679,8 +6691,8 @@ msgid "Email could not be verified. Please contact your administrator."
 msgstr ""
 "Није било могуће проверити имејл адресу. Молимо контактирајте администратора."
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:912
-#: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:404
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:913
+#: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:405
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:169
 msgid ""
 "Email sending and receiving could not be verified. Please check your "
@@ -6704,10 +6716,10 @@ msgstr "Имејл порука је послата на „%s”. Молимо 
 msgid "Email sent to %s"
 msgstr "Имејл послат на %s"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:738
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:739
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:43
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:289
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:61
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:60
 msgid ""
 "Emails before the cut-off time are imported as archived tickets. Emails "
 "after the cut-off time are imported as regular tickets."
@@ -6729,8 +6741,8 @@ msgstr "Празан преглед"
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:72
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:33
 #: app/assets/javascripts/app/views/google/list.jst.eco:109
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:111
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:121
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:107
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:117
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:31
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:42
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:87
@@ -7130,7 +7142,8 @@ msgstr ""
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:28
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:299
 msgid "Enter the security code generated by the authenticator app:"
-msgstr "Унеси сигурносни код генерисан од стране апликације за аутентификацију:"
+msgstr ""
+"Унеси сигурносни код генерисан од стране апликације за аутентификацију:"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:37
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:86
@@ -7163,7 +7176,8 @@ msgstr "Унеси свој %s API кључ из профила налога."
 
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceZendesk.vue:67
 msgid "Enter your Zendesk API token gained from your admin interface."
-msgstr "Унеси своју имејл адресу и %s API кључ из администраторског интерфејса."
+msgstr ""
+"Унеси своју имејл адресу и %s API кључ из администраторског интерфејса."
 
 #: app/assets/javascripts/app/views/profile/password.jst.eco:9
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:121
@@ -7182,7 +7196,8 @@ msgstr ""
 msgid ""
 "Enter your email address and the %s API token gained from your admin "
 "interface."
-msgstr "Унеси своју имејл адресу и %s API кључ из администраторског интерфејса."
+msgstr ""
+"Унеси своју имејл адресу и %s API кључ из администраторског интерфејса."
 
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceKayako.vue:43
 msgid ""
@@ -7762,7 +7777,7 @@ msgstr "Фиксни имејл налози"
 msgid "Flat Design"
 msgstr "Пљоснат дизајн"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:433
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:434
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:283
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:305
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:482
@@ -8039,7 +8054,8 @@ msgstr "Генерисање шифри за опоравак…"
 
 #: app/assets/javascripts/app/controllers/_integration/cti.coffee:264
 msgid "Generic API to integrate VoIP service provider with real-time push."
-msgstr "Генерички API за интеграцију провајдера VoIP сервиса у реалном времену."
+msgstr ""
+"Генерички API за интеграцију провајдера VoIP сервиса у реалном времену."
 
 #: db/seeds/settings.rb:476
 msgid "Geo Calendar Service"
@@ -8066,7 +8082,8 @@ msgstr "Буди обавештен(а)"
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:11
 #: db/seeds/settings.rb:5858
 msgid "Get the security code from the authenticator app on your device."
-msgstr "Преузми сигурноси код из апликације за аутентификацију на свом уређају."
+msgstr ""
+"Преузми сигурноси код из апликације за аутентификацију на свом уређају."
 
 #: app/assets/javascripts/app/views/api.jst.eco:70
 msgid "Getting an Access Token"
@@ -8600,7 +8617,7 @@ msgstr "Упозорење приликом додавања чланака по
 #: app/assets/javascripts/app/controllers/organization_profile/action_row.coffee:28
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket.coffee:114
 #: app/assets/javascripts/app/controllers/user_profile/action_row.coffee:60
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:62
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:64
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:130
 msgid "History"
 msgstr "Историјат"
@@ -8620,7 +8637,7 @@ msgstr "iCalendar извор празника"
 msgid "Home"
 msgstr "Почетна"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:427
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:428
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:325
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:80
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:69
@@ -8915,7 +8932,8 @@ msgstr "Датотека слике"
 #: app/assets/javascripts/app/lib/app_post/image_service.coffee:95
 #: app/assets/javascripts/app/lib/base/jquery.contenteditable.js:360
 msgid "Image file size is too large, please try inserting a smaller file."
-msgstr "Слика је превелика, молимо покушајте убацивањем датотеке мање величине."
+msgstr ""
+"Слика је превелика, молимо покушајте убацивањем датотеке мање величине."
 
 #: app/frontend/shared/components/CommonFilePreview/CommonFilePreview.vue:107
 msgid "Image of %s"
@@ -9480,8 +9498,8 @@ msgstr ""
 "на #{config.product_name} - нашу платформу за корисничку подршку.</div>\n"
 "<br>\n"
 "<div>Кликните <a href=\"#{config.http_type}://#{config.fqdn}/"
-"#password_reset_verify/#{token.token}\">овде</a> и подесите вашу "
-"лозинку.</div>\n"
+"#password_reset_verify/#{token.token}\">овде</a> и подесите вашу лозинку.</"
+"div>\n"
 "<br>\n"
 "<div>Срдачно,</div>\n"
 "<br>\n"
@@ -9615,7 +9633,7 @@ msgstr "Само кликните на означене површине и ди
 msgid "Kayako"
 msgstr "Kayako"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:434
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:435
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:284
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:306
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:483
@@ -10010,7 +10028,7 @@ msgid "LinkedIn Developer Site"
 msgstr "LinkedIn Developer сајт"
 
 #: app/assets/javascripts/app/views/link/ticket/list.jst.eco:1
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:123
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:125
 msgid "Links"
 msgstr "Везе"
 
@@ -10191,8 +10209,8 @@ msgstr ""
 "Макрои вам омогућавају да на једноставан начин аутоматизујете честе задатке "
 "са више корака у Zammad-у.\n"
 "\n"
-"Можете их користити за аутоматизацију поновних акција, притом штедећи време ("
-"и живце). Омогућавају извршавање комбиноване секвенце радњи на тикету само "
+"Можете их користити за аутоматизацију поновних акција, притом штедећи време "
+"(и живце). Омогућавају извршавање комбиноване секвенце радњи на тикету само "
 "једним кликом."
 
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:386
@@ -10221,7 +10239,7 @@ msgstr "Режим одржавања"
 msgid "Maintenance mode enabled!"
 msgstr "Режим одржавања је укључен!"
 
-#: app/assets/javascripts/app/controllers/manage.coffee:15
+#: app/assets/javascripts/app/controllers/manage.coffee:18
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:85
 msgid "Manage"
 msgstr "Управљање"
@@ -10695,7 +10713,7 @@ msgstr "Група помињања"
 #: app/assets/javascripts/app/controllers/agent_ticket_merge.coffee:7
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket.coffee:120
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketMerge/TicketMergeFlyout.vue:87
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:69
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:71
 msgid "Merge"
 msgstr "Споји"
 
@@ -11405,8 +11423,8 @@ msgstr ""
 "\n"
 "<div>Здраво #{recipient.firstname},</div>\n"
 "<br>\n"
-"<div>Нови тикет (#{ticket.title}) је отворен од стране "
-"„<b>#{current_user.longname}</b>”.</div>\n"
+"<div>Нови тикет (#{ticket.title}) је отворен од стране „<b>#{current_user."
+"longname}</b>”.</div>\n"
 "<br>\n"
 "<div>\n"
 "Група: #{ticket.group.name}<br>\n"
@@ -11530,7 +11548,7 @@ msgstr "Нема прегледа"
 msgid "No Proxy"
 msgstr "Без проксија"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:203
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:43
@@ -11573,7 +11591,7 @@ msgstr "Није пронађен сертификат."
 msgid "No checklist added to this ticket yet."
 msgstr "Списак задатака још није додат у овај тикет."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:185
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:186
 msgid "No checklist items yet"
 msgstr "Без задатака за сада"
 
@@ -12297,7 +12315,8 @@ msgstr "Отворени тикети"
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:21
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:254
 msgid "Open your authenticator app and scan the QR code below:"
-msgstr "Отворите своју апликацију за аутентификацију и скенирајте QR код испод:"
+msgstr ""
+"Отворите своју апликацију за аутентификацију и скенирајте QR код испод:"
 
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:116
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:91
@@ -13057,7 +13076,7 @@ msgstr ""
 "искористити за пријављивање уколико изгубите приступ другом методу "
 "двофакторске аутентификације:"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:75
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:76
 msgid "Please select a checklist template."
 msgstr "Молимо одаберите шаблон списка."
 
@@ -13107,7 +13126,7 @@ msgstr "Молимо сачекајте док не примите имејл п
 msgid "Please wait…"
 msgstr "Молимо сачекајте…"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:432
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:433
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:85
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:72
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:161
@@ -13531,7 +13550,8 @@ msgstr "Прималац"
 msgid ""
 "Records that exist in the import data (but not in Zammad) will always be "
 "created."
-msgstr "Записи увозних података који не постоје у Zammad-у ће увек бити додати."
+msgstr ""
+"Записи увозних података који не постоје у Zammad-у ће увек бити додати."
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_login/method/recovery_codes.coffee:2
 #: app/frontend/apps/desktop/pages/authentication/components/LoginRecoveryCode.vue:33
@@ -13564,7 +13584,8 @@ msgstr "Redis верзија"
 #: db/seeds/settings.rb:3355
 msgid ""
 "References - Search for follow-up also in In-Reply-To or References headers."
-msgstr "Референце - Претрага наставка и по In-Reply-To и References заглављима."
+msgstr ""
+"Референце - Претрага наставка и по In-Reply-To и References заглављима."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:275
 msgid "Regenerate Recovery Codes"
@@ -13759,7 +13780,7 @@ msgid "Reopening time in days"
 msgstr "Време поновног отварања у данима"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:195
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:196
 msgid "Reorder"
 msgstr "Измени редослед"
 
@@ -14118,8 +14139,8 @@ msgid "Roles:"
 msgstr "Улоге:"
 
 #: app/assets/javascripts/app/views/google/list.jst.eco:104
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:106
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:116
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:111
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:121
 msgid "Rollback migration"
 msgstr "Поништи миграцију"
 
@@ -14239,7 +14260,7 @@ msgstr "SMS проба није успела."
 msgid "SMTP - configure your own outgoing SMTP settings"
 msgstr "SMTP - подесите своја одлазна SMTP подешавања"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:207
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:47
@@ -14251,7 +14272,7 @@ msgstr "SSL"
 msgid "SSL Certificates"
 msgstr "SSL сертификати"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:432
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:714
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:84
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:73
@@ -14267,7 +14288,7 @@ msgstr "SSL сертификати"
 msgid "SSL verification"
 msgstr "SSL провера"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:27
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:33
@@ -14281,7 +14302,7 @@ msgstr "SSL/STARTTLS"
 msgid "SSO"
 msgstr "SSO"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:205
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:54
@@ -14318,7 +14339,7 @@ msgstr "субота"
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:22
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCameraFlyout.vue:121
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCropImageFlyout.vue:44
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:226
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:227
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:136
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:292
 #: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:70
@@ -14346,7 +14367,7 @@ msgid "Save Out of Office"
 msgstr "Сачувај ван канцеларије"
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSource.vue:53
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:146
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:147
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:115
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualSystemInformation.vue:131
 msgid "Save and Continue"
@@ -14418,7 +14439,8 @@ msgstr "Страна"
 
 #: app/assets/javascripts/app/views/integration/check_mk.jst.eco:38
 msgid "Script can be located under: ||%s|| and needs to be executable."
-msgstr "Скрипта се може налазити унутар: ||%s|| и неопходно је да буде извршна."
+msgstr ""
+"Скрипта се може налазити унутар: ||%s|| и неопходно је да буде извршна."
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewActions.vue:58
 msgid "Scroll down"
@@ -14713,7 +14735,7 @@ msgstr "Изабери CSV датотеку"
 msgid "Select Shared Draft"
 msgstr "Изабери заједнички нацрт"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:16
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:17
 #: app/assets/javascripts/app/views/widget/template.jst.eco:4
 msgid "Select Template"
 msgstr "Изабери шаблон"
@@ -14808,7 +14830,7 @@ msgstr "Пошаљи имејл поруку: %s"
 msgid "Send Invitation"
 msgstr "Пошаљи позивницу"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:408
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:409
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:65
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:50
 msgid "Send Mails via"
@@ -14836,7 +14858,8 @@ msgstr "Пошаљи postmaster имејл уколико је порука пр
 
 #: db/seeds/settings.rb:3429
 msgid "Send postmaster reject mail to sender of mail if mail is too large."
-msgstr "Пошаљи postmaster имејл одбијања пошиљаоцу уколико је порука превелика."
+msgstr ""
+"Пошаљи postmaster имејл одбијања пошиљаоцу уколико је порука превелика."
 
 #: app/assets/javascripts/app/views/maintenance.jst.eco:55
 msgid "Send to clients"
@@ -14871,6 +14894,12 @@ msgstr "Пошиљалац на основу Reply-To заглавља"
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:503
 msgid "Sender of last article"
 msgstr "Пошиљалац последњег чланка"
+
+#: db/seeds/object_manager_attributes.rb:2222
+#, fuzzy
+#| msgid "Email Address"
+msgid "Sending Email Address"
+msgstr "Имејл адреса"
 
 #: app/models/ticket/article.rb:312
 msgid "Sending an email without a valid recipient is not possible."
@@ -15073,7 +15102,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:28
 #: app/assets/javascripts/app/controllers/_channel/web.coffee:11
 #: app/assets/javascripts/app/controllers/chat.coffee:869
-#: app/assets/javascripts/app/controllers/manage.coffee:39
+#: app/assets/javascripts/app/controllers/manage.coffee:42
 #: app/assets/javascripts/app/controllers/ticket_zoom/setting.coffee:20
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:18
 #: app/assets/javascripts/app/views/channel/form.jst.eco:13
@@ -15464,7 +15493,7 @@ msgstr "Путања"
 
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:9
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:10
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:124
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:127
 #: app/assets/javascripts/app/views/getting_started/channel.jst.eco:21
 #: app/assets/javascripts/app/views/getting_started/email_notification.jst.eco:17
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:97
@@ -15862,7 +15891,7 @@ msgstr "Претплаћени тикети"
 msgid "Subscribed tickets"
 msgstr "Претплаћени тикети"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:145
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:147
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:192
 msgid "Subscribers"
 msgstr "Претплатници"
@@ -15913,7 +15942,7 @@ msgstr "Синхронизуј са рачунаром"
 
 #: app/assets/javascripts/app/controllers/_manage/system.coffee:3
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:37
-#: app/assets/javascripts/app/controllers/manage.coffee:40
+#: app/assets/javascripts/app/controllers/manage.coffee:43
 #: app/assets/javascripts/app/views/generic/history.jst.eco:15
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/composables/useHistoryEvents.ts:32
 #: db/seeds/permissions.rb:197 db/seeds/ticket_article_senders.rb:5
@@ -16000,7 +16029,7 @@ msgstr "Ознака „%s” већ постоји."
 #: app/assets/javascripts/app/views/popover/kb_generic.jst.eco:41
 #: app/assets/javascripts/app/views/tag/index.jst.eco:3
 #: app/assets/javascripts/app/views/widget/tag.jst.eco:1
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:113
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:115
 #: app/frontend/apps/mobile/components/Form/fields/FieldTags/FieldTagsDialog.vue:145
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketTags.vue:78
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:184
@@ -16592,8 +16621,8 @@ msgid ""
 msgstr ""
 "Подразумевани URL ваше базе знања је нпр. example.com или example.com/help. "
 "Да бисте подесили прилагођену URL путању, унесите је испод (нпр. „/support”, "
-"„example.com”, или „example.com/support”). Затим пратите упутство под „"
-"Подешавање веб сервера” како би комплетирали процес."
+"„example.com”, или „example.com/support”). Затим пратите упутство под "
+"„Подешавање веб сервера” како би комплетирали процес."
 
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:118
 msgid "The default font size is 12px."
@@ -16906,7 +16935,8 @@ msgstr "Параметар ‘mentionable_type’ је неисправан."
 #: app/assets/javascripts/app/controllers/_profile/password.coffee:135
 #: app/assets/javascripts/app/controllers/password_reset_verify.coffee:138
 msgid "The password could not be set. Please contact your administrator."
-msgstr "Није било могуће подесити лозинку. Молимо контактирајте администратора."
+msgstr ""
+"Није било могуће подесити лозинку. Молимо контактирајте администратора."
 
 #: lib/password_hash.rb:24
 msgid "The password is invalid."
@@ -16923,7 +16953,8 @@ msgstr "Није било могуће уклонити приступни кљ�
 #: app/controllers/ticket_articles_controller.rb:272
 msgid ""
 "The preview cannot be generated. The format is corrupted or not supported."
-msgstr "Није било могуће генерисати приказ. Формат је оштећен или није подржан."
+msgstr ""
+"Није било могуће генерисати приказ. Формат је оштећен или није подржан."
 
 #: lib/secure_mailing/pgp/incoming.rb:302
 msgid "The private PGP key could not be found."
@@ -17244,7 +17275,7 @@ msgstr "Одабран датум је неважећи."
 msgid "The server presented a certificate that could not be verified."
 msgstr "Сервер користи сертификат који није било могуће проверити."
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:625
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:626
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:200
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:245
 msgid ""
@@ -17433,8 +17464,8 @@ msgid ""
 "The uploaded image could not be processed. Need data:image in logo or "
 "logo_resize param."
 msgstr ""
-"Није било могуће обрадити отпремљену слику. Неопходно је приложити "
-"’data:image’ за лого или ’logo_resize’ параметар."
+"Није било могуће обрадити отпремљену слику. Неопходно је приложити ’data:"
+"image’ за лого или ’logo_resize’ параметар."
 
 #: app/models/authorization/provider.rb:47
 msgid "The user account does not exist. Please contact your administrator."
@@ -18408,8 +18439,8 @@ msgstr ""
 "\n"
 "<div>Здраво #{recipient.firstname},</div>\n"
 "<br>\n"
-"<div>Тикет тражи вашу пажњу: достигнуто време чекања тикета за "
-"(#{ticket.title}) са клијентом „<b>#{ticket.customer.longname}</b>”.</div>\n"
+"<div>Тикет тражи вашу пажњу: достигнуто време чекања тикета за (#{ticket."
+"title}) са клијентом „<b>#{ticket.customer.longname}</b>”.</div>\n"
 "<br>\n"
 "<% if @objects[:article] %>\n"
 "  <div>\n"
@@ -18780,8 +18811,8 @@ msgid ""
 "To enable %s for sending HTTP requests to %s, you need to create a "
 "designated \"notification rule\" in %s."
 msgstr ""
-"Да бисте укључили %s за слање HTTP захтева ка %s, морате додати посебно „"
-"правило обавештења” у %s."
+"Да бисте укључили %s за слање HTTP захтева ка %s, морате додати посебно "
+"„правило обавештења” у %s."
 
 #: app/assets/javascripts/app/views/whatsapp/account_phone_number.jst.eco:41
 msgid "To find out more about the 24-hour customer service window see %l."
@@ -18794,8 +18825,8 @@ msgid ""
 "To install %s as an app, press the %s \"Share\" button and then the %s \"Add "
 "to Home Screen\" button."
 msgstr ""
-"За инсталацију %s апликације, кликни на %s „Подели” а затим на дугме %s „"
-"Додај на почетни екран”."
+"За инсталацију %s апликације, кликни на %s „Подели” а затим на дугме %s "
+"„Додај на почетни екран”."
 
 #: app/assets/javascripts/app/views/translation/description.jst.eco:11
 msgid ""
@@ -18818,8 +18849,8 @@ msgid ""
 "To revert back to the default payload, simply turn off the \"Custom "
 "Payload\" switch above."
 msgstr ""
-"За повратак на подразумеване податке, једноставно искључите дугме „"
-"Прилагођени подаци” изнад."
+"За повратак на подразумеване податке, једноставно искључите дугме "
+"„Прилагођени подаци” изнад."
 
 #: app/assets/javascripts/app/models/text_module.coffee:25
 msgid "To select placeholders from a list, just enter \"::\"."
@@ -19023,8 +19054,8 @@ msgid ""
 "times are reached (e.g. pending time, escalation)."
 msgstr ""
 "Окидачи активирани радњама се извршавају по отварању или изменама, док се "
-"окидачи активирани временским догађајима извршавају по достизању времена ("
-"нпр. време чекања, ескалација)."
+"окидачи активирани временским догађајима извршавају по достизању времена "
+"(нпр. време чекања, ескалација)."
 
 #: app/assets/javascripts/app/views/widget/two_factor_login/try_another_method.jst.eco:2
 #: app/frontend/shared/composables/authentication/useLoginTwoFactor.ts:109
@@ -19078,7 +19109,7 @@ msgstr "Претвори ћаскање у тикет"
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:13
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:14
 #: app/assets/javascripts/app/views/object_manager/attribute/autocompletion_ajax_external_data_source.jst.eco:3
-#: app/frontend/apps/desktop/form/composables/useSSLVerificationWarningHandler.ts:24
+#: app/frontend/apps/desktop/form/composables/useSSLVerificationWarningHandler.ts:13
 msgid ""
 "Turning off SSL verification is a security risk and should be used only "
 "temporary. Use this option at your own risk!"
@@ -19088,7 +19119,8 @@ msgstr ""
 
 #: app/assets/javascripts/app/views/twitter/account_edit.jst.eco:5
 msgid "Tweets containing search terms are automatically turned into tickets."
-msgstr "Твитови који садрже кључне речи ће аутоматски бити претворени у тикете."
+msgstr ""
+"Твитови који садрже кључне речи ће аутоматски бити претворени у тикете."
 
 #: app/assets/javascripts/app/controllers/_channel/twitter.coffee:197
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:71
@@ -19220,7 +19252,7 @@ msgstr "Није било могуће поставити метод двофа�
 msgid "Two-factor method has been configured successfully."
 msgstr "Метод двофакторске аутентификације је успешно постављен."
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:426
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:427
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:248
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:79
 #: app/assets/javascripts/app/controllers/translation.coffee:289
@@ -19576,8 +19608,8 @@ msgstr ""
 "<div>Здраво #{recipient.firstname},</div>\n"
 "<br>\n"
 "<div>\n"
-"Тикет (#{ticket.title}) је освежен од стране "
-"„<b>#{current_user.longname}</b>”.\n"
+"Тикет (#{ticket.title}) је освежен од стране „<b>#{current_user.longname}</"
+"b>”.\n"
 "</div>\n"
 "<br>\n"
 "<% if @objects[:changes].present? %>\n"
@@ -19600,8 +19632,8 @@ msgstr ""
 "<br>\n"
 "<div>\n"
 "  <a href=\"#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}<% "
-"if @objects[:article] %>/#{article.id}<% end %>\" target=\"zammad_app\""
-">Погледај у #{config.product_name}</a>\n"
+"if @objects[:article] %>/#{article.id}<% end %>\" "
+"target=\"zammad_app\">Погледај у #{config.product_name}</a>\n"
 "</div>\n"
 
 #. This is the template file app/views/mailer/ticket_article_update_reaction/en.html.erb in ERB/HTML format.
@@ -19651,9 +19683,8 @@ msgstr ""
 "<% end %>\n"
 "<br>\n"
 "<div>\n"
-"  <a href=\"#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}/#{article.id}\" target=\"zammad_app\">Погледај у "
-"#{config.product_name}</a>\n"
+"  <a href=\"#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}/"
+"#{article.id}\" target=\"zammad_app\">Погледај у #{config.product_name}</a>\n"
 "</div>\n"
 
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:45
@@ -19713,8 +19744,8 @@ msgid ""
 "Use 'with_private_keyring' to create a private keyring or set @gnupg_home "
 "before calling gpg."
 msgstr ""
-"Користи 'with_private_keyring' за креирање тајног скупа кључева или подеси @"
-"gnupg_home пре позивања gpg."
+"Користи 'with_private_keyring' за креирање тајног скупа кључева или подеси "
+"@gnupg_home пре позивања gpg."
 
 #: app/assets/javascripts/app/views/object_manager/attribute/multiselect.jst.eco:69
 #: app/assets/javascripts/app/views/object_manager/attribute/select.jst.eco:65
@@ -19793,7 +19824,7 @@ msgstr "Користи се приликом писања текста"
 msgid "Used when viewing a Ticket"
 msgstr "Користи се приликом гледања тикета"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:428
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:429
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:37
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:165
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:24
@@ -19936,7 +19967,8 @@ msgstr "Успешно откључавање корисника!"
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:32
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:32
 msgid "User with specified ID was not found. Try checking the URL for errors."
-msgstr "Није пронађен корисник под траженим ID. Проверите URL путању на грешке."
+msgstr ""
+"Није пронађен корисник под траженим ID. Проверите URL путању на грешке."
 
 #: app/services/service/user/device/delete.rb:9
 msgid "UserDevice could not be found."
@@ -20081,7 +20113,7 @@ msgstr "Верификациони кључ"
 msgid "Verify sending and receiving"
 msgstr "Потврди слање и примање"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:170
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:171
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:92
 msgid "Verifying and saving your configuration…"
 msgstr "Провера и снимање ваших подешавања…"
@@ -20095,7 +20127,7 @@ msgstr "Провера и снимање ваших подешавања уво�
 msgid "Verifying key information…"
 msgstr "Провера информација о кључу…"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:178
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:179
 msgid "Verifying your configuration…"
 msgstr "Провера ваших подешавања…"
 
@@ -20453,7 +20485,8 @@ msgstr ""
 msgid ""
 "With checklist templates it is possible to pre-fill new checklists with "
 "initial items."
-msgstr "Са шаблонима је могуће аутоматски попунити списак за почетник задацима."
+msgstr ""
+"Са шаблонима је могуће аутоматски попунити списак за почетник задацима."
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/start.jst.eco:15
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistEmptyTemplates.vue:18
@@ -20502,8 +20535,8 @@ msgid ""
 "Counter\" (e.g. 201206231010138, 201206231010139)."
 msgstr ""
 "Са |Датум| бројеви тикета биће генерисани на основу тренутног датума, са "
-"SystemID и бројачем. Формат изгледа као „година.месец.дан.SystemID.бројач” ("
-"нпр. 201206231010138, 201206231010139)."
+"SystemID и бројачем. Формат изгледа као „година.месец.дан.SystemID."
+"бројач” (нпр. 201206231010138, 201206231010139)."
 
 #: app/assets/javascripts/app/controllers/email_verify.coffee:35
 #: app/frontend/apps/desktop/pages/authentication/views/SignupVerify.vue:47
@@ -20679,10 +20712,10 @@ msgstr ""
 "Упутство о томе како управљати %s се налази у нашој званичној документацији "
 "%l."
 
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:116
-#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:7
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:119
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:10
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:92
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:40
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:39
 msgid ""
 "You can find archived emails in Zammad anytime using the search function, "
 "like for any other ticket."
@@ -20704,8 +20737,8 @@ msgstr ""
 msgid "You can help translating Zammad."
 msgstr "Можете помоћи око Zammad превода."
 
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:115
-#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:6
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:118
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:9
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:91
 msgid ""
 "You can import some of your emails as an \"archive\", which means that no "
@@ -20866,6 +20899,16 @@ msgstr "Немате непрочитаних порука"
 msgid "You have not created a ticket yet."
 msgstr "Још нисте отворили тикет."
 
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:115
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:4
+#: app/assets/javascripts/app/views/getting_started/email.jst.eco:88
+#: app/frontend/apps/desktop/form/composables/useArchiveBeforeWarningHandler.ts:15
+msgid ""
+"You have selected a cut-off time in the future. Be aware that all emails "
+"(including future ones) are going to be archived until the selected time is "
+"reached."
+msgstr ""
+
 #: app/assets/javascripts/app/controllers/_profile/avatar.coffee:326
 msgid "You have to allow access to your webcam."
 msgstr "Морате да дозволите приступ вашој камери."
@@ -20949,8 +20992,8 @@ msgstr ""
 "<p>Лозинка за ваш #{config.product_name} налог <b>#{user.login}</b> је "
 "недавно промењена.</p>\n"
 "<br>\n"
-"<p>Ова активност вам није позната? Контактирајте вашег систем "
-"администратора.</p>\n"
+"<p>Ова активност вам није позната? Контактирајте вашег систем администратора."
+"</p>\n"
 "<br>\n"
 "<p>Ваш #{config.product_name} тим</p>\n"
 
@@ -21446,8 +21489,8 @@ msgid ""
 "current,new,confirm,change,current password,new password,confirm password,"
 "change password"
 msgstr ""
-"тренутна,нова,потврди,промени,тренутна лозинка,нова лозинка,потврди "
-"лозинку,промени лозинку"
+"тренутна,нова,потврди,промени,тренутна лозинка,нова лозинка,потврди лозинку,"
+"промени лозинку"
 
 #: app/assets/javascripts/app/controllers/translation.coffee:281
 msgid "custom"
@@ -22124,7 +22167,7 @@ msgstr "ново и отворено"
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:52
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:32
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:22
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:50
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:49
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:63
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:91
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14
@@ -22581,7 +22624,8 @@ msgstr "twitter статус"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/twoFactorAuth.ts:26
 msgid "twofactor,2fa,security key,passkey,authenticator app"
-msgstr "други фактор,2fa,безбедносни кључ,passkey,апликација за аутентификацију"
+msgstr ""
+"други фактор,2fa,безбедносни кључ,passkey,апликација за аутентификацију"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:423
 msgid "unassign user"
@@ -22660,7 +22704,7 @@ msgstr "у следећих (релативно)"
 #: app/assets/javascripts/app/models/public_link.coffee:10
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:32
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:15
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:49
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:48
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:62
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:90
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14

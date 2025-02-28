@@ -78,9 +78,9 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "#{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Creat de #{current_user.longname} la "
-"#{ticket.updated_at}_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Creat de #{current_user.longname} la #{ticket."
+"updated_at}_\n"
 "* Grup: #{ticket.group.name}\n"
 "* Proprietar: #{ticket.owner.fullname}\n"
 "* Stare: #{t(ticket.state.name)}\n"
@@ -104,9 +104,8 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "#{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Escaladat la #{ticket.escalation_at}"
-"_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Escaladat la #{ticket.escalation_at}_\n"
 "Tichetul (#{ticket.title}) de la „#{ticket.customer.longname}” a fost "
 "escaladat la „#{ticket.escalation_at}”!\n"
 "\n"
@@ -130,9 +129,8 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "#{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Ultima actualizare la "
-"#{ticket.updated_at}_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Ultima actualizare la #{ticket.updated_at}_\n"
 "* Grup: #{ticket.group.name}\n"
 "* Proprietar: #{ticket.owner.fullname}\n"
 "* Stare: #{t(ticket.state.name)}\n"
@@ -156,8 +154,8 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "#{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: A fost atins memento-ul!_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: A fost atins memento-ul!_\n"
 "Un tichet necesită atenție: memento atins pentru (#{ticket.title}) cu "
 "clientul „*#{ticket.customer.longname}*”.\n"
 "\n"
@@ -184,9 +182,9 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "#{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Actualizat de #{current_user.longname}"
-" la #{ticket.updated_at}_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Actualizat de #{current_user.longname} la #{ticket."
+"updated_at}_\n"
 "<% if @objects[:changes].present? %>\n"
 "  <% @objects[:changes].each do |key, value| %>\n"
 "  * <%= t key %>: <%= h value[0] %> -> <%= h value[1] %>\n"
@@ -212,9 +210,8 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "#{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Îl vom escalada la "
-"#{ticket.escalation_at}_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Îl vom escalada la #{ticket.escalation_at}_\n"
 "Tichetul (#{ticket.title}) de la „#{ticket.customer.longname}” a fost "
 "escaladat la „#{ticket.escalation_at}”!\n"
 "\n"
@@ -297,8 +294,8 @@ msgstr ""
 "<div>Țara a fost adăugată la lista ta de dispozitive cunoscute, pe care o "
 "poți vizualiza aici:</div>\n"
 "<br>\n"
-"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/devices\""
-">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
+"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/"
+"devices\">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
 "<br>\n"
 "<div>Dacă nu ai fost tu, te rugăm să elimini dispozitivul, să îți schimbi "
 "parola contului și să contactezi administratorul. Cineva ar putea avea acces "
@@ -351,8 +348,8 @@ msgstr ""
 "<div>Dispozitivul tău a fost adăugat în lista ta de dispozitive cunoscute, "
 "pe care o poți vizualiza aici:</div>\n"
 "<br>\n"
-"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/devices\""
-">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
+"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/"
+"devices\">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
 "<br>\n"
 "<div>Dacă nu ai fost tu, te rugăm să elimini dispozitivul, să îți schimbi "
 "parola contului și să contactezi administratorul. Cineva ar putea avea acces "
@@ -488,10 +485,10 @@ msgstr "Date de autentificare %s"
 msgid "%s days ago"
 msgstr "%s zile în urmă"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:709
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:710
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:260
-#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:4
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:28
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:7
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:27
 msgid ""
 "%s email(s) were found in your mailbox. They will all be moved from your "
 "mailbox into Zammad."
@@ -785,11 +782,11 @@ msgstr ""
 "termen de opt ore. Dacă ești în pericol de a nu atinge acest obiectiv, "
 "Zammad te va alerta.\n"
 "\n"
-"Poți defini obiective pentru trei metrici diferite: **timp de răspuns** ("
-"timpul dintre crearea unui tichet și prima reacție a unui agent), **timp de "
+"Poți defini obiective pentru trei metrici diferite: **timp de răspuns** "
+"(timpul dintre crearea unui tichet și prima reacție a unui agent), **timp de "
 "actualizare** (timpul dintre solicitarea unui client și reacția unui agent) "
-"și **timp de soluționare** (timpul dintre crearea și închiderea unui tichet)."
-"\n"
+"și **timp de soluționare** (timpul dintre crearea și închiderea unui "
+"tichet).\n"
 "\n"
 "Orice tichete escaladate (adică tichete care au depășit obiectivul definit) "
 "sunt afișate într-o vizualizare separată în vizualizările tale. Poți, de "
@@ -1134,7 +1131,7 @@ msgstr "SID Cont"
 msgid "Account Time"
 msgstr "Contabilizează timpul"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:621
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:622
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:197
 #: app/controllers/channels_email_controller.rb:211
 msgid "Account already exists!"
@@ -1150,7 +1147,7 @@ msgstr "Cont neverificat"
 #: app/assets/javascripts/app/views/ticket_zoom/time_unit.jst.eco:2
 #: app/assets/javascripts/app/views/time_accounting/accounted_time.jst.eco:2
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:83
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:136
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:138
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:18
 #: app/graphql/gql/types/overview_type.rb:101
 msgid "Accounted Time"
@@ -2097,26 +2094,26 @@ msgstr "Arhivă"
 msgid "Archive Emails"
 msgstr "Arhivat la"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:738
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:739
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:43
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:289
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:58
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:57
 msgid "Archive cut-off time"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:737
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:738
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:42
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:288
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:44
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:43
 #, fuzzy
 #| msgid "Archived at"
 msgid "Archive emails"
 msgstr "Arhivat la"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:739
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:740
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:44
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:290
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:74
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:66
 #, fuzzy
 #| msgid "Ticket update"
 msgid "Archive ticket target state"
@@ -2472,7 +2469,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_overview/settings.coffee:31
 #: app/assets/javascripts/app/models/overview.coffee:15
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:101
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:103
 msgid "Attributes"
 msgstr "Atribute"
 
@@ -2849,8 +2846,8 @@ msgstr "Conținut"
 #: db/seeds/settings.rb:3356
 msgid "Body - Search for follow-up also in mail body."
 msgstr ""
-"Conținut e-mailului - Caută continuări (follow-up) și în conținutul "
-"e-mailului."
+"Conținut e-mailului - Caută continuări (follow-up) și în conținutul e-"
+"mailului."
 
 #: lib/validations/ticket_article_validator/sms_twilio.rb:14
 msgid "Body text is required"
@@ -3095,7 +3092,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show.jst.eco:23
 #: app/assets/javascripts/app/views/widget/invite_user.jst.eco:17
 #: app/frontend/apps/desktop/components/CommonInlineEdit/CommonInlineEdit.vue:343
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:202
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:203
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:125
 #: app/frontend/apps/mobile/components/CommonSectionPopup/CommonSectionPopup.vue:29
 #: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInputDialog.vue:259
@@ -3235,7 +3232,7 @@ msgid "Change Your Password"
 msgstr "Schimbați-vă parola"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:69
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:80
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:82
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:74
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:137
 msgid "Change customer"
@@ -3258,13 +3255,13 @@ msgstr "Schimba-ți parola contului personal."
 msgid "Change text color"
 msgstr "Schimbă culoarea textului"
 
-#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:34
+#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:36
 #, fuzzy
 #| msgid "Change %s"
 msgid "Change to %s"
 msgstr "Schimbă %s"
 
-#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:24
+#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:27
 #, fuzzy
 #| msgid "Enter your username or email address"
 msgid "Change to channel email address"
@@ -3324,7 +3321,7 @@ msgstr "Canal de comunicare"
 msgid "Channel Distribution"
 msgstr "Distribuție canale"
 
-#: app/assets/javascripts/app/controllers/manage.coffee:38
+#: app/assets/javascripts/app/controllers/manage.coffee:41
 msgid "Channels"
 msgstr "Canale de comunicare"
 
@@ -3775,10 +3772,8 @@ msgstr "Company Inc."
 msgid ""
 "Compared to the Microsoft 365 Graph API Email Channel, this is the "
 "traditional implementation using OAuth and IMAP. When setting up new "
-"channels, we suggest using the Graph API implementation instead. When you "
-"think there are good reasons to keep the IMAP approach as an alternative in "
-"the future, please let us know in the Zammad Community %l. More information "
-"can be found here %l."
+"channels, we suggest using the Graph API implementation instead. More "
+"information can be found here %l."
 msgstr ""
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:6
@@ -3899,14 +3894,14 @@ msgid ""
 "<br>\n"
 "<div>Your #{config.product_name} Team</div>\n"
 msgstr ""
-"Confirmă contul tău #{config.product_name}, #{user.firstname} "
-"#{user.lastname}\n"
+"Confirmă contul tău #{config.product_name}, #{user.firstname} #{user."
+"lastname}\n"
 "\n"
 "<div>Bună #{user.firstname},</div>\n"
 "<br>\n"
 "<div>Confirmați adresa dvs. de email pentru a finaliza contul dvs. la "
-"#{config.product_name}. Este simplu, doar faceți clic pe linkul de mai "
-"jos.</div>\n"
+"#{config.product_name}. Este simplu, doar faceți clic pe linkul de mai jos.</"
+"div>\n"
 "<br>\n"
 "<div><a href=\"#{url}\">#{url}</a></div>\n"
 "<br>\n"
@@ -3976,7 +3971,7 @@ msgstr "Conectează aplicația Microsoft 365"
 msgid "Connect Twitter App"
 msgstr "Conectează aplicația Twitter"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:134
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:135
 msgid "Connect and Continue"
 msgstr "Conectează și continuă"
 
@@ -4057,7 +4052,7 @@ msgstr "Context"
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:108
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:49
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSource.vue:53
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:142
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:143
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:541
 msgid "Continue"
 msgstr "Continuă"
@@ -4358,7 +4353,7 @@ msgstr "Creează tichet"
 msgid "Create a Test Ticket"
 msgstr "Creează un tichet de test"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:211
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:212
 msgid "Create a new checklist item"
 msgstr "Creează un element nou în lista de verificare"
 
@@ -4932,8 +4927,8 @@ msgid ""
 "Define postmaster filter to check if follow-ups get created (based on admin "
 "settings)."
 msgstr ""
-"Definește filtrul postmaster pentru a verifica dacă urmărirea este creată ("
-"în funcție de setările de administrare)."
+"Definește filtrul postmaster pentru a verifica dacă urmărirea este creată "
+"(în funcție de setările de administrare)."
 
 #: db/seeds/settings.rb:4285
 msgid "Define postmaster filter to import archive mailboxes."
@@ -5323,7 +5318,8 @@ msgstr ""
 
 #: db/seeds/settings.rb:4142
 msgid "Defines if the time accounting types are enabled."
-msgstr "Definește dacă tipurile de contabilizare a timpului sunt active sau nu."
+msgstr ""
+"Definește dacă tipurile de contabilizare a timpului sunt active sau nu."
 
 #: db/seeds/settings.rb:5837
 msgid ""
@@ -5370,8 +5366,8 @@ msgid ""
 "notification email, then ignore it to prevent email loops."
 msgstr ""
 "Definește filtrul postmaster pentru a verifica dacă e-mailul este un e-mail "
-"de notificare creat de sine, apoi îl ignoră pentru a preveni buclele de "
-"e-mail."
+"de notificare creat de sine, apoi îl ignoră pentru a preveni buclele de e-"
+"mail."
 
 #: db/seeds/settings.rb:4321
 msgid "Defines postmaster filter to handle secure mailing."
@@ -5454,8 +5450,8 @@ msgstr "Definește filtrul postmaster pentru a identifica expeditorul."
 msgid ""
 "Defines postmaster filter to manage Icinga (http://www.icinga.org) emails."
 msgstr ""
-"Definește filtrul postmaster pentru a gestiona emailurile Icinga "
-"(http://www.icinga.org)."
+"Definește filtrul postmaster pentru a gestiona emailurile Icinga (http://www."
+"icinga.org)."
 
 #: db/seeds/settings.rb:4402
 msgid ""
@@ -5468,8 +5464,8 @@ msgstr ""
 msgid ""
 "Defines postmaster filter to manage Nagios (http://www.nagios.org) emails."
 msgstr ""
-"Definește filtrul postmaster pentru a gestiona emailurile Nagios "
-"(http://www.nagios.org)."
+"Definește filtrul postmaster pentru a gestiona emailurile Nagios (http://www."
+"nagios.org)."
 
 #: db/seeds/settings.rb:4231
 msgid ""
@@ -5811,7 +5807,8 @@ msgstr ""
 
 #: db/seeds/settings.rb:5076
 msgid "Defines the transaction backend to send agent notifications."
-msgstr "Definește backend-ul de tranzacție pentru trimite notificări agenților."
+msgstr ""
+"Definește backend-ul de tranzacție pentru trimite notificări agenților."
 
 #: db/seeds/settings.rb:5413
 msgid ""
@@ -5832,8 +5829,8 @@ msgid ""
 "Defines the transaction backend which posts messages to Slack (http://www."
 "slack.com)."
 msgstr ""
-"Definește backend-ul de tranzacție care postează mesaje în Slack "
-"(http://www.slack.com)."
+"Definește backend-ul de tranzacție care postează mesaje în Slack (http://www."
+"slack.com)."
 
 #: db/seeds/settings.rb:5404
 msgid ""
@@ -5909,8 +5906,8 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:75
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:55
 #: app/assets/javascripts/app/views/knowledge_base/public_menu_form_item.jst.eco:18
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:104
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:114
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:109
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:119
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:29
 #: app/assets/javascripts/app/views/profile/devices.jst.eco:25
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:21
@@ -6171,15 +6168,6 @@ msgstr "Desktop"
 msgid "Destination Group"
 msgstr "Grupul destinatar"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:264
-#: app/assets/javascripts/app/controllers/_channel/google.coffee:282
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:304
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:271
-#, fuzzy
-#| msgid "Destination Group"
-msgid "Destination Group Email Address"
-msgstr "Grupul destinatar"
-
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:58
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:74
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:61
@@ -6189,6 +6177,15 @@ msgstr "ID-ul apelantului destinatar"
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:108
 msgid "Destination caller ID or queue"
 msgstr "ID-ul apelantului destinatar sau coadă de așteptare"
+
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:264
+#: app/assets/javascripts/app/controllers/_channel/google.coffee:282
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:304
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:271
+#, fuzzy
+#| msgid "Destination Group"
+msgid "Destination group > Sending email address"
+msgstr "Grupul destinatar"
 
 #: app/assets/javascripts/app/views/settings/ticket_duplicate_detection.jst.eco:7
 #: db/seeds/settings.rb:2695
@@ -6308,8 +6305,8 @@ msgstr "Direcție"
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:70
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:31
 #: app/assets/javascripts/app/views/google/list.jst.eco:107
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:109
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:119
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:105
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:115
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:30
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:40
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:85
@@ -6393,10 +6390,10 @@ msgstr "Afișare"
 msgid "Display name"
 msgstr "Numele afișat"
 
-#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:23
+#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:26
 #, fuzzy
 #| msgid "Enter your username or email address"
-msgid "Do not change email address"
+msgid "Do not change email address (%s)"
 msgstr "Introdu numele de utilizator sau email-ul"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:662
@@ -6711,7 +6708,7 @@ msgstr "Editează organizația"
 msgid "Edit authenticator app"
 msgstr "Autentificare"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:122
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:123
 #, fuzzy
 #| msgid "Ticket update"
 msgid "Edit checklist title"
@@ -6870,7 +6867,6 @@ msgstr "Conturi e-mail"
 #: app/assets/javascripts/app/views/google/list.jst.eco:81
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:82
 #: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:92
-#: db/seeds/object_manager_attributes.rb:2222
 msgid "Email Address"
 msgstr "Adresa de e-mail"
 
@@ -6896,7 +6892,7 @@ msgstr "Notificare e-mail"
 msgid "Email Notifications"
 msgstr "Notificări e-mail"
 
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:137
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:140
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:105
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:71
 msgid "Email Outbound"
@@ -6924,8 +6920,8 @@ msgid "Email could not be verified. Please contact your administrator."
 msgstr ""
 "E-mailul nu a putut fi verificat. Te rugăm să contactezi administratorul tău."
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:912
-#: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:404
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:913
+#: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:405
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:169
 msgid ""
 "Email sending and receiving could not be verified. Please check your "
@@ -6951,10 +6947,10 @@ msgstr "E-mail trimis la \"%s\". Te rugăm să îți verifici contul de e-mail."
 msgid "Email sent to %s"
 msgstr "e-mail trimis la '%s'"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:738
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:739
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:43
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:289
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:61
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:60
 msgid ""
 "Emails before the cut-off time are imported as archived tickets. Emails "
 "after the cut-off time are imported as regular tickets."
@@ -6976,8 +6972,8 @@ msgstr "Prezentare generală"
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:72
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:33
 #: app/assets/javascripts/app/views/google/list.jst.eco:109
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:111
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:121
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:107
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:117
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:31
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:42
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:87
@@ -7034,7 +7030,8 @@ msgstr ""
 
 #: db/seeds/settings.rb:2596
 msgid "Enable auto assignment for following matching tickets."
-msgstr "Activează alocarea automată pentru următoarele tichete corespunzătoare."
+msgstr ""
+"Activează alocarea automată pentru următoarele tichete corespunzătoare."
 
 #: app/assets/javascripts/app/views/settings/ticket_auto_assignment.jst.eco:12
 msgid "Enable automatic assignment the first time an agent opens a ticket."
@@ -8055,7 +8052,7 @@ msgstr "Conturi de e-mail fixe"
 msgid "Flat Design"
 msgstr "Design plat"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:433
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:434
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:283
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:305
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:482
@@ -8935,7 +8932,7 @@ msgstr "Sugestie pentru adăugarea unui articol la un tichet existent."
 #: app/assets/javascripts/app/controllers/organization_profile/action_row.coffee:28
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket.coffee:114
 #: app/assets/javascripts/app/controllers/user_profile/action_row.coffee:60
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:62
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:64
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:130
 msgid "History"
 msgstr "Istoric"
@@ -8955,7 +8952,7 @@ msgstr "Flux iCalendar pentru sărbători"
 msgid "Home"
 msgstr "Acasă"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:427
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:428
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:325
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:80
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:69
@@ -9134,7 +9131,8 @@ msgstr ""
 msgid ""
 "If the host and service have recovered, the ticket can be closed "
 "automatically."
-msgstr "Dacă host-ul și serviciul și-au revenit, tichetul va fi închis automat."
+msgstr ""
+"Dacă host-ul și serviciul și-au revenit, tichetul va fi închis automat."
 
 #: db/seeds/settings.rb:3403
 msgid ""
@@ -9791,7 +9789,8 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/authenticator_app.coffee:104
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:142
 msgid "Invalid security code! Please try again with a new code."
-msgstr "Cod de securitate invalid! Vă rugăm să încercați din nou cu un cod nou."
+msgstr ""
+"Cod de securitate invalid! Vă rugăm să încercați din nou cu un cod nou."
 
 #: app/controllers/integration/cti_controller.rb:41
 #: app/controllers/integration/placetel_controller.rb:40
@@ -9847,8 +9846,8 @@ msgstr ""
 "#{config.product_name} - platforma noastră de suport clienți.</div>\n"
 "<br>\n"
 "<div>Apasă <a href=\"#{config.http_type}://#{config.fqdn}/"
-"#password_reset_verify/#{token.token}\">aici</a> și setează-ți parola.</div>"
-"\n"
+"#password_reset_verify/#{token.token}\">aici</a> și setează-ți parola.</"
+"div>\n"
 "<br>\n"
 "<div>Distracție plăcută,</div>\n"
 "<br>\n"
@@ -9993,7 +9992,7 @@ msgstr ""
 msgid "Kayako"
 msgstr "Kayako"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:434
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:435
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:284
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:306
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:483
@@ -10422,7 +10421,7 @@ msgid "LinkedIn Developer Site"
 msgstr "Site dezvoltator LinkedIn"
 
 #: app/assets/javascripts/app/views/link/ticket/list.jst.eco:1
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:123
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:125
 msgid "Links"
 msgstr "Link-uri"
 
@@ -10631,7 +10630,7 @@ msgstr "Mod mentenanță"
 msgid "Maintenance mode enabled!"
 msgstr "Mod mentenanță activat!"
 
-#: app/assets/javascripts/app/controllers/manage.coffee:15
+#: app/assets/javascripts/app/controllers/manage.coffee:18
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:85
 msgid "Manage"
 msgstr "Administrează"
@@ -11199,7 +11198,7 @@ msgstr "Grup mențiuni"
 #: app/assets/javascripts/app/controllers/agent_ticket_merge.coffee:7
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket.coffee:120
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketMerge/TicketMergeFlyout.vue:87
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:69
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:71
 msgid "Merge"
 msgstr "Fuzionare"
 
@@ -11943,8 +11942,8 @@ msgstr ""
 "\n"
 "<div>Bună #{recipient.firstname},</div>\n"
 "<br>\n"
-"<div>Tichetul nou (#{ticket.title}) a fost creat de "
-"\"<b>#{current_user.longname}</b>\".</div>\n"
+"<div>Tichetul nou (#{ticket.title}) a fost creat de \"<b>#{current_user."
+"longname}</b>\".</div>\n"
 "<br>\n"
 "<div>\n"
 "Grup: #{ticket.group.name}<br>\n"
@@ -12080,7 +12079,7 @@ msgstr "Prezentări generale"
 msgid "No Proxy"
 msgstr "Fără proxy"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:203
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:43
@@ -12127,7 +12126,7 @@ msgstr "Nu a fost găsit nici un certificat."
 msgid "No checklist added to this ticket yet."
 msgstr "Încă nu ați creat un tichet"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:185
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:186
 msgid "No checklist items yet"
 msgstr ""
 
@@ -13730,7 +13729,7 @@ msgstr ""
 "jos. Le puteți folosi pentru a vă autentifica dacă pierdeți accesul la o "
 "altă metodă de autentificare în doi factori:"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:75
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:76
 msgid "Please select a checklist template."
 msgstr ""
 
@@ -13784,7 +13783,7 @@ msgstr ""
 msgid "Please wait…"
 msgstr "Vă rugăm să așteptați…"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:432
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:433
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:85
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:72
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:161
@@ -14493,7 +14492,7 @@ msgid "Reopening time in days"
 msgstr "Rată de redeschidere în zile"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:195
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:196
 #, fuzzy
 #| msgid "Order"
 msgid "Reorder"
@@ -14691,8 +14690,8 @@ msgstr ""
 "\n"
 "<div>Bună #{user.firstname},</div>\n"
 "<br>\n"
-"<div>Am primit o solicitare pentru a reseta parola contului tău "
-"#{config.product_name} <b>#{user.login}</b>.</div>\n"
+"<div>Am primit o solicitare pentru a reseta parola contului tău #{config."
+"product_name} <b>#{user.login}</b>.</div>\n"
 "<br>\n"
 "<div>Dacă dorești resetarea parolei, apasă pe link-ul de mai jos (sau "
 "copiază și lipește URL-ul în browser-ul tău):</div>\n"
@@ -14871,8 +14870,8 @@ msgid "Roles:"
 msgstr "Roluri:"
 
 #: app/assets/javascripts/app/views/google/list.jst.eco:104
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:106
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:116
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:111
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:121
 msgid "Rollback migration"
 msgstr "Reveniți la migrare"
 
@@ -14992,7 +14991,7 @@ msgstr "Test SMS eșuat."
 msgid "SMTP - configure your own outgoing SMTP settings"
 msgstr "SMTP - configurează-ți propriile setări pentru SMTP"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:207
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:47
@@ -15004,7 +15003,7 @@ msgstr "SSL"
 msgid "SSL Certificates"
 msgstr "Certificate SSL"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:432
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:714
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:84
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:73
@@ -15020,7 +15019,7 @@ msgstr "Certificate SSL"
 msgid "SSL verification"
 msgstr "Verificare SSL"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:27
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:33
@@ -15034,7 +15033,7 @@ msgstr "SSL/STARTTLS"
 msgid "SSO"
 msgstr "SSO"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:205
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:54
@@ -15071,7 +15070,7 @@ msgstr "Sâmbătă"
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:22
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCameraFlyout.vue:121
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCropImageFlyout.vue:44
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:226
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:227
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:136
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:292
 #: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:70
@@ -15103,7 +15102,7 @@ msgid "Save Out of Office"
 msgstr "În afara serviciului"
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSource.vue:53
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:146
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:147
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:115
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualSystemInformation.vue:131
 msgid "Save and Continue"
@@ -15481,7 +15480,7 @@ msgstr "Selectează fișierul CSV"
 msgid "Select Shared Draft"
 msgstr "Selectează ciorna partajată"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:16
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:17
 #: app/assets/javascripts/app/views/widget/template.jst.eco:4
 msgid "Select Template"
 msgstr "Selectează schița"
@@ -15586,7 +15585,7 @@ msgstr "Trimite email"
 msgid "Send Invitation"
 msgstr "Trimite invitația"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:408
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:409
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:65
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:50
 msgid "Send Mails via"
@@ -15653,6 +15652,12 @@ msgstr "Expeditor bazat pe antetul Reply-To"
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:503
 msgid "Sender of last article"
 msgstr "Expeditorul ultimului articol"
+
+#: db/seeds/object_manager_attributes.rb:2222
+#, fuzzy
+#| msgid "Email Address"
+msgid "Sending Email Address"
+msgstr "Adresa de e-mail"
 
 #: app/models/ticket/article.rb:312
 msgid "Sending an email without a valid recipient is not possible."
@@ -15860,9 +15865,9 @@ msgid ""
 "set correct customer if email is received from a third-party system on "
 "behalf of a customer."
 msgstr ""
-"Setează/suprascrie expeditor/de la al email-ului pe baza antetului ”Reply-To”"
-". Util pentru a stabili clientul corect în cazul în care s-a trimis un email "
-"în numele clientului de către o altă persoană."
+"Setează/suprascrie expeditor/de la al email-ului pe baza antetului ”Reply-"
+"To”. Util pentru a stabili clientul corect în cazul în care s-a trimis un "
+"email în numele clientului de către o altă persoană."
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:26
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:26
@@ -15870,7 +15875,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:28
 #: app/assets/javascripts/app/controllers/_channel/web.coffee:11
 #: app/assets/javascripts/app/controllers/chat.coffee:869
-#: app/assets/javascripts/app/controllers/manage.coffee:39
+#: app/assets/javascripts/app/controllers/manage.coffee:42
 #: app/assets/javascripts/app/controllers/ticket_zoom/setting.coffee:20
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:18
 #: app/assets/javascripts/app/views/channel/form.jst.eco:13
@@ -16283,7 +16288,7 @@ msgstr "Site"
 
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:9
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:10
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:124
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:127
 #: app/assets/javascripts/app/views/getting_started/channel.jst.eco:21
 #: app/assets/javascripts/app/views/getting_started/email_notification.jst.eco:17
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:97
@@ -16454,7 +16459,8 @@ msgstr ""
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:116
 msgid "Start typing to find the ticket to merge into."
-msgstr "Începe să tastezi pentru a găsi tichetul cu care vrei să faci fuziunea."
+msgstr ""
+"Începe să tastezi pentru a găsi tichetul cu care vrei să faci fuziunea."
 
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:745
 msgid "Start typing to search for users…"
@@ -16699,7 +16705,7 @@ msgstr "Tichete la care sunt abonat"
 msgid "Subscribed tickets"
 msgstr "Tichetele mele atribuite"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:145
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:147
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:192
 msgid "Subscribers"
 msgstr "Abonați"
@@ -16752,7 +16758,7 @@ msgstr "Sincronizează cu calculatorul"
 
 #: app/assets/javascripts/app/controllers/_manage/system.coffee:3
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:37
-#: app/assets/javascripts/app/controllers/manage.coffee:40
+#: app/assets/javascripts/app/controllers/manage.coffee:43
 #: app/assets/javascripts/app/views/generic/history.jst.eco:15
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/composables/useHistoryEvents.ts:32
 #: db/seeds/permissions.rb:197 db/seeds/ticket_article_senders.rb:5
@@ -16841,7 +16847,7 @@ msgstr "Eticheta \"%s\" există deja."
 #: app/assets/javascripts/app/views/popover/kb_generic.jst.eco:41
 #: app/assets/javascripts/app/views/tag/index.jst.eco:3
 #: app/assets/javascripts/app/views/widget/tag.jst.eco:1
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:113
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:115
 #: app/frontend/apps/mobile/components/Form/fields/FieldTags/FieldTagsDialog.vue:145
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketTags.vue:78
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:184
@@ -17465,9 +17471,9 @@ msgid ""
 msgstr ""
 "URL-ul implicit pentru baza ta de cunoștințe este, de exemplu, example.com "
 "sau example.com/help. Pentru a o servi de la un URL personalizat, introduce "
-"destinația mai jos (de exemplu, \"/support\", \"example.com\" sau "
-"\"example.com/support\"). Apoi, urmează instrucțiunile din secțiunea „"
-"Configurarea serverului web” pentru a finaliza procesul."
+"destinația mai jos (de exemplu, \"/support\", \"example.com\" sau \"example."
+"com/support\"). Apoi, urmează instrucțiunile din secțiunea „Configurarea "
+"serverului web” pentru a finaliza procesul."
 
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:118
 msgid "The default font size is 12px."
@@ -18169,7 +18175,7 @@ msgstr "Data selectată este invalidă."
 msgid "The server presented a certificate that could not be verified."
 msgstr "Serverul a prezentat un certificat care nu poate fi verificat."
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:625
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:626
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:200
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:245
 msgid ""
@@ -19034,7 +19040,8 @@ msgstr "Această semnătură este inactivă, ea nu va fi inclusă în răspuns."
 #: app/services/service/user/add_first_admin.rb:8
 msgid ""
 "This system has already been configured and an administrator account exists."
-msgstr "Acest sistem a fost deja configurat și există un cont de administrator."
+msgstr ""
+"Acest sistem a fost deja configurat și există un cont de administrator."
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupAutomated/GuidedSetupAutomatedInfo.vue:11
 msgid "This system is configured for automated setup."
@@ -19396,8 +19403,8 @@ msgstr ""
 "\n"
 "<div>Bună #{recipient.firstname},</div>\n"
 "<br>\n"
-"<div>Un tichet necesită atenția ta: timp de amânare atins pentru "
-"(#{ticket.title}) cu clientul \"<b>#{ticket.customer.longname}</b>\".</div>\n"
+"<div>Un tichet necesită atenția ta: timp de amânare atins pentru (#{ticket."
+"title}) cu clientul \"<b>#{ticket.customer.longname}</b>\".</div>\n"
 "<br>\n"
 "<% if @objects[:article] %>\n"
 "  <div>\n"
@@ -19843,9 +19850,9 @@ msgid ""
 "To set up this service you need to create a new |\"Incoming webhook\"| in "
 "your %s integration panel and enter the webhook URL below."
 msgstr ""
-"Pentru a configura acest serviciu, trebuie să creați un nou |"
-"\"Incoming webhook\"| în panoul de integrare %s și să introduceți mai jos "
-"adresa URL a webhook-ului."
+"Pentru a configura acest serviciu, trebuie să creați un nou |\"Incoming "
+"webhook\"| în panoul de integrare %s și să introduceți mai jos adresa URL a "
+"webhook-ului."
 
 #: app/assets/javascripts/app/views/object_manager/attribute/autocompletion_ajax_external_data_source.jst.eco:21
 msgid "To trigger the preview, please enter some search term(s) above."
@@ -20059,8 +20066,8 @@ msgid ""
 msgstr ""
 "Mecanismele de declanșare(triggere) sunt executate de fiecare dată când un "
 "tichet este creat sau actualizat, în timp ce declanșatoarele activate de "
-"evenimente de timp sunt executate atunci când sunt atinse anumite momente ("
-"de exemplu, timpul de așteptare, escaladare)."
+"evenimente de timp sunt executate atunci când sunt atinse anumite momente "
+"(de exemplu, timpul de așteptare, escaladare)."
 
 #: app/assets/javascripts/app/views/widget/two_factor_login/try_another_method.jst.eco:2
 #: app/frontend/shared/composables/authentication/useLoginTwoFactor.ts:109
@@ -20114,7 +20121,7 @@ msgstr "Transformă chat-ul într-un tichet"
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:13
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:14
 #: app/assets/javascripts/app/views/object_manager/attribute/autocompletion_ajax_external_data_source.jst.eco:3
-#: app/frontend/apps/desktop/form/composables/useSSLVerificationWarningHandler.ts:24
+#: app/frontend/apps/desktop/form/composables/useSSLVerificationWarningHandler.ts:13
 msgid ""
 "Turning off SSL verification is a security risk and should be used only "
 "temporary. Use this option at your own risk!"
@@ -20266,7 +20273,7 @@ msgstr "Autentificare"
 msgid "Two-factor method has been configured successfully."
 msgstr "Testul a avut succes."
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:426
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:427
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:248
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:79
 #: app/assets/javascripts/app/controllers/translation.coffee:289
@@ -20640,8 +20647,8 @@ msgstr ""
 "<div>Bună #{recipient.firstname},</div>\n"
 "<br>\n"
 "<div>\n"
-"Tichetul (#{ticket.title}) a fost actualizat de "
-"\"<b>#{current_user.longname}</b>\".\n"
+"Tichetul (#{ticket.title}) a fost actualizat de \"<b>#{current_user.longname}"
+"</b>\".\n"
 "</div>\n"
 "<br>\n"
 "<% if @objects[:changes].present? %>\n"
@@ -20865,7 +20872,7 @@ msgstr "Utilizat atunci când compui un text"
 msgid "Used when viewing a Ticket"
 msgstr "Utilizat atunci când vizualizezi un tichet"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:428
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:429
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:37
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:165
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:24
@@ -21180,7 +21187,7 @@ msgstr "Token verificare"
 msgid "Verify sending and receiving"
 msgstr "Verifică trimiterea și primirea"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:170
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:171
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:92
 msgid "Verifying and saving your configuration…"
 msgstr "Verific și salvez configurația ta…"
@@ -21194,7 +21201,7 @@ msgstr "Verific și salvez configurația ta pentru import…"
 msgid "Verifying key information…"
 msgstr "Verific informații cheie…"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:178
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:179
 msgid "Verifying your configuration…"
 msgstr "Verific configurația ta…"
 
@@ -21794,10 +21801,10 @@ msgstr ""
 "Poți găsi un tutorial despre cum să gestionezi un %s în documentația noastră "
 "online %l."
 
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:116
-#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:7
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:119
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:10
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:92
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:40
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:39
 msgid ""
 "You can find archived emails in Zammad anytime using the search function, "
 "like for any other ticket."
@@ -21817,8 +21824,8 @@ msgstr ""
 msgid "You can help translating Zammad."
 msgstr ""
 
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:115
-#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:6
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:118
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:9
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:91
 msgid ""
 "You can import some of your emails as an \"archive\", which means that no "
@@ -21980,6 +21987,16 @@ msgstr "Nu ai nici un mesaj necitit"
 #: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:345
 msgid "You have not created a ticket yet."
 msgstr "Încă nu ai creat un tichet."
+
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:115
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:4
+#: app/assets/javascripts/app/views/getting_started/email.jst.eco:88
+#: app/frontend/apps/desktop/form/composables/useArchiveBeforeWarningHandler.ts:15
+msgid ""
+"You have selected a cut-off time in the future. Be aware that all emails "
+"(including future ones) are going to be archived until the selected time is "
+"reached."
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/_profile/avatar.coffee:326
 msgid "You have to allow access to your webcam."
@@ -23294,7 +23311,7 @@ msgstr "noi și deschise"
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:52
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:32
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:22
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:50
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:49
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:63
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:91
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14
@@ -23848,7 +23865,7 @@ msgstr "în următoarele (relativ)"
 #: app/assets/javascripts/app/models/public_link.coffee:10
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:32
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:15
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:49
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:48
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:62
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:90
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14

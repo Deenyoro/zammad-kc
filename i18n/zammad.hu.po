@@ -81,9 +81,9 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Létrehozta: #{current_user.longname} "
-"ekkor: #{ticket.updated_at}_\n"
+"_<<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Létrehozta: #{current_user.longname} ekkor: "
+"#{ticket.updated_at}_\n"
 "* Csoport: #{ticket.group.name}\n"
 "* Tulajdonos: #{ticket.owner.fullname}\n"
 "* Állapot: #{t(ticket.state.name)}\n"
@@ -107,9 +107,8 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Eszkalálódott ekkor: "
-"#{ticket.escalation_at}_\n"
+"_<<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Eszkalálódott ekkor: #{ticket.escalation_at}_\n"
 "A \"#{ticket.customer.longname}\"-tól származó jegy (#{ticket.title}) "
 "\"#{ticket.escalation_at}\" óta eszkalálódott!\n"
 "\n"
@@ -133,9 +132,9 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Utoljára frissítve: "
-"#{current_user.longname} ekkor: #{ticket.updated_at}_\n"
+"_<<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Utoljára frissítve: #{current_user.longname} "
+"ekkor: #{ticket.updated_at}_\n"
 "* Csoport: #{ticket.group.name}\n"
 "* Tulajdonos: #{ticket.owner.fullname}\n"
 "* Állapot: #{t(ticket.state.name)}\n"
@@ -159,8 +158,8 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Emlékeztető elérve!_\n"
+"_<<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Emlékeztető elérve!_\n"
 "Egy jegy figyelmet igényel: emlékeztető a (#{ticket.title}) számára "
 "\"*##{ticket.customer.longname}*\" ügyféllel.\n"
 "\n"
@@ -187,9 +186,9 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Frissítette: #{current_user.longname} "
-"ekkor: #{ticket.updated_at}_\n"
+"_<<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Frissítette: #{current_user.longname} ekkor: "
+"#{ticket.updated_at}_\n"
 "<% if @objects[:changes].present? %>\n"
 "  <% @objects[:changes].each do |key, value| %>\n"
 "  * <%= t key %>: <%= h value[0] %> -> <%= h value[1] %>\n"
@@ -215,9 +214,8 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Eszkalálódni fog ekkor: "
-"#{ticket.escalation_at}_\n"
+"_<<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Eszkalálódni fog ekkor: #{ticket.escalation_at}_\n"
 "A \"#{ticket.customer.longname}\" ügyféltől származó jegy (#{ticket.title}) "
 "eszkalálódni fog ekkor: \"#{ticket.escalation_at}\"!\n"
 "\n"
@@ -291,8 +289,8 @@ msgstr ""
 "<div>Üdvözöljük #{user.firstname},</div>\n"
 "<br>\n"
 "<div>Úgy tűnik, hogy Ön a fiókját egy <b>ismert eszközzel, de egy új "
-"országból</b> használta ezen az eszközön: \"#{user_device.created_at}\"</div>"
-"\n"
+"országból</b> használta ezen az eszközön: \"#{user_device.created_at}\"</"
+"div>\n"
 "<br>\n"
 "<div>\n"
 "Az Ön eszköze: #{user_device.name}<br>\n"
@@ -303,8 +301,8 @@ msgstr ""
 "<div>Az ország hozzá lett adva az ismert eszközök listájához, amelyet itt "
 "tekinthet meg:</div>\n"
 "<br>\n"
-"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/devices\""
-">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
+"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/"
+"devices\">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
 "<br>\n"
 "<div>Amennyiben ez nem Ön volt, kérjük, távolítsa el az eszközt, változtassa "
 "meg fiókja jelszavát, és lépjen kapcsolatba a rendszergazdájával. Valaki "
@@ -357,8 +355,8 @@ msgstr ""
 "<div>Az Ön eszköze felkerült az ismert eszközök listájára, amelyet itt "
 "tekinthet meg:</div>\n"
 "<br>\n"
-"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/devices\""
-">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
+"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/"
+"devices\">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
 "<br>\n"
 "<div>Amennyiben ez nem Ön volt, kérjük, távolítsa el az eszközt, változtassa "
 "meg fiókja jelszavát, és lépjen kapcsolatba a rendszergazdájával. Valaki "
@@ -496,10 +494,10 @@ msgstr "%s hitelesítő adatok"
 msgid "%s days ago"
 msgstr "%s nappal ezelőtt"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:709
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:710
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:260
-#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:4
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:28
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:7
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:27
 msgid ""
 "%s email(s) were found in your mailbox. They will all be moved from your "
 "mailbox into Zammad."
@@ -1126,7 +1124,7 @@ msgstr "Fiók SID"
 msgid "Account Time"
 msgstr "Fiókidő"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:621
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:622
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:197
 #: app/controllers/channels_email_controller.rb:211
 msgid "Account already exists!"
@@ -1142,7 +1140,7 @@ msgstr "A fiók nincs ellenőrizve"
 #: app/assets/javascripts/app/views/ticket_zoom/time_unit.jst.eco:2
 #: app/assets/javascripts/app/views/time_accounting/accounted_time.jst.eco:2
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:83
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:136
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:138
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:18
 #: app/graphql/gql/types/overview_type.rb:101
 msgid "Accounted Time"
@@ -1661,16 +1659,16 @@ msgstr ""
 "\n"
 "<div>Üdvözöljük #{user.firstname},</div>\n"
 "<br>\n"
-"<div>Egy rendszergazdai bejelentkezési kérelmet kaptunk az Ön "
-"#{config.product_name} fiókjához <b>#{user.login}</b>.</div>\n"
+"<div>Egy rendszergazdai bejelentkezési kérelmet kaptunk az Ön #{config."
+"product_name} fiókjához <b>#{user.login}</b>.</div>\n"
 "<br>\n"
 "<div>Kérjük, a folytatáshoz kattintson az alábbi hivatkozásra (vagy másolja "
 "be az URL címet a böngészőjébe):</div>\n"
 "<br>\n"
 "<div><a href=\"#{url}\">#{url}</a></div>\n"
 "<br>\n"
-"<div>Ez a hivatkozás egy olyan oldalra vezeti Önt, ahol bejelentkezhet.</div>"
-"\n"
+"<div>Ez a hivatkozás egy olyan oldalra vezeti Önt, ahol bejelentkezhet.</"
+"div>\n"
 "<br>\n"
 "<div>Amennyiben nem szeretne bejelentkezni, kérjük, hagyja figyelmen kívül "
 "ezt az üzenetet.</div>\n"
@@ -1976,8 +1974,8 @@ msgstr ""
 "<div>Üdvözöljük #{recipient.firstname},</div>\n"
 "<br>\n"
 "<div>\n"
-"Egy másik jegy lett egyesítve a jegybe (#{ticket.title}) "
-"\"<b>#{current_user.longname}\" által.</b>\".\n"
+"Egy másik jegy lett egyesítve a jegybe (#{ticket.title}) \"<b>#{current_user."
+"longname}\" által.</b>\".\n"
 "</div>\n"
 "<br>\n"
 "<div>\n"
@@ -2128,26 +2126,26 @@ msgstr "Archív"
 msgid "Archive Emails"
 msgstr "Archiválva ekkor"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:738
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:739
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:43
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:289
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:58
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:57
 msgid "Archive cut-off time"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:737
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:738
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:42
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:288
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:44
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:43
 #, fuzzy
 #| msgid "Archived at"
 msgid "Archive emails"
 msgstr "Archiválva ekkor"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:739
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:740
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:44
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:290
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:74
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:66
 #, fuzzy
 #| msgid "No tickets are updated."
 msgid "Archive ticket target state"
@@ -2512,7 +2510,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_overview/settings.coffee:31
 #: app/assets/javascripts/app/models/overview.coffee:15
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:101
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:103
 msgid "Attributes"
 msgstr "Tulajdonságok"
 
@@ -3136,7 +3134,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show.jst.eco:23
 #: app/assets/javascripts/app/views/widget/invite_user.jst.eco:17
 #: app/frontend/apps/desktop/components/CommonInlineEdit/CommonInlineEdit.vue:343
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:202
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:203
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:125
 #: app/frontend/apps/mobile/components/CommonSectionPopup/CommonSectionPopup.vue:29
 #: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInputDialog.vue:259
@@ -3274,7 +3272,7 @@ msgid "Change Your Password"
 msgstr "Változtassa meg jelszavát"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:69
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:80
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:82
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:74
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:137
 msgid "Change customer"
@@ -3299,13 +3297,13 @@ msgstr "Személyes fiók jelszavának módosítása."
 msgid "Change text color"
 msgstr "Dátum módosítása"
 
-#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:34
+#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:36
 #, fuzzy
 #| msgid "Change %s"
 msgid "Change to %s"
 msgstr "%s változtatás"
 
-#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:24
+#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:27
 #, fuzzy
 #| msgid "Invalid email address."
 msgid "Change to channel email address"
@@ -3365,7 +3363,7 @@ msgstr "Csatorna"
 msgid "Channel Distribution"
 msgstr "Csatorna forgalmazás"
 
-#: app/assets/javascripts/app/controllers/manage.coffee:38
+#: app/assets/javascripts/app/controllers/manage.coffee:41
 msgid "Channels"
 msgstr "Csatornák"
 
@@ -3827,10 +3825,8 @@ msgstr "Cég Zrt."
 msgid ""
 "Compared to the Microsoft 365 Graph API Email Channel, this is the "
 "traditional implementation using OAuth and IMAP. When setting up new "
-"channels, we suggest using the Graph API implementation instead. When you "
-"think there are good reasons to keep the IMAP approach as an alternative in "
-"the future, please let us know in the Zammad Community %l. More information "
-"can be found here %l."
+"channels, we suggest using the Graph API implementation instead. More "
+"information can be found here %l."
 msgstr ""
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:6
@@ -3952,8 +3948,8 @@ msgid ""
 "<br>\n"
 "<div>Your #{config.product_name} Team</div>\n"
 msgstr ""
-"Erősítse meg a #{config.product_name} fiókját, #{user.firstname} "
-"#{user.lastname}\n"
+"Erősítse meg a #{config.product_name} fiókját, #{user.firstname} #{user."
+"lastname}\n"
 "\n"
 "<div>Üdvözöljük #{user.firstname},</div>\n"
 "<br>\n"
@@ -4028,7 +4024,7 @@ msgstr "Microsoft 365 alkalmazás csatlakoztatása"
 msgid "Connect Twitter App"
 msgstr "Twitter alkalmazás csatlakoztatása"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:134
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:135
 msgid "Connect and Continue"
 msgstr "Csatlakozás és folytatás"
 
@@ -4110,7 +4106,7 @@ msgstr "Kontextus"
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:108
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:49
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSource.vue:53
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:142
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:143
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:541
 msgid "Continue"
 msgstr "Folytatás"
@@ -4409,8 +4405,8 @@ msgstr ""
 "* ticket.organization (pl. ticket.organization.name)\n"
 "* user (pl. user.keresztnév, user.email)\n"
 "\n"
-"Ha egy listából szeretne helyőrzőket kiválasztani, csak írja be a következőt:"
-" \"::\"."
+"Ha egy listából szeretne helyőrzőket kiválasztani, csak írja be a "
+"következőt: \"::\"."
 
 #: app/frontend/apps/mobile/pages/ticket/routes.ts:65
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:488
@@ -4421,7 +4417,7 @@ msgstr "Jegy létrehozása"
 msgid "Create a Test Ticket"
 msgstr "Tesztjegy létrehozása"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:211
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:212
 #, fuzzy
 #| msgid "Create new customer"
 msgid "Create a new checklist item"
@@ -5245,7 +5241,8 @@ msgstr ""
 
 #: db/seeds/settings.rb:5561
 msgid "Defines if Knowledge Base navbar button is enabled."
-msgstr "Meghatározza, hogy a Tudásbázis navigációs sáv gomb engedélyezve van-e."
+msgstr ""
+"Meghatározza, hogy a Tudásbázis navigációs sáv gomb engedélyezve van-e."
 
 #: db/seeds/settings.rb:4863
 msgid "Defines if LDAP is enabled or not."
@@ -5295,7 +5292,8 @@ msgstr "Meghatározza, hogy az alkalmazás indítási módban van-e."
 
 #: db/seeds/settings.rb:86
 msgid "Defines if application is used as online service."
-msgstr "Meghatározza, hogy az alkalmazást online szolgáltatásként használják-e."
+msgstr ""
+"Meghatározza, hogy az alkalmazást online szolgáltatásként használják-e."
 
 #: db/seeds/settings.rb:5777
 msgid ""
@@ -5468,7 +5466,8 @@ msgstr ""
 
 #: db/seeds/settings.rb:4321
 msgid "Defines postmaster filter to handle secure mailing."
-msgstr "Meghatározza a postmaster szűrőjét a biztonságos levelezés kezeléséhez."
+msgstr ""
+"Meghatározza a postmaster szűrőjét a biztonságos levelezés kezeléséhez."
 
 #: db/seeds/settings.rb:4429
 msgid ""
@@ -5543,7 +5542,8 @@ msgstr ""
 
 #: db/seeds/settings.rb:4312
 msgid "Defines postmaster filter to identify sender user."
-msgstr "Meghatározza a postmaster szűrőjét a feladó felhasználó azonosításához."
+msgstr ""
+"Meghatározza a postmaster szűrőjét a feladó felhasználó azonosításához."
 
 #: db/seeds/settings.rb:4384
 msgid ""
@@ -5935,9 +5935,8 @@ msgid ""
 "Defines the transaction backend which will enrich customer and organization "
 "information from Clearbit (http://www.clearbit.com)."
 msgstr ""
-"Meghatározza a tranzakciós háttérrendszert, amely a Clearbitből "
-"(http://www.clearbit.com) származó ügyfél- és szervezeti információkat "
-"gazdagítja."
+"Meghatározza a tranzakciós háttérrendszert, amely a Clearbitből (http://www."
+"clearbit.com) származó ügyfél- és szervezeti információkat gazdagítja."
 
 #: app/assets/javascripts/app/views/time_accounting/settings.jst.eco:14
 #: db/seeds/settings.rb:4106
@@ -6004,8 +6003,8 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:75
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:55
 #: app/assets/javascripts/app/views/knowledge_base/public_menu_form_item.jst.eco:18
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:104
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:114
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:109
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:119
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:29
 #: app/assets/javascripts/app/views/profile/devices.jst.eco:25
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:21
@@ -6057,7 +6056,8 @@ msgstr "Felhasználó törlése"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/delete_action.coffee:9
 msgid "Delete all child categories and answers, then try again."
-msgstr "Törölje az összes gyermekkategóriát és választ, majd próbálja meg újra."
+msgstr ""
+"Törölje az összes gyermekkategóriát és választ, majd próbálja meg újra."
 
 #: app/assets/javascripts/app/views/generic/object_import/index.jst.eco:19
 msgid "Delete all existing records first."
@@ -6261,15 +6261,6 @@ msgstr "Asztal"
 msgid "Destination Group"
 msgstr "Célcsoport"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:264
-#: app/assets/javascripts/app/controllers/_channel/google.coffee:282
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:304
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:271
-#, fuzzy
-#| msgid "Destination Group"
-msgid "Destination Group Email Address"
-msgstr "Célcsoport"
-
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:58
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:74
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:61
@@ -6279,6 +6270,15 @@ msgstr "Cél hívó fél azonosítója"
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:108
 msgid "Destination caller ID or queue"
 msgstr "Cél hívó fél azonosítója vagy várólista"
+
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:264
+#: app/assets/javascripts/app/controllers/_channel/google.coffee:282
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:304
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:271
+#, fuzzy
+#| msgid "Destination Group"
+msgid "Destination group > Sending email address"
+msgstr "Célcsoport"
 
 #: app/assets/javascripts/app/views/settings/ticket_duplicate_detection.jst.eco:7
 #: db/seeds/settings.rb:2695
@@ -6396,8 +6396,8 @@ msgstr "Irány"
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:70
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:31
 #: app/assets/javascripts/app/views/google/list.jst.eco:107
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:109
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:119
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:105
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:115
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:30
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:40
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:85
@@ -6487,10 +6487,10 @@ msgstr "Megjelenítés"
 msgid "Display name"
 msgstr "Megjelenítendő név"
 
-#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:23
+#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:26
 #, fuzzy
 #| msgid "Invalid email address."
-msgid "Do not change email address"
+msgid "Do not change email address (%s)"
 msgstr "Érvénytelen e-mail cím."
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:662
@@ -6803,7 +6803,7 @@ msgstr "Szervezet szerkesztése"
 msgid "Edit authenticator app"
 msgstr "Hitelesítő alkalmazás szerkesztése"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:122
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:123
 #, fuzzy
 #| msgid "Ticket title"
 msgid "Edit checklist title"
@@ -6958,7 +6958,6 @@ msgstr "E-mail fiókok"
 #: app/assets/javascripts/app/views/google/list.jst.eco:81
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:82
 #: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:92
-#: db/seeds/object_manager_attributes.rb:2222
 msgid "Email Address"
 msgstr "E-mail cím"
 
@@ -6984,7 +6983,7 @@ msgstr "E-mail értesítés"
 msgid "Email Notifications"
 msgstr "E-mail értesítések"
 
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:137
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:140
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:105
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:71
 msgid "Email Outbound"
@@ -7013,8 +7012,8 @@ msgstr ""
 "Az e-mailt nem lehetett ellenőrizni. Kérjük, lépjen kapcsolatba a "
 "rendszergazdájával."
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:912
-#: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:404
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:913
+#: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:405
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:169
 msgid ""
 "Email sending and receiving could not be verified. Please check your "
@@ -7042,10 +7041,10 @@ msgstr ""
 msgid "Email sent to %s"
 msgstr "e-mail elküldve '%s' részére"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:738
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:739
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:43
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:289
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:61
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:60
 msgid ""
 "Emails before the cut-off time are imported as archived tickets. Emails "
 "after the cut-off time are imported as regular tickets."
@@ -7067,8 +7066,8 @@ msgstr "Áttekintés"
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:72
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:33
 #: app/assets/javascripts/app/views/google/list.jst.eco:109
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:111
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:121
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:107
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:117
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:31
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:42
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:87
@@ -7085,8 +7084,8 @@ msgid ""
 "Enable REST API access using the username/email address and password for the "
 "authentication user."
 msgstr ""
-"Engedélyezze a REST API-hozzáférést a hitelesítő felhasználó felhasználónevé"
-"nek/ e-mail címének és jelszavának használatával."
+"Engedélyezze a REST API-hozzáférést a hitelesítő felhasználó "
+"felhasználónevének/ e-mail címének és jelszavának használatával."
 
 #: app/assets/javascripts/app/views/api.jst.eco:15
 msgid ""
@@ -7519,7 +7518,8 @@ msgstr ""
 #: app/assets/javascripts/app/views/profile/password.jst.eco:9
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:121
 msgid "Enter your current password, insert a new one and confirm it."
-msgstr "Írja be a jelenlegi jelszavát, adjon meg egy újat, és erősítse meg azt."
+msgstr ""
+"Írja be a jelenlegi jelszavát, adjon meg egy újat, és erősítse meg azt."
 
 #: app/assets/javascripts/app/views/import/kayako.jst.eco:36
 msgid ""
@@ -8155,7 +8155,7 @@ msgstr "Fix e-mail fiókok"
 msgid "Flat Design"
 msgstr "Flat Design"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:433
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:434
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:283
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:305
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:482
@@ -8949,9 +8949,9 @@ msgid ""
 "asterisk §*§ to find anything, e.g. §smi*§ or §rosent*l§. You also can use ||"
 "quotation marks|| for searching phrases: §\"some phrase\"§."
 msgstr ""
-"Itt kereshet jegyeket, ügyfeleket és szervezeteket. Használja a csillagot §*§"
-" a bármi kereséséhez, pl. §smi*§ vagy §rosent*l§. Használhat ||idézőjeleket||"
-" is a kifejezések kereséséhez: §\"valamilyen kifejezés\"§."
+"Itt kereshet jegyeket, ügyfeleket és szervezeteket. Használja a csillagot "
+"§*§ a bármi kereséséhez, pl. §smi*§ vagy §rosent*l§. Használhat ||"
+"idézőjeleket|| is a kifejezések kereséséhez: §\"valamilyen kifejezés\"§."
 
 #: app/assets/javascripts/app/views/profile/password.jst.eco:23
 msgid ""
@@ -9020,8 +9020,8 @@ msgstr "Kiemelés ikon"
 #: db/seeds/settings.rb:5604
 msgid "Highlights if the note a user is writing is public or private"
 msgstr ""
-"Kiemeli, hogy a felhasználó által írt megjegyzés nyilvános vagy "
-"magánjellegű-e"
+"Kiemeli, hogy a felhasználó által írt megjegyzés nyilvános vagy magánjellegű-"
+"e"
 
 #: db/seeds/settings.rb:5601
 msgid "Hint for adding an article to an existing ticket."
@@ -9031,7 +9031,7 @@ msgstr "Hasznos tipp egy cikk hozzáadásához egy meglévő jegyhez."
 #: app/assets/javascripts/app/controllers/organization_profile/action_row.coffee:28
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket.coffee:114
 #: app/assets/javascripts/app/controllers/user_profile/action_row.coffee:60
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:62
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:64
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:130
 msgid "History"
 msgstr "Előzmények"
@@ -9051,7 +9051,7 @@ msgstr "Ünnepek iCalendar hírfolyam"
 msgid "Home"
 msgstr "Kezdőlap"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:427
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:428
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:325
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:80
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:69
@@ -9686,8 +9686,8 @@ msgid ""
 "the §</body>§ closing tag."
 msgstr ""
 "Illessze be a widget kódját minden olyan oldal forráskódjába, amelyen a "
-"csevegés látható lesz. Az oldal forráskódjának végén kell elhelyezni a "
-"§</body>§ záró tag előtt."
+"csevegés látható lesz. Az oldal forráskódjának végén kell elhelyezni a §</"
+"body>§ záró tag előtt."
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:613
 msgid "Inserts a horizontal rule"
@@ -9942,8 +9942,8 @@ msgstr ""
 "#{config.product_name} - ügyfélszolgálati platformunkra.</div>\n"
 "<br>\n"
 "<div>Kattintson a <a href=\"#{config.http_type}://#{config.fqdn}/"
-"#password_reset_verify/#{token.token}\">ide</a> és állítsa be a "
-"jelszavát.</div>\n"
+"#password_reset_verify/#{token.token}\">ide</a> és állítsa be a jelszavát.</"
+"div>\n"
 "<br>\n"
 "<div>Sok sikert,</div>\n"
 "<br>\n"
@@ -10087,7 +10087,7 @@ msgstr ""
 msgid "Kayako"
 msgstr "Kayako"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:434
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:435
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:284
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:306
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:483
@@ -10512,7 +10512,7 @@ msgid "LinkedIn Developer Site"
 msgstr "LinkedIn fejlesztői oldal"
 
 #: app/assets/javascripts/app/views/link/ticket/list.jst.eco:1
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:123
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:125
 msgid "Links"
 msgstr "Hivatkozások"
 
@@ -10726,7 +10726,7 @@ msgstr "Karbantartás üzemmód"
 msgid "Maintenance mode enabled!"
 msgstr "Karbantartási üzemmód engedélyezve!"
 
-#: app/assets/javascripts/app/controllers/manage.coffee:15
+#: app/assets/javascripts/app/controllers/manage.coffee:18
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:85
 msgid "Manage"
 msgstr "Kezelés"
@@ -11271,7 +11271,7 @@ msgstr "Említések Csoport"
 #: app/assets/javascripts/app/controllers/agent_ticket_merge.coffee:7
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket.coffee:120
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketMerge/TicketMergeFlyout.vue:87
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:69
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:71
 msgid "Merge"
 msgstr "Egyesítés"
 
@@ -12142,7 +12142,7 @@ msgstr "Áttekintések"
 msgid "No Proxy"
 msgstr "Nincs proxy"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:203
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:43
@@ -12189,7 +12189,7 @@ msgstr "Nem található tanúsítvány."
 msgid "No checklist added to this ticket yet."
 msgstr "Ön még nem hozott létre jegyet."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:185
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:186
 msgid "No checklist items yet"
 msgstr ""
 
@@ -13780,7 +13780,7 @@ msgstr ""
 "Ezeket használhatja a bejelentkezéshez, ha elveszíti a hozzáférést egy másik "
 "kétfaktoros módszerhez:"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:75
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:76
 #, fuzzy
 #| msgid "Please select at least one folder."
 msgid "Please select a checklist template."
@@ -13834,7 +13834,7 @@ msgstr "Kérjük, várjon, amíg megkapja a jóváhagyásról szóló értesít�
 msgid "Please wait…"
 msgstr "Kérjük, várjon…"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:432
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:433
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:85
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:72
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:161
@@ -14526,7 +14526,7 @@ msgid "Reopening time in days"
 msgstr "Újranyitási idő napokban"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:195
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:196
 #, fuzzy
 #| msgid "Order"
 msgid "Reorder"
@@ -14734,8 +14734,8 @@ msgstr ""
 "jelszavát.</div>\n"
 "<br>\n"
 "<div>Amennyiben nem szeretné visszaállítani jelszavát, kérjük, hagyja "
-"figyelmen kívül ezt az üzenetet. A jelszavát nem fogjuk visszaállítani.</div>"
-"\n"
+"figyelmen kívül ezt az üzenetet. A jelszavát nem fogjuk visszaállítani.</"
+"div>\n"
 "<br>\n"
 "<div>Az Ön #{config.product_name} csapata</div>\n"
 
@@ -14779,8 +14779,8 @@ msgstr ""
 "jelszavát.</div>\n"
 "<br>\n"
 "<div>Amennyiben nem szeretné visszaállítani a jelszavát, kérjük, hagyja "
-"figyelmen kívül ezt az üzenetet. A jelszavát nem fogjuk visszaállítani.</div>"
-"\n"
+"figyelmen kívül ezt az üzenetet. A jelszavát nem fogjuk visszaállítani.</"
+"div>\n"
 "<br>\n"
 "<div>Az Ön #{config.product_name} csapata</div>\n"
 
@@ -14906,8 +14906,8 @@ msgid "Roles:"
 msgstr "Szerepkörök:"
 
 #: app/assets/javascripts/app/views/google/list.jst.eco:104
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:106
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:116
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:111
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:121
 msgid "Rollback migration"
 msgstr "Migráció visszaállítása"
 
@@ -15029,7 +15029,7 @@ msgstr "SMS teszt nem sikerült."
 msgid "SMTP - configure your own outgoing SMTP settings"
 msgstr "SMTP - saját kimenő SMTP beállítások konfigurálása"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:207
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:47
@@ -15041,7 +15041,7 @@ msgstr "SSL"
 msgid "SSL Certificates"
 msgstr "SSL tanúsítványok"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:432
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:714
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:84
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:73
@@ -15057,7 +15057,7 @@ msgstr "SSL tanúsítványok"
 msgid "SSL verification"
 msgstr "SSL ellenőrzés"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:27
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:33
@@ -15071,7 +15071,7 @@ msgstr "SSL/STARTTLS"
 msgid "SSO"
 msgstr "SSO"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:205
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:54
@@ -15108,7 +15108,7 @@ msgstr "szombat"
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:22
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCameraFlyout.vue:121
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCropImageFlyout.vue:44
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:226
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:227
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:136
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:292
 #: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:70
@@ -15138,7 +15138,7 @@ msgid "Save Out of Office"
 msgstr "Hivatalon kívül"
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSource.vue:53
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:146
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:147
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:115
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualSystemInformation.vue:131
 msgid "Save and Continue"
@@ -15504,7 +15504,7 @@ msgstr "CSV fájl kiválasztása"
 msgid "Select Shared Draft"
 msgstr "Megosztott piszkozat kiválasztása"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:16
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:17
 #: app/assets/javascripts/app/views/widget/template.jst.eco:4
 msgid "Select Template"
 msgstr "Sablon kiválasztása"
@@ -15607,7 +15607,7 @@ msgstr "E-mail küldése"
 msgid "Send Invitation"
 msgstr "Meghívó küldése"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:408
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:409
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:65
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:50
 msgid "Send Mails via"
@@ -15672,6 +15672,12 @@ msgstr "Feladó a Reply-To fejléc alapján"
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:503
 msgid "Sender of last article"
 msgstr "Az utolsó cikk feladója"
+
+#: db/seeds/object_manager_attributes.rb:2222
+#, fuzzy
+#| msgid "Email Address"
+msgid "Sending Email Address"
+msgstr "E-mail cím"
 
 #: app/models/ticket/article.rb:312
 msgid "Sending an email without a valid recipient is not possible."
@@ -15875,7 +15881,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:28
 #: app/assets/javascripts/app/controllers/_channel/web.coffee:11
 #: app/assets/javascripts/app/controllers/chat.coffee:869
-#: app/assets/javascripts/app/controllers/manage.coffee:39
+#: app/assets/javascripts/app/controllers/manage.coffee:42
 #: app/assets/javascripts/app/controllers/ticket_zoom/setting.coffee:20
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:18
 #: app/assets/javascripts/app/views/channel/form.jst.eco:13
@@ -16232,7 +16238,8 @@ msgstr "Simple Storage Service (S3)"
 
 #: app/models/store/provider/s3/config.rb:33
 msgid "Simple Storage Service configuration not found or invalid."
-msgstr "A Simple Storage Service konfigurációja nem található vagy érvénytelen."
+msgstr ""
+"A Simple Storage Service konfigurációja nem található vagy érvénytelen."
 
 #: app/models/store/provider/s3.rb:88
 msgid ""
@@ -16285,7 +16292,7 @@ msgstr "Oldal"
 
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:9
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:10
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:124
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:127
 #: app/assets/javascripts/app/views/getting_started/channel.jst.eco:21
 #: app/assets/javascripts/app/views/getting_started/email_notification.jst.eco:17
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:97
@@ -16696,7 +16703,7 @@ msgstr "Feliratkozott jegyek"
 msgid "Subscribed tickets"
 msgstr "Feliratkozott jegyek"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:145
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:147
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:192
 msgid "Subscribers"
 msgstr "Feliratkozók"
@@ -16747,7 +16754,7 @@ msgstr "Szinkronizálás számítógéppel"
 
 #: app/assets/javascripts/app/controllers/_manage/system.coffee:3
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:37
-#: app/assets/javascripts/app/controllers/manage.coffee:40
+#: app/assets/javascripts/app/controllers/manage.coffee:43
 #: app/assets/javascripts/app/views/generic/history.jst.eco:15
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/composables/useHistoryEvents.ts:32
 #: db/seeds/permissions.rb:197 db/seeds/ticket_article_senders.rb:5
@@ -16831,7 +16838,7 @@ msgstr "A \"%s\" címke már létezik."
 #: app/assets/javascripts/app/views/popover/kb_generic.jst.eco:41
 #: app/assets/javascripts/app/views/tag/index.jst.eco:3
 #: app/assets/javascripts/app/views/widget/tag.jst.eco:1
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:113
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:115
 #: app/frontend/apps/mobile/components/Form/fields/FieldTags/FieldTagsDialog.vue:145
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketTags.vue:78
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:184
@@ -17202,7 +17209,8 @@ msgstr "Az aktív jelentési profil nem található."
 #: app/assets/javascripts/app/views/exchange/admin_consent.jst.eco:2
 #: app/assets/javascripts/app/views/microsoft365/admin_consent.jst.eco:2
 msgid "The admin consent request was sent to your administrator."
-msgstr "A rendszergazdai hozzájárulási kérelmet elküldtük a rendszergazdájának."
+msgstr ""
+"A rendszergazdai hozzájárulási kérelmet elküldtük a rendszergazdájának."
 
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:81
 #, fuzzy
@@ -17479,9 +17487,9 @@ msgid ""
 msgstr ""
 "A tudásbázisa alapértelmezett URL címe például example.com vagy example.com/"
 "help. Ha helyette egy egyéni URL címről szeretné kiszolgálni, adja meg az "
-"alábbi célállomást (pl. \"/support\", \"example.com\" vagy "
-"\"example.com/support\"). Ezután a folyamat befejezéséhez kövesse a "
-"\"Webkiszolgáló konfigurálása\" című fejezetben található utasításokat."
+"alábbi célállomást (pl. \"/support\", \"example.com\" vagy \"example.com/"
+"support\"). Ezután a folyamat befejezéséhez kövesse a \"Webkiszolgáló "
+"konfigurálása\" című fejezetben található utasításokat."
 
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:118
 msgid "The default font size is 12px."
@@ -18228,7 +18236,7 @@ msgstr "A kiválasztott dátum érvénytelen."
 msgid "The server presented a certificate that could not be verified."
 msgstr "A fájlt nem sikerült feltölteni."
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:625
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:626
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:200
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:245
 msgid ""
@@ -18392,7 +18400,8 @@ msgstr ""
 #: app/assets/javascripts/app/views/login.jst.eco:61
 #: app/frontend/apps/desktop/pages/authentication/composables/useAdminPasswordAuthVerify.ts:62
 msgid "The token for the admin password login is invalid."
-msgstr "A rendszergazdai jelszavas bejelentkezéshez használt token érvénytelen."
+msgstr ""
+"A rendszergazdai jelszavas bejelentkezéshez használt token érvénytelen."
 
 #: app/frontend/apps/desktop/pages/authentication/composables/useAdminPasswordAuthVerify.ts:54
 msgid "The token is valid. You are now able to login via password once."
@@ -18417,7 +18426,8 @@ msgstr "A kétfaktoros hitelesítési módszer nincs engedélyezve."
 
 #: app/services/service/user/two_factor/remove_method_credentials.rb:37
 msgid "The two-factor credentials you're trying to delete do not exist"
-msgstr "A kétfaktoros hitelesítő adatok, amelyeket törölni próbál, nem léteznek"
+msgstr ""
+"A kétfaktoros hitelesítő adatok, amelyeket törölni próbál, nem léteznek"
 
 #: app/models/setting/validation/saml/security.rb:43
 #, fuzzy
@@ -19112,7 +19122,8 @@ msgstr "Ez az aláírás inaktív, nem kerül bele a válaszba."
 #: app/services/service/user/add_first_admin.rb:8
 msgid ""
 "This system has already been configured and an administrator account exists."
-msgstr "Ez a rendszer már konfigurálva van, és létezik egy rendszergazdai fiók."
+msgstr ""
+"Ez a rendszer már konfigurálva van, és létezik egy rendszergazdai fiók."
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupAutomated/GuidedSetupAutomatedInfo.vue:11
 msgid "This system is configured for automated setup."
@@ -19226,8 +19237,8 @@ msgstr ""
 "</div>\n"
 "<br>\n"
 "<div>\n"
-"   <a href=\"#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}\""
-" target=\"zammad_app\">Tekintse meg itt: #{config.product_name}</a>\n"
+"   <a href=\"#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket."
+"id}\" target=\"zammad_app\">Tekintse meg itt: #{config.product_name}</a>\n"
 "</div>\n"
 
 #: app/assets/javascripts/app/views/data_privacy/tasks.jst.eco:24
@@ -19586,8 +19597,8 @@ msgstr ""
 "<div>Üdvözöljük #{recipient.firstname},</div>\n"
 "<br>\n"
 "<div>A \"<b>#{ticket.customer.longname}</b>\" ügyféltől származó jegy "
-"(#{ticket.title}) eszkalálódni fog a következő időpontban: "
-"\"#{ticket.escalation_at}\"!</div>\n"
+"(#{ticket.title}) eszkalálódni fog a következő időpontban: \"#{ticket."
+"escalation_at}\"!</div>\n"
 "<br>\n"
 "<% if @objects[:article] %>\n"
 "   <div>\n"
@@ -19599,8 +19610,8 @@ msgstr ""
 "<% end %>\n"
 "<br>\n"
 "<div>\n"
-"   <a href=\"#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}\""
-" target=\"zammad_app\" >Tekintse meg itt: #{config.product_name}</a> \n"
+"   <a href=\"#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket."
+"id}\" target=\"zammad_app\" >Tekintse meg itt: #{config.product_name}</a> \n"
 "</div>\n"
 
 #: app/frontend/apps/desktop/pages/ticket/routes.ts:35
@@ -20182,7 +20193,7 @@ msgstr "Csevegés jeggyé alakítása"
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:13
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:14
 #: app/assets/javascripts/app/views/object_manager/attribute/autocompletion_ajax_external_data_source.jst.eco:3
-#: app/frontend/apps/desktop/form/composables/useSSLVerificationWarningHandler.ts:24
+#: app/frontend/apps/desktop/form/composables/useSSLVerificationWarningHandler.ts:13
 msgid ""
 "Turning off SSL verification is a security risk and should be used only "
 "temporary. Use this option at your own risk!"
@@ -20334,7 +20345,7 @@ msgstr "A kétfaktoros hitelesítési módszert nem lehetett elindítani."
 msgid "Two-factor method has been configured successfully."
 msgstr "A jegy sikeresen létrejött."
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:426
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:427
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:248
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:79
 #: app/assets/javascripts/app/controllers/translation.coffee:289
@@ -20712,8 +20723,8 @@ msgstr ""
 "<div>Üdvözöljük #{recipient.firstname},</div>\n"
 "<br>\n"
 "<div>\n"
-"A jegyet (#{ticket.title}) frissítette: \"<b>#{current_user.longname}</b>\"."
-"\n"
+"A jegyet (#{ticket.title}) frissítette: \"<b>#{current_user.longname}</"
+"b>\".\n"
 "</div>\n"
 "<br>\n"
 "<% if @objects[:changes].present? %>\n"
@@ -20736,8 +20747,8 @@ msgstr ""
 "<br>\n"
 "<div>\n"
 "   <a href=\"#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}"
-"<% if @objects[:article] %>/#{article.id}<% end %>\" target=\"zammad_app\""
-">Tekintse meg ebben: #{config.product_name}</a>\n"
+"<% if @objects[:article] %>/#{article.id}<% end %>\" "
+"target=\"zammad_app\">Tekintse meg ebben: #{config.product_name}</a>\n"
 "</div>\n"
 
 #. This is the template file app/views/mailer/ticket_article_update_reaction/en.html.erb in ERB/HTML format.
@@ -20788,8 +20799,8 @@ msgstr ""
 "<div>Üdvözöljük #{recipient.firstname},</div>\n"
 "<br>\n"
 "<div>\n"
-"Egy másik jegy lett egyesítve a jegybe (#{ticket.title}) "
-"\"<b>#{current_user.longname}\" által.</b>\".\n"
+"Egy másik jegy lett egyesítve a jegybe (#{ticket.title}) \"<b>#{current_user."
+"longname}\" által.</b>\".\n"
 "</div>\n"
 "<br>\n"
 "<div>\n"
@@ -20901,7 +20912,8 @@ msgstr "Használja az utolsó ügyfél-cikk időpontját."
 
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:5
 msgid "Use this switch to start synchronization of your ldap sources."
-msgstr "Ezzel a kapcsolóval indíthatja el az ldap forrásainak szinkronizálását."
+msgstr ""
+"Ezzel a kapcsolóval indíthatja el az ldap forrásainak szinkronizálását."
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:141
 msgid "Used anywhere"
@@ -20937,7 +20949,7 @@ msgstr "Szövegformázásra használt"
 msgid "Used when viewing a Ticket"
 msgstr "Jegy megjelenítésekor használható"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:428
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:429
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:37
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:165
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:24
@@ -21251,7 +21263,7 @@ msgstr "Token ellenőrzése"
 msgid "Verify sending and receiving"
 msgstr "Küldés és fogadás ellenőrzése"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:170
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:171
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:92
 msgid "Verifying and saving your configuration…"
 msgstr "Az Ön konfigurációjának ellenőrzése és mentése…"
@@ -21265,7 +21277,7 @@ msgstr "Az importálási konfiguráció ellenőrzése és mentése…"
 msgid "Verifying key information…"
 msgstr "Kulcsfontosságú információk ellenőrzése…"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:178
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:179
 msgid "Verifying your configuration…"
 msgstr "Az Ön konfigurációjának ellenőrzése…"
 
@@ -21683,9 +21695,8 @@ msgid ""
 "Counter\" (e.g. 201206231010138, 201206231010139)."
 msgstr ""
 "A |Date| opcióval a jegyszámok az aktuális dátum, a Rendszerazonosító és a "
-"számláló alapján lesznek generálva. A formátum "
-"\"Év.Hónap.Nap. Rendszerazonosító.Számláló\" (pl. 201206231010138, "
-"20120623101010139)."
+"számláló alapján lesznek generálva. A formátum \"Év.Hónap.Nap. "
+"Rendszerazonosító.Számláló\" (pl. 201206231010138, 20120623101010139)."
 
 #: app/assets/javascripts/app/controllers/email_verify.coffee:35
 #: app/frontend/apps/desktop/pages/authentication/views/SignupVerify.vue:47
@@ -21865,10 +21876,10 @@ msgid ""
 "%l."
 msgstr "A %s kezeléséről online dokumentációnkban %l talál egy útmutatót."
 
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:116
-#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:7
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:119
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:10
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:92
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:40
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:39
 msgid ""
 "You can find archived emails in Zammad anytime using the search function, "
 "like for any other ticket."
@@ -21888,8 +21899,8 @@ msgstr ""
 msgid "You can help translating Zammad."
 msgstr "Segíthet a Zammad fordításában."
 
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:115
-#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:6
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:118
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:9
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:91
 msgid ""
 "You can import some of your emails as an \"archive\", which means that no "
@@ -22057,6 +22068,16 @@ msgstr "Nincsenek olvasatlan üzenetei"
 #: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:345
 msgid "You have not created a ticket yet."
 msgstr "Ön még nem hozott létre jegyet."
+
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:115
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:4
+#: app/assets/javascripts/app/views/getting_started/email.jst.eco:88
+#: app/frontend/apps/desktop/form/composables/useArchiveBeforeWarningHandler.ts:15
+msgid ""
+"You have selected a cut-off time in the future. Be aware that all emails "
+"(including future ones) are going to be archived until the selected time is "
+"reached."
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/_profile/avatar.coffee:326
 msgid "You have to allow access to your webcam."
@@ -22394,8 +22415,8 @@ msgstr ""
 "Sajnos a \"#{mail.subject}\" című levelét nem sikerült kézbesíteni egy vagy "
 "több címzettnek.\n"
 "\n"
-"Az Ön üzenete #{mail.msg_size} MB, de mi csak "
-"#{config.postmaster_max_size_max_size} MB méretű üzeneteket fogadunk el.\n"
+"Az Ön üzenete #{mail.msg_size} MB, de mi csak #{config."
+"postmaster_max_size_max_size} MB méretű üzeneteket fogadunk el.\n"
 "\n"
 "Kérjük, csökkentse az üzenet méretét, és próbálja meg újra. Köszönjük "
 "megértését.\n"
@@ -23393,7 +23414,7 @@ msgstr "új & megnyitás"
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:52
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:32
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:22
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:50
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:49
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:63
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:91
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14
@@ -23953,7 +23974,7 @@ msgstr "a következőn belül (relatív)"
 #: app/assets/javascripts/app/models/public_link.coffee:10
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:32
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:15
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:49
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:48
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:62
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:90
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14

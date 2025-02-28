@@ -53,12 +53,12 @@ msgid ""
 "compatible object filesystem. You can switch between the modules even on a "
 "system that is already in production without any loss of data."
 msgstr ""
-"\"Base de datos\" almacena todos los archivos adjuntos en la base de datos ("
-"no se recomienda para almacenar grandes cantidades de datos). "
-"\"Sistema de archivos\" almacena los datos en el sistema de archivos. "
-"\"Almacenamiento simple (S3)\" almacena los datos en un sistema de archivos "
-"de objetos remoto compatible con S3. Puede cambiar entre los módulos incluso "
-"en un sistema que ya esté en producción sin pérdida de datos."
+"\"Base de datos\" almacena todos los archivos adjuntos en la base de datos "
+"(no se recomienda para almacenar grandes cantidades de datos). \"Sistema de "
+"archivos\" almacena los datos en el sistema de archivos. \"Almacenamiento "
+"simple (S3)\" almacena los datos en un sistema de archivos de objetos remoto "
+"compatible con S3. Puede cambiar entre los módulos incluso en un sistema que "
+"ya esté en producción sin pérdida de datos."
 
 #. This is the template file app/views/messaging/ticket_create/en.md.erb in ERB/Markdown format.
 #. Please make sure to translate it to a valid corresponding output structure.
@@ -77,9 +77,9 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Creado por #{current_user.longname} "
-"el #{ticket.updated_at}_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Creado por #{current_user.longname} el #{ticket."
+"updated_at}_\n"
 "* Grupo: #{ticket.group.name}\n"
 "* Propietario: #{ticket.owner.fullname}\n"
 "* Estado: #{t(ticket.state.name)}\n"
@@ -103,8 +103,8 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Escalado el #{ticket.escalation_at}_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Escalado el #{ticket.escalation_at}_\n"
 "El tiquete (#{ticket.title}) de \"#{ticket.customer.longname}\" ha sido "
 "escalado desde \"#{ticket.escalation_at}\"!\n"
 "\n"
@@ -128,9 +128,8 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Último cambio el #{ticket.updated_at}"
-"_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Último cambio el #{ticket.updated_at}_\n"
 "* Grupo: #{ticket.group.name}\n"
 "* Propietario: #{ticket.owner.fullname}\n"
 "* Estado: #{t(ticket.state.name)}\n"
@@ -154,10 +153,10 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Recordatorio alcanzado!_\n"
-"Un ticket necesita atención: limite de recordatorio alcanzado "
-"(#{ticket.title}) con cliente \"*#{ticket.customer.longname}*\".\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Recordatorio alcanzado!_\n"
+"Un ticket necesita atención: limite de recordatorio alcanzado (#{ticket."
+"title}) con cliente \"*#{ticket.customer.longname}*\".\n"
 "\n"
 "<% if @objects[:article] %>\n"
 "#{article.body_as_text}\n"
@@ -182,9 +181,9 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Actualizado por "
-"#{current_user.longname} el #{ticket.updated_at}_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Actualizado por #{current_user.longname} el "
+"#{ticket.updated_at}_\n"
 "<% if @objects[:changes].present? %>\n"
 "  <% @objects[:changes].each do |key, value| %>\n"
 "  * <%= t key %>: <%= h value[0] %> -> <%= h value[1] %>\n"
@@ -210,8 +209,8 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/"
-"#{ticket.id}|Ticket##{ticket.number}>: Escalará el #{ticket.escalation_at}_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Ticket##{ticket.number}>: Escalará el #{ticket.escalation_at}_\n"
 "El ticket (#{ticket.title}) de \"#{ticket.customer.longname}\" escalará el "
 "\"#{ticket.escalation_at}\"!\n"
 "\n"
@@ -240,8 +239,8 @@ msgstr ""
 "\n"
 "<div>Hola, #{user.firstname}:</div>\n"
 "<br>\n"
-"<div>Parece que ha conectado su cuenta <b>con una aplicación de terceros</b>:"
-" \"#{t(provider)}\".</div>\n"
+"<div>Parece que ha conectado su cuenta <b>con una aplicación de terceros</"
+"b>: \"#{t(provider)}\".</div>\n"
 "<br>\n"
 "<div>Si no fue usted, elimine la cuenta conectada de su perfil y cambie la "
 "contraseña de su aplicación de terceros. Es posible que alguien haya "
@@ -294,8 +293,8 @@ msgstr ""
 "<div>El nuevo país se ha agregado a la lista de dispositivos conocidos, esta "
 "lista se puede ver aquí:</div>\n"
 "<br>\n"
-"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/devices\""
-">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
+"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/"
+"devices\">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
 "<br>\n"
 "<div>Si no fue usted, por favor elimine el dispositivo de la lista, cambie "
 "la contraseña de su cuenta y contacte a su administrador. Alguien puede "
@@ -348,8 +347,8 @@ msgstr ""
 "<div>El dispositivo se ha agregado a la lista de dispositivos conocidos, que "
 "puede ver aquí:</div>\n"
 "<br>\n"
-"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/devices\""
-">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
+"<div><a href=\"#{config.http_type}://#{config.fqdn}/#profile/"
+"devices\">#{config.http_type}://#{config.fqdn}/#profile/devices</a></div>\n"
 "<br>\n"
 "<div>Si no ha sido usted, elimine el dispositivo de la lista, cambie la "
 "contraseña de su cuenta y contacte con su administrador. Alguien puede haber "
@@ -483,10 +482,10 @@ msgstr "%s credenciales"
 msgid "%s days ago"
 msgstr "%s días atrás"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:709
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:710
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:260
-#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:4
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:28
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:7
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:27
 msgid ""
 "%s email(s) were found in your mailbox. They will all be moved from your "
 "mailbox into Zammad."
@@ -638,8 +637,8 @@ msgstr "%s artículo actualizado para |%s|"
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/data-privacy-task.ts:33
 msgid "%s updated data privacy task to delete user ID |%s|"
 msgstr ""
-"%s tarea de privacidad de datos actualizada para eliminar la ID de usuario "
-"|%s|"
+"%s tarea de privacidad de datos actualizada para eliminar la ID de usuario |"
+"%s|"
 
 #: app/assets/javascripts/app/models/group.coffee:32
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/group.ts:28
@@ -730,8 +729,8 @@ msgstr ""
 "\n"
 "Cuando se habilita guardar el tipo de actividad, los usuarios podrán elegir "
 "un tipo de esta lista. Además, aparecerá una columna con un tipo de "
-"actividad asociado a la entrada en la tabla **Actividad** bajo la pestaña **"
-"Tiempo computado**."
+"actividad asociado a la entrada en la tabla **Actividad** bajo la pestaña "
+"**Tiempo computado**."
 
 #: app/assets/javascripts/app/models/data_privacy_task.coffee
 msgid ""
@@ -1126,7 +1125,7 @@ msgstr "SID de Cuenta"
 msgid "Account Time"
 msgstr "Tiempo de Cuenta"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:621
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:622
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:197
 #: app/controllers/channels_email_controller.rb:211
 msgid "Account already exists!"
@@ -1142,7 +1141,7 @@ msgstr "Cuenta no verificada"
 #: app/assets/javascripts/app/views/ticket_zoom/time_unit.jst.eco:2
 #: app/assets/javascripts/app/views/time_accounting/accounted_time.jst.eco:2
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:83
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:136
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:138
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:18
 #: app/graphql/gql/types/overview_type.rb:101
 msgid "Accounted Time"
@@ -2086,26 +2085,26 @@ msgstr "Archivo"
 msgid "Archive Emails"
 msgstr "Archivado a las"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:738
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:739
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:43
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:289
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:58
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:57
 msgid "Archive cut-off time"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:737
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:738
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:42
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:288
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:44
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:43
 #, fuzzy
 #| msgid "Archived at"
 msgid "Archive emails"
 msgstr "Archivado a las"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:739
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:740
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:44
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:290
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:74
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:66
 #, fuzzy
 #| msgid "Ticket update"
 msgid "Archive ticket target state"
@@ -2133,7 +2132,8 @@ msgstr "¿Estás seguro de que quieres borrar este objeto?"
 
 #: app/frontend/apps/mobile/pages/ticket/composable/useTicketsMerge.ts:67
 msgid "Are you sure you want to merge this ticket (#%s) into #%s?"
-msgstr "¿Está seguro de que desea fusionar este ticket (#%s) con el ticket #%s?"
+msgstr ""
+"¿Está seguro de que desea fusionar este ticket (#%s) con el ticket #%s?"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_controller.coffee:78
 msgid ""
@@ -2455,7 +2455,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_overview/settings.coffee:31
 #: app/assets/javascripts/app/models/overview.coffee:15
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:101
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:103
 msgid "Attributes"
 msgstr "Atributos"
 
@@ -3073,7 +3073,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show.jst.eco:23
 #: app/assets/javascripts/app/views/widget/invite_user.jst.eco:17
 #: app/frontend/apps/desktop/components/CommonInlineEdit/CommonInlineEdit.vue:343
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:202
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:203
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:125
 #: app/frontend/apps/mobile/components/CommonSectionPopup/CommonSectionPopup.vue:29
 #: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInputDialog.vue:259
@@ -3212,7 +3212,7 @@ msgid "Change Your Password"
 msgstr "Cambie su Contraseña"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:69
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:80
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:82
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:74
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:137
 msgid "Change customer"
@@ -3235,13 +3235,13 @@ msgstr "Cambiar la contraseña de la cuenta personal."
 msgid "Change text color"
 msgstr "Cambiar el color del texto"
 
-#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:34
+#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:36
 #, fuzzy
 #| msgid "Change %s"
 msgid "Change to %s"
 msgstr "Cambio %s"
 
-#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:24
+#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:27
 #, fuzzy
 #| msgid "add new email address"
 msgid "Change to channel email address"
@@ -3277,7 +3277,8 @@ msgstr "Los cambios no se han guardado."
 
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:17
 msgid "Changes were made that require a database update."
-msgstr "Se efectuaron modificaciones que requieren actualizar la base de datos."
+msgstr ""
+"Se efectuaron modificaciones que requieren actualizar la base de datos."
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:259
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:277
@@ -3297,7 +3298,7 @@ msgstr "Canal"
 msgid "Channel Distribution"
 msgstr "Canal de distribución"
 
-#: app/assets/javascripts/app/controllers/manage.coffee:38
+#: app/assets/javascripts/app/controllers/manage.coffee:41
 msgid "Channels"
 msgstr "Canales"
 
@@ -3595,7 +3596,8 @@ msgstr "Pulse aquí"
 
 #: app/frontend/apps/mobile/pages/authentication/components/AfterAuth/TwoFactorConfiguration.vue:20
 msgid "Click here to set up a two-factor authentication method."
-msgstr "Pulsar aquí para configurar un método de autenticación de doble factor."
+msgstr ""
+"Pulsar aquí para configurar un método de autenticación de doble factor."
 
 #: app/assets/javascripts/app/views/exchange/app_config.jst.eco:9
 #: app/assets/javascripts/app/views/exchange/token_information.jst.eco:28
@@ -3744,10 +3746,8 @@ msgstr "Company Inc."
 msgid ""
 "Compared to the Microsoft 365 Graph API Email Channel, this is the "
 "traditional implementation using OAuth and IMAP. When setting up new "
-"channels, we suggest using the Graph API implementation instead. When you "
-"think there are good reasons to keep the IMAP approach as an alternative in "
-"the future, please let us know in the Zammad Community %l. More information "
-"can be found here %l."
+"channels, we suggest using the Graph API implementation instead. More "
+"information can be found here %l."
 msgstr ""
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:6
@@ -3869,8 +3869,8 @@ msgid ""
 "<br>\n"
 "<div>Your #{config.product_name} Team</div>\n"
 msgstr ""
-"Confirma tu cuenta #{config.product_name}, #{user.firstname} #{user.lastname}"
-"\n"
+"Confirma tu cuenta #{config.product_name}, #{user.firstname} #{user."
+"lastname}\n"
 "\n"
 "<div>Hola, #{user.firstname}:</div>\n"
 "<br>\n"
@@ -3946,7 +3946,7 @@ msgstr "Conectar Microsoft 365 App"
 msgid "Connect Twitter App"
 msgstr "Conectar a Twitter"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:134
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:135
 msgid "Connect and Continue"
 msgstr "Conectar y Continuar"
 
@@ -4025,7 +4025,7 @@ msgstr "Contexto"
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:108
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:49
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSource.vue:53
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:142
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:143
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:541
 msgid "Continue"
 msgstr "Continuar"
@@ -4313,8 +4313,8 @@ msgstr ""
 "\n"
 "Los objetos disponibles son:\n"
 "* ticket (p. ej. ticket.state, ticket.group)\n"
-"* ticket.customer (p. ej. ticket.customer.firstname, "
-"ticket.customer.lastname)\n"
+"* ticket.customer (p. ej. ticket.customer.firstname, ticket.customer."
+"lastname)\n"
 "* ticket.owner (p. ej. ticket.owner.firstname, ticket.owner.lastname)\n"
 "* ticket.organization (p. ej. ticket.organization.name)\n"
 "* user (e.g. user.firstname, user.email)\n"
@@ -4330,7 +4330,7 @@ msgstr "Crear ticket"
 msgid "Create a Test Ticket"
 msgstr "Crear un Ticket de Prueba"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:211
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:212
 msgid "Create a new checklist item"
 msgstr "Crear un nuevo ítem de la lista de comprobación"
 
@@ -5136,7 +5136,8 @@ msgstr ""
 
 #: db/seeds/settings.rb:5561
 msgid "Defines if Knowledge Base navbar button is enabled."
-msgstr "Define si el botón de navegación Base de Conocimientos está habilitado."
+msgstr ""
+"Define si el botón de navegación Base de Conocimientos está habilitado."
 
 #: db/seeds/settings.rb:4863
 msgid "Defines if LDAP is enabled or not."
@@ -5374,16 +5375,16 @@ msgstr ""
 msgid ""
 "Defines postmaster filter to identify follow-ups (based on admin settings)."
 msgstr ""
-"Define el filtro de postmaster para identificar mensajes de seguimiento ("
-"basado en configuración administrativa)."
+"Define el filtro de postmaster para identificar mensajes de seguimiento "
+"(basado en configuración administrativa)."
 
 #: db/seeds/settings.rb:4330
 msgid ""
 "Defines postmaster filter to identify out-of-office emails for follow-up "
 "detection and keeping current ticket state."
 msgstr ""
-"Define el filtro de postmaster para identificar mensajes de aviso de "
-"\"fuera de oficina\", con el fin de gestionar correctamente el seguimiento y "
+"Define el filtro de postmaster para identificar mensajes de aviso de \"fuera "
+"de oficina\", con el fin de gestionar correctamente el seguimiento y "
 "conservar el estado del ticket."
 
 #: db/seeds/settings.rb:4357
@@ -5421,8 +5422,8 @@ msgstr ""
 msgid ""
 "Defines postmaster filter to manage Icinga (http://www.icinga.org) emails."
 msgstr ""
-"Define el filtro de postmaster para gestionar mensajes de Icinga "
-"(http://www.icinga.org)."
+"Define el filtro de postmaster para gestionar mensajes de Icinga (http://www."
+"icinga.org)."
 
 #: db/seeds/settings.rb:4402
 msgid ""
@@ -5435,8 +5436,8 @@ msgstr ""
 msgid ""
 "Defines postmaster filter to manage Nagios (http://www.nagios.org) emails."
 msgstr ""
-"Define el filtro de postmaster para gestionar mensajes de Nagios "
-"(http://www.nagios.org)."
+"Define el filtro de postmaster para gestionar mensajes de Nagios (http://www."
+"nagios.org)."
 
 #: db/seeds/settings.rb:4231
 msgid ""
@@ -5599,7 +5600,8 @@ msgstr ""
 
 #: db/seeds/settings.rb:4205
 msgid "Defines the default calendar tickets subscription settings."
-msgstr "Define los ajustes de suscripción por defecto de tickets de calendario."
+msgstr ""
+"Define los ajustes de suscripción por defecto de tickets de calendario."
 
 #: db/seeds/settings.rb:3635
 msgid "Defines the default screen."
@@ -5660,7 +5662,8 @@ msgstr ""
 
 #: db/seeds/settings.rb:120
 msgid "Defines the logo of the application, shown in the web interface."
-msgstr "Define el logotipo de la aplicación, que se muestra en la interfaz web."
+msgstr ""
+"Define el logotipo de la aplicación, que se muestra en la interfaz web."
 
 #: db/seeds/settings.rb:3296
 msgid "Defines the maximum accepted email size in MB."
@@ -5806,8 +5809,8 @@ msgid ""
 "Defines the transaction backend which posts messages to Slack (http://www."
 "slack.com)."
 msgstr ""
-"Define el back-end de transacciones que remite mensajes a Slack "
-"(http://www.slack.com)."
+"Define el back-end de transacciones que remite mensajes a Slack (http://www."
+"slack.com)."
 
 #: db/seeds/settings.rb:5404
 msgid ""
@@ -5846,7 +5849,8 @@ msgstr "Define el back-end de transacciones."
 msgid ""
 "Defines whether the matching tickets are shown in case of already existing "
 "tickets."
-msgstr "Define si los casos que coinciden se muestran, en casos que ya existen."
+msgstr ""
+"Define si los casos que coinciden se muestran, en casos que ya existen."
 
 #: db/seeds/settings.rb:2724
 msgid "Defines which ticket attributes are checked before creating a ticket."
@@ -5879,8 +5883,8 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:75
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:55
 #: app/assets/javascripts/app/views/knowledge_base/public_menu_form_item.jst.eco:18
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:104
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:114
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:109
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:119
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:29
 #: app/assets/javascripts/app/views/profile/devices.jst.eco:25
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:21
@@ -6119,15 +6123,6 @@ msgstr "Escritorio"
 msgid "Destination Group"
 msgstr "Grupo de destino"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:264
-#: app/assets/javascripts/app/controllers/_channel/google.coffee:282
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:304
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:271
-#, fuzzy
-#| msgid "Destination Group"
-msgid "Destination Group Email Address"
-msgstr "Grupo de destino"
-
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:58
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:74
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:61
@@ -6137,6 +6132,15 @@ msgstr "Identificación de llamada del destinatario"
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:108
 msgid "Destination caller ID or queue"
 msgstr "Identificación de llamada o cola del destinatario"
+
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:264
+#: app/assets/javascripts/app/controllers/_channel/google.coffee:282
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:304
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:271
+#, fuzzy
+#| msgid "Destination Group"
+msgid "Destination group > Sending email address"
+msgstr "Grupo de destino"
 
 #: app/assets/javascripts/app/views/settings/ticket_duplicate_detection.jst.eco:7
 #: db/seeds/settings.rb:2695
@@ -6252,8 +6256,8 @@ msgstr "Dirección"
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:70
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:31
 #: app/assets/javascripts/app/views/google/list.jst.eco:107
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:109
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:119
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:105
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:115
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:30
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:40
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:85
@@ -6336,10 +6340,10 @@ msgstr "Display"
 msgid "Display name"
 msgstr "Nombre para mostrar"
 
-#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:23
+#: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:26
 #, fuzzy
 #| msgid "add new email address"
-msgid "Do not change email address"
+msgid "Do not change email address (%s)"
 msgstr "añadir nueva dirección de correo electrónico"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:662
@@ -6630,7 +6634,7 @@ msgstr "Editar organización"
 msgid "Edit authenticator app"
 msgstr "Editar la aplicación de autenticación"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:122
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:123
 msgid "Edit checklist title"
 msgstr "Editar el título de la lista de comprobación"
 
@@ -6777,7 +6781,6 @@ msgstr "Cuentas de Correo Electrónico"
 #: app/assets/javascripts/app/views/google/list.jst.eco:81
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:82
 #: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:92
-#: db/seeds/object_manager_attributes.rb:2222
 msgid "Email Address"
 msgstr "Dirección de correo electrónico"
 
@@ -6803,7 +6806,7 @@ msgstr "Notificación por correo electrónico"
 msgid "Email Notifications"
 msgstr "Notificaciones por correo electrónico"
 
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:137
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:140
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:105
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:71
 msgid "Email Outbound"
@@ -6830,8 +6833,8 @@ msgstr ""
 "No se pudo verificar el correo electrónico. Póngase en contacto con su "
 "administrador."
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:912
-#: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:404
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:913
+#: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:405
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:169
 msgid ""
 "Email sending and receiving could not be verified. Please check your "
@@ -6855,10 +6858,10 @@ msgstr "Correo electrónico enviado a \"%s\". Por favor, compruebe su buzón."
 msgid "Email sent to %s"
 msgstr "Correo electrónico enviado a %s"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:738
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:739
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:43
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:289
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:61
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:60
 msgid ""
 "Emails before the cut-off time are imported as archived tickets. Emails "
 "after the cut-off time are imported as regular tickets."
@@ -6880,8 +6883,8 @@ msgstr "Resumen"
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:72
 #: app/assets/javascripts/app/views/facebook/list.jst.eco:33
 #: app/assets/javascripts/app/views/google/list.jst.eco:109
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:111
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:121
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:107
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:117
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:31
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:42
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:87
@@ -7268,7 +7271,8 @@ msgstr "Introduzca la URL de su sistema %s."
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:7
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:16
 msgid "Enter the code from your two-factor authenticator app."
-msgstr "Introduzca el código de la aplicación de autenticación de doble factor."
+msgstr ""
+"Introduzca el código de la aplicación de autenticación de doble factor."
 
 #: app/assets/javascripts/app/views/import/otrs.jst.eco:24
 msgid ""
@@ -7942,7 +7946,7 @@ msgstr "Cuentas de Correo Arregladas"
 msgid "Flat Design"
 msgstr "Diseño Plano"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:433
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:434
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:283
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:305
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:482
@@ -8793,7 +8797,8 @@ msgstr "Icono de resalte"
 
 #: db/seeds/settings.rb:5604
 msgid "Highlights if the note a user is writing is public or private"
-msgstr "Destaca si la nota que está escribiendo un usuario es pública o privada"
+msgstr ""
+"Destaca si la nota que está escribiendo un usuario es pública o privada"
 
 #: db/seeds/settings.rb:5601
 msgid "Hint for adding an article to an existing ticket."
@@ -8803,7 +8808,7 @@ msgstr "Indicio para añadir un artículo a un ticket existente."
 #: app/assets/javascripts/app/controllers/organization_profile/action_row.coffee:28
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket.coffee:114
 #: app/assets/javascripts/app/controllers/user_profile/action_row.coffee:60
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:62
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:64
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:130
 msgid "History"
 msgstr "Historial"
@@ -8823,7 +8828,7 @@ msgstr "Feed de Festivos iCalendar"
 msgid "Home"
 msgstr "Inicio"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:427
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:428
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:325
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:80
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:69
@@ -9292,7 +9297,8 @@ msgstr ""
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:140
 msgid "Include unassigned tickets in subscription for pending tickets."
-msgstr "Incluir tickets no asignados en la suscripción para tickets pendientes."
+msgstr ""
+"Incluir tickets no asignados en la suscripción para tickets pendientes."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:68
 msgid "Include your own tickets in subscription for escalated tickets."
@@ -9599,11 +9605,13 @@ msgstr "¡Token no válido, contacte con su administrador!"
 
 #: lib/password_policy/min_length.rb:11
 msgid "Invalid password, it must be at least %s characters long!"
-msgstr "¡Contraseña inválida, debe contener al menos %s caracteres de longitud!"
+msgstr ""
+"¡Contraseña inválida, debe contener al menos %s caracteres de longitud!"
 
 #: lib/password_policy/max_length.rb:24
 msgid "Invalid password, it must be shorter than %s characters!"
-msgstr "¡Contraseña inválida, debe contener al menos %s caracteres de longitud!"
+msgstr ""
+"¡Contraseña inválida, debe contener al menos %s caracteres de longitud!"
 
 #: lib/password_policy/digit.rb:13
 msgid "Invalid password, it must contain at least 1 digit!"
@@ -9843,7 +9851,7 @@ msgstr ""
 msgid "Kayako"
 msgstr "Kayako"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:434
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:435
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:284
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:306
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:483
@@ -10244,7 +10252,7 @@ msgid "LinkedIn Developer Site"
 msgstr "Sitio de LinkedIn para programadores"
 
 #: app/assets/javascripts/app/views/link/ticket/list.jst.eco:1
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:123
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:125
 msgid "Links"
 msgstr "Links"
 
@@ -10456,7 +10464,7 @@ msgstr "Modo mantenimiento"
 msgid "Maintenance mode enabled!"
 msgstr "¡Modo de mantenimiento activado!"
 
-#: app/assets/javascripts/app/controllers/manage.coffee:15
+#: app/assets/javascripts/app/controllers/manage.coffee:18
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:85
 msgid "Manage"
 msgstr "Gestionar"
@@ -10670,7 +10678,8 @@ msgstr "Gestione los módulos de texto de su sistema."
 
 #: db/seeds/permissions.rb:216
 msgid "Manage ticket auto assignment settings of your system."
-msgstr "Gestione los ajustes de asignación automática de tickets de su sistema."
+msgstr ""
+"Gestione los ajustes de asignación automática de tickets de su sistema."
 
 #: db/seeds/permissions.rb:306
 msgid "Manage ticket checklists of your system."
@@ -10935,7 +10944,7 @@ msgstr "Grupo de menciones"
 #: app/assets/javascripts/app/controllers/agent_ticket_merge.coffee:7
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket.coffee:120
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketMerge/TicketMergeFlyout.vue:87
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:69
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:71
 msgid "Merge"
 msgstr "Fusionar"
 
@@ -11652,8 +11661,8 @@ msgstr ""
 "\n"
 "<div>Buenos días, #{recipient.firstname}:</div>\n"
 "<br>\n"
-"<div>Se ha creado un nuevo ticket (#{ticket.title}) por "
-"\"<b>#{current_user.longname}</b>\".</div>\n"
+"<div>Se ha creado un nuevo ticket (#{ticket.title}) por \"<b>#{current_user."
+"longname}</b>\".</div>\n"
 "<br>\n"
 "<div>\n"
 "Grupo: #{ticket.group.name}<br>\n"
@@ -11783,7 +11792,7 @@ msgstr "Visión general"
 msgid "No Proxy"
 msgstr "Sin proxy"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:203
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:43
@@ -11826,7 +11835,7 @@ msgstr "No se ha encontrado ningún certificado."
 msgid "No checklist added to this ticket yet."
 msgstr "Aún no se ha añadido ninguna lista de comprobación a este ticket."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:185
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:186
 msgid "No checklist items yet"
 msgstr "Aún no hay ítems en la lista de comprobación"
 
@@ -12024,8 +12033,8 @@ msgid ""
 "No webhook available, please create a new one or activate an existing one at "
 "\"Manage > Webhook\""
 msgstr ""
-"Ningún webhook disponible. Cree uno o active uno existente en "
-"\"Administrar > Webhook\""
+"Ningún webhook disponible. Cree uno o active uno existente en \"Administrar "
+"> Webhook\""
 
 #: app/models/channel/email_parser.rb:119
 msgid "No x-zammad-session-user-id, no sender set!"
@@ -13254,7 +13263,8 @@ msgstr "Agregue categorías y/o respuestas"
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:12
 #: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:351
 msgid "Please click on the button below to create your first one."
-msgstr "Por favor, haga click en el botón inferior para crear su primer ticket."
+msgstr ""
+"Por favor, haga click en el botón inferior para crear su primer ticket."
 
 #: app/assets/javascripts/app/views/signup/verify.jst.eco:6
 msgid "Please click on the link in the verification email."
@@ -13361,7 +13371,7 @@ msgstr ""
 "seguro. Puede utilizarlos para iniciar sesión si pierde el acceso a otro "
 "método de doble factor:"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:75
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:76
 msgid "Please select a checklist template."
 msgstr "Seleccione una plantilla de lista de comprobación."
 
@@ -13414,7 +13424,7 @@ msgstr ""
 msgid "Please wait…"
 msgstr "Espere, por favor…"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:432
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:433
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:85
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:72
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:161
@@ -14081,7 +14091,7 @@ msgid "Reopening time in days"
 msgstr "Tiempo de reapertura en días"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:195
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:196
 msgid "Reorder"
 msgstr "Reordenar"
 
@@ -14322,8 +14332,8 @@ msgstr ""
 "<br>\n"
 "<div><a href=\"#{url}\">#{url}</a></div>\n"
 "<br>\n"
-"<div>Este enlace le llevará a una página donde podrá cambiar la "
-"contraseña.</div>\n"
+"<div>Este enlace le llevará a una página donde podrá cambiar la contraseña.</"
+"div>\n"
 "<br>\n"
 "<div>Si no desea cambiar su contraseña, ignore este mensaje. Su contraseña "
 "no será restablecida.</div>\n"
@@ -14448,8 +14458,8 @@ msgid "Roles:"
 msgstr "Roles:"
 
 #: app/assets/javascripts/app/views/google/list.jst.eco:104
-#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:106
-#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:116
+#: app/assets/javascripts/app/views/microsoft365/list.jst.eco:111
+#: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:121
 msgid "Rollback migration"
 msgstr "Deshacer migración"
 
@@ -14569,7 +14579,7 @@ msgstr "Prueba de SMS fallida."
 msgid "SMTP - configure your own outgoing SMTP settings"
 msgstr "SMTP - configurar servicio propio"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:207
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:47
@@ -14581,7 +14591,7 @@ msgstr "SSL"
 msgid "SSL Certificates"
 msgstr "Certificado SSL"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:432
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:714
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:84
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:73
@@ -14597,7 +14607,7 @@ msgstr "Certificado SSL"
 msgid "SSL verification"
 msgstr "Verificación SSL"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:27
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:33
@@ -14611,7 +14621,7 @@ msgstr "SSL/STARTTLS"
 msgid "SSO"
 msgstr "SSO"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:430
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:431
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:205
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:54
@@ -14648,7 +14658,7 @@ msgstr "Sábado"
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:22
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCameraFlyout.vue:121
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCropImageFlyout.vue:44
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:226
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:227
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:136
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:292
 #: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:70
@@ -14676,7 +14686,7 @@ msgid "Save Out of Office"
 msgstr "Guardar Fuera de la Oficina"
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSource.vue:53
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:146
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:147
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:115
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualSystemInformation.vue:131
 msgid "Save and Continue"
@@ -14857,7 +14867,8 @@ msgstr "Clave de la lista de resultados"
 
 #: lib/external_data_source/errors.rb:79
 msgid "Search result list key \"%s\" is not an array."
-msgstr "La clave de la lista de resultados de búsqueda \"%s\" no es una matriz."
+msgstr ""
+"La clave de la lista de resultados de búsqueda \"%s\" no es una matriz."
 
 #: lib/external_data_source/errors.rb:69
 msgid "Search result list key \"%s\" was not found."
@@ -15047,7 +15058,7 @@ msgstr "Seleccione archivo CSV"
 msgid "Select Shared Draft"
 msgstr "Seleccionar borrador compartido"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:16
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/start.coffee:17
 #: app/assets/javascripts/app/views/widget/template.jst.eco:4
 msgid "Select Template"
 msgstr "Seleccionar Template"
@@ -15142,7 +15153,7 @@ msgstr "Enviar Correo Electrónico: %s"
 msgid "Send Invitation"
 msgstr "Enviar Invitación"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:408
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:409
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:65
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:50
 msgid "Send Mails via"
@@ -15207,6 +15218,12 @@ msgstr "Remitente basado en el encabezado Reply-To"
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:503
 msgid "Sender of last article"
 msgstr "Remitente del último artículo"
+
+#: db/seeds/object_manager_attributes.rb:2222
+#, fuzzy
+#| msgid "Email Address"
+msgid "Sending Email Address"
+msgstr "Dirección de correo electrónico"
 
 #: app/models/ticket/article.rb:312
 msgid "Sending an email without a valid recipient is not possible."
@@ -15412,7 +15429,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:28
 #: app/assets/javascripts/app/controllers/_channel/web.coffee:11
 #: app/assets/javascripts/app/controllers/chat.coffee:869
-#: app/assets/javascripts/app/controllers/manage.coffee:39
+#: app/assets/javascripts/app/controllers/manage.coffee:42
 #: app/assets/javascripts/app/controllers/ticket_zoom/setting.coffee:20
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:18
 #: app/assets/javascripts/app/views/channel/form.jst.eco:13
@@ -15811,7 +15828,7 @@ msgstr "Sitio"
 
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:9
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:10
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:124
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:127
 #: app/assets/javascripts/app/views/getting_started/channel.jst.eco:21
 #: app/assets/javascripts/app/views/getting_started/email_notification.jst.eco:17
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:97
@@ -16220,7 +16237,7 @@ msgstr "Tickets suscritos"
 msgid "Subscribed tickets"
 msgstr "Tickets suscritos"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:145
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:147
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:192
 msgid "Subscribers"
 msgstr "Suscriptores"
@@ -16271,7 +16288,7 @@ msgstr "Sincronizar con equipo"
 
 #: app/assets/javascripts/app/controllers/_manage/system.coffee:3
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:37
-#: app/assets/javascripts/app/controllers/manage.coffee:40
+#: app/assets/javascripts/app/controllers/manage.coffee:43
 #: app/assets/javascripts/app/views/generic/history.jst.eco:15
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/composables/useHistoryEvents.ts:32
 #: db/seeds/permissions.rb:197 db/seeds/ticket_article_senders.rb:5
@@ -16358,7 +16375,7 @@ msgstr "La etiqueta \"%s\" ya existe."
 #: app/assets/javascripts/app/views/popover/kb_generic.jst.eco:41
 #: app/assets/javascripts/app/views/tag/index.jst.eco:3
 #: app/assets/javascripts/app/views/widget/tag.jst.eco:1
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:113
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:115
 #: app/frontend/apps/mobile/components/Form/fields/FieldTags/FieldTagsDialog.vue:145
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketTags.vue:78
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:184
@@ -16465,8 +16482,8 @@ msgstr ""
 "\n"
 "<div>Buenos días, #{agent.firstname}:</div>\n"
 "<br>\n"
-"<div>Este es un <b>ticket de prueba </b>. ¡Soy un cliente y necesito ayuda! "
-":)</div>\n"
+"<div>Este es un <b>ticket de prueba </b>. ¡Soy un cliente y necesito "
+"ayuda! :)</div>\n"
 "<br>\n"
 "<div>#{customer.fullname}</div>\n"
 "<br>\n"
@@ -16916,7 +16933,8 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_plugin/maintenance.coffee:93
 msgid "The configuration of Zammad has changed, please reload your browser."
-msgstr "La configuración de Zammad ha cambiado, rogamos refrescar su navegador."
+msgstr ""
+"La configuración de Zammad ha cambiado, rogamos refrescar su navegador."
 
 #: app/frontend/shared/composables/useAppMaintenanceCheck.ts:102
 msgid ""
@@ -16963,11 +16981,11 @@ msgid ""
 "g., \"/support\", \"example.com\", or \"example.com/support\"). Then, follow "
 "the directions under \"Web Server Configuration\" to complete the process."
 msgstr ""
-"La URL predeterminada para su base de conocimientos es, por ejemplo, "
-"example.com o example.com/help. Para servirlo desde una URL personalizada, "
-"ingrese el destino a continuación (por ejemplo, \"/support\", \"example.com\""
-" o \"example.com/support\"). Luego, siga las instrucciones en "
-"\"Configuración del servidor web\" para completar el proceso."
+"La URL predeterminada para su base de conocimientos es, por ejemplo, example."
+"com o example.com/help. Para servirlo desde una URL personalizada, ingrese "
+"el destino a continuación (por ejemplo, \"/support\", \"example.com\" o "
+"\"example.com/support\"). Luego, siga las instrucciones en \"Configuración "
+"del servidor web\" para completar el proceso."
 
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:118
 msgid "The default font size is 12px."
@@ -17102,7 +17120,8 @@ msgstr ""
 
 #: app/services/service/user/two_factor/set_default_method.rb:14
 msgid "The given two-factor authentication method is not enabled."
-msgstr "El método de autenticación de dos factores indicado no está habilitado."
+msgstr ""
+"El método de autenticación de dos factores indicado no está habilitado."
 
 #: app/services/service/user/two_factor/base.rb:14
 msgid "The given two-factor method does not exist."
@@ -17603,8 +17622,8 @@ msgid ""
 "The required value 'external_credential[:consumer_secret]' could not be "
 "found in the cache."
 msgstr ""
-"No se pudo localizar en caché el valor requerido 'external_credential"
-"[:consumer_secret]'."
+"No se pudo localizar en caché el valor requerido 'external_credential[:"
+"consumer_secret]'."
 
 #: app/policies/ticket_policy.rb:35
 msgid "The required value 'group_id' is missing."
@@ -17637,7 +17656,7 @@ msgstr "La fecha elegida no es válida."
 msgid "The server presented a certificate that could not be verified."
 msgstr "El servidor presentó un certificado que no pudo ser verificado."
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:625
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:626
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:200
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:245
 msgid ""
@@ -17770,8 +17789,8 @@ msgid ""
 "The text at the beginning of the subject in an email reply, e.g. RE, AW, or "
 "AS."
 msgstr ""
-"El texto al principio del asunto en una respuesta de correo electrónico, "
-"e.g. RE, AW, or AS."
+"El texto al principio del asunto en una respuesta de correo electrónico, e."
+"g. RE, AW, or AS."
 
 #: app/services/service/ticket/update/validator/checklist_completed.rb:16
 msgid "The ticket checklist is incomplete."
@@ -18308,7 +18327,8 @@ msgstr ""
 
 #: app/models/group.rb:83
 msgid "This group or its children exceed the allowed nesting depth."
-msgstr "Este grupo o sus hijos superan la profundidad de anidamiento permitida."
+msgstr ""
+"Este grupo o sus hijos superan la profundidad de anidamiento permitida."
 
 #: lib/email_helper/probe.rb:281
 msgid "This host cannot be reached."
@@ -18846,9 +18866,8 @@ msgstr ""
 "\n"
 "<div>Buenos días, #{recipient.firstname}:</div>\n"
 "<br>\n"
-"<div>Un ticket necesita su atención: recordatorio alcanzado para "
-"(#{ticket.title}) con el cliente \"<b>#{ticket.customer.longname}</b>\""
-".</div>\n"
+"<div>Un ticket necesita su atención: recordatorio alcanzado para (#{ticket."
+"title}) con el cliente \"<b>#{ticket.customer.longname}</b>\".</div>\n"
 "<br>\n"
 "<% if @objects[:article] %>\n"
 "  <div>\n"
@@ -19266,8 +19285,8 @@ msgid ""
 "To revert back to the default payload, simply turn off the \"Custom "
 "Payload\" switch above."
 msgstr ""
-"Para volver al contenido por defecto, no hay más que desactivar "
-"\"Contenido Personalizado\" arriba."
+"Para volver al contenido por defecto, no hay más que desactivar \"Contenido "
+"Personalizado\" arriba."
 
 #: app/assets/javascripts/app/models/text_module.coffee:25
 msgid "To select placeholders from a list, just enter \"::\"."
@@ -19531,7 +19550,7 @@ msgstr "Convertir chat en ticket"
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:13
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:14
 #: app/assets/javascripts/app/views/object_manager/attribute/autocompletion_ajax_external_data_source.jst.eco:3
-#: app/frontend/apps/desktop/form/composables/useSSLVerificationWarningHandler.ts:24
+#: app/frontend/apps/desktop/form/composables/useSSLVerificationWarningHandler.ts:13
 msgid ""
 "Turning off SSL verification is a security risk and should be used only "
 "temporary. Use this option at your own risk!"
@@ -19680,7 +19699,7 @@ msgstr "No se ha podido configurar el método de dos factores."
 msgid "Two-factor method has been configured successfully."
 msgstr "El método de dos factores se ha configurado correctamente."
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:426
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:427
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:248
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:79
 #: app/assets/javascripts/app/controllers/translation.coffee:289
@@ -20044,8 +20063,8 @@ msgstr ""
 "<div>Buenos días #{recipient.firstname},</div>\n"
 "<br>\n"
 "<div>\n"
-"El ticket (#{ticket.title}) ha sido actualizado por "
-"\"<b>#{current_user.longname}</b>\".\n"
+"El ticket (#{ticket.title}) ha sido actualizado por \"<b>#{current_user."
+"longname}</b>\".\n"
 "</div>\n"
 "<br>\n"
 "<% if @objects[:changes].present? %>\n"
@@ -20187,8 +20206,8 @@ msgid ""
 "Use 'with_private_keyring' to create a private keyring or set @gnupg_home "
 "before calling gpg."
 msgstr ""
-"Usa 'with_private_keyring' para crear un llavero privado o establece @"
-"gnupg_home antes de llamar a gpg."
+"Usa 'with_private_keyring' para crear un llavero privado o establece "
+"@gnupg_home antes de llamar a gpg."
 
 #: app/assets/javascripts/app/views/object_manager/attribute/multiselect.jst.eco:69
 #: app/assets/javascripts/app/views/object_manager/attribute/select.jst.eco:65
@@ -20270,7 +20289,7 @@ msgstr "Se usa al redactar un texto"
 msgid "Used when viewing a Ticket"
 msgstr "Se usa cuando se ve un ticket"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:428
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:429
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:37
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:165
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:24
@@ -20568,7 +20587,7 @@ msgstr "Verificar Token"
 msgid "Verify sending and receiving"
 msgstr "Verificando el envío y la recepción"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:170
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:171
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:92
 msgid "Verifying and saving your configuration…"
 msgstr "Verificar y guardar la configuración…"
@@ -20582,7 +20601,7 @@ msgstr "Verificar y guardar la configuración de importación…"
 msgid "Verifying key information…"
 msgstr "Verificación de la información clave…"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:178
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:179
 msgid "Verifying your configuration…"
 msgstr "Verificación de la configuración…"
 
@@ -20985,7 +21004,8 @@ msgstr ""
 
 #: app/assets/javascripts/app/views/widget/template.jst.eco:15
 msgid "With templates you can pre-fill ticket attributes."
-msgstr "Con las plantillas puede rellenar automáticamente atributos del ticket."
+msgstr ""
+"Con las plantillas puede rellenar automáticamente atributos del ticket."
 
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:208
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:258
@@ -20999,9 +21019,8 @@ msgid ""
 "Counter\" (e.g. 201206231010138, 201206231010139)."
 msgstr ""
 "Con |Date| los números de ticket se generarán por la fecha actual, el "
-"SystemID, y el contador. El formato será el siguiente:"
-"\"Año+mes+día+contador SystemID\" (p. ej. "
-"20120623101010138,20120623101010139)."
+"SystemID, y el contador. El formato será el siguiente:\"Año+mes+día+contador "
+"SystemID\" (p. ej. 20120623101010138,20120623101010139)."
 
 #: app/assets/javascripts/app/controllers/email_verify.coffee:35
 #: app/frontend/apps/desktop/pages/authentication/views/SignupVerify.vue:47
@@ -21176,10 +21195,10 @@ msgstr ""
 "Puede encontrar un tutorial sobre cómo administrar un %s en nuestra "
 "documentación en línea %l."
 
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:116
-#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:7
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:119
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:10
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:92
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:40
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:39
 msgid ""
 "You can find archived emails in Zammad anytime using the search function, "
 "like for any other ticket."
@@ -21199,8 +21218,8 @@ msgstr ""
 msgid "You can help translating Zammad."
 msgstr "Puedes ayudar a traducir Zammad."
 
-#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:115
-#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:6
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:118
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:9
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:91
 msgid ""
 "You can import some of your emails as an \"archive\", which means that no "
@@ -21363,6 +21382,16 @@ msgstr "No tiene mensajes sin leer"
 #: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:345
 msgid "You have not created a ticket yet."
 msgstr "Aún no ha creado un ticket."
+
+#: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:115
+#: app/assets/javascripts/app/views/channel/email_archive.jst.eco:4
+#: app/assets/javascripts/app/views/getting_started/email.jst.eco:88
+#: app/frontend/apps/desktop/form/composables/useArchiveBeforeWarningHandler.ts:15
+msgid ""
+"You have selected a cut-off time in the future. Be aware that all emails "
+"(including future ones) are going to be archived until the selected time is "
+"reached."
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/_profile/avatar.coffee:326
 msgid "You have to allow access to your webcam."
@@ -21551,8 +21580,8 @@ msgstr "Tu URL de devolución de llamada"
 msgid ""
 "Your changes may override someone else's changes. Do you really want to save?"
 msgstr ""
-"Sus cambios podrían sobrescribir los cambios realizados por otra persona ¿"
-"Está seguro de que desea guardar?"
+"Sus cambios podrían sobrescribir los cambios realizados por otra persona "
+"¿Está seguro de que desea guardar?"
 
 #: app/assets/javascripts/app/views/integration/exchange_certificate_issue.jst.eco:6
 msgid "Your connection is not private"
@@ -22638,7 +22667,7 @@ msgstr "nuevo & abrir"
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:52
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:32
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:22
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:50
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:49
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:63
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:91
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14
@@ -23178,7 +23207,7 @@ msgstr "dentro del próximo (relativo)"
 #: app/assets/javascripts/app/models/public_link.coffee:10
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:32
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:15
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:49
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:48
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:62
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:90
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14
