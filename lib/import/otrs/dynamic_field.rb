@@ -31,7 +31,7 @@ module Import
           object: dynamic_field['ObjectType'],
           name:   @internal_name,
         )
-        attribute ? true : false
+        attribute ? true : false # rubocop:disable Style/RedundantCondition
       end
 
       def initialize_attribute_config(dynamic_field)

@@ -5,7 +5,7 @@ class RolePolicy < ApplicationPolicy
     return true if admin?
 
     if user.role_ids.include? record.id
-      return agent? ? true : customer_field_scope
+      return agent? || customer_field_scope
     end
 
     false
