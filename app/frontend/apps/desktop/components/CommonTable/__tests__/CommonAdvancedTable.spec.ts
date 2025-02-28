@@ -38,7 +38,7 @@ const tableItems: TableAdvancedItem[] = [
     id: convertToGraphQLId('Ticket', 1),
     title: 'Dummy ticket',
     owner: {
-      __type: 'User',
+      __typename: 'User',
       id: convertToGraphQLId('User', 1),
       internalId: 2,
       firstname: 'Agent 1',

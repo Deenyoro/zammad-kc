@@ -7,17 +7,21 @@ module Gql::Queries
 
     argument :search,  String, description: 'What to search for'
     argument :only_in, Gql::Types::Enum::SearchableModelsType, description: 'Which model to search in, e.g. Ticket'
+
+    argument :order_by, String, required: false, description: 'Set a custom order by'
+    argument :order_direction, Gql::Types::Enum::OrderDirectionType, required: false, description: 'Set a custom order direction'
+
     argument :limit,   Integer, required: false, description: 'How many entries to find at maximum'
     argument :offset,  Integer, required: false, description: 'Offset to use for pagination'
 
     type Gql::Types::SearchResultType, null: false
 
-    def resolve(search:, only_in:, offset: 0, limit: 10)
+    def resolve(search:, only_in:, order_by: nil, order_direction: nil, offset: 0, limit: 10)
       search_result = Service::Search.new(
         current_user: context.current_user,
         query:        search,
         objects:      [only_in],
-        options:      { offset:, limit:, }
+        options:      { offset:, limit:, sort_by: order_by, order_by: order_direction }
       ).execute.result[only_in]
 
       return { total_count: 0, items: [] } if !search_result

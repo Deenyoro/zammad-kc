@@ -7,6 +7,7 @@ import {
   type TicketQuery,
   type TicketArticlesQuery,
   type TicketLiveUser,
+  type TicketsCachedByOverviewQuery,
   type EnumTaskbarApp,
   type EnumSecurityOption,
 } from '#shared/graphql/types.ts'
@@ -37,6 +38,9 @@ export interface TicketLiveAppUser {
 }
 
 export type TicketById = TicketQuery['ticket']
+export type TicketByList = NonNullable<
+  TicketsCachedByOverviewQuery['ticketsCachedByOverview']['edges']
+>[number]['node']
 
 export type TicketArticle = ConfidentTake<
   TicketArticlesQuery,

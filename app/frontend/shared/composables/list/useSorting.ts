@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import { isRef, ref, toValue, watch, type Ref } from 'vue'
+import { isRef, ref, toValue, watch, type ComputedRef, type Ref } from 'vue'
 import { onBeforeRouteUpdate } from 'vue-router'
 
 import { EnumOrderDirection } from '#shared/graphql/types.ts'
@@ -17,13 +17,21 @@ export const useSorting = <
   },
 >(
   query: QueryHandler<TQueryResult, TQueryVariables>,
-  orderByParam: string | Ref<string>,
-  orderDirectionParam: EnumOrderDirection | Ref<EnumOrderDirection>,
+  orderByParam:
+    | string
+    | Ref<string | undefined>
+    | ComputedRef<string | undefined>,
+  orderDirectionParam:
+    | EnumOrderDirection
+    | Ref<EnumOrderDirection | undefined>
+    | ComputedRef<EnumOrderDirection | undefined>,
   scrollContainer?: Ref<HTMLElement | null>,
 ) => {
   // Local refs that you'll work with inside this composable
-  const orderBy = ref<string>(toValue(orderByParam))
-  const orderDirection = ref<EnumOrderDirection>(toValue(orderDirectionParam))
+  const orderBy = ref<string | undefined>(toValue(orderByParam))
+  const orderDirection = ref<EnumOrderDirection | undefined>(
+    toValue(orderDirectionParam),
+  )
 
   if (isRef(orderByParam)) {
     watch(orderByParam, (newValue) => {
@@ -65,8 +73,16 @@ export const useSorting = <
   }
 
   onBeforeRouteUpdate(() => {
-    orderBy.value = toValue(orderByParam)
-    orderDirection.value = toValue(orderDirectionParam)
+    const newOrderBy = toValue(orderByParam)
+    const newOrderDirection = toValue(orderDirectionParam)
+
+    if (newOrderBy !== orderBy.value) {
+      orderBy.value = newOrderBy
+    }
+
+    if (newOrderDirection !== orderDirection.value) {
+      orderDirection.value = newOrderDirection
+    }
   })
 
   return {

@@ -236,6 +236,13 @@ const initializeRouter = (
         template: 'Error page',
       },
     },
+    {
+      name: 'search',
+      path: '/search/:searchTerm?',
+      component: {
+        template: 'search',
+      },
+    },
   ]
 
   // Use only the default routes, if nothing was given.

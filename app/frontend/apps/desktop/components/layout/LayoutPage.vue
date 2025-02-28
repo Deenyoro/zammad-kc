@@ -18,7 +18,7 @@ import LeftSidebarHeader from '#desktop/components/layout/LayoutSidebar/LeftSide
 import LayoutSidebar from '#desktop/components/layout/LayoutSidebar.vue'
 import { numberOfPermanentItems } from '#desktop/components/PageNavigation/firstLevelRoutes.ts'
 import PageNavigation from '#desktop/components/PageNavigation/PageNavigation.vue'
-import QuickSearch from '#desktop/components/QuickSearch/QuickSearch.vue'
+import QuickSearch from '#desktop/components/Search/QuickSearch/QuickSearch.vue'
 import UserTaskbarTabs from '#desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue'
 import { useResizeGridColumns } from '#desktop/composables/useResizeGridColumns.ts'
 
@@ -132,7 +132,7 @@ const {
           <component
             :is="Component"
             v-if="!currentRoute.meta.permanentItem"
-            :key="currentRoute.path"
+            :key="currentRoute.meta.pageKey || currentRoute.path"
           />
         </KeepAlive>
         <KeepAlive :max="numberOfPermanentItems">

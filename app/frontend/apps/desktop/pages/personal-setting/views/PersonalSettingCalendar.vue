@@ -22,7 +22,7 @@ import QueryHandler from '#shared/server/apollo/handler/QueryHandler.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 
 import CommonInputCopyToClipboard from '#desktop/components/CommonInputCopyToClipboard/CommonInputCopyToClipboard.vue'
-import CommonTabManager from '#desktop/components/CommonTabManager/CommonTabManager.vue'
+import CommonTabGroup from '#desktop/components/CommonTabGroup/CommonTabGroup.vue'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 
 import { useBreadcrumb } from '../composables/useBreadcrumb.ts'
@@ -321,7 +321,7 @@ const tabs = [
         {{ $t('Subscription settings') }}
       </CommonLabel>
 
-      <CommonTabManager v-model="activeStep" class="mb-3" :tabs="tabs" />
+      <CommonTabGroup v-model="activeStep" class="mb-3" :tabs="tabs" />
 
       <div
         :id="`tab-panel-${activeStep}`"

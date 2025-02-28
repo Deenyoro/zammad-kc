@@ -134,8 +134,9 @@ const tableAttributes = computed(() => {
     // Set default alignment for right-aligned data types.
     if (
       rightAlignedDataTypes.includes(mergedAttribute.dataType) &&
-      !mergedAttribute.columnPreferences.alignContent
+      !mergedAttribute.columnPreferences?.alignContent
     ) {
+      mergedAttribute.columnPreferences ||= {}
       mergedAttribute.columnPreferences.alignContent = 'right'
     }
 
@@ -177,7 +178,7 @@ const setHeaderWidths = (reset?: boolean) => {
     if (!header) return
 
     if (shouldReset) {
-      if (tableAttribute.headerPreferences.displayWidth)
+      if (tableAttribute.headerPreferences?.displayWidth)
         header.style.width = `${tableAttribute.headerPreferences.displayWidth}px`
       else header.style.width = '' // reflow
       return
@@ -187,7 +188,7 @@ const setHeaderWidths = (reset?: boolean) => {
       headerWidthsRelativeStorage.value[tableAttribute.name]
 
     const headerWidth =
-      tableAttribute.headerPreferences.displayWidth ??
+      tableAttribute.headerPreferences?.displayWidth ??
       Math.max(MINIMUM_COLUMN_WIDTH, headerWidthRelative * tableWidth)
 
     header.style.width = `${headerWidth}px`
@@ -262,7 +263,7 @@ const getTooltipText = (
   item: TableAdvancedItem,
   tableAttribute: TableAttribute,
 ) => {
-  return tableAttribute.headerPreferences.truncate
+  return tableAttribute.headerPreferences?.truncate
     ? item[tableAttribute.name]
     : undefined
 }
@@ -396,6 +397,7 @@ const showGroupByRow = (item: TableAdvancedItem) => {
 
 const hasLoadedMore = ref(false)
 
+// TODO: this will not work in all situation, we should switch to an unique table id...
 onBeforeRouteUpdate(() => {
   hasLoadedMore.value = false
 })
@@ -465,9 +467,9 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
           :key="tableAttribute.name"
           class="relative h-10 p-2.5 text-xs"
           :class="[
-            tableAttribute.headerPreferences.headerClass,
+            tableAttribute.headerPreferences?.headerClass,
             cellAlignmentClasses[
-              tableAttribute.columnPreferences.alignContent ?? 'left'
+              tableAttribute.columnPreferences?.alignContent ?? 'left'
             ],
           ]"
         >
@@ -495,20 +497,20 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                 class="flex items-center gap-1"
                 :class="[
                   cellAlignmentClasses[
-                    tableAttribute.columnPreferences.alignContent || 'left'
+                    tableAttribute.columnPreferences?.alignContent || 'left'
                   ],
                   {
                     'hover:cursor-pointer focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-800':
-                      !tableAttribute.headerPreferences.noSorting,
+                      !tableAttribute.headerPreferences?.noSorting,
                   },
                 ]"
                 :role="
-                  tableAttribute.headerPreferences.noSorting
+                  tableAttribute.headerPreferences?.noSorting
                     ? undefined
                     : 'button'
                 "
                 :tabindex="
-                  tableAttribute.headerPreferences.noSorting ? undefined : '0'
+                  tableAttribute.headerPreferences?.noSorting ? undefined : '0'
                 "
                 :aria-label="
                   orderDirection === EnumOrderDirection.Ascending
@@ -516,17 +518,17 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                     : $t('Sorted descending')
                 "
                 @click="
-                  tableAttribute.headerPreferences.noSorting
+                  tableAttribute.headerPreferences?.noSorting
                     ? undefined
                     : sort(tableAttribute.name)
                 "
                 @keydown.enter.prevent="
-                  tableAttribute.headerPreferences.noSorting
+                  tableAttribute.headerPreferences?.noSorting
                     ? undefined
                     : sort(tableAttribute.name)
                 "
                 @keydown.space.prevent="
-                  tableAttribute.headerPreferences.noSorting
+                  tableAttribute.headerPreferences?.noSorting
                     ? undefined
                     : sort(tableAttribute.name)
                 "
@@ -534,14 +536,14 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                 <CommonLabel
                   class="relative block! truncate font-normal text-gray-100! select-none dark:text-neutral-400!"
                   :class="[
-                    tableAttribute.headerPreferences.labelClass,
+                    tableAttribute.headerPreferences?.labelClass,
                     {
-                      'sr-only': tableAttribute.headerPreferences.hideLabel,
+                      'sr-only': tableAttribute.headerPreferences?.hideLabel,
                       'text-black! dark:text-white!': isSorted(
                         tableAttribute.name,
                       ),
                       'hover:text-black! dark:hover:text-white!':
-                        !tableAttribute.headerPreferences.noSorting,
+                        !tableAttribute.headerPreferences?.noSorting,
                     },
                   ]"
                   size="small"
@@ -555,7 +557,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                 </CommonLabel>
                 <CommonIcon
                   v-if="
-                    !tableAttribute.headerPreferences.noSorting &&
+                    !tableAttribute.headerPreferences?.noSorting &&
                     isSorted(tableAttribute.name)
                   "
                   class="shrink-0 text-blue-800"
@@ -574,7 +576,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
 
           <HeaderResizeLine
             v-if="
-              !tableAttribute.headerPreferences.noResize &&
+              !tableAttribute.headerPreferences?.noResize &&
               index !== tableAttributes.length - 1
             "
             @resize="calculateHeaderWidths"
@@ -631,11 +633,11 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
               class="h-10 p-2.5 text-sm"
               :class="[
                 cellAlignmentClasses[
-                  tableAttribute.columnPreferences.alignContent || 'left'
+                  tableAttribute.columnPreferences?.alignContent || 'left'
                 ],
                 {
                   'max-w-32 truncate text-black dark:text-white':
-                    tableAttribute.headerPreferences.truncate,
+                    tableAttribute.headerPreferences?.truncate,
                 },
               ]"
             >
@@ -670,7 +672,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                   :attribute="tableAttribute"
                 >
                   <CommonLink
-                    v-if="tableAttribute.columnPreferences.link"
+                    v-if="tableAttribute.columnPreferences?.link"
                     v-tooltip.truncate="getTooltipText(item, tableAttribute)"
                     :link="
                       tableAttribute.columnPreferences.link.getLink(

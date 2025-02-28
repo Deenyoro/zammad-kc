@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 import OnlineNotification from '#desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification.vue'
-import QuickSearchInput from '#desktop/components/QuickSearch/QuickSearchInput/QuickSearchInput.vue'
+import QuickSearchInput from '#desktop/components/Search/QuickSearch/QuickSearchInput/QuickSearchInput.vue'
 
 interface Props {
   collapsed?: boolean

@@ -2739,6 +2739,8 @@ export type Queries = {
   publicLinks?: Maybe<Array<PublicLink>>;
   /** Generic object search */
   search: SearchResult;
+  /** Generic object search, finds only hit counts across models */
+  searchCounts: Array<SearchCountsResult>;
   /** The sessionId of the currently authenticated user. */
   session: Session;
   /** Fetch system import state */
@@ -2958,6 +2960,15 @@ export type QueriesSearchArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   onlyIn: EnumSearchableModels;
+  orderBy?: InputMaybe<Scalars['String']['input']>;
+  orderDirection?: InputMaybe<EnumOrderDirection>;
+  search: Scalars['String']['input'];
+};
+
+
+/** All available queries */
+export type QueriesSearchCountsArgs = {
+  onlyIn: Array<EnumSearchableModels>;
   search: Scalars['String']['input'];
 };
 
@@ -3168,6 +3179,15 @@ export type Role = {
   updatedAt: Scalars['ISO8601DateTime']['output'];
   /** Last user that updated this record */
   updatedBy?: Maybe<User>;
+};
+
+/** Search count results */
+export type SearchCountsResult = {
+  __typename?: 'SearchCountsResult';
+  /** Model that was searched in */
+  model: EnumSearchableModels;
+  /** Total count of found entries for the current model */
+  totalCount: Scalars['Int']['output'];
 };
 
 /** Search result for one model */
@@ -5500,6 +5520,18 @@ export type UserUpdatesPayload = {
   user?: Maybe<User>;
 };
 
+export type DetailSearchQueryVariables = Exact<{
+  search: Scalars['String']['input'];
+  onlyIn: EnumSearchableModels;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Scalars['String']['input']>;
+  orderDirection?: InputMaybe<EnumOrderDirection>;
+}>;
+
+
+export type DetailSearchQuery = { __typename?: 'Queries', search: { __typename?: 'SearchResult', totalCount: number, items: Array<{ __typename?: 'Organization', id: string, internalId: number, name?: string | null, shared?: boolean | null, active?: boolean | null } | { __typename?: 'Ticket', id: string, internalId: number, title: string, number: string, stateColorCode: EnumTicketStateColorCode, createdAt: string, customer: { __typename?: 'User', id: string, fullname?: string | null }, group: { __typename?: 'Group', id: string, name?: string | null }, state: { __typename?: 'TicketState', id: string, name: string }, priority: { __typename?: 'TicketPriority', id: string, name: string, uiColor?: string | null } } | { __typename?: 'User', id: string, internalId: number, login?: string | null, firstname?: string | null, lastname?: string | null, active?: boolean | null, organization?: { __typename?: 'Organization', id: string, name?: string | null } | null, secondaryOrganizations?: { __typename?: 'OrganizationConnection', totalCount: number, edges: Array<{ __typename?: 'OrganizationEdge', node: { __typename?: 'Organization', id: string, name?: string | null } }> } | null }> } };
+
 export type QuickSearchQueryVariables = Exact<{
   search: Scalars['String']['input'];
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -5507,6 +5539,14 @@ export type QuickSearchQueryVariables = Exact<{
 
 
 export type QuickSearchQuery = { __typename?: 'Queries', quickSearchOrganizations: { __typename?: 'SearchResult', totalCount: number, items: Array<{ __typename?: 'Organization', id: string, internalId: number, name?: string | null, active?: boolean | null } | { __typename?: 'Ticket' } | { __typename?: 'User' }> }, quickSearchTickets: { __typename?: 'SearchResult', totalCount: number, items: Array<{ __typename?: 'Organization' } | { __typename?: 'Ticket', id: string, internalId: number, title: string, number: string, stateColorCode: EnumTicketStateColorCode, state: { __typename?: 'TicketState', id: string, name: string } } | { __typename?: 'User' }> }, quickSearchUsers: { __typename?: 'SearchResult', totalCount: number, items: Array<{ __typename?: 'Organization' } | { __typename?: 'Ticket' } | { __typename?: 'User', id: string, internalId: number, fullname?: string | null, active?: boolean | null }> } };
+
+export type SearchCountsQueryVariables = Exact<{
+  search: Scalars['String']['input'];
+  onlyIn: Array<EnumSearchableModels> | EnumSearchableModels;
+}>;
+
+
+export type SearchCountsQuery = { __typename?: 'Queries', searchCounts: Array<{ __typename?: 'SearchCountsResult', model: EnumSearchableModels, totalCount: number }> };
 
 export type CalendarIcsFileEventsQueryVariables = Exact<{
   fileId: Scalars['ID']['input'];

@@ -143,6 +143,7 @@ const getTaskbarTabComponent = (tabEntityKey: string) => {
 
 const getTaskbarTabLink = (tabEntityKey: string) => {
   const taskbarTab = taskbarTabListByTabEntityKey.value[tabEntityKey]
+
   if (!taskbarTab) return
 
   const plugin = getTaskbarTabTypePlugin(taskbarTab.type)

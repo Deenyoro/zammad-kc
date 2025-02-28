@@ -88,4 +88,6 @@ export const useObjectAttributes = (object: EnumObjectManagerObjects) => {
 export const initializeDefaultObjectAttributes = () => {
   useObjectAttributes(EnumObjectManagerObjects.Ticket)
   useObjectAttributes(EnumObjectManagerObjects.TicketArticle)
+  useObjectAttributes(EnumObjectManagerObjects.User)
+  useObjectAttributes(EnumObjectManagerObjects.Organization)
 }

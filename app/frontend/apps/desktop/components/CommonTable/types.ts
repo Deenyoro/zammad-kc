@@ -83,8 +83,8 @@ export interface TableAttribute {
   name: string
   label: string
   labelPlaceholder?: string[]
-  headerPreferences: TableHeaderPreference
-  columnPreferences: TableColumnPreference & {
+  headerPreferences?: TableHeaderPreference
+  columnPreferences?: TableColumnPreference & {
     link?: Pick<CommonLinkProps, 'internal' | 'openInNewTab'> & {
       getLink: (
         item: TableAdvancedItem,
@@ -128,4 +128,27 @@ export interface AdvancedTableProps extends BaseTableProps {
   orderDirection?: EnumOrderDirection
 
   isSorting?: boolean
+}
+
+export interface ListTableProps<T> {
+  tableId: string
+  headers: string[]
+  orderDirection?: EnumOrderDirection
+  orderBy?: string
+  groupBy?: string
+  caption: string
+  reachedScrollTop?: boolean
+  scrollContainer?: HTMLElement | null
+  items: T[]
+  totalCount: number
+  maxItems: number
+  resorting?: boolean
+  loading: boolean
+  loadingNewPage: boolean
+  skeletonLoadingCount?: number
+  onLoadMore?: () => Awaitable<void>
+}
+
+export interface ListTableEmits {
+  sort: [string, EnumOrderDirection]
 }

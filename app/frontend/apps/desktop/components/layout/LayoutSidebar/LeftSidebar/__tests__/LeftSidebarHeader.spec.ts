@@ -19,6 +19,7 @@ const renderLeftSidebarHeader = (collapsed = true) => {
       search: searchValue,
       searchActive,
     },
+    router: true,
   })
 
   return { wrapper, searchValue, searchActive }

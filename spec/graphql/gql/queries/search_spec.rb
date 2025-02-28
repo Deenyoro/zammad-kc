@@ -17,8 +17,8 @@ RSpec.describe Gql::Queries::Search, type: :graphql do
     let(:search)    { SecureRandom.uuid }
     let(:query)     do
       <<~QUERY
-        query search($search: String!, $onlyIn: EnumSearchableModels!, $offset: Int = 0, $limit: Int = 10) {
-          search(search: $search, onlyIn: $onlyIn, offset: $offset, limit: $limit) {
+        query search($search: String!, $onlyIn: EnumSearchableModels!, $orderBy: String, $orderDirection: EnumOrderDirection, $offset: Int = 0, $limit: Int = 10) {
+          search(search: $search, onlyIn: $onlyIn, orderBy: $orderBy, orderDirection: $orderDirection, offset: $offset, limit: $limit) {
             totalCount
             items {
               ... on Ticket {
@@ -41,7 +41,8 @@ RSpec.describe Gql::Queries::Search, type: :graphql do
       QUERY
     end
     let(:only_in)   { 'Ticket' }
-    let(:variables) { { search: search, onlyIn: only_in } }
+    let(:order_by)  { 'id' }
+    let(:variables) { { search: search, onlyIn: only_in, orderBy: order_by, orderDirection: 'ASCENDING' } }
     let(:es_setup) do
       Setting.set('es_url', nil)
     end
@@ -60,6 +61,14 @@ RSpec.describe Gql::Queries::Search, type: :graphql do
 
         it 'finds expected objects across models' do
           expect(gql.result.data).to eq(expected_result)
+        end
+
+        context 'with invalid order_by' do
+          let(:order_by) { 'nonexisting' }
+
+          it 'raises an error' do
+            expect(gql.result.error_message).to eq("Found invalid column 'nonexisting' for sorting.")
+          end
         end
 
         context 'with offset in a non-matching window' do

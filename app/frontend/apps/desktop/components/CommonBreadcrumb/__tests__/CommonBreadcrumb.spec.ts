@@ -136,4 +136,29 @@ describe('breadcrumb', () => {
 
     expect(view.getByText('trailing slot')).toBeInTheDocument()
   })
+
+  it('supports setting an item to isActive', () => {
+    const view = renderComponent(CommonBreadcrumb, {
+      props: {
+        items: [
+          {
+            label: 'Dashboard',
+            route: '/',
+          },
+          {
+            label: 'Settings',
+            isActive: true,
+          },
+        ],
+      },
+      slots: {
+        trailing: 'trailing slot',
+      },
+      router: true,
+    })
+
+    expect(
+      view.getByRole('heading', { name: 'Settings', level: 1 }),
+    ).toHaveClass('text-black dark:text-white')
+  })
 })

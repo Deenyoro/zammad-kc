@@ -26,8 +26,8 @@ vi.hoisted(() => {
   vi.setSystemTime(new Date('2011-11-11T12:00:00Z'))
 })
 
-const applyMocks = async (ticket: TicketById = createDummyTicket()) => {
-  await mockApplicationConfig({
+const applyMocks = (ticket: TicketById = createDummyTicket()) => {
+  mockApplicationConfig({
     ui_ticket_overview_ticket_limit: 1000,
   })
 
@@ -108,6 +108,8 @@ describe('TicketList', () => {
         form: true,
       })
 
+      console.log(wrapper.html())
+
       expect(await wrapper.findByTestId('table-skeleton')).toBeInTheDocument()
     })
   })
@@ -117,7 +119,7 @@ describe('TicketList', () => {
 
     const ticket = createDummyTicket()
 
-    await applyMocks(ticket)
+    applyMocks(ticket)
 
     const { wrapper, headers } = renderTicketList()
 
@@ -159,7 +161,7 @@ describe('TicketList', () => {
         uiColor: 'high-priority',
       },
     })
-    await applyMocks(ticket)
+    applyMocks(ticket)
 
     const { wrapper } = renderTicketList()
 
@@ -219,7 +221,7 @@ describe('TicketList', () => {
   it.todo('allows grouping of rows', async () => {
     const ticket = createDummyTicket()
 
-    await applyMocks(ticket)
+    applyMocks(ticket)
 
     const { wrapper } = renderTicketList({ groupBy: 'customer' })
 

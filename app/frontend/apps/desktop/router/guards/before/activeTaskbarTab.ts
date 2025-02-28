@@ -18,7 +18,7 @@ const activeTaskbarTab: NavigationGuard = async (
 ) => {
   if (
     !to.meta?.taskbarTabEntity ||
-    (!to.params.internalId && !to.params.tabId)
+    (!to.params.internalId && !to.params.tabId && !to.meta.pageKey)
   ) {
     if (to.meta?.requiresAuth) {
       // Reset the previously active tab state if the new route does not support the taskbar.
@@ -50,7 +50,7 @@ const activeTaskbarTab: NavigationGuard = async (
     await taskbarTabStore.waitForTaskbarListLoaded()
   }
 
-  await taskbarTabStore.upsertTaskbarTab(
+  taskbarTabStore.upsertTaskbarTab(
     taskbarTabEntityType,
     taskbarTabEntityKey,
     tabEntityInternalId,

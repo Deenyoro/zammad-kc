@@ -51,14 +51,13 @@ import CommonInputCopyToClipboard from '#desktop/components/CommonInputCopyToCli
 import CommonPopoverMenu from '#desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 import CommonProgressBar from '#desktop/components/CommonProgressBar/CommonProgressBar.vue'
-// import CommonAdvancedTable from '#desktop/components/CommonTable/CommonAdvancedTable.vue'
 import CommonSkeleton from '#desktop/components/CommonSkeleton/CommonSkeleton.vue'
+import CommonTabGroup from '#desktop/components/CommonTabGroup/CommonTabGroup.vue'
+import { useTabGroup } from '#desktop/components/CommonTabGroup/useTabGroup.ts'
 import CommonAdvancedTable from '#desktop/components/CommonTable/CommonAdvancedTable.vue'
 import CommonSimpleTable from '#desktop/components/CommonTable/CommonSimpleTable.vue'
 import CommonTableSkeleton from '#desktop/components/CommonTable/Skeleton/CommonTableSkeleton.vue'
 import type { TableAdvancedItem } from '#desktop/components/CommonTable/types.ts'
-import CommonTabManager from '#desktop/components/CommonTabManager/CommonTabManager.vue'
-import { useTabManager } from '#desktop/components/CommonTabManager/useTabManager.ts'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import ThemeSwitch from '#desktop/components/ThemeSwitch/ThemeSwitch.vue'
 
@@ -1215,9 +1214,9 @@ const changeRowSimple = () => {
   tableItems[0].role = tableItems[0].role ? '' : 'Member'
 }
 
-const { activeTab } = useTabManager<string>()
+const { activeTab } = useTabGroup<string>()
 
-const { activeTab: activeFilters } = useTabManager<string[]>()
+const { activeTab: activeFilters } = useTabGroup<string[]>()
 
 const popoverOrientation: Ref<Orientation> = ref('autoVertical')
 const popoverOrientationOptions = [
@@ -1894,8 +1893,9 @@ const inlineEditValue = ref('Edit me inline')
       </div>
 
       <h3>Tabs Groups</h3>
-      <CommonTabManager
+      <CommonTabGroup
         v-model="activeTab"
+        class="mb-4"
         :tabs="[
           { label: 'Tab 1', key: 'tab-1' },
           { label: 'Tab 2', default: true, key: 'tab-2' },
@@ -1903,8 +1903,20 @@ const inlineEditValue = ref('Edit me inline')
         ]"
       />
 
+      <h3>Search Entities</h3>
+      <CommonTabGroup
+        v-model="activeTab"
+        class="mb-4"
+        size="medium"
+        :tabs="[
+          { label: 'Organization', count: 5, key: 'organization' },
+          { label: 'Ticket', default: true, count: 5, key: 'ticket' },
+          { label: 'User', key: 'user', count: 2 },
+        ]"
+      />
+
       <h3>Filter Selector</h3>
-      <CommonTabManager
+      <CommonTabGroup
         v-model="activeFilters"
         label="Roles"
         :tabs="[

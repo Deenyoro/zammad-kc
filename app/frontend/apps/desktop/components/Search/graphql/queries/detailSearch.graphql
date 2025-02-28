@@ -1,0 +1,74 @@
+query detailSearch(
+  $search: String!
+  $onlyIn: EnumSearchableModels!
+  $limit: Int = 30
+  $offset: Int = 0
+  $orderBy: String
+  $orderDirection: EnumOrderDirection
+) {
+  search(
+    search: $search
+    onlyIn: $onlyIn
+    limit: $limit
+    offset: $offset
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    totalCount
+    items {
+      ... on Ticket {
+        id
+        internalId
+        title
+        number
+        customer {
+          id
+          fullname
+        }
+        group {
+          id
+          name
+        }
+        state {
+          id
+          name
+        }
+        stateColorCode
+        priority {
+          id
+          name
+          uiColor
+        }
+        createdAt
+      }
+      ... on User {
+        id
+        internalId
+        login
+        firstname
+        lastname
+        organization {
+          id
+          name
+        }
+        secondaryOrganizations(first: 3) {
+          edges {
+            node {
+              id
+              name
+            }
+          }
+          totalCount
+        }
+        active
+      }
+      ... on Organization {
+        id
+        internalId
+        name
+        shared
+        active
+      }
+    }
+  }
+}
