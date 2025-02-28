@@ -724,6 +724,18 @@ RSpec.describe Ticket::Article, type: :model do
 
           it_behaves_like 'raising an error'
         end
+
+        context 'when multiple recipients are present and at least one is invalid' do
+          let(:to) { 'users, test@example.com' }
+
+          it_behaves_like 'raising an error'
+        end
+
+        context 'when multiple recipients are present and all are valid' do
+          let(:to) { 'users@example.com, test@example.com' }
+
+          it_behaves_like 'not raising an error'
+        end
       end
     end
   end

@@ -399,13 +399,14 @@ returns
     email_article_type = Ticket::Article::Type.lookup(name: 'email')
     return if type_id != email_article_type.id
 
-    # ... and if recipient is valid.
-    recipient = begin
-      Mail::Address.new(to).address
-    rescue Mail::Field::FieldError
-      # no-op
+    # ... and if recipients are valid.
+    recipients = begin
+      Mail::AddressList.new(to).addresses
+    rescue Mail::Field::ParseError
+      nil
     end
-    return if EmailAddressValidation.new(recipient).valid?
+
+    return if recipients.present? && recipients.all? { |recipient| EmailAddressValidation.new(recipient.address).valid? }
 
     raise Exceptions::InvalidAttribute.new('email_recipient', __('Sending an email without a valid recipient is not possible.'))
   end
