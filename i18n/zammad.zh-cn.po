@@ -526,7 +526,7 @@ msgstr "%s 分钟之前"
 msgid "%s months ago"
 msgstr "%s 个月之前"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:164
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:178
 #, fuzzy
 #| msgid "show more"
 msgid "%s more"
@@ -1174,7 +1174,7 @@ msgstr "安全密钥的操作菜单按钮"
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:19
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:16
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:16
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:588
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:590
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:118
 msgid "Actions"
 msgstr "操作"
@@ -2145,7 +2145,7 @@ msgid ""
 "authentication methods."
 msgstr "您确定吗？用户将不得不重新配置所有双因素身份验证方法。"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:71
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:75
 #, fuzzy
 #| msgid "Are you sure? You have changes that will get lost."
 msgid "Are you sure? This recent search will get lost."
@@ -2169,13 +2169,13 @@ msgstr "你确定吗？您有未保存的更改，这些更改将会丢失。"
 msgid "Are you sure? Your notifications settings will be reset to default."
 msgstr "你确定吗？您的通知设置将重置为默认值。"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:88
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:92
 #, fuzzy
 #| msgid "Are you sure? You have changes that will get lost."
 msgid "Are you sure? Your recent searches will get lost."
 msgstr "你确定吗？您所做的更改将会丢失。"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:109
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:113
 #, fuzzy
 #| msgid "Are you sure? You have changes that will get lost."
 msgid "Are you sure? Your recently viewed items will get lost."
@@ -3478,17 +3478,23 @@ msgstr "清空选项"
 msgid "Clear filter"
 msgstr "清空筛选器"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:184
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:188
 #, fuzzy
 #| msgid "Clear Search"
 msgid "Clear recent searches"
 msgstr "清除搜索"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:220
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:226
 #, fuzzy
 #| msgid "Recently viewed"
 msgid "Clear recently viewed"
 msgstr "最近看过的工单"
+
+#: app/frontend/apps/desktop/pages/search/components/SearchEmptyMessage.vue:34
+#, fuzzy
+#| msgid "Clear Search"
+msgid "Clear search"
+msgstr "清除搜索"
 
 #: app/frontend/shared/components/Form/fields/FieldDate/useDateTime.ts:92
 #, fuzzy
@@ -4319,7 +4325,7 @@ msgid "Create ticket"
 msgstr "创建工单"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:358
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:351
 msgid "Create your first ticket"
 msgstr "创建第一个工单"
 
@@ -5756,7 +5762,7 @@ msgstr "删除该设备"
 msgid "Delete this link"
 msgstr "删除该设备"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:165
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:169
 #, fuzzy
 #| msgid "Delete this avatar"
 msgid "Delete this recent search"
@@ -5824,14 +5830,14 @@ msgstr "描述"
 msgid "Description (shown as title tag for screen readers)"
 msgstr "描述（显示为屏幕读取器的标题标签）"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:480
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:482
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:91
 #, fuzzy
 #| msgid "set optional"
 msgid "Deselect all entries"
 msgstr "设置可选"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:648
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:650
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:151
 #, fuzzy
 #| msgid "Delete User"
@@ -6257,7 +6263,7 @@ msgstr "草稿"
 msgid "Drag and drop to reorder ticket overview list items."
 msgstr "拖放以重新排序票务概述列表项目。"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:236
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:237
 msgid "Drag and drop to reorder your tabs."
 msgstr "拖放以重新排序选项卡。"
 
@@ -6574,7 +6580,7 @@ msgstr "电子邮件地址“％{email}”已经用于另一个用户。"
 msgid "Email could not be verified. Please contact your administrator."
 msgstr "电子邮件无法验证。请联系您的管理员。"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:913
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:914
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:405
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:169
 msgid ""
@@ -6612,7 +6618,7 @@ msgstr ""
 msgid "Empty"
 msgstr "空的"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:364
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:357
 #, fuzzy
 #| msgid "Overview"
 msgid "Empty Overview"
@@ -7357,6 +7363,7 @@ msgid "Expires at"
 msgstr "到期日"
 
 #: app/assets/javascripts/app/controllers/search.coffee:54
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/Search/Search.vue:18
 msgid "Extended Search"
 msgstr "擴展搜尋"
 
@@ -7800,19 +7807,19 @@ msgstr "||斜体||格式"
 msgid "Forward"
 msgstr "向前"
 
-#: app/frontend/apps/desktop/components/QuickSearch/plugins/organization.ts:12
+#: app/frontend/apps/desktop/components/Search/plugins/organization.ts:15
 #, fuzzy
 #| msgid "Secondary organizations"
 msgid "Found organizations"
 msgstr "二级组织"
 
-#: app/frontend/apps/desktop/components/QuickSearch/plugins/ticket.ts:12
+#: app/frontend/apps/desktop/components/Search/plugins/ticket.ts:15
 #, fuzzy
 #| msgid "Open Tickets"
 msgid "Found tickets"
 msgstr "处理中的工单"
 
-#: app/frontend/apps/desktop/components/QuickSearch/plugins/user.ts:12
+#: app/frontend/apps/desktop/components/Search/plugins/user.ts:15
 #, fuzzy
 #| msgid "Mention user"
 msgid "Found users"
@@ -9916,7 +9923,7 @@ msgstr "LinkedIn开发人员网站"
 msgid "Links"
 msgstr "链接"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:220
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:221
 msgid "List of all user taskbar tabs"
 msgstr "所有用户任务栏选项卡的列表"
 
@@ -10020,6 +10027,7 @@ msgstr "登录到％s"
 #: app/assets/javascripts/app/models/user.coffee:8
 #: app/assets/javascripts/app/views/maintenance.jst.eco:25
 #: app/controllers/time_accountings_controller.rb:107
+#: app/frontend/apps/desktop/components/User/UserListTable.vue:57
 #: db/seeds/object_manager_attributes.rb:766
 msgid "Login"
 msgstr "登录"
@@ -11811,7 +11819,7 @@ msgstr "没有发现可以处理状态消息的相关文章。"
 msgid "No related article found to process the status message on."
 msgstr "没有发现可以处理状态消息的相关文章。"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:171
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:185
 #, fuzzy
 #| msgid "No results found"
 msgid "No results for this query."
@@ -11831,6 +11839,12 @@ msgstr "未找到结果"
 #: app/views/layouts/knowledge_base.html.erb:43
 msgid "No results were found."
 msgstr "沒有找到任何結果"
+
+#: app/frontend/apps/desktop/pages/search/components/SearchEmptyMessage.vue:31
+#, fuzzy
+#| msgid "No results found"
+msgid "No search results for this query."
+msgstr "未找到结果"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleSecurityWarning.vue:30
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleSecurityBadge.vue:204
@@ -11872,7 +11886,7 @@ msgstr "暂时还没有模板."
 msgid "No template created yet."
 msgstr "暂时还没有模板."
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:365
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:358
 #, fuzzy
 #| msgid "Match tickets in following states"
 msgid "No tickets in this state."
@@ -12621,6 +12635,7 @@ msgstr "概览"
 #: app/assets/javascripts/app/views/time_accounting/by_organization.jst.eco:9
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:12
 #: app/controllers/time_accountings_controller.rb:99
+#: app/frontend/apps/desktop/components/Search/plugins/organization.ts:13
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/organization.ts:13
 #: app/frontend/apps/mobile/pages/organization/routes.ts:8
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:30
@@ -12649,7 +12664,7 @@ msgstr "機構支持"
 msgid "Organization could not be updated."
 msgstr "无法更新组织。"
 
-#: app/frontend/apps/desktop/components/QuickSearch/entitites/Organization.vue:18
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/Organization.vue:18
 #, fuzzy
 #| msgid "Organization Name"
 msgid "Organization is inactive."
@@ -12814,7 +12829,7 @@ msgstr "概述散装面具"
 msgid "Overview navigation list"
 msgstr "概览"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:374
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:314
 #, fuzzy
 #| msgid "Overviews"
 msgid "Overview: %s"
@@ -13210,7 +13225,7 @@ msgid "Please add categories and/or answers"
 msgstr "请添加类别和/或答案"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:12
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:351
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:344
 msgid "Please click on the button below to create your first one."
 msgstr "请单击下面的按钮来创建您的第一个。"
 
@@ -13533,7 +13548,7 @@ msgstr "里奧"
 msgid "Priority"
 msgstr "优先级"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:384
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:61
 #, fuzzy
 #| msgid "Priority"
 msgid "Priority Icon"
@@ -13767,20 +13782,20 @@ msgstr "该客户最近的工单"
 msgid "Recent Logs"
 msgstr "最近记录"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:82
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:86
 #, fuzzy
 #| msgid "The test run was successful."
 msgid "Recent search was removed successfully."
 msgstr "測試運行成功"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:99
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:103
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:282
 #, fuzzy
 #| msgid "Last searches"
 msgid "Recent searches"
 msgstr "最近搜索"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:99
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:103
 #, fuzzy
 #| msgid "The test run was successful."
 msgid "Recent searches were cleared successfully."
@@ -13793,11 +13808,11 @@ msgid "Recently Viewed Tickets"
 msgstr "最近查看过的工单"
 
 #: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:486
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:119
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:123
 msgid "Recently viewed"
 msgstr "最近看过的工单"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:119
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:123
 #, fuzzy
 #| msgid "The test run was successful."
 msgid "Recently viewed items were cleared successfully."
@@ -14206,7 +14221,7 @@ msgstr "重设密码"
 msgid "Reset Password failed!"
 msgstr "重置密码失败！"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearchInput/QuickSearchInput.vue:54
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchInput/QuickSearchInput.vue:63
 #, fuzzy
 #| msgid "Clear Search"
 msgid "Reset Search"
@@ -14363,6 +14378,12 @@ msgstr "仅限以下用户"
 
 #: app/assets/javascripts/app/views/generic/object_import/result.jst.eco:2
 msgid "Result:"
+msgstr "结果："
+
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:259
+#, fuzzy
+#| msgid "Result:"
+msgid "Results"
 msgstr "结果："
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:161
@@ -14766,6 +14787,8 @@ msgstr "向下滚动以查看新消息"
 #: app/assets/javascripts/app/views/integration/idoit_object_selector.jst.eco:3
 #: app/assets/javascripts/app/views/knowledge_base/search_field_widget.jst.eco:1
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:4
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:257
+#: app/frontend/apps/desktop/pages/search/routes.ts:14
 #: app/frontend/apps/mobile/pages/search/routes.ts:8
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:238
 msgid "Search"
@@ -15031,7 +15054,7 @@ msgstr "选择共享草稿"
 msgid "Select Template"
 msgstr "选择模板"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:481
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:483
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:92
 #, fuzzy
 #| msgid "set optional"
@@ -15070,7 +15093,7 @@ msgstr "选择您要创建的工单类型"
 msgid "Select this avatar"
 msgstr "删除用户"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:649
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:651
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:152
 #, fuzzy
 #| msgid "Delete User"
@@ -15879,13 +15902,13 @@ msgstr "抱歉，并非所有字段都填写正确。"
 msgid "Sorry, there is currently no CTI backend enabled."
 msgstr "抱歉，目前没有启用 CTI 后端。"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:515
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:517
 #, fuzzy
 #| msgid "pending"
 msgid "Sorted ascending"
 msgstr "待處理"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:516
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:518
 #, fuzzy
 #| msgid "pending"
 msgid "Sorted descending"
@@ -15971,13 +15994,19 @@ msgstr "重新開始"
 msgid "Start new conversation"
 msgstr "开始新的会话"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:229
-msgid "Start typing i.e. the name of a ticket, an organization or a user."
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:235
+msgid "Start typing e.g. the name of a ticket, an organization or a user."
 msgstr ""
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:116
 msgid "Start typing to find the ticket to merge into."
 msgstr "开始打字以查找合并的票。"
+
+#: app/frontend/apps/desktop/pages/search/components/SearchEmptyMessage.vue:38
+#, fuzzy
+#| msgid "Start typing to search for users…"
+msgid "Start typing to get the search results."
+msgstr "开始输入以搜索用户…"
 
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:745
 msgid "Start typing to search for users…"
@@ -16046,7 +16075,7 @@ msgstr "开始导入…"
 msgid "State"
 msgstr "状态"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:396
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:73
 #, fuzzy
 #| msgid "State"
 msgid "State Icon"
@@ -16346,7 +16375,7 @@ msgstr "门票后行为行为"
 msgid "Tab has changed, do you really want to close it?"
 msgstr "页面存在更新，确定要关闭此页面么?"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:231
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:232
 msgid "Tabs"
 msgstr "选项卡"
 
@@ -17864,7 +17893,7 @@ msgstr "需要认证"
 
 #: app/assets/javascripts/app/controllers/customer_ticket_create/sidebar_customer_default.coffee:29
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:11
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:348
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:341
 msgid "The way to communicate with us is this thing called \"ticket\"."
 msgstr "與我們溝通的方式就是所謂的“工單”"
 
@@ -18604,6 +18633,7 @@ msgstr "星期四"
 #: app/assets/javascripts/app/models/signature.coffee:15
 #: app/assets/javascripts/app/models/text_module.coffee:15
 #: app/assets/javascripts/app/views/time_accounting/accounted_time.jst.eco:19
+#: app/frontend/apps/desktop/components/Search/plugins/ticket.ts:13
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/information.ts:10
 #: app/frontend/apps/desktop/pages/ticket/routes.ts:10
 #: app/frontend/apps/mobile/pages/ticket/routes.ts:10
@@ -20581,6 +20611,7 @@ msgstr "适用在查看工单时"
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:128
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:111
 #: app/assets/javascripts/app/views/session.jst.eco:8
+#: app/frontend/apps/desktop/components/Search/plugins/user.ts:13
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:119
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailOutboundForm.ts:77
 #: app/frontend/apps/mobile/pages/user/routes.ts:7
@@ -20688,7 +20719,7 @@ msgstr "用户过滤器"
 msgid "User is inactive"
 msgstr "未激活"
 
-#: app/frontend/apps/desktop/components/QuickSearch/entitites/User.vue:17
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:17
 #, fuzzy
 #| msgid "inactive"
 msgid "User is inactive."
@@ -21150,7 +21181,7 @@ msgstr "欢迎来到Zammad！"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:2
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupStart.vue:46
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:342
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:335
 msgid "Welcome!"
 msgstr "欢迎！"
 
@@ -21638,7 +21669,7 @@ msgstr ""
 msgid "You do not have administrator permission."
 msgstr "至少有一个用户需要拥有admin权限。"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:436
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:438
 #, fuzzy
 #| msgid "You currently don't have any tickets."
 msgid "You don't have more tickets to load."
@@ -21704,7 +21735,7 @@ msgid "You have no unread messages"
 msgstr "您没有未读的消息"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:10
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:345
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:338
 msgid "You have not created a ticket yet."
 msgstr "您还没有创建工单"
 
@@ -21761,7 +21792,7 @@ msgstr "您需要在 ％s中配置 Zammad endpoint端點"
 msgid "You need to configure the Zammad endpoints in the %s:"
 msgstr "您需要在 ％s中配置 Zammad endpoint端點"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:432
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:434
 #, fuzzy
 #| msgid "The limit of %s displayable tickets was reached (%s remaining)"
 msgid "You reached the table limit of %s tickets (%s remaining)."
@@ -22420,7 +22451,7 @@ msgstr "删除客户"
 msgid "descending"
 msgstr "待處理"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:130
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:138
 #, fuzzy
 #| msgid "Extended Search"
 msgid "detailed search"

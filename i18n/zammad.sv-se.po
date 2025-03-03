@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zammad\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-02-25 07:00+0000\n"
-"Last-Translator: Martin Gruner <mg@zammad.com>\n"
+"PO-Revision-Date: 2025-03-01 09:00+0000\n"
+"Last-Translator: chrand818 <can@telenabler.com>\n"
 "Language-Team: Swedish <https://translations.zammad.org/projects/zammad/"
 "zammad-development/sv/>\n"
 "Language: sv-se\n"
@@ -533,7 +533,7 @@ msgstr "%s minuter sedan"
 msgid "%s months ago"
 msgstr "%s månader sedan"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:164
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:178
 msgid "%s more"
 msgstr "%s mer"
 
@@ -908,6 +908,9 @@ msgid ""
 "mails, e.g. when an agent is composing an email or a trigger is sending an "
 "auto-reply"
 msgstr ""
+"En grupps e-postadress avgör vilken adress som ska användas för utgående e-"
+"post, t.ex. när en agent skriver ett e-postmeddelande eller en trigger "
+"skickar ett autosvar"
 
 #: db/seeds/settings.rb:4013
 msgid "A list of active import backends that gets scheduled automatically."
@@ -1194,7 +1197,7 @@ msgstr "Åtgärdsmenyknapp för säkerhetsnycklar"
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:19
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:16
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:16
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:588
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:590
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:118
 msgid "Actions"
 msgstr "Åtgärder"
@@ -2162,11 +2165,9 @@ msgstr ""
 "Är du säker? Användaren kommer att behöva konfigurera om samtliga två-"
 "faktorautentiseringsmetoder."
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:71
-#, fuzzy
-#| msgid "Are you sure? You have changes that will get lost."
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:75
 msgid "Are you sure? This recent search will get lost."
-msgstr "Är du säker? Du har ändringar som kommer förloras."
+msgstr "Är du säker? Denna senaste sökning kommer att gå förlorad."
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:64
 msgid "Are you sure? You have changes that will get lost."
@@ -2188,17 +2189,13 @@ msgstr ""
 "Är du säker? Dina notifieringsinställningar kommer att återställas till "
 "standard."
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:88
-#, fuzzy
-#| msgid "Are you sure? You have changes that will get lost."
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:92
 msgid "Are you sure? Your recent searches will get lost."
-msgstr "Är du säker? Du har ändringar som kommer förloras."
+msgstr "Är du säker? Dina senaste sökningar kommer att gå förlorade."
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:109
-#, fuzzy
-#| msgid "Are you sure? You have changes that will get lost."
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:113
 msgid "Are you sure? Your recently viewed items will get lost."
-msgstr "Är du säker? Du har ändringar som kommer förloras."
+msgstr "Är du säker? Dina senast visade objekt kommer att försvinna."
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:54
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:11
@@ -3188,16 +3185,12 @@ msgid "Change text color"
 msgstr "Ändra textfärg"
 
 #: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:36
-#, fuzzy
-#| msgid "Change %s"
 msgid "Change to %s"
-msgstr "Ändra %s"
+msgstr "Ändra till %s"
 
 #: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:27
-#, fuzzy
-#| msgid "add new email address"
 msgid "Change to channel email address"
-msgstr "Lägg till ny e-postadress"
+msgstr "Ändra till kanalens e-postadress"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/HistoryEventDetails/HistoryEventDetailsReaction.vue:17
 msgid "Changed reaction on message %s from %s"
@@ -3505,17 +3498,19 @@ msgstr "Rensa urval"
 msgid "Clear filter"
 msgstr "Rensa filter"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:184
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:188
+msgid "Clear recent searches"
+msgstr "Ta bort senaste sökningar"
+
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:226
+msgid "Clear recently viewed"
+msgstr "Rensa nyligen visade"
+
+#: app/frontend/apps/desktop/pages/search/components/SearchEmptyMessage.vue:34
 #, fuzzy
 #| msgid "Clear Search"
-msgid "Clear recent searches"
+msgid "Clear search"
 msgstr "Rensa sökningar"
-
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:220
-#, fuzzy
-#| msgid "Recently viewed"
-msgid "Clear recently viewed"
-msgstr "Senast öppnade"
 
 #: app/frontend/shared/components/Form/fields/FieldDate/useDateTime.ts:92
 msgid "Clear the value"
@@ -3684,14 +3679,6 @@ msgid "Company Inc."
 msgstr "Företag AB"
 
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:35
-#, fuzzy
-#| msgid ""
-#| "Compared to the Microsoft 365 Graph API Email Channel, this is the "
-#| "traditional implementation using OAuth and IMAP. When setting up new "
-#| "channels, we suggest using the Graph API implementation instead. Please "
-#| "let us know in the Zammad Community %l when you think there are good "
-#| "reasons to keep the IMAP approach as an alternative in the future. More "
-#| "information can be found here %l."
 msgid ""
 "Compared to the Microsoft 365 Graph API Email Channel, this is the "
 "traditional implementation using OAuth and IMAP. When setting up new "
@@ -3700,10 +3687,8 @@ msgid ""
 msgstr ""
 "Jämfört med Microsoft 365 Graph API E-post Channel är detta den "
 "traditionella implementeringen med OAuth och IMAP. När du skapar nya kanaler "
-"föreslår vi att du använder Graph API-implementeringen istället. Låt oss "
-"gärna veta i Zammad Community %l om du tycker att det finns goda skäl att "
-"behålla IMAP-strategin som ett alternativ i framtiden. Mer information finns "
-"här %l."
+"föreslår vi att du använder Graph API-implementeringen istället. Mer "
+"information finns här %l."
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:11
@@ -4355,7 +4340,7 @@ msgid "Create ticket"
 msgstr "Skapa ärende"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:358
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:351
 msgid "Create your first ticket"
 msgstr "Skapa ditt första ärende"
 
@@ -5918,11 +5903,9 @@ msgstr "Ta bort den här enheten"
 msgid "Delete this link"
 msgstr "Ta bort denna länk"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:165
-#, fuzzy
-#| msgid "Delete this avatar"
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:169
 msgid "Delete this recent search"
-msgstr "Ta bort denna avatar"
+msgstr "Radera denna senaste sökning"
 
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:29
 msgid "Delete:"
@@ -5988,12 +5971,12 @@ msgstr "Beskrivning"
 msgid "Description (shown as title tag for screen readers)"
 msgstr "Beskrivning (visas som titeletikett för skärmläsare)"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:480
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:482
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:91
 msgid "Deselect all entries"
 msgstr "Avmarkera samtliga poster"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:648
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:650
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:151
 msgid "Deselect this entry"
 msgstr "Avmarkera denna post"
@@ -6034,10 +6017,8 @@ msgstr "Destinationens caller-id eller kö"
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:282
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:304
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:271
-#, fuzzy
-#| msgid "Destination Group"
 msgid "Destination group > Sending email address"
-msgstr "Destinationsgrupp"
+msgstr "Destination grupp > E-postadress för sändning"
 
 #: app/assets/javascripts/app/views/settings/ticket_duplicate_detection.jst.eco:7
 #: db/seeds/settings.rb:2695
@@ -6242,10 +6223,8 @@ msgid "Display name"
 msgstr "Visningsnamn"
 
 #: app/assets/javascripts/app/lib/mixins/destination_group_email_address.coffee:26
-#, fuzzy
-#| msgid "add new email address"
 msgid "Do not change email address (%s)"
-msgstr "Lägg till ny e-postadress"
+msgstr "Ändra inte e-postadressen (%s)"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:662
 msgid "Do not encrypt email"
@@ -6412,7 +6391,7 @@ msgstr "Utkast"
 msgid "Drag and drop to reorder ticket overview list items."
 msgstr "Dra och släpp för att ändra ordningen på ärendeöversikter."
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:236
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:237
 msgid "Drag and drop to reorder your tabs."
 msgstr "Dra och släpp för att ändra ordningen på flikarna."
 
@@ -6724,7 +6703,7 @@ msgid "Email could not be verified. Please contact your administrator."
 msgstr ""
 "Det gick inte att verifiera e-postadressen. Kontakta din administratör."
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:913
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:914
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:405
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:169
 msgid ""
@@ -6763,7 +6742,7 @@ msgstr ""
 msgid "Empty"
 msgstr "Tomt"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:364
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:357
 msgid "Empty Overview"
 msgstr "Tom översikt"
 
@@ -7544,6 +7523,7 @@ msgid "Expires at"
 msgstr "Upphör vid"
 
 #: app/assets/javascripts/app/controllers/search.coffee:54
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/Search/Search.vue:18
 msgid "Extended Search"
 msgstr "Utökad sökning"
 
@@ -7976,23 +7956,17 @@ msgstr "Formatera som ||kursiv||"
 msgid "Forward"
 msgstr "Vidarebefordra"
 
-#: app/frontend/apps/desktop/components/QuickSearch/plugins/organization.ts:12
-#, fuzzy
-#| msgid "Secondary organizations"
+#: app/frontend/apps/desktop/components/Search/plugins/organization.ts:15
 msgid "Found organizations"
-msgstr "Sekundära organisationer"
+msgstr "Hittade organisationer"
 
-#: app/frontend/apps/desktop/components/QuickSearch/plugins/ticket.ts:12
-#, fuzzy
-#| msgid "open tickets"
+#: app/frontend/apps/desktop/components/Search/plugins/ticket.ts:15
 msgid "Found tickets"
-msgstr "Öppna ärenden"
+msgstr "Hittade ärenden"
 
-#: app/frontend/apps/desktop/components/QuickSearch/plugins/user.ts:12
-#, fuzzy
-#| msgid "Mention user"
+#: app/frontend/apps/desktop/components/Search/plugins/user.ts:15
 msgid "Found users"
-msgstr "Nämn användare"
+msgstr "Hittade användare"
 
 #: app/assets/javascripts/app/views/widget/ticket_stats_frequency.jst.eco:1
 msgid "Frequency"
@@ -10079,7 +10053,7 @@ msgstr "LinkedIn Developer webbplats"
 msgid "Links"
 msgstr "Länkar"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:220
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:221
 msgid "List of all user taskbar tabs"
 msgstr "Lista över samtliga flikar i aktivitetsfältet för användare"
 
@@ -10181,6 +10155,7 @@ msgstr "Logga in på %s"
 #: app/assets/javascripts/app/models/user.coffee:8
 #: app/assets/javascripts/app/views/maintenance.jst.eco:25
 #: app/controllers/time_accountings_controller.rb:107
+#: app/frontend/apps/desktop/components/User/UserListTable.vue:57
 #: db/seeds/object_manager_attributes.rb:766
 msgid "Login"
 msgstr "Inloggning"
@@ -11730,8 +11705,6 @@ msgid "No proxy for the following hosts."
 msgstr "Ingen proxy för följande värdar."
 
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:305
-#, fuzzy
-#| msgid "No previous searches"
 msgid "No recent searches"
 msgstr "Inga tidigare sökningar"
 
@@ -11744,11 +11717,9 @@ msgid "No related article found to process the status message on."
 msgstr ""
 "Ingen relaterad artikel hittades för att bearbeta statusmeddelandet på."
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:171
-#, fuzzy
-#| msgid "No results found"
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:185
 msgid "No results for this query."
-msgstr "Inga resultat hittades"
+msgstr "Inga resultat för denna fråga."
 
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:698
 #: app/frontend/apps/desktop/components/CommonSelect/CommonSelect.vue:338
@@ -11764,6 +11735,12 @@ msgstr "Inga resultat hittades"
 #: app/views/layouts/knowledge_base.html.erb:43
 msgid "No results were found."
 msgstr "Inga resultat hittades."
+
+#: app/frontend/apps/desktop/pages/search/components/SearchEmptyMessage.vue:31
+#, fuzzy
+#| msgid "No results for this query."
+msgid "No search results for this query."
+msgstr "Inga resultat för denna fråga."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleSecurityWarning.vue:30
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleSecurityBadge.vue:204
@@ -11799,7 +11776,7 @@ msgstr "Inga taggar har lagts till ännu."
 msgid "No template created yet."
 msgstr "Inga mallar har skapats ännu."
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:365
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:358
 msgid "No tickets in this state."
 msgstr "Inga ärenden med den här statusen."
 
@@ -12336,10 +12313,8 @@ msgid "Open note box"
 msgstr "Öppna anteckningsruta"
 
 #: app/frontend/apps/desktop/components/PageNavigation/PageNavigation.vue:50
-#, fuzzy
-#| msgid "Open Ticket# %s"
 msgid "Open quick search"
-msgstr "Öppna Ärendenummer# %s"
+msgstr "Öppna snabbsökning"
 
 #: app/frontend/shared/components/Form/fields/FieldDate/useDateTime.ts:77
 msgid "Open the hours overlay"
@@ -12470,6 +12445,7 @@ msgstr "Översiktsordning"
 #: app/assets/javascripts/app/views/time_accounting/by_organization.jst.eco:9
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:12
 #: app/controllers/time_accountings_controller.rb:99
+#: app/frontend/apps/desktop/components/Search/plugins/organization.ts:13
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/organization.ts:13
 #: app/frontend/apps/mobile/pages/organization/routes.ts:8
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:30
@@ -12498,11 +12474,9 @@ msgstr "Organisationsupport"
 msgid "Organization could not be updated."
 msgstr "Organisationen kunde inte uppdateras."
 
-#: app/frontend/apps/desktop/components/QuickSearch/entitites/Organization.vue:18
-#, fuzzy
-#| msgid "Organization name"
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/Organization.vue:18
 msgid "Organization is inactive."
-msgstr "Organisationsnamn"
+msgstr "Organisationen är inaktiv."
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualSystemInformation.vue:48
 msgid "Organization logo"
@@ -12652,7 +12626,7 @@ msgstr "Översikt bulk mall"
 msgid "Overview navigation list"
 msgstr "Översikt navigeringslista"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:374
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:314
 msgid "Overview: %s"
 msgstr "Översikt: %s"
 
@@ -13033,7 +13007,7 @@ msgid "Please add categories and/or answers"
 msgstr "Lägg till kategorier och/eller svar"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:12
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:351
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:344
 msgid "Please click on the button below to create your first one."
 msgstr "Klicka på knappen nedan för att skapa din första."
 
@@ -13353,7 +13327,7 @@ msgstr "Prio"
 msgid "Priority"
 msgstr "Prioritet"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:384
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:61
 msgid "Priority Icon"
 msgstr "Prioritetsikon"
 
@@ -13577,24 +13551,18 @@ msgstr "Senaste kundtickets"
 msgid "Recent Logs"
 msgstr "Senaste loggar"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:82
-#, fuzzy
-#| msgid "Ticket tag removed successfully."
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:86
 msgid "Recent search was removed successfully."
-msgstr "Ärendetagg togs bort."
+msgstr "Senaste sökningen togs bort."
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:99
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:103
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:282
-#, fuzzy
-#| msgid "Last searches"
 msgid "Recent searches"
-msgstr "Senaste sökningar"
+msgstr "Senaste sökningarna"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:99
-#, fuzzy
-#| msgid "Ticket has been created successfully."
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:103
 msgid "Recent searches were cleared successfully."
-msgstr "Ärendet skapades."
+msgstr "De senaste sökningarna rensades."
 
 #: app/assets/javascripts/app/views/agent_ticket_merge.jst.eco:8
 #: app/assets/javascripts/app/views/link/ticket/add.jst.eco:36
@@ -13603,15 +13571,13 @@ msgid "Recently Viewed Tickets"
 msgstr "Senaste visade ärenden"
 
 #: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:486
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:119
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:123
 msgid "Recently viewed"
 msgstr "Senast öppnade"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:119
-#, fuzzy
-#| msgid "Ticket has been created successfully."
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:123
 msgid "Recently viewed items were cleared successfully."
-msgstr "Ärendet skapades."
+msgstr "Nyligen visade artiklar rensades."
 
 #: app/assets/javascripts/app/controllers/_channel/sms.coffee:397
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/notification.jst.eco:9
@@ -13989,11 +13955,9 @@ msgstr "Återställ lösenord"
 msgid "Reset Password failed!"
 msgstr "Återställning av lösenord misslyckades!"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearchInput/QuickSearchInput.vue:54
-#, fuzzy
-#| msgid "Clear Search"
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchInput/QuickSearchInput.vue:63
 msgid "Reset Search"
-msgstr "Rensa sökningar"
+msgstr "Återställ sökning"
 
 #: app/assets/javascripts/app/controllers/_profile/overviews.coffee:34
 msgid "Reset overview order"
@@ -14143,6 +14107,12 @@ msgstr "Begränsa till endast följande användare"
 
 #: app/assets/javascripts/app/views/generic/object_import/result.jst.eco:2
 msgid "Result:"
+msgstr "Resultat:"
+
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:259
+#, fuzzy
+#| msgid "Result:"
+msgid "Results"
 msgstr "Resultat:"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:161
@@ -14538,6 +14508,8 @@ msgstr "Bläddra ner för att se nya meddelanden"
 #: app/assets/javascripts/app/views/integration/idoit_object_selector.jst.eco:3
 #: app/assets/javascripts/app/views/knowledge_base/search_field_widget.jst.eco:1
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:4
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:257
+#: app/frontend/apps/desktop/pages/search/routes.ts:14
 #: app/frontend/apps/mobile/pages/search/routes.ts:8
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:238
 msgid "Search"
@@ -14815,7 +14787,7 @@ msgstr "Välj Delat utkast"
 msgid "Select Template"
 msgstr "Välj mall"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:481
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:483
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:92
 msgid "Select all entries"
 msgstr "Markera samtliga poster"
@@ -14848,7 +14820,7 @@ msgstr "Välj typ av ärende som du skapar"
 msgid "Select this avatar"
 msgstr "Välj denna avatar"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:649
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:651
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:152
 msgid "Select this entry"
 msgstr "Markera denna post"
@@ -14970,10 +14942,8 @@ msgid "Sender of last article"
 msgstr "Avsändare för senaste artikeln"
 
 #: db/seeds/object_manager_attributes.rb:2222
-#, fuzzy
-#| msgid "Email Address"
 msgid "Sending Email Address"
-msgstr "E-postadress"
+msgstr "Avsändande E-postadress"
 
 #: app/models/ticket/article.rb:312
 msgid "Sending an email without a valid recipient is not possible."
@@ -15631,11 +15601,11 @@ msgstr "Tyvärr är inte alla fält korrekt ifyllda."
 msgid "Sorry, there is currently no CTI backend enabled."
 msgstr "Tyvärr, det finns för närvarande ingen CTI-backend aktiverad."
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:515
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:517
 msgid "Sorted ascending"
 msgstr "Sorterad stigande"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:516
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:518
 msgid "Sorted descending"
 msgstr "Sorterad i fallande ordning"
 
@@ -15719,13 +15689,22 @@ msgstr "Starta ny"
 msgid "Start new conversation"
 msgstr "Starta ny konversation"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:229
-msgid "Start typing i.e. the name of a ticket, an organization or a user."
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:235
+#, fuzzy
+#| msgid "Start typing i.e. the name of a ticket, an organization or a user."
+msgid "Start typing e.g. the name of a ticket, an organization or a user."
 msgstr ""
+"Börja skriva, t.ex. namnet på ett ärende, en organisation eller en användare."
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:116
 msgid "Start typing to find the ticket to merge into."
 msgstr "Börja skriv för att hitta ärendet som du vill sammanfoga med."
+
+#: app/frontend/apps/desktop/pages/search/components/SearchEmptyMessage.vue:38
+#, fuzzy
+#| msgid "Start typing to search for users…"
+msgid "Start typing to get the search results."
+msgstr "Börja skriva för att söka efter användare …"
 
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:745
 msgid "Start typing to search for users…"
@@ -15788,7 +15767,7 @@ msgstr "Startar import…"
 msgid "State"
 msgstr "Status"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:396
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:73
 msgid "State Icon"
 msgstr "Statusikon"
 
@@ -16086,7 +16065,7 @@ msgstr "Flikbeteende när ärendet förändras"
 msgid "Tab has changed, do you really want to close it?"
 msgstr "Fliken har ändrats, vill du verkligen stänga den?"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:231
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:232
 msgid "Tabs"
 msgstr "Flikar"
 
@@ -17588,7 +17567,7 @@ msgstr "Verifieringen av två-faktorautentiseringsmetoden misslyckades."
 
 #: app/assets/javascripts/app/controllers/customer_ticket_create/sidebar_customer_default.coffee:29
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:11
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:348
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:341
 msgid "The way to communicate with us is this thing called \"ticket\"."
 msgstr "Sättet att kommunicera med oss kallas \"ärenden\"."
 
@@ -18223,6 +18202,10 @@ msgid ""
 "should be used for outgoing mails, e.g. when an agent is composing an email "
 "or a trigger is sending an auto-reply."
 msgstr ""
+"Detta kommer att justera motsvarande inställning för destinationsgruppen i "
+"grupphanteringen. En grupps e-postadress avgör vilken adress som ska "
+"användas för utgående e-post, t.ex. när en agent skriver ett e-"
+"postmeddelande eller en trigger skickar ett autosvar."
 
 #: app/assets/javascripts/app/controllers/_ui_element/basedate.coffee:157
 msgid "Thu"
@@ -18246,6 +18229,7 @@ msgstr "Torsdag"
 #: app/assets/javascripts/app/models/signature.coffee:15
 #: app/assets/javascripts/app/models/text_module.coffee:15
 #: app/assets/javascripts/app/views/time_accounting/accounted_time.jst.eco:19
+#: app/frontend/apps/desktop/components/Search/plugins/ticket.ts:13
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/information.ts:10
 #: app/frontend/apps/desktop/pages/ticket/routes.ts:10
 #: app/frontend/apps/mobile/pages/ticket/routes.ts:10
@@ -19939,6 +19923,7 @@ msgstr "Används när du visar ett ärende"
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:128
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:111
 #: app/assets/javascripts/app/views/session.jst.eco:8
+#: app/frontend/apps/desktop/components/Search/plugins/user.ts:13
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:119
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailOutboundForm.ts:77
 #: app/frontend/apps/mobile/pages/user/routes.ts:7
@@ -20023,11 +20008,9 @@ msgstr "Användaren är inaktiv"
 msgid "User is inactive"
 msgstr "Användaren är inaktiv"
 
-#: app/frontend/apps/desktop/components/QuickSearch/entitites/User.vue:17
-#, fuzzy
-#| msgid "User is inactive"
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:17
 msgid "User is inactive."
-msgstr "Användaren är inaktiv"
+msgstr "Användaren är inaktiv."
 
 #: app/frontend/shared/composables/useAvatarIndicator.ts:95
 msgid "User is on desktop"
@@ -20448,7 +20431,7 @@ msgstr "Välkommen till Zammad!"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:2
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupStart.vue:46
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:342
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:335
 msgid "Welcome!"
 msgstr "Välkommen!"
 
@@ -20919,7 +20902,7 @@ msgstr ""
 msgid "You do not have administrator permission."
 msgstr "Du har inte administratörsbehörighet."
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:436
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:438
 msgid "You don't have more tickets to load."
 msgstr "Du har inte fler ärenden att ladda."
 
@@ -20986,7 +20969,7 @@ msgid "You have no unread messages"
 msgstr "Du har inga olästa meddelanden"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:10
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:345
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:338
 msgid "You have not created a ticket yet."
 msgstr "Du har inte skapat ett ärende ännu."
 
@@ -20999,6 +20982,8 @@ msgid ""
 "(including future ones) are going to be archived until the selected time is "
 "reached."
 msgstr ""
+"Du har valt en bryttidpunkt i framtiden. Tänk på att alla E-postmeddelanden "
+"(även framtida) kommer att arkiveras tills den valda tiden har uppnåtts."
 
 #: app/assets/javascripts/app/controllers/_profile/avatar.coffee:326
 msgid "You have to allow access to your webcam."
@@ -21034,7 +21019,7 @@ msgstr "Du behöver lägga till Zammad-slutpunkterna i %s-webbgränssnittet:"
 msgid "You need to configure the Zammad endpoints in the %s:"
 msgstr "Du behöver lägga till Zammad-slutpunkterna i %s:"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:432
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:434
 msgid "You reached the table limit of %s tickets (%s remaining)."
 msgstr "Du har nått tabellgränsen av %s ärenden (%s kvar)."
 
@@ -21636,11 +21621,9 @@ msgstr "Levererat till kunden"
 msgid "descending"
 msgstr "fallande"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:130
-#, fuzzy
-#| msgid "Extended Search"
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:138
 msgid "detailed search"
-msgstr "Utökad sökning"
+msgstr "detaljerad sökning"
 
 #: db/seeds/settings.rb:1229
 msgid "developer password"

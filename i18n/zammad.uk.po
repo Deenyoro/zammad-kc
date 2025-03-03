@@ -446,7 +446,7 @@ msgstr "%s хвилин тому"
 msgid "%s months ago"
 msgstr "%s місяців тому"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:164
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:178
 #, fuzzy
 #| msgid "See more"
 msgid "%s more"
@@ -1132,7 +1132,7 @@ msgstr "Масову дію виконано!"
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:19
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:16
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:16
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:588
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:590
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:118
 msgid "Actions"
 msgstr "Дії"
@@ -2165,7 +2165,7 @@ msgid ""
 "authentication methods."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:71
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:75
 msgid "Are you sure? This recent search will get lost."
 msgstr ""
 
@@ -2187,11 +2187,11 @@ msgstr ""
 msgid "Are you sure? Your notifications settings will be reset to default."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:88
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:92
 msgid "Are you sure? Your recent searches will get lost."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:109
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:113
 msgid "Are you sure? Your recently viewed items will get lost."
 msgstr ""
 
@@ -3635,17 +3635,23 @@ msgstr "Селектор"
 msgid "Clear filter"
 msgstr "Журнал абонентів"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:184
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:188
 #, fuzzy
 #| msgid "Search"
 msgid "Clear recent searches"
 msgstr "Пошук"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:220
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:226
 #, fuzzy
 #| msgid "Recently viewed"
 msgid "Clear recently viewed"
 msgstr "Нещодавно переглянуті"
+
+#: app/frontend/apps/desktop/pages/search/components/SearchEmptyMessage.vue:34
+#, fuzzy
+#| msgid "Search"
+msgid "Clear search"
+msgstr "Пошук"
 
 #: app/frontend/shared/components/Form/fields/FieldDate/useDateTime.ts:92
 #, fuzzy
@@ -4531,7 +4537,7 @@ msgid "Create ticket"
 msgstr "Створити пробну заявку"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:358
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:351
 msgid "Create your first ticket"
 msgstr "Створіть свою першу заявку"
 
@@ -6101,7 +6107,7 @@ msgstr "Видалити Користувача"
 msgid "Delete this link"
 msgstr "Видалити Користувача"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:165
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:169
 #, fuzzy
 #| msgid "Delete User"
 msgid "Delete this recent search"
@@ -6181,14 +6187,14 @@ msgstr "Опис"
 msgid "Description (shown as title tag for screen readers)"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:480
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:482
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:91
 #, fuzzy
 #| msgid "reply"
 msgid "Deselect all entries"
 msgstr "відповісти"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:648
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:650
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:151
 #, fuzzy
 #| msgid "Delete User"
@@ -6644,7 +6650,7 @@ msgstr "Чернетка"
 msgid "Drag and drop to reorder ticket overview list items."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:236
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:237
 msgid "Drag and drop to reorder your tabs."
 msgstr ""
 
@@ -6997,7 +7003,7 @@ msgstr ""
 "Неможливо підтвердити електронну пошту. Будь ласка, зверніться до свого "
 "адміністратора.\t"
 
-#: app/assets/javascripts/app/controllers/_channel/email.coffee:913
+#: app/assets/javascripts/app/controllers/_channel/email.coffee:914
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:405
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:169
 msgid ""
@@ -7035,7 +7041,7 @@ msgstr ""
 msgid "Empty"
 msgstr "Порожній"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:364
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:357
 #, fuzzy
 #| msgid "Overview"
 msgid "Empty Overview"
@@ -7838,6 +7844,7 @@ msgid "Expires at"
 msgstr "Минає"
 
 #: app/assets/javascripts/app/controllers/search.coffee:54
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/Search/Search.vue:18
 msgid "Extended Search"
 msgstr "Розширений пошук"
 
@@ -8327,19 +8334,19 @@ msgstr "Форматувати як ||курсив||"
 msgid "Forward"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/QuickSearch/plugins/organization.ts:12
+#: app/frontend/apps/desktop/components/Search/plugins/organization.ts:15
 #, fuzzy
 #| msgid "Shared organization"
 msgid "Found organizations"
 msgstr "Спільна організація"
 
-#: app/frontend/apps/desktop/components/QuickSearch/plugins/ticket.ts:12
+#: app/frontend/apps/desktop/components/Search/plugins/ticket.ts:15
 #, fuzzy
 #| msgid "Open Tickets"
 msgid "Found tickets"
 msgstr "Відкрити заявки"
 
-#: app/frontend/apps/desktop/components/QuickSearch/plugins/user.ts:12
+#: app/frontend/apps/desktop/components/Search/plugins/user.ts:15
 #, fuzzy
 #| msgid "current user"
 msgid "Found users"
@@ -10604,7 +10611,7 @@ msgstr ""
 msgid "Links"
 msgstr "Прив’язки"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:220
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:221
 msgid "List of all user taskbar tabs"
 msgstr ""
 
@@ -10714,6 +10721,7 @@ msgstr ""
 #: app/assets/javascripts/app/models/user.coffee:8
 #: app/assets/javascripts/app/views/maintenance.jst.eco:25
 #: app/controllers/time_accountings_controller.rb:107
+#: app/frontend/apps/desktop/components/User/UserListTable.vue:57
 #: db/seeds/object_manager_attributes.rb:766
 msgid "Login"
 msgstr "Вхід"
@@ -12496,7 +12504,7 @@ msgstr ""
 msgid "No related article found to process the status message on."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:171
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:185
 msgid "No results for this query."
 msgstr ""
 
@@ -12513,6 +12521,10 @@ msgstr ""
 
 #: app/views/layouts/knowledge_base.html.erb:43
 msgid "No results were found."
+msgstr ""
+
+#: app/frontend/apps/desktop/pages/search/components/SearchEmptyMessage.vue:31
+msgid "No search results for this query."
 msgstr ""
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleSecurityWarning.vue:30
@@ -12553,7 +12565,7 @@ msgstr "Жоден шаблон ще не створено."
 msgid "No template created yet."
 msgstr "Жоден шаблон ще не створено."
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:365
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:358
 #, fuzzy
 #| msgid "Match all of the following"
 msgid "No tickets in this state."
@@ -13311,6 +13323,7 @@ msgstr "Огляди"
 #: app/assets/javascripts/app/views/time_accounting/by_organization.jst.eco:9
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:12
 #: app/controllers/time_accountings_controller.rb:99
+#: app/frontend/apps/desktop/components/Search/plugins/organization.ts:13
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/organization.ts:13
 #: app/frontend/apps/mobile/pages/organization/routes.ts:8
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:30
@@ -13341,7 +13354,7 @@ msgstr "Підтримка організації\t"
 msgid "Organization could not be updated."
 msgstr "%s об’єкт(ів) оновлено."
 
-#: app/frontend/apps/desktop/components/QuickSearch/entitites/Organization.vue:18
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/Organization.vue:18
 #, fuzzy
 #| msgid "Organization Name"
 msgid "Organization is inactive."
@@ -13520,7 +13533,7 @@ msgstr ""
 msgid "Overview navigation list"
 msgstr "Огляди"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:374
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:314
 #, fuzzy
 #| msgid "Overviews"
 msgid "Overview: %s"
@@ -13939,7 +13952,7 @@ msgid "Please add categories and/or answers"
 msgstr ""
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:12
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:351
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:344
 #, fuzzy
 #| msgid "Please click the button below to create your first one."
 msgid "Please click on the button below to create your first one."
@@ -14278,7 +14291,7 @@ msgstr "Пріоритет"
 msgid "Priority"
 msgstr "Пріоритет"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:384
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:61
 #, fuzzy
 #| msgid "Priority"
 msgid "Priority Icon"
@@ -14529,20 +14542,20 @@ msgstr "Нещодавні заявки клієнтів"
 msgid "Recent Logs"
 msgstr "Нещодавні журнали"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:82
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:86
 #, fuzzy
 #| msgid "The test run was successful."
 msgid "Recent search was removed successfully."
 msgstr "Тестовий запуск виконано вдало."
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:99
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:103
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:282
 #, fuzzy
 #| msgid "Last sync"
 msgid "Recent searches"
 msgstr "Остання синхронізація"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:99
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:103
 #, fuzzy
 #| msgid "The test run was successful."
 msgid "Recent searches were cleared successfully."
@@ -14557,11 +14570,11 @@ msgid "Recently Viewed Tickets"
 msgstr "Нещодавно переглянуті заявки"
 
 #: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:486
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:119
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:123
 msgid "Recently viewed"
 msgstr "Нещодавно переглянуті"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:119
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:123
 #, fuzzy
 #| msgid "The test run was successful."
 msgid "Recently viewed items were cleared successfully."
@@ -15006,7 +15019,7 @@ msgstr "Скинути пароль"
 msgid "Reset Password failed!"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearchInput/QuickSearchInput.vue:54
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchInput/QuickSearchInput.vue:63
 #, fuzzy
 #| msgid "Search"
 msgid "Reset Search"
@@ -15139,6 +15152,12 @@ msgstr ""
 #: app/assets/javascripts/app/views/generic/object_import/result.jst.eco:2
 msgid "Result:"
 msgstr ""
+
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:259
+#, fuzzy
+#| msgid "Restore Defaults"
+msgid "Results"
+msgstr "Відновити значення за замовчуванням"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:161
 #: app/assets/javascripts/app/views/widget/two_factor_login/security_keys.jst.eco:16
@@ -15561,6 +15580,8 @@ msgstr "Прокрутіть униз, щоб побачити нові пові
 #: app/assets/javascripts/app/views/integration/idoit_object_selector.jst.eco:3
 #: app/assets/javascripts/app/views/knowledge_base/search_field_widget.jst.eco:1
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:4
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:257
+#: app/frontend/apps/desktop/pages/search/routes.ts:14
 #: app/frontend/apps/mobile/pages/search/routes.ts:8
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:238
 msgid "Search"
@@ -15868,7 +15889,7 @@ msgstr ""
 msgid "Select Template"
 msgstr "Вибрати шаблон"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:481
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:483
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:92
 #, fuzzy
 #| msgid "reply"
@@ -15911,7 +15932,7 @@ msgstr "Виберіть клієнта для заявки чи створіт�
 msgid "Select this avatar"
 msgstr "Видалити Користувача"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:649
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:651
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:152
 #, fuzzy
 #| msgid "Delete User"
@@ -16814,13 +16835,13 @@ msgstr ""
 msgid "Sorry, there is currently no CTI backend enabled."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:515
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:517
 #, fuzzy
 #| msgid "pending"
 msgid "Sorted ascending"
 msgstr "активні"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:516
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:518
 #, fuzzy
 #| msgid "pending"
 msgid "Sorted descending"
@@ -16920,13 +16941,19 @@ msgstr "Розпочати новий"
 msgid "Start new conversation"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearch.vue:229
-msgid "Start typing i.e. the name of a ticket, an organization or a user."
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:235
+msgid "Start typing e.g. the name of a ticket, an organization or a user."
 msgstr ""
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:116
 msgid "Start typing to find the ticket to merge into."
 msgstr ""
+
+#: app/frontend/apps/desktop/pages/search/components/SearchEmptyMessage.vue:38
+#, fuzzy
+#| msgid "Search for users"
+msgid "Start typing to get the search results."
+msgstr "Шукати користувачів"
 
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:745
 #, fuzzy
@@ -17005,7 +17032,7 @@ msgstr "Виконується запуск Zammad"
 msgid "State"
 msgstr "Статус"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:396
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:73
 #, fuzzy
 #| msgid "State"
 msgid "State Icon"
@@ -17319,7 +17346,7 @@ msgstr ""
 msgid "Tab has changed, do you really want to close it?"
 msgstr "У вкладці відбулися зміни, Ви справді бажаєте закрити її?"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:231
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:232
 msgid "Tabs"
 msgstr ""
 
@@ -18978,7 +19005,7 @@ msgstr "Автентифікація"
 
 #: app/assets/javascripts/app/controllers/customer_ticket_create/sidebar_customer_default.coffee:29
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:11
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:348
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:341
 msgid "The way to communicate with us is this thing called \"ticket\"."
 msgstr "Спосіб комунікації з нами і є тією річчю, що називається «заявка».\t"
 
@@ -19710,6 +19737,7 @@ msgstr "Четвер"
 #: app/assets/javascripts/app/models/signature.coffee:15
 #: app/assets/javascripts/app/models/text_module.coffee:15
 #: app/assets/javascripts/app/views/time_accounting/accounted_time.jst.eco:19
+#: app/frontend/apps/desktop/components/Search/plugins/ticket.ts:13
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/information.ts:10
 #: app/frontend/apps/desktop/pages/ticket/routes.ts:10
 #: app/frontend/apps/mobile/pages/ticket/routes.ts:10
@@ -21472,6 +21500,7 @@ msgstr "Використовується при перегляді заявки\
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:128
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:111
 #: app/assets/javascripts/app/views/session.jst.eco:8
+#: app/frontend/apps/desktop/components/Search/plugins/user.ts:13
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:119
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailOutboundForm.ts:77
 #: app/frontend/apps/mobile/pages/user/routes.ts:7
@@ -21571,7 +21600,7 @@ msgstr ""
 msgid "User is inactive"
 msgstr "неактивний"
 
-#: app/frontend/apps/desktop/components/QuickSearch/entitites/User.vue:17
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:17
 #, fuzzy
 #| msgid "inactive"
 msgid "User is inactive."
@@ -22023,7 +22052,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:2
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupStart.vue:46
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:342
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:335
 msgid "Welcome!"
 msgstr "Ласкаво просимо!\t"
 
@@ -22502,7 +22531,7 @@ msgstr ""
 msgid "You do not have administrator permission."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:436
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:438
 #, fuzzy
 #| msgid "You have not created a ticket yet."
 msgid "You don't have more tickets to load."
@@ -22566,7 +22595,7 @@ msgid "You have no unread messages"
 msgstr ""
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:10
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:345
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:338
 msgid "You have not created a ticket yet."
 msgstr "Ви ще не створили заявки.\t"
 
@@ -22618,7 +22647,7 @@ msgstr ""
 msgid "You need to configure the Zammad endpoints in the %s:"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:432
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:434
 msgid "You reached the table limit of %s tickets (%s remaining)."
 msgstr ""
 
@@ -23259,7 +23288,7 @@ msgstr "Видалити Клієнта"
 msgid "descending"
 msgstr "активні"
 
-#: app/frontend/apps/desktop/components/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:130
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:138
 #, fuzzy
 #| msgid "Extended Search"
 msgid "detailed search"
