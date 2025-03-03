@@ -12,11 +12,6 @@ RSpec.describe Validations::ObjectManager::AttributeValidator::FuturePast do
     )
   end
 
-  before do
-    freeze_time
-    travel_to Time.zone.parse('2025-02-27T10:01:44Z0')
-  end
-
   let(:record)    { build(:user) }
   let(:attribute) { build(:object_manager_attribute_datetime) }
 
@@ -43,8 +38,8 @@ RSpec.describe Validations::ObjectManager::AttributeValidator::FuturePast do
     end
   end
 
-  it_behaves_like 'data_option validator', data_option: :future, value: Time.current.tomorrow.midnight
-  it_behaves_like 'data_option validator', data_option: :past, value: Time.current.yesterday.midnight
+  it_behaves_like 'data_option validator', data_option: :future, value: 1.week.from_now
+  it_behaves_like 'data_option validator', data_option: :past, value: 1.week.ago
 
   context 'when validation should not be performed' do
 
