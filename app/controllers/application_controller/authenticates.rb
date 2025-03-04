@@ -53,7 +53,9 @@ module ApplicationController::Authenticates
         raise Exceptions::Forbidden, 'API password access disabled!'
       end
 
-      auth = Auth.new(username, password)
+      # Disable 2FA for iCal and calendar subscriptions
+      only_verify_password = %w[/ical /calendar_subscriptions].any? { |path| request.path.start_with?(path) }
+      auth = Auth.new(username, password, only_verify_password:)
 
       begin
         auth.valid!
