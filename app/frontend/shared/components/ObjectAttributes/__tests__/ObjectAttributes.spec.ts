@@ -122,10 +122,10 @@ describe('common object attributes interface', () => {
       'Display1, Display2',
     )
     expect(getRegion('Single Tree Select Field')).toHaveTextContent(
-      'key1::key1_child1',
+      'key1 › key1_child1',
     )
     expect(getRegion('Multi Tree Select Field')).toHaveTextContent(
-      'key1, key2, key2::key2_child1',
+      'key1, key2, key2 › key2_child1',
     )
     expect(getRegion('External Attribute')).toHaveTextContent(
       'Display External',
@@ -227,8 +227,8 @@ describe('common object attributes interface', () => {
     expect(vip).toHaveTextContent('sí')
     expect(singleSelect).toHaveTextContent('Monitor1')
     expect(multiSelect).toHaveTextContent('Monitor1, Monitor2')
-    expect(singleTreeSelect).toHaveTextContent('llave1::llave1_niño1')
-    expect(multiTreeSelect).toHaveTextContent('llave1, llave1::llave1_niño1')
+    expect(singleTreeSelect).toHaveTextContent('llave1 › llave1_niño1')
+    expect(multiTreeSelect).toHaveTextContent('llave1, llave1 › llave1_niño1')
   })
 
   it('renders different dates', async () => {

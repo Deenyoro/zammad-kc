@@ -14,6 +14,10 @@ module CanSelector
       [
         TranslatedRelationSort,
         UntranslatedRelationSort,
+        SelectFieldSort,
+        TreeSelectFieldSort,
+        ExternalDataSourceFieldSort,
+        BooleanFieldSort,
       ]
     end
 

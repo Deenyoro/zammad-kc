@@ -18,7 +18,7 @@ const body = computed(() => {
         value
           .split('::')
           .map((option) => translateOption(props.attribute, option))
-          .join('::'),
+          .join(' › '),
       )
       .join(', ')
   }

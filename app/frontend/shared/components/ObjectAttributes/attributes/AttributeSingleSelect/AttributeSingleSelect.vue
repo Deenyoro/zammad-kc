@@ -16,7 +16,7 @@ const body = computed(() => {
     return props.value
       .split('::')
       .map((field) => translateOption(props.attribute, field))
-      .join('::')
+      .join(' › ')
   }
   const value =
     props.attribute.dataOption.historical_options?.[props.value] ?? props.value
