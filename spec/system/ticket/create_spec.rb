@@ -5,7 +5,7 @@ require 'rails_helper'
 require 'system/examples/core_workflow_examples'
 require 'system/examples/text_modules_examples'
 
-RSpec.describe 'Ticket Create', type: :system do
+RSpec.describe 'Ticket Create', time_zone: 'Europe/London', type: :system do
 
   context 'when calling without session' do
     describe 'redirect to' do
@@ -229,7 +229,7 @@ RSpec.describe 'Ticket Create', type: :system do
     end
   end
 
-  describe 'object manager attributes default date', time_zone: 'Europe/London' do
+  describe 'object manager attributes default date' do
     before :all do # rubocop:disable RSpec/BeforeAfterAll
       screens = {
         'create_top' => {
@@ -1084,7 +1084,7 @@ RSpec.describe 'Ticket Create', type: :system do
     end
   end
 
-  describe 'Ticket templates are missing pending till option #4318', time_zone: 'Europe/London' do
+  describe 'Ticket templates are missing pending till option #4318' do
 
     shared_examples 'check datetime field' do
 
