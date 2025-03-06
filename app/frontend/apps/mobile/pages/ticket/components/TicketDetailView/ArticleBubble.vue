@@ -356,6 +356,6 @@ const onContextClick = () => {
 }
 
 .Internal .BubbleGradient::before {
-  background: linear-gradient(rgba(255, 255, 255, 0), var('--color-black'));
+  background: linear-gradient(rgba(255, 255, 255, 0), var(--color-black));
 }
 </style>

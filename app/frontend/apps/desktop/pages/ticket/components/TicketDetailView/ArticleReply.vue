@@ -321,8 +321,8 @@ defineExpose({
     background-position: -1px;
     background-attachment: fixed;
     mask:
-      linear-gradient(#fff 0 0) padding-box,
-      linear-gradient(#fff 0 0);
+      linear-gradient(white, white) padding-box,
+      linear-gradient(white, white);
     mask-composite: exclude;
   }
 
