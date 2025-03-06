@@ -9,7 +9,7 @@ module CanSelector
         applicable = super
         return false if !applicable
 
-        attr = ObjectManager::Attribute.get(object: object.class_name, name: column_name(input, object))
+        attr = ObjectManager::Attribute.get(object: object.name, name: column_name(input, object))
         return false if !attr.data_option[:translate]
 
         true
@@ -18,7 +18,7 @@ module CanSelector
       def initialize(input, locale, object)
         super
 
-        attr = ObjectManager::Attribute.get(object: object.class_name, name: self.class.column_name(input, object))
+        attr = ObjectManager::Attribute.get(object: object.name, name: self.class.column_name(input, object))
         raise "#{self.class.name} can only be used with translatable fields" if !attr.data_option[:translate]
       end
 

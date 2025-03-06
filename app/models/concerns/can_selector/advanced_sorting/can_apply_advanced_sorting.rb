@@ -9,7 +9,7 @@ module CanSelector
         def applicable?(input, locale, object)
           return false if locale.blank?
 
-          attr = ObjectManager::Attribute.get(object: object.class_name, name: column_name(input, object))
+          attr = ObjectManager::Attribute.get(object: object.name, name: column_name(input, object))
           return false if attr.nil?
 
           return true if attr.data_type == data_type

@@ -53,7 +53,7 @@ module CanSelector
       end
 
       def object_manager_attribute
-        @object_manager_attribute ||= ObjectManager::Attribute.get(object: object.class_name, name: self.class.column_name(input, object))
+        @object_manager_attribute ||= ObjectManager::Attribute.get(object: object.name, name: self.class.column_name(input, object))
       end
 
       def translate(names_and_ids)
