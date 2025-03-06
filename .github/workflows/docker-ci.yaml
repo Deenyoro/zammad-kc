@@ -52,6 +52,9 @@ jobs:
           VERSION=latest
           ENV_FILE
 
-          docker compose -f docker-compose.yml up --detach
-          docker compose cp .github/auto_wizard.json zammad-railsserver:/opt/zammad/tmp
-          .github/tests.sh
+          .github/tests/setup/default.sh
+          .github/tests/default.sh
+
+          docker compose ps
+          # Ensure we are running with the correct image
+          docker compose ps | grep zammad-local:latest

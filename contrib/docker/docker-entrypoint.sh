@@ -87,7 +87,7 @@ if [ "$1" = 'zammad-init' ]; then
     fi
 
     until (echo > /dev/tcp/"${ELASTICSEARCH_HOST}/${ELASTICSEARCH_PORT}") &> /dev/null; do
-      echo "zammad railsserver waiting for elasticsearch server to be ready..."
+      echo "zammad-init waiting for elasticsearch server to be ready…"
       sleep 1
     done
 
