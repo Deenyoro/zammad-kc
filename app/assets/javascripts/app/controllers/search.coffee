@@ -289,6 +289,9 @@ class App.Search extends App.Controller
             'click': callbackCheckbox
           select_all: callbackCheckbox
         sortClickCallback: @saveOrderBy
+        pagerEnabled: false
+        orderEnabled: false
+        pagerAjax: true
       )
 
       updateSearch = =>
@@ -352,14 +355,14 @@ class App.Search extends App.Controller
           events:
             'click': openObject
         sortClickCallback: @saveOrderBy
+        pagerEnabled: false
+        orderEnabled: false
+        pagerAjax: true
       )
 
     @renderPagination()
 
   renderPagination: =>
-    (@table.table || @table).pagerEnabled = false
-    (@table.table || @table).orderEnabled = false
-
     object = @el.find('.js-tab.active').data('tab-content')
     page   = @getSavedOrderBy()?.page || 0
     count  = @result[object]?.total_count || 0

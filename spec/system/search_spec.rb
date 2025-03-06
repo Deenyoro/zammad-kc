@@ -339,6 +339,39 @@ RSpec.describe 'Search', authenticated_as: :authenticate, searchindex: true, typ
     end
   end
 
+  # https://github.com/zammad/zammad/issues/5505
+  context 'when tickets are ordered by grroups' do
+    let(:agent) { create(:agent, groups: Group.all) }
+    let(:authenticate_user) { agent }
+
+    let(:ticket_3) { create(:ticket, title: 'Testing Ticket 3', group: group_1) }
+    let(:ticket_4) { create(:ticket, title: 'Testing Ticket 4', group: group_2) }
+    let(:ticket_5) { create(:ticket, title: 'Testing Ticket 5', group: group_1) }
+    let(:ticket_6) { create(:ticket, title: 'Testing Ticket 6', group: group_2) }
+
+    before do
+      ticket_4 && ticket_5 && ticket_6 && ticket_3
+
+      searchindex_model_reload([Ticket, Organization, User])
+      fill_in id: 'global-search', with: 'Testing'
+      click_on 'Show Search Details'
+
+      find('[data-tab-content=Ticket]').click
+    end
+
+    it 'sorts correctly' do
+      # bug is most visible in descending order
+      find('.table-column-title', text: 'GROUP').click
+      find('.table-column-title', text: 'GROUP').click
+
+      actual_ids   = all('.js-tableBody tr.item').map { |row| row['data-id'].to_i }
+      expected_ids = [ticket_6, ticket_4, ticket_2, ticket_3, ticket_5, ticket_1].map(&:id)
+
+      expect(actual_ids).to eq(expected_ids)
+    end
+
+  end
+
   context 'Organization members' do
     let(:organization) { create(:organization) }
     let(:members)      { organization.members.reorder(id: :asc) }
