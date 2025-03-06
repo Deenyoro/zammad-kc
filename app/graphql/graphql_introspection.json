@@ -19091,6 +19091,11 @@
             },
             {
               "kind": "OBJECT",
+              "name": "UserTaskbarItemEntitySearch",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
               "name": "UserTaskbarItemEntityTicketCreate",
               "ofType": null
             }
@@ -30366,6 +30371,41 @@
         },
         {
           "kind": "OBJECT",
+          "name": "UserTaskbarItemEntitySearch",
+          "description": "Entity representing taskbar item search",
+          "fields": [
+            {
+              "name": "model",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "query",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "UserTaskbarItemEntityTicketCreate",
           "description": "Entity representing taskbar item ticket create",
           "fields": [
@@ -30468,6 +30508,16 @@
                   "name": "EnumTaskbarEntity",
                   "ofType": null
                 }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "state",
+              "description": "The taskbar item related object state",
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
               },
               "defaultValue": null
             },

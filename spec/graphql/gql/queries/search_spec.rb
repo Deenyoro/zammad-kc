@@ -41,7 +41,7 @@ RSpec.describe Gql::Queries::Search, type: :graphql do
       QUERY
     end
     let(:only_in)   { 'Ticket' }
-    let(:order_by)  { 'id' }
+    let(:order_by)  { 'title' }
     let(:variables) { { search: search, onlyIn: only_in, orderBy: order_by, orderDirection: 'ASCENDING' } }
     let(:es_setup) do
       Setting.set('es_url', nil)
@@ -59,8 +59,22 @@ RSpec.describe Gql::Queries::Search, type: :graphql do
           { 'items' => [{ '__typename' => 'Ticket', 'number' => ticket.number, 'title' => ticket.title }], 'totalCount' => 1 }
         end
 
-        it 'finds expected objects across models' do
-          expect(gql.result.data).to eq(expected_result)
+        context 'with direct_search_index: false' do
+          it 'finds expected objects' do
+            expect(gql.result.data).to eq(expected_result)
+          end
+        end
+
+        context 'with direct_search_index: true' do
+          let(:only_in) { 'User' }
+          let(:order_by) { 'login' }
+          let(:expected_result) do
+            { 'items' => [{ '__typename' => 'User', 'firstname' => agent.firstname, 'lastname' => agent.lastname }], 'totalCount' => 1 }
+          end
+
+          it 'finds expected objects' do
+            expect(gql.result.data).to eq(expected_result)
+          end
         end
 
         context 'with invalid order_by' do
@@ -86,6 +100,7 @@ RSpec.describe Gql::Queries::Search, type: :graphql do
       context 'with a customer', authenticated_as: :customer do
         let(:customer) { create(:customer, firstname: search, organization: organization) }
         let(:only_in)  { 'Organization' }
+        let(:order_by) { 'name' }
         let(:expected_result) do
           { 'items' => [{ '__typename' => 'Organization', 'name' => organization.name }], 'totalCount' => 1 }
         end
@@ -96,6 +111,7 @@ RSpec.describe Gql::Queries::Search, type: :graphql do
 
         context 'when searching for inacessible models' do
           let(:only_in) { 'User' }
+          let(:order_by) { 'login' }
           let(:expected_result) do
             { 'items' => [], 'totalCount' => 0 }
           end

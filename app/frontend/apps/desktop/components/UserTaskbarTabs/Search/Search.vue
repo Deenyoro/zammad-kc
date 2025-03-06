@@ -3,20 +3,25 @@
 <script setup lang="ts">
 import { computed, toRef } from 'vue'
 
+import type { UserTaskbarItemEntitySearch } from '#shared/graphql/types.ts'
+
 import { useUserTaskbarTabLink } from '#desktop/composables/useUserTaskbarTabLink.ts'
 
 import type { UserTaskbarTabEntityProps } from '../types.ts'
 
-const props = defineProps<UserTaskbarTabEntityProps>()
+const props =
+  defineProps<UserTaskbarTabEntityProps<UserTaskbarItemEntitySearch>>()
 
 const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTabLink(
   toRef(props, 'taskbarTab'),
 )
 
-const currentTitle = computed(() => {
-  console.log('taskbar props', props)
-  return __('Extended Search')
-})
+const currentTitle = computed(
+  () =>
+    props.context?.query ||
+    props.taskbarTab.entity?.query ||
+    __('Extended Search'),
+)
 </script>
 
 <template>

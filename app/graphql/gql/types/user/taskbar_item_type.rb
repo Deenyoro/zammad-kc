@@ -67,7 +67,10 @@ module Gql::Types::User
       klass, id = @object.key.split('-', 2)
 
       # Ticket create is ...
-      return @object.state.merge({ uid: id }) if klass == 'TicketCreateScreen'
+      return @object.state.merge({ uid: id, type: 'TicketCreate' }) if klass == 'TicketCreateScreen'
+
+      # Search is ...
+      return @object.params.merge(@object.state).merge({ type: 'Search' }) if klass == 'Search'
 
       entity = klass.constantize.find(id)
       Pundit.authorize(context.current_user, entity, :show?)

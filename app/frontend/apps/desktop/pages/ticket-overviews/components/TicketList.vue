@@ -1,7 +1,6 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { useWindowSize } from '@vueuse/core'
 import { isEqual } from 'lodash-es'
 import { storeToRefs } from 'pinia'
 import {
@@ -30,6 +29,7 @@ import hasPermission from '#shared/utils/hasPermission.ts'
 import { edgesToArray } from '#shared/utils/helpers.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
+import { useSkeletonLoadingCount } from '#desktop/components/CommonTable/composables/useSkeletonLoadingCount.ts'
 import TicketListTable from '#desktop/components/Ticket/TicketListTable.vue'
 import { useElementScroll } from '#desktop/composables/useElementScroll.ts'
 import { useScrollPosition } from '#desktop/composables/useScrollPosition.ts'
@@ -292,16 +292,9 @@ const localHeaders = computed(() => {
 
 const maxItems = computed(() => config.value.ui_ticket_overview_ticket_limit)
 
-const { height: screenHeight } = useWindowSize()
-
-const visibleOverviewCount = computed(() => {
-  const maxVisibleRowCount = Math.ceil(screenHeight.value / 40)
-
-  if (props.overviewCount && props.overviewCount > maxVisibleRowCount)
-    return maxVisibleRowCount
-
-  return props.overviewCount
-})
+const { visibleSkeletonLoadingCount } = useSkeletonLoadingCount(
+  toRef(props, 'overviewCount'),
+)
 </script>
 
 <template>
@@ -323,7 +316,7 @@ const visibleOverviewCount = computed(() => {
       :max-items="maxItems"
       :resorting="isSorting"
       :loading="isLoadingTickets"
-      :skeleton-loading-count="visibleOverviewCount"
+      :skeleton-loading-count="visibleSkeletonLoadingCount"
       :loading-new-page="pagination.loadingNewPage"
       @load-more="loadMore"
       @sort="resort"

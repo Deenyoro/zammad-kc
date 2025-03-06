@@ -21,7 +21,7 @@ module Gql::Queries
         current_user: context.current_user,
         query:        search,
         objects:      [only_in],
-        options:      { offset:, limit:, sort_by: order_by, order_by: order_direction }
+        options:      { offset:, limit:, sort_by: [order_by].compact, order_by: [order_direction].compact }
       ).execute.result[only_in]
 
       return { total_count: 0, items: [] } if !search_result

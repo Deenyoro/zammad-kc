@@ -439,6 +439,29 @@
       "note": "Admin configured RegExp"
     },
     {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "7aaa648a598c01511996d06c8805a491eedab03d9c84b815d11f2089d7e9285e",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/concerns/can_search.rb",
+      "line": 310,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Arel.sql((\"array_position(ARRAY[#{ids.join(\",\")}], id)\" or \"FIELD(id, #{ids.join(\",\")})\"))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "CanSearch",
+        "method": "where_ordered_ids"
+      },
+      "user_input": "ids.join(\",\")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
       "warning_type": "SSL Verification Bypass",
       "warning_code": 71,
       "fingerprint": "7d088914c00f93dddb545ad9e567d59bf89dad493884b550ba72c014c0190011",

@@ -16,6 +16,7 @@ const route: RouteRecordRaw[] = [
       requiresAuth: true,
       requiredPermission: ['ticket.agent', 'ticket.customer'],
       taskbarTabEntity: EnumTaskbarEntity.TicketCreate,
+      isTaskbarTabPossible: (route) => !!route.params.tabId,
       level: 2,
     },
   },
@@ -30,6 +31,7 @@ const route: RouteRecordRaw[] = [
       requiresAuth: true,
       requiredPermission: ['ticket.agent', 'ticket.customer'],
       taskbarTabEntity: EnumTaskbarEntity.TicketZoom,
+      isTaskbarTabPossible: (route) => !!route.params.internalId,
       messageForbidden: __('You have insufficient rights to view this ticket.'),
       messageNotFound: __(
         'Ticket with specified ID was not found. Try checking the URL for errors.',

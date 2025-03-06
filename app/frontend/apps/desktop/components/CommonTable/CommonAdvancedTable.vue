@@ -30,6 +30,7 @@ import {
 } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
+import emitter from '#shared/utils/emitter.ts'
 
 import CommonActionMenu from '#desktop/components/CommonActionMenu/CommonActionMenu.vue'
 import CommonTableRowsSkeleton from '#desktop/components/CommonTable/Skeleton/CommonTableRowsSkeleton.vue'
@@ -258,6 +259,7 @@ onMounted(() => {
 })
 
 useEventListener('resize', () => initializeHeaderWidths())
+emitter.on('main-sidebar-transition', () => initializeHeaderWidths())
 
 const getTooltipText = (
   item: TableAdvancedItem,

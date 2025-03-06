@@ -6,13 +6,13 @@ import renderComponent from '#tests/support/components/renderComponent.ts'
 import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
+import { useRecentSearches } from '#shared/composables/useRecentSearches.ts'
 import {
   EnumTicketStateColorCode,
   type Organization,
 } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
-import { useRecentSearches } from '#desktop/composables/useRecentSearches.ts'
 import { mockUserCurrentRecentViewResetMutation } from '#desktop/entities/user/current/graphql/mutations/userCurrentRecentViewReset.mocks.ts'
 import { mockUserCurrentRecentViewListQuery } from '#desktop/entities/user/current/graphql/queries/userCurrentRecentViewList.mocks.ts'
 import { getUserCurrentRecentViewUpdatesSubscriptionHandler } from '#desktop/entities/user/current/graphql/subscriptions/userCurrentRecentViewUpdates.mocks.ts'

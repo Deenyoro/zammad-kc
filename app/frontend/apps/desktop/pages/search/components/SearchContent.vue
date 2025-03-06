@@ -1,16 +1,20 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { useRouteParams, useRouteQuery } from '@vueuse/router'
+import { isEqual, omit } from 'lodash-es'
 import { computed, ref, useTemplateRef, watch, type Ref, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { useSorting } from '#shared/composables/list/useSorting.ts'
 import {
+  type DetailSearchQuery,
   type EnumOrderDirection,
   EnumSearchableModels,
+  type SearchCountsQuery,
 } from '#shared/graphql/types.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 
+import { useSkeletonLoadingCount } from '#desktop/components/CommonTable/composables/useSkeletonLoadingCount.ts'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import { useDetailSearchLazyQuery } from '#desktop/components/Search/graphql/queries/detailSearch.api.ts'
 import { useSearchCountsLazyQuery } from '#desktop/components/Search/graphql/queries/searchCounts.api.ts'
@@ -19,6 +23,9 @@ import {
   useSearchPlugins,
 } from '#desktop/components/Search/plugins/index.ts'
 import { useElementScroll } from '#desktop/composables/useElementScroll.ts'
+import { usePage } from '#desktop/composables/usePage.ts'
+import { useTaskbarTab } from '#desktop/entities/user/current/composables/useTaskbarTab.ts'
+import type { TaskbarTabContext } from '#desktop/entities/user/current/types.ts'
 import SearchControls from '#desktop/pages/search/components/SearchControls.vue'
 import SearchEmptyMessage from '#desktop/pages/search/components/SearchEmptyMessage.vue'
 
@@ -27,18 +34,81 @@ import type { CustomSorting } from '../types/sorting.ts'
 const MAX_ITEMS = 1000
 const PAGE_SIZE = 30
 
-const modelSearchTerm = useRouteParams('searchTerm', undefined, {
-  mode: 'push',
-})
-const selectedEntity = useRouteQuery<EnumSearchableModels>(
-  'entity',
-  EnumSearchableModels.Ticket,
-  { mode: 'replace' },
+const props = defineProps<{
+  searchTerm?: string
+}>()
+
+const router = useRouter()
+
+const selectedEntity = ref(
+  (router.currentRoute.value.query.entity as EnumSearchableModels) ??
+    EnumSearchableModels.Ticket,
 )
 
-const searchTerm = computed(() => modelSearchTerm.value ?? '')
+watch(selectedEntity, (newValue) => {
+  router.replace({
+    query: {
+      entity: newValue,
+    },
+  })
+})
+
+const modelSearchTerm = computed({
+  get: () => props.searchTerm,
+  set: (searchTerm) => {
+    router.push({
+      params: {
+        searchTerm,
+      },
+      query: {
+        entity: selectedEntity.value,
+      },
+    })
+  },
+})
+
+const sanitizedSearchTerm = computed(() => modelSearchTerm.value ?? '')
+
+const { pageInactive } = usePage({
+  metaTitle: sanitizedSearchTerm,
+})
+
+watch(
+  () => router.currentRoute.value.query.entity,
+  (newValue) => {
+    nextTick(() => {
+      if (pageInactive.value) return
+
+      selectedEntity.value = newValue as EnumSearchableModels
+    })
+  },
+)
+
+const tabContext = computed<TaskbarTabContext>((currentContext) => {
+  const newContext = {
+    query: sanitizedSearchTerm.value,
+    model: selectedEntity.value,
+  }
+
+  if (currentContext && isEqual(newContext, currentContext))
+    return currentContext
+
+  return newContext
+})
+
+const { currentTaskbarTab, currentTaskbarTabUpdate } = useTaskbarTab(tabContext)
+
+watch(tabContext, (newValue) => {
+  if (!currentTaskbarTab.value) return
+
+  if (isEqual(newValue, omit(currentTaskbarTab.value.entity, '__typename')))
+    return
+
+  currentTaskbarTabUpdate(currentTaskbarTab.value, newValue)
+})
 
 const scrollContainer = useTemplateRef('scroll-container')
+
 const { reachedTop } = useElementScroll(scrollContainer as Ref<HTMLElement>)
 
 const searchControlsInstance = useTemplateRef('search-controls')
@@ -48,7 +118,7 @@ const { sortedByNamePlugins, searchPluginNames } = useSearchPlugins()
 const detailSearchQuery = new QueryHandler(
   useDetailSearchLazyQuery(
     () => ({
-      search: searchTerm.value ?? '',
+      search: sanitizedSearchTerm.value,
       limit: PAGE_SIZE,
       onlyIn: selectedEntity.value,
       offset: 0,
@@ -59,7 +129,7 @@ const detailSearchQuery = new QueryHandler(
           active: false,
         },
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'cache-and-network', // TODO: for now until the cache handling is implemented
     },
   ),
 )
@@ -68,6 +138,7 @@ const notVisibleSearchEntities = computed(() =>
   searchPluginNames.value.filter((name) => name !== selectedEntity.value),
 )
 
+// Remember this in a static way to avoid unnecessary re-fetchtings of the search counts.
 let staticNotVisibleSearchEntities = notVisibleSearchEntities.value
 
 watch(notVisibleSearchEntities, (newValue) => {
@@ -78,7 +149,7 @@ const searchCountsQuery = new QueryHandler(
   useSearchCountsLazyQuery(
     () => {
       return {
-        search: searchTerm.value,
+        search: sanitizedSearchTerm.value,
         onlyIn: staticNotVisibleSearchEntities,
       }
     },
@@ -88,7 +159,7 @@ const searchCountsQuery = new QueryHandler(
           active: false,
         },
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'cache-and-network', // TODO: for now until the cache handling is implemented
       enabled: searchPluginNames.value.length > 1,
     }),
   ),
@@ -104,41 +175,48 @@ const searchQueriesStart = () => {
   searchCountsQuery.start()
 }
 
-const searchQueriesStop = () => {
-  detailSearchQuery.stop()
-  searchCountsQuery.stop()
-}
-
 const searchEntityManualSorting = ref<
   Partial<Record<EnumSearchableModels, CustomSorting>>
 >({})
-const searchEntityLastCounts = ref<
+const searchEntityCurrentCounts = ref<
   Partial<Record<EnumSearchableModels, number>>
 >({})
 
 const searchPlugin = computed(() => searchPluginByName[selectedEntity.value])
 
-watch(
-  searchTerm,
-  (newValue, oldValue) => {
-    if (newValue && detailSearchQuery.isFirstRun()) {
-      searchQueriesLoad()
-      return
-    }
-
-    if (oldValue && !newValue) searchQueriesStop()
-    else if (newValue && !oldValue) nextTick(searchQueriesStart)
-  },
-  { immediate: true },
-)
-
 const searchResult = detailSearchQuery.result()
+const currentSearchResult = ref<DetailSearchQuery>()
 const loading = detailSearchQuery.loading()
 
-const searchCountsResult = searchCountsQuery.result()
+// Remember the current search result to avoid always showing the loading state on search term changes.
+// Because the apollo cache is returning undefined when nothing is in currently in the cache.
+watch(searchResult, (newValue) => {
+  if (!newValue) return
 
-const searchCounts = computed(() =>
-  searchCountsResult.value?.searchCounts.reduce(
+  currentSearchResult.value = newValue
+})
+
+const searchCountsResult = searchCountsQuery.result()
+const currentSearchCountsResult = ref<SearchCountsQuery>()
+
+// Remember the current search counts result to avoid always showing the loading state on search term changes.
+// Because the apollo cache is returning undefined when nothing is in currently in the cache.
+watch(searchCountsResult, (newValue) => {
+  if (!newValue) return
+
+  currentSearchCountsResult.value = newValue
+})
+
+const searchQueriesStop = () => {
+  currentSearchResult.value = undefined
+  currentSearchCountsResult.value = undefined
+
+  detailSearchQuery.stop()
+  searchCountsQuery.stop()
+}
+
+const currentSearchCounts = computed(() =>
+  currentSearchCountsResult.value?.searchCounts.reduce(
     (acc, curr) => {
       acc[curr.model] = curr.totalCount
       return acc
@@ -147,38 +225,43 @@ const searchCounts = computed(() =>
   ),
 )
 
-// TODO: Check whats the best loading behavior for the different situations:
-// e.g. swichting entity, because the result is currently still present
+const isLoading = computed(() => {
+  if (currentSearchResult.value !== undefined) return false
 
-// const isLoading = computed(() => {
-//   if (searchResult.value !== undefined) return false
-
-//   return loading.value
-// })
+  return loading.value
+})
 
 const searchResultTotalCount = computed(
-  () => searchResult.value?.search.totalCount ?? 0,
+  () => currentSearchResult.value?.search.totalCount ?? 0,
 )
-const searchResultItems = computed(() => searchResult.value?.search.items || [])
+const searchResultItems = computed(
+  () => currentSearchResult.value?.search.items || [],
+)
 
-watch(searchResultTotalCount, (newValue) => {
-  searchEntityLastCounts.value[selectedEntity.value] = newValue
+// Update counts when needed, but hold the counts always in one object.
+watch([currentSearchCounts, searchResultTotalCount], () => {
+  searchEntityCurrentCounts.value = Object.assign(
+    searchEntityCurrentCounts.value,
+    currentSearchCounts.value,
+  )
+
+  // Change only the current entity count, when needed.
+  if (
+    currentSearchResult.value !== undefined &&
+    searchEntityCurrentCounts.value[selectedEntity.value] !==
+      currentSearchResult.value.search.totalCount
+  ) {
+    searchEntityCurrentCounts.value[selectedEntity.value] =
+      currentSearchResult.value.search.totalCount
+  }
 })
 
 const searchTabs = computed(() =>
   sortedByNamePlugins.value.map((plugin) => {
-    let count =
-      searchCounts.value?.[plugin.name] ??
-      (searchEntityLastCounts.value[plugin.name] || 0)
-
-    if (plugin.name === selectedEntity.value) {
-      count = searchResultTotalCount.value
-    }
-
     return {
       label: plugin.label,
       key: plugin.name,
-      count,
+      count: searchEntityCurrentCounts.value[plugin.name] ?? 0,
     }
   }),
 )
@@ -197,7 +280,16 @@ const { sort, orderBy, orderDirection, isSorting } = useSorting(
   scrollContainer,
 )
 
+const offset = ref(0)
+const loadingNewPage = ref(false)
+
+const resetPagination = () => {
+  offset.value = 0
+}
+
 const resort = (column: string, direction: EnumOrderDirection) => {
+  resetPagination()
+
   searchEntityManualSorting.value[selectedEntity.value] = {
     orderBy: column,
     orderDirection: direction,
@@ -205,13 +297,7 @@ const resort = (column: string, direction: EnumOrderDirection) => {
   sort(column, direction)
 }
 
-const maxPageSize = computed(() => searchResultTotalCount.value / PAGE_SIZE)
-const offset = ref(0)
-const loadingNewPage = ref(false)
-
 const fetchNextPage = async () => {
-  if (maxPageSize.value <= offset.value) return
-
   offset.value += PAGE_SIZE
 
   loadingNewPage.value = true
@@ -222,46 +308,50 @@ const fetchNextPage = async () => {
         limit: PAGE_SIZE,
         offset: offset.value,
       },
-      updateQuery(previousQuery, { fetchMoreResult }) {
-        if (!fetchMoreResult) return previousQuery
-
-        const newResult = fetchMoreResult.search
-
-        return {
-          ...previousQuery,
-          search: {
-            totalCount: newResult.totalCount,
-            items: [...previousQuery.search.items, ...newResult.items],
-          },
-        }
-      },
     })
   } finally {
     loadingNewPage.value = false
   }
 }
 
-// TODO: Pagination needs to be resetet after entity switch or remembered, clarify...
+watch(
+  sanitizedSearchTerm,
+  (newValue, oldValue) => {
+    if (newValue && detailSearchQuery.isFirstRun()) {
+      searchQueriesLoad()
+      return
+    }
 
-const resetPagination = () => {
-  offset.value = 0
-}
+    resetPagination()
+    searchEntityManualSorting.value = {}
 
-watch(searchTerm, () => {
+    if (oldValue && !newValue) searchQueriesStop()
+    else if (newValue && !oldValue) nextTick(searchQueriesStart)
+  },
+  { immediate: true },
+)
+
+watch(selectedEntity, () => {
+  // TODO: Pagination needs to be reset after entity switch or remembered, clarify...
+  currentSearchResult.value = undefined
+
   resetPagination()
-  searchEntityManualSorting.value = {}
-  searchEntityLastCounts.value = {}
 })
+
+const currentSearchResultCount = computed(
+  () => searchEntityCurrentCounts.value[selectedEntity.value],
+)
+
+const { visibleSkeletonLoadingCount } = useSkeletonLoadingCount(
+  currentSearchResultCount,
+)
 
 const breadcrumbItems = computed(() => [
   { label: __('Search') },
   {
     label: __('Results'),
     isActive: true,
-    count:
-      searchResult.value !== undefined
-        ? searchResultTotalCount.value
-        : undefined,
+    count: currentSearchResultCount.value,
   },
 ])
 </script>
@@ -287,10 +377,12 @@ const breadcrumbItems = computed(() => [
       <div
         :id="`tab-panel-${selectedEntity}`"
         ref="scroll-container"
+        :data-test-id="`tab-panel-${selectedEntity}`"
         class="relative grow overflow-y-auto px-4 pb-4"
       >
         <component
           :is="searchPlugin.detailSearchComponent"
+          :key="selectedEntity"
           :table-id="`search-${selectedEntity}-table`"
           :caption="`Search result for: ${searchPlugin.label}`"
           :items="searchResultItems"
@@ -298,19 +390,20 @@ const breadcrumbItems = computed(() => [
           :total-count="searchResultTotalCount"
           :order-by="orderBy"
           :order-direction="orderDirection"
-          :loading="loading"
+          :loading="isLoading"
           :resorting="isSorting"
           :max-items="MAX_ITEMS"
           :loading-new-page="loadingNewPage"
           :reached-scroll-top="reachedTop"
           :scroll-container="scrollContainer"
+          :skeleton-loading-count="visibleSkeletonLoadingCount"
           @load-more="fetchNextPage"
           @sort="resort"
         >
           <template #empty-list>
             <SearchEmptyMessage
               class="absolute top-1/2 -translate-y-1/2 ltr:left-1/2 ltr:-translate-x-1/2 rtl:right-1/2 rtl:translate-x-1/2"
-              :search-term="searchTerm"
+              :search-term="sanitizedSearchTerm"
               :results="searchResultItems"
               @clear-search-input="
                 () => searchControlsInstance?.clearAndFocusSearch()

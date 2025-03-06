@@ -6,6 +6,7 @@ module Gql::Types::User
     possible_types Gql::Types::UserType,
                    Gql::Types::OrganizationType,
                    Gql::Types::TicketType,
-                   Gql::Types::User::TaskbarItemEntity::TicketCreateType
+                   Gql::Types::User::TaskbarItemEntity::TicketCreateType,
+                   Gql::Types::User::TaskbarItemEntity::SearchType
   end
 end

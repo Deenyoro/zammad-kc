@@ -6,12 +6,14 @@ import {
   useCurrentElement,
   type VueInstance,
 } from '@vueuse/core'
+import { delay } from 'lodash-es'
 import { storeToRefs } from 'pinia'
 import { ref, useTemplateRef, watch } from 'vue'
 
 import { useTrapTab } from '#shared/composables/useTrapTab.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
+import emitter from '#shared/utils/emitter.ts'
 
 import LeftSidebarFooterMenu from '#desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarFooterMenu.vue'
 import LeftSidebarHeader from '#desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader.vue'
@@ -56,6 +58,32 @@ const {
   expandSidebar,
   resetSidebarWidth,
 } = useResizeGridColumns(storageKeyId)
+
+const emitSidebarEvent = (wait = 100) => {
+  delay(() => {
+    emitter.emit('main-sidebar-transition')
+  }, wait)
+}
+
+const onCollapse = () => {
+  collapseSidebar()
+  emitSidebarEvent()
+}
+
+const onExpand = () => {
+  expandSidebar()
+  emitSidebarEvent()
+}
+
+const onResize = (width: number) => {
+  resizeSidebar(width)
+  emitSidebarEvent(0)
+}
+
+const onResetWidth = () => {
+  resetSidebarWidth()
+  emitSidebarEvent()
+}
 </script>
 
 <template>
@@ -81,12 +109,12 @@ const {
       no-scroll
       :no-padding="isQuickSearchActive"
       remember-collapse
-      @collapse="collapseSidebar"
-      @expand="expandSidebar"
-      @resize-horizontal="resizeSidebar"
+      @collapse="onCollapse"
+      @expand="onExpand"
+      @resize-horizontal="onResize"
       @resize-horizontal-start="noTransition = true"
       @resize-horizontal-end="noTransition = false"
-      @reset-width="resetSidebarWidth"
+      @reset-width="onResetWidth"
     >
       <template #default="{ isCollapsed }">
         <!-- TODO: Switch to `scheme-dark` utility once we upgrade to TW 4. -->

@@ -1,7 +1,10 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import { TicketTaskbarTabAttributesFragmentDoc } from '#shared/entities/ticket/graphql/fragments/ticketTaskbarTabAttributes.api.ts'
-import { EnumTaskbarEntity } from '#shared/graphql/types.ts'
+import {
+  EnumTaskbarEntity,
+  type UserTaskbarItemEntitySearch,
+} from '#shared/graphql/types.ts'
 
 import type { UserTaskbarTabPlugin } from '#desktop/components/UserTaskbarTabs/types.ts'
 
@@ -15,16 +18,19 @@ export default <UserTaskbarTabPlugin>{
   entityType,
   entityDocument: TicketTaskbarTabAttributesFragmentDoc,
   buildEntityTabKey: () => entityType,
-  buildTaskbarTabParams: (entityInternalId: string) => {
-    return {
-      search: entityInternalId,
-    }
+  buildTaskbarTabEntityId: () => undefined,
+  buildTaskbarTabParams: (route) => ({
+    query: route.params.searchTerm,
+    model: route.query.entity,
+  }),
+  buildTaskbarTabLink: (entity: UserTaskbarItemEntitySearch) => {
+    const { query, model } = entity
+
+    let url = '/search'
+    if (query) url += `/${query}`
+    if (model) url += `?entity=${model}`
+
+    return encodeURI(url)
   },
-  buildTaskbarTabLink: (entity) => {
-    console.log('search entity', entity)
-    // :TODO add search term and query for entity
-    return '/search'
-    // return `/search/${entity}`
-  },
-  confirmTabRemove: true,
+  confirmTabRemove: false,
 }

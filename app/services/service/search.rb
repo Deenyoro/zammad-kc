@@ -57,8 +57,7 @@ class Service::Search < Service::BaseWithCurrentUser
         next if result.blank?
         next if !result[:object_metadata] # in case of :only_total_count
 
-        result[:objects] = result[:object_metadata]
-          .map { |elem| model.lookup(id: elem[:id]) }
+        result[:objects] = model.where_ordered_ids(result[:object_metadata].pluck(:id))
       end
   end
 end

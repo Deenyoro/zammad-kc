@@ -18,7 +18,8 @@ const activeTaskbarTab: NavigationGuard = async (
 ) => {
   if (
     !to.meta?.taskbarTabEntity ||
-    (!to.params.internalId && !to.params.tabId && !to.meta.pageKey)
+    (typeof to.meta.isTaskbarTabPossible === 'function' &&
+      !to.meta.isTaskbarTabPossible(to))
   ) {
     if (to.meta?.requiresAuth) {
       // Reset the previously active tab state if the new route does not support the taskbar.
@@ -39,11 +40,7 @@ const activeTaskbarTab: NavigationGuard = async (
   const taskbarTypePlugin =
     taskbarTabStore.getTaskbarTabTypePlugin(taskbarTabEntityType)
 
-  const tabEntityInternalId = (to.params.internalId ||
-    to.params.tabId) as string
-
-  const taskbarTabEntityKey =
-    taskbarTypePlugin.buildEntityTabKey(tabEntityInternalId)
+  const taskbarTabEntityKey = taskbarTypePlugin.buildEntityTabKey(to)
 
   // TODO: instead of that I would only load the single item so that the page can already start working?
   if (taskbarTabStore.loading) {
@@ -53,7 +50,7 @@ const activeTaskbarTab: NavigationGuard = async (
   taskbarTabStore.upsertTaskbarTab(
     taskbarTabEntityType,
     taskbarTabEntityKey,
-    tabEntityInternalId,
+    to,
   )
 
   // Remember the entity key for the current taskbar tab,

@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { refDebounced } from '@vueuse/shared'
+import { refDebounced, watchDebounced } from '@vueuse/shared'
 import { computed } from 'vue'
 
 import {
@@ -9,6 +9,7 @@ import {
   useNotifications,
 } from '#shared/components/CommonNotifications/index.ts'
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
+import { useRecentSearches } from '#shared/composables/useRecentSearches.ts'
 import { useTouchDevice } from '#shared/composables/useTouchDevice.ts'
 import MutationHandler from '#shared/server/apollo/handler/MutationHandler.ts'
 import QueryHandler from '#shared/server/apollo/handler/QueryHandler.ts'
@@ -17,7 +18,6 @@ import SubscriptionHandler from '#shared/server/apollo/handler/SubscriptionHandl
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonSectionCollapse from '#desktop/components/CommonSectionCollapse/CommonSectionCollapse.vue'
 import QuickSearchResultList from '#desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue'
-import { useRecentSearches } from '#desktop/composables/useRecentSearches.ts'
 import { useUserCurrentRecentViewResetMutation } from '#desktop/entities/user/current/graphql/mutations/userCurrentRecentViewReset.api.ts'
 import { useUserCurrentRecentViewListQuery } from '#desktop/entities/user/current/graphql/queries/userCurrentRecentViewList.api.ts'
 import { useUserCurrentRecentViewUpdatesSubscription } from '#desktop/entities/user/current/graphql/subscriptions/userCurrentRecentViewUpdates.api.ts'
@@ -36,6 +36,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const hasSearchInput = computed(() => props.search?.length > 0)
+
 const debouncedHasSearchInput = refDebounced(
   hasSearchInput,
   DEBOUNCE_TIME + 100, // Add some more delay to the first entered debounced value.
@@ -43,7 +44,13 @@ const debouncedHasSearchInput = refDebounced(
 
 const { isTouchDevice } = useTouchDevice()
 
-const { recentSearches, clearSearches, removeSearch } = useRecentSearches()
+const {
+  ADD_RECENT_SEARCH_DEBOUNCE_TIME,
+  recentSearches,
+  addSearch,
+  clearSearches,
+  removeSearch,
+} = useRecentSearches()
 
 const recentViewListQuery = new QueryHandler(
   useUserCurrentRecentViewListQuery({
@@ -67,12 +74,16 @@ recentViewUpdatesSubscription.onResult(({ data }) => {
   }
 })
 
+watchDebounced(() => props.search, addSearch, {
+  debounce: ADD_RECENT_SEARCH_DEBOUNCE_TIME,
+})
+
 const { waitForConfirmation } = useConfirmation()
 const { notify } = useNotifications()
 
 const confirmRemoveRecentSearch = async (searchQuery: string) => {
   const confirmed = await waitForConfirmation(
-    __('Are you sure? This recent search will get lost.'),
+    __('Are you sure? This recent search will be lost.'),
     { fullscreen: true },
   )
 
@@ -89,7 +100,7 @@ const confirmRemoveRecentSearch = async (searchQuery: string) => {
 
 const confirmClearRecentSearches = async () => {
   const confirmed = await waitForConfirmation(
-    __('Are you sure? Your recent searches will get lost.'),
+    __('Are you sure? Your recent searches will be lost.'),
     { fullscreen: true },
   )
 
@@ -150,14 +161,13 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
           <nav :aria-labelledby="headerId">
             <ul class="m-0 flex flex-col gap-1 p-0">
               <li
-                v-for="searchQuery in recentSearches"
+                v-for="searchQuery in [...recentSearches].reverse()"
                 :key="searchQuery"
                 class="group/recent-search flex justify-center"
               >
                 <CommonLink
                   class="relative flex grow items-center gap-2 rounded-md px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:no-underline!"
                   :link="`/search/${searchQuery}`"
-                  exact-active-class="bg-blue-800! w-full text-white!"
                   internal
                   @click="resetQuickSearchInputField"
                 >

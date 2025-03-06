@@ -61,6 +61,13 @@ const { goToItem, goToItemLinkColumn, loadMore, resort, storageKeyId } =
           dataType: 'input',
         },
       ]"
+      :attribute-extensions="{
+        organization_ids: {
+          headerPreferences: {
+            noSorting: true,
+          },
+        },
+      }"
       :items="items"
       :total-items="totalCount"
       :storage-key-id="storageKeyId"

@@ -1,8 +1,11 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { useDebounceFn } from '@vueuse/core'
-import { computed, nextTick, useTemplateRef } from 'vue'
+import { debouncedWatch, useDebounceFn } from '@vueuse/core'
+import { computed, nextTick, onActivated, onMounted, useTemplateRef } from 'vue'
+import { onBeforeRouteUpdate } from 'vue-router'
+
+import { useRecentSearches } from '#shared/composables/useRecentSearches.ts'
 
 import CommonInputSearch from '#desktop/components/CommonInputSearch/CommonInputSearch.vue'
 import CommonTabGroup from '#desktop/components/CommonTabGroup/CommonTabGroup.vue'
@@ -27,19 +30,41 @@ const inputSearchInstance = useTemplateRef('search-input')
 const searchTerm = computed({
   get: () => searchParam.value,
   set: useDebounceFn((value) => {
-    searchParam.value = value
+    searchParam.value = value.trim()
   }, DEBOUNCE_TIME),
 })
 
-const clearAndFocusSearch = () => {
-  searchTerm.value = ''
+const { ADD_RECENT_SEARCH_DEBOUNCE_TIME, addSearch } = useRecentSearches()
+
+debouncedWatch(searchTerm, addSearch, {
+  debounce: ADD_RECENT_SEARCH_DEBOUNCE_TIME,
+})
+
+const focusSearch = () => {
   nextTick(() => {
     inputSearchInstance.value?.focus()
   })
 }
 
+const clearAndFocusSearch = () => {
+  searchTerm.value = ''
+  focusSearch()
+}
+
 defineExpose({
   clearAndFocusSearch,
+})
+
+onMounted(() => {
+  focusSearch()
+})
+
+onActivated(() => {
+  focusSearch()
+})
+
+onBeforeRouteUpdate(() => {
+  focusSearch()
 })
 </script>
 

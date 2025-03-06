@@ -26,6 +26,10 @@ export const DetailSearchDocument = gql`
           id
           fullname
         }
+        owner {
+          id
+          fullname
+        }
         group {
           id
           name

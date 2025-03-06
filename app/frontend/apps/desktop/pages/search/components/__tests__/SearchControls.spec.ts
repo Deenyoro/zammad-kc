@@ -3,8 +3,11 @@
 import { ref } from 'vue'
 
 import renderComponent from '#tests/support/components/renderComponent.ts'
+import { mockRouterHooks } from '#tests/support/mock-vue-router.ts'
 
 import SearchControls from '../SearchControls.vue'
+
+mockRouterHooks()
 
 describe('SearchControls', () => {
   it('renders the search input and tabs', async () => {

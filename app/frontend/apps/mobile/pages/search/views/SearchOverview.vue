@@ -1,7 +1,6 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { useLocalStorage } from '@vueuse/core'
 import { ignorableWatch } from '@vueuse/shared'
 import { debounce } from 'lodash-es'
 import { computed, onMounted, reactive, ref, watch } from 'vue'
@@ -9,10 +8,10 @@ import { useRoute, useRouter } from 'vue-router'
 
 import type { CommonInputSearchExpose } from '#shared/components/CommonInputSearch/CommonInputSearch.vue'
 import CommonInputSearch from '#shared/components/CommonInputSearch/CommonInputSearch.vue'
+import { useRecentSearches } from '#shared/composables/useRecentSearches.ts'
 import { useStickyHeader } from '#shared/composables/useStickyHeader.ts'
 import { EnumSearchableModels } from '#shared/graphql/types.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
-import { useSessionStore } from '#shared/stores/session.ts'
 
 import CommonButtonGroup from '#mobile/components/CommonButtonGroup/CommonButtonGroup.vue'
 import type { CommonButtonOption } from '#mobile/components/CommonButtonGroup/types.ts'
@@ -29,8 +28,6 @@ interface SearchTypeItem extends MenuItem {
   value: string
 }
 
-const LAST_SEARCHES_LENGTH_MAX = 5
-
 const props = defineProps<{ type?: string }>()
 
 const route = useRoute()
@@ -45,9 +42,8 @@ const filter = ref(search.value)
 const canSearch = computed(() => filter.value.length >= 1)
 
 const found = reactive({} as Record<string, Record<string, unknown>[]>)
-const { userId } = useSessionStore()
 
-const recentSearches = useLocalStorage<string[]>(`${userId}-recentSearches`, [])
+const { recentSearches, addSearch } = useRecentSearches(5)
 
 const model = computed(() => {
   return props.type
@@ -110,13 +106,7 @@ const loadByFilter = async (filterQuery: string) => {
     return
   }
 
-  recentSearches.value = recentSearches.value.filter(
-    (item) => item !== filterQuery,
-  )
-  recentSearches.value.push(filterQuery)
-  if (recentSearches.value.length > LAST_SEARCHES_LENGTH_MAX) {
-    recentSearches.value.shift()
-  }
+  addSearch(filterQuery)
 
   if (searchQuery.isFirstRun()) {
     searchQuery.load()

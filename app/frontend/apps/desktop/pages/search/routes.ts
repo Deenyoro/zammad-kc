@@ -8,14 +8,15 @@ const route: RouteRecordRaw[] = [
   {
     path: '/search/:searchTerm?',
     name: 'search',
-    component: () => import('./views/Search.vue'),
     props: true,
+    component: () => import('./views/Search.vue'),
     meta: {
       title: __('Search'),
       requiresAuth: true,
       pageKey: 'search',
       requiredPermission: ['ticket.agent', 'ticket.customer'],
       taskbarTabEntity: EnumTaskbarEntity.Search,
+      isTaskbarTabPossible: (route) => !!route.query.entity,
       level: 2,
     },
   },

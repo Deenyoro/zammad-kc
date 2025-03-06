@@ -2,8 +2,11 @@
 
 import { waitFor, within } from '@testing-library/vue'
 
+import { getTestRouter } from '#tests/support/components/renderComponent.ts'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
+
+import { waitForDetailSearchQueryCalls } from '#desktop/components/Search/graphql/queries/detailSearch.mocks.ts'
 
 const visitSearchView = async (searchTerm = 'test') => {
   const view = await visitView(`/search/${searchTerm}`)
@@ -45,5 +48,24 @@ describe('search view', () => {
         within(searchContainer).getByRole('searchbox', { name: 'Search…' }),
       ).toHaveDisplayValue('fooBar'),
     )
+
+    const router = getTestRouter()
+
+    await waitFor(() =>
+      expect(router.currentRoute.value.fullPath).toBe(
+        '/search/fooBar?entity=Ticket',
+      ),
+    )
+
+    const mocks = await waitForDetailSearchQueryCalls()
+
+    expect(mocks.at(0)?.variables).toEqual({
+      limit: 30,
+      offset: 0,
+      onlyIn: 'Ticket',
+      search: 'test',
+    })
+
+    expect(view.getByRole('table')).toBeInTheDocument()
   })
 })

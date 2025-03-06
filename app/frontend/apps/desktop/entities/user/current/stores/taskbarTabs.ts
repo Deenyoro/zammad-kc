@@ -4,11 +4,12 @@ import { tryOnScopeDispose } from '@vueuse/shared'
 import { isEqual, keyBy } from 'lodash-es'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, type RouteLocationNormalizedGeneric } from 'vue-router'
 
 import {
   EnumTaskbarApp,
   EnumTaskbarEntity,
+  type TaskbarItemEntity,
   type UserCurrentTaskbarItemListQuery,
   type UserCurrentTaskbarItemListUpdatesSubscription,
   type UserCurrentTaskbarItemListUpdatesSubscriptionVariables,
@@ -22,7 +23,6 @@ import {
   QueryHandler,
 } from '#shared/server/apollo/handler/index.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
-import type { ObjectWithId } from '#shared/types/utils.ts'
 import log from '#shared/utils/log.ts'
 
 import { userTaskbarTabPluginByType } from '#desktop/components/UserTaskbarTabs/plugins/index.ts'
@@ -106,7 +106,7 @@ export const useUserCurrentTaskbarTabsStore = defineStore(
                 dirty: taskbarTab.dirty,
                 notify: taskbarTab.notify,
                 updatedAt: taskbarTab.updatedAt,
-              }
+              } as UserTaskbarTab
             })
 
         const existingTabEntityKeys = new Set(
@@ -350,10 +350,14 @@ export const useUserCurrentTaskbarTabsStore = defineStore(
     const addTaskbarTab = async (
       taskbarTabEntity: EnumTaskbarEntity,
       tabEntityKey: string,
-      tabEntityInternalId: string,
+      route: RouteLocationNormalizedGeneric,
     ) => {
-      const { buildTaskbarTabParams, entityType, entityDocument } =
-        getTaskbarTabTypePlugin(taskbarTabEntity)
+      const {
+        buildTaskbarTabEntityId,
+        buildTaskbarTabParams,
+        entityType,
+        entityDocument,
+      } = getTaskbarTabTypePlugin(taskbarTabEntity)
 
       const order = hasTaskbarTabs.value
         ? taskbarTabList.value[taskbarTabList.value.length - 1].order + 1
@@ -361,23 +365,26 @@ export const useUserCurrentTaskbarTabsStore = defineStore(
 
       // Add temporary in creation taskbar tab item when we have already an existing entity from the cache.
       if (entityType && entityDocument) {
-        const cachedEntity = getApolloClient().cache.readFragment<ObjectWithId>(
-          {
-            id: `${entityType}:${convertToGraphQLId(
-              entityType,
-              tabEntityInternalId,
-            )}`,
-            fragment: entityDocument,
-          },
-        )
+        const tabEntityInternalId = buildTaskbarTabEntityId(route)
 
-        if (cachedEntity) {
-          taskbarTabsInCreation.value.push({
-            type: taskbarTabEntity,
-            entity: cachedEntity,
-            tabEntityKey,
-            order,
-          })
+        if (tabEntityInternalId) {
+          const cachedEntity =
+            getApolloClient().cache.readFragment<TaskbarItemEntity>({
+              id: `${entityType}:${convertToGraphQLId(
+                entityType,
+                tabEntityInternalId,
+              )}`,
+              fragment: entityDocument,
+            })
+
+          if (cachedEntity) {
+            taskbarTabsInCreation.value.push({
+              type: taskbarTabEntity,
+              entity: cachedEntity,
+              tabEntityKey,
+              order,
+            })
+          }
         }
       }
 
@@ -388,12 +395,12 @@ export const useUserCurrentTaskbarTabsStore = defineStore(
             callback: taskbarTabEntity,
             key: tabEntityKey,
             notify: false,
-            params: buildTaskbarTabParams(tabEntityInternalId),
+            params: buildTaskbarTabParams(route),
             prio: order,
           },
         })
         .finally(() => {
-          // Remove temporary in creation taskar tab again.
+          // Remove temporary in creation taskbar tab again.
           taskbarTabsInCreation.value = taskbarTabsInCreation.value.filter(
             (tab) => tab.tabEntityKey !== tabEntityKey,
           )
@@ -404,7 +411,11 @@ export const useUserCurrentTaskbarTabsStore = defineStore(
       useUserCurrentTaskbarItemUpdateMutation(),
     )
 
-    const updateTaskbarTab = (taskbarTabId: ID, taskbarTab: UserTaskbarTab) => {
+    const updateTaskbarTab = (
+      taskbarTabId: ID,
+      taskbarTab: UserTaskbarTab,
+      state?: Record<string, unknown>,
+    ) => {
       taskbarUpdateMutation.send({
         id: taskbarTabId,
         input: {
@@ -412,6 +423,7 @@ export const useUserCurrentTaskbarTabsStore = defineStore(
           callback: taskbarTab.type,
           key: taskbarTab.tabEntityKey,
           notify: !!taskbarTab.notify,
+          state,
           prio: taskbarTab.order,
           dirty: taskbarTab.dirty,
         },
@@ -431,16 +443,20 @@ export const useUserCurrentTaskbarTabsStore = defineStore(
     const upsertTaskbarTab = async (
       taskbarTabEntity: EnumTaskbarEntity,
       tabEntityKey: string,
-      tabEntityInternalId: string,
+      route: RouteLocationNormalizedGeneric,
     ) => {
       activeTaskbarTabEntityKey.value = tabEntityKey
 
       if (!taskbarTabExists(taskbarTabEntity, tabEntityKey)) {
-        await addTaskbarTab(taskbarTabEntity, tabEntityKey, tabEntityInternalId)
+        await addTaskbarTab(taskbarTabEntity, tabEntityKey, route)
+        return
       }
 
       const taskbarTab = taskbarTabListByTabEntityKey.value[tabEntityKey]
       if (!taskbarTab || !taskbarTab.taskbarTabId) return
+
+      const { touchExistingTab } = getTaskbarTabTypePlugin(taskbarTabEntity)
+      if (!touchExistingTab) return
 
       await touchTaskbarTab(taskbarTab.taskbarTabId)
     }
