@@ -140,15 +140,20 @@ class Transaction::Notification
     end
   end
 
+  def recipient_myself?(user)
+    return false if @params[:interface_handle] != 'application_server'
+    return true if article&.updated_by_id == user.id
+    return true if !article && @item[:user_id] == user.id
+
+    false
+  end
+
   def send_to_single_recipient(recipient_settings)
     user     = recipient_settings[:user]
     channels = recipient_settings[:channels]
 
     # ignore user who changed it by him self via web
-    if @params[:interface_handle] == 'application_server'
-      return if article&.updated_by_id == user.id
-      return if !article && @item[:user_id] == user.id
-    end
+    return if recipient_myself?(user)
 
     # ignore inactive users
     return if !user.active?
