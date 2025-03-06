@@ -42,6 +42,11 @@ class ApplicationController::HasDownload::DownloadFile < SimpleDelegator
 
   def file_content_type
     @file_content_type ||= preferences['Content-Type'] || preferences['Mime-Type'] || ActiveStorage.binary_content_type
+
+    # Workaround for https://github.com/rails/rails/issues/51842
+    return @file_content_type if @file_content_type.start_with?('multipart/byteranges')
+
+    @file_content_type.split(';').first
   end
 
   def content_inline?
