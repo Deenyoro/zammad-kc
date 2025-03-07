@@ -27,6 +27,6 @@ class Controllers::TicketSharedDraftZoomControllerPolicy < Controllers::Applicat
     ticket_id = record.params[:ticket_id]
     ticket    = Ticket.find ticket_id
 
-    TicketPolicy.new(user, ticket).update?
+    TicketPolicy.new(user, ticket).agent_update_access?
   end
 end

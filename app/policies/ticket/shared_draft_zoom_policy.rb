@@ -16,6 +16,6 @@ class Ticket::SharedDraftZoomPolicy < ApplicationPolicy
   private
 
   def access?(_method)
-    TicketPolicy.new(user, record.ticket).update?
+    TicketPolicy.new(user, record.ticket).agent_update_access?
   end
 end
