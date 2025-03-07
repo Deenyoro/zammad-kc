@@ -87,8 +87,9 @@ class App.TicketZoom extends App.Controller
       queue = true
 
     if @init
+      @init = false
       initTicket = App.TaskbarInit.ticket(@ticket_id)
-      return @load(initTicket) if initTicket
+      return @load(initTicket, false, App.Ticket.fullLocal(@ticket_id)) if initTicket
 
     # get data
     @ajax(
@@ -138,8 +139,9 @@ class App.TicketZoom extends App.Controller
           )
     )
 
-  load: (data, local = false) =>
-    newTicketRaw = data?.assets?.Ticket?[@ticket_id] || App.Ticket.fullLocal(@ticket_id)
+  load: (data, local = false, newTicketRaw = undefined) =>
+    if !newTicketRaw
+      newTicketRaw = data.assets.Ticket[@ticket_id]
 
     view       = @ticket?.currentView()
     readable   = @ticket?.userGroupAccess('read')
