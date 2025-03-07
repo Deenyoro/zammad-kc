@@ -29,7 +29,12 @@ set -e
 : "${ZAMMAD_RAILSSERVER_PORT:=3000}"
 : "${ZAMMAD_WEBSOCKET_HOST:=zammad-websocket}"
 : "${ZAMMAD_WEBSOCKET_PORT:=6042}"
+
+# Support both ZAMMAD_WEB_CONCURRENCY (as recommended by the Zammad docker stack & documentation)
+#   and WEB_CONCURRENCY (Zammad and Rails default).
 : "${ZAMMAD_WEB_CONCURRENCY:=0}"
+: "${WEB_CONCURRENCY:=${ZAMMAD_WEB_CONCURRENCY}}"
+export WEB_CONCURRENCY
 
 ESCAPED_POSTGRESQL_PASS=$(echo "$POSTGRESQL_PASS" | sed -e 's/[\/&]/\\&/g')
 export DATABASE_URL="postgres://${POSTGRESQL_USER}:${ESCAPED_POSTGRESQL_PASS}@${POSTGRESQL_HOST}:${POSTGRESQL_PORT}/${POSTGRESQL_DB}${POSTGRESQL_OPTIONS}"
@@ -140,10 +145,10 @@ elif [ "$1" = 'zammad-nginx' ]; then
 elif [ "$1" = 'zammad-railsserver' ]; then
   check_zammad_ready
 
-  echo "starting railsserver... with WEB_CONCURRENCY=${ZAMMAD_WEB_CONCURRENCY}"
+  echo "starting railsserver... with WEB_CONCURRENCY=${WEB_CONCURRENCY}"
 
   #shellcheck disable=SC2101
-  exec bundle exec puma -b tcp://[::]:"${ZAMMAD_RAILSSERVER_PORT}" -w "${ZAMMAD_WEB_CONCURRENCY}" -e "${RAILS_ENV}"
+  exec bundle exec puma -b tcp://[::]:"${ZAMMAD_RAILSSERVER_PORT}" -e "${RAILS_ENV}"
 
 # zammad-scheduler
 elif [ "$1" = 'zammad-scheduler' ]; then
