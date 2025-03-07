@@ -426,6 +426,7 @@ ul {
 }
 
 .u-overflow-wrap {
+  /* stylelint-disable-next-line declaration-property-value-keyword-no-deprecated */
   word-break: break-word;
 
   @supports (overflow-wrap: anywhere) {
@@ -443,6 +444,7 @@ ul {
 }
 
 .u-breakWords.u-breakWords {
+  /* stylelint-disable-next-line declaration-property-value-keyword-no-deprecated */
   word-break: break-word;
 
   @supports (overflow-wrap: break-word) {
@@ -5615,6 +5617,7 @@ li.add .dropdown-nose {
   }
 
   &--unique {
+    /* stylelint-disable-next-line declaration-property-value-no-unknown */
     background-image: image_url('/assets/images/avatar-bg.png');
     background-size: 300px 226px;
     color: var(--text-inverted);
@@ -8176,6 +8179,7 @@ a.list-group-item.active > .badge,
 }
 
 .tabsSidebar.is-closed {
+  /* stylelint-disable-next-line declaration-property-value-no-unknown */
   transform: translateX($sidebarWidth);
 
   @include rtl(transform, translateX(-$sidebarWidth));
@@ -9774,7 +9778,7 @@ li.dropdown-header {
 
     &.is-disabled {
       cursor: default;
-      touch-action: default;
+      touch-action: auto;
 
       span {
         opacity: 0.33;
@@ -9828,7 +9832,7 @@ li.dropdown-header {
 
     &.is-disabled {
       cursor: default;
-      touch-action: default;
+      touch-action: auto;
 
       span {
         opacity: 0.33;
@@ -10973,7 +10977,7 @@ label + .wizard-buttonList {
 
   .ui-sortable-helper & {
     border-color: transparent;
-    border-radius: none;
+    border-radius: 0;
     background: var(--background-modifier-lighter);
 
     &[data-level]::before {
@@ -11228,7 +11232,7 @@ output {
   &:focus + label {
     transition: none;
     background: var(--border-highlight);
-    box-shadow: 0 0 0 3px var();
+    box-shadow: 0 0 0 3px var(--shadow-highlight);
   }
 
   &:checked + label {
@@ -11411,6 +11415,7 @@ output {
   }
 
   td {
+    /* stylelint-disable-next-line declaration-property-value-keyword-no-deprecated */
     word-break: break-word;
 
     > fieldset {
@@ -12481,7 +12486,8 @@ output {
   color: var(--text-muted);
   margin-bottom: 4px;
   align-self: center;
-  word-break: break-word;
+  word-break: normal;
+  overflow-wrap: anywhere;
 }
 
 .chat-timestamp-label {
@@ -12670,6 +12676,7 @@ output {
 
     &.is-picking {
       cursor:
+        /* stylelint-disable-next-line declaration-property-value-no-unknown */
         image_url('/assets/images/eyedropper.gif') 0 15,
         auto;
     }
@@ -13224,6 +13231,7 @@ output {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
         overflow: hidden;
+        /* stylelint-disable-next-line declaration-property-value-keyword-no-deprecated */
         word-break: break-word;
       }
 
@@ -13623,10 +13631,12 @@ output {
       $i: $i + 60;
     }
 
+    /* stylelint-disable-next-line declaration-property-value-no-unknown */
     background: linear-gradient(to right, $rainbow);
     position: relative;
     overflow: hidden;
     cursor:
+      /* stylelint-disable-next-line declaration-property-value-no-unknown */
       image_url('/assets/images/colorcircle.gif') 8 8,
       auto;
     user-select: none;
@@ -14225,8 +14235,8 @@ span.is-disabled {
   }
 
   .richtext-content {
+    /* stylelint-disable-next-line declaration-property-value-keyword-no-deprecated */
     word-break: break-word;
-    word-wrap: anywhere;
   }
 
   .page-header {

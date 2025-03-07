@@ -305,7 +305,8 @@ const onContextClick = () => {
 
 <style scoped>
 .Content {
-  word-break: break-word;
+  word-break: normal;
+  overflow-wrap: anywhere;
 }
 
 .Article:not(.Internal) {

@@ -40,7 +40,7 @@ const ticketColorCode = computed(() => {
   <CommonLink
     v-else
     class="flex! grow items-start gap-2 rounded-md break-words group-hover/tab:bg-blue-600 hover:no-underline! focus-visible:rounded-md focus-visible:outline-hidden group-hover/tab:dark:bg-blue-900"
-    style="word-break: break-word"
+    style="word-break: normal; overflow-wrap: anywhere"
     :link="`/tickets/${ticket?.internalId}`"
     internal
   >

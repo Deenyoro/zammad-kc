@@ -308,7 +308,7 @@ defineExpose({
         :id="id"
         ref="label"
         class="z-10 break-words"
-        style="word-break: break-word"
+        style="word-break: normal; overflow-wrap: anywhere"
         v-bind="labelAttrs"
         :size="size"
         :class="[classes?.label, minHeightClassMap[size]]"
