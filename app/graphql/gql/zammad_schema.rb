@@ -19,24 +19,9 @@ class Gql::ZammadSchema < GraphQL::Schema
 
   max_depth 8, count_introspection_fields: false
 
-  TYPE_MAP = {
-    ::Store   => ::Gql::Types::StoredFileType,
-    ::Taskbar => ::Gql::Types::User::TaskbarItemType,
-  }.freeze
-
-  ABSTRACT_TYPE_MAP = {
-    ::Gql::Types::User::TaskbarItemEntityType => 'Gql::Types::User::TaskbarItemEntity::%sType',
-  }.freeze
-
-  # Union and Interface Resolution
-  def self.resolve_type(abstract_type, obj, _ctx)
-    TYPE_MAP[obj.class] || "Gql::Types::#{obj.class.name}Type".constantize
-  rescue NameError
-    return (ABSTRACT_TYPE_MAP[abstract_type] % obj[:type]).constantize if ABSTRACT_TYPE_MAP[abstract_type].is_a?(String) && obj[:type]
-
-    ABSTRACT_TYPE_MAP[abstract_type]
-  rescue
-    raise GraphQL::RequiredImplementationMissingError, "Cannot resolve type for '#{obj.class.name}'."
+  # Required for loads:, other types like unions need to implement type resolution directly.
+  def self.resolve_type(abstract_type, _obj, _ctx)
+    abstract_type
   end
 
   # Relay-style Object Identification:

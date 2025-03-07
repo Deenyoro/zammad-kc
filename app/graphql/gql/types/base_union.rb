@@ -9,5 +9,10 @@ module Gql::Types
   class BaseUnion < GraphQL::Schema::Union
     edge_type_class(Gql::Types::BaseEdge)
     connection_type_class(Gql::Types::BaseConnection)
+
+    # default union type resolution
+    def self.resolve_type(obj, _context)
+      "Gql::Types::#{obj.class.name}Type".constantize
+    end
   end
 end
