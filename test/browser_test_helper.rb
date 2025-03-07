@@ -102,6 +102,12 @@ class TestCase < ActiveSupport::TestCase
 
   def browser_instance
     @browsers ||= {}
+
+    # `clear_local_storage` and `clear_session_storage` are deprecated in Selenium, but Capybara still uses them.
+    #   For now, we can ignore these warnings.
+    # https://github.com/teamcapybara/capybara/issues/2779
+    Selenium::WebDriver.logger.ignore(:clear_local_storage, :clear_session_storage)
+
     if ENV['REMOTE_URL'].blank?
       local_browser = Selenium::WebDriver.for(browser.to_sym, options: browser_options)
       @browsers[local_browser.hash] = local_browser

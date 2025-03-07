@@ -22,6 +22,11 @@ Capybara.register_driver(:zammad_firefox_mobile) do |app|
   build_firefox_driver(app, user_agent: 'Mozilla/5.0 (Android 13; Mobile; rv:109.0) Gecko/112.0 Firefox/112.0')
 end
 
+# `clear_local_storage` and `clear_session_storage` are deprecated in Selenium, but Capybara still uses them.
+#   For now, we can ignore these warnings.
+# https://github.com/teamcapybara/capybara/issues/2779
+Selenium::WebDriver.logger.ignore(:clear_local_storage, :clear_session_storage)
+
 private
 
 def build_chrome_driver(app, user_agent: nil)
