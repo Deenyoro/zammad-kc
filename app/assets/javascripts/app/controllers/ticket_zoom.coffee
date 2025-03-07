@@ -23,6 +23,7 @@ class App.TicketZoom extends App.Controller
     @article_id    = params.article_id
     @sidebarState  = {}
     @tooltipCopied = undefined
+    @init          = params.init
 
     # if we are in init task startup, ignore overview_id
     if !params.init
@@ -85,6 +86,10 @@ class App.TicketZoom extends App.Controller
     if !@initFetched
       queue = true
 
+    if @init
+      initTicket = App.TaskbarInit.ticket(@ticket_id)
+      return @load(initTicket) if initTicket
+
     # get data
     @ajax(
       id:    "ticket_zoom_#{@ticket_id}"
@@ -134,7 +139,7 @@ class App.TicketZoom extends App.Controller
     )
 
   load: (data, local = false) =>
-    newTicketRaw = data.assets.Ticket[@ticket_id]
+    newTicketRaw = data?.assets?.Ticket?[@ticket_id] || App.Ticket.fullLocal(@ticket_id)
 
     view       = @ticket?.currentView()
     readable   = @ticket?.userGroupAccess('read')

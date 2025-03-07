@@ -6,8 +6,7 @@ class TaskbarController < ApplicationController
   before_action :set_task_user_param, only: %i[create update]
 
   def index
-    current_user_tasks = Taskbar.where(user_id: current_user.id)
-    model_index_render_result(current_user_tasks)
+    model_index_render_result(current_user.taskbars)
   end
 
   def show
@@ -24,6 +23,10 @@ class TaskbarController < ApplicationController
 
   def destroy
     model_destroy_render(Taskbar, params)
+  end
+
+  def init
+    render json: Taskbar::Init.run(current_user)
   end
 
   private

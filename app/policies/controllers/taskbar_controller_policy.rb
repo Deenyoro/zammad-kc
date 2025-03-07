@@ -21,6 +21,10 @@ class Controllers::TaskbarControllerPolicy < Controllers::ApplicationControllerP
     own?
   end
 
+  def init?
+    true
+  end
+
   private
 
   def own?

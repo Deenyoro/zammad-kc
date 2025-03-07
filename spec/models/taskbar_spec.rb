@@ -726,4 +726,36 @@ RSpec.describe Taskbar, performs_jobs: true, type: :model do
       expect(taskbar).to be_saved_change_to_dirty
     end
   end
+
+  describe '.to_object_ids' do
+    let(:ticket)       { create(:ticket) }
+    let(:ticket2)      { create(:ticket) }
+    let(:organization) { create(:organization) }
+    let(:user)         { create(:user) }
+
+    let(:taskbar_ticket)       { create(:taskbar, params: { ticket_id: ticket.id }) }
+    let(:taskbar_ticket2)      { create(:taskbar, params: { ticket_id: ticket2.id }) }
+    let(:taskbar_organization) { create(:taskbar, params: { organization_id: organization.id }) }
+    let(:taskbar_user)         { create(:taskbar, params: { user_id: user.id }) }
+
+    before do
+      taskbar_ticket && taskbar_ticket2 && taskbar_organization && taskbar_user
+    end
+
+    it 'returns object ids' do
+      expect(described_class.to_object_ids).to include(
+        ticket_ids:       [ticket.id, ticket2.id],
+        user_ids:         [user.id],
+        organization_ids: [organization.id]
+      )
+    end
+
+    it 'returns object ids in scoped relation' do
+      expect(described_class.where(id: [taskbar_ticket2, taskbar_user]).to_object_ids).to include(
+        ticket_ids:       [ticket2.id],
+        user_ids:         [user.id],
+        organization_ids: []
+      )
+    end
+  end
 end

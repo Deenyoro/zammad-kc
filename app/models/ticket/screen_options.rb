@@ -42,7 +42,7 @@ returns
       params[:ticket] = Ticket.find(params[:ticket_id])
     end
 
-    assets = {}
+    assets = params[:assets] || {}
     filter = {}
 
     type_ids = []

@@ -46,6 +46,29 @@ class Taskbar < ApplicationModel
 
   scope :app, ->(app) { where(app:) }
 
+  # Returns IDs of objects referenced by the taskbars.
+  # Works on scopes, relations etc.
+  #
+  # @return [Hash{Symbol=>Array<Integer>}] of arrays of object IDs
+  #
+  # @example
+  #
+  # user.taskbars.to_object_ids # => { user_ids: [1, 2, 3], organization_ids: [1, 2, 3], ticket_ids: [1, 2, 3] }
+  #
+  def self.to_object_ids
+    all.each_with_object({ user_ids: [], organization_ids: [], ticket_ids: [] }) do |elem, memo|
+      case elem.params
+      in { user_id: }
+        memo[:user_ids] << user_id.to_i
+      in { organization_id: }
+        memo[:organization_ids] << organization_id.to_i
+      in { ticket_id: }
+        memo[:ticket_ids] << ticket_id.to_i
+      else
+      end
+    end
+  end
+
   def self.taskbar_entities
     @taskbar_entities ||= begin
       ApplicationModel.descendants.select { |model| model.included_modules.include?(HasTaskbars) }.each_with_object([]) do |model, result|
