@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 import { refDebounced, watchDebounced } from '@vueuse/shared'
-import { computed } from 'vue'
+import { computed, toRef } from 'vue'
 
 import {
   NotificationTypes,
@@ -26,7 +26,7 @@ import { searchPluginByName } from '../plugins/index.ts'
 
 import { useQuickSearchInput } from './useQuickSearchInput.ts'
 
-const DEBOUNCE_TIME = 400
+const DEBOUNCE_TIME = 500
 
 interface Props {
   collapsed?: boolean
@@ -37,9 +37,11 @@ const props = defineProps<Props>()
 
 const hasSearchInput = computed(() => props.search?.length > 0)
 
-const debouncedHasSearchInput = refDebounced(
-  hasSearchInput,
-  DEBOUNCE_TIME + 100, // Add some more delay to the first entered debounced value.
+// We need to use the search term for debounce, because otherwise showing the quick search result list
+// is too early (which means that already some search is triggered with some first characters).
+const debouncedSearchInput = refDebounced(
+  toRef(props, 'search'),
+  DEBOUNCE_TIME + 50, // Add some more delay to the first entered debounced value.
 )
 
 const { isTouchDevice } = useTouchDevice()
@@ -142,7 +144,7 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
 <template>
   <div class="overflow-x-hidden overflow-y-auto px-3 py-2.5 outline-none">
     <QuickSearchResultList
-      v-if="debouncedHasSearchInput && hasSearchInput"
+      v-if="debouncedSearchInput && hasSearchInput"
       :search="search"
       :debounce-time="DEBOUNCE_TIME"
     />

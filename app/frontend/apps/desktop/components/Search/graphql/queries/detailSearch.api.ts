@@ -6,7 +6,7 @@ import * as VueCompositionApi from 'vue';
 export type ReactiveFunction<TParam> = () => TParam;
 
 export const DetailSearchDocument = gql`
-    query detailSearch($search: String!, $onlyIn: EnumSearchableModels!, $limit: Int = 30, $offset: Int = 0, $orderBy: String, $orderDirection: EnumOrderDirection) {
+    query detailSearch($search: String!, $onlyIn: EnumSearchableModels!, $limit: Int = 30, $offset: Int, $orderBy: String, $orderDirection: EnumOrderDirection) {
   search(
     search: $search
     onlyIn: $onlyIn

@@ -14,10 +14,10 @@ const offsetLimitPagination = (
   return {
     keyArgs,
     merge(existing, incoming, { args }) {
-      const mergedItems = existing?.items ? [...existing.items] : []
+      let mergedItems = existing?.items ? [...existing.items] : []
 
       if (incoming.items) {
-        if (args) {
+        if (args && args.offset !== undefined) {
           // Assume an offset of 0 if args.offset omitted.
           const { offset = 0 } = args
           // TODO: Do we need to check if item already exists...? What is happening in the cursor pagination?
@@ -25,10 +25,8 @@ const offsetLimitPagination = (
             mergedItems[offset + i] = incoming.items[i]
           }
         } else {
-          throw new Error(
-            // eslint-disable-next-line zammad/zammad-detect-translatable-string
-            'No args provided for offset pagination.',
-          )
+          // Override items if no offset is provided.
+          mergedItems = incoming.items
         }
       }
 

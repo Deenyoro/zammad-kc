@@ -70,7 +70,7 @@ export const textTruncate = (text: string, length = 100) => {
 export const debouncedQuery = <A extends unknown[], R>(
   fn: (...args: A) => Promise<R>,
   defaultValue: R,
-  delay = 200,
+  delay = 400,
 ) => {
   let timeout: number | undefined
   let lastResolve: (() => void) | null = null

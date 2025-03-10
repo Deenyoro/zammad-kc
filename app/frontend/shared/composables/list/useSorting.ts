@@ -20,11 +20,13 @@ export const useSorting = <
   orderByParam:
     | string
     | Ref<string | undefined>
-    | ComputedRef<string | undefined>,
+    | ComputedRef<string | undefined>
+    | undefined,
   orderDirectionParam:
     | EnumOrderDirection
     | Ref<EnumOrderDirection | undefined>
-    | ComputedRef<EnumOrderDirection | undefined>,
+    | ComputedRef<EnumOrderDirection | undefined>
+    | undefined,
   scrollContainer?: Ref<HTMLElement | null>,
 ) => {
   // Local refs that you'll work with inside this composable

@@ -8,6 +8,7 @@ import { useRouter } from 'vue-router'
 import { useSorting } from '#shared/composables/list/useSorting.ts'
 import {
   type DetailSearchQuery,
+  type DetailSearchQueryVariables,
   type EnumOrderDirection,
   EnumSearchableModels,
   type SearchCountsQuery,
@@ -28,8 +29,7 @@ import { useTaskbarTab } from '#desktop/entities/user/current/composables/useTas
 import type { TaskbarTabContext } from '#desktop/entities/user/current/types.ts'
 import SearchControls from '#desktop/pages/search/components/SearchControls.vue'
 import SearchEmptyMessage from '#desktop/pages/search/components/SearchEmptyMessage.vue'
-
-import type { CustomSorting } from '../types/sorting.ts'
+import { useDetailSearchCache } from '#desktop/pages/search/composables/useDetailSearchCache.ts'
 
 const MAX_ITEMS = 1000
 const PAGE_SIZE = 30
@@ -115,23 +115,21 @@ const searchControlsInstance = useTemplateRef('search-controls')
 
 const { sortedByNamePlugins, searchPluginNames } = useSearchPlugins()
 
+const searchQueryVariables = computed(() => ({
+  search: sanitizedSearchTerm.value,
+  limit: PAGE_SIZE,
+  onlyIn: selectedEntity.value,
+}))
+
 const detailSearchQuery = new QueryHandler(
-  useDetailSearchLazyQuery(
-    () => ({
-      search: sanitizedSearchTerm.value,
-      limit: PAGE_SIZE,
-      onlyIn: selectedEntity.value,
-      offset: 0,
-    }),
-    {
-      context: {
-        batch: {
-          active: false,
-        },
+  useDetailSearchLazyQuery(searchQueryVariables, {
+    context: {
+      batch: {
+        active: false,
       },
-      fetchPolicy: 'cache-and-network', // TODO: for now until the cache handling is implemented
     },
-  ),
+    fetchPolicy: 'cache-and-network', // TODO: for now until the cache handling is implemented
+  }),
 )
 
 const notVisibleSearchEntities = computed(() =>
@@ -175,9 +173,6 @@ const searchQueriesStart = () => {
   searchCountsQuery.start()
 }
 
-const searchEntityManualSorting = ref<
-  Partial<Record<EnumSearchableModels, CustomSorting>>
->({})
 const searchEntityCurrentCounts = ref<
   Partial<Record<EnumSearchableModels, number>>
 >({})
@@ -209,6 +204,7 @@ watch(searchCountsResult, (newValue) => {
 
 const searchQueriesStop = () => {
   currentSearchResult.value = undefined
+  searchEntityCurrentCounts.value = {}
   currentSearchCountsResult.value = undefined
 
   detailSearchQuery.stop()
@@ -266,34 +262,37 @@ const searchTabs = computed(() =>
   }),
 )
 
-const activeTabSortingOrderBy = computed(
-  () => searchEntityManualSorting.value[selectedEntity.value]?.orderBy,
-)
-const activeTabSortingOrderDirection = computed(
-  () => searchEntityManualSorting.value[selectedEntity.value]?.orderDirection,
-)
+const { forceDetailSearchCacheOnlyFirstPage } = useDetailSearchCache()
 
 const { sort, orderBy, orderDirection, isSorting } = useSorting(
   detailSearchQuery,
-  activeTabSortingOrderBy,
-  activeTabSortingOrderDirection,
+  undefined,
+  undefined,
   scrollContainer,
 )
 
 const offset = ref(0)
 const loadingNewPage = ref(false)
 
-const resetPagination = () => {
+const resetPagination = (
+  variables: Partial<DetailSearchQueryVariables> = {},
+) => {
   offset.value = 0
+
+  forceDetailSearchCacheOnlyFirstPage(
+    {
+      ...searchQueryVariables.value,
+      ...variables,
+      orderBy: orderBy.value,
+      orderDirection: orderDirection.value,
+    },
+    PAGE_SIZE,
+  )
 }
 
 const resort = (column: string, direction: EnumOrderDirection) => {
   resetPagination()
 
-  searchEntityManualSorting.value[selectedEntity.value] = {
-    orderBy: column,
-    orderDirection: direction,
-  }
   sort(column, direction)
 }
 
@@ -322,8 +321,9 @@ watch(
       return
     }
 
-    resetPagination()
-    searchEntityManualSorting.value = {}
+    resetPagination({
+      search: oldValue,
+    })
 
     if (oldValue && !newValue) searchQueriesStop()
     else if (newValue && !oldValue) nextTick(searchQueriesStart)
@@ -331,11 +331,11 @@ watch(
   { immediate: true },
 )
 
-watch(selectedEntity, () => {
-  // TODO: Pagination needs to be reset after entity switch or remembered, clarify...
+watch(selectedEntity, (newValue, oldValue) => {
   currentSearchResult.value = undefined
-
-  resetPagination()
+  resetPagination({
+    onlyIn: oldValue,
+  })
 })
 
 const currentSearchResultCount = computed(

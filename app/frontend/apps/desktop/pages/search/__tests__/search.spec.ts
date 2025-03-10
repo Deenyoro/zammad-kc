@@ -61,7 +61,6 @@ describe('search view', () => {
 
     expect(mocks.at(0)?.variables).toEqual({
       limit: 30,
-      offset: 0,
       onlyIn: 'Ticket',
       search: 'test',
     })
