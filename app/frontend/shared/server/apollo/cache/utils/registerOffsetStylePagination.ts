@@ -31,7 +31,7 @@ const offsetLimitPagination = (
       }
 
       return {
-        totalCount: existing?.totalCount || incoming?.totalCount || 0,
+        totalCount: incoming?.totalCount || existing?.totalCount || 0,
         items: mergedItems,
       }
     },
