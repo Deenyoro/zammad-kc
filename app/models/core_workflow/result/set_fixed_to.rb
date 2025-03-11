@@ -13,9 +13,11 @@ class CoreWorkflow::Result::SetFixedTo < CoreWorkflow::Result::BaseOption
   end
 
   def config_value
-    result = Array(@perform_config['set_fixed_to'])
-    result |= saved_value
-    result
+    @config_value ||= begin
+      result = Array(@perform_config['set_fixed_to'])
+      result |= saved_value
+      result
+    end
   end
 
   def restriction_set?
