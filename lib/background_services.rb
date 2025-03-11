@@ -51,6 +51,9 @@ class BackgroundServices
     return if child_pids.blank?
 
     Thread.new do
+      Thread.current.abort_on_exception = true
+      Thread.current.name = 'child process monitoring'
+
       until self.class.shutdown_requested
         child_pids.each do |child_pid|
           Process.getpgid(child_pid)
@@ -76,6 +79,8 @@ class BackgroundServices
     #   If it doesn't, it will send KILL signals to all child processes and the main process
     #   to enforce the termination.
     Thread.new do
+      Thread.current.name = 'shutdown handler'
+
       Rails.logger.info { "BackgroundServices shutdown requested via #{signal} signal for process #{Process.pid}" }
 
       sleep SHUTDOWN_GRACE_PERIOD
@@ -130,6 +135,7 @@ class BackgroundServices
   def start_as_thread(service)
     Thread.new do
       Thread.current.abort_on_exception = true
+      Thread.current.name = "service #{service.service_name}"
 
       Rails.logger.info { "Starting thread for service #{service.service_name} in the main process." }
       service.new(manager: self).run

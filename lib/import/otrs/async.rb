@@ -13,6 +13,7 @@ module Import
 
         # start thread to observe current state
         status_update_thread = Thread.new do
+          Thread.current.name = 'OTRS import status update'
           loop do
             result = {
               data:   current_state,

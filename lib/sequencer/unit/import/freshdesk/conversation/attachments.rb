@@ -43,6 +43,7 @@ class Sequencer::Unit::Import::Freshdesk::Conversation::Attachments < Sequencer:
   def download_threads
     resource['attachments'].map do |attachment|
       Thread.new do
+        Thread.current.name = 'freshdesk attachment download'
         sync(attachment)
       end
     end

@@ -69,6 +69,8 @@ class BackgroundServices
 
       def start_client_session_thread(client_id)
         client_threads[client_id] = Thread.new do
+          Thread.current.name = "ProcessSessionJobs session client thread (client_id: #{client_id})"
+
           Rails.application.executor.wrap do
             Sessions.thread_client(client_id, 0, Time.now.utc, fork_id)
             client_threads.delete(client_id)

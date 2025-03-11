@@ -58,6 +58,7 @@ returns
     Rails.logger.debug { "Starting maintenance thread for #{process_name} (#{Process.pid})" }
     Thread.new do
       Thread.current.abort_on_exception = true
+      Thread.current.name = 'app version monitoring'
 
       loop do
         if restart_required?(initial_app_version)

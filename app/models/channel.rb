@@ -193,6 +193,7 @@ stream all accounts
 
         # start threads for each channel
         @@channel_stream[channel_id][:thread] = Thread.new do
+          Thread.current.name = "stream channel for '#{channel.id}' (#{channel.area})..."
 
           logger.info "Started stream channel for '#{channel.id}' (#{channel.area})..."
           channel.status_in = 'ok'

@@ -71,6 +71,8 @@ class BackgroundServices
 
         def start
           Thread.new do
+            Thread.current.name = "ProcessScheduledJobs manager thread for job \"#{job.name}\" (#{job.id})"
+
             Rails.application.executor.wrap do
               start_in_thread
             end
