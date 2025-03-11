@@ -163,8 +163,22 @@ class App.UiElement.ApplicationUiElement
 
     App.Log.debug 'ControllerForm', '_getRelationOptionList', attribute, list
 
+    if @isTreeRelation(attribute)
+      @setTreeRelationData(list, attribute)
+
     # build options list
     @buildOptionList(list, attribute)
+
+  @hasActiveChildren: (attribute, children, filter = undefined) ->
+    return false if !children
+
+    for row in children
+      return true if row.active && (!filter || _.contains(filter, row.id.toString()))
+
+      childrenActive = @hasActiveChildren(attribute, attribute.tree_children[row.id.toString()], filter)
+      return true if childrenActive
+
+    return false
 
   @buildOptionListRow: (attribute, item) ->
 
@@ -176,7 +190,7 @@ class App.UiElement.ApplicationUiElement
 
     hasActiveChildren = false
     if @isTreeRelation(attribute)
-      hasActiveChildren = _.some(item.all_children(), (obj) -> obj.active)
+      hasActiveChildren = @hasActiveChildren(attribute, attribute.tree_children[item.id.toString()])
 
     # if active or if active doesn't exist
     return if !item.active && activeSupport && !isSelected && !hasActiveChildren
@@ -361,3 +375,12 @@ class App.UiElement.ApplicationUiElement
     return false if !attribute.relation
     return false if !_.find(App[attribute.relation].configure_attributes, (attr) -> attr.name is 'parent_id')
     return true
+
+  @setTreeRelationData: (list, attribute) ->
+    tree_children = {}
+    for row in list
+      parent_id = row.parent_id?.toString() || '-NONE-'
+      tree_children[parent_id] ||= []
+      tree_children[parent_id].push(row)
+
+    attribute.tree_children = tree_children

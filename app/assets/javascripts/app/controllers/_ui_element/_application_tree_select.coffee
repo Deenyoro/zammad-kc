@@ -56,8 +56,7 @@ class App.UiElement.ApplicationTreeSelect extends App.UiElement.ApplicationUiEle
       activeChildren = false
       if option.value && option.children && option.children.length > 0
         if @isTreeRelation(attribute)
-          all_children_ids = _.map(App[attribute.relation].find(option.value).all_children(), (group) -> group.id.toString())
-          if _.intersection(attribute.filter, all_children_ids).length > 0
+          if @hasActiveChildren(attribute, attribute.tree_children[option.value], attribute.filter)
             activeChildren = true
         else
           for value in attribute.filter
@@ -81,18 +80,18 @@ class App.UiElement.ApplicationTreeSelect extends App.UiElement.ApplicationUiEle
   @buildOptionList: (list, attribute) ->
     return super if !@isTreeRelation(attribute)
 
-    parents           = list.filter((obj) -> !obj.parent_id)
-    attribute.options = @buildOptionListTreeRelation(list, attribute, parents)
+    attribute.options = @buildOptionListTreeRelation(attribute, '-NONE-')
     attribute.sortBy  = null
 
-  @buildOptionListTreeRelation: (list, attribute, entries) ->
+  @buildOptionListTreeRelation: (attribute, parent_id) ->
     result = []
-    for item in entries
+    return result if !attribute.tree_children[parent_id]
+
+    for item in attribute.tree_children[parent_id]
       row = @buildOptionListRow(attribute, item)
       continue if !row
 
-      children = _.filter(list, (obj) -> obj.parent_id is item.id)
-      children = @buildOptionListTreeRelation(list, attribute, children)
+      children = @buildOptionListTreeRelation(attribute, item.id.toString())
       if children.length > 0
         row.children = children
 
