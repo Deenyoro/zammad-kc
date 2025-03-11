@@ -6,6 +6,7 @@ class BackgroundServices
     BackgroundServices::Service.descendants
   end
 
+  CHILD_PROCESS_MONITOR_INTERVAL = 5.seconds
   # Waiting time before processes get killed.
   SHUTDOWN_GRACE_PERIOD = 30.seconds
 
@@ -34,6 +35,8 @@ class BackgroundServices
         run_service service_config
       end
 
+    monitor_child_processes
+
     child_pids.each { |pid| Process.waitpid(pid) }
     threads.each(&:join)
   ensure
@@ -41,6 +44,25 @@ class BackgroundServices
   end
 
   private
+
+  # Check if child processes are still alive, terminate the main process otherwise to
+  #   signal to the controlling process manager that the background worker needs a restart.
+  def monitor_child_processes
+    return if child_pids.blank?
+
+    Thread.new do
+      until self.class.shutdown_requested
+        child_pids.each do |child_pid|
+          Process.getpgid(child_pid)
+        rescue Errno::ESRCH
+          Rails.logger.error { "BackgroundServices child process #{child_pid} has died, terminating the background worker…" }
+          Process.kill('TERM', Process.pid)
+          Thread.current.exit
+        end
+        sleep CHILD_PROCESS_MONITOR_INTERVAL
+      end
+    end
+  end
 
   def install_signal_trap
     Signal.trap('TERM') { handle_signal('TERM') }
