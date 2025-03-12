@@ -229,8 +229,8 @@ RSpec.describe 'Ticket Create', time_zone: 'Europe/London', type: :system do
     end
   end
 
-  describe 'object manager attributes default date' do
-    before :all do # rubocop:disable RSpec/BeforeAfterAll
+  describe 'object manager attributes default date', authenticated_as: :authenticate, db_strategy: :reset do
+    def authenticate
       screens = {
         'create_top' => {
           '-all-' => {
@@ -241,11 +241,8 @@ RSpec.describe 'Ticket Create', time_zone: 'Europe/London', type: :system do
 
       create(:object_manager_attribute_date, name: 'date_test', display: 'date_test', default: 24, screens: screens)
       create(:object_manager_attribute_datetime, name: 'datetime_test', display: 'datetime_test', default: 100, screens: screens)
-      ObjectManager::Attribute.migration_execute # rubocop:disable Zammad/ExistsDbStrategy
-    end
-
-    after :all do # rubocop:disable RSpec/BeforeAfterAll
-      ObjectManager::Attribute.where(name: %i[date_test datetime_test]).destroy_all
+      ObjectManager::Attribute.migration_execute
+      true
     end
 
     before do
