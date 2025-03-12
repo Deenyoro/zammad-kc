@@ -62,7 +62,10 @@ RSpec.describe 'Desktop > Personal Setting > Profile', app: :desktop_view, authe
       expect(page).to have_text('The order of your ticket overviews was updated.')
       expect(page).to have_text("My Assigned Tickets\nTest Overview")
 
-      # TODO: open overviews section in desktop interface once it's implemented
+      within '#page-navigation' do
+        click_on 'Overviews'
+      end
+      expect(page).to have_text("My Assigned Tickets\n0\nTest Overview")
     end
   end
 
