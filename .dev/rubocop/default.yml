@@ -2,13 +2,13 @@
 # https://github.com/rubocop-hq/rubocop/blob/master/config/default.yml
 
 require:
-  - rubocop-capybara
   - rubocop-graphql
   - rubocop-inflector
   - ../../config/initializers/inflections.rb
   - ./rubocop_zammad.rb
 
 plugins:
+  - rubocop-capybara
   - rubocop-factory_bot
   - rubocop-faker
   - rubocop-performance
@@ -497,3 +497,7 @@ Zammad/EnsuresTimeZoneAtSpecTopLevel:
   Enabled: true
   Include:
     - 'spec/system/**/*.rb'
+
+Capybara/NegationMatcherAfterVisit:
+  Description: 'Allow to use negated matcher after visit'
+  Enabled: false

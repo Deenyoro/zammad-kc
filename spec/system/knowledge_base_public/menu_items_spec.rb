@@ -49,7 +49,7 @@ RSpec.describe 'Public Knowledge Base menu items', authenticated_as: false, type
     let(:color) { 'rgb(255, 0, 255)' }
 
     it 'applies color for header preview' do
-      elem = all('.menu-item')[0]
+      elem = first('.menu-item')
 
       expect(elem).to have_computed_style :color, color
     end

@@ -13,11 +13,11 @@ RSpec.shared_examples 'pagination', authenticated_as: :authenticate do |model:, 
   end
 
   def current_first_row
-    page.all('.js-tableBody tr').first.first('td').text.strip
+    page.first('.js-tableBody tr:first-child td').text.strip
   end
 
   def current_last_row
-    page.all('.js-tableBody tr').last.first('td').text.strip
+    page.first('.js-tableBody tr:last-child td').text.strip
   end
 
   def wait_until_first_and_last_changed(first_row, last_row)
