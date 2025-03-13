@@ -12,7 +12,11 @@ RSpec.describe SamlSSLVerifyHelp, type: :db_migration do
       o[:help] = 'Turning off SSL verification is a security risk and should be used only temporary. Use this option at your own risk!'
     end
 
-    setting.save!
+    setting.state = {
+      idp_sso_target_url: 'https://sso.example.com/auth/xxx/xxx/protocol/saml',
+    }
+
+    setting.save!(validate: false)
   end
 
   it 'updates the help text' do

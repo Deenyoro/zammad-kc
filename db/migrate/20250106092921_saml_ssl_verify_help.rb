@@ -19,6 +19,6 @@ class SamlSSLVerifyHelp < ActiveRecord::Migration[7.2]
 
     return if !update_needed
 
-    setting.save!
+    setting.save!(validate: false)
   end
 end
