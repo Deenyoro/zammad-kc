@@ -136,7 +136,7 @@ defineExpose({ hasLinks })
             <CommonTicketLabel
               class="h-12 items-center!"
               :ticket="link.item as TicketById"
-              :classes="{ indicator: 'mt-0', label: 'mt-0 line-clamp-1' }"
+              :classes="{ indicator: 'mt-0!', label: 'mt-0! line-clamp-1!' }"
             />
             <CommonButton
               v-if="isTicketEditable"

@@ -34,7 +34,7 @@ const paddingClasses = computed(() =>
     <ul class="m-0 flex basis-full flex-col gap-1 p-0">
       <li v-for="entry in items" :key="entry.label">
         <CommonLink
-          class="flex items-center gap-2 rounded-md text-sm text-gray-100 hover:bg-blue-600 hover:text-black hover:no-underline! focus:outline-hidden focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-neutral-400 dark:hover:bg-blue-900 dark:hover:text-white"
+          class="flex items-center gap-1 rounded-md text-sm text-gray-100 hover:bg-blue-600 hover:text-black hover:no-underline! focus:outline-hidden focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-neutral-400 dark:hover:bg-blue-900 dark:hover:text-white"
           :class="[paddingClasses]"
           exact-active-class="bg-blue-800! w-full text-white!"
           internal
@@ -42,11 +42,15 @@ const paddingClasses = computed(() =>
         >
           <template #default="{ isActive }">
             <slot v-bind="entry">
-              <CommonLabel
-                class="line-clamp-1! grow text-current!"
-                :prefix-icon="entry.icon"
-                :icon-color="entry.iconColor"
-              >
+              <CommonIcon
+                v-if="entry.icon"
+                size="small"
+                aria-hidden="true"
+                class="h-4 shrink-0"
+                :class="entry.iconColor"
+                :name="entry.icon"
+              />
+              <CommonLabel class="line-clamp-1! grow text-current!">
                 {{ $t(entry.label) }}
               </CommonLabel>
               <CommonBadge

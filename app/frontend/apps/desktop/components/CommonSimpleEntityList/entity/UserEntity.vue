@@ -13,7 +13,7 @@ defineProps<Props>()
 <template>
   <CommonLink
     :link="`/user/profile/${entity.internalId}`"
-    class="flex gap-2 hover:no-underline"
+    class="flex gap-2 hover:no-underline!"
   >
     <CommonUserAvatar :entity="entity" size="small" />
     <CommonLabel class="text-blue-800! hover:underline dark:text-neutral-400!"
