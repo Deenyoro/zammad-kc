@@ -87,4 +87,35 @@ RSpec.describe 'Desktop > Personal Setting > Profile', app: :desktop_view, authe
       expect(avatar_element_style['background-image']).to include("/api/v1/users/image/#{Avatar.last.store_hash}")
     end
   end
+
+  describe 'calendar handling', authenticated_as: :agent do
+    let(:group)            { create(:group) }
+    let(:agent)            { create(:agent, firstname: 'Jane', lastname: 'Doe', groups: [group]) }
+    let(:ticket)           { create(:ticket, title: 'Normal ticket', owner: agent, group:) }
+    let(:escalated_ticket) { create(:ticket, title: 'Escalated ticket', owner: agent, group:) }
+
+    before do
+      ticket.update_columns(escalation_at: 2.weeks.from_now)
+      escalated_ticket.update_columns(escalation_at: 2.weeks.ago)
+
+      click_on 'Profile settings'
+      click_on 'Calendar'
+    end
+
+    it 'user can use combined subscription URL' do
+      visit(find_input('Combined subscription URL').input_element.value)
+
+      expect(page).to have_text("new ticket: 'Normal ticket'")
+      expect(page).to have_text("ticket escalation: 'Escalated ticket'")
+    end
+
+    it 'user can use direct subscription URL' do
+      find_toggle('Not assigned').toggle_on
+      expect(page).to have_text('You calendar subscription settings were updated.')
+
+      visit(find_input('Direct subscription URL').input_element.value)
+      expect(page).to have_no_text("new ticket: 'Normal ticket'")
+      expect(page).to have_text("ticket escalation: 'Escalated ticket'")
+    end
+  end
 end
