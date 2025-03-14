@@ -311,7 +311,6 @@ module.exports = {
     defineExpose: 'readonly',
     withDefaults: 'readonly',
   },
-  parser: 'vue-eslint-parser',
   parserOptions: {
     parser: '@typescript-eslint/parser', // the typescript-parser for eslint, instead of tslint
     sourceType: 'module', // allow the use of imports statements
