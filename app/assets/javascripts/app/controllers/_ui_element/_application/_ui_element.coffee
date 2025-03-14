@@ -93,6 +93,13 @@ class App.UiElement.ApplicationUiElement
     else
       @getConfigOptionList(attribute)
 
+  @getRelationOptionListSearchParams: (attribute) ->
+    result =
+      sortBy: attribute.sortBy
+    if attribute.filter && _.isArray(attribute.filter) && attribute.tag is 'select'
+      result.translate = attribute.translate
+    result
+
   @getRelationOptionList: (attribute, params) ->
 
     # build options list based on relation
@@ -101,6 +108,7 @@ class App.UiElement.ApplicationUiElement
 
     attribute.options = []
     list              = []
+    searchParams      = @getRelationOptionListSearchParams(attribute)
     if attribute.filter
 
       App.Log.debug 'ControllerForm', '_getRelationOptionList:filter', attribute.filter
@@ -109,7 +117,7 @@ class App.UiElement.ApplicationUiElement
       if typeof attribute.filter is 'function'
         App.Log.debug 'ControllerForm', '_getRelationOptionList:filter-function'
 
-        all = App[ attribute.relation ].search(sortBy: attribute.sortBy)
+        all = App[ attribute.relation ].search(searchParams)
 
         list = attribute.filter(all, 'collection', params)
 
@@ -120,7 +128,7 @@ class App.UiElement.ApplicationUiElement
         App.Log.debug 'ControllerForm', '_getRelationOptionList:filter-data', filter
 
         # check all records
-        for record in App[ attribute.relation ].search(sortBy: attribute.sortBy)
+        for record in App[ attribute.relation ].search(searchParams)
 
           # check all filter attributes
           for key in filter
@@ -139,7 +147,7 @@ class App.UiElement.ApplicationUiElement
           filter.push(params[ attribute.name ])
 
         # check all records
-        for record in App[ attribute.relation ].search(sortBy: attribute.sortBy, translate: attribute.translate)
+        for record in App[ attribute.relation ].search(searchParams)
 
           # check all filter attributes
           for key in filter
@@ -152,10 +160,10 @@ class App.UiElement.ApplicationUiElement
       # no data filter matched
       else
         App.Log.debug 'ControllerForm', '_getRelationOptionList:filter-data no filter matched'
-        list = App[ attribute.relation ].search(sortBy: attribute.sortBy)
+        list = App[ attribute.relation ].search(searchParams)
     else
       App.Log.debug 'ControllerForm', '_getRelationOptionList:filter-no filter defined'
-      list = App[ attribute.relation ].search(sortBy: attribute.sortBy)
+      list = App[ attribute.relation ].search(searchParams)
 
     # Turn on attribute translation if configured for the relation object.
     if 'configure_translate' in App[attribute.relation]
