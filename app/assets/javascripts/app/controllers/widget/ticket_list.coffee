@@ -3,9 +3,9 @@ class App.TicketList extends App.Controller
   @registerPopovers 'Organization', 'User'
   orderBy: null
   orderDirection: null
-  pagerEnabled: true
-  orderEnabled: true
-  pagerAjax: true
+  pagerEnabled: false
+  orderEnabled: false
+  pagerAjax:    false
 
   constructor: ->
     super

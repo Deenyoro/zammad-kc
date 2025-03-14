@@ -289,9 +289,7 @@ class App.Search extends App.Controller
             'click': callbackCheckbox
           select_all: callbackCheckbox
         sortClickCallback: @saveOrderBy
-        pagerEnabled: false
-        orderEnabled: false
-        pagerAjax: true
+        pagerAjax:    true
       )
 
       updateSearch = =>
