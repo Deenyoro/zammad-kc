@@ -22,6 +22,7 @@ class App.Search extends App.Controller
     @savedOrderBy    = {}
     @resultPaginated = {}
     @result          = {}
+    @queue           = {}
 
     current = App.TaskManager.get(@taskKey).state
     if current && current.query
@@ -67,18 +68,33 @@ class App.Search extends App.Controller
   show: (params) =>
     if @table
       @table.show()
+
     @navupdate(url: '#search', type: 'menu')
 
-    if !_.isEmpty(params.query)
+    if !_.isEmpty(params.query) # When opening detailed search from the global search
       @$('.js-search').val(params.query).trigger('keyup')
-      return
-
-    if @query
-      @search(500, true)
+    else if @query # When coming back to detailed search taskbar from another taskbar
+      @reloadCurrentSearch()
 
   hide: ->
     if @table
       @table.hide()
+
+  reloadCurrentSearch: =>
+    if !_.isEmpty(@getSavedOrderBy())
+      modelsToLoad = _.keys(@savedOrderBy)
+      modelsToLoad = _.without(modelsToLoad, @model)
+      modelsToLoad.push('all')
+
+      @queue = { query: @query, models: modelsToLoad }
+
+      @goToPaginated(@model, @getSavedOrderBy().page)
+    else
+      modelsToLoad = _.keys(@savedOrderBy)
+
+      @queue = { query: @query, models: modelsToLoad }
+
+      @search(-1, true)
 
   changed: ->
     # nothing
@@ -148,7 +164,7 @@ class App.Search extends App.Controller
 
     @delayedRemoveAnyPopover()
 
-  search: (delay, force = false) =>
+  search: (delay, force = false, skipRendering = false) =>
     query = @searchInput.val().trim()
     if !force
       return if !query
@@ -164,8 +180,9 @@ class App.Search extends App.Controller
         delay = 200
 
     @globalSearch.search(
-      delay: delay
-      query: @query
+      delay:         delay
+      query:         @query
+      skipRendering: skipRendering
     )
 
   buildResultCacheKey: (offset, direction, column, object) -> {
@@ -174,25 +191,48 @@ class App.Search extends App.Controller
 
   renderResult: (result = {}, params = undefined) =>
     if !_.isUndefined(params?.offset)
+      @renderPaginatedSearchResult(result, params)
+    else
+      @renderInitialSearchResult(result, params)
 
-      for klassName, metadata of result
-        @resultPaginated[klassName] ||= {}
+    @loadNextInQueue()
 
-        cacheKey = @buildResultCacheKey(params?.offset, params?.orderDirection, params?.orderBy, klassName)
-        @resultPaginated[klassName][cacheKey] = metadata.items
+  renderPaginatedSearchResult: (result, params) =>
+    for klassName, metadata of result
+      @resultPaginated[klassName] ||= {}
 
-        if @model is klassName
-          @renderTab(klassName, metadata.items || [])
+      cacheKey = @buildResultCacheKey(params?.offset, params?.orderDirection, params?.orderBy, klassName)
+      @resultPaginated[klassName][cacheKey] = metadata.items
 
-      return
+      @result[klassName] ||= {}
+      @result[klassName].total_count = metadata.total_count
 
+      if @model is klassName
+        @renderTab(klassName, metadata.items || [])
+
+  renderInitialSearchResult: (result, params) =>
     @result = result
+    # @savedOrderBy = {}
     for tab in @tabs
       count = result[tab.model]?.total_count || 0
       @$(".js-tab#{tab.model} .js-counter").text(count)
 
-      if @model is tab.model
+      if !params?.skipRendering and @model is tab.model
         @renderTab(tab.model, result[tab.model]?.items || [])
+
+  loadNextInQueue: =>
+    if @queue?.query != @query
+      @queue = {}
+      return
+
+    nextModel = @queue.models.shift()
+
+    if !nextModel
+      @queue = {}
+    else if nextModel is 'all'
+      @search(-1, true, true)
+    else
+      @goToPaginated(nextModel, @savedOrderBy[nextModel]?.page)
 
   showTab: (e) =>
     tabs = $(e.currentTarget).closest('.tabs')
@@ -293,9 +333,7 @@ class App.Search extends App.Controller
       )
 
       updateSearch = =>
-        callback = =>
-          @search(0, true)
-        @delay(callback, 100)
+        @delay(@reloadCurrentSearch, 100)
 
       @bulkForm.releaseController() if @bulkForm
       @bulkForm = new App.TicketBulkForm(
@@ -366,7 +404,7 @@ class App.Search extends App.Controller
     count  = @result[object]?.total_count || 0
     pages  = Math.ceil(count / 50) - 1
 
-    if !pages
+    if (!pages && !page) || count == 0
       @$('.js-pager').html('')
       return
 
@@ -416,9 +454,10 @@ class App.Search extends App.Controller
     @globalSearch.search(
       query: @query
       object:object
-      offset: page * 50
+      offset: (page || 0) * 50
       orderBy: savedOrder?.orderBy
       orderDirection: savedOrder?.orderDirection
+      delay: -1
     )
 
   updateTask: =>
