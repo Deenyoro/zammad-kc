@@ -46,6 +46,16 @@ The previous environment variable `APP_RESTART_CMD` is not supported any more.
 
 For systems where this behaviour is not wanted, it can be disabled by setting the Zammad Setting `auto_shutdown` to `false`.
 
+### `ZAMMAD_SESSION_JOBS_CONCURRENT` was renamed to `ZAMMAD_PROCESS_SESSIONS_JOBS_WORKERS`
+
+The background worker shutdown handling [was improved](https://github.com/zammad/zammad/commit/b5141f6670920bd960ab4269dc80b1d09d7c8eb6)
+to be more graceful and allow processes to finish first.
+
+Together with this change, the session jobs logic that computes the ticket overviews was moved to be
+a first-class background service. Therefore the name of its configuration variable changed
+from `ZAMMAD_SESSION_JOBS_CONCURRENT` to `ZAMMAD_PROCESS_SESSIONS_JOBS_WORKERS`. The old one will continue
+to work for now, but emit a deprecation warning.
+
 ### nginx configuration update
 
 Please update your nginx configuration file to insert the line `proxy_set_header Host $http_host;` to the `location /ws` and `location /cable` sections like in the example below:
