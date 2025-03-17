@@ -193,7 +193,7 @@ Permission.create_if_not_exists(
   preferences: { prio: 1300 }
 )
 Permission.create_if_not_exists(
-  name:        'admin.setting_system',
+  name:        'admin.system',
   label:       __('System'),
   description: __('Manage core system settings.'),
   preferences: { prio: 1310 }
