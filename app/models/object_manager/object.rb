@@ -50,14 +50,12 @@ returns:
 
   def attribute_records
     @attribute_records ||= begin
-      Auth::RequestCache.fetch_value("ObjectManager::Object/attribute_records/#{object}") do
-        ObjectManager::Attribute.where(
-          object_lookup_id: object,
-          active:           true,
-          to_create:        false,
-          to_delete:        false,
-        ).reorder('position ASC, name ASC')
-      end
+      ObjectManager::Attribute.where(
+        object_lookup_id: object,
+        active:           true,
+        to_create:        false,
+        to_delete:        false,
+      ).reorder('position ASC, name ASC')
     end
   end
 
