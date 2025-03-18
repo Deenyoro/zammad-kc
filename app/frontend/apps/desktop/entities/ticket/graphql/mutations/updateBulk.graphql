@@ -1,0 +1,14 @@
+mutation ticketUpdateBulk($ticketIds: [ID!]!, $input: TicketUpdateInput!) {
+  ticketUpdateBulk(ticketIds: $ticketIds, input: $input) {
+    success
+    errors {
+      failedTicket {
+        id
+        title
+        number
+      }
+      errorType
+      message
+    }
+  }
+}

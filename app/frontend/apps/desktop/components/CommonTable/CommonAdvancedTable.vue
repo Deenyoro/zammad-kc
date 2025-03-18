@@ -2,21 +2,21 @@
 
 <script setup lang="ts">
 import {
+  useEventListener,
   useInfiniteScroll,
   useLocalStorage,
   whenever,
-  useEventListener,
 } from '@vueuse/core'
-import { delay, merge } from 'lodash-es'
+import { delay, isEqual, merge } from 'lodash-es'
 import {
   computed,
   nextTick,
   onMounted,
   ref,
+  type Ref,
   toRef,
   useTemplateRef,
   watch,
-  type Ref,
 } from 'vue'
 import { onBeforeRouteUpdate } from 'vue-router'
 
@@ -33,22 +33,21 @@ import type { ObjectLike } from '#shared/types/utils.ts'
 import emitter from '#shared/utils/emitter.ts'
 
 import CommonActionMenu from '#desktop/components/CommonActionMenu/CommonActionMenu.vue'
+import CellCheckbox from '#desktop/components/CommonTable/CellContent/CellCheckbox.vue'
 import CommonTableRowsSkeleton from '#desktop/components/CommonTable/Skeleton/CommonTableRowsSkeleton.vue'
 import TableCaption from '#desktop/components/CommonTable/TableCaption.vue'
 
-import { useTableCheckboxes } from './composables/useTableCheckboxes.ts'
 import HeaderResizeLine from './HeaderResizeLine.vue'
 import TableRow from './TableRow.vue'
 import TableRowGroupBy from './TableRowGroupBy.vue'
 import {
+  type AdvancedTableProps,
   MINIMUM_COLUMN_WIDTH,
   MINIMUM_TABLE_WIDTH,
-  type AdvancedTableProps,
   type TableAdvancedItem,
   type TableAttribute,
 } from './types.ts'
 
-// TODO: Clarify defaults.
 const props = withDefaults(defineProps<AdvancedTableProps>(), {
   maxItems: 1000,
   reachedScrollTop: true,
@@ -80,28 +79,20 @@ const localAttributesLookup = computed(() => {
   return lookup
 })
 
-const findAttribute = <T,>(headerName: string, lookup: Map<string, T>) => {
-  return (
-    lookup?.get(headerName) ||
-    lookup?.get(`${headerName}_id`) ||
-    lookup?.get(`${headerName}_ids`)
-  )
-}
+const findAttribute = <T,>(headerName: string, lookup: Map<string, T>) =>
+  lookup?.get(headerName) ||
+  lookup?.get(`${headerName}_id`) ||
+  lookup?.get(`${headerName}_ids`)
 
-const localHeaders = computed(() => {
-  if (!props.groupBy) return props.headers
-
-  return props.headers.filter((header) => header !== props.groupBy)
-})
-
-// TODO: bulk checkbox fixed in template
+const localHeaders = computed(() =>
+  props.groupBy
+    ? props.headers.filter((header) => header !== props.groupBy)
+    : props.headers,
+)
 
 const rightAlignedDataTypes = ['date', 'datetime', 'integer']
 
-const tableAttributes = computed(() => {
-  const table: TableAttribute[] = []
-
-  // Process each header
+const addLocalHeaders = (table: TableAttribute[]) =>
   localHeaders.value.forEach((headerName) => {
     // Try to find matching attribute from both sources
     const localAttribute = findAttribute(
@@ -144,12 +135,17 @@ const tableAttributes = computed(() => {
     table.push(mergedAttribute)
   })
 
+const tableAttributes = computed(() => {
+  const table: TableAttribute[] = []
+
+  addLocalHeaders(table)
+
   return table
 })
 
-const tableColumnLength = computed(() => {
-  return tableAttributes.value.length + (props.actions ? 1 : 0)
-})
+const tableColumnLength = computed(
+  () => tableAttributes.value.length + (props.actions ? 1 : 0),
+)
 
 const tableElement = useTemplateRef('table')
 
@@ -197,7 +193,7 @@ const setHeaderWidths = (reset?: boolean) => {
 }
 
 const storeHeaderWidths = (headerWidths: Record<string, number>) => {
-  const headerWidthsRelative = Object.keys(headerWidths).reduce(
+  headerWidthsRelativeStorage.value = Object.keys(headerWidths).reduce(
     (headerWidthsRelative, headerName) => {
       if (!tableElement.value) return headerWidthsRelative
       headerWidthsRelative[headerName] =
@@ -206,8 +202,6 @@ const storeHeaderWidths = (headerWidths: Record<string, number>) => {
     },
     {} as Record<string, number>,
   )
-
-  headerWidthsRelativeStorage.value = headerWidthsRelative
 }
 
 const calculateHeaderWidths = () => {
@@ -249,9 +243,7 @@ const resetHeaderWidths = () => {
 
 watch(() => props.storageKeyId, initializeHeaderWidths)
 
-watch(localHeaders, () => {
-  initializeHeaderWidths()
-})
+watch(localHeaders, () => initializeHeaderWidths())
 
 onMounted(() => {
   if (!props.storageKeyId) return
@@ -264,38 +256,46 @@ emitter.on('main-sidebar-transition', () => initializeHeaderWidths())
 const getTooltipText = (
   item: TableAdvancedItem,
   tableAttribute: TableAttribute,
-) => {
-  return tableAttribute.headerPreferences?.truncate
+) =>
+  tableAttribute.headerPreferences?.truncate
     ? item[tableAttribute.name]
     : undefined
-}
 
-const checkedRows = defineModel<Array<TableAdvancedItem>>('checkedRows', {
+const modelCheckedItemIds = defineModel<Set<ID>>('checkedItemIds', {
   required: false,
-  default: (props: AdvancedTableProps) =>
-    props.items.filter((item) => item.checked), // is not reactive by default and making it reactive causes other issues.
+  default: () => new Set(),
 })
 
-const {
-  hasCheckboxId,
-  allCheckboxRowsSelected,
-  selectAllRowCheckboxes,
-  handleCheckboxUpdate,
-} = useTableCheckboxes(checkedRows, toRef(props, 'items'))
+const updateCheckedItem = (
+  item: TableAdvancedItem,
+  event: MouseEvent | KeyboardEvent,
+) => {
+  if (item.policy ? !item.policy.update : item.disabled) return
+  event.stopPropagation()
+
+  return modelCheckedItemIds.value.has(item.id)
+    ? modelCheckedItemIds.value.delete(item.id)
+    : modelCheckedItemIds.value.add(item.id)
+}
 
 const rowHandlers = computed(() =>
   props.onClickRow || props.hasCheckboxColumn
     ? {
         'click-row': (event: TableAdvancedItem) => {
           if (props.onClickRow) props.onClickRow(event)
-          if (props.hasCheckboxColumn) handleCheckboxUpdate(event)
         },
       }
     : {},
 )
 
-const localItems = computed(() => {
-  return props.items.slice(0, props.maxItems)
+const localItems = computed<TableAdvancedItem[]>((currentItems) => {
+  const newItems = props.items.slice(0, props.maxItems)
+
+  if (currentItems && isEqual(currentItems, newItems)) {
+    return currentItems
+  }
+
+  return newItems
 })
 
 const remainingItems = computed(() => {
@@ -338,6 +338,7 @@ const groupByAttribute = computed(() => {
 
   return (localAttribute || objectAttribute) as TableAttribute
 })
+
 const groupByAttributeItemName = computed(() => {
   if (!groupByAttribute.value) return
 
@@ -452,6 +453,9 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
       return ''
   }
 }
+
+//  :TODO work on this in second milestone for bulk edit in ticket overviews
+const allSelected = ref(false)
 </script>
 
 <template>
@@ -464,6 +468,37 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
     >
       <tr>
         <th
+          v-if="hasCheckboxColumn"
+          id="checkbox-header"
+          class="relative h-10 w-8 p-2.5 text-xs"
+        >
+          <!--    :TODO work on this in second milestone for bulk edit in ticket overviews -->
+          <div
+            role="checkbox"
+            :class="{
+              'before:absolute before:top-0 before:z-20 before:h-full before:w-2 before:bg-blue-800 ltr:before:left-0 rtl:before:right-0':
+                allSelected,
+              'text-gray-100! dark:text-neutral-400!': allSelected,
+            }"
+            :aria-label="
+              allSelected
+                ? $t('Select all entries')
+                : $t('Deselect all entries')
+            "
+            class="invisible text-stone-200 group-hover/checkbox:text-blue-800 focus-visible:text-blue-800! focus-visible:outline-0 dark:text-neutral-500"
+            :tabindex="0"
+            :aria-checked="allSelected"
+            @click="allSelected = !allSelected"
+            @keydown.enter="allSelected = !allSelected"
+          >
+            <CommonIcon
+              class="mx-1 w-full"
+              size="xs"
+              :name="allSelected ? 'check-square' : 'square'"
+            />
+          </div>
+        </th>
+        <th
           v-for="(tableAttribute, index) in tableAttributes"
           :id="`${tableAttribute.name}-header`"
           :key="tableAttribute.name"
@@ -475,101 +510,85 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
             ],
           ]"
         >
-          <!-- TODO: Implement with bulk edit -->
-          <FormKit
-            v-if="hasCheckboxColumn && tableAttribute.name === 'checkbox'"
-            name="checkbox-all-rows"
-            :aria-label="
-              allCheckboxRowsSelected
-                ? $t('Deselect all entries')
-                : $t('Select all entries')
-            "
-            type="checkbox"
-            :model-value="allCheckboxRowsSelected"
-            @update:model-value="selectAllRowCheckboxes"
-          />
-
-          <template v-else>
-            <slot
-              :name="`column-header-${tableAttribute.name}`"
-              :attribute="tableAttribute"
+          <slot
+            :name="`column-header-${tableAttribute.name}`"
+            :attribute="tableAttribute"
+          >
+            <!-- eslint-disable vuejs-accessibility/no-static-element-interactions,vuejs-accessibility/mouse-events-have-key-events-->
+            <div
+              class="flex items-center gap-1"
+              :class="[
+                cellAlignmentClasses[
+                  tableAttribute.columnPreferences?.alignContent || 'left'
+                ],
+                {
+                  'hover:cursor-pointer focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-800':
+                    !tableAttribute.headerPreferences?.noSorting,
+                },
+              ]"
+              :role="
+                tableAttribute.headerPreferences?.noSorting
+                  ? undefined
+                  : 'button'
+              "
+              :tabindex="
+                tableAttribute.headerPreferences?.noSorting ? undefined : '0'
+              "
+              :aria-label="
+                orderDirection === EnumOrderDirection.Ascending
+                  ? $t('Sorted ascending')
+                  : $t('Sorted descending')
+              "
+              @click="
+                tableAttribute.headerPreferences?.noSorting
+                  ? undefined
+                  : sort(tableAttribute.name)
+              "
+              @keydown.enter.prevent="
+                tableAttribute.headerPreferences?.noSorting
+                  ? undefined
+                  : sort(tableAttribute.name)
+              "
+              @keydown.space.prevent="
+                tableAttribute.headerPreferences?.noSorting
+                  ? undefined
+                  : sort(tableAttribute.name)
+              "
             >
-              <!-- eslint-disable vuejs-accessibility/no-static-element-interactions,vuejs-accessibility/mouse-events-have-key-events-->
-              <div
-                class="flex items-center gap-1"
+              <CommonLabel
+                class="relative block! truncate font-normal text-gray-100! select-none dark:text-neutral-400!"
                 :class="[
-                  cellAlignmentClasses[
-                    tableAttribute.columnPreferences?.alignContent || 'left'
-                  ],
+                  tableAttribute.headerPreferences?.labelClass,
                   {
-                    'hover:cursor-pointer focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-800':
+                    'sr-only': tableAttribute.headerPreferences?.hideLabel,
+                    'text-black! dark:text-white!': isSorted(
+                      tableAttribute.name,
+                    ),
+                    'hover:text-black! dark:hover:text-white!':
                       !tableAttribute.headerPreferences?.noSorting,
                   },
                 ]"
-                :role="
-                  tableAttribute.headerPreferences?.noSorting
-                    ? undefined
-                    : 'button'
-                "
-                :tabindex="
-                  tableAttribute.headerPreferences?.noSorting ? undefined : '0'
-                "
-                :aria-label="
-                  orderDirection === EnumOrderDirection.Ascending
-                    ? $t('Sorted ascending')
-                    : $t('Sorted descending')
-                "
-                @click="
-                  tableAttribute.headerPreferences?.noSorting
-                    ? undefined
-                    : sort(tableAttribute.name)
-                "
-                @keydown.enter.prevent="
-                  tableAttribute.headerPreferences?.noSorting
-                    ? undefined
-                    : sort(tableAttribute.name)
-                "
-                @keydown.space.prevent="
-                  tableAttribute.headerPreferences?.noSorting
-                    ? undefined
-                    : sort(tableAttribute.name)
-                "
+                size="small"
               >
-                <CommonLabel
-                  class="relative block! truncate font-normal text-gray-100! select-none dark:text-neutral-400!"
-                  :class="[
-                    tableAttribute.headerPreferences?.labelClass,
-                    {
-                      'sr-only': tableAttribute.headerPreferences?.hideLabel,
-                      'text-black! dark:text-white!': isSorted(
-                        tableAttribute.name,
-                      ),
-                      'hover:text-black! dark:hover:text-white!':
-                        !tableAttribute.headerPreferences?.noSorting,
-                    },
-                  ]"
-                  size="small"
-                >
-                  {{
-                    $t(
-                      tableAttribute.label,
-                      ...(tableAttribute.labelPlaceholder || []),
-                    )
-                  }}
-                </CommonLabel>
-                <CommonIcon
-                  v-if="
-                    !tableAttribute.headerPreferences?.noSorting &&
-                    isSorted(tableAttribute.name)
-                  "
-                  class="shrink-0 text-blue-800"
-                  :name="sortIcon"
-                  size="xs"
-                  decorative
-                />
-              </div>
-            </slot>
-          </template>
+                {{
+                  $t(
+                    tableAttribute.label,
+                    ...(tableAttribute.labelPlaceholder || []),
+                  )
+                }}
+              </CommonLabel>
+              <CommonIcon
+                v-if="
+                  !tableAttribute.headerPreferences?.noSorting &&
+                  isSorted(tableAttribute.name)
+                "
+                class="shrink-0 text-blue-800"
+                :name="sortIcon"
+                size="xs"
+                decorative
+              />
+            </div>
+          </slot>
 
           <slot
             :name="`header-suffix-${tableAttribute.name}`"
@@ -594,8 +613,6 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
         </th>
       </tr>
     </thead>
-    <!--    :TODO tabindex should be -1 re-evaluate when we work on bulk action with checkbox  -->
-    <!--    SR should not be able to focus the row but each action node  -->
     <tbody
       class="relative"
       :inert="isSorting"
@@ -604,7 +621,10 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
           isSorting,
       }"
     >
-      <template v-for="item in localItems" :key="item.id">
+      <template
+        v-for="(item, index) in localItems"
+        :key="`${index}-${item.id}`"
+      >
         <TableRowGroupBy
           v-if="groupByAttribute && showGroupByRow(item)"
           :item="item"
@@ -630,101 +650,83 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
         >
           <template #default="{ isRowSelected }">
             <td
+              v-if="hasCheckboxColumn"
+              class="group/checkbox h-10 p-2.5"
+              @click="updateCheckedItem(item, $event)"
+              @keydown.enter="updateCheckedItem(item, $event)"
+              @keydown.space="updateCheckedItem(item, $event)"
+            >
+              <CellCheckbox :item="item" :item-ids="checkedItemIds" />
+            </td>
+            <td
               v-for="tableAttribute in tableAttributes"
               :key="`${item.id}-${tableAttribute.name}`"
               class="h-10 p-2.5 text-sm"
               :class="[
                 cellAlignmentClasses[
-                  tableAttribute.columnPreferences?.alignContent || 'left'
+                  tableAttribute?.columnPreferences?.alignContent || 'left'
                 ],
                 {
                   'max-w-32 truncate text-black dark:text-white':
-                    tableAttribute.headerPreferences?.truncate,
+                    tableAttribute?.headerPreferences?.truncate,
                 },
               ]"
+              :table-attribute="tableAttribute"
             >
-              <FormKit
-                v-if="hasCheckboxColumn && tableAttribute.name === 'checkbox'"
-                :key="`checkbox-${item.id}-${tableAttribute.name}`"
-                :name="`checkbox-${item.id}`"
-                :aria-label="
-                  hasCheckboxId(item.id)
-                    ? $t('Deselect this entry')
-                    : $t('Select this entry')
-                "
-                type="checkbox"
-                :alternative-background="true"
-                :classes="{
-                  decorator:
-                    'group-active:formkit-checked:border-white group-hover:dark:border-white group-hover:group-active:border-white group-hover:group-active:peer-hover:border-white group-hover:formkit-checked:border-black group-hover:dark:formkit-checked:border-white group-hover:dark:peer-hover:border-white  ltr:group-hover:dark:group-hover:peer-hover:formkit-checked:border-white ltr:group-hover:peer-hover:dark:border-white rtl:group-hover:peer-hover:dark:border-white ltr:group-hover:peer-hover:border-black rtl:group-hover:peer-hover:border-black  group-hover:border-black',
-                  decoratorIcon:
-                    'group-active:formkit-checked:text-white group-hover:formkit-checked:text-black group-hover:formkit-checked:dark:text-white',
-                }"
-                :disabled="!!item.disabled"
-                :model-value="hasCheckboxId(item.id)"
-                @click="handleCheckboxUpdate(item)"
-                @keydown.enter="handleCheckboxUpdate(item)"
-                @keydown.space="handleCheckboxUpdate(item)"
-              />
-              <template v-else>
-                <slot
-                  :name="`column-cell-${tableAttribute.name}`"
-                  :item="item"
-                  :is-row-selected="isRowSelected"
-                  :attribute="tableAttribute"
+              <slot
+                :name="`column-cell-${tableAttribute.name}`"
+                :item="item"
+                :is-row-selected="isRowSelected"
+                :attribute="tableAttribute"
+              >
+                <CommonLink
+                  v-if="tableAttribute.columnPreferences?.link"
+                  v-tooltip.truncate="getTooltipText(item, tableAttribute)"
+                  :link="
+                    tableAttribute.columnPreferences.link.getLink(
+                      item,
+                      tableAttribute,
+                    )
+                  "
+                  :open-in-new-tab="
+                    tableAttribute.columnPreferences.link.openInNewTab
+                  "
+                  :internal="tableAttribute.columnPreferences.link.internal"
+                  :class="[
+                    {
+                      'text-black dark:text-white': isRowSelected,
+                    },
+                    getLinkColorClasses(item),
+                  ]"
+                  class="block! truncate text-sm group-hover:text-black group-focus-visible:text-white group-active:text-white hover:no-underline! group-hover:dark:text-white"
+                  @click.stop
+                  @keydown.stop
                 >
-                  <CommonLink
-                    v-if="tableAttribute.columnPreferences?.link"
-                    v-tooltip.truncate="getTooltipText(item, tableAttribute)"
-                    :link="
-                      tableAttribute.columnPreferences.link.getLink(
-                        item,
-                        tableAttribute,
-                      )
-                    "
-                    :open-in-new-tab="
-                      tableAttribute.columnPreferences.link.openInNewTab
-                    "
-                    :internal="tableAttribute.columnPreferences.link.internal"
-                    :class="[
-                      {
-                        'text-black dark:text-white': isRowSelected,
-                      },
-                      getLinkColorClasses(item),
-                    ]"
-                    class="block! truncate text-sm group-hover:text-black group-focus-visible:text-white group-active:text-white hover:no-underline! group-hover:dark:text-white"
-                    @click.stop
-                    @keydown.stop
-                  >
-                    <ObjectAttributeContent
-                      mode="table"
-                      :attribute="tableAttribute as unknown as ObjectAttribute"
-                      :object="item"
-                    />
-                  </CommonLink>
-                  <CommonLabel
-                    v-else
-                    v-tooltip.truncate="getTooltipText(item, tableAttribute)"
-                    class="block! truncate text-gray-100! group-hover:text-black! group-focus-visible:text-white! group-active:text-white! dark:text-neutral-400! group-hover:dark:text-white!"
-                    :class="[
-                      {
-                        'text-black! dark:text-white!': isRowSelected,
-                      },
-                    ]"
-                  >
-                    <ObjectAttributeContent
-                      mode="table"
-                      :attribute="tableAttribute as unknown as ObjectAttribute"
-                      :object="item"
-                    />
-                  </CommonLabel>
-                </slot>
+                  <ObjectAttributeContent
+                    mode="table"
+                    :attribute="tableAttribute as unknown as ObjectAttribute"
+                    :object="item"
+                  />
+                </CommonLink>
+                <CommonLabel
+                  v-else
+                  v-tooltip.truncate="getTooltipText(item, tableAttribute)"
+                  class="block! truncate text-gray-100! group-hover:text-black! group-focus-visible:text-white! group-active:text-white! dark:text-neutral-400! group-hover:dark:text-white!"
+                  :class="[
+                    {
+                      'text-black! dark:text-white!': isRowSelected,
+                    },
+                  ]"
+                >
+                  <ObjectAttributeContent
+                    mode="table"
+                    :attribute="tableAttribute as unknown as ObjectAttribute"
+                    :object="item"
+                  />
+                </CommonLabel>
+              </slot>
 
-                <slot
-                  :name="`item-suffix-${tableAttribute.name}`"
-                  :item="item"
-                />
-              </template>
+              <slot :name="`item-suffix-${tableAttribute.name}`" :item="item" />
             </td>
             <td v-if="actions" class="h-10 p-2.5 text-center">
               <slot name="actions" v-bind="{ actions, item }">
@@ -751,6 +753,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
       </Transition>
     </tbody>
   </table>
+
   <CommonLabel
     v-if="endOfListMessage"
     class="py-2.5 text-stone-200! dark:text-neutral-500!"

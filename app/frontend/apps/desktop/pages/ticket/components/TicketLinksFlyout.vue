@@ -23,10 +23,8 @@ import { useTargetTicketOptions } from '#desktop/pages/ticket/composables/useTar
 import { useLinkAddMutation } from '#desktop/pages/ticket/graphql/mutations/linkAdd.api.ts'
 import { LinkListDocument } from '#desktop/pages/ticket/graphql/queries/linkList.api.ts'
 
-import type { Ref } from 'vue'
-
 interface Props {
-  sourceTicket: Ref<TicketById>
+  sourceTicket: TicketById
 }
 const props = defineProps<Props>()
 

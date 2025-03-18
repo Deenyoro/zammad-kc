@@ -16,6 +16,8 @@ import CommonTicketStateIndicatorIcon from '#desktop/components/CommonTicketStat
 
 import { useListTable } from '../CommonTable/composables/useListTable.ts'
 
+import { useTicketBulkEdit } from './TicketBulkEditFlyout/useTicketBulkEdit.ts'
+
 import type { ListTableEmits, ListTableProps } from '../CommonTable/types.ts'
 
 const props = defineProps<ListTableProps<TicketByList>>()
@@ -29,6 +31,8 @@ const { goToItem, goToItemLinkColumn, loadMore, resort, storageKeyId } =
   useListTable(props, emit, getLink)
 
 const { config } = storeToRefs(useApplicationStore())
+
+const { bulkEditActive, checkedItemIds } = useTicketBulkEdit()
 </script>
 
 <template>
@@ -47,6 +51,8 @@ const { config } = storeToRefs(useApplicationStore())
 
   <div v-else-if="items.length">
     <CommonAdvancedTable
+      v-model:checked-item-ids="checkedItemIds"
+      :has-checkbox-column="bulkEditActive"
       :caption="caption"
       :object="EnumObjectManagerObjects.Ticket"
       :headers="headers"

@@ -83,7 +83,6 @@ export const TicketsCachedByOverviewDocument = gql`
         lastContactCustomerAt
         policy {
           update
-          agentReadAccess
         }
       }
       cursor

@@ -6,6 +6,7 @@ import { computed } from 'vue'
 
 import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
 import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
+import { getTicketNumberWithHook } from '#shared/entities/ticket/composables/getTicketNumber.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 
 import CommonPopoverMenu from '#desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue'
@@ -16,7 +17,6 @@ import type {
   ReferencingTicket,
   TicketReferenceMenuItem,
 } from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/types.ts'
-import { getTicketNumberWithHook } from '#desktop/pages/ticket/composables/getTicketNumber.ts'
 
 // Trigger close manually since the popover does not close sometimes on click
 const { popover, popoverTarget, isOpen, toggle, close } = usePopover()

@@ -30,6 +30,7 @@ import { edgesToArray } from '#shared/utils/helpers.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import { useSkeletonLoadingCount } from '#desktop/components/CommonTable/composables/useSkeletonLoadingCount.ts'
+import { useTicketBulkEdit } from '#desktop/components/Ticket/TicketBulkEditFlyout/useTicketBulkEdit.ts'
 import TicketListTable from '#desktop/components/Ticket/TicketListTable.vue'
 import { useElementScroll } from '#desktop/composables/useElementScroll.ts'
 import { useScrollPosition } from '#desktop/composables/useScrollPosition.ts'
@@ -289,6 +290,16 @@ const localHeaders = computed(() => {
 
   return extendedHeaders
 })
+
+const { setOnSuccessCallback, checkedItemIds } = useTicketBulkEdit()
+
+setOnSuccessCallback(() => {
+  ticketsQuery.refetch({
+    renewCache: true,
+  })
+})
+
+onBeforeRouteUpdate(() => checkedItemIds.value.clear())
 
 const maxItems = computed(() => config.value.ui_ticket_overview_ticket_limit)
 

@@ -8,8 +8,10 @@ import { getTestRouter } from '#tests/support/components/renderComponent.ts'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
+import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
+import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
 import { mockCurrentUserQuery } from '#shared/graphql/queries/currentUser.mocks.ts'
 import { EnumOrderDirection } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
@@ -62,7 +64,7 @@ const getDefaultOverviews = () => [
   },
 ]
 
-describe('TicketOverviews', async () => {
+describe('TicketOverviews', () => {
   it('redirects when overview does not exist', async () => {
     mockDefaultOverviewQueries()
 
@@ -255,6 +257,7 @@ describe('TicketOverviews', async () => {
         preferences: {
           tickets_closed: 0,
           tickets_open: 0,
+          overviews_last_used: {},
         },
       },
     })
@@ -272,7 +275,7 @@ describe('TicketOverviews', async () => {
 
     mockPermissions(['ticket.customer'])
 
-    await mockApplicationConfig({ customer_ticket_create: true })
+    mockApplicationConfig({ customer_ticket_create: true })
 
     const view = await visitView('tickets/view')
 
@@ -369,6 +372,13 @@ describe('TicketOverviews', async () => {
 
     it.todo('polls for the active overviews', async () => {
       mockDefaultOverviewQueries()
+
+      mockUserCurrent({
+        preferences: {
+          overviews_last_used: {},
+        },
+      })
+
       await visitView('tickets/view/my_assigned')
 
       const mocks = await waitForUserCurrentTicketOverviewsQueryCalls()
@@ -402,6 +412,7 @@ describe('TicketOverviews', async () => {
           },
         },
       })
+
       await visitView('tickets/view/my_assigned')
 
       // const mocks = await waitForUserCurrentTicketOverviewsQueryCalls()
@@ -426,5 +437,90 @@ describe('TicketOverviews', async () => {
 
       expect(mocks).toHaveLength(1)
     })
+  })
+
+  it('does not show bulk edit button when user is customer', async () => {
+    mockUserCurrentTicketOverviewsQuery({
+      userCurrentTicketOverviews: getDefaultOverviews(),
+    })
+
+    mockPermissions(['ticket.customer'])
+
+    mockUserCurrent({
+      preferences: {
+        overviews_last_used: {
+          '1': '2021-06-01T00:00:00.000Z',
+          '2': '2021-06-01T00:00:00.000Z',
+        },
+      },
+    })
+
+    const view = await visitView('tickets/view/my_assigned')
+
+    expect(view.queryByRole('checkbox')).not.toBeInTheDocument()
+    expect(
+      view.queryByRole('button', { name: 'Bulk Actions' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('selects a ticket for bulk edit', async () => {
+    mockUserCurrentTicketOverviewsQuery({
+      userCurrentTicketOverviews: [
+        generateObjectData('Overview', {
+          id: convertToGraphQLId('Overview', 1),
+          name: 'My Assigned Tickets',
+          link: 'my_assigned',
+          prio: 4,
+          orderBy: 'created_at',
+          orderDirection: EnumOrderDirection.Ascending,
+          organizationShared: false,
+          outOfOffice: false,
+          active: true,
+        }),
+      ],
+    })
+
+    mockTicketsCachedByOverviewQuery({
+      ticketsCachedByOverview: generateObjectData('TicketConnection', {
+        totalCount: 1,
+        edges: [
+          {
+            cursor: 'MQ',
+            node: createDummyTicket(),
+          },
+        ],
+        pageInfo: {
+          endCursor: '',
+          hasNextPage: false,
+        },
+      }),
+    })
+
+    mockUserCurrent({
+      permissions: {
+        names: ['ticket.agent'],
+      },
+      preferences: {
+        overviews_last_used: {},
+      },
+    })
+
+    const view = await visitView('tickets/view/my_assigned')
+
+    await waitForUserCurrentTicketOverviewsQueryCalls()
+
+    expect(
+      view.queryByRole('button', { name: 'Bulk Action' }),
+    ).not.toBeInTheDocument()
+
+    await view.events.click(
+      view.getByRole('checkbox', { name: 'Select this entry' }),
+    )
+
+    await view.events.click(view.getByRole('button', { name: 'Bulk Actions' }))
+
+    expect(
+      await view.findByRole('complementary', { name: 'Tickets Bulk Edit' }),
+    ).toBeInTheDocument()
   })
 })

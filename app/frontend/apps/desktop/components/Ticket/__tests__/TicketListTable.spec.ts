@@ -81,7 +81,6 @@ const tableItems: TicketByList[] = [
     policy: {
       __typename: undefined,
       update: false,
-      agentReadAccess: false,
     },
   },
 ]

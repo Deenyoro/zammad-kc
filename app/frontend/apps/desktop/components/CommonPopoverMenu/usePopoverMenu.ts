@@ -11,8 +11,7 @@ import type {
   MenuItem,
   MenuItems,
   UsePopoverMenuReturn,
-} from '#desktop/components/CommonPopoverMenu/types.ts'
-
+} from './types.ts'
 import type { Ref } from 'vue'
 
 const POPOVER_MENU_SYMBOL = Symbol('popover-menu')

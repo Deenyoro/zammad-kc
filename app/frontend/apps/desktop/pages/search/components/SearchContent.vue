@@ -69,21 +69,6 @@ const modelSearchTerm = computed({
 
 const sanitizedSearchTerm = computed(() => modelSearchTerm.value ?? '')
 
-const { pageInactive } = usePage({
-  metaTitle: sanitizedSearchTerm,
-})
-
-watch(
-  () => router.currentRoute.value.query.entity,
-  (newValue) => {
-    nextTick(() => {
-      if (pageInactive.value) return
-
-      selectedEntity.value = newValue as EnumSearchableModels
-    })
-  },
-)
-
 const tabContext = computed<TaskbarTabContext>((currentContext) => {
   const newContext = {
     query: sanitizedSearchTerm.value,
@@ -354,6 +339,27 @@ const breadcrumbItems = computed(() => [
     count: currentSearchResultCount.value,
   },
 ])
+
+const { pageInactive } = usePage({
+  metaTitle: sanitizedSearchTerm,
+  onReactivate: () => {
+    detailSearchQuery.refetch({
+      limit: offset.value + PAGE_SIZE,
+    })
+    searchCountsQuery.refetch()
+  },
+})
+
+watch(
+  () => router.currentRoute.value.query.entity,
+  (newValue) => {
+    nextTick(() => {
+      if (pageInactive.value) return
+
+      selectedEntity.value = newValue as EnumSearchableModels
+    })
+  },
+)
 </script>
 
 <template>

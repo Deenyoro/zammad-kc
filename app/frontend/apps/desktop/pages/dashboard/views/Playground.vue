@@ -1041,6 +1041,7 @@ const tableItems = reactive([
     title: 'Front-end Developer',
     email: 'lindsay.walton@example.com',
     role: 'Member',
+    checked: true,
   },
   {
     id: 2,
@@ -1189,6 +1190,8 @@ const tableItemsAdvanced = reactive<TableAdvancedItem[]>([
     role: 'Member',
   },
 ])
+
+const checkedAdvancedTableItems = ref(new Set(['1', '2']))
 
 const tableActions: MenuItem[] = [
   {
@@ -1532,6 +1535,7 @@ const inlineEditValue = ref('Edit me inline')
       <h2 class="mt-8 mb-2">Table (Advanced)</h2>
       <div class="mb-6 flex flex-col gap-4">
         <CommonAdvancedTable
+          v-model:checked-item-ids="checkedAdvancedTableItems"
           :headers="tableHeadersAdvanced"
           :items="tableItemsAdvanced"
           :actions="tableActions"
@@ -1597,6 +1601,8 @@ const inlineEditValue = ref('Edit me inline')
         />
       </div>
 
+      {{ checkedAdvancedTableItems }}
+
       <div class="w-1/2">
         <h2 class="text-lg">Avatar</h2>
 
@@ -1643,7 +1649,7 @@ const inlineEditValue = ref('Edit me inline')
             size="small"
           />
           <CommonUserAvatar
-            class="cursor-pointer border border-neutral-100 outline outline-2 outline-transparent hover:outline-blue-600 focus:outline-blue-800 dark:border-gray-900 dark:hover:outline-blue-900 dark:hover:focus:outline-blue-800"
+            class="cursor-pointer border border-neutral-100 outline-2 outline-transparent hover:outline-blue-600 focus:outline-blue-800 dark:border-gray-900 dark:hover:outline-blue-900 dark:hover:focus:outline-blue-800"
             tabindex="0"
             :entity="{
               id: 'gid://zammad/User/4',
@@ -1654,7 +1660,7 @@ const inlineEditValue = ref('Edit me inline')
             size="medium"
           />
           <CommonUserAvatar
-            class="cursor-pointer outline outline-2 outline-transparent hover:outline-blue-600 focus:outline-blue-800 dark:hover:outline-blue-900 dark:hover:focus:outline-blue-800"
+            class="cursor-pointer outline-2 outline-transparent hover:outline-blue-600 focus:outline-blue-800 dark:hover:outline-blue-900 dark:hover:focus:outline-blue-800"
             tabindex="0"
             :entity="{
               id: 'gid://zammad/User/5',
@@ -1665,7 +1671,7 @@ const inlineEditValue = ref('Edit me inline')
             size="normal"
           />
           <CommonUserAvatar
-            class="cursor-pointer border border-neutral-100 outline outline-2 outline-transparent hover:outline-blue-600 focus:outline-blue-800 dark:border-gray-900 dark:hover:outline-blue-900 dark:hover:focus:outline-blue-800"
+            class="cursor-pointer border border-neutral-100 outline-2 outline-transparent hover:outline-blue-600 focus:outline-blue-800 dark:border-gray-900 dark:hover:outline-blue-900 dark:hover:focus:outline-blue-800"
             tabindex="0"
             :entity="{
               id: 'gid://zammad/User/6',
@@ -1676,7 +1682,7 @@ const inlineEditValue = ref('Edit me inline')
             size="large"
           />
           <CommonUserAvatar
-            class="cursor-pointer border border-neutral-100 outline outline-2 outline-transparent hover:outline-blue-600 focus:outline-blue-800 dark:border-gray-900 dark:hover:outline-blue-900 dark:hover:focus:outline-blue-800"
+            class="cursor-pointer border border-neutral-100 outline-2 outline-transparent hover:outline-blue-600 focus:outline-blue-800 dark:border-gray-900 dark:hover:outline-blue-900 dark:hover:focus:outline-blue-800"
             tabindex="0"
             :entity="{
               id: 'gid://zammad/User/7',
@@ -1769,7 +1775,7 @@ const inlineEditValue = ref('Edit me inline')
           </CommonPopover>
           <button
             ref="popoverTarget"
-            class="rounded-full outline outline-2 outline-transparent hover:outline-blue-900 focus:outline-blue-800 hover:focus:outline-blue-800"
+            class="rounded-full outline-2 outline-transparent hover:outline-blue-900 focus:outline-blue-800 hover:focus:outline-blue-800"
             :class="{
               'outline-blue-800 hover:outline-blue-800': popoverIsOpen,
             }"

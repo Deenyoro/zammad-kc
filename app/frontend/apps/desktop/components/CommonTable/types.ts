@@ -54,6 +54,9 @@ export interface TableItem {
 export interface TableAdvancedItem {
   [key: string]: unknown
   id: ID
+  policy?: {
+    update?: boolean
+  }
 }
 
 interface BaseTableProps {

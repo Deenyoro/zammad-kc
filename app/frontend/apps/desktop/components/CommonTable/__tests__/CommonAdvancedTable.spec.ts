@@ -399,8 +399,8 @@ describe('CommonAdvancedTable', () => {
     expect(linkCell).not.toHaveAttribute('target')
   })
 
-  it.todo('supports row selection', async () => {
-    const checkedRows = ref([])
+  it('supports checking a item in a row', async () => {
+    const checkedItemIds = ref(new Set([]))
 
     const items = [
       {
@@ -421,28 +421,24 @@ describe('CommonAdvancedTable', () => {
         totalItems: 100,
         caption: 'Table caption',
       },
-      { form: true, vModel: { checkedRows } },
+      { form: true, vModel: { checkedItemIds } },
     )
 
     expect(wrapper.getAllByRole('checkbox')).toHaveLength(3)
-
-    const selectAllCheckbox = wrapper.getByLabelText('Select all entries')
-
-    expect(selectAllCheckbox).not.toHaveAttribute('checked')
 
     const rowCheckboxes = wrapper.getAllByRole('checkbox', {
       name: 'Select this entry',
     })
 
+    expect(rowCheckboxes[0]).not.toBeChecked()
     await wrapper.events.click(rowCheckboxes[0])
-    expect(rowCheckboxes[0]).toHaveAttribute('checked')
+    expect(rowCheckboxes[0]).toBeChecked()
 
     await wrapper.events.click(rowCheckboxes[1])
 
-    await waitFor(() => expect(checkedRows.value).toEqual(items))
-    await waitFor(() => expect(selectAllCheckbox).toHaveAttribute('checked'))
-
-    await wrapper.events.click(wrapper.getByLabelText('Deselect all entries'))
+    await waitFor(() =>
+      expect(Array.from(checkedItemIds.value)).toContain(items[0].id),
+    )
 
     await waitFor(() => expect(rowCheckboxes[0]).not.toHaveAttribute('checked'))
     expect(rowCheckboxes[1]).not.toHaveAttribute('checked')
@@ -454,19 +450,85 @@ describe('CommonAdvancedTable', () => {
     ).toBeInTheDocument()
   })
 
-  it.todo('supports disabling checkbox item for specific rows', async () => {
-    const checkedRows = ref([])
+  it('renders checklist item as disabled if update policy is not given', async () => {
+    const checkedItemIds = ref(new Set([]))
 
     const items = [
       {
         id: convertToGraphQLId('Ticket', 1),
-        checked: false,
+        policy: { update: false },
+        label: 'selection data 1',
+      },
+      {
+        id: convertToGraphQLId('Ticket', 2),
+        label: 'selection data 2',
+      },
+    ]
+
+    const wrapper = await renderTable(
+      {
+        headers: ['label'],
+        items,
+        hasCheckboxColumn: true,
+        totalItems: 100,
+        caption: 'Table caption',
+      },
+      { form: true, vModel: { checkedItemIds } },
+    )
+
+    const rowCheckboxes = wrapper.getAllByRole('checkbox', {
+      name: 'Select this entry',
+    })
+
+    expect(rowCheckboxes[0]).toBeDisabled()
+  })
+
+  it('renders checklist item as disabled', async () => {
+    const checkedItemIds = ref(new Set([]))
+
+    const items = [
+      {
+        id: convertToGraphQLId('Ticket', 1),
         disabled: true,
         label: 'selection data 1',
       },
       {
         id: convertToGraphQLId('Ticket', 2),
-        checked: true,
+        label: 'selection data 2',
+      },
+    ]
+
+    const wrapper = await renderTable(
+      {
+        headers: ['label'],
+        items,
+        hasCheckboxColumn: true,
+        totalItems: 100,
+        caption: 'Table caption',
+      },
+      { form: true, vModel: { checkedItemIds } },
+    )
+
+    const rowCheckboxes = wrapper.getAllByRole('checkbox', {
+      name: 'Select this entry',
+    })
+
+    expect(rowCheckboxes[0]).toBeDisabled()
+  })
+
+  it.todo('supports checking all items', () => {})
+
+  it('supports disabling checkbox item for specific rows', async () => {
+    const checkedItemIds = ref(new Set())
+
+    const items = [
+      {
+        id: convertToGraphQLId('Ticket', 1),
+        disabled: true,
+        label: 'selection data 1',
+      },
+      {
+        id: convertToGraphQLId('Ticket', 2),
         disabled: true,
         label: 'selection data 2',
       },
@@ -480,23 +542,22 @@ describe('CommonAdvancedTable', () => {
         totalItems: 100,
         caption: 'Table caption',
       },
-      { form: true, vModel: { checkedRows } },
+      { form: true, vModel: { checkedItemIds } },
     )
 
-    const checkboxes = wrapper.getAllByRole('checkbox')
-    expect(checkboxes).toHaveLength(3)
+    const checkboxes = wrapper.getAllByRole('checkbox', {
+      name: 'Select this entry',
+    })
 
     expect(checkboxes[1]).toBeDisabled()
     expect(checkboxes[1]).not.toBeChecked()
-    expect(checkboxes[2]).toHaveAttribute('value', 'true')
+
+    expect(checkboxes[0]).toBeDisabled()
+    expect(checkboxes[0]).not.toBeChecked()
 
     await wrapper.events.click(checkboxes[1])
 
-    expect(checkedRows.value).toEqual([])
-
-    await wrapper.events.click(checkboxes[0])
-
-    expect(checkedRows.value).toEqual([])
+    expect(checkedItemIds.value.size).toBe(0)
   })
 
   it('supports sorting', async () => {

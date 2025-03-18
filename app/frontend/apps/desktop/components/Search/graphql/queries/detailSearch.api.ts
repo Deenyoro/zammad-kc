@@ -45,6 +45,9 @@ export const DetailSearchDocument = gql`
           uiColor
         }
         createdAt
+        policy {
+          update
+        }
       }
       ... on User {
         id

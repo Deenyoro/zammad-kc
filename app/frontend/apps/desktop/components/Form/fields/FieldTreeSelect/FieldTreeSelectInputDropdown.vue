@@ -429,7 +429,7 @@ const { collapseDuration, collapseEnter, collapseAfterEnter, collapseLeave } =
         v-show="isTargetVisible"
         id="field-tree-select-input-dropdown"
         ref="dropdown"
-        class="fixed z-10 flex min-h-9 antialiased"
+        class="fixed z-50 flex min-h-9 antialiased"
         :style="dropdownStyle"
       >
         <div class="w-full" role="menu">

@@ -1507,7 +1507,7 @@ export default {
           $el: undefined,
           $cmp: 'CommonAlert',
           props: {
-            id: `$id + '-' + $message.key`,
+            id: `$: '${id}-' + $message.key`,
             key: '$message.key',
             variant: {
               if: '$message.type == error || $message.type == validation',
