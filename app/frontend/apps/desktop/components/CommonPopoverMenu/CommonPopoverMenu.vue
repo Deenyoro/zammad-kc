@@ -105,6 +105,7 @@ const getHoverFocusStyles = (variant?: Variant) => {
                     :variant="subItem.variant"
                     :link="subItem.link"
                     :icon="subItem.icon"
+                    :icon-class="subItem.iconClass"
                     :label-placeholder="subItem.labelPlaceholder"
                     @click="onClickItem($event, subItem)"
                   />
@@ -133,6 +134,7 @@ const getHoverFocusStyles = (variant?: Variant) => {
                   :variant="item.variant"
                   :link="item.link"
                   :icon="item.icon"
+                  :icon-class="item.iconClass"
                   :label-placeholder="item.labelPlaceholder"
                   @click="onClickItem($event, item)"
                 />

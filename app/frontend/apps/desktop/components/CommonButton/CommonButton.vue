@@ -155,6 +155,7 @@ const iconSizeClass = computed(() => {
     ]"
     :type="type"
     :form="form"
+    :tabindex="disabled ? '-1' : '0'"
     :aria-disabled="disabled ? 'true' : undefined"
   >
     <slot name="label">

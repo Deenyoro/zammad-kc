@@ -59,6 +59,7 @@ import CommonSimpleTable from '#desktop/components/CommonTable/CommonSimpleTable
 import CommonTableSkeleton from '#desktop/components/CommonTable/Skeleton/CommonTableSkeleton.vue'
 import type { TableAdvancedItem } from '#desktop/components/CommonTable/types.ts'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
+import SplitButton from '#desktop/components/SplitButton/SplitButton.vue'
 import ThemeSwitch from '#desktop/components/ThemeSwitch/ThemeSwitch.vue'
 
 const alphabetOptions = computed(() =>
@@ -1283,10 +1284,56 @@ const breadcrumbItems = [
 const popoverHideArrow = ref(false)
 
 const inlineEditValue = ref('Edit me inline')
+
+const splitButtonMenuItems: MenuItem[] = [
+  {
+    label: 'Save as draft',
+    groupLabel: 'Drafts',
+    icon: 'floppy',
+    key: 'save-draft',
+    onClick: () => {
+      console.log('Save as draft clicked!')
+    },
+  },
+  {
+    label: 'Macro 1',
+    groupLabel: 'Macros',
+    icon: 'play-circle',
+    iconClass: 'text-yellow-300',
+    key: 'macro-1',
+    onClick: () => {
+      console.log('Macro 1 clicked!')
+    },
+  },
+  {
+    label: 'Macro 2',
+    groupLabel: 'Macros',
+    icon: 'play-circle',
+    iconClass: 'text-yellow-300',
+    key: 'macro-2',
+    onClick: () => {
+      console.log('Macro 2 clicked!')
+    },
+  },
+  {
+    label: 'Macro 3',
+    groupLabel: 'Macros',
+    icon: 'play-circle',
+    iconClass: 'text-yellow-300',
+    key: 'macro-3',
+    onClick: () => {
+      console.log('Macro 3 clicked!')
+    },
+  },
+]
+
+const onSplitButtonClick = () => {
+  console.log('Split button clicked!')
+}
 </script>
 
 <template>
-  <LayoutContent :breadcrumb-items="[]">
+  <LayoutContent>
     <div>
       Generic skeleton
       <CommonSkeleton class="h-8 w-full" />
@@ -1932,6 +1979,31 @@ const inlineEditValue = ref('Edit me inline')
         ]"
         multiple
       />
+
+      <h3>Split Button</h3>
+      <div class="mb-3 flex justify-end gap-3">
+        <SplitButton
+          variant="submit"
+          size="large"
+          :items="splitButtonMenuItems"
+          disabled
+          >Disabled</SplitButton
+        >
+        <SplitButton
+          variant="submit"
+          size="large"
+          addon-disabled
+          @click="onSplitButtonClick"
+          >Addon disabled</SplitButton
+        >
+        <SplitButton
+          variant="submit"
+          size="large"
+          :items="splitButtonMenuItems"
+          @click="onSplitButtonClick"
+          >Update</SplitButton
+        >
+      </div>
     </div>
   </LayoutContent>
 </template>

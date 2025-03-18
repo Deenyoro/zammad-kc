@@ -249,6 +249,8 @@ describe('TicketDetailBottomBar', () => {
 
       const menu = await wrapper.findByRole('menu')
 
+      expect(within(menu).getByRole('menuitem')).toBeInTheDocument()
+
       await wrapper.events.click(within(menu).getByText('Macro 1'))
 
       expect(wrapper.emitted('execute-macro')).toEqual([
@@ -269,8 +271,14 @@ describe('TicketDetailBottomBar', () => {
         groupId: undefined,
       })
 
+      const addonButton = wrapper.getByRole('button', {
+        name: 'Additional ticket edit actions',
+      })
+
+      await wrapper.events.click(addonButton)
+
       expect(
-        wrapper.queryByLabelText('Additional ticket edit actions'),
+        within(wrapper.getByRole('menu')).queryByRole('menuitem'),
       ).not.toBeInTheDocument()
     })
   })

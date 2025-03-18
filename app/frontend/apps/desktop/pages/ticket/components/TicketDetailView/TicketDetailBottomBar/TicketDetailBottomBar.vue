@@ -12,10 +12,10 @@ import type { TicketLiveAppUser } from '#shared/entities/ticket/types.ts'
 import { useTicketSharedDraftZoomCreateMutation } from '#shared/entities/ticket-shared-draft-zoom/graphql/mutations/ticketSharedDraftZoomCreate.api.ts'
 import { MutationHandler } from '#shared/server/apollo/handler/index.ts'
 
-import CommonActionMenu from '#desktop/components/CommonActionMenu/CommonActionMenu.vue'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import { useDialog } from '#desktop/components/CommonDialog/useDialog.ts'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
+import SplitButton from '#desktop/components/SplitButton/SplitButton.vue'
 import TicketScreenBehavior from '#desktop/pages/ticket/components/TicketDetailView/TicketScreenBehavior/TicketScreenBehavior.vue'
 import { useTicketSharedDraft } from '#desktop/pages/ticket/composables/useTicketSharedDraft.ts'
 
@@ -140,7 +140,21 @@ const actionItems = computed(() => {
 
     <TicketScreenBehavior />
 
+    <SplitButton
+      v-if="isTicketAgent"
+      size="large"
+      variant="submit"
+      type="button"
+      :disabled="disabled"
+      :items="actionItems"
+      :addon-label="__('Additional ticket edit actions')"
+      @click="$emit('submit', $event)"
+    >
+      {{ $t('Update') }}
+    </SplitButton>
+
     <CommonButton
+      v-else
       size="large"
       variant="submit"
       type="button"
@@ -148,15 +162,5 @@ const actionItems = computed(() => {
       @click="$emit('submit', $event)"
       >{{ $t('Update') }}
     </CommonButton>
-
-    <CommonActionMenu
-      v-if="isTicketAgent"
-      class="flex!"
-      button-size="large"
-      no-single-action-mode
-      placement="arrowEnd"
-      custom-menu-button-label="Additional ticket edit actions"
-      :actions="actionItems"
-    />
   </template>
 </template>
