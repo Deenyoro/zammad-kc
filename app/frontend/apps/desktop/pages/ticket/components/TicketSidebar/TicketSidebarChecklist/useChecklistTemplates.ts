@@ -52,7 +52,7 @@ export const useChecklistTemplates = (
     variables: {
       onlyActive: true,
     },
-    updateQuery: (prev, { subscriptionData }) => {
+    updateQuery: (_, { subscriptionData }) => {
       if (!subscriptionData.data?.checklistTemplateUpdates.checklistTemplates)
         return null as unknown as ChecklistTemplatesQuery
 

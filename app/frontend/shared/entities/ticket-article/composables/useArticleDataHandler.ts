@@ -106,12 +106,15 @@ export const useArticleDataHandler = (
       ticketId: ticketId.value,
     },
     onError: noop,
-    updateQuery(previous, { subscriptionData }) {
+    updateQuery(_, { previousData, subscriptionData }) {
       const updates = subscriptionData.data.ticketArticleUpdates
+      const prviousArticles =
+        previousData?.articles as TicketArticlesQuery['articles']
 
-      if (!previous.articles || updates.updateArticle) return previous
+      if (!prviousArticles || updates.updateArticle)
+        return previousData as TicketArticlesQuery
 
-      const previousArticlesEdges = previous.articles.edges
+      const previousArticlesEdges = prviousArticles.edges
       const previousArticlesEdgesCount = previousArticlesEdges.length
 
       if (updates.removeArticleId) {
@@ -125,15 +128,15 @@ export const useArticleDataHandler = (
         if (removedArticleVisible && !allArticleLoaded.value) {
           refetchArticlesQuery(firstArticlesCount.value)
 
-          return previous
+          return previousData as TicketArticlesQuery
         }
 
         const result = {
-          ...previous,
+          ...previousData,
           articles: {
-            ...previous.articles,
+            ...prviousArticles,
             edges,
-            totalCount: previous.articles.totalCount - 1,
+            totalCount: prviousArticles.totalCount - 1,
           },
         }
 
@@ -142,7 +145,7 @@ export const useArticleDataHandler = (
             previousArticlesEdges[previousArticlesEdgesCount - 2]
 
           result.articles.pageInfo = {
-            ...previous.articles.pageInfo,
+            ...prviousArticles.pageInfo,
             ...adjustPageInfoAfterDeletion(nextEndCursorEdge.cursor),
           }
         }
@@ -168,7 +171,7 @@ export const useArticleDataHandler = (
         })
       }
 
-      return previous
+      return previousData as TicketArticlesQuery
     },
   }))
   return {

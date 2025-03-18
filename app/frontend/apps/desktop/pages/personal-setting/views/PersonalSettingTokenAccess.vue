@@ -73,7 +73,7 @@ accessTokenListQuery.subscribeToMore<
   UserCurrentAccessTokenUpdatesSubscription
 >({
   document: UserCurrentAccessTokenUpdatesDocument,
-  updateQuery: (prev, { subscriptionData }) => {
+  updateQuery: (_, { subscriptionData }) => {
     if (!subscriptionData.data?.userCurrentAccessTokenUpdates.tokens) {
       return null as unknown as UserCurrentAccessTokenListQuery
     }

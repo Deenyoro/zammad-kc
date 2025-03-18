@@ -46,7 +46,7 @@ deviceListQuery.subscribeToMore<
   UserCurrentDevicesUpdatesSubscription
 >({
   document: UserCurrentDevicesUpdatesDocument,
-  updateQuery: (prev, { subscriptionData }) => {
+  updateQuery: (_, { subscriptionData }) => {
     if (!subscriptionData.data?.userCurrentDevicesUpdates.devices) {
       return null as unknown as UserCurrentDeviceListQuery
     }

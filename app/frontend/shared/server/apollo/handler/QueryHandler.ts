@@ -126,7 +126,7 @@ export default class QueryHandler<
   }
 
   public subscribeToMore<
-    TSubscriptionVariables = TVariables,
+    TSubscriptionVariables extends OperationVariables = TVariables,
     TSubscriptionData = TResult,
   >(
     options:

@@ -45,7 +45,7 @@ export const useObjectLinks = (
       objectId: objectId.value,
       targetType,
     },
-    updateQuery: (prev, { subscriptionData }) => {
+    updateQuery: (_, { subscriptionData }) => {
       if (!subscriptionData.data?.linkUpdates.links) {
         return null as unknown as LinkListQuery
       }

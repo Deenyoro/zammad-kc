@@ -45,7 +45,7 @@ export const useTicketTemplateStore = defineStore('ticketTemplate', () => {
     variables: {
       onlyActive: true,
     },
-    updateQuery: (prev, { subscriptionData }) => {
+    updateQuery: (_, { subscriptionData }) => {
       if (!subscriptionData.data?.templateUpdates.templates) {
         return null as unknown as TemplatesQuery
       }

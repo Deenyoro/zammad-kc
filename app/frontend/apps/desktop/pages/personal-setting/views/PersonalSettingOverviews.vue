@@ -45,7 +45,7 @@ overviewListQuery.subscribeToMore<
 >({
   document: UserCurrentOverviewOrderingUpdatesDocument,
   variables: { ignoreUserConditions: true },
-  updateQuery: (prev, { subscriptionData }) => {
+  updateQuery: (_, { subscriptionData }) => {
     if (!subscriptionData.data?.userCurrentOverviewOrderingUpdates.overviews) {
       return null as unknown as UserCurrentOverviewListQuery
     }

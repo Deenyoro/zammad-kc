@@ -65,7 +65,7 @@ avatarListQuery.subscribeToMore<
   UserCurrentAvatarUpdatesSubscription
 >({
   document: UserCurrentAvatarUpdatesDocument,
-  updateQuery: (prev, { subscriptionData }) => {
+  updateQuery: (_, { subscriptionData }) => {
     if (!subscriptionData.data?.userCurrentAvatarUpdates.avatars) {
       return null as unknown as UserCurrentAvatarListQuery
     }
