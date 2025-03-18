@@ -26,7 +26,7 @@ $ docker container run -ti --rm --name zammad -p 80:80 zammad/zammad
 $ sysctl -w vm.max_map_count=262144
 ```
 
-> **_Tip for Mac OS:_** https://github.com/zammad/zammad-docker/issues/27#issuecomment-455171752
+> **_Tip for Mac OS:_** [zammad/zammad-docker/issues/27](https://github.com/zammad/zammad-docker/issues/27#issuecomment-455171752)
 
 ---
 
@@ -37,5 +37,5 @@ To disconnect or detach from the shell without exiting, use the escape sequence 
 
 ### Open Zammad
 
-Go to http://localhost and you'll see:
+Go to [http://localhost](http://localhost) and you'll see:
 * "Welcome to Zammad!", there you need to create your admin user.

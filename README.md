@@ -34,30 +34,14 @@ has a bright and sustainable future, consider becoming a Zammad customer!
 - Download DEB/RPM: [![binary packages for Zammad stable](https://img.shields.io/badge/Branch-stable-blue.svg)](https://packager.io/gh/zammad/zammad/refs/stable) [![binary packages for Zammad develop](https://img.shields.io/badge/Branch-develop-lightgrey.svg)](https://packager.io/gh/zammad/zammad/refs/develop)
 - License: [![AGPL license](https://img.shields.io/badge/License-AGPL%203.0-brightgreen.svg)](https://github.com/zammad/zammad/blob/develop/LICENSE)
 
-## Installing & Getting Started
+## Further Information
 
-https://docs.zammad.org
-
-## Screenshots
-
-https://zammad.org/screenshots
-
-## Developer Manual
-
-[Developer Manual](/doc/developer_manual/index.md)
-
-## REST API
-
-https://docs.zammad.org/en/latest/api/intro.html
-
-## Security Policy
-
-For reporting security vulnerabilities, please see [SECURITY.md](SECURITY.md).
-
-## Contributing
-
-https://zammad.org/participate
-
+- [Installing & Getting Started](https://docs.zammad.org)
+- [Screenshots](https://zammad.org/screenshots)
+- [Developer Manual](/doc/developer_manual/index.md)
+- [REST API](https://docs.zammad.org/en/latest/api/intro.html)
+- For reporting security vulnerabilities, please see [our security policy](SECURITY.md).
+- [Contributing](https://zammad.org/participate)
 
 Thanks! ❤️ ❤️ ❤️
 

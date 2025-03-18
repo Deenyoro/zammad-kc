@@ -125,20 +125,20 @@ UpperCamelCase: e.g. CommonDateTime.vue
 ###### useTemplateRef
 [docs](https://vuejs.org/api/composition-api-helpers.html#usetemplateref)
 
-```vue 
+```vue
 <script setup lang="ts">
 import { useTemplateRef } from 'vue'
-  
+
 const buttonInstance =  useTemplateRef('button')
 const resizeLineInstance = useTemplateRef('resize-line')
-  
+
 const listElement = useTemplateRef('list')
 </script>
 
 <template>
   <CommonButton ref="button"/>
   <ResizeLine ref="resize-line"/>
-  
+
   <ul ref="list"/>
 </template>
 ```

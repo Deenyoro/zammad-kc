@@ -28,6 +28,17 @@
     - shellcheck -S warning $(find . -name "*.sh" -o -name "functions" | egrep -v "/vendor|node_modules/")
   after_script: []
 
+'lint: markdown':
+  stage: lint
+  image:
+    name: davidanson/markdownlint-cli2:latest
+    entrypoint: [""]
+  cache: []
+  before_script: []
+  script:
+    - markdownlint-cli2 "*.md" "doc/**/*.md"
+  after_script: []
+
 'lint: i18n & rails':
   extends:
     - .template_lint_rails

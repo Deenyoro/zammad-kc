@@ -20,10 +20,10 @@ security advisory.
 
 ### Reporting Process Overview
 
-- Potential security issues can be reported via security@zammad.com.
+- Potential security issues can be reported via [security@zammad.com](mailto:security@zammad.com).
 - We evaluate them and provide timely feedback to the reporter.
-- There may be security releases created if needed, e.g. https://zammad.com/en/releases/6-3-1.
-- We publish security advisories for every acknowledged issue, like https://zammad.com/en/advisories/zaa-2024-04.
+- There may be security releases created if needed, e.g. [Zammad 6.3.1](https://zammad.com/en/releases/6-3-1).
+- We publish security advisories for every acknowledged issue, like [ZAA-2024-04](https://zammad.com/en/advisories/zaa-2024-04).
 - After their publication, we request CVE identifiers to be assigned to the advisories.
 
 ### Rewards

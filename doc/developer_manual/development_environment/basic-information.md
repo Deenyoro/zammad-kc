@@ -4,8 +4,7 @@ Here you'll find some basic information about the Zammad repository.
 
 ## Branches
 
-The Zammad main repository at https://github.com/zammad/zammad
-has several branches.
+The Zammad [repository](https://github.com/zammad/zammad) has several branches.
 
 ### `develop`
 
@@ -33,7 +32,7 @@ has several branches.
 ## Packages
 
 * Zammad packages are built on [packager.io](https://packager.io).
-* You can find all Zammad packages here: https://packager.io/gh/zammad/zammad
+* You can find all Zammad packages [here](https://packager.io/gh/zammad/zammad).
 * Builds of new packages are triggered with every push to our GitHub repo
 * If you fork the Zammad repo, you can use packager.io to get builds for your fork
 * Just change the file `.pkgr.yml` to fit your needs
