@@ -132,18 +132,30 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/*
- * Currently, we only set the style for img and svg elements.
- * If necessary, this may need to be extended with other elements listed bellow.
- *
- * Relevant elements include:
- * - img, svg, canvas, audio, iframe, embed, object
- *
- * These elements inherit a `display: block` style from the root stylesheet.
- */
 .inner-article-body {
-  :deep(img, svg) {
+  word-break: normal;
+  overflow-wrap: anywhere;
+
+  /*
+   * TODO: Consider extending this rule to other elements.
+   *
+   * Relevant elements include:
+   * - img, svg, canvas, audio, iframe, embed, object
+   *
+   * These elements inherit a `display: block` style from the root stylesheet.
+   */
+  &:deep(img, svg) {
     display: inline;
+  }
+
+  /* Wrap long lines in code blocks. */
+  &:deep(code) {
+    white-space: pre-wrap;
+  }
+
+  /* Strip inline color styles in dark mode. */
+  [data-theme='dark'] &:deep(*[style*='color']) {
+    color: inherit !important;
   }
 }
 
