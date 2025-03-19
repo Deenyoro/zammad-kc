@@ -4,11 +4,9 @@
 import { until } from '@vueuse/core'
 import { computed } from 'vue'
 
-import { useSessionStore } from '#shared/stores/session.ts'
-
-import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import LayoutSidebar from '#desktop/components/layout/LayoutSidebar.vue'
+import TicketBulkEditButton from '#desktop/components/Ticket/TicketBulkEditButton.vue'
 import { useTicketBulkEdit } from '#desktop/components/Ticket/TicketBulkEditFlyout/useTicketBulkEdit.ts'
 import TicketList from '#desktop/pages/ticket-overviews/components/TicketList.vue'
 import TicketOverviewsEmptyText from '#desktop/pages/ticket-overviews/components/TicketOverviewsEmptyText.vue'
@@ -20,10 +18,6 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-
-const { hasPermission } = useSessionStore()
-
-const isAgentUser = computed(() => hasPermission('ticket.agent'))
 
 defineOptions({
   async beforeRouteEnter(to, _, next) {
@@ -120,17 +114,10 @@ const { checkedItemIds, openBulkEditFlyout } = useTicketBulkEdit()
       content-padding
     >
       <template #headerRight>
-        <CommonButton
-          v-if="isAgentUser"
-          class="invisible"
-          :aria-hidden="checkedItemIds.size === 0"
-          :class="{ visible: checkedItemIds.size }"
-          size="medium"
-          prefix-icon="collection-play"
-          variant="primary"
-          @click="openBulkEditFlyout"
-          >{{ $t('Bulk Actions') }}</CommonButton
-        >
+        <TicketBulkEditButton
+          :checked-ticket-ids="checkedItemIds"
+          @open-flyout="openBulkEditFlyout"
+        />
       </template>
       <TicketList
         v-if="currentOverview"

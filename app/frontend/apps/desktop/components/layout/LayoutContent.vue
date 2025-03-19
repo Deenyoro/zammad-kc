@@ -109,7 +109,7 @@ const { durations } = useTransitionConfig()
           <div
             v-if="breadcrumbItems"
             data-test-id="wrapper-breadcrumb"
-            class="flex items-center justify-between"
+            class="flex min-h-13 items-center justify-between"
             :class="{ 'px-4 pt-4': contentPadding }"
           >
             <CommonBreadcrumb :items="breadcrumbItems" />

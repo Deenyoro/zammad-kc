@@ -226,4 +226,48 @@ describe('SearchContent', () => {
       expect(wrapper.getByText('Customer Ticket')).toBeInTheDocument(),
     )
   })
+
+  it('only displays Action Button for ticket entity', async () => {
+    mockPermissions(['ticket.agent'])
+
+    mockTicketSearchResult(2, [
+      createSampleTicket(469, 'Ticket A'),
+      createSampleTicket(470, 'Ticket B'),
+    ])
+
+    mockSearchCountsQuery({
+      searchCounts: [
+        { model: EnumSearchableModels.Organization, totalCount: 100 },
+        { model: EnumSearchableModels.User, totalCount: 100 },
+      ],
+    })
+    const wrapper = renderSearchContent({ searchTerm: 'ticket' })
+
+    await waitForDetailSearchQueryCalls()
+    await waitForNextTick()
+
+    const checkboxes = wrapper.getAllByRole('checkbox', {
+      name: 'Select this entry',
+    })
+
+    await wrapper.events.click(checkboxes[0])
+
+    expect(
+      wrapper.getByRole('button', { name: 'Bulk Actions' }),
+    ).toBeInTheDocument()
+
+    await wrapper.events.click(
+      wrapper.getByRole('tab', { name: 'Organization 100' }),
+    )
+
+    expect(
+      wrapper.queryByRole('button', { name: 'Bulk Actions' }),
+    ).not.toBeInTheDocument()
+
+    await wrapper.events.click(wrapper.getByRole('tab', { name: 'User 100' }))
+
+    expect(
+      wrapper.queryByRole('button', { name: 'Bulk Actions' }),
+    ).not.toBeInTheDocument()
+  })
 })

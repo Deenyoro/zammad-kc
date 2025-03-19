@@ -294,8 +294,19 @@ const localHeaders = computed(() => {
 const { setOnSuccessCallback, checkedItemIds } = useTicketBulkEdit()
 
 setOnSuccessCallback(() => {
+  forceTicketsByOverviewCacheOnlyFirstPage(
+    ticketsQueryVariables.value,
+    lastFirstPageCollectionSignature,
+    queryPollingConfig.value.page_size,
+  )
+
   ticketsQuery.refetch({
+    pageSize: queryPollingConfig.value.page_size,
     renewCache: true,
+  })
+
+  requestAnimationFrame(() => {
+    scrollContainerElement.value?.scrollTo({ top: 0 })
   })
 })
 

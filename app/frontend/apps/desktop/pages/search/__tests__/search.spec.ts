@@ -5,8 +5,18 @@ import { waitFor, within } from '@testing-library/vue'
 import { getTestRouter } from '#tests/support/components/renderComponent.ts'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
+import { waitForNextTick } from '#tests/support/utils.ts'
 
-import { waitForDetailSearchQueryCalls } from '#desktop/components/Search/graphql/queries/detailSearch.mocks.ts'
+import { mockFormUpdaterQuery } from '#shared/components/Form/graphql/queries/formUpdater.mocks.ts'
+import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
+import { convertToGraphQLId } from '#shared/graphql/utils.ts'
+
+import {
+  mockDetailSearchQuery,
+  waitForDetailSearchQueryCalls,
+} from '#desktop/components/Search/graphql/queries/detailSearch.mocks.ts'
+import { waitForSearchCountsQueryCalls } from '#desktop/components/Search/graphql/queries/searchCounts.mocks.ts'
+import { waitForTicketUpdateBulkMutationCalls } from '#desktop/entities/ticket/graphql/mutations/updateBulk.mocks.ts'
 
 const visitSearchView = async (searchTerm = 'test') => {
   const view = await visitView(`/search/${searchTerm}`)
@@ -66,5 +76,180 @@ describe('search view', () => {
     })
 
     expect(view.getByRole('table')).toBeInTheDocument()
+  })
+
+  it('selects a ticket for bulk edit', async () => {
+    mockPermissions(['ticket.agent'])
+
+    const ticket = createDummyTicket()
+
+    mockDetailSearchQuery({
+      search: {
+        totalCount: 1,
+        items: [ticket],
+      },
+    })
+
+    mockFormUpdaterQuery({
+      formUpdater: {
+        fields: {
+          group_id: {
+            options: [
+              {
+                value: 2,
+                label: 'test group',
+              },
+            ],
+          },
+          owner_id: {
+            options: [
+              {
+                value: 3,
+                label: 'Test Admin Agent',
+              },
+            ],
+          },
+          state_id: {
+            options: [
+              {
+                value: 4,
+                label: 'closed',
+              },
+            ],
+          },
+          pending_time: {
+            show: false,
+          },
+        },
+      },
+    })
+
+    const { view } = await visitSearchView()
+
+    expect(
+      view.queryByRole('button', { name: 'Bulk Action' }),
+    ).not.toBeInTheDocument()
+
+    const mainContent = view.getByRole('main')
+
+    const checkboxes = within(mainContent).getAllByRole('checkbox', {
+      name: 'Select this entry',
+    })
+
+    await view.events.click(checkboxes[0])
+
+    await view.events.click(
+      await view.findByRole('button', { name: 'Bulk Actions' }),
+    )
+
+    expect(
+      await view.findByRole('complementary', { name: 'Tickets Bulk Edit' }),
+    ).toBeInTheDocument()
+
+    const ticketState = await view.findByLabelText('State')
+
+    await view.events.click(ticketState)
+
+    expect(await view.findByRole('menu')).toBeInTheDocument()
+
+    await view.events.click(view.getByRole('option', { name: 'closed' }))
+
+    await view.events.click(view.getByRole('button', { name: 'Apply' }))
+
+    const calls = await waitForTicketUpdateBulkMutationCalls()
+
+    expect(calls.at(-1)?.variables).toEqual({
+      input: {
+        article: null,
+        stateId: convertToGraphQLId('Ticket::State', 4),
+      },
+      ticketIds: [ticket.id],
+    })
+    expect(await waitForDetailSearchQueryCalls()).toHaveLength(2)
+    expect(await waitForSearchCountsQueryCalls()).toHaveLength(2)
+  })
+
+  it('resets checked tickets on text input', async () => {
+    mockPermissions(['ticket.agent'])
+
+    const ticket = createDummyTicket()
+
+    mockDetailSearchQuery({
+      search: {
+        totalCount: 1,
+        items: [ticket],
+      },
+    })
+
+    mockFormUpdaterQuery({
+      formUpdater: {
+        fields: {
+          group_id: {
+            options: [
+              {
+                value: 2,
+                label: 'test group',
+              },
+            ],
+          },
+          owner_id: {
+            options: [
+              {
+                value: 3,
+                label: 'Test Admin Agent',
+              },
+            ],
+          },
+          state_id: {
+            options: [
+              {
+                value: 4,
+                label: 'closed',
+              },
+            ],
+          },
+          pending_time: {
+            show: false,
+          },
+        },
+      },
+    })
+    const { view } = await visitSearchView()
+
+    await waitForDetailSearchQueryCalls()
+    await waitForNextTick()
+
+    const mainContent = view.getByRole('main')
+
+    const checkboxes = within(mainContent).getAllByRole('checkbox', {
+      name: 'Select this entry',
+    })
+
+    expect(
+      within(mainContent).queryByRole('checkbox', {
+        name: 'Deselect this entry',
+      }),
+    ).not.toBeInTheDocument()
+
+    await view.events.click(checkboxes[0])
+
+    expect(
+      await within(mainContent).findByRole('checkbox', {
+        name: 'Deselect this entry',
+      }),
+    ).toBeInTheDocument()
+
+    await view.events.type(
+      within(mainContent).getByRole('searchbox', { name: 'Search…' }),
+      'more text',
+    )
+
+    await waitFor(() =>
+      expect(
+        within(mainContent).queryByRole('checkbox', {
+          name: 'Deselect this entry',
+        }),
+      ).not.toBeInTheDocument(),
+    )
   })
 })

@@ -144,7 +144,10 @@ const tableAttributes = computed(() => {
 })
 
 const tableColumnLength = computed(
-  () => tableAttributes.value.length + (props.actions ? 1 : 0),
+  () =>
+    tableAttributes.value.length +
+    (props.actions ? 1 : 0) +
+    (props.hasCheckboxColumn ? 1 : 0),
 )
 
 const tableElement = useTemplateRef('table')

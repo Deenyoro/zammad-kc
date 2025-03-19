@@ -11,12 +11,17 @@ import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
+import { mockFormUpdaterQuery } from '#shared/components/Form/graphql/queries/formUpdater.mocks.ts'
 import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
 import { mockCurrentUserQuery } from '#shared/graphql/queries/currentUser.mocks.ts'
 import { EnumOrderDirection } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
-import { mockTicketsCachedByOverviewQuery } from '#desktop/entities/ticket/graphql/queries/ticketsCachedByOverview.mocks.ts'
+import { waitForTicketUpdateBulkMutationCalls } from '#desktop/entities/ticket/graphql/mutations/updateBulk.mocks.ts'
+import {
+  mockTicketsCachedByOverviewQuery,
+  waitForTicketsCachedByOverviewQueryCalls,
+} from '#desktop/entities/ticket/graphql/queries/ticketsCachedByOverview.mocks.ts'
 import {
   mockUserCurrentTicketOverviewsQuery,
   waitForUserCurrentTicketOverviewsQueryCalls,
@@ -439,88 +444,150 @@ describe('TicketOverviews', () => {
     })
   })
 
-  it('does not show bulk edit button when user is customer', async () => {
-    mockUserCurrentTicketOverviewsQuery({
-      userCurrentTicketOverviews: getDefaultOverviews(),
-    })
+  describe('bulk edit tickets', () => {
+    it('does not show bulk edit button when user is customer', async () => {
+      mockUserCurrentTicketOverviewsQuery({
+        userCurrentTicketOverviews: getDefaultOverviews(),
+      })
 
-    mockPermissions(['ticket.customer'])
+      mockPermissions(['ticket.customer'])
 
-    mockUserCurrent({
-      preferences: {
-        overviews_last_used: {
-          '1': '2021-06-01T00:00:00.000Z',
-          '2': '2021-06-01T00:00:00.000Z',
-        },
-      },
-    })
-
-    const view = await visitView('tickets/view/my_assigned')
-
-    expect(view.queryByRole('checkbox')).not.toBeInTheDocument()
-    expect(
-      view.queryByRole('button', { name: 'Bulk Actions' }),
-    ).not.toBeInTheDocument()
-  })
-
-  it('selects a ticket for bulk edit', async () => {
-    mockUserCurrentTicketOverviewsQuery({
-      userCurrentTicketOverviews: [
-        generateObjectData('Overview', {
-          id: convertToGraphQLId('Overview', 1),
-          name: 'My Assigned Tickets',
-          link: 'my_assigned',
-          prio: 4,
-          orderBy: 'created_at',
-          orderDirection: EnumOrderDirection.Ascending,
-          organizationShared: false,
-          outOfOffice: false,
-          active: true,
-        }),
-      ],
-    })
-
-    mockTicketsCachedByOverviewQuery({
-      ticketsCachedByOverview: generateObjectData('TicketConnection', {
-        totalCount: 1,
-        edges: [
-          {
-            cursor: 'MQ',
-            node: createDummyTicket(),
+      mockUserCurrent({
+        preferences: {
+          overviews_last_used: {
+            '1': '2021-06-01T00:00:00.000Z',
+            '2': '2021-06-01T00:00:00.000Z',
           },
-        ],
-        pageInfo: {
-          endCursor: '',
-          hasNextPage: false,
         },
-      }),
+      })
+
+      const view = await visitView('tickets/view/my_assigned')
+
+      expect(view.queryByRole('checkbox')).not.toBeInTheDocument()
+      expect(
+        view.queryByRole('button', { name: 'Bulk Actions' }),
+      ).not.toBeInTheDocument()
     })
 
-    mockUserCurrent({
-      permissions: {
-        names: ['ticket.agent'],
-      },
-      preferences: {
-        overviews_last_used: {},
-      },
+    it('selects a ticket for bulk edit', async () => {
+      mockUserCurrentTicketOverviewsQuery({
+        userCurrentTicketOverviews: [
+          generateObjectData('Overview', {
+            id: convertToGraphQLId('Overview', 1),
+            name: 'My Assigned Tickets',
+            link: 'my_assigned',
+            prio: 4,
+            orderBy: 'created_at',
+            orderDirection: EnumOrderDirection.Ascending,
+            organizationShared: false,
+            outOfOffice: false,
+            active: true,
+          }),
+        ],
+      })
+
+      const ticket = createDummyTicket()
+
+      mockTicketsCachedByOverviewQuery({
+        ticketsCachedByOverview: generateObjectData('TicketConnection', {
+          totalCount: 1,
+          edges: [
+            {
+              cursor: 'MQ',
+              node: ticket,
+            },
+          ],
+          pageInfo: {
+            endCursor: '',
+            hasNextPage: false,
+          },
+        }),
+      })
+
+      mockUserCurrent({
+        permissions: {
+          names: ['ticket.agent'],
+        },
+        preferences: {
+          overviews_last_used: {},
+        },
+      })
+
+      mockFormUpdaterQuery({
+        formUpdater: {
+          fields: {
+            group_id: {
+              options: [
+                {
+                  value: 2,
+                  label: 'test group',
+                },
+              ],
+            },
+            owner_id: {
+              options: [
+                {
+                  value: 3,
+                  label: 'Test Admin Agent',
+                },
+              ],
+            },
+            state_id: {
+              options: [
+                {
+                  value: 4,
+                  label: 'closed',
+                },
+              ],
+            },
+            pending_time: {
+              show: false,
+            },
+          },
+        },
+      })
+
+      const view = await visitView('tickets/view/my_assigned')
+
+      await waitForUserCurrentTicketOverviewsQueryCalls()
+
+      expect(
+        view.queryByRole('button', { name: 'Bulk Action' }),
+      ).not.toBeInTheDocument()
+
+      await view.events.click(
+        view.getByRole('checkbox', { name: 'Select this entry' }),
+      )
+
+      await view.events.click(
+        view.getByRole('button', { name: 'Bulk Actions' }),
+      )
+
+      expect(
+        await view.findByRole('complementary', { name: 'Tickets Bulk Edit' }),
+      ).toBeInTheDocument()
+
+      const ticketState = await view.findByLabelText('State')
+
+      await view.events.click(ticketState)
+
+      expect(await view.findByRole('menu')).toBeInTheDocument()
+
+      await view.events.click(view.getByRole('option', { name: 'closed' }))
+
+      await view.events.click(view.getByRole('button', { name: 'Apply' }))
+
+      const calls = await waitForTicketUpdateBulkMutationCalls()
+
+      expect(calls.at(-1)?.variables).toEqual({
+        input: {
+          article: null,
+          stateId: convertToGraphQLId('Ticket::State', 4),
+        },
+        ticketIds: [ticket.id],
+      })
+
+      expect(await waitForTicketsCachedByOverviewQueryCalls()).toHaveLength(2)
     })
-
-    const view = await visitView('tickets/view/my_assigned')
-
-    await waitForUserCurrentTicketOverviewsQueryCalls()
-
-    expect(
-      view.queryByRole('button', { name: 'Bulk Action' }),
-    ).not.toBeInTheDocument()
-
-    await view.events.click(
-      view.getByRole('checkbox', { name: 'Select this entry' }),
-    )
-
-    await view.events.click(view.getByRole('button', { name: 'Bulk Actions' }))
-
-    expect(
-      await view.findByRole('complementary', { name: 'Tickets Bulk Edit' }),
-    ).toBeInTheDocument()
   })
 })

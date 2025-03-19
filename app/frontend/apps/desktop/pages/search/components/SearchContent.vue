@@ -23,6 +23,8 @@ import {
   searchPluginByName,
   useSearchPlugins,
 } from '#desktop/components/Search/plugins/index.ts'
+import TicketBulkEditButton from '#desktop/components/Ticket/TicketBulkEditButton.vue'
+import { useTicketBulkEdit } from '#desktop/components/Ticket/TicketBulkEditFlyout/useTicketBulkEdit.ts'
 import { useElementScroll } from '#desktop/composables/useElementScroll.ts'
 import { usePage } from '#desktop/composables/usePage.ts'
 import { useTaskbarTab } from '#desktop/entities/user/current/composables/useTaskbarTab.ts'
@@ -92,9 +94,11 @@ watch(tabContext, (newValue) => {
   currentTaskbarTabUpdate(currentTaskbarTab.value, newValue)
 })
 
-const scrollContainer = useTemplateRef('scroll-container')
+const scrollContainerElement = useTemplateRef('scroll-container')
 
-const { reachedTop } = useElementScroll(scrollContainer as Ref<HTMLElement>)
+const { reachedTop } = useElementScroll(
+  scrollContainerElement as Ref<HTMLElement>,
+)
 
 const searchControlsInstance = useTemplateRef('search-controls')
 
@@ -253,7 +257,7 @@ const { sort, orderBy, orderDirection, isSorting } = useSorting(
   detailSearchQuery,
   undefined,
   undefined,
-  scrollContainer,
+  scrollContainerElement,
 )
 
 const offset = ref(0)
@@ -298,9 +302,21 @@ const fetchNextPage = async () => {
   }
 }
 
+const refetchQueries = () => {
+  detailSearchQuery.refetch({
+    limit: offset.value + PAGE_SIZE,
+  })
+  searchCountsQuery.refetch()
+}
+
+const { checkedItemIds, openBulkEditFlyout, setOnSuccessCallback } =
+  useTicketBulkEdit()
+
 watch(
   sanitizedSearchTerm,
   (newValue, oldValue) => {
+    if (newValue !== oldValue) checkedItemIds.value.clear()
+
     if (newValue && detailSearchQuery.isFirstRun()) {
       searchQueriesLoad()
       return
@@ -316,8 +332,11 @@ watch(
   { immediate: true },
 )
 
-watch(selectedEntity, (newValue, oldValue) => {
+watch(selectedEntity, (_, oldValue) => {
   currentSearchResult.value = undefined
+
+  checkedItemIds.value.clear()
+
   resetPagination({
     onlyIn: oldValue,
   })
@@ -342,12 +361,7 @@ const breadcrumbItems = computed(() => [
 
 const { pageInactive } = usePage({
   metaTitle: sanitizedSearchTerm,
-  onReactivate: () => {
-    detailSearchQuery.refetch({
-      limit: offset.value + PAGE_SIZE,
-    })
-    searchCountsQuery.refetch()
-  },
+  onReactivate: () => refetchQueries(),
 })
 
 watch(
@@ -360,6 +374,14 @@ watch(
     })
   },
 )
+
+setOnSuccessCallback(() => {
+  resetPagination()
+  refetchQueries()
+  requestAnimationFrame(() => {
+    scrollContainerElement.value?.scrollTo({ top: 0 })
+  })
+})
 </script>
 
 <template>
@@ -368,7 +390,13 @@ watch(
     no-scrollable
     :breadcrumb-items="breadcrumbItems"
   >
-    <template #headerRight></template>
+    <template #headerRight>
+      <TicketBulkEditButton
+        v-if="selectedEntity === EnumSearchableModels.Ticket"
+        :checked-ticket-ids="checkedItemIds"
+        @open-flyout="openBulkEditFlyout"
+      />
+    </template>
     <div
       class="flex h-full flex-col overflow-hidden"
       data-test-id="search-container"
@@ -401,7 +429,7 @@ watch(
           :max-items="MAX_ITEMS"
           :loading-new-page="loadingNewPage"
           :reached-scroll-top="reachedTop"
-          :scroll-container="scrollContainer"
+          :scroll-container="scrollContainerElement"
           :skeleton-loading-count="visibleSkeletonLoadingCount"
           @load-more="fetchNextPage"
           @sort="resort"

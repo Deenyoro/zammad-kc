@@ -12,6 +12,7 @@ export const mockUserCurrent = (mockUser: Partial<UserData> = {}) => {
     id: '123',
     internalId: 1,
     objectAttributeValues: [],
+    preferences: {},
     ...mockUser,
   }
 }
