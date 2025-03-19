@@ -21,15 +21,13 @@ module Gql::Mutations
     end
 
     def resolve(username:)
-      verify = Service::User::PasswordReset::Send.new(username: username)
-
-      begin
-        verify.execute
-      rescue Service::User::PasswordReset::Send::EmailError => e
-        return error_response({ message: e.message })
-      end
+      Service::User::PasswordReset::Send
+        .new(username: username)
+        .execute
 
       { success: true }
+    rescue Exceptions::UnprocessableEntity => e
+      error_response({ message: e.message })
     end
   end
 end

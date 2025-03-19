@@ -126,6 +126,22 @@ RSpec.describe Gql::Mutations::User::Signup, type: :graphql do
           expect(gql.result.error_message).to eq 'The request limit for this operation was exceeded.'
         end
       end
+
+      context 'with import mode' do
+        before do
+          Setting.set('import_mode', true)
+        end
+
+        it 'raises an error' do
+          gql.execute(query, variables: variables)
+
+          expect(gql.result.data).to include(
+            errors: include(
+              include(message: 'Could not create user and send verification email because import_mode setting is on.')
+            )
+          )
+        end
+      end
     end
   end
 end

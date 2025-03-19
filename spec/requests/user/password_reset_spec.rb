@@ -17,6 +17,15 @@ RSpec.describe 'User endpoint', authenticated_as: false, type: :request do
     end
   end
 
+  context 'when import_mode is on' do
+    before { Setting.set('import_mode', true) }
+
+    it 'returns failure' do
+      post api_v1_users_password_reset_path, params: { username: create(:user).login }, as: :json
+      expect(json_response).to include('error_human' => 'The email could not be sent to the user because import_mode setting is on.')
+    end
+  end
+
   # For the throttling, see config/initializers/rack_attack.rb.
   context 'when user resets password more than throttle allows', :rack_attack do
 

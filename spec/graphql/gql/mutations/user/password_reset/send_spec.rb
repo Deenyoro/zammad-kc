@@ -36,6 +36,22 @@ RSpec.describe Gql::Mutations::User::PasswordReset::Send, type: :graphql do
       end
     end
 
+    context 'with import mode' do
+      before do
+        Setting.set('import_mode', true)
+      end
+
+      it 'raises an error' do
+        gql.execute(query, variables: variables)
+
+        expect(gql.result.data).to include(
+          errors: include(
+            include(message: 'The email could not be sent to the user because import_mode setting is on.')
+          )
+        )
+      end
+    end
+
     context 'with existing user' do
       it 'sends a password reset link', :aggregate_failures do
         message = nil

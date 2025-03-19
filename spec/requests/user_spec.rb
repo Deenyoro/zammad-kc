@@ -1083,7 +1083,7 @@ RSpec.describe 'User', performs_jobs: true, type: :request do
 
           expect(response).to have_http_status(:ok)
           expect(json_response).to be_a(Hash)
-          expect(json_response['message']).to eq('failed')
+          expect(json_response['message']).to eq('ok')
         end
       end
 

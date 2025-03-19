@@ -411,19 +411,14 @@ curl http://localhost/api/v1/users/password_reset -v -u #{login}:#{password} -H 
   def password_reset_send
     raise Exceptions::UnprocessableEntity, 'username param needed!' if params[:username].blank?
 
-    send = Service::User::PasswordReset::Deprecated::Send.new(username: params[:username])
-
-    begin
-      send.execute
-    rescue Service::CheckFeatureEnabled::FeatureDisabledError => e
-      raise Exceptions::UnprocessableEntity, e.message
-    rescue Service::User::PasswordReset::Send::EmailError
-      render json: { message: 'failed' }, status: :ok
-      return
-    end
+    Service::User::PasswordReset::Deprecated::Send
+      .new(username: params[:username])
+      .execute
 
     # Result is always positive to avoid leaking of existing user accounts.
     render json: { message: 'ok' }, status: :ok
+  rescue Service::CheckFeatureEnabled::FeatureDisabledError => e
+    raise Exceptions::UnprocessableEntity, e.message
   end
 
 =begin

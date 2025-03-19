@@ -367,7 +367,7 @@ returns
     # try second lookup with email
     user ||= User.find_by(email: username.downcase.strip, active: true)
 
-    return if !user || !user.email
+    return if !user || user.email.blank?
 
     # Discard any possible previous tokens for safety reasons.
     Token.where(action: 'PasswordReset', user_id: user.id).destroy_all
