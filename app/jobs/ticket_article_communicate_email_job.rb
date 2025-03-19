@@ -45,6 +45,11 @@ class TicketArticleCommunicateEmailJob < ApplicationJob
     end
     channel = email_address.channel
 
+    if !channel.active
+      log_error(record, "Channel defined for email address id '#{email_address.id}' is not active!", channel)
+      return
+    end
+
     notification = false
     sender = Ticket::Article::Sender.lookup(id: record.sender_id)
     if sender['name'] == 'System'
