@@ -29,7 +29,7 @@ RSpec.describe 'Clues', authenticated_as: :agent, type: :system do
       visit 'dashboard'
 
       expect(page).to have_text('New Keyboard Shortcuts')
-      find('div.btn', text: 'Got it!').click
+      find('div.btn', text: 'Got it').click
 
       wait.until do
         agent.reload.preferences >= { 'intro' => true, 'keyboard_shortcuts_clues' => true }

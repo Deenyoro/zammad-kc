@@ -15145,3 +15145,58 @@ div.accounted-time-value {
     }
   }
 }
+
+.navbar-desktop-beta-switch {
+  position: relative;
+  padding: 10px 36px;
+  color: #38393e;
+  background-color: #b7dff2;
+  text-align: center;
+
+  @include phone {
+    .navigation:not(.is-not-collapsed) & {
+      display: none;
+    }
+  }
+
+  .dismiss-button {
+    @include bidi-style(right, 5px, left, 5px);
+
+    position: absolute;
+    top: 5px;
+    display: block;
+    padding: 5px;
+    color: #38393e;
+    cursor: pointer;
+
+    .icon-diagonal-cross {
+      display: block;
+      width: 7px;
+      height: 7px;
+    }
+  }
+
+  .horizontal-filters-switch {
+    display: inline-flex;
+
+    label {
+      flex-direction: row;
+      color: #38393e;
+      font-size: 14px;
+      letter-spacing: normal;
+      text-transform: none;
+
+      .zammad-switch {
+        @include bidi-style(margin-left, 5px, margin-right, 5px);
+      }
+    }
+  }
+
+  .learn-more-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: #38393e;
+    text-decoration: underline;
+    font-size: 12px;
+  }
+}

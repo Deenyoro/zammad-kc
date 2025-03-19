@@ -64,7 +64,7 @@ export const getCoreDesktopClasses: FormThemeExtension = (
     checkbox: {
       outer: 'leading-none',
       wrapper: 'inline-flex items-center cursor-pointer select-none',
-      label: 'mb-0 text-sm text-gray-100 dark:text-neutral-400',
+      label: 'mb-0! text-sm text-gray-100 dark:text-neutral-400',
       inner:
         'w-5 h-5 flex justify-center items-center ltr:mr-1 rtl:ml-1 formkit-label-hidden:m-0',
       input:

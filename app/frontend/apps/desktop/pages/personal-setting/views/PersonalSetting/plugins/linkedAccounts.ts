@@ -13,6 +13,7 @@ export default <PersonalSettingPlugin>{
   },
   route: {
     path: 'linked-accounts',
+    alias: '/profile/linked',
     name: 'PersonalSettingLinkedAccounts',
     component: () => import('../../PersonalSettingLinkedAccounts.vue'),
     level: 2,

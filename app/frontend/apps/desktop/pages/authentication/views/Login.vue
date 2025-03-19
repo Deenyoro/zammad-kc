@@ -23,6 +23,7 @@ import { useAuthenticationStore } from '#shared/stores/authentication.ts'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonPublicLinks from '#desktop/components/CommonPublicLinks/CommonPublicLinks.vue'
 import LayoutPublicPage from '#desktop/components/layout/LayoutPublicPage/LayoutPublicPage.vue'
+import { useNewBetaUi } from '#desktop/composables/useNewBetaUi.ts'
 import LoginThirdParty from '#desktop/pages/authentication/components/LoginThirdParty.vue'
 
 import { ensureAfterAuth } from '../after-auth/composable/useAfterAuthPlugins.ts'
@@ -155,6 +156,8 @@ const showPasswordLogin = computed(
     !hasEnabledProviders.value ||
     verifyTokenResult?.value,
 )
+
+const { switchValue, toggleBetaUiSwitch } = useNewBetaUi()
 </script>
 
 <template>
@@ -295,15 +298,25 @@ const showPasswordLogin = computed(
         }}
       </CommonLabel>
 
-      <!-- TODO: Remember the choice when we have a switch between the two desktop apps -->
-      <CommonLink
-        v-if="loginFlow.state === 'credentials'"
-        class="mt-3 text-sm"
-        link="/mobile"
-        external
-      >
-        {{ $t('Continue to mobile') }}
-      </CommonLink>
+      <div v-if="loginFlow.state === 'credentials'" class="mt-3">
+        <CommonLink
+          link="/mobile"
+          class="after:mx-2 after:inline-block after:font-medium after:text-neutral-500 after:content-['|'] last:after:content-none"
+          size="medium"
+          external
+        >
+          {{ $t('Continue to mobile') }}
+        </CommonLink>
+        <CommonLink
+          v-if="switchValue"
+          size="medium"
+          link="/"
+          external
+          @click="toggleBetaUiSwitch"
+        >
+          {{ $t('Switch to old interface') }}
+        </CommonLink>
+      </div>
       <CommonPublicLinks :screen="EnumPublicLinksScreen.Login" />
     </template>
   </LayoutPublicPage>

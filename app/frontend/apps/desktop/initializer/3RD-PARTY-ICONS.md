@@ -92,6 +92,7 @@
 - `assets/wrench.svg`
 - `assets/x-circle.svg`
 - `assets/x-lg.svg`
+- `assets/x.svg`
 
   - Author: The Bootstrap Authors
   - License: MIT

@@ -13,6 +13,7 @@ export default <PersonalSettingPlugin>{
   },
   route: {
     path: 'token-access',
+    alias: '/profile/token_access',
     name: 'PersonalSettingTokenAccess',
     component: () => import('../../PersonalSettingTokenAccess.vue'),
     level: 2,

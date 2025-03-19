@@ -89,6 +89,7 @@ export interface ConfigList {
   two_factor_authentication_method_authenticator_app?: boolean | null
   two_factor_authentication_method_security_keys?: boolean | null
   two_factor_authentication_recovery_codes?: boolean | null
+  ui_desktop_beta_switch: boolean
   ui_sidebar_open_ticket_indicator_colored?: boolean | null
   ui_table_group_by_show_count?: boolean | null
   ui_task_mananger_max_task_count: number

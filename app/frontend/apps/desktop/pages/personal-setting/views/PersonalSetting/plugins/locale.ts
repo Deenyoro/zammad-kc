@@ -11,6 +11,7 @@ export default <PersonalSettingPlugin>{
   },
   route: {
     path: 'locale',
+    alias: '/profile/language',
     name: 'PersonalSettingLocale',
     component: () => import('../../PersonalSettingLocale.vue'),
     level: 2,

@@ -5985,3 +5985,12 @@ Setting.create_if_not_exists(
   preferences: { online_service_disable: true },
   frontend:    false
 )
+
+Setting.create_if_not_exists(
+  title:       __('UI Desktop Beta Switch'),
+  name:        'ui_desktop_beta_switch',
+  area:        'UI::Desktop',
+  description: __('Allow users to switch automatically to the new desktop UI.'),
+  state:       false,
+  frontend:    true,
+)

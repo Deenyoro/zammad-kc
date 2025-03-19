@@ -493,6 +493,16 @@ Permission.create_if_not_exists(
   allow_signup: true,
 )
 
+Permission.create_if_not_exists(
+  name:         'user_preferences.beta_ui_switch',
+  label:        __('New Beta UI Switch'),
+  description:  __('Manage access to new beta UI switch.'),
+  preferences:  {
+    prio: 1710,
+  },
+  allow_signup: true,
+)
+
 admin = Role.find_by(name: 'Admin')
 admin.permission_grant('user_preferences')
 admin.permission_grant('admin')

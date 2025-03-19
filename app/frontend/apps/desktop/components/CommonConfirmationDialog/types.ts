@@ -8,6 +8,6 @@ export interface ConfirmationVariantOptions {
   content: string
   footerActionOptions: Pick<
     ActionFooterProps,
-    'actionLabel' | 'actionButton' | 'cancelLabel'
+    'actionLabel' | 'actionButton' | 'cancelLabel' | 'hideCancelButton'
   >
 }

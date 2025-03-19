@@ -11,6 +11,7 @@ export default <PersonalSettingPlugin>{
   },
   route: {
     path: 'calendar-subscriptions',
+    alias: '/profile/calendar_subscriptions',
     name: 'PersonalSettingCalendar',
     component: () => import('../../PersonalSettingCalendar.vue'),
     level: 2,

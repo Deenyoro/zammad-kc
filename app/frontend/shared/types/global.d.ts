@@ -8,7 +8,6 @@ declare type ID = string
 
 declare global {
   interface Window {
-    Router: import('vue-router').Router
     __(source: string): string
     setLogLevel(level: LogLevel, persistent: boolean): void
     setQueryPollingConfig(
@@ -17,7 +16,6 @@ declare global {
   }
 }
 
-declare const Router: import('vue-router').Router
 declare function __(source: string): string
 declare function setLogLevel(level: LogLevel, persistent: boolean): void
 

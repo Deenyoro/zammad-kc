@@ -42,6 +42,7 @@ import { buildFormKitPluginConfig } from '#shared/form/index.ts'
 import { i18n } from '#shared/i18n.ts'
 import applicationConfigPlugin from '#shared/plugins/applicationConfigPlugin.ts'
 import tooltip from '#shared/plugins/directives/tooltip/index.ts'
+import { setCurrentRouter } from '#shared/router/router.ts'
 import { initializeWalker } from '#shared/router/walker.ts'
 import type { AppName } from '#shared/types/app.ts'
 import type { FormFieldTypeImportModules } from '#shared/types/form.ts'
@@ -257,11 +258,7 @@ const initializeRouter = (
 
   routerBeforeGuards?.forEach((guard) => router.beforeEach(guard))
 
-  Object.defineProperty(globalThis, 'Router', {
-    value: router,
-    writable: true,
-    configurable: true,
-  })
+  setCurrentRouter(router)
 
   ensureRouterSpy()
 

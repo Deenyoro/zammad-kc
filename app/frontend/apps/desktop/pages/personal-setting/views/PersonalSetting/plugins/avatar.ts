@@ -11,6 +11,7 @@ export default <PersonalSettingPlugin>{
   },
   route: {
     path: 'avatar',
+    alias: '/profile/avatar',
     name: 'PersonalSettingAvatar',
     component: () => import('../../PersonalSettingAvatar.vue'),
     level: 2,

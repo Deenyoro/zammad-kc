@@ -75,6 +75,7 @@ const confirmationVariant = computed<ConfirmationVariantOptions>(() => {
               currentConfirmationOptions.value?.buttonVariant || 'primary',
           },
           cancelLabel: currentConfirmationOptions.value?.cancelLabel,
+          hideCancelButton: currentConfirmationOptions.value?.hideCancelButton,
         },
       }
   }

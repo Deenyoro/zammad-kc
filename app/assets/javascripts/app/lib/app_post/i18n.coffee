@@ -277,6 +277,7 @@ class _i18nSingleton extends Spine.Module
         .replace(/_(.+?)_/gm, '<u>$1</u>')
         .replace(/\/\/(.+?)\/\//gm, '<del>$1</del>')
         .replace(/§(.+?)§/gm, '<kbd>$1</kbd>')
+        .replace(/¶/gm, '<br>')
 
     # search %s|%l
     if args

@@ -11,6 +11,7 @@ export default <PersonalSettingPlugin>{
   },
   route: {
     path: 'notifications',
+    alias: '/profile/notifications',
     name: 'PersonalSettingNotifications',
     component: () => import('../../PersonalSettingNotifications.vue'),
     level: 1,

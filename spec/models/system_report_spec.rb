@@ -225,6 +225,7 @@ RSpec.describe SystemReport, current_user_id: 1, type: :model do
           'checklist',
           'auto_shutdown',
           'language_detection_article',
+          'ui_desktop_beta_switch',
         ]
       end
 

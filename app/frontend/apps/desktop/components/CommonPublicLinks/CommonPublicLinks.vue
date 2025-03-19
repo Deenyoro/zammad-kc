@@ -21,7 +21,7 @@ const { links } = usePublicLinks(props.screen)
         :link="link.link"
         :title="link.description"
         :open-in-new-tab="link.newTab"
-        class="text-sm text-blue-800 after:ml-2 after:font-medium after:text-neutral-500 after:content-['|'] last:after:content-none"
+        class="text-sm text-blue-800 after:ms-2 after:font-medium after:text-neutral-500 after:content-['|'] last:after:content-none"
       >
         {{ $t(link.title) }}
       </CommonLink>

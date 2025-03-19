@@ -11,6 +11,7 @@ export default <PersonalSettingPlugin>{
   },
   route: {
     path: 'ticket-overviews',
+    alias: '/profile/overviews',
     name: 'PersonalSettingOverviews',
     component: () => import('../../PersonalSettingOverviews.vue'),
     level: 2,

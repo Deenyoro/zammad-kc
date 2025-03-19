@@ -13,6 +13,7 @@ export default <PersonalSettingPlugin>{
   },
   route: {
     path: 'password',
+    alias: '/profile/password',
     name: 'PersonalSettingPassword',
     component: () => import('../../PersonalSettingPassword.vue'),
     level: 2,

@@ -11,6 +11,7 @@ export default <PersonalSettingPlugin>{
   },
   route: {
     path: 'devices',
+    alias: '/profile/devices',
     name: 'PersonalSettingDevices',
     component: () => import('../../PersonalSettingDevices.vue'),
     level: 2,

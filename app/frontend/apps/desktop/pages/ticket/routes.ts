@@ -10,7 +10,11 @@ const route: RouteRecordRaw[] = [
     name: 'TicketCreate',
     props: true,
     component: () => import('./views/TicketCreate.vue'),
-    alias: ['/ticket/create/:tabId?', '/ticket/create/:pathMatch(.*)*'],
+    alias: [
+      '/ticket/create/:tabId?',
+      '/ticket/create/id/:tabId?',
+      '/ticket/create/:pathMatch(.*)*',
+    ],
     meta: {
       title: __('New Ticket'),
       requiresAuth: true,
