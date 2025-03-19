@@ -55,7 +55,9 @@ export const useCheckBodyAttachmentReference = () => {
       },
     )
 
-    return confirmed
+    // In case the user clicked outside the confirmation dialog or closed it in another way,
+    //  we would like to abort the submit of the related form.
+    return confirmed === undefined ? true : confirmed
   }
 
   return {

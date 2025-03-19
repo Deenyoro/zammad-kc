@@ -45,6 +45,9 @@ export const handleMockFormUpdaterQuery = (additionalProperties = {}) =>
             { value: 3, label: 'pending reminder' },
           ],
         },
+        pending_time: {
+          show: false,
+        },
         ...additionalProperties,
       },
     },

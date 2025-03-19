@@ -70,7 +70,11 @@ describe('ticket create view', async () => {
     })
 
     it('prevents submission on incomplete form', async () => {
-      handleMockFormUpdaterQuery()
+      handleMockFormUpdaterQuery({
+        pending_time: {
+          show: true,
+        },
+      })
 
       const view = await visitView('/ticket/create')
 
@@ -84,7 +88,11 @@ describe('ticket create view', async () => {
     })
 
     it('creates a new ticket', async () => {
-      handleMockFormUpdaterQuery()
+      handleMockFormUpdaterQuery({
+        pending_time: {
+          show: true,
+        },
+      })
 
       const view = await visitView('/ticket/create')
 
@@ -296,7 +304,11 @@ describe('ticket create view', async () => {
     })
 
     it('prevents submission on incomplete form', async () => {
-      handleMockFormUpdaterQuery()
+      handleMockFormUpdaterQuery({
+        pending_time: {
+          show: true,
+        },
+      })
 
       const view = await visitView('/ticket/create')
 
@@ -395,6 +407,58 @@ describe('ticket create view', async () => {
           }),
         }),
       )
+    })
+
+    it('shows alert for missing attachments', async () => {
+      handleMockFormUpdaterQuery()
+
+      const view = await visitView('/ticket/create')
+
+      await view.events.type(await view.findByLabelText('Title'), 'Test Ticket')
+
+      // Customer field
+      await handleCustomerMock(view)
+
+      handleMockUserQuery()
+
+      await view.events.click(
+        view.getByRole('option', {
+          name: 'Avatar (Nicole Braun) Nicole Braun – Zammad Foundation',
+        }),
+      )
+
+      // Text field
+      await view.events.type(
+        view.getByRole('textbox', { name: 'Text' }),
+        'Test ticket text. See attachment.',
+      )
+
+      // Group field
+      await view.events.click(view.getByLabelText('Group'))
+      await view.events.click(view.getByRole('option', { name: 'Users' }))
+
+      // Priority Field
+      await view.events.click(view.getByLabelText('Priority'))
+      await view.events.click(view.getByRole('option', { name: '2 normal' }))
+
+      // State field
+      await view.events.click(view.getByLabelText('State'))
+      await view.events.click(view.getByRole('option', { name: 'new' }))
+
+      // Submission
+      await view.events.click(view.getByRole('button', { name: 'Create' }))
+
+      const dialog = await view.findByRole('dialog', {
+        name: 'Confirmation',
+      })
+      expect(dialog).toBeInTheDocument()
+
+      const dialogView = within(dialog)
+      expect(
+        dialogView.getByText(
+          'Did you plan to include attachments with this message?',
+        ),
+      ).toBeInTheDocument()
     })
   })
 

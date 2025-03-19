@@ -10,6 +10,7 @@ import type {
   FormSubmitData,
 } from '#shared/components/Form/types.ts'
 import { getNodeByName } from '#shared/components/Form/utils.ts'
+import { useCheckBodyAttachmentReference } from '#shared/composables/form/useCheckBodyAttachmentReference.ts'
 import { useObjectAttributeFormData } from '#shared/entities/object-attributes/composables/useObjectAttributeFormData.ts'
 import { useObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
 import { useTicketUpdateMutation } from '#shared/entities/ticket/graphql/mutations/update.api.ts'
@@ -146,6 +147,11 @@ export const useTicketEdit = (
     }
   }
 
+  const {
+    missingBodyAttachmentReference,
+    bodyAttachmentReferenceConfirmation,
+  } = useCheckBodyAttachmentReference()
+
   const editTicket = async (
     formData: FormSubmitData<TicketUpdateFormData>,
     meta?: TicketUpdateMetaInput,
@@ -156,13 +162,25 @@ export const useTicketEdit = (
       formData.owner_id = 1
     }
 
-    const { internalObjectAttributeValues, additionalObjectAttributeValues } =
-      useObjectAttributeFormData(ticketObjectAttributesLookup.value, formData)
-
     const formArticle = formData.article as
       | TicketArticleReceivedFormValues
       | undefined
+
+    if (
+      formArticle &&
+      missingBodyAttachmentReference(
+        formArticle?.body,
+        formArticle?.attachments,
+      ) &&
+      (await bodyAttachmentReferenceConfirmation())
+    ) {
+      return undefined
+    }
+
     const article = processArticle(form.value.formId, formArticle)
+
+    const { internalObjectAttributeValues, additionalObjectAttributeValues } =
+      useObjectAttributeFormData(ticketObjectAttributesLookup.value, formData)
 
     const ticketMeta = meta || {}
 
