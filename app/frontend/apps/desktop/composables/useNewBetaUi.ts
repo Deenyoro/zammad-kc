@@ -27,10 +27,10 @@ export const useNewBetaUi = () => {
       !dismissValue.value,
   )
 
-  const toggleBetaUiSwitch = () => {
+  const toggleBetaUiSwitch = (redirectTo = '/') => {
     switchValue.value = undefined
 
-    window.location.href = '/'
+    window.location.href = redirectTo
   }
 
   const dismissBetaUiSwitch = () => {

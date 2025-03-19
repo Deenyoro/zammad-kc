@@ -16,13 +16,13 @@ const { toggleBetaUiSwitch, toggleDismissBetaUiSwitch, dismissValue } =
 
 <template>
   <LayoutContent :breadcrumb-items="breadcrumbItems" width="full">
-    <div class="my-4 flex flex-col gap-4">
+    <div class="mb-2 flex flex-col gap-4">
       <FormKit
         type="toggle"
         :label="__('Display Zammad with the New BETA User Interface')"
         :value="true"
         :variants="{ true: 'True', false: 'False' }"
-        @input-raw="toggleBetaUiSwitch"
+        @input-raw="toggleBetaUiSwitch()"
       />
       <FormKit
         type="checkbox"

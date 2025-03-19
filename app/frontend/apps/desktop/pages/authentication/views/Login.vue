@@ -312,7 +312,7 @@ const { switchValue, toggleBetaUiSwitch } = useNewBetaUi()
           size="medium"
           link="/"
           external
-          @click="toggleBetaUiSwitch"
+          @click="toggleBetaUiSwitch()"
         >
           {{ $t('Switch to old interface') }}
         </CommonLink>

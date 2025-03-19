@@ -39,7 +39,7 @@ const { betaUiSwitchEnabled, toggleBetaUiSwitch, dismissBetaUiSwitch } =
           :variants="{ true: 'True', false: 'False' }"
           wrapper-class="!flex-row"
           label-class="!text-white truncate"
-          @input-raw="toggleBetaUiSwitch"
+          @input-raw="toggleBetaUiSwitch()"
         />
         <!-- <CommonLink class="truncate text-white" link="#" size="small">
           {{ $t('Send Feedback') }}
