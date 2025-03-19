@@ -106,7 +106,7 @@ class Channel::Driver::Pop3 < Channel::Driver::BaseEmailInbound
     if message_validator.fresh_verify_message?
       Rails.logger.info "  - ignore message #{count}/#{count_all} - because message has a verify message"
 
-      return MessageResult.new(sucess: false)
+      return MessageResult.new(success: false)
     end
 
     # do not process too large messages, instead download and send postmaster reply

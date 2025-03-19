@@ -247,19 +247,19 @@ returns
       return MessageResult.new(success: false, after_action: [:result_error, notice])
     end
 
-    return MessageResult.new(sucess: false) if message_meta.nil?
+    return MessageResult.new(success: false) if message_meta.nil?
 
     message_validator = MessageValidator.new(self.class.extract_rfc822_headers(message_meta), message_meta.attr['RFC822.SIZE'])
 
     if message_validator.fresh_verify_message?
       Rails.logger.info "  - ignore message #{count}/#{count_all} - because message has a verify message"
 
-      return MessageResult.new(sucess: false)
+      return MessageResult.new(success: false)
     end
 
     # ignore deleted messages
     if deleted?(message_meta, count, count_all)
-      return MessageResult.new(sucess: false)
+      return MessageResult.new(success: false)
     end
 
     # ignore already imported
@@ -269,7 +269,7 @@ returns
       end
       Rails.logger.info "  - ignore message #{count}/#{count_all} - because message message id already imported"
 
-      return MessageResult.new(sucess: false)
+      return MessageResult.new(success: false)
     end
 
     # delete email from server after article was created
@@ -284,7 +284,7 @@ returns
     end
 
     if !msg
-      return MessageResult.new(sucess: false)
+      return MessageResult.new(success: false)
     end
 
     # do not process too big messages, instead download & send postmaster reply
