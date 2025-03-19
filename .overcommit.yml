@@ -82,6 +82,14 @@ PreCommit:
       - '**/*.js'
       - '**/*.ts'
       - '**/*.vue'
+  Markdownlint:
+    required_executable: 'pnpm'
+    enabled: true
+    command: ['pnpm', 'lint:md:cmd']
+    flags: ['*.md', 'doc/**/*.md']
+    include:
+      - '*.md'
+      - 'doc/**/*.md'
 
 PostCheckout:
   ALL:

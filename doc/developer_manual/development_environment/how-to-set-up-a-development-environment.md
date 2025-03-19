@@ -84,6 +84,9 @@ To ensure a well-readable and maintainable code base, we're using linting tools 
 - [CoffeeLint](http://www.coffeelint.org/)
 - [Stylelint](https://stylelint.io/)
 - [ESLint](https://eslint.org/)
+- [Markdownlint](https://github.com/DavidAnson/markdownlint)
+
+There is also a dependency on [Docker](https://www.docker.com/) for some linting tasks, make sure it's available on your system.
 
 For Linux and macOS:
 
