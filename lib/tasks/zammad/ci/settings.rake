@@ -8,6 +8,12 @@ namespace :zammad do
     task :settings, [:elasticsearch] => :environment do |_task, args|
       Setting.set('developer_mode', true)
       Setting.set('chat_agent_idle_timeout', '45')
+
+      Setting.set('image_backend', '')
+      Setting.set('geo_ip_backend', '')
+      Setting.set('geo_location_backend', '')
+      Setting.set('geo_calendar_backend', '')
+
       Scheduler.find_by(method: 'SessionTimeoutJob.perform_now').update!(active: false)
 
       next if args[:elasticsearch] != 'with_elasticsearch'
