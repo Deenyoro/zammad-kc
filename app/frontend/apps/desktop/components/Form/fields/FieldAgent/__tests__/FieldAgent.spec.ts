@@ -7,6 +7,7 @@ import { getByTestId, waitFor } from '@testing-library/vue'
 import { renderComponent } from '#tests/support/components/index.ts'
 import { nullableMock, waitForNextTick } from '#tests/support/utils.ts'
 
+import logo from '#shared/components/CommonUserAvatar/assets/logo.svg'
 import {
   mockAutocompleteSearchAgentQuery,
   waitForAutocompleteSearchAgentQueryCalls,
@@ -183,8 +184,7 @@ describe('Form - Field - Agent - Query', () => {
 
     // User with ID 1 should show the logo.
     expect(getByTestId(selectOptions[0], 'common-avatar')).toHaveStyle({
-      'background-image':
-        'url(/app/frontend/shared/components/CommonUserAvatar/assets/logo.svg)',
+      backgroundImage: `url(/${logo})`,
     })
 
     await wrapper.events.click(wrapper.getByLabelText('Clear Search'))
