@@ -3,7 +3,7 @@
 require_relative 'set_up'
 
 CAPYBARA_PORT = ENV['CAPYBARA_PORT'] || 3001
-CAPYBARA_HOSTNAME = ENV['CI'].present? ? 'build' : 'localhost'
+CAPYBARA_HOSTNAME = ENV['CAPYBARA_HOSTNAME'] || (ENV['CI'].present? ? 'build' : 'localhost')
 
 RSpec.configure do |config|
 
