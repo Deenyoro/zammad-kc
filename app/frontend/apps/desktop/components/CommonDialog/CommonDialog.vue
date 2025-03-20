@@ -11,6 +11,7 @@ import { getFirstFocusableElement } from '#shared/utils/getFocusableElements.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonOverlayContainer from '#desktop/components/CommonOverlayContainer/CommonOverlayContainer.vue'
+import { getRouteIdentifier } from '#desktop/composables/useOverlayContainer.ts'
 
 import CommonDialogActionFooter, {
   type Props as ActionFooterProps,
@@ -48,12 +49,14 @@ const emit = defineEmits<{
   close: [cancel?: boolean]
 }>()
 
-const { path } = useRoute()
+const routeIdentifier = getRouteIdentifier(useRoute())
 
 const router = useRouter()
 
 const isActive = computed(() =>
-  props.fullscreen ? true : path === router.currentRoute.value.path,
+  props.fullscreen
+    ? true
+    : routeIdentifier === getRouteIdentifier(router.currentRoute.value),
 )
 
 const dialogElement = useTemplateRef<HTMLElement>('dialog')

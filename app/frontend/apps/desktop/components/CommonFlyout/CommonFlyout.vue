@@ -33,6 +33,7 @@ import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonOverlayContainer from '#desktop/components/CommonOverlayContainer/CommonOverlayContainer.vue'
 import ResizeLine from '#desktop/components/ResizeLine/ResizeLine.vue'
 import { useResizeLine } from '#desktop/components/ResizeLine/useResizeLine.ts'
+import { getRouteIdentifier } from '#desktop/composables/useOverlayContainer.ts'
 
 import CommonFlyoutActionFooter from './CommonFlyoutActionFooter.vue'
 import { closeFlyout } from './useFlyout.ts'
@@ -88,12 +89,14 @@ const emit = defineEmits<{
   activated: []
 }>()
 
-const { path } = useRoute()
+const routeIdentifier = getRouteIdentifier(useRoute())
 
 const router = useRouter()
 
 const isActive = computed(() =>
-  props.fullscreen ? true : path === router.currentRoute.value.path,
+  props.fullscreen
+    ? true
+    : routeIdentifier === getRouteIdentifier(router.currentRoute.value),
 )
 
 whenever(isActive, () => {

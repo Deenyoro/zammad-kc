@@ -25,3 +25,12 @@ declare function setQueryPollingConfig(
 
 // TODO: Workaround for current problem with formkit version, remove when fixed
 declare module '@formkit/themes'
+
+// Workaround for spark-md5 not having proper type definitions.
+declare module 'spark-md5' {
+  interface SparkMD5 {
+    hash: (str: string) => string
+  }
+  const SparkMD5: SparkMD5
+  export = SparkMD5
+}

@@ -5,6 +5,8 @@ import { useRoute } from 'vue-router'
 
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
 
+import { getRouteIdentifier } from '#desktop/composables/useOverlayContainer.ts'
+
 import { closeDialog, useDialog } from '../CommonDialog/useDialog.ts'
 
 const confirmationDialogPerRoute = new Map<string, Set<string>>()
@@ -21,12 +23,12 @@ export const initializeConfirmationDialog = () => {
     afterClose: (uniqueId) => {
       if (!uniqueId) return
 
-      const dialogs = confirmationDialogPerRoute.get(route.path)
+      const dialogs = confirmationDialogPerRoute.get(getRouteIdentifier(route))
       if (!dialogs) return
 
       dialogs.delete(uniqueId)
       if (dialogs.size === 0) {
-        confirmationDialogPerRoute.delete(route.path)
+        confirmationDialogPerRoute.delete(getRouteIdentifier(route))
       }
     },
   })
@@ -34,10 +36,15 @@ export const initializeConfirmationDialog = () => {
   watch(triggerConfirmation, () => {
     if (!lastConfirmationUuid.value) return
 
-    if (!confirmationDialogPerRoute.has(route.path)) {
-      confirmationDialogPerRoute.set(route.path, new Set<string>())
+    if (!confirmationDialogPerRoute.has(getRouteIdentifier(route))) {
+      confirmationDialogPerRoute.set(
+        getRouteIdentifier(route),
+        new Set<string>(),
+      )
     }
-    confirmationDialogPerRoute.get(route.path)!.add(lastConfirmationUuid.value)
+    confirmationDialogPerRoute
+      .get(getRouteIdentifier(route))!
+      .add(lastConfirmationUuid.value)
 
     confirmationDialog.open({
       uniqueId: lastConfirmationUuid.value,
