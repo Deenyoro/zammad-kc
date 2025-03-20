@@ -1,7 +1,9 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import gql from 'graphql-tag'
 import { computed, inject, provide, ref } from 'vue'
 
+import { getApolloClient } from '#shared/server/apollo/client.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 
 import { useFlyout } from '../../CommonFlyout/useFlyout.ts'
@@ -18,7 +20,30 @@ export const useTicketBulkEdit = () => {
 
   if (injectBulkEdit) return injectBulkEdit
 
-  const checkedItemIds = ref<Set<ID>>(new Set())
+  const apolloClient = getApolloClient()
+
+  const checkedTicketIds = ref<Set<ID>>(new Set())
+
+  const ticketIds = computed<ID[]>(() =>
+    Array.from(checkedTicketIds.value.keys()),
+  )
+
+  const groupIds = computed(() =>
+    ticketIds.value.map((ticketId) => {
+      const cache = apolloClient.cache.readFragment<{ group: { id: ID } }>({
+        id: `Ticket:${ticketId}`,
+        fragment: gql`
+          fragment groupId on Ticket {
+            id
+            group {
+              id
+            }
+          }
+        `,
+      })
+      return cache?.group.id ?? ''
+    }),
+  )
 
   const { hasPermission } = useSessionStore()
 
@@ -36,9 +61,10 @@ export const useTicketBulkEdit = () => {
 
   const openBulkEditFlyout = () => {
     open({
-      ticketIds: checkedItemIds,
+      ticketIds,
+      groupIds,
       onSuccess: () => {
-        checkedItemIds.value.clear()
+        checkedTicketIds.value.clear()
         onSuccessCallback?.()
       },
     })
@@ -46,7 +72,7 @@ export const useTicketBulkEdit = () => {
 
   const provideBulkEdit = {
     bulkEditActive,
-    checkedItemIds,
+    checkedTicketIds,
     openBulkEditFlyout,
     setOnSuccessCallback: (callback: () => void) => {
       onSuccessCallback = callback

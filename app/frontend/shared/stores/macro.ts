@@ -41,7 +41,7 @@ export const useMacroStore = defineStore('macro', () => {
 
     if (!macroId && !removeMacroId) return
 
-    const refetchFor: Record<string, boolean> = {}
+    const refetchFor: Set<ID | ID[]> = new Set()
 
     queryByUsageKey.forEach((query) => {
       const macros = query.operationResult.result.value?.macros
@@ -52,21 +52,27 @@ export const useMacroStore = defineStore('macro', () => {
       )
         return
 
-      const { groupId } = toValue(query.operationResult.variables) ?? {}
+      const { groupIds: inputGroupIds } =
+        toValue(query.operationResult.variables) ?? {}
 
       // Skip refetching of duplicate queries with the same group ID.
-      if (!groupId || refetchFor[groupId]) return
+      if (!inputGroupIds || refetchFor.has(inputGroupIds)) return
+
       if (
         groupIds &&
         groupIds.length &&
-        !groupIds.includes(groupId) &&
+        !groupIds.some((id) =>
+          Array.isArray(inputGroupIds)
+            ? inputGroupIds.includes(id)
+            : inputGroupIds === id,
+        ) &&
         !macros.find((macro) => macro.id === macroId)
       )
         return
 
       query.refetch()
 
-      refetchFor[groupId] = true
+      refetchFor.add(inputGroupIds)
     })
   })
 

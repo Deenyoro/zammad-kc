@@ -8,7 +8,7 @@ import { useSessionStore } from '#shared/stores/session.ts'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 
 interface Props {
-  checkedTicketIds: Set<string>
+  checkedTicketIds: Set<ID>
 }
 
 defineProps<Props>()
@@ -26,7 +26,6 @@ const isAgentUser = computed(() => hasPermission('ticket.agent'))
   <CommonButton
     v-if="isAgentUser && checkedTicketIds.size"
     data-test-id="ticket-bulk-edit-button"
-    :class="{ visible: checkedTicketIds.size }"
     size="medium"
     prefix-icon="collection-play"
     variant="primary"

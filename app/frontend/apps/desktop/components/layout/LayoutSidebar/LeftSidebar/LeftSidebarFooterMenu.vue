@@ -45,7 +45,7 @@ const { betaUiSwitchEnabled, toggleBetaUiSwitch, dismissBetaUiSwitch } =
           {{ $t('Send Feedback') }}
         </CommonLink> -->
         <CommonIcon
-          class="absolute end-3"
+          class="absolute end-3 text-white"
           name="x"
           :fixed-size="{ width: 16, height: 16 }"
           role="button"

@@ -32,7 +32,7 @@ const { goToItem, goToItemLinkColumn, loadMore, resort, storageKeyId } =
 
 const { config } = storeToRefs(useApplicationStore())
 
-const { bulkEditActive, checkedItemIds } = useTicketBulkEdit()
+const { bulkEditActive, checkedTicketIds } = useTicketBulkEdit()
 </script>
 
 <template>
@@ -51,7 +51,7 @@ const { bulkEditActive, checkedItemIds } = useTicketBulkEdit()
 
   <div v-else-if="items.length">
     <CommonAdvancedTable
-      v-model:checked-item-ids="checkedItemIds"
+      v-model:checked-item-ids="checkedTicketIds"
       :has-checkbox-column="bulkEditActive"
       :caption="caption"
       :object="EnumObjectManagerObjects.Ticket"

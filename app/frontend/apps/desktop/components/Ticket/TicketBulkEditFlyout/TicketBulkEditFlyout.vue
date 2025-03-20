@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
+import { computed, reactive, toRef } from 'vue'
 
 import {
   NotificationTypes,
@@ -12,6 +12,10 @@ import Form from '#shared/components/Form/Form.vue'
 import type { FormSubmitData } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
 import { getNodeByName } from '#shared/components/Form/utils.ts'
+import {
+  useMacros,
+  useTicketMacros,
+} from '#shared/entities/macro/composables/useMacros.ts'
 import { useObjectAttributeFormData } from '#shared/entities/object-attributes/composables/useObjectAttributeFormData.ts'
 import { useObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
 import { getTicketNumberWithHook } from '#shared/entities/ticket/composables/getTicketNumber.ts'
@@ -32,15 +36,17 @@ import MutationHandler from '#shared/server/apollo/handler/MutationHandler.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import type { MutationSendError } from '#shared/types/error.ts'
 
+import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonFlyout from '#desktop/components/CommonFlyout/CommonFlyout.vue'
+import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
+import SplitButton from '#desktop/components/SplitButton/SplitButton.vue'
 import { useTicketUpdateBulkMutation } from '#desktop/entities/ticket/graphql/mutations/updateBulk.api.ts'
 
 import { closeFlyout } from '../../CommonFlyout/useFlyout.ts'
 
-import type { ActionFooterOptions } from '../../CommonFlyout/types.ts'
-
 interface Props {
-  ticketIds: Set<ID>
+  ticketIds: ID[]
+  groupIds: ID[]
 }
 
 const props = defineProps<Props>()
@@ -49,18 +55,11 @@ const emit = defineEmits<{
   success: []
 }>()
 
-const { form, formSetErrors } = useForm()
+const application = useApplicationStore()
+
+const { form, formSetErrors, formNodeId, formSubmit } = useForm()
 
 const flyoutName = 'tickets-bulk-edit'
-
-const footerActionOptions = computed<ActionFooterOptions>(() => ({
-  actionButton: {
-    variant: 'submit',
-    type: 'submit',
-  },
-  actionLabel: __('Apply'),
-  form: form.value,
-}))
 
 const formSchema = defineFormSchema([
   {
@@ -202,7 +201,21 @@ const processBulkEditArticle = (
   }
 }
 
-const application = useApplicationStore()
+const { macros } = useMacros(toRef(props, 'groupIds'))
+const { activeMacro, executeMacro, disposeActiveMacro } =
+  useTicketMacros(formSubmit)
+
+const macroMenuItems = computed<MenuItem[]>(
+  () =>
+    macros.value?.map((macro) => ({
+      key: macro.id,
+      label: macro.name,
+      groupLabel: __('Macros'),
+      icon: 'play-circle',
+      iconClass: 'text-yellow-300',
+      onClick: () => executeMacro(macro),
+    })) ?? [],
+)
 
 const bulkEditTickets = async (
   formData: FormSubmitData<TicketBulkEditFormData>,
@@ -225,11 +238,12 @@ const bulkEditTickets = async (
 
   try {
     const result = await updateBulkMutation.send({
-      ticketIds: Array.from(props.ticketIds),
+      ticketIds: props.ticketIds,
       input: {
         ...internalObjectAttributeValues,
         article,
       } as TicketUpdateInput,
+      macroId: activeMacro.value?.id,
     })
 
     if (result) {
@@ -237,7 +251,7 @@ const bulkEditTickets = async (
         id: 'tickets-updated-bulk',
         type: NotificationTypes.Success,
         message: __('The %s selected tickets have been updated successfully.'),
-        messagePlaceholder: [props.ticketIds.size.toString()],
+        messagePlaceholder: [props.ticketIds.length.toString()],
       })
 
       emit('success')
@@ -268,10 +282,12 @@ const bulkEditTickets = async (
     }
 
     formSetErrors(error as MutationSendError)
+  } finally {
+    disposeActiveMacro()
   }
 }
 
-const ticketIdsCount = computed(() => props.ticketIds.size)
+const ticketIdsCount = computed(() => props.ticketIds.length)
 
 const schemaData = reactive({
   ticketIdsCount,
@@ -285,7 +301,6 @@ const schemaData = reactive({
     header-icon="collection-play"
     size="large"
     no-close-on-action
-    :footer-action-options="footerActionOptions"
   >
     <Form
       id="form-tickets-bulk-edit"
@@ -299,5 +314,24 @@ const schemaData = reactive({
         bulkEditTickets($event as FormSubmitData<TicketBulkEditFormData>)
       "
     />
+    <template #footer="{ close }">
+      <div class="flex items-center justify-end gap-4">
+        <CommonButton size="large" variant="secondary" @click="close">
+          {{ $t('Cancel & Go Back') }}
+        </CommonButton>
+        <SplitButton
+          type="submit"
+          size="large"
+          placement="end"
+          :hide-arrow="false"
+          variant="submit"
+          :items="macroMenuItems"
+          :addon-disabled="!macroMenuItems.length"
+          :form="formNodeId"
+        >
+          {{ $t('Apply') }}
+        </SplitButton>
+      </div>
+    </template>
   </CommonFlyout>
 </template>

@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import { computed, onBeforeUnmount, type Ref, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, type Ref, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 import type { MacroById } from '#shared/entities/macro/types.ts'
@@ -19,20 +19,13 @@ export const macroScreenBehaviourMapping: Record<
   none: EnumTicketScreenBehavior.StayOnTab,
 }
 
-export const useMacros = (
-  groupId: Ref<ID | undefined>,
-  isTicketEditable: Ref<boolean>,
-) => {
-  const macroFeatureActive = computed(() =>
-    Boolean(isTicketEditable.value && groupId.value),
-  )
-
+export const useMacros = (groupIds: Ref<ID[] | undefined>) => {
   const macroQuery = new QueryHandler(
     useMacrosQuery(
       () => ({
-        groupId: groupId.value as string,
+        groupIds: groupIds.value as ID[],
       }),
-      () => ({ enabled: macroFeatureActive.value }),
+      () => ({ enabled: !!groupIds.value?.length }),
     ),
   )
 
@@ -42,19 +35,9 @@ export const useMacros = (
 
   // TODO: Drop this mechanism once Apollo implements an effective deduplication of subscriptions on the client level.
   //   More information: https://github.com/apollographql/apollo-client/issues/10117
-  const usageKey = route.meta.taskbarTabEntityKey ?? 'apply-template'
+  const usageKey = route.meta.taskbarTabEntityKey ?? 'apply-macro'
 
-  watch(
-    macroFeatureActive,
-    (active) => {
-      if (active) {
-        activate(usageKey, macroQuery)
-      } else {
-        deactivate(usageKey)
-      }
-    },
-    { immediate: true },
-  )
+  activate(usageKey, macroQuery)
 
   onBeforeUnmount(() => {
     deactivate(usageKey)

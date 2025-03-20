@@ -2928,7 +2928,7 @@ export type QueriesLocalesArgs = {
 
 /** All available queries */
 export type QueriesMacrosArgs = {
-  groupId: Scalars['ID']['input'];
+  groupIds: Array<Scalars['ID']['input']>;
 };
 
 
@@ -5650,6 +5650,7 @@ export type EmailAddressesQuery = { __typename?: 'Queries', emailAddresses: Arra
 export type TicketUpdateBulkMutationVariables = Exact<{
   ticketIds: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
   input: TicketUpdateInput;
+  macroId?: InputMaybe<Scalars['ID']['input']>;
 }>;
 
 
@@ -7006,7 +7007,7 @@ export type LocalesQueryVariables = Exact<{
 export type LocalesQuery = { __typename?: 'Queries', locales: Array<{ __typename?: 'Locale', locale: string, alias?: string | null, name: string, dir: EnumTextDirection, active: boolean }> };
 
 export type MacrosQueryVariables = Exact<{
-  groupId: Scalars['ID']['input'];
+  groupIds: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
 }>;
 
 

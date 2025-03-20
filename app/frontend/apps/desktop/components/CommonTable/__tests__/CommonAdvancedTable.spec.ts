@@ -191,7 +191,7 @@ describe('CommonAdvancedTable', () => {
       },
     )
 
-    expect(view.baseElement.querySelector('table')).toMatchFileSnapshot(
+    await expect(view.baseElement.querySelector('table')).toMatchFileSnapshot(
       `${__filename}.snapshot.txt`,
     )
   })
@@ -400,7 +400,7 @@ describe('CommonAdvancedTable', () => {
   })
 
   it('supports checking a item in a row', async () => {
-    const checkedItemIds = ref(new Set([]))
+    const checkedItemIds = ref(new Set())
 
     const items = [
       {
@@ -424,7 +424,7 @@ describe('CommonAdvancedTable', () => {
       { form: true, vModel: { checkedItemIds } },
     )
 
-    expect(wrapper.getAllByRole('checkbox')).toHaveLength(3)
+    expect(wrapper.getAllByRole('checkbox')).toHaveLength(2)
 
     const rowCheckboxes = wrapper.getAllByRole('checkbox', {
       name: 'Select this entry',
@@ -437,7 +437,7 @@ describe('CommonAdvancedTable', () => {
     await wrapper.events.click(rowCheckboxes[1])
 
     await waitFor(() =>
-      expect(Array.from(checkedItemIds.value)).toContain(items[0].id),
+      expect(Array.from(checkedItemIds.value.keys())).toContain(items[0].id),
     )
 
     await waitFor(() => expect(rowCheckboxes[0]).not.toHaveAttribute('checked'))
@@ -451,7 +451,7 @@ describe('CommonAdvancedTable', () => {
   })
 
   it('renders checklist item as disabled if update policy is not given', async () => {
-    const checkedItemIds = ref(new Set([]))
+    const checkedItemIds = ref(new Set())
 
     const items = [
       {
@@ -476,15 +476,13 @@ describe('CommonAdvancedTable', () => {
       { form: true, vModel: { checkedItemIds } },
     )
 
-    const rowCheckboxes = wrapper.getAllByRole('checkbox', {
-      name: 'Select this entry',
-    })
+    const rowCheckboxes = wrapper.getAllByRole('checkbox')
 
     expect(rowCheckboxes[0]).toBeDisabled()
   })
 
   it('renders checklist item as disabled', async () => {
-    const checkedItemIds = ref(new Set([]))
+    const checkedItemIds = ref(new Set())
 
     const items = [
       {
@@ -509,9 +507,7 @@ describe('CommonAdvancedTable', () => {
       { form: true, vModel: { checkedItemIds } },
     )
 
-    const rowCheckboxes = wrapper.getAllByRole('checkbox', {
-      name: 'Select this entry',
-    })
+    const rowCheckboxes = wrapper.getAllByRole('checkbox')
 
     expect(rowCheckboxes[0]).toBeDisabled()
   })
@@ -545,9 +541,7 @@ describe('CommonAdvancedTable', () => {
       { form: true, vModel: { checkedItemIds } },
     )
 
-    const checkboxes = wrapper.getAllByRole('checkbox', {
-      name: 'Select this entry',
-    })
+    const checkboxes = wrapper.getAllByRole('checkbox')
 
     expect(checkboxes[1]).toBeDisabled()
     expect(checkboxes[1]).not.toBeChecked()

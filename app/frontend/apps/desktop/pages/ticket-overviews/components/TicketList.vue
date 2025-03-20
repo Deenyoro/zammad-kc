@@ -7,6 +7,7 @@ import {
   computed,
   onActivated,
   onDeactivated,
+  readonly,
   ref,
   type Ref,
   toRef,
@@ -291,7 +292,7 @@ const localHeaders = computed(() => {
   return extendedHeaders
 })
 
-const { setOnSuccessCallback, checkedItemIds } = useTicketBulkEdit()
+const { setOnSuccessCallback, checkedTicketIds } = useTicketBulkEdit()
 
 setOnSuccessCallback(() => {
   forceTicketsByOverviewCacheOnlyFirstPage(
@@ -310,13 +311,15 @@ setOnSuccessCallback(() => {
   })
 })
 
-onBeforeRouteUpdate(() => checkedItemIds.value.clear())
+onBeforeRouteUpdate(() => checkedTicketIds.value.clear())
 
 const maxItems = computed(() => config.value.ui_ticket_overview_ticket_limit)
 
 const { visibleSkeletonLoadingCount } = useSkeletonLoadingCount(
   toRef(props, 'overviewCount'),
 )
+
+defineExpose({ tickets: readonly(tickets) })
 </script>
 
 <template>

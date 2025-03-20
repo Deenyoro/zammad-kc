@@ -458,7 +458,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
 }
 
 //  :TODO work on this in second milestone for bulk edit in ticket overviews
-const allSelected = ref(false)
+// const allSelected = ref(false)
 </script>
 
 <template>
@@ -475,8 +475,7 @@ const allSelected = ref(false)
           id="checkbox-header"
           class="relative h-10 w-8 p-2.5 text-xs"
         >
-          <!--    :TODO work on this in second milestone for bulk edit in ticket overviews -->
-          <div
+          <!-- <div
             role="checkbox"
             :class="{
               'before:absolute before:top-0 before:z-20 before:h-full before:w-2 before:bg-blue-800 ltr:before:left-0 rtl:before:right-0':
@@ -499,7 +498,7 @@ const allSelected = ref(false)
               size="xs"
               :name="allSelected ? 'check-square' : 'square'"
             />
-          </div>
+          </div> -->
         </th>
         <th
           v-for="(tableAttribute, index) in tableAttributes"

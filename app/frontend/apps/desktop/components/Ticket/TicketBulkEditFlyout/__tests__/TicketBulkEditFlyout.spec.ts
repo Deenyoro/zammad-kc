@@ -1,8 +1,11 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import { within } from '@testing-library/vue'
+
 import renderComponent from '#tests/support/components/renderComponent.ts'
 
 import { mockFormUpdaterQuery } from '#shared/components/Form/graphql/queries/formUpdater.mocks.ts'
+import { mockMacrosQuery } from '#shared/graphql/queries/macros.mocks.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import TicketBulkEditFlyout from '#desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue'
@@ -12,6 +15,11 @@ import {
 } from '#desktop/entities/ticket/graphql/mutations/updateBulk.mocks.ts'
 
 const ids = [convertToGraphQLId('Ticket', 1), convertToGraphQLId('Ticket', 2)]
+
+const groupIds = [
+  convertToGraphQLId('Group', 1),
+  convertToGraphQLId('Group', 2),
+]
 
 const renderBulkEditFlyout = () => {
   mockFormUpdaterQuery({
@@ -48,8 +56,8 @@ const renderBulkEditFlyout = () => {
     },
   })
 
-  const wrapper = renderComponent(TicketBulkEditFlyout, {
-    props: { ticketIds: new Set(ids) },
+  return renderComponent(TicketBulkEditFlyout, {
+    props: { ticketIds: ids, groupIds },
     form: true,
     router: true,
     global: {
@@ -58,8 +66,6 @@ const renderBulkEditFlyout = () => {
       },
     },
   })
-
-  return wrapper
 }
 
 describe('TicketBulkEditFlyout', () => {
@@ -137,6 +143,44 @@ describe('TicketBulkEditFlyout', () => {
         },
         groupId: convertToGraphQLId('Group', 2),
       },
+      ticketIds: ids,
+    })
+  })
+
+  it('executes macro on tickets', async () => {
+    mockMacrosQuery({
+      macros: [
+        {
+          name: 'test macro',
+          id: convertToGraphQLId('Macro', 1),
+          uxFlowNextUp: 'next_task',
+        },
+      ],
+    })
+
+    const wrapper = renderBulkEditFlyout()
+
+    await wrapper.events.click(
+      wrapper.getByRole('button', { name: 'Context menu' }),
+    )
+
+    const menu = await wrapper.findByRole('menu')
+
+    expect(
+      within(menu).getByRole('heading', { name: 'Macros' }),
+    ).toBeInTheDocument()
+
+    await wrapper.events.click(
+      within(menu).getByRole('button', { name: 'test macro' }),
+    )
+
+    const calls = await waitForTicketUpdateBulkMutationCalls()
+
+    expect(calls.at(-1)?.variables).toEqual({
+      input: {
+        article: null,
+      },
+      macroId: convertToGraphQLId('Macro', 1),
       ticketIds: ids,
     })
   })

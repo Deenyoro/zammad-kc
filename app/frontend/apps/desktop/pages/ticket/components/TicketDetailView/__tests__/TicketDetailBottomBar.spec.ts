@@ -182,7 +182,7 @@ describe('TicketDetailBottomBar', () => {
       const calls = await waitForMacrosQueryCalls()
 
       expect(calls?.at(-1)?.variables).toEqual({
-        groupId: convertToGraphQLId('Group', 2),
+        groupIds: [convertToGraphQLId('Group', 2)],
       })
 
       await waitForNextTick()

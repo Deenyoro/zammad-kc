@@ -21,13 +21,12 @@ describe('TicketBulkEditButton', () => {
       wrapper.queryByRole('button', { name: 'Bulk Actions' }),
     ).not.toBeInTheDocument()
 
+    const checkedTicketIds = new Set([convertToGraphQLId('Ticket', 2)])
+
     await wrapper.rerender({
-      checkedTicketIds: new Set([convertToGraphQLId('Ticket', 1)]),
+      checkedTicketIds,
     })
 
-    expect(wrapper.getByTestId('ticket-bulk-edit-button')).toHaveClass(
-      'visible',
-    )
     expect(
       wrapper.getByRole('button', { name: 'Bulk Actions' }),
     ).toHaveTextContent('Bulk Actions')
@@ -51,9 +50,11 @@ describe('TicketBulkEditButton', () => {
   it('emits open flyout event', async () => {
     mockPermissions(['ticket.agent'])
 
+    const checkedTicketIds = new Set([convertToGraphQLId('Ticket', 2)])
+
     const wrapper = renderComponent(TicketBulkEditButton, {
       props: {
-        checkedTicketIds: new Set([convertToGraphQLId('Ticket', 1)]),
+        checkedTicketIds,
       },
     })
 

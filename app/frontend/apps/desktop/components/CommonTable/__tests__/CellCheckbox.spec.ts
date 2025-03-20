@@ -48,4 +48,27 @@ describe('CellCheckbox.vue', () => {
     expect(wrapper.getByRole('checkbox')).toHaveClass('opacity-30')
     expect(wrapper.getByRole('checkbox')).toBeDisabled()
   })
+
+  describe('a11y', () => {
+    it('displays reason to the user why user update permission is not granted', () => {
+      const wrapper = renderComponent(CellCheckbox, {
+        props: { item: { ...item, policy: { update: false } }, itemIds },
+      })
+
+      const checkbox = wrapper.getByRole('checkbox')
+      expect(checkbox).toHaveAttribute(
+        'aria-description',
+        'You do not have permission to update',
+      )
+    })
+
+    it('displays reason to show missing update message to user if disabled generically', () => {
+      const wrapper = renderComponent(CellCheckbox, {
+        props: { item: { ...item, disabled: true }, itemIds },
+      })
+
+      const checkbox = wrapper.getByRole('checkbox')
+      expect(checkbox).not.toHaveAttribute('aria-description')
+    })
+  })
 })

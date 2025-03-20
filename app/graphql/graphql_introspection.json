@@ -15439,15 +15439,23 @@
               "description": "Returns a list of macros",
               "args": [
                 {
-                  "name": "groupId",
-                  "description": "The group of the macros to look for.",
+                  "name": "groupIds",
+                  "description": "Filter macros by group assignment, must have no group or all groups assigned.",
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,
                     "ofType": {
-                      "kind": "SCALAR",
-                      "name": "ID",
-                      "ofType": null
+                      "kind": "LIST",
+                      "name": null,
+                      "ofType": {
+                        "kind": "NON_NULL",
+                        "name": null,
+                        "ofType": {
+                          "kind": "SCALAR",
+                          "name": "ID",
+                          "ofType": null
+                        }
+                      }
                     }
                   },
                   "defaultValue": null

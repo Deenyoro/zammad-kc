@@ -4,7 +4,7 @@ import type { ComputedRef, Ref } from 'vue'
 
 export interface TicketBulkEditReturn {
   bulkEditActive: ComputedRef<boolean>
-  checkedItemIds: Ref<Set<ID>>
+  checkedTicketIds: Ref<Set<ID>>
   setOnSuccessCallback: (callback: () => void) => void
   onSuccessCallback?: () => void
   openBulkEditFlyout: () => void

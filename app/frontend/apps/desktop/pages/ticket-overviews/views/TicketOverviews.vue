@@ -92,7 +92,7 @@ const breadcrumbItems = computed(() => [
   },
 ])
 
-const { checkedItemIds, openBulkEditFlyout } = useTicketBulkEdit()
+const { checkedTicketIds, openBulkEditFlyout } = useTicketBulkEdit()
 </script>
 
 <template>
@@ -115,7 +115,7 @@ const { checkedItemIds, openBulkEditFlyout } = useTicketBulkEdit()
     >
       <template #headerRight>
         <TicketBulkEditButton
-          :checked-ticket-ids="checkedItemIds"
+          :checked-ticket-ids="checkedTicketIds"
           @open-flyout="openBulkEditFlyout"
         />
       </template>

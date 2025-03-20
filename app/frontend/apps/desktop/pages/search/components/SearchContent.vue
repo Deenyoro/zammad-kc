@@ -309,13 +309,13 @@ const refetchQueries = () => {
   searchCountsQuery.refetch()
 }
 
-const { checkedItemIds, openBulkEditFlyout, setOnSuccessCallback } =
+const { checkedTicketIds, openBulkEditFlyout, setOnSuccessCallback } =
   useTicketBulkEdit()
 
 watch(
   sanitizedSearchTerm,
   (newValue, oldValue) => {
-    if (newValue !== oldValue) checkedItemIds.value.clear()
+    if (newValue !== oldValue) checkedTicketIds.value.clear()
 
     if (newValue && detailSearchQuery.isFirstRun()) {
       searchQueriesLoad()
@@ -335,7 +335,7 @@ watch(
 watch(selectedEntity, (_, oldValue) => {
   currentSearchResult.value = undefined
 
-  checkedItemIds.value.clear()
+  checkedTicketIds.value.clear()
 
   resetPagination({
     onlyIn: oldValue,
@@ -393,7 +393,7 @@ setOnSuccessCallback(() => {
     <template #headerRight>
       <TicketBulkEditButton
         v-if="selectedEntity === EnumSearchableModels.Ticket"
-        :checked-ticket-ids="checkedItemIds"
+        :checked-ticket-ids="checkedTicketIds"
         @open-flyout="openBulkEditFlyout"
       />
     </template>

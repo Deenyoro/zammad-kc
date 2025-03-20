@@ -1192,7 +1192,8 @@ const tableItemsAdvanced = reactive<TableAdvancedItem[]>([
   },
 ])
 
-const checkedAdvancedTableItems = ref(new Set(['1', '2']))
+const tableItemsMap = new Set(['1', '2'])
+const checkedAdvancedTableItems = ref(tableItemsMap)
 
 const tableActions: MenuItem[] = [
   {

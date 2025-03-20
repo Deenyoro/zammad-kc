@@ -283,13 +283,15 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
       [overviewId]: new Date().toISOString(),
     }
 
-    // Update user preferences with the new mapping using overviewsById
-    user.value!.preferences.overviews_last_used = Object.fromEntries(
-      Object.entries(newOverviewsLastUsed).map(([overviewId, lastUsedAt]) => [
-        overviewsById.value[overviewId].internalId,
-        lastUsedAt,
-      ]),
-    )
+    if (user.value?.preferences) {
+      // Update user preferences with the new mapping using overviewsById
+      user.value.preferences.overviews_last_used = Object.fromEntries(
+        Object.entries(newOverviewsLastUsed).map(([overviewId, lastUsedAt]) => [
+          overviewsById.value[overviewId].internalId,
+          lastUsedAt,
+        ]),
+      )
+    }
 
     const mappedOverviewsLastUsed = Object.entries(newOverviewsLastUsed).map(
       ([overviewId, lastUsedAt]) => ({
