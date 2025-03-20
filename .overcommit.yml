@@ -86,10 +86,11 @@ PreCommit:
     required_executable: 'pnpm'
     enabled: true
     command: ['pnpm', 'lint:md:cmd']
-    flags: ['*.md', 'doc/**/*.md']
+    flags: ['*.md', '**/*.md', '#node_modules']
+    exclude:
+      - 'node_modules'
     include:
-      - '*.md'
-      - 'doc/**/*.md'
+      - '**/*.md'
 
 PostCheckout:
   ALL:

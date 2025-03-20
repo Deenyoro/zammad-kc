@@ -42,7 +42,9 @@ With this, you can also locally reproduce the results.
 
 ### Dependency Management
 
-We use renovate bot to keep our Ruby and JS dependencies up-to-date by automatic merge requests in our internal GitLab. This config is not visible in our source code, but you can see frequent commits from it in our history, like [this one](https://github.com/zammad/zammad/commit/a61b205e4ba41fca1ec7c85323ec6045fc3672e5).
+We use renovate bot to keep our Ruby and JS dependencies up-to-date by automatic merge requests in our internal GitLab.
+This config is not visible in our source code, but you can see frequent commits from it in our history, like
+[this one](https://github.com/zammad/zammad/commit/a61b205e4ba41fca1ec7c85323ec6045fc3672e5).
 
 ### Dependency Security Analysis
 

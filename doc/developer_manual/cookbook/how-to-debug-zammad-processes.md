@@ -1,25 +1,23 @@
 # How to Debug Zammad Processes
 
-Sometimes it can be helpful to understand the internal state of threads
-running in a Zammad process. This can be achieved by sending a `SIGWINCH`
-signal to any Zammad service (railsserver, websocket or background worker)
-process, which will cause the process to print the state of its threads to
-STDOUT.
+Sometimes it can be helpful to understand the internal state of threads running in a Zammad process. This can be
+achieved by sending a `SIGWINCH` signal to any Zammad service (railsserver, websocket or background worker) process,
+which will cause the process to print the state of its threads to STDOUT.
 
-Beware by default this is only available in a production environment. It can be
-forced by setting the environment variable ENFORCE_THREAD_STATUS_HANDLER to "true".
+Beware by default this is only available in a production environment. It can be forced by setting the environment
+variable ENFORCE_THREAD_STATUS_HANDLER to "true".
 
 - Find out process ID of Zammad webserver
 
 ```screen
-$ ps
-  PID TTY           TIME CMD
+ps
+PID TTY           TIME CMD
 …
 77926 ttys001    0:03.02 puma 6.5.0 (tcp://localhost:3000) [zammad]
 …
 ```
 
-- Send the SIGWINCH signal to that process or any of its forked workers. This doesn't acutally "kill" the process.
+- Send the SIGWINCH signal to that process or any of its forked workers. This doesn't actually "kill" the process.
 
 ```screen
 kill -SIGWINCH 77926
