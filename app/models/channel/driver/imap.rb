@@ -272,7 +272,7 @@ returns
       return MessageResult.new(success: false)
     end
 
-    # delete email from server after article was created
+    # fetch message body
     msg = begin
       Timeout.timeout(FETCH_MSG_TIMEOUT) do
         key = fetch_message_body_key(@options)
@@ -304,6 +304,7 @@ returns
       process(@channel, msg, false)
     end
 
+    # delete email from server after article was created
     begin
       Timeout.timeout(FETCH_MSG_TIMEOUT) do
         if @keep_on_server

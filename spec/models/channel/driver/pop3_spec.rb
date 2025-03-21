@@ -191,6 +191,15 @@ RSpec.describe Channel::Driver::Pop3 do
       end
     end
 
+    context 'when fetching a verify message' do
+      let(:message) { mock_a_message(verify: true) }
+
+      it 'skips verify message without errors' do
+        expect { channel.fetch }.not_to change(Ticket, :count)
+        expect(channel.reload.status_in).to eq('ok')
+      end
+    end
+
     context 'when fetching oversized emails' do
       before do
         Setting.set('postmaster_max_size', 0.00001)
@@ -214,7 +223,10 @@ RSpec.describe Channel::Driver::Pop3 do
 
           channel.fetch
 
-          expect(channel.reload.status_in).to eq('error')
+          expect(channel.reload).to have_attributes(
+            status_in:   'error',
+            last_log_in: include('because message is too large')
+          )
         end
       end
     end
@@ -232,7 +244,7 @@ RSpec.describe Channel::Driver::Pop3 do
     if verify.present?
       attrs[:'X-Zammad-Ignore'] = 'true'
       attrs[:'X-Zammad-Verify'] = 'true'
-      attrs[:'X-Zammad-Verify-Time'] = Time.current.to_s
+      attrs[:'X-Zammad-Verify-Time'] = Time.current.iso8601
     end
 
     Channel::EmailBuild.build(**attrs).to_s

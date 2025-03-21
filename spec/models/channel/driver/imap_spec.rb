@@ -116,7 +116,7 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
   describe '#fetch', :aggregate_failures do
     include_context 'with channel and server configuration'
 
-    let(:purge_inbox) do
+    def purge_inbox
       imap.select('inbox')
       imap.sort(['DATE'], ['ALL'], 'US-ASCII').each do |msg|
         imap.store(msg, '+FLAGS', [:Deleted])
@@ -196,6 +196,7 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
 
           # fetch messages - will not import
           expect { channel.fetch(true) }.not_to change(Ticket::Article, :count)
+          expect(channel.reload).to have_attributes(status_in: 'ok')
 
           # verify if message is still on server
           message_ids = imap.sort(['DATE'], ['ALL'], 'US-ASCII')
@@ -227,6 +228,7 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
 
           # fetch messages - will still not import
           expect { channel.fetch(true) }.not_to change(Ticket::Article, :count)
+          expect(channel.reload).to have_attributes(status_in: 'ok')
         end
       end
 
@@ -273,6 +275,14 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
           message_meta = imap.fetch(1, ['FLAGS'])[0].attr
           expect(message_meta['FLAGS']).to include(:Seen)
         end
+
+        it 'handles already deleted message correctly' do
+          imap.append(folder, email1, [:Deleted], Time.zone.now)
+          imap.append(folder, email2, [], Time.zone.now)
+
+          expect { channel.fetch(true) }.to change(Ticket, :count).by(1)
+          expect(channel.reload).to have_attributes(status_in: 'ok')
+        end
       end
 
       context 'when folder name contains special characters' do
@@ -309,7 +319,7 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
       let(:oversized_email_md5) { Digest::MD5.hexdigest(oversized_email) }
       let(:oversized_email_size) { format('%<MB>.2f', MB: oversized_email.size.to_f / 1024 / 1024) }
 
-      let(:fetch_oversized_email) do
+      def fetch_oversized_email
         imap.append(folder, oversized_email, [], Time.zone.now)
         channel.fetch(true)
       end
@@ -376,7 +386,22 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
           # check that original mail is still there
           imap.select(folder)
           expect(imap.sort(['DATE'], ['ALL'], 'US-ASCII').count).to be(1)
+
+          # check that channel has correct error message
+          expect(channel.reload).to have_attributes(
+            status_in:   'error',
+            last_log_in: include('because message is too large')
+          )
         end
+      end
+    end
+
+    context 'when fetching a verify message' do
+      it 'skips verify message without errors' do
+        imap.append folder, mock_a_message(verify: true)
+
+        expect { channel.fetch(true) }.not_to change(Ticket, :count)
+        expect(channel.reload.status_in).to eq('ok')
       end
     end
   end
@@ -575,7 +600,7 @@ RSpec.describe Channel::Driver::Imap, integration: true, required_envs: %w[MAIL_
     if verify.present?
       attrs[:'X-Zammad-Ignore'] = 'true'
       attrs[:'X-Zammad-Verify'] = 'true'
-      attrs[:'X-Zammad-Verify-Time'] = Time.current.to_s
+      attrs[:'X-Zammad-Verify-Time'] = Time.current.iso8601
     end
 
     Channel::EmailBuild.build(**attrs).to_s
