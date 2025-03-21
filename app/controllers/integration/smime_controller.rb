@@ -114,6 +114,12 @@ class Integration::SMIMEController < ApplicationController
   def cert_obj_to_json(cert)
     info = cert.parsed
 
+    smime_cert = Certificate::X509::SMIME.new(cert.pem)
+    usage = [
+      smime_cert.signature? ? __('Signature') : nil,
+      smime_cert.encryption? ? __('Encryption') : nil,
+    ].compact
+
     {
       id:                       cert.id,
       subject:                  info.subject.to_s,
@@ -127,7 +133,8 @@ class Integration::SMIMEController < ApplicationController
       private_key_secret:       cert.private_key_secret,
       created_at:               cert.created_at,
       updated_at:               cert.updated_at,
-      subject_alternative_name: cert.email_addresses.join(', ')
+      subject_alternative_name: cert.email_addresses.join(', '),
+      usage:                    usage
     }
   end
 end

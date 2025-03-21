@@ -22,7 +22,12 @@ class SMIMECertificate < ApplicationModel
       certificates.push(*certs)
     end
 
-    raise ActiveRecord::RecordNotFound, "Can't find S/MIME encryption certificates for: #{missing_addresses.join(', ')}" if missing_addresses.present? && blame
+    if missing_addresses.present? && blame
+      message = __('The certificate for %s was not found.')
+      addresses = missing_addresses.join(', ')
+
+      raise ActiveRecord::RecordNotFound, message % addresses
+    end
 
     certificates
   end

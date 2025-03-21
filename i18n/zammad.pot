@@ -835,7 +835,7 @@ msgstr ""
 #: app/assets/javascripts/app/models/macro.coffee:7
 #: app/assets/javascripts/app/models/template.coffee:7
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:19
-#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:16
+#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:15
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:16
 #: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:614
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:118
@@ -3740,7 +3740,6 @@ msgstr ""
 #: app/assets/javascripts/app/models/ticket_priority.coffee:12
 #: app/assets/javascripts/app/models/ticket_state.coffee:13
 #: app/assets/javascripts/app/views/agent_ticket_view/detail.jst.eco:36
-#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:14
 #: app/assets/javascripts/app/views/popover/ticket.jst.eco:34
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:18
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:14
@@ -4841,7 +4840,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/generic/multi_locales.jst.eco:6
 #: app/assets/javascripts/app/views/google/list.jst.eco:111
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:75
-#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:55
+#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:53
 #: app/assets/javascripts/app/views/knowledge_base/public_menu_form_item.jst.eco:18
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:109
 #: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:119
@@ -5380,13 +5379,13 @@ msgstr ""
 msgid "Download %s record(s)"
 msgstr ""
 
-#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:48
+#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:46
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:37
 msgid "Download Certificate"
 msgstr ""
 
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:59
-#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:39
+#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:37
 msgid "Download Private Key"
 msgstr ""
 
@@ -5735,6 +5734,10 @@ msgstr ""
 msgid "Email address '%{email}' is already used for another user."
 msgstr ""
 
+#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:11
+msgid "Email addresses"
+msgstr ""
+
 #: app/assets/javascripts/app/controllers/email_verify.coffee:53
 #: app/frontend/apps/desktop/pages/authentication/views/SignupVerify.vue:50
 msgid "Email could not be verified. Please contact your administrator."
@@ -5978,6 +5981,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/views/integration/pgp_group.jst.eco:6
 #: app/assets/javascripts/app/views/integration/smime_group.jst.eco:6
+#: app/controllers/integration/smime_controller.rb:120
 msgid "Encryption"
 msgstr ""
 
@@ -6360,7 +6364,6 @@ msgstr ""
 msgid "Expiration date"
 msgstr ""
 
-#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:15
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:19
 #: app/assets/javascripts/app/views/profile/token_access_create.jst.eco:10
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:15
@@ -6369,6 +6372,7 @@ msgid "Expires"
 msgstr ""
 
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:18
+#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:14
 msgid "Expires at"
 msgstr ""
 
@@ -6571,7 +6575,6 @@ msgid "Find what you're looking for, e.g. \"search phrase\""
 msgstr ""
 
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:16
-#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:13
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:12
 msgid "Fingerprint"
 msgstr ""
@@ -7294,10 +7297,6 @@ msgstr ""
 msgid "Has update"
 msgstr ""
 
-#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:12
-msgid "Hash"
-msgstr ""
-
 #: app/assets/javascripts/app/views/telegram/bot_add.jst.eco:29
 #: app/assets/javascripts/app/views/telegram/bot_edit.jst.eco:26
 msgid "Have a nice day."
@@ -7883,7 +7882,7 @@ msgid "Includes escalated, new & open and pending tickets."
 msgstr ""
 
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:26
-#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:22
+#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:21
 msgid "Including private key."
 msgstr ""
 
@@ -13799,6 +13798,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_channel/_email_signature.coffee:49
 #: app/assets/javascripts/app/models/group.coffee:13
+#: app/controllers/integration/smime_controller.rb:119
 #: db/seeds/object_manager_attributes.rb:2257
 msgid "Signature"
 msgstr ""
@@ -14212,7 +14212,6 @@ msgstr ""
 #: app/assets/javascripts/app/models/ticket_article.coffee:10
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/article.jst.eco:9
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/notification.jst.eco:18
-#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:11
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:11
 #: app/assets/javascripts/app/views/ticket_zoom/article_new.jst.eco:64
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:40
@@ -14821,11 +14820,12 @@ msgstr ""
 msgid "The certificate for %s was found."
 msgstr ""
 
+#: app/models/smime_certificate.rb:25
 #: lib/secure_mailing/smime/security_options.rb:42
 msgid "The certificate for %s was not found."
 msgstr ""
 
-#: app/models/smime_certificate.rb:54
+#: app/models/smime_certificate.rb:59
 msgid "The certificate for this private key could not be found."
 msgstr ""
 
@@ -17586,6 +17586,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:136
 #: app/assets/javascripts/app/views/integration/check_mk.jst.eco:3
+#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:12
 msgid "Usage"
 msgstr ""
 
@@ -17875,6 +17876,10 @@ msgstr ""
 #: app/frontend/shared/components/CommonUserAvatar/CommonUserAvatar.vue:122
 #: db/seeds/object_manager_attributes.rb:1490
 msgid "VIP"
+msgstr ""
+
+#: app/assets/javascripts/app/views/integration/smime_list.jst.eco:13
+msgid "Valid from"
 msgstr ""
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewActions.vue:105
