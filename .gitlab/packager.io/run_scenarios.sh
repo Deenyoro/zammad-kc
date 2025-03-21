@@ -21,6 +21,6 @@ do
   docker compose down --timeout 0 --volumes
   docker compose up -d
   docker compose exec zammad bash "/scenarios/${SCENARIO}/${DISTRIBUTION}.sh"
-  docker compose down --timeout 0 --volumes
+  docker compose down --timeout 0 --volumes || true # Ignore "prune operation is already running" errors.
 done
 ./cleanup.sh
