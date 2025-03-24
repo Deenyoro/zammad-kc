@@ -11,6 +11,7 @@ import type { MacroById } from '#shared/entities/macro/types.ts'
 import { useTicketSharedDraftZoomCreateMutation } from '#shared/entities/ticket-shared-draft-zoom/graphql/mutations/ticketSharedDraftZoomCreate.api.ts'
 import { MutationHandler } from '#shared/server/apollo/handler/index.ts'
 
+import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import { useDialog } from '#desktop/components/CommonDialog/useDialog.ts'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 import SplitButton from '#desktop/components/SplitButton/SplitButton.vue'
@@ -36,7 +37,7 @@ const emit = defineEmits<{
 const groupIds = computed(() => (props.groupId ? [props.groupId] : undefined))
 
 // For now handover ticket editable, flag, maybe later we can move the action menu in an own component.
-const { macros } = useMacros(groupIds)
+const { macrosLoaded, macros } = useMacros(groupIds)
 
 const { notify } = useNotifications()
 
@@ -106,6 +107,7 @@ const actionItems = computed(() => {
 
 <template>
   <SplitButton
+    v-if="!macrosLoaded || canUseDraft || macros?.length"
     size="large"
     variant="submit"
     type="button"
@@ -116,4 +118,14 @@ const actionItems = computed(() => {
   >
     {{ $t('Update') }}
   </SplitButton>
+  <CommonButton
+    v-else
+    size="large"
+    variant="submit"
+    type="button"
+    :disabled="disabled"
+    @click="$emit('submit', $event)"
+  >
+    {{ $t('Update') }}
+  </CommonButton>
 </template>

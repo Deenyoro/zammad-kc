@@ -16,7 +16,7 @@ import type { Props as CommonPopoverMenuProps } from '../CommonPopoverMenu/Commo
 
 export interface Props
   extends CommonButtonProps,
-    Pick<CommonPopoverProps, 'hideArrow' | 'orientation' | 'placement'>,
+    Pick<CommonPopoverProps, 'orientation' | 'placement'>,
     Pick<CommonPopoverMenuProps, 'items'> {
   addonDisabled?: boolean
   addonLabel?: string
@@ -24,35 +24,11 @@ export interface Props
 
 const props = withDefaults(defineProps<Props>(), {
   orientation: 'top',
-  placement: 'arrowEnd',
+  placement: 'end',
 })
 
 defineOptions({
   inheritAttrs: false,
-})
-
-const separatorClass = computed(() => {
-  switch (props.variant) {
-    case 'primary':
-      return 'border-white'
-    case 'tertiary':
-      return 'border-gray-300 dark:border-neutral-400'
-    case 'submit':
-      return 'border-black'
-    case 'danger':
-      return 'border-red-500'
-    case 'remove':
-      return 'border-white'
-    case 'subtle':
-      return 'border-black dark:border-white'
-    case 'neutral':
-      return 'border-gray-100 dark:border-neutral-400'
-    case 'none':
-      return 'border-neutral-100 dark:border-gray-900'
-    case 'secondary':
-    default:
-      return 'border-blue-800'
-  }
 })
 
 const addonPaddingClasses = computed(() => {
@@ -79,17 +55,16 @@ const addonIconSize = computed(() => {
   }
 })
 
-const { popover, popoverTarget, toggle } = usePopover()
+const { popover, popoverTarget, isOpen: popoverIsOpen, toggle } = usePopover()
 </script>
 
 <template>
-  <div class="inline-flex" :class="{ 'w-full': block }">
+  <div class="inline-flex gap-px" :class="{ 'w-full': block }">
     <CommonButton
       v-bind="{ ...props, ...$attrs }"
-      class="rounded-e-none border-e-[0.5px] hover:z-10 focus-visible:z-10"
+      class="rounded-e-none hover:z-10 focus-visible:z-10"
       :class="{
         grow: block,
-        [separatorClass]: !addonDisabled,
       }"
       :block="false"
     >
@@ -98,11 +73,11 @@ const { popover, popoverTarget, toggle } = usePopover()
     <CommonButton
       ref="popoverTarget"
       v-bind="props"
-      class="rounded-s-none border-s-[0.5px]"
+      class="rounded-s-none"
       :class="[
         addonPaddingClasses,
         {
-          [separatorClass]: !addonDisabled,
+          'outline-1! outline-offset-1 outline-blue-800!': popoverIsOpen,
         },
       ]"
       :disabled="addonDisabled"
@@ -124,7 +99,7 @@ const { popover, popoverTarget, toggle } = usePopover()
     :owner="popoverTarget"
     :orientation="orientation"
     :placement="placement"
-    :hide-arrow="hideArrow"
+    hide-arrow
   >
     <slot name="popover-content">
       <CommonPopoverMenu :popover="popover" :items="items" />

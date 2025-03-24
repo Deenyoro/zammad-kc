@@ -201,7 +201,7 @@ const processBulkEditArticle = (
   }
 }
 
-const { macros } = useMacros(toRef(props, 'groupIds'))
+const { macrosLoaded, macros } = useMacros(toRef(props, 'groupIds'))
 const { activeMacro, executeMacro, disposeActiveMacro } =
   useTicketMacros(formSubmit)
 
@@ -320,17 +320,24 @@ const schemaData = reactive({
           {{ $t('Cancel & Go Back') }}
         </CommonButton>
         <SplitButton
+          v-if="!macrosLoaded || macroMenuItems.length"
           type="submit"
           size="large"
-          placement="end"
-          :hide-arrow="false"
           variant="submit"
           :items="macroMenuItems"
-          :addon-disabled="!macroMenuItems.length"
           :form="formNodeId"
         >
           {{ $t('Apply') }}
         </SplitButton>
+        <CommonButton
+          v-else
+          type="submit"
+          size="large"
+          variant="submit"
+          :form="formNodeId"
+        >
+          {{ $t('Apply') }}
+        </CommonButton>
       </div>
     </template>
   </CommonFlyout>

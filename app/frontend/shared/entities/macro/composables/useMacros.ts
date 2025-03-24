@@ -45,9 +45,15 @@ export const useMacros = (groupIds: Ref<ID[] | undefined>) => {
 
   const result = macroQuery.result()
 
+  const macrosLoaded = ref(false)
+
+  macroQuery.watchOnResult(() => {
+    macrosLoaded.value = true
+  })
+
   const macros = computed(() => result.value?.macros)
 
-  return { macros }
+  return { macrosLoaded, macros }
 }
 
 export const useTicketMacros = (formSubmit: () => void) => {

@@ -119,7 +119,7 @@ const variantClasses = computed(() => {
       <CommonButton
         v-else
         v-tooltip="$t(singleActionAriaLabel)"
-        class="rounded-xs p-0"
+        class="rounded-xs p-0!"
         :class="[variantClasses]"
         :size="buttonSize"
         :disabled="disabled"
