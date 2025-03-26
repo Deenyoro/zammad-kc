@@ -2,6 +2,8 @@ class App.Search extends App.Controller
   @extend App.PopoverProvidable
   @extend App.TicketMassUpdatable
 
+  @ticketSearchColumns: [ 'number', 'title', 'customer', 'group', 'owner', 'created_at' ]
+
   elements:
     '.js-search': 'searchInput'
 
@@ -315,7 +317,7 @@ class App.Search extends App.Controller
       @table = new App.TicketList(
         tableId:    "find_#{model}"
         el:         localeEl
-        columns:    [ 'number', 'title', 'customer', 'group', 'owner', 'created_at' ]
+        columns:    @ticketSearchColumns
         ticket_ids: ticket_ids
         radio:      false
         checkbox:   checkbox
