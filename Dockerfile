@@ -3,7 +3,7 @@ RUN npm -g install corepack && corepack enable pnpm
 RUN rm /usr/local/bin/yarn /usr/local/bin/yarnpkg
 
 
-FROM ruby:3.2.7-slim-bookworm AS builder
+FROM ruby:3.2.8-slim-bookworm AS builder
 ARG DEBIAN_FRONTEND=noninteractive
 ARG RAILS_ENV=production
 ARG ZAMMAD_DIR=/opt/zammad
@@ -18,7 +18,7 @@ RUN contrib/docker/setup.sh builder
 
 # note: zammad is currently incompatible to alpine because of:
 # https://github.com/docker-library/ruby/issues/113
-FROM ruby:3.2.7-slim-bookworm
+FROM ruby:3.2.8-slim-bookworm
 ARG DEBIAN_FRONTEND=noninteractive
 ARG ZAMMAD_USER=zammad
 ENV RAILS_ENV=production
