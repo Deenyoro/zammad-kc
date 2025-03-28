@@ -7,7 +7,7 @@ class TextModulePolicy < ApplicationPolicy
     return false if !user.permissions?('ticket.agent')
 
     if record.group_ids.any?
-      return record.group_ids.intersection(user.group_ids_access('read')).any?
+      return record.group_ids.intersect?(user.group_ids_access('read'))
     end
 
     true
