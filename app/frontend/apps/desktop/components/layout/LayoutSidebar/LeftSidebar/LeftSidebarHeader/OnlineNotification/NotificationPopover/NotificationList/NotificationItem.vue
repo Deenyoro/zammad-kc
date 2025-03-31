@@ -68,7 +68,7 @@ const handleLinkClick = (notification: OnlineNotification) => {
         />
 
         <CommonDateTime
-          class="row-2 col-start-2 text-xs text-gray-100 dark:text-neutral-500"
+          class="col-start-2 row-2 text-xs text-gray-100 dark:text-neutral-500"
           :date-time="notification.createdAt"
           type="relative"
         />
