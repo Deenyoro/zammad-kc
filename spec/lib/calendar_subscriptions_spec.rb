@@ -124,12 +124,11 @@ RSpec.describe CalendarSubscriptions, :aggregate_failures do
     expect(dtend).to match(tstart)
   end
 
-  def verify_offset(dtstart, dtend, tstart)
+  def verify_offset(dtstart, dtend)
     time_zone = Setting.get('timezone_default')
-    tz = ActiveSupport::TimeZone.find_tzinfo(time_zone)
 
-    expect(dtstart.utc_offset).to match(tz.utc_to_local(tstart).utc_offset)
-    expect(dtend.utc_offset).to match(tz.utc_to_local(tstart).utc_offset)
+    expect(dtstart.time_zone.name).to eq(time_zone)
+    expect(dtend.time_zone.name).to eq(time_zone)
   end
 
   # https://github.com/zammad/zammad/issues/4307
@@ -148,7 +147,7 @@ RSpec.describe CalendarSubscriptions, :aggregate_failures do
 
           expect(dtstart.strftime('%Y-%m-%d')).to match(ticket.updated_at.strftime('%Y-%m-%d'))
           expect(dtend.strftime('%Y-%m-%d')).to match(ticket.updated_at.strftime('%Y-%m-%d'))
-          verify_offset(dtstart, dtend, tstart)
+          verify_offset(dtstart, dtend)
 
           next
         when %r{pending reminder}
@@ -158,7 +157,7 @@ RSpec.describe CalendarSubscriptions, :aggregate_failures do
         end
 
         verify_timestamp(dtstart, dtend, tstart)
-        verify_offset(dtstart, dtend, tstart)
+        verify_offset(dtstart, dtend)
       end
     end
   end
