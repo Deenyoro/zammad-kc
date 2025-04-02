@@ -11,6 +11,10 @@ RSpec.describe Issue5191EnsureSingleMergedState, type: :db_migration do
     Ticket::State.without_callback(:update, :before, :prevent_merged_state_editing, &block)
   end
 
+  def force_destroying_state(&block)
+    Ticket::State.without_callback(:destroy, :before, :prevent_merged_state_destruction, &block)
+  end
+
   context 'when single merged name state exists' do
     it 'keeps single state' do
       migrate
@@ -118,6 +122,42 @@ RSpec.describe Issue5191EnsureSingleMergedState, type: :db_migration do
       migrate
 
       expect(merged_states_by_type).to contain_exactly(merged_states_by_name.first)
+    end
+  end
+
+  # https://github.com/zammad/zammad/issues/5544#issuecomment-2771512880
+  context 'when no merged states exist' do
+    before do
+      force_destroying_state do
+        merged_states_by_type.destroy_all
+      end
+    end
+
+    it 'creates a new merged state' do
+      migrate
+
+      expect(merged_states_by_type.reload.first).to have_attributes(name: 'merged')
+    end
+
+    context 'when state named merged exists with a different type' do
+      let(:state_type) { Ticket::StateType.lookup(name: 'open') }
+      let(:merged_but_other_type) { create(:ticket_state, name: 'merged', state_type:) }
+
+      prepend_before do
+        merged_but_other_type
+      end
+
+      it 'creates a new merged state' do
+        migrate
+
+        expect(merged_states_by_type.reload.first).to have_attributes(name: 'merged')
+      end
+
+      it 'renames the old merged state' do
+        migrate
+
+        expect(merged_but_other_type.reload).to have_attributes(name: 'merged (open)')
+      end
     end
   end
 end
