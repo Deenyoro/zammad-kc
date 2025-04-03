@@ -389,8 +389,13 @@ module CommonActions
   #
   # scroll_into_view('button.js-submit)
   #
-  def scroll_into_view(css_selector, position: :top)
-    page.execute_script("document.querySelector('#{css_selector}').scrollIntoView(#{position == :top})")
+  def scroll_into_view(css_selector_or_elem, position: :top)
+    case css_selector_or_elem
+    when ZammadCapybaraElementDelegator, Capybara::Node::Element
+      css_selector_or_elem.execute_script("this.scrollIntoView(#{position == :top})")
+    else
+      page.execute_script("document.querySelector('#{css_selector_or_elem}').scrollIntoView(#{position == :top})")
+    end
     sleep 0.3
   end
 
