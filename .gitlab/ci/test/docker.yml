@@ -14,7 +14,7 @@ docker:
     ZAMMAD_IMAGE_REPO: "zammad-local"
     ZAMMAD_IMAGE: "${ZAMMAD_IMAGE_REPO}:${ZAMMAD_IMAGE_TAG}"
   before_script:
-    - docker build --build-arg COMMIT_SHA=${CI_COMMIT_SHORT_SHA} -t $ZAMMAD_IMAGE .
+    - docker build --build-arg COMMIT_SHA=${CI_COMMIT_SHORT_SHA} --pull -t $ZAMMAD_IMAGE .
   script: |
     git clone --depth=1 https://github.com/zammad/zammad-docker-compose.git
     cd zammad-docker-compose
