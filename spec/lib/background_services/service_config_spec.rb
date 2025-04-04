@@ -59,14 +59,16 @@ RSpec.describe BackgroundServices::ServiceConfig do
     end
 
     it 'handles the deprecated setting ZAMMAD_SESSION_JOBS_CONCURRENT correctly', :aggregate_failures do
-      allow(ActiveSupport::Deprecation).to receive(:warn)
+      deprecator = instance_double(ActiveSupport::Deprecation)
+      allow(ActiveSupport::Deprecation).to receive(:new).and_return(deprecator)
+      allow(deprecator).to receive(:warn)
       hash = { 'ZAMMAD_SESSION_JOBS_CONCURRENT' => 2 }
 
       configurations = described_class.configuration_from_env(hash)
       single_config = configurations.find { |config| config.service == BackgroundServices::Service::ProcessSessionsJobs }
 
       expect(single_config.workers).to be(2)
-      expect(ActiveSupport::Deprecation).to have_received(:warn).once
+      expect(deprecator).to have_received(:warn).once
     end
   end
 

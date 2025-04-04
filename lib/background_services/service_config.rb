@@ -9,7 +9,8 @@ class BackgroundServices
       if !input['ZAMMAD_PROCESS_SESSIONS_JOBS_WORKERS'] && input['ZAMMAD_SESSION_JOBS_CONCURRENT']
         input['ZAMMAD_PROCESS_SESSIONS_JOBS_WORKERS'] = input['ZAMMAD_SESSION_JOBS_CONCURRENT']
 
-        ActiveSupport::Deprecation.send(:warn, 'The environment variable ZAMMAD_SESSION_JOBS_CONCURRENT is deprecated, please use ZAMMAD_PROCESS_SESSIONS_JOBS_WORKERS instead.') # rubocop:disable Zammad/DetectTranslatableString
+        ActiveSupport::Deprecation.new.warn('The environment variable ZAMMAD_SESSION_JOBS_CONCURRENT is deprecated, please use ZAMMAD_PROCESS_SESSIONS_JOBS_WORKERS instead.')
+        Rails.logger.warn('The environment variable ZAMMAD_SESSION_JOBS_CONCURRENT is deprecated, please use ZAMMAD_PROCESS_SESSIONS_JOBS_WORKERS instead.')
       end
 
       BackgroundServices

@@ -24,7 +24,8 @@ module ApplicationController::HasUser
   def request_header_from
     @request_header_from ||= begin
       if request.headers['X-On-Behalf-Of'].present?
-        ActiveSupport::Deprecation.send(:warn, "Header 'X-On-Behalf-Of' is deprecated. Please use header 'From' instead.") # rubocop:disable Zammad/DetectTranslatableString
+        ActiveSupport::Deprecation.new.warn("Header 'X-On-Behalf-Of' is deprecated. Please use header 'From' instead.")
+        Rails.logger.warn("Header 'X-On-Behalf-Of' is deprecated. Please use header 'From' instead.")
       end
 
       request.headers['From'] || request.headers['X-On-Behalf-Of']
