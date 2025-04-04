@@ -108,13 +108,13 @@ export const useArticleDataHandler = (
     onError: noop,
     updateQuery(_, { previousData, subscriptionData }) {
       const updates = subscriptionData.data.ticketArticleUpdates
-      const prviousArticles =
+      const previousArticles =
         previousData?.articles as TicketArticlesQuery['articles']
 
-      if (!prviousArticles || updates.updateArticle)
+      if (!previousArticles || updates.updateArticle)
         return previousData as TicketArticlesQuery
 
-      const previousArticlesEdges = prviousArticles.edges
+      const previousArticlesEdges = previousArticles.edges
       const previousArticlesEdgesCount = previousArticlesEdges.length
 
       if (updates.removeArticleId) {
@@ -134,9 +134,9 @@ export const useArticleDataHandler = (
         const result = {
           ...previousData,
           articles: {
-            ...prviousArticles,
+            ...previousArticles,
             edges,
-            totalCount: prviousArticles.totalCount - 1,
+            totalCount: previousArticles.totalCount - 1,
           },
         }
 
@@ -145,7 +145,7 @@ export const useArticleDataHandler = (
             previousArticlesEdges[previousArticlesEdgesCount - 2]
 
           result.articles.pageInfo = {
-            ...prviousArticles.pageInfo,
+            ...previousArticles.pageInfo,
             ...adjustPageInfoAfterDeletion(nextEndCursorEdge.cursor),
           }
         }

@@ -754,6 +754,10 @@ pre code {
     text-transform: capitalize;
   }
 
+  &--uppercased {
+    text-transform: uppercase;
+  }
+
   &--action {
     text-transform: uppercase;
     color: var(--button-action-color);
@@ -6969,6 +6973,7 @@ a.list-group-item.active > .badge,
 }
 
 .ticket-article,
+.ticket-ai-summary-banner,
 .article-new {
   max-width: 1080px;
   margin: 0 auto;
@@ -7224,6 +7229,60 @@ a.list-group-item.active > .badge,
       margin-top: 1px;
       width: 16px;
       height: 16px;
+    }
+  }
+}
+
+.ticket-ai-summary-banner {
+  .ticket-ai-summary-banner-inner {
+    padding: 0 55px;
+    padding-bottom: 33px;
+
+    .ticket-ai-summary-banner-bordered {
+      border: 1px solid #009ec6;
+      border-radius: 5px;
+      padding-top: 10px;
+      padding-right: 24px;
+      padding-left: 24px;
+      padding-bottom: 10px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      row-gap: 10px;
+    }
+
+    .ticket-ai-summary-message {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      flex: 1 1 150px;
+    }
+
+    .icon {
+      flex-grow: 0;
+      flex-shrink: 0;
+      color: #009ec6;
+      margin-bottom: 1px;
+    }
+
+    .ticket-ai-summary-buttons {
+      max-width: fit-content;
+      flex: 1 0 auto;
+      margin: auto;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+
+      .btn {
+        flex: 0 0 fit-content;
+        white-space: nowrap;
+        margin-left: 0;
+      }
     }
   }
 }
@@ -8265,6 +8324,17 @@ a.list-group-item.active > .badge,
   width: 24px;
   height: 24px;
   fill: var(--interactive-muted-alt);
+}
+
+.tabsSidebar .suggestion-body {
+  .loading-container {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  .retry-container {
+    text-align: end;
+  }
 }
 
 .tabsSidebar-tab.active {
@@ -15143,6 +15213,12 @@ div.accounted-time-value {
     &.is-disabled {
       opacity: 0.33;
     }
+  }
+}
+
+.ai-assistance-services {
+  .help-text {
+    font-size: 14px;
   }
 }
 

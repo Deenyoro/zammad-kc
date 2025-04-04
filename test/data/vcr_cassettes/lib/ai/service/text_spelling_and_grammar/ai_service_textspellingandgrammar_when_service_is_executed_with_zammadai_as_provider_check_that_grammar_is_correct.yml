@@ -1,0 +1,76 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://ai.edenhofer.de/api/v1/features/text_spelling_and_grammar
+    body:
+      encoding: UTF-8
+      string: '{"system_prompt":"You are a helpful support agent. Your task is to
+        fix the spelling, grammar, and punctuation of the following response while
+        keeping it in the same language as the user''s input. Detect the language
+        from the input and ensure corrections are made in the same language. Ensure
+        that the reply remains polite and professional.\n\nAdditionally, if the response
+        contains any HTML content, do not break or remove the HTML tags. Make corrections
+        only to the text within the tags without altering the HTML structure.\n\nAdd
+        also the reason what you have done to response.\n\nPlease respond using the
+        defined JSON syntax provided below:\n{\n“text”: “string”,\n“reason”, “string”\n}\n","prompt":"I
+        Nicole Braun.","options":{}}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Zammad User Agent
+      Host:
+      - ai.edenhofer.de
+      Content-Type:
+      - application/json; charset=utf-8
+      Authorization:
+      - Bearer <ZAMMAD_AI_TOKEN>
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 11 Oct 2024 12:40:47 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Vary:
+      - Accept
+      Etag:
+      - W/"4317d05a619dd85cb5a20f1d2d50090f"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 4bbe9cef-2e08-4c6d-bec6-4a28cff47e34
+      X-Runtime:
+      - '0.857255'
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+    body:
+      encoding: ASCII-8BIT
+      string: '[{"model":"llama3.1","created_at":"2024-10-11T12:40:46.927156869Z","response":"{\n  \"text\":
+        \"Hello, I am Nicole Braun.\",\n  \"reason\": \"The original text was a single
+        sentence with no punctuation, so I added a period at the end to make it a
+        complete sentence and also capitalized ''I'' as it''s the first word of the
+        sentence.\"\n}","done":true,"done_reason":"stop","context":[128006,882,128007,271,2675,527,264,11190,1862,8479,13,4718,3465,374,311,5155,279,43529,11,32528,11,323,62603,315,279,2768,2077,1418,10494,433,304,279,1890,4221,439,279,1217,596,1988,13,34387,279,4221,505,279,1988,323,6106,51479,527,1903,304,279,1890,4221,13,30379,430,279,10052,8625,48887,323,6721,382,50674,11,422,279,2077,5727,904,9492,2262,11,656,539,1464,477,4148,279,9492,9681,13,7557,51479,1193,311,279,1495,2949,279,9681,2085,60923,279,9492,6070,382,2261,1101,279,2944,1148,499,617,2884,311,2077,382,5618,6013,1701,279,4613,4823,20047,3984,3770,512,517,2118,1342,57633,1054,928,863,345,2118,20489,9520,1054,928,89874,3818,40,45130,70703,13,128009,128006,78191,128007,271,517,220,330,1342,794,330,9906,11,358,1097,45130,70703,10560,220,330,20489,794,330,791,4113,1495,574,264,3254,11914,449,912,62603,11,779,358,3779,264,4261,520,279,842,311,1304,433,264,4686,11914,323,1101,98421,364,40,6,439,433,596,279,1176,3492,315,279,11914,10246,92],"total_duration":608398872,"load_duration":18389827,"prompt_eval_count":145,"prompt_eval_duration":39144000,"eval_count":61,"eval_duration":508861000,"uuid":"4bbe9cef-2e08-4c6d-bec6-4a28cff47e34"}]'
+  recorded_at: Fri, 11 Oct 2024 12:40:47 GMT
+recorded_with: VCR 6.3.1

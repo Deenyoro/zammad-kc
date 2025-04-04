@@ -214,6 +214,49 @@
           "possibleTypes": null
         },
         {
+          "kind": "OBJECT",
+          "name": "AsyncExecutionError",
+          "description": "Represents an error with the execution of an async job.",
+          "fields": [
+            {
+              "name": "exception",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "message",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
           "kind": "INPUT_OBJECT",
           "name": "AttachmentInput",
           "description": "Represents the attachment attributes to be used e.g. in ticket create/update.",
@@ -9751,6 +9794,33 @@
               "deprecationReason": null
             },
             {
+              "name": "ticketAIAssistanceSummarize",
+              "description": "Return current summary or trigger generation in the background",
+              "args": [
+                {
+                  "name": "ticketId",
+                  "description": "The ticket to fetch the summary for",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "TicketAIAssistanceSummarizePayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "ticketArticleChangeVisibility",
               "description": "Change ticket article visibility from public to internal or vice versa",
               "args": [
@@ -11708,6 +11778,33 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "UserCurrentTicketScreenBehaviorPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "userCurrentTicketSummaryBannerHidden",
+              "description": "Update user profile ticket summary banner hidden setting",
+              "args": [
+                {
+                  "name": "hidden",
+                  "description": "The new hidden state of setting",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Boolean",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "UserCurrentTicketSummaryBannerHiddenPayload",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -18079,6 +18176,51 @@
               "deprecationReason": null
             },
             {
+              "name": "ticketAIAssistanceSummaryUpdates",
+              "description": "Updates to triggered AI assistance summary",
+              "args": [
+                {
+                  "name": "ticketId",
+                  "description": "Ticket identifier",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "locale",
+                  "description": "The locale to use, e.g. \"de-de\".",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "TicketAIAssistanceSummaryUpdatesPayload",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "ticketArticleUpdates",
               "description": "Changes to the list of ticket articles",
               "args": [
@@ -20352,6 +20494,183 @@
               "ofType": null
             }
           ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "TicketAIAssistanceSummarizePayload",
+          "description": "Autogenerated return type of TicketAIAssistanceSummarize.",
+          "fields": [
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "reason",
+              "description": "Reason for the result of the summary generation",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "summary",
+              "description": "Different parts of the generated summary",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "TicketAIAssistanceSummary",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "TicketAIAssistanceSummary",
+          "description": "The ticket summary",
+          "fields": [
+            {
+              "name": "conversationSummary",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "openQuestions",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "problem",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "suggestions",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "TicketAIAssistanceSummaryUpdatesPayload",
+          "description": "Autogenerated return type of TicketAIAssistanceSummaryUpdates.",
+          "fields": [
+            {
+              "name": "error",
+              "description": "Error that occurred during the execution of the async job",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "AsyncExecutionError",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "reason",
+              "description": "Reason for the result of the summary generation",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "summary",
+              "description": "Different parts of the generated summary",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "TicketAIAssistanceSummary",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
           "enumValues": null,
           "possibleTypes": null
         },
@@ -28230,6 +28549,53 @@
             {
               "name": "success",
               "description": "Whether the user ticket screen behavior setting was updated successfully",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "UserCurrentTicketSummaryBannerHiddenPayload",
+          "description": "Autogenerated return type of UserCurrentTicketSummaryBannerHidden.",
+          "fields": [
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "success",
+              "description": "Profile ticket summary banner setting updated successfully?",
               "args": [],
               "type": {
                 "kind": "NON_NULL",

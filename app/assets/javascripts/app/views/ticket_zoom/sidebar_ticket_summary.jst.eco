@@ -1,0 +1,46 @@
+<div class="sidebar-block">
+  <div class="suggestion-body">
+    <% if @data?.error: %>
+      <div class="alert alert--danger">
+        <%- @T('Unable to generate summary, try again later or contact your admin.') %>
+      </div>
+
+      <div class="retry-container">
+        <a class="btn btn--text btn--secondary js-retry" href="#">
+          <%- @T('Retry') %>
+        </a>
+      </div>
+    <% else if !@C('ai_provider'): %>
+      <div class="alert alert--danger">
+        <%- @T('No AI provider is currently set up. Please contact your administrator.') %>
+      </div>
+    <% else if @noSummaryPossible: %>
+      <div class="alert alert--info">
+        <%- @T('There is not enough content yet to summarize this ticket.') %>
+      </div>
+    <% else if @data?.result: %>
+      <% for item in @structure: %>
+        <% if !_.isEmpty(@data.result[item.value]): %>
+          <h4><%- @T(item.name) %></h4>
+          <% if item.type is 'list': %>
+            <ul>
+            <% for localList in @data.result[item.value]: %>
+              <li><%= localList %></li>
+            <% end %>
+            </ul>
+          <% else: %>
+            <p><%= @data.result[item.value] %><p/>
+          <% end %>
+        <% end %>
+      <% end %>
+      <span class="text-muted text-small">
+        <%- @T('*Be sure to check AI-generated summaries for accuracy') %>
+      </div>
+    <% else: %>
+      <p><%- @T('Zammad Smart Assist is generating the summary for you…') %><p/>
+      <div class="loading-container">
+        <div class="loading icon"></div>
+      </div>
+    <% end %>
+  </div>
+</div>

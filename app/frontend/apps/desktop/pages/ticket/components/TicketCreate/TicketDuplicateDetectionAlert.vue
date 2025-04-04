@@ -13,10 +13,10 @@ defineProps<Props>()
 <template>
   <CommonAlert variant="warning">
     <div class="flex flex-col gap-1.5">
-      <CommonLabel class="text-yellow-600" size="large">
+      <CommonLabel class="text-yellow-600 dark:text-yellow-600" size="large">
         {{ $c.ticket_duplicate_detection_title }}
       </CommonLabel>
-      <CommonLabel class="text-yellow-600">
+      <CommonLabel class="text-yellow-600 dark:text-yellow-600">
         {{ $c.ticket_duplicate_detection_body }}
       </CommonLabel>
       <ul

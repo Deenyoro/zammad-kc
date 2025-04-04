@@ -4,6 +4,9 @@ import { injectLocal, provideLocal } from '@vueuse/shared'
 import { isEqual } from 'lodash-es'
 import { computed, ref, type InjectionKey, type Ref } from 'vue'
 
+import { useSessionStore } from '#shared/stores/session.ts'
+import emitter from '#shared/utils/emitter.ts'
+
 import { useTicketSidebarPlugins } from '../components/TicketSidebar/plugins/index.ts'
 
 import type { TicketSidebarPlugin } from '../components/TicketSidebar/plugins/types.ts'
@@ -20,6 +23,8 @@ export const useProvideTicketSidebar = (context: Ref<TicketSidebarContext>) => {
   const shownSidebars = ref<Record<string, boolean>>({})
   const switchedSidebar = ref<string>()
 
+  const { userId } = useSessionStore()
+
   const showSidebar = (sidebar: string) => {
     shownSidebars.value[sidebar] = true
   }
@@ -30,6 +35,7 @@ export const useProvideTicketSidebar = (context: Ref<TicketSidebarContext>) => {
 
   const switchSidebar = (newSidebar: string) => {
     switchedSidebar.value = newSidebar
+    emitter.emit('expand-collapsed-content', `${userId}-ticket-detail`)
   }
 
   const sidebarPlugins = useTicketSidebarPlugins(context.value.screenType)

@@ -1,0 +1,17 @@
+<title><%= @context_data[:ticket].title %></title>
+<% @context_data[:ticket].articles.summarizable.each do |article| %>
+  <% next if article.body.blank? %>
+  <% next if article.body_as_text.blank? %>
+  <% if article.type.name == 'email' %>
+    <% result = AI::Service::EmailRemoveQuote.new(current_user: @current_user, context_data: { article: article }).execute %>
+    <% next if result['body'].blank? %>
+  <% else %>
+    <% result = { 'body' => article.body_as_text } %>
+  <% end %>
+<article>
+  <sender><%= article.sender.name %></sender>
+  <sender_name><%= User.find(article.origin_by_id || article.created_by_id).fullname %></sender_name>
+  <visibility><%= article.internal ? 'internal' : 'public' %></visibility>
+  <text><%= result['body'] %></text>
+</article>
+<% end %>

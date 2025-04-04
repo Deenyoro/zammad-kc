@@ -3,6 +3,9 @@ subscription ticketArticleUpdates($ticketId: ID!) {
     addArticle {
       id
       createdAt
+      sender {
+        name
+      }
     }
     updateArticle {
       ...ticketArticleAttributes

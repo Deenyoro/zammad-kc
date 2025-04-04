@@ -1,0 +1,35 @@
+<div class="page-header">
+  <div class="page-header-title">
+    <div class="zammad-switch zammad-switch--small js-aiAssistanceTicketSummarySetting">
+      <input name="enableAIAssistanceTicketSummary" type="checkbox" id="enableAIAssistanceTicketSummary" <% if @C('ai_assistance_ticket_summary'): %>checked<% end %>>
+      <label for="enableAIAssistanceTicketSummary"></label>
+    </div>
+    <h1><%- @T('Ticket Summary') %><small></small></h1>
+  </div>
+</div>
+
+<div class="page-content">
+  <% if @C('ai_assistance_ticket_summary') && @missingProvider: %>
+  <div class="alert alert--warning">
+    <%- @T('The provider configuration is missing. Please set up the provider before proceeding in |AI > Providers|.') %>
+  </div>
+  <% end %>
+
+  <%- @description %>
+
+  <h2><%- @T('Services') %></h2>
+
+  <div class="ai-assistance-services">
+    <% for option in @contentOptions: %>
+      <div class="checkbox checkbox--service">
+        <label class="inline-label checkbox-replacement">
+          <input type="checkbox" name="<%= option.key %>" value="true" <% if option.active: %>checked<% end %> <% if option.disabled is true: %> disabled<% end %>>
+          <%- @Icon('checkbox', 'icon-unchecked') %>
+          <%- @Icon('checkbox-checked', 'icon-checked') %>
+          <span class="label-text"><%- @T(option.name) %></span>
+        </label>
+        <span class="help-text"><%- @T(option.description) %></span>
+      </div>
+    <% end %>
+  </div>
+</div>

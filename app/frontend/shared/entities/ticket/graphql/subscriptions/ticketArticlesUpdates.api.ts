@@ -12,6 +12,9 @@ export const TicketArticleUpdatesDocument = gql`
     addArticle {
       id
       createdAt
+      sender {
+        name
+      }
     }
     updateArticle {
       ...ticketArticleAttributes

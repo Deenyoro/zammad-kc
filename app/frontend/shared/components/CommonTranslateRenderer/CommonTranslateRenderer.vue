@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { defineProps, computed } from 'vue'
+import { computed } from 'vue'
 
 import { i18n } from '#shared/i18n.ts'
 
@@ -10,6 +10,7 @@ import type { PlaceholderRenderType, RenderPlaceholder } from './types.ts'
 interface Props {
   source: string
   placeholders: (string | RenderPlaceholder)[]
+  as?: 'div' | 'p' | 'span'
 }
 
 const typeComponents: Record<PlaceholderRenderType, string> = {
@@ -19,7 +20,9 @@ const typeComponents: Record<PlaceholderRenderType, string> = {
   badge: 'CommonBadge',
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  as: 'p',
+})
 
 const translatedSourcePieces = computed(() => {
   const translatedSource = i18n.t(
@@ -51,7 +54,7 @@ const translatedSourcePieces = computed(() => {
 </script>
 
 <template>
-  <span>
+  <component :is="as">
     <template v-for="(translatedSourcePiece, index) in translatedSourcePieces">
       <template v-if="typeof translatedSourcePiece === 'string'">
         {{ translatedSourcePiece }}
@@ -68,5 +71,5 @@ const translatedSourcePieces = computed(() => {
         </component>
       </template>
     </template>
-  </span>
+  </component>
 </template>

@@ -846,4 +846,17 @@ RSpec.describe Ticket::Article, type: :model do
       end
     end
   end
+
+  describe '.summarizable' do
+    let(:ticket)    { create(:ticket) }
+    let(:article_1) { create(:ticket_article, :system_outbound_email, ticket:) }
+    let(:article_2) { create(:ticket_article, :inbound_web, ticket:) }
+    let(:article_3) { create(:ticket_article, :outbound_email, ticket:) }
+
+    before { article_1 && article_2 && article_3 }
+
+    it 'filters out System articles' do
+      expect(ticket.articles.summarizable).to contain_exactly(article_2, article_3)
+    end
+  end
 end

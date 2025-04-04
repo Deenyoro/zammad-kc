@@ -7,7 +7,7 @@ module Service::Concerns::HandlesSetting
 
   included do
     def setting_enabled?(name)
-      Setting.get(name)
+      Setting.get(name).present?
     end
 
     def setting_disabled?(name)

@@ -2,6 +2,9 @@ export interface ConfigList {
   api_path: string
   'active_storage.web_image_content_types': string[]
   'auth_saml_credentials.display_name'?: string
+  ai_assistance_ticket_summary: boolean
+  ai_assistance_ticket_summary_config: unknown
+  ai_provider: string
   api_password_access?: boolean | null
   api_token_access?: boolean | null
   auth_facebook?: boolean | null

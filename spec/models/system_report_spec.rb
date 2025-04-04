@@ -226,6 +226,8 @@ RSpec.describe SystemReport, current_user_id: 1, type: :model do
           'auto_shutdown',
           'language_detection_article',
           'ui_desktop_beta_switch',
+          'ai_assistance_ticket_summary',
+          'ai_provider',
         ]
       end
 

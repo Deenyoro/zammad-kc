@@ -1,0 +1,116 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","response_format":{"type":"json_object"},"messages":[{"role":"system","content":"You
+        are a helpful support agent. Your task is to fix the spelling, grammar, and
+        punctuation of the following response while keeping it in the same language
+        as the user''s input. Detect the language from the input and ensure corrections
+        are made in the same language. Ensure that the reply remains polite and professional.\n\nAdditionally,
+        if the response contains any HTML content, do not break or remove the HTML
+        tags. Make corrections only to the text within the tags without altering the
+        HTML structure.\n\nAdd also the reason what you have done to response.\n\nPlease
+        respond using the defined JSON syntax provided below:\n{\n“text”: “string”,\n“reason”,
+        “string”\n}\n"},{"role":"user","content":"I Nicole Braun."}],"temperature":0.2,"stream":false}'
+    headers:
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <OPEN_AI_TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 11 Oct 2024 12:40:45 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - zammad-gmbh
+      Openai-Processing-Ms:
+      - '807'
+      Openai-Version:
+      - '2020-10-01'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9999'
+      X-Ratelimit-Remaining-Tokens:
+      - '199808'
+      X-Ratelimit-Reset-Requests:
+      - 8.64s
+      X-Ratelimit-Reset-Tokens:
+      - 57ms
+      X-Request-Id:
+      - req_2476493d7f505208bc72baf2a90f6e47
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=nm34B.0PQB8Jv_cZivP3ENreNByuC7SbEAasUxe0Qpg-1728650445-1.0.1.1-BjIAj0oCZliYo5BctE4pPoNJ1sFSUlvWunAIoRDRvnft4k2U3MJDJsbO.t78nDzUVwxXLg.3xojyYgb9ASrxog;
+        path=/; expires=Fri, 11-Oct-24 13:10:45 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=2vlEgAOCQNTMefJFnSbK6dwOiDb9yRwVshejfaG7akg-1728650445857-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 8d0eeba09bd8cab9-HAM
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-AH9EjYKjmSmYcLzdFSQ7etweyquSy",
+          "object": "chat.completion",
+          "created": 1728650445,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\n  \"text\": \"I am Nicole Braun.\",\n  \"reason\": \"Corrected the sentence to include the verb 'am' for proper grammatical structure.\"\n}",
+                "refusal": null
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 145,
+            "completion_tokens": 33,
+            "total_tokens": 178,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "system_fingerprint": "fp_e2bde53e6e"
+        }
+  recorded_at: Fri, 11 Oct 2024 12:40:45 GMT
+recorded_with: VCR 6.3.1

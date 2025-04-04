@@ -68,9 +68,22 @@ class App.TicketZoom extends App.Controller
       @sidebarWidget.render(@formCurrent())
     )
     @controllerBind('config_update', (data) =>
-      return if data.name isnt 'checklist'
+      return if !_.contains(['checklist', 'ai_assistance_ticket_summary'], data.name)
+
       @renderDone = false
       @render()
+    )
+
+    @controllerBind('ticketSummaryUpdate', (data) =>
+      return if data.ticket_id isnt @ticket_id
+      return if data.locale isnt App.i18n.get()
+
+      if data.error
+        @ticketSummaryData = { data: { error: true } }
+        App.Event.trigger('ui::ticket::summaryUpdate', { ticket_id: @ticket.id, data: { error: true } })
+        return
+
+      @triggerArticleSummaryUpdate()
     )
 
   fetchMayBe: (data) =>
@@ -203,6 +216,8 @@ class App.TicketZoom extends App.Controller
     beforeRenderDone = @renderDone
     @render(local)
 
+    @triggerArticleSummaryUpdateIfNeeded()
+
     if beforeRenderDone
       App.Event.trigger('ui::ticket::load', data)
 
@@ -237,6 +252,8 @@ class App.TicketZoom extends App.Controller
 
   show: (params) =>
     @navupdate(url: '#', type: 'menu')
+
+    @ensureTicketSummaryAvailable()
 
     # set all notifications to seen
     App.OnlineNotification.seen('Ticket', @ticket_id)
@@ -573,6 +590,11 @@ class App.TicketZoom extends App.Controller
         object_id: @ticket_id
         el:        elLocal.find('.ticketZoom-header')
       )
+
+      if App.Config.get('ai_assistance_ticket_summary') && App.Config.get('ai_provider') && @ticket.currentView() is 'agent'
+        new App.TicketZoomAiSummaryBanner(
+          el:  elLocal.find('.ticket-ai-summary-banner')
+        )
 
       @sidebarWidget = new App.TicketZoomSidebar(
         el:               elLocal
@@ -1301,6 +1323,65 @@ class App.TicketZoom extends App.Controller
   hideCopyTicketNumberTooltip: =>
     return if !@tooltipCopied
     @tooltipCopied.tooltip('hide')
+
+  triggerArticleSummaryUpdateIfNeeded: =>
+    return if !App.Config.get('ai_provider')
+    return if !App.Config.get('ai_assistance_ticket_summary')
+
+    return if @ticket.currentView() isnt 'agent'
+    return if @ticket.getState() == 'merged'
+
+    ticketSummarizableArticleIds = @ticketSumarizableArticleIds(@ticket.article_ids)
+
+    if @summaryEstablishAtTicketSet
+      @ensureTicketSummaryAvailable()
+      @ticketSummarizableArticleIds = ticketSummarizableArticleIds
+      return
+
+    if @ticketSummarizableArticleIds && !_.isEqual(@ticketSummarizableArticleIds, ticketSummarizableArticleIds)
+      @ticketSummaryData = undefined
+      @triggerArticleSummaryUpdate()
+
+    @ticketSummarizableArticleIds = ticketSummarizableArticleIds
+
+  ticketSumarizableArticleIds: (allArticleIds) ->
+    allArticleIds.filter (elem) ->
+      article = App.TicketArticle.find(elem)
+      sender  = App.TicketArticleSender.find(article.sender_id)
+
+      sender.name != 'System' && article.body?.length > 0
+
+  ensureTicketSummaryAvailable: =>
+    return if !App.Config.get('ai_provider')
+    return if !App.Config.get('ai_assistance_ticket_summary')
+
+    if !@ticket
+      @summaryEstablishAtTicketSet = true
+      return
+    return if @ticket.currentView() isnt 'agent'
+    return if @ticket.getState() == 'merged'
+    return if @summaryEstablished
+
+    @summaryEstablished = true
+    @summaryEstablishAtTicketSet = false
+
+    @triggerArticleSummaryUpdate()
+
+  triggerArticleSummaryUpdate: =>
+    return if !App.Config.get('ai_assistance_ticket_summary')
+    return if @ticket.currentView() isnt 'agent'
+    return if @ticket.getState() == 'merged'
+
+    @ajax(
+      id:    "ticket-intelligence-enqueue-#{@taskKey}"
+      type:  'POST'
+      url:   "#{@apiPath}/tickets/#{@ticket.id}/enqueue_summarize"
+      success: (data, status, xhr) =>
+        @ticketSummaryData = { data: data }
+        App.Event.trigger('ui::ticket::summaryUpdate', { ticket_id: @ticket.id, data: data})
+      error: (xhr, status, error) ->
+        # show error toaster
+    )
 
 class TicketZoomRouter extends App.ControllerPermanent
   @requiredPermission: ['ticket.agent', 'ticket.customer']

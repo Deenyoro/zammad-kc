@@ -3,9 +3,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { useSessionStore } from '#shared/stores/session.ts'
-import emitter from '#shared/utils/emitter.ts'
-
 import ChecklistBadge from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ChecklistBadge.vue'
 import ReferencingTicketsBadgePopover from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ReferencingTicketsBadgePopover.vue'
 import type { ReferencingTicket } from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/types.ts'
@@ -26,13 +23,6 @@ const completedItemsCount = computed(() => checklist.value?.complete)
 const totalItemsCount = computed(() => checklist.value?.total)
 
 const isCompleted = computed(() => checklist.value?.completed)
-
-const { userId } = useSessionStore()
-
-const openChecklistInSidebar = () => {
-  ticketSidebar.switchSidebar('checklist')
-  emitter.emit('expand-collapsed-content', `${userId}-ticket-detail`)
-}
 </script>
 
 <template>
@@ -41,9 +31,9 @@ const openChecklistInSidebar = () => {
     v-tooltip="$t('Open Checklist')"
     role="button"
     tabindex="0"
-    class="cursor-pointer hover:outline hover:outline-1 hover:outline-offset-1 hover:outline-blue-600 focus:outline-transparent focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 active:outline-blue-800 dark:hover:outline-blue-900 dark:active:outline-blue-800"
-    @click="openChecklistInSidebar"
-    @keydown.enter="openChecklistInSidebar"
+    class="cursor-pointer hover:outline-1 hover:outline-offset-1 hover:outline-blue-600 focus:outline-transparent focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 active:outline-blue-800 dark:hover:outline-blue-900 dark:active:outline-blue-800"
+    @click="ticketSidebar.switchSidebar('checklist')"
+    @keydown.enter="ticketSidebar.switchSidebar('checklist')"
   >
     <template #label>
       <CommonLabel size="small" class="text-current! uppercase">

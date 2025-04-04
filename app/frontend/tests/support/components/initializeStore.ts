@@ -28,6 +28,7 @@ export const initializeStore = () => {
   app.config.ticket_hook = 'Ticket#'
   app.config.api_path = '/api'
   app.config.pretty_date_format = 'relative'
+  app.config.locale_default = 'en-us'
   return pinia
 }
 

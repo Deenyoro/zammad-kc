@@ -5994,3 +5994,67 @@ Setting.create_if_not_exists(
   state:       false,
   frontend:    true,
 )
+
+Setting.create_if_not_exists(
+  title:       __('AI provider'),
+  name:        'ai_provider',
+  area:        'AI::Provider',
+  description: __('Stores the AI provider.'),
+  options:     {},
+  state:       '',
+  preferences: {
+    authentication: true,
+    permission:     ['admin.ai'],
+    validations:    [
+      'Setting::Validation::AIProvider',
+    ],
+  },
+  frontend:    true,
+)
+
+Setting.create_if_not_exists(
+  title:       __('AI Provider Config'),
+  name:        'ai_provider_config',
+  area:        'AI::Provider',
+  description: __('Stores the AI provider configuration.'),
+  options:     {},
+  state:       {},
+  preferences: {
+    permission:  ['admin.ai'],
+    validations: [
+      'Setting::Validation::AIProviderConfig',
+    ],
+  },
+  frontend:    false,
+)
+
+Setting.create_if_not_exists(
+  title:       __('Ticket Summary'),
+  name:        'ai_assistance_ticket_summary',
+  area:        'AI::Assistance',
+  description: __('Enable or disable the AI assistance ticket summary.'),
+  options:     {},
+  state:       false,
+  preferences: {
+    authentication: true,
+    permission:     ['admin.ai_assistance_ticket_summary'],
+  },
+  frontend:    true,
+)
+
+Setting.create_if_not_exists(
+  title:       __('Ticket Summary Config'),
+  name:        'ai_assistance_ticket_summary_config',
+  area:        'AI::Assistance',
+  description: __('Stores the AI assistance ticket summarization options (e.g. which content is visible).'),
+  options:     {},
+  state:       {
+    open_questions: true,
+    suggestions:    true,
+  },
+  preferences: {
+    authentication: true,
+    permission:     ['admin.ai_assistance_ticket_summary'],
+  },
+  frontend:    true,
+)

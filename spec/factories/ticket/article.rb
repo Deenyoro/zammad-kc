@@ -84,6 +84,13 @@ FactoryBot.define do
       end
     end
 
+    trait :system_outbound_email do
+      transient do
+        type_name   { 'email' }
+        sender_name { 'System' }
+      end
+    end
+
     factory :twitter_article do
       transient do
         type_name   { 'twitter status' }

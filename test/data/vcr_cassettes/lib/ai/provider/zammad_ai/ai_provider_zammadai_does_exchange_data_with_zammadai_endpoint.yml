@@ -1,0 +1,122 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://ai.edenhofer.de/api/v1/me
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Zammad User Agent
+      Host:
+      - ai.edenhofer.de
+      Authorization:
+      - Bearer <ZAMMAD_AI_TOKEN>
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Tue, 01 Apr 2025 09:34:06 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Vary:
+      - Accept
+      Etag:
+      - W/"42bd98b30a1a89e766a8d84a6b49330a"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 9d18468f-1e8e-479b-a9b4-440bab6d1715
+      X-Runtime:
+      - '0.004142'
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+    body:
+      encoding: ASCII-8BIT
+      string: '{"current_user":{"id":9,"email":"bs@zammad.com","firstname":"Benjamin","lastname":"Scharf","active":true,"created_by_id":1,"created_at":"2025-03-24T09:40:16.024Z","updated_at":"2025-03-24T09:40:16.024Z","organization_id":2,"is_platform_admin":false,"is_organization_admin":false,"login_failed_count":null,"login_at":null}}'
+  recorded_at: Tue, 01 Apr 2025 09:34:06 GMT
+- request:
+    method: post
+    uri: https://ai.edenhofer.de/api/v1/features/generic
+    body:
+      encoding: UTF-8
+      string: '{"system_prompt":"This is a connection test. Return \"true\" in unprettified
+        JSON if you got the message.","prompt":"Return true."}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Zammad User Agent
+      Host:
+      - ai.edenhofer.de
+      Content-Type:
+      - application/json; charset=utf-8
+      Authorization:
+      - Bearer <ZAMMAD_AI_TOKEN>
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Tue, 01 Apr 2025 09:34:06 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Vary:
+      - Accept
+      Etag:
+      - W/"a5069a7bcfe2c841703c842a526087b0"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 4c839654-a29a-4cf9-884e-ca4e1fe5f780
+      X-Runtime:
+      - '0.109846'
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+    body:
+      encoding: ASCII-8BIT
+      string: '[{"model":"llama3.2-vision","created_at":"2025-04-01T09:34:06.604155995Z","response":"{\"true\"}","done":true,"done_reason":"stop","context":[128006,882,128007,271,2028,374,264,3717,1296,13,3494,330,1904,1,304,653,1762,5683,1908,4823,422,499,2751,279,1984,382,5715,837,13,128009,128006,78191,128007,271,5018,1904,9388],"total_duration":70429705,"load_duration":18429199,"prompt_eval_count":35,"prompt_eval_duration":11000000,"eval_count":4,"eval_duration":39000000,"uuid":"4c839654-a29a-4cf9-884e-ca4e1fe5f780"}]'
+  recorded_at: Tue, 01 Apr 2025 09:34:06 GMT
+recorded_with: VCR 6.3.1

@@ -69,6 +69,12 @@ class Ticket::Article < ApplicationModel
                              :to,
                              :cc
 
+  scope :summarizable, lambda {
+    system_sender = Ticket::Article::Sender.lookup(name: 'System')
+
+    where.not(sender_id: system_sender.id)
+  }
+
   attr_accessor :should_clone_inline_attachments, :check_mentions_raises_error, :check_email_recipient_raises_error
 
   alias should_clone_inline_attachments? should_clone_inline_attachments

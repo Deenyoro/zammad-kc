@@ -4,35 +4,58 @@
   </div>
 </div>
 <div class="page-content">
-  <form class="settings-entry horizontal end">
-    <div class="form-item js-theme flex">
-      <div class="form-group">
-        <div class="formGroup-label">
-          <label for="appearance"><%- @T('Theme') %></label>
-        </div>
-        <div class="controls">
-          <div class="radio">
-            <label class="inline-label radio-replacement u-clickable">
-              <input type="radio" value="dark" name="theme"<%= ' checked' if @theme == 'dark' %>>
-              <%- @Icon('radio', 'icon-unchecked') %>
-              <%- @Icon('radio-checked', 'icon-checked') %>
-              <span class="label-text"><%- @T('Dark') %></span>
-            </label>
-            <label class="inline-label radio-replacement u-clickable">
-              <input type="radio" value="light" name="theme"<%= ' checked' if @theme == 'light' %>>
-              <%- @Icon('radio', 'icon-unchecked') %>
-              <%- @Icon('radio-checked', 'icon-checked') %>
-              <span class="label-text"><%- @T('Light') %></span>
-            </label>
-            <label class="inline-label radio-replacement u-clickable">
-              <input type="radio" value="auto" name="theme"<%= ' checked' if @theme == 'auto' %>>
-              <%- @Icon('radio', 'icon-unchecked') %>
-              <%- @Icon('radio-checked', 'icon-checked') %>
-              <span class="label-text"><%- @T('Sync with computer') %></span>
-            </label>
+  <form>
+    <div class="settings-entry">
+      <div class="form-item js-theme flex">
+        <div class="form-group">
+          <div class="formGroup-label">
+            <label for="appearance"><%- @T('Theme') %></label>
+          </div>
+          <div class="controls">
+            <div class="radio">
+              <label class="inline-label radio-replacement u-clickable">
+                <input type="radio" value="dark" name="theme"<%= ' checked' if @theme == 'dark' %>>
+                <%- @Icon('radio', 'icon-unchecked') %>
+                <%- @Icon('radio-checked', 'icon-checked') %>
+                <span class="label-text"><%- @T('Dark') %></span>
+              </label>
+              <label class="inline-label radio-replacement u-clickable">
+                <input type="radio" value="light" name="theme"<%= ' checked' if @theme == 'light' %>>
+                <%- @Icon('radio', 'icon-unchecked') %>
+                <%- @Icon('radio-checked', 'icon-checked') %>
+                <span class="label-text"><%- @T('Light') %></span>
+              </label>
+              <label class="inline-label radio-replacement u-clickable">
+                <input type="radio" value="auto" name="theme"<%= ' checked' if @theme == 'auto' %>>
+                <%- @Icon('radio', 'icon-unchecked') %>
+                <%- @Icon('radio-checked', 'icon-checked') %>
+                <span class="label-text"><%- @T('Sync with computer') %></span>
+              </label>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <% if @isProviderConfigured: %>
+      <div class="settings-entry">
+
+        <div class="form-item js-theme flex">
+            <div class="formGroup-label">
+              <label for="appearance"><%- @T('Ticket Summary') %></label>
+            </div>
+            <div class="formGroup">
+              <label class="inline-label">
+                <span class="checkbox-replacement checkbox-replacement--inline">
+                  <input type="checkbox" name="summary_banner_visible" value="true" <% if @isSummaryBannerVisible: %> checked<% end %>>
+                  <%- @Icon('checkbox', 'icon-unchecked') %>
+                  <%- @Icon('checkbox-checked', 'icon-checked') %>
+                </span>
+                <%- @T('Show an info banner in the article list indicating that a summary has been created by %s.', 'Zammad Smart Assist') %>
+              </label>
+            </div>
+          </div>
+      </div>
+    <% end %>
   </form>
 </div>
