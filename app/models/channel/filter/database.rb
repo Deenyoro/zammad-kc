@@ -94,23 +94,23 @@ module Channel::Filter::Database # rubocop:disable Metrics/ModuleLength
     return if %w[x-zammad-ticket-tags x-zammad-ticket-followup-tags].exclude?(key.downcase)
 
     mail_header_key         = key.downcase.to_sym
-    mail[mail_header_key] ||= []
-    tags                    = meta['value'].split(',').map(&:strip).compact_blank
+    current_tags            = mail[mail_header_key].to_s.split(',').map(&:strip).compact_blank
+    change_tags             = meta['value'].split(',').map(&:strip).compact_blank
 
     case meta['operator']
     when 'add'
-      tags.each do |tag|
-        next if mail[mail_header_key].include?(tag)
-
-        mail[mail_header_key].push tag
+      change_tags.each do |tag|
+        current_tags |= [tag]
         mail[:"#{key.downcase}-source"] = filter
       end
     when 'remove'
-      tags.each do |tag|
-        mail[mail_header_key] -= [tag]
+      change_tags.each do |tag|
+        current_tags -= [tag]
         mail[:"#{key.downcase}-source"] = filter
       end
     end
+
+    mail[mail_header_key] = current_tags.join(',')
 
     true
   end

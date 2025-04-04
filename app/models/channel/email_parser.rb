@@ -239,7 +239,10 @@ returns
 
         # apply tags to ticket
         if mail[:'x-zammad-ticket-followup-tags'].present?
-          mail[:'x-zammad-ticket-followup-tags'].each do |tag|
+          tags = mail[:'x-zammad-ticket-followup-tags']
+          tags = tags.strip.split(',') if tags.is_a?(String)
+
+          tags.each do |tag|
             ticket.tag_add(tag, sourceable: mail[:'x-zammad-ticket-followup-tags-source'])
           end
         end
@@ -287,7 +290,10 @@ returns
 
         # apply tags to ticket
         if mail[:'x-zammad-ticket-tags'].present?
-          mail[:'x-zammad-ticket-tags'].each do |tag|
+          tags = mail[:'x-zammad-ticket-tags']
+          tags = tags.strip.split(',') if tags.is_a?(String)
+
+          tags.each do |tag|
             ticket.tag_add(tag, sourceable: mail[:'x-zammad-ticket-tags-source'])
           end
         end
