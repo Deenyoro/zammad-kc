@@ -114,6 +114,9 @@ class SecureMailing::Backend::HandlerSecurityOptions < SecureMailing::Backend::H
   def verified_recipient_addresses
     list = Mail::AddressList.new(recipient_addresses.compact.join(','))
     list.addresses.map(&:address).uniq
+  rescue
+    Rails.logger.error "Can not parse mail addresses from: #{recipient_addresses.compact.join(',')}"
+    nil
   end
 
   def recipient_addresses
