@@ -4,7 +4,7 @@ class Service::Ticket::Update < Service::BaseWithCurrentUser
   include Service::Concerns::HandlesCoreWorkflow
 
   def execute(ticket:, ticket_data:, skip_validators: nil, macro: nil)
-    Pundit.authorize current_user, ticket, :update?
+    Pundit.authorize current_user, ticket, :follow_up?
     set_core_workflow_information(ticket_data, ::Ticket, 'edit')
 
     article_data = ticket_data.delete(:article)
