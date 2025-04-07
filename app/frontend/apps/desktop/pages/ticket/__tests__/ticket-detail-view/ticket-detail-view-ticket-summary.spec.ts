@@ -58,6 +58,7 @@ const triggerArticleUpdate = async (
       ticketArticleUpdates: {
         addArticle: null,
         updateArticle: null,
+        removeArticleId: null,
       },
     })
   }
@@ -166,7 +167,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Summary' }))
 
-    let calls = await waitForTicketAiAssistanceSummarizeMutationCalls()
+    const calls = await waitForTicketAiAssistanceSummarizeMutationCalls()
 
     expect(calls).toHaveLength(1)
 
@@ -180,9 +181,9 @@ describe('Ticket detail view - Ticket summary', () => {
         },
         id: convertToGraphQLId('Article', 1),
       },
+      updateArticle: null,
+      removeArticleId: null,
     })
-
-    calls = await waitForTicketAiAssistanceSummarizeMutationCalls()
 
     expect(calls).toHaveLength(2)
   })
@@ -222,6 +223,8 @@ describe('Ticket detail view - Ticket summary', () => {
             name: EnumTicketArticleSenderName.System,
           },
         },
+        updateArticle: null,
+        removeArticleId: null,
       },
       false,
     )
