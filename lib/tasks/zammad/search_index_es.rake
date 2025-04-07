@@ -64,6 +64,7 @@ namespace :zammad do
       SearchIndexBackend.info # Raises for unsupported versions.
     end
 
+    desc 'Is the search index backend configured?'
     task configured: :environment do
       next if SearchIndexBackend.configured?
 

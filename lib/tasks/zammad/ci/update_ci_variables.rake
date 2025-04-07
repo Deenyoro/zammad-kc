@@ -1,45 +1,45 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-namespace :zammad do # rubocop:disable Metrics/BlockLength
+def update_ci_variable(credentials_class, name)
+  puts "Trying to fetch a new #{name}..."
 
-  namespace :ci do # rubocop:disable Metrics/BlockLength
+  result = credentials_class.refresh_token(
+    created_at:    30.days.ago,
+    client_id:     ENV['MICROSOFT365_CLIENT_ID'],
+    client_secret: ENV['MICROSOFT365_CLIENT_SECRET'],
+    client_tenant: ENV['MICROSOFT365_CLIENT_TENANT'],
+    refresh_token: ENV[name],
+  )
 
-    def update_ci_variable(credentials_class, name)
-      puts "Trying to fetch a new #{name}..."
+  if !result[:refresh_token].presence
+    pp result
+    raise "Error: a new #{name} could not be found."
+  end
 
-      result = credentials_class.refresh_token(
-        created_at:    30.days.ago,
-        client_id:     ENV['MICROSOFT365_CLIENT_ID'],
-        client_secret: ENV['MICROSOFT365_CLIENT_SECRET'],
-        client_tenant: ENV['MICROSOFT365_CLIENT_TENANT'],
-        refresh_token: ENV[name],
-      )
+  puts "Trying to update the corresponding CI variable with the new token #{result[:refresh_token]}..."
 
-      if !result[:refresh_token].presence
-        pp result
-        raise "Error: a new #{name} could not be found."
-      end
+  api_result = UserAgent.put(
+    "#{ENV['CI_API_V4_URL']}/projects/#{ENV['CI_PROJECT_ID']}/variables/#{name}",
+    {
+      value: result[:refresh_token],
+    },
+    {
+      headers: {
+        'PRIVATE-TOKEN' => ENV['CI_VARIABLE_UPDATE_TOKEN']
+      }
+    },
+  )
 
-      puts "Trying to update the corresponding CI variable with the new token #{result[:refresh_token]}..."
+  return if api_result.success?
 
-      api_result = UserAgent.put(
-        "#{ENV['CI_API_V4_URL']}/projects/#{ENV['CI_PROJECT_ID']}/variables/#{name}",
-        {
-          value: result[:refresh_token],
-        },
-        {
-          headers: {
-            'PRIVATE-TOKEN' => ENV['CI_VARIABLE_UPDATE_TOKEN']
-          }
-        },
-      )
+  pp api_result
+  raise 'Error: the CI variable could not be updated. Please make sure that CI_VARIABLE_UPDATE_TOKEN has a valid token.'
 
-      return if api_result.success?
+end
 
-      pp api_result
-      raise 'Error: the CI variable could not be updated. Please make sure that CI_VARIABLE_UPDATE_TOKEN has a valid token.'
+namespace :zammad do
 
-    end
+  namespace :ci do
 
     desc 'Update CI variables that need it, like refresh tokens'
     task update_ci_variables: :environment do
