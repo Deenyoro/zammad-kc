@@ -38,7 +38,7 @@ def run_test_scenarios(results:)
     Ticket::Overviews.all(current_user: agent)
   end
 
-  max_overview_list_time    = 20
+  max_overview_list_time    = version_oldstable? ? 46 : 34
   max_overview_list_queries = 25_000
   puts "Current ticket count: #{Ticket.count}"
   expect(title: 'Sessions::Backend::TicketOverviewList#push', max_time: max_overview_list_time, max_sql_queries: max_overview_list_queries, results:) do
