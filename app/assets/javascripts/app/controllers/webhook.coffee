@@ -196,7 +196,7 @@ PreDefinedWebhookMixin =
 
     # Process edit and clone forms conditionally, in case we are dealing with a pre-defined webhook.
     if not @preDefinedWebhook and @item?.pre_defined_webhook_type
-      @preDefinedWebhook = App.PreDefinedWebhook.findByAttribute(name: @item.pre_defined_webhook_type)
+      @preDefinedWebhook = App.PreDefinedWebhook.findByAttribute('id', @item.pre_defined_webhook_type)
 
     # Add pre-defined webhook fields as additional attributes.
     if @preDefinedWebhook
