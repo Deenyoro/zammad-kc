@@ -1,5 +1,5 @@
 class App.InviteUser extends App.ControllerWizardModal
-  className: 'modal fade modal--large'
+  large: true
   events:
     'click  .js-close':     'hide'
     'submit .js-user':      'submit'
@@ -7,9 +7,6 @@ class App.InviteUser extends App.ControllerWizardModal
 
   constructor: ->
     super
-
-    if @container
-      @el.addClass('modal--local')
 
     @render()
 
@@ -28,6 +25,8 @@ class App.InviteUser extends App.ControllerWizardModal
 
 
   render: =>
+    super
+
     modal = $(App.view('widget/invite_user')(
       head: @head
     ))

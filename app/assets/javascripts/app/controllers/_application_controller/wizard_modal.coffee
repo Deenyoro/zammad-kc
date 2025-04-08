@@ -1,4 +1,8 @@
 class App.ControllerWizardModal extends App.ControllerFullPage
+  large: false
+  small: false
+  veryLarge: false
+  dynamicSize: false
   className: 'modal fade'
 
   constructor: ->
@@ -48,5 +52,13 @@ class App.ControllerWizardModal extends App.ControllerFullPage
         @$(".#{screen}").find("[name=\"options::#{field}\"]").closest('.form-group').addClass('has-error')
 
   render: ->
-    # do nothing
-
+    if @container
+      @el.addClass('modal--local')
+    if @dynamicSize
+      @el.addClass('modal--dynamicSize')
+    if @veryLarge
+      @el.addClass('modal--veryLarge')
+    if @large
+      @el.addClass('modal--large')
+    if @small
+      @el.addClass('modal--small')

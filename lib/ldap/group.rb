@@ -57,6 +57,51 @@ class Ldap
       groups
     end
 
+    def all_members
+      @all_members ||= begin
+        filter ||= filter()
+
+        entries  = []
+        @ldap.search(filter, attributes: %w[dn member memberuid uniquemember]) do |entry|
+          entries << entry
+        end
+
+        entries
+      end
+    end
+
+    def all_members_dn(target_dn)
+      @all_members_dn ||= begin
+        all_members.index_by { |entry| entry.dn.downcase }
+      end
+      @all_members_dn[target_dn]
+    end
+
+    def nested_users(entry)
+      members = Set.new(group_user_dns(entry))
+      return members if members.blank?
+      return members if !@group_role_recursive[entry.dn.downcase]
+
+      check_current = members.filter_map { |dn| all_members_dn(dn) }
+      seen          = Set[entry.dn.downcase]
+      while check_current.present?
+        check_next = Set.new
+        check_current.each do |sub_entry|
+          next if seen.include?(sub_entry.dn.downcase)
+
+          seen << sub_entry.dn.downcase
+
+          sub_members = Set.new(group_user_dns(sub_entry))
+          next if sub_members.blank?
+
+          members    += sub_members
+          check_next += sub_members.filter_map { |dn| all_members_dn(dn) }
+        end
+        check_current = check_next
+      end
+      members
+    end
+
     # Creates a mapping for user DN and local role IDs based on a given group DN to local role ID mapping.
     #
     # @param mapping [Hash{String=>String}] The group DN to local role mapping.
@@ -69,19 +114,16 @@ class Ldap
     #
     # @return [Hash{String=>Array<Number>}] The user DN to local role IDs mapping.
     def user_roles(mapping, filter: nil)
-
-      filter ||= filter()
-
       result = {}
-      @ldap.search(filter, attributes: %w[dn member memberuid uniquemember]) do |entry|
+      all_members.each do |entry|
 
         roles = mapping[entry.dn.downcase]
         next if roles.blank?
 
-        members = group_user_dns(entry)
-        next if members.blank?
+        users = nested_users(entry)
+        next if users.blank?
 
-        members.each do |user_dn|
+        users.each do |user_dn|
           user_dn_key = user_dn.downcase
 
           roles.each do |role|
@@ -125,19 +167,27 @@ class Ldap
     def handle_config(config)
       return if config.blank?
 
-      @uid_attribute = config[:uid_attribute]
-      @filter        = config[:filter]
-      @user_filter   = config[:user_filter]
+      @uid_attribute        = config[:uid_attribute]
+      @filter               = config[:filter]
+      @user_filter          = config[:user_filter]
+      @group_role_recursive = config[:group_role_recursive] || {}
     end
 
     def group_user_dns(entry)
-      return entry[:member] if entry[:member].present?
-      # workaround for windows ad's with more than 1500 group users
-      # https://metacpan.org/dist/perl-ldap/view/lib/Net/LDAP/FAQ.pod#How-do-I-search-for-all-members-of-a-large-group-in-AD
-      return group_user_memberof(entry) if entry.to_h.keys.any? { |key| key.to_s.include?('member;range') }
-      return group_user_dns_memberuid(entry) if entry[:memberuid].present?
-
-      entry[:uniquemember].presence
+      @group_user_dns ||= {}
+      @group_user_dns[entry.dn] = begin
+        if entry[:member].present?
+          entry[:member]
+        elsif entry.to_h.keys.any? { |key| key.to_s.include?('member;range') }
+          # workaround for windows ad's with more than 1500 group users
+          # https://metacpan.org/dist/perl-ldap/view/lib/Net/LDAP/FAQ.pod#How-do-I-search-for-all-members-of-a-large-group-in-AD
+          group_user_memberof(entry)
+        elsif entry[:memberuid].present?
+          group_user_dns_memberuid(entry)
+        else
+          entry[:uniquemember].presence
+        end
+      end
     end
 
     def group_user_dns_memberuid(entry)

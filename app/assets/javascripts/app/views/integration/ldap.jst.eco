@@ -66,8 +66,8 @@
     <table class="settings-list settings-list--stretch">
       <thead>
         <tr>
-          <th width="40%"><%- @T('LDAP') %>
-          <th width="60%"><%- @T('Zammad') %>
+          <th width="40%"><%- @T('%s Attribute', 'LDAP') %>
+          <th width="60%"><%- @T('%s Attribute', 'Zammad') %>
         <% for key, value of @config.user_attributes: %>
           <tr>
             <td class="settings-list-row-control"><%= key %>
@@ -87,13 +87,20 @@
     <table class="settings-list settings-list--stretch">
       <thead>
         <tr>
-          <th width="40%"><%- @T('LDAP') %>
-          <th width="60%"><%- @T('Zammad') %>
+          <th width="40%" ><%- @T('%s Group', 'LDAP') %>
+          <th><%- @T('%s Role', 'Zammad') %>
+          <th width="50" class="u-noWrap"><%- @T('Include nested') %>
       <tbody>
         <% for source, dests of @group_role_map: %>
           <tr>
-            <td class="settings-list-row-control"><%= source %>
-            <td class="settings-list-row-control"><%= dests %>
+          <td class="settings-list-row-control"><%= source %>
+          <td class="settings-list-row-control"><%= dests %>
+          <td class="settings-list-row-control">
+            <% if @group_role_recursive[source]: %>
+              <%- @T('Yes') %>
+            <% else: %>
+              <%- @T('No') %>
+            <% end %>
         <% end %>
   <% end %>
     </table>

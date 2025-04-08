@@ -303,9 +303,6 @@ class ConnectionWizard extends App.ControllerWizardModal
     if @currentAuthenticationMethod isnt undefined
       @wizardConfig.auth_type = @currentAuthenticationMethod
 
-    if @container
-      @el.addClass('modal--local')
-
     @render()
 
     @el.modal
@@ -325,6 +322,8 @@ class ConnectionWizard extends App.ControllerWizardModal
       @showSlide(@slide)
 
   render: =>
+    super
+
     @ajax(
       id:   'exchange_index'
       type: 'GET'

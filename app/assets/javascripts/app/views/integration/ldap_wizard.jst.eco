@@ -197,16 +197,22 @@
               <col width="240">
               <col>
               <col>
+              <col>
             </colgroup>
             <thead>
               <tr>
                 <th><%- @T('%s Group', 'LDAP') %>
                 <th><%- @T('%s Role', 'Zammad') %>
+                <th class="u-noWrap">
+                  <%- @T('Include nested') %>
+                  <div class="help-message js-helpMessage" title="<%- @T('Include all users in nested groups of this group') %>">
+                    <%- @Icon('help') %>
+                  </div>
                 <th><%- @T('Action') %>
             </thead>
             <tbody>
               <tr>
-                <td class="settings-list-row-control" colspan="3">
+                <td class="settings-list-row-control" colspan="4">
                   <div class="btn btn--text btn--create js-add">
                     <%- @Icon('plus-small') %> <%- @T('Add') %>
                   </div>

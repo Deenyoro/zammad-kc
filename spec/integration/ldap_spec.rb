@@ -82,6 +82,33 @@ RSpec.describe 'Ldap import', integration: true, required_envs: %w[IMPORT_LDAP_E
 
     include_examples 'ldap import'
 
+    context 'when containing nested groups' do
+      let(:ldap_source) do
+        ldap_source = create(:ldap_source, :with_config)
+        ldap_source.preferences['group_role_map'] = { 'cn=3rd level,ou=groups,dc=foo,dc=example,dc=com' => ['2'], '4th level,ou=groups,dc=foo,dc=example,dc=com' => ['2'] }
+        ldap_source.save!
+        ldap_source
+      end
+
+      it 'does not import agents because no recursive mode on' do
+        expect(ImportJob.last.result['role_ids'].dig(2, 'created')).to be_nil
+      end
+
+      context 'when 3rd level recursive' do
+        let(:ldap_source) do
+          ldap_source = create(:ldap_source, :with_config)
+          ldap_source.preferences['group_role_map'] = { 'cn=3rd level,ou=groups,dc=foo,dc=example,dc=com' => ['2'], '4th level,ou=groups,dc=foo,dc=example,dc=com' => ['2'] }
+          ldap_source.preferences['group_role_recursive'] = { 'cn=3rd level,ou=groups,dc=foo,dc=example,dc=com' => true }
+          ldap_source.save!
+          ldap_source
+        end
+
+        it 'does import agents with recursive mode on' do
+          expect(ImportJob.last.result['role_ids'].dig(2, 'created')).to eq(2)
+        end
+      end
+    end
+
     context 'with ssl' do
       context 'with ssl verification' do
         context 'with trusted certificate' do

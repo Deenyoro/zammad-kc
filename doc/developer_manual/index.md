@@ -23,12 +23,14 @@ it.
 
 - [How to diagnose email bugs](cookbook/how-to-diagnose-email-bugs.md)
 - [How to Debug Zammad Processes](cookbook/how-to-debug-zammad-processes.md)
-- [How to setup S/MIME integration](cookbook/how-to-setup-smime-integration.md)
 - [How to use debuggers with Zammad](cookbook/how-to-use-debuggers.md)
 - [How to test with RSpec / Capybara](cookbook/how-to-test-with-rspec-and-capybara.md)
 - [How to test with QUnit](cookbook/how-to-test-with-qunit.md)
 - [How to test with Vitest and Cypress](cookbook/how-to-test-with-vitest-and-cypress.md)
 - [How to test the development version of Zammad via Docker](cookbook/how-to-test-develop-with-docker.md)
+- [How to setup LDAP integration](cookbook/how-to-setup-ldap-integration.md)
+- [How to setup PGP integration](cookbook/how-to-setup-pgp-integration.md)
+- [How to setup S/MIME integration](cookbook/how-to-setup-smime-integration.md)
 
 ## How to Contribute
 

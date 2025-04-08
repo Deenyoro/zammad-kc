@@ -357,9 +357,6 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
         @outboundPassword = @account.outbound.options.password
         @account.outbound.options.password = @passwordPlaceholder
 
-    if @container
-      @el.addClass('modal--local')
-
     @render()
 
     if @channel
@@ -383,6 +380,8 @@ class ChannelEmailAccountWizard extends App.ControllerWizardModal
       @showSlide(@slide)
 
   render: =>
+    super
+
     @html App.view('channel/email_account_wizard')()
     @showSlide('js-intro')
 
@@ -969,9 +968,6 @@ class ChannelEmailNotificationWizard extends App.ControllerWizardModal
         @outboundPassword = @account.outbound.options.password
         @account.outbound.options.password = @passwordPlaceholder
 
-    if @container
-      @el.addClass('modal--local')
-
     @render()
     @toggleSslVerifyAlert(target: @el.find('[name="options::ssl_verify"]'))
 
@@ -994,6 +990,8 @@ class ChannelEmailNotificationWizard extends App.ControllerWizardModal
       @showSlide(@slide)
 
   render: =>
+    super
+
     @html App.view('channel/email_notification_wizard')()
     @showSlide('js-outbound')
 

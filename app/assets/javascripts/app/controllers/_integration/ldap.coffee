@@ -210,6 +210,7 @@ class Form extends App.Controller
       item: @item
       config: @config
       group_role_map: group_role_map
+      group_role_recursive: @config.group_role_recursive || {}
     )
     if _.isEmpty(@config.host)
       @$('.js-notConfigured').removeClass('hide')
@@ -260,6 +261,8 @@ class State
     App.Setting.get('ldap_integration')
 
 class ConnectionWizard extends App.ControllerWizardModal
+  veryLarge: true
+
   slideMethod:
     'js-bind': 'bindShow'
     'js-mapping': 'mappingShow'
@@ -316,6 +319,8 @@ class ConnectionWizard extends App.ControllerWizardModal
       @[@start]()
 
   render: =>
+    super
+
     nameHtml = App.UiElement.input.render({ name: 'name', id: 'name', display: __('Name'), tag: 'input', type: 'text', class: 'form-control--small', required: 'required', value: @config.name })[0].outerHTML
     activeHtml = App.UiElement.boolean.render({ name: 'active', display: __('Active'), tag: 'active', value: @config.active, required: 'required', class: 'form-control--small' })[0].outerHTML
 
@@ -353,6 +358,8 @@ class ConnectionWizard extends App.ControllerWizardModal
       hostHtml:      hostHtml
       sslHtml:       sslHtml
     )
+
+    @el.find('.js-helpMessage').tooltip()
 
   saveQuit: (e) =>
     e.preventDefault()
@@ -583,7 +590,7 @@ class ConnectionWizard extends App.ControllerWizardModal
     @userMappingForm.find('tbody tr.js-entry').remove()
     @userMappingForm.find('tbody tr').before(@buildRowsUserMap(user_attribute_map))
     @groupRoleForm.find('tbody tr.js-entry').remove()
-    @groupRoleForm.find('tbody tr').before(@buildRowsGroupRole(@wizardConfig.group_role_map))
+    @groupRoleForm.find('tbody tr').before(@buildRowsGroupRole(@wizardConfig))
 
     @$('.js-mapping input[name="user_filter"]').val(@wizardConfig.user_filter)
 
@@ -620,7 +627,8 @@ class ConnectionWizard extends App.ControllerWizardModal
 
     # group role map
     group_role_map = @formParam(@groupRoleForm)
-    for key in ['source', 'dest']
+    recursive_map_local  = {}
+    for key in ['source', 'dest', 'recursive']
       if !_.isArray(group_role_map[key])
         group_role_map[key] = [group_role_map[key]]
     group_role_map_local = {}
@@ -630,7 +638,9 @@ class ConnectionWizard extends App.ControllerWizardModal
         if !_.isArray(group_role_map_local[group_role_map.source[count]])
           group_role_map_local[group_role_map.source[count]] = []
         group_role_map_local[group_role_map.source[count]].push group_role_map.dest[count]
+        recursive_map_local[group_role_map.source[count]] = group_role_map.recursive[count] is 'true'
     @wizardConfig.group_role_map = group_role_map_local
+    @wizardConfig.group_role_recursive = recursive_map_local
 
     expertSettings = @formParam(@expertForm)
 
@@ -652,20 +662,21 @@ class ConnectionWizard extends App.ControllerWizardModal
     el.find('.js-userAttribute').html(@createSelection('dest', @wizardData.user_attributes, dest))
     el
 
-  buildRowsGroupRole: (group_role_map) =>
+  buildRowsGroupRole: (wizardConfig) =>
     el = []
-    for source, dests of group_role_map
+    for source, dests of wizardConfig.group_role_map
       for dest in dests
-        el.push @buildRowGroupRole(source, dest)
+        el.push @buildRowGroupRole(source, dest, wizardConfig.group_role_recursive?[source])
     el
 
-  buildRowGroupRole: (source, dest) =>
+  buildRowGroupRole: (source, dest, recursive) =>
     el = $(App.view('integration/ldap_group_role_row')())
     el.find('.js-ldapList').html(@createAutocompletion('source', @wizardData.backend_groups, source))
+    el.find('.js-recursive').html(@createSelection('recursive', [ { name: 'Yes', value: 'true' }, { name: 'No', value: 'false' } ], recursive, undefined, 'false'))
     el.find('.js-roleList').html(@createSelection('dest', @wizardData.roles, dest))
     el
 
-  createSelection: (name, options, selected, unknown) ->
+  createSelection: (name, options, selected, unknown, defaultValue) ->
     return App.UiElement.searchable_select.render(
       name: name
       multiple: false
@@ -675,6 +686,8 @@ class ConnectionWizard extends App.ControllerWizardModal
       options: options
       value: selected
       unknown: unknown
+      default: defaultValue
+      translate: true
       class: 'form-control--small'
     )
 
