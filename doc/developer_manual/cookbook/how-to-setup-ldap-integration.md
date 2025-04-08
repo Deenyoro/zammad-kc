@@ -5,69 +5,33 @@ approach uses an example LDAP service, this is considered unsafe for production.
 
 ## Start LDAP Service
 
-You can leverage our LDAP CI Docker container for a quick-n-dirty local service. It comes prefilled with some sample
-users and groups.
+You can leverage an LDAP Docker container for a quick-n-dirty local service. It comes prefilled with some sample users
+and groups.
 
-### With Registry Image
-
-#### CLI
+You will first need to build a local image in order to use it. The definition is located in the Zammad checkout:
 
 ```sh
-docker run --name zammad-ldap --detach -p 389:389 -p 636:636 registry.zammad.com/docker/zammad-ldap:stable
-```
-
-#### Docker Compose
-
-```yaml
-ldap:
-  container_name: zammad-ldap
-  image: registry.zammad.com/docker/zammad-ldap:stable
-  ports:
-  - 389:389
-  - 636:636
-  restart: unless-stopped
-```
-
-### With Locally Built Image
-
-#### CLI
-
-```sh
-git clone git@git.zammad.com:docker/zammad-ldap.git
-cd zammad-ldap
+cd doc/developer_manual/assets/ldap
 docker build -t zammad-ldap .
-docker run --name zammad-ldap --detach -p 389:389 -p 636:636 zammad-ldap
 ```
 
-#### Docker Compose
+Next, you can run the container in one of the following ways.
+
+### CLI
 
 ```sh
-cd /path/to/docker/checkouts
-git clone git@git.zammad.com:docker/zammad-ldap.git
+docker run --name zammad-ldap --detach -p 389:389 zammad-ldap
 ```
+
+### Docker Compose
 
 ```yaml
 ldap:
   container_name: zammad-ldap
   image: zammad-ldap
-  build:
-    context: /path/to/docker/checkouts/zammad-ldap
-    dockerfile: /path/to/docker/checkouts/zammad-ldap/Dockerfile
   ports:
   - 389:389
-  - 636:636
   restart: unless-stopped
-```
-
-Where `/path/to/docker/checkouts` points to the the parent folder of your Git checkout.
-
-## Import Certificate
-
-```sh
-cd /path/to/docker/checkouts
-git clone git@git.zammad.com:docker/zammad-ldap.git
-cd /opt/zammad
-rails r "SSLCertificate.create!(certificate: Rails.root.join('/path/to/docker/checkouts/zammad-ldap/certs/ca.crt').read)"
 ```
 
 ## Configure LDAP Integration
@@ -75,15 +39,16 @@ rails r "SSLCertificate.create!(certificate: Rails.root.join('/path/to/docker/ch
 1. Navigate to the **System > Integrations > LDAP** section in GUI, and click on the **New Source** button.
 2. Enter `zammad-ldap` under **Name**.
 3. Enter `localhost` under **Host**.
-4. Click on **Continue**.
-5. Enter `cn=admin,dc=foo,dc=example,dc=com` under **Bind User**.
-6. Enter `test` under **Bind Password**.
-7. Click on **Continue**.
-8. Select _cn (e.g., Nicole)_ LDAP Attribute for _First name_ Zammad Attribute.
-9. Select _uid (e.g., nb)_ LDAP Attribute for _Login_ Zammad Attribute.
-10. Optionally, add any **Zammad Role** assignments based on **LDAP Group**.
-11. Click on **Continue**.
-12. Confirm that _14_ users will be created and click on **Save configuration**.
+4. Select _No SSL_ for **SSL/STARTTLS**.
+5. Click on **Continue**.
+6. Enter `cn=admin,dc=foo,dc=example,dc=com` under **Bind User**.
+7. Enter `test` under **Bind Password**.
+8. Click on **Continue**.
+9. Select _cn (e.g., Nicole)_ LDAP Attribute for _First name_ Zammad Attribute.
+10. Select _uid (e.g., nb)_ LDAP Attribute for _Login_ Zammad Attribute.
+11. Optionally, add any **Zammad Role** assignments based on **LDAP Group**.
+12. Click on **Continue**.
+13. Confirm that _14_ users will be created and click on **Save configuration**.
 
 Finally, turn on the toggle switch on top to activate the feature. Wait a bit until the background job does the first
 sync. You will then be able to find newly imported users under **Manage > Users** section. All users have `test` set as

@@ -70,13 +70,13 @@ Zammad requires some extra initialization beyond the standard `rails db:` rake t
 If you visit the homepage after running those tasks and starting the server, you will be presented with a setup wizard
 like the one below:
 
-![Zammad Setup Wizard](../images/setup-wizard.png)
+![Zammad Setup Wizard](../assets/images/setup-wizard.png)
 
 The wizard can be time-consuming to go through (for instance, you have the option to enter and validate SMTP credentials
 for outgoing emails), but you can’t access the main dashboard (below) or interact with the rest of the app until you
 complete it.
 
-![Zammad Dashboard](../images/dashboard.png)
+![Zammad Dashboard](../assets/images/dashboard.png)
 
 You should click through the wizard just once, just to get a sense of what our users go through — but if we had to do
 this _every time_ we reset the database, we’d never get any actual work done. So, Zammad includes a feature called the
