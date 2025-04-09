@@ -488,6 +488,9 @@ class App.TicketZoom extends App.Controller
     return @articleNew?.params()
 
   render: (local) =>
+    # If taskbar item is not a valid ticket
+    return if !@ticket
+
     @setPendingTimeReminderDelay()
 
     # update taskbar with new meta data
