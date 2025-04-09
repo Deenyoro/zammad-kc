@@ -38,7 +38,7 @@ RSpec.describe 'Desktop > Login', app: :desktop_view, authenticated_as: false, t
     end
   end
 
-  context 'when loggin in via external authentication provider', authenticated_as: false, integration: true, integration_standalone: :saml, required_envs: %w[KEYCLOAK_BASE_URL KEYCLOAK_ADMIN_USER KEYCLOAK_ADMIN_PASSWORD] do
+  context 'when logging in via external authentication provider', authenticated_as: false, integration: true, integration_standalone: :saml, required_envs: %w[KEYCLOAK_BASE_URL KEYCLOAK_ADMIN_USER KEYCLOAK_ADMIN_PASSWORD] do
     let(:zammad_base_url)              { "#{Capybara.app_host}:#{Capybara.current_session.server.port}" }
     let(:zammad_saml_metadata)         { "#{zammad_base_url}/auth/saml/metadata" }
     let(:saml_base_url)                { ENV['KEYCLOAK_BASE_URL'] }
@@ -62,15 +62,20 @@ RSpec.describe 'Desktop > Login', app: :desktop_view, authenticated_as: false, t
 
       # Workaround: SAML redirects in CI don't work because of missing HTTP referrer headers.
       visit '/'
-      expect(page).to have_css('[aria-label="John Doe"]')
+      wait.until { expect(page).to have_css('[aria-label="John Doe"]') }
+      wait_for_test_flag('common-popover.mounted-user-menu-popover')
+      wait_for_gql('apps/desktop/entities/user/current/graphql/queries/userCurrentTaskbarItemList.graphql')
+      wait_for_gql('shared/entities/object-attributes/graphql/queries/objectManagerFrontendAttributes.graphql', number: 4)
+      sleep 0.3
 
       find('[aria-label="John Doe"]').click
-      click_on('Sign out')
-
-      expect(page).to have_current_path(%r{/login})
-      wait_for_test_flag('applicationLoaded.loaded', skip_clearing: true)
+      wait_for_test_flag('common-popover.opened')
+      expect(page).to have_text('Sign out')
+      click_on 'Sign out'
+      wait.until { expect(page).to have_no_css('[aria-label="John Doe"]') }
 
       visit '/'
+      wait_for_test_flag('applicationLoaded.loaded', skip_clearing: true)
       expect_current_route '/login'
 
       visit saml_realm_zammad_accounts

@@ -12,6 +12,7 @@ import {
   type ComponentPublicInstance,
   computed,
   nextTick,
+  onMounted,
   onUnmounted,
   ref,
   type UnwrapRef,
@@ -355,6 +356,12 @@ defineOptions({
 const { durations } = useTransitionConfig()
 
 const classes = getPopoverClasses()
+
+onMounted(() => {
+  testFlags.set(
+    props.id ? `common-popover.mounted-${props.id}` : 'common-popover.mounted',
+  )
+})
 </script>
 
 <template>
