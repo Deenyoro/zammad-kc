@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, useTemplateRef } from 'vue'
+import { onBeforeUnmount, onMounted, useTemplateRef, computed } from 'vue'
 
 import type { ObjectLike } from '#shared/types/utils.ts'
 
@@ -14,9 +14,10 @@ interface Props {
   icon: string
   entity?: ObjectLike
   actions?: MenuItem[]
+  variant?: 'ai'
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const scrollPosition = defineModel<number>({
   required: true,
@@ -25,6 +26,17 @@ const scrollPosition = defineModel<number>({
 
 const scrollContainer = useTemplateRef('scroll-container')
 
+const variantClass = computed(() =>
+  props.variant === 'ai'
+    ? 'ai-stripe before:-bottom-3 before:absolute relative before:left:0 before:right-0 before:h-0.5'
+    : '',
+)
+
+const iconClass = computed(() =>
+  props.variant === 'ai'
+    ? 'text-blue-800'
+    : 'text-stone-200 dark:text-neutral-500',
+)
 // Handle scroll position (re)storing of the active sidebar, when navigating between taskbar tabs.
 useScrollPosition(scrollContainer)
 
@@ -45,9 +57,10 @@ onBeforeUnmount(() => {
     <CommonLabel
       tag="h2"
       class="min-h-7 grow gap-1.5"
+      :class="variantClass"
       size="large"
       :prefix-icon="icon"
-      icon-color="text-stone-200 dark:text-neutral-500"
+      :icon-color="iconClass"
     >
       {{ $t(title) }}
     </CommonLabel>

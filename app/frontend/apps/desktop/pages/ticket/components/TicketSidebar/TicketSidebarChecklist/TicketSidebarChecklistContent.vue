@@ -65,7 +65,8 @@ const createNewChecklist = async (
     return addNewChecklistMutation
       .send({
         ...input,
-        ticketId: ticket.value.id,
+        createFirstItem: true,
+        ticketId: ticket.value!.id,
       })
       .then(() => {
         if (options.focusLastItem)

@@ -9,8 +9,8 @@ RSpec.describe Gql::Mutations::Ticket::Checklist::Add, current_user_id: 1, type:
 
   let(:query) do
     <<~QUERY
-      mutation ticketChecklistAdd($ticketId: ID!, $templateId: ID) {
-        ticketChecklistAdd(ticketId: $ticketId, templateId: $templateId) {
+      mutation ticketChecklistAdd($ticketId: ID!, $createFirstItem: Boolean, $templateId: ID) {
+        ticketChecklistAdd(ticketId: $ticketId, createFirstItem: $createFirstItem, templateId: $templateId) {
           checklist {
             id
             name
@@ -28,7 +28,8 @@ RSpec.describe Gql::Mutations::Ticket::Checklist::Add, current_user_id: 1, type:
     QUERY
   end
 
-  let(:variables) { { ticketId: gql.id(ticket) } }
+  let(:create_first_item) { true }
+  let(:variables) { { ticketId: gql.id(ticket), createFirstItem: create_first_item } }
 
   let(:response) do
     {
@@ -69,7 +70,23 @@ RSpec.describe Gql::Mutations::Ticket::Checklist::Add, current_user_id: 1, type:
   end
 
   context 'with authenticated session', authenticated_as: :agent do
-    it_behaves_like 'creating the ticket checklist'
+
+    context 'with create_first_item' do
+      it_behaves_like 'creating the ticket checklist'
+    end
+
+    context 'without create_first_item' do
+      let(:create_first_item) { false }
+      let(:response) do
+        {
+          'id'    => a_kind_of(String),
+          'name'  => '',
+          'items' => [],
+        }
+      end
+
+      it_behaves_like 'creating the ticket checklist'
+    end
 
     context 'with disabled checklist feature' do
       let(:setup) do

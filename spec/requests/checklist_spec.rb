@@ -35,10 +35,18 @@ RSpec.describe 'Checklist', authenticated_as: :agent_1, current_user_id: 1, type
     expect(response).to have_http_status(:forbidden)
   end
 
-  it 'does create checklist', :aggregate_failures do
+  it 'does create checklist with create_first_item', :aggregate_failures do
+    post '/api/v1/checklists', params: { name: SecureRandom.uuid, ticket_id: ticket_1_empty.id, create_first_item: true }, as: :json
+    expect(response).to have_http_status(:created)
+    expect(json_response).to include('id' => Checklist.last.id)
+    expect(Checklist.last.items.count).to eq(1)
+  end
+
+  it 'does create checklist without create_first_item', :aggregate_failures do
     post '/api/v1/checklists', params: { name: SecureRandom.uuid, ticket_id: ticket_1_empty.id }, as: :json
     expect(response).to have_http_status(:created)
     expect(json_response).to include('id' => Checklist.last.id)
+    expect(Checklist.last.items.count).to eq(0)
   end
 
   it 'does not create checklist' do

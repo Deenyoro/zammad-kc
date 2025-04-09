@@ -343,6 +343,7 @@ describe('TicketSidebarChecklist', () => {
     const calls = await waitForTicketChecklistAddMutationCalls()
 
     expect(calls.at(-1)?.variables).toEqual({
+      createFirstItem: true,
       ticketId: convertToGraphQLId('Ticket', 1),
     })
   })

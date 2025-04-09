@@ -252,6 +252,19 @@
   @apply after:ms-1 after:inline-block after:font-extrabold after:text-yellow-600 after:content-['•'];
 }
 
+@utility ai-stripe {
+  &::before {
+    content: '';
+    height: 1px;
+    width: 100%;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--color-blue-800),
+      var(--color-pink-200)
+    );
+  }
+}
+
 /* Uses to be in the @layer utilities */
 @media print {
   [data-print-mode='true'] body {

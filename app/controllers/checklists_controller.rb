@@ -13,8 +13,10 @@ class ChecklistsController < ApplicationController
     checklist = if params[:template_id].present?
                   template = ChecklistTemplate.find(params[:template_id])
                   Checklist.create_from_template!(ticket, template)
-                else
+                elsif params[:create_first_item]
                   Checklist.create_fresh!(ticket)
+                else
+                  Checklist.create!(ticket:)
                 end
 
     render json: { id: checklist.id, assets: checklist.assets({}) }, status: :created

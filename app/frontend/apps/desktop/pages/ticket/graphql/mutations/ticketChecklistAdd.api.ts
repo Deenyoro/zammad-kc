@@ -7,8 +7,12 @@ import * as VueCompositionApi from 'vue';
 export type ReactiveFunction<TParam> = () => TParam;
 
 export const TicketChecklistAddDocument = gql`
-    mutation ticketChecklistAdd($ticketId: ID!, $templateId: ID) {
-  ticketChecklistAdd(ticketId: $ticketId, templateId: $templateId) {
+    mutation ticketChecklistAdd($ticketId: ID!, $templateId: ID, $createFirstItem: Boolean) {
+  ticketChecklistAdd(
+    ticketId: $ticketId
+    templateId: $templateId
+    createFirstItem: $createFirstItem
+  ) {
     checklist {
       id
       name

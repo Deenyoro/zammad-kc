@@ -12,13 +12,20 @@ import type { ObjectLike } from '#shared/types/utils.ts'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import TicketSidebarContent from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarContent.vue'
 import SummarySkeleton from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary/SummarySkeleton.vue'
-import { useTicketSummary } from '#desktop/pages/ticket/composables/useTicketSummary.ts'
+import TicketSummaryCreateChecklist from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue'
+import TicketSummaryItem from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryItem.vue'
+import {
+  type SummaryItem,
+  TicketSummaryFeature,
+} from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/types.ts'
 import type { TicketSidebarContentProps } from '#desktop/pages/ticket/types/sidebar.ts'
 
 interface Props extends TicketSidebarContentProps {
   summary: Maybe<TicketAiAssistanceSummary>
   error: Maybe<AsyncExecutionError>
   showErrorDetails: boolean
+  summaryHeadings: SummaryItem[]
+  isProviderConfigured: boolean
 }
 
 const props = defineProps<Props>()
@@ -29,8 +36,6 @@ defineEmits<{
 
 const persistentStates = defineModel<ObjectLike>({ required: true })
 
-const { summaryHeadings, isProviderConfigured } = useTicketSummary()
-
 const errorMessage = computed(() => props.error?.message)
 
 const noSummaryPossible = computed(() => {
@@ -38,7 +43,7 @@ const noSummaryPossible = computed(() => {
 
   if (!summary) return false
 
-  return summaryHeadings.value.every((section) => !summary[section.key]?.length)
+  return props.summaryHeadings.every((section) => !summary[section.key]?.length)
 })
 </script>
 
@@ -47,8 +52,9 @@ const noSummaryPossible = computed(() => {
     v-model="persistentStates.scrollPosition"
     :icon="sidebarPlugin.icon"
     :title="sidebarPlugin.title"
+    variant="ai"
   >
-    <section class="space-y-6">
+    <section class="space-y-4.5">
       <template v-if="!isProviderConfigured">
         <CommonAlert class="self-stretch" variant="danger">
           <div class="flex flex-col gap-1.5">
@@ -93,35 +99,25 @@ const noSummaryPossible = computed(() => {
           {{ $t('There is not enough content yet to summarize this ticket.') }}
         </CommonAlert>
       </template>
-      <template v-else-if="props.summary">
-        <template v-for="heading in summaryHeadings" :key="heading.key">
-          <article v-if="props.summary[heading.key]?.length">
-            <CommonLabel
-              class="mb-3 block! text-black! dark:text-white!"
-              tag="h3"
-              >{{ heading.label }}
-            </CommonLabel>
-            <ol
-              v-if="Array.isArray(props.summary[heading.key])"
-              class="space-y-1 text-gray-100 dark:text-neutral-400"
-            >
-              <li
-                v-for="content in props.summary[heading.key]"
-                :key="content"
-                class="flex gap-2 ps-2 before:mt-1.5 before:h-[3px] before:w-[3px] before:shrink-0 before:rounded-full before:bg-current"
-              >
-                <CommonLabel tag="p">{{ content }}</CommonLabel>
-              </li>
-            </ol>
-            <CommonLabel v-else tag="p"
-              >{{ props.summary[heading.key] }}
-            </CommonLabel>
+      <template v-else-if="summary">
+        <template v-for="item in summaryHeadings" :key="item.key">
+          <article v-if="summary[item.key]?.length">
+            <TicketSummaryCreateChecklist
+              v-if="item.feature === TicketSummaryFeature.Checklist"
+              :summary="summary[item.key] as string[]"
+              :label="item.label"
+            />
+            <TicketSummaryItem
+              v-else
+              :summary="summary[item.key]!"
+              :label="item.label"
+            />
           </article>
         </template>
 
         <CommonLabel
           size="small"
-          class="text-stone-200! dark:text-neutral-500!"
+          class="border-t border-neutral-100 pt-2 text-stone-200! dark:border-gray-900 dark:text-neutral-500!"
           tag="p"
           >{{ $t('*Be sure to check AI-generated summaries for accuracy') }}
         </CommonLabel>

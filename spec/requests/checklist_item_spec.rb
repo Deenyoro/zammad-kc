@@ -44,6 +44,17 @@ RSpec.describe 'Checklist Item', authenticated_as: :agent_1, current_user_id: 1,
     expect(response).to have_http_status(:forbidden)
   end
 
+  it 'does bulk create checklist items', :aggregate_failures do
+    post '/api/v1/checklist_items/create_bulk', params: { checklist_id: checklist_1.id, items: [{ text: SecureRandom.uuid }] }, as: :json
+    expect(response).to have_http_status(:created)
+    expect(json_response).to include('success' => true, 'checklist_item_ids' => [Checklist::Item.last.id])
+  end
+
+  it 'does not bulk create checklist items' do
+    post '/api/v1/checklist_items/create_bulk', params: { checklist_id: checklist_2.id, items: [{ text: SecureRandom.uuid }] }, as: :json
+    expect(response).to have_http_status(:forbidden)
+  end
+
   it 'does update checklist items', :aggregate_failures do
     put "/api/v1/checklist_items/#{checklist_1.items.first.id}", params: { id: checklist_1.items.first.id, text: SecureRandom.uuid }, as: :json
     expect(response).to have_http_status(:ok)

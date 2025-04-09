@@ -8,10 +8,12 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
   let(:article)                      { create(:ticket_article, ticket:) }
   let(:ai_provider)                  { 'zammad_ai' }
   let(:ai_assistance_ticket_summary) { true }
+  let(:checklist)                    { true }
 
   def authenticate
     Setting.set('ai_provider', ai_provider)
     Setting.set('ai_assistance_ticket_summary', ai_assistance_ticket_summary)
+    Setting.set('checklist', checklist)
 
     article
 
@@ -23,11 +25,11 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
       allow(AI::Service::TicketSummarize)
         .to receive(:cache_key).and_return(initial_cache_key, :noop, updated_cache_key)
 
-      Rails.cache.write(initial_cache_key, { 'summary' => initial_summary })
-      Rails.cache.write(updated_cache_key, { 'summary' => updated_summary })
+      Rails.cache.write(initial_cache_key, { 'summary' => initial_summary, 'suggestions' => (initial_suggestions if defined?(initial_suggestions)) }.compact)
+      Rails.cache.write(updated_cache_key, { 'summary' => updated_summary, 'suggestions' => (updated_suggestions if defined?(updated_suggestions)) }.compact)
 
       allow_any_instance_of(Service::Ticket::AIAssistance::Summarize)
-        .to receive(:execute).and_return({ 'summary' => updated_summary })
+        .to receive(:execute).and_return({ 'summary' => updated_summary, 'suggestions' => (updated_suggestions if defined?(updated_suggestions)) }.compact)
     end
 
     visit "ticket/zoom/#{ticket.id}"
@@ -35,16 +37,20 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
   describe 'Sidebar' do
     context 'when ai_provider is set' do
-      let(:initial_summary) { Faker::Lorem.sentence }
-      let(:updated_summary)   { Faker::Lorem.sentence }
+      let(:initial_summary)   { Faker::Lorem.unique.sentence }
+      let(:updated_summary)   { Faker::Lorem.unique.sentence }
       let(:initial_cache_key) { "ticket_summary_#{ticket.id}" }
       let(:updated_cache_key) { "ticket_summary_#{ticket.id}_2" }
 
-      it 'displays and updates summary in sidebar', performs_jobs: true do
+      before do
         click '.tabsSidebar-tab[data-tab=summary]'
+      end
 
-        expect(page).to have_text 'CONVERSATION SUMMARY'
-        expect(page).to have_text initial_summary
+      it 'displays and updates summary in sidebar', performs_jobs: true do
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_text 'Conversation Summary'
+          expect(page).to have_text initial_summary
+        end
 
         create(:ticket_article, ticket:)
 
@@ -52,7 +58,52 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
         perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
 
-        expect(page).to have_text updated_summary
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_text updated_summary
+        end
+      end
+
+      context 'when suggestions are available' do
+        let(:initial_suggestions) do
+          [
+            Faker::Lorem.unique.sentence,
+            Faker::Lorem.unique.sentence,
+            Faker::Lorem.unique.sentence,
+          ]
+        end
+
+        it 'shows add buttons' do
+          within '.sidebar[data-tab="summary"]' do
+            expect(page).to have_text 'Suggested Next Steps'
+            expect(find_all('button[aria-label="Add as checklist item"]').length).to eq(3)
+            expect(page).to have_button 'Add all to checklist'
+
+            find_all('button[aria-label="Add as checklist item"]').first.click
+          end
+
+          expect(page).to have_text 'Checklist item successfully added.'
+
+          within '.sidebar[data-tab="summary"]' do
+            click_on 'Add all to checklist'
+          end
+
+          within '.sidebar[data-tab="checklist"]' do
+            expect(page).to have_text 'Checklist'
+            expect(find_all('table tbody tr').length).to eq(4)
+          end
+        end
+
+        context 'with checklist feature disabled' do
+          let(:checklist) { false }
+
+          it 'does not show add buttons' do
+            within '.sidebar[data-tab="summary"]' do
+              expect(page).to have_text 'Suggested Next Steps'
+              expect(page).to have_no_button 'Add'
+              expect(page).to have_no_button 'Add all to checklist'
+            end
+          end
+        end
       end
     end
 
@@ -73,7 +124,9 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
         click_on('See Summary')
 
-        expect(page).to have_css('.js-headline', text: 'Summary')
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_text('Summary')
+        end
       end
 
       it 'allows to hide Summary banner' do

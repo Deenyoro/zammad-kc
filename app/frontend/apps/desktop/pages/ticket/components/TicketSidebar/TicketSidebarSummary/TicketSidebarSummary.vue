@@ -1,6 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { ref, effectScope, watch, type EffectScope, computed } from 'vue'
 
 import { useTicketArticleUpdatesSubscription } from '#shared/entities/ticket/graphql/subscriptions/ticketArticlesUpdates.api.ts'
@@ -17,9 +18,13 @@ import { useSessionStore } from '#shared/stores/session.ts'
 
 import { useReactivate } from '#desktop/composables/useReactivate.ts'
 import TicketSidebarSummaryContent from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue'
+import {
+  type SummaryConfig,
+  type SummaryItem,
+  TicketSummaryFeature,
+} from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/types.ts'
 import { usePersistentStates } from '#desktop/pages/ticket/composables/usePersistentStates.ts'
 import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
-import { useTicketSummary } from '#desktop/pages/ticket/composables/useTicketSummary.ts'
 import { useTicketAiAssistanceSummarizeMutation } from '#desktop/pages/ticket/graphql/mutations/ticketAIAssistanceSummarize.api.ts'
 import { useTicketAiAssistanceSummaryUpdatesSubscription } from '#desktop/pages/ticket/graphql/subscriptions/ticketAIAssistanceSummaryUpdates.api.ts'
 import type {
@@ -32,7 +37,8 @@ import TicketSidebarWrapper from '../TicketSidebarWrapper.vue'
 defineProps<TicketSidebarProps>()
 
 const { user, hasPermission } = useSessionStore()
-const { config } = useApplicationStore()
+
+const { config } = storeToRefs(useApplicationStore())
 
 const { persistentStates } = usePersistentStates()
 
@@ -40,7 +46,52 @@ const emit = defineEmits<TicketSidebarEmits>()
 
 const { ticketId } = useTicketInformation()
 
-const { isEnabled, isProviderConfigured } = useTicketSummary()
+const summaryConfig = computed(
+  () => config.value.ai_assistance_ticket_summary_config as SummaryConfig,
+)
+
+const isProviderConfigured = computed(() => !!config.value.ai_provider)
+
+const { ticket } = useTicketInformation()
+
+const isEnabled = computed(
+  () =>
+    !!(
+      ticket.value &&
+      ticket.value?.state.name !== 'merged' &&
+      config.value.ai_assistance_ticket_summary
+    ),
+)
+
+const headings = computed<SummaryItem[]>(() => [
+  {
+    key: 'problem',
+    label: __('Customer Intent'),
+    active: true,
+  },
+  {
+    key: 'conversationSummary',
+    label: __('Conversation Summary'),
+    active: true,
+  },
+  {
+    key: 'openQuestions',
+    label: __('Open Questions'),
+    active: summaryConfig.value.open_questions,
+  },
+  {
+    key: 'suggestions',
+    label: __('Suggested Next Steps'),
+    active: summaryConfig.value.suggestions,
+    feature: config.value.checklist
+      ? TicketSummaryFeature.Checklist
+      : undefined,
+  },
+])
+
+const summaryHeadings = computed(() =>
+  headings.value.filter((heading) => heading.active),
+)
 
 const summary = ref<TicketAiAssistanceSummary | null>(null)
 const generationError = ref<AsyncExecutionError | null>(null)
@@ -62,6 +113,12 @@ const getAIAssistanceSummary = () => {
     // Reset error if summary is returned.
     if (summary.value) generationError.value = null
   })
+}
+
+const retrySummaryGeneration = () => {
+  summary.value = null
+  generationError.value = null
+  getAIAssistanceSummary()
 }
 
 const activateSubscription = () => {
@@ -90,7 +147,7 @@ const activateSubscription = () => {
     useTicketAiAssistanceSummaryUpdatesSubscription(
       {
         ticketId: ticketId.value,
-        locale: user?.preferences?.locale || config.locale_default,
+        locale: user?.preferences?.locale || config.value.locale_default,
       },
       () => ({
         enabled: isProviderConfigured.value,
@@ -160,9 +217,11 @@ watch(
       :context="context"
       :sidebar-plugin="sidebarPlugin"
       :summary="summary"
+      :summary-headings="summaryHeadings"
+      :is-provider-configured="isProviderConfigured"
       :error="generationError"
       :show-error-details="showErrorDetails"
-      @retry-get-summary="getAIAssistanceSummary"
+      @retry-get-summary="retrySummaryGeneration"
     />
   </TicketSidebarWrapper>
 </template>

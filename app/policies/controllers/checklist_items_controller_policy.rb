@@ -7,6 +7,10 @@ class Controllers::ChecklistItemsControllerPolicy < Controllers::ApplicationCont
       .create?
   end
 
+  def create_bulk?
+    create?
+  end
+
   def show?
     Checklist::ItemPolicy
       .new(user, checklist_item)

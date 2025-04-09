@@ -36,6 +36,7 @@ class SidebarChecklist extends App.Controller
           done: =>
             @widget = new App.SidebarChecklistStart(el: @elSidebar, parentVC: @)
         )
+        @ticket.checklist_id = undefined
     )
 
   renderActions: =>

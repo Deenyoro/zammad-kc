@@ -11,11 +11,16 @@ import { createDummyArticle } from '#shared/entities/ticket-article/__tests__/mo
 import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
+import { pluginFiles } from '#desktop/pages/ticket/components/TicketSidebar/plugins/index.ts'
 import plugin from '#desktop/pages/ticket/components/TicketSidebar/plugins/ticket-summary.ts'
 import TicketSidebarSummary from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue'
 import { ARTICLES_INFORMATION_KEY } from '#desktop/pages/ticket/composables/useArticleContext.ts'
 import { TICKET_KEY } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
-import { mockTicketAiAssistanceSummarizeMutation } from '#desktop/pages/ticket/graphql/mutations/ticketAIAssistanceSummarize.mocks.ts'
+import { TICKET_SIDEBAR_SYMBOL } from '#desktop/pages/ticket/composables/useTicketSidebar.ts'
+import {
+  mockTicketAiAssistanceSummarizeMutation,
+  waitForTicketAiAssistanceSummarizeMutationCalls,
+} from '#desktop/pages/ticket/graphql/mutations/ticketAIAssistanceSummarize.mocks.ts'
 
 const defaultTicket = createDummyTicket()
 const testArticle = createDummyArticle({
@@ -70,6 +75,18 @@ const renderRenderTicketSidebarSummary = (
             },
           })),
           articlesQuery: { watchOnResult: vi.fn() },
+        },
+      ],
+      [
+        TICKET_SIDEBAR_SYMBOL,
+        {
+          switchSidebar: vi.fn(),
+          shownSidebars: ref({ 'ticket-summary': true }),
+          activeSidebar: ref('ticket-summary'),
+          sidebarPlugins: pluginFiles,
+          hasSidebar: vi.fn(),
+          showSidebar: vi.fn(),
+          hideSidebar: vi.fn(),
         },
       ],
     ],
@@ -300,5 +317,37 @@ describe('TicketSidebarSummary', () => {
     expect(
       wrapper.getAllByLabelText('Placeholder for AI generated text'),
     ).toHaveLength(16)
+  })
+
+  it('hides feature if feature flag is disabled', async () => {
+    mockApplicationConfig({
+      checklist: false,
+    })
+
+    mockApplicationConfig({
+      ai_provider: 'zammad_ai',
+      ai_assistance_ticket_summary: true,
+      ai_assistance_ticket_summary_config: {
+        open_questions: true,
+        suggestions: true,
+      },
+    })
+
+    mockTicketAiAssistanceSummarizeMutation({
+      ticketAIAssistanceSummarize: ticketAIAssistanceSummarizeMock,
+    })
+
+    const wrapper = renderRenderTicketSidebarSummary()
+
+    await waitForTicketAiAssistanceSummarizeMutationCalls()
+
+    expect(
+      wrapper.queryByRole('button', { name: 'Add all to checklist' }),
+    ).not.toBeInTheDocument()
+
+    expect(
+      wrapper.queryAllByRole('button', { name: 'Add as checklist item' })
+        .length,
+    ).toBe(0)
   })
 })
