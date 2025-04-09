@@ -701,6 +701,44 @@ describe('useHistoryEvents', () => {
       })
     })
 
+    describe('set', () => {
+      beforeEach(async () => {
+        setActivePinia(createPinia())
+
+        await scope.run(async () => {
+          useObjectAttributes(EnumObjectManagerObjects.Ticket)
+
+          await waitForObjectManagerFrontendAttributesQueryCalls()
+        })
+      })
+
+      it('returns output for e.g. ticket group update', async () => {
+        await scope.run(async () => {
+          const event: HistoryRecordEvent = {
+            __typename: 'HistoryRecordEvent',
+            action: 'set',
+            createdAt: '2022-01-01T00:00:00Z',
+            object: createDummyTicket(),
+            attribute: 'group',
+            changes: {
+              from: '',
+              to: 'Group3::Group4',
+            },
+          }
+
+          const { getEventOutput } = useHistoryEvents()
+
+          expect(getEventOutput(event)).toEqual({
+            actionName: 'set',
+            component: undefined,
+            entityName: 'Ticket',
+            attributeName: 'Group',
+            details: 'Group3 › Group4',
+          })
+        })
+      })
+    })
+
     describe('WhatsApp reaction', () => {
       const article = generateObjectData<TicketArticle>('TicketArticle')
 
