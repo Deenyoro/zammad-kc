@@ -8,7 +8,17 @@ module Gql::Queries
     type Gql::Types::OnlineNotificationType.connection_type, null: false
 
     def resolve(...)
-      OnlineNotification.list(context.current_user, access: 'ignore')
+      OnlineNotification
+        .list(
+          context.current_user,
+          access: 'ignore'
+        )
+        .where(
+          # Make sure to limit it to known meta object types.
+          object_lookup_id: ObjectLookup.where(
+            name: Gql::Types::ActivityMessageMetaObjectType.possible_types.map(&:graphql_name)
+          ).select(:id)
+        )
     end
   end
 end

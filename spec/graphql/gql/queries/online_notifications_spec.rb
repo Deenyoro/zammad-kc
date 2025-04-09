@@ -94,5 +94,18 @@ RSpec.describe Gql::Queries::OnlineNotifications, authenticated_as: :user, type:
         expect(gql.result.nodes.pluck('id')).to eq(notifications.sort_by { |n| n[:created_at] }.reverse.map { |n| gql.id(n) })
       end
     end
+
+    context 'with a non-existing meta object type' do
+      let(:another_notification) { create(:online_notification, user:, o: create(:macro)) }
+
+      it 'only contains known meta object types' do
+        another_notification
+        gql.execute(query)
+
+        returned_ids = gql.result.nodes.pluck('id')
+
+        expect(returned_ids).to contain_exactly(gql.id(notification)).and not_include(gql.id(another_notification))
+      end
+    end
   end
 end
