@@ -29,7 +29,8 @@
   after_script: []
 
 'lint: markdown':
-  stage: lint
+  extends:
+    - .template_lint
   image:
     name: davidanson/markdownlint-cli2:latest
     entrypoint: [""]
@@ -127,6 +128,7 @@
     - .template_lint_rails
   allow_failure: true
   rules:
+    - !reference [.job_rules, variable_filters]
     - when: manual
   script:
     - bundle exec rake zammad:ci:bundle:orphaned 5
@@ -135,6 +137,7 @@
   extends:
     - .template_lint_rails
   rules:
+    - !reference [.job_rules, variable_filters]
     - if: $CI_PIPELINE_SOURCE != "schedule"
       when: manual
       allow_failure: true

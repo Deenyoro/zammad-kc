@@ -21,6 +21,7 @@
   extends:
     - .template_integration_otrs
   rules:
+    - !reference [.job_rules, variable_filters]
     - when: manual
       allow_failure: true
 

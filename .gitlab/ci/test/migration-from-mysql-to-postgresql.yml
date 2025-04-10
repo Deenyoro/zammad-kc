@@ -4,6 +4,7 @@
 .template_migration_from_mysql_to_postgresql:
   stage: test
   rules:
+    - !reference [.job_rules, variable_filters]
     - if: $CI_COMMIT_REF_NAME =~ /^private/
       when: manual
       allow_failure: true

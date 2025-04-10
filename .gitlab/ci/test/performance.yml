@@ -1,6 +1,7 @@
 performance:
   stage: test
   rules:
+    - !reference [.job_rules, variable_filters]
     - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web"
       allow_failure: true
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"

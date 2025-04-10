@@ -1,4 +1,4 @@
-assets:build:test:
+assets:build:
   stage: test
   services:
     - !reference [.services, postgresql]
@@ -25,8 +25,10 @@ assets:build:test:
 # The job below builds a production-ready app, but without the test mode flag enabled (VITE_TEST_MODE).
 #   This is needed in order to check PWA build, which is skipped in test mode due to stability concerns.
 #   The job will not produce any artifacts, as it is only checking for build errors.
-assets:build:production:
+assets:build:pwa:
   stage: test
+  extends:
+    - .job_rules_default
   services:
     - !reference [.services, postgresql]
   cache: !reference [.cache, read_only_full]

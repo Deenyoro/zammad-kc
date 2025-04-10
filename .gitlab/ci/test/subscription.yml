@@ -4,16 +4,17 @@ addon:subscription:
   extends:
     - .job_rules_default
   rules:
-  - if: $CI_COMMIT_REF_NAME == 'develop'
-    when: on_success
-    # Complain if breaking changes were merged and subscription is not ported.
-    allow_failure: false
-  - if: $CI_COMMIT_REF_NAME =~ /^(private|develop)/
-    when: on_success
-    # It could happen that in a branch we need to make breaking changes, so
-    #   only hint at the situation but don't block the pipeline.
-    allow_failure: true
-  - when: never
+    - !reference [.job_rules, variable_filters]
+    - if: $CI_COMMIT_REF_NAME == 'develop'
+      when: on_success
+      # Complain if breaking changes were merged and subscription is not ported.
+      allow_failure: false
+    - if: $CI_COMMIT_REF_NAME =~ /^(private|develop)/
+      when: on_success
+      # It could happen that in a branch we need to make breaking changes, so
+      #   only hint at the situation but don't block the pipeline.
+      allow_failure: true
+    - when: never
   services:
     - !reference [.services, postgresql]
     - !reference [.services, redis]
