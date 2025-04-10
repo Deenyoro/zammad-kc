@@ -1,11 +1,13 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class BackgroundServices
+  include BackgroundServices::Concerns::HasInterruptibleSleep
 
   def self.available_services
     BackgroundServices::Service.descendants
   end
 
+  FILE_WATCHING_INTERVAL         = 1.second
   CHILD_PROCESS_MONITOR_INTERVAL = 5.seconds
   # Waiting time before processes get killed.
   SHUTDOWN_GRACE_PERIOD = 30.seconds
@@ -36,6 +38,7 @@ class BackgroundServices
       end
 
     monitor_child_processes
+    restart_on_file_changes if Rails.application.config.reloading_enabled? # e.g. in development environment
 
     child_pids.each { |pid| Process.waitpid(pid) }
     threads.each(&:join)
@@ -63,6 +66,28 @@ class BackgroundServices
           Thread.current.exit
         end
         sleep CHILD_PROCESS_MONITOR_INTERVAL
+      end
+    end
+  end
+
+  # If codebase reloading is enabled, trigger a process shutdown if a file change is detected.
+  #   This is required to avoid deadlocks due to Rails' built-in code reloading mechanism,
+  #   which uses locking and has issues with our threading model.
+  def restart_on_file_changes
+    Thread.new do
+      Thread.current.abort_on_exception = true
+      Thread.current.name = 'file change monitor thread'
+
+      watcher = Rails.application.config.file_watcher.new(*Rails.application.watchable_args) do
+        # Cause self-shutdown via TERM signal, to also shutdown any children.
+        Rails.logger.info 'Codebase changed, shutting down background worker…'
+        Process.kill('TERM', Process.pid)
+        Thread.current.exit
+      end
+
+      loop do
+        watcher.execute_if_updated
+        interruptible_sleep FILE_WATCHING_INTERVAL
       end
     end
   end

@@ -181,4 +181,36 @@ RSpec.describe BackgroundServices do
       expect(thread).to be_alive
     end
   end
+
+  describe '#restart_on_file_change' do
+    let(:config) { described_class::ServiceConfig.new(service: SampleService, disabled: false, workers: 0) }
+
+    before do
+      stub_const("#{described_class}::FILE_WATCHING_INTERVAL", 0)
+      allow(Process).to receive(:kill)
+      allow(Rails.application.config).to receive(:reloading_enabled?).and_return(true)
+
+      instance.run
+
+      FileUtils.touch(file)
+
+      sleep 0.1
+    end
+
+    context 'when backend file changes' do
+      let(:file) { 'app/models/user.rb' }
+
+      it 'stops' do
+        expect(Process).to have_received(:kill).with('TERM', anything)
+      end
+    end
+
+    context 'when frontend file changes' do
+      let(:file) { 'app/frontend/apps/desktop/AppDesktop.vue' }
+
+      it 'does not stop' do
+        expect(Process).not_to have_received(:kill)
+      end
+    end
+  end
 end
