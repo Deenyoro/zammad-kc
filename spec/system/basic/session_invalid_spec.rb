@@ -4,11 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'Session invalid detection', authenticated_as: true, authentication_type: :form, type: :system do
   context 'when session will be deleted on the backend' do
-    it 'redirects to login page after next request' do
+    it 'redirects to login page' do
       # Delete the session on backend
       SessionHelper.destroy(SessionHelper.list.first.id)
-
-      click('.menu-item[href="#ticket/view"]')
 
       expect(page).to have_text('The session is no longer valid. Please log in again.')
     end
