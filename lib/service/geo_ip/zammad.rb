@@ -38,7 +38,7 @@ class Service::GeoIp::Zammad
       end
 
       ::Rails.cache.write(cache_key, data, { expires_in: 90.days })
-    rescue => e
+    rescue StandardError, Timeout::ExitException => e
       Rails.logger.error "#{host}#{url}: #{e.inspect}"
       ::Rails.cache.write(cache_key, data, { expires_in: 60.minutes })
     end
