@@ -15,6 +15,7 @@ module Gql::Types
       Mail::AddressList
         .new(object)
         .addresses
+        .select { |elem| EmailAddressValidation.new(elem.address).valid? }
         .map { |elem| { name: elem.name, email_address: elem.address } }
     rescue Mail::Field::ParseError
       nil

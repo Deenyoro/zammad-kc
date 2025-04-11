@@ -244,6 +244,32 @@ describe('email permissions', () => {
         actions.find((action) => action.name === 'email-reply-all'),
       ).toBeDefined()
     })
+
+    it('reply-all action is not available if article was created via web', () => {
+      const { ticket, article } = setupAction()
+      article.sender = {
+        __typename: 'TicketArticleSender',
+        name: EnumTicketArticleSenderName.Customer,
+      }
+      article.type = {
+        __typename: 'TicketArticleType',
+        name: 'web',
+        communication: true,
+      }
+      article.to = {
+        raw: 'dummy@example.com',
+        parsed: [{ emailAddress: 'dummy@example.com', isSystemAddress: false }],
+      }
+      article.from = {
+        raw: '-',
+        parsed: [],
+      }
+      article.cc = null
+      const actions = createTestArticleActions(ticket, article)
+      expect(
+        actions.find((action) => action.name === 'email-reply-all'),
+      ).toBeUndefined()
+    })
   })
 
   it.each(types)(`%s action is not available for customer`, (type) => {
