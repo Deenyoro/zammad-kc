@@ -471,9 +471,13 @@ RSpec.describe 'Ticket Create', time_zone: 'Europe/London', type: :system do
         find('[name=title]').fill_in with: 'Title'
       end
 
-      wait.until { find(:task_active)['data-key'].present? }
+      task_key = nil
+      wait.until do
+        task_key = find(:task_active)['data-key']
+        task_key.present?
+      end
 
-      taskbar_tab_close(find(:task_active)['data-key'])
+      taskbar_tab_close(task_key)
     end
   end
 
