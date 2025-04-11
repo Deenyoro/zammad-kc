@@ -510,7 +510,11 @@ Permission.create_if_not_exists(
   label:        __('New Beta UI Switch'),
   description:  __('Manage access to new beta UI switch.'),
   preferences:  {
-    prio: 1710,
+    prio:    1710,
+    setting: {
+      name:  'ui_desktop_beta_switch',
+      value: true,
+    },
   },
   allow_signup: true,
 )

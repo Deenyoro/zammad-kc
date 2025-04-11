@@ -18,6 +18,13 @@ class FormUpdater::Updater::User::Current::NewAccessToken < FormUpdater::Updater
   def permissions
     permissions = current_user.permissions_with_child_and_parent_elements
 
+    # Filter out permissions which are tied to inactivated settings.
+    permissions = permissions.reject do |permission|
+      next if permission.preferences[:setting].blank?
+
+      Setting.get(permission.preferences.dig(:setting, :name)) != permission.preferences.dig(:setting, :value)
+    end
+
     {
       options: build_options_tree_structure(permissions)
     }

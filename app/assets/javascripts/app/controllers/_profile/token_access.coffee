@@ -85,8 +85,14 @@ class Create extends App.ControllerModal
     'change input[name=permission]': 'onToggle'
 
   content: ->
+    # Filter out permissions which are tied to inactivated settings.
+    permissions = _.filter(@permissions, (permission) ->
+      return true if not permission.preferences?.setting
+      App.Config.get(permission.preferences.setting.name) is permission.preferences.setting.value
+    )
+
     content = $(App.view('profile/token_access_create')(
-      permissions: @permissions
+      permissions: permissions
     ))
     datepicker = App.UiElement.date.render(
       name:    'expires_at',

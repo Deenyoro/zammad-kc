@@ -3,6 +3,12 @@ class App.UiElement.permission extends App.UiElement.ApplicationUiElement
   @render: (attribute, params = {}) ->
     permissions = App.Permission.search(sortBy: 'name')
 
+    # Filter out permissions which are tied to inactivated settings.
+    permissions = _.filter(permissions, (permission) ->
+      return true if not permission.preferences?.setting
+      App.Config.get(permission.preferences.setting.name) is permission.preferences.setting.value
+    )
+
     item = $( App.view('generic/permission')(
       attribute:   attribute
       params:      params
