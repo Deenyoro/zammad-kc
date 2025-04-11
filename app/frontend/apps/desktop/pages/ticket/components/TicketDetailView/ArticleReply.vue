@@ -36,7 +36,13 @@ defineEmits<{
 
 const currentTicketArticleType = computed(() => {
   if (props.isTicketCustomer) return 'web'
-  if (props.createArticleType === 'phone') return 'email'
+  if (
+    props.createArticleType &&
+    ['phone', 'web'].includes(props.createArticleType)
+  ) {
+    return 'email'
+  }
+
   return props.createArticleType
 })
 

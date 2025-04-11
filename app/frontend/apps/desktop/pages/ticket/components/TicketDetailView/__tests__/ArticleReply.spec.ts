@@ -88,9 +88,21 @@ describe('ArticleReply', () => {
     expect(wrapper.getByIconName('telephone')).toBeInTheDocument()
   })
 
-  it('shows primary article reply action button', () => {
+  it('shows primary article reply action button for tickets created by phone', () => {
     const wrapper = renderArticleReply({
       createArticleType: 'phone',
+    })
+
+    expect(
+      wrapper.getByRole('button', { name: 'Add reply' }),
+    ).toBeInTheDocument()
+
+    expect(wrapper.getByIconName('envelope')).toBeInTheDocument()
+  })
+
+  it('shows primary article reply action button for tickets created by web', () => {
+    const wrapper = renderArticleReply({
+      createArticleType: 'web',
     })
 
     expect(
