@@ -3176,6 +3176,7 @@ wait untill text in selector disabppears
           browser: instance,
           css:     '.content.active .js-search',
           value:   search_query,
+          blur:    true,
         )
       end
       sleep 1

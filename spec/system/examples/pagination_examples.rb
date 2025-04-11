@@ -26,6 +26,12 @@ RSpec.shared_examples 'pagination', authenticated_as: :authenticate do |model:, 
     end
   end
 
+  def search(search_query)
+    search_field = page.find('.js-search')
+    search_field.fill_in with: search_query, fill_options: { clear: :backspace }
+    search_field.execute_script('this.blur()')
+  end
+
   before do
     visit path
   end
@@ -80,7 +86,7 @@ RSpec.shared_examples 'pagination', authenticated_as: :authenticate do |model:, 
     end
 
     it 'does filter results with the search bar' do
-      page.find('.js-search').fill_in with: base_scope.last.try(main_column)
+      search(base_scope.last.try(main_column))
       expect(page).to have_css('.js-tableBody tr', count: 1)
 
       # does stay after reload
@@ -89,7 +95,7 @@ RSpec.shared_examples 'pagination', authenticated_as: :authenticate do |model:, 
       expect(page).to have_css('.js-tableBody tr', count: 1)
 
       # remove filter
-      page.find('.js-search').fill_in with: ' '
+      search(' ')
 
       expect(page).to have_css('.js-tableBody tr', count: 50)
     end
@@ -104,7 +110,7 @@ RSpec.shared_examples 'pagination', authenticated_as: :authenticate do |model:, 
       it 'does only show 2 pages because of a search filter and paginate through it' do
         entries_per_page = page.all('.js-tableBody tr').count
         search_query = base_scope.limit(entries_per_page * 2).pluck(:id).map { |i| "id: #{i}" }.join(' OR ')
-        page.find('.js-search').fill_in with: search_query, fill_options: { clear: :backspace }
+        search(search_query)
         wait.until { page.first('.js-pager').all('.js-page').count == 4 }
 
         page.first('.js-page', text: '2').click

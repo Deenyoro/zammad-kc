@@ -8,7 +8,8 @@ class App.ControllerGenericIndex extends App.Controller
     'click [data-type=payload]': 'payload'
     'click [data-type=import]':  'import'
     'click .js-description':     'description'
-    'input .js-search': 'search'
+    'blur .js-search':           'search'
+    'input .js-search':          'search'
 
   constructor: ->
     super
