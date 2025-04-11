@@ -113,7 +113,7 @@ CoreWorkflow.create_if_not_exists(
   updated_by_id:   1,
 )
 CoreWorkflow.create_if_not_exists(
-  name:            'base - ticket time accouting check',
+  name:            'base - ticket time accounting check',
   object:          'Ticket',
   condition_saved: {
     'custom.module': {
@@ -129,7 +129,6 @@ CoreWorkflow.create_if_not_exists(
     },
   },
   changeable:      false,
-  priority:        99_999,
   created_by_id:   1,
   updated_by_id:   1,
 )

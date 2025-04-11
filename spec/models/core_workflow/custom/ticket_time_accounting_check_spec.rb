@@ -35,4 +35,18 @@ RSpec.describe CoreWorkflow::Custom::TicketTimeAccountingCheck, type: :model do
       expect { result }.not_to raise_error(NoMethodError)
     end
   end
+
+  describe 'Stop after match does disable the time accounting detection #5556' do
+    let(:payload) do
+      base_payload.merge('params' => { 'id' => ticket.id }, 'screen' => 'edit')
+    end
+
+    before do
+      create(:core_workflow, stop_after_match: true)
+    end
+
+    it 'does show if there is a stop after match core workflow configured' do
+      expect(result.dig(:flags, :time_accounting)).to be(true)
+    end
+  end
 end
