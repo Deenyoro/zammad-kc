@@ -90,7 +90,15 @@ get count of tickets and tickets which match on selector
           when Hash
             memo = memo.select(Arel.sql(elem[:select])) if elem[:select]
             memo = memo.order(Arel.sql(elem[:order])) if elem[:order] # rubocop:disable Zammad/ActiveRecordReorder
-            memo = memo.joins(elem[:joins]) if elem[:joins]
+
+            if elem[:joins].present?
+              memo = if elem[:joins].to_s.upcase.include?('INNER JOIN') # rubocop:disable Metrics/BlockNesting
+                       memo.joins(elem[:joins])
+                     else
+                       memo.left_joins(elem[:joins])
+                     end
+            end
+
             memo = memo.group(elem[:group]) if elem[:group]
 
             memo

@@ -27,7 +27,7 @@ RSpec.describe 'Ticket::Overviews > Sorting' do # rubocop:disable RSpec/Describe
 
   shared_examples 'it sorts correctly' do
     it 'sorts correctly' do
-      expect(result).to eq(sorted_tickets)
+      expect(result).to eq(sorted_tickets.pluck(:id))
     end
   end
 
@@ -42,7 +42,7 @@ RSpec.describe 'Ticket::Overviews > Sorting' do # rubocop:disable RSpec/Describe
 
     context "when language is set to 'de-de'" do
       let(:locale)         { 'de-de' }
-      let(:sorted_tickets) { tickets.sort_by { |ticket| Translation.translate(locale, ticket.state.name) }.pluck(:id) }
+      let(:sorted_tickets) { tickets.sort_by { |ticket| Translation.translate(locale, ticket.state.name) } }
 
       context 'when ascending' do
         let(:order_direction) { 'ASC' }
@@ -52,7 +52,7 @@ RSpec.describe 'Ticket::Overviews > Sorting' do # rubocop:disable RSpec/Describe
 
       context 'when descending' do
         let(:order_direction) { 'DESC' }
-        let(:sorted_tickets)  { tickets.sort_by { |ticket| Translation.translate(locale, ticket.state.name) }.pluck(:id).reverse }
+        let(:sorted_tickets)  { tickets.sort_by { |ticket| Translation.translate(locale, ticket.state.name) }.reverse }
 
         it_behaves_like 'it sorts correctly'
       end
@@ -62,7 +62,7 @@ RSpec.describe 'Ticket::Overviews > Sorting' do # rubocop:disable RSpec/Describe
   context 'when sorting by group_id' do
     let(:order_by)       { 'group_id' }
     let(:locale)         { 'en-us' }
-    let(:sorted_tickets) { tickets.sort_by { |ticket| ticket.group.name.downcase }.pluck(:id) }
+    let(:sorted_tickets) { tickets.sort_by { |ticket| ticket.group.name.downcase } }
 
     let(:tickets) do
       groups = create_list(:group, 10).tap { |gs| gs.each { |g| g.update!(name: Faker::App.unique.name) } }
@@ -79,7 +79,7 @@ RSpec.describe 'Ticket::Overviews > Sorting' do # rubocop:disable RSpec/Describe
 
     context 'when descending' do
       let(:order_direction) { 'DESC' }
-      let(:sorted_tickets)  { tickets.sort_by { |ticket| ticket.group.name.downcase }.pluck(:id).reverse }
+      let(:sorted_tickets)  { tickets.sort_by { |ticket| ticket.group.name.downcase }.reverse }
 
       it_behaves_like 'it sorts correctly'
     end
@@ -98,14 +98,14 @@ RSpec.describe 'Ticket::Overviews > Sorting' do # rubocop:disable RSpec/Describe
 
     context 'when ascending' do
       let(:order_direction) { 'ASC' }
-      let(:sorted_tickets) { tickets.sort_by { |ticket| ticket.customer.fullname.downcase }.pluck(:id) }
+      let(:sorted_tickets) { tickets.sort_by { |ticket| ticket.customer.fullname.downcase } }
 
       it_behaves_like 'it sorts correctly'
     end
 
     context 'when descending' do
       let(:order_direction) { 'DESC' }
-      let(:sorted_tickets)  { tickets.sort_by { |ticket| ticket.customer.fullname.downcase }.pluck(:id).reverse }
+      let(:sorted_tickets)  { tickets.sort_by { |ticket| ticket.customer.fullname.downcase }.reverse }
 
       it_behaves_like 'it sorts correctly'
     end
@@ -130,13 +130,12 @@ RSpec.describe 'Ticket::Overviews > Sorting' do # rubocop:disable RSpec/Describe
       let(:sorted_tickets)  do
         tickets
           .sort do |a, b|
-            initial = a.customer.fullname.downcase <=> b.customer.fullname.downcase
+            initial = a.customer.fullname.casecmp(b.customer.fullname)
 
             next initial if !initial.zero?
 
-            a.title.downcase <=> b.title.downcase
+            a.title.casecmp(b.title)
           end
-          .pluck(:id)
       end
 
       it_behaves_like 'it sorts correctly'
@@ -147,16 +146,75 @@ RSpec.describe 'Ticket::Overviews > Sorting' do # rubocop:disable RSpec/Describe
       let(:sorted_tickets)  do
         tickets
           .sort do |a, b|
-            initial = a.customer.fullname.downcase <=> b.customer.fullname.downcase
+            initial = a.customer.fullname.casecmp(b.customer.fullname)
 
             next initial if !initial.zero?
 
-            b.title.downcase <=> a.title.downcase
+            b.title.casecmp(a.title)
           end
-          .pluck(:id)
       end
 
       it_behaves_like 'it sorts correctly'
+    end
+
+    context 'when grouping by organization_id', db_adapter: :postgresql do
+      let(:overview)        { super().tap { _1.update! group_by: 'organization_id', group_direction: } }
+      let(:group_direction) { 'ASC' }
+      let(:customers)       { create_list(:customer, 3) + create_list(:customer, 3, :with_org) }
+
+      def organization_compare(ticket_a, ticket_b)
+        org_a = ticket_a.organization&.name
+        org_b = ticket_b.organization&.name
+
+        case [org_a.blank?, org_b.blank?]
+        when [true, false], [false, true] # Ruby puts empty values at the end, SQL puts them at the top
+          org_b.to_s.casecmp org_a.to_s
+        else
+          org_a.to_s.casecmp org_b.to_s
+        end
+      end
+
+      def ticket_compare(ticket_a, ticket_b, org_direction: :same)
+        org_cmp = org_direction == :same ? organization_compare(ticket_a, ticket_b) : organization_compare(ticket_b, ticket_a)
+
+        return org_cmp if !org_cmp.zero?
+
+        ticket_a.title.casecmp(ticket_b.title)
+      end
+
+      context 'when ascending' do
+        let(:order_direction) { 'ASC' }
+
+        context 'when group direction is ascending' do
+          let(:sorted_tickets) { tickets.sort { |a, b| ticket_compare(a, b) } }
+
+          it_behaves_like 'it sorts correctly'
+        end
+
+        context 'when group direction is descending' do
+          let(:group_direction) { 'DESC' }
+          let(:sorted_tickets)  { tickets.sort { |a, b| ticket_compare(a, b, org_direction: :opposite) } }
+
+          it_behaves_like 'it sorts correctly'
+        end
+      end
+
+      context 'when descending' do
+        let(:order_direction) { 'DESC' }
+
+        context 'when group direction is ascending' do
+          let(:sorted_tickets) { tickets.sort { |a, b| ticket_compare(b, a, org_direction: :opposite) } }
+
+          it_behaves_like 'it sorts correctly'
+        end
+
+        context 'when group direction is descending' do
+          let(:group_direction) { 'DESC' }
+          let(:sorted_tickets)  { tickets.sort { |a, b| ticket_compare(b, a) } }
+
+          it_behaves_like 'it sorts correctly'
+        end
+      end
     end
   end
 end

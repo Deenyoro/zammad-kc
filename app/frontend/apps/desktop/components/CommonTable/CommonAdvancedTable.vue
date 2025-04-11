@@ -364,7 +364,10 @@ const groupByRowCounts = computed(() => {
       isRelation && item[name] ? (item[name] as ObjectLike).id : item[name]
     ) as string | number
 
-    if (lastValue && value !== lastValue) {
+    if (
+      (lastValue && value !== lastValue) ||
+      (groupByRowIds.length > 0 && !lastValue && value)
+    ) {
       groupByValueIndex += 1
     }
 
