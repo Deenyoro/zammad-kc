@@ -96,7 +96,6 @@ class App.TicketBatch extends App.Controller
 
     $(document).on 'mousemove.item', @dragItem
     $(document).one 'mouseup.item', @endDragItem
-    # TODO: fire @cancelDrag on ESC
 
   dragItem: (event) =>
     pos = @batchDragger.data()

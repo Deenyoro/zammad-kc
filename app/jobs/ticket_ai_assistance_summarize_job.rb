@@ -16,8 +16,6 @@ class TicketAIAssistanceSummarizeJob < ApplicationJob
     result = summarize.execute
 
     if result.nil?
-      # TODO: Define some default messages?!
-
       # Trigger the update for the new desktop view.
       trigger_subscription(ticket:, locale:, data: {
                              summary: {
@@ -56,10 +54,6 @@ class TicketAIAssistanceSummarizeJob < ApplicationJob
                          data:  { ticket_id: ticket.id, locale: }
                        })
   rescue => e
-    # TODO: remove debug log
-    Rails.logger.error "Error summarizing ticket #{ticket.id}: #{e.message}"
-
-    # TRIGGER SUBSCRIPTION...
     trigger_subscription(ticket:, locale:, data: {
                            error: {
                              message:   e.message,
@@ -67,7 +61,7 @@ class TicketAIAssistanceSummarizeJob < ApplicationJob
                            }
                          })
 
-    # Trigger the update for the old stack
+    # Trigger the update for the old stack without real date (it will be refetched on frontend decision).
     Sessions.broadcast({
                          event: 'ticketSummaryUpdate',
                          data:  { ticket_id: ticket.id, locale:, error: true }

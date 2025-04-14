@@ -4,7 +4,7 @@ class App.TicketZoomChannel
     @ticket = ticket
 
   channelAlert: =>
-    # TODO: Add a frontend module layer here for other channels, if the need arises.
+    # Add a frontend module layer here for other channels, if the need arises.
     @whatsappAlert() if _.has(@ticket.preferences, 'whatsapp')
 
   whatsappAlert: =>

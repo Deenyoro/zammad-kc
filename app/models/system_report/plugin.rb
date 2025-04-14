@@ -15,10 +15,6 @@ class SystemReport::Plugin
     name_plugin.split('::')
   end
 
-  def initialize
-    # TODO
-  end
-
   def fetch
     raise NotImplementedError
   end

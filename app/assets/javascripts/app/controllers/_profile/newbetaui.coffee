@@ -53,7 +53,6 @@ class ProfileNewBetaUI extends App.ControllerSubContent
     return if not App.DesktopBetaSwitch.activateSwitch()
     App.DesktopBetaSwitch.navigateToDesktop()
 
-# TODO: Clarify permission!
 App.Config.set('NewBetaUI', {
   prio: 950,
   name: __('New Beta UI'),

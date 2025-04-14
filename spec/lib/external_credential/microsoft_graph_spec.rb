@@ -116,7 +116,6 @@ RSpec.describe ExternalCredential::MicrosoftGraph do
 
       context 'when users do not match', :aggregate_failures do
         let(:existing_channel) do
-          # TODO: change ENV
           ENV['MICROSOFT365_USER']          = 'zammad@outlook.com'
           ENV['MICROSOFT365_CLIENT_ID']     = 'xxx'
           ENV['MICROSOFT365_CLIENT_SECRET'] = 'xxx'
@@ -368,7 +367,6 @@ RSpec.describe ExternalCredential::MicrosoftGraph do
 
   describe '.update_client_secret' do
     let(:channel) do
-      # TODO: change ENV
       ENV['MICROSOFT365_USER'] = 'zammad@outlook.com'
       ENV['MICROSOFT365_CLIENT_ID']     = 'id1337'
       ENV['MICROSOFT365_CLIENT_SECRET'] = 'dummy'

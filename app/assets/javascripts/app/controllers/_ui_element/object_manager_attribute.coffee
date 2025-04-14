@@ -106,7 +106,7 @@ class App.UiElement.object_manager_attribute extends App.UiElement.ApplicationUi
     item
 
   @dataScreens: (attribute, localParams, params) ->
-    # TODO: find a better place for these translation markers, since they are used only in keys below!
+    # Find a better place for these translation markers, since they are used only in keys below!
     #   __('shown')
     #   __('required')
     object = params.object
