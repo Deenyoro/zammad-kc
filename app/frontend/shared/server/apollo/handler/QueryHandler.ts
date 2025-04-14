@@ -23,6 +23,7 @@ import type {
   OperationVariables,
   QueryOptions,
   SubscribeToMoreOptions,
+  Unmasked,
 } from '@apollo/client/core'
 import type { UseQueryOptions, UseQueryReturn } from '@vue/apollo-composable'
 import type { Ref, WatchStopHandle } from 'vue'
@@ -148,7 +149,15 @@ export default class QueryHandler<
 
   public fetchMore(
     options: FetchMoreQueryOptions<TVariables, TResult> &
-      FetchMoreOptions<TResult, TVariables>,
+      FetchMoreOptions<TResult, TVariables> & {
+        updateQuery?: (
+          previousQueryResult: Unmasked<TResult>,
+          options: {
+            fetchMoreResult: Unmasked<TResult>
+            variables: TVariables
+          },
+        ) => Unmasked<TResult>
+      },
   ): Promise<Maybe<TResult>> {
     return new Promise((resolve, reject) => {
       const fetchMore = this.operationResult.fetchMore(options)
