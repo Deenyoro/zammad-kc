@@ -954,6 +954,7 @@ helper method for making HTTP calls and raising error if response was not succes
   def self.default_model_settings
     {
       'index.mapping.total_fields.limit' => 2000,
+      'index.max_result_window'          => 1_000_000,
     }
   end
 
