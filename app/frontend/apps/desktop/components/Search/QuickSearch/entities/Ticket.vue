@@ -22,6 +22,7 @@ const itemLabel = computed(() => {
 
 <template>
   <CommonLink
+    v-tooltip="itemLabel"
     class="group/item flex grow gap-2 rounded-md px-2 py-3 hover:bg-blue-900 hover:no-underline!"
     :link="`/tickets/${item.internalId}`"
     internal

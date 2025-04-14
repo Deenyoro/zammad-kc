@@ -12,6 +12,7 @@ const isOrganizationInactive = computed(() => !props.item.active)
 
 <template>
   <CommonLink
+    v-tooltip="item.name"
     class="group/item flex grow gap-2 rounded-md px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:no-underline!"
     :link="`/organizations/${item.internalId}`"
     :aria-description="

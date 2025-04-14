@@ -168,14 +168,17 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
                 class="group/recent-search flex justify-center"
               >
                 <CommonLink
+                  v-tooltip="searchQuery"
                   class="relative flex grow items-center gap-2 rounded-md px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:no-underline!"
                   :link="`/search/${searchQuery}`"
                   internal
                   @click="resetQuickSearchInputField"
                 >
-                  <CommonIcon name="search" size="tiny" />
-                  <CommonLabel class="gap-2 text-white!">
-                    {{ searchQuery }}
+                  <CommonIcon class="shrink-0" name="search" size="tiny" />
+                  <CommonLabel class="text-white!">
+                    <span class="line-clamp-1 wrap-anywhere">
+                      {{ searchQuery }}
+                    </span>
                   </CommonLabel>
                   <CommonButton
                     :aria-label="$t('Delete this recent search')"

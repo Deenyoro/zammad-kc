@@ -12,6 +12,7 @@ const isUserInactive = computed(() => !props.item?.active)
 
 <template>
   <CommonLink
+    v-tooltip="item.fullname"
     class="group/item flex grow gap-2 rounded-md px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:no-underline!"
     :link="`/users/${item.internalId}`"
     :aria-description="isUserInactive ? $t('User is inactive.') : undefined"

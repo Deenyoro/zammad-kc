@@ -36,7 +36,7 @@ const currentTitle = computed(
     internal
   >
     <CommonIcon
-      class="text-neutral-500"
+      class="shrink-0 text-neutral-500"
       :class="{
         'text-white!': taskbarTabActive,
       }"
