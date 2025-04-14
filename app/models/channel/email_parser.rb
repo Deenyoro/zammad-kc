@@ -566,7 +566,7 @@ returns
   # https://github.com/zammad/zammad/issues/2922
   def force_parts_encoding_if_needed(mail)
     # enforce encoding on both multipart parts and main body
-    ([mail] + mail.parts).each { |elem| force_single_part_encoding_if_needed(elem) }
+    ([mail] + mail.all_parts).each { |elem| force_single_part_encoding_if_needed(elem) }
   end
 
   # https://github.com/zammad/zammad/issues/2922
