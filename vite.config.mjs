@@ -7,10 +7,10 @@ import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { homedir } from 'os'
 
+import tailwindcss from '@tailwindcss/vite'
 import VuePlugin from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
-import tailwindcss from '@tailwindcss/vite'
 
 import svgIconsPlugin from './app/frontend/build/iconsPlugin.mjs'
 import ManualChunksPlugin from './app/frontend/build/manualChunks.mjs'
@@ -88,6 +88,10 @@ export default defineConfig(({ mode, command }) => {
     publicDir,
     esbuild: {
       target: isTesting ? 'esnext' : tsconfig.compilerOptions.target,
+      // TODO: Remove the following line once the related upstream TailwindCSS issue has been addressed,
+      //   since it can mask potential syntax errors.
+      //   https://github.com/tailwindlabs/tailwindcss/issues/16582
+      logOverride: { 'css-syntax-error': 'silent' },
     },
     resolve: {
       preserveSymlinks: isEnvBooleanSet(process.env.PRESERVE_SYMLINKS),
