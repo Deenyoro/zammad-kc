@@ -117,9 +117,9 @@ const noSummaryPossible = computed(() => {
 
         <CommonLabel
           size="small"
-          class="border-t border-neutral-100 pt-2 text-stone-200! dark:border-gray-900 dark:text-neutral-500!"
+          class="w-full border-t border-neutral-100 pt-2 text-stone-200! dark:border-gray-900 dark:text-neutral-500!"
           tag="p"
-          >{{ $t('*Be sure to check AI-generated summaries for accuracy') }}
+          >{{ $t('Be sure to check AI-generated summaries for accuracy.') }}
         </CommonLabel>
       </template>
 

@@ -261,7 +261,7 @@ describe('TicketSidebarSummary', () => {
 
     expect(
       await wrapper.findByText(
-        '*Be sure to check AI-generated summaries for accuracy',
+        'Be sure to check AI-generated summaries for accuracy.',
       ),
     ).toBeInTheDocument()
   })

@@ -143,14 +143,12 @@ class SidebarTicketSummary extends App.Controller
     )
 
   showSummarization: (payload) =>
-    return if not payload?.data
-
-    @summaryItems = payload.data.result
+    @summaryItems = payload?.data?.result
 
     noSummaryPossible = @summaryItems and _.every(_.values(@summaryItems), (item) -> item is null)
 
     summarization = $(App.view('ticket_zoom/sidebar_ticket_summary')(
-      data:              payload.data,
+      data:              payload?.data,
       noSummaryPossible: noSummaryPossible
       structure:         @getAvailableDisplayStructure()
     ))
