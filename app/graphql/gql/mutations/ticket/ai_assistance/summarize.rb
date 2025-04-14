@@ -8,6 +8,7 @@ module Gql::Mutations
 
     field :summary, Gql::Types::Ticket::AIAssistance::SummaryType, description: 'Different parts of the generated summary'
     field :reason, String, description: 'Reason for the result of the summary generation'
+    field :fingerprint_md5, String, description: 'MD5 digest of the complete summary content'
 
     def authorized?(ticket:)
       pundit_authorized?(ticket, :agent_read_access?)
@@ -24,13 +25,14 @@ module Gql::Mutations
 
       if cache.present?
         return {
-          summary: {
+          summary:         {
             problem:              cache['problem'],
             conversation_summary: cache['summary'],
             open_questions:       cache['open_questions'],
             suggestions:          cache['suggestions'],
           },
-          reason:  cache['reason'],
+          reason:          cache['reason'],
+          fingerprint_md5: Digest::MD5.hexdigest(cache.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
         }
       end
 

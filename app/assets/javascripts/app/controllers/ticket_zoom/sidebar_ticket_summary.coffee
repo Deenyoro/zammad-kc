@@ -46,6 +46,7 @@ class SidebarTicketSummary extends App.Controller
     @item
 
   shown: =>
+    App.Event.trigger('ui::ticket::summarySidebar::shown', { ticket_id: @ticket.id })
     @showSummarization(@parent.ticketSummaryData)
 
   sidebarCallback: (el) =>

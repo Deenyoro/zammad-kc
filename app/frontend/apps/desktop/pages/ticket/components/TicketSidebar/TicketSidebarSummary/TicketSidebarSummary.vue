@@ -7,6 +7,7 @@ import { ref, effectScope, watch, type EffectScope, computed } from 'vue'
 import { useTicketArticleUpdatesSubscription } from '#shared/entities/ticket/graphql/subscriptions/ticketArticlesUpdates.api.ts'
 import type {
   AsyncExecutionError,
+  TicketAiAssistanceSummarizePayload,
   TicketAiAssistanceSummary,
 } from '#shared/graphql/types.ts'
 import {
@@ -15,6 +16,7 @@ import {
 } from '#shared/server/apollo/handler/index.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
+import emitter from '#shared/utils/emitter.ts'
 
 import { useReactivate } from '#desktop/composables/useReactivate.ts'
 import TicketSidebarSummaryContent from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue'
@@ -25,6 +27,7 @@ import {
 } from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/types.ts'
 import { usePersistentStates } from '#desktop/pages/ticket/composables/usePersistentStates.ts'
 import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
+import { useTicketSummarySeen } from '#desktop/pages/ticket/composables/useTicketSummarySeen.ts'
 import { useTicketAiAssistanceSummarizeMutation } from '#desktop/pages/ticket/graphql/mutations/ticketAIAssistanceSummarize.api.ts'
 import { useTicketAiAssistanceSummaryUpdatesSubscription } from '#desktop/pages/ticket/graphql/subscriptions/ticketAIAssistanceSummaryUpdates.api.ts'
 import type {
@@ -93,7 +96,10 @@ const summaryHeadings = computed(() =>
   headings.value.filter((heading) => heading.active),
 )
 
+const { setFingerprint } = useTicketSummarySeen()
+
 const summary = ref<TicketAiAssistanceSummary | null>(null)
+
 const generationError = ref<AsyncExecutionError | null>(null)
 
 const showErrorDetails = computed(() => hasPermission('admin'))
@@ -104,14 +110,32 @@ const ticketSummaryHandler = new MutationHandler(
   useTicketAiAssistanceSummarizeMutation(),
 )
 
+const updateLocalSummary = (
+  summaryData?: TicketAiAssistanceSummary | null,
+  fingerprint?: TicketAiAssistanceSummarizePayload['fingerprintMd5'],
+) => {
+  summary.value = summaryData ?? null
+
+  setFingerprint(fingerprint)
+
+  // Reset error if summary is returned.
+  if (summaryData) generationError.value = null
+}
+
 const getAIAssistanceSummary = () => {
   if (!isProviderConfigured.value) return
 
-  ticketSummaryHandler.send({ ticketId: ticketId.value }).then((data) => {
-    summary.value = data?.ticketAIAssistanceSummarize?.summary ?? null
+  summary.value = null
+  emitter.emit('ticket-summary-generating', true)
 
-    // Reset error if summary is returned.
-    if (summary.value) generationError.value = null
+  ticketSummaryHandler.send({ ticketId: ticketId.value }).then((data) => {
+    if (data?.ticketAIAssistanceSummarize?.summary)
+      emitter.emit('ticket-summary-generating', false)
+
+    updateLocalSummary(
+      data?.ticketAIAssistanceSummarize?.summary,
+      data?.ticketAIAssistanceSummarize?.fingerprintMd5,
+    )
   })
 }
 
@@ -157,20 +181,23 @@ const activateSubscription = () => {
 
   ticketSummarySubscription.onSubscribed().then(() => {
     ticketSummarySubscription.onResult(({ data }) => {
+      emitter.emit('ticket-summary-generating', false)
+
       if (!data?.ticketAIAssistanceSummaryUpdates) return
 
-      const { summary: summaryData, error: errorData } =
-        data.ticketAIAssistanceSummaryUpdates
-
-      if (!summaryData && !errorData) return
+      const {
+        summary: summaryData,
+        fingerprintMd5,
+        error: errorData,
+      } = data.ticketAIAssistanceSummaryUpdates
 
       if (errorData) {
         generationError.value = errorData
         summary.value = null
-      } else if (summaryData) {
-        summary.value = summaryData
-        generationError.value = null
+        return setFingerprint(true)
       }
+
+      if (summaryData) updateLocalSummary(summaryData, fingerprintMd5)
     })
   })
 }
@@ -182,6 +209,7 @@ const handleDeactivate = () => {
 const handleActivation = () => {
   activeDetachedChildScope = effectScope(true)
   activeDetachedChildScope.run(activateSubscription)
+  getAIAssistanceSummary()
 }
 
 useReactivate(handleActivation, handleDeactivate)

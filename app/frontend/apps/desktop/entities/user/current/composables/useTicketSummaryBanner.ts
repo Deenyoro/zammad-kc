@@ -25,7 +25,7 @@ export const useTicketSummaryBanner = () => {
       !!config.value?.ai_provider,
   )
 
-  const showBanner = computed(
+  const hideBannerFromUserPreference = computed(
     () => !user.value?.preferences?.ticket_summary_banner_hidden,
   )
 
@@ -75,7 +75,7 @@ export const useTicketSummaryBanner = () => {
   }
 
   return {
-    showBanner,
+    hideBannerFromUserPreference,
     isTicketSummaryFeatureEnabled,
     toggleSummaryBanner,
     config,

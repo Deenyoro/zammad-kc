@@ -20,6 +20,7 @@ class Ticket::SummarizeController < ApplicationController
           conversation_summary: cache['summary'],
           open_questions:       cache['open_questions'],
           suggestions:          cache['suggestions'],
+          fingerprint_md5:      Digest::MD5.hexdigest(cache.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
         },
       }
       return

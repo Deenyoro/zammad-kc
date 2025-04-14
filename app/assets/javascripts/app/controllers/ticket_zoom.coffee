@@ -596,7 +596,10 @@ class App.TicketZoom extends App.Controller
 
       if App.Config.get('ai_assistance_ticket_summary') && App.Config.get('ai_provider') && @ticket.currentView() is 'agent'
         new App.TicketZoomAiSummaryBanner(
-          el:  elLocal.find('.ticket-ai-summary-banner')
+          object_id:       @ticket_id
+          isPreparingData: _.isUndefined(@ticketSummaryData) or @ticketSummaryData?.data?.error
+          fingerprintMD5:  @ticketSummaryData?.data?.fingerprint_md5 or true
+          el:              elLocal.find('.ticket-ai-summary-banner')
         )
 
       @sidebarWidget = new App.TicketZoomSidebar(

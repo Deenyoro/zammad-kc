@@ -28,7 +28,7 @@ const scrollContainer = useTemplateRef('scroll-container')
 
 const variantClass = computed(() =>
   props.variant === 'ai'
-    ? 'ai-stripe before:-bottom-3 before:absolute relative before:left:0 before:right-0 before:h-0.5'
+    ? 'ai-stripe before:-bottom-3 before:absolute relative before:left:0 before:right-0'
     : '',
 )
 

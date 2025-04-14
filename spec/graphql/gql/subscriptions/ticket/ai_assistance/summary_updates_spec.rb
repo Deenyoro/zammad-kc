@@ -18,6 +18,7 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
             suggestions
           }
           reason
+          fingerprintMd5
           error {
             message
             exception
@@ -71,8 +72,9 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
           result: include(
             'data' => include(
               'ticketAIAssistanceSummaryUpdates' => include(
-                'summary' => expected_broadcasted_summary,
-                'reason'  => 'example',
+                'summary'        => expected_broadcasted_summary,
+                'reason'         => 'example',
+                'fingerprintMd5' => Digest::MD5.hexdigest(expected_summary.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
               )
             )
           )

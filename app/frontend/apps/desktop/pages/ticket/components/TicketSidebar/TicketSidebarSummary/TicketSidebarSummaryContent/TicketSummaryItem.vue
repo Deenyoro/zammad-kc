@@ -12,7 +12,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const variantClass = computed(() =>
-  props.variant ? ['ai-stripe before:mb-3'] : [],
+  props.variant ? ['ai-stripe before:h-[1px] before:mb-3'] : [],
 )
 </script>
 

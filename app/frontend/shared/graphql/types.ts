@@ -3757,6 +3757,8 @@ export type TicketAiAssistanceSummarizePayload = {
   __typename?: 'TicketAIAssistanceSummarizePayload';
   /** Errors encountered during execution of the mutation. */
   errors?: Maybe<Array<UserError>>;
+  /** MD5 digest of the complete summary content */
+  fingerprintMd5?: Maybe<Scalars['String']['output']>;
   /** Reason for the result of the summary generation */
   reason?: Maybe<Scalars['String']['output']>;
   /** Different parts of the generated summary */
@@ -3777,6 +3779,8 @@ export type TicketAiAssistanceSummaryUpdatesPayload = {
   __typename?: 'TicketAIAssistanceSummaryUpdatesPayload';
   /** Error that occurred during the execution of the async job */
   error?: Maybe<AsyncExecutionError>;
+  /** MD5 digest of the complete summary content */
+  fingerprintMd5?: Maybe<Scalars['String']['output']>;
   /** Reason for the result of the summary generation */
   reason?: Maybe<Scalars['String']['output']>;
   /** Different parts of the generated summary */
@@ -6187,7 +6191,7 @@ export type TicketAiAssistanceSummarizeMutationVariables = Exact<{
 }>;
 
 
-export type TicketAiAssistanceSummarizeMutation = { __typename?: 'Mutations', ticketAIAssistanceSummarize?: { __typename?: 'TicketAIAssistanceSummarizePayload', summary?: { __typename?: 'TicketAIAssistanceSummary', conversationSummary?: string | null, openQuestions?: Array<string> | null, problem?: string | null, suggestions?: Array<string> | null } | null } | null };
+export type TicketAiAssistanceSummarizeMutation = { __typename?: 'Mutations', ticketAIAssistanceSummarize?: { __typename?: 'TicketAIAssistanceSummarizePayload', fingerprintMd5?: string | null, summary?: { __typename?: 'TicketAIAssistanceSummary', conversationSummary?: string | null, openQuestions?: Array<string> | null, problem?: string | null, suggestions?: Array<string> | null } | null } | null };
 
 export type TicketChecklistAddMutationVariables = Exact<{
   ticketId: Scalars['ID']['input'];
@@ -6397,7 +6401,7 @@ export type TicketAiAssistanceSummaryUpdatesSubscriptionVariables = Exact<{
 }>;
 
 
-export type TicketAiAssistanceSummaryUpdatesSubscription = { __typename?: 'Subscriptions', ticketAIAssistanceSummaryUpdates: { __typename?: 'TicketAIAssistanceSummaryUpdatesPayload', summary?: { __typename?: 'TicketAIAssistanceSummary', conversationSummary?: string | null, openQuestions?: Array<string> | null, problem?: string | null, suggestions?: Array<string> | null } | null, error?: { __typename?: 'AsyncExecutionError', message: string, exception: string } | null } };
+export type TicketAiAssistanceSummaryUpdatesSubscription = { __typename?: 'Subscriptions', ticketAIAssistanceSummaryUpdates: { __typename?: 'TicketAIAssistanceSummaryUpdatesPayload', fingerprintMd5?: string | null, summary?: { __typename?: 'TicketAIAssistanceSummary', conversationSummary?: string | null, openQuestions?: Array<string> | null, problem?: string | null, suggestions?: Array<string> | null } | null, error?: { __typename?: 'AsyncExecutionError', message: string, exception: string } | null } };
 
 export type TicketChecklistUpdatesSubscriptionVariables = Exact<{
   ticketId: Scalars['ID']['input'];

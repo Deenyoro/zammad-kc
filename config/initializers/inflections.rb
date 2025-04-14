@@ -29,4 +29,5 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym 'SSL'
   inflect.acronym 'TLS'
   inflect.acronym 'AI'
+  inflect.acronym 'MD5'
 end

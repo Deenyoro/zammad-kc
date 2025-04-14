@@ -14,6 +14,7 @@ class TicketAIAssistanceSummarizeJob < ApplicationJob
     )
 
     result = summarize.execute
+
     if result.nil?
       # TODO: Define some default messages?!
 
@@ -39,13 +40,14 @@ class TicketAIAssistanceSummarizeJob < ApplicationJob
 
     # Trigger the update for the new desktop view.
     trigger_subscription(ticket:, locale:, data: {
-                           summary: {
+                           summary:         {
                              problem:              result['problem'],
                              conversation_summary: result['summary'],
                              open_questions:       result['open_questions'],
                              suggestions:          result['suggestions']
                            },
-                           reason:  result['reason']
+                           reason:          result['reason'],
+                           fingerprint_md5: Digest::MD5.hexdigest(result.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
                          },)
 
     # Trigger the update for the old stack

@@ -19,6 +19,7 @@ RSpec.describe Gql::Mutations::Ticket::AIAssistance::Summarize, :aggregate_failu
               openQuestions
               suggestions
             }
+            fingerprintMd5
           }
         }
       MUTATION
@@ -43,22 +44,33 @@ RSpec.describe Gql::Mutations::Ticket::AIAssistance::Summarize, :aggregate_failu
     context 'when the summary is already in the cache' do
       let(:expected_cache) do
         {
-          problem:              'example',
-          conversation_summary: 'example',
-          open_questions:       ['example'],
-          suggestions:          ['example'],
-          reason:               'example',
+          'problem'        => 'example',
+          'summary'        => 'example',
+          'open_questions' => ['example'],
+          'suggestions'    => ['example'],
+          'reason'         => 'example',
         }
       end
 
       it 'returns the cached summary' do
-        expect(gql.result.data[:summary]).to be_present
+        expect(gql.result.data).to include(
+          summary:        eq({
+                               'conversationSummary' => 'example',
+                               'openQuestions'       => ['example'],
+                               'problem'             => 'example',
+                               'suggestions'         => ['example'],
+                             }),
+          fingerprintMd5: eq(Digest::MD5.hexdigest(expected_cache.slice('problem', 'summary', 'open_questions', 'suggestions').to_s)),
+        )
       end
     end
 
     context 'when the summary is not in the cache', performs_jobs: true do
       it 'returns nil' do
-        expect(gql.result.data[:summary]).to be_nil
+        expect(gql.result.data).to include(
+          summary:        be_nil,
+          fingerprintMd5: be_nil,
+        )
       end
 
       it 'enqueues a background job to generate the summary' do

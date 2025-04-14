@@ -14,6 +14,7 @@ export const TicketAiAssistanceSummaryUpdatesDocument = gql`
       problem
       suggestions
     }
+    fingerprintMd5
     error {
       message
       exception

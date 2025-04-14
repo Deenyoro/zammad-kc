@@ -1,22 +1,33 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 import CommonTranslateRenderer from '#shared/components/CommonTranslateRenderer/CommonTranslateRenderer.vue'
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
 import { getTicketView } from '#shared/entities/ticket/utils/getTicketView.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
+import emitter from '#shared/utils/emitter.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import { useTicketSummaryBanner } from '#desktop/entities/user/current/composables/useTicketSummaryBanner.ts'
 import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
 import { useTicketSidebar } from '#desktop/pages/ticket/composables/useTicketSidebar.ts'
+import { useTicketSummarySeen } from '#desktop/pages/ticket/composables/useTicketSummarySeen.ts'
 
 const sidebar = useTicketSidebar()
 
-const { toggleSummaryBanner, showBanner, isTicketSummaryFeatureEnabled } =
-  useTicketSummaryBanner()
+const {
+  toggleSummaryBanner,
+  hideBannerFromUserPreference,
+  isTicketSummaryFeatureEnabled,
+} = useTicketSummaryBanner()
+
+const {
+  isCurrentTicketSummaryRead,
+  isTicketStateMerged,
+  isTicketSummarySidebarActive,
+} = useTicketSummarySeen()
 
 const { waitForConfirmation } = useConfirmation()
 
@@ -24,6 +35,22 @@ const { ticket } = useTicketInformation()
 
 const isTicketAgent = computed(() =>
   ticket.value ? getTicketView(ticket.value).isTicketAgent : false,
+)
+
+const isSummaryGenerating = ref(false)
+
+emitter.on('ticket-summary-generating', (isGenerating) => {
+  isSummaryGenerating.value = isGenerating
+})
+
+const showBanner = computed(
+  () =>
+    isTicketSummaryFeatureEnabled.value &&
+    isTicketAgent.value &&
+    hideBannerFromUserPreference.value &&
+    !isTicketStateMerged.value &&
+    ((isSummaryGenerating.value && !isTicketSummarySidebarActive.value) ||
+      !isCurrentTicketSummaryRead.value),
 )
 
 const { userId } = useSessionStore()
@@ -46,18 +73,23 @@ const handleHideSummaryMessage = async () => {
 
 <template>
   <div
-    v-if="isTicketSummaryFeatureEnabled && isTicketAgent && showBanner"
-    class="flex items-center gap-1 rounded-lg border border-(--border-color) px-4 py-3 [--border-color:var(--color-blue-800)]"
+    v-if="showBanner"
+    data-test-id="ticket-summary-banner"
+    class="ai-stripe relative flex items-center gap-1 rounded-lg px-4 py-3 before:absolute before:top-0 before:right-0 before:left-0"
   >
     <CommonIcon
-      class="flex-shrink-0 text-(--border-color)!"
+      class="shrink-0 text-blue-800"
       size="small"
       name="smart-assist"
     />
 
     <CommonTranslateRenderer
       class="text-sm text-gray-100 dark:text-neutral-400"
-      :source="__('%s has prepared a summary of this ticket.')"
+      :source="
+        isSummaryGenerating
+          ? __('%s is preparing summary…')
+          : __('%s ticket summary has been generated.')
+      "
       :placeholders="[
         {
           type: 'label',
@@ -71,16 +103,17 @@ const handleHideSummaryMessage = async () => {
 
     <div class="flex items-center gap-4 ltr:ml-auto rtl:mr-auto">
       <CommonButton
-        :aria-label="$t('Hide ticket summary banner')"
-        @click="handleHideSummaryMessage"
-        >{{ $t('Hide') }}
+        size="small"
+        @click="sidebar?.switchSidebar('ticket-summary')"
+      >
+        {{ $t('See Summary') }}
       </CommonButton>
       <CommonButton
-        size="medium"
-        variant="tertiary"
-        @click="() => sidebar?.switchSidebar('ticket-summary')"
-        >{{ $t('See Summary') }}
-      </CommonButton>
+        variant="neutral"
+        :aria-label="$t('Hide ticket summary banner')"
+        icon="x-lg"
+        @click="handleHideSummaryMessage"
+      />
     </div>
   </div>
 </template>

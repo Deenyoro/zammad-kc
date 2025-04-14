@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import { within } from '@testing-library/vue'
+import { waitFor, within } from '@testing-library/vue'
 
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
@@ -465,6 +465,7 @@ describe('Ticket detail view - Ticket summary', () => {
     mockPermissions(['ticket.agent'])
 
     mockApplicationConfig({
+      ai_provider: 'zammad_ai',
       ai_assistance_ticket_summary: false,
     })
 
@@ -477,5 +478,328 @@ describe('Ticket detail view - Ticket summary', () => {
     expect(
       view.queryByRole('button', { name: 'Summary' }),
     ).not.toBeInTheDocument()
+  })
+
+  describe('ticket summary banner', () => {
+    it('renders correctly', async () => {
+      mockPermissions(['ticket.agent'])
+
+      mockApplicationConfig({
+        ai_provider: 'zammad_ai',
+        ai_assistance_ticket_summary: true,
+      })
+
+      mockTicketQuery({
+        ticket: createDummyTicket(),
+      })
+
+      const view = await visitView('/tickets/1')
+
+      await getTicketAiAssistanceSummaryUpdatesSubscriptionHandler().trigger({
+        ticketAIAssistanceSummaryUpdates: {
+          summary: null,
+          error: null,
+        },
+      })
+
+      expect(
+        await view.findByTestId('ticket-summary-banner'),
+      ).toHaveTextContent(
+        'Zammad Smart Assist ticket summary has been generated.',
+      )
+
+      expect(view.getAllByIconName('smart-assist').length).toBe(2)
+    })
+
+    it('shows summary sidebar when clicked', async () => {
+      mockPermissions(['ticket.agent'])
+
+      mockApplicationConfig({
+        ai_provider: 'zammad_ai',
+        ai_assistance_ticket_summary: true,
+      })
+
+      mockTicketQuery({
+        ticket: createDummyTicket(),
+      })
+
+      const view = await visitView('/tickets/1')
+
+      await view.events.click(
+        await view.findByRole('button', { name: 'See Summary' }),
+      )
+
+      expect(
+        await view.findByRole('complementary', { name: 'Content sidebar' }),
+      ).toBeInTheDocument()
+    })
+
+    it('hides banner if ticket has merged state', async () => {
+      mockPermissions(['ticket.agent'])
+
+      mockApplicationConfig({
+        ai_provider: 'zammad_ai',
+        ai_assistance_ticket_summary: true,
+      })
+
+      mockTicketQuery({
+        ticket: createDummyTicket({
+          state: {
+            name: 'merged',
+            id: convertToGraphQLId('State', 5),
+            stateType: {
+              id: convertToGraphQLId('StateType', 6),
+              name: 'merged',
+            },
+          },
+        }),
+      })
+
+      const view = await visitView('/tickets/1')
+
+      expect(
+        view.queryByRole('button', { name: 'See Summary' }),
+      ).not.toBeInTheDocument()
+    })
+
+    it('hides banner if feature is disabled', async () => {
+      mockPermissions(['ticket.agent'])
+
+      mockTicketQuery({
+        ticket: createDummyTicket(),
+      })
+
+      mockApplicationConfig({
+        ai_provider: 'zammad_ai',
+        ai_assistance_ticket_summary: false,
+      })
+
+      const view = await visitView('/tickets/1')
+
+      expect(
+        view.queryByRole('button', { name: 'See Summary' }),
+      ).not.toBeInTheDocument()
+    })
+
+    it('hides banner if user is customer', async () => {
+      mockPermissions(['ticket.customer'])
+
+      mockTicketQuery({
+        ticket: createDummyTicket(),
+      })
+
+      mockApplicationConfig({
+        ai_provider: 'zammad_ai',
+        ai_assistance_ticket_summary: true,
+      })
+
+      const view = await visitView('/tickets/1')
+
+      expect(
+        view.queryByRole('button', { name: 'See Summary' }),
+      ).not.toBeInTheDocument()
+    })
+
+    it('hides banner if provider is not available', async () => {
+      mockPermissions(['ticket.agent'])
+
+      mockTicketQuery({
+        ticket: createDummyTicket(),
+      })
+
+      mockApplicationConfig({
+        ai_provider: '',
+      })
+
+      const view = await visitView('/tickets/1')
+
+      expect(
+        view.queryByRole('button', { name: 'See Summary' }),
+      ).not.toBeInTheDocument()
+    })
+
+    it('hides banner if ticket summary tab is active', async () => {
+      mockPermissions(['ticket.agent'])
+
+      mockTicketQuery({
+        ticket: createDummyTicket(),
+      })
+
+      mockApplicationConfig({
+        ai_provider: 'zammad_ai',
+        ai_assistance_ticket_summary: true,
+      })
+
+      const ticket = createDummyTicket()
+
+      mockTicketQuery({ ticket })
+
+      const view = await visitView('/tickets/1')
+
+      await view.events.click(
+        await view.findByRole('button', { name: 'See Summary' }),
+      )
+
+      expect(
+        view.queryByRole('button', { name: 'See Summary' }),
+      ).not.toBeInTheDocument()
+    })
+  })
+
+  it('hides ticket summary banner when user is on ticket summary sidebar tab', async () => {
+    mockPermissions(['ticket.agent'])
+
+    mockApplicationConfig({
+      ai_provider: 'zammad_ai',
+      ai_assistance_ticket_summary: true,
+    })
+
+    mockTicketQuery({
+      ticket: createDummyTicket(),
+    })
+
+    const view = await visitView('/tickets/1')
+
+    await view.events.click(
+      await view.findByRole('button', { name: 'See Summary' }),
+    )
+
+    expect(
+      view.queryByRole('button', { name: 'See Summary' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('shows ticket summary is progressing in banner', async () => {
+    mockPermissions(['ticket.agent'])
+
+    mockApplicationConfig({
+      ai_provider: 'zammad_ai',
+      ai_assistance_ticket_summary: true,
+    })
+
+    mockTicketQuery({
+      ticket: createDummyTicket(),
+    })
+
+    const view = await visitView('/tickets/1')
+
+    expect(view.getByTestId('ticket-summary-banner')).toHaveTextContent(
+      'Zammad Smart Assist is preparing summary…See Summary',
+    )
+  })
+
+  it('keeps hiding ticket summary banner when subscription update comes in', async () => {
+    mockPermissions(['ticket.agent'])
+
+    mockApplicationConfig({
+      ai_provider: 'zammad_ai',
+      ai_assistance_ticket_summary: true,
+    })
+
+    mockTicketQuery({
+      ticket: createDummyTicket(),
+    })
+
+    mockTicketAiAssistanceSummarizeMutation({
+      ticketAIAssistanceSummarize: {
+        summary: {
+          conversationSummary:
+            'The customer paid for an order but claims to have not received it. They provided the order number and requested assistance with tracking.',
+          openQuestions: ['What was the payment method used?'],
+          problem: 'Order not received after payment',
+          suggestions: [
+            'Check the order status in the system',
+            'Verify if the shipping address is correct',
+            'Contact the shipping carrier for updates',
+          ],
+        },
+        fingerprintMd5: '5987df7488e9d904519cdc6235c9dc39',
+      },
+    })
+
+    const view = await visitView('/tickets/1')
+
+    await view.events.click(
+      await view.findByRole('button', { name: 'See Summary' }),
+    )
+
+    await waitForTicketAiAssistanceSummarizeMutationCalls()
+
+    await waitForNextTick()
+
+    await triggerSummaryUpdate({
+      summary: null,
+      error: null,
+    })
+
+    await waitFor(() =>
+      expect(
+        view.queryByRole('button', { name: 'See Summary' }),
+      ).not.toBeInTheDocument(),
+    )
+  })
+
+  it('displays ticket summary banner when subscription update comes in', async () => {
+    mockPermissions(['ticket.agent'])
+
+    mockApplicationConfig({
+      ai_provider: 'zammad_ai',
+      ai_assistance_ticket_summary: true,
+      ai_assistance_ticket_summary_config: {
+        conversation_summary: true,
+        open_questions: true,
+        problem: true,
+        suggestions: true,
+      },
+    })
+
+    mockTicketAiAssistanceSummarizeMutation({
+      ticketAIAssistanceSummarize: {
+        summary: {
+          conversationSummary:
+            'The customer paid for an order but claims to have not received it. They provided the order number and requested assistance with tracking.',
+          openQuestions: ['What was the payment method used?'],
+          problem: 'Order not received after payment',
+          suggestions: [
+            'Check the order status in the system',
+            'Verify if the shipping address is correct',
+            'Contact the shipping carrier for updates',
+          ],
+        },
+        fingerprintMd5: '5987df7488e9d904519cdc6235c9dc32',
+      },
+    })
+
+    mockTicketQuery({
+      ticket: createDummyTicket(),
+    })
+
+    const view = await visitView('/tickets/1')
+
+    await view.events.click(
+      await view.findByRole('button', { name: 'See Summary' }),
+    )
+
+    expect(
+      view.queryByRole('button', { name: 'See Summary' }),
+    ).not.toBeInTheDocument()
+
+    // Change sidebar tab
+    await view.events.click(await view.findByRole('button', { name: 'Ticket' }))
+
+    await triggerSummaryUpdate({
+      summary: {
+        conversationSummary: 'Summary to see if subscription comes in',
+        openQuestions: ['...'],
+        problem: '...',
+        suggestions: ['foo', 'bar'],
+      },
+      fingerprintMd5: '5987df7488e9d904519cdc6235c9dc39',
+      error: null,
+    })
+
+    expect(
+      await view.findByRole('button', { name: 'See Summary' }),
+    ).toBeInTheDocument()
   })
 })

@@ -46,6 +46,7 @@ RSpec.describe 'Ticket Summarize API endpoints', authenticated_as: :user, perfor
                                         'open_questions'       => 'mocked open_questions',
                                         'suggestions'          => 'mocked suggestions',
                                         'problem'              => 'mocked problem',
+                                        'fingerprint_md5'      => Digest::MD5.hexdigest(result.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
                                       } })
         end
 

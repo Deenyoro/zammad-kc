@@ -10,6 +10,7 @@ module Gql::Subscriptions
 
     field :summary, Gql::Types::Ticket::AIAssistance::SummaryType, description: 'Different parts of the generated summary'
     field :reason, String, description: 'Reason for the result of the summary generation' # TODO: only for debugging/admins?
+    field :fingerprint_md5, String, description: 'MD5 digest of the complete summary content'
     field :error, Gql::Types::AsyncExecutionErrorType, description: 'Error that occurred during the execution of the async job'
 
     def authorized?(ticket_id:, locale:)
@@ -26,8 +27,9 @@ module Gql::Subscriptions
       end
 
       {
-        summary: object[:summary],
-        reason:  object[:reason]
+        summary:         object[:summary],
+        reason:          object[:reason],
+        fingerprint_md5: object[:fingerprint_md5],
       }
     end
   end

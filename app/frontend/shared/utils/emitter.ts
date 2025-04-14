@@ -8,6 +8,7 @@ type Events = {
   'focus-quick-search-field': void
   'reset-quick-search-field': void
   'main-sidebar-transition': void
+  'ticket-summary-generating': boolean
 }
 
 const emitter: Emitter<Events> = mitt<Events>()
