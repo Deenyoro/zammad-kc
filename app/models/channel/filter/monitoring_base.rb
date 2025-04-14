@@ -33,7 +33,12 @@ class Channel::Filter::MonitoringBase
     # get mail attributes like host and state
     result = {}
 
-    mail[:body].gsub(%r{(Service|Host|State|Address|Date/Time|Additional\sInfo|Info|Action|Description):(.+?)(\n|$)}i) do |_match|
+    mail_body = mail[:body]
+
+    # Convert HTML body to plain text, if needed.
+    mail_body = mail_body.html2text if mail[:content_type] == 'text/html'
+
+    mail_body.gsub(%r{(Service(?!\sMetrics)|Host(?!\sMetrics)|State|Address|Date/Time|Additional\sInfo|Info|Action|Description)(?::|\s)(.+?)(\n|$)}i) do |_match|
       key = $1
       if key
         key = key.downcase
@@ -47,7 +52,7 @@ class Channel::Filter::MonitoringBase
     return if result['host'].blank?
 
     # icinga - get state by body - new templates
-    if result['state'].blank? && mail[:body] =~ %r{.+?\sis\s(.+?)!}
+    if result['state'].blank? && mail_body =~ %r{.+?\sis\s(.+?)!}
       result['state'] = $1
     end
 
@@ -58,14 +63,19 @@ class Channel::Filter::MonitoringBase
       result['state'] = $2
     end
 
+    # check_mk - get state by event
+    if result['state'].blank? && mail_body =~ %r{\sEvent\s.+?\s→\s(.+?)\s}
+      result['state'] = $1
+    end
+
     # monit - get missing attributes from body
-    if result['service'].blank? && mail[:body] =~ %r{\sService\s(.+?)\s}
+    if result['service'].blank? && mail_body =~ %r{\sService\s(.+?)\s}
       result['service'] = $1
     end
 
     # possible event types https://mmonit.com/monit/documentation/#Setting-an-event-filter
     if result['state'].blank?
-      result['state'] = case mail[:body]
+      result['state'] = case mail_body
                         when %r{\s(done|recovery|succeeded|bytes\sok|packets\sok)\s}, %r{(instance\schanged\snot|Link\sup|Exists|Saturation\sok|Speed\sok)}
                           'OK'
                         else

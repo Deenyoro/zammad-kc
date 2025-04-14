@@ -4397,6 +4397,15 @@ Setting.create_if_not_exists(
 )
 Setting.create_if_not_exists(
   title:       __('Defines postmaster filter.'),
+  name:        '5200_postmaster_filter_check_mk',
+  area:        'Postmaster::PreFilter',
+  description: __('Defines postmaster filter to manage Checkmk (http://mathias-kettner.com/check_mk.html) emails.'),
+  options:     {},
+  state:       'Channel::Filter::CheckMk',
+  frontend:    false
+)
+Setting.create_if_not_exists(
+  title:       __('Defines postmaster filter.'),
   name:        '5300_postmaster_filter_monit',
   area:        'Postmaster::PreFilter',
   description: __('Defines postmaster filter to manage Monit (https://mmonit.com/monit/) emails.'),
@@ -4670,6 +4679,29 @@ Setting.create_if_not_exists(
     permission: ['admin.integration'],
   },
   frontend:    false
+)
+Setting.create_if_not_exists(
+  title:       __('Sender'),
+  name:        'check_mk_sender',
+  area:        'Integration::CheckMK',
+  description: __('Defines the sender email address of the service emails.'),
+  options:     {
+    form: [
+      {
+        display:     '',
+        null:        false,
+        name:        'check_mk_sender',
+        tag:         'input',
+        placeholder: 'check_mk@monitoring.example.com',
+      },
+    ],
+  },
+  state:       'check_mk@monitoring.example.com',
+  preferences: {
+    prio:       2,
+    permission: ['admin.integration'],
+  },
+  frontend:    false,
 )
 Setting.create_if_not_exists(
   title:       __('Group'),

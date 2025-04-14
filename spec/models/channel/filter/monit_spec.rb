@@ -14,13 +14,13 @@ RSpec.describe Channel::Filter::Monit, :aggregate_failures do
       ticket_start, _article_p, _user_p, _mail = Channel::EmailParser.new.process({}, start_email)
       expect(ticket_start).to have_attributes(
         state:       have_attributes(name: 'new'),
-        preferences: eq({ 'monit' => monit_config })
+        preferences: include({ 'monit' => monit_config })
       )
       ticket_stop, _article_p, _user_p, _mail = Channel::EmailParser.new.process({}, stop_email)
       expect(ticket_stop).to have_attributes(
         id:          ticket_start.id,
         state:       have_attributes(name: 'closed'),
-        preferences: eq({ 'monit' => monit_config })
+        preferences: include({ 'monit' => monit_config })
       )
     end
 

@@ -10,7 +10,7 @@ class CheckMkIntegration2 < ActiveRecord::Migration[4.2]
       title:       'Check_MK integration',
       name:        'check_mk_integration',
       area:        'Integration::Switch',
-      description: 'Defines if Check_MK (http://mathias-kettner.com/check_mk.html) is enabled or not.',
+      description: 'Defines if Checkmk (http://mathias-kettner.com/check_mk.html) is enabled or not.',
       options:     {
         form: [
           {
@@ -130,10 +130,10 @@ class CheckMkIntegration2 < ActiveRecord::Migration[4.2]
       frontend:    false
     )
     Setting.create_if_not_exists(
-      title:       'Check_MK tolen',
+      title:       'Checkmk token',
       name:        'check_mk_token',
       area:        'Core',
-      description: 'Defines the Check_MK token for allowing updates.',
+      description: 'Defines the Checkmk token for allowing updates.',
       options:     {},
       state:       SecureRandom.hex(16),
       preferences: {
@@ -145,7 +145,7 @@ class CheckMkIntegration2 < ActiveRecord::Migration[4.2]
       title:       'Defines postmaster filter.',
       name:        '5200_postmaster_filter_check_mk',
       area:        'Postmaster::PreFilter',
-      description: 'Defines postmaster filter to manage Check_MK (http://mathias-kettner.com/check_mk.html) emails.',
+      description: 'Defines postmaster filter to manage Checkmk (http://mathias-kettner.com/check_mk.html) emails.',
       options:     {},
       state:       'Channel::Filter::CheckMk',
       frontend:    false
