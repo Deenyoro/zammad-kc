@@ -4,6 +4,10 @@ class SidebarChecklist extends App.Controller
 
     @changeable = @ticket.userGroupAccess('change')
 
+    @controllerBind('ui::ticket::checklistSidebar::showLoader', =>
+      @widget.showLoader() if typeof @widget?.showLoader is 'function'
+    )
+
   release: =>
     super
     @unsubscribe()

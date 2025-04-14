@@ -78,3 +78,7 @@ class App.SidebarChecklistStart extends App.Controller
   clearErrors: =>
     @el.find('form').find('.has-error').removeClass('has-error')
     @el.find('form').find('.help-inline').html('')
+
+  showLoader: =>
+    @el.find('.checklistStart').hide()
+    @el.find('.loading-container').show()

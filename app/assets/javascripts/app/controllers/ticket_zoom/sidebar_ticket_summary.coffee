@@ -89,6 +89,7 @@ class SidebarTicketSummary extends App.Controller
 
     item.save(
       done: =>
+        App.Event.trigger('ui::ticket::checklistSidebar::showLoader')
         @notify(
           type: 'success'
           msg: App.i18n.translateInline('Checklist item successfully added.')
@@ -134,6 +135,7 @@ class SidebarTicketSummary extends App.Controller
         items: items
       )
       success:  =>
+        App.Event.trigger('ui::ticket::checklistSidebar::showLoader')
         @openChecklist()
       error: =>
         @notify(
