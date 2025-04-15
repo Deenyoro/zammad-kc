@@ -175,7 +175,7 @@ const { switchValue, toggleBetaUiSwitch } = useNewBetaUi()
   <LayoutPublicPage box-size="small" :title="loginPageTitle" show-logo>
     <div
       v-if="$c.maintenance_mode"
-      class="bg-red my-1 flex items-center rounded-xl px-4 py-2 text-white"
+      class="mb-1 rounded-lg bg-red-500 px-4 py-2 text-sm text-white"
     >
       {{
         $t(
@@ -186,7 +186,7 @@ const { switchValue, toggleBetaUiSwitch } = useNewBetaUi()
     <!-- eslint-disable vue/no-v-html -->
     <div
       v-if="$c.maintenance_login && $c.maintenance_login_message"
-      class="bg-green my-1 flex items-center rounded-xl px-4 py-2 text-white"
+      class="mb-1 rounded-lg bg-green-500 px-4 py-2 text-sm text-white"
       v-html="$c.maintenance_login_message"
     ></div>
 
