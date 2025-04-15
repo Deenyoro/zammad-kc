@@ -7,7 +7,8 @@ module Ticket::Search
 
   included do
     scope :search_sql_query_extension, lambda { |params|
-      return if params[:query].blank?
+      query = params[:query]&.delete('*')
+      return if query.blank?
 
       fields = %w[title number]
       fields << Ticket::Article.arel_table[:body]
@@ -15,7 +16,7 @@ module Ticket::Search
       fields << Ticket::Article.arel_table[:to]
       fields << Ticket::Article.arel_table[:subject]
 
-      where_or_cis(fields, "%#{SqlHelper.quote_like(params[:query])}%")
+      where_or_cis(fields, "%#{SqlHelper.quote_like(query)}%")
         .joins(:articles)
     }
   end

@@ -18,6 +18,21 @@ RSpec.describe Ticket::Search do
     end
   end
 
+  describe 'Missing wildcard search on fulltext search #5558', searchindex: true do
+    let(:search)   { SecureRandom.uuid }
+    let(:ticket)   { create(:ticket, group: Group.first) }
+    let(:agent)    { create(:agent, groups: Group.all) }
+
+    before do
+      ticket
+      searchindex_model_reload([Ticket])
+    end
+
+    it 'does not show up the same ticket twice if no elastic search is configured' do
+      expect(Ticket.search(current_user: agent, query: '(state.name:new OR state.name:open) AND NOT customer.organization_id:* AND owner_id:1')).to eq([ticket])
+    end
+  end
+
   describe 'Language detection mechanism #5476', searchindex: true do
     let(:ticket)  { create(:ticket, group: Group.first) }
     let(:article) { create(:ticket_article, ticket: ticket, detected_language: 'de') }

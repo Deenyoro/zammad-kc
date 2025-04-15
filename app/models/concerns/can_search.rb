@@ -27,12 +27,13 @@ see e.g. also app/models/ticket/search.rb
 =end
 
     scope :search_sql_query_extension, lambda { |params|
-      return if params[:query].blank?
+      query = params[:query]&.delete('*')
+      return if query.blank?
 
       search_columns = columns.select { |row| row.type == :string && !row.try(:array) }.map(&:name)
       return if search_columns.blank?
 
-      where_or_cis(search_columns, "%#{SqlHelper.quote_like(params[:query].to_s.downcase)}%")
+      where_or_cis(search_columns, "%#{SqlHelper.quote_like(query.to_s.downcase)}%")
     }
 
     # Scope to specific IDs if they're given in params.
@@ -196,7 +197,7 @@ returns
       # try search index backend
       # we only search in elastic search when we have a query present
       # else we try to use the database result, since it is more up to date
-      object_ids, object_count = if SearchIndexBackend.enabled? && included_modules.include?(HasSearchIndexBackend) && params[:query].present?
+      object_ids, object_count = if SearchIndexBackend.enabled? && included_modules.include?(HasSearchIndexBackend) && params[:query]&.delete('*').present?
                                    search_es(params)
                                  else
                                    search_sql(params)
@@ -236,7 +237,6 @@ returns
 
       params[:condition] ||= {}
       params[:limit]     ||= 50
-      params[:query]    = params[:query]&.delete('*')
       params[:offset]   = params[:offset].presence || params[:from].presence || 0
       params[:full]     = !params.key?(:full) || ActiveModel::Type::Boolean.new.cast(params[:full])
       params[:sort_by]  = sql_helper.get_sort_by(params, search_default_sort_by)

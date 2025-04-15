@@ -17,9 +17,10 @@ class KnowledgeBase::Answer::Translation
       }
 
       scope :search_sql_query_extension, lambda { |params|
-        return if params[:query].blank?
+        query = params[:query]&.delete('*')
+        return if query.blank?
 
-        search_sql_text_fallback(params[:query])
+        search_sql_text_fallback(query)
       }
     end
 
