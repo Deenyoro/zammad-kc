@@ -698,7 +698,7 @@ class App.SearchableSelect extends Spine.Controller
     @currentItem = null
 
   toggleClear: =>
-    if @attribute.value and not @isOpen
+    if _.isEmpty(@attribute.value) and not @isOpen
       @clear.removeClass('hide')
     else
       @clear.addClass('hide')

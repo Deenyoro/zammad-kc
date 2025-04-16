@@ -7,15 +7,17 @@ RSpec.describe 'Ticket > Update > External Data Source Attribute', db_adapter: :
   let(:external_data_source_attribute) do
     create(:object_manager_attribute_autocompletion_ajax_external_data_source, :shown_screen, :elastic_search, search_url: search_url, name: 'external_data_source_attribute')
   end
-  let(:group)          { Group.find_by(name: 'Users') }
-  let(:ticket)         { create(:ticket, group: group, customer: customer1) }
-  let(:customer1)      { create(:customer, firstname: SecureRandom.uuid) }
-  let(:customer2)      { create(:customer, firstname: searchterm) }
-  let(:searchterm)     { SecureRandom.uuid }
+  let(:group)              { Group.find_by(name: 'Users') }
+  let(:ticket)             { create(:ticket, group: group, customer: customer1) }
+  let(:preexisting_ticket) { create(:ticket, group: group, customer: customer1) }
+  let(:customer1)          { create(:customer, firstname: SecureRandom.uuid) }
+  let(:customer2)          { create(:customer, firstname: searchterm) }
+  let(:searchterm)         { SecureRandom.uuid }
 
   before do
     customer1
     customer2
+    preexisting_ticket
     searchindex_model_reload([User])
 
     external_data_source_attribute
@@ -45,6 +47,19 @@ RSpec.describe 'Ticket > Update > External Data Source Attribute', db_adapter: :
 
         expect(ticket.reload.external_data_source_attribute).to eq({ 'value' => customer1.id.to_s, 'label' => customer1.email })
       end
+    end
+  end
+
+  # https://github.com/zammad/zammad/issues/5062
+  context 'when external data source attribute is created with pre existing tickets' do
+    it 'sees preexisting ticket as unchanged' do
+      visit "ticket/zoom/#{preexisting_ticket.id}"
+
+      sleep 1 # some time needed for change marker to be applied
+
+      elem = find("div[data-attribute-name='#{external_data_source_attribute.name}']")
+
+      expect(elem[:class]).not_to include('is-changed')
     end
   end
 end

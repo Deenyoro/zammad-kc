@@ -826,11 +826,13 @@ class App.TicketZoom extends App.Controller
       if value is null || value is undefined
         params.ticket[key] = ''
 
-      tagName = App.Ticket.configure_attributes.find((elem) -> elem.name == key)?.tag
-
-      if ['multiselect', 'multi_tree_select'].includes(tagName)
-        if _.isEmpty(value) || _.isEqual(value, [''])
-          params.ticket[key] = ''
+      switch App.Ticket.configure_attributes.find((elem) -> elem.name == key)?.tag
+        when 'multiselect', 'multi_tree_select'
+          if _.isEmpty(value) || _.isEqual(value, [''])
+            params.ticket[key] = ''
+        when 'autocompletion_ajax_external_data_source'
+          if _.isEmpty(value)
+            params.ticket[key] = ''
 
   forRemoveMeta: (params = {}) ->
     paramsNew = {}
