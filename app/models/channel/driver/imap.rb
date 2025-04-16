@@ -179,7 +179,7 @@ returns
       "ssl_verify=#{server_settings[:ssl_verify]}"
     ]
 
-    Rails.logger.info "fetching imap (#{settings.join(',')}"
+    Rails.logger.info "fetching imap (#{settings.join(',')})"
   end
 
   def setup_connection_server_settings(options)

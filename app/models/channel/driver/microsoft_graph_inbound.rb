@@ -49,7 +49,7 @@ class Channel::Driver::MicrosoftGraphInbound < Channel::Driver::BaseEmailInbound
 
     _collection, count_all = messages_iterator(false, options)
 
-    Rails.logger.info 'check only mode, fetch no emails'
+    Rails.logger.info '  - check only mode, fetch no emails'
 
     {
       result:           'ok',
@@ -155,7 +155,19 @@ class Channel::Driver::MicrosoftGraphInbound < Channel::Driver::BaseEmailInbound
     access_token = options[:password]
     mailbox      = options[:shared_mailbox].presence || options[:user]
 
+    setup_connection_server_log(options)
+
     @graph = MicrosoftGraph.new access_token:, mailbox:
+  end
+
+  def setup_connection_server_log(options)
+    mailbox = options[:shared_mailbox].presence || options[:user]
+    config  = [
+      *("folder_id=#{options[:folder_id]}" if options[:folder_id].present?),
+      "keep_on_server=#{options[:keep_on_server]}",
+    ]
+
+    Rails.logger.info "fetching Microsoft Graph (#{mailbox} #{config.join(',')})"
   end
 
   def verify_folder!(id, options)
