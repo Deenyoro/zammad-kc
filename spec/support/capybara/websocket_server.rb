@@ -3,7 +3,8 @@
 RSpec.configure do |config|
 
   hostname = ENV['CI'].present? ? 'build' : 'localhost'
-  localhost_autority = Localhost::Authority.fetch(hostname)
+  localhost_authority = Localhost::Authority.new(hostname, issuer: nil)
+  localhost_authority.save # make sure the certificate is created
 
   config.around(:each, type: :system) do |example|
 
@@ -22,8 +23,8 @@ RSpec.configure do |config|
           v:           false,
           d:           false,
           tls_options: {
-            private_key_file: localhost_autority.key_path,
-            cert_chain_file:  localhost_autority.certificate_path,
+            private_key_file: localhost_authority.key_path,
+            cert_chain_file:  localhost_authority.certificate_path,
           }
         )
       end

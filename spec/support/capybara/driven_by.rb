@@ -8,11 +8,12 @@ CAPYBARA_HOSTNAME = ENV['CAPYBARA_HOSTNAME'] || (ENV['CI'].present? ? 'build' : 
 RSpec.configure do |config|
 
   # Provide SSL certificates with the help of the 'localhost' gem.
-  localhost_autority = Localhost::Authority.fetch(CAPYBARA_HOSTNAME)
+  localhost_authority = Localhost::Authority.new(CAPYBARA_HOSTNAME, issuer: nil)
+  localhost_authority.save # make sure the certificate is created
 
   Capybara.register_server :puma_wrapper do |app, port, host, **_options|
     # Start a silenced Puma as application server.
-    Capybara.servers[:puma].call(app, port, host, Silent: true, Host: "ssl://0.0.0.0?key=#{localhost_autority.key_path}&cert=#{localhost_autority.certificate_path}", Threads: '0:16')
+    Capybara.servers[:puma].call(app, port, host, Silent: true, Host: "ssl://0.0.0.0?key=#{localhost_authority.key_path}&cert=#{localhost_authority.certificate_path}", Threads: '0:16')
   end
 
   Capybara.configure do |capybara_config|

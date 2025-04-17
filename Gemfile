@@ -270,9 +270,7 @@ group :development, :test do
   gem 'slack-ruby-client', require: false
 
   # Self-signed localhost certificates for puma / capybara.
-  # locahost gem version 1.3.x is required to generate self-signed certificates correctly.
-  # Newer versions changed how certificates are generated and they're no longer seen as self-signed.
-  gem 'localhost', '1.3.1'
+  gem 'localhost'
 
   # Keycloak admin tool for setting up SAML auth tests
   gem 'ruby-keycloak-admin'

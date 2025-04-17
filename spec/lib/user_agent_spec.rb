@@ -35,7 +35,8 @@ RSpec.describe UserAgent, :aggregate_failures do
       Rack::Handler::Puma.run app, Port: 3000
     end
 
-    localhost_authority = Localhost::Authority.fetch
+    localhost_authority = Localhost::Authority.new('localhost', issuer: nil)
+    localhost_authority.save # make sure the certificate is created
 
     ssl_puma_thread = Thread.new do
       app = Rack::Builder.new do
@@ -719,7 +720,7 @@ RSpec.describe UserAgent, :aggregate_failures do
 
       context 'with self-signed certificate present' do
         before do
-          localhost_authority = Localhost::Authority.fetch
+          localhost_authority = Localhost::Authority.new('localhost', issuer: nil)
           create(:ssl_certificate, certificate: File.read(localhost_authority.certificate_path))
         end
 
