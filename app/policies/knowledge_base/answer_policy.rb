@@ -1,6 +1,8 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class KnowledgeBase::AnswerPolicy < ApplicationPolicy
+  USER_REQUIRED = false
+
   def show?
     return true if access_editor?
 
@@ -22,10 +24,6 @@ class KnowledgeBase::AnswerPolicy < ApplicationPolicy
 
   def destroy?
     access_editor?
-  end
-
-  def user_required?
-    false
   end
 
   # Compatibility with Ticket policy

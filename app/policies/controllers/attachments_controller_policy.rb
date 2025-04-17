@@ -1,16 +1,14 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class Controllers::AttachmentsControllerPolicy < Controllers::ApplicationControllerPolicy
+  USER_REQUIRED = false
+
   def show?
     store_object_policy(store_object_owner, allow_kb_preview_token: true)&.show?
   end
 
   def destroy?
     store_object_policy(store_object_owner)&.destroy?
-  end
-
-  def user_required?
-    false
   end
 
   def custom_exception

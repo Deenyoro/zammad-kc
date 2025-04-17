@@ -18,31 +18,31 @@ describe UserPolicy do
         context 'when record is an admin user' do
           let(:record) { create(:admin) }
 
-          it { is_expected.to permit_actions(%i[show nested_show update destroy]) }
+          it { is_expected.to permit_all_actions }
         end
 
         context 'when record is an agent user' do
           let(:record) { create(:agent) }
 
-          it { is_expected.to permit_actions(%i[show nested_show update destroy]) }
+          it { is_expected.to permit_all_actions }
         end
 
         context 'when record is a customer user' do
           let(:record) { create(:customer) }
 
-          it { is_expected.to permit_actions(%i[show nested_show update destroy]) }
+          it { is_expected.to permit_all_actions }
         end
 
         context 'when record is any user' do
           let(:record) { create(:user) }
 
-          it { is_expected.to permit_actions(%i[show nested_show update destroy]) }
+          it { is_expected.to permit_all_actions }
         end
 
         context 'when record is the same user' do
           let(:record) { user }
 
-          it { is_expected.to permit_actions(%i[show nested_show update destroy]) }
+          it { is_expected.to permit_all_actions }
         end
       end
     end
@@ -55,36 +55,31 @@ describe UserPolicy do
       context 'when record is an admin user' do
         let(:record) { create(:admin) }
 
-        it { is_expected.to permit_actions(%i[show nested_show]) }
-        it { is_expected.to forbid_actions(%i[update destroy]) }
+        it { is_expected.to permit_only_actions(%i[show nested_show]) }
       end
 
       context 'when record is an agent user' do
         let(:record) { create(:agent) }
 
-        it { is_expected.to permit_actions(%i[show nested_show]) }
-        it { is_expected.to forbid_actions(%i[update destroy]) }
+        it { is_expected.to permit_only_actions(%i[show nested_show]) }
       end
 
       context 'when record is a customer user' do
         let(:record) { create(:customer) }
 
-        it { is_expected.to permit_actions(%i[show nested_show]) }
-        it { is_expected.to forbid_actions(%i[update destroy]) }
+        it { is_expected.to permit_only_actions(%i[show nested_show]) }
       end
 
       context 'when record is any user' do
         let(:record) { create(:user) }
 
-        it { is_expected.to permit_actions(%i[show nested_show]) }
-        it { is_expected.to forbid_actions(%i[update destroy]) }
+        it { is_expected.to permit_only_actions(%i[show nested_show]) }
       end
 
       context 'when record is the same user' do
         let(:record) { user }
 
-        it { is_expected.to permit_actions(%i[show nested_show]) }
-        it { is_expected.to forbid_actions(%i[update destroy]) }
+        it { is_expected.to permit_only_actions(%i[show nested_show]) }
       end
     end
   end
@@ -95,50 +90,43 @@ describe UserPolicy do
     context 'when record is an admin user' do
       let(:record) { create(:admin) }
 
-      it { is_expected.to permit_actions(%i[show nested_show]) }
-      it { is_expected.to forbid_actions(%i[update destroy]) }
+      it { is_expected.to permit_only_actions(%i[show nested_show]) }
     end
 
     context 'when record is an agent user' do
       let(:record) { create(:agent) }
 
-      it { is_expected.to permit_actions(%i[show nested_show]) }
-      it { is_expected.to forbid_actions(%i[update destroy]) }
+      it { is_expected.to permit_only_actions(%i[show nested_show]) }
     end
 
     context 'when record is a customer user' do
       let(:record) { create(:customer) }
 
-      it { is_expected.to permit_actions(%i[show update]) }
-      it { is_expected.to forbid_action(:destroy) }
+      it { is_expected.to permit_only_actions(%i[show update nested_show]) }
     end
 
     context 'when record is any user' do
       let(:record) { create(:user) }
 
-      it { is_expected.to permit_actions(%i[show nested_show update]) }
-      it { is_expected.to forbid_action(:destroy) }
+      it { is_expected.to permit_only_actions(%i[show nested_show update]) }
     end
 
     context 'when record is the same user' do
       let(:record) { user }
 
-      it { is_expected.to permit_actions(%i[show nested_show]) }
-      it { is_expected.to forbid_actions(%i[update destroy]) }
+      it { is_expected.to permit_only_actions(%i[show nested_show]) }
     end
 
     context 'when record is both admin and customer' do
       let(:record) { create(:customer, role_ids: Role.signup_role_ids.push(Role.find_by(name: 'Admin').id)) }
 
-      it { is_expected.to permit_actions(%i[show nested_show]) }
-      it { is_expected.to forbid_actions(%i[update destroy]) }
+      it { is_expected.to permit_only_actions(%i[show nested_show]) }
     end
 
     context 'when record is both agent and customer' do
       let(:record) { create(:customer, role_ids: Role.signup_role_ids.push(Role.find_by(name: 'Agent').id)) }
 
-      it { is_expected.to permit_actions(%i[show nested_show]) }
-      it { is_expected.to forbid_actions(%i[update destroy]) }
+      it { is_expected.to permit_only_actions(%i[show nested_show]) }
     end
 
   end
@@ -162,8 +150,7 @@ describe UserPolicy do
     context 'when record is an admin user' do
       let(:record) { create(:admin) }
 
-      it { is_expected.to permit_actions(%i[nested_show]) }
-      it { is_expected.to forbid_actions(%i[show update destroy]) }
+      it { is_expected.to permit_only_actions(%i[nested_show]) }
 
       include_examples 'restricts fields', :nested_show?
     end
@@ -171,8 +158,7 @@ describe UserPolicy do
     context 'when record is an agent user' do
       let(:record) { create(:agent) }
 
-      it { is_expected.to permit_actions(%i[nested_show]) }
-      it { is_expected.to forbid_actions(%i[show update destroy]) }
+      it { is_expected.to permit_only_actions(%i[nested_show]) }
 
       include_examples 'restricts fields', :nested_show?
     end
@@ -180,8 +166,7 @@ describe UserPolicy do
     context 'when record is a customer user' do
       let(:record) { create(:customer) }
 
-      it { is_expected.to permit_actions(%i[nested_show]) }
-      it { is_expected.to forbid_actions(%i[show update destroy]) }
+      it { is_expected.to permit_only_actions(%i[nested_show]) }
 
       include_examples 'restricts fields', :nested_show?
     end
@@ -189,8 +174,7 @@ describe UserPolicy do
     context 'when record is any user' do
       let(:record) { create(:user) }
 
-      it { is_expected.to permit_actions(%i[nested_show]) }
-      it { is_expected.to forbid_actions(%i[show update destroy]) }
+      it { is_expected.to permit_only_actions(%i[nested_show]) }
 
       include_examples 'restricts fields', :nested_show?
     end
@@ -199,8 +183,7 @@ describe UserPolicy do
       let(:user)   { create(:customer, :with_org) }
       let(:record) { create(:customer, organization: user.organization) }
 
-      it { is_expected.to permit_actions(%i[show nested_show]) }
-      it { is_expected.to forbid_actions(%i[update destroy]) }
+      it { is_expected.to permit_only_actions(%i[show nested_show]) }
 
       include_examples 'restricts fields', :nested_show?
       include_examples 'restricts fields', :show?
@@ -209,8 +192,7 @@ describe UserPolicy do
     context 'when record is the same user' do
       let(:record) { user }
 
-      it { is_expected.to permit_actions(%i[show nested_show]) }
-      it { is_expected.to forbid_actions(%i[update destroy]) }
+      it { is_expected.to permit_only_actions(%i[show nested_show]) }
 
       include_examples 'does not restrict fields', :nested_show?
       include_examples 'does not restrict fields', :show?
@@ -219,8 +201,7 @@ describe UserPolicy do
     context 'when record is both admin and customer' do
       let(:record) { create(:customer, role_ids: Role.signup_role_ids.push(Role.find_by(name: 'Admin').id)) }
 
-      it { is_expected.to permit_action(:nested_show) }
-      it { is_expected.to forbid_actions(%i[show update destroy]) }
+      it { is_expected.to permit_only_actions(:nested_show) }
 
       include_examples 'restricts fields', :nested_show?
     end
@@ -228,8 +209,7 @@ describe UserPolicy do
     context 'when record is both agent and customer' do
       let(:record) { create(:customer, role_ids: Role.signup_role_ids.push(Role.find_by(name: 'Agent').id)) }
 
-      it { is_expected.to permit_action(:nested_show) }
-      it { is_expected.to forbid_actions(%i[show update destroy]) }
+      it { is_expected.to permit_only_actions(:nested_show) }
 
       include_examples 'restricts fields', :nested_show?
     end

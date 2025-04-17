@@ -11,7 +11,7 @@ describe ChannelPolicy do
   context 'when user is admin' do
     let(:user) { create(:admin) }
 
-    it { is_expected.to permit_actions(:show, :create, :update, :destroy) }
+    it { is_expected.to permit_all_actions }
   end
 
   context 'when user is not admin with limited channel permissions' do
@@ -19,19 +19,19 @@ describe ChannelPolicy do
     let(:user) { create(:user, roles: [role]) }
 
     context 'when user permission matches record' do
-      it { is_expected.to permit_actions(:show, :create, :update, :destroy) }
+      it { is_expected.to permit_all_actions }
     end
 
     context 'when user permission does not match record' do
       let(:area) { 'Facebook::Account' }
 
-      it { is_expected.to forbid_actions(:show, :create, :update, :destroy) }
+      it { is_expected.to forbid_all_actions }
     end
   end
 
   context 'when user is not admin' do
     let(:user) { create(:agent) }
 
-    it { is_expected.to forbid_actions(:show, :create, :update, :destroy) }
+    it { is_expected.to forbid_all_actions }
   end
 end

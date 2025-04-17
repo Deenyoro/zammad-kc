@@ -1,6 +1,7 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class StorePolicy < ApplicationPolicy
+  USER_REQUIRED = false
 
   # Store objects are authorized based on the policy of the object that "owns" them,
   #   like the ticket or knowledge base answer they are attached to.
@@ -12,10 +13,6 @@ class StorePolicy < ApplicationPolicy
 
   def destroy?
     store_object_policy(store_object_owner)&.destroy?
-  end
-
-  def user_required?
-    false
   end
 
   def custom_exception

@@ -23,16 +23,28 @@ describe Controllers::TagsControllerPolicy do
       }
     end
 
+    context 'when user is admin' do
+      let(:user) { create(:admin) }
+
+      it { is_expected.to forbid_only_actions(:add, :remove) }
+    end
+
+    context 'when user is admin and agent with access' do
+      let(:user) { create(:admin, groups: [ticket.group]) }
+
+      it { is_expected.to permit_all_actions }
+    end
+
     context 'when user has edit permission' do
       let(:user) { create(:agent, groups: [ticket.group]) }
 
-      it { is_expected.to permit_actions(%i[add remove]) }
+      it { is_expected.to permit_only_actions(:add, :remove, :list, :search) }
     end
 
     context 'when user has no edit permission' do
       let(:user) { create(:agent) }
 
-      it { is_expected.to forbid_actions(%i[add remove]) }
+      it { is_expected.to permit_only_actions(:list, :search) }
     end
 
     context 'when user has no edit permission on this ticket' do
@@ -42,13 +54,13 @@ describe Controllers::TagsControllerPolicy do
         user.user_groups.create! group: ticket.group, access: 'read'
       end
 
-      it { is_expected.to forbid_actions(%i[add remove]) }
+      it { is_expected.to permit_only_actions(:list, :search) }
     end
 
     context 'when user is customer' do
       let(:user) { ticket.customer }
 
-      it { is_expected.to forbid_actions(%i[add remove]) }
+      it { is_expected.to permit_only_actions(:list, :search) }
     end
   end
 
@@ -66,19 +78,19 @@ describe Controllers::TagsControllerPolicy do
       let(:role) { create(:role, permission_names: %w[knowledge_base.editor]) }
       let(:user) { create(:agent, roles: [role]) }
 
-      it { is_expected.to permit_actions(%i[add remove]) }
+      it { is_expected.to permit_only_actions(:add, :remove, :list, :search) }
     end
 
     context 'when user has no edit permission' do
       let(:user) { create(:agent) }
 
-      it { is_expected.to forbid_actions(%i[add remove]) }
+      it { is_expected.to permit_only_actions(:list, :search) }
     end
 
     context 'when user is customer' do
       let(:user) { create(:customer) }
 
-      it { is_expected.to forbid_actions(%i[add remove]) }
+      it { is_expected.to permit_only_actions(:list, :search) }
     end
   end
 

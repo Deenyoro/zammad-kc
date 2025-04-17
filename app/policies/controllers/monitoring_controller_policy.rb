@@ -1,6 +1,7 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class Controllers::MonitoringControllerPolicy < Controllers::ApplicationControllerPolicy
+  USER_REQUIRED = false
 
   def health_check?
     token_or_permission?
@@ -23,10 +24,6 @@ class Controllers::MonitoringControllerPolicy < Controllers::ApplicationControll
   end
 
   private
-
-  def user_required?
-    false
-  end
 
   def token_or_permission?
     monitoring_admin? || valid_token_param?

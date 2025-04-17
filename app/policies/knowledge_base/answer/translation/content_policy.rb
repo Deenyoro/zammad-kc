@@ -1,12 +1,10 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class KnowledgeBase::Answer::Translation::ContentPolicy < ApplicationPolicy
+  USER_REQUIRED = false
+
   delegate :show?,    to: :parent_answer_policy
   delegate :destroy?, to: :parent_answer_policy
-
-  def user_required?
-    false
-  end
 
   private
 

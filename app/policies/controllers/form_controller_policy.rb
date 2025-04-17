@@ -1,6 +1,7 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class Controllers::FormControllerPolicy < Controllers::ApplicationControllerPolicy
+  USER_REQUIRED = false
 
   def configuration?
     authorized?
@@ -18,10 +19,6 @@ class Controllers::FormControllerPolicy < Controllers::ApplicationControllerPoli
 
   def authorized?
     test? || enabled?
-  end
-
-  def user_required?
-    false
   end
 
   def enabled?

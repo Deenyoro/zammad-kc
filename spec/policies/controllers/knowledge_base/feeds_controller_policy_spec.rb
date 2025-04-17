@@ -20,13 +20,13 @@ describe Controllers::KnowledgeBase::FeedsControllerPolicy do
   context 'with KB user' do
     let(:user) { create(:admin) }
 
-    it { is_expected.to permit_actions(:root, :category) }
+    it { is_expected.to permit_all_actions }
   end
 
   context 'with non-KB user' do
     let(:user) { create(:customer) }
 
-    it { is_expected.to forbid_actions(:root, :category) }
+    it { is_expected.to forbid_all_actions }
   end
 
   context 'with token with KB user' do
@@ -34,7 +34,7 @@ describe Controllers::KnowledgeBase::FeedsControllerPolicy do
     let(:token)  { create(:token, action: 'KnowledgeBaseFeed', user: user) }
     let(:params) { { token: token.token } }
 
-    it { is_expected.to permit_actions(:root, :category) }
+    it { is_expected.to permit_all_actions }
   end
 
   context 'with token with non-KB user' do
@@ -42,19 +42,19 @@ describe Controllers::KnowledgeBase::FeedsControllerPolicy do
     let(:token)  { create(:token, action: 'KnowledgeBaseFeed', user: user) }
     let(:params) { { token: token.token } }
 
-    it { is_expected.to forbid_actions(:root, :category) }
+    it { is_expected.to forbid_all_actions }
   end
 
   context 'with nonexistant token' do
     let(:user)   { nil }
     let(:params) { { token: 'foobar' } }
 
-    it { is_expected.to forbid_actions(:root, :category) }
+    it { is_expected.to forbid_all_actions }
   end
 
   context 'without both token and user' do
     let(:user) { nil }
 
-    it { is_expected.to forbid_actions(:root, :category) }
+    it { is_expected.to forbid_all_actions }
   end
 end

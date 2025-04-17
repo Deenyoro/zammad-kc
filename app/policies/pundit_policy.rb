@@ -1,18 +1,15 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 module PunditPolicy
+  USER_REQUIRED = true
 
   attr_reader :user, :custom_exception
 
   def initialize(user, context)
     @user = user
-    user_required! if user_required?
+    user_required! if self.class::USER_REQUIRED
 
     initialize_context(context)
-  end
-
-  def user_required?
-    true
   end
 
   def user_required!

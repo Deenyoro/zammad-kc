@@ -1,6 +1,8 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class KnowledgeBase::CategoryPolicy < ApplicationPolicy
+  USER_REQUIRED = false
+
   def show?
     access_editor? || access_reader?
   end
@@ -45,9 +47,5 @@ class KnowledgeBase::CategoryPolicy < ApplicationPolicy
 
   def parent_editor?
     parent_access == 'editor'
-  end
-
-  def user_required?
-    false
   end
 end
