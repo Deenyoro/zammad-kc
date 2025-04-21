@@ -59,7 +59,7 @@ export const initializeGlobalComponentStyles = () => {
   })
 
   initializeLinkClasses({
-    base: 'cursor-pointer no-underline hover:underline text-blue-800 focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-hidden focus-visible:outline-offset-1 focus-visible:outline-blue-800',
+    base: 'cursor-pointer no-underline hover:underline text-blue-800 focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800',
   })
 
   initializeNotificationClasses({

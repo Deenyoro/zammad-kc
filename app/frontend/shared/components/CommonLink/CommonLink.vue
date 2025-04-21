@@ -126,6 +126,7 @@ defineExpose({
         [exactActiveClass]: isExactActive,
       },
     ]"
+    tabindex="0"
     @click="onClick"
   >
     <slot :is-active="isExactActive" :is-exact-active="isExactActive" />
