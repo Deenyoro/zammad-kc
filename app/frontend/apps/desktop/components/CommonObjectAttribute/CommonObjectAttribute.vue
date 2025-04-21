@@ -18,7 +18,7 @@ defineProps<Props>()
     <CommonLabel
       tag="div"
       size="medium"
-      class="text-gray-100! dark:text-neutral-400!"
+      class="break-word text-gray-100! dark:text-neutral-400!"
     >
       <slot>{{ body }}</slot>
     </CommonLabel>

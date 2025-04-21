@@ -41,7 +41,7 @@
   }
 
   a {
-    @apply outline-hidden focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800;
+    @apply text-blue-800 outline-hidden focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800;
   }
 
   @keyframes onAutoFillStart {
@@ -263,6 +263,12 @@
       var(--color-pink-200)
     );
   }
+}
+
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/word-break#break-word */
+@utility break-word {
+  overflow-wrap: anywhere !important;
+  word-wrap: normal;
 }
 
 /* Uses to be in the @layer utilities */
