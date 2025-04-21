@@ -938,6 +938,7 @@ Setting.create_if_not_exists(
   frontend:    true
 )
 
+# TODO: Deprecated in desktop view, drop later.
 Setting.create_if_not_exists(
   title:       __('Open ticket indicator'),
   name:        'ui_sidebar_open_ticket_indicator_colored',

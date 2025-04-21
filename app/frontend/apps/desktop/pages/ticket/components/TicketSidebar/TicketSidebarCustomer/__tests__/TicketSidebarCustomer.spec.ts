@@ -3,7 +3,6 @@
 import { computed, ref } from 'vue'
 
 import { renderComponent } from '#tests/support/components/index.ts'
-import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockRouterHooks } from '#tests/support/mock-vue-router.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
@@ -111,28 +110,35 @@ describe('TicketSidebarCustomer.vue', () => {
     expect(wrapper.emitted('hide')).toHaveLength(1)
   })
 
-  it('displays badge with open ticket count', async () => {
-    mockApplicationConfig({
-      ui_sidebar_open_ticket_indicator_colored: true,
-    })
-
-    mockUserQuery({
-      user: {
-        ticketsCount: {
-          open: 42,
+  it.each([
+    { open: 1, alarming: false },
+    { open: 2, alarming: true },
+    { open: 100, alarming: true },
+  ])(
+    'displays badge with open ticket count (open=$open, alarming=$alarming)',
+    async ({ open, alarming }) => {
+      mockUserQuery({
+        user: {
+          ticketsCount: {
+            open,
+          },
         },
-      },
-    })
+      })
 
-    const wrapper = await renderTicketSidebarCustomer({
-      formValues: {
-        customer_id: 1,
-      },
-    })
+      const wrapper = await renderTicketSidebarCustomer({
+        formValues: {
+          customer_id: 1,
+        },
+      })
 
-    const badge = wrapper.getByRole('status', { name: 'Open tickets' })
+      const badge = wrapper.getByRole('status', { name: 'Open tickets' })
 
-    expect(badge).toHaveTextContent('42')
-    expect(badge).toHaveClass('bg-red-500')
-  })
+      const count = open < 100 ? open.toString() : '99+'
+
+      expect(badge).toHaveTextContent(count)
+
+      if (alarming) expect(badge).toHaveClasses(['bg-pink-500', 'text-white'])
+      else expect(badge).not.toHaveClasses(['bg-pink-500', 'text-white'])
+    },
+  )
 })

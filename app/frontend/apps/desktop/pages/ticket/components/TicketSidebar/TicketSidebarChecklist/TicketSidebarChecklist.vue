@@ -34,7 +34,7 @@ const badge = computed<TicketSidebarButtonBadgeDetails | undefined>(() => {
   if (!incompleteChecklistItemsCount.value) return
 
   return {
-    type: TicketSidebarButtonBadgeType.Info,
+    type: TicketSidebarButtonBadgeType.Alarming,
     value: incompleteChecklistItemsCount.value,
     label,
   }

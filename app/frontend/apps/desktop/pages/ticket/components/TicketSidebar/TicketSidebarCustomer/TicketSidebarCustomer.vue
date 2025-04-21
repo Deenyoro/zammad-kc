@@ -4,7 +4,6 @@
 import { watch, computed } from 'vue'
 
 import { useUserDetail } from '#shared/entities/user/composables/useUserDetail.ts'
-import { useApplicationStore } from '#shared/stores/application.ts'
 
 import { usePersistentStates } from '#desktop/pages/ticket/composables/usePersistentStates.ts'
 import {
@@ -25,8 +24,6 @@ const { persistentStates } = usePersistentStates()
 
 const emit = defineEmits<TicketSidebarEmits>()
 
-const application = useApplicationStore()
-
 // TODO: only for now, implement correct situation for create/detail view.
 const customerId = computed(() => Number(props.context.formValues.customer_id))
 
@@ -38,21 +35,14 @@ const {
 } = useUserDetail(customerId)
 
 const calculateBadgeType = (value: number) => {
-  if (!application.config.ui_sidebar_open_ticket_indicator_colored)
-    return TicketSidebarButtonBadgeType.Info
-
+  // If the sidebar is open in the ticket detail view,
+  //   we need to subtract 1 from the value to account for the ticket itself.
   if (props.context.screenType === TicketSidebarScreenType.TicketDetailView)
     value -= 1
 
-  switch (value) {
-    case 0:
-      return TicketSidebarButtonBadgeType.Info
-    case 1:
-      return TicketSidebarButtonBadgeType.Warning
-    case 2:
-    default:
-      return TicketSidebarButtonBadgeType.Danger
-  }
+  return value > 1
+    ? TicketSidebarButtonBadgeType.Alarming
+    : TicketSidebarButtonBadgeType.Default
 }
 
 const badge = computed<TicketSidebarButtonBadgeDetails | undefined>(() => {

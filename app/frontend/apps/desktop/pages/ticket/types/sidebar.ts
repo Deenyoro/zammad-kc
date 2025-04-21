@@ -21,9 +21,8 @@ export interface TicketSidebarContext {
 }
 
 export enum TicketSidebarButtonBadgeType {
-  Info = 'info',
-  Warning = 'warning',
-  Danger = 'danger',
+  Default = 'default',
+  Alarming = 'alarming',
 }
 
 export type TicketSidebarButtonBadgeDetails = {

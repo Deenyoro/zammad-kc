@@ -48,7 +48,7 @@ const badge = computed<TicketSidebarButtonBadgeDetails | undefined>(() => {
   const label = __('Attachments')
 
   return {
-    type: TicketSidebarButtonBadgeType.Info,
+    type: TicketSidebarButtonBadgeType.Default,
     value: ticketAttachments.value.length,
     label,
   }

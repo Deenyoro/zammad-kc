@@ -40,13 +40,11 @@ const processedBadgeValue = computed(() => {
 
 const badgeColor = computed(() => {
   switch (props.badge?.type) {
-    case TicketSidebarButtonBadgeType.Warning:
-      return 'bg-yellow-500 text-yellow-100'
-    case TicketSidebarButtonBadgeType.Danger:
-      return 'bg-red-500 text-pink-100'
-    case TicketSidebarButtonBadgeType.Info:
-    default:
+    case TicketSidebarButtonBadgeType.Alarming:
       return 'bg-pink-500 text-white'
+    case TicketSidebarButtonBadgeType.Default:
+    default:
+      return 'bg-gray-200 text-white'
   }
 })
 </script>

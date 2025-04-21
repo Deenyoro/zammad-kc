@@ -7,19 +7,23 @@ import type {
   FormThemeExtension,
 } from '#shared/types/form.ts'
 
-const textInputClasses = (classes: Classes = {}) => {
+const innerInvalidAndErrorClasses = () => {
   const innerInvalidClasses =
     'formkit-invalid:outline formkit-invalid:outline-1 formkit-invalid:outline-offset-1 formkit-invalid:outline-red-500 dark:hover:formkit-invalid:outline-red-500'
+
   const innerErrorsClasses = innerInvalidClasses.replace(/invalid/g, 'errors')
 
-  return extendClasses(classes, {
+  return `${innerInvalidClasses} ${innerErrorsClasses}`
+}
+
+const textInputClasses = (classes: Classes = {}) =>
+  extendClasses(classes, {
     wrapper: 'flex flex-col items-start justify-start',
     input:
       'grow bg-transparent px-2.5 py-2 placeholder:text-stone-200 read-only:text-stone-200 dark:placeholder:text-neutral-500 dark:read-only:text-neutral-500',
     label: 'mb-1 block text-sm text-gray-100 dark:text-neutral-400',
-    inner: `flex h-10 w-full items-center bg-blue-200 text-black focus-within:outline focus-within:outline-1 focus-within:outline-offset-1 focus-within:outline-blue-800 hover:outline hover:outline-1 hover:outline-offset-1 hover:outline-blue-600 hover:focus-within:outline-blue-800 dark:bg-gray-700 dark:text-white dark:hover:outline-blue-900 dark:hover:focus-within:outline-blue-800 ${innerInvalidClasses} ${innerErrorsClasses}`,
+    inner: `flex h-10 w-full items-center bg-blue-200 text-black focus-within:outline focus-within:outline-1 focus-within:outline-offset-1 focus-within:outline-blue-800 hover:outline hover:outline-1 hover:outline-offset-1 hover:outline-blue-600 hover:focus-within:outline-blue-800 dark:bg-gray-700 dark:text-white dark:hover:outline-blue-900 dark:hover:focus-within:outline-blue-800 ${innerInvalidAndErrorClasses()}`,
   })
-}
 
 const selectInputClasses = (classes: Classes = {}) =>
   extendClasses(classes, {
@@ -100,8 +104,7 @@ export const getCoreDesktopClasses: FormThemeExtension = (
     editor: extendClasses(classes.editor, {
       wrapper: 'max-w-full',
       input: 'min-h-[76px] text-sm text-black outline-hidden dark:text-white',
-      inner:
-        'bg-blue-200 focus-within:outline focus-within:outline-1 focus-within:outline-offset-1 focus-within:outline-blue-800 hover:outline hover:outline-1 hover:outline-offset-1 hover:outline-blue-600 focus-within:hover:outline-blue-800 focus-visible:outline-1 dark:bg-gray-700 dark:hover:outline-blue-900 dark:focus-within:hover:outline-blue-800',
+      inner: `bg-blue-200 focus-within:outline focus-within:outline-1 focus-within:outline-offset-1 focus-within:outline-blue-800 hover:outline hover:outline-1 hover:outline-offset-1 hover:outline-blue-600 focus-within:hover:outline-blue-800 focus-visible:outline-1 dark:bg-gray-700 dark:hover:outline-blue-900 dark:focus-within:hover:outline-blue-800 ${innerInvalidAndErrorClasses()}`,
     }),
     // TODO: check...
     file: extendClasses(classes.file, {

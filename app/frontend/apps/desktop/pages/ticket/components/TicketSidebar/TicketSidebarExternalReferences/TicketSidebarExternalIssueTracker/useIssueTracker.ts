@@ -37,7 +37,7 @@ export const useIssueTracker = (
     issueLinks.value?.length
       ? {
           label: __('Issues'),
-          type: TicketSidebarButtonBadgeType.Info,
+          type: TicketSidebarButtonBadgeType.Default,
           value: issueLinks.value?.length,
         }
       : undefined,

@@ -54,7 +54,7 @@ const objectBadges = computed(() =>
   objectIds.value?.length
     ? {
         label: __('Objects'),
-        type: TicketSidebarButtonBadgeType.Info,
+        type: TicketSidebarButtonBadgeType.Default,
         value: objectIds.value?.length,
       }
     : undefined,
