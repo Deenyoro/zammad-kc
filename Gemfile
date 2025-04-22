@@ -65,13 +65,6 @@ gem 'vite_rails'
 # asset handling - config.assets for pipeline
 gem 'sprockets-rails'
 
-# Workaround
-# Explicitly specify nokogiri, even though it is an internal Rails dependency
-#   to work around issues with precompiled versions not running on RHEL 8 any more.
-# See https://github.com/sparklemotion/nokogiri/issues/3399.
-# Consider removing this again after CentOS 8 support was dropped.
-gem 'nokogiri', force_ruby_platform: true
-
 # Only load gems for asset compilation if they are needed to avoid
 #   having unneeded runtime dependencies like NodeJS.
 group :assets do
