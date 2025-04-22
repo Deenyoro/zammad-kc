@@ -15356,10 +15356,11 @@ div.accounted-time-value {
 
 .navbar-desktop-beta-switch {
   position: relative;
-  padding: 10px 36px;
   color: #38393e;
   background-color: #b7dff2;
-  text-align: center;
+
+  @include ltr(padding, 10px 16px 10px 12px);
+  @include rtl(padding, 10px 12px 10px 16px);
 
   @include phone {
     .navigation:not(.is-not-collapsed) & {
@@ -15368,10 +15369,12 @@ div.accounted-time-value {
   }
 
   .dismiss-button {
-    @include bidi-style(right, 5px, left, 5px);
+    @include ltr(right, 5px);
+    @include rtl(left, 5px);
 
     position: absolute;
-    top: 5px;
+    top: 50%;
+    margin-top: -8.5px;
     display: block;
     padding: 5px;
     color: #38393e;
@@ -15395,6 +15398,11 @@ div.accounted-time-value {
       text-transform: none;
 
       .zammad-switch {
+        /* Force light mode style */
+        --background-secondary: white;
+
+        flex-shrink: 0;
+
         @include bidi-style(margin-left, 5px, margin-right, 5px);
       }
     }

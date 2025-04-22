@@ -1,6 +1,6 @@
 class ProfileNewBetaUI extends App.ControllerSubContent
   @requiredPermission: 'user_preferences'
-  header: __('New Beta UI')
+  header: __('New BETA UI')
 
   constructor: ->
     super
@@ -18,7 +18,7 @@ class ProfileNewBetaUI extends App.ControllerSubContent
     content.find('.js-checkboxControl').replaceWith App.UiElement.checkbox.render(
       name: 'desktop_beta_switch_dismiss'
       options:
-        true: __('Have the BETA switch between the old and the new UI always available in the Primary Navigation')
+        true: __('Have the BETA switch between the old and the new UI always available in the primary navigation')
       value: if App.DesktopBetaSwitch.isSwitchDismissed() then false else true
     )
 

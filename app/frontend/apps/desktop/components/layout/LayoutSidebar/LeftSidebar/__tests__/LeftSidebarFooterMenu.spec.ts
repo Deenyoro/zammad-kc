@@ -51,6 +51,6 @@ describe('layout sidebar footer menu', () => {
       form: true,
     })
 
-    expect(view.getByText('New Beta UI')).toBeInTheDocument()
+    expect(view.getByText('New BETA UI')).toBeInTheDocument()
   })
 })

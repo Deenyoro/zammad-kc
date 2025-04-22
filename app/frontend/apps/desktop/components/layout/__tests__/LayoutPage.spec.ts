@@ -70,7 +70,7 @@ describe('LayoutPage', () => {
         form: true,
       })
 
-      const toggle = wrapper.getByLabelText('New Beta UI')
+      const toggle = wrapper.getByLabelText('New BETA UI')
 
       expect(toggle).toBeChecked()
 
@@ -91,7 +91,7 @@ describe('LayoutPage', () => {
         form: true,
       })
 
-      expect(wrapper.queryByLabelText('New Beta UI')).not.toBeInTheDocument()
+      expect(wrapper.queryByLabelText('New BETA UI')).not.toBeInTheDocument()
     })
 
     it('hides the switch if the user has no permissions', async () => {
@@ -102,7 +102,7 @@ describe('LayoutPage', () => {
         form: true,
       })
 
-      expect(wrapper.queryByLabelText('New Beta UI')).not.toBeInTheDocument()
+      expect(wrapper.queryByLabelText('New BETA UI')).not.toBeInTheDocument()
     })
 
     it('hides the switch if the user has dismissed it', async () => {
@@ -113,7 +113,7 @@ describe('LayoutPage', () => {
         form: true,
       })
 
-      expect(wrapper.queryByLabelText('New Beta UI')).not.toBeInTheDocument()
+      expect(wrapper.queryByLabelText('New BETA UI')).not.toBeInTheDocument()
 
       localStorage.removeItem('beta-ui-switch-dismiss')
     })
@@ -124,7 +124,7 @@ describe('LayoutPage', () => {
         form: true,
       })
 
-      const toggle = wrapper.getByLabelText('New Beta UI')
+      const toggle = wrapper.getByLabelText('New BETA UI')
 
       const button = wrapper.getByRole('button', {
         name: 'Hide Beta UI switch',

@@ -15,8 +15,8 @@ class AddSettingUiDesktopBetaSwitch < ActiveRecord::Migration[7.2]
 
     Permission.create_if_not_exists(
       name:         'user_preferences.beta_ui_switch',
-      label:        'New Beta UI Switch',
-      description:  'Manage access to new beta UI switch.',
+      label:        'New BETA UI Switch',
+      description:  'Manage access to New BETA UI switch.',
       preferences:  {
         prio: 1710,
       },

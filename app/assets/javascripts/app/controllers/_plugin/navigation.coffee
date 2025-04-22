@@ -203,7 +203,7 @@ class Navigation extends App.Controller
 
     content.find('.js-switchControl').replaceWith App.UiElement.switch.render(
       name: 'desktop_beta_switch'
-      display: __('Try NEW BETA UI')
+      display: __('Try New BETA UI')
     )
 
     content.find('input[name="desktop_beta_switch"]')

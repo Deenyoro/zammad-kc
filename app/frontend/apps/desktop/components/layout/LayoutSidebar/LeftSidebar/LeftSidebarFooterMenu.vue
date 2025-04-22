@@ -34,7 +34,7 @@ const { betaUiSwitchEnabled, toggleBetaUiSwitch, dismissBetaUiSwitch } =
       >
         <FormKit
           type="toggle"
-          :label="__('New Beta UI')"
+          :label="__('New BETA UI')"
           :value="true"
           :variants="{ true: 'True', false: 'False' }"
           wrapper-class="!flex-row"
