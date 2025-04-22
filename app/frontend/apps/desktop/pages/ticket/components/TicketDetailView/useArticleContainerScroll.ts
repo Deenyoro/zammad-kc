@@ -154,5 +154,6 @@ export const useArticleContainerScroll = (
     isHoveringOnTopBar,
     isHidingTicketDetails,
     isReachingBottom,
+    isReachingTop: computed(() => arrivedState.top),
   }
 }

@@ -145,35 +145,4 @@ describe('Ticket detail view', () => {
       ).not.toBeInTheDocument()
     })
   })
-
-  it('has invisible top bar and hides it from screen reader', async () => {
-    mockTicketQuery({
-      ticket: createDummyTicket(),
-    })
-
-    const testArticle = createDummyArticle({
-      bodyWithUrls: 'foobar',
-    })
-
-    mockTicketArticlesQuery({
-      articles: {
-        totalCount: 1,
-        edges: [{ node: testArticle }],
-      },
-      firstArticles: {
-        edges: [{ node: testArticle }],
-      },
-    })
-
-    const view = await visitView('/tickets/1')
-
-    expect(view.getByTestId('invisible-ticket-detail-top-bar')).toHaveAttribute(
-      'aria-hidden',
-      'true',
-    )
-
-    expect(view.getByTestId('invisible-ticket-detail-top-bar')).toHaveClass(
-      'invisible',
-    )
-  })
 })

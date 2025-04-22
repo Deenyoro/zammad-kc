@@ -1,6 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
+import { useResizeObserver, useWindowSize, whenever } from '@vueuse/core'
 import { cloneDeep, isEqual } from 'lodash-es'
 import {
   computed,
@@ -557,6 +558,7 @@ watch(ticketId, () => {
 })
 
 const articleListInstance = useTemplateRef('article-list')
+
 const topBarInstance = useTemplateRef('top-bar')
 
 const {
@@ -564,11 +566,41 @@ const {
   isHoveringOnTopBar,
   isHidingTicketDetails,
   isReachingBottom,
+  isReachingTop,
 } = useArticleContainerScroll(
   ticket,
   contentContainerElement,
   articleListInstance,
   topBarInstance,
+)
+
+const { height } = useWindowSize()
+
+whenever(height, () => {
+  if (!contentContainerElement) return
+
+  // On window resize, manually check if the article list is at the bottom.
+  const { clientHeight, scrollHeight, scrollTop } =
+    contentContainerElement.value!
+
+  isReachingBottom.value = scrollTop + clientHeight < scrollHeight
+})
+
+const articleListTopPadding = ref('4rem')
+
+useResizeObserver(
+  () => topBarInstance.value?.$el,
+  (observerEntry) => {
+    if (!isReachingTop.value) return
+
+    const gap = 20
+    const topBarNode = observerEntry.at(-1)?.target
+
+    if (!topBarNode) return
+
+    const height = topBarNode.clientHeight
+    articleListTopPadding.value = `${(height + gap) / 16}rem`
+  },
 )
 </script>
 
@@ -594,26 +626,25 @@ const {
         @scroll.passive="handleScroll"
       >
         <div class="sticky top-0 z-10">
-          <TicketDetailTopBar
-            :key="`${isHidingTicketDetails}-ticket-detail-top-bar`"
-            ref="top-bar"
-            class="invisible"
-            aria-hidden="true"
-            data-test-id="invisible-ticket-detail-top-bar"
-            :hide-details="false"
-          />
           <Transition name="slide-down">
             <TicketDetailTopBar
+              ref="top-bar"
               :key="`${isHidingTicketDetails}-top-bar`"
               v-model:hover="isHoveringOnTopBar"
+              class="absolute! top-0 w-full"
               data-test-id="visible-ticket-detail-top-bar"
-              class="absolute! top-0 right-0 left-0 w-full"
               :hide-details="isHidingTicketDetails"
             />
           </Transition>
         </div>
 
-        <ArticleList ref="article-list" :aria-busy="isLoadingArticles" />
+        <ArticleList
+          ref="article-list"
+          :style="{
+            'padding-top': articleListTopPadding,
+          }"
+          :aria-busy="isLoadingArticles"
+        />
 
         <ArticleReply
           v-if="ticket?.id && isTicketEditable"
