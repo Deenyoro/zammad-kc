@@ -938,8 +938,10 @@ class App.Utils
                     value = key.map((element) -> attributes[attributeName]['historical_options'][element]).join(', ')
                   when 'autocompletion_ajax_external_data_source'
                     value = dataRefLast.label
-                  else
+                  when 'richtext'
                     value = dataRefLast[attributeName]
+                  else
+                    value = App.Utils.htmlEscape(dataRefLast[attributeName])
               else
                 switch dataType
                   when 'textarea'
@@ -956,7 +958,10 @@ class App.Utils
 
         # as fallback use value of toString()
         if !value
-          value = dataRef.toString()
+          value = if dataType is 'richtext'
+            dataRef.toString()
+          else
+            App.Utils.htmlEscape(dataRef).toString()
       else
         value = ''
       value = '-' if value is ''

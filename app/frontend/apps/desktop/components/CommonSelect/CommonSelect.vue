@@ -2,6 +2,7 @@
 
 <script setup lang="ts">
 import { type UseElementBoundingReturn, onClickOutside, onKeyDown, useVModel } from '@vueuse/core'
+import { escape } from 'lodash-es'
 import { useTemplateRef } from 'vue'
 import { computed, type ConcreteComponent, nextTick, onUnmounted, ref, type Ref, toRef } from 'vue'
 
@@ -290,7 +291,7 @@ const highlightedOptions = computed(() =>
         ? 'bg-blue-200 dark:bg-gray-300'
         : 'bg-blue-600 dark:bg-blue-900 group-hover:bg-blue-800 group-hover:group-focus:bg-blue-600 dark:group-hover:group-focus:bg-blue-900 group-hover:text-white group-focus:text-black dark:group-focus:text-white group-hover:group-focus:text-black dark:group-hover:group-focus:text-white'
 
-      label = `${labelBeforeMatch}<span class="${highlightClasses}">${labelMatchedText}</span>${labelAfterMatch}`
+      label = `${escape(labelBeforeMatch)}<span class="${highlightClasses}">${escape(labelMatchedText)}</span>${escape(labelAfterMatch)}`
     }
 
     return {

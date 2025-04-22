@@ -8,6 +8,7 @@ class Setting < ApplicationModel
   store         :state_current
   store         :state_initial
   store         :preferences
+  before_validation :transform
   before_validation :state_check
   before_create :set_initial
   after_save    :reset_class_cache_key
@@ -248,6 +249,11 @@ reload config settings
     return if ['auth_saml_credentials'].exclude?(name)
 
     AppVersion.trigger_browser_reload AppVersion::MSG_CONFIG_CHANGED
+  end
+
+  def transform
+    Array(preferences[:transformations])
+      .map { |klass| klass.constantize.new(self).run }
   end
 end
 # rubocop:enable Style/ClassVars

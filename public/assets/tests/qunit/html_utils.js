@@ -1090,7 +1090,6 @@ QUnit.test("identify signature by plaintext", assert => {
 
 });
 
-
 QUnit.test("identify signature by HTML", assert => {
 
   var message = "<div>test 123 </div>"
@@ -1578,6 +1577,18 @@ QUnit.test("check replace tags", assert => {
   verify = App.Utils.replaceTags(message, data, true)
   assert.equal(verify, result)
 
+  user = new App.User({
+    firstname: '<b>Bob</b>',
+    lastname: '<i>Smith</i>',
+  })
+  message = "<div>#{user.firstname} #{user.lastname.value}</div>"
+  result  = '<div>&lt;b&gt;Bob&lt;/b&gt; &lt;i&gt;Smith&lt;/i&gt;</div>'
+  data    = {
+    user: user
+  }
+  verify = App.Utils.replaceTags(message, data)
+  assert.equal(verify, result)
+
   var attribute_external_source = {
     name: 'external_data_source', display: 'external_data_source',  tag: 'autocompletion_ajax_external_data_source', null: true
   };
@@ -1728,8 +1739,8 @@ QUnit.test("check replace tags", assert => {
   assert.equal(verify, result)
 });
 
-// check attibute validation
-QUnit.test("check attibute validation", assert => {
+// check attribute validation
+QUnit.test("check attribute validation", assert => {
 
   var string = '123'
   var result = '123'

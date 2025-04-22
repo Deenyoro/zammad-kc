@@ -69,7 +69,7 @@ class App.ControllerModal extends App.Controller
   update: =>
     if @message
       content = App.Utils.htmlEscape( App.i18n.translatePlain(@message) )
-    else if @contentInline
+    else if not _.isUndefined(@contentInline)
       content = @contentInline
     else
       content = @content()

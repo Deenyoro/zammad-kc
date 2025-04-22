@@ -65,7 +65,8 @@ Setting.create_if_not_exists(
   options:     {},
   state:       __('This is a default maintenance message. Click here to change.'),
   preferences: {
-    permission: ['admin.maintenance'],
+    permission:      ['admin.maintenance'],
+    transformations: ['Setting::Transformation::SanitizeHtml']
   },
   frontend:    true
 )

@@ -2,6 +2,7 @@
 
 <script setup lang="ts">
 import { type UseElementBoundingReturn, onClickOutside, onKeyDown, useVModel } from '@vueuse/core'
+import { escape } from 'lodash-es'
 import { useTemplateRef, onUnmounted, computed, nextTick, ref, toRef } from 'vue'
 
 import type {
@@ -330,7 +331,7 @@ const highlightedOptions = computed(() =>
       parentPaths = option.parents.map((parentValue) => {
         const parentOption = props.optionValueLookup[parentValue as string | number]
 
-        return `${parentOption.label || parentOption.value} \u203A `
+        return `${escape(parentOption.label || parentOption.value.toString())} \u203A `
       })
     }
 
@@ -356,7 +357,7 @@ const highlightedOptions = computed(() =>
         ? 'bg-blue-200 dark:bg-gray-300'
         : 'bg-blue-600 dark:bg-blue-900 group-hover:bg-blue-800 group-hover:group-focus:bg-blue-600 group-hover:text-white group-focus:text-black group-hover:group-focus:text-black'
 
-      label = `${labelBeforeMatch}<span class="${highlightClasses}">${labelMatchedText}</span>${labelAfterMatch}`
+      label = `${escape(labelBeforeMatch)}<span class="${highlightClasses}">${escape(labelMatchedText)}</span>${escape(labelAfterMatch)}`
     }
 
     return {

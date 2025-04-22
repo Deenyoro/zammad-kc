@@ -2,6 +2,7 @@
 
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
+import { escape } from 'lodash-es'
 import {
   computed,
   defineAsyncComponent,
@@ -165,7 +166,7 @@ const handleEnterKey = (event: KeyboardEvent) => {
 
 const processedContent = computed(() => {
   if (props.detectLinks) return textToHtml(props.value)
-  return props.value
+  return escape(props.value)
 })
 
 useTrapTab(target)
