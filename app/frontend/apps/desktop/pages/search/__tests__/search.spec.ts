@@ -9,6 +9,7 @@ import { waitForNextTick } from '#tests/support/utils.ts'
 
 import { mockFormUpdaterQuery } from '#shared/components/Form/graphql/queries/formUpdater.mocks.ts'
 import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
+import type { Ticket } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import {
@@ -26,10 +27,23 @@ const visitSearchView = async (searchTerm = 'test') => {
   return { view, searchContainer }
 }
 
+let ticket: Ticket
+
 describe('search view', () => {
-  it('renders view correctly', async () => {
+  beforeEach(() => {
     mockPermissions(['ticket.agent'])
 
+    ticket = createDummyTicket()
+
+    mockDetailSearchQuery({
+      search: {
+        totalCount: 1,
+        items: [ticket],
+      },
+    })
+  })
+
+  it('renders view correctly', async () => {
     const { searchContainer } = await visitSearchView()
 
     expect(
@@ -38,8 +52,6 @@ describe('search view', () => {
   })
 
   it('write quick search input correctly to the search view input', async () => {
-    mockPermissions(['ticket.agent'])
-
     const { searchContainer, view } = await visitSearchView()
 
     const primaryNavigationSidebar = view.getByRole('complementary', {
@@ -79,17 +91,6 @@ describe('search view', () => {
   })
 
   it('selects a ticket for bulk edit', async () => {
-    mockPermissions(['ticket.agent'])
-
-    const ticket = createDummyTicket()
-
-    mockDetailSearchQuery({
-      search: {
-        totalCount: 1,
-        items: [ticket],
-      },
-    })
-
     mockFormUpdaterQuery({
       formUpdater: {
         fields: {
@@ -170,17 +171,6 @@ describe('search view', () => {
   })
 
   it('resets checked tickets on text input', async () => {
-    mockPermissions(['ticket.agent'])
-
-    const ticket = createDummyTicket()
-
-    mockDetailSearchQuery({
-      search: {
-        totalCount: 1,
-        items: [ticket],
-      },
-    })
-
     mockFormUpdaterQuery({
       formUpdater: {
         fields: {

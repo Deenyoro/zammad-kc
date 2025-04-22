@@ -5,6 +5,7 @@ import type {
   Item,
   QuickSearchQuery,
 } from '#shared/graphql/types.ts'
+import type { ConfigList } from '#shared/types/config.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
 
 import type { PartialDeep } from 'type-fest'
@@ -19,7 +20,7 @@ export type SearchPlugin = {
   quickSearchResultKey: Exclude<keyof QuickSearchQuery, '__typename'>
   permissions?: string[]
   show?: () => boolean
-  detailSearchHeaders: string[]
+  detailSearchHeaders: string[] | ((config: ConfigList) => string[])
   detailSearchComponent: Component
 }
 

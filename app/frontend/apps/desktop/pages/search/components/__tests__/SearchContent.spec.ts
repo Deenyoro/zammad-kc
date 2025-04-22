@@ -4,7 +4,9 @@ import { within, waitFor } from '@testing-library/vue'
 import { computed } from 'vue'
 
 import ticketObjectAttributes from '#tests/graphql/factories/fixtures/ticket-object-attributes.ts'
+import { getByIconName } from '#tests/support/components/iconQueries.ts'
 import { renderComponent } from '#tests/support/components/index.ts'
+import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { mockRouterHooks } from '#tests/support/mock-vue-router.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
@@ -114,12 +116,38 @@ describe('SearchContent', () => {
     const table = await wrapper.findByRole('table', {
       name: 'Search result for: Ticket',
     })
+
+    // Ticket state `open` indicator.
+    expect(getByIconName(table, 'check-circle-no')).toBeInTheDocument()
+
     expect(
       within(table).getByRole('link', { name: '12469' }),
     ).toBeInTheDocument()
   })
 
+  it('supports optional ticket priority column', async () => {
+    mockApplicationConfig({
+      ui_ticket_priority_icons: true,
+    })
+
+    mockTicketSearchResult(1, [
+      createSampleTicket(469, 'Foo ticket title', 12469),
+    ])
+
+    const wrapper = renderSearchContent({ searchTerm: 'Foo ticket title' })
+
+    const table = await wrapper.findByRole('table', {
+      name: 'Search result for: Ticket',
+    })
+
+    expect(getByIconName(table, 'priority-normal')).toBeInTheDocument()
+  })
+
   it('syncs search input with URL param', async () => {
+    mockTicketSearchResult(1, [
+      createSampleTicket(469, 'Foo ticket title', 12469),
+    ])
+
     const wrapper = renderSearchContent({ searchTerm: 'foo-bar' })
 
     await waitFor(() =>

@@ -16,13 +16,22 @@ export default <SearchPlugin>{
   quickSearchComponent: Ticket,
   quickSearchResultKey: 'quickSearchTickets',
   permissions: ['ticket.agent', 'ticket.customer'],
-  detailSearchHeaders: [
-    'number',
-    'title',
-    'customer',
-    'group',
-    'owner',
-    'created_at',
-  ], // TODO: maybe add possibility of a function, because of generic stuff like priority icon etc.
+  detailSearchHeaders: (config) => {
+    const headers = [
+      'stateIcon',
+      'number',
+      'title',
+      'customer',
+      'group',
+      'owner',
+      'created_at',
+    ]
+
+    if (config.ui_ticket_priority_icons) {
+      headers.unshift('priorityIcon')
+    }
+
+    return headers
+  },
   detailSearchComponent: TicketListTable,
 }

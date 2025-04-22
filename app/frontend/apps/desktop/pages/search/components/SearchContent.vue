@@ -2,6 +2,7 @@
 
 <script setup lang="ts">
 import { isEqual, omit } from 'lodash-es'
+import { storeToRefs } from 'pinia'
 import { computed, ref, useTemplateRef, watch, type Ref, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -14,6 +15,7 @@ import {
   type SearchCountsQuery,
 } from '#shared/graphql/types.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
+import { useApplicationStore } from '#shared/stores/application.ts'
 
 import { useSkeletonLoadingCount } from '#desktop/components/CommonTable/composables/useSkeletonLoadingCount.ts'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
@@ -167,6 +169,14 @@ const searchEntityCurrentCounts = ref<
 >({})
 
 const searchPlugin = computed(() => searchPluginByName[selectedEntity.value])
+
+const { config } = storeToRefs(useApplicationStore())
+
+const detailSearchHeaders = computed(() =>
+  typeof searchPlugin.value.detailSearchHeaders === 'function'
+    ? searchPlugin.value.detailSearchHeaders(config.value)
+    : searchPlugin.value.detailSearchHeaders,
+)
 
 const searchResult = detailSearchQuery.result()
 const currentSearchResult = ref<DetailSearchQuery>()
@@ -420,7 +430,7 @@ setOnSuccessCallback(() => {
           :table-id="`search-${selectedEntity}-table`"
           :caption="`Search result for: ${searchPlugin.label}`"
           :items="searchResultItems"
-          :headers="searchPlugin.detailSearchHeaders"
+          :headers="detailSearchHeaders"
           :total-count="searchResultTotalCount"
           :order-by="orderBy"
           :order-direction="orderDirection"
