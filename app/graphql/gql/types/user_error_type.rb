@@ -6,6 +6,7 @@ module Gql::Types
     description 'Represents an error in the input of a mutation.'
 
     field :message, String, null: false
+    field :message_placeholder, [String]
     field :field, String
     field :exception, Gql::Types::Enum::UserErrorExceptionType
   end

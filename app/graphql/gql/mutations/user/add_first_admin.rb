@@ -25,7 +25,7 @@ module Gql::Mutations
     rescue Service::System::CheckSetup::SystemSetupError => e
       error_response({ message: e.message })
     rescue PasswordPolicy::Error => e
-      error_response({ message: e.message, field: 'password' })
+      error_response({ message: e.message, message_placeholder: e.metadata.drop(1), field: 'password' })
     end
   end
 end

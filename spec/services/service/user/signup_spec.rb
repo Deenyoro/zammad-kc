@@ -16,9 +16,19 @@ RSpec.describe Service::User::Signup do
     }
   end
 
-  shared_examples 'raising an error' do |klass, message|
-    it 'raises an error' do
-      expect { service.execute }.to raise_error(klass, include(message))
+  shared_examples 'raising an error' do |klass, message, message_placeholder: nil|
+    it 'raises an error', :aggregate_failures do
+      if message_placeholder
+        expect { service.execute }.to raise_error do |error|
+          expect(error).to be_a(klass)
+            .and have_attributes(
+              message:  include(message),
+              metadata: [include(message), *message_placeholder],
+            )
+        end
+      else
+        expect { service.execute }.to raise_error(klass, include(message))
+      end
     end
   end
 
@@ -122,6 +132,12 @@ RSpec.describe Service::User::Signup do
         let(:password) { 'idonotlovebenderandthisiswrong' }
 
         it_behaves_like 'raising an error', PasswordPolicy::Error, 'Invalid password'
+      end
+
+      context 'when the password is too short' do
+        let(:password) { 'brBR2999' }
+
+        it_behaves_like 'raising an error', PasswordPolicy::Error, 'Invalid password', [10]
       end
 
       context 'when the email is already taken' do

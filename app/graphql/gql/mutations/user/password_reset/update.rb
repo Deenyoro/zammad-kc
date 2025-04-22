@@ -23,7 +23,7 @@ module Gql::Mutations
       rescue Service::User::PasswordReset::Update::InvalidTokenError, Service::User::PasswordReset::Update::EmailError => e
         return error_response({ message: e.message })
       rescue PasswordPolicy::Error => e
-        return error_response({ message: e.message, field: 'password' })
+        return error_response({ message: e.message, message_placeholder: e.metadata.drop(1), field: 'password' })
       end
 
       { success: true }

@@ -39,5 +39,6 @@ export type UserErrors = Except<UserError, '__typename'>[]
 export interface UserFieldError {
   field: string
   message: string
+  messagePlaceholder?: string[]
 }
 export type UserFieldErrors = UserFieldError[]

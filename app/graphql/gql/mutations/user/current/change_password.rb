@@ -29,7 +29,7 @@ module Gql::Mutations
       rescue PasswordHash::Error
         return error_response({ message: __('The current password you provided is incorrect.'), field: 'current_password' })
       rescue PasswordPolicy::Error => e
-        return error_response({ message: e.message, field: 'new_password' })
+        return error_response({ message: e.message, message_placeholder: e.metadata.drop(1), field: 'new_password' })
       end
 
       { success: true }

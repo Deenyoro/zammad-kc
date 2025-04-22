@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 export const ErrorsFragmentDoc = gql`
     fragment errors on UserError {
   message
+  messagePlaceholder
   field
   exception
 }

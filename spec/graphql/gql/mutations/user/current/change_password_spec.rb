@@ -12,6 +12,7 @@ RSpec.describe Gql::Mutations::User::Current::ChangePassword, type: :graphql do
             success
             errors {
               message
+              messagePlaceholder
               field
             }
           }
@@ -43,14 +44,16 @@ RSpec.describe Gql::Mutations::User::Current::ChangePassword, type: :graphql do
       let(:variables) do
         {
           currentPassword: 'password',
-          newPassword:     'FooBarbazbaz'
+          newPassword:     'fooBAR42',
         }
       end
 
-      it 'fails with error message', :aggregate_failures do
-        errors = gql.result.data[:errors].first
-        expect(errors['message']).to eq('Invalid password, it must contain at least 1 digit!')
-        expect(errors['field']).to eq('new_password')
+      it 'fails with an error message' do
+        expect(gql.result.data[:errors].first).to eq({
+                                                       'message'            => 'Invalid password, it must be at least %s characters long!',
+                                                       'messagePlaceholder' => ['10'],
+                                                       'field'              => 'new_password',
+                                                     })
       end
     end
 

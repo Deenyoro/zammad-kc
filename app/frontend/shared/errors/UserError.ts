@@ -1,6 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import type { EnumUserErrorException } from '#shared/graphql/types.ts'
+import { i18n } from '#shared/i18n.ts'
 import type { UserErrors, UserFieldError } from '#shared/types/error.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 
@@ -40,7 +41,14 @@ export default class UserError extends Error {
   public getFieldErrorList(): Record<string, string> {
     return this.fieldErrors.reduce(
       (fieldErrorList: Record<string, string>, fieldError) => {
-        fieldErrorList[fieldError.field] = fieldError.message
+        // In case of an array with placeholders, translate the message right here.
+        if (fieldError.messagePlaceholder)
+          fieldErrorList[fieldError.field] = i18n.t(
+            fieldError.message,
+            ...fieldError.messagePlaceholder,
+          )
+        // Otherwise, just pass the source string for later translation.
+        else fieldErrorList[fieldError.field] = fieldError.message
 
         return fieldErrorList
       },

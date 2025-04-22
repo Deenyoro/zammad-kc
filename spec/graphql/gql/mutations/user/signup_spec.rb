@@ -11,6 +11,7 @@ RSpec.describe Gql::Mutations::User::Signup, type: :graphql do
             success
             errors {
               message
+              messagePlaceholder
               field
             }
           }
@@ -77,6 +78,29 @@ RSpec.describe Gql::Mutations::User::Signup, type: :graphql do
           expect(errors.keys).to include('message', 'field')
           expect(errors['message']).to include('Invalid password')
           expect(errors['field']).to eq('password')
+        end
+      end
+
+      context 'when the password is too short' do
+        let(:variables) do
+          {
+            input: {
+              email:     'bender@futurama.fiction',
+              firstname: 'Bender',
+              lastname:  'Rodríguez',
+              password:  'brBR1234',
+            }
+          }
+        end
+
+        it 'raises an error' do
+          gql.execute(query, variables: variables)
+
+          expect(gql.result.data[:errors].first).to eq({
+                                                         'message'            => 'Invalid password, it must be at least %s characters long!',
+                                                         'messagePlaceholder' => ['10'],
+                                                         'field'              => 'password',
+                                                       })
         end
       end
 

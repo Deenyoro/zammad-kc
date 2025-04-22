@@ -17,6 +17,7 @@ RSpec.describe Gql::Mutations::User::AddFirstAdmin, :aggregate_failures, set_up:
             }
             errors {
               message
+              messagePlaceholder
               field
             }
           }
@@ -95,6 +96,29 @@ RSpec.describe Gql::Mutations::User::AddFirstAdmin, :aggregate_failures, set_up:
       end
     end
 
+    context 'with a short password' do
+      let(:variables) do
+        {
+          input: {
+            email:     'bender@futurama.fiction',
+            firstname: 'Bender',
+            lastname:  'Rodríguez',
+            password:  'brBR1234',
+          }
+        }
+      end
+
+      it 'fails with an error' do
+        expect(graphql_response['data']['userAddFirstAdmin']['errors']).to eq([
+                                                                                {
+                                                                                  'message'            => 'Invalid password, it must be at least %s characters long!',
+                                                                                  'messagePlaceholder' => ['10'],
+                                                                                  'field'              => 'password',
+                                                                                },
+                                                                              ])
+      end
+    end
+
     context 'when system has already been configured' do
       before do
         Setting.set('system_init_done', true)
@@ -102,9 +126,13 @@ RSpec.describe Gql::Mutations::User::AddFirstAdmin, :aggregate_failures, set_up:
       end
 
       it 'fails with an error' do
-        expect(graphql_response['data']['userAddFirstAdmin']['errors']).to eq(
-          [{ 'message' => 'This system has already been configured and an administrator account exists.', 'field' => nil }]
-        )
+        expect(graphql_response['data']['userAddFirstAdmin']['errors']).to eq([
+                                                                                {
+                                                                                  'message'            => 'This system has already been configured and an administrator account exists.',
+                                                                                  'messagePlaceholder' => nil,
+                                                                                  'field'              => nil,
+                                                                                },
+                                                                              ])
       end
     end
   end
