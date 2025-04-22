@@ -83,7 +83,20 @@ class GitHub
     end
 
     def text_color(background_color)
-      background_color.to_i(16) > 0xFFF / 2 ? '#000000' : '#FFFFFF'
+      # Convert hex to RGB values.
+      #  Supports only 6-digit hex color codes (e.g. RRGGBB).
+      rgb_r = Integer("0x#{background_color[0..1]}") / 255.0
+      rgb_g = Integer("0x#{background_color[2..3]}") / 255.0
+      rgb_b = Integer("0x#{background_color[4..5]}") / 255.0
+
+      # Calculate relative luminance (WCAG 2.0 formula).
+      #   https://www.w3.org/TR/WCAG20/#contrast-ratiodef
+      calc = proc { |rgb| rgb <= 0.03928 ? rgb / 12.92 : ((rgb + 0.055) / 1.055)**2.4 }
+      relative_luminance = (0.2126 * calc.call(rgb_r)) + (0.7152 * calc.call(rgb_g)) + (0.0722 * calc.call(rgb_b))
+
+      # Return the color with better contrast.
+      #   https://stackoverflow.com/a/3943023
+      relative_luminance > 0.179 ? '#000000' : '#FFFFFF'
     end
 
     def milestone

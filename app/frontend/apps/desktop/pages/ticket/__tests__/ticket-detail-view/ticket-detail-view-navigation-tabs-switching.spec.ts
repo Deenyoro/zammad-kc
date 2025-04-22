@@ -276,7 +276,7 @@ describe('Ticket detail view multi tabs switching', () => {
      * */
 
     await waitFor(() =>
-      expect(customerSidebarTab).toHaveClass('outline-blue-800'),
+      expect(customerSidebarTab).toHaveClass('outline-blue-800!'),
     )
 
     await view.events.click(
@@ -289,7 +289,7 @@ describe('Ticket detail view multi tabs switching', () => {
 
     await waitFor(() =>
       expect(view.getByRole('button', { name: 'Ticket' })).toHaveClass(
-        'outline-blue-800',
+        'outline-blue-800!',
       ),
     )
 
@@ -300,11 +300,11 @@ describe('Ticket detail view multi tabs switching', () => {
     )
 
     await waitFor(() =>
-      expect(customerSidebarTab).toHaveClass('outline-blue-800'),
+      expect(customerSidebarTab).toHaveClass('outline-blue-800!'),
     )
 
     expect(view.getByRole('button', { name: 'Ticket' })).not.toHaveClass(
-      'outline-blue-800',
+      'outline-blue-800!',
     )
   })
 })
