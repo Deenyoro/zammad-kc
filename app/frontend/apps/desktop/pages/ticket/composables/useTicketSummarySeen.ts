@@ -3,14 +3,12 @@
 import { useLocalStorage } from '@vueuse/core'
 import { readonly, ref, watch, computed } from 'vue'
 
-import type { TicketAiAssistanceSummarizePayload } from '#shared/graphql/types.ts'
-
 import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
 import { useTicketSidebar } from '#desktop/pages/ticket/composables/useTicketSidebar.ts'
 
-const currentSummaryFingerprint = ref<
-  TicketAiAssistanceSummarizePayload['fingerprintMd5'] | boolean
->()
+const ticketSummaryFingerprints = ref<Map<ID, string | null | undefined>>(
+  new Map(),
+)
 
 export const useTicketSummarySeen = () => {
   const { ticket } = useTicketInformation()
@@ -25,38 +23,55 @@ export const useTicketSummarySeen = () => {
   )
 
   const localStorageFingerprint = useLocalStorage(
-    `${ticket.value?.internalId}-ticket-summary-seen`,
-    undefined as TicketAiAssistanceSummarizePayload['fingerprintMd5'] | boolean,
+    `${ticket.value?.internalId}-ticket-summary-banner-seen`,
+    null as string | null,
   )
 
-  const setFingerprint = (md5Sum?: string | null | boolean) => {
-    if (!md5Sum) return
+  const storedSummaryFingerprint = computed<string | null>(() =>
+    // NB: Compatibility layer for the legacy `App.LocalStorage` class.
+    JSON.parse(localStorageFingerprint.value || 'null'),
+  )
 
-    currentSummaryFingerprint.value = md5Sum
+  const setFingerprint = (md5Sum?: string | null) => {
+    if (!ticket.value) return
 
-    if (!isTicketSummarySidebarActive.value) return
+    ticketSummaryFingerprints.value.set(ticket.value.id, md5Sum)
+  }
 
-    localStorageFingerprint.value = md5Sum
+  const currentSummaryFingerprint = computed(() => {
+    if (!ticket.value) return
+
+    return ticketSummaryFingerprints.value.get(ticket.value.id)
+  })
+
+  const storeFingerprint = (md5Sum?: string | null) => {
+    if (!md5Sum || localStorageFingerprint.value === md5Sum) return
+
+    // NB: Compatibility layer for the legacy `App.LocalStorage` class.
+    localStorageFingerprint.value = JSON.stringify(md5Sum)
   }
 
   watch(
     () => sidebar.activeSidebar.value,
     (currentSidebar) => {
-      if (currentSidebar === 'ticket-summary')
-        setFingerprint(currentSummaryFingerprint.value)
+      if (currentSidebar !== 'ticket-summary') return
+
+      storeFingerprint(currentSummaryFingerprint.value)
     },
   )
 
-  const isCurrentTicketSummaryRead = computed(
-    () => currentSummaryFingerprint.value === localStorageFingerprint.value,
-  )
+  const isCurrentTicketSummaryRead = computed(() => {
+    if (!currentSummaryFingerprint.value) return false
+
+    return currentSummaryFingerprint.value === storedSummaryFingerprint.value
+  })
 
   return {
-    localStorageFingerprint: readonly(localStorageFingerprint),
     currentSummaryFingerprint: readonly(currentSummaryFingerprint),
     isCurrentTicketSummaryRead,
     isTicketSummarySidebarActive,
     isTicketStateMerged,
     setFingerprint,
+    storeFingerprint,
   }
 }

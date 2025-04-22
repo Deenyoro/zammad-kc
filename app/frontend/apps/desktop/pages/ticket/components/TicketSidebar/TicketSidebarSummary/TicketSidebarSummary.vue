@@ -194,7 +194,7 @@ const activateSubscription = () => {
       if (errorData) {
         generationError.value = errorData
         summary.value = null
-        return setFingerprint(true)
+        return
       }
 
       if (summaryData) updateLocalSummary(summaryData, fingerprintMd5)

@@ -24,9 +24,11 @@ const {
 } = useTicketSummaryBanner()
 
 const {
+  currentSummaryFingerprint,
   isCurrentTicketSummaryRead,
   isTicketStateMerged,
   isTicketSummarySidebarActive,
+  storeFingerprint,
 } = useTicketSummarySeen()
 
 const { waitForConfirmation } = useConfirmation()
@@ -52,6 +54,15 @@ const showBanner = computed(
     ((isSummaryGenerating.value && !isTicketSummarySidebarActive.value) ||
       !isCurrentTicketSummaryRead.value),
 )
+
+const seeSummary = () => {
+  if (!isTicketSummarySidebarActive.value) {
+    sidebar?.switchSidebar('ticket-summary')
+    return
+  }
+
+  storeFingerprint(currentSummaryFingerprint.value)
+}
 
 const { userId } = useSessionStore()
 
@@ -102,10 +113,7 @@ const handleHideSummaryMessage = async () => {
     />
 
     <div class="flex items-center gap-4 ltr:ml-auto rtl:mr-auto">
-      <CommonButton
-        size="small"
-        @click="sidebar?.switchSidebar('ticket-summary')"
-      >
+      <CommonButton size="small" @click="seeSummary">
         {{ $t('See Summary') }}
       </CommonButton>
       <CommonButton

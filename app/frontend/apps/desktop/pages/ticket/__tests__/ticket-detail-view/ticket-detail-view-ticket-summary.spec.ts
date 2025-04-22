@@ -16,6 +16,7 @@ import {
   type TicketArticleUpdatesPayload,
 } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
+import emitter from '#shared/utils/emitter.ts'
 
 import { waitForUserCurrentTicketSummaryBannerHiddenMutationCalls } from '#desktop/entities/user/current/graphql/mutations/userCurrentTicketSummaryBannerHidden.mocks.ts'
 import {
@@ -682,6 +683,10 @@ describe('Ticket detail view - Ticket summary', () => {
     })
 
     const view = await visitView('/tickets/1')
+
+    emitter.emit('ticket-summary-generating', true)
+
+    await waitForNextTick()
 
     expect(view.getByTestId('ticket-summary-banner')).toHaveTextContent(
       'Zammad Smart Assist is preparing summary…See Summary',
