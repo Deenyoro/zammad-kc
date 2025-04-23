@@ -1,10 +1,13 @@
 #
 # Test the migration from the `stable-6.0` branch to `develop`.
 #
-.template_migration:
+rspec:migration:
   stage: test
   extends:
     - .job_rules_default
+  services:
+    - !reference [.services, postgresql]
+    - !reference [.services, redis]
   before_script: []
   script:
     # First, checkout stable and set it up.
@@ -23,24 +26,3 @@
     - export REDIS_URL=redis://redis
     - bundle exec rails db:migrate
     - RAILS_CHECK_PENDING_MIGRATIONS=1 bundle exec rspec --profile 10 spec/db -t ~searchindex
-
-rspec:migration:postgresql:
-  extends:
-    - .template_migration
-  services:
-    - !reference [.services, postgresql]
-    - !reference [.services, redis]
-
-rspec:migration:mysql:
-  extends:
-    - .template_migration
-  services:
-    - !reference [.services, mysql]
-    - !reference [.services, redis]
-
-rspec:migration:mariadb:
-  extends:
-    - .template_migration
-  services:
-    - !reference [.services, mariadb]
-    - !reference [.services, redis]

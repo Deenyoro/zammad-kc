@@ -7,7 +7,6 @@ require 'fileutils'
 
 #
 # Configures the CI system
-#   - (randomly) mysql or postgresql, if available
 #   - (randomly) Redis or File as web socket session back end, if Redis is available
 #   - (randomly) Memcached or File as Rails cache store, if Memcached is available
 #   - Elasticsearch support, if available
@@ -22,27 +21,6 @@ class ConfigureEnvironment
     #!/bin/bash
     true
   ENV_FILE_CONTENT
-
-  DB_SETTINGS_MAP = {
-    'postgresql' => {
-      'adapter'  => 'postgresql',
-      'username' => 'zammad',
-      'password' => 'zammad',
-      'host'     => 'postgresql', # db alias from gitlab-ci.yml
-    },
-    'mysql'      => {
-      'adapter'  => 'mysql2',
-      'username' => 'root',
-      'password' => 'zammad',
-      'host'     => 'mysql', # db alias from gitlab-ci.yml
-      'flags'    => [
-        # See https://github.com/brianmario/mysql2#flags-option-parsing
-        # This should hopefully reduce mysql crashes in CI.
-        '-COMPRESS',
-        '-MULTI_STATEMENTS',
-      ]
-    }
-  }.freeze
 
   # Detect service availability based on host presence in network.
   def self.network_host_exists?(hostname)
@@ -66,16 +44,12 @@ class ConfigureEnvironment
     cnf = YAML.load_file(File.join(__dir__, '../config/database/database.yml'), aliases: true)
     cnf.delete('default')
 
-    database = ENV['ENFORCE_DB_SERVICE'] || %w[postgresql mysql].shuffle.find do |db|
-      network_host_exists?(db)
-    end
-
-    raise "Can't find any supported database." if database.nil?
-
-    puts "Using #{database} as database service."
-
-    # fetch DB settings from settings map and fallback to postgresql
-    db_settings = DB_SETTINGS_MAP.fetch(database) { DB_SETTINGS_MAP['postgresql'] }
+    db_settings = {
+      'adapter'  => 'postgresql',
+      'username' => 'zammad',
+      'password' => 'zammad',
+      'host'     => 'postgresql', # db alias from gitlab-ci.yml
+    }.freeze
 
     %w[development test production].each do |environment|
       cnf[environment].merge!(db_settings)
@@ -128,17 +102,6 @@ class ConfigureEnvironment
 
     puts 'Not using Elasticsearch.'
     @env_file_content += "unset ES_URL\n"
-  end
-
-  # Since configure_database skips if database.yml already exists, check the
-  #   content of that file to reliably determine the database type in all cases.
-  def self.database_type
-    database = File.read(File.join(__dir__, '../config/database.yml')).match(%r{^\s*adapter:\s*(mysql|postgresql)})[1]
-    if !database
-      raise 'Could not determine database type, cannot setup cable.yml'
-    end
-
-    database
   end
 
   def self.write_env_file

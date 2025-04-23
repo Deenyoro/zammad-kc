@@ -6,10 +6,8 @@ include:
     - .job_rules_default
     - .job_rules_integration
   services:
-    - !reference [.services, mysql]
     - !reference [.services, postgresql]
     - !reference [.services, imap]
     - !reference [.services, redis]
     - !reference [.services, memcached]
   stage: test
-
