@@ -63,6 +63,16 @@ RSpec.describe Webhook, type: :model do
         expect(endpoint_errors).to be_empty
       end
     end
+
+    context 'with endpoint longer than 300 characters (#5573)' do
+      let(:endpoint) { "https://example.com/#{'endpoint' * 128}" }
+
+      it { is_expected.to be_valid }
+
+      it 'has no errors' do
+        expect(endpoint_errors).to be_empty
+      end
+    end
   end
 
   describe 'check custom payload' do

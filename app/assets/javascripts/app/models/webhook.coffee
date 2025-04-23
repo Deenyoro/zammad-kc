@@ -4,7 +4,7 @@ class App.Webhook extends App.Model
   @url: @apiPath + '/webhooks'
   @configure_attributes = [
     { name: 'name',                display: __('Name'),                      tag: 'input',       type: 'text', limit: 250, null: false },
-    { name: 'endpoint',            display: __('Endpoint'),                  tag: 'input',       type: 'text', limit: 300, null: false, placeholder: 'https://target.example.com/webhook' },
+    { name: 'endpoint',            display: __('Endpoint'),                  tag: 'input',       type: 'text', limit: 2000, null: false, placeholder: 'https://target.example.com/webhook' },
     { name: 'signature_token',     display: __('HMAC SHA1 Signature Token'), tag: 'input',       type: 'text', limit: 100, null: true },
     { name: 'ssl_verify',          display: __('SSL verification'),          tag: 'boolean',     null: true, translate: true, options: { true: 'yes', false: 'no' }, default: true },
     { name: 'basic_auth_username', display: __('HTTP Basic Authentication Username'), tag: 'input', type: 'text', limit: 250, null: true, item_class: 'formGroup--halfSize' },

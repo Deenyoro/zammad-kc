@@ -515,7 +515,7 @@ class CreateTicket < ActiveRecord::Migration[4.2]
 
     create_table :webhooks do |t|
       t.column :name,                       :string, limit: 250,              null: false
-      t.column :endpoint,                   :string, limit: 300,              null: false
+      t.column :endpoint,                   :string, limit: 2000,             null: false
       t.column :signature_token,            :string, limit: 200,              null: true
       t.column :ssl_verify,                 :boolean,                         null: false, default: true
       t.column :basic_auth_username,        :string, limit: 250,              null: true
