@@ -148,7 +148,7 @@ export const useOnlineNotificationActions = () => {
     },
   )
 
-  const markAllRead = (ids: Scalars['ID']['output'][]) => {
+  const markAllRead = async (ids: Scalars['ID']['output'][]) => {
     const revertCache = updateAllSeenNotificationCache(ids)
 
     return markAllSeenMutation

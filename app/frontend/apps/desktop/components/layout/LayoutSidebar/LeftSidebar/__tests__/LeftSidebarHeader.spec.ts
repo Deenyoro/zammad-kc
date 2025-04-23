@@ -9,6 +9,15 @@ import LeftSidebarHeader from '#desktop/components/layout/LayoutSidebar/LeftSide
 
 import '#tests/graphql/builders/mocks.ts'
 
+vi.mock('#shared/server/apollo/client.ts', () => ({
+  getApolloClient: () => ({
+    cache: {
+      readQuery: vi.fn(),
+      writeQuery: vi.fn(),
+    },
+  }),
+}))
+
 const renderLeftSidebarHeader = (collapsed = true) => {
   const searchValue = ref('')
   const searchActive = ref(false)

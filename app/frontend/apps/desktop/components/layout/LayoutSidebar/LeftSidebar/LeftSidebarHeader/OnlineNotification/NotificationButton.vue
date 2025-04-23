@@ -4,10 +4,12 @@
 import { computed } from 'vue'
 
 interface Props {
-  unseenCount: number
+  unseenCount?: number
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  unseenCount: 0,
+})
 
 defineEmits<{
   show: [MouseEvent]

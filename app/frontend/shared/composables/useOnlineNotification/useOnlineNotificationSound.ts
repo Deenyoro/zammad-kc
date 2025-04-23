@@ -1,5 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import { noop } from 'lodash-es'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 
@@ -27,10 +28,7 @@ export const useOnlineNotificationSound = () => {
 
   const audio = computed(() => getPreloadedAudio(audioPath.value))
 
-  const play = () =>
-    audio.value?.play().catch(() => {
-      console.error('Failed to play notification sound')
-    })
+  const play = () => audio.value?.play().catch(noop)
 
   return {
     isEnabled,

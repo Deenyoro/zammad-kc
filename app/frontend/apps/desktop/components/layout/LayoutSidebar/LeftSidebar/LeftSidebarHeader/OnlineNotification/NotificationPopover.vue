@@ -3,8 +3,6 @@
 <script setup lang="ts">
 import { useTemplateRef, type Ref } from 'vue'
 
-import { useOnlineNotificationActions } from '#shared/entities/online-notification/composables/useOnlineNotificationActions.ts'
-import { useOnlineNotificationCount } from '#shared/entities/online-notification/composables/useOnlineNotificationCount.ts'
 import type { OnlineNotification } from '#shared/graphql/types.ts'
 
 import CommonLoader from '#desktop/components/CommonLoader/CommonLoader.vue'
@@ -18,52 +16,19 @@ interface Props {
   hasUnseenNotification: boolean
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
-const emit = defineEmits<{
-  refetch: []
-  close: []
+defineEmits<{
+  seen: [OnlineNotification]
+  remove: [OnlineNotification]
+  'seen-all': []
 }>()
-
-let mutationTriggered = false
-
-const { notificationsCountSubscription } = useOnlineNotificationCount()
-notificationsCountSubscription.watchOnResult(() => {
-  if (!mutationTriggered) emit('refetch')
-  mutationTriggered = false
-})
 
 const sectionElement = useTemplateRef('section')
 
 const { reachedTop, isScrollable } = useElementScroll(
   sectionElement as Ref<HTMLElement>,
 )
-
-const { seenNotification, markAllRead, deleteNotification } =
-  useOnlineNotificationActions()
-
-const runSeenNotification = async (notification: OnlineNotification) => {
-  mutationTriggered = true
-
-  emit('close')
-
-  return seenNotification(notification.metaObject?.id as string).then(() => {
-    mutationTriggered = false
-  })
-}
-
-const removeNotification = async (notification: OnlineNotification) =>
-  deleteNotification(notification.id)
-
-const runMarkAllRead = async () => {
-  mutationTriggered = true
-
-  const ids = props.notificationList.map((notification) => notification.id)
-
-  return markAllRead(ids).then(() => {
-    mutationTriggered = false
-  })
-}
 </script>
 
 <template>
@@ -74,14 +39,14 @@ const runMarkAllRead = async () => {
         'border-b border-b-neutral-300 dark:border-b-gray-900': !reachedTop,
       }"
       :has-unseen-notification="hasUnseenNotification"
-      @mark-all="runMarkAllRead"
+      @mark-all="$emit('seen-all')"
     />
     <CommonLoader :loading="loading">
       <NotificationList
         :class="{ 'ltr:pr-5 rtl:pl-5': isScrollable }"
         :list="notificationList"
-        @seen="runSeenNotification"
-        @remove="removeNotification"
+        @seen="$emit('seen', $event)"
+        @remove="$emit('remove', $event)"
       />
     </CommonLoader>
   </section>

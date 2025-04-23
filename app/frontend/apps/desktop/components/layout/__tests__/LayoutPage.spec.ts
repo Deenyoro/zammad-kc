@@ -11,6 +11,15 @@ import LayoutPage from '#desktop/components/layout/LayoutPage.vue'
 
 import '#tests/graphql/builders/mocks.ts'
 
+vi.mock('#shared/server/apollo/client.ts', () => ({
+  getApolloClient: () => ({
+    cache: {
+      readQuery: vi.fn(),
+      writeQuery: vi.fn(),
+    },
+  }),
+}))
+
 describe('LayoutPage', () => {
   it('expands search and focus quick search input', async () => {
     const wrapper = renderComponent(LayoutPage, {

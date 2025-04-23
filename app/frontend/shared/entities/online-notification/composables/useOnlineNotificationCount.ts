@@ -6,7 +6,7 @@ import { useOnlineNotificationsCountSubscription } from '#shared/entities/online
 import { SubscriptionHandler } from '#shared/server/apollo/handler/index.ts'
 
 export const useOnlineNotificationCount = () => {
-  const unseenCount = ref(0)
+  const unseenCount = ref<number>()
 
   const notificationsCountSubscription = new SubscriptionHandler(
     useOnlineNotificationsCountSubscription(),

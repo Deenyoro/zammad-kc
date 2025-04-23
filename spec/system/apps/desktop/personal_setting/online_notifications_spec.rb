@@ -85,7 +85,6 @@ RSpec.describe 'Desktop > Ticket > Online Notifications', app: :desktop_view, au
       end
 
       wait_for_mutation('onlineNotificationSeen')
-      wait_for_subscription_update('onlineNotificationsCount', number: 3)
 
       expect(page).to have_current_path("/desktop/tickets/#{ticket_b.id}")
 

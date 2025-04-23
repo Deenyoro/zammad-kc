@@ -1,7 +1,8 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev'
+// eslint-disable-next-line max-classes-per-file
 import '@testing-library/jest-dom/vitest'
+import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev'
 import { toBeDisabled } from '@testing-library/jest-dom/matchers'
 import { configure } from '@testing-library/vue'
 import { expect, vi } from 'vitest'
@@ -39,12 +40,17 @@ Object.defineProperty(window, 'fetch', {
 })
 
 Object.defineProperty(globalThis, 'Notification', {
-  value: {
-    permission: undefined,
-    requestPermission: async () => Promise.resolve('granted'),
-    name: 'Notification',
+  value: class {
+    static permission = 'granted'
+
+    static requestPermission = () => Promise.resolve('granted')
+
+    close = vi.fn()
+
+    send = vi.fn()
   },
   writable: true,
+  configurable: true,
 })
 
 class DOMRectList {

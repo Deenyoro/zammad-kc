@@ -61,7 +61,7 @@ const notificationRemoved = () => {
   mutationTriggered = true
 }
 
-// TODO: currently this triggered in some situtations a real subscription on the server: https://github.com/apollographql/apollo-client/issues/10117
+// TODO: currently this triggered in some situations a real subscription on the server: https://github.com/apollographql/apollo-client/issues/10117
 const { unseenCount, notificationsCountSubscription } =
   useOnlineNotificationCount()
 
@@ -71,7 +71,9 @@ notificationsCountSubscription.watchOnResult(() => {
   mutationTriggered = false
 })
 
-const haveUnread = computed(() => unseenCount.value > 0)
+const haveUnread = computed(() =>
+  unseenCount.value ? unseenCount.value > 0 : false,
+)
 </script>
 
 <template>
