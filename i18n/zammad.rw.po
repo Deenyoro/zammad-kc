@@ -412,12 +412,6 @@ msgstr ""
 msgid "%s groups to %s roles assignments"
 msgstr "amatsinda %s ku gutanga inshingano %s"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:60
-#, fuzzy
-#| msgid "Defines the state of auto closed tickets."
-msgid "%s has prepared a summary of this ticket."
-msgstr "Isobanura imimerere y'amatike yifunze"
-
 #: app/frontend/shared/i18n/dates.ts:113
 #, fuzzy
 #| msgid "%s ago"
@@ -430,6 +424,10 @@ msgstr "%s yahise"
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:62
 #: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:72
 msgid "%s is inactive, please select an active one."
+msgstr ""
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:101
+msgid "%s is preparing summary…"
 msgstr ""
 
 #: app/frontend/shared/form/i18n/locales.ts:533
@@ -566,6 +564,12 @@ msgstr "%s zahinduwemo |%s|!"
 #| msgid "assign tickets"
 msgid "%s ticket selected"
 msgstr "Tanga amatike"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:102
+#, fuzzy
+#| msgid "%s Object(s) are created."
+msgid "%s ticket summary has been generated."
+msgstr " ikintu %s cyakozwe  (ibintu %s byakozwe)"
 
 #: app/assets/javascripts/app/views/ticket_zoom/meta.jst.eco:30
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ReferencingTicketsBadgePopover.vue:71
@@ -734,11 +738,6 @@ msgid ""
 "Any escalated tickets (i.e. tickets that have missed the defined target) are "
 "displayed in a separate view in your overviews. You can also configure "
 "**email notifications**."
-msgstr ""
-
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:62
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:122
-msgid "*Be sure to check AI-generated summaries for accuracy"
 msgstr ""
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleFooter.vue:30
@@ -971,11 +970,11 @@ msgstr ""
 msgid "AI"
 msgstr "Muhuza ifasha guhuza za porogaramu(API)"
 
-#: db/seeds/settings.rb:6010
+#: db/seeds/settings.rb:6042
 msgid "AI Provider Config"
 msgstr ""
 
-#: db/seeds/settings.rb:5993
+#: db/seeds/settings.rb:6025
 #, fuzzy
 #| msgid "Test SMS provider"
 msgid "AI provider"
@@ -986,7 +985,7 @@ msgid "AI provider Ollama URL is not set"
 msgstr ""
 
 #: app/controllers/ticket/summarize_controller.rb:8
-#: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:19
+#: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:20
 #: app/services/service/ticket/ai_assistance/summarize.rb:15
 #, fuzzy
 #| msgid "Not configured"
@@ -1247,7 +1246,7 @@ msgstr "igikorwa cy'uruvunge cyakozwe"
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:19
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:15
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:16
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:613
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:616
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:118
 msgid "Actions"
 msgstr "ibikorwa"
@@ -1367,7 +1366,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/profile/linked_accounts.jst.eco:15
 #: app/assets/javascripts/app/views/tag/index.jst.eco:25
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show.jst.eco:19
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:34
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:33
 #: app/frontend/apps/desktop/components/Form/fields/FieldGroupPermissions/FieldGroupPermissionsInput.vue:278
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:106
 #: app/frontend/shared/form/i18n/locales.ts:25
@@ -1478,7 +1477,7 @@ msgstr "ongera muhwituzi ku matike ategereje kwibutswa n'ayazamutse"
 msgid "Add alarm to pending reminder and escalated tickets."
 msgstr "ongera muhwituzi ku matike ategereje kwibutswa n'ayazamutse"
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:54
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:53
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:118
 #, fuzzy
 #| msgid "Enable Chat"
@@ -1489,7 +1488,7 @@ msgstr "Emera gutangira kuganira"
 msgid "Add all values"
 msgstr ""
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:34
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:33
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:106
 #, fuzzy
 #| msgid "Checksum"
@@ -1586,7 +1585,7 @@ msgstr "tunganya  nk'urutonde rwasabwe"
 msgid "Add phone call"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:64
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:70
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:37
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewActions.vue:88
 #, fuzzy
@@ -1913,7 +1912,7 @@ msgstr "Emerera abakoresha kongeraho utumenyestso dushya"
 msgid "Allow users to create new tags."
 msgstr ""
 
-#: db/seeds/settings.rb:5987
+#: db/seeds/settings.rb:6019
 msgid "Allow users to switch automatically to the new desktop UI."
 msgstr ""
 
@@ -1930,7 +1929,7 @@ msgstr ""
 msgid "Also notify via email"
 msgstr "ongeraho kumenyesha ukoresheje imeri"
 
-#: db/seeds/settings.rb:5206
+#: db/seeds/settings.rb:5238
 msgid ""
 "Alternative FQDN for callbacks if you operate Zammad in an internal network."
 msgstr ""
@@ -2639,7 +2638,7 @@ msgstr ""
 
 #: app/controllers/application_controller/authenticates.rb:17
 #: app/graphql/gql/context/current_user_aware.rb:7
-#: app/policies/pundit_policy.rb:21 lib/user_context.rb:26
+#: app/policies/pundit_policy.rb:18 lib/user_context.rb:26
 msgid "Authentication required"
 msgstr ""
 
@@ -2650,7 +2649,7 @@ msgstr "Kwemeza biturutse kuri %s"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/authenticator_app.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:5
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:9
-#: db/seeds/settings.rb:5834
+#: db/seeds/settings.rb:5866
 #, fuzzy
 #| msgid "Authentication"
 msgid "Authenticator App"
@@ -2705,7 +2704,7 @@ msgstr "kwiha inshingano"
 msgid "Auto Assignment Selector"
 msgstr "kwiha inshingano"
 
-#: db/seeds/settings.rb:5973
+#: db/seeds/settings.rb:6005
 msgid "Auto Shutdown"
 msgstr ""
 
@@ -2713,7 +2712,7 @@ msgstr ""
 msgid "Auto Wizard"
 msgstr ""
 
-#: db/seeds/settings.rb:4502
+#: db/seeds/settings.rb:4511
 msgid "Auto close"
 msgstr "kwifunga"
 
@@ -2721,7 +2720,7 @@ msgstr "kwifunga"
 msgid "Auto create"
 msgstr ""
 
-#: db/seeds/settings.rb:4528
+#: db/seeds/settings.rb:4537
 #, fuzzy
 #| msgid "Auto close state"
 msgid "Auto-close state"
@@ -2910,6 +2909,11 @@ msgstr "kwemeza"
 
 #: app/assets/javascripts/app/controllers/_ui_element/postmaster_match.coffee:6
 msgid "Basic Settings"
+msgstr ""
+
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:61
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:122
+msgid "Be sure to check AI-generated summaries for accuracy."
 msgstr ""
 
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:788
@@ -3121,21 +3125,21 @@ msgstr "uburyo bwemerera murandasi guhuzwa n'ihuzanzira"
 msgid "CTI (generic)"
 msgstr ""
 
-#: db/seeds/settings.rb:5265
+#: db/seeds/settings.rb:5297
 msgid "CTI Token"
 msgstr ""
 
-#: db/seeds/settings.rb:5252
+#: db/seeds/settings.rb:5284
 #, fuzzy
 #| msgid "Config"
 msgid "CTI config"
 msgstr "iboneza"
 
-#: db/seeds/settings.rb:5286
+#: db/seeds/settings.rb:5318
 msgid "CTI customer last activity"
 msgstr ""
 
-#: db/seeds/settings.rb:5224
+#: db/seeds/settings.rb:5256
 #, fuzzy
 #| msgid "Integrations"
 msgid "CTI integration"
@@ -3580,7 +3584,7 @@ msgid ""
 "is not checked, values are sorted in alphabetical order."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:52
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:56
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/checklist.ts:11
 #, fuzzy
 #| msgid "Checksum"
@@ -3609,7 +3613,7 @@ msgstr "hitamo inyandikorugero"
 msgid "Checklist Template items are limited to 100 items per checklist."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:93
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:95
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:65
 #, fuzzy
 #| msgid "The test run was successful."
@@ -3626,7 +3630,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/checklist_template.coffee:3
 #: app/assets/javascripts/app/views/checklist_template/index.jst.eco:7
-#: db/seeds/permissions.rb:317 db/seeds/settings.rb:5946
+#: db/seeds/permissions.rb:317 db/seeds/settings.rb:5978
 #, fuzzy
 #| msgid "Checksum"
 msgid "Checklists"
@@ -3636,11 +3640,11 @@ msgstr "Sheki"
 msgid "Checkmk"
 msgstr ""
 
-#: db/seeds/settings.rb:4649
+#: db/seeds/settings.rb:4658
 msgid "Checkmk integration"
 msgstr ""
 
-#: db/seeds/settings.rb:4747
+#: db/seeds/settings.rb:4779
 msgid "Checkmk token"
 msgstr ""
 
@@ -3798,13 +3802,13 @@ msgstr "mushunguzi"
 msgid "Clear filter"
 msgstr "abahamagaye"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:200
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:203
 #, fuzzy
 #| msgid "Search"
 msgid "Clear recent searches"
 msgstr "shakisha"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:238
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:241
 #, fuzzy
 #| msgid "Recently viewed"
 msgid "Clear recently viewed"
@@ -3827,11 +3831,11 @@ msgstr "mushunguzi"
 msgid "Clearbit"
 msgstr ""
 
-#: db/seeds/settings.rb:5388
+#: db/seeds/settings.rb:5420
 msgid "Clearbit config"
 msgstr ""
 
-#: db/seeds/settings.rb:5362
+#: db/seeds/settings.rb:5394
 msgid "Clearbit integration"
 msgstr ""
 
@@ -4006,7 +4010,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:11
-#: db/seeds/settings.rb:5826
+#: db/seeds/settings.rb:5858
 msgid "Complete the sign-in with your security key."
 msgstr ""
 
@@ -4245,7 +4249,7 @@ msgid "Connection test successful"
 msgstr ""
 
 #: app/assets/javascripts/app/views/widget/two_factor_login/help_text.jst.eco:8
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:297
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:308
 #: app/frontend/apps/mobile/pages/authentication/views/Login.vue:177
 msgid "Contact the administrator if you have any problems logging in."
 msgstr ""
@@ -4334,7 +4338,7 @@ msgstr "ikiciro gikomeza"
 
 #: app/assets/javascripts/app/controllers/_plugin/mobile_detection.coffee:56
 #: app/assets/javascripts/app/views/login.jst.eco:125
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:308
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:319
 #, fuzzy
 #| msgid "Continue session"
 msgid "Continue to mobile"
@@ -4346,7 +4350,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:34
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:4
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:74
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:77
 msgid "Conversation Summary"
 msgstr ""
 
@@ -4967,7 +4971,7 @@ msgstr "kuganira n'abakiriya"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:27
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:69
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:72
 #, fuzzy
 #| msgid "Recent Customer Tickets"
 msgid "Customer Intent"
@@ -5360,7 +5364,7 @@ msgid ""
 "Defines a Zendesk endpoint to import users, tickets, states, and articles."
 msgstr ""
 
-#: db/seeds/settings.rb:5466
+#: db/seeds/settings.rb:5498
 msgid "Defines a dashboard stats backend that gets scheduled automatically."
 msgstr ""
 
@@ -5449,59 +5453,59 @@ msgid ""
 "production, \"websocketPort\" is for CI"
 msgstr ""
 
-#: db/seeds/settings.rb:4652
+#: db/seeds/settings.rb:4661
 msgid "Defines if Checkmk (https://checkmk.com/) is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:5365
+#: db/seeds/settings.rb:5397
 msgid "Defines if Clearbit (http://www.clearbit.com) is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:4916
+#: db/seeds/settings.rb:4948
 msgid "Defines if Exchange is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:4456
+#: db/seeds/settings.rb:4465
 msgid "Defines if Icinga (http://www.icinga.org) is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:5576
+#: db/seeds/settings.rb:5608
 msgid ""
 "Defines if Knowledge Base navbar button is enabled for users without "
 "Knowledge Base permission."
 msgstr ""
 
-#: db/seeds/settings.rb:5561
+#: db/seeds/settings.rb:5593
 msgid "Defines if Knowledge Base navbar button is enabled."
 msgstr ""
 
-#: db/seeds/settings.rb:4863
+#: db/seeds/settings.rb:4895
 msgid "Defines if LDAP is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:4762
+#: db/seeds/settings.rb:4794
 msgid "Defines if Monit (https://mmonit.com/monit/) is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:4554
+#: db/seeds/settings.rb:4563
 msgid "Defines if Nagios (http://www.nagios.org) is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:5694
+#: db/seeds/settings.rb:5726
 #, fuzzy
 #| msgid "Authentication"
 msgid "Defines if PGP encryption is enabled or not."
 msgstr "kwemeza"
 
-#: db/seeds/settings.rb:5302
+#: db/seeds/settings.rb:5334
 msgid "Defines if Placetel (http://www.placetel.de) is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:5652
+#: db/seeds/settings.rb:5684
 msgid "Defines if S/MIME encryption is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:5103
+#: db/seeds/settings.rb:5135
 msgid "Defines if Slack (http://www.slack.org) is enabled or not."
 msgstr ""
 
@@ -5519,37 +5523,37 @@ msgstr ""
 msgid "Defines if application is used as online service."
 msgstr ""
 
-#: db/seeds/settings.rb:5777
+#: db/seeds/settings.rb:5809
 msgid ""
 "Defines if calendar weeks are shown in the picker of date/datetime fields to "
 "easily select the correct date."
 msgstr ""
 
-#: db/seeds/settings.rb:5227
+#: db/seeds/settings.rb:5259
 msgid "Defines if generic CTI integration is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:5869
+#: db/seeds/settings.rb:5901
 msgid ""
 "Defines if recovery codes can be used by users in the event they lose access "
 "to other two-factor authentication methods."
 msgstr ""
 
-#: db/seeds/settings.rb:5144
+#: db/seeds/settings.rb:5176
 msgid "Defines if sipgate.io (http://www.sipgate.io) is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:5025
+#: db/seeds/settings.rb:5057
 msgid ""
 "Defines if the GitHub (http://www.github.com) integration is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:4983
+#: db/seeds/settings.rb:5015
 msgid ""
 "Defines if the GitLab (http://www.gitlab.com) integration is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:5736
+#: db/seeds/settings.rb:5768
 #, fuzzy
 #| msgid "Authentication"
 msgid "Defines if the PGP recipient alias configuration is enabled or not."
@@ -5567,7 +5571,7 @@ msgid ""
 "password and password reset will work without email delivery)."
 msgstr ""
 
-#: db/seeds/settings.rb:5921
+#: db/seeds/settings.rb:5953
 msgid ""
 "Defines if the change of the primary organization of a user will update the "
 "100 most recent tickets for this user as well."
@@ -5585,7 +5589,7 @@ msgid ""
 "organization widget."
 msgstr ""
 
-#: db/seeds/settings.rb:4943
+#: db/seeds/settings.rb:4975
 msgid ""
 "Defines if the i-doit (https://www.i-doit.org/) integration is enabled or "
 "not."
@@ -5608,13 +5612,13 @@ msgstr ""
 msgid "Defines if the time accounting types are enabled."
 msgstr "kwemeza"
 
-#: db/seeds/settings.rb:5837
+#: db/seeds/settings.rb:5869
 msgid ""
 "Defines if the two-factor authentication method authenticator app is enabled "
 "or not."
 msgstr ""
 
-#: db/seeds/settings.rb:5805
+#: db/seeds/settings.rb:5837
 #, fuzzy
 #| msgid "Authentication"
 msgid ""
@@ -5626,7 +5630,7 @@ msgstr "kwemeza"
 msgid "Defines if tickets can be created via web form."
 msgstr ""
 
-#: db/seeds/settings.rb:4505
+#: db/seeds/settings.rb:4514
 msgid "Defines if tickets should be closed if service is recovered."
 msgstr "Isobanura niba amatike ashobora"
 
@@ -5650,12 +5654,12 @@ msgstr ""
 msgid "Defines postmaster filter to handle secure mailing."
 msgstr ""
 
-#: db/seeds/settings.rb:4429
+#: db/seeds/settings.rb:4438
 msgid ""
 "Defines postmaster filter to identify Jira mails for correct follow-ups."
 msgstr ""
 
-#: db/seeds/settings.rb:4411
+#: db/seeds/settings.rb:4420
 msgid ""
 "Defines postmaster filter to identify ServiceNow mails for correct follow-"
 "ups."
@@ -5705,12 +5709,18 @@ msgstr ""
 msgid "Defines postmaster filter to identify sender user."
 msgstr ""
 
+#: db/seeds/settings.rb:4402
+msgid ""
+"Defines postmaster filter to manage Checkmk (http://mathias-kettner.com/"
+"check_mk.html) emails."
+msgstr ""
+
 #: db/seeds/settings.rb:4384
 msgid ""
 "Defines postmaster filter to manage Icinga (http://www.icinga.org) emails."
 msgstr ""
 
-#: db/seeds/settings.rb:4402
+#: db/seeds/settings.rb:4411
 msgid ""
 "Defines postmaster filter to manage Monit (https://mmonit.com/monit/) emails."
 msgstr ""
@@ -5738,7 +5748,7 @@ msgid ""
 "header."
 msgstr ""
 
-#: db/seeds/settings.rb:4447
+#: db/seeds/settings.rb:4456
 msgid ""
 "Defines postmaster filter which sets the articles visibility to internal if "
 "it is a rely to an internal article or the last outgoing email is internal."
@@ -5752,37 +5762,37 @@ msgstr ""
 msgid "Defines pretty date format."
 msgstr "Isobanura imiterere myiza y'itariki"
 
-#: db/seeds/settings.rb:5455
+#: db/seeds/settings.rb:5487
 msgid "Defines processing timeout for the html sanitizer."
 msgstr ""
 
-#: db/seeds/settings.rb:5064
+#: db/seeds/settings.rb:5096
 msgid "Defines sync transaction backend."
 msgstr ""
 
-#: db/seeds/settings.rb:5443
+#: db/seeds/settings.rb:5475
 msgid "Defines the CSS font information for HTML emails."
 msgstr ""
 
-#: db/seeds/settings.rb:5255
+#: db/seeds/settings.rb:5287
 msgid "Defines the CTI config."
 msgstr ""
 
-#: db/seeds/settings.rb:4750
+#: db/seeds/settings.rb:4782
 msgid "Defines the Checkmk token for allowing updates."
 msgstr ""
 
-#: db/seeds/settings.rb:5391
+#: db/seeds/settings.rb:5423
 msgid "Defines the Clearbit config."
 msgstr ""
 
-#: db/seeds/settings.rb:4903
+#: db/seeds/settings.rb:4935
 #, fuzzy
 #| msgid "Defines pretty date format."
 msgid "Defines the Exchange OAuth config."
 msgstr "Isobanura imiterere myiza y'itariki"
 
-#: db/seeds/settings.rb:4890
+#: db/seeds/settings.rb:4922
 msgid "Defines the Exchange config."
 msgstr ""
 
@@ -5792,25 +5802,25 @@ msgstr ""
 msgid "Defines the HTTP protocol of your instance."
 msgstr "Isobanura porotokoro ya HTTP ku mwanya wawe"
 
-#: db/seeds/settings.rb:5722
+#: db/seeds/settings.rb:5754
 #, fuzzy
 #| msgid "Defines pretty date format."
 msgid "Defines the PGP config."
 msgstr "Isobanura imiterere myiza y'itariki"
 
-#: db/seeds/settings.rb:5330
+#: db/seeds/settings.rb:5362
 msgid "Defines the Placetel config."
 msgstr ""
 
-#: db/seeds/settings.rb:5680
+#: db/seeds/settings.rb:5712
 msgid "Defines the S/MIME config."
 msgstr ""
 
-#: db/seeds/settings.rb:5129
+#: db/seeds/settings.rb:5161
 msgid "Defines the Slack config."
 msgstr ""
 
-#: db/seeds/settings.rb:5432
+#: db/seeds/settings.rb:5464
 #, fuzzy
 #| msgid "Defines pretty date format."
 msgid "Defines the agent limit."
@@ -5904,7 +5914,7 @@ msgstr "Isobanura imimerere y'amatike yifunze"
 msgid "Defines the default visibility for new notes."
 msgstr "kugaragara mburabuzi ku nyandiko nshya"
 
-#: db/seeds/settings.rb:5289
+#: db/seeds/settings.rb:5321
 msgid ""
 "Defines the duration of customer activity (in seconds) on a call until the "
 "user profile dialog is shown."
@@ -5921,7 +5931,7 @@ msgstr ""
 "bw'ubutumwa bukoreshwa na porogaramu kugira ngo wubake amahuza ku matike "
 "muri sisitemu."
 
-#: db/seeds/settings.rb:4678
+#: db/seeds/settings.rb:4710
 msgid "Defines the group of created tickets."
 msgstr "Isobanura itsinda ry'amatike yakozwe"
 
@@ -5931,7 +5941,7 @@ msgstr "Isobanura itsinda ry'amatike yakozwe"
 msgid "Defines the group of tickets created via web form."
 msgstr "Isobanura itsinda ry'amatike yakozwe"
 
-#: db/seeds/settings.rb:4970
+#: db/seeds/settings.rb:5002
 msgid "Defines the i-doit config."
 msgstr ""
 
@@ -5980,15 +5990,15 @@ msgstr ""
 msgid "Defines the random application secret."
 msgstr ""
 
-#: db/seeds/settings.rb:4482
+#: db/seeds/settings.rb:4491
 msgid "Defines the sender email address of Icinga emails."
 msgstr ""
 
-#: db/seeds/settings.rb:4580
+#: db/seeds/settings.rb:4589
 msgid "Defines the sender email address of Nagios emails."
 msgstr ""
 
-#: db/seeds/settings.rb:4788
+#: db/seeds/settings.rb:4687
 msgid "Defines the sender email address of the service emails."
 msgstr "Isobanura aderesi ya imeri y'uwohereje wa imeri za serivisi"
 
@@ -6010,11 +6020,11 @@ msgid ""
 "permissions the highest timeout value will be used, otherwise the default."
 msgstr ""
 
-#: db/seeds/settings.rb:5193
+#: db/seeds/settings.rb:5225
 msgid "Defines the sipgate.io config."
 msgstr ""
 
-#: db/seeds/settings.rb:4531
+#: db/seeds/settings.rb:4540
 #, fuzzy
 #| msgid "Defines the state of auto closed tickets."
 msgid "Defines the state of auto-closed tickets."
@@ -6042,46 +6052,46 @@ msgid "Defines the ticket states used for lookups."
 msgstr ""
 "isobanurira umukoresha imbere h'uruguba no gushakisha amshusho k'umuryango"
 
-#: db/seeds/settings.rb:5588
+#: db/seeds/settings.rb:5620
 msgid "Defines the timeframe during which a self-created note can be deleted."
 msgstr ""
 
-#: db/seeds/settings.rb:5344
+#: db/seeds/settings.rb:5376
 #, fuzzy
 #| msgid "Defines pretty date format."
 msgid "Defines the token for Placetel."
 msgstr "Isobanura imiterere myiza y'itariki"
 
-#: db/seeds/settings.rb:5085
+#: db/seeds/settings.rb:5117
 msgid ""
 "Defines the transaction backend to detect customer signatures in emails."
 msgstr ""
 
-#: db/seeds/settings.rb:5067
+#: db/seeds/settings.rb:5099
 msgid "Defines the transaction backend to execute triggers."
 msgstr ""
 
-#: db/seeds/settings.rb:5076
+#: db/seeds/settings.rb:5108
 msgid "Defines the transaction backend to send agent notifications."
 msgstr ""
 
-#: db/seeds/settings.rb:5413
+#: db/seeds/settings.rb:5445
 msgid ""
 "Defines the transaction backend which detects caller IDs in objects and "
 "stores them for CTI lookups."
 msgstr ""
 
-#: db/seeds/settings.rb:5422
+#: db/seeds/settings.rb:5454
 msgid "Defines the transaction backend which executes time based triggers."
 msgstr ""
 
-#: db/seeds/settings.rb:5094
+#: db/seeds/settings.rb:5126
 msgid ""
 "Defines the transaction backend which posts messages to Slack (http://www."
 "slack.com)."
 msgstr ""
 
-#: db/seeds/settings.rb:5404
+#: db/seeds/settings.rb:5436
 msgid ""
 "Defines the transaction backend which will enrich customer and organization "
 "information from Clearbit (http://www.clearbit.com)."
@@ -6102,7 +6112,7 @@ msgid ""
 "Defines the warning title that is shown when a matching ticket is present."
 msgstr ""
 
-#: db/seeds/settings.rb:5073
+#: db/seeds/settings.rb:5105
 msgid "Defines transaction backend."
 msgstr ""
 
@@ -6302,7 +6312,7 @@ msgstr "siba"
 msgid "Delete this link"
 msgstr "siba"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:181
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:184
 #, fuzzy
 #| msgid "Delete"
 msgid "Delete this recent search"
@@ -6380,7 +6390,7 @@ msgstr "ibisobanuro"
 msgid "Description (shown as title tag for screen readers)"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:488
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:491
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:91
 #, fuzzy
 #| msgid "reply"
@@ -6573,7 +6583,7 @@ msgstr "guhagarika imenyesha"
 msgid "Disable the banner for the BETA switch"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:23
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:26
 msgid "Disable the banner for the ticket summary smart assist"
 msgstr ""
 
@@ -6621,7 +6631,7 @@ msgstr "anga impinduka"
 msgid "Discard changes"
 msgstr "anga impinduka"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:251
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:257
 #, fuzzy
 #| msgid "Discard your unsaved changes."
 msgid "Discard unsaved reply"
@@ -6675,7 +6685,7 @@ msgstr ""
 msgid "Do not sign email"
 msgstr ""
 
-#: db/seeds/settings.rb:5931
+#: db/seeds/settings.rb:5963
 #, fuzzy
 #| msgid "You have not created a ticket yet."
 msgid "Do not update any tickets."
@@ -7308,7 +7318,7 @@ msgid ""
 "user needs to create its own access tokens in user profile."
 msgstr ""
 
-#: db/seeds/settings.rb:5866
+#: db/seeds/settings.rb:5898
 msgid "Enable Recovery Codes"
 msgstr ""
 
@@ -7330,7 +7340,7 @@ msgstr ""
 msgid "Enable automatic assignment the first time an agent opens a ticket."
 msgstr "gushoboza gutanga byikora bwa mbere umukozi afunguye tike"
 
-#: db/seeds/settings.rb:5949
+#: db/seeds/settings.rb:5981
 #, fuzzy
 #| msgid "Enable Chat"
 msgid "Enable checklists."
@@ -7358,14 +7368,14 @@ msgstr ""
 "Niba ushaka gusubiramo interuro iyi n’iyi, garagaza uwo mwandiko ukande ku "
 "gusubiza( iki gikoresho kiba gihari buri gihe)"
 
-#: db/seeds/settings.rb:5976
+#: db/seeds/settings.rb:6008
 msgid ""
 "Enable or disable self-shutdown of Zammad processes after significant "
 "configuration changes. This should only be used if the controlling process "
 "manager like systemd or docker supports an automatic restart policy."
 msgstr ""
 
-#: db/seeds/settings.rb:6029
+#: db/seeds/settings.rb:6061
 msgid "Enable or disable the AI assistance ticket summary."
 msgstr ""
 
@@ -7390,7 +7400,7 @@ msgstr ""
 msgid "Enable the banner for the BETA switch"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:24
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:27
 msgid "Enable the banner for the ticket summary smart assist"
 msgstr ""
 
@@ -7425,7 +7435,7 @@ msgid ""
 "ticket with the same attributes."
 msgstr ""
 
-#: db/seeds/settings.rb:5747
+#: db/seeds/settings.rb:5779
 msgid ""
 "Enables button for user authentication via %s. The button will redirect to /"
 "auth/sso on user interaction."
@@ -7590,13 +7600,13 @@ msgstr "impera"
 msgid "Endpoint Settings"
 msgstr "Igenamiterere ry'umuntu ku giti cye"
 
-#: db/seeds/settings.rb:5893
+#: db/seeds/settings.rb:5925
 #, fuzzy
 #| msgid "Authentication"
 msgid "Enforce the setup of the two-factor authentication"
 msgstr "kwemeza"
 
-#: db/seeds/settings.rb:5900
+#: db/seeds/settings.rb:5932
 #, fuzzy
 #| msgid "How to use it"
 msgid "Enforced for user roles"
@@ -7975,16 +7985,16 @@ msgstr "abakoresha bihariye"
 msgid "Exchange"
 msgstr ""
 
-#: db/seeds/settings.rb:4900
+#: db/seeds/settings.rb:4932
 #, fuzzy
 msgid "Exchange OAuth"
 msgstr "ya/byahinduwe/tse"
 
-#: db/seeds/settings.rb:4887
+#: db/seeds/settings.rb:4919
 msgid "Exchange config"
 msgstr ""
 
-#: db/seeds/settings.rb:4913
+#: db/seeds/settings.rb:4945
 msgid "Exchange integration"
 msgstr ""
 
@@ -8095,7 +8105,7 @@ msgstr "ishakisha ryagutse"
 msgid "External data source field"
 msgstr "umuhezo"
 
-#: lib/search_index_backend.rb:726
+#: lib/search_index_backend.rb:727
 msgid "Extract zammad-attachment information from arrays"
 msgstr ""
 
@@ -8489,7 +8499,7 @@ msgid "Forgot Password Screen"
 msgstr "wibagiwe ijambo banga?"
 
 #: app/assets/javascripts/app/views/login.jst.eco:53
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:130
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:141
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:83
 msgid "Forgot password?"
 msgstr "wibagiwe ijambo banga?"
@@ -8740,7 +8750,7 @@ msgstr "konti ntiyagenzuwe"
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:11
-#: db/seeds/settings.rb:5858
+#: db/seeds/settings.rb:5890
 msgid "Get the security code from the authenticator app on your device."
 msgstr ""
 
@@ -8774,11 +8784,11 @@ msgstr "ibyangombwa by'ibanga bya twitter"
 msgid "GitHub OAuth Applications"
 msgstr "za porogaramu"
 
-#: db/seeds/settings.rb:5049
+#: db/seeds/settings.rb:5081
 msgid "GitHub config"
 msgstr ""
 
-#: db/seeds/settings.rb:5022
+#: db/seeds/settings.rb:5054
 msgid "GitHub integration"
 msgstr ""
 
@@ -8809,11 +8819,11 @@ msgstr ""
 msgid "GitLab Applications"
 msgstr "za porogaramu"
 
-#: db/seeds/settings.rb:5007
+#: db/seeds/settings.rb:5039
 msgid "GitLab config"
 msgstr ""
 
-#: db/seeds/settings.rb:4980
+#: db/seeds/settings.rb:5012
 msgid "GitLab integration"
 msgstr ""
 
@@ -9060,11 +9070,11 @@ msgstr "Amatsinda"
 msgid "HMAC SHA1 Signature Token"
 msgstr ""
 
-#: db/seeds/settings.rb:5440
+#: db/seeds/settings.rb:5472
 msgid "HTML Email CSS Font"
 msgstr ""
 
-#: db/seeds/settings.rb:5452
+#: db/seeds/settings.rb:5484
 msgid "HTML Sanitizer Processing Timeout"
 msgstr ""
 
@@ -9145,15 +9155,20 @@ msgstr "Amakuru agezweho"
 msgid "Have a nice day."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_profile/newbetaui.coffee:21
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNewBetaUi.vue:32
 msgid ""
 "Have the BETA switch between the old and the new UI always available in the "
 "Primary Navigation"
 msgstr ""
 
+#: app/assets/javascripts/app/controllers/_profile/newbetaui.coffee:21
+msgid ""
+"Have the BETA switch between the old and the new UI always available in the "
+"primary navigation"
+msgstr ""
+
 #: app/assets/javascripts/app/views/widget/two_factor_login/help_text.jst.eco:3
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:258
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:269
 #: app/frontend/apps/mobile/pages/authentication/views/Login.vue:144
 msgid "Having problems?"
 msgstr ""
@@ -9297,17 +9312,12 @@ msgstr ""
 msgid "Hi! Which one of our products?"
 msgstr ""
 
-#: app/assets/javascripts/app/views/ticket_zoom/ai_summary_banner.jst.eco:10
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:35
-msgid "Hide"
-msgstr ""
-
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarFooterMenu.vue:52
 msgid "Hide Beta UI switch"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:22
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:35
+#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:43
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:73
 msgid "Hide Smart Assist Summary Banner?"
 msgstr ""
 
@@ -9317,7 +9327,8 @@ msgstr ""
 msgid "Hide authenticator app secret"
 msgstr "kwemeza"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:74
+#: app/assets/javascripts/app/views/ticket_zoom/ai_summary_banner.jst.eco:18
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:121
 msgid "Hide ticket summary banner"
 msgstr ""
 
@@ -9339,11 +9350,11 @@ msgstr ""
 msgid "Highlight icon"
 msgstr ""
 
-#: db/seeds/settings.rb:5604
+#: db/seeds/settings.rb:5636
 msgid "Highlights if the note a user is writing is public or private"
 msgstr ""
 
-#: db/seeds/settings.rb:5601
+#: db/seeds/settings.rb:5633
 msgid "Hint for adding an article to an existing ticket."
 msgstr ""
 
@@ -9488,7 +9499,7 @@ msgstr ""
 msgid "Icinga"
 msgstr ""
 
-#: db/seeds/settings.rb:4453
+#: db/seeds/settings.rb:4462
 msgid "Icinga integration"
 msgstr ""
 
@@ -9610,7 +9621,7 @@ msgstr ""
 "bupfuye, mu mutumwa bwizana cyangwa mu zindi dosiye"
 
 #: app/assets/javascripts/app/views/login.jst.eco:105
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:283
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:294
 #: app/frontend/apps/mobile/pages/authentication/views/Login.vue:161
 msgid ""
 "If you have problems with the third-party login you can request a one-time "
@@ -9911,7 +9922,7 @@ msgid "Including private key."
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:10
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:367
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:368
 msgid "Incomplete Ticket Checklist"
 msgstr ""
 
@@ -10155,7 +10166,7 @@ msgstr ""
 msgid "Invalid GitHub configuration (missing endpoint or api_token)."
 msgstr ""
 
-#: lib/github/linked_issue.rb:104
+#: lib/github/linked_issue.rb:115
 msgid "Invalid GitHub issue link format"
 msgstr ""
 
@@ -10528,19 +10539,19 @@ msgstr "Ububiko bw'ubumenyi"
 msgid "Knowledge Base Reader"
 msgstr ""
 
-#: db/seeds/settings.rb:5558
+#: db/seeds/settings.rb:5590
 #, fuzzy
 #| msgid "Knowledge Base"
 msgid "Knowledge Base active"
 msgstr "Ububiko bw'ubumenyi"
 
-#: db/seeds/settings.rb:5573
+#: db/seeds/settings.rb:5605
 #, fuzzy
 #| msgid "Knowledge Base"
 msgid "Knowledge Base active publicly"
 msgstr "Ububiko bw'ubumenyi"
 
-#: db/seeds/settings.rb:5547
+#: db/seeds/settings.rb:5579
 msgid "Knowledge Base multilingual support"
 msgstr ""
 
@@ -10554,7 +10565,7 @@ msgstr ""
 msgid "LDAP Host"
 msgstr "Uwakira ukwemeza kw'ingano y'urumuri"
 
-#: db/seeds/settings.rb:4860
+#: db/seeds/settings.rb:4892
 msgid "LDAP integration"
 msgstr ""
 
@@ -11226,7 +11237,7 @@ msgid "Manage Zammad Smart Assist ticket summarization of your system."
 msgstr "injiza umwirondoro wa murandasi(URL) wa sisiteme yawe %s"
 
 #: db/seeds/permissions.rb:511
-msgid "Manage access to new beta UI switch."
+msgid "Manage access to New BETA UI switch."
 msgstr ""
 
 #: db/seeds/permissions.rb:306
@@ -11996,7 +12007,7 @@ msgstr "kuwa mbere"
 msgid "Monit"
 msgstr ""
 
-#: db/seeds/settings.rb:4759
+#: db/seeds/settings.rb:4791
 msgid "Monit integration"
 msgstr ""
 
@@ -12145,7 +12156,7 @@ msgstr "Amatike yawe arimo gukorwa"
 msgid "Nagios"
 msgstr ""
 
-#: db/seeds/settings.rb:4551
+#: db/seeds/settings.rb:4560
 msgid "Nagios integration"
 msgstr ""
 
@@ -12331,20 +12342,21 @@ msgstr "ubusabe bushya"
 msgid "New Attribute"
 msgstr "ikiranga gishya"
 
+#: app/assets/javascripts/app/controllers/_profile/newbetaui.coffee:3
 #: app/assets/javascripts/app/controllers/clues/desktop_beta_switch_clues.coffee:5
+#: app/assets/javascripts/app/views/profile/newbetaui.jst.eco:3
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarFooterMenu.vue:37
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/newBetaUi.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNewBetaUi.vue:11
 msgid "New BETA UI"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_profile/newbetaui.coffee:3
-#: app/assets/javascripts/app/views/profile/newbetaui.jst.eco:3
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarFooterMenu.vue:37
-msgid "New Beta UI"
+#: db/seeds/permissions.rb:510
+msgid "New BETA UI Switch"
 msgstr ""
 
-#: db/seeds/permissions.rb:510
-msgid "New Beta UI Switch"
+#: app/assets/javascripts/app/controllers/_profile/newbetaui.coffee:58
+msgid "New Beta UI"
 msgstr ""
 
 #: app/assets/javascripts/app/views/calendar/index.jst.eco:10
@@ -12555,7 +12567,7 @@ msgid ""
 "</div>\n"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:205
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:216
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:140
 #, fuzzy
 #| msgid "New User"
@@ -12616,7 +12628,7 @@ msgstr "Oya"
 msgid "No %s configured."
 msgstr "Nomero %s yabonejwe"
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:15
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:14
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:64
 #, fuzzy
 #| msgid "Unable to verify email. Please contact your administrator."
@@ -12972,7 +12984,7 @@ msgid "No x-zammad-session-user-id, no sender set!"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:8
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:370
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:371
 #, fuzzy
 #| msgid "You have closed a ticket"
 msgid "No, just close the ticket"
@@ -13258,7 +13270,7 @@ msgstr ""
 msgid "OK, I have copied my token"
 msgstr "OK, Nakoze kopi y'íkimenyesto cyanjye"
 
-#: app/assets/javascripts/app/controllers/_profile/token_access.coffee:145
+#: app/assets/javascripts/app/controllers/_profile/token_access.coffee:151
 msgid "OK, I've copied my token"
 msgstr "OK, Nakoze kopi y'íkimenyesto cyanjye"
 
@@ -13491,7 +13503,7 @@ msgstr "Sheki"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:41
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:79
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:82
 #, fuzzy
 #| msgid "Options"
 msgid "Open Questions"
@@ -13737,7 +13749,7 @@ msgstr "ubufasha bw' ikigo"
 msgid "Organization could not be updated."
 msgstr " ikintu %s cyashyizwe ku gihe  (ibintu %s byashyizwe ku gihe)"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/Organization.vue:18
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/Organization.vue:19
 #, fuzzy
 #| msgid "Organization Name"
 msgid "Organization is inactive."
@@ -13972,17 +13984,17 @@ msgstr ""
 msgid "PGP"
 msgstr ""
 
-#: db/seeds/settings.rb:5733
+#: db/seeds/settings.rb:5765
 msgid "PGP Recipient Alias Configuration"
 msgstr ""
 
-#: db/seeds/settings.rb:5719
+#: db/seeds/settings.rb:5751
 #, fuzzy
 #| msgid "Config"
 msgid "PGP config"
 msgstr "iboneza"
 
-#: db/seeds/settings.rb:5691
+#: db/seeds/settings.rb:5723
 #, fuzzy
 #| msgid "Integrations"
 msgid "PGP integration"
@@ -14057,7 +14069,7 @@ msgstr "umubyeyi"
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailAccountForm.ts:41
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:129
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailOutboundForm.ts:87
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:105
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:116
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordResetVerify.vue:51
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceKayako.vue:47
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/password.ts:8
@@ -14289,7 +14301,7 @@ msgid "Pick a name for the application, and we'll give you a unique token."
 msgstr ""
 "Toranya/Fata izina rya porogaramu, hanyuma turaguha ikimeneyetso cyihariye"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:258
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:264
 msgid "Pin this panel"
 msgstr ""
 
@@ -14311,15 +14323,15 @@ msgstr ""
 msgid "Placetel"
 msgstr ""
 
-#: db/seeds/settings.rb:5341
+#: db/seeds/settings.rb:5373
 msgid "Placetel Token"
 msgstr ""
 
-#: db/seeds/settings.rb:5327
+#: db/seeds/settings.rb:5359
 msgid "Placetel config"
 msgstr ""
 
-#: db/seeds/settings.rb:5299
+#: db/seeds/settings.rb:5331
 msgid "Placetel integration"
 msgstr ""
 
@@ -15065,7 +15077,7 @@ msgstr "hanagura ibibitswe"
 msgid "Regenerate recovery codes"
 msgstr "hanagura ibibitswe"
 
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:207
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:218
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:146
 msgid "Register"
 msgstr ""
@@ -15093,7 +15105,7 @@ msgstr "Ongera wohereze ibisabwa"
 
 #: app/assets/javascripts/app/views/generic/login_preview.jst.eco:43
 #: app/assets/javascripts/app/views/login.jst.eco:45
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:119
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:130
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:69
 msgid "Remember me"
 msgstr "Unyibuke"
@@ -15191,7 +15203,7 @@ msgstr "vanaho"
 msgid "Remove authenticator app"
 msgstr "kwemeza"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:21
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:25
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:406
 #, fuzzy
 #| msgid "Remove"
@@ -15263,7 +15275,7 @@ msgstr "ikuraho imiterere"
 msgid "Removes the shadows for a flat look."
 msgstr "ivanaho ibicucucu ku migaragarire irambuye"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:16
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:20
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:399
 msgid "Rename checklist"
 msgstr ""
@@ -15306,7 +15318,7 @@ msgstr "Isimbura/za"
 msgid "Replacement agent"
 msgstr "Isimbura/za"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:248
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:254
 #: app/frontend/shared/entities/ticket-article/action/plugins/email.ts:87
 #: app/frontend/shared/entities/ticket-article/action/plugins/facebook.ts:20
 #: app/frontend/shared/entities/ticket-article/action/plugins/sms.ts:22
@@ -15382,7 +15394,7 @@ msgid "Request password login for admin?"
 msgstr ""
 
 #: app/assets/javascripts/app/views/login.jst.eco:106
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:288
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:299
 #: app/frontend/apps/mobile/pages/authentication/views/Login.vue:170
 msgid "Request the password login here."
 msgstr ""
@@ -15404,7 +15416,7 @@ msgstr ""
 msgid "Requirements"
 msgstr "ibisabwa"
 
-#: db/seeds/settings.rb:5896
+#: db/seeds/settings.rb:5928
 #, fuzzy
 #| msgid "Authentication"
 msgid ""
@@ -15532,7 +15544,7 @@ msgstr ""
 msgid "Resetting the order of your ticket overviews failed."
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:206
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:212
 #, fuzzy
 #| msgid "Close tab"
 msgid "Resize article panel"
@@ -15583,7 +15595,7 @@ msgid "Results"
 msgstr "kugarura imiterere fatizo"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:161
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:10
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:9
 #: app/assets/javascripts/app/views/widget/two_factor_login/security_keys.jst.eco:16
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:74
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:66
@@ -15715,7 +15727,7 @@ msgid ""
 "encrypted messages."
 msgstr ""
 
-#: db/seeds/settings.rb:5677
+#: db/seeds/settings.rb:5709
 msgid "S/MIME config"
 msgstr ""
 
@@ -15723,7 +15735,7 @@ msgstr ""
 msgid "S/MIME enables you to send digitally signed and encrypted messages."
 msgstr ""
 
-#: db/seeds/settings.rb:5649
+#: db/seeds/settings.rb:5681
 msgid "S/MIME integration"
 msgstr ""
 
@@ -15826,7 +15838,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:111
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:84
-#: db/seeds/settings.rb:5765
+#: db/seeds/settings.rb:5797
 msgid "SSO"
 msgstr ""
 
@@ -15939,7 +15951,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1155
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1160
 #, fuzzy
 #| msgid "Bulk action executed!"
 msgid "Saving failed."
@@ -16218,7 +16230,7 @@ msgstr "umutekano"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:5
 #: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:10
-#: db/seeds/settings.rb:5802
+#: db/seeds/settings.rb:5834
 #, fuzzy
 #| msgid "Security"
 msgid "Security Keys"
@@ -16259,8 +16271,8 @@ msgstr ""
 msgid "See HTTPLog for details."
 msgstr ""
 
-#: app/assets/javascripts/app/views/ticket_zoom/ai_summary_banner.jst.eco:13
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:82
+#: app/assets/javascripts/app/views/ticket_zoom/ai_summary_banner.jst.eco:16
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:117
 #, fuzzy
 #| msgid "See more"
 msgid "See Summary"
@@ -16323,7 +16335,7 @@ msgstr ""
 msgid "Select Template"
 msgstr "hitamo inyandikorugero"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:487
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:490
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:92
 #, fuzzy
 #| msgid "reply"
@@ -16615,7 +16627,7 @@ msgstr "kwemeza"
 msgid "Set a title for your ticket"
 msgstr "himba itike yawe ya mbere"
 
-#: db/seeds/settings.rb:5429
+#: db/seeds/settings.rb:5461
 msgid "Set agent limit"
 msgstr ""
 
@@ -16682,7 +16694,7 @@ msgstr "shyiraho ikirango cya muhamagazo yo hanze "
 msgid "Set security keys as default"
 msgstr "kugarura imiterere fatizo"
 
-#: db/seeds/settings.rb:5591
+#: db/seeds/settings.rb:5623
 msgid ""
 "Set timeframe in seconds. If it's set to 0 you can delete notes without time "
 "limits"
@@ -16911,7 +16923,7 @@ msgstr ""
 msgid "Show authenticator app secret"
 msgstr "Kwemeza biturutse kuri %s"
 
-#: db/seeds/settings.rb:5774
+#: db/seeds/settings.rb:5806
 msgid "Show calendar weeks in the picker of date/datetime fields"
 msgstr ""
 
@@ -17054,7 +17066,7 @@ msgstr "Sohoka"
 #: app/frontend/apps/desktop/pages/authentication/components/LoginRecoveryCode.vue:83
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:148
 #: app/frontend/apps/desktop/pages/authentication/routes.ts:13
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:218
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:229
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:156
 #: app/frontend/apps/mobile/pages/authentication/components/LoginRecoveryCode.vue:86
 #: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:152
@@ -17230,11 +17242,11 @@ msgstr ""
 msgid "Slack Notifications"
 msgstr "guhagarika imenyesha"
 
-#: db/seeds/settings.rb:5126
+#: db/seeds/settings.rb:5158
 msgid "Slack config"
 msgstr ""
 
-#: db/seeds/settings.rb:5100
+#: db/seeds/settings.rb:5132
 msgid "Slack integration"
 msgstr ""
 
@@ -17281,13 +17293,13 @@ msgstr ""
 msgid "Sorry, there is currently no CTI backend enabled."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:541
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:544
 #, fuzzy
 #| msgid "pending"
 msgid "Sorted ascending"
 msgstr "ntibirarangira"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:542
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:545
 #, fuzzy
 #| msgid "pending"
 msgid "Sorted descending"
@@ -17387,7 +17399,7 @@ msgstr "Tangira inshya"
 msgid "Start new conversation"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:247
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:250
 msgid "Start typing e.g. the name of a ticket, an organization or a user."
 msgstr ""
 
@@ -17484,7 +17496,7 @@ msgstr "Aho bigeze"
 msgid "State Icon"
 msgstr "Aho bigeze"
 
-#: db/seeds/settings.rb:5463
+#: db/seeds/settings.rb:5495
 msgid "Stats Backend"
 msgstr ""
 
@@ -17568,29 +17580,29 @@ msgstr "uburyo bwo kubika"
 msgid "Store"
 msgstr "ububiko"
 
-#: db/seeds/settings.rb:6043
+#: db/seeds/settings.rb:6075
 msgid ""
 "Stores the AI assistance ticket summarization options (e.g. which content is "
 "visible)."
 msgstr ""
 
-#: db/seeds/settings.rb:6013
+#: db/seeds/settings.rb:6045
 #, fuzzy
 #| msgid "Save configuration"
 msgid "Stores the AI provider configuration."
 msgstr "bika iboneza"
 
-#: db/seeds/settings.rb:5996
+#: db/seeds/settings.rb:6028
 #, fuzzy
 #| msgid "Test SMS provider"
 msgid "Stores the AI provider."
 msgstr "geregeza utanga ubutumwa buto"
 
-#: db/seeds/settings.rb:5052
+#: db/seeds/settings.rb:5084
 msgid "Stores the GitHub configuration."
 msgstr ""
 
-#: db/seeds/settings.rb:5010
+#: db/seeds/settings.rb:5042
 msgid "Stores the GitLab configuration."
 msgstr ""
 
@@ -17700,7 +17712,7 @@ msgstr "igenamiterere ryífatabuguzi"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:47
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:6
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:84
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:87
 msgid "Suggested Next Steps"
 msgstr ""
 
@@ -17724,7 +17736,7 @@ msgstr "ku cyumwwru"
 msgid "Sunday"
 msgstr "ku cyumweru"
 
-#: db/seeds/settings.rb:5550
+#: db/seeds/settings.rb:5582
 msgid "Support of multilingual Knowledge Base."
 msgstr ""
 
@@ -17736,7 +17748,7 @@ msgstr ""
 msgid "Switch to new layout"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:317
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:328
 #, fuzzy
 #| msgid "set to internal"
 msgid "Switch to old interface"
@@ -17808,7 +17820,7 @@ msgid ""
 "Weblate, give it a try!"
 msgstr ""
 
-#: db/seeds/settings.rb:5623
+#: db/seeds/settings.rb:5655
 msgid ""
 "System-wide configuration of the query polling mechanism for ticket "
 "overviews."
@@ -19135,7 +19147,7 @@ msgstr ""
 msgid "The required parameter 'id' is missing."
 msgstr ""
 
-#: lib/search_index_backend.rb:649
+#: lib/search_index_backend.rb:650
 msgid "The required parameter 'key' is missing."
 msgstr ""
 
@@ -19183,7 +19195,7 @@ msgstr ""
 msgid "The required parameter 'payload->screen' is missing."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_profile/token_access.coffee:112
+#: app/assets/javascripts/app/controllers/_profile/token_access.coffee:118
 msgid "The required parameter 'permission' is missing."
 msgstr ""
 
@@ -19203,7 +19215,7 @@ msgstr ""
 msgid "The required parameter 'user_id' is missing."
 msgstr ""
 
-#: lib/search_index_backend.rb:650
+#: lib/search_index_backend.rb:651
 msgid "The required parameter 'value' is missing."
 msgstr ""
 
@@ -19328,6 +19340,7 @@ msgstr ""
 msgid "The start date must precede or match end date."
 msgstr ""
 
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:5
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:78
 #, fuzzy
 #| msgid "Unable to verify email. Please contact your administrator."
@@ -19672,7 +19685,7 @@ msgstr "bihuye/ bisa"
 msgid "There is no valid PGP email signer."
 msgstr "nta mukozi uri ku murongo"
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:19
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:18
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:99
 #, fuzzy
 #| msgid "There is no agent online."
@@ -20365,7 +20378,7 @@ msgstr ""
 msgid "Ticket Number ignore system_id"
 msgstr ""
 
-#: db/seeds/settings.rb:5918
+#: db/seeds/settings.rb:5950
 #, fuzzy
 #| msgid "Tickets of Organization"
 msgid "Ticket Organization Reassignment"
@@ -20379,7 +20392,7 @@ msgstr "amatike y'umuryango"
 msgid "Ticket Overview"
 msgstr "Incamake nshya"
 
-#: db/seeds/settings.rb:5620
+#: db/seeds/settings.rb:5652
 #, fuzzy
 #| msgid "New Overview"
 msgid "Ticket Overview Query Polling"
@@ -20464,14 +20477,14 @@ msgstr "kwiyandikisha ku matike"
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:2
 #: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:7
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:45
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:13
-#: db/seeds/permissions.rb:233 db/seeds/settings.rb:6026
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:16
+#: db/seeds/permissions.rb:233 db/seeds/settings.rb:6058
 #, fuzzy
 #| msgid "Ticket update"
 msgid "Ticket Summary"
 msgstr "kuvugurura tike"
 
-#: db/seeds/settings.rb:6040
+#: db/seeds/settings.rb:6072
 #, fuzzy
 #| msgid "Ticket Number Format"
 msgid "Ticket Summary Config"
@@ -20658,7 +20671,7 @@ msgid "Ticket update failed."
 msgstr "kuvugurura tike"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/useTicketEditTitle.ts:27
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:463
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:464
 #: app/frontend/apps/mobile/pages/ticket/views/TicketDetailView.vue:174
 #, fuzzy
 #| msgid "The test run was successful."
@@ -21107,11 +21120,11 @@ msgstr "Uburyo/ikimenyetso cyo kwinjira ahantu"
 msgid "Token authorization failed."
 msgstr "kwemeza"
 
-#: db/seeds/settings.rb:5268
+#: db/seeds/settings.rb:5300
 msgid "Token for CTI."
 msgstr ""
 
-#: db/seeds/settings.rb:5172
+#: db/seeds/settings.rb:5204
 msgid "Token for Sipgate."
 msgstr ""
 
@@ -21252,7 +21265,7 @@ msgid "Try Another Method"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:206
-msgid "Try NEW BETA UI"
+msgid "Try New BETA UI"
 msgstr ""
 
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordReset.vue:132
@@ -21264,7 +21277,7 @@ msgid "Try again"
 msgstr "indi ncuro"
 
 #: app/assets/javascripts/app/views/widget/two_factor_login/help_text.jst.eco:4
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:264
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:275
 #: app/frontend/apps/mobile/pages/authentication/views/Login.vue:149
 msgid "Try another method"
 msgstr ""
@@ -21494,7 +21507,7 @@ msgstr "ubwoko"
 msgid "Type:"
 msgstr "ubwoko"
 
-#: db/seeds/settings.rb:5984
+#: db/seeds/settings.rb:6016
 msgid "UI Desktop Beta Switch"
 msgstr ""
 
@@ -21531,27 +21544,23 @@ msgstr "URL"
 msgid "URL (AJAX endpoint)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:140
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:143
 #, fuzzy
 #| msgid "Create new Customer"
 msgid "Unable to add all checklist items."
 msgstr "Guhanga umukiriya mushya"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:98
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:100
 #, fuzzy
 #| msgid "Create new Customer"
 msgid "Unable to add checklist item."
 msgstr "Guhanga umukiriya mushya"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:65
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:66
 #, fuzzy
 #| msgid "Allow users to add new tags."
 msgid "Unable to create checklist."
 msgstr "Emerera abakoresha kongeraho utumenyestso dushya"
-
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:5
-msgid "Unable to generate summary, try again later or contact your admin."
-msgstr ""
 
 #: lib/ai/provider.rb:40
 msgid "Unable to process response"
@@ -21622,7 +21631,7 @@ msgstr "Nta bibazo"
 msgid "Unlock"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:258
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:264
 msgid "Unpin this panel"
 msgstr ""
 
@@ -21763,7 +21772,7 @@ msgstr ""
 msgid "Update successful."
 msgstr ""
 
-#: db/seeds/settings.rb:5930
+#: db/seeds/settings.rb:5962
 #, fuzzy
 #| msgid "%s Object(s) are updated."
 msgid "Update the most recent tickets."
@@ -22170,7 +22179,7 @@ msgstr ""
 msgid "User is inactive"
 msgstr "kidakora"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:17
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:18
 #, fuzzy
 #| msgid "inactive"
 msgid "User is inactive."
@@ -22226,7 +22235,7 @@ msgid "Username"
 msgstr "izina rikoreshwa"
 
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:44
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:100
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:111
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordReset.vue:45
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:40
 #, fuzzy
@@ -22871,13 +22880,13 @@ msgstr ""
 msgid "Yes, add attachments now"
 msgstr "ongeraho uburyo bwo komekaho umugereka kugira ngo wohereze"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:24
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:36
+#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:45
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:74
 msgid "Yes, hide it"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:369
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:370
 #, fuzzy
 #| msgid "Remove"
 msgid "Yes, open the checklist"
@@ -23080,8 +23089,8 @@ msgstr ""
 "bitandukanye. Ongeraho ururimi munsi, nyuma uruhitemo muri Knowledge Base "
 "Editor kugira ngo wongereho ubusemuzi bwawe."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:23
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:33
+#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:44
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:71
 msgid "You can re-enable it anytime in Profile Settings > Appearance."
 msgstr ""
 
@@ -23145,7 +23154,7 @@ msgstr ""
 msgid "You do not have permission to update"
 msgstr "Ntabwo urakora itike kugeza ubu"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:444
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:447
 #, fuzzy
 #| msgid "You have not created a ticket yet."
 msgid "You don't have more tickets to load."
@@ -23231,7 +23240,7 @@ msgstr ""
 msgid "You have unchecked items in the checklist."
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:364
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:365
 #, fuzzy
 #| msgid "Sure to delete this object?"
 msgid ""
@@ -23266,7 +23275,7 @@ msgstr "Ukeneye kunoza endpoints za  Zammad muri %s"
 msgid "You need to configure the Zammad endpoints in the %s:"
 msgstr "Ukeneye kunoza endpoints za  Zammad muri %s"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:440
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:443
 msgid "You reached the table limit of %s tickets (%s remaining)."
 msgstr ""
 
@@ -23346,7 +23355,7 @@ msgstr "ubutumwa"
 msgid "Your Name"
 msgstr "izina ryose"
 
-#: app/assets/javascripts/app/controllers/_profile/token_access.coffee:144
+#: app/assets/javascripts/app/controllers/_profile/token_access.coffee:150
 msgid "Your New Personal Access Token"
 msgstr "Ikimenyetso/uburyo bushya bwihariye bwo kwinjira"
 
@@ -23492,7 +23501,7 @@ msgstr ""
 msgid "Zammad Helpdesk"
 msgstr ""
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:65
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:64
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:132
 msgid "Zammad Smart Assist is generating the summary for you…"
 msgstr ""
@@ -23503,7 +23512,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/views/generic/login_preview.jst.eco:4
 #: app/assets/javascripts/app/views/login.jst.eco:7
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:171
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:182
 #: app/frontend/apps/mobile/pages/authentication/components/LoginHeader.vue:22
 #, fuzzy
 #| msgid ""
@@ -24119,12 +24128,6 @@ msgstr ""
 msgid "has changed"
 msgstr "Cya/yahinduwe"
 
-#: app/assets/javascripts/app/views/ticket_zoom/ai_summary_banner.jst.eco:5
-#, fuzzy
-#| msgid "assign tickets"
-msgid "has prepared a summary of this ticket."
-msgstr "Tanga amatike"
-
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:157
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:184
 #, fuzzy
@@ -24182,11 +24185,11 @@ msgstr ""
 msgid "i-doit"
 msgstr ""
 
-#: db/seeds/settings.rb:4967
+#: db/seeds/settings.rb:4999
 msgid "i-doit config"
 msgstr ""
 
-#: db/seeds/settings.rb:4940
+#: db/seeds/settings.rb:4972
 msgid "i-doit integration"
 msgstr ""
 
@@ -24944,19 +24947,19 @@ msgstr ""
 msgid "shown"
 msgstr ""
 
-#: db/seeds/settings.rb:5169
+#: db/seeds/settings.rb:5201
 msgid "sipgate.io Token"
 msgstr ""
 
-#: db/seeds/settings.rb:5203
+#: db/seeds/settings.rb:5235
 msgid "sipgate.io alternative FQDN"
 msgstr ""
 
-#: db/seeds/settings.rb:5190
+#: db/seeds/settings.rb:5222
 msgid "sipgate.io config"
 msgstr ""
 
-#: db/seeds/settings.rb:5141
+#: db/seeds/settings.rb:5173
 msgid "sipgate.io integration"
 msgstr ""
 
@@ -25260,6 +25263,16 @@ msgstr "umwandiko wose"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "igihe cyo gutegereza uyu munsi"
+
+#, fuzzy
+#~| msgid "Defines the state of auto closed tickets."
+#~ msgid "%s has prepared a summary of this ticket."
+#~ msgstr "Isobanura imimerere y'amatike yifunze"
+
+#, fuzzy
+#~| msgid "assign tickets"
+#~ msgid "has prepared a summary of this ticket."
+#~ msgstr "Tanga amatike"
 
 #, fuzzy
 #~| msgid "Failed to sent Email \"%s\". Please contact an administrator."

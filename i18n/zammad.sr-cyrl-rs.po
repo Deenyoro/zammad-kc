@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zammad\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-04-10 09:00+0000\n"
+"PO-Revision-Date: 2025-04-16 09:00+0000\n"
 "Last-Translator: Dusan Vuckovic <dv@zammad.com>\n"
 "Language-Team: Serbian (Cyrillic script) <https://translations.zammad.org/"
 "projects/zammad/zammad-development/sr_Cyrl/>\n"
@@ -510,10 +510,6 @@ msgstr "%s фолдер(а)"
 msgid "%s groups to %s roles assignments"
 msgstr "%s групе су додељене за %s улоге"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:60
-msgid "%s has prepared a summary of this ticket."
-msgstr "%s је припремио сажет опис тикета."
-
 #: app/frontend/shared/i18n/dates.ts:113
 msgid "%s hours ago"
 msgstr "пре %s сат/а/и"
@@ -525,6 +521,10 @@ msgstr "пре %s сат/а/и"
 #: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:72
 msgid "%s is inactive, please select an active one."
 msgstr "%s је искључен, молимо изаберите укључен."
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:101
+msgid "%s is preparing summary…"
+msgstr "%s припрема сажети опис…"
 
 #: app/frontend/shared/form/i18n/locales.ts:533
 msgid "%s is required."
@@ -635,6 +635,10 @@ msgstr "Прелазак од стране %s на |%s|!"
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:74
 msgid "%s ticket selected"
 msgstr "%s означен(их) тикет(а)"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:102
+msgid "%s ticket summary has been generated."
+msgstr "%s је припремио сажети опис тикета."
 
 #: app/assets/javascripts/app/views/ticket_zoom/meta.jst.eco:30
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ReferencingTicketsBadgePopover.vue:71
@@ -802,11 +806,6 @@ msgstr ""
 "Сви ескалирани тикети (тј. тикети који су надмашили одређене циљеве) су "
 "приказани у посебном екрану ваших прегледа. Такође можете подесити **имејл "
 "обавештења**."
-
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:62
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:122
-msgid "*Be sure to check AI-generated summaries for accuracy"
-msgstr "*Обавезно проверите исправност сажетка генерисаног путем AI"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleFooter.vue:30
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:223
@@ -1027,11 +1026,11 @@ msgstr ""
 msgid "AI"
 msgstr "AI"
 
-#: db/seeds/settings.rb:6010
+#: db/seeds/settings.rb:6042
 msgid "AI Provider Config"
 msgstr "Конфигурација AI провајдера"
 
-#: db/seeds/settings.rb:5993
+#: db/seeds/settings.rb:6025
 msgid "AI provider"
 msgstr "AI провајдер"
 
@@ -1040,7 +1039,7 @@ msgid "AI provider Ollama URL is not set"
 msgstr "URL адреса Ollama AI провајдера није постављена"
 
 #: app/controllers/ticket/summarize_controller.rb:8
-#: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:19
+#: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:20
 #: app/services/service/ticket/ai_assistance/summarize.rb:15
 msgid "AI provider is not configured."
 msgstr "AI провајдер није подешен."
@@ -1271,7 +1270,7 @@ msgstr "Дугме менија радње безбедносних кључев
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:19
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:15
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:16
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:613
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:616
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:118
 msgid "Actions"
 msgstr "Радње"
@@ -1385,7 +1384,7 @@ msgstr "Адаптер"
 #: app/assets/javascripts/app/views/profile/linked_accounts.jst.eco:15
 #: app/assets/javascripts/app/views/tag/index.jst.eco:25
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show.jst.eco:19
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:34
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:33
 #: app/frontend/apps/desktop/components/Form/fields/FieldGroupPermissions/FieldGroupPermissionsInput.vue:278
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:106
 #: app/frontend/shared/form/i18n/locales.ts:25
@@ -1486,23 +1485,19 @@ msgstr "Додај аларм за ескалиране и тикете на ч�
 msgid "Add alarm to pending reminder and escalated tickets."
 msgstr "Додај аларм за ескалиране и тикете на чекању."
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:54
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:53
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:118
-#, fuzzy
-#| msgid "Add empty checklist"
 msgid "Add all to checklist"
-msgstr "Додај празан списак"
+msgstr "Додај све на списак"
 
 #: app/frontend/shared/form/i18n/locales.ts:74
 msgid "Add all values"
 msgstr "Додај све вредности"
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:34
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:33
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:106
-#, fuzzy
-#| msgid "Tracked as checklist item in"
 msgid "Add as checklist item"
-msgstr "Праћено као задатак у"
+msgstr "Додај као задатак"
 
 #: app/assets/javascripts/app/views/channel/form.jst.eco:112
 msgid "Add attachment option to upload."
@@ -1572,7 +1567,7 @@ msgstr "Додај листу са бројевима"
 msgid "Add phone call"
 msgstr "Додај позив"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:64
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:70
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:37
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewActions.vue:88
 msgid "Add reply"
@@ -1889,7 +1884,7 @@ msgstr "Дозволи корисницима да додају нове озн�
 msgid "Allow users to create new tags."
 msgstr "Дозволи корисницима да креирају нове ознаке."
 
-#: db/seeds/settings.rb:5987
+#: db/seeds/settings.rb:6019
 msgid "Allow users to switch automatically to the new desktop UI."
 msgstr ""
 "Омогућава корисницима да се аутоматски пребаце на нови кориснички интерфејс."
@@ -1907,7 +1902,7 @@ msgstr "Дозволи веб странице (одвојено са ;)"
 msgid "Also notify via email"
 msgstr "Такође обавести имејлом"
 
-#: db/seeds/settings.rb:5206
+#: db/seeds/settings.rb:5238
 msgid ""
 "Alternative FQDN for callbacks if you operate Zammad in an internal network."
 msgstr ""
@@ -2571,7 +2566,7 @@ msgstr "Аутентификација није могућа (сервис је 
 
 #: app/controllers/application_controller/authenticates.rb:17
 #: app/graphql/gql/context/current_user_aware.rb:7
-#: app/policies/pundit_policy.rb:21 lib/user_context.rb:26
+#: app/policies/pundit_policy.rb:18 lib/user_context.rb:26
 msgid "Authentication required"
 msgstr "Неопходна аутентификација"
 
@@ -2582,7 +2577,7 @@ msgstr "Аутентификација путем %s"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/authenticator_app.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:5
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:9
-#: db/seeds/settings.rb:5834
+#: db/seeds/settings.rb:5866
 msgid "Authenticator App"
 msgstr "Апликација за аутентификацију"
 
@@ -2627,7 +2622,7 @@ msgstr "Игнорисани корисници при аутоматској д
 msgid "Auto Assignment Selector"
 msgstr "Бирач аутоматске доделе"
 
-#: db/seeds/settings.rb:5973
+#: db/seeds/settings.rb:6005
 msgid "Auto Shutdown"
 msgstr "Аутоматско искључивање"
 
@@ -2635,7 +2630,7 @@ msgstr "Аутоматско искључивање"
 msgid "Auto Wizard"
 msgstr "Аутоматски асистент"
 
-#: db/seeds/settings.rb:4502
+#: db/seeds/settings.rb:4511
 msgid "Auto close"
 msgstr "Аутоматско затварање"
 
@@ -2643,7 +2638,7 @@ msgstr "Аутоматско затварање"
 msgid "Auto create"
 msgstr "Аутоматско отварање"
 
-#: db/seeds/settings.rb:4528
+#: db/seeds/settings.rb:4537
 msgid "Auto-close state"
 msgstr "Стање аутоматског затварања"
 
@@ -2820,6 +2815,11 @@ msgstr "Basic Authentication"
 #: app/assets/javascripts/app/controllers/_ui_element/postmaster_match.coffee:6
 msgid "Basic Settings"
 msgstr "Основна подешавања"
+
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:61
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:122
+msgid "Be sure to check AI-generated summaries for accuracy."
+msgstr "Обавезно проверите исправност сажетог описа генерисаног путем AI."
 
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:788
 #: app/frontend/shared/components/Form/fields/FieldEditor/suggestions/UserMention.ts:99
@@ -3017,19 +3017,19 @@ msgstr "CTI"
 msgid "CTI (generic)"
 msgstr "CTI (генерички)"
 
-#: db/seeds/settings.rb:5265
+#: db/seeds/settings.rb:5297
 msgid "CTI Token"
 msgstr "CTI кључ"
 
-#: db/seeds/settings.rb:5252
+#: db/seeds/settings.rb:5284
 msgid "CTI config"
 msgstr "CTI конфигурација"
 
-#: db/seeds/settings.rb:5286
+#: db/seeds/settings.rb:5318
 msgid "CTI customer last activity"
 msgstr "CTI последња активност клијента"
 
-#: db/seeds/settings.rb:5224
+#: db/seeds/settings.rb:5256
 msgid "CTI integration"
 msgstr "CTI интеграција"
 
@@ -3420,7 +3420,7 @@ msgstr ""
 "Укључите овде уколико желите да измените како су опције сортиране. Уколико "
 "није укључено, вредности ће бити сортиране азбучним редоследом."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:52
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:56
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/checklist.ts:11
 msgid "Checklist"
 msgstr "Списак задатака"
@@ -3443,12 +3443,10 @@ msgstr "Шаблон списка задатака"
 msgid "Checklist Template items are limited to 100 items per checklist."
 msgstr "Шаблони списка су ограничени на 100 задатака по списку."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:93
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:95
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:65
-#, fuzzy
-#| msgid "Ticket updated successfully."
 msgid "Checklist item successfully added."
-msgstr "Тикет је успешно освежен."
+msgstr "Задатак је успешно додат на списак."
 
 #: app/models/checklist/item.rb:108
 msgid "Checklist items are limited to 100 items per checklist."
@@ -3462,7 +3460,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/checklist_template.coffee:3
 #: app/assets/javascripts/app/views/checklist_template/index.jst.eco:7
-#: db/seeds/permissions.rb:317 db/seeds/settings.rb:5946
+#: db/seeds/permissions.rb:317 db/seeds/settings.rb:5978
 msgid "Checklists"
 msgstr "Спискови задатака"
 
@@ -3470,11 +3468,11 @@ msgstr "Спискови задатака"
 msgid "Checkmk"
 msgstr "Checkmk"
 
-#: db/seeds/settings.rb:4649
+#: db/seeds/settings.rb:4658
 msgid "Checkmk integration"
 msgstr "Checkmk интеграција"
 
-#: db/seeds/settings.rb:4747
+#: db/seeds/settings.rb:4779
 msgid "Checkmk token"
 msgstr "Checkmk кључ"
 
@@ -3614,11 +3612,11 @@ msgstr "Очисти избор"
 msgid "Clear filter"
 msgstr "Уклони филтер"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:200
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:203
 msgid "Clear recent searches"
 msgstr "Избриши недавне претраге"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:238
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:241
 msgid "Clear recently viewed"
 msgstr "Избриши недавно виђене"
 
@@ -3635,11 +3633,11 @@ msgstr "Избриши вредност"
 msgid "Clearbit"
 msgstr "Clearbit"
 
-#: db/seeds/settings.rb:5388
+#: db/seeds/settings.rb:5420
 msgid "Clearbit config"
 msgstr "Clearbit конфигурација"
 
-#: db/seeds/settings.rb:5362
+#: db/seeds/settings.rb:5394
 msgid "Clearbit integration"
 msgstr "Clearbit интеграција"
 
@@ -3806,7 +3804,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:11
-#: db/seeds/settings.rb:5826
+#: db/seeds/settings.rb:5858
 msgid "Complete the sign-in with your security key."
 msgstr "Завршите пријаву уз помоћ вашег безбедносног кључа."
 
@@ -4026,7 +4024,7 @@ msgid "Connection test successful"
 msgstr "Проба везе је успела"
 
 #: app/assets/javascripts/app/views/widget/two_factor_login/help_text.jst.eco:8
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:297
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:308
 #: app/frontend/apps/mobile/pages/authentication/views/Login.vue:177
 msgid "Contact the administrator if you have any problems logging in."
 msgstr ""
@@ -4102,7 +4100,7 @@ msgstr "Настави на основни приказ"
 
 #: app/assets/javascripts/app/controllers/_plugin/mobile_detection.coffee:56
 #: app/assets/javascripts/app/views/login.jst.eco:125
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:308
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:319
 msgid "Continue to mobile"
 msgstr "Настави на мобилни приказ"
 
@@ -4112,7 +4110,7 @@ msgstr "Допринос преводима"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:34
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:4
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:74
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:77
 msgid "Conversation Summary"
 msgstr "Сажети опис конверзације"
 
@@ -4704,7 +4702,7 @@ msgstr "Клијент ћаскање"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:27
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:69
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:72
 msgid "Customer Intent"
 msgstr "Намера клијента"
 
@@ -5067,7 +5065,7 @@ msgid ""
 "Defines a Zendesk endpoint to import users, tickets, states, and articles."
 msgstr "Одређује Zendesk путању за увоз корисника, тикета, стања и чланака."
 
-#: db/seeds/settings.rb:5466
+#: db/seeds/settings.rb:5498
 msgid "Defines a dashboard stats backend that gets scheduled automatically."
 msgstr ""
 "Одређује позадински модул статистика контролне табле који се аутоматски "
@@ -5163,23 +5161,23 @@ msgstr ""
 "Одређује како доћи до websocket сервера. „websocket” је подразумевана "
 "вредност у продукцији, „websocketPort” је за CI"
 
-#: db/seeds/settings.rb:4652
+#: db/seeds/settings.rb:4661
 msgid "Defines if Checkmk (https://checkmk.com/) is enabled or not."
 msgstr "Одређује да ли је Checkmk (https://checkmk.com/) укључен или не."
 
-#: db/seeds/settings.rb:5365
+#: db/seeds/settings.rb:5397
 msgid "Defines if Clearbit (http://www.clearbit.com) is enabled or not."
 msgstr "Одређује да ли је Clearbit (http://www.clearbit.com) укључен или не."
 
-#: db/seeds/settings.rb:4916
+#: db/seeds/settings.rb:4948
 msgid "Defines if Exchange is enabled or not."
 msgstr "Одређује да ли је Exchange укључен или не."
 
-#: db/seeds/settings.rb:4456
+#: db/seeds/settings.rb:4465
 msgid "Defines if Icinga (http://www.icinga.org) is enabled or not."
 msgstr "Одређује да ли је Icinga (http://www.icinga.org) укључена или не."
 
-#: db/seeds/settings.rb:5576
+#: db/seeds/settings.rb:5608
 msgid ""
 "Defines if Knowledge Base navbar button is enabled for users without "
 "Knowledge Base permission."
@@ -5187,35 +5185,35 @@ msgstr ""
 "Одређује да ли је дугме за навигацију на базу знања укључено за кориснике "
 "без дозвола за базу знања."
 
-#: db/seeds/settings.rb:5561
+#: db/seeds/settings.rb:5593
 msgid "Defines if Knowledge Base navbar button is enabled."
 msgstr "Одређује да ли је дугме за навигацију на базу знања укључено."
 
-#: db/seeds/settings.rb:4863
+#: db/seeds/settings.rb:4895
 msgid "Defines if LDAP is enabled or not."
 msgstr "Одређује да ли је LDAP укључен или не."
 
-#: db/seeds/settings.rb:4762
+#: db/seeds/settings.rb:4794
 msgid "Defines if Monit (https://mmonit.com/monit/) is enabled or not."
 msgstr "Одређује да ли је Monit (https://mmonit.com/monit/) укључен или не."
 
-#: db/seeds/settings.rb:4554
+#: db/seeds/settings.rb:4563
 msgid "Defines if Nagios (http://www.nagios.org) is enabled or not."
 msgstr "Одређује да ли је Nagios (http://www.nagios.org) укључен или не."
 
-#: db/seeds/settings.rb:5694
+#: db/seeds/settings.rb:5726
 msgid "Defines if PGP encryption is enabled or not."
 msgstr "Одређује да ли је PGP шифровање укључено или не."
 
-#: db/seeds/settings.rb:5302
+#: db/seeds/settings.rb:5334
 msgid "Defines if Placetel (http://www.placetel.de) is enabled or not."
 msgstr "Одређује да ли је Placetel (http://www.placetel.de) укључен или не."
 
-#: db/seeds/settings.rb:5652
+#: db/seeds/settings.rb:5684
 msgid "Defines if S/MIME encryption is enabled or not."
 msgstr "Одређује да ли је S/MIME шифровање укључено или не."
 
-#: db/seeds/settings.rb:5103
+#: db/seeds/settings.rb:5135
 msgid "Defines if Slack (http://www.slack.org) is enabled or not."
 msgstr "Одређује да ли је Slack (http://www.slack.org) укључен или не."
 
@@ -5231,7 +5229,7 @@ msgstr "Одређује да ли је апликација у режиму и�
 msgid "Defines if application is used as online service."
 msgstr "Одређује да ли се апликација користи као онлајн сервис."
 
-#: db/seeds/settings.rb:5777
+#: db/seeds/settings.rb:5809
 msgid ""
 "Defines if calendar weeks are shown in the picker of date/datetime fields to "
 "easily select the correct date."
@@ -5239,11 +5237,11 @@ msgstr ""
 "Одређује да ли су бројеви недеља приказани у прозору поља датума (и времена) "
 "за лак одабир тачног датума."
 
-#: db/seeds/settings.rb:5227
+#: db/seeds/settings.rb:5259
 msgid "Defines if generic CTI integration is enabled or not."
 msgstr "Одређује да ли је генеричка CTI интеграција укључена или не."
 
-#: db/seeds/settings.rb:5869
+#: db/seeds/settings.rb:5901
 msgid ""
 "Defines if recovery codes can be used by users in the event they lose access "
 "to other two-factor authentication methods."
@@ -5251,23 +5249,23 @@ msgstr ""
 "Одређује да ли се шифре за опоравак могу користити у случају губитка "
 "приступа другом методу двофакторске аутентификације."
 
-#: db/seeds/settings.rb:5144
+#: db/seeds/settings.rb:5176
 msgid "Defines if sipgate.io (http://www.sipgate.io) is enabled or not."
 msgstr "Одређује да ли је sipgate.io (http://www.sipgate.io) укључен или не."
 
-#: db/seeds/settings.rb:5025
+#: db/seeds/settings.rb:5057
 msgid ""
 "Defines if the GitHub (http://www.github.com) integration is enabled or not."
 msgstr ""
 "Одређује да ли је GitHub (http://www.github.com) интеграција укључена или не."
 
-#: db/seeds/settings.rb:4983
+#: db/seeds/settings.rb:5015
 msgid ""
 "Defines if the GitLab (http://www.gitlab.com) integration is enabled or not."
 msgstr ""
 "Одређује да ли је GitLab (http://www.gitlab.com) интеграција укључена или не."
 
-#: db/seeds/settings.rb:5736
+#: db/seeds/settings.rb:5768
 msgid "Defines if the PGP recipient alias configuration is enabled or not."
 msgstr "Одређује да ли је PGP конфигурација алиаса примаоца укључена или не."
 
@@ -5287,7 +5285,7 @@ msgstr ""
 "Одређује да ли је апликација у режиму развоја (сви корисници имају исту "
 "лозинку и поништавање лозинке ће радити без имејл испоруке)."
 
-#: db/seeds/settings.rb:5921
+#: db/seeds/settings.rb:5953
 msgid ""
 "Defines if the change of the primary organization of a user will update the "
 "100 most recent tickets for this user as well."
@@ -5311,7 +5309,7 @@ msgstr ""
 "Одређује да ли ће имејл адреса бити приказана у додатку корисника/"
 "организације."
 
-#: db/seeds/settings.rb:4943
+#: db/seeds/settings.rb:4975
 msgid ""
 "Defines if the i-doit (https://www.i-doit.org/) integration is enabled or "
 "not."
@@ -5337,7 +5335,7 @@ msgstr ""
 msgid "Defines if the time accounting types are enabled."
 msgstr "Одређује да ли су врсте активности обрачунатог времена укључене."
 
-#: db/seeds/settings.rb:5837
+#: db/seeds/settings.rb:5869
 msgid ""
 "Defines if the two-factor authentication method authenticator app is enabled "
 "or not."
@@ -5345,7 +5343,7 @@ msgstr ""
 "Одређује да ли је двофакторски метод апликације за аутентификацију укључен "
 "или не."
 
-#: db/seeds/settings.rb:5805
+#: db/seeds/settings.rb:5837
 msgid ""
 "Defines if the two-factor authentication method security keys is enabled or "
 "not."
@@ -5356,7 +5354,7 @@ msgstr ""
 msgid "Defines if tickets can be created via web form."
 msgstr "Одређује да ли је могуће отварати тикете путем веб форме."
 
-#: db/seeds/settings.rb:4505
+#: db/seeds/settings.rb:4514
 msgid "Defines if tickets should be closed if service is recovered."
 msgstr ""
 "Одређује да ли тикети треба да буду затворени ако дође до опоравка сервиса."
@@ -5386,14 +5384,14 @@ msgstr ""
 msgid "Defines postmaster filter to handle secure mailing."
 msgstr "Одређује postmaster филтер за управљање безбедном поштом."
 
-#: db/seeds/settings.rb:4429
+#: db/seeds/settings.rb:4438
 msgid ""
 "Defines postmaster filter to identify Jira mails for correct follow-ups."
 msgstr ""
 "Одређује postmaster филтер за идентификацију Jira имејл порука ради "
 "исправних наставака."
 
-#: db/seeds/settings.rb:4411
+#: db/seeds/settings.rb:4420
 msgid ""
 "Defines postmaster filter to identify ServiceNow mails for correct follow-"
 "ups."
@@ -5457,6 +5455,14 @@ msgstr ""
 msgid "Defines postmaster filter to identify sender user."
 msgstr "Одређује postmaster филтер за идентификацију корисника пошиљаоца."
 
+#: db/seeds/settings.rb:4402
+msgid ""
+"Defines postmaster filter to manage Checkmk (http://mathias-kettner.com/"
+"check_mk.html) emails."
+msgstr ""
+"Одређује postmaster филтер за управљање Checkmk (http://mathias-kettner.com/"
+"check_mk.html) имејл порукама."
+
 #: db/seeds/settings.rb:4384
 msgid ""
 "Defines postmaster filter to manage Icinga (http://www.icinga.org) emails."
@@ -5464,7 +5470,7 @@ msgstr ""
 "Одређује postmaster филтер за управљање Icinga (http://www.icinga.org) имејл "
 "порукама."
 
-#: db/seeds/settings.rb:4402
+#: db/seeds/settings.rb:4411
 msgid ""
 "Defines postmaster filter to manage Monit (https://mmonit.com/monit/) emails."
 msgstr ""
@@ -5502,7 +5508,7 @@ msgstr ""
 "Одређује postmaster филтер за постављање од/за имејл порука на основу reply-"
 "to заглавља."
 
-#: db/seeds/settings.rb:4447
+#: db/seeds/settings.rb:4456
 msgid ""
 "Defines postmaster filter which sets the articles visibility to internal if "
 "it is a rely to an internal article or the last outgoing email is internal."
@@ -5519,35 +5525,35 @@ msgstr "Одређује postmaster филтер."
 msgid "Defines pretty date format."
 msgstr "Одређује лепши формат датума."
 
-#: db/seeds/settings.rb:5455
+#: db/seeds/settings.rb:5487
 msgid "Defines processing timeout for the html sanitizer."
 msgstr "Одређује време истека процеса за санирање HTML."
 
-#: db/seeds/settings.rb:5064
+#: db/seeds/settings.rb:5096
 msgid "Defines sync transaction backend."
 msgstr "Одређује позадински модул за синхронизацију трансакција."
 
-#: db/seeds/settings.rb:5443
+#: db/seeds/settings.rb:5475
 msgid "Defines the CSS font information for HTML emails."
 msgstr "Одређује CSS фонтове за HTML имејл поруке."
 
-#: db/seeds/settings.rb:5255
+#: db/seeds/settings.rb:5287
 msgid "Defines the CTI config."
 msgstr "Одређује CTI конфигурацију."
 
-#: db/seeds/settings.rb:4750
+#: db/seeds/settings.rb:4782
 msgid "Defines the Checkmk token for allowing updates."
 msgstr "Одређује Checkmk кључ за омогућавање ажурирања."
 
-#: db/seeds/settings.rb:5391
+#: db/seeds/settings.rb:5423
 msgid "Defines the Clearbit config."
 msgstr "Одређује Clearbit конфигурацију."
 
-#: db/seeds/settings.rb:4903
+#: db/seeds/settings.rb:4935
 msgid "Defines the Exchange OAuth config."
 msgstr "Одређује Exchange OAuth конфигурацију."
 
-#: db/seeds/settings.rb:4890
+#: db/seeds/settings.rb:4922
 msgid "Defines the Exchange config."
 msgstr "Одређује Exchange конфигурацију."
 
@@ -5555,23 +5561,23 @@ msgstr "Одређује Exchange конфигурацију."
 msgid "Defines the HTTP protocol of your instance."
 msgstr "Одређује HTTP протокол вашег система."
 
-#: db/seeds/settings.rb:5722
+#: db/seeds/settings.rb:5754
 msgid "Defines the PGP config."
 msgstr "Одређује PGP конфигурацију."
 
-#: db/seeds/settings.rb:5330
+#: db/seeds/settings.rb:5362
 msgid "Defines the Placetel config."
 msgstr "Одређује Placetel конфигурацију."
 
-#: db/seeds/settings.rb:5680
+#: db/seeds/settings.rb:5712
 msgid "Defines the S/MIME config."
 msgstr "Одређује S/MIME конфигурацију."
 
-#: db/seeds/settings.rb:5129
+#: db/seeds/settings.rb:5161
 msgid "Defines the Slack config."
 msgstr "Одређује Slack конфигурацију."
 
-#: db/seeds/settings.rb:5432
+#: db/seeds/settings.rb:5464
 msgid "Defines the agent limit."
 msgstr "Одређује ограничење броја оператера."
 
@@ -5654,7 +5660,7 @@ msgstr "Одређује подразумевану врсту активнос�
 msgid "Defines the default visibility for new notes."
 msgstr "Одређује подразумевану видљивост нових напомена."
 
-#: db/seeds/settings.rb:5289
+#: db/seeds/settings.rb:5321
 msgid ""
 "Defines the duration of customer activity (in seconds) on a call until the "
 "user profile dialog is shown."
@@ -5672,7 +5678,7 @@ msgstr ""
 "fqdn} коју је могуће пронаћи у свим типовима комуникације у апликацији, ради "
 "конструкције линкова на тикете вашег система."
 
-#: db/seeds/settings.rb:4678
+#: db/seeds/settings.rb:4710
 msgid "Defines the group of created tickets."
 msgstr "Одређује групу отворених тикета."
 
@@ -5680,7 +5686,7 @@ msgstr "Одређује групу отворених тикета."
 msgid "Defines the group of tickets created via web form."
 msgstr "Одређује групу отворених тикета путем веб форме."
 
-#: db/seeds/settings.rb:4970
+#: db/seeds/settings.rb:5002
 msgid "Defines the i-doit config."
 msgstr "Одређује i-doit конфигурацију."
 
@@ -5724,15 +5730,15 @@ msgstr "Одређује број порта websocket сервера."
 msgid "Defines the random application secret."
 msgstr "Одређује насумичну шифру апликације."
 
-#: db/seeds/settings.rb:4482
+#: db/seeds/settings.rb:4491
 msgid "Defines the sender email address of Icinga emails."
 msgstr "Одређује имејл адресу пошиљаоца Icinga имејл порука."
 
-#: db/seeds/settings.rb:4580
+#: db/seeds/settings.rb:4589
 msgid "Defines the sender email address of Nagios emails."
 msgstr "Одређује имејл адресу пошиљаоца Nagios имејл порука."
 
-#: db/seeds/settings.rb:4788
+#: db/seeds/settings.rb:4687
 msgid "Defines the sender email address of the service emails."
 msgstr "Одређује имејл адресу пошиљаоца сервисних имејл порука."
 
@@ -5756,11 +5762,11 @@ msgstr ""
 "истека ће бити одабрано на основу додељених дозвола, у супротном "
 "подразумевано."
 
-#: db/seeds/settings.rb:5193
+#: db/seeds/settings.rb:5225
 msgid "Defines the sipgate.io config."
 msgstr "Одређује sipgate.io конфигурацију."
 
-#: db/seeds/settings.rb:4531
+#: db/seeds/settings.rb:4540
 msgid "Defines the state of auto-closed tickets."
 msgstr "Одређује стање тикета који су аутоматски затворени."
 
@@ -5782,31 +5788,31 @@ msgstr "Одређује понашање прозора након радње �
 msgid "Defines the ticket states used for lookups."
 msgstr "Одређује стања тикета која су обухваћена претрагом."
 
-#: db/seeds/settings.rb:5588
+#: db/seeds/settings.rb:5620
 msgid "Defines the timeframe during which a self-created note can be deleted."
 msgstr ""
 "Одређује временски интервал током ког је могуће обрисати управо додату "
 "напомену."
 
-#: db/seeds/settings.rb:5344
+#: db/seeds/settings.rb:5376
 msgid "Defines the token for Placetel."
 msgstr "Одређује кључ за Placetel."
 
-#: db/seeds/settings.rb:5085
+#: db/seeds/settings.rb:5117
 msgid ""
 "Defines the transaction backend to detect customer signatures in emails."
 msgstr ""
 "Одређује позадински модул за детекцију потписа клијента у имејл порукама."
 
-#: db/seeds/settings.rb:5067
+#: db/seeds/settings.rb:5099
 msgid "Defines the transaction backend to execute triggers."
 msgstr "Одређује позадински модул за извршавање окидача."
 
-#: db/seeds/settings.rb:5076
+#: db/seeds/settings.rb:5108
 msgid "Defines the transaction backend to send agent notifications."
 msgstr "Одређује позадински модул за слање обавештења оператерима."
 
-#: db/seeds/settings.rb:5413
+#: db/seeds/settings.rb:5445
 msgid ""
 "Defines the transaction backend which detects caller IDs in objects and "
 "stores them for CTI lookups."
@@ -5814,11 +5820,11 @@ msgstr ""
 "Одређује позадински модул за детекцију ID позиваоца у објектима и чува их за "
 "CTI претрагу."
 
-#: db/seeds/settings.rb:5422
+#: db/seeds/settings.rb:5454
 msgid "Defines the transaction backend which executes time based triggers."
 msgstr "Одређује позадински модул за извршавање временских окидача."
 
-#: db/seeds/settings.rb:5094
+#: db/seeds/settings.rb:5126
 msgid ""
 "Defines the transaction backend which posts messages to Slack (http://www."
 "slack.com)."
@@ -5826,7 +5832,7 @@ msgstr ""
 "Одређује позадински модул за постављање порука на Slack (http://www.slack."
 "com)."
 
-#: db/seeds/settings.rb:5404
+#: db/seeds/settings.rb:5436
 msgid ""
 "Defines the transaction backend which will enrich customer and organization "
 "information from Clearbit (http://www.clearbit.com)."
@@ -5851,7 +5857,7 @@ msgid ""
 msgstr ""
 "Одређује наслов упозорења које ће бити приказано ако постоје слични тикети."
 
-#: db/seeds/settings.rb:5073
+#: db/seeds/settings.rb:5105
 msgid "Defines transaction backend."
 msgstr "Одређује позадински модул."
 
@@ -6029,7 +6035,7 @@ msgstr "Избриши овај уређај"
 msgid "Delete this link"
 msgstr "Избриши ову везу"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:181
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:184
 msgid "Delete this recent search"
 msgstr "Избриши ову недавну претрагу"
 
@@ -6097,7 +6103,7 @@ msgstr "Опис"
 msgid "Description (shown as title tag for screen readers)"
 msgstr "Опис (приказује се као наслов за читаче екрана)"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:488
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:491
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:91
 msgid "Deselect all entries"
 msgstr "Одзначи све уносе"
@@ -6282,7 +6288,7 @@ msgstr "Искључи обавештења"
 msgid "Disable the banner for the BETA switch"
 msgstr "Искључи приказ дугмета за BETA интерфејс"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:23
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:26
 msgid "Disable the banner for the ticket summary smart assist"
 msgstr "Искључи приказ траке за сажети опис тикета"
 
@@ -6326,7 +6332,7 @@ msgstr "Откажи чланак"
 msgid "Discard changes"
 msgstr "Откажи промене"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:251
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:257
 msgid "Discard unsaved reply"
 msgstr "Откажи несачуван одговор"
 
@@ -6374,7 +6380,7 @@ msgstr "Без шифровања имејл поруке"
 msgid "Do not sign email"
 msgstr "Без потписивања имејл поруке"
 
-#: db/seeds/settings.rb:5931
+#: db/seeds/settings.rb:5963
 msgid "Do not update any tickets."
 msgstr "Без освежавања тикета."
 
@@ -6938,7 +6944,7 @@ msgstr ""
 "лозинке). Сваки корисник ће бити у обавези да генерише лични кључ у "
 "корисничком профилу."
 
-#: db/seeds/settings.rb:5866
+#: db/seeds/settings.rb:5898
 msgid "Enable Recovery Codes"
 msgstr "Укључи шифре за опоравак"
 
@@ -6962,7 +6968,7 @@ msgstr "Укључи аутоматску доделу тикета који с�
 msgid "Enable automatic assignment the first time an agent opens a ticket."
 msgstr "Укључи аутоматску доделу први пут када оператер отвори тикет."
 
-#: db/seeds/settings.rb:5949
+#: db/seeds/settings.rb:5981
 msgid "Enable checklists."
 msgstr "Укључује спискове задатака."
 
@@ -6990,7 +6996,7 @@ msgstr ""
 "извесну фразу, одабери текст и кликни на одговор (ова функција је увек "
 "доступна)."
 
-#: db/seeds/settings.rb:5976
+#: db/seeds/settings.rb:6008
 msgid ""
 "Enable or disable self-shutdown of Zammad processes after significant "
 "configuration changes. This should only be used if the controlling process "
@@ -7001,7 +7007,7 @@ msgstr ""
 "менаџер процеса као systemd или docker подржавају полису аутоматског "
 "рестартовања."
 
-#: db/seeds/settings.rb:6029
+#: db/seeds/settings.rb:6061
 msgid "Enable or disable the AI assistance ticket summary."
 msgstr "Укључује или искључује сажети опис тикета преко AI асистента."
 
@@ -7029,7 +7035,7 @@ msgstr ""
 msgid "Enable the banner for the BETA switch"
 msgstr "Укључи приказ дугмета за BETA интерфејс"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:24
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:27
 msgid "Enable the banner for the ticket summary smart assist"
 msgstr "Укључи приказ траке за сажети опис тикета"
 
@@ -7066,7 +7072,7 @@ msgstr ""
 "Укључује упозорење корисницима приликом отварања тикета уколико постоје "
 "слични тикети са истим атрибутима."
 
-#: db/seeds/settings.rb:5747
+#: db/seeds/settings.rb:5779
 msgid ""
 "Enables button for user authentication via %s. The button will redirect to /"
 "auth/sso on user interaction."
@@ -7215,11 +7221,11 @@ msgstr "Путања"
 msgid "Endpoint Settings"
 msgstr "Подешавања путање"
 
-#: db/seeds/settings.rb:5893
+#: db/seeds/settings.rb:5925
 msgid "Enforce the setup of the two-factor authentication"
 msgstr "Захтевај поставку двофакторске аутентификације"
 
-#: db/seeds/settings.rb:5900
+#: db/seeds/settings.rb:5932
 msgid "Enforced for user roles"
 msgstr "Захтевано за корисничке улоге"
 
@@ -7587,15 +7593,15 @@ msgstr "Изузети корисници"
 msgid "Exchange"
 msgstr "Exchange"
 
-#: db/seeds/settings.rb:4900
+#: db/seeds/settings.rb:4932
 msgid "Exchange OAuth"
 msgstr "Exchange OAuth"
 
-#: db/seeds/settings.rb:4887
+#: db/seeds/settings.rb:4919
 msgid "Exchange config"
 msgstr "Exchange конфигурација"
 
-#: db/seeds/settings.rb:4913
+#: db/seeds/settings.rb:4945
 msgid "Exchange integration"
 msgstr "Exchange интеграција"
 
@@ -7686,7 +7692,7 @@ msgstr "Проширена претрага"
 msgid "External data source field"
 msgstr "Поље удаљеног извора података"
 
-#: lib/search_index_backend.rb:726
+#: lib/search_index_backend.rb:727
 msgid "Extract zammad-attachment information from arrays"
 msgstr "Издвоји информације о Zammad прилозима из низова"
 
@@ -7743,10 +7749,8 @@ msgid "Failed to add new checklist item."
 msgstr "Грешка при додавању новог задатка на списак."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:94
-#, fuzzy
-#| msgid "Failed to add new checklist item."
 msgid "Failed to add new checklist items."
-msgstr "Грешка при додавању новог задатка на списак."
+msgstr "Грешка при додавању нових задатака на списак."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:168
 msgid "Failed to delete checklist item."
@@ -8037,7 +8041,7 @@ msgid "Forgot Password Screen"
 msgstr "Страна заборављене лозинке"
 
 #: app/assets/javascripts/app/views/login.jst.eco:53
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:130
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:141
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:83
 msgid "Forgot password?"
 msgstr "Заборављена лозинка?"
@@ -8257,7 +8261,7 @@ msgstr "Буди обавештен(а)"
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:11
-#: db/seeds/settings.rb:5858
+#: db/seeds/settings.rb:5890
 msgid "Get the security code from the authenticator app on your device."
 msgstr ""
 "Преузми сигурноси код из апликације за аутентификацију на свом уређају."
@@ -8288,11 +8292,11 @@ msgstr "Креденцијали GitHub апликације"
 msgid "GitHub OAuth Applications"
 msgstr "GitHub OAuth апликације"
 
-#: db/seeds/settings.rb:5049
+#: db/seeds/settings.rb:5081
 msgid "GitHub config"
 msgstr "GitHub конфигурација"
 
-#: db/seeds/settings.rb:5022
+#: db/seeds/settings.rb:5054
 msgid "GitHub integration"
 msgstr "GitHub интеграција"
 
@@ -8321,11 +8325,11 @@ msgstr "Креденцијали GitLab апликације"
 msgid "GitLab Applications"
 msgstr "GitLab апликације"
 
-#: db/seeds/settings.rb:5007
+#: db/seeds/settings.rb:5039
 msgid "GitLab config"
 msgstr "GitLab конфигурација"
 
-#: db/seeds/settings.rb:4980
+#: db/seeds/settings.rb:5012
 msgid "GitLab integration"
 msgstr "GitLab интеграција"
 
@@ -8552,11 +8556,11 @@ msgstr "Групе су …"
 msgid "HMAC SHA1 Signature Token"
 msgstr "HMAC SHA1 кључ за потпис"
 
-#: db/seeds/settings.rb:5440
+#: db/seeds/settings.rb:5472
 msgid "HTML Email CSS Font"
 msgstr "CSS фонт HTML имејл порука"
 
-#: db/seeds/settings.rb:5452
+#: db/seeds/settings.rb:5484
 msgid "HTML Sanitizer Processing Timeout"
 msgstr "Време истека процеса за санирање HTML"
 
@@ -8623,7 +8627,6 @@ msgstr "Освежено"
 msgid "Have a nice day."
 msgstr "Желимо вам пријатан дан."
 
-#: app/assets/javascripts/app/controllers/_profile/newbetaui.coffee:21
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNewBetaUi.vue:32
 msgid ""
 "Have the BETA switch between the old and the new UI always available in the "
@@ -8631,8 +8634,19 @@ msgid ""
 msgstr ""
 "Прикажи увек дугме за нови BETA кориснички интерфејс у примарној навигацији"
 
+#: app/assets/javascripts/app/controllers/_profile/newbetaui.coffee:21
+#, fuzzy
+#| msgid ""
+#| "Have the BETA switch between the old and the new UI always available in "
+#| "the Primary Navigation"
+msgid ""
+"Have the BETA switch between the old and the new UI always available in the "
+"primary navigation"
+msgstr ""
+"Прикажи увек дугме за нови BETA кориснички интерфејс у примарној навигацији"
+
 #: app/assets/javascripts/app/views/widget/two_factor_login/help_text.jst.eco:3
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:258
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:269
 #: app/frontend/apps/mobile/pages/authentication/views/Login.vue:144
 msgid "Having problems?"
 msgstr "Имате проблема?"
@@ -8780,17 +8794,12 @@ msgstr ""
 msgid "Hi! Which one of our products?"
 msgstr "Здраво! Који тачно од наших производа?"
 
-#: app/assets/javascripts/app/views/ticket_zoom/ai_summary_banner.jst.eco:10
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:35
-msgid "Hide"
-msgstr "Сакриј"
-
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarFooterMenu.vue:52
 msgid "Hide Beta UI switch"
 msgstr "Сакриј дугме за BETA интерфејс"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:22
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:35
+#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:43
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:73
 msgid "Hide Smart Assist Summary Banner?"
 msgstr "Сакриј траку сажетог описа преко асистента?"
 
@@ -8798,7 +8807,8 @@ msgstr "Сакриј траку сажетог описа преко асист�
 msgid "Hide authenticator app secret"
 msgstr "Сакриј шифру апликације за аутентификацију"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:74
+#: app/assets/javascripts/app/views/ticket_zoom/ai_summary_banner.jst.eco:18
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:121
 msgid "Hide ticket summary banner"
 msgstr "Сакриј траку сажетог описа тикета"
 
@@ -8818,11 +8828,11 @@ msgstr "Боја истицања"
 msgid "Highlight icon"
 msgstr "Иконица истицања"
 
-#: db/seeds/settings.rb:5604
+#: db/seeds/settings.rb:5636
 msgid "Highlights if the note a user is writing is public or private"
 msgstr "Упозорава корисника на видљивост новог чланка (интерно или јавно)"
 
-#: db/seeds/settings.rb:5601
+#: db/seeds/settings.rb:5633
 msgid "Hint for adding an article to an existing ticket."
 msgstr "Упозорење приликом додавања чланака постојећим тикетима."
 
@@ -8959,7 +8969,7 @@ msgstr "IMAP"
 msgid "Icinga"
 msgstr "Icinga"
 
-#: db/seeds/settings.rb:4453
+#: db/seeds/settings.rb:4462
 msgid "Icinga integration"
 msgstr "Icinga интеграција"
 
@@ -9065,7 +9075,7 @@ msgstr ""
 "нежељене поште, друштвених мрежа и сл."
 
 #: app/assets/javascripts/app/views/login.jst.eco:105
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:283
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:294
 #: app/frontend/apps/mobile/pages/authentication/views/Login.vue:161
 msgid ""
 "If you have problems with the third-party login you can request a one-time "
@@ -9345,7 +9355,7 @@ msgid "Including private key."
 msgstr "Укључује и тајни кључ."
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:10
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:367
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:368
 msgid "Incomplete Ticket Checklist"
 msgstr "Некомплетан списак задатака"
 
@@ -9561,7 +9571,7 @@ msgstr "Неисправан GitHub GraphQL API кључ"
 msgid "Invalid GitHub configuration (missing endpoint or api_token)."
 msgstr "Неисправна GitHub конфигурација (недостаје endpoint или api_token)."
 
-#: lib/github/linked_issue.rb:104
+#: lib/github/linked_issue.rb:115
 msgid "Invalid GitHub issue link format"
 msgstr "Неисправан формат GitHub извештаја"
 
@@ -9924,15 +9934,15 @@ msgstr "Извор чланака базе знања"
 msgid "Knowledge Base Reader"
 msgstr "Читалац базе знања"
 
-#: db/seeds/settings.rb:5558
+#: db/seeds/settings.rb:5590
 msgid "Knowledge Base active"
 msgstr "Активна база знања"
 
-#: db/seeds/settings.rb:5573
+#: db/seeds/settings.rb:5605
 msgid "Knowledge Base active publicly"
 msgstr "Активна јавна база знања"
 
-#: db/seeds/settings.rb:5547
+#: db/seeds/settings.rb:5579
 msgid "Knowledge Base multilingual support"
 msgstr "Мултијезичка подршка базе знања"
 
@@ -9946,7 +9956,7 @@ msgstr "LDAP"
 msgid "LDAP Host"
 msgstr "LDAP сервер"
 
-#: db/seeds/settings.rb:4860
+#: db/seeds/settings.rb:4892
 msgid "LDAP integration"
 msgstr "LDAP интеграција"
 
@@ -10547,7 +10557,9 @@ msgid "Manage Zammad Smart Assist ticket summarization of your system."
 msgstr "Управљање сажетог описа тикета вашег система преко Zammad асистента."
 
 #: db/seeds/permissions.rb:511
-msgid "Manage access to new beta UI switch."
+#, fuzzy
+#| msgid "Manage access to new beta UI switch."
+msgid "Manage access to New BETA UI switch."
 msgstr "Управљање приступом дугмету за нови BETA интерфејс."
 
 #: db/seeds/permissions.rb:306
@@ -11180,7 +11192,7 @@ msgstr "понедељак"
 msgid "Monit"
 msgstr "Monit"
 
-#: db/seeds/settings.rb:4759
+#: db/seeds/settings.rb:4791
 msgid "Monit integration"
 msgstr "Monit интеграција"
 
@@ -11307,7 +11319,7 @@ msgstr "Моји тикети у обради"
 msgid "Nagios"
 msgstr "Nagios"
 
-#: db/seeds/settings.rb:4551
+#: db/seeds/settings.rb:4560
 msgid "Nagios integration"
 msgstr "Nagios интеграција"
 
@@ -11485,21 +11497,24 @@ msgstr "Нова апликација"
 msgid "New Attribute"
 msgstr "Нови атрибут"
 
+#: app/assets/javascripts/app/controllers/_profile/newbetaui.coffee:3
 #: app/assets/javascripts/app/controllers/clues/desktop_beta_switch_clues.coffee:5
+#: app/assets/javascripts/app/views/profile/newbetaui.jst.eco:3
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarFooterMenu.vue:37
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/newBetaUi.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNewBetaUi.vue:11
 msgid "New BETA UI"
 msgstr "Нови BETA интерфејс"
 
-#: app/assets/javascripts/app/controllers/_profile/newbetaui.coffee:3
-#: app/assets/javascripts/app/views/profile/newbetaui.jst.eco:3
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarFooterMenu.vue:37
+#: db/seeds/permissions.rb:510
+#, fuzzy
+#| msgid "New Beta UI Switch"
+msgid "New BETA UI Switch"
+msgstr "Дугме за нови BETA интерфејс"
+
+#: app/assets/javascripts/app/controllers/_profile/newbetaui.coffee:58
 msgid "New Beta UI"
 msgstr "Нови BETA интерфејс"
-
-#: db/seeds/permissions.rb:510
-msgid "New Beta UI Switch"
-msgstr "Дугме за нови BETA интерфејс"
 
 #: app/assets/javascripts/app/views/calendar/index.jst.eco:10
 msgid "New Calendar"
@@ -11711,7 +11726,7 @@ msgstr ""
 "target=\"zammad_app\">Погледај у #{config.product_name}</a>\n"
 "</div>\n"
 
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:205
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:216
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:140
 msgid "New user?"
 msgstr "Нови корисник?"
@@ -11762,7 +11777,7 @@ msgstr "Не"
 msgid "No %s configured."
 msgstr "Нема подешавања за %s."
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:15
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:14
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:64
 msgid "No AI provider is currently set up. Please contact your administrator."
 msgstr ""
@@ -12064,7 +12079,7 @@ msgid "No x-zammad-session-user-id, no sender set!"
 msgstr "Без x-zammad-session-user-id, пошиљалац није подешен!"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:8
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:370
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:371
 msgid "No, just close the ticket"
 msgstr "Не, само затвори тикет"
 
@@ -12326,7 +12341,7 @@ msgstr "У реду"
 msgid "OK, I have copied my token"
 msgstr "У реду, копирао сам свој кључ"
 
-#: app/assets/javascripts/app/controllers/_profile/token_access.coffee:145
+#: app/assets/javascripts/app/controllers/_profile/token_access.coffee:151
 msgid "OK, I've copied my token"
 msgstr "У реду, копирао сам свој кључ"
 
@@ -12529,7 +12544,7 @@ msgstr "Отвори списак задатака"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:41
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:79
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:82
 msgid "Open Questions"
 msgstr "Отворена питања"
 
@@ -12730,7 +12745,7 @@ msgstr "Подршка организације"
 msgid "Organization could not be updated."
 msgstr "Није било могуће освежити организацију."
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/Organization.vue:18
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/Organization.vue:19
 msgid "Organization is inactive."
 msgstr "Организација је искључена."
 
@@ -12936,15 +12951,15 @@ msgstr ""
 msgid "PGP"
 msgstr "PGP"
 
-#: db/seeds/settings.rb:5733
+#: db/seeds/settings.rb:5765
 msgid "PGP Recipient Alias Configuration"
 msgstr "PGP конфигурација алиаса примаоца"
 
-#: db/seeds/settings.rb:5719
+#: db/seeds/settings.rb:5751
 msgid "PGP config"
 msgstr "PGP конфигурација"
 
-#: db/seeds/settings.rb:5691
+#: db/seeds/settings.rb:5723
 msgid "PGP integration"
 msgstr "PGP интеграција"
 
@@ -13011,7 +13026,7 @@ msgstr "Надређена група"
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailAccountForm.ts:41
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:129
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailOutboundForm.ts:87
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:105
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:116
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordResetVerify.vue:51
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceKayako.vue:47
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/password.ts:8
@@ -13212,7 +13227,7 @@ msgstr "Одабрани број телефона се већ користи з
 msgid "Pick a name for the application, and we'll give you a unique token."
 msgstr "Изаберите назив апликације, и добићете јединствени кључ."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:258
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:264
 msgid "Pin this panel"
 msgstr "Закачи овај панел"
 
@@ -13234,15 +13249,15 @@ msgstr "Место за текст генерисан преко AI"
 msgid "Placetel"
 msgstr "Placetel"
 
-#: db/seeds/settings.rb:5341
+#: db/seeds/settings.rb:5373
 msgid "Placetel Token"
 msgstr "Placetel кључ"
 
-#: db/seeds/settings.rb:5327
+#: db/seeds/settings.rb:5359
 msgid "Placetel config"
 msgstr "Placetel конфигурација"
 
-#: db/seeds/settings.rb:5299
+#: db/seeds/settings.rb:5331
 msgid "Placetel integration"
 msgstr "Placetel интеграција"
 
@@ -13924,7 +13939,7 @@ msgstr "Регенериши шифре за опоравак"
 msgid "Regenerate recovery codes"
 msgstr "Регенериши шифре за опоравак"
 
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:207
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:218
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:146
 msgid "Register"
 msgstr "Регистрација"
@@ -13952,7 +13967,7 @@ msgstr "Освежи апликацију"
 
 #: app/assets/javascripts/app/views/generic/login_preview.jst.eco:43
 #: app/assets/javascripts/app/views/login.jst.eco:45
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:119
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:130
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:69
 msgid "Remember me"
 msgstr "Запамти ме"
@@ -14032,7 +14047,7 @@ msgstr "Избриши све вредности"
 msgid "Remove authenticator app"
 msgstr "Уклони апликацију за аутентификацију"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:21
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:25
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:406
 msgid "Remove checklist"
 msgstr "Обриши списак"
@@ -14086,7 +14101,7 @@ msgstr "Уклања форматирање"
 msgid "Removes the shadows for a flat look."
 msgstr "Уклања сенке за пљоснатији изглед."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:16
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:20
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:399
 msgid "Rename checklist"
 msgstr "Промени наслов списка"
@@ -14121,7 +14136,7 @@ msgstr "Замена"
 msgid "Replacement agent"
 msgstr "Оператер на замени"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:248
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:254
 #: app/frontend/shared/entities/ticket-article/action/plugins/email.ts:87
 #: app/frontend/shared/entities/ticket-article/action/plugins/facebook.ts:20
 #: app/frontend/shared/entities/ticket-article/action/plugins/sms.ts:22
@@ -14187,7 +14202,7 @@ msgid "Request password login for admin?"
 msgstr "Упути захтев за пријаву преко привремене лозинке администратора?"
 
 #: app/assets/javascripts/app/views/login.jst.eco:106
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:288
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:299
 #: app/frontend/apps/mobile/pages/authentication/views/Login.vue:170
 msgid "Request the password login here."
 msgstr "Упути захтев за пријаву преко привремене лозинке овде."
@@ -14209,7 +14224,7 @@ msgstr "Недостаје обавезан параметар ’profile’."
 msgid "Requirements"
 msgstr "Услови"
 
-#: db/seeds/settings.rb:5896
+#: db/seeds/settings.rb:5928
 msgid ""
 "Requires the setup of the two-factor authentication for certain user roles."
 msgstr ""
@@ -14358,7 +14373,7 @@ msgstr ""
 msgid "Resetting the order of your ticket overviews failed."
 msgstr "Поништавање редоследа ваших прегледа тикета није успело."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:206
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:212
 msgid "Resize article panel"
 msgstr "Промени висину панела чланка"
 
@@ -14403,7 +14418,7 @@ msgid "Results"
 msgstr "Резултати"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:161
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:10
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:9
 #: app/assets/javascripts/app/views/widget/two_factor_login/security_keys.jst.eco:16
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:74
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:66
@@ -14526,7 +14541,7 @@ msgstr ""
 "распрострањен метод (или тачније, протокол) за слање дигитално потписаних и "
 "шифрованих порука."
 
-#: db/seeds/settings.rb:5677
+#: db/seeds/settings.rb:5709
 msgid "S/MIME config"
 msgstr "S/MIME конфигурација"
 
@@ -14534,7 +14549,7 @@ msgstr "S/MIME конфигурација"
 msgid "S/MIME enables you to send digitally signed and encrypted messages."
 msgstr "S/MIME вам омогућава да шаљете дигитално потписане и шифроване поруке."
 
-#: db/seeds/settings.rb:5649
+#: db/seeds/settings.rb:5681
 msgid "S/MIME integration"
 msgstr "S/MIME интеграција"
 
@@ -14633,7 +14648,7 @@ msgstr "SSL/STARTTLS"
 
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:111
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:84
-#: db/seeds/settings.rb:5765
+#: db/seeds/settings.rb:5797
 msgid "SSO"
 msgstr "SSO"
 
@@ -14732,7 +14747,7 @@ msgstr "Сачувани услови"
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1155
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1160
 msgid "Saving failed."
 msgstr "Неуспешно снимање."
 
@@ -14989,7 +15004,7 @@ msgstr "Безбедносни кључ"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:5
 #: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:10
-#: db/seeds/settings.rb:5802
+#: db/seeds/settings.rb:5834
 msgid "Security Keys"
 msgstr "Безбедносни кључеви"
 
@@ -15024,10 +15039,10 @@ msgstr ""
 msgid "See HTTPLog for details."
 msgstr "Погледајте HTTPLog за детаље."
 
-#: app/assets/javascripts/app/views/ticket_zoom/ai_summary_banner.jst.eco:13
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:82
+#: app/assets/javascripts/app/views/ticket_zoom/ai_summary_banner.jst.eco:16
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:117
 msgid "See Summary"
-msgstr "Прегледај опис"
+msgstr "Прочитај опис"
 
 #: app/assets/javascripts/app/controllers/_ui_element/ticket_duplicate_detection.coffee:71
 #: app/assets/javascripts/app/controllers/article_view/item.coffee:447
@@ -15082,7 +15097,7 @@ msgstr "Изабери заједнички нацрт"
 msgid "Select Template"
 msgstr "Изабери шаблон"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:487
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:490
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:92
 msgid "Select all entries"
 msgstr "Означи све уносе"
@@ -15337,7 +15352,7 @@ msgstr "Постављање двофакторске аутентификаци
 msgid "Set a title for your ticket"
 msgstr "Одреди наслов свог тикета"
 
-#: db/seeds/settings.rb:5429
+#: db/seeds/settings.rb:5461
 msgid "Set agent limit"
 msgstr "Подеси ограничење броја оператера"
 
@@ -15392,7 +15407,7 @@ msgstr "Подеси одлазећи ID позиваоца"
 msgid "Set security keys as default"
 msgstr "Подеси безбедносне кључеве као подразумевано"
 
-#: db/seeds/settings.rb:5591
+#: db/seeds/settings.rb:5623
 msgid ""
 "Set timeframe in seconds. If it's set to 0 you can delete notes without time "
 "limits"
@@ -15582,7 +15597,7 @@ msgstr ""
 msgid "Show authenticator app secret"
 msgstr "Прикажи шифру апликације за аутентификацију"
 
-#: db/seeds/settings.rb:5774
+#: db/seeds/settings.rb:5806
 msgid "Show calendar weeks in the picker of date/datetime fields"
 msgstr "Прикажи бројеве недеља у прозору поља датума (и времена)"
 
@@ -15711,7 +15726,7 @@ msgstr "Грешка потписа"
 #: app/frontend/apps/desktop/pages/authentication/components/LoginRecoveryCode.vue:83
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:148
 #: app/frontend/apps/desktop/pages/authentication/routes.ts:13
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:218
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:229
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:156
 #: app/frontend/apps/mobile/pages/authentication/components/LoginRecoveryCode.vue:86
 #: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:152
@@ -15868,11 +15883,11 @@ msgstr "Slack"
 msgid "Slack Notifications"
 msgstr "Slack обавештења"
 
-#: db/seeds/settings.rb:5126
+#: db/seeds/settings.rb:5158
 msgid "Slack config"
 msgstr "Slack конфигурација"
 
-#: db/seeds/settings.rb:5100
+#: db/seeds/settings.rb:5132
 msgid "Slack integration"
 msgstr "Slack интеграција"
 
@@ -15921,11 +15936,11 @@ msgstr "Жао нам је, нису сва поља исправно попуњ
 msgid "Sorry, there is currently no CTI backend enabled."
 msgstr "Жао нам је, тренутно нема укључених CTI позадинских модула."
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:541
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:544
 msgid "Sorted ascending"
 msgstr "Сортирано растуће"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:542
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:545
 msgid "Sorted descending"
 msgstr "Сортирано опадајуће"
 
@@ -16009,7 +16024,7 @@ msgstr "Започни ново"
 msgid "Start new conversation"
 msgstr "Започни нови разговор"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:247
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:250
 msgid "Start typing e.g. the name of a ticket, an organization or a user."
 msgstr "Започните претрагу нпр. по називу тикета, организације или корисника."
 
@@ -16086,7 +16101,7 @@ msgstr "Стање"
 msgid "State Icon"
 msgstr "Иконица стања"
 
-#: db/seeds/settings.rb:5463
+#: db/seeds/settings.rb:5495
 msgid "Stats Backend"
 msgstr "Позадински модул статистика"
 
@@ -16160,7 +16175,7 @@ msgstr "Метод складиштења"
 msgid "Store"
 msgstr "Снимљено"
 
-#: db/seeds/settings.rb:6043
+#: db/seeds/settings.rb:6075
 msgid ""
 "Stores the AI assistance ticket summarization options (e.g. which content is "
 "visible)."
@@ -16168,19 +16183,19 @@ msgstr ""
 "Чува подешавања сажетог описа тикета преко AI асистента (нпр. који садржај "
 "је видљив)."
 
-#: db/seeds/settings.rb:6013
+#: db/seeds/settings.rb:6045
 msgid "Stores the AI provider configuration."
 msgstr "Чува конфигурацију AI провајдера."
 
-#: db/seeds/settings.rb:5996
+#: db/seeds/settings.rb:6028
 msgid "Stores the AI provider."
 msgstr "Чува одабир AI провајдера."
 
-#: db/seeds/settings.rb:5052
+#: db/seeds/settings.rb:5084
 msgid "Stores the GitHub configuration."
 msgstr "Снима GitHub конфигурацију."
 
-#: db/seeds/settings.rb:5010
+#: db/seeds/settings.rb:5042
 msgid "Stores the GitLab configuration."
 msgstr "Снима GitLab конфигурацију."
 
@@ -16284,7 +16299,7 @@ msgstr "Подешавања претплате"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:47
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:6
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:84
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:87
 msgid "Suggested Next Steps"
 msgstr "Предложени следећи кораци"
 
@@ -16308,7 +16323,7 @@ msgstr "нед"
 msgid "Sunday"
 msgstr "недеља"
 
-#: db/seeds/settings.rb:5550
+#: db/seeds/settings.rb:5582
 msgid "Support of multilingual Knowledge Base."
 msgstr "Подршка за вишејезичну базу знања."
 
@@ -16320,7 +16335,7 @@ msgstr "Повратак на стари распоред"
 msgid "Switch to new layout"
 msgstr "Пребацивање на нови распоред"
 
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:317
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:328
 msgid "Switch to old interface"
 msgstr "Повратак на стари интерфејс"
 
@@ -16389,7 +16404,7 @@ msgstr ""
 "%l. Поседује веома удобан кориснички интерфејс базиран на Weblate-у, "
 "пробајте га!"
 
-#: db/seeds/settings.rb:5623
+#: db/seeds/settings.rb:5655
 msgid ""
 "System-wide configuration of the query polling mechanism for ticket "
 "overviews."
@@ -17581,7 +17596,7 @@ msgstr "Није пронађен обавезни параметар ’group_i
 msgid "The required parameter 'id' is missing."
 msgstr "Није пронађен обавезни параметар ’id’."
 
-#: lib/search_index_backend.rb:649
+#: lib/search_index_backend.rb:650
 msgid "The required parameter 'key' is missing."
 msgstr "Није пронађен обавезни параметар ’key’."
 
@@ -17629,7 +17644,7 @@ msgstr "Није пронађен обавезни параметар ’payload
 msgid "The required parameter 'payload->screen' is missing."
 msgstr "Није пронађен обавезни параметар ’payload->screen’."
 
-#: app/assets/javascripts/app/controllers/_profile/token_access.coffee:112
+#: app/assets/javascripts/app/controllers/_profile/token_access.coffee:118
 msgid "The required parameter 'permission' is missing."
 msgstr "Није пронађен обавезни параметар ’permission’."
 
@@ -17649,7 +17664,7 @@ msgstr "Није пронађен обавезни параметар ’ticket_
 msgid "The required parameter 'user_id' is missing."
 msgstr "Није пронађен обавезни параметар ’user_id’."
 
-#: lib/search_index_backend.rb:650
+#: lib/search_index_backend.rb:651
 msgid "The required parameter 'value' is missing."
 msgstr "Није пронађен обавезни параметар ’value’."
 
@@ -17768,6 +17783,7 @@ msgstr "Одабрана имејл адреса се већ користи за
 msgid "The start date must precede or match end date."
 msgstr "Датум почетка мора бити пре или исти као датум краја."
 
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:5
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:78
 msgid ""
 "The summary could not be generated. Please try again later or contact your "
@@ -18077,7 +18093,7 @@ msgstr "Без важећег примаоца PGP имејл поруке."
 msgid "There is no valid PGP email signer."
 msgstr "Без важећег потписника PGP имејл поруке."
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:19
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:18
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:99
 msgid "There is not enough content yet to summarize this ticket."
 msgstr "Још увек нема довољно садржаја за сажети опис тикета."
@@ -18715,7 +18731,7 @@ msgstr "Датум увећања броја тикета"
 msgid "Ticket Number ignore system_id"
 msgstr "Игнорисање system_id из броја тикета"
 
-#: db/seeds/settings.rb:5918
+#: db/seeds/settings.rb:5950
 msgid "Ticket Organization Reassignment"
 msgstr "Пребацивање тикета организације"
 
@@ -18725,7 +18741,7 @@ msgstr "Пребацивање тикета организације"
 msgid "Ticket Overview"
 msgstr "Преглед тикета"
 
-#: db/seeds/settings.rb:5620
+#: db/seeds/settings.rb:5652
 msgid "Ticket Overview Query Polling"
 msgstr "Аутоматски упити у прегледима тикета"
 
@@ -18790,12 +18806,12 @@ msgstr "Претплате тикета"
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:2
 #: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:7
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:45
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:13
-#: db/seeds/permissions.rb:233 db/seeds/settings.rb:6026
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:16
+#: db/seeds/permissions.rb:233 db/seeds/settings.rb:6058
 msgid "Ticket Summary"
 msgstr "Сажети опис тикета"
 
-#: db/seeds/settings.rb:6040
+#: db/seeds/settings.rb:6072
 msgid "Ticket Summary Config"
 msgstr "Конфигурација сажетог описа тикета"
 
@@ -18962,7 +18978,7 @@ msgid "Ticket update failed."
 msgstr "Неуспело освежавање тикета."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/useTicketEditTitle.ts:27
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:463
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:464
 #: app/frontend/apps/mobile/pages/ticket/views/TicketDetailView.vue:174
 msgid "Ticket updated successfully."
 msgstr "Тикет је успешно освежен."
@@ -19394,11 +19410,11 @@ msgstr "Приступ путем кључа"
 msgid "Token authorization failed."
 msgstr "Неуспела ауторизација кључа."
 
-#: db/seeds/settings.rb:5268
+#: db/seeds/settings.rb:5300
 msgid "Token for CTI."
 msgstr "CTI кључ."
 
-#: db/seeds/settings.rb:5172
+#: db/seeds/settings.rb:5204
 msgid "Token for Sipgate."
 msgstr "Sipgate кључ."
 
@@ -19522,7 +19538,9 @@ msgid "Try Another Method"
 msgstr "Покушајте други метод"
 
 #: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:206
-msgid "Try NEW BETA UI"
+#, fuzzy
+#| msgid "Try NEW BETA UI"
+msgid "Try New BETA UI"
 msgstr "Пробај нови BETA интерфејс"
 
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordReset.vue:132
@@ -19532,7 +19550,7 @@ msgid "Try again"
 msgstr "Покушај поново"
 
 #: app/assets/javascripts/app/views/widget/two_factor_login/help_text.jst.eco:4
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:264
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:275
 #: app/frontend/apps/mobile/pages/authentication/views/Login.vue:149
 msgid "Try another method"
 msgstr "Покушајте други метод"
@@ -19739,7 +19757,7 @@ msgstr "Тип"
 msgid "Type:"
 msgstr "Тип:"
 
-#: db/seeds/settings.rb:5984
+#: db/seeds/settings.rb:6016
 msgid "UI Desktop Beta Switch"
 msgstr "Дугме за нови BETA интерфејс"
 
@@ -19772,29 +19790,17 @@ msgstr "URL"
 msgid "URL (AJAX endpoint)"
 msgstr "URL (AJAX путања)"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:140
-#, fuzzy
-#| msgid "Failed to add new checklist item."
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:143
 msgid "Unable to add all checklist items."
-msgstr "Грешка при додавању новог задатка на списак."
+msgstr "Грешка при додавању свих задатака на списак."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:98
-#, fuzzy
-#| msgid "Failed to add new checklist item."
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:100
 msgid "Unable to add checklist item."
 msgstr "Грешка при додавању новог задатка на списак."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:65
-#, fuzzy
-#| msgid "Allow users to create new checklists."
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:66
 msgid "Unable to create checklist."
-msgstr "Дозволи корисницима да додају нове спискове задатака."
-
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:5
-msgid "Unable to generate summary, try again later or contact your admin."
-msgstr ""
-"Није било могуће генерисати сажети опис, покушајте поново касније или "
-"контактирајте вашег администратора."
+msgstr "Није било могуће додати нови списак задатака."
 
 #: lib/ai/provider.rb:40
 msgid "Unable to process response"
@@ -19858,7 +19864,7 @@ msgstr "Развежи објекат"
 msgid "Unlock"
 msgstr "Откључај"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:258
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:264
 msgid "Unpin this panel"
 msgstr "Откачи овај панел"
 
@@ -19988,7 +19994,7 @@ msgstr "Освежи постојеће записе са атрибутима �
 msgid "Update successful."
 msgstr "Успешно освежавање."
 
-#: db/seeds/settings.rb:5930
+#: db/seeds/settings.rb:5962
 msgid "Update the most recent tickets."
 msgstr "Освежи недавне тикете."
 
@@ -20433,7 +20439,7 @@ msgstr "Корисник је одсутан"
 msgid "User is inactive"
 msgstr "Корисник је искључен"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:17
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:18
 msgid "User is inactive."
 msgstr "Корисник је искључен."
 
@@ -20478,7 +20484,7 @@ msgid "Username"
 msgstr "Корисничко име"
 
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:44
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:100
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:111
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordReset.vue:45
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:40
 msgid "Username / Email"
@@ -21086,13 +21092,13 @@ msgstr "Да"
 msgid "Yes, add attachments now"
 msgstr "Да, додај прилог одмах"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:24
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:36
+#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:45
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:74
 msgid "Yes, hide it"
 msgstr "Да, сакриј"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:369
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:370
 msgid "Yes, open the checklist"
 msgstr "Да, прикажи списак"
 
@@ -21300,8 +21306,8 @@ msgstr ""
 "Додајте језик испод, затим га изаберите у едитору базе знања за додавање "
 "ваших превода."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:23
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:33
+#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:44
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:71
 msgid "You can re-enable it anytime in Profile Settings > Appearance."
 msgstr "Увек је можете поново укључити у подешавањима Профил > Изглед."
 
@@ -21364,7 +21370,7 @@ msgstr "Немате администраторске дозволе."
 msgid "You do not have permission to update"
 msgstr "Немате дозволу за освежавање"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:444
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:447
 msgid "You don't have more tickets to load."
 msgstr "Немате више тикета за учитавање."
 
@@ -21454,7 +21460,7 @@ msgstr "Морате да дозволите приступ вашој каме�
 msgid "You have unchecked items in the checklist."
 msgstr "Имате неодзначене задатке на списку."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:364
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:365
 msgid ""
 "You have unchecked items in the checklist. Do you want to handle them before "
 "closing this ticket?"
@@ -21480,7 +21486,7 @@ msgstr "Неопходно је подесити Zammad путање у %с ве
 msgid "You need to configure the Zammad endpoints in the %s:"
 msgstr "Неопходно је подесити Zammad путање у %s:"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:440
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:443
 msgid "You reached the table limit of %s tickets (%s remaining)."
 msgstr "Достигнуто је ограничење табеле од %s тикет(а) (преостало је %s)."
 
@@ -21559,7 +21565,7 @@ msgstr "Ваша порука…"
 msgid "Your Name"
 msgstr "Ваше име"
 
-#: app/assets/javascripts/app/controllers/_profile/token_access.coffee:144
+#: app/assets/javascripts/app/controllers/_profile/token_access.coffee:150
 msgid "Your New Personal Access Token"
 msgstr "Ваш нови лични приступни кључ"
 
@@ -21686,7 +21692,7 @@ msgstr "Zammad фондација"
 msgid "Zammad Helpdesk"
 msgstr "Zammad Helpdesk"
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:65
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:64
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:132
 msgid "Zammad Smart Assist is generating the summary for you…"
 msgstr "Zammad паметни асистент генерише сажети опис за вас…"
@@ -21697,7 +21703,7 @@ msgstr "Zammad User Agent"
 
 #: app/assets/javascripts/app/views/generic/login_preview.jst.eco:4
 #: app/assets/javascripts/app/views/login.jst.eco:7
-#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:171
+#: app/frontend/apps/desktop/pages/authentication/views/Login.vue:182
 #: app/frontend/apps/mobile/pages/authentication/components/LoginHeader.vue:22
 msgid ""
 "Zammad is currently in maintenance mode. Only administrators can log in. "
@@ -22284,10 +22290,6 @@ msgstr "је већ заузето"
 msgid "has changed"
 msgstr "је измењено"
 
-#: app/assets/javascripts/app/views/ticket_zoom/ai_summary_banner.jst.eco:5
-msgid "has prepared a summary of this ticket."
-msgstr "је припремио сажети опис овог тикета."
-
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:157
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:184
 msgid "has reached"
@@ -22339,11 +22341,11 @@ msgstr ""
 msgid "i-doit"
 msgstr "i-doit"
 
-#: db/seeds/settings.rb:4967
+#: db/seeds/settings.rb:4999
 msgid "i-doit config"
 msgstr "i-doit конфигурација"
 
-#: db/seeds/settings.rb:4940
+#: db/seeds/settings.rb:4972
 msgid "i-doit integration"
 msgstr "i-doit интеграција"
 
@@ -23017,19 +23019,19 @@ msgstr "прикажи више"
 msgid "shown"
 msgstr "приказано"
 
-#: db/seeds/settings.rb:5169
+#: db/seeds/settings.rb:5201
 msgid "sipgate.io Token"
 msgstr "sipgate.io кључ"
 
-#: db/seeds/settings.rb:5203
+#: db/seeds/settings.rb:5235
 msgid "sipgate.io alternative FQDN"
 msgstr "sipgate.io алтернативни FQDN"
 
-#: db/seeds/settings.rb:5190
+#: db/seeds/settings.rb:5222
 msgid "sipgate.io config"
 msgstr "sipgate.io конфигурација"
 
-#: db/seeds/settings.rb:5141
+#: db/seeds/settings.rb:5173
 msgid "sipgate.io integration"
 msgstr "sipgate.io интеграција"
 
@@ -23305,6 +23307,20 @@ msgstr "…целог текстуалног поља"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅ Време чекања данас"
+
+#~ msgid "%s has prepared a summary of this ticket."
+#~ msgstr "%s је припремио сажет опис тикета."
+
+#~ msgid "Hide"
+#~ msgstr "Сакриј"
+
+#~ msgid "Unable to generate summary, try again later or contact your admin."
+#~ msgstr ""
+#~ "Није било могуће генерисати сажети опис, покушајте поново касније или "
+#~ "контактирајте вашег администратора."
+
+#~ msgid "has prepared a summary of this ticket."
+#~ msgstr "је припремио сажети опис овог тикета."
 
 #~ msgid "Hash"
 #~ msgstr "Отисак"
