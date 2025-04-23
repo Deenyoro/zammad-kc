@@ -696,9 +696,7 @@ const updateSchemaLink = (
   const values = (props.initialEntityObject?.objectAttributeValues ||
     []) as ObjectAttributeValue[]
   const attribute = values.find(({ attribute }) => attribute.name === fieldName)
-  if (attribute?.renderedLink) {
-    specificProps.link = attribute.renderedLink
-  }
+  specificProps.link = attribute?.renderedLink
 }
 
 const updateSchemaDataField = (

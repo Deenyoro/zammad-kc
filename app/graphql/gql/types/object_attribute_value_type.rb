@@ -11,7 +11,7 @@ module Gql::Types
 
     def rendered_link
       template = @object.dig(:attribute, :data_option, 'linktemplate')
-      return nil if !template
+      return nil if !template || @object[:value].blank?
 
       NotificationFactory::Renderer.new(
         objects:    { @object[:parent].class.name.downcase.to_sym => @object[:parent] },

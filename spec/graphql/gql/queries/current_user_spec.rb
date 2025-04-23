@@ -76,7 +76,7 @@ RSpec.describe Gql::Queries::CurrentUser, type: :graphql do
       context 'with custom object attribute with linktemplate', db_strategy: :reset do
         let(:object_attribute) do
           screens = { create: { 'admin.organization': { shown: true, required: false } } }
-          create(:object_manager_attribute_text, name: 'UserLink', object_name: 'User', screens: screens).tap do |oa|
+          create(:object_manager_attribute_text, name: 'UserLink', object_name: 'User', default: 'foobar', screens: screens).tap do |oa|
             oa.data_option['linktemplate'] = 'http://test?user=#{user.fullname};missing=#{missing.nonexisting}' # rubocop:disable Lint/InterpolationCheck
             oa.save!
             ObjectManager::Attribute.migration_execute
@@ -92,7 +92,7 @@ RSpec.describe Gql::Queries::CurrentUser, type: :graphql do
 
         it 'has rendered and URL encoded objectAttributeValue data for User' do
           oas = gql.result.data[:objectAttributeValues]
-          expect(oas.find { |oa| oa['attribute']['name'].eql?('UserLink') }).to include('value' => '', 'renderedLink' => rendered_link)
+          expect(oas.find { |oa| oa['attribute']['name'].eql?('UserLink') }).to include('value' => 'foobar', 'renderedLink' => rendered_link)
         end
       end
 
