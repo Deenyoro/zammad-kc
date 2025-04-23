@@ -3,6 +3,8 @@
 module HasActiveJobLock
   class LockKeyNotGeneratable < StandardError; end
 
+  EXISTING_ACTIVE_JOB_LOCK_BEHAVIOUR = :dismiss # or upsert_date
+
   extend ActiveSupport::Concern
 
   included do
@@ -128,7 +130,7 @@ module HasActiveJobLock
 
     # don't enqueue perform_later jobs if a job with the same
     # lock key exists that hasn't started to perform yet
-    existing_active_job_lock! if active_job_lock.peform_pending?
+    existing_active_job_lock! if active_job_lock.perform_pending?
 
     active_job_lock.tap { |lock| lock.transfer_to(self) }
   end
@@ -142,6 +144,24 @@ module HasActiveJobLock
   end
 
   def existing_active_job_lock!
+    throw :abort if self.class::EXISTING_ACTIVE_JOB_LOCK_BEHAVIOUR == :dismiss
+
+    throw :abort if scheduled_at.blank? # apply to postponed jobs only
+
+    if active_job_lock && !active_job_lock.perform_pending?
+      active_job_lock.transfer_to(self)
+      return
+    end
+
+    delayed_job = Delayed::Job.find_by('handler LIKE ?', "%#{active_job_lock.active_job_id}%")
+
+    if !delayed_job
+      active_job_lock.transfer_to(self)
+      return
+    end
+
+    delayed_job.update!(run_at: scheduled_at)
+
     throw :abort
   end
 end

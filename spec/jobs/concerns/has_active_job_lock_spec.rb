@@ -22,7 +22,7 @@ RSpec.describe HasActiveJobLock, type: :job do
     end
   end
 
-  shared_examples 'handle locking of jobs' do
+  shared_examples 'handle locking of jobs' do |behaviour: :dismiss|
     context 'performing job is present' do
 
       before { create(:active_job_lock, lock_key: job_class.name, created_at: 1.minute.ago, updated_at: 1.second.ago) }
@@ -33,6 +33,13 @@ RSpec.describe HasActiveJobLock, type: :job do
 
       it 'allows execution of perform_now jobs' do
         expect { job_class.perform_now }.to change(job_class, :perform_counter).by(1)
+      end
+
+      context 'with a date' do
+        it 'allows enquiueing of perform_later jobs' do
+          expect { job_class.set(wait: 1.minute).perform_later }
+            .to have_enqueued_job(job_class).exactly(:once)
+        end
       end
     end
 
@@ -46,6 +53,34 @@ RSpec.describe HasActiveJobLock, type: :job do
 
       it 'allows execution of perform_now jobs' do
         expect { job_class.perform_now }.to change(job_class, :perform_counter).by(1)
+      end
+
+      # Date upsert relies on DelayedJob internals
+      # If type is set to job, RSpec uses special ActiveJob test adapter
+      # Thus different type has to be set to test date upsert
+      context 'with a date', type: :model do
+        let(:related_delayed_job) { Delayed::Job.where("handler LIKE '%job_class: UniqueActiveJob%'").last }
+
+        it 'does not enqueue a new job' do
+          expect { job_class.set(wait_until: 1.year.from_now).perform_later }
+            .not_to change(Delayed::Job, :count)
+        end
+
+        case behaviour
+        when :upsert_date
+          it 'bumps original job perform date' do
+            target_time = 1.day.from_now.beginning_of_minute
+
+            expect { job_class.set(wait_until: target_time).perform_later }
+              .to change { related_delayed_job.reload.run_at }
+              .to target_time
+          end
+        else
+          it 'does not allow enqueing of perform_later jobs' do
+            expect { job_class.set(wait: 1.minute).perform_later }
+              .not_to change { related_delayed_job.reload.run_at }
+          end
+        end
       end
     end
 
@@ -177,6 +212,20 @@ RSpec.describe HasActiveJobLock, type: :job do
     end
 
     include_examples 'handle locking of jobs'
+  end
+
+  context 'when has upsert date lock behaviour' do
+    # let(:job_class) do
+    #   Class.new(super()) do
+    #     EXISTING_ACTIVE_JOB_LOCK_BEHAVIOUR = :upsert_date
+    #   end
+    # end
+
+    before do
+      stub_const "#{job_class.name}::EXISTING_ACTIVE_JOB_LOCK_BEHAVIOUR", :upsert_date
+    end
+
+    include_examples 'handle locking of jobs', behaviour: :upsert_date
   end
 
   context 'when has invalid custom lock key' do

@@ -5,12 +5,10 @@ class ScheduledWhatsappReminderJob < ApplicationJob
 
   DEFAULT_REMINDER_MESSAGE = __('Hello, the customer service window for this conversation is about to expire, please reply to keep it open.').freeze
 
-  def lock_key
-    "#{self.class.name}/#{SecureRandom.uuid}"
-  end
+  EXISTING_ACTIVE_JOB_LOCK_BEHAVIOUR = :upsert_date
 
-  def self.perform_at(scheduled_time, ticket, locale)
-    set(wait_until: scheduled_time).perform_later(ticket, locale)
+  def lock_key
+    "#{self.class.name}/#{arguments[0].id}"
   end
 
   def perform(ticket, locale)

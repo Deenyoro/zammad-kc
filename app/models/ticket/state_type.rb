@@ -29,6 +29,7 @@ class Ticket::StateType < ApplicationModel
     closed:                 %w[closed],
     merged:                 %w[merged],
     archivable_into:        %w[new open closed],
+    resolved:               %w[closed merged removed],
   }.with_indifferent_access.freeze
 
   def solo?

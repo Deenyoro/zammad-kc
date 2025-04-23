@@ -8,17 +8,6 @@ RSpec.describe ScheduledWhatsappReminderJob, type: :job do
   let(:reminder_time) { 12.hours.from_now }
   let(:locale)        { Locale.default }
 
-  describe '#perform_at' do
-    it 'schedules ticket unique delayed job at appointed time' do
-      expect(described_class.perform_at(reminder_time, ticket, locale))
-        .to have_attributes(
-          arguments:    [ticket, locale],
-          lock_key:     a_string_starting_with('ScheduledWhatsappReminderJob/'),
-          scheduled_at: reminder_time,
-        )
-    end
-  end
-
   describe '.perform' do
     subject(:job) { described_class.new(reminder_time, ticket, locale) }
 

@@ -6,7 +6,7 @@ class ActiveJobLock < ActiveRecord::Base
     active_job.job_id == active_job_id
   end
 
-  def peform_pending?
+  def perform_pending?
     updated_at == created_at
   end
 

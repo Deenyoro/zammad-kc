@@ -82,7 +82,7 @@ class Whatsapp::Webhook::Message
   end
 
   def find_ticket
-    state_ids        = Ticket::State.where(name: %w[closed merged removed]).pluck(:id)
+    state_ids        = Ticket::State.by_category_ids(:resolved)
     possible_tickets = Ticket.where(customer_id: @user.id).where.not(state_id: state_ids).reorder(:updated_at)
 
     possible_tickets.find_each.find { |possible_ticket| possible_ticket.preferences[:channel_id] == @channel.id }
@@ -244,26 +244,14 @@ class Whatsapp::Webhook::Message
     timestamp_incoming = @ticket.preferences.dig(:whatsapp, :timestamp_incoming)
     return if timestamp_incoming.nil?
 
-    cleanup_last_reminder_job
-
     # Calculate the end of the service window, based on the message timestamp.
     end_service_time = Time.zone.at(timestamp_incoming.to_i) + 24.hours
     return if end_service_time <= Time.zone.now
 
     # Set the reminder time to 1 hour before the service window closes and schedule a delayed job.
     reminder_time = end_service_time - 1.hour
-    job = ScheduledWhatsappReminderJob.perform_at(reminder_time, @ticket, user_locale)
-
-    # Remember reminder job information for subsequent runs.
-    preferences = @ticket.preferences
-    preferences[:whatsapp][:last_reminder_job_id] = job.provider_job_id
-    ticket.update!(preferences:)
-  end
-
-  def cleanup_last_reminder_job
-    last_job_id = @ticket.preferences.dig(:whatsapp, :last_reminder_job_id)
-    return if last_job_id.nil?
-
-    ::Delayed::Job.find_by(id: last_job_id)&.destroy!
+    ScheduledWhatsappReminderJob
+      .set(wait_until: reminder_time)
+      .perform_later(ticket, user_locale)
   end
 end
