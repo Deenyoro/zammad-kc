@@ -77,7 +77,7 @@ RSpec.describe Issue5191EnsureSingleMergedState, type: :db_migration do
     it 'renames oldest state back' do
       migrate
 
-      expect(merged_states_by_name.first.id).to be < (additional_state.id)
+      expect(merged_states_by_name.first.id).to be < additional_state.id
     end
 
     it 'changes additional states to closed type' do

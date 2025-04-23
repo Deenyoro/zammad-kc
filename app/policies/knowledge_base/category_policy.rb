@@ -42,7 +42,7 @@ class KnowledgeBase::CategoryPolicy < ApplicationPolicy
   end
 
   def parent_access
-    @parent_access ||= KnowledgeBase::EffectivePermission.new(user, (record.parent || record.knowledge_base)).access_effective
+    @parent_access ||= KnowledgeBase::EffectivePermission.new(user, record.parent || record.knowledge_base).access_effective
   end
 
   def parent_editor?

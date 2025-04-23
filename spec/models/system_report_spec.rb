@@ -239,7 +239,7 @@ RSpec.describe SystemReport, current_user_id: 1, type: :model do
         # If your setting does not contain confidential values, just add it to the non_confidential_settings variable list in the top.
         # If your setting DOES contain confidential values, then edit the settings plugin of the system report to exclude it.
         settings = described_class.fetch[:system_report]['Setting'].pluck(:name)
-        expect((settings - non_confidential_settings)).to eq([])
+        expect(settings - non_confidential_settings).to eq([])
       end
     end
   end

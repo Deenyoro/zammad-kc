@@ -83,7 +83,7 @@ class Channel::Driver::Pop3 < Channel::Driver::BaseEmailInbound
 
     if ssl
       Certificate::ApplySSLCertificates.ensure_fresh_ssl_context
-      @pop.enable_ssl((ssl_verify ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE))
+      @pop.enable_ssl(ssl_verify ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE)
     end
     @pop.start(options[:user], options[:password])
   end

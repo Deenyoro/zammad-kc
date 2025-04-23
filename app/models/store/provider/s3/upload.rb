@@ -47,7 +47,7 @@ module Store::Provider::S3::Upload
     def divide(data)
       size = Store::Provider::S3::Config.max_chunk_size
 
-      Array.new(((data.length + size - 1) / size)) do |index|
+      Array.new((data.length + size - 1) / size) do |index|
         data.byteslice(index * size, size)
       end
     end
