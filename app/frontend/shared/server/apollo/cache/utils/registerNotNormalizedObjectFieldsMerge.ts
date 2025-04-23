@@ -14,7 +14,7 @@ export default function registerNotNormalizedObjectFieldsMerge(
 
   fields.forEach((field) => {
     notNormalizedFields[field] = {
-      merge: (_, incoming) => incoming,
+      merge: true,
     }
   })
 

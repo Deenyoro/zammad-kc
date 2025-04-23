@@ -26,7 +26,9 @@ export const initializeTicketInformation = (
       () => ({
         ticketId: ticketId.value,
       }),
-      { fetchPolicy: 'cache-first' },
+      {
+        fetchPolicy: 'cache-first',
+      },
     ),
   )
 
