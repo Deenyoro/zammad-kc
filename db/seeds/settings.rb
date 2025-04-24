@@ -3729,6 +3729,15 @@ Setting.create_if_not_exists(
   preferences: { online_service_disable: true },
   frontend:    false
 )
+Setting.create_if_not_exists(
+  title:       __('Elasticsearch Asciifolding Configuration'),
+  name:        'es_asciifolding',
+  area:        'SearchIndex::Elasticsearch',
+  description: __('Define if asciifolding analyzer should be used in Elasticsearch.'),
+  state:       true,
+  preferences: { online_service_disable: true },
+  frontend:    false
+)
 
 Setting.create_if_not_exists(
   title:       __('Import Mode'),

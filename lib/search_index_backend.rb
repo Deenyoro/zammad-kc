@@ -965,14 +965,18 @@ helper method for making HTTP calls and raising error if response was not succes
 
   def self.default_model_settings
     {
-      'index.mapping.total_fields.limit' => 2000,
-      'index.max_result_window'          => 1_000_000,
+      'index.mapping.total_fields.limit'    => 2000,
+      'index.max_result_window'             => 1_000_000,
+      'analysis.analyzer.default.type'      => 'custom',
+      'analysis.analyzer.default.tokenizer' => 'standard',
+      'analysis.analyzer.default.filter'    => ['lowercase'],
     }
   end
 
   def self.model_settings(model)
-    settings = Setting.get('es_model_settings')[model.name] || {}
-    default_model_settings.merge(settings)
+    settings = default_model_settings
+    settings['analysis.analyzer.default.filter'] |= ['asciifolding'] if Setting.get('es_asciifolding')
+    settings.merge(Setting.get('es_model_settings')[model.name] || {})
   end
 
   def self.all_settings

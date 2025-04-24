@@ -33,6 +33,36 @@ RSpec.describe Ticket::Search do
     end
   end
 
+  describe 'Add support for optional Elasticsearch asciifolding analyzer #5537', searchindex: true do
+    let(:search)       { 'Ružovučký' }
+    let(:search_fuzzy) { 'ruzovucky' }
+    let!(:ticket)      { create(:ticket, title: 'Ružovučký koníček a sôvä spia', group: Group.first) }
+    let(:agent)        { create(:agent, groups: Group.all) }
+
+    before do
+      searchindex_model_reload([Ticket])
+    end
+
+    it 'does find the ticket via asciifolding', :aggregate_failures do
+      expect(Ticket.search(current_user: agent, query: search)).to eq([ticket])
+      expect(Ticket.search(current_user: agent, query: search_fuzzy)).to eq([ticket])
+    end
+
+    context 'when disabled' do
+      before do
+        Setting.set('es_asciifolding', false)
+        SearchIndexBackend.drop_index([Ticket])
+        SearchIndexBackend.create_index([Ticket])
+        searchindex_model_reload([Ticket])
+      end
+
+      it 'does not find the ticket without asciifolding', :aggregate_failures do
+        expect(Ticket.search(current_user: agent, query: search)).to eq([ticket])
+        expect(Ticket.search(current_user: agent, query: search_fuzzy)).to eq([])
+      end
+    end
+  end
+
   describe 'Language detection mechanism #5476', searchindex: true do
     let(:ticket)  { create(:ticket, group: Group.first) }
     let(:article) { create(:ticket_article, ticket: ticket, detected_language: 'de') }
