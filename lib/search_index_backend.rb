@@ -161,7 +161,8 @@ get object of search index by id
 
   def self.get(type, data)
 
-    url = build_url(type: type, object_id: data, with_pipeline: false)
+    # do not return attachments since they could contain invalid utf-8 #5575
+    url = build_url(type: type, object_id: data, with_pipeline: false, url_params: { _source_excludes: 'attachment,article.attachment' })
     return if url.blank?
 
     make_request(url, method: :get).try(:data)
@@ -555,6 +556,9 @@ example for aggregations within one year
 
     data = selector2query(index, selectors, options, aggs_interval)
 
+    # do not return attachments since they could contain invalid utf-8 #5575
+    data[:_source] = false
+
     response = make_request(url, data: data, method: :post)
 
     with_interval = aggs_interval.present? && aggs_interval[:interval].present?
@@ -761,6 +765,9 @@ generate url for index or document access (only for internal use)
       data[:query][:bool][:must_not] += Array.wrap(selector_query[:query][:bool][:must_not])
     end
 
+    # do not return attachments since they could contain invalid utf-8 #5575
+    data[:_source] = false
+
     data
   end
 
@@ -934,6 +941,11 @@ helper method for making HTTP calls and raising error if response was not succes
         include_in_parent: true,
       }
     end
+
+    # do not return attachments since they could contain invalid utf-8 #5575
+    result[:_source] = {
+      excludes: ['attachment', 'article.attachment']
+    }
 
     result
   end
