@@ -13,7 +13,7 @@
   <% for row in @rows.slice(-20): %>
   <tr>
     <td><a href="#organization/profile/<%- row.organization.id %>"><%= row.organization.name %></a>
-    <td><%= row.time_unit %>
+    <td><%= @timeUnit(row.time_unit) %>
   <% end %>
   </tbody>
 </table>

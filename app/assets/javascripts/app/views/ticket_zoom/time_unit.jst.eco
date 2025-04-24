@@ -3,7 +3,7 @@
   <div class="accounted-time-value-container">
     <div class="accounted-time-value-row">
       <div class="accounted-time-value-item"><%- @T('Total') %></div>
-      <div class="accounted-time-value-item"><%= @ticket.time_unit %></div>
+      <div class="accounted-time-value-item"><%= @timeUnit(@ticket.time_unit) %></div>
       <% if @displayUnit: %>
       <div class="accounted-time-value-item">
         <span class="text-muted"><%- @T(@displayUnit) %></span>
@@ -13,7 +13,7 @@
     <% for entry in @list: %>
     <div class="accounted-time-value-row">
       <div class="accounted-time-value-item" title="<%- @T(entry[0]) %>"><%- @T(entry[0]) %></div>
-      <div class="accounted-time-value-item"><%= parseFloat(entry[1]).toFixed(1) %></div>
+      <div class="accounted-time-value-item"><%= @timeUnit(entry[1]) %></div>
       <% if @displayUnit: %>
       <div class="accounted-time-value-item">
         <span class="text-muted"><%- @T(@displayUnit) %></span>

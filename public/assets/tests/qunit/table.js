@@ -906,10 +906,10 @@ QUnit.test('Table - numeric sort', assert => {
   })
 
   click_sort(el, 3)
-  assert.ok(_.isEqual(list_items(el, 3), ['10', '25', '50']), 'Sorting by time unit ASC is fine')
+  assert.ok(_.isEqual(list_items(el, 3), ['10.00', '25.00', '50.00']), 'Sorting by time unit ASC is fine')
 
   click_sort(el, 3)
-  assert.ok(_.isEqual(list_items(el, 3), ['50', '25', '10']), 'Sorting by time unit DESC is fine')
+  assert.ok(_.isEqual(list_items(el, 3), ['50.00', '25.00', '10.00']), 'Sorting by time unit DESC is fine')
 });
 
 QUnit.test('Last column is right-aligned if auto align flag is set', assert => {

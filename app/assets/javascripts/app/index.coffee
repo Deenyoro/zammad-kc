@@ -202,6 +202,8 @@ class App extends Spine.Controller
           title += ' ' + App.Config.get('timezone_default')
 
         resultLocal = "<time class=\"humanTimeFromNow #{cssClass}\" datetime=\"#{resultLocal}\" title=\"#{title}\"#{timezone}>#{humanTime}</time>"
+      else if attributeConfig.tag is 'float'
+        resultLocal = App.ViewHelpers.timeUnit(resultLocal)
 
       if !isHtmlEscape && typeof resultLocal is 'string'
         resultLocal = App.Utils.htmlEscape(resultLocal)

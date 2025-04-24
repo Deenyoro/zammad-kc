@@ -24,8 +24,8 @@
     <td><%= row.customer %>
     <td><%= row.organization %>
     <td><%= row.agent %>
-    <td><%= row.time_unit %>
-    <td><%= row.ticket.time_unit %>
+    <td><%= @timeUnit(row.time_unit) %>
+    <td><%= @timeUnit(row.ticket.time_unit) %>
     <td><%- @humanTime(row.ticket.created_at) %>
     <td><%- @humanTime(row.ticket.close_at) %>
   <% end %>

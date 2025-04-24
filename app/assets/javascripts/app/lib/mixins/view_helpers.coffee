@@ -8,6 +8,10 @@ App.ViewHelpers =
   P: (object, attributeName, attributes, table = false) ->
     App.viewPrint(object, attributeName, attributes, table)
 
+  timeUnit: (value) ->
+    return if !value
+    return parseFloat(value).toFixed(2)
+
   # define date format helper
   date: (time) ->
     return '' if !time
