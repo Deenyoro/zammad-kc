@@ -442,6 +442,7 @@ App.Config.set(
               onlyOutsideInputs: true
               description: __('Toggle dark mode')
               callback: ->
+                return if !App.Session.get()?.permission('user_preferences.appearance')
                 App.Event.trigger('ui:theme:toggle-dark-mode')
             }
           ]
