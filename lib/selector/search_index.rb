@@ -295,14 +295,11 @@ class Selector::SearchIndex < Selector::Base
       end
 
     # is less/greater than
-    elsif ['is less than', 'is greater than'].include?(data[:operator])
+    elsif ['is less than', 'is less equal than', 'is greater than', 'is greater equal than'].include?(data[:operator])
+      operator  = ((data[:operator].include?('less') ? 'lt' : 'gt') + (data[:operator].include?('equal') ? 'e' : '')).to_sym
       t[:range] = {}
       t[:range][key_tmp] = {}
-      if data[:operator] == 'is less than'
-        t[:range][key_tmp][:lt] = data[:value]
-      else
-        t[:range][key_tmp][:gt] = data[:value]
-      end
+      t[:range][key_tmp][operator] = data[:value]
       query_must.push t
 
     # within last/within next (relative)

@@ -2440,4 +2440,125 @@ RSpec.describe 'CoreWorkflow > Conditions', mariadb: true, type: :model do
       end
     end
   end
+
+  describe '.perform - Condition - Integer operators', db_strategy: :reset do
+    let(:field_name) { SecureRandom.hex(8) }
+    let(:payload) do
+      base_payload.merge('params' => { 'id' => ticket.id }, 'screen' => 'edit')
+    end
+
+    before do
+      create(:object_manager_attribute_integer, object_name: 'Ticket', name: field_name)
+      ObjectManager::Attribute.migration_execute
+      ticket.reload.update!(field_name => 42)
+    end
+
+    context 'when is less than' do
+      let!(:workflow) do
+        create(:core_workflow,
+               object:             'Ticket',
+               condition_selected: {
+                 "ticket.#{field_name}": {
+                   operator: 'is less than',
+                   value:    43,
+                 },
+               })
+      end
+
+      it 'does match' do
+        expect(result[:matched_workflows]).to include(workflow.id)
+      end
+
+      context 'when mismatch' do
+        before do
+          ticket.update!(field_name => 43)
+        end
+
+        it 'does not match' do
+          expect(result[:matched_workflows]).not_to include(workflow.id)
+        end
+      end
+    end
+
+    context 'when is less equal than' do
+      let!(:workflow) do
+        create(:core_workflow,
+               object:             'Ticket',
+               condition_selected: {
+                 "ticket.#{field_name}": {
+                   operator: 'is less equal than',
+                   value:    42,
+                 },
+               })
+      end
+
+      it 'does match' do
+        expect(result[:matched_workflows]).to include(workflow.id)
+      end
+
+      context 'when mismatch' do
+        before do
+          ticket.update!(field_name => 43)
+        end
+
+        it 'does not match' do
+          expect(result[:matched_workflows]).not_to include(workflow.id)
+        end
+      end
+    end
+
+    context 'when is greater than' do
+      let!(:workflow) do
+        create(:core_workflow,
+               object:             'Ticket',
+               condition_selected: {
+                 "ticket.#{field_name}": {
+                   operator: 'is greater than',
+                   value:    41,
+                 },
+               })
+      end
+
+      it 'does match' do
+        expect(result[:matched_workflows]).to include(workflow.id)
+      end
+
+      context 'when mismatch' do
+        before do
+          ticket.update!(field_name => 41)
+        end
+
+        it 'does not match' do
+          expect(result[:matched_workflows]).not_to include(workflow.id)
+        end
+      end
+    end
+
+    context 'when is greater equal than' do
+      let!(:workflow) do
+        create(:core_workflow,
+               object:             'Ticket',
+               condition_selected: {
+                 "ticket.#{field_name}": {
+                   operator: 'is greater equal than',
+                   value:    42,
+                 },
+               })
+      end
+
+      it 'does match' do
+        expect(result[:matched_workflows]).to include(workflow.id)
+      end
+
+      context 'when mismatch' do
+        before do
+          ticket.update!(field_name => 41)
+        end
+
+        it 'does not match' do
+          expect(result[:matched_workflows]).not_to include(workflow.id)
+        end
+      end
+    end
+  end
 end

@@ -21,8 +21,10 @@ class Selector::Sql < Selector::Base
     'has reached',
     'is any of',
     'is in working time',
-    'is greater than',
     'is less than',
+    'is less equal than',
+    'is greater than',
+    'is greater equal than',
     'is none of',
     'is not in working time',
     'is not',
@@ -587,11 +589,9 @@ class Selector::Sql < Selector::Base
       query << "#{attribute} >= ?"
       time = range(block_condition).ago
       bind_params.push time
-    elsif block_condition[:operator] == 'is less than'
-      query << "#{attribute} < ?"
-      bind_params.push block_condition[:value]
-    elsif block_condition[:operator] == 'is greater than'
-      query << "#{attribute} > ?"
+    elsif ['is less than', 'is less equal than', 'is greater than', 'is greater equal than'].include?(block_condition[:operator])
+      operator = (block_condition[:operator].include?('less') ? '<' : '>') + (block_condition[:operator].include?('equal') ? '=' : '')
+      query << "#{attribute} #{operator} ?"
       bind_params.push block_condition[:value]
     else
       raise "Invalid operator '#{block_condition[:operator]}' for '#{block_condition[:value].inspect}'"

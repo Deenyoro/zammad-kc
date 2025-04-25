@@ -1272,4 +1272,216 @@ RSpec.describe Selector::Base, searchindex: true do
       end
     end
   end
+
+  describe 'Integer operators', db_strategy: :reset do
+    let(:field_name) { SecureRandom.hex(8) }
+    let(:ticket)     { create(:ticket, title: SecureRandom.uuid, group: Group.first, owner: agent_owner, customer: default_customer, field_name => 42) }
+
+    before do
+      create(:object_manager_attribute_integer, object_name: 'Ticket', name: field_name)
+      ObjectManager::Attribute.migration_execute
+      ticket
+      searchindex_model_reload([Ticket])
+    end
+
+    describe 'when is less than' do
+      it 'does match the ticket', :aggregate_failures do
+        condition = {
+          operator:   'AND',
+          conditions: [
+            {
+              name:     'ticket.title',
+              operator: 'is',
+              value:    ticket.title,
+            },
+            {
+              name:     "ticket.#{field_name}",
+              operator: 'is less than',
+              value:    43,
+            },
+          ]
+        }
+
+        count, = Ticket.selectors(condition, { current_user: agent })
+        expect(count).to eq(1)
+
+        result = SearchIndexBackend.selectors('Ticket', condition, { current_user: agent })
+        expect(result[:count]).to eq(1)
+      end
+
+      it 'does not match the ticket', :aggregate_failures do
+        condition = {
+          operator:   'AND',
+          conditions: [
+            {
+              name:     'ticket.title',
+              operator: 'is',
+              value:    ticket.title,
+            },
+            {
+              name:     "ticket.#{field_name}",
+              operator: 'is less than',
+              value:    42,
+            },
+          ]
+        }
+
+        count, = Ticket.selectors(condition, { current_user: agent })
+        expect(count).to eq(0)
+
+        result = SearchIndexBackend.selectors('Ticket', condition, { current_user: agent })
+        expect(result[:count]).to eq(0)
+      end
+    end
+
+    describe 'when is less equal than' do
+      it 'does match the ticket', :aggregate_failures do
+        condition = {
+          operator:   'AND',
+          conditions: [
+            {
+              name:     'ticket.title',
+              operator: 'is',
+              value:    ticket.title,
+            },
+            {
+              name:     "ticket.#{field_name}",
+              operator: 'is less equal than',
+              value:    42,
+            },
+          ]
+        }
+
+        count, = Ticket.selectors(condition, { current_user: agent })
+        expect(count).to eq(1)
+
+        result = SearchIndexBackend.selectors('Ticket', condition, { current_user: agent })
+        expect(result[:count]).to eq(1)
+      end
+
+      it 'does not match the ticket', :aggregate_failures do
+        condition = {
+          operator:   'AND',
+          conditions: [
+            {
+              name:     'ticket.title',
+              operator: 'is',
+              value:    ticket.title,
+            },
+            {
+              name:     "ticket.#{field_name}",
+              operator: 'is less equal than',
+              value:    41,
+            },
+          ]
+        }
+
+        count, = Ticket.selectors(condition, { current_user: agent })
+        expect(count).to eq(0)
+
+        result = SearchIndexBackend.selectors('Ticket', condition, { current_user: agent })
+        expect(result[:count]).to eq(0)
+      end
+    end
+
+    describe 'when is greater than' do
+      it 'does match the ticket', :aggregate_failures do
+        condition = {
+          operator:   'AND',
+          conditions: [
+            {
+              name:     'ticket.title',
+              operator: 'is',
+              value:    ticket.title,
+            },
+            {
+              name:     "ticket.#{field_name}",
+              operator: 'is greater than',
+              value:    41,
+            },
+          ]
+        }
+
+        count, = Ticket.selectors(condition, { current_user: agent })
+        expect(count).to eq(1)
+
+        result = SearchIndexBackend.selectors('Ticket', condition, { current_user: agent })
+        expect(result[:count]).to eq(1)
+      end
+
+      it 'does not match the ticket', :aggregate_failures do
+        condition = {
+          operator:   'AND',
+          conditions: [
+            {
+              name:     'ticket.title',
+              operator: 'is',
+              value:    ticket.title,
+            },
+            {
+              name:     "ticket.#{field_name}",
+              operator: 'is greater than',
+              value:    42,
+            },
+          ]
+        }
+
+        count, = Ticket.selectors(condition, { current_user: agent })
+        expect(count).to eq(0)
+
+        result = SearchIndexBackend.selectors('Ticket', condition, { current_user: agent })
+        expect(result[:count]).to eq(0)
+      end
+    end
+
+    describe 'when is greater equal than' do
+      it 'does match the ticket', :aggregate_failures do
+        condition = {
+          operator:   'AND',
+          conditions: [
+            {
+              name:     'ticket.title',
+              operator: 'is',
+              value:    ticket.title,
+            },
+            {
+              name:     "ticket.#{field_name}",
+              operator: 'is greater equal than',
+              value:    42,
+            },
+          ]
+        }
+
+        count, = Ticket.selectors(condition, { current_user: agent })
+        expect(count).to eq(1)
+
+        result = SearchIndexBackend.selectors('Ticket', condition, { current_user: agent })
+        expect(result[:count]).to eq(1)
+      end
+
+      it 'does not match the ticket', :aggregate_failures do
+        condition = {
+          operator:   'AND',
+          conditions: [
+            {
+              name:     'ticket.title',
+              operator: 'is',
+              value:    ticket.title,
+            },
+            {
+              name:     "ticket.#{field_name}",
+              operator: 'is greater equal than',
+              value:    43,
+            },
+          ]
+        }
+
+        count, = Ticket.selectors(condition, { current_user: agent })
+        expect(count).to eq(0)
+
+        result = SearchIndexBackend.selectors('Ticket', condition, { current_user: agent })
+        expect(result[:count]).to eq(0)
+      end
+    end
+  end
 end
