@@ -72,7 +72,7 @@ const showDivider = computed(() => shownUnits.value.length > 1) // If more than 
           :aria-labelledby="`accounted-time-label-${name}`"
           :aria-describedby="`accounted-time-unit-${name}`"
           class="text-black! ltr:ml-auto rtl:mr-auto dark:text-white!"
-          >{{ timeUnit }}</CommonLabel
+          >{{ timeUnit?.toFixed(2) }}</CommonLabel
         >
         <CommonLabel
           :id="`accounted-time-unit-${name}`"

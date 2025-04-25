@@ -16,7 +16,7 @@ export const staticObjectAttributes: EntityStaticObjectAttributes = {
     {
       name: 'time_unit',
       display: __('Accounted Time'),
-      dataType: 'input',
+      dataType: 'time_unit',
       isStatic: true,
       isInternal: true,
     },

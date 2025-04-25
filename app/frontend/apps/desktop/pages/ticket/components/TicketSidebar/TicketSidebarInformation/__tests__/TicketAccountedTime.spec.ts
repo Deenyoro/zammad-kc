@@ -16,26 +16,32 @@ const timeUnitsPerType = [
   {
     name: 'None',
     timeUnit: 6,
+    timeUnitDisplay: '6.00',
   },
   {
     name: 'Finance',
     timeUnit: 5,
+    timeUnitDisplay: '5.00',
   },
   {
     name: 'Business',
     timeUnit: 4,
+    timeUnitDisplay: '4.00',
   },
   {
     name: 'Development',
     timeUnit: 3,
+    timeUnitDisplay: '3.00',
   },
   {
     name: 'Testing',
     timeUnit: 2,
+    timeUnitDisplay: '2.00',
   },
   {
     name: 'Foo',
     timeUnit: 1,
+    timeUnitDisplay: '1.00',
   },
 ]
 
@@ -74,7 +80,7 @@ describe('TicketAccountedTime', () => {
 
     expect(wrapper.getByText('Total')).toBeInTheDocument()
 
-    expect(wrapper.getByText('3')).toBeInTheDocument()
+    expect(wrapper.getByText('3.00')).toBeInTheDocument()
 
     expect(wrapper.queryByRole('button')).not.toBeInTheDocument() // Show more button
   })
@@ -95,10 +101,12 @@ describe('TicketAccountedTime', () => {
     timeUnitsPerType.forEach((value, index) => {
       if (index < 3) {
         expect(wrapper.getByText(value.name)).toBeInTheDocument()
-        expect(wrapper.getByText(value.timeUnit)).toBeInTheDocument()
+        expect(wrapper.getByText(value.timeUnitDisplay)).toBeInTheDocument()
       } else {
         expect(wrapper.queryByText(value.name)).not.toBeInTheDocument()
-        expect(wrapper.queryByText(value.timeUnit)).not.toBeInTheDocument()
+        expect(
+          wrapper.queryByText(value.timeUnitDisplay),
+        ).not.toBeInTheDocument()
       }
     })
   })
@@ -118,7 +126,7 @@ describe('TicketAccountedTime', () => {
 
     timeUnitsPerType.slice(3, -1).forEach((value) => {
       expect(wrapper.getByText(value.name)).toBeInTheDocument()
-      expect(wrapper.getByText(value.timeUnit)).toBeInTheDocument()
+      expect(wrapper.getByText(value.timeUnitDisplay)).toBeInTheDocument()
     })
   })
 

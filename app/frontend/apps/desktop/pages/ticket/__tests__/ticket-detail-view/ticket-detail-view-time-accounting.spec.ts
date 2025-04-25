@@ -82,7 +82,7 @@ describe('Ticket detail view', () => {
       ).toBeInTheDocument()
 
       expect(within(sidebar).getByText('Total')).toBeInTheDocument()
-      expect(within(sidebar).getByText('15')).toBeInTheDocument()
+      expect(within(sidebar).getByText('15.00')).toBeInTheDocument()
     })
 
     it('opens time accounting flyout when the condition is met', async () => {
