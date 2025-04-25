@@ -230,7 +230,13 @@ RSpec.describe 'Ticket Create', time_zone: 'Europe/London', type: :system do
   end
 
   describe 'object manager attributes default date', authenticated_as: :authenticate, db_strategy: :reset do
+    let(:template) { create(:template, :dummy_data) }
+    let(:field_date) { find 'input[name="{date}date_test"]', visible: :all }
+    let(:field_time) { find 'input[name="{datetime}datetime_test"]', visible: :all }
+
     def authenticate
+      template
+
       screens = {
         'create_top' => {
           '-all-' => {
@@ -248,17 +254,12 @@ RSpec.describe 'Ticket Create', time_zone: 'Europe/London', type: :system do
     before do
       visit '/'
 
-      template = create(:template, :dummy_data)
-
       travel 1.month
       browser_travel_to Time.current
 
       visit 'ticket/create'
       use_template template, without_taskbar: true
     end
-
-    let(:field_date) { find 'input[name="{date}date_test"]', visible: :all }
-    let(:field_time) { find 'input[name="{datetime}datetime_test"]', visible: :all }
 
     it 'prefills date' do
       expect(field_date.value).to eq 1.day.from_now.to_date.to_s
