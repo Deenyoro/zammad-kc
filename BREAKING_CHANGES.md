@@ -1,5 +1,26 @@
 # Breaking Changes
 
+## 7.0
+
+### Fulltext search is now asciifolding
+
+The global search, as well as other fulltext searches, are now [asciifolding](https://github.com/zammad/zammad/pull/5536).
+To enable this behaviour, it is needed to rebuild the search index:
+
+`zammad run rake zammad:searchindex:rebuild`
+
+If the behaviour is unwanted then it also can be disabled and no rebuild is needed:
+
+`zammad run rails r "Setting.set('es_asciifolding', false)"`
+
+Example for asciifolding searches:
+
+**enabled (new default)**: Searching for `Munchen` will match `München`.
+
+**disabled**: Searching for `Munchen` will not match `München`.
+
+Thanks to [Jano Suchal](https://github.com/jsuchal) for the contribution.
+
 ## 6.5
 
 ### Textarea object manager attribute values
