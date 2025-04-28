@@ -1,6 +1,13 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class Selector::SearchIndex < Selector::Base
+  OPERATOR_WORDING_TO_SYNTAX = {
+    'is less than'                => 'lt',
+    'is less than or equal to'    => 'lte',
+    'is greater than'             => 'gt',
+    'is greater than or equal to' => 'gte',
+  }.freeze
+
   def get
     result = {
       size: options[:limit] || SearchIndexBackend::DEFAULT_QUERY_OPTIONS[:limit],
@@ -295,11 +302,13 @@ class Selector::SearchIndex < Selector::Base
       end
 
     # is less/greater than
-    elsif ['is less than', 'is less equal than', 'is greater than', 'is greater equal than'].include?(data[:operator])
-      operator  = ((data[:operator].include?('less') ? 'lt' : 'gt') + (data[:operator].include?('equal') ? 'e' : '')).to_sym
-      t[:range] = {}
-      t[:range][key_tmp] = {}
-      t[:range][key_tmp][operator] = data[:value]
+    elsif ['is less than', 'is less than or equal to', 'is greater than', 'is greater than or equal to'].include?(data[:operator])
+      t[:range] = {
+        key_tmp => {
+          OPERATOR_WORDING_TO_SYNTAX[data[:operator]] => data[:value]
+        }
+      }
+
       query_must.push t
 
     # within last/within next (relative)

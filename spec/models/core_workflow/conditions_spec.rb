@@ -2480,13 +2480,13 @@ RSpec.describe 'CoreWorkflow > Conditions', mariadb: true, type: :model do
       end
     end
 
-    context 'when is less equal than' do
+    context 'when is less than or equal to' do
       let!(:workflow) do
         create(:core_workflow,
                object:             'Ticket',
                condition_selected: {
                  "ticket.#{field_name}": {
-                   operator: 'is less equal than',
+                   operator: 'is less than or equal to',
                    value:    42,
                  },
                })
@@ -2534,13 +2534,13 @@ RSpec.describe 'CoreWorkflow > Conditions', mariadb: true, type: :model do
       end
     end
 
-    context 'when is greater equal than' do
+    context 'when is greater than or equal to' do
       let!(:workflow) do
         create(:core_workflow,
                object:             'Ticket',
                condition_selected: {
                  "ticket.#{field_name}": {
-                   operator: 'is greater equal than',
+                   operator: 'is greater than or equal to',
                    value:    42,
                  },
                })

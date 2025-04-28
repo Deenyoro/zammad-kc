@@ -22,9 +22,9 @@ class Selector::Sql < Selector::Base
     'is any of',
     'is in working time',
     'is less than',
-    'is less equal than',
+    'is less than or equal to',
     'is greater than',
-    'is greater equal than',
+    'is greater than or equal to',
     'is none of',
     'is not in working time',
     'is not',
@@ -39,6 +39,13 @@ class Selector::Sql < Selector::Base
     'within last (relative)',
     'within next (relative)',
   ].freeze
+
+  OPERATOR_WORDING_TO_SYNTAX = {
+    'is less than'                => '<',
+    'is less than or equal to'    => '<=',
+    'is greater than'             => '>',
+    'is greater than or equal to' => '>=',
+  }.freeze
 
   attr_accessor :final_query, :final_bind_params, :final_tables, :changed_attributes
 
@@ -589,8 +596,8 @@ class Selector::Sql < Selector::Base
       query << "#{attribute} >= ?"
       time = range(block_condition).ago
       bind_params.push time
-    elsif ['is less than', 'is less equal than', 'is greater than', 'is greater equal than'].include?(block_condition[:operator])
-      operator = (block_condition[:operator].include?('less') ? '<' : '>') + (block_condition[:operator].include?('equal') ? '=' : '')
+    elsif ['is less than', 'is less than or equal to', 'is greater than', 'is greater than or equal to'].include?(block_condition[:operator])
+      operator = OPERATOR_WORDING_TO_SYNTAX[block_condition[:operator]]
       query << "#{attribute} #{operator} ?"
       bind_params.push block_condition[:value]
     else

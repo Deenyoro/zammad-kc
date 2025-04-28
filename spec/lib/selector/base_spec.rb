@@ -1334,7 +1334,7 @@ RSpec.describe Selector::Base, searchindex: true do
       end
     end
 
-    describe 'when is less equal than' do
+    describe 'when is less than or equal to' do
       it 'does match the ticket', :aggregate_failures do
         condition = {
           operator:   'AND',
@@ -1346,7 +1346,7 @@ RSpec.describe Selector::Base, searchindex: true do
             },
             {
               name:     "ticket.#{field_name}",
-              operator: 'is less equal than',
+              operator: 'is less than or equal to',
               value:    42,
             },
           ]
@@ -1370,7 +1370,7 @@ RSpec.describe Selector::Base, searchindex: true do
             },
             {
               name:     "ticket.#{field_name}",
-              operator: 'is less equal than',
+              operator: 'is less than or equal to',
               value:    41,
             },
           ]
@@ -1434,7 +1434,7 @@ RSpec.describe Selector::Base, searchindex: true do
       end
     end
 
-    describe 'when is greater equal than' do
+    describe 'when is greater than or equal to' do
       it 'does match the ticket', :aggregate_failures do
         condition = {
           operator:   'AND',
@@ -1446,7 +1446,7 @@ RSpec.describe Selector::Base, searchindex: true do
             },
             {
               name:     "ticket.#{field_name}",
-              operator: 'is greater equal than',
+              operator: 'is greater than or equal to',
               value:    42,
             },
           ]
@@ -1470,7 +1470,7 @@ RSpec.describe Selector::Base, searchindex: true do
             },
             {
               name:     "ticket.#{field_name}",
-              operator: 'is greater equal than',
+              operator: 'is greater than or equal to',
               value:    43,
             },
           ]
