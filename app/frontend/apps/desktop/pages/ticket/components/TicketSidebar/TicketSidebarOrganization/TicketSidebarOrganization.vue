@@ -40,13 +40,20 @@ const userQuery = new QueryHandler(
 const userResult = userQuery.result()
 const customer = computed(() => userResult.value?.user)
 
-watch(customer, (newValue) => {
-  if (!newValue?.organization) {
-    emit('hide')
-    return
-  }
-  emit('show')
-})
+watch(
+  customer,
+  (newValue) => {
+    if (!newValue?.organization) {
+      emit('hide')
+      return
+    }
+
+    emit('show')
+  },
+  {
+    immediate: true,
+  },
+)
 
 const organizationInternalId = computed(() => {
   if (props.context.formValues?.organization_id)
