@@ -25,14 +25,8 @@ class TimeAccountingsController < ApplicationController
   end
 
   def by_activity
-    year  = params[:year] || Time.zone.now.year
-    month = params[:month] || Time.zone.now.month
-
-    start_period = Time.zone.parse("#{year}-#{month}-01")
-    end_period   = start_period.end_of_month
-
     records = Ticket::TimeAccounting
-      .where(created_at: (start_period..end_period))
+      .where(created_at: reporting_period)
       .pluck(:ticket_id, :ticket_article_id, :time_unit, :type_id, :created_by_id, :created_at)
 
     customers     = {}
@@ -141,14 +135,8 @@ class TimeAccountingsController < ApplicationController
   end
 
   def by_ticket
-    year  = params[:year] || Time.zone.now.year
-    month = params[:month] || Time.zone.now.month
-
-    start_period = Time.zone.parse("#{year}-#{month}-01")
-    end_period   = start_period.end_of_month
-
     time_unit = Ticket::TimeAccounting
-      .where(created_at: (start_period..end_period))
+      .where(created_at: reporting_period)
       .pluck(:ticket_id, :time_unit, :created_by_id)
       .each_with_object({}) do |record, memo|
         if !memo[record[0]]
@@ -217,14 +205,8 @@ class TimeAccountingsController < ApplicationController
   end
 
   def by_customer
-    year  = params[:year] || Time.zone.now.year
-    month = params[:month] || Time.zone.now.month
-
-    start_period = Time.zone.parse("#{year}-#{month}-01")
-    end_period   = start_period.end_of_month
-
     results = Ticket::TimeAccounting
-      .where(created_at: (start_period..end_period))
+      .where(created_at: reporting_period)
       .pluck(:ticket_id, :time_unit, :created_by_id)
       .each_with_object({}) do |record, memo|
         memo[record[0]] ||= {
@@ -295,14 +277,8 @@ class TimeAccountingsController < ApplicationController
   end
 
   def by_organization
-    year  = params[:year] || Time.zone.now.year
-    month = params[:month] || Time.zone.now.month
-
-    start_period = Time.zone.parse("#{year}-#{month}-01")
-    end_period   = start_period.end_of_month
-
     results = Ticket::TimeAccounting
-      .where(created_at: (start_period..end_period))
+      .where(created_at: reporting_period)
       .pluck(:ticket_id, :time_unit, :created_by_id)
       .each_with_object({}) do |record, memo|
         memo[record[0]] ||= {
@@ -374,6 +350,27 @@ class TimeAccountingsController < ApplicationController
       else
         Ticket::TimeAccounting
       end
+    end
+  end
+
+  def year
+    @year ||= Time.use_zone(Setting.get('timezone_default')) do
+      params[:year] || Time.zone.now.year
+    end
+  end
+
+  def month
+    @month ||= Time.use_zone(Setting.get('timezone_default')) do
+      params[:month] || Time.zone.now.month
+    end
+  end
+
+  def reporting_period
+    @reporting_period ||= Time.use_zone(Setting.get('timezone_default')) do
+      start_period = Time.zone.parse("#{year}-#{month}-01")
+      end_period   = start_period.end_of_month
+
+      (start_period..end_period)
     end
   end
 end

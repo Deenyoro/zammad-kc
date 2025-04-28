@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Time Accounting API endpoints', type: :request do
+RSpec.describe 'Time Accounting API endpoints', authenticated_as: :admin, type: :request do
   let(:admin)    { create(:admin) }
   let(:agent)    { create(:agent) }
   let(:customer) { create(:customer) }
   let(:year)     { Time.current.year }
   let(:month)    { Time.current.month }
 
-  describe '/api/v1/time_accounting/log/by_activity', authenticated_as: :admin do
+  describe '/api/v1/time_accounting/log/by_activity' do
     context 'when requesting a JSON response' do
       let(:ticket)           { create(:ticket, customer: admin) }
       let(:time_accounting1) { create(:ticket_time_accounting, :for_type, ticket: ticket, created_by_id: admin.id) }
@@ -27,21 +27,20 @@ RSpec.describe 'Time Accounting API endpoints', type: :request do
         it 'responds with an JSON' do
           get "/api/v1/time_accounting/log/by_activity/#{year}/#{month}", as: :json
 
-          expect(json_response.first).to include(
-            'time_unit'    => time_accounting1.time_unit.to_s,
-            'type'         => time_accounting1.type.name,
-            'customer'     => admin.fullname,
-            'organization' => '-',
-            'agent'        => admin.fullname,
-          )
-
-          expect(json_response.second).to include(
-            'time_unit'    => time_accounting2.time_unit.to_s,
-            'type'         => '-',
-            'customer'     => admin.fullname,
-            'organization' => '-',
-            'agent'        => agent.fullname,
-          )
+          expect(json_response).to contain_exactly(include(
+                                                     'time_unit'    => time_accounting1.time_unit.to_s,
+                                                     'type'         => time_accounting1.type.name,
+                                                     'customer'     => admin.fullname,
+                                                     'organization' => '-',
+                                                     'agent'        => admin.fullname,
+                                                   ),
+                                                   include(
+                                                     'time_unit'    => time_accounting2.time_unit.to_s,
+                                                     'type'         => '-',
+                                                     'customer'     => admin.fullname,
+                                                     'organization' => '-',
+                                                     'agent'        => agent.fullname,
+                                                   ))
         end
       end
 
@@ -64,6 +63,27 @@ RSpec.describe 'Time Accounting API endpoints', type: :request do
         get "/api/v1/time_accounting/log/by_activity/#{year}/#{month}?limit=1", as: :json
 
         expect(json_response.count).to be 1
+      end
+
+      context 'when time zone is set' do
+        before do
+          Setting.set('timezone_default', 'America/Los_Angeles')
+        end
+
+        it 'returns time accountings in a given timeframe respecting timezone' do
+          time_accounting1.update!(created_at: Time.current.beginning_of_month + 2.hours)
+          time_accounting2.update!(created_at: Time.current.beginning_of_month + 12.hours)
+
+          get "/api/v1/time_accounting/log/by_activity/#{year}/#{month}", as: :json
+
+          expect(json_response).to contain_exactly(include(
+                                                     'time_unit'    => time_accounting2.time_unit.to_s,
+                                                     'customer'     => admin.fullname,
+                                                     'organization' => '-',
+                                                     'agent'        => agent.fullname,
+                                                   ))
+        end
+
       end
     end
 
@@ -93,7 +113,6 @@ RSpec.describe 'Time Accounting API endpoints', type: :request do
         let!(:time_log) { create(:ticket_time_accounting, ticket: ticket, created_by_id: admin.id) }
 
         it 'responds with a non-nil value for each :agent key' do
-          authenticated_as(admin)
           get "/api/v1/time_accounting/log/by_ticket/#{year}/#{month}", as: :json
 
           expect(json_response.first).not_to include('agent' => nil)
@@ -109,7 +128,6 @@ RSpec.describe 'Time Accounting API endpoints', type: :request do
 
         create(:ticket_time_accounting, ticket_id: ticket.id, ticket_article_id: article.id)
 
-        authenticated_as(admin)
         get "/api/v1/time_accounting/log/by_ticket/#{year}/#{month}?download=true", params: {}
 
         expect(response).to have_http_status(:ok)
@@ -131,7 +149,6 @@ RSpec.describe 'Time Accounting API endpoints', type: :request do
 
         create(:ticket_time_accounting, ticket_id: ticket.id, ticket_article_id: article.id)
 
-        authenticated_as(admin)
         get "/api/v1/time_accounting/log/by_ticket/#{year}/#{month}?download=true", params: {}
 
         expect(response).to have_http_status(:ok)
@@ -141,6 +158,147 @@ RSpec.describe 'Time Accounting API endpoints', type: :request do
       end
     end
 
+    context 'when time zone is set' do
+      let(:ticket)           { create(:ticket, customer: admin) }
+      let(:time_accounting1) { create(:ticket_time_accounting, :for_type, ticket: ticket, created_by_id: admin.id) }
+      let(:time_accounting2) { create(:ticket_time_accounting, ticket: ticket, created_by_id: agent.id) }
+
+      before do
+        Setting.set('timezone_default', 'America/Los_Angeles')
+
+        time_accounting1.update!(created_at: Time.current.beginning_of_month + 2.hours)
+        time_accounting2.update!(created_at: Time.current.beginning_of_month + 12.hours)
+      end
+
+      it 'returns time accountings in a given timeframe respecting timezone' do
+
+        get "/api/v1/time_accounting/log/by_ticket/#{year}/#{month}", as: :json
+
+        expect(json_response).to contain_exactly(include(
+                                                   'ticket'    => include('id' => ticket.id),
+                                                   'time_unit' => time_accounting2.time_unit.to_s,
+                                                 ))
+      end
+
+    end
+  end
+
+  describe '/api/v1/time_accounting/log/by_organization' do
+    let(:organization) { create(:organization) }
+    let(:customer)     { create(:customer, organization:) }
+    let(:ticket)       { create(:ticket, customer:, organization:) }
+
+    let(:other_organization) { create(:organization) }
+    let(:other_customer) { create(:customer, organization: other_organization) }
+    let(:other_ticket)   { create(:ticket, customer: other_customer, organization: other_organization) }
+
+    let!(:time_accounting1) { create(:ticket_time_accounting, ticket: ticket, created_by_id: admin.id) }
+    let!(:time_accounting2) { create(:ticket_time_accounting, ticket: ticket, created_by_id: admin.id) }
+    let!(:time_accounting3) { create(:ticket_time_accounting, ticket: other_ticket, created_by_id: other_customer.id) }
+
+    context 'when requesting a JSON response' do
+      it 'returns per-organization count' do
+        get "/api/v1/time_accounting/log/by_organization/#{year}/#{month}", as: :json
+
+        expect(json_response).to contain_exactly(include(
+                                                   'time_unit'    => (time_accounting1.time_unit + time_accounting2.time_unit).to_s,
+                                                   'organization' => include('name' => organization.name),
+                                                 ),
+                                                 include(
+                                                   'time_unit'    => time_accounting3.time_unit.to_s,
+                                                   'organization' => include('name' => other_organization.name),
+                                                 ))
+      end
+    end
+
+    context 'when requesting a log report download' do
+      it 'responds with an Excel spreadsheet' do
+        get "/api/v1/time_accounting/log/by_organization/#{year}/#{month}?download=true", params: {}
+
+        expect(response).to have_http_status(:ok)
+        expect(response['Content-Disposition']).to be_truthy
+        expect(response['Content-Disposition']).to eq("attachment; filename=\"by_organization-#{year}-#{month}.xlsx\"; filename*=UTF-8''by_organization-#{year}-#{month}.xlsx")
+        expect(response['Content-Type']).to eq(ExcelSheet::CONTENT_TYPE)
+      end
+    end
+
+    context 'when time zone is set' do
+      before do
+        Setting.set('timezone_default', 'America/Los_Angeles')
+
+        time_accounting1.update!(created_at: Time.current.beginning_of_month + 2.hours)
+        time_accounting2.update!(created_at: Time.current.beginning_of_month + 12.hours)
+      end
+
+      it 'returns time accountings in a given timeframe respecting timezone' do
+
+        get "/api/v1/time_accounting/log/by_organization/#{year}/#{month}", as: :json
+
+        expect(json_response).to include(include(
+                                           'time_unit'    => time_accounting2.time_unit.to_s,
+                                           'organization' => include('name' => organization.name),
+                                         ))
+      end
+
+    end
+  end
+
+  describe '/api/v1/time_accounting/log/by_customer' do
+    let(:customer) { create(:customer) }
+    let(:ticket) { create(:ticket, customer:) }
+
+    let(:other_customer) { create(:customer) }
+    let(:other_ticket) { create(:ticket, customer: other_customer) }
+
+    let!(:time_accounting1) { create(:ticket_time_accounting, ticket: ticket, created_by_id: admin.id) }
+    let!(:time_accounting2) { create(:ticket_time_accounting, ticket: ticket, created_by_id: admin.id) }
+    let!(:time_accounting3) { create(:ticket_time_accounting, ticket: other_ticket, created_by_id: other_customer.id) }
+
+    context 'when requesting a JSON response' do
+      it 'responds with a per-customer count' do
+        get "/api/v1/time_accounting/log/by_customer/#{year}/#{month}", as: :json
+
+        expect(json_response).to contain_exactly(include(
+                                                   'time_unit' => (time_accounting1.time_unit + time_accounting2.time_unit).to_s,
+                                                   'customer'  => include('email' => customer.email),
+                                                 ),
+                                                 include(
+                                                   'time_unit' => time_accounting3.time_unit.to_s,
+                                                   'customer'  => include('email' => other_customer.email),
+                                                 ))
+      end
+    end
+
+    context 'when requesting a log report download' do
+      it 'responds with an Excel spreadsheet' do
+        get "/api/v1/time_accounting/log/by_customer/#{year}/#{month}?download=true", params: {}
+
+        expect(response).to have_http_status(:ok)
+        expect(response['Content-Disposition']).to be_truthy
+        expect(response['Content-Disposition']).to eq("attachment; filename=\"by_customer-#{year}-#{month}.xlsx\"; filename*=UTF-8''by_customer-#{year}-#{month}.xlsx")
+        expect(response['Content-Type']).to eq(ExcelSheet::CONTENT_TYPE)
+      end
+    end
+
+    context 'when time zone is set' do
+      before do
+        Setting.set('timezone_default', 'America/Los_Angeles')
+
+        time_accounting1.update!(created_at: Time.current.beginning_of_month + 2.hours)
+        time_accounting2.update!(created_at: Time.current.beginning_of_month + 12.hours)
+      end
+
+      it 'returns time accountings in a given timeframe respecting timezone' do
+
+        get "/api/v1/time_accounting/log/by_customer/#{year}/#{month}", as: :json
+
+        expect(json_response).to include(include(
+                                           'time_unit' => time_accounting2.time_unit.to_s,
+                                           'customer'  => include('email' => customer.email),
+                                         ))
+      end
+
+    end
   end
 
   describe 'Assign user to multiple organizations #1573' do
@@ -163,7 +321,6 @@ RSpec.describe 'Time Accounting API endpoints', type: :request do
     end
 
     it 'does return results group by organization and customer so multi organization support is given' do
-      authenticated_as(admin)
       get "/api/v1/time_accounting/log/by_customer/#{year}/#{month}", as: :json
       expect(json_response.count).to eq(2)
       expect(json_response[0]['organization']['id']).to eq(organization1.id)
