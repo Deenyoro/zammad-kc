@@ -162,14 +162,4 @@ describe('TicketLiveUsers', () => {
       getByIconName(agent2Avatar.parentElement!, 'phone-pencil'),
     ).toHaveClasses(['fill-stone-200', 'dark:fill-neutral-500'])
   })
-
-  it.todo('displays user popover on hover', async () => {
-    const wrapper = renderTicketLiveUsers()
-
-    await wrapper.events.hover(
-      wrapper.getByRole('img', { name: 'Avatar (Agent 1 Test)' }),
-    )
-
-    expect(await wrapper.findByRole('region')).toBeVisible()
-  })
 })

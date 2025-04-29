@@ -1,6 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import { renderComponent } from '#tests/support/components/index.ts'
+import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 import { mockRouterHooks } from '#tests/support/mock-vue-router.ts'
 
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
@@ -64,6 +65,11 @@ const renderTicketSidebarOrganizationContent = async (options: any = {}) => {
 
 describe('TicketSidebarOrganizationContent.vue', () => {
   it('renders organization info', async () => {
+    mockUserCurrent({
+      permissions: {
+        names: ['ticket.agent'],
+      },
+    })
     const wrapper = await renderTicketSidebarOrganizationContent()
 
     expect(wrapper.getByRole('heading', { level: 2 })).toHaveTextContent(

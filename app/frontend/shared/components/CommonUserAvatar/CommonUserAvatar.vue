@@ -80,7 +80,7 @@ const application = useApplicationStore()
 
 const image = computed(() => {
   if (icon.value || props.initialsOnly) return null
-  if (props.entity.id === SYSTEM_USER_ID) return logo
+  if (props.entity.id === SYSTEM_USER_ID) return `"${logo}"`
   if (!props.entity.image) return null
 
   // Support the inline data URI as an image source.

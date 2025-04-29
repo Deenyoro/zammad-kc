@@ -53,6 +53,7 @@ const { debouncedLoading } = useDebouncedLoading({
       >
         <template #trailing="{ totalCount, entities }">
           <CommonLink
+            v-if="totalCount - entities.length"
             class="float-right mt-2 inline-block"
             size="small"
             internal

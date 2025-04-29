@@ -4,10 +4,15 @@
 import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
 import type { User } from '#shared/graphql/types.ts'
 
+import type { EntityType } from '#desktop/components/CommonSimpleEntityList/types.ts'
 import UserPopoverWithTrigger from '#desktop/components/User/UserPopoverWithTrigger.vue'
 
 interface Props {
   entity: User
+  context: {
+    type: EntityType
+    emptyMessage: string
+  }
 }
 
 defineProps<Props>()

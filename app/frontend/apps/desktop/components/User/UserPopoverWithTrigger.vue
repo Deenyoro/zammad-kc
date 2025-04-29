@@ -9,6 +9,8 @@ import CommonUserAvatar, {
 } from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
 import type { AvatarUser } from '#shared/components/CommonUserAvatar/types.ts'
 import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
+import { useSessionStore } from '#shared/stores/session.ts'
+import { SYSTEM_USER_ID } from '#shared/utils/constants.ts'
 
 import CommonPopoverWithTrigger from '#desktop/components/CommonPopover/CommonPopoverWithTrigger.vue'
 import UserPopover from '#desktop/components/User/UserPopoverWithTrigger/UserPopover.vue'
@@ -24,11 +26,26 @@ export interface Props {
 
 const props = defineProps<Props>()
 
+defineSlots<{
+  default(props: { isOpen?: boolean | undefined; popoverId?: string }): never
+}>()
+
 const userInternalId = computed(() => getIdFromGraphQLId(props.user.id))
+
+const session = useSessionStore()
+
+const isAgent = computed(() => session.hasPermission('ticket.agent'))
+
+const isSystemUser = computed(() => {
+  const { id } = props.user
+
+  return id === SYSTEM_USER_ID
+})
 </script>
 
 <template>
   <CommonPopoverWithTrigger
+    v-if="isAgent && !isSystemUser"
     :class="[
       !$slots?.default?.() ? 'rounded-full! focus-visible:outline-2!' : '',
       triggerClass ?? '',
@@ -52,4 +69,7 @@ const userInternalId = computed(() => getIdFromGraphQLId(props.user.id))
       </slot>
     </template>
   </CommonPopoverWithTrigger>
+  <slot v-else>
+    <CommonUserAvatar v-bind="{ ...avatarConfig, ...$attrs }" :entity="user" />
+  </slot>
 </template>

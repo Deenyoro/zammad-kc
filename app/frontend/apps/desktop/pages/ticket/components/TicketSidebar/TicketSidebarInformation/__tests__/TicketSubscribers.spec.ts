@@ -1,6 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import { renderComponent } from '#tests/support/components/index.ts'
+import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 
 import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
@@ -24,8 +25,8 @@ const provideTestTicket = (subscribed: boolean = false) => {
             __typename: 'Mention',
             user: {
               __typename: 'User',
-              id: convertToGraphQLId('User', 1),
-              internalId: 1,
+              id: convertToGraphQLId('User', 2),
+              internalId: 2,
               firstname: 'John',
               lastname: 'Doe',
               fullname: 'John Doe',
@@ -42,8 +43,8 @@ const provideTestTicket = (subscribed: boolean = false) => {
             __typename: 'Mention',
             user: {
               __typename: 'User',
-              id: convertToGraphQLId('User', 2),
-              internalId: 2,
+              id: convertToGraphQLId('User', 3),
+              internalId: 3,
               firstname: 'Jane',
               lastname: 'Doe',
               fullname: 'Jane Doe',
@@ -60,8 +61,8 @@ const provideTestTicket = (subscribed: boolean = false) => {
             __typename: 'Mention',
             user: {
               __typename: 'User',
-              id: convertToGraphQLId('User', 3),
-              internalId: 3,
+              id: convertToGraphQLId('User', 4),
+              internalId: 4,
               firstname: 'Jim',
               lastname: 'Doe',
               fullname: 'Jim Doe',
@@ -118,6 +119,11 @@ describe('TicketSubscribers', () => {
   })
 
   it('shows popover with user details on hover', async () => {
+    mockUserCurrent({
+      permissions: {
+        names: ['ticket.agent'],
+      },
+    })
     const wrapper = renderTicketSubscribers()
 
     await wrapper.events.hover(wrapper.getByLabelText('Avatar (John Doe)'))

@@ -3,12 +3,17 @@
 import { within } from '@testing-library/vue'
 
 import renderComponent from '#tests/support/components/renderComponent.ts'
+import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 
 import {
   mockUserQuery,
   waitForUserQueryCalls,
 } from '#shared/entities/user/graphql/queries/user.mocks.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
+import {
+  SYSTEM_USER_ID,
+  SYSTEM_USER_INTERNAL_ID,
+} from '#shared/utils/constants.ts'
 
 import UserPopoverWithTrigger, {
   type Props,
@@ -47,14 +52,43 @@ const dummyUser = {
   hasSecondaryOrganizations: true,
 }
 
-const renderUserPopover = (props?: Partial<Props>) => {
+const systemUser = {
+  id: SYSTEM_USER_ID,
+  internalId: SYSTEM_USER_INTERNAL_ID,
+  fullname: 'System',
+  vip: false,
+  organization: {
+    id: convertToGraphQLId('Organization', 1),
+    internalId: 1,
+    name: 'Zammad Foundation',
+    active: true,
+    vip: false,
+    ticketsCount: {
+      open: 5,
+      closed: 0,
+    },
+  },
+}
+
+const renderUserPopover = (
+  props?: Partial<Props>,
+  isAgent = true,
+  isSystemUser = false,
+) => {
   mockUserQuery({
     user: props?.user ?? dummyUser,
   })
+
+  mockUserCurrent({
+    permissions: {
+      names: [isAgent ? 'ticket.agent' : 'ticket.customer'],
+    },
+  })
+
   return renderComponent(UserPopoverWithTrigger, {
     props: {
       ...props,
-      user: props?.user ?? dummyUser,
+      user: isSystemUser ? systemUser : (props?.user ?? dummyUser),
     },
     router: true,
   })
@@ -183,5 +217,29 @@ describe('UserPopover', () => {
     const avatarWrapper = wrapper.getByRole('link')
 
     expect(avatarWrapper).toHaveClass(customClass)
+  })
+
+  it('does not display popover for customer user', async () => {
+    const wrapper = renderUserPopover(undefined, false)
+
+    expect(wrapper.queryByRole('link')).not.toBeInTheDocument()
+
+    await wrapper.events.hover(
+      wrapper.getByRole('img', { name: `Avatar (${dummyUser.fullname})` }),
+    )
+
+    expect(wrapper.queryByRole('region')).not.toBeInTheDocument()
+  })
+
+  it('does not display popover for system user', async () => {
+    const wrapper = renderUserPopover(undefined, true, true)
+
+    expect(wrapper.queryByRole('link')).not.toBeInTheDocument()
+
+    await wrapper.events.hover(
+      wrapper.getByRole('img', { name: `Avatar (${systemUser.fullname})` }),
+    )
+
+    expect(wrapper.queryByRole('region')).not.toBeInTheDocument()
   })
 })

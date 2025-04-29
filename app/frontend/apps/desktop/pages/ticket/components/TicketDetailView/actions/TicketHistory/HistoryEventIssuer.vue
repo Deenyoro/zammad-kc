@@ -2,8 +2,9 @@
 
 <script setup lang="ts">
 import CommonAvatar from '#shared/components/CommonAvatar/CommonAvatar.vue'
-import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
 import type { HistoryRecordIssuer, User } from '#shared/graphql/types.ts'
+
+import UserPopoverWithTrigger from '#desktop/components/User/UserPopoverWithTrigger.vue'
 
 import { useHistoryEvents } from './composables/useHistoryEvents.ts'
 
@@ -25,12 +26,11 @@ const { issuedBySystemService, issuedBySystemUser, getIssuerName } =
       name="play-circle"
       size="small"
     />
-    <!-- TODO: Link to user profile -->
-    <CommonUserAvatar
+    <UserPopoverWithTrigger
       v-else-if="!issuedBySystemUser(issuer)"
-      :entity="issuer as User"
-      size="xs"
-      no-indicator
+      :avatar-config="{ noIndicator: true, size: 'xs' }"
+      :popover-config="{ placement: 'arrowStart' }"
+      :user="issuer as User"
     />
     <CommonAvatar
       v-else-if="issuedBySystemUser(issuer)"
