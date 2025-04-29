@@ -44,7 +44,7 @@ class App.UiElement.ApplicationSelector
         '^timestamp$': [__('before (absolute)'), __('after (absolute)'), __('before (relative)'), __('after (relative)'), __('within next (relative)'), __('within last (relative)'), __('till (relative)'), __('from (relative)'), __('has changed')]
         '^date$': [__('before (absolute)'), __('after (absolute)'), __('before (relative)'), __('after (relative)'), __('within next (relative)'), __('within last (relative)'), __('till (relative)'), __('from (relative)'), __('has changed')]
         'boolean$': [__('is'), __('is not'), __('has changed')]
-        'integer$': [__('is'), __('is not'),  __('is less than'), __('is less than or equal to'), __('is greater than'), __('is greater than or equal to')]
+        'integer$': [__('is'), __('is not'),  __('is less than'), __('is less than or equal to'), __('is greater than'), __('is greater than or equal to'), __('has changed')]
         '^radio$': [__('is'), __('is not'), __('has changed')]
         '^select$': [__('is'), __('is not'), __('has changed')]
         '^multiselect$': [__('contains all'), __('contains one'), __('contains all not'), __('contains one not')]
