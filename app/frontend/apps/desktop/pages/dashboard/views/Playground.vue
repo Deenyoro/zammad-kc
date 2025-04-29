@@ -34,6 +34,7 @@ import { useConfirmation } from '#shared/composables/useConfirmation.ts'
 import { useCopyToClipboard } from '#shared/composables/useCopyToClipboard.ts'
 import { defineFormSchema } from '#shared/form/defineFormSchema.ts'
 import { EnumObjectManagerObjects } from '#shared/graphql/types.ts'
+import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 
@@ -61,6 +62,7 @@ import type { TableAdvancedItem } from '#desktop/components/CommonTable/types.ts
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import SplitButton from '#desktop/components/SplitButton/SplitButton.vue'
 import ThemeSwitch from '#desktop/components/ThemeSwitch/ThemeSwitch.vue'
+import UserPopoverWithTrigger from '#desktop/components/User/UserPopoverWithTrigger.vue'
 
 const alphabetOptions = computed(() =>
   [...Array(26).keys()].map((i) => ({
@@ -1119,6 +1121,7 @@ const tableItemsAdvanced = reactive<TableAdvancedItem[]>([
     id: '1',
     name: 'Lindsay Walton',
     title: 'Front-end Developer',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     email: 'lindsay.walton@example.com',
     role: 'Member',
   },
@@ -1153,8 +1156,7 @@ const tableItemsAdvanced = reactive<TableAdvancedItem[]>([
   {
     id: '6',
     name: 'Floyd Miles',
-    title:
-      'Principal Designer for a very long way to go to see the end of the title. It is a very long title, indeed.',
+    title: 'Principal Designer for a very long way to go to see the end',
     email: 'floyd.miles@example.com',
     role: 'Member',
   },
@@ -1330,6 +1332,26 @@ const splitButtonMenuItems: MenuItem[] = [
 
 const onSplitButtonClick = () => {
   console.log('Split button clicked!')
+}
+
+const userEntity = {
+  id: convertToGraphQLId('User', 2),
+  internalId: 2,
+  firstname: 'Nicole',
+  lastname: 'Braun',
+  fullname: 'Nicole Braun',
+  outOfOffice: false,
+  outOfOfficeStartAt: null,
+  outOfOfficeEndAt: null,
+  image: null,
+  email: 'nicole.braun@zammad.org',
+  web: '',
+  vip: false,
+  phone: '+34 111 111 111 11',
+  mobile: '',
+  fax: '',
+  note: '',
+  active: true,
 }
 </script>
 
@@ -1587,7 +1609,7 @@ const onSplitButtonClick = () => {
           :headers="tableHeadersAdvanced"
           :items="tableItemsAdvanced"
           :actions="tableActions"
-          :max-items="5"
+          :max-items="8"
           :total-items="10"
           has-checkbox-column
           caption="test advanced table"
@@ -1613,6 +1635,7 @@ const onSplitButtonClick = () => {
                 noResize: false,
                 hideLabel: false,
                 displayWidth: 200,
+                truncate: true,
               },
               columnPreferences: {
                 alignContent: 'center',
@@ -1671,6 +1694,12 @@ const onSplitButtonClick = () => {
           >
             {{ vip ? 'Make us unimportant :(' : 'Make us important :)' }}
           </CommonButton>
+        </div>
+
+        <div class="mb-8">
+          <h3>User Popover</h3>
+
+          <UserPopoverWithTrigger :user="userEntity" />
         </div>
 
         <div class="flex gap-4">

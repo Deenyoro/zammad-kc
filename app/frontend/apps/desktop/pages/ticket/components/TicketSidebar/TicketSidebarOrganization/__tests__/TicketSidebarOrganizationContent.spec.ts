@@ -81,7 +81,9 @@ describe('TicketSidebarOrganizationContent.vue', () => {
     expect(wrapper.getByText('Members')).toBeInTheDocument()
 
     expect(
-      wrapper.getByRole('link', { name: 'Avatar (Nicole Braun) Nicole Braun' }),
+      await wrapper.findByRole('link', {
+        name: 'Avatar (Nicole Braun) Nicole Braun',
+      }),
     ).toHaveAttribute('href', '/user/profile/2')
 
     expect(

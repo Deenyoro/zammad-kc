@@ -108,8 +108,6 @@ describe('TicketList', () => {
         form: true,
       })
 
-      console.log(wrapper.html())
-
       expect(await wrapper.findByTestId('table-skeleton')).toBeInTheDocument()
     })
   })

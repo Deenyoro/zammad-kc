@@ -28,6 +28,7 @@ const { field } = useDisplayObjectAttribute(props)
   <template v-if="field && !isEmpty(field.value)">
     <CommonLink
       v-if="field.link"
+      v-bind="$attrs"
       :link="field.link"
       :class="objectAttributesConfig.classes.link"
     >
@@ -40,6 +41,7 @@ const { field } = useDisplayObjectAttribute(props)
       />
     </CommonLink>
     <Component
+      v-bind="$attrs"
       :is="field.component"
       v-else
       :attribute="field.attribute"
@@ -48,5 +50,7 @@ const { field } = useDisplayObjectAttribute(props)
       :mode="mode"
     />
   </template>
-  <template v-else>-</template>
+  <template v-else>
+    <span v-bind="$attrs"> - </span>
+  </template>
 </template>

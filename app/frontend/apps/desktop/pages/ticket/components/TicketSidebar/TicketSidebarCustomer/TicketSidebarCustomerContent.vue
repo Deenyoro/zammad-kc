@@ -3,7 +3,6 @@
 <script setup lang="ts">
 import { computed, type ComputedRef } from 'vue'
 
-import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
 import ObjectAttributes from '#shared/components/ObjectAttributes/ObjectAttributes.vue'
 import type { ObjectAttribute } from '#shared/entities/object-attributes/types/store.ts'
 import { useTicketView } from '#shared/entities/ticket/composables/useTicketView.ts'
@@ -18,6 +17,7 @@ import CommonSimpleEntityList from '#desktop/components/CommonSimpleEntityList/C
 import { EntityType } from '#desktop/components/CommonSimpleEntityList/types.ts'
 import NavigationMenuList from '#desktop/components/NavigationMenu/NavigationMenuList.vue'
 import { NavigationMenuDensity } from '#desktop/components/NavigationMenu/types.ts'
+import UserInfo from '#desktop/components/User/UserInfo.vue'
 import type { TicketInformation } from '#desktop/entities/ticket/types.ts'
 import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
 import {
@@ -85,22 +85,7 @@ const actions = computed<MenuItem[]>(() => [
     :entity="customer"
     :actions="actions"
   >
-    <div class="flex gap-2">
-      <CommonUserAvatar v-if="customer" :entity="customer" size="normal" />
-      <div class="flex flex-col justify-center gap-px">
-        <CommonLabel size="large" class="text-gray-300! dark:text-neutral-400!">
-          {{ customer?.fullname }}
-        </CommonLabel>
-
-        <CommonLink
-          v-if="customer?.organization"
-          :link="`/organizations/${customer.organization?.internalId}`"
-          class="text-sm leading-snug"
-        >
-          {{ customer?.organization.name }}
-        </CommonLink>
-      </div>
-    </div>
+    <UserInfo :user="customer" />
 
     <ObjectAttributes
       :attributes="objectAttributes"

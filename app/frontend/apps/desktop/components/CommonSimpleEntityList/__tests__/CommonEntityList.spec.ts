@@ -15,7 +15,7 @@ import { EntityType } from '#desktop/components/CommonSimpleEntityList/types.ts'
 
 describe('CommonSimpleEntityList', () => {
   describe('Entity Types', () => {
-    it('renders a list of users', () => {
+    it('renders a list of users', async () => {
       const wrapper = renderComponent(CommonSimpleEntityList, {
         router: true,
         props: {
@@ -28,7 +28,7 @@ describe('CommonSimpleEntityList', () => {
         },
       })
 
-      expect(wrapper.getByText('Nicole Braun')).toBeInTheDocument()
+      expect(await wrapper.findByText('Nicole Braun')).toBeInTheDocument()
       expect(wrapper.getByText('Thomas Ernst')).toBeInTheDocument()
       expect(
         wrapper.getByLabelText('Avatar (Nicole Braun)'),
@@ -43,7 +43,7 @@ describe('CommonSimpleEntityList', () => {
       )
     })
 
-    it('renders a list of organizations', () => {
+    it('renders a list of organizations', async () => {
       const wrapper = renderComponent(CommonSimpleEntityList, {
         router: true,
         props: {
@@ -56,7 +56,7 @@ describe('CommonSimpleEntityList', () => {
         },
       })
 
-      expect(wrapper.getByText('Spar')).toBeInTheDocument()
+      expect(await wrapper.findByText('Spar')).toBeInTheDocument()
       expect(wrapper.getByText('Mercadona')).toBeInTheDocument()
       expect(wrapper.getByLabelText('Avatar (Spar)')).toBeInTheDocument()
       expect(wrapper.getByLabelText('Avatar (Mercadona)')).toBeInTheDocument()

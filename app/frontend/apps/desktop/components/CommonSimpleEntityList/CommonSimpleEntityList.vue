@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts" generic="T">
-import { computed } from 'vue'
+import { computed, defineAsyncComponent, type AsyncComponentLoader } from 'vue'
 
 import type { ObjectLike } from '#shared/types/utils.ts'
 
@@ -31,7 +31,10 @@ defineEmits<{
 }>()
 
 const entitySetup = computed(() => {
-  const { component, ...context } = entityModules[props.type]
+  const { component: componentAsync, ...context } = entityModules[props.type]
+
+  const component = defineAsyncComponent(componentAsync as AsyncComponentLoader)
+
   return {
     component,
     context,
@@ -61,12 +64,18 @@ const entitySetup = computed(() => {
       >{{ entitySetup.context.emptyMessage }}
     </CommonLabel>
 
-    <CommonShowMoreButton
+    <slot
       v-if="entity"
-      class="self-end"
-      :entities="entity.array"
+      name="trailing"
       :total-count="entity.totalCount"
-      @click="$emit('load-more')"
-    />
+      :entities="entity.array"
+    >
+      <CommonShowMoreButton
+        class="self-end"
+        :entities="entity.array"
+        :total-count="entity.totalCount"
+        @click="$emit('load-more')"
+      />
+    </slot>
   </CommonSectionCollapse>
 </template>

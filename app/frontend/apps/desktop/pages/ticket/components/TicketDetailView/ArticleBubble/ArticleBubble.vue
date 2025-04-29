@@ -3,11 +3,11 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref } from 'vue'
 
-import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
 import { useAttachments } from '#shared/composables/useAttachments.ts'
 import type { TicketArticle } from '#shared/entities/ticket/types.ts'
 import { EnumTicketArticleSenderName } from '#shared/graphql/types.ts'
 
+import UserPopoverWithTrigger from '#desktop/components/User/UserPopoverWithTrigger.vue'
 import {
   useFilePreviewViewer,
   type ViewerFile,
@@ -96,7 +96,7 @@ const { showPreview } = useFilePreviewViewer(
       internalNoteClass,
     ]"
   >
-    <CommonUserAvatar
+    <UserPopoverWithTrigger
       class="!absolute bottom-0"
       :class="{
         'ltr:-right-2.5 ltr:translate-x-full rtl:-left-2.5 rtl:-translate-x-full':
@@ -104,9 +104,14 @@ const { showPreview } = useFilePreviewViewer(
         'ltr:-left-2.5 ltr:-translate-x-full rtl:-right-2.5 rtl:translate-x-full':
           position === 'left',
       }"
-      :entity="article.author"
-      size="small"
-      no-indicator
+      :user="article.author"
+      :popover-config="{
+        placement: 'arrowStart',
+      }"
+      :avatar-config="{
+        size: 'small',
+        noIndicator: true,
+      }"
     />
 
     <div

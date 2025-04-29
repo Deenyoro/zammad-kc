@@ -1,6 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import { waitFor, within } from '@testing-library/vue'
+import { beforeEach } from 'vitest'
 
 import ticketCustomerObjectAttributes from '#tests/graphql/factories/fixtures/ticket-customer-object-attributes.ts'
 import { getTestRouter } from '#tests/support/components/renderComponent.ts'
@@ -148,7 +149,9 @@ describe('ticket create view', async () => {
       expect(view.getByText('Organization')).toBeInTheDocument()
 
       expect(view.getByText('Members')).toBeInTheDocument()
-      expect(view.getByLabelText('Avatar (Nicole Braun)')).toBeInTheDocument()
+      expect(
+        await view.findByLabelText('Avatar (Nicole Braun)'),
+      ).toBeInTheDocument()
 
       // Text field
       await view.events.type(

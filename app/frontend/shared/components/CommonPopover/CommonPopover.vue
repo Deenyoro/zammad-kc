@@ -43,6 +43,7 @@ export interface Props {
   id?: string
   noAutoFocus?: boolean
   persistent?: boolean
+  noCloseOnClickOutside?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -312,9 +313,16 @@ const openPopover = () => {
     closePopover()
   })
 
-  onClickOutside(popoverElement, () => closePopover(true), {
-    ignore: [props.owner],
-  })
+  const onClickOutsideHandler = onClickOutside(
+    popoverElement,
+    () => closePopover(true),
+    {
+      ignore: [props.owner],
+      controls: true,
+    },
+  )
+
+  if (props?.noCloseOnClickOutside) onClickOutsideHandler.stop()
 
   requestAnimationFrame(() => {
     nextTick(() => {
@@ -338,6 +346,7 @@ const exposedInstance: CommonPopoverInternalInstance = {
   openPopover,
   closePopover,
   togglePopover,
+  popoverElement,
 }
 
 instances.value.add(exposedInstance)

@@ -4,20 +4,26 @@
 import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
 import type { User } from '#shared/graphql/types.ts'
 
+import UserPopoverWithTrigger from '#desktop/components/User/UserPopoverWithTrigger.vue'
+
 interface Props {
   entity: User
 }
+
 defineProps<Props>()
 </script>
 
 <template>
-  <CommonLink
-    :link="`/user/profile/${entity.internalId}`"
-    class="flex gap-2 hover:no-underline!"
-  >
-    <CommonUserAvatar :entity="entity" size="small" />
-    <CommonLabel class="text-blue-800! hover:underline dark:text-neutral-400!"
-      >{{ `${entity.fullname}` }}
-    </CommonLabel>
-  </CommonLink>
+  <UserPopoverWithTrigger no-focus-styling :user="entity">
+    <template #default="slotProps">
+      <div class="flex items-center gap-2">
+        <CommonUserAvatar
+          class="rounded-full outline-2 outline-transparent group-hover:outline-blue-800 group-focus-visible:outline-blue-800"
+          :class="{ 'outline-2! outline-blue-800!': slotProps?.isOpen }"
+          :entity="entity"
+        />
+        <CommonLabel class="block truncate">{{ entity.fullname }}</CommonLabel>
+      </div>
+    </template>
+  </UserPopoverWithTrigger>
 </template>

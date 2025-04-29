@@ -3,9 +3,10 @@
 <script setup lang="ts">
 import { nextTick, toRef, watch } from 'vue'
 
-import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
 import { useTicketSubscribe } from '#shared/entities/ticket/composables/useTicketSubscribe.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
+
+import UserPopoverWithTrigger from '#desktop/components/User/UserPopoverWithTrigger.vue'
 
 export interface Props {
   ticket?: TicketById
@@ -69,12 +70,12 @@ const handleToggleInput = async () => {
         />
       </div>
       <div v-if="totalSubscribers > 0" class="flex flex-wrap gap-2 pt-2.5">
-        <CommonUserAvatar
+        <UserPopoverWithTrigger
           v-for="subscriber in subscribers"
           :key="subscriber.user.id"
           :entity="subscriber.user"
           :access="subscriber.access"
-          size="small"
+          :user="subscriber.user"
         />
       </div>
     </div>

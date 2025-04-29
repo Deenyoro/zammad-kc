@@ -4,6 +4,7 @@
 import { watch, computed } from 'vue'
 
 import { useUserDetail } from '#shared/entities/user/composables/useUserDetail.ts'
+import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import { usePersistentStates } from '#desktop/pages/ticket/composables/usePersistentStates.ts'
 import {
@@ -25,7 +26,11 @@ const { persistentStates } = usePersistentStates()
 const emit = defineEmits<TicketSidebarEmits>()
 
 // TODO: only for now, implement correct situation for create/detail view.
-const customerId = computed(() => Number(props.context.formValues.customer_id))
+const customerId = computed(() =>
+  props.context.formValues?.customer_id
+    ? convertToGraphQLId('User', props.context.formValues.customer_id as string)
+    : undefined,
+)
 
 const {
   user: customer,

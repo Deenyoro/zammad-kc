@@ -594,7 +594,7 @@ useResizeObserver(
     if (!isReachingTop.value) return
 
     const gap = 20
-    const topBarNode = observerEntry.at(-1)?.target
+    const topBarNode = observerEntry[observerEntry.length - 1]?.target
 
     if (!topBarNode) return
 

@@ -7,6 +7,8 @@ import {
 import renderComponent from '#tests/support/components/renderComponent.ts'
 
 import type { TicketLiveAppUser } from '#shared/entities/ticket/types.ts'
+import { mockUserQuery } from '#shared/entities/user/graphql/queries/user.mocks.ts'
+import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import TicketLiveUsers, {
   type Props,
@@ -20,6 +22,7 @@ const renderTicketLiveUsers = (props?: Partial<Props>) =>
       liveUserList: liveUserList as TicketLiveAppUser[],
       ...props,
     },
+    router: true,
   })
 
 vi.hoisted(() => {
@@ -27,6 +30,41 @@ vi.hoisted(() => {
 })
 
 describe('TicketLiveUsers', () => {
+  beforeEach(() => {
+    mockUserQuery({
+      user: {
+        id: convertToGraphQLId('User', 3),
+        internalId: 3,
+        fullname: 'Agent 2 Test',
+        vip: false,
+        organization: {
+          id: convertToGraphQLId('Organization', 1),
+          internalId: 1,
+          name: 'Zammad Foundation',
+          active: true,
+          ticketsCount: {
+            open: 5,
+            closed: 0,
+          },
+        },
+        secondaryOrganizations: {
+          edges: [
+            {
+              node: {
+                id: convertToGraphQLId('Organization', 2),
+                internalId: 2,
+                active: true,
+                name: 'Apple',
+              },
+            },
+          ],
+          totalCount: 1,
+        },
+        hasSecondaryOrganizations: true,
+      },
+    })
+  })
+
   it('shows editing/app indicator icons', async () => {
     const wrapper = renderTicketLiveUsers()
 
@@ -123,5 +161,15 @@ describe('TicketLiveUsers', () => {
     expect(
       getByIconName(agent2Avatar.parentElement!, 'phone-pencil'),
     ).toHaveClasses(['fill-stone-200', 'dark:fill-neutral-500'])
+  })
+
+  it.todo('displays user popover on hover', async () => {
+    const wrapper = renderTicketLiveUsers()
+
+    await wrapper.events.hover(
+      wrapper.getByRole('img', { name: 'Avatar (Agent 1 Test)' }),
+    )
+
+    expect(await wrapper.findByRole('region')).toBeVisible()
   })
 })

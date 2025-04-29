@@ -4,9 +4,9 @@
 import { ref } from 'vue'
 
 import CommonOrganizationAvatar from '#shared/components/CommonOrganizationAvatar/CommonOrganizationAvatar.vue'
-import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
 
 import CommonInlineEdit from '#desktop/components/CommonInlineEdit/CommonInlineEdit.vue'
+import UserPopoverWithTrigger from '#desktop/components/User/UserPopoverWithTrigger.vue'
 import TicketInformationBadgeList from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList.vue'
 import { useTicketEditTitle } from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/useTicketEditTitle.ts'
 import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
@@ -30,11 +30,15 @@ const { updateTitle } = useTicketEditTitle(ticketId)
     :class="{ 'items-center gap-3': hideDetails }"
   >
     <div class="flex" :class="{ 'mt-1': !hideDetails }">
-      <CommonUserAvatar
+      <UserPopoverWithTrigger
         v-if="ticket.customer"
-        :size="hideDetails ? 'medium' : 'normal'"
-        :entity="ticket.customer"
+        class="h-min"
+        :avatar-config="{
+          size: hideDetails ? 'medium' : 'normal',
+        }"
+        :user="ticket.customer"
       />
+
       <CommonOrganizationAvatar
         v-if="ticket.organization"
         class="ltr:-translate-x- -z-10 ltr:-translate-x-1.5 rtl:translate-x-1.5"

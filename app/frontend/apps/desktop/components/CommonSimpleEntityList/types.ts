@@ -16,6 +16,6 @@ export interface Entity<T = ObjectLike> {
 
 export interface EntityModule {
   type: EntityType
-  component: Component
+  component: () => Promise<Component>
   emptyMessage: string
 }

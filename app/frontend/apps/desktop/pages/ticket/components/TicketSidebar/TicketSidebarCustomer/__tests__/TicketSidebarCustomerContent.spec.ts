@@ -159,7 +159,9 @@ describe('TicketSidebarCustomerContent.vue', () => {
       expect(wrapper.getByText('Secondary organizations')).toBeInTheDocument()
 
       expect(
-        wrapper.getByRole('link', { name: 'Avatar (Zammad Org) Zammad Org' }),
+        await wrapper.findByRole('link', {
+          name: 'Avatar (Zammad Org) Zammad Org',
+        }),
       ).toHaveAttribute('href', '/organizations/2')
 
       expect(

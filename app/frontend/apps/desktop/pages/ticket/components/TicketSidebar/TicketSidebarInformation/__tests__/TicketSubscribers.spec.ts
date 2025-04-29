@@ -9,6 +9,8 @@ import TicketSubscribers, {
   type Props,
 } from '../TicketSidebarInformationContent/TicketSubscribers.vue'
 
+import '#tests/graphql/builders/mocks.ts'
+
 const provideTestTicket = (subscribed: boolean = false) => {
   return createDummyTicket({
     subscribed,
@@ -87,31 +89,40 @@ const renderTicketSubscribers = (props: Partial<Props> = {}) =>
 
 describe('TicketSubscribers', () => {
   it('renders a toggle to subscribe/unsubscribe', () => {
-    const view = renderTicketSubscribers()
+    const wrapper = renderTicketSubscribers()
 
-    const toggle = view.getByLabelText('Subscribe me')
+    const toggle = wrapper.getByLabelText('Subscribe me')
 
     expect(toggle).toBeInTheDocument()
     expect(toggle).not.toBeChecked()
   })
 
   it('renders a toggle as checked if user is subscribed to ticket', () => {
-    const view = renderTicketSubscribers({
+    const wrapper = renderTicketSubscribers({
       ticket: provideTestTicket(true),
     })
 
-    const toggle = view.getByLabelText('Subscribe me')
+    const toggle = wrapper.getByLabelText('Subscribe me')
 
     expect(toggle).toBeChecked()
   })
 
   it('renders a list of subscribers', () => {
-    const view = renderTicketSubscribers()
+    const wrapper = renderTicketSubscribers()
 
-    expect(view.getByLabelText('Avatar (John Doe)')).toBeInTheDocument()
-    expect(view.getByLabelText('Avatar (Jane Doe)')).toBeInTheDocument()
+    expect(wrapper.getByLabelText('Avatar (John Doe)')).toBeInTheDocument()
+    expect(wrapper.getByLabelText('Avatar (Jane Doe)')).toBeInTheDocument()
 
     // Inactive users should not be rendered
-    expect(view.queryByLabelText('Avatar (Jim Doe)')).not.toBeInTheDocument()
+    expect(wrapper.queryByLabelText('Avatar (Jim Doe)')).not.toBeInTheDocument()
+  })
+
+  it('shows popover with user details on hover', async () => {
+    const wrapper = renderTicketSubscribers()
+
+    await wrapper.events.hover(wrapper.getByLabelText('Avatar (John Doe)'))
+
+    // popover
+    expect(await wrapper.findByRole('region')).toBeVisible()
   })
 })

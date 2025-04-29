@@ -3,6 +3,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 
+import ObjectAttributeContent from '#shared/components/ObjectAttributes/ObjectAttribute.vue'
+import type { ObjectAttribute } from '#shared/entities/object-attributes/types/store.ts'
 import type { TicketByList } from '#shared/entities/ticket/types.ts'
 import { EnumObjectManagerObjects } from '#shared/graphql/types.ts'
 import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
@@ -13,6 +15,7 @@ import CommonAdvancedTable from '#desktop/components/CommonTable/CommonAdvancedT
 import CommonTableSkeleton from '#desktop/components/CommonTable/Skeleton/CommonTableSkeleton.vue'
 import CommonTicketPriorityIndicatorIcon from '#desktop/components/CommonTicketPriorityIndicator/CommonTicketPriorityIndicatorIcon.vue'
 import CommonTicketStateIndicatorIcon from '#desktop/components/CommonTicketStateIndicator/CommonTicketStateIndicatorIcon.vue'
+import UserPopoverWithTrigger from '#desktop/components/User/UserPopoverWithTrigger.vue'
 
 import { useListTable } from '../CommonTable/composables/useListTable.ts'
 
@@ -113,17 +116,33 @@ const { bulkEditActive, checkedTicketIds } = useTicketBulkEdit()
         <CommonTicketPriorityIndicatorIcon
           :ui-color="(item as TicketByList).priority?.uiColor"
           with-text-color
-          class="shrink-0 group-hover:text-black group-focus-visible:text-white group-active:text-white group-hover:dark:text-white group-active:dark:text-white"
+          class="shrink-0 outline-offset-0! group-hover:text-black group-hover:dark:text-white"
           :class="{
             'ltr:text-black rtl:text-black dark:text-white': isRowSelected,
           }"
         />
       </template>
+      <template #column-cell-customer_id="{ item, isRowSelected, attribute }">
+        <UserPopoverWithTrigger :user="(item as TicketByList).customer" no-link>
+          <CommonLabel
+            class="block! shrink-0 truncate outline-offset-0! group-hover:text-black! group-hover:dark:text-white!"
+            :class="{
+              'text-black! dark:text-white!': isRowSelected,
+            }"
+          >
+            <ObjectAttributeContent
+              mode="table"
+              :attribute="attribute as unknown as ObjectAttribute"
+              :object="item"
+            />
+          </CommonLabel>
+        </UserPopoverWithTrigger>
+      </template>
       <template #column-cell-stateIcon="{ item, isRowSelected }">
         <CommonTicketStateIndicatorIcon
-          class="shrink-0 group-hover:text-black group-focus-visible:text-white group-active:text-white group-hover:dark:text-white group-active:dark:text-white"
+          class="shrink-0 outline-offset-0! group-hover:text-black group-hover:dark:text-white"
           :class="{
-            'ltr:text-black rtl:text-black dark:text-white': isRowSelected,
+            'text-black! dark:text-white!': isRowSelected,
           }"
           :color-code="(item as TicketByList).stateColorCode"
           :label="(item as TicketByList).state.name"

@@ -44,7 +44,9 @@ const link = computed(() => {
 </script>
 
 <template>
-  <template v-if="!link">{{ title }}</template>
+  <template v-if="!link">
+    {{ title }}
+  </template>
   <CommonLink
     v-else
     :class="config?.classes?.link"
