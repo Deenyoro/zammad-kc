@@ -264,10 +264,8 @@ class App.UiElement.ApplicationUiElement
   @optionSelectableValues: (values) ->
     result = []
     for option in values
-      continue if option.inactive
-      continue if !_.isEmpty(option.disabled)
-
-      result.push(option.value.toString())
+      if !option.inactive && _.isEmpty(option.disabled)
+        result.push(option.value.toString())
       result = result.concat(@optionSelectableValues(option.children)) if _.isArray(option.children)
     result
 

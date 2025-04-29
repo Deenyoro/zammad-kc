@@ -791,3 +791,45 @@ QUnit.test("Escaping of values works just fine", assert => {
 
   el.append(element)
 });
+
+QUnit.test("Missing selected groups for multi tree select relation in ticket zoom #5597", assert => {
+  $('#forms').append('<hr><h1>Missing selected groups for multi tree select relation in ticket zoom #5597 form10</h1><form id="form10"></form>')
+  var el = $('#form10')
+
+  App.Group.configure_attributes.push({ name: 'parent_id', display: 'Parent Group', tag: 'tree_select', relation: 'Group' })
+
+  App.Group.refresh([
+    {
+      id: 1,
+      name: 'group 1',
+      name_last: 'group 1',
+      active: true,
+    },
+    {
+      id: 2,
+      name: 'group 1 > group 2',
+      name_last: 'group 2',
+      parent_id: 1,
+      active: true,
+    },
+  ])
+
+  attribute = {
+    "name": "mts_5597",
+    "display": "mts_5597",
+    "tag": "multi_tree_select",
+    "null": true,
+    "nulloption": true,
+    "translate": true,
+    "relation": "Group",
+    "filter": ['', '2'],
+    "value": 2,
+    "multiple": true,
+  }
+
+  element = App.UiElement.multi_tree_select.render(attribute)
+
+  assert.equal(true, element.find(".token[data-value='2']").length == 1)
+
+  el.append(element)
+});
