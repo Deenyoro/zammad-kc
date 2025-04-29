@@ -108,6 +108,7 @@ module Gql::Types
       'last_contact_customer_at'     => __('Last contact (customer)'),
       'first_response_at'            => __('First response'),
       'close_at'                     => __('Closing time'),
+      'last_close_at'                => __('Last closing time'),
       'created_by'                   => __('Created by'),
       'created_at'                   => __('Created at'),
       'updated_by'                   => __('Updated by'),
