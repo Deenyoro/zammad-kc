@@ -880,7 +880,11 @@ helper method for making HTTP calls and raising error if response was not succes
     boolean_raw = { type: 'boolean' }
 
     object.columns_hash.each do |key, value|
-      if value.type == :string && value.limit && value.limit <= 5000 && store_columns.exclude?(key)
+      if store_columns.include?(key)
+        result[:properties][key] = {
+          type: 'flattened',
+        }
+      elsif value.type == :string && value.limit && value.limit <= 5000
         result[:properties][key] = {
           type:   string_type,
           fields: {

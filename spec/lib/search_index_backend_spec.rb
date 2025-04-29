@@ -1183,4 +1183,13 @@ RSpec.describe SearchIndexBackend do
       end
     end
   end
+
+  describe 'rake searchindex:rebuild is not working after Elasticsearch 2.4 upgrade to Elasticsearch 5.6 "Limit of total fields [1000] in index" #2297', searchindex: true do
+    it 'does find store columns in search' do
+      create(:ticket, preferences: { special_key: 42 })
+      create(:ticket, preferences: { special_key: 43 })
+      searchindex_model_reload([Ticket])
+      expect(described_class.search('preferences.special_key: 42', 'Ticket').count).to eq(1)
+    end
+  end
 end
