@@ -2325,6 +2325,8 @@ wait untill text in selector disabppears
         end
       end
       sleep 1
+    rescue Selenium::WebDriver::Error::StaleElementReferenceError
+      next
     end
     screenshot(browser: instance, comment: 'ticket_create_failed')
     raise "ticket creation failed, can't get zoom url (current url is '#{instance.current_url}')"
