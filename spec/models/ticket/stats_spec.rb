@@ -122,5 +122,51 @@ RSpec.describe Ticket::Stats do
         }
       )
     end
+
+    # https://github.com/zammad/zammad/issues/5600
+    it 'returns empty results if user does not have access to any tickets' do
+      user_sans_permissions = create(:user).tap { _1.update! roles: [create(:role)] }
+
+      instance = described_class.new(current_user: user_sans_permissions, user_id: customer_other.id, organization_id: organization.id, assets: {})
+
+      expect(instance.list_stats).to include(
+        user:         {
+          closed_ids:     [],
+          open_ids:       [],
+          volume_by_year: [
+            { closed: 0, created: 0, month: 7, text: 'July', year: 2019 },
+            { closed: 0, created: 0, month: 6, text: 'June', year: 2019 },
+            { closed: 0, created: 0, month: 5, text: 'May', year: 2019 },
+            { closed: 0, created: 0, month: 4, text: 'April', year: 2019 },
+            { closed: 0, created: 0, month: 3, text: 'March', year: 2019 },
+            { closed: 0, created: 0, month: 2, text: 'February', year: 2019 },
+            { closed: 0, created: 0, month: 1, text: 'January', year: 2019 },
+            { closed: 0, created: 0, month: 12, text: 'December', year: 2018 },
+            { closed: 0, created: 0, month: 11, text: 'November', year: 2018 },
+            { closed: 0, created: 0, month: 10, text: 'October', year: 2018 },
+            { closed: 0, created: 0, month: 9, text: 'September', year: 2018 },
+            { closed: 0, created: 0, month: 8, text: 'August', year: 2018 }
+          ]
+        },
+        organization: {
+          closed_ids:     [],
+          open_ids:       [],
+          volume_by_year: [
+            { closed: 0, created: 0, month: 7, text: 'July', year: 2019 },
+            { closed: 0, created: 0, month: 6, text: 'June', year: 2019 },
+            { closed: 0, created: 0, month: 5, text: 'May', year: 2019 },
+            { closed: 0, created: 0, month: 4, text: 'April', year: 2019 },
+            { closed: 0, created: 0, month: 3, text: 'March', year: 2019 },
+            { closed: 0, created: 0, month: 2, text: 'February', year: 2019 },
+            { closed: 0, created: 0, month: 1, text: 'January', year: 2019 },
+            { closed: 0, created: 0, month: 12, text: 'December', year: 2018 },
+            { closed: 0, created: 0, month: 11, text: 'November', year: 2018 },
+            { closed: 0, created: 0, month: 10, text: 'October', year: 2018 },
+            { closed: 0, created: 0, month: 9, text: 'September', year: 2018 },
+            { closed: 0, created: 0, month: 8, text: 'August', year: 2018 }
+          ]
+        }
+      )
+    end
   end
 end

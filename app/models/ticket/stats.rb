@@ -148,7 +148,7 @@ class Ticket::Stats
 
   def assets_of_tickets(tickets)
     ticket_ids = []
-    tickets.each do |ticket|
+    Array.wrap(tickets).each do |ticket|
       ticket_ids.push ticket.id
       @assets = ticket.assets(@assets)
     end
