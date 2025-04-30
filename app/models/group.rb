@@ -151,4 +151,15 @@ class Group < ApplicationModel
 
     @@max_depth = ActiveRecord::Base.connection_db_config.configuration_hash[:adapter] == 'mysql2' ? 6 : 10 # rubocop:disable Style/ClassVars
   end
+
+  def self.customer_create_groups_with_parent_ids
+    Rails.cache.fetch("Group/#{Group.latest_change}/#{Setting.latest_change}/customer_create_groups_with_parent_ids") do
+      result = []
+      Group.where(id: Setting.get('customer_ticket_create_group_ids')).each do |group|
+        result |= [group]
+        result |= group.all_parents
+      end
+      result.pluck(:id)
+    end
+  end
 end

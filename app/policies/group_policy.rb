@@ -20,10 +20,10 @@ class GroupPolicy < ApplicationPolicy
   end
 
   def group_is_customer_group?
-    create_group_ids = Setting.get('customer_ticket_create_group_ids')
-    return create_group_ids.include?(record.id) if create_group_ids.present?
+    # All groups allowed if 'customer_ticket_create_group_ids' is empty.
+    return true if Setting.get('customer_ticket_create_group_ids').blank?
 
-    true # All groups allowed if 'customer_ticket_create_group_ids' is empty.
+    Group.customer_create_groups_with_parent_ids.include?(record.id)
   end
 
   def group_has_customer_tickets?

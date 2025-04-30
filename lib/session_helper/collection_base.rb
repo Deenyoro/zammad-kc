@@ -36,7 +36,7 @@ module SessionHelper::CollectionBase
     end
 
     collections[ Group.to_app_model ] = []
-    Group.all.each do |item|
+    GroupPolicy::Scope.new(user, Group).resolve.each do |item|
       assets = item.assets(assets)
     end
 

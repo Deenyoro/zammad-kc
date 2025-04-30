@@ -8,7 +8,7 @@ class GroupPolicy < ApplicationPolicy
       return scope.all if user.permissions?(['ticket.agent', 'admin.group'])
 
       allowed_group_ids = Auth::RequestCache.fetch_value("GroupPolicy/Scope/allowed_group_ids/#{user.id}") do
-        Array.wrap(Setting.get('customer_ticket_create_group_ids')).map(&:to_i) | TicketPolicy::ReadScope.new(user).resolve.distinct(:group_id).pluck(:group_id)
+        Group.customer_create_groups_with_parent_ids | TicketPolicy::ReadScope.new(user).resolve.distinct(:group_id).pluck(:group_id)
       end
 
       scope.where(id: allowed_group_ids)

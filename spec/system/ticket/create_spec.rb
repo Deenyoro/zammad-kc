@@ -1594,4 +1594,27 @@ RSpec.describe 'Ticket Create', time_zone: 'Europe/London', type: :system do
       end
     end
   end
+
+  describe 'Required value group_id is missing during ticket creation via web #5590', authenticated_as: :authenticate do
+    let(:group_1) { create(:group) }
+    let(:group_2) { create(:group, parent_id: group_1.id) }
+
+    def authenticate
+      group_1
+      group_2
+      Setting.set('customer_ticket_create_group_ids', [group_2.id.to_s])
+      create(:customer)
+    end
+
+    before do
+      visit '#customer_ticket_new'
+    end
+
+    it 'does create a ticket' do
+      fill_in 'Title', with: 'test'
+      find('.richtext-content').send_keys 'test'
+      click '.js-submit'
+      wait.until { Ticket.last.group_id == group_2.id }
+    end
+  end
 end
