@@ -146,21 +146,21 @@ Permission.create_if_not_exists(
 )
 Permission.create_if_not_exists(
   name:        'admin.channel_google',
-  label:       __('Google'),
+  label:       __('Google Email'),
   description: __('Manage Google mail channel of your system.'),
   preferences: { prio: 1240 }
 )
 Permission.create_if_not_exists(
   name:        'admin.channel_microsoft365',
-  label:       __('Microsoft 365'),
-  description: __('Manage Microsoft 365 mail channel of your system.'),
-  preferences: { prio: 1250 }
+  label:       __('Microsoft 365 IMAP Email'),
+  description: __('Manage Microsoft 365 IMAP mail channel of your system.'),
+  preferences: { prio: 1255 }
 )
 Permission.create_if_not_exists(
   name:        'admin.channel_microsoft_graph',
-  label:       __('Microsoft Graph'),
-  description: __('Manage Microsoft Graph mail channel of your system.'),
-  preferences: { prio: 1255 }
+  label:       __('Microsoft 365 Graph Email'),
+  description: __('Manage Microsoft 365 Graph mail channel of your system.'),
+  preferences: { prio: 1250 }
 )
 Permission.create_if_not_exists(
   name:        'admin.channel_twitter',
@@ -316,7 +316,7 @@ Permission.create_if_not_exists(
   name:        'admin.checklist',
   label:       __('Checklists'),
   description: __('Manage ticket checklists of your system.'),
-  preferences: { prio: 1465 }
+  preferences: { prio: 1095 }
 )
 Permission.create_if_not_exists(
   name:        'chat',
