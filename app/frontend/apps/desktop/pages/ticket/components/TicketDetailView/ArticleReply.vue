@@ -282,10 +282,11 @@ defineExpose({
   </div>
   <div
     v-else-if="newArticlePresent !== undefined"
-    class="sticky bottom-0 z-20 flex w-full justify-center gap-2.5 border-t border-t-transparent py-1.5"
+    class="sticky bottom-0 z-20 flex w-full justify-center gap-2.5 border-t py-1.5"
     :class="{
       'border-t-neutral-100 bg-neutral-50 dark:border-t-gray-900 dark:bg-gray-500':
         parentReachedBottomScroll,
+      'border-t-transparent': !parentReachedBottomScroll,
     }"
   >
     <CommonButton
