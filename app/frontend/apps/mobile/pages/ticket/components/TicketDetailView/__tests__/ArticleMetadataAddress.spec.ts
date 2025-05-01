@@ -11,6 +11,7 @@ describe('displaying contact address in metadata', () => {
         label: 'Label',
         address: {
           raw: 'some-email',
+          parsed: [],
         },
       },
     })
