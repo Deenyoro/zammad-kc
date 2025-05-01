@@ -129,7 +129,7 @@ const goToNextPage = (option: AutoCompleteOption, noFocus?: boolean) => {
         :class="{
           'text-stone-200 dark:text-neutral-500':
             option.disabled && !(option as AutoCompleteOption).children?.length,
-          'text-stone-100 dark:text-neutral-400':
+          'text-gray-100 dark:text-neutral-400':
             option.disabled && (option as AutoCompleteOption).children?.length,
         }"
         v-html="(option as MatchedSelectOption).matchedLabel"

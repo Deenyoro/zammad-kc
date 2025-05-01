@@ -21,7 +21,7 @@ defineProps<Props>()
       :entity="entity as AvatarOrganization"
       size="small"
     />
-    <CommonLabel class="text-blue-800! hover:underline dark:text-neutral-400!"
+    <CommonLabel class="text-blue-800! hover:underline"
       >{{ entity.name }}
     </CommonLabel>
   </CommonLink>
