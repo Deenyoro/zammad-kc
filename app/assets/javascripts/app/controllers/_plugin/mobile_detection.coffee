@@ -5,6 +5,9 @@ class App.MobileDetection
   @isForcingDesktopView: ->
     App.LocalStorage.get('forceDesktopApp', false)
 
+  @isSystemInitialized: ->
+    App.Config.get('system_init_done')
+
   @clearForceDesktopApp: ->
     if App.LocalStorage.get('forceDesktopApp', false)
       App.LocalStorage.delete('forceDesktopApp')
@@ -21,10 +24,12 @@ class App.MobileDetection
     @clearForceDesktopApp()
     @navigateToMobile()
 
+  # Automatically redirect to mobile view, if:
+  #   - the system was already initialized
+  #   - on mobile device
+  #   - not forcing desktop view.
   @autoRedirectToMobile: =>
-    # Automatically redirect to mobile view, if on mobile device and not forcing desktop view.
-    if @isMobile() and !@isForcingDesktopView()
-      @redirectToMobile()
+    @redirectToMobile() if @isSystemInitialized() and @isMobile() and !@isForcingDesktopView()
 
 class App.MobileDetectionWorker
   clicked: (e) ->
