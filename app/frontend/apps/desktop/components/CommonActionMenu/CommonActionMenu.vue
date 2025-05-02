@@ -125,6 +125,7 @@ const variantClasses = computed(() => {
         :disabled="disabled"
         :aria-label="$t(singleActionAriaLabel)"
         :icon="singleMenuItem?.icon"
+        :icon-class="singleMenuItem?.iconClass"
         @click="singleMenuItem?.onClick?.(props.entity as ObjectLike)"
       />
     </template>

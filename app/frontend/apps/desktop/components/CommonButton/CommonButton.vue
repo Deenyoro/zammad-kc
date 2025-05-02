@@ -16,6 +16,7 @@ export interface Props {
   prefixIcon?: string
   icon?: string
   suffixIcon?: string
+  iconClass?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -170,6 +171,7 @@ const iconSizeClass = computed(() => {
       <CommonIcon
         v-if="icon"
         class="pointer-events-none block shrink-0"
+        :class="iconClass"
         decorative
         :size="iconSizeClass"
         :name="icon"
