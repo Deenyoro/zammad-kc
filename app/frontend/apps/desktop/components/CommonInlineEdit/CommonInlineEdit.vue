@@ -213,10 +213,10 @@ const focusClasses = computed(() => {
 
   if (props.alternativeBackground) {
     classes +=
-      ' group-focus-within:before:bg-neutral-50 group-focus-within:before:dark:bg-gray-500'
+      ' group-focus-within:before:bg-neutral-50 dark:group-focus-within:before:bg-gray-500'
   } else {
     classes +=
-      ' group-focus-within:before:bg-blue-200 group-focus-within:before:dark:bg-gray-700'
+      ' group-focus-within:before:bg-blue-200 dark:group-focus-within:before:bg-gray-700'
   }
   return classes
 })
