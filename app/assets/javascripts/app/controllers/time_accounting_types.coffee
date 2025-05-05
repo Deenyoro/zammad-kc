@@ -49,6 +49,7 @@ class App.TimeAccountingTypes extends App.Controller
         home:      'time_accounting_types'
         object:    __('Activity Type')
         objects:   __('Activity Types')
+        searchPlaceholder: __('Search for activity types')
         navupdate: '#time_accounting_types'
         buttons: [
           { name: __('New Activity Type'), 'data-type': 'new', class: 'btn--success' }

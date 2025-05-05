@@ -17,6 +17,7 @@ class CoreWorkflow extends App.ControllerSubContent
         home: 'core_workflow'
         object: __('Workflow')
         objects: __('Workflows')
+        searchPlaceholder: __('Search for workflows')
         pagerAjax: true
         pagerBaseUrl: '#manage/core_workflow/'
         pagerSelected: ( @page || 1 )

@@ -15,6 +15,7 @@ class Macro extends App.ControllerSubContent
         home: 'macros'
         object: __('Macro')
         objects: __('Macros')
+        searchPlaceholder: __('Search for macros')
         pagerAjax: true
         pagerBaseUrl: '#manage/macros/'
         pagerSelected: ( @page || 1 )

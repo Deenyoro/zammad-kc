@@ -20,6 +20,7 @@ class Organization extends App.ControllerSubContent
         home: 'organizations'
         object: __('Organization')
         objects: __('Organizations')
+        searchPlaceholder: __('Search for organizations')
         pagerAjax: true
         pagerBaseUrl: '#manage/organizations/'
         pagerSelected: ( @page || 1 )

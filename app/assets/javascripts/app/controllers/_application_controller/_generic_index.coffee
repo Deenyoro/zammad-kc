@@ -155,14 +155,15 @@ class App.ControllerGenericIndex extends App.Controller
         showDescription = true
 
       @html App.view('generic/admin/index')(
-        head:            @pageData.objects
-        buttons:         @pageData.buttons
-        subHead:         @pageData.subHead
-        showDescription: showDescription
-        objects:         @pageData.objects
-        searchBar:       @searchBar
-        searchQuery:     @searchQuery
-        filterMenu:      @filterMenu
+        head:              @pageData.objects
+        buttons:           @pageData.buttons
+        subHead:           @pageData.subHead
+        showDescription:   showDescription
+        objects:           @pageData.objects
+        searchPlaceholder: @pageData.searchPlaceholder
+        searchBar:         @searchBar
+        searchQuery:       @searchQuery
+        filterMenu:        @filterMenu
       )
 
       @$('.tab').off('click').on(

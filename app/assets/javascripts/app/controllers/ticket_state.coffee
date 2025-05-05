@@ -17,6 +17,7 @@ class TicketState extends App.ControllerSubContent
         home: 'ticket_states'
         object: __('Ticket State')
         objects: __('Ticket States')
+        searchPlaceholder: __('Search for ticket states')
         navupdate: '#ticket_states'
         buttons: [
           { name: __('New Ticket State'), 'data-type': 'new', class: 'btn--success' }

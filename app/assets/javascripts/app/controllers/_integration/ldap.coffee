@@ -22,6 +22,7 @@ class Ldap extends App.ControllerIntegrationBase
         home: 'ldap'
         object: __('Source')
         objects: __('Sources')
+        searchPlaceholder: __('Search for LDAP sources')
         navupdate: '#system/integration/ldap'
         buttons: [
           { name: __('New Source'), 'data-type': 'new', class: 'btn--success' }

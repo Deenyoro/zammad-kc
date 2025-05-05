@@ -17,6 +17,7 @@ class Job extends App.ControllerSubContent
         home: 'Jobs'
         object: __('Scheduler')
         objects: __('Schedulers')
+        searchPlaceholder: __('Search for schedulers')
         pagerAjax: true
         pagerBaseUrl: '#manage/job/'
         pagerSelected: ( @page || 1 )

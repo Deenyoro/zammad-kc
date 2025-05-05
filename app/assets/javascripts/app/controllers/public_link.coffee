@@ -15,6 +15,7 @@ class PublicLink extends App.ControllerSubContent
         home: 'public_links'
         object: __('Public Link')
         objects: __('Public Links')
+        searchPlaceholder: __('Search for public links')
         pagerAjax: true
         pagerBaseUrl: '#manage/public_links/'
         pagerSelected: ( @page || 1 )

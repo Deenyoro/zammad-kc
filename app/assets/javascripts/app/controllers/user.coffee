@@ -44,6 +44,7 @@ class User extends App.ControllerSubContent
         home: 'users'
         object: __('User')
         objects: __('Users')
+        searchPlaceholder: __('Search for users')
         pagerAjax: true
         pagerBaseUrl: '#manage/users/'
         pagerSelected: ( @page || 1 )

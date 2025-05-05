@@ -26,8 +26,9 @@ class Overviews extends App.ControllerSubContent
       defaultSortBy: 'prio'
       pageData:
         home: 'overviews'
-        object: __('Order of Overviews')
-        objects: __('Order of Overviews')
+        object: __('Order of overviews')
+        objects: __('Order of overviews')
+        searchPlaceholder: __('Search for overviews')
         navupdate: '#profile/overviews'
         subHead: false
         buttons: [

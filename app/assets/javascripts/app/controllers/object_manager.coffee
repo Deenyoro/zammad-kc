@@ -150,11 +150,11 @@ class Items extends App.ControllerSubContent
     e.preventDefault()
     new New(
       pageData:
-        head:      @object
-        title:     __('Attribute')
-        home:      'object_manager'
-        object:    'ObjectManagerAttribute'
-        objects:   'ObjectManagerAttributes'
+        head: @object
+        title: __('Attribute')
+        home: 'object_manager'
+        object: __('Object Manager Attribute')
+        objects: __('Object Manager Attributes')
         navupdate: '#object_manager'
       genericObject: 'ObjectManagerAttribute'
       container:     @el.closest('.content')
@@ -167,11 +167,11 @@ class Items extends App.ControllerSubContent
     id = $(e.target).closest('tr').data('id')
     new Edit(
       pageData:
-        head:      @object
-        title:     __('Attribute')
-        home:      'object_manager'
-        object:    'ObjectManagerAttribute'
-        objects:   'ObjectManagerAttributes'
+        head: @object
+        title: __('Attribute')
+        home: 'object_manager'
+        object: __('Object Manager Attribute')
+        objects: __('Object Manager Attributes')
         navupdate: '#object_manager'
       genericObject: 'ObjectManagerAttribute'
       container:     @el.closest('.content')

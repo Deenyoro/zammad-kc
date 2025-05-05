@@ -18,6 +18,7 @@ class Trigger extends App.ControllerSubContent
         home: 'triggers'
         object: __('Trigger')
         objects: __('Triggers')
+        searchPlaceholder: __('Search for triggers')
         pagerAjax: true
         pagerBaseUrl: '#manage/trigger/'
         pagerSelected: ( @page || 1 )

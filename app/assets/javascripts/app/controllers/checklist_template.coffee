@@ -25,10 +25,11 @@ class ChecklistTemplate extends App.ControllerSubContent
       genericObject: 'ChecklistTemplate'
       defaultSortBy: 'name'
       pageData:
-        home:      'checklists'
-        head:      __('Checklist Template')
-        object:    __('Manage Checklist Template')
-        objects:   __('Manage Checklist Templates')
+        home: 'checklists'
+        head: __('Checklist Template')
+        object: __('Manage Checklist Template')
+        objects: __('Manage Checklist Templates')
+        searchPlaceholder: __('Search for checklist templates')
         subHead: false
         navupdate: '#checklists'
         notes: [

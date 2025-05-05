@@ -21,6 +21,7 @@ class Overview extends App.ControllerSubContent
         home: 'overviews'
         object: __('Overview')
         objects: __('Overviews')
+        searchPlaceholder: __('Search for overviews')
         pagerAjax: true
         pagerBaseUrl: '#manage/overviews/'
         pagerSelected: ( @page || 1 )

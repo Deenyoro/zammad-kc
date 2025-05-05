@@ -15,6 +15,7 @@ class ReportProfile extends App.ControllerSubContent
         home: 'report_profiles'
         object: __('Report Profile')
         objects: __('Report Profiles')
+        searchPlaceholder: __('Search for report profiles')
         pagerAjax: true
         pagerBaseUrl: '#manage/report_profiles/'
         pagerSelected: ( @page || 1 )

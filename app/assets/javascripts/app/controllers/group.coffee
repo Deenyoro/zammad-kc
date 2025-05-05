@@ -12,9 +12,10 @@ class Group extends App.ControllerSubContent
       searchBar: true
       searchQuery: @search_query
       pageData:
-        home:      'groups'
-        object:    __('Group')
-        objects:   __('Groups')
+        home: 'groups'
+        object: __('Group')
+        objects: __('Groups')
+        searchPlaceholder: __('Search for groups')
         pagerAjax: true
         pagerBaseUrl: '#manage/groups/'
         pagerSelected: ( @page || 1 )

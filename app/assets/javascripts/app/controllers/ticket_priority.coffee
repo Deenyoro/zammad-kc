@@ -11,9 +11,10 @@ class TicketPriority extends App.ControllerSubContent
       defaultSortBy: 'name'
       handlers: [@formHandler]
       pageData:
-        home:      'ticket_priorities'
-        object:    __('Ticket Priority')
-        objects:   __('Ticket Priorities')
+        home: 'ticket_priorities'
+        object: __('Ticket Priority')
+        objects: __('Ticket Priorities')
+        searchPlaceholder: __('Search for ticket priorities')
         navupdate: '#ticket_priorities'
         buttons: [
           { name: __('New Priority'), 'data-type': 'new', class: 'btn--success' }

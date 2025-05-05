@@ -15,9 +15,10 @@ class Role extends App.ControllerSubContent
       searchBar: true
       searchQuery: @search_query
       pageData:
-        home:      'roles'
-        object:    __('Role')
-        objects:   __('Roles')
+        home: 'roles'
+        object: __('Role')
+        objects: __('Roles')
+        searchPlaceholder: __('Search for roles')
         pagerAjax: true
         pagerBaseUrl: '#manage/roles/'
         pagerSelected: ( @page || 1 )

@@ -21,6 +21,7 @@ class TextModule extends App.ControllerSubContent
         home:      'text_modules'
         object:    __('Text module')
         objects:   __('Text modules')
+        searchPlaceholder: __('Search for text modules')
         pagerAjax: true
         pagerBaseUrl: '#manage/text_modules/'
         pagerSelected: ( @page || 1 )

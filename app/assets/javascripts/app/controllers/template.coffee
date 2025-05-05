@@ -15,6 +15,7 @@ class Template extends App.ControllerSubContent
         home: 'templates'
         object: __('Template')
         objects: __('Templates')
+        searchPlaceholder: __('Search for templates')
         pagerAjax: true
         pagerBaseUrl: '#manage/templates/'
         pagerSelected: ( @page || 1 )

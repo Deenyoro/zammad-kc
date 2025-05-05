@@ -19,6 +19,7 @@ class Index extends App.ControllerSubContent
         home: 'webhooks'
         object: __('Webhook')
         objects: __('Webhooks')
+        searchPlaceholder: __('Search for webhooks')
         pagerAjax: true
         pagerBaseUrl: '#manage/webhook/'
         pagerSelected: ( @page || 1 )
