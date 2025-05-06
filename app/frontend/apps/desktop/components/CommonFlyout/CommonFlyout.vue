@@ -6,7 +6,6 @@ import {
   useLocalStorage,
   useScroll,
   useActiveElement,
-  onKeyDown,
   useCurrentElement,
   type MaybeElementRef,
   type ComputedRefWithControl,
@@ -30,13 +29,17 @@ import type { FormRef } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
 import { useTrapTab } from '#shared/composables/useTrapTab.ts'
-import stopEvent from '#shared/utils/events.ts'
 import { getFirstFocusableElement } from '#shared/utils/getFocusableElements.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonOverlayContainer from '#desktop/components/CommonOverlayContainer/CommonOverlayContainer.vue'
 import ResizeLine from '#desktop/components/ResizeLine/ResizeLine.vue'
 import { useResizeLine } from '#desktop/components/ResizeLine/useResizeLine.ts'
+import {
+  type OrderKeyHandlerConfig,
+  KeyboardKey,
+} from '#desktop/composables/useOrderedKeyboardEvents/types.ts'
+import { useKeyboardEventBus } from '#desktop/composables/useOrderedKeyboardEvents/useKeyboardEventBus.ts'
 import { getRouteIdentifier } from '#desktop/composables/useOverlayContainer.ts'
 
 import CommonFlyoutActionFooter from './CommonFlyoutActionFooter.vue'
@@ -69,7 +72,7 @@ export interface Props {
   noCloseOnAction?: boolean
   /**
    * Don't focus the first element inside a Flyout after being mounted
-   * if nothing is focusable, will focus "Close" button when dismissible is active.
+   * if nothing is focusable, will focus the "Close" button when dismissible is active.
    */
   noAutofocus?: boolean
   fullscreen?: boolean
@@ -77,6 +80,9 @@ export interface Props {
    * If true, no page context will be added to the name, e.g. for confirmation dialogs.
    */
   global?: boolean
+  /**
+   */
+  escapeConfig?: Pick<OrderKeyHandlerConfig, 'beforeHandlerRuns' | 'handler'>
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -244,11 +250,28 @@ onMounted(async () => {
   })
 })
 
-onKeyDown('Escape', (e) => {
+const escapeHandler = () => {
   if (props.noCloseOnEscape) return
-  stopEvent(e)
   close()
-})
+}
+
+const escapeConfig: OrderKeyHandlerConfig = {
+  handler: () => {
+    if (props.escapeConfig?.handler) props.escapeConfig.handler()
+    escapeHandler()
+  },
+  key: flyoutId,
+  beforeHandlerRuns: props.escapeConfig?.beforeHandlerRuns,
+}
+
+const { subscribeEvent, unsubscribeEvent } = useKeyboardEventBus(
+  KeyboardKey.Escape,
+  escapeConfig,
+)
+
+watch(isActive, (isActive) =>
+  isActive ? subscribeEvent(escapeConfig) : unsubscribeEvent(escapeConfig),
+)
 
 // Style
 const contentElement = useTemplateRef('content')
