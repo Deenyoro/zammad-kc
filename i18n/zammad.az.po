@@ -66,8 +66,8 @@ msgstr ""
 msgid ""
 "# #{ticket.title}\n"
 "_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
-"Ticket##{ticket.number}>: Created by #{current_user.longname} at #{ticket."
-"updated_at}_\n"
+"Ticket##{ticket.number}>: Created by #{current_user.longname} at "
+"#{ticket.updated_at}_\n"
 "* Group: #{ticket.group.name}\n"
 "* Owner: #{ticket.owner.fullname}\n"
 "* State: #{t(ticket.state.name)}\n"
@@ -129,8 +129,8 @@ msgstr ""
 msgid ""
 "# #{ticket.title}\n"
 "_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
-"Ticket##{ticket.number}>: Updated by #{current_user.longname} at #{ticket."
-"updated_at}_\n"
+"Ticket##{ticket.number}>: Updated by #{current_user.longname} at "
+"#{ticket.updated_at}_\n"
 "<% if @objects[:changes].present? %>\n"
 "  <% @objects[:changes].each do |key, value| %>\n"
 "  * <%= t key %>: <%= h value[0] %> -> <%= h value[1] %>\n"
@@ -427,6 +427,7 @@ msgid "%s months ago"
 msgstr "%s ay əvvəl"
 
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:178
+#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:61
 #, fuzzy
 #| msgid "Load more"
 msgid "%s more"
@@ -821,7 +822,7 @@ msgid ""
 "auto-reply"
 msgstr ""
 
-#: db/seeds/settings.rb:4013
+#: db/seeds/settings.rb:4022
 msgid "A list of active import backends that gets scheduled automatically."
 msgstr ""
 
@@ -908,13 +909,13 @@ msgstr ""
 msgid "AI"
 msgstr "API"
 
-#: db/seeds/settings.rb:6042
+#: db/seeds/settings.rb:6051
 #, fuzzy
 #| msgid "Provider"
 msgid "AI Provider Config"
 msgstr "Provayder"
 
-#: db/seeds/settings.rb:6025
+#: db/seeds/settings.rb:6034
 #, fuzzy
 #| msgid "Provider"
 msgid "AI provider"
@@ -1202,7 +1203,7 @@ msgstr ""
 "İstifadəçilər üçün şifrə itkisi funksiyasını aktivləşdirir. Bu parametr "
 "yalnız şifrə ilə giriş aktiv olduqda etibarlıdır."
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:325
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:326
 #: app/assets/javascripts/app/models/chat.coffee:257
 #: app/assets/javascripts/app/models/checklist_template.coffee:9
 #: app/assets/javascripts/app/models/core_workflow.coffee:14
@@ -1251,7 +1252,7 @@ msgstr "Fəaliyyət axını"
 #: app/assets/javascripts/app/controllers/time_accounting_types.coffee:50
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:16
 #: app/assets/javascripts/app/views/time_accounting/types.jst.eco:4
-#: app/controllers/time_accountings_controller.rb:117
+#: app/controllers/time_accountings_controller.rb:111
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:118
 msgid "Activity Type"
 msgstr "Fəaliyyət növü"
@@ -1620,8 +1621,8 @@ msgid ""
 "\n"
 "<div>Hi #{user.firstname},</div>\n"
 "<br>\n"
-"<div>We received a request for an administration login for your #{config."
-"product_name} account <b>#{user.login}</b>.</div>\n"
+"<div>We received a request for an administration login for your "
+"#{config.product_name} account <b>#{user.login}</b>.</div>\n"
 "<br>\n"
 "<div>Please, click on the link below (or copy and paste the URL into your "
 "browser) to proceed:</div>\n"
@@ -1638,8 +1639,8 @@ msgstr ""
 "\n"
 "<div>Salam #{user.firstname},</div>\n"
 "<br>\n"
-"<div>Sizin üçün inzibati giriş daxil etmək üçün bir sorğu aldıq #{config."
-"product_name} account <b>#{user.login}</b>.</div>\n"
+"<div>Sizin üçün inzibati giriş daxil etmək üçün bir sorğu aldıq "
+"#{config.product_name} account <b>#{user.login}</b>.</div>\n"
 "<br>\n"
 "<div>Davam etmək üçün aşağıdakı linki klikləyin(və ya URL-i brauzerinizə "
 "kopyalayın əlavə edin):</div>\n"
@@ -1703,7 +1704,7 @@ msgstr "Yaş"
 #: app/assets/javascripts/app/views/popover/ticket.jst.eco:6
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:13
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:13
-#: app/controllers/time_accountings_controller.rb:103 db/seeds/roles.rb:14
+#: app/controllers/time_accountings_controller.rb:97 db/seeds/roles.rb:14
 #: db/seeds/ticket_article_senders.rb:3
 msgid "Agent"
 msgstr "Agent"
@@ -1772,9 +1773,9 @@ msgid ""
 "history entry preserved. There is no rollback of this deletion possible."
 msgstr ""
 "Bu tapşırığın başlaması ilə, təsirə məruz qalan bütün biletlər silinmək üçün "
-"qeyd ediləcəkdir.Məlumat gizliliyi təminatı tapşırığı yerinə yetirildikdə,"
-"biletlər silinəcək və tarix qeyd olunacaq. Bu silmənin geri qaytarılması "
-"mümkün deyil."
+"qeyd ediləcəkdir.Məlumat gizliliyi təminatı tapşırığı yerinə "
+"yetirildikdə,biletlər silinəcək və tarix qeyd olunacaq. Bu silmənin geri "
+"qaytarılması mümkün deyil."
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:129
 msgid ""
@@ -1843,11 +1844,11 @@ msgstr "Biletlərin müəyyən müddət ərzində yenidən açılmasına icazə 
 msgid "Allow users to add new tags."
 msgstr "İstifadəçilərə yeni teglər əlavə etməyə icazə ver."
 
-#: db/seeds/settings.rb:4178
+#: db/seeds/settings.rb:4187
 msgid "Allow users to create new tags."
 msgstr "İstifadəçilərə yeni teglər yaratmağa icazə ver."
 
-#: db/seeds/settings.rb:6019
+#: db/seeds/settings.rb:6028
 msgid "Allow users to switch automatically to the new desktop UI."
 msgstr ""
 
@@ -1865,7 +1866,7 @@ msgstr "Veb saytlara icazə ver ( ; simvolla ayrılmış)"
 msgid "Also notify via email"
 msgstr "Həmçinin e-poçt vasitəsilə bildirin"
 
-#: db/seeds/settings.rb:5238
+#: db/seeds/settings.rb:5247
 msgid ""
 "Alternative FQDN for callbacks if you operate Zammad in an internal network."
 msgstr ""
@@ -2300,7 +2301,7 @@ msgstr "Məqalədəki dəyişikliklər"
 msgid "Article could not be deleted."
 msgstr "Məqalə silinə bilməz."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubble.vue:128
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubble.vue:133
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleHeader.vue:27
 #, fuzzy
 #| msgid "Additional information"
@@ -2332,7 +2333,7 @@ msgstr "Son agentə yenidən təyin et."
 msgid "Assign follow-ups"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:598
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:599
 msgid "Assign signup roles"
 msgstr "Qeydiyyat üçün rollar təyin edin"
 
@@ -2480,7 +2481,7 @@ msgstr ""
 msgid "Attribute"
 msgstr "Atribut"
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:625
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:626
 msgid "Attribute '%s' is required in the mapping"
 msgstr "Uyğunlaşdırmaq üçün '%s' atributu tələb olunur"
 
@@ -2563,7 +2564,7 @@ msgstr "%S vasitəsilə identifikasiya"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/authenticator_app.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:5
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:9
-#: db/seeds/settings.rb:5866
+#: db/seeds/settings.rb:5875
 msgid "Authenticator App"
 msgstr "İdentifikasiya tətbiqi"
 
@@ -2610,7 +2611,7 @@ msgstr "Avtomatik təyinlərə nəzərə alınmayan istifadəçilər"
 msgid "Auto Assignment Selector"
 msgstr "Avtomatik təyinat seçimi"
 
-#: db/seeds/settings.rb:6005
+#: db/seeds/settings.rb:6014
 msgid "Auto Shutdown"
 msgstr ""
 
@@ -2618,7 +2619,7 @@ msgstr ""
 msgid "Auto Wizard"
 msgstr ""
 
-#: db/seeds/settings.rb:4511
+#: db/seeds/settings.rb:4520
 msgid "Auto close"
 msgstr "Avtomatik bağlanma"
 
@@ -2626,7 +2627,7 @@ msgstr "Avtomatik bağlanma"
 msgid "Auto create"
 msgstr "Avtomatik yaradılma"
 
-#: db/seeds/settings.rb:4537
+#: db/seeds/settings.rb:4546
 msgid "Auto-close state"
 msgstr "Avtomatik bağlanma vəziyyəti"
 
@@ -2666,11 +2667,11 @@ msgstr ""
 "Сhat.css faylı avtomatik olaraq yüklənir.Öz css-dən istifadə etmək "
 "istəyirsinizsə, onu false olaraq təyin edin."
 
-#: app/frontend/shared/components/Form/Form.vue:1290
+#: app/frontend/shared/components/Form/Form.vue:1288
 msgid "Autosave in progress…"
 msgstr ""
 
-#: app/frontend/shared/components/Form/Form.vue:1299
+#: app/frontend/shared/components/Form/Form.vue:1297
 msgid "Autosaving is taking longer than expected…"
 msgstr ""
 
@@ -2788,7 +2789,7 @@ msgstr "Gecikmə"
 msgid "Base"
 msgstr "Əsas"
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:500
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:501
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:35
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:91
 msgid "Base DN"
@@ -3016,20 +3017,20 @@ msgstr "CTI"
 msgid "CTI (generic)"
 msgstr "CTI (universal)"
 
-#: db/seeds/settings.rb:5297
+#: db/seeds/settings.rb:5306
 #, fuzzy
 msgid "CTI Token"
 msgstr "CTI Token"
 
-#: db/seeds/settings.rb:5284
+#: db/seeds/settings.rb:5293
 msgid "CTI config"
 msgstr "CTI konfiqurasiyası"
 
-#: db/seeds/settings.rb:5318
+#: db/seeds/settings.rb:5327
 msgid "CTI customer last activity"
 msgstr "Müştərinin son fəaliyyəti"
 
-#: db/seeds/settings.rb:5256
+#: db/seeds/settings.rb:5265
 msgid "CTI integration"
 msgstr "CTI inteqrasiyası"
 
@@ -3436,7 +3437,7 @@ msgstr "Kanalları yoxla."
 msgid "Check item"
 msgstr "Checkmk"
 
-#: lib/search_index_backend.rb:437
+#: lib/search_index_backend.rb:439
 msgid "Check the response and payload for detailed information:"
 msgstr ""
 
@@ -3491,7 +3492,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/checklist_template.coffee:3
 #: app/assets/javascripts/app/views/checklist_template/index.jst.eco:7
-#: db/seeds/permissions.rb:317 db/seeds/settings.rb:5978
+#: db/seeds/permissions.rb:317 db/seeds/settings.rb:5987
 #, fuzzy
 msgid "Checklists"
 msgstr "Checksum"
@@ -3501,12 +3502,12 @@ msgstr "Checksum"
 msgid "Checkmk"
 msgstr "Checkmk"
 
-#: db/seeds/settings.rb:4658
+#: db/seeds/settings.rb:4667
 #, fuzzy
 msgid "Checkmk integration"
 msgstr "Checkmk inteqrasiyası"
 
-#: db/seeds/settings.rb:4779
+#: db/seeds/settings.rb:4788
 #, fuzzy
 msgid "Checkmk token"
 msgstr "Checkmk token"
@@ -3680,11 +3681,11 @@ msgstr "Seçimi təmizlə"
 msgid "Clearbit"
 msgstr "Clearbit"
 
-#: db/seeds/settings.rb:5420
+#: db/seeds/settings.rb:5429
 msgid "Clearbit config"
 msgstr "Clearbit konfiqurasiyası"
 
-#: db/seeds/settings.rb:5394
+#: db/seeds/settings.rb:5403
 msgid "Clearbit integration"
 msgstr "Clearbit inteqrasiyası"
 
@@ -3859,7 +3860,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:11
-#: db/seeds/settings.rb:5858
+#: db/seeds/settings.rb:5867
 msgid "Complete the sign-in with your security key."
 msgstr "Təhlükəsizlik açarı ilə identifikasiya prosesini yekunlaşdırın."
 
@@ -3968,8 +3969,8 @@ msgstr "Şifrəni təsdiq edin"
 #: app/views/mailer/signup/en.html.erb
 #, fuzzy
 msgid ""
-"Confirm your #{config.product_name} account, #{user.firstname} #{user."
-"lastname}\n"
+"Confirm your #{config.product_name} account, #{user.firstname} "
+"#{user.lastname}\n"
 "\n"
 "<div>Hi #{user.firstname},</div>\n"
 "<br>\n"
@@ -3980,13 +3981,13 @@ msgid ""
 "<br>\n"
 "<div>Your #{config.product_name} Team</div>\n"
 msgstr ""
-"Hesabınızı təsdiq edin #{config.product_name} , #{user.firstname} #{user."
-"lastname}\n"
+"Hesabınızı təsdiq edin #{config.product_name} , #{user.firstname} "
+"#{user.lastname}\n"
 "\n"
 "<div>Salam #{user.firstname},</div>\n"
 "<br>\n"
-"<div>Qeydiyyatı tamamlamaq üçün e-poçt adresinizi təsdiqləyin #{config."
-"product_name} hesab.Sadəcə aşağıdakı linkə klikləyin.</div>\n"
+"<div>Qeydiyyatı tamamlamaq üçün e-poçt adresinizi təsdiqləyin "
+"#{config.product_name} hesab.Sadəcə aşağıdakı linkə klikləyin.</div>\n"
 "<br>\n"
 "<div><a href=\"#{url}\">#{url}</a></div>\n"
 "<br>\n"
@@ -4463,8 +4464,8 @@ msgid ""
 "\n"
 "Available objects are:\n"
 "* ticket (e.g. ticket.state, ticket.group)\n"
-"* ticket.customer (e.g. ticket.customer.firstname, ticket.customer."
-"lastname)\n"
+"* ticket.customer (e.g. ticket.customer.firstname, "
+"ticket.customer.lastname)\n"
 "* ticket.owner (e.g. ticket.owner.firstname, ticket.owner.lastname)\n"
 "* ticket.organization (e.g. ticket.organization.name)\n"
 "* user (e.g. user.firstname, user.email)\n"
@@ -4487,8 +4488,8 @@ msgstr ""
 "\n"
 "Mövcud obyektlər:\n"
 "* ticket (məsələn, ticket.state, ticket.group)\n"
-"* ticket.customer (məsələn, ticket.customer.firstname, ticket.customer."
-"lastname)\n"
+"* ticket.customer (məsələn, ticket.customer.firstname, "
+"ticket.customer.lastname)\n"
 "* ticket.owner (məsələn, ticket.owner.firstname, ticket.owner.lastname)\n"
 "* ticket.organization (məsələn, ticket.organization.name)\n"
 "* user (məsələn, user.firstname, user.email)\n"
@@ -4660,14 +4661,14 @@ msgstr "Daxili məqalə yaradıldı"
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:17
 #: app/assets/javascripts/app/views/widget/http_log.jst.eco:19
 #: app/assets/javascripts/app/views/widget/http_log_show.jst.eco:23
-#: app/controllers/time_accountings_controller.rb:122
+#: app/controllers/time_accountings_controller.rb:116
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:121
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleMeta/useArticleMeta.ts:57
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/TicketSimpleTable.vue:41
 #: app/frontend/shared/entities/organization/stores/objectAttributes.ts:24
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:106
 #: app/frontend/shared/entities/user/stores/objectAttributes.ts:24
-#: app/graphql/gql/types/overview_type.rb:112
+#: app/graphql/gql/types/overview_type.rb:113
 msgid "Created at"
 msgstr "Yaradıldı"
 
@@ -4693,7 +4694,7 @@ msgstr "Yaradıldı:"
 #: app/frontend/shared/entities/organization/stores/objectAttributes.ts:14
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:95
 #: app/frontend/shared/entities/user/stores/objectAttributes.ts:14
-#: app/graphql/gql/types/overview_type.rb:111
+#: app/graphql/gql/types/overview_type.rb:112
 msgid "Created by"
 msgstr "Yaradılmış"
 
@@ -4706,7 +4707,7 @@ msgstr "İnternet vasitəsilə yeni biletlərin yaradılması deaktiv edildi."
 msgid "Creation Channels"
 msgstr "Kanalın yaradılması"
 
-#: app/assets/javascripts/app/controllers/core_workflow.coffee:55
+#: app/assets/javascripts/app/controllers/core_workflow.coffee:56
 #, fuzzy
 msgid "Creation mask"
 msgstr "Maska yaradılması"
@@ -4808,7 +4809,7 @@ msgstr "Xüsusi ünvan verilməyib"
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:11
 #: app/assets/javascripts/app/views/time_accounting/by_customer.jst.eco:9
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:11
-#: app/controllers/time_accountings_controller.rb:95
+#: app/controllers/time_accountings_controller.rb:89
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/TicketSimpleTable.vue:39
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/customer.ts:13
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/plugins/customer.ts:6
@@ -5043,7 +5044,7 @@ msgstr "Agent üçün standart bildirişlər"
 msgid "Default at Signup"
 msgstr "Qeydiyyat üçün standart olaraq"
 
-#: db/seeds/settings.rb:4202
+#: db/seeds/settings.rb:4211
 #, fuzzy
 msgid "Default calendar tickets subscriptions"
 msgstr "Sorğulara abunə üçün standart qrafik"
@@ -5090,6 +5091,14 @@ msgid ""
 "executives)."
 msgstr ""
 
+#: db/seeds/settings.rb:3735
+#, fuzzy
+#| msgid "Defines HTTP basic auth user of Elasticsearch."
+msgid "Define if asciifolding analyzer should be used in Elasticsearch."
+msgstr ""
+"Elasticsearch əsas istifadəçi identifikasiyasını HTTP protokolu ilə "
+"müəyyənləşdirir."
+
 #: db/seeds/settings.rb:3699
 msgid "Define max. attachment size for Elasticsearch."
 msgstr "Elasticsearch üçün maksimal əlavənin ölçüsünü təyin edin."
@@ -5107,17 +5116,17 @@ msgstr "Elasticsearch üçün model konfiqurasiyasını müəyyənləşdir."
 msgid "Define pipeline name for Elasticsearch."
 msgstr ""
 
-#: db/seeds/settings.rb:4339
+#: db/seeds/settings.rb:4348
 msgid ""
 "Define postmaster filter to check if follow-ups get created (based on admin "
 "settings)."
 msgstr ""
 
-#: db/seeds/settings.rb:4285
+#: db/seeds/settings.rb:4294
 msgid "Define postmaster filter to import archive mailboxes."
 msgstr ""
 
-#: db/seeds/settings.rb:4282
+#: db/seeds/settings.rb:4291
 msgid "Define postmaster filter."
 msgstr "Poçtmeyster filtrini müəyyənləşdirin."
 
@@ -5145,7 +5154,7 @@ msgstr "SSL Elasticsearch verifikasiyasını təyin edir."
 msgid "Defines Elasticsearch index name."
 msgstr "Elasticsearch indeksinin adını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:3939
+#: db/seeds/settings.rb:3948
 msgid "Defines Freshdesk endpoint authentication API key."
 msgstr "Freshdesk son nöqtəsinin identifikasiyası API açarını müəyyənləşdirir."
 
@@ -5159,7 +5168,7 @@ msgstr ""
 "Elasticsearch əsas istifadəçi identifikasiyasını HTTP protokolu ilə "
 "müəyyənləşdirir."
 
-#: db/seeds/settings.rb:3846
+#: db/seeds/settings.rb:3855
 msgid ""
 "Defines HTTP basic authentication password (only if OTRS is protected via "
 "HTTP basic auth)."
@@ -5167,7 +5176,7 @@ msgstr ""
 "Əsas HTTP identifikasiyası parolunu təyin edir (yalnız OTRS HTTP Basic auth "
 "ilə qorunursa)."
 
-#: db/seeds/settings.rb:3827
+#: db/seeds/settings.rb:3836
 msgid ""
 "Defines HTTP basic authentication user (only if OTRS is protected via HTTP "
 "basic auth)."
@@ -5175,44 +5184,44 @@ msgstr ""
 "Əsas HTTP identifikasiyası şifrəni təyin edir (yalnız OTRS HTTP Basic auth "
 "ilə qorunursa)."
 
-#: db/seeds/settings.rb:3994
+#: db/seeds/settings.rb:4003
 msgid "Defines Kayako endpoint authentication password."
 msgstr "Kayako autentifikasiya şifrəsini təyin edir."
 
-#: db/seeds/settings.rb:3976
+#: db/seeds/settings.rb:3985
 msgid "Defines Kayako endpoint authentication user."
 msgstr "Kayako autentifikasiya istifadəçisini müəyyənləşdirir."
 
-#: db/seeds/settings.rb:3808
+#: db/seeds/settings.rb:3817
 msgid "Defines OTRS endpoint authentication key."
 msgstr "OTRS autentifikasiya açarını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:3883
+#: db/seeds/settings.rb:3892
 #, fuzzy
 msgid "Defines Zendesk endpoint authentication API key."
 msgstr "Zendesk API açarını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:3902
+#: db/seeds/settings.rb:3911
 #, fuzzy
 msgid "Defines Zendesk endpoint authentication user."
 msgstr "Zendesk autentifikasiya istifadəçisini müəyyənləşdirir."
 
-#: db/seeds/settings.rb:3921
+#: db/seeds/settings.rb:3930
 msgid ""
 "Defines a Freshdesk endpoint to import users, tickets, states, and articles."
 msgstr ""
 
-#: db/seeds/settings.rb:3958
+#: db/seeds/settings.rb:3967
 msgid ""
 "Defines a Kayako endpoint to import users, tickets, states, and articles."
 msgstr ""
 
-#: db/seeds/settings.rb:3865
+#: db/seeds/settings.rb:3874
 msgid ""
 "Defines a Zendesk endpoint to import users, tickets, states, and articles."
 msgstr ""
 
-#: db/seeds/settings.rb:5498
+#: db/seeds/settings.rb:5507
 msgid "Defines a dashboard stats backend that gets scheduled automatically."
 msgstr ""
 
@@ -5243,7 +5252,7 @@ msgid "Defines after how many failed logins accounts will be deactivated."
 msgstr ""
 "Uğursuz girişlərin sayınına görə deaktivasiya edilmə limiti təyin edilir."
 
-#: db/seeds/settings.rb:3790
+#: db/seeds/settings.rb:3799
 msgid ""
 "Defines an OTRS endpoint to import users, tickets, states, and articles."
 msgstr ""
@@ -5308,24 +5317,24 @@ msgstr ""
 "Websocket serverinə giriş üçün metodlar təyin edir. \"websocket\" ümumi "
 "istehsal üçün istifadə olunur, \"websocketPort\" isə CI üçün"
 
-#: db/seeds/settings.rb:4661
+#: db/seeds/settings.rb:4670
 msgid "Defines if Checkmk (https://checkmk.com/) is enabled or not."
 msgstr "Checkmk (https://checkmk.com/) aktiv olub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:5397
+#: db/seeds/settings.rb:5406
 msgid "Defines if Clearbit (http://www.clearbit.com) is enabled or not."
 msgstr ""
 "Clearbit (http://www.clearbit.com) aktiv olub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:4948
+#: db/seeds/settings.rb:4957
 msgid "Defines if Exchange is enabled or not."
 msgstr "Exchange aktiv olub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:4465
+#: db/seeds/settings.rb:4474
 msgid "Defines if Icinga (http://www.icinga.org) is enabled or not."
 msgstr "Icinga (http://www.icinga.org) aktiv olub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:5608
+#: db/seeds/settings.rb:5617
 msgid ""
 "Defines if Knowledge Base navbar button is enabled for users without "
 "Knowledge Base permission."
@@ -5333,39 +5342,39 @@ msgstr ""
 "İstifadəçilərin məllumat bazasına giriş hüququ olmadan naviqasiya panelində "
 "məllumat bazası düyməsinin aktiv olub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:5593
+#: db/seeds/settings.rb:5602
 msgid "Defines if Knowledge Base navbar button is enabled."
 msgstr ""
 "Navigasiya panelində məllumat bazası düyməsinin aktiv olub olmadığını "
 "müəyyənləşdirir."
 
-#: db/seeds/settings.rb:4895
+#: db/seeds/settings.rb:4904
 msgid "Defines if LDAP is enabled or not."
 msgstr "LDAP aktiv olub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:4794
+#: db/seeds/settings.rb:4803
 msgid "Defines if Monit (https://mmonit.com/monit/) is enabled or not."
 msgstr ""
 "Monit (https://mmonit.com/monit/) aktiv olub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:4563
+#: db/seeds/settings.rb:4572
 msgid "Defines if Nagios (http://www.nagios.org) is enabled or not."
 msgstr "Nagios (http://www.nagios.org) aktiv olub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:5726
+#: db/seeds/settings.rb:5735
 msgid "Defines if PGP encryption is enabled or not."
 msgstr "PGP şifrələməsi aktiv olub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:5334
+#: db/seeds/settings.rb:5343
 msgid "Defines if Placetel (http://www.placetel.de) is enabled or not."
 msgstr ""
 "Placetel (http://www.placetel.de) aktiv olub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:5684
+#: db/seeds/settings.rb:5693
 msgid "Defines if S/MIME encryption is enabled or not."
 msgstr "S/MIME şifrələməsi aktiv olub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:5135
+#: db/seeds/settings.rb:5144
 msgid "Defines if Slack (http://www.slack.org) is enabled or not."
 msgstr "Slack (http://www.slack.org) aktiv olub olmadığını müəyyənləşdirir."
 
@@ -5384,7 +5393,7 @@ msgid "Defines if application is used as online service."
 msgstr ""
 "Tətbiqin onlayn xidmət olaraq istifadə olunub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:5809
+#: db/seeds/settings.rb:5818
 msgid ""
 "Defines if calendar weeks are shown in the picker of date/datetime fields to "
 "easily select the correct date."
@@ -5392,12 +5401,12 @@ msgstr ""
 "Düzgün tarix seçməni təmin etmək üçün, tarix və vaxt seçimi sahəsində "
 "həftələr göstərilir."
 
-#: db/seeds/settings.rb:5259
+#: db/seeds/settings.rb:5268
 msgid "Defines if generic CTI integration is enabled or not."
 msgstr ""
 "CTI ilə universal inteqrasiyanın aktiv olub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:5901
+#: db/seeds/settings.rb:5910
 #, fuzzy
 msgid ""
 "Defines if recovery codes can be used by users in the event they lose access "
@@ -5406,22 +5415,22 @@ msgstr ""
 "İki faktorlu təyinat metodlarının əlçatmazlığı halında istifadəçilərin bərpa "
 "kodlarını istifadə edə biləcəyi müəyyən edilir."
 
-#: db/seeds/settings.rb:5176
+#: db/seeds/settings.rb:5185
 msgid "Defines if sipgate.io (http://www.sipgate.io) is enabled or not."
 msgstr ""
 "sipgate.io (http://www.sipgate.io) aktiv olub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:5057
+#: db/seeds/settings.rb:5066
 msgid ""
 "Defines if the GitHub (http://www.github.com) integration is enabled or not."
 msgstr "GitHub (http://www.github.com) aktiv olub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:5015
+#: db/seeds/settings.rb:5024
 msgid ""
 "Defines if the GitLab (http://www.gitlab.com) integration is enabled or not."
 msgstr "GitLab (http://www.gitlab.com) aktiv olub olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:5768
+#: db/seeds/settings.rb:5777
 msgid "Defines if the PGP recipient alias configuration is enabled or not."
 msgstr ""
 
@@ -5440,7 +5449,7 @@ msgid ""
 "password and password reset will work without email delivery)."
 msgstr ""
 
-#: db/seeds/settings.rb:5953
+#: db/seeds/settings.rb:5962
 #, fuzzy
 msgid ""
 "Defines if the change of the primary organization of a user will update the "
@@ -5467,7 +5476,7 @@ msgstr ""
 "İstifadəçi/təşkilat widgetinin nəticələrində elektron məktub "
 "göstərilməlidirmi."
 
-#: db/seeds/settings.rb:4975
+#: db/seeds/settings.rb:4984
 msgid ""
 "Defines if the i-doit (https://www.i-doit.org/) integration is enabled or "
 "not."
@@ -5490,11 +5499,11 @@ msgstr ""
 "üçün düzgün ifadə operatorlarını dəstəkləyib-destəkləmədiyini "
 "müəyyənləşdirir."
 
-#: db/seeds/settings.rb:4142
+#: db/seeds/settings.rb:4151
 msgid "Defines if the time accounting types are enabled."
 msgstr "Hesabat növlərinin aktiv olub-olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:5869
+#: db/seeds/settings.rb:5878
 msgid ""
 "Defines if the two-factor authentication method authenticator app is enabled "
 "or not."
@@ -5502,7 +5511,7 @@ msgstr ""
 "Authenticator tətbiqində iki faktorlu identifikasiya metodunun aktiv olub "
 "olmadığını müəyyənləşdirir."
 
-#: db/seeds/settings.rb:5837
+#: db/seeds/settings.rb:5846
 msgid ""
 "Defines if the two-factor authentication method security keys is enabled or "
 "not."
@@ -5516,19 +5525,19 @@ msgstr ""
 "Veb formasından istifadə edərək müraciətlərin yaradıla biləcəyini "
 "müəyyənləşdirir."
 
-#: db/seeds/settings.rb:4514
+#: db/seeds/settings.rb:4523
 msgid "Defines if tickets should be closed if service is recovered."
 msgstr ""
 "Xidmət bərpa olunarsa müraciətlərin bağlanmalı olub olmadığını "
 "müəyyənləşdirir."
 
-#: db/seeds/settings.rb:4375
+#: db/seeds/settings.rb:4384
 msgid "Defines postmaster filter for filters managed via admin interface."
 msgstr ""
 "Admin interfeysi vasitəsilə idarə olunan filtrlər üçün poçtmeyster filtrini "
 "təyin edir."
 
-#: db/seeds/settings.rb:4294
+#: db/seeds/settings.rb:4303
 msgid ""
 "Defines postmaster filter to check if email has been created by Zammad "
 "itself and will set the article sender."
@@ -5536,24 +5545,24 @@ msgstr ""
 "E-poçtun Zammad tərəfindən yaradıldığını yoxlamaq üçün poçtmeyster filtrini "
 "müəyyənləşdirir və məqalənin göndəricisini təyin edir."
 
-#: db/seeds/settings.rb:4303
+#: db/seeds/settings.rb:4312
 msgid ""
 "Defines postmaster filter to check if the email is a self-created "
 "notification email, then ignore it to prevent email loops."
 msgstr ""
 
-#: db/seeds/settings.rb:4321
+#: db/seeds/settings.rb:4330
 msgid "Defines postmaster filter to handle secure mailing."
 msgstr "Təhlükəsiz poçtun işlənməsi üçün poçtmeyster filtrini təyin edir."
 
-#: db/seeds/settings.rb:4438
+#: db/seeds/settings.rb:4447
 msgid ""
 "Defines postmaster filter to identify Jira mails for correct follow-ups."
 msgstr ""
 "Jira məktublarının identifikasiyası və düzgün izlənməsi üçün poçtmeyster "
 "filtrini təyin edir."
 
-#: db/seeds/settings.rb:4420
+#: db/seeds/settings.rb:4429
 msgid ""
 "Defines postmaster filter to identify ServiceNow mails for correct follow-"
 "ups."
@@ -5561,13 +5570,13 @@ msgstr ""
 "ServiceNow məktublarının tanınması və düzgün izlənməsi üçün poçtmeyster "
 "filtrini təyin edir."
 
-#: db/seeds/settings.rb:4240
+#: db/seeds/settings.rb:4249
 msgid ""
 "Defines postmaster filter to identify auto responses to prevent auto replies "
 "from Zammad."
 msgstr ""
 
-#: db/seeds/settings.rb:4258
+#: db/seeds/settings.rb:4267
 #, fuzzy
 msgid ""
 "Defines postmaster filter to identify follow-up ticket for merged tickets."
@@ -5575,43 +5584,43 @@ msgstr ""
 "Bir-birinə birləşdirilmiş sorğuların identifikasiyası və izlənməsi üçün "
 "poçtmeyster filtrini təyin edir."
 
-#: db/seeds/settings.rb:4249
+#: db/seeds/settings.rb:4258
 msgid ""
 "Defines postmaster filter to identify follow-ups (based on admin settings)."
 msgstr ""
 "İdarəçinin təyinatları əsasında identifikasiya və izləmə üçün poçtmeyster "
 "filtrini təyin edir."
 
-#: db/seeds/settings.rb:4330
+#: db/seeds/settings.rb:4339
 msgid ""
 "Defines postmaster filter to identify out-of-office emails for follow-up "
 "detection and keeping current ticket state."
 msgstr ""
 
-#: db/seeds/settings.rb:4357
+#: db/seeds/settings.rb:4366
 msgid ""
 "Defines postmaster filter to identify postmaster bounces; and disables "
 "sending notification if delivery fails permanently."
 msgstr ""
 
-#: db/seeds/settings.rb:4348
+#: db/seeds/settings.rb:4357
 msgid ""
 "Defines postmaster filter to identify postmaster bounces; and handles them "
 "as follow-up of the original tickets"
 msgstr ""
 
-#: db/seeds/settings.rb:4366
+#: db/seeds/settings.rb:4375
 msgid ""
 "Defines postmaster filter to identify postmaster bounces; and reopens "
 "tickets if delivery fails permanently."
 msgstr ""
 
-#: db/seeds/settings.rb:4312
+#: db/seeds/settings.rb:4321
 msgid "Defines postmaster filter to identify sender user."
 msgstr ""
 "Göndərən istifadəçinin identifikasiyası üçün poçtmeyster filtrini təyin edir."
 
-#: db/seeds/settings.rb:4402
+#: db/seeds/settings.rb:4411
 #, fuzzy
 msgid ""
 "Defines postmaster filter to manage Checkmk (http://mathias-kettner.com/"
@@ -5620,7 +5629,7 @@ msgstr ""
 "Monit (https://mmonit.com/monit/) elektron məktublarının emalatxanadan "
 "keçirilməsi üçün poçtmeyster filtrini müəyyənləşdirir."
 
-#: db/seeds/settings.rb:4384
+#: db/seeds/settings.rb:4393
 #, fuzzy
 msgid ""
 "Defines postmaster filter to manage Icinga (http://www.icinga.org) emails."
@@ -5628,7 +5637,7 @@ msgstr ""
 "Icinga (http://www.icinga.org) elektron məktublarının emalatxanadan "
 "keçirilməsi üçün poçtmeyster filtrini müəyyənləşdirir."
 
-#: db/seeds/settings.rb:4411
+#: db/seeds/settings.rb:4420
 #, fuzzy
 msgid ""
 "Defines postmaster filter to manage Monit (https://mmonit.com/monit/) emails."
@@ -5636,14 +5645,14 @@ msgstr ""
 "Monit (https://mmonit.com/monit/) elektron məktublarının emalatxanadan "
 "keçirilməsi üçün poçtmeyster filtrini müəyyənləşdirir."
 
-#: db/seeds/settings.rb:4393
+#: db/seeds/settings.rb:4402
 msgid ""
 "Defines postmaster filter to manage Nagios (http://www.nagios.org) emails."
 msgstr ""
 "Nagios (http://www.nagios.org) elektron məktublarının emalatxanadan "
 "keçirilməsi üçün poçtmeyster filtrini müəyyənləşdirir."
 
-#: db/seeds/settings.rb:4231
+#: db/seeds/settings.rb:4240
 #, fuzzy
 msgid ""
 "Defines postmaster filter to remove X-Zammad headers from untrustworthy "
@@ -5652,25 +5661,25 @@ msgstr ""
 "Etibarsız mənbələrdən X-Zammad sətirlərinin silinməsi üçün poçt masterinin "
 "filtrini təyin edir."
 
-#: db/seeds/settings.rb:4267
+#: db/seeds/settings.rb:4276
 msgid ""
 "Defines postmaster filter to set the owner (based on group follow up "
 "assignment)."
 msgstr ""
 
-#: db/seeds/settings.rb:4276
+#: db/seeds/settings.rb:4285
 msgid ""
 "Defines postmaster filter to set the sender/from of emails based on reply-to "
 "header."
 msgstr ""
 
-#: db/seeds/settings.rb:4456
+#: db/seeds/settings.rb:4465
 msgid ""
 "Defines postmaster filter which sets the articles visibility to internal if "
 "it is a rely to an internal article or the last outgoing email is internal."
 msgstr ""
 
-#: db/seeds/settings.rb:4228
+#: db/seeds/settings.rb:4237
 #, fuzzy
 msgid "Defines postmaster filter."
 msgstr "Poçtmeyster filtrini təyin edir."
@@ -5679,35 +5688,35 @@ msgstr "Poçtmeyster filtrini təyin edir."
 msgid "Defines pretty date format."
 msgstr "Əlverişli tarix formatını təyin edir."
 
-#: db/seeds/settings.rb:5487
+#: db/seeds/settings.rb:5496
 msgid "Defines processing timeout for the html sanitizer."
 msgstr "HTML təmizlənməsini gözləmə vaxtını təyin edir."
 
-#: db/seeds/settings.rb:5096
+#: db/seeds/settings.rb:5105
 msgid "Defines sync transaction backend."
 msgstr "Server tərəfində sinxron əməliyyatı təyin edir."
 
-#: db/seeds/settings.rb:5475
+#: db/seeds/settings.rb:5484
 msgid "Defines the CSS font information for HTML emails."
 msgstr "HTML formatındakı e-poçtlar üçün CSS font məlumatlarını təyin edir."
 
-#: db/seeds/settings.rb:5287
+#: db/seeds/settings.rb:5296
 msgid "Defines the CTI config."
 msgstr "CTI konfiqurasiyasını təyin edir."
 
-#: db/seeds/settings.rb:4782
+#: db/seeds/settings.rb:4791
 msgid "Defines the Checkmk token for allowing updates."
 msgstr "Yeniləmələri icazə verən Checkmk açarı təyin edir."
 
-#: db/seeds/settings.rb:5423
+#: db/seeds/settings.rb:5432
 msgid "Defines the Clearbit config."
 msgstr "Clearbit konfiqurasiyalarını təyin edir."
 
-#: db/seeds/settings.rb:4935
+#: db/seeds/settings.rb:4944
 msgid "Defines the Exchange OAuth config."
 msgstr "Exchange OAuth konfiqurasiyalarını təyin edir."
 
-#: db/seeds/settings.rb:4922
+#: db/seeds/settings.rb:4931
 msgid "Defines the Exchange config."
 msgstr "Exchange konfiqurasiyalarını təyin edir."
 
@@ -5715,27 +5724,27 @@ msgstr "Exchange konfiqurasiyalarını təyin edir."
 msgid "Defines the HTTP protocol of your instance."
 msgstr "Sizin nümunənin HTTP protokolu versiyasını təyin edir."
 
-#: db/seeds/settings.rb:5754
+#: db/seeds/settings.rb:5763
 #, fuzzy
 msgid "Defines the PGP config."
 msgstr "PGP ayarlarını təyin edir."
 
-#: db/seeds/settings.rb:5362
+#: db/seeds/settings.rb:5371
 #, fuzzy
 msgid "Defines the Placetel config."
 msgstr "Placetel ayarlarını təyin edir."
 
-#: db/seeds/settings.rb:5712
+#: db/seeds/settings.rb:5721
 #, fuzzy
 msgid "Defines the S/MIME config."
 msgstr "S/MIME ayarlarını təyin edir."
 
-#: db/seeds/settings.rb:5161
+#: db/seeds/settings.rb:5170
 #, fuzzy
 msgid "Defines the Slack config."
 msgstr "Slack ayarlarını təyin edir."
 
-#: db/seeds/settings.rb:5464
+#: db/seeds/settings.rb:5473
 msgid "Defines the agent limit."
 msgstr "Agent limitini təyin edir."
 
@@ -5787,14 +5796,14 @@ msgstr ""
 "Tətbiqdə yaradıla bilən məqalələrin sayının bir dəqiqə ərzində yaradıla "
 "biləcəyi konfiqurasiyanı təyin edir."
 
-#: db/seeds/settings.rb:4124
+#: db/seeds/settings.rb:4133
 #, fuzzy
 msgid ""
 "Defines the custom unit to be shown next to the time accounting input field."
 msgstr ""
 "Zaman hesabı sahəsi ilə birlikdə görünən xüsusi ölçü birliyini təyin edir."
 
-#: db/seeds/settings.rb:4205
+#: db/seeds/settings.rb:4214
 msgid "Defines the default calendar tickets subscription settings."
 msgstr "Sorğu təqvimi abunə parametrlərini standart şəkildə təyin edir."
 
@@ -5810,7 +5819,7 @@ msgstr "Standart olaraq sistem dilini təyin edir."
 msgid "Defines the default system timezone."
 msgstr "Standart sistem saat qurşağını təyin edir."
 
-#: db/seeds/settings.rb:4160
+#: db/seeds/settings.rb:4169
 msgid "Defines the default time accounting type."
 msgstr "Standart olaraq zaman hesabı növünü təyin edir."
 
@@ -5818,7 +5827,7 @@ msgstr "Standart olaraq zaman hesabı növünü təyin edir."
 msgid "Defines the default visibility for new notes."
 msgstr "Standart olaraq yeni qeydlər üçün görünürlüyü təyin edir."
 
-#: db/seeds/settings.rb:5321
+#: db/seeds/settings.rb:5330
 #, fuzzy
 msgid ""
 "Defines the duration of customer activity (in seconds) on a call until the "
@@ -5838,7 +5847,7 @@ msgstr ""
 "istifadə olunan bütün mesaj mübadilə formasında #{setting.fqdn} kimi "
 "istifadə olunur, sisteminizdə tələbləri üçün link yaratmaq üçün."
 
-#: db/seeds/settings.rb:4710
+#: db/seeds/settings.rb:4719
 msgid "Defines the group of created tickets."
 msgstr "Yaradılan müraciətlər qrupunu təyin edir."
 
@@ -5846,11 +5855,11 @@ msgstr "Yaradılan müraciətlər qrupunu təyin edir."
 msgid "Defines the group of tickets created via web form."
 msgstr "Veb forması ilə yaradılan bir qrup tətbiqi təyin edir."
 
-#: db/seeds/settings.rb:5002
+#: db/seeds/settings.rb:5011
 msgid "Defines the i-doit config."
 msgstr "i-doit konfiqurasiyasını təyin edir."
 
-#: db/seeds/settings.rb:4026
+#: db/seeds/settings.rb:4035
 msgid "Defines the log levels for various logging actions of the Sequencer."
 msgstr ""
 "Sequencer tərəfindən müxtəlif jurnal fəaliyyətləri üçün jurnal səviyyələrini "
@@ -5888,20 +5897,20 @@ msgstr "websocket server portunu təyin edir."
 msgid "Defines the random application secret."
 msgstr "Tətbiqatın təsadüfi açarını təyin edir."
 
-#: db/seeds/settings.rb:4491
+#: db/seeds/settings.rb:4500
 msgid "Defines the sender email address of Icinga emails."
 msgstr ""
 "Icinga tərəfindən göndərilən məktubların e-poçt göndərənin ünvanını təyin "
 "edir."
 
-#: db/seeds/settings.rb:4589
+#: db/seeds/settings.rb:4598
 #, fuzzy
 msgid "Defines the sender email address of Nagios emails."
 msgstr ""
 "Nagios tərəfindən göndərilən məktubların e-poçt göndərənin ünvanını təyin "
 "edir."
 
-#: db/seeds/settings.rb:4687
+#: db/seeds/settings.rb:4696
 msgid "Defines the sender email address of the service emails."
 msgstr "Xidmət məktubları üçün e-poçt göndərən şəxsin ünvanını təyin edir."
 
@@ -5923,11 +5932,11 @@ msgid ""
 "permissions the highest timeout value will be used, otherwise the default."
 msgstr ""
 
-#: db/seeds/settings.rb:5225
+#: db/seeds/settings.rb:5234
 msgid "Defines the sipgate.io config."
 msgstr "sipgate.io konfiqurasiyası təyin edir."
 
-#: db/seeds/settings.rb:4540
+#: db/seeds/settings.rb:4549
 msgid "Defines the state of auto-closed tickets."
 msgstr "Avtomatik olaraq bağlanan müraciətlərin vəziyyətini təyin edir."
 
@@ -5948,31 +5957,31 @@ msgstr "Müraciət əməliyyatından sonra səyfənin davranışını təyin edi
 msgid "Defines the ticket states used for lookups."
 msgstr "Axtarış üçün istifadə olunan müraciət vəziyyətlərini təyin edir."
 
-#: db/seeds/settings.rb:5620
+#: db/seeds/settings.rb:5629
 msgid "Defines the timeframe during which a self-created note can be deleted."
 msgstr ""
 "Avtomatik olaraq yaradılan qeydin silinə biləcəyi vaxt aralığını təyin edir."
 
-#: db/seeds/settings.rb:5376
+#: db/seeds/settings.rb:5385
 msgid "Defines the token for Placetel."
 msgstr "Placetel üçün açar təyin edir."
 
-#: db/seeds/settings.rb:5117
+#: db/seeds/settings.rb:5126
 msgid ""
 "Defines the transaction backend to detect customer signatures in emails."
 msgstr ""
 "Elektron məktublardakı müştəri imzalarını aşkarlamaq üçün server "
 "əməliyyatını təyin edir."
 
-#: db/seeds/settings.rb:5099
+#: db/seeds/settings.rb:5108
 msgid "Defines the transaction backend to execute triggers."
 msgstr "Trigerlərin yerinə yetirilməsi üçün server əməliyyatını təyin edir."
 
-#: db/seeds/settings.rb:5108
+#: db/seeds/settings.rb:5117
 msgid "Defines the transaction backend to send agent notifications."
 msgstr "Agentə bildiriş göndərmək üçün server əməliyyatını təyin edir."
 
-#: db/seeds/settings.rb:5445
+#: db/seeds/settings.rb:5454
 msgid ""
 "Defines the transaction backend which detects caller IDs in objects and "
 "stores them for CTI lookups."
@@ -5980,20 +5989,20 @@ msgstr ""
 "Çağrı tanıma məlumatını obyektlərdə aşkarlayan və onları CTI axtarışları "
 "üçün saxlayan daşınma backend-ini təyin edir."
 
-#: db/seeds/settings.rb:5454
+#: db/seeds/settings.rb:5463
 msgid "Defines the transaction backend which executes time based triggers."
 msgstr ""
 "Zaman əsaslı trigerlərin icra edilməsi üçün server əməliyyatını təyin edir."
 
-#: db/seeds/settings.rb:5126
+#: db/seeds/settings.rb:5135
 msgid ""
-"Defines the transaction backend which posts messages to Slack (http://www."
-"slack.com)."
+"Defines the transaction backend which posts messages to Slack (http://"
+"www.slack.com)."
 msgstr ""
 "Slack (http://www.slack.com )-ə mesaj göndərən server əməliyyatını təyin "
 "edir."
 
-#: db/seeds/settings.rb:5436
+#: db/seeds/settings.rb:5445
 msgid ""
 "Defines the transaction backend which will enrich customer and organization "
 "information from Clearbit (http://www.clearbit.com)."
@@ -6002,7 +6011,7 @@ msgstr ""
 "məlumatları yeniləyəcək server əməliyyatını təyin edir."
 
 #: app/assets/javascripts/app/views/time_accounting/settings.jst.eco:14
-#: db/seeds/settings.rb:4106
+#: db/seeds/settings.rb:4115
 msgid "Defines the unit to be shown next to the time accounting input field."
 msgstr ""
 "İş vaxtının daxil edildiyi sahənin yanında göstərilən ölçü vahidini təyin "
@@ -6020,7 +6029,7 @@ msgid ""
 msgstr ""
 "Uyğun müraciət olduğu halda göstərilən xəbərdarlıq başlığını təyin edir."
 
-#: db/seeds/settings.rb:5105
+#: db/seeds/settings.rb:5114
 msgid "Defines transaction backend."
 msgstr "Server əməliyyatı təyin edir."
 
@@ -6051,7 +6060,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:188
 #: app/assets/javascripts/app/controllers/knowledge_base/delete_action.coffee:9
 #: app/assets/javascripts/app/controllers/package.coffee:54
-#: app/assets/javascripts/app/controllers/user.coffee:100
+#: app/assets/javascripts/app/controllers/user.coffee:101
 #: app/assets/javascripts/app/controllers/user_profile/action_row.coffee:90
 #: app/assets/javascripts/app/views/calendar/index.jst.eco:80
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:153
@@ -6578,7 +6587,7 @@ msgstr "Elektron poçt şifrələməmək"
 msgid "Do not sign email"
 msgstr "Elektron poçt imzalamamaq"
 
-#: db/seeds/settings.rb:5963
+#: db/seeds/settings.rb:5972
 msgid "Do not update any tickets."
 msgstr "Hər hansı bir müraciəti yeniləməmək."
 
@@ -6646,7 +6655,7 @@ msgid ""
 "Don't load CSS for form. You need to generate your own CSS for the form."
 msgstr "Forma üçün CSS yüklənmir.Forma üçün öz CSS faylınızı tərtib etməlisiz."
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:599
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:600
 #, fuzzy
 msgid "Don't synchronize"
 msgstr "Sinxronizasiya etmə"
@@ -6848,7 +6857,7 @@ msgstr "Yeni il tətili"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:173
 #: app/frontend/apps/mobile/pages/home/views/Home.vue:76
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:53
-#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:53
+#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:56
 msgid "Edit"
 msgstr "Redaktə et"
 
@@ -6898,7 +6907,7 @@ msgstr ""
 msgid "Edit item"
 msgstr "Maska redaktə et"
 
-#: app/assets/javascripts/app/controllers/core_workflow.coffee:57
+#: app/assets/javascripts/app/controllers/core_workflow.coffee:58
 msgid "Edit mask"
 msgstr "Maska redaktə et"
 
@@ -6913,7 +6922,7 @@ msgstr "Cavabı redaktə et"
 msgid "Edit security keys"
 msgstr "Təhlükəsizlik açarı üçün ad"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation.vue:86
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation.vue:90
 #, fuzzy
 #| msgid "Existing tickets"
 msgid "Edit ticket title"
@@ -6924,6 +6933,11 @@ msgstr "Mövcud biletlər"
 #| msgid "Edit"
 msgid "Editor"
 msgstr "Redaktə et"
+
+#: db/seeds/settings.rb:3732
+#, fuzzy
+msgid "Elasticsearch Asciifolding Configuration"
+msgstr "Elasticsearch Model Configuration"
 
 #: db/seeds/settings.rb:3687
 #, fuzzy
@@ -6975,7 +6989,7 @@ msgstr "Elasticsearch SSL verification"
 msgid "Elasticsearch Total Payload Size"
 msgstr "Elasticsearch Total Payload Size"
 
-#: lib/search_index_backend.rb:433
+#: lib/search_index_backend.rb:435
 #, fuzzy
 msgid ""
 "Elasticsearch is not reachable. It's possible that it's not running. Please "
@@ -7207,7 +7221,7 @@ msgstr ""
 "şifrələrdən istifadə etmədən). Hər bir istifadəçi öz profilində şəxsi "
 "açarlarını yaratmalıdırlar."
 
-#: db/seeds/settings.rb:5898
+#: db/seeds/settings.rb:5907
 msgid "Enable Recovery Codes"
 msgstr "Bərpa kodlarını aktivləşdir"
 
@@ -7233,7 +7247,7 @@ msgstr ""
 "Bilet ilk dəfə agent tərəfindən açıldığı zaman avtomatik tapşırığı "
 "aktivləşdir."
 
-#: db/seeds/settings.rb:5981
+#: db/seeds/settings.rb:5990
 #, fuzzy
 #| msgid "Enable Chat"
 msgid "Enable checklists."
@@ -7262,14 +7276,14 @@ msgstr ""
 "cavabınızın sonunda veriləcək. Yalnız müəyyən bir ifadəni sitat etmək üçün, "
 "mətni seç və cavab ver düyməsini kliklə (bu xüsusiyyət həmişə mövcuddur)."
 
-#: db/seeds/settings.rb:6008
+#: db/seeds/settings.rb:6017
 msgid ""
 "Enable or disable self-shutdown of Zammad processes after significant "
 "configuration changes. This should only be used if the controlling process "
 "manager like systemd or docker supports an automatic restart policy."
 msgstr ""
 
-#: db/seeds/settings.rb:6061
+#: db/seeds/settings.rb:6070
 msgid "Enable or disable the AI assistance ticket summary."
 msgstr ""
 
@@ -7305,7 +7319,7 @@ msgstr ""
 msgid "Enable ticket auto assignment."
 msgstr "Avtomatik bilet təyinatını aktivləşdir."
 
-#: db/seeds/settings.rb:4061
+#: db/seeds/settings.rb:4070
 msgid "Enable time accounting."
 msgstr "Vaxt qeydiyyatını aktivləşdir."
 
@@ -7334,7 +7348,7 @@ msgstr ""
 "Bənzər xüsusiyyətlərə sahib olan eyni bilet yaradıldıqda istifadəçilərə "
 "xəbərdarlığ aktivləşdir."
 
-#: db/seeds/settings.rb:5779
+#: db/seeds/settings.rb:5788
 msgid ""
 "Enables button for user authentication via %s. The button will redirect to /"
 "auth/sso on user interaction."
@@ -7491,11 +7505,11 @@ msgstr "Son nöqtə"
 msgid "Endpoint Settings"
 msgstr "Son nöqtə parametrləri"
 
-#: db/seeds/settings.rb:5925
+#: db/seeds/settings.rb:5934
 msgid "Enforce the setup of the two-factor authentication"
 msgstr "İki faktorlu autentifikasiyanın aktivləşdirilməsini tələb et"
 
-#: db/seeds/settings.rb:5932
+#: db/seeds/settings.rb:5941
 msgid "Enforced for user roles"
 msgstr "İstifadəçi rolu üçün tələb olunur"
 
@@ -7848,7 +7862,7 @@ msgstr ""
 msgid "Example CSV file for download."
 msgstr "Yükləmək üçün nümunə CSV faylı."
 
-#: app/assets/javascripts/app/controllers/webhook.coffee:28
+#: app/assets/javascripts/app/controllers/webhook.coffee:29
 #: app/assets/javascripts/app/controllers/widget/payload_example.coffee:5
 msgid "Example Payload"
 msgstr "Payload nümunəsi"
@@ -7875,15 +7889,15 @@ msgstr "İstisna istifadəçilər"
 msgid "Exchange"
 msgstr ""
 
-#: db/seeds/settings.rb:4932
+#: db/seeds/settings.rb:4941
 msgid "Exchange OAuth"
 msgstr ""
 
-#: db/seeds/settings.rb:4919
+#: db/seeds/settings.rb:4928
 msgid "Exchange config"
 msgstr ""
 
-#: db/seeds/settings.rb:4945
+#: db/seeds/settings.rb:4954
 msgid "Exchange integration"
 msgstr ""
 
@@ -7980,7 +7994,7 @@ msgstr "Ətraflı axtarış"
 msgid "External data source field"
 msgstr "Xarici mənbələrdən məlumat sahəsi"
 
-#: lib/search_index_backend.rb:727
+#: lib/search_index_backend.rb:743
 #, fuzzy
 msgid "Extract zammad-attachment information from arrays"
 msgstr "Zammad əlavələrindən məlumatların çıxarılması"
@@ -8388,12 +8402,12 @@ msgstr "FormSchema tapılmadı."
 msgid "Format"
 msgstr "Format"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:582
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:583
 #, fuzzy
 msgid "Format as //strikethrough//"
 msgstr "//Qaralanmış// kimi formatlaşdırmaq"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:564
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:565
 msgid "Format as _underlined_"
 msgstr ""
 
@@ -8401,16 +8415,16 @@ msgstr ""
 msgid "Format as bold"
 msgstr "Qalın şəklində formatlaşdırmaq"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:631
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:632
 #, fuzzy
 msgid "Format as h1 heading"
 msgstr "h1 başlığı kimi formatlaşdırmaq"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:637
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:638
 msgid "Format as h2 heading"
 msgstr "h2 başlığı kimi formatlaşdırmaq"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:643
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:644
 msgid "Format as h3 heading"
 msgstr "h3 başlığı kimi formatlaşdırmaq"
 
@@ -8418,7 +8432,7 @@ msgstr "h3 başlığı kimi formatlaşdırmaq"
 msgid "Format as italic"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:625
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:626
 msgid "Format as ordered list"
 msgstr "Nizamlanmış siyahı kimi formatlaşdırmaq"
 
@@ -8431,16 +8445,16 @@ msgstr "Qaralanmış kimi formatlaşdırmaq"
 msgid "Format as underlined"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:619
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:620
 #, fuzzy
 msgid "Format as unordered list"
 msgstr "Nizamsız siyahı kimi formatlaşdırmaq"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:570
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:571
 msgid "Format as |bold|"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:576
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:577
 msgid "Format as ||italic||"
 msgstr ""
 
@@ -8609,7 +8623,7 @@ msgstr "Bildiriş al"
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:11
-#: db/seeds/settings.rb:5890
+#: db/seeds/settings.rb:5899
 msgid "Get the security code from the authenticator app on your device."
 msgstr "Сihazınızdakı avtentifikator tətbiqatından təhlükəsizlik kodunu alın."
 
@@ -8641,11 +8655,11 @@ msgstr "GitHub tətbiq məlumatları"
 msgid "GitHub OAuth Applications"
 msgstr "GitHub OAuth tətbiqləri"
 
-#: db/seeds/settings.rb:5081
+#: db/seeds/settings.rb:5090
 msgid "GitHub config"
 msgstr "GitHub konfiqurasiyası"
 
-#: db/seeds/settings.rb:5054
+#: db/seeds/settings.rb:5063
 msgid "GitHub integration"
 msgstr "GitHub ilə inteqrasiya"
 
@@ -8682,11 +8696,11 @@ msgstr "GitLab tətbiq məlumatları"
 msgid "GitLab Applications"
 msgstr "GitLab Tətbiqi"
 
-#: db/seeds/settings.rb:5039
+#: db/seeds/settings.rb:5048
 msgid "GitLab config"
 msgstr "GitLab konfiqurasiyası"
 
-#: db/seeds/settings.rb:5012
+#: db/seeds/settings.rb:5021
 msgid "GitLab integration"
 msgstr "GitLab ilə inteqrasiya"
 
@@ -8760,7 +8774,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:96
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:61
-#: db/seeds/permissions.rb:149 db/seeds/settings.rb:1498
+#: db/seeds/settings.rb:1498
 #, fuzzy
 msgid "Google"
 msgstr "Google"
@@ -8792,6 +8806,7 @@ msgstr "Google istifadəçi şifrəsi"
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:3
 #: app/assets/javascripts/app/views/google/index.jst.eco:3
 #: app/assets/javascripts/app/views/google/list.jst.eco:3
+#: db/seeds/permissions.rb:149
 #, fuzzy
 msgid "Google Email"
 msgstr "Google"
@@ -8840,25 +8855,25 @@ msgstr ""
 msgid "Group"
 msgstr "Qrup"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:306
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:310
 #, fuzzy
 msgid "Group (change)"
 msgstr "Qrup (tənzimlə)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:297
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:301
 #, fuzzy
 msgid "Group (create)"
 msgstr "Qrup (yaratmaq)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:324
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:328
 msgid "Group (full)"
 msgstr "Qrup (tam)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:315
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:319
 msgid "Group (overview)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:288
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:292
 #, fuzzy
 msgid "Group (read)"
 msgstr "Qrup (oxu)"
@@ -8867,7 +8882,7 @@ msgstr "Qrup (oxu)"
 msgid "Group Filter"
 msgstr "Qrup filtri"
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:542
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:543
 msgid ""
 "Group information could not be retrieved, please check your bind user "
 "permissions."
@@ -8921,7 +8936,7 @@ msgstr "Qruplaşdırma qaydası"
 msgid "Groups"
 msgstr "Qruplar"
 
-#: app/assets/javascripts/app/controllers/group.coffee:24
+#: app/assets/javascripts/app/controllers/group.coffee:25
 msgid "Groups are …"
 msgstr "Qruplar …"
 
@@ -8930,12 +8945,12 @@ msgstr "Qruplar …"
 msgid "HMAC SHA1 Signature Token"
 msgstr "HMAC SHA1 imza açarı"
 
-#: db/seeds/settings.rb:5472
+#: db/seeds/settings.rb:5481
 #, fuzzy
 msgid "HTML Email CSS Font"
 msgstr "HTML Email CSS Font"
 
-#: db/seeds/settings.rb:5484
+#: db/seeds/settings.rb:5493
 #, fuzzy
 msgid "HTML Sanitizer Processing Timeout"
 msgstr "HTML təmizlənməsi üçün müddət bitmişdir."
@@ -9207,11 +9222,11 @@ msgstr ""
 msgid "Highlight icon"
 msgstr ""
 
-#: db/seeds/settings.rb:5636
+#: db/seeds/settings.rb:5645
 msgid "Highlights if the note a user is writing is public or private"
 msgstr "İstifadəçinin yazdığı qeyd, ictimai və ya şəxsi olduğunu təyin edir"
 
-#: db/seeds/settings.rb:5633
+#: db/seeds/settings.rb:5642
 msgid "Hint for adding an article to an existing ticket."
 msgstr "Mövcud tətbiqə məqalə əlavə etmək üçün ipucu."
 
@@ -9241,7 +9256,7 @@ msgid "Home"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:427
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:330
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:331
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:80
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:69
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:73
@@ -9355,7 +9370,7 @@ msgstr "IMAP"
 msgid "Icinga"
 msgstr "Icinga"
 
-#: db/seeds/settings.rb:4462
+#: db/seeds/settings.rb:4471
 msgid "Icinga integration"
 msgstr "Icinga inteqrasiyası"
 
@@ -9521,7 +9536,7 @@ msgstr ""
 msgid "Ignore Escalation"
 msgstr "Eskalasiyaya diqqət yetirmə"
 
-#: db/seeds/settings.rb:3764
+#: db/seeds/settings.rb:3773
 #, fuzzy
 msgid "Ignore Escalation/SLA Information"
 msgstr "Escalation/SLA Information diqqət yetirmə"
@@ -9530,7 +9545,7 @@ msgstr "Escalation/SLA Information diqqət yetirmə"
 msgid "Ignore Message"
 msgstr "Mesaja diqqət yetirmə"
 
-#: db/seeds/settings.rb:3767
+#: db/seeds/settings.rb:3776
 msgid "Ignore escalation/SLA information for import."
 msgstr ""
 
@@ -9571,9 +9586,9 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/import_freshdesk.coffee:25
 #: app/assets/javascripts/app/controllers/import_otrs.coffee:20
 #: app/assets/javascripts/app/controllers/import_zendesk.coffee:26
-#: app/assets/javascripts/app/controllers/organization.coffee:29
-#: app/assets/javascripts/app/controllers/text_module.coffee:33
-#: app/assets/javascripts/app/controllers/user.coffee:53
+#: app/assets/javascripts/app/controllers/organization.coffee:30
+#: app/assets/javascripts/app/controllers/text_module.coffee:34
+#: app/assets/javascripts/app/controllers/user.coffee:54
 #: app/assets/javascripts/app/controllers/widget/import.coffee:4
 #: app/assets/javascripts/app/controllers/widget/import_result.coffee:6
 #: app/assets/javascripts/app/controllers/widget/import_try_result.coffee:6
@@ -9592,56 +9607,56 @@ msgstr "İdxal %s"
 msgid "Import API key could not be extracted from URL."
 msgstr "URL ünvanından idxal üçün API açarı çıxarılması mümkün olmadı."
 
-#: db/seeds/settings.rb:3936
+#: db/seeds/settings.rb:3945
 msgid "Import API key for requesting the Freshdesk API"
 msgstr "Freshdesk API-ına sorğular üzərindən idxal üçün API açar"
 
-#: db/seeds/settings.rb:3880
+#: db/seeds/settings.rb:3889
 msgid "Import API key for requesting the Zendesk API"
 msgstr "Zendesk API-ına sorğular üzərindən idxal üçün API açar"
 
-#: db/seeds/settings.rb:3755
+#: db/seeds/settings.rb:3764
 msgid "Import Backend"
 msgstr "Backend idxal"
 
-#: db/seeds/settings.rb:4010
+#: db/seeds/settings.rb:4019
 #, fuzzy
 msgid "Import Backends"
 msgstr "Backend idxal"
 
-#: db/seeds/settings.rb:3787
+#: db/seeds/settings.rb:3796
 #, fuzzy
 msgid "Import Endpoint"
 msgstr "İdxal son nöqtəsi"
 
-#: db/seeds/settings.rb:3805
+#: db/seeds/settings.rb:3814
 msgid "Import Key"
 msgstr "İdxal açarı"
 
-#: db/seeds/settings.rb:3733
+#: db/seeds/settings.rb:3742
 msgid "Import Mode"
 msgstr "İdxal rejimi"
 
-#: db/seeds/settings.rb:3843
+#: db/seeds/settings.rb:3852
 #, fuzzy
 msgid "Import Password for HTTP basic authentication"
 msgstr "Əsas HTTP identifikasiyası üçün idxal şifrəsi"
 
-#: db/seeds/settings.rb:3991
+#: db/seeds/settings.rb:4000
 msgid "Import Password for requesting the Kayako API"
 msgstr "Kayako API sorğusu üçün idxal şifrəsi"
 
-#: db/seeds/settings.rb:3824
+#: db/seeds/settings.rb:3833
 #, fuzzy
 msgid "Import User for HTTP basic authentication"
 msgstr "Əsas HTTP identifikasiyası üçün idxal istifadəçisi"
 
-#: db/seeds/settings.rb:3973
+#: db/seeds/settings.rb:3982
 #, fuzzy
 msgid "Import User for requesting the Kayako API"
 msgstr "Kayako API sorğusu üçün idxal istifadəçi"
 
-#: db/seeds/settings.rb:3899
+#: db/seeds/settings.rb:3908
 msgid "Import User for requesting the Zendesk API"
 msgstr "Zendesk API tələb etmək üçün istifadəçini idxal edin"
 
@@ -9908,20 +9923,20 @@ msgid ""
 "the §</body>§ closing tag."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:613
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:614
 msgid "Inserts a horizontal rule"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:546
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:547
 #, fuzzy
 msgid "Inserts a mention for a user"
 msgstr "İstifadəçi üçün qeyd əlavə edir"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:540
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:541
 msgid "Inserts knowledge base answer"
 msgstr "Məlumat bazasından cavab əlavə edir"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:534
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:535
 msgid "Inserts text module"
 msgstr "Mətn modulunu daxil edir"
 
@@ -10377,15 +10392,15 @@ msgstr "Məlumat bazası kanalı"
 msgid "Knowledge Base Reader"
 msgstr "Məlumat bazası oxucusu"
 
-#: db/seeds/settings.rb:5590
+#: db/seeds/settings.rb:5599
 msgid "Knowledge Base active"
 msgstr "Məlumat bazası aktivdir"
 
-#: db/seeds/settings.rb:5605
+#: db/seeds/settings.rb:5614
 msgid "Knowledge Base active publicly"
 msgstr "Məlumat Bazası açıq şəkildə aktivdir"
 
-#: db/seeds/settings.rb:5579
+#: db/seeds/settings.rb:5588
 #, fuzzy
 msgid "Knowledge Base multilingual support"
 msgstr "Çoxdilli məlumat bazası dəstəyi"
@@ -10402,11 +10417,11 @@ msgstr "LDAP"
 msgid "LDAP Host"
 msgstr "LDAP Host"
 
-#: db/seeds/settings.rb:4892
+#: db/seeds/settings.rb:4901
 msgid "LDAP integration"
 msgstr "LDAP inteqrasiyası"
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:846
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:847
 msgid "LDAP integration for user management."
 msgstr "İstifadəçiləri idarə etmək üçün LDAP inteqrasiyası."
 
@@ -10494,6 +10509,7 @@ msgstr "Son dəyişiklik"
 
 #: app/assets/javascripts/app/models/ticket.coffee:26
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:88
+#: app/graphql/gql/types/overview_type.rb:111
 msgid "Last closing time"
 msgstr "Son bağlanma vaxtı"
 
@@ -10866,7 +10882,7 @@ msgstr "%s hesabına daxil ol"
 
 #: app/assets/javascripts/app/models/user.coffee:8
 #: app/assets/javascripts/app/views/maintenance.jst.eco:25
-#: app/controllers/time_accountings_controller.rb:107
+#: app/controllers/time_accountings_controller.rb:101
 #: app/frontend/apps/desktop/components/User/UserListTable.vue:57
 #: db/seeds/object_manager_attributes.rb:766
 msgid "Login"
@@ -11011,14 +11027,16 @@ msgstr "%s sisteminin altdomenini daxil edin"
 msgid "Manage Google mail channel of your system."
 msgstr "%s sisteminin altdomenini daxil edin"
 
-#: db/seeds/permissions.rb:156
-msgid "Manage Microsoft 365 mail channel of your system."
-msgstr ""
-
 #: db/seeds/permissions.rb:162
 #, fuzzy
 #| msgid "Enter the Subdomain of your %s system"
-msgid "Manage Microsoft Graph mail channel of your system."
+msgid "Manage Microsoft 365 Graph mail channel of your system."
+msgstr "%s sisteminin altdomenini daxil edin"
+
+#: db/seeds/permissions.rb:156
+#, fuzzy
+#| msgid "Enter the Subdomain of your %s system"
+msgid "Manage Microsoft 365 IMAP mail channel of your system."
 msgstr "%s sisteminin altdomenini daxil edin"
 
 #: db/seeds/permissions.rb:138
@@ -11047,7 +11065,7 @@ msgstr "%s sistemin URL daxil et."
 msgid "Manage Twitter channel of your system."
 msgstr "%s sistemin URL daxil et."
 
-#: app/assets/javascripts/app/controllers/user.coffee:85
+#: app/assets/javascripts/app/controllers/user.coffee:86
 #: app/assets/javascripts/app/controllers/user/manage_two_factor.coffee:4
 msgid "Manage Two-Factor Authentication"
 msgstr "İki faktorlu identifikasiyanı idarə et"
@@ -11413,7 +11431,7 @@ msgid "March"
 msgstr "Mart"
 
 #: app/assets/javascripts/app/views/widget/online_notification.jst.eco:4
-#: app/frontend/apps/mobile/pages/online-notification/views/NotificationsList.vue:103
+#: app/frontend/apps/mobile/pages/online-notification/views/NotificationsList.vue:105
 #, fuzzy
 msgid "Mark all as read"
 msgstr "Bütününü oxunmuş kimi qeyd et"
@@ -11676,11 +11694,6 @@ msgstr "Metod (AJAX son nöqtəsi)"
 msgid "Microsoft"
 msgstr "Microsoft"
 
-#: db/seeds/permissions.rb:155
-#, fuzzy
-msgid "Microsoft 365"
-msgstr "Microsoft 365"
-
 #: db/seeds/settings.rb:1769
 #, fuzzy
 msgid "Microsoft 365 App Credentials"
@@ -11689,6 +11702,7 @@ msgstr "Microsoft 365 tətbiq hesab məlumatları"
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:4
 #: app/assets/javascripts/app/views/microsoft_graph/index.jst.eco:4
 #: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:3
+#: db/seeds/permissions.rb:161
 #, fuzzy
 msgid "Microsoft 365 Graph Email"
 msgstr "Microsoft 365"
@@ -11696,6 +11710,7 @@ msgstr "Microsoft 365"
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:3
 #: app/assets/javascripts/app/views/microsoft365/index.jst.eco:3
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:3
+#: db/seeds/permissions.rb:155
 #, fuzzy
 msgid "Microsoft 365 IMAP Email"
 msgstr "Microsoft 365"
@@ -11709,11 +11724,6 @@ msgstr "Microsoft tətbiq qeydiyyat portalı"
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:164
 msgid "Microsoft Authenticator"
 msgstr "Microsoft identifikatoru"
-
-#: db/seeds/permissions.rb:161
-#, fuzzy
-msgid "Microsoft Graph"
-msgstr "Microsoft"
 
 #: app/models/webhook/pre_defined/microsoft_teams.rb:5
 msgid "Microsoft Teams Notifications"
@@ -11795,7 +11805,7 @@ msgstr "Mobil"
 msgid "Mode"
 msgstr "Rejim"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:268
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:272
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_perform.coffee:66
 msgid "Module"
 msgstr "Modul"
@@ -11816,7 +11826,7 @@ msgstr "Bazar ertəsi"
 msgid "Monit"
 msgstr "Monit"
 
-#: db/seeds/settings.rb:4791
+#: db/seeds/settings.rb:4800
 msgid "Monit integration"
 msgstr "Monit inteqrasiyası"
 
@@ -11956,12 +11966,12 @@ msgstr ""
 msgid "Nagios"
 msgstr "Nagios"
 
-#: db/seeds/settings.rb:4560
+#: db/seeds/settings.rb:4569
 msgid "Nagios integration"
 msgstr "Nagios inteqrasiya"
 
 #: app/assets/javascripts/app/controllers/_application_controller/reorder_modal.coffee:13
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:324
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:325
 #: app/assets/javascripts/app/controllers/chat.coffee:559
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:58
 #: app/assets/javascripts/app/models/_application_model.coffee:156
@@ -12016,7 +12026,7 @@ msgstr "Nagios inteqrasiya"
 #: app/assets/javascripts/app/views/tag/table.jst.eco:4
 #: app/assets/javascripts/app/views/widget/organization.jst.eco:9
 #: app/assets/javascripts/app/views/widget/user.jst.eco:5
-#: app/controllers/time_accountings_controller.rb:95
+#: app/controllers/time_accountings_controller.rb:89
 #: app/frontend/apps/desktop/components/Form/fields/FieldNotifications/FieldNotificationsInput.vue:30
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:116
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:31
@@ -12043,7 +12053,7 @@ msgstr "Təhlükəsizlik açarı üçün ad"
 msgid "Name of form submit button"
 msgstr "Forma göndərmə düyməsinin adı"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:524
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:525
 msgid "Navigate through article"
 msgstr "Məqalədə naviqasiya"
 
@@ -12125,7 +12135,7 @@ msgstr "Açıq Biletlər"
 msgid "New Access Token is"
 msgstr "Yeni giriş tokeni"
 
-#: app/assets/javascripts/app/controllers/time_accounting_types.coffee:54
+#: app/assets/javascripts/app/controllers/time_accounting_types.coffee:55
 msgid "New Activity Type"
 msgstr "Yeni fəaliyyət növü"
 
@@ -12171,7 +12181,7 @@ msgstr "Yeni təqvim"
 msgid "New Category"
 msgstr "Kateqoriya"
 
-#: app/assets/javascripts/app/controllers/checklist_template.coffee:38
+#: app/assets/javascripts/app/controllers/checklist_template.coffee:39
 #, fuzzy
 #| msgid "New Template"
 msgid "New Checklist Template"
@@ -12182,7 +12192,7 @@ msgstr "Yeni şablon"
 msgid "New Deletion Task"
 msgstr "Yeni silmə tapşırığı"
 
-#: app/assets/javascripts/app/controllers/group.coffee:27
+#: app/assets/javascripts/app/controllers/group.coffee:28
 msgid "New Group"
 msgstr "Yeni qrup"
 
@@ -12191,15 +12201,15 @@ msgstr "Yeni qrup"
 msgid "New Keyboard Shortcuts"
 msgstr "Klaviatura Qısayolları"
 
-#: app/assets/javascripts/app/controllers/macro.coffee:24
+#: app/assets/javascripts/app/controllers/macro.coffee:25
 msgid "New Macro"
 msgstr "Yeni Macro"
 
-#: app/assets/javascripts/app/controllers/organization.coffee:30
+#: app/assets/javascripts/app/controllers/organization.coffee:31
 msgid "New Organization"
 msgstr "Yeni təşkilat"
 
-#: app/assets/javascripts/app/controllers/overview.coffee:30
+#: app/assets/javascripts/app/controllers/overview.coffee:31
 msgid "New Overview"
 msgstr "Yeni xülasə"
 
@@ -12210,20 +12220,20 @@ msgstr "Yeni xülasə"
 msgid "New Personal Access Token"
 msgstr "Şəxsi Giriş Tokenləri"
 
-#: app/assets/javascripts/app/controllers/ticket_priority.coffee:19
+#: app/assets/javascripts/app/controllers/ticket_priority.coffee:20
 msgid "New Priority"
 msgstr "Yeni prioritet"
 
-#: app/assets/javascripts/app/controllers/report_profile.coffee:24
+#: app/assets/javascripts/app/controllers/report_profile.coffee:25
 msgid "New Profile"
 msgstr "Yeni profil"
 
-#: app/assets/javascripts/app/controllers/public_link.coffee:24
+#: app/assets/javascripts/app/controllers/public_link.coffee:25
 #, fuzzy
 msgid "New Public Link"
 msgstr "Yeni ictimai link"
 
-#: app/assets/javascripts/app/controllers/role.coffee:30
+#: app/assets/javascripts/app/controllers/role.coffee:31
 msgid "New Role"
 msgstr "Yeni rol"
 
@@ -12231,20 +12241,20 @@ msgstr "Yeni rol"
 msgid "New SLA"
 msgstr "Yeni SLA"
 
-#: app/assets/javascripts/app/controllers/job.coffee:26
+#: app/assets/javascripts/app/controllers/job.coffee:27
 msgid "New Scheduler"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:27
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:28
 msgid "New Source"
 msgstr "Yeni mənbə"
 
 #: app/assets/javascripts/app/views/tag/index.jst.eco:14
-#: db/seeds/settings.rb:4175
+#: db/seeds/settings.rb:4184
 msgid "New Tags"
 msgstr "Yeni Teqlər"
 
-#: app/assets/javascripts/app/controllers/template.coffee:24
+#: app/assets/javascripts/app/controllers/template.coffee:25
 msgid "New Template"
 msgstr "Yeni şablon"
 
@@ -12262,7 +12272,7 @@ msgstr "Yeni şablon"
 msgid "New Ticket"
 msgstr "Yeni bilet"
 
-#: app/assets/javascripts/app/controllers/ticket_state.coffee:22
+#: app/assets/javascripts/app/controllers/ticket_state.coffee:23
 msgid "New Ticket State"
 msgstr ""
 
@@ -12276,11 +12286,11 @@ msgstr "Yeni bilet"
 msgid "New Translation"
 msgstr "Yeni tərcümə"
 
-#: app/assets/javascripts/app/controllers/trigger.coffee:27
+#: app/assets/javascripts/app/controllers/trigger.coffee:28
 msgid "New Trigger"
 msgstr "Yeni Trigger"
 
-#: app/assets/javascripts/app/controllers/user.coffee:54
+#: app/assets/javascripts/app/controllers/user.coffee:55
 #: app/assets/javascripts/app/views/cti/caller_log.jst.eco:89
 #: app/assets/javascripts/app/views/navigation/menu_cti_ringing.jst.eco:54
 msgid "New User"
@@ -12294,11 +12304,11 @@ msgstr "Yeni istifadəçi hesabları"
 msgid "New Version"
 msgstr "Yeni versiya"
 
-#: app/assets/javascripts/app/controllers/webhook.coffee:30
+#: app/assets/javascripts/app/controllers/webhook.coffee:31
 msgid "New Webhook"
 msgstr "Yeni Webhook"
 
-#: app/assets/javascripts/app/controllers/core_workflow.coffee:26
+#: app/assets/javascripts/app/controllers/core_workflow.coffee:27
 msgid "New Workflow"
 msgstr "Yeni Workflow"
 
@@ -12317,7 +12327,7 @@ msgstr "Yeni şifrə"
 msgid "New tab"
 msgstr "Yeni nişan"
 
-#: app/assets/javascripts/app/controllers/text_module.coffee:34
+#: app/assets/javascripts/app/controllers/text_module.coffee:35
 msgid "New text module"
 msgstr "Yeni mətn modulu"
 
@@ -12393,7 +12403,7 @@ msgid "New user?"
 msgstr "Yeni istifadəçi?"
 
 #: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:112
-#: app/assets/javascripts/app/controllers/webhook.coffee:126
+#: app/assets/javascripts/app/controllers/webhook.coffee:127
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/password_check.coffee:2
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:120
 #: app/assets/javascripts/app/views/clues/clues_content.jst.eco:19
@@ -12508,7 +12518,7 @@ msgid "No Proxy"
 msgstr "Proxy server yoxdur"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:430
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:203
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:204
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:43
 msgid "No SSL"
@@ -12588,7 +12598,7 @@ msgid "No email!"
 msgstr "E-poçt yoxdur!"
 
 #: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:139
-#: app/frontend/apps/mobile/pages/online-notification/views/NotificationsList.vue:89
+#: app/frontend/apps/mobile/pages/online-notification/views/NotificationsList.vue:91
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:265
 #: app/frontend/apps/mobile/pages/ticket/components/TicketList/TicketList.vue:150
 msgid "No entries"
@@ -12642,7 +12652,7 @@ msgstr "Macros mövcud deyil."
 msgid "No members found"
 msgstr "Kamera tapılmadı."
 
-#: app/frontend/apps/desktop/components/CommonSimpleEntityList/plugins/organization.ts:9
+#: app/frontend/apps/desktop/components/CommonSimpleEntityList/plugins/organization.ts:11
 #, fuzzy
 #| msgid "Organizations"
 msgid "No organizations found"
@@ -13003,7 +13013,7 @@ msgstr "Bildiriş səsi"
 #: app/assets/javascripts/app/views/profile/notification.jst.eco:2
 #: app/assets/javascripts/app/views/widget/mention.jst.eco:1
 #: app/assets/javascripts/app/views/widget/online_notification.jst.eco:3
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification.vue:83
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification.vue:157
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationPopover/NotificationHeader.vue:20
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/notifications.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:34
@@ -13108,6 +13118,18 @@ msgstr "Obyekt"
 #: app/assets/javascripts/app/controllers/object_manager.coffee:114
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:3
 msgid "Object Manager"
+msgstr "Obyekt meneceri"
+
+#: app/assets/javascripts/app/controllers/object_manager.coffee:156
+#, fuzzy
+#| msgid "Object Manager"
+msgid "Object Manager Attribute"
+msgstr "Obyekt meneceri"
+
+#: app/assets/javascripts/app/controllers/object_manager.coffee:157
+#, fuzzy
+#| msgid "Object Manager"
+msgid "Object Manager Attributes"
 msgstr "Obyekt meneceri"
 
 #: app/services/service/history/list.rb:52
@@ -13321,12 +13343,12 @@ msgstr "Yeni tabda açın"
 msgid "Open link"
 msgstr "Açıq Biletlər"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:502
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:503
 #, fuzzy
 msgid "Open macro selection"
 msgstr "Macro seçimini açın"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:462
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:463
 #, fuzzy
 msgid "Open note box"
 msgstr "Qeyd qutusunu açın"
@@ -13378,7 +13400,7 @@ msgid "Open ticket indicator"
 msgstr "Açıq bilet göstəricisi"
 
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:38
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomer.vue:59
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomer.vue:54
 msgid "Open tickets"
 msgstr "Açıq biletlər"
 
@@ -13468,6 +13490,12 @@ msgstr ""
 msgid "Order of Overviews"
 msgstr ""
 
+#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:29
+#, fuzzy
+#| msgid "Included ticket overviews"
+msgid "Order of overviews"
+msgstr "Daxil edilmiş bilet rəyləri"
+
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOverviews.vue:133
 #, fuzzy
 #| msgid "Included ticket overviews"
@@ -13493,7 +13521,7 @@ msgstr "Daxil edilmiş bilet rəyləri"
 #: app/assets/javascripts/app/views/time_accounting/by_customer.jst.eco:10
 #: app/assets/javascripts/app/views/time_accounting/by_organization.jst.eco:9
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:12
-#: app/controllers/time_accountings_controller.rb:99
+#: app/controllers/time_accountings_controller.rb:93
 #: app/frontend/apps/desktop/components/Search/plugins/organization.ts:13
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/organization.ts:13
 #: app/frontend/apps/mobile/pages/organization/routes.ts:8
@@ -13542,7 +13570,7 @@ msgstr "Təşkilat loqosu"
 msgid "Organization name"
 msgstr "Təşkilatın adı"
 
-#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:78
+#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:81
 msgid "Organization tickets"
 msgstr "Təşkilat biletləri"
 
@@ -13683,7 +13711,7 @@ msgstr ""
 msgid "Overview"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/core_workflow.coffee:58
+#: app/assets/javascripts/app/controllers/core_workflow.coffee:59
 msgid "Overview bulk mask"
 msgstr ""
 
@@ -13698,7 +13726,7 @@ msgid "Overview: %s"
 msgstr "Yeni xülasə"
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:158
-#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:79
+#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:80
 #: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:38
 #: app/assets/javascripts/app/controllers/overview.coffee:3
 #: app/assets/javascripts/app/controllers/ticket_overview.coffee:258
@@ -13748,16 +13776,16 @@ msgstr ""
 msgid "PGP"
 msgstr "PGP"
 
-#: db/seeds/settings.rb:5765
+#: db/seeds/settings.rb:5774
 #, fuzzy
 msgid "PGP Recipient Alias Configuration"
 msgstr "PGP Alıcı Tələb Konfiqurasiyası"
 
-#: db/seeds/settings.rb:5751
+#: db/seeds/settings.rb:5760
 msgid "PGP config"
 msgstr "PGP konfiqurasiyası"
 
-#: db/seeds/settings.rb:5723
+#: db/seeds/settings.rb:5732
 msgid "PGP integration"
 msgstr "PGP inteqrasiyası"
 
@@ -13921,11 +13949,11 @@ msgstr "Sertifikatı daxil edin"
 msgid "Paste Private Key"
 msgstr "Şəxsi açarı daxil edin"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:588
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:589
 msgid "Paste from clipboard"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:595
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:596
 msgid "Paste from clipboard (plain text)"
 msgstr ""
 
@@ -13983,7 +14011,7 @@ msgstr "Məlumat bazasını həmişəlik silin"
 msgid "Permission level for looking up tickets"
 msgstr "Biletləri axtarmaq üçün icazə səviyyəsi"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:333
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:337
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:96
 #: app/assets/javascripts/app/models/role.coffee:7
 #: app/assets/javascripts/app/views/object_manager/screens.jst.eco:5
@@ -14007,7 +14035,7 @@ msgstr "Şəxsi Parametrlər"
 msgid "Personal access token has been deleted."
 msgstr "Şəxsi Giriş Tokenləri"
 
-#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:76
+#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:77
 msgid "Personal overview order was reset."
 msgstr ""
 
@@ -14068,16 +14096,16 @@ msgstr ""
 msgid "Placetel"
 msgstr "Placetel"
 
-#: db/seeds/settings.rb:5373
+#: db/seeds/settings.rb:5382
 #, fuzzy
 msgid "Placetel Token"
 msgstr "Placetel Token"
 
-#: db/seeds/settings.rb:5359
+#: db/seeds/settings.rb:5368
 msgid "Placetel config"
 msgstr "Placetel Konfiqurasiyası"
 
-#: db/seeds/settings.rb:5331
+#: db/seeds/settings.rb:5340
 msgid "Placetel integration"
 msgstr "Placetel ilə inteqrasiya"
 
@@ -14096,7 +14124,7 @@ msgid ""
 "duplicate first."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/checklist_template.coffee:55
+#: app/assets/javascripts/app/controllers/checklist_template.coffee:56
 #, fuzzy
 #| msgid "Please select at least one folder."
 msgid "Please add at least one item to the checklist."
@@ -14135,7 +14163,7 @@ msgstr "Zəhmət olmasa başlamazdan əvvəl import mənbəyini konfiqurasiya ed
 msgid "Please contact your administrator."
 msgstr "Zəhmət olmasa administratorunuzla əlaqə saxlayın."
 
-#: lib/selector/sql.rb:181
+#: lib/selector/sql.rb:192
 #, fuzzy
 msgid ""
 "Please enable execution_time feature to use it (currently only allowed for "
@@ -14148,7 +14176,7 @@ msgstr ""
 msgid "Please enter a text."
 msgstr "Zəhmət olmasa mətn daxil edin."
 
-#: app/assets/javascripts/app/controllers/webhook.coffee:95
+#: app/assets/javascripts/app/controllers/webhook.coffee:96
 msgid "Please enter a valid JSON string."
 msgstr "Zəhmət olmasa, düzgün JSON sətri daxil edin."
 
@@ -14322,12 +14350,12 @@ msgstr "Poçtmeyster filtri"
 msgid "Powered by"
 msgstr "İlə işləyir"
 
-#: app/assets/javascripts/app/controllers/webhook.coffee:34
+#: app/assets/javascripts/app/controllers/webhook.coffee:35
 #: app/assets/javascripts/app/views/pre_defined_webhook.jst.eco:5
 msgid "Pre-defined Webhook"
 msgstr "Əvvəlcədən təyin edilmiş Webhook"
 
-#: app/assets/javascripts/app/controllers/webhook.coffee:250
+#: app/assets/javascripts/app/controllers/webhook.coffee:251
 msgid "Pre-defined webhook for %s."
 msgstr "%s üçün əvvəlcədən təyin edilmiş webhook."
 
@@ -14459,7 +14487,7 @@ msgstr ""
 msgid "Priority"
 msgstr "Prioritet"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:67
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:70
 #, fuzzy
 msgid "Priority Icon"
 msgstr "4. Bilet eskalasiya"
@@ -14639,7 +14667,7 @@ msgstr ""
 "Giriş səhifəsinə mesaj göndərin. Dəyişdirmək üçün aşağıdakı mətn sahəsinə "
 "klikləyin və onu sətirdə dəyişdirin."
 
-#: db/seeds/settings.rb:3736
+#: db/seeds/settings.rb:3745
 #, fuzzy
 msgid "Puts Zammad into import mode (disables some triggers)."
 msgstr "Zammad import rejiminə keçirilir (bəzi tətikləyiciləri deaktiv edir)."
@@ -15002,11 +15030,11 @@ msgstr "İki faktorlu autentifikasiyanı sil"
 msgid "Removed reaction from message %s from %s"
 msgstr "%s bitdi , keçdi |%s|!"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:649
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:650
 msgid "Removes any hyperlink"
 msgstr "İstənilən hiperlinkləri sil"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:601
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:602
 #, fuzzy
 msgid "Removes the formatting"
 msgstr "Formatlaşdırmanı aradan qaldır"
@@ -15075,7 +15103,7 @@ msgstr "Bütününə cavab ver"
 msgid "Reply allowed only for open tickets"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:477
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:478
 msgid "Reply to last article"
 msgstr "Son məqaləyə cavab ver"
 
@@ -15152,7 +15180,7 @@ msgstr "Tələb olunan 'profil' parametri yoxdur."
 msgid "Requirements"
 msgstr "Tələblər"
 
-#: db/seeds/settings.rb:5928
+#: db/seeds/settings.rb:5937
 #, fuzzy
 msgid ""
 "Requires the setup of the two-factor authentication for certain user roles."
@@ -15196,7 +15224,7 @@ msgstr ""
 msgid "Reset Search"
 msgstr "Axtarış panelini təmizlə"
 
-#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:34
+#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:35
 msgid "Reset overview order"
 msgstr ""
 
@@ -15226,8 +15254,8 @@ msgid ""
 "\n"
 "<div>Hi #{user.firstname},</div>\n"
 "<br>\n"
-"<div>We received a request to reset the password for your #{config."
-"product_name} account <b>#{user.login}</b>.</div>\n"
+"<div>We received a request to reset the password for your "
+"#{config.product_name} account <b>#{user.login}</b>.</div>\n"
 "<br>\n"
 "<div>If you want to reset your password, click on the link below (or copy "
 "and paste the URL into your browser):</div>\n"
@@ -15316,7 +15344,7 @@ msgstr ""
 msgid "Result:"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:356
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:366
 msgid "Results"
 msgstr ""
 
@@ -15367,7 +15395,7 @@ msgstr ""
 msgid "Rocket Chat Notifications"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:279
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:283
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:216
 #: app/assets/javascripts/app/controllers/role.coffee:3
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:81
@@ -15385,7 +15413,7 @@ msgstr ""
 msgid "Roles"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/role.coffee:27
+#: app/assets/javascripts/app/controllers/role.coffee:28
 msgid "Roles are …"
 msgstr ""
 
@@ -15443,7 +15471,7 @@ msgid ""
 "encrypted messages."
 msgstr ""
 
-#: db/seeds/settings.rb:5709
+#: db/seeds/settings.rb:5718
 msgid "S/MIME config"
 msgstr ""
 
@@ -15451,7 +15479,7 @@ msgstr ""
 msgid "S/MIME enables you to send digitally signed and encrypted messages."
 msgstr ""
 
-#: db/seeds/settings.rb:5681
+#: db/seeds/settings.rb:5690
 msgid "S/MIME integration"
 msgstr ""
 
@@ -15513,7 +15541,7 @@ msgid "SMTP - configure your own outgoing SMTP settings"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:430
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:207
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:208
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:47
 msgid "SSL"
@@ -15550,12 +15578,12 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:111
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:84
-#: db/seeds/settings.rb:5797
+#: db/seeds/settings.rb:5806
 msgid "SSO"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:430
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:205
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:206
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:54
 msgid "STARTTLS"
@@ -15718,7 +15746,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/idoit_object_selector.jst.eco:3
 #: app/assets/javascripts/app/views/knowledge_base/search_field_widget.jst.eco:1
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:4
-#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:354
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:364
 #: app/frontend/apps/desktop/pages/search/routes.ts:14
 #: app/frontend/apps/mobile/pages/search/routes.ts:8
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:228
@@ -15746,13 +15774,100 @@ msgstr ""
 msgid "Search URL is missing."
 msgstr ""
 
-#: app/assets/javascripts/app/views/generic/admin/index.jst.eco:32
-msgid "Search for %s"
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:25
+msgid "Search for LDAP sources"
 msgstr ""
 
+#: app/assets/javascripts/app/controllers/time_accounting_types.coffee:52
+#, fuzzy
+#| msgid "New Activity Type"
+msgid "Search for activity types"
+msgstr "Yeni fəaliyyət növü"
+
+#: app/assets/javascripts/app/controllers/checklist_template.coffee:32
+#, fuzzy
+#| msgid "Please select at least one folder."
+msgid "Search for checklist templates"
+msgstr "Xahiş edirik ən azı bir qovluq seçin."
+
+#: app/assets/javascripts/app/controllers/group.coffee:18
+msgid "Search for groups"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/macro.coffee:18
+msgid "Search for macros"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/organization.coffee:23
+#, fuzzy
+#| msgid "Organizations"
+msgid "Search for organizations"
+msgstr "Təşkilatlar"
+
+#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:31
+#: app/assets/javascripts/app/controllers/overview.coffee:24
+#, fuzzy
+#| msgid "Back to overview"
+msgid "Search for overviews"
+msgstr "Baxışa geri qayıt"
+
+#: app/assets/javascripts/app/controllers/public_link.coffee:18
+msgid "Search for public links"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/report_profile.coffee:18
+#, fuzzy
+msgid "Search for report profiles"
+msgstr "Hesabat profilləri"
+
+#: app/assets/javascripts/app/controllers/role.coffee:21
+#, fuzzy
+#| msgid "Enforced for user roles"
+msgid "Search for roles"
+msgstr "İstifadəçi rolu üçün tələb olunur"
+
+#: app/assets/javascripts/app/controllers/job.coffee:20
+msgid "Search for schedulers"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/template.coffee:18
+msgid "Search for templates"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/text_module.coffee:24
+#, fuzzy
+#| msgid "New text module"
+msgid "Search for text modules"
+msgstr "Yeni mətn modulu"
+
+#: app/assets/javascripts/app/controllers/ticket_priority.coffee:17
+#, fuzzy
+#| msgid "Included ticket overviews"
+msgid "Search for ticket priorities"
+msgstr "Daxil edilmiş bilet rəyləri"
+
+#: app/assets/javascripts/app/controllers/ticket_state.coffee:20
+msgid "Search for ticket states"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/trigger.coffee:21
+msgid "Search for triggers"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/user.coffee:47
 #: app/assets/javascripts/app/views/user.jst.eco:15
 msgid "Search for users"
 msgstr ""
+
+#: app/assets/javascripts/app/controllers/webhook.coffee:22
+msgid "Search for webhooks"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/core_workflow.coffee:20
+#, fuzzy
+#| msgid "Core Workflows"
+msgid "Search for workflows"
+msgstr "Əsas iş axınları"
 
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:243
 msgid "Search for…"
@@ -15843,9 +15958,10 @@ msgstr ""
 msgid "Search…"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:116
+#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:51
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:101
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:98
-#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:133
+#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:136
 #: db/seeds/object_manager_attributes.rb:1159
 msgid "Secondary organizations"
 msgstr ""
@@ -15899,7 +16015,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:5
 #: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:10
-#: db/seeds/settings.rb:5834
+#: db/seeds/settings.rb:5843
 msgid "Security Keys"
 msgstr ""
 
@@ -16184,12 +16300,12 @@ msgstr ""
 msgid "September"
 msgstr ""
 
-#: db/seeds/settings.rb:4023
+#: db/seeds/settings.rb:4032
 msgid "Sequencer log level"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_integration/exchange.coffee:409
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:490
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:491
 #: app/assets/javascripts/app/controllers/_integration/pgp.coffee:252
 #: app/assets/javascripts/app/controllers/_integration/smime.coffee:215
 #: app/assets/javascripts/app/controllers/ssl_certificate.coffee:78
@@ -16257,11 +16373,11 @@ msgstr "İki faktorlu identifikasiyanı idarə et"
 msgid "Set a title for your ticket"
 msgstr ""
 
-#: db/seeds/settings.rb:5461
+#: db/seeds/settings.rb:5470
 msgid "Set agent limit"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:492
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:493
 msgid "Set article to internal/public"
 msgstr ""
 
@@ -16284,7 +16400,7 @@ msgstr "Autentifikator tətbiq açarını gizlədilməsiz."
 msgid "Set available ticket types"
 msgstr ""
 
-#: db/seeds/settings.rb:3758
+#: db/seeds/settings.rb:3767
 msgid "Set backend which is being used for import."
 msgstr ""
 
@@ -16294,12 +16410,12 @@ msgstr ""
 msgid "Set caller ID of outbound calls based on destination caller ID."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_state.coffee:39
+#: app/assets/javascripts/app/controllers/ticket_state.coffee:40
 msgid "Set default for follow-ups"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_priority.coffee:25
-#: app/assets/javascripts/app/controllers/ticket_state.coffee:29
+#: app/assets/javascripts/app/controllers/ticket_priority.coffee:26
+#: app/assets/javascripts/app/controllers/ticket_state.coffee:30
 msgid "Set default for new tickets"
 msgstr ""
 
@@ -16313,7 +16429,7 @@ msgstr ""
 msgid "Set security keys as default"
 msgstr ""
 
-#: db/seeds/settings.rb:5623
+#: db/seeds/settings.rb:5632
 msgid ""
 "Set timeframe in seconds. If it's set to 0 you can delete notes without time "
 "limits"
@@ -16510,7 +16626,7 @@ msgstr ""
 msgid "Show authenticator app secret"
 msgstr ""
 
-#: db/seeds/settings.rb:5806
+#: db/seeds/settings.rb:5815
 msgid "Show calendar weeks in the picker of date/datetime fields"
 msgstr ""
 
@@ -16538,7 +16654,7 @@ msgstr ""
 msgid "Show next tab"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationButton.vue:24
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationButton.vue:26
 #, fuzzy
 #| msgid "Notifications"
 msgid "Show notifications"
@@ -16568,7 +16684,7 @@ msgid "Show ticket viewers"
 msgstr ""
 
 #: app/assets/javascripts/app/views/time_accounting/settings.jst.eco:6
-#: db/seeds/settings.rb:4088
+#: db/seeds/settings.rb:4097
 msgid "Show time accounting dialog when updating matching tickets."
 msgstr ""
 
@@ -16791,11 +16907,11 @@ msgstr ""
 msgid "Slack Notifications"
 msgstr ""
 
-#: db/seeds/settings.rb:5158
+#: db/seeds/settings.rb:5167
 msgid "Slack config"
 msgstr ""
 
-#: db/seeds/settings.rb:5132
+#: db/seeds/settings.rb:5141
 msgid "Slack integration"
 msgstr ""
 
@@ -17002,11 +17118,11 @@ msgstr ""
 msgid "State"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:79
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:82
 msgid "State Icon"
 msgstr ""
 
-#: db/seeds/settings.rb:5495
+#: db/seeds/settings.rb:5504
 msgid "Stats Backend"
 msgstr ""
 
@@ -17080,25 +17196,25 @@ msgstr ""
 msgid "Store"
 msgstr ""
 
-#: db/seeds/settings.rb:6075
+#: db/seeds/settings.rb:6084
 msgid ""
 "Stores the AI assistance ticket summarization options (e.g. which content is "
 "visible)."
 msgstr ""
 
-#: db/seeds/settings.rb:6045
+#: db/seeds/settings.rb:6054
 msgid "Stores the AI provider configuration."
 msgstr ""
 
-#: db/seeds/settings.rb:6028
+#: db/seeds/settings.rb:6037
 msgid "Stores the AI provider."
 msgstr ""
 
-#: db/seeds/settings.rb:5084
+#: db/seeds/settings.rb:5093
 msgid "Stores the GitHub configuration."
 msgstr ""
 
-#: db/seeds/settings.rb:5042
+#: db/seeds/settings.rb:5051
 msgid "Stores the GitLab configuration."
 msgstr ""
 
@@ -17157,7 +17273,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:139
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:178
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:369
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:373
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:148
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:206
 #: app/assets/javascripts/app/views/widget/mention.jst.eco:4
@@ -17165,7 +17281,7 @@ msgstr ""
 msgid "Subscribe"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:60
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:61
 #, fuzzy
 #| msgid "My Subscribed Tickets"
 msgid "Subscribe me"
@@ -17230,7 +17346,7 @@ msgstr ""
 msgid "Sunday"
 msgstr ""
 
-#: db/seeds/settings.rb:5582
+#: db/seeds/settings.rb:5591
 msgid "Support of multilingual Knowledge Base."
 msgstr ""
 
@@ -17306,7 +17422,7 @@ msgid ""
 "Weblate, give it a try!"
 msgstr ""
 
-#: db/seeds/settings.rb:5655
+#: db/seeds/settings.rb:5664
 msgid ""
 "System-wide configuration of the query polling mechanism for ticket "
 "overviews."
@@ -17466,7 +17582,7 @@ msgstr ""
 msgid "Text Modules"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:555
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:556
 msgid "Text editing"
 msgstr ""
 
@@ -17489,7 +17605,7 @@ msgstr ""
 msgid "Text modules"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/text_module.coffee:30
+#: app/assets/javascripts/app/controllers/text_module.coffee:31
 msgid "Text modules are …"
 msgstr ""
 
@@ -17907,9 +18023,10 @@ msgstr ""
 #: app/assets/javascripts/app/models/knowledge_base.coffee:294
 msgid ""
 "The default URL for your knowledge base is e.g. example.com or example.com/"
-"help. To serve it from a custom URL instead, enter the destination below (e."
-"g., \"/support\", \"example.com\", or \"example.com/support\"). Then, follow "
-"the directions under \"Web Server Configuration\" to complete the process."
+"help. To serve it from a custom URL instead, enter the destination below "
+"(e.g., \"/support\", \"example.com\", or \"example.com/support\"). Then, "
+"follow the directions under \"Web Server Configuration\" to complete the "
+"process."
 msgstr ""
 
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:118
@@ -18109,7 +18226,7 @@ msgid ""
 "arbitrary code will be executed in the context of the Zammad application."
 msgstr ""
 
-#: lib/search_index_backend.rb:435
+#: lib/search_index_backend.rb:437
 msgid ""
 "The installed attachment plugin could not handle the request payload. Ensure "
 "that the correct attachment plugin is installed (ingest-attachment)."
@@ -18472,7 +18589,7 @@ msgstr ""
 msgid "The required parameter 'id' is missing."
 msgstr ""
 
-#: lib/search_index_backend.rb:650
+#: lib/search_index_backend.rb:666
 msgid "The required parameter 'key' is missing."
 msgstr ""
 
@@ -18542,7 +18659,7 @@ msgstr ""
 msgid "The required parameter 'user_id' is missing."
 msgstr ""
 
-#: lib/search_index_backend.rb:651
+#: lib/search_index_backend.rb:667
 msgid "The required parameter 'value' is missing."
 msgstr ""
 
@@ -18853,7 +18970,7 @@ msgstr "Qapalı Biletlər"
 msgid "The year picker overlay"
 msgstr "İş saatlarının üst-üstə düşməsi"
 
-#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:73
+#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:76
 msgid "Their tickets"
 msgstr ""
 
@@ -19560,7 +19677,7 @@ msgstr ""
 msgid "Ticket Number ignore system_id"
 msgstr ""
 
-#: db/seeds/settings.rb:5950
+#: db/seeds/settings.rb:5959
 msgid "Ticket Organization Reassignment"
 msgstr ""
 
@@ -19570,7 +19687,7 @@ msgstr ""
 msgid "Ticket Overview"
 msgstr ""
 
-#: db/seeds/settings.rb:5652
+#: db/seeds/settings.rb:5661
 msgid "Ticket Overview Query Polling"
 msgstr ""
 
@@ -19637,13 +19754,13 @@ msgstr ""
 #: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:7
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:45
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:16
-#: db/seeds/permissions.rb:233 db/seeds/settings.rb:6058
+#: db/seeds/permissions.rb:233 db/seeds/settings.rb:6067
 #, fuzzy
 #| msgid "History"
 msgid "Ticket Summary"
 msgstr "Tarix"
 
-#: db/seeds/settings.rb:6072
+#: db/seeds/settings.rb:6081
 #, fuzzy
 msgid "Ticket Summary Config"
 msgstr "4. Bilet eskalasiya"
@@ -19862,7 +19979,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:9
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:9
-#: app/controllers/time_accountings_controller.rb:87
+#: app/controllers/time_accountings_controller.rb:81
 msgid "Ticket#"
 msgstr ""
 
@@ -19870,7 +19987,7 @@ msgstr ""
 msgid "TicketID"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:452
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:453
 #: app/assets/javascripts/app/controllers/widget/user.coffee:87
 #: app/assets/javascripts/app/views/import/freshdesk.jst.eco:94
 #: app/assets/javascripts/app/views/import/kayako.jst.eco:98
@@ -19883,7 +20000,7 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/calendar.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/notifications.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/ticketOverviews.ts:8
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:124
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:109
 #: app/frontend/apps/mobile/pages/search/plugins/ticket.ts:9
 #: app/frontend/apps/mobile/pages/ticket/routes.ts:51
 #: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:173
@@ -19944,27 +20061,27 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:12
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:3
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:145
-#: db/seeds/permissions.rb:107 db/seeds/settings.rb:4058
+#: db/seeds/permissions.rb:107 db/seeds/settings.rb:4067
 msgid "Time Accounting"
 msgstr ""
 
-#: db/seeds/settings.rb:4121
+#: db/seeds/settings.rb:4130
 msgid "Time Accounting Custom Unit"
 msgstr ""
 
-#: db/seeds/settings.rb:4157
+#: db/seeds/settings.rb:4166
 msgid "Time Accounting Default Type"
 msgstr ""
 
-#: db/seeds/settings.rb:4085
+#: db/seeds/settings.rb:4094
 msgid "Time Accounting Selector"
 msgstr ""
 
-#: db/seeds/settings.rb:4139
+#: db/seeds/settings.rb:4148
 msgid "Time Accounting Types"
 msgstr ""
 
-#: db/seeds/settings.rb:4103
+#: db/seeds/settings.rb:4112
 msgid "Time Accounting Unit"
 msgstr ""
 
@@ -19976,7 +20093,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/time_accounting/by_customer.jst.eco:11
 #: app/assets/javascripts/app/views/time_accounting/by_organization.jst.eco:10
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:14
-#: app/controllers/time_accountings_controller.rb:111
+#: app/controllers/time_accountings_controller.rb:105
 msgid "Time Units"
 msgstr ""
 
@@ -20038,7 +20155,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/settings/form.jst.eco:6
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:10
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:10
-#: app/controllers/time_accountings_controller.rb:91
+#: app/controllers/time_accountings_controller.rb:85
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/TicketSimpleTable.vue:38
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:144
 #: app/graphql/gql/types/overview_type.rb:92
@@ -20210,11 +20327,11 @@ msgstr ""
 msgid "Token authorization failed."
 msgstr "Avtorizasiya xətası"
 
-#: db/seeds/settings.rb:5300
+#: db/seeds/settings.rb:5309
 msgid "Token for CTI."
 msgstr ""
 
-#: db/seeds/settings.rb:5204
+#: db/seeds/settings.rb:5213
 msgid "Token for Sipgate."
 msgstr ""
 
@@ -20384,7 +20501,7 @@ msgstr ""
 msgid "Turn chat into ticket"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/webhook.coffee:239
+#: app/assets/javascripts/app/controllers/webhook.coffee:240
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:89
 #: app/assets/javascripts/app/views/channel/email_notification_wizard.jst.eco:48
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:71
@@ -20562,7 +20679,7 @@ msgstr ""
 msgid "Type:"
 msgstr ""
 
-#: db/seeds/settings.rb:6016
+#: db/seeds/settings.rb:6025
 msgid "UI Desktop Beta Switch"
 msgstr ""
 
@@ -20677,7 +20794,7 @@ msgstr "Link problemi"
 msgid "Unlink object"
 msgstr "Link problemi"
 
-#: app/assets/javascripts/app/controllers/user.coffee:108
+#: app/assets/javascripts/app/controllers/user.coffee:109
 msgid "Unlock"
 msgstr ""
 
@@ -20699,7 +20816,7 @@ msgstr ""
 msgid "Unsaved Changes"
 msgstr "Dəyişiklikləri ləğv et"
 
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationButton.vue:35
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationButton.vue:37
 #, fuzzy
 #| msgid "Notification Sound"
 msgid "Unseen notifications count"
@@ -20784,7 +20901,7 @@ msgstr "Ümumi qaralama tətbiq et"
 msgid "Update Time"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:512
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:513
 msgid "Update as closed"
 msgstr ""
 
@@ -20815,7 +20932,7 @@ msgstr ""
 msgid "Update successful."
 msgstr ""
 
-#: db/seeds/settings.rb:5962
+#: db/seeds/settings.rb:5971
 msgid "Update the most recent tickets."
 msgstr ""
 
@@ -20863,7 +20980,7 @@ msgstr ""
 #: app/frontend/shared/entities/organization/stores/objectAttributes.ts:41
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:124
 #: app/frontend/shared/entities/user/stores/objectAttributes.ts:41
-#: app/graphql/gql/types/overview_type.rb:114
+#: app/graphql/gql/types/overview_type.rb:115
 msgid "Updated at"
 msgstr ""
 
@@ -20885,7 +21002,7 @@ msgstr ""
 #: app/frontend/shared/entities/organization/stores/objectAttributes.ts:31
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:113
 #: app/frontend/shared/entities/user/stores/objectAttributes.ts:31
-#: app/graphql/gql/types/overview_type.rb:113
+#: app/graphql/gql/types/overview_type.rb:114
 msgid "Updated by"
 msgstr ""
 
@@ -21101,15 +21218,15 @@ msgstr ""
 msgid "Used in object views"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:529
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:530
 msgid "Used when composing a Ticket article"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:559
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:560
 msgid "Used when composing a text"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:456
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:457
 msgid "Used when viewing a Ticket"
 msgstr ""
 
@@ -21143,7 +21260,7 @@ msgstr ""
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:119
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailOutboundForm.ts:77
 #: app/frontend/apps/mobile/pages/user/routes.ts:7
-#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:32
+#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:33
 msgid "User"
 msgstr ""
 
@@ -21199,7 +21316,7 @@ msgstr ""
 msgid "User has no access"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:537
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:538
 msgid ""
 "User information could not be retrieved, please check your bind user "
 "permissions."
@@ -21257,12 +21374,12 @@ msgstr ""
 msgid "User menu"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/user.coffee:122
+#: app/assets/javascripts/app/controllers/user.coffee:123
 msgid "User successfully unlocked!"
 msgstr ""
 
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:32
-#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:32
+#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:33
 msgid "User with specified ID was not found. Try checking the URL for errors."
 msgstr ""
 
@@ -21456,7 +21573,7 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/user.coffee:63
+#: app/assets/javascripts/app/controllers/user.coffee:64
 msgid "View from user's perspective"
 msgstr ""
 
@@ -21758,7 +21875,7 @@ msgid ""
 "like \"%s\" (e. g. %s)."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/checklist_template.coffee:35
+#: app/assets/javascripts/app/controllers/checklist_template.coffee:36
 #: app/assets/javascripts/app/models/checklist_template.coffee:23
 msgid ""
 "With checklist templates it is possible to pre-fill new checklists with "
@@ -21804,8 +21921,8 @@ msgstr ""
 #: app/assets/javascripts/app/views/settings/ticket_number.jst.eco:7
 msgid ""
 "With |Date| the ticket numbers will be generated by the current date, the "
-"SystemID, and the counter. The format will be \"Year.Month.Day.SystemID."
-"Counter\" (e.g. 201206231010138, 201206231010139)."
+"SystemID, and the counter. The format will be "
+"\"Year.Month.Day.SystemID.Counter\" (e.g. 201206231010138, 201206231010139)."
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/email_verify.coffee:35
@@ -22138,7 +22255,7 @@ msgid "You have insufficient rights to view this ticket."
 msgstr ""
 
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:34
-#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:34
+#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:35
 msgid "You have insufficient rights to view this user."
 msgstr ""
 
@@ -22652,7 +22769,7 @@ msgstr ""
 msgid "closed"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:138
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:123
 #, fuzzy
 #| msgid "Closed Tickets"
 msgid "closed tickets"
@@ -22663,37 +22780,37 @@ msgid "connected"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:32
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:139
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:143
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:59
 msgid "contains"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:32
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:141
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:145
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:59
 msgid "contains all"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:32
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:142
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:146
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:59
 msgid "contains all not"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:36
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:140
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:144
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:63
 msgid "contains not"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:32
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:212
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:216
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:59
 msgid "contains one"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:32
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:214
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:218
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:59
 msgid "contains one not"
 msgstr ""
@@ -22726,8 +22843,8 @@ msgstr ""
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/password.ts:28
 msgid ""
-"current,new,confirm,change,current password,new password,confirm password,"
-"change password"
+"current,new,confirm,change,current password,new password,confirm "
+"password,change password"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/translation.coffee:281
@@ -22822,7 +22939,7 @@ msgid "does not exist"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:60
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:188
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:192
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:87
 msgid "does not match regex"
 msgstr ""
@@ -22885,12 +23002,12 @@ msgstr ""
 msgid "email sent to '%s'"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:186
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:190
 msgid "ends with"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:36
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:186
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:190
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:63
 msgid "ends with one of"
 msgstr ""
@@ -23030,11 +23147,11 @@ msgstr ""
 msgid "i-doit"
 msgstr ""
 
-#: db/seeds/settings.rb:4999
+#: db/seeds/settings.rb:5008
 msgid "i-doit config"
 msgstr ""
 
-#: db/seeds/settings.rb:4972
+#: db/seeds/settings.rb:4981
 msgid "i-doit integration"
 msgstr ""
 
@@ -23134,9 +23251,22 @@ msgid "is already used"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:36
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:183
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:187
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:63
 msgid "is any of"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:29
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:115
+#: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:56
+#, fuzzy
+msgid "is greater than"
+msgstr "Teg yarat"
+
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:29
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:116
+#: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:56
+msgid "is greater than or equal to"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:124
@@ -23149,6 +23279,18 @@ msgstr ""
 
 #: lib/validations/object_manager/attribute_validator/min_max.rb:30
 msgid "is larger than the allowed maximum value of %{max_value}"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:29
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:113
+#: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:56
+msgid "is less than"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:29
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:114
+#: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:56
+msgid "is less than or equal to"
 msgstr ""
 
 #: lib/validations/object_manager/attribute_validator/max_length.rb:25
@@ -23166,7 +23308,7 @@ msgid "is modified to"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:36
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:184
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:188
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:63
 msgid "is none of"
 msgstr ""
@@ -23283,15 +23425,15 @@ msgstr ""
 msgid "mark all as read"
 msgstr "Bütününü oxunmuş kimi qeyd et"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:273
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:277
 msgid "match all modules"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:273
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:277
 msgid "match no modules"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:273
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:277
 msgid "match one module"
 msgstr ""
 
@@ -23302,7 +23444,7 @@ msgid "matches found"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:60
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:187
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:191
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:87
 msgid "matches regex"
 msgstr ""
@@ -23421,7 +23563,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:32
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:22
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:49
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:63
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:64
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:91
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14
 #: app/frontend/shared/entities/object-attributes/form/resolver/fields/active.ts:16
@@ -23496,7 +23638,7 @@ msgstr ""
 msgid "open"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:131
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:116
 #, fuzzy
 #| msgid "Open tickets"
 msgid "open tickets"
@@ -23733,19 +23875,19 @@ msgstr ""
 msgid "shown"
 msgstr ""
 
-#: db/seeds/settings.rb:5201
+#: db/seeds/settings.rb:5210
 msgid "sipgate.io Token"
 msgstr ""
 
-#: db/seeds/settings.rb:5235
+#: db/seeds/settings.rb:5244
 msgid "sipgate.io alternative FQDN"
 msgstr ""
 
-#: db/seeds/settings.rb:5222
+#: db/seeds/settings.rb:5231
 msgid "sipgate.io config"
 msgstr ""
 
-#: db/seeds/settings.rb:5173
+#: db/seeds/settings.rb:5182
 msgid "sipgate.io integration"
 msgstr ""
 
@@ -23780,12 +23922,12 @@ msgstr ""
 msgid "split"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:185
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:189
 msgid "starts with"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:36
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:185
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:189
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:63
 msgid "starts with one of"
 msgstr ""
@@ -23975,7 +24117,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:32
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:15
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:48
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:62
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:63
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:90
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14
 #: app/frontend/shared/entities/object-attributes/form/resolver/fields/active.ts:15
@@ -24011,13 +24153,21 @@ msgstr ""
 msgid "…add object title"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:607
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:608
 msgid "…of whole text area"
 msgstr ""
 
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Microsoft 365"
+#~ msgstr "Microsoft 365"
+
+#, fuzzy
+#~ msgid "Microsoft Graph"
+#~ msgstr "Microsoft"
 
 #, fuzzy
 #~| msgid "Find a ticket"

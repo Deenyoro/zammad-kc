@@ -70,8 +70,8 @@ msgstr ""
 msgid ""
 "# #{ticket.title}\n"
 "_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
-"Ticket##{ticket.number}>: Created by #{current_user.longname} at #{ticket."
-"updated_at}_\n"
+"Ticket##{ticket.number}>: Created by #{current_user.longname} at "
+"#{ticket.updated_at}_\n"
 "* Group: #{ticket.group.name}\n"
 "* Owner: #{ticket.owner.fullname}\n"
 "* State: #{t(ticket.state.name)}\n"
@@ -173,8 +173,8 @@ msgstr ""
 msgid ""
 "# #{ticket.title}\n"
 "_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
-"Ticket##{ticket.number}>: Updated by #{current_user.longname} at #{ticket."
-"updated_at}_\n"
+"Ticket##{ticket.number}>: Updated by #{current_user.longname} at "
+"#{ticket.updated_at}_\n"
 "<% if @objects[:changes].present? %>\n"
 "  <% @objects[:changes].each do |key, value| %>\n"
 "  * <%= t key %>: <%= h value[0] %> -> <%= h value[1] %>\n"
@@ -556,6 +556,7 @@ msgid "%s months ago"
 msgstr "%s hónappal ezelőtt"
 
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:178
+#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:61
 #, fuzzy
 #| msgid "show more"
 msgid "%s more"
@@ -961,7 +962,7 @@ msgid ""
 "auto-reply"
 msgstr ""
 
-#: db/seeds/settings.rb:4013
+#: db/seeds/settings.rb:4022
 msgid "A list of active import backends that gets scheduled automatically."
 msgstr ""
 "Az aktív importáló háttérrendszerek listája, amely automatikusan ütemezésre "
@@ -1049,13 +1050,13 @@ msgstr ""
 msgid "AI"
 msgstr "API"
 
-#: db/seeds/settings.rb:6042
+#: db/seeds/settings.rb:6051
 #, fuzzy
 #| msgid "Provider"
 msgid "AI Provider Config"
 msgstr "Szolgáltató"
 
-#: db/seeds/settings.rb:6025
+#: db/seeds/settings.rb:6034
 #, fuzzy
 #| msgid "Provider"
 msgid "AI provider"
@@ -1328,7 +1329,7 @@ msgstr ""
 "Aktiválja az elfelejtett jelszó funkciót a felhasználók számára. Ez a "
 "beállítás csak akkor érvényes, ha a jelszavas bejelentkezés engedélyezve van."
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:325
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:326
 #: app/assets/javascripts/app/models/chat.coffee:257
 #: app/assets/javascripts/app/models/checklist_template.coffee:9
 #: app/assets/javascripts/app/models/core_workflow.coffee:14
@@ -1377,7 +1378,7 @@ msgstr "Tevékenységi folyam"
 #: app/assets/javascripts/app/controllers/time_accounting_types.coffee:50
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:16
 #: app/assets/javascripts/app/views/time_accounting/types.jst.eco:4
-#: app/controllers/time_accountings_controller.rb:117
+#: app/controllers/time_accountings_controller.rb:111
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:118
 msgid "Activity Type"
 msgstr "Tevékenységtípus"
@@ -1752,8 +1753,8 @@ msgid ""
 "\n"
 "<div>Hi #{user.firstname},</div>\n"
 "<br>\n"
-"<div>We received a request for an administration login for your #{config."
-"product_name} account <b>#{user.login}</b>.</div>\n"
+"<div>We received a request for an administration login for your "
+"#{config.product_name} account <b>#{user.login}</b>.</div>\n"
 "<br>\n"
 "<div>Please, click on the link below (or copy and paste the URL into your "
 "browser) to proceed:</div>\n"
@@ -1770,8 +1771,8 @@ msgstr ""
 "\n"
 "<div>Üdvözöljük #{user.firstname},</div>\n"
 "<br>\n"
-"<div>Egy rendszergazdai bejelentkezési kérelmet kaptunk az Ön #{config."
-"product_name} fiókjához <b>#{user.login}</b>.</div>\n"
+"<div>Egy rendszergazdai bejelentkezési kérelmet kaptunk az Ön "
+"#{config.product_name} fiókjához <b>#{user.login}</b>.</div>\n"
 "<br>\n"
 "<div>Kérjük, a folytatáshoz kattintson az alábbi hivatkozásra (vagy másolja "
 "be az URL címet a böngészőjébe):</div>\n"
@@ -1835,7 +1836,7 @@ msgstr "Életkor"
 #: app/assets/javascripts/app/views/popover/ticket.jst.eco:6
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:13
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:13
-#: app/controllers/time_accountings_controller.rb:103 db/seeds/roles.rb:14
+#: app/controllers/time_accountings_controller.rb:97 db/seeds/roles.rb:14
 #: db/seeds/ticket_article_senders.rb:3
 msgid "Agent"
 msgstr "Ügynök"
@@ -1970,11 +1971,11 @@ msgstr "Engedélyezze a jegyek bizonyos időn belüli újranyitását."
 msgid "Allow users to add new tags."
 msgstr "Engedélyezze a felhasználók számára új címkék hozzáadását."
 
-#: db/seeds/settings.rb:4178
+#: db/seeds/settings.rb:4187
 msgid "Allow users to create new tags."
 msgstr "Engedélyezze a felhasználók számára új címkék létrehozását."
 
-#: db/seeds/settings.rb:6019
+#: db/seeds/settings.rb:6028
 msgid "Allow users to switch automatically to the new desktop UI."
 msgstr ""
 
@@ -1991,7 +1992,7 @@ msgstr "Engedélyezze a weboldalakat (;-vel elválasztva)"
 msgid "Also notify via email"
 msgstr "Értesítés e-mailben is"
 
-#: db/seeds/settings.rb:5238
+#: db/seeds/settings.rb:5247
 msgid ""
 "Alternative FQDN for callbacks if you operate Zammad in an internal network."
 msgstr ""
@@ -2095,8 +2096,8 @@ msgstr ""
 "<div>Üdvözöljük #{recipient.firstname},</div>\n"
 "<br>\n"
 "<div>\n"
-"Egy másik jegy lett egyesítve a jegybe (#{ticket.title}) \"<b>#{current_user."
-"longname}\" által.</b>\".\n"
+"Egy másik jegy lett egyesítve a jegybe (#{ticket.title}) "
+"\"<b>#{current_user.longname}\" által.</b>\".\n"
 "</div>\n"
 "<br>\n"
 "<div>\n"
@@ -2439,7 +2440,7 @@ msgstr "Cikk műveletek"
 msgid "Article could not be deleted."
 msgstr "A cikket nem lehetett törölni."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubble.vue:128
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubble.vue:133
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleHeader.vue:27
 #, fuzzy
 #| msgid "Ticket information"
@@ -2469,7 +2470,7 @@ msgstr "Ismét rendelje hozzá az utánkövetést a legutóbbi ügynökhöz."
 msgid "Assign follow-ups"
 msgstr "Utánkövetések hozzárendelése"
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:598
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:599
 msgid "Assign signup roles"
 msgstr "Regisztrációs szerepkörök hozzárendelése"
 
@@ -2618,7 +2619,7 @@ msgstr ""
 msgid "Attribute"
 msgstr "Tulajdonságok"
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:625
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:626
 msgid "Attribute '%s' is required in the mapping"
 msgstr "A '%s' tulajdonság szükséges a hozzárendeléshez"
 
@@ -2700,7 +2701,7 @@ msgstr "Hitelesítés ezzel: %s"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/authenticator_app.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:5
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:9
-#: db/seeds/settings.rb:5866
+#: db/seeds/settings.rb:5875
 msgid "Authenticator App"
 msgstr "Hitelesítő alkalmazás"
 
@@ -2745,7 +2746,7 @@ msgstr "Automatikus hozzárendelés Figyelmen kívül hagyott felhasználók"
 msgid "Auto Assignment Selector"
 msgstr "Automatikus hozzárendelés kiválasztó"
 
-#: db/seeds/settings.rb:6005
+#: db/seeds/settings.rb:6014
 msgid "Auto Shutdown"
 msgstr ""
 
@@ -2753,7 +2754,7 @@ msgstr ""
 msgid "Auto Wizard"
 msgstr "Automatikus varázsló"
 
-#: db/seeds/settings.rb:4511
+#: db/seeds/settings.rb:4520
 msgid "Auto close"
 msgstr "Automatikus bezárás"
 
@@ -2761,7 +2762,7 @@ msgstr "Automatikus bezárás"
 msgid "Auto create"
 msgstr "Automatikus létrehozás"
 
-#: db/seeds/settings.rb:4537
+#: db/seeds/settings.rb:4546
 msgid "Auto-close state"
 msgstr "Automatikus bezárási állapot"
 
@@ -2803,11 +2804,11 @@ msgstr ""
 "Automatikusan betölti a chat.css fájlt. Amennyiben a saját css fájlját "
 "szeretné használni, csak állítsa hamisra."
 
-#: app/frontend/shared/components/Form/Form.vue:1290
+#: app/frontend/shared/components/Form/Form.vue:1288
 msgid "Autosave in progress…"
 msgstr ""
 
-#: app/frontend/shared/components/Form/Form.vue:1299
+#: app/frontend/shared/components/Form/Form.vue:1297
 msgid "Autosaving is taking longer than expected…"
 msgstr ""
 
@@ -2919,7 +2920,7 @@ msgstr "Elmaradás"
 msgid "Base"
 msgstr "Alap"
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:500
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:501
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:35
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:91
 msgid "Base DN"
@@ -3150,19 +3151,19 @@ msgstr "CTI"
 msgid "CTI (generic)"
 msgstr "CTI (általános)"
 
-#: db/seeds/settings.rb:5297
+#: db/seeds/settings.rb:5306
 msgid "CTI Token"
 msgstr "CTI token"
 
-#: db/seeds/settings.rb:5284
+#: db/seeds/settings.rb:5293
 msgid "CTI config"
 msgstr "CTI konfiguráció"
 
-#: db/seeds/settings.rb:5318
+#: db/seeds/settings.rb:5327
 msgid "CTI customer last activity"
 msgstr "CTI ügyfél utolsó tevékenysége"
 
-#: db/seeds/settings.rb:5256
+#: db/seeds/settings.rb:5265
 msgid "CTI integration"
 msgstr "CTI integráció"
 
@@ -3555,7 +3556,7 @@ msgstr "Ellenőrizze a csatornákat."
 msgid "Check item"
 msgstr "Checkmk"
 
-#: lib/search_index_backend.rb:437
+#: lib/search_index_backend.rb:439
 msgid "Check the response and payload for detailed information:"
 msgstr ""
 "A részletes információkért ellenőrizze a választ és a hasznos terhelést:"
@@ -3618,7 +3619,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/checklist_template.coffee:3
 #: app/assets/javascripts/app/views/checklist_template/index.jst.eco:7
-#: db/seeds/permissions.rb:317 db/seeds/settings.rb:5978
+#: db/seeds/permissions.rb:317 db/seeds/settings.rb:5987
 #, fuzzy
 #| msgid "Checksum"
 msgid "Checklists"
@@ -3628,11 +3629,11 @@ msgstr "Ellenőrző összeg"
 msgid "Checkmk"
 msgstr "Checkmk"
 
-#: db/seeds/settings.rb:4658
+#: db/seeds/settings.rb:4667
 msgid "Checkmk integration"
 msgstr "Checkmk integráció"
 
-#: db/seeds/settings.rb:4779
+#: db/seeds/settings.rb:4788
 msgid "Checkmk token"
 msgstr "Checkmk token"
 
@@ -3805,11 +3806,11 @@ msgstr "Kiválasztás törlése"
 msgid "Clearbit"
 msgstr "Clearbit"
 
-#: db/seeds/settings.rb:5420
+#: db/seeds/settings.rb:5429
 msgid "Clearbit config"
 msgstr "Clearbit konfiguráció"
 
-#: db/seeds/settings.rb:5394
+#: db/seeds/settings.rb:5403
 msgid "Clearbit integration"
 msgstr "Clearbit integráció"
 
@@ -3978,7 +3979,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:11
-#: db/seeds/settings.rb:5858
+#: db/seeds/settings.rb:5867
 msgid "Complete the sign-in with your security key."
 msgstr "Fejezze be a bejelentkezést a biztonsági kulcsával."
 
@@ -4083,8 +4084,8 @@ msgstr "Jelszó megerősítése"
 #. Please make sure to translate it to a valid corresponding output structure.
 #: app/views/mailer/signup/en.html.erb
 msgid ""
-"Confirm your #{config.product_name} account, #{user.firstname} #{user."
-"lastname}\n"
+"Confirm your #{config.product_name} account, #{user.firstname} "
+"#{user.lastname}\n"
 "\n"
 "<div>Hi #{user.firstname},</div>\n"
 "<br>\n"
@@ -4095,8 +4096,8 @@ msgid ""
 "<br>\n"
 "<div>Your #{config.product_name} Team</div>\n"
 msgstr ""
-"Erősítse meg a #{config.product_name} fiókját, #{user.firstname} #{user."
-"lastname}\n"
+"Erősítse meg a #{config.product_name} fiókját, #{user.firstname} "
+"#{user.lastname}\n"
 "\n"
 "<div>Üdvözöljük #{user.firstname},</div>\n"
 "<br>\n"
@@ -4549,8 +4550,8 @@ msgid ""
 "\n"
 "Available objects are:\n"
 "* ticket (e.g. ticket.state, ticket.group)\n"
-"* ticket.customer (e.g. ticket.customer.firstname, ticket.customer."
-"lastname)\n"
+"* ticket.customer (e.g. ticket.customer.firstname, "
+"ticket.customer.lastname)\n"
 "* ticket.owner (e.g. ticket.owner.firstname, ticket.owner.lastname)\n"
 "* ticket.organization (e.g. ticket.organization.name)\n"
 "* user (e.g. user.firstname, user.email)\n"
@@ -4742,14 +4743,14 @@ msgstr "Létrehozott belső cikk"
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:17
 #: app/assets/javascripts/app/views/widget/http_log.jst.eco:19
 #: app/assets/javascripts/app/views/widget/http_log_show.jst.eco:23
-#: app/controllers/time_accountings_controller.rb:122
+#: app/controllers/time_accountings_controller.rb:116
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:121
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleMeta/useArticleMeta.ts:57
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/TicketSimpleTable.vue:41
 #: app/frontend/shared/entities/organization/stores/objectAttributes.ts:24
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:106
 #: app/frontend/shared/entities/user/stores/objectAttributes.ts:24
-#: app/graphql/gql/types/overview_type.rb:112
+#: app/graphql/gql/types/overview_type.rb:113
 msgid "Created at"
 msgstr "Létrehozva ekkor"
 
@@ -4775,7 +4776,7 @@ msgstr "Létrehozva ekkor:"
 #: app/frontend/shared/entities/organization/stores/objectAttributes.ts:14
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:95
 #: app/frontend/shared/entities/user/stores/objectAttributes.ts:14
-#: app/graphql/gql/types/overview_type.rb:111
+#: app/graphql/gql/types/overview_type.rb:112
 msgid "Created by"
 msgstr "Létrehozta"
 
@@ -4788,7 +4789,7 @@ msgstr "Az új jegyek webes létrehozása tiltva van."
 msgid "Creation Channels"
 msgstr "Csatornák létrehozása"
 
-#: app/assets/javascripts/app/controllers/core_workflow.coffee:55
+#: app/assets/javascripts/app/controllers/core_workflow.coffee:56
 msgid "Creation mask"
 msgstr "Létrehozási maszk"
 
@@ -4891,7 +4892,7 @@ msgstr "Egyéni cím nincs beállítva"
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:11
 #: app/assets/javascripts/app/views/time_accounting/by_customer.jst.eco:9
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:11
-#: app/controllers/time_accountings_controller.rb:95
+#: app/controllers/time_accountings_controller.rb:89
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/TicketSimpleTable.vue:39
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/customer.ts:13
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/plugins/customer.ts:6
@@ -5108,7 +5109,7 @@ msgstr "Alapértelmezett jegyügynöki értesítések"
 msgid "Default at Signup"
 msgstr "Alapértelmezett a regisztrációkor"
 
-#: db/seeds/settings.rb:4202
+#: db/seeds/settings.rb:4211
 msgid "Default calendar tickets subscriptions"
 msgstr "Alapértelmezett naptárjegy feliratkozások"
 
@@ -5154,6 +5155,12 @@ msgstr ""
 "Az \"automatikus hozzárendelés\" kivételének meghatározása bizonyos "
 "felhasználók (pl. vezetők) számára."
 
+#: db/seeds/settings.rb:3735
+#, fuzzy
+#| msgid "Define pipeline name for Elasticsearch."
+msgid "Define if asciifolding analyzer should be used in Elasticsearch."
+msgstr "Az Elasticsearch pipeline nevének meghatározása."
+
 #: db/seeds/settings.rb:3699
 msgid "Define max. attachment size for Elasticsearch."
 msgstr "Az Elasticsearch maximális csatolmányméretének meghatározása."
@@ -5170,7 +5177,7 @@ msgstr "Az Elasticsearch modellkonfigurációjának meghatározása."
 msgid "Define pipeline name for Elasticsearch."
 msgstr "Az Elasticsearch pipeline nevének meghatározása."
 
-#: db/seeds/settings.rb:4339
+#: db/seeds/settings.rb:4348
 msgid ""
 "Define postmaster filter to check if follow-ups get created (based on admin "
 "settings)."
@@ -5178,11 +5185,11 @@ msgstr ""
 "Postmaster szűrő definiálása annak ellenőrzésére, hogy az utánkövetés "
 "létrejön-e (a rendszergazdai beállítások alapján)."
 
-#: db/seeds/settings.rb:4285
+#: db/seeds/settings.rb:4294
 msgid "Define postmaster filter to import archive mailboxes."
 msgstr "Postmaster szűrő meghatározása az archív postafiókok importálásához."
 
-#: db/seeds/settings.rb:4282
+#: db/seeds/settings.rb:4291
 msgid "Define postmaster filter."
 msgstr "Postmaster szűrő meghatározása."
 
@@ -5215,7 +5222,7 @@ msgstr "Az Elasticsearch SSL-ellenőrzésének meghatározása."
 msgid "Defines Elasticsearch index name."
 msgstr "Meghatározza az Elasticsearch index nevét."
 
-#: db/seeds/settings.rb:3939
+#: db/seeds/settings.rb:3948
 msgid "Defines Freshdesk endpoint authentication API key."
 msgstr "Meghatározza a Freshdesk végpont hitelesítési API-kulcsát."
 
@@ -5228,7 +5235,7 @@ msgid "Defines HTTP basic auth user of Elasticsearch."
 msgstr ""
 "Meghatározza az Elasticsearch HTTP alapszintű hitelesítés felhasználóját."
 
-#: db/seeds/settings.rb:3846
+#: db/seeds/settings.rb:3855
 msgid ""
 "Defines HTTP basic authentication password (only if OTRS is protected via "
 "HTTP basic auth)."
@@ -5236,7 +5243,7 @@ msgstr ""
 "Meghatározza a HTTP alapszintű hitelesítési jelszót (csak akkor, ha az OTRS "
 "a HTTP alapszintű hitelesítéssel védett)."
 
-#: db/seeds/settings.rb:3827
+#: db/seeds/settings.rb:3836
 msgid ""
 "Defines HTTP basic authentication user (only if OTRS is protected via HTTP "
 "basic auth)."
@@ -5244,48 +5251,48 @@ msgstr ""
 "Meghatározza a HTTP alapszintű hitelesítéssel rendelkező felhasználót (csak "
 "akkor, ha az OTRS HTTP alapszintű hitelesítéssel védett)."
 
-#: db/seeds/settings.rb:3994
+#: db/seeds/settings.rb:4003
 msgid "Defines Kayako endpoint authentication password."
 msgstr "Meghatározza a Kayako végpont hitelesítési jelszavát."
 
-#: db/seeds/settings.rb:3976
+#: db/seeds/settings.rb:3985
 msgid "Defines Kayako endpoint authentication user."
 msgstr "Meghatározza a Kayako végpont hitelesítési felhasználóját."
 
-#: db/seeds/settings.rb:3808
+#: db/seeds/settings.rb:3817
 msgid "Defines OTRS endpoint authentication key."
 msgstr "Meghatározza az OTRS végpont hitelesítési kulcsát."
 
-#: db/seeds/settings.rb:3883
+#: db/seeds/settings.rb:3892
 msgid "Defines Zendesk endpoint authentication API key."
 msgstr "Meghatározza a Zendesk végpont hitelesítési API kulcsát."
 
-#: db/seeds/settings.rb:3902
+#: db/seeds/settings.rb:3911
 msgid "Defines Zendesk endpoint authentication user."
 msgstr "Meghatározza a Zendesk végpont hitelesítési felhasználóját."
 
-#: db/seeds/settings.rb:3921
+#: db/seeds/settings.rb:3930
 msgid ""
 "Defines a Freshdesk endpoint to import users, tickets, states, and articles."
 msgstr ""
 "Meghatároz egy Freshdesk végpontot a felhasználók, jegyek, állapotok és "
 "cikkek importálásához."
 
-#: db/seeds/settings.rb:3958
+#: db/seeds/settings.rb:3967
 msgid ""
 "Defines a Kayako endpoint to import users, tickets, states, and articles."
 msgstr ""
 "Meghatároz egy Kayako végpontot a felhasználók, jegyek, állapotok és cikkek "
 "importálásához."
 
-#: db/seeds/settings.rb:3865
+#: db/seeds/settings.rb:3874
 msgid ""
 "Defines a Zendesk endpoint to import users, tickets, states, and articles."
 msgstr ""
 "Meghatároz egy Zendesk végpontot a felhasználók, jegyek, állapotok és cikkek "
 "importálásához."
 
-#: db/seeds/settings.rb:5498
+#: db/seeds/settings.rb:5507
 msgid "Defines a dashboard stats backend that gets scheduled automatically."
 msgstr ""
 "Meghatároz egy műszerfal-statisztikai háttérrendszert, amely automatikusan "
@@ -5319,7 +5326,7 @@ msgstr ""
 "Meghatározza, hogy hány sikertelen bejelentkezés után lesznek deaktiválva a "
 "fiókok."
 
-#: db/seeds/settings.rb:3790
+#: db/seeds/settings.rb:3799
 msgid ""
 "Defines an OTRS endpoint to import users, tickets, states, and articles."
 msgstr ""
@@ -5388,29 +5395,29 @@ msgstr ""
 "Meghatározza, hogyan érhető el a websocket-kiszolgáló. A \"websocket\" "
 "alapértelmezett a termelésben, a \"websocketPort\" a CI számára van"
 
-#: db/seeds/settings.rb:4661
+#: db/seeds/settings.rb:4670
 msgid "Defines if Checkmk (https://checkmk.com/) is enabled or not."
 msgstr ""
 "Meghatározza, hogy a Checkmk (https://checkmk.com/) engedélyezve van-e vagy "
 "sem."
 
-#: db/seeds/settings.rb:5397
+#: db/seeds/settings.rb:5406
 msgid "Defines if Clearbit (http://www.clearbit.com) is enabled or not."
 msgstr ""
 "Meghatározza, hogy a Clearbit (http://www.clearbit.com) engedélyezve van-e "
 "vagy sem."
 
-#: db/seeds/settings.rb:4948
+#: db/seeds/settings.rb:4957
 msgid "Defines if Exchange is enabled or not."
 msgstr "Meghatározza, hogy az Exchange engedélyezve van-e vagy sem."
 
-#: db/seeds/settings.rb:4465
+#: db/seeds/settings.rb:4474
 msgid "Defines if Icinga (http://www.icinga.org) is enabled or not."
 msgstr ""
 "Meghatározza, hogy az Icinga (http://www.icinga.org) engedélyezve van-e vagy "
 "sem."
 
-#: db/seeds/settings.rb:5608
+#: db/seeds/settings.rb:5617
 msgid ""
 "Defines if Knowledge Base navbar button is enabled for users without "
 "Knowledge Base permission."
@@ -5418,42 +5425,42 @@ msgstr ""
 "Meghatározza, hogy a Tudásbázis navigációs sáv gomb engedélyezve legyen-e a "
 "Tudásbázis jogosultsággal nem rendelkező felhasználók számára."
 
-#: db/seeds/settings.rb:5593
+#: db/seeds/settings.rb:5602
 msgid "Defines if Knowledge Base navbar button is enabled."
 msgstr ""
 "Meghatározza, hogy a Tudásbázis navigációs sáv gomb engedélyezve van-e."
 
-#: db/seeds/settings.rb:4895
+#: db/seeds/settings.rb:4904
 msgid "Defines if LDAP is enabled or not."
 msgstr "Meghatározza, hogy az LDAP engedélyezve van-e vagy sem."
 
-#: db/seeds/settings.rb:4794
+#: db/seeds/settings.rb:4803
 msgid "Defines if Monit (https://mmonit.com/monit/) is enabled or not."
 msgstr ""
 "Meghatározza, hogy a Monit (https://mmonit.com/monit/) engedélyezve van-e "
 "vagy sem."
 
-#: db/seeds/settings.rb:4563
+#: db/seeds/settings.rb:4572
 msgid "Defines if Nagios (http://www.nagios.org) is enabled or not."
 msgstr ""
 "Meghatározza, hogy a Nagios (http://www.nagios.org) engedélyezve van-e vagy "
 "sem."
 
-#: db/seeds/settings.rb:5726
+#: db/seeds/settings.rb:5735
 msgid "Defines if PGP encryption is enabled or not."
 msgstr "Meghatározza, hogy a PGP titkosítás engedélyezve van-e vagy sem."
 
-#: db/seeds/settings.rb:5334
+#: db/seeds/settings.rb:5343
 msgid "Defines if Placetel (http://www.placetel.de) is enabled or not."
 msgstr ""
 "Meghatározza, hogy a Placetel (http://www.placetel.de) engedélyezve van-e "
 "vagy sem."
 
-#: db/seeds/settings.rb:5684
+#: db/seeds/settings.rb:5693
 msgid "Defines if S/MIME encryption is enabled or not."
 msgstr "Meghatározza, hogy az S/MIME titkosítás engedélyezve van-e vagy sem."
 
-#: db/seeds/settings.rb:5135
+#: db/seeds/settings.rb:5144
 msgid "Defines if Slack (http://www.slack.org) is enabled or not."
 msgstr ""
 "Meghatározza, hogy a Slack (http://www.slack.org) engedélyezve van-e vagy "
@@ -5474,7 +5481,7 @@ msgid "Defines if application is used as online service."
 msgstr ""
 "Meghatározza, hogy az alkalmazást online szolgáltatásként használják-e."
 
-#: db/seeds/settings.rb:5809
+#: db/seeds/settings.rb:5818
 msgid ""
 "Defines if calendar weeks are shown in the picker of date/datetime fields to "
 "easily select the correct date."
@@ -5482,12 +5489,12 @@ msgstr ""
 "Meghatározza, hogy a naptári hetek megjelenjenek-e a dátum/idő mezők "
 "kiválasztójában, hogy könnyen kiválaszthassa a megfelelő dátumot."
 
-#: db/seeds/settings.rb:5259
+#: db/seeds/settings.rb:5268
 msgid "Defines if generic CTI integration is enabled or not."
 msgstr ""
 "Meghatározza, hogy az általános CTI integráció engedélyezve van-e vagy sem."
 
-#: db/seeds/settings.rb:5901
+#: db/seeds/settings.rb:5910
 msgid ""
 "Defines if recovery codes can be used by users in the event they lose access "
 "to other two-factor authentication methods."
@@ -5496,27 +5503,27 @@ msgstr ""
 "abban az esetben, ha elveszítik a hozzáférést más kétfaktoros hitelesítési "
 "módszerekhez."
 
-#: db/seeds/settings.rb:5176
+#: db/seeds/settings.rb:5185
 msgid "Defines if sipgate.io (http://www.sipgate.io) is enabled or not."
 msgstr ""
 "Meghatározza, hogy a sipgate.io (http://www.sipgate.io) engedélyezve van-e "
 "vagy sem."
 
-#: db/seeds/settings.rb:5057
+#: db/seeds/settings.rb:5066
 msgid ""
 "Defines if the GitHub (http://www.github.com) integration is enabled or not."
 msgstr ""
 "Meghatározza, hogy a GitHub (http://www.github.com) integráció engedélyezve "
 "van-e vagy sem."
 
-#: db/seeds/settings.rb:5015
+#: db/seeds/settings.rb:5024
 msgid ""
 "Defines if the GitLab (http://www.gitlab.com) integration is enabled or not."
 msgstr ""
 "Meghatározza, hogy a GitLab (http://www.gitlab.com) integráció engedélyezve "
 "van-e vagy sem."
 
-#: db/seeds/settings.rb:5768
+#: db/seeds/settings.rb:5777
 msgid "Defines if the PGP recipient alias configuration is enabled or not."
 msgstr ""
 "Meghatározza, hogy a PGP címzett alias konfiguráció engedélyezve van-e vagy "
@@ -5539,7 +5546,7 @@ msgstr ""
 "felhasználónak ugyanaz a jelszava, és a jelszó visszaállítása e-mail küldése "
 "nélkül is működik)."
 
-#: db/seeds/settings.rb:5953
+#: db/seeds/settings.rb:5962
 msgid ""
 "Defines if the change of the primary organization of a user will update the "
 "100 most recent tickets for this user as well."
@@ -5563,7 +5570,7 @@ msgstr ""
 "Meghatározza, hogy az e-mail megjelenjen-e a felhasználó/szervezet widget "
 "eredményében."
 
-#: db/seeds/settings.rb:4975
+#: db/seeds/settings.rb:4984
 msgid ""
 "Defines if the i-doit (https://www.i-doit.org/) integration is enabled or "
 "not."
@@ -5590,11 +5597,11 @@ msgstr ""
 "Meghatározza, hogy a jegyfeltételek szerkesztője támogatja-e az összetett "
 "logikai kifejezéseket."
 
-#: db/seeds/settings.rb:4142
+#: db/seeds/settings.rb:4151
 msgid "Defines if the time accounting types are enabled."
 msgstr "Meghatározza, hogy az időelszámolási típusok engedélyezve vannak-e."
 
-#: db/seeds/settings.rb:5869
+#: db/seeds/settings.rb:5878
 msgid ""
 "Defines if the two-factor authentication method authenticator app is enabled "
 "or not."
@@ -5602,7 +5609,7 @@ msgstr ""
 "Meghatározza, hogy a kétfaktoros hitelesítési módszer hitelesítő alkalmazás "
 "engedélyezve van-e vagy sem."
 
-#: db/seeds/settings.rb:5837
+#: db/seeds/settings.rb:5846
 msgid ""
 "Defines if the two-factor authentication method security keys is enabled or "
 "not."
@@ -5614,19 +5621,19 @@ msgstr ""
 msgid "Defines if tickets can be created via web form."
 msgstr "Meghatározza, hogy a jegyek létrehozhatók-e webes űrlapon keresztül."
 
-#: db/seeds/settings.rb:4514
+#: db/seeds/settings.rb:4523
 msgid "Defines if tickets should be closed if service is recovered."
 msgstr ""
 "Meghatározza, hogy a szolgáltatás helyreállítása esetén a jegyeket be kell-e "
 "zárni."
 
-#: db/seeds/settings.rb:4375
+#: db/seeds/settings.rb:4384
 msgid "Defines postmaster filter for filters managed via admin interface."
 msgstr ""
 "Meghatározza a postmaster szűrőjét a rendszergazdai felületen keresztül "
 "kezelt szűrőkhöz."
 
-#: db/seeds/settings.rb:4294
+#: db/seeds/settings.rb:4303
 msgid ""
 "Defines postmaster filter to check if email has been created by Zammad "
 "itself and will set the article sender."
@@ -5634,7 +5641,7 @@ msgstr ""
 "Meghatározza a postmaster szűrőjét, hogy ellenőrizze, hogy az e-mailt maga a "
 "Zammad hozta-e létre, és beállítja a cikk feladóját."
 
-#: db/seeds/settings.rb:4303
+#: db/seeds/settings.rb:4312
 msgid ""
 "Defines postmaster filter to check if the email is a self-created "
 "notification email, then ignore it to prevent email loops."
@@ -5643,19 +5650,19 @@ msgstr ""
 "maga által létrehozott értesítési e-mail-e, majd figyelmen kívül hagyja azt "
 "az e-mail hurkok elkerülése érdekében."
 
-#: db/seeds/settings.rb:4321
+#: db/seeds/settings.rb:4330
 msgid "Defines postmaster filter to handle secure mailing."
 msgstr ""
 "Meghatározza a postmaster szűrőjét a biztonságos levelezés kezeléséhez."
 
-#: db/seeds/settings.rb:4438
+#: db/seeds/settings.rb:4447
 msgid ""
 "Defines postmaster filter to identify Jira mails for correct follow-ups."
 msgstr ""
 "Meghatározza a postmaster szűrőjét a Jira levelek azonosításához a megfelelő "
 "utánkövetéshez."
 
-#: db/seeds/settings.rb:4420
+#: db/seeds/settings.rb:4429
 msgid ""
 "Defines postmaster filter to identify ServiceNow mails for correct follow-"
 "ups."
@@ -5663,7 +5670,7 @@ msgstr ""
 "Meghatározza a postmaster szűrőjét a ServiceNow levelek azonosításához a "
 "megfelelő utánkövetéshez."
 
-#: db/seeds/settings.rb:4240
+#: db/seeds/settings.rb:4249
 msgid ""
 "Defines postmaster filter to identify auto responses to prevent auto replies "
 "from Zammad."
@@ -5671,21 +5678,21 @@ msgstr ""
 "Meghatározza a postmaster szűrőjét az automatikus válaszok azonosítására, "
 "hogy megakadályozza a Zammad automatikus válaszait."
 
-#: db/seeds/settings.rb:4258
+#: db/seeds/settings.rb:4267
 msgid ""
 "Defines postmaster filter to identify follow-up ticket for merged tickets."
 msgstr ""
 "Meghatározza a postmaster szűrőjét az egyesített jegyek utánkövetési "
 "jegyének azonosításához."
 
-#: db/seeds/settings.rb:4249
+#: db/seeds/settings.rb:4258
 msgid ""
 "Defines postmaster filter to identify follow-ups (based on admin settings)."
 msgstr ""
 "Meghatározza a postmaster szűrőjét az utánkövetések azonosításához (a "
 "rendszergazdai beállítások alapján)."
 
-#: db/seeds/settings.rb:4330
+#: db/seeds/settings.rb:4339
 msgid ""
 "Defines postmaster filter to identify out-of-office emails for follow-up "
 "detection and keeping current ticket state."
@@ -5693,7 +5700,7 @@ msgstr ""
 "Meghatározza a postmaster szűrőjét az irodán kívüli e-mailek azonosításához "
 "az utánkövetés észleléséhez és az aktuális jegyállapot megtartásához."
 
-#: db/seeds/settings.rb:4357
+#: db/seeds/settings.rb:4366
 msgid ""
 "Defines postmaster filter to identify postmaster bounces; and disables "
 "sending notification if delivery fails permanently."
@@ -5702,7 +5709,7 @@ msgstr ""
 "azonosítására; és letiltja az értesítés küldését, ha a kézbesítés tartósan "
 "sikertelen."
 
-#: db/seeds/settings.rb:4348
+#: db/seeds/settings.rb:4357
 msgid ""
 "Defines postmaster filter to identify postmaster bounces; and handles them "
 "as follow-up of the original tickets"
@@ -5710,7 +5717,7 @@ msgstr ""
 "Meghatározza a postmaster szűrőjét a postmaster visszapattanások "
 "azonosítására; és az eredeti jegyek utánkövetéseként kezeli őket"
 
-#: db/seeds/settings.rb:4366
+#: db/seeds/settings.rb:4375
 msgid ""
 "Defines postmaster filter to identify postmaster bounces; and reopens "
 "tickets if delivery fails permanently."
@@ -5719,12 +5726,12 @@ msgstr ""
 "azonosítására; és újra megnyitja a jegyeket, ha a kézbesítés tartósan "
 "sikertelen."
 
-#: db/seeds/settings.rb:4312
+#: db/seeds/settings.rb:4321
 msgid "Defines postmaster filter to identify sender user."
 msgstr ""
 "Meghatározza a postmaster szűrőjét a feladó felhasználó azonosításához."
 
-#: db/seeds/settings.rb:4402
+#: db/seeds/settings.rb:4411
 #, fuzzy
 #| msgid ""
 #| "Defines postmaster filter to manage Monit (https://mmonit.com/monit/) "
@@ -5736,28 +5743,28 @@ msgstr ""
 "Meghatározza a postmaster szűrőjét a Monit (https://mmonit.com/monit/) e-"
 "mailek kezeléséhez."
 
-#: db/seeds/settings.rb:4384
+#: db/seeds/settings.rb:4393
 msgid ""
 "Defines postmaster filter to manage Icinga (http://www.icinga.org) emails."
 msgstr ""
 "Meghatározza a postmaster szűrőjét az Icinga (http://www.icinga.org) e-"
 "mailek kezeléséhez."
 
-#: db/seeds/settings.rb:4411
+#: db/seeds/settings.rb:4420
 msgid ""
 "Defines postmaster filter to manage Monit (https://mmonit.com/monit/) emails."
 msgstr ""
 "Meghatározza a postmaster szűrőjét a Monit (https://mmonit.com/monit/) e-"
 "mailek kezeléséhez."
 
-#: db/seeds/settings.rb:4393
+#: db/seeds/settings.rb:4402
 msgid ""
 "Defines postmaster filter to manage Nagios (http://www.nagios.org) emails."
 msgstr ""
 "Meghatározza a postmaster szűrőjét a Nagios (http://www.nagios.org) e-mailek "
 "kezeléséhez."
 
-#: db/seeds/settings.rb:4231
+#: db/seeds/settings.rb:4240
 msgid ""
 "Defines postmaster filter to remove X-Zammad headers from untrustworthy "
 "sources."
@@ -5765,7 +5772,7 @@ msgstr ""
 "Meghatározza a postmaster szűrőjét az X-Zammad fejlécek eltávolítására a nem "
 "megbízható forrásokból."
 
-#: db/seeds/settings.rb:4267
+#: db/seeds/settings.rb:4276
 msgid ""
 "Defines postmaster filter to set the owner (based on group follow up "
 "assignment)."
@@ -5773,7 +5780,7 @@ msgstr ""
 "Meghatározza a postmaster szűrőjét a tulajdonos beállításához (csoportos "
 "utánkövetési hozzárendelés alapján)."
 
-#: db/seeds/settings.rb:4276
+#: db/seeds/settings.rb:4285
 msgid ""
 "Defines postmaster filter to set the sender/from of emails based on reply-to "
 "header."
@@ -5781,7 +5788,7 @@ msgstr ""
 "Meghatározza a postmaster szűrőjét az e-mailek feladójának/küldőjének "
 "beállításához a reply-to fejléc alapján."
 
-#: db/seeds/settings.rb:4456
+#: db/seeds/settings.rb:4465
 msgid ""
 "Defines postmaster filter which sets the articles visibility to internal if "
 "it is a rely to an internal article or the last outgoing email is internal."
@@ -5790,7 +5797,7 @@ msgstr ""
 "állítja, ha egy belső cikkre hivatkozik, vagy ha az utolsó kimenő e-mail "
 "belső."
 
-#: db/seeds/settings.rb:4228
+#: db/seeds/settings.rb:4237
 msgid "Defines postmaster filter."
 msgstr "Meghatározza a postmaster szűrőjét."
 
@@ -5798,35 +5805,35 @@ msgstr "Meghatározza a postmaster szűrőjét."
 msgid "Defines pretty date format."
 msgstr "Meghatározza a dátum formátumát."
 
-#: db/seeds/settings.rb:5487
+#: db/seeds/settings.rb:5496
 msgid "Defines processing timeout for the html sanitizer."
 msgstr "Meghatározza a HTML tisztító feldolgozási időkorlátját."
 
-#: db/seeds/settings.rb:5096
+#: db/seeds/settings.rb:5105
 msgid "Defines sync transaction backend."
 msgstr "Meghatározza a szinkronizálási tranzakció háttérrendszerét."
 
-#: db/seeds/settings.rb:5475
+#: db/seeds/settings.rb:5484
 msgid "Defines the CSS font information for HTML emails."
 msgstr "Meghatározza a CSS betűtípusadatokat a HTML e-mailekhez."
 
-#: db/seeds/settings.rb:5287
+#: db/seeds/settings.rb:5296
 msgid "Defines the CTI config."
 msgstr "Meghatározza a CTI konfigurációt."
 
-#: db/seeds/settings.rb:4782
+#: db/seeds/settings.rb:4791
 msgid "Defines the Checkmk token for allowing updates."
 msgstr "Meghatározza a Checkmk tokent a frissítések engedélyezéséhez."
 
-#: db/seeds/settings.rb:5423
+#: db/seeds/settings.rb:5432
 msgid "Defines the Clearbit config."
 msgstr "Meghatározza a Clearbit konfigurációt."
 
-#: db/seeds/settings.rb:4935
+#: db/seeds/settings.rb:4944
 msgid "Defines the Exchange OAuth config."
 msgstr "Meghatározza az Exchange OAuth konfigurációt."
 
-#: db/seeds/settings.rb:4922
+#: db/seeds/settings.rb:4931
 msgid "Defines the Exchange config."
 msgstr "Meghatározza az Exchange konfigurációt."
 
@@ -5834,23 +5841,23 @@ msgstr "Meghatározza az Exchange konfigurációt."
 msgid "Defines the HTTP protocol of your instance."
 msgstr "Meghatározza az Ön példányának HTTP protokollját."
 
-#: db/seeds/settings.rb:5754
+#: db/seeds/settings.rb:5763
 msgid "Defines the PGP config."
 msgstr "Meghatározza a PGP konfigurációt."
 
-#: db/seeds/settings.rb:5362
+#: db/seeds/settings.rb:5371
 msgid "Defines the Placetel config."
 msgstr "Meghatározza a Placetel konfigurációt."
 
-#: db/seeds/settings.rb:5712
+#: db/seeds/settings.rb:5721
 msgid "Defines the S/MIME config."
 msgstr "Meghatározza az S/MIME konfigurációt."
 
-#: db/seeds/settings.rb:5161
+#: db/seeds/settings.rb:5170
 msgid "Defines the Slack config."
 msgstr "Meghatározza a Slack konfigurációt."
 
-#: db/seeds/settings.rb:5464
+#: db/seeds/settings.rb:5473
 msgid "Defines the agent limit."
 msgstr "Meghatározza az ügynöki korlátot."
 
@@ -5904,14 +5911,14 @@ msgstr ""
 "Meghatározza a konfigurációt, hogy hány cikket lehet létrehozni egy "
 "perctartományban jegyenként."
 
-#: db/seeds/settings.rb:4124
+#: db/seeds/settings.rb:4133
 msgid ""
 "Defines the custom unit to be shown next to the time accounting input field."
 msgstr ""
 "Meghatározza az időelszámolási beviteli mező mellett megjelenítendő egyéni "
 "egységet."
 
-#: db/seeds/settings.rb:4205
+#: db/seeds/settings.rb:4214
 msgid "Defines the default calendar tickets subscription settings."
 msgstr ""
 "Meghatározza az alapértelmezett naptárjegyek feliratkozási beállításait."
@@ -5928,7 +5935,7 @@ msgstr "Meghatározza a rendszer alapértelmezett nyelvét."
 msgid "Defines the default system timezone."
 msgstr "Meghatározza a rendszer alapértelmezett időzónáját."
 
-#: db/seeds/settings.rb:4160
+#: db/seeds/settings.rb:4169
 msgid "Defines the default time accounting type."
 msgstr "Meghatározza az alapértelmezett időelszámolási típust."
 
@@ -5936,7 +5943,7 @@ msgstr "Meghatározza az alapértelmezett időelszámolási típust."
 msgid "Defines the default visibility for new notes."
 msgstr "Meghatározza az új megjegyzések alapértelmezett láthatóságát."
 
-#: db/seeds/settings.rb:5321
+#: db/seeds/settings.rb:5330
 msgid ""
 "Defines the duration of customer activity (in seconds) on a call until the "
 "user profile dialog is shown."
@@ -5955,7 +5962,7 @@ msgstr ""
 "használt összes üzenetküldési formában megtalálható, hogy a rendszerében a "
 "jegyekre mutató hivatkozásokat létrehozzuk."
 
-#: db/seeds/settings.rb:4710
+#: db/seeds/settings.rb:4719
 msgid "Defines the group of created tickets."
 msgstr "Meghatározza a létrehozott jegyek csoportját."
 
@@ -5963,11 +5970,11 @@ msgstr "Meghatározza a létrehozott jegyek csoportját."
 msgid "Defines the group of tickets created via web form."
 msgstr "Meghatározza a webes űrlapon létrehozott jegyek csoportját."
 
-#: db/seeds/settings.rb:5002
+#: db/seeds/settings.rb:5011
 msgid "Defines the i-doit config."
 msgstr "Meghatározza az i-doit konfigurációt."
 
-#: db/seeds/settings.rb:4026
+#: db/seeds/settings.rb:4035
 msgid "Defines the log levels for various logging actions of the Sequencer."
 msgstr ""
 "Meghatározza a naplózási szinteket a Sequencer különböző naplózási "
@@ -6011,15 +6018,15 @@ msgstr "Meghatározza a websocket-kiszolgáló portját."
 msgid "Defines the random application secret."
 msgstr "Meghatározza a véletlenszerű alkalmazás titkát."
 
-#: db/seeds/settings.rb:4491
+#: db/seeds/settings.rb:4500
 msgid "Defines the sender email address of Icinga emails."
 msgstr "Meghatározza az Icinga e-mailek feladójának e-mail címét."
 
-#: db/seeds/settings.rb:4589
+#: db/seeds/settings.rb:4598
 msgid "Defines the sender email address of Nagios emails."
 msgstr "Meghatározza a Nagios e-mailek feladójának e-mail címét."
 
-#: db/seeds/settings.rb:4687
+#: db/seeds/settings.rb:4696
 msgid "Defines the sender email address of the service emails."
 msgstr "Meghatározza a szolgáltatási e-mailek feladójának e-mail címét."
 
@@ -6044,11 +6051,11 @@ msgstr ""
 "hozzárendelt jogosultságok alapján a legmagasabb időkorlát értéket "
 "használja, egyébként az alapértelmezettet."
 
-#: db/seeds/settings.rb:5225
+#: db/seeds/settings.rb:5234
 msgid "Defines the sipgate.io config."
 msgstr "Meghatározza a sipgate.io konfigurációt."
 
-#: db/seeds/settings.rb:4540
+#: db/seeds/settings.rb:4549
 msgid "Defines the state of auto-closed tickets."
 msgstr "Meghatározza az automatikusan lezárt jegyek állapotát."
 
@@ -6071,35 +6078,35 @@ msgstr "Meghatározza a lap viselkedését egy jegykezelési művelet után."
 msgid "Defines the ticket states used for lookups."
 msgstr "Meghatározza a kereséshez használt jegyállapotokat."
 
-#: db/seeds/settings.rb:5620
+#: db/seeds/settings.rb:5629
 msgid "Defines the timeframe during which a self-created note can be deleted."
 msgstr ""
 "Meghatározza azt az időkeretet, amely alatt egy saját készítésű megjegyzés "
 "törölhető."
 
-#: db/seeds/settings.rb:5376
+#: db/seeds/settings.rb:5385
 msgid "Defines the token for Placetel."
 msgstr "Meghatározza a tokent a Placetel számára."
 
-#: db/seeds/settings.rb:5117
+#: db/seeds/settings.rb:5126
 msgid ""
 "Defines the transaction backend to detect customer signatures in emails."
 msgstr ""
 "Meghatározza a tranzakciós háttérrendszert az e-mailekben lévő "
 "ügyfélaláírások észlelésére."
 
-#: db/seeds/settings.rb:5099
+#: db/seeds/settings.rb:5108
 msgid "Defines the transaction backend to execute triggers."
 msgstr ""
 "Meghatározza a tranzakciós háttérrendszert az eseményindítók végrehajtásához."
 
-#: db/seeds/settings.rb:5108
+#: db/seeds/settings.rb:5117
 msgid "Defines the transaction backend to send agent notifications."
 msgstr ""
 "Meghatározza az ügynöki értesítések küldésére szolgáló tranzakciós "
 "háttérrendszert."
 
-#: db/seeds/settings.rb:5445
+#: db/seeds/settings.rb:5454
 msgid ""
 "Defines the transaction backend which detects caller IDs in objects and "
 "stores them for CTI lookups."
@@ -6107,30 +6114,30 @@ msgstr ""
 "Meghatározza a tranzakciós háttérrendszert, amely felismeri a "
 "hívóazonosítókat az objektumokban, és tárolja azokat a CTI-kereséshez."
 
-#: db/seeds/settings.rb:5454
+#: db/seeds/settings.rb:5463
 msgid "Defines the transaction backend which executes time based triggers."
 msgstr ""
 "Meghatározza a tranzakciós háttérrendszert, amely időalapú eseményindítókat "
 "hajt végre."
 
-#: db/seeds/settings.rb:5126
+#: db/seeds/settings.rb:5135
 msgid ""
-"Defines the transaction backend which posts messages to Slack (http://www."
-"slack.com)."
+"Defines the transaction backend which posts messages to Slack (http://"
+"www.slack.com)."
 msgstr ""
 "Meghatározza a tranzakciós háttérrendszert, amely üzeneteket posztol a Slack "
 "rendszerbe (http://www.slack.com)."
 
-#: db/seeds/settings.rb:5436
+#: db/seeds/settings.rb:5445
 msgid ""
 "Defines the transaction backend which will enrich customer and organization "
 "information from Clearbit (http://www.clearbit.com)."
 msgstr ""
-"Meghatározza a tranzakciós háttérrendszert, amely a Clearbitből (http://www."
-"clearbit.com) származó ügyfél- és szervezeti információkat gazdagítja."
+"Meghatározza a tranzakciós háttérrendszert, amely a Clearbitből (http://"
+"www.clearbit.com) származó ügyfél- és szervezeti információkat gazdagítja."
 
 #: app/assets/javascripts/app/views/time_accounting/settings.jst.eco:14
-#: db/seeds/settings.rb:4106
+#: db/seeds/settings.rb:4115
 msgid "Defines the unit to be shown next to the time accounting input field."
 msgstr ""
 "Meghatározza az időelszámolási beviteli mező mellett megjelenítendő egységet."
@@ -6149,7 +6156,7 @@ msgstr ""
 "Meghatározza a figyelmeztetés címét, amely akkor jelenik meg, ha van egy "
 "egyező jegy."
 
-#: db/seeds/settings.rb:5105
+#: db/seeds/settings.rb:5114
 msgid "Defines transaction backend."
 msgstr "Meghatározza a tranzakciós háttérrendszert."
 
@@ -6181,7 +6188,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:188
 #: app/assets/javascripts/app/controllers/knowledge_base/delete_action.coffee:9
 #: app/assets/javascripts/app/controllers/package.coffee:54
-#: app/assets/javascripts/app/controllers/user.coffee:100
+#: app/assets/javascripts/app/controllers/user.coffee:101
 #: app/assets/javascripts/app/controllers/user_profile/action_row.coffee:90
 #: app/assets/javascripts/app/views/calendar/index.jst.eco:80
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:153
@@ -6708,7 +6715,7 @@ msgstr "Ne titkosítsa az e-maileket"
 msgid "Do not sign email"
 msgstr "Ne írja alá az e-mailt"
 
-#: db/seeds/settings.rb:5963
+#: db/seeds/settings.rb:5972
 msgid "Do not update any tickets."
 msgstr "Ne frissítsen egyetlen jegyet sem."
 
@@ -6774,7 +6781,7 @@ msgid ""
 msgstr ""
 "Ne töltsön be CSS-t az űrlaphoz. Saját CSS-t kell generálnia az űrlaphoz."
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:599
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:600
 msgid "Don't synchronize"
 msgstr "Ne szinkronizáljon"
 
@@ -6973,7 +6980,7 @@ msgstr "Húsvét"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:173
 #: app/frontend/apps/mobile/pages/home/views/Home.vue:76
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:53
-#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:53
+#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:56
 msgid "Edit"
 msgstr "Szerkesztés"
 
@@ -7023,7 +7030,7 @@ msgstr "Jegy címe"
 msgid "Edit item"
 msgstr "Maszk szerkesztése"
 
-#: app/assets/javascripts/app/controllers/core_workflow.coffee:57
+#: app/assets/javascripts/app/controllers/core_workflow.coffee:58
 msgid "Edit mask"
 msgstr "Maszk szerkesztése"
 
@@ -7036,7 +7043,7 @@ msgstr "Válasz szerkesztése"
 msgid "Edit security keys"
 msgstr "Biztonsági kulcsok szerkesztése"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation.vue:86
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation.vue:90
 #, fuzzy
 #| msgid "Ticket title"
 msgid "Edit ticket title"
@@ -7047,6 +7054,12 @@ msgstr "Jegy címe"
 #| msgid "Edit"
 msgid "Editor"
 msgstr "Szerkesztés"
+
+#: db/seeds/settings.rb:3732
+#, fuzzy
+#| msgid "Elasticsearch Model Configuration"
+msgid "Elasticsearch Asciifolding Configuration"
+msgstr "Elasticsearch Model konfiguráció"
 
 #: db/seeds/settings.rb:3687
 msgid "Elasticsearch Attachment Extensions"
@@ -7088,7 +7101,7 @@ msgstr "Elasticsearch SSL ellenőrzés"
 msgid "Elasticsearch Total Payload Size"
 msgstr "Elasticsearch teljes hasznos terhelés mérete"
 
-#: lib/search_index_backend.rb:433
+#: lib/search_index_backend.rb:435
 msgid ""
 "Elasticsearch is not reachable. It's possible that it's not running. Please "
 "check whether it is installed."
@@ -7318,7 +7331,7 @@ msgstr ""
 "cím és jelszó). Minden felhasználónak saját hozzáférési tokent kell "
 "létrehoznia a felhasználói profilban."
 
-#: db/seeds/settings.rb:5898
+#: db/seeds/settings.rb:5907
 msgid "Enable Recovery Codes"
 msgstr "Helyreállítási kódok engedélyezése"
 
@@ -7346,7 +7359,7 @@ msgstr ""
 "Engedélyezze az automatikus hozzárendelést, amikor egy ügynök először nyit "
 "meg egy jegyet."
 
-#: db/seeds/settings.rb:5981
+#: db/seeds/settings.rb:5990
 #, fuzzy
 #| msgid "Enable Chat"
 msgid "Enable checklists."
@@ -7376,14 +7389,14 @@ msgstr ""
 "idézni, csak jelölje ki a szöveget, és nyomja meg a válasz gombot (ez a "
 "funkció mindig elérhető)."
 
-#: db/seeds/settings.rb:6008
+#: db/seeds/settings.rb:6017
 msgid ""
 "Enable or disable self-shutdown of Zammad processes after significant "
 "configuration changes. This should only be used if the controlling process "
 "manager like systemd or docker supports an automatic restart policy."
 msgstr ""
 
-#: db/seeds/settings.rb:6061
+#: db/seeds/settings.rb:6070
 msgid "Enable or disable the AI assistance ticket summary."
 msgstr ""
 
@@ -7419,7 +7432,7 @@ msgstr ""
 msgid "Enable ticket auto assignment."
 msgstr "Engedélyezze a jegyek automatikus hozzárendelését."
 
-#: db/seeds/settings.rb:4061
+#: db/seeds/settings.rb:4070
 msgid "Enable time accounting."
 msgstr "Időelszámolás engedélyezése."
 
@@ -7450,7 +7463,7 @@ msgstr ""
 "Lehetővé teszi a felhasználók figyelmeztetését a jegy létrehozásakor, ha van "
 "egy meglévő jegy ugyanazokkal az tulajdonságokkal."
 
-#: db/seeds/settings.rb:5779
+#: db/seeds/settings.rb:5788
 msgid ""
 "Enables button for user authentication via %s. The button will redirect to /"
 "auth/sso on user interaction."
@@ -7605,11 +7618,11 @@ msgstr "Végpont"
 msgid "Endpoint Settings"
 msgstr "Végpont beállítások"
 
-#: db/seeds/settings.rb:5925
+#: db/seeds/settings.rb:5934
 msgid "Enforce the setup of the two-factor authentication"
 msgstr "A kétfaktoros hitelesítés beállításának kikényszerítése"
 
-#: db/seeds/settings.rb:5932
+#: db/seeds/settings.rb:5941
 msgid "Enforced for user roles"
 msgstr "Felhasználói szerepkörök esetében érvényesített"
 
@@ -7963,7 +7976,7 @@ msgstr ""
 msgid "Example CSV file for download."
 msgstr "Letölthető példa CSV fájl."
 
-#: app/assets/javascripts/app/controllers/webhook.coffee:28
+#: app/assets/javascripts/app/controllers/webhook.coffee:29
 #: app/assets/javascripts/app/controllers/widget/payload_example.coffee:5
 msgid "Example Payload"
 msgstr "Hasznos terhelés példa"
@@ -7990,15 +8003,15 @@ msgstr "Kivételt képező felhasználók"
 msgid "Exchange"
 msgstr "Exchange"
 
-#: db/seeds/settings.rb:4932
+#: db/seeds/settings.rb:4941
 msgid "Exchange OAuth"
 msgstr "Exchange OAuth"
 
-#: db/seeds/settings.rb:4919
+#: db/seeds/settings.rb:4928
 msgid "Exchange config"
 msgstr "Exchange konfiguráció"
 
-#: db/seeds/settings.rb:4945
+#: db/seeds/settings.rb:4954
 msgid "Exchange integration"
 msgstr "Exchange integráció"
 
@@ -8091,7 +8104,7 @@ msgstr "Kibővített keresés"
 msgid "External data source field"
 msgstr "Külső adatbázis forrása mező"
 
-#: lib/search_index_backend.rb:727
+#: lib/search_index_backend.rb:743
 msgid "Extract zammad-attachment information from arrays"
 msgstr "Zammad-csatolmány információk kinyerése tömbökből"
 
@@ -8496,11 +8509,11 @@ msgstr "A FormSchema nem található."
 msgid "Format"
 msgstr "Formátum"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:582
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:583
 msgid "Format as //strikethrough//"
 msgstr "Formázás //áthúzottként//"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:564
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:565
 msgid "Format as _underlined_"
 msgstr "Formázás _aláhúzottként_"
 
@@ -8508,15 +8521,15 @@ msgstr "Formázás _aláhúzottként_"
 msgid "Format as bold"
 msgstr "Formázás félkövérként"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:631
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:632
 msgid "Format as h1 heading"
 msgstr "Formázás h1 címsorként"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:637
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:638
 msgid "Format as h2 heading"
 msgstr "Formázás h2 címsorként"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:643
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:644
 msgid "Format as h3 heading"
 msgstr "Formázás h3 címsorként"
 
@@ -8524,7 +8537,7 @@ msgstr "Formázás h3 címsorként"
 msgid "Format as italic"
 msgstr "Formázás dőlt betűsként"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:625
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:626
 msgid "Format as ordered list"
 msgstr "Formázás rendezett listaként"
 
@@ -8536,15 +8549,15 @@ msgstr "Formázás áthúzásként"
 msgid "Format as underlined"
 msgstr "Formázás aláhúzottként"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:619
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:620
 msgid "Format as unordered list"
 msgstr "Formázás rendezetlen listaként"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:570
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:571
 msgid "Format as |bold|"
 msgstr "Formázás |félkövérként|"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:576
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:577
 msgid "Format as ||italic||"
 msgstr "Formázás ||dőltként||"
 
@@ -8701,7 +8714,7 @@ msgstr "Kapjon értesítést"
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:11
-#: db/seeds/settings.rb:5890
+#: db/seeds/settings.rb:5899
 msgid "Get the security code from the authenticator app on your device."
 msgstr ""
 "Szerezze be a biztonsági kódot az eszközén lévő hitelesítő alkalmazásból."
@@ -8732,11 +8745,11 @@ msgstr "GitHub alkalmazás hitelesítő adatok"
 msgid "GitHub OAuth Applications"
 msgstr "GitHub OAuth alkalmazások"
 
-#: db/seeds/settings.rb:5081
+#: db/seeds/settings.rb:5090
 msgid "GitHub config"
 msgstr "GitHub konfiguráció"
 
-#: db/seeds/settings.rb:5054
+#: db/seeds/settings.rb:5063
 msgid "GitHub integration"
 msgstr "GitHub integráció"
 
@@ -8771,11 +8784,11 @@ msgstr "GitLab alkalmazás hitelesítő adatok"
 msgid "GitLab Applications"
 msgstr "GitLab alkalmazások"
 
-#: db/seeds/settings.rb:5039
+#: db/seeds/settings.rb:5048
 msgid "GitLab config"
 msgstr "GitLab konfiguráció"
 
-#: db/seeds/settings.rb:5012
+#: db/seeds/settings.rb:5021
 msgid "GitLab integration"
 msgstr "GitLab integráció"
 
@@ -8847,7 +8860,7 @@ msgstr "Elköszönő üzenet"
 
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:96
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:61
-#: db/seeds/permissions.rb:149 db/seeds/settings.rb:1498
+#: db/seeds/settings.rb:1498
 msgid "Google"
 msgstr "Google"
 
@@ -8875,6 +8888,7 @@ msgstr "Google ügyfél titok"
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:3
 #: app/assets/javascripts/app/views/google/index.jst.eco:3
 #: app/assets/javascripts/app/views/google/list.jst.eco:3
+#: db/seeds/permissions.rb:149
 #, fuzzy
 #| msgid "Google Maps"
 msgid "Google Email"
@@ -8924,23 +8938,23 @@ msgstr "Üdvözlés"
 msgid "Group"
 msgstr "Csoport"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:306
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:310
 msgid "Group (change)"
 msgstr "Csoport (változás)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:297
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:301
 msgid "Group (create)"
 msgstr "Csoport (létrehozás)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:324
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:328
 msgid "Group (full)"
 msgstr "Csoport (teljes)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:315
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:319
 msgid "Group (overview)"
 msgstr "Csoport (áttekintés)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:288
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:292
 msgid "Group (read)"
 msgstr "Csoport (olvasás)"
 
@@ -8948,7 +8962,7 @@ msgstr "Csoport (olvasás)"
 msgid "Group Filter"
 msgstr "Csoport szűrő"
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:542
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:543
 msgid ""
 "Group information could not be retrieved, please check your bind user "
 "permissions."
@@ -9002,7 +9016,7 @@ msgstr "Csoportosítási sorrend"
 msgid "Groups"
 msgstr "Csoportok"
 
-#: app/assets/javascripts/app/controllers/group.coffee:24
+#: app/assets/javascripts/app/controllers/group.coffee:25
 msgid "Groups are …"
 msgstr "A csoportok …"
 
@@ -9010,11 +9024,11 @@ msgstr "A csoportok …"
 msgid "HMAC SHA1 Signature Token"
 msgstr "HMAC SHA1 aláírási token"
 
-#: db/seeds/settings.rb:5472
+#: db/seeds/settings.rb:5481
 msgid "HTML Email CSS Font"
 msgstr "HTML E-mail CSS betűtípus"
 
-#: db/seeds/settings.rb:5484
+#: db/seeds/settings.rb:5493
 msgid "HTML Sanitizer Processing Timeout"
 msgstr "HTML tisztító feldolgozási időkorlát"
 
@@ -9283,13 +9297,13 @@ msgstr "Kiemelő szín"
 msgid "Highlight icon"
 msgstr "Kiemelés ikon"
 
-#: db/seeds/settings.rb:5636
+#: db/seeds/settings.rb:5645
 msgid "Highlights if the note a user is writing is public or private"
 msgstr ""
 "Kiemeli, hogy a felhasználó által írt megjegyzés nyilvános vagy magánjellegű-"
 "e"
 
-#: db/seeds/settings.rb:5633
+#: db/seeds/settings.rb:5642
 msgid "Hint for adding an article to an existing ticket."
 msgstr "Hasznos tipp egy cikk hozzáadásához egy meglévő jegyhez."
 
@@ -9318,7 +9332,7 @@ msgid "Home"
 msgstr "Kezdőlap"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:427
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:330
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:331
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:80
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:69
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:73
@@ -9425,7 +9439,7 @@ msgstr "IMAP"
 msgid "Icinga"
 msgstr "Icinga"
 
-#: db/seeds/settings.rb:4462
+#: db/seeds/settings.rb:4471
 msgid "Icinga integration"
 msgstr "Icinga integráció"
 
@@ -9590,7 +9604,7 @@ msgstr ""
 msgid "Ignore Escalation"
 msgstr "Eszkaláció figyelmen kívül hagyása"
 
-#: db/seeds/settings.rb:3764
+#: db/seeds/settings.rb:3773
 msgid "Ignore Escalation/SLA Information"
 msgstr "Az eszkaláció/SLA információk figyelmen kívül hagyása"
 
@@ -9598,7 +9612,7 @@ msgstr "Az eszkaláció/SLA információk figyelmen kívül hagyása"
 msgid "Ignore Message"
 msgstr "Üzenet figyelmen kívül hagyása"
 
-#: db/seeds/settings.rb:3767
+#: db/seeds/settings.rb:3776
 msgid "Ignore escalation/SLA information for import."
 msgstr ""
 "Figyelmen kívül hagyja az eszkaláció/SLA-információkat az importáláshoz."
@@ -9639,9 +9653,9 @@ msgstr "Kép előnézet"
 #: app/assets/javascripts/app/controllers/import_freshdesk.coffee:25
 #: app/assets/javascripts/app/controllers/import_otrs.coffee:20
 #: app/assets/javascripts/app/controllers/import_zendesk.coffee:26
-#: app/assets/javascripts/app/controllers/organization.coffee:29
-#: app/assets/javascripts/app/controllers/text_module.coffee:33
-#: app/assets/javascripts/app/controllers/user.coffee:53
+#: app/assets/javascripts/app/controllers/organization.coffee:30
+#: app/assets/javascripts/app/controllers/text_module.coffee:34
+#: app/assets/javascripts/app/controllers/user.coffee:54
 #: app/assets/javascripts/app/controllers/widget/import.coffee:4
 #: app/assets/javascripts/app/controllers/widget/import_result.coffee:6
 #: app/assets/javascripts/app/controllers/widget/import_try_result.coffee:6
@@ -9657,51 +9671,51 @@ msgstr "%s importálása"
 msgid "Import API key could not be extracted from URL."
 msgstr "Az import API-kulcsot nem sikerült kinyerni az URL címből."
 
-#: db/seeds/settings.rb:3936
+#: db/seeds/settings.rb:3945
 msgid "Import API key for requesting the Freshdesk API"
 msgstr "API-kulcs importálása a Freshdesk API lekérdezéséhez"
 
-#: db/seeds/settings.rb:3880
+#: db/seeds/settings.rb:3889
 msgid "Import API key for requesting the Zendesk API"
 msgstr "API-kulcs importálása a Zendesk API lekérdezéséhez"
 
-#: db/seeds/settings.rb:3755
+#: db/seeds/settings.rb:3764
 msgid "Import Backend"
 msgstr "Háttérrendszer importálása"
 
-#: db/seeds/settings.rb:4010
+#: db/seeds/settings.rb:4019
 msgid "Import Backends"
 msgstr "Háttérrendszerek importálása"
 
-#: db/seeds/settings.rb:3787
+#: db/seeds/settings.rb:3796
 msgid "Import Endpoint"
 msgstr "Végpont importálása"
 
-#: db/seeds/settings.rb:3805
+#: db/seeds/settings.rb:3814
 msgid "Import Key"
 msgstr "Kulcs importálása"
 
-#: db/seeds/settings.rb:3733
+#: db/seeds/settings.rb:3742
 msgid "Import Mode"
 msgstr "Importálási mód"
 
-#: db/seeds/settings.rb:3843
+#: db/seeds/settings.rb:3852
 msgid "Import Password for HTTP basic authentication"
 msgstr "Jelszó importálása HTTP alaphitelesítéshez"
 
-#: db/seeds/settings.rb:3991
+#: db/seeds/settings.rb:4000
 msgid "Import Password for requesting the Kayako API"
 msgstr "Jelszó importálása a Kayako API lekéréséhez"
 
-#: db/seeds/settings.rb:3824
+#: db/seeds/settings.rb:3833
 msgid "Import User for HTTP basic authentication"
 msgstr "Felhasználó importálása HTTP alapszintű hitelesítéshez"
 
-#: db/seeds/settings.rb:3973
+#: db/seeds/settings.rb:3982
 msgid "Import User for requesting the Kayako API"
 msgstr "Felhasználó importálása a Kayako API lekérdezéséhez"
 
-#: db/seeds/settings.rb:3899
+#: db/seeds/settings.rb:3908
 msgid "Import User for requesting the Zendesk API"
 msgstr "Felhasználó importálása a Zendesk API lekérdezéséhez"
 
@@ -9964,19 +9978,19 @@ msgstr ""
 "csevegés látható lesz. Az oldal forráskódjának végén kell elhelyezni a §</"
 "body>§ záró tag előtt."
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:613
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:614
 msgid "Inserts a horizontal rule"
 msgstr "Vízszintes vonal beszúrása"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:546
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:547
 msgid "Inserts a mention for a user"
 msgstr "Egy felhasználó említésének beszúrása"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:540
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:541
 msgid "Inserts knowledge base answer"
 msgstr "Tudásbázis válasz beszúrása"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:534
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:535
 msgid "Inserts text module"
 msgstr "Szövegmodul beszúrása"
 
@@ -10437,15 +10451,15 @@ msgstr "Tudásbázis hírfolyam"
 msgid "Knowledge Base Reader"
 msgstr "Tudásbázis olvasó"
 
-#: db/seeds/settings.rb:5590
+#: db/seeds/settings.rb:5599
 msgid "Knowledge Base active"
 msgstr "Tudásbázis aktív"
 
-#: db/seeds/settings.rb:5605
+#: db/seeds/settings.rb:5614
 msgid "Knowledge Base active publicly"
 msgstr "A tudásbázis nyilvánosan aktív"
 
-#: db/seeds/settings.rb:5579
+#: db/seeds/settings.rb:5588
 msgid "Knowledge Base multilingual support"
 msgstr "A Tudásbázis többnyelvű támogatása"
 
@@ -10459,11 +10473,11 @@ msgstr "LDAP"
 msgid "LDAP Host"
 msgstr "LDAP gazdagép"
 
-#: db/seeds/settings.rb:4892
+#: db/seeds/settings.rb:4901
 msgid "LDAP integration"
 msgstr "LDAP integráció"
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:846
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:847
 msgid "LDAP integration for user management."
 msgstr "LDAP integráció a felhasználók kezeléséhez."
 
@@ -10547,6 +10561,7 @@ msgstr "Utoljára módosítva"
 
 #: app/assets/javascripts/app/models/ticket.coffee:26
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:88
+#: app/graphql/gql/types/overview_type.rb:111
 msgid "Last closing time"
 msgstr "Utolsó lezárási idő"
 
@@ -10911,7 +10926,7 @@ msgstr "Bejelentkezés a %s rendszerbe"
 
 #: app/assets/javascripts/app/models/user.coffee:8
 #: app/assets/javascripts/app/views/maintenance.jst.eco:25
-#: app/controllers/time_accountings_controller.rb:107
+#: app/controllers/time_accountings_controller.rb:101
 #: app/frontend/apps/desktop/components/User/UserListTable.vue:57
 #: db/seeds/object_manager_attributes.rb:766
 msgid "Login"
@@ -11055,14 +11070,16 @@ msgstr "Rendszerének Facebook-csatornájának kezelése."
 msgid "Manage Google mail channel of your system."
 msgstr "Rendszerének Google e-mail csatornájának kezelése."
 
-#: db/seeds/permissions.rb:156
-msgid "Manage Microsoft 365 mail channel of your system."
-msgstr ""
-
 #: db/seeds/permissions.rb:162
 #, fuzzy
 #| msgid "Manage Google mail channel of your system."
-msgid "Manage Microsoft Graph mail channel of your system."
+msgid "Manage Microsoft 365 Graph mail channel of your system."
+msgstr "Rendszerének Google e-mail csatornájának kezelése."
+
+#: db/seeds/permissions.rb:156
+#, fuzzy
+#| msgid "Manage Google mail channel of your system."
+msgid "Manage Microsoft 365 IMAP mail channel of your system."
 msgstr "Rendszerének Google e-mail csatornájának kezelése."
 
 #: db/seeds/permissions.rb:138
@@ -11085,7 +11102,7 @@ msgstr "Rendszerének Telegram-csatornájának kezelése."
 msgid "Manage Twitter channel of your system."
 msgstr "Rendszerének Twitter-csatornájának kezelése."
 
-#: app/assets/javascripts/app/controllers/user.coffee:85
+#: app/assets/javascripts/app/controllers/user.coffee:86
 #: app/assets/javascripts/app/controllers/user/manage_two_factor.coffee:4
 msgid "Manage Two-Factor Authentication"
 msgstr "Kétfaktoros hitelesítés kezelése"
@@ -11421,7 +11438,7 @@ msgid "March"
 msgstr "március"
 
 #: app/assets/javascripts/app/views/widget/online_notification.jst.eco:4
-#: app/frontend/apps/mobile/pages/online-notification/views/NotificationsList.vue:103
+#: app/frontend/apps/mobile/pages/online-notification/views/NotificationsList.vue:105
 msgid "Mark all as read"
 msgstr "Összes olvasottnak jelölése"
 
@@ -11676,10 +11693,6 @@ msgstr "Módszer (AJAX végpont)"
 msgid "Microsoft"
 msgstr "Microsoft"
 
-#: db/seeds/permissions.rb:155
-msgid "Microsoft 365"
-msgstr "Microsoft 365"
-
 #: db/seeds/settings.rb:1769
 msgid "Microsoft 365 App Credentials"
 msgstr "Microsoft 365 alkalmazás hitelesítő adatok"
@@ -11687,6 +11700,7 @@ msgstr "Microsoft 365 alkalmazás hitelesítő adatok"
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:4
 #: app/assets/javascripts/app/views/microsoft_graph/index.jst.eco:4
 #: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:3
+#: db/seeds/permissions.rb:161
 #, fuzzy
 #| msgid "Microsoft 365"
 msgid "Microsoft 365 Graph Email"
@@ -11695,6 +11709,7 @@ msgstr "Microsoft 365"
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:3
 #: app/assets/javascripts/app/views/microsoft365/index.jst.eco:3
 #: app/assets/javascripts/app/views/microsoft365/list.jst.eco:3
+#: db/seeds/permissions.rb:155
 #, fuzzy
 #| msgid "Microsoft 365"
 msgid "Microsoft 365 IMAP Email"
@@ -11708,12 +11723,6 @@ msgstr "Microsoft alkalmazás regisztrációs portál"
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:164
 msgid "Microsoft Authenticator"
 msgstr "Microsoft Authenticator"
-
-#: db/seeds/permissions.rb:161
-#, fuzzy
-#| msgid "Microsoft"
-msgid "Microsoft Graph"
-msgstr "Microsoft"
 
 #: app/models/webhook/pre_defined/microsoft_teams.rb:5
 msgid "Microsoft Teams Notifications"
@@ -11795,7 +11804,7 @@ msgstr "Mobiltelefon"
 msgid "Mode"
 msgstr "Mód"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:268
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:272
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_perform.coffee:66
 msgid "Module"
 msgstr "Modul"
@@ -11815,7 +11824,7 @@ msgstr "hétfő"
 msgid "Monit"
 msgstr "Monit"
 
-#: db/seeds/settings.rb:4791
+#: db/seeds/settings.rb:4800
 msgid "Monit integration"
 msgstr "Monit integráció"
 
@@ -11942,12 +11951,12 @@ msgstr "Folyamatban lévő jegyeim"
 msgid "Nagios"
 msgstr "Nagios"
 
-#: db/seeds/settings.rb:4560
+#: db/seeds/settings.rb:4569
 msgid "Nagios integration"
 msgstr "Nagios integráció"
 
 #: app/assets/javascripts/app/controllers/_application_controller/reorder_modal.coffee:13
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:324
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:325
 #: app/assets/javascripts/app/controllers/chat.coffee:559
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:58
 #: app/assets/javascripts/app/models/_application_model.coffee:156
@@ -12002,7 +12011,7 @@ msgstr "Nagios integráció"
 #: app/assets/javascripts/app/views/tag/table.jst.eco:4
 #: app/assets/javascripts/app/views/widget/organization.jst.eco:9
 #: app/assets/javascripts/app/views/widget/user.jst.eco:5
-#: app/controllers/time_accountings_controller.rb:95
+#: app/controllers/time_accountings_controller.rb:89
 #: app/frontend/apps/desktop/components/Form/fields/FieldNotifications/FieldNotificationsInput.vue:30
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:116
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:31
@@ -12028,7 +12037,7 @@ msgstr "Ennek a biztonsági kulcsnak a neve"
 msgid "Name of form submit button"
 msgstr "Az űrlap elküldés gombjának neve"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:524
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:525
 msgid "Navigate through article"
 msgstr "Navigálás a cikken keresztül"
 
@@ -12106,7 +12115,7 @@ msgstr "Új és nyitott jegyek"
 msgid "New Access Token is"
 msgstr "Az új hozzáférési token"
 
-#: app/assets/javascripts/app/controllers/time_accounting_types.coffee:54
+#: app/assets/javascripts/app/controllers/time_accounting_types.coffee:55
 msgid "New Activity Type"
 msgstr "Új tevékenységtípus"
 
@@ -12153,7 +12162,7 @@ msgstr "Új naptár"
 msgid "New Category"
 msgstr "Kategória"
 
-#: app/assets/javascripts/app/controllers/checklist_template.coffee:38
+#: app/assets/javascripts/app/controllers/checklist_template.coffee:39
 #, fuzzy
 #| msgid "New Template"
 msgid "New Checklist Template"
@@ -12163,7 +12172,7 @@ msgstr "Új sablon"
 msgid "New Deletion Task"
 msgstr "Új törlési feladat"
 
-#: app/assets/javascripts/app/controllers/group.coffee:27
+#: app/assets/javascripts/app/controllers/group.coffee:28
 msgid "New Group"
 msgstr "Új csoport"
 
@@ -12173,15 +12182,15 @@ msgstr "Új csoport"
 msgid "New Keyboard Shortcuts"
 msgstr "Billentyűparancsok"
 
-#: app/assets/javascripts/app/controllers/macro.coffee:24
+#: app/assets/javascripts/app/controllers/macro.coffee:25
 msgid "New Macro"
 msgstr "Új makró"
 
-#: app/assets/javascripts/app/controllers/organization.coffee:30
+#: app/assets/javascripts/app/controllers/organization.coffee:31
 msgid "New Organization"
 msgstr "Új szervezet"
 
-#: app/assets/javascripts/app/controllers/overview.coffee:30
+#: app/assets/javascripts/app/controllers/overview.coffee:31
 msgid "New Overview"
 msgstr "Új áttekintés"
 
@@ -12190,19 +12199,19 @@ msgstr "Új áttekintés"
 msgid "New Personal Access Token"
 msgstr "Új személyes hozzáférési token"
 
-#: app/assets/javascripts/app/controllers/ticket_priority.coffee:19
+#: app/assets/javascripts/app/controllers/ticket_priority.coffee:20
 msgid "New Priority"
 msgstr "Új prioritás"
 
-#: app/assets/javascripts/app/controllers/report_profile.coffee:24
+#: app/assets/javascripts/app/controllers/report_profile.coffee:25
 msgid "New Profile"
 msgstr "Új profil"
 
-#: app/assets/javascripts/app/controllers/public_link.coffee:24
+#: app/assets/javascripts/app/controllers/public_link.coffee:25
 msgid "New Public Link"
 msgstr "Új nyilvános hivatkozás"
 
-#: app/assets/javascripts/app/controllers/role.coffee:30
+#: app/assets/javascripts/app/controllers/role.coffee:31
 msgid "New Role"
 msgstr "Új szerepkör"
 
@@ -12210,20 +12219,20 @@ msgstr "Új szerepkör"
 msgid "New SLA"
 msgstr "Új SLA"
 
-#: app/assets/javascripts/app/controllers/job.coffee:26
+#: app/assets/javascripts/app/controllers/job.coffee:27
 msgid "New Scheduler"
 msgstr "Új ütemező"
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:27
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:28
 msgid "New Source"
 msgstr "Új forrás"
 
 #: app/assets/javascripts/app/views/tag/index.jst.eco:14
-#: db/seeds/settings.rb:4175
+#: db/seeds/settings.rb:4184
 msgid "New Tags"
 msgstr "Új címkék"
 
-#: app/assets/javascripts/app/controllers/template.coffee:24
+#: app/assets/javascripts/app/controllers/template.coffee:25
 msgid "New Template"
 msgstr "Új sablon"
 
@@ -12241,7 +12250,7 @@ msgstr "Új sablon"
 msgid "New Ticket"
 msgstr "Új jegy"
 
-#: app/assets/javascripts/app/controllers/ticket_state.coffee:22
+#: app/assets/javascripts/app/controllers/ticket_state.coffee:23
 msgid "New Ticket State"
 msgstr "Új jegy állapot"
 
@@ -12255,11 +12264,11 @@ msgstr "Új jegy"
 msgid "New Translation"
 msgstr "Új fordítás"
 
-#: app/assets/javascripts/app/controllers/trigger.coffee:27
+#: app/assets/javascripts/app/controllers/trigger.coffee:28
 msgid "New Trigger"
 msgstr "Új eseményindító"
 
-#: app/assets/javascripts/app/controllers/user.coffee:54
+#: app/assets/javascripts/app/controllers/user.coffee:55
 #: app/assets/javascripts/app/views/cti/caller_log.jst.eco:89
 #: app/assets/javascripts/app/views/navigation/menu_cti_ringing.jst.eco:54
 msgid "New User"
@@ -12273,11 +12282,11 @@ msgstr "Új felhasználói fiókok"
 msgid "New Version"
 msgstr "Új verzió"
 
-#: app/assets/javascripts/app/controllers/webhook.coffee:30
+#: app/assets/javascripts/app/controllers/webhook.coffee:31
 msgid "New Webhook"
 msgstr "Új webhook"
 
-#: app/assets/javascripts/app/controllers/core_workflow.coffee:26
+#: app/assets/javascripts/app/controllers/core_workflow.coffee:27
 msgid "New Workflow"
 msgstr "Új munkafolyamat"
 
@@ -12294,7 +12303,7 @@ msgstr "Új jelszó"
 msgid "New tab"
 msgstr "Új lap"
 
-#: app/assets/javascripts/app/controllers/text_module.coffee:34
+#: app/assets/javascripts/app/controllers/text_module.coffee:35
 msgid "New text module"
 msgstr "Új szövegmodul"
 
@@ -12367,7 +12376,7 @@ msgid "New user?"
 msgstr "Új felhasználó?"
 
 #: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:112
-#: app/assets/javascripts/app/controllers/webhook.coffee:126
+#: app/assets/javascripts/app/controllers/webhook.coffee:127
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/password_check.coffee:2
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:120
 #: app/assets/javascripts/app/views/clues/clues_content.jst.eco:19
@@ -12482,7 +12491,7 @@ msgid "No Proxy"
 msgstr "Nincs proxy"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:430
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:203
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:204
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:43
 msgid "No SSL"
@@ -12561,7 +12570,7 @@ msgid "No email!"
 msgstr "Nincs e-mail!"
 
 #: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:139
-#: app/frontend/apps/mobile/pages/online-notification/views/NotificationsList.vue:89
+#: app/frontend/apps/mobile/pages/online-notification/views/NotificationsList.vue:91
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:265
 #: app/frontend/apps/mobile/pages/ticket/components/TicketList/TicketList.vue:150
 msgid "No entries"
@@ -12612,7 +12621,7 @@ msgstr "Nincsenek elérhető makrók."
 msgid "No members found"
 msgstr "Nem található kamera."
 
-#: app/frontend/apps/desktop/components/CommonSimpleEntityList/plugins/organization.ts:9
+#: app/frontend/apps/desktop/components/CommonSimpleEntityList/plugins/organization.ts:11
 #, fuzzy
 #| msgid "Organizations"
 msgid "No organizations found"
@@ -12966,7 +12975,7 @@ msgstr "Értesítési hang"
 #: app/assets/javascripts/app/views/profile/notification.jst.eco:2
 #: app/assets/javascripts/app/views/widget/mention.jst.eco:1
 #: app/assets/javascripts/app/views/widget/online_notification.jst.eco:3
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification.vue:83
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification.vue:157
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationPopover/NotificationHeader.vue:20
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/notifications.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:34
@@ -13072,6 +13081,18 @@ msgstr "Objektum"
 #: app/assets/javascripts/app/controllers/object_manager.coffee:114
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:3
 msgid "Object Manager"
+msgstr "Objektumkezelő"
+
+#: app/assets/javascripts/app/controllers/object_manager.coffee:156
+#, fuzzy
+#| msgid "Object Manager"
+msgid "Object Manager Attribute"
+msgstr "Objektumkezelő"
+
+#: app/assets/javascripts/app/controllers/object_manager.coffee:157
+#, fuzzy
+#| msgid "Object Manager"
+msgid "Object Manager Attributes"
 msgstr "Objektumkezelő"
 
 #: app/services/service/history/list.rb:52
@@ -13286,11 +13307,11 @@ msgstr "Megnyitás új lapon"
 msgid "Open link"
 msgstr "Nyitott jegyek"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:502
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:503
 msgid "Open macro selection"
 msgstr "Makró kiválasztás megnyitása"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:462
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:463
 msgid "Open note box"
 msgstr "Megjegyzés mező megnyitása"
 
@@ -13339,7 +13360,7 @@ msgid "Open ticket indicator"
 msgstr "Nyitott jegy jelző"
 
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:38
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomer.vue:59
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomer.vue:54
 msgid "Open tickets"
 msgstr "Nyitott jegyek"
 
@@ -13430,6 +13451,12 @@ msgstr "Vagy használja az Ön egyik"
 msgid "Order of Overviews"
 msgstr "Az áttekintések sorrendje"
 
+#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:29
+#, fuzzy
+#| msgid "Order of Overviews"
+msgid "Order of overviews"
+msgstr "Az áttekintések sorrendje"
+
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOverviews.vue:133
 msgid "Order of ticket overviews"
 msgstr "A jegyek áttekintésének sorrendje"
@@ -13453,7 +13480,7 @@ msgstr "A jegyek áttekintésének sorrendje"
 #: app/assets/javascripts/app/views/time_accounting/by_customer.jst.eco:10
 #: app/assets/javascripts/app/views/time_accounting/by_organization.jst.eco:9
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:12
-#: app/controllers/time_accountings_controller.rb:99
+#: app/controllers/time_accountings_controller.rb:93
 #: app/frontend/apps/desktop/components/Search/plugins/organization.ts:13
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/organization.ts:13
 #: app/frontend/apps/mobile/pages/organization/routes.ts:8
@@ -13501,7 +13528,7 @@ msgstr "Szervezet logója"
 msgid "Organization name"
 msgstr "Szervezet neve"
 
-#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:78
+#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:81
 msgid "Organization tickets"
 msgstr "Szervezet jegyek"
 
@@ -13637,7 +13664,7 @@ msgstr ""
 msgid "Overview"
 msgstr "Áttekintés"
 
-#: app/assets/javascripts/app/controllers/core_workflow.coffee:58
+#: app/assets/javascripts/app/controllers/core_workflow.coffee:59
 msgid "Overview bulk mask"
 msgstr "Tömeges maszk áttekintése"
 
@@ -13654,7 +13681,7 @@ msgid "Overview: %s"
 msgstr "Áttekintések"
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:158
-#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:79
+#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:80
 #: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:38
 #: app/assets/javascripts/app/controllers/overview.coffee:3
 #: app/assets/javascripts/app/controllers/ticket_overview.coffee:258
@@ -13707,15 +13734,15 @@ msgstr ""
 msgid "PGP"
 msgstr "PGP"
 
-#: db/seeds/settings.rb:5765
+#: db/seeds/settings.rb:5774
 msgid "PGP Recipient Alias Configuration"
 msgstr "PGP Címzett alias beállítása"
 
-#: db/seeds/settings.rb:5751
+#: db/seeds/settings.rb:5760
 msgid "PGP config"
 msgstr "PGP konfiguráció"
 
-#: db/seeds/settings.rb:5723
+#: db/seeds/settings.rb:5732
 msgid "PGP integration"
 msgstr "PGP integráció"
 
@@ -13874,11 +13901,11 @@ msgstr "Tanúsítvány beillesztése"
 msgid "Paste Private Key"
 msgstr "Privát kulcs beillesztése"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:588
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:589
 msgid "Paste from clipboard"
 msgstr "Beillesztés a vágólapról"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:595
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:596
 msgid "Paste from clipboard (plain text)"
 msgstr "Beillesztés a vágólapról (egyszerű szöveg)"
 
@@ -13930,7 +13957,7 @@ msgstr "Tudásbázis végleges törlése"
 msgid "Permission level for looking up tickets"
 msgstr "Jegyek keresésének engedélyezési szintje"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:333
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:337
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:96
 #: app/assets/javascripts/app/models/role.coffee:7
 #: app/assets/javascripts/app/views/object_manager/screens.jst.eco:5
@@ -13952,7 +13979,7 @@ msgstr "Személyes beállítások"
 msgid "Personal access token has been deleted."
 msgstr "A személyes hozzáférési token törlésre került."
 
-#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:76
+#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:77
 msgid "Personal overview order was reset."
 msgstr "A személyes áttekintési sorrend alaphelyzetbe került."
 
@@ -14011,15 +14038,15 @@ msgstr ""
 msgid "Placetel"
 msgstr "Placetel"
 
-#: db/seeds/settings.rb:5373
+#: db/seeds/settings.rb:5382
 msgid "Placetel Token"
 msgstr "Placetel token"
 
-#: db/seeds/settings.rb:5359
+#: db/seeds/settings.rb:5368
 msgid "Placetel config"
 msgstr "Placetel konfiguráció"
 
-#: db/seeds/settings.rb:5331
+#: db/seeds/settings.rb:5340
 msgid "Placetel integration"
 msgstr "Placetel integráció"
 
@@ -14038,7 +14065,7 @@ msgid ""
 "duplicate first."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/checklist_template.coffee:55
+#: app/assets/javascripts/app/controllers/checklist_template.coffee:56
 #, fuzzy
 #| msgid "Please select at least one ticket overview"
 msgid "Please add at least one item to the checklist."
@@ -14075,7 +14102,7 @@ msgstr "Kérjük, futtatás előtt konfigurálja az importálási forrást."
 msgid "Please contact your administrator."
 msgstr "Kérjük, lépjen kapcsolatba a rendszergazdájával."
 
-#: lib/selector/sql.rb:181
+#: lib/selector/sql.rb:192
 msgid ""
 "Please enable execution_time feature to use it (currently only allowed for "
 "triggers and schedulers)"
@@ -14087,7 +14114,7 @@ msgstr ""
 msgid "Please enter a text."
 msgstr "Kérjük, írjon be egy szöveget."
 
-#: app/assets/javascripts/app/controllers/webhook.coffee:95
+#: app/assets/javascripts/app/controllers/webhook.coffee:96
 msgid "Please enter a valid JSON string."
 msgstr "Kérjük, adjon meg egy érvényes JSON karakterláncot."
 
@@ -14249,12 +14276,12 @@ msgstr "Postmaster szűrő"
 msgid "Powered by"
 msgstr "Powered by"
 
-#: app/assets/javascripts/app/controllers/webhook.coffee:34
+#: app/assets/javascripts/app/controllers/webhook.coffee:35
 #: app/assets/javascripts/app/views/pre_defined_webhook.jst.eco:5
 msgid "Pre-defined Webhook"
 msgstr "Előre definiált Webhook"
 
-#: app/assets/javascripts/app/controllers/webhook.coffee:250
+#: app/assets/javascripts/app/controllers/webhook.coffee:251
 msgid "Pre-defined webhook for %s."
 msgstr "Előre definiált webhook %s számára."
 
@@ -14380,7 +14407,7 @@ msgstr ""
 msgid "Priority"
 msgstr "Prioritás"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:67
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:70
 #, fuzzy
 #| msgid "Priority"
 msgid "Priority Icon"
@@ -14549,7 +14576,7 @@ msgstr ""
 "kattintson az alábbi szöveges területre, és módosítsa azt közvetlenül a "
 "soron belül."
 
-#: db/seeds/settings.rb:3736
+#: db/seeds/settings.rb:3745
 msgid "Puts Zammad into import mode (disables some triggers)."
 msgstr ""
 "Importálási módba helyezi a Zammad rendszert (letilt néhány eseményindítót)."
@@ -14892,11 +14919,11 @@ msgstr "Kétfaktoros hitelesítés eltávolítása"
 msgid "Removed reaction from message %s from %s"
 msgstr "%s befejezte az átváltást erre: |%s|!"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:649
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:650
 msgid "Removes any hyperlink"
 msgstr "Eltávolít minden hiperhivatkozást"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:601
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:602
 msgid "Removes the formatting"
 msgstr "Eltávolítja a formázást"
 
@@ -14959,7 +14986,7 @@ msgstr "Válasz mindenkinek"
 msgid "Reply allowed only for open tickets"
 msgstr "Válasz csak nyitott jegyek esetén engedélyezett"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:477
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:478
 msgid "Reply to last article"
 msgstr "Válasz az utolsó cikkre"
 
@@ -15029,7 +15056,7 @@ msgstr "A kötelező 'profile' paraméter hiányzik."
 msgid "Requirements"
 msgstr "Követelmények"
 
-#: db/seeds/settings.rb:5928
+#: db/seeds/settings.rb:5937
 #, fuzzy
 #| msgid ""
 #| "Requires the set up of the two-factor authentication for certain user "
@@ -15075,7 +15102,7 @@ msgstr "A jelszó visszaállítása nem sikerült!"
 msgid "Reset Search"
 msgstr "Keresés törlése"
 
-#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:34
+#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:35
 msgid "Reset overview order"
 msgstr "Áttekintési sorrend visszaállítása"
 
@@ -15103,8 +15130,8 @@ msgid ""
 "\n"
 "<div>Hi #{user.firstname},</div>\n"
 "<br>\n"
-"<div>We received a request to reset the password for your #{config."
-"product_name} account <b>#{user.login}</b>.</div>\n"
+"<div>We received a request to reset the password for your "
+"#{config.product_name} account <b>#{user.login}</b>.</div>\n"
 "<br>\n"
 "<div>If you want to reset your password, click on the link below (or copy "
 "and paste the URL into your browser):</div>\n"
@@ -15233,7 +15260,7 @@ msgstr "Csak a következő felhasználókra korlátozva"
 msgid "Result:"
 msgstr "Eredmény:"
 
-#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:356
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:366
 #, fuzzy
 #| msgid "Result:"
 msgid "Results"
@@ -15288,7 +15315,7 @@ msgstr "A retweetek jegyekké lesznek alakítva."
 msgid "Rocket Chat Notifications"
 msgstr "Rocket Chat értesítések"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:279
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:283
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:216
 #: app/assets/javascripts/app/controllers/role.coffee:3
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:81
@@ -15306,7 +15333,7 @@ msgstr "A %s szerepkör ütközik a %s szerepkörrel, szeretné folytatni?"
 msgid "Roles"
 msgstr "Szerepkörök"
 
-#: app/assets/javascripts/app/controllers/role.coffee:27
+#: app/assets/javascripts/app/controllers/role.coffee:28
 msgid "Roles are …"
 msgstr "A szerepkörök …"
 
@@ -15367,7 +15394,7 @@ msgstr ""
 "elfogadott módszer (pontosabban protokoll) digitálisan aláírt és titkosított "
 "üzenetek küldésére."
 
-#: db/seeds/settings.rb:5709
+#: db/seeds/settings.rb:5718
 msgid "S/MIME config"
 msgstr "S/MIME konfiguráció"
 
@@ -15377,7 +15404,7 @@ msgstr ""
 "Az S/MIME lehetővé teszi a digitálisan aláírt és titkosított üzenetek "
 "küldését."
 
-#: db/seeds/settings.rb:5681
+#: db/seeds/settings.rb:5690
 msgid "S/MIME integration"
 msgstr "S/MIME integráció"
 
@@ -15439,7 +15466,7 @@ msgid "SMTP - configure your own outgoing SMTP settings"
 msgstr "SMTP - saját kimenő SMTP beállítások konfigurálása"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:430
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:207
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:208
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:47
 msgid "SSL"
@@ -15476,12 +15503,12 @@ msgstr "SSL/STARTTLS"
 
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:111
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:84
-#: db/seeds/settings.rb:5797
+#: db/seeds/settings.rb:5806
 msgid "SSO"
 msgstr "SSO"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:430
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:205
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:206
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:83
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:54
 msgid "STARTTLS"
@@ -15643,7 +15670,7 @@ msgstr "Görgessen lefelé az új üzenetek megtekintéséhez"
 #: app/assets/javascripts/app/views/integration/idoit_object_selector.jst.eco:3
 #: app/assets/javascripts/app/views/knowledge_base/search_field_widget.jst.eco:1
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:4
-#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:354
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:364
 #: app/frontend/apps/desktop/pages/search/routes.ts:14
 #: app/frontend/apps/mobile/pages/search/routes.ts:8
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:228
@@ -15673,14 +15700,118 @@ msgstr "A megadott URL cím érvénytelen."
 msgid "Search URL is missing."
 msgstr "A keresési URL hiányzik."
 
-#: app/assets/javascripts/app/views/generic/admin/index.jst.eco:32
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:25
 #, fuzzy
 #| msgid "Search for users"
-msgid "Search for %s"
+msgid "Search for LDAP sources"
 msgstr "Felhasználók keresése"
 
+#: app/assets/javascripts/app/controllers/time_accounting_types.coffee:52
+#, fuzzy
+#| msgid "Search for users"
+msgid "Search for activity types"
+msgstr "Felhasználók keresése"
+
+#: app/assets/javascripts/app/controllers/checklist_template.coffee:32
+#, fuzzy
+#| msgid "Please select at least one folder."
+msgid "Search for checklist templates"
+msgstr "Kérjük, válasszon ki legalább egy mappát."
+
+#: app/assets/javascripts/app/controllers/group.coffee:18
+#, fuzzy
+#| msgid "Search for users"
+msgid "Search for groups"
+msgstr "Felhasználók keresése"
+
+#: app/assets/javascripts/app/controllers/macro.coffee:18
+#, fuzzy
+#| msgid "Search for users"
+msgid "Search for macros"
+msgstr "Felhasználók keresése"
+
+#: app/assets/javascripts/app/controllers/organization.coffee:23
+#, fuzzy
+#| msgid "Secondary organizations"
+msgid "Search for organizations"
+msgstr "Másodlagos szervezetek"
+
+#: app/assets/javascripts/app/controllers/_profile/overviews.coffee:31
+#: app/assets/javascripts/app/controllers/overview.coffee:24
+#, fuzzy
+#| msgid "Search for users"
+msgid "Search for overviews"
+msgstr "Felhasználók keresése"
+
+#: app/assets/javascripts/app/controllers/public_link.coffee:18
+#, fuzzy
+#| msgid "Search result list"
+msgid "Search for public links"
+msgstr "Keresési eredmények listája"
+
+#: app/assets/javascripts/app/controllers/report_profile.coffee:18
+#, fuzzy
+#| msgid "Search for users"
+msgid "Search for report profiles"
+msgstr "Felhasználók keresése"
+
+#: app/assets/javascripts/app/controllers/role.coffee:21
+#, fuzzy
+#| msgid "Search for users"
+msgid "Search for roles"
+msgstr "Felhasználók keresése"
+
+#: app/assets/javascripts/app/controllers/job.coffee:20
+#, fuzzy
+#| msgid "Search for users"
+msgid "Search for schedulers"
+msgstr "Felhasználók keresése"
+
+#: app/assets/javascripts/app/controllers/template.coffee:18
+#, fuzzy
+#| msgid "Search for users"
+msgid "Search for templates"
+msgstr "Felhasználók keresése"
+
+#: app/assets/javascripts/app/controllers/text_module.coffee:24
+#, fuzzy
+#| msgid "Search for users"
+msgid "Search for text modules"
+msgstr "Felhasználók keresése"
+
+#: app/assets/javascripts/app/controllers/ticket_priority.coffee:17
+#, fuzzy
+#| msgid "Ticket title"
+msgid "Search for ticket priorities"
+msgstr "Jegy címe"
+
+#: app/assets/javascripts/app/controllers/ticket_state.coffee:20
+#, fuzzy
+#| msgid "Search for users"
+msgid "Search for ticket states"
+msgstr "Felhasználók keresése"
+
+#: app/assets/javascripts/app/controllers/trigger.coffee:21
+#, fuzzy
+#| msgid "Search for users"
+msgid "Search for triggers"
+msgstr "Felhasználók keresése"
+
+#: app/assets/javascripts/app/controllers/user.coffee:47
 #: app/assets/javascripts/app/views/user.jst.eco:15
 msgid "Search for users"
+msgstr "Felhasználók keresése"
+
+#: app/assets/javascripts/app/controllers/webhook.coffee:22
+#, fuzzy
+#| msgid "Search for users"
+msgid "Search for webhooks"
+msgstr "Felhasználók keresése"
+
+#: app/assets/javascripts/app/controllers/core_workflow.coffee:20
+#, fuzzy
+#| msgid "Search for users"
+msgid "Search for workflows"
 msgstr "Felhasználók keresése"
 
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:243
@@ -15772,9 +15903,10 @@ msgstr "Az oldal nem található."
 msgid "Search…"
 msgstr "Keresés…"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:116
+#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:51
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:101
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:98
-#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:133
+#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:136
 #: db/seeds/object_manager_attributes.rb:1159
 msgid "Secondary organizations"
 msgstr "Másodlagos szervezetek"
@@ -15830,7 +15962,7 @@ msgstr "Biztonsági kulcs"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:5
 #: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:10
-#: db/seeds/settings.rb:5834
+#: db/seeds/settings.rb:5843
 msgid "Security Keys"
 msgstr "Biztonsági kulcsok"
 
@@ -16129,12 +16261,12 @@ msgstr "A több értéket a következővel válassza el egymástól: ;"
 msgid "September"
 msgstr "szeptember"
 
-#: db/seeds/settings.rb:4023
+#: db/seeds/settings.rb:4032
 msgid "Sequencer log level"
 msgstr "Sequencer napló szint"
 
 #: app/assets/javascripts/app/controllers/_integration/exchange.coffee:409
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:490
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:491
 #: app/assets/javascripts/app/controllers/_integration/pgp.coffee:252
 #: app/assets/javascripts/app/controllers/_integration/smime.coffee:215
 #: app/assets/javascripts/app/controllers/ssl_certificate.coffee:78
@@ -16197,11 +16329,11 @@ msgstr "Kétfaktoros hitelesítés beállítása: %s"
 msgid "Set a title for your ticket"
 msgstr "Állítson be egy címet a jegyéhez"
 
-#: db/seeds/settings.rb:5461
+#: db/seeds/settings.rb:5470
 msgid "Set agent limit"
 msgstr "Ügynöki korlát beállítása"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:492
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:493
 msgid "Set article to internal/public"
 msgstr "Cikk beállítása belsőre / nyilvánosra"
 
@@ -16223,7 +16355,7 @@ msgstr "Hitelesítő alkalmazás alapértelmezettként történő beállítása"
 msgid "Set available ticket types"
 msgstr "Rendelkezésre álló jegytípusok beállítása"
 
-#: db/seeds/settings.rb:3758
+#: db/seeds/settings.rb:3767
 msgid "Set backend which is being used for import."
 msgstr "Az importáláshoz használt háttérrendszer beállítása."
 
@@ -16233,12 +16365,12 @@ msgstr "Az importáláshoz használt háttérrendszer beállítása."
 msgid "Set caller ID of outbound calls based on destination caller ID."
 msgstr "A kimenő hívások hívószámának beállítása a cél hívószám alapján."
 
-#: app/assets/javascripts/app/controllers/ticket_state.coffee:39
+#: app/assets/javascripts/app/controllers/ticket_state.coffee:40
 msgid "Set default for follow-ups"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_priority.coffee:25
-#: app/assets/javascripts/app/controllers/ticket_state.coffee:29
+#: app/assets/javascripts/app/controllers/ticket_priority.coffee:26
+#: app/assets/javascripts/app/controllers/ticket_state.coffee:30
 msgid "Set default for new tickets"
 msgstr "Alapértelmezett beállítás az új jegyekhez"
 
@@ -16252,7 +16384,7 @@ msgstr "Kimenő hívó azonosító beállítása"
 msgid "Set security keys as default"
 msgstr "Biztonsági kulcsok alapértelmezettként történő beállítása"
 
-#: db/seeds/settings.rb:5623
+#: db/seeds/settings.rb:5632
 msgid ""
 "Set timeframe in seconds. If it's set to 0 you can delete notes without time "
 "limits"
@@ -16456,7 +16588,7 @@ msgstr ""
 msgid "Show authenticator app secret"
 msgstr "Hitelesítő alkalmazás titkának megjelenítése"
 
-#: db/seeds/settings.rb:5806
+#: db/seeds/settings.rb:5815
 msgid "Show calendar weeks in the picker of date/datetime fields"
 msgstr "Naptári hetek megjelenítése a dátum/idő mezők kiválasztójában"
 
@@ -16484,7 +16616,7 @@ msgstr "Metaadatok megjelenítése"
 msgid "Show next tab"
 msgstr "Következő lap megjelenítése"
 
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationButton.vue:24
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationButton.vue:26
 #, fuzzy
 #| msgid "Save Notifications"
 msgid "Show notifications"
@@ -16517,7 +16649,7 @@ msgid "Show ticket viewers"
 msgstr "A jegy megtekintőinek megjelenítése"
 
 #: app/assets/javascripts/app/views/time_accounting/settings.jst.eco:6
-#: db/seeds/settings.rb:4088
+#: db/seeds/settings.rb:4097
 msgid "Show time accounting dialog when updating matching tickets."
 msgstr "Mutassa az idő elszámolását amikor egyező jegyeket frissít."
 
@@ -16747,11 +16879,11 @@ msgstr "Slack"
 msgid "Slack Notifications"
 msgstr "Slack értesítések"
 
-#: db/seeds/settings.rb:5158
+#: db/seeds/settings.rb:5167
 msgid "Slack config"
 msgstr "Slack konfiguráció"
 
-#: db/seeds/settings.rb:5132
+#: db/seeds/settings.rb:5141
 msgid "Slack integration"
 msgstr "Slack integráció"
 
@@ -16974,13 +17106,13 @@ msgstr "Az importálás indítása…"
 msgid "State"
 msgstr "Állapot"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:79
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:82
 #, fuzzy
 #| msgid "State"
 msgid "State Icon"
 msgstr "Állapot"
 
-#: db/seeds/settings.rb:5495
+#: db/seeds/settings.rb:5504
 msgid "Stats Backend"
 msgstr "Statisztikai háttérrendszer"
 
@@ -17054,29 +17186,29 @@ msgstr "Tárolási módszer"
 msgid "Store"
 msgstr ""
 
-#: db/seeds/settings.rb:6075
+#: db/seeds/settings.rb:6084
 msgid ""
 "Stores the AI assistance ticket summarization options (e.g. which content is "
 "visible)."
 msgstr ""
 
-#: db/seeds/settings.rb:6045
+#: db/seeds/settings.rb:6054
 #, fuzzy
 #| msgid "Stores the GitHub configuration."
 msgid "Stores the AI provider configuration."
 msgstr "A GitHub konfigurációt tárolja."
 
-#: db/seeds/settings.rb:6028
+#: db/seeds/settings.rb:6037
 #, fuzzy
 #| msgid "Test SMS provider"
 msgid "Stores the AI provider."
 msgstr "SMS szolgáltató tesztelése"
 
-#: db/seeds/settings.rb:5084
+#: db/seeds/settings.rb:5093
 msgid "Stores the GitHub configuration."
 msgstr "A GitHub konfigurációt tárolja."
 
-#: db/seeds/settings.rb:5042
+#: db/seeds/settings.rb:5051
 msgid "Stores the GitLab configuration."
 msgstr "A GitLab konfigurációt tárolja."
 
@@ -17135,7 +17267,7 @@ msgstr "Elküldés"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:139
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:178
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:369
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:373
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:148
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:206
 #: app/assets/javascripts/app/views/widget/mention.jst.eco:4
@@ -17143,7 +17275,7 @@ msgstr "Elküldés"
 msgid "Subscribe"
 msgstr "Feliratkozás"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:60
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:61
 #, fuzzy
 #| msgid "Subscribe"
 msgid "Subscribe me"
@@ -17204,7 +17336,7 @@ msgstr "vas."
 msgid "Sunday"
 msgstr "vasárnap"
 
-#: db/seeds/settings.rb:5582
+#: db/seeds/settings.rb:5591
 msgid "Support of multilingual Knowledge Base."
 msgstr "Többnyelvű Tudásbázis támogatása."
 
@@ -17284,7 +17416,7 @@ msgid ""
 "Weblate, give it a try!"
 msgstr ""
 
-#: db/seeds/settings.rb:5655
+#: db/seeds/settings.rb:5664
 msgid ""
 "System-wide configuration of the query polling mechanism for ticket "
 "overviews."
@@ -17454,7 +17586,7 @@ msgstr "Szöveg"
 msgid "Text Modules"
 msgstr "Szövegmodulok"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:555
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:556
 msgid "Text editing"
 msgstr "Szövegszerkesztés"
 
@@ -17477,7 +17609,7 @@ msgstr "Szövegmodul"
 msgid "Text modules"
 msgstr "Szövegmodulok"
 
-#: app/assets/javascripts/app/controllers/text_module.coffee:30
+#: app/assets/javascripts/app/controllers/text_module.coffee:31
 msgid "Text modules are …"
 msgstr "A szövegmodulok …"
 
@@ -17973,9 +18105,10 @@ msgstr ""
 #: app/assets/javascripts/app/models/knowledge_base.coffee:294
 msgid ""
 "The default URL for your knowledge base is e.g. example.com or example.com/"
-"help. To serve it from a custom URL instead, enter the destination below (e."
-"g., \"/support\", \"example.com\", or \"example.com/support\"). Then, follow "
-"the directions under \"Web Server Configuration\" to complete the process."
+"help. To serve it from a custom URL instead, enter the destination below "
+"(e.g., \"/support\", \"example.com\", or \"example.com/support\"). Then, "
+"follow the directions under \"Web Server Configuration\" to complete the "
+"process."
 msgstr ""
 "A tudásbázisa alapértelmezett URL címe például example.com vagy example.com/"
 "help. Ha helyette egy egyéni URL címről szeretné kiszolgálni, adja meg az "
@@ -18213,7 +18346,7 @@ msgstr ""
 "A csomagok telepítése biztonsági következményekkel jár, mivel tetszőleges "
 "kódot hajtanak végre a Zammad alkalmazás kontextusában."
 
-#: lib/search_index_backend.rb:435
+#: lib/search_index_backend.rb:437
 msgid ""
 "The installed attachment plugin could not handle the request payload. Ensure "
 "that the correct attachment plugin is installed (ingest-attachment)."
@@ -18616,7 +18749,7 @@ msgstr "A kötelező 'group_id' paraméter hiányzik."
 msgid "The required parameter 'id' is missing."
 msgstr "A kötelező 'id' paraméter hiányzik."
 
-#: lib/search_index_backend.rb:650
+#: lib/search_index_backend.rb:666
 #, fuzzy
 #| msgid "The required parameter 'area' is missing."
 msgid "The required parameter 'key' is missing."
@@ -18692,7 +18825,7 @@ msgstr "A kötelező 'ticket_number' paraméter hiányzik."
 msgid "The required parameter 'user_id' is missing."
 msgstr "A kötelező 'for_user_id' paraméter hiányzik."
 
-#: lib/search_index_backend.rb:651
+#: lib/search_index_backend.rb:667
 #, fuzzy
 #| msgid "The required parameter 'locale' is missing."
 msgid "The required parameter 'value' is missing."
@@ -19054,7 +19187,7 @@ msgstr "A jegyeik"
 msgid "The year picker overlay"
 msgstr "Megjegyzés mező megnyitása"
 
-#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:73
+#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:76
 msgid "Their tickets"
 msgstr "A jegyeik"
 
@@ -19774,8 +19907,8 @@ msgstr ""
 "</div>\n"
 "<br>\n"
 "<div>\n"
-"   <a href=\"#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket."
-"id}\" target=\"zammad_app\">Tekintse meg itt: #{config.product_name}</a>\n"
+"   <a href=\"#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}"
+"\" target=\"zammad_app\">Tekintse meg itt: #{config.product_name}</a>\n"
 "</div>\n"
 
 #: app/assets/javascripts/app/views/data_privacy/tasks.jst.eco:24
@@ -19850,7 +19983,7 @@ msgstr "Jegyszám növekmény dátum"
 msgid "Ticket Number ignore system_id"
 msgstr "Jegyszám figyelmen kívül hagyja a system_id-t"
 
-#: db/seeds/settings.rb:5950
+#: db/seeds/settings.rb:5959
 #, fuzzy
 #| msgid "Tickets of Organization"
 msgid "Ticket Organization Reassignment"
@@ -19862,7 +19995,7 @@ msgstr "A Szervezet jegyei"
 msgid "Ticket Overview"
 msgstr "Jegy áttekintés"
 
-#: db/seeds/settings.rb:5652
+#: db/seeds/settings.rb:5661
 #, fuzzy
 #| msgid "Ticket Overview"
 msgid "Ticket Overview Query Polling"
@@ -19940,13 +20073,13 @@ msgstr "Jegy feliratkozások"
 #: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:7
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:45
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:16
-#: db/seeds/permissions.rb:233 db/seeds/settings.rb:6058
+#: db/seeds/permissions.rb:233 db/seeds/settings.rb:6067
 #, fuzzy
 #| msgid "Ticket title"
 msgid "Ticket Summary"
 msgstr "Jegy címe"
 
-#: db/seeds/settings.rb:6072
+#: db/seeds/settings.rb:6081
 #, fuzzy
 #| msgid "Ticket Count"
 msgid "Ticket Summary Config"
@@ -20150,8 +20283,8 @@ msgstr ""
 "<div>Üdvözöljük #{recipient.firstname},</div>\n"
 "<br>\n"
 "<div>A \"<b>#{ticket.customer.longname}</b>\" ügyféltől származó jegy "
-"(#{ticket.title}) eszkalálódni fog a következő időpontban: \"#{ticket."
-"escalation_at}\"!</div>\n"
+"(#{ticket.title}) eszkalálódni fog a következő időpontban: "
+"\"#{ticket.escalation_at}\"!</div>\n"
 "<br>\n"
 "<% if @objects[:article] %>\n"
 "   <div>\n"
@@ -20163,8 +20296,8 @@ msgstr ""
 "<% end %>\n"
 "<br>\n"
 "<div>\n"
-"   <a href=\"#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket."
-"id}\" target=\"zammad_app\" >Tekintse meg itt: #{config.product_name}</a> \n"
+"   <a href=\"#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}"
+"\" target=\"zammad_app\" >Tekintse meg itt: #{config.product_name}</a> \n"
 "</div>\n"
 
 #: app/frontend/apps/desktop/pages/ticket/routes.ts:41
@@ -20192,7 +20325,7 @@ msgstr "A |%s| jegy hamarosan eszkalálódik!"
 
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:9
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:9
-#: app/controllers/time_accountings_controller.rb:87
+#: app/controllers/time_accountings_controller.rb:81
 msgid "Ticket#"
 msgstr "Jegy#"
 
@@ -20200,7 +20333,7 @@ msgstr "Jegy#"
 msgid "TicketID"
 msgstr "Jegyazonosító"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:452
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:453
 #: app/assets/javascripts/app/controllers/widget/user.coffee:87
 #: app/assets/javascripts/app/views/import/freshdesk.jst.eco:94
 #: app/assets/javascripts/app/views/import/kayako.jst.eco:98
@@ -20213,7 +20346,7 @@ msgstr "Jegyazonosító"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/calendar.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/notifications.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/ticketOverviews.ts:8
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:124
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:109
 #: app/frontend/apps/mobile/pages/search/plugins/ticket.ts:9
 #: app/frontend/apps/mobile/pages/ticket/routes.ts:51
 #: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:173
@@ -20279,27 +20412,27 @@ msgstr "Idő"
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:12
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:3
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:145
-#: db/seeds/permissions.rb:107 db/seeds/settings.rb:4058
+#: db/seeds/permissions.rb:107 db/seeds/settings.rb:4067
 msgid "Time Accounting"
 msgstr "Időelszámolás"
 
-#: db/seeds/settings.rb:4121
+#: db/seeds/settings.rb:4130
 msgid "Time Accounting Custom Unit"
 msgstr "Időelszámolási egyéni egység"
 
-#: db/seeds/settings.rb:4157
+#: db/seeds/settings.rb:4166
 msgid "Time Accounting Default Type"
 msgstr "Időelszámolás alapértelmezett típusa"
 
-#: db/seeds/settings.rb:4085
+#: db/seeds/settings.rb:4094
 msgid "Time Accounting Selector"
 msgstr "Időelszámolás választó"
 
-#: db/seeds/settings.rb:4139
+#: db/seeds/settings.rb:4148
 msgid "Time Accounting Types"
 msgstr "Időelszámolási típusok"
 
-#: db/seeds/settings.rb:4103
+#: db/seeds/settings.rb:4112
 msgid "Time Accounting Unit"
 msgstr "Időelszámolási egység"
 
@@ -20311,7 +20444,7 @@ msgstr "Az időelszámolás nincs engedélyezve"
 #: app/assets/javascripts/app/views/time_accounting/by_customer.jst.eco:11
 #: app/assets/javascripts/app/views/time_accounting/by_organization.jst.eco:10
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:14
-#: app/controllers/time_accountings_controller.rb:111
+#: app/controllers/time_accountings_controller.rb:105
 msgid "Time Units"
 msgstr "Időegységek"
 
@@ -20371,7 +20504,7 @@ msgstr "Időzítés"
 #: app/assets/javascripts/app/views/settings/form.jst.eco:6
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:10
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:10
-#: app/controllers/time_accountings_controller.rb:91
+#: app/controllers/time_accountings_controller.rb:85
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/TicketSimpleTable.vue:38
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:144
 #: app/graphql/gql/types/overview_type.rb:92
@@ -20564,11 +20697,11 @@ msgstr "Token hozzáférés"
 msgid "Token authorization failed."
 msgstr "Az engedélyezés nem sikerült"
 
-#: db/seeds/settings.rb:5300
+#: db/seeds/settings.rb:5309
 msgid "Token for CTI."
 msgstr "Token a CTI számára."
 
-#: db/seeds/settings.rb:5204
+#: db/seeds/settings.rb:5213
 msgid "Token for Sipgate."
 msgstr "Token a Sipgate számára."
 
@@ -20748,7 +20881,7 @@ msgstr "kedd"
 msgid "Turn chat into ticket"
 msgstr "Csevegés jeggyé alakítása"
 
-#: app/assets/javascripts/app/controllers/webhook.coffee:239
+#: app/assets/javascripts/app/controllers/webhook.coffee:240
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:89
 #: app/assets/javascripts/app/views/channel/email_notification_wizard.jst.eco:48
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:71
@@ -20935,7 +21068,7 @@ msgstr "Típus"
 msgid "Type:"
 msgstr "Típus:"
 
-#: db/seeds/settings.rb:6016
+#: db/seeds/settings.rb:6025
 msgid "UI Desktop Beta Switch"
 msgstr ""
 
@@ -21056,7 +21189,7 @@ msgstr "Link probléma"
 msgid "Unlink object"
 msgstr "Link probléma"
 
-#: app/assets/javascripts/app/controllers/user.coffee:108
+#: app/assets/javascripts/app/controllers/user.coffee:109
 msgid "Unlock"
 msgstr "Feloldás"
 
@@ -21078,7 +21211,7 @@ msgstr "Olvasatlan értesítések"
 msgid "Unsaved Changes"
 msgstr "Változások elvetése"
 
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationButton.vue:35
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationButton.vue:37
 #, fuzzy
 #| msgid "Unread notifications"
 msgid "Unseen notifications count"
@@ -21167,7 +21300,7 @@ msgstr "Megosztott piszkozat alkalmazása"
 msgid "Update Time"
 msgstr "Frissítési idő"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:512
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:513
 msgid "Update as closed"
 msgstr "Frissítés, amint lezárásra került"
 
@@ -21200,7 +21333,7 @@ msgstr ""
 msgid "Update successful."
 msgstr "A frissítés sikeres."
 
-#: db/seeds/settings.rb:5962
+#: db/seeds/settings.rb:5971
 msgid "Update the most recent tickets."
 msgstr "Frissítse a legújabb jegyeket."
 
@@ -21248,7 +21381,7 @@ msgstr "Frissítve ekkor"
 #: app/frontend/shared/entities/organization/stores/objectAttributes.ts:41
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:124
 #: app/frontend/shared/entities/user/stores/objectAttributes.ts:41
-#: app/graphql/gql/types/overview_type.rb:114
+#: app/graphql/gql/types/overview_type.rb:115
 msgid "Updated at"
 msgstr "Frissítve ekkor"
 
@@ -21270,7 +21403,7 @@ msgstr "Frissítve ekkor"
 #: app/frontend/shared/entities/organization/stores/objectAttributes.ts:31
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:113
 #: app/frontend/shared/entities/user/stores/objectAttributes.ts:31
-#: app/graphql/gql/types/overview_type.rb:113
+#: app/graphql/gql/types/overview_type.rb:114
 msgid "Updated by"
 msgstr "Frissítette"
 
@@ -21359,8 +21492,8 @@ msgstr ""
 #| "</div>\n"
 #| "<br>\n"
 #| "<div>\n"
-#| "  <a href=\"#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket."
-#| "id}\" target=\"zammad_app\">View this in #{config.product_name}</a>\n"
+#| "  <a href=\"#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}"
+#| "\" target=\"zammad_app\">View this in #{config.product_name}</a>\n"
 #| "</div>\n"
 msgid ""
 "Updated ticket article (#{ticket.title})\n"
@@ -21392,8 +21525,8 @@ msgstr ""
 "<div>Üdvözöljük #{recipient.firstname},</div>\n"
 "<br>\n"
 "<div>\n"
-"Egy másik jegy lett egyesítve a jegybe (#{ticket.title}) \"<b>#{current_user."
-"longname}\" által.</b>\".\n"
+"Egy másik jegy lett egyesítve a jegybe (#{ticket.title}) "
+"\"<b>#{current_user.longname}\" által.</b>\".\n"
 "</div>\n"
 "<br>\n"
 "<div>\n"
@@ -21531,15 +21664,15 @@ msgstr "Listákban használt (nézet és eredmények)"
 msgid "Used in object views"
 msgstr "Elemek megtekintésekor használt"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:529
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:530
 msgid "Used when composing a Ticket article"
 msgstr "Jegy cikk készítésekor használatos"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:559
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:560
 msgid "Used when composing a text"
 msgstr "Szövegformázásra használt"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:456
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:457
 msgid "Used when viewing a Ticket"
 msgstr "Jegy megjelenítésekor használható"
 
@@ -21573,7 +21706,7 @@ msgstr "Jegy megjelenítésekor használható"
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:119
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailOutboundForm.ts:77
 #: app/frontend/apps/mobile/pages/user/routes.ts:7
-#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:32
+#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:33
 msgid "User"
 msgstr "Felhasználó"
 
@@ -21631,7 +21764,7 @@ msgstr "Felhasználói szűrő"
 msgid "User has no access"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:537
+#: app/assets/javascripts/app/controllers/_integration/ldap.coffee:538
 msgid ""
 "User information could not be retrieved, please check your bind user "
 "permissions."
@@ -21704,12 +21837,12 @@ msgstr "Felhasználónév / E-mail cím"
 msgid "User menu"
 msgstr "Felhasználónév"
 
-#: app/assets/javascripts/app/controllers/user.coffee:122
+#: app/assets/javascripts/app/controllers/user.coffee:123
 msgid "User successfully unlocked!"
 msgstr "A felhasználó sikeresen feloldásra került!"
 
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:32
-#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:32
+#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:33
 msgid "User with specified ID was not found. Try checking the URL for errors."
 msgstr ""
 "A megadott azonosítóval rendelkező felhasználó nem található. Próbálja meg "
@@ -21914,7 +22047,7 @@ msgstr "Videó fájl"
 msgid "View"
 msgstr "Megtekintés"
 
-#: app/assets/javascripts/app/controllers/user.coffee:63
+#: app/assets/javascripts/app/controllers/user.coffee:64
 msgid "View from user's perspective"
 msgstr "Megtekintés a felhasználó szemszögéből"
 
@@ -22234,7 +22367,7 @@ msgstr ""
 "Az Ellenőrző összeggel egy ellenőrző összeg kerül a számlálóhoz csatolásra. "
 "A formátum a következőképpen néz ki: \"%s\" (pl. %s)."
 
-#: app/assets/javascripts/app/controllers/checklist_template.coffee:35
+#: app/assets/javascripts/app/controllers/checklist_template.coffee:36
 #: app/assets/javascripts/app/models/checklist_template.coffee:23
 #, fuzzy
 #| msgid ""
@@ -22293,8 +22426,8 @@ msgstr "Az Ön jelenlegi konfigurációjával a következő fog történni:"
 #: app/assets/javascripts/app/views/settings/ticket_number.jst.eco:7
 msgid ""
 "With |Date| the ticket numbers will be generated by the current date, the "
-"SystemID, and the counter. The format will be \"Year.Month.Day.SystemID."
-"Counter\" (e.g. 201206231010138, 201206231010139)."
+"SystemID, and the counter. The format will be "
+"\"Year.Month.Day.SystemID.Counter\" (e.g. 201206231010138, 201206231010139)."
 msgstr ""
 "A |Date| opcióval a jegyszámok az aktuális dátum, a Rendszerazonosító és a "
 "számláló alapján lesznek generálva. A formátum \"Év.Hónap.Nap. "
@@ -22670,7 +22803,7 @@ msgstr ""
 "Ön nem rendelkezik elegendő jogosultsággal ennek a jegynek a megtekintéséhez."
 
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:34
-#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:34
+#: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:35
 msgid "You have insufficient rights to view this user."
 msgstr ""
 "Ön nem rendelkezik elegendő joggal ennek a felhasználónak a megtekintéséhez."
@@ -23056,8 +23189,8 @@ msgstr ""
 "Sajnos a \"#{mail.subject}\" című levelét nem sikerült kézbesíteni egy vagy "
 "több címzettnek.\n"
 "\n"
-"Az Ön üzenete #{mail.msg_size} MB, de mi csak #{config."
-"postmaster_max_size_max_size} MB méretű üzeneteket fogadunk el.\n"
+"Az Ön üzenete #{mail.msg_size} MB, de mi csak "
+"#{config.postmaster_max_size_max_size} MB méretű üzeneteket fogadunk el.\n"
 "\n"
 "Kérjük, csökkentse az üzenet méretét, és próbálja meg újra. Köszönjük "
 "megértését.\n"
@@ -23263,7 +23396,7 @@ msgstr "bezárás"
 msgid "closed"
 msgstr "lezárt"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:138
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:123
 #, fuzzy
 #| msgid "Closed Tickets"
 msgid "closed tickets"
@@ -23274,37 +23407,37 @@ msgid "connected"
 msgstr "kapcsolva"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:32
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:139
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:143
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:59
 msgid "contains"
 msgstr "tartalmazza"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:32
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:141
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:145
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:59
 msgid "contains all"
 msgstr "mindet tartalmazza"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:32
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:142
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:146
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:59
 msgid "contains all not"
 msgstr "egyiket sem tartalmazza"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:36
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:140
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:144
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:63
 msgid "contains not"
 msgstr "nem tartalmazza"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:32
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:212
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:216
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:59
 msgid "contains one"
 msgstr "tartalmaz egy"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:32
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:214
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:218
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:59
 msgid "contains one not"
 msgstr "nem tartalmaz egy"
@@ -23337,8 +23470,8 @@ msgstr "aktuális felhasználói szervezet"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/password.ts:28
 msgid ""
-"current,new,confirm,change,current password,new password,confirm password,"
-"change password"
+"current,new,confirm,change,current password,new password,confirm "
+"password,change password"
 msgstr ""
 "jelenlegi,új,megerősítés,módosítás,jelenlegi jelszó,új jelszó,jelszó "
 "megerősítése,jelszó módosítása"
@@ -23438,7 +23571,7 @@ msgid "does not exist"
 msgstr "nem létezik"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:60
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:188
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:192
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:87
 #, fuzzy
 #| msgid "does not exist"
@@ -23503,12 +23636,12 @@ msgstr "e-mail"
 msgid "email sent to '%s'"
 msgstr "e-mail elküldve '%s' részére"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:186
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:190
 msgid "ends with"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:36
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:186
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:190
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:63
 msgid "ends with one of"
 msgstr ""
@@ -23652,11 +23785,11 @@ msgstr ""
 msgid "i-doit"
 msgstr "i-doit"
 
-#: db/seeds/settings.rb:4999
+#: db/seeds/settings.rb:5008
 msgid "i-doit config"
 msgstr "i-doit konfiguráció"
 
-#: db/seeds/settings.rb:4972
+#: db/seeds/settings.rb:4981
 msgid "i-doit integration"
 msgstr "i-doit integráció"
 
@@ -23759,10 +23892,26 @@ msgid "is already used"
 msgstr "már használatban van"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:36
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:183
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:187
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:63
 msgid "is any of"
 msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:29
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:115
+#: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:56
+#, fuzzy
+#| msgid "Create tag"
+msgid "is greater than"
+msgstr "Címke létrehozása"
+
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:29
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:116
+#: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:56
+#, fuzzy
+#| msgid "must be greater than or equal to %{count}"
+msgid "is greater than or equal to"
+msgstr "nagyobbnak vagy egyenlőnek kell lennie, mint %{count}"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:124
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:151
@@ -23775,6 +23924,20 @@ msgstr "érvénytelen"
 #: lib/validations/object_manager/attribute_validator/min_max.rb:30
 msgid "is larger than the allowed maximum value of %{max_value}"
 msgstr "nagyobb, mint a megengedett maximális érték %{max_value}"
+
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:29
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:113
+#: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:56
+msgid "is less than"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:29
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:114
+#: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:56
+#, fuzzy
+#| msgid "must be less than or equal to %{count}"
+msgid "is less than or equal to"
+msgstr "kisebb vagy egyenlő kell legyen, mint %{count}"
 
 #: lib/validations/object_manager/attribute_validator/max_length.rb:25
 msgid "is longer than the allowed length %{maxlength}"
@@ -23793,7 +23956,7 @@ msgid "is modified to"
 msgstr "fixen beállítva erre az értékre"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:36
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:184
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:188
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:63
 #, fuzzy
 #| msgid "is not"
@@ -23916,15 +24079,15 @@ msgstr "p"
 msgid "mark all as read"
 msgstr "Összes olvasottnak jelölése"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:273
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:277
 msgid "match all modules"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:273
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:277
 msgid "match no modules"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:273
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:277
 msgid "match one module"
 msgstr ""
 
@@ -23935,7 +24098,7 @@ msgid "matches found"
 msgstr "talált egyezés"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:60
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:187
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:191
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:87
 #, fuzzy
 #| msgid "matches found"
@@ -24060,7 +24223,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:32
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:22
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:49
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:63
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:64
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:91
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14
 #: app/frontend/shared/entities/object-attributes/form/resolver/fields/active.ts:16
@@ -24135,7 +24298,7 @@ msgstr "csak kisbetűk, számok és '_' engedélyezettek"
 msgid "open"
 msgstr "nyitott"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:131
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:116
 #, fuzzy
 #| msgid "Open tickets"
 msgid "open tickets"
@@ -24328,8 +24491,7 @@ msgstr "az ügyfélnek elküldve"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/devices.ts:25
 msgid "session,sessions,computer,computers,browser,browsers,access"
-msgstr ""
-"munkamenet,munkamenetek,számítógép,számítógépek,böngésző,böngészők,hozzáférés"
+msgstr "munkamenet,munkamenetek,számítógép,számítógépek,böngésző,böngészők,hozzáférés"
 
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_perform.coffee:171
 msgid "set fixed to"
@@ -24374,19 +24536,19 @@ msgstr "mutasson többet"
 msgid "shown"
 msgstr "megjelenítve"
 
-#: db/seeds/settings.rb:5201
+#: db/seeds/settings.rb:5210
 msgid "sipgate.io Token"
 msgstr "sipgate.io Token"
 
-#: db/seeds/settings.rb:5235
+#: db/seeds/settings.rb:5244
 msgid "sipgate.io alternative FQDN"
 msgstr "sipgate.io alternatív FQDN"
 
-#: db/seeds/settings.rb:5222
+#: db/seeds/settings.rb:5231
 msgid "sipgate.io config"
 msgstr "sipgate.io konfiguráció"
 
-#: db/seeds/settings.rb:5173
+#: db/seeds/settings.rb:5182
 msgid "sipgate.io integration"
 msgstr "sipgate.io integráció"
 
@@ -24421,12 +24583,12 @@ msgstr "meghatározott felhasználó"
 msgid "split"
 msgstr "szétválasztás"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:185
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:189
 msgid "starts with"
 msgstr "a következővel kezdődik"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:36
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:185
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:189
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:63
 #, fuzzy
 #| msgid "starts with"
@@ -24620,7 +24782,7 @@ msgstr "a következőn belül (relatív)"
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:32
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:15
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:48
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:62
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:63
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:90
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14
 #: app/frontend/shared/entities/object-attributes/form/resolver/fields/active.ts:15
@@ -24661,13 +24823,21 @@ msgstr "...objektum hivatkozás URL hozzáadása"
 msgid "…add object title"
 msgstr "...objektum címének hozzáadása"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:607
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:608
 msgid "…of whole text area"
 msgstr "...a teljes szövegterületből"
 
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "Várakozási idő ma"
+
+#~ msgid "Microsoft 365"
+#~ msgstr "Microsoft 365"
+
+#, fuzzy
+#~| msgid "Microsoft"
+#~ msgid "Microsoft Graph"
+#~ msgstr "Microsoft"
 
 #, fuzzy
 #~| msgid "ticket %s was merged into this ticket"
@@ -25237,8 +25407,8 @@ msgstr "Várakozási idő ma"
 #~ "Starting with Zammad 5.1, translations can be contributed exclusively via "
 #~ "\"translations.zammad.org\" %l."
 #~ msgstr ""
-#~ "A Zammad 5.1-től kezdve a fordításokhoz kizárólag a \"translations.zammad."
-#~ "org\" %l oldalon keresztül lehet hozzájárulni."
+#~ "A Zammad 5.1-től kezdve a fordításokhoz kizárólag a "
+#~ "\"translations.zammad.org\" %l oldalon keresztül lehet hozzájárulni."
 
 #~ msgid ""
 #~ "While it will be no longer possible to directly push changed translations "
@@ -25402,8 +25572,8 @@ msgstr "Várakozási idő ma"
 #~ msgstr "Szervezet jegyek"
 
 #~ msgid ""
-#~ "Article could not be created. An unsupported key other than 'article."
-#~ "note' was provided."
+#~ "Article could not be created. An unsupported key other than "
+#~ "'article.note' was provided."
 #~ msgstr ""
 #~ "A cikket nem lehetett létrehozni. Az 'article.note' kulcstól eltérő, nem "
 #~ "támogatott kulcs volt megadva."
