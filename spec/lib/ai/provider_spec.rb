@@ -16,13 +16,13 @@ RSpec.describe AI::Provider do
 
   describe '#process' do
     it 'raises an error' do
-      expect { ai_provider.process }.to raise_error(RuntimeError, 'Not implemented')
+      expect { ai_provider.process }.to raise_error(RuntimeError, 'not implemented')
     end
   end
 
   describe '.accessible!' do
     it 'raises an error' do
-      expect { described_class.accessible! }.to raise_error(RuntimeError, 'Not implemented')
+      expect { described_class.accessible! }.to raise_error(RuntimeError, 'not implemented')
     end
   end
 

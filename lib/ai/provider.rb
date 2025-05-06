@@ -23,7 +23,7 @@ class AI::Provider
     end
 
     def accessible!
-      raise 'Not implemented' # rubocop:disable Zammad/DetectTranslatableString
+      raise 'not implemented'
     end
 
   end
@@ -46,7 +46,7 @@ class AI::Provider
   private
 
   def request
-    raise 'Not implemented' # rubocop:disable Zammad/DetectTranslatableString
+    raise 'not implemented'
   end
 
   class RequestError < StandardError; end
