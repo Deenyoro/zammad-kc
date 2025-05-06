@@ -22,9 +22,13 @@ import {
   ref,
   shallowRef,
   watch,
+  toRef,
 } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import type { FormRef } from '#shared/components/Form/types.ts'
+import { useForm } from '#shared/components/Form/useForm.ts'
+import { useConfirmation } from '#shared/composables/useConfirmation.ts'
 import { useTrapTab } from '#shared/composables/useTrapTab.ts'
 import stopEvent from '#shared/utils/events.ts'
 import { getFirstFocusableElement } from '#shared/utils/getFocusableElements.ts'
@@ -60,6 +64,7 @@ export interface Props {
   noCloseOnBackdropClick?: boolean
   noCloseOnEscape?: boolean
   hideFooter?: boolean
+  form?: FormRef
   footerActionOptions?: ActionFooterOptions
   noCloseOnAction?: boolean
   /**
@@ -103,7 +108,31 @@ whenever(isActive, () => {
   emit('activated')
 })
 
+const {
+  isDirty: isFormDirty,
+  isDisabled: isFormDisabled,
+  formNodeId,
+} = useForm(toRef(props, 'form'))
+
+const { waitForVariantConfirmation } = useConfirmation()
+
 const close = async (isCancel?: boolean) => {
+  if (props.form && isFormDirty.value) {
+    let dialogName = `flyout-unsaved-${props.name}`
+
+    if (!props.global) {
+      dialogName = `${dialogName}_${routeIdentifier}`
+    }
+
+    const confirmed = await waitForVariantConfirmation(
+      'unsaved',
+      undefined,
+      dialogName,
+    )
+
+    if (!confirmed) return
+  }
+
   emit('close', isCancel)
 
   await closeFlyout(props.name, props.global)
@@ -340,6 +369,8 @@ const transition = VITE_TEST_MODE
         <slot name="footer" v-bind="{ action, close }">
           <CommonFlyoutActionFooter
             v-bind="footerActionOptions"
+            :form-node-id="formNodeId"
+            :is-form-disabled="isFormDisabled"
             @cancel="close(true)"
             @action="action()"
           />
