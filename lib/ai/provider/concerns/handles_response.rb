@@ -4,11 +4,11 @@ class AI::Provider
   module Concerns::HandlesResponse
     extend ActiveSupport::Concern
 
-    included do # rubocop:disable Metrics/BlockLength
-      def handle_response(response, provider)
+    included do
+      def validate_response!(response)
         message = case response.code.to_i
                   when 200..399
-                    return handle_success(response, provider)
+                    return response.data
                   when 400
                     __('Invalid request - please check your input')
                   when 401
@@ -30,19 +30,6 @@ class AI::Provider
                   end
 
         raise AI::Provider::ResponseError, message
-      end
-
-      private
-
-      def handle_success(response, provider)
-        case provider.name
-        when 'AI::Provider::OpenAI'
-          response.data['choices'].first['message']['content']
-        when 'AI::Provider::Ollama'
-          response.data['response']
-        when 'AI::Provider::ZammadAI'
-          response.data.first['response']
-        end
       end
     end
   end
