@@ -2,17 +2,21 @@
 
 class BackgroundServices
   class Service
-    class ProcessDelayedJobs < BaseDelayedJobs
+    class ProcessDelayedAIJobs < BaseDelayedJobs
+
+      # Use some parallelity by default for the slow AI
+      def self.default_worker_threads
+        5
+      end
 
       def self.pre_launch
         start_time = Time.zone.now
 
         CleanupAction.cleanup_delayed_jobs(start_time, queues:)
-        ImportJob.cleanup_import_jobs(start_time)
       end
 
       def self.queues
-        [:default].freeze
+        [:ai].freeze
       end
     end
   end

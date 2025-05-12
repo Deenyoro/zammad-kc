@@ -8,26 +8,35 @@ class SampleDelayedJob < ApplicationJob
   end
 end
 
-RSpec.describe BackgroundServices::Service::ProcessDelayedJobs, ensure_threads_exited: true do
+class SampleDelayedAIJob < AIJob
+  def perform
+    Rails.logger.debug 'performing SampleTestAIJob'
+  end
+end
+
+RSpec.describe BackgroundServices::Service::ProcessDelayedJobs, :aggregate_failures, ensure_threads_exited: true do
   before do
     stub_const "#{described_class}::SLEEP_IF_EMPTY", 1
   end
 
-  let(:instance) { described_class.new(manager: nil) }
+  let(:manager)  { BackgroundServices.new(BackgroundServices::ServiceConfig.configuration_from_env({})) }
+  let(:instance) { described_class.new(manager:) }
 
   describe '#run' do
     context 'with a queued job' do
       before do
         Delayed::Job.destroy_all
         SampleDelayedJob.perform_later
+        SampleDelayedAIJob.perform_later
       end
 
-      it 'processes a job' do
+      it 'processes the default job, but not the AI job' do
         expect do
           ensure_block_keeps_running do
-            described_class.new(manager: nil).run
+            described_class.new(manager:).run
           end
         end.to change(Delayed::Job, :count).by(-1)
+        expect(Delayed::Job.last.queue).to eq 'ai'
       end
 
       it 'runs loop multiple times', :aggregate_failures do
@@ -47,7 +56,7 @@ RSpec.describe BackgroundServices::Service::ProcessDelayedJobs, ensure_threads_e
         end
 
         it 'does not start jobs' do
-          expect { described_class.new(manager: nil).run }.not_to change(Delayed::Job, :count)
+          expect { described_class.new(manager:).run }.not_to change(Delayed::Job, :count)
         end
       end
     end
@@ -76,8 +85,12 @@ RSpec.describe BackgroundServices::Service::ProcessDelayedJobs, ensure_threads_e
   describe '.pre_run' do
     it 'cleans up DelayedJobs' do
       allow(described_class::CleanupAction).to receive(:cleanup_delayed_jobs)
+
       described_class.pre_run
-      expect(described_class::CleanupAction).to have_received(:cleanup_delayed_jobs)
+
+      expect(described_class::CleanupAction)
+        .to have_received(:cleanup_delayed_jobs)
+        .with(anything, queues: contain_exactly(:default))
     end
 
     it 'cleans up ImportJobs' do

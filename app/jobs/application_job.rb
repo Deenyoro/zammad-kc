@@ -7,6 +7,8 @@ class ApplicationJob < ActiveJob::Base
 
   discard_on HasActiveJobLock::LockKeyNotGeneratable
 
+  queue_as :default
+
   # Rails 7.2 changed how background jobs are handled inside ActiveRecord transaction.
   # Turns out some jobs are still enqueued within transaction which is a bad practice.
   # For now, this reverts to pre-7.2 behavior.

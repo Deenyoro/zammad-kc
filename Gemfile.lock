@@ -9,6 +9,23 @@ GIT
       nori
 
 GIT
+  remote: https://github.com/zammad-deps/delayed_job
+  revision: 0f1644ccc6911f7fc0950aec6a63440b333a5074
+  branch: threadsafe
+  specs:
+    delayed_job (4.1.13)
+      activesupport (>= 3.0, < 9.0)
+
+GIT
+  remote: https://github.com/zammad-deps/delayed_job_active_record
+  revision: d49dd6da2cfd7650a0c1205f8007cdc9771004fb
+  branch: update-limit-143
+  specs:
+    delayed_job_active_record (4.1.11)
+      activerecord (>= 3.0, < 9.0)
+      delayed_job (>= 3.0, < 5)
+
+GIT
   remote: https://github.com/zammad-deps/omniauth-weibo-oauth2
   revision: 06803ef97f822ede854322587db8049cc67dcfa6
   branch: unpin-dependencies
@@ -196,11 +213,6 @@ GEM
     dalli (3.2.8)
     date (3.4.1)
     debug_inspector (1.2.0)
-    delayed_job (4.1.13)
-      activesupport (>= 3.0, < 9.0)
-    delayed_job_active_record (4.1.11)
-      activerecord (>= 3.0, < 9.0)
-      delayed_job (>= 3.0, < 5)
     deprecation_toolkit (2.2.3)
       activesupport (>= 6.1)
     diff-lcs (1.6.1)
@@ -869,7 +881,8 @@ DEPENDENCIES
   csv
   daemons
   dalli
-  delayed_job_active_record
+  delayed_job!
+  delayed_job_active_record!
   deprecation_toolkit
   diffy
   doorkeeper

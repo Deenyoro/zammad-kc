@@ -2,16 +2,15 @@
 
 class BackgroundServices
   class Service
-    class ProcessDelayedJobs
+    class BaseDelayedJobs
       class CleanupAction
         extend ::Mixin::StartFinishLogger
 
         attr_reader :job
 
-        def self.cleanup_delayed_jobs(after)
+        def self.cleanup_delayed_jobs(after, queues: nil)
           log_start_finish(:info, "Cleanup of left over locked delayed jobs #{after}") do
-
-            scope(after).each do |job|
+            scope(after, queues:).each do |job|
               log_start_finish(:info, "Checking left over delayed job #{job.inspect}") do
                 CleanupAction.new(job).cleanup
               end
@@ -19,8 +18,10 @@ class BackgroundServices
           end
         end
 
-        private_class_method def self.scope(after)
-          ::Delayed::Job.where(updated_at: ...after).where.not(locked_at: nil)
+        private_class_method def self.scope(after, queues: nil)
+          output = ::Delayed::Job.where(updated_at: ...after).where.not(locked_at: nil)
+
+          queues.present? ? output.where(queue: queues) : output
         end
 
         def initialize(job)

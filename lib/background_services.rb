@@ -4,7 +4,7 @@ class BackgroundServices
   include BackgroundServices::Concerns::HasInterruptibleSleep
 
   def self.available_services
-    BackgroundServices::Service.descendants
+    BackgroundServices::Service.descendants.reject { |service| service.name.demodulize.start_with?('Base') }
   end
 
   FILE_WATCHING_INTERVAL         = 1.second

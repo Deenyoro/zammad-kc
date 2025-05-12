@@ -23,7 +23,8 @@ gem 'pg', '~> 1.5', '>= 1.5.4', group: :postgres
 
 # core - asynchrous task execution
 gem 'daemons'
-gem 'delayed_job_active_record'
+gem 'delayed_job', git: 'https://github.com/zammad-deps/delayed_job', branch: 'threadsafe'
+gem 'delayed_job_active_record', git: 'https://github.com/zammad-deps/delayed_job_active_record', branch: 'update-limit-143'
 
 # core - command line interface
 gem 'thor'

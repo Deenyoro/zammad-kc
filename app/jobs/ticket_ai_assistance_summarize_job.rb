@@ -1,6 +1,6 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-class TicketAIAssistanceSummarizeJob < ApplicationJob
+class TicketAIAssistanceSummarizeJob < AIJob
   include HasActiveJobLock
 
   def lock_key

@@ -21,7 +21,7 @@ module ThreadsHelper
     end
 
     if superfluous_threads.call.count.positive?
-      superfluous_threads.each do |thread|
+      superfluous_threads.call.each do |thread|
         warn "Error: found a superfluous thread after clean-up: #{thread}"
         warn "Backtrace: #{thread.backtrace.join("\n")}"
       end
