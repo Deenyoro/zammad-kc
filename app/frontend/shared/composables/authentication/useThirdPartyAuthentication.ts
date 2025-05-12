@@ -88,7 +88,10 @@ export const useThirdPartyAuthentication = () => {
       },
       {
         name: EnumAuthenticationProvider.OpenidConnect,
-        label: i18n.t('OpenID Connect'),
+        label:
+          (config.value[
+            'auth_openid_connect_credentials.display_name'
+          ] as string) || i18n.t('OpenID Connect'),
         enabled: !!config.value.auth_openid_connect,
         icon: 'openid-connect',
         url: '/auth/openid_connect',

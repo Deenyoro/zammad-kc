@@ -49,6 +49,7 @@ module Gql::Queries
     def custom_settings
       [
         'auth_saml_credentials.display_name',
+        'auth_openid_connect_credentials.display_name',
       ].filter_map do |config_name|
         (setting, key) = config_name.split('.')
 
