@@ -12,7 +12,7 @@ RSpec.describe HtmlSanitizer::Scrubber::Cleanup do
         .to_html save_with: Nokogiri::XML::Node::SaveOptions::DEFAULT_HTML ^ Nokogiri::XML::Node::SaveOptions::FORMAT
     end
 
-    let(:fragment) { Loofah.fragment(input) }
+    let(:fragment) { Loofah.html5_fragment(input) }
 
     context 'when extra spaces' do
       let(:input)  { "<div> \n </div>" }

@@ -64,7 +64,7 @@ module KnowledgeBaseRichTextHelper
     end
 
     Loofah
-      .fragment(input)
+      .html5_fragment(input)
       .scrub!(scrubber_link)
       .scrub!(scrubber_images)
       .to_s

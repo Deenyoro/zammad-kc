@@ -9,7 +9,7 @@ RSpec.describe HtmlSanitizer::Scrubber::InlineImages do
   describe('#scrubber') do
     subject(:actual) { fragment.scrub!(scrubber).to_html }
 
-    let(:fragment) { Loofah.fragment(input) }
+    let(:fragment) { Loofah.html5_fragment(input) }
 
     context 'when matching image' do
       let(:input)  { '<img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/...">' }

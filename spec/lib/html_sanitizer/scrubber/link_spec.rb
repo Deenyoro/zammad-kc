@@ -8,7 +8,7 @@ RSpec.describe HtmlSanitizer::Scrubber::Link do
   describe('#scrubber') do
     subject(:actual) { fragment.scrub!(scrubber).to_html }
 
-    let(:fragment) { Loofah.fragment(input) }
+    let(:fragment) { Loofah.html5_fragment(input) }
 
     context 'when url as text' do
       let(:input)  { 'http://zammad.org' }

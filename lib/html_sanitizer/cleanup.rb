@@ -32,7 +32,7 @@ class HtmlSanitizer
       empty_node_scrubber = HtmlSanitizer::Scrubber::RemoveLastEmptyNode.new
       string = loop_string(string, empty_node_scrubber)
 
-      Loofah.fragment(string).scrub!(HtmlSanitizer::Scrubber::Cleanup.new).to_html
+      Loofah.html5_fragment(string).scrub!(HtmlSanitizer::Scrubber::Cleanup.new).to_html
     end
   end
 end

@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe HtmlSanitizer::Scrubber::TagRemove do
   subject(:actual) { fragment.scrub!(scrubber).to_html }
 
-  let(:fragment)   { Loofah.fragment(input) }
+  let(:fragment)   { Loofah.html5_fragment(input) }
   let(:scrubber)   { described_class.new }
 
   before do

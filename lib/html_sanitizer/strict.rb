@@ -23,7 +23,7 @@ class HtmlSanitizer
 
     def run_sanitization(string, external)
       fragment = Loofah
-        .fragment(string)
+        .html5_fragment(string)
         .scrub!(HtmlSanitizer::Scrubber::TagRemove.new)
         .scrub!(HtmlSanitizer::Scrubber::QuoteContent.new)
 
@@ -38,7 +38,7 @@ class HtmlSanitizer
       @remote_content_removed = wipe_scrubber.remote_content_removed
 
       link_scrubber = HtmlSanitizer::Scrubber::Link.new(web_app_url_prefix: web_app_url_prefix, external: external)
-      Loofah.fragment(string).scrub!(link_scrubber).to_html
+      Loofah.html5_fragment(string).scrub!(link_scrubber).to_html
     end
 
     def web_app_url_prefix

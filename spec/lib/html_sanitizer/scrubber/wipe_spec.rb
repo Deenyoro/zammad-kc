@@ -12,7 +12,7 @@ RSpec.describe HtmlSanitizer::Scrubber::Wipe do
         .to_html save_with: Nokogiri::XML::Node::SaveOptions::DEFAULT_HTML ^ Nokogiri::XML::Node::SaveOptions::FORMAT
     end
 
-    let(:fragment) { Loofah.fragment(input) }
+    let(:fragment) { Loofah.html5_fragment(input) }
 
     context 'when has not allowed tag' do
       let(:input)  { '<not-allowed><b>asd</b></not-allowed>' }

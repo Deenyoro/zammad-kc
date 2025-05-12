@@ -111,9 +111,9 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
         let(:current_text) { %r{On .+, #{article.created_by.fullname} wrote:\s+#{article.body}\s+#{agent.firstname}\nSignature!} }
         let(:result_text)  do
           msg = '<p>This is a note<br><br></p>'
-          msg += '<blockquote type="cite">\n'
-          msg += "<p>On .+, #{article.created_by.fullname} wrote:</p>\n<p><br></p>\n"
-          msg += "<p>#{article.body}</p>\n"
+          msg += '<blockquote type="cite">'
+          msg += "<p>On .+, #{article.created_by.fullname} wrote:</p><p><br></p>"
+          msg += "<p>#{article.body}</p>"
           msg += '</blockquote><p><br></p>'
           msg += signature_html
           a_string_matching(Regexp.new(msg))
@@ -265,11 +265,11 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
         msg += "<div data-signature=\"true\" data-signature-id=\"#{signature.id}\"><p>#{agent.firstname}<br>Signature!</p></div>" # signature is before forwarded message
         msg += '<p><br></p><p>---Begin forwarded message:---</p><p><br></p>' # new lines and "before" message
         # blockquote with original message and header with subject, date and "to"
-        msg += "<blockquote type=\"cite\">\n"
+        msg += '<blockquote type="cite">'
         msg += "<p>Subject: #{article_subject}<br>"
         msg += 'Date: \\d{2}/\\d{2}/\\d{4} \\d{1,2}:\\d{1,2} (am|pm)<br>'
-        msg += "To: #{escape_html_wo_single_quotes(text_to)}<br><br></p>\n"
-        msg += "<p>#{article.body}</p>\n"
+        msg += "To: #{escape_html_wo_single_quotes(text_to)}<br><br></p>"
+        msg += "<p>#{article.body}</p>"
         msg += '</blockquote>'
         a_string_matching(Regexp.new(msg))
       end

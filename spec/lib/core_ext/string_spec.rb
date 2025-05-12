@@ -772,8 +772,7 @@ RSpec.describe String do
         <li class="asasd">test</li><
         /ul>
       HTML
-        <ul>
-        <li>test</li>
+        <ul><li>test</li>
         <li>test</li>&lt; /ul&gt;</ul>
       TEXT
     end
@@ -804,25 +803,15 @@ RSpec.describe String do
         <table>
       HTML
         <table>
-        <tr>
-        <td>
-        <b>Franz Schäfer</b>
-        </td>
-        </tr>
-        <tr>
-        <td>Manager Information Systems</td>
-        </tr>
-        </table>
+        <tbody><tr>
+        <td><b>Franz Schäfer</b>
+        </td></tr><tr>
+        <td>Manager Information Systems</td></tr></tbody></table>
         <br>
         <table>
-        <tr>
-        <td> Telefon </td>
-        <td> +49 000 000 8565 </td>
-        </tr>
-        <tr>
-        <td colspan="2">christian.schaefer@example.com</td>
-        </tr>
-        </table>
+        <tbody><tr>
+        <td>Telefon </td><td>+49 000 000 8565 </td></tr><tr>
+        <td colspan="2">christian.schaefer@example.com</td></tr></tbody></table>
       TEXT
     end
 
@@ -865,7 +854,7 @@ RSpec.describe String do
       end
 
       it 'collapses 2+ nested, whitespace-only <p> into \n<p>&nbsp;</p>' do
-        expect('<div><p> </p><p> </p></div>'.html2html_strict.first).to eq("<div>\n<p>&nbsp;</p></div>")
+        expect('<div><p> </p><p> </p></div>'.html2html_strict.first).to eq('<div><p>&nbsp;</p></div>')
       end
     end
 
@@ -940,8 +929,7 @@ RSpec.describe String do
         expect(<<~HTML.chomp.html2html_strict.first).to eq(<<~TEXT.chomp)
           <div lang="DE"><div><div>Hello Martin,</div> </div></div>
         HTML
-          <div lang="DE">
-          <div>Hello Martin,</div></div>
+          <div lang="DE"><div>Hello Martin,</div></div>
         TEXT
       end
 
@@ -949,9 +937,7 @@ RSpec.describe String do
         expect(<<~HTML.chomp.html2html_strict.first).to eq(<<~TEXT.chomp)
           <div style="max-width: 600px;"><br>abc<br><br></div>
         HTML
-          <div>
-          <br>abc<br><br>
-          </div>
+          <div><br>abc<br><br></div>
         TEXT
       end
 
@@ -970,8 +956,7 @@ RSpec.describe String do
           <p> </p>
           </div>
         HTML
-          <div>
-          <p>&nbsp;</p></div>
+          <div><p>&nbsp;</p></div>
         TEXT
       end
 
@@ -1029,7 +1014,7 @@ RSpec.describe String do
         expect(<<~HTML.chomp.html2html_strict.first).to eq(<<~TEXT.chomp)
           <div>https://www.facebook.com/test</div>
         HTML
-          <div>\n<a href="https://www.facebook.com/test" rel="nofollow noreferrer noopener" target="_blank">https://www.facebook.com/test</a>\n</div>
+          <div><a href="https://www.facebook.com/test" rel="nofollow noreferrer noopener" target="_blank">https://www.facebook.com/test</a></div>
         TEXT
       end
 
@@ -1077,8 +1062,7 @@ RSpec.describe String do
         expect(<<~HTML.chomp.html2html_strict.first).to eq(<<~TEXT.chomp)
           <div><br>https://www.facebook.com/test<br></div>
         HTML
-          <div>
-          <br><a href="https://www.facebook.com/test" rel="nofollow noreferrer noopener" target="_blank">https://www.facebook.com/test</a><br>\n</div>
+          <div><br><a href="https://www.facebook.com/test" rel="nofollow noreferrer noopener" target="_blank">https://www.facebook.com/test</a><br></div>
         TEXT
       end
 
@@ -1094,9 +1078,7 @@ RSpec.describe String do
         expect(<<~HTML.chomp.html2html_strict.first).to eq(<<~TEXT.chomp)
           <div>http://example.com</div>
         HTML
-          <div>
-          <a href="http://example.com" rel="nofollow noreferrer noopener" target="_blank">http://example.com</a>
-          </div>
+          <div><a href="http://example.com" rel="nofollow noreferrer noopener" target="_blank">http://example.com</a></div>
         TEXT
       end
 
@@ -1104,8 +1086,7 @@ RSpec.describe String do
         expect(<<~HTML.chomp.html2html_strict.first).to eq(<<~TEXT.chomp)
           <div>http://example.com.</div>
         HTML
-          <div>
-          <a href="http://example.com" rel="nofollow noreferrer noopener" target="_blank">http://example.com</a>.</div>
+          <div><a href="http://example.com" rel="nofollow noreferrer noopener" target="_blank">http://example.com</a>.</div>
         TEXT
       end
 
@@ -1121,8 +1102,7 @@ RSpec.describe String do
         expect(<<~HTML.chomp.html2html_strict.first).to eq(<<~TEXT.chomp)
           <div>http://example.com, and so on</div>
         HTML
-          <div>
-          <a href="http://example.com" rel="nofollow noreferrer noopener" target="_blank">http://example.com</a>, and so on</div>
+          <div><a href="http://example.com" rel="nofollow noreferrer noopener" target="_blank">http://example.com</a>, and so on</div>
         TEXT
       end
 
@@ -1130,8 +1110,7 @@ RSpec.describe String do
         expect(<<~HTML.chomp.html2html_strict.first).to eq(<<~TEXT.chomp)
           <div>http://example.com?lala=me, and so on</div>
         HTML
-          <div>
-          <a href="http://example.com?lala=me" rel="nofollow noreferrer noopener" target="_blank">http://example.com?lala=me</a>, and so on</div>
+          <div><a href="http://example.com?lala=me" rel="nofollow noreferrer noopener" target="_blank">http://example.com?lala=me</a>, and so on</div>
         TEXT
       end
 
@@ -1183,7 +1162,7 @@ RSpec.describe String do
           expect(<<~HTML.chomp.html2html_strict.first).to eq(<<~TEXT.chomp)
             <a href="http://example.com %22test%22">http://what-different.example.com</a>
           HTML
-            <a href="http://example.com%20%22test%22" rel="nofollow noreferrer noopener" target="_blank" title="http://example.com%20%22test%22">http://what-different.example.com</a>
+            <a href="http://example.com %22test%22" rel="nofollow noreferrer noopener" target="_blank" title="http://example.com %22test%22">http://what-different.example.com</a>
           TEXT
         end
 
@@ -1298,15 +1277,7 @@ RSpec.describe String do
         expect(<<~HTML.chomp.html2html_strict.first).to eq(<<~TEXT.chomp)
           <div style="margin-top: 0cm; margin-right: 0cm; margin-left: 0cm; margin-bottom: 0.0001pt; font-size: 11pt; font-family: Calibri, sans-serif; "><span style="font-size: 10pt; font-family: Arial, sans-serif; ">Mit freundlichem Gruß<span class="Apple-converted-space">&nbsp;</span><br><br>John Smith<br>Service und Support<br><br>Example Service AG &amp; Co.<o:p></o:p></span></div><div style="margin-top: 0cm; margin-right: 0cm; margin-left: 0cm; margin-bottom: 0.0001pt; font-size: 11pt; font-family: Calibri, sans-serif; "><span style="font-size: 10pt; font-family: Arial, sans-serif; ">Management OHG<br>Someware-Str. 4<br>xxxxx Someware<br><br></span><span style="font-size: 10pt; font-family: Arial, sans-serif; "><o:p></o:p></span></div><div style="margin-top: 0cm; margin-right: 0cm; margin-left: 0cm; margin-bottom: 0.0001pt; font-size: 11pt; font-family: Calibri, sans-serif; "><span style="font-size: 10pt; font-family: Arial, sans-serif; ">Tel.: +49 001 7601 462<br>Fax: +49 001 7601 472</span><span style="font-size: 10pt; font-family: Arial, sans-serif; "><o:p></o:p></span></div><div style="margin-top: 0cm; margin-right: 0cm; margin-left: 0cm; margin-bottom: 0.0001pt; font-size: 11pt; font-family: Calibri, sans-serif; "><span style="font-size: 10pt; font-family: Arial, sans-serif; "><a href="mailto:john.smith@example.com" style=color: blue; text-decoration: underline; ">john.smith@example.com</a></span><span style="font-size: 10pt; font-family: Arial, sans-serif; "><o:p></o:p></span></div><div style="margin-top: 0cm; margin-right: 0cm; margin-left: 0cm; margin-bottom: 0.0001pt; font-size: 11pt; font-family: Calibri, sans-serif; "><span style="font-size: 10pt; font-family: Arial, sans-serif; "><a href="http://www.example.com" style="color: blue; text-decoration: underline; ">www.example.com</a></span><span style="font-size: 10pt; font-family: Arial, sans-serif; "><o:p></o:p></span></div>
         HTML
-          <div><span>Mit freundlichem Gruß <br><br>John Smith<br>Service und Support<br><br>Example Service AG &amp; Co.</span></div><div>
-          <span>Management OHG<br>Someware-Str. 4<br>xxxxx Someware<br><br></span>
-          </div><div>
-          <span>Tel.: +49 001 7601 462<br>Fax: +49 001 7601 472</span>
-          </div><div>
-          <a href="mailto:john.smith@example.com">john.smith@example.com</a>
-          </div><div>
-          <a href="http://www.example.com" rel="nofollow noreferrer noopener" target="_blank">www.example.com</a>
-          </div>
+          <div><span>Mit freundlichem Gruß <br><br>John Smith<br>Service und Support<br><br>Example Service AG &amp; Co.</span></div><div><span>Management OHG<br>Someware-Str. 4<br>xxxxx Someware<br><br></span></div><div><span>Tel.: +49 001 7601 462<br>Fax: +49 001 7601 472</span></div><div><a href="mailto:john.smith@example.com">john.smith@example.com</a></div><div><a href="http://www.example.com" rel="nofollow noreferrer noopener" target="_blank">www.example.com</a></div>
         TEXT
       end
 
@@ -1396,21 +1367,7 @@ RSpec.describe String do
         expect(<<~HTML.chomp.html2html_strict.first).to eq(<<~TEXT.chomp)
           <tr style="height: 15pt;" class=""><td width="170" nowrap="" valign="bottom" style="width: 127.5pt; border-style: none none none solid; border-left-width: 1pt; border-left-color: windowtext; padding: 0cm 5.4pt; height: 15pt;" class=""><p class="MsoNormal" align="center" style="margin: 0cm 0cm 0.0001pt; font-size: 12pt; font-family: 'Times New Roman', serif; text-align: center;"><span style="" class="">&nbsp;</span></p></td><td width="58" nowrap="" valign="bottom" style="width: 43.5pt; padding: 0cm 5.4pt; height: 15pt;" class=""><div style="margin: 0cm 0cm 0.0001pt; font-size: 12pt; font-family: 'Times New Roman', serif; text-align: center;" class=""><span style="" class="">20-29</span></div></td><td width="47" nowrap="" valign="bottom" style="width: 35pt; background-color: rgb(255, 199, 206); padding: 0cm 5.4pt; height: 15pt; background-position: initial initial; background-repeat: initial initial;" class=""><div style="margin: 0cm 0cm 0.0001pt; font-size: 12pt; font-family: 'Times New Roman', serif; text-align: center;" class=""><span style="color: rgb(156, 0, 6);" class="">200</span></div></td><td width="76" nowrap="" valign="bottom" style="width: 57pt; background-color: rgb(255, 199, 206); padding: 0cm 5.4pt; height: 15pt; background-position: initial initial; background-repeat: initial initial;" class=""><div style="margin: 0cm 0cm 0.0001pt; font-size: 12pt; font-family: 'Times New Roman', serif; text-align: center;" class=""><span style="color: rgb(156, 0, 6);" class="">-1</span></div></td><td width="76" nowrap="" valign="bottom" style="width: 57pt; border-style: none solid none none; border-right-width: 1pt; border-right-color: windowtext; background-color: rgb(255, 199, 206); padding: 0cm 5.4pt; height: 15pt; background-position: initial initial; background-repeat: initial initial;" class=""><div style="margin: 0cm 0cm 0.0001pt; font-size: 12pt; font-family: 'Times New Roman', serif; text-align: center;" class=""><span style="color: rgb(156, 0, 6);" class="">201</span></div></td><td width="107" nowrap="" valign="bottom" style="width: 80pt; padding: 0cm 5.4pt; height: 15pt;" class=""></td><td width="85" nowrap="" valign="bottom" style="width: 64pt; padding: 0cm 5.4pt; height: 15pt;" class=""></td><td width="101" nowrap="" valign="bottom" style="width: 76pt; border-style: none solid solid; border-left-width: 1pt; border-left-color: windowtext; border-bottom-width: 1pt; border-bottom-color: gray; border-right-width: 1pt; border-right-color: gray; background-color: rgb(242, 242, 242); padding: 0cm 5.4pt; height: 15pt; background-position: initial initial; background-repeat: initial initial;" class=""><div style="margin: 0cm 0cm 0.0001pt; font-size: 12pt; font-family: 'Times New Roman', serif; text-align: center;" class=""><b class=""><span style="font-size: 10pt; font-family: Arial, sans-serif;" class="">country</span></b><span style="font-size: 11pt; font-family: Calibri, sans-serif;" class=""></span></div></td><td width="87" nowrap="" valign="bottom" style="width: 65pt; border-style: none solid solid none; border-bottom-width: 1pt; border-bottom-color: gray; border-right-width: 1pt; border-right-color: gray; background-color: rgb(242, 242, 242); padding: 0cm 5.4pt; height: 15pt; background-position: initial initial; background-repeat: initial initial;" class=""><div style="margin: 0cm 0cm 0.0001pt; font-size: 12pt; font-family: 'Times New Roman', serif; text-align: center;" class=""><span style="font-size: 10pt; font-family: Arial, sans-serif;" class="">Target (gross)</span></div></td><td width="123" nowrap="" valign="bottom" style="width: 92pt; border-style: none solid solid none; border-bottom-width: 1pt; border-bottom-color: gray; border-right-width: 1pt; border-right-color: gray; background-color: rgb(242, 242, 242); padding: 0cm 5.4pt; height: 15pt; background-position: initial initial; background-repeat: initial initial;" class=""><div style="margin: 0cm 0cm 0.0001pt; font-size: 12pt; font-family: 'Times New Roman', serif; text-align: center;" class=""><span style="font-size: 10pt; font-family: Arial, sans-serif;" class="">Remaining Recruits</span></div></td><td width="87" nowrap="" valign="bottom" style="width: 65pt; border-style: none solid solid none; border-bottom-width: 1pt; border-bottom-color: gray; border-right-width: 1pt; border-right-color: windowtext; background-color: rgb(242, 242, 242); padding: 0cm 5.4pt; height: 15pt; background-position: initial initial; background-repeat: initial initial;" class=""><div style="margin: 0cm 0cm 0.0001pt; font-size: 12pt; font-family: 'Times New Roman', serif; text-align: center;" class=""><span style="font-size: 10pt; font-family: Arial, sans-serif;" class="">Total Recruits</span></div></td></tr>
         HTML
-          <tr>
-          <td valign="bottom" style="width: 127.5pt; border-style: none none none solid; border-left-width: 1pt; border-left-color: windowtext; padding: 0cm 5.4pt;"><p>&nbsp;</p></td>
-          <td valign="bottom" style="width: 43.5pt; padding: 0cm 5.4pt;"><div>20-29</div></td>
-          <td valign="bottom" style="width: 35pt; background-color: rgb(255, 199, 206); padding: 0cm 5.4pt;"><div><span style="color: rgb(156, 0, 6);">200</span></div></td>
-          <td valign="bottom" style="width: 57pt; background-color: rgb(255, 199, 206); padding: 0cm 5.4pt;"><div><span style="color: rgb(156, 0, 6);">-1</span></div></td>
-          <td valign="bottom" style="width: 57pt; border-style: none solid none none; border-right-width: 1pt; border-right-color: windowtext; background-color: rgb(255, 199, 206); padding: 0cm 5.4pt;"><div><span style="color: rgb(156, 0, 6);">201</span></div></td>
-          <td valign="bottom" style="width: 80pt; padding: 0cm 5.4pt;"></td>
-          <td valign="bottom" style="width: 64pt; padding: 0cm 5.4pt;"></td>
-          <td valign="bottom" style="width: 76pt; border-style: none solid solid; border-left-width: 1pt; border-left-color: windowtext; border-bottom-width: 1pt; border-bottom-color: gray; border-right-width: 1pt; border-right-color: gray; background-color: rgb(242, 242, 242); padding: 0cm 5.4pt;"><div>
-          <b>country</b>
-          </div></td>
-          <td valign="bottom" style="width: 65pt; border-style: none solid solid none; border-bottom-width: 1pt; border-bottom-color: gray; border-right-width: 1pt; border-right-color: gray; background-color: rgb(242, 242, 242); padding: 0cm 5.4pt;"><div>Target (gross)</div></td>
-          <td valign="bottom" style="width: 92pt; border-style: none solid solid none; border-bottom-width: 1pt; border-bottom-color: gray; border-right-width: 1pt; border-right-color: gray; background-color: rgb(242, 242, 242); padding: 0cm 5.4pt;"><div>Remaining Recruits</div></td>
-          <td valign="bottom" style="width: 65pt; border-style: none solid solid none; border-bottom-width: 1pt; border-bottom-color: gray; border-right-width: 1pt; border-right-color: windowtext; background-color: rgb(242, 242, 242); padding: 0cm 5.4pt;"><div>Total Recruits</div></td>
-          </tr>
+          <p>&nbsp;</p><div>20-29</div><div><span style="color: rgb(156, 0, 6);">200</span></div><div><span style="color: rgb(156, 0, 6);">-1</span></div><div><span style="color: rgb(156, 0, 6);">201</span></div><div><b>country</b></div><div>Target (gross)</div><div>Remaining Recruits</div><div>Total Recruits</div>
         TEXT
       end
 
@@ -1418,8 +1375,7 @@ RSpec.describe String do
         expect(<<~HTML.chomp.html2html_strict.first).to eq(<<~TEXT.chomp)
           <div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div style="line-height:1.7;color:#000000;font-size:14px;font-family:Arial"><div>Dear Bob<span style="line-height: 23.8px;">:</span><span style="color: rgb(255, 255, 255); line-height: 1.7;">Mr/Mrs</span></div><div><br></div><div><span style="line-height: 1.7;">We&nbsp;are&nbsp;one&nbsp;of&nbsp;the&nbsp;leading&nbsp;manufacturer&nbsp;and&nbsp;supplier&nbsp;of&nbsp;</span>conduits and cars since 3000.</div><div><br></div><div>Could you inform me the specification you need?</div><div><br></div><div>May I sent you our products catalogues for your reference?</div><div><br></div><div><img src="cid:5cb2783c$1$15ae9b384c8$Coremail$zhanabcdzhao$example.com" orgwidth="1101" orgheight="637" data-image="1" style="width: 722.7px; height: 418px; border: none;"></div><div>Best regards!</div><div><br></div><div><b style="line-height: 1.7;"><i><u><span lang="EL" style="font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:#17365D;\nmso-ansi-language:EL">Welcome to our booth B11/1 Hall 13 during SOMEWHERE\n9999.</span></u></i></b></div><div style="position:relative;zoom:1"><div>Bob Smith</div><div><div>Exp. &amp; Imp.</div><div>Town Example Electric Co., Ltd.</div><div>Tel: 0000-11-12345678 (Ext-220) &nbsp;Fax: 0000-11-12345678&nbsp;</div><div><span style="color:#17365d;">Room1234, NO. 638, Smith Road, Town, 200000, Somewhere</span></div><div>Web: www.example.com</div></div><div style="clear:both"></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div>
         HTML
-          <div>\n<div>Dear Bob:<span style="color: rgb(255, 255, 255);">Mr/Mrs</span>
-          </div><div>&nbsp;</div><div>We are one of the leading manufacturer and supplier of conduits and cars since 3000.</div><div>&nbsp;</div><div>Could you inform me the specification you need?</div><div>&nbsp;</div><div>May I sent you our products catalogues for your reference?</div><div>&nbsp;</div><div><img src="cid:5cb2783c$1$15ae9b384c8$Coremail$zhanabcdzhao$example.com" style="width: 722.7px; height: 418px;"></div><div>Best regards!</div><div>&nbsp;</div><div><b><i><u><span lang="EL" style="color:#17365d;">Welcome to our booth B11/1 Hall 13 during SOMEWHERE 9999.</span></u></i></b></div><div>\n<div>Bob Smith</div><div>\n<div>Exp. &amp; Imp.</div><div>Town Example Electric Co., Ltd.</div><div>Tel: 0000-11-12345678 (Ext-220) Fax: 0000-11-12345678</div><div><span style="color:#17365d;">Room1234, NO. 638, Smith Road, Town, 200000, Somewhere</span></div><div>Web: www.example.com</div></div></div></div>
+          <div><div>Dear Bob:<span style="color: rgb(255, 255, 255);">Mr/Mrs</span></div><div>&nbsp;</div><div>We are one of the leading manufacturer and supplier of conduits and cars since 3000.</div><div>&nbsp;</div><div>Could you inform me the specification you need?</div><div>&nbsp;</div><div>May I sent you our products catalogues for your reference?</div><div>&nbsp;</div><div><img src="cid:5cb2783c$1$15ae9b384c8$Coremail$zhanabcdzhao$example.com" style="width: 722.7px; height: 418px;"></div><div>Best regards!</div><div>&nbsp;</div><div><b><i><u><span lang="EL" style="color:#17365d;">Welcome to our booth B11/1 Hall 13 during SOMEWHERE 9999.</span></u></i></b></div><div><div>Bob Smith</div><div><div>Exp. &amp; Imp.</div><div>Town Example Electric Co., Ltd.</div><div>Tel: 0000-11-12345678 (Ext-220) Fax: 0000-11-12345678</div><div><span style="color:#17365d;">Room1234, NO. 638, Smith Road, Town, 200000, Somewhere</span></div><div>Web: www.example.com</div></div></div></div>
         TEXT
       end
 
@@ -1557,9 +1513,7 @@ RSpec.describe String do
         expect(<<~HTML.chomp.html2html_strict.first).to eq(<<~TEXT.chomp)
           <br class=""><div><blockquote type="cite" class=""><div class="">On 04 Mar 2017, at 14:47, Oliver Ruhm &lt;<a href="mailto:oliver@example.com" class="">oliver@example.com</a>&gt; wrote:</div><br class="Apple-interchange-newline">
         HTML
-          <div>#{marker}<blockquote type="cite">
-          <div>On 04 Mar 2017, at 14:47, Oliver Ruhm &lt;<a href="mailto:oliver@example.com">oliver@example.com</a>&gt; wrote:</div><br>
-          </blockquote></div>
+          <div>#{marker}<blockquote type="cite"><div>On 04 Mar 2017, at 14:47, Oliver Ruhm &lt;<a href="mailto:oliver@example.com">oliver@example.com</a>&gt; wrote:</div><br></blockquote></div>
         TEXT
       end
 
@@ -1567,9 +1521,7 @@ RSpec.describe String do
         expect(<<~HTML.chomp.html2html_strict.first).to eq(<<~TEXT.chomp)
           <br class=""><div><blockquote type="cite" class=""><div class="">some note</div><br class="Apple-interchange-newline">
         HTML
-          <div><blockquote type="cite">
-          <div>some note</div><br>
-          </blockquote></div>
+          <div><blockquote type="cite"><div>some note</div><br></blockquote></div>
         TEXT
       end
 
@@ -1602,8 +1554,7 @@ RSpec.describe String do
           <br> Am 17.03.2017 um 17:03 schrieb Martin Edenhofer via Zammad Helpdesk &lt;support@example.com&gt;:<br>
           <br>
           </div><blockquote type="cite">
-          <div>Dear Mr. Smith,<br>
-          </div></blockquote>
+          <div>Dear Mr. Smith,<br></div></blockquote>
         TEXT
       end
     end

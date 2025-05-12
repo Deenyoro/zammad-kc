@@ -9,7 +9,7 @@ class HtmlSanitizer
 
       return Loofah.scrub_document(string, scrubber).to_html if string.include? '<html'
 
-      Loofah.fragment(string).scrub!(scrubber).to_html
+      Loofah.html5_fragment(string).scrub!(scrubber).to_html
     end
   end
 end

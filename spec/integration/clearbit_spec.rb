@@ -130,7 +130,7 @@ RSpec.describe 'Clearbit', aggregate_failures: true, current_user_id: 1, integra
       expect(customer).to have_attributes(
         firstname: 'Martin',
         lastname:  'Edenhofer',
-        note:      "Open Source professional and geek. Also known as OTRS inventor. ;)\r\nEntrepreneur and Advisor for open source people in need.",
+        note:      "Open Source professional and geek. Also known as OTRS inventor. ;)\nEntrepreneur and Advisor for open source people in need.",
         address:   'Norsk-Data-Straße 1, 61352 Bad Homburg vor der Höhe, Germany',
       )
     end

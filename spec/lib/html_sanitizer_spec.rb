@@ -108,7 +108,7 @@ RSpec.describe HtmlSanitizer, :aggregate_failures do
         let(:html) { '<div><img style="width: 181px; height: 125px" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/..."><p>123</p><img style="width: 181px; height: 125px" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/..."></div>' }
 
         it 'converts embedded image to cid' do
-          expect(body).to match(%r{<div>\s+<img style="width: 181px; height: 125px" src="cid:.+?"><p>123</p>\s+<img style="width: 181px; height: 125px" src="cid:.+?">\s+</div>})
+          expect(body).to match(%r{<div><img style="width: 181px; height: 125px" src="cid:.+?"><p>123</p><img style="width: 181px; height: 125px" src="cid:.+?"></div>})
         end
 
         it 'extracts two attachments' do
@@ -224,7 +224,7 @@ Building dependency tree...</code></pre>'
 
     context 'when HTML sanitizer is removing attributes/styles which are white listed. #4605' do
       it 'does not remove whitelisted attributes width' do
-        expect(described_class.strict('<table width=20><tr width=20><td width=20>123</td></tr></table>')).to eq('<table style="width:20px;"><tr style="width:20px;"><td style="width:20px;">123</td></tr></table>')
+        expect(described_class.strict('<table width=20><tr width=20><td width=20>123</td></tr></table>')).to eq('<table style="width:20px;"><tbody><tr style="width:20px;"><td style="width:20px;">123</td></tr></tbody></table>')
       end
     end
 

@@ -8,7 +8,7 @@ RSpec.describe HtmlSanitizer::Scrubber::ImageSize do
   describe('#scrubber') do
     subject(:actual) { fragment.scrub!(scrubber).to_html }
 
-    let(:fragment) { Loofah.fragment(input) }
+    let(:fragment) { Loofah.html5_fragment(input) }
 
     context 'when image' do
       let(:input)  { '<img src="...">' }

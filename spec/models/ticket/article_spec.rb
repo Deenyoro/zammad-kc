@@ -202,14 +202,12 @@ RSpec.describe Ticket::Article, type: :model do
 
         it 'performs all sanitizations' do
           expect(article.body).to eq(<<~SANITIZED.chomp)
-            please tell me this doesn't work: <table>ada<tr></tr>
-            </table>
+            please tell me this doesn't work: ada<table><tbody><tr></tr></tbody></table>
             <div></div>
             <div>
             LINK
             <a href="http://lalal.de" rel="nofollow noreferrer noopener" target="_blank" title="http://lalal.de">aa</a>
-            ABC
-            </div>
+            ABC</div>
           SANITIZED
         end
       end

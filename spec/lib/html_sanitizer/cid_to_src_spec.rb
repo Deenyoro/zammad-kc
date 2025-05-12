@@ -8,7 +8,7 @@ RSpec.describe HtmlSanitizer::CidToSrc do
   describe('#scrubber') do
     subject(:actual) { fragment.scrub!(scrubber).to_html }
 
-    let(:fragment) { Loofah.fragment(input) }
+    let(:fragment) { Loofah.html5_fragment(input) }
 
     describe 'does not touch images without cid' do
       let(:input)  { '<img src="test.jpg">' }

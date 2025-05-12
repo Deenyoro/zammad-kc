@@ -10,11 +10,11 @@ class HtmlSanitizer
     end
 
     def loop_string(string, scrubber)
-      string = Loofah.fragment(string).scrub!(scrubber).to_html
+      string = Loofah.html5_fragment(string).scrub!(scrubber).to_html
       old_string = string
 
       loop do
-        string = Loofah.fragment(string).scrub!(scrubber).to_html
+        string = Loofah.html5_fragment(string).scrub!(scrubber).to_html
         break if string == old_string
 
         old_string = string

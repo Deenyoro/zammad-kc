@@ -41,7 +41,7 @@ class Ticket::SharedDraftZoom < ApplicationModel
     scrubber = HtmlSanitizer::Scrubber::InsertInlineImages.new(attachments)
 
     sanitized = Loofah
-      .fragment(body)
+      .html5_fragment(body)
       .scrub!(scrubber)
 
     sanitized.to_s
