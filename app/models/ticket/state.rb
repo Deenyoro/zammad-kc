@@ -125,6 +125,7 @@ returns:
     return if Setting.get('import_mode')
 
     return if state_type.name != 'merged'
+    return if (changed_attribute_names_to_save - %w[created_by_id updated_by_id updated_at]).blank?
 
     throw :abort
   end

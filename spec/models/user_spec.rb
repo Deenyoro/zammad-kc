@@ -617,7 +617,7 @@ RSpec.describe User, type: :model do
         'Ticket::SharedDraftZoom'            => { 'created_by_id' => 1, 'updated_by_id' => 0 },
         'Ticket::TimeAccounting'             => { 'created_by_id' => 0 },
         'Ticket::TimeAccounting::Type'       => { 'created_by_id' => 0, 'updated_by_id' => 0 },
-        'Ticket::State'                      => { 'created_by_id' => 0, 'updated_by_id' => 0 },
+        'Ticket::State'                      => { 'created_by_id' => 1, 'updated_by_id' => 1 },
         'PostmasterFilter'                   => { 'created_by_id' => 0, 'updated_by_id' => 0 },
         'PublicLink'                         => { 'created_by_id' => 1, 'updated_by_id' => 0 },
         'User::TwoFactorPreference'          => { 'created_by_id' => 1, 'updated_by_id' => 1, 'user_id' => 1 },
@@ -719,6 +719,8 @@ RSpec.describe User, type: :model do
       customer_ticket2      = create(:ticket, group: group_subject, customer: user)
       customer_ticket3      = create(:ticket, group: group_subject, customer: user)
       knowledge_base_answer = create(:knowledge_base_answer, archived_by_id: user.id, published_by_id: user.id, internal_by_id: user.id)
+      ticket_state          = create(:ticket_state, created_by_id: user.id)
+      ticket_merged_state   = Ticket::State.find_by(name: 'merged').tap { _1.update!(updated_by_id: user.id) }
 
       refs_user = Models.references('User', user.id, true)
       expect(refs_user).to eq(refs_known)
@@ -766,6 +768,8 @@ RSpec.describe User, type: :model do
       expect { draft_zoom.reload }.to change(draft_zoom, :created_by_id).to(1)
       expect { invalid_user.reload }.to change(invalid_user, :created_by_id).to(1)
       expect { public_link.reload }.to change(public_link, :created_by_id).to(1)
+      expect { ticket_state.reload }.to change(ticket_state, :created_by_id).to(1)
+      expect { ticket_merged_state.reload }.to change(ticket_merged_state, :updated_by_id).to(1)
     end
 
     it 'does delete cache after user deletion' do
