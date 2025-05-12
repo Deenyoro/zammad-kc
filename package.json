@@ -17,7 +17,7 @@
     "lint:css:fix": "pnpm lint:css --fix",
     "lint:md": "pnpm lint:md:cmd '*.md' '**/*.md' '#node_modules' '#**/node_modules'",
     "lint:md:fix": "pnpm lint:md --fix",
-    "lint:md:cmd": "docker run -v $PWD:/workdir --rm davidanson/markdownlint-cli2:latest",
+    "lint:md:cmd": "docker run -v $PWD:/workdir --rm --pull=always davidanson/markdownlint-cli2:latest",
     "test": "VTL_SKIP_AUTO_CLEANUP=true TZ=utc vitest",
     "test:ct": "cd .dev/cypress; CY_OPEN=true pnpm cypress open --component --project ../../ --config-file .dev/cypress/cypress.config.mjs",
     "test:ci:ct": "cd .dev/cypress; CI=true pnpm cypress run --component --project ../../ --config-file .dev/cypress/cypress.config.mjs --browser electron",
