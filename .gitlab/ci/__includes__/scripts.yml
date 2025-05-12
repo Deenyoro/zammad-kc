@@ -8,7 +8,7 @@
     - pnpm config set store-dir ${CI_PROJECT_DIR}/tmp/cache/pnpm-store
   pnpm_install: &pnpm_install
     - *pnpm_init
-    - pnpm install
+    - pnpm install --frozen-lockfile # fail if lockfile is broken or not up to date
   pnpm_install_chat: &pnpm_install_chat
     - *pnpm_init
     - pnpm --dir public/assets/chat install
