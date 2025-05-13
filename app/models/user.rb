@@ -569,6 +569,16 @@ returns
       end
     end
 
+    # Taskbars which do not exist will be moved to the merge user.
+    # All others will be deleted.
+    Taskbar.where(user_id: user_id_of_duplicate_user).find_each do |taskbar|
+      if Taskbar.exists?(key: taskbar.key, app: taskbar.app, user_id: id)
+        taskbar.destroy
+      else
+        taskbar.update(user_id: id)
+      end
+    end
+
     # merge missing attributes
     Models.merge('User', id, user_id_of_duplicate_user)
 

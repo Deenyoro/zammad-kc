@@ -9,7 +9,7 @@ RSpec.describe 'Search', type: :request do
     create(:admin, groups: [Group.lookup(name: 'Users'), group])
   end
   let!(:agent) do
-    create(:agent, firstname: 'Search 1234', groups: [Group.lookup(name: 'Users'), group])
+    create(:agent, firstname: 'Search superuniqstring1337', groups: [Group.lookup(name: 'Users'), group])
   end
   let!(:customer) do
     create(:customer)
@@ -36,13 +36,13 @@ RSpec.describe 'Search', type: :request do
     create(:customer, organization: organization1)
   end
   let!(:ticket1) do
-    create(:ticket, title: 'test 1234-1', customer: customer, group: group)
+    create(:ticket, title: 'test superuniqstring1337-1', customer: customer, group: group)
   end
   let!(:ticket2) do
-    create(:ticket, title: 'test 1234-2', customer: customer2, group: group)
+    create(:ticket, title: 'test superuniqstring1337-2', customer: customer2, group: group)
   end
   let!(:ticket3) do
-    create(:ticket, title: 'test 1234-2', customer: customer3, group: group)
+    create(:ticket, title: 'test superuniqstring1337-2', customer: customer3, group: group)
   end
   let!(:article1) do
     create(:ticket_article, ticket_id: ticket1.id)
@@ -61,7 +61,7 @@ RSpec.describe 'Search', type: :request do
 
     it 'does settings index with nobody' do
       params = {
-        query: 'test 1234',
+        query: 'test superuniqstring1337',
         limit: 2,
       }
 
@@ -86,7 +86,7 @@ RSpec.describe 'Search', type: :request do
 
     it 'does settings index with admin' do
       params = {
-        query: '1234*',
+        query: 'superuniqstring1337*',
         limit: 1,
       }
       authenticated_as(admin)
@@ -101,7 +101,7 @@ RSpec.describe 'Search', type: :request do
       expect(json_response['result'][2]).to be_falsey
 
       params = {
-        query: '1234*',
+        query: 'superuniqstring1337*',
         limit: 10,
       }
 
@@ -120,7 +120,7 @@ RSpec.describe 'Search', type: :request do
       expect(json_response['result'][4]).to be_falsey
 
       params = {
-        query: '1234*',
+        query: 'superuniqstring1337*',
         limit: 10,
       }
 
@@ -137,7 +137,7 @@ RSpec.describe 'Search', type: :request do
       expect(json_response['result'][3]).to be_falsey
 
       params = {
-        query: '1234*',
+        query: 'superuniqstring1337*',
         limit: 10,
       }
 
@@ -151,7 +151,7 @@ RSpec.describe 'Search', type: :request do
 
     it 'does settings index with agent' do
       params = {
-        query: '1234*',
+        query: 'superuniqstring1337*',
         limit: 1,
       }
 
@@ -167,7 +167,7 @@ RSpec.describe 'Search', type: :request do
       expect(json_response['result'][2]).to be_falsey
 
       params = {
-        query: '1234*',
+        query: 'superuniqstring1337*',
         limit: 10,
       }
 
@@ -186,7 +186,7 @@ RSpec.describe 'Search', type: :request do
       expect(json_response['result'][4]).to be_falsey
 
       params = {
-        query: '1234*',
+        query: 'superuniqstring1337*',
         limit: 10,
       }
 
@@ -203,7 +203,7 @@ RSpec.describe 'Search', type: :request do
       expect(json_response['result'][3]).to be_falsey
 
       params = {
-        query: '1234*',
+        query: 'superuniqstring1337*',
         limit: 10,
       }
 
@@ -217,7 +217,7 @@ RSpec.describe 'Search', type: :request do
 
     it 'does settings index with customer 1' do
       params = {
-        query: '1234*',
+        query: 'superuniqstring1337*',
         limit: 10,
       }
 
@@ -231,7 +231,7 @@ RSpec.describe 'Search', type: :request do
       expect(json_response['result'][1]).to be_falsey
 
       params = {
-        query: '1234*',
+        query: 'superuniqstring1337*',
         limit: 10,
       }
 
@@ -244,7 +244,7 @@ RSpec.describe 'Search', type: :request do
       expect(json_response['result'][1]).to be_falsey
 
       params = {
-        query: '1234*',
+        query: 'superuniqstring1337*',
         limit: 10,
       }
 
@@ -256,7 +256,7 @@ RSpec.describe 'Search', type: :request do
 
     it 'does settings index with customer 2' do
       params = {
-        query: '1234*',
+        query: 'superuniqstring1337*',
         limit: 10,
       }
 
@@ -272,7 +272,7 @@ RSpec.describe 'Search', type: :request do
       expect(json_response['result'][2]).to be_falsey
 
       params = {
-        query: '1234*',
+        query: 'superuniqstring1337*',
         limit: 10,
       }
 
@@ -287,7 +287,7 @@ RSpec.describe 'Search', type: :request do
       expect(json_response['result'][2]).to be_falsey
 
       params = {
-        query: '1234*',
+        query: 'superuniqstring1337*',
         limit: 10,
       }
 
