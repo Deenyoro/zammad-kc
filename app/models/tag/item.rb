@@ -155,37 +155,68 @@ Job.condition       Job.perform
 =end
 
   def self.update_referenced_objects(old_name, new_name)
-    objects = Overview.all + Trigger.all + Job.all + PostmasterFilter.all
-
-    objects.each do |object|
+    all_objects.each do |object|
       changed = false
-      if object.has_attribute?(:condition)
-        changed |= update_condition_hash object.condition, old_name, new_name
-      end
-      if object.has_attribute?(:perform)
-        changed |= update_condition_hash object.perform, old_name, new_name
-      end
+
+      changed |= update_tag_values(object.condition, old_name, new_name) if object.has_attribute?(:condition)
+      changed |= update_tag_values(object.perform, old_name, new_name)   if object.has_attribute?(:perform)
+
       object.save if changed
     end
   end
 
-  def self.update_condition_hash(hash, old_name, new_name)
+  def self.all_objects
+    Overview.all + Trigger.all + Job.all + PostmasterFilter.all
+  end
+
+  def self.update_tag_values(data, old_name, new_name)
+    return false if !data
+
+    return update_conditions_array(data[:conditions], old_name, new_name) if data.key?(:conditions)
+
+    update_condition_hash(data, old_name, new_name)
+  end
+
+  def self.update_conditions_array(conditions, old_name, new_name)
     changed = false
-    hash.each do |key, condition|
-      next if %w[ticket.tags x-zammad-ticket-tags].exclude? key
-      next if condition[:value].split(', ').exclude? old_name
+
+    conditions.each do |condition|
+      next if !tag_condition?(condition[:name])
+      next if !tag_includes?(condition[:value], old_name)
 
       condition[:value] = update_name(condition[:value], old_name, new_name)
       changed = true
     end
+
     changed
   end
 
-  def self.update_name(condition, old_name, new_name)
-    tags = condition.split(', ')
-    return new_name if tags.size == 1
+  def self.update_condition_hash(hash, old_name, new_name)
+    changed = false
 
-    tags = tags.map { |t| t == old_name ? new_name : t }
-    tags.join(', ')
+    hash.each do |key, condition|
+      next if !tag_condition?(key)
+      next if !tag_includes?(condition[:value], old_name)
+
+      condition[:value] = update_name(condition[:value], old_name, new_name)
+      changed = true
+    end
+
+    changed
+  end
+
+  def self.update_name(value, old_name, new_name)
+    tags = value.split(', ')
+    return new_name if tags.one?
+
+    tags.map { |t| t == old_name ? new_name : t }.join(', ')
+  end
+
+  def self.tag_condition?(key)
+    %w[ticket.tags x-zammad-ticket-tags].include?(key)
+  end
+
+  def self.tag_includes?(value, tag)
+    value.to_s.split(', ').include?(tag)
   end
 end

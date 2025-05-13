@@ -6,6 +6,13 @@ RSpec.describe Tag::Item do
   subject(:item) { create(:'tag/item') }
 
   describe '.rename' do
+    before do
+      Overview.destroy_all
+      Trigger.destroy_all
+      Job.destroy_all
+      PostmasterFilter.destroy_all
+    end
+
     context 'when given a unique item name' do
       it 'updates the name on the Tag::Item' do
         expect { described_class.rename(id: item.id, name: 'foo') }
@@ -74,6 +81,30 @@ RSpec.describe Tag::Item do
             .to change { object.reload.send(method)[label][:value] }
             .from('test1').to('test1_renamed')
         end
+
+        if method == :condition
+          context 'with expert mode in conditions' do
+            let(:object) do
+              create(object_klass.name.underscore,
+                     condition: {
+                       operator:   'AND',
+                       conditions: [
+                         {
+                           name:     label,
+                           operator: 'contains one',
+                           value:    'test1',
+                         },
+                       ]
+                     })
+            end
+
+            it 'updates reference with new tag name' do
+              expect { described_class.rename(id: item.id, name: 'test1_renamed') }
+                .to change { object.reload.send(method)[:conditions].first[:value] }
+                .from('test1').to('test1_renamed')
+            end
+          end
+        end
       end
 
       context "with reference to renamed tag in its #{method} hash (contains-all)" do
@@ -84,6 +115,30 @@ RSpec.describe Tag::Item do
           expect { described_class.rename(id: item.id, name: 'test1_renamed') }
             .to change { object.reload.send(method)[label][:value] }
             .from('test1, test2, test3').to('test1_renamed, test2, test3')
+        end
+
+        if method == :condition
+          context 'with expert mode in conditions' do
+            let(:object) do
+              create(object_klass.name.underscore,
+                     condition: {
+                       operator:   'AND',
+                       conditions: [
+                         {
+                           name:     label,
+                           operator: 'contains all',
+                           value:    'test1, test2, test3',
+                         },
+                       ]
+                     })
+            end
+
+            it 'updates reference with new tag name' do
+              expect { described_class.rename(id: item.id, name: 'test1_renamed') }
+                .to change { object.reload.send(method)[:conditions].first[:value] }
+                .from('test1, test2, test3').to('test1_renamed, test2, test3')
+            end
+          end
         end
       end
     end
