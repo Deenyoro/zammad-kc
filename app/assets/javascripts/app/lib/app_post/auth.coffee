@@ -109,8 +109,11 @@ class App.Auth
       async: false
       type:  'GET'
       url:   App.Config.get('api_path') + '/taskbar/init'
+      failResponseNoTrigger: true
       success: (data_taskbar, status, xhr) =>
         @bootup(data, type, data_taskbar)
+      error: (xhr, statusText, error) =>
+        @bootup(data, type, {})
     )
 
   @bootup: (data, type, data_taskbar) ->
