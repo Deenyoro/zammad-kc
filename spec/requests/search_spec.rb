@@ -554,4 +554,25 @@ RSpec.describe 'Search', type: :request do
       include_examples 'search for organization ids'
     end
   end
+
+  describe 'getting "undefined method assets for nil:NilClass #5618', searchindex: true do
+    before do
+      ticket1
+      searchindex_model_reload([Ticket, User, Organization])
+      ticket1.destroy
+    end
+
+    it 'does not throw error if the ticket exists in the search index but not in DB' do
+      params = {
+        query:     ticket1.number,
+        limit:     1,
+        by_object: true
+      }
+
+      authenticated_as(agent)
+      post '/api/v1/search', params: params, as: :json
+      expect(response).to have_http_status(:ok)
+      expect(json_response['result']['Ticket']['object_ids']).to be_blank
+    end
+  end
 end
