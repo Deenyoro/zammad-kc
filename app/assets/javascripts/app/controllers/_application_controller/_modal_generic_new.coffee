@@ -58,8 +58,12 @@ class App.ControllerGenericNew extends App.ControllerModal
           ui.callback(item)
         ui.close()
 
-      fail: (settings, details) ->
+      fail: (settings, details) =>
         ui.log 'errors', details
         ui.formEnable(e)
-        ui.controller.showAlert(details.error_human || details.error || __('The object could not be created.'))
+
+        if details && details.invalid_attribute
+          @formValidate( form: e.target, errors: details.invalid_attribute )
+        else
+          ui.controller.showAlert(details.error_human || details.error || __('The object could not be created.'))
     )

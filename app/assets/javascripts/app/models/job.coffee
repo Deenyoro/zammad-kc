@@ -6,7 +6,7 @@ class App.Job extends App.Model
     { name: 'name',                 display: __('Name'),                            tag: 'input',    type: 'text', limit: 100, null: false },
     { name: 'timeplan',             display: __('When should the job run?'),        tag: 'timer', null: true },
     { name: 'object',               display: __('Object'),                          tag: 'select', null: true, options: { Ticket: __('Ticket'), User: __('User'), Organization: __('Organization') }, default: 'Ticket', translate: true },
-    { name: 'condition',            display: __('Conditions for affected objects'), tag: 'object_selector', null: true, executionTime: true, noCurrentUser: true },
+    { name: 'condition',            display: __('Conditions for affected objects'), tag: 'object_selector', null: false, executionTime: true, noCurrentUser: true },
     { name: 'perform',              display: __('Execute changes on objects'),      tag: 'object_perform_action', null: true, notification: true, ticket_delete: true, data_privacy_deletion_task: true },
     { name: 'disable_notification', display: __('Disable Notifications'),           tag: 'boolean', default: true },
     { name: 'execution_localization',   display: __('Localization of execution changes'), tag: 'switch', null: true, label_class: 'hidden', help: __('Customize the default locale and timezone during replacement of template variables.') },

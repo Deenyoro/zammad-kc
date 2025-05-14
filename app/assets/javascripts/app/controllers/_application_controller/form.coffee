@@ -369,6 +369,12 @@ class App.ControllerForm extends App.Controller
       )
       fullItem.find('.controls').prepend(item)
 
+      # make error messages for application selector more readable by showing before preview box of objects
+      previewBlock = fullItem.find('.js-preview')
+      helpBlock    = fullItem.find('.help-block')
+      if previewBlock.length > 0 && helpBlock.length > 0
+        previewBlock.insertAfter(helpBlock)
+
       # hide/show item
       if attribute.hide
         @.hide(attribute.name, fullItem)
@@ -834,7 +840,7 @@ class App.ControllerForm extends App.Controller
       itemGeneric.find('.help-inline').html(msg)
 
       # use meta fields
-      itemMeta = lookupForm.find('[data-name="' + key + '"]').closest('.form-group')
+      itemMeta = lookupForm.find('[data-name="' + key + '"], [data-attribute-name="' + key + '"]').closest('.form-group')
       itemMeta.addClass('has-error')
       itemMeta.find('.help-inline').html(msg)
 
