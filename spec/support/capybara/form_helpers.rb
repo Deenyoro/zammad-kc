@@ -548,7 +548,7 @@ class ZammadFormFieldCapybaraElementDelegator < SimpleDelegator
   end
 
   def autocomplete?
-    type_autocomplete? || type_customer? || type_organization? || type_recipient? || type_externalDataSource?
+    type_autocomplete? || type_customer? || type_organization? || type_recipient? || type_externalDataSource? || type_ticket?
   end
 
   # Input elements in supported fields define data attribute for "multiple" state.
@@ -913,6 +913,8 @@ class ZammadFormFieldCapybaraElementDelegator < SimpleDelegator
       wait_for_gql('shared/components/Form/fields/FieldRecipient/graphql/queries/autocompleteSearch/recipient.graphql', number: gql_number)
     elsif type_externalDataSource?
       wait_for_gql('shared/components/Form/fields/FieldExternalDataSource/graphql/queries/autocompleteSearchObjectAttributeExternalDataSource.graphql', number: gql_number)
+    elsif type_ticket?
+      wait_for_gql('shared/entities/ticket/graphql/queries/autocompleteSearchTicket.graphql', number: gql_number)
     elsif type_tags?
       # NB: tags autocomplete query fires only once?!
       wait_for_gql('shared/entities/tags/graphql/queries/autocompleteTags.graphql', number: 1, skip_clearing: true)
@@ -929,6 +931,7 @@ class ZammadFormFieldCapybaraElementDelegator < SimpleDelegator
     return form_context.form_gql_number(:organization) if type_organization?
     return form_context.form_gql_number(:recipient) if type_recipient?
     return form_context.form_gql_number(:externalDataSource) if type_externalDataSource?
+    return form_context.form_gql_number(:ticket) if type_ticket?
 
     form_context.form_gql_number(:tags) if type_tags?
   end
