@@ -2,20 +2,20 @@
 
 require 'rails_helper'
 
-RSpec.describe AI::Provider::ZammadAI, required_envs: %w[ZAMMAD_AI_TOKEN ZAMMAD_AI_API_URL], use_vcr: true do
+RSpec.describe AI::Provider::Anthropic, required_envs: %w[ANTHROPIC_API_KEY], use_vcr: true do
   subject(:ai_provider) { described_class.new(options: { json_response: true }) }
 
   let(:prompt_system) { '' }
   let(:prompt_user)   { 'This is a connection test. Return in unprettified JSON \'{ "connected": "true" }\' if you got the message.' }
 
   before do
-    Setting.set('ai_provider', 'zammad_ai')
+    Setting.set('ai_provider', 'anthropic')
     Setting.set('ai_provider_config', {
-                  token: ENV['ZAMMAD_AI_TOKEN'],
+                  token: ENV['ANTHROPIC_API_KEY'],
                 })
   end
 
-  it 'does exchange data with ZammadAI endpoint' do
+  it 'does exchange data with open ai endpoint' do
     expect(ai_provider.ask(prompt_system:, prompt_user:)).to match({ 'connected' => 'true' })
   end
 

@@ -35,7 +35,7 @@ RSpec.describe AI::Provider do
 
   describe '.ping!' do
     it 'raises an error' do
-      expect { described_class.ping! }.to raise_error(RuntimeError, 'not implemented')
+      expect { described_class.ping!(nil) }.to raise_error(RuntimeError, 'not implemented')
     end
   end
 
@@ -47,7 +47,12 @@ RSpec.describe AI::Provider do
 
   describe '.list' do
     it 'returns a list of providers' do
-      expect(described_class.list).to eq([AI::Provider::Ollama, AI::Provider::OpenAI, AI::Provider::ZammadAI])
+      expect(described_class.list).to eq([
+                                           AI::Provider::Anthropic,
+                                           AI::Provider::Ollama,
+                                           AI::Provider::OpenAI,
+                                           AI::Provider::ZammadAI,
+                                         ])
     end
   end
 

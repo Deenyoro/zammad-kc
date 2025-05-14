@@ -2,7 +2,6 @@ class App.UiElement.ApplicationUiElement
 
   # sort attribute.options
   @sortOptions: (attribute) ->
-
     # skip sorting if it is disabled by config
     return if attribute.sortBy == null
 

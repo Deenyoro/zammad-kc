@@ -1,21 +1,35 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-class AI::Provider::ZammadAI < AI::Provider
-  ZAMMAD_AI_API_BASE_URL = 'https://ai.zammad.com'.freeze
+class AI::Provider::Anthropic < AI::Provider
+  ANTHROPIC_API_BASE_URL = 'https://api.anthropic.com/v1'.freeze
+
+  DEFAULT_OPTIONS = {
+    model:       'claude-3-7-sonnet-latest',
+    max_tokens:  1024,
+    temperature: 0.0,
+  }.freeze
 
   def chat(prompt_system:, prompt_user:)
-    service_name = options[:service_name] || 'generic'
     response = UserAgent.post(
-      "#{self.class.base_url(config)}/api/v1/features/#{service_name.underscore}",
+      "#{ANTHROPIC_API_BASE_URL}/messages",
       {
-        system_prompt: prompt_system,
-        prompt:        prompt_user,
+        max_tokens:  options[:max_tokens],
+        messages:    [
+          {
+            role:    'user',
+            content: prompt_user,
+          },
+        ],
+        model:       options[:model],
+        stream:      false,
+        system:      prompt_system,
+        temperature: options[:temperature],
       },
       {
         open_timeout:  4,
         read_timeout:  60,
         verify_ssl:    true,
-        bearer_token:  config[:token],
+        headers:       headers,
         total_timeout: 60,
         json:          true,
         log:           {
@@ -25,7 +39,7 @@ class AI::Provider::ZammadAI < AI::Provider
     )
 
     data = validate_response!(response)
-    data.first['response']
+    data['content'].first['text']
   end
 
   def embeddings(input:)
@@ -34,13 +48,13 @@ class AI::Provider::ZammadAI < AI::Provider
 
   def self.ping!(config)
     response = UserAgent.get(
-      "#{base_url(config)}/api/v1/me",
+      "#{ANTHROPIC_API_BASE_URL}/models",
       {},
       {
         open_timeout:  4,
         read_timeout:  60,
         verify_ssl:    true,
-        bearer_token:  config[:token],
+        headers:       headers(config),
         total_timeout: 60,
         json:          true,
         log:           {
@@ -54,7 +68,16 @@ class AI::Provider::ZammadAI < AI::Provider
     nil
   end
 
-  def self.base_url(config)
-    ENV['ZAMMAD_AI_API_URL'] || config[:url] || ZAMMAD_AI_API_BASE_URL
+  def self.headers(config)
+    {
+      'Anthropic-Version' => '2023-06-01',
+      'X-Api-Key'         => config[:token],
+    }
+  end
+
+  private
+
+  def headers
+    self.class.headers(config)
   end
 end

@@ -49,7 +49,7 @@ class ProviderForm extends App.Controller
       , {})
 
   getProviderOptions: ->
-    providers = Object.entries(@providers).sort(([_, a], [__, b]) -> a.order - b.order)
+    providers = Object.entries(@providers).sort(([_, a], [__, b]) -> a.prio - b.prio)
     providers.reduce((acc, [key, { label }]) ->
       acc[key] = label
       acc
@@ -87,13 +87,14 @@ class ProviderForm extends App.Controller
 
     result = [
       {
-        name: 'provider',
-        display: __('Provider'),
-        tag: 'select',
-        options: @getProviderOptions(),
-        null: true,
-        nulloption: true,
+        name: 'provider'
+        display: __('Provider')
+        tag: 'select'
+        options: @getProviderOptions()
+        null: true
+        nulloption: true
         value: provider
+        customsort: 'on'
       },
     ]
 

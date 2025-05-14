@@ -24,7 +24,7 @@ class AI::Provider
       "AI::Provider::#{name.classify}".safe_constantize
     end
 
-    def ping!
+    def ping!(_config)
       raise 'not implemented'
     end
   end
