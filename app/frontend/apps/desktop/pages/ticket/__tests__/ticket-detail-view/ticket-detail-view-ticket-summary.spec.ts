@@ -16,7 +16,6 @@ import {
   type TicketArticleUpdatesPayload,
 } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
-import emitter from '#shared/utils/emitter.ts'
 
 import { waitForUserCurrentTicketSummaryBannerHiddenMutationCalls } from '#desktop/entities/user/current/graphql/mutations/userCurrentTicketSummaryBannerHidden.mocks.ts'
 import {
@@ -352,6 +351,50 @@ describe('Ticket detail view - Ticket summary', () => {
     // We could try to verify if banner is not shown anymore
   })
 
+  it('displays update indicator when new summary comes in', async () => {
+    mockPermissions(['ticket.agent'])
+
+    mockApplicationConfig({
+      ai_provider: 'zammad_ai',
+      ai_assistance_ticket_summary: true,
+    })
+
+    mockTicketQuery({
+      ticket: createDummyTicket(),
+    })
+
+    const view = await visitView('/tickets/1')
+
+    await waitForTicketAiAssistanceSummarizeMutationCalls()
+
+    expect(
+      await view.findByRole('status', { name: 'Has update' }),
+    ).toBeInTheDocument()
+  })
+
+  it('hides update indicator when ticket summary sidebar is opened', async () => {
+    mockPermissions(['ticket.agent'])
+
+    mockApplicationConfig({
+      ai_provider: 'zammad_ai',
+      ai_assistance_ticket_summary: true,
+    })
+
+    mockTicketQuery({
+      ticket: createDummyTicket(),
+    })
+
+    const view = await visitView('/tickets/1')
+
+    await waitForTicketAiAssistanceSummarizeMutationCalls()
+
+    await view.events.click(view.getByRole('button', { name: 'Summary' }))
+
+    expect(
+      view.queryByRole('status', { name: 'Has update' }),
+    ).not.toBeInTheDocument()
+  })
+
   describe('errors', () => {
     beforeEach(() => {
       mockPermissions(['ticket.agent'])
@@ -684,8 +727,6 @@ describe('Ticket detail view - Ticket summary', () => {
 
     const view = await visitView('/tickets/1')
 
-    emitter.emit('ticket-summary-generating', true)
-
     await waitForNextTick()
 
     expect(view.getByTestId('ticket-summary-banner')).toHaveTextContent(
@@ -693,7 +734,7 @@ describe('Ticket detail view - Ticket summary', () => {
     )
   })
 
-  it('keeps hiding ticket summary banner when subscription update comes in', async () => {
+  it('shows ticket summary banner when subscription update comes in', async () => {
     mockPermissions(['ticket.agent'])
 
     mockApplicationConfig({
@@ -740,7 +781,7 @@ describe('Ticket detail view - Ticket summary', () => {
     await waitFor(() =>
       expect(
         view.queryByRole('button', { name: 'See Summary' }),
-      ).not.toBeInTheDocument(),
+      ).toBeInTheDocument(),
     )
   })
 

@@ -63,7 +63,10 @@ const badgeColor = computed(() => {
       :aria-label="$t(label)"
       @click="$emit('click', name)"
     />
-    <CommonUpdateIndicator v-if="!selected && updateIndicator" />
+    <CommonUpdateIndicator
+      v-if="!selected && updateIndicator"
+      class="top-0.5 ltr:right-0.5 rtl:left-0.5"
+    />
     <CommonLabel
       v-if="badge"
       size="xs"

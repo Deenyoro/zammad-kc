@@ -16,7 +16,6 @@ import {
 } from '#shared/server/apollo/handler/index.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
-import emitter from '#shared/utils/emitter.ts'
 
 import { useReactivate } from '#desktop/composables/useReactivate.ts'
 import TicketSidebarSummaryContent from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue'
@@ -25,6 +24,7 @@ import {
   type SummaryItem,
   TicketSummaryFeature,
 } from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/types.ts'
+import { useTicketSummaryGenerating } from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/useTicketSummaryGenerating.ts'
 import { usePersistentStates } from '#desktop/pages/ticket/composables/usePersistentStates.ts'
 import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
 import { useTicketSummarySeen } from '#desktop/pages/ticket/composables/useTicketSummarySeen.ts'
@@ -37,7 +37,7 @@ import type {
 
 import TicketSidebarWrapper from '../TicketSidebarWrapper.vue'
 
-defineProps<TicketSidebarProps>()
+const props = defineProps<TicketSidebarProps>()
 
 const { user, hasPermission } = useSessionStore()
 
@@ -96,11 +96,19 @@ const summaryHeadings = computed(() =>
   headings.value.filter((heading) => heading.active),
 )
 
-const { setFingerprint } = useTicketSummarySeen()
+const {
+  setFingerprint,
+  storeFingerprint,
+  isCurrentTicketSummaryRead,
+  isTicketStateMerged,
+} = useTicketSummarySeen()
 
 const summary = ref<TicketAiAssistanceSummary | null>(null)
 
 const generationError = ref<AsyncExecutionError | null>(null)
+
+const { updateSummaryGenerating, isSummaryGenerating } =
+  useTicketSummaryGenerating()
 
 const showErrorDetails = computed(() => hasPermission('admin'))
 
@@ -108,6 +116,13 @@ let activeDetachedChildScope: EffectScope
 
 const ticketSummaryHandler = new MutationHandler(
   useTicketAiAssistanceSummarizeMutation(),
+)
+
+const showUpdateIndicator = computed(
+  () =>
+    !isCurrentTicketSummaryRead.value &&
+    !isTicketStateMerged.value &&
+    !isSummaryGenerating.value,
 )
 
 const updateLocalSummary = (
@@ -118,7 +133,7 @@ const updateLocalSummary = (
 
   setFingerprint(fingerprint)
 
-  // Reset error if summary is returned.
+  // Reset error if the summary is returned.
   if (summaryData) generationError.value = null
 }
 
@@ -126,11 +141,11 @@ const getAIAssistanceSummary = () => {
   if (!isProviderConfigured.value) return
 
   summary.value = null
-  emitter.emit('ticket-summary-generating', true)
+  updateSummaryGenerating(true)
 
   ticketSummaryHandler.send({ ticketId: ticketId.value }).then((data) => {
     if (data?.ticketAIAssistanceSummarize?.summary)
-      emitter.emit('ticket-summary-generating', false)
+      updateSummaryGenerating(false)
 
     updateLocalSummary(
       data?.ticketAIAssistanceSummarize?.summary,
@@ -181,7 +196,7 @@ const activateSubscription = () => {
 
   ticketSummarySubscription.onSubscribed().then(() => {
     ticketSummarySubscription.onResult(({ data }) => {
-      emitter.emit('ticket-summary-generating', false)
+      updateSummaryGenerating(false)
 
       if (!data?.ticketAIAssistanceSummaryUpdates) return
 
@@ -198,6 +213,7 @@ const activateSubscription = () => {
       }
 
       if (summaryData) updateLocalSummary(summaryData, fingerprintMd5)
+      if (props.selected) storeFingerprint(fingerprintMd5)
     })
   })
 }
@@ -238,6 +254,7 @@ watch(
     :key="sidebar"
     :sidebar="sidebar"
     :sidebar-plugin="sidebarPlugin"
+    :update-indicator="showUpdateIndicator"
     :selected="selected"
   >
     <TicketSidebarSummaryContent

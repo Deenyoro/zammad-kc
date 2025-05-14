@@ -1,4 +1,4 @@
-class SidebarTicketSummary extends App.Controller
+class App.SidebarTicketSummary extends App.Controller
   DISPLAY_STRUCTURE: [
     { key: 'problem', name: __('Customer Intent'), value: 'problem' },
     { key: 'conversation_summary', name: __('Conversation Summary'), value: 'conversation_summary' },
@@ -38,17 +38,35 @@ class SidebarTicketSummary extends App.Controller
   sidebarItem: =>
     return if !@sidebarIsEnabled()
 
-    @item = {
+    {
       name:           'summary'
       badgeIcon:      'smart-assist'
+      badgeCallback:  @badgeRender
       sidebarHead:     __('Summary')
       sidebarCallback: @sidebarCallback
       sidebarActions:  []
     }
 
-    @item
+  badgeDetails: =>
+    {
+      name:       'summary'
+      icon:       'smart-assist'
+      dotVisible: !@isPreparingData && @fingerprintMD5 && !@constructor.isSummarySeen(@ticket, @fingerprintMD5)
+    }
+
+  badgeRender: (el) =>
+    @badgeEl = el
+    @badgeRenderLocal()
+
+  badgeRenderLocal: =>
+    return if !@badgeEl
+    @badgeEl.html(App.view('generic/sidebar_tabs_item')(@badgeDetails()))
 
   shown: =>
+    if !@isPreparingData && @fingerprintMD5
+      @constructor.markSummaryAsSeen(@ticket, @fingerprintMD5)
+
+    @badgeRenderLocal()
 
     # trigger shown sidebar to hide ai banner
     App.Event.trigger('ui::ticket::summarySidebar::shown', { ticket_id: @ticket.id })
@@ -80,17 +98,15 @@ class SidebarTicketSummary extends App.Controller
   renderSummarization: (data) =>
     if data
       @summaryData = data
-    else
-      data = @summaryData
 
-    App.Event.trigger('ui::ticket::summaryUpdate', { ticket_id: @ticket.id, result: data.result })
+    @updateSummarySeenState(@summaryData)
 
     return if !@elSidebar
 
-    noSummaryPossible = data.result && _.every(_.values(data.result), (item) -> item is null)
+    noSummaryPossible = @summaryData.result && _.every(_.values(@summaryData.result), (item) -> item is null)
 
     summarization = $(App.view('ticket_zoom/sidebar_ticket_summary')(
-      data:              data
+      data:              @summaryData
       noSummaryPossible: noSummaryPossible
       checklist:         App.Config.get('checklist')
       structure:         @getAvailableDisplayStructure()
@@ -107,6 +123,20 @@ class SidebarTicketSummary extends App.Controller
     @preventDefaultAndStopPropagation(e)
     @renderSummarization({})
     @loadSummarization()
+
+  updateSummarySeenState: (data) =>
+    @isPreparingData = (_.isNull(data?.result) or data?.error)
+    @fingerprintMD5  = data?.result?.fingerprint_md5
+
+    App.Event.trigger(
+      'ui::ticket::summaryUpdate',
+      { ticket_id: @ticket.id, isPreparingData: @isPreparingData, fingerprintMD5: @fingerprintMD5 }
+    )
+
+    if @sidebarItem()?.name == @parentSidebar.currentTab && @fingerprintMD5 && !@isPreparingData
+      @constructor.markSummaryAsSeen(@ticket, @fingerprintMD5)
+
+    @badgeRenderLocal()
 
   summaryReloadNeeded: =>
     ticket = App.Ticket.find(@ticket.id)
@@ -209,4 +239,17 @@ class SidebarTicketSummary extends App.Controller
         )
     )
 
-App.Config.set('350-TicketSummary', SidebarTicketSummary, 'TicketZoomSidebar')
+  @summarySeenLocalStorageKey: (ticket) ->
+    "ticket-summary-seen-#{ticket.id}"
+
+  @markSummaryAsSeen: (ticket, fingerprint) =>
+    key = @summarySeenLocalStorageKey(ticket)
+    App.LocalStorage.set(key, fingerprint)
+
+  @isSummarySeen: (ticket, fingerprint) =>
+    key = @summarySeenLocalStorageKey(ticket)
+
+    App.LocalStorage.get(key) is fingerprint
+
+
+App.Config.set('350-TicketSummary', App.SidebarTicketSummary, 'TicketZoomSidebar')

@@ -124,6 +124,55 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
     end
   end
 
+  describe 'Dot', performs_jobs: true do
+    context 'when summary was updated before opening the tab' do
+      it 'dot is visible but gone after looking at the sidebar' do
+        expect(page).to have_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
+
+        click '.tabsSidebar-tab[data-tab=summary]'
+
+        expect(page).to have_no_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
+
+        refresh
+
+        expect(page).to have_no_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
+      end
+
+      it 'dot is visible when summary is updated while looking at other tab' do
+        click '.tabsSidebar-tab[data-tab=summary]'
+        click '.tabsSidebar-tab[data-tab=customer]'
+
+        create(:ticket_article, ticket:)
+
+        expect(page).to have_text 'is preparing summary'
+
+        expect(page).to have_no_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
+
+        perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
+
+        expect(page).to have_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
+      end
+
+      it 'dot is not visible when summary is updated while looking at the summar tab' do
+        click '.tabsSidebar-tab[data-tab=summary]'
+
+        create(:ticket_article, ticket:)
+
+        expect(page).to have_text 'is preparing summary'
+
+        expect(page).to have_no_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
+
+        perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
+
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_text updated_summary
+        end
+
+        expect(page).to have_no_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
+      end
+    end
+  end
+
   describe 'Banner' do
     context 'when ai_provider is set' do
       it 'displays the summary banner and opens sidebar', performs_jobs: true do

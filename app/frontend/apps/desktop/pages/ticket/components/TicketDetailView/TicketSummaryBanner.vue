@@ -1,16 +1,16 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 import CommonTranslateRenderer from '#shared/components/CommonTranslateRenderer/CommonTranslateRenderer.vue'
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
 import { getTicketView } from '#shared/entities/ticket/utils/getTicketView.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
-import emitter from '#shared/utils/emitter.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import { useTicketSummaryBanner } from '#desktop/entities/user/current/composables/useTicketSummaryBanner.ts'
+import { useTicketSummaryGenerating } from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/useTicketSummaryGenerating.ts'
 import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
 import { useTicketSidebar } from '#desktop/pages/ticket/composables/useTicketSidebar.ts'
 import { useTicketSummarySeen } from '#desktop/pages/ticket/composables/useTicketSummarySeen.ts'
@@ -39,11 +39,7 @@ const isTicketAgent = computed(() =>
   ticket.value ? getTicketView(ticket.value).isTicketAgent : false,
 )
 
-const isSummaryGenerating = ref(false)
-
-emitter.on('ticket-summary-generating', (isGenerating) => {
-  isSummaryGenerating.value = isGenerating
-})
+const { isSummaryGenerating } = useTicketSummaryGenerating()
 
 const showBanner = computed(
   () =>
@@ -58,7 +54,6 @@ const showBanner = computed(
 const seeSummary = () => {
   if (!isTicketSummarySidebarActive.value) {
     sidebar?.switchSidebar('ticket-summary')
-    return
   }
 
   storeFingerprint(currentSummaryFingerprint.value)

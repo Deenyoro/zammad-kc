@@ -11,7 +11,7 @@ const ticketSummaryFingerprints = ref<Map<ID, string | null | undefined>>(
 )
 
 export const useTicketSummarySeen = () => {
-  const { ticket } = useTicketInformation()
+  const { ticket, ticketInternalId } = useTicketInformation()
   const sidebar = useTicketSidebar()
 
   const isTicketStateMerged = computed(
@@ -22,9 +22,9 @@ export const useTicketSummarySeen = () => {
     () => sidebar.activeSidebar.value === 'ticket-summary',
   )
 
-  const localStorageFingerprint = useLocalStorage(
-    `${ticket.value?.internalId}-ticket-summary-banner-seen`,
-    null as string | null,
+  const localStorageFingerprint = useLocalStorage<null | string>(
+    `ticket-summary-seen-${ticketInternalId.value}`,
+    null,
   )
 
   const storedSummaryFingerprint = computed<string | null>(() =>
@@ -57,14 +57,15 @@ export const useTicketSummarySeen = () => {
       if (currentSidebar !== 'ticket-summary') return
 
       storeFingerprint(currentSummaryFingerprint.value)
+      setFingerprint(currentSummaryFingerprint.value)
     },
   )
 
-  const isCurrentTicketSummaryRead = computed(() => {
-    if (!currentSummaryFingerprint.value) return false
-
-    return currentSummaryFingerprint.value === storedSummaryFingerprint.value
-  })
+  const isCurrentTicketSummaryRead = computed(() =>
+    !currentSummaryFingerprint.value
+      ? false
+      : currentSummaryFingerprint.value === storedSummaryFingerprint.value,
+  )
 
   return {
     currentSummaryFingerprint: readonly(currentSummaryFingerprint),

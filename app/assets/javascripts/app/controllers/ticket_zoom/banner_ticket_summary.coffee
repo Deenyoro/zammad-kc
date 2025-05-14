@@ -18,7 +18,6 @@ class App.TicketZoomBannerTicketSummary extends App.Controller
     # hide banner if summary sidebar is shown
     @controllerBind('ui::ticket::summarySidebar::shown', (data) =>
       return if data.ticket_id isnt @ticket.id
-      return if !@isBannerVisible()
 
       @hideOnSummaryTabOpen()
     )
@@ -27,8 +26,8 @@ class App.TicketZoomBannerTicketSummary extends App.Controller
     @controllerBind('ui::ticket::summaryUpdate', (data) =>
       return if data.ticket_id isnt @ticket.id
 
-      @isPreparingData = (_.isNull(data?.result) or data?.error)
-      @fingerprintMD5  = data?.result?.fingerprint_md5
+      @isPreparingData = data.isPreparingData
+      @fingerprintMD5  = data.fingerprintMD5
 
       @render()
     )
@@ -88,17 +87,14 @@ class App.TicketZoomBannerTicketSummary extends App.Controller
       .click()
 
   bannerLocalStorageKey: =>
-    "#{@ticket.id}-ticket-summary-banner-seen"
+    "#{@ticket.id}-ticket-summary-seen"
 
   isBannerVisible: =>
     return false if App.User.current()?.preferences?.ticket_summary_banner_hidden
-    return false if App.LocalStorage.get(@bannerLocalStorageKey()) is @fingerprintMD5
-    true
+
+    !App.SidebarTicketSummary.isSummarySeen(@ticket, @fingerprintMD5)
 
   hideOnSummaryTabOpen: =>
-
-    # Do not remember hiding of the banner if the data is still being prepared or the fingerprint is missing.
-    return if @isPreparingData || !@fingerprintMD5
-
-    App.LocalStorage.set(@bannerLocalStorageKey(), @fingerprintMD5)
+    if @fingerprintMD5
+      App.SidebarTicketSummary.markSummaryAsSeen(@ticket, @fingerprintMD5)
     @render()

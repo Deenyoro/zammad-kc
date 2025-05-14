@@ -690,7 +690,8 @@ useResizeObserver(
         </div>
       </div>
     </CommonLoader>
-    <template #sideBar="{ isCollapsed, toggleCollapse }">
+    <!-- Render underlying components only when the ticket is available to avoid providing undefined ticket context -->
+    <template v-if="!!ticket" #sideBar="{ isCollapsed, toggleCollapse }">
       <TicketSidebar
         :is-collapsed="isCollapsed"
         :toggle-collapse="toggleCollapse"
