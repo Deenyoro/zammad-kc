@@ -107,7 +107,10 @@ module ApplicationController::HandlesErrors
       data[:error_human] = data[:error]
     elsif e.instance_of?(Exceptions::InvalidAttribute)
       data[:invalid_attribute] = { e.attribute => data[:error] }
-    elsif [ActionController::RoutingError, ActiveRecord::RecordNotFound, Exceptions::UnprocessableEntity, Exceptions::NotAuthorized, Exceptions::Forbidden, Store::Provider::S3::Error, Authorization::Provider::AccountError, Exceptions::MissingAttribute, ActionController::ParameterMissing].include?(e.class)
+    elsif e.instance_of?(Exceptions::UnprocessableEntity)
+      data[:error_human] = data[:error]
+      data[:unprocessable_entity] = e.entity
+    elsif [ActionController::RoutingError, ActiveRecord::RecordNotFound, Exceptions::NotAuthorized, Exceptions::Forbidden, Store::Provider::S3::Error, Authorization::Provider::AccountError, Exceptions::MissingAttribute, ActionController::ParameterMissing].include?(e.class)
       data[:error_human] = data[:error]
     end
 

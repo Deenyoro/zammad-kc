@@ -31,7 +31,7 @@ class Webhook::EnsureNoRelatedObjects
   def ensure_no_related_objects!
     return if related_objects.blank?
 
-    raise Exceptions::UnprocessableEntity, "Cannot delete! This webhook is referenced by #{references_text}"
+    raise Exceptions::UnprocessableEntity.new __('This webhook is referenced by another object and thus cannot be deleted: %s'), references_text
   end
 
   def related_objects
@@ -63,7 +63,7 @@ class Webhook::EnsureNoRelatedObjects
   def references_text
     related_objects.map do |model, performables|
       performables_text = performables.map { |performable| "#{performable[:name]} (##{performable[:id]})" }.join(', ')
-      "#{model}: #{performables_text}"
+      "#{model} / #{performables_text}"
     end.join(', ')
   end
 end

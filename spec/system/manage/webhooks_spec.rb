@@ -235,13 +235,21 @@ RSpec.describe 'Manage > Webhook', type: :system do
     end
   end
 
-  context 'when deleting' do
-    let!(:webhook) { create(:webhook) }
-    let!(:trigger) { create(:trigger, perform: { 'notification.webhook' => { 'webhook_id' => webhook.id.to_s } }) }
+  context 'when deleting', authenticated_as: :admin do
+    let(:admin)       { create(:admin, preferences: { locale: 'de-de' }) }
+    let(:webhook)     { create(:webhook) }
+    let(:trigger)     { create(:trigger, perform: { 'notification.webhook' => { 'webhook_id' => webhook.id.to_s } }) }
+    let(:source)      { 'This webhook is referenced by another object and thus cannot be deleted: %s' }
+    let(:target)      { "[TRANSLATED] #{source}" }
+    let(:translation) { create(:translation, locale: 'de-de', source:, target:) }
 
-    it 'referenced webhook shows error message' do
+    before do
+      webhook && trigger && translation
+
       visit '/#manage/webhook'
+    end
 
+    it 'referenced webhook shows translated error message (#5619)' do
       within :active_content do
         click '.js-action'
         click '.js-delete'
@@ -250,7 +258,7 @@ RSpec.describe 'Manage > Webhook', type: :system do
       in_modal do
         click '.js-submit'
 
-        expect(page).to have_text('Cannot delete').and(have_text("##{trigger.id}"))
+        expect(page).to have_text('[TRANSLATED]').and(have_text("##{trigger.id}"))
       end
     end
   end

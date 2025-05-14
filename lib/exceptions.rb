@@ -6,7 +6,14 @@ module Exceptions
 
   class Forbidden < StandardError; end
 
-  class UnprocessableEntity < StandardError; end
+  class UnprocessableEntity < StandardError
+    attr_reader :entity
+
+    def initialize(message, entity = nil)
+      super(message)
+      @entity = entity
+    end
+  end
 
   class InvalidAttribute < StandardError
     attr_reader :attribute

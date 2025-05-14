@@ -154,7 +154,7 @@ RSpec.describe Webhook, type: :model do
       let!(:trigger) { create(:trigger, perform: { 'notification.webhook' => { 'webhook_id' => webhook.id.to_s } }) }
 
       it 'raises error with details' do
-        expect { webhook.destroy }.to raise_error(Exceptions::UnprocessableEntity, %r{#{Regexp.escape("Trigger: #{trigger.name} (##{trigger.id})")}})
+        expect { webhook.destroy }.to raise_exception(be_an_instance_of(Exceptions::UnprocessableEntity).and(have_attributes(message: 'This webhook is referenced by another object and thus cannot be deleted: %s', entity: "Trigger / #{trigger.name} (##{trigger.id})")))
       end
     end
   end
