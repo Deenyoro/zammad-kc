@@ -271,11 +271,11 @@ describe('guided setup import source status', () => {
 
       await flushPromises()
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(view, 'correctly redirects to login page').toHaveCurrentUrl(
           '/login',
-        )
-      })
+        ),
+      )
     })
 
     it('shows import could not be started message', async () => {

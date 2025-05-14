@@ -65,12 +65,12 @@ describe('guided setup import selection', () => {
 
       await view.events.click(importSourceButton)
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly redirects to guided setup import source freshdesk',
-        ).toHaveCurrentUrl('/guided-setup/import/freshdesk')
-      })
+        ).toHaveCurrentUrl('/guided-setup/import/freshdesk'),
+      )
     })
   })
 })

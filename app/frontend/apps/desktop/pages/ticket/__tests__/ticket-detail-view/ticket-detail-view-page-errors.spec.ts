@@ -1,5 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import { waitFor } from '@testing-library/vue'
 import { beforeEach, expect } from 'vitest'
 
 import { visitView } from '#tests/support/components/visitView.ts'
@@ -43,7 +44,8 @@ describe('Ticket detail view error handling', () => {
 
     const view = await visitView('/tickets/123')
 
-    expect(view).toHaveCurrentUrl('/tickets/123')
+    await waitFor(async () => expect(view).toHaveCurrentUrl('/tickets/123'))
+
     expect(view.getByRole('img', { name: 'Error' })).toBeInTheDocument()
 
     expect(view.getByRole('heading', { level: 1 })).toHaveTextContent(
@@ -71,7 +73,8 @@ describe('Ticket detail view error handling', () => {
 
     const view = await visitView('/tickets/999')
 
-    expect(view).toHaveCurrentUrl('/tickets/999')
+    await waitFor(async () => expect(view).toHaveCurrentUrl('/tickets/999'))
+
     expect(view.getByRole('img', { name: 'Error' })).toBeInTheDocument()
 
     expect(view.getByRole('heading', { level: 1 })).toHaveTextContent(

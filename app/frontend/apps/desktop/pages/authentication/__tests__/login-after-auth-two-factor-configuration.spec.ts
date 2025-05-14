@@ -47,11 +47,11 @@ describe('Login - After Auth - Two Factor Configuration', () => {
 
       await view.events.click(logoutButton)
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(view, 'correctly redirects to login page').toHaveCurrentUrl(
           '/login',
-        )
-      })
+        ),
+      )
     })
   })
 
@@ -142,11 +142,11 @@ describe('Login - After Auth - Two Factor Configuration', () => {
 
       await view.events.click(logoutButton)
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(view, 'correctly redirects to login page').toHaveCurrentUrl(
           '/login',
-        )
-      })
+        ),
+      )
     })
   })
 })

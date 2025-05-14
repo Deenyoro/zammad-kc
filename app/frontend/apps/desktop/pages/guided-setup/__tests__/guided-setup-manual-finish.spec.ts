@@ -27,12 +27,12 @@ describe('guided setup manual finish', () => {
 
       const view = await visitView('/guided-setup/manual/finish')
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly redirects to guided setup start screen',
-        ).toHaveCurrentUrl('/guided-setup')
-      })
+        ).toHaveCurrentUrl('/guided-setup'),
+      )
       view.getByText('Set up a new system')
     })
   })
@@ -54,9 +54,11 @@ describe('guided setup manual finish', () => {
       await vi.runAllTimersAsync()
       vi.useRealTimers()
 
-      await vi.waitFor(() => {
-        expect(view, 'correctly redirects to home screen').toHaveCurrentUrl('/')
-      })
+      await vi.waitFor(async () =>
+        expect(view, 'correctly redirects to home screen').toHaveCurrentUrl(
+          '/',
+        ),
+      )
     })
   })
 })

@@ -95,9 +95,9 @@ describe('password login', () => {
     })
 
     // We can't really wait for it via usual methods, so we just check it ever few ms.
-    await vi.waitFor(() => {
+    await vi.waitFor(async () =>
       // We can check current url with the new custom assertion `.toHaveCurrentUrl()`.
-      expect(view, 'correctly redirects to home').toHaveCurrentUrl('/')
-    })
+      expect(view, 'correctly redirects to home').toHaveCurrentUrl('/'),
+    )
   })
 })

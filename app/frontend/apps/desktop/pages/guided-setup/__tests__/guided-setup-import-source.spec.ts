@@ -99,12 +99,12 @@ describe('guided setup import source', () => {
 
       await view.events.click(saveAndContinueButton)
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly redirects to guided setup import source freshdesk',
-        ).toHaveCurrentUrl('/guided-setup/import/freshdesk/start')
-      })
+        ).toHaveCurrentUrl('/guided-setup/import/freshdesk/start'),
+      )
 
       expect(
         view.getByRole('button', { name: 'Start Import' }),

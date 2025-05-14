@@ -3,6 +3,7 @@
 import { getAllByRole, getByRole, queryByRole } from '@testing-library/vue'
 import { flushPromises } from '@vue/test-utils'
 
+import { getHistory } from '#tests/support/components/renderComponent.ts'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockAuthentication } from '#tests/support/mock-authentication.ts'
@@ -35,12 +36,12 @@ describe('guided setup manual invite', () => {
 
       const view = await visitView('/guided-setup/manual/invite')
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly redirects to guided setup start screen',
-        ).toHaveCurrentUrl('/guided-setup')
-      })
+        ).toHaveCurrentUrl('/guided-setup'),
+      )
       view.getByText('Set up a new system')
     })
   })
@@ -170,10 +171,17 @@ describe('guided setup manual invite', () => {
       expect(queryByRole(combobox, 'listitem')).not.toBeInTheDocument()
       expect(view.getByLabelText('Full')).not.toBeChecked()
 
-      expect(
-        view,
-        'stays on the guided setup manual invite step',
-      ).toHaveCurrentUrl('/guided-setup/manual/invite')
+      await vi.waitFor(async () =>
+        expect(
+          view,
+          'stays on the guided setup manual invite step',
+        ).toHaveCurrentUrl('/guided-setup/manual/invite'),
+      )
+
+      onTestFailed(() => {
+        console.warn('🕮 history:')
+        console.log(getHistory())
+      })
     })
 
     it('can display form errors', async () => {
@@ -212,12 +220,12 @@ describe('guided setup manual invite', () => {
         view.getByRole('button', { name: 'Finish Setup' }),
       )
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly redirects to guided setup finish screen',
-        ).toHaveCurrentUrl('/guided-setup/manual/finish')
-      })
+        ).toHaveCurrentUrl('/guided-setup/manual/finish'),
+      )
     })
   })
 })

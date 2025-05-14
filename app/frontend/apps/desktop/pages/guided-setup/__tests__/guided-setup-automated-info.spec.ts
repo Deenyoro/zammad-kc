@@ -39,12 +39,12 @@ describe('guided setup automated info', () => {
     it('redirects to info screen first', async () => {
       const view = await visitView('/guided-setup')
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly redirects to guided setup automated info screen',
-        ).toHaveCurrentUrl('/guided-setup/automated')
-      })
+        ).toHaveCurrentUrl('/guided-setup/automated'),
+      )
     })
   })
 
@@ -59,9 +59,11 @@ describe('guided setup automated info', () => {
     it('redirects to home screen', async () => {
       const view = await visitView('/guided-setup/automated')
 
-      await vi.waitFor(() => {
-        expect(view, 'correctly redirects to home screen').toHaveCurrentUrl('/')
-      })
+      await vi.waitFor(async () =>
+        expect(view, 'correctly redirects to home screen').toHaveCurrentUrl(
+          '/',
+        ),
+      )
     })
   })
 })

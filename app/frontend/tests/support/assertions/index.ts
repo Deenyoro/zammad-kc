@@ -13,7 +13,7 @@ interface CustomMatchers<R = unknown> {
   toBeAvatarElement(options?: ToBeAvatarOptions): R
   toHaveClasses(classes?: string[]): R
   toHaveImagePreview(content: string): R
-  toHaveCurrentUrl(url: `/${string}`): R
+  toHaveCurrentUrl(url: `/${string}`): PromiseLike<R>
   toBeDescribedBy(text: string): R
 }
 

@@ -49,9 +49,11 @@ describe('guided setup automated run', () => {
       await vi.runAllTimersAsync()
       vi.useRealTimers()
 
-      await vi.waitFor(() => {
-        expect(view, 'correctly redirects to home screen').toHaveCurrentUrl('/')
-      })
+      await vi.waitFor(async () =>
+        expect(view, 'correctly redirects to home screen').toHaveCurrentUrl(
+          '/',
+        ),
+      )
     })
 
     it('shows an alert message and hides spinner on errors', async () => {
@@ -103,9 +105,11 @@ describe('guided setup automated run', () => {
 
       const view = await visitView('/guided-setup/automated/run')
 
-      await vi.waitFor(() => {
-        expect(view, 'correctly redirects to home screen').toHaveCurrentUrl('/')
-      })
+      await vi.waitFor(async () =>
+        expect(view, 'correctly redirects to home screen').toHaveCurrentUrl(
+          '/',
+        ),
+      )
     })
 
     it('redirects to login screen', async () => {
@@ -113,11 +117,11 @@ describe('guided setup automated run', () => {
 
       const view = await visitView('/guided-setup/automated/run')
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(view, 'correctly redirects to login screen').toHaveCurrentUrl(
           '/login',
-        )
-      })
+        ),
+      )
     })
   })
 })

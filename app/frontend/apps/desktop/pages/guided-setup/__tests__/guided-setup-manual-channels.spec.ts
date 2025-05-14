@@ -27,12 +27,12 @@ describe('guided setup manual channels', () => {
 
       const view = await visitView('/guided-setup/manual/channels')
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly redirects to guided setup start screen',
-        ).toHaveCurrentUrl('/guided-setup')
-      })
+        ).toHaveCurrentUrl('/guided-setup'),
+      )
       view.getByText('Set up a new system')
     })
   })
@@ -58,12 +58,12 @@ describe('guided setup manual channels', () => {
 
       await view.events.click(emailChannelButton)
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly redirects to guided setup email channel step',
-        ).toHaveCurrentUrl('/guided-setup/manual/channels/email')
-      })
+        ).toHaveCurrentUrl('/guided-setup/manual/channels/email'),
+      )
     })
 
     it('can go back to email notification step', async () => {
@@ -73,12 +73,12 @@ describe('guided setup manual channels', () => {
 
       await view.events.click(goBackButton)
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly redirects to email notification step',
-        ).toHaveCurrentUrl('/guided-setup/manual/email-notification')
-      })
+        ).toHaveCurrentUrl('/guided-setup/manual/email-notification'),
+      )
     })
 
     it('can skip to the last step', async () => {
@@ -88,11 +88,11 @@ describe('guided setup manual channels', () => {
 
       await view.events.click(skipButton)
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(view, 'correctly redirects to the last step').toHaveCurrentUrl(
           '/guided-setup/manual/finish',
-        )
-      })
+        ),
+      )
     })
   })
 })

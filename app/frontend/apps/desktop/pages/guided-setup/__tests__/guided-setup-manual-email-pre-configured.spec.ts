@@ -38,12 +38,12 @@ describe('guided setup manual email notification', () => {
         '/guided-setup/manual/channels/email-pre-configured',
       )
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly redirects to guided setup channels email screen',
-        ).toHaveCurrentUrl('/guided-setup/manual/channels/email')
-      })
+        ).toHaveCurrentUrl('/guided-setup/manual/channels/email'),
+      )
 
       expect(view.getByText('Email Account')).toBeInTheDocument()
       expect(view.getByText('Email address')).toBeInTheDocument()
@@ -82,12 +82,14 @@ describe('guided setup manual email notification', () => {
         '/guided-setup/manual/channels/email-pre-configured',
       )
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly shows information about pre-configured email addresses',
-        ).toHaveCurrentUrl('/guided-setup/manual/channels/email-pre-configured')
-      })
+        ).toHaveCurrentUrl(
+          '/guided-setup/manual/channels/email-pre-configured',
+        ),
+      )
 
       const labels = view.getAllByTestId('common-label')
 

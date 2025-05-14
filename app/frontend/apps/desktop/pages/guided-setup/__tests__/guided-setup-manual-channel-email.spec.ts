@@ -9,6 +9,7 @@ import {
   queryByText,
 } from '@testing-library/vue'
 
+import { getHistory } from '#tests/support/components/renderComponent.ts'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockAuthentication } from '#tests/support/mock-authentication.ts'
@@ -75,12 +76,12 @@ describe('guided setup manual channel email', () => {
 
       const view = await visitView('/guided-setup/manual/channels/email')
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly redirects to guided setup start screen',
-        ).toHaveCurrentUrl('/guided-setup')
-      })
+        ).toHaveCurrentUrl('/guided-setup'),
+      )
       view.getByText('Set up a new system')
     })
   })
@@ -224,12 +225,12 @@ describe('guided setup manual channel email', () => {
         }),
       )
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly redirects to guided setup invite step',
-        ).toHaveCurrentUrl('/guided-setup/manual/invite')
-      })
+        ).toHaveCurrentUrl('/guided-setup/manual/invite'),
+      )
     })
 
     it('can show inbound configuration form when guess is unsuccessful', async () => {
@@ -757,9 +758,9 @@ describe('guided setup manual channel email', () => {
         },
       })
 
-      await vi.waitFor(() => {
-        expect(view).toHaveCurrentUrl('/guided-setup/manual/invite')
-      })
+      await vi.waitFor(async () =>
+        expect(view).toHaveCurrentUrl('/guided-setup/manual/invite'),
+      )
     })
 
     it('can show warning when SSL/STARTTLS is used and SSL verification is turned off in inbound form', async () => {
@@ -989,10 +990,15 @@ describe('guided setup manual channel email', () => {
 
       await view.events.click(goBackButton)
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(view, 'correctly redirects to channels step').toHaveCurrentUrl(
           '/guided-setup/manual/channels',
-        )
+        ),
+      )
+
+      onTestFailed(() => {
+        console.warn('🕮 history:')
+        console.log(getHistory())
       })
     })
   })

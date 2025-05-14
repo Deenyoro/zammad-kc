@@ -38,12 +38,12 @@ describe('guided setup manual email notification', () => {
 
       const view = await visitView('/guided-setup/manual/email-notification')
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly redirects to guided setup start screen',
-        ).toHaveCurrentUrl('/guided-setup')
-      })
+        ).toHaveCurrentUrl('/guided-setup'),
+      )
       view.getByText('Set up a new system')
     })
   })
@@ -109,12 +109,12 @@ describe('guided setup manual email notification', () => {
 
       await view.events.click(continueButton)
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly redirects to guided setup email channel step',
-        ).toHaveCurrentUrl('/guided-setup/manual/channels')
-      })
+        ).toHaveCurrentUrl('/guided-setup/manual/channels'),
+      )
     })
 
     it('shows warning when SSL verification is turned off', async () => {
@@ -258,12 +258,12 @@ describe('guided setup manual email notification', () => {
 
       await view.events.click(goBackButton)
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(
           view,
           'correctly redirects to email notification step',
-        ).toHaveCurrentUrl('/guided-setup/manual/system-information')
-      })
+        ).toHaveCurrentUrl('/guided-setup/manual/system-information'),
+      )
     })
 
     it('can skip to channels step', async () => {
@@ -273,11 +273,11 @@ describe('guided setup manual email notification', () => {
 
       await view.events.click(skipButton)
 
-      await vi.waitFor(() => {
+      await vi.waitFor(async () =>
         expect(view, 'correctly redirects to channels step').toHaveCurrentUrl(
           '/guided-setup/manual/channels',
-        )
-      })
+        ),
+      )
     })
   })
 })

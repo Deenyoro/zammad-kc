@@ -14,11 +14,11 @@ describe('linked accounts page', () => {
   it('is not accessible if no providers are enabled', async () => {
     const view = await visitView('/personal-setting/linked-accounts')
 
-    await vi.waitFor(() => {
+    await vi.waitFor(async () =>
       expect(view, 'correctly redirects to error page').toHaveCurrentUrl(
         '/error-tab',
-      )
-    })
+      ),
+    )
   })
 
   describe('with enabled providers', () => {

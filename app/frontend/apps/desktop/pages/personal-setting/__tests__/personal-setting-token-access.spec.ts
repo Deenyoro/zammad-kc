@@ -106,11 +106,11 @@ describe('personal settings for token access', () => {
 
     const view = await visitView('/personal-setting/token-access')
 
-    await vi.waitFor(() => {
+    await vi.waitFor(async () =>
       expect(view, 'correctly redirects to error page').toHaveCurrentUrl(
         '/error-tab',
-      )
-    })
+      ),
+    )
   })
 
   it('show existing personal access token', async () => {
