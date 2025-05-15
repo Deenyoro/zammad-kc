@@ -28,12 +28,12 @@ describe('guided setup system information', () => {
 
       const view = await visitView('/guided-setup/manual/system-information')
 
-      await vi.waitFor(async () =>
+      await vi.waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup start screen',
-        ).toHaveCurrentUrl('/guided-setup'),
-      )
+        ).toHaveCurrentUrl('/guided-setup')
+      })
       view.getByText('Set up a new system')
     })
   })
@@ -85,12 +85,12 @@ describe('guided setup system information', () => {
 
       await view.events.click(continueButton)
 
-      await vi.waitFor(async () =>
+      await vi.waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup email notification setp',
-        ).toHaveCurrentUrl('/guided-setup/manual/email-notification'),
-      )
+        ).toHaveCurrentUrl('/guided-setup/manual/email-notification')
+      })
     })
   })
 })

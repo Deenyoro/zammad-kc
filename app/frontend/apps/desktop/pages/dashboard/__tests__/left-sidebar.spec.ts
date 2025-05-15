@@ -8,7 +8,6 @@ import {
 } from '@testing-library/vue'
 import { flushPromises } from '@vue/test-utils'
 
-import { getHistory } from '#tests/support/components/renderComponent.ts'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
@@ -201,11 +200,11 @@ describe('Left sidebar', () => {
 
       await view.events.click(playgroundLink)
 
-      await vi.waitFor(async () =>
+      await vi.waitFor(() => {
         expect(view, 'correctly redirects to playground page').toHaveCurrentUrl(
           '/playground',
-        ),
-      )
+        )
+      })
 
       expect(
         view.queryByRole('region', { name: 'User menu' }),
@@ -228,12 +227,12 @@ describe('Left sidebar', () => {
 
       await view.events.click(personalSettingsLink)
 
-      await vi.waitFor(async () =>
+      await vi.waitFor(() => {
         expect(
           view,
           'correctly redirects to personal settings page',
-        ).toHaveCurrentUrl('/personal-setting/appearance'),
-      )
+        ).toHaveCurrentUrl('/personal-setting/appearance')
+      })
 
       expect(
         view.queryByRole('region', { name: 'User menu' }),
@@ -261,15 +260,10 @@ describe('Left sidebar', () => {
 
       await flushPromises()
 
-      await vi.waitFor(async () =>
+      await vi.waitFor(() => {
         expect(view, 'correctly redirects to login page').toHaveCurrentUrl(
           '/login',
-        ),
-      )
-
-      onTestFailed(() => {
-        console.warn('🕮 history:')
-        console.log(getHistory())
+        )
       })
 
       expect(

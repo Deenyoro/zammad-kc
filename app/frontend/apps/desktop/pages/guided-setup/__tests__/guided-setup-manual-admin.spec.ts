@@ -51,12 +51,12 @@ describe('guided setup admin user creation', () => {
 
       view.getByText('Set up a new system').click()
 
-      await vi.waitFor(async () =>
+      await vi.waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup manual',
-        ).toHaveCurrentUrl('/guided-setup/manual'),
-      )
+        ).toHaveCurrentUrl('/guided-setup/manual')
+      })
 
       expect(view.getByText('Create Administrator Account')).toBeInTheDocument()
 
@@ -84,12 +84,12 @@ describe('guided setup admin user creation', () => {
 
       await view.events.click(createUserCurrentButton)
 
-      await vi.waitFor(async () =>
+      await vi.waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup manual system information step',
-        ).toHaveCurrentUrl('/guided-setup/manual/system-information'),
-      )
+        ).toHaveCurrentUrl('/guided-setup/manual/system-information')
+      })
 
       expect(useAuthenticationStore().authenticated).toBe(true)
 
@@ -109,11 +109,9 @@ describe('guided setup admin user creation', () => {
 
       router.back()
 
-      await vi.waitFor(async () =>
-        expect(view, 'correctly redirects to home screen').toHaveCurrentUrl(
-          '/',
-        ),
-      )
+      await vi.waitFor(() => {
+        expect(view, 'correctly redirects to home screen').toHaveCurrentUrl('/')
+      })
     })
   })
 })

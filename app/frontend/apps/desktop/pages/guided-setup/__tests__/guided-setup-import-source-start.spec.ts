@@ -40,12 +40,12 @@ describe('guided setup import source start', () => {
     it('redirects to freshdesk configuration', async () => {
       const view = await visitView('/guided-setup/import/freshdesk/start')
 
-      await vi.waitFor(async () =>
+      await vi.waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup import source freshdesk configuration',
-        ).toHaveCurrentUrl('/guided-setup/import/freshdesk'),
-      )
+        ).toHaveCurrentUrl('/guided-setup/import/freshdesk')
+      })
     })
   })
 
@@ -93,12 +93,12 @@ describe('guided setup import source start', () => {
 
       await view.events.click(startButton)
 
-      await vi.waitFor(async () =>
+      await vi.waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup import source freshdesk status page',
-        ).toHaveCurrentUrl('/guided-setup/import/freshdesk/status'),
-      )
+        ).toHaveCurrentUrl('/guided-setup/import/freshdesk/status')
+      })
 
       expect(view.getByText('Starting import…')).toBeInTheDocument()
     })
@@ -125,12 +125,12 @@ describe('guided setup import source start', () => {
 
       await view.events.click(goBackButton)
 
-      await vi.waitFor(async () =>
+      await vi.waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup import source freshdesk configuration page',
-        ).toHaveCurrentUrl('/guided-setup/import/freshdesk'),
-      )
+        ).toHaveCurrentUrl('/guided-setup/import/freshdesk')
+      })
     })
   })
 })

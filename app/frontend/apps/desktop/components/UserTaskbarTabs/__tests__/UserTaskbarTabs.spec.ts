@@ -575,7 +575,7 @@ describe('UserTaskbarTabs.vue', () => {
       },
     })
 
-    await expect(
+    expect(
       wrapper,
       'correctly redirects to the previous route',
     ).toHaveCurrentUrl('/tickets/42')

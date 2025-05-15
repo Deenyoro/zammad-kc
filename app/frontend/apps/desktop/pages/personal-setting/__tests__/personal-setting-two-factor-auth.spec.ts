@@ -18,11 +18,11 @@ describe('password personal settings', () => {
 
     const view = await visitView('/personal-setting/two-factor-auth')
 
-    await vi.waitFor(async () =>
+    await vi.waitFor(() => {
       expect(view, 'correctly redirects to error page').toHaveCurrentUrl(
         '/error-tab',
-      ),
-    )
+      )
+    })
   })
 
   describe('authentication methods', () => {

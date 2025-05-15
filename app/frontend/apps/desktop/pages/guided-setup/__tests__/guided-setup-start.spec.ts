@@ -66,12 +66,12 @@ describe('guided setup start', () => {
 
       await view.events.click(manualSetupButton)
 
-      await vi.waitFor(async () =>
+      await vi.waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup manual',
-        ).toHaveCurrentUrl('/guided-setup/manual'),
-      )
+        ).toHaveCurrentUrl('/guided-setup/manual')
+      })
 
       expect(view.getByRole('button', { name: 'Go Back' })).toBeInTheDocument()
       expect(view.getByText('Create Administrator Account')).toBeInTheDocument()
@@ -99,12 +99,12 @@ describe('guided setup start', () => {
 
       await view.events.click(importSetupButton)
 
-      await vi.waitFor(async () =>
+      await vi.waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup import',
-        ).toHaveCurrentUrl('/guided-setup/import'),
-      )
+        ).toHaveCurrentUrl('/guided-setup/import')
+      })
 
       expect(
         view.getByRole('button', { name: 'Freshdesk Beta' }),
@@ -137,12 +137,12 @@ describe('guided setup start', () => {
 
       const view = await visitView('/guided-setup')
 
-      await vi.waitFor(async () =>
+      await vi.waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup manual',
-        ).toHaveCurrentUrl('/guided-setup/manual'),
-      )
+        ).toHaveCurrentUrl('/guided-setup/manual')
+      })
 
       expect(view.getByRole('button', { name: 'Go Back' })).toBeInTheDocument()
       expect(view.getByText('Create Administrator Account')).toBeInTheDocument()
@@ -182,11 +182,9 @@ describe('guided setup start', () => {
 
       router.back()
 
-      await vi.waitFor(async () =>
-        expect(view, 'correctly redirects to home screen').toHaveCurrentUrl(
-          '/',
-        ),
-      )
+      await vi.waitFor(() => {
+        expect(view, 'correctly redirects to home screen').toHaveCurrentUrl('/')
+      })
     })
   })
 })
