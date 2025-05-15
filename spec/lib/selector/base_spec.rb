@@ -1484,4 +1484,32 @@ RSpec.describe Selector::Base, searchindex: true do
       end
     end
   end
+
+  describe 'Report Profile with selector "starts with one of" on text objects results in "unknown operator" #5198' do
+    before do
+      ticket_1.update(title: "1111 #{ticket_1.title}")
+      ticket_2.update(title: "1111 #{ticket_2.title}")
+      ticket_3.update(title: "1111 #{ticket_3.title}")
+      searchindex_model_reload([Ticket])
+    end
+
+    it 'does match', :aggregate_failures do
+      condition = {
+        operator:   'AND',
+        conditions: [
+          {
+            name:     'ticket.title',
+            operator: 'starts with one of',
+            value:    ['111'],
+          },
+        ]
+      }
+
+      count, = Ticket.selectors(condition, { current_user: agent })
+      expect(count).to eq(3)
+
+      result = SearchIndexBackend.selectors('Ticket', condition, { current_user: agent })
+      expect(result[:count]).to eq(3)
+    end
+  end
 end

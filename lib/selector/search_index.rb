@@ -158,6 +158,14 @@ class Selector::SearchIndex < Selector::Base
     if data[:value].is_a?(Array)
       wildcard_or_term = 'terms'
     end
+
+    # because of the deep structure search we don't really know the field type of the related data
+    # so we currently guess it by checking the condition value and if it is not some kind of relation field like state_id
+    value_is_string = Array.wrap(data[:value]).any?(String)
+    if value_is_string && ['.id', '_id', '_ids'].any? { |value| key.ends_with?(value) } # ticket.state_id / user.organization_ids / role.id
+      value_is_string = Array.wrap(data[:value]).any? { |value| value.match(%r{[A-z]}) }
+    end
+
     t = {}
 
     # use .keyword in case of compare exact values
@@ -188,20 +196,12 @@ class Selector::SearchIndex < Selector::Base
         data[:value] = user.organization_id
       end
 
-      if data[:value].is_a?(Array)
-        data[:value].each do |value|
-          next if !value.is_a?(String) || value !~ %r{[A-z]}
-
-          key_tmp += '.keyword'
-          break
-        end
-      elsif data[:value].is_a?(String) && %r{[A-z]}.match?(data[:value])
+      if value_is_string
         key_tmp += '.keyword'
       end
     end
 
     # use .keyword and wildcard search in cases where query contains non A-z chars
-    value_is_string = Array.wrap(data[:value]).any? { |v| v.is_a?(String) && v.match?(%r{[A-z]}) }
     if ['contains', 'contains not', 'starts with one of', 'ends with one of'].include?(data[:operator]) && value_is_string
       wildcard_or_term = 'wildcard'
       if !key_tmp.ends_with?('.keyword')
