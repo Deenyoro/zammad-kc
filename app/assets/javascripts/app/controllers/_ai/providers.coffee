@@ -78,6 +78,26 @@ class ProviderForm extends App.Controller
         value: params.url,
         placeholder: 'http://localhost:11434'
       }
+      url_completions: {
+        name: 'url_completions',
+        display: __('URL (Completions)'),
+        tag: 'input',
+        type: 'text',
+        null: false,
+        autocomplete: 'off',
+        value: params.url_completions,
+        placeholder: ''
+      }
+      url_embeddings: {
+        name: 'url_embeddings',
+        display: __('URL (Embeddings)'),
+        tag: 'input',
+        type: 'text',
+        null: false,
+        autocomplete: 'off',
+        value: params.url_embeddings,
+        placeholder: ''
+      }
     }
 
 

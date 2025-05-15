@@ -1,0 +1,75 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: "<AZURE_URL_COMPLETIONS>"
+    body:
+      encoding: UTF-8
+      string: '{"messages":[{"role":"system","content":""},{"role":"user","content":"This
+        is a connection test. Return in unprettified JSON ''{ \"connected\": \"true\"
+        }'' if you got the message."}],"temperature":null,"response_format":{"type":"json_object"},"stream":false,"store":false}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Zammad User Agent
+      Host:
+      - "<AZURE_HOST>"
+      Content-Type:
+      - application/json; charset=utf-8
+      Authorization:
+      - Bearer <AZURE_TOKEN>
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Length:
+      - '1046'
+      Content-Type:
+      - application/json
+      Apim-Request-Id:
+      - 8be37a66-5817-4849-87d3-cb77cdd44a85
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Region:
+      - East US 2
+      X-Ratelimit-Remaining-Requests:
+      - '49'
+      X-Ratelimit-Limit-Requests:
+      - '50'
+      X-Ratelimit-Remaining-Tokens:
+      - '49332'
+      X-Ratelimit-Limit-Tokens:
+      - '50000'
+      Cmp-Upstream-Response-Duration:
+      - '152'
+      X-Accel-Buffering:
+      - 'no'
+      X-Ms-Rai-Invoked:
+      - 'true'
+      X-Envoy-Upstream-Service-Time:
+      - '192'
+      X-Request-Id:
+      - 65bf12d3-4967-4d22-9192-ba7113c66b4e
+      Ms-Azureml-Model-Time:
+      - '190'
+      X-Ms-Client-Request-Id:
+      - Not-Set
+      Azureml-Model-Session:
+      - v20250415-3-168426324-2
+      X-Ms-Deployment-Name:
+      - gpt-4o
+      Date:
+      - Wed, 14 May 2025 13:44:09 GMT
+    body:
+      encoding: UTF-8
+      string: '{"choices":[{"content_filter_results":{"hate":{"filtered":false,"severity":"safe"},"self_harm":{"filtered":false,"severity":"safe"},"sexual":{"filtered":false,"severity":"safe"},"violence":{"filtered":false,"severity":"safe"}},"finish_reason":"stop","index":0,"logprobs":null,"message":{"annotations":[],"content":"{\"connected\":\"true\"}","refusal":null,"role":"assistant"}}],"created":1747230250,"id":"chatcmpl-BX6h0G4NfDf8PTDD24dUowmqHtjiH","model":"gpt-4o","object":"chat.completion","prompt_filter_results":[{"prompt_index":0,"content_filter_results":{"hate":{"filtered":false,"severity":"safe"},"self_harm":{"filtered":false,"severity":"safe"},"sexual":{"filtered":false,"severity":"safe"},"violence":{"filtered":false,"severity":"safe"}}}],"system_fingerprint":"fp_ee1d74bde0","usage":{"completion_tokens":6,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":0,"rejected_prediction_tokens":0},"prompt_tokens":39,"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0},"total_tokens":45}}
+
+        '
+  recorded_at: Wed, 14 May 2025 13:44:10 GMT
+recorded_with: VCR 6.3.1

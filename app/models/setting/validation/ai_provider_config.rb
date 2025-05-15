@@ -31,6 +31,8 @@ class Setting::Validation::AIProviderConfig < Setting::Validation::Base
     case provider
     when 'ollama'
       return __('AI provider Ollama URL is not set') if value['url'].blank?
+    when 'azure'
+      return __('AI provider Azure configuration is incomplete') if !required_attributes_azure
     else
       return __('AI provider token is not set') if value['token'].blank?
     end
@@ -46,5 +48,16 @@ class Setting::Validation::AIProviderConfig < Setting::Validation::Base
     nil
   rescue => e
     __("AI provider is not accessible: #{e.message}")
+  end
+
+  def required_attributes_azure
+    return false if value['url_completions'].blank?
+
+    # TODO: Enable it when needed.
+    # return false if value['url_embeddings'].blank?
+
+    return false if value['token'].blank?
+
+    true
   end
 end
