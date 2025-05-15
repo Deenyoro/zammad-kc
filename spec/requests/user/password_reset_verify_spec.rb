@@ -40,7 +40,7 @@ RSpec.describe 'User password reset verify endpoint', authenticated_as: false, t
 
       send_request
 
-      expect(message).to include('This activity is not known to you? If not, contact your system administrator.')
+      expect(message).to include('If you did not initiate this change, please contact your system administrator.')
     end
   end
 

@@ -43,7 +43,7 @@ RSpec.describe Service::User::PasswordReset::Update do
 
       service.execute
 
-      expect(message).to include 'This activity is not known to you? If not, contact your system administrator.'
+      expect(message).to include 'If you did not initiate this change, please contact your system administrator.'
     end
   end
 
