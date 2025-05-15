@@ -535,7 +535,7 @@ msgstr "%s órával ezelőtt"
 msgid "%s is inactive, please select an active one."
 msgstr "%s inaktív, kérjük, válasszon egy aktívat."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:101
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:96
 msgid "%s is preparing summary…"
 msgstr ""
 
@@ -653,7 +653,7 @@ msgstr "%s átváltott erre: |%s|!"
 msgid "%s ticket selected"
 msgstr "%s jegy"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:102
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:97
 #, fuzzy
 #| msgid "The new ticket number could not be generated."
 msgid "%s ticket summary has been generated."
@@ -1109,16 +1109,16 @@ msgstr "API token hozzáférés"
 msgid "API error."
 msgstr "API hiba."
 
-#: lib/ai/provider/concerns/handles_response.rb:23
+#: lib/ai/provider/concerns/handles_response.rb:22
 msgid "API server error - please try again"
 msgstr ""
 
-#: lib/ai/provider/ollama.rb:47 lib/ai/provider/open_ai.rb:61
-#: lib/ai/provider/zammad_ai.rb:47
+#: lib/ai/provider/anthropic.rb:66 lib/ai/provider/ollama.rb:86
+#: lib/ai/provider/open_ai.rb:93 lib/ai/provider/zammad_ai.rb:52
 msgid "API server not accessible"
 msgstr ""
 
-#: lib/ai/provider/concerns/handles_response.rb:25
+#: lib/ai/provider/concerns/handles_response.rb:24
 #, fuzzy
 #| msgid "Loading failed, please try again later."
 msgid "API server unavailable - please try again later"
@@ -1356,7 +1356,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:37
 #: app/assets/javascripts/app/views/profile/password.jst.eco:29
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:71
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:228
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:229
 #: db/seeds/object_manager_attributes.rb:1665
 msgid "Active"
 msgstr "Aktív"
@@ -1858,7 +1858,7 @@ msgstr "Ügynöki csevegés"
 msgid "Agent idle timeout"
 msgstr "Ügynök üresjárati időkorlát"
 
-#: app/models/role.rb:156 app/models/user.rb:727
+#: app/models/role.rb:156 app/models/user.rb:736
 msgid "Agent limit exceeded, please check your account settings."
 msgstr "Ügynöki limit túllépve, kérjük, ellenőrizze fiókja beállításait."
 
@@ -2053,7 +2053,7 @@ msgstr "Váratlan hiba történt."
 msgid "An unexpected error occurred during system setup."
 msgstr "Váratlan hiba történt a rendszer beállítása során."
 
-#: lib/ai/provider/concerns/handles_response.rb:29
+#: lib/ai/provider/concerns/handles_response.rb:28
 #, fuzzy
 #| msgid "An error occurred: %s"
 msgid "An unknown error occurred"
@@ -2121,6 +2121,10 @@ msgstr "Válaszok"
 #: app/assets/javascripts/app/views/knowledge_base/_reader_list_item.jst.eco:6
 msgid "Answers: %s"
 msgstr "Válaszok: %s"
+
+#: app/assets/javascripts/app/lib/app_post/ai_provider/anthropic.coffee:3
+msgid "Anthropic"
+msgstr ""
 
 #: app/assets/javascripts/app/lib/app_post/iconset_picker.coffee:9
 msgid "Anticon"
@@ -2198,17 +2202,17 @@ msgstr "Alkalmazások"
 
 #: app/assets/javascripts/app/views/widget/template.jst.eco:8
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:330
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:143
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:144
 msgid "Apply"
 msgstr "Alkalmaz"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:56
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:143
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:144
 msgid "Apply Draft"
 msgstr "Piszkozat alkalmazása"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:2
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:170
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:174
 msgid "Apply Shared Draft"
 msgstr "Megosztott piszkozat alkalmazása"
 
@@ -2511,7 +2515,7 @@ msgstr ""
 "A hozzárendelési időkorlát percben, ha a kijelölt ügynök nem dolgozik rajta. "
 "A jegy nem hozzárendeltként jelenik meg."
 
-#: app/models/user.rb:630
+#: app/models/user.rb:639
 #, fuzzy
 #| msgid ""
 #| "At least one identifier (firstname, lastname, phone or email) for user is "
@@ -2531,7 +2535,7 @@ msgstr "Legalább egy megfelelési szabály szükséges, de egy sem lett megadva
 msgid "At least one object must be selected."
 msgstr "Legalább egy objektumot ki kell választani."
 
-#: app/models/role.rb:128 app/models/user.rb:701
+#: app/models/role.rb:128 app/models/user.rb:710
 msgid "At least one user needs to have admin permissions."
 msgstr ""
 "Legalább egy felhasználónak rendszergazdai jogosultságokkal kell "
@@ -2556,7 +2560,7 @@ msgstr "Csatolt fájlok"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:199
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:317
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:227
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:231
 msgid "Attachment"
 msgstr "Csatolmány"
 
@@ -2715,7 +2719,7 @@ msgid "Authenticator app secret"
 msgstr "Hitelesítő alkalmazás titok"
 
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:198
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:202
 msgid "Author"
 msgstr "Szerző"
 
@@ -2817,7 +2821,7 @@ msgstr ""
 msgid "Available for the following roles"
 msgstr "A következő szerepkörökre áll rendelkezésre"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:207
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:208
 msgid "Available methods"
 msgstr "Elérhető módok"
 
@@ -2932,7 +2936,7 @@ msgid "Base Objects"
 msgstr "Alap objektum"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:736
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:10
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:11
 msgid "Basic Authentication"
 msgstr "Alapszintű hitelesítés"
 
@@ -3125,7 +3129,7 @@ msgstr "CA"
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:97
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:243
 #: app/frontend/shared/entities/ticket-article/action/plugins/email/forward.ts:37
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:184
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:188
 #: db/seeds/object_manager_attributes.rb:508
 msgid "CC"
 msgstr "Másolat"
@@ -3290,16 +3294,16 @@ msgstr "Mégse"
 #: app/assets/javascripts/app/views/password/reset_sent.jst.eco:7
 #: app/assets/javascripts/app/views/signup.jst.eco:7
 #: app/frontend/apps/desktop/components/CommonDialog/CommonDialogActionFooter.vue:19
-#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:14
+#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:10
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:320
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactorMethods.vue:56
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:125
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordReset.vue:119
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordResetVerify.vue:158
 #: app/frontend/apps/desktop/pages/authentication/views/Signup.vue:140
-#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:414
+#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:415
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:72
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:229
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:233
 msgid "Cancel & Go Back"
 msgstr "Mégse és visszalépés"
 
@@ -3381,7 +3385,7 @@ msgstr "Tanúsítványok és privát kulcsok"
 
 #: app/assets/javascripts/app/models/group.coffee:46
 #: app/assets/javascripts/app/views/generic/login_preview.jst.eco:26
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:99
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:102
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:108
 #: app/frontend/apps/desktop/components/Form/fields/FieldGroupPermissions/FieldGroupPermissionsInput.vue:48
 msgid "Change"
@@ -3490,7 +3494,7 @@ msgstr "Olyan változások történtek, amelyek adatbázis-frissítést igényel
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:163
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleMeta/useArticleMeta.ts:108
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:112
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:137
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:141
 msgid "Channel"
 msgstr "Csatorna"
 
@@ -3571,7 +3575,7 @@ msgstr ""
 "rendezését. Amennyiben a jelölőnégyzet nincs bejelölve, az értékek ábécé "
 "sorrendben lesznek rendezve."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:56
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:23
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/checklist.ts:11
 #, fuzzy
 #| msgid "Checksum"
@@ -3600,7 +3604,7 @@ msgstr "Sablon kiválasztása"
 msgid "Checklist Template items are limited to 100 items per checklist."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:95
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:193
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:65
 #, fuzzy
 #| msgid "Ticket updated successfully."
@@ -3885,11 +3889,11 @@ msgstr ""
 msgid "Close current tab"
 msgstr "Aktuális lap bezárása"
 
-#: app/frontend/apps/desktop/components/CommonDialog/CommonDialog.vue:149
+#: app/frontend/apps/desktop/components/CommonDialog/CommonDialog.vue:163
 msgid "Close dialog"
 msgstr "Párbeszédpanel bezárása"
 
-#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyout.vue:320
+#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyout.vue:372
 msgid "Close side panel"
 msgstr "Oldalpanel bezárása"
 
@@ -4032,7 +4036,7 @@ msgid "Configuration of performance settings via environment variables."
 msgstr ""
 "A teljesítménybeállítások konfigurálása környezeti változókon keresztül."
 
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:22
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:25
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:6
 msgid "Configure"
 msgstr "Konfigurálás"
@@ -4280,7 +4284,7 @@ msgstr "Munkamenet folytatása"
 msgid "Continue to desktop"
 msgstr "Folytatás asztali gépen"
 
-#: app/assets/javascripts/app/controllers/_plugin/mobile_detection.coffee:56
+#: app/assets/javascripts/app/controllers/_plugin/mobile_detection.coffee:61
 #: app/assets/javascripts/app/views/login.jst.eco:125
 #: app/frontend/apps/desktop/pages/authentication/views/Login.vue:319
 msgid "Continue to mobile"
@@ -4393,7 +4397,7 @@ msgstr ""
 msgid "Could not fetch WhatsApp phone number details."
 msgstr "Nem sikerült lekérni a WhatsApp telefonszám adatait."
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:91
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:94
 msgid "Could not fetch security keys"
 msgstr "Nem sikerült lekérni a biztonsági kulcsokat"
 
@@ -4443,7 +4447,7 @@ msgstr ""
 msgid "Could not remove two-factor authentication method"
 msgstr "Nem sikerült eltávolítani a kétfaktoros hitelesítési módszert"
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:140
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:143
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:122
 msgid "Could not remove two-factor authentication method."
 msgstr "Nem sikerült eltávolítani a kétfaktoros hitelesítési módszert."
@@ -4498,7 +4502,7 @@ msgstr "Ország"
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:4
 #: app/frontend/apps/desktop/components/Form/fields/FieldGroupPermissions/FieldGroupPermissionsInput.vue:44
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:119
-#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:426
+#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:427
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:488
 msgid "Create"
 msgstr "Létrehozás"
@@ -4524,7 +4528,7 @@ msgstr "Tudásbázis létrehozása"
 msgid "Create Macros"
 msgstr "Makrók létrehozása"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:167
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:169
 #, fuzzy
 #| msgid "Create a shared draft"
 msgid "Create Shared Draft"
@@ -4608,7 +4612,7 @@ msgid "Create a new template in the admin interface."
 msgstr "Hozzon létre egy új sablont a rendszergazdai felületen."
 
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:4
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:162
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:164
 msgid "Create a shared draft"
 msgstr "Megosztott piszkozat létrehozása"
 
@@ -4744,7 +4748,7 @@ msgstr "Létrehozott belső cikk"
 #: app/assets/javascripts/app/views/widget/http_log.jst.eco:19
 #: app/assets/javascripts/app/views/widget/http_log_show.jst.eco:23
 #: app/controllers/time_accountings_controller.rb:116
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:121
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:124
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleMeta/useArticleMeta.ts:57
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/TicketSimpleTable.vue:41
 #: app/frontend/shared/entities/organization/stores/objectAttributes.ts:24
@@ -5083,7 +5087,7 @@ msgstr "A dekódolás sikeres volt."
 #: app/assets/javascripts/app/views/object_manager/attribute/multiselect.jst.eco:9
 #: app/assets/javascripts/app/views/object_manager/attribute/select.jst.eco:9
 #: app/assets/javascripts/app/views/profile/password.jst.eco:44
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:231
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:232
 #: db/seeds/settings.rb:886
 msgid "Default"
 msgstr "Alapértelmezett"
@@ -6214,7 +6218,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:83
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:45
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:13
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:236
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:240
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:162
 #: app/frontend/shared/components/Form/fields/FieldFile/FieldFileInput.vue:158
 msgid "Delete"
@@ -6640,7 +6644,7 @@ msgstr "Elvet"
 #: app/assets/javascripts/app/controllers/taskbar_widget.coffee:128
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:37
 #: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:60
-#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:411
+#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:412
 msgid "Discard Changes"
 msgstr "Változások elvetése"
 
@@ -6669,7 +6673,7 @@ msgstr "Változások elvetése"
 msgid "Discard unsaved reply"
 msgstr "A nem mentett változtatásainak elvetése"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:59
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:61
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:146
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:148
 msgid "Discard your unsaved changes"
@@ -6855,7 +6859,7 @@ msgstr "Mellékletek letöltése…"
 msgid "Draft"
 msgstr "Piszkozat"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketSharedDraftZoom.vue:24
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketSharedDraftZoom.vue:27
 #, fuzzy
 #| msgid "Draft available"
 msgid "Draft Available"
@@ -6977,7 +6981,7 @@ msgstr "Húsvét"
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:89
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:51
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:11
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:173
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:174
 #: app/frontend/apps/mobile/pages/home/views/Home.vue:76
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:53
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:56
@@ -7220,7 +7224,7 @@ msgstr "E-mail ellenőrzés"
 msgid "Email address"
 msgstr "E-mail cím"
 
-#: app/models/user.rb:640
+#: app/models/user.rb:649
 msgid "Email address '%{email}' is already used for another user."
 msgstr ""
 "A '%{email}' e-mail cím már használatban van egy másik felhasználó számára."
@@ -7603,7 +7607,7 @@ msgstr "Titkosítás:"
 #: app/assets/javascripts/app/models/webhook.coffee:7
 #: app/assets/javascripts/app/views/integration/check_mk.jst.eco:16
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:3
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:39
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:42
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:23
 #: app/assets/javascripts/app/views/integration/github.jst.eco:12
 #: app/assets/javascripts/app/views/integration/gitlab.jst.eco:12
@@ -7805,7 +7809,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_error_modal.coffee:6
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:165
 #: app/assets/javascripts/app/controllers/_settings/area_proxy.coffee:51
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:143
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:125
 #: app/assets/javascripts/app/controllers/widget/error_modal.coffee:6
 #: app/frontend/apps/desktop/components/CommonError/CommonError.vue:30
 #: app/frontend/apps/mobile/pages/error/views/Error.vue:39
@@ -7998,7 +8002,7 @@ msgid "Excepted users"
 msgstr "Kivételt képező felhasználók"
 
 #: app/assets/javascripts/app/controllers/_integration/exchange.coffee:3
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:21
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:24
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:8
 msgid "Exchange"
 msgstr "Exchange"
@@ -8206,7 +8210,7 @@ msgstr ""
 msgid "Failed to save the order of the checklist items. Please try again."
 msgstr "Nem sikerült beállítani a QR-kódot. Kérjük, próbálja újra."
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:205
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:204
 msgid "Failed to set up QR code. Please try again."
 msgstr "Nem sikerült beállítani a QR-kódot. Kérjük, próbálja újra."
 
@@ -8400,7 +8404,7 @@ msgstr "Flat Design"
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:305
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:482
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:86
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:59
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:62
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:174
 msgid "Folder"
 msgstr "Mappa"
@@ -8409,7 +8413,7 @@ msgstr "Mappa"
 msgid "Folder:"
 msgstr "Mappa:"
 
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:59
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:62
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:80
 msgid "Folders"
 msgstr "Mappák"
@@ -8474,7 +8478,7 @@ msgstr ""
 msgid "Forbidden"
 msgstr "Tiltott"
 
-#: lib/ai/provider/concerns/handles_response.rb:19
+#: lib/ai/provider/concerns/handles_response.rb:16
 #, fuzzy
 #| msgid "You do not have administrator permission."
 msgid "Forbidden - you do not have permission to access this resource"
@@ -8651,7 +8655,7 @@ msgstr "GID"
 msgid "Gateway"
 msgstr "Átjáró"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:147
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:129
 #: app/assets/javascripts/app/lib/app_post/ajax.coffee:91
 msgid "General communication error, maybe internet is not available!"
 msgstr "Általános kommunikációs hiba, talán az internet nem elérhető!"
@@ -8660,7 +8664,7 @@ msgstr "Általános kommunikációs hiba, talán az internet nem elérhető!"
 msgid "Generate Access Token for |%s|"
 msgstr "Hozzáférési token generálása |%s| számára"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:276
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:277
 msgid "Generate Recovery Codes"
 msgstr "Visszaállítási kódok generálása"
 
@@ -8724,7 +8728,7 @@ msgid "Getting an Access Token"
 msgstr "Hozzáférési token beszerzése"
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/security_keys/register.jst.eco:2
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:422
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:435
 msgid "Getting key information from the browser…"
 msgstr "Kulcsfontosságú információk lekérése a böngészőből…"
 
@@ -8831,7 +8835,7 @@ msgstr "A megadott időzóna érvénytelen."
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:98
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:105
 #: app/assets/javascripts/app/views/signup/verify.jst.eco:10
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationWizard.vue:62
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationWizard.vue:67
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:88
 msgid "Go Back"
 msgstr "Vissza"
@@ -9265,8 +9269,8 @@ msgstr "Üdvözlöm! Melyik termékünk?"
 msgid "Hide Beta UI switch"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:43
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:73
+#: app/assets/javascripts/app/controllers/ticket_zoom/banner_ticket_summary.coffee:62
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:68
 msgid "Hide Smart Assist Summary Banner?"
 msgstr ""
 
@@ -9274,8 +9278,8 @@ msgstr ""
 msgid "Hide authenticator app secret"
 msgstr "Hitelesítő alkalmazás titkának elrejtése"
 
-#: app/assets/javascripts/app/views/ticket_zoom/ai_summary_banner.jst.eco:18
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:121
+#: app/assets/javascripts/app/views/ticket_zoom/banner_ticket_summary.jst.eco:21
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:116
 msgid "Hide ticket summary banner"
 msgstr ""
 
@@ -9562,7 +9566,7 @@ msgstr ""
 "kérhet egyszeri jelszavas bejelentkezést rendszergazdaként."
 
 #: app/assets/javascripts/app/views/profile/password.jst.eco:106
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:262
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:263
 msgid ""
 "If you lose your recovery codes it's possible to generate new ones. This "
 "action is going to invalidate previous recovery codes."
@@ -9636,7 +9640,7 @@ msgid "Image file"
 msgstr "Képfájl"
 
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/popup_image.coffee:18
-#: app/assets/javascripts/app/lib/app_post/image_service.coffee:95
+#: app/assets/javascripts/app/lib/app_post/image_service.coffee:134
 #: app/assets/javascripts/app/lib/base/jquery.contenteditable.js:360
 msgid "Image file size is too large, please try inserting a smaller file."
 msgstr ""
@@ -10022,7 +10026,7 @@ msgstr "A letöltött WhatsApp média integritásának ellenőrzése sikertelen 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:105
 #: app/assets/javascripts/app/controllers/knowledge_base/content_controller.coffee:133
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:161
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:158
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:162
 msgid "Internal"
 msgstr "Belső"
 
@@ -10052,7 +10056,7 @@ msgstr "Bevezető"
 msgid "Invalid 'direction'!"
 msgstr "Érvénytelen 'direction'!"
 
-#: lib/ai/provider/concerns/handles_response.rb:15
+#: lib/ai/provider/concerns/handles_response.rb:12
 #, fuzzy
 #| msgid "Invalid token, please contact your admin!"
 msgid "Invalid API key - please check your configuration"
@@ -10098,7 +10102,7 @@ msgstr "Érvénytelen client_id a fogadási ciklusban!"
 msgid "Invalid client_id received!"
 msgstr "Érvénytelen client_id érkezett!"
 
-#: app/models/user.rb:585
+#: app/models/user.rb:594
 msgid "Invalid email '%{email}'"
 msgstr "Érvénytelen e-mail cím '%{email}'"
 
@@ -10179,7 +10183,7 @@ msgstr ""
 "Érvénytelen jogosultságok. Ez a szerepkör szerkesztői hozzáféréssel "
 "rendelkezik a szülői kategóriához. A hozzáférés korlátozása nem hatékony."
 
-#: lib/ai/provider/concerns/handles_response.rb:13
+#: lib/ai/provider/concerns/handles_response.rb:10
 #, fuzzy
 #| msgid "Invalid token, please contact your admin!"
 msgid "Invalid request - please check your input"
@@ -10555,7 +10559,7 @@ msgid "Last change %s %s by %s"
 msgstr "Utolsó változtatás %s %s által %s"
 
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:11
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:207
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:211
 msgid "Last changed"
 msgstr "Utoljára módosítva"
 
@@ -10707,7 +10711,7 @@ msgstr "GitHub problémák összekapcsolása a jegyeivel."
 msgid "Link GitLab issues to your tickets."
 msgstr "GitLab problémák összekapcsolása a jegyeivel."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerLinkFlyout.vue:68
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerLinkFlyout.vue:69
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerList.vue:288
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitHub/TicketSidebarGitHub.vue:71
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitLab/TicketSidebarGitLab.vue:71
@@ -10716,7 +10720,7 @@ msgstr "GitLab problémák összekapcsolása a jegyeivel."
 msgid "Link Issue"
 msgstr "Link probléma"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:184
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:185
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:196
 #, fuzzy
 #| msgid "Objects"
@@ -10727,7 +10731,7 @@ msgstr "Objektumok"
 msgid "Link Related Answer"
 msgstr "Kapcsolódó válasz hozzákapcsolása"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:155
+#: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:154
 #, fuzzy
 #| msgid "Linked Tickets"
 msgid "Link Tickets"
@@ -10739,7 +10743,7 @@ msgstr "Összekapcsolt jegyek"
 msgid "Link account on %s"
 msgstr "Fiókok összekapcsolása"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:143
+#: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:142
 #, fuzzy
 #| msgid "Ticket tags updated successfully."
 msgid "Link added successfully"
@@ -11420,7 +11424,7 @@ msgstr ""
 "létre az OTRS-ben jelenleg használt dinamikus mezőkhöz képest."
 
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:22
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:57
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:60
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:128
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:58
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:163
@@ -11602,7 +11606,7 @@ msgstr "Említések Csoport"
 msgid "Merge"
 msgstr "Egyesítés"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketMerge/TicketMergeFlyout.vue:94
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketMerge/TicketMergeFlyout.vue:93
 #, fuzzy
 #| msgid "Merge tickets"
 msgid "Merge Tickets"
@@ -11855,7 +11859,7 @@ msgstr "Hangulat"
 msgid "More information can be found here."
 msgstr "További információk itt találhatók."
 
-#: app/models/user.rb:653
+#: app/models/user.rb:662
 msgid "More than 250 secondary organizations are not allowed."
 msgstr "250-nél több másodlagos szervezet nem engedélyezett."
 
@@ -11993,7 +11997,7 @@ msgstr "Nagios integráció"
 #: app/assets/javascripts/app/models/user_overview_sorting_overview.coffee:4
 #: app/assets/javascripts/app/models/webhook.coffee:6
 #: app/assets/javascripts/app/views/channel/topics.jst.eco:5
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:34
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:37
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:18
 #: app/assets/javascripts/app/views/integration/github.jst.eco:7
 #: app/assets/javascripts/app/views/integration/gitlab.jst.eco:7
@@ -12013,13 +12017,13 @@ msgstr "Nagios integráció"
 #: app/assets/javascripts/app/views/widget/user.jst.eco:5
 #: app/controllers/time_accountings_controller.rb:89
 #: app/frontend/apps/desktop/components/Form/fields/FieldNotifications/FieldNotificationsInput.vue:30
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:116
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:119
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:31
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:97
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:91
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:188
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:192
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout/IdoitObjectList.vue:20
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:163
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:165
 #: db/seeds/object_manager_attributes.rb:1704 public/assets/form/form.js:24
 msgid "Name"
 msgstr "Név"
@@ -12029,7 +12033,7 @@ msgid "Name Identifier Format"
 msgstr "Név azonosító formátum"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:131
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:413
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:426
 msgid "Name for this security key"
 msgstr "Ennek a biztonsági kulcsnak a neve"
 
@@ -12194,7 +12198,7 @@ msgstr "Új szervezet"
 msgid "New Overview"
 msgstr "Új áttekintés"
 
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:132
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:131
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:203
 msgid "New Personal Access Token"
 msgstr "Új személyes hozzáférési token"
@@ -12383,7 +12387,7 @@ msgstr "Új felhasználó?"
 #: app/assets/javascripts/app/views/getting_started/base.jst.eco:31
 #: app/assets/javascripts/app/views/import/otrs.jst.eco:17
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationPasswordCheck.vue:57
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:58
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:59
 #: app/frontend/shared/form/i18n/locales.ts:66
 msgid "Next"
 msgstr "Következő"
@@ -12419,7 +12423,7 @@ msgstr "Következő év"
 msgid "No"
 msgstr "Nem"
 
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:21
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:24
 msgid "No %s configured."
 msgstr "Nincs %s konfigurálva."
 
@@ -12439,7 +12443,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/generic/admin/empty.jst.eco:5
 #: app/assets/javascripts/app/views/generic/calender_preview.jst.eco:49
 #: app/assets/javascripts/app/views/google/list.jst.eco:36
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:62
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:65
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:63
 #: app/assets/javascripts/app/views/integration/pgp_group.jst.eco:12
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:6
@@ -12693,7 +12697,7 @@ msgid "No settings with area 'Dashboard::Stats' defined"
 msgstr ""
 "A 'Dashboard::Stats' területhez tartozó beállítások nincsenek definiálva"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:218
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:220
 #, fuzzy
 #| msgid "Shared Drafts"
 msgid "No shared drafts yet"
@@ -12797,7 +12801,7 @@ msgstr "Nem érhető el"
 
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:160
 #: app/assets/javascripts/app/controllers/knowledge_base/agent_controller.coffee:240
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:138
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:120
 #: app/frontend/apps/desktop/components/layout/LayoutTaskbarTabContent.vue:73
 #: app/frontend/shared/errors/useErrorHandler.ts:25
 #: app/frontend/shared/router/error.ts:24
@@ -12822,7 +12826,7 @@ msgid "Not assigned"
 msgstr "Nincs hozzárendelve"
 
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:158
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:134
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:116
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show_row_display_value.jst.eco:16
 #: app/controllers/application_controller/handles_errors.rb:61
 #: app/services/service/ticket/article/create.rb:122
@@ -12849,9 +12853,11 @@ msgstr "Nem konfigurált"
 msgid "Not found"
 msgstr "Nem található"
 
-#: app/models/concerns/can_selector/advanced_sorting/base_sort.rb:15
-msgid "Not implemented"
-msgstr ""
+#: lib/ai/provider/concerns/handles_response.rb:18
+#, fuzzy
+#| msgid "No results found"
+msgid "Not found - resource not found"
+msgstr "Nincs eredmény"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:71
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:51
@@ -13006,7 +13012,7 @@ msgstr "november"
 msgid "Number"
 msgstr "Szám"
 
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:11
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:12
 msgid "OAuth"
 msgstr "OAuth"
 
@@ -13251,16 +13257,6 @@ msgstr "Irodán kívüli helyettesítés"
 msgid "Only when shared organization member"
 msgstr "Megosztott szervezet"
 
-#: app/assets/javascripts/app/views/generic/error/not_found.jst.eco:3
-msgid "Oops.. I'm sorry, but I can't find this %s."
-msgstr "Hoppá... Sajnálom, de nem találom ezt: %s."
-
-#: app/assets/javascripts/app/views/generic/error/unauthorized.jst.eco:3
-msgid "Oops.. I'm sorry, but you have insufficient rights to open this %s."
-msgstr ""
-"Hoppá... Sajnálom, de nincs elegendő jogosultsága a következő megnyitásához: "
-"%s."
-
 #: app/frontend/shared/form/i18n/locales.ts:107
 msgid "Open"
 msgstr "Megnyitás"
@@ -13377,7 +13373,7 @@ msgid "OpenAI"
 msgstr "Megnyitás"
 
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:116
-#: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:91
+#: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:94
 #: db/seeds/settings.rb:2052
 #, fuzzy
 #| msgid "Connect"
@@ -13693,7 +13689,7 @@ msgstr "Áttekintések"
 msgid "Overviews"
 msgstr "Áttekintések"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:144
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:145
 #, fuzzy
 #| msgid "Overwrite Draft"
 msgid "Overwrite Content"
@@ -13806,7 +13802,7 @@ msgstr "Szülő csoport"
 #: app/assets/javascripts/app/views/generic/login_preview.jst.eco:38
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:19
 #: app/assets/javascripts/app/views/import/kayako.jst.eco:46
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:46
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:49
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:42
 #: app/assets/javascripts/app/views/login.jst.eco:35
 #: app/frontend/apps/desktop/composables/authentication/useSignupForm.ts:43
@@ -13917,7 +13913,7 @@ msgstr "CSV adatok beillesztése"
 msgid "Paste key"
 msgstr "Kulcs beillesztése"
 
-#: lib/ai/provider/concerns/handles_response.rb:17
+#: lib/ai/provider/concerns/handles_response.rb:14
 msgid "Payment required - please top up your account"
 msgstr ""
 
@@ -14338,8 +14334,8 @@ msgstr "%s előnézet"
 msgid "Preview Calendar"
 msgstr "Új naptár"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:167
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:187
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:171
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:189
 #, fuzzy
 #| msgid "Select Shared Draft"
 msgid "Preview Shared Draft"
@@ -14407,7 +14403,7 @@ msgstr ""
 msgid "Priority"
 msgstr "Prioritás"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:70
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:79
 #, fuzzy
 #| msgid "Priority"
 msgid "Priority Icon"
@@ -14524,7 +14520,7 @@ msgstr "Proxy cím"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:109
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:156
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:163
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:167
 msgid "Public"
 msgstr "Nyilvános"
 
@@ -14597,7 +14593,7 @@ msgstr ""
 "A REST API-hozzáférés a felhasználónév/e-mail cím és jelszó használatával "
 "jelenleg letiltva van. Kérjük, lépjen kapcsolatba a rendszergazdával."
 
-#: lib/ai/provider/concerns/handles_response.rb:21
+#: lib/ai/provider/concerns/handles_response.rb:20
 msgid "Rate limit exceeded - please wait a moment"
 msgstr ""
 
@@ -14726,7 +14722,7 @@ msgid "Recovery Codes"
 msgstr "Visszaállítási kódok"
 
 #: app/assets/javascripts/app/views/profile/password.jst.eco:104
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:255
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:256
 msgid ""
 "Recovery codes can be used to access your account in the event you lose "
 "access to other two-factor authentication methods."
@@ -14747,7 +14743,7 @@ msgid ""
 "References - Search for follow-up also in In-Reply-To or References headers."
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:275
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:276
 msgid "Regenerate Recovery Codes"
 msgstr "Visszaállítási kódok újragenerálása"
 
@@ -14823,8 +14819,8 @@ msgstr "Távoli"
 #: app/assets/javascripts/app/views/twitter/search_term.jst.eco:6
 #: app/frontend/apps/desktop/components/Form/fields/FieldGroupPermissions/FieldGroupPermissionsInput.vue:269
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationPasswordCheck.vue:62
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:156
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:193
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:159
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:194
 #: app/frontend/shared/form/i18n/locales.ts:29
 msgid "Remove"
 msgstr "Eltávolítás"
@@ -14869,7 +14865,7 @@ msgstr "Minden érték eltávolítása"
 msgid "Remove authenticator app"
 msgstr "Hitelesítő alkalmazás eltávolítása"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:25
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:38
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:406
 #, fuzzy
 #| msgid "Remove %s"
@@ -14931,7 +14927,7 @@ msgstr "Eltávolítja a formázást"
 msgid "Removes the shadows for a flat look."
 msgstr "Eltávolítja az árnyékokat a lapos megjelenésért."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:20
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:33
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:399
 msgid "Rename checklist"
 msgstr ""
@@ -15096,7 +15092,7 @@ msgstr "Jelszó visszaállítása"
 msgid "Reset Password failed!"
 msgstr "A jelszó visszaállítása nem sikerült!"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchInput/QuickSearchInput.vue:63
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchInput/QuickSearchInput.vue:70
 #, fuzzy
 #| msgid "Clear Search"
 msgid "Reset Search"
@@ -15232,7 +15228,7 @@ msgstr "Cikk törlése"
 msgid "Resize frame"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyout.vue:352
+#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyout.vue:406
 msgid "Resize side panel"
 msgstr "Oldalpanel átméretezése"
 
@@ -15270,7 +15266,7 @@ msgstr "Eredmény:"
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:9
 #: app/assets/javascripts/app/views/widget/two_factor_login/security_keys.jst.eco:16
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:74
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:66
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:68
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:177
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:140
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:93
@@ -15482,7 +15478,7 @@ msgstr "SSL tanúsítványok"
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:84
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:73
 #: app/assets/javascripts/app/models/webhook.coffee:9
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:51
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:54
 #: app/assets/javascripts/app/views/integration/gitlab.jst.eco:18
 #: app/assets/javascripts/app/views/integration/idoit.jst.eco:24
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:31
@@ -15608,7 +15604,7 @@ msgstr "Mentett feltételek"
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1160
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1135
 msgid "Saving failed."
 msgstr "A mentés nem sikerült."
 
@@ -15911,7 +15907,7 @@ msgstr "Keresés…"
 msgid "Secondary organizations"
 msgstr "Másodlagos szervezetek"
 
-#: app/models/user.rb:647
+#: app/models/user.rb:656
 msgid ""
 "Secondary organizations are only allowed when the primary organization is "
 "given."
@@ -15932,7 +15928,7 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/email.ts:25
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:151
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:285
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:206
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:210
 #: db/seeds/permissions.rb:203
 msgid "Security"
 msgstr "Biztonság"
@@ -15980,14 +15976,14 @@ msgstr "A biztonsági kulcs beállítása nem sikerült."
 msgid "Security key verification failed."
 msgstr "A biztonsági kulcs ellenőrzése nem sikerült."
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:389
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:402
 #, fuzzy
 #| msgid "Security Keys"
 msgid "Security keys"
 msgstr "Biztonsági kulcsok"
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/security_keys/index.jst.eco:1
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:389
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:402
 msgid ""
 "Security keys are hardware or software credentials that can be used as your "
 "two-factor authentication method."
@@ -15999,8 +15995,8 @@ msgstr ""
 msgid "See HTTPLog for details."
 msgstr ""
 
-#: app/assets/javascripts/app/views/ticket_zoom/ai_summary_banner.jst.eco:16
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:117
+#: app/assets/javascripts/app/views/ticket_zoom/banner_ticket_summary.jst.eco:19
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:112
 #, fuzzy
 #| msgid "See more"
 msgid "See Summary"
@@ -16281,7 +16277,7 @@ msgstr "Szolgáltatás"
 msgid "Service Notification"
 msgstr "Szolgáltatási értesítés"
 
-#: lib/ai/provider/concerns/handles_response.rb:27
+#: lib/ai/provider/concerns/handles_response.rb:26
 #, fuzzy
 #| msgid "Media download failed. Please try again later."
 msgid "Service overloaded - please try again later"
@@ -16313,7 +16309,7 @@ msgstr "Munkamenetek"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:2
 #: app/assets/javascripts/app/views/profile/password.jst.eco:90
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:171
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:62
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:64
 msgid "Set Up"
 msgstr "Beállítás"
 
@@ -16343,7 +16339,7 @@ msgstr "Beállítás alapértelmezettként"
 
 #: app/assets/javascripts/app/controllers/_application_controller/table.coffee:728
 #: app/assets/javascripts/app/views/profile/password.jst.eco:62
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:185
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:186
 msgid "Set as default"
 msgstr "Beállítás alapértelmezettként"
 
@@ -16450,7 +16446,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/ai/providers.jst.eco:10
 #: app/assets/javascripts/app/views/channel/form.jst.eco:13
 #: app/assets/javascripts/app/views/customer_chat/index.jst.eco:8
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:25
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:28
 #: app/assets/javascripts/app/views/integration/github.jst.eco:2
 #: app/assets/javascripts/app/views/integration/gitlab.jst.eco:2
 #: app/assets/javascripts/app/views/integration/idoit.jst.eco:2
@@ -16495,6 +16491,7 @@ msgstr "Megosztott piszkozatok"
 
 #: app/controllers/tickets_controller.rb:89
 #: app/services/service/ticket/create.rb:180
+#: app/services/service/ticket/update.rb:72
 msgid "Shared draft cannot be selected for this ticket."
 msgstr "Megosztott piszkozat nem választható ehhez a jegyhez."
 
@@ -16505,7 +16502,7 @@ msgstr "Megosztott piszkozat nem választható ehhez a jegyhez."
 msgid "Shared draft has been created successfully."
 msgstr "A jegy sikeresen létrejött."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:129
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:130
 #, fuzzy
 #| msgid "The avatar could not be deleted."
 msgid "Shared draft has been deleted."
@@ -16683,7 +16680,7 @@ msgstr "Megjelenített bejegyzések a hívásnaplóban."
 msgid "Shown when the chat is closed."
 msgstr "Akkor jelenik meg, amikor a csevegés zárva van."
 
-#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyout.vue:333
+#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyout.vue:385
 msgid "Side panel footer"
 msgstr "Oldalpanel lábléc"
 
@@ -17106,7 +17103,7 @@ msgstr "Az importálás indítása…"
 msgid "State"
 msgstr "Állapot"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:82
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:91
 #, fuzzy
 #| msgid "State"
 msgid "State Icon"
@@ -17227,7 +17224,7 @@ msgstr "Utca"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/email.ts:13
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:98
 #: app/frontend/shared/entities/ticket-article/action/plugins/email/forward.ts:33
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:195
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:199
 msgid "Subject"
 msgstr "Tárgy"
 
@@ -17316,7 +17313,7 @@ msgstr "Feliratkozási beállítások"
 msgid "Suggested Next Steps"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:41
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:45
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/ticket-summary.ts:11
 msgid "Summary"
 msgstr ""
@@ -17577,7 +17574,7 @@ msgstr "Tesztelés"
 #: app/assets/javascripts/app/models/signature.coffee:8
 #: app/assets/javascripts/app/models/ticket_article.coffee:11
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:20
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:219
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:223
 #: db/seeds/object_manager_attributes.rb:536
 msgid "Text"
 msgstr "Szöveg"
@@ -18050,6 +18047,10 @@ msgstr ""
 "A csevegő akkor jelenik meg, ha a kapcsolat létrejött a szerverrel, és ha "
 "van online egy operátor, akivel cseveghetsz."
 
+#: app/models/concerns/can_selector/advanced_sorting/base_sort.rb:33
+msgid "The chosen sort column is unknown."
+msgstr ""
+
 #: app/assets/javascripts/app/views/time_accounting/settings.jst.eco:33
 msgid ""
 "The chosen unit will be used for display only and will not affect stored "
@@ -18424,7 +18425,7 @@ msgstr "Megjegyzés mező megnyitása"
 msgid "The new ticket number could not be generated."
 msgstr "Az új jegyszámot nem sikerült generálni."
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_new.coffee:64
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_new.coffee:68
 #: app/assets/javascripts/app/controllers/_channel/_email_signature.coffee:93
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:807
 #: app/assets/javascripts/app/controllers/customer_ticket_create.coffee:193
@@ -18438,7 +18439,7 @@ msgstr "Az objektumot nem sikerült létrehozni."
 msgid "The object could not be found."
 msgstr "Az objektumot nem sikerült megtalálni."
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_edit.coffee:64
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_edit.coffee:68
 #: app/assets/javascripts/app/controllers/_channel/sms.coffee:265
 #: app/assets/javascripts/app/controllers/_settings/area_switch.coffee:93
 #: app/assets/javascripts/app/controllers/_settings/area_ticket_number.coffee:134
@@ -18631,6 +18632,12 @@ msgstr "A kérést nem lehetett feldolgozni."
 msgid "The request limit for this operation was exceeded."
 msgstr ""
 
+#: app/assets/javascripts/app/views/generic/error/not_found.jst.eco:3
+#, fuzzy
+#| msgid "The hostname could not be found."
+msgid "The requested %s could not be found."
+msgstr "A gazdagép nevét nem sikerült megtalálni."
+
 #: lib/validations/verify_perform_rules_validator.rb:62
 msgid "The required '%{attribute}' value for %{key}, %{inner} is missing!"
 msgstr "A szükséges '%{attribute}' érték a %{key}, %{inner} esetében hiányzik!"
@@ -18696,7 +18703,7 @@ msgstr "A kötelező 'application_secret' paraméter hiányzik."
 msgid "The required parameter 'area' is missing."
 msgstr "A kötelező 'area' paraméter hiányzik."
 
-#: lib/whatsapp/account/phone_numbers.rb:16
+#: lib/whatsapp/account/phone_numbers.rb:15
 #, fuzzy
 #| msgid "The required parameter 'for_user_id' is missing."
 msgid "The required parameter 'business_id' is missing."
@@ -19255,7 +19262,7 @@ msgid "There is an existing draft. Do you want to overwrite it?"
 msgstr "Van egy meglévő piszkozat. Szeretné felülírni?"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:57
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:141
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:142
 msgid "There is existing content. Do you want to overwrite it?"
 msgstr "Van meglévő tartalom. Szeretné felülírni?"
 
@@ -19829,6 +19836,11 @@ msgstr ""
 "Ez a felhasználó jelenleg blokkolva van, mert túl sok sikertelen "
 "bejelentkezési kísérletet tett."
 
+#: app/models/webhook/ensure_no_related_objects.rb:34
+msgid ""
+"This webhook is referenced by another object and thus cannot be deleted: %s"
+msgstr ""
+
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:264
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:282
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:304
@@ -20237,7 +20249,7 @@ msgstr "Jegy címe"
 msgid "Ticket update"
 msgstr "Jegyfrissítés"
 
-#: app/frontend/shared/entities/ticket/composables/useTicketEdit.ts:54
+#: app/frontend/shared/entities/ticket/composables/useTicketEdit.ts:55
 #, fuzzy
 #| msgid "Ticket update"
 msgid "Ticket update failed."
@@ -20411,7 +20423,7 @@ msgstr "Idő"
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:134
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:12
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:145
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:144
 #: db/seeds/permissions.rb:107 db/seeds/settings.rb:4067
 msgid "Time Accounting"
 msgstr "Időelszámolás"
@@ -20524,7 +20536,7 @@ msgstr "Az űrlap címe"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleMeta/useArticleMeta.ts:79
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:96
 #: app/frontend/shared/entities/ticket-article/action/plugins/email/forward.ts:36
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:172
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:176
 #: db/seeds/object_manager_attributes.rb:482
 msgid "To"
 msgstr "Címzett"
@@ -20585,7 +20597,7 @@ msgstr ""
 "a soron belüli fordítási funkciót a „%s” gomb megnyomásával."
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/security_keys/index.jst.eco:3
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:401
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:414
 msgid ""
 "To register a new security key with your account, press the button below."
 msgstr ""
@@ -20886,7 +20898,7 @@ msgstr "Csevegés jeggyé alakítása"
 #: app/assets/javascripts/app/views/channel/email_notification_wizard.jst.eco:48
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:71
 #: app/assets/javascripts/app/views/getting_started/email_notification.jst.eco:10
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:28
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:31
 #: app/assets/javascripts/app/views/integration/idoit.jst.eco:5
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:13
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:14
@@ -21009,14 +21021,14 @@ msgstr ""
 "A kétfaktoros hitelesítés szükséges, de nincs elegendő jogosultsága a "
 "beállításához. Kérjük, lépjen kapcsolatba a rendszergazdájával."
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:224
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:227
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:106
 #: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:112
 msgid "Two-factor authentication method could not be initiated."
 msgstr "A kétfaktoros hitelesítési módszert nem lehetett elindítani."
 
 #: app/assets/javascripts/app/controllers/_profile/password.coffee:191
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:181
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:184
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:142
 msgid "Two-factor authentication method was removed."
 msgstr "A kétfaktoros hitelesítési módszer eltávolításra került."
@@ -21027,11 +21039,11 @@ msgid "Two-factor authentication method was set as default."
 msgstr "A kétfaktoros hitelesítési módszer alapértelmezettként lett beállítva."
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal.coffee:59
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:323
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:326
 msgid "Two-factor authentication method was set up successfully."
 msgstr "A kétfaktoros hitelesítési módszer beállítása sikeresen megtörtént."
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:293
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:296
 #, fuzzy
 #| msgid "Two-factor authentication method could not be initiated."
 msgid "Two-factor method could not be configured."
@@ -21103,25 +21115,19 @@ msgstr "URL"
 msgid "URL (AJAX endpoint)"
 msgstr "URL (AJAX végpont)"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:143
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:238
 #, fuzzy
 #| msgid "Create new customer"
 msgid "Unable to add all checklist items."
 msgstr "Új ügyfél létrehozása"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:100
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:198
 #, fuzzy
 #| msgid "Create new customer"
 msgid "Unable to add checklist item."
 msgstr "Új ügyfél létrehozása"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:66
-#, fuzzy
-#| msgid "Allow users to create new tags."
-msgid "Unable to create checklist."
-msgstr "Engedélyezze a felhasználók számára új címkék létrehozását."
-
-#: lib/ai/provider.rb:40
+#: lib/ai/provider.rb:43
 msgid "Unable to process response"
 msgstr ""
 
@@ -21155,10 +21161,6 @@ msgstr "Egység"
 #| msgid "Unknown error"
 msgid "Unknown"
 msgstr "Ismeretlen hiba"
-
-#: app/models/concerns/can_selector/advanced_sorting/base_sort.rb:33
-msgid "Unknown column given to sort by!"
-msgstr ""
 
 #: lib/password_policy/backend.rb:15
 msgid "Unknown error"
@@ -21265,9 +21267,9 @@ msgstr ""
 #: app/assets/javascripts/app/views/session.jst.eco:12
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:57
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:9
-#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:13
+#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:9
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:119
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:82
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:84
 msgid "Update"
 msgstr "Frissítés"
 
@@ -21287,7 +21289,7 @@ msgstr "Frissítés eszkaláció ekkor"
 msgid "Update In Min"
 msgstr "Frissítés percben"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:205
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:207
 #, fuzzy
 #| msgid "Apply Shared Draft"
 msgid "Update Shared Draft"
@@ -21695,7 +21697,7 @@ msgstr "Jegy megjelenítésekor használható"
 #: app/assets/javascripts/app/models/mention.coffee:6
 #: app/assets/javascripts/app/models/user_overview_sorting.coffee:2
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:67
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:43
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:46
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:38
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:47
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:169
@@ -21802,7 +21804,7 @@ msgstr "Felhasználói szűrő"
 msgid "User is inactive"
 msgstr "inaktív"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:18
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:21
 #, fuzzy
 #| msgid "inactive"
 msgid "User is inactive."
@@ -21953,7 +21955,7 @@ msgstr "Az ellenőrzés nem sikerült: %{errors}"
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:933
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:8
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:86
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:35
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:38
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:19
 #: app/assets/javascripts/app/views/integration/github.jst.eco:8
 #: app/assets/javascripts/app/views/integration/gitlab.jst.eco:8
@@ -22075,7 +22077,7 @@ msgstr "Jegy megtekintése"
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/article.jst.eco:3
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/notification.jst.eco:3
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:150
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:150
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:154
 #: db/seeds/object_manager_attributes.rb:449
 msgid "Visibility"
 msgstr "Láthatóság"
@@ -22480,8 +22482,8 @@ msgstr "Igen"
 msgid "Yes, add attachments now"
 msgstr "A melléklet letöltésének megismétlése"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:45
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:74
+#: app/assets/javascripts/app/controllers/ticket_zoom/banner_ticket_summary.coffee:64
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:69
 msgid "Yes, hide it"
 msgstr ""
 
@@ -22495,6 +22497,13 @@ msgstr "%s eltávolítása"
 #: app/assets/javascripts/app/controllers/widget/import_try_result.coffee:4
 msgid "Yes, start real import."
 msgstr "Igen, a valódi importálás megkezdése."
+
+#: app/assets/javascripts/app/views/generic/error/unauthorized.jst.eco:3
+#, fuzzy
+#| msgid "You have insufficient rights to view this ticket."
+msgid "You are not authorized to open this %s."
+msgstr ""
+"Ön nem rendelkezik elegendő jogosultsággal ennek a jegynek a megtekintéséhez."
 
 #: public/assets/chat/views/waiting.eco:8
 msgid "You are on waiting list position <strong>%s</strong>."
@@ -22690,8 +22699,8 @@ msgstr ""
 "nyelvterületekre. Adjon hozzá egy nyelvet az alábbiakban, majd válassza ki "
 "azt a tudásbázis-szerkesztőben a fordítások hozzáadásához."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:44
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:71
+#: app/assets/javascripts/app/controllers/ticket_zoom/banner_ticket_summary.coffee:63
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:66
 msgid "You can re-enable it anytime in Profile Settings > Appearance."
 msgstr ""
 
@@ -23066,7 +23075,7 @@ msgstr ""
 "kapcsolatba a rendszergazdájával."
 
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:31
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:88
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:91
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:128
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:112
 #: app/frontend/apps/desktop/components/layout/LayoutPublicPage/LayoutPublicPage.vue:90
@@ -24017,7 +24026,7 @@ msgstr "nem megfelelő hosszúságú (%{count} karaktereknek kellene lennie)"
 msgid "is the wrong length (should be 1 character)"
 msgstr "nem megfelelő hosszúságú (1 karakter kellene, hogy legyen)"
 
-#: app/models/user.rb:851
+#: app/models/user.rb:860
 msgid "is too long"
 msgstr "túl hosszú"
 
@@ -24219,7 +24228,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_ui_element/boolean.coffee:10
 #: app/assets/javascripts/app/controllers/time_accounting_types.coffee:23
 #: app/assets/javascripts/app/models/public_link.coffee:10
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:52
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:55
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:32
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:22
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:49
@@ -24831,6 +24840,19 @@ msgstr "...a teljes szövegterületből"
 msgid "∅ Waiting time today"
 msgstr "Várakozási idő ma"
 
+#~ msgid "Oops.. I'm sorry, but I can't find this %s."
+#~ msgstr "Hoppá... Sajnálom, de nem találom ezt: %s."
+
+#~ msgid "Oops.. I'm sorry, but you have insufficient rights to open this %s."
+#~ msgstr ""
+#~ "Hoppá... Sajnálom, de nincs elegendő jogosultsága a következő "
+#~ "megnyitásához: %s."
+
+#, fuzzy
+#~| msgid "Allow users to create new tags."
+#~ msgid "Unable to create checklist."
+#~ msgstr "Engedélyezze a felhasználók számára új címkék létrehozását."
+
 #~ msgid "Microsoft 365"
 #~ msgstr "Microsoft 365"
 
@@ -25057,13 +25079,6 @@ msgstr "Várakozási idő ma"
 #~| msgid "The hostname could not be found."
 #~ msgid "This tab could not be found."
 #~ msgstr "A gazdagép nevét nem sikerült megtalálni."
-
-#, fuzzy
-#~| msgid "You have insufficient rights to view this ticket."
-#~ msgid "You have insufficient rights to open this tab."
-#~ msgstr ""
-#~ "Ön nem rendelkezik elegendő jogosultsággal ennek a jegynek a "
-#~ "megtekintéséhez."
 
 #~ msgid "Editing"
 #~ msgstr "Szerkesztés"

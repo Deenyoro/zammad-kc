@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zammad\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-02-25 06:58+0000\n"
+"PO-Revision-Date: 2025-05-15 06:53+0000\n"
 "Last-Translator: sigurbjartur <github@sigurbjartur.com>\n"
 "Language-Team: Icelandic <https://translations.zammad.org/projects/zammad/"
 "zammad-development/is/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.11\n"
 
 #. Default date format to use for the current locale.
 #. These placeholders are supported:
@@ -520,7 +520,7 @@ msgstr "fyrir %s klukkustundum síðan"
 msgid "%s is inactive, please select an active one."
 msgstr "%s er óvirkur, vinsamlega veldu virkan."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:101
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:96
 msgid "%s is preparing summary…"
 msgstr ""
 
@@ -636,7 +636,7 @@ msgstr "%s skipti yfir á |%s|!"
 msgid "%s ticket selected"
 msgstr "%s beiðnir"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:102
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:97
 #, fuzzy
 #| msgid "The new ticket number could not be generated."
 msgid "%s ticket summary has been generated."
@@ -1089,16 +1089,16 @@ msgstr "Aðgangur að API með tóka"
 msgid "API error."
 msgstr "API villa."
 
-#: lib/ai/provider/concerns/handles_response.rb:23
+#: lib/ai/provider/concerns/handles_response.rb:22
 msgid "API server error - please try again"
 msgstr ""
 
-#: lib/ai/provider/ollama.rb:47 lib/ai/provider/open_ai.rb:61
-#: lib/ai/provider/zammad_ai.rb:47
+#: lib/ai/provider/anthropic.rb:66 lib/ai/provider/ollama.rb:86
+#: lib/ai/provider/open_ai.rb:93 lib/ai/provider/zammad_ai.rb:52
 msgid "API server not accessible"
 msgstr ""
 
-#: lib/ai/provider/concerns/handles_response.rb:25
+#: lib/ai/provider/concerns/handles_response.rb:24
 msgid "API server unavailable - please try again later"
 msgstr ""
 
@@ -1333,7 +1333,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:37
 #: app/assets/javascripts/app/views/profile/password.jst.eco:29
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:71
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:228
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:229
 #: db/seeds/object_manager_attributes.rb:1665
 msgid "Active"
 msgstr "Virkt"
@@ -1601,26 +1601,22 @@ msgid "Add note"
 msgstr "Bæta við þjark"
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:257
-#, fuzzy
-#| msgid "Format as ordered list"
 msgid "Add ordered list"
-msgstr "Forsníða sem númeraðan lista"
+msgstr "Bæta röðuðum lista við"
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/phone.ts:13
 msgid "Add phone call"
-msgstr ""
+msgstr "Bæta símtali við"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:70
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:37
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewActions.vue:88
-#, fuzzy
-#| msgid "reply"
 msgid "Add reply"
-msgstr "svara"
+msgstr "Bæta svari við"
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:203
 msgid "Add second level heading"
-msgstr ""
+msgstr "Bæta við millifyrirsögn"
 
 #: app/frontend/shared/form/i18n/locales.ts:78
 msgid "Add selected values"
@@ -1631,10 +1627,8 @@ msgid "Add sender initials to end of a tweet."
 msgstr "Bæta við upphafsstöfum sendanda aftan á tíst."
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/sms.ts:49
-#, fuzzy
-#| msgid "Add Tag"
 msgid "Add sms"
-msgstr "Bæta við merki"
+msgstr "Bæta SMS við"
 
 #: app/assets/javascripts/app/views/generic/application_selector_row.jst.eco:35
 #: app/assets/javascripts/app/views/generic/application_selector_subclause.jst.eco:21
@@ -1642,10 +1636,8 @@ msgid "Add subclause"
 msgstr ""
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketTags.vue:201
-#, fuzzy
-#| msgid "Add Tag"
 msgid "Add tag"
-msgstr "Bæta við merkispjaldi"
+msgstr "Bæta merkispjaldi við"
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:214
 msgid "Add third level heading"
@@ -1664,16 +1656,12 @@ msgid "Additional follow-up detection"
 msgstr ""
 
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:211
-#, fuzzy
-#| msgid "Block Notifications"
 msgid "Additional information"
-msgstr "Loka fyrir tilkynningar"
+msgstr "Viðbótarupplýsingar"
 
 #: app/frontend/apps/desktop/components/layout/LayoutPublicPage/LayoutPublicPage.vue:59
-#, fuzzy
-#| msgid "Block Notifications"
 msgid "Additional information and links"
-msgstr "Loka fyrir tilkynningar"
+msgstr "Viðbótarupplýsingar og hlekkir"
 
 #: db/seeds/settings.rb:871
 msgid "Additional notes for ticket create types."
@@ -1808,7 +1796,7 @@ msgstr "Spjall við þjónustufulltrúa"
 msgid "Agent idle timeout"
 msgstr ""
 
-#: app/models/role.rb:156 app/models/user.rb:727
+#: app/models/role.rb:156 app/models/user.rb:736
 #, fuzzy
 msgid "Agent limit exceeded, please check your account settings."
 msgstr ""
@@ -1990,7 +1978,7 @@ msgstr ""
 msgid "An unexpected error occurred during system setup."
 msgstr "Óvænt villa kom upp við uppsetningu kerfisins."
 
-#: lib/ai/provider/concerns/handles_response.rb:29
+#: lib/ai/provider/concerns/handles_response.rb:28
 msgid "An unknown error occurred"
 msgstr ""
 
@@ -2046,6 +2034,10 @@ msgstr "Svör"
 msgid "Answers: %s"
 msgstr "Svör"
 
+#: app/assets/javascripts/app/lib/app_post/ai_provider/anthropic.coffee:3
+msgid "Anthropic"
+msgstr ""
+
 #: app/assets/javascripts/app/lib/app_post/iconset_picker.coffee:9
 msgid "Anticon"
 msgstr ""
@@ -2096,10 +2088,8 @@ msgid "App credentials for Twitter."
 msgstr "Aðgangsupplýsingar fyrir Twitter forrit."
 
 #: app/assets/javascripts/app/views/whatsapp/account_cloud_api.jst.eco:28
-#, fuzzy
-#| msgid "App Secret"
 msgid "App secret"
-msgstr "Leyndarmál forrits"
+msgstr "Lykilorð forrits"
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:433
 #: app/assets/javascripts/app/controllers/_profile/appearance.coffee:3
@@ -2126,19 +2116,19 @@ msgstr "Forrit"
 
 #: app/assets/javascripts/app/views/widget/template.jst.eco:8
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:330
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:143
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:144
 msgid "Apply"
 msgstr "Virkja"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:56
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:143
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:144
 #, fuzzy
 #| msgid "Apply"
 msgid "Apply Draft"
 msgstr "Virkja"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:2
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:170
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:174
 msgid "Apply Shared Draft"
 msgstr ""
 
@@ -2197,10 +2187,8 @@ msgstr "Safnvista"
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:44
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:290
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:66
-#, fuzzy
-#| msgid "%s of my tickets escalated."
 msgid "Archive ticket target state"
-msgstr "%s af mínum miðum í hærri forgangi."
+msgstr "Staða safnvistaðra beiðna"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:113
 msgid "Archived"
@@ -2432,7 +2420,7 @@ msgid ""
 "will be shown as unassigend."
 msgstr ""
 
-#: app/models/user.rb:630
+#: app/models/user.rb:639
 msgid ""
 "At least one identifier (firstname, lastname, phone, mobile or email) for "
 "user is required."
@@ -2446,7 +2434,7 @@ msgstr ""
 msgid "At least one object must be selected."
 msgstr ""
 
-#: app/models/role.rb:128 app/models/user.rb:701
+#: app/models/role.rb:128 app/models/user.rb:710
 msgid "At least one user needs to have admin permissions."
 msgstr ""
 
@@ -2475,7 +2463,7 @@ msgstr "Viðhengdar skrár"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:199
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:317
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:227
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:231
 msgid "Attachment"
 msgstr "Viðhengi"
 
@@ -2634,7 +2622,7 @@ msgid "Authenticator app secret"
 msgstr "Auðkenning gegnum %s"
 
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:198
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:202
 msgid "Author"
 msgstr ""
 
@@ -2740,7 +2728,7 @@ msgstr ""
 msgid "Available for the following roles"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:207
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:208
 msgid "Available methods"
 msgstr "Tiltækar aðferðir"
 
@@ -2859,7 +2847,7 @@ msgid "Base Objects"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:736
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:10
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:11
 #, fuzzy
 #| msgid "Authentication"
 msgid "Basic Authentication"
@@ -3037,7 +3025,7 @@ msgstr ""
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:97
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:243
 #: app/frontend/shared/entities/ticket-article/action/plugins/email/forward.ts:37
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:184
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:188
 #: db/seeds/object_manager_attributes.rb:508
 msgid "CC"
 msgstr ""
@@ -3208,16 +3196,16 @@ msgstr "Hætta við"
 #: app/assets/javascripts/app/views/password/reset_sent.jst.eco:7
 #: app/assets/javascripts/app/views/signup.jst.eco:7
 #: app/frontend/apps/desktop/components/CommonDialog/CommonDialogActionFooter.vue:19
-#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:14
+#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:10
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:320
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactorMethods.vue:56
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:125
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordReset.vue:119
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordResetVerify.vue:158
 #: app/frontend/apps/desktop/pages/authentication/views/Signup.vue:140
-#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:414
+#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:415
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:72
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:229
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:233
 msgid "Cancel & Go Back"
 msgstr "Hætta við og fara tilbaka"
 
@@ -3302,7 +3290,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/models/group.coffee:46
 #: app/assets/javascripts/app/views/generic/login_preview.jst.eco:26
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:99
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:102
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:108
 #: app/frontend/apps/desktop/components/Form/fields/FieldGroupPermissions/FieldGroupPermissionsInput.vue:48
 msgid "Change"
@@ -3417,7 +3405,7 @@ msgstr "Breytingar framkvæmdar krefjast þess að gagnagrunnur sé uppfærður.
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:163
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleMeta/useArticleMeta.ts:108
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:112
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:137
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:141
 msgid "Channel"
 msgstr "Rás"
 
@@ -3498,7 +3486,7 @@ msgid ""
 "is not checked, values are sorted in alphabetical order."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:56
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:23
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/checklist.ts:11
 #, fuzzy
 #| msgid "Checksum"
@@ -3525,7 +3513,7 @@ msgstr "Sniðmát gátlista"
 msgid "Checklist Template items are limited to 100 items per checklist."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:95
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:193
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:65
 #, fuzzy
 #| msgid "Ticket updated successfully."
@@ -3806,13 +3794,13 @@ msgstr ""
 msgid "Close current tab"
 msgstr "Loka núverandi flipa"
 
-#: app/frontend/apps/desktop/components/CommonDialog/CommonDialog.vue:149
+#: app/frontend/apps/desktop/components/CommonDialog/CommonDialog.vue:163
 #, fuzzy
 #| msgid "Confirm/submit dialog"
 msgid "Close dialog"
 msgstr "Staðfesta/senda gluggi"
 
-#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyout.vue:320
+#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyout.vue:372
 #, fuzzy
 #| msgid "Close tab"
 msgid "Close side panel"
@@ -3960,7 +3948,7 @@ msgstr ""
 msgid "Configuration of performance settings via environment variables."
 msgstr ""
 
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:22
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:25
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:6
 msgid "Configure"
 msgstr "Stilla"
@@ -4214,7 +4202,7 @@ msgstr "Halda áfram með setu"
 msgid "Continue to desktop"
 msgstr "Halda áfram með setu"
 
-#: app/assets/javascripts/app/controllers/_plugin/mobile_detection.coffee:56
+#: app/assets/javascripts/app/controllers/_plugin/mobile_detection.coffee:61
 #: app/assets/javascripts/app/views/login.jst.eco:125
 #: app/frontend/apps/desktop/pages/authentication/views/Login.vue:319
 #, fuzzy
@@ -4328,15 +4316,13 @@ msgstr ""
 msgid "Could not fetch WhatsApp phone number details."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:91
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:94
 msgid "Could not fetch security keys"
 msgstr ""
 
 #: app/controllers/channels_admin/microsoft_graph_controller.rb:16
-#, fuzzy
-#| msgid "Couldn't save changes"
 msgid "Could not find the channel."
-msgstr "Ekki tókst að vista breytingar"
+msgstr "Fann ekki rásina."
 
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:39
 #: app/graphql/gql/mutations/user/current/two_factor/recovery_codes_generate.rb:23
@@ -4372,7 +4358,7 @@ msgstr ""
 msgid "Could not remove two-factor authentication method"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:140
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:143
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:122
 msgid "Could not remove two-factor authentication method."
 msgstr "Ekki tókst að fjarlægja tveggja þátta auðkenningaraðferð."
@@ -4425,7 +4411,7 @@ msgstr "Land"
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:4
 #: app/frontend/apps/desktop/components/Form/fields/FieldGroupPermissions/FieldGroupPermissionsInput.vue:44
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:119
-#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:426
+#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:427
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:488
 msgid "Create"
 msgstr "Stofna"
@@ -4453,7 +4439,7 @@ msgstr ""
 msgid "Create Macros"
 msgstr "Stofna fjölva"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:167
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:169
 #, fuzzy
 #| msgid "Created at"
 msgid "Create Shared Draft"
@@ -4515,7 +4501,7 @@ msgid "Create a new template in the admin interface."
 msgstr ""
 
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:4
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:162
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:164
 #, fuzzy
 #| msgid "Created at"
 msgid "Create a shared draft"
@@ -4666,7 +4652,7 @@ msgstr "Stofna prufu miða"
 #: app/assets/javascripts/app/views/widget/http_log.jst.eco:19
 #: app/assets/javascripts/app/views/widget/http_log_show.jst.eco:23
 #: app/controllers/time_accountings_controller.rb:116
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:121
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:124
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleMeta/useArticleMeta.ts:57
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/TicketSimpleTable.vue:41
 #: app/frontend/shared/entities/organization/stores/objectAttributes.ts:24
@@ -5017,7 +5003,7 @@ msgstr "Afkóðun heppnaðist."
 #: app/assets/javascripts/app/views/object_manager/attribute/multiselect.jst.eco:9
 #: app/assets/javascripts/app/views/object_manager/attribute/select.jst.eco:9
 #: app/assets/javascripts/app/views/profile/password.jst.eco:44
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:231
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:232
 #: db/seeds/settings.rb:886
 msgid "Default"
 msgstr "Sjálfgefið"
@@ -5964,7 +5950,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:83
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:45
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:13
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:236
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:240
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:162
 #: app/frontend/shared/components/Form/fields/FieldFile/FieldFileInput.vue:158
 msgid "Delete"
@@ -6386,7 +6372,7 @@ msgstr "Hunsa"
 #: app/assets/javascripts/app/controllers/taskbar_widget.coffee:128
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:37
 #: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:60
-#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:411
+#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:412
 msgid "Discard Changes"
 msgstr "Hunsa breytingar"
 
@@ -6419,7 +6405,7 @@ msgstr "Hunsa breytingar"
 msgid "Discard unsaved reply"
 msgstr "Fleygja óvistuðum breytingum"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:59
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:61
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:146
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:148
 msgid "Discard your unsaved changes"
@@ -6620,7 +6606,7 @@ msgstr "veldu viðhengi…"
 msgid "Draft"
 msgstr "Drög"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketSharedDraftZoom.vue:24
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketSharedDraftZoom.vue:27
 msgid "Draft Available"
 msgstr ""
 
@@ -6728,7 +6714,7 @@ msgstr "Páskafrí"
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:89
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:51
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:11
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:173
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:174
 #: app/frontend/apps/mobile/pages/home/views/Home.vue:76
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:53
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:56
@@ -6981,7 +6967,7 @@ msgstr "Staðfesting með tölvupósti"
 msgid "Email address"
 msgstr "Netfang"
 
-#: app/models/user.rb:640
+#: app/models/user.rb:649
 msgid "Email address '%{email}' is already used for another user."
 msgstr ""
 
@@ -7108,10 +7094,8 @@ msgid "Enable automatic assignment the first time an agent opens a ticket."
 msgstr ""
 
 #: db/seeds/settings.rb:5990
-#, fuzzy
-#| msgid "Enable Chat"
 msgid "Enable checklists."
-msgstr "Virkja spjall"
+msgstr "Virkja gátlista."
 
 #: app/assets/javascripts/app/views/channel/form.jst.eco:72
 msgid "Enable debugging for implementation."
@@ -7325,7 +7309,7 @@ msgstr "Dulkóðun:"
 #: app/assets/javascripts/app/models/webhook.coffee:7
 #: app/assets/javascripts/app/views/integration/check_mk.jst.eco:16
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:3
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:39
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:42
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:23
 #: app/assets/javascripts/app/views/integration/github.jst.eco:12
 #: app/assets/javascripts/app/views/integration/gitlab.jst.eco:12
@@ -7516,7 +7500,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_error_modal.coffee:6
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:165
 #: app/assets/javascripts/app/controllers/_settings/area_proxy.coffee:51
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:143
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:125
 #: app/assets/javascripts/app/controllers/widget/error_modal.coffee:6
 #: app/frontend/apps/desktop/components/CommonError/CommonError.vue:30
 #: app/frontend/apps/mobile/pages/error/views/Error.vue:39
@@ -7688,7 +7672,7 @@ msgid "Excepted users"
 msgstr "%s stofnaði notanda |%s|"
 
 #: app/assets/javascripts/app/controllers/_integration/exchange.coffee:3
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:21
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:24
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:8
 msgid "Exchange"
 msgstr ""
@@ -7908,7 +7892,7 @@ msgstr ""
 msgid "Failed to save the order of the checklist items. Please try again."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:205
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:204
 msgid "Failed to set up QR code. Please try again."
 msgstr ""
 
@@ -8097,7 +8081,7 @@ msgstr "Flöt hönnun"
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:305
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:482
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:86
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:59
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:62
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:174
 msgid "Folder"
 msgstr "Mappa"
@@ -8106,7 +8090,7 @@ msgstr "Mappa"
 msgid "Folder:"
 msgstr "Mappa:"
 
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:59
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:62
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:80
 msgid "Folders"
 msgstr ""
@@ -8174,7 +8158,7 @@ msgstr ""
 msgid "Forbidden"
 msgstr ""
 
-#: lib/ai/provider/concerns/handles_response.rb:19
+#: lib/ai/provider/concerns/handles_response.rb:16
 #, fuzzy
 #| msgid "You have not created a ticket yet."
 msgid "Forbidden - you do not have permission to access this resource"
@@ -8361,7 +8345,7 @@ msgstr ""
 msgid "Gateway"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:147
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:129
 #: app/assets/javascripts/app/lib/app_post/ajax.coffee:91
 msgid "General communication error, maybe internet is not available!"
 msgstr ""
@@ -8370,7 +8354,7 @@ msgstr ""
 msgid "Generate Access Token for |%s|"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:276
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:277
 #, fuzzy
 #| msgid "Delete records"
 msgid "Generate Recovery Codes"
@@ -8441,7 +8425,7 @@ msgid "Getting an Access Token"
 msgstr "Sæki aðgangstóka"
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/security_keys/register.jst.eco:2
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:422
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:435
 msgid "Getting key information from the browser…"
 msgstr ""
 
@@ -8542,7 +8526,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:98
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:105
 #: app/assets/javascripts/app/views/signup/verify.jst.eco:10
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationWizard.vue:62
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationWizard.vue:67
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:88
 msgid "Go Back"
 msgstr "Tilbaka"
@@ -8988,8 +8972,8 @@ msgstr ""
 msgid "Hide Beta UI switch"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:43
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:73
+#: app/assets/javascripts/app/controllers/ticket_zoom/banner_ticket_summary.coffee:62
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:68
 msgid "Hide Smart Assist Summary Banner?"
 msgstr ""
 
@@ -8999,8 +8983,8 @@ msgstr ""
 msgid "Hide authenticator app secret"
 msgstr "Auðkenning"
 
-#: app/assets/javascripts/app/views/ticket_zoom/ai_summary_banner.jst.eco:18
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:121
+#: app/assets/javascripts/app/views/ticket_zoom/banner_ticket_summary.jst.eco:21
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:116
 msgid "Hide ticket summary banner"
 msgstr ""
 
@@ -9284,7 +9268,7 @@ msgid ""
 msgstr ""
 
 #: app/assets/javascripts/app/views/profile/password.jst.eco:106
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:262
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:263
 msgid ""
 "If you lose your recovery codes it's possible to generate new ones. This "
 "action is going to invalidate previous recovery codes."
@@ -9353,7 +9337,7 @@ msgid "Image file"
 msgstr "Myndaþjónusta"
 
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/popup_image.coffee:18
-#: app/assets/javascripts/app/lib/app_post/image_service.coffee:95
+#: app/assets/javascripts/app/lib/app_post/image_service.coffee:134
 #: app/assets/javascripts/app/lib/base/jquery.contenteditable.js:360
 msgid "Image file size is too large, please try inserting a smaller file."
 msgstr ""
@@ -9755,7 +9739,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:105
 #: app/assets/javascripts/app/controllers/knowledge_base/content_controller.coffee:133
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:161
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:158
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:162
 msgid "Internal"
 msgstr ""
 
@@ -9785,7 +9769,7 @@ msgstr "Inngangur"
 msgid "Invalid 'direction'!"
 msgstr ""
 
-#: lib/ai/provider/concerns/handles_response.rb:15
+#: lib/ai/provider/concerns/handles_response.rb:12
 msgid "Invalid API key - please check your configuration"
 msgstr ""
 
@@ -9829,7 +9813,7 @@ msgstr ""
 msgid "Invalid client_id received!"
 msgstr ""
 
-#: app/models/user.rb:585
+#: app/models/user.rb:594
 msgid "Invalid email '%{email}'"
 msgstr ""
 
@@ -9908,7 +9892,7 @@ msgid ""
 "Limiting access is not effective."
 msgstr ""
 
-#: lib/ai/provider/concerns/handles_response.rb:13
+#: lib/ai/provider/concerns/handles_response.rb:10
 msgid "Invalid request - please check your input"
 msgstr ""
 
@@ -10275,7 +10259,7 @@ msgid "Last change %s %s by %s"
 msgstr ""
 
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:11
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:207
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:211
 #, fuzzy
 #| msgid "has changed"
 msgid "Last changed"
@@ -10435,7 +10419,7 @@ msgstr ""
 msgid "Link GitLab issues to your tickets."
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerLinkFlyout.vue:68
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerLinkFlyout.vue:69
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerList.vue:288
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitHub/TicketSidebarGitHub.vue:71
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitLab/TicketSidebarGitLab.vue:71
@@ -10444,7 +10428,7 @@ msgstr ""
 msgid "Link Issue"
 msgstr "Tengill %s"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:184
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:185
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:196
 #, fuzzy
 #| msgid "Objects"
@@ -10455,7 +10439,7 @@ msgstr "Hlutir"
 msgid "Link Related Answer"
 msgstr "Tengja við tengda lausn"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:155
+#: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:154
 #, fuzzy
 #| msgid "Linked Tickets"
 msgid "Link Tickets"
@@ -10467,11 +10451,9 @@ msgstr "Samtengdar Beiðnir"
 msgid "Link account on %s"
 msgstr "Tengdir aðgangar"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:143
-#, fuzzy
-#| msgid "Ticket tags updated successfully."
+#: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:142
 msgid "Link added successfully"
-msgstr "Breyting á merkispjöldum beiðnar heppnaðist."
+msgstr "Viðbót hlekkjar heppnaðist"
 
 #: lib/validations/link_uniqueness_validator.rb:9
 #, fuzzy
@@ -10490,10 +10472,8 @@ msgid "Link objects"
 msgstr "Samtengdar Beiðnir"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketLinks.vue:90
-#, fuzzy
-#| msgid "Ticket tags updated successfully."
 msgid "Link removed successfully"
-msgstr "Breyting á merkispjöldum beiðnar heppnaðist."
+msgstr "Eyðing hlekkjar heppnaðist"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:267
 msgid "Link template"
@@ -10929,10 +10909,8 @@ msgid "Manage personal calendar."
 msgstr ""
 
 #: db/seeds/permissions.rb:459
-#, fuzzy
-#| msgid "Continue session"
 msgid "Manage personal devices and sessions."
-msgstr "Halda áfram með setu"
+msgstr "Sýsla um eigin tæki og setur."
 
 #: db/seeds/permissions.rb:421
 msgid "Manage personal language settings."
@@ -10943,32 +10921,24 @@ msgid "Manage personal linked accounts."
 msgstr ""
 
 #: db/seeds/permissions.rb:480
-#, fuzzy
-#| msgid "Manage your notifications settings"
 msgid "Manage personal notifications settings."
-msgstr "Sýsla með stillingar fyrir tilkynningarnar mínar"
+msgstr "Sýsla um eigin tilkynningastillingar."
 
 #: db/seeds/permissions.rb:435
-#, fuzzy
-#| msgid "Manage your notifications settings"
 msgid "Manage personal out of office settings."
-msgstr "Sýsla með stillingar fyrir tilkynningarnar mínar"
+msgstr "Sýsla um eigin fjarverustillingar."
 
 #: db/seeds/permissions.rb:490
 msgid "Manage personal overviews."
 msgstr ""
 
 #: db/seeds/permissions.rb:407
-#, fuzzy
-#| msgid "Personal Settings"
 msgid "Manage personal settings."
-msgstr "Persónulegar stillingar"
+msgstr "Sýsla um eigin stillingar."
 
 #: db/seeds/permissions.rb:452
-#, fuzzy
-#| msgid "Authentication"
 msgid "Manage personal two-factor authentication methods."
-msgstr "Auðkenning"
+msgstr "Sýsla um eigin tveggja-þátta auðkenningaleiðir."
 
 #: db/seeds/permissions.rb:84
 msgid "Manage public links of your system."
@@ -10999,32 +10969,24 @@ msgid "Manage text modules of your system."
 msgstr ""
 
 #: db/seeds/permissions.rb:216
-#, fuzzy
-#| msgid "Overviews"
 msgid "Manage ticket auto assignment settings of your system."
-msgstr "Yfirlit"
+msgstr "Sýsla um stillingar sjálfvirkrar úthlutunar beiðna á kerfinu þínu."
 
 #: db/seeds/permissions.rb:318
-#, fuzzy
-#| msgid "Overviews"
 msgid "Manage ticket checklists of your system."
-msgstr "Yfirlit"
+msgstr "Sýsla um gátlista beiðna á kerfinu þínu."
 
 #: db/seeds/permissions.rb:222
-#, fuzzy
-#| msgid "Overviews"
 msgid "Manage ticket duplicate detection settings of your system."
-msgstr "Yfirlit"
+msgstr "Sýsla um stillingar tvítökuskynjunar beiðna á kerfinu þínu."
 
 #: db/seeds/permissions.rb:48
 msgid "Manage ticket macros of your system."
 msgstr ""
 
 #: db/seeds/permissions.rb:36
-#, fuzzy
-#| msgid "Overviews"
 msgid "Manage ticket overviews of your system."
-msgstr "Yfirlit"
+msgstr "Sýsla um yfirlit beiðna á kerfinu þínu."
 
 #: db/seeds/permissions.rb:264
 msgid "Manage ticket priorities of your system."
@@ -11096,7 +11058,7 @@ msgid ""
 msgstr ""
 
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:22
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:57
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:60
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:128
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:58
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:163
@@ -11282,7 +11244,7 @@ msgstr ""
 msgid "Merge"
 msgstr "Sameina"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketMerge/TicketMergeFlyout.vue:94
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketMerge/TicketMergeFlyout.vue:93
 #, fuzzy
 #| msgid "Merge to Ticket#"
 msgid "Merge Tickets"
@@ -11555,7 +11517,7 @@ msgstr "Stemming"
 msgid "More information can be found here."
 msgstr ""
 
-#: app/models/user.rb:653
+#: app/models/user.rb:662
 msgid "More than 250 secondary organizations are not allowed."
 msgstr ""
 
@@ -11701,7 +11663,7 @@ msgstr ""
 #: app/assets/javascripts/app/models/user_overview_sorting_overview.coffee:4
 #: app/assets/javascripts/app/models/webhook.coffee:6
 #: app/assets/javascripts/app/views/channel/topics.jst.eco:5
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:34
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:37
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:18
 #: app/assets/javascripts/app/views/integration/github.jst.eco:7
 #: app/assets/javascripts/app/views/integration/gitlab.jst.eco:7
@@ -11721,13 +11683,13 @@ msgstr ""
 #: app/assets/javascripts/app/views/widget/user.jst.eco:5
 #: app/controllers/time_accountings_controller.rb:89
 #: app/frontend/apps/desktop/components/Form/fields/FieldNotifications/FieldNotificationsInput.vue:30
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:116
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:119
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:31
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:97
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:91
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:188
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:192
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout/IdoitObjectList.vue:20
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:163
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:165
 #: db/seeds/object_manager_attributes.rb:1704 public/assets/form/form.js:24
 msgid "Name"
 msgstr "Nafn"
@@ -11737,7 +11699,7 @@ msgid "Name Identifier Format"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:131
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:413
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:426
 msgid "Name for this security key"
 msgstr ""
 
@@ -11900,7 +11862,7 @@ msgstr "Ný stofnun"
 msgid "New Overview"
 msgstr "Nýtt yfirlit"
 
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:132
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:131
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:203
 #, fuzzy
 #| msgid "Your New Personal Access Token"
@@ -12075,7 +12037,7 @@ msgstr "Nýr notandi?"
 #: app/assets/javascripts/app/views/getting_started/base.jst.eco:31
 #: app/assets/javascripts/app/views/import/otrs.jst.eco:17
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationPasswordCheck.vue:57
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:58
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:59
 #: app/frontend/shared/form/i18n/locales.ts:66
 msgid "Next"
 msgstr "Næst"
@@ -12117,7 +12079,7 @@ msgstr "Staða"
 msgid "No"
 msgstr "Nei"
 
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:21
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:24
 msgid "No %s configured."
 msgstr ""
 
@@ -12137,7 +12099,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/generic/admin/empty.jst.eco:5
 #: app/assets/javascripts/app/views/generic/calender_preview.jst.eco:49
 #: app/assets/javascripts/app/views/google/list.jst.eco:36
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:62
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:65
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:63
 #: app/assets/javascripts/app/views/integration/pgp_group.jst.eco:12
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:6
@@ -12390,7 +12352,7 @@ msgstr ""
 msgid "No settings with area 'Dashboard::Stats' defined"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:218
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:220
 #, fuzzy
 #| msgid "Shared"
 msgid "No shared drafts yet"
@@ -12413,10 +12375,8 @@ msgid "No template created yet."
 msgstr "Enn hefur ekkert sniðmát hefur verið stofnað."
 
 #: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:376
-#, fuzzy
-#| msgid "My tickets in process"
 msgid "No tickets in this state."
-msgstr "Mínar beiðnir í vinnslu"
+msgstr "Engar beiðni í þessari stöðu."
 
 #: app/controllers/users_controller.rb:254
 msgid "No token!"
@@ -12435,10 +12395,8 @@ msgid "No unread notifications for you. :)"
 msgstr "Engar ólesnar tilkynningar fyrir þig :)"
 
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationPopover/NotificationList.vue:22
-#, fuzzy
-#| msgid "Notification"
 msgid "No unread notifications."
-msgstr "Tilkynning"
+msgstr "Engar ólesnar tilkynningar."
 
 #: db/seeds/settings.rb:1323
 msgid "No user creation on logon"
@@ -12456,10 +12414,8 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:8
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:371
-#, fuzzy
-#| msgid "You can no longer see the ticket."
 msgid "No, just close the ticket"
-msgstr "Þú getur ekki séð beiðnina lengur."
+msgstr "No, lokaðu bara beiðninni"
 
 #: app/frontend/shared/composables/form/useCheckBodyAttachmentReference.ts:54
 msgid "No, thanks"
@@ -12488,7 +12444,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:160
 #: app/assets/javascripts/app/controllers/knowledge_base/agent_controller.coffee:240
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:138
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:120
 #: app/frontend/apps/desktop/components/layout/LayoutTaskbarTabContent.vue:73
 #: app/frontend/shared/errors/useErrorHandler.ts:25
 #: app/frontend/shared/router/error.ts:24
@@ -12513,7 +12469,7 @@ msgid "Not assigned"
 msgstr "Ekki úthlutað"
 
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:158
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:134
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:116
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show_row_display_value.jst.eco:16
 #: app/controllers/application_controller/handles_errors.rb:61
 #: app/services/service/ticket/article/create.rb:122
@@ -12542,8 +12498,8 @@ msgstr "Hefur ekki verið stillt af"
 msgid "Not found"
 msgstr "passar við"
 
-#: app/models/concerns/can_selector/advanced_sorting/base_sort.rb:15
-msgid "Not implemented"
+#: lib/ai/provider/concerns/handles_response.rb:18
+msgid "Not found - resource not found"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:71
@@ -12642,16 +12598,12 @@ msgid "Notification read"
 msgstr "Sendandi tilkynninga"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:172
-#, fuzzy
-#| msgid "%s% have been reopened"
 msgid "Notification settings could not be reset."
-msgstr "%s% hafa verið enduropnaðir"
+msgstr "Ekki tókst að endurstilla tilkynningarstillingar."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:122
-#, fuzzy
-#| msgid "%s% have been reopened"
 msgid "Notification settings could not be saved."
-msgstr "%s% hafa verið enduropnaðir"
+msgstr "Ekki tókst að vista tilkynningarstillingar."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:190
 msgid "Notification settings have been reset to default."
@@ -12704,7 +12656,7 @@ msgstr "Nóvember"
 msgid "Number"
 msgstr "Númer"
 
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:11
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:12
 msgid "OAuth"
 msgstr ""
 
@@ -12931,14 +12883,6 @@ msgstr ""
 msgid "Only when shared organization member"
 msgstr "Samnýtt stofnun"
 
-#: app/assets/javascripts/app/views/generic/error/not_found.jst.eco:3
-msgid "Oops.. I'm sorry, but I can't find this %s."
-msgstr ""
-
-#: app/assets/javascripts/app/views/generic/error/unauthorized.jst.eco:3
-msgid "Oops.. I'm sorry, but you have insufficient rights to open this %s."
-msgstr ""
-
 #: app/frontend/shared/form/i18n/locales.ts:107
 #, fuzzy
 #| msgid "Open"
@@ -13062,7 +13006,7 @@ msgid "OpenAI"
 msgstr "Opin"
 
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:116
-#: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:91
+#: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:94
 #: db/seeds/settings.rb:2052
 #, fuzzy
 #| msgid "Connect"
@@ -13206,10 +13150,8 @@ msgid "Organization could not be updated."
 msgstr "Ekki tókst að uppfæra fyrirtæki."
 
 #: app/frontend/apps/desktop/components/Search/QuickSearch/entities/Organization.vue:19
-#, fuzzy
-#| msgid "Organization Name"
 msgid "Organization is inactive."
-msgstr "Nafn stofnunar"
+msgstr "Stofnun er óvirk."
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualSystemInformation.vue:48
 #, fuzzy
@@ -13293,10 +13235,8 @@ msgid "Out of Office"
 msgstr ""
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:157
-#, fuzzy
-#| msgid "%s% have been reopened"
 msgid "Out of Office settings could not be saved."
-msgstr "%s% hafa verið enduropnaðir"
+msgstr "Ekki tókst að vista fjarverustillingar."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:150
 msgid "Out of Office settings have been saved successfully"
@@ -13394,7 +13334,7 @@ msgstr "Yfirlit"
 msgid "Overviews"
 msgstr "Yfirlit"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:144
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:145
 msgid "Overwrite Content"
 msgstr ""
 
@@ -13509,7 +13449,7 @@ msgstr "Foreldri"
 #: app/assets/javascripts/app/views/generic/login_preview.jst.eco:38
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:19
 #: app/assets/javascripts/app/views/import/kayako.jst.eco:46
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:46
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:49
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:42
 #: app/assets/javascripts/app/views/login.jst.eco:35
 #: app/frontend/apps/desktop/composables/authentication/useSignupForm.ts:43
@@ -13556,10 +13496,8 @@ msgid "Password changed successfully."
 msgstr "Lykilorði breytt."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:95
-#, fuzzy
-#| msgid "%s% have been reopened"
 msgid "Password could not be changed."
-msgstr "%s% hafa verið enduropnaðir"
+msgstr "Ekki tókst að breyta lykilorði."
 
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationPasswordCheck.vue:37
 #, fuzzy
@@ -13628,7 +13566,7 @@ msgstr "Límdu inn CSV gögn"
 msgid "Paste key"
 msgstr ""
 
-#: lib/ai/provider/concerns/handles_response.rb:17
+#: lib/ai/provider/concerns/handles_response.rb:14
 msgid "Payment required - please top up your account"
 msgstr ""
 
@@ -13693,10 +13631,8 @@ msgid "Personal Settings"
 msgstr "Persónulegar stillingar"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:142
-#, fuzzy
-#| msgid "Personal Access Tokens"
 msgid "Personal access token has been deleted."
-msgstr "Persónulegir aðgangstókar"
+msgstr "Eigin aðgangstóka hefur verið eytt."
 
 #: app/assets/javascripts/app/controllers/_profile/overviews.coffee:77
 msgid "Personal overview order was reset."
@@ -14054,8 +13990,8 @@ msgstr "Forskoðun"
 msgid "Preview Calendar"
 msgstr "Nýtt dagatal"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:167
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:187
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:171
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:189
 #, fuzzy
 #| msgid "Shared"
 msgid "Preview Shared Draft"
@@ -14129,7 +14065,7 @@ msgstr "Forg"
 msgid "Priority"
 msgstr "Forgangur"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:70
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:79
 #, fuzzy
 #| msgid "Priority"
 msgid "Priority Icon"
@@ -14252,7 +14188,7 @@ msgstr "Vistfang vefsels"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:109
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:156
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:163
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:167
 msgid "Public"
 msgstr ""
 
@@ -14331,7 +14267,7 @@ msgstr ""
 "Virkja REST API aðgang með notandanafni/netfangi ásamt lykilorði til að "
 "auðkenna notanda."
 
-#: lib/ai/provider/concerns/handles_response.rb:21
+#: lib/ai/provider/concerns/handles_response.rb:20
 msgid "Rate limit exceeded - please wait a moment"
 msgstr ""
 
@@ -14462,7 +14398,7 @@ msgid "Recovery Codes"
 msgstr "Öryggi"
 
 #: app/assets/javascripts/app/views/profile/password.jst.eco:104
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:255
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:256
 msgid ""
 "Recovery codes can be used to access your account in the event you lose "
 "access to other two-factor authentication methods."
@@ -14483,7 +14419,7 @@ msgid ""
 "References - Search for follow-up also in In-Reply-To or References headers."
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:275
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:276
 #, fuzzy
 #| msgid "Delete records"
 msgid "Regenerate Recovery Codes"
@@ -14563,8 +14499,8 @@ msgstr ""
 #: app/assets/javascripts/app/views/twitter/search_term.jst.eco:6
 #: app/frontend/apps/desktop/components/Form/fields/FieldGroupPermissions/FieldGroupPermissionsInput.vue:269
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationPasswordCheck.vue:62
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:156
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:193
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:159
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:194
 #: app/frontend/shared/form/i18n/locales.ts:29
 msgid "Remove"
 msgstr "Fjarlægja"
@@ -14621,7 +14557,7 @@ msgstr "Fjarlægja"
 msgid "Remove authenticator app"
 msgstr "Auðkenning"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:25
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:38
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:406
 #, fuzzy
 #| msgid "Remove"
@@ -14693,7 +14629,7 @@ msgstr "Fjarlægir forsnið"
 msgid "Removes the shadows for a flat look."
 msgstr "Fjarlægir skugga fyrir flatara útlit."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:20
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist.coffee:33
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:399
 msgid "Rename checklist"
 msgstr ""
@@ -14868,7 +14804,7 @@ msgstr "Endursetja lykilorð"
 msgid "Reset Password failed!"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchInput/QuickSearchInput.vue:63
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchInput/QuickSearchInput.vue:70
 #, fuzzy
 #| msgid "Search"
 msgid "Reset Search"
@@ -14972,7 +14908,7 @@ msgstr "Eyða skrá"
 msgid "Resize frame"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyout.vue:352
+#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyout.vue:406
 msgid "Resize side panel"
 msgstr ""
 
@@ -15010,7 +14946,7 @@ msgstr "Endurheimta sjálfgildi"
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:9
 #: app/assets/javascripts/app/views/widget/two_factor_login/security_keys.jst.eco:16
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:74
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:66
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:68
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:177
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:140
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:93
@@ -15223,7 +15159,7 @@ msgstr "SMS tilkynning"
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:84
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:73
 #: app/assets/javascripts/app/models/webhook.coffee:9
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:51
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:54
 #: app/assets/javascripts/app/views/integration/gitlab.jst.eco:18
 #: app/assets/javascripts/app/views/integration/idoit.jst.eco:24
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:31
@@ -15355,7 +15291,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1160
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1135
 msgid "Saving failed."
 msgstr "Vistun misheppnaðist."
 
@@ -15674,7 +15610,7 @@ msgstr "Leita…"
 msgid "Secondary organizations"
 msgstr "Samnýtt stofnun"
 
-#: app/models/user.rb:647
+#: app/models/user.rb:656
 msgid ""
 "Secondary organizations are only allowed when the primary organization is "
 "given."
@@ -15693,7 +15629,7 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/email.ts:25
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:151
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:285
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:206
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:210
 #: db/seeds/permissions.rb:203
 msgid "Security"
 msgstr "Öryggi"
@@ -15749,14 +15685,14 @@ msgstr "Uppsetning á öryggislykli misheppnaðist."
 msgid "Security key verification failed."
 msgstr "Staðfesting öryggislykils misheppnaðist."
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:389
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:402
 #, fuzzy
 #| msgid "Security"
 msgid "Security keys"
 msgstr "Öryggi"
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/security_keys/index.jst.eco:1
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:389
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:402
 msgid ""
 "Security keys are hardware or software credentials that can be used as your "
 "two-factor authentication method."
@@ -15766,8 +15702,8 @@ msgstr ""
 msgid "See HTTPLog for details."
 msgstr ""
 
-#: app/assets/javascripts/app/views/ticket_zoom/ai_summary_banner.jst.eco:16
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:117
+#: app/assets/javascripts/app/views/ticket_zoom/banner_ticket_summary.jst.eco:19
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:112
 #, fuzzy
 #| msgid "See more"
 msgid "See Summary"
@@ -16052,7 +15988,7 @@ msgstr "Þjónusta"
 msgid "Service Notification"
 msgstr ""
 
-#: lib/ai/provider/concerns/handles_response.rb:27
+#: lib/ai/provider/concerns/handles_response.rb:26
 msgid "Service overloaded - please try again later"
 msgstr ""
 
@@ -16082,7 +16018,7 @@ msgstr "Setur"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:2
 #: app/assets/javascripts/app/views/profile/password.jst.eco:90
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:171
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:62
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:64
 msgid "Set Up"
 msgstr ""
 
@@ -16118,7 +16054,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_application_controller/table.coffee:728
 #: app/assets/javascripts/app/views/profile/password.jst.eco:62
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:185
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:186
 #, fuzzy
 #| msgid "Restore Defaults"
 msgid "Set as default"
@@ -16243,7 +16179,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/ai/providers.jst.eco:10
 #: app/assets/javascripts/app/views/channel/form.jst.eco:13
 #: app/assets/javascripts/app/views/customer_chat/index.jst.eco:8
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:25
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:28
 #: app/assets/javascripts/app/views/integration/github.jst.eco:2
 #: app/assets/javascripts/app/views/integration/gitlab.jst.eco:2
 #: app/assets/javascripts/app/views/integration/idoit.jst.eco:2
@@ -16292,6 +16228,7 @@ msgstr "Samnýtt"
 
 #: app/controllers/tickets_controller.rb:89
 #: app/services/service/ticket/create.rb:180
+#: app/services/service/ticket/update.rb:72
 msgid "Shared draft cannot be selected for this ticket."
 msgstr ""
 
@@ -16302,11 +16239,9 @@ msgstr ""
 msgid "Shared draft has been created successfully."
 msgstr "Shared draft has been created successfully."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:129
-#, fuzzy
-#| msgid "%s% have been reopened"
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:130
 msgid "Shared draft has been deleted."
-msgstr "%s% hafa verið enduropnaðir"
+msgstr "Sameiginlegu uppkasti hefur verið eytt."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:50
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:140
@@ -16493,7 +16428,7 @@ msgstr ""
 msgid "Shown when the chat is closed."
 msgstr "Sýna þegar spjallgluggi er lokaður."
 
-#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyout.vue:333
+#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyout.vue:385
 msgid "Side panel footer"
 msgstr ""
 
@@ -16944,7 +16879,7 @@ msgstr "Hef innflutning…"
 msgid "State"
 msgstr "Staða"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:82
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:91
 #, fuzzy
 #| msgid "State"
 msgid "State Icon"
@@ -17069,7 +17004,7 @@ msgstr "Gata"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/email.ts:13
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:98
 #: app/frontend/shared/entities/ticket-article/action/plugins/email/forward.ts:33
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:195
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:199
 msgid "Subject"
 msgstr "Viðfangsefni"
 
@@ -17162,7 +17097,7 @@ msgstr "Áskriftarstillingar"
 msgid "Suggested Next Steps"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:41
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:45
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/ticket-summary.ts:11
 msgid "Summary"
 msgstr ""
@@ -17419,7 +17354,7 @@ msgstr "Prófa"
 #: app/assets/javascripts/app/models/signature.coffee:8
 #: app/assets/javascripts/app/models/ticket_article.coffee:11
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:20
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:219
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:223
 #: db/seeds/object_manager_attributes.rb:536
 msgid "Text"
 msgstr "Texti"
@@ -17670,10 +17605,8 @@ msgid "The WhatsApp webhook payload could not be validated."
 msgstr "The WhatsApp webhook payload could not be validated."
 
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:87
-#, fuzzy
-#| msgid "%s% have been reopened"
 msgid "The access token could not be created."
-msgstr "%s% hafa verið enduropnaðir"
+msgstr "Ekki tókst að búa til aðgangstókann."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:164
 #, fuzzy
@@ -17699,10 +17632,8 @@ msgid "The admin password auth email could not be sent."
 msgstr "Þegar verið er að senda tilkynningu."
 
 #: app/frontend/apps/desktop/stores/theme.ts:43
-#, fuzzy
-#| msgid "%s% have been reopened"
 msgid "The appearance could not be updated."
-msgstr "%s% hafa verið enduropnaðir"
+msgstr "Ekki tókst að uppfæra útlitið."
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:218
 #: app/assets/javascripts/app/controllers/widget/two_factor_login/method/security_keys.coffee:24
@@ -17741,10 +17672,8 @@ msgid "The avatar could not be fetched."
 msgstr "Ekki heppnaðist að sækja passamyndina."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAvatar.vue:225
-#, fuzzy
-#| msgid "%s% have been reopened"
 msgid "The avatar could not be selected."
-msgstr "%s% hafa verið enduropnaðir"
+msgstr "Ekki tókst að velja gengilinn."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAvatar.vue:166
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:90
@@ -17874,6 +17803,10 @@ msgstr ""
 "Spjallið mun birtast um leið og tenging við þjóninn er orðin virk og þegar "
 "einhver er tengdur til að spjalla við."
 
+#: app/models/concerns/can_selector/advanced_sorting/base_sort.rb:33
+msgid "The chosen sort column is unknown."
+msgstr ""
+
 #: app/assets/javascripts/app/views/time_accounting/settings.jst.eco:33
 msgid ""
 "The chosen unit will be used for display only and will not affect stored "
@@ -17935,10 +17868,8 @@ msgid "The default font size is 12px."
 msgstr "Sjálfgefin leturstærð er 12px."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:75
-#, fuzzy
-#| msgid "%s% have been reopened"
 msgid "The device could not be deleted."
-msgstr "%s% hafa verið enduropnaðir"
+msgstr "Ekki tókst að eyða tækinu."
 
 #: db/seeds/settings.rb:2322
 msgid "The divider between TicketHook and ticket number. E. g. ': '."
@@ -18049,16 +17980,12 @@ msgid "The given checklist item does not belong to the given checklist."
 msgstr ""
 
 #: app/services/service/user/two_factor/set_default_method.rb:18
-#, fuzzy
-#| msgid "Authentication"
 msgid "The given two-factor authentication method is not configured."
-msgstr "Auðkenning"
+msgstr "Valin tveggja-þátta auðkenningarleið hefur ekki verið stillt."
 
 #: app/services/service/user/two_factor/set_default_method.rb:14
-#, fuzzy
-#| msgid "Authentication"
 msgid "The given two-factor authentication method is not enabled."
-msgstr "Auðkenning"
+msgstr "AuðkenningValin tveggja-þátta auðkenningarleið hefur ekki virkjuð."
 
 #: app/services/service/user/two_factor/base.rb:14
 msgid "The given two-factor method does not exist."
@@ -18144,7 +18071,7 @@ msgstr "Ekki tókst að vista beiðnina."
 #, fuzzy
 #| msgid "%{name} already exists"
 msgid "The issue reference already exists."
-msgstr "%{name} er þegar til"
+msgstr "The issue reference already exists."
 
 #: app/graphql/gql/mutations/ticket/external_references/issue_tracker_item_add.rb:44
 #, fuzzy
@@ -18171,10 +18098,8 @@ msgid ""
 msgstr ""
 
 #: app/services/service/user/remove_linked_account.rb:21
-#, fuzzy
-#| msgid "%s% have been reopened"
 msgid "The linked account could not be found."
-msgstr "%s% hafa verið enduropnaðir"
+msgstr "Tengdi reikningurinn fannst ekki."
 
 #: app/services/service/auth/verify_admin_token.rb:17
 msgid "The login is not possible."
@@ -18202,7 +18127,7 @@ msgstr "Opna athugasemdabox"
 msgid "The new ticket number could not be generated."
 msgstr "Ekki var hægt að stofna nýtt beiðnarnúmer."
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_new.coffee:64
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_new.coffee:68
 #: app/assets/javascripts/app/controllers/_channel/_email_signature.coffee:93
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:807
 #: app/assets/javascripts/app/controllers/customer_ticket_create.coffee:193
@@ -18216,7 +18141,7 @@ msgstr "Ekki var hægt að búa hlutinn til."
 msgid "The object could not be found."
 msgstr "Hluturinn fannst ekki."
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_edit.coffee:64
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_edit.coffee:68
 #: app/assets/javascripts/app/controllers/_channel/sms.coffee:265
 #: app/assets/javascripts/app/controllers/_settings/area_switch.coffee:93
 #: app/assets/javascripts/app/controllers/_settings/area_ticket_number.coffee:134
@@ -18231,10 +18156,8 @@ msgid "The online notification could not be marked as seen."
 msgstr "Ekki tókst að merkja álínis tilkynningu sem séða."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOverviews.vue:109
-#, fuzzy
-#| msgid "Overviews"
 msgid "The order of your ticket overviews was reset."
-msgstr "Yfirlit"
+msgstr "Röð beiðnayfirlitana var endurstillt."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOverviews.vue:87
 msgid "The order of your ticket overviews was updated."
@@ -18264,10 +18187,8 @@ msgstr ""
 "þinn."
 
 #: lib/password_hash.rb:24
-#, fuzzy
-#| msgid "Signature"
 msgid "The password is invalid."
-msgstr "Undirskrift"
+msgstr "Lykilorðið er ógilt."
 
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordReset.vue:88
 #, fuzzy
@@ -18276,10 +18197,8 @@ msgid "The password reset request was successful."
 msgstr "Innflutningur tókst."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:133
-#, fuzzy
-#| msgid "%s% have been reopened"
 msgid "The personal access token could not be deleted."
-msgstr "%s% hafa verið enduropnaðir"
+msgstr "Eigin aðgangstóka var eytt."
 
 #: app/controllers/ticket_articles_controller.rb:272
 msgid ""
@@ -18354,10 +18273,8 @@ msgid "The provided match operator is missing or invalid."
 msgstr ""
 
 #: app/graphql/gql/mutations/user/current/password_check.rb:28
-#, fuzzy
-#| msgid "Signature"
 msgid "The provided password is incorrect."
-msgstr "Undirskrift"
+msgstr "Uppgefið lykilorð er rangt."
 
 #: app/models/webhook.rb:48
 msgid "The provided payload is invalid. Please check your syntax."
@@ -18395,6 +18312,12 @@ msgstr ""
 #: lib/operations_rate_limiter.rb:39
 msgid "The request limit for this operation was exceeded."
 msgstr ""
+
+#: app/assets/javascripts/app/views/generic/error/not_found.jst.eco:3
+#, fuzzy
+#| msgid "The hostname could not be found."
+msgid "The requested %s could not be found."
+msgstr "Vélarnafnið fannst ekki."
 
 #: lib/validations/verify_perform_rules_validator.rb:62
 msgid "The required '%{attribute}' value for %{key}, %{inner} is missing!"
@@ -18453,7 +18376,7 @@ msgstr ""
 msgid "The required parameter 'area' is missing."
 msgstr ""
 
-#: lib/whatsapp/account/phone_numbers.rb:16
+#: lib/whatsapp/account/phone_numbers.rb:15
 msgid "The required parameter 'business_id' is missing."
 msgstr ""
 
@@ -18702,7 +18625,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Signature"
 msgid "The supplied password revalidation token is invalid."
-msgstr "Undirskrift"
+msgstr "The supplied password revalidation token is invalid."
 
 #: app/assets/javascripts/app/views/system_report.jst.eco:6
 msgid ""
@@ -18749,10 +18672,8 @@ msgid ""
 msgstr ""
 
 #: app/services/service/ticket/update/validator/checklist_completed.rb:16
-#, fuzzy
-#| msgid "Overviews"
 msgid "The ticket checklist is incomplete."
-msgstr "Yfirlit"
+msgstr "Gátlista beiðnarinnar er ólokið."
 
 #: app/services/service/ticket/update/validator/time_accounting.rb:19
 msgid "The ticket time accounting condition is met."
@@ -18860,12 +18781,11 @@ msgid ""
 msgstr ""
 
 #: app/services/service/user/two_factor/verify_method_configuration.rb:21
-#, fuzzy
-#| msgid "Authentication"
 msgid ""
 "The verification of the two-factor authentication method configuration "
 "failed."
-msgstr "Auðkenning"
+msgstr ""
+"Sannprófun stillingar tveggjaþátta auðkenningaleiðarinnar misheppnaðist."
 
 #: app/assets/javascripts/app/controllers/customer_ticket_create/sidebar_customer_default.coffee:29
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:11
@@ -18923,10 +18843,8 @@ msgid "There are no enabled third-party authentication providers."
 msgstr ""
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:39
-#, fuzzy
-#| msgid "Authentication"
 msgid "There are no enabled two-factor authentication methods."
-msgstr "Auðkenning"
+msgstr "Það eru engar virkar tveggjaþátta auðkenningahættir."
 
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:210
 #, fuzzy
@@ -18949,7 +18867,7 @@ msgid "There is an existing draft. Do you want to overwrite it?"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:57
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:141
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:142
 msgid "There is existing content. Do you want to overwrite it?"
 msgstr ""
 
@@ -19496,6 +19414,11 @@ msgid ""
 "This user is currently blocked because of too many failed login attempts."
 msgstr ""
 
+#: app/models/webhook/ensure_no_related_objects.rb:34
+msgid ""
+"This webhook is referenced by another object and thus cannot be deleted: %s"
+msgstr ""
+
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:264
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:282
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:304
@@ -19799,10 +19722,8 @@ msgid "Ticket information"
 msgstr "Loka fyrir tilkynningar"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketMerge/TicketMergeFlyout.vue:72
-#, fuzzy
-#| msgid "Ticket tags updated successfully."
 msgid "Ticket merged successfully"
-msgstr "Breyting á merkispjöldum beiðnar heppnaðist."
+msgstr "Sameining beiðna heppnaðist"
 
 #: app/frontend/apps/desktop/components/Form/fields/FieldTicket/FieldTicketWrapper.vue:35
 #, fuzzy
@@ -19846,7 +19767,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Ticket customer updated successfully."
 msgid "Ticket screen behavior updated successfully"
-msgstr "Breyting á viðskiptavini beiðnar heppnaðist."
+msgstr "Ticket screen behavior updated successfully"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector_expert.coffee:131
 msgid ""
@@ -19897,11 +19818,9 @@ msgstr "Titill Beiðnar"
 msgid "Ticket update"
 msgstr ""
 
-#: app/frontend/shared/entities/ticket/composables/useTicketEdit.ts:54
-#, fuzzy
-#| msgid "2. Ticket Update"
+#: app/frontend/shared/entities/ticket/composables/useTicketEdit.ts:55
 msgid "Ticket update failed."
-msgstr "2. Uppfæra Beiðni"
+msgstr "Uppfærsla beiðnar misheppnaðist."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/useTicketEditTitle.ts:27
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:464
@@ -20047,7 +19966,7 @@ msgstr "Tími"
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:134
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:12
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:145
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:144
 #: db/seeds/permissions.rb:107 db/seeds/settings.rb:4067
 msgid "Time Accounting"
 msgstr "Tímabókhald"
@@ -20174,7 +20093,7 @@ msgstr "Titill á formi"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleMeta/useArticleMeta.ts:79
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:96
 #: app/frontend/shared/entities/ticket-article/action/plugins/email/forward.ts:36
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:172
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:176
 #: db/seeds/object_manager_attributes.rb:482
 msgid "To"
 msgstr "Til"
@@ -20229,7 +20148,7 @@ msgstr ""
 "að uppfæra þýðingar inn í viðmótinu."
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/security_keys/index.jst.eco:3
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:401
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:414
 msgid ""
 "To register a new security key with your account, press the button below."
 msgstr ""
@@ -20521,7 +20440,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/channel/email_notification_wizard.jst.eco:48
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:71
 #: app/assets/javascripts/app/views/getting_started/email_notification.jst.eco:10
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:28
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:31
 #: app/assets/javascripts/app/views/integration/idoit.jst.eco:5
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:13
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:14
@@ -20652,14 +20571,14 @@ msgid ""
 "permissions to set it up. Please contact your administrator."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:224
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:227
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:106
 #: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:112
 msgid "Two-factor authentication method could not be initiated."
 msgstr "Ekki tókst að vekja tveggja þátta auðkenningarhátt."
 
 #: app/assets/javascripts/app/controllers/_profile/password.coffee:191
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:181
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:184
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:142
 msgid "Two-factor authentication method was removed."
 msgstr ""
@@ -20670,15 +20589,13 @@ msgid "Two-factor authentication method was set as default."
 msgstr "Tveggja þátta auðkenningarháttur var gerður sjalfgefinn."
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal.coffee:59
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:323
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:326
 msgid "Two-factor authentication method was set up successfully."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:293
-#, fuzzy
-#| msgid "Authentication"
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:296
 msgid "Two-factor method could not be configured."
-msgstr "Auðkenning"
+msgstr "Ekki tókst að stilla tveggaþátta hátt."
 
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:116
 msgid "Two-factor method has been configured successfully."
@@ -20746,25 +20663,19 @@ msgstr "Slóð"
 msgid "URL (AJAX endpoint)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:143
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:238
 #, fuzzy
 #| msgid "Failed to add new checklist item."
 msgid "Unable to add all checklist items."
 msgstr "Ekki tókst að bæta við gátlistafærslu."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:100
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:198
 #, fuzzy
 #| msgid "Failed to add new checklist item."
 msgid "Unable to add checklist item."
 msgstr "Ekki tókst að bæta við gátlistafærslu."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:66
-#, fuzzy
-#| msgid "Allow users to create new tags."
-msgid "Unable to create checklist."
-msgstr "Leyfa notendum að stofna ný merkispjöld."
-
-#: lib/ai/provider.rb:40
+#: lib/ai/provider.rb:43
 msgid "Unable to process response"
 msgstr ""
 
@@ -20796,10 +20707,6 @@ msgstr ""
 #| msgid "%s (unknown)"
 msgid "Unknown"
 msgstr "%s (óþekkt)"
-
-#: app/models/concerns/can_selector/advanced_sorting/base_sort.rb:33
-msgid "Unknown column given to sort by!"
-msgstr ""
 
 #: lib/password_policy/backend.rb:15
 msgid "Unknown error"
@@ -20906,9 +20813,9 @@ msgstr ""
 #: app/assets/javascripts/app/views/session.jst.eco:12
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:57
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:9
-#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:13
+#: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:9
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:119
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:82
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:84
 msgid "Update"
 msgstr "Uppfæra"
 
@@ -20928,7 +20835,7 @@ msgstr ""
 msgid "Update In Min"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:205
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:207
 #, fuzzy
 #| msgid "Shared"
 msgid "Update Shared Draft"
@@ -21270,7 +21177,7 @@ msgstr "Notað þegar beiðni er skoðuð"
 #: app/assets/javascripts/app/models/mention.coffee:6
 #: app/assets/javascripts/app/models/user_overview_sorting.coffee:2
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:67
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:43
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:46
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:38
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:47
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:169
@@ -21371,11 +21278,9 @@ msgstr ""
 msgid "User is inactive"
 msgstr "óvirkt"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:18
-#, fuzzy
-#| msgid "inactive"
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:21
 msgid "User is inactive."
-msgstr "óvirkt"
+msgstr "Notandi er óvirkur."
 
 #: app/frontend/shared/composables/useAvatarIndicator.ts:95
 #, fuzzy
@@ -21414,10 +21319,8 @@ msgid "User with specified ID was not found. Try checking the URL for errors."
 msgstr ""
 
 #: app/services/service/user/device/delete.rb:9
-#, fuzzy
-#| msgid "%s% have been reopened"
 msgid "UserDevice could not be found."
-msgstr "%s% hafa verið enduropnaðir"
+msgstr "Notandatæki fannst ekki."
 
 #: app/assets/javascripts/app/controllers/_integration/slack.coffee:32
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:88
@@ -21520,7 +21423,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:933
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:8
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:86
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:35
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:38
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:19
 #: app/assets/javascripts/app/views/integration/github.jst.eco:8
 #: app/assets/javascripts/app/views/integration/gitlab.jst.eco:8
@@ -21646,7 +21549,7 @@ msgstr "Skoða beiðni"
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/article.jst.eco:3
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/notification.jst.eco:3
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:150
-#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:150
+#: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:154
 #: db/seeds/object_manager_attributes.rb:449
 msgid "Visibility"
 msgstr "Sýnileiki"
@@ -22040,8 +21943,8 @@ msgstr "Já"
 msgid "Yes, add attachments now"
 msgstr "Reyndu aftur að hala niður viðhengi"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:45
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:74
+#: app/assets/javascripts/app/controllers/ticket_zoom/banner_ticket_summary.coffee:64
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:69
 msgid "Yes, hide it"
 msgstr ""
 
@@ -22055,6 +21958,10 @@ msgstr "Fjarlægja"
 #: app/assets/javascripts/app/controllers/widget/import_try_result.coffee:4
 msgid "Yes, start real import."
 msgstr "Já, framkvæma raunverulegan innflutning."
+
+#: app/assets/javascripts/app/views/generic/error/unauthorized.jst.eco:3
+msgid "You are not authorized to open this %s."
+msgstr ""
 
 #: public/assets/chat/views/waiting.eco:8
 msgid "You are on waiting list position <strong>%s</strong>."
@@ -22230,8 +22137,8 @@ msgid ""
 "to add your translations."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/ai_summary_banner.coffee:44
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:71
+#: app/assets/javascripts/app/controllers/ticket_zoom/banner_ticket_summary.coffee:63
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:66
 msgid "You can re-enable it anytime in Profile Settings > Appearance."
 msgstr ""
 
@@ -22515,22 +22422,16 @@ msgid "Your avatar"
 msgstr "Fullt nafn"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAvatar.vue:235
-#, fuzzy
-#| msgid "Woo hoo! Your password has been changed!"
 msgid "Your avatar has been changed."
-msgstr "Jibbý! Lykilorðinu hefur verið breytt"
+msgstr "Genglinum hefur verið breytt."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAvatar.vue:267
-#, fuzzy
-#| msgid "%s% have been reopened"
 msgid "Your avatar has been deleted."
-msgstr "%s% hafa verið enduropnaðir"
+msgstr "Genglinum þínum hefur verið eytt."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAvatar.vue:179
-#, fuzzy
-#| msgid "%s% have been reopened"
 msgid "Your avatar has been uploaded."
-msgstr "%s% hafa verið enduropnaðir"
+msgstr "Genglinum þínum hefur verið halað upp."
 
 #: app/assets/javascripts/app/views/exchange/app_config.jst.eco:31
 #: app/assets/javascripts/app/views/facebook/app_config.jst.eco:23
@@ -22552,16 +22453,12 @@ msgid "Your connection is not private"
 msgstr ""
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLocale.vue:28
-#, fuzzy
-#| msgid "Change your language."
 msgid "Your language"
-msgstr "Breyta tungumálinu þínu."
+msgstr "Tungumál þitt"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:29
-#, fuzzy
-#| msgid "%s% have been reopened"
 msgid "Your theme has been updated."
-msgstr "%s% hafa verið enduropnaðir"
+msgstr "Þemað þitt hefur verið uppfært."
 
 #: app/assets/javascripts/app/controllers/customer_ticket_create.coffee:46
 msgid ""
@@ -22572,7 +22469,7 @@ msgstr ""
 "samband við kerfisstjórann."
 
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:31
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:88
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:91
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:128
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:112
 #: app/frontend/apps/desktop/components/layout/LayoutPublicPage/LayoutPublicPage.vue:90
@@ -23529,7 +23426,7 @@ msgstr ""
 msgid "is the wrong length (should be 1 character)"
 msgstr ""
 
-#: app/models/user.rb:851
+#: app/models/user.rb:860
 msgid "is too long"
 msgstr ""
 
@@ -23731,7 +23628,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_ui_element/boolean.coffee:10
 #: app/assets/javascripts/app/controllers/time_accounting_types.coffee:23
 #: app/assets/javascripts/app/models/public_link.coffee:10
-#: app/assets/javascripts/app/views/integration/exchange.jst.eco:52
+#: app/assets/javascripts/app/views/integration/exchange.jst.eco:55
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:32
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:22
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:49
@@ -24358,6 +24255,11 @@ msgstr "...af textasvæðinu"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅ Biðtími í dag"
+
+#, fuzzy
+#~| msgid "Allow users to create new tags."
+#~ msgid "Unable to create checklist."
+#~ msgstr "Leyfa notendum að stofna ný merkispjöld."
 
 #, fuzzy
 #~| msgid "Macros"
