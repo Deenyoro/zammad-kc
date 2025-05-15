@@ -5,7 +5,6 @@ include:
   stage: test
   extends:
     - .job_rules_default
-    - .variables_proxy
   script:
     - !reference [.scripts, zammad_db_init]
     - bundle exec rspec --require ./spec/rspec_extensions.rb --exclude-pattern "spec/system/**/*_spec.rb" -t ~searchindex -t ~integration --profile 10
