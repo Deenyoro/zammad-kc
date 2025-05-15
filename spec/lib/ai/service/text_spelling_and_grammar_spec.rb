@@ -2,14 +2,11 @@
 
 require 'rails_helper'
 
-RSpec.describe AI::Service::TextSpellingAndGrammar, required_envs: %w[OPEN_AI_TOKEN ZAMMAD_AI_TOKEN], use_vcr: true do
+RSpec.describe AI::Service::TextSpellingAndGrammar, required_envs: %w[OPEN_AI_TOKEN ZAMMAD_AI_TOKEN ZAMMAD_AI_API_URL], use_vcr: true do
   subject(:ai_service) { described_class.new(current_user:, context_data:) }
 
-  let(:context_data)   { { text: 'I Nicole Braun.' } }
+  let(:context_data)   { { input: 'I Nicole Braun.' } }
   let(:current_user)   { create(:user) }
-
-  # TODO: Re-enable this test when the AI service is available.
-  before { skip 'Currently disabled.' }
 
   context 'when service is executed with OpenAI as provider' do
     before do
@@ -21,7 +18,7 @@ RSpec.describe AI::Service::TextSpellingAndGrammar, required_envs: %w[OPEN_AI_TO
 
     it 'check that grammar is correct' do
       result = ai_service.execute
-      expect(result['text']).to eq('I am Nicole Braun.')
+      expect(result).to include('I am Nicole Braun.')
     end
   end
 
@@ -35,7 +32,7 @@ RSpec.describe AI::Service::TextSpellingAndGrammar, required_envs: %w[OPEN_AI_TO
 
     it 'check that grammar is correct' do
       result = ai_service.execute
-      expect(result['text']).to eq('Hello, I am Nicole Braun.')
+      expect(result).to include('I am Nicole Braun.')
     end
   end
 end

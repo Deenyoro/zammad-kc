@@ -19,6 +19,7 @@ import {
   useTemplateRef,
 } from 'vue'
 
+import { useAppName } from '#shared/composables/useAppName.ts'
 import { useTransitionConfig } from '#shared/composables/useTransitionConfig.ts'
 import { useTrapTab } from '#shared/composables/useTrapTab.ts'
 import { EnumTextDirection } from '#shared/graphql/types.ts'
@@ -126,8 +127,17 @@ const PLACEMENT_OFFSET_WITH_ARROW = 30
 const ORIENTATION_OFFSET_WO_ARROW = 6
 const ORIENTATION_OFFSET_WITH_ARROW = 16
 
+const appName = useAppName()
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const popoverStyle = computed(() => {
+  if (appName === 'mobile') {
+    return {
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+    }
+  }
+
   if (!targetElementBounds.value) return { top: 0, left: 0, maxHeight: 0 }
 
   const maxHeight = hasDirectionUp.value

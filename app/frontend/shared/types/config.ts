@@ -3,6 +3,7 @@ export interface ConfigList {
   'active_storage.web_image_content_types': string[]
   'auth_saml_credentials.display_name'?: string
   'auth_openid_connect_credentials.display_name'?: string
+  ai_assistance_text_tools: boolean
   ai_assistance_ticket_summary: boolean
   ai_assistance_ticket_summary_config: unknown
   ai_provider: string

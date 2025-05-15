@@ -538,6 +538,8 @@ class App.TicketCreate extends App.Controller
       events:
         'fileUploadStart .richtext': => @submitDisable()
         'fileUploadStop .richtext': => @submitEnable()
+        'textToolsStart .richtext': => @submitDisable()
+        'textToolsStop .richtext': => @submitEnable()
         'change [name=customer_id]': @localUserInfo
         'change [data-attribute-name=organization_id] .js-input': @localUserInfo
       richTextUploadRenderCallback: @updateTaskManagerAttachments

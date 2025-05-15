@@ -532,6 +532,8 @@ class App.TicketZoom extends App.Controller
           richTextUploadDeleteCallback: (attachments) =>
             @taskUpdateAttachments('article', attachments)
             @delay(@markForm, 250, 'ticket-zoom-form-update')
+          richTextTextToolsStartCallback: @submitDisable
+          richTextTextToolsStopCallback:  @submitEnable
         )
 
         @highlighter = new App.TicketZoomHighlighter(

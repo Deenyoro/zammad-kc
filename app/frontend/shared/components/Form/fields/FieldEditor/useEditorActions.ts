@@ -1,9 +1,15 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import { storeToRefs } from 'pinia'
 import { computed, nextTick, onUnmounted } from 'vue'
 
+import AiAssistantTextTools from '#shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue'
+import { getAiAssistantTextToolsClasses } from '#shared/components/Form/fields/FieldEditor/AiAssistantTextTools/initializeAiAssistantTextTools.ts'
 import { i18n } from '#shared/i18n.ts'
+import { useApplicationStore } from '#shared/stores/application.ts'
 import { useLocaleStore } from '#shared/stores/locale.ts'
+import { useSessionStore } from '#shared/stores/session.ts'
+import type { ConfigList } from '#shared/types/config.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 import testFlags from '#shared/utils/testFlags.ts'
 
@@ -37,6 +43,9 @@ export interface EditorButton {
   command?: (e: MouseEvent) => void
   disabled?: boolean
   showDivider?: boolean
+  dividerClass?: string
+  permission?: string
+  show?: (config: ConfigList) => boolean
   subMenu?: Component | Except<EditorButton, 'subMenu'>[]
 }
 
@@ -87,10 +96,28 @@ export default function useEditorActions(
     fileInput = null
   })
 
+  const { config: applicationConfig } = storeToRefs(useApplicationStore())
+  const { hasPermission } = useSessionStore()
+
   const { localeData } = useLocaleStore()
+
+  const { verticalGradient } = getAiAssistantTextToolsClasses()
   // eslint-disable-next-line sonarjs/cognitive-complexity
   const getActionsList = (): EditorButton[] => {
     return [
+      {
+        id: getUuid(),
+        name: 'aiAssistantTextTools',
+        contentType: ['text/html', 'text/plain'],
+        label: i18n.t('Ai assistant text tools'),
+        showDivider: true,
+        dividerClass: verticalGradient,
+        permission: 'ticket.agent',
+        show: (config) =>
+          config.ai_assistance_text_tools && !!config.ai_provider,
+        icon: 'smart-assist-elaborate',
+        subMenu: AiAssistantTextTools,
+      },
       {
         id: `action-${getUuid()}`,
         name: 'bold',
@@ -356,14 +383,17 @@ export default function useEditorActions(
     ]
   }
 
-  const actions = computed(() => {
-    return getActionsList().filter((action) => {
-      if (disabledPlugins.includes(action.name)) {
-        return false
-      }
+  const actions = computed(() =>
+    getActionsList().filter((action) => {
+      if (disabledPlugins.includes(action.name)) return false
+
+      if (action.show && !action.show(applicationConfig.value)) return false
+
+      if (action.permission && !hasPermission(action.permission)) return false
+
       return action.contentType.includes(contentType)
-    })
-  })
+    }),
+  )
 
   return {
     focused,

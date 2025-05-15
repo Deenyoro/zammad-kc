@@ -6100,3 +6100,17 @@ Setting.create_if_not_exists(
   },
   frontend:    true,
 )
+
+Setting.create_if_not_exists(
+  title:       __('Text Tools'),
+  name:        'ai_assistance_text_tools',
+  area:        'AI::Assistance',
+  description: __('Enable or disable the AI assistance text tools.'),
+  options:     {},
+  state:       true,
+  preferences: {
+    authentication: true,
+    permission:     ['admin.ai_assistance_text_tools'],
+  },
+  frontend:    true,
+)

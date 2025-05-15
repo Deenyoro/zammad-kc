@@ -1,5 +1,7 @@
 # coffeelint: disable=camel_case_classes
-class App.UiElement.richtext
+class App.UiElement.richtext extends Spine.Module
+  @extend App.TextTools
+
   @render: (attributeConfig, params, form) ->
     attribute = $.extend(true, {}, attributeConfig)
 
@@ -107,6 +109,13 @@ class App.UiElement.richtext
 
         uploader.render()
       , 100, undefined, 'form_upload')
+
+    @textToolsInit(
+      item,
+      attribute.disabled,
+      -> item.find('[contenteditable]').trigger('textToolsStart'),
+      -> item.find('[contenteditable]').trigger('textToolsStop'),
+    ) if attribute.text_tools
 
     item
 

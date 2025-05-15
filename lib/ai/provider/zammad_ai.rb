@@ -5,6 +5,7 @@ class AI::Provider::ZammadAI < AI::Provider
 
   def chat(prompt_system:, prompt_user:)
     service_name = options[:service_name] || 'generic'
+
     response = UserAgent.post(
       "#{self.class.base_url(config)}/api/v1/features/#{service_name.underscore}",
       {

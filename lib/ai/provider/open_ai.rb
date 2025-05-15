@@ -5,7 +5,7 @@ class AI::Provider::OpenAI < AI::Provider
 
   DEFAULT_OPTIONS = {
     temperature:     0.0,
-    model:           'gpt-4o',
+    model:           'gpt-4.1',
     embedding_model: 'text-embedding-3-small'
   }.freeze
 

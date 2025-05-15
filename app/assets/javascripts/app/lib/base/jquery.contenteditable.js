@@ -326,6 +326,67 @@
     })[0]
   }
 
+  Plugin.prototype.getSelection = function() {
+    var result = {
+      content: '',
+      ranges: [],
+    }
+
+    if (window.getSelection || document.getSelection) {
+      var sel
+
+      if (window.getSelection) sel = window.getSelection()
+      else sel = document.getSelection()
+
+      if (sel.rangeCount) {
+        var container = $('<div />')
+        for (var i = 0; i < sel.rangeCount; ++i) {
+          result.ranges.push(sel.getRangeAt(i))
+          container.append(sel.getRangeAt(i).cloneContents())
+        }
+        if ( this.options.mode === 'textonly' ) {
+          result.content = container.text().trim()
+        }
+        else {
+          result.content = container.html()
+        }
+      }
+    }
+    else if (document.selection) {
+      if (document.selection.type === 'Text') {
+        if ( this.options.mode === 'textonly' ) {
+          result.content = document.selection.createRange().text
+        }
+        else {
+          result.content = document.selection.createRange().htmlText
+        }
+      }
+    }
+
+    return result
+  }
+
+  Plugin.prototype.replaceSelection = function (ranges, content) {
+    if (ranges.length && (window.getSelection || document.getSelection)) {
+      this.log('restore selection')
+
+      var sel
+
+      if (window.getSelection) sel = window.getSelection()
+      else sel = document.getSelection()
+
+      sel.removeAllRanges()
+
+      for (var i = 0; i < ranges.length; i++) {
+        sel.addRange(ranges[i])
+      }
+    }
+
+    content = App.Utils.clipboardHtmlInsertPreperation(content, this.options)
+
+    this.paste(content)
+  }
+
   Plugin.prototype.onPaste = function (e) {
     e.preventDefault()
     var clipboardData, clipboardImage, text, htmlRaw, htmlString

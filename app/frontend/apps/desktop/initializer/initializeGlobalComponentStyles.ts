@@ -1,5 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import { initializeAiAssistantTextTools } from '#shared/components/Form/fields/FieldEditor/AiAssistantTextTools/initializeAiAssistantTextTools.ts'
+import { initializeAiAssistantTextToolsLoadingBanner } from '#shared/components/Form/fields/FieldEditor/AiAssistantTextTools/initializeAiAssistantTextToolsLoadingBanner.ts'
 import { initializeEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/FieldEditorColorMenu/initializeEditorColorMenu.ts'
 import { initializeAlertClasses } from '#shared/initializer/initializeAlertClasses.ts'
 import { initializeAvatarClasses } from '#shared/initializer/initializeAvatarClasses.ts'
@@ -85,6 +87,15 @@ export const initializeGlobalComponentStyles = () => {
     },
   })
 
+  initializeAiAssistantTextTools({
+    popover: {
+      base: 'min-w-[13.5rem] rounded-xl overflow-hidden',
+      button:
+        'text-sm outline-none p-3 text-left active:text-white active:bg-blue-800 dark:active:bg-blue-800 dark:hover:text-white hover:text-black inline-block w-full dark:text-neutral-400 focus-visible:bg-blue-800 focus-visible:text-white hover:bg-blue-600 dark:hover:bg-blue-900 text-gray-100',
+    },
+    verticalGradient: 'bg-linear-to-t from-pink-200 to-blue-800',
+  })
+
   initializeFilePreviewClasses({
     base: 'dark:text-white text-black text-sm leading-snug',
     wrapper: 'p-2.5',
@@ -93,5 +104,11 @@ export const initializeGlobalComponentStyles = () => {
     link: 'hover:rounded-xs hover:no-underline! hover:outline-1 hover:outline-offset-1 hover:outline-blue-600 dark:hover:outline-blue-900',
     size: 'dark:text-neutral-500 text-stone-400 text-xs leading-snug',
     icon: 'dark:text-neutral-500 text-stone-400',
+  })
+
+  initializeAiAssistantTextToolsLoadingBanner({
+    icon: 'text-blue-800',
+    label: 'text-black! dark:text-white!',
+    button: 'text-blue-800',
   })
 }

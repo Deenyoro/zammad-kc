@@ -1,0 +1,20 @@
+<% if !@disabled: %>
+<div class="text-tools <% if @no_attachment: %>text-tools--standalone<% end %>">
+  <%- @Icon('smart-assist-elaborate') %>
+  <div class="buttonDropdown dropdown dropdown--actions dropup">
+    <a id="textToolsAction" class="text-tools-action" href="#" data-toggle="dropdown">
+      <%- @T('Smart Editor') %>
+    </a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="textToolsAction">
+      <li class="js-action" role="menuitem" data-type="improve_writing">
+        <%- @T('Improve writing') %>
+      <li class="js-action" role="menuitem" data-type="spelling_and_grammar">
+        <%- @T('Fix spelling and grammar') %>
+      <li class="js-action" role="menuitem" data-type="expand">
+        <%- @T('Expand') %>
+      <li class="js-action" role="menuitem" data-type="simplify">
+        <%- @T('Simplify') %>
+    </ul>
+  </div>
+</div>
+<% end %>

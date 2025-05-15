@@ -199,3 +199,16 @@
 @utility required {
   @apply after:bg-yellow after:ms-1 after:inline-block after:h-1 after:w-1 after:rounded-full after:align-middle after:content-[''];
 }
+
+@utility ai-stripe {
+  &::before {
+    content: '';
+    height: 2px;
+    width: 100%;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--color-blue),
+      var(--color-pink)
+    );
+  }
+}

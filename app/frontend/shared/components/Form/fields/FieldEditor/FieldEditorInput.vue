@@ -429,7 +429,7 @@ const classes = getFieldEditorClasses()
     :content-type="contentType"
     :visible="showActionBar"
     :disabled-plugins="disabledPlugins"
-    :form-id="context.formId"
+    :form-context="reactiveContext"
     @hide="showActionBar = false"
     @blur="focusEditor"
   />

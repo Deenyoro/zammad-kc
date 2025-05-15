@@ -197,7 +197,10 @@ const leftgradientvalue = computed(() => classes.actionBar.leftGradient.left)
           />
         </button>
         <div v-if="action.showDivider">
-          <hr class="h-full w-px border-0 bg-neutral-100 dark:bg-gray-900" />
+          <hr
+            :class="action.dividerClass"
+            class="h-full w-px border-0 bg-neutral-100 dark:bg-gray-900"
+          />
         </div>
       </template>
     </div>

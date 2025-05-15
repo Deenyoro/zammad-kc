@@ -1,5 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import { initializeAiAssistantTextTools } from '#shared/components/Form/fields/FieldEditor/AiAssistantTextTools/initializeAiAssistantTextTools.ts'
+import { initializeAiAssistantTextToolsLoadingBanner } from '#shared/components/Form/fields/FieldEditor/AiAssistantTextTools/initializeAiAssistantTextToolsLoadingBanner.ts'
 import { initializeEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/FieldEditorColorMenu/initializeEditorColorMenu.ts'
 import { initializeAlertClasses } from '#shared/initializer/initializeAlertClasses.ts'
 import { initializeAvatarClasses } from '#shared/initializer/initializeAvatarClasses.ts'
@@ -57,7 +59,7 @@ export const initializeGlobalComponentStyles = () => {
   })
 
   initializePopoverClasses({
-    base: 'min-h-9 rounded-xl max-w-[calc(100vw-8px)] text-white top-0 border border-gray-500 bg-gray-400 antialiased rtl:right-1/2 ltr:left-1/2 rtl:translate-x-1/2 ltr:-translate-x-1/2',
+    base: 'min-h-9 rounded-xl max-w-[calc(100vw-8px)] text-white top-0 border border-gray-500 bg-gray-400 antialiased',
     arrow: 'hidden',
   })
 
@@ -79,5 +81,19 @@ export const initializeGlobalComponentStyles = () => {
     link: '',
     size: 'text-white/80',
     icon: 'border-gray-300',
+  })
+
+  initializeAiAssistantTextTools({
+    popover: {
+      base: '',
+      button: 'py-4 px-3',
+    },
+    verticalGradient: 'bg-linear-to-t from-pink to-blue',
+  })
+
+  initializeAiAssistantTextToolsLoadingBanner({
+    icon: 'text-blue',
+    label: 'text-white',
+    button: 'text-blue',
   })
 }

@@ -61,8 +61,7 @@ class AI::Service
   end
 
   def save_cache(result)
-    # TODO: time per service?
-    expires_in = result.blank? ? 1.minute : 14.days
+    expires_in = result.blank? ? 1.minute : cache_ttl
 
     Rails.cache.write(cache_key, result, { expires_in: })
   end
@@ -73,6 +72,10 @@ class AI::Service
 
   def cache_key
     nil
+  end
+
+  def cache_ttl
+    14.days
   end
 
   def json_response?

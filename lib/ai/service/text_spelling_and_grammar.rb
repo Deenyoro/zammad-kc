@@ -5,7 +5,7 @@ class AI::Service::TextSpellingAndGrammar < AI::Service
 
   def options
     {
-      temperature: 0.3,
+      temperature: 0.1,
     }
   end
 
@@ -13,4 +13,7 @@ class AI::Service::TextSpellingAndGrammar < AI::Service
     false
   end
 
+  def json_response?
+    false
+  end
 end
