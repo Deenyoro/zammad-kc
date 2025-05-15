@@ -5,6 +5,7 @@ import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { mockUserCurrentChangePasswordMutation } from '../graphql/mutations/userCurrentChangePassword.mocks.ts'
 
@@ -50,7 +51,7 @@ describe('password personal settings', () => {
 
     const view = await visitView('/personal-setting/password')
 
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(view, 'correctly redirects to error page').toHaveCurrentUrl(
         '/error-tab',
       )

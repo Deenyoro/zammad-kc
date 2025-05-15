@@ -7,6 +7,7 @@ import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockAuthentication } from '#tests/support/mock-authentication.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { mockFormUpdaterQuery } from '#shared/components/Form/graphql/queries/formUpdater.mocks.ts'
 import {
@@ -35,7 +36,7 @@ describe('guided setup manual invite', () => {
 
       const view = await visitView('/guided-setup/manual/invite')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup start screen',
@@ -212,7 +213,7 @@ describe('guided setup manual invite', () => {
         view.getByRole('button', { name: 'Finish Setup' }),
       )
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup finish screen',

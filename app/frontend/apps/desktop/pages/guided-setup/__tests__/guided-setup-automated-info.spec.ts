@@ -3,6 +3,7 @@
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockAuthentication } from '#tests/support/mock-authentication.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { EnumSystemSetupInfoStatus } from '#shared/graphql/types.ts'
 
@@ -39,7 +40,7 @@ describe('guided setup automated info', () => {
     it('redirects to info screen first', async () => {
       const view = await visitView('/guided-setup')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup automated info screen',
@@ -59,7 +60,7 @@ describe('guided setup automated info', () => {
     it('redirects to home screen', async () => {
       const view = await visitView('/guided-setup/automated')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view, 'correctly redirects to home screen').toHaveCurrentUrl('/')
       })
     })

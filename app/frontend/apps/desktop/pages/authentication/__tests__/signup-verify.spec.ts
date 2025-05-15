@@ -4,6 +4,7 @@ import { getByIconName } from '#tests/support/components/iconQueries.ts'
 import { getTestRouter } from '#tests/support/components/renderComponent.ts'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { mockUserSignupVerifyMutation } from '../graphql/mutations/userSignupVerify.mocks.ts'
 
@@ -67,7 +68,7 @@ describe('signup verify view', () => {
     await vi.runAllTimersAsync()
     vi.useRealTimers()
 
-    await vi.waitFor(() => {
+    await waitFor(() => {
       const router = getTestRouter()
       const route = router.currentRoute.value
       expect(route.name).toBe('Dashboard')

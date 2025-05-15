@@ -13,6 +13,7 @@ import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockAuthentication } from '#tests/support/mock-authentication.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { mockFormUpdaterQuery } from '#shared/components/Form/graphql/queries/formUpdater.mocks.ts'
 import {
@@ -75,7 +76,7 @@ describe('guided setup manual channel email', () => {
 
       const view = await visitView('/guided-setup/manual/channels/email')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup start screen',
@@ -224,7 +225,7 @@ describe('guided setup manual channel email', () => {
         }),
       )
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup invite step',
@@ -757,7 +758,7 @@ describe('guided setup manual channel email', () => {
         },
       })
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view).toHaveCurrentUrl('/guided-setup/manual/invite')
       })
     })
@@ -920,14 +921,14 @@ describe('guided setup manual channel email', () => {
 
       await view.events.type(getByLabelText(outboundForm, 'Port'), '25')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(alert).not.toBeInTheDocument()
         expect(getByLabelText(outboundForm, 'SSL verification')).toBeDisabled()
       })
 
       await view.events.clear(getByLabelText(outboundForm, 'Port'))
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           getByLabelText(outboundForm, 'SSL verification'),
         ).not.toBeDisabled()
@@ -935,7 +936,7 @@ describe('guided setup manual channel email', () => {
 
       await view.events.click(getByLabelText(outboundForm, 'SSL verification'))
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         alert = getByText(outboundForm, sslVerificationWarningText)
 
         expect(alert).toBeInTheDocument()
@@ -947,13 +948,13 @@ describe('guided setup manual channel email', () => {
 
       await view.events.type(getByLabelText(outboundForm, 'Port'), '465')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           getByLabelText(outboundForm, 'SSL verification'),
         ).not.toBeDisabled()
       })
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         alert = getByText(outboundForm, sslVerificationWarningText)
 
         expect(alert).toBeInTheDocument()
@@ -965,13 +966,13 @@ describe('guided setup manual channel email', () => {
 
       await view.events.type(getByLabelText(outboundForm, 'Port'), '587')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           getByLabelText(outboundForm, 'SSL verification'),
         ).not.toBeDisabled()
       })
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         alert = getByText(outboundForm, sslVerificationWarningText)
 
         expect(alert).toBeInTheDocument()
@@ -989,7 +990,7 @@ describe('guided setup manual channel email', () => {
 
       await view.events.click(goBackButton)
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view, 'correctly redirects to channels step').toHaveCurrentUrl(
           '/guided-setup/manual/channels',
         )

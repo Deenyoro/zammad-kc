@@ -4,6 +4,7 @@ import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockAuthentication } from '#tests/support/mock-authentication.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import {
   EnumSystemSetupInfoStatus,
@@ -38,7 +39,7 @@ describe('guided setup manual email notification', () => {
         '/guided-setup/manual/channels/email-pre-configured',
       )
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup channels email screen',
@@ -82,7 +83,7 @@ describe('guided setup manual email notification', () => {
         '/guided-setup/manual/channels/email-pre-configured',
       )
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly shows information about pre-configured email addresses',

@@ -6,6 +6,7 @@ import { getTestRouter } from '#tests/support/components/renderComponent.ts'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { mockLogoutMutation } from '#shared/graphql/mutations/logout.mocks.ts'
 import { EnumAfterAuthType } from '#shared/graphql/types.ts'
@@ -47,7 +48,7 @@ describe('Login - After Auth - Two Factor Configuration', () => {
 
       await view.events.click(logoutButton)
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view, 'correctly redirects to login page').toHaveCurrentUrl(
           '/login',
         )
@@ -142,7 +143,7 @@ describe('Login - After Auth - Two Factor Configuration', () => {
 
       await view.events.click(logoutButton)
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view, 'correctly redirects to login page').toHaveCurrentUrl(
           '/login',
         )

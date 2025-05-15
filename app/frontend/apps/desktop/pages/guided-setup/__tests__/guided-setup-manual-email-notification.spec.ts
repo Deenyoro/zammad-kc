@@ -8,6 +8,7 @@ import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockAuthentication } from '#tests/support/mock-authentication.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { mockFormUpdaterQuery } from '#shared/components/Form/graphql/queries/formUpdater.mocks.ts'
 import { EnumSystemSetupInfoStatus } from '#shared/graphql/types.ts'
@@ -38,7 +39,7 @@ describe('guided setup manual email notification', () => {
 
       const view = await visitView('/guided-setup/manual/email-notification')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup start screen',
@@ -109,7 +110,7 @@ describe('guided setup manual email notification', () => {
 
       await view.events.click(continueButton)
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup email channel step',
@@ -173,25 +174,25 @@ describe('guided setup manual email notification', () => {
 
       await view.events.type(view.getByLabelText('Port'), '25')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view.getByLabelText('SSL verification')).toBeDisabled()
       })
 
       await view.events.clear(view.getByLabelText('Port'))
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view.getByLabelText('SSL verification')).not.toBeDisabled()
       })
 
       await view.events.type(view.getByLabelText('Port'), '465')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view.getByLabelText('SSL verification')).not.toBeDisabled()
       })
 
       await view.events.type(view.getByLabelText('Port'), '587')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view.getByLabelText('SSL verification')).not.toBeDisabled()
       })
     })
@@ -258,7 +259,7 @@ describe('guided setup manual email notification', () => {
 
       await view.events.click(goBackButton)
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to email notification step',
@@ -273,7 +274,7 @@ describe('guided setup manual email notification', () => {
 
       await view.events.click(skipButton)
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view, 'correctly redirects to channels step').toHaveCurrentUrl(
           '/guided-setup/manual/channels',
         )

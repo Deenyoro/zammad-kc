@@ -2,6 +2,7 @@
 
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { waitForUserCurrentTwoFactorRemoveMethodMutationCalls } from '#shared/entities/user/current/graphql/mutations/two-factor/userCurrentTwoFactorRemoveMethod.mocks.ts'
 import { waitForUserCurrentTwoFactorSetDefaultMethodMutationCalls } from '#shared/entities/user/current/graphql/mutations/two-factor/userCurrentTwoFactorSetDefaultMethod.mocks.ts'
@@ -18,7 +19,7 @@ describe('password personal settings', () => {
 
     const view = await visitView('/personal-setting/two-factor-auth')
 
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(view, 'correctly redirects to error page').toHaveCurrentUrl(
         '/error-tab',
       )

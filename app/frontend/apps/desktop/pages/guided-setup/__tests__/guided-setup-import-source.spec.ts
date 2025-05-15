@@ -2,6 +2,7 @@
 
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import {
   EnumSystemSetupInfoStatus,
@@ -99,7 +100,7 @@ describe('guided setup import source', () => {
 
       await view.events.click(saveAndContinueButton)
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup import source freshdesk',

@@ -5,6 +5,7 @@ import { flushPromises } from '@vue/test-utils'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockAuthentication } from '#tests/support/mock-authentication.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { EnumSystemSetupInfoStatus } from '#shared/graphql/types.ts'
 
@@ -49,7 +50,7 @@ describe('guided setup automated run', () => {
       await vi.runAllTimersAsync()
       vi.useRealTimers()
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view, 'correctly redirects to home screen').toHaveCurrentUrl('/')
       })
     })
@@ -103,7 +104,7 @@ describe('guided setup automated run', () => {
 
       const view = await visitView('/guided-setup/automated/run')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view, 'correctly redirects to home screen').toHaveCurrentUrl('/')
       })
     })
@@ -113,7 +114,7 @@ describe('guided setup automated run', () => {
 
       const view = await visitView('/guided-setup/automated/run')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view, 'correctly redirects to login screen').toHaveCurrentUrl(
           '/login',
         )

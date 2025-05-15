@@ -4,6 +4,7 @@ import { getNode } from '@formkit/core'
 import { FormKit } from '@formkit/vue'
 
 import { renderComponent } from '#tests/support/components/index.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { mockAutocompleteSearchObjectAttributeExternalDataSourceQuery } from '#shared/components/Form/fields/FieldExternalDataSource/graphql/queries/autocompleteSearchObjectAttributeExternalDataSource.mocks.ts'
 import { EnumObjectManagerObjects } from '#shared/graphql/types.ts'
@@ -137,13 +138,13 @@ describe('Form - Field - External Data Source - Query', () => {
       },
     })
 
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(wrapper.getByRole('listitem')).toHaveTextContent('Selected Value')
     })
 
     await wrapper.events.click(wrapper.getByRole('button'))
 
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(wrapper.emitted().inputRaw).toBeTruthy()
     })
 

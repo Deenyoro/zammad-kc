@@ -6,6 +6,7 @@ import {
 } from '#tests/support/components/renderComponent.ts'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { mockPublicLinksQuery } from '#shared/entities/public-links/graphql/queries/links.mocks.ts'
 
@@ -88,7 +89,7 @@ it('can update a password', async () => {
   await updatePassword(view, 'password', 'password')
   await confirmSuccess(view, 'password')
 
-  await vi.waitFor(() => {
+  await waitFor(() => {
     expect(getTestRouter().currentRoute.value.name).toBe('Login')
   })
 })

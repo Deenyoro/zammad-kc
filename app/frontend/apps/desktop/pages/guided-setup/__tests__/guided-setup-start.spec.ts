@@ -3,6 +3,7 @@
 import { getTestRouter } from '#tests/support/components/renderComponent.ts'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import {
   EnumSystemSetupInfoStatus,
@@ -66,7 +67,7 @@ describe('guided setup start', () => {
 
       await view.events.click(manualSetupButton)
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup manual',
@@ -99,7 +100,7 @@ describe('guided setup start', () => {
 
       await view.events.click(importSetupButton)
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup import',
@@ -137,7 +138,7 @@ describe('guided setup start', () => {
 
       const view = await visitView('/guided-setup')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup manual',
@@ -160,7 +161,7 @@ describe('guided setup start', () => {
 
       await view.events.click(view.getByText('Set up a new system'))
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup manual',
@@ -182,7 +183,7 @@ describe('guided setup start', () => {
 
       router.back()
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view, 'correctly redirects to home screen').toHaveCurrentUrl('/')
       })
     })

@@ -4,6 +4,7 @@ import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { EnumAuthenticationProvider } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
@@ -14,7 +15,7 @@ describe('linked accounts page', () => {
   it('is not accessible if no providers are enabled', async () => {
     const view = await visitView('/personal-setting/linked-accounts')
 
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(view, 'correctly redirects to error page').toHaveCurrentUrl(
         '/error-tab',
       )

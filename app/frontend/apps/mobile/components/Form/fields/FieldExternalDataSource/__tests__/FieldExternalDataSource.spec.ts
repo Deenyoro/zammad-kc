@@ -5,6 +5,7 @@ import { FormKit } from '@formkit/vue'
 
 import { getGraphQLMockCalls } from '#tests/graphql/builders/mocks.ts'
 import { renderComponent } from '#tests/support/components/index.ts'
+import { waitFor, waitUntil } from '#tests/support/vitest-wrapper.ts'
 
 import { AutocompleteSearchObjectAttributeExternalDataSourceDocument } from '#shared/components/Form/fields/FieldExternalDataSource/graphql/queries/autocompleteSearchObjectAttributeExternalDataSource.api.ts'
 import {
@@ -69,7 +70,7 @@ describe('Form - Field - External Data Source - Query', () => {
       wrapper.queryByText('Start typing to search…'),
     ).not.toBeInTheDocument()
 
-    const callResult = await vi.waitUntil(
+    const callResult = await waitUntil(
       () =>
         getGraphQLMockCalls<AutocompleteSearchObjectAttributeExternalDataSourceQuery>(
           AutocompleteSearchObjectAttributeExternalDataSourceDocument,
@@ -107,7 +108,7 @@ describe('Form - Field - External Data Source - Query', () => {
 
     expect(filterElement).toHaveValue('')
 
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(wrapper.queryByText('Start typing to search…')).toBeInTheDocument()
     })
 
@@ -120,7 +121,7 @@ describe('Form - Field - External Data Source - Query', () => {
 
     selectOptions = wrapper.getAllByRole('option')
 
-    const newTestOptions = await vi.waitFor(
+    const newTestOptions = await waitFor(
       () =>
         getGraphQLMockCalls<AutocompleteSearchObjectAttributeExternalDataSourceQuery>(
           AutocompleteSearchObjectAttributeExternalDataSourceDocument,
@@ -165,13 +166,13 @@ describe('Form - Field - External Data Source - Query', () => {
       },
     })
 
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(wrapper.getByRole('listitem')).toHaveTextContent('Selected Value')
     })
 
     await wrapper.events.click(wrapper.getByRole('button'))
 
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(wrapper.emitted().inputRaw).toBeTruthy()
     })
 

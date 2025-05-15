@@ -11,6 +11,7 @@ import { flushPromises } from '@vue/test-utils'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { mockLogoutMutation } from '#shared/graphql/mutations/logout.mocks.ts'
 
@@ -200,7 +201,7 @@ describe('Left sidebar', () => {
 
       await view.events.click(playgroundLink)
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view, 'correctly redirects to playground page').toHaveCurrentUrl(
           '/playground',
         )
@@ -227,7 +228,7 @@ describe('Left sidebar', () => {
 
       await view.events.click(personalSettingsLink)
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to personal settings page',
@@ -260,7 +261,7 @@ describe('Left sidebar', () => {
 
       await flushPromises()
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view, 'correctly redirects to login page').toHaveCurrentUrl(
           '/login',
         )

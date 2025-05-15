@@ -9,6 +9,7 @@ import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
+import { waitUntil } from '#tests/support/vitest-wrapper.ts'
 
 import { waitForFormUpdaterQueryCalls } from '#shared/components/Form/graphql/queries/formUpdater.mocks.ts'
 import { mockObjectManagerFrontendAttributesQuery } from '#shared/entities/object-attributes/graphql/queries/objectManagerFrontendAttributes.mocks.ts'
@@ -68,7 +69,7 @@ describe('ticket create view - shared drafts sidebar', async () => {
       )
 
       const formUpdaterCalls = await waitForFormUpdaterQueryCalls()
-      await vi.waitUntil(() => formUpdaterCalls.length === 2)
+      await waitUntil(() => formUpdaterCalls.length === 2)
 
       mockTicketSharedDraftStartListQuery({
         ticketSharedDraftStartList: [],

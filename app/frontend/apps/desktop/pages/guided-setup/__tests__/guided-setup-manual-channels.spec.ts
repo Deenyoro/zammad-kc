@@ -4,6 +4,7 @@ import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockAuthentication } from '#tests/support/mock-authentication.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { EnumSystemSetupInfoStatus } from '#shared/graphql/types.ts'
 
@@ -27,7 +28,7 @@ describe('guided setup manual channels', () => {
 
       const view = await visitView('/guided-setup/manual/channels')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup start screen',
@@ -58,7 +59,7 @@ describe('guided setup manual channels', () => {
 
       await view.events.click(emailChannelButton)
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup email channel step',
@@ -73,7 +74,7 @@ describe('guided setup manual channels', () => {
 
       await view.events.click(goBackButton)
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to email notification step',
@@ -88,7 +89,7 @@ describe('guided setup manual channels', () => {
 
       await view.events.click(skipButton)
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view, 'correctly redirects to the last step').toHaveCurrentUrl(
           '/guided-setup/manual/finish',
         )

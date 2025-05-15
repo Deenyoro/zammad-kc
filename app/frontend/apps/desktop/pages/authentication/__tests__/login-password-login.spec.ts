@@ -3,6 +3,7 @@
 import { waitForGraphQLMockCalls } from '#tests/graphql/builders/mocks.ts'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { mockLoginMutation } from '#shared/graphql/mutations/login.mocks.ts'
 
@@ -95,7 +96,7 @@ describe('password login', () => {
     })
 
     // We can't really wait for it via usual methods, so we just check it ever few ms.
-    await vi.waitFor(() => {
+    await waitFor(() => {
       // We can check current url with the new custom assertion `.toHaveCurrentUrl()`.
       expect(view, 'correctly redirects to home').toHaveCurrentUrl('/')
     })

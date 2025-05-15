@@ -5,6 +5,7 @@ import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockAuthentication } from '#tests/support/mock-authentication.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { dataURItoBlob } from '#tests/support/utils.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { EnumSystemSetupInfoStatus } from '#shared/graphql/types.ts'
 
@@ -28,7 +29,7 @@ describe('guided setup system information', () => {
 
       const view = await visitView('/guided-setup/manual/system-information')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup start screen',
@@ -85,7 +86,7 @@ describe('guided setup system information', () => {
 
       await view.events.click(continueButton)
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup email notification setp',

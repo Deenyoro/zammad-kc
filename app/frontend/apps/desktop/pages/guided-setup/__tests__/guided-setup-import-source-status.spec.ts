@@ -5,6 +5,7 @@ import { flushPromises } from '@vue/test-utils'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { getConfigUpdatesSubscriptionHandler } from '#shared/graphql/subscriptions/configUpdates.mocks.ts'
 import {
@@ -45,7 +46,7 @@ describe('guided setup import source status', () => {
     it('redirects to freshdesk configuration', async () => {
       const view = await visitView('/guided-setup/import/freshdesk/status')
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(
           view,
           'correctly redirects to guided setup import source freshdesk configuration',
@@ -271,7 +272,7 @@ describe('guided setup import source status', () => {
 
       await flushPromises()
 
-      await vi.waitFor(() => {
+      await waitFor(() => {
         expect(view, 'correctly redirects to login page').toHaveCurrentUrl(
           '/login',
         )

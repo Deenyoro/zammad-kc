@@ -29,6 +29,7 @@ import {
 import { noop } from 'lodash-es'
 
 import { waitForNextTick } from '#tests/support/utils.ts'
+import { waitUntil } from '#tests/support/vitest-wrapper.ts'
 
 import createCache from '#shared/server/apollo/cache.ts'
 import type { GraphQLErrorTypes } from '#shared/types/error.ts'
@@ -189,7 +190,7 @@ export const waitForGraphQLMockCalls = <T>(
   documentOrOperation: DocumentNode | OperationType,
   operationName?: keyof T & string,
 ): Promise<MockCall<DeepRequired<T>>[]> => {
-  return vi.waitUntil(() => {
+  return waitUntil(() => {
     try {
       const calls = getGraphQLMockCalls<T>(documentOrOperation, operationName)
       return calls.length && calls

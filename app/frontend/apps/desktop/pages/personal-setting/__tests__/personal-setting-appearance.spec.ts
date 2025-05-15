@@ -4,6 +4,7 @@ import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
+import { waitUntil } from '#tests/support/vitest-wrapper.ts'
 
 import { EnumAppearanceTheme } from '#shared/graphql/types.ts'
 
@@ -63,7 +64,7 @@ describe('appearance page', () => {
     )
 
     await view.events.click(lightMode)
-    await vi.waitUntil(() => calls.length === 2)
+    await waitUntil(() => calls.length === 2)
 
     expect(calls.at(-1)?.variables).toEqual({ theme: 'light' })
     expect(window.matchMedia('(prefers-color-scheme: dark)').matches).toBe(
