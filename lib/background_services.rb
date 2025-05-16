@@ -46,6 +46,22 @@ class BackgroundServices
     Rails.logger.info('Stopping BackgroundServices.')
   end
 
+  TOLERATE_ACTIVE_RECORD_ERRORS_IN_TESTS = [
+    'Cannot expire connection, it is not currently leased.', # rubocop:disable Zammad/DetectTranslatableString
+    'Cannot expire connection, it is owned by a different thread:' # rubocop:disable Zammad/DetectTranslatableString
+  ].freeze
+
+  # BackgroundServices rspec test is using Timeout.timeout to stop background services.
+  # It was fine for a long time, but started throwing following error in Rails 7.2.
+  # This seems to affect that test case only.
+  # Unfortunately, since it's running on a separate thread, that error has to be rescued here.
+  # That said, this should be handled by improving services loops to support graceful exiting.
+  def self.tolerate_error?(e)
+    return false if !Rails.env.test?
+
+    TOLERATE_ACTIVE_RECORD_ERRORS_IN_TESTS.any? { |error| e.message.starts_with?(error) }
+  end
+
   private
 
   # Check if child processes are still alive, terminate the main process otherwise to
@@ -164,13 +180,8 @@ class BackgroundServices
 
       Rails.logger.info { "Starting thread for service #{service.service_name} in the main process." }
       service.new(manager: self).run
-    # BackgroundServices rspec test is using Timeout.timeout to stop background services.
-    # It was fine for a long time, but started throwing following error in Rails 7.2.
-    # This seems to affect that test case only.
-    # Unfortunately, since it's running on a separate thread, that error has to be rescued here.
-    # That said, this should be handled by improving services loops to support graceful exiting.
     rescue ActiveRecord::ActiveRecordError => e
-      raise e if Rails.env.test? && e.message != 'Cannot expire connection, it is not currently leased.' # rubocop:disable Zammad/DetectTranslatableString
+      raise e if !self.class.tolerate_error?(e)
     end
   end
 end

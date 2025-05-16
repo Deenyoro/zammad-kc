@@ -26,7 +26,12 @@ class BackgroundServices
           result = nil
 
           realtime = Benchmark.realtime do
-            Rails.logger.debug { "*** worker thread, #{::Delayed::Job.where(queue: self.class.queues).count} in queue" }
+            Rails.logger.debug do
+              format('*** worker thread, %<count>d in %<queues>s queues', # rubocop:disable Style/FormatStringToken
+                     count:  ::Delayed::Job.where(queue: self.class.queues).count,
+                     queues: self.class.queues)
+            end
+
             # ::Delayed::Worker#stop? is monkey patched by config/initializers/delayed_worker_stop.rb
             #   to ensure an early exit even during work_off().
             result = ::Delayed::Worker.new(queues: self.class.queues).work_off
@@ -39,13 +44,28 @@ class BackgroundServices
       private
 
       def process_results(result, realtime)
+        result.sum.zero? ? process_empty : process_busy(result, realtime)
+      end
+
+      def process_empty
+        Rails.logger.debug do
+          format('*** no jobs processed in %<queues>s, sleeping…', queues: self.class.queues) # rubocop:disable Style/FormatStringToken
+        end
+        interruptible_sleep SLEEP_IF_EMPTY
+        Rails.logger.debug do
+          format('*** worker thread loop processing %<queues>s queues', queues: self.class.queues) # rubocop:disable Style/FormatStringToken
+        end
+      end
+
+      def process_busy(result, realtime)
         count = result.sum
 
-        if count.zero?
-          interruptible_sleep SLEEP_IF_EMPTY
-          Rails.logger.debug { '*** worker thread loop' }
-        else
-          Rails.logger.debug { format("*** #{count} jobs processed at %<jps>.4f j/s, %<failed>d failed ...\n", jps: count / realtime, failed: result.last) }
+        Rails.logger.debug do
+          format('*** %<count>d jobs processed at %<jps>.4f j/s, %<failed>d failed in %<queues>s queues…\n', # rubocop:disable Style/FormatStringToken
+                 count:  count,
+                 queues: self.class.queues,
+                 jps:    count / realtime,
+                 failed: result.last)
         end
       end
     end

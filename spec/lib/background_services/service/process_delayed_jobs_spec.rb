@@ -63,22 +63,31 @@ RSpec.describe BackgroundServices::Service::ProcessDelayedJobs, :aggregate_failu
   end
 
   describe '#process_results' do
-    it 'sleeps & loops when no jobs processed', :aggregate_failures do
-      allow(Rails.logger).to receive(:debug)
-      instance.send(:process_results, [0, 0], 1)
-
-      expect(Rails.logger).to have_received(:debug).with(no_args) do |&block|
-        expect(block.call).to match(%r{loop})
-      end
+    before do
+      allow(instance).to receive(:process_empty).and_call_original
+      allow(instance).to receive(:process_busy).and_call_original
+      allow(instance).to receive(:interruptible_sleep)
     end
 
-    it 'loops immediatelly when there was anything to process', :aggregate_failures do
-      allow(Rails.logger).to receive(:debug)
+    it 'sleeps & loops when no jobs processed', :aggregate_failures do
+      instance.send(:process_results, [0, 0], 1)
+
+      expect(instance).to have_received(:process_empty)
+      expect(instance).to have_received(:interruptible_sleep)
+    end
+
+    it 'loops immediately when there was anything to process', :aggregate_failures do
       instance.send(:process_results, [1, 0], 1)
 
-      expect(Rails.logger).to have_received(:debug).with(no_args) do |&block|
-        expect(block.call).to match(%r{jobs processed})
-      end
+      expect(instance).to have_received(:process_busy).with([1, 0], 1)
+      expect(instance).not_to have_received(:interruptible_sleep)
+    end
+
+    it 'loops immediately when all processed jobs failed', :aggregate_failures do
+      instance.send(:process_results, [0, 123], 1)
+
+      expect(instance).to have_received(:process_busy).with([0, 123], 1)
+      expect(instance).not_to have_received(:interruptible_sleep)
     end
   end
 

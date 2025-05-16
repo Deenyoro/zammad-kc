@@ -74,9 +74,8 @@ class BackgroundServices::Service
         Thread.current.name = "service #{self.class.name} thread ##{i}"
 
         run_single_thread
-      # See note in lib/background_services.rb#start_as_thread
       rescue ActiveRecord::ActiveRecordError => e
-        raise e if Rails.env.test? && e.message != 'Cannot expire connection, it is not currently leased.' # rubocop:disable Zammad/DetectTranslatableString
+        raise e if !BackgroundServices.tolerate_error?(e)
       end
     end.each(&:join)
   end
