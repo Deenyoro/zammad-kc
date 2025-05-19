@@ -2,7 +2,7 @@
 
 class Auth
 
-  attr_reader :user, :password, :auth_user, :two_factor_method, :two_factor_payload, :only_verify_password
+  attr_reader :password, :auth_user, :two_factor_method, :two_factor_payload, :only_verify_password
 
   delegate :user, to: :auth_user
 
