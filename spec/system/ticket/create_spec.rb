@@ -458,9 +458,7 @@ RSpec.describe 'Ticket Create', time_zone: 'Europe/London', type: :system do
         await_empty_ajax_queue
       end
 
-      in_modal do
-        expect(page).to have_text 'Error'
-      end
+      expect(page).to have_text 'Error'
     end
   end
 

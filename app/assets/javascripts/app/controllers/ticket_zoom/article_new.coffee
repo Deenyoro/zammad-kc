@@ -236,6 +236,9 @@ class App.TicketZoomArticleNew extends App.Controller
       onFileAbortedCallback: =>
         @richTextUploadRenderCallback?(@attachments)
 
+      onFileErrorCallback: =>
+        @richTextUploadRenderCallback?(@attachments)
+
       attachmentPlaceholder: @attachmentPlaceholder
       attachmentUpload:      @attachmentUpload
       progressBar:           @progressBar

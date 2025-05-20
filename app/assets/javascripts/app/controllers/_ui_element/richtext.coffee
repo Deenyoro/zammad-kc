@@ -101,6 +101,10 @@ class App.UiElement.richtext extends Spine.Module
             item.find('input').val('')
             item.find('[contenteditable]').trigger('fileUploadStop', ['aborted'])
 
+          onFileErrorCallback: ->
+            item.find('input').val('')
+            item.find('[contenteditable]').trigger('fileUploadStop', ['aborted'])
+
           attachmentPlaceholder: item.find('.attachmentPlaceholder')
           attachmentUpload:      item.find('.attachmentUpload')
           progressBar:           item.find('.attachmentUpload-progressBar')
