@@ -124,17 +124,18 @@ const currentViewTitle = computed(
     v-if="taskbarTabLink"
     ref="tabLinkInstance"
     v-tooltip="currentViewTitle"
-    class="flex grow gap-2 rounded-md px-2 py-3 group-hover/tab:bg-blue-600 hover:no-underline! focus-visible:rounded-md focus-visible:outline-hidden group-hover/tab:dark:bg-blue-900"
+    class="flex grow gap-2 px-2 py-3 hover:no-underline! group-hover/tab:dark:bg-blue-900"
     :link="taskbarTabLink"
     :class="{
       [activeBackgroundColor]: taskbarTabActive,
+      'group-hover/tab:bg-blue-60': collapsed,
+      'rounded-lg!': !collapsed,
     }"
     internal
   >
     <div class="relative">
       <CommonUpdateIndicator v-if="isTicketUpdated" />
       <CommonTicketStateIndicatorIcon
-        class="group-focus-visible/link:text-white"
         :class="{
           '!text-white': taskbarTabActive,
         }"
@@ -144,7 +145,7 @@ const currentViewTitle = computed(
       />
     </div>
     <CommonLabel
-      class="block! truncate text-gray-300 group-focus-visible/link:text-white dark:text-neutral-400 group-hover/tab:dark:text-white"
+      class="block! truncate text-gray-300 dark:text-neutral-400 group-hover/tab:dark:text-white"
       :class="{
         'text-white!': taskbarTabActive,
       }"

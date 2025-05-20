@@ -11,7 +11,7 @@ const { collapsedState } = useCollapsedState()
 <template>
   <div
     role="list"
-    class="flex items-center gap-4 rounded-xl bg-gray-700 p-4 empty:hidden"
+    class="flex items-center gap-1.5 rounded-xl bg-gray-700 p-2 empty:hidden"
     :class="{ 'flex-col bg-transparent': collapsedState }"
   >
     <AdminMenu role="listitem" />

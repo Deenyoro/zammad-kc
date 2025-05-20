@@ -51,14 +51,14 @@ const onClickItem = (event: MouseEvent, item: MenuItem) => {
 
 const getHoverFocusStyles = (variant?: Variant) => {
   if (variant === 'secondary') {
-    return 'focus-within:bg-blue-500 hover:bg-blue-500 hover:focus-within:bg-blue-500 dark:focus-within:bg-blue-950 dark:hover:bg-blue-950 dark:hover:focus-within:bg-blue-950'
+    return 'hover:bg-blue-500 dark:hover:bg-blue-950'
   }
 
   if (variant === 'danger') {
     return 'focus-within:bg-pink-100 hover:bg-pink-100 hover:focus-within:bg-pink-100 dark:focus-within:bg-red-900 dark:hover:bg-red-900 dark:hover:focus-within:bg-red-900'
   }
 
-  return 'focus-within:bg-blue-800 focus-within:text-white hover:bg-blue-600 hover:focus-within:bg-blue-800 dark:hover:bg-blue-900 dark:hover:focus-within:bg-blue-800'
+  return 'hover:bg-blue-600 dark:hover:bg-blue-900'
 }
 </script>
 
@@ -81,8 +81,13 @@ const getHoverFocusStyles = (variant?: Variant) => {
 
     <template v-if="filteredMenuItems || $slots.default">
       <slot>
-        <ul role="menu" v-bind="$attrs" class="flex w-full flex-col">
-          <template v-for="item in filteredMenuItems" :key="item.key">
+        <ul
+          v-if="filteredMenuItems"
+          role="menu"
+          v-bind="$attrs"
+          class="flex w-full flex-col"
+        >
+          <template v-for="(item, index) in filteredMenuItems" :key="item.key">
             <li
               v-if="'array' in item"
               class="flex flex-col overflow-clip pt-2.5 last:rounded-b-[10px] [&:nth-child(n+2)]:border-t [&:nth-child(n+2)]:border-neutral-100 [&:nth-child(n+2)]:dark:border-gray-900"
@@ -99,8 +104,14 @@ const getHoverFocusStyles = (variant?: Variant) => {
                 <slot :name="`item-${subItem.key}`" v-bind="subItem">
                   <component
                     :is="subItem.component || CommonPopoverMenuItem"
-                    class="flex grow p-2.5"
-                    :class="getHoverFocusStyles(subItem.variant)"
+                    class="flex grow rounded-lg p-2.5"
+                    :class="[
+                      getHoverFocusStyles(subItem.variant),
+                      {
+                        'last:rounded-b-xl':
+                          index === filteredMenuItems?.length - 1,
+                      },
+                    ]"
                     :label="subItem.label"
                     :variant="subItem.variant"
                     :link="subItem.link"
@@ -129,7 +140,11 @@ const getHoverFocusStyles = (variant?: Variant) => {
               <slot :name="`item-${item.key}`" v-bind="item">
                 <component
                   :is="item.component || CommonPopoverMenuItem"
-                  class="flex grow p-2.5"
+                  class="focus-visible-app-default flex grow p-2.5 focus-visible:-outline-offset-1!"
+                  :class="{
+                    'rounded-t-lg!': index === 0 && !showHeaderLabel,
+                    'rounded-b-lg!': index === filteredMenuItems?.length - 1,
+                  }"
                   :label="item.label"
                   :variant="item.variant"
                   :link="item.link"

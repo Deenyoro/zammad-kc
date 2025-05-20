@@ -17,7 +17,7 @@ interface Props {
 }
 
 //*
-// IMPORTANT: This is just a temporary implementations please replace and adapt it later
+// IMPORTANT: This is just a temporary implementation please replace and adapt it later
 // *//
 defineProps<Props>()
 
@@ -32,7 +32,7 @@ const openSearch = () => {
 </script>
 
 <template>
-  <div class="py-2">
+  <div>
     <CommonSectionCollapse
       id="page-navigation"
       :title="__('Navigation')"
@@ -40,7 +40,7 @@ const openSearch = () => {
     >
       <template #default="{ headerId }">
         <nav :aria-labelledby="headerId">
-          <ul class="m-0 flex basis-full flex-col gap-1 p-0">
+          <ul class="flex basis-full flex-col" :class="{ 'gap-1': collapsed }">
             <li class="flex justify-center">
               <CommonButton
                 v-if="collapsed"
@@ -56,10 +56,11 @@ const openSearch = () => {
               v-for="route in sortedFirstLevelRoutes"
               :key="route.path"
               class="flex justify-center"
+              :class="{ 'not-last:mb-1.5': !collapsed }"
             >
               <CommonButton
                 v-if="collapsed"
-                class="flex-shrink-0 text-neutral-400 hover:outline-blue-900"
+                class="focus-visible-app-default flex-shrink-0 text-neutral-400 hover:outline-blue-900"
                 size="large"
                 variant="neutral"
                 :icon="route.meta.icon"
@@ -67,7 +68,7 @@ const openSearch = () => {
               />
               <CommonLink
                 v-else
-                class="flex grow gap-2 rounded-md px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:text-white! hover:no-underline!"
+                class="focus-visible-app-default flex grow gap-2 rounded-lg px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:text-white! hover:no-underline! focus-visible:rounded-lg!"
                 :class="{
                   'bg-blue-800! text-white!':
                     router.currentRoute.value.name === route.name, // $route.name is not detected by ts

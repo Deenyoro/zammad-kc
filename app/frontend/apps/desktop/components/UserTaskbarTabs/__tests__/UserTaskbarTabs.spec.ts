@@ -201,7 +201,7 @@ describe('UserTaskbarTabs.vue', () => {
 
     const tab = wrapper.getByRole('listitem')
 
-    expect(getAllByIconName(tab, 'x-lg')[0]).toHaveClass('text-red-500')
+    expect(getAllByIconName(tab, 'x-lg')[1]).toHaveClass('text-red-500')
     expect(tab).toHaveTextContent('Access denied')
 
     expect(tab).toHaveAccessibleDescription(
@@ -241,7 +241,7 @@ describe('UserTaskbarTabs.vue', () => {
 
     const tab = wrapper.getByRole('listitem')
 
-    expect(getAllByIconName(tab, 'x-lg')[0]).toHaveClass('text-red-500')
+    expect(getAllByIconName(tab, 'x-lg')[1]).toHaveClass('text-red-500')
     expect(tab).toHaveTextContent('Not found')
 
     expect(tab).toHaveAccessibleDescription(

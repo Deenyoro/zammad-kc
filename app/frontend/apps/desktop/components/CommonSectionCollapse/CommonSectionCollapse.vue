@@ -71,9 +71,9 @@ watch(
     <header
       v-if="!noHeader"
       :id="headerId"
-      class="group flex cursor-default items-center justify-between text-stone-200 dark:text-neutral-500"
+      class="group mx-1 flex cursor-default items-center justify-between text-stone-200 group-focus-within:focus-visible:outline-1 has-focus-visible:outline-1 has-focus-visible:outline-offset-1 has-focus-visible:outline-blue-800 dark:text-neutral-500"
       :class="{
-        'cursor-pointer rounded-md focus-within:outline-1 focus-within:outline-offset-1 focus-within:outline-blue-800 hover:bg-blue-600 hover:text-black dark:hover:bg-blue-900 hover:dark:text-white':
+        'cursor-pointer rounded-md hover:bg-blue-600 hover:text-black dark:hover:bg-blue-900 hover:dark:text-white':
           !noCollapse,
         'px-1 py-0.5': size === 'small',
         '-mx-1': size === 'small' && !noNegativeMargin,
@@ -98,7 +98,7 @@ watch(
         :collapsed="isCollapsed"
         :owner-id="id"
         no-padded
-        class="group-hover:text-black! group-hover:opacity-100 focus-visible:bg-transparent focus-visible:text-black dark:group-hover:text-white! dark:focus-visible:text-white"
+        class="group-hover:text-black! group-hover:opacity-100 focus-visible:text-black dark:group-hover:text-white!"
         :class="{ 'opacity-100': isCollapsed }"
         orientation="vertical"
         @keydown.enter="toggleCollapse()"

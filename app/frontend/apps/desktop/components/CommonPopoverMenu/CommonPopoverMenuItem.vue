@@ -25,14 +25,14 @@ const props = defineProps<Props>()
 const variantClass = computed(() => {
   if (props.variant === 'secondary') return 'text-blue-800'
   if (props.variant === 'danger') return 'text-red-500'
-  return 'group-focus-within:text-white group-hover:text-black group-hover:group-focus-within:text-white dark:group-hover:text-white'
+  return 'group-hover:text-black dark:group-hover:text-white'
 })
 
 const iconColor = computed(() => {
   if (props.iconClass) return props.iconClass
   if (props.variant === 'secondary') return 'text-blue-800'
   if (props.variant === 'danger') return 'text-red-500'
-  return 'text-stone-200 dark:text-neutral-500 group-hover:text-black dark:group-hover:text-white group-focus-within:text-white group-hover:group-focus-within:text-white'
+  return 'text-stone-200 dark:text-neutral-500 group-hover:text-black dark:group-hover:text-white'
 })
 </script>
 
@@ -41,7 +41,7 @@ const iconColor = computed(() => {
     :is="link ? 'CommonLink' : 'button'"
     :link="link"
     :external="link && linkExternal"
-    class="group block cursor-pointer leading-snug hover:no-underline! focus-visible:!outline-hidden"
+    class="group focus-visible-app-default block cursor-pointer leading-snug hover:no-underline! focus-visible:-outline-offset-1!"
     data-test-id="popover-menu-item"
   >
     <slot name="leading" />

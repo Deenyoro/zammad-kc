@@ -448,7 +448,7 @@ const { collapseDuration, collapseEnter, collapseAfterEnter, collapseLeave } =
             >
               <CommonLabel
                 v-if="currentPath.length"
-                class="text-blue-800 hover:text-black focus-visible:rounded-xs focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-blue-800 dark:hover:text-white"
+                class="text-blue-800 hover:text-black focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-blue-800 dark:hover:text-white"
                 :prefix-icon="
                   locale.localeData?.dir === 'rtl'
                     ? 'chevron-right'
@@ -466,7 +466,7 @@ const { collapseDuration, collapseEnter, collapseAfterEnter, collapseLeave } =
               </CommonLabel>
               <CommonLabel
                 v-if="multiple && hasMoreSelectableOptions"
-                class="ms-auto text-blue-800 hover:text-black focus-visible:rounded-xs focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-blue-800 dark:hover:text-white"
+                class="ms-auto text-blue-800 hover:text-black focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-blue-800 dark:hover:text-white"
                 prefix-icon="check-all"
                 size="small"
                 role="button"

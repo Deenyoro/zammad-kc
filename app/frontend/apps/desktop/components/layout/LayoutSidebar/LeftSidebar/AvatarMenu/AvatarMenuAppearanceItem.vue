@@ -37,7 +37,7 @@ const modelTheme = computed({
     <ThemeSwitch
       ref="theme-switch"
       v-model="modelTheme"
-      class="hover:outline-blue-300 focus:outline-blue-600 hover:focus:outline-blue-600 dark:hover:outline-blue-950 dark:focus:outline-blue-900 dark:hover:focus:outline-blue-900"
+      class="hover:outline-blue-300 dark:hover:outline-blue-950"
       size="small"
     />
   </div>

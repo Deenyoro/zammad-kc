@@ -107,7 +107,7 @@ const onResetWidth = () => {
       :collapsible="!isQuickSearchActive"
       resizable
       no-scroll
-      :no-padding="isQuickSearchActive"
+      no-padding
       remember-collapse
       @collapse="onCollapse"
       @expand="onExpand"
@@ -117,36 +117,35 @@ const onResetWidth = () => {
       @reset-width="onResetWidth"
     >
       <template #default="{ isCollapsed }">
-        <!-- TODO: Switch to `scheme-dark` utility once we upgrade to TW 4. -->
-        <div
-          class="flex h-full flex-col"
-          data-theme="dark"
-          style="color-scheme: dark"
-        >
+        <div class="flex h-full flex-col" data-theme="dark">
           <LeftSidebarHeader
             v-model:search="quickSearchValue"
             v-model:search-active="isQuickSearchActive"
-            class="mb-2"
-            :class="{ 'px-3 pt-2.5': isQuickSearchActive }"
+            class="mb-3 px-3 py-2.5"
             :collapsed="isCollapsed"
           />
           <QuickSearch
             v-show="isQuickSearchActive"
             :search="quickSearchValue"
+            class="mb-3 px-3"
             :collapsed="isCollapsed"
           />
           <PageNavigation
             v-show="!isQuickSearchActive"
+            class="px-3"
+            :class="{ 'mb-2': !isCollapsed }"
             :collapsed="isCollapsed"
           />
           <UserTaskbarTabs
             v-show="!isQuickSearchActive"
+            class="px-3"
             :collapsed="isCollapsed"
           />
           <LeftSidebarFooterMenu
             v-show="!isQuickSearchActive"
             :collapsed="isCollapsed"
             class="mt-auto"
+            :class="{ 'p-3': !isCollapsed }"
           />
         </div>
       </template>

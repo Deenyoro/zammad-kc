@@ -42,7 +42,7 @@ const iconClassMap = {
   <span
     ref="el"
     v-tooltip="tooltip"
-    class="inline-flex items-center gap-1 rounded-full px-3.5 py-1 text-base text-nowrap text-gray-100 outline-hidden transition-colors select-none focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-neutral-400"
+    class="inline-flex items-center gap-1 rounded-full px-3.5 py-1 text-base text-nowrap text-gray-100 select-none focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-neutral-400"
     :class="[
       colorClasses,
       fontSizeClassMap[props.size],

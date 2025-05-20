@@ -38,15 +38,17 @@ const { currentViewTitle } = useTicketCreateTitle(
     v-if="taskbarTabLink"
     ref="tabLinkInstance"
     v-tooltip="currentViewTitle"
-    class="flex grow gap-2 rounded-md px-2 py-3 group-hover/tab:bg-blue-600 hover:no-underline! focus-visible:rounded-md focus-visible:outline-hidden group-hover/tab:dark:bg-blue-900"
+    class="flex grow gap-2 px-2 py-3 group-hover/tab:bg-blue-600 hover:no-underline! group-hover/tab:dark:bg-blue-900"
     :class="{
       ['!bg-blue-800 text-white']: taskbarTabActive,
+      'group-focus-visible/link:text-white': collapsed,
+      'rounded-lg!': !collapsed,
     }"
     :link="taskbarTabLink"
     internal
   >
     <CommonIcon
-      class="shrink-0 text-stone-200 group-focus-visible/link:text-white dark:text-neutral-500"
+      class="shrink-0 text-stone-200 dark:text-neutral-500"
       :class="{
         'text-white!': taskbarTabActive,
       }"
@@ -56,7 +58,7 @@ const { currentViewTitle } = useTicketCreateTitle(
     />
 
     <CommonLabel
-      class="block! truncate text-gray-300 group-hover/tab:text-white group-focus-visible/link:text-white dark:text-neutral-400"
+      class="block! truncate text-gray-300 group-hover/tab:text-white dark:text-neutral-400"
       :class="{
         'text-white!': taskbarTabActive,
       }"

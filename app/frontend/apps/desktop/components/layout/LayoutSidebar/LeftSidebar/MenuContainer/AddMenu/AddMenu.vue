@@ -16,7 +16,7 @@ const defaultItem = computed(() =>
 
 <template>
   <CommonActionMenu
-    class="flex!"
+    class="rounded-md p-2 has-focus-visible:outline has-focus-visible:outline-offset-0! has-focus-visible:outline-blue-800!"
     orientation="autoVertical"
     :hide-arrow="collapsedState"
     :default-icon="defaultItem?.icon"

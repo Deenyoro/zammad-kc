@@ -34,6 +34,7 @@ export interface UserTaskbarTabEntityProps<T = UserTaskbarTabEntity> {
   taskbarTab: UserTaskbarTab<T>
   taskbarTabLink?: string
   context?: TaskbarTabContext
+  collapsed?: boolean
 }
 
 export interface UserTaskbarTabPlugin<T = UserTaskbarTabEntity> {

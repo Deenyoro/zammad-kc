@@ -32,7 +32,7 @@ const confirmRemoveUserTaskbarTab = async () => {
   if (!props.taskbarTab.taskbarTabId) return
 
   if (props.plugin?.confirmTabRemove) {
-    // Redirect to taskbar tab that is to be closed, if:
+    // Redirect to the taskbar tab that is to be closed, if:
     //   * it has a dirty state
     //   * it's not the currently active tab
     //   * the tab link can be computed
@@ -60,14 +60,13 @@ const confirmRemoveUserTaskbarTab = async () => {
     }
   }
 
-  // Redirection to a historical route will be handled by the store.
+  // The store will handle redirection to a historical route.
   taskbarTabStore.deleteTaskbarTab(props.taskbarTab.taskbarTabId)
 }
 </script>
 
 <template>
   <CommonButton
-    v-if="props.taskbarTab.taskbarTabId"
     v-tooltip="$t('Close this tab')"
     :class="{ 'opacity-0 transition-opacity': !isTouchDevice }"
     class="absolute end-2 top-3 group-hover/tab:opacity-100 focus:opacity-100"
