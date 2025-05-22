@@ -8,6 +8,6 @@ class Service::Translation::Search::Collector::Overview < Service::Translation::
   end
 
   def search_sources
-    ::Overview.where("name #{like_operator} :query", query: like_query).pluck(:name)
+    ::Overview.where('name ILIKE :query', query: like_query).pluck(:name)
   end
 end

@@ -111,7 +111,6 @@ class Selector::Sql < Selector::Base
     query                           = []
     tables                          = []
     bind_params                     = []
-    like                            = Rails.application.config.db_like
     attribute_table, attribute_name = block_condition[:name].split('.')
 
     # get tables to join
@@ -333,26 +332,26 @@ class Selector::Sql < Selector::Base
                  "users.id NOT IN (SELECT DISTINCT #{distinct_column} FROM tickets#{query_where})"
                end
     elsif block_condition[:operator] == 'starts with'
-      query << "#{attribute} #{like} (?)"
+      query << "#{attribute} ILIKE (?)"
       bind_params.push "#{SqlHelper.quote_like(block_condition[:value])}%"
     elsif block_condition[:operator] == 'starts with one of'
       block_condition[:value] = Array.wrap(block_condition[:value])
 
       sub_query = []
       block_condition[:value].each do |value|
-        sub_query << "#{attribute} #{like} (?)"
+        sub_query << "#{attribute} ILIKE (?)"
         bind_params.push "#{SqlHelper.quote_like(value)}%"
       end
       query << "(#{sub_query.join(' OR ')})" if sub_query.present?
     elsif block_condition[:operator] == 'ends with'
-      query << "#{attribute} #{like} (?)"
+      query << "#{attribute} ILIKE (?)"
       bind_params.push "%#{SqlHelper.quote_like(block_condition[:value])}"
     elsif block_condition[:operator] == 'ends with one of'
       block_condition[:value] = Array.wrap(block_condition[:value])
 
       sub_query = []
       block_condition[:value].each do |value|
-        sub_query << "#{attribute} #{like} (?)"
+        sub_query << "#{attribute} ILIKE (?)"
         bind_params.push "%#{SqlHelper.quote_like(value)}"
       end
       query << "(#{sub_query.join(' OR ')})" if sub_query.present?
@@ -471,12 +470,12 @@ class Selector::Sql < Selector::Base
         # rubocop:enable Style/IfInsideElse, Metrics/BlockNesting
       end
     elsif block_condition[:operator] == 'contains'
-      query << "#{attribute} #{like} (?)"
+      query << "#{attribute} ILIKE (?)"
       bind_params.push "%#{SqlHelper.quote_like(block_condition[:value])}%"
     elsif block_condition[:operator] == 'contains not'
       # NOT LIKE is always false on NULL values
       # https://github.com/zammad/zammad/issues/4948
-      query << "#{attribute} NOT #{like} (?) OR #{attribute} IS NULL"
+      query << "#{attribute} NOT ILIKE (?) OR #{attribute} IS NULL"
       bind_params.push "%#{SqlHelper.quote_like(block_condition[:value])}%"
     elsif block_condition[:operator] == 'matches regex'
       query << sql_helper.regex_match(attribute, negated: false)

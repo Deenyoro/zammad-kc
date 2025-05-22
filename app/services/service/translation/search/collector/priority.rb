@@ -8,6 +8,6 @@ class Service::Translation::Search::Collector::Priority < Service::Translation::
   end
 
   def search_sources
-    Ticket::Priority.where("name #{like_operator} :query", query: like_query).pluck(:name)
+    Ticket::Priority.where('name ILIKE :query', query: like_query).pluck(:name)
   end
 end

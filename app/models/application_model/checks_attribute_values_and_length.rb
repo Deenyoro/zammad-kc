@@ -31,7 +31,7 @@ module ApplicationModel::ChecksAttributeValuesAndLength
       next if value.blank? || self[name].frozen?
 
       # strip null byte chars (postgresql will complain about it)
-      if column.type == :text && Rails.application.config.db_null_byte == false
+      if column.type == :text
         self[name].delete!("\u0000")
       end
 
@@ -46,9 +46,7 @@ module ApplicationModel::ChecksAttributeValuesAndLength
       end
 
       # strip null byte chars (postgresql will complain about it)
-      if Rails.application.config.db_null_byte == false
-        self[name].delete!("\u0000")
-      end
+      self[name].delete!("\u0000")
     end
     true
   end

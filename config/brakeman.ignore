@@ -118,29 +118,6 @@
       "note": "ObjectLookup.by_id works as designed"
     },
     {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "2251415d8897d2c79a5c952dd0fe57dadd5ca96defd67ccefa27fc7b5ab06148",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/services/service/translation/search/collector/model.rb",
-      "line": 28,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "Translation.not_customized.where(\"locale = :locale AND (source #{like_operator} :query OR target #{like_operator} :query OR target_initial #{like_operator} :query)\", :locale => locale, :query => like_query)",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Service::Translation::Search::Collector::Model",
-        "method": "search_by_query"
-      },
-      "user_input": "like_operator",
-      "confidence": "Medium",
-      "cwe_id": [
-        89
-      ],
-      "note": ""
-    },
-    {
       "warning_type": "Redirect",
       "warning_code": 18,
       "fingerprint": "2ebd9f5e35ae11122d5561fdbbef7432eeef6b34d7c61249365be7dc34cbfb82",
@@ -162,29 +139,6 @@
         601
       ],
       "note": ""
-    },
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "34d5d0f52def9a9fbcb045f4f16b0117cb22d59d8ab6184f3bddd057d81d7cd1",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/models/channel/filter/internal_article_check.rb",
-      "line": 31,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "ticket.articles.where(\"ticket_articles.to #{Rails.application.config.db_like} ?\", \"%#{parse_email(mail[:from_email])}%\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Channel::Filter::InternalArticleCheck",
-        "method": "Channel::Filter::InternalArticleCheck.last_outgoing_mail_is_internal?"
-      },
-      "user_input": "Rails.application.config.db_like",
-      "confidence": "Weak",
-      "cwe_id": [
-        89
-      ],
-      "note": "The db_like config setting is safe to use in an SQL string."
     },
     {
       "warning_type": "Denial of Service",
@@ -226,29 +180,6 @@
       "confidence": "Medium",
       "cwe_id": [
         470
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "49c4e60297a41654cfb9d8ac6b8232e0d3a68ee7ebd53f48b7c6d0ec6f830318",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/services/service/translation/search/collector/macro.rb",
-      "line": 11,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "::Macro.where(\"name #{like_operator} :query\", :query => like_query)",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Service::Translation::Search::Collector::Macro",
-        "method": "search_sources"
-      },
-      "user_input": "like_operator",
-      "confidence": "Weak",
-      "cwe_id": [
-        89
       ],
       "note": ""
     },
@@ -344,29 +275,6 @@
         470
       ],
       "note": "Only for testing purposes"
-    },
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "6f9bc95786e5e3904c8cf11eaff8d481d057ac2a15edad0a753587047a9bd785",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/services/service/translation/search/collector/overview.rb",
-      "line": 11,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "::Overview.where(\"name #{like_operator} :query\", :query => like_query)",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Service::Translation::Search::Collector::Overview",
-        "method": "search_sources"
-      },
-      "user_input": "like_operator",
-      "confidence": "Weak",
-      "cwe_id": [
-        89
-      ],
-      "note": ""
     },
     {
       "warning_type": "Remote Code Execution",
@@ -664,7 +572,7 @@
       "check_name": "UnsafeReflection",
       "message": "Unsafe reflection method `constantize` called on model attribute",
       "file": "app/models/object_manager/attribute.rb",
-      "line": 962,
+      "line": 951,
       "link": "https://brakemanscanner.org/docs/warning_types/remote_code_execution/",
       "code": "ObjectLookup.by_id(object_lookup_id).constantize",
       "render_path": null,
@@ -679,29 +587,6 @@
         470
       ],
       "note": "ObjectLookup.by_id works as designed"
-    },
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "c3e251f444d988a200ae5c5e811dc7264337906df99740007bfa499c35e203c9",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/services/service/translation/search/collector/priority.rb",
-      "line": 11,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "Ticket::Priority.where(\"name #{like_operator} :query\", :query => like_query)",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Service::Translation::Search::Collector::Priority",
-        "method": "search_sources"
-      },
-      "user_input": "like_operator",
-      "confidence": "Medium",
-      "cwe_id": [
-        89
-      ],
-      "note": ""
     },
     {
       "warning_type": "Command Injection",
@@ -748,29 +633,6 @@
         22
       ],
       "note": "Running QUnit tests"
-    },
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "c686d86a18e1345c9216a074fb8cd86f1e4d4bc1f6d78c8f00891f4c13dfb849",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/services/service/translation/search/collector/state.rb",
-      "line": 11,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "Ticket::State.where(\"name #{like_operator} :query\", :query => like_query)",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Service::Translation::Search::Collector::State",
-        "method": "search_sources"
-      },
-      "user_input": "like_operator",
-      "confidence": "Medium",
-      "cwe_id": [
-        89
-      ],
-      "note": ""
     },
     {
       "warning_type": "SSL Verification Bypass",

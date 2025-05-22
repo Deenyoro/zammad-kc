@@ -46,18 +46,10 @@ class Transaction::Trigger
   def triggers_scope
     ::Trigger
       .activated_by(trigger_activator)
-      .reorder(reorder_clause)
+      .reorder(Arel.sql('LOWER(name)'))
   end
 
   def trigger_activator
     :action
-  end
-
-  def reorder_clause
-    if Rails.configuration.db_case_sensitive
-      return Arel.sql('LOWER(name)')
-    end
-
-    :name
   end
 end

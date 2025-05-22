@@ -2,6 +2,19 @@
 
 ## 7.0
 
+### MySQL support removed, database related application settings deprecated
+
+After a long period of deprecation, support for the MySQL database was removed.
+Any systems still running on MySQL need to be migrated to PostgreSQL
+_before updating to Zammad 7.0_.
+
+The following configuration values are now deprecated and will be removed with Zammad 8.0:
+
+- `Rails.application.config.db_null_byte`
+- `Rails.application.config.db_case_sensitive`
+- `Rails.application.config.db_like`
+- `Rails.application.config.db_column_array`
+
 ### Fulltext search is now asciifolding
 
 The global search, as well as other fulltext searches, are now [asciifolding](https://github.com/zammad/zammad/pull/5536).
