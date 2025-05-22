@@ -13,9 +13,9 @@ class TicketAIAssistanceSummarizeJob < AIJob
       ticket:
     )
 
-    result = summarize.execute
+    content = summarize.execute&.content
 
-    if result.nil?
+    if content.nil?
       # Trigger the update for the new desktop view.
       trigger_subscription(ticket:, locale:, data: {
                              summary: {
@@ -39,13 +39,13 @@ class TicketAIAssistanceSummarizeJob < AIJob
     # Trigger the update for the new desktop view.
     trigger_subscription(ticket:, locale:, data: {
                            summary:         {
-                             problem:              result['problem'],
-                             conversation_summary: result['summary'],
-                             open_questions:       result['open_questions'],
-                             suggestions:          result['suggestions']
+                             problem:              content['problem'],
+                             conversation_summary: content['summary'],
+                             open_questions:       content['open_questions'],
+                             suggestions:          content['suggestions']
                            },
-                           reason:          result['reason'],
-                           fingerprint_md5: Digest::MD5.hexdigest(result.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+                           reason:          content['reason'],
+                           fingerprint_md5: Digest::MD5.hexdigest(content.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
                          },)
 
     # Trigger the update for the old stack

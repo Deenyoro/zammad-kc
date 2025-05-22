@@ -48,7 +48,18 @@ class AI::Provider
     embeddings(input:)
   end
 
+  def metadata
+    {
+      provider:    self.class.name,
+      temperature: options[:temperature],
+    }.merge(specific_metadata)
+  end
+
   private
+
+  def specific_metadata
+    {}
+  end
 
   def chat(prompt_system:, prompt_user:)
     raise 'not implemented'

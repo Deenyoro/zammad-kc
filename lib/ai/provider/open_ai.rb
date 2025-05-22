@@ -94,4 +94,12 @@ class AI::Provider::OpenAI < AI::Provider
 
     nil
   end
+
+  private
+
+  def specific_metadata
+    {
+      model: options[:model],
+    }
+  end
 end

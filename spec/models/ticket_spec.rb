@@ -1283,6 +1283,17 @@ RSpec.describe Ticket, type: :model do
             .to change { customer.reload.updated_at }
             .and change { organization.reload.updated_at }
         end
+
+        it 'destroys related AI persistent storages' do
+          article = create(:ticket_article, ticket: ticket)
+
+          create(:ai_stored_result, related_object: ticket)
+          create(:ai_stored_result, related_object: article)
+
+          expect { ticket.destroy }
+            .to change(AI::StoredResult, :count)
+            .by(-2)
+        end
       end
 
       context 'when customer association is changed' do

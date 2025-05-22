@@ -9,7 +9,7 @@ class AI::Service::TextSpellingAndGrammar < AI::Service
     }
   end
 
-  def cachable?
+  def persistable?
     false
   end
 

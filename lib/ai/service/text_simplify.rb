@@ -9,10 +9,6 @@ class AI::Service::TextSimplify < AI::Service
     }
   end
 
-  def cachable?
-    false
-  end
-
   def json_response?
     false
   end

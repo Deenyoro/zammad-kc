@@ -87,4 +87,12 @@ class AI::Provider::Ollama < AI::Provider
 
     nil
   end
+
+  private
+
+  def specific_metadata
+    {
+      model: options[:model],
+    }
+  end
 end

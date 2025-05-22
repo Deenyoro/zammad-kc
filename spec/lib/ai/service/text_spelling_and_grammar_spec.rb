@@ -32,7 +32,7 @@ RSpec.describe AI::Service::TextSpellingAndGrammar, required_envs: %w[OPEN_AI_TO
 
     it 'check that grammar is correct' do
       result = ai_service.execute
-      expect(result).to include('I am Nicole Braun.')
+      expect(result.content).to include('I am Nicole Braun.')
     end
   end
 end

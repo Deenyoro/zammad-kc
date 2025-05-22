@@ -738,6 +738,22 @@ RSpec.describe Ticket::Article, type: :model do
     end
   end
 
+  describe 'Touching associations on update:' do
+    context 'on destruction' do
+      let(:ticket)  { create(:ticket) }
+      let(:article) { create(:ticket_article, ticket:) }
+
+      it 'destroys all related cache entries' do
+        create(:ai_stored_result, related_object: ticket)
+        create(:ai_stored_result, related_object: article)
+
+        expect { article.destroy }
+          .to change(AI::StoredResult, :count)
+          .by(-1)
+      end
+    end
+  end
+
   describe 'clone attachments' do
     context 'of forwarded article' do
       context 'via email' do

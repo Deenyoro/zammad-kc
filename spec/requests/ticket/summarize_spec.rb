@@ -3,8 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Ticket Summarize API endpoints', authenticated_as: :user, performs_jobs: true, type: :request do
-  let(:user)   { create(:agent) }
-  let(:ticket) { create(:ticket) }
+  let(:user)    { create(:agent) }
+  let(:ticket)  { article.ticket }
+  let(:article) { create(:ticket_article) }
 
   before do
     Setting.set('ai_provider', 'zammad_ai')
@@ -36,7 +37,13 @@ RSpec.describe 'Ticket Summarize API endpoints', authenticated_as: :user, perfor
           }
         end
 
-        before { allow(Rails.cache).to receive(:read).and_return(result) }
+        before do
+          AI::StoredResult.create!(
+            content: result,
+            version: AI::Service::TicketSummarize.persistent_version({ ticket: }, Locale.find_by(locale: user.locale)),
+            **AI::Service::TicketSummarize.persistent_lookup_attributes({ ticket: }, Locale.find_by(locale: user.locale)),
+          )
+        end
 
         it 'returns cached version' do
           make_request

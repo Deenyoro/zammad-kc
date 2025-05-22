@@ -109,6 +109,8 @@ class Ticket < ApplicationModel
   belongs_to    :create_article_type,    class_name: 'Ticket::Article::Type', optional: true
   belongs_to    :create_article_sender,  class_name: 'Ticket::Article::Sender', optional: true
 
+  has_many :ai_stored_results, class_name: 'AI::StoredResult', as: :related_object, dependent: :destroy
+
   association_attributes_ignored :flags, :mentions
 
   attr_accessor :callback_loop

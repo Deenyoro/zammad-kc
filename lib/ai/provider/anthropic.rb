@@ -77,6 +77,12 @@ class AI::Provider::Anthropic < AI::Provider
 
   private
 
+  def specific_metadata
+    {
+      model: options[:model],
+    }
+  end
+
   def headers
     self.class.headers(config)
   end

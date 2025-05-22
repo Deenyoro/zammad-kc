@@ -51,6 +51,13 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
         }
       end
 
+      let(:expected_result) do
+        AI::Service::Result.new(
+          content: expected_summary,
+          fresh:   true
+        )
+      end
+
       let(:expected_broadcasted_summary) do
         {
           'problem'             => 'Houston we got a problem',
@@ -63,7 +70,7 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
       before do
         allow_any_instance_of(Service::Ticket::AIAssistance::Summarize)
           .to receive(:execute)
-          .and_return(expected_summary)
+          .and_return(expected_result)
       end
 
       it 'receives new summary data' do

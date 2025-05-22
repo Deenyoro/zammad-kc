@@ -9,8 +9,8 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
   let(:ai_provider)                  { 'zammad_ai' }
   let(:ai_assistance_ticket_summary) { true }
   let(:checklist)                    { true }
-  let(:initial_summary)              { Faker::Lorem.unique.sentence }
-  let(:updated_summary)              { Faker::Lorem.unique.sentence }
+  let(:initial_summary)              { "initial #{Faker::Lorem.unique.sentence}" }
+  let(:updated_summary)              { "updated #{Faker::Lorem.unique.sentence}" }
   let(:initial_cache_key)            { "ticket_summary_#{ticket.id}" }
   let(:updated_cache_key)            { "ticket_summary_#{ticket.id}_2" }
 
@@ -26,14 +26,24 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
   before do
     if defined?(initial_cache_key)
-      allow(AI::Service::TicketSummarize)
-        .to receive(:cache_key).and_return(initial_cache_key, :noop, updated_cache_key)
+      initial_content = {
+        'summary'     => initial_summary,
+        'suggestions' => (initial_suggestions if defined?(initial_suggestions))
+      }
 
-      Rails.cache.write(initial_cache_key, { 'summary' => initial_summary, 'suggestions' => (initial_suggestions if defined?(initial_suggestions)) }.compact)
-      Rails.cache.write(updated_cache_key, { 'summary' => updated_summary, 'suggestions' => (updated_suggestions if defined?(updated_suggestions)) }.compact)
+      AI::StoredResult.create!(
+        content: initial_content,
+        version: AI::Service::TicketSummarize.persistent_version({ ticket: }, Locale.find_by(locale: agent.locale)),
+        **AI::Service::TicketSummarize.persistent_lookup_attributes({ ticket: }, Locale.find_by(locale: agent.locale)),
+      )
 
-      allow_any_instance_of(Service::Ticket::AIAssistance::Summarize)
-        .to receive(:execute).and_return({ 'summary' => updated_summary, 'suggestions' => (updated_suggestions if defined?(updated_suggestions)) }.compact)
+      updated_content = {
+        'summary'     => updated_summary,
+        'suggestions' => (updated_suggestions if defined?(updated_suggestions))
+      }.compact
+
+      allow_any_instance_of(AI::Service::TicketSummarize)
+        .to receive(:ask_provider).and_return(updated_content)
     end
 
     visit "ticket/zoom/#{ticket.id}"
@@ -192,10 +202,14 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
         # Remembers the seen state of the summary.
         expect(page).to have_no_text('Zammad Smart Assist ticket summary has been generated.')
 
+        create(:ticket_article, ticket:)
+
+        # Shows the banner while the summary is being updated.
+        expect(page).to have_text('Zammad Smart Assist is preparing summary…')
+
         perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
 
         # Restores the banner when the summary is updated.
-        expect(page).to have_text('Zammad Smart Assist is preparing summary…')
         expect(page).to have_text('Zammad Smart Assist ticket summary has been generated.')
       end
 

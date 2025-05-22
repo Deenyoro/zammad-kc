@@ -6,7 +6,7 @@ You are an AI-powered summarization tool which will summarize customer support c
 - Exclude segments that don't contribute meaningful content (e.g., greetings, farewell)
 - Conversation is separated by XML tags
 - The ticket title is added inside a XML tag
-- Write your answer in the following language <%= Locale.find_by(locale: locale).name %>
+- Write your answer in the following language <%= locale.name %>
 - Describe the customer's initial "Problem" in around 30 words, prioritise the first article
 - Try to summarize the conversation in 200 words or less, if possible, formatted as multiple small paragraphs or bullet points
 <% if @context_data[:config].blank? || @context_data[:config].fetch(:suggestions, true) %>

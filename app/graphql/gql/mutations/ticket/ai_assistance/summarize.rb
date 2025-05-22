@@ -20,19 +20,22 @@ module Gql::Mutations
       Service::CheckFeatureEnabled.new(name: 'ai_assistance_ticket_summary').execute
       Service::CheckFeatureEnabled.new(name: 'ai_provider', custom_error_message: __('AI provider is not configured.')).execute
 
-      cache_key = AI::Service::TicketSummarize.cache_key(ticket, context.current_user.locale)
-      cache     = Rails.cache.read(cache_key)
+      summarize_service = Service::Ticket::AIAssistance::Summarize.new(
+        locale:               context.current_user.locale,
+        ticket:,
+        persistence_strategy: :stored_only,
+      )
 
-      if cache.present?
+      if (stored_content = summarize_service.execute&.content)
         return {
           summary:         {
-            problem:              cache['problem'],
-            conversation_summary: cache['summary'],
-            open_questions:       cache['open_questions'],
-            suggestions:          cache['suggestions'],
+            problem:              stored_content['problem'],
+            conversation_summary: stored_content['summary'],
+            open_questions:       stored_content['open_questions'],
+            suggestions:          stored_content['suggestions'],
           },
-          reason:          cache['reason'],
-          fingerprint_md5: Digest::MD5.hexdigest(cache.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+          reason:          stored_content['reason'],
+          fingerprint_md5: Digest::MD5.hexdigest(stored_content.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
         }
       end
 

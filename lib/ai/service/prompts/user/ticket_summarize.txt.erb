@@ -3,7 +3,10 @@
   <% next if article.body.blank? %>
   <% next if article.body_as_text.blank? %>
   <% if article.type.name == 'email' %>
-    <% result = AI::Service::EmailRemoveQuote.new(current_user: @current_user, context_data: { article: article }).execute %>
+    <% result = AI::Service::EmailRemoveQuote
+      .new(current_user: @current_user, context_data: { article: article })
+      .execute
+      .content %>
     <% next if result['body'].blank? %>
   <% else %>
     <% result = { 'body' => article.body_as_text } %>

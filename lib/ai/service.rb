@@ -5,43 +5,76 @@ class AI::Service
 
   PROMPT_PATH_STRING = Rails.root.join('lib/ai/service/prompts/%{type}/%{service}.txt.erb').to_s.freeze
 
-  attr_reader :current_user, :context_data, :ignore_cache, :locale
+  attr_reader :current_user, :context_data, :locale, :persistence_strategy
+
+  Result = Struct.new(:content, :stored_result, :fresh, keyword_init: true)
 
   def self.list
     @list ||= descendants.sort_by(&:name)
   end
 
-  def initialize(context_data:, current_user: nil, prompt_system: nil, prompt_user: nil, ignore_cache: false, locale: nil)
-    @context_data = context_data
-    @current_user = current_user
-    @prompt_system = prompt_system
-    @prompt_user = prompt_user
-    @ignore_cache = ignore_cache
-    @locale = locale || @current_user&.locale || Locale.default
+  # @param persistence_strategy [Symbol, NilClass] :stored_or_request, :stored_only, :request_only.
+  def initialize(context_data:, current_user: nil, persistence_strategy: :stored_or_request, prompt_system: nil, prompt_user: nil, locale: nil)
+    @context_data         = context_data
+    @current_user         = current_user
+    @prompt_system        = prompt_system
+    @prompt_user          = prompt_user
+    @persistence_strategy = persistence_strategy
+    @locale               = Locale.find_by(locale: locale || @current_user&.locale || Locale.default)
   end
 
   def self.name_service
     name.sub('AI::Service::', '')
   end
 
+  # @return [Result] result of the AI service
   def execute
-    if cachable? && !ignore_cache
-      result = from_cache
-
-      return result if result
+    case persistence_strategy
+    when :stored_or_request
+      fetch_stored || request_fresh
+    when :stored_only
+      fetch_stored
+    when :request_only
+      request_fresh
     end
+  end
 
-    current_prompt_system = @prompt_system || render_prompt(prompt_system)
-    current_prompt_user   = @prompt_user   || render_prompt(prompt_user)
+  def self.persistent_lookup_attributes(_context_data, _locale)
+    raise 'not implemented'
+  end
 
-    result = provider.ask(prompt_system: current_prompt_system, prompt_user: current_prompt_user)
-
-    save_cache(result) if cachable?
-
-    result
+  def self.persistent_version(_context_data, _locale)
+    raise 'not implemented'
   end
 
   private
+
+  def fetch_stored
+    return if !persistable?
+
+    stored_result = AI::StoredResult.find_by(persistent_lookup_attributes_with_version)
+
+    return if !stored_result
+
+    Result.new(content: stored_result.content, stored_result:, fresh: false)
+  end
+
+  def request_fresh
+    response = ask_provider
+
+    return if response.blank?
+
+    stored_result = save_result(response) if persistable?
+
+    Result.new(content: response, stored_result:, fresh: true)
+  end
+
+  def ask_provider
+    current_prompt_system = @prompt_system || render_prompt(prompt_system)
+    current_prompt_user   = @prompt_user   || render_prompt(prompt_user)
+
+    provider.ask(prompt_system: current_prompt_system, prompt_user: current_prompt_user)
+  end
 
   def provider
     @provider ||= AI::Provider.by_name(provider_name).new(
@@ -53,29 +86,24 @@ class AI::Service
     @provider_name ||= Setting.get('ai_provider')
   end
 
-  def from_cache
-    cache = Rails.cache.read(cache_key)
-    return cache if cache.present?
-
-    nil
+  def save_result(result)
+    AI::StoredResult.upsert!(result, persistent_lookup_attributes, persistent_version, provider.metadata)
   end
 
-  def save_cache(result)
-    expires_in = result.blank? ? 1.minute : cache_ttl
-
-    Rails.cache.write(cache_key, result, { expires_in: })
-  end
-
-  def cachable?
+  def persistable?
     false
   end
 
-  def cache_key
-    nil
+  def persistent_lookup_attributes_with_version
+    persistent_lookup_attributes.merge(version: persistent_version)
   end
 
-  def cache_ttl
-    14.days
+  def persistent_lookup_attributes
+    self.class.persistent_lookup_attributes(context_data, locale)
+  end
+
+  def persistent_version
+    self.class.persistent_version(context_data, locale)
   end
 
   def json_response?

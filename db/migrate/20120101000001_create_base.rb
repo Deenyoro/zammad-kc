@@ -922,5 +922,23 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.timestamps limit: 3, null: false
     end
     add_index :system_reports, [:uuid], unique: true
+
+    create_table :ai_stored_results do |t|
+      t.string :identifier, null: false
+      t.string :version
+
+      t.jsonb :metadata, null: false, default: {}
+      t.jsonb :content, null: false, default: {}
+
+      t.references :locale, null: true, foreign_key: { to_table: :locales }
+      t.references :related_object, polymorphic: true, null: true,
+        index: { name: 'index_ai_stored_results_on_related_object' }
+
+      t.timestamps limit: 3
+
+      t.index %i[identifier locale_id related_object_id related_object_type],
+              unique: true,
+              name:   'index_ai_stored_results_on_identifier_and_other'
+    end
   end
 end

@@ -10,17 +10,20 @@ class Ticket::SummarizeController < ApplicationController
     ticket = Ticket.find(params[:id])
     authorize!(ticket, :agent_read_access?)
 
-    cache_key = AI::Service::TicketSummarize.cache_key(ticket, current_user.locale)
-    cache     = Rails.cache.read(cache_key)
+    summarize_service = Service::Ticket::AIAssistance::Summarize.new(
+      locale:               current_user.locale,
+      ticket:,
+      persistence_strategy: :stored_only,
+    )
 
-    if cache.present?
+    if (stored_content = summarize_service.execute&.content)
       render json: {
         result: {
-          problem:              cache['problem'],
-          conversation_summary: cache['summary'],
-          open_questions:       cache['open_questions'],
-          suggestions:          cache['suggestions'],
-          fingerprint_md5:      Digest::MD5.hexdigest(cache.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+          problem:              stored_content['problem'],
+          conversation_summary: stored_content['summary'],
+          open_questions:       stored_content['open_questions'],
+          suggestions:          stored_content['suggestions'],
+          fingerprint_md5:      Digest::MD5.hexdigest(stored_content.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
         },
       }
       return

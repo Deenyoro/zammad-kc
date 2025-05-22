@@ -34,8 +34,11 @@ RSpec.describe Gql::Mutations::Ticket::AIAssistance::Summarize, :aggregate_failu
       ticket_article
 
       if expected_cache
-        cache_key = AI::Service::TicketSummarize.cache_key(ticket, agent.locale)
-        Rails.cache.write(cache_key, expected_cache)
+        AI::StoredResult.create!(
+          content: expected_cache,
+          version: AI::Service::TicketSummarize.persistent_version({ ticket: }, Locale.find_by(locale: agent.locale)),
+          **AI::Service::TicketSummarize.persistent_lookup_attributes({ ticket: }, Locale.find_by(locale: agent.locale)),
+        )
       end
 
       gql.execute(query, variables: variables)

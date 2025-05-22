@@ -37,6 +37,8 @@ class Ticket::Article < ApplicationModel
   belongs_to :sender,     class_name: 'Ticket::Article::Sender', optional: true
   belongs_to :origin_by,  class_name: 'User', optional: true
 
+  has_many :ai_stored_results, class_name: 'AI::StoredResult', as: :related_object, dependent: :destroy
+
   before_validation :detect_language, on: :create
   before_validation :check_mentions, on: :create
   before_validation :check_email_recipient_validity, if: :check_email_recipient_raises_error
