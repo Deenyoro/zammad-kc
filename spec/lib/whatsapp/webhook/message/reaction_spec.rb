@@ -72,7 +72,7 @@ RSpec.describe Whatsapp::Webhook::Message::Reaction, :aggregate_failures, curren
       end
 
       # Only for PostgreSQL due to emoji storage
-      context 'when history is written', db_adapter: :postgresql do
+      context 'when history is written' do
         it 'contains correct type and emoji' do
           described_class.new(data:, channel:).process
 

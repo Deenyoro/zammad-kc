@@ -778,7 +778,7 @@ RSpec.describe 'System > Objects', type: :system do
     end
   end
 
-  describe 'with external data source format', db_adapter: :postgresql, searchindex: true do
+  describe 'with external data source format', searchindex: true do
     let(:users)       { create_list(:user, 10) }
     let(:link_prefix) { "#{Setting.get('http_type')}://#{Setting.get('fqdn')}/#user/profile/" }
 

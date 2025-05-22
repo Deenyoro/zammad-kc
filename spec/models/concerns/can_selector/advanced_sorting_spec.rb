@@ -20,14 +20,8 @@ RSpec.describe CanSelector::AdvancedSorting do
     context 'when sorting according to a hash' do
       let(:input) { { column: 'article_count', direction: 'ASC' } }
 
-      if ActiveRecord::Base.connection_db_config.configuration_hash[:adapter] == 'mysql2'
-        it 'returns the calculated MySQL option' do
-          expect(instance.calculate_sorting).to eq('`tickets`.`article_count` ASC')
-        end
-      else
-        it 'returns the calculated option' do
-          expect(instance.calculate_sorting).to eq('"tickets"."article_count" ASC')
-        end
+      it 'returns the calculated option' do
+        expect(instance.calculate_sorting).to eq('"tickets"."article_count" ASC')
       end
 
       it 'forwards given arguments to sorting backend' do
@@ -53,11 +47,7 @@ RSpec.describe CanSelector::AdvancedSorting do
       it 'returns parsed array members in the same order' do
         expect(instance.calculate_sorting)
           .to eq([
-                   if ActiveRecord::Base.connection_db_config.configuration_hash[:adapter] == 'mysql2'
-                     '`tickets`.`article_count` ASC'
-                   else
-                     '"tickets"."article_count" ASC'
-                   end,
+                   '"tickets"."article_count" ASC',
                    'title DESC',
                  ])
       end

@@ -1125,7 +1125,7 @@ RSpec.describe Trigger, type: :model do
     end
   end
 
-  describe 'multiselect triggers', db_strategy: :reset, mariadb: true do
+  describe 'multiselect triggers', db_strategy: :reset do
 
     let(:attribute_name) { 'multiselect' }
 

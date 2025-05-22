@@ -300,7 +300,7 @@ RSpec.describe TriggerWebhookJob::CustomPayload do
         include_examples 'check different usage'
       end
 
-      context 'when external data source is used inside the ticket', db_adapter: :postgresql do
+      context 'when external data source is used inside the ticket' do
         let(:object_manager_attribute_name)  { 'autocompletion_ajax_external_data_source' }
         let(:object_manager_attribute_value) do
           {

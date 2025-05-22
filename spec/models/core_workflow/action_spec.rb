@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'models/core_workflow/base'
 
-RSpec.describe 'CoreWorkflow > Action', mariadb: true, type: :model do
+RSpec.describe 'CoreWorkflow > Action', type: :model do
   include_context 'with core workflow base'
 
   describe '.perform - Stop after match' do

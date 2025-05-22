@@ -20,10 +20,6 @@ class Checklist::Item < ApplicationModel
   validate :detect_ticket_loop_reference, unless: -> { ticket.blank? }
   validate :validate_item_count, on: :create, unless: :initial_clone
 
-  # MySQL does not support default value on non-null text columns
-  # Can be removed after dropping MySQL
-  before_validation :ensure_text_not_nil, if: -> { ActiveRecord::Base.connection_db_config.configuration_hash[:adapter] == 'mysql2' }
-
   after_update :history_update_checked, if: -> { saved_change_to_checked? }
   after_destroy :update_checklist_on_destroy
   after_destroy :update_referenced_ticket
@@ -119,11 +115,5 @@ class Checklist::Item < ApplicationModel
         elem.updated_at = Time.current
         elem.save!
       end
-  end
-
-  # MySQL does not support default value on non-null text columns
-  # Can be removed after dropping MySQL
-  def ensure_text_not_nil
-    self.text ||= ''
   end
 end

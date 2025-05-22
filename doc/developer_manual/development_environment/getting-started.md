@@ -37,7 +37,6 @@ After the installation of the correct Ruby version
 the following command can be used to install all Ruby dependencies:
 
 ```sh
-bundle config set --local without 'mysql'
 bundle install
 ```
 

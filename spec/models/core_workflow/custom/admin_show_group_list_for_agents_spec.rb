@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'models/core_workflow/base'
 
-RSpec.describe CoreWorkflow::Custom::AdminShowGroupListForAgents, mariadb: true, type: :model do
+RSpec.describe CoreWorkflow::Custom::AdminShowGroupListForAgents, type: :model do
   include_context 'with core workflow base'
 
   describe 'For Users' do

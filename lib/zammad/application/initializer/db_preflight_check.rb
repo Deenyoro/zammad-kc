@@ -1,7 +1,6 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 require 'zammad/application/initializer/db_preflight_check/base'
-require 'zammad/application/initializer/db_preflight_check/mysql2'
 require 'zammad/application/initializer/db_preflight_check/postgresql'
 
 module Zammad

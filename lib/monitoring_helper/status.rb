@@ -41,8 +41,6 @@ module MonitoringHelper
     end
 
     def storage
-      return if ActiveRecord::Base.connection_db_config.configuration_hash[:adapter] != 'postgresql'
-
       sql = 'SELECT SUM(CAST(coalesce(size, \'0\') AS INTEGER)) FROM stores'
 
       stored = ActiveRecord::Base.connection.exec_query(sql).first&.dig('sum')

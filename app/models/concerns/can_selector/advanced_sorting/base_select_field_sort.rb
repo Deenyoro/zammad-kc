@@ -6,14 +6,8 @@ module CanSelector
       include CanApplyAdvancedSorting
 
       def calculate_sorting
-        command = case ActiveRecord::Base.connection_db_config.configuration_hash[:adapter]
-                  when 'postgresql'
-                    column_part = cached_sorted_ids.include?("'") ? "CAST(#{adjusted_column} as TEXT)" : adjusted_column
-
-                    "array_position(ARRAY[#{cached_sorted_ids}], #{column_part})"
-                  when 'mysql2'
-                    "FIELD(#{adjusted_column}, #{cached_sorted_ids})"
-                  end
+        column_part = cached_sorted_ids.include?("'") ? "CAST(#{adjusted_column} as TEXT)" : adjusted_column
+        command = "array_position(ARRAY[#{cached_sorted_ids}], #{column_part})"
 
         {
           order:  "#{meta_value_name} #{input[:direction]}",

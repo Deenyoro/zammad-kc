@@ -21,11 +21,7 @@ class CreatePublicLinks < ActiveRecord::Migration[6.1]
       t.string  :title, limit: 200,       null: false
       t.string  :description, limit: 200, null: true
 
-      if Rails.application.config.db_column_array
-        t.string :screen, null: false, array: true
-      else
-        t.json :screen, null: false
-      end
+      t.string :screen, null: false, array: true
 
       t.boolean :new_tab,                 null: false, default: true
       t.integer :prio,                    null: false

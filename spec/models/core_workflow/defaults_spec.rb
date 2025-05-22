@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'models/core_workflow/base'
 
-RSpec.describe 'CoreWorkflow > Defaults', mariadb: true, type: :model do
+RSpec.describe 'CoreWorkflow > Defaults', type: :model do
   include_context 'with core workflow base'
 
   describe '.perform - Default - Group' do

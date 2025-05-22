@@ -46,8 +46,6 @@ module CanSelector
       end
 
       def collate
-        return if ActiveRecord::Base.connection.instance_values['config'][:adapter] == 'mysql2'
-
         locale_object = Locale.find_by(locale:)
 
         quoted_collation = ApplicationModel.connection.quote_column_name(locale_object.postgres_collation_name)

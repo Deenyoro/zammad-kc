@@ -32,7 +32,7 @@ rm -rf /var/lib/apt/lists/*
 
 if [ "$1" = 'builder' ]; then
   cd "${ZAMMAD_DIR}"
-  bundle config set --local without 'test development mysql'
+  bundle config set --local without 'test development'
   # Don't use the 'deployment' switch here as it would require always using 'bundle exec'
   #   to invoke commands like rails.
   bundle config set --local frozen 'true'

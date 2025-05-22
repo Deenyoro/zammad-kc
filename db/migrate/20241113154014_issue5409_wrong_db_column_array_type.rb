@@ -4,9 +4,6 @@ class Issue5409WrongDbColumnArrayType < ActiveRecord::Migration[7.1]
   def change
     return if !Setting.exists?(name: 'system_init_done')
 
-    # Do not execute on unsupported backends.
-    return if !Rails.application.config.db_column_array
-
     migrate_smime_certificates_email_addresses_column
     migrate_pgp_keys_email_addresses_column
     migrate_public_links_screen_column

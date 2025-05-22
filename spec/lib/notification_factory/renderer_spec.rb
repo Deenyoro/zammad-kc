@@ -286,7 +286,7 @@ RSpec.describe NotificationFactory::Renderer do
         it_behaves_like 'correctly rendering the attributes'
       end
 
-      context 'with multiselect', mariadb: true do
+      context 'with multiselect' do
         context 'with a simple multiselect attribute' do
           let(:create_object_manager_attribute) do
             create(:object_manager_attribute_multiselect, name: 'multiselect')
@@ -473,7 +473,7 @@ RSpec.describe NotificationFactory::Renderer do
           it_behaves_like 'correctly rendering the attributes'
         end
 
-        context 'with external data source attribute on chained group object', db_adapter: :postgresql do
+        context 'with external data source attribute on chained group object' do
           let(:create_object_manager_attribute) do
             create(:object_manager_attribute_autocompletion_ajax_external_data_source,
                    object_lookup_id: ObjectLookup.by_name('Group'),

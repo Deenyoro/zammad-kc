@@ -14,11 +14,7 @@ RSpec.describe Taskbar, performs_jobs: true, type: :model do
     it { is_expected.to validate_inclusion_of(:app).in_array(%w[desktop mobile]) }
 
     it do
-      if ActiveRecord::Base.connection_db_config.configuration_hash[:adapter] == 'mysql2'
-        expect(taskbar).to validate_uniqueness_of(:key).scoped_to(%w[user_id app]).with_message(%r{}).case_insensitive
-      else
-        expect(taskbar).to validate_uniqueness_of(:key).scoped_to(%w[user_id app]).with_message(%r{})
-      end
+      expect(taskbar).to validate_uniqueness_of(:key).scoped_to(%w[user_id app]).with_message(%r{})
     end
   end
 

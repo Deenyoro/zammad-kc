@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'External Data Source', :aggregate_failures, db_adapter: :postgresql, type: :request do
+RSpec.describe 'External Data Source', :aggregate_failures, type: :request do
   let(:agent)          { create(:agent) }
   let(:admin)          { create(:admin) }
   let(:object_name)    { 'Ticket' }

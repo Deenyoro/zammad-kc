@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'models/core_workflow/base'
 
-RSpec.describe CoreWorkflow, mariadb: true, type: :model do
+RSpec.describe CoreWorkflow, type: :model do
   include_context 'with core workflow base'
 
   describe '.perform - No assets' do

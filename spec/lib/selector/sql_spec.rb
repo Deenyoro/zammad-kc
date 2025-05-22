@@ -383,7 +383,7 @@ RSpec.describe Selector::Sql do
         end
 
         # Skip for MySQL as it handles IN case insensitive.
-        context 'with matching upcased string', db_adapter: :postgresql do
+        context 'with matching upcased string' do
           let(:value) { 'SOME really nice title' }
 
           include_examples 'does not find the ticket'
@@ -428,7 +428,7 @@ RSpec.describe Selector::Sql do
         end
 
         # Skip for MySQL as it handles IN case insensitive.
-        context 'with matching upcased string', db_adapter: :postgresql do
+        context 'with matching upcased string' do
           let(:value) { ['SOME really nice title', 'another example'] }
 
           include_examples 'does not find the ticket'
@@ -473,7 +473,7 @@ RSpec.describe Selector::Sql do
         end
 
         # Skip for MySQL as it handles IN case insensitive.
-        context 'with matching upcased string', db_adapter: :postgresql do
+        context 'with matching upcased string' do
           let(:value) { 'SOME really nice title' }
 
           include_examples 'finds the ticket'
@@ -518,7 +518,7 @@ RSpec.describe Selector::Sql do
         end
 
         # Skip for MySQL as it handles IN case insensitive.
-        context 'with matching upcased string', db_adapter: :postgresql do
+        context 'with matching upcased string' do
           let(:value) { %w[SO SOME] }
 
           include_examples 'finds the ticket'
@@ -667,7 +667,7 @@ RSpec.describe Selector::Sql do
         end
       end
 
-      describe "operator 'matches regex'", mariadb: true do
+      describe "operator 'matches regex'" do
         let(:operator) { 'matches regex' }
 
         context 'with matching string' do
@@ -689,7 +689,7 @@ RSpec.describe Selector::Sql do
         end
       end
 
-      describe "operator 'does not match regex'", mariadb: true do
+      describe "operator 'does not match regex'" do
         let(:operator) { 'does not match regex' }
 
         context 'with matching string' do
@@ -811,7 +811,7 @@ RSpec.describe Selector::Sql do
       end
     end
 
-    describe 'external data source field', db_adapter: :postgresql, db_strategy: :reset do
+    describe 'external data source field', db_strategy: :reset do
       let(:external_data_source_attribute) do
         create(:object_manager_attribute_autocompletion_ajax_external_data_source,
                name: 'external_data_source_attribute')
@@ -977,7 +977,7 @@ RSpec.describe Selector::Sql do
       end
     end
 
-    context 'with invalid regular expression', mariadb: true do
+    context 'with invalid regular expression' do
       let(:condition) do
         {
           name:     'ticket.title',
@@ -991,7 +991,7 @@ RSpec.describe Selector::Sql do
       end
     end
 
-    context 'with external data source field', db_adapter: :postgresql, db_strategy: :reset do
+    context 'with external data source field', db_strategy: :reset do
       let(:external_data_source_attribute) do
         create(:object_manager_attribute_autocompletion_ajax_external_data_source,
                name: 'external_data_source_attribute')

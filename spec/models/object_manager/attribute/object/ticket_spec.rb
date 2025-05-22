@@ -74,10 +74,9 @@ RSpec.describe 'ObjectManager::Attribute::Object::Ticket', aggregate_failures: t
       attribute
     end
     let(:ticket) { create(:ticket) }
-    let(:mysql?)       { ActiveRecord::Base.connection_db_config.configuration_hash[:adapter] == 'mysql2' }
 
     it 'is successful' do
-      expect(ticket.attributes[attribute.name]).to eq(mysql? ? '0' : 'f')
+      expect(ticket.attributes[attribute.name]).to eq('f')
     end
   end
 end

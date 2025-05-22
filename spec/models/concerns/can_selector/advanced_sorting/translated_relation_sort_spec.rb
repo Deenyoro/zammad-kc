@@ -30,13 +30,8 @@ RSpec.describe CanSelector::AdvancedSorting::TranslatedRelationSort do
     let(:instance) { described_class.new(input, locale, Ticket) }
     let(:result)   { instance.calculate_sorting }
 
-    if ActiveRecord::Base.connection_db_config.configuration_hash[:adapter] == 'mysql2'
-      let(:column_reference) { '`tickets`.`state_id`' }
-      let(:order_reference)  { '`_advanced_sorting_Ticket_state` ASC' }
-    else
-      let(:column_reference) { '"tickets"."state_id"' }
-      let(:order_reference)  { '"_advanced_sorting_Ticket_state" ASC' }
-    end
+    let(:column_reference) { '"tickets"."state_id"' }
+    let(:order_reference)  { '"_advanced_sorting_Ticket_state" ASC' }
 
     context 'when locale is de-de' do
       let(:locale) { 'de-de' }

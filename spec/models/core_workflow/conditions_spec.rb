@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'models/core_workflow/base'
 
-RSpec.describe 'CoreWorkflow > Conditions', mariadb: true, type: :model do
+RSpec.describe 'CoreWorkflow > Conditions', type: :model do
   include_context 'with core workflow base'
 
   describe '.perform - Condition - today' do
@@ -1834,7 +1834,7 @@ RSpec.describe 'CoreWorkflow > Conditions', mariadb: true, type: :model do
       end
     end
 
-    context 'with new external data source field', db_adapter: :postgresql, db_strategy: :reset do
+    context 'with new external data source field', db_strategy: :reset do
       let!(:external_data_source_attribute) do
         attribute = create(:object_manager_attribute_autocompletion_ajax_external_data_source,
                            name: 'external_data_source_attribute')
@@ -1939,7 +1939,7 @@ RSpec.describe 'CoreWorkflow > Conditions', mariadb: true, type: :model do
       end
     end
 
-    context 'with new external data source field', db_adapter: :postgresql, db_strategy: :reset do
+    context 'with new external data source field', db_strategy: :reset do
       let!(:external_data_source_attribute) do
         attribute = create(:object_manager_attribute_autocompletion_ajax_external_data_source,
                            name: 'external_data_source_attribute')
@@ -2027,7 +2027,7 @@ RSpec.describe 'CoreWorkflow > Conditions', mariadb: true, type: :model do
       end
     end
 
-    context 'with new external data source field', db_adapter: :postgresql, db_strategy: :reset do
+    context 'with new external data source field', db_strategy: :reset do
       let!(:external_data_source_attribute) do
         attribute = create(:object_manager_attribute_autocompletion_ajax_external_data_source,
                            name: 'external_data_source_attribute')
@@ -2088,7 +2088,7 @@ RSpec.describe 'CoreWorkflow > Conditions', mariadb: true, type: :model do
       base_payload.merge('params' => { 'id' => ticket.id }, 'screen' => 'edit')
     end
 
-    context 'with new external data source field', db_adapter: :postgresql, db_strategy: :reset do
+    context 'with new external data source field', db_strategy: :reset do
       let!(:external_data_source_attribute) do
         attribute = create(:object_manager_attribute_autocompletion_ajax_external_data_source,
                            name: 'external_data_source_attribute')
@@ -2183,7 +2183,7 @@ RSpec.describe 'CoreWorkflow > Conditions', mariadb: true, type: :model do
       end
     end
 
-    context 'with new external data source field', db_adapter: :postgresql, db_strategy: :reset do
+    context 'with new external data source field', db_strategy: :reset do
       let(:payload) do
         base_payload.merge('params' => { 'id' => ticket.id }, 'screen' => 'edit', 'last_changed_attribute' => external_data_source_attribute.name)
       end

@@ -301,12 +301,8 @@ returns
     # Returns a relation with objects referenced by the ids in their original order.
     #
     def where_ordered_ids(ids)
-      order_by = case ActiveRecord::Base.connection_db_config.configuration_hash[:adapter]
-                 when 'postgresql'
-                   "array_position(ARRAY[#{ids.join(',')}], id)"
-                 when 'mysql2'
-                   "FIELD(id, #{ids.join(',')})"
-                 end
+      order_by = "array_position(ARRAY[#{ids.join(',')}], id)"
+
       where(id: ids).reorder(Arel.sql(order_by))
     end
   end

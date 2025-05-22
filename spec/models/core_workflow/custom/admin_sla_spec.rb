@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'models/core_workflow/base'
 
-RSpec.describe CoreWorkflow::Custom::AdminSla, mariadb: true, type: :model do
+RSpec.describe CoreWorkflow::Custom::AdminSla, type: :model do
   include_context 'with core workflow base'
 
   let(:payload) do

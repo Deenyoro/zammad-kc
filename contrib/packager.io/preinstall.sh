@@ -15,10 +15,7 @@ rm -f /opt/zammad/public/assets/.sprockets-manifest-*.json || true
 if [[ -f /opt/zammad/config/database.yml ]]; then
    DB_HOST="$(grep -m 1 '^[[:space:]]*host:' < /opt/zammad/config/database.yml | sed -e 's/.*host:[[:space:]]*//g')"
    DB_PORT="$(grep -m 1 '^[[:space:]]*port:' < /opt/zammad/config/database.yml | sed -e 's/.*port:[[:space:]]*//g')"
-   DB_USER="$(grep -m 1 '^[[:space:]]*username:' < /opt/zammad/config/database.yml | sed -e 's/.*username:[[:space:]]*//g')"
-   DB_PASS="$(grep -m 1 '^[[:space:]]*password:' < /opt/zammad/config/database.yml | sed -e 's/.*password:[[:space:]]*//g')"
    DB_SOCKET="$(grep -m 1 '^[[:space:]]*socket:' < /opt/zammad/config/database.yml | sed -e 's/.*socket:[[:space:]]*//g')"
-   DB_ADAPTER="$(grep -m 1 '^[[:space:]]*adapter:' < /opt/zammad/config/database.yml | sed -e 's/.*adapter:[[:space:]]*//g')"
 else
    # Skip this whole script if we can't find our database file
    echo "Warning: Could not find database.yml"
@@ -28,7 +25,7 @@ fi
 if [ "${DB_HOST}x" == "x" ]; then
    DB_HOST="localhost"
 fi
-if [ -n "$(which psql 2> /dev/null)" ] && [ "${DB_ADAPTER}" == 'postgresql' ]; then
+if [ -n "$(which psql 2> /dev/null)" ]; then
    if [ "${DB_PORT}x" == "x" ]; then
       DB_PORT="5432"
    fi
@@ -39,12 +36,6 @@ if [ -n "$(which psql 2> /dev/null)" ] && [ "${DB_ADAPTER}" == 'postgresql' ]; t
       pg_isready -q
       state=$?
    fi
-elif [ -n "$(which mysql 2> /dev/null)" ] && [ "${DB_ADAPTER}" == 'mysql2' ]; then
-   if [ "${DB_PORT}x" == "x" ]; then
-      DB_PORT="3306"
-   fi
-   mysqladmin status -h $DB_HOST -P $DB_PORT -u $DB_USER -p$DB_PASS > /dev/null
-   state=$?
 fi
 
 # Check error state to ensure database is online

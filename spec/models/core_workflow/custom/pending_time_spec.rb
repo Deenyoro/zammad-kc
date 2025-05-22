@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'models/core_workflow/base'
 
-RSpec.describe CoreWorkflow::Custom::PendingTime, mariadb: true, type: :model do
+RSpec.describe CoreWorkflow::Custom::PendingTime, type: :model do
   include_context 'with core workflow base'
 
   it 'does not show pending time for non pending state' do

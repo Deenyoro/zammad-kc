@@ -213,11 +213,7 @@ RSpec.describe 'Telegram Webhook Integration', type: :request do
           expect(response).to have_http_status(:ok)
           ticket = Ticket.last
 
-          if Rails.application.config.db_4bytes_utf8
-            expect(ticket.title).to eq('😄')
-          else
-            expect(ticket.title).to eq('')
-          end
+          expect(ticket.title).to eq('😄')
           expect(ticket.state.name).to eq('new')
           expect(ticket.articles.count).to eq(1)
           expect(ticket.articles.last.body).to match(%r{<img style="}i)
@@ -319,11 +315,7 @@ RSpec.describe 'Telegram Webhook Integration', type: :request do
           expect(response).to have_http_status(:ok)
           ticket = Ticket.last
 
-          if Rails.application.config.db_4bytes_utf8
-            expect(ticket.title).to eq('😄')
-          else
-            expect(ticket.title).to eq('')
-          end
+          expect(ticket.title).to eq('😄')
           expect(ticket.state.name).to eq('new')
           expect(ticket.articles.count).to eq(1)
           expect(ticket.articles.last.body).to match(%r{<img style="}i)

@@ -116,11 +116,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.references :signature,                      null: true
       t.references :email_address,                  null: true
 
-      if ActiveRecord::Base.connection_db_config.configuration_hash[:adapter] == 'mysql2'
-        t.string :name, limit: (160 * 6) + (2 * 5), null: false # max depth of 6 and 5 delimiters in between
-      else
-        t.string :name, limit: (160 * 10) + (2 * 9), null: false # max depth of 10 and 9 delimiters in between
-      end
+      t.string :name, limit: (160 * 10) + (2 * 9), null: false # max depth of 10 and 9 delimiters in between
 
       t.string :name_last,              limit: 160, null: false
       t.integer :parent_id,                         null: true
@@ -762,13 +758,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
     create_table :smime_certificates do |t|
       t.string :fingerprint,        limit: 250,  null: false
       t.string :uid,                limit: 1024, null: false
-
-      if Rails.application.config.db_column_array
-        t.string :email_addresses, null: true, array: true
-      else
-        t.json :email_addresses, null: true
-      end
-
+      t.string :email_addresses, null: true, array: true
       t.binary :pem,                limit: 10.megabytes,  null: false
       t.binary :private_key,        limit: 10.megabytes,  null: true
       t.string :private_key_secret, limit: 500,           null: true
@@ -863,11 +853,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.string  :title, limit: 200,       null: false
       t.string  :description, limit: 200, null: true
 
-      if Rails.application.config.db_column_array
-        t.string :screen, null: false, array: true
-      else
-        t.json :screen, null: false
-      end
+      t.string :screen, null: false, array: true
 
       t.boolean :new_tab,                 null: false, default: true
       t.integer :prio,                    null: false
@@ -898,11 +884,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.text     :key,         limit: 500.kilobytes + 1, null: false
       t.datetime :expires_at, null: true, limit: 3
 
-      if Rails.application.config.db_column_array
-        t.string :email_addresses, null: true, array: true
-      else
-        t.json :email_addresses, null: true
-      end
+      t.string :email_addresses, null: true, array: true
 
       t.boolean  :secret,                   null: false, default: false
       t.string   :passphrase,  limit: 500,  null: true

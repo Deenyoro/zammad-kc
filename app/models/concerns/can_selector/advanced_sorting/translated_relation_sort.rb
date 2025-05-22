@@ -13,12 +13,7 @@ module CanSelector
       end
 
       def calculate_sorting
-        command = case ActiveRecord::Base.connection_db_config.configuration_hash[:adapter]
-                  when 'postgresql'
-                    "array_position(ARRAY[#{cached_sorted_ids}], #{adjusted_column})"
-                  when 'mysql2'
-                    "FIELD(#{adjusted_column}, #{cached_sorted_ids})"
-                  end
+        command = "array_position(ARRAY[#{cached_sorted_ids}], #{adjusted_column})"
 
         {
           order:  "#{meta_value_name} #{input[:direction]}",

@@ -22,13 +22,7 @@ class KnowledgeBase::Answer < ApplicationModel
       .published
   }
   scope :sorted_by_internally_published, lambda {
-    case ActiveRecord::Base.connection_db_config.configuration_hash[:adapter]
-    when 'mysql2'
-      reorder(Arel.sql('GREATEST(LEAST(IFNULL(knowledge_base_answers.internal_at,1), IFNULL(knowledge_base_answers.published_at, 1)), knowledge_base_answers.updated_at) DESC'))
-    else
-      reorder(Arel.sql('GREATEST(LEAST(knowledge_base_answers.internal_at, knowledge_base_answers.published_at), knowledge_base_answers.updated_at) DESC'))
-    end
-      .internal
+    reorder(Arel.sql('GREATEST(LEAST(knowledge_base_answers.internal_at, knowledge_base_answers.published_at), knowledge_base_answers.updated_at) DESC')).internal
   }
 
   acts_as_list scope: :category, top_of_list: 0

@@ -147,9 +147,7 @@ class Group < ApplicationModel
   end
 
   def self.max_depth
-    return @@max_depth if @@max_depth
-
-    @@max_depth = ActiveRecord::Base.connection_db_config.configuration_hash[:adapter] == 'mysql2' ? 6 : 10 # rubocop:disable Style/ClassVars
+    10
   end
 
   def self.customer_create_groups_with_parent_ids

@@ -84,26 +84,6 @@ class String
     camel_cased_word.split('/').map(&:camelize).join('::')
   end
 
-  # because of mysql inno_db limitations, strip 4 bytes utf8 chars (e. g. emojis)
-  # unfortunaly UTF8mb4 will raise other limitaions of max varchar and lower index sizes
-  # More details: http://pjambet.github.io/blog/emojis-and-mysql/
-  def utf8_to_3bytesutf8
-    return self if Rails.application.config.db_4bytes_utf8
-
-    removed = ''
-    each_char.with_object('') do |c, result|
-      if c.bytesize > 3
-        removed << c
-        next
-      end
-      result << c
-    end.tap do
-      if removed.present?
-        Rails.logger.warn "strip out 4 bytes utf8 chars '#{removed[0..255]}' of '#{self[0..255]}'"
-      end
-    end
-  end
-
 =begin
 
   text = html_string.html2text

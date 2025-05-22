@@ -400,13 +400,9 @@ RSpec.describe ObjectManager::Attribute, type: :model do
       end
       let(:attribute) { create(:object_manager_attribute_autocompletion_ajax_external_data_source) }
 
-      it 'works on postgresql', db_adapter: :postgresql do
+      it 'works on postgresql' do
         expect { attribute }.to change(described_class, :count)
         expect(attribute).to have_attributes(expected_attributes)
-      end
-
-      it 'fails on mysql', db_adapter: :mysql do
-        expect { attribute }.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Data type can only be created on postgresql databases')
       end
     end
   end

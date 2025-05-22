@@ -15,8 +15,6 @@ or only for certain tables
 =end
 
   def self.import_post(table = nil)
-    return if ActiveRecord::Base.connection_db_config.configuration_hash[:adapter] != 'postgresql'
-
     tables = if table
                [table]
              else

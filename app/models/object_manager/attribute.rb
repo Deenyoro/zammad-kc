@@ -76,7 +76,6 @@ class ObjectManager::Attribute < ApplicationModel
   validates :data_type, inclusion: { in: DATA_TYPES, msg: '%{value} is not a valid data type' }
   validate :inactive_must_be_unused_by_references, unless: :active?
   validate :data_type_must_not_change, on: :update
-  validate :json_field_only_on_postgresql, on: :create
 
   validates_with ObjectManager::Attribute::DataOptionValidator
 
@@ -655,16 +654,10 @@ to send no browser reload event, pass false
 
       data_type = nil
       case attribute.data_type
-      when %r{^(input|select|tree_select|richtext|textarea|checkbox)$}
+      when %r{^(input|select|tree_select|richtext|textarea|checkbox|multiselect|multi_tree_select)$}
         data_type = :string
       when 'autocompletion_ajax_external_data_source'
         data_type = :jsonb
-      when %r{^(multiselect|multi_tree_select)$}
-        data_type = if Rails.application.config.db_column_array
-                      :string
-                    else
-                      :json
-                    end
       when %r{^(integer|user_autocompletion)$}
         data_type = :integer
       when %r{^(boolean|active)$}
@@ -688,11 +681,9 @@ to send no browser reload event, pass false
           )
         when %r{^(multiselect|multi_tree_select)$}
           options = {
-            null: true,
+            null:  true,
+            array: true,
           }
-          if Rails.application.config.db_column_array
-            options[:array] = true
-          end
 
           ActiveRecord::Migration.change_column(
             model.table_name,
@@ -745,11 +736,9 @@ to send no browser reload event, pass false
         )
       when %r{^(multiselect|multi_tree_select)$}
         options = {
-          null: true,
+          null:  true,
+          array: true,
         }
-        if Rails.application.config.db_column_array
-          options[:array] = true
-        end
 
         ActiveRecord::Migration.add_column(
           model.table_name,
@@ -1024,13 +1013,6 @@ is certain attribute used by triggers, overviews or schedulers
     return if (data_type_change - allowable_changes).empty?
 
     errors.add(:data_type, __("can't be altered after creation (you can delete the attribute and create another with the desired value)"))
-  end
-
-  def json_field_only_on_postgresql
-    return if data_type != 'autocompletion_ajax_external_data_source'
-    return if ActiveRecord::Base.connection_db_config.configuration_hash[:adapter] == 'postgresql'
-
-    errors.add(:data_type, __('can only be created on postgresql databases'))
   end
 
   def local_data_attr

@@ -5,16 +5,9 @@ RSpec.shared_examples 'ApplicationModel::ChecksImport' do
     subject { build(described_class.name.underscore, id: next_id + 1) }
 
     let(:next_id) do
-      case ActiveRecord::Base.connection_db_config.configuration_hash[:adapter]
-      when 'mysql2'
-        ActiveRecord::Base.connection.execute(<<~QUERY).first.first
-          SELECT max(auto_increment) FROM information_schema.tables WHERE table_name='#{described_class.table_name}'
-        QUERY
-      when 'postgresql'
-        ActiveRecord::Base.connection.execute(<<~QUERY).first['last_value'].next
-          SELECT last_value FROM #{described_class.table_name}_id_seq
-        QUERY
-      end
+      ActiveRecord::Base.connection.execute(<<~QUERY).first['last_value'].next
+        SELECT last_value FROM #{described_class.table_name}_id_seq
+      QUERY
     end
 
     context 'when Setting.get("system_init_done") is false (regardless of import_mode)' do

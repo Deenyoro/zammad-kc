@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe ExternalDataSource do
-  describe '#execute', db_adapter: :postgresql do
+  describe '#execute' do
     context 'with ElasticSearch', searchindex: true do
       let(:data_option) do
         create(:object_manager_attribute_autocompletion_ajax_external_data_source, :elastic_search)

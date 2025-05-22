@@ -994,7 +994,7 @@ RSpec.describe SearchIndexBackend do
       end
     end
 
-    context 'with external data source field', db_adapter: :postgresql, db_strategy: :reset do
+    context 'with external data source field', db_strategy: :reset do
       let(:external_data_source_attribute) do
         create(:object_manager_attribute_autocompletion_ajax_external_data_source,
                name: 'external_data_source_attribute')

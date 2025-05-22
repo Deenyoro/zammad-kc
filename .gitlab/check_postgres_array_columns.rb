@@ -5,11 +5,6 @@ require File.expand_path('../config/environment', __dir__)
 
 class CheckPostgresArrayColumns
   def self.run
-    if Rails.configuration.database_configuration[Rails.env]['adapter'] != 'postgresql'
-      puts 'Error: This script works only with postgresql adapter!'
-      exit 1
-    end
-
     puts 'Checking database array columns:'
 
     check_columns_type
