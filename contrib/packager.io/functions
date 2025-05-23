@@ -182,6 +182,7 @@ function create_webserver_config () {
       a2enmod proxy
       a2enmod proxy_http
       a2enmod proxy_wstunnel
+      a2enmod headers
     fi
   else
     test -f ${WEBSERVER_CONF} || cp ${ZAMMAD_DIR}/contrib/${WEBSERVER}/zammad.conf ${WEBSERVER_CONF}
@@ -190,7 +191,7 @@ function create_webserver_config () {
   echo "# Creating webserver bootstart"
   ${INIT_CMD} enable ${WEBSERVER_CMD}
 
-  echo "# Restarting webserver ${WEBSERVER_CMD}"
+  echo "# Restarting webserver ${WEBSERVER_CMD} - please check if all required modules are enabled in case apache fails to start."
   ${INIT_CMD} restart ${WEBSERVER_CMD}
 }
 
