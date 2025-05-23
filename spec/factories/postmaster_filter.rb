@@ -9,5 +9,17 @@ FactoryBot.define do
     active          { true }
     created_by_id   { 1 }
     updated_by_id   { 1 }
+
+    trait :route_to_group do
+      transient do
+        group { association :group }
+      end
+
+      perform do
+        {
+          'x-zammad-ticket-group_id' => { 'value' => group.id },
+        }
+      end
+    end
   end
 end

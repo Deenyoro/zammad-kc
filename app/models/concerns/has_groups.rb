@@ -52,6 +52,9 @@ module HasGroups
   # Checks a given Group( ID) for given access(es) for the instance.
   # Checks indirect access via Roles if instance has Roles, too.
   #
+  # @param group [Group, Integer] or ID check access for
+  # @param access [Symbol, String, Array<Symbol, String>] or array of accesses to check for. Takes :any as a wildcard or :read, :create, :change, :overview, :full for specific access lookup.
+  #
   # @example Group ID param
   #   user.group_access?(1, 'read')
   #   #=> true
@@ -62,6 +65,10 @@ module HasGroups
   #
   # @example Access list
   #   user.group_access?(group, ['read', 'create'])
+  #   #=> true
+  #
+  # @example Check if user has any permissions in the group
+  #   user.group_access?(group, :any)
   #   #=> true
   #
   # @return [Boolean]
@@ -75,17 +82,28 @@ module HasGroups
     return false if !active?
     return false if !groups_access_permission?
 
-    access = Array(access).map(&:to_sym) | [:full]
+    case access
+    when :any
+      return true if group_through.klass.eager_load(:group).exists?(
+        group_through.foreign_key => id,
+        group_id: group,
+        groups: {
+          active: true
+        }
+      )
+    else
+      access = Array(access).map(&:to_sym) | [:full]
 
-    # check direct access
-    return true if group_through.klass.eager_load(:group).exists?(
-      group_through.foreign_key => id,
-      group_id: group,
-      access: access,
-      groups: {
-        active: true
-      }
-    )
+      # check direct access
+      return true if group_through.klass.eager_load(:group).exists?(
+        group_through.foreign_key => id,
+        group_id: group,
+        access: access,
+        groups: {
+          active: true
+        }
+      )
+    end
 
     # check indirect access through Roles if possible
     return false if !respond_to?(:role_access?)

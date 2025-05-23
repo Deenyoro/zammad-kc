@@ -93,13 +93,15 @@ RSpec.shared_examples 'HasGroups' do |group_access_factory:|
 
       context 'Group ID parameter' do
         include_examples '#group_access? call' do
-          let(:group_parameter) { group_read.id }
+          let(:group_parameter)              { group_read.id }
+          let(:inaccessible_group_parameter) { group_inactive.id }
         end
       end
 
       context 'Group parameter' do
         include_examples '#group_access? call' do
-          let(:group_parameter) { group_read }
+          let(:group_parameter)              { group_read }
+          let(:inaccessible_group_parameter) { group_inactive }
         end
       end
 
@@ -614,6 +616,14 @@ RSpec.shared_examples '#group_access? call' do
 
     it 'checks negative' do
       expect(subject.group_access?(group_parameter, 'change')).to be false
+    end
+
+    it 'checks wildcard' do
+      expect(subject.group_access?(group_parameter, :any)).to be true
+    end
+
+    it 'checks negative wildcard' do
+      expect(subject.group_access?(inaccessible_group_parameter, :any)).to be false
     end
   end
 

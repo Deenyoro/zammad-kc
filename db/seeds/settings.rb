@@ -4299,7 +4299,7 @@ Setting.create_if_not_exists(
 )
 Setting.create_if_not_exists(
   title:       __('Defines postmaster filter.'),
-  name:        '0012_postmaster_filter_sender_is_system_address',
+  name:        '6105_postmaster_filter_sender_is_system_address',
   area:        'Postmaster::PreFilter',
   description: __('Defines postmaster filter to check if email has been created by Zammad itself and will set the article sender.'),
   options:     {},
@@ -4317,7 +4317,16 @@ Setting.create_if_not_exists(
 )
 Setting.create_if_not_exists(
   title:       __('Defines postmaster filter.'),
-  name:        '0015_postmaster_filter_identify_sender',
+  name:        '0015_postmaster_filter_identify_session_user',
+  area:        'Postmaster::PreFilter',
+  description: __('Defines postmaster filter to identify session user.'),
+  options:     {},
+  state:       'Channel::Filter::IdentifySessionUser',
+  frontend:    false
+)
+Setting.create_if_not_exists(
+  title:       __('Defines postmaster filter.'),
+  name:        '6500_postmaster_filter_identify_sender',
   area:        'Postmaster::PreFilter',
   description: __('Defines postmaster filter to identify sender user.'),
   options:     {},
@@ -4466,6 +4475,15 @@ Setting.create_if_not_exists(
   description: __('Defines postmaster filter which sets the articles visibility to internal if it is a rely to an internal article or the last outgoing email is internal.'),
   options:     {},
   state:       'Channel::Filter::InternalArticleCheck',
+  frontend:    false
+)
+Setting.create!(
+  name:        '6005_postmaster_filter_identify_group',
+  title:       __('Defines postmaster filter.'),
+  area:        'Postmaster::PreFilter',
+  description: __('Defines postmaster filter to identify ticket group.'),
+  options:     {},
+  state:       'Channel::Filter::IdentifyGroup',
   frontend:    false
 )
 Setting.create_if_not_exists(

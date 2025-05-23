@@ -321,18 +321,135 @@ RSpec.describe Channel::EmailParser, type: :model do
         end
 
         context 'when from address matches an existing agent' do
-          let!(:agent) { create(:agent, email: 'foo@bar.com') }
-
-          it 'sets article.sender to "Agent"' do
-            described_class.new.process({}, raw_mail)
-
-            expect(Ticket::Article.last.sender.name).to eq('Agent')
+          before do
+            Setting.set('postmaster_sender_is_agent_search_for_customer', search_for_customer)
           end
 
-          it 'sets ticket.state to "new"' do
-            described_class.new.process({}, raw_mail)
+          describe 'postmaster filter group routing' do
+            let(:channel) { create(:email_channel, group: initial_group) }
+            let(:agent)               { create(:agent_and_customer, email: 'foo@bar.com', groups: [agent_group]) }
+            let(:initial_group)       { create(:group) }
+            let(:routed_group)        { create(:group) }
+            let(:postmaster_filter)   { create(:postmaster_filter, :route_to_group, group: routed_group) }
+            let(:search_for_customer) { false }
 
-            expect(Ticket.last.state.name).to eq('new')
+            before { agent && postmaster_filter }
+
+            context 'when agent-customer is customer in target group but postmaster filter routes to another group' do
+              let(:agent_group) { routed_group }
+
+              it 'sets article.sender to "Agent"' do
+                described_class.new.process(channel, raw_mail)
+
+                expect(Ticket::Article.last.sender.name).to eq('Agent')
+              end
+            end
+
+            context 'when agent-customer is agent in target group but postmaster filter routes to another group' do
+              let(:agent_group) { initial_group }
+
+              it 'sets article.sender to "Agent"' do
+                described_class.new.process(channel, raw_mail)
+
+                expect(Ticket::Article.last.sender.name).to eq('Customer')
+              end
+            end
+          end
+
+          context 'when agent is agent in target group' do
+            let!(:agent) { create(:agent, email: 'foo@bar.com', groups: Group.all) }
+
+            context 'when search for customer is false' do
+              let(:search_for_customer) { false }
+
+              it 'sets article.sender to "Agent"' do
+                described_class.new.process({}, raw_mail)
+
+                expect(Ticket::Article.last.sender.name).to eq('Agent')
+              end
+
+              it 'sets ticket.state to "new"' do
+                described_class.new.process({}, raw_mail)
+
+                expect(Ticket.last.state.name).to eq('new')
+              end
+
+              it 'sets agent as customer' do
+                described_class.new.process({}, raw_mail)
+
+                expect(Ticket.last.customer).to eq(agent)
+              end
+            end
+
+            context 'when search for customer is true' do
+              let(:search_for_customer) { true }
+
+              it 'sets article.sender to "Agent"' do
+                described_class.new.process({}, raw_mail)
+
+                expect(Ticket::Article.last.sender.name).to eq('Agent')
+              end
+
+              it 'sets ticket.state to "new"' do
+                described_class.new.process({}, raw_mail)
+
+                expect(Ticket.last.state.name).to eq('new')
+              end
+
+              it 'sets customer using TO value' do
+                described_class.new.process({}, raw_mail)
+
+                expect(Ticket.last.customer).to have_attributes(email: 'baz@qux.net')
+              end
+            end
+          end
+
+          context 'when agent is customer in target group' do
+            let!(:agent) { create(:agent, email: 'foo@bar.com') }
+
+            context 'when search for customer is false' do
+              let(:search_for_customer) { false }
+
+              it 'sets article.sender to "Agent"' do
+                described_class.new.process({}, raw_mail)
+
+                expect(Ticket::Article.last.sender.name).to eq('Customer')
+              end
+
+              it 'sets ticket.state to "new"' do
+                described_class.new.process({}, raw_mail)
+
+                expect(Ticket.last.state.name).to eq('new')
+              end
+
+              it 'sets agent as customer' do
+                described_class.new.process({}, raw_mail)
+
+                expect(Ticket.last.customer).to eq(agent)
+              end
+            end
+
+            context 'when search for customer is true' do
+              let(:search_for_customer) { true }
+
+              it 'sets article.sender to "Agent"' do
+                described_class.new.process({}, raw_mail)
+
+                expect(Ticket::Article.last.sender.name).to eq('Customer')
+              end
+
+              it 'sets ticket.state to "new"' do
+                described_class.new.process({}, raw_mail)
+
+                expect(Ticket.last.state.name).to eq('new')
+              end
+
+              it 'sets customer using TO value' do
+                described_class.new.process({}, raw_mail)
+
+                expect(Ticket.last.customer).to have_attributes(email: 'baz@qux.net')
+              end
+            end
           end
         end
 

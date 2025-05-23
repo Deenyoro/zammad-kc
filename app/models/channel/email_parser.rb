@@ -252,35 +252,10 @@ returns
       if !ticket
 
         preferences = {}
-        if channel[:id]
-          preferences = {
-            channel_id: channel[:id]
-          }
-        end
+        preferences[:channel_id] = channel[:id] if channel[:id]
 
-        # get default group where ticket is created
-        group = nil
-        if channel[:group_id]
-          group = Group.lookup(id: channel[:group_id])
-        else
-          mail_to_group = self.class.mail_to_group(mail[:to])
-          if mail_to_group.present?
-            group = mail_to_group
-          end
-        end
-        if group.blank? || group.active == false
-          group = Group.where(active: true).reorder(id: :asc).first
-        end
-        if group.blank?
-          group = Group.first
-        end
-        title = mail[:subject]
-        if title.blank?
-          title = '-'
-        end
         ticket = Ticket.new(
-          group_id:    group.id,
-          title:       title,
+          title:       mail[:subject].presence || '-',
           preferences: preferences,
         )
         set_attributes_by_x_headers(ticket, 'ticket', mail)
