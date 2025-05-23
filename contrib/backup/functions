@@ -27,6 +27,21 @@ function demand_backup_conf () {
       echo "FULL_FS_DUMP is not set, falling back to 'yes' to produce a full backup."
     fi
   fi
+
+  # set VARs related to pigz
+  if command -v pigz  > /dev/null; then
+    if [ "${DEBUG}" == "yes" ]; then
+      echo "Using pigz instead of gzip."
+    fi
+    GZIP_PROG="pigz"
+    TAR_GZIP_ARG="-I $GZIP_PROG"
+  else
+    if [ "${DEBUG}" == "yes" ]; then
+      echo "pigz is not available, falling back to gzip."
+    fi
+    GZIP_PROG="gzip"
+    TAR_GZIP_ARG="-z"
+  fi
 }
 
 function get_zammad_dir () {
@@ -145,7 +160,7 @@ function backup_files () {
 
   if [ "${FULL_FS_DUMP}" == 'yes' ]; then
     echo " ... as full dump"
-    tar -C / -czf ${BACKUP_DIR}/${TIMESTAMP}_zammad_files.tar.gz\
+    tar -C / -c ${TAR_GZIP_ARG} -f ${BACKUP_DIR}/${TIMESTAMP}_zammad_files.tar.gz\
       --exclude='tmp' --exclude 'node_modules' --exclude '.git' --exclude '.yarn/cache' --exclude='config/database.yml' ${ZAMMAD_DIR#/}
 
     state=$?
@@ -171,7 +186,7 @@ function backup_files () {
       ZAMMAD_STORAGE_DIR="${ZAMMAD_DIR#/}/storage/"
     fi
 
-    tar -C / -czf ${BACKUP_DIR}/${TIMESTAMP}_zammad_files.tar.gz ${ZAMMAD_STORAGE_DIR}
+    tar -C / -c ${TAR_GZIP_ARG} -f ${BACKUP_DIR}/${TIMESTAMP}_zammad_files.tar.gz ${ZAMMAD_STORAGE_DIR}
 
     state=$?
   fi
@@ -211,7 +226,7 @@ function backup_db () {
       ${DB_HOST:+--host $DB_HOST} \
       ${DB_PORT:+--port $DB_PORT} \
       --no-privileges --no-owner \
-      --compress 6 --file "${BACKUP_DIR}/${TIMESTAMP}_zammad_db.psql.gz"
+      | ${GZIP_PROG} > "${BACKUP_DIR}/${TIMESTAMP}_zammad_db.psql.gz"
 
   state=$?
 
@@ -411,7 +426,7 @@ function restore_zammad () {
 
 function restore_files () {
   echo "# Restoring Files"
-  tar -C / --overwrite -xzf ${BACKUP_DIR}/${RESTORE_FILE_DATE}_zammad_files.tar.gz
+  tar -C / --overwrite -x ${TAR_GZIP_ARG} -f ${BACKUP_DIR}/${RESTORE_FILE_DATE}_zammad_files.tar.gz
 
   state=$?
 
