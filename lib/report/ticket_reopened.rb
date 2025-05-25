@@ -19,7 +19,7 @@ returns
 =end
 
   def self.aggs(params_origin)
-    params = params_origin.deep_dup
+    params = duplicate_preserving_current_user(params_origin)
     ticket_state_ids = ticket_ids
 
     result = []

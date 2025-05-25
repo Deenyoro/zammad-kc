@@ -20,7 +20,7 @@ returns
 =end
 
   def self.aggs(params_origin)
-    params = params_origin.deep_dup
+    params = duplicate_preserving_current_user(params_origin)
     interval_es = params[:interval]
     if params[:interval] == 'week'
       interval_es = 'day'
@@ -40,7 +40,7 @@ returns
     end
     selector.merge!(without_merged_tickets_selector) # do not show merged tickets in reports
 
-    result_es = SearchIndexBackend.selectors('Ticket', selector, { current_user: params_origin[:current_user] }, aggs_interval) # use params_origin because deep_dup removes current_user.id
+    result_es = SearchIndexBackend.selectors('Ticket', selector, { current_user: params[:current_user] }, aggs_interval)
     case params[:interval]
     when 'month'
       stop_interval = 12

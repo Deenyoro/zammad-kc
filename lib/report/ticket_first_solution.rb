@@ -18,7 +18,7 @@ returns
 =end
 
   def self.aggs(params_origin)
-    params = params_origin.deep_dup
+    params = duplicate_preserving_current_user(params_origin)
 
     result = []
     case params[:interval]

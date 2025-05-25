@@ -384,4 +384,13 @@ class Report::Base
       }
     }
   end
+
+  # https://github.com/zammad/zammad/issues/5176
+  def self.duplicate_preserving_current_user(input)
+    input
+      .deep_dup
+      .tap do |elem|
+        elem[:current_user] = input[:current_user]
+      end
+  end
 end
