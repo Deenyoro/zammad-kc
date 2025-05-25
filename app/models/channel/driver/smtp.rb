@@ -57,6 +57,11 @@ class Channel::Driver::Smtp < Channel::Driver::BaseEmailOutbound
           fqdn = domain
         end
       end
+
+      # https://github.com/zammad/zammad/pull/5635
+      # remove port from the network address. RFC 5321 / 4.1.1.1. EHLO/HELO requires hostname withoutport.
+      fqdn = fqdn.split(':').first
+
       options[:domain] = fqdn
     end
 

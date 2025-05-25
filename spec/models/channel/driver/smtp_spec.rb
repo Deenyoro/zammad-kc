@@ -160,4 +160,57 @@ RSpec.describe Channel::Driver::Smtp, integration: true, required_envs: %w[MAIL_
                                                                            notification:                true))
     end
   end
+
+  describe '#prepare_options' do
+    let(:instance) { described_class.new }
+    let(:outbound) do
+      {
+        adapter: 'smtp',
+        options: {
+          host:      'mx1.example.com',
+          port:      25,
+          start_tls: true,
+          user:      'not_existing',
+          password:  'not_existing',
+        },
+      }
+    end
+
+    describe 'domain' do
+      context 'when domain is given' do
+        it 'uses the given one' do
+          expect(instance.prepare_options({ domain: 'outgoing.com' }, {}))
+            .to include(domain: 'outgoing.com')
+        end
+      end
+
+      context 'when domain is not given' do
+        it 'uses FQDN' do
+          expect(instance.prepare_options({}, {}))
+            .to include(domain: 'zammad.example.com')
+        end
+
+        it 'uses FQDN without port number if it was included' do
+          Setting.set('fqdn', 'with.port.com:3000')
+
+          expect(instance.prepare_options({}, {}))
+            .to include(domain: 'with.port.com')
+        end
+
+        it 'uses FROM address domain if FQDN is a local address' do
+          Setting.set('fqdn', 'localhost.local')
+
+          expect(instance.prepare_options({}, { from: 'test@example.com' }))
+            .to include(domain: 'example.com')
+        end
+
+        it 'uses local FQDN if FROM is not set' do
+          Setting.set('fqdn', 'localhost.local')
+
+          expect(instance.prepare_options({}, {}))
+            .to include(domain: 'localhost.local')
+        end
+      end
+    end
+  end
 end
