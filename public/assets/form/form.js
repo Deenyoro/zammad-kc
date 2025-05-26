@@ -292,7 +292,7 @@ $(function() {
         'Message': '訊息',
         'Name': '名稱',
         'Your Email': '請留下您的電子郵件地址',
-        'Your Message…': '',
+        'Your Message…': '請寫下您的留言…',
         'Your Name': '您的尊姓大名',
       },
     // ZAMMAD_TRANSLATIONS_END
