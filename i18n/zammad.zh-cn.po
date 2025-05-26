@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zammad\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-02-25 07:01+0000\n"
-"Last-Translator: Never Min <59808@qq.com>\n"
+"PO-Revision-Date: 2025-05-21 09:00+0000\n"
+"Last-Translator: horizonxh <horizonxh@163.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.zammad.org/projects/zammad/zammad-development/zh_Hans/>\n"
 "Language: zh-cn\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #. Default date format to use for the current locale.
 #. These placeholders are supported:
@@ -505,6 +505,12 @@ msgstr "%s 组到 %s 角色分配"
 msgid "%s hours ago"
 msgstr "%s 小时之前"
 
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantLoadingBanner.vue:33
+#, fuzzy
+#| msgid "%s Migration"
+msgid "%s is generating text"
+msgstr "%s 迁移"
+
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:91
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:58
 #: app/assets/javascripts/app/views/google/list.jst.eco:61
@@ -718,11 +724,11 @@ msgstr "%s% 的工单已被重新打开"
 msgid "%{model} can have full or granular access to group"
 msgstr "%{model}可以具有对群组的完全或粒度访问权限"
 
-#: app/models/object_manager/attribute.rb:610
+#: app/models/object_manager/attribute.rb:599
 msgid "%{name} already exists"
 msgstr "%{name} 已存在"
 
-#: app/models/object_manager/attribute.rb:594
+#: app/models/object_manager/attribute.rb:583
 msgid "%{name} is a reserved word"
 msgstr "%{name} 是一个保留词"
 
@@ -925,7 +931,7 @@ msgstr "一种配色方案，在光背景上使用深色元素。"
 msgid "A color scheme that uses light-colored elements on a dark background."
 msgstr "一种配色方案，在深色背景上使用浅色元素。"
 
-#: db/seeds/object_manager_attributes.rb:2231
+#: db/seeds/object_manager_attributes.rb:2232
 msgid ""
 "A group's email address determines which address should be used for outgoing "
 "mails, e.g. when an agent is composing an email or a trigger is sending an "
@@ -974,7 +980,7 @@ msgid ""
 "A test ticket has been created, you can find it in your overview \"%s\" %l."
 msgstr "测试工单已建立，您可以在工单概览 \"%s\" %l 中找到它。"
 
-#: app/models/ticket.rb:279
+#: app/models/ticket.rb:281
 msgid "A ticket cannot be merged into itself."
 msgstr "一个工单不能与它本身合并。"
 
@@ -1009,17 +1015,23 @@ msgstr "Webhook可以由触发器和调度器触发，不要忘记定义它们�
 msgid "AI"
 msgstr "API"
 
-#: db/seeds/settings.rb:6051
+#: db/seeds/settings.rb:6069
 #, fuzzy
 #| msgid "Provider"
 msgid "AI Provider Config"
 msgstr "提供者"
 
-#: db/seeds/settings.rb:6034
+#: db/seeds/settings.rb:6052
 #, fuzzy
 #| msgid "Provider"
 msgid "AI provider"
 msgstr "提供者"
+
+#: app/models/setting/validation/ai_provider_config.rb:35
+#, fuzzy
+#| msgid "The provided token is invalid."
+msgid "AI provider Azure configuration is incomplete"
+msgstr "提供的令牌无效。"
 
 #: app/models/setting/validation/ai_provider_config.rb:33
 msgid "AI provider Ollama URL is not set"
@@ -1027,6 +1039,7 @@ msgstr ""
 
 #: app/controllers/ticket/summarize_controller.rb:8
 #: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:20
+#: app/services/service/ai_assistance/text_tools.rb:17
 #: app/services/service/ticket/ai_assistance/summarize.rb:15
 #, fuzzy
 #| msgid "The setting 'storage_provider' was not configured."
@@ -1037,14 +1050,14 @@ msgstr "未配置设置“ storage_provider”。"
 msgid "AI provider is not supported"
 msgstr ""
 
-#: app/models/setting/validation/ai_provider_config.rb:35
+#: app/models/setting/validation/ai_provider_config.rb:37
 #, fuzzy
 #| msgid "The provided token is invalid."
 msgid "AI provider token is not set"
 msgstr "提供的令牌无效。"
 
 #: app/assets/javascripts/app/controllers/api.coffee:3
-#: app/assets/javascripts/app/views/api.jst.eco:2 db/seeds/permissions.rb:245
+#: app/assets/javascripts/app/views/api.jst.eco:2 db/seeds/permissions.rb:251
 msgid "API"
 msgstr "API"
 
@@ -1072,8 +1085,9 @@ msgstr "API 错误。"
 msgid "API server error - please try again"
 msgstr ""
 
-#: lib/ai/provider/anthropic.rb:66 lib/ai/provider/ollama.rb:86
-#: lib/ai/provider/open_ai.rb:93 lib/ai/provider/zammad_ai.rb:52
+#: lib/ai/provider/anthropic.rb:66 lib/ai/provider/azure.rb:104
+#: lib/ai/provider/ollama.rb:86 lib/ai/provider/open_ai.rb:93
+#: lib/ai/provider/zammad_ai.rb:53
 msgid "API server not accessible"
 msgstr ""
 
@@ -1099,51 +1113,51 @@ msgid "Accept Data Privacy Policy & Acceptable Use Policy"
 msgstr "接受数据隐私政策和可接受使用政策"
 
 #: app/frontend/apps/desktop/components/CommonTicketLabel/CommonTicketLabel.vue:37
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabForbidden.vue:42
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabForbidden.vue:43
 msgid "Access denied"
 msgstr "拒绝访问"
 
-#: db/seeds/permissions.rb:333
+#: db/seeds/permissions.rb:339
 msgid "Access the agent chat features."
 msgstr "访问代理聊天功能。"
 
-#: db/seeds/permissions.rb:348
+#: db/seeds/permissions.rb:354
 msgid "Access the agent phone features."
 msgstr "访问代理电话功能。"
 
-#: db/seeds/permissions.rb:363
+#: db/seeds/permissions.rb:369
 msgid "Access the knowledge base editor features."
 msgstr "访问知识库编辑器功能。"
 
-#: db/seeds/permissions.rb:369
+#: db/seeds/permissions.rb:375
 msgid "Access the knowledge base reader features."
 msgstr "访问知识库读取器功能。"
 
-#: db/seeds/permissions.rb:391
+#: db/seeds/permissions.rb:397
 msgid "Access the tickets as agent based on group access."
 msgstr "根据所在群组的权限以访问不同的工单。"
 
-#: db/seeds/permissions.rb:400
+#: db/seeds/permissions.rb:406
 msgid "Access tickets as customer."
 msgstr "以客户身份访工单。"
 
-#: db/seeds/permissions.rb:324
+#: db/seeds/permissions.rb:330
 msgid "Access to the chat interface."
 msgstr "进入聊天界面。"
 
-#: db/seeds/permissions.rb:354
+#: db/seeds/permissions.rb:360
 msgid "Access to the knowledge base interface."
 msgstr "进入知识库页面。"
 
-#: db/seeds/permissions.rb:339
+#: db/seeds/permissions.rb:345
 msgid "Access to the phone interface."
 msgstr "进入手机页面。"
 
-#: db/seeds/permissions.rb:376
+#: db/seeds/permissions.rb:382
 msgid "Access to the report interface."
 msgstr "访问报告接口。"
 
-#: db/seeds/permissions.rb:382
+#: db/seeds/permissions.rb:388
 msgid "Access to the ticket interface."
 msgstr "访问工单页面。"
 
@@ -1311,7 +1325,7 @@ msgstr "为用户激活丢失密码功能。只有在启用密码登录时，此
 #: app/assets/javascripts/app/views/profile/password.jst.eco:29
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:71
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:229
-#: db/seeds/object_manager_attributes.rb:1665
+#: db/seeds/object_manager_attributes.rb:1666
 msgid "Active"
 msgstr "激活"
 
@@ -1503,7 +1517,7 @@ msgstr "校验"
 msgid "Add attachment option to upload."
 msgstr "允许上传附件。"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:270
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:297
 msgid "Add bullet list"
 msgstr "添加项目符号列表"
 
@@ -1530,7 +1544,7 @@ msgstr "E-Mail"
 msgid "Add empty checklist"
 msgstr "添加项目符号列表"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:192
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:219
 msgid "Add first level heading"
 msgstr "添加一级标题"
 
@@ -1540,11 +1554,11 @@ msgstr "添加一级标题"
 msgid "Add from a template"
 msgstr "保存为模板"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:185
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:212
 msgid "Add heading"
 msgstr "新增标题"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:130
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:157
 msgid "Add image"
 msgstr "添加图片"
 
@@ -1555,7 +1569,7 @@ msgid "Add internal note"
 msgstr "增加注释"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketLinks.vue:163
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:152
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:179
 msgid "Add link"
 msgstr "添加链接"
 
@@ -1573,7 +1587,7 @@ msgstr "新增消息"
 msgid "Add note"
 msgstr "添加机器人"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:257
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:284
 msgid "Add ordered list"
 msgstr "添加有序列表"
 
@@ -1587,7 +1601,7 @@ msgstr ""
 msgid "Add reply"
 msgstr "添加回复"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:203
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:230
 msgid "Add second level heading"
 msgstr "添加二级标题"
 
@@ -1616,7 +1630,7 @@ msgstr "添加子句"
 msgid "Add tag"
 msgstr "新增标签"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:214
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:241
 msgid "Add third level heading"
 msgstr "添加三级标题"
 
@@ -1650,7 +1664,7 @@ msgstr "有关工单创建类型的附加说明。"
 msgid "Additional ticket edit actions"
 msgstr "附加信息"
 
-#: db/seeds/object_manager_attributes.rb:1405
+#: db/seeds/object_manager_attributes.rb:1406
 msgid "Address"
 msgstr "地址"
 
@@ -1777,7 +1791,7 @@ msgstr "客服名称"
 msgid "Agent Name + FromSeparator + System Address Display Name"
 msgstr "客服名称 + 来自分隔符+ 系统地址显示名称"
 
-#: db/seeds/permissions.rb:332
+#: db/seeds/permissions.rb:338
 msgid "Agent chat"
 msgstr "客服对话"
 
@@ -1789,17 +1803,21 @@ msgstr "客服空闲超时"
 msgid "Agent limit exceeded, please check your account settings."
 msgstr "已超出客服限制，请检查您的帐户设置。"
 
-#: db/seeds/permissions.rb:347
+#: db/seeds/permissions.rb:353
 msgid "Agent phone"
 msgstr "客服电话"
 
-#: db/seeds/permissions.rb:390
+#: db/seeds/permissions.rb:396
 msgid "Agent tickets"
 msgstr "客服工单"
 
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:109
 msgid "Agents"
 msgstr "客服人员"
+
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:112
+msgid "Ai assistant text tools"
+msgstr ""
 
 #: app/assets/javascripts/app/views/profile/calendar_subscriptions.jst.eco:27
 msgid "Alarm"
@@ -1863,7 +1881,7 @@ msgstr "所有工单"
 msgid "All two-factor authentication methods were removed for this user."
 msgstr "该用户的所有双因素身份验证方法均已删除。"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:325
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:317
 msgid "Allow future"
 msgstr "允许将来"
 
@@ -1871,7 +1889,7 @@ msgstr "允许将来"
 msgid "Allow future dates toggle value is required."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:334
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:326
 msgid "Allow past"
 msgstr "允许过去"
 
@@ -1881,7 +1899,7 @@ msgstr "允许过去"
 msgid "Allow past dates toggle value is required."
 msgstr "至少需要一个字母"
 
-#: db/seeds/object_manager_attributes.rb:2164
+#: db/seeds/object_manager_attributes.rb:2165
 msgid "Allow reopening of tickets within a certain time."
 msgstr "允许在一定时间内重新开启工单。"
 
@@ -1893,7 +1911,7 @@ msgstr "允许用户增加新标签."
 msgid "Allow users to create new tags."
 msgstr "允许用户创建新的标签。"
 
-#: db/seeds/settings.rb:6028
+#: db/seeds/settings.rb:6046
 msgid "Allow users to switch automatically to the new desktop UI."
 msgstr ""
 
@@ -1910,7 +1928,7 @@ msgstr "允许网站（以 ; 分隔）"
 msgid "Also notify via email"
 msgstr "也通过邮件通知"
 
-#: db/seeds/settings.rb:5247
+#: db/seeds/settings.rb:5265
 msgid ""
 "Alternative FQDN for callbacks if you operate Zammad in an internal network."
 msgstr "如果您在内部网络中操作 Zammad，则用于回调的替代 FQDN。"
@@ -1946,7 +1964,7 @@ msgstr "发生了错误"
 msgid "An error occured during the operation."
 msgstr "操作过程中发生错误。"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:997
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:989
 #: app/assets/javascripts/app/views/integration/exchange_last_import.jst.eco:5
 #: app/assets/javascripts/app/views/integration/ldap_last_import.jst.eco:5
 msgid "An error occurred: %s"
@@ -2097,7 +2115,7 @@ msgstr "应用密码"
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/appearance.ts:9
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/appearance.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:60
-#: db/seeds/permissions.rb:413
+#: db/seeds/permissions.rb:419
 msgid "Appearance"
 msgstr "外观"
 
@@ -2358,12 +2376,12 @@ msgstr "文章使用不同的安全机制。"
 msgid "Article#"
 msgstr "文章#"
 
-#: db/seeds/object_manager_attributes.rb:2186
+#: db/seeds/object_manager_attributes.rb:2187
 msgid "Assign Follow-Ups"
 msgstr "分配后续工作"
 
 #: app/assets/javascripts/app/models/group.coffee:11
-#: db/seeds/object_manager_attributes.rb:2195
+#: db/seeds/object_manager_attributes.rb:2196
 msgid "Assign follow-up to latest agent again."
 msgstr "再次分配跟进给最新的客服。"
 
@@ -2375,7 +2393,7 @@ msgstr "分配后续工作"
 msgid "Assign signup roles"
 msgstr "分配注册角色"
 
-#: db/seeds/object_manager_attributes.rb:1795
+#: db/seeds/object_manager_attributes.rb:1796
 msgid "Assign users based on user domain."
 msgstr "根据用户的域名分配用户。"
 
@@ -2394,7 +2412,7 @@ msgstr "受让人"
 msgid "Assignees"
 msgstr "受让人"
 
-#: db/seeds/object_manager_attributes.rb:2087
+#: db/seeds/object_manager_attributes.rb:2088
 msgid "Assignment Timeout"
 msgstr "分配超時"
 
@@ -2404,7 +2422,7 @@ msgid "Assignment timeout"
 msgstr "分配超时"
 
 #: app/assets/javascripts/app/models/group.coffee:8
-#: db/seeds/object_manager_attributes.rb:2092
+#: db/seeds/object_manager_attributes.rb:2093
 msgid ""
 "Assignment timeout in minutes if assigned agent is not working on it. Ticket "
 "will be shown as unassigend."
@@ -2551,7 +2569,7 @@ msgstr "验证"
 msgid "Authentication"
 msgstr "验证"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:736
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:728
 msgid "Authentication Token"
 msgstr "身份验证令牌"
 
@@ -2584,7 +2602,7 @@ msgstr "通过 s% 认证"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/authenticator_app.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:5
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:9
-#: db/seeds/settings.rb:5875
+#: db/seeds/settings.rb:5893
 msgid "Authenticator App"
 msgstr "验证器应用程序"
 
@@ -2629,7 +2647,7 @@ msgstr "自动分配忽略的用户"
 msgid "Auto Assignment Selector"
 msgstr "自动分配选择器"
 
-#: db/seeds/settings.rb:6014
+#: db/seeds/settings.rb:6032
 msgid "Auto Shutdown"
 msgstr ""
 
@@ -2637,7 +2655,7 @@ msgstr ""
 msgid "Auto Wizard"
 msgstr "自动向导"
 
-#: db/seeds/settings.rb:4520
+#: db/seeds/settings.rb:4538
 msgid "Auto close"
 msgstr "自动关闭"
 
@@ -2645,7 +2663,7 @@ msgstr "自动关闭"
 msgid "Auto create"
 msgstr "自动建立"
 
-#: db/seeds/settings.rb:4546
+#: db/seeds/settings.rb:4564
 msgid "Auto-close state"
 msgstr "自动关闭状态"
 
@@ -2715,7 +2733,7 @@ msgstr "新工单的可用类型"
 #: app/frontend/apps/mobile/pages/account/views/AccountOverview.vue:128
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:175
 #: app/frontend/shared/components/CommonUserAvatar/CommonUserAvatar.vue:119
-#: db/seeds/permissions.rb:427
+#: db/seeds/permissions.rb:433
 msgid "Avatar"
 msgstr "头像"
 
@@ -2744,6 +2762,10 @@ msgstr "平均: %s minutes"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_reopen.jst.eco:12
 msgid "Average: %s%"
 msgstr "平均: %s%"
+
+#: app/assets/javascripts/app/lib/app_post/ai_provider/azure_ai.coffee:3
+msgid "Azure AI"
+msgstr ""
 
 #: db/seeds/settings.rb:3499
 msgid "BCC address for all outgoing emails"
@@ -2808,7 +2830,7 @@ msgstr "基本DN"
 msgid "Base Objects"
 msgstr "基础对象"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:736
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:728
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:11
 msgid "Basic Authentication"
 msgstr "基本认证"
@@ -3013,19 +3035,19 @@ msgstr "CTI"
 msgid "CTI (generic)"
 msgstr "CTI (generic)"
 
-#: db/seeds/settings.rb:5306
+#: db/seeds/settings.rb:5324
 msgid "CTI Token"
 msgstr "CTI Token"
 
-#: db/seeds/settings.rb:5293
+#: db/seeds/settings.rb:5311
 msgid "CTI config"
 msgstr "CTI 配置"
 
-#: db/seeds/settings.rb:5327
+#: db/seeds/settings.rb:5345
 msgid "CTI customer last activity"
 msgstr "CTI 客户最近一次活动"
 
-#: db/seeds/settings.rb:5265
+#: db/seeds/settings.rb:5283
 msgid "CTI integration"
 msgstr "CTI 集成"
 
@@ -3120,7 +3142,8 @@ msgstr "无法更新密码，您输入的密码错误。请再试一次。"
 #: app/assets/javascripts/app/controllers/_application_controller/after_auth_modal.coffee:9
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:380
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/twitter_reply.coffee:177
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:339
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:342
+#: app/assets/javascripts/app/views/generic/text_tools_loading.jst.eco:3
 #: app/assets/javascripts/app/views/integration/exchange_certificate_issue.jst.eco:18
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:236
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:292
@@ -3136,6 +3159,7 @@ msgstr "无法更新密码，您输入的密码错误。请再试一次。"
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:225
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:120
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:78
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantLoadingBanner.vue:51
 msgid "Cancel"
 msgstr "取消"
 
@@ -3203,7 +3227,7 @@ msgstr "无法处理外部数据源%s. %s"
 msgid "Cannot set online notifications as seen"
 msgstr "无法设置在线通知，如图所示"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:797
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:806
 msgid "Cannot upload file"
 msgstr "无法上传文件"
 
@@ -3279,11 +3303,11 @@ msgstr "更改日期"
 msgid "Change order"
 msgstr "更改顺序"
 
-#: db/seeds/permissions.rb:445
+#: db/seeds/permissions.rb:451
 msgid "Change personal account password."
 msgstr "修改个人账户密码。"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:227
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:254
 msgid "Change text color"
 msgstr "更改字体颜色"
 
@@ -3460,7 +3484,7 @@ msgstr ""
 msgid "Checklist item successfully added."
 msgstr "測試運行成功"
 
-#: app/models/checklist/item.rb:108
+#: app/models/checklist/item.rb:105
 #, fuzzy
 #| msgid "The article does not belong to the specified ticket."
 msgid "Checklist items are limited to 100 items per checklist."
@@ -3472,7 +3496,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/checklist_template.coffee:3
 #: app/assets/javascripts/app/views/checklist_template/index.jst.eco:7
-#: db/seeds/permissions.rb:317 db/seeds/settings.rb:5987
+#: db/seeds/permissions.rb:323 db/seeds/settings.rb:6005
 #, fuzzy
 #| msgid "Checksum"
 msgid "Checklists"
@@ -3482,11 +3506,11 @@ msgstr "校验"
 msgid "Checkmk"
 msgstr "校验码"
 
-#: db/seeds/settings.rb:4667
+#: db/seeds/settings.rb:4685
 msgid "Checkmk integration"
 msgstr "检查集成"
 
-#: db/seeds/settings.rb:4788
+#: db/seeds/settings.rb:4806
 msgid "Checkmk token"
 msgstr "检查令牌"
 
@@ -3563,7 +3587,7 @@ msgstr "选择您较喜欢的双重身份验证方法进行设置。"
 msgid "Christmas holiday"
 msgstr "圣诞假期"
 
-#: db/seeds/object_manager_attributes.rb:1325
+#: db/seeds/object_manager_attributes.rb:1326
 msgid "City"
 msgstr "城市"
 
@@ -3653,11 +3677,11 @@ msgstr "清空选项"
 msgid "Clearbit"
 msgstr "Clearbit"
 
-#: db/seeds/settings.rb:5429
+#: db/seeds/settings.rb:5447
 msgid "Clearbit config"
 msgstr "Clearbit配置"
 
-#: db/seeds/settings.rb:5403
+#: db/seeds/settings.rb:5421
 msgid "Clearbit integration"
 msgstr "Clearbit集成"
 
@@ -3756,7 +3780,7 @@ msgstr "当工单关闭时关闭tab页"
 msgid "Close the time picker"
 msgstr "关闭时间选择器"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabRemove.vue:71
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabRemove.vue:70
 msgid "Close this tab"
 msgstr "关闭此选项卡"
 
@@ -3822,7 +3846,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:11
-#: db/seeds/settings.rb:5867
+#: db/seeds/settings.rb:5885
 msgid "Complete the sign-in with your security key."
 msgstr "使用您的安全密钥完成登录。"
 
@@ -4203,7 +4227,7 @@ msgid "Core Workflow Ajax Mode"
 msgstr "核心工作流程 Ajax 模式"
 
 #: app/assets/javascripts/app/controllers/core_workflow.coffee:3
-#: db/seeds/permissions.rb:269
+#: db/seeds/permissions.rb:275
 msgid "Core Workflows"
 msgstr "核心工作流程"
 
@@ -4307,7 +4331,7 @@ msgstr "电子邮件的计数"
 msgid "Counting entries. This may take a while."
 msgstr "计数条目。需要一些时间处理。"
 
-#: db/seeds/object_manager_attributes.rb:1365
+#: db/seeds/object_manager_attributes.rb:1366
 msgid "Country"
 msgstr "国家"
 
@@ -4733,7 +4757,7 @@ msgstr "客户和代理比率（基于角色的用户计数）"
 msgid "Customer selection based on sender and receiver list"
 msgstr "根據寄件人和收件人列表選擇客戶"
 
-#: db/seeds/permissions.rb:399
+#: db/seeds/permissions.rb:405
 msgid "Customer tickets"
 msgstr "客户的工单"
 
@@ -4744,7 +4768,7 @@ msgid ""
 msgstr "用户的客户工单将在执行任务时被删除。 无法回滚。"
 
 #: app/assets/javascripts/app/models/organization.coffee:7
-#: db/seeds/object_manager_attributes.rb:1749
+#: db/seeds/object_manager_attributes.rb:1750
 msgid "Customers in the organization can view each other's items."
 msgstr "组织中的客户可以查看彼此的项目。"
 
@@ -4779,7 +4803,7 @@ msgstr "信息中心"
 
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:3
 #: app/assets/javascripts/app/views/data_privacy/index.jst.eco:3
-#: db/seeds/permissions.rb:281
+#: db/seeds/permissions.rb:287
 msgid "Data Privacy"
 msgstr "Data Privacy"
 
@@ -4880,7 +4904,7 @@ msgstr "解密失败！ %s"
 msgid "Decryption was successful."
 msgstr "解密成功。"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:239
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:231
 #: app/assets/javascripts/app/views/calendar/index.jst.eco:32
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:228
 #: app/assets/javascripts/app/views/generic/multi_locales.jst.eco:5
@@ -4934,11 +4958,11 @@ msgstr "默认跟进"
 msgid "Default for new tickets"
 msgstr "新工单的默认类型"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:357
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:349
 msgid "Default time diff (hours)"
 msgstr "默认时间差（小时）"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:343
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:335
 msgid "Default time diff (minutes)"
 msgstr "默认时间差（分钟）"
 
@@ -4981,7 +5005,7 @@ msgstr "定义 Elasticsearch 的模型配置。"
 msgid "Define pipeline name for Elasticsearch."
 msgstr "定义Elasticsearch的管道名称。"
 
-#: db/seeds/settings.rb:4348
+#: db/seeds/settings.rb:4357
 msgid ""
 "Define postmaster filter to check if follow-ups get created (based on admin "
 "settings)."
@@ -5079,7 +5103,7 @@ msgid ""
 "Defines a Zendesk endpoint to import users, tickets, states, and articles."
 msgstr "定义一个Zendesk端点，用于导入用户、工单、状态和文章。"
 
-#: db/seeds/settings.rb:5507
+#: db/seeds/settings.rb:5525
 msgid "Defines a dashboard stats backend that gets scheduled automatically."
 msgstr "自动安排的仪表板统计后端。"
 
@@ -5161,57 +5185,57 @@ msgstr ""
 "定义如何连接到websocket服务器。在生产环境中，默认为\"websocket\"，在CI中为"
 "\"websocketPort\""
 
-#: db/seeds/settings.rb:4670
+#: db/seeds/settings.rb:4688
 msgid "Defines if Checkmk (https://checkmk.com/) is enabled or not."
 msgstr "定义Checkmk (https://checkmk.com/) 是否启用。"
 
-#: db/seeds/settings.rb:5406
+#: db/seeds/settings.rb:5424
 msgid "Defines if Clearbit (http://www.clearbit.com) is enabled or not."
 msgstr "定义了Clearbit (http://www.clearbit.com) 是否启用。"
 
-#: db/seeds/settings.rb:4957
+#: db/seeds/settings.rb:4975
 msgid "Defines if Exchange is enabled or not."
 msgstr "定义了Exchange是否启用。"
 
-#: db/seeds/settings.rb:4474
+#: db/seeds/settings.rb:4492
 msgid "Defines if Icinga (http://www.icinga.org) is enabled or not."
 msgstr "定义了Icinga (http://www.icinga.org) 是否启用。"
 
-#: db/seeds/settings.rb:5617
+#: db/seeds/settings.rb:5635
 msgid ""
 "Defines if Knowledge Base navbar button is enabled for users without "
 "Knowledge Base permission."
 msgstr "定义了是否为没有知识库权限的用户启用知识库导航栏按钮。"
 
-#: db/seeds/settings.rb:5602
+#: db/seeds/settings.rb:5620
 msgid "Defines if Knowledge Base navbar button is enabled."
 msgstr "定义了是否启用知识库导航栏按钮。"
 
-#: db/seeds/settings.rb:4904
+#: db/seeds/settings.rb:4922
 msgid "Defines if LDAP is enabled or not."
 msgstr "定义了LDAP是否启用。"
 
-#: db/seeds/settings.rb:4803
+#: db/seeds/settings.rb:4821
 msgid "Defines if Monit (https://mmonit.com/monit/) is enabled or not."
 msgstr "定义了Monit (https://mmonit.com/monit/) 是否启用。"
 
-#: db/seeds/settings.rb:4572
+#: db/seeds/settings.rb:4590
 msgid "Defines if Nagios (http://www.nagios.org) is enabled or not."
 msgstr "定义了Nagios (http://www.nagios.org) 是否启用。"
 
-#: db/seeds/settings.rb:5735
+#: db/seeds/settings.rb:5753
 msgid "Defines if PGP encryption is enabled or not."
 msgstr "定义是否启用 PGP 加密。"
 
-#: db/seeds/settings.rb:5343
+#: db/seeds/settings.rb:5361
 msgid "Defines if Placetel (http://www.placetel.de) is enabled or not."
 msgstr "定义了Placetel (http://www.placetel.de) 是否启用。"
 
-#: db/seeds/settings.rb:5693
+#: db/seeds/settings.rb:5711
 msgid "Defines if S/MIME encryption is enabled or not."
 msgstr "定义了S/MIME加密是否启用。"
 
-#: db/seeds/settings.rb:5144
+#: db/seeds/settings.rb:5162
 msgid "Defines if Slack (http://www.slack.org) is enabled or not."
 msgstr "定义了Slack (http://www.slack.org) 是否启用。"
 
@@ -5227,37 +5251,37 @@ msgstr "定义应用程序是否处于初始化模式。"
 msgid "Defines if application is used as online service."
 msgstr "定义应用程序是否被用作在线服务。"
 
-#: db/seeds/settings.rb:5818
+#: db/seeds/settings.rb:5836
 msgid ""
 "Defines if calendar weeks are shown in the picker of date/datetime fields to "
 "easily select the correct date."
 msgstr "定义日期/时间字段的选择器中是否显示日历周，以便轻松选择正确的日期。"
 
-#: db/seeds/settings.rb:5268
+#: db/seeds/settings.rb:5286
 msgid "Defines if generic CTI integration is enabled or not."
 msgstr "定义是否启用通用CTI集成。"
 
-#: db/seeds/settings.rb:5910
+#: db/seeds/settings.rb:5928
 msgid ""
 "Defines if recovery codes can be used by users in the event they lose access "
 "to other two-factor authentication methods."
 msgstr "定义用户在无法访问其他两因素身份验证方法时是否可以使用恢复代码。"
 
-#: db/seeds/settings.rb:5185
+#: db/seeds/settings.rb:5203
 msgid "Defines if sipgate.io (http://www.sipgate.io) is enabled or not."
 msgstr "定义是否启用sipgate.io（http://www.sipgate.io）。"
 
-#: db/seeds/settings.rb:5066
+#: db/seeds/settings.rb:5084
 msgid ""
 "Defines if the GitHub (http://www.github.com) integration is enabled or not."
 msgstr "定义是否启用GitHub (http://www.github.com)集成。"
 
-#: db/seeds/settings.rb:5024
+#: db/seeds/settings.rb:5042
 msgid ""
 "Defines if the GitLab (http://www.gitlab.com) integration is enabled or not."
 msgstr "定义是否启用GitLab (http://www.gitlab.com)集成。"
 
-#: db/seeds/settings.rb:5777
+#: db/seeds/settings.rb:5795
 msgid "Defines if the PGP recipient alias configuration is enabled or not."
 msgstr "定义是否启用 PGP 收件人别名配置。"
 
@@ -5275,7 +5299,7 @@ msgstr ""
 "定义应用程序是否处于开发人员模式（所有用户的密码相同，且无需通过电子邮件发"
 "送，密码重置功能将正常工作）。"
 
-#: db/seeds/settings.rb:5962
+#: db/seeds/settings.rb:5980
 msgid ""
 "Defines if the change of the primary organization of a user will update the "
 "100 most recent tickets for this user as well."
@@ -5293,7 +5317,7 @@ msgid ""
 "organization widget."
 msgstr "定义用户/组织小部件的结果中是否应显示电子邮件。"
 
-#: db/seeds/settings.rb:4984
+#: db/seeds/settings.rb:5002
 msgid ""
 "Defines if the i-doit (https://www.i-doit.org/) integration is enabled or "
 "not."
@@ -5314,13 +5338,13 @@ msgstr "定义机票条件编辑是否支持正则表达操作员进行触发器
 msgid "Defines if the time accounting types are enabled."
 msgstr "定义是否启用时间统计类型。"
 
-#: db/seeds/settings.rb:5878
+#: db/seeds/settings.rb:5896
 msgid ""
 "Defines if the two-factor authentication method authenticator app is enabled "
 "or not."
 msgstr "定义是否启用了两因素身份验证方法身份验证方法。"
 
-#: db/seeds/settings.rb:5846
+#: db/seeds/settings.rb:5864
 msgid ""
 "Defines if the two-factor authentication method security keys is enabled or "
 "not."
@@ -5330,11 +5354,11 @@ msgstr "定义是否启用双因素身份验证方法安全密钥。"
 msgid "Defines if tickets can be created via web form."
 msgstr "定义是否可以通过网页表单创建工单。"
 
-#: db/seeds/settings.rb:4523
+#: db/seeds/settings.rb:4541
 msgid "Defines if tickets should be closed if service is recovered."
 msgstr "定义如果服务恢复，是否应关闭工单。"
 
-#: db/seeds/settings.rb:4384
+#: db/seeds/settings.rb:4393
 msgid "Defines postmaster filter for filters managed via admin interface."
 msgstr "定义通过管理员界面管理的过滤器的邮件管理员过滤器。"
 
@@ -5353,16 +5377,16 @@ msgstr ""
 "定义邮件管理员过滤器以检查电子邮件是否为自我创建的通知电子邮件，然后忽略它以"
 "防止电子邮件循环。"
 
-#: db/seeds/settings.rb:4330
+#: db/seeds/settings.rb:4339
 msgid "Defines postmaster filter to handle secure mailing."
 msgstr "定义邮件管理员过滤器以处理安全邮件。"
 
-#: db/seeds/settings.rb:4447
+#: db/seeds/settings.rb:4456
 msgid ""
 "Defines postmaster filter to identify Jira mails for correct follow-ups."
 msgstr "定义邮件管理员过滤器以识别Jira邮件以进行正确的后续处理。"
 
-#: db/seeds/settings.rb:4429
+#: db/seeds/settings.rb:4438
 msgid ""
 "Defines postmaster filter to identify ServiceNow mails for correct follow-"
 "ups."
@@ -5384,7 +5408,7 @@ msgid ""
 "Defines postmaster filter to identify follow-ups (based on admin settings)."
 msgstr "定义邮件管理员过滤器以识别后续处理（基于管理员设置）。"
 
-#: db/seeds/settings.rb:4339
+#: db/seeds/settings.rb:4348
 msgid ""
 "Defines postmaster filter to identify out-of-office emails for follow-up "
 "detection and keeping current ticket state."
@@ -5392,7 +5416,7 @@ msgstr ""
 "定义邮件管理员过滤器以识别外出办公电子邮件，以便进行后续处理检测并保持当前的"
 "工单状态。"
 
-#: db/seeds/settings.rb:4366
+#: db/seeds/settings.rb:4375
 msgid ""
 "Defines postmaster filter to identify postmaster bounces; and disables "
 "sending notification if delivery fails permanently."
@@ -5400,14 +5424,14 @@ msgstr ""
 "定义邮件管理员过滤器以识别邮件管理员退信；如果永久性无法发送通知，则禁用发送"
 "通知。"
 
-#: db/seeds/settings.rb:4357
+#: db/seeds/settings.rb:4366
 msgid ""
 "Defines postmaster filter to identify postmaster bounces; and handles them "
 "as follow-up of the original tickets"
 msgstr ""
 "定义邮件管理员过滤器以识别邮件管理员的退信；并将它们作为原始工单的后续处理"
 
-#: db/seeds/settings.rb:4375
+#: db/seeds/settings.rb:4384
 msgid ""
 "Defines postmaster filter to identify postmaster bounces; and reopens "
 "tickets if delivery fails permanently."
@@ -5415,11 +5439,23 @@ msgstr ""
 "定义邮件管理员过滤器以识别邮件管理员的退信；如果邮件永久性无法投递，则重新开"
 "启工单。"
 
-#: db/seeds/settings.rb:4321
+#: db/seeds/settings.rb:4330
 msgid "Defines postmaster filter to identify sender user."
 msgstr "定义邮件管理员过滤器以识别发件人用户。"
 
-#: db/seeds/settings.rb:4411
+#: db/seeds/settings.rb:4321
+#, fuzzy
+#| msgid "Defines postmaster filter to identify sender user."
+msgid "Defines postmaster filter to identify session user."
+msgstr "定义邮件管理员过滤器以识别发件人用户。"
+
+#: db/seeds/settings.rb:4483
+#, fuzzy
+#| msgid "Defines postmaster filter to identify sender user."
+msgid "Defines postmaster filter to identify ticket group."
+msgstr "定义邮件管理员过滤器以识别发件人用户。"
+
+#: db/seeds/settings.rb:4420
 #, fuzzy
 #| msgid ""
 #| "Defines postmaster filter to manage Monit (https://mmonit.com/monit/) "
@@ -5429,17 +5465,17 @@ msgid ""
 "check_mk.html) emails."
 msgstr "定义邮件管理员过滤器以管理Monit (https://mmonit.com/monit/) 邮件。"
 
-#: db/seeds/settings.rb:4393
+#: db/seeds/settings.rb:4402
 msgid ""
 "Defines postmaster filter to manage Icinga (http://www.icinga.org) emails."
 msgstr "定义邮件管理员过滤器来管理Icinga (http://www.icinga.org) 邮件。"
 
-#: db/seeds/settings.rb:4420
+#: db/seeds/settings.rb:4429
 msgid ""
 "Defines postmaster filter to manage Monit (https://mmonit.com/monit/) emails."
 msgstr "定义邮件管理员过滤器以管理Monit (https://mmonit.com/monit/) 邮件。"
 
-#: db/seeds/settings.rb:4402
+#: db/seeds/settings.rb:4411
 msgid ""
 "Defines postmaster filter to manage Nagios (http://www.nagios.org) emails."
 msgstr "定义邮件管理员过滤器以管理Nagios (http://www.nagios.org) 邮件。"
@@ -5462,7 +5498,7 @@ msgid ""
 "header."
 msgstr "定义邮件管理员过滤器，根据回复头设置电子邮件的发送者/发件人。"
 
-#: db/seeds/settings.rb:4465
+#: db/seeds/settings.rb:4474
 msgid ""
 "Defines postmaster filter which sets the articles visibility to internal if "
 "it is a rely to an internal article or the last outgoing email is internal."
@@ -5478,35 +5514,35 @@ msgstr "定义邮件管理员过滤器。"
 msgid "Defines pretty date format."
 msgstr "定义合适的日期格式。"
 
-#: db/seeds/settings.rb:5496
+#: db/seeds/settings.rb:5514
 msgid "Defines processing timeout for the html sanitizer."
 msgstr "定义HTML清理器的处理超时时间。"
 
-#: db/seeds/settings.rb:5105
+#: db/seeds/settings.rb:5123
 msgid "Defines sync transaction backend."
 msgstr "定义同步交易后端。"
 
-#: db/seeds/settings.rb:5484
+#: db/seeds/settings.rb:5502
 msgid "Defines the CSS font information for HTML emails."
 msgstr "定义HTML电子邮件的CSS字体信息。"
 
-#: db/seeds/settings.rb:5296
+#: db/seeds/settings.rb:5314
 msgid "Defines the CTI config."
 msgstr "定义CTI（计算机电话集成）配置。"
 
-#: db/seeds/settings.rb:4791
+#: db/seeds/settings.rb:4809
 msgid "Defines the Checkmk token for allowing updates."
 msgstr "定义了允许更新的Checkmk令牌。"
 
-#: db/seeds/settings.rb:5432
+#: db/seeds/settings.rb:5450
 msgid "Defines the Clearbit config."
 msgstr "定义Clearbit配置。"
 
-#: db/seeds/settings.rb:4944
+#: db/seeds/settings.rb:4962
 msgid "Defines the Exchange OAuth config."
 msgstr "定义 Exchange OAuth 配置。"
 
-#: db/seeds/settings.rb:4931
+#: db/seeds/settings.rb:4949
 msgid "Defines the Exchange config."
 msgstr "定义Exchange配置。"
 
@@ -5514,23 +5550,23 @@ msgstr "定义Exchange配置。"
 msgid "Defines the HTTP protocol of your instance."
 msgstr "定义实例的 HTTP 协议。"
 
-#: db/seeds/settings.rb:5763
+#: db/seeds/settings.rb:5781
 msgid "Defines the PGP config."
 msgstr "定义 PGP 配置。"
 
-#: db/seeds/settings.rb:5371
+#: db/seeds/settings.rb:5389
 msgid "Defines the Placetel config."
 msgstr "定义Placetel配置。"
 
-#: db/seeds/settings.rb:5721
+#: db/seeds/settings.rb:5739
 msgid "Defines the S/MIME config."
 msgstr "定义S/MIME配置。"
 
-#: db/seeds/settings.rb:5170
+#: db/seeds/settings.rb:5188
 msgid "Defines the Slack config."
 msgstr "定义Slack配置。"
 
-#: db/seeds/settings.rb:5473
+#: db/seeds/settings.rb:5491
 msgid "Defines the agent limit."
 msgstr "定义代理限制。"
 
@@ -5603,7 +5639,7 @@ msgstr "定义默认时间统计类型。"
 msgid "Defines the default visibility for new notes."
 msgstr "定义新注释的默认可见性。"
 
-#: db/seeds/settings.rb:5330
+#: db/seeds/settings.rb:5348
 msgid ""
 "Defines the duration of customer activity (in seconds) on a call until the "
 "user profile dialog is shown."
@@ -5619,7 +5655,7 @@ msgstr ""
 "定义系统的完全限定域名。此设置用作变量 #{setting.fqdn}，该变量可在应用程序使"
 "用的所有形式的消息传递中找到，以构建指向系统内工单的链接。"
 
-#: db/seeds/settings.rb:4719
+#: db/seeds/settings.rb:4737
 msgid "Defines the group of created tickets."
 msgstr "定义创建的工单组。"
 
@@ -5627,7 +5663,7 @@ msgstr "定义创建的工单组。"
 msgid "Defines the group of tickets created via web form."
 msgstr "定义通过 Web 表单创建的工单组。"
 
-#: db/seeds/settings.rb:5011
+#: db/seeds/settings.rb:5029
 msgid "Defines the i-doit config."
 msgstr "定义 i-doit 配置。"
 
@@ -5667,15 +5703,15 @@ msgstr "定义Websocket服务器的端口。"
 msgid "Defines the random application secret."
 msgstr "定义随机应用程序秘密。"
 
-#: db/seeds/settings.rb:4500
+#: db/seeds/settings.rb:4518
 msgid "Defines the sender email address of Icinga emails."
 msgstr "定义ICINGA电子邮件的发送者电子邮件地址。"
 
-#: db/seeds/settings.rb:4598
+#: db/seeds/settings.rb:4616
 msgid "Defines the sender email address of Nagios emails."
 msgstr "定义Nagios电子邮件的发送者电子邮件地址。"
 
-#: db/seeds/settings.rb:4696
+#: db/seeds/settings.rb:4714
 msgid "Defines the sender email address of the service emails."
 msgstr "定义服务电子邮件的发件人电子邮件地址。"
 
@@ -5696,11 +5732,11 @@ msgid ""
 msgstr ""
 "定义用户不活动的会话超时。 根据分配的权限，将使用最高超时值，否则使用默认值。"
 
-#: db/seeds/settings.rb:5234
+#: db/seeds/settings.rb:5252
 msgid "Defines the sipgate.io config."
 msgstr "定义sipgate.io config。"
 
-#: db/seeds/settings.rb:4549
+#: db/seeds/settings.rb:4567
 msgid "Defines the state of auto-closed tickets."
 msgstr "定义自动关闭工单的状态。"
 
@@ -5721,44 +5757,44 @@ msgstr "在票务操作后定义标签行为。"
 msgid "Defines the ticket states used for lookups."
 msgstr "定义用于查找的工单状态。"
 
-#: db/seeds/settings.rb:5629
+#: db/seeds/settings.rb:5647
 msgid "Defines the timeframe during which a self-created note can be deleted."
 msgstr "定义可以删除自我创建的音符的时间表。"
 
-#: db/seeds/settings.rb:5385
+#: db/seeds/settings.rb:5403
 msgid "Defines the token for Placetel."
 msgstr "定义 Placetel 的令牌。"
 
-#: db/seeds/settings.rb:5126
+#: db/seeds/settings.rb:5144
 msgid ""
 "Defines the transaction backend to detect customer signatures in emails."
 msgstr "定义交易后端以检测电子邮件中的客户签名。"
 
-#: db/seeds/settings.rb:5108
+#: db/seeds/settings.rb:5126
 msgid "Defines the transaction backend to execute triggers."
 msgstr "将事务后端定义为执行触发器。"
 
-#: db/seeds/settings.rb:5117
+#: db/seeds/settings.rb:5135
 msgid "Defines the transaction backend to send agent notifications."
 msgstr "定义交易后端以发送代理通知。"
 
-#: db/seeds/settings.rb:5454
+#: db/seeds/settings.rb:5472
 msgid ""
 "Defines the transaction backend which detects caller IDs in objects and "
 "stores them for CTI lookups."
 msgstr "定义事务后端检测对象中的呼叫者ID并将其存储以进行CTI查找。"
 
-#: db/seeds/settings.rb:5463
+#: db/seeds/settings.rb:5481
 msgid "Defines the transaction backend which executes time based triggers."
 msgstr "定义执行基于时间的触发器的事务后端。"
 
-#: db/seeds/settings.rb:5135
+#: db/seeds/settings.rb:5153
 msgid ""
 "Defines the transaction backend which posts messages to Slack (http://"
 "www.slack.com)."
 msgstr "定义交易后端，将消息发布到Slack（http://www.slack.com）。"
 
-#: db/seeds/settings.rb:5445
+#: db/seeds/settings.rb:5463
 msgid ""
 "Defines the transaction backend which will enrich customer and organization "
 "information from Clearbit (http://www.clearbit.com)."
@@ -5780,7 +5816,7 @@ msgid ""
 "Defines the warning title that is shown when a matching ticket is present."
 msgstr "定义存在匹配票时显示的警告标题。"
 
-#: db/seeds/settings.rb:5114
+#: db/seeds/settings.rb:5132
 msgid "Defines transaction backend."
 msgstr "定义交易后端。"
 
@@ -5886,7 +5922,7 @@ msgstr "删除头像"
 msgid "Delete column"
 msgstr "删除列"
 
-#: db/seeds/permissions.rb:282
+#: db/seeds/permissions.rb:288
 msgid "Delete existing data of your system."
 msgstr "删除系统的现有数据。"
 
@@ -5997,7 +6033,7 @@ msgstr "投递失败:"
 msgid "Delivery failed: \"%s\""
 msgstr "传送失败：“%s”"
 
-#: db/seeds/object_manager_attributes.rb:1206
+#: db/seeds/object_manager_attributes.rb:1207
 msgid "Department"
 msgstr "部门"
 
@@ -6085,7 +6121,7 @@ msgid "Detect Duplicate Ticket Creation"
 msgstr "检测重复的工单创建"
 
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:158
-#: db/seeds/object_manager_attributes.rb:734
+#: db/seeds/object_manager_attributes.rb:735
 #, fuzzy
 #| msgid "Target Language"
 msgid "Detected Language"
@@ -6114,7 +6150,7 @@ msgstr "设备已被撤销。"
 #: app/assets/javascripts/app/views/profile/devices.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/devices.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:34
-#: db/seeds/permissions.rb:458
+#: db/seeds/permissions.rb:464
 msgid "Devices"
 msgstr "登录设备"
 
@@ -6307,7 +6343,7 @@ msgstr "不要加密电子邮件"
 msgid "Do not sign email"
 msgstr "不要签署电子邮件"
 
-#: db/seeds/settings.rb:5972
+#: db/seeds/settings.rb:5990
 msgid "Do not update any tickets."
 msgstr "不要更新任何工单。"
 
@@ -6353,7 +6389,7 @@ msgstr "您确实要删除该对象吗？"
 msgid "Document file"
 msgstr "文档文件"
 
-#: db/seeds/object_manager_attributes.rb:1790
+#: db/seeds/object_manager_attributes.rb:1791
 msgid "Domain"
 msgstr "網域"
 
@@ -6362,7 +6398,7 @@ msgstr "網域"
 msgid "Domain Alias"
 msgstr "域别名"
 
-#: db/seeds/object_manager_attributes.rb:1790
+#: db/seeds/object_manager_attributes.rb:1791
 msgid "Domain based assignment"
 msgstr "根據網域分配"
 
@@ -6473,7 +6509,7 @@ msgstr "草稿"
 msgid "Drag and drop to reorder ticket overview list items."
 msgstr "拖放以重新排序票务概述列表项目。"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:237
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:242
 msgid "Drag and drop to reorder your tabs."
 msgstr "拖放以重新排序选项卡。"
 
@@ -6700,7 +6736,7 @@ msgstr "Elasticsearch 版本"
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceZendesk.vue:34
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/email.ts:11
 #: app/frontend/shared/entities/ticket-article/action/plugins/email.ts:167
-#: db/seeds/object_manager_attributes.rb:902 db/seeds/permissions.rb:131
+#: db/seeds/object_manager_attributes.rb:903 db/seeds/permissions.rb:131
 #: public/assets/form/form.js:32
 msgid "Email"
 msgstr "邮件地址"
@@ -6885,7 +6921,7 @@ msgstr ""
 "使用令牌启用REST API（不是用户名/电子邮件地址和密码）。每个用户都需要在用户配"
 "置文件中创建自己的访问令牌。"
 
-#: db/seeds/settings.rb:5907
+#: db/seeds/settings.rb:5925
 msgid "Enable Recovery Codes"
 msgstr "启用恢复代码"
 
@@ -6907,7 +6943,7 @@ msgstr "启用自动分配以进行以下匹配票。"
 msgid "Enable automatic assignment the first time an agent opens a ticket."
 msgstr "客服人员第一次打开工单时启用自动分配。"
 
-#: db/seeds/settings.rb:5990
+#: db/seeds/settings.rb:6008
 #, fuzzy
 #| msgid "Enable Chat"
 msgid "Enable checklists."
@@ -6933,14 +6969,18 @@ msgstr ""
 "啟用引用完整的電子郵件於回答中。 引用的電子郵件將放在回答的末尾。 如果您只想"
 "引用某個短語，則只需標記文本並按回覆即可 (此功能始終可用)。"
 
-#: db/seeds/settings.rb:6017
+#: db/seeds/settings.rb:6035
 msgid ""
 "Enable or disable self-shutdown of Zammad processes after significant "
 "configuration changes. This should only be used if the controlling process "
 "manager like systemd or docker supports an automatic restart policy."
 msgstr ""
 
-#: db/seeds/settings.rb:6070
+#: db/seeds/settings.rb:6119
+msgid "Enable or disable the AI assistance text tools."
+msgstr ""
+
+#: db/seeds/settings.rb:6088
 msgid "Enable or disable the AI assistance ticket summary."
 msgstr ""
 
@@ -7001,7 +7041,7 @@ msgid ""
 "ticket with the same attributes."
 msgstr "如果有具有相同属性的现有票，则在创建票证期间向用户发出警告。"
 
-#: db/seeds/settings.rb:5788
+#: db/seeds/settings.rb:5806
 msgid ""
 "Enables button for user authentication via %s. The button will redirect to /"
 "auth/sso on user interaction."
@@ -7143,11 +7183,11 @@ msgstr "終點"
 msgid "Endpoint Settings"
 msgstr "端点设定"
 
-#: db/seeds/settings.rb:5934
+#: db/seeds/settings.rb:5952
 msgid "Enforce the setup of the two-factor authentication"
 msgstr "强制执行双因素身份验证的设置"
 
-#: db/seeds/settings.rb:5941
+#: db/seeds/settings.rb:5959
 msgid "Enforced for user roles"
 msgstr "针对用户角色强制执行"
 
@@ -7188,7 +7228,7 @@ msgstr "输入一个有效的电子邮件地址。"
 msgid "Enter credentials"
 msgstr "輸入憑證"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:157
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:184
 msgid "Enter link URL"
 msgstr "输入链接URL"
 
@@ -7505,15 +7545,15 @@ msgstr "例外用户"
 msgid "Exchange"
 msgstr "交换"
 
-#: db/seeds/settings.rb:4941
+#: db/seeds/settings.rb:4959
 msgid "Exchange OAuth"
 msgstr "Exchange OAuth"
 
-#: db/seeds/settings.rb:4928
+#: db/seeds/settings.rb:4946
 msgid "Exchange config"
 msgstr "Exchange Config"
 
-#: db/seeds/settings.rb:4954
+#: db/seeds/settings.rb:4972
 msgid "Exchange integration"
 msgstr "交换集成"
 
@@ -7554,6 +7594,13 @@ msgstr "现有工单"
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:262
 msgid "Existing tickets (open)"
 msgstr "现有工单（开放）"
+
+#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:14
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:171
+#, fuzzy
+#| msgid "Main sidebar"
+msgid "Expand"
+msgstr "主侧栏"
 
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar.vue:198
 #, fuzzy
@@ -7717,7 +7764,7 @@ msgid "Failed to upload."
 msgstr "上传失败。"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/fax.ts:7
-#: db/seeds/object_manager_attributes.rb:1074
+#: db/seeds/object_manager_attributes.rb:1075
 msgid "Fax"
 msgstr "传真"
 
@@ -7772,7 +7819,7 @@ msgstr "文件“％s”正在上传"
 msgid "File format is not allowed: %s"
 msgstr "不允许文件格式：％s"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:858
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:867
 #: app/frontend/shared/components/Form/fields/FieldFile/composable/useFileValidation.ts:26
 #: lib/validations/ticket_article_validator/whatsapp_message.rb:38
 msgid "File is too big. %s has to be %s or smaller."
@@ -7864,7 +7911,7 @@ msgstr "提示"
 
 #: app/assets/javascripts/app/models/user.coffee:9
 #: app/frontend/apps/desktop/composables/authentication/useSignupForm.ts:14
-#: db/seeds/object_manager_attributes.rb:798
+#: db/seeds/object_manager_attributes.rb:799
 msgid "First name"
 msgstr "名"
 
@@ -7873,6 +7920,11 @@ msgstr "名"
 #: app/graphql/gql/types/overview_type.rb:109
 msgid "First response"
 msgstr "第一次回應"
+
+#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:12
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:165
+msgid "Fix spelling and grammar"
+msgstr ""
 
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:3
 msgid "Fixed Email Accounts"
@@ -7902,12 +7954,12 @@ msgid "Folders"
 msgstr "文件夹"
 
 #: app/assets/javascripts/app/models/group.coffee:9
-#: db/seeds/object_manager_attributes.rb:2130
+#: db/seeds/object_manager_attributes.rb:2131
 msgid "Follow-up for closed ticket possible or not."
 msgstr "是否可能进行关闭票的后续行动。"
 
 #: app/assets/javascripts/app/models/group.coffee:9
-#: db/seeds/object_manager_attributes.rb:2120
+#: db/seeds/object_manager_attributes.rb:2121
 msgid "Follow-up possible"
 msgstr "可以跟进"
 
@@ -8002,7 +8054,7 @@ msgstr "//删除线//格式"
 msgid "Format as _underlined_"
 msgstr "_下划线_格式"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:98
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:125
 msgid "Format as bold"
 msgstr "粗体"
 
@@ -8018,7 +8070,7 @@ msgstr "格式化為H2標題"
 msgid "Format as h3 heading"
 msgstr "格式化為h3標題"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:106
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:133
 msgid "Format as italic"
 msgstr "斜体"
 
@@ -8026,11 +8078,11 @@ msgstr "斜体"
 msgid "Format as ordered list"
 msgstr "格式化為排序列表"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:122
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:149
 msgid "Format as strikethrough"
 msgstr "删除线"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:114
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:141
 msgid "Format as underlined"
 msgstr "下划线"
 
@@ -8124,7 +8176,7 @@ msgstr "全名"
 msgid "Fully Qualified Domain Name"
 msgstr "完全合格域名(FQDN)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:686
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:678
 msgid "GET"
 msgstr "得到"
 
@@ -8170,6 +8222,12 @@ msgstr "生成基于用户的统计数据。"
 msgid "Generating recovery codes…"
 msgstr "正在生成恢复代码…"
 
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantLoadingBanner.vue:44
+#, fuzzy
+#| msgid "Generating recovery codes…"
+msgid "Generating text…"
+msgstr "正在生成恢复代码…"
+
 #: app/assets/javascripts/app/controllers/_integration/cti.coffee:264
 msgid "Generic API to integrate VoIP service provider with real-time push."
 msgstr "用于将VoIP服务提供商与实时推送集成的通用API。"
@@ -8197,7 +8255,7 @@ msgstr "收到通知"
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:11
-#: db/seeds/settings.rb:5899
+#: db/seeds/settings.rb:5917
 msgid "Get the security code from the authenticator app on your device."
 msgstr "从设备上的身份验证器应用程序获取安全码。"
 
@@ -8227,11 +8285,11 @@ msgstr "GitHub 应用程序凭证"
 msgid "GitHub OAuth Applications"
 msgstr "GitHub OAuth 应用程序"
 
-#: db/seeds/settings.rb:5090
+#: db/seeds/settings.rb:5108
 msgid "GitHub config"
 msgstr "github config"
 
-#: db/seeds/settings.rb:5063
+#: db/seeds/settings.rb:5081
 msgid "GitHub integration"
 msgstr "GitHub集成"
 
@@ -8265,11 +8323,11 @@ msgstr "Gitlab应用凭据"
 msgid "GitLab Applications"
 msgstr "GitLab 应用程序"
 
-#: db/seeds/settings.rb:5048
+#: db/seeds/settings.rb:5066
 msgid "GitLab config"
 msgstr "GitLab配置"
 
-#: db/seeds/settings.rb:5021
+#: db/seeds/settings.rb:5039
 msgid "GitLab integration"
 msgstr "GitLab集成"
 
@@ -8458,7 +8516,7 @@ msgstr "频道定义中需要的组！"
 
 #: app/assets/javascripts/app/models/role.coffee:8
 #: app/assets/javascripts/app/models/user.coffee:13
-#: db/seeds/object_manager_attributes.rb:1622
+#: db/seeds/object_manager_attributes.rb:1623
 msgid "Group permissions"
 msgstr "群组权限"
 
@@ -8502,19 +8560,19 @@ msgstr "组是 …"
 msgid "HMAC SHA1 Signature Token"
 msgstr "HMAC SHA1签名令牌"
 
-#: db/seeds/settings.rb:5481
+#: db/seeds/settings.rb:5499
 msgid "HTML Email CSS Font"
 msgstr "HTML电子邮件CSS字体"
 
-#: db/seeds/settings.rb:5493
+#: db/seeds/settings.rb:5511
 msgid "HTML Sanitizer Processing Timeout"
 msgstr "HTML消毒器处理超时"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:736
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:728
 msgid "HTTP Authentication"
 msgstr "HTTP 验证"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:770
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:762
 msgid "HTTP Authentication token"
 msgstr "HTTP 身份验证令牌"
 
@@ -8526,11 +8584,11 @@ msgstr "HTTP 基本身份验证密码"
 msgid "HTTP Basic Authentication Username"
 msgstr "HTTP 基本身份验证用户名"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:759
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:751
 msgid "HTTP Basic Authentication password"
 msgstr "HTTP 基本身份验证密码"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:748
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:740
 msgid "HTTP Basic Authentication username"
 msgstr "HTTP 基本身份验证用户名"
 
@@ -8751,11 +8809,11 @@ msgstr "突出显示颜色"
 msgid "Highlight icon"
 msgstr "突出显示图标"
 
-#: db/seeds/settings.rb:5645
+#: db/seeds/settings.rb:5663
 msgid "Highlights if the note a user is writing is public or private"
 msgstr "突出显示用户写作的注释是公共的还是私人的"
 
-#: db/seeds/settings.rb:5642
+#: db/seeds/settings.rb:5660
 msgid "Hint for adding an article to an existing ticket."
 msgstr "暗示将文章添加到现有票证上。"
 
@@ -8888,7 +8946,7 @@ msgstr "IMAP"
 msgid "Icinga"
 msgstr "Icinga"
 
-#: db/seeds/settings.rb:4471
+#: db/seeds/settings.rb:4489
 msgid "Icinga integration"
 msgstr "icinga集成"
 
@@ -9064,7 +9122,7 @@ msgstr "图像文件"
 
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/popup_image.coffee:18
 #: app/assets/javascripts/app/lib/app_post/image_service.coffee:134
-#: app/assets/javascripts/app/lib/base/jquery.contenteditable.js:360
+#: app/assets/javascripts/app/lib/base/jquery.contenteditable.js:421
 msgid "Image file size is too large, please try inserting a smaller file."
 msgstr ""
 
@@ -9170,6 +9228,13 @@ msgstr "重要的"
 #: app/assets/javascripts/app/controllers/widget/import_result.coffee:13
 msgid "Imported"
 msgstr "进口"
+
+#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:10
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:159
+#, fuzzy
+#| msgid "Remove formatting"
+msgid "Improve writing"
+msgstr "删除格式"
 
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:22
 msgid "In order for Zammad to access %s, the %s API token must be stored here:"
@@ -9296,7 +9361,7 @@ msgstr "增加分钟值"
 msgid "Increment seconds value"
 msgstr "增加秒值"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:235
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:262
 msgid "Indent text"
 msgstr "缩进文本"
 
@@ -9344,7 +9409,7 @@ msgstr "无法生成内联内容。"
 msgid "Input field must be text, password, tel, fax, email or url type."
 msgstr ""
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:319
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:346
 msgid "Insert code block"
 msgstr "插入代码块"
 
@@ -9356,7 +9421,7 @@ msgstr "在此列后插入列"
 msgid "Insert column before"
 msgstr "在此列前插入列"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:308
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:335
 msgid "Insert inline code"
 msgstr "插入内联代码"
 
@@ -9368,15 +9433,15 @@ msgstr "在上方插入行"
 msgid "Insert row below"
 msgstr "在下方插入行"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:291
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:318
 msgid "Insert table"
 msgstr "插入表格"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:342
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:369
 msgid "Insert text from Knowledge Base article"
 msgstr "插入知识库文章中的文本"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:350
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:377
 msgid "Insert text from text module"
 msgstr "从文本模块插入文本"
 
@@ -9422,7 +9487,7 @@ msgid "Integer field"
 msgstr "整数字段"
 
 #: app/assets/javascripts/app/controllers/integrations.coffee:3
-#: db/seeds/permissions.rb:239
+#: db/seeds/permissions.rb:245
 msgid "Integrations"
 msgstr "集成"
 
@@ -9723,7 +9788,7 @@ msgstr "无法删除系统用户。"
 msgid "It is not possible to delete your current account."
 msgstr "无法删除您当前的帐户。"
 
-#: app/models/ticket.rb:277
+#: app/models/ticket.rb:279
 msgid "It is not possible to merge into an already merged ticket."
 msgstr "不可能合并成已经合并的票。"
 
@@ -9841,7 +9906,7 @@ msgstr "知识库"
 msgid "Knowledge Base Answer"
 msgstr "知识库答案"
 
-#: db/seeds/permissions.rb:362
+#: db/seeds/permissions.rb:368
 msgid "Knowledge Base Editor"
 msgstr "知识库编辑器"
 
@@ -9849,19 +9914,19 @@ msgstr "知识库编辑器"
 msgid "Knowledge Base Feed"
 msgstr "知识库提要"
 
-#: db/seeds/permissions.rb:368
+#: db/seeds/permissions.rb:374
 msgid "Knowledge Base Reader"
 msgstr "知识库读者"
 
-#: db/seeds/settings.rb:5599
+#: db/seeds/settings.rb:5617
 msgid "Knowledge Base active"
 msgstr "激活知识库"
 
-#: db/seeds/settings.rb:5614
+#: db/seeds/settings.rb:5632
 msgid "Knowledge Base active publicly"
 msgstr "激活公开知识库"
 
-#: db/seeds/settings.rb:5588
+#: db/seeds/settings.rb:5606
 msgid "Knowledge Base multilingual support"
 msgstr "知识库多语言支持"
 
@@ -9875,7 +9940,7 @@ msgstr "LDAP"
 msgid "LDAP Host"
 msgstr "LDAP 服务器"
 
-#: db/seeds/settings.rb:4901
+#: db/seeds/settings.rb:4919
 msgid "LDAP integration"
 msgstr "LDAP集成"
 
@@ -9883,7 +9948,7 @@ msgstr "LDAP集成"
 msgid "LDAP integration for user management."
 msgstr "用于用户管理的 LDAP 集成。"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:937
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:929
 msgid "Label"
 msgstr "标签"
 
@@ -9903,7 +9968,7 @@ msgstr "着陆页布局"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/locale.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLocale.vue:13
 #: app/frontend/apps/mobile/pages/account/views/AccountOverview.vue:157
-#: db/seeds/permissions.rb:420
+#: db/seeds/permissions.rb:426
 msgid "Language"
 msgstr "语言"
 
@@ -10001,7 +10066,7 @@ msgstr "上次登录"
 
 #: app/assets/javascripts/app/models/user.coffee:10
 #: app/frontend/apps/desktop/composables/authentication/useSignupForm.ts:23
-#: db/seeds/object_manager_attributes.rb:850
+#: db/seeds/object_manager_attributes.rb:851
 msgid "Last name"
 msgstr "姓"
 
@@ -10075,7 +10140,7 @@ msgstr "每天限制门票"
 msgid "Limited Visibility"
 msgstr "隱私內部與公開"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:267
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:259
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/embed_video_button.coffee:11
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/link_button.coffee:11
 #: app/assets/javascripts/app/controllers/ticket_link_add.coffee:7
@@ -10171,7 +10236,7 @@ msgstr "連結的工單"
 msgid "Link removed successfully"
 msgstr "測試運行成功"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:267
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:259
 msgid "Link template"
 msgstr "链接模板"
 
@@ -10192,7 +10257,7 @@ msgstr "链接模板"
 #: app/assets/javascripts/app/views/widget/user.jst.eco:34
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/linkedAccounts.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:56
-#: db/seeds/permissions.rb:472
+#: db/seeds/permissions.rb:478
 msgid "Linked Accounts"
 msgstr "外部已連結帳號"
 
@@ -10226,7 +10291,7 @@ msgstr "LinkedIn开发人员网站"
 msgid "Links"
 msgstr "链接"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:221
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:225
 msgid "List of all user taskbar tabs"
 msgstr "所有用户任务栏选项卡的列表"
 
@@ -10332,7 +10397,7 @@ msgstr "登录到％s"
 #: app/assets/javascripts/app/views/maintenance.jst.eco:25
 #: app/controllers/time_accountings_controller.rb:101
 #: app/frontend/apps/desktop/components/User/UserListTable.vue:57
-#: db/seeds/object_manager_attributes.rb:766
+#: db/seeds/object_manager_attributes.rb:767
 msgid "Login"
 msgstr "登录"
 
@@ -10416,7 +10481,7 @@ msgstr "主侧栏"
 
 #: app/assets/javascripts/app/controllers/maintenance.coffee:3
 #: app/assets/javascripts/app/views/maintenance.jst.eco:3
-#: db/seeds/permissions.rb:287
+#: db/seeds/permissions.rb:293
 msgid "Maintenance"
 msgstr "维护"
 
@@ -10443,7 +10508,7 @@ msgstr "系统管理"
 msgid "Manage AI settings of your system."
 msgstr "輸入您的 ％s 系統的網址 URL"
 
-#: db/seeds/permissions.rb:246
+#: db/seeds/permissions.rb:252
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage API of your system."
@@ -10518,17 +10583,23 @@ msgstr "管理双因素身份验证"
 msgid "Manage WhatsApp channel of your system."
 msgstr "輸入您的 ％s 系統的網址 URL"
 
+#: db/seeds/permissions.rb:240
+#, fuzzy
+#| msgid "Enter the URL of your %s system"
+msgid "Manage Zammad Smart Assist text tools of your system."
+msgstr "輸入您的 ％s 系統的網址 URL"
+
 #: db/seeds/permissions.rb:234
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage Zammad Smart Assist ticket summarization of your system."
 msgstr "輸入您的 ％s 系統的網址 URL"
 
-#: db/seeds/permissions.rb:511
+#: db/seeds/permissions.rb:517
 msgid "Manage access to New BETA UI switch."
 msgstr ""
 
-#: db/seeds/permissions.rb:306
+#: db/seeds/permissions.rb:312
 msgid "Manage active user sessions of your system."
 msgstr "管理系统的主动用户会话。"
 
@@ -10573,7 +10644,7 @@ msgstr "輸入您的 ％s 系統的網址 URL"
 msgid "Manage core system settings."
 msgstr "管理 %s 配置"
 
-#: db/seeds/permissions.rb:270
+#: db/seeds/permissions.rb:276
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage core workflows of your system."
@@ -10597,93 +10668,93 @@ msgstr "輸入您的 ％s 系統的網址 URL"
 msgid "Manage groups of your system."
 msgstr "配置系統"
 
-#: db/seeds/permissions.rb:240
+#: db/seeds/permissions.rb:246
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage integrations of your system."
 msgstr "輸入您的 ％s 系統的網址 URL"
 
-#: db/seeds/permissions.rb:288
+#: db/seeds/permissions.rb:294
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage maintenance mode of your system."
 msgstr "輸入您的 ％s 系統的網址 URL"
 
-#: db/seeds/permissions.rb:294
+#: db/seeds/permissions.rb:300
 #, fuzzy
 #| msgid "To configure your system."
 msgid "Manage monitoring of your system."
 msgstr "配置系統"
 
-#: db/seeds/permissions.rb:252
+#: db/seeds/permissions.rb:258
 msgid "Manage object attributes of your system."
 msgstr "管理系统的对象属性。"
 
-#: db/seeds/permissions.rb:300
+#: db/seeds/permissions.rb:306
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage packages of your system."
 msgstr "輸入您的 ％s 系統的網址 URL"
 
-#: db/seeds/permissions.rb:466
+#: db/seeds/permissions.rb:472
 #, fuzzy
 #| msgid "Personal Access Tokens"
 msgid "Manage personal API tokens."
 msgstr "個人存取 Token"
 
-#: db/seeds/permissions.rb:414
+#: db/seeds/permissions.rb:420
 msgid "Manage personal appearance settings."
 msgstr "管理个人外观设置。"
 
-#: db/seeds/permissions.rb:428
+#: db/seeds/permissions.rb:434
 #, fuzzy
 #| msgid "Manage %s Settings"
 msgid "Manage personal avatar settings."
 msgstr "管理 %s 配置"
 
-#: db/seeds/permissions.rb:500
+#: db/seeds/permissions.rb:506
 msgid "Manage personal calendar."
 msgstr "管理个人日历。"
 
-#: db/seeds/permissions.rb:459
+#: db/seeds/permissions.rb:465
 #, fuzzy
 #| msgid "Clean up dead sessions."
 msgid "Manage personal devices and sessions."
 msgstr "清除死会话。"
 
-#: db/seeds/permissions.rb:421
+#: db/seeds/permissions.rb:427
 #, fuzzy
 #| msgid "Manage %s Settings"
 msgid "Manage personal language settings."
 msgstr "管理 %s 配置"
 
-#: db/seeds/permissions.rb:473
+#: db/seeds/permissions.rb:479
 msgid "Manage personal linked accounts."
 msgstr "管理个人链接帐户。"
 
-#: db/seeds/permissions.rb:480
+#: db/seeds/permissions.rb:486
 #, fuzzy
 #| msgid "Manage your notifications settings"
 msgid "Manage personal notifications settings."
 msgstr "管理您的通知設置"
 
-#: db/seeds/permissions.rb:435
+#: db/seeds/permissions.rb:441
 #, fuzzy
 #| msgid "Manage your notifications settings"
 msgid "Manage personal out of office settings."
 msgstr "管理您的通知設置"
 
-#: db/seeds/permissions.rb:490
+#: db/seeds/permissions.rb:496
 msgid "Manage personal overviews."
 msgstr "管理个人概述。"
 
-#: db/seeds/permissions.rb:407
+#: db/seeds/permissions.rb:413
 #, fuzzy
 #| msgid "Manage %s Settings"
 msgid "Manage personal settings."
 msgstr "管理 %s 配置"
 
-#: db/seeds/permissions.rb:452
+#: db/seeds/permissions.rb:458
 #, fuzzy
 #| msgid "Could not remove two-factor authentication method"
 msgid "Manage personal two-factor authentication methods."
@@ -10715,7 +10786,7 @@ msgstr "輸入您的 ％s 系統的網址 URL"
 msgid "Manage security settings of your system."
 msgstr "管理系统的安全设置。"
 
-#: db/seeds/permissions.rb:312
+#: db/seeds/permissions.rb:318
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage system report of your system."
@@ -10733,7 +10804,7 @@ msgstr "輸入您的 ％s 系統的網址 URL"
 msgid "Manage ticket auto assignment settings of your system."
 msgstr "輸入您的 ％s 系統的網址 URL"
 
-#: db/seeds/permissions.rb:318
+#: db/seeds/permissions.rb:324
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage ticket checklists of your system."
@@ -10757,7 +10828,7 @@ msgstr "輸入您的 ％s 系統的網址 URL"
 msgid "Manage ticket overviews of your system."
 msgstr "概览"
 
-#: db/seeds/permissions.rb:264
+#: db/seeds/permissions.rb:270
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage ticket priorities of your system."
@@ -10769,7 +10840,7 @@ msgstr "輸入您的 ％s 系統的網址 URL"
 msgid "Manage ticket settings of your system."
 msgstr "輸入您的 ％s 系統的網址 URL"
 
-#: db/seeds/permissions.rb:258
+#: db/seeds/permissions.rb:264
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage ticket states of your system."
@@ -10791,7 +10862,7 @@ msgstr "輸入您的 ％s 系統的網址 URL"
 msgid "Manage time accounting settings of your system."
 msgstr "管理系统的时间会计设置。"
 
-#: db/seeds/permissions.rb:276
+#: db/seeds/permissions.rb:282
 msgid "Manage translations of your system."
 msgstr "管理系统的翻译。"
 
@@ -10914,7 +10985,7 @@ msgstr "最大限度。等候名单上的客户"
 msgid "Max. concurrent chats"
 msgstr "最高同時文字對話"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:257
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:249
 msgid "Max. length"
 msgstr "最大长度"
 
@@ -10922,7 +10993,7 @@ msgstr "最大长度"
 msgid "Max. length of the subject in an email reply."
 msgstr "電子郵件回覆中主旨的最大長度"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:387
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:379
 msgid "Maximal"
 msgstr "最大"
 
@@ -11007,7 +11078,7 @@ msgstr "成员"
 msgid "Mention for"
 msgstr "提及用户"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:334
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:361
 msgid "Mention user"
 msgstr "提及用户"
 
@@ -11107,7 +11178,7 @@ msgstr "元数据"
 msgid "Method"
 msgstr "方法"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:686
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:678
 msgid "Method (AJAX endpoint)"
 msgstr "方法（AJAX端点）"
 
@@ -11181,7 +11252,7 @@ msgstr "里程碑"
 msgid "Min. size of number"
 msgstr "最小號碼大小"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:378
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:370
 msgid "Minimal"
 msgstr "最小"
 
@@ -11220,7 +11291,7 @@ msgid "Mismatching phone number id."
 msgstr "电话号码ID不匹配。"
 
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:23
-#: db/seeds/object_manager_attributes.rb:1034
+#: db/seeds/object_manager_attributes.rb:1035
 msgid "Mobile"
 msgstr "手机"
 
@@ -11248,13 +11319,13 @@ msgstr "星期一"
 msgid "Monit"
 msgstr "监视"
 
-#: db/seeds/settings.rb:4800
+#: db/seeds/settings.rb:4818
 msgid "Monit integration"
 msgstr "监测整合"
 
 #: app/assets/javascripts/app/controllers/monitoring.coffee:3
 #: app/assets/javascripts/app/views/monitoring.jst.eco:3
-#: db/seeds/permissions.rb:293
+#: db/seeds/permissions.rb:299
 msgid "Monitoring"
 msgstr "系统监控"
 
@@ -11387,7 +11458,7 @@ msgstr "正在处理"
 msgid "Nagios"
 msgstr "Nagios"
 
-#: db/seeds/settings.rb:4569
+#: db/seeds/settings.rb:4587
 msgid "Nagios integration"
 msgstr "纳吉奥斯整合"
 
@@ -11456,7 +11527,7 @@ msgstr "纳吉奥斯整合"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:192
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout/IdoitObjectList.vue:20
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:165
-#: db/seeds/object_manager_attributes.rb:1704 public/assets/form/form.js:24
+#: db/seeds/object_manager_attributes.rb:1705 public/assets/form/form.js:24
 msgid "Name"
 msgstr "名称"
 
@@ -11582,7 +11653,7 @@ msgstr "增加新对象"
 msgid "New BETA UI"
 msgstr ""
 
-#: db/seeds/permissions.rb:510
+#: db/seeds/permissions.rb:516
 msgid "New BETA UI Switch"
 msgstr ""
 
@@ -11922,7 +11993,7 @@ msgstr "未配置 ％s"
 msgid "No AI provider is currently set up. Please contact your administrator."
 msgstr "无法设置密码。请联系您的管理员。"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:924
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:916
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:42
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:5
 #: app/assets/javascripts/app/views/exchange/token_information.jst.eco:16
@@ -12242,7 +12313,7 @@ msgstr "不象征！"
 msgid "No translation for this locale available"
 msgstr "無法翻譯此語言環境"
 
-#: app/models/ticket.rb:400
+#: app/models/ticket.rb:402
 msgid "No triggers active"
 msgstr "没有触发器活动"
 
@@ -12356,7 +12427,7 @@ msgstr "不適用於所選語言"
 msgid "Not configured"
 msgstr "未配置"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabNotFound.vue:42
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabNotFound.vue:43
 #, fuzzy
 #| msgid "No results found"
 msgid "Not found"
@@ -12391,7 +12462,7 @@ msgstr "未找到结果"
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:106
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/note.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/note.ts:14
-#: db/seeds/object_manager_attributes.rb:1532
+#: db/seeds/object_manager_attributes.rb:1533
 msgid "Note"
 msgstr "备注"
 
@@ -12420,7 +12491,7 @@ msgstr ""
 #: app/assets/javascripts/app/models/job.coffee:15
 #: app/assets/javascripts/app/models/role.coffee:10
 #: app/assets/javascripts/app/models/signature.coffee:26
-#: db/seeds/object_manager_attributes.rb:1539
+#: db/seeds/object_manager_attributes.rb:1540
 msgid "Notes are visible to agents only, never to customers."
 msgstr "備註只有客服人員可見, 客戶不可見"
 
@@ -12511,7 +12582,7 @@ msgstr "通知音"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/notifications.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:34
 #: app/frontend/apps/mobile/pages/online-notification/routes.ts:8
-#: db/seeds/permissions.rb:479
+#: db/seeds/permissions.rb:485
 msgid "Notifications"
 msgstr "通知"
 
@@ -12642,7 +12713,7 @@ msgstr "找不到指定ID的票。尝试检查URL是否有错误。"
 
 #: app/assets/javascripts/app/controllers/object_manager.coffee:330
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoit.vue:56
-#: db/seeds/permissions.rb:251
+#: db/seeds/permissions.rb:257
 msgid "Objects"
 msgstr "对象"
 
@@ -12706,7 +12777,7 @@ msgstr "在线服务"
 msgid "Only %s attachment allowed"
 msgstr "附件"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:823
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:832
 msgid "Only %s attachment allowed."
 msgstr "仅允许％s附件。"
 
@@ -13114,7 +13185,7 @@ msgstr "其他设定"
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/outOfOffice.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:126
-#: db/seeds/permissions.rb:434
+#: db/seeds/permissions.rb:440
 msgid "Out of Office"
 msgstr "外出"
 
@@ -13181,7 +13252,7 @@ msgstr "发送:"
 msgid "Outdated Browser"
 msgstr "过旧的浏览器"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:246
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:273
 msgid "Outdent text"
 msgstr "减少缩进文本"
 
@@ -13260,15 +13331,15 @@ msgstr "用户的所有者工单不会被删除。 所有者将映射到系统�
 msgid "PGP"
 msgstr "PGP"
 
-#: db/seeds/settings.rb:5774
+#: db/seeds/settings.rb:5792
 msgid "PGP Recipient Alias Configuration"
 msgstr "PGP收件人别名配置"
 
-#: db/seeds/settings.rb:5760
+#: db/seeds/settings.rb:5778
 msgid "PGP config"
 msgstr "PGP配置"
 
-#: db/seeds/settings.rb:5732
+#: db/seeds/settings.rb:5750
 msgid "PGP integration"
 msgstr "PGP 集成"
 
@@ -13285,7 +13356,7 @@ msgid "Package"
 msgstr "套件"
 
 #: app/assets/javascripts/app/controllers/package.coffee:3
-#: db/seeds/permissions.rb:299
+#: db/seeds/permissions.rb:305
 msgid "Packages"
 msgstr "插件"
 
@@ -13319,7 +13390,7 @@ msgstr "需要参数“数据”或“文件”。"
 msgid "Parent"
 msgstr "父"
 
-#: db/seeds/object_manager_attributes.rb:2054
+#: db/seeds/object_manager_attributes.rb:2055
 msgid "Parent group"
 msgstr "父组"
 
@@ -13345,7 +13416,7 @@ msgstr "父组"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/password.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:32
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:52
-#: db/seeds/object_manager_attributes.rb:1446 db/seeds/permissions.rb:444
+#: db/seeds/object_manager_attributes.rb:1447 db/seeds/permissions.rb:450
 msgid "Password"
 msgstr "密码"
 
@@ -13520,7 +13591,7 @@ msgstr "个人概述订单已重置。"
 #: app/assets/javascripts/app/controllers/cti.coffee:322
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/phone.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/phone.ts:12
-#: db/seeds/object_manager_attributes.rb:994 db/seeds/permissions.rb:338
+#: db/seeds/object_manager_attributes.rb:995 db/seeds/permissions.rb:344
 msgid "Phone"
 msgstr "电话"
 
@@ -13572,15 +13643,15 @@ msgstr ""
 msgid "Placetel"
 msgstr "Placetel"
 
-#: db/seeds/settings.rb:5382
+#: db/seeds/settings.rb:5400
 msgid "Placetel Token"
 msgstr "Placetel Token"
 
-#: db/seeds/settings.rb:5368
+#: db/seeds/settings.rb:5386
 msgid "Placetel config"
 msgstr "plapetel配置"
 
-#: db/seeds/settings.rb:5340
+#: db/seeds/settings.rb:5358
 msgid "Placetel integration"
 msgstr "placetel集成"
 
@@ -13641,7 +13712,7 @@ msgid ""
 "triggers and schedulers)"
 msgstr "请启用execution_time功能可以使用它（目前仅适用于触发器和调度程序）"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:342
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:345
 msgid "Please enter a text."
 msgstr "请输入文字。"
 
@@ -13728,6 +13799,12 @@ msgstr "请选择至少一个文件夹。"
 #: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:75
 msgid "Please select at least one ticket overview"
 msgstr "请选择至少一张门票概述"
+
+#: app/assets/javascripts/app/lib/mixins/text_tools.coffee:39
+#, fuzzy
+#| msgid "Please fill also some text in!"
+msgid "Please select some text first."
+msgstr "請同輸入一些文字！"
 
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:5
 msgid ""
@@ -13836,7 +13913,7 @@ msgstr ""
 "Pretty Good Privacy (PGP) 是一种加密程序，可用于签名、加密和解密消息并提高电"
 "子邮件通信的安全性。"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:852
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:844
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:20
 #: app/assets/javascripts/app/views/channel/form.jst.eco:135
 #: app/assets/javascripts/app/views/generic/application_selector.jst.eco:15
@@ -13989,7 +14066,7 @@ msgid "Profile language updated successfully."
 msgstr "測試運行成功"
 
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/personal-settings.ts:7
-#: db/seeds/permissions.rb:406
+#: db/seeds/permissions.rb:412
 #, fuzzy
 #| msgid "Proxy Settings"
 msgid "Profile settings"
@@ -14408,7 +14485,7 @@ msgstr "验证"
 msgid "Remove checklist"
 msgstr "删除%s"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:283
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:310
 msgid "Remove formatting"
 msgstr "删除格式"
 
@@ -14483,7 +14560,7 @@ msgid "Reopening rate"
 msgstr "重开比例"
 
 #: app/assets/javascripts/app/models/group.coffee:10
-#: db/seeds/object_manager_attributes.rb:2157
+#: db/seeds/object_manager_attributes.rb:2158
 msgid "Reopening time in days"
 msgstr "重新开放时间（天）"
 
@@ -14594,7 +14671,7 @@ msgstr "缺少必需的参数“配置文件”。"
 msgid "Requirements"
 msgstr "要求"
 
-#: db/seeds/settings.rb:5937
+#: db/seeds/settings.rb:5955
 msgid ""
 "Requires the setup of the two-factor authentication for certain user roles."
 msgstr "需要为某些用户角色设置双因素身份验证。"
@@ -14858,7 +14935,7 @@ msgstr "角色 %s 与角色 %s 冲突，您想继续吗？"
 
 #: app/assets/javascripts/app/controllers/role.coffee:3
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:193
-#: db/seeds/object_manager_attributes.rb:1577 db/seeds/permissions.rb:23
+#: db/seeds/object_manager_attributes.rb:1578 db/seeds/permissions.rb:23
 msgid "Roles"
 msgstr "角色"
 
@@ -14881,7 +14958,7 @@ msgstr "回滚迁移"
 msgid "Rollback of channel migration succeeded!"
 msgstr "渠道迁移的回滚成功！"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:310
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:302
 msgid "Rows"
 msgstr "行"
 
@@ -14922,7 +14999,7 @@ msgstr ""
 "S/MIME（安全/多用途互联网邮件扩展）是一种广泛接受的方法（或更准确地说，是一种"
 "协议），用于发送数字签名和加密的消息。"
 
-#: db/seeds/settings.rb:5718
+#: db/seeds/settings.rb:5736
 msgid "S/MIME config"
 msgstr "S/MIME配置"
 
@@ -14930,7 +15007,7 @@ msgstr "S/MIME配置"
 msgid "S/MIME enables you to send digitally signed and encrypted messages."
 msgstr "S/MIME 使您能够发送经过数字签名和加密的邮件。"
 
-#: db/seeds/settings.rb:5690
+#: db/seeds/settings.rb:5708
 msgid "S/MIME integration"
 msgstr "S/MIME集成"
 
@@ -15004,7 +15081,7 @@ msgid "SSL Certificates"
 msgstr "SSL证书"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:431
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:714
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:706
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:84
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:73
 #: app/assets/javascripts/app/models/webhook.coffee:9
@@ -15029,7 +15106,7 @@ msgstr "SSL/StartTL"
 
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:111
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:84
-#: db/seeds/settings.rb:5806
+#: db/seeds/settings.rb:5824
 msgid "SSO"
 msgstr "SSO"
 
@@ -15136,7 +15213,7 @@ msgstr "保存的条件"
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1135
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1137
 msgid "Saving failed."
 msgstr "保存失败。"
 
@@ -15214,7 +15291,7 @@ msgstr "搜索词"
 msgid "Search Terms"
 msgstr "搜寻词"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:702
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:694
 msgid "Search URL"
 msgstr "搜索网址"
 
@@ -15360,7 +15437,7 @@ msgid ""
 "search result label key."
 msgstr "搜索结果标签不是字符串、数字或布尔值。请提供搜索结果标签键。"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:828
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:820
 msgid "Search result label key"
 msgstr "搜索结果标签键"
 
@@ -15372,7 +15449,7 @@ msgstr "搜索结果标签键“%s”不是字符串、数字或布尔值。"
 msgid "Search result label key \"%s\" was not found."
 msgstr "未找到搜索结果标签键“%s”。"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:806
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:798
 msgid "Search result list"
 msgstr "搜索结果列表"
 
@@ -15381,7 +15458,7 @@ msgid ""
 "Search result list is not an array. Please provide search result list key."
 msgstr "搜索结果列表不是数组。请提供搜索结果列表密钥。"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:806
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:798
 msgid "Search result list key"
 msgstr "搜索结果列表密钥"
 
@@ -15393,7 +15470,7 @@ msgstr "搜索结果列表键“%s”不是数组。"
 msgid "Search result list key \"%s\" was not found."
 msgstr "未找到搜索结果列表键“%s”。"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:899
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:891
 msgid "Search result response"
 msgstr "搜索结果回复"
 
@@ -15403,7 +15480,7 @@ msgid ""
 "search result value key."
 msgstr "搜索结果值不是字符串、数字或布尔值。请提供搜索结果值键。"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:817
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:809
 msgid "Search result value key"
 msgstr "搜索结果值密钥"
 
@@ -15418,7 +15495,7 @@ msgstr "未找到搜索结果值键“%s”。"
 #: app/assets/javascripts/app/controllers/_ui_element/autocompletion_ajax.coffee:16
 #: app/assets/javascripts/app/controllers/_ui_element/autocompletion_ajax_customer_organization.coffee:18
 #: app/assets/javascripts/app/controllers/_ui_element/autocompletion_ajax_external_data_source.coffee:13
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:852
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:844
 #: app/assets/javascripts/app/controllers/widget/link/kb_answer.coffee:57
 #: app/assets/javascripts/app/views/generic/icon_picker.jst.eco:9
 #: app/assets/javascripts/app/views/translation/form.jst.eco:7
@@ -15433,7 +15510,7 @@ msgstr "搜索…"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:101
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:98
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:136
-#: db/seeds/object_manager_attributes.rb:1159
+#: db/seeds/object_manager_attributes.rb:1160
 msgid "Secondary organizations"
 msgstr "二级组织"
 
@@ -15486,7 +15563,7 @@ msgstr "安全密钥"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:5
 #: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:10
-#: db/seeds/settings.rb:5843
+#: db/seeds/settings.rb:5861
 msgid "Security Keys"
 msgstr "安全密钥"
 
@@ -15747,13 +15824,13 @@ msgstr "基於Reply-To標頭的寄件人"
 msgid "Sender of last article"
 msgstr "上一篇文章的发件人"
 
-#: db/seeds/object_manager_attributes.rb:2222
+#: db/seeds/object_manager_attributes.rb:2223
 #, fuzzy
 #| msgid "Email Address"
 msgid "Sending Email Address"
 msgstr "电子邮件"
 
-#: app/models/ticket/article.rb:319
+#: app/models/ticket/article.rb:321
 msgid "Sending an email without a valid recipient is not possible."
 msgstr ""
 
@@ -15822,7 +15899,7 @@ msgstr "会话超时"
 
 #: app/assets/javascripts/app/controllers/session.coffee:3
 #: app/assets/javascripts/app/views/session.jst.eco:2
-#: db/seeds/permissions.rb:305
+#: db/seeds/permissions.rb:311
 msgid "Sessions"
 msgstr "会话"
 
@@ -15851,7 +15928,7 @@ msgstr "验证"
 msgid "Set a title for your ticket"
 msgstr "为您的工单设置标题"
 
-#: db/seeds/settings.rb:5470
+#: db/seeds/settings.rb:5488
 msgid "Set agent limit"
 msgstr "设定代理限制"
 
@@ -15910,7 +15987,7 @@ msgstr "设置外拨主叫号码"
 msgid "Set security keys as default"
 msgstr "设为默认"
 
-#: db/seeds/settings.rb:5632
+#: db/seeds/settings.rb:5650
 msgid ""
 "Set timeframe in seconds. If it's set to 0 you can delete notes without time "
 "limits"
@@ -16009,7 +16086,7 @@ msgstr "共享草稿"
 #: app/assets/javascripts/app/controllers/agent_ticket_create/sidebar_shared_draft.coffee:12
 #: app/assets/javascripts/app/models/group.coffee:17
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/shared-draft-start.ts:10
-#: db/seeds/object_manager_attributes.rb:2291
+#: db/seeds/object_manager_attributes.rb:2292
 msgid "Shared Drafts"
 msgstr "共享草稿"
 
@@ -16058,7 +16135,7 @@ msgid "Shared mailbox"
 msgstr "发送邮件"
 
 #: app/assets/javascripts/app/models/organization.coffee:7
-#: db/seeds/object_manager_attributes.rb:1744
+#: db/seeds/object_manager_attributes.rb:1745
 msgid "Shared organization"
 msgstr "是否为共享的机构"
 
@@ -16113,7 +16190,7 @@ msgstr ""
 msgid "Show authenticator app secret"
 msgstr "显示身份验证器应用程序密码"
 
-#: db/seeds/settings.rb:5815
+#: db/seeds/settings.rb:5833
 msgid "Show calendar weeks in the picker of date/datetime fields"
 msgstr "在日期/dateTime字段的选择器中显示日历周"
 
@@ -16278,7 +16355,7 @@ msgstr "标志:"
 #: app/assets/javascripts/app/controllers/_channel/_email_signature.coffee:49
 #: app/assets/javascripts/app/models/group.coffee:13
 #: app/controllers/integration/smime_controller.rb:119
-#: db/seeds/object_manager_attributes.rb:2257
+#: db/seeds/object_manager_attributes.rb:2258
 msgid "Signature"
 msgstr "回复签名"
 
@@ -16341,6 +16418,11 @@ msgstr "简单存储服务故障。请联系您的 Zammad 管理员。"
 msgid "Simple Storage Service not reachable."
 msgstr "简单的存储服务不可到达。"
 
+#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:16
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:177
+msgid "Simplify"
+msgstr ""
+
 #: db/seeds/settings.rb:1832
 msgid "Sina Weibo"
 msgstr "西娜微博"
@@ -16394,13 +16476,23 @@ msgstr "Slack"
 msgid "Slack Notifications"
 msgstr "Slack 通知"
 
-#: db/seeds/settings.rb:5167
+#: db/seeds/settings.rb:5185
 msgid "Slack config"
 msgstr "Slack Config"
 
-#: db/seeds/settings.rb:5141
+#: db/seeds/settings.rb:5159
 msgid "Slack integration"
 msgstr "松弛整合"
+
+#: app/assets/javascripts/app/views/generic/text_tools_loading.jst.eco:2
+msgid "Smart Assist is generating text…"
+msgstr ""
+
+#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:6
+#, fuzzy
+#| msgid "Start Editing"
+msgid "Smart Editor"
+msgstr "开始编辑"
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/sms.ts:48
 msgid "Sms"
@@ -16448,16 +16540,12 @@ msgid "Sorry, there is currently no CTI backend enabled."
 msgstr "抱歉，目前没有启用 CTI 后端。"
 
 #: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:544
-#, fuzzy
-#| msgid "pending"
 msgid "Sorted ascending"
-msgstr "待處理"
+msgstr "升序排列"
 
 #: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:545
-#, fuzzy
-#| msgid "pending"
 msgid "Sorted descending"
-msgstr "待處理"
+msgstr "降序排列"
 
 #: app/assets/javascripts/app/controllers/ticket_overview/settings.coffee:40
 #: app/assets/javascripts/app/models/overview.coffee:23
@@ -16626,7 +16714,7 @@ msgstr "状态"
 msgid "State Icon"
 msgstr "状态"
 
-#: db/seeds/settings.rb:5504
+#: db/seeds/settings.rb:5522
 msgid "Stats Backend"
 msgstr "统计后端"
 
@@ -16700,33 +16788,33 @@ msgstr "储存方法"
 msgid "Store"
 msgstr "儲存"
 
-#: db/seeds/settings.rb:6084
+#: db/seeds/settings.rb:6102
 msgid ""
 "Stores the AI assistance ticket summarization options (e.g. which content is "
 "visible)."
 msgstr ""
 
-#: db/seeds/settings.rb:6054
+#: db/seeds/settings.rb:6072
 #, fuzzy
 #| msgid "Stores the GitHub configuration."
 msgid "Stores the AI provider configuration."
 msgstr "存储GitHub配置。"
 
-#: db/seeds/settings.rb:6037
+#: db/seeds/settings.rb:6055
 #, fuzzy
 #| msgid "Test SMS provider"
 msgid "Stores the AI provider."
 msgstr "測試簡訊 SMS 提供商"
 
-#: db/seeds/settings.rb:5093
+#: db/seeds/settings.rb:5111
 msgid "Stores the GitHub configuration."
 msgstr "存储GitHub配置。"
 
-#: db/seeds/settings.rb:5051
+#: db/seeds/settings.rb:5069
 msgid "Stores the GitLab configuration."
 msgstr "存储GitLab配置。"
 
-#: db/seeds/object_manager_attributes.rb:1246
+#: db/seeds/object_manager_attributes.rb:1247
 msgid "Street"
 msgstr "街道"
 
@@ -16854,7 +16942,7 @@ msgstr "日"
 msgid "Sunday"
 msgstr "星期天"
 
-#: db/seeds/settings.rb:5591
+#: db/seeds/settings.rb:5609
 msgid "Support of multilingual Knowledge Base."
 msgstr "支持多语言知识库。"
 
@@ -16905,7 +16993,7 @@ msgstr "系统初始完成"
 
 #: app/assets/javascripts/app/controllers/system_report.coffee:3
 #: app/assets/javascripts/app/views/system_report.jst.eco:2
-#: db/seeds/permissions.rb:311
+#: db/seeds/permissions.rb:317
 #, fuzzy
 #| msgid "System URL"
 msgid "System Report"
@@ -16936,7 +17024,7 @@ msgstr ""
 "系统翻译可以在我们的公共平台 %l 上与社区贡献和共享。它具有基于 Weblate 的非常"
 "方便的用户界面，尝试一下！"
 
-#: db/seeds/settings.rb:5664
+#: db/seeds/settings.rb:5682
 msgid ""
 "System-wide configuration of the query polling mechanism for ticket "
 "overviews."
@@ -16954,7 +17042,7 @@ msgstr "门票后行为行为"
 msgid "Tab has changed, do you really want to close it?"
 msgstr "页面存在更新，确定要关闭此页面么?"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:232
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:237
 msgid "Tabs"
 msgstr "选项卡"
 
@@ -17106,6 +17194,12 @@ msgstr "正文"
 msgid "Text Modules"
 msgstr "文本模块"
 
+#: db/seeds/settings.rb:6116
+#, fuzzy
+#| msgid "Text Modules"
+msgid "Text Tools"
+msgstr "文本模块"
+
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:556
 msgid "Text editing"
 msgstr "编辑"
@@ -17116,7 +17210,7 @@ msgstr "文本域"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:379
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/twitter_reply.coffee:176
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:338
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:341
 msgid "Text missing"
 msgstr "文字遺失"
 
@@ -17643,7 +17737,7 @@ msgstr "无法创建条目。"
 msgid "The file could not be retrieved from the bot."
 msgstr "该文件无法从机器人中检索。"
 
-#: app/assets/javascripts/app/lib/app_post/html5_upload.coffee:90
+#: app/assets/javascripts/app/lib/app_post/html5_upload.coffee:91
 msgid "The file could not be uploaded."
 msgstr "文件无法上传。"
 
@@ -17651,7 +17745,7 @@ msgstr "文件无法上传。"
 msgid "The file does not belong to the specified article."
 msgstr "该文件不属于指定的文章。"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:852
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:861
 #: app/frontend/shared/components/Form/fields/FieldFile/features/filesTypeError.ts:22
 msgid "The file type %s is not allowed."
 msgstr "不允许使用文件类型 %s。"
@@ -17850,7 +17944,7 @@ msgstr "无法生成新的工单编号。"
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_new.coffee:68
 #: app/assets/javascripts/app/controllers/_channel/_email_signature.coffee:93
-#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:807
+#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:809
 #: app/assets/javascripts/app/controllers/customer_ticket_create.coffee:193
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:272
 #: app/assets/javascripts/app/controllers/object_manager.coffee:261
@@ -18392,6 +18486,11 @@ msgid ""
 "The text at the beginning of the subject in an email reply, e.g. RE, AW, or "
 "AS."
 msgstr "電子郵件回覆中主旨開頭的文本，例如RE，AW或AS"
+
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:67
+msgid ""
+"The text was modified. Your request has been aborted to prevent overwriting."
+msgstr ""
 
 #: app/services/service/ticket/update/validator/checklist_completed.rb:16
 #, fuzzy
@@ -19290,7 +19389,7 @@ msgstr "星期四"
 msgid "Ticket"
 msgstr "工单"
 
-#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:780
+#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:782
 msgid "Ticket %s created!"
 msgstr "工單 ％s已建立 ！"
 
@@ -19433,7 +19532,7 @@ msgstr "票证编号增量日期"
 msgid "Ticket Number ignore system_id"
 msgstr "票数忽略System_ID"
 
-#: db/seeds/settings.rb:5959
+#: db/seeds/settings.rb:5977
 #, fuzzy
 #| msgid "Tickets of Organization"
 msgid "Ticket Organization Reassignment"
@@ -19447,7 +19546,7 @@ msgstr "機構中的工單"
 msgid "Ticket Overview"
 msgstr "新增工单概览"
 
-#: db/seeds/settings.rb:5661
+#: db/seeds/settings.rb:5679
 #, fuzzy
 #| msgid "New Overview"
 msgid "Ticket Overview Query Polling"
@@ -19472,7 +19571,7 @@ msgid "Ticket Owner"
 msgstr "新增工单概览"
 
 #: app/assets/javascripts/app/controllers/ticket_priority.coffee:16
-#: db/seeds/permissions.rb:263
+#: db/seeds/permissions.rb:269
 #, fuzzy
 #| msgid "Ticket update"
 msgid "Ticket Priorities"
@@ -19507,7 +19606,7 @@ msgid "Ticket State"
 msgstr "工單更新"
 
 #: app/assets/javascripts/app/controllers/ticket_state.coffee:3
-#: db/seeds/permissions.rb:257
+#: db/seeds/permissions.rb:263
 #, fuzzy
 #| msgid "Ticket update"
 msgid "Ticket States"
@@ -19533,17 +19632,23 @@ msgstr "訂閱工單"
 #: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:7
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:45
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:16
-#: db/seeds/permissions.rb:233 db/seeds/settings.rb:6067
+#: db/seeds/permissions.rb:233 db/seeds/settings.rb:6085
 #, fuzzy
 #| msgid "Ticket update"
 msgid "Ticket Summary"
 msgstr "工單更新"
 
-#: db/seeds/settings.rb:6081
+#: db/seeds/settings.rb:6099
 #, fuzzy
 #| msgid "Ticket Count"
 msgid "Ticket Summary Config"
 msgstr "门票数"
+
+#: db/seeds/permissions.rb:239
+#, fuzzy
+#| msgid "Ticket Hook"
+msgid "Ticket Tools"
+msgstr "工单 hook 挂钩"
 
 #: db/seeds/settings.rb:2912
 msgid "Ticket Trigger Loop Protection Articles Total"
@@ -20244,7 +20349,7 @@ msgstr "令牌"
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/tokenAccess.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:56
-#: db/seeds/permissions.rb:465
+#: db/seeds/permissions.rb:471
 msgid "Token Access"
 msgstr "存取權限 Token"
 
@@ -20254,11 +20359,11 @@ msgstr "存取權限 Token"
 msgid "Token authorization failed."
 msgstr "认证失败"
 
-#: db/seeds/settings.rb:5309
+#: db/seeds/settings.rb:5327
 msgid "Token for CTI."
 msgstr "CTI的令牌。"
 
-#: db/seeds/settings.rb:5213
+#: db/seeds/settings.rb:5231
 msgid "Token for Sipgate."
 msgstr "sipgate的象征。"
 
@@ -20324,7 +20429,7 @@ msgstr "校验"
 msgid "Transfer conversation to another chat:"
 msgstr "将对话转移到另一个聊天中："
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:227
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:219
 #, fuzzy
 #| msgid "Translations"
 msgid "Translate field contents"
@@ -20345,7 +20450,7 @@ msgstr "语言"
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:414
 #: app/assets/javascripts/app/controllers/translation.coffee:3
 #: app/assets/javascripts/app/views/translation/index.jst.eco:4
-#: db/seeds/permissions.rb:275
+#: db/seeds/permissions.rb:281
 msgid "Translations"
 msgstr "语言"
 
@@ -20557,7 +20662,7 @@ msgstr "需要认证"
 #: app/assets/javascripts/app/views/profile/password.jst.eco:22
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/twoFactorAuth.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:72
-#: db/seeds/permissions.rb:451
+#: db/seeds/permissions.rb:457
 #, fuzzy
 #| msgid "Authentication"
 msgid "Two-factor Authentication"
@@ -20619,7 +20724,7 @@ msgid "Two-factor method has been configured successfully."
 msgstr "測試運行成功"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:426
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:248
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:240
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:79
 #: app/assets/javascripts/app/controllers/translation.coffee:289
 #: app/assets/javascripts/app/controllers/widget/ticket_bulk_form.coffee:70
@@ -20645,7 +20750,7 @@ msgstr "类型"
 msgid "Type:"
 msgstr "类型"
 
-#: db/seeds/settings.rb:6025
+#: db/seeds/settings.rb:6043
 msgid "UI Desktop Beta Switch"
 msgstr ""
 
@@ -20678,9 +20783,19 @@ msgstr "日期字段"
 msgid "URL"
 msgstr "URL"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:677
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:669
 msgid "URL (AJAX endpoint)"
 msgstr "URL（Ajax端点）"
+
+#: app/assets/javascripts/app/controllers/_ai/providers.coffee:83
+#, fuzzy
+#| msgid "%s (option)"
+msgid "URL (Completions)"
+msgstr "%s（选项）"
+
+#: app/assets/javascripts/app/controllers/_ai/providers.coffee:93
+msgid "URL (Embeddings)"
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:238
 #, fuzzy
@@ -20904,7 +21019,7 @@ msgstr "使用匯入數據中指定的屬性更新現有記錄"
 msgid "Update successful."
 msgstr "更新成功。"
 
-#: db/seeds/settings.rb:5971
+#: db/seeds/settings.rb:5989
 #, fuzzy
 #| msgid "%s Object(s) are updated."
 msgid "Update the most recent tickets."
@@ -21166,10 +21281,6 @@ msgstr "上传"
 msgid "Upload Certificate"
 msgstr "上传证书"
 
-#: app/assets/javascripts/app/lib/app_post/html5_upload.coffee:86
-msgid "Upload Failed"
-msgstr "上传失败"
-
 #: app/assets/javascripts/app/views/integration/smime_private_key_add.jst.eco:7
 msgid "Upload Private Key"
 msgstr "上传私钥"
@@ -21212,7 +21323,7 @@ msgstr ""
 msgid "Use custom option sort"
 msgstr "使用自定义选项排序"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:546
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:538
 msgid "Use double click to change level of the row."
 msgstr "使用双击以更改行的级别。"
 
@@ -21549,7 +21660,7 @@ msgstr ""
 "组织设置为“共享”，可以为每个组织定义）。"
 
 #: app/frontend/shared/components/CommonUserAvatar/CommonUserAvatar.vue:122
-#: db/seeds/object_manager_attributes.rb:1490
+#: db/seeds/object_manager_attributes.rb:1491
 msgid "VIP"
 msgstr "VIP"
 
@@ -21568,7 +21679,7 @@ msgstr "批量操作失败"
 msgid "Validation failed: %{errors}"
 msgstr "验证失败：％{errors}"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:933
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:925
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:8
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:86
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:38
@@ -21775,7 +21886,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_channel/web.coffee:3
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/web.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/web.ts:12
-#: db/seeds/object_manager_attributes.rb:954 db/seeds/permissions.rb:89
+#: db/seeds/object_manager_attributes.rb:955 db/seeds/permissions.rb:89
 msgid "Web"
 msgstr "网页"
 
@@ -22538,8 +22649,8 @@ msgstr "您需要在 ％s中配置 Zammad endpoint端點"
 msgid "You reached the table limit of %s tickets (%s remaining)."
 msgstr "达到了百分比可显示票的限额（剩余％S）"
 
-#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:760
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:354
+#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:762
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:357
 #, fuzzy
 #| msgid ""
 #| "You use %s in text but no attachment is attached. Do you want to continue?"
@@ -22562,6 +22673,19 @@ msgstr "YouTube或Vimeo地址"
 #. This is the template file app/views/mailer/password_change/en.html.erb in ERB/HTML format.
 #. Please make sure to translate it to a valid corresponding output structure.
 #: app/views/mailer/password_change/en.html.erb
+#, fuzzy
+#| msgid ""
+#| "Your #{config.product_name} password has been changed\n"
+#| "\n"
+#| "<p>Hi #{user.firstname},</p>\n"
+#| "<br>\n"
+#| "<p>The password for your #{config.product_name} account <b>#{user.login}</"
+#| "b> has been changed recently.</p>\n"
+#| "<br>\n"
+#| "<p>This activity is not known to you? If not, contact your system "
+#| "administrator.</p>\n"
+#| "<br>\n"
+#| "<p>Your #{config.product_name} Team</p>\n"
 msgid ""
 "Your #{config.product_name} password has been changed\n"
 "\n"
@@ -22570,7 +22694,7 @@ msgid ""
 "<p>The password for your #{config.product_name} account <b>#{user.login}</b> "
 "has been changed recently.</p>\n"
 "<br>\n"
-"<p>This activity is not known to you? If not, contact your system "
+"<p>If you did not initiate this change, please contact your system "
 "administrator.</p>\n"
 "<br>\n"
 "<p>Your #{config.product_name} Team</p>\n"
@@ -22737,7 +22861,7 @@ msgstr "扎马德"
 msgid "Zammad AI"
 msgstr "扎马德"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:327
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:354
 #, fuzzy
 #| msgid "This is Zammad version %s"
 msgid "Zammad Features"
@@ -22762,6 +22886,12 @@ msgstr "Zammad基金会"
 #: db/seeds/settings.rb:113
 msgid "Zammad Helpdesk"
 msgstr "Zammad Helpdesk"
+
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantLoadingBanner.vue:40
+#, fuzzy
+#| msgid "Zammad User Agent"
+msgid "Zammad Smart Assist"
+msgstr "Zammad用户代理"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:64
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:132
@@ -22819,7 +22949,7 @@ msgstr "当前系统的版本为 %s"
 msgid "Zendesk"
 msgstr "Zendesk"
 
-#: db/seeds/object_manager_attributes.rb:1285
+#: db/seeds/object_manager_attributes.rb:1286
 msgid "Zip"
 msgstr "邮编"
 
@@ -22939,10 +23069,8 @@ msgstr "存档"
 #: app/assets/javascripts/app/controllers/ticket_overview/settings.coffee:55
 #: app/assets/javascripts/app/models/overview.coffee:37
 #: app/frontend/apps/mobile/pages/ticket/components/TicketList/TicketOrderBySelector.vue:37
-#, fuzzy
-#| msgid "pending"
 msgid "ascending"
-msgstr "待處理"
+msgstr "升序"
 
 #: app/assets/javascripts/app/views/ticket_overview/batch_overlay.jst.eco:11
 msgid "assign tickets"
@@ -22952,7 +23080,7 @@ msgstr "分配工单"
 msgid "at"
 msgstr "在"
 
-#: app/models/object_manager/attribute.rb:590
+#: app/models/object_manager/attribute.rb:579
 #, fuzzy
 #| msgid "At least one letter is required"
 msgid "at least one letter is required"
@@ -22963,7 +23091,7 @@ msgstr "至少需要一个字母"
 msgid "attachment,attached,enclosed,enclosure"
 msgstr ""
 
-#: app/models/object_manager/attribute.rb:623
+#: app/models/object_manager/attribute.rb:612
 #, fuzzy
 #| msgid "Attribute not editable!"
 msgid "attribute is not editable"
@@ -22999,11 +23127,7 @@ msgstr "忙碌"
 msgid "camera,image,photo,picture"
 msgstr "相机、图像、照片、图片"
 
-#: app/models/object_manager/attribute.rb:672
-msgid "can only be created on postgresql databases"
-msgstr "只能在PostgreSQL数据库上创建"
-
-#: app/models/object_manager/attribute.rb:665
+#: app/models/object_manager/attribute.rb:654
 msgid ""
 "can't be altered after creation (you can delete the attribute and create "
 "another with the desired value)"
@@ -23015,7 +23139,7 @@ msgstr "不能空白"
 msgid "can't be empty"
 msgstr "不能空"
 
-#: app/models/object_manager/attribute.rb:581
+#: app/models/object_manager/attribute.rb:570
 msgid "can't be used because *_id and *_ids are not allowed"
 msgstr "无法使用，因为 *_id和 *_id不允许"
 
@@ -23196,10 +23320,8 @@ msgstr "删除客户"
 #: app/assets/javascripts/app/controllers/ticket_overview/settings.coffee:56
 #: app/assets/javascripts/app/models/overview.coffee:38
 #: app/frontend/apps/mobile/pages/ticket/components/TicketList/TicketOrderBySelector.vue:38
-#, fuzzy
-#| msgid "pending"
 msgid "descending"
-msgstr "待處理"
+msgstr "降序"
 
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:138
 #, fuzzy
@@ -23218,12 +23340,12 @@ msgid "disconnect"
 msgstr "断开"
 
 #: app/assets/javascripts/app/models/group.coffee:9
-#: db/seeds/object_manager_attributes.rb:2127
+#: db/seeds/object_manager_attributes.rb:2128
 msgid "do not reopen ticket after certain time but create new ticket"
 msgstr "在一定时间后不要重新打开票，而是创建新票"
 
 #: app/assets/javascripts/app/models/group.coffee:9
-#: db/seeds/object_manager_attributes.rb:2126
+#: db/seeds/object_manager_attributes.rb:2127
 #, fuzzy
 #| msgid "Cannot follow-up on a closed ticket. Please create a new ticket."
 msgid "do not reopen ticket but create new ticket"
@@ -23452,7 +23574,7 @@ msgstr "小时"
 msgid "https://example.com"
 msgstr "support@example.com"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:267
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:259
 msgid ""
 "https://example.com/?q=#{object.attribute_name} - use ticket, user or "
 "organization as object"
@@ -23466,11 +23588,11 @@ msgstr ""
 msgid "i-doit"
 msgstr "我做"
 
-#: db/seeds/settings.rb:5008
+#: db/seeds/settings.rb:5026
 msgid "i-doit config"
 msgstr "i-doit config"
 
-#: db/seeds/settings.rb:4981
+#: db/seeds/settings.rb:4999
 msgid "i-doit integration"
 msgstr "i-doit集成"
 
@@ -24008,7 +24130,7 @@ msgstr "通知"
 msgid "now"
 msgstr "未设置"
 
-#: app/models/object_manager/attribute.rb:587
+#: app/models/object_manager/attribute.rb:576
 msgid "only lowercase letters, numbers, and '_' are allowed"
 msgstr "只允许使用小写字母、数字和“_”"
 
@@ -24113,7 +24235,7 @@ msgstr "收到合并"
 msgid "recovery codes"
 msgstr "恢复代码"
 
-#: app/models/checklist/item.rb:102
+#: app/models/checklist/item.rb:99
 #, fuzzy
 #| msgid "The article does not belong to the specified ticket."
 msgid "reference must not be the checklist ticket."
@@ -24165,7 +24287,7 @@ msgstr "回复"
 msgid "reply all"
 msgstr "回复"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:111
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:103
 #, fuzzy
 #| msgid "%s required!"
 msgid "required"
@@ -24264,27 +24386,27 @@ msgstr "显示"
 msgid "show more"
 msgstr "显示更多"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:110
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:102
 #, fuzzy
 #| msgid "show"
 msgid "shown"
 msgstr "显示"
 
-#: db/seeds/settings.rb:5210
+#: db/seeds/settings.rb:5228
 #, fuzzy
 #| msgid "%s Api Token"
 msgid "sipgate.io Token"
 msgstr "%s Api Token"
 
-#: db/seeds/settings.rb:5244
+#: db/seeds/settings.rb:5262
 msgid "sipgate.io alternative FQDN"
 msgstr "sipgate.io替代fqdn"
 
-#: db/seeds/settings.rb:5231
+#: db/seeds/settings.rb:5249
 msgid "sipgate.io config"
 msgstr "sipgate.io config"
 
-#: db/seeds/settings.rb:5182
+#: db/seeds/settings.rb:5200
 msgid "sipgate.io integration"
 msgstr "sipgate.io集成"
 
@@ -24299,7 +24421,7 @@ msgstr "已跳过"
 msgid "sms"
 msgstr "短信"
 
-#: app/models/object_manager/attribute.rb:584
+#: app/models/object_manager/attribute.rb:573
 msgid "spaces are not allowed"
 msgstr "不允许使用空格"
 
@@ -24532,7 +24654,7 @@ msgstr "在下一個 (相對)"
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:90
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14
 #: app/frontend/shared/entities/object-attributes/form/resolver/fields/active.ts:15
-#: db/seeds/object_manager_attributes.rb:1498 db/seeds/settings.rb:612
+#: db/seeds/object_manager_attributes.rb:1499 db/seeds/settings.rb:612
 msgid "yes"
 msgstr "是"
 
@@ -24591,6 +24713,12 @@ msgstr "...整个文本区域"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅轮候时间"
+
+#~ msgid "can only be created on postgresql databases"
+#~ msgstr "只能在PostgreSQL数据库上创建"
+
+#~ msgid "Upload Failed"
+#~ msgstr "上传失败"
 
 #~ msgid "Oops.. I'm sorry, but I can't find this %s."
 #~ msgstr "哎呀.. 抱歉，我找不到这个 %s。"
@@ -25647,9 +25775,6 @@ msgstr "∅轮候时间"
 
 #~ msgid "Call Outbound"
 #~ msgstr "致电客户"
-
-#~ msgid "Please fill also some text in!"
-#~ msgstr "請同輸入一些文字！"
 
 #~ msgid "Search..."
 #~ msgstr "搜索..."

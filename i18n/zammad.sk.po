@@ -515,6 +515,12 @@ msgstr "%s skupín do %s priradených rolí"
 msgid "%s hours ago"
 msgstr "pred %s hodinami"
 
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantLoadingBanner.vue:33
+#, fuzzy
+#| msgid "%s Migration"
+msgid "%s is generating text"
+msgstr "% Migrácie"
+
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:91
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:58
 #: app/assets/javascripts/app/views/google/list.jst.eco:61
@@ -730,11 +736,11 @@ msgstr "%s% bolo znovu otvorených"
 msgid "%{model} can have full or granular access to group"
 msgstr "%{model} môže mať plný, alebo čiastočný prístup do skupiny"
 
-#: app/models/object_manager/attribute.rb:610
+#: app/models/object_manager/attribute.rb:599
 msgid "%{name} already exists"
 msgstr "%{name} už existuje"
 
-#: app/models/object_manager/attribute.rb:594
+#: app/models/object_manager/attribute.rb:583
 msgid "%{name} is a reserved word"
 msgstr "%{name} je rezervované slovo"
 
@@ -938,7 +944,7 @@ msgstr "Farebná schéma, ktorá používa tmavé prvky na svetlom pozadí."
 msgid "A color scheme that uses light-colored elements on a dark background."
 msgstr "Farebná schéma, ktorá používa svetlé prvky na tmavom pozadí."
 
-#: db/seeds/object_manager_attributes.rb:2231
+#: db/seeds/object_manager_attributes.rb:2232
 msgid ""
 "A group's email address determines which address should be used for outgoing "
 "mails, e.g. when an agent is composing an email or a trigger is sending an "
@@ -995,7 +1001,7 @@ msgid ""
 "A test ticket has been created, you can find it in your overview \"%s\" %l."
 msgstr "Bol vytvorený skúšobný tiket, ktorý nájdete v vašom prehľade \"%s\"%l."
 
-#: app/models/ticket.rb:279
+#: app/models/ticket.rb:281
 msgid "A ticket cannot be merged into itself."
 msgstr "Tiket nemôže byť zlúčený sám so sebou."
 
@@ -1034,17 +1040,22 @@ msgstr ""
 msgid "AI"
 msgstr "API"
 
-#: db/seeds/settings.rb:6051
+#: db/seeds/settings.rb:6069
 #, fuzzy
 #| msgid "Provider"
 msgid "AI Provider Config"
 msgstr "Poskytovateľ"
 
-#: db/seeds/settings.rb:6034
+#: db/seeds/settings.rb:6052
 #, fuzzy
 #| msgid "Provider"
 msgid "AI provider"
 msgstr "Poskytovateľ"
+
+#: app/models/setting/validation/ai_provider_config.rb:35
+#, fuzzy
+msgid "AI provider Azure configuration is incomplete"
+msgstr "Poskytnutý kľúč je neplatný."
 
 #: app/models/setting/validation/ai_provider_config.rb:33
 msgid "AI provider Ollama URL is not set"
@@ -1052,6 +1063,7 @@ msgstr ""
 
 #: app/controllers/ticket/summarize_controller.rb:8
 #: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:20
+#: app/services/service/ai_assistance/text_tools.rb:17
 #: app/services/service/ticket/ai_assistance/summarize.rb:15
 #, fuzzy
 #| msgid "%s Object(s) are created."
@@ -1062,13 +1074,13 @@ msgstr "Nie je nakonfigurovaná žiadna aplikácia Google."
 msgid "AI provider is not supported"
 msgstr ""
 
-#: app/models/setting/validation/ai_provider_config.rb:35
+#: app/models/setting/validation/ai_provider_config.rb:37
 #, fuzzy
 msgid "AI provider token is not set"
 msgstr "Poskytnutý kľúč je neplatný."
 
 #: app/assets/javascripts/app/controllers/api.coffee:3
-#: app/assets/javascripts/app/views/api.jst.eco:2 db/seeds/permissions.rb:245
+#: app/assets/javascripts/app/views/api.jst.eco:2 db/seeds/permissions.rb:251
 msgid "API"
 msgstr "API"
 
@@ -1096,8 +1108,9 @@ msgstr "Chyba API."
 msgid "API server error - please try again"
 msgstr ""
 
-#: lib/ai/provider/anthropic.rb:66 lib/ai/provider/ollama.rb:86
-#: lib/ai/provider/open_ai.rb:93 lib/ai/provider/zammad_ai.rb:52
+#: lib/ai/provider/anthropic.rb:66 lib/ai/provider/azure.rb:104
+#: lib/ai/provider/ollama.rb:86 lib/ai/provider/open_ai.rb:93
+#: lib/ai/provider/zammad_ai.rb:53
 msgid "API server not accessible"
 msgstr ""
 
@@ -1123,51 +1136,51 @@ msgid "Accept Data Privacy Policy & Acceptable Use Policy"
 msgstr ""
 
 #: app/frontend/apps/desktop/components/CommonTicketLabel/CommonTicketLabel.vue:37
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabForbidden.vue:42
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabForbidden.vue:43
 msgid "Access denied"
 msgstr "Prístup zamietnutý"
 
-#: db/seeds/permissions.rb:333
+#: db/seeds/permissions.rb:339
 msgid "Access the agent chat features."
 msgstr "Prístup chatovým funkciám agenta."
 
-#: db/seeds/permissions.rb:348
+#: db/seeds/permissions.rb:354
 msgid "Access the agent phone features."
 msgstr "Prístup k telefonickým funkciám agenta."
 
-#: db/seeds/permissions.rb:363
+#: db/seeds/permissions.rb:369
 msgid "Access the knowledge base editor features."
 msgstr "Prístup k funkciám editora databázy znalostí."
 
-#: db/seeds/permissions.rb:369
+#: db/seeds/permissions.rb:375
 msgid "Access the knowledge base reader features."
 msgstr "Prístup k funkciám čitateľa databázy znalostí."
 
-#: db/seeds/permissions.rb:391
+#: db/seeds/permissions.rb:397
 msgid "Access the tickets as agent based on group access."
 msgstr "Pristupovať k tiketom ako agent na základe skupinového prístupu."
 
-#: db/seeds/permissions.rb:400
+#: db/seeds/permissions.rb:406
 msgid "Access tickets as customer."
 msgstr "Prístup k tiketom ako zákazník."
 
-#: db/seeds/permissions.rb:324
+#: db/seeds/permissions.rb:330
 msgid "Access to the chat interface."
 msgstr "Prístup k rozhraniu chatu."
 
-#: db/seeds/permissions.rb:354
+#: db/seeds/permissions.rb:360
 msgid "Access to the knowledge base interface."
 msgstr "Prístup k rozhraniu databázy znalostí."
 
-#: db/seeds/permissions.rb:339
+#: db/seeds/permissions.rb:345
 msgid "Access to the phone interface."
 msgstr "Prístup k rozhraniu telefónu."
 
-#: db/seeds/permissions.rb:376
+#: db/seeds/permissions.rb:382
 msgid "Access to the report interface."
 msgstr "Prístup k reportom."
 
-#: db/seeds/permissions.rb:382
+#: db/seeds/permissions.rb:388
 msgid "Access to the ticket interface."
 msgstr "Prístup k rozhraniu tiketov."
 
@@ -1343,7 +1356,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/profile/password.jst.eco:29
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:71
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:229
-#: db/seeds/object_manager_attributes.rb:1665
+#: db/seeds/object_manager_attributes.rb:1666
 msgid "Active"
 msgstr "Aktívny"
 
@@ -1531,7 +1544,7 @@ msgstr "Sledované ako položka kontrolného zoznamu v"
 msgid "Add attachment option to upload."
 msgstr "Pridať možnosť nahrať prílohy."
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:270
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:297
 msgid "Add bullet list"
 msgstr "Pridať zoznam odrážok"
 
@@ -1552,7 +1565,7 @@ msgstr "Pridať e-mail"
 msgid "Add empty checklist"
 msgstr "Pridať prázdny kontrolný zoznam"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:192
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:219
 msgid "Add first level heading"
 msgstr "Pridať nadpis prvej úrovne"
 
@@ -1560,11 +1573,11 @@ msgstr "Pridať nadpis prvej úrovne"
 msgid "Add from a template"
 msgstr "Pridať zo šablóny"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:185
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:212
 msgid "Add heading"
 msgstr "Pridať nadpis"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:130
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:157
 msgid "Add image"
 msgstr "Pridať obrázok"
 
@@ -1573,7 +1586,7 @@ msgid "Add internal note"
 msgstr "Pridať internú poznámku"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketLinks.vue:163
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:152
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:179
 msgid "Add link"
 msgstr "Pridať odkaz"
 
@@ -1587,7 +1600,7 @@ msgstr "Pridať správu"
 msgid "Add note"
 msgstr "Pridať poznámku"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:257
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:284
 msgid "Add ordered list"
 msgstr "Pridať zoradený zoznam"
 
@@ -1602,7 +1615,7 @@ msgstr "Pridať telefonát"
 msgid "Add reply"
 msgstr "Pridať odpoveď"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:203
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:230
 msgid "Add second level heading"
 msgstr "Pridať nadpis druhej úrovne"
 
@@ -1627,7 +1640,7 @@ msgstr "Pridať podkapitolu"
 msgid "Add tag"
 msgstr "Pridať značku"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:214
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:241
 msgid "Add third level heading"
 msgstr "Pridať nadpis tretej úrovne"
 
@@ -1663,7 +1676,7 @@ msgstr ""
 msgid "Additional ticket edit actions"
 msgstr "Ďalšie informácie"
 
-#: db/seeds/object_manager_attributes.rb:1405
+#: db/seeds/object_manager_attributes.rb:1406
 msgid "Address"
 msgstr "Adresa"
 
@@ -1793,7 +1806,7 @@ msgstr "Meno agenta"
 msgid "Agent Name + FromSeparator + System Address Display Name"
 msgstr ""
 
-#: db/seeds/permissions.rb:332
+#: db/seeds/permissions.rb:338
 msgid "Agent chat"
 msgstr "Chat agentov"
 
@@ -1805,17 +1818,21 @@ msgstr "Časový limit nečinnosti agenta"
 msgid "Agent limit exceeded, please check your account settings."
 msgstr "Bol prekročený limit agenta. Skontrolujte nastavenia svojho účtu."
 
-#: db/seeds/permissions.rb:347
+#: db/seeds/permissions.rb:353
 msgid "Agent phone"
 msgstr "Telefón agenta"
 
-#: db/seeds/permissions.rb:390
+#: db/seeds/permissions.rb:396
 msgid "Agent tickets"
 msgstr "Tikety agenta"
 
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:109
 msgid "Agents"
 msgstr "Agenti"
+
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:112
+msgid "Ai assistant text tools"
+msgstr ""
 
 #: app/assets/javascripts/app/views/profile/calendar_subscriptions.jst.eco:27
 msgid "Alarm"
@@ -1879,7 +1896,7 @@ msgstr ""
 "Všetky dvoj-faktorové metódy prihlásenia boli pre tohto používateľa "
 "odstránené."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:325
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:317
 msgid "Allow future"
 msgstr "povoliť budúce"
 
@@ -1887,7 +1904,7 @@ msgstr "povoliť budúce"
 msgid "Allow future dates toggle value is required."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:334
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:326
 msgid "Allow past"
 msgstr "povoliť minulé"
 
@@ -1895,7 +1912,7 @@ msgstr "povoliť minulé"
 msgid "Allow past dates toggle value is required."
 msgstr ""
 
-#: db/seeds/object_manager_attributes.rb:2164
+#: db/seeds/object_manager_attributes.rb:2165
 msgid "Allow reopening of tickets within a certain time."
 msgstr "Povoliť znovuotvorenie tiketov v rámci určitého časového obdobia."
 
@@ -1907,7 +1924,7 @@ msgstr "Povoliť používateľom pridávať nové značky."
 msgid "Allow users to create new tags."
 msgstr "Povoliť používateľom vytvárať nové štítky."
 
-#: db/seeds/settings.rb:6028
+#: db/seeds/settings.rb:6046
 msgid "Allow users to switch automatically to the new desktop UI."
 msgstr ""
 
@@ -1925,7 +1942,7 @@ msgstr ""
 msgid "Also notify via email"
 msgstr "Tiež upozorniť cez e-mail"
 
-#: db/seeds/settings.rb:5247
+#: db/seeds/settings.rb:5265
 msgid ""
 "Alternative FQDN for callbacks if you operate Zammad in an internal network."
 msgstr ""
@@ -1963,7 +1980,7 @@ msgstr "Vyskytla sa chyba"
 msgid "An error occured during the operation."
 msgstr "Počas operácie došlo k chybe."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:997
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:989
 #: app/assets/javascripts/app/views/integration/exchange_last_import.jst.eco:5
 #: app/assets/javascripts/app/views/integration/ldap_last_import.jst.eco:5
 msgid "An error occurred: %s"
@@ -2118,7 +2135,7 @@ msgstr "Tajná fráza aplikácie"
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/appearance.ts:9
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/appearance.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:60
-#: db/seeds/permissions.rb:413
+#: db/seeds/permissions.rb:419
 msgid "Appearance"
 msgstr "Vzhľad"
 
@@ -2387,12 +2404,12 @@ msgstr "Článok používa iný bezpečnostný mechanizmus."
 msgid "Article#"
 msgstr "Článok#"
 
-#: db/seeds/object_manager_attributes.rb:2186
+#: db/seeds/object_manager_attributes.rb:2187
 msgid "Assign Follow-Ups"
 msgstr "Priradiť sledovanie"
 
 #: app/assets/javascripts/app/models/group.coffee:11
-#: db/seeds/object_manager_attributes.rb:2195
+#: db/seeds/object_manager_attributes.rb:2196
 msgid "Assign follow-up to latest agent again."
 msgstr ""
 
@@ -2404,7 +2421,7 @@ msgstr "Priradiť sledovanie"
 msgid "Assign signup roles"
 msgstr "Priradenie rolí pri registrácii"
 
-#: db/seeds/object_manager_attributes.rb:1795
+#: db/seeds/object_manager_attributes.rb:1796
 msgid "Assign users based on user domain."
 msgstr "Priradiť používateľov na základe používateľovej domény."
 
@@ -2421,7 +2438,7 @@ msgstr "Príjemca"
 msgid "Assignees"
 msgstr "Príjemcovia"
 
-#: db/seeds/object_manager_attributes.rb:2087
+#: db/seeds/object_manager_attributes.rb:2088
 msgid "Assignment Timeout"
 msgstr "Časový limit priradenia"
 
@@ -2431,7 +2448,7 @@ msgid "Assignment timeout"
 msgstr "Časový limit priradenia"
 
 #: app/assets/javascripts/app/models/group.coffee:8
-#: db/seeds/object_manager_attributes.rb:2092
+#: db/seeds/object_manager_attributes.rb:2093
 msgid ""
 "Assignment timeout in minutes if assigned agent is not working on it. Ticket "
 "will be shown as unassigend."
@@ -2587,7 +2604,7 @@ msgstr "Autentifikácia"
 msgid "Authentication"
 msgstr "Autentifikácia"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:736
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:728
 msgid "Authentication Token"
 msgstr "Autentifikačný token"
 
@@ -2620,7 +2637,7 @@ msgstr "Overenie cez %s"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/authenticator_app.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:5
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:9
-#: db/seeds/settings.rb:5875
+#: db/seeds/settings.rb:5893
 msgid "Authenticator App"
 msgstr "Autentifikačná aplikácia"
 
@@ -2667,7 +2684,7 @@ msgstr "Automatické priradenie ignorovaných používateľov"
 msgid "Auto Assignment Selector"
 msgstr "Výber automatického priradenia"
 
-#: db/seeds/settings.rb:6014
+#: db/seeds/settings.rb:6032
 msgid "Auto Shutdown"
 msgstr ""
 
@@ -2675,7 +2692,7 @@ msgstr ""
 msgid "Auto Wizard"
 msgstr "Automatický sprievodca"
 
-#: db/seeds/settings.rb:4520
+#: db/seeds/settings.rb:4538
 msgid "Auto close"
 msgstr "Automatické uzavretie"
 
@@ -2683,7 +2700,7 @@ msgstr "Automatické uzavretie"
 msgid "Auto create"
 msgstr "Automatické vytvorenie"
 
-#: db/seeds/settings.rb:4546
+#: db/seeds/settings.rb:4564
 msgid "Auto-close state"
 msgstr "Stav automatického zatvorenia"
 
@@ -2757,7 +2774,7 @@ msgstr "Dostupné typy pre nový tiket"
 #: app/frontend/apps/mobile/pages/account/views/AccountOverview.vue:128
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:175
 #: app/frontend/shared/components/CommonUserAvatar/CommonUserAvatar.vue:119
-#: db/seeds/permissions.rb:427
+#: db/seeds/permissions.rb:433
 msgid "Avatar"
 msgstr "Profilový obrázok"
 
@@ -2787,6 +2804,10 @@ msgstr "Priemer: %s minút"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_reopen.jst.eco:12
 msgid "Average: %s%"
 msgstr "Priemer: %s%"
+
+#: app/assets/javascripts/app/lib/app_post/ai_provider/azure_ai.coffee:3
+msgid "Azure AI"
+msgstr ""
 
 #: db/seeds/settings.rb:3499
 msgid "BCC address for all outgoing emails"
@@ -2851,7 +2872,7 @@ msgstr "Base DN"
 msgid "Base Objects"
 msgstr "Základné objekty"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:736
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:728
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:11
 msgid "Basic Authentication"
 msgstr "Basic Authentication"
@@ -3068,19 +3089,19 @@ msgstr "CTI"
 msgid "CTI (generic)"
 msgstr "CTI (všeobecné)"
 
-#: db/seeds/settings.rb:5306
+#: db/seeds/settings.rb:5324
 msgid "CTI Token"
 msgstr "CTI Token"
 
-#: db/seeds/settings.rb:5293
+#: db/seeds/settings.rb:5311
 msgid "CTI config"
 msgstr "Konfigurácia CTI"
 
-#: db/seeds/settings.rb:5327
+#: db/seeds/settings.rb:5345
 msgid "CTI customer last activity"
 msgstr "Posledná aktivita zákazníka CTI"
 
-#: db/seeds/settings.rb:5265
+#: db/seeds/settings.rb:5283
 msgid "CTI integration"
 msgstr "Integrácia CTI"
 
@@ -3183,7 +3204,8 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_application_controller/after_auth_modal.coffee:9
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:380
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/twitter_reply.coffee:177
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:339
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:342
+#: app/assets/javascripts/app/views/generic/text_tools_loading.jst.eco:3
 #: app/assets/javascripts/app/views/integration/exchange_certificate_issue.jst.eco:18
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:236
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:292
@@ -3199,6 +3221,7 @@ msgstr ""
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:225
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:120
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:78
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantLoadingBanner.vue:51
 msgid "Cancel"
 msgstr "Zrušiť"
 
@@ -3268,7 +3291,7 @@ msgstr "Nemožno spracovať externý zdroj dát %s. %s"
 msgid "Cannot set online notifications as seen"
 msgstr "Nie je možné nastaviť online upozornenia ako videné"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:797
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:806
 msgid "Cannot upload file"
 msgstr "Nie je možné nahrať súbor"
 
@@ -3344,11 +3367,11 @@ msgstr "Zmeniť dátum"
 msgid "Change order"
 msgstr "Zmeniť poradie"
 
-#: db/seeds/permissions.rb:445
+#: db/seeds/permissions.rb:451
 msgid "Change personal account password."
 msgstr "Zmeniť heslo osobného účtu."
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:227
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:254
 msgid "Change text color"
 msgstr "Zmeniť farbu textu"
 
@@ -3517,7 +3540,7 @@ msgstr ""
 msgid "Checklist item successfully added."
 msgstr "Tiket bol úspešne aktualizovaný."
 
-#: app/models/checklist/item.rb:108
+#: app/models/checklist/item.rb:105
 msgid "Checklist items are limited to 100 items per checklist."
 msgstr ""
 
@@ -3527,7 +3550,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/checklist_template.coffee:3
 #: app/assets/javascripts/app/views/checklist_template/index.jst.eco:7
-#: db/seeds/permissions.rb:317 db/seeds/settings.rb:5987
+#: db/seeds/permissions.rb:323 db/seeds/settings.rb:6005
 msgid "Checklists"
 msgstr "Kontrolné zoznamy"
 
@@ -3535,11 +3558,11 @@ msgstr "Kontrolné zoznamy"
 msgid "Checkmk"
 msgstr "Checkmk"
 
-#: db/seeds/settings.rb:4667
+#: db/seeds/settings.rb:4685
 msgid "Checkmk integration"
 msgstr "Integrácia Checkmk"
 
-#: db/seeds/settings.rb:4788
+#: db/seeds/settings.rb:4806
 msgid "Checkmk token"
 msgstr "Checkmk token"
 
@@ -3613,7 +3636,7 @@ msgstr ""
 msgid "Christmas holiday"
 msgstr "Vianočné sviatky"
 
-#: db/seeds/object_manager_attributes.rb:1325
+#: db/seeds/object_manager_attributes.rb:1326
 msgid "City"
 msgstr "Mesto"
 
@@ -3702,11 +3725,11 @@ msgstr "Vymazať hodnotu"
 msgid "Clearbit"
 msgstr "Clearbit"
 
-#: db/seeds/settings.rb:5429
+#: db/seeds/settings.rb:5447
 msgid "Clearbit config"
 msgstr "Konfigurácia Clearbitu"
 
-#: db/seeds/settings.rb:5403
+#: db/seeds/settings.rb:5421
 msgid "Clearbit integration"
 msgstr "Integrácia Clearbitu"
 
@@ -3807,7 +3830,7 @@ msgstr "Zatvoriť záložku po zatvorení tiketu"
 msgid "Close the time picker"
 msgstr "Zavrieť výber času"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabRemove.vue:71
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabRemove.vue:70
 msgid "Close this tab"
 msgstr "Zavrieť túto kartu"
 
@@ -3873,7 +3896,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:11
-#: db/seeds/settings.rb:5867
+#: db/seeds/settings.rb:5885
 #, fuzzy
 msgid "Complete the sign-in with your security key."
 msgstr "Dokončite prihlásenie so svojím bezpečnostným kľúčom."
@@ -4270,7 +4293,7 @@ msgid "Core Workflow Ajax Mode"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/core_workflow.coffee:3
-#: db/seeds/permissions.rb:269
+#: db/seeds/permissions.rb:275
 msgid "Core Workflows"
 msgstr ""
 
@@ -4371,7 +4394,7 @@ msgstr ""
 msgid "Counting entries. This may take a while."
 msgstr "Počítanie záznamov. Môže to chvíľu trvať."
 
-#: db/seeds/object_manager_attributes.rb:1365
+#: db/seeds/object_manager_attributes.rb:1366
 msgid "Country"
 msgstr "Krajina"
 
@@ -4808,7 +4831,7 @@ msgstr "Pomer zákazníkov a agentov (počty používateľov na základe rolí)"
 msgid "Customer selection based on sender and receiver list"
 msgstr "Výber zákazníka na základe zoznamu odosielateľov a príjemcov"
 
-#: db/seeds/permissions.rb:399
+#: db/seeds/permissions.rb:405
 msgid "Customer tickets"
 msgstr "Zákaznícke tikety"
 
@@ -4821,7 +4844,7 @@ msgstr ""
 "nie je možné vrátiť späť."
 
 #: app/assets/javascripts/app/models/organization.coffee:7
-#: db/seeds/object_manager_attributes.rb:1749
+#: db/seeds/object_manager_attributes.rb:1750
 msgid "Customers in the organization can view each other's items."
 msgstr "Zákazníci v organizácii môžu navzájom prezerať svoje položky."
 
@@ -4856,7 +4879,7 @@ msgstr "Nástenka"
 
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:3
 #: app/assets/javascripts/app/views/data_privacy/index.jst.eco:3
-#: db/seeds/permissions.rb:281
+#: db/seeds/permissions.rb:287
 msgid "Data Privacy"
 msgstr "Ochrana osobných údajov"
 
@@ -4967,7 +4990,7 @@ msgstr "Dešifrovanie zlyhalo! %s"
 msgid "Decryption was successful."
 msgstr "Dešifrovanie bolo úspešné."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:239
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:231
 #: app/assets/javascripts/app/views/calendar/index.jst.eco:32
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:228
 #: app/assets/javascripts/app/views/generic/multi_locales.jst.eco:5
@@ -5027,11 +5050,11 @@ msgstr ""
 msgid "Default for new tickets"
 msgstr "Predvolené pre nové tikety"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:357
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:349
 msgid "Default time diff (hours)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:343
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:335
 msgid "Default time diff (minutes)"
 msgstr ""
 
@@ -5073,7 +5096,7 @@ msgstr ""
 msgid "Define pipeline name for Elasticsearch."
 msgstr ""
 
-#: db/seeds/settings.rb:4348
+#: db/seeds/settings.rb:4357
 msgid ""
 "Define postmaster filter to check if follow-ups get created (based on admin "
 "settings)."
@@ -5170,7 +5193,7 @@ msgid ""
 "Defines a Zendesk endpoint to import users, tickets, states, and articles."
 msgstr ""
 
-#: db/seeds/settings.rb:5507
+#: db/seeds/settings.rb:5525
 msgid "Defines a dashboard stats backend that gets scheduled automatically."
 msgstr ""
 
@@ -5261,59 +5284,59 @@ msgid ""
 "production, \"websocketPort\" is for CI"
 msgstr ""
 
-#: db/seeds/settings.rb:4670
+#: db/seeds/settings.rb:4688
 msgid "Defines if Checkmk (https://checkmk.com/) is enabled or not."
 msgstr "Definuje, či je Checkmk (https://checkmk.com/) povolený alebo nie."
 
-#: db/seeds/settings.rb:5406
+#: db/seeds/settings.rb:5424
 msgid "Defines if Clearbit (http://www.clearbit.com) is enabled or not."
 msgstr "Definuje, či je Clearbit (http://www.clearbit.com) povolený alebo nie."
 
-#: db/seeds/settings.rb:4957
+#: db/seeds/settings.rb:4975
 msgid "Defines if Exchange is enabled or not."
 msgstr "Definuje, či je Exchange povolený alebo nie."
 
-#: db/seeds/settings.rb:4474
+#: db/seeds/settings.rb:4492
 msgid "Defines if Icinga (http://www.icinga.org) is enabled or not."
 msgstr "Definuje, či je Icinga (http://www.icinga.org) povolená alebo nie."
 
-#: db/seeds/settings.rb:5617
+#: db/seeds/settings.rb:5635
 msgid ""
 "Defines if Knowledge Base navbar button is enabled for users without "
 "Knowledge Base permission."
 msgstr ""
 
-#: db/seeds/settings.rb:5602
+#: db/seeds/settings.rb:5620
 #, fuzzy
 msgid "Defines if Knowledge Base navbar button is enabled."
 msgstr ""
 "Definuje, či je tlačidlo navigačného panela Databázy znalosti povolené."
 
-#: db/seeds/settings.rb:4904
+#: db/seeds/settings.rb:4922
 msgid "Defines if LDAP is enabled or not."
 msgstr "Definuje, či je LDAP povolený alebo nie."
 
-#: db/seeds/settings.rb:4803
+#: db/seeds/settings.rb:4821
 msgid "Defines if Monit (https://mmonit.com/monit/) is enabled or not."
 msgstr "Definuje, či je Monit (https://mmonit.com/monit/) povolený alebo nie."
 
-#: db/seeds/settings.rb:4572
+#: db/seeds/settings.rb:4590
 msgid "Defines if Nagios (http://www.nagios.org) is enabled or not."
 msgstr "Definuje, či je Nagios (http://www.nagios.org) povolený alebo nie."
 
-#: db/seeds/settings.rb:5735
+#: db/seeds/settings.rb:5753
 msgid "Defines if PGP encryption is enabled or not."
 msgstr "Definuje, či PGP šifrovanie je povolené alebo nie."
 
-#: db/seeds/settings.rb:5343
+#: db/seeds/settings.rb:5361
 msgid "Defines if Placetel (http://www.placetel.de) is enabled or not."
 msgstr "Definuje, či je Placetel (http://www.placetel.de) povolený alebo nie."
 
-#: db/seeds/settings.rb:5693
+#: db/seeds/settings.rb:5711
 msgid "Defines if S/MIME encryption is enabled or not."
 msgstr "Definuje, či je šifrovanie S/MIME povolené alebo nie."
 
-#: db/seeds/settings.rb:5144
+#: db/seeds/settings.rb:5162
 msgid "Defines if Slack (http://www.slack.org) is enabled or not."
 msgstr "Definuje, či je Slack (http://www.slack.org) povolený alebo nie."
 
@@ -5329,17 +5352,17 @@ msgstr ""
 msgid "Defines if application is used as online service."
 msgstr "Definuje, či je aplikácia používaná ako online služba."
 
-#: db/seeds/settings.rb:5818
+#: db/seeds/settings.rb:5836
 msgid ""
 "Defines if calendar weeks are shown in the picker of date/datetime fields to "
 "easily select the correct date."
 msgstr ""
 
-#: db/seeds/settings.rb:5268
+#: db/seeds/settings.rb:5286
 msgid "Defines if generic CTI integration is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:5910
+#: db/seeds/settings.rb:5928
 msgid ""
 "Defines if recovery codes can be used by users in the event they lose access "
 "to other two-factor authentication methods."
@@ -5347,21 +5370,21 @@ msgstr ""
 "Určuje, či môžu používatelia použiť obnovovacie kódy v prípade, že stratia "
 "prístup k iným metódam dvojfaktorovej autentifikácie."
 
-#: db/seeds/settings.rb:5185
+#: db/seeds/settings.rb:5203
 msgid "Defines if sipgate.io (http://www.sipgate.io) is enabled or not."
 msgstr "Definuje, či je sipgate.io (http://www.sipgate.io) povolený alebo nie."
 
-#: db/seeds/settings.rb:5066
+#: db/seeds/settings.rb:5084
 msgid ""
 "Defines if the GitHub (http://www.github.com) integration is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:5024
+#: db/seeds/settings.rb:5042
 msgid ""
 "Defines if the GitLab (http://www.gitlab.com) integration is enabled or not."
 msgstr ""
 
-#: db/seeds/settings.rb:5777
+#: db/seeds/settings.rb:5795
 msgid "Defines if the PGP recipient alias configuration is enabled or not."
 msgstr ""
 "Definuje, či je nastavenie PGP pre prezývku prijímateľa povolená alebo nie."
@@ -5378,7 +5401,7 @@ msgid ""
 "password and password reset will work without email delivery)."
 msgstr ""
 
-#: db/seeds/settings.rb:5962
+#: db/seeds/settings.rb:5980
 msgid ""
 "Defines if the change of the primary organization of a user will update the "
 "100 most recent tickets for this user as well."
@@ -5398,7 +5421,7 @@ msgid ""
 "organization widget."
 msgstr ""
 
-#: db/seeds/settings.rb:4984
+#: db/seeds/settings.rb:5002
 msgid ""
 "Defines if the i-doit (https://www.i-doit.org/) integration is enabled or "
 "not."
@@ -5419,7 +5442,7 @@ msgstr ""
 msgid "Defines if the time accounting types are enabled."
 msgstr "Definuje, či sú povolené rôzne typy evidovania času."
 
-#: db/seeds/settings.rb:5878
+#: db/seeds/settings.rb:5896
 msgid ""
 "Defines if the two-factor authentication method authenticator app is enabled "
 "or not."
@@ -5427,7 +5450,7 @@ msgstr ""
 "Definuje, či je metóda dvojfaktorovej autentifikácie pomocou autentifikačnej "
 "aplikácie povolená, alebo nie."
 
-#: db/seeds/settings.rb:5846
+#: db/seeds/settings.rb:5864
 msgid ""
 "Defines if the two-factor authentication method security keys is enabled or "
 "not."
@@ -5439,11 +5462,11 @@ msgstr ""
 msgid "Defines if tickets can be created via web form."
 msgstr "Definuje, či je možné vytvárať tikety cez webový formulár."
 
-#: db/seeds/settings.rb:4523
+#: db/seeds/settings.rb:4541
 msgid "Defines if tickets should be closed if service is recovered."
 msgstr ""
 
-#: db/seeds/settings.rb:4384
+#: db/seeds/settings.rb:4393
 msgid "Defines postmaster filter for filters managed via admin interface."
 msgstr ""
 
@@ -5459,16 +5482,16 @@ msgid ""
 "notification email, then ignore it to prevent email loops."
 msgstr ""
 
-#: db/seeds/settings.rb:4330
+#: db/seeds/settings.rb:4339
 msgid "Defines postmaster filter to handle secure mailing."
 msgstr ""
 
-#: db/seeds/settings.rb:4447
+#: db/seeds/settings.rb:4456
 msgid ""
 "Defines postmaster filter to identify Jira mails for correct follow-ups."
 msgstr ""
 
-#: db/seeds/settings.rb:4429
+#: db/seeds/settings.rb:4438
 msgid ""
 "Defines postmaster filter to identify ServiceNow mails for correct follow-"
 "ups."
@@ -5490,35 +5513,49 @@ msgid ""
 "Defines postmaster filter to identify follow-ups (based on admin settings)."
 msgstr ""
 
-#: db/seeds/settings.rb:4339
+#: db/seeds/settings.rb:4348
 msgid ""
 "Defines postmaster filter to identify out-of-office emails for follow-up "
 "detection and keeping current ticket state."
 msgstr ""
 
-#: db/seeds/settings.rb:4366
+#: db/seeds/settings.rb:4375
 msgid ""
 "Defines postmaster filter to identify postmaster bounces; and disables "
 "sending notification if delivery fails permanently."
 msgstr ""
 
-#: db/seeds/settings.rb:4357
+#: db/seeds/settings.rb:4366
 msgid ""
 "Defines postmaster filter to identify postmaster bounces; and handles them "
 "as follow-up of the original tickets"
 msgstr ""
 
-#: db/seeds/settings.rb:4375
+#: db/seeds/settings.rb:4384
 msgid ""
 "Defines postmaster filter to identify postmaster bounces; and reopens "
 "tickets if delivery fails permanently."
 msgstr ""
 
-#: db/seeds/settings.rb:4321
+#: db/seeds/settings.rb:4330
 msgid "Defines postmaster filter to identify sender user."
 msgstr ""
 
-#: db/seeds/settings.rb:4411
+#: db/seeds/settings.rb:4321
+#, fuzzy
+msgid "Defines postmaster filter to identify session user."
+msgstr ""
+"Definuje filter poštového správcu na správu e-mailov Monit (https://"
+"mmonit.com/monit/)."
+
+#: db/seeds/settings.rb:4483
+#, fuzzy
+msgid "Defines postmaster filter to identify ticket group."
+msgstr ""
+"Definuje filter poštového správcu na správu e-mailov Monit (https://"
+"mmonit.com/monit/)."
+
+#: db/seeds/settings.rb:4420
 #, fuzzy
 msgid ""
 "Defines postmaster filter to manage Checkmk (http://mathias-kettner.com/"
@@ -5527,12 +5564,12 @@ msgstr ""
 "Definuje filter poštového správcu na správu e-mailov Monit (https://"
 "mmonit.com/monit/)."
 
-#: db/seeds/settings.rb:4393
+#: db/seeds/settings.rb:4402
 msgid ""
 "Defines postmaster filter to manage Icinga (http://www.icinga.org) emails."
 msgstr ""
 
-#: db/seeds/settings.rb:4420
+#: db/seeds/settings.rb:4429
 #, fuzzy
 msgid ""
 "Defines postmaster filter to manage Monit (https://mmonit.com/monit/) emails."
@@ -5540,7 +5577,7 @@ msgstr ""
 "Definuje filter poštového správcu na správu e-mailov Monit (https://"
 "mmonit.com/monit/)."
 
-#: db/seeds/settings.rb:4402
+#: db/seeds/settings.rb:4411
 msgid ""
 "Defines postmaster filter to manage Nagios (http://www.nagios.org) emails."
 msgstr ""
@@ -5563,7 +5600,7 @@ msgid ""
 "header."
 msgstr ""
 
-#: db/seeds/settings.rb:4465
+#: db/seeds/settings.rb:4474
 msgid ""
 "Defines postmaster filter which sets the articles visibility to internal if "
 "it is a rely to an internal article or the last outgoing email is internal."
@@ -5577,37 +5614,37 @@ msgstr ""
 msgid "Defines pretty date format."
 msgstr "Definuje vzhľad dátumového formátu."
 
-#: db/seeds/settings.rb:5496
+#: db/seeds/settings.rb:5514
 msgid "Defines processing timeout for the html sanitizer."
 msgstr ""
 
-#: db/seeds/settings.rb:5105
+#: db/seeds/settings.rb:5123
 msgid "Defines sync transaction backend."
 msgstr ""
 
-#: db/seeds/settings.rb:5484
+#: db/seeds/settings.rb:5502
 msgid "Defines the CSS font information for HTML emails."
 msgstr "Definuje informácie o písme CSS pre HTML e-maily."
 
-#: db/seeds/settings.rb:5296
+#: db/seeds/settings.rb:5314
 msgid "Defines the CTI config."
 msgstr ""
 
-#: db/seeds/settings.rb:4791
+#: db/seeds/settings.rb:4809
 msgid "Defines the Checkmk token for allowing updates."
 msgstr ""
 
-#: db/seeds/settings.rb:5432
+#: db/seeds/settings.rb:5450
 msgid "Defines the Clearbit config."
 msgstr ""
 
-#: db/seeds/settings.rb:4944
+#: db/seeds/settings.rb:4962
 #, fuzzy
 #| msgid "Defines pretty date format."
 msgid "Defines the Exchange OAuth config."
 msgstr "Definuje konfiguráciu Exchange OAuth."
 
-#: db/seeds/settings.rb:4931
+#: db/seeds/settings.rb:4949
 msgid "Defines the Exchange config."
 msgstr ""
 
@@ -5616,25 +5653,25 @@ msgstr ""
 msgid "Defines the HTTP protocol of your instance."
 msgstr "Definuje HTTP protokol vašej inštancie."
 
-#: db/seeds/settings.rb:5763
+#: db/seeds/settings.rb:5781
 #, fuzzy
 #| msgid "Defines pretty date format."
 msgid "Defines the PGP config."
 msgstr "Definuje vzhľad dátumového formátu."
 
-#: db/seeds/settings.rb:5371
+#: db/seeds/settings.rb:5389
 msgid "Defines the Placetel config."
 msgstr ""
 
-#: db/seeds/settings.rb:5721
+#: db/seeds/settings.rb:5739
 msgid "Defines the S/MIME config."
 msgstr ""
 
-#: db/seeds/settings.rb:5170
+#: db/seeds/settings.rb:5188
 msgid "Defines the Slack config."
 msgstr ""
 
-#: db/seeds/settings.rb:5473
+#: db/seeds/settings.rb:5491
 msgid "Defines the agent limit."
 msgstr "Definuje agentov limit."
 
@@ -5709,7 +5746,7 @@ msgstr "Určuje predvolený typ účtovania času."
 msgid "Defines the default visibility for new notes."
 msgstr "Definuje predvolenú viditeľnosť pre nové poznámky."
 
-#: db/seeds/settings.rb:5330
+#: db/seeds/settings.rb:5348
 msgid ""
 "Defines the duration of customer activity (in seconds) on a call until the "
 "user profile dialog is shown."
@@ -5724,7 +5761,7 @@ msgid ""
 "by the application, to build links to the tickets within your system."
 msgstr ""
 
-#: db/seeds/settings.rb:4719
+#: db/seeds/settings.rb:4737
 msgid "Defines the group of created tickets."
 msgstr "Definuje skupinu vytvorených tiketov."
 
@@ -5732,7 +5769,7 @@ msgstr "Definuje skupinu vytvorených tiketov."
 msgid "Defines the group of tickets created via web form."
 msgstr ""
 
-#: db/seeds/settings.rb:5011
+#: db/seeds/settings.rb:5029
 msgid "Defines the i-doit config."
 msgstr ""
 
@@ -5776,15 +5813,15 @@ msgstr ""
 msgid "Defines the random application secret."
 msgstr ""
 
-#: db/seeds/settings.rb:4500
+#: db/seeds/settings.rb:4518
 msgid "Defines the sender email address of Icinga emails."
 msgstr ""
 
-#: db/seeds/settings.rb:4598
+#: db/seeds/settings.rb:4616
 msgid "Defines the sender email address of Nagios emails."
 msgstr ""
 
-#: db/seeds/settings.rb:4696
+#: db/seeds/settings.rb:4714
 msgid "Defines the sender email address of the service emails."
 msgstr ""
 
@@ -5809,11 +5846,11 @@ msgstr ""
 "pridelených oprávnení sa použije najvyššia hodnota časového limitu, inak "
 "predvolená."
 
-#: db/seeds/settings.rb:5234
+#: db/seeds/settings.rb:5252
 msgid "Defines the sipgate.io config."
 msgstr ""
 
-#: db/seeds/settings.rb:4549
+#: db/seeds/settings.rb:4567
 msgid "Defines the state of auto-closed tickets."
 msgstr ""
 
@@ -5832,48 +5869,48 @@ msgstr "Definuje správanie záložky po akcii tiketu."
 msgid "Defines the ticket states used for lookups."
 msgstr ""
 
-#: db/seeds/settings.rb:5629
+#: db/seeds/settings.rb:5647
 msgid "Defines the timeframe during which a self-created note can be deleted."
 msgstr ""
 "Definuje časový rámec, počas ktorého môže byť vlastná poznámka vymazaná."
 
-#: db/seeds/settings.rb:5385
+#: db/seeds/settings.rb:5403
 #, fuzzy
 #| msgid "Defines pretty date format."
 msgid "Defines the token for Placetel."
 msgstr "Definuje kľúč pre Placetel."
 
-#: db/seeds/settings.rb:5126
+#: db/seeds/settings.rb:5144
 msgid ""
 "Defines the transaction backend to detect customer signatures in emails."
 msgstr ""
 "Definuje backend transakcie na zisťovanie podpisov zákazníkov v e-mailoch."
 
-#: db/seeds/settings.rb:5108
+#: db/seeds/settings.rb:5126
 msgid "Defines the transaction backend to execute triggers."
 msgstr ""
 
-#: db/seeds/settings.rb:5117
+#: db/seeds/settings.rb:5135
 msgid "Defines the transaction backend to send agent notifications."
 msgstr ""
 
-#: db/seeds/settings.rb:5454
+#: db/seeds/settings.rb:5472
 msgid ""
 "Defines the transaction backend which detects caller IDs in objects and "
 "stores them for CTI lookups."
 msgstr ""
 
-#: db/seeds/settings.rb:5463
+#: db/seeds/settings.rb:5481
 msgid "Defines the transaction backend which executes time based triggers."
 msgstr ""
 
-#: db/seeds/settings.rb:5135
+#: db/seeds/settings.rb:5153
 msgid ""
 "Defines the transaction backend which posts messages to Slack (http://"
 "www.slack.com)."
 msgstr ""
 
-#: db/seeds/settings.rb:5445
+#: db/seeds/settings.rb:5463
 msgid ""
 "Defines the transaction backend which will enrich customer and organization "
 "information from Clearbit (http://www.clearbit.com)."
@@ -5897,7 +5934,7 @@ msgstr ""
 "Určuje názov upozornenia, ktorý sa zobrazí, keď je prítomný zodpovedajúci "
 "tiket."
 
-#: db/seeds/settings.rb:5114
+#: db/seeds/settings.rb:5132
 msgid "Defines transaction backend."
 msgstr ""
 
@@ -6003,7 +6040,7 @@ msgstr "Odstrániť obrázok"
 msgid "Delete column"
 msgstr "Vymazať stĺpec"
 
-#: db/seeds/permissions.rb:282
+#: db/seeds/permissions.rb:288
 msgid "Delete existing data of your system."
 msgstr "Odstrániť existujúce údaje z vášho systému."
 
@@ -6119,7 +6156,7 @@ msgstr "Doručenie zlyhalo:"
 msgid "Delivery failed: \"%s\""
 msgstr "Doručenie zlyhalo: \"%s\""
 
-#: db/seeds/object_manager_attributes.rb:1206
+#: db/seeds/object_manager_attributes.rb:1207
 msgid "Department"
 msgstr "Oddelenie"
 
@@ -6211,7 +6248,7 @@ msgid "Detect Duplicate Ticket Creation"
 msgstr "Detegovať vytvorenie duplicitného tiketu"
 
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:158
-#: db/seeds/object_manager_attributes.rb:734
+#: db/seeds/object_manager_attributes.rb:735
 #, fuzzy
 #| msgid "Language"
 msgid "Detected Language"
@@ -6240,7 +6277,7 @@ msgstr "Zariadenie bolo odstránené."
 #: app/assets/javascripts/app/views/profile/devices.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/devices.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:34
-#: db/seeds/permissions.rb:458
+#: db/seeds/permissions.rb:464
 msgid "Devices"
 msgstr "Zariadenia"
 
@@ -6430,7 +6467,7 @@ msgstr "Nešifrovať e-mail"
 msgid "Do not sign email"
 msgstr "Nepodpisovať e-mail"
 
-#: db/seeds/settings.rb:5972
+#: db/seeds/settings.rb:5990
 msgid "Do not update any tickets."
 msgstr "Neaktualizovať žiadne tikety."
 
@@ -6474,7 +6511,7 @@ msgstr "Chcete ich vybaviť pred uzavretím tohto tiketu?"
 msgid "Document file"
 msgstr ""
 
-#: db/seeds/object_manager_attributes.rb:1790
+#: db/seeds/object_manager_attributes.rb:1791
 msgid "Domain"
 msgstr "Doména"
 
@@ -6485,7 +6522,7 @@ msgstr "Doména"
 msgid "Domain Alias"
 msgstr "Alias domény"
 
-#: db/seeds/object_manager_attributes.rb:1790
+#: db/seeds/object_manager_attributes.rb:1791
 msgid "Domain based assignment"
 msgstr "Priradenie na základe domény"
 
@@ -6592,7 +6629,7 @@ msgstr "Návrhy"
 msgid "Drag and drop to reorder ticket overview list items."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:237
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:242
 msgid "Drag and drop to reorder your tabs."
 msgstr "Ťahaním a púšťaním môžete meniť poradie kariet."
 
@@ -6822,7 +6859,7 @@ msgstr "Verzia Elasticsearch"
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceZendesk.vue:34
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/email.ts:11
 #: app/frontend/shared/entities/ticket-article/action/plugins/email.ts:167
-#: db/seeds/object_manager_attributes.rb:902 db/seeds/permissions.rb:131
+#: db/seeds/object_manager_attributes.rb:903 db/seeds/permissions.rb:131
 #: public/assets/form/form.js:32
 msgid "Email"
 msgstr "E-mail"
@@ -7011,7 +7048,7 @@ msgstr ""
 "a hesla). Každý používateľ si musí vytvoriť vlastné prístupové tokeny v "
 "používateľskom profile."
 
-#: db/seeds/settings.rb:5907
+#: db/seeds/settings.rb:5925
 msgid "Enable Recovery Codes"
 msgstr "Povoliť obnovovacie kódy"
 
@@ -7034,7 +7071,7 @@ msgstr "Povoliť automatické priradenie pre nasledujúce zhodujúce sa tikety."
 msgid "Enable automatic assignment the first time an agent opens a ticket."
 msgstr ""
 
-#: db/seeds/settings.rb:5990
+#: db/seeds/settings.rb:6008
 #, fuzzy
 #| msgid "Enable Chat"
 msgid "Enable checklists."
@@ -7063,14 +7100,18 @@ msgstr ""
 "bude pridaný na koniec vašej odpovede. Ak chcete citovať iba určitú frázu, "
 "stačí označiť text a stlačiť odpovedať (táto funkcia je vždy dostupná)."
 
-#: db/seeds/settings.rb:6017
+#: db/seeds/settings.rb:6035
 msgid ""
 "Enable or disable self-shutdown of Zammad processes after significant "
 "configuration changes. This should only be used if the controlling process "
 "manager like systemd or docker supports an automatic restart policy."
 msgstr ""
 
-#: db/seeds/settings.rb:6070
+#: db/seeds/settings.rb:6119
+msgid "Enable or disable the AI assistance text tools."
+msgstr ""
+
+#: db/seeds/settings.rb:6088
 msgid "Enable or disable the AI assistance ticket summary."
 msgstr ""
 
@@ -7134,7 +7175,7 @@ msgstr ""
 "Povoľuje zobrazenie varovania používateľom počas vytvárania tiketu, ak už "
 "existuje tiket s rovnakými atribútmi."
 
-#: db/seeds/settings.rb:5788
+#: db/seeds/settings.rb:5806
 msgid ""
 "Enables button for user authentication via %s. The button will redirect to /"
 "auth/sso on user interaction."
@@ -7287,11 +7328,11 @@ msgstr "Koncový bod"
 msgid "Endpoint Settings"
 msgstr "Nastavenia koncového bodu"
 
-#: db/seeds/settings.rb:5934
+#: db/seeds/settings.rb:5952
 msgid "Enforce the setup of the two-factor authentication"
 msgstr "Vynútiť nastavenie dvojfaktorovej autentifikácie"
 
-#: db/seeds/settings.rb:5941
+#: db/seeds/settings.rb:5959
 msgid "Enforced for user roles"
 msgstr "Vynútené pre používateľské roly"
 
@@ -7332,7 +7373,7 @@ msgstr "Zadajte platnú e-mailovú adresu."
 msgid "Enter credentials"
 msgstr ""
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:157
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:184
 #, fuzzy
 msgid "Enter link URL"
 msgstr "Zadajte URL adresu odkazu"
@@ -7656,15 +7697,15 @@ msgstr "Vylúčení používatelia"
 msgid "Exchange"
 msgstr "Exchange"
 
-#: db/seeds/settings.rb:4941
+#: db/seeds/settings.rb:4959
 msgid "Exchange OAuth"
 msgstr "Exchange OAuth"
 
-#: db/seeds/settings.rb:4928
+#: db/seeds/settings.rb:4946
 msgid "Exchange config"
 msgstr ""
 
-#: db/seeds/settings.rb:4954
+#: db/seeds/settings.rb:4972
 msgid "Exchange integration"
 msgstr ""
 
@@ -7705,6 +7746,13 @@ msgstr "Existujúce tikety"
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:262
 msgid "Existing tickets (open)"
 msgstr "Existujúce tikety (otvorené)"
+
+#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:14
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:171
+#, fuzzy
+#| msgid "Expand sidebar"
+msgid "Expand"
+msgstr "Rozbaliť bočný panel"
 
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar.vue:198
 msgid "Expand sidebar"
@@ -7866,7 +7914,7 @@ msgid "Failed to upload."
 msgstr "Nahrávanie zlyhalo."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/fax.ts:7
-#: db/seeds/object_manager_attributes.rb:1074
+#: db/seeds/object_manager_attributes.rb:1075
 msgid "Fax"
 msgstr "Fax"
 
@@ -7917,7 +7965,7 @@ msgstr "Súbor '%s' sa nahráva"
 msgid "File format is not allowed: %s"
 msgstr "Formát súboru nie je povolený: %s"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:858
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:867
 #: app/frontend/shared/components/Form/fields/FieldFile/composable/useFileValidation.ts:26
 #: lib/validations/ticket_article_validator/whatsapp_message.rb:38
 msgid "File is too big. %s has to be %s or smaller."
@@ -8013,7 +8061,7 @@ msgstr "Prvé kroky"
 
 #: app/assets/javascripts/app/models/user.coffee:9
 #: app/frontend/apps/desktop/composables/authentication/useSignupForm.ts:14
-#: db/seeds/object_manager_attributes.rb:798
+#: db/seeds/object_manager_attributes.rb:799
 msgid "First name"
 msgstr "Krstné meno"
 
@@ -8022,6 +8070,11 @@ msgstr "Krstné meno"
 #: app/graphql/gql/types/overview_type.rb:109
 msgid "First response"
 msgstr "Prvá odpoveď"
+
+#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:12
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:165
+msgid "Fix spelling and grammar"
+msgstr ""
 
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:3
 msgid "Fixed Email Accounts"
@@ -8051,12 +8104,12 @@ msgid "Folders"
 msgstr "Adresáre"
 
 #: app/assets/javascripts/app/models/group.coffee:9
-#: db/seeds/object_manager_attributes.rb:2130
+#: db/seeds/object_manager_attributes.rb:2131
 msgid "Follow-up for closed ticket possible or not."
 msgstr ""
 
 #: app/assets/javascripts/app/models/group.coffee:9
-#: db/seeds/object_manager_attributes.rb:2120
+#: db/seeds/object_manager_attributes.rb:2121
 msgid "Follow-up possible"
 msgstr ""
 
@@ -8152,7 +8205,7 @@ msgstr "Formátovať ako //preškrtnuté//"
 msgid "Format as _underlined_"
 msgstr "Formátovať ako _podčiarknuté_"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:98
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:125
 #, fuzzy
 #| msgid "Format as |bold|"
 msgid "Format as bold"
@@ -8170,7 +8223,7 @@ msgstr "Formátovať ako h2 nadpis"
 msgid "Format as h3 heading"
 msgstr "Formátovať ako h3 nadpis"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:106
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:133
 #, fuzzy
 #| msgid "Format as ||italic||"
 msgid "Format as italic"
@@ -8180,13 +8233,13 @@ msgstr "Formátovať ako kurzíva"
 msgid "Format as ordered list"
 msgstr "Formátovať ako zoradený zoznam"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:122
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:149
 #, fuzzy
 #| msgid "Format as //strikethrough//"
 msgid "Format as strikethrough"
 msgstr "Formátovať ako preškrtnuté"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:114
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:141
 #, fuzzy
 #| msgid "Format as _underlined_"
 msgid "Format as underlined"
@@ -8281,7 +8334,7 @@ msgstr "Celé meno"
 msgid "Fully Qualified Domain Name"
 msgstr "Plne kvalifikovaný názov domény (FQDN)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:686
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:678
 msgid "GET"
 msgstr "GET"
 
@@ -8331,6 +8384,12 @@ msgstr ""
 msgid "Generating recovery codes…"
 msgstr "Generujú sa obnovovacie kódy…"
 
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantLoadingBanner.vue:44
+#, fuzzy
+#| msgid "Generating recovery codes…"
+msgid "Generating text…"
+msgstr "Generujú sa obnovovacie kódy…"
+
 #: app/assets/javascripts/app/controllers/_integration/cti.coffee:264
 msgid "Generic API to integrate VoIP service provider with real-time push."
 msgstr ""
@@ -8360,7 +8419,7 @@ msgstr "Dostať upozornenie"
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:11
-#: db/seeds/settings.rb:5899
+#: db/seeds/settings.rb:5917
 msgid "Get the security code from the authenticator app on your device."
 msgstr ""
 "Získajte bezpečnostný kód z autentifikačnej aplikácie na vašom zariadení."
@@ -8391,11 +8450,11 @@ msgstr ""
 msgid "GitHub OAuth Applications"
 msgstr "GitHub OAuth Aplikácie"
 
-#: db/seeds/settings.rb:5090
+#: db/seeds/settings.rb:5108
 msgid "GitHub config"
 msgstr "GitHub konfigurácia"
 
-#: db/seeds/settings.rb:5063
+#: db/seeds/settings.rb:5081
 msgid "GitHub integration"
 msgstr ""
 
@@ -8426,11 +8485,11 @@ msgstr ""
 msgid "GitLab Applications"
 msgstr "GitLab aplikácie"
 
-#: db/seeds/settings.rb:5048
+#: db/seeds/settings.rb:5066
 msgid "GitLab config"
 msgstr ""
 
-#: db/seeds/settings.rb:5021
+#: db/seeds/settings.rb:5039
 msgid "GitLab integration"
 msgstr ""
 
@@ -8620,7 +8679,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/models/role.coffee:8
 #: app/assets/javascripts/app/models/user.coffee:13
-#: db/seeds/object_manager_attributes.rb:1622
+#: db/seeds/object_manager_attributes.rb:1623
 msgid "Group permissions"
 msgstr "Oprávnenia skupiny"
 
@@ -8670,21 +8729,21 @@ msgstr "Skupiny sú …"
 msgid "HMAC SHA1 Signature Token"
 msgstr ""
 
-#: db/seeds/settings.rb:5481
+#: db/seeds/settings.rb:5499
 msgid "HTML Email CSS Font"
 msgstr "HTML Email CSS Font"
 
-#: db/seeds/settings.rb:5493
+#: db/seeds/settings.rb:5511
 msgid "HTML Sanitizer Processing Timeout"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:736
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:728
 #, fuzzy
 #| msgid "Authentication"
 msgid "HTTP Authentication"
 msgstr "HTTP autentifikácia"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:770
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:762
 #, fuzzy
 #| msgid "Authentication"
 msgid "HTTP Authentication token"
@@ -8702,13 +8761,13 @@ msgstr "HTTP Basic Authentication Password"
 msgid "HTTP Basic Authentication Username"
 msgstr "HTTP Basic Authentication Username"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:759
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:751
 #, fuzzy
 #| msgid "Authentication"
 msgid "HTTP Basic Authentication password"
 msgstr "HTTP Basic Authentication password"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:748
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:740
 #, fuzzy
 #| msgid "Authentication"
 msgid "HTTP Basic Authentication username"
@@ -8951,13 +9010,13 @@ msgstr ""
 msgid "Highlight icon"
 msgstr ""
 
-#: db/seeds/settings.rb:5645
+#: db/seeds/settings.rb:5663
 #, fuzzy
 msgid "Highlights if the note a user is writing is public or private"
 msgstr ""
 "Zvýrazňuje, či je poznámka, ktorú používateľ píše, verejná alebo súkromná"
 
-#: db/seeds/settings.rb:5642
+#: db/seeds/settings.rb:5660
 msgid "Hint for adding an article to an existing ticket."
 msgstr "Nápoveda pre pridanie článku do existujúceho tiketu."
 
@@ -9094,7 +9153,7 @@ msgstr "IMAP"
 msgid "Icinga"
 msgstr "Icinga"
 
-#: db/seeds/settings.rb:4471
+#: db/seeds/settings.rb:4489
 msgid "Icinga integration"
 msgstr ""
 
@@ -9274,7 +9333,7 @@ msgstr "Obrazový súbor"
 
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/popup_image.coffee:18
 #: app/assets/javascripts/app/lib/app_post/image_service.coffee:134
-#: app/assets/javascripts/app/lib/base/jquery.contenteditable.js:360
+#: app/assets/javascripts/app/lib/base/jquery.contenteditable.js:421
 msgid "Image file size is too large, please try inserting a smaller file."
 msgstr ""
 "Veľkosť súboru s obrázkom je príliš veľká, prosím, skúste vložiť menší súbor."
@@ -9383,6 +9442,13 @@ msgstr "Dôležité"
 #: app/assets/javascripts/app/controllers/widget/import_result.coffee:13
 msgid "Imported"
 msgstr "Importované"
+
+#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:10
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:159
+#, fuzzy
+#| msgid "Remove formatting"
+msgid "Improve writing"
+msgstr "Odstrániť formátovanie"
 
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:22
 msgid "In order for Zammad to access %s, the %s API token must be stored here:"
@@ -9518,7 +9584,7 @@ msgstr "Zvýšiť hodnotu minút"
 msgid "Increment seconds value"
 msgstr "Zvýšiť hodnotu sekúnd"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:235
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:262
 msgid "Indent text"
 msgstr "Odsadiť text"
 
@@ -9567,7 +9633,7 @@ msgstr "Vložený obsah sa nepodarilo vygenerovať."
 msgid "Input field must be text, password, tel, fax, email or url type."
 msgstr "Vstupné pole musí byť typu text, heslo, tel, fax, e-mail alebo url."
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:319
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:346
 msgid "Insert code block"
 msgstr ""
 
@@ -9579,7 +9645,7 @@ msgstr "Vložiť stĺpec za"
 msgid "Insert column before"
 msgstr "Vložiť stĺpec pred"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:308
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:335
 #, fuzzy
 #| msgid "New text module"
 msgid "Insert inline code"
@@ -9593,15 +9659,15 @@ msgstr "Vložiť riadok nad"
 msgid "Insert row below"
 msgstr "Vložiť riadok pod"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:291
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:318
 msgid "Insert table"
 msgstr "Vložiť tabuľku"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:342
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:369
 msgid "Insert text from Knowledge Base article"
 msgstr "Vložiť text z článku znalostnej databázy"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:350
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:377
 msgid "Insert text from text module"
 msgstr "Vložiť text z textového modulu"
 
@@ -9650,7 +9716,7 @@ msgid "Integer field"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/integrations.coffee:3
-#: db/seeds/permissions.rb:239
+#: db/seeds/permissions.rb:245
 msgid "Integrations"
 msgstr "Integrácie"
 
@@ -9952,7 +10018,7 @@ msgstr ""
 msgid "It is not possible to delete your current account."
 msgstr ""
 
-#: app/models/ticket.rb:277
+#: app/models/ticket.rb:279
 msgid "It is not possible to merge into an already merged ticket."
 msgstr "Nie je možné zlúčiť do už zlúčeného tiketu."
 
@@ -10069,7 +10135,7 @@ msgstr "Databáza znalostí"
 msgid "Knowledge Base Answer"
 msgstr ""
 
-#: db/seeds/permissions.rb:362
+#: db/seeds/permissions.rb:368
 msgid "Knowledge Base Editor"
 msgstr ""
 
@@ -10079,23 +10145,23 @@ msgstr ""
 msgid "Knowledge Base Feed"
 msgstr "Feed databázy znalostí"
 
-#: db/seeds/permissions.rb:368
+#: db/seeds/permissions.rb:374
 msgid "Knowledge Base Reader"
 msgstr ""
 
-#: db/seeds/settings.rb:5599
+#: db/seeds/settings.rb:5617
 #, fuzzy
 #| msgid "Knowledge Base"
 msgid "Knowledge Base active"
 msgstr "Databáza znalostí je aktívna"
 
-#: db/seeds/settings.rb:5614
+#: db/seeds/settings.rb:5632
 #, fuzzy
 #| msgid "Knowledge Base"
 msgid "Knowledge Base active publicly"
 msgstr "Databáza znalostí je verejne aktívna"
 
-#: db/seeds/settings.rb:5588
+#: db/seeds/settings.rb:5606
 msgid "Knowledge Base multilingual support"
 msgstr ""
 
@@ -10109,7 +10175,7 @@ msgstr "LDAP"
 msgid "LDAP Host"
 msgstr "LDAP Host"
 
-#: db/seeds/settings.rb:4901
+#: db/seeds/settings.rb:4919
 msgid "LDAP integration"
 msgstr ""
 
@@ -10117,7 +10183,7 @@ msgstr ""
 msgid "LDAP integration for user management."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:937
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:929
 msgid "Label"
 msgstr "Štítok"
 
@@ -10137,7 +10203,7 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/locale.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLocale.vue:13
 #: app/frontend/apps/mobile/pages/account/views/AccountOverview.vue:157
-#: db/seeds/permissions.rb:420
+#: db/seeds/permissions.rb:426
 msgid "Language"
 msgstr "Jazyk"
 
@@ -10236,7 +10302,7 @@ msgstr "Naposledy prihlásený"
 
 #: app/assets/javascripts/app/models/user.coffee:10
 #: app/frontend/apps/desktop/composables/authentication/useSignupForm.ts:23
-#: db/seeds/object_manager_attributes.rb:850
+#: db/seeds/object_manager_attributes.rb:851
 msgid "Last name"
 msgstr "Priezvisko"
 
@@ -10310,7 +10376,7 @@ msgstr "Obmedziť tikety na deň"
 msgid "Limited Visibility"
 msgstr "Viditeľnosť"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:267
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:259
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/embed_video_button.coffee:11
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/link_button.coffee:11
 #: app/assets/javascripts/app/controllers/ticket_link_add.coffee:7
@@ -10403,7 +10469,7 @@ msgstr "Moje čakajúce požiadavky"
 msgid "Link removed successfully"
 msgstr "Odkaz úspešne odstránený"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:267
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:259
 #, fuzzy
 #| msgid "Templates"
 msgid "Link template"
@@ -10426,7 +10492,7 @@ msgstr "Šablóny"
 #: app/assets/javascripts/app/views/widget/user.jst.eco:34
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/linkedAccounts.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:56
-#: db/seeds/permissions.rb:472
+#: db/seeds/permissions.rb:478
 msgid "Linked Accounts"
 msgstr "Prepojené účty"
 
@@ -10460,7 +10526,7 @@ msgstr ""
 msgid "Links"
 msgstr "Odkazy"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:221
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:225
 #, fuzzy
 msgid "List of all user taskbar tabs"
 msgstr "Zoznam všetkých kariet na paneli úloh používateľa"
@@ -10566,7 +10632,7 @@ msgstr "Prihláste sa do %s"
 #: app/assets/javascripts/app/views/maintenance.jst.eco:25
 #: app/controllers/time_accountings_controller.rb:101
 #: app/frontend/apps/desktop/components/User/UserListTable.vue:57
-#: db/seeds/object_manager_attributes.rb:766
+#: db/seeds/object_manager_attributes.rb:767
 msgid "Login"
 msgstr "Prihlásenie"
 
@@ -10655,7 +10721,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/maintenance.coffee:3
 #: app/assets/javascripts/app/views/maintenance.jst.eco:3
-#: db/seeds/permissions.rb:287
+#: db/seeds/permissions.rb:293
 msgid "Maintenance"
 msgstr "Údržba"
 
@@ -10682,7 +10748,7 @@ msgstr "Spravovať"
 msgid "Manage AI settings of your system."
 msgstr "Spravovať nastavenia tiketov vášho systému."
 
-#: db/seeds/permissions.rb:246
+#: db/seeds/permissions.rb:252
 msgid "Manage API of your system."
 msgstr "Spravovať API vášho systému."
 
@@ -10745,17 +10811,23 @@ msgstr "Správa dvojfaktorového overovania"
 msgid "Manage WhatsApp channel of your system."
 msgstr "Spravovať WhatsApp kanál vášho systému."
 
+#: db/seeds/permissions.rb:240
+#, fuzzy
+#| msgid "Manage ticket macros of your system."
+msgid "Manage Zammad Smart Assist text tools of your system."
+msgstr "Spravovať makrá tiketov vášho systému."
+
 #: db/seeds/permissions.rb:234
 #, fuzzy
 #| msgid "Manage ticket macros of your system."
 msgid "Manage Zammad Smart Assist ticket summarization of your system."
 msgstr "Spravovať makrá tiketov vášho systému."
 
-#: db/seeds/permissions.rb:511
+#: db/seeds/permissions.rb:517
 msgid "Manage access to New BETA UI switch."
 msgstr ""
 
-#: db/seeds/permissions.rb:306
+#: db/seeds/permissions.rb:312
 msgid "Manage active user sessions of your system."
 msgstr "Spravovať aktívne používateľské relácie vášho systému."
 
@@ -10791,7 +10863,7 @@ msgstr "Spravovať chat kanál vášho systému."
 msgid "Manage core system settings."
 msgstr ""
 
-#: db/seeds/permissions.rb:270
+#: db/seeds/permissions.rb:276
 msgid "Manage core workflows of your system."
 msgstr ""
 
@@ -10807,73 +10879,73 @@ msgstr "Spravovať formulárový kanál vášho systému."
 msgid "Manage groups of your system."
 msgstr "Spravovať skupiny vášho systému."
 
-#: db/seeds/permissions.rb:240
+#: db/seeds/permissions.rb:246
 msgid "Manage integrations of your system."
 msgstr "Spravovať integrácie vášho systému."
 
-#: db/seeds/permissions.rb:288
+#: db/seeds/permissions.rb:294
 msgid "Manage maintenance mode of your system."
 msgstr "Spravovať režim údržby vášho systému."
 
-#: db/seeds/permissions.rb:294
+#: db/seeds/permissions.rb:300
 msgid "Manage monitoring of your system."
 msgstr "Spravovať monitorovanie vášho systému."
 
-#: db/seeds/permissions.rb:252
+#: db/seeds/permissions.rb:258
 msgid "Manage object attributes of your system."
 msgstr "Spravovať atribúty objektov vášho systému."
 
-#: db/seeds/permissions.rb:300
+#: db/seeds/permissions.rb:306
 msgid "Manage packages of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:466
+#: db/seeds/permissions.rb:472
 msgid "Manage personal API tokens."
 msgstr "Spravovať osobné API kľúče."
 
-#: db/seeds/permissions.rb:414
+#: db/seeds/permissions.rb:420
 msgid "Manage personal appearance settings."
 msgstr "Spravovať nastavenia osobného vzhľadu."
 
-#: db/seeds/permissions.rb:428
+#: db/seeds/permissions.rb:434
 msgid "Manage personal avatar settings."
 msgstr "Spravovať osobné nastavenia profilového obrázka."
 
-#: db/seeds/permissions.rb:500
+#: db/seeds/permissions.rb:506
 msgid "Manage personal calendar."
 msgstr "Spravovať osobný kalendár."
 
-#: db/seeds/permissions.rb:459
+#: db/seeds/permissions.rb:465
 msgid "Manage personal devices and sessions."
 msgstr "Spravovať osobné zariadenia a relácie."
 
-#: db/seeds/permissions.rb:421
+#: db/seeds/permissions.rb:427
 msgid "Manage personal language settings."
 msgstr "Spravovať osobné nastavenia jazyka."
 
-#: db/seeds/permissions.rb:473
+#: db/seeds/permissions.rb:479
 msgid "Manage personal linked accounts."
 msgstr "Spravovať osobné prepojené účty."
 
-#: db/seeds/permissions.rb:480
+#: db/seeds/permissions.rb:486
 msgid "Manage personal notifications settings."
 msgstr "Spravovať nastavenia osobných upozornení."
 
-#: db/seeds/permissions.rb:435
+#: db/seeds/permissions.rb:441
 msgid "Manage personal out of office settings."
 msgstr "Spravovať osobné nastavenia mimo kancelárie."
 
-#: db/seeds/permissions.rb:490
+#: db/seeds/permissions.rb:496
 msgid "Manage personal overviews."
 msgstr ""
 
-#: db/seeds/permissions.rb:407
+#: db/seeds/permissions.rb:413
 #, fuzzy
 #| msgid "Personal Settings"
 msgid "Manage personal settings."
 msgstr "Spravovať osobné nastavenia."
 
-#: db/seeds/permissions.rb:452
+#: db/seeds/permissions.rb:458
 msgid "Manage personal two-factor authentication methods."
 msgstr "Spravovať osobné metódy dvojfaktorovej autentifikácie."
 
@@ -10897,7 +10969,7 @@ msgstr "Spravovať plánovače vášho systému."
 msgid "Manage security settings of your system."
 msgstr "Spravovať bezpečnostné nastavenia vášho systému."
 
-#: db/seeds/permissions.rb:312
+#: db/seeds/permissions.rb:318
 msgid "Manage system report of your system."
 msgstr ""
 
@@ -10909,7 +10981,7 @@ msgstr "Spravovať textové moduly vášho systému."
 msgid "Manage ticket auto assignment settings of your system."
 msgstr "Spravovať nastavenia automatického priraďovania tiketov vášho systému."
 
-#: db/seeds/permissions.rb:318
+#: db/seeds/permissions.rb:324
 msgid "Manage ticket checklists of your system."
 msgstr "Spravovať kontrolné zoznamy tiketov vášho systému."
 
@@ -10925,7 +10997,7 @@ msgstr "Spravovať makrá tiketov vášho systému."
 msgid "Manage ticket overviews of your system."
 msgstr "Spravovať prehľady tiketov vášho systému."
 
-#: db/seeds/permissions.rb:264
+#: db/seeds/permissions.rb:270
 msgid "Manage ticket priorities of your system."
 msgstr "Spravovať priority tiketov vášho systému."
 
@@ -10933,7 +11005,7 @@ msgstr "Spravovať priority tiketov vášho systému."
 msgid "Manage ticket settings of your system."
 msgstr "Spravovať nastavenia tiketov vášho systému."
 
-#: db/seeds/permissions.rb:258
+#: db/seeds/permissions.rb:264
 msgid "Manage ticket states of your system."
 msgstr "Spravovať stavy tiketov vášho systému."
 
@@ -10949,7 +11021,7 @@ msgstr "Spravovať šablóny tiketov vášho systému."
 msgid "Manage time accounting settings of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:276
+#: db/seeds/permissions.rb:282
 msgid "Manage translations of your system."
 msgstr "Spravovať preklady vášho systému."
 
@@ -11061,7 +11133,7 @@ msgstr "Max. klientov na čakacej listine"
 msgid "Max. concurrent chats"
 msgstr "Max. súbežných chatov"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:257
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:249
 msgid "Max. length"
 msgstr "Max. dĺžka"
 
@@ -11069,7 +11141,7 @@ msgstr "Max. dĺžka"
 msgid "Max. length of the subject in an email reply."
 msgstr "Max. dĺžka predmetu v odpovedi na e-mail."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:387
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:379
 msgid "Maximal"
 msgstr "Maximálne"
 
@@ -11150,7 +11222,7 @@ msgstr "Členovia"
 msgid "Mention for"
 msgstr "aktuálny používateľ"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:334
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:361
 msgid "Mention user"
 msgstr "Spomenúť používateľa"
 
@@ -11252,7 +11324,7 @@ msgstr "Metadáta"
 msgid "Method"
 msgstr "Metóda"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:686
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:678
 msgid "Method (AJAX endpoint)"
 msgstr "Method (AJAX endpoint)"
 
@@ -11327,7 +11399,7 @@ msgstr "Miľník"
 msgid "Min. size of number"
 msgstr "Min. veľkosť čísla"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:378
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:370
 msgid "Minimal"
 msgstr "Minimálne"
 
@@ -11364,7 +11436,7 @@ msgid "Mismatching phone number id."
 msgstr ""
 
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:23
-#: db/seeds/object_manager_attributes.rb:1034
+#: db/seeds/object_manager_attributes.rb:1035
 msgid "Mobile"
 msgstr "Mobil"
 
@@ -11392,13 +11464,13 @@ msgstr "Pondelok"
 msgid "Monit"
 msgstr "Monit"
 
-#: db/seeds/settings.rb:4800
+#: db/seeds/settings.rb:4818
 msgid "Monit integration"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/monitoring.coffee:3
 #: app/assets/javascripts/app/views/monitoring.jst.eco:3
-#: db/seeds/permissions.rb:293
+#: db/seeds/permissions.rb:299
 msgid "Monitoring"
 msgstr "Monitorovanie"
 
@@ -11530,7 +11602,7 @@ msgstr "Moje rozpracované tikety"
 msgid "Nagios"
 msgstr "Nagios"
 
-#: db/seeds/settings.rb:4569
+#: db/seeds/settings.rb:4587
 msgid "Nagios integration"
 msgstr ""
 
@@ -11599,7 +11671,7 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:192
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout/IdoitObjectList.vue:20
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:165
-#: db/seeds/object_manager_attributes.rb:1704 public/assets/form/form.js:24
+#: db/seeds/object_manager_attributes.rb:1705 public/assets/form/form.js:24
 msgid "Name"
 msgstr "Meno"
 
@@ -11722,7 +11794,7 @@ msgstr "Nový atribút"
 msgid "New BETA UI"
 msgstr ""
 
-#: db/seeds/permissions.rb:510
+#: db/seeds/permissions.rb:516
 msgid "New BETA UI Switch"
 msgstr ""
 
@@ -12013,7 +12085,7 @@ msgstr ""
 msgid "No AI provider is currently set up. Please contact your administrator."
 msgstr "Heslo sa nepodarilo nastaviť. Obráťte sa na svojho administrátora."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:924
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:916
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:42
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:5
 #: app/assets/javascripts/app/views/exchange/token_information.jst.eco:16
@@ -12300,7 +12372,7 @@ msgstr ""
 msgid "No translation for this locale available"
 msgstr ""
 
-#: app/models/ticket.rb:400
+#: app/models/ticket.rb:402
 msgid "No triggers active"
 msgstr "Žiadne aktívne spúšťače"
 
@@ -12408,7 +12480,7 @@ msgstr "Nie je dostupné vo vybranom jazyku"
 msgid "Not configured"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabNotFound.vue:42
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabNotFound.vue:43
 msgid "Not found"
 msgstr "Nenájdené"
 
@@ -12441,7 +12513,7 @@ msgstr "Nenašli sa žiadne výsledky"
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:106
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/note.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/note.ts:14
-#: db/seeds/object_manager_attributes.rb:1532
+#: db/seeds/object_manager_attributes.rb:1533
 msgid "Note"
 msgstr "Poznámka"
 
@@ -12470,7 +12542,7 @@ msgstr ""
 #: app/assets/javascripts/app/models/job.coffee:15
 #: app/assets/javascripts/app/models/role.coffee:10
 #: app/assets/javascripts/app/models/signature.coffee:26
-#: db/seeds/object_manager_attributes.rb:1539
+#: db/seeds/object_manager_attributes.rb:1540
 msgid "Notes are visible to agents only, never to customers."
 msgstr "Poznámky sú viditeľné iba pre agentov, nikdy nie pre zákazníkov."
 
@@ -12547,7 +12619,7 @@ msgstr "Zvuk upozornenia"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/notifications.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:34
 #: app/frontend/apps/mobile/pages/online-notification/routes.ts:8
-#: db/seeds/permissions.rb:479
+#: db/seeds/permissions.rb:485
 msgid "Notifications"
 msgstr "Upozornenia"
 
@@ -12664,7 +12736,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/object_manager.coffee:330
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoit.vue:56
-#: db/seeds/permissions.rb:251
+#: db/seeds/permissions.rb:257
 msgid "Objects"
 msgstr "Objekty"
 
@@ -12730,7 +12802,7 @@ msgstr ""
 msgid "Only %s attachment allowed"
 msgstr "Len %s príloh povolených"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:823
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:832
 msgid "Only %s attachment allowed."
 msgstr "Povolená je iba %s príloha."
 
@@ -13135,7 +13207,7 @@ msgstr "Ďalšie nastavenia"
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/outOfOffice.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:126
-#: db/seeds/permissions.rb:434
+#: db/seeds/permissions.rb:440
 msgid "Out of Office"
 msgstr "Mimo kancelárie"
 
@@ -13199,7 +13271,7 @@ msgstr "Odchádzajúci:"
 msgid "Outdated Browser"
 msgstr "Zastaraný prehliadač"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:246
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:273
 msgid "Outdent text"
 msgstr ""
 
@@ -13277,15 +13349,15 @@ msgstr ""
 msgid "PGP"
 msgstr "PGP"
 
-#: db/seeds/settings.rb:5774
+#: db/seeds/settings.rb:5792
 msgid "PGP Recipient Alias Configuration"
 msgstr ""
 
-#: db/seeds/settings.rb:5760
+#: db/seeds/settings.rb:5778
 msgid "PGP config"
 msgstr "PGP konfigurácia"
 
-#: db/seeds/settings.rb:5732
+#: db/seeds/settings.rb:5750
 #, fuzzy
 #| msgid "Integrations"
 msgid "PGP integration"
@@ -13304,7 +13376,7 @@ msgid "Package"
 msgstr "Balíček"
 
 #: app/assets/javascripts/app/controllers/package.coffee:3
-#: db/seeds/permissions.rb:299
+#: db/seeds/permissions.rb:305
 msgid "Packages"
 msgstr "Balíčky"
 
@@ -13338,7 +13410,7 @@ msgstr "Vyžaduje sa parameter 'data' alebo 'file'."
 msgid "Parent"
 msgstr "Nadriadený"
 
-#: db/seeds/object_manager_attributes.rb:2054
+#: db/seeds/object_manager_attributes.rb:2055
 #, fuzzy
 #| msgid "Parent"
 msgid "Parent group"
@@ -13366,7 +13438,7 @@ msgstr "Rodičovská skupina"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/password.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:32
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:52
-#: db/seeds/object_manager_attributes.rb:1446 db/seeds/permissions.rb:444
+#: db/seeds/object_manager_attributes.rb:1447 db/seeds/permissions.rb:450
 msgid "Password"
 msgstr "Heslo"
 
@@ -13539,7 +13611,7 @@ msgstr "Poradie osobných prehľadov bolo obnovené."
 #: app/assets/javascripts/app/controllers/cti.coffee:322
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/phone.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/phone.ts:12
-#: db/seeds/object_manager_attributes.rb:994 db/seeds/permissions.rb:338
+#: db/seeds/object_manager_attributes.rb:995 db/seeds/permissions.rb:344
 msgid "Phone"
 msgstr "Telefón"
 
@@ -13592,15 +13664,15 @@ msgstr ""
 msgid "Placetel"
 msgstr "Placetel"
 
-#: db/seeds/settings.rb:5382
+#: db/seeds/settings.rb:5400
 msgid "Placetel Token"
 msgstr ""
 
-#: db/seeds/settings.rb:5368
+#: db/seeds/settings.rb:5386
 msgid "Placetel config"
 msgstr ""
 
-#: db/seeds/settings.rb:5340
+#: db/seeds/settings.rb:5358
 msgid "Placetel integration"
 msgstr ""
 
@@ -13660,7 +13732,7 @@ msgid ""
 "triggers and schedulers)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:342
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:345
 msgid "Please enter a text."
 msgstr "Zadajte prosím text."
 
@@ -13746,6 +13818,12 @@ msgstr "Prosím, vyberte si aspoň jeden priečinok."
 #: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:75
 msgid "Please select at least one ticket overview"
 msgstr "Prosím, vyberte aspoň jeden prehľad tiketov"
+
+#: app/assets/javascripts/app/lib/mixins/text_tools.coffee:39
+#, fuzzy
+#| msgid "Please select a ticket to merge into."
+msgid "Please select some text first."
+msgstr "Vyberte tiket, do ktorého chcete zlúčiť."
 
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:5
 msgid ""
@@ -13857,7 +13935,7 @@ msgstr ""
 "podpisovanie, šifrovanie a dešifrovanie správ za účelom zvýšenia bezpečnosti "
 "e-mailovej komunikácie."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:852
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:844
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:20
 #: app/assets/javascripts/app/views/channel/form.jst.eco:135
 #: app/assets/javascripts/app/views/generic/application_selector.jst.eco:15
@@ -14000,7 +14078,7 @@ msgid "Profile language updated successfully."
 msgstr "Jazyk profilu bol úspešne aktualizovaný."
 
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/personal-settings.ts:7
-#: db/seeds/permissions.rb:406
+#: db/seeds/permissions.rb:412
 msgid "Profile settings"
 msgstr "Profilové nastavenia"
 
@@ -14421,7 +14499,7 @@ msgstr "Odstrániť autentifikačnú aplikáciu"
 msgid "Remove checklist"
 msgstr "Odstrániť zoznam"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:283
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:310
 msgid "Remove formatting"
 msgstr "Odstrániť formátovanie"
 
@@ -14494,7 +14572,7 @@ msgid "Reopening rate"
 msgstr "Miera znovuotvorenia"
 
 #: app/assets/javascripts/app/models/group.coffee:10
-#: db/seeds/object_manager_attributes.rb:2157
+#: db/seeds/object_manager_attributes.rb:2158
 #, fuzzy
 #| msgid "Reopening rate"
 msgid "Reopening time in days"
@@ -14601,7 +14679,7 @@ msgstr "Chýba požadovaný parameter 'profile'."
 msgid "Requirements"
 msgstr "Požiadavky"
 
-#: db/seeds/settings.rb:5937
+#: db/seeds/settings.rb:5955
 msgid ""
 "Requires the setup of the two-factor authentication for certain user roles."
 msgstr ""
@@ -14870,7 +14948,7 @@ msgstr "Rola %s je v konflikte s rolou %s, chcete pokračovať?"
 
 #: app/assets/javascripts/app/controllers/role.coffee:3
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:193
-#: db/seeds/object_manager_attributes.rb:1577 db/seeds/permissions.rb:23
+#: db/seeds/object_manager_attributes.rb:1578 db/seeds/permissions.rb:23
 msgid "Roles"
 msgstr "Role"
 
@@ -14893,7 +14971,7 @@ msgstr ""
 msgid "Rollback of channel migration succeeded!"
 msgstr "Vrátenie migrácie kanála späť bolo úspešné!"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:310
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:302
 msgid "Rows"
 msgstr "Riadky"
 
@@ -14935,7 +15013,7 @@ msgstr ""
 "metóda (presnejšie protokol) na odosielanie digitálne podpísaných a "
 "šifrovaných správ."
 
-#: db/seeds/settings.rb:5718
+#: db/seeds/settings.rb:5736
 msgid "S/MIME config"
 msgstr ""
 
@@ -14943,7 +15021,7 @@ msgstr ""
 msgid "S/MIME enables you to send digitally signed and encrypted messages."
 msgstr ""
 
-#: db/seeds/settings.rb:5690
+#: db/seeds/settings.rb:5708
 msgid "S/MIME integration"
 msgstr ""
 
@@ -15017,7 +15095,7 @@ msgid "SSL Certificates"
 msgstr "SSL certifikáty"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:431
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:714
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:706
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:84
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:73
 #: app/assets/javascripts/app/models/webhook.coffee:9
@@ -15042,7 +15120,7 @@ msgstr "SSL/STARTTLS"
 
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:111
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:84
-#: db/seeds/settings.rb:5806
+#: db/seeds/settings.rb:5824
 msgid "SSO"
 msgstr "SSO"
 
@@ -15141,7 +15219,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1135
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1137
 msgid "Saving failed."
 msgstr "Uloženie zlyhalo."
 
@@ -15221,7 +15299,7 @@ msgstr "Hľadaj výraz"
 msgid "Search Terms"
 msgstr "Hľadaj výrazy"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:702
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:694
 #, fuzzy
 #| msgid "Search"
 msgid "Search URL"
@@ -15369,7 +15447,7 @@ msgid ""
 "search result label key."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:828
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:820
 msgid "Search result label key"
 msgstr ""
 
@@ -15381,7 +15459,7 @@ msgstr ""
 msgid "Search result label key \"%s\" was not found."
 msgstr "Hľadaný kľúč označenia výsledku \"%s\" sa nenašiel."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:806
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:798
 msgid "Search result list"
 msgstr "Zoznam výsledkov vyhľadávania"
 
@@ -15390,7 +15468,7 @@ msgid ""
 "Search result list is not an array. Please provide search result list key."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:806
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:798
 msgid "Search result list key"
 msgstr ""
 
@@ -15402,7 +15480,7 @@ msgstr ""
 msgid "Search result list key \"%s\" was not found."
 msgstr "Hľadaný kľúč zoznamu \"%s\" sa nenašiel."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:899
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:891
 #, fuzzy
 #| msgid "First response"
 msgid "Search result response"
@@ -15414,7 +15492,7 @@ msgid ""
 "search result value key."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:817
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:809
 msgid "Search result value key"
 msgstr ""
 
@@ -15429,7 +15507,7 @@ msgstr "Hľadaný kľúč výslednej hodnoty \"%s\" sa nenašiel."
 #: app/assets/javascripts/app/controllers/_ui_element/autocompletion_ajax.coffee:16
 #: app/assets/javascripts/app/controllers/_ui_element/autocompletion_ajax_customer_organization.coffee:18
 #: app/assets/javascripts/app/controllers/_ui_element/autocompletion_ajax_external_data_source.coffee:13
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:852
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:844
 #: app/assets/javascripts/app/controllers/widget/link/kb_answer.coffee:57
 #: app/assets/javascripts/app/views/generic/icon_picker.jst.eco:9
 #: app/assets/javascripts/app/views/translation/form.jst.eco:7
@@ -15444,7 +15522,7 @@ msgstr "Hľadať…"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:101
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:98
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:136
-#: db/seeds/object_manager_attributes.rb:1159
+#: db/seeds/object_manager_attributes.rb:1160
 #, fuzzy
 #| msgid "Shared organization"
 msgid "Secondary organizations"
@@ -15507,7 +15585,7 @@ msgstr "Bezpečnostný kľúč"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:5
 #: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:10
-#: db/seeds/settings.rb:5843
+#: db/seeds/settings.rb:5861
 #, fuzzy
 #| msgid "Security"
 msgid "Security Keys"
@@ -15778,13 +15856,13 @@ msgstr ""
 msgid "Sender of last article"
 msgstr "Odosielateľ posledného článku"
 
-#: db/seeds/object_manager_attributes.rb:2222
+#: db/seeds/object_manager_attributes.rb:2223
 #, fuzzy
 #| msgid "Email Address"
 msgid "Sending Email Address"
 msgstr "E-mailová adresa"
 
-#: app/models/ticket/article.rb:319
+#: app/models/ticket/article.rb:321
 msgid "Sending an email without a valid recipient is not possible."
 msgstr "Odoslanie e-mailu bez platného príjemcu nie je možné."
 
@@ -15853,7 +15931,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/session.coffee:3
 #: app/assets/javascripts/app/views/session.jst.eco:2
-#: db/seeds/permissions.rb:305
+#: db/seeds/permissions.rb:311
 msgid "Sessions"
 msgstr "Relácie"
 
@@ -15878,7 +15956,7 @@ msgstr "Nastaviť dvojfaktorovú autentifikáciu: %s"
 msgid "Set a title for your ticket"
 msgstr "Zadať názov pre váš tiket"
 
-#: db/seeds/settings.rb:5470
+#: db/seeds/settings.rb:5488
 msgid "Set agent limit"
 msgstr "Nastavenie limitu agenta"
 
@@ -15941,7 +16019,7 @@ msgstr "Nastaviť ID odchádzajúceho volajúceho"
 msgid "Set security keys as default"
 msgstr "Nastaviť bezpečnostné kľúče ako predvolené"
 
-#: db/seeds/settings.rb:5632
+#: db/seeds/settings.rb:5650
 msgid ""
 "Set timeframe in seconds. If it's set to 0 you can delete notes without time "
 "limits"
@@ -16044,7 +16122,7 @@ msgstr "Zdieľané"
 #: app/assets/javascripts/app/controllers/agent_ticket_create/sidebar_shared_draft.coffee:12
 #: app/assets/javascripts/app/models/group.coffee:17
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/shared-draft-start.ts:10
-#: db/seeds/object_manager_attributes.rb:2291
+#: db/seeds/object_manager_attributes.rb:2292
 #, fuzzy
 #| msgid "Shared"
 msgid "Shared Drafts"
@@ -16094,7 +16172,7 @@ msgid "Shared mailbox"
 msgstr "Poslať E-mail"
 
 #: app/assets/javascripts/app/models/organization.coffee:7
-#: db/seeds/object_manager_attributes.rb:1744
+#: db/seeds/object_manager_attributes.rb:1745
 msgid "Shared organization"
 msgstr "Zdieľaná organizácia"
 
@@ -16149,7 +16227,7 @@ msgstr ""
 msgid "Show authenticator app secret"
 msgstr "Zobraz heslo autorizačnej aplikácie"
 
-#: db/seeds/settings.rb:5815
+#: db/seeds/settings.rb:5833
 msgid "Show calendar weeks in the picker of date/datetime fields"
 msgstr ""
 
@@ -16323,7 +16401,7 @@ msgstr "Prihlásiť sa:"
 #: app/assets/javascripts/app/controllers/_channel/_email_signature.coffee:49
 #: app/assets/javascripts/app/models/group.coffee:13
 #: app/controllers/integration/smime_controller.rb:119
-#: db/seeds/object_manager_attributes.rb:2257
+#: db/seeds/object_manager_attributes.rb:2258
 msgid "Signature"
 msgstr "Podpis"
 
@@ -16392,6 +16470,11 @@ msgstr ""
 msgid "Simple Storage Service not reachable."
 msgstr ""
 
+#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:16
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:177
+msgid "Simplify"
+msgstr ""
+
 #: db/seeds/settings.rb:1832
 msgid "Sina Weibo"
 msgstr "Sina Weibo"
@@ -16449,13 +16532,23 @@ msgstr "Slack"
 msgid "Slack Notifications"
 msgstr "Slack Upozornenia"
 
-#: db/seeds/settings.rb:5167
+#: db/seeds/settings.rb:5185
 msgid "Slack config"
 msgstr ""
 
-#: db/seeds/settings.rb:5141
+#: db/seeds/settings.rb:5159
 msgid "Slack integration"
 msgstr ""
+
+#: app/assets/javascripts/app/views/generic/text_tools_loading.jst.eco:2
+msgid "Smart Assist is generating text…"
+msgstr ""
+
+#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:6
+#, fuzzy
+#| msgid "Editor"
+msgid "Smart Editor"
+msgstr "Editor"
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/sms.ts:48
 msgid "Sms"
@@ -16675,7 +16768,7 @@ msgstr "Stav"
 msgid "State Icon"
 msgstr "Stav"
 
-#: db/seeds/settings.rb:5504
+#: db/seeds/settings.rb:5522
 msgid "Stats Backend"
 msgstr ""
 
@@ -16754,31 +16847,31 @@ msgstr "Spôsob skladovania"
 msgid "Store"
 msgstr "Uložiť"
 
-#: db/seeds/settings.rb:6084
+#: db/seeds/settings.rb:6102
 msgid ""
 "Stores the AI assistance ticket summarization options (e.g. which content is "
 "visible)."
 msgstr ""
 
-#: db/seeds/settings.rb:6054
+#: db/seeds/settings.rb:6072
 #, fuzzy
 #| msgid "Web Server Configuration"
 msgid "Stores the AI provider configuration."
 msgstr "Konfigurácia webového servera"
 
-#: db/seeds/settings.rb:6037
+#: db/seeds/settings.rb:6055
 msgid "Stores the AI provider."
 msgstr ""
 
-#: db/seeds/settings.rb:5093
+#: db/seeds/settings.rb:5111
 msgid "Stores the GitHub configuration."
 msgstr ""
 
-#: db/seeds/settings.rb:5051
+#: db/seeds/settings.rb:5069
 msgid "Stores the GitLab configuration."
 msgstr ""
 
-#: db/seeds/object_manager_attributes.rb:1246
+#: db/seeds/object_manager_attributes.rb:1247
 msgid "Street"
 msgstr "Ulica"
 
@@ -16903,7 +16996,7 @@ msgstr "Ne"
 msgid "Sunday"
 msgstr "Nedeľa"
 
-#: db/seeds/settings.rb:5591
+#: db/seeds/settings.rb:5609
 msgid "Support of multilingual Knowledge Base."
 msgstr ""
 
@@ -16954,7 +17047,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/system_report.coffee:3
 #: app/assets/javascripts/app/views/system_report.jst.eco:2
-#: db/seeds/permissions.rb:311
+#: db/seeds/permissions.rb:317
 msgid "System Report"
 msgstr "Systémová správa"
 
@@ -16986,7 +17079,7 @@ msgstr ""
 "platforme %l. Má veľmi pohodlné používateľské rozhranie založené na Weblate, "
 "vyskúšajte si to!"
 
-#: db/seeds/settings.rb:5664
+#: db/seeds/settings.rb:5682
 msgid ""
 "System-wide configuration of the query polling mechanism for ticket "
 "overviews."
@@ -17004,7 +17097,7 @@ msgstr "Správanie záložky po akcii tiketu"
 msgid "Tab has changed, do you really want to close it?"
 msgstr "Karta sa zmenila, naozaj ju chcete zatvoriť?"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:232
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:237
 msgid "Tabs"
 msgstr "Záložky"
 
@@ -17158,6 +17251,12 @@ msgstr "Text"
 msgid "Text Modules"
 msgstr "Textové moduly"
 
+#: db/seeds/settings.rb:6116
+#, fuzzy
+#| msgid "Text Modules"
+msgid "Text Tools"
+msgstr "Textové moduly"
+
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:556
 msgid "Text editing"
 msgstr "Úprava textu"
@@ -17168,7 +17267,7 @@ msgstr "Textové pole"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:379
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/twitter_reply.coffee:176
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:338
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:341
 msgid "Text missing"
 msgstr ""
 
@@ -17714,7 +17813,7 @@ msgstr "Záznam sa nemohol vytvoriť."
 msgid "The file could not be retrieved from the bot."
 msgstr "Súbor sa nepodarilo získať od bota."
 
-#: app/assets/javascripts/app/lib/app_post/html5_upload.coffee:90
+#: app/assets/javascripts/app/lib/app_post/html5_upload.coffee:91
 msgid "The file could not be uploaded."
 msgstr "Súbor sa nepodarilo nahrať."
 
@@ -17722,7 +17821,7 @@ msgstr "Súbor sa nepodarilo nahrať."
 msgid "The file does not belong to the specified article."
 msgstr "Súbor nepatrí do zadaného článku."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:852
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:861
 #: app/frontend/shared/components/Form/fields/FieldFile/features/filesTypeError.ts:22
 msgid "The file type %s is not allowed."
 msgstr "Typ súboru %s nie je povolený."
@@ -17910,7 +18009,7 @@ msgstr "Nové číslo tiketu sa nepodarilo vygenerovať."
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_new.coffee:68
 #: app/assets/javascripts/app/controllers/_channel/_email_signature.coffee:93
-#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:807
+#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:809
 #: app/assets/javascripts/app/controllers/customer_ticket_create.coffee:193
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:272
 #: app/assets/javascripts/app/controllers/object_manager.coffee:261
@@ -18455,6 +18554,11 @@ msgid ""
 "AS."
 msgstr ""
 "Text na začiatku predmetu v e-mailovej odpovedi, napríklad RE, AW alebo AS."
+
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:67
+msgid ""
+"The text was modified. Your request has been aborted to prevent overwriting."
+msgstr ""
 
 #: app/services/service/ticket/update/validator/checklist_completed.rb:16
 msgid "The ticket checklist is incomplete."
@@ -19268,7 +19372,7 @@ msgstr "Štvrtok"
 msgid "Ticket"
 msgstr "Tiket"
 
-#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:780
+#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:782
 msgid "Ticket %s created!"
 msgstr "Tiket %s bol vytvorený!"
 
@@ -19378,7 +19482,7 @@ msgstr ""
 msgid "Ticket Number ignore system_id"
 msgstr ""
 
-#: db/seeds/settings.rb:5959
+#: db/seeds/settings.rb:5977
 #, fuzzy
 #| msgid "Tickets of Organization"
 msgid "Ticket Organization Reassignment"
@@ -19392,7 +19496,7 @@ msgstr "Zmena priradenia organizácie tiketov"
 msgid "Ticket Overview"
 msgstr "Prehľad tiketov"
 
-#: db/seeds/settings.rb:5661
+#: db/seeds/settings.rb:5679
 #, fuzzy
 #| msgid "New Overview"
 msgid "Ticket Overview Query Polling"
@@ -19413,7 +19517,7 @@ msgid "Ticket Owner"
 msgstr "Vlastník tiketu"
 
 #: app/assets/javascripts/app/controllers/ticket_priority.coffee:16
-#: db/seeds/permissions.rb:263
+#: db/seeds/permissions.rb:269
 msgid "Ticket Priorities"
 msgstr "Priority tiketov"
 
@@ -19442,7 +19546,7 @@ msgid "Ticket State"
 msgstr "Stav tiketu"
 
 #: app/assets/javascripts/app/controllers/ticket_state.coffee:3
-#: db/seeds/permissions.rb:257
+#: db/seeds/permissions.rb:263
 #, fuzzy
 #| msgid "Ticket update"
 msgid "Ticket States"
@@ -19469,17 +19573,23 @@ msgstr "Odbery tiketov"
 #: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:7
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:45
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:16
-#: db/seeds/permissions.rb:233 db/seeds/settings.rb:6067
+#: db/seeds/permissions.rb:233 db/seeds/settings.rb:6085
 #, fuzzy
 #| msgid "Ticket update"
 msgid "Ticket Summary"
 msgstr "Stav tiketu"
 
-#: db/seeds/settings.rb:6081
+#: db/seeds/settings.rb:6099
 #, fuzzy
 #| msgid "Ticket number or title"
 msgid "Ticket Summary Config"
 msgstr "Číslo alebo názov lístka"
+
+#: db/seeds/permissions.rb:239
+#, fuzzy
+#| msgid "Tickets"
+msgid "Ticket Tools"
+msgstr "Tiket"
 
 #: db/seeds/settings.rb:2912
 msgid "Ticket Trigger Loop Protection Articles Total"
@@ -20093,7 +20203,7 @@ msgstr "Token"
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/tokenAccess.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:56
-#: db/seeds/permissions.rb:465
+#: db/seeds/permissions.rb:471
 msgid "Token Access"
 msgstr "Prístup cez Token"
 
@@ -20103,11 +20213,11 @@ msgstr "Prístup cez Token"
 msgid "Token authorization failed."
 msgstr "Autorizácia kľúča zlyhala."
 
-#: db/seeds/settings.rb:5309
+#: db/seeds/settings.rb:5327
 msgid "Token for CTI."
 msgstr ""
 
-#: db/seeds/settings.rb:5213
+#: db/seeds/settings.rb:5231
 #, fuzzy
 msgid "Token for Sipgate."
 msgstr "Kľúč pre Sipgate."
@@ -20174,7 +20284,7 @@ msgstr "Sledované ako položka kontrolného zoznamu v"
 msgid "Transfer conversation to another chat:"
 msgstr "Preniesť konverzáciu do iného chatu:"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:227
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:219
 #, fuzzy
 #| msgid "Translations"
 msgid "Translate field contents"
@@ -20193,7 +20303,7 @@ msgstr "Zdroj prekladu"
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:414
 #: app/assets/javascripts/app/controllers/translation.coffee:3
 #: app/assets/javascripts/app/views/translation/index.jst.eco:4
-#: db/seeds/permissions.rb:275
+#: db/seeds/permissions.rb:281
 msgid "Translations"
 msgstr "Preklady"
 
@@ -20393,7 +20503,7 @@ msgstr "Je potrebná konfigurácia dvojfaktorovej autentifikácie"
 #: app/assets/javascripts/app/views/profile/password.jst.eco:22
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/twoFactorAuth.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:72
-#: db/seeds/permissions.rb:451
+#: db/seeds/permissions.rb:457
 msgid "Two-factor Authentication"
 msgstr "Dvojfaktorová autentifikácia"
 
@@ -20449,7 +20559,7 @@ msgid "Two-factor method has been configured successfully."
 msgstr "Metóda dvojfaktorovej autentifikácie bola úspešne nakonfigurovaná."
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:426
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:248
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:240
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:79
 #: app/assets/javascripts/app/controllers/translation.coffee:289
 #: app/assets/javascripts/app/controllers/widget/ticket_bulk_form.coffee:70
@@ -20473,7 +20583,7 @@ msgstr "Typ"
 msgid "Type:"
 msgstr "Typ:"
 
-#: db/seeds/settings.rb:6025
+#: db/seeds/settings.rb:6043
 msgid "UI Desktop Beta Switch"
 msgstr ""
 
@@ -20506,9 +20616,19 @@ msgstr "Dátumové pole"
 msgid "URL"
 msgstr "URL"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:677
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:669
 msgid "URL (AJAX endpoint)"
 msgstr "URL (AJAX endpoint)"
+
+#: app/assets/javascripts/app/controllers/_ai/providers.coffee:83
+#, fuzzy
+#| msgid "%s (option)"
+msgid "URL (Completions)"
+msgstr "%s (možnosť)"
+
+#: app/assets/javascripts/app/controllers/_ai/providers.coffee:93
+msgid "URL (Embeddings)"
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:238
 #, fuzzy
@@ -20723,7 +20843,7 @@ msgstr ""
 msgid "Update successful."
 msgstr "Aktualizácia bola úspešná."
 
-#: db/seeds/settings.rb:5971
+#: db/seeds/settings.rb:5989
 msgid "Update the most recent tickets."
 msgstr "Aktualizovať najnovšie tikety."
 
@@ -20943,10 +21063,6 @@ msgstr "Nahrať"
 msgid "Upload Certificate"
 msgstr ""
 
-#: app/assets/javascripts/app/lib/app_post/html5_upload.coffee:86
-msgid "Upload Failed"
-msgstr "Nahrávanie zlyhalo"
-
 #: app/assets/javascripts/app/views/integration/smime_private_key_add.jst.eco:7
 msgid "Upload Private Key"
 msgstr "Nahrať súkromný kľúč"
@@ -20985,7 +21101,7 @@ msgstr ""
 msgid "Use custom option sort"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:546
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:538
 msgid "Use double click to change level of the row."
 msgstr ""
 
@@ -21303,7 +21419,7 @@ msgstr ""
 "\"zdieľaná\", čo je možné definovať pre každú organizáciu samostatne)."
 
 #: app/frontend/shared/components/CommonUserAvatar/CommonUserAvatar.vue:122
-#: db/seeds/object_manager_attributes.rb:1490
+#: db/seeds/object_manager_attributes.rb:1491
 msgid "VIP"
 msgstr "VIP"
 
@@ -21320,7 +21436,7 @@ msgstr "Kontrola zlyhala"
 msgid "Validation failed: %{errors}"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:933
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:925
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:8
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:86
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:38
@@ -21506,7 +21622,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_channel/web.coffee:3
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/web.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/web.ts:12
-#: db/seeds/object_manager_attributes.rb:954 db/seeds/permissions.rb:89
+#: db/seeds/object_manager_attributes.rb:955 db/seeds/permissions.rb:89
 msgid "Web"
 msgstr "Web"
 
@@ -22241,8 +22357,8 @@ msgstr ""
 msgid "You reached the table limit of %s tickets (%s remaining)."
 msgstr "Bol dosiahnutý limit %s zobrazených tiketov (%s zostávajúcich)"
 
-#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:760
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:354
+#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:762
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:357
 msgid ""
 "You used %s in the text but no attachment could be found. Do you want to "
 "continue?"
@@ -22265,6 +22381,19 @@ msgstr "Adresa YouTube alebo Vimeo"
 #. This is the template file app/views/mailer/password_change/en.html.erb in ERB/HTML format.
 #. Please make sure to translate it to a valid corresponding output structure.
 #: app/views/mailer/password_change/en.html.erb
+#, fuzzy
+#| msgid ""
+#| "Your #{config.product_name} password has been changed\n"
+#| "\n"
+#| "<p>Hi #{user.firstname},</p>\n"
+#| "<br>\n"
+#| "<p>The password for your #{config.product_name} account <b>#{user.login}</"
+#| "b> has been changed recently.</p>\n"
+#| "<br>\n"
+#| "<p>This activity is not known to you? If not, contact your system "
+#| "administrator.</p>\n"
+#| "<br>\n"
+#| "<p>Your #{config.product_name} Team</p>\n"
 msgid ""
 "Your #{config.product_name} password has been changed\n"
 "\n"
@@ -22273,7 +22402,7 @@ msgid ""
 "<p>The password for your #{config.product_name} account <b>#{user.login}</b> "
 "has been changed recently.</p>\n"
 "<br>\n"
-"<p>This activity is not known to you? If not, contact your system "
+"<p>If you did not initiate this change, please contact your system "
 "administrator.</p>\n"
 "<br>\n"
 "<p>Your #{config.product_name} Team</p>\n"
@@ -22427,7 +22556,7 @@ msgstr "Zammad"
 msgid "Zammad AI"
 msgstr "Zammad"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:327
+#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:354
 msgid "Zammad Features"
 msgstr "Funkcie Zammadu"
 
@@ -22446,6 +22575,12 @@ msgstr ""
 #: db/seeds/settings.rb:113
 msgid "Zammad Helpdesk"
 msgstr "Zammad Helpdesk"
+
+#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantLoadingBanner.vue:40
+#, fuzzy
+#| msgid "Zammad User Agent"
+msgid "Zammad Smart Assist"
+msgstr "Zammad User Agent"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:64
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:132
@@ -22496,7 +22631,7 @@ msgstr "Verzia Zammadu"
 msgid "Zendesk"
 msgstr "Zendesk"
 
-#: db/seeds/object_manager_attributes.rb:1285
+#: db/seeds/object_manager_attributes.rb:1286
 msgid "Zip"
 msgstr "PSČ"
 
@@ -22616,7 +22751,7 @@ msgstr "priradiť tikety"
 msgid "at"
 msgstr "o"
 
-#: app/models/object_manager/attribute.rb:590
+#: app/models/object_manager/attribute.rb:579
 msgid "at least one letter is required"
 msgstr "vyžaduje sa aspoň jedno písmeno"
 
@@ -22625,7 +22760,7 @@ msgstr "vyžaduje sa aspoň jedno písmeno"
 msgid "attachment,attached,enclosed,enclosure"
 msgstr "príloha, pripojené, uzavreté, priehradka"
 
-#: app/models/object_manager/attribute.rb:623
+#: app/models/object_manager/attribute.rb:612
 msgid "attribute is not editable"
 msgstr "atribút nie je možné upravovať"
 
@@ -22659,11 +22794,7 @@ msgstr "zaneprázdnený"
 msgid "camera,image,photo,picture"
 msgstr "fotoaparát,obrázok,fotografia,obraz"
 
-#: app/models/object_manager/attribute.rb:672
-msgid "can only be created on postgresql databases"
-msgstr ""
-
-#: app/models/object_manager/attribute.rb:665
+#: app/models/object_manager/attribute.rb:654
 msgid ""
 "can't be altered after creation (you can delete the attribute and create "
 "another with the desired value)"
@@ -22677,7 +22808,7 @@ msgstr "nemôže byť prázdne"
 msgid "can't be empty"
 msgstr "nemôže byť prázdne"
 
-#: app/models/object_manager/attribute.rb:581
+#: app/models/object_manager/attribute.rb:570
 msgid "can't be used because *_id and *_ids are not allowed"
 msgstr ""
 
@@ -22868,12 +22999,12 @@ msgid "disconnect"
 msgstr "odpojiť"
 
 #: app/assets/javascripts/app/models/group.coffee:9
-#: db/seeds/object_manager_attributes.rb:2127
+#: db/seeds/object_manager_attributes.rb:2128
 msgid "do not reopen ticket after certain time but create new ticket"
 msgstr "po určitom čase znovu neotvárajte tiket, ale vytvorte nový tiket"
 
 #: app/assets/javascripts/app/models/group.coffee:9
-#: db/seeds/object_manager_attributes.rb:2126
+#: db/seeds/object_manager_attributes.rb:2127
 msgid "do not reopen ticket but create new ticket"
 msgstr "neotvárajte uzavretý tiket, ale vytvorte nový tiket"
 
@@ -23090,7 +23221,7 @@ msgstr "hodiny"
 msgid "https://example.com"
 msgstr "support@example.com"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:267
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:259
 msgid ""
 "https://example.com/?q=#{object.attribute_name} - use ticket, user or "
 "organization as object"
@@ -23102,11 +23233,11 @@ msgstr ""
 msgid "i-doit"
 msgstr "i-doit"
 
-#: db/seeds/settings.rb:5008
+#: db/seeds/settings.rb:5026
 msgid "i-doit config"
 msgstr ""
 
-#: db/seeds/settings.rb:4981
+#: db/seeds/settings.rb:4999
 msgid "i-doit integration"
 msgstr ""
 
@@ -23597,7 +23728,7 @@ msgstr "Upozornenia,tikety"
 msgid "now"
 msgstr "teraz"
 
-#: app/models/object_manager/attribute.rb:587
+#: app/models/object_manager/attribute.rb:576
 msgid "only lowercase letters, numbers, and '_' are allowed"
 msgstr "povolené sú iba malé písmená, číslice a '_'"
 
@@ -23695,7 +23826,7 @@ msgstr ""
 msgid "recovery codes"
 msgstr "obnovovacie kódy"
 
-#: app/models/checklist/item.rb:102
+#: app/models/checklist/item.rb:99
 msgid "reference must not be the checklist ticket."
 msgstr ""
 
@@ -23741,7 +23872,7 @@ msgstr "odpovedať"
 msgid "reply all"
 msgstr "odpovedať všetkým"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:111
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:103
 msgid "required"
 msgstr "požadované"
 
@@ -23832,23 +23963,23 @@ msgstr "zobraziť"
 msgid "show more"
 msgstr "zobraziť viac"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:110
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:102
 msgid "shown"
 msgstr "zobrazené"
 
-#: db/seeds/settings.rb:5210
+#: db/seeds/settings.rb:5228
 msgid "sipgate.io Token"
 msgstr ""
 
-#: db/seeds/settings.rb:5244
+#: db/seeds/settings.rb:5262
 msgid "sipgate.io alternative FQDN"
 msgstr "sipgate.io alternative FQDN"
 
-#: db/seeds/settings.rb:5231
+#: db/seeds/settings.rb:5249
 msgid "sipgate.io config"
 msgstr ""
 
-#: db/seeds/settings.rb:5182
+#: db/seeds/settings.rb:5200
 msgid "sipgate.io integration"
 msgstr ""
 
@@ -23863,7 +23994,7 @@ msgstr "preskočené"
 msgid "sms"
 msgstr "SMS"
 
-#: app/models/object_manager/attribute.rb:584
+#: app/models/object_manager/attribute.rb:573
 msgid "spaces are not allowed"
 msgstr "medzery nie sú povolené"
 
@@ -24086,7 +24217,7 @@ msgstr ""
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:90
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14
 #: app/frontend/shared/entities/object-attributes/form/resolver/fields/active.ts:15
-#: db/seeds/object_manager_attributes.rb:1498 db/seeds/settings.rb:612
+#: db/seeds/object_manager_attributes.rb:1499 db/seeds/settings.rb:612
 msgid "yes"
 msgstr "áno"
 
@@ -24131,6 +24262,9 @@ msgstr "...celej textovej plochy"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅ Dnešná doba čakania"
+
+#~ msgid "Upload Failed"
+#~ msgstr "Nahrávanie zlyhalo"
 
 #~ msgid "Oops.. I'm sorry, but I can't find this %s."
 #~ msgstr "Ups… Ospravedlňujem sa, ale nemôžem nájsť tento %s."
