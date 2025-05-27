@@ -194,8 +194,9 @@ class TicketArticlesController < ApplicationController
 
     file = article.as_raw
 
-    # find file
-    return if !file
+    if !file
+      raise ActiveRecord::RecordNotFound, __('This article does not have a raw copy available.')
+    end
 
     send_data(
       file.content,

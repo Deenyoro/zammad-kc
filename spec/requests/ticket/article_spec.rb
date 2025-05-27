@@ -753,4 +753,35 @@ AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
       end
     end
   end
+
+  describe 'GET /api/v1/ticket_article_plain/:id', authenticated_as: :agent do
+    let(:ticket)  { create(:ticket, group: Group.first) }
+    let(:article) { create(:ticket_article, ticket: ticket) }
+
+    context 'when article has a raw copy present' do
+      before do
+        article.save_as_raw('This is a test article')
+
+        get "/api/v1/ticket_article_plain/#{article.id}"
+      end
+
+      it 'returns the raw copy of the article' do
+        expect(response.body).to eq('This is a test article')
+      end
+    end
+
+    context 'when article does not have a raw copy' do
+      before do
+        get "/api/v1/ticket_article_plain/#{article.id}"
+      end
+
+      it 'returns 404' do
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it 'returns a human readable error message' do
+        expect(response.body).to include('This article does not have a raw copy available.')
+      end
+    end
+  end
 end
