@@ -40,7 +40,7 @@ class AI::Provider
       Rails.logger.error "Unable to parse JSON response: #{e.inspect}"
       Rails.logger.error "Response: #{result}"
 
-      raise ResponseError, __('Unable to process response')
+      raise ResponseError, __('The response could not be processed.')
     end
   end
 

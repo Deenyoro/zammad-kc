@@ -195,7 +195,7 @@ class App.SidebarTicketSummary extends App.Controller
       fail: =>
         @notify(
           type: 'error'
-          msg: App.i18n.translateInline('Unable to add checklist item.')
+          msg: App.i18n.translateInline('The checklist item could not be added.')
         )
     )
 
@@ -235,7 +235,7 @@ class App.SidebarTicketSummary extends App.Controller
       error: =>
         @notify(
           type: 'error'
-          msg: App.i18n.translateInline('Unable to add all checklist items.')
+          msg: App.i18n.translateInline('Not all checklist items could be added.')
         )
     )
 
