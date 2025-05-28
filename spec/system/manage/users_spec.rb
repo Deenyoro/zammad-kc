@@ -47,6 +47,23 @@ RSpec.describe 'Manage > Users', type: :system do
       expect(current_user).to eq alternative_three_user
     end
 
+    # https://github.com/zammad/zammad/issues/5641
+    it 'clears switched-to-user bar after logout' do
+      switch_to(alternative_one_user)
+
+      find(".navbar-items-personal a[title=\"#{alternative_one_user.login}\"]").click
+      click_on('Sign out')
+
+      within('#login') do
+        fill_in 'username', with: original_user.login
+        fill_in 'password', with: original_user.password_plain
+
+        click_on('Sign in')
+      end
+
+      expect(page).to have_no_text('Zammad looks like this')
+    end
+
     def switch_to(user)
       visit 'manage/users'
 
