@@ -34,6 +34,17 @@ Example for asciifolding searches:
 
 Thanks to [Jano Suchal](https://github.com/jsuchal) for the contribution.
 
+### nginx configuration update
+
+Please update your nginx configuration file to insert the line `proxy_http_version 1.1;` to the `location /`
+section like in the example below:
+
+```diff
+   location / {
++    proxy_http_version 1.1;
+     proxy_set_header Host $http_host;
+```
+
 ## 6.5
 
 ### Textarea object manager attribute values
