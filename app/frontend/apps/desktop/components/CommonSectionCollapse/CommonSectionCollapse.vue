@@ -71,7 +71,7 @@ watch(
     <header
       v-if="!noHeader"
       :id="headerId"
-      class="group mx-1 flex cursor-default items-center justify-between text-stone-200 group-focus-within:focus-visible:outline-1 has-focus-visible:outline-1 has-focus-visible:outline-offset-1 has-focus-visible:outline-blue-800 dark:text-neutral-500"
+      class="group flex cursor-default items-center justify-between text-stone-200 group-focus-within:focus-visible:outline-1 has-focus-visible:outline-1 has-focus-visible:outline-offset-1 has-focus-visible:outline-blue-800 dark:text-neutral-500"
       :class="{
         'cursor-pointer rounded-md hover:bg-blue-600 hover:text-black dark:hover:bg-blue-900 hover:dark:text-white':
           !noCollapse,
