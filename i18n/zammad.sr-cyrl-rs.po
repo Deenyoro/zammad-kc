@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zammad\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-05-19 09:00+0000\n"
+"PO-Revision-Date: 2025-05-27 09:00+0000\n"
 "Last-Translator: Dusan Vuckovic <dv@zammad.com>\n"
 "Language-Team: Serbian (Cyrillic script) <https://translations.zammad.org/"
 "projects/zammad/zammad-development/sr_Cyrl/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.11\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #. Default date format to use for the current locale.
 #. These placeholders are supported:
@@ -1050,7 +1050,7 @@ msgstr "URL адреса Ollama AI провајдера није постављ�
 #: app/controllers/ticket/summarize_controller.rb:8
 #: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:20
 #: app/services/service/ai_assistance/text_tools.rb:17
-#: app/services/service/ticket/ai_assistance/summarize.rb:15
+#: app/services/service/ticket/ai_assistance/summarize.rb:16
 msgid "AI provider is not configured."
 msgstr "AI провајдер није подешен."
 
@@ -5485,16 +5485,12 @@ msgid "Defines postmaster filter to identify sender user."
 msgstr "Одређује postmaster филтер за идентификацију корисника пошиљаоца."
 
 #: db/seeds/settings.rb:4321
-#, fuzzy
-#| msgid "Defines postmaster filter to identify sender user."
 msgid "Defines postmaster filter to identify session user."
-msgstr "Одређује postmaster филтер за идентификацију корисника пошиљаоца."
+msgstr "Одређује postmaster филтер за идентификацију сесије корисника."
 
 #: db/seeds/settings.rb:4483
-#, fuzzy
-#| msgid "Defines postmaster filter to identify sender user."
 msgid "Defines postmaster filter to identify ticket group."
-msgstr "Одређује postmaster филтер за идентификацију корисника пошиљаоца."
+msgstr "Одређује postmaster филтер за идентификацију групе тикета."
 
 #: db/seeds/settings.rb:4420
 msgid ""
@@ -12084,7 +12080,7 @@ msgstr "Без заједничких нацрта"
 
 #: app/controllers/organizations_controller.rb:107
 #: app/controllers/text_modules_controller.rb:75
-#: app/controllers/ticket_articles_controller.rb:232
+#: app/controllers/ticket_articles_controller.rb:236
 #: app/controllers/tickets_controller.rb:480
 #: app/controllers/users_controller.rb:574
 msgid "No source data submitted!"
@@ -13377,7 +13373,7 @@ msgstr "Молимо подесите извор увоза пре почетк�
 msgid "Please contact your administrator."
 msgstr "Молимо контактирајте администратора."
 
-#: lib/selector/sql.rb:192
+#: lib/selector/sql.rb:191
 msgid ""
 "Please enable execution_time feature to use it (currently only allowed for "
 "triggers and schedulers)"
@@ -15399,7 +15395,7 @@ msgstr "Пошиљалац последњег чланка"
 msgid "Sending Email Address"
 msgstr "Имејл адреса за слање"
 
-#: app/models/ticket/article.rb:321
+#: app/models/ticket/article.rb:317
 msgid "Sending an email without a valid recipient is not possible."
 msgstr "Слање имејл поруке без исправног примаоца није могуће."
 
@@ -17535,7 +17531,7 @@ msgstr "Захтев за поништавање лозинке је примљ�
 msgid "The personal access token could not be deleted."
 msgstr "Није било могуће уклонити приступни кључ."
 
-#: app/controllers/ticket_articles_controller.rb:272
+#: app/controllers/ticket_articles_controller.rb:276
 msgid ""
 "The preview cannot be generated. The format is corrupted or not supported."
 msgstr ""
@@ -17850,7 +17846,7 @@ msgstr "Није пронађена обавезна вредност ’group_i
 msgid "The required value external_credential could not be found in the cache."
 msgstr "Није пронађена обавезна вредност external_credential у кешу."
 
-#: app/controllers/ticket_articles_controller.rb:263
+#: app/controllers/ticket_articles_controller.rb:267
 msgid "The retried attachment download failed."
 msgstr "Неуспешно поновно преузимање прилога."
 
@@ -18337,6 +18333,12 @@ msgstr ""
 msgid ""
 "This PGP email was encrypted with a potentially unknown encryption algorithm."
 msgstr "Ова PGP имејл порука је потенцијално шифрована непознатим алгоритмом."
+
+#: app/controllers/ticket_articles_controller.rb:186
+#, fuzzy
+#| msgid "This article is not part of the ticket."
+msgid "This article does not have a raw copy available."
+msgstr "Задат чланак тикета не припада овом тикету."
 
 #: app/models/ticket/time_accounting.rb:44
 msgid "This article is not part of the ticket."
@@ -19283,7 +19285,7 @@ msgstr "Тикети су сортирани по „%s” колони (%s)."
 msgid "Tickets assigned to me: %s of %s"
 msgstr "Моји додељени тикети: %s од %s"
 
-#: app/controllers/ticket_articles_controller.rb:225
+#: app/controllers/ticket_articles_controller.rb:229
 #: app/controllers/tickets_controller.rb:473
 msgid "Tickets can only be imported if system is in import mode."
 msgstr "Тикети могу бити увезени само ако је систем у режиму увоза."
