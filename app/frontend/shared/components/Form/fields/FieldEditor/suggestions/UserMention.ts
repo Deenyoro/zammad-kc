@@ -1,5 +1,4 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
-
 import Link from '@tiptap/extension-link'
 import Mention from '@tiptap/extension-mention'
 
@@ -19,6 +18,7 @@ import { useMentionSuggestionsLazyQuery } from '../graphql/queries/mention/menti
 import buildMentionSuggestion from './suggestions.ts'
 
 import type { FieldEditorProps, MentionUserItem } from '../types.ts'
+import type { CommandProps, MarkConfig, ParentConfig } from '@tiptap/core'
 import type { Ref } from 'vue'
 
 export const PLUGIN_NAME = 'mentionUser'
@@ -49,7 +49,8 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
     addCommands: () => ({
       openUserMention:
         () =>
-        ({ chain }) =>
+        // TODO: Check if this explicit typing is needed after the stable release of next TipTap version.
+        ({ chain }: CommandProps) =>
           chain().insertContent(` ${ACTIVATOR}`).run(),
     }),
   }).configure({
@@ -111,14 +112,21 @@ export const UserLink = Link.extend({
   name: PLUGIN_LINK_NAME,
   addAttributes() {
     return {
-      ...this.parent?.(),
+      // TODO: Check if this explicit typing is still needed after the stable release of next TipTap version.
+      ...(
+        this as {
+          parent: ParentConfig<MarkConfig<unknown, Storage>>['addAttributes']
+        }
+      ).parent?.(),
       href: {
         default: null,
       },
       'data-mention-user-id': {
         default: null,
-        parseHTML: (element) => element.dataset.mentionUserId,
-        renderHTML: (attributes) => ({
+        // TODO: Check if this explicit typing is still needed after the stable release of next TipTap version.
+        parseHTML: (element: HTMLElement) => element.dataset.mentionUserId,
+        // TODO: Check if this explicit typing is still needed after the stable release of next TipTap version.
+        renderHTML: (attributes: Record<string, unknown>) => ({
           'data-mention-user-id': attributes['data-mention-user-id'],
         }),
       },

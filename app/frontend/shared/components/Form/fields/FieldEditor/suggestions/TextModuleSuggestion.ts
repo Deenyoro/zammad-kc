@@ -13,6 +13,7 @@ import { useTextModuleSuggestionsLazyQuery } from '../graphql/queries/textModule
 import buildMentionSuggestion from './suggestions.ts'
 
 import type { FieldEditorProps, MentionTextItem } from '../types.ts'
+import type { CommandProps } from '@tiptap/core'
 import type { Ref } from 'vue'
 
 export const PLUGIN_NAME = 'mentionText'
@@ -63,7 +64,8 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
     addCommands: () => ({
       openTextMention:
         () =>
-        ({ chain }) =>
+        // TODO: Check if this explicit typing is still needed after the stable release of next TipTap version.
+        ({ chain }: CommandProps) =>
           chain().insertContent(` ${ACTIVATOR}`).run(),
     }),
   }).configure({

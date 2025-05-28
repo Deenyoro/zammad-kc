@@ -14,7 +14,7 @@ interface Props {
   hideDetails: boolean
 }
 
-const { hideDetails } = defineProps<Props>()
+defineProps<Props>()
 
 const isHovering = defineModel<boolean>('hover', {
   required: false,
@@ -25,6 +25,10 @@ const { isTicketAgent, isTicketEditable } = useTicketView(ticket)
 const { hasChannelAlert, channelAlert } = useTicketChannel(ticket)
 
 const { isTouchDevice } = useTouchDevice()
+
+const isAgentAndHasPermissionAndHasChannelAlarm = computed(
+  () => isTicketAgent.value && isTicketEditable.value && hasChannelAlert.value,
+)
 
 const events = computed(() => {
   if (isTouchDevice.value)
@@ -50,19 +54,27 @@ const events = computed(() => {
 
 <template>
   <div
-    v-if="isTicketAgent && isTicketEditable && hasChannelAlert"
     class="z-10"
-    :tabindex="hideDetails ? 0 : -1"
-    v-on="events"
+    :tabindex="
+      !isAgentAndHasPermissionAndHasChannelAlarm ? -1 : hideDetails ? 0 : -1
+    "
+    v-on="isAgentAndHasPermissionAndHasChannelAlarm ? events : {}"
   >
-    <TopBarHeader :hide-details="hideDetails" />
+    <template v-if="isAgentAndHasPermissionAndHasChannelAlarm">
+      <TopBarHeader :hide-details="hideDetails" />
 
-    <CommonAlert
-      class="rounded-none px-14 md:grid-cols-none md:justify-center"
-      :variant="channelAlert?.variant"
-    >
-      {{ $t(channelAlert?.text, channelAlert?.textPlaceholder) }}
-    </CommonAlert>
+      <CommonAlert
+        class="rounded-none px-14 md:grid-cols-none md:justify-center"
+        :variant="channelAlert?.variant"
+      >
+        {{ $t(channelAlert?.text, channelAlert?.textPlaceholder) }}
+      </CommonAlert>
+    </template>
+    <TopBarHeader
+      v-else
+      ref="wrapper"
+      :hide-details="hideDetails"
+      v-on="events"
+    />
   </div>
-  <TopBarHeader v-else :hide-details="hideDetails" v-on="events" />
 </template>

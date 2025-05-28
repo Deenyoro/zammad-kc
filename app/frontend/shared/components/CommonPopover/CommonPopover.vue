@@ -7,6 +7,7 @@ import {
   useElementBounding,
   useWindowSize,
   type UseElementBoundingReturn,
+  whenever,
 } from '@vueuse/core'
 import {
   type ComponentPublicInstance,
@@ -99,23 +100,34 @@ const verticalOrientation = computed(() => {
   return autoOrientation.value === 'top' || autoOrientation.value === 'bottom'
 })
 
+const overflowHorizontalPlacement = ref<Placement | null>(null)
+
+whenever(
+  () => !showPopover.value,
+  () => {
+    overflowHorizontalPlacement.value = null
+  },
+)
+
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const currentPlacement = computed(() => {
-  if (props.placement === 'arrowStart' || props.placement === 'arrowEnd') {
+  const placement = overflowHorizontalPlacement.value || props.placement
+
+  if (placement === 'arrowStart' || placement === 'arrowEnd') {
     if (locale.localeData?.dir === EnumTextDirection.Rtl) {
-      if (props.placement === 'arrowStart') return 'arrowEnd'
+      if (placement === 'arrowStart') return 'arrowEnd'
       return 'arrowStart'
     }
-    return props.placement
+    return placement
   }
 
   if (verticalOrientation.value) {
     if (locale.localeData?.dir === EnumTextDirection.Rtl) {
-      if (props.placement === 'start') return 'end'
-      if (props.placement === 'end') return 'start'
+      if (placement === 'start') return 'end'
+      if (placement === 'end') return 'start'
       return props.hideArrow ? 'start' : 'arrowStart'
     }
-    return props.placement
+    return placement
   }
   if (hasDirectionUp.value) return props.hideArrow ? 'end' : 'arrowEnd'
   return props.hideArrow ? 'start' : 'arrowStart'
@@ -303,6 +315,28 @@ const closePopover = (isInteractive = false) => {
   })
 }
 
+const checkHorizontalOverflow = () => {
+  if (!popoverElement.value || !showPopover.value) return
+
+  nextTick(() => {
+    const popoverElementReference = popoverElement.value as HTMLElement
+    const popoverRect = popoverElementReference.getBoundingClientRect()
+
+    // Check if overflowing right edge of viewport
+    if (
+      props.placement === 'start' &&
+      popoverRect.right > windowSize.width.value
+    ) {
+      overflowHorizontalPlacement.value = 'end'
+    }
+
+    // Check if overflowing left edge of viewport
+    if (props.placement === 'end' && popoverRect.left < 0) {
+      overflowHorizontalPlacement.value = 'start'
+    }
+  })
+}
+
 const openPopover = () => {
   if (showPopover.value) return
 
@@ -340,6 +374,8 @@ const openPopover = () => {
       if (!props.noAutoFocus) moveNextFocusToTrap()
       updateOwnerAriaExpandedState()
       testFlags.set('common-popover.opened')
+
+      checkHorizontalOverflow()
     })
   })
 }

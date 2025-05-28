@@ -2,10 +2,7 @@
 
 import { initializeFileClasses } from '#shared/components/Form/fields/FieldFile/initializeFileClasses.ts'
 import { initializeToggleClasses } from '#shared/components/Form/fields/FieldToggle/initializeToggleClasses.ts'
-import {
-  initializeFieldEditorClasses,
-  initializeFieldEditorProps,
-} from '#shared/components/Form/initializeFieldEditor.ts'
+import { initializeFieldEditorClasses } from '#shared/components/Form/initializeFieldEditor.ts'
 import { initializeFieldLinkClasses } from '#shared/components/Form/initializeFieldLinkClasses.ts'
 import { initializeFormClasses } from '#shared/components/Form/initializeFormClasses.ts'
 import { initializeFormGroupClasses } from '#shared/components/Form/initializeFormGroupClasses.ts'
@@ -80,63 +77,14 @@ export const initializeFormFields = () => {
 
   initializeFieldEditorClasses({
     actionBar: {
-      buttonContainer:
-        'gap-1.5 px-2.5 py-2 focus:outline focus:outline-1 focus:outline-offset-2 rounded-md focus:outline-blue-800',
       tableMenuContainer:
         'gap-1.5 px-1.5 py-1.5 focus:outline focus:outline-1 focus:outline-offset-2 rounded-md focus:outline-blue-800',
-      leftGradient: {
-        left: '0',
-        before: {
-          background: {
-            light: `linear-gradient(
-                    270deg,
-                    rgba(0, 0, 0, 0),
-                    #EDF1F2)`,
-            dark: `linear-gradient(
-                    270deg,
-                    rgba(255, 255, 255, 0),
-                    #262627`, // :TODO inject tailwind theme colors
-          },
-        },
-      },
-      rightGradient: {
-        before: {
-          background: {
-            light: `linear-gradient(
-                    90deg,
-                    rgba(0, 0, 0, 0),
-                    #EDF1F2)`,
-            dark: `linear-gradient(
-                    90deg,
-                    rgba(255, 255, 255, 0),
-                    #262627`, // :TODO inject tailwind theme colors
-          },
-        },
-      },
-      shadowGradient: {
-        before: {
-          top: 'calc(0px - 20px - 1.5rem)',
-          height: 'calc(28px + 1rem)',
-        },
-      },
       button: {
-        base: 'bg-green-200  focus:outline focus:outline-1 focus:outline-offset-2 focus:outline-blue-800 transition-color hover:bg-green-300 dark:hover:bg-neutral-950 text-gray-300 dark:bg-gray-600 dark:text-neutral-400 rounded-lg p-1.5',
-        active: 'bg-green-300 dark:bg-neutral-950', // :TODO adapt if gets adapted in figma
+        base: 'focus-visible-app-default dark:hover:bg-blue-900 hover:bg-blue-600 rounded-lg dark:hover:text-white hover:text-black transition-color p-1.5',
       },
     },
     input: {
       container: 'px-2.5 py-2',
-    },
-  })
-
-  initializeFieldEditorProps({
-    actionBar: {
-      visible: true, // show action bar always
-      button: {
-        icon: {
-          size: 'tiny',
-        },
-      },
     },
   })
 

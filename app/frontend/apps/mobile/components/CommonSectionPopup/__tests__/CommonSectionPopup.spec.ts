@@ -243,4 +243,45 @@ describe('popup behaviour', () => {
 
     expect(view.queryByTestId('popupWindow')).toBeInTheDocument()
   })
+
+  it('supports persistent mode', async () => {
+    const state = ref(true)
+
+    const view = renderComponent(CommonSectionPopup, {
+      props: {
+        persistent: true,
+      },
+      vModel: {
+        state,
+      },
+    })
+
+    const popup = view.getByTestId('popupWindow')
+
+    expect(popup).toHaveAttribute('aria-hidden', 'false')
+
+    expect(popup).toHaveStyle({
+      display: 'block',
+    })
+
+    state.value = false
+
+    await flushPromises()
+
+    expect(popup).toHaveAttribute('aria-hidden', 'true')
+
+    expect(popup).toHaveStyle({
+      display: 'none',
+    })
+
+    state.value = true
+
+    await flushPromises()
+
+    expect(popup).toHaveAttribute('aria-hidden', 'false')
+
+    expect(popup).toHaveStyle({
+      display: 'block',
+    })
+  })
 })

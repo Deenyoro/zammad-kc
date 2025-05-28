@@ -2,22 +2,30 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { nextTick, shallowRef, toRef, ref, defineAsyncComponent } from 'vue'
+import {
+  nextTick,
+  shallowRef,
+  toRef,
+  ref,
+  defineAsyncComponent,
+  watch,
+} from 'vue'
 
 import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
 import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
-import ActionBar from '#shared/components/Form/fields/FieldEditor/ActionBar.vue'
-import { getFieldEditorProps } from '#shared/components/Form/initializeFieldEditor.ts'
-import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
-import { useApplicationStore } from '#shared/stores/application.ts'
-
-import useEditorActions, { type EditorButton } from './useEditorActions.ts'
-
 import type {
   EditorContentType,
   EditorCustomPlugins,
-  FieldEditorProps,
-} from './types.ts'
+} from '#shared/components/Form/fields/FieldEditor/types.ts'
+import useEditorActions, {
+  type EditorButton,
+} from '#shared/components/Form/fields/FieldEditor/useEditorActions.ts'
+import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
+import type { FieldEditorProps } from '#shared/components/Form/types.ts'
+import { useApplicationStore } from '#shared/stores/application.ts'
+
+import ActionToolbar from './FieldEditorActionBar/ActionToolbar.vue'
+
 import type { Selection } from '@tiptap/pm/state'
 import type { Editor } from '@tiptap/vue-3'
 import type { Except } from 'type-fest'
@@ -53,15 +61,25 @@ const { actions, isActive } = useEditorActions(
   props.disabledPlugins,
 )
 
-const { popover, popoverTarget, open, close } = usePopover()
-
-const editorProps = getFieldEditorProps()
+const { popover, popoverTarget, isOpen, open, close } = usePopover()
 
 const subMenuPopoverContent = shallowRef<
   Component | Except<EditorButton, 'subMenu'>[]
 >()
 
 let currentSelection: Selection | undefined
+
+watch(isOpen, (isOpen) => {
+  if (!popoverTarget.value) return
+
+  const classes = ['bg-blue-800!', 'text-white']
+
+  if (isOpen) {
+    popoverTarget.value.classList.add(...classes)
+    return
+  }
+  popoverTarget.value.classList.remove(...classes)
+})
 
 const handleButtonClick = (action: EditorButton, event: MouseEvent) => {
   if (!action.subMenu) return
@@ -98,11 +116,11 @@ const { config } = storeToRefs(useApplicationStore())
 </script>
 
 <template>
-  <div>
-    <ActionBar
-      v-show="
-        !hideActionBarLocally && (visible || editorProps.actionBar.visible)
-      "
+  <div
+    class="sticky top-(--top-header-height) z-30 -order-1 border border-blue-200 bg-neutral-50 ltr:left-0 rtl:right-0 dark:border-gray-700 dark:bg-gray-500"
+  >
+    <ActionToolbar
+      v-show="!hideActionBarLocally"
       :editor="editor"
       :visible="visible"
       :is-active="isActive"
@@ -119,17 +137,17 @@ const { config } = storeToRefs(useApplicationStore())
       :editor="editor"
     />
 
-    <!--  :TODO rethink the persistent  -->
     <CommonPopover
       ref="popover"
       :owner="popoverTarget"
       persistent
       orientation="autoVertical"
       placement="arrowStart"
+      hide-arrow
       no-auto-focus
     >
       <template v-if="Array.isArray(subMenuPopoverContent)">
-        <ActionBar
+        <ActionToolbar
           :id="popoverTarget?.id"
           data-test-id="sub-menu-action-bar"
           :actions="subMenuPopoverContent"

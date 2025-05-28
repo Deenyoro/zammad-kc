@@ -104,7 +104,7 @@ export const getCoreDesktopClasses: FormThemeExtension = (
     editor: extendClasses(classes.editor, {
       wrapper: 'max-w-full',
       input: 'min-h-[76px] text-sm text-black outline-hidden dark:text-white',
-      inner: `bg-blue-200 focus-within:outline focus-within:outline-1 focus-within:outline-offset-1 focus-within:outline-blue-800 hover:outline hover:outline-1 hover:outline-offset-1 hover:outline-blue-600 focus-within:hover:outline-blue-800 focus-visible:outline-1 dark:bg-gray-700 dark:hover:outline-blue-900 dark:focus-within:hover:outline-blue-800 ${innerInvalidAndErrorClasses()}`,
+      inner: `rounded-t-none bg-blue-200 focus-within:outline focus-within:outline-1 focus-within:outline-offset-1 focus-within:outline-blue-800 hover:outline hover:outline-1 hover:outline-offset-1 hover:outline-blue-600 focus-within:hover:outline-blue-800 focus-visible:outline-1 dark:bg-gray-700 dark:hover:outline-blue-900 dark:focus-within:hover:outline-blue-800 ${innerInvalidAndErrorClasses()}`,
     }),
     // TODO: check...
     file: extendClasses(classes.file, {

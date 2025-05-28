@@ -18,6 +18,7 @@ import { useKnowledgeBaseAnswerSuggestionsLazyQuery } from '../graphql/queries/k
 import buildMentionSuggestion from './suggestions.ts'
 
 import type { FieldEditorProps, MentionKnowledgeBaseItem } from '../types.ts'
+import type { CommandProps } from '@tiptap/core'
 import type { Ref } from 'vue'
 
 export const PLUGIN_NAME = 'mentionKnowledgeBase'
@@ -44,7 +45,8 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
     addCommands: () => ({
       openKnowledgeBaseMention:
         () =>
-        ({ chain }) =>
+        // TODO: Check if this explicit typing is still needed after the stable release of next TipTap version.
+        ({ chain }: CommandProps) =>
           chain().insertContent(` ${ACTIVATOR}`).run(),
     }),
   }).configure({

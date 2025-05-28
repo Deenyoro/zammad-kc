@@ -2,7 +2,7 @@
 
 import { initializeAiAssistantTextTools } from '#shared/components/Form/fields/FieldEditor/AiAssistantTextTools/initializeAiAssistantTextTools.ts'
 import { initializeAiAssistantTextToolsLoadingBanner } from '#shared/components/Form/fields/FieldEditor/AiAssistantTextTools/initializeAiAssistantTextToolsLoadingBanner.ts'
-import { initializeEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/FieldEditorColorMenu/initializeEditorColorMenu.ts'
+import { initializeEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/features/color-picker/initializeEditorColorMenu.ts'
 import { initializeAlertClasses } from '#shared/initializer/initializeAlertClasses.ts'
 import { initializeAvatarClasses } from '#shared/initializer/initializeAvatarClasses.ts'
 import { initializeBadgeClasses } from '#shared/initializer/initializeBadgeClasses.ts'
@@ -90,6 +90,7 @@ export const initializeGlobalComponentStyles = () => {
   initializeAiAssistantTextTools({
     popover: {
       base: 'min-w-[13.5rem] rounded-xl overflow-hidden',
+      item: '',
       button:
         'text-sm outline-none p-3 text-left active:text-white active:bg-blue-800 dark:active:bg-blue-800 dark:hover:text-white hover:text-black inline-block w-full dark:text-neutral-400 focus-visible:bg-blue-800 focus-visible:text-white hover:bg-blue-600 dark:hover:bg-blue-900 text-gray-100',
     },

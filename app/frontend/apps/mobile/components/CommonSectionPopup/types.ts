@@ -10,4 +10,6 @@ export interface PopupItemDescriptor extends TooltipItemDescriptor {
   attributes?: Record<string, unknown>
   onAction?(): void
   noHideOnSelect?: boolean
+  buttonPrefixIcon?: string
+  buttonAlign?: 'start' | 'end'
 }

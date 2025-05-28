@@ -332,35 +332,9 @@ export type FieldLinkClassMap = Record<FieldLinkClass, string>
 
 export type FieldEditorClass = {
   actionBar: {
-    buttonContainer: string
     tableMenuContainer: string
-    leftGradient: {
-      left: string
-      before: {
-        background: {
-          light: string
-          dark: string
-        }
-      }
-    }
-    rightGradient: {
-      before: {
-        background: {
-          light: string
-          dark: string
-        }
-      }
-    }
-    shadowGradient: {
-      before: {
-        top: string
-        height: string
-      }
-    }
     button: {
       base: string
-      active: string
-      action?: Record<string, string>
     }
   }
   input: {

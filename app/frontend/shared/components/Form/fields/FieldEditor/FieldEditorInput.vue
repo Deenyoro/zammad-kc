@@ -5,40 +5,38 @@ import { useEditor, EditorContent } from '@tiptap/vue-3'
 import { useEventListener } from '@vueuse/core'
 import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
 
+import { getEditorActionBarComponent } from '#shared/components/Form/initializeEditorComponents.ts'
 import { getFieldEditorClasses } from '#shared/components/Form/initializeFieldEditor.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
 import { htmlCleanup } from '#shared/utils/htmlCleanup.ts'
-import log from '#shared/utils/log.ts'
-import testFlags from '#shared/utils/testFlags.ts'
 
 import useValue from '../../composables/useValue.ts'
-import { getNodeByName } from '../../utils.ts'
 
 import {
   getCustomExtensions,
   getHtmlExtensions,
   getPlainExtensions,
 } from './extensions/List.ts'
-import FieldEditorActionBar from './FieldEditorActionBar.vue'
+import FieldEditorTableMenu from './features/table/EditorTableMenu.vue'
 import FieldEditorFooter from './FieldEditorFooter.vue'
-import FieldEditorTableMenu from './FieldEditorTableMenu.vue'
 import { PLUGIN_NAME as userMentionPluginName } from './suggestions/UserMention.ts'
-import { convertInlineImages } from './utils.ts'
+import { useAttachments } from './useAttachments.ts'
+import { useSignatureHandling } from './useSignatureHandling.ts'
 
 import type {
   EditorContentType,
   EditorCustomPlugins,
   FieldEditorContext,
   FieldEditorProps,
-  PossibleSignature,
 } from './types.ts'
-import type { Editor } from '@tiptap/vue-3'
 
 interface Props {
   context: FormFieldContext<FieldEditorProps>
 }
 
 const props = defineProps<Props>()
+
+const FieldEditorActionBar = getEditorActionBarComponent()
 
 const reactiveContext = toRef(props, 'context')
 const { currentValue } = useValue(reactiveContext)
@@ -51,15 +49,16 @@ const contentType = computed<EditorContentType>(
   () => props.context.contentType || 'text/html',
 )
 
+const isPlainText = computed(() => contentType.value === 'text/plain')
+
 // remove user mention in plain text mode and inline images
-if (contentType.value === 'text/plain') {
+if (isPlainText.value) {
   disabledPlugins.push(userMentionPluginName, 'image')
 }
 
-const editorExtensions =
-  contentType.value === 'text/plain'
-    ? getPlainExtensions()
-    : getHtmlExtensions()
+const editorExtensions = isPlainText.value
+  ? getPlainExtensions()
+  : getHtmlExtensions()
 
 getCustomExtensions(reactiveContext).forEach((extension) => {
   if (!disabledPlugins.includes(extension.name as EditorCustomPlugins)) {
@@ -67,71 +66,17 @@ getCustomExtensions(reactiveContext).forEach((extension) => {
   }
 })
 
-const hasImageExtension = editorExtensions.some(
-  (extension) => extension.name === 'image',
-)
 const showActionBar = ref(false)
 const editorValue = ref<string>(VITE_TEST_MODE ? props.context._value : '')
 
-interface LoadImagesOptions {
-  attachNonInlineFiles: boolean
-}
+const { hasImageExtension, loadFiles } = useAttachments(
+  editorExtensions,
+  props.context.formId,
+)
 
-const inlineImagesInEditor = (editor: Editor, files: File[]) => {
-  convertInlineImages(files, editor.view.dom).then(async (urls) => {
-    if (editor?.isDestroyed) return
-    editor?.commands.setImages(urls)
-  })
-}
-
-const addFilesToAttachments = (files: File[]) => {
-  const attachmentsContext = getNodeByName(props.context.formId, 'attachments')
-    ?.context as unknown as
-    | { uploadFiles?: (files: File[]) => void }
-    | undefined
-  if (attachmentsContext && !attachmentsContext.uploadFiles) {
-    log.error(
-      '[FieldEditorInput] Attachments field was found, but it doesn\'t provide "uploadFiles" method.',
-    )
-  } else {
-    attachmentsContext?.uploadFiles?.(files)
-  }
-}
-
-// there is also a gif, but desktop only inlines these two for now
-const imagesMimeType = ['image/png', 'image/jpeg']
-const loadFiles = (
-  files: FileList | File[] | null | undefined,
-  editor: Editor | undefined,
-  options: LoadImagesOptions,
-) => {
-  if (!files) {
-    return false
-  }
-
-  const inlineImages: File[] = []
-  const otherFiles: File[] = []
-
-  for (const file of files) {
-    if (imagesMimeType.includes(file.type)) {
-      inlineImages.push(file)
-    } else {
-      otherFiles.push(file)
-    }
-  }
-
-  if (inlineImages.length && editor) {
-    inlineImagesInEditor(editor, inlineImages)
-  }
-
-  if (options.attachNonInlineFiles && otherFiles.length) {
-    addFilesToAttachments(otherFiles)
-  }
-
-  return Boolean(
-    inlineImages.length || (options.attachNonInlineFiles && otherFiles.length),
-  )
-}
+const hasTableExtension = editorExtensions.some(
+  (ext) => ext.name === 'tableKit',
+)
 
 const editor = useEditor({
   extensions: editorExtensions,
@@ -146,9 +91,7 @@ const editor = useEditor({
     },
     // add inlined files
     handlePaste(view, event) {
-      if (!hasImageExtension) {
-        return
-      }
+      if (!hasImageExtension) return
 
       const items = Array.from(event.clipboardData?.items || [])
       for (const item of items) {
@@ -173,9 +116,8 @@ const editor = useEditor({
       return false
     },
     handleDrop(view, event) {
-      if (!hasImageExtension) {
-        return
-      }
+      if (!hasImageExtension) return
+
       const e = event as unknown as InputEvent
       const files = e.dataTransfer?.files || null
       const loaded = loadFiles(files, editor.value, {
@@ -194,8 +136,7 @@ const editor = useEditor({
       ? htmlCleanup(currentValue.value)
       : currentValue.value,
   onUpdate({ editor }) {
-    const content =
-      contentType.value === 'text/plain' ? editor.getText() : editor.getHTML()
+    const content = isPlainText.value ? editor.getText() : editor.getHTML()
     const value = content === '<p></p>' ? '' : content
     props.context.node.input(value)
 
@@ -249,7 +190,9 @@ const setEditorContent = (
 
   editor.value.commands.setContent(
     contentType === 'text/html' ? htmlCleanup(content) : content,
-    emitUpdate,
+    {
+      emitUpdate,
+    },
   )
 }
 
@@ -257,10 +200,9 @@ const setEditorContent = (
 const updateValueKey = props.context.node.on(
   'input',
   ({ payload: newContent }) => {
-    const currentContent =
-      contentType.value === 'text/plain'
-        ? editor.value?.getText()
-        : editor.value?.getHTML()
+    const currentContent = isPlainText.value
+      ? editor.value?.getText()
+      : editor.value?.getHTML()
 
     // Skip the update if the value is identical.
     if (newContent === currentContent) return
@@ -298,65 +240,8 @@ useEventListener('click', (e) => {
   if (label === e.target) focusEditor()
 })
 
-// insert signature before full article blockquote or at the end of the document
-const resolveSignaturePosition = (editor: Editor) => {
-  let blockquotePosition: number | null = null
-  editor.state.doc.descendants((node, pos) => {
-    if (
-      (node.type.name === 'paragraph' || node.type.name === 'blockquote') &&
-      node.attrs['data-marker'] === 'signature-before'
-    ) {
-      blockquotePosition = pos
-      return false
-    }
-  })
-  if (blockquotePosition !== null) {
-    return { position: 'before', from: blockquotePosition }
-  }
-  return { position: 'after', from: editor.state.doc.content.size || 0 }
-}
-
-const addSignature = (signature: PossibleSignature) => {
-  if (!editor.value || editor.value.isDestroyed || !editor.value.isEditable)
-    return
-  const currentPosition = editor.value.state.selection.anchor
-  const positionFromEnd = editor.value.state.doc.content.size - currentPosition
-  // don't use "chain()", because we change positions a lot
-  // and chain doesn't know about it
-  editor.value.commands.removeSignature()
-  const { position, from } = resolveSignaturePosition(editor.value)
-  editor.value.commands.addSignature({ ...signature, position, from })
-  const getNewPosition = (editor: Editor) => {
-    if (signature.position != null) {
-      return signature.position
-    }
-    if (currentPosition < from) {
-      return currentPosition
-    }
-    if (from === 0 && currentPosition <= 1) {
-      return 1
-    }
-    return editor.state.doc.content.size - positionFromEnd
-  }
-  // calculate new position from the end of the signature otherwise
-  editor.value.commands.focus(getNewPosition(editor.value))
-  requestAnimationFrame(() => {
-    testFlags.set('editor.signatureAdd')
-  })
-}
-
-const removeSignature = () => {
-  if (!editor.value || editor.value.isDestroyed || !editor.value.isEditable)
-    return
-  const currentPosition = editor.value.state.selection.anchor
-  editor.value.chain().removeSignature().focus(currentPosition).run()
-  requestAnimationFrame(() => {
-    testFlags.set('editor.removeSignature')
-  })
-}
-
 const characters = computed(() => {
-  if (contentType.value === 'text/plain') {
+  if (isPlainText.value) {
     return currentValue.value?.length || 0
   }
   if (!editor.value) return 0
@@ -364,6 +249,8 @@ const characters = computed(() => {
     node: editor.value.state.doc,
   })
 })
+
+const { addSignature, removeSignature } = useSignatureHandling(editor)
 
 const editorCustomContext = {
   _loaded: true,
@@ -403,36 +290,39 @@ const classes = getFieldEditorClasses()
 </script>
 
 <template>
-  <div :class="classes.input.container">
-    <EditorContent
-      class="text-base ltr:text-left rtl:text-right"
-      data-test-id="field-editor"
-      :editor="editor"
-    />
-    <FieldEditorFooter
-      v-if="context.meta?.footer && !context.meta.footer.disabled && editor"
-      :footer="context.meta.footer"
-      :characters="characters"
-    />
+  <!-- TODO: questionable usability - it moves, when new line is added -->
+  <div class="flex flex-col">
+    <div :class="classes.input.container">
+      <EditorContent
+        class="text-base ltr:text-left rtl:text-right"
+        data-test-id="field-editor"
+        :editor="editor"
+      />
+      <FieldEditorFooter
+        v-if="context.meta?.footer && !context.meta.footer.disabled && editor"
+        :footer="context.meta.footer"
+        :characters="characters"
+      />
 
-    <FieldEditorTableMenu
-      v-if="editor"
+      <FieldEditorTableMenu
+        v-if="editor && hasTableExtension"
+        :editor="editor"
+        :content-type="contentType"
+        :form-id="context.formId"
+      />
+    </div>
+
+    <component
+      :is="FieldEditorActionBar"
       :editor="editor"
       :content-type="contentType"
-      :form-id="context.formId"
+      :visible="showActionBar"
+      :disabled-plugins="disabledPlugins"
+      :form-context="reactiveContext"
+      @hide="showActionBar = false"
+      @blur="focusEditor"
     />
   </div>
-
-  <!-- TODO: questionable usability - it moves, when new line is added -->
-  <FieldEditorActionBar
-    :editor="editor"
-    :content-type="contentType"
-    :visible="showActionBar"
-    :disabled-plugins="disabledPlugins"
-    :form-context="reactiveContext"
-    @hide="showActionBar = false"
-    @blur="focusEditor"
-  />
 </template>
 
 <style>

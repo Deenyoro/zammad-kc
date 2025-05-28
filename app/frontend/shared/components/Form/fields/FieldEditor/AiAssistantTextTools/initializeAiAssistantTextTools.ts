@@ -3,6 +3,7 @@
 let aiAssistantTextTools = {
   popover: {
     base: '',
+    item: '',
     button: '',
   },
   verticalGradient: '',

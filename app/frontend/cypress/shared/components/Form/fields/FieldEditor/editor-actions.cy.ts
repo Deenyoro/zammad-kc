@@ -10,6 +10,7 @@ const testAction = (
   action: string,
   expected: (text: string) => string,
   submenu?: string,
+  role = 'textbox',
   typeText = 'Something',
   hint = ' ',
 ) => {
@@ -28,7 +29,7 @@ const testAction = (
 
       // It is unsafe to chain further commands that rely on the subject after `.type()`.
       //   https://docs.cypress.io/api/commands/type
-      cy.findByRole('textbox').type(typeText)
+      cy.findByRole(role).type(typeText)
       cy.findByRole('textbox').should('contain.html', expected(typeText))
     })
 
@@ -67,7 +68,7 @@ const testTableAction = (
     cy.findByRole('table').find('td').first().click()
     cy.findByRole('table').find('td').first().click()
 
-    cy.findByRole('region').should('exist')
+    cy.findByRole('presentation').should('exist')
 
     if (actionLabel === 'Merge cells') {
       cy.findByRole('table').find('td').selectText('left', 2)
@@ -76,6 +77,7 @@ const testTableAction = (
     if (actionLabel === 'Split cells') {
       cy.findByRole('table').find('td').selectText('left', 2)
       cy.findByLabelText('Merge cells').click({ force: true }) // can be out of viewport scrollable
+      cy.findByRole('table').find('td').first().click()
     }
 
     cy.findByLabelText(actionLabel).click({ force: true }) // can be out of viewport scrollable
@@ -100,24 +102,38 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
     'Add first level heading',
     (text) => `<h1>${text}</h1>`,
     'Add heading',
+    'heading',
   )
   testAction(
     'Add second level heading',
     (text) => `<h2>${text}</h2>`,
     'Add heading',
+    'heading',
   )
   testAction(
     'Add third level heading',
     (text) => `<h3>${text}</h3>`,
     'Add heading',
+    'heading',
   )
-  testAction('Add ordered list', (text) => `<ol><li><p>${text}</p></li></ol>`)
-  testAction('Add bullet list', (text) => `<ul><li><p>${text}</p></li></ul>`)
+  testAction(
+    'Add ordered list',
+    (text) => `<ol><li><p>${text}</p></li></ol>`,
+    undefined,
+    'listitem',
+  )
+  testAction(
+    'Add bullet list',
+    (text) => `<ul><li><p>${text}</p></li></ul>`,
+    undefined,
+    'listitem',
+  )
 
   testAction(
     'Add ordered list',
     () => `<ol><li><p>Something1</p></li><li><p>Something2</p></li></ol>`,
     undefined,
+    'listitem',
     'Something1{enter}Something2',
     ' (multiline)',
   )
@@ -125,6 +141,7 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
     'Add bullet list',
     () => `<ul><li><p>Something1</p></li><li><p>Something2</p></li></ul>`,
     undefined,
+    'listitem',
     'Something1{enter}Something2',
     ' (multiline)',
   )
@@ -135,7 +152,7 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
 
       cy.findByRole('textbox').click()
       cy.findByTestId('action-bar').findByLabelText('Format as bold').click()
-      cy.findByRole('textbox').type('Text')
+      cy.findByRole('paragraph').type('Text')
 
       cy.findByRole('textbox').should(
         'have.html',
@@ -144,7 +161,6 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
 
       cy.findByRole('textbox').type('{selectall}')
       cy.findByTestId('action-bar').findByLabelText('Remove formatting').click()
-      cy.findByRole('textbox').type('Text')
       cy.findByRole('textbox').should('have.html', '<p>Text</p>')
     })
   })
@@ -275,7 +291,7 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
         cy.findByRole('table').find('td').first().click()
         cy.findByRole('table').find('td').first().click()
 
-        cy.findByRole('region').should('exist')
+        cy.findByRole('presentation').should('exist')
 
         cy.findByLabelText('Delete table').click({ force: true }) // can be out of viewport scrollable
 
@@ -290,10 +306,12 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
     cy.findByRole('textbox').click()
     cy.findByTestId('action-bar').findByLabelText('Insert code block').click()
 
-    cy.findByRole('textbox').type('const vue = "awesome"')
+    cy.findByRole('code').should('exist')
+
+    cy.findByRole('code').type('const vue = "awesome"')
 
     cy.findByRole('textbox').should(
-      'have.html',
+      'contain.html',
       '<pre><code>const <span class="hljs-attr">vue</span> = <span class="hljs-string">"awesome"</span></code></pre>',
     )
   })
@@ -304,7 +322,7 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
     cy.findByRole('textbox').click()
     cy.findByTestId('action-bar').findByLabelText('Add bullet list').click()
 
-    cy.findByRole('textbox').type('First{enter}Second{enter}Third')
+    cy.findByRole('listitem').type('First{enter}Second{enter}Third')
 
     cy.findByLabelText('Indent text').click()
 
@@ -326,7 +344,7 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
     cy.findByRole('textbox').click()
     cy.findByTestId('action-bar').findByLabelText('Add bullet list').click()
 
-    cy.findByRole('textbox').type('First{enter}Second{enter}Third')
+    cy.findByRole('listitem').type('First{enter}Second{enter}Third')
 
     cy.findByLabelText('Indent text').click()
 

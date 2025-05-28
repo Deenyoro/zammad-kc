@@ -93,6 +93,9 @@ export default defineConfig(({ mode, command }) => {
       //   https://github.com/tailwindlabs/tailwindcss/issues/16582
       logOverride: { 'css-syntax-error': 'silent' },
     },
+    build: {
+      chunkSizeWarningLimit: 1000, // :TODO - please drop this once working on improving chunks to be smaller then the defaul <500kb
+    },
     resolve: {
       preserveSymlinks: isEnvBooleanSet(process.env.PRESERVE_SYMLINKS),
       alias: {

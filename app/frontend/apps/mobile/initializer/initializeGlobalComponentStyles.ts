@@ -2,7 +2,7 @@
 
 import { initializeAiAssistantTextTools } from '#shared/components/Form/fields/FieldEditor/AiAssistantTextTools/initializeAiAssistantTextTools.ts'
 import { initializeAiAssistantTextToolsLoadingBanner } from '#shared/components/Form/fields/FieldEditor/AiAssistantTextTools/initializeAiAssistantTextToolsLoadingBanner.ts'
-import { initializeEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/FieldEditorColorMenu/initializeEditorColorMenu.ts'
+import { initializeEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/features/color-picker/initializeEditorColorMenu.ts'
 import { initializeAlertClasses } from '#shared/initializer/initializeAlertClasses.ts'
 import { initializeAvatarClasses } from '#shared/initializer/initializeAvatarClasses.ts'
 import { initializeFilePreviewClasses } from '#shared/initializer/initializeFilePreviewClasses.ts'
@@ -65,7 +65,7 @@ export const initializeGlobalComponentStyles = () => {
 
   initializeEditorColorMenuClasses({
     colorSchemeList: {
-      base: 'border-b  pb-1',
+      base: 'border-b border-gray-300 pb-1',
       button: 'p-4',
     },
   })
@@ -86,6 +86,7 @@ export const initializeGlobalComponentStyles = () => {
   initializeAiAssistantTextTools({
     popover: {
       base: '',
+      item: 'border-b border-gray-300 last:border-0',
       button: 'py-4 px-3',
     },
     verticalGradient: 'bg-linear-to-t from-pink to-blue',

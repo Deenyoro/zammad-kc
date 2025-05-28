@@ -68,6 +68,8 @@ const iconSizeClass = computed(() => {
       ...sizeClasses,
       {
         'opacity-50': disabled,
+        'justify-start': align === 'start',
+        'justify-end': align === 'end',
       },
     ]"
   >

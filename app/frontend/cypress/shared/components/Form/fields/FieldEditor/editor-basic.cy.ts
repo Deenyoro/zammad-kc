@@ -6,6 +6,8 @@ describe('FieldEditor basic functionality', { retries: 2 }, () => {
   it('typing works, text becomes bold, when "B" is clicked', () => {
     mountEditor()
 
+    cy.findByTestId('action-bar').should('not.be.visible')
+
     cy.findByRole('textbox')
       .click()
       .then(() => {
@@ -23,11 +25,6 @@ describe('FieldEditor basic functionality', { retries: 2 }, () => {
         cy.findByRole('textbox').within((editor) => {
           expect(editor.find('strong')).to.have.text('Hello, World!')
         })
-      })
-      .then(() => {
-        cy.findByTestId('action-bar').should('be.visible')
-        cy.get('body').click(400, 400, { force: true })
-        cy.findByTestId('action-bar').should('not.be.visible')
       })
   })
 

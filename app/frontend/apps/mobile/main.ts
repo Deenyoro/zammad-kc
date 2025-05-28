@@ -21,6 +21,7 @@ import { initializeForm, initializeFormFields } from '#mobile/form/index.ts'
 import { initializeGlobalComponentStyles } from '#mobile/initializer/initializeGlobalComponentStyles.ts'
 import initializeGlobalDirectives from '#mobile/initializer/initializeGlobalDirectives.ts'
 import { initializeMobileIcons } from '#mobile/initializer/initializeMobileIcons.ts'
+import initializeSharedComponents from '#mobile/initializer/initializeSharedComponents.ts'
 import { initializeMobileVisuals } from '#mobile/initializer/mobileVisuals.ts'
 import initializeRouter from '#mobile/router/index.ts'
 import initializeApolloClient from '#mobile/server/apollo/index.ts'
@@ -55,6 +56,7 @@ export default async function mountApp(): Promise<void> {
   initializeGlobalDirectives(app)
   initializeMobileVisuals()
   initializeStoreSubscriptions()
+  initializeSharedComponents()
 
   initializeAbstracts({
     durations: { normal: { enter: 300, leave: 200 } },

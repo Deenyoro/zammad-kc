@@ -3,8 +3,8 @@
 <script setup lang="ts">
 import { toRef } from 'vue'
 
-import ColorSchemeList from '#shared/components/Form/fields/FieldEditor/FieldEditorColorMenu/ColorSchemeList.vue'
-import { getEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/FieldEditorColorMenu/initializeEditorColorMenu.ts'
+import ColorSchemeList from '#shared/components/Form/fields/FieldEditor/features/color-picker/ColorSchemeList.vue'
+import { getEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/features/color-picker/initializeEditorColorMenu.ts'
 import { getFieldEditorClasses } from '#shared/components/Form/initializeFieldEditor.ts'
 import { useColorPallet } from '#shared/composables/useColorPallet/useColorPallet.ts'
 

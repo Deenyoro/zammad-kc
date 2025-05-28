@@ -1,7 +1,14 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { useResizeObserver, useWindowSize, whenever } from '@vueuse/core'
+import {
+  type MaybeElement,
+  useCssVar,
+  useElementSize,
+  useResizeObserver,
+  useWindowSize,
+  whenever,
+} from '@vueuse/core'
 import { cloneDeep, isEqual } from 'lodash-es'
 import {
   computed,
@@ -15,6 +22,7 @@ import {
   watch,
   useTemplateRef,
   ref,
+  type ShallowRef,
 } from 'vue'
 
 import {
@@ -602,6 +610,22 @@ useResizeObserver(
     articleListTopPadding.value = `${(height + gap) / 16}rem`
   },
 )
+
+const topHeaderHeightCustomProperty = useCssVar('--top-header-height')
+const { height: topHeaderHeight } = useElementSize(
+  topBarInstance as ShallowRef<MaybeElement>, // wrongly typed in vue-use
+)
+
+whenever(
+  () => [topHeaderHeight.value, isReplyPinned.value],
+  ([value, isPinned]) => {
+    // We set custom property to set it for action bar top positioning
+    topHeaderHeightCustomProperty.value = isPinned
+      ? '0'
+      : `${(value as number) / 16}rem`
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -612,6 +636,9 @@ useResizeObserver(
     :show-sidebar="hasSidebar"
     content-alignment="center"
     no-scrollable
+    :style="{
+      '--top-header-height': topHeaderHeightCustomProperty,
+    }"
   >
     <CommonLoader class="mt-8" :loading="!ticket">
       <div

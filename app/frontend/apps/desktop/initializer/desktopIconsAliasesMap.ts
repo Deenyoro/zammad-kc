@@ -54,8 +54,8 @@ export default {
   'editor-bullet-list': 'list-ul',
   'editor-remove-formatting': 'remove-formatting',
   'editor-mention-user': 'at',
-  'editor-mention-knowledge-base': 'mention-kb',
-  'editor-mention-text-module': 'snippet',
+  'editor-mention-knowledge-base': 'book',
+  'editor-mention-text-module': 'text-modules',
   'editor-table': 'table',
   'editor-code': 'code',
   'editor-code-block': 'code-square',
@@ -64,6 +64,7 @@ export default {
   'editor-indent-left': 'text-indent-left',
   'editor-text-color': 'color',
   'editor-action-checkmark': 'check2',
+  'editor-insert-divider': 'insert-hr',
 
   '2fa-security-keys': 'key',
   '2fa-authenticator-app': 'phone',

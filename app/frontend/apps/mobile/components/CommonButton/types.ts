@@ -15,4 +15,5 @@ export interface CommonButtonProps {
   disabled?: boolean
   variant?: ButtonVariant
   transparentBackground?: boolean
+  align?: 'start' | 'end'
 }

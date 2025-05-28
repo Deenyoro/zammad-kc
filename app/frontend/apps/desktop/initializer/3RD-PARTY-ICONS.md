@@ -5,6 +5,7 @@
 - `assets/arrow-repeat.svg`
 - `assets/arrows-collapse.svg`
 - `assets/arrows-expand.svg`
+- `assets/book.svg`
 - `assets/box-arrow-in-right.svg`
 - `assets/box-arrow-up-right.svg`
 - `assets/brightness-alt-high.svg`

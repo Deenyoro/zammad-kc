@@ -2,20 +2,12 @@
 
 <script setup lang="ts">
 import { onKeyDown, useEventListener, whenever } from '@vueuse/core'
-import { storeToRefs } from 'pinia'
 import { useTemplateRef } from 'vue'
-import { computed, nextTick, type Ref, ref, toRef } from 'vue'
+import { nextTick, type Ref, ref, toRef } from 'vue'
 
 import type { EditorButton } from '#shared/components/Form/fields/FieldEditor/useEditorActions.ts'
-import {
-  getFieldEditorClasses,
-  getFieldEditorProps,
-} from '#shared/components/Form/initializeFieldEditor.ts'
 import { useTraverseOptions } from '#shared/composables/useTraverseOptions.ts'
 import stopEvent from '#shared/utils/events.ts'
-
-// eslint-disable-next-line import/no-restricted-paths
-import { useThemeStore } from '#desktop/stores/theme.ts'
 
 import type { Editor } from '@tiptap/core'
 
@@ -40,8 +32,6 @@ const emit = defineEmits<{
   blur: []
   'click-action': [EditorButton, MouseEvent]
 }>()
-
-const classes = getFieldEditorClasses()
 
 const opacityGradientEnd = ref('0')
 const opacityGradientStart = ref('0')
@@ -71,8 +61,6 @@ const recalculateOpacity = () => {
   opacityGradientEnd.value = Math.min(1, 1 - opacityPart).toFixed(2)
 }
 
-const editorProps = getFieldEditorProps()
-
 useTraverseOptions(actionBar, { direction: 'horizontal', ignoreTabindex: true })
 
 onKeyDown(
@@ -99,50 +87,6 @@ whenever(
   () => props.visible,
   () => nextTick(recalculateOpacity),
 )
-
-const { currentTheme } = storeToRefs(useThemeStore())
-
-const checkCurrentTheme = (currentTheme: 'dark' | 'light' | 'auto') => {
-  let theme: 'dark' | 'light' = 'dark'
-
-  if (currentTheme === 'light') {
-    theme = 'light'
-  }
-  if (currentTheme === 'auto') {
-    const rootElement = document.documentElement
-    theme = rootElement.getAttribute('data-theme') as 'dark' | 'light'
-  }
-  return theme
-}
-
-// Css lint rule for v-bind expects this naming convention
-const leftgradientbeforebackground = computed(() => {
-  const theme = checkCurrentTheme(currentTheme.value)
-
-  return theme === 'dark'
-    ? classes.actionBar.leftGradient.before.background.dark
-    : classes.actionBar.leftGradient.before.background.light
-})
-
-// Css lint rule for v-bind expects this naming convention
-const rightgradientbeforebackground = computed(() => {
-  const theme = checkCurrentTheme(currentTheme.value)
-
-  return theme === 'dark'
-    ? classes.actionBar.rightGradient.before.background.dark
-    : classes.actionBar.rightGradient.before.background.light
-})
-
-// Css lint rule for v-bind expects this naming convention
-const beforegradienttop = computed(
-  () => classes.actionBar.shadowGradient.before.top,
-)
-// Css lint rule for v-bind expects this naming convention
-const beforegradientheight = computed(
-  () => classes.actionBar.shadowGradient.before.height,
-)
-// Css lint rule for v-bind expects this naming convention
-const leftgradientvalue = computed(() => classes.actionBar.leftGradient.left)
 </script>
 
 <template>
@@ -151,25 +95,21 @@ const leftgradientvalue = computed(() => classes.actionBar.leftGradient.left)
     <div
       ref="action-bar"
       data-test-id="action-bar"
-      class="Menubar relative flex max-w-full overflow-x-auto overflow-y-hidden"
-      :class="[classes.actionBar.buttonContainer]"
+      class="Menubar relative flex max-w-full items-center gap-1 overflow-x-auto overflow-y-hidden p-2"
       role="toolbar"
       tabindex="0"
       @keydown.tab="hideAfterLeaving"
       @scroll.passive="recalculateOpacity"
     >
-      <template v-for="action in actions" :key="action.name">
+      <template v-for="(action, idx) in actions" :key="action.name">
         <button
-          :title="action.label || action.name"
+          :title="$t(action.label || action.name)"
           type="button"
+          class="flex items-center gap-1 rounded bg-black p-2 lg:hover:bg-gray-300"
           :class="[
-            classes.actionBar.button.base,
             action.class,
             {
-              [classes.actionBar.button.active]: isActive?.(
-                action.name,
-                action.attributes,
-              ),
+              'bg-gray-300': isActive?.(action.name, action.attributes),
               'color-indicator': action.name === 'textColor',
             },
           ]"
@@ -180,7 +120,7 @@ const leftgradientvalue = computed(() => classes.actionBar.leftGradient.left)
               ? editor.getAttributes('textStyle').color
               : '#ffffff',
           }"
-          :aria-label="action.label || action.name"
+          :aria-label="$t(action.label || action.name)"
           :aria-pressed="isActive?.(action.name, action.attributes)"
           tabindex="-1"
           @click="
@@ -190,17 +130,11 @@ const leftgradientvalue = computed(() => classes.actionBar.leftGradient.left)
             }
           "
         >
-          <CommonIcon
-            :name="action.icon"
-            :size="editorProps.actionBar.button.icon.size"
-            decorative
-          />
+          <CommonIcon :name="action.icon" size="small" decorative />
+          <CommonIcon v-if="action.subMenu" name="caret" size="xs" decorative />
         </button>
-        <div v-if="action.showDivider">
-          <hr
-            :class="action.dividerClass"
-            class="h-full w-px border-0 bg-neutral-100 dark:bg-gray-900"
-          />
+        <div v-if="action.showDivider && idx < actions.length - 1">
+          <hr :class="action.dividerClass" class="h-6 w-px border-0 bg-black" />
         </div>
       </template>
     </div>
@@ -237,16 +171,16 @@ const leftgradientvalue = computed(() => classes.actionBar.leftGradient.left)
   border-radius: 0 0 0.5rem;
   content: '';
   position: absolute;
-  top: v-bind(beforegradienttop);
-  height: v-bind(beforegradientheight);
+  top: calc(0px - 30px - 1.5rem);
+  height: calc(30px + 1.5rem);
   pointer-events: none;
 }
 
 .LeftGradient::before {
   border-radius: 0 0 0 0.5rem;
-  left: v-bind(leftgradientvalue);
+  left: -0.5rem;
   right: 0;
-  background: v-bind(leftgradientbeforebackground);
+  background: linear-gradient(270deg, rgba(255, 255, 255, 0), #282829);
 }
 
 .RightGradient {
@@ -256,7 +190,7 @@ const leftgradientvalue = computed(() => classes.actionBar.leftGradient.left)
 .RightGradient::before {
   right: 0;
   left: 0;
-  background: v-bind(rightgradientbeforebackground);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), #282829);
 }
 
 .color-indicator {
@@ -266,15 +200,16 @@ const leftgradientvalue = computed(() => classes.actionBar.leftGradient.left)
 
   &::before {
     content: '';
+    border: solid 1px var(--color-gray-400);
     background: var(--color-indicator-background) !important;
-    color: var(--color-black);
     position: absolute;
-    bottom: 0.25rem;
+    bottom: 0.6rem;
     left: 50%;
-    height: 0.125rem;
-    width: 33.333333%;
+    height: 0.25rem;
+    width: 0.25rem;
     transform: translateX(-50%);
-    border-radius: 100%;
+    border-radius: 2px;
+    box-sizing: content-box;
   }
 }
 </style>

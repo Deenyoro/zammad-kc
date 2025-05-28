@@ -9,6 +9,7 @@ import { initializeForm, initializeFormFields } from '#mobile/form/index.ts'
 import { initializeGlobalComponentStyles } from '#mobile/initializer/initializeGlobalComponentStyles.ts'
 import { initializeMobileIcons } from '#mobile/initializer/initializeMobileIcons.ts'
 import { initializeMobileVisuals } from '#mobile/initializer/mobileVisuals.ts'
+import initializeSharedComponents from '#mobile/initializer/initializeSharedComponents.ts'
 
 // imported only for types
 // for some reason adding it to tsconfig doesn't work
@@ -49,6 +50,7 @@ export const mountComponent: typeof mount = (
   plugins.push(initializeForm)
   plugins.push(initializeFormFields)
   plugins.push(initializeMobileVisuals)
+  plugins.push(initializeSharedComponents)
   plugins.push((app: App) => router.install(app))
 
   return cy.mount(component, merge({ global: { plugins } }, options))

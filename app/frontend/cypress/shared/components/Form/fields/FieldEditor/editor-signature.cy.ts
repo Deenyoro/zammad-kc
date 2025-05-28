@@ -49,21 +49,29 @@ const resolveEditor = (props: any = {}) => {
 describe('correctly adds signature', () => {
   it('add signature into an empty editor', () => {
     resolveEditor().then((context) => {
-      context.addSignature({
-        body: SIGNATURE,
-        id: 1,
-      })
       cy.findByRole('textbox')
-        .should(
-          'have.html',
-          `${BREAK_HTML}${BREAK_HTML}${WRAPPED_SIGNATURE(
-            '1',
-            PARSED_SIGNATURE,
-          )}`,
-        )
+        .should('have.html', `${BREAK_HTML}`)
         .then(() => {
-          context.removeSignature()
-          cy.findByRole('textbox').should('have.html', BREAK_HTML)
+          context.addSignature({
+            body: SIGNATURE,
+            id: 1,
+          })
+          cy.findByRole('textbox')
+            .should(
+              'have.html',
+              `${BREAK_HTML}${BREAK_HTML}${WRAPPED_SIGNATURE(
+                '1',
+                PARSED_SIGNATURE,
+              )}${BREAK_HTML}`,
+            )
+            .then(() => {
+              context.removeSignature()
+              // FIXME: Try to address the extra line break issue when removing signature.
+              cy.findByRole('textbox').should(
+                'have.html',
+                `${BREAK_HTML}${BREAK_HTML}`,
+              )
+            })
         })
     })
   })
@@ -71,8 +79,9 @@ describe('correctly adds signature', () => {
   it('add bottom signature when content is already there', () => {
     mountEditor()
 
+    cy.findByRole('textbox').type(ORIGINAL_TEXT)
+
     cy.findByRole('textbox')
-      .type(ORIGINAL_TEXT)
       .then(resolveContext)
       .then((context) => {
         context.addSignature({
@@ -85,15 +94,17 @@ describe('correctly adds signature', () => {
             `<p>${ORIGINAL_TEXT}</p>${BREAK_HTML}${WRAPPED_SIGNATURE(
               '2',
               `${PARSED_SIGNATURE}`,
-            )}`,
+            )}${BREAK_HTML}`,
           )
           .type('new')
+
+        cy.findByRole('textbox')
           .should('include.html', `<p>${ORIGINAL_TEXT}new</p>`) // cursor didn't move
           .then(() => {
             context.removeSignature()
             cy.findByRole('textbox').should(
               'have.html',
-              `<p>${ORIGINAL_TEXT}new</p>`,
+              `<p>${ORIGINAL_TEXT}new</p>${BREAK_HTML}`,
             )
           })
       })

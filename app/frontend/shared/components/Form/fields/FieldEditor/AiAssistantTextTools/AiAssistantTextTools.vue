@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 import { DOMSerializer } from 'prosemirror-model'
-import { computed, watch } from 'vue'
+import { computed, nextTick, onMounted, watch } from 'vue'
 
 import {
   useNotifications,
@@ -37,6 +37,20 @@ const hasSelection = computed(
   () =>
     props.editor?.state.selection.anchor !== props.editor?.state.selection.head,
 )
+
+onMounted(() => {
+  if (hasSelection.value) return
+
+  nextTick(() => {
+    emit('close')
+
+    notify({
+      id: 'ai-assistant-text-tools-no-selection',
+      type: NotificationTypes.Info,
+      message: __('Please select some text first.'),
+    })
+  })
+})
 
 const useAbortableMutation = () => {
   const abortController = new AbortController()
@@ -113,7 +127,7 @@ const updateSelectedContent = (content: string) => {
 }
 
 const hideActionBarAndShowAiTextLoader = () => {
-  emit('close')
+  emit('action')
   props.editor!.setEditable(false)
   emit('hide-action-bar', true)
   emit('show-ai-text-loader', true)
@@ -184,7 +198,11 @@ const actions = computed(() => [
 <template>
   <div :class="smartEditorClasses.popover.base">
     <ul ref="list">
-      <li v-for="action in actions" :key="action.key">
+      <li
+        v-for="action in actions"
+        :key="action.key"
+        :class="smartEditorClasses.popover.item"
+      >
         <button
           :disabled="action.disabled"
           :class="smartEditorClasses.popover.button"

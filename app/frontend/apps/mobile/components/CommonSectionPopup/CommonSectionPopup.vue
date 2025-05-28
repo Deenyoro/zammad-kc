@@ -19,6 +19,7 @@ export interface Props {
   zIndex?: number
   heading?: string
   cancelLabel?: string
+  persistent?: boolean
 }
 
 defineOptions({
@@ -130,13 +131,15 @@ const getClassesByType = (type: PopupItemDescriptor['type']) => {
     >
       <!-- empty @click is needed for https://stackoverflow.com/a/39712411 -->
       <div
-        v-if="localState"
+        v-if="persistent || localState"
+        v-show="persistent ? localState : true"
         class="window pb-safe-4 fixed top-0 bottom-0 flex w-screen flex-col justify-end px-4 text-white ltr:left-0 rtl:right-0"
         :class="{ 'z-20': !zIndex }"
         :style="{ zIndex }"
         role="presentation"
         tabindex="-1"
         data-test-id="popupWindow"
+        :aria-hidden="!localState"
         @click="void 0"
         @keydown.esc="hidePopup()"
       >
@@ -154,7 +157,10 @@ const getClassesByType = (type: PopupItemDescriptor['type']) => {
               class="flex w-full items-center px-4"
               :class="[getClassesByType(item.type), item.class]"
               :variant="!item.link && item.buttonVariant"
+              :prefix-icon="!item.link && item.buttonPrefixIcon"
+              :align="!item.link && item.buttonAlign"
               :transparent-background="!item.link"
+              :aria-label="$t(item.label)"
               v-bind="item.attributes"
               @click="onItemClick(item)"
             >

@@ -1,24 +1,16 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { findParentNodeClosestToPos } from '@tiptap/core'
-import { useEventListener, onKeyUp } from '@vueuse/core'
-import { computed, nextTick, toRef } from 'vue'
+import { computed, toRef, useTemplateRef } from 'vue'
 
-import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
-import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
-import ActionBar from '#shared/components/Form/fields/FieldEditor/ActionBar.vue'
-// import {
-//   getFieldEditorClasses,
-//   getFieldEditorProps,
-// } from '#shared/components/Form/initializeFieldEditor.ts'
+import FieldEditorActionMenu from '#shared/components/Form/fields/FieldEditor/FieldEditorActionMenu.vue'
+import type { EditorContentType } from '#shared/components/Form/fields/FieldEditor/types.ts'
+import useEditorActions, {
+  type EditorButton,
+} from '#shared/components/Form/fields/FieldEditor/useEditorActions.ts'
 import { i18n } from '#shared/i18n.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 
-import useEditorActions from './useEditorActions.ts'
-
-import type { EditorContentType } from './types.ts'
-import type { EditorButton } from './useEditorActions.ts'
 import type { Editor } from '@tiptap/vue-3'
 
 const props = defineProps<{
@@ -29,69 +21,9 @@ const props = defineProps<{
 
 const editor = toRef(props, 'editor')
 
-const { isActive, focused, canExecute } = useEditorActions(
-  editor,
-  props.contentType,
-  [],
-)
+const { focused, canExecute } = useEditorActions(editor, props.contentType, [])
 
-const { popover, open, close, popoverTarget, isOpen } = usePopover()
-
-const setPopoverTarget = () => {
-  if (!editor.value) return
-
-  const nearestTableParent = findParentNodeClosestToPos(
-    editor.value.state.selection.$anchor,
-    (node) => node.type.name === 'table',
-  )
-
-  if (!nearestTableParent) {
-    popoverTarget.value = undefined
-    if (isOpen.value) close()
-    return
-  }
-
-  if (nearestTableParent) {
-    const wrapperDomNode = editor.value.view.nodeDOM(nearestTableParent.pos) as
-      | HTMLElement
-      | null
-      | undefined
-
-    const tableDomNode = wrapperDomNode?.querySelector('table')
-    if (tableDomNode) {
-      popoverTarget.value = tableDomNode
-    }
-    if (popoverTarget.value && !isOpen.value) {
-      nextTick(() => {
-        open()
-      })
-    }
-  }
-}
-
-const isCurrentFocusedEditorWithTable = (element: HTMLElement | null) => {
-  // `ID` gets set on each editor, so we can distinguish between them
-
-  return (
-    element?.closest(`#${editor.value?.view.dom.id}`) &&
-    editor.value?.isFocused &&
-    isActive('table')
-  )
-}
-
-onKeyUp(['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'], (e) => {
-  if (isCurrentFocusedEditorWithTable(e.target as HTMLElement)) {
-    setPopoverTarget()
-  } else if (isOpen.value) {
-    close()
-  }
-})
-
-useEventListener('click', (e) => {
-  if (isCurrentFocusedEditorWithTable(e.target as HTMLElement)) {
-    setPopoverTarget()
-  }
-})
+const actionMenuInstance = useTemplateRef('action-menu')
 
 const getActionsList = (): EditorButton[] => {
   if (!editor.value) return []
@@ -207,7 +139,7 @@ const getActionsList = (): EditorButton[] => {
       label: i18n.t('Delete table'),
       icon: 'delete-table',
       command: focused((c) => {
-        close()
+        actionMenuInstance.value?.close()
         return c.deleteTable()
       }),
       disabled: !canExecute('deleteTable'),
@@ -215,22 +147,19 @@ const getActionsList = (): EditorButton[] => {
   ]
 }
 
-const actions = computed(() => {
-  return getActionsList().filter((action) => {
+const actions = computed(() =>
+  getActionsList().filter((action) => {
     return action.contentType.includes(props.contentType)
-  })
-})
+  }),
+)
 </script>
 
 <template>
-  <CommonPopover
-    ref="popover"
-    :owner="popoverTarget"
-    orientation="autoVertical"
-    placement="start"
-    no-auto-focus
-    hide-arrow
-  >
-    <ActionBar :editor="editor" :actions="actions" no-gradient />
-  </CommonPopover>
+  <FieldEditorActionMenu
+    ref="action-menu"
+    type-name="table"
+    :content-type="contentType"
+    :editor="editor"
+    :actions="actions"
+  />
 </template>

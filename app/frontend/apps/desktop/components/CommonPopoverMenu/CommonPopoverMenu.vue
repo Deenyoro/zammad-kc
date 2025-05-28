@@ -21,6 +21,10 @@ export interface Props {
 
 const props = defineProps<Props>()
 
+const emit = defineEmits<{
+  'click-item': [MenuItem, MouseEvent]
+}>()
+
 const { items, entity } = toRefs(props)
 
 const { filteredMenuItems } = usePopoverMenu(items, entity)
@@ -47,6 +51,8 @@ const onClickItem = (event: MouseEvent, item: MenuItem) => {
   if (!item.noCloseOnClick) {
     props.popover?.closePopover()
   }
+
+  emit('click-item', item, event)
 }
 
 const getHoverFocusStyles = (variant?: Variant) => {
@@ -90,7 +96,7 @@ const getHoverFocusStyles = (variant?: Variant) => {
           <template v-for="(item, index) in filteredMenuItems" :key="item.key">
             <li
               v-if="'array' in item"
-              class="flex flex-col overflow-clip pt-2.5 last:rounded-b-[10px] [&:nth-child(n+2)]:border-t [&:nth-child(n+2)]:border-neutral-100 [&:nth-child(n+2)]:dark:border-gray-900"
+              class="group flex flex-col overflow-clip pt-2.5 last:rounded-b-[10px] [&:nth-child(n+2)]:border-t [&:nth-child(n+2)]:border-neutral-100 [&:nth-child(n+2)]:dark:border-gray-900"
               role="menuitem"
             >
               <CommonLabel
@@ -156,6 +162,7 @@ const getHoverFocusStyles = (variant?: Variant) => {
                 <slot :name="`itemRight-${item.key}`" v-bind="item" />
               </slot>
             </li>
+            <slot :item="item" name="trailing-item" />
           </template>
         </ul>
       </slot>

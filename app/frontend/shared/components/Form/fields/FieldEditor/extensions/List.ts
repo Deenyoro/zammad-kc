@@ -4,23 +4,20 @@ import Blockquote from '@tiptap/extension-blockquote'
 import CharacterCount from '@tiptap/extension-character-count'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import Color from '@tiptap/extension-color'
-import Link from '@tiptap/extension-link'
 import Paragraph from '@tiptap/extension-paragraph'
-import Table from '@tiptap/extension-table'
-import TableCell from '@tiptap/extension-table-cell'
-import TableSimpleHeader from '@tiptap/extension-table-header'
-import TableRow from '@tiptap/extension-table-row'
-import TextStyle from '@tiptap/extension-text-style'
-import Underline from '@tiptap/extension-underline'
+import { TableKit } from '@tiptap/extension-table'
+import { TextStyle } from '@tiptap/extension-text-style'
 import StarterKit from '@tiptap/starter-kit'
 import { common, createLowlight } from 'lowlight'
-import TextDirection from 'tiptap-text-direction'
 
 import { IndentExtension } from '#shared/components/Form/fields/FieldEditor/extensions/Indent.ts'
 import {
   MarginLeft,
   MarginRight,
 } from '#shared/components/Form/fields/FieldEditor/extensions/Styles.ts'
+import TextDirection, {
+  type Direction,
+} from '#shared/components/Form/fields/FieldEditor/extensions/TextDirection.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
 
 import KnowledgeBaseSuggestion from '../suggestions/KnowledgeBaseSuggestion.ts'
@@ -47,23 +44,19 @@ export const getPlainExtensions = (): Extensions => [
     dropcursor: false,
     gapcursor: false,
     heading: false,
-    history: false,
     horizontalRule: false,
     italic: false,
     listItem: false,
     hardBreak: false,
     orderedList: false,
     strike: false,
+    link: {
+      openOnClick: false,
+      autolink: false,
+    },
   }),
   CharacterCount,
   HardBreakPlain,
-  TextDirection.configure({
-    defaultDirection: document.documentElement.getAttribute('dir') as
-      | 'ltr'
-      | 'rtl'
-      | null,
-    types: ['paragraph', 'heading'],
-  }),
 ]
 
 export const getHtmlExtensions = (): Extensions => [
@@ -89,10 +82,6 @@ export const getHtmlExtensions = (): Extensions => [
   CodeBlockLowlight.configure({ lowlight }),
   Color,
   IndentExtension,
-  Link.configure({
-    openOnClick: false,
-    autolink: false,
-  }),
   MarginLeft.configure({
     types: ['listItem', 'taskItem', 'heading', 'paragraph'],
   }),
@@ -110,21 +99,16 @@ export const getHtmlExtensions = (): Extensions => [
     },
   }),
   TextDirection.configure({
-    defaultDirection: document.documentElement.getAttribute('dir') as
-      | 'ltr'
-      | 'rtl'
-      | null,
+    defaultDirection: document.documentElement.getAttribute('dir') as Direction,
     types: ['paragraph', 'heading'],
   }),
-  Table.configure({
-    resizable: true,
-    allowTableNodeSelection: true,
+  TableKit.configure({
+    table: {
+      resizable: true,
+      allowTableNodeSelection: true,
+    },
   }),
-  TableRow,
-  TableSimpleHeader,
-  TableCell,
   TextStyle,
-  Underline,
   UserLink,
 ]
 

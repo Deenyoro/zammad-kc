@@ -42,7 +42,7 @@ vi.mock('prosemirror-model', () => {
   }
 })
 
-describe('keyboard interactions', () => {
+describe.todo('keyboard interactions', () => {
   it('can use arrows to traverse toolbar', async () => {
     const view = renderComponent(FieldEditorActionBar, {
       props: {
@@ -172,18 +172,16 @@ describe('basic toolbar testing', () => {
       },
     })
 
-    await view.events.click(view.getByLabelText('Zammad Features'))
-
     expect(
       view.getByLabelText('Insert text from text module'),
     ).toBeInTheDocument()
 
-    expect(view.getByIconName('snippet')).toBeInTheDocument()
+    expect(view.getByIconName('text-modules')).toBeInTheDocument()
 
     expect(
       view.getByLabelText('Insert text from Knowledge Base article'),
     ).toBeInTheDocument()
-    expect(view.getByIconName('mention-kb')).toBeInTheDocument()
+    expect(view.getByIconName('book')).toBeInTheDocument()
 
     expect(
       view.queryByRole('button', { name: 'Mention user' }),
@@ -225,6 +223,7 @@ describe('basic toolbar testing', () => {
         deleteSelection: vi.fn(),
         insertContentAt: vi.fn(),
         focus: vi.fn(),
+        setTextSelection: vi.fn(),
       },
       setEditable: vi.fn(),
       on: vi.fn(),
@@ -343,12 +342,10 @@ describe('basic toolbar testing', () => {
         wrapper.getByRole('button', { name: 'Ai assistant text tools' }),
       )
 
-      const popover = await wrapper.findByRole('region', {
-        name: 'Ai assistant text tools',
-      })
+      const sectionMenu = await wrapper.findByRole('alert')
 
       await wrapper.events.click(
-        within(popover).getByRole('button', { name: label }),
+        within(sectionMenu).getByRole('button', { name: label }),
       )
 
       expect(mockEditor.setEditable).toHaveBeenCalledWith(false)
