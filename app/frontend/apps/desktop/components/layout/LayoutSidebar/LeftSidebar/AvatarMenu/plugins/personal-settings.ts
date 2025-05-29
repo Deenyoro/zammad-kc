@@ -8,4 +8,5 @@ export default <AvatarMenuPlugin>{
   link: '/personal-setting',
   icon: 'person-gear',
   order: 400,
+  permission: 'user_preferences.*',
 }

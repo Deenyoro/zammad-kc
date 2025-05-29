@@ -12,7 +12,7 @@ const route: RouteRecordRaw[] = [
       title: 'Playground',
       icon: 'logo-flat',
       requiresAuth: true,
-      requiredPermission: ['*'],
+      requiredPermission: ['admin'],
       order: 500,
     },
   },

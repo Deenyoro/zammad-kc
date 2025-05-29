@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { nextTick } from 'vue'
+import { nextTick, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useSessionStore } from '#shared/stores/session.ts'
@@ -23,12 +23,18 @@ defineProps<Props>()
 
 const router = useRouter()
 
-const { userId } = useSessionStore()
+const { userId, hasPermission } = useSessionStore()
 
 const openSearch = () => {
   emitter.emit('expand-collapsed-content', `${userId}-left`)
   nextTick(() => emitter.emit('focus-quick-search-field'))
 }
+
+const permittedRoutes = computed(() => {
+  return sortedFirstLevelRoutes.filter((route) => {
+    return hasPermission(route.meta.requiredPermission)
+  })
+})
 </script>
 
 <template>
@@ -53,7 +59,7 @@ const openSearch = () => {
               />
             </li>
             <li
-              v-for="route in sortedFirstLevelRoutes"
+              v-for="route in permittedRoutes"
               :key="route.path"
               class="flex justify-center"
               :class="{ 'not-last:mb-1.5': !collapsed }"

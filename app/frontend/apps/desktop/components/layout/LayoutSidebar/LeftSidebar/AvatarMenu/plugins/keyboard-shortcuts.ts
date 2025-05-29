@@ -10,4 +10,5 @@ export default <AvatarMenuPlugin>{
   },
   icon: 'keyboard',
   order: 200,
+  permission: ['admin.*', 'ticket.agent'],
 }

@@ -95,6 +95,7 @@ describe('TicketOverviews', () => {
 
   it('displays overviews correctly', async () => {
     mockDefaultOverviewQueries()
+    mockPermissions(['ticket.agent'])
 
     const view = await visitView('tickets/view/my_assigned')
 

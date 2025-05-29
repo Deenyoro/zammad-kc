@@ -11,4 +11,5 @@ export default <AvatarMenuPlugin>{
   link: '/playground',
   icon: 'logo-flat',
   order: 150,
+  permission: 'admin',
 }

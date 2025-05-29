@@ -147,8 +147,9 @@ class Navigation extends App.Controller
     # if only one child exists, use direct access
     for item in items
       if item && item.child && item.child.length is 1
-        item.target = item.child[0].target
-        delete item.child
+        if item.class != 'user' # allow user menu with a single logout button
+          item.target = item.child[0].target
+          delete item.child
 
     # get open tabs to reopen on rerender
     openTab = {}

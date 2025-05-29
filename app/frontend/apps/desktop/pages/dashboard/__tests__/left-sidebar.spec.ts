@@ -132,6 +132,8 @@ describe('Left sidebar', () => {
     it.each([{ collapsed: false }, { collapsed: true }])(
       'shows menu popover on click (collapsed: $collapsed)',
       async ({ collapsed }) => {
+        mockPermissions(['user_preferences', 'ticket.agent'])
+
         localStorage.setItem(
           'gid://zammad/User/999-left-sidebar-collapsed',
           String(collapsed),
@@ -188,6 +190,8 @@ describe('Left sidebar', () => {
     })
 
     it('supports navigating to playground', async () => {
+      mockPermissions(['admin'])
+
       const view = await visitView('/')
 
       const aside = view.getByRole('complementary')
@@ -215,6 +219,8 @@ describe('Left sidebar', () => {
     // TODO: Cover keyboard shortcuts menu item when ready.
 
     it('supports navigating to personal settings', async () => {
+      mockPermissions(['user_preferences.appearance'])
+
       const view = await visitView('/')
 
       const aside = view.getByRole('complementary')
