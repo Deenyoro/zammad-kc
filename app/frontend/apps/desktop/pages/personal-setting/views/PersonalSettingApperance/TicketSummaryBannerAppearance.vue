@@ -1,6 +1,10 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
+import { computed } from 'vue'
+
+import { useSessionStore } from '#shared/stores/session.ts'
+
 import { useTicketSummaryBanner } from '#desktop/entities/user/current/composables/useTicketSummaryBanner.ts'
 
 const {
@@ -8,10 +12,14 @@ const {
   toggleSummaryBanner,
   isTicketSummaryFeatureEnabled,
 } = useTicketSummaryBanner()
+
+const { hasPermission } = useSessionStore()
+
+const isAgent = computed(() => hasPermission('ticket.agent'))
 </script>
 
 <template>
-  <div v-if="isTicketSummaryFeatureEnabled">
+  <div v-if="isTicketSummaryFeatureEnabled && isAgent">
     <CommonLabel tag="h3">
       {{ $t('Ticket Summary') }}
     </CommonLabel>

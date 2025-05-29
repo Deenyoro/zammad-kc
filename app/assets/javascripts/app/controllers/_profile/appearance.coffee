@@ -19,6 +19,7 @@ class ProfileAppearance extends App.ControllerSubContent
       theme: params?.theme || App.Session.get('preferences').theme || 'auto'
       isSummaryBannerVisible: @isSummaryBannerVisible()
       isProviderConfigured: App.Config.get('ai_provider')
+      isAgent: @permissionCheck('ticket.agent')
     )
 
   updateTheme: (event) ->
