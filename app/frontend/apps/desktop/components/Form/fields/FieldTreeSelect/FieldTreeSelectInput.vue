@@ -325,8 +325,8 @@ setupMissingOrDisabledOptionHandling()
                 decorative
               />
               <span
+                v-tooltip="getSelectedOptionFullPath(selectedValue)"
                 class="line-clamp-3 break-words whitespace-pre-wrap"
-                :title="getSelectedOptionFullPath(selectedValue)"
               >
                 {{ getSelectedOptionFullPath(selectedValue) }}
               </span>
@@ -370,8 +370,8 @@ setupMissingOrDisabledOptionHandling()
               decorative
             />
             <span
+              v-tooltip="getSelectedOptionFullPath(currentValue)"
               class="line-clamp-3 break-words whitespace-pre-wrap"
-              :title="getSelectedOptionFullPath(currentValue)"
             >
               {{ getSelectedOptionFullPath(currentValue) }}
             </span>

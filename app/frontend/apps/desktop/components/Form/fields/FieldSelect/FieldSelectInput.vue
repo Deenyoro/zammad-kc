@@ -264,11 +264,11 @@ setupMissingOrDisabledOptionHandling()
                 decorative
               />
               <span
-                class="line-clamp-3 break-words whitespace-pre-wrap"
-                :title="
+                v-tooltip="
                   getSelectedOptionLabel(selectedValue) ||
                   i18n.t('%s (unknown)', selectedValue)
                 "
+                class="line-clamp-3 break-words whitespace-pre-wrap"
               >
                 {{
                   getSelectedOptionLabel(selectedValue) ||
@@ -315,11 +315,11 @@ setupMissingOrDisabledOptionHandling()
               decorative
             />
             <span
-              class="line-clamp-3 break-words whitespace-pre-wrap"
-              :title="
+              v-tooltip="
                 getSelectedOptionLabel(currentValue) ||
                 i18n.t('%s (unknown)', currentValue)
               "
+              class="line-clamp-3 break-words whitespace-pre-wrap"
             >
               {{
                 getSelectedOptionLabel(currentValue) ||

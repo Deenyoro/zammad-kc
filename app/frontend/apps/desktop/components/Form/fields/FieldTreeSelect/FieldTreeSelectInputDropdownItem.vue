@@ -102,23 +102,23 @@ const goToNextPage = (option: FlatSelectOption, noFocus?: boolean) => {
     />
     <span
       v-if="filter"
+      v-tooltip="label"
       :class="{
         'pointer-events-none text-stone-200 dark:text-neutral-500':
           option.disabled,
       }"
       class="grow truncate"
-      :title="label"
       v-html="(option as MatchedFlatSelectOption).matchedPath"
     />
     <span
       v-else
+      v-tooltip="label"
       :class="{
         'pointer-events-none text-stone-200 dark:text-neutral-500':
           option.disabled && !option.hasChildren,
         'pointer-events-none text-gray-100 dark:text-neutral-400':
           option.disabled && option.hasChildren,
       }"
-      :title="label"
       class="grow truncate"
     >
       {{ label }}
