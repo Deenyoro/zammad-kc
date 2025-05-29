@@ -784,4 +784,74 @@ AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
       end
     end
   end
+
+  describe 'POST /api/v1/ticket_articles', authenticated_as: :user do
+    let(:group)  { create(:group) }
+    let(:ticket) { create(:ticket, group:) }
+
+    describe 'permissions' do
+      let(:params) do
+        {
+          ticket_id:    ticket.id,
+          content_type: 'text/plain', # or text/html
+          body:         'some body',
+          type:         'note',
+        }
+      end
+
+      context 'when user is agent' do
+        let(:user)  { create(:agent_and_customer) }
+
+        before { user.user_groups.create!(group: group, access:) if defined?(access) }
+
+        context 'when agent has full access to the group' do
+          let(:access) { :full }
+
+          it 'creates a new article' do
+            expect { post '/api/v1/ticket_articles', params: params, as: :json }
+              .to change { ticket.articles.count }.by(1)
+          end
+        end
+
+        context 'when agent has change access to the group' do
+          let(:access) { :change }
+
+          it 'creates a new article' do
+            expect { post '/api/v1/ticket_articles', params: params, as: :json }
+              .to change { ticket.articles.count }.by(1)
+          end
+        end
+
+        context 'when agent has read access to the group' do
+          let(:access) { :read }
+
+          it 'does not create a new article' do
+            expect { post '/api/v1/ticket_articles', params: params, as: :json }
+              .not_to change { ticket.articles.count }
+          end
+        end
+
+        context 'when agent has customer access to the ticket' do
+          let(:ticket) { create(:ticket, customer: user, group:) }
+          let(:user) { create(:customer) }
+
+          it 'creates a new article' do
+            expect { post '/api/v1/ticket_articles', params: params, as: :json }
+              .to change { ticket.articles.count }.by(1)
+          end
+        end
+      end
+
+      context 'when user is customer' do
+        let(:ticket) { create(:ticket, customer: user) }
+        let(:user)   { create(:customer) }
+
+        it 'creates a new article' do
+          expect { post '/api/v1/ticket_articles', params: params, as: :json }
+            .to change { ticket.articles.count }.by(1)
+        end
+      end
+    end
+
+  end
 end

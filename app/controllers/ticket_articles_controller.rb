@@ -78,7 +78,7 @@ class TicketArticlesController < ApplicationController
   # POST /articles
   def create
     ticket = Ticket.find(params[:ticket_id])
-    authorize!(ticket)
+    authorize!(ticket, :follow_up?)
     article = article_create(ticket, params)
 
     if response_expand?

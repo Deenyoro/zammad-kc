@@ -3,11 +3,13 @@
 class Ticket::ArticlePolicy < ApplicationPolicy
 
   def show?
-    access?(__method__)
+    return false if record.internal && !ticket_policy.agent_read_access?
+
+    ticket_policy.show?
   end
 
   def create?
-    access?(__method__)
+    ticket_policy.follow_up?
   end
 
   def update?
