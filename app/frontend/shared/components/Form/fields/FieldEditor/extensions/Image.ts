@@ -15,9 +15,7 @@ export default Image.extend({
       width: {
         default: '100%',
         renderHTML: (attributes) => {
-          return {
-            width: attributes.width,
-          }
+          return { width: attributes.width }
         },
       },
 
@@ -38,6 +36,11 @@ export default Image.extend({
       },
 
       type: {
+        default: null,
+        renderHTML: () => ({}),
+      },
+
+      style: {
         default: null,
         renderHTML: () => ({}),
       },

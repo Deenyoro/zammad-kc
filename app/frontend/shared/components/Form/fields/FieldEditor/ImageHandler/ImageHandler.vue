@@ -31,12 +31,26 @@ const uploadCacheExists = computed(() =>
 const uploadFailed = ref(false)
 const src = computed(() => props.node.attrs.src)
 
+const getNodeStyle = () =>
+  props.node?.attrs?.style
+    ?.split?.(';')
+    ?.reduce((acc: Record<string, string>, style: string) => {
+      const [property, value] = style.split(':').map((item) => item.trim())
+      if (property && value) acc[property] = value
+      return acc
+    }, {})
+
 if (!props.node.attrs.src.startsWith('/api/v1/attachments/')) {
   const { uploadImage } = useImageUpload(
     editorAttributes.value['data-form-id'] as string,
     editorAttributes.value.name as string,
     true,
   )
+
+  const style = getNodeStyle()
+
+  const width = style?.width ? parseFloat(style.width) : undefined
+  const height = style?.height ? parseFloat(style.height) : undefined
 
   uploadImage(
     [
@@ -52,7 +66,12 @@ if (!props.node.attrs.src.startsWith('/api/v1/attachments/')) {
       // Remember the preview src before updating the src in the node.
       const previewSrc = props.node.attrs.src
 
-      props.updateAttributes({ src: files[0].src, content: null })
+      props.updateAttributes({
+        src: files[0].src,
+        width,
+        height,
+        content: null,
+      })
 
       nextTick(() => {
         URL.revokeObjectURL(previewSrc)
