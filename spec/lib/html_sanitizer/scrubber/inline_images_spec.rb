@@ -76,10 +76,14 @@ RSpec.describe HtmlSanitizer::Scrubber::InlineImages do
   end
 
   describe '#inline_image_data' do
-    it 'truthy when image' do
-      input = base64
+    %w[image/jpeg image/jpg image/png].each do |type|
+      context "with #{type}" do
+        it 'returns truthy' do
+          input = "data:#{type};base64,/9j/4AAQSkZJRgABAQAAAQABAAD/..."
 
-      expect(scrubber.send(:inline_image_data, input)).to be_truthy
+          expect(scrubber.send(:inline_image_data, input)).to be_truthy
+        end
+      end
     end
 
     it 'falsey when non-jpeg/png' do
