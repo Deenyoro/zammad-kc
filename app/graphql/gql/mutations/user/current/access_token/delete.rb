@@ -4,7 +4,7 @@ module Gql::Mutations
   class User::Current::AccessToken::Delete < BaseMutation
     description 'Deletes user access token'
 
-    argument :token_id, GraphQL::Types::ID, loads: Gql::Types::TokenType, description: 'The token o be deleted'
+    argument :token_id, GraphQL::Types::ID, loads: Gql::Types::TokenType, description: 'The token to be deleted'
     field :success, Boolean, null: false, description: 'Was the access token deletion successful?'
 
     def self.authorize(_obj, ctx)
@@ -12,7 +12,7 @@ module Gql::Mutations
     end
 
     def authorized?(token:)
-      pundit_authorized?(token, :destroy?)
+      pundit_authorized?(token, :destroy?) && super
     end
 
     def resolve(token:)

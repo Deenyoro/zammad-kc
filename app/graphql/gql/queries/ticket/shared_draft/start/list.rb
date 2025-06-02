@@ -12,7 +12,7 @@ module Gql::Queries
     type [Gql::Types::Ticket::SharedDraftStartType], null: false
 
     def authorized?(group:)
-      context.current_user.group_access?(group, :create)
+      context.current_user.group_access?(group, :create) && super
     end
 
     def resolve(group:)

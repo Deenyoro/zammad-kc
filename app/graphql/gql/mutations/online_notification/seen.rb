@@ -11,7 +11,7 @@ module Gql::Mutations
     def authorized?(object_id:)
       relevant_notifications(object_id).all? do |notification|
         pundit_authorized?(notification, :update?)
-      end
+      end && super
     end
 
     def resolve(object_id:)

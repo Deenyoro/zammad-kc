@@ -6,7 +6,7 @@ module Gql::Mutations
 
     description 'Bulk-update tickets.'
 
-    argument :ticket_ids, [GraphQL::Types::ID], loads: Gql::Types::TicketType, description: 'The tickets to be updated'
+    argument :ticket_ids, [GraphQL::Types::ID], loads: Gql::Types::TicketType, loads_pundit_method: :agent_update_access?, description: 'The tickets to be updated'
     argument :input, Gql::Types::Input::Ticket::UpdateInputType, description: 'The ticket data'
     argument :macro_id, GraphQL::Types::ID, loads: Gql::Types::MacroType, required: false, description: 'The macro to apply onto ticket'
 
@@ -16,10 +16,6 @@ module Gql::Mutations
 
     def self.authorize(_obj, ctx)
       ctx.current_user.permissions?(['ticket.agent'])
-    end
-
-    def authorized?(tickets:, input:, macro: nil)
-      tickets.all? { |ticket| pundit_authorized?(ticket, :agent_update_access?) }
     end
 
     def resolve(tickets:, input:, macro: nil)

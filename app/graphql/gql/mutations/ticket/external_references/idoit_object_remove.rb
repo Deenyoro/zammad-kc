@@ -4,17 +4,13 @@ module Gql::Mutations
   class Ticket::ExternalReferences::IdoitObjectRemove < BaseMutation
     description 'Remove an idoit object from a ticket.'
 
-    argument :ticket_id, GraphQL::Types::ID, loads: Gql::Types::TicketType, description: 'The related ticket for the idoit objects'
+    argument :ticket_id, GraphQL::Types::ID, loads: Gql::Types::TicketType, loads_pundit_method: :agent_update_access?, description: 'The related ticket for the idoit objects'
     argument :idoit_object_id, Integer, description: 'The idoit object to remove'
 
     field :success, Boolean, description: 'Was the mutation successful?'
 
     def self.authorize(_obj, _ctx)
       Setting.get('idoit_integration')
-    end
-
-    def authorized?(idoit_object_id:, ticket:)
-      pundit_authorized?(ticket, :agent_update_access?)
     end
 
     def resolve(idoit_object_id:, ticket: nil)

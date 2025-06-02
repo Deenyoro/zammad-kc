@@ -5,13 +5,9 @@ module Gql::Mutations
     description 'Delete a ticket checklist item.'
 
     argument :checklist_id, GraphQL::Types::ID, required: true, loads: Gql::Types::ChecklistType, description: 'ID of the ticket checklist to delete an item in.'
-    argument :checklist_item_id, GraphQL::Types::ID, required: true, loads: Gql::Types::Checklist::ItemType, description: 'ID of the ticket checklist item to delete.'
+    argument :checklist_item_id, GraphQL::Types::ID, required: true, loads: Gql::Types::Checklist::ItemType, loads_pundit_method: :destroy?, description: 'ID of the ticket checklist item to delete.'
 
     field :success, Boolean, description: 'Was the mutation succcessful?'
-
-    def authorized?(checklist:, checklist_item:)
-      pundit_authorized?(checklist_item, :destroy?)
-    end
 
     def resolve(checklist:, checklist_item:)
       raise ActiveRecord::RecordInvalid, __('The given checklist item does not belong to the given checklist.') if !checklist_item.checklist.eql?(checklist)

@@ -4,14 +4,10 @@ module Gql::Mutations
   class User::Update < BaseMutation
     description 'Update an existing user.'
 
-    argument :id, GraphQL::Types::ID, description: 'The user ID', as: :current_user, loads: Gql::Types::UserType
+    argument :id, GraphQL::Types::ID, description: 'The user ID', as: :current_user, loads: Gql::Types::UserType, loads_pundit_method: :update?
     argument :input, Gql::Types::Input::UserInputType, description: 'The user data'
 
     field :user, Gql::Types::UserType, description: 'The created user.'
-
-    def authorized?(current_user:, input:)
-      pundit_authorized?(current_user, :update?)
-    end
 
     def resolve(current_user:, input:)
       { user: update(current_user, input) }

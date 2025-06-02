@@ -4,18 +4,16 @@ module Gql::Mutations
   class Ticket::ExternalReferences::IssueTrackerItemAdd < BaseMutation
     description 'Add an issue tracker link to a ticket or just resolve it for ticket creation.'
 
-    argument :ticket_id,          GraphQL::Types::ID, required: false, loads: Gql::Types::TicketType, description: 'The related ticket for the issue tracker items'
+    argument :ticket_id,          GraphQL::Types::ID, required: false, loads: Gql::Types::TicketType, loads_pundit_method: :agent_update_access?, description: 'The related ticket for the issue tracker items'
     argument :issue_tracker_link, Gql::Types::UriHttpStringType, description: 'The issue tracker link to add'
     argument :issue_tracker_type, Gql::Types::Enum::Ticket::ExternalReferences::IssueTrackerTypeType, description: 'The issue tracker type'
 
     field :issue_tracker_item, Gql::Types::Ticket::ExternalReferences::IssueTrackerItemType, description: 'The added issue tracker item'
 
     def authorized?(issue_tracker_link:, issue_tracker_type:, ticket: nil)
-      if ticket.present?
-        pundit_authorized?(ticket, :agent_update_access?)
-      else
-        context.current_user.permissions?('ticket.agent')
-      end
+      return super if ticket.present?
+
+      context.current_user.permissions?('ticket.agent') && super
     end
 
     def resolve(issue_tracker_link:, issue_tracker_type:, ticket: nil)

@@ -11,7 +11,7 @@ module Gql::Mutations
     field :checklist, Gql::Types::ChecklistType, null: false, description: 'Updated checklist.'
 
     def authorized?(checklist:, input:)
-      pundit_authorized?(Checklist::Item.new(checklist:), :create?)
+      pundit_authorized?(Checklist::Item.new(checklist:), :create?) && super
     end
 
     def resolve(checklist:, input:)

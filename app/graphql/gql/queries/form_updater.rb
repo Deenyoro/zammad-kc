@@ -41,7 +41,7 @@ module Gql::Queries
 
     def authorized?(...)
       if form_updater.respond_to?(:authorized?)
-        return form_updater.authorized?
+        return form_updater.authorized? && super
       end
 
       super

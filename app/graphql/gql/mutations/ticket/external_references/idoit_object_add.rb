@@ -4,7 +4,7 @@ module Gql::Mutations
   class Ticket::ExternalReferences::IdoitObjectAdd < BaseMutation
     description 'Add idoit objects to a ticket or just resolve them for ticket creation.'
 
-    argument :ticket_id,        GraphQL::Types::ID, required: false, loads: Gql::Types::TicketType, description: 'The related ticket for the idoit objects'
+    argument :ticket_id,        GraphQL::Types::ID, required: false, loads: Gql::Types::TicketType, loads_pundit_method: :agent_update_access?, description: 'The related ticket for the idoit objects'
     argument :idoit_object_ids, [Integer], description: 'The idoit objects to add'
 
     field :idoit_objects, [Gql::Types::Ticket::ExternalReferences::IdoitObjectType], description: 'The added / resolved idoit objects'
@@ -14,11 +14,9 @@ module Gql::Mutations
     end
 
     def authorized?(idoit_object_ids:, ticket: nil)
-      if ticket.present?
-        pundit_authorized?(ticket, :agent_update_access?)
-      else
-        context.current_user.permissions?('ticket.agent')
-      end
+      return super if ticket.present?
+
+      context.current_user.permissions?('ticket.agent') && super
     end
 
     def resolve(idoit_object_ids:, ticket: nil)

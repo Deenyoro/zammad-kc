@@ -14,7 +14,7 @@ module Gql::Mutations
     end
 
     def authorized?(device:)
-      context.current_user.id == device.user_id
+      context.current_user.id == device.user_id && super
     end
 
     def resolve(device:)

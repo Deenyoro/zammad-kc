@@ -4,15 +4,11 @@ module Gql::Mutations
   class Ticket::AIAssistance::Summarize < BaseMutation
     description 'Return current summary or trigger generation in the background'
 
-    argument :ticket_id, GraphQL::Types::ID, loads: Gql::Types::TicketType, description: 'The ticket to fetch the summary for'
+    argument :ticket_id, GraphQL::Types::ID, loads: Gql::Types::TicketType, loads_pundit_method: :agent_read_access?, description: 'The ticket to fetch the summary for'
 
     field :summary, Gql::Types::Ticket::AIAssistance::SummaryType, description: 'Different parts of the generated summary'
     field :reason, String, description: 'Reason for the result of the summary generation'
     field :fingerprint_md5, String, description: 'MD5 digest of the complete summary content'
-
-    def authorized?(ticket:)
-      pundit_authorized?(ticket, :agent_read_access?)
-    end
 
     # TODO: The current cache situation is more a first PoC, it will change to an persistent store.
 

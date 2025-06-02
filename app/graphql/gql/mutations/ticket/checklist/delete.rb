@@ -4,13 +4,9 @@ module Gql::Mutations
   class Ticket::Checklist::Delete < Ticket::Checklist::Base
     description 'Delete a ticket checklist.'
 
-    argument :checklist_id, GraphQL::Types::ID, required: true, loads: Gql::Types::ChecklistType, description: 'ID of the ticket checklist to delete.'
+    argument :checklist_id, GraphQL::Types::ID, required: true, loads: Gql::Types::ChecklistType, loads_pundit_method: :destroy?, description: 'ID of the ticket checklist to delete.'
 
     field :success, Boolean, description: 'Was the mutation succcessful?'
-
-    def authorized?(checklist:)
-      pundit_authorized?(checklist, :destroy?)
-    end
 
     def resolve(checklist:)
       checklist.destroy!

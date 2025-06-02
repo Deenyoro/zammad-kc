@@ -4,14 +4,8 @@ module Gql::Mutations
   class OnlineNotification::MarkAllAsSeen < BaseMutation
     description 'Marks notifications for active user as seen'
 
-    argument :online_notification_ids, [GraphQL::Types::ID], required: true, loads: Gql::Types::OnlineNotificationType, description: 'Unique identifiers ofnotifications which should be deleted.'
+    argument :online_notification_ids, [GraphQL::Types::ID], required: true, loads: Gql::Types::OnlineNotificationType, loads_pundit_method: :update?, description: 'Unique identifiers ofnotifications which should be deleted.'
     field :online_notifications, [Gql::Types::OnlineNotificationType], null: true, description: 'The seen notifications.'
-
-    def authorized?(online_notifications:)
-      online_notifications.all? do |elem|
-        pundit_authorized?(elem, :update?)
-      end
-    end
 
     def resolve(online_notifications:)
       return {} if online_notifications.none?
