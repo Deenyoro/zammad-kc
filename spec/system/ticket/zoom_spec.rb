@@ -2578,4 +2578,33 @@ RSpec.describe 'Ticket zoom', type: :system do
       expect(page).to have_no_css('.modal')
     end
   end
+
+  describe 'Display error of copied text in dark mode #5589' do
+    let(:ticket)                     { create(:ticket, group: Group.find_by(name: 'Users')) }
+    let(:ticket_number_copy_element) { 'span.ticket-number-copy svg.ticketNumberCopy-icon' }
+    let(:expected_clipboard_content) { (Setting.get('ticket_hook') + ticket.number).to_s }
+    let(:field)                      { find(:richtext) }
+
+    before do
+      visit "#ticket/zoom/#{ticket.id}"
+    end
+
+    it 'copies the ticket number without stylings' do
+      find(ticket_number_copy_element).click
+
+      # simulate a paste action
+      within(:active_content) do
+        field.send_keys('test ')
+        field.send_keys([magic_key, 'v'])
+        field.send_keys([:enter])
+        field.send_keys('test ')
+        field.send_keys([magic_key, 'v'])
+        field.send_keys([:enter])
+        field.send_keys('test ')
+        field.send_keys([magic_key, 'v'])
+        field.send_keys([:enter])
+        expect(field.all('span[style]').length).to eq(0)
+      end
+    end
+  end
 end
