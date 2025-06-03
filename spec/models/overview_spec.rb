@@ -116,4 +116,16 @@ RSpec.describe Overview, type: :model do
       expect { create(:overview, :condition_expert) }.not_to raise_error
     end
   end
+
+  describe '#attribute_to_references_hash' do
+    it 'returns a hash with the overview name' do
+      create(:object_manager_attribute_text, object_name: 'Ticket', name: 'custom_textfield')
+      create(:overview, name: 'Test Overview', view: { 's' => %w[title custom_textfield] }, prio: nil)
+
+      result = described_class.attribute_to_references_hash
+
+      expect(result).to include('ticket.custom_textfield')
+      expect(result['ticket.custom_textfield']).to include('Overview' => ['Test Overview'])
+    end
+  end
 end

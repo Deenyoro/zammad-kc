@@ -195,6 +195,30 @@ RSpec.describe ObjectManager::Attribute, type: :model do
       end
     end
 
+    describe '.attribute_to_references_hash_model', db_strategy: :reset do
+      before do
+        create(:object_manager_attribute_text, object_name: 'Ticket', name: 'custom_textfield')
+      end
+
+      context 'when no attribute is used in an overview' do
+        it 'returns an empty hash' do
+          result = described_class.attribute_to_references_hash_model
+
+          expect(result).to eq({})
+        end
+      end
+
+      context 'when attribute is used in overview' do
+        it 'returns a hash with the overview name and the attribute' do
+          create(:overview, name: 'Test Overview', view: { 's' => %w[title custom_textfield] }, prio: nil)
+          result = described_class.attribute_to_references_hash_model
+
+          expect(result).to include('ticket.custom_textfield')
+          expect(result['ticket.custom_textfield']).to include('Overview' => ['Test Overview'])
+        end
+      end
+    end
+
     describe '.data_options_hash' do
       context 'when hash' do
         let(:check) do
@@ -440,6 +464,17 @@ RSpec.describe ObjectManager::Attribute, type: :model do
     context 'when attribute does not exist' do
       it 'raises an error' do
         expect { described_class.remove(object: 'Ticket', name: 'test4') }.to raise_error(RuntimeError)
+      end
+    end
+
+    context 'when attribute is referenced' do
+      before do
+        create(:object_manager_attribute_text, name: 'test5')
+        create(:overview, name: 'Test Overview', view: { 's' => %w[test5] }, prio: nil)
+      end
+
+      it 'raises an error' do
+        expect { described_class.remove(object: 'Ticket', name: 'test5') }.to raise_error(RuntimeError, 'Ticket.test5 is referenced by Overview: Test Overview and thus cannot be deleted!')
       end
     end
   end

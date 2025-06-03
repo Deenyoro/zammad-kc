@@ -812,22 +812,45 @@ where attributes are used in conditions
 =end
 
   def self.attribute_to_references_hash
-    attribute_list = {}
-
     attribute_to_references_hash_objects
       .map { |elem| elem.select(:name, :condition) }
       .flatten
-      .each do |item|
-        item.condition.each_key do |condition_key|
-          attribute_list[condition_key] ||= {}
-          attribute_list[condition_key][item.class.name] ||= []
-          next if attribute_list[condition_key][item.class.name].include?(item.name)
+      .each_with_object({}) do |item, attribute_list|
+        walk_conditions(item.condition) do |condition_name|
+          attribute_list[condition_name] ||= {}
+          attribute_list[condition_name][item.class.name] ||= []
+          next if attribute_list[condition_name][item.class.name].include?(item.name)
 
-          attribute_list[condition_key][item.class.name].push item.name
+          attribute_list[condition_name][item.class.name] << item.name
+        end
+      end.deep_merge(attribute_to_references_hash_model)
+  end
+
+  private_class_method def self.walk_conditions(condition, &block)
+    case condition
+    when Hash
+      if condition.key?('conditions') && condition['conditions'].is_a?(Array)
+        condition['conditions'].each { |sub| walk_conditions(sub, &block) }
+      elsif condition.key?('name')
+        yield condition['name']
+      else
+        condition.each_key do |key|
+          next if %w[operator value].include?(key)
+
+          yield key
         end
       end
+    when Array
+      condition.each { |sub| walk_conditions(sub, &block) }
+    end
+  end
 
-    attribute_list
+  def self.attribute_to_references_hash_model
+    attribute_to_references_hash_objects.each_with_object({}) do |model, hash|
+      next if !model.respond_to?(:attribute_to_references_hash)
+
+      hash.merge!(model.attribute_to_references_hash)
+    end
   end
 
 =begin
