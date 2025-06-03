@@ -181,11 +181,16 @@ Job.condition       Job.perform
     changed = false
 
     conditions.each do |condition|
-      next if !tag_condition?(condition[:name])
-      next if !tag_includes?(condition[:value], old_name)
+      if condition.key?(:conditions)
+        # Nested condition group
+        changed |= update_conditions_array(condition[:conditions], old_name, new_name)
+      else
+        next if !tag_condition?(condition[:name])
+        next if !tag_includes?(condition[:value], old_name)
 
-      condition[:value] = update_name(condition[:value], old_name, new_name)
-      changed = true
+        condition[:value] = update_name(condition[:value], old_name, new_name)
+        changed = true
+      end
     end
 
     changed

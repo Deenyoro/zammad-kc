@@ -104,6 +104,38 @@ RSpec.describe Tag::Item do
                 .from('test1').to('test1_renamed')
             end
           end
+
+          context 'with expert mode in conditions (nested)' do
+            let(:object) do
+              create(object_klass.name.underscore,
+                     condition: {
+                       'operator'   => 'OR',
+                       'conditions' => [
+                         {
+                           'name'     => label,
+                           'operator' => 'contains one',
+                           'value'    => 'test2',
+                         },
+                         {
+                           'operator'   => 'NOT',
+                           'conditions' => [
+                             {
+                               'name'     => label,
+                               'operator' => 'contains one',
+                               'value'    => 'test1',
+                             },
+                           ],
+                         },
+                       ],
+                     })
+            end
+
+            it 'updates reference with new tag name' do
+              expect { described_class.rename(id: item.id, name: 'test1_renamed') }
+                .to change { object.reload.send(method)[:conditions][1][:conditions].first[:value] }
+                .from('test1').to('test1_renamed')
+            end
+          end
         end
       end
 
@@ -137,6 +169,38 @@ RSpec.describe Tag::Item do
               expect { described_class.rename(id: item.id, name: 'test1_renamed') }
                 .to change { object.reload.send(method)[:conditions].first[:value] }
                 .from('test1, test2, test3').to('test1_renamed, test2, test3')
+            end
+          end
+
+          context 'with expert mode in conditions (nested)' do
+            let(:object) do
+              create(object_klass.name.underscore,
+                     condition: {
+                       'operator'   => 'OR',
+                       'conditions' => [
+                         {
+                           'name'     => label,
+                           'operator' => 'contains one',
+                           'value'    => 'test2',
+                         },
+                         {
+                           'operator'   => 'NOT',
+                           'conditions' => [
+                             {
+                               'name'     => label,
+                               'operator' => 'contains one',
+                               'value'    => 'test1',
+                             },
+                           ],
+                         },
+                       ],
+                     })
+            end
+
+            it 'updates reference with new tag name' do
+              expect { described_class.rename(id: item.id, name: 'test1_renamed') }
+                .to change { object.reload.send(method)[:conditions][1][:conditions].first[:value] }
+                .from('test1').to('test1_renamed')
             end
           end
         end
