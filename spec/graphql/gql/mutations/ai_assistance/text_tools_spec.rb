@@ -6,7 +6,7 @@ RSpec.describe Gql::Mutations::AIAssistance::TextTools, :aggregate_failures, typ
   context 'when accessing as an agent', authenticated_as: :agent do
     let(:agent)        { create(:agent) }
     let(:input)        { Faker::Lorem.unique.sentence }
-    let(:output)       { Faker::Lorem.unique.paragraph }
+    let(:output)       { Struct.new(:content, :stored_result, :fresh, keyword_init: true).new(content: Faker::Lorem.unique.paragraph, stored_result: nil, fresh: false) }
     let(:service_type) { 'improve_writing' }
 
     let(:query) do
@@ -33,7 +33,7 @@ RSpec.describe Gql::Mutations::AIAssistance::TextTools, :aggregate_failures, typ
     end
 
     it 'returns improved text' do
-      expect(gql.result.data['output']).to eq(output)
+      expect(gql.result.data['output']).to eq(output[:content])
     end
 
     it_behaves_like 'graphql responds with error if unauthenticated'

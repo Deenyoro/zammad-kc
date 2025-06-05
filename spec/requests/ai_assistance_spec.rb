@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'AI Assistance API endpoints', authenticated_as: :user, type: :request do
   let(:user)   { create(:agent) }
   let(:input)  { Faker::Lorem.unique.sentence }
-  let(:output) { Faker::Lorem.unique.paragraph }
+  let(:output) { Struct.new(:content, :stored_result, :fresh, keyword_init: true).new(content: Faker::Lorem.unique.paragraph, stored_result: nil, fresh: false) }
 
   describe '#text_tools' do
     let(:params) do
@@ -33,7 +33,7 @@ RSpec.describe 'AI Assistance API endpoints', authenticated_as: :user, type: :re
 
       context 'when user has agent access' do
         it 'returns improved text' do
-          expect(json_response).to eq({ 'output' => output })
+          expect(json_response).to eq({ 'output' => output[:content] })
         end
       end
 

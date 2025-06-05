@@ -16,7 +16,7 @@ RSpec.describe Service::AIAssistance::TextTools do
     end
 
     let(:input)           { 'Hello, wrld!' }
-    let(:expected_output) { 'Hello, world!' }
+    let(:expected_output) { Struct.new(:content, :stored_result, :fresh, keyword_init: true).new(content: 'Hello, world!', stored_result: nil, fresh: false) }
 
     describe '#execute' do
       context 'when correct service type is used' do

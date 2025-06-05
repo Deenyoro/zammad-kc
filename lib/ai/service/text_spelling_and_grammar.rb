@@ -9,10 +9,6 @@ class AI::Service::TextSpellingAndGrammar < AI::Service
     }
   end
 
-  def persistable?
-    false
-  end
-
   def json_response?
     false
   end

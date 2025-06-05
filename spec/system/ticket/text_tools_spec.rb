@@ -7,7 +7,7 @@ RSpec.describe 'AI Assistance Text Tools', authenticated_as: :authenticate, type
   let(:ai_provider)              { 'zammad_ai' }
   let(:ai_assistance_text_tools) { true }
   let(:input)                    { 'Teh qwik braun foxx jumpz ova da laizi doge.' }
-  let(:output)                   { 'The quick brown fox jumps over the lazy dog.' }
+  let(:output)                   { Struct.new(:content, :stored_result, :fresh, keyword_init: true).new(content: 'The quick brown fox jumps over the lazy dog.', stored_result: nil, fresh: false) }
 
   def authenticate
     Setting.set('ai_provider', ai_provider)
@@ -38,7 +38,7 @@ RSpec.describe 'AI Assistance Text Tools', authenticated_as: :authenticate, type
       find('.js-action', text: 'Fix spelling and grammar').click
 
       expect(page).to have_no_css('[role=menu]')
-      check_editor_field_value('body', output)
+      check_editor_field_value('body', output[:content])
     end
 
     context 'when text tools are disabled' do
@@ -79,7 +79,7 @@ RSpec.describe 'AI Assistance Text Tools', authenticated_as: :authenticate, type
       find('.js-action', text: 'Fix spelling and grammar').click
 
       expect(page).to have_no_css('[role=menu]')
-      expect(find('.articleNewEdit-body').text).to eq(output)
+      expect(find('.articleNewEdit-body').text).to eq(output[:content])
     end
 
     context 'when text tools are disabled' do

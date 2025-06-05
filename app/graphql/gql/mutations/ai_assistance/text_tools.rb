@@ -17,7 +17,7 @@ module Gql::Mutations
       ).execute
 
       {
-        output:,
+        output: output[:content],
       }
     end
   end

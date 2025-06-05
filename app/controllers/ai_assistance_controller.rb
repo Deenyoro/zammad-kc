@@ -11,7 +11,7 @@ class AIAssistanceController < ApplicationController
     ).execute
 
     render json: {
-      output:,
+      output: output[:content],
     }
   end
 end

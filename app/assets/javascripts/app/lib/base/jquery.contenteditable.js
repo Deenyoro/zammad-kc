@@ -382,9 +382,7 @@
       }
     }
 
-    content = App.Utils.clipboardHtmlInsertPreperation(content, this.options)
-
-    this.paste(content)
+    this.paste(App.Utils.clipboardHtmlInsertPreperation(content, this.options))
   }
 
   Plugin.prototype.onPaste = function (e) {
