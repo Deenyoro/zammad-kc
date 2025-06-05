@@ -30,7 +30,9 @@ module CanSelector
 
         return fallback if fallback && column_names.include?(fallback.to_s)
 
-        raise __('The chosen sort column is unknown.')
+        Rails.logger.error "The chosen sort column is unknown ('#{column}'), falling back to 'created_at'."
+
+        'created_at'
       end
 
       def column
