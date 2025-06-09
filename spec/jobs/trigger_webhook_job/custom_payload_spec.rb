@@ -8,7 +8,7 @@ RSpec.describe TriggerWebhookJob::CustomPayload do
   describe '.generate' do
     subject(:generate) { described_class.generate(record, { ticket:, article:, notification:, config: }) }
 
-    let(:ticket)  { create(:ticket) }
+    let(:ticket)  { create(:ticket, time_unit: 123) }
     let(:article) { create(:ticket_article, body: "Text with\nnew line.") }
     let(:event) do
       {
@@ -197,10 +197,11 @@ RSpec.describe TriggerWebhookJob::CustomPayload do
           'current_user' => '#{current_user.fullname}',
           'fqdn'         => '#{config.fqdn}',
           'ticket'       => {
-            'id'      => '#{ticket.id}',
-            'owner'   => '#{ticket.owner.fullname}',
-            'group'   => '#{ticket.group.name}',
-            'article' => {
+            'id'        => '#{ticket.id}',
+            'owner'     => '#{ticket.owner.fullname}',
+            'group'     => '#{ticket.group.name}',
+            'time_unit' => '#{ticket.time_unit}',
+            'article'   => {
               'id'          => '#{article.id}',
               'created_at'  => '#{article.created_at}',
               'subject'     => '#{article.subject}',
@@ -216,10 +217,11 @@ RSpec.describe TriggerWebhookJob::CustomPayload do
           'current_user' => '#{current_user / no such object}',
           'fqdn'         => Setting.get('fqdn'),
           'ticket'       => {
-            'id'      => ticket.id,
-            'owner'   => ticket.owner.fullname.to_s,
-            'group'   => ticket.group.name.to_s,
-            'article' => {
+            'id'        => ticket.id,
+            'owner'     => ticket.owner.fullname.to_s,
+            'group'     => ticket.group.name.to_s,
+            'time_unit' => ticket.time_unit.to_s,
+            'article'   => {
               'id'          => article.id,
               'created_at'  => article.created_at.to_s,
               'subject'     => article.subject.to_s,

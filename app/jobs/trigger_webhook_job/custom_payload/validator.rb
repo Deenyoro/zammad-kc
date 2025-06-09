@@ -13,6 +13,7 @@ module TriggerWebhookJob::CustomPayload::Validator
     Float
     FalseClass
     TrueClass
+    BigDecimal
   ].freeze
 
   ALLOWED_RAILS_CLASSES = %w[
