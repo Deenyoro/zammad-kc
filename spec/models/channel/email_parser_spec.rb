@@ -65,11 +65,15 @@ RSpec.describe Channel::EmailParser, type: :model do
     #
     context 'when checking a bunch of stored emails for correct parsing behaviour' do
       tests = Dir.glob(Rails.root.join('test/data/mail/mail*.box')).each do |stored_email| # rubocop:disable Rails/RootPathnameMethods
+        if ENV['MAIL_PARSER_TEST'] && stored_email.exclude?("#{ENV['MAIL_PARSER_TEST']}.box")
+          next
+        end
+
         include_examples('parses email correctly', stored_email)
       end
 
       it 'ensures tests were dynamically generated' do
-        expect(tests.count).to eq(110)
+        expect(tests.count).to eq(113)
       end
     end
 
