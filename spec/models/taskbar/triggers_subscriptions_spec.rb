@@ -3,8 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe Taskbar::TriggersSubscriptions, :aggregate_failures, performs_jobs: true do
-  let(:taskbar)         { create(:taskbar, user: create(:user)) }
-  let(:related_taskbar) { create(:taskbar, key: taskbar.key, user: create(:user)) }
+  let(:ticket)          { create(:ticket) }
+  let(:user)            { create(:agent, groups: [ticket.group]) }
+  let(:user_other)      { create(:agent, groups: [ticket.group]) }
+  let(:taskbar)         { create(:taskbar, :with_ticket, ticket:, user:) }
+  let(:related_taskbar) { create(:taskbar, :with_ticket, ticket:, user: user_other) }
 
   gqs = Gql::Subscriptions
   gqs_uc = gqs::User::Current
@@ -13,6 +16,7 @@ RSpec.describe Taskbar::TriggersSubscriptions, :aggregate_failures, performs_job
     freeze_time
     related_taskbar.save!
     taskbar.save!
+    perform_enqueued_jobs
     travel(1.second)
     allow(gqs::Ticket::LiveUserUpdates).to receive(:trigger)
     allow(gqs_uc::TaskbarItemUpdates).to receive(:trigger_after_create)
@@ -84,7 +88,7 @@ RSpec.describe Taskbar::TriggersSubscriptions, :aggregate_failures, performs_job
     end
 
     context 'with mobile app' do
-      let(:taskbar) { create(:taskbar, app: 'mobile') }
+      let(:taskbar) { create(:taskbar, :with_ticket, ticket:, user:, app: 'mobile') }
 
       it 'triggers correctly' do
         taskbar.state = { 'body' => 'test' }

@@ -147,11 +147,40 @@ class Taskbar < ApplicationModel
   end
 
   def collect_related_tasks
-    related_taskbars.map(&:preferences_task_info)
+    return [] if !target_accessible_to_owner?
+
+    related_taskbars
+      .filter(&:target_accessible_to_owner?)
+      .map(&:preferences_task_info)
       .tap { |arr| arr.push(preferences_task_info) if !destroyed? }
       .each_with_object({}) { |elem, memo| reduce_related_tasks(elem, memo) }
       .values
       .sort_by { |elem| elem[:id] || Float::MAX } # sort by IDs to pass old tests
+  end
+
+  # Checks if taskbar's owner has access to the target object (Ticket, User, Organization...)
+  # @return [Boolean, nil] true if the target is accessible, false if not accessible and nil for non-relatable items
+  KEY_REGEXP = %r{^(?<model>\p{Lu}\p{L}+)-(?<id>\d+)$}
+  def target_accessible_to_owner?
+    case key.match(KEY_REGEXP)
+    in model: 'Ticket', id:
+      record = Ticket.find_by(id:)
+
+      TicketPolicy.new(user, record).show? if record
+    else
+    end
+  end
+
+  # Checks if taskbar should update related taskbars
+  # to make sure each taskbar includes siblings
+  # for displaying active users in frontend
+  def relatable?
+    case key.match(KEY_REGEXP)
+    in model: 'Ticket'
+      true
+    else
+      false
+    end
   end
 
   private
@@ -160,17 +189,8 @@ class Taskbar < ApplicationModel
     return if local_update
     return if changes.blank?
     return if changed_only_prio?
+    return if changed_only_notify?
 
-    if changes['notify']
-      count = 0
-      changes.each_key do |attribute|
-        next if attribute == 'updated_at'
-        next if attribute == 'created_at'
-
-        count += 1
-      end
-      return true if count <= 1
-    end
     self.last_contact = Time.zone.now
   end
 
@@ -182,7 +202,7 @@ class Taskbar < ApplicationModel
   end
 
   def update_preferences_infos
-    return if key == 'Search'
+    return if !relatable?
     return if local_update
     return if changed_only_prio?
 
@@ -197,6 +217,10 @@ class Taskbar < ApplicationModel
     changed_attribute_names_to_save.to_set == Set.new(%w[updated_at prio])
   end
 
+  def changed_only_notify?
+    changed_attribute_names_to_save.to_set == Set.new(%w[updated_at notify])
+  end
+
   def reduce_related_tasks(elem, memo)
     key = elem[:user_id]
 
@@ -209,7 +233,7 @@ class Taskbar < ApplicationModel
   end
 
   def update_related_taskbars
-    return if key == 'Search'
+    return if !relatable?
     return if local_update
     return if changed_only_prio?
 
