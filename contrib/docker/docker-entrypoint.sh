@@ -29,6 +29,7 @@ set -e
 : "${ZAMMAD_RAILSSERVER_PORT:=3000}"
 : "${ZAMMAD_WEBSOCKET_HOST:=zammad-websocket}"
 : "${ZAMMAD_WEBSOCKET_PORT:=6042}"
+: "${RESTORE_DIR:=/var/tmp/zammad/restore}"
 
 # Support both ZAMMAD_WEB_CONCURRENCY (as recommended by the Zammad docker stack & documentation)
 #   and WEB_CONCURRENCY (Zammad and Rails default).
@@ -37,23 +38,42 @@ set -e
 export WEB_CONCURRENCY
 
 ESCAPED_POSTGRESQL_PASS=$(echo "$POSTGRESQL_PASS" | sed -e 's/[\/&]/\\&/g')
+export ESCAPED_POSTGRESQL_PASS
 export DATABASE_URL="postgres://${POSTGRESQL_USER}:${ESCAPED_POSTGRESQL_PASS}@${POSTGRESQL_HOST}:${POSTGRESQL_PORT}/${POSTGRESQL_DB}${POSTGRESQL_OPTIONS}"
 
+function check_no_restore_running {
+  echo 'Checking for active restore operations...'
+  until [ ! -d "${RESTORE_DIR}" ] || [ -z "$(ls "${RESTORE_DIR}")" ]; do
+    echo "  waiting for restore to finish..."
+    sleep 2
+  done
+}
+
 function check_zammad_ready {
+  check_no_restore_running
+
+  echo 'Checking if Zammad is ready...'
   # Verify that migrations have been ran and seeds executed to process ENV vars like FQDN correctly.
   until bundle exec rails r 'ActiveRecord::Migration.check_all_pending!; Translation.any? || raise' &> /dev/null; do
-    echo "waiting for init container to finish install or update..."
+    echo "  waiting for init container to finish install or update..."
     sleep 2
+  done
+}
+
+function check_postgresql_ready {
+  echo 'Checking if PostgreSQL is ready...'
+  until (echo > /dev/tcp/"${POSTGRESQL_HOST}"/"${POSTGRESQL_PORT}") &> /dev/null; do
+    echo "  waiting for postgresql server to be ready..."
+    sleep 1
   done
 }
 
 # zammad init
 if [ "$1" = 'zammad-init' ]; then
   # install / update zammad
-  until (echo > /dev/tcp/"${POSTGRESQL_HOST}"/"${POSTGRESQL_PORT}") &> /dev/null; do
-    echo "waiting for postgresql server to be ready..."
-    sleep 1
-  done
+  check_postgresql_ready
+
+  check_no_restore_running
 
   # check if database exists / update to new version
   echo "initialising / updating database..."
@@ -168,10 +188,9 @@ elif [ "$1" = 'zammad-websocket' ]; then
 
 # zammad-backup
 elif [ "$1" = 'zammad-backup' ]; then
-  check_zammad_ready
+  check_postgresql_ready
 
-  echo "starting backup..."
-
+  # Handles backup and restore operations.
   exec contrib/docker/backup.sh
 
 # Pass all other container commands to shell
