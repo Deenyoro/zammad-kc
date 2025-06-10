@@ -379,9 +379,13 @@ Layout/MultilineMethodCallIndentation:
 Lint/UnusedMethodArgument:
   AllowUnusedKeywordArguments: true
 
-Naming/PredicateName:
+Naming/PredicatePrefix:
   Exclude:
     - "app/graphql/gql/types/**/*"
+
+Naming/PredicateMethod:
+  Description: 'Checks for methods returning true/false that do not end with a questionmark.'
+  Enabled: false
 
 RSpec/DescribeMethod:
   # We want to be able to split tests into subfolders, where several cases are grouped together.

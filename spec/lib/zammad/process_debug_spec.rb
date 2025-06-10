@@ -7,7 +7,7 @@ RSpec.describe Zammad::ProcessDebug, :aggregate_failures do
     it 'prints the thread info and stack trace' do
       output = ''
       allow(described_class).to receive(:puts) do |message|
-        output += [message].flatten.join("\n")
+        output += Array(message).join("\n")
       end
       described_class.dump_thread_status
       expect(output).to include("PID: #{Process.pid} Thread:")

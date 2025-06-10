@@ -8,7 +8,7 @@ class ExternalDataSourceController < ApplicationController
       attribute:      attribute,
       render_context: render_context,
       term:           params[:query],
-      limit:          params[:limit].to_i || 10,
+      limit:          (params[:limit].presence || 10).to_i,
     )
 
     render json: {
@@ -21,7 +21,7 @@ class ExternalDataSourceController < ApplicationController
       data_option:    params[:data_option],
       render_context: render_context,
       term:           params[:query],
-      limit:          params[:limit].to_i || 10,
+      limit:          (params[:limit].presence || 10).to_i,
     )
 
     render json: result

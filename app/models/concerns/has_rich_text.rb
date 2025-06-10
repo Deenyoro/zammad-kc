@@ -34,11 +34,11 @@ Checks if file is used inline
 
   private
 
-  def has_rich_text_parse # rubocop:disable Naming/PredicateName
+  def has_rich_text_parse # rubocop:disable Naming/PredicatePrefix
     has_rich_text_attributes.each { |attr| has_rich_text_parse_attribute(attr) }
   end
 
-  def has_rich_text_parse_attribute(attr) # rubocop:disable Naming/PredicateName
+  def has_rich_text_parse_attribute(attr) # rubocop:disable Naming/PredicatePrefix
     image_prefix = "#{self.class.name}_#{attr}"
     raw = send(attr)
     return if raw.blank?
@@ -55,7 +55,7 @@ Checks if file is used inline
     self.has_rich_text_attachments_cache += attachments_inline
   end
 
-  def has_rich_text_commit_cache # rubocop:disable Naming/PredicateName
+  def has_rich_text_commit_cache # rubocop:disable Naming/PredicatePrefix
     return if has_rich_text_attachments_cache.blank?
 
     has_rich_text_attachments_cache.each do |attachment_cache|
@@ -79,7 +79,7 @@ Checks if file is used inline
     attrs
   end
 
-  def has_rich_text_pickup_attachments # rubocop:disable Naming/PredicateName
+  def has_rich_text_pickup_attachments # rubocop:disable Naming/PredicatePrefix
     return if form_id.blank?
 
     self.attachments = Store.list(
@@ -88,7 +88,7 @@ Checks if file is used inline
     )
   end
 
-  def has_rich_text_cleanup_unused_attachments # rubocop:disable Naming/PredicateName
+  def has_rich_text_cleanup_unused_attachments # rubocop:disable Naming/PredicatePrefix
     active_cids = has_rich_text_attributes.each_with_object([]) do |elem, memo|
       memo.concat HasRichText.extract_inline_cids(send(elem))
     end
@@ -100,7 +100,7 @@ Checks if file is used inline
   end
 
   class_methods do
-    def has_rich_text(*attrs) # rubocop:disable Naming/PredicateName
+    def has_rich_text(*attrs) # rubocop:disable Naming/PredicatePrefix
       (self.has_rich_text_attributes += attrs.map(&:to_sym)).freeze
 
       attrs.each do |attr|

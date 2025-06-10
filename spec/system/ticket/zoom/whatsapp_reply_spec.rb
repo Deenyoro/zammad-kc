@@ -51,8 +51,8 @@ RSpec.describe 'Ticket Zoom > Whatsapp reply', :use_vcr, authenticated_as: :user
         find(:richtext).send_keys(sample_text)
 
         2.times do |i|
-          find('input#fileUpload_1', visible: :all).set(Rails.root.join("spec/fixtures/files/image/squares#{i > 1 ? i.to_s : ''}.png"))
-          expect(page).to have_text("squares#{i > 1 ? i.to_s : ''}.png")
+          find('input#fileUpload_1', visible: :all).set(Rails.root.join("spec/fixtures/files/image/squares#{i.to_s if i > 1}.png"))
+          expect(page).to have_text("squares#{i.to_s if i > 1}.png")
         end
 
         click '.js-selectableTypes'

@@ -14,7 +14,7 @@ module HasPublishing
     end
   end
 
-  def has_publishing_update # rubocop:disable Naming/PredicateName
+  def has_publishing_update # rubocop:disable Naming/PredicatePrefix
     params_for_update = params
       .permit(:id, :internal_at, :published_at, :archived_at)
       .to_h
