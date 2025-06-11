@@ -42,6 +42,8 @@ if [ "$1" = 'builder' ]; then
   ZAMMAD_SAFE_MODE=1 DATABASE_URL=postgresql://zammad:/zammad bundle exec rake assets:precompile # Don't require Redis or Postgres.
 
   script/build/cleanup.sh
+
+  bundle exec bootsnap precompile --gemfile
 fi
 
 if [ "$1" = 'runner' ]; then
