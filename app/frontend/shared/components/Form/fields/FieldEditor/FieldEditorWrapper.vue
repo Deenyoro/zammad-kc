@@ -5,15 +5,10 @@ import { computed, defineAsyncComponent, nextTick } from 'vue'
 import FieldEditorFooter from '#shared/components/Form/fields/FieldEditor/FieldEditorFooter.vue'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
 
-import type {
-  FieldEditorContext,
-  FieldEditorProps,
-  PossibleSignature,
-} from './types.ts'
+import type { FieldEditorContext, FieldEditorProps, PossibleSignature } from './types.ts'
 
 const FieldEditor = defineAsyncComponent(
-  () =>
-    import('#shared/components/Form/fields/FieldEditor/FieldEditorInput.vue'),
+  () => import('#shared/components/Form/fields/FieldEditor/FieldEditorInput.vue'),
 )
 
 interface Props {

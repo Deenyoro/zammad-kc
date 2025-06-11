@@ -107,10 +107,7 @@ watch(taskbarTabListOrder, (newValue) => {
 dragAndDrop({
   parent: dndParentElement as Ref<HTMLElement>,
   values: dndTaskbarTabListOrder,
-  plugins: [
-    startAndEndEventsDNDPlugin(dndStartCallback, dndEndCallback),
-    animations(),
-  ],
+  plugins: [startAndEndEventsDNDPlugin(dndStartCallback, dndEndCallback), animations()],
   dropZoneClass: 'opacity-0 no-tooltip dragging-active',
   touchDropZoneClass: 'opacity-0 no-tooltip dragging-active',
   draggingClass: 'dragging-active',
@@ -129,17 +126,12 @@ const getTaskbarTabComponent = (tabEntityKey: string) => {
   const taskbarTab = taskbarTabListByTabEntityKey.value[tabEntityKey]
   if (!taskbarTab) return
 
-  if (
-    !taskbarTab.entityAccess ||
-    taskbarTab.entityAccess === EnumTaskbarEntityAccess.Granted
-  )
+  if (!taskbarTab.entityAccess || taskbarTab.entityAccess === EnumTaskbarEntityAccess.Granted)
     return getTaskbarTabTypePlugin(taskbarTab.type).component
 
-  if (taskbarTab.entityAccess === EnumTaskbarEntityAccess.Forbidden)
-    return UserTaskbarTabForbidden
+  if (taskbarTab.entityAccess === EnumTaskbarEntityAccess.Forbidden) return UserTaskbarTabForbidden
 
-  if (taskbarTab.entityAccess === EnumTaskbarEntityAccess.NotFound)
-    return UserTaskbarTabNotFound
+  if (taskbarTab.entityAccess === EnumTaskbarEntityAccess.NotFound) return UserTaskbarTabNotFound
 }
 
 const getTaskbarTabLink = (tabEntityKey: string) => {
@@ -150,10 +142,7 @@ const getTaskbarTabLink = (tabEntityKey: string) => {
   const plugin = getTaskbarTabTypePlugin(taskbarTab.type)
   if (typeof plugin.buildTaskbarTabLink !== 'function') return
 
-  return (
-    plugin.buildTaskbarTabLink(taskbarTab.entity, taskbarTab.tabEntityKey) ??
-    '#'
-  )
+  return plugin.buildTaskbarTabLink(taskbarTab.entity, taskbarTab.tabEntityKey) ?? '#'
 }
 
 const { popover, popoverTarget, toggle, isOpen: popoverIsOpen } = usePopover()
@@ -217,9 +206,7 @@ const { isTouchDevice } = useTouchDevice()
           icon="card-list"
           size="large"
           variant="neutral"
-          :aria-controls="
-            popoverIsOpen ? 'user-taskbar-tabs-popover' : undefined
-          "
+          :aria-controls="popoverIsOpen ? 'user-taskbar-tabs-popover' : undefined"
           aria-haspopup="true"
           :aria-expanded="popoverIsOpen"
           :aria-label="$t('List of all user taskbar tabs')"
@@ -260,24 +247,17 @@ const { isTouchDevice } = useTouchDevice()
               class="group/tab relative"
               :class="{
                 draggable: !collapsed,
-                'overflow-hidden first:rounded-t-lg last:rounded-b-lg':
-                  collapsed,
+                'overflow-hidden first:rounded-t-lg last:rounded-b-lg': collapsed,
               }"
               :draggable="!collapsed ? 'true' : undefined"
-              :aria-describedby="
-                !collapsed ? 'drag-and-drop-taskbar-tabs' : undefined
-              "
+              :aria-describedby="!collapsed ? 'drag-and-drop-taskbar-tabs' : undefined"
             >
               <UserTaskbarTabRemove
                 v-if="taskbarTabListByTabEntityKey[tabEntityKey].taskbarTabId"
                 class="peer"
                 :taskbar-tab="taskbarTabListByTabEntityKey[tabEntityKey]"
                 :dirty="getTaskbarTabDirtyFlag(tabEntityKey)"
-                :plugin="
-                  getTaskbarTabTypePlugin(
-                    taskbarTabListByTabEntityKey[tabEntityKey].type,
-                  )
-                "
+                :plugin="getTaskbarTabTypePlugin(taskbarTabListByTabEntityKey[tabEntityKey].type)"
               />
 
               <component

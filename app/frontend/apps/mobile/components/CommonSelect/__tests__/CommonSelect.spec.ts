@@ -55,10 +55,7 @@ describe('interacting with CommonSelect', () => {
 
     expect(view.emitted().select).toEqual([[options[0]]])
 
-    expect(
-      view.queryByTestId('dialog-overlay'),
-      'dialog is hidden',
-    ).not.toBeInTheDocument()
+    expect(view.queryByTestId('dialog-overlay'), 'dialog is hidden').not.toBeInTheDocument()
 
     expect(modelValue.value).toBe(0)
 
@@ -66,10 +63,7 @@ describe('interacting with CommonSelect', () => {
 
     expect(
       view.getByIconName((name, node) => {
-        return (
-          name === '#icon-check' &&
-          !node?.parentElement?.classList.contains('invisible')
-        )
+        return name === '#icon-check' && !node?.parentElement?.classList.contains('invisible')
       }),
     ).toBeInTheDocument()
     await view.events.click(view.getByText('Item A'))
@@ -123,10 +117,7 @@ describe('interacting with CommonSelect', () => {
 
   test("can't select disabled values", async () => {
     const modelValue = ref()
-    const view = renderSelect(
-      { options: [{ ...options[0], disabled: true }] },
-      modelValue,
-    )
+    const view = renderSelect({ options: [{ ...options[0], disabled: true }] }, modelValue)
 
     await view.events.click(view.getByText('Open Select'))
     await view.events.click(view.getByText('Item A'))
@@ -172,9 +163,7 @@ describe('interacting with CommonSelect', () => {
 
     await view.events.click(view.getByText('Open Select'))
 
-    expect(view.getByRole('dialog')).toHaveAccessibleName(
-      'Dialog window with selections',
-    )
+    expect(view.getByRole('dialog')).toHaveAccessibleName('Dialog window with selections')
   })
 })
 

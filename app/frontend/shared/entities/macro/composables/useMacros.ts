@@ -9,10 +9,7 @@ import { EnumTicketScreenBehavior } from '#shared/graphql/types.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import { useMacroStore } from '#shared/stores/macro.ts'
 
-export const macroScreenBehaviourMapping: Record<
-  string,
-  EnumTicketScreenBehavior
-> = {
+export const macroScreenBehaviourMapping: Record<string, EnumTicketScreenBehavior> = {
   next_task: EnumTicketScreenBehavior.CloseTab,
   next_from_overview: EnumTicketScreenBehavior.CloseNextInOverview,
   next_task_on_close: EnumTicketScreenBehavior.CloseTabOnTicketClose,

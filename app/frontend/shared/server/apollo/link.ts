@@ -39,9 +39,7 @@ const batchLink = new BatchHttpLink({
   batchInterval: 20,
 })
 
-const operationIsLoginLogout = (
-  definition: OperationDefinitionNode | FragmentDefinitionNode,
-) => {
+const operationIsLoginLogout = (definition: OperationDefinitionNode | FragmentDefinitionNode) => {
   return !!(
     definition.kind === 'OperationDefinition' &&
     definition.operation === 'mutation' &&
@@ -55,10 +53,7 @@ const requiresBatchLink = (op: Operation) => {
 
   const definition = getMainDefinition(op.query)
 
-  if (
-    definition.kind === 'OperationDefinition' &&
-    definition.operation === 'mutation'
-  ) {
+  if (definition.kind === 'OperationDefinition' && definition.operation === 'mutation') {
     return false
   }
 
@@ -77,10 +72,8 @@ const requiresHttpLink = (op: Operation) => {
   if (!enableQueriesOverWebsocket) {
     // Only subscriptions over websocket.
     return (
-      !(
-        definition.kind === 'OperationDefinition' &&
-        definition.operation === 'subscription'
-      ) && !websocketContext.active
+      !(definition.kind === 'OperationDefinition' && definition.operation === 'subscription') &&
+      !websocketContext.active
     )
   }
 

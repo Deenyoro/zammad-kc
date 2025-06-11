@@ -29,10 +29,7 @@ const customer = computed(() => {
 <template>
   <div class="flex cursor-pointer ltr:pr-3 rtl:pl-3">
     <div class="flex w-14 items-center justify-center">
-      <CommonTicketStateIndicator
-        :color-code="entity.stateColorCode"
-        :label="entity.state.name"
-      />
+      <CommonTicketStateIndicator :color-code="entity.stateColorCode" :label="entity.state.name" />
     </div>
     <div
       class="flex flex-1 items-center gap-1 overflow-hidden border-b border-white/10 py-3 text-gray-100 ltr:pr-2 rtl:pl-2"
@@ -45,18 +42,12 @@ const customer = computed(() => {
             {{ customer }}
           </template>
         </span>
-        <span
-          class="mb-1 line-clamp-3 text-lg leading-5 font-bold whitespace-normal"
-        >
+        <span class="mb-1 line-clamp-3 text-lg leading-5 font-bold whitespace-normal">
           <slot>
             {{ entity.title }}
           </slot>
         </span>
-        <div
-          v-if="stringUpdated"
-          data-test-id="stringUpdated"
-          class="text-gray truncate"
-        >
+        <div v-if="stringUpdated" data-test-id="stringUpdated" class="text-gray truncate">
           {{ stringUpdated }}
         </div>
       </div>

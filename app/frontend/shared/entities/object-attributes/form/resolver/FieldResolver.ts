@@ -1,15 +1,12 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import type {
-  FormFieldValue,
-  FormSchemaField,
-} from '#shared/components/Form/types.ts'
+import type { FormFieldValue, FormSchemaField } from '#shared/components/Form/types.ts'
 import type { EnumObjectManagerObjects } from '#shared/graphql/types.ts'
 
 import type { ObjectAttribute } from '../../types/store.ts'
 import type { JsonValue } from 'type-fest'
 
-export default abstract class FieldResolver {
+export abstract class FieldResolver {
   protected name: string
 
   protected object: EnumObjectManagerObjects
@@ -24,10 +21,7 @@ export default abstract class FieldResolver {
 
   abstract fieldType: string | (() => string)
 
-  constructor(
-    object: EnumObjectManagerObjects,
-    objectAttribute: ObjectAttribute,
-  ) {
+  constructor(object: EnumObjectManagerObjects, objectAttribute: ObjectAttribute) {
     this.object = object
     this.name = objectAttribute.name
     this.label = objectAttribute.display
@@ -62,9 +56,7 @@ export default abstract class FieldResolver {
     //   backend for now. Later we can make this a concern of the frontend only, and ignore the hard-coded values.
     if (
       this.attributeConfig.item_class &&
-      (this.attributeConfig.item_class as string).indexOf(
-        'formGroup--halfSize',
-      ) !== -1
+      (this.attributeConfig.item_class as string).indexOf('formGroup--halfSize') !== -1
     ) {
       resolvedAttributes.outerClass = 'form-group-single-column'
     }

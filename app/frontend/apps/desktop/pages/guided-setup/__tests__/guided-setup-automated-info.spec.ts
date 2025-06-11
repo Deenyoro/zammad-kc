@@ -30,9 +30,7 @@ describe('guided setup automated info', () => {
       expect(view.getByText('Automated Setup')).toBeInTheDocument()
       expect(view.queryByIconName('spinner')).not.toBeInTheDocument()
 
-      expect(
-        view.getByText('This system is configured for automated setup.'),
-      ).toBeInTheDocument()
+      expect(view.getByText('This system is configured for automated setup.')).toBeInTheDocument()
 
       expect(view.getByText('Please use the provided URL.')).toBeInTheDocument()
     })
@@ -41,10 +39,9 @@ describe('guided setup automated info', () => {
       const view = await visitView('/guided-setup')
 
       await waitFor(() => {
-        expect(
-          view,
-          'correctly redirects to guided setup automated info screen',
-        ).toHaveCurrentUrl('/guided-setup/automated')
+        expect(view, 'correctly redirects to guided setup automated info screen').toHaveCurrentUrl(
+          '/guided-setup/automated',
+        )
       })
     })
   })

@@ -26,8 +26,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: 'information',
-        component: () =>
-          import('./views/TicketInformation/TicketInformationView.vue'),
+        component: () => import('./views/TicketInformation/TicketInformationView.vue'),
         name: 'TicketInformationView',
         props: true,
         children: ticketInformationRoutes,
@@ -70,8 +69,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/ticket/zoom/:internalId(\\d+)/:articleId(\\d+)',
-    redirect: (to) =>
-      `/tickets/${to.params.internalId}#article-${to.params.articleId}`,
+    redirect: (to) => `/tickets/${to.params.internalId}#article-${to.params.articleId}`,
   },
 ]
 

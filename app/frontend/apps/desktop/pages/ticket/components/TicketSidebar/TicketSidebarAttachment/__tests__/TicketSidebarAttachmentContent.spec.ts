@@ -90,8 +90,6 @@ describe('TicketSidebarAttachmentContent', () => {
 
     expect(await wrapper.findByText('image010.jpg')).toBeInTheDocument()
     expect(await wrapper.findByText('Test PDF.pdf')).toBeInTheDocument()
-    expect(
-      await wrapper.findByText('Entsorgungstermine.ics'),
-    ).toBeInTheDocument()
+    expect(await wrapper.findByText('Entsorgungstermine.ics')).toBeInTheDocument()
   })
 })

@@ -52,12 +52,7 @@ const iconClassMap = {
     ]"
     :aria-disabled="disabled"
   >
-    <CommonIcon
-      v-if="icon"
-      :name="icon"
-      :size="iconClassMap[props.size]"
-      decorative
-    />
+    <CommonIcon v-if="icon" :name="icon" :size="iconClassMap[props.size]" decorative />
     <template v-if="label">
       {{ $t(label) }}
     </template>

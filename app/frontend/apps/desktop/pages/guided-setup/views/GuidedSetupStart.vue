@@ -3,10 +3,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 
-import {
-  EnumSystemSetupInfoStatus,
-  EnumSystemSetupInfoType,
-} from '#shared/graphql/types.ts'
+import { EnumSystemSetupInfoStatus, EnumSystemSetupInfoType } from '#shared/graphql/types.ts'
 import MutationHandler from '#shared/server/apollo/handler/MutationHandler.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
@@ -44,15 +41,9 @@ const startSetup = (type: EnumSystemSetupInfoType) => {
 
 <template>
   <LayoutPublicPage box-size="medium" :title="__('Welcome!')" show-logo>
-    <CommonAlert
-      v-if="systemSetupInfoStore.systemSetupAlreadyStarted"
-      variant="warning"
-      >{{
-        $t(
-          'The setup has already been started. Please wait until it is finished.',
-        )
-      }}</CommonAlert
-    >
+    <CommonAlert v-if="systemSetupInfoStore.systemSetupAlreadyStarted" variant="warning">{{
+      $t('The setup has already been started. Please wait until it is finished.')
+    }}</CommonAlert>
 
     <template v-if="!systemSetupInfoStore.systemSetupAlreadyStarted">
       <div class="mt-10 mb-14 text-center">

@@ -4,10 +4,7 @@
 import { computed, reactive } from 'vue'
 
 import Form from '#shared/components/Form/Form.vue'
-import type {
-  FormSchemaNode,
-  FormSubmitData,
-} from '#shared/components/Form/types.ts'
+import type { FormSchemaNode, FormSubmitData } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
 import type { TicketArticleTimeAccountingFormData } from '#shared/entities/ticket/types.ts'
 import { EnumFormUpdaterId } from '#shared/graphql/types.ts'
@@ -29,9 +26,7 @@ const { form } = useForm()
 
 const flyoutName = 'ticket-time-accounting'
 
-const submitForm = (
-  formData: FormSubmitData<TicketArticleTimeAccountingFormData>,
-) => {
+const submitForm = (formData: FormSubmitData<TicketArticleTimeAccountingFormData>) => {
   if (formData.time_unit) {
     formData.time_unit = formData.time_unit.replace(',', '.')
   }
@@ -55,8 +50,7 @@ const timeAccountingUnit = computed(() => {
     case 'minute':
       return __('minute(s)')
     case 'custom': {
-      if (config.time_accounting_unit_custom)
-        return config.time_accounting_unit_custom
+      if (config.time_accounting_unit_custom) return config.time_accounting_unit_custom
       return null
     }
     default:
@@ -89,9 +83,7 @@ const formSchema = [
           validationRuleTimeAccountingUnit,
         },
         validationMessages: {
-          validationRuleTimeAccountingUnit: __(
-            'This field must contain a number.',
-          ),
+          validationRuleTimeAccountingUnit: __('This field must contain a number.'),
         },
         ...(timeAccountingUnit.value
           ? {
@@ -156,15 +148,9 @@ const footerActionOptions = computed<ActionFooterOptions>(() => ({
         :schema="formSchema"
         :schema-data="schemaData"
         should-autofocus
-        :form-updater-id="
-          EnumFormUpdaterId.FormUpdaterUpdaterTicketTimeAccounting
-        "
+        :form-updater-id="EnumFormUpdaterId.FormUpdaterUpdaterTicketTimeAccounting"
         form-updater-initial-only
-        @submit="
-          submitForm(
-            $event as FormSubmitData<TicketArticleTimeAccountingFormData>,
-          )
-        "
+        @submit="submitForm($event as FormSubmitData<TicketArticleTimeAccountingFormData>)"
       />
     </div>
   </CommonFlyout>

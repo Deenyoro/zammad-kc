@@ -31,10 +31,7 @@ const valueLookup = computed<Record<string, boolean>>(() => {
   }, {})
 })
 
-const updateValue = (
-  key: ToggleListOptionValue,
-  state: boolean | undefined,
-) => {
+const updateValue = (key: ToggleListOptionValue, state: boolean | undefined) => {
   const values: ToggleListOptionValue[] = cloneDeep(localValue.value) || []
 
   if (state === true && !values.includes(key)) {

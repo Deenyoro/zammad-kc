@@ -47,11 +47,9 @@ describe('Form - Field - External Data Source - Query', () => {
       },
     })
 
-    const mocker = mockAutocompleteSearchObjectAttributeExternalDataSourceQuery(
-      {
-        autocompleteSearchObjectAttributeExternalDataSource: testOptions,
-      },
-    )
+    const mocker = mockAutocompleteSearchObjectAttributeExternalDataSourceQuery({
+      autocompleteSearchObjectAttributeExternalDataSource: testOptions,
+    })
 
     // When we only have one field, the root node is the field itself.
     // So we are faking the initial entity object.
@@ -65,16 +63,12 @@ describe('Form - Field - External Data Source - Query', () => {
 
     const filterElement = wrapper.getByRole('searchbox')
 
-    expect(
-      await wrapper.findByText('Start typing to search…'),
-    ).toBeInTheDocument()
+    expect(await wrapper.findByText('Start typing to search…')).toBeInTheDocument()
 
     // Search is always case-insensitive.
     await wrapper.events.type(filterElement, 'A')
 
-    expect(
-      wrapper.queryByText('Start typing to search…'),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByText('Start typing to search…')).not.toBeInTheDocument()
 
     const mockCalls = await mocker.waitForCalls()
 
@@ -103,9 +97,7 @@ describe('Form - Field - External Data Source - Query', () => {
 
     expect(filterElement).toHaveValue('')
 
-    expect(
-      await wrapper.findByText('Start typing to search…'),
-    ).toBeInTheDocument()
+    expect(await wrapper.findByText('Start typing to search…')).toBeInTheDocument()
   })
 
   it('correctly renders default value', async () => {

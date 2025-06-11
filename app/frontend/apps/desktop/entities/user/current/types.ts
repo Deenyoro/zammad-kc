@@ -2,11 +2,10 @@
 
 import type { FormValues } from '#shared/components/Form/types.ts'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+// oxlint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface TaskbarTabDetailDataLoader {}
 
-export type TaskbarTabDetailDataLoaderComposable =
-  () => TaskbarTabDetailDataLoader
+export type TaskbarTabDetailDataLoaderComposable = () => TaskbarTabDetailDataLoader
 
 export interface TaskbarTabContext {
   formValues?: FormValues

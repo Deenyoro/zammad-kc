@@ -28,8 +28,7 @@ defineExpose({
     :is="component"
     ref="action-menu"
     @click-action="
-      (action: EditorButton, event: MouseEvent) =>
-        $emit('click-action', action, event)
+      (action: EditorButton, event: MouseEvent) => $emit('click-action', action, event)
     "
   >
     <template #default="slotProps">

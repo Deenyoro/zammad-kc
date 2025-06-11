@@ -50,10 +50,7 @@ describe('CommonAvatar.vue', () => {
 
     await view.rerender({ image: 'data:image/png;base64,1' })
 
-    expect(
-      avatar,
-      'renders base64 as an image instead of relying on API',
-    ).toHaveStyle({
+    expect(avatar, 'renders base64 as an image instead of relying on API').toHaveStyle({
       'background-image': 'url("data:image/png;base64,1")',
     })
   })

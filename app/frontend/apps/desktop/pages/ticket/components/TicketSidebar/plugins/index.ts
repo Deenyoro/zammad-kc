@@ -25,10 +25,7 @@ export const useTicketSidebarPlugins = (screen: TicketSidebarScreenType) => {
   const { hasPermission } = useSessionStore()
 
   return pluginFiles
-    .filter(
-      ([, plugin]) =>
-        hasPermission(plugin.permissions) && plugin.screens.includes(screen),
-    )
+    .filter(([, plugin]) => hasPermission(plugin.permissions) && plugin.screens.includes(screen))
     .reduce<Record<string, TicketSidebarPlugin>>((acc, [name, plugin]) => {
       acc[name] = plugin
       return acc

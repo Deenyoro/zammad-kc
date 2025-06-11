@@ -16,10 +16,7 @@ import type {
   TicketSharedDraftZoomShowQuery,
 } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
-import {
-  MutationHandler,
-  QueryHandler,
-} from '#shared/server/apollo/handler/index.ts'
+import { MutationHandler, QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import type {
   OperationMutationFunction,
   OperationQueryFunction,
@@ -69,15 +66,13 @@ const sharedDraft = computed(() => {
 
 const sharedDraftContent = computed(() => {
   if (props.draftType === 'start') {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const content: any =
+    const content =
       sharedDraft.value as TicketSharedDraftStartSingleQuery['ticketSharedDraftStartSingle']
 
     return content.content.body
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const newArticle: any =
+  const newArticle =
     sharedDraft.value as TicketSharedDraftZoomShowQuery['ticketSharedDraftZoomShow']
 
   return newArticle.newArticle.body
@@ -93,9 +88,7 @@ const { notify } = useNotifications()
 
 const sharedDrafteleteMutation = new MutationHandler(deleteMutation({}))
 
-const { isDirty, triggerFormUpdater, updateFieldValues, values } = useForm(
-  toRef(props, 'form'),
-)
+const { isDirty, triggerFormUpdater, updateFieldValues, values } = useForm(toRef(props, 'form'))
 
 const deleteSharedDraft = async (sharedDraftId: string) => {
   const confirmed = await waitForVariantConfirmation('delete')
@@ -109,15 +102,11 @@ const deleteSharedDraft = async (sharedDraftId: string) => {
       // Reset shared draft internal ID, if currently set to the same value in the form.
       if (
         (props.draftType === 'start' &&
-          convertToGraphQLId(
-            'Ticket::SharedDraftStart',
-            Number(values.value.shared_draft_id),
-          ) === sharedDraftId) ||
+          convertToGraphQLId('Ticket::SharedDraftStart', Number(values.value.shared_draft_id)) ===
+            sharedDraftId) ||
         (props.draftType === 'detail-view' &&
-          convertToGraphQLId(
-            'Ticket::SharedDraftZoom',
-            Number(values.value.shared_draft_id),
-          ) === sharedDraftId)
+          convertToGraphQLId('Ticket::SharedDraftZoom', Number(values.value.shared_draft_id)) ===
+            sharedDraftId)
       ) {
         updateFieldValues({
           shared_draft_id: null,
@@ -195,10 +184,7 @@ const headerTitle = computed(() => {
       </CommonObjectAttributeContainer> -->
 
       <div class="flex items-start gap-y-3">
-        <CommonObjectAttributeContainer
-          v-if="sharedDraft?.updatedBy"
-          class="grow"
-        >
+        <CommonObjectAttributeContainer v-if="sharedDraft?.updatedBy" class="grow">
           <CommonObjectAttribute :label="__('Author')">
             <div class="flex items-center gap-1.5">
               <CommonUserAvatar :entity="sharedDraft?.updatedBy" size="small" />
@@ -232,18 +218,10 @@ const headerTitle = computed(() => {
         <CommonButton size="large" variant="secondary" @click="close">
           {{ $t('Cancel & Go Back') }}
         </CommonButton>
-        <CommonButton
-          size="large"
-          variant="danger"
-          @click="deleteSharedDraft(sharedDraftId)"
-        >
+        <CommonButton size="large" variant="danger" @click="deleteSharedDraft(sharedDraftId)">
           {{ $t('Delete') }}
         </CommonButton>
-        <CommonButton
-          size="large"
-          variant="primary"
-          @click="applySharedDraft(sharedDraftId)"
-        >
+        <CommonButton size="large" variant="primary" @click="applySharedDraft(sharedDraftId)">
           {{ $t('Apply') }}
         </CommonButton>
       </div>

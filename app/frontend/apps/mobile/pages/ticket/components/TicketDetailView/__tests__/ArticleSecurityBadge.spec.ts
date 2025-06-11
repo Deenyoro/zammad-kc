@@ -19,8 +19,6 @@ const SUCCESS_COMMENT =
   '/emailAddress=smime1@example.com/C=DE/ST=Berlin/L=Berlin/O=Example Security/OU=IT Department/CN=example.com'
 
 describe('rendering security badge', () => {
-  it('renders success classes, when security passed')
-
   describe('renders encryption', () => {
     const renderEncryption = (success: boolean, comment: string) => {
       return renderBadge({
@@ -45,9 +43,7 @@ describe('rendering security badge', () => {
       await view.events.click(view.getByRole('button'))
 
       expect(view.queryByText('Security Error')).not.toBeInTheDocument()
-      expect(
-        view.getByText(`Encryption: ${SUCCESS_COMMENT}`),
-      ).toBeInTheDocument()
+      expect(view.getByText(`Encryption: ${SUCCESS_COMMENT}`)).toBeInTheDocument()
     })
 
     it('ignores encryption error, if comment is not provided', () => {
@@ -162,9 +158,7 @@ describe('rendering security badge', () => {
 
     const popup = view.getByTestId('popupWindow')
     expect(within(popup).getByText('Security Error')).toBeInTheDocument()
-    expect(
-      within(popup).getByText('Encryption: encryption error'),
-    ).toBeInTheDocument()
+    expect(within(popup).getByText('Encryption: encryption error')).toBeInTheDocument()
     expect(within(popup).getByText('Sign: sign error')).toBeInTheDocument()
 
     expect(within(popup).getByText('Try again')).toBeInTheDocument()

@@ -65,10 +65,8 @@ const componentType = computed(() => {
 })
 
 const ariaLabel = computed(() => {
-  if (props.downloadUrl && canDownload.value)
-    return i18n.t('Download %s', props.file.name) // directly downloads file
-  if (props.downloadUrl && !canDownload.value)
-    return i18n.t('Open %s', props.file.name) // opens file in another tab
+  if (props.downloadUrl && canDownload.value) return i18n.t('Download %s', props.file.name) // directly downloads file
+  if (props.downloadUrl && !canDownload.value) return i18n.t('Open %s', props.file.name) // opens file in another tab
   return props.file.name // cannot download and preview, probably just uploaded pdf
 })
 
@@ -144,11 +142,7 @@ const classMap = getFilePreviewClasses()
         <span class="line-clamp-1">
           {{ file.name }}
         </span>
-        <span
-          v-if="file.size"
-          class="line-clamp-1"
-          :class="[classMap.size, sizeClass]"
-        >
+        <span v-if="file.size" class="line-clamp-1" :class="[classMap.size, sizeClass]">
           {{ humanizeFileSize(file.size) }}
         </span>
       </div>

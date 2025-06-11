@@ -3,10 +3,7 @@
 import { computed, ref, shallowRef } from 'vue'
 
 import { useTicketArticleReplyAction } from '#shared/entities/ticket/composables/useTicketArticleReplyAction.ts'
-import type {
-  TicketArticle,
-  TicketById,
-} from '#shared/entities/ticket/types.ts'
+import type { TicketArticle, TicketById } from '#shared/entities/ticket/types.ts'
 import { createArticleActions } from '#shared/entities/ticket-article/action/plugins/index.ts'
 import { getArticleSelection } from '#shared/entities/ticket-article/composables/getArticleSelection.ts'
 import log from '#shared/utils/log.ts'
@@ -23,8 +20,7 @@ export const useTicketArticleContext = () => {
   const selectionData = ref<SelectionData>()
   const metadataDialog = useDialog({
     name: 'article-metadata',
-    component: () =>
-      import('../components/TicketDetailView/ArticleMetadataDialog.vue'),
+    component: () => import('../components/TicketDetailView/ArticleMetadataDialog.vue'),
   })
 
   const { showArticleReplyDialog, form } = useTicketInformation()

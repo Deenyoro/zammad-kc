@@ -46,8 +46,6 @@ describe('locale page', () => {
   it('has link to zammad translations', async () => {
     const view = await visitView('/personal-setting/locale')
 
-    expect(
-      view.queryByText('You can help translating Zammad.'),
-    ).toBeInTheDocument()
+    expect(view.queryByText('You can help translating Zammad.')).toBeInTheDocument()
   })
 })

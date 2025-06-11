@@ -18,9 +18,7 @@ defineProps<{
   >
     <div class="flex flex-col items-center gap-1 text-white">
       <CommonIcon name="image" />
-      <CommonLabel class="text-white">{{
-        $t('Failed to upload.')
-      }}</CommonLabel>
+      <CommonLabel class="text-white">{{ $t('Failed to upload.') }}</CommonLabel>
     </div>
   </div>
 </template>

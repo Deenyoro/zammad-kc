@@ -15,10 +15,7 @@ import { useTicketCreateArticleType } from '#shared/entities/ticket/composables/
 import { useTicketFormOrganizationHandler } from '#shared/entities/ticket/composables/useTicketFormOrganizationHandler.ts'
 import type { TicketFormData } from '#shared/entities/ticket/types.ts'
 import { defineFormSchema } from '#shared/form/defineFormSchema.ts'
-import {
-  EnumFormUpdaterId,
-  EnumObjectManagerObjects,
-} from '#shared/graphql/types.ts'
+import { EnumFormUpdaterId, EnumObjectManagerObjects } from '#shared/graphql/types.ts'
 import { useWalker } from '#shared/router/walker.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 
@@ -31,14 +28,8 @@ import { useTaskbarTab } from '#desktop/entities/user/current/composables/useTas
 import { useTaskbarTabStateUpdates } from '#desktop/entities/user/current/composables/useTaskbarTabStateUpdates.ts'
 import type { TaskbarTabContext } from '#desktop/entities/user/current/types.ts'
 
-import {
-  useProvideTicketSidebar,
-  useTicketSidebar,
-} from '../../composables/useTicketSidebar.ts'
-import {
-  TicketSidebarScreenType,
-  type TicketSidebarContext,
-} from '../../types/sidebar.ts'
+import { useProvideTicketSidebar, useTicketSidebar } from '../../composables/useTicketSidebar.ts'
+import { TicketSidebarScreenType, type TicketSidebarContext } from '../../types/sidebar.ts'
 import TicketSidebar from '../TicketSidebar.vue'
 
 import ApplyTemplate from './ApplyTemplate.vue'
@@ -54,25 +45,13 @@ const router = useRouter()
 const walker = useWalker()
 const route = useRoute()
 
-const {
-  form,
-  isDisabled,
-  isDirty,
-  isInitialSettled,
-  formNodeId,
-  values,
-  triggerFormUpdater,
-} = useForm()
+const { form, isDisabled, isDirty, isInitialSettled, formNodeId, values, triggerFormUpdater } =
+  useForm()
 
 const currentTitle = computed(() => values.value.title as string)
-const currentArticleType = computed(
-  () => values.value.articleSenderType as string,
-)
+const currentArticleType = computed(() => values.value.articleSenderType as string)
 
-const { currentViewTitle } = useTicketCreateTitle(
-  currentTitle,
-  currentArticleType,
-)
+const { currentViewTitle } = useTicketCreateTitle(currentTitle, currentArticleType)
 
 usePage({
   metaTitle: currentViewTitle,
@@ -96,10 +75,7 @@ const goBack = () => {
 
 const { ticketArticleSenderTypeField } = useTicketCreateArticleType()
 
-const { createTicket, isTicketCustomer } = useTicketCreate(
-  form,
-  redirectAfterCreate,
-)
+const { createTicket, isTicketCustomer } = useTicketCreate(form, redirectAfterCreate)
 
 const defaultTitle = __('New Ticket')
 
@@ -112,8 +88,7 @@ const formSchema = defineFormSchema([
         isLayout: true,
         element: 'h1',
         attrs: {
-          class:
-            'py-2.5 text-center text-xl font-medium leading-snug text-black dark:text-white',
+          class: 'py-2.5 text-center text-xl font-medium leading-snug text-black dark:text-white',
           ariaCurrent: 'page',
         },
         children: '$values.title || $t($defaultTitle)',
@@ -252,15 +227,11 @@ const formSchema = defineFormSchema([
 ])
 
 const securityIntegration = computed<boolean>(
-  () =>
-    (application.config.smime_integration ||
-      application.config.pgp_integration) ??
-    false,
+  () => (application.config.smime_integration || application.config.pgp_integration) ?? false,
 )
 
 const additionalCreateNotes = computed(
-  () =>
-    (application.config.ui_ticket_create_notes as Record<string, string>) || {},
+  () => (application.config.ui_ticket_create_notes as Record<string, string>) || {},
 )
 
 const schemaData = reactive({
@@ -294,18 +265,13 @@ const tabContext = computed<TaskbarTabContext>((currentContext) => {
     formIsDirty: isDirty.value,
   }
 
-  if (currentContext && isEqual(newContext, currentContext))
-    return currentContext
+  if (currentContext && isEqual(newContext, currentContext)) return currentContext
 
   return newContext
 })
 
-const {
-  currentTaskbarTab,
-  currentTaskbarTabId,
-  currentTaskbarTabFormId,
-  currentTaskbarTabDelete,
-} = useTaskbarTab(tabContext)
+const { currentTaskbarTab, currentTaskbarTabId, currentTaskbarTabFormId, currentTaskbarTabDelete } =
+  useTaskbarTab(tabContext)
 
 const { setSkipNextStateUpdate } = useTaskbarTabStateUpdates(
   currentTaskbarTabId,
@@ -349,7 +315,7 @@ const applyTemplate = (templateId: string) => {
 
 const formAdditionalRouteQueryParams = computed(() => ({
   taskbarId: currentTaskbarTab.value?.taskbarTabId,
-  ...(route.query || {}),
+  ...route.query,
 }))
 
 const submitCreateTicket = async (event: FormSubmitData<TicketFormData>) => {
@@ -383,10 +349,7 @@ const submitCreateTicket = async (event: FormSubmitData<TicketFormData>) => {
         }"
         :schema-data="schemaData"
         :form-updater-id="EnumFormUpdaterId.FormUpdaterUpdaterTicketCreate"
-        :handlers="[
-          useTicketFormOrganizationHandler(),
-          signatureHandling('body'),
-        ]"
+        :handlers="[useTicketFormOrganizationHandler(), signatureHandling('body')]"
         :change-fields="changedFields"
         :form-updater-additional-params="formAdditionalRouteQueryParams"
         use-object-attributes

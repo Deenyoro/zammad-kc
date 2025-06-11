@@ -22,11 +22,7 @@ const fieldDefinition = createInput(
     'noInitialAutoPreselect',
   ],
   {
-    features: [
-      addLink,
-      formUpdaterTrigger(),
-      removeValuesForNonExistingOptions,
-    ],
+    features: [addLink, formUpdaterTrigger(), removeValuesForNonExistingOptions],
   },
 )
 

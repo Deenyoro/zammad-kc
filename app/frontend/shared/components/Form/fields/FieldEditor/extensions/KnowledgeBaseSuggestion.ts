@@ -7,10 +7,7 @@ import buildMentionSuggestion from '#shared/components/Form/fields/FieldEditor/f
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
 import { getNodeByName } from '#shared/components/Form/utils.ts'
 import type { StoredFile } from '#shared/graphql/types.ts'
-import {
-  MutationHandler,
-  QueryHandler,
-} from '#shared/server/apollo/handler/index.ts'
+import { MutationHandler, QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import { debouncedQuery, htmlCleanup } from '#shared/utils/helpers.ts'
 
 import { useKnowledgeBaseAnswerSuggestionContentTransformMutation } from '../graphql/mutations/knowledgeBase/suggestion/content/transform.api.ts'
@@ -65,23 +62,16 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
         const attachmentsNodeName = meta?.attachmentsNodeName
 
         if (attachmentsNodeName) {
-          const attachmentField = getNodeByName(
-            context.value.formId,
-            attachmentsNodeName,
-          )
+          const attachmentField = getNodeByName(context.value.formId, attachmentsNodeName)
 
-          const existingAttachments = (cloneDeep(attachmentField?.value) ||
-            []) as StoredFile[]
+          const existingAttachments = (cloneDeep(attachmentField?.value) || []) as StoredFile[]
           const newAttachments =
-            result?.knowledgeBaseAnswerSuggestionContentTransform
-              ?.attachments || []
+            result?.knowledgeBaseAnswerSuggestionContentTransform?.attachments || []
 
           attachmentField?.input?.([...existingAttachments, ...newAttachments])
         }
 
-        return htmlCleanup(
-          result?.knowledgeBaseAnswerSuggestionContentTransform?.body || '',
-        )
+        return htmlCleanup(result?.knowledgeBaseAnswerSuggestionContentTransform?.body || '')
       },
       items: debouncedQuery(async ({ query }) => {
         if (!query) {

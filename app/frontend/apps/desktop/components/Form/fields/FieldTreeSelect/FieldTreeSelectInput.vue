@@ -1,11 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import {
-  useElementBounding,
-  useElementVisibility,
-  useWindowSize,
-} from '@vueuse/core'
+import { useElementBounding, useElementVisibility, useWindowSize } from '@vueuse/core'
 import { escapeRegExp } from 'lodash-es'
 import { computed, nextTick, ref, toRef, watch, useTemplateRef } from 'vue'
 
@@ -80,8 +76,7 @@ const clearFilter = () => {
 
 watch(() => contextReactive.value.noFiltering, clearFilter)
 
-const deaccent = (s: string) =>
-  s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+const deaccent = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 
 const filteredOptions = computed(() => {
   // In case we are not currently filtering for a parent, search across all options.
@@ -95,10 +90,7 @@ const filteredOptions = computed(() => {
 
   // Trim and de-accent search keywords and compile them as a case-insensitive regex.
   //   Make sure to escape special regex characters!
-  const filterRegex = new RegExp(
-    escapeRegExp(deaccent(filter.value.trim())),
-    'i',
-  )
+  const filterRegex = new RegExp(escapeRegExp(deaccent(filter.value.trim())), 'i')
 
   return options
     .map(
@@ -107,9 +99,7 @@ const filteredOptions = computed(() => {
           ...option,
 
           // Match options via their de-accented labels.
-          match: filterRegex.exec(
-            deaccent(option.label || String(option.value)),
-          ),
+          match: filterRegex.exec(deaccent(option.label || String(option.value))),
         }) as FlatSelectOption,
     )
     .filter((option) => option.match)
@@ -134,8 +124,7 @@ const suggestedOptionLabel = computed(() => {
 
 const currentOptions = computed(() => {
   // In case we are not currently filtering for a parent, return only top-level options.
-  if (!currentParent.value)
-    return sortedOptions.value.filter((option) => !option.parents?.length)
+  if (!currentParent.value) return sortedOptions.value.filter((option) => !option.parents?.length)
 
   // Otherwise, return all options which are children of the current parent.
   return sortedOptions.value.filter(
@@ -298,11 +287,7 @@ setupMissingOrDisabledOptionHandling()
         @blur="context.handlers.blur"
         @click.stop="onHandleToggleDropdown"
       >
-        <div
-          v-if="hasValue && context.multiple"
-          class="flex flex-wrap gap-1.5"
-          role="list"
-        >
+        <div v-if="hasValue && context.multiple" class="flex flex-wrap gap-1.5" role="list">
           <div
             v-for="selectedValue in valueContainer"
             :key="selectedValue"
@@ -313,8 +298,7 @@ setupMissingOrDisabledOptionHandling()
               class="inline-flex cursor-default items-center gap-1 rounded px-1.5 py-0.5 text-xs text-black dark:text-white"
               :class="{
                 'bg-white dark:bg-gray-200': !context.alternativeBackground,
-                'bg-neutral-100 dark:bg-gray-200':
-                  context.alternativeBackground,
+                'bg-neutral-100 dark:bg-gray-200': context.alternativeBackground,
               }"
             >
               <CommonIcon
@@ -338,12 +322,8 @@ setupMissingOrDisabledOptionHandling()
                 role="button"
                 tabindex="0"
                 @click.stop="selectOption(getSelectedOption(selectedValue))"
-                @keypress.enter.prevent.stop="
-                  selectOption(getSelectedOption(selectedValue))
-                "
-                @keypress.space.prevent.stop="
-                  selectOption(getSelectedOption(selectedValue))
-                "
+                @keypress.enter.prevent.stop="selectOption(getSelectedOption(selectedValue))"
+                @keypress.space.prevent.stop="selectOption(getSelectedOption(selectedValue))"
               />
             </div>
           </div>

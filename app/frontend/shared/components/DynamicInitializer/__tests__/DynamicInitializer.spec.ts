@@ -44,12 +44,7 @@ describe('dynamicaly add components to dom', () => {
 
     const name = ref('dialog')
 
-    await pushComponent(
-      'dialog',
-      '1',
-      (props) => h('div', `Hello, ${props.name}!`),
-      { name },
-    )
+    await pushComponent('dialog', '1', (props) => h('div', `Hello, ${props.name}!`), { name })
 
     expect(view.container).toHaveTextContent('Hello, dialog!')
 

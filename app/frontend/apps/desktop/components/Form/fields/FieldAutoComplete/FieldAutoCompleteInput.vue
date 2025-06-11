@@ -13,15 +13,7 @@ import {
 import gql from 'graphql-tag'
 import { cloneDeep, escapeRegExp, isEqual, uniqBy } from 'lodash-es'
 import { useTemplateRef } from 'vue'
-import {
-  computed,
-  markRaw,
-  nextTick,
-  ref,
-  toRef,
-  watch,
-  type ConcreteComponent,
-} from 'vue'
+import { computed, markRaw, nextTick, ref, toRef, watch, type ConcreteComponent } from 'vue'
 
 import type { SelectOption } from '#shared/components/CommonSelect/types'
 import useValue from '#shared/components/Form/composables/useValue.ts'
@@ -165,10 +157,7 @@ const trimmedFilter = computed(() => {
   return props.context.stripFilter(filter.value.trim())
 })
 
-const debouncedFilter = refDebounced(
-  trimmedFilter,
-  props.context.debounceInterval ?? 500,
-)
+const debouncedFilter = refDebounced(trimmedFilter, props.context.debounceInterval ?? 500)
 
 const AutocompleteSearchDocument = gql`
   ${props.context.gqlQuery}
@@ -195,7 +184,7 @@ const autocompleteQueryHandler = new QueryHandler(
       input: {
         query: debouncedFilter.value || defaultFilter.value || '',
         limit: props.context.limit,
-        ...(additionalQueryParams() || {}),
+        ...additionalQueryParams(),
       },
     }),
     () => ({
@@ -218,25 +207,19 @@ if (defaultFilter.value) {
 }
 
 const autocompleteQueryResultKey = (
-  (AutocompleteSearchDocument.definitions[0] as OperationDefinitionNode)
-    .selectionSet.selections[0] as SelectionNode & { name: NameNode }
+  (AutocompleteSearchDocument.definitions[0] as OperationDefinitionNode).selectionSet
+    .selections[0] as SelectionNode & { name: NameNode }
 ).name.value
 
-const autocompleteQueryResultOptions = computed<AutoCompleteOption[]>(
-  (oldValue) => {
-    const resultOptions =
-      autocompleteQueryHandler.result().value?.[autocompleteQueryResultKey] ||
-      []
+const autocompleteQueryResultOptions = computed<AutoCompleteOption[]>((oldValue) => {
+  const resultOptions = autocompleteQueryHandler.result().value?.[autocompleteQueryResultKey] || []
 
-    if (oldValue && isEqual(oldValue, resultOptions)) return oldValue
+  if (oldValue && isEqual(oldValue, resultOptions)) return oldValue
 
-    return resultOptions
-  },
-)
+  return resultOptions
+})
 
-const autocompleteOptions = computed(
-  () => cloneDeep(autocompleteQueryResultOptions.value) || [],
-)
+const autocompleteOptions = computed(() => cloneDeep(autocompleteQueryResultOptions.value) || [])
 
 const {
   sortedOptions: sortedAutocompleteOptions,
@@ -244,18 +227,12 @@ const {
   getSelectedOption: getSelectedAutocompleteOption,
   getSelectedOptionIcon: getSelectedAutocompleteOptionIcon,
   optionValueLookup: autocompleteOptionValueLookup,
-} = useSelectOptions<AutoCompleteOption[]>(
-  autocompleteOptions,
-  toRef(props, 'context'),
-)
+} = useSelectOptions<AutoCompleteOption[]>(autocompleteOptions, toRef(props, 'context'))
 
 const preprocessedAutocompleteOptions = computed(() => {
-  if (!props.context.autocompleteOptionsPreprocessor)
-    return sortedAutocompleteOptions.value
+  if (!props.context.autocompleteOptionsPreprocessor) return sortedAutocompleteOptions.value
 
-  return props.context.autocompleteOptionsPreprocessor(
-    sortedAutocompleteOptions.value,
-  )
+  return props.context.autocompleteOptionsPreprocessor(sortedAutocompleteOptions.value)
 })
 
 const selectOption = (option: SelectOption, focus = false) => {
@@ -271,9 +248,7 @@ const selectOption = (option: SelectOption, focus = false) => {
     appendedOptions.value.push(option as AutoCompleteOption)
   }
 
-  appendedOptions.value = appendedOptions.value.filter((elem) =>
-    isCurrentValue(elem.value),
-  )
+  appendedOptions.value = appendedOptions.value.filter((elem) => isCurrentValue(elem.value))
 
   if (!focus) return
 
@@ -346,16 +321,12 @@ const onKeydownFilterInput = (event: KeyboardEvent) => {
   })
 }
 
-const deaccent = (s: string) =>
-  s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+const deaccent = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 
 const availableOptionsWithMatches = computed(() => {
   // Trim and de-accent search keywords and compile them as a case-insensitive regex.
   //   Make sure to escape special regex characters!
-  const filterRegex = new RegExp(
-    escapeRegExp(deaccent(filter.value.trim())),
-    'i',
-  )
+  const filterRegex = new RegExp(escapeRegExp(deaccent(filter.value.trim())), 'i')
 
   return availableOptions.value.map(
     (option) =>
@@ -386,8 +357,7 @@ const displayOptions = computed(() => {
 })
 
 const suggestedOptionLabel = computed(() => {
-  if (!filter.value || !availableOptionsWithMatches.value.length)
-    return undefined
+  if (!filter.value || !availableOptionsWithMatches.value.length) return undefined
 
   const exactMatches = availableOptionsWithMatches.value.filter(
     (option) =>
@@ -462,8 +432,7 @@ const handleToggleDropdown = (event: MouseEvent) => {
 }
 
 const OptionIconComponent =
-  props.context.optionIconComponent ??
-  (FieldAutoCompleteOptionIcon as ConcreteComponent)
+  props.context.optionIconComponent ?? (FieldAutoCompleteOptionIcon as ConcreteComponent)
 
 const handleCloseDropdown = (
   event: KeyboardEvent,
@@ -563,11 +532,7 @@ useFormBlock(
         @blur="context.handlers.blur"
         @click.stop="handleToggleDropdown"
       >
-        <div
-          v-if="hasValue && context.multiple"
-          class="flex flex-wrap gap-1.5"
-          role="list"
-        >
+        <div v-if="hasValue && context.multiple" class="flex flex-wrap gap-1.5" role="list">
           <div
             v-for="selectedValue in valueContainer"
             :key="selectedValue.toString()"
@@ -578,8 +543,7 @@ useFormBlock(
               class="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-xs text-black dark:text-white"
               :class="{
                 'bg-white dark:bg-gray-200': !context.alternativeBackground,
-                'bg-neutral-100 dark:bg-gray-200':
-                  context.alternativeBackground,
+                'bg-neutral-100 dark:bg-gray-200': context.alternativeBackground,
               }"
             >
               <CommonIcon

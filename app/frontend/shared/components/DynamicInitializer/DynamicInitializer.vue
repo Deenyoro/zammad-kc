@@ -22,39 +22,31 @@ const props = defineProps<{
 
 const components = shallowRef<PushComponentData[]>([])
 
-useEventListener(
-  window,
-  Events.Push,
-  ({ detail }: CustomEvent<PushComponentData>) => {
-    if (detail.name !== props.name) return
+useEventListener(window, Events.Push, ({ detail }: CustomEvent<PushComponentData>) => {
+  if (detail.name !== props.name) return
 
-    components.value = [
-      ...components.value,
-      {
-        ...detail,
-        cmp: markRaw(detail.cmp),
-      },
-    ]
-  },
-)
+  components.value = [
+    ...components.value,
+    {
+      ...detail,
+      cmp: markRaw(detail.cmp),
+    },
+  ]
+})
 
-useEventListener(
-  window,
-  Events.Destroy,
-  ({ detail }: CustomEvent<DestroyComponentData>) => {
-    if (detail.name !== props.name) return
+useEventListener(window, Events.Destroy, ({ detail }: CustomEvent<DestroyComponentData>) => {
+  if (detail.name !== props.name) return
 
-    if (!detail.id) {
-      components.value = []
+  if (!detail.id) {
+    components.value = []
 
-      return
-    }
+    return
+  }
 
-    components.value = components.value.filter(
-      (item) => !(item.name === detail.name && item.id === detail.id),
-    )
-  },
-)
+  components.value = components.value.filter(
+    (item) => !(item.name === detail.name && item.id === detail.id),
+  )
+})
 </script>
 
 <template>

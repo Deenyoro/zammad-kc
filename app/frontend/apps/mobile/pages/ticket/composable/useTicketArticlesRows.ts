@@ -53,10 +53,7 @@ type TicketArticleRow = (
   key: string
 }
 
-export const useTicketArticleRows = (
-  articles: Ref<TicketArticle[]>,
-  totalCount: Ref<number>,
-) => {
+export const useTicketArticleRows = (articles: Ref<TicketArticle[]>, totalCount: Ref<number>) => {
   const { newArticlesIds } = useTicketInformation()
   const session = useSessionStore()
 
@@ -109,12 +106,7 @@ export const useTicketArticleRows = (
         })
       }
       const next = articles.value[index + 1]
-      if (
-        !hasNew &&
-        next &&
-        session.userId !== next.author.id &&
-        newArticlesIds.has(next.id)
-      ) {
+      if (!hasNew && next && session.userId !== next.author.id && newArticlesIds.has(next.id)) {
         hasNew = true
         rows.push({
           type: 'new',

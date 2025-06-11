@@ -11,9 +11,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const variantClass = computed(() =>
-  props.variant ? ['ai-stripe before:h-[1px] before:mb-3'] : [],
-)
+const variantClass = computed(() => (props.variant ? ['ai-stripe before:h-[1px] before:mb-3'] : []))
 </script>
 
 <template>
@@ -21,10 +19,7 @@ const variantClass = computed(() =>
     <CommonLabel class="mb-3 block! text-black! dark:text-white!" tag="h3">{{
       $t(label)
     }}</CommonLabel>
-    <ol
-      v-if="Array.isArray(summary)"
-      class="space-y-3 text-gray-100 dark:text-neutral-400"
-    >
+    <ol v-if="Array.isArray(summary)" class="space-y-3 text-gray-100 dark:text-neutral-400">
       <li
         v-for="content in summary"
         :key="content"

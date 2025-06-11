@@ -58,13 +58,9 @@ const collapseOptions: CollapseOptions = {
   name: props.name,
 }
 
-if (props.rememberCollapse)
-  collapseOptions.storageKey = `${props.name}-sidebar-collapsed`
+if (props.rememberCollapse) collapseOptions.storageKey = `${props.name}-sidebar-collapsed`
 
-const { toggleCollapse, isCollapsed } = useCollapseHandler(
-  emit,
-  collapseOptions,
-)
+const { toggleCollapse, isCollapsed } = useCollapseHandler(emit, collapseOptions)
 
 const backgroundVariantClass = computed(() => {
   switch (props.backgroundVariant) {
@@ -77,17 +73,12 @@ const backgroundVariantClass = computed(() => {
 })
 
 // a11y keyboard navigation // TS: Does not infer type for some reason?
-const resizeLineInstance =
-  useTemplateRef<InstanceType<typeof ResizeLine>>('resize-line')
+const resizeLineInstance = useTemplateRef<InstanceType<typeof ResizeLine>>('resize-line')
 
 const activeElement = useActiveElement()
 
 const handleKeyStroke = (e: KeyboardEvent, adjustment: number) => {
-  if (
-    !props.currentWidth ||
-    activeElement.value !== resizeLineInstance.value?.resizeLine
-  )
-    return
+  if (!props.currentWidth || activeElement.value !== resizeLineInstance.value?.resizeLine) return
 
   e.preventDefault()
 
@@ -115,10 +106,8 @@ watch(isResizing, (isResizing) => {
 })
 
 const collapseButtonClass = computed(() => {
-  if (props.position === SidebarPosition.Start)
-    return 'ltr:rounded-l-none rtl:rounded-r-none'
-  if (props.position === SidebarPosition.End)
-    return 'ltr:rounded-r-none rtl:rounded-l-none'
+  if (props.position === SidebarPosition.Start) return 'ltr:rounded-l-none rtl:rounded-r-none'
+  if (props.position === SidebarPosition.End) return 'ltr:rounded-r-none rtl:rounded-l-none'
 
   return ''
 })

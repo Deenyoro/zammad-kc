@@ -45,8 +45,7 @@ const checklistItems = computed({
   },
 })
 
-const checklistInstance =
-  useTemplateRef<InstanceType<typeof ChecklistItem>[]>('checklist')
+const checklistInstance = useTemplateRef<InstanceType<typeof ChecklistItem>[]>('checklist')
 const containerElement = useTemplateRef<HTMLElement>('container')
 const checklistTitleInstance = useTemplateRef('title')
 
@@ -94,8 +93,7 @@ const startReordering = () => {
 
 defineExpose({
   focusTitle: () => checklistTitleInstance.value?.activateEditing(),
-  quitItemEditing: (index: number) =>
-    checklistInstance.value?.at(index)?.quitEditing(),
+  quitItemEditing: (index: number) => checklistInstance.value?.at(index)?.quitEditing(),
   quitReordering: resetOrder,
   focusNewItem,
 })

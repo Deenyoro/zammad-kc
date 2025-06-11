@@ -10,17 +10,14 @@ import type { Ref } from 'vue'
 
 // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role#keyboard_interactions
 // - Type-ahead is recommended for all listboxes, especially those with more than seven options
-export const useFocusWhenTyping = (
-  container: MaybeRefOrGetter<HTMLElement | undefined | null>,
-) => {
+export const useFocusWhenTyping = (container: MaybeRefOrGetter<HTMLElement | undefined | null>) => {
   let filter = ''
   let timeout = 0
 
   onKeyStroke(
     (e) => {
       // only process alphanumeric keys
-      if (e.location !== 0 || (e.key.length !== 1 && e.key !== 'Backspace'))
-        return
+      if (e.location !== 0 || (e.key.length !== 1 && e.key !== 'Backspace')) return
 
       if (e.key === ' ') {
         if (filter === '') return // don't start timeout, if not filtering
@@ -30,16 +27,13 @@ export const useFocusWhenTyping = (
       window.clearTimeout(timeout)
 
       timeout = window.setTimeout(() => {
-        const option = getFocusableElements(unrefElement(container)).find(
-          (el) => {
-            const content = el.textContent?.toLowerCase().trim() ?? ''
-            const filtered = filter.toLowerCase()
-            if (content.startsWith(filtered)) return true
-            const label =
-              el.getAttribute('aria-label')?.toLowerCase().trim() ?? ''
-            return label.startsWith(filtered)
-          },
-        )
+        const option = getFocusableElements(unrefElement(container)).find((el) => {
+          const content = el.textContent?.toLowerCase().trim() ?? ''
+          const filtered = filter.toLowerCase()
+          if (content.startsWith(filtered)) return true
+          const label = el.getAttribute('aria-label')?.toLowerCase().trim() ?? ''
+          return label.startsWith(filtered)
+        })
         option?.focus()
         filter = ''
       }, 250)

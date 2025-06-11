@@ -9,11 +9,7 @@ export enum NotificationTypes {
   Info = 'info',
 }
 
-export type NotificationClass =
-  | NotificationTypes
-  | 'base'
-  | 'baseContainer'
-  | 'message'
+export type NotificationClass = NotificationTypes | 'base' | 'baseContainer' | 'message'
 export type NotificationClassMap = Record<NotificationClass, string>
 
 export interface Notification {

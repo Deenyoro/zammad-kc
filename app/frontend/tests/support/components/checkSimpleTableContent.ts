@@ -12,9 +12,7 @@ export const checkSimpleTableHeader = (
   const table = within(view.getByRole('table', { name: tableLabel }))
 
   tableHeaders.forEach((header) => {
-    expect(
-      table.getByRole('columnheader', { name: header }),
-    ).toBeInTheDocument()
+    expect(table.getByRole('columnheader', { name: header })).toBeInTheDocument()
   })
 }
 

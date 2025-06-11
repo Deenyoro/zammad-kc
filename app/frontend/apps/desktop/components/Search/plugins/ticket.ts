@@ -17,15 +17,7 @@ export default <SearchPlugin>{
   quickSearchResultKey: 'quickSearchTickets',
   permissions: ['ticket.agent', 'ticket.customer'],
   detailSearchHeaders: (config) => {
-    const headers = [
-      'stateIcon',
-      'number',
-      'title',
-      'customer',
-      'group',
-      'owner',
-      'created_at',
-    ]
+    const headers = ['stateIcon', 'number', 'title', 'customer', 'group', 'owner', 'created_at']
 
     if (config.ui_ticket_priority_icons) {
       headers.unshift('priorityIcon')

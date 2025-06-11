@@ -6,9 +6,7 @@ import testFlags from '#shared/utils/testFlags.ts'
 import type { Editor } from '@tiptap/vue-3'
 import type { ShallowRef } from 'vue'
 
-export const useSignatureHandling = (
-  editor: ShallowRef<Editor | undefined>,
-) => {
+export const useSignatureHandling = (editor: ShallowRef<Editor | undefined>) => {
   // insert signature before full article blockquote or at the end of the document
   const resolveSignaturePosition = (editor: Editor) => {
     let blockquotePosition: number | null = null
@@ -28,11 +26,9 @@ export const useSignatureHandling = (
   }
 
   const addSignature = (signature: PossibleSignature) => {
-    if (!editor.value || editor.value.isDestroyed || !editor.value.isEditable)
-      return
+    if (!editor.value || editor.value.isDestroyed || !editor.value.isEditable) return
     const currentPosition = editor.value.state.selection.anchor
-    const positionFromEnd =
-      editor.value.state.doc.content.size - currentPosition
+    const positionFromEnd = editor.value.state.doc.content.size - currentPosition
     // don't use "chain()", because we change positions a lot
     // and chain doesn't know about it
     editor.value.commands.removeSignature()
@@ -58,8 +54,7 @@ export const useSignatureHandling = (
   }
 
   const removeSignature = () => {
-    if (!editor.value || editor.value.isDestroyed || !editor.value.isEditable)
-      return
+    if (!editor.value || editor.value.isDestroyed || !editor.value.isEditable) return
     const currentPosition = editor.value.state.selection.anchor
     editor.value.chain().removeSignature().focus(currentPosition).run()
     requestAnimationFrame(() => {

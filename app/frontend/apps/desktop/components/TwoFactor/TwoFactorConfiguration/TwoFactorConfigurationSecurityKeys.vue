@@ -14,10 +14,7 @@ import { useUserCurrentTwoFactorRemoveMethodCredentialsMutation } from '#shared/
 import { useUserCurrentTwoFactorVerifyMethodConfigurationMutation } from '#shared/entities/user/current/graphql/mutations/two-factor/userCurrentTwoFactorVerifyMethodConfiguration.api.ts'
 import { useUserCurrentTwoFactorInitiateMethodConfigurationLazyQuery } from '#shared/entities/user/current/graphql/queries/two-factor/userCurrentTwoFactorInitiateMethodConfiguration.api.ts'
 import UserError from '#shared/errors/UserError.ts'
-import {
-  MutationHandler,
-  QueryHandler,
-} from '#shared/server/apollo/handler/index.ts'
+import { MutationHandler, QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import { GraphQLErrorTypes } from '#shared/types/error.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
 
@@ -29,8 +26,7 @@ import { usePasswordCheckTwoFactor } from '#desktop/entities/two-factor-configur
 
 import type { TwoFactorConfigurationComponentPropsWithRequiredToken } from '../types.ts'
 
-const props =
-  defineProps<TwoFactorConfigurationComponentPropsWithRequiredToken>()
+const props = defineProps<TwoFactorConfigurationComponentPropsWithRequiredToken>()
 
 const { twoFactorMethodLookup } = useTwoFactorPlugins()
 
@@ -81,9 +77,7 @@ const footerActionOptions = computed(() => {
   }
 })
 
-const { redirectToPasswordCheck } = usePasswordCheckTwoFactor(
-  props.formSubmitCallback,
-)
+const { redirectToPasswordCheck } = usePasswordCheckTwoFactor(props.formSubmitCallback)
 
 const configurationQuery = new QueryHandler(
   useUserCurrentTwoFactorGetMethodConfigurationQuery({
@@ -104,14 +98,10 @@ const configurationQuery = new QueryHandler(
 )
 
 const configuration = computed<ObjectLike>(
-  () =>
-    configurationQuery.result().value
-      ?.userCurrentTwoFactorGetMethodConfiguration,
+  () => configurationQuery.result().value?.userCurrentTwoFactorGetMethodConfiguration,
 )
 
-const credentials = computed<ObjectLike[]>(
-  () => configuration.value?.credentials || [],
-)
+const credentials = computed<ObjectLike[]>(() => configuration.value?.credentials || [])
 
 const tableHeaders: TableSimpleHeader[] = [
   {
@@ -139,9 +129,7 @@ const { notify } = useNotifications()
 const removeCredentialsMutation = new MutationHandler(
   useUserCurrentTwoFactorRemoveMethodCredentialsMutation(),
   {
-    errorNotificationMessage: __(
-      'Could not remove two-factor authentication method.',
-    ),
+    errorNotificationMessage: __('Could not remove two-factor authentication method.'),
     errorCallback: (error) => {
       if (error.type === GraphQLErrorTypes.UnknownError) {
         redirectToPasswordCheck()
@@ -168,11 +156,7 @@ const tableActions: MenuItem[] = [
         credentialId: entity.id,
       })
 
-      if (
-        !removeCredentialsResult?.userCurrentTwoFactorRemoveMethodCredentials
-          ?.success
-      )
-        return
+      if (!removeCredentialsResult?.userCurrentTwoFactorRemoveMethodCredentials?.success) return
 
       await configurationQuery.refetch()
 
@@ -219,18 +203,13 @@ const setupCredential = async () => {
     throw new Error()
   }
 
-  const initiateData =
-    initiateQueryResult.data?.userCurrentTwoFactorInitiateMethodConfiguration
+  const initiateData = initiateQueryResult.data?.userCurrentTwoFactorInitiateMethodConfiguration
 
-  if (!initiateData)
-    throw new Error(
-      __('Two-factor authentication method could not be initiated.'),
-    )
+  if (!initiateData) throw new Error(__('Two-factor authentication method could not be initiated.'))
 
   return {
     initiateData,
-    setupResult:
-      await twoFactorPlugin.configurationOptions?.setup?.(initiateData),
+    setupResult: await twoFactorPlugin.configurationOptions?.setup?.(initiateData),
   }
 }
 
@@ -248,10 +227,7 @@ const verifyMutation = new MutationHandler(
   },
 )
 
-const verifyCredential = async (
-  initiateData: ObjectLike,
-  setupResult: TwoFactorSetupResult,
-) => {
+const verifyCredential = async (initiateData: ObjectLike, setupResult: TwoFactorSetupResult) => {
   const verifyResult = (
     await verifyMutation.send({
       methodName: twoFactorPlugin.name,
@@ -366,9 +342,7 @@ const executeAction = async () => {
       // FIXME: This is a hack to focus the nickname input field once the form is rendered.
       //   It should be fixed by providing a dedicated API on the form, if possible.
       nextTick(() => {
-        ;(
-          document.querySelector('input[name="nickname"]') as HTMLInputElement
-        )?.focus()
+        ;(document.querySelector('input[name="nickname"]') as HTMLInputElement)?.focus()
       })
 
       break
@@ -410,9 +384,7 @@ defineExpose({
           :actions="tableActions"
         />
         <CommonLabel>{{
-          $t(
-            'To register a new security key with your account, press the button below.',
-          )
+          $t('To register a new security key with your account, press the button below.')
         }}</CommonLabel>
       </template>
     </template>
@@ -429,11 +401,9 @@ defineExpose({
       </Form>
     </template>
     <template v-else-if="state === 'register' || state === 'retry'">
-      <CommonLabel
-        v-if="state === 'register' && loading"
-        class="mx-auto my-3"
-        >{{ $t('Getting key information from the browser…') }}</CommonLabel
-      >
+      <CommonLabel v-if="state === 'register' && loading" class="mx-auto my-3">{{
+        $t('Getting key information from the browser…')
+      }}</CommonLabel>
       <CommonLoader class="my-3" :loading="loading" :error="error" />
     </template>
   </div>

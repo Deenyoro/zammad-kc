@@ -55,18 +55,12 @@ const form = computed(() => activeComponentInstance.value?.form)
 const { formNodeId, isDisabled: isFormDisabled } = useForm(form)
 
 const footerActionOptions = computed(() => ({
-  hideActionButton:
-    activeComponentInstance.value?.footerActionOptions?.hideActionButton,
+  hideActionButton: activeComponentInstance.value?.footerActionOptions?.hideActionButton,
   actionLabel: activeComponentInstance.value?.footerActionOptions?.actionLabel,
-  actionButton:
-    activeComponentInstance.value?.footerActionOptions?.actionButton,
-  hideCancelButton:
-    activeComponentInstance.value?.footerActionOptions?.hideCancelButton,
-  cancelLabel:
-    activeComponentInstance.value?.footerActionOptions?.cancelLabel ||
-    __('Go Back'),
-  cancelButton:
-    activeComponentInstance.value?.footerActionOptions?.cancelButton,
+  actionButton: activeComponentInstance.value?.footerActionOptions?.actionButton,
+  hideCancelButton: activeComponentInstance.value?.footerActionOptions?.hideCancelButton,
+  cancelLabel: activeComponentInstance.value?.footerActionOptions?.cancelLabel || __('Go Back'),
+  cancelButton: activeComponentInstance.value?.footerActionOptions?.cancelButton,
 }))
 
 const handleActionPayload = (payload: TwoFactorConfigurationActionPayload) => {

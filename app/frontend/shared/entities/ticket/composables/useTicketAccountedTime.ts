@@ -11,8 +11,7 @@ export const useTicketAccountedTime = () => {
   const timeAccountingConfig = computed(() => ({
     time_accounting_types: applicationConfig.value.time_accounting_types,
     time_accounting_unit: applicationConfig.value.time_accounting_unit,
-    time_accounting_unit_custom:
-      applicationConfig.value.time_accounting_unit_custom,
+    time_accounting_unit_custom: applicationConfig.value.time_accounting_unit_custom,
   }))
 
   const timeAccountingDisplayUnit = computed(() => {

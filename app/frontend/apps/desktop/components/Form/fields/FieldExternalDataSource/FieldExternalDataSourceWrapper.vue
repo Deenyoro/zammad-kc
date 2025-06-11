@@ -10,10 +10,7 @@ import FieldAutoCompleteInput from '../FieldAutoComplete/FieldAutoCompleteInput.
 
 const props = defineProps<Props>()
 
-Object.assign(
-  props.context,
-  useFieldExternalDataSourceWrapper(toRef(props, 'context')),
-)
+Object.assign(props.context, useFieldExternalDataSourceWrapper(toRef(props, 'context')))
 </script>
 
 <template>

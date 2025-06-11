@@ -1,5 +1,4 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
-/* eslint-disable zammad/zammad-detect-translatable-string */
 
 import type { RouteRecordRaw } from 'vue-router'
 

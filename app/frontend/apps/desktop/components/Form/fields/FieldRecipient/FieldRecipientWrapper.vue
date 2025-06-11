@@ -22,9 +22,7 @@ const props = defineProps<Props>()
 const { contact } = props.context
 
 const actionLabel = computed(() =>
-  contact === 'phone'
-    ? __('add new phone number')
-    : __('add new email address'),
+  contact === 'phone' ? __('add new phone number') : __('add new email address'),
 )
 
 const filterValueValidator = (filter: string) => {
@@ -37,8 +35,10 @@ const filterValueValidator = (filter: string) => {
   }
 }
 
-const { actions, onSearchInteractionUpdate, onKeydownFilterInput } =
-  useAddUnknownValueAction(actionLabel, filterValueValidator)
+const { actions, onSearchInteractionUpdate, onKeydownFilterInput } = useAddUnknownValueAction(
+  actionLabel,
+  filterValueValidator,
+)
 
 Object.assign(props.context, {
   actions,

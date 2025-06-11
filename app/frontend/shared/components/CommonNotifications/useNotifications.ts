@@ -33,15 +33,13 @@ const useNotifications = () => {
     const newNotification: Notification = { id, timeout: 0, ...notification }
 
     if (unique) {
-      notifications.value = notifications.value.filter(
-        (notification: Notification) => {
-          const isSame = notification.id === id
-          if (isSame) {
-            window.clearTimeout(notification.timeout)
-          }
-          return !isSame
-        },
-      )
+      notifications.value = notifications.value.filter((notification: Notification) => {
+        const isSame = notification.id === id
+        if (isSame) {
+          window.clearTimeout(notification.timeout)
+        }
+        return !isSame
+      })
     }
 
     notifications.value.push(newNotification)

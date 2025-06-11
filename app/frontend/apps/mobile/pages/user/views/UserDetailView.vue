@@ -29,9 +29,7 @@ const props = defineProps<Props>()
 const { createQueryErrorHandler } = useErrorHandler()
 
 const errorCallback = createQueryErrorHandler({
-  notFound: __(
-    'User with specified ID was not found. Try checking the URL for errors.',
-  ),
+  notFound: __('User with specified ID was not found. Try checking the URL for errors.'),
   forbidden: __('You have insufficient rights to view this user.'),
 })
 
@@ -85,8 +83,7 @@ const ticketButtons = computed<CommonButtonOption[]>(() => {
   ]
 })
 
-const { getTicketData: getOrganizationTicketsData } =
-  useOrganizationTicketsCount()
+const { getTicketData: getOrganizationTicketsData } = useOrganizationTicketsCount()
 const { getTicketData: getUserTicketsData } = useUsersTicketsCount()
 
 const ticketsData = computed(() => {

@@ -17,7 +17,7 @@ rm .gitlab-ci.yml
 # linting
 # Since the .eslint-plugin-zammad folder is a dependency in package.json (required by assets:precompile), it cannot be removed.
 rm .rubocop.yml
-rm .stylelintrc.json .eslintignore .eslintrc .eslintrc.js .prettierrc.json
+rm .stylelintrc.json .oxlintrc.json eslint.config.ts .prettierrc.json
 rm coffeelint.json
 rm .overcommit.*
 

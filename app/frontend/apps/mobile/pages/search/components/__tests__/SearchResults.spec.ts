@@ -36,9 +36,6 @@ describe('renders search result', () => {
 
     expect(organization).toBeInTheDocument()
 
-    expect(view.getLinkFromElement(organization)).toHaveAttribute(
-      'href',
-      '/organizations/123',
-    )
+    expect(view.getLinkFromElement(organization)).toHaveAttribute('href', '/organizations/123')
   })
 })

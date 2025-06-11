@@ -3,10 +3,7 @@
 import { axe } from 'vitest-axe'
 
 import { visitView } from '#tests/support/components/visitView.ts'
-import {
-  mockGraphQLApi,
-  mockGraphQLSubscription,
-} from '#tests/support/mock-graphql-api.ts'
+import { mockGraphQLApi, mockGraphQLSubscription } from '#tests/support/mock-graphql-api.ts'
 import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 import { waitUntil } from '#tests/support/utils.ts'
 
@@ -49,9 +46,7 @@ describe('testing online notification a11y', () => {
       lastname: 'Doe',
     })
 
-    const userUpdateSubscription = mockGraphQLSubscription(
-      OnlineNotificationsCountDocument,
-    )
+    const userUpdateSubscription = mockGraphQLSubscription(OnlineNotificationsCountDocument)
 
     await userUpdateSubscription.next({
       data: {

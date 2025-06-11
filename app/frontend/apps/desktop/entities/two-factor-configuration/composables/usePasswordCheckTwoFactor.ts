@@ -12,9 +12,7 @@ export const usePasswordCheckTwoFactor = (
     useNotifications().notify({
       id: 'two-factor-invalid-password-revalidation-token',
       type: NotificationTypes.Error,
-      message: __(
-        'Invalid password revalidation token, please confirm your password again.',
-      ),
+      message: __('Invalid password revalidation token, please confirm your password again.'),
     })
 
     formSubmitCallback?.({ nextState: 'password_check' })

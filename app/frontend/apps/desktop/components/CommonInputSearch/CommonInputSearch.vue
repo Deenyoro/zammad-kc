@@ -46,9 +46,7 @@ const clearFilter = () => {
   focus()
 }
 
-const suggestionVisiblePart = computed(() =>
-  props.suggestion?.slice(filter.value?.length),
-)
+const suggestionVisiblePart = computed(() => props.suggestion?.slice(filter.value?.length))
 
 const maybeAcceptSuggestion = (event: Event) => {
   if (
@@ -69,10 +67,7 @@ const onKeydown = (event: KeyboardEvent) => emit('keydown', event)
 </script>
 
 <template>
-  <div
-    class="inline-flex grow items-center justify-start gap-1 text-sm"
-    :class="wrapperClass"
-  >
+  <div class="inline-flex grow items-center justify-start gap-1 text-sm" :class="wrapperClass">
     <CommonIcon
       class="shrink-0 fill-stone-200 dark:fill-neutral-500"
       size="tiny"
@@ -109,9 +104,7 @@ const onKeydown = (event: KeyboardEvent) => emit('keydown', event)
         data-test-id="suggestion"
       >
         <span class="invisible">{{ filter }}</span>
-        <span class="text-stone-200 dark:text-neutral-500">{{
-          suggestionVisiblePart
-        }}</span>
+        <span class="text-stone-200 dark:text-neutral-500">{{ suggestionVisiblePart }}</span>
       </div>
     </div>
     <div class="flex shrink-0 items-center gap-1">

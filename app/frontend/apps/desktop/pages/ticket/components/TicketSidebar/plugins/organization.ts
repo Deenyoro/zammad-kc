@@ -13,18 +13,12 @@ export default <TicketSidebarPlugin>{
   title: __('Organization'),
   component: TicketSidebarOrganization,
   permissions: ['ticket.agent'],
-  screens: [
-    TicketSidebarScreenType.TicketDetailView,
-    TicketSidebarScreenType.TicketCreate,
-  ],
+  screens: [TicketSidebarScreenType.TicketDetailView, TicketSidebarScreenType.TicketCreate],
   icon: 'buildings',
   order: 2000,
   available: (context: TicketSidebarContext) => {
     // Consider the sidebar available only if a customer ID has been set to an integer ID.
     //   In case of a string value, it's probably an unknown email address and therefore no organization to show.
-    return !!(
-      context.formValues.customer_id &&
-      typeof context.formValues.customer_id === 'number'
-    )
+    return !!(context.formValues.customer_id && typeof context.formValues.customer_id === 'number')
   },
 }

@@ -34,14 +34,8 @@ describe('tickets zoom header', () => {
     })
 
     expect(view.getByIconName('home'), 'has home icon').toBeInTheDocument()
-    expect(
-      view.getByText(`#${ticket.number}`),
-      'has ticket id',
-    ).toBeInTheDocument()
-    expect(
-      view.getByText('created 3 days ago'),
-      'has time ticket was created',
-    ).toBeInTheDocument()
+    expect(view.getByText(`#${ticket.number}`), 'has ticket id').toBeInTheDocument()
+    expect(view.getByText('created 3 days ago'), 'has time ticket was created').toBeInTheDocument()
   })
 
   test('has avatars and opens viewers dialog', async () => {
@@ -99,9 +93,7 @@ describe('tickets zoom header', () => {
     expect(counter, 'has a counter').toBeInTheDocument()
     expect(counter).toHaveTextContent('+2')
 
-    await view.events.click(
-      view.getByRole('button', { name: 'Show ticket viewers' }),
-    )
+    await view.events.click(view.getByRole('button', { name: 'Show ticket viewers' }))
 
     expect(view.getByText('Viewing ticket')).toBeInTheDocument()
     expect(view.getByText('Opened in tabs')).toBeInTheDocument()

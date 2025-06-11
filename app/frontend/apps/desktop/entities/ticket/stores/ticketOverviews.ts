@@ -3,25 +3,14 @@
 import { useLocalStorage } from '@vueuse/core'
 import { defaultsDeep, isEqual } from 'lodash-es'
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
-import {
-  computed,
-  effectScope,
-  markRaw,
-  onScopeDispose,
-  ref,
-  watch,
-  type Raw,
-} from 'vue'
+import { computed, effectScope, markRaw, onScopeDispose, ref, watch, type Raw } from 'vue'
 
 import { useQueryPolling } from '#shared/composables/useQueryPolling.ts'
 import type {
   TicketsCachedByOverviewQuery,
   TicketsCachedByOverviewQueryVariables,
 } from '#shared/graphql/types.ts'
-import {
-  MutationHandler,
-  QueryHandler,
-} from '#shared/server/apollo/handler/index.ts'
+import { MutationHandler, QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 
@@ -32,10 +21,7 @@ import { useUserCurrentTicketOverviews } from '#desktop/entities/ticket/stores/c
 import { useTicketsCachedByOverviewCache } from '../composables/useTicketsCachedByOverviewCache.ts'
 import { useTicketsCachedByOverviewLazyQuery } from '../graphql/queries/ticketsCachedByOverview.api.ts'
 
-import type {
-  TicketsByOverviewHandlerItem,
-  TicketOverviewQueryPollingConfig,
-} from './types.ts'
+import type { TicketsByOverviewHandlerItem, TicketOverviewQueryPollingConfig } from './types.ts'
 
 const DEFAULT_CONFIG: TicketOverviewQueryPollingConfig = {
   enabled: true,
@@ -133,16 +119,13 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
     return remainingIds
   })
 
-  const { overviewsTicketCountById, overviewsTicketCount } =
-    useTicketsCountByOverview(
-      overviewIds,
-      overviewBackgroundCountPollingIds,
-      queryPollingConfig,
-    )
-
-  const ticketsByOverviewHandler = ref(
-    new Map<ID, Raw<TicketsByOverviewHandlerItem>>(),
+  const { overviewsTicketCountById, overviewsTicketCount } = useTicketsCountByOverview(
+    overviewIds,
+    overviewBackgroundCountPollingIds,
+    queryPollingConfig,
   )
+
+  const ticketsByOverviewHandler = ref(new Map<ID, Raw<TicketsByOverviewHandlerItem>>())
 
   const { readTicketsByOverviewCache } = useTicketsCachedByOverviewCache()
 
@@ -155,10 +138,7 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
 
     const result = scope.run(
       (): {
-        handler: QueryHandler<
-          TicketsCachedByOverviewQuery,
-          TicketsCachedByOverviewQueryVariables
-        >
+        handler: QueryHandler<TicketsCachedByOverviewQuery, TicketsCachedByOverviewQueryVariables>
       } => {
         // TODO: maybe we can use same variables here and afterwards?
         const cachedTickets = readTicketsByOverviewCache({
@@ -192,10 +172,7 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
           ),
         )
 
-        if (
-          lastTicketOverviewLink.value &&
-          overviewsByLink.value[lastTicketOverviewLink.value]
-        ) {
+        if (lastTicketOverviewLink.value && overviewsByLink.value[lastTicketOverviewLink.value]) {
           // Delay the background polling when it was the previous foreground overview.
           const delayStartTimer = setTimeout(() => {
             ticketsQuery.load()
@@ -210,8 +187,7 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
 
         const ticketsResult = ticketsQuery.result()
         const currentCollectionSignature = computed(() => {
-          return ticketsResult.value?.ticketsCachedByOverview
-            ?.collectionSignature
+          return ticketsResult.value?.ticketsCachedByOverview?.collectionSignature
         })
 
         const { startPolling } = useQueryPolling(
@@ -274,8 +250,9 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
     { immediate: true },
   )
 
-  const useUserCurrentOverviewUpdateLastUsedMutationHandler =
-    new MutationHandler(useUserCurrentOverviewUpdateLastUsedMutation())
+  const useUserCurrentOverviewUpdateLastUsedMutationHandler = new MutationHandler(
+    useUserCurrentOverviewUpdateLastUsedMutation(),
+  )
 
   const updateLastUsedOverview = async (overviewId: ID) => {
     const newOverviewsLastUsed = {
@@ -306,8 +283,7 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
   }
 
   watch(currentTicketOverviewLink, () => {
-    const overviewId =
-      overviewsByLink.value[currentTicketOverviewLink.value]?.id
+    const overviewId = overviewsByLink.value[currentTicketOverviewLink.value]?.id
 
     if (!overviewId) return
 
@@ -337,7 +313,5 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
 })
 
 if (import.meta.hot) {
-  import.meta.hot.accept(
-    acceptHMRUpdate(useTicketOverviewsStore, import.meta.hot),
-  )
+  import.meta.hot.accept(acceptHMRUpdate(useTicketOverviewsStore, import.meta.hot))
 }

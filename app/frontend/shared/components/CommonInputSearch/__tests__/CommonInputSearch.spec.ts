@@ -4,9 +4,7 @@ import { onMounted, ref } from 'vue'
 
 import { renderComponent } from '#tests/support/components/index.ts'
 
-import CommonInputSearch, {
-  type CommonInputSearchExpose,
-} from '../CommonInputSearch.vue'
+import CommonInputSearch, { type CommonInputSearchExpose } from '../CommonInputSearch.vue'
 
 describe('testing input for searching', () => {
   it('renders input', async () => {

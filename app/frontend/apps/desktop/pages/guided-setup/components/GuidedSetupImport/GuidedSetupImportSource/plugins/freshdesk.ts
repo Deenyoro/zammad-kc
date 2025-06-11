@@ -17,6 +17,5 @@ export default <GuidedSetupImportSourcePlugin>{
     Users: __('Users'),
     Tickets: __('Tickets'),
   },
-  documentationURL:
-    'https://docs.zammad.org/en/latest/migration/freshdesk.html',
+  documentationURL: 'https://docs.zammad.org/en/latest/migration/freshdesk.html',
 }

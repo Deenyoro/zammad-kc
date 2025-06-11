@@ -33,10 +33,7 @@ describe('CommonActionMenu', () => {
     },
   ]
 
-  const renderActionMenu = async (
-    actions: MenuItem[],
-    props?: Partial<Props>,
-  ) => {
+  const renderActionMenu = async (actions: MenuItem[], props?: Partial<Props>) => {
     return renderComponent(CommonActionMenu, {
       router: true,
       props: {
@@ -72,9 +69,7 @@ describe('CommonActionMenu', () => {
         },
       ])
 
-      expect(
-        view.queryByIconName('three-dots-vertical'),
-      ).not.toBeInTheDocument()
+      expect(view.queryByIconName('three-dots-vertical')).not.toBeInTheDocument()
     })
 
     it('calls onClick handler when action is clicked', async () => {
@@ -94,9 +89,7 @@ describe('CommonActionMenu', () => {
       const view = await renderActionMenu(actions)
 
       await view.events.click(view.getByIconName('three-dots-vertical'))
-      const id = view
-        .getByLabelText('Action menu button')
-        .getAttribute('aria-controls')
+      const id = view.getByLabelText('Action menu button').getAttribute('aria-controls')
 
       const popover = document.getElementById(id as string)
 
@@ -112,9 +105,7 @@ describe('CommonActionMenu', () => {
         customMenuButtonLabel: 'Custom Action Menu Label',
       })
 
-      expect(
-        view.getByLabelText('Custom Action Menu Label'),
-      ).toBeInTheDocument()
+      expect(view.getByLabelText('Custom Action Menu Label')).toBeInTheDocument()
     })
   })
 
@@ -128,9 +119,7 @@ describe('CommonActionMenu', () => {
     it('supports single action mode', async () => {
       const view = await renderActionMenu([actions[0]])
 
-      expect(
-        view.queryByIconName('three-dots-vertical'),
-      ).not.toBeInTheDocument()
+      expect(view.queryByIconName('three-dots-vertical')).not.toBeInTheDocument()
 
       expect(view.getByIconName('trash3')).toBeInTheDocument()
     })
@@ -213,9 +202,7 @@ describe('CommonActionMenu', () => {
         disabled: true,
       })
 
-      expect(
-        wrapper.getByRole('button', { name: 'Action menu button' }),
-      ).toBeDisabled()
+      expect(wrapper.getByRole('button', { name: 'Action menu button' })).toBeDisabled()
 
       await wrapper.rerender({
         actions: [actions[0]],

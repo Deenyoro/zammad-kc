@@ -44,10 +44,7 @@ export const convertInlineImages = (
 
 export const getSelection = (editor: Editor) => editor.state.selection
 
-export const getHTMLFromSelection = (
-  editor: Editor,
-  selection?: Editor['state']['selection'],
-) => {
+export const getHTMLFromSelection = (editor: Editor, selection?: Editor['state']['selection']) => {
   const sel = selection ?? editor!.state.selection
   const slice = sel.content()
   const serializer = DOMSerializer.fromSchema(editor!.schema)

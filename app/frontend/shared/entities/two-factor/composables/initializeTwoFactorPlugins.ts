@@ -2,10 +2,7 @@
 
 import type { EnumTwoFactorAuthenticationMethod } from '#shared/graphql/types.ts'
 
-import type {
-  TwoFactorConfigurationOptions,
-  TwoFactorPlugin,
-} from '../types.ts'
+import type { TwoFactorConfigurationOptions, TwoFactorPlugin } from '../types.ts'
 
 const pluginsModules = import.meta.glob<TwoFactorPlugin>('../plugins/*.ts', {
   eager: true,

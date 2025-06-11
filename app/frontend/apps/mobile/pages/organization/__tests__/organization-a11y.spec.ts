@@ -3,10 +3,7 @@
 import { axe } from 'vitest-axe'
 
 import { visitView } from '#tests/support/components/visitView.ts'
-import {
-  mockGraphQLApi,
-  mockGraphQLSubscription,
-} from '#tests/support/mock-graphql-api.ts'
+import { mockGraphQLApi, mockGraphQLSubscription } from '#tests/support/mock-graphql-api.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { waitUntil } from '#tests/support/utils.ts'
 

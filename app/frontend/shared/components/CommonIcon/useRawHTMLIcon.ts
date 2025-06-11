@@ -16,8 +16,7 @@ export const useRawHTMLIcon = (props: Props & { class?: string }) => {
       class="icon ${iconClass.value} ${props.class || ''} fill-current"
       width="${finalSize.value.width}"
       height="${finalSize.value.height}"
-      ${!props.decorative &&
-      `aria-label=${i18n.t(props.label || props.name) || ''}`}
+      ${!props.decorative && `aria-label=${i18n.t(props.label || props.name) || ''}`}
       ${(props.decorative && 'aria-hidden="true"') || ''}
     >
       <use href="#icon-${props.name}" />

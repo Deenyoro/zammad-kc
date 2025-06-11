@@ -63,11 +63,7 @@ const classMap = getAvatarClasses()
     <CommonIcon
       v-if="vipIcon"
       class="vip pointer-events-none absolute"
-      :class="
-        vipIcon === 'vip-organization'
-          ? classMap.vipOrganization
-          : classMap.vipUser
-      "
+      :class="vipIcon === 'vip-organization' ? classMap.vipOrganization : classMap.vipUser"
       :name="vipIcon"
       :size="iconSizes[props.size]"
       decorative

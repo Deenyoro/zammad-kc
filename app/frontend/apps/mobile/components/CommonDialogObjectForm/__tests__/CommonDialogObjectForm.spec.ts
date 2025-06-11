@@ -84,10 +84,7 @@ test('can update default object', async () => {
 
   await waitUntilApisResolved(attributesApi)
 
-  const attributeValues = keyBy(
-    organization.objectAttributeValues,
-    'attribute.name',
-  )
+  const attributeValues = keyBy(organization.objectAttributeValues, 'attribute.name')
 
   const name = view.getByLabelText('Name')
   const shared = view.getByLabelText('Shared organization')

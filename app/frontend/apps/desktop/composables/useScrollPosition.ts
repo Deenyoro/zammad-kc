@@ -3,9 +3,7 @@
 import { onActivated, ref, type ShallowRef } from 'vue'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 
-export const useScrollPosition = (
-  scrollContainer?: ShallowRef<HTMLElement | null>,
-) => {
+export const useScrollPosition = (scrollContainer?: ShallowRef<HTMLElement | null>) => {
   const scrollPosition = ref<number>()
 
   const storeScrollPosition = () => {

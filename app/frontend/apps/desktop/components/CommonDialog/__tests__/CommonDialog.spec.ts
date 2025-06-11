@@ -114,9 +114,7 @@ describe('visuals for common dialog', () => {
       router: true,
     })
 
-    expect(
-      wrapper.getByRole('button', { name: 'Yes, continue' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Yes, continue' })).toBeInTheDocument()
   })
 
   it('has an accessible name', async () => {
@@ -165,9 +163,7 @@ describe('visuals for common dialog', () => {
     expect(wrapper.getByTestId('select')).toHaveFocus()
 
     await wrapper.events.keyboard('{Tab}')
-    expect(
-      wrapper.getByRole('button', { name: 'Cancel & Go Back' }),
-    ).toHaveFocus()
+    expect(wrapper.getByRole('button', { name: 'Cancel & Go Back' })).toHaveFocus()
 
     await wrapper.events.keyboard('{Tab}')
     expect(wrapper.getByRole('button', { name: 'OK' })).toHaveFocus()
@@ -221,8 +217,7 @@ describe('visuals for common dialog', () => {
         setup() {
           const dialog = useDialog({
             name: 'dialog',
-            component: () =>
-              import('#desktop/components/CommonDialog/CommonDialog.vue'),
+            component: () => import('#desktop/components/CommonDialog/CommonDialog.vue'),
           })
           dialog.open({ name: 'dialog', hideFooter: true })
         },

@@ -30,10 +30,9 @@ describe('guided setup system information', () => {
       const view = await visitView('/guided-setup/manual/system-information')
 
       await waitFor(() => {
-        expect(
-          view,
-          'correctly redirects to guided setup start screen',
-        ).toHaveCurrentUrl('/guided-setup')
+        expect(view, 'correctly redirects to guided setup start screen').toHaveCurrentUrl(
+          '/guided-setup',
+        )
       })
       view.getByText('Set up a new system')
     })
@@ -53,9 +52,7 @@ describe('guided setup system information', () => {
 
       expect(view.getByText('System Information')).toBeInTheDocument()
 
-      expect(
-        view.queryByRole('button', { name: 'Go Back' }),
-      ).not.toBeInTheDocument()
+      expect(view.queryByRole('button', { name: 'Go Back' })).not.toBeInTheDocument()
 
       const organizationField = view.getByLabelText('Organization name')
       const urlField = view.getByLabelText('System URL')

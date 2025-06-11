@@ -20,10 +20,7 @@ import QueryHandler from '#shared/server/apollo/handler/QueryHandler.ts'
 import CommonLoader from '#desktop/components/CommonLoader/CommonLoader.vue'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 import CommonSimpleTable from '#desktop/components/CommonTable/CommonSimpleTable.vue'
-import type {
-  TableSimpleHeader,
-  TableItem,
-} from '#desktop/components/CommonTable/types.ts'
+import type { TableSimpleHeader, TableItem } from '#desktop/components/CommonTable/types.ts'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 
 import { useBreadcrumb } from '../composables/useBreadcrumb.ts'
@@ -52,8 +49,7 @@ deviceListQuery.subscribeToMore<
     }
 
     return {
-      userCurrentDeviceList:
-        subscriptionData.data.userCurrentDevicesUpdates.devices,
+      userCurrentDeviceList: subscriptionData.data.userCurrentDevicesUpdates.devices,
     }
   },
 })
@@ -123,20 +119,16 @@ const tableActions: MenuItem[] = [
 ]
 
 const currentDevices = computed<TableItem[]>(() => {
-  return (deviceListQueryResult.value?.userCurrentDeviceList || []).map(
-    (device) => {
-      return {
-        ...device,
-        current: device.fingerprint && device.fingerprint === fingerprint.value,
-      }
-    },
-  )
+  return (deviceListQueryResult.value?.userCurrentDeviceList || []).map((device) => {
+    return {
+      ...device,
+      current: device.fingerprint && device.fingerprint === fingerprint.value,
+    }
+  })
 })
 
 const helpText = computed(() =>
-  i18n.t(
-    'All computers and browsers from which you logged in to Zammad appear here.',
-  ),
+  i18n.t('All computers and browsers from which you logged in to Zammad appear here.'),
 )
 </script>
 
@@ -158,10 +150,7 @@ const helpText = computed(() =>
           :aria-label="helpText"
         >
           <template #item-suffix-name="{ item }">
-            <CommonBadge
-              v-if="item.current"
-              variant="info"
-              class="ltr:ml-2 rtl:mr-2"
+            <CommonBadge v-if="item.current" variant="info" class="ltr:ml-2 rtl:mr-2"
               >{{ $t('This device') }}
             </CommonBadge>
           </template>

@@ -5,10 +5,7 @@ import { waitFor } from '@testing-library/vue'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockAuthentication } from '#tests/support/mock-authentication.ts'
-import {
-  mockGraphQLApi,
-  mockGraphQLSubscription,
-} from '#tests/support/mock-graphql-api.ts'
+import { mockGraphQLApi, mockGraphQLSubscription } from '#tests/support/mock-graphql-api.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
 import { OnlineNotificationsCountDocument } from '#shared/entities/online-notification/graphql/subscriptions/onlineNotificationsCount.api.ts'
@@ -83,9 +80,7 @@ describe('testing login maintenance mode', () => {
 
     const view = await visitView('/login')
 
-    const maintenanceModeCustomMessage = view.queryByText(
-      'Custom maintenance login message.',
-    )
+    const maintenanceModeCustomMessage = view.queryByText('Custom maintenance login message.')
 
     expect(maintenanceModeCustomMessage).toBeInTheDocument()
   })

@@ -38,8 +38,7 @@ const buildEntityOption = (entity: User) => {
   }
 }
 
-const { actions, onSearchInteractionUpdate, onKeydownFilterInput } =
-  useAddUnknownValueAction()
+const { actions, onSearchInteractionUpdate, onKeydownFilterInput } = useAddUnknownValueAction()
 
 Object.assign(props.context, {
   optionIconComponent: markRaw(FieldCustomerOptionIcon),
@@ -61,14 +60,10 @@ Object.assign(props.context, {
     onlyIn: ['User', 'Organization'],
   },
   autocompleteOptionsPreprocessor: (
-    autocompleteOptions: (AutoCompleteCustomerGenericOption &
-      AutoCompleteOption)[],
+    autocompleteOptions: (AutoCompleteCustomerGenericOption & AutoCompleteOption)[],
   ) =>
     autocompleteOptions.map((autocompleteOption) => {
-      if (
-        !autocompleteOption.object ||
-        autocompleteOption.object.__typename !== 'Organization'
-      )
+      if (!autocompleteOption.object || autocompleteOption.object.__typename !== 'Organization')
         return autocompleteOption
 
       autocompleteOption.disabled = true
@@ -104,9 +99,7 @@ Object.assign(props.context, {
       return autocompleteOption
     }),
   actions,
-  emptyInitialLabelText: __(
-    'Start typing to search or enter an email address…',
-  ),
+  emptyInitialLabelText: __('Start typing to search or enter an email address…'),
 })
 </script>
 

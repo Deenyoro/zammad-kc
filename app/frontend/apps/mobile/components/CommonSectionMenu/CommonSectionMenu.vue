@@ -46,8 +46,7 @@ const slots: SetupContext['slots'] = useSlots()
 
 const hasHelp = computed(() => slots.help || props.help)
 const showLabel = computed(() => {
-  if (!itemsWithPermission.value && !slots.default && !slots['before-items'])
-    return false
+  if (!itemsWithPermission.value && !slots.default && !slots['before-items']) return false
   return slots.header || props.headerLabel || props.actionLabel
 })
 </script>

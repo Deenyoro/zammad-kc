@@ -8,9 +8,7 @@ export const useTableCheckboxes = (
   checkedRowItems: ModelRef<TableItem[]>,
   items: Ref<TableItem[]>,
 ) => {
-  const allCheckboxRowsSelected = computed(
-    () => checkedRowItems.value.length >= items.value.length,
-  )
+  const allCheckboxRowsSelected = computed(() => checkedRowItems.value.length >= items.value.length)
 
   const selectAllRowCheckboxes = (value?: boolean) => {
     if (allCheckboxRowsSelected.value === value) return
@@ -18,16 +16,12 @@ export const useTableCheckboxes = (
     if (value) {
       checkedRowItems.value = items.value
     } else {
-      checkedRowItems.value = items.value.filter(
-        (item) => item.disabled && item.checked,
-      )
+      checkedRowItems.value = items.value.filter((item) => item.disabled && item.checked)
     }
   }
 
   const handleCheckboxUpdate = (item: TableItem) => {
-    const isChecked = checkedRowItems.value.some(
-      (selectedItem) => selectedItem.id === item.id,
-    )
+    const isChecked = checkedRowItems.value.some((selectedItem) => selectedItem.id === item.id)
 
     if (!isChecked) {
       // Overwrite entire array to trigger reactivity since defineModel default value is not reactive.
@@ -40,9 +34,7 @@ export const useTableCheckboxes = (
   }
 
   const hasCheckboxId = (itemId: string | number) =>
-    checkedRowItems.value.some(
-      (selectedItem) => selectedItem.id.toString() === itemId.toString(),
-    )
+    checkedRowItems.value.some((selectedItem) => selectedItem.id.toString() === itemId.toString())
 
   return {
     allCheckboxRowsSelected,

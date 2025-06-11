@@ -21,9 +21,7 @@ describe('security keys method correctly handles setup', () => {
 
     const result = await securityKeys.loginOptions.setup({ challenge: '123' })
     expect(result.success).toBe(false)
-    expect(result.retry, 'cannot retry, since it always returns false').toBe(
-      false,
-    )
+    expect(result.retry, 'cannot retry, since it always returns false').toBe(false)
     expect(result.error, 'has error').toEqual(expect.any(String))
   })
 

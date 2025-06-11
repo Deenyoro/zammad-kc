@@ -94,9 +94,7 @@ describe('personal settings for token access', () => {
     ).toBeInTheDocument()
 
     expect(
-      view.getByText(
-        "Pick a name for the application, and we'll give you a unique token.",
-      ),
+      view.getByText("Pick a name for the application, and we'll give you a unique token."),
     ).toBeInTheDocument()
   })
 
@@ -108,9 +106,7 @@ describe('personal settings for token access', () => {
     const view = await visitView('/personal-setting/token-access')
 
     await waitFor(() => {
-      expect(view, 'correctly redirects to error page').toHaveCurrentUrl(
-        '/error-tab',
-      )
+      expect(view, 'correctly redirects to error page').toHaveCurrentUrl('/error-tab')
     })
   })
 
@@ -121,22 +117,13 @@ describe('personal settings for token access', () => {
 
     const tableLabel = 'Personal Access Tokens'
 
-    const tableHeaders = [
-      'Name',
-      'Permissions',
-      'Created',
-      'Expires',
-      'Last Used',
-      'Actions',
-    ]
+    const tableHeaders = ['Name', 'Permissions', 'Created', 'Expires', 'Last Used', 'Actions']
 
     checkSimpleTableHeader(view, tableHeaders, tableLabel)
     checkSimpleTableContent(view, rowContents, tableLabel)
 
     const table = within(view.getByRole('table', { name: tableLabel }))
-    expect(
-      table.getAllByRole('button', { name: 'Delete this access token' }),
-    ).toHaveLength(2)
+    expect(table.getAllByRole('button', { name: 'Delete this access token' })).toHaveLength(2)
   })
 
   it('can delete an personal access token', async () => {
@@ -146,12 +133,9 @@ describe('personal settings for token access', () => {
 
     const table = within(view.getByRole('table'))
 
-    const deleteButton = within(table.getAllByRole('row')[1]).getByRole(
-      'button',
-      {
-        name: 'Delete this access token',
-      },
-    )
+    const deleteButton = within(table.getAllByRole('row')[1]).getByRole('button', {
+      name: 'Delete this access token',
+    })
 
     mockUserCurrentAccessTokenDeleteMutation({
       userCurrentAccessTokenDelete: {
@@ -163,9 +147,7 @@ describe('personal settings for token access', () => {
 
     await waitForNextTick()
 
-    expect(
-      await view.findByRole('dialog', { name: 'Delete Object' }),
-    ).toBeInTheDocument()
+    expect(await view.findByRole('dialog', { name: 'Delete Object' })).toBeInTheDocument()
 
     await view.events.click(view.getByRole('button', { name: 'Delete Object' }))
 
@@ -177,8 +159,7 @@ describe('personal settings for token access', () => {
 
     const view = await visitView('/personal-setting/token-access')
 
-    const accessTokenUpdateSubscription =
-      getUserCurrentAccessTokenUpdatesSubscriptionHandler()
+    const accessTokenUpdateSubscription = getUserCurrentAccessTokenUpdatesSubscriptionHandler()
 
     accessTokenUpdateSubscription.trigger({
       userCurrentAccessTokenUpdates: {
@@ -229,8 +210,7 @@ describe('personal settings for token access', () => {
                   {
                     value: 'ticket.agent',
                     label: 'Agent Tickets (%s)',
-                    description:
-                      'To access the agent tickets based on group access.',
+                    description: 'To access the agent tickets based on group access.',
                   },
                 ],
               },
@@ -288,9 +268,7 @@ describe('personal settings for token access', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Create' }))
 
-    expect(
-      await view.findByLabelText('Your Personal Access Token'),
-    ).toHaveValue('new-token-1234')
+    expect(await view.findByLabelText('Your Personal Access Token')).toHaveValue('new-token-1234')
 
     await view.events.click(
       view.getByRole('button', {

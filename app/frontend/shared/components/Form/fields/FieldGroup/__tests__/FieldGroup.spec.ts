@@ -37,12 +37,7 @@ describe('Form - Field - Group (Formkit-BuildIn)', () => {
         default: html`
           <fieldset>
             <FormKit type="text" name="text" id="text" value="example-value" />
-            <FormKit
-              type="checkbox"
-              name="checkbox"
-              id="checkbox"
-              :value="true"
-            />
+            <FormKit type="checkbox" name="checkbox" id="checkbox" :value="true" />
           </fieldset>
         `,
       },

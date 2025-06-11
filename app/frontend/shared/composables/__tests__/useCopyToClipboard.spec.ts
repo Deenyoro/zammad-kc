@@ -10,8 +10,7 @@ const clipboardCopyMock = vi.fn()
 const clipboardCopiedMock = ref(false)
 
 vi.mock('@vueuse/core', async () => {
-  const mod =
-    await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
+  const mod = await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
 
   return {
     ...mod,
@@ -24,14 +23,11 @@ vi.mock('@vueuse/core', async () => {
 
 const notifyMock = vi.fn()
 
-vi.mock(
-  '#shared/components/CommonNotifications/useNotifications.ts',
-  async () => ({
-    useNotifications: () => ({
-      notify: notifyMock,
-    }),
+vi.mock('#shared/components/CommonNotifications/useNotifications.ts', async () => ({
+  useNotifications: () => ({
+    notify: notifyMock,
   }),
-)
+}))
 
 describe('useCopyToClipboard', () => {
   it('supports copying text to clipboard', () => {
@@ -51,9 +47,7 @@ describe('useCopyToClipboard', () => {
 
     await waitForNextTick()
 
-    expect(notifyMock).toHaveBeenCalledWith(
-      expect.objectContaining({ message: 'Copied.' }),
-    )
+    expect(notifyMock).toHaveBeenCalledWith(expect.objectContaining({ message: 'Copied.' }))
   })
 
   it('does not copy undefined nor null text to clipboard', () => {

@@ -82,14 +82,10 @@ export const useTicketsCountByOverview = (
   const overviewsTicketCount = ticketOverviewTicketCountHandler.result()
 
   const overviewsTicketCountById = computed(() => {
-    const overviewsWithCount =
-      overviewsTicketCount.value?.userCurrentTicketOverviews || []
+    const overviewsWithCount = overviewsTicketCount.value?.userCurrentTicketOverviews || []
 
     return Object.fromEntries(
-      overviewsWithCount.map((overview) => [
-        overview.id,
-        overview.cachedTicketCount,
-      ]),
+      overviewsWithCount.map((overview) => [overview.id, overview.cachedTicketCount]),
     )
   })
 

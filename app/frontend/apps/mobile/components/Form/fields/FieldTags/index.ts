@@ -10,6 +10,7 @@ import FieldTagsInput from './FieldTagsInput.vue'
 import type { FormKitBaseSlots, FormKitInputs } from '@formkit/inputs'
 
 declare module '@formkit/inputs' {
+  // oxlint-disable-next-line no-unused-vars
   interface FormKitInputProps<Props extends FormKitInputs<Props>> {
     tags: FieldTagsProps & {
       type: 'tags'
@@ -24,14 +25,7 @@ declare module '@formkit/inputs' {
 
 const fieldDefinition = createInput(
   FieldTagsInput,
-  [
-    'noOptionsLabelTranslation',
-    'options',
-    'sorting',
-    'canCreate',
-    'exclude',
-    'onDeactivate',
-  ],
+  ['noOptionsLabelTranslation', 'options', 'sorting', 'canCreate', 'exclude', 'onDeactivate'],
   { features: [addLink, formUpdaterTrigger()] },
   { addArrow: true },
 )

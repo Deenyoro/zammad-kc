@@ -11,10 +11,7 @@ import type { CollapseOptions, CollapseEmit } from './types.ts'
  * @args emit - The emit function from the setup function
  * @args options.storageKey - The key to store the collapse state in local storage
  * * */
-export const useCollapseHandler = (
-  emit: CollapseEmit,
-  options?: CollapseOptions,
-) => {
+export const useCollapseHandler = (emit: CollapseEmit, options?: CollapseOptions) => {
   let isCollapsed: Ref<boolean>
 
   if (options?.storageKey) {
@@ -23,8 +20,7 @@ export const useCollapseHandler = (
     isCollapsed = ref(false)
   }
 
-  const callEmit = () =>
-    isCollapsed.value ? emit('collapse', true) : emit('expand', true)
+  const callEmit = () => (isCollapsed.value ? emit('collapse', true) : emit('expand', true))
 
   const toggleCollapse = () => {
     isCollapsed.value = !isCollapsed.value

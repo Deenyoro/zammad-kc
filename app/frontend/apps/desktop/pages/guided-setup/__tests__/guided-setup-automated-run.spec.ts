@@ -42,9 +42,7 @@ describe('guided setup automated run', () => {
       expect(view.getByIconName('spinner')).toBeInTheDocument()
 
       expect(
-        view.getByText(
-          'The system was configured successfully. You are being redirected.',
-        ),
+        view.getByText('The system was configured successfully. You are being redirected.'),
       ).toBeInTheDocument()
 
       await vi.runAllTimersAsync()
@@ -115,9 +113,7 @@ describe('guided setup automated run', () => {
       const view = await visitView('/guided-setup/automated/run')
 
       await waitFor(() => {
-        expect(view, 'correctly redirects to login screen').toHaveCurrentUrl(
-          '/login',
-        )
+        expect(view, 'correctly redirects to login screen').toHaveCurrentUrl('/login')
       })
     })
   })

@@ -32,13 +32,9 @@ const sidebar = useTicketSidebar()
 
 const { notify } = useNotifications()
 
-const addNewChecklistHandler = new MutationHandler(
-  useTicketChecklistAddMutation(),
-)
+const addNewChecklistHandler = new MutationHandler(useTicketChecklistAddMutation())
 
-const ticketChecklistUpsertMutation = new MutationHandler(
-  useTicketChecklistItemUpsertMutation(),
-)
+const ticketChecklistUpsertMutation = new MutationHandler(useTicketChecklistItemUpsertMutation())
 
 const createNewChecklist = async () => {
   const response = await addNewChecklistHandler.send({
@@ -74,9 +70,7 @@ const createNewChecklistItem = async (text: string) => {
     )
 }
 
-const ticketChecklistItemsAddHandler = new MutationHandler(
-  useTicketChecklistItemsAddMutation(),
-)
+const ticketChecklistItemsAddHandler = new MutationHandler(useTicketChecklistItemsAddMutation())
 
 const convertAllToChecklistItems = async () => {
   const checklist = ticketChecklist.value || (await createNewChecklist())

@@ -6,34 +6,31 @@ import { FieldResolverTreeselect } from '../treeselect.ts'
 
 describe('FieldResolverTreeselect', () => {
   it('should return the correct field attributes', () => {
-    const fieldResolver = new FieldResolverTreeselect(
-      EnumObjectManagerObjects.Ticket,
-      {
-        dataType: 'tree_select',
-        name: 'category',
-        display: 'Category',
-        dataOption: {
-          options: [
-            {
-              name: 'Category 1',
-              value: 'Category 1',
-              children: [
-                {
-                  name: 'Category 1.1',
-                  value: 'Category 1::Category 1.1',
-                },
-              ],
-            },
-            {
-              name: 'Category 2',
-              value: 'Category 2',
-            },
-          ],
-          translate: true,
-        },
-        isInternal: true,
+    const fieldResolver = new FieldResolverTreeselect(EnumObjectManagerObjects.Ticket, {
+      dataType: 'tree_select',
+      name: 'category',
+      display: 'Category',
+      dataOption: {
+        options: [
+          {
+            name: 'Category 1',
+            value: 'Category 1',
+            children: [
+              {
+                name: 'Category 1.1',
+                value: 'Category 1::Category 1.1',
+              },
+            ],
+          },
+          {
+            name: 'Category 2',
+            value: 'Category 2',
+          },
+        ],
+        translate: true,
       },
-    )
+      isInternal: true,
+    })
 
     expect(fieldResolver.fieldAttributes()).toEqual({
       label: 'Category',
@@ -65,22 +62,19 @@ describe('FieldResolverTreeselect', () => {
   })
 
   it('should return the correct field attributes for relations', () => {
-    const fieldResolver = new FieldResolverTreeselect(
-      EnumObjectManagerObjects.Ticket,
-      {
-        dataType: 'treeselect',
-        name: 'category',
-        display: 'Category',
-        dataOption: {
-          historical_options: {},
-          translate: true,
-          options: {},
-          relation: 'Group',
-          belongs_to: 'group',
-        },
-        isInternal: true,
+    const fieldResolver = new FieldResolverTreeselect(EnumObjectManagerObjects.Ticket, {
+      dataType: 'treeselect',
+      name: 'category',
+      display: 'Category',
+      dataOption: {
+        historical_options: {},
+        translate: true,
+        options: {},
+        relation: 'Group',
+        belongs_to: 'group',
       },
-    )
+      isInternal: true,
+    })
 
     expect(fieldResolver.fieldAttributes()).toEqual({
       label: 'Category',

@@ -19,11 +19,7 @@ const { fingerprint } = useFingerprint()
 <template>
   <section class="mt-4 mb-16 w-full max-w-md" data-test-id="loginThirdParty">
     <p class="p-3 text-center">
-      {{
-        $c.user_show_password_login
-          ? $t('Or sign in using')
-          : $t('Sign in using')
-      }}
+      {{ $c.user_show_password_login ? $t('Or sign in using') : $t('Sign in using') }}
     </p>
     <div class="-m-2 flex flex-wrap p-1">
       <form

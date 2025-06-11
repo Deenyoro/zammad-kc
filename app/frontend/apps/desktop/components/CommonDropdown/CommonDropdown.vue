@@ -71,11 +71,7 @@ const actionItems = computed(() =>
     :orientation="orientation"
   >
     <CommonPopoverMenu v-if="modelValue" :popover="popover" :items="items">
-      <template
-        v-for="(item, index) in items"
-        :key="item.key"
-        #[`item-${item.key}`]
-      >
+      <template v-for="(item, index) in items" :key="item.key" #[`item-${item.key}`]>
         <div class="group flex grow cursor-pointer items-center">
           <CommonPopoverMenuItem
             class="focus-visible-app-default flex grow items-center gap-2 p-2.5 focus-visible:-outline-offset-1!"
@@ -111,8 +107,7 @@ const actionItems = computed(() =>
     ref="popoverTarget"
     class="group"
     :class="{
-      'hover:bg-blue-600! hover:text-black dark:hover:bg-blue-900! dark:hover:text-white':
-        !isOpen,
+      'hover:bg-blue-600! hover:text-black dark:hover:bg-blue-900! dark:hover:text-white': !isOpen,
       'bg-blue-800! text-white! outline! outline-offset-1! outline-blue-800! hover:bg-blue-800!':
         isOpen,
     }"

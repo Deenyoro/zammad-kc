@@ -23,9 +23,7 @@ export const generateFingerprint = () => {
 
   const hashCode = (string: string) => {
     return string.split('').reduce((a, b) => {
-      // eslint-disable-next-line no-bitwise
       a = (a << 5) - a + b.charCodeAt(0)
-      // eslint-disable-next-line no-bitwise
       return a & a
     }, 0)
   }

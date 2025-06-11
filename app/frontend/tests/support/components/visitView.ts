@@ -28,9 +28,7 @@ const isDesktop = await vi.hoisted(async () => {
 
 vi.mock('#shared/server/apollo/client.ts', async () => {
   if (isDesktop) {
-    const { mockedApolloClient } = await import(
-      '#tests/graphql/builders/mocks.ts'
-    )
+    const { mockedApolloClient } = await import('#tests/graphql/builders/mocks.ts')
     return {
       clearApolloClientStore: async () => {
         await mockedApolloClient.clearStore()
@@ -125,9 +123,7 @@ export const visitView = async (
 
   const view = renderComponent(
     {
-      template: html` <LayoutTest${isDesktop
-        ? 'DesktopView'
-        : 'MobileView'} />`,
+      template: html` <LayoutTest${isDesktop ? 'DesktopView' : 'MobileView'} />`,
       components: {
         LayoutTestDesktopView,
         LayoutTestMobileView,

@@ -16,13 +16,7 @@ export interface CommonPopoverInternalInstance
   popoverElement: Readonly<ShallowRef<HTMLDivElement | null>>
 }
 
-export type Orientation =
-  | 'top'
-  | 'bottom'
-  | 'left'
-  | 'right'
-  | 'autoVertical'
-  | 'autoHorizontal'
+export type Orientation = 'top' | 'bottom' | 'left' | 'right' | 'autoVertical' | 'autoHorizontal'
 
 export type Placement = 'start' | 'arrowStart' | 'arrowEnd' | 'end'
 

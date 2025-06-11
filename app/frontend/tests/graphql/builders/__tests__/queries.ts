@@ -2,11 +2,7 @@
 
 import gql from 'graphql-tag'
 
-import type {
-  UserError,
-  UserInput,
-  UserSignupInput,
-} from '#shared/graphql/types.ts'
+import type { UserError, UserInput, UserSignupInput } from '#shared/graphql/types.ts'
 
 export interface TestAvatarQuery {
   userCurrentAvatarActive: {
@@ -93,10 +89,7 @@ export const TestTicketArticlesMultiple = gql`
         }
       }
     }
-    articles: ticketArticles(
-      ticket: { ticketId: $ticketId }
-      before: $beforeCursor
-    ) {
+    articles: ticketArticles(ticket: { ticketId: $ticketId }, before: $beforeCursor) {
       totalCount
       edges {
         node {

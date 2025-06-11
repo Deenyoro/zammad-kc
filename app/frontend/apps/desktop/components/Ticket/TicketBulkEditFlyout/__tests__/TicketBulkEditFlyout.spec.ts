@@ -16,10 +16,7 @@ import {
 
 const ids = [convertToGraphQLId('Ticket', 1), convertToGraphQLId('Ticket', 2)]
 
-const groupIds = [
-  convertToGraphQLId('Group', 1),
-  convertToGraphQLId('Group', 2),
-]
+const groupIds = [convertToGraphQLId('Group', 1), convertToGraphQLId('Group', 2)]
 
 const renderBulkEditFlyout = () => {
   mockFormUpdaterQuery({
@@ -72,9 +69,7 @@ describe('TicketBulkEditFlyout', () => {
   it('renders correctly', async () => {
     const wrapper = renderBulkEditFlyout()
 
-    expect(wrapper.getByRole('heading', { level: 2 })).toHaveTextContent(
-      'Tickets Bulk Edit',
-    )
+    expect(wrapper.getByRole('heading', { level: 2 })).toHaveTextContent('Tickets Bulk Edit')
 
     expect(wrapper.getByIconName('collection-play')).toBeInTheDocument()
 
@@ -93,9 +88,7 @@ describe('TicketBulkEditFlyout', () => {
 
     await wrapper.events.click(wrapper.getByLabelText('Group'))
 
-    await wrapper.events.click(
-      wrapper.getByRole('option', { name: 'test group' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('option', { name: 'test group' }))
 
     await wrapper.events.click(wrapper.getByRole('button', { name: 'Apply' }))
 
@@ -117,17 +110,12 @@ describe('TicketBulkEditFlyout', () => {
     const group = await wrapper.findByLabelText('Group')
     await wrapper.events.click(group)
 
-    await wrapper.events.click(
-      wrapper.getByRole('option', { name: 'test group' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('option', { name: 'test group' }))
 
     await wrapper.events.click(wrapper.getByLabelText('Note'))
 
     await wrapper.events.click(wrapper.getByLabelText('Text'))
-    await wrapper.events.type(
-      wrapper.getByLabelText('Text'),
-      'Test ticket text',
-    )
+    await wrapper.events.type(wrapper.getByLabelText('Text'), 'Test ticket text')
 
     await wrapper.events.click(wrapper.getByRole('button', { name: 'Apply' }))
 
@@ -160,19 +148,13 @@ describe('TicketBulkEditFlyout', () => {
 
     const wrapper = renderBulkEditFlyout()
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Context menu' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Context menu' }))
 
     const menu = await wrapper.findByRole('menu')
 
-    expect(
-      within(menu).getByRole('heading', { name: 'Macros' }),
-    ).toBeInTheDocument()
+    expect(within(menu).getByRole('heading', { name: 'Macros' })).toBeInTheDocument()
 
-    await wrapper.events.click(
-      within(menu).getByRole('button', { name: 'test macro' }),
-    )
+    await wrapper.events.click(within(menu).getByRole('button', { name: 'test macro' }))
 
     const calls = await waitForTicketUpdateBulkMutationCalls()
 

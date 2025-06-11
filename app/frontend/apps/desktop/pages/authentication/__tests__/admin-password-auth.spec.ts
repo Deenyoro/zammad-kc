@@ -17,14 +17,11 @@ describe('requesting a token for the admin password auth', () => {
   it('can request a token for the admin password auth', async () => {
     const view = await visitView('/admin-password-auth')
 
-    const mocker = mockGraphQLResult<AdminPasswordAuthSendMutation>(
-      AdminPasswordAuthSendDocument,
-      { adminPasswordAuthSend: { success: true } },
-    )
+    const mocker = mockGraphQLResult<AdminPasswordAuthSendMutation>(AdminPasswordAuthSendDocument, {
+      adminPasswordAuthSend: { success: true },
+    })
 
-    expect(
-      await view.findByText('Request password login for admin?'),
-    ).toBeInTheDocument()
+    expect(await view.findByText('Request password login for admin?')).toBeInTheDocument()
 
     const username = view.getByLabelText('Username / Email')
     await view.events.type(username, 'admin@example.com')
@@ -40,21 +37,13 @@ describe('requesting a token for the admin password auth', () => {
     })
 
     expect(
-      await view.findByText(
-        'Admin password login instructions were sent to your email address.',
-      ),
+      await view.findByText('Admin password login instructions were sent to your email address.'),
     ).toBeInTheDocument()
 
-    expect(
-      view.queryByRole('button', { name: 'Submit' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Submit' })).not.toBeInTheDocument()
 
-    expect(
-      await view.findByRole('button', { name: 'Retry' }),
-    ).toBeInTheDocument()
+    expect(await view.findByRole('button', { name: 'Retry' })).toBeInTheDocument()
 
-    expect(
-      await view.findByRole('button', { name: 'Cancel & Go Back' }),
-    ).toBeInTheDocument()
+    expect(await view.findByRole('button', { name: 'Cancel & Go Back' })).toBeInTheDocument()
   })
 })

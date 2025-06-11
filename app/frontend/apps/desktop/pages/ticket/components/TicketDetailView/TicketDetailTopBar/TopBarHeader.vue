@@ -40,9 +40,7 @@ const items = computed(() => [
 
 const detailViewActiveClasses = computed(() => {
   if (props.hideDetails)
-    return [
-      'ticket-detail-grid-compact gap-x-2 grid-cols-[1fr_max-content] items-center p-2 px-10',
-    ]
+    return ['ticket-detail-grid-compact gap-x-2 grid-cols-[1fr_max-content] items-center p-2 px-10']
   return [' ticket-detail-grid-full grid-cols-2 gap-y-2.5']
 })
 </script>

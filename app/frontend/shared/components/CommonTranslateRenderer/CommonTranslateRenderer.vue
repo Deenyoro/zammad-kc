@@ -32,9 +32,7 @@ const translatedSourcePieces = computed(() => {
     }),
   )
 
-  const filteredPlaceholders = props.placeholders.filter(
-    (ph) => typeof ph === 'object',
-  )
+  const filteredPlaceholders = props.placeholders.filter((ph) => typeof ph === 'object')
 
   const translatedSourcePieces: (string | RenderPlaceholder)[] = []
   const translatedSourceParts = translatedSource.split('%s')

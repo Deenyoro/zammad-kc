@@ -10,11 +10,7 @@ const formUpdaterTrigger = (
   return (node: FormKitNode) => {
     const { props } = node
 
-    node.addProps([
-      'triggerFormUpdater',
-      'formUpdaterTrigger',
-      'pendingValueUpdate',
-    ])
+    node.addProps(['triggerFormUpdater', 'formUpdaterTrigger', 'pendingValueUpdate'])
 
     node.on('created', () => {
       if (!props.formUpdaterTrigger) {

@@ -4,7 +4,7 @@ import { axe } from 'vitest-axe'
 
 import { visitView } from '#tests/support/components/visitView.ts'
 
-describe('testing locale a11y view', async () => {
+describe('testing locale a11y view', () => {
   it('has no accessibility violations', async () => {
     const view = await visitView('/personal-setting/locale')
     const results = await axe(view.html())

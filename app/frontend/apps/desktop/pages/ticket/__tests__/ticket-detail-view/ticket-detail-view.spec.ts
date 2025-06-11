@@ -55,7 +55,7 @@ describe('Ticket detail view', () => {
               sender: { name: 'Customer' },
             },
           })
-        // eslint-disable-next-line no-plusplus
+
         count--
       }
 
@@ -65,8 +65,7 @@ describe('Ticket detail view', () => {
           edges: articlesEdges,
           pageInfo: {
             hasPreviousPage: articlesEdges.length > 0,
-            startCursor:
-              articlesEdges.length > 0 ? articlesEdges[0].cursor : null,
+            startCursor: articlesEdges.length > 0 ? articlesEdges[0].cursor : null,
             endCursor: btoa('50'),
           },
         },
@@ -111,25 +110,17 @@ describe('Ticket detail view', () => {
 
       const view = await visitView('/tickets/1')
 
-      expect(
-        view.getByRole('heading', { name: 'Test Ticket', level: 2 }),
-      ).toBeInTheDocument()
+      expect(view.getByRole('heading', { name: 'Test Ticket', level: 2 })).toBeInTheDocument()
 
-      const ticketDetailHeader = view.getByTestId(
-        'visible-ticket-detail-top-bar',
-      )
+      const ticketDetailHeader = view.getByTestId('visible-ticket-detail-top-bar')
 
-      expect(
-        within(ticketDetailHeader).getByLabelText('Breadcrumb navigation'),
-      ).toBeInTheDocument()
+      expect(within(ticketDetailHeader).getByLabelText('Breadcrumb navigation')).toBeInTheDocument()
 
       expect(view.getByTestId('article-content')).toHaveTextContent('foobar')
 
       await view.events.click(view.getByTestId('article-bubble-body-1'))
 
-      expect(
-        await view.findByLabelText('Article meta information'),
-      ).toBeInTheDocument()
+      expect(await view.findByLabelText('Article meta information')).toBeInTheDocument()
 
       vi.useFakeTimers()
 
@@ -140,9 +131,7 @@ describe('Ticket detail view', () => {
       await vi.runAllTimersAsync()
       vi.useRealTimers()
 
-      expect(
-        view.queryByLabelText('Article meta information'),
-      ).not.toBeInTheDocument()
+      expect(view.queryByLabelText('Article meta information')).not.toBeInTheDocument()
     })
   })
 })

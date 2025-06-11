@@ -27,13 +27,9 @@ export const useTicketExternalIssueTracker = (
       }),
       () => ({
         enabled:
-          screenType === TicketSidebarScreenType.TicketCreate
-            ? links.value.length > 0
-            : !!ticketId,
+          screenType === TicketSidebarScreenType.TicketCreate ? links.value.length > 0 : !!ticketId,
         fetchPolicy:
-          screenType === TicketSidebarScreenType.TicketCreate
-            ? 'cache-first'
-            : 'cache-and-network',
+          screenType === TicketSidebarScreenType.TicketCreate ? 'cache-first' : 'cache-and-network',
       }),
     ),
     {
@@ -61,9 +57,7 @@ export const useTicketExternalIssueTracker = (
       : null,
   )
 
-  const issueList = computed(
-    () => queryResult.value?.ticketExternalReferencesIssueTrackerItemList,
-  )
+  const issueList = computed(() => queryResult.value?.ticketExternalReferencesIssueTrackerItemList)
 
   const isLoadingIssues = computed(() => {
     // Return already true when a checklist result already exists from the cache, also

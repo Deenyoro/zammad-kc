@@ -7,7 +7,6 @@ const modules = import.meta.glob<AddMenuItem>(['./*.ts', '!./index.ts'], {
   import: 'default',
 })
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const addModules = Object.entries(modules).map(([_, module]) => module)
 
 export default addModules.sort((m1, m2) => m1.order - m2.order)

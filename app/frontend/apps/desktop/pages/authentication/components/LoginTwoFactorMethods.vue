@@ -20,11 +20,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <section
-    v-for="method of methods"
-    :key="method.name"
-    class="mt-3 flex flex-col"
-  >
+  <section v-for="method of methods" :key="method.name" class="mt-3 flex flex-col">
     <CommonButton
       size="large"
       block
@@ -43,11 +39,7 @@ const emit = defineEmits<{
   </section>
 
   <div class="mt-8 text-center text-sm">
-    <CommonLink
-      v-if="recoveryCodesAvailable"
-      link="#"
-      @click="emit('use-recovery-code')"
-    >
+    <CommonLink v-if="recoveryCodesAvailable" link="#" @click="emit('use-recovery-code')">
       {{ $t('Or use one of your recovery codes.') }}
     </CommonLink>
   </div>

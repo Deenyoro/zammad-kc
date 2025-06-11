@@ -102,10 +102,7 @@ const actions = computed<MenuItem[]>(() => [
       v-model="persistentStates.collapseAttributes"
       :title="__('Attributes')"
     >
-      <div
-        id="ticketEditAttributeForm"
-        data-test-id="ticket-edit-attribute-form"
-      />
+      <div id="ticketEditAttributeForm" data-test-id="ticket-edit-attribute-form" />
     </CommonSectionCollapse>
 
     <CommonSectionCollapse
@@ -124,11 +121,7 @@ const actions = computed<MenuItem[]>(() => [
       v-model="persistentStates.collapseLinks"
       :title="__('Links')"
     >
-      <TicketLinks
-        ref="ticket-links"
-        :ticket="ticket"
-        :is-ticket-editable="isTicketEditable"
-      />
+      <TicketLinks ref="ticket-links" :ticket="ticket" :is-ticket-editable="isTicketEditable" />
     </CommonSectionCollapse>
 
     <CommonSectionCollapse

@@ -10,8 +10,7 @@ import { useBreadcrumb } from '../composables/useBreadcrumb.ts'
 
 const { breadcrumbItems } = useBreadcrumb(__('New BETA UI'))
 
-const { toggleBetaUiSwitch, toggleDismissBetaUiSwitch, dismissValue } =
-  useNewBetaUi()
+const { toggleBetaUiSwitch, toggleDismissBetaUiSwitch, dismissValue } = useNewBetaUi()
 </script>
 
 <template>

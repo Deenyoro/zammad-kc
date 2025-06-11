@@ -16,14 +16,10 @@ export const useResizeGridColumns = (
   position: SidebarPosition = SidebarPosition.Start,
 ) => {
   const defaultSidebarWidth =
-    position === SidebarPosition.Start
-      ? DEFAULT_START_SIDEBAR_WIDTH
-      : DEFAULT_END_SIDEBAR_WIDTH
+    position === SidebarPosition.Start ? DEFAULT_START_SIDEBAR_WIDTH : DEFAULT_END_SIDEBAR_WIDTH
 
   const minSidebarWidth =
-    position === SidebarPosition.Start
-      ? MINIMUM_START_SIDEBAR_WIDTH
-      : MINIMUM_END_SIDEBAR_WIDTH
+    position === SidebarPosition.Start ? MINIMUM_START_SIDEBAR_WIDTH : MINIMUM_END_SIDEBAR_WIDTH
 
   const isSidebarCollapsed = shallowRef(false)
 
@@ -41,9 +37,7 @@ export const useResizeGridColumns = (
   const maxWidth = computed(() => screenWidth.value / 3)
 
   const gridColumns = computed(() => {
-    const width = isSidebarCollapsed.value
-      ? SIDEBAR_COLLAPSED_WIDTH
-      : currentSidebarWidth.value
+    const width = isSidebarCollapsed.value ? SIDEBAR_COLLAPSED_WIDTH : currentSidebarWidth.value
 
     if (position === SidebarPosition.End)
       return {

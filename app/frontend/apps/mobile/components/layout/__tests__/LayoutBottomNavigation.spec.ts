@@ -37,9 +37,7 @@ describe('bottom navigation in layout', () => {
   })
 
   it('rendering notifications counter', async () => {
-    const subscription = mockGraphQLSubscription(
-      OnlineNotificationsCountDocument,
-    )
+    const subscription = mockGraphQLSubscription(OnlineNotificationsCountDocument)
     const view = renderComponent(LayoutBottomNavigation, {
       store: true,
       router: true,
@@ -53,9 +51,7 @@ describe('bottom navigation in layout', () => {
     } as UserData
     await flushPromises()
 
-    expect(
-      view.queryByRole('status', { name: 'Unread notifications' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('status', { name: 'Unread notifications' })).not.toBeInTheDocument()
 
     await subscription.next({
       data: {
@@ -65,8 +61,6 @@ describe('bottom navigation in layout', () => {
       },
     })
 
-    expect(
-      view.getByRole('status', { name: 'Unread notifications' }),
-    ).toHaveTextContent('1')
+    expect(view.getByRole('status', { name: 'Unread notifications' })).toHaveTextContent('1')
   })
 })

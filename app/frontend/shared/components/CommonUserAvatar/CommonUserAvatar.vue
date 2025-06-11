@@ -10,10 +10,7 @@ import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 import { i18n } from '#shared/i18n.ts'
 import { getUserAvatarClasses } from '#shared/initializer/initializeUserAvatarClasses.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
-import {
-  SYSTEM_USER_ID,
-  SYSTEM_USER_INTERNAL_ID,
-} from '#shared/utils/constants.ts'
+import { SYSTEM_USER_ID, SYSTEM_USER_INTERNAL_ID } from '#shared/utils/constants.ts'
 import { getInitials } from '#shared/utils/formatter.ts'
 
 import CommonAvatar from '../CommonAvatar/CommonAvatar.vue'
@@ -67,11 +64,9 @@ const colorClass = computed(() => {
   return backgroundColors[internalId % (backgroundColors.length - 1)]
 })
 
-const sources = ['facebook', 'twitter']
-
 const icon = computed(() => {
   const { source } = props.entity
-  if (source && sources.includes(source)) return source
+  if (source && (source == 'facebook' || source == 'twitter')) return source
   return null
 })
 

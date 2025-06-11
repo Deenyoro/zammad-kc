@@ -56,10 +56,7 @@ describe('CellCheckbox.vue', () => {
       })
 
       const checkbox = wrapper.getByRole('checkbox')
-      expect(checkbox).toHaveAttribute(
-        'aria-description',
-        'You do not have permission to update',
-      )
+      expect(checkbox).toHaveAttribute('aria-description', 'You do not have permission to update')
     })
 
     it('displays reason to show missing update message to user if disabled generically', () => {

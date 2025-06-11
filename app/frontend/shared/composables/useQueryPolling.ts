@@ -1,14 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import {
-  ref,
-  type Ref,
-  type ComputedRef,
-  onScopeDispose,
-  toRef,
-  watch,
-  toValue,
-} from 'vue'
+import { ref, type Ref, type ComputedRef, onScopeDispose, toRef, watch, toValue } from 'vue'
 
 import type { QueryHandler } from '#shared/server/apollo/handler'
 import type { OperationQueryResult } from '#shared/types/server/apollo/handler'
@@ -40,24 +32,18 @@ export const useQueryPolling = <
   let pollTimer: ReturnType<typeof setTimeout>
 
   // Only randomize up to +1000ms to avoid requests happening at the same time
-  const randomizeInterval = toValue(options)?.randomize
-    ? Math.floor(Math.random() * 1000)
-    : 0
+  const randomizeInterval = toValue(options)?.randomize ? Math.floor(Math.random() * 1000) : 0
 
   const intervalRef = toRef(interval)
 
   const startPolling = () => {
-    if (
-      isPolling.value ||
-      (toValue(options)?.enabled !== undefined && !toValue(options)?.enabled)
-    )
+    if (isPolling.value || (toValue(options)?.enabled !== undefined && !toValue(options)?.enabled))
       return
 
     isPolling.value = true
 
     const poll = async () => {
-      const pollVariables =
-        typeof variables === 'function' ? variables() : variables?.value
+      const pollVariables = typeof variables === 'function' ? variables() : variables?.value
       await query.refetch(pollVariables as TVariables)
 
       // Only schedule next poll after current one completes

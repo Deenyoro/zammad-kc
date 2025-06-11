@@ -19,8 +19,9 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { user, loading, secondaryOrganizations, objectAttributes } =
-  useUserDetail(toRef(props.userAvatar.id))
+const { user, loading, secondaryOrganizations, objectAttributes } = useUserDetail(
+  toRef(props.userAvatar.id),
+)
 
 const { debouncedLoading } = useDebouncedLoading({
   isLoading: loading,
@@ -35,8 +36,7 @@ const { debouncedLoading } = useDebouncedLoading({
 
       <ObjectAttributes
         :class="{
-          'border-b border-white pb-2.5 dark:border-black':
-            secondaryOrganizations?.totalCount,
+          'border-b border-white pb-2.5 dark:border-black': secondaryOrganizations?.totalCount,
         }"
         :object="user!"
         :attributes="objectAttributes"

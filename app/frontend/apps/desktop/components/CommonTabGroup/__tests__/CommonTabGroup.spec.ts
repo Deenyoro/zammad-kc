@@ -35,9 +35,7 @@ describe('CommonTabGroup', () => {
       })
 
       waitFor(() => {
-        expect(wrapper.getByRole('tab', { selected: true })).toHaveTextContent(
-          'Tab 1',
-        )
+        expect(wrapper.getByRole('tab', { selected: true })).toHaveTextContent('Tab 1')
       })
     })
 
@@ -56,9 +54,7 @@ describe('CommonTabGroup', () => {
       })
 
       waitFor(() => {
-        expect(wrapper.getByRole('tab', { selected: true })).toHaveTextContent(
-          'Tab 4',
-        )
+        expect(wrapper.getByRole('tab', { selected: true })).toHaveTextContent('Tab 4')
       })
     })
 
@@ -72,9 +68,7 @@ describe('CommonTabGroup', () => {
       await wrapper.events.click(wrapper.getByRole('tab', { name: 'Tab 2' }))
 
       waitFor(() => {
-        expect(wrapper.getByRole('tab', { selected: true })).toHaveTextContent(
-          'Tab 2',
-        )
+        expect(wrapper.getByRole('tab', { selected: true })).toHaveTextContent('Tab 2')
       })
     })
   })
@@ -116,17 +110,13 @@ describe('CommonTabGroup', () => {
       await wrapper.events.click(wrapper.getByText('Agent'))
 
       waitFor(() => {
-        expect(wrapper.getAllByRole('option', { selected: true })).toHaveLength(
-          2,
-        )
+        expect(wrapper.getAllByRole('option', { selected: true })).toHaveLength(2)
       })
 
       await wrapper.events.click(wrapper.getByText('Admin'))
 
       waitFor(() => {
-        expect(wrapper.getAllByRole('option', { selected: true })).toHaveLength(
-          1,
-        )
+        expect(wrapper.getAllByRole('option', { selected: true })).toHaveLength(1)
       })
     })
   })

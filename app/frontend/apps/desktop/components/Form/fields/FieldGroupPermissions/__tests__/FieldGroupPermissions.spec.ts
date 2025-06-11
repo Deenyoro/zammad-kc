@@ -2,21 +2,14 @@
 
 import { getNode } from '@formkit/core'
 import { FormKit } from '@formkit/vue'
-import {
-  getAllByRole,
-  getByRole,
-  queryByRole,
-  waitFor,
-} from '@testing-library/vue'
+import { getAllByRole, getByRole, queryByRole, waitFor } from '@testing-library/vue'
 
 import { renderComponent } from '#tests/support/components/index.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
 import { i18n } from '#shared/i18n.ts'
 
-const renderGroupPermissionsInput = async (
-  props: Record<string, unknown> = {},
-) => {
+const renderGroupPermissionsInput = async (props: Record<string, unknown> = {}) => {
   const view = renderComponent(FormKit, {
     props: {
       id: 'groupPermissions',
@@ -143,9 +136,7 @@ describe('Fields - FieldGroupPermissions', () => {
 
     expect(options).toHaveLength(2)
 
-    expect(
-      view.getByRole('button', { name: 'Has submenu' }),
-    ).toBeInTheDocument()
+    expect(view.getByRole('button', { name: 'Has submenu' })).toBeInTheDocument()
 
     await view.events.click(options[0])
     await view.events.click(view.getByRole('button', { name: 'Add' }))
@@ -156,9 +147,7 @@ describe('Fields - FieldGroupPermissions', () => {
 
     expect(options).toHaveLength(1)
 
-    expect(
-      getByRole(listbox, 'button', { name: 'Has submenu' }),
-    ).toBeInTheDocument()
+    expect(getByRole(listbox, 'button', { name: 'Has submenu' })).toBeInTheDocument()
 
     await view.events.click(options[0])
     // Because of clicking outside the input is a toggle, we need to click twice
@@ -167,9 +156,7 @@ describe('Fields - FieldGroupPermissions', () => {
 
     listbox = await view.findByRole('listbox')
 
-    await view.events.click(
-      getByRole(listbox, 'button', { name: 'Has submenu' }),
-    )
+    await view.events.click(getByRole(listbox, 'button', { name: 'Has submenu' }))
 
     await view.events.click(getByRole(listbox, 'option'))
 
@@ -205,18 +192,14 @@ describe('Fields - FieldGroupPermissions', () => {
 
     expect(options).toHaveLength(1)
 
-    expect(
-      queryByRole(listbox, 'button', { name: 'Has submenu' }),
-    ).not.toBeInTheDocument()
+    expect(queryByRole(listbox, 'button', { name: 'Has submenu' })).not.toBeInTheDocument()
 
     await view.events.keyboard('{Escape}')
 
     const combobox = view.getAllByRole('combobox')[1]
     const listitem = getAllByRole(combobox, 'listitem')[1]
 
-    await view.events.click(
-      getByRole(listitem, 'button', { name: 'Unselect Option' }),
-    )
+    await view.events.click(getByRole(listitem, 'button', { name: 'Unselect Option' }))
 
     await waitFor(async () => {
       expect(getNode('groupPermissions')?.value).toEqual([
@@ -250,9 +233,7 @@ describe('Fields - FieldGroupPermissions', () => {
 
     expect(options).toHaveLength(2)
 
-    expect(
-      queryByRole(listbox, 'button', { name: 'Has submenu' }),
-    ).toBeInTheDocument()
+    expect(queryByRole(listbox, 'button', { name: 'Has submenu' })).toBeInTheDocument()
   })
 
   it('ensures either granular or full access is selected', async () => {
@@ -376,10 +357,7 @@ describe('Fields - FieldGroupPermissions - Input Checklist', () => {
       id: 'test_id',
     })
 
-    expect(view.getByLabelText('Group permissions')).toHaveAttribute(
-      'id',
-      'test_id',
-    )
+    expect(view.getByLabelText('Group permissions')).toHaveAttribute('id', 'test_id')
   })
 
   it('implements input name', async () => {
@@ -388,10 +366,7 @@ describe('Fields - FieldGroupPermissions - Input Checklist', () => {
       name: 'test_name',
     })
 
-    expect(view.getByLabelText('Group permissions')).toHaveAttribute(
-      'name',
-      'test_name',
-    )
+    expect(view.getByLabelText('Group permissions')).toHaveAttribute('name', 'test_name')
   })
 
   it('implements blur handler', async () => {
@@ -498,17 +473,12 @@ describe('Fields - FieldGroupPermissions - Input Checklist', () => {
       'test-attribute': 'test_value',
     })
 
-    expect(view.getByLabelText('Group permissions')).toHaveAttribute(
-      'test-attribute',
-      'test_value',
-    )
+    expect(view.getByLabelText('Group permissions')).toHaveAttribute('test-attribute', 'test_value')
   })
 
   it('implements standardized classes', async () => {
     const view = await renderGroupPermissionsInput(commonProps)
 
-    expect(view.getByLabelText('Group permissions')).toHaveClass(
-      'formkit-input',
-    )
+    expect(view.getByLabelText('Group permissions')).toHaveClass('formkit-input')
   })
 })

@@ -23,7 +23,6 @@ export class I18N {
     return this.translator.translate(source, ...args)
   }
 
-  // eslint-disable-next-line class-methods-use-this
   locale() {
     return document.documentElement.getAttribute('lang') || 'en-US'
   }
@@ -43,11 +42,7 @@ export class I18N {
   }
 
   relativeDateTime(dateTimeString: string, baseDate?: Date): string {
-    return dates.relativeDateTime(
-      dateTimeString,
-      baseDate || reactiveNow.value,
-      this.translator,
-    )
+    return dates.relativeDateTime(dateTimeString, baseDate || reactiveNow.value, this.translator)
   }
 
   setTranslationMap(map: TranslationMap): void {

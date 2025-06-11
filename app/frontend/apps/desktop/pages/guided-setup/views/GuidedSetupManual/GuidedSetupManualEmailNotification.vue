@@ -29,11 +29,8 @@ const router = useRouter()
 const { setTitle } = useSystemSetup()
 setTitle(__('Email Notification'))
 
-const {
-  formEmailOutbound,
-  emailOutboundSchema,
-  emailOutboundFormChangeFields,
-} = useEmailOutboundForm()
+const { formEmailOutbound, emailOutboundSchema, emailOutboundFormChangeFields } =
+  useEmailOutboundForm()
 
 const emailNotificationSchema = [
   // For now this is hidden, but should be changeable at some point: https://github.com/zammad/zammad/issues/3343
@@ -98,15 +95,11 @@ const probeEmailNotification = async (data: EmailNotificationData) => {
       data-test-id="email-notification-setup"
       form-class="mb-2.5"
       :flatten-form-groups="['outbound']"
-      :form-updater-id="
-        EnumFormUpdaterId.FormUpdaterUpdaterGuidedSetupEmailNotification
-      "
+      :form-updater-id="EnumFormUpdaterId.FormUpdaterUpdaterGuidedSetupEmailNotification"
       :schema="emailNotificationSchema"
       :handlers="[useSSLVerificationWarningHandler()]"
       :change-fields="emailOutboundFormChangeFields"
-      @submit="
-        probeEmailNotification($event as FormSubmitData<EmailNotificationData>)
-      "
+      @submit="probeEmailNotification($event as FormSubmitData<EmailNotificationData>)"
     />
     <GuidedSetupActionFooter
       go-back-route="/guided-setup/manual/system-information"

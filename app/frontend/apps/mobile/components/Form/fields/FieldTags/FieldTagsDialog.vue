@@ -79,9 +79,7 @@ const { ignoreUpdates } = watchIgnorable(
 const filteredTags = computed(() => {
   if (!filter.value) return sortedOptions.value
 
-  return sortedOptions.value.filter((tag) =>
-    tag.toLowerCase().includes(filter.value.toLowerCase()),
-  )
+  return sortedOptions.value.filter((tag) => tag.toLowerCase().includes(filter.value.toLowerCase()))
 })
 
 const removeTag = (tag: string) => {

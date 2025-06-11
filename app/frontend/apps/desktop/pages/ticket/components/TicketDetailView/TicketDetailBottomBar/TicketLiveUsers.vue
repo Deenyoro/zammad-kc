@@ -18,9 +18,7 @@ const { liveUsers } = useTicketLiveUsersDisplay(toRef(props, 'liveUserList'))
 
 const LIVE_USER_LIMIT = 9
 
-const visibleLiveUsers = computed(() =>
-  liveUsers.value.slice(0, LIVE_USER_LIMIT),
-)
+const visibleLiveUsers = computed(() => liveUsers.value.slice(0, LIVE_USER_LIMIT))
 
 const liveUsersOverflow = computed(() => {
   if (liveUsers.value.length <= LIVE_USER_LIMIT) return

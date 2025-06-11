@@ -5,10 +5,7 @@ import { i18n } from '#shared/i18n.ts'
 
 import type { ActivityMessageBuilder } from '../types.ts'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const path = (metaObject: DataPrivacyTask) => {
-  return '#'
-}
+const path = (_metaObject: DataPrivacyTask) => '#'
 
 const messageText = (
   type: string,
@@ -23,17 +20,9 @@ const messageText = (
 
   switch (type) {
     case 'create':
-      return i18n.t(
-        '%s created data privacy task to delete user ID |%s|',
-        authorName,
-        objectTitle,
-      )
+      return i18n.t('%s created data privacy task to delete user ID |%s|', authorName, objectTitle)
     case 'update':
-      return i18n.t(
-        '%s updated data privacy task to delete user ID |%s|',
-        authorName,
-        objectTitle,
-      )
+      return i18n.t('%s updated data privacy task to delete user ID |%s|', authorName, objectTitle)
     case 'completed':
       return i18n.t(
         '%s completed data privacy task to delete user ID |%s|',

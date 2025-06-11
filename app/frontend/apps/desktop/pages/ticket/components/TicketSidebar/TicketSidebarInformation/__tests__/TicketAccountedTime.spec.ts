@@ -104,9 +104,8 @@ describe('TicketAccountedTime', () => {
         expect(wrapper.getByText(value.timeUnitDisplay)).toBeInTheDocument()
       } else {
         expect(wrapper.queryByText(value.name)).not.toBeInTheDocument()
-        expect(
-          wrapper.queryByText(value.timeUnitDisplay),
-        ).not.toBeInTheDocument()
+
+        expect(wrapper.queryByText(value.timeUnitDisplay)).not.toBeInTheDocument()
       }
     })
   })
@@ -143,9 +142,7 @@ describe('TicketAccountedTime', () => {
 
     const listItems = wrapper.getAllByRole('listitem')
 
-    expect(listItems[0]).toHaveClass(
-      'first:border-b first:border-solid dark:border-neutral-500',
-    )
+    expect(listItems[0]).toHaveClass('first:border-b first:border-solid dark:border-neutral-500')
   })
 
   it('adds border under total count if more than one accounting type is available', () => {

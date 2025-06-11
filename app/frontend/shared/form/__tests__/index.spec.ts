@@ -20,10 +20,7 @@ describe('getFormPlugins', () => {
   }
 
   it('should return the plugin list', () => {
-    expect(getFormPlugins(pluginModules)).toEqual([
-      examplePlugin,
-      examplePlugin,
-    ])
+    expect(getFormPlugins(pluginModules)).toEqual([examplePlugin, examplePlugin])
   })
 })
 

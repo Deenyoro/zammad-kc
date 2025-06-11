@@ -58,9 +58,7 @@ describe('Fields - FieldImageUpload', () => {
       placeholderImagePath: '/api/v1/system_assets/product_logo/1704708731',
     })
 
-    expect(
-      view.queryByRole('button', { name: 'Remove image' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Remove image' })).not.toBeInTheDocument()
   })
 
   it('supports removal of the uploaded image', async () => {
@@ -72,9 +70,7 @@ describe('Fields - FieldImageUpload', () => {
 
     await view.events.click(removeImageButton)
 
-    expect(
-      view.queryByRole('button', { name: 'Remove image' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Remove image' })).not.toBeInTheDocument()
 
     expect(getNode('imageUpload')?._value).toEqual('')
   })
@@ -116,10 +112,7 @@ describe('Fields - FieldImageUpload - Input Checklist', () => {
       name: 'test_name',
     })
 
-    expect(view.getByLabelText('Image Upload')).toHaveAttribute(
-      'name',
-      'test_name',
-    )
+    expect(view.getByLabelText('Image Upload')).toHaveAttribute('name', 'test_name')
   })
 
   it('implements blur handler', async () => {
@@ -195,10 +188,7 @@ describe('Fields - FieldImageUpload - Input Checklist', () => {
       'test-attribute': 'test_value',
     })
 
-    expect(view.getByLabelText('Image Upload')).toHaveAttribute(
-      'test-attribute',
-      'test_value',
-    )
+    expect(view.getByLabelText('Image Upload')).toHaveAttribute('test-attribute', 'test_value')
   })
 
   it('implements standardized classes', async () => {

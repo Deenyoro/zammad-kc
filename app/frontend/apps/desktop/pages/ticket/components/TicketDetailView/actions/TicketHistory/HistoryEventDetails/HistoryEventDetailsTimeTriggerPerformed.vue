@@ -12,10 +12,8 @@ const { event } = defineProps<Props>()
 
 <template>
   <span>
-    <CommonLabel
-      v-if="event.description"
-      class="text-gray-100 dark:text-neutral-400"
-      >{{ $t(event.description) }}</CommonLabel
-    >
+    <CommonLabel v-if="event.description" class="text-gray-100 dark:text-neutral-400">{{
+      $t(event.description)
+    }}</CommonLabel>
   </span>
 </template>

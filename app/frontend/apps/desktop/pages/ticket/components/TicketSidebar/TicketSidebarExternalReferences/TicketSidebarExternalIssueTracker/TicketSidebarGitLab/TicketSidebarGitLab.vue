@@ -24,11 +24,10 @@ const { persistentStates } = usePersistentStates()
 
 const emit = defineEmits<TicketSidebarEmits>()
 
-const { hideSidebar, issueLinks, isTicketEditable, openIssuesBadge } =
-  useIssueTracker(
-    EnumTicketExternalReferencesIssueTrackerType.Gitlab,
-    toRef(props, 'context'),
-  )
+const { hideSidebar, issueLinks, isTicketEditable, openIssuesBadge } = useIssueTracker(
+  EnumTicketExternalReferencesIssueTrackerType.Gitlab,
+  toRef(props, 'context'),
+)
 
 const issueTrackerListInstance = useTemplateRef('issue-tracker-list')
 

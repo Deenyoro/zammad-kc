@@ -1,10 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import { TicketTaskbarTabAttributesFragmentDoc } from '#shared/entities/ticket/graphql/fragments/ticketTaskbarTabAttributes.api.ts'
-import {
-  EnumTaskbarEntity,
-  type Ticket as TicketType,
-} from '#shared/graphql/types.ts'
+import { EnumTaskbarEntity, type Ticket as TicketType } from '#shared/graphql/types.ts'
 
 import type { UserTaskbarTabPlugin } from '#desktop/components/UserTaskbarTabs/types.ts'
 

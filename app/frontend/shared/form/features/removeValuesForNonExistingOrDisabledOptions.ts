@@ -30,13 +30,9 @@ const removeValuesForNonExistingOrDisabledOptions = (node: FormKitNode) => {
       return availableValues
     }
 
-    if (
-      typeof optionValueLookup[payload] === 'undefined' ||
-      optionValueLookup[payload].disabled
-    ) {
+    if (typeof optionValueLookup[payload] === 'undefined' || optionValueLookup[payload].disabled) {
       if (typeof optionValueLookup[node.props._init] === 'undefined') {
-        const getPreselectValue =
-          context.getPreselectValue as () => ObjectSelectValue
+        const getPreselectValue = context.getPreselectValue as () => ObjectSelectValue
 
         return context.clearable || getPreselectValue === undefined
           ? undefined
@@ -56,8 +52,8 @@ const removeValuesForNonExistingOrDisabledOptions = (node: FormKitNode) => {
 
     node.at('$root')?.settled.then(() => {
       node.hook.input((payload, next) => {
-        if (!context.fns.hasValue(payload) || !context.optionValueLookup)
-          return next(payload)
+        // eslint-disable no-callback-in-promise
+        if (!context.fns.hasValue(payload) || !context.optionValueLookup) return next(payload)
 
         return next(handleNewInputValue(payload, context))
       })

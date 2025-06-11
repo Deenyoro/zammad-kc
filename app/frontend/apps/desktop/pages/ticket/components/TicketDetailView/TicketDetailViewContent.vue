@@ -30,10 +30,7 @@ import {
   useNotifications,
 } from '#shared/components/CommonNotifications/index.ts'
 import Form from '#shared/components/Form/Form.vue'
-import type {
-  FormSubmitData,
-  FormValues,
-} from '#shared/components/Form/types.ts'
+import type { FormSubmitData, FormValues } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
 import { setErrors } from '#shared/components/Form/utils.ts'
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
@@ -55,17 +52,10 @@ import {
   type AddArticleCallbackArgs,
 } from '#shared/entities/ticket-article/composables/useArticleDataHandler.ts'
 import UserError from '#shared/errors/UserError.ts'
-import {
-  EnumFormUpdaterId,
-  EnumTaskbarApp,
-  EnumUserErrorException,
-} from '#shared/graphql/types.ts'
+import { EnumFormUpdaterId, EnumTaskbarApp, EnumUserErrorException } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
-import {
-  GraphQLErrorTypes,
-  type GraphQLHandlerError,
-} from '#shared/types/error.ts'
+import { GraphQLErrorTypes, type GraphQLHandlerError } from '#shared/types/error.ts'
 
 import { useFlyout } from '#desktop/components/CommonFlyout/useFlyout.ts'
 import CommonLoader from '#desktop/components/CommonLoader/CommonLoader.vue'
@@ -86,14 +76,8 @@ import {
   provideTicketInformation,
 } from '../../composables/useTicketInformation.ts'
 import { useTicketNumber } from '../../composables/useTicketNumber.ts'
-import {
-  useTicketSidebar,
-  useProvideTicketSidebar,
-} from '../../composables/useTicketSidebar.ts'
-import {
-  type TicketSidebarContext,
-  TicketSidebarScreenType,
-} from '../../types/sidebar.ts'
+import { useTicketSidebar, useProvideTicketSidebar } from '../../composables/useTicketSidebar.ts'
+import { type TicketSidebarContext, TicketSidebarScreenType } from '../../types/sidebar.ts'
 import TicketSidebar from '../TicketSidebar.vue'
 
 import ArticleList from './ArticleList.vue'
@@ -109,15 +93,16 @@ const props = defineProps<Props>()
 const internalId = toRef(props, 'internalId')
 const isReplyPinned = ref(false)
 
-const { ticket, ticketId, ...ticketInformation } =
-  initializeTicketInformation(internalId)
+const { ticket, ticketId, ...ticketInformation } = initializeTicketInformation(internalId)
 
 const onAddArticleCallback = ({ articlesQuery }: AddArticleCallbackArgs) => {
   return (articlesQuery as QueryHandler).refetch()
 }
 
-const { articleResult, articlesQuery, isLoadingArticles } =
-  useArticleDataHandler(ticketId, { pageSize: 20, onAddArticleCallback })
+const { articleResult, articlesQuery, isLoadingArticles } = useArticleDataHandler(ticketId, {
+  pageSize: 20,
+  onAddArticleCallback,
+})
 
 provide(ARTICLES_INFORMATION_KEY, {
   articles: computed(() => articleResult.value),
@@ -143,24 +128,18 @@ const tabContext = computed<TaskbarTabContext>((currentContext) => {
     formIsDirty: isDirty.value,
   }
 
-  if (currentContext && isEqual(newContext, currentContext))
-    return currentContext
+  if (currentContext && isEqual(newContext, currentContext)) return currentContext
 
   return newContext
 })
 
-const {
-  currentTaskbarTabId,
-  currentTaskbarTabFormId,
-  currentTaskbarTabNewArticlePresent,
-} = useTaskbarTab(tabContext)
+const { currentTaskbarTabId, currentTaskbarTabFormId, currentTaskbarTabNewArticlePresent } =
+  useTaskbarTab(tabContext)
 
 const { ticketNumberWithTicketHook } = useTicketNumber(ticket)
 
 usePage({
-  metaTitle: computed(
-    () => `${ticketNumberWithTicketHook.value} - ${ticket.value?.title}`,
-  ),
+  metaTitle: computed(() => `${ticketNumberWithTicketHook.value} - ${ticket.value?.title}`),
 })
 
 const contentContainerElement = useTemplateRef('content-container')
@@ -218,26 +197,17 @@ const sidebarContext = computed<TicketSidebarContext>(() => ({
 useProvideTicketSidebar(sidebarContext)
 const { hasSidebar, activeSidebar, switchSidebar } = useTicketSidebar()
 
-const hasInternalArticle = computed(
-  () => (values.value as TicketUpdateFormData).article?.internal,
-)
+const hasInternalArticle = computed(() => (values.value as TicketUpdateFormData).article?.internal)
 
 const formEditAttributeLocation = computed(() => {
   if (activeSidebar.value === 'information') return '#ticketEditAttributeForm'
   return '#wrapper-form-ticket-edit'
 })
 
-const {
-  isArticleFormGroupValid,
-  newTicketArticlePresent,
-  showTicketArticleReplyForm,
-} = useTicketArticleReply(form, currentTaskbarTabNewArticlePresent)
+const { isArticleFormGroupValid, newTicketArticlePresent, showTicketArticleReplyForm } =
+  useTicketArticleReply(form, currentTaskbarTabNewArticlePresent)
 
-const { liveUserList } = useTicketLiveUserList(
-  internalId,
-  isTicketAgent,
-  EnumTaskbarApp.Desktop,
-)
+const { liveUserList } = useTicketLiveUserList(internalId, isTicketAgent, EnumTaskbarApp.Desktop)
 
 provideTicketInformation({
   ticket,
@@ -330,13 +300,13 @@ const errorCallback = (errorHandler: GraphQLHandlerError) =>
   errorHandler.type !== GraphQLErrorTypes.Forbidden &&
   errorHandler.type !== GraphQLErrorTypes.RecordNotFound
 
-const { isTicketFormGroupValid, initialTicketValue, editTicket } =
-  useTicketEdit(ticket, form, errorCallback)
-
-const { openReplyForm } = useTicketArticleReplyAction(
+const { isTicketFormGroupValid, initialTicketValue, editTicket } = useTicketEdit(
+  ticket,
   form,
-  showTicketArticleReplyForm,
+  errorCallback,
 )
+
+const { openReplyForm } = useTicketArticleReplyAction(form, showTicketArticleReplyForm)
 
 const isFormValid = computed(() => {
   if (!newTicketArticlePresent.value) return isTicketFormGroupValid.value
@@ -354,11 +324,7 @@ const checkSubmitEditTicket = () => {
   if (!isFormValid.value) {
     if (activeSidebar.value !== 'information') switchSidebar('information')
 
-    if (
-      newTicketArticlePresent.value &&
-      !isArticleFormGroupValid.value &&
-      !isReplyPinned.value
-    )
+    if (newTicketArticlePresent.value && !isArticleFormGroupValid.value && !isReplyPinned.value)
       scrollToArticlesEnd()
   }
 
@@ -434,15 +400,11 @@ const handleUserErrorException = (error: UserError) => {
   return true
 }
 
-const { activeMacro, executeMacro, disposeActiveMacro } =
-  useTicketMacros(formSubmit)
+const { activeMacro, executeMacro, disposeActiveMacro } = useTicketMacros(formSubmit)
 
-const submitEditTicket = async (
-  formData: FormSubmitData<TicketUpdateFormData>,
-) => {
+const submitEditTicket = async (formData: FormSubmitData<TicketUpdateFormData>) => {
   let data = cloneDeep(formData)
-  if (currentArticleType.value?.updateForm)
-    data = currentArticleType.value.updateForm(data)
+  if (currentArticleType.value?.updateForm) data = currentArticleType.value.updateForm(data)
 
   if (data.article && timeAccountingData.value) {
     data.article = {
@@ -493,10 +455,7 @@ const submitEditTicket = async (
         newTicketArticlePresent.value = false
 
         return {
-          reset: (
-            values: FormSubmitData<TicketUpdateFormData>,
-            formNodeValues: FormValues,
-          ) => {
+          reset: (values: FormSubmitData<TicketUpdateFormData>, formNodeValues: FormValues) => {
             nextTick(() => {
               if (!formNodeValues) return
               formReset({ values: { ticket: formNodeValues.ticket } })
@@ -509,8 +468,7 @@ const submitEditTicket = async (
     })
     .catch((error) => {
       if (error instanceof UserError) {
-        if (error.getFirstErrorException())
-          return handleUserErrorException(error)
+        if (error.getFirstErrorException()) return handleUserErrorException(error)
         skipValidators.value.length = 0
         timeAccountingData.value = undefined
         if (form.value?.formNode) {
@@ -569,18 +527,8 @@ const articleListInstance = useTemplateRef('article-list')
 
 const topBarInstance = useTemplateRef('top-bar')
 
-const {
-  handleScroll,
-  isHoveringOnTopBar,
-  isHidingTicketDetails,
-  isReachingBottom,
-  isReachingTop,
-} = useArticleContainerScroll(
-  ticket,
-  contentContainerElement,
-  articleListInstance,
-  topBarInstance,
-)
+const { handleScroll, isHoveringOnTopBar, isHidingTicketDetails, isReachingBottom, isReachingTop } =
+  useArticleContainerScroll(ticket, contentContainerElement, articleListInstance, topBarInstance)
 
 const { height } = useWindowSize()
 
@@ -588,8 +536,7 @@ whenever(height, () => {
   if (!contentContainerElement) return
 
   // On window resize, manually check if the article list is at the bottom.
-  const { clientHeight, scrollHeight, scrollTop } =
-    contentContainerElement.value!
+  const { clientHeight, scrollHeight, scrollTop } = contentContainerElement.value!
 
   isReachingBottom.value = scrollTop + clientHeight < scrollHeight
 })
@@ -620,9 +567,7 @@ whenever(
   () => [topHeaderHeight.value, isReplyPinned.value],
   ([value, isPinned]) => {
     // We set custom property to set it for action bar top positioning
-    topHeaderHeightCustomProperty.value = isPinned
-      ? '0'
-      : `${(value as number) / 16}rem`
+    topHeaderHeightCustomProperty.value = isPinned ? '0' : `${(value as number) / 16}rem`
   },
   { immediate: true },
 )
@@ -647,8 +592,7 @@ whenever(
         :class="{
           'grid-rows-[max-content_max-content_max-content]':
             !newTicketArticlePresent || !isReplyPinned,
-          'grid-rows-[max-content_1fr_max-content]':
-            newTicketArticlePresent && isReplyPinned,
+          'grid-rows-[max-content_1fr_max-content]': newTicketArticlePresent && isReplyPinned,
         }"
         @scroll.passive="handleScroll"
       >
@@ -708,9 +652,7 @@ whenever(
             :schema-component-library="{
               Teleport: markRaw(Teleport) as unknown as Component,
             }"
-            @submit="
-              submitEditTicket($event as FormSubmitData<TicketUpdateFormData>)
-            "
+            @submit="submitEditTicket($event as FormSubmitData<TicketUpdateFormData>)"
             @settled="onEditFormSettled"
             @changed="setSkipNextStateUpdate(true)"
           />

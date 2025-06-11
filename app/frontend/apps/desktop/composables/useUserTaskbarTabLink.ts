@@ -16,9 +16,7 @@ export const useUserTaskbarTabLink = (
 ) => {
   const tabLinkInstance = ref<CommonLinkInstance>()
 
-  const { activeTaskbarTabEntityKey } = storeToRefs(
-    useUserCurrentTaskbarTabsStore(),
-  )
+  const { activeTaskbarTabEntityKey } = storeToRefs(useUserCurrentTaskbarTabsStore())
 
   const taskbarTabActive = computed(
     () => activeTaskbarTabEntityKey.value === taskbarTab.value.tabEntityKey,

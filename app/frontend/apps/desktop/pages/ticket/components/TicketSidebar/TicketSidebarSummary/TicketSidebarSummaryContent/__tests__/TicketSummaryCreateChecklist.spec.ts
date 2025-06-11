@@ -22,10 +22,7 @@ const switchSidebar = vi.fn()
 
 const summary = ['Test checklist item A', 'Test checklist item B']
 
-const renderTicketSummaryCreateChecklist = (
-  summaryArg = summary,
-  ticketArg = ticket,
-) =>
+const renderTicketSummaryCreateChecklist = (summaryArg = summary, ticketArg = ticket) =>
   renderComponent(TicketSummaryCreateChecklist, {
     props: {
       summary: summaryArg,
@@ -53,13 +50,9 @@ describe('TicketSummaryCreateChecklist', () => {
   it('render correctly', () => {
     const wrapper = renderTicketSummaryCreateChecklist()
 
-    expect(wrapper.getByRole('heading', { level: 3 })).toHaveTextContent(
-      'Checklist heading',
-    )
+    expect(wrapper.getByRole('heading', { level: 3 })).toHaveTextContent('Checklist heading')
 
-    expect(
-      wrapper.getAllByRole('button', { name: 'Add as checklist item' }).length,
-    ).toBe(2)
+    expect(wrapper.getAllByRole('button', { name: 'Add as checklist item' }).length).toBe(2)
   })
 
   it('converts summary item to checklist item if checklist is NOT available', async () => {
@@ -145,9 +138,7 @@ describe('TicketSummaryCreateChecklist', () => {
   it('converts all summaries to checklist items if list is NOT available', async () => {
     const wrapper = renderTicketSummaryCreateChecklist()
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Add all to checklist' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Add all to checklist' }))
 
     const mockedChecklistId = convertToGraphQLId('Checklist', 3)
 
@@ -203,9 +194,7 @@ describe('TicketSummaryCreateChecklist', () => {
       },
     })
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Add all to checklist' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Add all to checklist' }))
 
     const itemsAddCalls = await waitForTicketChecklistItemsAddMutationCalls()
 

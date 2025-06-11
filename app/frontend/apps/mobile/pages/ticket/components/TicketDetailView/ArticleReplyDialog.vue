@@ -33,13 +33,9 @@ const emit = defineEmits<{
   done: []
 }>()
 
-const label = computed(() =>
-  props.newTicketArticlePresent ? __('Edit reply') : __('Add reply'),
-)
+const label = computed(() => (props.newTicketArticlePresent ? __('Edit reply') : __('Add reply')))
 
-const articleFormGroupNodeContext = computed(
-  () => props.articleFormGroupNode?.context,
-)
+const articleFormGroupNodeContext = computed(() => props.articleFormGroupNode?.context)
 
 const rememberArticleFormData = cloneDeep({
   ...articleFormGroupNodeContext.value?._value,
@@ -47,13 +43,9 @@ const rememberArticleFormData = cloneDeep({
 })
 
 const dialogFormIsDirty = computed(() => {
-  if (!props.newTicketArticlePresent)
-    return !!articleFormGroupNodeContext.value?.state.dirty
+  if (!props.newTicketArticlePresent) return !!articleFormGroupNodeContext.value?.state.dirty
 
-  return !isEqual(
-    rememberArticleFormData,
-    articleFormGroupNodeContext.value?._value,
-  )
+  return !isEqual(rememberArticleFormData, articleFormGroupNodeContext.value?._value)
 })
 
 const { waitForConfirmation } = useConfirmation()
@@ -145,10 +137,7 @@ const close = () => {
       >
         {{ $t('Discard your unsaved changes') }}
       </FormKit>
-      <div
-        class="transition-all"
-        :class="{ 'pb-16': needSpaceForSaveBanner }"
-      ></div>
+      <div class="transition-all" :class="{ 'pb-16': needSpaceForSaveBanner }"></div>
     </div>
   </CommonDialog>
 </template>

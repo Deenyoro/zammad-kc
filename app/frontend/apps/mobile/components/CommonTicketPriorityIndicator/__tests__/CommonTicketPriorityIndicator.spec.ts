@@ -24,10 +24,7 @@ describe('CommonTicketPriorityIndicator.vue', () => {
       },
     })
 
-    expect(view.getByText('1 low')).toHaveClasses([
-      'bg-gray-highlight',
-      'text-gray',
-    ])
+    expect(view.getByText('1 low')).toHaveClasses(['bg-gray-highlight', 'text-gray'])
   })
 
   it('renders high priority correctly', () => {
@@ -39,10 +36,7 @@ describe('CommonTicketPriorityIndicator.vue', () => {
       },
     })
 
-    expect(view.getByText('3 high')).toHaveClasses([
-      'bg-red-dark',
-      'text-red-bright',
-    ])
+    expect(view.getByText('3 high')).toHaveClasses(['bg-red-dark', 'text-red-bright'])
   })
 
   it('does not render default priority', () => {

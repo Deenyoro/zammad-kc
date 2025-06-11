@@ -49,8 +49,10 @@ export const staticObjectAttributes: EntityStaticObjectAttributes = {
 export const useOrganizationObjectAttributesStore = defineStore(
   'organizationObjectAttributes',
   () => {
-    const { screenAttributes: viewScreenAttributes } =
-      useObjectAttributesScreen(EnumObjectManagerObjects.Organization, 'view')
+    const { screenAttributes: viewScreenAttributes } = useObjectAttributesScreen(
+      EnumObjectManagerObjects.Organization,
+      'view',
+    )
 
     return {
       viewScreenAttributes,

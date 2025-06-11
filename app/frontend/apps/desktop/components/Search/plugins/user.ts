@@ -16,12 +16,6 @@ export default <SearchPlugin>{
   quickSearchComponent: User,
   quickSearchResultKey: 'quickSearchUsers',
   permissions: ['ticket.agent', 'admin.user'],
-  detailSearchHeaders: [
-    'login',
-    'firstname',
-    'lastname',
-    'organization',
-    'organization_ids',
-  ],
+  detailSearchHeaders: ['login', 'firstname', 'lastname', 'organization', 'organization_ids'],
   detailSearchComponent: UserListTable,
 }

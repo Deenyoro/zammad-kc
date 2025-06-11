@@ -22,15 +22,8 @@ const contextReactive = toRef(props, 'context')
 
 const { localValue } = useValue(contextReactive)
 
-const {
-  ariaLabels,
-  displayFormat,
-  is24,
-  minDate,
-  position,
-  timePicker,
-  valueFormat,
-} = useDateTime(contextReactive)
+const { ariaLabels, displayFormat, is24, minDate, position, timePicker, valueFormat } =
+  useDateTime(contextReactive)
 
 const config = {
   keepActionRow: true,
@@ -103,9 +96,7 @@ useEventListener('click', (e) => {
       :min-date="minDate"
       :start-date="minDate || context.maxDate"
       :ignore-time-validation="!timePicker"
-      :prevent-min-max-navigation="
-        Boolean(minDate || context.maxDate || context.futureOnly)
-      "
+      :prevent-min-max-navigation="Boolean(minDate || context.maxDate || context.futureOnly)"
       :now-button-label="$t('Today')"
       :position="position"
       :action-row="actionRow"
@@ -120,17 +111,7 @@ useEventListener('click', (e) => {
       @close="collapsePicker"
       @blur="context.handlers.blur"
     >
-      <template
-        #dp-input="{
-          value,
-          onInput,
-          onEnter,
-          onTab,
-          onBlur,
-          onKeypress,
-          onPaste,
-        }"
-      >
+      <template #dp-input="{ value, onInput, onEnter, onTab, onBlur, onKeypress, onPaste }">
         <input
           :id="context.id"
           ref="input"

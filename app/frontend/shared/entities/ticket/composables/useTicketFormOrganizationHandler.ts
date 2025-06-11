@@ -31,12 +31,7 @@ export const useTicketFormOrganizationHandler = (): FormHandler => {
     return true
   }
 
-  const handleOrganizationField: FormHandlerFunction = (
-    execution,
-    reactivity,
-    data,
-    // eslint-disable-next-line sonarjs/cognitive-complexity
-  ) => {
+  const handleOrganizationField: FormHandlerFunction = (execution, reactivity, data) => {
     const { formNode, values, initialEntityObject, changedField } = data
     const { schemaData, changeFields, updateSchemaDataField } = reactivity
 
@@ -54,10 +49,7 @@ export const useTicketFormOrganizationHandler = (): FormHandler => {
         if (changedField?.newValue) {
           // TODO: user <=> object ?!?!?
           const optionValue = formNode?.find('customer_id', 'name')?.context
-            ?.optionValueLookup as Record<
-            number,
-            Record<'object' | 'user', UserData>
-          >
+            ?.optionValueLookup as Record<number, Record<'object' | 'user', UserData>>
           // ⚠️ :INFO mobile query retrieves .user and .object for desktop
           return (
             (optionValue[changedField.newValue as number].object as UserData) ||
@@ -116,7 +108,7 @@ export const useTicketFormOrganizationHandler = (): FormHandler => {
 
     // This values should be fixed, until the user change something in the customer_id field.
     changeFields.value.organization_id = {
-      ...(changeFields.value.organization_id || {}),
+      ...changeFields.value.organization_id,
       ...organizationField,
     }
   }

@@ -10,10 +10,7 @@ import { i18n } from '#shared/i18n.ts'
 
 import { useTranslationsStore } from '../translations.ts'
 
-const mockQueryResult = (
-  locale: string,
-  cacheKey: string | null,
-): TranslationsPayload => {
+const mockQueryResult = (locale: string, cacheKey: string | null): TranslationsPayload => {
   if (cacheKey === 'MOCKED_CACHE_KEY') {
     return {
       isCacheStillValid: true,
@@ -78,10 +75,7 @@ describe('Translations Store', () => {
     await translations.load('en-us')
     expect(lastQueryResult.isCacheStillValid).toBe(false)
     expect(translations.cacheKey.length).toBeGreaterThan(5)
-    expect(translations.translationData).toHaveProperty(
-      'Login',
-      'Login (translated)',
-    )
+    expect(translations.translationData).toHaveProperty('Login', 'Login (translated)')
   })
 
   it('loads translations from a warm cache', async () => {

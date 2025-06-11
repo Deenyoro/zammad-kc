@@ -119,9 +119,7 @@ describe('Ticket detail view macros', () => {
 
     const view = await visitView('/tickets/1')
 
-    const actionMenu = await view.findByLabelText(
-      'Additional ticket edit actions',
-    )
+    const actionMenu = await view.findByLabelText('Additional ticket edit actions')
 
     await view.events.click(actionMenu)
 
@@ -140,8 +138,6 @@ describe('Ticket detail view macros', () => {
     const router = getTestRouter()
 
     // :TODO add this real redirect once the overview is implemented
-    await waitFor(() =>
-      expect(router.currentRoute.value.path).not.toEqual('/tickets/1'),
-    )
+    await waitFor(() => expect(router.currentRoute.value.path).not.toEqual('/tickets/1'))
   })
 })

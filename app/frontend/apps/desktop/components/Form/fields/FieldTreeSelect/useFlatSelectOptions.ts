@@ -14,21 +14,15 @@ const useFlatSelectOptions = (options?: Ref<TreeSelectOption[]>) => {
     parents: SelectValue[] = [],
   ): FlatSelectOption[] =>
     options &&
-    options.reduce(
-      (flatOptions: FlatSelectOption[], { children, ...option }) => {
-        flatOptions.push({
-          ...option,
-          parents,
-          hasChildren: Boolean(children),
-        })
-        if (children)
-          flatOptions.push(
-            ...flattenOptions(children, [...parents, option.value]),
-          )
-        return flatOptions
-      },
-      [],
-    )
+    options.reduce((flatOptions: FlatSelectOption[], { children, ...option }) => {
+      flatOptions.push({
+        ...option,
+        parents,
+        hasChildren: Boolean(children),
+      })
+      if (children) flatOptions.push(...flattenOptions(children, [...parents, option.value]))
+      return flatOptions
+    }, [])
 
   const flatOptions = computed(() => flattenOptions(options?.value || []))
 

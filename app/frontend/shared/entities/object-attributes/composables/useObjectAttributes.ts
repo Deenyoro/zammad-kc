@@ -32,8 +32,7 @@ export const useObjectAttributes = (object: EnumObjectManagerObjects) => {
     const attributes = computed<ObjectAttribute[]>(() => {
       return [
         ...(staticObjectAttributesByEntity[object] || []),
-        ...(attributesRaw.value?.objectManagerFrontendAttributes?.attributes ||
-          []),
+        ...(attributesRaw.value?.objectManagerFrontendAttributes?.attributes || []),
       ]
     })
 
@@ -52,9 +51,7 @@ export const useObjectAttributes = (object: EnumObjectManagerObjects) => {
     const attributesLookup = computed(() => {
       const lookup: Map<string, ObjectAttribute> = new Map()
 
-      attributes.value?.forEach((attribute) =>
-        lookup.set(attribute.name, attribute),
-      )
+      attributes.value?.forEach((attribute) => lookup.set(attribute.name, attribute))
 
       return lookup
     })

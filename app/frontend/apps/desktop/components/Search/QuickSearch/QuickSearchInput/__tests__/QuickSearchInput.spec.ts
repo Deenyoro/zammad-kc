@@ -2,9 +2,7 @@
 import { waitFor } from '@testing-library/vue'
 import { ref } from 'vue'
 
-import renderComponent, {
-  getTestRouter,
-} from '#tests/support/components/renderComponent.ts'
+import renderComponent, { getTestRouter } from '#tests/support/components/renderComponent.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
 import QuickSearchInput from '../QuickSearchInput.vue'
@@ -38,9 +36,7 @@ describe('QuickSearchInput', () => {
 
     await waitForNextTick()
 
-    expect(
-      wrapper.getByRole('button', { name: 'Reset Search' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Reset Search' })).toBeInTheDocument()
   })
 
   it('emits search active when focused', () => {
@@ -74,17 +70,13 @@ describe('QuickSearchInput', () => {
 
     const searchField = wrapper.getByRole('searchbox', { name: 'Search…' })
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Clear Search' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear Search' }))
 
     expect(modelValue.value).toBe('')
     expect(searchField).toHaveFocus()
     expect(searchActive.value).toBe(true)
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Reset Search' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Reset Search' }))
 
     expect(searchActive.value).toBe(false)
   })

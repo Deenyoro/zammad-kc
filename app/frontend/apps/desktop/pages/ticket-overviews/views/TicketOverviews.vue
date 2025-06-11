@@ -38,8 +38,7 @@ defineOptions({
       return next()
     }
 
-    const nextOverviewLink =
-      currentTicketOverviewLink.value || overviews.value[0].link
+    const nextOverviewLink = currentTicketOverviewLink.value || overviews.value[0].link
     setCurrentTicketOverviewLink(nextOverviewLink)
 
     next({
@@ -48,19 +47,15 @@ defineOptions({
     })
   },
   beforeRouteUpdate(to, _, next) {
-    const {
-      currentTicketOverviewLink,
-      overviews,
-      setCurrentTicketOverviewLink,
-    } = useTicketOverviews()
+    const { currentTicketOverviewLink, overviews, setCurrentTicketOverviewLink } =
+      useTicketOverviews()
 
     if (to.params.overviewLink) {
       setCurrentTicketOverviewLink(to.params.overviewLink as string)
       return next()
     }
 
-    const nextOverviewLink =
-      currentTicketOverviewLink.value || overviews.value[0].link
+    const nextOverviewLink = currentTicketOverviewLink.value || overviews.value[0].link
     setCurrentTicketOverviewLink(nextOverviewLink)
 
     next({
@@ -70,12 +65,9 @@ defineOptions({
   },
 })
 
-const { overviewsByLink, hasOverviews, overviewsTicketCountById } =
-  useTicketOverviews()
+const { overviewsByLink, hasOverviews, overviewsTicketCountById } = useTicketOverviews()
 
-const currentOverview = computed(
-  () => overviewsByLink.value[props.overviewLink],
-)
+const currentOverview = computed(() => overviewsByLink.value[props.overviewLink])
 
 const currentOverviewCount = computed(
   () => overviewsTicketCountById.value[currentOverview.value?.id],

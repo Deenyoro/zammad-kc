@@ -1,8 +1,6 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-/* eslint-disable vue/no-v-html */
-
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
 import CommonFilePreview from '#shared/components/CommonFilePreview/CommonFilePreview.vue'
@@ -14,10 +12,7 @@ import { useHtmlLinks } from '#shared/composables/useHtmlLinks.ts'
 import type { ImageViewerFile } from '#shared/composables/useImageViewer.ts'
 import { useImageViewer } from '#shared/composables/useImageViewer.ts'
 import type { Attachment } from '#shared/entities/attachment/types.ts'
-import type {
-  TicketArticleSecurityState,
-  TicketArticlesQuery,
-} from '#shared/graphql/types.ts'
+import type { TicketArticleSecurityState, TicketArticlesQuery } from '#shared/graphql/types.ts'
 import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 import { i18n } from '#shared/i18n.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
@@ -107,8 +102,7 @@ const colorsClasses = computed(() => {
   }
 })
 
-const { shownMore, bubbleElement, hasShowMore, toggleShowMore } =
-  useArticleToggleMore()
+const { shownMore, bubbleElement, hasShowMore, toggleShowMore } = useArticleToggleMore()
 
 const articleInternalId = computed(() => getIdFromGraphQLId(props.articleId))
 
@@ -190,19 +184,13 @@ const onContextClick = () => {
         class="content flex flex-col overflow-hidden rounded-3xl px-4 pt-2 pb-3"
         :class="[bubbleClasses, colorClasses]"
       >
-        <div
-          class="flex items-center text-xs font-bold"
-          data-test-id="article-username"
-        >
+        <div class="flex items-center text-xs font-bold" data-test-id="article-username">
           <span class="truncate break-words">
             {{ username }}
           </span>
         </div>
-        <div
-          ref="bubbleElement"
-          data-test-id="article-content"
-          class="overflow-hidden text-base"
-        >
+        <div ref="bubbleElement" data-test-id="article-content" class="overflow-hidden text-base">
+          <!-- eslint-disable vue/no-v-html -->
           <div class="Content" v-html="body" />
         </div>
         <div
@@ -212,11 +200,7 @@ const onContextClick = () => {
             BubbleGradient: hasShowMore && !shownMore,
           }"
         ></div>
-        <div
-          v-if="attachments.length"
-          class="mt-1 mb-2"
-          :class="colorsClasses.top"
-        >
+        <div v-if="attachments.length" class="mt-1 mb-2" :class="colorsClasses.top">
           <div class="py-1 text-xs" :class="colorsClasses.amount">
             {{
               attachments.length === 1
@@ -246,11 +230,7 @@ const onContextClick = () => {
               : 'ltr:right-10 rtl:left-10',
           ]"
         >
-          <ArticleReactionBadge
-            v-if="reaction"
-            :class="[colorClasses]"
-            :reaction="reaction"
-          />
+          <ArticleReactionBadge v-if="reaction" :class="[colorClasses]" :reaction="reaction" />
           <ArticleWhatsappMediaBadge
             v-if="props.mediaError"
             :article-id="articleId"
@@ -280,22 +260,14 @@ const onContextClick = () => {
             {{ shownMore ? $t('See less') : $t('See more') }}
           </button>
           <button
-            :class="[
-              colorClasses,
-              'flex h-7 w-7 items-center justify-center rounded-md',
-            ]"
+            :class="[colorClasses, 'flex h-7 w-7 items-center justify-center rounded-md']"
             type="button"
             data-name="article-context"
             :aria-label="$t('Article actions')"
             @pointerdown="onContextClick()"
             @keydown.enter.prevent="onContextClick()"
           >
-            <CommonIcon
-              name="more-vertical"
-              size="small"
-              decorative
-              data-ignore-click
-            />
+            <CommonIcon name="more-vertical" size="small" decorative data-ignore-click />
           </button>
         </div>
       </div>

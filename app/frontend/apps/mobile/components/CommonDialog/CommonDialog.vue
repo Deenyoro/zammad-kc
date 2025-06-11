@@ -84,8 +84,7 @@ onMounted(() => {
   // if it won't find it, will try to find inside the header
   // most likely will find "Done" button
   const firstFocusable =
-    getFirstFocusableElement(contentElement.value) ||
-    getFirstFocusableElement(dialogElement.value)
+    getFirstFocusableElement(contentElement.value) || getFirstFocusableElement(dialogElement.value)
 
   nextTick(() => {
     firstFocusable?.focus()

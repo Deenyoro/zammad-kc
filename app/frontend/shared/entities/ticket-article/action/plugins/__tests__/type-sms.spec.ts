@@ -31,9 +31,7 @@ describe('sms type', () => {
 
       const types = createTestArticleTypes(ticket)
 
-      expect(types).not.toContainEqual(
-        expect.objectContaining({ value: 'sms' }),
-      )
+      expect(types).not.toContainEqual(expect.objectContaining({ value: 'sms' }))
     })
   })
 

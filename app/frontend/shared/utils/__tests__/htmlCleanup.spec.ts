@@ -1,5 +1,4 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
-/* eslint-disable no-irregular-whitespace */
 
 import { describe, it, assert } from 'vitest'
 
@@ -107,8 +106,7 @@ describe('htmlCleanup utility', () => {
   })
 
   it('removes "w" an "o" tags', () => {
-    const source =
-      '<p>some link to somewhere from word<w:sdt>abc</w:sdt></p><o:p></o:p></a>'
+    const source = '<p>some link to somewhere from word<w:sdt>abc</w:sdt></p><o:p></o:p></a>'
     // should = "<div><p>some link to somewhere from wordabc</p></div>"
     const should = '<p>some link to somewhere from wordabc</p>'
     const result = htmlCleanup(source)

@@ -15,14 +15,8 @@ const changePassword = async (
   newPassword: string,
   newPasswordConfirm?: string,
 ) => {
-  await view.events.type(
-    await view.findByLabelText('Current password'),
-    currentPassword,
-  )
-  await view.events.type(
-    await view.findByLabelText('New password'),
-    newPassword,
-  )
+  await view.events.type(await view.findByLabelText('Current password'), currentPassword)
+  await view.events.type(await view.findByLabelText('New password'), newPassword)
   await view.events.type(
     await view.findByLabelText('Confirm new password'),
     newPasswordConfirm || newPassword,
@@ -52,9 +46,7 @@ describe('password personal settings', () => {
     const view = await visitView('/personal-setting/password')
 
     await waitFor(() => {
-      expect(view, 'correctly redirects to error page').toHaveCurrentUrl(
-        '/error-tab',
-      )
+      expect(view, 'correctly redirects to error page').toHaveCurrentUrl('/error-tab')
     })
   })
 
@@ -65,9 +57,7 @@ describe('password personal settings', () => {
     expect(view.getByText('New password')).toBeInTheDocument()
     expect(view.getByText('Confirm new password')).toBeInTheDocument()
 
-    expect(
-      view.getByRole('button', { name: 'Change Password' }),
-    ).toBeInTheDocument()
+    expect(view.getByRole('button', { name: 'Change Password' })).toBeInTheDocument()
   })
 
   it('shows an error message when e.g. current password is incorrect', async () => {
@@ -98,9 +88,7 @@ describe('password personal settings', () => {
     await changePassword(view, 'old-password', 'new-password', 'wrong-password')
 
     expect(
-      await view.findByText(
-        "This field doesn't correspond to the expected value.",
-      ),
+      await view.findByText("This field doesn't correspond to the expected value."),
     ).toBeInTheDocument()
   })
 
@@ -116,8 +104,6 @@ describe('password personal settings', () => {
 
     await changePassword(view, 'old-password', 'new-password')
 
-    expect(
-      await view.findByText('Password changed successfully.'),
-    ).toBeInTheDocument()
+    expect(await view.findByText('Password changed successfully.')).toBeInTheDocument()
   })
 })

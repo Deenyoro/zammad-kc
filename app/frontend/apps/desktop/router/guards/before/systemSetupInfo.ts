@@ -3,11 +3,7 @@
 import { useApplicationStore } from '#shared/stores/application.ts'
 import log from '#shared/utils/log.ts'
 
-import type {
-  NavigationGuard,
-  RouteLocationNormalized,
-  NavigationGuardNext,
-} from 'vue-router'
+import type { NavigationGuard, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
 
 const systemSetupInfo: NavigationGuard = (
   to: RouteLocationNormalized,

@@ -43,10 +43,7 @@ export const useTicketLiveUserList = (
 
       // Sort app items by last interaction.
       appItems.sort((a, b) => {
-        return (
-          new Date(b.lastInteraction).getTime() -
-          new Date(a.lastInteraction).getTime()
-        )
+        return new Date(b.lastInteraction).getTime() - new Date(a.lastInteraction).getTime()
       })
 
       mappedLiveUsers.push({

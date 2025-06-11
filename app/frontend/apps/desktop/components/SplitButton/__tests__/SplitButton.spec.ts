@@ -7,10 +7,7 @@ import { renderComponent } from '#tests/support/components/index.ts'
 
 import SplitButton, { type Props } from '../SplitButton.vue'
 
-const renderSplitButton = (
-  props?: Partial<Props>,
-  slots?: typeof SplitButton.slots,
-) => {
+const renderSplitButton = (props?: Partial<Props>, slots?: typeof SplitButton.slots) => {
   const wrapper = renderComponent(SplitButton, {
     props,
     slots,
@@ -28,9 +25,7 @@ describe('SplitButton.vue', () => {
       },
     )
 
-    expect(
-      wrapper.getByRole('button', { name: 'Click me' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Click me' })).toBeInTheDocument()
 
     const addonButton = wrapper.getByRole('button', { name: 'Context menu' })
 
@@ -124,9 +119,7 @@ describe('SplitButton.vue', () => {
 
     expect(wrapper.queryByText('Popover content')).not.toBeInTheDocument()
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Context menu' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Context menu' }))
 
     expect(wrapper.getByText('Popover content')).toBeInTheDocument()
   })
@@ -136,8 +129,6 @@ describe('SplitButton.vue', () => {
       addonLabel: 'Macro menu',
     })
 
-    expect(
-      wrapper.getByRole('button', { name: 'Macro menu' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Macro menu' })).toBeInTheDocument()
   })
 })

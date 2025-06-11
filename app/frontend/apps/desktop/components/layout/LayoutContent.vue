@@ -55,9 +55,7 @@ const props = withDefaults(defineProps<Props>(), {
   contentAlignment: 'start',
 })
 
-const maxWidth = computed(() =>
-  props.width === 'narrow' ? '600px' : undefined,
-)
+const maxWidth = computed(() => (props.width === 'narrow' ? '600px' : undefined))
 
 const contentAlignmentClass = computed(() => {
   return props.contentAlignment === 'center' ? 'items-center' : ''
@@ -117,9 +115,7 @@ const { durations } = useTransitionConfig()
               v-if="$slots.headerRight || helpText || $slots.helpPage"
               class="flex gap-4 ltr:text-left rtl:text-right"
             >
-              <CommonPageHelp
-                v-if="!showInlineHelp && (helpText || $slots.helpPage)"
-              >
+              <CommonPageHelp v-if="!showInlineHelp && (helpText || $slots.helpPage)">
                 <slot name="helpPage">
                   <CommonHelpText :help-text="helpText" />
                 </slot>

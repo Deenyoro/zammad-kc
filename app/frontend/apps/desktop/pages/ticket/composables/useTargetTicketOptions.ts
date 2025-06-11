@@ -3,10 +3,7 @@
 import { storeToRefs } from 'pinia'
 import { computed, ref, shallowRef } from 'vue'
 
-import type {
-  ChangedFieldFunction,
-  FormFieldValue,
-} from '#shared/components/Form/types.ts'
+import type { ChangedFieldFunction, FormFieldValue } from '#shared/components/Form/types.ts'
 import { getTicketNumberWithHook } from '#shared/entities/ticket/composables/getTicketNumber.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 

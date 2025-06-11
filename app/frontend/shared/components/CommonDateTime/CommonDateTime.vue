@@ -27,9 +27,7 @@ const application = useApplicationStore()
 const outputFormat: ComputedRef<OutputType> = computed(() => {
   if (props.type !== 'configured') return props.type
 
-  return application.config.pretty_date_format === 'relative'
-    ? 'relative'
-    : 'absolute'
+  return application.config.pretty_date_format === 'relative' ? 'relative' : 'absolute'
 })
 
 const outputAbsoluteDate = computed(() => {

@@ -50,9 +50,7 @@ export const useTicketSubscribe = (ticket: Ref<TicketById | undefined>) => {
   )
 
   const isSubscriptionLoading = computed(() => {
-    return (
-      subscribeHandler.loading().value || unsubscribeMutation.loading().value
-    )
+    return subscribeHandler.loading().value || unsubscribeMutation.loading().value
   })
 
   const subscribe = async (ticketId: string) => {
@@ -108,9 +106,7 @@ export const useTicketSubscribe = (ticket: Ref<TicketById | undefined>) => {
   const hasMe = computed(() => {
     if (!ticket.value?.mentions) return false
 
-    return ticket.value.mentions.edges.some(
-      ({ node }) => node.user.id === session.userId,
-    )
+    return ticket.value.mentions.edges.some(({ node }) => node.user.id === session.userId)
   })
 
   const totalSubscribers = computed(() => {

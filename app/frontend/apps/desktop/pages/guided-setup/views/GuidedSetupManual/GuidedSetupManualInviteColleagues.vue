@@ -53,8 +53,7 @@ const transformGroupPermissions = (value: GroupPermissionReactive[]) =>
         ...(row.groups as unknown as SelectValue[]).map((groupInternalId) => ({
           groupInternalId,
           accessType: Object.keys(row.groupAccess).reduce((accesses, key) => {
-            if (row.groupAccess[key as GroupAccess])
-              accesses.push(key as GroupAccess)
+            if (row.groupAccess[key as GroupAccess]) accesses.push(key as GroupAccess)
             return accesses
           }, [] as GroupAccess[]),
         })),

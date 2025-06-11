@@ -37,18 +37,8 @@ describe('Form - Field - List (Formkit-BuildIn)', () => {
       slots: {
         default: html`
           <fieldset>
-            <FormKit
-              type="text"
-              name="email-adress"
-              id="text"
-              value="admin@example.com"
-            />
-            <FormKit
-              type="text"
-              name="email-adress"
-              id="text"
-              value="admin2@example.com"
-            />
+            <FormKit type="text" name="email-adress" id="text" value="admin@example.com" />
+            <FormKit type="text" name="email-adress" id="text" value="admin2@example.com" />
           </fieldset>
         `,
       },
@@ -60,9 +50,6 @@ describe('Form - Field - List (Formkit-BuildIn)', () => {
     expect(inputs).toHaveLength(2)
 
     const node = getNode('list')
-    expect(node?.value).toStrictEqual([
-      'admin@example.com',
-      'admin2@example.com',
-    ])
+    expect(node?.value).toStrictEqual(['admin@example.com', 'admin2@example.com'])
   })
 })

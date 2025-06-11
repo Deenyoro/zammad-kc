@@ -1,11 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import {
-  type MaybeElementRef,
-  useCurrentElement,
-  type VueInstance,
-} from '@vueuse/core'
+import { type MaybeElementRef, useCurrentElement, type VueInstance } from '@vueuse/core'
 import { delay } from 'lodash-es'
 import { storeToRefs } from 'pinia'
 import { ref, useTemplateRef, watch } from 'vue'
@@ -34,15 +30,11 @@ const isQuickSearchActive = ref(false)
 const quickSearchValue = ref('')
 
 const { deactivateTabTrap, activateTabTrap } = useTrapTab(
-  useCurrentElement(
-    layoutSidebarInstance as MaybeElementRef<VueInstance> | undefined,
-  ),
+  useCurrentElement(layoutSidebarInstance as MaybeElementRef<VueInstance> | undefined),
   true,
 )
 
-watch(isQuickSearchActive, (isActive) =>
-  isActive ? activateTabTrap() : deactivateTabTrap(),
-)
+watch(isQuickSearchActive, (isActive) => (isActive ? activateTabTrap() : deactivateTabTrap()))
 
 const { userId } = useSessionStore()
 
@@ -136,11 +128,7 @@ const onResetWidth = () => {
             :class="{ 'mb-2': !isCollapsed }"
             :collapsed="isCollapsed"
           />
-          <UserTaskbarTabs
-            v-show="!isQuickSearchActive"
-            class="px-3"
-            :collapsed="isCollapsed"
-          />
+          <UserTaskbarTabs v-show="!isQuickSearchActive" class="px-3" :collapsed="isCollapsed" />
           <LeftSidebarFooterMenu
             v-show="!isQuickSearchActive"
             :collapsed="isCollapsed"
@@ -152,10 +140,7 @@ const onResetWidth = () => {
     </LayoutSidebar>
     <div id="main-content" class="relative">
       <RouterView #default="{ Component, route: currentRoute }">
-        <KeepAlive
-          :exclude="['ErrorTab']"
-          :max="config.ui_task_mananger_max_task_count"
-        >
+        <KeepAlive :exclude="['ErrorTab']" :max="config.ui_task_mananger_max_task_count">
           <component
             :is="Component"
             v-if="!currentRoute.meta.permanentItem"

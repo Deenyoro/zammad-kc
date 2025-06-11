@@ -28,21 +28,14 @@ const { ticket, updateRefetchingStatus } = useTicketInformation()
 const { createQueryErrorHandler } = useErrorHandler()
 
 const errorCallback = createQueryErrorHandler({
-  notFound: __(
-    'User with specified ID was not found. Try checking the URL for errors.',
-  ),
+  notFound: __('User with specified ID was not found. Try checking the URL for errors.'),
   forbidden: __('You have insufficient rights to view this user.'),
 })
 
 const customerId = computed(() => ticket.value?.customer.id)
 
-const {
-  user,
-  loading,
-  objectAttributes,
-  secondaryOrganizations,
-  loadAllSecondaryOrganizations,
-} = useUserDetail(customerId, errorCallback)
+const { user, loading, objectAttributes, secondaryOrganizations, loadAllSecondaryOrganizations } =
+  useUserDetail(customerId, errorCallback)
 
 watchEffect(() => {
   updateRefetchingStatus(loading.value && user.value != null)
@@ -63,10 +56,7 @@ const ticketsData = computed(() => getTicketData(user.value))
           {{ user.fullname }}
         </h2>
         <h3 v-if="user.organization">
-          <CommonLink
-            :link="`/organizations/${user.organization.internalId}`"
-            class="text-blue"
-          >
+          <CommonLink :link="`/organizations/${user.organization.internalId}`" class="text-blue">
             {{ user.organization.name }}
           </CommonLink>
         </h3>

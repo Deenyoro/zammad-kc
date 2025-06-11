@@ -3,10 +3,7 @@
 <script setup lang="ts">
 import { toRef } from 'vue'
 
-import {
-  useEscalationState,
-  EscalationState,
-} from '#shared/composables/useEscalationState.ts'
+import { useEscalationState, EscalationState } from '#shared/composables/useEscalationState.ts'
 import type { Scalars } from '#shared/graphql/types.ts'
 
 import CommonSectionMenuItem from '#mobile/components/CommonSectionMenu/CommonSectionMenuItem.vue'
@@ -23,10 +20,8 @@ const escalationState = useEscalationState(toRef(() => props.escalationAt))
   <CommonSectionMenuItem
     v-if="escalationAt && escalationState !== EscalationState.None"
     :class="{
-      'text-red-bright bg-red-highlight':
-        escalationState === EscalationState.Escalated,
-      'text-yellow bg-yellow-highlight':
-        escalationState === EscalationState.Warning,
+      'text-red-bright bg-red-highlight': escalationState === EscalationState.Escalated,
+      'text-yellow bg-yellow-highlight': escalationState === EscalationState.Warning,
     }"
     :label="label"
   >

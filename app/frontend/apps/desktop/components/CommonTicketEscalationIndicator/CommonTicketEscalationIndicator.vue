@@ -3,10 +3,7 @@
 <script setup lang="ts">
 import { toRef } from 'vue'
 
-import {
-  useEscalationState,
-  EscalationState,
-} from '#shared/composables/useEscalationState.ts'
+import { useEscalationState, EscalationState } from '#shared/composables/useEscalationState.ts'
 import type { Scalars } from '#shared/graphql/types.ts'
 
 export interface Props {
@@ -21,9 +18,7 @@ const escalationState = useEscalationState(toRef(() => props.escalationAt))
 <template>
   <CommonBadge
     v-if="escalationAt && escalationState !== EscalationState.None"
-    :variant="
-      escalationState === EscalationState.Escalated ? 'danger' : 'warning'
-    "
+    :variant="escalationState === EscalationState.Escalated ? 'danger' : 'warning'"
     class="uppercase"
     role="alert"
   >

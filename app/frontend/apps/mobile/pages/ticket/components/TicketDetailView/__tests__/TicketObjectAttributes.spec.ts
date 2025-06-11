@@ -24,10 +24,7 @@ describe('TicketObjectAttributes', () => {
     expect(accountedTime).toHaveTextContent('1.1')
 
     expect(wrapper.queryByText('none')).not.toBeInTheDocument()
-    expect(
-      wrapper.queryByRole('button'),
-      'no "show more" button',
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button'), 'no "show more" button').not.toBeInTheDocument()
   })
 
   it('does not render an empty accounted time value', () => {
@@ -41,9 +38,7 @@ describe('TicketObjectAttributes', () => {
       },
     })
 
-    expect(
-      wrapper.queryByLabelText('Total Accounted Time'),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByLabelText('Total Accounted Time')).not.toBeInTheDocument()
   })
 
   it('renders the pre-defined time accounting unit', () => {
@@ -168,10 +163,7 @@ describe('TicketObjectAttributes', () => {
     `,
     )
 
-    expect(
-      wrapper.queryByRole('button'),
-      'no "show more" button',
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button'), 'no "show more" button').not.toBeInTheDocument()
   })
 
   it('shows a button to show more', async () => {

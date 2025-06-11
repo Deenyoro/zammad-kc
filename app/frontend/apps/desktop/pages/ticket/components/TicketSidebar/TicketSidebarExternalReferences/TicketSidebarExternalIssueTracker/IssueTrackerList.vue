@@ -45,13 +45,12 @@ const emit = defineEmits<{
   error: [string | null]
 }>()
 
-const { isLoadingIssues, issueList, skipNextLinkUpdate, error } =
-  useTicketExternalIssueTracker(
-    props.screenType,
-    props.trackerType,
-    toRef(props, 'issueLinks'),
-    props.ticketId,
-  )
+const { isLoadingIssues, issueList, skipNextLinkUpdate, error } = useTicketExternalIssueTracker(
+  props.screenType,
+  props.trackerType,
+  toRef(props, 'issueLinks'),
+  props.ticketId,
+)
 
 watch(error, () => {
   emit('error', error.value)
@@ -64,9 +63,7 @@ const unlinkMutation = new MutationHandler(
   },
 )
 
-const removeIssueLinkListCacheUpdate = (
-  issue: TicketExternalReferencesIssueTrackerItem,
-) => {
+const removeIssueLinkListCacheUpdate = (issue: TicketExternalReferencesIssueTrackerItem) => {
   const { cache } = getApolloClient()
 
   const queryOptions = {
@@ -79,9 +76,7 @@ const removeIssueLinkListCacheUpdate = (
   }
 
   const existingIssueTrackerItems =
-    cache.readQuery<TicketExternalReferencesIssueTrackerItemListQuery>(
-      queryOptions,
-    )
+    cache.readQuery<TicketExternalReferencesIssueTrackerItemListQuery>(queryOptions)
 
   if (!existingIssueTrackerItems) return
 
@@ -124,9 +119,9 @@ const unlinkIssue = async (issue: TicketExternalReferencesIssueTrackerItem) => {
     return externalReferences?.input(
       {
         ...values.externalReferences,
-        [props.trackerType]: values?.externalReferences[
-          props.trackerType
-        ]?.filter((link) => link !== issue.url),
+        [props.trackerType]: values?.externalReferences[props.trackerType]?.filter(
+          (link) => link !== issue.url,
+        ),
       },
       false,
     )
@@ -159,17 +154,14 @@ const linkIssueMutation = new MutationHandler(
       }
 
       let existingIssueTrackerItems =
-        cache.readQuery<TicketExternalReferencesIssueTrackerItemListQuery>(
-          queryOptions,
-        )
+        cache.readQuery<TicketExternalReferencesIssueTrackerItemListQuery>(queryOptions)
 
       const newIdPresent =
         existingIssueTrackerItems?.ticketExternalReferencesIssueTrackerItemList?.find(
           (issueItem) => {
             return (
               issueItem.issueId ===
-              ticketExternalReferencesIssueTrackerItemAdd?.issueTrackerItem
-                ?.issueId
+              ticketExternalReferencesIssueTrackerItemAdd?.issueTrackerItem?.issueId
             )
           },
         )
@@ -178,8 +170,7 @@ const linkIssueMutation = new MutationHandler(
       existingIssueTrackerItems = {
         ...existingIssueTrackerItems,
         ticketExternalReferencesIssueTrackerItemList: [
-          ...(existingIssueTrackerItems?.ticketExternalReferencesIssueTrackerItemList ||
-            []),
+          ...(existingIssueTrackerItems?.ticketExternalReferencesIssueTrackerItemList || []),
           ticketExternalReferencesIssueTrackerItemAdd?.issueTrackerItem,
         ],
       }
@@ -216,14 +207,11 @@ const linkIssue = async (link: string) => {
     .then((result) => {
       // For ticket create we need to remember the url inside the hidden form field.
       if (props.screenType === TicketSidebarScreenType.TicketCreate) {
-        const issueUrl =
-          result?.ticketExternalReferencesIssueTrackerItemAdd?.issueTrackerItem
-            ?.url
+        const issueUrl = result?.ticketExternalReferencesIssueTrackerItemAdd?.issueTrackerItem?.url
 
         if (!issueUrl) return
 
-        const externalReferences =
-          props.form?.findNodeByName('externalReferences')
+        const externalReferences = props.form?.findNodeByName('externalReferences')
 
         if (!externalReferences) return
 
@@ -260,11 +248,7 @@ const openFlyout = () => {
 
 const showEmptyState = computed(() => {
   if (props.ticketId) {
-    return (
-      issueList.value !== undefined &&
-      issueList.value.length === 0 &&
-      props.isTicketEditable
-    )
+    return issueList.value !== undefined && issueList.value.length === 0 && props.isTicketEditable
   }
 
   return props.form?.formInitialSettled && !props.issueLinks?.length

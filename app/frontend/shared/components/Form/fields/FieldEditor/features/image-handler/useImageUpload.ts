@@ -6,15 +6,13 @@ import { parseGraphqlId } from '#shared/graphql/utils.ts'
 import { MutationHandler } from '#shared/server/apollo/handler/index.ts'
 import type { ImageFileData, ImageFileSource } from '#shared/utils/files.ts'
 
-export const useImageUpload = (
-  formId: string,
-  name: string,
-  inline: boolean,
-) => {
+export const useImageUpload = (formId: string, name: string, inline: boolean) => {
   const addFileMutation = new MutationHandler(useFormUploadCacheAddMutation({}))
 
-  const { setFileUploadProcessing, removeFileUploadProcessing } =
-    useFileUploadProcessing(formId, name)
+  const { setFileUploadProcessing, removeFileUploadProcessing } = useFileUploadProcessing(
+    formId,
+    name,
+  )
 
   const uploadImage = (
     files: ImageFileData[],
@@ -33,15 +31,13 @@ export const useImageUpload = (
         })),
       })
       .then((response) => {
-        const uploadedFiles = response?.formUploadCacheAdd?.uploadedFiles.map(
-          (file) => {
-            return {
-              name: file.name,
-              type: file.type,
-              src: `/api/v1/attachments/${parseGraphqlId(file.id).id}`,
-            }
-          },
-        ) as ImageFileSource[]
+        const uploadedFiles = response?.formUploadCacheAdd?.uploadedFiles.map((file) => {
+          return {
+            name: file.name,
+            type: file.type,
+            src: `/api/v1/attachments/${parseGraphqlId(file.id).id}`,
+          }
+        }) as ImageFileSource[]
 
         successCallback(uploadedFiles)
       })

@@ -20,9 +20,7 @@ type CreateNewChecklist = (
   options?: { focusLastItem: boolean },
 ) => Promise<void | Maybe<TicketChecklistAddMutation>>
 
-export const useChecklistTemplates = (
-  createNewChecklist: CreateNewChecklist,
-) => {
+export const useChecklistTemplates = (createNewChecklist: CreateNewChecklist) => {
   const checklistTemplatesQuery = new QueryHandler(
     useChecklistTemplatesQuery(
       {
@@ -57,15 +55,12 @@ export const useChecklistTemplates = (
         return null as unknown as ChecklistTemplatesQuery
 
       return {
-        checklistTemplates:
-          subscriptionData.data.checklistTemplateUpdates.checklistTemplates,
+        checklistTemplates: subscriptionData.data.checklistTemplateUpdates.checklistTemplates,
       }
     },
   })
 
-  const applyChecklistTemplate = async (
-    template: Partial<ChecklistTemplate>,
-  ) => {
+  const applyChecklistTemplate = async (template: Partial<ChecklistTemplate>) => {
     await createNewChecklist(
       {
         templateId: template.id,

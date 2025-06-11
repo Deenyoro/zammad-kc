@@ -12,9 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
   label: __('Content loader'),
 })
 
-const roundedClass = computed(() =>
-  props.rounded ? 'rounded-full' : 'rounded-md',
-)
+const roundedClass = computed(() => (props.rounded ? 'rounded-full' : 'rounded-md'))
 </script>
 
 <template>

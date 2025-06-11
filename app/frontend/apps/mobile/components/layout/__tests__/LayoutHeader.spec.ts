@@ -16,7 +16,6 @@ describe('mobile app header', () => {
   })
 
   describe('title prop tests', () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let view: ReturnType<typeof renderComponent>
 
     beforeEach(() => {

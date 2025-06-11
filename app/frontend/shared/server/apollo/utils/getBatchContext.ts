@@ -4,9 +4,7 @@ import type { ClientBatchContext } from '#shared/types/server/apollo/client.ts'
 
 import type { Operation } from '@apollo/client/core'
 
-export default function getBatchContext(
-  operation: Operation,
-): ClientBatchContext {
+export default function getBatchContext(operation: Operation): ClientBatchContext {
   const defaultBatchContext: ClientBatchContext = {
     active: true,
   }

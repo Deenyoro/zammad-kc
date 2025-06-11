@@ -19,9 +19,7 @@ describe('TicketHistoryFlyout', () => {
       router: true,
     })
 
-    expect(
-      wrapper.getByRole('heading', { name: 'Ticket History', level: 2 }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('heading', { name: 'Ticket History', level: 2 })).toBeInTheDocument()
   })
 
   it('renders the ticket history entries', async () => {

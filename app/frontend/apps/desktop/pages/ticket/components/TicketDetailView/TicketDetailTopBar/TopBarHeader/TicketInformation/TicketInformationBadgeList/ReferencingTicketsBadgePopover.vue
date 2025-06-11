@@ -38,18 +38,14 @@ const ticketReferenceMenuItems = computed<Array<MenuItem> | undefined>(() =>
 
 const referencingTicketsCount = computed(() => props.referencingTickets.length)
 
-const menuItemKeys = computed(() =>
-  ticketReferenceMenuItems.value?.map((item) => item.key),
-)
+const menuItemKeys = computed(() => ticketReferenceMenuItems.value?.map((item) => item.key))
 </script>
 
 <template>
   <ChecklistBadge
     ref="popoverTarget"
     v-tooltip="
-      referencingTicketsCount === 1
-        ? $t('Show tracking ticket')
-        : $t('Show tracking tickets')
+      referencingTicketsCount === 1 ? $t('Show tracking ticket') : $t('Show tracking tickets')
     "
     role="button"
     tag="div"
@@ -64,10 +60,7 @@ const menuItemKeys = computed(() =>
     <CommonLabel size="small" class="text-black! dark:text-white!">
       {{
         referencingTicketsCount === 1
-          ? getTicketNumberWithHook(
-              config.ticket_hook,
-              referencingTickets[0].number as string,
-            )
+          ? getTicketNumberWithHook(config.ticket_hook, referencingTickets[0].number as string)
           : $t('%s tickets', referencingTicketsCount)
       }}
     </CommonLabel>

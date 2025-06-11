@@ -25,8 +25,6 @@ describe('ArticleBubbleHeader', () => {
   it('creates the component', () => {
     const wrapper = renderWrapper()
 
-    expect(
-      wrapper.queryByLabelText('Article meta information'),
-    ).toBeInTheDocument()
+    expect(wrapper.queryByLabelText('Article meta information')).toBeInTheDocument()
   })
 })

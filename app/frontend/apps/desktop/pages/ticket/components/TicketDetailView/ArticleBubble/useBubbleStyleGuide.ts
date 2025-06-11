@@ -13,8 +13,7 @@ export const useBubbleStyleGuide = (
   )
 
   const dividerClass = computed(() => {
-    if (position.value === 'right')
-      return 'border-t border-t-neutral-100 dark:border-t-gray-900'
+    if (position.value === 'right') return 'border-t border-t-neutral-100 dark:border-t-gray-900'
 
     return 'border-t border-t-neutral-300 dark:border-t-gray-900'
   })
@@ -22,8 +21,7 @@ export const useBubbleStyleGuide = (
   const frameBorderClass = computed(() => {
     if (isArticleTypeNote.value) return ''
 
-    if (position.value === 'right')
-      return 'border border-neutral-100 dark:border-gray-900'
+    if (position.value === 'right') return 'border border-neutral-100 dark:border-gray-900'
 
     return 'border border-neutral-300 dark:border-gray-900'
   })

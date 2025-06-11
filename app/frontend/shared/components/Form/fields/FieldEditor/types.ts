@@ -47,10 +47,7 @@ declare module '@tiptap/core' {
   }
 }
 
-export type MentionUserItem = ConfidentTake<
-  MentionSuggestionsQuery,
-  'mentionSuggestions'
->[number]
+export type MentionUserItem = ConfidentTake<MentionSuggestionsQuery, 'mentionSuggestions'>[number]
 
 export type MentionKnowledgeBaseItem = ConfidentTake<
   KnowledgeBaseAnswerSuggestionsQuery,

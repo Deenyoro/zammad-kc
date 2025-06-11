@@ -55,9 +55,7 @@ describe('ticket item display', () => {
     expect(view.getByText(/·/)).toBeInTheDocument()
     expect(view.getByText(/Erik Wise, Peter Smith, \+1/)).toBeInTheDocument()
 
-    expect(
-      view.getByText('edited 10 hours ago by Jane Doe'),
-    ).toBeInTheDocument()
+    expect(view.getByText('edited 10 hours ago by Jane Doe')).toBeInTheDocument()
   })
 
   it('renders when something is missing', () => {

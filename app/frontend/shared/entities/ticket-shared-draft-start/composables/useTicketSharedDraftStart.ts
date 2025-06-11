@@ -48,17 +48,13 @@ export const useTicketSharedDraftStart = (
       groupId: groupId.value,
     },
     updateQuery: (_, { subscriptionData }) => {
-      if (
-        !subscriptionData.data?.ticketSharedDraftStartUpdateByGroup
-          ?.sharedDraftStarts
-      ) {
+      if (!subscriptionData.data?.ticketSharedDraftStartUpdateByGroup?.sharedDraftStarts) {
         return null as unknown as TicketSharedDraftStartListQuery
       }
 
       return {
         ticketSharedDraftStartList:
-          subscriptionData.data.ticketSharedDraftStartUpdateByGroup
-            .sharedDraftStarts,
+          subscriptionData.data.ticketSharedDraftStartUpdateByGroup.sharedDraftStarts,
       }
     },
   }))

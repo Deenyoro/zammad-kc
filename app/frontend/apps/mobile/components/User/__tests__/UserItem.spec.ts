@@ -42,9 +42,7 @@ describe('user item display', () => {
     expect(view.getByText(/organization/)).toBeInTheDocument()
     expect(view.getByText(/2 tickets/)).toBeInTheDocument()
     expect(view.getByText('John Doe')).toBeInTheDocument()
-    expect(
-      view.getByText('edited 10 hours ago by Jane Doe'),
-    ).toBeInTheDocument()
+    expect(view.getByText('edited 10 hours ago by Jane Doe')).toBeInTheDocument()
   })
 
   it('renders when something is missing', () => {

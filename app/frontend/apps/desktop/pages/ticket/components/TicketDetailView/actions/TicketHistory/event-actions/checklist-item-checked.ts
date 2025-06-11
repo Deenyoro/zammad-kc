@@ -4,8 +4,7 @@ import type { EventActionModule } from '../types.ts'
 
 export default <EventActionModule>{
   name: 'checklist-item-checked',
-  actionName: (event) =>
-    event.changes?.to === 'true' ? 'checked' : 'unchecked',
+  actionName: (event) => (event.changes?.to === 'true' ? 'checked' : 'unchecked'),
   content: (event) => {
     return {
       entityName: __('Checklist Item'),

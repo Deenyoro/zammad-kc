@@ -26,27 +26,17 @@ it('see default list when opening page', async () => {
   const plusSign = view.getByIconName('add')
 
   expect(plusSign, 'can create a new ticket from here').toBeInTheDocument()
-  expect(view.getLinkFromElement(plusSign)).toHaveAttribute(
-    'href',
-    '/mobile/tickets/create',
-  )
+  expect(view.getLinkFromElement(plusSign)).toHaveAttribute('href', '/mobile/tickets/create')
 
   await waitForNextTick(true)
 
-  expect(
-    await view.findByTestId('overview'),
-    'has default overview',
-  ).toHaveTextContent('Overview 1')
+  expect(await view.findByTestId('overview'), 'has default overview').toHaveTextContent(
+    'Overview 1',
+  )
 
-  expect(
-    await view.findByTestId('column'),
-    'has default column',
-  ).toHaveTextContent('Created at')
+  expect(await view.findByTestId('column'), 'has default column').toHaveTextContent('Created at')
 
-  expect(
-    view.getByIconName('arrow-down'),
-    'descending by default',
-  ).not.toHaveClass('rotate-180')
+  expect(view.getByIconName('arrow-down'), 'descending by default').not.toHaveClass('rotate-180')
 
   expect(
     await view.findByText('No entries'),
@@ -76,10 +66,7 @@ it('can filter by overview type', async () => {
   const ticketItem = view.getByText('Ticket 1')
 
   expect(ticketItem).toBeInTheDocument()
-  expect(view.getLinkFromElement(ticketItem)).toHaveAttribute(
-    'href',
-    '/mobile/tickets/1',
-  )
+  expect(view.getLinkFromElement(ticketItem)).toHaveAttribute('href', '/mobile/tickets/1')
 })
 
 it('can filter by columns and direction', async () => {
@@ -155,9 +142,7 @@ it('takes filter from query', async () => {
 describe.skip('paginating ticket list', () => {
   const emulateScroll = async (scroll: number) => {
     document.documentElement.scrollTop = scroll
-    document.dispatchEvent(
-      new Event('scroll', { bubbles: true, cancelable: true }),
-    )
+    document.dispatchEvent(new Event('scroll', { bubbles: true, cancelable: true }))
 
     await waitForNextTick()
   }
@@ -176,9 +161,7 @@ describe.skip('paginating ticket list', () => {
 
     await waitFor(() => view.getByText('Ticket 1'))
 
-    expect(
-      view.queryByRole('button', { name: 'load 10 more' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'load 10 more' })).not.toBeInTheDocument()
 
     await emulateScroll(1000)
 

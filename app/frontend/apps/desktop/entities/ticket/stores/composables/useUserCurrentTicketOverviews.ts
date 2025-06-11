@@ -37,8 +37,7 @@ const initializeOverviewsSubscriptions = (
 
       // if we return empty array here, the actual query will be aborted, because we have fetchPolicy "cache-and-network"
       // if we return existing value, it will throw an error, because "overviews" doesn't exist yet on the query result
-      if (!ticketOverviews)
-        return null as unknown as UserCurrentTicketOverviewsQuery
+      if (!ticketOverviews) return null as unknown as UserCurrentTicketOverviewsQuery
 
       return {
         userCurrentTicketOverviews: ticketOverviews,
@@ -54,8 +53,7 @@ const initializeOverviewsSubscriptions = (
     document: UserCurrentOverviewOrderingFullAttributesUpdatesDocument,
     variables: { ignoreUserConditions: false },
     updateQuery(_, { subscriptionData }) {
-      const overviews =
-        subscriptionData.data.userCurrentOverviewOrderingUpdates?.overviews
+      const overviews = subscriptionData.data.userCurrentOverviewOrderingUpdates?.overviews
 
       if (!overviews) return null as unknown as UserCurrentTicketOverviewsQuery
 
@@ -81,70 +79,53 @@ export const useUserCurrentTicketOverviews = () => {
   const overviewsRaw = overviewHandler.result()
   const overviewsLoading = overviewHandler.loading()
 
-  const overviews = computed(
-    () => overviewsRaw.value?.userCurrentTicketOverviews || [],
-  )
+  const overviews = computed(() => overviewsRaw.value?.userCurrentTicketOverviews || [])
   const overviewsById = computed(() => keyBy(overviews.value, 'id'))
-  const overviewsByInternalId = computed<Record<ID, string>>(
-    (currentLookup) => {
-      const newLookup = mapValues(keyBy(overviews.value, 'internalId'), 'id')
+  const overviewsByInternalId = computed<Record<ID, string>>((currentLookup) => {
+    const newLookup = mapValues(keyBy(overviews.value, 'internalId'), 'id')
 
-      if (currentLookup && isEqual(currentLookup, newLookup))
-        return currentLookup
+    if (currentLookup && isEqual(currentLookup, newLookup)) return currentLookup
 
-      return newLookup
-    },
-  )
+    return newLookup
+  })
 
   const overviewsByLink = computed(() => keyBy(overviews.value, 'link'))
   const hasOverviews = computed(() => overviews.value.length > 0)
 
   const overviewIds = computed(() => Object.keys(overviewsById.value))
 
-  const lastUsedOverviews = computed<Record<ID, string>>(
-    (currentLastUsedOverviews) => {
-      const lastUsedOverviews =
-        user.value?.preferences?.overviews_last_used || {}
+  const lastUsedOverviews = computed<Record<ID, string>>((currentLastUsedOverviews) => {
+    const lastUsedOverviews = user.value?.preferences?.overviews_last_used || {}
 
-      const newLastUsedOverviews = Object.keys(lastUsedOverviews).reduce(
-        (result: Record<ID, string>, internalId) => {
-          const id = overviewsByInternalId.value[internalId]
+    const newLastUsedOverviews = Object.keys(lastUsedOverviews).reduce(
+      (result: Record<ID, string>, internalId) => {
+        const id = overviewsByInternalId.value[internalId]
 
-          if (id) {
-            result[id] = lastUsedOverviews[internalId]
-          }
-          return result
-        },
-        {},
-      )
+        if (id) {
+          result[id] = lastUsedOverviews[internalId]
+        }
+        return result
+      },
+      {},
+    )
 
-      if (
-        currentLastUsedOverviews &&
-        isEqual(currentLastUsedOverviews, newLastUsedOverviews)
-      ) {
-        return currentLastUsedOverviews
-      }
+    if (currentLastUsedOverviews && isEqual(currentLastUsedOverviews, newLastUsedOverviews)) {
+      return currentLastUsedOverviews
+    }
 
-      return newLastUsedOverviews
-    },
-  )
+    return newLastUsedOverviews
+  })
 
-  const overviewsSortedByLastUsedIds = computed<ID[]>(
-    (currentSortedLastUsedIds) => {
-      const newSortedLastUsedIds = Object.keys(lastUsedOverviews.value).sort(
-        (a, b) =>
-          lastUsedOverviews.value[b].localeCompare(lastUsedOverviews.value[a]),
-      )
+  const overviewsSortedByLastUsedIds = computed<ID[]>((currentSortedLastUsedIds) => {
+    const newSortedLastUsedIds = Object.keys(lastUsedOverviews.value).sort((a, b) =>
+      lastUsedOverviews.value[b].localeCompare(lastUsedOverviews.value[a]),
+    )
 
-      if (
-        currentSortedLastUsedIds &&
-        isEqual(currentSortedLastUsedIds, newSortedLastUsedIds)
-      )
-        return currentSortedLastUsedIds
+    if (currentSortedLastUsedIds && isEqual(currentSortedLastUsedIds, newSortedLastUsedIds))
+      return currentSortedLastUsedIds
 
-      return newSortedLastUsedIds
-    },
-  )
+    return newSortedLastUsedIds
+  })
 
   // Active Overview (foreground)
   const currentTicketOverviewLink = ref('')

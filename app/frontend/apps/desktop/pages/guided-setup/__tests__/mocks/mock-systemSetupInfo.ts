@@ -6,9 +6,7 @@ import { useSystemSetupInfoStore } from '../../stores/systemSetupInfo.ts'
 
 import type { SystemSetupInfoStorage } from '../../types/setup-info.ts'
 
-export const mockSystemSetupInfo = (
-  systemSetupInfo: SystemSetupInfoStorage,
-) => {
+export const mockSystemSetupInfo = (systemSetupInfo: SystemSetupInfoStorage) => {
   initializePiniaStore()
 
   const systemSetupInfoStore = useSystemSetupInfoStore()

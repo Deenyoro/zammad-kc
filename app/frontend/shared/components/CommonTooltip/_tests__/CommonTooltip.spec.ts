@@ -10,9 +10,7 @@ import renderComponent, {
 import CommonTooltipVue, { type Props } from '../CommonTooltip.vue'
 
 const CustomComponent = (props: any) => {
-  return props.state
-    ? h('div', { 'data-test-id': 'customTooltip' }, 'tooltip')
-    : null
+  return props.state ? h('div', { 'data-test-id': 'customTooltip' }, 'tooltip') : null
 }
 CustomComponent.props = ['id', 'messages', 'heading', 'state']
 
@@ -34,7 +32,7 @@ const renderTooltip = (type: 'popup' | 'inline', props: Props) => {
 
 type Context = { view: ExtendedRenderResult }
 
-describe('rendering "inline" tooltip', async () => {
+describe('rendering "inline" tooltip', () => {
   const test = it<Context>
 
   beforeEach<Context>((context) => {

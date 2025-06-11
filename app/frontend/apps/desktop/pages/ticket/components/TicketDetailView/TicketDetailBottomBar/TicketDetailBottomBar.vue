@@ -38,10 +38,7 @@ defineEmits<{
 
 <template>
   <div class="flex gap-4 ltr:mr-auto rtl:ml-auto">
-    <TicketLiveUsers
-      v-if="liveUserList?.length"
-      :live-user-list="liveUserList"
-    />
+    <TicketLiveUsers v-if="liveUserList?.length" :live-user-list="liveUserList" />
 
     <TicketSharedDraftZoom
       v-if="hasAvailableDraft"

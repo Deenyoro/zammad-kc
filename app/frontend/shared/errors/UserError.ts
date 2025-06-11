@@ -19,12 +19,8 @@ export default class UserError extends Error {
 
     this.userErrorId = userErrorId || getUuid()
     this.errors = errors
-    this.generalErrors = errors
-      .filter((error) => !error.field)
-      .map((error) => error.message)
-    this.fieldErrors = errors.filter(
-      (error) => error.field,
-    ) as ReadonlyArray<UserFieldError>
+    this.generalErrors = errors.filter((error) => !error.field).map((error) => error.message)
+    this.fieldErrors = errors.filter((error) => error.field) as ReadonlyArray<UserFieldError>
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, new.target.prototype)
@@ -39,20 +35,17 @@ export default class UserError extends Error {
   }
 
   public getFieldErrorList(): Record<string, string> {
-    return this.fieldErrors.reduce(
-      (fieldErrorList: Record<string, string>, fieldError) => {
-        // In case of an array with placeholders, translate the message right here.
-        if (fieldError.messagePlaceholder)
-          fieldErrorList[fieldError.field] = i18n.t(
-            fieldError.message,
-            ...fieldError.messagePlaceholder,
-          )
-        // Otherwise, just pass the source string for later translation.
-        else fieldErrorList[fieldError.field] = fieldError.message
+    return this.fieldErrors.reduce((fieldErrorList: Record<string, string>, fieldError) => {
+      // In case of an array with placeholders, translate the message right here.
+      if (fieldError.messagePlaceholder)
+        fieldErrorList[fieldError.field] = i18n.t(
+          fieldError.message,
+          ...fieldError.messagePlaceholder,
+        )
+      // Otherwise, just pass the source string for later translation.
+      else fieldErrorList[fieldError.field] = fieldError.message
 
-        return fieldErrorList
-      },
-      {},
-    )
+      return fieldErrorList
+    }, {})
   }
 }

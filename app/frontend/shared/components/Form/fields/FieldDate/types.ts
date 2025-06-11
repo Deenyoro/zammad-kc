@@ -4,13 +4,7 @@ import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
 
 import type { RangeConfig } from '@vuepic/vue-datepicker'
 
-export const dateFieldProps = [
-  'clearable',
-  'futureOnly',
-  'maxDate',
-  'minDate',
-  'range',
-]
+export const dateFieldProps = ['clearable', 'futureOnly', 'maxDate', 'minDate', 'range']
 
 export type DateTimeContext = FormFieldContext<{
   range?: boolean | RangeConfig

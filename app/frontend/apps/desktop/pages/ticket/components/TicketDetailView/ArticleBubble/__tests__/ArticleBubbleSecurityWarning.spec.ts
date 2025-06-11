@@ -6,9 +6,7 @@ import { createDummyArticle } from '#shared/entities/ticket-article/__tests__/mo
 
 import ArticleBubbleSecurityWarning from '#desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleSecurityWarning.vue'
 
-const renderHeaderWarning = (
-  article: ReturnType<typeof createDummyArticle>,
-) => {
+const renderHeaderWarning = (article: ReturnType<typeof createDummyArticle>) => {
   return renderComponent(
     {
       setup() {
@@ -69,9 +67,7 @@ describe('ArticleBubbleSecurityWarning', () => {
     )
 
     expect(wrapper.queryByText('Security Error')).toBeInTheDocument()
-    expect(
-      wrapper.queryByText('Encryption: decryption failure'),
-    ).toBeInTheDocument()
+    expect(wrapper.queryByText('Encryption: decryption failure')).toBeInTheDocument()
   })
 
   it('displays a warning in case of both sign and decryption errors', () => {
@@ -88,8 +84,6 @@ describe('ArticleBubbleSecurityWarning', () => {
 
     expect(wrapper.queryByText('Security Error')).toBeInTheDocument()
     expect(wrapper.queryByText('Sign: signing failure')).toBeInTheDocument()
-    expect(
-      wrapper.queryByText('Encryption: decryption failure'),
-    ).toBeInTheDocument()
+    expect(wrapper.queryByText('Encryption: decryption failure')).toBeInTheDocument()
   })
 })

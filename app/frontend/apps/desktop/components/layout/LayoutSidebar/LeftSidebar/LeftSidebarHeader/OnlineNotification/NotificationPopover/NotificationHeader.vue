@@ -19,11 +19,7 @@ defineEmits<{
     <CommonLabel size="small" class="dark:text-neutral-500" tag="h3">
       {{ $t('Notifications') }}
     </CommonLabel>
-    <CommonButton
-      v-if="hasUnseenNotification"
-      prefix-icon="lightning"
-      @click="$emit('mark-all')"
-    >
+    <CommonButton v-if="hasUnseenNotification" prefix-icon="lightning" @click="$emit('mark-all')">
       {{ $t('mark all as read') }}
     </CommonButton>
   </header>

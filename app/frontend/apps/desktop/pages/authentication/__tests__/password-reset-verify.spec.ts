@@ -19,10 +19,7 @@ const updatePassword = async (
   newPassword: string,
 ) => {
   await view.events.type(await view.findByLabelText('Password'), oldPassword)
-  await view.events.type(
-    await view.findByLabelText('Confirm password'),
-    newPassword,
-  )
+  await view.events.type(await view.findByLabelText('Confirm password'), newPassword)
   await view.events.click(view.getByRole('button', { name: 'Submit' }))
 }
 
@@ -33,9 +30,7 @@ const confirmSuccess = async (view: ExtendedRenderResult, password: string) => {
     password,
   })
 
-  expect(
-    await view.findByText('Woo hoo! Your password has been changed!'),
-  ).toBeInTheDocument()
+  expect(await view.findByText('Woo hoo! Your password has been changed!')).toBeInTheDocument()
 }
 
 beforeEach(() => {
@@ -71,9 +66,7 @@ it('can update a password', async () => {
 
   const view = await visitView('/reset-password/verify/123')
 
-  expect(
-    await view.findByRole('button', { name: 'Cancel & Go Back' }),
-  ).toBeInTheDocument()
+  expect(await view.findByRole('button', { name: 'Cancel & Go Back' })).toBeInTheDocument()
 
   const [imprint, privacy] = publicLinks
 
@@ -107,9 +100,7 @@ it('expects passwords to be equal', async () => {
   await updatePassword(view, 'password', 'password123')
 
   expect(
-    await view.findByText(
-      "This field doesn't correspond to the expected value.",
-    ),
+    await view.findByText("This field doesn't correspond to the expected value."),
   ).toBeInTheDocument()
 })
 
@@ -123,9 +114,7 @@ it('shows an error if reset was unsuccessful', async () => {
 
   const view = await visitView('/reset-password/verify/123')
 
-  expect(
-    await view.findByText('The provided token is invalid.'),
-  ).toBeInTheDocument()
+  expect(await view.findByText('The provided token is invalid.')).toBeInTheDocument()
   expect(view.queryByLabelText('Password')).not.toBeInTheDocument()
 })
 
@@ -133,9 +122,7 @@ it('shows an error if no token is provided', async () => {
   const view = await visitView('/reset-password/verify')
 
   expect(
-    await view.findByText(
-      'The token could not be verified. Please contact your administrator.',
-    ),
+    await view.findByText('The token could not be verified. Please contact your administrator.'),
   ).toBeInTheDocument()
   expect(view.queryByLabelText('Password')).not.toBeInTheDocument()
 })

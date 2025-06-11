@@ -75,11 +75,7 @@ useFormBlock(reactiveContext, onInputClick)
       @keypress.space.prevent="showDialog()"
       @blur="context.handlers.blur"
     >
-      <div
-        v-if="selectedTagsList.length"
-        class="flex grow flex-wrap gap-1"
-        role="list"
-      >
+      <div v-if="selectedTagsList.length" class="flex grow flex-wrap gap-1" role="list">
         <div
           v-for="tag of selectedTagsList"
           :key="tag"

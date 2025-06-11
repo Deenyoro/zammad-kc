@@ -55,9 +55,7 @@ const events = computed(() => {
 <template>
   <div
     class="z-10"
-    :tabindex="
-      !isAgentAndHasPermissionAndHasChannelAlarm ? -1 : hideDetails ? 0 : -1
-    "
+    :tabindex="!isAgentAndHasPermissionAndHasChannelAlarm ? -1 : hideDetails ? 0 : -1"
     v-on="isAgentAndHasPermissionAndHasChannelAlarm ? events : {}"
   >
     <template v-if="isAgentAndHasPermissionAndHasChannelAlarm">
@@ -70,11 +68,6 @@ const events = computed(() => {
         {{ $t(channelAlert?.text, channelAlert?.textPlaceholder) }}
       </CommonAlert>
     </template>
-    <TopBarHeader
-      v-else
-      ref="wrapper"
-      :hide-details="hideDetails"
-      v-on="events"
-    />
+    <TopBarHeader v-else ref="wrapper" :hide-details="hideDetails" v-on="events" />
   </div>
 </template>

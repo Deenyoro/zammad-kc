@@ -1,22 +1,9 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import {
-  type UseElementBoundingReturn,
-  onClickOutside,
-  onKeyDown,
-  useVModel,
-} from '@vueuse/core'
+import { type UseElementBoundingReturn, onClickOutside, onKeyDown, useVModel } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
-import {
-  computed,
-  type ConcreteComponent,
-  nextTick,
-  onUnmounted,
-  ref,
-  type Ref,
-  toRef,
-} from 'vue'
+import { computed, type ConcreteComponent, nextTick, onUnmounted, ref, type Ref, toRef } from 'vue'
 
 import type {
   MatchedSelectOption,
@@ -38,17 +25,10 @@ import { useTransitionCollapse } from '#desktop/composables/useTransitionCollaps
 import CommonSelectItem from './CommonSelectItem.vue'
 import { useCommonSelect } from './useCommonSelect.ts'
 
-import type {
-  CommonSelectInternalInstance,
-  DropdownOptionsAction,
-} from './types.ts'
+import type { CommonSelectInternalInstance, DropdownOptionsAction } from './types.ts'
 
 export interface Props {
-  modelValue?:
-    | SelectValue
-    | SelectValue[]
-    | { value: SelectValue; label: string }
-    | null
+  modelValue?: SelectValue | SelectValue[] | { value: SelectValue; label: string } | null
   options: AutoCompleteOption[] | SelectOption[]
   /**
    * Do not modify local value
@@ -91,9 +71,7 @@ if (localValue.value == null && props.multiple) {
 }
 
 const getFocusableOptions = () => {
-  return Array.from<HTMLElement>(
-    dropdownElement.value?.querySelectorAll('[tabindex="0"]') || [],
-  )
+  return Array.from<HTMLElement>(dropdownElement.value?.querySelectorAll('[tabindex="0"]') || [])
 }
 
 const showDropdown = ref(false)
@@ -118,9 +96,7 @@ const dropdownStyle = computed(() => {
   if (hasDirectionUp.value) {
     style.bottom = `${windowHeight.value - inputElementBounds.top.value}px`
   } else {
-    style.top = `${
-      inputElementBounds.top.value + inputElementBounds.height.value
-    }px`
+    style.top = `${inputElementBounds.top.value + inputElementBounds.height.value}px`
   }
 
   return style
@@ -147,16 +123,12 @@ const closeDropdown = (refocusOnEscape?: boolean) => {
   emit('close')
 
   nextTick(() => {
-    if (!props.noRefocus || refocusOnEscape)
-      lastFocusableOutsideElement?.focus()
+    if (!props.noRefocus || refocusOnEscape) lastFocusableOutsideElement?.focus()
     testFlags.set('common-select.closed')
   })
 }
 
-const openDropdown = (
-  bounds: UseElementBoundingReturn,
-  height: Ref<number>,
-) => {
+const openDropdown = (bounds: UseElementBoundingReturn, height: Ref<number>) => {
   inputElementBounds = bounds
   windowHeight = toRef(height)
   instances.value.forEach((instance) => {
@@ -187,9 +159,7 @@ const moveFocusToDropdown = (lastOption = false) => {
   if (lastOption) {
     focusElement = focusableElements[focusableElements.length - 1]
   } else {
-    const selected = focusableElements.find(
-      (el) => el.getAttribute('aria-selected') === 'true',
-    )
+    const selected = focusableElements.find((el) => el.getAttribute('aria-selected') === 'true')
     if (selected) focusElement = selected
   }
 
@@ -271,9 +241,7 @@ const select = (option: SelectOption) => {
 
 const hasMoreSelectableOptions = computed(
   () =>
-    props.options.filter(
-      (option) => !option.disabled && !isCurrentValue(option.value),
-    ).length > 0,
+    props.options.filter((option) => !option.disabled && !isCurrentValue(option.value)).length > 0,
 )
 
 const focusFirstOption = () => {
@@ -316,9 +284,7 @@ const highlightedOptions = computed(() =>
         option.match.index + option.match[0].length,
       )
 
-      const labelAfterMatch = label.slice(
-        option.match.index + option.match[0].length,
-      )
+      const labelAfterMatch = label.slice(option.match.index + option.match[0].length)
 
       const highlightClasses = option.disabled
         ? 'bg-blue-200 dark:bg-gray-300'
@@ -386,13 +352,7 @@ const childPageCallback = (option?: AutoCompleteOption, noFocus?: boolean) => {
   }
 }
 
-const goToChildPage = ({
-  option,
-  noFocus,
-}: {
-  option: AutoCompleteOption
-  noFocus?: boolean
-}) => {
+const goToChildPage = ({ option, noFocus }: { option: AutoCompleteOption; noFocus?: boolean }) => {
   childPageCallback(option, noFocus)
 }
 </script>
@@ -436,11 +396,7 @@ const goToChildPage = ({
                 v-if="isChildPage"
                 class="text-blue-800! hover:text-black! focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-blue-800! dark:hover:text-white!"
                 :aria-label="$t('Back to previous page')"
-                :prefix-icon="
-                  locale.localeData?.dir === 'rtl'
-                    ? 'chevron-right'
-                    : 'chevron-left'
-                "
+                :prefix-icon="locale.localeData?.dir === 'rtl' ? 'chevron-right' : 'chevron-left'"
                 size="small"
                 role="button"
                 tabindex="0"
@@ -450,10 +406,7 @@ const goToChildPage = ({
               >
                 {{ $t('Back') }}
               </CommonLabel>
-              <div
-                v-if="dropdownActions.length"
-                class="flex grow justify-end gap-2"
-              >
+              <div v-if="dropdownActions.length" class="flex grow justify-end gap-2">
                 <CommonLabel
                   v-for="action of dropdownActions"
                   :key="action.key"
@@ -484,9 +437,7 @@ const goToChildPage = ({
                     :key="String(option.value)"
                     :class="{
                       'first:rounded-t-lg':
-                        hasDirectionUp &&
-                        !isChildPage &&
-                        (!multiple || !hasMoreSelectableOptions),
+                        hasDirectionUp && !isChildPage && (!multiple || !hasMoreSelectableOptions),
                       'last:rounded-b-lg': !hasDirectionUp,
                     }"
                     :selected="isCurrentValue(option.value)"

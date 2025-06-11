@@ -15,9 +15,7 @@ export const useTicketArticleReplyAction = (
   form: FormRefParameter,
   showArticleReply: () => void | Promise<void>,
 ) => {
-  const openReplyForm: TicketArticlePerformOptions['openReplyForm'] = async (
-    values = {},
-  ) => {
+  const openReplyForm: TicketArticlePerformOptions['openReplyForm'] = async (values = {}) => {
     const formNode = form.value?.formNode as FormKitNode
 
     await showArticleReply()
@@ -48,9 +46,7 @@ export const useTicketArticleReplyAction = (
 
     formNode.emit('article-reply-open', articleType)
 
-    const context = formNode.find('body', 'name')?.context as
-      | FieldEditorContext
-      | undefined
+    const context = formNode.find('body', 'name')?.context as FieldEditorContext | undefined
 
     context?.focus()
 

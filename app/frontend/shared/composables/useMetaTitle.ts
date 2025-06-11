@@ -28,8 +28,7 @@ const initializeMetaTitle = () => {
   watch(
     currentTitle,
     (newTitle, oldTitle) => {
-      if (isString(newTitle) && newTitle !== oldTitle && document)
-        document.title = newTitle
+      if (isString(newTitle) && newTitle !== oldTitle && document) document.title = newTitle
     },
     { immediate: true },
   )

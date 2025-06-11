@@ -19,11 +19,7 @@ const fieldDefinition = createInput(
     'sorting',
   ],
   {
-    features: [
-      addLink,
-      formUpdaterTrigger(),
-      removeValuesForNonExistingOptions,
-    ],
+    features: [addLink, formUpdaterTrigger(), removeValuesForNonExistingOptions],
   },
   {
     addArrow: true,

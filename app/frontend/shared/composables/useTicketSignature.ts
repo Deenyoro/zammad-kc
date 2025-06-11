@@ -12,20 +12,11 @@ import type {
 import { FormHandlerExecution } from '#shared/components/Form/types.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
 import { useTicketSignatureLazyQuery } from '#shared/graphql/queries/ticketSignature.api.ts'
-import type {
-  TicketSignatureQuery,
-  TicketSignatureQueryVariables,
-} from '#shared/graphql/types.ts'
-import {
-  convertToGraphQLId,
-  getIdFromGraphQLId,
-} from '#shared/graphql/utils.ts'
+import type { TicketSignatureQuery, TicketSignatureQueryVariables } from '#shared/graphql/types.ts'
+import { convertToGraphQLId, getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 
-let signatureQuery: QueryHandler<
-  TicketSignatureQuery,
-  TicketSignatureQueryVariables
->
+let signatureQuery: QueryHandler<TicketSignatureQuery, TicketSignatureQueryVariables>
 
 export const getTicketSignatureQuery = () => {
   if (signatureQuery) return signatureQuery
@@ -33,9 +24,7 @@ export const getTicketSignatureQuery = () => {
   const scope = effectScope()
 
   scope.run(() => {
-    signatureQuery = new QueryHandler(
-      useTicketSignatureLazyQuery({ groupId: '' }),
-    )
+    signatureQuery = new QueryHandler(useTicketSignatureLazyQuery({ groupId: '' }))
   })
 
   return signatureQuery
@@ -45,27 +34,15 @@ export const getTicketSignatureQuery = () => {
 export const useTicketSignature = (ticket?: Ref<TicketById | undefined>) => {
   const signatureQuery = getTicketSignatureQuery()
 
-  const getValue = (
-    values: FormValues,
-    changedField: ChangedField,
-    name: string,
-  ) => {
+  const getValue = (values: FormValues, changedField: ChangedField, name: string) => {
     return changedField.name === name ? changedField.newValue : values[name]
   }
 
   const signatureHandling = (editorName: string): FormHandler => {
-    const handleSignature: FormHandlerFunction = (
-      execution,
-      reactivity,
-      data,
-    ) => {
+    const handleSignature: FormHandlerFunction = (execution, reactivity, data) => {
       const { formNode, values, changedField } = data
 
-      if (
-        changedField?.name !== 'group_id' &&
-        changedField?.name !== 'articleSenderType'
-      )
-        return
+      if (changedField?.name !== 'group_id' && changedField?.name !== 'articleSenderType') return
 
       const editorContext = formNode?.find(editorName, 'name')?.context as
         | FieldEditorContext
@@ -105,10 +82,7 @@ export const useTicketSignature = (ticket?: Ref<TicketById | undefined>) => {
     }
 
     return {
-      execution: [
-        FormHandlerExecution.Initial,
-        FormHandlerExecution.FieldChange,
-      ],
+      execution: [FormHandlerExecution.Initial, FormHandlerExecution.FieldChange],
       callback: handleSignature,
     }
   }

@@ -34,15 +34,9 @@ export const filesSizeError = (node: FormKitNode) => {
           )
           if (isValid) {
             node.store.remove('fileSizeError')
-            node.emit(
-              'prop:validationVisibility',
-              FormValidationVisibility.Live,
-            )
+            node.emit('prop:validationVisibility', FormValidationVisibility.Live)
           } else {
-            node.emit(
-              'prop:validationVisibility',
-              FormValidationVisibility.Submit,
-            )
+            node.emit('prop:validationVisibility', FormValidationVisibility.Submit)
           }
         })
       } else if (!payload && commitEventListener) {

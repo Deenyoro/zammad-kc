@@ -26,9 +26,7 @@ const props = defineProps<Props>()
 const { createQueryErrorHandler } = useErrorHandler()
 
 const errorCallback = createQueryErrorHandler({
-  notFound: __(
-    'Organization with specified ID was not found. Try checking the URL for errors.',
-  ),
+  notFound: __('Organization with specified ID was not found. Try checking the URL for errors.'),
   forbidden: __('You have insufficient rights to view this organization.'),
 })
 
@@ -51,12 +49,8 @@ useHeader({
   title: __('Organization'),
   backUrl: '/',
   actionTitle: __('Edit'),
-  actionHidden: computed(
-    () => organization.value == null || !organization.value.policy.update,
-  ),
-  refetch: computed(
-    () => organization.value != null && organizationQuery.loading().value,
-  ),
+  actionHidden: computed(() => organization.value == null || !organization.value.policy.update),
+  refetch: computed(() => organization.value != null && organizationQuery.loading().value),
   onAction() {
     if (!organization.value || !organization.value.policy.update) return
     openEditOrganizationDialog(organization.value)
@@ -71,10 +65,7 @@ const ticketData = computed(() => getTicketData(organization.value))
   <div v-if="organization" class="px-4">
     <div class="flex flex-col items-center justify-center py-6">
       <div>
-        <CommonOrganizationAvatar
-          :entity="organization as AvatarOrganization"
-          size="xl"
-        />
+        <CommonOrganizationAvatar :entity="organization as AvatarOrganization" size="xl" />
       </div>
       <div class="mt-2 text-xl font-bold">
         {{ organization.name }}

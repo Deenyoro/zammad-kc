@@ -25,8 +25,7 @@ defineProps<Props>()
         <CommonUserAvatar
           class="rounded-full outline-2 outline-transparent group-hover:outline-blue-900 group-focus-visible:outline-blue-900"
           :class="{
-            'outline-2! outline-blue-800!':
-              slotProps?.isOpen && slotProps.hasOpenViaLongClick,
+            'outline-2! outline-blue-800!': slotProps?.isOpen && slotProps.hasOpenViaLongClick,
           }"
           :entity="entity"
         />

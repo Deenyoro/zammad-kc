@@ -10,53 +10,47 @@ import { mountEditorWithAttachments } from './utils.ts'
 describe('Testing "knowledge base" popup: "??" command', { retries: 2 }, () => {
   it('inserts a text', () => {
     const client = mockApolloClient()
-    client.setRequestHandler(
-      KnowledgeBaseAnswerSuggestionsDocument,
-      async () => ({
-        data: {
-          knowledgeBaseAnswerSuggestions: [
-            {
-              __typename: 'KnowledgeBaseAnswer',
-              id: btoa('How to create a ticket?'),
-              title: 'How to create a ticket?',
-              categoryTreeTranslation: [
-                {
-                  __typename: 'KnowledgeBaseCategoryTranslation',
-                  id: btoa('Category 1'),
-                  title: 'Category 1',
-                },
-              ],
-            },
-          ],
-        },
-      }),
-    )
-    client.setRequestHandler(
-      KnowledgeBaseAnswerSuggestionContentTransformDocument,
-      async () => ({
-        data: {
-          knowledgeBaseAnswerSuggestionContentTransform: {
-            __typename: 'KnowledgeBaseAnswerSuggestionContentTransform',
-            body: 'knowledge base answer body',
-            attachments: [
+    client.setRequestHandler(KnowledgeBaseAnswerSuggestionsDocument, async () => ({
+      data: {
+        knowledgeBaseAnswerSuggestions: [
+          {
+            __typename: 'KnowledgeBaseAnswer',
+            id: btoa('How to create a ticket?'),
+            title: 'How to create a ticket?',
+            categoryTreeTranslation: [
               {
-                id: 'gid://zammad/Store/2062',
-                name: 'Zammad.png',
-                size: 945213,
-                type: 'image/png',
-                preferences: {
-                  'Content-Type': 'image/png',
-                  resizable: true,
-                  content_preview: true,
-                },
-                __typename: 'StoredFile',
+                __typename: 'KnowledgeBaseCategoryTranslation',
+                id: btoa('Category 1'),
+                title: 'Category 1',
               },
             ],
-            errors: null,
           },
+        ],
+      },
+    }))
+    client.setRequestHandler(KnowledgeBaseAnswerSuggestionContentTransformDocument, async () => ({
+      data: {
+        knowledgeBaseAnswerSuggestionContentTransform: {
+          __typename: 'KnowledgeBaseAnswerSuggestionContentTransform',
+          body: 'knowledge base answer body',
+          attachments: [
+            {
+              id: 'gid://zammad/Store/2062',
+              name: 'Zammad.png',
+              size: 945213,
+              type: 'image/png',
+              preferences: {
+                'Content-Type': 'image/png',
+                resizable: true,
+                content_preview: true,
+              },
+              __typename: 'StoredFile',
+            },
+          ],
+          errors: null,
         },
-      }),
-    )
+      },
+    }))
 
     mountEditorWithAttachments()
 

@@ -10,9 +10,7 @@ import type { JsonValue } from 'type-fest'
 import type { ConcreteComponent } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 
-export type AutocompleteSelectValue =
-  | SelectValue
-  | { value: SelectValue; label: string }
+export type AutocompleteSelectValue = SelectValue | { value: SelectValue; label: string }
 
 export type AutoCompleteOption = {
   value: string | number
@@ -45,9 +43,7 @@ export type AutoCompleteProps = FormFieldContext<{
   optionIconComponent?: ConcreteComponent
   options?: AutoCompleteOption[]
   belongsToObjectField?: string
-  additionalQueryParams?:
-    | Record<string, JsonValue>
-    | (() => Record<string, JsonValue>)
+  additionalQueryParams?: Record<string, JsonValue> | (() => Record<string, JsonValue>)
   dialogNotFoundMessage?: string
   dialogEmptyMessage?: string
   initialOptionBuilder?: (

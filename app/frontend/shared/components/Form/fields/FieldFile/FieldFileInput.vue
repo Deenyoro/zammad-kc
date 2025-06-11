@@ -59,20 +59,17 @@ const uploadFilesWithContent = computed(() => {
 const addFileMutation = new MutationHandler(useFormUploadCacheAddMutation({}))
 const addFileLoading = addFileMutation.loading()
 
-const removeFileMutation = new MutationHandler(
-  useFormUploadCacheRemoveMutation({}),
-)
+const removeFileMutation = new MutationHandler(useFormUploadCacheRemoveMutation({}))
 const removeFileLoading = addFileMutation.loading()
 
 const canInteract = computed(
-  () =>
-    !props.context.disabled &&
-    !addFileLoading.value &&
-    !removeFileLoading.value,
+  () => !props.context.disabled && !addFileLoading.value && !removeFileLoading.value,
 )
 
-const { setFileUploadProcessing, removeFileUploadProcessing } =
-  useFileUploadProcessing(props.context.formId, props.context.node.name)
+const { setFileUploadProcessing, removeFileUploadProcessing } = useFileUploadProcessing(
+  props.context.formId,
+  props.context.node.name,
+)
 
 const fileInput = useTemplateRef('file-input')
 
@@ -151,14 +148,11 @@ const { waitForConfirmation } = useConfirmation()
 
 const removeFile = async (file: FileUploaded) => {
   const fileId = file.id
-  const confirmed = await waitForConfirmation(
-    __('Are you sure you want to delete "%s"?'),
-    {
-      textPlaceholder: [file.name],
-      buttonLabel: __('Delete'),
-      buttonVariant: 'danger',
-    },
-  )
+  const confirmed = await waitForConfirmation(__('Are you sure you want to delete "%s"?'), {
+    textPlaceholder: [file.name],
+    buttonLabel: __('Delete'),
+    buttonVariant: 'danger',
+  })
 
   if (!confirmed) return
 
@@ -172,15 +166,13 @@ const removeFile = async (file: FileUploaded) => {
     toBeDeletedFile.isProcessing = true
   }
 
-  removeFileMutation
-    .send({ formId: props.context.formId, fileIds: [fileId] })
-    .then((data) => {
-      if (data?.formUploadCacheRemove?.success) {
-        uploadFiles.value = uploadFiles.value.filter((elem) => {
-          return elem.id !== fileId
-        })
-      }
-    })
+  removeFileMutation.send({ formId: props.context.formId, fileIds: [fileId] }).then((data) => {
+    if (data?.formUploadCacheRemove?.success) {
+      uploadFiles.value = uploadFiles.value.filter((elem) => {
+        return elem.id !== fileId
+      })
+    }
+  })
 }
 
 const uploadTitle = computed(() => {
@@ -195,8 +187,7 @@ const uploadTitle = computed(() => {
 
 const reachedUploadLimit = computed(() => {
   return (
-    !props.context.multiple &&
-    (uploadFiles.value.length >= 1 || loadingFiles.value.length >= 1)
+    !props.context.multiple && (uploadFiles.value.length >= 1 || loadingFiles.value.length >= 1)
   )
 })
 
@@ -237,10 +228,7 @@ const showDivider = computed(() => {
 })
 
 const showGradient = computed(() => {
-  return (
-    appName === 'mobile' &&
-    (uploadFiles.value.length > 2 || loadingFiles.value.length > 2)
-  )
+  return appName === 'mobile' && (uploadFiles.value.length > 2 || loadingFiles.value.length > 2)
 })
 
 const acceptableFileTypes = computed(() => props.context.accept?.split(','))
@@ -261,9 +249,7 @@ const { isOverDropZone } = useDropZone(dropZoneElement, {
   <div class="relative" :class="context.classes.input">
     <div ref="drop-zone">
       <div v-if="showGradient" class="relative w-full">
-        <div
-          class="file-list show-gradient top-gradient absolute h-5 w-full"
-        ></div>
+        <div class="file-list show-gradient top-gradient absolute h-5 w-full"></div>
       </div>
       <div
         v-if="uploadFiles.length || loadingFiles.length"

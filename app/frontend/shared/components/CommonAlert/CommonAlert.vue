@@ -46,12 +46,7 @@ const dismissed = ref(false)
     role="alert"
     data-test-id="common-alert"
   >
-    <CommonIcon
-      class="mx-auto mt-0.5 md:mx-0"
-      :name="icon"
-      size="tiny"
-      decorative
-    />
+    <CommonIcon class="mx-auto mt-0.5 md:mx-0" :name="icon" size="tiny" decorative />
 
     <slot />
 

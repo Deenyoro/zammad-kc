@@ -16,9 +16,7 @@ const categories: NavigationMenuCategory[] = []
 const categorizedItems: Record<string, PersonalSettingPlugin[]> = {}
 
 Object.values(plugins).forEach((plugin) => {
-  if (
-    !categories.find((category) => category.label === plugin.category.label)
-  ) {
+  if (!categories.find((category) => category.label === plugin.category.label)) {
     categories.push(plugin.category)
   }
 
@@ -40,6 +38,4 @@ Object.values(plugins).forEach((plugin) => {
 export const personalSettingCategories = categories
 export const personalSettingItems = categorizedItems
 
-export const personalSettingRoutes = Object.values(plugins).map(
-  (plugin) => plugin.route,
-)
+export const personalSettingRoutes = Object.values(plugins).map((plugin) => plugin.route)

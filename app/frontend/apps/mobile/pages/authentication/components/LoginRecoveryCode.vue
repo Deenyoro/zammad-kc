@@ -3,15 +3,9 @@
 <script setup lang="ts">
 import { useNotifications } from '#shared/components/CommonNotifications/index.ts'
 import Form from '#shared/components/Form/Form.vue'
-import type {
-  FormSubmitData,
-  FormSchemaNode,
-} from '#shared/components/Form/types.ts'
+import type { FormSubmitData, FormSchemaNode } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
-import type {
-  LoginCredentials,
-  RecoveryCodeFormData,
-} from '#shared/entities/two-factor/types.ts'
+import type { LoginCredentials, RecoveryCodeFormData } from '#shared/entities/two-factor/types.ts'
 import UserError from '#shared/errors/UserError.ts'
 import { useAuthenticationStore } from '#shared/stores/authentication.ts'
 

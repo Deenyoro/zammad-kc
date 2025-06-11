@@ -130,8 +130,6 @@ describe('CommonButton.vue', () => {
 
     expect(view.getByIconName('logo')).toBeInTheDocument()
 
-    expect(
-      view.queryByRole('button', { name: 'foobar' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'foobar' })).not.toBeInTheDocument()
   })
 })

@@ -22,13 +22,9 @@ describe('testing login error handling', () => {
     const view = await visitView('/login')
     await view.events.click(view.getByText('Sign in'))
 
-    expect(view.getByLabelText('Username / Email')).toBeDescribedBy(
-      'This field is required.',
-    )
+    expect(view.getByLabelText('Username / Email')).toBeDescribedBy('This field is required.')
 
-    expect(view.getByLabelText('Password')).toBeDescribedBy(
-      'This field is required.',
-    )
+    expect(view.getByLabelText('Password')).toBeDescribedBy('This field is required.')
   })
 
   it('check that login request error is visible', async () => {
@@ -82,8 +78,7 @@ describe('testing login error handling', () => {
           session: null,
           errors: [
             {
-              message:
-                'Login failed. Please double-check your two-factor authentication method.',
+              message: 'Login failed. Please double-check your two-factor authentication method.',
             },
           ],
           twoFactorRequired: null,

@@ -13,8 +13,7 @@ export const useTicketCreateTitle = (
 ) => {
   const { isTicketCustomer } = useTicketCreateView()
 
-  const { ticketCreateArticleType, defaultTicketCreateArticleType } =
-    useTicketCreateArticleType()
+  const { ticketCreateArticleType, defaultTicketCreateArticleType } = useTicketCreateArticleType()
 
   const currentViewTitle = computed(() => {
     // Customer users should get a generic title prefix, since they cannot control the type of the first article.
@@ -25,21 +24,14 @@ export const useTicketCreateTitle = (
     }
 
     if (!currentArticleType.value) {
-      return i18n.t(
-        ticketCreateArticleType[defaultTicketCreateArticleType]?.label,
-      )
+      return i18n.t(ticketCreateArticleType[defaultTicketCreateArticleType]?.label)
     }
 
-    const createArticleTypeKey =
-      currentArticleType.value as TicketCreateArticleType
+    const createArticleTypeKey = currentArticleType.value as TicketCreateArticleType
 
-    if (!currentTitle.value)
-      return i18n.t(ticketCreateArticleType[createArticleTypeKey]?.label)
+    if (!currentTitle.value) return i18n.t(ticketCreateArticleType[createArticleTypeKey]?.label)
 
-    return i18n.t(
-      ticketCreateArticleType[createArticleTypeKey]?.title,
-      currentTitle.value,
-    )
+    return i18n.t(ticketCreateArticleType[createArticleTypeKey]?.title, currentTitle.value)
   })
 
   return {

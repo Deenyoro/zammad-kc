@@ -12,9 +12,7 @@ const props = defineProps<{
   setSkipNextStateUpdate: (skip: boolean) => void
 }>()
 
-const { openSharedDraftFlyout } = useTicketSharedDraft(
-  props.setSkipNextStateUpdate,
-)
+const { openSharedDraftFlyout } = useTicketSharedDraft(props.setSkipNextStateUpdate)
 </script>
 
 <template>

@@ -27,11 +27,7 @@ const classMap = getFormGroupClasses()
   >
     <slot />
   </div>
-  <div
-    v-if="hasHelp"
-    class="pt-1"
-    :class="[classMap.bottomMargin, classMap.help]"
-  >
+  <div v-if="hasHelp" class="pt-1" :class="[classMap.bottomMargin, classMap.help]">
     <slot name="help">
       {{ help }}
     </slot>

@@ -19,9 +19,7 @@ describe('locales', () => {
 
   it('check the validation strings', () => {
     Object.keys(en.validation).forEach((key) => {
-      expect
-        .soft(staticLocaleValidation[key], `"${key}" is not defined`)
-        .toBeTruthy()
+      expect.soft(staticLocaleValidation[key], `"${key}" is not defined`).toBeTruthy()
     })
   })
 })

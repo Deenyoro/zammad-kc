@@ -13,9 +13,7 @@ let notificationClasses: NotificationClassMap = {
   warn: 'common-notification-warn',
 }
 
-export const initializeNotificationClasses = (
-  classes: NotificationClassMap,
-) => {
+export const initializeNotificationClasses = (classes: NotificationClassMap) => {
   notificationClasses = classes
 }
 

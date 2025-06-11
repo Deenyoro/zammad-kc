@@ -51,18 +51,13 @@ const actions: MenuItem[] = [
     :entity="organization"
     :actions="actions"
   >
-    <CommonLink
-      :link="`/organizations/${organization.internalId}`"
-      class="flex gap-2"
-    >
+    <CommonLink :link="`/organizations/${organization.internalId}`" class="flex gap-2">
       <CommonOrganizationAvatar
         class="p-3.5"
         :entity="organization as AvatarOrganization"
         size="normal"
       />
-      <CommonLabel size="large" class="dark:text-white!"
-        >{{ organization.name }}
-      </CommonLabel>
+      <CommonLabel size="large" class="dark:text-white!">{{ organization.name }} </CommonLabel>
     </CommonLink>
 
     <ObjectAttributes

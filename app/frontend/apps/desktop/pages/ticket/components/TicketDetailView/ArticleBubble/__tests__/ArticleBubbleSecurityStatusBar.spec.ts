@@ -6,9 +6,7 @@ import { createDummyArticle } from '#shared/entities/ticket-article/__tests__/mo
 
 import ArticleBubbleSecurityStatusBar from '#desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleSecurityStatusBar.vue'
 
-const renderHeaderWarning = (
-  article: ReturnType<typeof createDummyArticle>,
-) => {
+const renderHeaderWarning = (article: ReturnType<typeof createDummyArticle>) => {
   return renderComponent(
     {
       setup() {

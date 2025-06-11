@@ -1,10 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import type {
-  EnumSearchableModels,
-  Item,
-  QuickSearchQuery,
-} from '#shared/graphql/types.ts'
+import type { EnumSearchableModels, Item, QuickSearchQuery } from '#shared/graphql/types.ts'
 import type { ConfigList } from '#shared/types/config.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
 

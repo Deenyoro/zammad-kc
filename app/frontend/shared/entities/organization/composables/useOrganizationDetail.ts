@@ -78,13 +78,9 @@ export const useOrganizationDetail = (
       })
   }
 
-  const { viewScreenAttributes } = storeToRefs(
-    useOrganizationObjectAttributesStore(),
-  )
+  const { viewScreenAttributes } = storeToRefs(useOrganizationObjectAttributesStore())
 
-  const organizationMembers = computed(
-    () => normalizeEdges(organization.value?.allMembers) || [],
-  )
+  const organizationMembers = computed(() => normalizeEdges(organization.value?.allMembers) || [])
 
   return {
     loading,

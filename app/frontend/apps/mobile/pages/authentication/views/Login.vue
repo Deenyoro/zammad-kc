@@ -61,8 +61,7 @@ const { links } = usePublicLinks(EnumPublicLinksScreen.Login)
 const { enabledProviders, hasEnabledProviders } = useThirdPartyAuthentication()
 
 const showPasswordLogin = computed(
-  () =>
-    application.config.user_show_password_login || !hasEnabledProviders.value,
+  () => application.config.user_show_password_login || !hasEnabledProviders.value,
 )
 
 const { forceDesktop } = useForceDesktop()
@@ -88,11 +87,7 @@ const showError = (error: UserError) => {
 <template>
   <div class="flex h-full min-h-screen flex-col items-center px-6 pt-6 pb-4">
     <div v-if="statePreviousMap[loginFlow.state]" class="flex w-full">
-      <button
-        class="cursor-pointer"
-        :aria-label="__('Go back')"
-        @click="goBack"
-      >
+      <button class="cursor-pointer" :aria-label="__('Go back')" @click="goBack">
         <CommonIcon name="chevron-left" decorative />
       </button>
     </div>
@@ -107,20 +102,14 @@ const showError = (error: UserError) => {
             @finish="finishLogin"
           />
           <LoginTwoFactor
-            v-else-if="
-              loginFlow.state === '2fa' &&
-              twoFactorPlugin &&
-              loginFlow.credentials
-            "
+            v-else-if="loginFlow.state === '2fa' && twoFactorPlugin && loginFlow.credentials"
             :credentials="loginFlow.credentials"
             :two-factor="twoFactorPlugin"
             @error="showError"
             @finish="finishLogin"
           />
           <LoginRecoveryCode
-            v-else-if="
-              loginFlow.state === 'recovery-code' && loginFlow.credentials
-            "
+            v-else-if="loginFlow.state === 'recovery-code' && loginFlow.credentials"
             :credentials="loginFlow.credentials"
             @error="showError"
             @finish="finishLogin"
@@ -176,11 +165,7 @@ const showError = (error: UserError) => {
     >
       {{ $t('Contact the administrator if you have any problems logging in.') }}
     </div>
-    <CommonLink
-      link="/#login"
-      class="text-gray leading-4 font-medium"
-      @click="forceDesktop"
-    >
+    <CommonLink link="/#login" class="text-gray leading-4 font-medium" @click="forceDesktop">
       {{ $t('Continue to desktop') }}
     </CommonLink>
     <nav

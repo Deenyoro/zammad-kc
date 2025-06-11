@@ -51,11 +51,7 @@ const userCurrentDeviceList = [
 
 const rowContents = [
   ['Chrome on Mac', 'Germany, Berlin', ['2024-02-01 12:00', '2 months ago']],
-  [
-    'Firefox on Mac',
-    'Germany, Frankfurt',
-    ['2024-01-01 12:00', '3 months ago'],
-  ],
+  ['Firefox on Mac', 'Germany, Frankfurt', ['2024-01-01 12:00', '3 months ago']],
 ]
 
 describe('devices personal settings', () => {
@@ -85,9 +81,7 @@ describe('devices personal settings', () => {
 
     expect(view.getByRole('table')).toHaveTextContent(/This device/)
 
-    expect(
-      table.getAllByRole('button', { name: 'Delete this device' }),
-    ).toHaveLength(1)
+    expect(table.getAllByRole('button', { name: 'Delete this device' })).toHaveLength(1)
   })
 
   it('can delete a device', async () => {
@@ -111,9 +105,7 @@ describe('devices personal settings', () => {
 
     await waitForNextTick()
 
-    expect(
-      await view.findByRole('dialog', { name: 'Delete Object' }),
-    ).toBeInTheDocument()
+    expect(await view.findByRole('dialog', { name: 'Delete Object' })).toBeInTheDocument()
 
     await view.events.click(view.getByRole('button', { name: 'Delete Object' }))
 
@@ -125,8 +117,7 @@ describe('devices personal settings', () => {
 
     const view = await visitView('/personal-setting/devices')
 
-    const devicesUpdateSubscription =
-      getUserCurrentDevicesUpdatesSubscriptionHandler()
+    const devicesUpdateSubscription = getUserCurrentDevicesUpdatesSubscriptionHandler()
 
     devicesUpdateSubscription.trigger({
       userCurrentDevicesUpdates: {
@@ -154,8 +145,6 @@ describe('devices personal settings', () => {
     checkSimpleTableContent(view, [...rowContents, newDeviceRowContents])
 
     const table = within(view.getByRole('table'))
-    expect(
-      table.getAllByRole('button', { name: 'Delete this device' }),
-    ).toHaveLength(2)
+    expect(table.getAllByRole('button', { name: 'Delete this device' })).toHaveLength(2)
   })
 })

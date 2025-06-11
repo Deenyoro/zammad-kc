@@ -23,8 +23,7 @@ const { persistentStates } = usePersistentStates()
 
 const emit = defineEmits<TicketSidebarEmits>()
 
-const { ticketAttachments, ticketAttachmentsQuery, loading } =
-  useTicketAttachments()
+const { ticketAttachments, ticketAttachmentsQuery, loading } = useTicketAttachments()
 
 const { context: contextArticle } = useArticleContext()
 

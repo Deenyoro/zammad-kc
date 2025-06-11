@@ -35,9 +35,7 @@ const action = () => {
 
 <template>
   <!-- TODO: rtl button order? -->
-  <div
-    class="flex items-center gap-2 ltr:justify-end rtl:flex-row-reverse rtl:justify-start"
-  >
+  <div class="flex items-center gap-2 ltr:justify-end rtl:flex-row-reverse rtl:justify-start">
     <CommonButton
       v-if="!hideCancelButton"
       size="large"

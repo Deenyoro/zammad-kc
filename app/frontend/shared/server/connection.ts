@@ -7,10 +7,7 @@ import {
   useNotifications,
 } from '#shared/components/CommonNotifications/index.ts'
 import { useApplicationLoaded } from '#shared/composables/useApplicationLoaded.ts'
-import {
-  consumer,
-  reopenWebSocketConnection,
-} from '#shared/server/action_cable/consumer.ts'
+import { consumer, reopenWebSocketConnection } from '#shared/server/action_cable/consumer.ts'
 import log from '#shared/utils/log.ts'
 
 const wsConnectionState = ref(true)
@@ -63,10 +60,7 @@ checkStatus()
 let connectionNotificationId: string
 const networkConnectionState = ref(true)
 const connected = computed(() => {
-  return (
-    (wsReopening.value || wsConnectionState.value) &&
-    networkConnectionState.value
-  )
+  return (wsReopening.value || wsConnectionState.value) && networkConnectionState.value
 })
 
 const notifications = useNotifications()

@@ -34,9 +34,7 @@ const options = computed(() => {
     {
       option: 'encryption',
       label: __('Encrypt'),
-      icon: isCurrentSecurityOption('encryption')
-        ? 'encryption-enabled'
-        : 'encryption-disabled',
+      icon: isCurrentSecurityOption('encryption') ? 'encryption-enabled' : 'encryption-disabled',
     },
     {
       option: 'sign',
@@ -70,10 +68,7 @@ const tooltipMessages = computed(() => {
   const { encryption, sign } = props.context.securityMessages?.[method] || {}
 
   if (encryption) {
-    const message = i18n.t(
-      encryption.message,
-      ...(encryption.messagePlaceholder || []),
-    )
+    const message = i18n.t(encryption.message, ...(encryption.messagePlaceholder || []))
     messages.push({
       type: 'text',
       label: `${i18n.t('Encryption:')} ${message}`,
@@ -154,8 +149,7 @@ const tooltipMessages = computed(() => {
             'bg-gray-600/50 text-white/30': isSecurityOptionDisabled(option),
             'cursor-pointer': !isSecurityOptionDisabled(option),
             'bg-gray-300 text-white': !isCurrentSecurityOption(option),
-            'bg-white font-semibold text-black':
-              isCurrentSecurityOption(option),
+            'bg-white font-semibold text-black': isCurrentSecurityOption(option),
           }"
           :tabindex="isSecurityOptionDisabled(option) ? -1 : 0"
           :disabled="isSecurityOptionDisabled(option)"

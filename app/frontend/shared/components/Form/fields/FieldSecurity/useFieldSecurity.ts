@@ -27,9 +27,7 @@ export const useFieldSecurity = (
     () =>
       localValue.value?.method ??
       // smime should have priority
-      (securityMethods.value.find(
-        (value) => value === EnumSecurityStateType.Smime,
-      ) ||
+      (securityMethods.value.find((value) => value === EnumSecurityStateType.Smime) ||
         securityMethods.value[0]),
   )
 
@@ -43,14 +41,9 @@ export const useFieldSecurity = (
   const defaultOptions = (method: EnumSecurityStateType) =>
     context.value.securityDefaultOptions?.[method] || []
 
-  const filterOptions = (
-    method: EnumSecurityStateType,
-    options: SecurityOption[],
-  ) => {
+  const filterOptions = (method: EnumSecurityStateType, options: SecurityOption[]) => {
     return options
-      .filter((option) =>
-        context.value.securityAllowed?.[method]?.includes(option),
-      )
+      .filter((option) => context.value.securityAllowed?.[method]?.includes(option))
       .sort()
   }
 

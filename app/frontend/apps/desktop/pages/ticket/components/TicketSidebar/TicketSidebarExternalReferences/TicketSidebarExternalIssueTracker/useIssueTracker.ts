@@ -22,16 +22,15 @@ export const useIssueTracker = (
   const issueLinks = computed(() => {
     if (context.value.screenType === TicketSidebarScreenType.TicketCreate)
       return (
-        (context.value.formValues as ExternalReferencesFormValues)
-          .externalReferences?.[trackerType] || []
+        (context.value.formValues as ExternalReferencesFormValues).externalReferences?.[
+          trackerType
+        ] || []
       )
 
     return context.value.ticket?.value?.externalReferences?.[trackerType] || []
   })
 
-  const hideSidebar = computed(
-    () => !issueLinks.value?.length && !isTicketEditable.value,
-  )
+  const hideSidebar = computed(() => !issueLinks.value?.length && !isTicketEditable.value)
 
   const openIssuesBadge = computed(() =>
     issueLinks.value?.length

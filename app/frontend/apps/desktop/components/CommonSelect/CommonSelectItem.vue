@@ -1,13 +1,9 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-/* eslint-disable vue/no-v-html */
 import { computed, type ConcreteComponent } from 'vue'
 
-import type {
-  MatchedSelectOption,
-  SelectOption,
-} from '#shared/components/CommonSelect/types.ts'
+import type { MatchedSelectOption, SelectOption } from '#shared/components/CommonSelect/types.ts'
 import type { AutoCompleteOption } from '#shared/components/Form/fields/FieldAutocomplete/types'
 import { i18n } from '#shared/i18n.ts'
 import { useLocaleStore } from '#shared/stores/locale.ts'
@@ -40,19 +36,13 @@ const label = computed(() => {
   if (props.noLabelTranslate && !option.labelPlaceholder)
     return option.label || option.value.toString()
 
-  return (
-    i18n.t(option.label, ...(option.labelPlaceholder || [])) ||
-    option.value.toString()
-  )
+  return i18n.t(option.label, ...(option.labelPlaceholder || [])) || option.value.toString()
 })
 
 const heading = computed(() => {
   const { option } = props
 
-  if (
-    props.noLabelTranslate &&
-    !(option as AutoCompleteOption).headingPlaceholder
-  )
+  if (props.noLabelTranslate && !(option as AutoCompleteOption).headingPlaceholder)
     return (option as AutoCompleteOption).heading
 
   return i18n.t(
@@ -120,11 +110,8 @@ const goToNextPage = (option: AutoCompleteOption, noFocus?: boolean) => {
       decorative
       class="shrink-0 fill-gray-100 group-hover:fill-black group-focus:fill-white dark:fill-neutral-400 dark:group-hover:fill-white"
     />
-    <div
-      v-if="filter"
-      v-tooltip="label + (heading ? ` – ${heading}` : '')"
-      class="grow truncate"
-    >
+    <div v-if="filter" v-tooltip="label + (heading ? ` – ${heading}` : '')" class="grow truncate">
+      <!-- eslint-disable vue/no-v-html -->
       <span
         :class="{
           'text-stone-200 dark:text-neutral-500':
@@ -179,9 +166,7 @@ const goToNextPage = (option: AutoCompleteOption, noFocus?: boolean) => {
             !option.disabled,
         }"
         class="shrink-0 fill-stone-200 group-hover/nav:!fill-white dark:fill-neutral-500"
-        :name="
-          locale.localeData?.dir === 'rtl' ? 'chevron-left' : 'chevron-right'
-        "
+        :name="locale.localeData?.dir === 'rtl' ? 'chevron-left' : 'chevron-right'"
         size="xs"
         tabindex="-1"
         decorative

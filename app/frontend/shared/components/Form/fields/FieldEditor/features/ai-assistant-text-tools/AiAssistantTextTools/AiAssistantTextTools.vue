@@ -30,8 +30,7 @@ const smartEditorClasses = getAiAssistantTextToolsClasses()
 const { notify } = useNotifications()
 
 const hasSelection = computed(
-  () =>
-    props.editor?.state.selection.anchor !== props.editor?.state.selection.head,
+  () => props.editor?.state.selection.anchor !== props.editor?.state.selection.head,
 )
 
 onMounted(() => {
@@ -91,11 +90,7 @@ const actions = [
 <template>
   <div :class="smartEditorClasses.popover.base">
     <ul ref="list">
-      <li
-        v-for="action in actions"
-        :key="action.key"
-        :class="smartEditorClasses.popover.item"
-      >
+      <li v-for="action in actions" :key="action.key" :class="smartEditorClasses.popover.item">
         <button
           :disabled="action.disabled"
           :class="smartEditorClasses.popover.button"

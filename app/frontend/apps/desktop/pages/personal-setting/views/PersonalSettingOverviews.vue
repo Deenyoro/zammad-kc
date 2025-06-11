@@ -70,9 +70,7 @@ const updateOverviewList = (newValue: OverviewItem[]) => {
   const overviewUpdateOrderMutation = new MutationHandler(
     useUserCurrentOverviewUpdateOrderMutation(),
     {
-      errorNotificationMessage: __(
-        'Updating the order of your ticket overviews failed.',
-      ),
+      errorNotificationMessage: __('Updating the order of your ticket overviews failed.'),
     },
   )
 
@@ -95,9 +93,7 @@ const resetOverviewOrder = () => {
   const userCurrentOverviewResetOrderMutation = new MutationHandler(
     useUserCurrentOverviewResetOrderMutation(),
     {
-      errorNotificationMessage: __(
-        'Resetting the order of your ticket overviews failed.',
-      ),
+      errorNotificationMessage: __('Resetting the order of your ticket overviews failed.'),
     },
   )
 
@@ -127,9 +123,7 @@ const confirmResetOverviewOrder = async () => {
   <LayoutContent :breadcrumb-items="breadcrumbItems" width="narrow">
     <CommonLoader class="mt-5 mb-3" :loading="overviewListQueryLoading">
       <div class="mb-4">
-        <CommonLabel
-          id="label-ticket-overview-order"
-          class="!mt-0.5 mb-1 !block"
+        <CommonLabel id="label-ticket-overview-order" class="!mt-0.5 mb-1 !block"
           >{{ $t('Order of ticket overviews') }}
         </CommonLabel>
 

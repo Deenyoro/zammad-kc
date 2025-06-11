@@ -17,13 +17,9 @@ const plugins = import.meta.glob<SearchPlugin>(
 
 export const searchPlugins = Object.values(plugins)
 
-export const sortedByPriorityPlugins = searchPlugins.sort(
-  (a, b) => a.priority - b.priority,
-)
+export const sortedByPriorityPlugins = searchPlugins.sort((a, b) => a.priority - b.priority)
 
-export const sortedByNamePlugins = searchPlugins.sort((a, b) =>
-  a.name.localeCompare(b.name),
-)
+export const sortedByNamePlugins = searchPlugins.sort((a, b) => a.name.localeCompare(b.name))
 
 export const searchPluginByName = keyBy(searchPlugins, 'name')
 
@@ -46,9 +42,7 @@ export const useSearchPlugins = () => {
     plugins.value.sort((a, b) => a.name.localeCompare(b.name)),
   )
 
-  const searchPluginNames = computed(() =>
-    plugins.value.map((plugin) => plugin.name),
-  )
+  const searchPluginNames = computed(() => plugins.value.map((plugin) => plugin.name))
 
   return {
     plugins,

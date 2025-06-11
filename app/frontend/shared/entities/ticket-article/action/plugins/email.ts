@@ -5,10 +5,7 @@ import { ref } from 'vue'
 
 import { useEmailFileUrls } from '#shared/composables/useEmailFileUrls.ts'
 import { getTicketSignatureQuery } from '#shared/composables/useTicketSignature.ts'
-import type {
-  TicketArticle,
-  TicketById,
-} from '#shared/entities/ticket/types.ts'
+import type { TicketArticle, TicketById } from '#shared/entities/ticket/types.ts'
 import { EnumTicketArticleSenderName } from '#shared/graphql/types.ts'
 import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 import { textCleanup } from '#shared/utils/helpers.ts'
@@ -122,10 +119,7 @@ const actionPlugin: TicketArticleActionPlugin = {
           view: { agent: ['read'] },
           label: __('Download original email'),
           icon: 'download',
-          perform: () =>
-            openExternalLink(
-              emailFileUrls.originalFormattingUrl.value as string,
-            ),
+          perform: () => openExternalLink(emailFileUrls.originalFormattingUrl.value as string),
         })
       }
 
@@ -136,8 +130,7 @@ const actionPlugin: TicketArticleActionPlugin = {
           view: { agent: ['read'] },
           label: __('Download raw email'),
           icon: 'download',
-          perform: () =>
-            openExternalLink(emailFileUrls.rawMessageUrl.value as string),
+          perform: () => openExternalLink(emailFileUrls.rawMessageUrl.value as string),
         })
       }
     }

@@ -23,9 +23,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const isKnowledgeBaseItem = (
-  item: unknown,
-): item is MentionKnowledgeBaseItem => {
+const isKnowledgeBaseItem = (item: unknown): item is MentionKnowledgeBaseItem => {
   return props.type === 'knowledge-base'
 }
 
@@ -37,9 +35,8 @@ const isTextItem = (item: unknown): item is MentionTextItem => {
   return props.type === 'text'
 }
 
-const { selectItem, selectedIndex, onKeyDown } = useNavigateOptions(
-  toRef(props, 'items'),
-  (item) => props.command(item as MentionUserItem),
+const { selectItem, selectedIndex, onKeyDown } = useNavigateOptions(toRef(props, 'items'), (item) =>
+  props.command(item as MentionUserItem),
 )
 
 defineExpose({
@@ -74,17 +71,11 @@ defineExpose({
         </div>
         <div>{{ item.title }}</div>
       </template>
-      <div
-        v-else-if="isTextItem(item)"
-        class="flex flex-row items-center gap-2"
-      >
+      <div v-else-if="isTextItem(item)" class="flex flex-row items-center gap-2">
         <div>
           {{ item.name }}
         </div>
-        <div
-          v-if="item.keywords"
-          class="border-gray-150 rounded border border-solid px-1 text-sm"
-        >
+        <div v-if="item.keywords" class="border-gray-150 rounded border border-solid px-1 text-sm">
           {{ item.keywords }}
         </div>
       </div>

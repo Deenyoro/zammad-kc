@@ -89,10 +89,7 @@ const customer = computed(() => {
               :label="ticket.state.name"
               pill
             />
-            <CommonTicketPriorityIndicator
-              v-if="isTicketAgent"
-              :priority="ticket.priority"
-            />
+            <CommonTicketPriorityIndicator v-if="isTicketAgent" :priority="ticket.priority" />
           </div>
         </div>
         <CommonIcon

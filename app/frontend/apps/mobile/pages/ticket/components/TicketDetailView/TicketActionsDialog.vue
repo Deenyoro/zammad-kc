@@ -33,17 +33,12 @@ const router = useRouter()
 const ticketReactive = toRef(props, 'ticket')
 const { isTicketAgent, isTicketEditable } = useTicketView(ticketReactive)
 
-const { autocompleteRef, gqlQuery, openMergeTicketsDialog } = useTicketsMerge(
-  ticketReactive,
-  () => closeDialog(props.name),
+const { autocompleteRef, gqlQuery, openMergeTicketsDialog } = useTicketsMerge(ticketReactive, () =>
+  closeDialog(props.name),
 )
 
-const {
-  isSubscribed,
-  isSubscriptionLoading,
-  canManageSubscription,
-  toggleSubscribe,
-} = useTicketSubscribe(ticketReactive)
+const { isSubscribed, isSubscriptionLoading, canManageSubscription, toggleSubscribe } =
+  useTicketSubscribe(ticketReactive)
 
 const topButtons = computed(() =>
   [
@@ -55,9 +50,7 @@ const topButtons = computed(() =>
     },
     {
       label: isSubscribed.value ? __('Unsubscribe') : __('Subscribe'),
-      icon: isSubscribed.value
-        ? 'notification-unsubscribed'
-        : 'notification-subscribed',
+      icon: isSubscribed.value ? 'notification-unsubscribed' : 'notification-subscribed',
       value: 'subscribe',
       hidden: !canManageSubscription.value,
       selected: isSubscribed.value,
@@ -133,10 +126,7 @@ const showChangeCustomer = () => {
         />
       </CommonSectionMenu> -->
       <CommonSectionMenu v-if="isTicketEditable && isTicketAgent">
-        <CommonSectionMenuLink
-          :label="__('Change customer')"
-          @click="showChangeCustomer"
-        >
+        <CommonSectionMenuLink :label="__('Change customer')" @click="showChangeCustomer">
           <template #icon>
             <CommonUserAvatar :entity="ticket.customer" size="small" />
           </template>

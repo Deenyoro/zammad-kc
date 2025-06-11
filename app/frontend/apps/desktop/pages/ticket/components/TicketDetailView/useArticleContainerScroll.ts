@@ -1,15 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import { useScroll, useThrottleFn, whenever } from '@vueuse/core'
-import {
-  computed,
-  onMounted,
-  onActivated,
-  type Ref,
-  ref,
-  type ShallowRef,
-  watch,
-} from 'vue'
+import { computed, onMounted, onActivated, type Ref, ref, type ShallowRef, watch } from 'vue'
 
 import type { TicketById } from '#shared/entities/ticket/types.ts'
 
@@ -19,12 +11,8 @@ import TicketDetailTopBar from '#desktop/pages/ticket/components/TicketDetailVie
 export const useArticleContainerScroll = (
   ticket: Ref<TicketById>,
   contentContainerElement: Readonly<ShallowRef<HTMLDivElement | null>>,
-  articleListInstance: Readonly<
-    ShallowRef<InstanceType<typeof ArticleList> | null>
-  >,
-  topBarInstance: Readonly<
-    ShallowRef<InstanceType<typeof TicketDetailTopBar> | null>
-  >,
+  articleListInstance: Readonly<ShallowRef<InstanceType<typeof ArticleList> | null>>,
+  topBarInstance: Readonly<ShallowRef<InstanceType<typeof TicketDetailTopBar> | null>>,
 ) => {
   const THROTTLE_TIME = 250
 
@@ -79,8 +67,7 @@ export const useArticleContainerScroll = (
 
     // If we keep the pointer on the top bar we do not want to hide the details if the user starts to scroll on the same time.
     if (!isHoveringOnTopBar.value) {
-      isHidingTicketDetails.value =
-        scrollTop > (topBarInstance.value?.$el.clientHeight ?? 0)
+      isHidingTicketDetails.value = scrollTop > (topBarInstance.value?.$el.clientHeight ?? 0)
     }
 
     previousPosition.value = scrollTop

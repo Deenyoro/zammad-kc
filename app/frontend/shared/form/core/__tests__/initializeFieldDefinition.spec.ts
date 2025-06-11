@@ -1,10 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import {
-  text as inputTextDefinition,
-  select as selectDefinition,
-  casts,
-} from '@formkit/inputs'
+import { text as inputTextDefinition, select as selectDefinition, casts } from '@formkit/inputs'
 import { cloneDeep } from 'lodash-es'
 
 import initializeFieldDefinition from '#shared/form/core/initializeFieldDefinition.ts'
@@ -18,12 +14,7 @@ describe('initializeFieldDefinition', () => {
     const definition = cloneDeep(inputTextDefinition)
     initializeFieldDefinition(definition)
 
-    expect(definition.props).toEqual([
-      'formId',
-      'labelSrOnly',
-      'labelPlaceholder',
-      'internal',
-    ])
+    expect(definition.props).toEqual(['formId', 'labelSrOnly', 'labelPlaceholder', 'internal'])
   })
 
   it('check for added default props with existing props', () => {
@@ -74,11 +65,7 @@ describe('initializeFieldDefinition', () => {
 
   it('do not add default features', () => {
     const definition = cloneDeep(inputTextDefinition)
-    initializeFieldDefinition(
-      definition,
-      {},
-      { addDefaultProps: true, addDefaultFeatures: false },
-    )
+    initializeFieldDefinition(definition, {}, { addDefaultProps: true, addDefaultFeatures: false })
 
     expect(definition.features).toEqual([casts])
   })

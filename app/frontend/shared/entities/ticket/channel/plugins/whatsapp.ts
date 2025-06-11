@@ -10,15 +10,10 @@ const ticketChannelPlugin: TicketChannelPlugin = {
   area: EnumChannelArea.WhatsAppBusiness,
 
   channelAlert(ticket: TicketById) {
-    const lastWhatsappTimestamp =
-      ticket.preferences?.whatsapp?.timestamp_incoming
+    const lastWhatsappTimestamp = ticket.preferences?.whatsapp?.timestamp_incoming
 
     // In case the customer service window is not open yet, or the ticket is closed, hide the alert.
-    if (
-      !lastWhatsappTimestamp ||
-      /^(closed|merged|removed)$/.test(ticket.state.name)
-    )
-      return null
+    if (!lastWhatsappTimestamp || /^(closed|merged|removed)$/.test(ticket.state.name)) return null
 
     // Determine the end of the customer service window and set the appropriate alert text and type.
     const timeWindowEnd = new Date(lastWhatsappTimestamp * 1000)

@@ -17,9 +17,7 @@ describe('TicketBulkEditButton', () => {
       },
     })
 
-    expect(
-      wrapper.queryByRole('button', { name: 'Bulk Actions' }),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button', { name: 'Bulk Actions' })).not.toBeInTheDocument()
 
     const checkedTicketIds = new Set([convertToGraphQLId('Ticket', 2)])
 
@@ -27,9 +25,7 @@ describe('TicketBulkEditButton', () => {
       checkedTicketIds,
     })
 
-    expect(
-      wrapper.getByRole('button', { name: 'Bulk Actions' }),
-    ).toHaveTextContent('Bulk Actions')
+    expect(wrapper.getByRole('button', { name: 'Bulk Actions' })).toHaveTextContent('Bulk Actions')
     expect(wrapper.getByIconName('collection-play')).toBeInTheDocument()
   })
 
@@ -42,9 +38,7 @@ describe('TicketBulkEditButton', () => {
       },
     })
 
-    expect(
-      wrapper.queryByTestId('ticket-bulk-edit-button'),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByTestId('ticket-bulk-edit-button')).not.toBeInTheDocument()
   })
 
   it('emits open flyout event', async () => {

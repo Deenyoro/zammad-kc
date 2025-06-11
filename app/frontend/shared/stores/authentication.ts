@@ -7,10 +7,7 @@ import { ref } from 'vue'
 import useFingerprint from '#shared/composables/useFingerprint.ts'
 import { useLoginMutation } from '#shared/graphql/mutations/login.api.ts'
 import { useLogoutMutation } from '#shared/graphql/mutations/logout.api.ts'
-import {
-  type EnumTwoFactorAuthenticationMethod,
-  type LoginInput,
-} from '#shared/graphql/types.ts'
+import { type EnumTwoFactorAuthenticationMethod, type LoginInput } from '#shared/graphql/types.ts'
 import { clearApolloClientStore } from '#shared/server/apollo/client.ts'
 import { MutationHandler } from '#shared/server/apollo/handler/index.ts'
 import testFlags from '#shared/utils/testFlags.ts'
@@ -52,10 +49,7 @@ export const useAuthenticationStore = defineStore(
     }
 
     const refreshAfterAuthentication = async (): Promise<void> => {
-      await Promise.all([
-        useApplicationStore().getConfig(),
-        useSessionStore().getCurrentUser(),
-      ])
+      await Promise.all([useApplicationStore().getConfig(), useSessionStore().getCurrentUser()])
     }
 
     const logout = async (): Promise<void> => {

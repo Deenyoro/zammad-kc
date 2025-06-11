@@ -3,10 +3,7 @@
 import type { FormSchemaField } from '#shared/components/Form/types.ts'
 import { defineFormSchema } from '#shared/form/defineFormSchema.ts'
 import type { UserQuery } from '#shared/graphql/types.ts'
-import {
-  EnumFormUpdaterId,
-  EnumObjectManagerObjects,
-} from '#shared/graphql/types.ts'
+import { EnumFormUpdaterId, EnumObjectManagerObjects } from '#shared/graphql/types.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import type { ConfidentTake } from '#shared/types/utils.ts'
 

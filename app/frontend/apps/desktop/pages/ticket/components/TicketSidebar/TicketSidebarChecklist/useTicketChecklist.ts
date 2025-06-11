@@ -60,9 +60,7 @@ export const useTicketChecklist = (
   const checklistResult = checklistQuery.result()
   const checklistLoading = checklistQuery.loading()
 
-  const checklist = computed(
-    () => checklistResult?.value?.ticketChecklist as Checklist,
-  )
+  const checklist = computed(() => checklistResult?.value?.ticketChecklist as Checklist)
 
   const isLoadingChecklist = computed(() => {
     // Return true when the ticket is not loaded yet, because some output is related to the ticket data (e.g. readonly).

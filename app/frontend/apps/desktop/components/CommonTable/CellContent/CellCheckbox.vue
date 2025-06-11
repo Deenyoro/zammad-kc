@@ -14,9 +14,7 @@ const props = defineProps<Props>()
 
 const hasRowId = computed(() => props.itemIds?.has(props.item.id))
 
-const checkboxIcon = computed(() =>
-  hasRowId.value ? 'check-square' : 'square',
-)
+const checkboxIcon = computed(() => (hasRowId.value ? 'check-square' : 'square'))
 
 const disabled = computed(() =>
   props.item.policy ? !props.item.policy.update : !!props.item.disabled,
@@ -32,22 +30,15 @@ const disabled = computed(() =>
         hasRowId,
       'text-gray-100! dark:text-neutral-400!': hasRowId,
       'group-hover/checkbox:text-blue-800!': !disabled,
-      'opacity-30 group-hover:text-gray-100! group-hover:dark:text-neutral-400!':
-        disabled,
+      'opacity-30 group-hover:text-gray-100! group-hover:dark:text-neutral-400!': disabled,
     }"
     :aria-label="
-      disabled
-        ? undefined
-        : hasRowId
-          ? $t('Deselect this entry')
-          : $t('Select this entry')
+      disabled ? undefined : hasRowId ? $t('Deselect this entry') : $t('Select this entry')
     "
     :tabindex="disabled ? -1 : 0"
     :aria-disabled="!!disabled"
     :aria-description="
-      disabled && props.item.policy
-        ? $t('You do not have permission to update')
-        : undefined
+      disabled && props.item.policy ? $t('You do not have permission to update') : undefined
     "
     :aria-checked="!!hasRowId"
   >

@@ -4,10 +4,7 @@
 import { computed, onMounted, ref } from 'vue'
 
 import Form from '#shared/components/Form/Form.vue'
-import type {
-  FormSubmitData,
-  FormSchemaNode,
-} from '#shared/components/Form/types.ts'
+import type { FormSubmitData, FormSchemaNode } from '#shared/components/Form/types.ts'
 import type {
   TwoFactorLoginFormData,
   LoginCredentials,
@@ -102,9 +99,7 @@ const tryMethod = async () => {
       login: props.credentials.login,
     })
     if (!initiated?.twoFactorMethodInitiateAuthentication?.initiationData) {
-      error.value = __(
-        'Two-factor authentication method could not be initiated.',
-      )
+      error.value = __('Two-factor authentication method could not be initiated.')
       return
     }
     const result = await twoFactorLoginOptions.value.setup(
@@ -153,10 +148,7 @@ onMounted(async () => {
     v-else-if="twoFactorLoginOptions.setup"
     class="flex flex-col items-center justify-center"
   >
-    <CommonLabel
-      v-if="error && twoFactorLoginOptions.errorHelpMessage"
-      class="mt-5"
-    >
+    <CommonLabel v-if="error && twoFactorLoginOptions.errorHelpMessage" class="mt-5">
       {{ $t(twoFactorLoginOptions.errorHelpMessage) }}
     </CommonLabel>
 

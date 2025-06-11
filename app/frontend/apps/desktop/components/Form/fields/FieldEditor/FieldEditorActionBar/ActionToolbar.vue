@@ -1,13 +1,8 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import {
-  onKeyDown,
-  useEventListener,
-  useIntersectionObserver,
-} from '@vueuse/core'
-import { computed, ref, shallowRef, useTemplateRef } from 'vue'
-import { type Ref, toRef } from 'vue'
+import { onKeyDown, useEventListener, useIntersectionObserver } from '@vueuse/core'
+import { computed, ref, shallowRef, useTemplateRef, type Ref, toRef } from 'vue'
 
 import FieldEditorActionMenu from '#shared/components/Form/fields/FieldEditor/FieldEditorActionMenu/FieldEditorActionMenu.vue'
 import type { EditorButton } from '#shared/components/Form/fields/FieldEditor/types.ts'
@@ -92,9 +87,7 @@ const invisibleActions = computed(() =>
   Array.from(visibleActions.value.entries()).reduce<ExtendedEditorButton[]>(
     (acc, [actionName, isVisible]) => {
       if (!isVisible) {
-        const action = editorActions.actions.value.find(
-          (action) => action.name === actionName,
-        )
+        const action = editorActions.actions.value.find((action) => action.name === actionName)
         if (action)
           acc.push({
             ...action,
@@ -111,15 +104,10 @@ const invisibleActions = computed(() =>
 const activeActionWithSubmenu = shallowRef<EditorButton['subMenu'] | null>(null)
 
 const activeActions = computed(() =>
-  activeActionWithSubmenu.value
-    ? activeActionWithSubmenu.value
-    : invisibleActions.value,
+  activeActionWithSubmenu.value ? activeActionWithSubmenu.value : invisibleActions.value,
 )
 
-const handleOverlowMenuItemClick = async (
-  action: EditorButton,
-  event: MouseEvent,
-) => {
+const handleOverlowMenuItemClick = async (action: EditorButton, event: MouseEvent) => {
   stopEvent(event)
 
   if (action.subMenu) {
@@ -137,9 +125,7 @@ const handleOverlowMenuItemClick = async (
     tabindex="0"
     role="toolbar"
   >
-    <div
-      class="flex h-10.5 flex-wrap gap-1.5 overflow-hidden py-2 ps-2.5 pe-0.5"
-    >
+    <div class="flex h-10.5 flex-wrap gap-1.5 overflow-hidden py-2 ps-2.5 pe-0.5">
       <template v-for="(action, idx) in actions" :key="action.name">
         <ActionButton
           ref="action-button"

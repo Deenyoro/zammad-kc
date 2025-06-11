@@ -4,10 +4,7 @@ import { defineStore } from 'pinia'
 import { effectScope, ref } from 'vue'
 
 import { useTranslationsLazyQuery } from '#shared/graphql/queries/translations.api.ts'
-import type {
-  TranslationsQuery,
-  TranslationsQueryVariables,
-} from '#shared/graphql/types.ts'
+import type { TranslationsQuery, TranslationsQueryVariables } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
@@ -23,9 +20,7 @@ const localStorageKey = (locale: string): string => {
 }
 
 const loadCache = (locale: string): TranslationsCacheValue => {
-  const cached = JSON.parse(
-    window.localStorage.getItem(localStorageKey(locale)) || '{}',
-  )
+  const cached = JSON.parse(window.localStorage.getItem(localStorageKey(locale)) || '{}')
   log.debug('translations.loadCache()', locale, cached)
   return {
     cacheKey: cached.cacheKey || '',
@@ -39,10 +34,7 @@ const setCache = (locale: string, value: TranslationsCacheValue): void => {
   log.debug('translations.setCache()', locale, value)
 }
 
-let translationsQuery: QueryHandler<
-  TranslationsQuery,
-  TranslationsQueryVariables
->
+let translationsQuery: QueryHandler<TranslationsQuery, TranslationsQueryVariables>
 
 const getTranslationsQuery = () => {
   if (translationsQuery) return translationsQuery
@@ -98,11 +90,7 @@ export const useTranslationsStore = defineStore(
         })
       }
 
-      log.debug(
-        'translations.load() setting new translation map',
-        locale,
-        translationData.value,
-      )
+      log.debug('translations.load() setting new translation map', locale, translationData.value)
       i18n.setTranslationMap(new Map(Object.entries(translationData.value)))
     }
 

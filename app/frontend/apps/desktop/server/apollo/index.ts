@@ -8,8 +8,10 @@ import type {
 
 import type { App } from 'vue'
 
-export const cacheInitializerModules: CacheInitializerModules =
-  import.meta.glob('./cache/initializer/*.ts', { eager: true })
+export const cacheInitializerModules: CacheInitializerModules = import.meta.glob(
+  './cache/initializer/*.ts',
+  { eager: true },
+)
 
 const initializeApolloClient: InitializeAppApolloClient = (app: App) => {
   mainInitializeApolloClient(app, cacheInitializerModules)

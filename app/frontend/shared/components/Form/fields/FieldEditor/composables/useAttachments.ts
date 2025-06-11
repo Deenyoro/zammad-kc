@@ -12,9 +12,7 @@ interface LoadImagesOptions {
 }
 
 export const useAttachments = (extensions: Extensions, formId: string) => {
-  const hasImageExtension = extensions.some(
-    (extension) => extension.name === 'image',
-  )
+  const hasImageExtension = extensions.some((extension) => extension.name === 'image')
 
   const inlineImagesInEditor = (editor: Editor, files: File[]) => {
     convertInlineImages(files, editor.view.dom).then(async (urls) => {
@@ -24,8 +22,7 @@ export const useAttachments = (extensions: Extensions, formId: string) => {
   }
 
   const addFilesToAttachments = (files: File[]) => {
-    const attachmentsContext = getNodeByName(formId, 'attachments')
-      ?.context as unknown as
+    const attachmentsContext = getNodeByName(formId, 'attachments')?.context as unknown as
       | { uploadFiles?: (files: File[]) => void }
       | undefined
     if (attachmentsContext && !attachmentsContext.uploadFiles) {
@@ -38,7 +35,7 @@ export const useAttachments = (extensions: Extensions, formId: string) => {
   }
 
   // there is also a gif, but desktop only inlines these two for now
-  const imagesMimeType = ['image/png', 'image/jpeg']
+  const imagesMimeType = new Set(['image/png', 'image/jpeg'])
   const loadFiles = (
     files: FileList | File[] | null | undefined,
     editor: Editor | undefined,
@@ -52,7 +49,7 @@ export const useAttachments = (extensions: Extensions, formId: string) => {
     const otherFiles: File[] = []
 
     for (const file of files) {
-      if (imagesMimeType.includes(file.type)) {
+      if (imagesMimeType.has(file.type)) {
         inlineImages.push(file)
       } else {
         otherFiles.push(file)
@@ -67,10 +64,7 @@ export const useAttachments = (extensions: Extensions, formId: string) => {
       addFilesToAttachments(otherFiles)
     }
 
-    return Boolean(
-      inlineImages.length ||
-        (options.attachNonInlineFiles && otherFiles.length),
-    )
+    return Boolean(inlineImages.length || (options.attachNonInlineFiles && otherFiles.length))
   }
 
   return {

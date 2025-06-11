@@ -45,10 +45,7 @@ describe('useKeyboardEventBus', () => {
     }
 
     const wrapper = mountComponent(() => {
-      const { subscribeEvent } = useKeyboardEventBus(
-        KeyboardKey.Escape,
-        firstEvent,
-      )
+      const { subscribeEvent } = useKeyboardEventBus(KeyboardKey.Escape, firstEvent)
 
       subscribeEvent(secondEvent)
     })

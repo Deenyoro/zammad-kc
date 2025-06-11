@@ -55,19 +55,11 @@ watchEffect(() => {
   emit('refetch', loading.value && !!ticketsResult.value)
 })
 
-const tickets = computed(() =>
-  edgesToArray(ticketsResult.value?.ticketsByOverview),
-)
+const tickets = computed(() => edgesToArray(ticketsResult.value?.ticketsByOverview))
 
-const totalCount = computed(
-  () => ticketsResult.value?.ticketsByOverview.totalCount || 0,
-)
+const totalCount = computed(() => ticketsResult.value?.ticketsByOverview.totalCount || 0)
 
-const pagination = usePagination(
-  ticketsQuery,
-  'ticketsByOverview',
-  TICKETS_COUNT,
-)
+const pagination = usePagination(ticketsQuery, 'ticketsByOverview', TICKETS_COUNT)
 
 // Refetch tickets, when the ticket count for the current overview changed.
 watch(
@@ -142,11 +134,7 @@ useInfiniteScroll(
       </div>
     </section>
     <CommonLoader v-if="pagination.loadingNewPage" loading class="mt-4" />
-    <div
-      v-if="!tickets.length"
-      aria-live="polite"
-      class="px-4 py-3 text-center text-base"
-    >
+    <div v-if="!tickets.length" aria-live="polite" class="px-4 py-3 text-center text-base">
       {{ $t('No entries') }}
     </div>
     <div

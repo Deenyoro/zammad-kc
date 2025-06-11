@@ -3,12 +3,11 @@
 import type { FieldResolverModule } from '#shared/entities/object-attributes/types/resolver.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 
-import FieldResolver from '../FieldResolver.ts'
+import { FieldResolver } from '../FieldResolver.ts'
 
 export class FieldResolverTag extends FieldResolver {
   fieldType = 'tags'
 
-  // eslint-disable-next-line class-methods-use-this
   public fieldTypeAttributes() {
     const application = useApplicationStore()
 

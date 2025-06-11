@@ -66,9 +66,7 @@ describe('Form - Field - External Data Source - Query', () => {
     // Search is always case-insensitive.
     await wrapper.events.type(filterElement, 'a')
 
-    expect(
-      wrapper.queryByText('Start typing to search…'),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByText('Start typing to search…')).not.toBeInTheDocument()
 
     const callResult = await waitUntil(
       () =>
@@ -77,8 +75,7 @@ describe('Form - Field - External Data Source - Query', () => {
         ).at(-1)!,
     )
 
-    const testOptions =
-      callResult.result.autocompleteSearchObjectAttributeExternalDataSource
+    const testOptions = callResult.result.autocompleteSearchObjectAttributeExternalDataSource
 
     expect(callResult.variables).toMatchObject({
       input: {
@@ -115,9 +112,7 @@ describe('Form - Field - External Data Source - Query', () => {
     // // Search for non-accented characters matches items with accents too.
     await wrapper.events.type(filterElement, 'r')
 
-    expect(
-      wrapper.queryByText('Start typing to search…'),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByText('Start typing to search…')).not.toBeInTheDocument()
 
     selectOptions = wrapper.getAllByRole('option')
 

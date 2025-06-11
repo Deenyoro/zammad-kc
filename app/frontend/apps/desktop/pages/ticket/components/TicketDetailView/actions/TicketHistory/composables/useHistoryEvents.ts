@@ -2,11 +2,7 @@
 
 import { kebabCase } from 'lodash-es'
 
-import type {
-  HistoryRecordEvent,
-  HistoryRecordIssuer,
-  User,
-} from '#shared/graphql/types.ts'
+import type { HistoryRecordEvent, HistoryRecordIssuer, User } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n.ts'
 import type { DeepPartial } from '#shared/types/utils.ts'
 
@@ -42,9 +38,7 @@ export const useHistoryEvents = () => {
     }
   }
 
-  const getEventOutput = (
-    event: DeepPartial<HistoryRecordEvent>,
-  ): EventActionOutput => {
+  const getEventOutput = (event: DeepPartial<HistoryRecordEvent>): EventActionOutput => {
     if (!event.action || !eventActionsLookup[kebabCase(event.action)]) {
       throw new Error(
         // eslint-disable-next-line zammad/zammad-detect-translatable-string
@@ -55,9 +49,7 @@ export const useHistoryEvents = () => {
     const module = eventActionsLookup[kebabCase(event.action)]
 
     const actionName =
-      typeof module.actionName === 'function'
-        ? module.actionName(event)
-        : module.actionName
+      typeof module.actionName === 'function' ? module.actionName(event) : module.actionName
 
     return {
       component: module.component,

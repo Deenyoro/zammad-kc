@@ -52,11 +52,7 @@ const testAction = (
 
 const testTableAction = (
   actionLabel: string,
-  {
-    trCount,
-    tdCount,
-    thCount,
-  }: { trCount: number; tdCount: number; thCount?: number },
+  { trCount, tdCount, thCount }: { trCount: number; tdCount: number; thCount?: number },
 ) => {
   it(`table action - ${actionLabel}`, () => {
     mountEditor()
@@ -98,36 +94,16 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
   testAction('Format as bold', (text) => `<strong>${text}</strong>`)
   testAction('Format as italic', (text) => `<em>${text}</em>`)
   testAction('Format as strikethrough', (text) => `<s>${text}</s>`)
-  testAction(
-    'Add first level heading',
-    (text) => `<h1>${text}</h1>`,
-    'Add heading',
-    'heading',
-  )
-  testAction(
-    'Add second level heading',
-    (text) => `<h2>${text}</h2>`,
-    'Add heading',
-    'heading',
-  )
-  testAction(
-    'Add third level heading',
-    (text) => `<h3>${text}</h3>`,
-    'Add heading',
-    'heading',
-  )
+  testAction('Add first level heading', (text) => `<h1>${text}</h1>`, 'Add heading', 'heading')
+  testAction('Add second level heading', (text) => `<h2>${text}</h2>`, 'Add heading', 'heading')
+  testAction('Add third level heading', (text) => `<h3>${text}</h3>`, 'Add heading', 'heading')
   testAction(
     'Add ordered list',
     (text) => `<ol><li><p>${text}</p></li></ol>`,
     undefined,
     'listitem',
   )
-  testAction(
-    'Add bullet list',
-    (text) => `<ul><li><p>${text}</p></li></ul>`,
-    undefined,
-    'listitem',
-  )
+  testAction('Add bullet list', (text) => `<ul><li><p>${text}</p></li></ul>`, undefined, 'listitem')
 
   testAction(
     'Add ordered list',
@@ -154,10 +130,7 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
       cy.findByTestId('action-bar').findByLabelText('Format as bold').click()
       cy.findByRole('paragraph').type('Text')
 
-      cy.findByRole('textbox').should(
-        'have.html',
-        '<p><strong>Text</strong></p>',
-      )
+      cy.findByRole('textbox').should('have.html', '<p><strong>Text</strong></p>')
 
       cy.findByRole('textbox').type('{selectall}')
       cy.findByTestId('action-bar').findByLabelText('Remove formatting').click()
@@ -234,9 +207,7 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
         )
       })
 
-    cy.findByRole('textbox')
-      .find('img')
-      .should('have.attr', 'src', '/api/v1/attachments/2062')
+    cy.findByRole('textbox').find('img').should('have.attr', 'src', '/api/v1/attachments/2062')
   })
 
   describe('table', () => {
@@ -366,9 +337,6 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
     cy.findByTestId('action-bar').findByLabelText('Change text color').click()
 
     cy.findByLabelText('Monza').click()
-    cy.findByRole('textbox').should(
-      'contain.html',
-      '<span style="color: #B00020">world</span>',
-    )
+    cy.findByRole('textbox').should('contain.html', '<span style="color: #B00020">world</span>')
   })
 })

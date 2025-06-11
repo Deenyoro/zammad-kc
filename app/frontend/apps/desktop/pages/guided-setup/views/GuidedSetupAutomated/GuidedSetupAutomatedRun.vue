@@ -46,11 +46,7 @@ runAutoWizardMutation
   .then(async (result) => {
     finished.value = true
     const { setAuthenticatedSessionId } = useAuthenticationStore()
-    if (
-      await setAuthenticatedSessionId(
-        result?.systemSetupRunAutoWizard?.session?.id || null,
-      )
-    ) {
+    if (await setAuthenticatedSessionId(result?.systemSetupRunAutoWizard?.session?.id || null)) {
       const afterAuth = result?.systemSetupRunAutoWizard?.session?.afterAuth
 
       // Redirect only after some seconds, in order to give the user a chance to read the message.
@@ -69,10 +65,7 @@ runAutoWizardMutation
   })
 
 const statusMessage = computed(() => {
-  if (finished.value)
-    return __(
-      'The system was configured successfully. You are being redirected.',
-    )
+  if (finished.value) return __('The system was configured successfully. You are being redirected.')
 
   return __('Relax, your system is being set up…')
 })
@@ -81,8 +74,6 @@ const statusMessage = computed(() => {
 <template>
   <LayoutPublicPage box-size="medium" :title="__('Automated Setup')">
     <GuidedSetupStatusMessage v-if="!errors" :message="statusMessage" />
-    <CommonAlert v-else variant="danger">{{
-      errors?.generalErrors[0]
-    }}</CommonAlert>
+    <CommonAlert v-else variant="danger">{{ errors?.generalErrors[0] }}</CommonAlert>
   </LayoutPublicPage>
 </template>

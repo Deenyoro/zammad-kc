@@ -8,10 +8,7 @@ import type { TicketById } from '#shared/entities/ticket/types.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 
 import CommonSimpleTable from '#desktop/components/CommonTable/CommonSimpleTable.vue'
-import type {
-  TableSimpleHeader,
-  TableItem,
-} from '#desktop/components/CommonTable/types'
+import type { TableSimpleHeader, TableItem } from '#desktop/components/CommonTable/types'
 import CommonTicketStateIndicatorIcon from '#desktop/components/CommonTicketStateIndicator/CommonTicketStateIndicatorIcon.vue'
 import type { TicketRelationAndRecentListItem } from '#desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/types.ts'
 

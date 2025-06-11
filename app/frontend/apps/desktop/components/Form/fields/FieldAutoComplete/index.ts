@@ -11,6 +11,7 @@ import type { AutoCompleteProps } from './types.ts'
 import type { FormKitBaseSlots, FormKitInputs } from '@formkit/inputs'
 
 declare module '@formkit/inputs' {
+  // oxlint-disable-next-line no-unused-vars
   interface FormKitInputProps<Props extends FormKitInputs<Props>> {
     autocomplete: AutoCompleteProps & {
       type: 'autocomplete'
@@ -48,11 +49,9 @@ export const autoCompleteProps = [
   'alwaysApplyDefaultFilter',
 ]
 
-const fieldDefinition = createInput(
-  FieldAutoCompleteInput,
-  [...autoCompleteProps, 'gqlQuery'],
-  { features: [addLink, formUpdaterTrigger()] },
-)
+const fieldDefinition = createInput(FieldAutoCompleteInput, [...autoCompleteProps, 'gqlQuery'], {
+  features: [addLink, formUpdaterTrigger()],
+})
 
 export default {
   fieldType: 'autocomplete',

@@ -9,16 +9,7 @@ import { render } from '@testing-library/vue'
 import { mount } from '@vue/test-utils'
 import { merge, cloneDeep } from 'lodash-es'
 import { afterEach, vi } from 'vitest'
-import {
-  isRef,
-  nextTick,
-  ref,
-  watchEffect,
-  unref,
-  type App,
-  type Plugin,
-  type Ref,
-} from 'vue'
+import { isRef, nextTick, ref, watchEffect, unref, type App, type Plugin, type Ref } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 import type { DependencyProvideApi } from '#tests/support/components/types.ts'
@@ -88,24 +79,20 @@ let initDefaultVisuals: () => void
 
 // TODO: have a separate check for shared components
 if (isMobile) {
-  const [
-    { default: CommonConfirmation },
-    { initializeMobileVisuals },
-    { mobileFormFieldModules },
-  ] = await Promise.all([
-    import('#mobile/components/CommonConfirmation/CommonConfirmation.vue'),
-    import('#mobile/initializer/mobileVisuals.ts'),
-    import('#mobile/form/index.ts'),
-  ])
+  const [{ default: CommonConfirmation }, { initializeMobileVisuals }, { mobileFormFieldModules }] =
+    await Promise.all([
+      import('#mobile/components/CommonConfirmation/CommonConfirmation.vue'),
+      import('#mobile/initializer/mobileVisuals.ts'),
+      import('#mobile/form/index.ts'),
+    ])
   initDefaultVisuals = initializeMobileVisuals
   ConformationComponent = CommonConfirmation
   formFields = mobileFormFieldModules
 } else if (isDesktop) {
-  const [{ initializeDesktopVisuals }, { desktopFormFieldModules }] =
-    await Promise.all([
-      import('#desktop/initializer/desktopVisuals.ts'),
-      import('#desktop/form/index.ts'),
-    ])
+  const [{ initializeDesktopVisuals }, { desktopFormFieldModules }] = await Promise.all([
+    import('#desktop/initializer/desktopVisuals.ts'),
+    import('#desktop/form/index.ts'),
+  ])
   initDefaultVisuals = initializeDesktopVisuals
   formFields = desktopFormFieldModules
 } else {
@@ -114,8 +101,7 @@ if (isMobile) {
 
 // TODO: some things can be handled differently: https://test-utils.vuejs.org/api/#config-global
 
-export interface ExtendedMountingOptions<Props>
-  extends ComponentMountingOptions<Props> {
+export interface ExtendedMountingOptions<Props> extends ComponentMountingOptions<Props> {
   router?: boolean
   routerRoutes?: RouteRecordRaw[]
   routerBeforeGuards?: NavigationGuard[]
@@ -192,13 +178,7 @@ export const getTestRouter = () => router
 export const getHistory = () => history
 
 // cannot use "as const" here, because ESLint fails with obscure error :shrug:
-const routerMethods = [
-  'push',
-  'replace',
-  'back',
-  'go',
-  'forward',
-] as unknown as ['push']
+const routerMethods = ['push', 'replace', 'back', 'go', 'forward'] as unknown as ['push']
 
 const ensureRouterSpy = () => {
   if (!router) return
@@ -206,10 +186,7 @@ const ensureRouterSpy = () => {
   routerMethods.forEach((name) => vi.spyOn(router, name))
 }
 
-const initializeRouter = (
-  routes?: RouteRecordRaw[],
-  routerBeforeGuards?: NavigationGuard[],
-) => {
+const initializeRouter = (routes?: RouteRecordRaw[], routerBeforeGuards?: NavigationGuard[]) => {
   if (routerInitialized) {
     ensureRouterSpy()
     return
@@ -430,6 +407,7 @@ const setupVModel = <Props>(wrapperOptions: ExtendedMountingOptions<Props>) => {
   for (const [prop, propDefault] of vModelOptions) {
     const reactiveValue = isRef(propDefault) ? propDefault : ref(propDefault)
     const props = (wrapperOptions.props ?? {}) as any
+
     props[prop] = unref(propDefault)
     props[`onUpdate:${prop}`] = (value: unknown) => {
       reactiveValue.value = value
@@ -481,10 +459,7 @@ const renderComponent = <Props>(
 
   // Store and Router needs only to be initalized once for a test suit.
   if (wrapperOptions.router) {
-    initializeRouter(
-      wrapperOptions.routerRoutes,
-      wrapperOptions.routerBeforeGuards,
-    )
+    initializeRouter(wrapperOptions.routerRoutes, wrapperOptions.routerBeforeGuards)
   }
   if (wrapperOptions.store) {
     initializePiniaStore()

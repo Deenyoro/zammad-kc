@@ -19,9 +19,7 @@ describe('signup verify view', () => {
     const view = await visitView('/signup/verify')
 
     expect(
-      view.getByText(
-        'Email could not be verified. Please contact your administrator.',
-      ),
+      view.getByText('Email could not be verified. Please contact your administrator.'),
     ).toBeInTheDocument()
   })
 
@@ -46,9 +44,7 @@ describe('signup verify view', () => {
     const view = await visitView('/signup/verify/123')
 
     expect(
-      await view.findByText(
-        'Email could not be verified. Please contact your administrator.',
-      ),
+      await view.findByText('Email could not be verified. Please contact your administrator.'),
     ).toBeInTheDocument()
   })
 

@@ -16,9 +16,7 @@ const props = defineProps<Props>()
 
 const showPopup = ref(false)
 
-const { loading, tryAgain } = useTicketArticleRetryMediaDownload(
-  toRef(props, 'articleId'),
-)
+const { loading, tryAgain } = useTicketArticleRetryMediaDownload(toRef(props, 'articleId'))
 
 const popupItems = computed(() =>
   props.mediaError && !loading.value
@@ -54,9 +52,7 @@ const popupItems = computed(() =>
   </button>
   <CommonSectionPopup v-model:state="showPopup" :messages="popupItems">
     <template #header>
-      <div
-        class="flex flex-col items-center gap-2 border-b border-b-white/10 p-4"
-      >
+      <div class="flex flex-col items-center gap-2 border-b border-b-white/10 p-4">
         <div
           v-if="props.mediaError"
           class="text-yellow flex w-full items-center justify-center gap-1"
@@ -64,10 +60,7 @@ const popupItems = computed(() =>
           <CommonIcon name="update" size="tiny" />
           {{ $t('Media Download Error') }}
         </div>
-        <div
-          v-if="loading"
-          class="flex w-full items-center justify-center gap-1"
-        >
+        <div v-if="loading" class="flex w-full items-center justify-center gap-1">
           <CommonIcon name="loading" animation="spin" />
         </div>
       </div>

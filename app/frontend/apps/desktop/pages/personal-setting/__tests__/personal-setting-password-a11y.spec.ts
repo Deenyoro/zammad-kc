@@ -7,7 +7,7 @@ import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 
-describe('testing password a11y view', async () => {
+describe('testing password a11y view', () => {
   beforeEach(() => {
     mockUserCurrent({
       firstname: 'John',

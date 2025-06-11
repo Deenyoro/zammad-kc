@@ -2,11 +2,7 @@
 
 import { setupView } from '#tests/support/mock-user.ts'
 
-import {
-  createTicketArticle,
-  createTestArticleActions,
-  createTicket,
-} from './utils.ts'
+import { createTicketArticle, createTestArticleActions, createTicket } from './utils.ts'
 
 describe('split action', () => {
   it('returns split link for agent with read access', () => {

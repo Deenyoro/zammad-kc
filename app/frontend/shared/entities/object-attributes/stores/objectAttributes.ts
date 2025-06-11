@@ -12,32 +12,25 @@ import type {
   ObjectAttributesObject,
 } from '../types/store.ts'
 
-const staticObjectAttributesEntityModules: Record<
-  string,
-  EntityStaticObjectAttributes
-> = import.meta.glob(['../../*/stores/objectAttributes.ts'], {
-  eager: true,
-  import: 'staticObjectAttributes',
-})
+const staticObjectAttributesEntityModules: Record<string, EntityStaticObjectAttributes> =
+  import.meta.glob(['../../*/stores/objectAttributes.ts'], {
+    eager: true,
+    import: 'staticObjectAttributes',
+  })
 
-export const entitiesStaticObjectAttributes = Object.values(
-  staticObjectAttributesEntityModules,
+export const entitiesStaticObjectAttributes = Object.values(staticObjectAttributesEntityModules)
+export const staticObjectAttributesByEntity = entitiesStaticObjectAttributes.reduce<
+  Record<EnumObjectManagerObjects, ObjectAttribute[]>
+>(
+  (result, entityItem) => {
+    result[entityItem.name] = entityItem.attributes
+    return result
+  },
+  {} as Record<EnumObjectManagerObjects, ObjectAttribute[]>,
 )
-export const staticObjectAttributesByEntity =
-  entitiesStaticObjectAttributes.reduce<
-    Record<EnumObjectManagerObjects, ObjectAttribute[]>
-  >(
-    (result, entityItem) => {
-      result[entityItem.name] = entityItem.attributes
-      return result
-    },
-    {} as Record<EnumObjectManagerObjects, ObjectAttribute[]>,
-  )
 
 export const useObjectAttributesStore = defineStore('objectAttributes', () => {
-  const objectAttributesObjectLookup = ref<
-    Record<string, ObjectAttributesObject>
-  >({})
+  const objectAttributesObjectLookup = ref<Record<string, ObjectAttributesObject>>({})
 
   const getObjectAttributesForObject = (object: EnumObjectManagerObjects) => {
     const objectAttributesObject = objectAttributesObjectLookup.value[object]

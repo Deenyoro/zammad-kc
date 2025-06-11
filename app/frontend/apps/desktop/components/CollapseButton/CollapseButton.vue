@@ -36,8 +36,7 @@ defineEmits<{
 const locale = useLocaleStore()
 
 const collapseButtonIcon = computed(() => {
-  if (props.orientation === 'vertical')
-    return props.collapsed ? 'arrows-expand' : 'arrows-collapse'
+  if (props.orientation === 'vertical') return props.collapsed ? 'arrows-expand' : 'arrows-collapse'
 
   if (
     (props.inverse && locale.localeData?.dir !== EnumTextDirection.Rtl) ||
@@ -79,9 +78,7 @@ const labels = computed(() => ({
       variant="none"
       :aria-controls="ownerId"
       :data-test-id="`controls-${ownerId}`"
-      :aria-label="
-        collapsed ? $t('Expand this element') : $t('Collapse this element')
-      "
+      :aria-label="collapsed ? $t('Expand this element') : $t('Collapse this element')"
       size="small"
       @click="$emit('toggle-collapse', $event)"
     />

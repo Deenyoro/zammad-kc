@@ -10,10 +10,7 @@ import type {
   TicketAiAssistanceSummarizePayload,
   TicketAiAssistanceSummary,
 } from '#shared/graphql/types.ts'
-import {
-  MutationHandler,
-  SubscriptionHandler,
-} from '#shared/server/apollo/handler/index.ts'
+import { MutationHandler, SubscriptionHandler } from '#shared/server/apollo/handler/index.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 
@@ -30,10 +27,7 @@ import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicke
 import { useTicketSummarySeen } from '#desktop/pages/ticket/composables/useTicketSummarySeen.ts'
 import { useTicketAiAssistanceSummarizeMutation } from '#desktop/pages/ticket/graphql/mutations/ticketAIAssistanceSummarize.api.ts'
 import { useTicketAiAssistanceSummaryUpdatesSubscription } from '#desktop/pages/ticket/graphql/subscriptions/ticketAIAssistanceSummaryUpdates.api.ts'
-import type {
-  TicketSidebarEmits,
-  TicketSidebarProps,
-} from '#desktop/pages/ticket/types/sidebar.ts'
+import type { TicketSidebarEmits, TicketSidebarProps } from '#desktop/pages/ticket/types/sidebar.ts'
 
 import TicketSidebarWrapper from '../TicketSidebarWrapper.vue'
 
@@ -86,43 +80,30 @@ const headings = computed<SummaryItem[]>(() => [
     key: 'suggestions',
     label: __('Suggested Next Steps'),
     active: summaryConfig.value.suggestions,
-    feature: config.value.checklist
-      ? TicketSummaryFeature.Checklist
-      : undefined,
+    feature: config.value.checklist ? TicketSummaryFeature.Checklist : undefined,
   },
 ])
 
-const summaryHeadings = computed(() =>
-  headings.value.filter((heading) => heading.active),
-)
+const summaryHeadings = computed(() => headings.value.filter((heading) => heading.active))
 
-const {
-  setFingerprint,
-  storeFingerprint,
-  isCurrentTicketSummaryRead,
-  isTicketStateMerged,
-} = useTicketSummarySeen()
+const { setFingerprint, storeFingerprint, isCurrentTicketSummaryRead, isTicketStateMerged } =
+  useTicketSummarySeen()
 
 const summary = ref<TicketAiAssistanceSummary | null>(null)
 
 const generationError = ref<AsyncExecutionError | null>(null)
 
-const { updateSummaryGenerating, isSummaryGenerating } =
-  useTicketSummaryGenerating()
+const { updateSummaryGenerating, isSummaryGenerating } = useTicketSummaryGenerating()
 
 const showErrorDetails = computed(() => hasPermission('admin'))
 
 let activeDetachedChildScope: EffectScope
 
-const ticketSummaryHandler = new MutationHandler(
-  useTicketAiAssistanceSummarizeMutation(),
-)
+const ticketSummaryHandler = new MutationHandler(useTicketAiAssistanceSummarizeMutation())
 
 const showUpdateIndicator = computed(
   () =>
-    !isCurrentTicketSummaryRead.value &&
-    !isTicketStateMerged.value &&
-    !isSummaryGenerating.value,
+    !isCurrentTicketSummaryRead.value && !isTicketStateMerged.value && !isSummaryGenerating.value,
 )
 
 const updateLocalSummary = (
@@ -144,8 +125,7 @@ const getAIAssistanceSummary = () => {
   updateSummaryGenerating(true)
 
   ticketSummaryHandler.send({ ticketId: ticketId.value }).then((data) => {
-    if (data?.ticketAIAssistanceSummarize?.summary)
-      updateSummaryGenerating(false)
+    if (data?.ticketAIAssistanceSummarize?.summary) updateSummaryGenerating(false)
 
     updateLocalSummary(
       data?.ticketAIAssistanceSummarize?.summary,

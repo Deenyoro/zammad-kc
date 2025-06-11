@@ -56,10 +56,7 @@ export const isEmpty = (value: unknown) => {
   return value === null || value === undefined || value === ''
 }
 
-export const getLink = (
-  name: string,
-  attributesObject: Dictionary<ObjectAttributeValue>,
-) => {
+export const getLink = (name: string, attributesObject: Dictionary<ObjectAttributeValue>) => {
   const attribute = attributesObject[name]
   return attribute?.renderedLink || null
 }

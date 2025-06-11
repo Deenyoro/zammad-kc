@@ -53,10 +53,7 @@ export const useResizeLine = (
       positionX = screenWidth.value - positionX
 
     // In case of LTR locale and resizer is used from right side of the window, subtract the reported position from the current screen width.
-    if (
-      locale.localeData?.dir === EnumTextDirection.Ltr &&
-      options?.calculateFromRight
-    )
+    if (locale.localeData?.dir === EnumTextDirection.Ltr && options?.calculateFromRight)
       positionX = screenWidth.value - positionX
 
     resizeCallback(positionX)
@@ -84,7 +81,6 @@ export const useResizeLine = (
   }
 
   const endResizing = () => {
-    // eslint-disable-next-line no-use-before-define
     removeListeners()
     isResizing.value = false
   }

@@ -25,11 +25,7 @@ interface Props {
 const props = defineProps<Props>()
 const contextReactive = toRef(props, 'context')
 
-const {
-  hasValue,
-  valueContainer,
-  clearValue: clearInternalValue,
-} = useValue(contextReactive)
+const { hasValue, valueContainer, clearValue: clearInternalValue } = useValue(contextReactive)
 
 const currentPath = ref<FlatSelectOption[]>([])
 
@@ -72,8 +68,7 @@ const flattenOptions = (
       parents,
       hasChildren: Boolean(children),
     })
-    if (children)
-      flatOptions.push(...flattenOptions(children, [...parents, option.value]))
+    if (children) flatOptions.push(...flattenOptions(children, [...parents, option.value]))
     return flatOptions
   }, [])
 
@@ -120,9 +115,7 @@ const openModal = () => {
   })
 }
 
-const getSelectedOptionParents = (
-  selectedValue: string | number,
-): SelectValue[] =>
+const getSelectedOptionParents = (selectedValue: string | number): SelectValue[] =>
   (optionValueLookup.value[selectedValue] &&
     (optionValueLookup.value[selectedValue] as FlatSelectOption).parents) ||
   []
@@ -131,8 +124,7 @@ const getSelectedOptionFullPath = (selectedValue: string | number) =>
   getSelectedOptionParents(selectedValue)
     .map((parentValue) => `${getSelectedOptionLabel(parentValue)} \u203A `)
     .join('') +
-  (getSelectedOptionLabel(selectedValue) ||
-    i18n.t('%s (unknown)', selectedValue.toString()))
+  (getSelectedOptionLabel(selectedValue) || i18n.t('%s (unknown)', selectedValue.toString()))
 
 const toggleDialog = async (isVisible: boolean) => {
   if (props.context.disabled) return

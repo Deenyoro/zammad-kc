@@ -5,8 +5,6 @@ import { EntityType } from '#desktop/components/CommonSimpleEntityList/types.ts'
 export default {
   type: EntityType.Organization,
   component: () =>
-    import(
-      '#desktop/components/CommonSimpleEntityList/entity/OrganizationEntity.vue'
-    ),
+    import('#desktop/components/CommonSimpleEntityList/entity/OrganizationEntity.vue'),
   emptyMessage: __('No organizations found'),
 }

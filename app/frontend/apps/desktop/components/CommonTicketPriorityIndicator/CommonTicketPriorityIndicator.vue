@@ -31,12 +31,7 @@ const badgeVariant = computed(() => {
 </script>
 
 <template>
-  <CommonBadge
-    :variant="badgeVariant"
-    class="uppercase"
-    role="status"
-    aria-live="polite"
-  >
+  <CommonBadge :variant="badgeVariant" class="uppercase" role="status" aria-live="polite">
     <CommonTicketPriorityIndicatorIcon
       v-if="config.ui_ticket_priority_icons"
       :ui-color="priority?.uiColor"

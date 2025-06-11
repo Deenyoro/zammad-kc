@@ -7,7 +7,7 @@ import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
 import { mockUserCurrentCalendarSubscriptionList } from '../graphql/queries/userCurrentCalendarSubscriptionList.mocks.ts'
 
-describe('testing password a11y view', async () => {
+describe('testing password a11y view', () => {
   beforeEach(() => {
     mockPermissions(['user_preferences.notifications'])
 

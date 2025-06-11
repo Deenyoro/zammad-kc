@@ -14,8 +14,7 @@ interface Props {
 
 const { issuer } = defineProps<Props>()
 
-const { issuedBySystemService, issuedBySystemUser, getIssuerName } =
-  useHistoryEvents()
+const { issuedBySystemService, issuedBySystemUser, getIssuerName } = useHistoryEvents()
 </script>
 
 <template>

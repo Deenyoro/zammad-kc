@@ -10,9 +10,7 @@ import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import { mockLinkListQuery } from '#desktop/pages/ticket/graphql/queries/linkList.mocks.ts'
 import { getLinkUpdatesSubscriptionHandler } from '#desktop/pages/ticket/graphql/subscriptions/linkUpdates.mocks.ts'
 
-import TicketLinks, {
-  type Props,
-} from '../TicketSidebarInformationContent/TicketLinks.vue'
+import TicketLinks, { type Props } from '../TicketSidebarInformationContent/TicketLinks.vue'
 
 const renderTicketLinks = (props: Partial<Props> = {}) =>
   renderComponent(TicketLinks, {

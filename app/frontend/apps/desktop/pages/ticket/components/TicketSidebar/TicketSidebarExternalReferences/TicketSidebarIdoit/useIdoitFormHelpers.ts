@@ -10,9 +10,7 @@ import type { ExternalReferencesFormValues } from '#desktop/pages/ticket/compone
 import type { Ref } from 'vue'
 
 export const useIdoitFormHelpers = (form: Ref<FormRef | undefined>) => {
-  const addObjectIdsToForm = (
-    objects?: IdoitObjectAttributesFragment[] | null,
-  ) => {
+  const addObjectIdsToForm = (objects?: IdoitObjectAttributesFragment[] | null) => {
     if (!objects) return
 
     const objectIds = objects.map((object) => object.idoitObjectId)
@@ -26,10 +24,7 @@ export const useIdoitFormHelpers = (form: Ref<FormRef | undefined>) => {
     ) as ExternalReferencesFormValues['externalReferences']
 
     existingReferences ||= {}
-    existingReferences.idoit = [
-      ...(existingReferences.idoit || []),
-      ...objectIds,
-    ]
+    existingReferences.idoit = [...(existingReferences.idoit || []), ...objectIds]
 
     externalReferences?.input(existingReferences, false)
   }
@@ -47,9 +42,7 @@ export const useIdoitFormHelpers = (form: Ref<FormRef | undefined>) => {
 
     existingReferences ||= {}
 
-    existingReferences.idoit = existingReferences.idoit!.filter(
-      (objectId) => objectId !== id,
-    )
+    existingReferences.idoit = existingReferences.idoit!.filter((objectId) => objectId !== id)
 
     return externalReferences?.input(existingReferences, false)
   }

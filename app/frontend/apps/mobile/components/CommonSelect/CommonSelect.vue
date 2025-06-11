@@ -50,9 +50,7 @@ if (localValue.value == null && props.multiple) {
 }
 
 const getFocusableOptions = () => {
-  return Array.from<HTMLElement>(
-    dialogElement.value?.querySelectorAll('[tabindex="0"]') || [],
-  )
+  return Array.from<HTMLElement>(dialogElement.value?.querySelectorAll('[tabindex="0"]') || [])
 }
 
 const showDialog = ref(false)
@@ -72,9 +70,7 @@ const openDialog = () => {
     // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role#keyboard_interactions
     // focus selected or first available option
     const focusableElements = getFocusableOptions()
-    const selected = focusableElements.find(
-      (el) => el.getAttribute('aria-selected') === 'true',
-    )
+    const selected = focusableElements.find((el) => el.getAttribute('aria-selected') === 'true')
     const focusElement = selected || focusableElements[0]
     focusElement?.focus()
 

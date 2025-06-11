@@ -38,8 +38,7 @@ const recoveryCodes = [
 const clipboardCopyMock = vi.fn()
 
 vi.mock('@vueuse/core', async () => {
-  const mod =
-    await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
+  const mod = await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
 
   return {
     ...mod,
@@ -66,8 +65,7 @@ describe('Two-factor Authentication - Recovery Codes', () => {
         configuration: {
           enabledAuthenticationMethods: [
             {
-              authenticationMethod:
-                EnumTwoFactorAuthenticationMethod.SecurityKeys,
+              authenticationMethod: EnumTwoFactorAuthenticationMethod.SecurityKeys,
               configured: true,
             },
           ],
@@ -76,9 +74,7 @@ describe('Two-factor Authentication - Recovery Codes', () => {
       },
     })
 
-    await view.events.click(
-      view.getByRole('button', { name: 'Regenerate Recovery Codes' }),
-    )
+    await view.events.click(view.getByRole('button', { name: 'Regenerate Recovery Codes' }))
 
     const flyout = await view.findByRole('complementary', {
       name: 'Generate Recovery Codes: Confirm Password',
@@ -154,9 +150,7 @@ describe('Two-factor Authentication - Recovery Codes', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Set Up' }))
 
-    const nicknameInput = flyoutContent.getByLabelText(
-      'Name for this security key',
-    )
+    const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
     await view.events.type(nicknameInput, 'My key')
 
@@ -176,9 +170,7 @@ describe('Two-factor Authentication - Recovery Codes', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Next' }))
 
-    expect(flyout).toHaveAccessibleName(
-      'Set Up Two-factor Authentication: Save Codes',
-    )
+    expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes')
 
     expect(flyoutContent.getByTestId('recovery-codes')).toHaveTextContent(
       'foobarbazquxquuxcorgegraultgarplywaldofred',
@@ -193,8 +185,7 @@ describe('Two-factor Authentication - Recovery Codes', () => {
         configuration: {
           enabledAuthenticationMethods: [
             {
-              authenticationMethod:
-                EnumTwoFactorAuthenticationMethod.SecurityKeys,
+              authenticationMethod: EnumTwoFactorAuthenticationMethod.SecurityKeys,
               configured: true,
             },
           ],
@@ -203,9 +194,7 @@ describe('Two-factor Authentication - Recovery Codes', () => {
       },
     })
 
-    await view.events.click(
-      view.getByRole('button', { name: 'Regenerate Recovery Codes' }),
-    )
+    await view.events.click(view.getByRole('button', { name: 'Regenerate Recovery Codes' }))
 
     const flyout = await view.findByRole('complementary', {
       name: 'Generate Recovery Codes: Confirm Password',
@@ -254,8 +243,7 @@ describe('Two-factor Authentication - Recovery Codes', () => {
         configuration: {
           enabledAuthenticationMethods: [
             {
-              authenticationMethod:
-                EnumTwoFactorAuthenticationMethod.SecurityKeys,
+              authenticationMethod: EnumTwoFactorAuthenticationMethod.SecurityKeys,
               configured: true,
             },
           ],
@@ -264,9 +252,7 @@ describe('Two-factor Authentication - Recovery Codes', () => {
       },
     })
 
-    await view.events.click(
-      view.getByRole('button', { name: 'Regenerate Recovery Codes' }),
-    )
+    await view.events.click(view.getByRole('button', { name: 'Regenerate Recovery Codes' }))
 
     const flyout = await view.findByRole('complementary', {
       name: 'Generate Recovery Codes: Confirm Password',

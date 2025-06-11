@@ -8,7 +8,7 @@ import { waitForFormUpdaterQueryCalls } from '#shared/components/Form/graphql/qu
 
 import { mockTemplatesQuery } from '../../graphql/queries/templates.mocks.ts'
 
-describe('ticket create view - apply template', async () => {
+describe('ticket create view - apply template', () => {
   beforeEach(() => {
     mockApplicationConfig({
       ui_ticket_create_available_types: ['phone-in', 'phone-out', 'email-out'],
@@ -22,12 +22,10 @@ describe('ticket create view - apply template', async () => {
 
     const view = await visitView('/ticket/create')
 
-    expect(
-      view.queryByRole('button', { name: 'Apply Template' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Apply Template' })).not.toBeInTheDocument()
   })
 
-  it('renders the "Apply Template" button and can apply the ', async () => {
+  it('renders the "Apply Template" button and can apply the', async () => {
     mockTemplatesQuery({
       templates: [
         { id: '1', name: 'template1' },

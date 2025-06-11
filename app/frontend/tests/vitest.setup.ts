@@ -1,6 +1,5 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-// eslint-disable-next-line max-classes-per-file
 import '@testing-library/jest-dom/vitest'
 import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev'
 import { toBeDisabled } from '@testing-library/jest-dom/matchers'
@@ -56,10 +55,8 @@ Object.defineProperty(globalThis, 'Notification', {
 class DOMRectList {
   length = 0
 
-  // eslint-disable-next-line class-methods-use-this
   item = () => null;
 
-  // eslint-disable-next-line class-methods-use-this
   [Symbol.iterator] = () => {
     //
   }
@@ -72,10 +69,7 @@ Object.defineProperty(Element.prototype, 'scroll', { value: vi.fn() })
 Object.defineProperty(Element.prototype, 'scrollBy', { value: vi.fn() })
 Object.defineProperty(Element.prototype, 'scrollIntoView', { value: vi.fn() })
 
-const descriptor = Object.getOwnPropertyDescriptor(
-  HTMLImageElement.prototype,
-  'src',
-)!
+const descriptor = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src')!
 
 Object.defineProperty(HTMLImageElement.prototype, 'src', {
   set(value) {
@@ -111,6 +105,7 @@ const IntersectionObserverMock = vi.fn(() => ({
   takeRecords: vi.fn(),
   unobserve: vi.fn(),
 }))
+
 globalThis.IntersectionObserver = IntersectionObserverMock as any
 
 require.extensions['.css'] = () => ({})
@@ -119,6 +114,7 @@ globalThis.requestAnimationFrame = (cb) => {
   setTimeout(cb, 0)
   return 0
 }
+
 globalThis.scrollTo = vi.fn<any>()
 globalThis.matchMedia = (media: string) => ({
   matches: false,
@@ -131,72 +127,63 @@ globalThis.matchMedia = (media: string) => ({
   removeEventListener: vi.fn(),
 })
 
-vi.mock(
-  '#shared/components/CommonNotifications/useNotifications.ts',
-  async () => {
-    const { useNotifications: originalUseNotifications } =
-      await vi.importActual<any>(
-        '#shared/components/CommonNotifications/useNotifications.ts',
-      )
-    let notifications: any
-    const useNotifications = () => {
-      if (notifications) return notifications
-      const result = originalUseNotifications()
-      notifications = {
-        notify: vi.fn(result.notify),
-        notifications: result.notifications,
-        removeNotification: vi.fn(result.removeNotification),
-        clearAllNotifications: vi.fn(result.clearAllNotifications),
-        hasErrors: vi.fn(result.hasErrors),
-      }
-      return notifications
-    }
+vi.mock('#shared/components/CommonNotifications/useNotifications.ts', async () => {
+  const { useNotifications: originalUseNotifications } = await vi.importActual<any>(
+    '#shared/components/CommonNotifications/useNotifications.ts',
+  )
 
-    return {
-      useNotifications,
-      default: useNotifications,
+  let notifications: any
+  const useNotifications = () => {
+    if (notifications) return notifications
+    const result = originalUseNotifications()
+    notifications = {
+      notify: vi.fn(result.notify),
+      notifications: result.notifications,
+      removeNotification: vi.fn(result.removeNotification),
+      clearAllNotifications: vi.fn(result.clearAllNotifications),
+      hasErrors: vi.fn(result.hasErrors),
     }
-  },
-)
+    return notifications
+  }
+
+  return {
+    useNotifications,
+    default: useNotifications,
+  }
+})
 
 // don't rely on tiptap, because it's not supported in JSDOM
-vi.mock(
-  '#shared/components/Form/fields/FieldEditor/FieldEditorInput.vue',
-  async () => {
-    const { computed, defineComponent } = await import('vue')
-    const component = defineComponent({
-      name: 'FieldEditorInput',
-      props: { context: { type: Object, required: true } },
-      setup(props) {
-        const value = computed({
-          get: () => props.context._value,
-          set: (value) => {
-            props.context.node.input(value)
-          },
-        })
+vi.mock('#shared/components/Form/fields/FieldEditor/FieldEditorInput.vue', async () => {
+  const { computed, defineComponent } = await import('vue')
+  const component = defineComponent({
+    name: 'FieldEditorInput',
+    props: { context: { type: Object, required: true } },
+    setup(props) {
+      const value = computed({
+        get: () => props.context._value,
+        set: (value) => {
+          props.context.node.input(value)
+        },
+      })
 
-        return {
-          value,
-          name: props.context.node.name,
-          id: props.context.id,
-        }
-      },
-      template: `<textarea :id="id" :name="name" v-model="value" />`,
-    })
-    return { __esModule: true, default: component }
-  },
-)
+      return {
+        value,
+        name: props.context.node.name,
+        id: props.context.id,
+      }
+    },
+    template: `<textarea :id="id" :name="name" v-model="value" />`,
+  })
+  return { __esModule: true, default: component }
+})
 
 // mock vueuse because of CommonDialog, it uses usePointerSwipe
 // that is not supported in JSDOM
 vi.mock('@vueuse/core', async () => {
-  const mod =
-    await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
+  const mod = await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
   return {
     ...mod,
-    usePointerSwipe: vi
-      .fn()
-      .mockReturnValue({ distanceY: 0, isSwiping: false }),
+    usePointerSwipe: vi.fn().mockReturnValue({ distanceY: 0, isSwiping: false }),
   }
 })
 
@@ -224,14 +211,8 @@ afterEach((context) => {
   }
 
   if (context.skipConsole !== true) {
-    expect(
-      console.warn,
-      'there were no warning during test',
-    ).not.toHaveBeenCalled()
-    expect(
-      console.error,
-      'there were no errors during test',
-    ).not.toHaveBeenCalled()
+    expect(console.warn, 'there were no warning during test').not.toHaveBeenCalled()
+    expect(console.error, 'there were no errors during test').not.toHaveBeenCalled()
   }
 })
 
@@ -253,6 +234,7 @@ expect.extend({
         return { pass: true, message: () => 'should not have "aria-disabled"' }
       }
     }
+
     return (toBeDisabled as any).call(this, received, ...args)
   },
 })
@@ -265,12 +247,11 @@ declare module 'vitest' {
     skipConsole: boolean
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   // interface Assertion<T> extends TestingLibraryMatchers<null, T> {}
 }
 
 declare module 'vitest' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/no-unused-vars
+  // oxlint-disable-next-line
   interface Assertion<T> extends matchers.AxeMatchers {}
 }
 

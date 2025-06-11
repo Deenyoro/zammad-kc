@@ -10,10 +10,7 @@ import {
   waitForUserQueryCalls,
 } from '#shared/entities/user/graphql/queries/user.mocks.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
-import {
-  SYSTEM_USER_ID,
-  SYSTEM_USER_INTERNAL_ID,
-} from '#shared/utils/constants.ts'
+import { SYSTEM_USER_ID, SYSTEM_USER_INTERNAL_ID } from '#shared/utils/constants.ts'
 
 import UserPopoverWithTrigger, {
   type Props,
@@ -70,11 +67,7 @@ const systemUser = {
   },
 }
 
-const renderUserPopover = (
-  props?: Partial<Props>,
-  isAgent = true,
-  isSystemUser = false,
-) => {
+const renderUserPopover = (props?: Partial<Props>, isAgent = true, isSystemUser = false) => {
   mockUserQuery({
     user: props?.user ?? dummyUser,
   })
@@ -93,17 +86,13 @@ const renderUserPopover = (
 describe('UserPopover', () => {
   it('displays the user avatar by default', () => {
     const wrapper = renderUserPopover()
-    expect(
-      wrapper.getByRole('img', { name: `Avatar (${dummyUser.fullname})` }),
-    ).toBeVisible()
+    expect(wrapper.getByRole('img', { name: `Avatar (${dummyUser.fullname})` })).toBeVisible()
   })
 
   it('shows a skeleton when user info is not available', async () => {
     const wrapper = renderUserPopover()
 
-    await wrapper.events.hover(
-      wrapper.getByRole('img', { name: `Avatar (${dummyUser.fullname})` }),
-    )
+    await wrapper.events.hover(wrapper.getByRole('img', { name: `Avatar (${dummyUser.fullname})` }))
 
     const popover = await wrapper.findByRole('region')
     // :TODO a11y testing
@@ -113,9 +102,7 @@ describe('UserPopover', () => {
   it('opens and shows the displays a user popover', async () => {
     const wrapper = renderUserPopover()
 
-    await wrapper.events.hover(
-      wrapper.getByRole('img', { name: `Avatar (${dummyUser.fullname})` }),
-    )
+    await wrapper.events.hover(wrapper.getByRole('img', { name: `Avatar (${dummyUser.fullname})` }))
 
     const popover = await wrapper.findByRole('region')
     expect(await within(popover).findByText(dummyUser.fullname)).toBeVisible()
@@ -166,9 +153,7 @@ describe('UserPopover', () => {
 
     const wrapper = renderUserPopover()
 
-    await wrapper.events.hover(
-      wrapper.getByRole('img', { name: `Avatar (${dummyUser.fullname})` }),
-    )
+    await wrapper.events.hover(wrapper.getByRole('img', { name: `Avatar (${dummyUser.fullname})` }))
 
     await waitForUserQueryCalls()
 
@@ -186,10 +171,7 @@ describe('UserPopover', () => {
 
     const avatarWrapper = wrapper.getByRole('link')
 
-    expect(avatarWrapper).toHaveAttribute(
-      'href',
-      `/user/profile/${dummyUser.internalId}`,
-    )
+    expect(avatarWrapper).toHaveAttribute('href', `/user/profile/${dummyUser.internalId}`)
   })
 
   it('disables link navigation when noLink is true', () => {
@@ -220,9 +202,7 @@ describe('UserPopover', () => {
 
     expect(wrapper.queryByRole('link')).not.toBeInTheDocument()
 
-    await wrapper.events.hover(
-      wrapper.getByRole('img', { name: `Avatar (${dummyUser.fullname})` }),
-    )
+    await wrapper.events.hover(wrapper.getByRole('img', { name: `Avatar (${dummyUser.fullname})` }))
 
     expect(wrapper.queryByRole('region')).not.toBeInTheDocument()
   })

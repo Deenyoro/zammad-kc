@@ -13,10 +13,7 @@ export {}
 
 const now = new Date('2021-04-13T11:10:00Z')
 
-const renderDateField = async (
-  props: Record<string, unknown> = {},
-  options: any = {},
-) => {
+const renderDateField = async (props: Record<string, unknown> = {}, options: any = {}) => {
   return renderComponent(FormKit, {
     props: {
       type: 'date',
@@ -129,9 +126,7 @@ describe('Fields - FieldDate', () => {
       vi.runAllTimers()
       await waitForNextTick()
 
-      expect(input).toBeDescribedBy(
-        'The start date must precede or match end date.',
-      )
+      expect(input).toBeDescribedBy('The start date must precede or match end date.')
     })
 
     it('renders input and allows selecting today', async () => {
@@ -234,8 +229,7 @@ describe('Fields - FieldDate', () => {
       mockMediaTheme(EnumAppearanceTheme.Dark)
 
       vi.mock('@vueuse/core', async () => {
-        const mod =
-          await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
+        const mod = await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
 
         return {
           ...mod,
@@ -315,9 +309,7 @@ describe('Fields - FieldDate', () => {
     })
 
     it('renders AM/PM, if needed', async () => {
-      i18n.setTranslationMap(
-        new Map([['FORMAT_DATETIME', 'mm/dd/yyyy l:MM P']]),
-      )
+      i18n.setTranslationMap(new Map([['FORMAT_DATETIME', 'mm/dd/yyyy l:MM P']]))
 
       const view = await renderDateField({
         type: 'datetime',

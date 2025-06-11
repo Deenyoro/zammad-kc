@@ -61,7 +61,6 @@ export default function useEditorActions(
   const { localeData } = useLocaleStore()
 
   const { verticalGradient } = getAiAssistantTextToolsClasses()
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   const getActionsList = (): EditorButton[] => {
     return [
       {
@@ -72,8 +71,7 @@ export default function useEditorActions(
         showDivider: true,
         dividerClass: verticalGradient,
         permission: 'ticket.agent',
-        show: (config) =>
-          config?.ai_assistance_text_tools && !!config.ai_provider,
+        show: (config) => config?.ai_assistance_text_tools && !!config.ai_provider,
         icon: 'smart-assist-elaborate',
         subMenu: AiAssistantTextTools,
       },
@@ -251,10 +249,7 @@ export default function useEditorActions(
         name: 'indent',
         contentType: ['text/html'],
         label: __('Indent text'),
-        icon:
-          localeData?.dir === 'ltr'
-            ? 'editor-indent-left'
-            : 'editor-indent-right',
+        icon: localeData?.dir === 'ltr' ? 'editor-indent-left' : 'editor-indent-right',
         command: focused((c) => c.increaseIndent()),
       },
       {
@@ -263,10 +258,7 @@ export default function useEditorActions(
         contentType: ['text/html'],
         label: __('Outdent text'),
         showDivider: true,
-        icon:
-          localeData?.dir === 'ltr'
-            ? 'editor-indent-right'
-            : 'editor-indent-left',
+        icon: localeData?.dir === 'ltr' ? 'editor-indent-right' : 'editor-indent-left',
         command: focused((c) => c.decreaseIndent()),
       },
       {
@@ -279,10 +271,7 @@ export default function useEditorActions(
           const input = getInputForImage()
           input.onchange = async () => {
             if (!input.files?.length || !editor.value) return
-            const files = await convertInlineImages(
-              input.files,
-              editor.value.view.dom,
-            )
+            const files = await convertInlineImages(input.files, editor.value.view.dom)
 
             c.setImages(files).run()
             input.value = ''
@@ -299,7 +288,6 @@ export default function useEditorActions(
         icon: 'editor-inline-link',
         command: focused((c) => {
           if (!editor.value) return null
-          // eslint-disable-next-line no-alert
           const href = prompt(__('Enter link URL'))
           if (!href) return null
           const { view, state } = editor.value
@@ -331,11 +319,7 @@ export default function useEditorActions(
         label: __('Insert table'),
         icon: 'editor-table',
         command: () => {
-          editor.value
-            ?.chain()
-            .focus()
-            .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-            .run()
+          editor.value?.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
 
           const end = editor.value?.state.doc.content.size ?? 0
           editor.value?.chain().focus().insertContentAt(end, '<p></p>').run()

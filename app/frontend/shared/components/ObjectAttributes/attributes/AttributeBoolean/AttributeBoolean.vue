@@ -6,8 +6,7 @@ import { computed } from 'vue'
 import type { ObjectAttributeBoolean } from './attributeBooleanTypes.ts'
 import type { ObjectAttributeProps } from '../../types.ts'
 
-const props =
-  defineProps<ObjectAttributeProps<ObjectAttributeBoolean, boolean>>()
+const props = defineProps<ObjectAttributeProps<ObjectAttributeBoolean, boolean>>()
 
 const body = computed(() => {
   const { true: yes, false: no } = props.attribute.dataOption?.options || {}

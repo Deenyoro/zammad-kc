@@ -24,8 +24,7 @@ const route: RouteRecordRaw[] = [
       {
         path: 'automated',
         name: 'GuidedSetupAutomatedInfo',
-        component: () =>
-          import('./views/GuidedSetupAutomated/GuidedSetupAutomatedInfo.vue'),
+        component: () => import('./views/GuidedSetupAutomated/GuidedSetupAutomatedInfo.vue'),
         meta: {
           title: __('Automated Setup'),
           requiresAuth: false,
@@ -37,8 +36,7 @@ const route: RouteRecordRaw[] = [
         path: 'automated/run/:token?',
         name: 'GuidedSetupAutomatedRun',
         props: true,
-        component: () =>
-          import('./views/GuidedSetupAutomated/GuidedSetupAutomatedRun.vue'),
+        component: () => import('./views/GuidedSetupAutomated/GuidedSetupAutomatedRun.vue'),
         meta: {
           title: __('Automated Setup'),
           requiresAuth: false,
@@ -49,15 +47,13 @@ const route: RouteRecordRaw[] = [
       {
         path: 'manual',
         name: 'GuidedSetupManual',
-        component: () =>
-          import('./views/GuidedSetupManual/GuidedSetupManual.vue'),
+        component: () => import('./views/GuidedSetupManual/GuidedSetupManual.vue'),
         children: [
           {
             path: 'admin',
             alias: '',
             name: 'GuidedSetupManualAdmin',
-            component: () =>
-              import('./views/GuidedSetupManual/GuidedSetupManualAdmin.vue'),
+            component: () => import('./views/GuidedSetupManual/GuidedSetupManualAdmin.vue'),
             meta: {
               title: __('Create Administrator Account'),
               requiresAuth: false,
@@ -69,8 +65,7 @@ const route: RouteRecordRaw[] = [
             path: 'finish',
             alias: '',
             name: 'GuidedSetupManualFinish',
-            component: () =>
-              import('./views/GuidedSetupManual/GuidedSetupManualFinish.vue'),
+            component: () => import('./views/GuidedSetupManual/GuidedSetupManualFinish.vue'),
             meta: {
               title: __('Setup Finished'),
               requiresAuth: true,
@@ -82,9 +77,7 @@ const route: RouteRecordRaw[] = [
             path: 'system-information',
             name: 'GuidedSetupManualSystemInformation',
             component: () =>
-              import(
-                './views/GuidedSetupManual/GuidedSetupManualSystemInformation.vue'
-              ),
+              import('./views/GuidedSetupManual/GuidedSetupManualSystemInformation.vue'),
             meta: {
               title: __('System Information'),
               requiresAuth: true,
@@ -96,9 +89,7 @@ const route: RouteRecordRaw[] = [
             path: 'email-notification',
             name: 'GuidedSetupManualEmailNotification',
             component: () =>
-              import(
-                './views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue'
-              ),
+              import('./views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue'),
             meta: {
               title: __('Email Notification'),
               requiresAuth: true,
@@ -109,8 +100,7 @@ const route: RouteRecordRaw[] = [
           {
             path: 'channels',
             name: 'GuidedSetupManualChannels',
-            component: () =>
-              import('./views/GuidedSetupManual/GuidedSetupManualChannels.vue'),
+            component: () => import('./views/GuidedSetupManual/GuidedSetupManualChannels.vue'),
             meta: {
               title: __('Connect Channels'),
               requiresAuth: true,
@@ -121,10 +111,7 @@ const route: RouteRecordRaw[] = [
           {
             path: 'channels/email',
             name: 'GuidedSetupManualChannelEmail',
-            component: () =>
-              import(
-                './views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue'
-              ),
+            component: () => import('./views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue'),
             meta: {
               title: __('Email Account'),
               requiresAuth: true,
@@ -136,9 +123,7 @@ const route: RouteRecordRaw[] = [
             path: 'channels/email-pre-configured',
             name: 'GuidedSetupManualChannelEmailPreConfigured',
             component: () =>
-              import(
-                './views/GuidedSetupManual/GuidedSetupManualChannelEmailPreConfigured.vue'
-              ),
+              import('./views/GuidedSetupManual/GuidedSetupManualChannelEmailPreConfigured.vue'),
             meta: {
               title: __('Connect Channels'),
               requiresAuth: true,
@@ -150,9 +135,7 @@ const route: RouteRecordRaw[] = [
             path: 'invite',
             name: 'GuidedSetupManualInviteColleagues',
             component: () =>
-              import(
-                './views/GuidedSetupManual/GuidedSetupManualInviteColleagues.vue'
-              ),
+              import('./views/GuidedSetupManual/GuidedSetupManualInviteColleagues.vue'),
             meta: {
               title: __('Invite Colleagues'),
               requiresAuth: true,
@@ -165,16 +148,12 @@ const route: RouteRecordRaw[] = [
       {
         path: 'import',
         name: 'GuidedSetupImport',
-        component: () =>
-          import('./views/GuidedSetupImport/GuidedSetupImport.vue'),
+        component: () => import('./views/GuidedSetupImport/GuidedSetupImport.vue'),
         children: [
           {
             path: '',
             name: 'GuidedSetupImportSelection',
-            component: () =>
-              import(
-                './views/GuidedSetupImport/GuidedSetupImportSelection.vue'
-              ),
+            component: () => import('./views/GuidedSetupImport/GuidedSetupImportSelection.vue'),
             meta: {
               title: __('Import'),
               requiresAuth: false,

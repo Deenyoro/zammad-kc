@@ -7,11 +7,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import CommonLink from '#shared/components/CommonLink/CommonLink.vue'
 import Form from '#shared/components/Form/Form.vue'
-import type {
-  FormSubmitData,
-  FormSchemaField,
-  FormValues,
-} from '#shared/components/Form/types.ts'
+import type { FormSubmitData, FormSchemaField, FormValues } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
 import useLoginTwoFactor from '#shared/composables/authentication/useLoginTwoFactor.ts'
 import { useThirdPartyAuthentication } from '#shared/composables/authentication/useThirdPartyAuthentication.ts'
@@ -173,10 +169,7 @@ const { switchValue, toggleBetaUiSwitch } = useNewBetaUi()
 
 <template>
   <LayoutPublicPage box-size="small" :title="loginPageTitle" show-logo>
-    <div
-      v-if="$c.maintenance_mode"
-      class="mb-1 rounded-lg bg-red-500 px-4 py-2 text-sm text-white"
-    >
+    <div v-if="$c.maintenance_mode" class="mb-1 rounded-lg bg-red-500 px-4 py-2 text-sm text-white">
       {{
         $t(
           'Zammad is currently in maintenance mode. Only administrators can log in. Please wait until the maintenance window is over.',
@@ -219,22 +212,14 @@ const { switchValue, toggleBetaUiSwitch } = useNewBetaUi()
               }}</CommonLink>
             </CommonLabel>
           </div>
-          <CommonButton
-            type="submit"
-            variant="submit"
-            size="large"
-            block
-            :disabled="isDisabled"
-          >
+          <CommonButton type="submit" variant="submit" size="large" block :disabled="isDisabled">
             {{ $t('Sign in') }}
           </CommonButton>
         </template>
       </Form>
 
       <LoginTwoFactor
-        v-else-if="
-          loginFlow.state === '2fa' && twoFactorPlugin && loginFlow.credentials
-        "
+        v-else-if="loginFlow.state === '2fa' && twoFactorPlugin && loginFlow.credentials"
         :credentials="loginFlow.credentials"
         :two-factor="twoFactorPlugin"
         @error="showError"
@@ -267,11 +252,7 @@ const { switchValue, toggleBetaUiSwitch } = useNewBetaUi()
       >
         <CommonLabel>
           {{ $t('Having problems?') }}
-          <CommonLink
-            link="#"
-            class="select-none"
-            @click="updateState('2fa-select')"
-          >
+          <CommonLink link="#" class="select-none" @click="updateState('2fa-select')">
             {{ $t('Try another method') }}
           </CommonLink>
         </CommonLabel>
@@ -304,9 +285,7 @@ const { switchValue, toggleBetaUiSwitch } = useNewBetaUi()
         v-if="loginFlow.state === '2fa-select'"
         class="mt-3 mb-3 text-stone-200 dark:text-neutral-500"
       >
-        {{
-          $t('Contact the administrator if you have any problems logging in.')
-        }}
+        {{ $t('Contact the administrator if you have any problems logging in.') }}
       </CommonLabel>
 
       <div v-if="loginFlow.state === 'credentials'" class="mt-3">

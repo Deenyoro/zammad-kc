@@ -28,12 +28,9 @@ const close = () => {
   closeDialog(dialogName)
 }
 
-const draftUpdateMutation = new MutationHandler(
-  useTicketSharedDraftZoomUpdateMutation(),
-  {
-    errorNotificationMessage: __('Draft could not be updated.'),
-  },
-)
+const draftUpdateMutation = new MutationHandler(useTicketSharedDraftZoomUpdateMutation(), {
+  errorNotificationMessage: __('Draft could not be updated.'),
+})
 
 const updateDraft = () => {
   draftUpdateMutation
@@ -65,18 +62,11 @@ const showDraft = () => {
     content="There is an existing draft. Do you want to overwrite it?"
   >
     <template #footer>
-      <div
-        class="flex items-center gap-2 ltr:justify-end rtl:flex-row-reverse rtl:justify-start"
-      >
+      <div class="flex items-center gap-2 ltr:justify-end rtl:flex-row-reverse rtl:justify-start">
         <CommonButton size="large" variant="secondary" @click="close()">
           {{ $t('Cancel & Go Back') }}
         </CommonButton>
-        <CommonButton
-          size="large"
-          prefix-icon="file-text"
-          variant="tertiary"
-          @click="showDraft()"
-        >
+        <CommonButton size="large" prefix-icon="file-text" variant="tertiary" @click="showDraft()">
           {{ $t('Show Draft') }}
         </CommonButton>
         <CommonButton size="large" variant="danger" @click="updateDraft()">

@@ -9,11 +9,7 @@ const path = (metaObject: Ticket) => {
   return `tickets/${metaObject.internalId}`
 }
 
-const messageText = (
-  type: string,
-  authorName: string,
-  metaObject?: Ticket,
-): Maybe<string> => {
+const messageText = (type: string, authorName: string, metaObject?: Ticket): Maybe<string> => {
   if (!metaObject) {
     return i18n.t('You can no longer see the ticket.')
   }

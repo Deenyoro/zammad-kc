@@ -51,7 +51,5 @@ export const redirectErrorRoute = (options: Partial<ErrorOptions> = {}) => {
   }
 }
 
-export const redirectToError = (
-  router: Router,
-  options: Partial<ErrorOptions> = {},
-) => router.replace(redirectErrorRoute(options))
+export const redirectToError = (router: Router, options: Partial<ErrorOptions> = {}) =>
+  router.replace(redirectErrorRoute(options))

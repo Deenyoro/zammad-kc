@@ -10,17 +10,9 @@ import type { ConfigList } from '#shared/types/store.ts'
 import type { ConfidentTake } from '#shared/types/utils.ts'
 import { getInitials } from '#shared/utils/formatter.ts'
 
-import type {
-  TicketArticleAction,
-  TicketArticleActionPlugin,
-  TicketArticleType,
-} from './types.ts'
+import type { TicketArticleAction, TicketArticleActionPlugin, TicketArticleType } from './types.ts'
 
-const replyToTwitterComment = ((
-  ticket,
-  article,
-  { openReplyForm, getNewArticleBody },
-) => {
+const replyToTwitterComment = ((ticket, article, { openReplyForm, getNewArticleBody }) => {
   const articleData: FormValues = {
     articleType: 'twitter status',
     inReplyTo: article.messageId,
@@ -36,8 +28,7 @@ const replyToTwitterComment = ((
     recipients.filter((recipient) => {
       recipient = recipient.trim().toLowerCase()
       if (body.toLowerCase().includes(recipient)) return false
-      if (recipient === `@${ticket.preferences?.channel_screen_name}`)
-        return false
+      if (recipient === `@${ticket.preferences?.channel_screen_name}`) return false
       return true
     }),
   ).join(' ')
@@ -56,9 +47,7 @@ const replyToTwitterDm = ((ticket, article, { openReplyForm }) => {
   else if (sender === EnumTicketArticleSenderName.Agent) to = article.to?.raw
 
   if (!to) {
-    const autorization = article.author.authorizations?.find(
-      (a) => a.provider === 'twitter',
-    )
+    const autorization = article.author.authorizations?.find((a) => a.provider === 'twitter')
     to = autorization?.username || autorization?.uid
   }
 
@@ -89,8 +78,7 @@ const actionPlugin: TicketArticleActionPlugin = {
   addActions(ticket, article) {
     const type = article.type?.name
 
-    if (type !== 'twitter status' && type !== 'twitter direct-message')
-      return []
+    if (type !== 'twitter status' && type !== 'twitter direct-message') return []
 
     const action: TicketArticleAction = {
       apps: ['mobile', 'desktop'],
@@ -101,8 +89,7 @@ const actionPlugin: TicketArticleActionPlugin = {
         agent: ['change'],
       },
       perform(ticket, article, options) {
-        if (type === 'twitter status')
-          return replyToTwitterComment(ticket, article, options)
+        if (type === 'twitter status') return replyToTwitterComment(ticket, article, options)
         return replyToTwitterDm(ticket, article, options)
       },
     }
@@ -112,10 +99,7 @@ const actionPlugin: TicketArticleActionPlugin = {
   addTypes(ticket, { config }) {
     const descriptionType = ticket.createArticleType?.name
 
-    if (
-      descriptionType !== 'twitter status' &&
-      descriptionType !== 'twitter direct-message'
-    )
+    if (descriptionType !== 'twitter status' && descriptionType !== 'twitter direct-message')
       return []
 
     const type: TicketArticleType = {

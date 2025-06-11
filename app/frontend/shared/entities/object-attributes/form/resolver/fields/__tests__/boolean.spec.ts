@@ -6,18 +6,15 @@ import { FieldResolverBoolean } from '../boolean.ts'
 
 describe('FieldResolverBoolean', () => {
   it('should return the correct field attributes', () => {
-    const fieldResolver = new FieldResolverBoolean(
-      EnumObjectManagerObjects.Ticket,
-      {
-        dataType: 'boolean',
-        name: 'correct',
-        display: 'Correct?',
-        dataOption: {
-          options: { false: 'no', true: 'yes' },
-        },
-        isInternal: true,
+    const fieldResolver = new FieldResolverBoolean(EnumObjectManagerObjects.Ticket, {
+      dataType: 'boolean',
+      name: 'correct',
+      display: 'Correct?',
+      dataOption: {
+        options: { false: 'no', true: 'yes' },
       },
-    )
+      isInternal: true,
+    })
 
     expect(fieldResolver.fieldAttributes()).toEqual({
       label: 'Correct?',

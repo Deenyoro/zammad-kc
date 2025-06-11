@@ -46,13 +46,8 @@ const debouncedSearchInput = refDebounced(
 
 const { isTouchDevice } = useTouchDevice()
 
-const {
-  ADD_RECENT_SEARCH_DEBOUNCE_TIME,
-  recentSearches,
-  addSearch,
-  clearSearches,
-  removeSearch,
-} = useRecentSearches()
+const { ADD_RECENT_SEARCH_DEBOUNCE_TIME, recentSearches, addSearch, clearSearches, removeSearch } =
+  useRecentSearches()
 
 const recentViewListQuery = new QueryHandler(
   useUserCurrentRecentViewListQuery({
@@ -117,9 +112,7 @@ const confirmClearRecentSearches = async () => {
   })
 }
 
-const recentViewResetMutation = new MutationHandler(
-  useUserCurrentRecentViewResetMutation(),
-)
+const recentViewResetMutation = new MutationHandler(useUserCurrentRecentViewResetMutation())
 
 const confirmClearRecentViewed = async () => {
   const confirmed = await waitForConfirmation(
@@ -149,9 +142,7 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
       :debounce-time="DEBOUNCE_TIME"
     />
 
-    <template
-      v-else-if="recentSearches.length > 0 || recentViewListItems.length > 0"
-    >
+    <template v-else-if="recentSearches.length > 0 || recentViewListItems.length > 0">
       <CommonSectionCollapse
         v-if="recentSearches.length > 0"
         id="page-recent-searches"
@@ -195,11 +186,7 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
               </li>
             </ul>
             <div class="mt-2 mb-1 flex justify-end">
-              <CommonLink
-                link="#"
-                size="small"
-                @click="confirmClearRecentSearches"
-              >
+              <CommonLink link="#" size="small" @click="confirmClearRecentSearches">
                 {{ $t('Clear recent searches') }}
               </CommonLink>
             </div>
@@ -217,15 +204,9 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
         <template #default="{ headerId }">
           <nav :aria-labelledby="headerId">
             <ul class="m-0 flex flex-col gap-1 p-0">
-              <li
-                v-for="item in recentViewListItems"
-                :key="item.id"
-                class="relative"
-              >
+              <li v-for="item in recentViewListItems" :key="item.id" class="relative">
                 <component
-                  :is="
-                    searchPluginByName[item.__typename!].quickSearchComponent
-                  "
+                  :is="searchPluginByName[item.__typename!].quickSearchComponent"
                   :item="item"
                   mode="recently-viewed"
                   @click="resetQuickSearchInputField"
@@ -233,11 +214,7 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
               </li>
             </ul>
             <div class="mt-2 mb-1 flex justify-end">
-              <CommonLink
-                link="#"
-                size="small"
-                @click="confirmClearRecentViewed"
-              >
+              <CommonLink link="#" size="small" @click="confirmClearRecentViewed">
                 {{ $t('Clear recently viewed') }}
               </CommonLink>
             </div>
@@ -246,9 +223,7 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
       </CommonSectionCollapse>
     </template>
     <CommonLabel v-else>
-      {{
-        $t('Start typing e.g. the name of a ticket, an organization or a user.')
-      }}
+      {{ $t('Start typing e.g. the name of a ticket, an organization or a user.') }}
     </CommonLabel>
   </div>
 </template>

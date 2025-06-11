@@ -10,19 +10,11 @@ export enum Events {
   Destroy = 'dynamic-component.destroy',
 }
 
-const createEvent = <T = PushComponentData | DestroyComponentData>(
-  title: string,
-  detail: T,
-) => {
+const createEvent = <T = PushComponentData | DestroyComponentData>(title: string, detail: T) => {
   return new CustomEvent<T>(title, { detail })
 }
 
-export const pushComponent = async (
-  name: string,
-  id: string,
-  cmp: Component,
-  props = {},
-) => {
+export const pushComponent = async (name: string, id: string, cmp: Component, props = {}) => {
   const event = createEvent(Events.Push, {
     name,
     id,

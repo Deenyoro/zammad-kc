@@ -2,7 +2,7 @@
 
 import type { FieldResolverModule } from '#shared/entities/object-attributes/types/resolver.ts'
 
-import FieldResolver from '../FieldResolver.ts'
+import { FieldResolver } from '../FieldResolver.ts'
 
 export class FieldResolverRichtext extends FieldResolver {
   fieldType = 'editor'
@@ -15,7 +15,6 @@ export class FieldResolverRichtext extends FieldResolver {
   //     // maxlength: attribute[:data_option]['maxlength']
   //   )
   // end
-  // eslint-disable-next-line class-methods-use-this
   public fieldTypeAttributes() {
     return {
       props: {},

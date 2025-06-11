@@ -12,10 +12,7 @@ import {
   waitForTicketSharedDraftStartListQueryCalls,
 } from '#shared/entities/ticket-shared-draft-start/graphql/queries/ticketSharedDraftStartList.mocks.ts'
 import { waitForUserQueryCalls } from '#shared/entities/user/graphql/queries/user.mocks.ts'
-import {
-  EnumTaskbarEntity,
-  EnumTaskbarEntityAccess,
-} from '#shared/graphql/types.ts'
+import { EnumTaskbarEntity, EnumTaskbarEntityAccess } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 
@@ -26,7 +23,7 @@ import {
   handleMockUserQuery,
 } from '#desktop/pages/ticket/__tests__/support/ticket-create-helpers.ts'
 
-describe('testing tickets create a11y view', async () => {
+describe('testing tickets create a11y view', () => {
   beforeEach(() => {
     mockApplicationConfig({
       ui_ticket_create_available_types: ['phone-in', 'phone-out', 'email-out'],

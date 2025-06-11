@@ -9,6 +9,7 @@ import FieldToggleInput from './FieldToggleInput.vue'
 import type { FormKitBaseSlots, FormKitInputs } from '@formkit/inputs'
 
 declare module '@formkit/inputs' {
+  // oxlint-disable-next-line no-unused-vars
   interface FormKitInputProps<Props extends FormKitInputs<Props>> {
     toggle: {
       type: 'toggle'

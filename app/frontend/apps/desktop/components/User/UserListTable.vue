@@ -23,17 +23,17 @@ const emit = defineEmits<ListTableEmits>()
 
 const getLink = (item: ObjectWithId) => `/users/${getIdFromGraphQLId(item.id)}`
 
-const { goToItem, goToItemLinkColumn, loadMore, resort, storageKeyId } =
-  useListTable(props, emit, getLink)
+const { goToItem, goToItemLinkColumn, loadMore, resort, storageKeyId } = useListTable(
+  props,
+  emit,
+  getLink,
+)
 </script>
 
 <template>
   <div v-if="loading && !loadingNewPage">
     <slot name="loading">
-      <CommonTableSkeleton
-        data-test-id="table-skeleton"
-        :rows="skeletonLoadingCount"
-      />
+      <CommonTableSkeleton data-test-id="table-skeleton" :rows="skeletonLoadingCount" />
     </slot>
   </div>
 

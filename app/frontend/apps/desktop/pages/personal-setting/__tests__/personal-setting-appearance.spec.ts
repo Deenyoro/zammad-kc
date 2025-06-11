@@ -24,9 +24,7 @@ describe('appearance page', () => {
 
       const view = await visitView('/personal-setting/appearance')
 
-      expect(view.getByRole('radio', { checked: true })).toHaveTextContent(
-        'dark',
-      )
+      expect(view.getByRole('radio', { checked: true })).toHaveTextContent('dark')
     })
 
     it('should have light theme set', async () => {
@@ -38,9 +36,7 @@ describe('appearance page', () => {
 
       const view = await visitView('/personal-setting/appearance')
 
-      expect(view.getByRole('radio', { checked: true })).toHaveTextContent(
-        'light',
-      )
+      expect(view.getByRole('radio', { checked: true })).toHaveTextContent('light')
     })
 
     it('update appearance to dark', async () => {
@@ -64,17 +60,13 @@ describe('appearance page', () => {
       const calls = await waitForUserCurrentAppearanceMutationCalls()
 
       expect(calls.at(-1)?.variables).toEqual({ theme: 'dark' })
-      expect(window.matchMedia('(prefers-color-scheme: light)').matches).toBe(
-        false,
-      )
+      expect(window.matchMedia('(prefers-color-scheme: light)').matches).toBe(false)
 
       await view.events.click(lightMode)
       await waitUntil(() => calls.length === 2)
 
       expect(calls.at(-1)?.variables).toEqual({ theme: 'light' })
-      expect(window.matchMedia('(prefers-color-scheme: dark)').matches).toBe(
-        false,
-      )
+      expect(window.matchMedia('(prefers-color-scheme: dark)').matches).toBe(false)
 
       await view.events.click(syncWithComputer)
 
@@ -131,8 +123,7 @@ describe('appearance page', () => {
         }),
       )
 
-      const calls =
-        await waitForUserCurrentTicketSummaryBannerHiddenMutationCalls()
+      const calls = await waitForUserCurrentTicketSummaryBannerHiddenMutationCalls()
 
       expect(calls.at(-1)?.variables).toEqual({
         hidden: true,

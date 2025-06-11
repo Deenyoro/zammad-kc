@@ -41,9 +41,7 @@ export const useFilePreviewViewer = (viewFiles: MaybeRef<ViewerFile[]>) => {
   const calendarPreviewFlyout = useFlyout({
     name: 'common-calendar-preview',
     component: () =>
-      import(
-        '#desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue'
-      ),
+      import('#desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue'),
   })
 
   const showPreview = (type: FilePreview, filePreviewfile: ViewerFile) => {

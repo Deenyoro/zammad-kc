@@ -9,10 +9,7 @@ import { useFormFieldOrganizationInitialOptionBuilder } from '#shared/components
 import FieldOrganizationOptionIcon from './FieldOrganizationOptionIcon.vue'
 
 const FieldAutoCompleteInput = defineAsyncComponent(
-  () =>
-    import(
-      '#mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue'
-    ),
+  () => import('#mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue'),
 )
 
 const props = defineProps<AutocompleteOrganizationProps>()

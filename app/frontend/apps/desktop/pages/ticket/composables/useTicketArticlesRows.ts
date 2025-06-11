@@ -28,12 +28,7 @@ interface SystemRaw {
   reaction?: Maybe<string>
 }
 
-export type TicketArticleRow = (
-  | ArticleRow
-  | SystemRaw
-  | MoreRow
-  | ArticleDeliveryRow
-) & {
+export type TicketArticleRow = (ArticleRow | SystemRaw | MoreRow | ArticleDeliveryRow) & {
   key: string
 }
 
@@ -52,10 +47,7 @@ export const useTicketArticleRows = (
           content: article.bodyWithUrls,
           key: article.internalId.toString(),
         })
-      } else if (
-        article.sender?.name === 'System' &&
-        article.type?.name !== 'note'
-      ) {
+      } else if (article.sender?.name === 'System' && article.type?.name !== 'note') {
         memo.push({
           type: 'system',
           subject: article.subject,

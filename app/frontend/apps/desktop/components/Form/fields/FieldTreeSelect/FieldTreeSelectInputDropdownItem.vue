@@ -1,7 +1,6 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-/* eslint-disable vue/no-v-html */
 import { computed } from 'vue'
 
 import type {
@@ -40,10 +39,7 @@ const label = computed(() => {
 
   if (props.noLabelTranslate) return option.label || option.value.toString()
 
-  return (
-    i18n.t(option.label, ...(option.labelPlaceholder || [])) ||
-    option.value.toString()
-  )
+  return i18n.t(option.label, ...(option.labelPlaceholder || [])) || option.value.toString()
 })
 
 const goToNextPage = (option: FlatSelectOption, noFocus?: boolean) => {
@@ -100,12 +96,12 @@ const goToNextPage = (option: FlatSelectOption, noFocus?: boolean) => {
       decorative
       class="shrink-0 fill-gray-100 group-hover:fill-black group-focus:fill-white dark:fill-neutral-400 dark:group-hover:fill-white"
     />
+    <!--      eslint-disable vue/no-v-html -->
     <span
       v-if="filter"
       v-tooltip="label"
       :class="{
-        'pointer-events-none text-stone-200 dark:text-neutral-500':
-          option.disabled,
+        'pointer-events-none text-stone-200 dark:text-neutral-500': option.disabled,
       }"
       class="grow truncate"
       v-html="(option as MatchedFlatSelectOption).matchedPath"
@@ -139,9 +135,7 @@ const goToNextPage = (option: FlatSelectOption, noFocus?: boolean) => {
             !option.disabled,
         }"
         class="shrink-0 fill-stone-200 group-hover/nav:!fill-white dark:fill-neutral-500"
-        :name="
-          locale.localeData?.dir === 'rtl' ? 'chevron-left' : 'chevron-right'
-        "
+        :name="locale.localeData?.dir === 'rtl' ? 'chevron-left' : 'chevron-right'"
         size="xs"
         tabindex="-1"
         decorative

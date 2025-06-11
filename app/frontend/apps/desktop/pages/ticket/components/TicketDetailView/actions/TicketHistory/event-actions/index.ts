@@ -2,17 +2,13 @@
 
 import type { EventActionModule } from '../types.ts'
 
-const eventActionModules = import.meta.glob<EventActionModule>(
-  ['./*.ts', '!./index.ts'],
-  {
-    eager: true,
-    import: 'default',
-  },
-)
+const eventActionModules = import.meta.glob<EventActionModule>(['./*.ts', '!./index.ts'], {
+  eager: true,
+  import: 'default',
+})
 
 // Put all event actions from the glob output into an hash
 const eventActions = Object.entries(eventActionModules).reduce(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (lookup: Record<string, EventActionModule>, [_, module]) => {
     lookup[module.name] = module
     return lookup

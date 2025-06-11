@@ -6,22 +6,11 @@ import { nextTick } from 'vue'
 
 import { useCollapseHandler } from '#desktop/components/CollapseButton/useCollapseHandler.ts'
 
-describe('useCollapseHandler', async () => {
+describe('useCollapseHandler', () => {
   const emit = vi.fn()
 
   beforeEach(() => {
     localStorage.clear()
-  })
-
-  it('initializes with collapsed state from local storage', async () => {
-    const TestComponent = {
-      setup() {
-        const { isCollapsed } = useCollapseHandler(emit, { storageKey: 'test' })
-        expect(isCollapsed.value).toBe(false)
-      },
-      template: '<div></div>',
-    }
-    mount(TestComponent)
   })
 
   it('sync local storage state on initial load', async () => {

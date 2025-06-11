@@ -1,18 +1,16 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
-/* eslint-disable no-use-before-define */
 
 import { getOperationName } from '@apollo/client/utilities'
 import { useApolloClient } from '@vue/apollo-composable'
 import { watch, nextTick } from 'vue'
 
+import { BaseHandler } from '#shared/server/apollo/handler/BaseHandler.ts'
 import type {
   OperationQueryOptionsReturn,
   OperationQueryResult,
   WatchResultCallback,
 } from '#shared/types/server/apollo/handler.ts'
 import type { ReactiveFunction } from '#shared/types/utils.ts'
-
-import BaseHandler from './BaseHandler.ts'
 
 import type {
   ApolloError,
@@ -31,11 +29,7 @@ import type { Ref, WatchStopHandle } from 'vue'
 export default class QueryHandler<
   TResult = OperationQueryResult,
   TVariables extends OperationVariables = OperationVariables,
-> extends BaseHandler<
-  TResult,
-  TVariables,
-  UseQueryReturn<TResult, TVariables>
-> {
+> extends BaseHandler<TResult, TVariables, UseQueryReturn<TResult, TVariables>> {
   private lastCancel: (() => void) | null = null
 
   public cancel() {
@@ -56,9 +50,7 @@ export default class QueryHandler<
    *
    * If an error was throws, `data` is `null`, and `error` is the thrown error.
    */
-  public async query(
-    options: Omit<QueryOptions<TVariables, TResult>, 'query'> = {},
-  ) {
+  public async query(options: Omit<QueryOptions<TVariables, TResult>, 'query'> = {}) {
     const {
       options: defaultOptions,
       document: { value: node },
@@ -76,16 +68,13 @@ export default class QueryHandler<
     }
     this.cancel()
     const { client } = useApolloClient()
-    const aborter =
-      typeof AbortController !== 'undefined' ? new AbortController() : null
+    const aborter = typeof AbortController !== 'undefined' ? new AbortController() : null
     this.lastCancel = () => aborter?.abort()
     const { fetchPolicy: defaultFetchPolicy, ...defaultOptionsValue } =
       'value' in defaultOptions ? defaultOptions.value : defaultOptions
     const fetchPolicy =
       options.fetchPolicy ||
-      (defaultFetchPolicy !== 'cache-and-network'
-        ? defaultFetchPolicy
-        : undefined)
+      (defaultFetchPolicy !== 'cache-and-network' ? defaultFetchPolicy : undefined)
     try {
       return await client.query<TResult, TVariables>({
         ...defaultOptionsValue,
@@ -120,9 +109,7 @@ export default class QueryHandler<
     return this.operationResult.result
   }
 
-  public watchQuery(): Ref<
-    ObservableQuery<TResult, TVariables> | null | undefined
-  > {
+  public watchQuery(): Ref<ObservableQuery<TResult, TVariables> | null | undefined> {
     return this.operationResult.query
   }
 
@@ -131,17 +118,9 @@ export default class QueryHandler<
     TSubscriptionData = TResult,
   >(
     options:
-      | SubscribeToMoreOptions<
-          TResult,
-          TSubscriptionVariables,
-          TSubscriptionData
-        >
+      | SubscribeToMoreOptions<TResult, TSubscriptionVariables, TSubscriptionData>
       | ReactiveFunction<
-          SubscribeToMoreOptions<
-            TResult,
-            TSubscriptionVariables,
-            TSubscriptionData
-          >
+          SubscribeToMoreOptions<TResult, TSubscriptionVariables, TSubscriptionData>
         >,
   ): void {
     return this.operationResult.subscribeToMore(options)
@@ -198,10 +177,7 @@ export default class QueryHandler<
     })
   }
 
-  public load(
-    variables?: TVariables,
-    options?: UseQueryOptions<TResult, TVariables>,
-  ): void {
+  public load(variables?: TVariables, options?: UseQueryOptions<TResult, TVariables>): void {
     const operation = this.operationResult as unknown as {
       load?: (
         document?: unknown,
@@ -259,9 +235,7 @@ export default class QueryHandler<
     )
   }
 
-  public watchOnResult(
-    callback: WatchResultCallback<TResult>,
-  ): WatchStopHandle {
+  public watchOnResult(callback: WatchResultCallback<TResult>): WatchStopHandle {
     return watch(
       this.result(),
       (result) => {

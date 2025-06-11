@@ -9,10 +9,7 @@ import { useForm } from '#shared/components/Form/useForm.ts'
 import { useUserCurrentAccessTokenAddMutation } from '#shared/entities/user/current/graphql/mutations/userCurrentAccessTokenAdd.api.ts'
 import { UserCurrentAccessTokenListDocument } from '#shared/entities/user/current/graphql/queries/userCurrentAcessTokenList.api.ts'
 import { defineFormSchema } from '#shared/form/defineFormSchema.ts'
-import {
-  EnumFormUpdaterId,
-  type UserCurrentAccessTokenListQuery,
-} from '#shared/graphql/types.ts'
+import { EnumFormUpdaterId, type UserCurrentAccessTokenListQuery } from '#shared/graphql/types.ts'
 import MutationHandler from '#shared/server/apollo/handler/MutationHandler.ts'
 
 import CommonFlyout from '#desktop/components/CommonFlyout/CommonFlyout.vue'
@@ -58,15 +55,13 @@ const accessTokenCreateMutation = new MutationHandler(
       const { userCurrentAccessTokenAdd } = data
       if (!userCurrentAccessTokenAdd?.token) return
 
-      let existingAccessTokens =
-        cache.readQuery<UserCurrentAccessTokenListQuery>({
-          query: UserCurrentAccessTokenListDocument,
-        })
+      let existingAccessTokens = cache.readQuery<UserCurrentAccessTokenListQuery>({
+        query: UserCurrentAccessTokenListDocument,
+      })
 
-      const newIdPresent =
-        existingAccessTokens?.userCurrentAccessTokenList?.find((token) => {
-          return token.id === userCurrentAccessTokenAdd.token?.id
-        })
+      const newIdPresent = existingAccessTokens?.userCurrentAccessTokenList?.find((token) => {
+        return token.id === userCurrentAccessTokenAdd.token?.id
+      })
       if (newIdPresent) return
 
       existingAccessTokens = {
@@ -153,9 +148,7 @@ const actionCloseFlyout = () => {
       v-else
       ref="form"
       :schema="formSchema"
-      :form-updater-id="
-        EnumFormUpdaterId.FormUpdaterUpdaterUserCurrentNewAccessToken
-      "
+      :form-updater-id="EnumFormUpdaterId.FormUpdaterUpdaterUserCurrentNewAccessToken"
       form-updater-initial-only
       should-autofocus
       @submit="submitForm($event as FormSubmitData<NewTokenAccessFormData>)"

@@ -16,10 +16,7 @@ import type {
   AppMaintenanceSubscriptionVariables,
 } from '#shared/graphql/types.ts'
 import { EnumAppMaintenanceType } from '#shared/graphql/types.ts'
-import {
-  QueryHandler,
-  SubscriptionHandler,
-} from '#shared/server/apollo/handler/index.ts'
+import { QueryHandler, SubscriptionHandler } from '#shared/server/apollo/handler/index.ts'
 import testFlags from '#shared/utils/testFlags.ts'
 
 let checksumQuery: QueryHandler<
@@ -36,9 +33,7 @@ interface UseAppMaintenanceCheckOptions {
   onNeedRefresh?: () => void
 }
 
-const useAppMaintenanceCheck = (
-  maintenanceOptions: UseAppMaintenanceCheckOptions = {},
-) => {
+const useAppMaintenanceCheck = (maintenanceOptions: UseAppMaintenanceCheckOptions = {}) => {
   const notify = (message: string, callback?: () => void) => {
     useNotifications().notify({
       id: 'app-maintenance',
@@ -85,9 +80,7 @@ const useAppMaintenanceCheck = (
       }
     })
 
-    appMaintenanceSubscription = new SubscriptionHandler(
-      useAppMaintenanceSubscription(),
-    )
+    appMaintenanceSubscription = new SubscriptionHandler(useAppMaintenanceSubscription())
     appMaintenanceSubscription.onResult((result) => {
       const type = result.data?.appMaintenance?.type
       let message = notificationMessage
@@ -98,9 +91,7 @@ const useAppMaintenanceCheck = (
       }
       switch (type) {
         case EnumAppMaintenanceType.ConfigChanged:
-          message = __(
-            'The configuration of Zammad has changed. Please reload at your earliest.',
-          )
+          message = __('The configuration of Zammad has changed. Please reload at your earliest.')
           break
         case EnumAppMaintenanceType.RestartAuto:
         case EnumAppMaintenanceType.RestartManual:

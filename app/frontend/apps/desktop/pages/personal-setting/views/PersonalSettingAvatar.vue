@@ -24,10 +24,7 @@ import QueryHandler from '#shared/server/apollo/handler/QueryHandler.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 import type { ImageFileData } from '#shared/utils/files.ts'
-import {
-  convertFileList,
-  allowedImageTypesString,
-} from '#shared/utils/files.ts'
+import { convertFileList, allowedImageTypesString } from '#shared/utils/files.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonDivider from '#desktop/components/CommonDivider/CommonDivider.vue'
@@ -71,8 +68,7 @@ avatarListQuery.subscribeToMore<
     }
 
     return {
-      userCurrentAvatarList:
-        subscriptionData.data.userCurrentAvatarUpdates.avatars,
+      userCurrentAvatarList: subscriptionData.data.userCurrentAvatarUpdates.avatars,
     }
   },
 })
@@ -89,14 +85,12 @@ const fileUploadElement = useTemplateRef('file-upload')
 
 const cameraFlyout = useFlyout({
   name: 'avatar-camera-capture',
-  component: () =>
-    import('../components/PersonalSettingAvatarCameraFlyout.vue'),
+  component: () => import('../components/PersonalSettingAvatarCameraFlyout.vue'),
 })
 
 const cropImageFlyout = useFlyout({
   name: 'avatar-file-upload',
-  component: () =>
-    import('../components/PersonalSettingAvatarCropImageFlyout.vue'),
+  component: () => import('../components/PersonalSettingAvatarCropImageFlyout.vue'),
 })
 
 const modifyDefaultAvatarCache = (
@@ -299,9 +293,7 @@ const activeAvatarButtonClass = (active: boolean) => {
   <LayoutContent :breadcrumb-items="breadcrumbItems" width="narrow">
     <CommonLoader :loading="avatarListQueryLoading">
       <div class="mb-4">
-        <CommonLabel class="!mt-0.5 mb-1 !block"
-          >{{ $t('Your avatar') }}
-        </CommonLabel>
+        <CommonLabel class="!mt-0.5 mb-1 !block">{{ $t('Your avatar') }} </CommonLabel>
 
         <div class="rounded-lg bg-blue-200 dark:bg-gray-700">
           <div class="flex flex-row flex-wrap gap-2.5 p-2.5">
@@ -309,10 +301,7 @@ const activeAvatarButtonClass = (active: boolean) => {
               <button
                 v-if="avatar.initial && user"
                 :aria-label="$t('Select this avatar')"
-                :class="[
-                  ...avatarButtonClasses,
-                  activeAvatarButtonClass(avatar.default),
-                ]"
+                :class="[...avatarButtonClasses, activeAvatarButtonClass(avatar.default)]"
                 @click.stop="avatar.default ? void 0 : selectAvatar(avatar)"
               >
                 <CommonUserAvatar
@@ -326,16 +315,10 @@ const activeAvatarButtonClass = (active: boolean) => {
                   no-muted
                 />
               </button>
-              <div
-                v-else-if="avatar.imageHash"
-                class="group/avatar relative flex"
-              >
+              <div v-else-if="avatar.imageHash" class="group/avatar relative flex">
                 <button
                   :aria-label="$t('Select this avatar')"
-                  :class="[
-                    ...avatarButtonClasses,
-                    activeAvatarButtonClass(avatar.default),
-                  ]"
+                  :class="[...avatarButtonClasses, activeAvatarButtonClass(avatar.default)]"
                   @click.stop="avatar.default ? void 0 : selectAvatar(avatar)"
                 >
                   <CommonAvatar
@@ -373,21 +356,11 @@ const activeAvatarButtonClass = (active: boolean) => {
               @change="loadAvatar(fileUploadElement)"
             />
 
-            <CommonButton
-              class="m-1"
-              size="medium"
-              prefix-icon="image"
-              @click="addAvatarByUpload"
-            >
+            <CommonButton class="m-1" size="medium" prefix-icon="image" @click="addAvatarByUpload">
               {{ $t('Upload') }}
             </CommonButton>
 
-            <CommonButton
-              class="m-1"
-              size="medium"
-              prefix-icon="camera"
-              @click="addAvatarByCamera"
-            >
+            <CommonButton class="m-1" size="medium" prefix-icon="camera" @click="addAvatarByCamera">
               {{ $t('Camera') }}
             </CommonButton>
           </div>

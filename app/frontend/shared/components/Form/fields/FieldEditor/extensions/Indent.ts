@@ -20,12 +20,10 @@ declare module '@tiptap/core' {
   }
 }
 
-const update = ({
-  step = 1,
-  min = 0,
-  max = Number.POSITIVE_INFINITY,
-  unit = '',
-} = {}): ((v: string | number, delta?: number) => string) => {
+const update = ({ step = 1, min = 0, max = Number.POSITIVE_INFINITY, unit = '' } = {}): ((
+  v: string | number,
+  delta?: number,
+) => string) => {
   return (last, delta = step) => {
     let n
 
@@ -41,7 +39,6 @@ const update = ({
       }
     }
     n += delta
-    // eslint-disable-next-line no-use-before-define
     n = clamp(n, min, max)
     let frac = 0
     const abs = Math.abs(delta)
@@ -76,11 +73,7 @@ export const IndentExtension = Extension.create<IndentOptions>({
         (backspace) =>
         ({ chain, state }) => {
           const { selection } = state
-          if (
-            backspace &&
-            (selection.$anchor.parentOffset > 0 ||
-              selection.from !== selection.to)
-          )
+          if (backspace && (selection.$anchor.parentOffset > 0 || selection.from !== selection.to))
             return false
 
           return useLocaleStore().localeData?.dir === 'rtl'
@@ -147,6 +140,4 @@ export const IndentExtension = Extension.create<IndentOptions>({
   },
 })
 
-const clamp = (val: number, min: number, max: number) =>
-  // eslint-disable-next-line no-nested-ternary
-  val < min ? min : val > max ? max : val
+const clamp = (val: number, min: number, max: number) => (val < min ? min : val > max ? max : val)

@@ -16,9 +16,7 @@ const props = defineProps<Props>()
 
 const hasError = computed(() => props.article.mediaErrorState?.error)
 
-const { loading, tryAgain } = useTicketArticleRetryMediaDownload(
-  toRef(props.article, 'id'),
-)
+const { loading, tryAgain } = useTicketArticleRetryMediaDownload(toRef(props.article, 'id'))
 
 const retryDownload = async () => {
   try {

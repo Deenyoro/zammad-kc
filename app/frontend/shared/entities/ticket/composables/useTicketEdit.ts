@@ -4,11 +4,7 @@ import { isEqual } from 'lodash-es'
 import { computed, ref, watch } from 'vue'
 
 import { populateEditorNewLines } from '#shared/components/Form/fields/FieldEditor/utils.ts'
-import type {
-  FormValues,
-  FormRef,
-  FormSubmitData,
-} from '#shared/components/Form/types.ts'
+import type { FormValues, FormRef, FormSubmitData } from '#shared/components/Form/types.ts'
 import { getNodeByName } from '#shared/components/Form/utils.ts'
 import { useCheckBodyAttachmentReference } from '#shared/composables/form/useCheckBodyAttachmentReference.ts'
 import { useObjectAttributeFormData } from '#shared/entities/object-attributes/composables/useObjectAttributeFormData.ts'
@@ -19,10 +15,7 @@ import type {
   TicketById,
   TicketUpdateFormData,
 } from '#shared/entities/ticket/types.ts'
-import type {
-  TicketUpdateInput,
-  TicketUpdateMetaInput,
-} from '#shared/graphql/types.ts'
+import type { TicketUpdateInput, TicketUpdateMetaInput } from '#shared/graphql/types.ts'
 import { EnumObjectManagerObjects } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import { MutationHandler } from '#shared/server/apollo/handler/index.ts'
@@ -55,30 +48,28 @@ export const useTicketEdit = (
     errorNotificationMessage: __('Ticket update failed.'),
   })
 
-  const ticketFormRelatedData = computed<Partial<TicketById>>(
-    (currentTicketFormRelatedData) => {
-      if (!ticket.value) return {}
+  const ticketFormRelatedData = computed<Partial<TicketById>>((currentTicketFormRelatedData) => {
+    if (!ticket.value) return {}
 
-      const newTicketFormRelatedData = (
-        TICKET_FORM_RELEVANT_KEYS as Array<keyof TicketById>
-      ).reduce<Partial<TicketById>>((relevantData, key) => {
-        if (!ticket.value || !(key in ticket.value)) return relevantData
+    const newTicketFormRelatedData = (TICKET_FORM_RELEVANT_KEYS as Array<keyof TicketById>).reduce<
+      Partial<TicketById>
+    >((relevantData, key) => {
+      if (!ticket.value || !(key in ticket.value)) return relevantData
 
-        relevantData[key] = ticket.value[key]
+      relevantData[key] = ticket.value[key]
 
-        return relevantData
-      }, {})
+      return relevantData
+    }, {})
 
-      if (
-        currentTicketFormRelatedData &&
-        isEqual(newTicketFormRelatedData, currentTicketFormRelatedData)
-      ) {
-        return currentTicketFormRelatedData
-      }
+    if (
+      currentTicketFormRelatedData &&
+      isEqual(newTicketFormRelatedData, currentTicketFormRelatedData)
+    ) {
+      return currentTicketFormRelatedData
+    }
 
-      return newTicketFormRelatedData
-    },
-  )
+    return newTicketFormRelatedData
+  })
 
   watch(
     ticketFormRelatedData,
@@ -115,17 +106,14 @@ export const useTicketEdit = (
     return !!ticketGroup?.context?.state.valid
   })
 
-  const { attributesLookup: ticketObjectAttributesLookup } =
-    useObjectAttributes(EnumObjectManagerObjects.Ticket)
+  const { attributesLookup: ticketObjectAttributesLookup } = useObjectAttributes(
+    EnumObjectManagerObjects.Ticket,
+  )
 
-  const processArticle = (
-    formId: string,
-    article: TicketArticleReceivedFormValues | undefined,
-  ) => {
+  const processArticle = (formId: string, article: TicketArticleReceivedFormValues | undefined) => {
     if (!article) return null
 
-    const contentType =
-      getNodeByName(formId, 'body')?.context?.contentType || 'text/html'
+    const contentType = getNodeByName(formId, 'body')?.context?.contentType || 'text/html'
 
     if (contentType === 'text/html') {
       article.body = populateEditorNewLines(article.body)
@@ -148,10 +136,8 @@ export const useTicketEdit = (
     }
   }
 
-  const {
-    missingBodyAttachmentReference,
-    bodyAttachmentReferenceConfirmation,
-  } = useCheckBodyAttachmentReference()
+  const { missingBodyAttachmentReference, bodyAttachmentReferenceConfirmation } =
+    useCheckBodyAttachmentReference()
 
   const editTicket = async (
     formData: FormSubmitData<TicketUpdateFormData>,
@@ -163,16 +149,11 @@ export const useTicketEdit = (
       formData.owner_id = 1
     }
 
-    const formArticle = formData.article as
-      | TicketArticleReceivedFormValues
-      | undefined
+    const formArticle = formData.article as TicketArticleReceivedFormValues | undefined
 
     if (
       formArticle &&
-      missingBodyAttachmentReference(
-        formArticle?.body,
-        formArticle?.attachments,
-      ) &&
+      missingBodyAttachmentReference(formArticle?.body, formArticle?.attachments) &&
       (await bodyAttachmentReferenceConfirmation())
     ) {
       return undefined

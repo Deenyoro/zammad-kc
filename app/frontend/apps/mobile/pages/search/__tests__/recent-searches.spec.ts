@@ -36,9 +36,7 @@ describe('testing recent searches block', () => {
       await waitUntil(() => mockSearchApi.calls.resolve)
     }
     const clearSearch = () => {
-      return view.events.debounced(() =>
-        view.events.clear(view.getByPlaceholderText('Search…')),
-      )
+      return view.events.debounced(() => view.events.clear(view.getByPlaceholderText('Search…')))
     }
 
     expect(getByTextInLastSearch('No recent searches')).toBeInTheDocument()
@@ -162,10 +160,7 @@ describe('testing recent searches block', () => {
       id,
     })
     localStorage.clear()
-    localStorage.setItem(
-      `${id}-recentSearches`,
-      JSON.stringify(['search', 'search123']),
-    )
+    localStorage.setItem(`${id}-recentSearches`, JSON.stringify(['search', 'search123']))
     const view = await visitView('/search/user')
 
     expect(view.getByRole('button', { name: 'search' })).toBeInTheDocument()
@@ -176,8 +171,6 @@ describe('testing recent searches block', () => {
 
     await view.events.clear(input)
 
-    expect(
-      view.queryByRole('button', { name: 'search55' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'search55' })).not.toBeInTheDocument()
   })
 })

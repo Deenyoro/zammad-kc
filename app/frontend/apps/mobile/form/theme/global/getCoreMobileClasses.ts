@@ -2,10 +2,7 @@
 
 import { clean, extendClasses } from '#shared/form/plugins/utils.ts'
 import type { Classes } from '#shared/form/plugins/utils.ts'
-import type {
-  FormThemeClasses,
-  FormThemeExtension,
-} from '#shared/types/form.ts'
+import type { FormThemeClasses, FormThemeExtension } from '#shared/types/form.ts'
 
 import { addAbsoluteFloatingLabel } from './addAbsoluteFloatingLabel.ts'
 import { addBlockFloatingLabel } from './addBlockFloatingLabel.ts'
@@ -29,8 +26,7 @@ const getCoreClasses: FormThemeExtension = (classes: FormThemeClasses) => {
       message: 'text-red-bright pb-1',
       help: 'mt-0.5 px-2 pb-2',
       arrow: 'formkit-arrow formkit-disabled:opacity-30 flex items-center',
-      prefixIcon:
-        'absolute top-1/2 -translate-y-1/2 transform ltr:left-3 rtl:right-3',
+      prefixIcon: 'absolute top-1/2 -translate-y-1/2 transform ltr:left-3 rtl:right-3',
       suffixIcon:
         'absolute top-1/2 flex -translate-y-1/2 transform items-center justify-center fill-current text-white ltr:right-3 rtl:left-3',
     }),

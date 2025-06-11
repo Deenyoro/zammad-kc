@@ -4,8 +4,6 @@ import registerIncomingMerge from '#shared/server/apollo/cache/utils/registerInc
 
 import type { InMemoryCacheConfig } from '@apollo/client/cache/inmemory/types'
 
-export default function register(
-  config: InMemoryCacheConfig,
-): InMemoryCacheConfig {
+export default function register(config: InMemoryCacheConfig): InMemoryCacheConfig {
   return registerIncomingMerge(config, 'userCurrentTicketOverviews')
 }

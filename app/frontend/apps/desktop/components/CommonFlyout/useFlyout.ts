@@ -16,8 +16,7 @@ import { getCurrentApp } from '#desktop/currentApp.ts'
 
 const OVERLAY_CONTAINER_TYPE = 'flyout'
 
-export const getOpenedFlyouts = () =>
-  getOpenedOverlayContainers(OVERLAY_CONTAINER_TYPE)
+export const getOpenedFlyouts = () => getOpenedOverlayContainers(OVERLAY_CONTAINER_TYPE)
 
 export const isFlyoutOpened = (name?: string) =>
   isOverlayContainerOpened(OVERLAY_CONTAINER_TYPE, name)

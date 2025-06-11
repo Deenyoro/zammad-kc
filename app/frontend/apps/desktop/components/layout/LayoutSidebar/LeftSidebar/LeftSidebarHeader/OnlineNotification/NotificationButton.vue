@@ -15,9 +15,7 @@ defineEmits<{
   show: [MouseEvent]
 }>()
 
-const truncatedUnseenCount = computed(() =>
-  props.unseenCount > 99 ? '99+' : props.unseenCount,
-)
+const truncatedUnseenCount = computed(() => (props.unseenCount > 99 ? '99+' : props.unseenCount))
 </script>
 
 <template>

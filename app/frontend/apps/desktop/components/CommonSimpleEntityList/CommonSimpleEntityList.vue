@@ -8,10 +8,7 @@ import type { ObjectLike } from '#shared/types/utils.ts'
 import CommonSectionCollapse from '#desktop/components/CommonSectionCollapse/CommonSectionCollapse.vue'
 import CommonShowMoreButton from '#desktop/components/CommonShowMoreButton/CommonShowMoreButton.vue'
 import entityModules from '#desktop/components/CommonSimpleEntityList/plugins/index.ts'
-import {
-  type Entity,
-  EntityType,
-} from '#desktop/components/CommonSimpleEntityList/types.ts'
+import { type Entity, EntityType } from '#desktop/components/CommonSimpleEntityList/types.ts'
 
 interface Props {
   id: string
@@ -44,19 +41,10 @@ const entitySetup = computed(() => {
 </script>
 
 <template>
-  <CommonSectionCollapse
-    :id="id"
-    v-model="modelValue"
-    :title="label"
-    :no-header="!label"
-  >
+  <CommonSectionCollapse :id="id" v-model="modelValue" :title="label" :no-header="!label">
     <ul v-if="entity.array?.length" class="flex flex-col gap-1.5">
       <li v-for="item in entitySetup.array" :key="`entity-${item.id}`">
-        <component
-          :is="entitySetup.component"
-          :entity="item"
-          :context="entitySetup.context"
-        />
+        <component :is="entitySetup.component" :entity="item" :context="entitySetup.context" />
       </li>
     </ul>
 
@@ -64,12 +52,7 @@ const entitySetup = computed(() => {
       >{{ entitySetup.context.emptyMessage }}
     </CommonLabel>
 
-    <slot
-      v-if="entity"
-      name="trailing"
-      :total-count="entity.totalCount"
-      :entities="entity.array"
-    >
+    <slot v-if="entity" name="trailing" :total-count="entity.totalCount" :entities="entity.array">
       <CommonShowMoreButton
         class="self-end"
         :entities="entity.array"

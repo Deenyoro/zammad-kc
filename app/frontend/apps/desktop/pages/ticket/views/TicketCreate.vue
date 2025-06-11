@@ -15,8 +15,7 @@ interface Props {
 
 defineOptions({
   beforeRouteEnter(to) {
-    const { ticketCreateEnabled, checkUniqueTicketCreateRoute } =
-      useTicketCreateView()
+    const { ticketCreateEnabled, checkUniqueTicketCreateRoute } = useTicketCreateView()
 
     if (!ticketCreateEnabled.value)
       return redirectErrorRoute({

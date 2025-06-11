@@ -45,13 +45,11 @@ const route: RouteRecordRaw[] = [
   },
   {
     path: '/ticket/zoom/:internalId(\\d+)/:articleId(\\d+)',
-    redirect: (to) =>
-      `/tickets/${to.params.internalId}#article-${to.params.articleId}`,
+    redirect: (to) => `/tickets/${to.params.internalId}#article-${to.params.articleId}`,
   },
   {
     path: '/tickets/:internalId(\\d+)/:articleId(\\d+)',
-    redirect: (to) =>
-      `/tickets/${to.params.internalId}#article-${to.params.articleId}`,
+    redirect: (to) => `/tickets/${to.params.internalId}#article-${to.params.articleId}`,
   },
 ]
 

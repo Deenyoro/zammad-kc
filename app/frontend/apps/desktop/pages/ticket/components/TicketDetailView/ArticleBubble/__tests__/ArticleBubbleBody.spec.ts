@@ -46,9 +46,7 @@ describe('ArticleBubbleBody', () => {
 
     const wrapper = renderBody(article, true)
     expect(await wrapper.findByText('test & body')).toBeInTheDocument()
-    expect(
-      await wrapper.queryByText(article.author.fullname!),
-    ).not.toBeInTheDocument()
+    expect(await wrapper.queryByText(article.author.fullname!)).not.toBeInTheDocument()
   })
 
   it('displays text article body with meta information display inactive', async () => {
@@ -59,9 +57,7 @@ describe('ArticleBubbleBody', () => {
 
     const wrapper = renderBody(article, false)
     expect(await wrapper.findByText('test &amp; body')).toBeInTheDocument()
-    expect(
-      await wrapper.queryByText(article.author.fullname!),
-    ).to.toBeInTheDocument()
+    expect(await wrapper.queryByText(article.author.fullname!)).to.toBeInTheDocument()
   })
 
   it('does not display system message name on article body', async () => {

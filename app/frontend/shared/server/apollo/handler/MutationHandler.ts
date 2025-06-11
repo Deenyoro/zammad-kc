@@ -4,7 +4,7 @@ import UserError from '#shared/errors/UserError.ts'
 import type { UserErrors } from '#shared/types/error.ts'
 import type { OperationMutationResult } from '#shared/types/server/apollo/handler.ts'
 
-import BaseHandler from './BaseHandler.ts'
+import { BaseHandler } from './BaseHandler.ts'
 
 import type { OperationVariables } from '@apollo/client/core'
 import type { UseMutationReturn } from '@vue/apollo-composable'
@@ -13,11 +13,7 @@ import type { Ref } from 'vue'
 export default class MutationHandler<
   TResult = OperationMutationResult,
   TVariables extends OperationVariables = OperationVariables,
-> extends BaseHandler<
-  TResult,
-  TVariables,
-  UseMutationReturn<TResult, TVariables>
-> {
+> extends BaseHandler<TResult, TVariables, UseMutationReturn<TResult, TVariables>> {
   public async send(variables?: TVariables): Promise<Maybe<TResult>> {
     return new Promise((resolve, reject) => {
       this.operationResult.mutate(variables).then((result) => {

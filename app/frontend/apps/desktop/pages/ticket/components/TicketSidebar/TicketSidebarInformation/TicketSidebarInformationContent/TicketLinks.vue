@@ -31,10 +31,7 @@ const props = defineProps<Props>()
 
 const ticketReactive = toRef(props, 'ticket')
 
-const { hasLinks, linkTypesWithLinks, linkListIsLoading } = useObjectLinks(
-  ticketReactive,
-  'Ticket',
-)
+const { hasLinks, linkTypesWithLinks, linkListIsLoading } = useObjectLinks(ticketReactive, 'Ticket')
 
 const { isTouchDevice } = useTouchDevice()
 
@@ -121,10 +118,7 @@ defineExpose({ hasLinks })
         class="flex w-full flex-col rounded-lg bg-blue-200 px-2.5 dark:bg-gray-700"
       >
         <div v-for="(type, idx) in linkTypesWithLinks" :key="type.id">
-          <CommonLabel
-            size="small"
-            class="text-stone-200! dark:text-neutral-500!"
-          >
+          <CommonLabel size="small" class="text-stone-200! dark:text-neutral-500!">
             {{ $t(type.label) }}
           </CommonLabel>
 

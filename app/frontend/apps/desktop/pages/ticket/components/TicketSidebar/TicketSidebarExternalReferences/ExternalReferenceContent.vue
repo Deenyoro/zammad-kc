@@ -11,10 +11,7 @@ defineProps<Props>()
 
 <template>
   <div class="flex flex-col gap-0.5">
-    <CommonLabel
-      size="small"
-      class="block text-stone-200 dark:text-neutral-500"
-    >
+    <CommonLabel size="small" class="block text-stone-200 dark:text-neutral-500">
       {{ label }}
     </CommonLabel>
     <slot>

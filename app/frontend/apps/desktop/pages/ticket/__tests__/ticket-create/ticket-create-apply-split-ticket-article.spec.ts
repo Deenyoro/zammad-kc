@@ -11,7 +11,7 @@ import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import { handleMockFormUpdaterQuery } from '#desktop/pages/ticket/__tests__/support/ticket-create-helpers.ts'
 
-describe('ticket create view - splitting of a ticket article', async () => {
+describe('ticket create view - splitting of a ticket article', () => {
   const ticketTitle = 'split title'
   const articleId = 666
   const ticketId = 123
@@ -30,9 +30,7 @@ describe('ticket create view - splitting of a ticket article', async () => {
       split_article_id: articleId,
     })
 
-    const view = await visitView(
-      '/ticket/create?splitTicketArticleId=ticket_article_gid',
-    )
+    const view = await visitView('/ticket/create?splitTicketArticleId=ticket_article_gid')
 
     const formUpdaterCalls = await waitForFormUpdaterQueryCalls()
 
@@ -73,9 +71,7 @@ describe('ticket create view - splitting of a ticket article', async () => {
       pending_time: { show: false },
     })
 
-    const view = await visitView(
-      '/ticket/create?splitTicketArticleId=ticket_article_gid',
-    )
+    const view = await visitView('/ticket/create?splitTicketArticleId=ticket_article_gid')
 
     await waitForFormUpdaterQueryCalls()
 

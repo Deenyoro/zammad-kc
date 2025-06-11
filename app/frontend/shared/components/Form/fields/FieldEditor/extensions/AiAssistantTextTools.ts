@@ -40,10 +40,7 @@ export default (editor: ShallowRef<Editor>) => {
       }),
       {
         errorCallback: (error) => {
-          return !(
-            mutationGotCancelled &&
-            error.type === GraphQLErrorTypes.NetworkError
-          )
+          return !(mutationGotCancelled && error.type === GraphQLErrorTypes.NetworkError)
         },
       },
     )
@@ -57,15 +54,11 @@ export default (editor: ShallowRef<Editor>) => {
 
   let aiAssistanceTextToolsController = useAbortableMutation()
 
-  const sendTextToolsMutation = async (
-    textToolService: EnumAiTextToolService,
-    input: string,
-  ) => {
-    const response =
-      await aiAssistanceTextToolsController.textToolsMutation.send({
-        input,
-        serviceType: textToolService,
-      })
+  const sendTextToolsMutation = async (textToolService: EnumAiTextToolService, input: string) => {
+    const response = await aiAssistanceTextToolsController.textToolsMutation.send({
+      input,
+      serviceType: textToolService,
+    })
     return response?.aiAssistanceTextTools?.output
   }
 
@@ -127,21 +120,17 @@ export default (editor: ShallowRef<Editor>) => {
         improveWriting:
           () =>
           ({ editor }) => {
-            modifySelectedText(EnumAiTextToolService.ImproveWriting).then(
-              () => {
-                editor.chain().focus().run()
-              },
-            )
+            modifySelectedText(EnumAiTextToolService.ImproveWriting).then(() => {
+              editor.chain().focus().run()
+            })
             return true
           },
         fixSpellingAndGrammar:
           () =>
           ({ editor }) => {
-            modifySelectedText(EnumAiTextToolService.SpellingAndGrammar).then(
-              () => {
-                editor.chain().focus().run()
-              },
-            )
+            modifySelectedText(EnumAiTextToolService.SpellingAndGrammar).then(() => {
+              editor.chain().focus().run()
+            })
             return true
           },
         expandText:

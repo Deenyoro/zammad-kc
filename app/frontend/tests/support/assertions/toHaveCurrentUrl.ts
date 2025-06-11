@@ -2,12 +2,7 @@
 
 import type { ExtendedRenderResult } from '../components/renderComponent.ts'
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
-export default function toHaveCurrentUrl(
-  this: any,
-  view: ExtendedRenderResult,
-  url: string,
-) {
+export default function toHaveCurrentUrl(this: any, view: ExtendedRenderResult, url: string) {
   if (typeof url !== 'string') {
     throw new Error(`"toHaveCurrentUrl" expects a string, got ${typeof url}`)
   }

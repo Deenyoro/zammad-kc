@@ -31,9 +31,7 @@ watch(
   () => props.context.variants,
   (variants) => {
     if (!variants) {
-      console.warn(
-        'FieldToggleInput: variants prop is required, but not provided',
-      )
+      console.warn('FieldToggleInput: variants prop is required, but not provided')
       return
     }
 
@@ -98,8 +96,7 @@ const knobSizeClasses = computed(() => {
 })
 
 const knobTranslateClasses = computed(() => {
-  if (context.value.size === 'small')
-    return 'ltr:translate-x-[13px] rtl:-translate-x-[13px]'
+  if (context.value.size === 'small') return 'ltr:translate-x-[13px] rtl:-translate-x-[13px]'
 
   return 'ltr:translate-x-[17px] rtl:-translate-x-[17px]'
 })

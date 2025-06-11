@@ -4,10 +4,7 @@ import { getByRole } from '@testing-library/vue'
 import { storeToRefs } from 'pinia'
 import { type RouteRecordRaw } from 'vue-router'
 
-import {
-  getAllByIconName,
-  getByIconName,
-} from '#tests/support/components/iconQueries.ts'
+import { getAllByIconName, getByIconName } from '#tests/support/components/iconQueries.ts'
 import { renderComponent } from '#tests/support/components/index.ts'
 import { getTestRouter } from '#tests/support/components/renderComponent.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
@@ -118,9 +115,7 @@ describe('UserTaskbarTabs.vue', () => {
     expect(getByIconName(tab, 'check-circle-no')).toBeInTheDocument()
     expect(tab).toHaveTextContent('Welcome to Zammad!')
 
-    expect(tab).toHaveAccessibleDescription(
-      'Drag and drop to reorder your tabs.',
-    )
+    expect(tab).toHaveAccessibleDescription('Drag and drop to reorder your tabs.')
 
     const link = getByRole(tab, 'link')
 
@@ -134,9 +129,7 @@ describe('UserTaskbarTabs.vue', () => {
 
     expect(link).toHaveClass('router-link-active router-link-exact-active')
 
-    expect(
-      getByRole(tab, 'button', { name: 'Close this tab' }),
-    ).toBeInTheDocument()
+    expect(getByRole(tab, 'button', { name: 'Close this tab' })).toBeInTheDocument()
   })
 
   it('renders ticket create tab', async () => {
@@ -167,18 +160,14 @@ describe('UserTaskbarTabs.vue', () => {
     expect(getByIconName(tab, 'pencil')).toBeInTheDocument()
     expect(tab).toHaveTextContent('Received Call: Test title')
 
-    expect(tab).toHaveAccessibleDescription(
-      'Drag and drop to reorder your tabs.',
-    )
+    expect(tab).toHaveAccessibleDescription('Drag and drop to reorder your tabs.')
 
     const link = getByRole(tab, 'link')
 
     expect(link).toHaveAttribute('href', '/desktop/tickets/create/999')
     expect(link).toHaveAccessibleName('Received Call: Test title')
 
-    expect(
-      getByRole(tab, 'button', { name: 'Close this tab' }),
-    ).toBeInTheDocument()
+    expect(getByRole(tab, 'button', { name: 'Close this tab' })).toBeInTheDocument()
   })
 
   it('renders forbidden tab', async () => {
@@ -204,21 +193,15 @@ describe('UserTaskbarTabs.vue', () => {
     expect(getAllByIconName(tab, 'x-lg')[1]).toHaveClass('text-red-500')
     expect(tab).toHaveTextContent('Access denied')
 
-    expect(tab).toHaveAccessibleDescription(
-      'Drag and drop to reorder your tabs.',
-    )
+    expect(tab).toHaveAccessibleDescription('Drag and drop to reorder your tabs.')
 
     const link = getByRole(tab, 'link')
 
     expect(link).toHaveAttribute('href', '/desktop/tickets/999')
 
-    expect(link).toHaveAccessibleName(
-      'You have insufficient rights to view this object.',
-    )
+    expect(link).toHaveAccessibleName('You have insufficient rights to view this object.')
 
-    expect(
-      getByRole(tab, 'button', { name: 'Close this tab' }),
-    ).toBeInTheDocument()
+    expect(getByRole(tab, 'button', { name: 'Close this tab' })).toBeInTheDocument()
   })
 
   it('renders not found tab', async () => {
@@ -244,18 +227,14 @@ describe('UserTaskbarTabs.vue', () => {
     expect(getAllByIconName(tab, 'x-lg')[1]).toHaveClass('text-red-500')
     expect(tab).toHaveTextContent('Not found')
 
-    expect(tab).toHaveAccessibleDescription(
-      'Drag and drop to reorder your tabs.',
-    )
+    expect(tab).toHaveAccessibleDescription('Drag and drop to reorder your tabs.')
 
     const link = getByRole(tab, 'link')
 
     expect(link).toHaveAttribute('href', '/desktop/tickets/999')
     expect(link).toHaveAccessibleName('This object could not be found.')
 
-    expect(
-      getByRole(tab, 'button', { name: 'Close this tab' }),
-    ).toBeInTheDocument()
+    expect(getByRole(tab, 'button', { name: 'Close this tab' })).toBeInTheDocument()
   })
 
   it('renders popover button in collapsed mode', async () => {
@@ -285,9 +264,7 @@ describe('UserTaskbarTabs.vue', () => {
     expect(getByIconName(tab, 'check-circle-no')).toBeInTheDocument()
     expect(tab).toHaveTextContent('Welcome to Zammad!')
 
-    expect(tab).not.toHaveAccessibleDescription(
-      'Drag and drop to reorder your tabs.',
-    )
+    expect(tab).not.toHaveAccessibleDescription('Drag and drop to reorder your tabs.')
 
     const link = getByRole(tab, 'link')
 
@@ -295,9 +272,7 @@ describe('UserTaskbarTabs.vue', () => {
     expect(link).toHaveAccessibleName('Ticket#53001 - Welcome to Zammad!')
     expect(link).toHaveClass('router-link-active router-link-exact-active')
 
-    expect(
-      getByRole(tab, 'button', { name: 'Close this tab' }),
-    ).toBeInTheDocument()
+    expect(getByRole(tab, 'button', { name: 'Close this tab' })).toBeInTheDocument()
   })
 
   it('implements tab updates subscription', async () => {
@@ -475,9 +450,7 @@ describe('UserTaskbarTabs.vue', () => {
 
     const tab = wrapper.getByRole('listitem')
 
-    await wrapper.events.click(
-      getByRole(tab, 'button', { name: 'Close this tab' }),
-    )
+    await wrapper.events.click(getByRole(tab, 'button', { name: 'Close this tab' }))
 
     const calls = await waitForUserCurrentTaskbarItemDeleteMutationCalls()
 
@@ -544,9 +517,7 @@ describe('UserTaskbarTabs.vue', () => {
 
     // Simulate currently active tab by changing the store state directly.
     //   Normally, this would be set by the route navigation guard (`activeTaskbarTab`).
-    const { activeTaskbarTabEntityKey } = storeToRefs(
-      useUserCurrentTaskbarTabsStore(),
-    )
+    const { activeTaskbarTabEntityKey } = storeToRefs(useUserCurrentTaskbarTabsStore())
 
     activeTaskbarTabEntityKey.value = 'TicketCreateScreen-999'
 
@@ -559,9 +530,7 @@ describe('UserTaskbarTabs.vue', () => {
 
     expect(tabs).toHaveLength(2)
 
-    await wrapper.events.click(
-      getByRole(tabs[0], 'button', { name: 'Close this tab' }),
-    )
+    await wrapper.events.click(getByRole(tabs[0], 'button', { name: 'Close this tab' }))
 
     await waitForUserCurrentTaskbarItemDeleteMutationCalls()
 
@@ -575,9 +544,6 @@ describe('UserTaskbarTabs.vue', () => {
       },
     })
 
-    expect(
-      wrapper,
-      'correctly redirects to the previous route',
-    ).toHaveCurrentUrl('/tickets/42')
+    expect(wrapper, 'correctly redirects to the previous route').toHaveCurrentUrl('/tickets/42')
   })
 })

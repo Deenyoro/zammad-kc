@@ -9,11 +9,7 @@ const path = (metaObject: User) => {
   return `users/${metaObject.internalId}`
 }
 
-const messageText = (
-  type: string,
-  authorName: string,
-  metaObject?: User,
-): Maybe<string> => {
+const messageText = (type: string, authorName: string, metaObject?: User): Maybe<string> => {
   if (!metaObject) {
     return i18n.t('You can no longer see the user.')
   }

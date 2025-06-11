@@ -253,22 +253,19 @@ describe('creating new tag', () => {
     expect(filterInput).toHaveFocus()
   })
 
-  it.each(['{Enter}', '{Tab}', ','])(
-    'can add new tag with "%s" key',
-    async (key) => {
-      const view = renderFieldTags({ canCreate: true })
+  it.each(['{Enter}', '{Tab}', ','])('can add new tag with "%s" key', async (key) => {
+    const view = renderFieldTags({ canCreate: true })
 
-      const node = view.getByLabelText('Tags')
-      await view.events.click(node)
+    const node = view.getByLabelText('Tags')
+    await view.events.click(node)
 
-      const filterInput = view.getByPlaceholderText('Tag name…')
+    const filterInput = view.getByPlaceholderText('Tag name…')
 
-      await view.events.type(filterInput, `pay${key}`)
+    await view.events.type(filterInput, `pay${key}`)
 
-      expect(view.getByRole('option', { name: 'pay' })).toBeInTheDocument()
-      expect(filterInput).toHaveDisplayValue('')
-    },
-  )
+    expect(view.getByRole('option', { name: 'pay' })).toBeInTheDocument()
+    expect(filterInput).toHaveDisplayValue('')
+  })
 
   it.each(['{Enter}', '{Tab}', ','])(
     'can not add new tag with "%s" key when disabled',
@@ -282,9 +279,7 @@ describe('creating new tag', () => {
 
       await view.events.type(filterInput, `pay${key}`)
 
-      expect(
-        view.queryByRole('option', { name: 'pay' }),
-      ).not.toBeInTheDocument()
+      expect(view.queryByRole('option', { name: 'pay' })).not.toBeInTheDocument()
       expect(filterInput).toHaveDisplayValue('pay')
     },
   )

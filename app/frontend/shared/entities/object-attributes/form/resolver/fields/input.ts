@@ -3,7 +3,7 @@
 import type { FormFieldAdditionalProps } from '#shared/components/Form/types.ts'
 import type { FieldResolverModule } from '#shared/entities/object-attributes/types/resolver.ts'
 
-import FieldResolver from '../FieldResolver.ts'
+import { FieldResolver } from '../FieldResolver.ts'
 
 export class FieldResolverInput extends FieldResolver {
   fieldType = () => {

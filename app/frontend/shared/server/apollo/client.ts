@@ -11,9 +11,7 @@ import type { NormalizedCacheObject } from '@apollo/client/core'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
-export const createApolloClient = (
-  cacheInitializerModules: CacheInitializerModules = {},
-) => {
+export const createApolloClient = (cacheInitializerModules: CacheInitializerModules = {}) => {
   const cache = createCache(cacheInitializerModules)
 
   apolloClient = new ApolloClient({

@@ -12,9 +12,7 @@ const useHtmlInlineImages = (
     inlineImages.value.splice(0)
 
     element.querySelectorAll('img').forEach((image) => {
-      const mime = (image.alt || image.src)?.match(/\.(jpe?g)$/i)
-        ? 'image/jpeg'
-        : 'image/png'
+      const mime = (image.alt || image.src)?.match(/\.(jpe?g)$/i) ? 'image/jpeg' : 'image/png'
 
       const preview: ImageViewerFile = {
         name: image.alt,

@@ -31,8 +31,7 @@ const notificationPermission = usePermission('notifications')
 
 const { notificationsCountSubscription } = useOnlineNotificationCount()
 
-const { show, isSupported, permissionGranted, ensurePermissions } =
-  useWebNotification()
+const { show, isSupported, permissionGranted, ensurePermissions } = useWebNotification()
 
 const {
   notificationList,
@@ -41,8 +40,7 @@ const {
   refetch,
 } = useOnlineNotificationList()
 
-const { seenNotification, markAllRead, deleteNotification } =
-  useOnlineNotificationActions()
+const { seenNotification, markAllRead, deleteNotification } = useOnlineNotificationActions()
 
 let mutationTriggered = false
 let hasInitialCountRun = false
@@ -59,10 +57,7 @@ const runSeenNotification = async (notification: OnlineNotification) => {
   webNotificationList.delete(notification.id)
 }
 
-const handleOpenWebNotification = (
-  notification: OnlineNotification,
-  link?: string,
-) => {
+const handleOpenWebNotification = (notification: OnlineNotification, link?: string) => {
   window.focus()
 
   if (link) router.push(`/${link}`)
@@ -130,8 +125,7 @@ notificationsCountSubscription.watchOnResult(async (result) => {
     if (!webNotification) return
 
     webNotificationList.set(notification.id, webNotification)
-    webNotification.onclick = () =>
-      handleOpenWebNotification(notification, link)
+    webNotification.onclick = () => handleOpenWebNotification(notification, link)
   }
 
   previousUnseenCount = result.onlineNotificationsCount.unseenCount

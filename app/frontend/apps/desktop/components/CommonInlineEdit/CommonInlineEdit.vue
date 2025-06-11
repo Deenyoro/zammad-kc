@@ -42,9 +42,7 @@ export interface Props {
     label?: string
     input?: string
   }
-  onSubmitEdit?: (
-    value: string,
-  ) => Promise<void | (() => void)> | void | (() => void)
+  onSubmitEdit?: (value: string) => Promise<void | (() => void)> | void | (() => void)
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -101,8 +99,7 @@ const stopEditing = (emitCancel = true) => {
   isEditing.value = false
   if (emitCancel) emit('cancel-edit')
 
-  if (!newEditValue.value.length)
-    newEditValue.value = props.initialEditValue ?? props.value
+  if (!newEditValue.value.length) newEditValue.value = props.initialEditValue ?? props.value
 }
 
 const activateEditing = (event?: MouseEvent | KeyboardEvent) => {
@@ -176,8 +173,7 @@ useTrapTab(target)
 watch(
   () => props.value,
   () => {
-    if (props.detectLinks && labelInstance.value?.$el)
-      setupLinksHandlers(labelInstance.value?.$el)
+    if (props.detectLinks && labelInstance.value?.$el) setupLinksHandlers(labelInstance.value?.$el)
   },
   {
     flush: 'post',
@@ -186,8 +182,7 @@ watch(
 
 onMounted(() => {
   nextTick(() => {
-    if (props.detectLinks && labelInstance.value?.$el)
-      setupLinksHandlers(labelInstance.value?.$el)
+    if (props.detectLinks && labelInstance.value?.$el) setupLinksHandlers(labelInstance.value?.$el)
   })
 })
 
@@ -212,11 +207,9 @@ const focusClasses = computed(() => {
     'group-focus-within:before:absolute group-focus-within:before:-left-[5px] group-focus-within:before:top-1/2 group-focus-within:before:z-0 group-focus-within:before:h-[calc(100%+10px)] group-focus-within:before:w-[calc(100%+10px)] group-focus-within:before:-translate-y-1/2 group-focus-within:before:rounded-md'
 
   if (props.alternativeBackground) {
-    classes +=
-      ' group-focus-within:before:bg-neutral-50 dark:group-focus-within:before:bg-gray-500'
+    classes += ' group-focus-within:before:bg-neutral-50 dark:group-focus-within:before:bg-gray-500'
   } else {
-    classes +=
-      ' group-focus-within:before:bg-blue-200 dark:group-focus-within:before:bg-gray-700'
+    classes += ' group-focus-within:before:bg-blue-200 dark:group-focus-within:before:bg-gray-700'
   }
   return classes
 })
@@ -319,11 +312,7 @@ defineExpose({
     <div
       v-else
       class="flex max-w-full items-center gap-2 before:absolute before:top-1/2 before:-left-[5px] before:z-0 before:h-[calc(100%+10px)] before:w-[calc(100%+10px)] before:-translate-y-1/2 before:rounded-md"
-      :class="[
-        { 'w-full': block },
-        editBackgroundClass,
-        fontSizeClassMap[size],
-      ]"
+      :class="[{ 'w-full': block }, editBackgroundClass, fontSizeClassMap[size]]"
     >
       <div class="relative z-10 w-full ltr:pr-14 rtl:pl-14">
         <input

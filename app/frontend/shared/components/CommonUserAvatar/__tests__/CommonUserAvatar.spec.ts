@@ -55,9 +55,7 @@ describe('CommonUserAvatar', () => {
       },
     })
 
-    expect(avatar).toHaveStyle(
-      'background-image: url(/api/users/image/100.png)',
-    )
+    expect(avatar).toHaveStyle('background-image: url(/api/users/image/100.png)')
     expect(avatar).not.toHaveTextContent('JD')
   })
 
@@ -173,9 +171,7 @@ describe('CommonUserAvatar', () => {
     expect(avatar).toHaveTextContent('JD')
     expect(avatar).toHaveClass('bg-blue')
 
-    expect(avatar).not.toHaveStyle(
-      'background-image: url(/api/users/image/100.png)',
-    )
+    expect(avatar).not.toHaveStyle('background-image: url(/api/users/image/100.png)')
   })
 
   describe('out of office state', () => {

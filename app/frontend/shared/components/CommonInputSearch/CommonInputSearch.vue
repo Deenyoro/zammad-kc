@@ -47,10 +47,7 @@ export default {
 </script>
 
 <template>
-  <div
-    class="relative flex w-full items-center self-stretch"
-    :class="wrapperClass"
-  >
+  <div class="relative flex w-full items-center self-stretch" :class="wrapperClass">
     <CommonIcon
       class="text-gray absolute shrink-0 ltr:left-2 rtl:right-2"
       size="base"

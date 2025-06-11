@@ -18,16 +18,10 @@ import { useUserCurrentAvatarAddMutation } from '#shared/entities/user/current/g
 import { useUserCurrentAvatarDeleteMutation } from '#shared/entities/user/current/graphql/mutations/userCurrentAvatarDelete.api.ts'
 import type UserError from '#shared/errors/UserError.ts'
 import type { UserCurrentAvatarActiveQuery } from '#shared/graphql/types.ts'
-import {
-  MutationHandler,
-  QueryHandler,
-} from '#shared/server/apollo/handler/index.ts'
+import { MutationHandler, QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 import type { ImageFileData } from '#shared/utils/files.ts'
-import {
-  convertFileList,
-  allowedImageTypesString,
-} from '#shared/utils/files.ts'
+import { convertFileList, allowedImageTypesString } from '#shared/utils/files.ts'
 
 import CommonButton from '#mobile/components/CommonButton/CommonButton.vue'
 import CommonButtonGroup from '#mobile/components/CommonButtonGroup/CommonButtonGroup.vue'
@@ -46,8 +40,7 @@ const avatarImage = shallowRef<ImageFileData>()
 const activeAvatarQuery = new QueryHandler(useUserCurrentAvatarActiveQuery(), {
   errorNotificationMessage: __('The avatar could not be fetched.'),
 })
-const activeAvatar =
-  ref<UserCurrentAvatarActiveQuery['userCurrentAvatarActive']>()
+const activeAvatar = ref<UserCurrentAvatarActiveQuery['userCurrentAvatarActive']>()
 
 activeAvatarQuery.watchOnResult((data) => {
   activeAvatar.value = data?.userCurrentAvatarActive
@@ -176,9 +169,7 @@ useHeader({
   backUrl: '/account',
   actionTitle: __('Done'),
   backIgnore: ['/user/current/avatar'],
-  refetch: computed(
-    () => avatarLoading.value && !!activeAvatarQuery.result().value,
-  ),
+  refetch: computed(() => avatarLoading.value && !!activeAvatarQuery.result().value),
   onAction() {
     router.push('/account')
   },
@@ -231,14 +222,8 @@ const actions = computed<CommonButtonOption[]>(() => [
 <template>
   <div v-if="user" class="px-4">
     <div class="flex flex-col items-center py-6">
-      <CommonLoader
-        :loading="avatarLoading && !activeAvatarQuery.result().value"
-      >
-        <CommonAvatar
-          v-if="state.resizedImage"
-          :image="state.resizedImage"
-          size="xl"
-        />
+      <CommonLoader :loading="avatarLoading && !activeAvatarQuery.result().value">
+        <CommonAvatar v-if="state.resizedImage" :image="state.resizedImage" size="xl" />
         <CommonUserAvatar v-else :entity="user" size="xl" personal />
         <CommonButtonGroup class="mt-6" mode="full" :options="actions" />
       </CommonLoader>
@@ -264,10 +249,7 @@ const actions = computed<CommonButtonOption[]>(() => [
         @change="loadAvatar(fileCameraInput)"
       />
 
-      <div
-        v-if="avatarImage"
-        class="flex w-full flex-col items-center justify-center"
-      >
+      <div v-if="avatarImage" class="flex w-full flex-col items-center justify-center">
         <Cropper
           class="mt-4 mb-4 !max-h-[250px] !max-w-[400px]"
           :src="avatarImage.content"

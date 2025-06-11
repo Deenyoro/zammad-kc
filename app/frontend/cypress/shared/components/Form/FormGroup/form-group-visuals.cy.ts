@@ -227,10 +227,7 @@ describe('grouping form fields', { retries: 3 }, () => {
       {
         components: { Form, DynamicInitializer },
         render() {
-          return h('div', [
-            h(DynamicInitializer, { name: 'dialog' }),
-            h(Form, props),
-          ])
+          return h('div', [h(DynamicInitializer, { name: 'dialog' }), h(Form, props)])
         },
       },
       {

@@ -1,33 +1,16 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import {
-  useEventListener,
-  useInfiniteScroll,
-  useLocalStorage,
-  whenever,
-} from '@vueuse/core'
+import { useEventListener, useInfiniteScroll, useLocalStorage, whenever } from '@vueuse/core'
 import { delay, isEqual, merge } from 'lodash-es'
-import {
-  computed,
-  nextTick,
-  onMounted,
-  ref,
-  type Ref,
-  toRef,
-  useTemplateRef,
-  watch,
-} from 'vue'
+import { computed, nextTick, onMounted, ref, type Ref, toRef, useTemplateRef, watch } from 'vue'
 import { onBeforeRouteUpdate } from 'vue-router'
 
 import ObjectAttributeContent from '#shared/components/ObjectAttributes/ObjectAttribute.vue'
 import { useObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
 import type { ObjectAttribute } from '#shared/entities/object-attributes/types/store.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
-import {
-  EnumObjectManagerObjects,
-  EnumOrderDirection,
-} from '#shared/graphql/types.ts'
+import { EnumObjectManagerObjects, EnumOrderDirection } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
 import emitter from '#shared/utils/emitter.ts'
@@ -72,33 +55,24 @@ const { attributesLookup: objectAttributesLookup } = props.object
 const localAttributesLookup = computed(() => {
   const lookup: Map<string, TableAttribute> = new Map()
 
-  props.attributes?.forEach((attribute) =>
-    lookup.set(attribute.name, attribute),
-  )
+  props.attributes?.forEach((attribute) => lookup.set(attribute.name, attribute))
 
   return lookup
 })
 
 const findAttribute = <T,>(headerName: string, lookup: Map<string, T>) =>
-  lookup?.get(headerName) ||
-  lookup?.get(`${headerName}_id`) ||
-  lookup?.get(`${headerName}_ids`)
+  lookup?.get(headerName) || lookup?.get(`${headerName}_id`) || lookup?.get(`${headerName}_ids`)
 
 const localHeaders = computed(() =>
-  props.groupBy
-    ? props.headers.filter((header) => header !== props.groupBy)
-    : props.headers,
+  props.groupBy ? props.headers.filter((header) => header !== props.groupBy) : props.headers,
 )
 
-const rightAlignedDataTypes = ['date', 'datetime', 'integer']
+const rightAlignedDataTypes = new Set(['date', 'datetime', 'integer'])
 
 const addLocalHeaders = (table: TableAttribute[]) =>
   localHeaders.value.forEach((headerName) => {
     // Try to find matching attribute from both sources
-    const localAttribute = findAttribute(
-      headerName,
-      localAttributesLookup.value,
-    )
+    const localAttribute = findAttribute(headerName, localAttributesLookup.value)
     const objectAttribute = objectAttributesLookup?.value
       ? findAttribute(headerName, objectAttributesLookup.value)
       : null
@@ -125,7 +99,7 @@ const addLocalHeaders = (table: TableAttribute[]) =>
 
     // Set default alignment for right-aligned data types.
     if (
-      rightAlignedDataTypes.includes(mergedAttribute.dataType) &&
+      rightAlignedDataTypes.has(mergedAttribute.dataType) &&
       !mergedAttribute.columnPreferences?.alignContent
     ) {
       mergedAttribute.columnPreferences ||= {}
@@ -144,10 +118,7 @@ const tableAttributes = computed(() => {
 })
 
 const tableColumnLength = computed(
-  () =>
-    tableAttributes.value.length +
-    (props.actions ? 1 : 0) +
-    (props.hasCheckboxColumn ? 1 : 0),
+  () => tableAttributes.value.length + (props.actions ? 1 : 0) + (props.hasCheckboxColumn ? 1 : 0),
 )
 
 const tableElement = useTemplateRef('table')
@@ -160,17 +131,13 @@ const setHeaderWidths = (reset?: boolean) => {
 
   const availableWidth = tableElement.value.parentElement.clientWidth
 
-  const tableWidth =
-    availableWidth < MINIMUM_TABLE_WIDTH ? MINIMUM_TABLE_WIDTH : availableWidth
+  const tableWidth = availableWidth < MINIMUM_TABLE_WIDTH ? MINIMUM_TABLE_WIDTH : availableWidth
 
   tableElement.value.style.width = `${tableWidth}px`
 
   let shouldReset = reset
 
-  if (
-    tableAttributes.value.length !==
-    Object.keys(headerWidthsRelativeStorage.value).length
-  )
+  if (tableAttributes.value.length !== Object.keys(headerWidthsRelativeStorage.value).length)
     shouldReset = true
 
   tableAttributes.value.forEach((tableAttribute) => {
@@ -184,8 +151,7 @@ const setHeaderWidths = (reset?: boolean) => {
       return
     }
 
-    const headerWidthRelative =
-      headerWidthsRelativeStorage.value[tableAttribute.name]
+    const headerWidthRelative = headerWidthsRelativeStorage.value[tableAttribute.name]
 
     const headerWidth =
       tableAttribute.headerPreferences?.displayWidth ??
@@ -199,8 +165,7 @@ const storeHeaderWidths = (headerWidths: Record<string, number>) => {
   headerWidthsRelativeStorage.value = Object.keys(headerWidths).reduce(
     (headerWidthsRelative, headerName) => {
       if (!tableElement.value) return headerWidthsRelative
-      headerWidthsRelative[headerName] =
-        headerWidths[headerName] / tableElement.value.clientWidth
+      headerWidthsRelative[headerName] = headerWidths[headerName] / tableElement.value.clientWidth
       return headerWidthsRelative
     },
     {} as Record<string, number>,
@@ -211,9 +176,7 @@ const calculateHeaderWidths = () => {
   const headerWidths: Record<string, number> = {}
 
   tableAttributes.value.forEach((tableAttribute) => {
-    const headerWidth = document.getElementById(
-      `${tableAttribute.name}-header`,
-    )?.clientWidth
+    const headerWidth = document.getElementById(`${tableAttribute.name}-header`)?.clientWidth
 
     if (!headerWidth) return
 
@@ -227,10 +190,7 @@ const initializeHeaderWidths = (storageKeyId?: string) => {
   if (storageKeyId) {
     // FIXME: This is needed because storage key as a reactive value is unsupported.
     // eslint-disable-next-line vue/no-ref-as-operand
-    headerWidthsRelativeStorage = useLocalStorage<Record<string, number>>(
-      storageKeyId,
-      {},
-    )
+    headerWidthsRelativeStorage = useLocalStorage<Record<string, number>>(storageKeyId, {})
   }
 
   nextTick(() => {
@@ -246,7 +206,9 @@ const resetHeaderWidths = () => {
 
 watch(() => props.storageKeyId, initializeHeaderWidths)
 
-watch(localHeaders, () => initializeHeaderWidths())
+watch(localHeaders, () => {
+  initializeHeaderWidths()
+})
 
 onMounted(() => {
   if (!props.storageKeyId) return
@@ -256,23 +218,15 @@ onMounted(() => {
 useEventListener('resize', () => initializeHeaderWidths())
 emitter.on('main-sidebar-transition', () => initializeHeaderWidths())
 
-const getTooltipText = (
-  item: TableAdvancedItem,
-  tableAttribute: TableAttribute,
-) =>
-  tableAttribute.headerPreferences?.truncate
-    ? item[tableAttribute.name]
-    : undefined
+const getTooltipText = (item: TableAdvancedItem, tableAttribute: TableAttribute) =>
+  tableAttribute.headerPreferences?.truncate ? item[tableAttribute.name] : undefined
 
 const modelCheckedItemIds = defineModel<Set<ID>>('checkedItemIds', {
   required: false,
   default: () => new Set(),
 })
 
-const updateCheckedItem = (
-  item: TableAdvancedItem,
-  event: MouseEvent | KeyboardEvent,
-) => {
+const updateCheckedItem = (item: TableAdvancedItem, event: MouseEvent | KeyboardEvent) => {
   if (item.policy ? !item.policy.update : item.disabled) return
   event.stopPropagation()
 
@@ -302,15 +256,13 @@ const localItems = computed<TableAdvancedItem[]>((currentItems) => {
 })
 
 const remainingItems = computed(() => {
-  const itemCount =
-    props.totalItems >= props.maxItems ? props.maxItems : props.totalItems
+  const itemCount = props.totalItems >= props.maxItems ? props.maxItems : props.totalItems
   return itemCount - localItems.value.length
 })
 
 const sort = (column: string) => {
   const newDirection =
-    props.orderBy === column &&
-    props.orderDirection === EnumOrderDirection.Ascending
+    props.orderBy === column && props.orderDirection === EnumOrderDirection.Ascending
       ? EnumOrderDirection.Descending
       : EnumOrderDirection.Ascending
 
@@ -320,9 +272,7 @@ const sort = (column: string) => {
 const isSorted = (column: string) => props.orderBy === column
 
 const sortIcon = computed(() =>
-  props.orderDirection === EnumOrderDirection.Ascending
-    ? 'arrow-up-short'
-    : 'arrow-down-short',
+  props.orderDirection === EnumOrderDirection.Ascending ? 'arrow-up-short' : 'arrow-down-short',
 )
 
 let currentGroupByValueIndex = -1
@@ -331,10 +281,7 @@ const groupByAttribute = computed(() => {
   if (!props.groupBy) return null
 
   // Try to find matching attribute from both sources
-  const localAttribute = findAttribute(
-    props.groupBy,
-    localAttributesLookup.value,
-  )
+  const localAttribute = findAttribute(props.groupBy, localAttributesLookup.value)
   const objectAttribute = objectAttributesLookup?.value
     ? findAttribute(props.groupBy, objectAttributesLookup.value)
     : null
@@ -345,9 +292,7 @@ const groupByAttribute = computed(() => {
 const groupByAttributeItemName = computed(() => {
   if (!groupByAttribute.value) return
 
-  return (
-    groupByAttribute.value.dataOption?.belongs_to || groupByAttribute.value.name
-  )
+  return groupByAttribute.value.dataOption?.belongs_to || groupByAttribute.value.name
 })
 
 const groupByRowCounts = computed(() => {
@@ -360,14 +305,11 @@ const groupByRowCounts = computed(() => {
   let lastValue: string | number
 
   return localItems.value.reduce((groupByRowIds: string[][], item) => {
-    const value = (
-      isRelation && item[name] ? (item[name] as ObjectLike).id : item[name]
-    ) as string | number
+    const value = (isRelation && item[name] ? (item[name] as ObjectLike).id : item[name]) as
+      | string
+      | number
 
-    if (
-      (lastValue && value !== lastValue) ||
-      (groupByRowIds.length > 0 && !lastValue && value)
-    ) {
+    if ((lastValue && value !== lastValue) || (groupByRowIds.length > 0 && !lastValue && value)) {
       groupByValueIndex += 1
     }
 
@@ -473,11 +415,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
       :class="{ 'border-shadow-b': !reachedScrollTop }"
     >
       <tr>
-        <th
-          v-if="hasCheckboxColumn"
-          id="checkbox-header"
-          class="relative h-10 w-8 p-2.5 text-xs"
-        >
+        <th v-if="hasCheckboxColumn" id="checkbox-header" class="relative h-10 w-8 p-2.5 text-xs">
           <!-- <div
             role="checkbox"
             :class="{
@@ -510,54 +448,35 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
           class="relative h-10 p-2.5 text-xs"
           :class="[
             tableAttribute.headerPreferences?.headerClass,
-            cellAlignmentClasses[
-              tableAttribute.columnPreferences?.alignContent ?? 'left'
-            ],
+            cellAlignmentClasses[tableAttribute.columnPreferences?.alignContent ?? 'left'],
           ]"
         >
-          <slot
-            :name="`column-header-${tableAttribute.name}`"
-            :attribute="tableAttribute"
-          >
+          <slot :name="`column-header-${tableAttribute.name}`" :attribute="tableAttribute">
             <!-- eslint-disable vuejs-accessibility/no-static-element-interactions,vuejs-accessibility/mouse-events-have-key-events-->
             <div
               class="flex items-center gap-1"
               :class="[
-                cellAlignmentClasses[
-                  tableAttribute.columnPreferences?.alignContent || 'left'
-                ],
+                cellAlignmentClasses[tableAttribute.columnPreferences?.alignContent || 'left'],
                 {
                   'hover:cursor-pointer focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-800':
                     !tableAttribute.headerPreferences?.noSorting,
                 },
               ]"
-              :role="
-                tableAttribute.headerPreferences?.noSorting
-                  ? undefined
-                  : 'button'
-              "
-              :tabindex="
-                tableAttribute.headerPreferences?.noSorting ? undefined : '0'
-              "
+              :role="tableAttribute.headerPreferences?.noSorting ? undefined : 'button'"
+              :tabindex="tableAttribute.headerPreferences?.noSorting ? undefined : '0'"
               :aria-label="
                 orderDirection === EnumOrderDirection.Ascending
                   ? $t('Sorted ascending')
                   : $t('Sorted descending')
               "
               @click="
-                tableAttribute.headerPreferences?.noSorting
-                  ? undefined
-                  : sort(tableAttribute.name)
+                tableAttribute.headerPreferences?.noSorting ? undefined : sort(tableAttribute.name)
               "
               @keydown.enter.prevent="
-                tableAttribute.headerPreferences?.noSorting
-                  ? undefined
-                  : sort(tableAttribute.name)
+                tableAttribute.headerPreferences?.noSorting ? undefined : sort(tableAttribute.name)
               "
               @keydown.space.prevent="
-                tableAttribute.headerPreferences?.noSorting
-                  ? undefined
-                  : sort(tableAttribute.name)
+                tableAttribute.headerPreferences?.noSorting ? undefined : sort(tableAttribute.name)
               "
             >
               <CommonLabel
@@ -566,27 +485,17 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                   tableAttribute.headerPreferences?.labelClass,
                   {
                     'sr-only': tableAttribute.headerPreferences?.hideLabel,
-                    'text-black! dark:text-white!': isSorted(
-                      tableAttribute.name,
-                    ),
+                    'text-black! dark:text-white!': isSorted(tableAttribute.name),
                     'hover:text-black! dark:hover:text-white!':
                       !tableAttribute.headerPreferences?.noSorting,
                   },
                 ]"
                 size="small"
               >
-                {{
-                  $t(
-                    tableAttribute.label,
-                    ...(tableAttribute.labelPlaceholder || []),
-                  )
-                }}
+                {{ $t(tableAttribute.label, ...(tableAttribute.labelPlaceholder || [])) }}
               </CommonLabel>
               <CommonIcon
-                v-if="
-                  !tableAttribute.headerPreferences?.noSorting &&
-                  isSorted(tableAttribute.name)
-                "
+                v-if="!tableAttribute.headerPreferences?.noSorting && isSorted(tableAttribute.name)"
                 class="shrink-0 text-blue-800"
                 :name="sortIcon"
                 size="xs"
@@ -595,41 +504,33 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
             </div>
           </slot>
 
-          <slot
-            :name="`header-suffix-${tableAttribute.name}`"
-            :item="tableAttribute"
-          />
+          <slot :name="`header-suffix-${tableAttribute.name}`" :item="tableAttribute" />
 
           <HeaderResizeLine
             v-if="
-              !tableAttribute.headerPreferences?.noResize &&
-              index !== tableAttributes.length - 1
+              !tableAttribute.headerPreferences?.noResize && index !== tableAttributes.length - 1
             "
             @resize="calculateHeaderWidths"
             @reset="resetHeaderWidths"
           />
         </th>
         <th v-if="actions" class="h-10 w-0 p-2.5 text-center">
-          <CommonLabel
-            class="font-normal text-stone-200! dark:text-neutral-500!"
-            size="small"
+          <CommonLabel class="font-normal text-stone-200! dark:text-neutral-500!" size="small"
             >{{ $t('Actions') }}
           </CommonLabel>
         </th>
       </tr>
     </thead>
+    <!-- :TODO tabindex should be -1 re-evaluate when we work on bulk action with checkbox  -->
+    <!-- SR should not be able to focus the row but each action node  -->
     <tbody
       class="relative"
       :inert="isSorting"
       :class="{
-        'opacity-50 before:absolute before:z-20 before:h-full before:w-full':
-          isSorting,
+        'opacity-50 before:absolute before:z-20 before:h-full before:w-full': isSorting,
       }"
     >
-      <template
-        v-for="(item, index) in localItems"
-        :key="`${index}-${item.id}`"
-      >
+      <template v-for="(item, index) in localItems" :key="`${index}-${item.id}`">
         <TableRowGroupBy
           v-if="groupByAttribute && showGroupByRow(item)"
           :item="item"
@@ -641,15 +542,12 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
         />
         <TableRow
           :item="item"
-          :is-row-selected="
-            !hasCheckboxColumn && item.id === props.selectedRowId
-          "
+          :is-row-selected="!hasCheckboxColumn && item.id === props.selectedRowId"
           tabindex="-1"
           :has-checkbox="hasCheckboxColumn"
           :no-auto-striping="!!groupByAttribute"
           :is-striped="
-            !!groupByAttribute &&
-            groupIndexByRowId(currentGroupByValueIndex, item.id) % 2 === 0
+            !!groupByAttribute && groupIndexByRowId(currentGroupByValueIndex, item.id) % 2 === 0
           "
           v-on="rowHandlers"
         >
@@ -668,9 +566,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
               :key="`${item.id}-${tableAttribute.name}`"
               class="h-10 p-2.5 text-sm"
               :class="[
-                cellAlignmentClasses[
-                  tableAttribute?.columnPreferences?.alignContent || 'left'
-                ],
+                cellAlignmentClasses[tableAttribute?.columnPreferences?.alignContent || 'left'],
                 {
                   'max-w-32 truncate text-black dark:text-white':
                     tableAttribute?.headerPreferences?.truncate,
@@ -687,15 +583,8 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                 <CommonLink
                   v-if="tableAttribute.columnPreferences?.link"
                   v-tooltip.truncate="getTooltipText(item, tableAttribute)"
-                  :link="
-                    tableAttribute.columnPreferences.link.getLink(
-                      item,
-                      tableAttribute,
-                    )
-                  "
-                  :open-in-new-tab="
-                    tableAttribute.columnPreferences.link.openInNewTab
-                  "
+                  :link="tableAttribute.columnPreferences.link.getLink(item, tableAttribute)"
+                  :open-in-new-tab="tableAttribute.columnPreferences.link.openInNewTab"
                   :internal="tableAttribute.columnPreferences.link.internal"
                   :class="[
                     {

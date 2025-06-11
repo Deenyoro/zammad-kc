@@ -20,25 +20,15 @@ const isChecklistFeatureEnabled = computed(() => !!config.value.checklist)
 </script>
 
 <template>
-  <div
-    v-if="ticket"
-    class="flex max-w-full items-center gap-2.5 text-nowrap *:h-7"
-  >
+  <div v-if="ticket" class="flex max-w-full items-center gap-2.5 text-nowrap *:h-7">
     <CommonTicketEscalationIndicator :escalation-at="ticket.escalationAt" />
 
-    <CommonTicketStateIndicator
-      :color-code="ticket.stateColorCode"
-      :label="ticket.state.name"
-    />
+    <CommonTicketStateIndicator :color-code="ticket.stateColorCode" :label="ticket.state.name" />
 
     <CommonTicketPriorityIndicator :priority="ticket.priority" />
 
     <CommonBadge variant="tertiary" class="uppercase">
-      <CommonDateTime
-        :date-time="ticket.createdAt"
-        absolute-format="date"
-        class="ms-1"
-      >
+      <CommonDateTime :date-time="ticket.createdAt" absolute-format="date" class="ms-1">
         <template #prefix>
           {{ $t('Created') }}
         </template>

@@ -63,10 +63,7 @@ const loadImages = async (files: FileList | File[] | null) => {
 
     if (file.size && file.size > 1024 * 1024 * MAX_IMAGE_SIZE_IN_MB) {
       props.context.node.setErrors(
-        i18n.t(
-          'File too big, max. %s MB allowed.',
-          MAX_IMAGE_SIZE_IN_MB.toString(),
-        ),
+        i18n.t('File too big, max. %s MB allowed.', MAX_IMAGE_SIZE_IN_MB.toString()),
       )
       return
     }

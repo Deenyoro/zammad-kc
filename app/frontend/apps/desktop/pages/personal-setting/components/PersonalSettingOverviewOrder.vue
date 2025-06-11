@@ -38,10 +38,7 @@ watch(localValue, (newValue) => {
 dragAndDrop({
   parent: dndParentElement as Ref<HTMLElement>,
   values: dndLocalValue,
-  plugins: [
-    startAndEndEventsDNDPlugin(undefined, dndEndCallback),
-    animations(),
-  ],
+  plugins: [startAndEndEventsDNDPlugin(undefined, dndEndCallback), animations()],
   dropZoneClass: 'opacity-0',
   touchDropZoneClass: 'opacity-0',
 })
@@ -73,12 +70,9 @@ dragAndDrop({
           <CommonLabel class="inline text-black dark:text-white">
             {{ $t(value.name) }}
           </CommonLabel>
-          <CommonBadge
-            v-if="value.organizationShared"
-            variant="info"
-            class="ms-1.5"
-            >{{ $t('Only when shared organization member') }}</CommonBadge
-          >
+          <CommonBadge v-if="value.organizationShared" variant="info" class="ms-1.5">{{
+            $t('Only when shared organization member')
+          }}</CommonBadge>
           <CommonBadge v-if="value.outOfOffice" variant="info" class="ms-1.5">{{
             $t('Only when out of office replacement')
           }}</CommonBadge>

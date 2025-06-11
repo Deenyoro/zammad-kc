@@ -2,10 +2,7 @@
 
 <script setup lang="ts">
 import CommonSimpleTable from '#desktop/components/CommonTable/CommonSimpleTable.vue'
-import type {
-  TableSimpleHeader,
-  TableItem,
-} from '#desktop/components/CommonTable/types'
+import type { TableSimpleHeader, TableItem } from '#desktop/components/CommonTable/types'
 
 interface Props {
   items: TableItem[]

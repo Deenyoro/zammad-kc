@@ -1,12 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import { getNode } from '@formkit/core'
-import {
-  getByLabelText,
-  getByRole,
-  waitFor,
-  within,
-} from '@testing-library/vue'
+import { getByLabelText, getByRole, waitFor, within } from '@testing-library/vue'
 import { expect } from 'vitest'
 
 import { visitView } from '#tests/support/components/visitView.ts'
@@ -141,9 +136,7 @@ describe('Ticket detail view', () => {
 
       const statusBadges = view.getAllByTestId('common-badge')
 
-      const hasOpenTicketStatus = statusBadges.some((badge) =>
-        within(badge).getByText('open'),
-      )
+      const hasOpenTicketStatus = statusBadges.some((badge) => within(badge).getByText('open'))
 
       expect(hasOpenTicketStatus).toBe(true)
 
@@ -151,9 +144,7 @@ describe('Ticket detail view', () => {
 
       await view.events.click(await ticketMetaSidebar.findByLabelText('State'))
 
-      expect(
-        await view.findByRole('listbox', { name: 'Select…' }),
-      ).toBeInTheDocument()
+      expect(await view.findByRole('listbox', { name: 'Select…' })).toBeInTheDocument()
 
       mockFormUpdaterQuery({
         formUpdater: {
@@ -207,9 +198,7 @@ describe('Ticket detail view', () => {
 
       await waitForNextTick()
 
-      const hasClosedTicketStatus = statusBadges.some((badge) =>
-        within(badge).getByText('closed'),
-      )
+      const hasClosedTicketStatus = statusBadges.some((badge) => within(badge).getByText('closed'))
       expect(hasClosedTicketStatus).toBe(true)
     })
   })
@@ -315,27 +304,19 @@ describe('Ticket detail view', () => {
 
       const view = await visitView('/tickets/1')
 
-      await view.events.click(
-        await view.findByRole('button', { name: 'Add internal note' }),
-      )
+      await view.events.click(await view.findByRole('button', { name: 'Add internal note' }))
 
       const complementary = await view.findByRole('complementary', {
         name: 'Reply',
       })
 
-      expect(
-        getByRole(complementary, 'heading', { level: 2, name: 'Reply' }),
-      ).toBeInTheDocument()
+      expect(getByRole(complementary, 'heading', { level: 2, name: 'Reply' })).toBeInTheDocument()
 
       await getNode('form-ticket-edit')?.settled
 
-      expect(getByLabelText(complementary, 'Visibility')).toHaveTextContent(
-        'Internal',
-      )
+      expect(getByLabelText(complementary, 'Visibility')).toHaveTextContent('Internal')
 
-      expect(view.getByTestId('article-reply-stripes-panel')).toHaveClass(
-        'bg-stripes',
-      )
+      expect(view.getByTestId('article-reply-stripes-panel')).toHaveClass('bg-stripes')
 
       const editor = view.getByRole('textbox', { name: 'Text' })
 
@@ -464,14 +445,9 @@ describe('Ticket detail view', () => {
 
       const articles = await view.findAllByRole('article')
 
-      await view.events.click(
-        await within(articles[0]).findByRole('button', { name: 'Reply' }),
-      )
+      await view.events.click(await within(articles[0]).findByRole('button', { name: 'Reply' }))
 
-      await view.events.type(
-        view.getByRole('textbox', { name: 'Text' }),
-        'Foo email',
-      )
+      await view.events.type(view.getByRole('textbox', { name: 'Text' }), 'Foo email')
 
       await getNode('form-ticket-edit')?.settled
 
@@ -613,16 +589,11 @@ describe('Ticket detail view', () => {
         autocompleteSearchRecipient: [],
       })
 
-      await view.events.type(
-        within(to).getByRole('searchbox'),
-        'nicole.braun@zammad.org',
-      )
+      await view.events.type(within(to).getByRole('searchbox'), 'nicole.braun@zammad.org')
 
       await waitForAutocompleteSearchRecipientQueryCalls()
 
-      await view.events.click(
-        view.getByRole('button', { name: 'add new email address' }),
-      )
+      await view.events.click(view.getByRole('button', { name: 'add new email address' }))
 
       await getNode('form-ticket-edit')?.settled
 
@@ -658,22 +629,13 @@ describe('Ticket detail view', () => {
 
       const view = await visitView('/tickets/1')
 
-      await view.events.click(
-        view.getByRole('button', { name: 'Add phone call' }),
-      )
+      await view.events.click(view.getByRole('button', { name: 'Add phone call' }))
 
-      expect(
-        await view.findByRole('heading', { level: 2, name: 'Reply' }),
-      ).toBeInTheDocument()
+      expect(await view.findByRole('heading', { level: 2, name: 'Reply' })).toBeInTheDocument()
 
-      await view.events.type(
-        view.getByRole('textbox', { name: 'Text' }),
-        'Foo note',
-      )
+      await view.events.type(view.getByRole('textbox', { name: 'Text' }), 'Foo note')
 
-      await view.events.click(
-        view.getByRole('button', { name: 'Discard your unsaved changes' }),
-      )
+      await view.events.click(view.getByRole('button', { name: 'Discard your unsaved changes' }))
 
       const confirmDialog = await view.findByRole('dialog')
 
@@ -684,9 +646,7 @@ describe('Ticket detail view', () => {
       )
 
       await waitFor(() =>
-        expect(
-          view.queryByRole('textbox', { name: 'Text' }),
-        ).not.toBeInTheDocument(),
+        expect(view.queryByRole('textbox', { name: 'Text' })).not.toBeInTheDocument(),
       )
     })
 
@@ -787,31 +747,19 @@ describe('Ticket detail view', () => {
       const view = await visitView('/tickets/1')
 
       // Discard changes inside the reply form
-      await view.events.click(
-        view.getByRole('button', { name: 'Add phone call' }),
-      )
+      await view.events.click(view.getByRole('button', { name: 'Add phone call' }))
 
-      expect(
-        await view.findByRole('heading', { level: 2, name: 'Reply' }),
-      ).toBeInTheDocument()
+      expect(await view.findByRole('heading', { level: 2, name: 'Reply' })).toBeInTheDocument()
 
       // Sets dirty set for a ticket attribute
       await view.events.click(view.getByLabelText('State'))
-      await view.events.click(
-        await view.findByRole('option', { name: 'closed' }),
-      )
+      await view.events.click(await view.findByRole('option', { name: 'closed' }))
 
-      await view.events.click(
-        view.getByRole('button', { name: 'Discard unsaved reply' }),
-      )
+      await view.events.click(view.getByRole('button', { name: 'Discard unsaved reply' }))
 
-      expect(
-        await view.findByRole('dialog', { name: 'Unsaved Changes' }),
-      ).toBeInTheDocument()
+      expect(await view.findByRole('dialog', { name: 'Unsaved Changes' })).toBeInTheDocument()
 
-      await view.events.click(
-        view.getByRole('button', { name: 'Discard Changes' }),
-      )
+      await view.events.click(view.getByRole('button', { name: 'Discard Changes' }))
 
       // Verify that ticket attributes state is not lost
       expect(view.getByLabelText('State')).toHaveTextContent('closed')
@@ -922,9 +870,7 @@ describe('Ticket detail view', () => {
       const view = await visitView('/tickets/1')
 
       const ticketMetaSidebar = within(view.getByLabelText('Content sidebar'))
-      expect(
-        await ticketMetaSidebar.findByLabelText('State'),
-      ).toBeInTheDocument()
+      expect(await ticketMetaSidebar.findByLabelText('State')).toBeInTheDocument()
 
       await getTicketUpdatesSubscriptionHandler().trigger({
         ticketUpdates: {
@@ -949,11 +895,7 @@ describe('Ticket detail view', () => {
       // Discard changes inside the reply form
       await view.events.click(view.getByRole('button', { name: 'Add reply' }))
 
-      await waitFor(() =>
-        expect(
-          view.queryByRole('textbox', { name: 'Text' }),
-        ).toBeInTheDocument(),
-      )
+      await waitFor(() => expect(view.queryByRole('textbox', { name: 'Text' })).toBeInTheDocument())
 
       await view.events.click(
         await view.findByRole('button', {
@@ -961,13 +903,9 @@ describe('Ticket detail view', () => {
         }),
       )
 
-      expect(
-        await view.findByRole('dialog', { name: 'Unsaved Changes' }),
-      ).toBeInTheDocument()
+      expect(await view.findByRole('dialog', { name: 'Unsaved Changes' })).toBeInTheDocument()
 
-      await view.events.click(
-        view.getByRole('button', { name: 'Discard Changes' }),
-      )
+      await view.events.click(view.getByRole('button', { name: 'Discard Changes' }))
 
       await waitFor(() => {
         expect(
@@ -979,17 +917,13 @@ describe('Ticket detail view', () => {
 
       await view.events.click(view.getByRole('button', { name: 'Add reply' }))
 
-      await view.events.click(
-        view.getByRole('button', { name: 'Discard unsaved reply' }),
-      )
+      await view.events.click(view.getByRole('button', { name: 'Discard unsaved reply' }))
 
       const dialog = await view.findByRole('dialog', {
         name: 'Unsaved Changes',
       })
 
-      await view.events.click(
-        within(dialog).getByRole('button', { name: 'Discard Changes' }),
-      )
+      await view.events.click(within(dialog).getByRole('button', { name: 'Discard Changes' }))
 
       await waitFor(() => {
         expect(
@@ -1105,9 +1039,7 @@ describe('Ticket detail view', () => {
 
       const articles = await view.findAllByRole('article')
 
-      await view.events.click(
-        await within(articles[0]).findByRole('button', { name: 'Reply' }),
-      )
+      await view.events.click(await within(articles[0]).findByRole('button', { name: 'Reply' }))
 
       await view.events.type(
         view.getByRole('textbox', { name: 'Text' }),
@@ -1125,9 +1057,7 @@ describe('Ticket detail view', () => {
 
       const dialogView = within(dialog)
       expect(
-        dialogView.getByText(
-          'Did you plan to include attachments with this message?',
-        ),
+        dialogView.getByText('Did you plan to include attachments with this message?'),
       ).toBeInTheDocument()
     })
   })
@@ -1217,9 +1147,7 @@ describe('Ticket detail view', () => {
 
     await view.events.click(await ticketMetaSidebar.findByLabelText('State'))
 
-    expect(
-      await view.findByRole('listbox', { name: 'Select…' }),
-    ).toBeInTheDocument()
+    expect(await view.findByRole('listbox', { name: 'Select…' })).toBeInTheDocument()
 
     await view.events.click(view.getByRole('option', { name: 'closed' }))
 
@@ -1240,9 +1168,7 @@ describe('Ticket detail view', () => {
     const attributesContainer = view.getByTestId('ticket-attributes')
 
     await waitFor(() =>
-      expect(
-        within(attributesContainer).getByLabelText('Group'),
-      ).toHaveTextContent('Users'),
+      expect(within(attributesContainer).getByLabelText('Group')).toHaveTextContent('Users'),
     )
   })
 })

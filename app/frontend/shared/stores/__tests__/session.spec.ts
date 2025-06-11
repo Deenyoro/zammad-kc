@@ -2,10 +2,7 @@
 
 import { createPinia, setActivePinia } from 'pinia'
 
-import {
-  mockGraphQLApi,
-  mockGraphQLSubscription,
-} from '#tests/support/mock-graphql-api.ts'
+import { mockGraphQLApi, mockGraphQLSubscription } from '#tests/support/mock-graphql-api.ts'
 
 import { CurrentUserDocument } from '#shared/graphql/queries/currentUser.api.ts'
 import { CurrentUserUpdatesDocument } from '#shared/graphql/subscriptions/currentUserUpdates.api.ts'
@@ -138,9 +135,7 @@ describe('Session Store', () => {
     mockGraphQLApi(CurrentUserDocument).willResolve({
       currentUser: userData,
     })
-    const userUpdateSubscription = mockGraphQLSubscription(
-      CurrentUserUpdatesDocument,
-    )
+    const userUpdateSubscription = mockGraphQLSubscription(CurrentUserUpdatesDocument)
 
     await session.getCurrentUser()
 

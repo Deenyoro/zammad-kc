@@ -36,9 +36,7 @@ describe('LayoutSidebar', () => {
     it('does not show CollapseButton when collapsible is false', async () => {
       await view.rerender({ collapsible: false })
 
-      expect(
-        view.queryByLabelText('collapse this item'),
-      ).not.toBeInTheDocument()
+      expect(view.queryByLabelText('collapse this item')).not.toBeInTheDocument()
 
       expect(view.queryByLabelText('expand this item')).not.toBeInTheDocument()
     })

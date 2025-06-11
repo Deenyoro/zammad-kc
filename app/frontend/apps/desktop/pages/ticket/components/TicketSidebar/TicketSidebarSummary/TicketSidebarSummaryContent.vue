@@ -3,10 +3,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import type {
-  AsyncExecutionError,
-  TicketAiAssistanceSummary,
-} from '#shared/graphql/types.ts'
+import type { AsyncExecutionError, TicketAiAssistanceSummary } from '#shared/graphql/types.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
@@ -59,11 +56,7 @@ const noSummaryPossible = computed(() => {
         <CommonAlert class="self-stretch" variant="danger">
           <div class="flex flex-col gap-1.5">
             <CommonLabel class="text-red-500 dark:text-red-500">
-              {{
-                $t(
-                  'No AI provider is currently set up. Please contact your administrator.',
-                )
-              }}
+              {{ $t('No AI provider is currently set up. Please contact your administrator.') }}
             </CommonLabel>
           </div>
         </CommonAlert>
@@ -79,19 +72,14 @@ const noSummaryPossible = computed(() => {
                   )
                 }}
               </CommonLabel>
-              <CommonLabel
-                v-if="showErrorDetails"
-                class="text-red-500 dark:text-red-500"
-              >
+              <CommonLabel v-if="showErrorDetails" class="text-red-500 dark:text-red-500">
                 {{ errorMessage }}
               </CommonLabel>
             </div>
           </CommonAlert>
-          <CommonButton
-            variant="tertiary"
-            @click="$emit('retry-get-summary')"
-            >{{ $t('Retry') }}</CommonButton
-          >
+          <CommonButton variant="tertiary" @click="$emit('retry-get-summary')">{{
+            $t('Retry')
+          }}</CommonButton>
         </div>
       </template>
       <template v-else-if="noSummaryPossible">
@@ -107,11 +95,7 @@ const noSummaryPossible = computed(() => {
               :summary="summary[item.key] as string[]"
               :label="item.label"
             />
-            <TicketSummaryItem
-              v-else
-              :summary="summary[item.key]!"
-              :label="item.label"
-            />
+            <TicketSummaryItem v-else :summary="summary[item.key]!" :label="item.label" />
           </article>
         </template>
 
@@ -124,19 +108,10 @@ const noSummaryPossible = computed(() => {
       </template>
 
       <template v-else>
-        <CommonLabel
-          size="small"
-          class="text-stone-200! dark:text-neutral-500!"
-          tag="p"
-          >{{
-            $t('Zammad Smart Assist is generating the summary for you…')
-          }}</CommonLabel
-        >
-        <SummarySkeleton
-          v-for="n in 4"
-          :key="n"
-          :style="{ 'animation-delay': `${n * 0.1}s` }"
-        />
+        <CommonLabel size="small" class="text-stone-200! dark:text-neutral-500!" tag="p">{{
+          $t('Zammad Smart Assist is generating the summary for you…')
+        }}</CommonLabel>
+        <SummarySkeleton v-for="n in 4" :key="n" :style="{ 'animation-delay': `${n * 0.1}s` }" />
       </template>
     </section>
   </TicketSidebarContent>

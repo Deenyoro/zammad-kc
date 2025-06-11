@@ -21,10 +21,7 @@ import { useChannelEmailValidateConfigurationInboundMutation } from '../graphql/
 import { useChannelEmailValidateConfigurationOutboundMutation } from '../graphql/mutations/channelEmailValidateConfigurationOutbound.api.ts'
 
 import type { EmailAccountData } from '../types/email-account.ts'
-import type {
-  EmailChannelSteps,
-  EmailChannelForms,
-} from '../types/email-channel.ts'
+import type { EmailChannelSteps, EmailChannelForms } from '../types/email-channel.ts'
 import type {
   UpdateMetaInformationInboundFunction,
   EmailInboundMetaInformation,
@@ -95,9 +92,7 @@ export const useEmailChannelConfiguration = (
     const validateConfigurationRoundtripMutation = new MutationHandler(
       useChannelEmailValidateConfigurationRoundtripMutation(),
     )
-    const addEmailChannelMutation = new MutationHandler(
-      useChannelEmailAddMutation(),
-    )
+    const addEmailChannelMutation = new MutationHandler(useChannelEmailAddMutation())
 
     // Transform port field to real number for usage in the mutation.
     inboundConfiguration.port = Number(inboundConfiguration.port)
@@ -114,17 +109,13 @@ export const useEmailChannelConfiguration = (
     }
 
     try {
-      const roundTripResult = await validateConfigurationRoundtripMutation.send(
-        {
-          inboundConfiguration,
-          outboundConfiguration,
-          emailAddress: account.email,
-        },
-      )
+      const roundTripResult = await validateConfigurationRoundtripMutation.send({
+        inboundConfiguration,
+        outboundConfiguration,
+        emailAddress: account.email,
+      })
 
-      if (
-        roundTripResult?.channelEmailValidateConfigurationRoundtrip?.success
-      ) {
+      if (roundTripResult?.channelEmailValidateConfigurationRoundtrip?.success) {
         try {
           const addChannelResult = await addEmailChannelMutation.send({
             input: {
@@ -144,15 +135,8 @@ export const useEmailChannelConfiguration = (
         }
       }
     } catch (errors) {
-      if (
-        errors instanceof UserError &&
-        Object.keys(errors.getFieldErrorList()).length > 0
-      ) {
-        if (
-          Object.keys(errors.getFieldErrorList()).some((key) =>
-            key.startsWith('outbound'),
-          )
-        ) {
+      if (errors instanceof UserError && Object.keys(errors.getFieldErrorList()).length > 0) {
+        if (Object.keys(errors.getFieldErrorList()).some((key) => key.startsWith('outbound'))) {
           setActiveStep('outbound')
           emailChannelForms.emailOutbound.setErrors(errors as MutationSendError)
         } else {
@@ -192,32 +176,26 @@ export const useEmailChannelConfiguration = (
           result?.channelEmailGuessConfiguration?.result.inboundConfiguration &&
           result?.channelEmailGuessConfiguration?.result.outboundConfiguration
         ) {
-          const inboundConfiguration = result.channelEmailGuessConfiguration
-            .result.inboundConfiguration as SetOptional<
+          const inboundConfiguration = result.channelEmailGuessConfiguration.result
+            .inboundConfiguration as SetOptional<
             SetNonNullable<Required<ChannelEmailInboundConfiguration>>,
             '__typename'
           >
           delete inboundConfiguration.__typename
 
-          const outboundConfiguration = result.channelEmailGuessConfiguration
-            .result.outboundConfiguration as SetOptional<
+          const outboundConfiguration = result.channelEmailGuessConfiguration.result
+            .outboundConfiguration as SetOptional<
             SetNonNullable<Required<ChannelEmailOutboundConfiguration>>,
             '__typename'
           >
           delete outboundConfiguration.__typename
 
           emailChannelForms.emailInbound.updateFieldValues(inboundConfiguration)
-          emailChannelForms.emailOutbound.updateFieldValues(
-            outboundConfiguration,
-          )
+          emailChannelForms.emailOutbound.updateFieldValues(outboundConfiguration)
 
-          const mailboxStats =
-            result?.channelEmailGuessConfiguration?.result.mailboxStats
+          const mailboxStats = result?.channelEmailGuessConfiguration?.result.mailboxStats
 
-          if (
-            mailboxStats?.contentMessages &&
-            mailboxStats?.contentMessages > 0
-          ) {
+          if (mailboxStats?.contentMessages && mailboxStats?.contentMessages > 0) {
             updateMetaInformationInbound(mailboxStats, 'roundtrip')
             setActiveStep('inbound-messages')
             return
@@ -278,13 +256,9 @@ export const useEmailChannelConfiguration = (
             password: data.password,
           })
 
-          const mailboxStats =
-            result?.channelEmailValidateConfigurationInbound?.mailboxStats
+          const mailboxStats = result?.channelEmailValidateConfigurationInbound?.mailboxStats
 
-          if (
-            mailboxStats?.contentMessages &&
-            mailboxStats?.contentMessages > 0
-          ) {
+          if (mailboxStats?.contentMessages && mailboxStats?.contentMessages > 0) {
             updateMetaInformationInbound(mailboxStats, 'outbound')
             setActiveStep('inbound-messages')
             return
@@ -298,14 +272,11 @@ export const useEmailChannelConfiguration = (
       })
   }
 
-  const importEmailInboundMessages = async (
-    data: FormSubmitData<EmailInboundMessagesData>,
-  ) => {
+  const importEmailInboundMessages = async (data: FormSubmitData<EmailInboundMessagesData>) => {
     if (metaInformationInbound.value && data.archive) {
       metaInformationInbound.value.archive = true
       metaInformationInbound.value.archiveBefore = data.archive_before as string
-      metaInformationInbound.value.archiveStateId =
-        data.archive_state_id as number
+      metaInformationInbound.value.archiveStateId = data.archive_state_id as number
     }
 
     if (metaInformationInbound.value?.nextAction === 'outbound') {
@@ -338,8 +309,7 @@ export const useEmailChannelConfiguration = (
           ...data,
           port: Number(data.port),
         },
-        emailAddress: emailChannelForms.emailAccount.values.value
-          ?.email as string,
+        emailAddress: emailChannelForms.emailAccount.values.value?.email as string,
       })
       .then(async (result) => {
         if (result?.channelEmailValidateConfigurationOutbound?.success) {

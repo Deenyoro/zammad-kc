@@ -8,12 +8,8 @@ import log from '#shared/utils/log.ts'
 
 import { activityMessageBuilder } from './activityMessageBuilder/index.ts'
 
-export const useActivityMessage = (
-  activity: Readonly<Ref<OnlineNotification>>,
-) => {
-  const builder = computed(
-    () => activityMessageBuilder[activity.value.objectName],
-  )
+export const useActivityMessage = (activity: Readonly<Ref<OnlineNotification>>) => {
+  const builder = computed(() => activityMessageBuilder[activity.value.objectName])
   if (!builder.value) {
     log.error(`Object missing ${activity.value.objectName}.`)
   }

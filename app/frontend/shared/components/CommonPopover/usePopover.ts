@@ -5,11 +5,8 @@ import { computed, shallowRef } from 'vue'
 import type { CommonPopoverInstance } from './types.ts'
 import type { ShallowRef, Ref } from 'vue'
 
-export const usePopover = (
-  popoverRef?: Ref<CommonPopoverInstance | undefined>,
-) => {
-  const popover: ShallowRef<CommonPopoverInstance | undefined> =
-    popoverRef || shallowRef()
+export const usePopover = (popoverRef?: Ref<CommonPopoverInstance | undefined>) => {
+  const popover: ShallowRef<CommonPopoverInstance | undefined> = popoverRef || shallowRef()
   const popoverTarget: ShallowRef<HTMLDivElement | undefined> = shallowRef()
 
   const isOpen = computed(() => popover.value?.isOpen)

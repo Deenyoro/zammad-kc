@@ -45,9 +45,7 @@ describe('Ticket detail view ticket merge', () => {
 
     const sidebar = view.getByLabelText('Content sidebar')
 
-    await view.events.click(
-      within(sidebar).getByRole('button', { name: 'Action menu button' }),
-    )
+    await view.events.click(within(sidebar).getByRole('button', { name: 'Action menu button' }))
 
     await view.events.click(await view.findByRole('button', { name: 'Merge' }))
 

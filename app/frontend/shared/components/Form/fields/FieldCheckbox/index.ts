@@ -54,11 +54,7 @@ const handleAlternativeBorder = (node: FormKitNode) => {
 
 initializeFieldDefinition(checkboxDefinition, {
   props: ['alternativeBorder'],
-  features: [
-    addCheckedDataAttribute,
-    handleAlternativeBorder,
-    formUpdaterTrigger(),
-  ],
+  features: [addCheckedDataAttribute, handleAlternativeBorder, formUpdaterTrigger()],
 })
 
 export default {

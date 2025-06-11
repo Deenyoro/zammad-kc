@@ -22,10 +22,8 @@ interface TextDirectionOptions {
 }
 
 const RTL_REGEX =
-  // eslint-disable-next-line no-misleading-character-class
   /^[^\u0041-\u007A\u00C0-\u02B8\u0300-\u0590\u0800-\u1FFF\u200E\u2C00-\uFB1C\uFE00-\uFE6F\uFEFD-\uFFFF]*[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/
 const LTR_REGEX =
-  // eslint-disable-next-line no-misleading-character-class
   /^[^\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]*[\u0041-\u007A\u00C0-\u02B8\u0300-\u0590\u0800-\u1FFF\u200E\u2C00-\uFB1C\uFE00-\uFE6F\uFEFD-\uFFFF]/
 
 const getTextDirection = (text: string): Direction | null => {
@@ -46,11 +44,7 @@ const TextDirectionPlugin = ({ types }: { types: string[] }) =>
       let modified = false
 
       newState.doc.descendants((node, pos) => {
-        if (
-          types.includes(node.type.name) &&
-          !node.attrs.dir &&
-          node.textContent
-        ) {
+        if (types.includes(node.type.name) && !node.attrs.dir && node.textContent) {
           tr.setNodeAttribute(pos, 'dir', getTextDirection(node.textContent))
           modified = true
         }
@@ -74,12 +68,9 @@ export default Extension.create<TextDirectionOptions>({
         attributes: {
           dir: {
             default: null,
-            parseHTML: (element) =>
-              element.dir || this.options.defaultDirection,
+            parseHTML: (element) => element.dir || this.options.defaultDirection,
             renderHTML: (attributes) =>
-              attributes.dir === this.options.defaultDirection
-                ? {}
-                : { dir: attributes.dir },
+              attributes.dir === this.options.defaultDirection ? {} : { dir: attributes.dir },
           },
         },
       },

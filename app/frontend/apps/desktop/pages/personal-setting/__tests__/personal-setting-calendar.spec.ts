@@ -55,22 +55,14 @@ describe('personal calendar subscription settings', () => {
     )
 
     expect(
-      view.getByLabelText(
-        'Add alarm to pending reminder and escalated tickets',
-      ),
+      view.getByLabelText('Add alarm to pending reminder and escalated tickets'),
     ).toBeInTheDocument()
 
-    expect(
-      view.getByRole('tab', { name: 'Escalated Tickets' }),
-    ).toBeInTheDocument()
+    expect(view.getByRole('tab', { name: 'Escalated Tickets' })).toBeInTheDocument()
 
-    expect(
-      view.getByRole('tab', { name: 'New & Open Tickets' }),
-    ).toBeInTheDocument()
+    expect(view.getByRole('tab', { name: 'New & Open Tickets' })).toBeInTheDocument()
 
-    expect(
-      view.getByRole('tab', { name: 'Pending Tickets' }),
-    ).toBeInTheDocument()
+    expect(view.getByRole('tab', { name: 'Pending Tickets' })).toBeInTheDocument()
   })
 
   it('switches tab panels correctly', async () => {
@@ -127,9 +119,7 @@ describe('personal calendar subscription settings', () => {
     })
 
     await view.events.click(
-      view.getByLabelText(
-        'Add alarm to pending reminder and escalated tickets',
-      ),
+      view.getByLabelText('Add alarm to pending reminder and escalated tickets'),
     )
 
     const calls = await waitForUserCurrentCalendarSubscriptionUpdateCalls()
@@ -167,9 +157,7 @@ describe('personal calendar subscription settings', () => {
   it('updates calendar subscription when different tab is changed', async () => {
     const view = await visitView('personal-setting/calendar-subscriptions')
 
-    await view.events.click(
-      view.getByRole('tab', { name: 'New & Open Tickets' }),
-    )
+    await view.events.click(view.getByRole('tab', { name: 'New & Open Tickets' }))
 
     mockUserCurrentCalendarSubscriptionUpdate({
       userCurrentCalendarSubscriptionUpdate: {
@@ -239,11 +227,7 @@ describe('personal calendar subscription settings', () => {
       },
     })
 
-    expect(
-      view.getByLabelText(
-        'Add alarm to pending reminder and escalated tickets',
-      ),
-    ).toBeChecked()
+    expect(view.getByLabelText('Add alarm to pending reminder and escalated tickets')).toBeChecked()
 
     expect(view.getAllByLabelText('My tickets')[0]).not.toBeChecked()
     expect(view.getAllByLabelText('Not assigned')[0]).toBeChecked()

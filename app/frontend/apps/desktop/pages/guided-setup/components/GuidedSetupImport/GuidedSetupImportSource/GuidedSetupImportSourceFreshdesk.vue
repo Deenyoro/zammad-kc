@@ -74,9 +74,7 @@ const formSchema = [
             ],
           },
         },
-        help: __(
-          'Enter your Freshdesk API token gained from your account profile settings.',
-        ),
+        help: __('Enter your Freshdesk API token gained from your account profile settings.'),
       },
     ],
   },

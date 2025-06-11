@@ -89,29 +89,21 @@ export const visitViewAndMockPasswordConfirmation = async (
         break
       case 'setup':
       default:
-        await view.events.click(
-          view.getByRole('button', { name: 'Set up authenticator app' }),
-        )
+        await view.events.click(view.getByRole('button', { name: 'Set up authenticator app' }))
     }
   }
 
   if (configuration?.type === 'securityKeys') {
     switch (configuration?.action) {
       case 'edit':
-        await view.events.click(
-          view.getByRole('button', { name: 'Edit security keys' }),
-        )
+        await view.events.click(view.getByRole('button', { name: 'Edit security keys' }))
         break
       case 'remove':
-        await view.events.click(
-          view.getByRole('button', { name: 'Remove security keys' }),
-        )
+        await view.events.click(view.getByRole('button', { name: 'Remove security keys' }))
         break
       case 'setup':
       default:
-        await view.events.click(
-          view.getByRole('button', { name: 'Set up security keys' }),
-        )
+        await view.events.click(view.getByRole('button', { name: 'Set up security keys' }))
     }
   }
 
@@ -123,10 +115,7 @@ export const visitViewAndMockPasswordConfirmation = async (
 
   const passwordInput = flyoutContent.getByLabelText('Current password')
 
-  await view.events.type(
-    passwordInput,
-    faker.number.binary({ min: 10000, max: 99999 }).toString(),
-  )
+  await view.events.type(passwordInput, faker.number.binary({ min: 10000, max: 99999 }).toString())
 
   mockUserCurrentPasswordCheckMutation({
     userCurrentPasswordCheck: {

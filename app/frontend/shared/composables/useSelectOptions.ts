@@ -3,10 +3,7 @@
 import { cloneDeep, keyBy } from 'lodash-es'
 import { computed, ref, type Ref, watch } from 'vue'
 
-import type {
-  SelectOption,
-  SelectValue,
-} from '#shared/components/CommonSelect/types.ts'
+import type { SelectOption, SelectValue } from '#shared/components/CommonSelect/types.ts'
 import useValue from '#shared/components/Form/composables/useValue.ts'
 import type { AutoCompleteOption } from '#shared/components/Form/fields/FieldAutocomplete/types'
 import type { SelectOptionSorting } from '#shared/components/Form/fields/FieldSelect/types.ts'
@@ -16,9 +13,7 @@ import { i18n } from '#shared/i18n.ts'
 
 type AllowedSelectValue = SelectValue | Record<string, unknown>
 
-const useSelectOptions = <
-  T extends SelectOption[] | FlatSelectOption[] | AutoCompleteOption[],
->(
+const useSelectOptions = <T extends SelectOption[] | FlatSelectOption[] | AutoCompleteOption[]>(
   options: Ref<T>,
   context: Ref<
     FormFieldContext<{
@@ -33,20 +28,14 @@ const useSelectOptions = <
 ) => {
   const dialog = ref<HTMLElement>()
 
-  const { currentValue, hasValue, valueContainer, clearValue } =
-    useValue(context)
+  const { currentValue, hasValue, valueContainer, clearValue } = useValue(context)
 
   const appendedOptions = ref<T>([] as unknown as T)
 
-  const availableOptions = computed(() => [
-    ...(options.value || []),
-    ...appendedOptions.value,
-  ])
+  const availableOptions = computed(() => [...(options.value || []), ...appendedOptions.value])
 
   const hasStatusProperty = computed(() =>
-    availableOptions.value?.some(
-      (option) => (option as SelectOption | FlatSelectOption).status,
-    ),
+    availableOptions.value?.some((option) => (option as SelectOption | FlatSelectOption).status),
   )
 
   const translatedOptions = computed(() => {
@@ -74,9 +63,7 @@ const useSelectOptions = <
     })
   })
 
-  const optionValueLookup = computed(() =>
-    keyBy(translatedOptions.value, 'value'),
-  )
+  const optionValueLookup = computed(() => keyBy(translatedOptions.value, 'value'))
 
   const sortedOptions = computed(() => {
     const { sorting } = context.value
@@ -119,15 +106,11 @@ const useSelectOptions = <
   }
 
   const getSelectedOptionStatus = (selectedValue: AllowedSelectValue) => {
-    const option = getSelectedOption(selectedValue) as
-      | SelectOption
-      | FlatSelectOption
+    const option = getSelectedOption(selectedValue) as SelectOption | FlatSelectOption
     return option?.status
   }
 
-  const getSelectedOptionParents = (
-    selectedValue: string | number,
-  ): SelectValue[] =>
+  const getSelectedOptionParents = (selectedValue: string | number): SelectValue[] =>
     (optionValueLookup.value[selectedValue] &&
       (optionValueLookup.value[selectedValue] as FlatSelectOption).parents) ||
     []
@@ -136,13 +119,10 @@ const useSelectOptions = <
     getSelectedOptionParents(selectedValue)
       .map((parentValue) => `${getSelectedOptionLabel(parentValue)} \u203A `)
       .join('') +
-    (getSelectedOptionLabel(selectedValue) ||
-      i18n.t('%s (unknown)', selectedValue.toString()))
+    (getSelectedOptionLabel(selectedValue) || i18n.t('%s (unknown)', selectedValue.toString()))
 
   const valueBuilder = (option: SelectOption): AllowedSelectValue => {
-    return context.value.complexValue
-      ? { value: option.value, label: option.label }
-      : option.value
+    return context.value.complexValue ? { value: option.value, label: option.label } : option.value
   }
 
   const selectOption = (option: T extends Array<infer V> ? V : never) => {
@@ -174,33 +154,27 @@ const useSelectOptions = <
 
     if (optionsOnly)
       return targetElements.filter(
-        (targetElement) =>
-          targetElement.attributes.getNamedItem('role')?.value === 'option',
+        (targetElement) => targetElement.attributes.getNamedItem('role')?.value === 'option',
       )
 
     return targetElements
   }
 
-  const handleValuesForNonExistingOrDisabledOptions = (
-    rejectNonExistentValues?: boolean,
-  ) => {
+  const handleValuesForNonExistingOrDisabledOptions = (rejectNonExistentValues?: boolean) => {
     if (!hasValue.value || context.value.pendingValueUpdate) return
 
     const localRejectNonExistentValues = rejectNonExistentValues ?? true
 
     if (context.value.multiple) {
-      const availableValues = currentValue.value.filter(
-        (selectValue: string | number) => {
-          const selectValueOption = optionValueLookup.value[selectValue]
-          return (
-            (localRejectNonExistentValues &&
-              typeof selectValueOption !== 'undefined' &&
-              selectValueOption?.disabled !== true) ||
-            (!localRejectNonExistentValues &&
-              selectValueOption?.disabled !== true)
-          )
-        },
-      ) as SelectValue[]
+      const availableValues = currentValue.value.filter((selectValue: string | number) => {
+        const selectValueOption = optionValueLookup.value[selectValue]
+        return (
+          (localRejectNonExistentValues &&
+            typeof selectValueOption !== 'undefined' &&
+            selectValueOption?.disabled !== true) ||
+          (!localRejectNonExistentValues && selectValueOption?.disabled !== true)
+        )
+      }) as SelectValue[]
 
       if (availableValues.length !== currentValue.value.length) {
         context.value.node.input(availableValues, false)
@@ -211,8 +185,7 @@ const useSelectOptions = <
 
     const currentValueOption = optionValueLookup.value[currentValue.value]
     if (
-      (localRejectNonExistentValues &&
-        typeof currentValueOption === 'undefined') ||
+      (localRejectNonExistentValues && typeof currentValueOption === 'undefined') ||
       currentValueOption?.disabled
     )
       clearValue(false)
@@ -260,19 +233,12 @@ const useSelectOptions = <
     //   - non-existent values are not supposed to be rejected
     //   - we have a current value
     //   - we have a list of historical options
-    if (
-      !context.value.rejectNonExistentValues &&
-      hasValue.value &&
-      historicalOptions
-    ) {
+    if (!context.value.rejectNonExistentValues && hasValue.value && historicalOptions) {
       appendedOptions.value = valueContainer.value.reduce(
         (accumulator: SelectOption[], value: SelectValue) => {
           const label = historicalOptions[value.toString()]
           // Make sure the options are not duplicated!
-          if (
-            label &&
-            !options.value.some((option) => option.value === value)
-          ) {
+          if (label && !options.value.some((option) => option.value === value)) {
             accumulator.push({ value, label })
           }
           // TODO: Workaround, because currently the "nulloption" exists also for multiselect fields (#4513).
@@ -293,9 +259,7 @@ const useSelectOptions = <
 
     // Reject non-existent or disabled option values during the initialization phase (note that
     //  the non-existent values behavior is controlled by a dedicated flag).
-    handleValuesForNonExistingOrDisabledOptions(
-      context.value.rejectNonExistentValues,
-    )
+    handleValuesForNonExistingOrDisabledOptions(context.value.rejectNonExistentValues)
 
     // Set up a watcher that clears a missing option value or disabled options on subsequent mutations
     //  of the options prop (in this case, the dedicated "rejectNonExistentValues" flag is ignored).

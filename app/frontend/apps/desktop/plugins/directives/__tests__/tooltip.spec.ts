@@ -17,9 +17,7 @@ describe('TooltipDirective', () => {
 
       await wrapper.events.hover(wrapper.getByText('Foo Test World'))
 
-      await waitFor(() =>
-        expect(wrapper.queryByText('Hello, Tooltip')).toBeInTheDocument(),
-      )
+      await waitFor(() => expect(wrapper.queryByText('Hello, Tooltip')).toBeInTheDocument())
 
       await wrapper.events.unhover(wrapper.getByText('Foo Test World'))
 
@@ -34,9 +32,7 @@ describe('TooltipDirective', () => {
         <div v-tooltip="'Hello, Tooltip'">Foo Test World</div>
       `,
       })
-      await waitFor(() =>
-        expect(wrapper.queryByLabelText('Hello, Tooltip')).toBeInTheDocument(),
-      )
+      await waitFor(() => expect(wrapper.queryByLabelText('Hello, Tooltip')).toBeInTheDocument())
     })
 
     it('should hide tooltip on scroll', async () => {
@@ -48,24 +44,18 @@ describe('TooltipDirective', () => {
 
       await wrapper.events.hover(wrapper.getByText('Foo Test World'))
 
-      await waitFor(() =>
-        expect(wrapper.queryByText('Hello, Tooltip')).toBeInTheDocument(),
-      )
+      await waitFor(() => expect(wrapper.queryByText('Hello, Tooltip')).toBeInTheDocument())
 
       window.dispatchEvent(new Event('scroll'))
 
-      await waitFor(() =>
-        expect(wrapper.queryByText('Hello, Tooltip')).not.toBeInTheDocument(),
-      )
+      await waitFor(() => expect(wrapper.queryByText('Hello, Tooltip')).not.toBeInTheDocument())
     })
   })
 
   describe('on touch device', () => {
     beforeEach(() => {
       vi.mock('#shared/composables/useTouchDevice.ts', () => ({
-        useTouchDevice: vi
-          .fn()
-          .mockReturnValue({ isTouchDevice: { value: true } }),
+        useTouchDevice: vi.fn().mockReturnValue({ isTouchDevice: { value: true } }),
       }))
     })
 
@@ -85,9 +75,7 @@ describe('TooltipDirective', () => {
       await fireEvent.touchStart(wrapper.getByText('Foo Test World'))
       await fireEvent.touchEnd(wrapper.getByText('Foo Test World'))
 
-      await waitFor(() =>
-        expect(wrapper.queryByText('Hello, Tooltip')).not.toBeInTheDocument(),
-      )
+      await waitFor(() => expect(wrapper.queryByText('Hello, Tooltip')).not.toBeInTheDocument())
     })
 
     it('updated tooltip locale', async () => {

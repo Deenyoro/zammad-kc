@@ -17,9 +17,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const getTicketsLink = (stateIds: number[]) => {
-  const states = stateIds
-    .map((stateId) => `state.state_type_id: ${stateId}`)
-    .join(' OR ')
+  const states = stateIds.map((stateId) => `state.state_type_id: ${stateId}`).join(' OR ')
   return replaceTags(`/search/ticket?search=(${states}) AND #{query}`, {
     query: props.ticketsLinkQuery,
   })

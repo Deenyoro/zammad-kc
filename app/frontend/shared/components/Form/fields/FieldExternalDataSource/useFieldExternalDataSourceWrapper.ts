@@ -22,8 +22,7 @@ export const useFieldExternalDataSourceWrapper = (
     const templateRenderContext: Record<string, JsonValue> = {}
 
     // Add the main entity object id from the current object.
-    const entityObject = context.value.node.at('$root')?.context
-      ?.initialEntityObject as ObjectLike
+    const entityObject = context.value.node.at('$root')?.context?.initialEntityObject as ObjectLike
     if (entityObject) {
       templateRenderContext[`${object.toLowerCase()}Id`] = entityObject.id
     }
@@ -55,7 +54,6 @@ export const useFieldExternalDataSourceWrapper = (
       return {}
     },
 
-    initialOptionBuilder: (_: ObjectLike, value: AutocompleteSelectValue) =>
-      value,
+    initialOptionBuilder: (_: ObjectLike, value: AutocompleteSelectValue) => value,
   }
 }

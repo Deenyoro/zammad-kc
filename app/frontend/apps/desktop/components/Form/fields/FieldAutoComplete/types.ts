@@ -16,9 +16,6 @@ export interface AutoCompleteProps extends DefaultAutoCompleteProps {
 
 export type AutoCompleteOptionValueDictionary = Dictionary<AutoCompleteOption>
 
-export type SelectOptionFunction = (
-  option: AutoCompleteOption,
-  focus?: boolean,
-) => void
+export type SelectOptionFunction = (option: AutoCompleteOption, focus?: boolean) => void
 
 export type ClearFilterInputFunction = () => void

@@ -34,11 +34,7 @@ const errorImage = computed(() => {
   <CommonLabel class="mx-auto max-w-prose text-center" tag="p">
     {{ $t(options?.message, ...(options?.messagePlaceholder || [])) }}
   </CommonLabel>
-  <CommonLabel
-    v-if="options?.route"
-    class="mx-auto max-w-prose text-center"
-    tag="p"
-  >
+  <CommonLabel v-if="options?.route" class="mx-auto max-w-prose text-center" tag="p">
     {{ options.route }}
   </CommonLabel>
   <CommonLink v-if="!authenticated" link="/login" size="medium">

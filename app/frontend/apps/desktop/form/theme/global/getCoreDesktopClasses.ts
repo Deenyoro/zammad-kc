@@ -2,10 +2,7 @@
 
 import { extendClasses } from '#shared/form/plugins/utils.ts'
 import type { Classes } from '#shared/form/plugins/utils.ts'
-import type {
-  FormThemeClasses,
-  FormThemeExtension,
-} from '#shared/types/form.ts'
+import type { FormThemeClasses, FormThemeExtension } from '#shared/types/form.ts'
 
 const innerInvalidAndErrorClasses = () => {
   const innerInvalidClasses =
@@ -31,13 +28,10 @@ const selectInputClasses = (classes: Classes = {}) =>
       'formkit-invalid:outline formkit-invalid:outline-1 formkit-invalid:outline-offset-1 formkit-invalid:outline-red-500 formkit-errors:outline formkit-errors:outline-1 formkit-errors:outline-offset-1 formkit-errors:outline-red-500 w-full',
   })
 
-export const getCoreDesktopClasses: FormThemeExtension = (
-  classes: FormThemeClasses,
-) => {
+export const getCoreDesktopClasses: FormThemeExtension = (classes: FormThemeClasses) => {
   return {
     global: extendClasses(classes.global, {
-      wrapper:
-        'formkit-disabled:opacity-50 formkit-disabled:pointer-events-none flex-grow',
+      wrapper: 'formkit-disabled:opacity-50 formkit-disabled:pointer-events-none flex-grow',
       block: 'flex items-end',
       label:
         'formkit-required:required formkit-invalid:text-red-500 formkit-errors:text-red-500 mb-1 block text-sm text-gray-100 dark:text-neutral-400',
@@ -69,10 +63,8 @@ export const getCoreDesktopClasses: FormThemeExtension = (
       outer: 'leading-none',
       wrapper: 'inline-flex items-center cursor-pointer select-none',
       label: 'mb-0! text-sm text-gray-100 dark:text-neutral-400',
-      inner:
-        'w-5 h-5 flex justify-center items-center ltr:mr-1 rtl:ml-1 formkit-label-hidden:m-0',
-      input:
-        'peer appearance-none focus:outline-hidden focus:ring-0 focus:ring-offset-0',
+      inner: 'w-5 h-5 flex justify-center items-center ltr:mr-1 rtl:ml-1 formkit-label-hidden:m-0',
+      input: 'peer appearance-none focus:outline-hidden focus:ring-0 focus:ring-offset-0',
       decorator:
         'w-3 h-3 relative border peer-hover:border-blue-600 dark:peer-hover:border-blue-900 peer-focus:border-blue-800 peer-focus:outline peer-focus:outline-1 peer-focus:outline-offset-1 peer-focus:outline-blue-800 rounded-xs bg-transparent peer-hover:text-blue-600 dark:peer-hover:text-blue-900 peer-focus:text-blue-800 formkit-checked:peer-hover:border-blue-600 dark:formkit-checked:peer-hover:border-blue-900 formkit-checked:peer-focus:border-blue-800 formkit-checked:peer-focus:outline-blue-800 formkit-checked:peer-hover:text-blue-600 dark:formkit-checked:peer-hover:text-blue-900 formkit-checked:peer-focus:text-blue-800',
       decoratorIcon:

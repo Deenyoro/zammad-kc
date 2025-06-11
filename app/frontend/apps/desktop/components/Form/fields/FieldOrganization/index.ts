@@ -8,11 +8,9 @@ import { autoCompleteProps } from '../FieldAutoComplete/index.ts'
 
 import FieldOrganizationWrapper from './FieldOrganizationWrapper.vue'
 
-const fieldDefinition = createInput(
-  FieldOrganizationWrapper,
-  autoCompleteProps,
-  { features: [addLink, formUpdaterTrigger()] },
-)
+const fieldDefinition = createInput(FieldOrganizationWrapper, autoCompleteProps, {
+  features: [addLink, formUpdaterTrigger()],
+})
 
 export default {
   fieldType: 'organization',

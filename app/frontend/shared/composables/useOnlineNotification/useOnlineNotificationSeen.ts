@@ -8,9 +8,7 @@ import type { ObjectWithId } from '#shared/types/utils.ts'
 
 import type { Ref } from 'vue'
 
-export const useOnlineNotificationSeen = (
-  object: Ref<ObjectWithId | undefined>,
-) => {
+export const useOnlineNotificationSeen = (object: Ref<ObjectWithId | undefined>) => {
   const seenMutation = new MutationHandler(useOnlineNotificationSeenMutation())
 
   const setAsSeen = async () => {

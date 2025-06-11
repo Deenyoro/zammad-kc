@@ -12,10 +12,7 @@ const { links } = usePublicLinks(props.screen)
 </script>
 
 <template>
-  <nav
-    v-if="links.length"
-    class="inline-flex flex-wrap items-center justify-center gap-x-2 py-3"
-  >
+  <nav v-if="links.length" class="inline-flex flex-wrap items-center justify-center gap-x-2 py-3">
     <template v-for="link in links" :key="link.id">
       <CommonLink
         :link="link.link"

@@ -11,11 +11,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div
-    :aria-label="$t('List of issue labels')"
-    class="flex flex-wrap gap-1"
-    role="list"
-  >
+  <div :aria-label="$t('List of issue labels')" class="flex flex-wrap gap-1" role="list">
     <CommonBadge
       v-for="label in badges"
       :key="label.title"

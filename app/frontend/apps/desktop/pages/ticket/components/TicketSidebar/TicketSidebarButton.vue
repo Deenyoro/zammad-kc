@@ -54,8 +54,7 @@ const badgeColor = computed(() => {
     <CommonButton
       v-tooltip="$t(label)"
       :class="{
-        'text-black! outline-1! outline-offset-1 outline-blue-800! dark:text-white!':
-          selected,
+        'text-black! outline-1! outline-offset-1 outline-blue-800! dark:text-white!': selected,
       }"
       size="large"
       variant="neutral"

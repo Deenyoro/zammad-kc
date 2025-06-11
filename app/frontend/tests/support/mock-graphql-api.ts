@@ -1,5 +1,4 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
-/* eslint-disable no-use-before-define */
 
 import { NetworkStatus } from '@apollo/client/core'
 import {
@@ -34,9 +33,7 @@ export interface MockGraphQLInstance {
     errors: GraphQLFormattedError[],
     networkStatus?: NetworkStatus,
   ): MockGraphQLInstance
-  willFailWithUserError(
-    result: OperationResultWithUserError,
-  ): MockGraphQLInstance
+  willFailWithUserError(result: OperationResultWithUserError): MockGraphQLInstance
   willFailWithForbiddenError(message?: string): MockGraphQLInstance
   willFailWithNotFoundError(message?: string): MockGraphQLInstance
   willFailWithNetworkError(error: Error): MockGraphQLInstance
@@ -56,9 +53,7 @@ export interface MockGraphQLInstance {
   }
 }
 
-export const mockGraphQLApi = (
-  operationDocument: DocumentNode,
-): MockGraphQLInstance => {
+export const mockGraphQLApi = (operationDocument: DocumentNode): MockGraphQLInstance => {
   const resolveSpy = vi.fn()
   const errorSpy = vi.fn()
   const userErrorSpy = vi.fn()
@@ -93,10 +88,7 @@ export const mockGraphQLApi = (
     return instance
   }
 
-  const willFailWithError = (
-    errors: GraphQLFormattedError[],
-    networkStatus?: NetworkStatus,
-  ) => {
+  const willFailWithError = (errors: GraphQLFormattedError[], networkStatus?: NetworkStatus) => {
     errorSpy.mockResolvedValue({
       networkStatus: networkStatus || NetworkStatus.error,
       errors,
@@ -230,9 +222,7 @@ export const mockGraphQLSubscription = <T>(
   ])
 
   return {
-    next: async (
-      value: Parameters<typeof mockSubscription.next>[0],
-    ): Promise<void> => {
+    next: async (value: Parameters<typeof mockSubscription.next>[0]): Promise<void> => {
       mockSubscription.next(value)
 
       await waitForNextTick(true)

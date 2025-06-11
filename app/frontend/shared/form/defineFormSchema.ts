@@ -10,9 +10,7 @@ export const defineFormSchema = (
   schema: FormSchemaNode[],
   options?: FormSchemaOptions,
 ): FormSchemaNode[] => {
-  const needGroup = schema.every(
-    (node) => !(typeof node !== 'string' && 'isLayout' in node),
-  )
+  const needGroup = schema.every((node) => !(typeof node !== 'string' && 'isLayout' in node))
 
   if (!needGroup) return schema
   return [

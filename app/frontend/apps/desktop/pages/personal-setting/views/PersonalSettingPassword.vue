@@ -89,12 +89,9 @@ const { breadcrumbItems } = useBreadcrumb(__('Password'))
 
 const { notify } = useNotifications()
 
-const changePasswordMutation = new MutationHandler(
-  useUserCurrentChangePasswordMutation(),
-  {
-    errorNotificationMessage: __('Password could not be changed.'),
-  },
-)
+const changePasswordMutation = new MutationHandler(useUserCurrentChangePasswordMutation(), {
+  errorNotificationMessage: __('Password could not be changed.'),
+})
 
 const submitForm = async (formData: FormSubmitData<ChangePasswordFormData>) => {
   return changePasswordMutation
@@ -117,9 +114,7 @@ const submitForm = async (formData: FormSubmitData<ChangePasswordFormData>) => {
 <template>
   <LayoutContent
     :breadcrumb-items="breadcrumbItems"
-    :help-text="
-      $t('Enter your current password, insert a new one and confirm it.')
-    "
+    :help-text="$t('Enter your current password, insert a new one and confirm it.')"
     width="narrow"
   >
     <div class="mb-4">
@@ -131,12 +126,7 @@ const submitForm = async (formData: FormSubmitData<ChangePasswordFormData>) => {
       >
         <template #after-fields>
           <div class="mt-5 flex items-center justify-end gap-2">
-            <CommonButton
-              variant="submit"
-              type="submit"
-              size="medium"
-              :disabled="isDisabled"
-            >
+            <CommonButton variant="submit" type="submit" size="medium" :disabled="isDisabled">
               {{ $t('Change Password') }}
             </CommonButton>
           </div>

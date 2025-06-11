@@ -11,8 +11,7 @@ export const useSkeletonLoadingCount = (
   const visibleSkeletonLoadingCount = computed(() => {
     const maxVisibleRowCount = Math.ceil(screenHeight.value / 40)
 
-    if (count.value && count.value > maxVisibleRowCount)
-      return maxVisibleRowCount
+    if (count.value && count.value > maxVisibleRowCount) return maxVisibleRowCount
 
     return count.value
   })

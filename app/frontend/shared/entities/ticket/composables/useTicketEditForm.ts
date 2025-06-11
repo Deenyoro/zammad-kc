@@ -35,15 +35,11 @@ export const useTicketEditForm = (
     return ticket.value ? createArticleTypes(ticket.value, appName) : []
   })
 
-  const ticketArticleTypeValueLookup = computed(() =>
-    keyBy(ticketArticleTypes.value, 'value'),
-  )
+  const ticketArticleTypeValueLookup = computed(() => keyBy(ticketArticleTypes.value, 'value'))
 
   const currentArticleType = shallowRef<AppSpecificTicketArticleType>()
 
-  const recipientContact = computed(
-    () => currentArticleType.value?.options?.recipientContact,
-  )
+  const recipientContact = computed(() => currentArticleType.value?.options?.recipientContact)
   const editorType = computed(() => currentArticleType.value?.contentType)
 
   const editorMeta = computed(() => {
@@ -61,30 +57,18 @@ export const useTicketEditForm = (
     }
   })
 
-  const articleTypeFields = [
-    'to',
-    'cc',
-    'subject',
-    'body',
-    'attachments',
-    'security',
-  ] as const
+  const articleTypeFields = ['to', 'cc', 'subject', 'body', 'attachments', 'security'] as const
 
   const articleTypeFieldProps = articleTypeFields.reduce((acc, field) => {
     acc[field] = {
-      validation: computed(
-        () => currentArticleType.value?.fields?.[field]?.validation || null,
-      ),
-      required: computed(
-        () => !!currentArticleType.value?.fields?.[field]?.required,
-      ),
+      validation: computed(() => currentArticleType.value?.fields?.[field]?.validation || null),
+      required: computed(() => !!currentArticleType.value?.fields?.[field]?.required),
     }
 
     return acc
   }, {} as TicketArticleTypeFields)
 
-  const { isTicketAgent, isTicketCustomer, isTicketEditable } =
-    useTicketView(ticket)
+  const { isTicketAgent, isTicketCustomer, isTicketEditable } = useTicketView(ticket)
 
   const isMobileApp = appName === 'mobile'
 
@@ -120,9 +104,7 @@ export const useTicketEditForm = (
 
   const articleSchema = {
     // Desktop is handling the condition on top for the teleport.
-    if: isMobileApp
-      ? '$newTicketArticleRequested || $newTicketArticlePresent'
-      : undefined,
+    if: isMobileApp ? '$newTicketArticleRequested || $newTicketArticlePresent' : undefined,
     type: 'group',
     name: 'article',
     isGroupOrList: true,
@@ -234,20 +216,15 @@ export const useTicketEditForm = (
         props: {
           multiple: computed(() =>
             Boolean(
-              typeof currentArticleType.value?.fields?.attachments?.multiple ===
-                'boolean'
+              typeof currentArticleType.value?.fields?.attachments?.multiple === 'boolean'
                 ? currentArticleType.value?.fields?.attachments?.multiple
                 : true,
             ),
           ),
           allowedFiles: computed(
-            () =>
-              currentArticleType.value?.fields?.attachments?.allowedFiles ||
-              null,
+            () => currentArticleType.value?.fields?.attachments?.allowedFiles || null,
           ),
-          accept: computed(
-            () => currentArticleType.value?.fields?.attachments?.accept || null,
-          ),
+          accept: computed(() => currentArticleType.value?.fields?.attachments?.accept || null),
         },
         required: articleTypeFieldProps.attachments.required,
       },
@@ -267,11 +244,7 @@ export const useTicketEditForm = (
       )
     }
 
-    const handleArticleType: FormHandlerFunction = (
-      execution,
-      reactivity,
-      data,
-    ) => {
+    const handleArticleType: FormHandlerFunction = (execution, reactivity, data) => {
       const { formNode, changedField, formUpdaterData } = data
       const { schemaData } = reactivity
 
@@ -280,9 +253,7 @@ export const useTicketEditForm = (
         formUpdaterData?.fields.articleType?.value
       ) {
         currentArticleType.value =
-          ticketArticleTypeValueLookup.value[
-            formUpdaterData.fields.articleType.value
-          ]
+          ticketArticleTypeValueLookup.value[formUpdaterData.fields.articleType.value]
       }
 
       if (
@@ -302,8 +273,7 @@ export const useTicketEditForm = (
       }
 
       if (!changedField?.newValue) return
-      const newType =
-        ticketArticleTypeValueLookup.value[changedField?.newValue as string]
+      const newType = ticketArticleTypeValueLookup.value[changedField?.newValue as string]
       if (!newType) return
 
       if (!formNode.context?._open) {
@@ -315,10 +285,7 @@ export const useTicketEditForm = (
     }
 
     return {
-      execution: [
-        FormHandlerExecution.Initial,
-        FormHandlerExecution.FieldChange,
-      ],
+      execution: [FormHandlerExecution.Initial, FormHandlerExecution.FieldChange],
       callback: handleArticleType,
     }
   }
@@ -343,10 +310,7 @@ export const useTicketEditForm = (
   const application = useApplicationStore()
 
   const securityIntegration = computed<boolean>(
-    () =>
-      (application.config.smime_integration ||
-        application.config.pgp_integration) ??
-      false,
+    () => (application.config.smime_integration || application.config.pgp_integration) ?? false,
   )
 
   return {

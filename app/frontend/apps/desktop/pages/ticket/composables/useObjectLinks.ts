@@ -18,10 +18,7 @@ import { useObjectLinkTypes } from './useObjectLinkTypes.ts'
 
 import type { Ref } from 'vue'
 
-export const useObjectLinks = (
-  object: Ref<ObjectLike | undefined>,
-  targetType: string,
-) => {
+export const useObjectLinks = (object: Ref<ObjectLike | undefined>, targetType: string) => {
   const { linkTypes } = useObjectLinkTypes()
 
   const objectId = computed(() => object.value?.id)
@@ -36,10 +33,7 @@ export const useObjectLinks = (
   const linkListQueryResult = linkListQuery.result()
   const linkListQueryLoading = linkListQuery.loading()
 
-  linkListQuery.subscribeToMore<
-    LinkUpdatesSubscriptionVariables,
-    LinkUpdatesSubscription
-  >(() => ({
+  linkListQuery.subscribeToMore<LinkUpdatesSubscriptionVariables, LinkUpdatesSubscription>(() => ({
     document: LinkUpdatesDocument,
     variables: {
       objectId: objectId.value,

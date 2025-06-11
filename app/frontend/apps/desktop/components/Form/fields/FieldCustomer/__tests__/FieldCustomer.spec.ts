@@ -56,9 +56,7 @@ describe('Form - Field - Customer - Features', () => {
 
     await waitForAutocompleteSearchGenericQueryCalls()
 
-    expect(
-      wrapper.queryByRole('button', { name: 'add new email address' }),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button', { name: 'add new email address' })).not.toBeInTheDocument()
 
     expect(wrapper.getByRole('option')).toHaveTextContent('Loading…')
 
@@ -66,9 +64,7 @@ describe('Form - Field - Customer - Features', () => {
 
     await waitForAutocompleteSearchGenericQueryCalls()
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'add new email address' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'add new email address' }))
 
     await waitFor(() => {
       expect(wrapper.emitted().inputRaw).toBeTruthy()
@@ -94,9 +90,7 @@ describe('Form - Field - Customer - Features', () => {
 
     await wrapper.events.keyboard('{Escape}')
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Clear Selection' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear Selection' }))
 
     expect(emittedInput[1][0]).toBeNull()
 
@@ -164,9 +158,7 @@ describe('Form - Field - Customer - Query', () => {
       `${testOptions[0].label} – ${testOptions[0].heading}`,
     )
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Back to previous page' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Back to previous page' }))
 
     selectOptions = wrapper.getAllByRole('option')
 
@@ -206,9 +198,7 @@ describe('Form - Field - Customer - Query', () => {
 
     expect(wrapper.queryByRole('menu')).not.toBeInTheDocument()
 
-    expect(wrapper.getByRole('listitem')).toHaveTextContent(
-      testOptions[0].label,
-    )
+    expect(wrapper.getByRole('listitem')).toHaveTextContent(testOptions[0].label)
 
     await wrapper.events.click(wrapper.getByLabelText('Select…'))
 

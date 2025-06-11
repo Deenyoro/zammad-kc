@@ -105,12 +105,7 @@ const scrollDown = () => {
               :aria-label="$t('Validation failed')"
               class="bg-red absolute bottom-7 h-5 w-5 cursor-pointer rounded-full text-center text-xs leading-5 text-black ltr:right-2 rtl:left-2"
             >
-              <CommonIcon
-                class="mx-auto h-5"
-                name="close"
-                size="tiny"
-                decorative
-              />
+              <CommonIcon class="mx-auto h-5" name="close" size="tiny" decorative />
             </span>
           </button>
         </div>

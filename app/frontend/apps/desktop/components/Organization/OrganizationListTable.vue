@@ -1,10 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import {
-  EnumObjectManagerObjects,
-  type Organization,
-} from '#shared/graphql/types.ts'
+import { EnumObjectManagerObjects, type Organization } from '#shared/graphql/types.ts'
 import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 import type { ObjectWithId } from '#shared/types/utils.ts'
 
@@ -19,20 +16,19 @@ const props = defineProps<ListTableProps<Organization>>()
 
 const emit = defineEmits<ListTableEmits>()
 
-const getLink = (item: ObjectWithId) =>
-  `/organizations/${getIdFromGraphQLId(item.id)}`
+const getLink = (item: ObjectWithId) => `/organizations/${getIdFromGraphQLId(item.id)}`
 
-const { goToItem, goToItemLinkColumn, loadMore, resort, storageKeyId } =
-  useListTable(props, emit, getLink)
+const { goToItem, goToItemLinkColumn, loadMore, resort, storageKeyId } = useListTable(
+  props,
+  emit,
+  getLink,
+)
 </script>
 
 <template>
   <div v-if="loading && !loadingNewPage">
     <slot name="loading">
-      <CommonTableSkeleton
-        data-test-id="table-skeleton"
-        :rows="skeletonLoadingCount"
-      />
+      <CommonTableSkeleton data-test-id="table-skeleton" :rows="skeletonLoadingCount" />
     </slot>
   </div>
 

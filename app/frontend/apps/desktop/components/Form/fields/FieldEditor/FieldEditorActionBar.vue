@@ -2,14 +2,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import {
-  nextTick,
-  shallowRef,
-  toRef,
-  ref,
-  defineAsyncComponent,
-  watch,
-} from 'vue'
+import { nextTick, shallowRef, toRef, ref, defineAsyncComponent, watch } from 'vue'
 
 import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
 import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
@@ -58,17 +51,11 @@ const hideActionBarLocally = ref(false)
 
 const { isActive } = useEditorActionHelper(editor)
 
-const { actions } = useEditorActions(
-  editor,
-  props.contentType,
-  props.disabledPlugins,
-)
+const { actions } = useEditorActions(editor, props.contentType, props.disabledPlugins)
 
 const { popover, popoverTarget, isOpen, open, close } = usePopover()
 
-const subMenuPopoverContent = shallowRef<
-  Component | Except<EditorButton, 'subMenu'>[]
->()
+const subMenuPopoverContent = shallowRef<Component | Except<EditorButton, 'subMenu'>[]>()
 
 let currentSelection: Selection | undefined
 
@@ -141,9 +128,7 @@ watch(
     />
 
     <AiAssistantTextToolsLoadingBanner
-      v-if="
-        showAiAssistantTextToolsLoadingBanner && config.ai_assistance_text_tools
-      "
+      v-if="showAiAssistantTextToolsLoadingBanner && config.ai_assistance_text_tools"
       :editor="editor"
     />
 

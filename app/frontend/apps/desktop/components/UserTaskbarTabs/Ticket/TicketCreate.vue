@@ -10,16 +10,12 @@ import { useTicketCreateTitle } from '#desktop/entities/ticket/composables/useTi
 
 import type { UserTaskbarTabEntityProps } from '../types.ts'
 
-const props =
-  defineProps<UserTaskbarTabEntityProps<UserTaskbarItemEntityTicketCreate>>()
+const props = defineProps<UserTaskbarTabEntityProps<UserTaskbarItemEntityTicketCreate>>()
 
-const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTabLink(
-  toRef(props, 'taskbarTab'),
-)
+const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTabLink(toRef(props, 'taskbarTab'))
 
 const currentTitle = computed(() => {
-  return (props.context?.formValues?.title ||
-    props.taskbarTab.entity?.title) as string
+  return (props.context?.formValues?.title || props.taskbarTab.entity?.title) as string
 })
 
 const currentArticleType = computed(() => {
@@ -27,10 +23,7 @@ const currentArticleType = computed(() => {
     props.taskbarTab.entity?.createArticleTypeKey) as string
 })
 
-const { currentViewTitle } = useTicketCreateTitle(
-  currentTitle,
-  currentArticleType,
-)
+const { currentViewTitle } = useTicketCreateTitle(currentTitle, currentArticleType)
 </script>
 
 <template>

@@ -9,18 +9,12 @@ import { useUserTaskbarTabLink } from '#desktop/composables/useUserTaskbarTabLin
 
 import type { UserTaskbarTabEntityProps } from '../types.ts'
 
-const props =
-  defineProps<UserTaskbarTabEntityProps<UserTaskbarItemEntitySearch>>()
+const props = defineProps<UserTaskbarTabEntityProps<UserTaskbarItemEntitySearch>>()
 
-const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTabLink(
-  toRef(props, 'taskbarTab'),
-)
+const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTabLink(toRef(props, 'taskbarTab'))
 
 const currentTitle = computed(
-  () =>
-    props.context?.query ||
-    props.taskbarTab.entity?.query ||
-    __('Extended Search'),
+  () => props.context?.query || props.taskbarTab.entity?.query || __('Extended Search'),
 )
 </script>
 

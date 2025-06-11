@@ -2,14 +2,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import {
-  nextTick,
-  shallowRef,
-  toRef,
-  ref,
-  defineAsyncComponent,
-  watch,
-} from 'vue'
+import { nextTick, shallowRef, toRef, ref, defineAsyncComponent, watch } from 'vue'
 
 import useEditorActionHelper from '#shared/components/Form/fields/FieldEditor/composables/useEditorActionHelper.ts'
 import type {
@@ -58,15 +51,9 @@ const hideActionBarLocally = ref(false)
 
 const { isActive } = useEditorActionHelper(editor)
 
-const { actions } = useEditorActions(
-  editor,
-  props.contentType,
-  props.disabledPlugins,
-)
+const { actions } = useEditorActions(editor, props.contentType, props.disabledPlugins)
 
-const subMenuPopupContent = shallowRef<
-  Component | Except<EditorButton, 'subMenu'>[]
->()
+const subMenuPopupContent = shallowRef<Component | Except<EditorButton, 'subMenu'>[]>()
 
 let currentSelection: Selection | undefined
 
@@ -145,9 +132,7 @@ watch(
     />
 
     <AiAssistantTextToolsLoadingBanner
-      v-if="
-        showAiAssistantTextToolsLoadingBanner && config.ai_assistance_text_tools
-      "
+      v-if="showAiAssistantTextToolsLoadingBanner && config.ai_assistance_text_tools"
       :editor="editor"
     />
     <CommonSectionPopup

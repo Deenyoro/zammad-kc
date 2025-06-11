@@ -13,9 +13,7 @@ import {
 
 import ArticleBubbleMediaError from '#desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleMediaError.vue'
 
-const renderArticleBubbleMediaError = (
-  article: ReturnType<typeof createDummyArticle>,
-) => {
+const renderArticleBubbleMediaError = (article: ReturnType<typeof createDummyArticle>) => {
   return renderComponent(
     {
       setup() {
@@ -48,9 +46,7 @@ describe('ArticleBubbleMediaError', () => {
 
     expect(getByIconName(warning, 'exclamation-triangle')).toBeInTheDocument()
 
-    expect(
-      within(warning).getByText('Failed to load content.'),
-    ).toBeInTheDocument()
+    expect(within(warning).getByText('Failed to load content.')).toBeInTheDocument()
   })
 
   it('shows a button to trigger the retry media download process', async () => {

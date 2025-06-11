@@ -11,9 +11,7 @@ import { useImportSource } from './useImportSource.ts'
 
 import type { ImportSourceConfigurationBase } from '../types/setup-import.ts'
 
-export const useImportSourceConfiguration = <
-  T extends ImportSourceConfigurationBase,
->(
+export const useImportSourceConfiguration = <T extends ImportSourceConfigurationBase>(
   source: EnumSystemImportSource,
 ) => {
   const router = useRouter()

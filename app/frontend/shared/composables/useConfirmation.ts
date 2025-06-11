@@ -44,8 +44,7 @@ export const useConfirmation = () => {
     > = {},
     name: string | undefined = undefined,
   ) => {
-    const uniqueName =
-      appName === 'desktop' ? name || getUuid() : 'confirmation'
+    const uniqueName = appName === 'desktop' ? name || getUuid() : 'confirmation'
 
     if (confirmationOptions.value.has(uniqueName)) {
       return new Promise<undefined>((resolve) => {

@@ -47,11 +47,7 @@ describe('CommonLabel.vue', () => {
     const badge = view.getByTestId('common-badge')
 
     expect(badge).toHaveTextContent('Dummy')
-    expect(badge).toHaveClasses([
-      'common-badge',
-      'common-badge-success',
-      'text-xs',
-    ])
+    expect(badge).toHaveClasses(['common-badge', 'common-badge-success', 'text-xs'])
   })
 
   it('renders correct colors if variant custom is given', () => {
@@ -68,11 +64,6 @@ describe('CommonLabel.vue', () => {
     const badge = view.getByTestId('common-badge')
 
     expect(badge).toHaveTextContent('Dummy')
-    expect(badge).toHaveClasses([
-      'text-xs',
-      'dark:bg-pink-300',
-      'bg-pink-300',
-      'text-white',
-    ])
+    expect(badge).toHaveClasses(['text-xs', 'dark:bg-pink-300', 'bg-pink-300', 'text-white'])
   })
 })

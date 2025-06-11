@@ -5,31 +5,16 @@
 import { reset } from '@formkit/core'
 import gql from 'graphql-tag'
 import { storeToRefs } from 'pinia'
-import {
-  computed,
-  h,
-  onMounted,
-  reactive,
-  ref,
-  watch,
-  type Ref,
-  useTemplateRef,
-} from 'vue'
+import { computed, h, onMounted, reactive, ref, watch, type Ref, useTemplateRef } from 'vue'
 
 import CommonAlert from '#shared/components/CommonAlert/CommonAlert.vue'
 import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
-import type {
-  Orientation,
-  Placement,
-} from '#shared/components/CommonPopover/types.ts'
+import type { Orientation, Placement } from '#shared/components/CommonPopover/types.ts'
 import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
 import CommonTranslateRenderer from '#shared/components/CommonTranslateRenderer/CommonTranslateRenderer.vue'
 import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
 import Form from '#shared/components/Form/Form.vue'
-import type {
-  FormSchemaNode,
-  FormValues,
-} from '#shared/components/Form/types.ts'
+import type { FormSchemaNode, FormValues } from '#shared/components/Form/types.ts'
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
 import { useCopyToClipboard } from '#shared/composables/useCopyToClipboard.ts'
 import { defineFormSchema } from '#shared/form/defineFormSchema.ts'
@@ -424,8 +409,7 @@ const permissions = [
       {
         value: 'user_preferences.two_factor_authentication',
         label: 'Two-factor Authentication',
-        description:
-          'To access the two-factor authentication personal setting.',
+        description: 'To access the two-factor authentication personal setting.',
       },
       {
         value: 'user_preferences.device',
@@ -489,7 +473,7 @@ const treeselectOptions = [
         value: 5,
         label: 'Item 2',
         children: [
-          ...[longOption.value],
+          longOption.value,
           {
             value: 6,
             label: 'Item IV',
@@ -568,7 +552,7 @@ const formSchema = defineFormSchema([
         outerClass: 'col-span-1',
         props: {
           maxLength: 150,
-          options: [...alphabetOptions.value, ...[longOption.value]],
+          options: [...alphabetOptions.value, longOption.value],
           clearable: true,
           help: 'Testing',
         },
@@ -793,7 +777,7 @@ const formSchema = defineFormSchema([
     name: 'select_1',
     label: 'Single select',
     props: {
-      options: [...alphabetOptions.value, ...[longOption.value]],
+      options: [...alphabetOptions.value, longOption.value],
       clearable: true,
     },
   },
@@ -803,7 +787,7 @@ const formSchema = defineFormSchema([
     label: 'Multi select',
     props: {
       multiple: true,
-      options: [...alphabetOptions.value, ...[longOption.value]],
+      options: [...alphabetOptions.value, longOption.value],
       clearable: true,
     },
   },
@@ -943,18 +927,10 @@ const flyout = useFlyout({
           CommonFlyout,
           {
             onClose: () => {
-              console.log(
-                '%c %s',
-                'color: red; font-size: 16px',
-                'Flyout closed!',
-              )
+              console.log('%c %s', 'color: red; font-size: 16px', 'Flyout closed!')
             },
             onAction: () => {
-              console.log(
-                '%c %s',
-                'color: green; font-size: 16px',
-                'Flyout action!',
-              )
+              console.log('%c %s', 'color: green; font-size: 16px', 'Flyout action!')
             },
             name: 'playground',
             headerTitle: 'Hello Playground',
@@ -1387,9 +1363,7 @@ const userEntity = {
             ]"
           />
         </div>
-        <h1 id="test" v-tooltip="'Hello world'" class="w-fit">
-          Tooltip example
-        </h1>
+        <h1 id="test" v-tooltip="'Hello world'" class="w-fit">Tooltip example</h1>
 
         <h2 title="Buttons" class="text-xl">Buttons</h2>
 
@@ -1474,14 +1448,10 @@ const userEntity = {
       <div class="w-1/2">
         <h2 class="text-xl">Alerts</h2>
 
-        <CommonAlert variant="info" dismissible class="mb-2.5"
-          >It's Friday!
-        </CommonAlert>
+        <CommonAlert variant="info" dismissible class="mb-2.5">It's Friday! </CommonAlert>
         <CommonAlert variant="success" class="mb-2.5">
           <div class="flex flex-col gap-1.5">
-            <CommonLabel class="text-yellow-600!" size="large"
-              >Similar tickets found</CommonLabel
-            >
+            <CommonLabel class="text-yellow-600!" size="large">Similar tickets found</CommonLabel>
             <CommonLabel class="text-yellow-600!"
               >Tickets with the same attributes were found.</CommonLabel
             >
@@ -1490,31 +1460,21 @@ const userEntity = {
             </ul>
           </div>
         </CommonAlert>
-        <CommonAlert variant="warning" class="mb-2.5"
-          >Heee! You're typing too fast.
-        </CommonAlert>
-        <CommonAlert variant="danger" class="mb-2.5"
-          >Ooops! You broke it.
-        </CommonAlert>
+        <CommonAlert variant="warning" class="mb-2.5">Heee! You're typing too fast. </CommonAlert>
+        <CommonAlert variant="danger" class="mb-2.5">Ooops! You broke it. </CommonAlert>
       </div>
 
       <div>
         <h2>Labels</h2>
-        <CommonLabel size="small" prefix-icon="logo" suffix-icon="logo-flat">
-          Small
-        </CommonLabel>
+        <CommonLabel size="small" prefix-icon="logo" suffix-icon="logo-flat"> Small </CommonLabel>
 
         <br />
 
-        <CommonLabel size="medium" prefix-icon="logo" suffix-icon="logo-flat">
-          Medium
-        </CommonLabel>
+        <CommonLabel size="medium" prefix-icon="logo" suffix-icon="logo-flat"> Medium </CommonLabel>
 
         <br />
 
-        <CommonLabel size="large" prefix-icon="logo" suffix-icon="logo-flat">
-          Large
-        </CommonLabel>
+        <CommonLabel size="large" prefix-icon="logo" suffix-icon="logo-flat"> Large </CommonLabel>
 
         <br />
 
@@ -1526,23 +1486,15 @@ const userEntity = {
       <div>
         <h2>Badges</h2>
 
-        <CommonBadge class="ltr:mr-2 rtl:ml-2" variant="neutral">
-          Neutral
-        </CommonBadge>
+        <CommonBadge class="ltr:mr-2 rtl:ml-2" variant="neutral"> Neutral </CommonBadge>
 
         <CommonBadge class="ltr:mr-2 rtl:ml-2" variant="info">Info</CommonBadge>
 
-        <CommonBadge class="ltr:mr-2 rtl:ml-2" variant="success">
-          Success
-        </CommonBadge>
+        <CommonBadge class="ltr:mr-2 rtl:ml-2" variant="success"> Success </CommonBadge>
 
-        <CommonBadge class="ltr:mr-2 rtl:ml-2" variant="warning">
-          Warning
-        </CommonBadge>
+        <CommonBadge class="ltr:mr-2 rtl:ml-2" variant="warning"> Warning </CommonBadge>
 
-        <CommonBadge class="ltr:mr-2 rtl:ml-2" variant="danger">
-          Danger
-        </CommonBadge>
+        <CommonBadge class="ltr:mr-2 rtl:ml-2" variant="danger"> Danger </CommonBadge>
 
         <CommonBadge
           class="bg-pink-300 text-white ltr:mr-2 rtl:ml-2 dark:bg-pink-300"
@@ -1564,18 +1516,12 @@ const userEntity = {
             <div class="mb-1 flex grow flex-col gap-1">
               <div class="flex justify-between">
                 <CommonLabel size="small">Organizations</CommonLabel>
-                <CommonLabel
-                  class="text-stone-200 dark:text-neutral-500"
-                  size="small"
-                >
+                <CommonLabel class="text-stone-200 dark:text-neutral-500" size="small">
                   {{ progressBarValue }} of 100
                 </CommonLabel>
               </div>
 
-              <CommonProgressBar
-                :value="progressBarValue.toString()"
-                max="100"
-              />
+              <CommonProgressBar :value="progressBarValue.toString()" max="100" />
             </div>
 
             <CommonIcon
@@ -1591,9 +1537,7 @@ const userEntity = {
 
       <h2 class="mt-8 mb-2">Table (Simple)</h2>
       <div class="mb-6 flex flex-col gap-4">
-        <CommonButton variant="primary" @click="changeRowSimple()"
-          >Change row</CommonButton
-        >
+        <CommonButton variant="primary" @click="changeRowSimple()">Change row</CommonButton>
         <CommonSimpleTable
           caption="test"
           :headers="tableHeaders"
@@ -1688,10 +1632,7 @@ const userEntity = {
             size="medium"
           />
 
-          <CommonButton
-            :variant="vip ? 'neutral' : 'subtle'"
-            @click="vip = !vip"
-          >
+          <CommonButton :variant="vip ? 'neutral' : 'subtle'" @click="vip = !vip">
             {{ vip ? 'Make us unimportant :(' : 'Make us important :)' }}
           </CommonButton>
         </div>
@@ -1841,11 +1782,7 @@ const userEntity = {
             >
               <template #itemRight-appearance>
                 <div class="flex items-center px-2">
-                  <ThemeSwitch
-                    ref="theme-switch"
-                    v-model="appearance"
-                    size="small"
-                  />
+                  <ThemeSwitch ref="theme-switch" v-model="appearance" size="small" />
                 </div>
               </template>
             </CommonPopoverMenu>
@@ -1919,27 +1856,18 @@ const userEntity = {
       <div class="w-1/2">
         <h2 class="mt-8 mb-2">Flyout and Dialog</h2>
         <div class="mb-6 flex gap-4">
-          <CommonButton variant="tertiary" @click="dialog.open()"
-            >Show Dialog
-          </CommonButton>
-          <CommonButton variant="primary" @click="flyout.open()">
-            Open Flyout
-          </CommonButton>
+          <CommonButton variant="tertiary" @click="dialog.open()">Show Dialog </CommonButton>
+          <CommonButton variant="primary" @click="flyout.open()"> Open Flyout </CommonButton>
         </div>
 
         <h2 class="mb-2">Confirmation</h2>
         <div class="mb-6 flex gap-4">
-          <CommonButton variant="tertiary" @click="deleteTest()"
-            >Delete
-          </CommonButton>
+          <CommonButton variant="tertiary" @click="deleteTest()">Delete </CommonButton>
         </div>
 
         <h2 class="mt-8 mb-2">Input Copy To Clipboard</h2>
         <div class="mb-6">
-          <CommonInputCopyToClipboard
-            value="some text to copy"
-            label="A label"
-          />
+          <CommonInputCopyToClipboard value="some text to copy" label="A label" />
         </div>
       </div>
 
@@ -1956,16 +1884,10 @@ const userEntity = {
         >
           <template #after-fields>
             <div class="my-5 flex items-center justify-end gap-2">
-              <CommonButton
-                variant="secondary"
-                size="medium"
-                @click="reset('playground-form')"
-              >
+              <CommonButton variant="secondary" size="medium" @click="reset('playground-form')">
                 Reset
               </CommonButton>
-              <CommonButton variant="submit" type="submit" size="medium">
-                Submit
-              </CommonButton>
+              <CommonButton variant="submit" type="submit" size="medium"> Submit </CommonButton>
             </div>
           </template>
         </Form>
@@ -2012,18 +1934,10 @@ const userEntity = {
 
       <h3>Split Button</h3>
       <div class="mb-3 flex justify-end gap-3">
-        <SplitButton
-          variant="submit"
-          size="large"
-          :items="splitButtonMenuItems"
-          disabled
+        <SplitButton variant="submit" size="large" :items="splitButtonMenuItems" disabled
           >Disabled</SplitButton
         >
-        <SplitButton
-          variant="submit"
-          size="large"
-          addon-disabled
-          @click="onSplitButtonClick"
+        <SplitButton variant="submit" size="large" addon-disabled @click="onSplitButtonClick"
           >Addon disabled</SplitButton
         >
         <SplitButton

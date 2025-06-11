@@ -58,9 +58,7 @@ export const useEmailInboundForm = () => {
     return options
   })
 
-  const emailInboundFormChangeFields = reactive<
-    Record<string, Partial<FormSchemaField>>
-  >({
+  const emailInboundFormChangeFields = reactive<Record<string, Partial<FormSchemaField>>>({
     sslVerify: {},
     port: {},
   })

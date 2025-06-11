@@ -26,10 +26,7 @@ export const multipleFilesError = (node: FormKitNode) => {
         commitEventListener = node.on('commit', ({ payload: newValue }) => {
           if (Array.isArray(newValue) && newValue.length === 1) {
             node.store.remove('multipleFilesError')
-            node.emit(
-              'prop:validationVisibility',
-              FormValidationVisibility.Submit,
-            )
+            node.emit('prop:validationVisibility', FormValidationVisibility.Submit)
           }
         })
       } else if (payload && commitEventListener) {

@@ -5,19 +5,13 @@ import { computed, toRefs } from 'vue'
 
 import type { Sizes } from '#shared/components/CommonIcon/types.ts'
 import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
-import type {
-  Orientation,
-  Placement,
-} from '#shared/components/CommonPopover/types.ts'
+import type { Orientation, Placement } from '#shared/components/CommonPopover/types.ts'
 import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
-import type {
-  ButtonSize,
-  ButtonVariant,
-} from '#desktop/components/CommonButton/types.ts'
+import type { ButtonSize, ButtonVariant } from '#desktop/components/CommonButton/types.ts'
 import CommonPopoverMenu from '#desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 import { usePopoverMenu } from '#desktop/components/CommonPopoverMenu/usePopoverMenu.ts'
@@ -49,8 +43,11 @@ const { popover, isOpen: popoverIsOpen, popoverTarget, toggle } = usePopover()
 
 const { actions, entity } = toRefs(props)
 
-const { filteredMenuItems, singleMenuItemPresent, singleMenuItem } =
-  usePopoverMenu(actions, entity, { provides: true })
+const { filteredMenuItems, singleMenuItemPresent, singleMenuItem } = usePopoverMenu(
+  actions,
+  entity,
+  { provides: true },
+)
 
 const entityId = computed(() => props.entity?.id || getUuid())
 const menuId = computed(() => `popover-${entityId.value}`)
@@ -90,10 +87,7 @@ const variantClasses = computed(() => {
 </script>
 
 <template>
-  <div
-    v-if="filteredMenuItems && filteredMenuItems.length > 0"
-    class="inline-block"
-  >
+  <div v-if="filteredMenuItems && filteredMenuItems.length > 0" class="inline-block">
     <template v-if="singleActionMode">
       <CommonLink
         v-if="singleMenuItem?.link"
@@ -140,8 +134,7 @@ const variantClasses = computed(() => {
           buttonVariantClassExtension,
         ]"
         :variant="
-          defaultButtonVariant !== 'neutral-dark' &&
-          defaultButtonVariant !== 'neutral-light'
+          defaultButtonVariant !== 'neutral-dark' && defaultButtonVariant !== 'neutral-light'
             ? defaultButtonVariant
             : 'neutral'
         "

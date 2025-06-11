@@ -63,7 +63,6 @@ const ManualChunksPlugin = () => {
 
   return {
     name: 'zammad:manual-chunks',
-    // eslint-disable-next-line sonarjs/cognitive-complexity
     config() {
       return {
         build: {

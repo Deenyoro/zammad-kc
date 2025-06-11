@@ -61,9 +61,7 @@ describe('TimeAccountingFlyout.vue', () => {
       }),
     ).toBeInTheDocument()
 
-    expect(
-      wrapper.getByRole('heading', { name: 'Time Accounting' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('heading', { name: 'Time Accounting' })).toBeInTheDocument()
 
     expect(wrapper.getByLabelText('Accounted Time')).toBeInTheDocument()
 
@@ -72,17 +70,13 @@ describe('TimeAccountingFlyout.vue', () => {
 
     expect(wrapper.getByRole('button', { name: 'Skip' })).toBeInTheDocument()
 
-    expect(
-      wrapper.getByRole('button', { name: 'Account Time' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Account Time' })).toBeInTheDocument()
   })
 
   it('can submit time accounting data', async () => {
     const wrapper = await renderTimeAccountingFlyout()
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Account Time' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Account Time' }))
 
     const input = wrapper.getByLabelText('Accounted Time')
 
@@ -92,9 +86,7 @@ describe('TimeAccountingFlyout.vue', () => {
 
     await getNode('timeUnit')?.settled
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Account Time' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Account Time' }))
 
     expect(input).toBeDescribedBy('This field must contain a number.')
 
@@ -103,9 +95,7 @@ describe('TimeAccountingFlyout.vue', () => {
 
     await getNode('timeUnit')?.settled
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Account Time' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Account Time' }))
 
     expect(wrapper.emitted('account-time')[0]).toEqual([
       {
@@ -154,9 +144,7 @@ describe('TimeAccountingFlyout.vue', () => {
 
     await getNode('timeUnit')?.settled
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Account Time' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Account Time' }))
 
     expect(wrapper.emitted('account-time')[0]).toEqual([
       {
@@ -165,13 +153,9 @@ describe('TimeAccountingFlyout.vue', () => {
       },
     ])
 
-    await wrapper.events.click(
-      getByRole(select, 'button', { name: 'Clear Selection' }),
-    )
+    await wrapper.events.click(getByRole(select, 'button', { name: 'Clear Selection' }))
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Account Time' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Account Time' }))
 
     expect(wrapper.emitted('account-time')[1]).toEqual([
       {
@@ -187,9 +171,7 @@ describe('TimeAccountingFlyout.vue', () => {
     await waitForNextTick()
 
     await waitFor(() =>
-      expect(
-        wrapper.getByPlaceholderText('Enter the time you want to record'),
-      ).toHaveFocus(),
+      expect(wrapper.getByPlaceholderText('Enter the time you want to record')).toHaveFocus(),
     )
   })
 
@@ -202,9 +184,7 @@ describe('TimeAccountingFlyout.vue', () => {
 
     await getNode('timeUnit')?.settled
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Account Time' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Account Time' }))
 
     expect(wrapper.emitted('account-time')[0]).toEqual(
       expect.arrayContaining([

@@ -7,20 +7,13 @@ import { setupView } from '#tests/support/mock-user.ts'
 import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 
 import type { FormSubmitData } from '#shared/components/Form/types.ts'
-import type {
-  TicketArticle,
-  TicketById,
-  TicketFormData,
-} from '#shared/entities/ticket/types.ts'
+import type { TicketArticle, TicketById, TicketFormData } from '#shared/entities/ticket/types.ts'
 import { EnumTicketArticleSenderName } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import { createArticleTypes } from '../index.ts'
 
-import {
-  createEligibleTicketArticleReplyData,
-  createTestArticleActions,
-} from './utils.ts'
+import { createEligibleTicketArticleReplyData, createTestArticleActions } from './utils.ts'
 
 const getArticleActionData = (
   name: string,
@@ -44,10 +37,7 @@ const getArticleActionData = (
   }
 }
 
-const getArticleTypeActionData = (
-  name: string,
-  transformer?: (ticket: TicketById) => void,
-) => {
+const getArticleTypeActionData = (name: string, transformer?: (ticket: TicketById) => void) => {
   setupView('agent')
   const { ticket } = createEligibleTicketArticleReplyData(name)
   ticket.createArticleType = {
@@ -176,9 +166,7 @@ describe('twitter article action', () => {
           article.from = { raw: 'res-from' }
           article.to = { raw: 'res-to' }
           article.sender = null
-          article.author.authorizations = [
-            { provider: 'twitter', username: 'name', uid: '123' },
-          ]
+          article.author.authorizations = [{ provider: 'twitter', username: 'name', uid: '123' }]
         },
       )
       action.perform!(ticket, article, options)
@@ -207,52 +195,49 @@ describe('twitter article action', () => {
     })
   })
 
-  describe.each(['twitter status', 'twitter direct-message'])(
-    'shared test %s',
-    (name) => {
-      it("doesn't add initials, if config is disabled", async () => {
-        mockApplicationConfig({
-          ui_ticket_zoom_article_twitter_initials: false,
-        })
-        await nextTick()
-        const { action } = getArticleTypeActionData(name)
-        const result = action.updateForm!({
-          article: { body: 'text' },
-          formId: '1',
-        } as unknown as FormSubmitData<TicketFormData>) as any
-        expect(result.article?.body).toBe('text')
+  describe.each(['twitter status', 'twitter direct-message'])('shared test %s', (name) => {
+    it("doesn't add initials, if config is disabled", async () => {
+      mockApplicationConfig({
+        ui_ticket_zoom_article_twitter_initials: false,
       })
-      it('adds initials, if config is not disabled', async () => {
-        mockApplicationConfig({
-          ui_ticket_zoom_article_twitter_initials: true,
-        })
-        mockUserCurrent({
-          firstname: 'John',
-          lastname: 'Doe',
-        })
-        await nextTick()
-        const { action } = getArticleTypeActionData(name)
-        const result = action.updateForm!({
-          article: { body: 'text' },
-          formId: '1',
-        } as unknown as FormSubmitData<TicketFormData>) as any
-        expect(result.article.body).toBe('text\n/JD')
+      await nextTick()
+      const { action } = getArticleTypeActionData(name)
+      const result = action.updateForm!({
+        article: { body: 'text' },
+        formId: '1',
+      } as unknown as FormSubmitData<TicketFormData>) as any
+      expect(result.article?.body).toBe('text')
+    })
+    it('adds initials, if config is not disabled', async () => {
+      mockApplicationConfig({
+        ui_ticket_zoom_article_twitter_initials: true,
       })
-      it('skips body, if article was not added to the ticket', async () => {
-        mockApplicationConfig({
-          ui_ticket_zoom_article_twitter_initials: true,
-        })
-        mockUserCurrent({
-          firstname: 'John',
-          lastname: 'Doe',
-        })
-        await nextTick()
-        const { action } = getArticleTypeActionData(name)
-        const result = action.updateForm!({
-          formId: '1',
-        } as unknown as FormSubmitData<TicketFormData>) as any
-        expect(result.article).toBeUndefined()
+      mockUserCurrent({
+        firstname: 'John',
+        lastname: 'Doe',
       })
-    },
-  )
+      await nextTick()
+      const { action } = getArticleTypeActionData(name)
+      const result = action.updateForm!({
+        article: { body: 'text' },
+        formId: '1',
+      } as unknown as FormSubmitData<TicketFormData>) as any
+      expect(result.article.body).toBe('text\n/JD')
+    })
+    it('skips body, if article was not added to the ticket', async () => {
+      mockApplicationConfig({
+        ui_ticket_zoom_article_twitter_initials: true,
+      })
+      mockUserCurrent({
+        firstname: 'John',
+        lastname: 'Doe',
+      })
+      await nextTick()
+      const { action } = getArticleTypeActionData(name)
+      const result = action.updateForm!({
+        formId: '1',
+      } as unknown as FormSubmitData<TicketFormData>) as any
+      expect(result.article).toBeUndefined()
+    })
+  })
 })

@@ -12,9 +12,7 @@ export const useBubbleHeader = () => {
     const interactiveElements = new Set(['A', 'BUTTON'])
 
     // Parent interactive or traversed nodes
-    const hasInteractiveElements = target.closest(
-      Array.from(interactiveElements).join(','),
-    )
+    const hasInteractiveElements = target.closest(Array.from(interactiveElements).join(','))
 
     return interactiveElements.has(target.tagName) || hasInteractiveElements
   }

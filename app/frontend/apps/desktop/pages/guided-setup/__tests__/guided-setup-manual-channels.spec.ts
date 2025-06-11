@@ -29,10 +29,9 @@ describe('guided setup manual channels', () => {
       const view = await visitView('/guided-setup/manual/channels')
 
       await waitFor(() => {
-        expect(
-          view,
-          'correctly redirects to guided setup start screen',
-        ).toHaveCurrentUrl('/guided-setup')
+        expect(view, 'correctly redirects to guided setup start screen').toHaveCurrentUrl(
+          '/guided-setup',
+        )
       })
       view.getByText('Set up a new system')
     })
@@ -60,10 +59,9 @@ describe('guided setup manual channels', () => {
       await view.events.click(emailChannelButton)
 
       await waitFor(() => {
-        expect(
-          view,
-          'correctly redirects to guided setup email channel step',
-        ).toHaveCurrentUrl('/guided-setup/manual/channels/email')
+        expect(view, 'correctly redirects to guided setup email channel step').toHaveCurrentUrl(
+          '/guided-setup/manual/channels/email',
+        )
       })
     })
 
@@ -75,10 +73,9 @@ describe('guided setup manual channels', () => {
       await view.events.click(goBackButton)
 
       await waitFor(() => {
-        expect(
-          view,
-          'correctly redirects to email notification step',
-        ).toHaveCurrentUrl('/guided-setup/manual/email-notification')
+        expect(view, 'correctly redirects to email notification step').toHaveCurrentUrl(
+          '/guided-setup/manual/email-notification',
+        )
       })
     })
 

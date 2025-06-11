@@ -1,20 +1,8 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import {
-  type UseElementBoundingReturn,
-  onClickOutside,
-  onKeyDown,
-  useVModel,
-} from '@vueuse/core'
-import {
-  useTemplateRef,
-  onUnmounted,
-  computed,
-  nextTick,
-  ref,
-  toRef,
-} from 'vue'
+import { type UseElementBoundingReturn, onClickOutside, onKeyDown, useVModel } from '@vueuse/core'
+import { useTemplateRef, onUnmounted, computed, nextTick, ref, toRef } from 'vue'
 
 import type {
   FlatSelectOption,
@@ -80,9 +68,7 @@ if (localValue.value == null && props.multiple) {
 }
 
 const getFocusableOptions = () => {
-  return Array.from<HTMLElement>(
-    dropdownElement.value?.querySelectorAll('[tabindex="0"]') || [],
-  )
+  return Array.from<HTMLElement>(dropdownElement.value?.querySelectorAll('[tabindex="0"]') || [])
 }
 
 const showDropdown = ref(false)
@@ -107,17 +93,13 @@ const dropdownStyle = computed(() => {
   if (hasDirectionUp.value) {
     style.bottom = `${windowHeight.value - inputElementBounds.top.value}px`
   } else {
-    style.top = `${
-      inputElementBounds.top.value + inputElementBounds.height.value
-    }px`
+    style.top = `${inputElementBounds.top.value + inputElementBounds.height.value}px`
   }
 
   return style
 })
 
-const { activateTabTrap, deactivateTabTrap } = useTrapTab(
-  dropdownElement as Ref<HTMLElement>,
-)
+const { activateTabTrap, deactivateTabTrap } = useTrapTab(dropdownElement as Ref<HTMLElement>)
 
 let lastFocusableOutsideElement: HTMLElement | null = null
 
@@ -144,10 +126,7 @@ const closeDropdown = () => {
   })
 }
 
-const openDropdown = (
-  bounds: UseElementBoundingReturn,
-  height: Ref<number>,
-) => {
+const openDropdown = (bounds: UseElementBoundingReturn, height: Ref<number>) => {
   inputElementBounds = bounds
   windowHeight = toRef(height)
   instances.value.forEach((instance) => {
@@ -178,9 +157,7 @@ const moveFocusToDropdown = (lastOption = false) => {
   if (lastOption) {
     focusElement = focusableElements[focusableElements.length - 1]
   } else {
-    const selected = focusableElements.find(
-      (el) => el.getAttribute('aria-selected') === 'true',
-    )
+    const selected = focusableElements.find((el) => el.getAttribute('aria-selected') === 'true')
     if (selected) focusElement = selected
   }
 
@@ -262,14 +239,10 @@ const select = (option: FlatSelectOption) => {
 
 const hasMoreSelectableOptions = computed(() => {
   if (props.currentPath.length)
-    return props.currentOptions.some(
-      (option) => !option.disabled && !isCurrentValue(option.value),
-    )
+    return props.currentOptions.some((option) => !option.disabled && !isCurrentValue(option.value))
 
   return (
-    props.options.filter(
-      (option) => !option.disabled && !isCurrentValue(option.value),
-    ).length > 0
+    props.options.filter((option) => !option.disabled && !isCurrentValue(option.value)).length > 0
   )
 })
 
@@ -328,20 +301,11 @@ const nextPageCallback = (option?: FlatSelectOption, noFocus?: boolean) => {
   }
 }
 
-const goToNextPage = ({
-  option,
-  noFocus,
-}: {
-  option: FlatSelectOption
-  noFocus?: boolean
-}) => {
+const goToNextPage = ({ option, noFocus }: { option: FlatSelectOption; noFocus?: boolean }) => {
   nextPageCallback(option, noFocus)
 }
 
-const maybeGoToNextOrPreviousPage = (
-  option: FlatSelectOption,
-  direction: 'left' | 'right',
-) => {
+const maybeGoToNextOrPreviousPage = (option: FlatSelectOption, direction: 'left' | 'right') => {
   if (
     (locale.localeData?.dir === 'rtl' && direction === 'right') ||
     (locale.localeData?.dir === 'ltr' && direction === 'left')
@@ -364,8 +328,7 @@ const highlightedOptions = computed(() =>
 
     if (option.parents) {
       parentPaths = option.parents.map((parentValue) => {
-        const parentOption =
-          props.optionValueLookup[parentValue as string | number]
+        const parentOption = props.optionValueLookup[parentValue as string | number]
 
         return `${parentOption.label || parentOption.value} \u203A `
       })
@@ -387,9 +350,7 @@ const highlightedOptions = computed(() =>
         option.match.index + option.match[0].length,
       )
 
-      const labelAfterMatch = label.slice(
-        option.match.index + option.match[0].length,
-      )
+      const labelAfterMatch = label.slice(option.match.index + option.match[0].length)
 
       const highlightClasses = option.disabled
         ? 'bg-blue-200 dark:bg-gray-300'
@@ -441,19 +402,13 @@ const { collapseDuration, collapseEnter, collapseAfterEnter, collapseLeave } =
             }"
           >
             <div
-              v-if="
-                currentPath.length || (multiple && hasMoreSelectableOptions)
-              "
+              v-if="currentPath.length || (multiple && hasMoreSelectableOptions)"
               class="flex w-full justify-between gap-2 px-2.5 py-1.5"
             >
               <CommonLabel
                 v-if="currentPath.length"
                 class="text-blue-800 hover:text-black focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-blue-800 dark:hover:text-white"
-                :prefix-icon="
-                  locale.localeData?.dir === 'rtl'
-                    ? 'chevron-right'
-                    : 'chevron-left'
-                "
+                :prefix-icon="locale.localeData?.dir === 'rtl' ? 'chevron-right' : 'chevron-left'"
                 :aria-label="$t('Back to previous page')"
                 size="small"
                 role="button"
@@ -475,11 +430,7 @@ const { collapseDuration, collapseEnter, collapseAfterEnter, collapseLeave } =
                 @keypress.enter.prevent.stop="selectAll()"
                 @keypress.space.prevent.stop="selectAll()"
               >
-                {{
-                  currentPath.length
-                    ? $t('select visible options')
-                    : $t('select all options')
-                }}
+                {{ currentPath.length ? $t('select visible options') : $t('select all options') }}
               </CommonLabel>
             </div>
             <div
@@ -508,12 +459,8 @@ const { collapseDuration, collapseEnter, collapseAfterEnter, collapseLeave } =
                 :no-label-translate="noOptionsLabelTranslation"
                 @select="select($event)"
                 @next="goToNextPage($event)"
-                @keydown.right.prevent="
-                  maybeGoToNextOrPreviousPage(option, 'right')
-                "
-                @keydown.left.prevent="
-                  maybeGoToNextOrPreviousPage(option, 'left')
-                "
+                @keydown.right.prevent="maybeGoToNextOrPreviousPage(option, 'right')"
+                @keydown.left.prevent="maybeGoToNextOrPreviousPage(option, 'left')"
               />
               <FieldTreeSelectInputDropdownItem
                 v-if="!options.length"

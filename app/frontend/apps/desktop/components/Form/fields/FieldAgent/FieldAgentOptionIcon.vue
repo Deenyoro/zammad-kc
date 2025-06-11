@@ -10,10 +10,5 @@ defineProps<{
 </script>
 
 <template>
-  <CommonUserAvatar
-    v-if="option.user"
-    :entity="option.user"
-    size="xs"
-    no-indicator
-  />
+  <CommonUserAvatar v-if="option.user" :entity="option.user" size="xs" no-indicator />
 </template>

@@ -7,8 +7,5 @@ import type { User } from '#shared/graphql/types.ts'
 export const userDisplayName = (user: Partial<User>): string => {
   const { fullname, email, phone, login } = user
 
-  return (
-    [fullname, email, phone, login].find((elem) => elem && !isEmpty(elem)) ||
-    '-'
-  )
+  return [fullname, email, phone, login].find((elem) => elem && !isEmpty(elem)) || '-'
 }

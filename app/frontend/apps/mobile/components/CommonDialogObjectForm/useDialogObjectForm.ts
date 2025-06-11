@@ -10,17 +10,10 @@ import type { Props } from './CommonDialogObjectForm.vue'
 interface ObjectDescription extends Omit<Props, 'name' | 'type'> {
   onSuccess?(data: unknown): void
   onError?(): void
-  onChangedField?(
-    fieldName: string,
-    newValue: FormFieldValue,
-    oldValue: FormFieldValue,
-  ): void
+  onChangedField?(fieldName: string, newValue: FormFieldValue, oldValue: FormFieldValue): void
 }
 
-export const useDialogObjectForm = (
-  name: string,
-  type: EnumObjectManagerObjects,
-) => {
+export const useDialogObjectForm = (name: string, type: EnumObjectManagerObjects) => {
   const dialog = useDialog({
     name,
     component: () => import('./CommonDialogObjectForm.vue'),

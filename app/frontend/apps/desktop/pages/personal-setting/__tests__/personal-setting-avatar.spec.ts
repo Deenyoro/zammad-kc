@@ -163,9 +163,7 @@ describe('avatar personal settings', () => {
 
     await waitForNextTick()
 
-    expect(
-      await view.findByRole('dialog', { name: 'Delete Object' }),
-    ).toBeInTheDocument()
+    expect(await view.findByRole('dialog', { name: 'Delete Object' })).toBeInTheDocument()
 
     await view.events.click(view.getByRole('button', { name: 'Delete Object' }))
 
@@ -213,9 +211,7 @@ describe('avatar personal settings', () => {
     expect(flyout).toBeInTheDocument()
 
     const flyoutContent = within(flyout)
-    expect(
-      await flyoutContent.findByTestId('common-avatar'),
-    ).toBeInTheDocument()
+    expect(await flyoutContent.findByTestId('common-avatar')).toBeInTheDocument()
 
     mockUserCurrentAvatarAddMutation({
       userCurrentAvatarAdd: {
@@ -261,9 +257,7 @@ describe('avatar personal settings', () => {
       vi.spyOn(VueUse, 'usePermission').mockImplementation(() => {
         // Return a mock ref object based on the permission you are testing
         // You can control the returned value based on the permissionName if needed
-        return ref(
-          mockPermissionState,
-        ) as unknown as VueUse.UsePermissionReturnWithControls
+        return ref(mockPermissionState) as unknown as VueUse.UsePermissionReturnWithControls
       })
     })
 
@@ -308,9 +302,7 @@ describe('avatar personal settings', () => {
       expect(flyout).toBeInTheDocument()
 
       expect(
-        await view.findByLabelText(
-          'Use the camera to take a photo for the avatar.',
-        ),
+        await view.findByLabelText('Use the camera to take a photo for the avatar.'),
       ).toBeInTheDocument()
 
       const captureButton = view.getByRole('button', {
@@ -355,9 +347,7 @@ describe('avatar personal settings', () => {
       expect(flyout).toBeInTheDocument()
 
       expect(
-        view.getByText(
-          'Accessing your camera is forbidden. Please check your settings.',
-        ),
+        view.getByText('Accessing your camera is forbidden. Please check your settings.'),
       ).toBeInTheDocument()
     })
   })

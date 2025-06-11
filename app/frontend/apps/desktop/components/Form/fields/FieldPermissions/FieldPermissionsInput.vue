@@ -31,13 +31,10 @@ const valueLookup = computed<Record<string, boolean>>(() => {
 })
 
 const parentChildLookup = ref(
-  props.context.options.reduce(
-    (lookup: Record<string, PermissionsChildOption[]>, option) => {
-      lookup[option.value] = option.children
-      return lookup
-    },
-    {},
-  ),
+  props.context.options.reduce((lookup: Record<string, PermissionsChildOption[]>, option) => {
+    lookup[option.value] = option.children
+    return lookup
+  }, {}),
 )
 
 const initializeCollapseState = (key: string) =>

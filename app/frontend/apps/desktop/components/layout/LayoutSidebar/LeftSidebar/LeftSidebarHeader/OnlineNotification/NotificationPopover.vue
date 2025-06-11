@@ -26,9 +26,7 @@ defineEmits<{
 
 const sectionElement = useTemplateRef('section')
 
-const { reachedTop, isScrollable } = useElementScroll(
-  sectionElement as Ref<HTMLElement>,
-)
+const { reachedTop, isScrollable } = useElementScroll(sectionElement as Ref<HTMLElement>)
 </script>
 
 <template>

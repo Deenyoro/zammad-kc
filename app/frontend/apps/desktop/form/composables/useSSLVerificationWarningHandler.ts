@@ -14,8 +14,7 @@ export const useSSLVerificationWarningHandler = () =>
       ),
     },
     (field) => !field.props.disabled && field.props.value === false,
-    (changedField, fields) =>
-      !fields.sslVerify.props.disabled && changedField?.newValue === false,
+    (changedField, fields) => !fields.sslVerify.props.disabled && changedField?.newValue === false,
     (node, addAlert, clearAlert) => {
       const { props, value } = node
 

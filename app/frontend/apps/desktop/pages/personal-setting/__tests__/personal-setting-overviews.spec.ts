@@ -88,9 +88,7 @@ describe('personal settings for token access', () => {
 
     await waitForNextTick()
 
-    expect(
-      await view.findByRole('dialog', { name: 'Confirmation' }),
-    ).toBeInTheDocument()
+    expect(await view.findByRole('dialog', { name: 'Confirmation' })).toBeInTheDocument()
 
     await view.events.click(view.getByRole('button', { name: 'Yes' }))
 
@@ -106,8 +104,7 @@ describe('personal settings for token access', () => {
 
     const view = await visitView('/personal-setting/ticket-overviews')
 
-    const overviewUpdateSubscription =
-      getUserCurrentOverviewOrderingUpdatesSubscriptionHandler()
+    const overviewUpdateSubscription = getUserCurrentOverviewOrderingUpdatesSubscriptionHandler()
 
     userCurrentTicketOverviews.forEach((overview) => {
       expect(view.getByText(overview.name)).toBeInTheDocument()

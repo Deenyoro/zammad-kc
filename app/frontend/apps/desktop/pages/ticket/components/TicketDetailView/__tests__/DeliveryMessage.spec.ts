@@ -12,8 +12,6 @@ describe('DeliveryMessage', () => {
   it('creates the component with enabled button', () => {
     const wrapper = renderWrapper('something went wrong')
 
-    expect(
-      wrapper.queryByText('Delivery failed: "something went wrong"'),
-    ).toBeInTheDocument()
+    expect(wrapper.queryByText('Delivery failed: "something went wrong"')).toBeInTheDocument()
   })
 })

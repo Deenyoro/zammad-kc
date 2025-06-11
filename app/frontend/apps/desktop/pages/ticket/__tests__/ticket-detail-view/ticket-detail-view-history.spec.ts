@@ -68,13 +68,9 @@ describe('Ticket detail view - history', () => {
 
     const sidebar = view.getByLabelText('Content sidebar')
 
-    await view.events.click(
-      within(sidebar).getByRole('button', { name: 'Action menu button' }),
-    )
+    await view.events.click(within(sidebar).getByRole('button', { name: 'Action menu button' }))
 
-    await view.events.click(
-      await view.findByRole('button', { name: 'History' }),
-    )
+    await view.events.click(await view.findByRole('button', { name: 'History' }))
 
     await waitForNextTick()
 
@@ -86,9 +82,7 @@ describe('Ticket detail view - history', () => {
       name: 'Ticket History',
     })
 
-    await waitFor(() =>
-      expect(within(flyout).getByText('Created')).toBeInTheDocument(),
-    )
+    await waitFor(() => expect(within(flyout).getByText('Created')).toBeInTheDocument())
 
     expect(within(flyout).getByText('Created')).toBeInTheDocument()
     expect(within(flyout).getByText('John Doe')).toBeInTheDocument()

@@ -23,9 +23,7 @@ const mockOrganizationObjectManagerAttributes = () => {
 const getObjectAttributeLookup = async () => {
   mockOrganizationObjectManagerAttributes()
 
-  const { attributesLookup } = useObjectAttributes(
-    EnumObjectManagerObjects.Organization,
-  )
+  const { attributesLookup } = useObjectAttributes(EnumObjectManagerObjects.Organization)
   await waitForTimeout()
 
   return attributesLookup

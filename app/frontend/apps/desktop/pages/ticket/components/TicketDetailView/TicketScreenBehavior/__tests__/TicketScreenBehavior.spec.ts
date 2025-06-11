@@ -22,9 +22,7 @@ describe('TicketScreenBehavior', () => {
     })
     const wrapper = renderTicketScreenBehavior()
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Stay on tab' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Stay on tab' }))
 
     const menu = await wrapper.findByRole('menu')
 
@@ -38,9 +36,7 @@ describe('TicketScreenBehavior', () => {
     // :TODO Add this option as soon as overview is implemented
     // expect(menu).toHaveTextContent('Next in overview')
 
-    expect(
-      within(menu).getByRole('checkbox', { checked: true }),
-    ).toHaveTextContent('Stay on tab')
+    expect(within(menu).getByRole('checkbox', { checked: true })).toHaveTextContent('Stay on tab')
   })
 
   it('displays as a selected default ticket_secondary_action from config', async () => {
@@ -56,15 +52,11 @@ describe('TicketScreenBehavior', () => {
 
     const wrapper = renderTicketScreenBehavior()
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Close tab' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Close tab' }))
 
     const menu = await wrapper.findByRole('menu')
 
-    expect(
-      within(menu).getByRole('checkbox', { checked: true }),
-    ).toHaveTextContent('Close tab')
+    expect(within(menu).getByRole('checkbox', { checked: true })).toHaveTextContent('Close tab')
   })
 
   it('defaults to stay on tab if other application config and user preferences are not set', async () => {
@@ -80,29 +72,21 @@ describe('TicketScreenBehavior', () => {
 
     const wrapper = renderTicketScreenBehavior()
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Stay on tab' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Stay on tab' }))
 
     const menu = await wrapper.findByRole('menu')
 
-    expect(
-      within(menu).getByRole('checkbox', { checked: true }),
-    ).toHaveTextContent('Stay on tab')
+    expect(within(menu).getByRole('checkbox', { checked: true })).toHaveTextContent('Stay on tab')
   })
 
   it('updates screen behavior if option is selected', async () => {
     const wrapper = renderTicketScreenBehavior()
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Stay on tab' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Stay on tab' }))
 
     const menu = await wrapper.findByRole('menu')
 
-    await wrapper.events.click(
-      within(menu).getByRole('checkbox', { name: 'check2 Close tab' }),
-    )
+    await wrapper.events.click(within(menu).getByRole('checkbox', { name: 'check2 Close tab' }))
 
     const calls = await waitForUserCurrentTicketScreenBehaviorMutationCalls()
 

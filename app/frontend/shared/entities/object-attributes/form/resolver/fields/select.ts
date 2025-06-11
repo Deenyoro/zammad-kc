@@ -1,16 +1,13 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import type {
-  FormFieldAdditionalProps,
-  FormSchemaField,
-} from '#shared/components/Form/types.ts'
+import type { FormFieldAdditionalProps, FormSchemaField } from '#shared/components/Form/types.ts'
 import type {
   FieldResolverModule,
   ObjectAttributeSelectOptions,
 } from '#shared/entities/object-attributes/types/resolver.ts'
 import { camelize } from '#shared/utils/formatter.ts'
 
-import FieldResolver from '../FieldResolver.ts'
+import { FieldResolver } from '../FieldResolver.ts'
 
 export type ObjectSelectValue = string | number | boolean
 
@@ -43,17 +40,14 @@ export class FieldResolverSelect extends FieldResolver {
         attributes.relation.filterIds = this.attributeConfig.filter as number[]
       }
 
-      props.belongsToObjectField = camelize(
-        (this.attributeConfig.belongs_to as string) || '',
-      )
+      props.belongsToObjectField = camelize((this.attributeConfig.belongs_to as string) || '')
 
       props.sorting = 'label'
     } else if (this.attributeConfig.options) {
       props.options = this.mappedOptions()
     }
 
-    if (this.attributeType === this.multiFieldAttributeType)
-      props.multiple = true
+    if (this.attributeType === this.multiFieldAttributeType) props.multiple = true
 
     return {
       ...attributes,

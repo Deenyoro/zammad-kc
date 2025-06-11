@@ -69,13 +69,9 @@ describe('TicketSidebarOrganizationContent.vue', () => {
 
     const wrapper = await renderTicketSidebarOrganizationContent()
 
-    expect(wrapper.getByRole('heading', { level: 2 })).toHaveTextContent(
-      'Organization',
-    )
+    expect(wrapper.getByRole('heading', { level: 2 })).toHaveTextContent('Organization')
 
-    expect(
-      wrapper.getByRole('img', { name: 'Avatar (Zammad Foundation)' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('img', { name: 'Avatar (Zammad Foundation)' })).toBeInTheDocument()
 
     expect(wrapper.getByText('Zammad Foundation')).toBeInTheDocument()
     expect(wrapper.getByText('Domain')).toBeInTheDocument()
@@ -89,8 +85,6 @@ describe('TicketSidebarOrganizationContent.vue', () => {
       }),
     ).toHaveAttribute('href', '/user/profile/2')
 
-    expect(
-      wrapper.getByRole('button', { name: 'Show 1 more' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Show 1 more' })).toBeInTheDocument()
   })
 })

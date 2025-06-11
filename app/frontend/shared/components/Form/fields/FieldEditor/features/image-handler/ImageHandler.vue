@@ -16,28 +16,24 @@ const props = defineProps<NodeViewProps>()
 const initialHeight = props.node.attrs.height
 const initialWidth = props.node.attrs.width
 
-const editorAttributes = computed(
-  () => props.editor.options.editorProps.attributes,
-) as ComputedRef<Record<string, unknown>>
+const editorAttributes = computed(() => props.editor.options.editorProps.attributes) as ComputedRef<
+  Record<string, unknown>
+>
 
 const isResized = ref(false)
 const isResizing = ref(false)
 const imageLoaded = ref(false)
 const isDraggable = computed(() => props.node.attrs.isDraggable)
-const uploadCacheExists = computed(() =>
-  props.node.attrs.src.startsWith('/api/v1/attachments/'),
-)
+const uploadCacheExists = computed(() => props.node.attrs.src.startsWith('/api/v1/attachments/'))
 const uploadFailed = ref(false)
 const src = computed(() => props.node.attrs.src)
 
 const getNodeStyle = () =>
-  props.node?.attrs?.style
-    ?.split?.(';')
-    ?.reduce((acc: Record<string, string>, style: string) => {
-      const [property, value] = style.split(':').map((item) => item.trim())
-      if (property && value) acc[property] = value
-      return acc
-    }, {})
+  props.node?.attrs?.style?.split?.(';')?.reduce((acc: Record<string, string>, style: string) => {
+    const [property, value] = style.split(':').map((item) => item.trim())
+    if (property && value) acc[property] = value
+    return acc
+  }, {})
 
 if (!props.node.attrs.src.startsWith('/api/v1/attachments/')) {
   const { uploadImage } = useImageUpload(
@@ -55,9 +51,7 @@ if (!props.node.attrs.src.startsWith('/api/v1/attachments/')) {
     [
       {
         name: props.node.attrs.alt || 'untitled',
-        type:
-          props.node.attrs.type ||
-          props.node.attrs.src?.match(/^data:(.+);base64/)?.at(1),
+        type: props.node.attrs.type || props.node.attrs.src?.match(/^data:(.+);base64/)?.at(1),
         content: props.node.attrs.content || props.node.attrs.src,
       },
     ],
@@ -98,8 +92,7 @@ const dimensions = reactive({
 })
 
 const onLoadImage = (e: Event) => {
-  if (imageLoaded.value || props.editor.isDestroyed || !props.editor.isEditable)
-    return
+  if (imageLoaded.value || props.editor.isDestroyed || !props.editor.isEditable) return
 
   const img = e.target as HTMLImageElement
   const { naturalWidth, naturalHeight } = img
@@ -183,12 +176,7 @@ const wrapperStyle = computed(() => {
       class="!relative !inline-block"
       @resize-end="stopResizing"
     >
-      <img
-        class="inline-block"
-        :alt="$t('Resize frame')"
-        :src="src"
-        :draggable="isDraggable"
-      />
+      <img class="inline-block" :alt="$t('Resize frame')" :src="src" :draggable="isDraggable" />
     </DraggableResizable>
   </NodeViewWrapper>
 </template>

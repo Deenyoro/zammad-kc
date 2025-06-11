@@ -66,12 +66,7 @@ const variantClasses = computed(() => {
         'dark:text-white',
       ]
     case 'neutral':
-      return [
-        'bg-transparent',
-        'hover:bg-transparent',
-        'text-gray-100',
-        'dark:text-neutral-400',
-      ]
+      return ['bg-transparent', 'hover:bg-transparent', 'text-gray-100', 'dark:text-neutral-400']
     case 'none':
       return []
     case 'secondary':

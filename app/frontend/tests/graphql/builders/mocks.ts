@@ -79,9 +79,7 @@ const requestToKey = (query: DocumentNode) => {
   const operationNode = query.definitions.find(
     (node) => node.kind === Kind.OPERATION_DEFINITION,
   ) as OperationDefinitionNode
-  const operationNameKey = `${operationNode.operation}:${
-    operationNode.name?.value || ''
-  }`
+  const operationNameKey = `${operationNode.operation}:${operationNode.name?.value || ''}`
   const normalized = normalize(query)
   const queryString = query && print(normalized)
   const stringified = JSON.stringify({ query: queryString })
@@ -95,7 +93,6 @@ const stripQueryData = (
   fragments: FragmentDefinitionNode[],
   resultData: any,
   newData: any = {},
-  // eslint-disable-next-line sonarjs/cognitive-complexity
 ) => {
   if (!('selectionSet' in definition) || !definition.selectionSet) {
     return newData
@@ -110,7 +107,6 @@ const stripQueryData = (
   }
 
   const name = definition.name!.value
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   const processNode = (node: SelectionNode) => {
     if (node.kind === Kind.INLINE_FRAGMENT) {
       const condition = node.typeCondition
@@ -124,17 +120,14 @@ const stripQueryData = (
       return
     }
     if (node.kind === Kind.FRAGMENT_SPREAD) {
-      const fragment = fragments.find(
-        (fragment) => fragment.name.value === node.name.value,
-      )
+      const fragment = fragments.find((fragment) => fragment.name.value === node.name.value)
       if (fragment) {
         fragment.selectionSet.selections.forEach(processNode)
       }
       return
     }
 
-    const fieldName =
-      'alias' in node && node.alias ? node.alias?.value : node.name!.value
+    const fieldName = 'alias' in node && node.alias ? node.alias?.value : node.name!.value
     if (!fieldName) {
       return
     }
@@ -145,12 +138,7 @@ const stripQueryData = (
           stripQueryData(node, fragments, item, newData[name]),
         )
       } else {
-        newData[fieldName] = stripQueryData(
-          node,
-          fragments,
-          resultValue,
-          newData[name],
-        )
+        newData[fieldName] = stripQueryData(node, fragments, resultValue, newData[name])
       }
     } else {
       newData[fieldName] = resultValue ?? null
@@ -248,10 +236,7 @@ export interface TestSubscriptionHandler<T extends Record<string, any> = any> {
   closed(): boolean
 }
 
-const mockSubscriptionHanlders = new Map<
-  string,
-  TestSubscriptionHandler<Record<string, any>>
->()
+const mockSubscriptionHanlders = new Map<string, TestSubscriptionHandler<Record<string, any>>>()
 export const getGraphQLSubscriptionHandler = <T extends Record<string, any>>(
   documentOrName: DocumentNode | (keyof T & string),
 ) => {
@@ -290,22 +275,17 @@ const getQueryDefaults = (
   if (typeof userDefaults === 'function') {
     userDefaults = userDefaults(variables)
   }
-  if (!variables.input || definition.operation !== OperationTypeNode.MUTATION)
-    return userDefaults
+  if (!variables.input || definition.operation !== OperationTypeNode.MUTATION) return userDefaults
   const inputVariableNode = definition.variableDefinitions?.find((node) => {
     return node.variable.name.value === 'input'
   })
   if (!inputVariableNode) return userDefaults
   const objectInputType = getInputObjectType(inputVariableNode.type)
-  if (!objectInputType || !objectInputType.endsWith('Input'))
-    return userDefaults
+  if (!objectInputType || !objectInputType.endsWith('Input')) return userDefaults
 
   const objectType = objectInputType.slice(0, -5)
   const mutationName = definition.name!.value
-  const mutationDefinition = getOperationDefinition(
-    definition.operation,
-    mutationName,
-  )
+  const mutationDefinition = getOperationDefinition(definition.operation, mutationName)
   // expect object to be in the first level, otherwise we might update the wrong object
   const payloadDefinition = getObjectDefinition(mutationDefinition.type.name)
   const sameTypeField = payloadDefinition.fields?.find((node) => {
@@ -327,7 +307,6 @@ const getQueryDefaults = (
 //  - mocks mutations, respects defaults, but also looks for "$input" variable and updates the object if it's inside the first level
 //  - mocks result for subscriptions, respects defaults
 class MockLink extends ApolloLink {
-  // eslint-disable-next-line class-methods-use-this
   request(operation: Operation): Observable<FetchResult> | null {
     const { query, variables } = operation
     const definition = query.definitions[0]

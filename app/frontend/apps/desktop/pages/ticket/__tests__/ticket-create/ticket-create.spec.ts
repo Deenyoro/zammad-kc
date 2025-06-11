@@ -11,10 +11,7 @@ import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
 import { mockObjectManagerFrontendAttributesQuery } from '#shared/entities/object-attributes/graphql/queries/objectManagerFrontendAttributes.mocks.ts'
 import { waitForTicketCreateMutationCalls } from '#shared/entities/ticket/graphql/mutations/create.mocks.ts'
-import {
-  EnumTaskbarEntity,
-  EnumTaskbarEntityAccess,
-} from '#shared/graphql/types.ts'
+import { EnumTaskbarEntity, EnumTaskbarEntityAccess } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 
@@ -32,16 +29,12 @@ vi.hoisted(() => {
   vi.setSystemTime('2024-11-11T00:00:00Z')
 })
 
-describe('ticket create view', async () => {
-  describe('view with granted access', async () => {
+describe('ticket create view', () => {
+  describe('view with granted access', () => {
     beforeEach(() => {
       mockApplicationConfig({
         ui_task_mananger_max_task_count: 30,
-        ui_ticket_create_available_types: [
-          'phone-in',
-          'phone-out',
-          'email-out',
-        ],
+        ui_ticket_create_available_types: ['phone-in', 'phone-out', 'email-out'],
       })
       mockPermissions(['ticket.agent'])
     })
@@ -53,9 +46,7 @@ describe('ticket create view', async () => {
 
       await view.events.type(await view.findByLabelText('Title'), 'Test Ticket')
 
-      await view.events.click(
-        await view.findByRole('button', { name: 'Discard Changes' }),
-      )
+      await view.events.click(await view.findByRole('button', { name: 'Discard Changes' }))
 
       const dialog = await view.findByRole('dialog', {
         name: 'Unsaved Changes',
@@ -63,9 +54,7 @@ describe('ticket create view', async () => {
 
       const dialogView = within(dialog)
 
-      await view.events.click(
-        dialogView.getByRole('button', { name: 'Cancel & Go Back' }),
-      )
+      await view.events.click(dialogView.getByRole('button', { name: 'Cancel & Go Back' }))
 
       expect(view.getByText('Test Ticket')).toBeInTheDocument()
     })
@@ -83,9 +72,7 @@ describe('ticket create view', async () => {
 
       await view.events.click(view.getByRole('button', { name: 'Create' }))
 
-      expect(await view.findAllByText('This field is required.')).toHaveLength(
-        4,
-      )
+      expect(await view.findAllByText('This field is required.')).toHaveLength(4)
     })
 
     it('creates a new ticket', async () => {
@@ -107,9 +94,7 @@ describe('ticket create view', async () => {
       // Page title defaults back when title is cleared
       await view.events.clear(view.getByLabelText('Title'))
       await waitFor(() =>
-        expect(
-          view.getByRole('heading', { level: 1, name: 'New Ticket' }),
-        ).toBeInTheDocument(),
+        expect(view.getByRole('heading', { level: 1, name: 'New Ticket' })).toBeInTheDocument(),
       )
 
       await view.events.type(view.getByLabelText('Title'), 'Test Ticket')
@@ -128,18 +113,12 @@ describe('ticket create view', async () => {
       const sidebar = view.getByLabelText('Content sidebar')
 
       // Sidebar CUSTOMER
-      expect(
-        within(sidebar).getByLabelText('Avatar (Nicole Braun)'),
-      ).toBeInTheDocument()
+      expect(within(sidebar).getByLabelText('Avatar (Nicole Braun)')).toBeInTheDocument()
       expect(within(sidebar).getByText('Zammad Foundation')).toBeInTheDocument()
       expect(within(sidebar).getByText('open tickets')).toBeInTheDocument()
-      expect(
-        within(sidebar).getByText('nicole.braun@zammad.org'),
-      ).toBeInTheDocument()
+      expect(within(sidebar).getByText('nicole.braun@zammad.org')).toBeInTheDocument()
       expect(within(sidebar).getByText('closed tickets')).toBeInTheDocument()
-      expect(within(sidebar).getByLabelText('Open tickets')).toHaveTextContent(
-        '17',
-      )
+      expect(within(sidebar).getByLabelText('Open tickets')).toHaveTextContent('17')
 
       // Sidebar Organization
       handleMockOrganizationQuery()
@@ -149,15 +128,10 @@ describe('ticket create view', async () => {
       expect(view.getByText('Organization')).toBeInTheDocument()
 
       expect(view.getByText('Members')).toBeInTheDocument()
-      expect(
-        await view.findByLabelText('Avatar (Nicole Braun)'),
-      ).toBeInTheDocument()
+      expect(await view.findByLabelText('Avatar (Nicole Braun)')).toBeInTheDocument()
 
       // Text field
-      await view.events.type(
-        view.getByRole('textbox', { name: 'Text' }),
-        'Test ticket text',
-      )
+      await view.events.type(view.getByRole('textbox', { name: 'Text' }), 'Test ticket text')
 
       // Group field
       await view.events.click(view.getByLabelText('Group'))
@@ -169,9 +143,7 @@ describe('ticket create view', async () => {
 
       // Priority Field
       await view.events.click(view.getByLabelText('State'))
-      await view.events.click(
-        view.getByRole('option', { name: 'pending reminder' }),
-      )
+      await view.events.click(view.getByRole('option', { name: 'pending reminder' }))
 
       // Date selection Field on pending reminder
       await view.events.click(view.getByText('Pending till'))
@@ -218,16 +190,12 @@ describe('ticket create view', async () => {
     it('renders view correctly', async () => {
       const view = await visitView('/ticket/create')
 
-      expect(
-        await view.findByRole('heading', { level: 1, name: 'New Ticket' }),
-      ).toBeInTheDocument()
+      expect(await view.findByRole('heading', { level: 1, name: 'New Ticket' })).toBeInTheDocument()
 
       expect(view.getByRole('tablist')).toBeInTheDocument()
 
       // Default tab is the first one
-      expect(
-        view.getByRole('tab', { selected: true, name: 'Received Call' }),
-      ).toBeInTheDocument()
+      expect(view.getByRole('tab', { selected: true, name: 'Received Call' })).toBeInTheDocument()
 
       rendersFields(view)
     })
@@ -235,13 +203,9 @@ describe('ticket create view', async () => {
     it('cancels ticket creation', async () => {
       const view = await visitView('/ticket/create')
 
-      expect(
-        await view.findByRole('heading', { level: 1, name: 'New Ticket' }),
-      ).toBeInTheDocument()
+      expect(await view.findByRole('heading', { level: 1, name: 'New Ticket' })).toBeInTheDocument()
 
-      await view.events.click(
-        view.getByRole('button', { name: 'Cancel & Go Back' }),
-      )
+      await view.events.click(view.getByRole('button', { name: 'Cancel & Go Back' }))
 
       await waitFor(() =>
         expect(
@@ -255,9 +219,7 @@ describe('ticket create view', async () => {
 
       await view.events.click(await view.findByText('Send Email'))
 
-      expect(
-        view.getByRole('tab', { selected: true, name: 'Send Email' }),
-      ).toBeInTheDocument()
+      expect(view.getByRole('tab', { selected: true, name: 'Send Email' })).toBeInTheDocument()
       expect(view.getByLabelText('CC')).toBeInTheDocument()
       rendersFields(view)
     })
@@ -267,9 +229,7 @@ describe('ticket create view', async () => {
 
       await view.events.click(await view.findByText('Outbound Call'))
 
-      expect(
-        view.getByRole('tab', { selected: true, name: 'Outbound Call' }),
-      ).toBeInTheDocument()
+      expect(view.getByRole('tab', { selected: true, name: 'Outbound Call' })).toBeInTheDocument()
       rendersFields(view)
     })
 
@@ -277,8 +237,7 @@ describe('ticket create view', async () => {
       await mockApplicationConfig({
         ticket_duplicate_detection: true,
         ticket_duplicate_detection_title: 'Similar tickets found',
-        ticket_duplicate_detection_body:
-          'Tickets with the same attributes were found.',
+        ticket_duplicate_detection_body: 'Tickets with the same attributes were found.',
       })
 
       handleMockFormUpdaterQuery({
@@ -293,17 +252,13 @@ describe('ticket create view', async () => {
 
       await view.events.type(await view.findByLabelText('Title'), 'foo title')
 
-      await waitFor(() =>
-        expect(view.getByText('Similar tickets found')).toBeInTheDocument(),
-      )
+      await waitFor(() => expect(view.getByText('Similar tickets found')).toBeInTheDocument())
 
       expect(view.getByTestId('common-alert')).toHaveTextContent('foo title')
 
       expect(view.getByIconName('exclamation-triangle')).toBeInTheDocument()
 
-      expect(
-        view.getByText('Tickets with the same attributes were found.'),
-      ).toBeInTheDocument()
+      expect(view.getByText('Tickets with the same attributes were found.')).toBeInTheDocument()
     })
 
     it('prevents submission on incomplete form', async () => {
@@ -319,9 +274,7 @@ describe('ticket create view', async () => {
 
       await view.events.click(view.getByRole('button', { name: 'Create' }))
 
-      expect(await view.findAllByText('This field is required.')).toHaveLength(
-        4,
-      )
+      expect(await view.findAllByText('This field is required.')).toHaveLength(4)
     })
 
     it('discards unsaved changes', async () => {
@@ -329,21 +282,15 @@ describe('ticket create view', async () => {
 
       const view = await visitView('/ticket/create')
 
-      expect(
-        await view.findByRole('button', { name: 'Cancel & Go Back' }),
-      ).toBeInTheDocument()
+      expect(await view.findByRole('button', { name: 'Cancel & Go Back' })).toBeInTheDocument()
 
       await view.events.type(view.getByLabelText('Title'), 'Test Ticket')
 
       await waitFor(() =>
-        expect(
-          view.queryByRole('button', { name: 'Cancel & Go Back' }),
-        ).not.toBeInTheDocument(),
+        expect(view.queryByRole('button', { name: 'Cancel & Go Back' })).not.toBeInTheDocument(),
       )
 
-      await view.events.click(
-        await view.findByRole('button', { name: 'Discard Changes' }),
-      )
+      await view.events.click(await view.findByRole('button', { name: 'Discard Changes' }))
 
       const dialog = await view.findByRole('dialog', {
         name: 'Unsaved Changes',
@@ -354,19 +301,13 @@ describe('ticket create view', async () => {
       const dialogView = within(dialog)
 
       expect(
-        await dialogView.findByText(
-          'Are you sure? You have unsaved changes that will get lost.',
-        ),
+        await dialogView.findByText('Are you sure? You have unsaved changes that will get lost.'),
       )
 
-      await view.events.click(
-        dialogView.getByRole('button', { name: 'Discard Changes' }),
-      )
+      await view.events.click(dialogView.getByRole('button', { name: 'Discard Changes' }))
 
       // should not be in the document anymore
-      await waitFor(() =>
-        expect(view.queryByLabelText('Title')).not.toBeInTheDocument(),
-      )
+      await waitFor(() => expect(view.queryByLabelText('Title')).not.toBeInTheDocument())
     })
 
     it('supports updating dirty flag in the associated taskbar tab', async () => {
@@ -395,9 +336,7 @@ describe('ticket create view', async () => {
 
       const view = await visitView(`/ticket/create/${uid}`)
 
-      expect(
-        await view.findByRole('button', { name: 'Cancel & Go Back' }),
-      ).toBeInTheDocument()
+      expect(await view.findByRole('button', { name: 'Cancel & Go Back' })).toBeInTheDocument()
 
       await view.events.type(view.getByLabelText('Title'), 'Test Ticket')
 
@@ -458,9 +397,7 @@ describe('ticket create view', async () => {
 
       const dialogView = within(dialog)
       expect(
-        dialogView.getByText(
-          'Did you plan to include attachments with this message?',
-        ),
+        dialogView.getByText('Did you plan to include attachments with this message?'),
       ).toBeInTheDocument()
     })
   })
@@ -470,7 +407,7 @@ describe('ticket create view', async () => {
       mockPermissions(['ticket.customer'])
     })
 
-    describe('view disabled customer ticket create', async () => {
+    describe('view disabled customer ticket create', () => {
       beforeEach(() => {
         mockApplicationConfig({
           customer_ticket_create: false,
@@ -483,18 +420,14 @@ describe('ticket create view', async () => {
 
         const router = getTestRouter()
 
-        await waitFor(() =>
-          expect(router.currentRoute.value.path).toBe('/error-tab'),
-        )
+        await waitFor(() => expect(router.currentRoute.value.path).toBe('/error-tab'))
 
         expect(view.getByText('Forbidden')).toBeInTheDocument()
-        expect(
-          view.getByText('Creating new tickets via web is disabled.'),
-        ).toBeInTheDocument()
+        expect(view.getByText('Creating new tickets via web is disabled.')).toBeInTheDocument()
       })
     })
 
-    describe('view enabled customer ticket create', async () => {
+    describe('view enabled customer ticket create', () => {
       beforeEach(() => {
         mockApplicationConfig({
           customer_ticket_create: true,
@@ -511,10 +444,7 @@ describe('ticket create view', async () => {
 
         const view = await visitView('/ticket/create')
 
-        await view.events.type(
-          await view.findByLabelText('Title'),
-          'Test Customer Ticket',
-        )
+        await view.events.type(await view.findByLabelText('Title'), 'Test Customer Ticket')
 
         // Text field
         await view.events.type(

@@ -34,10 +34,7 @@ const useHtmlLinks = (urlPrefix: '/desktop' | '/mobile') => {
     try {
       const url = new URL(link.href)
 
-      if (
-        url.origin === window.location.origin ||
-        url.origin === baseUrl.value
-      ) {
+      if (url.origin === window.location.origin || url.origin === baseUrl.value) {
         const redirectRoute = getRedirectRoute(url)
         if (redirectRoute) {
           event.preventDefault()

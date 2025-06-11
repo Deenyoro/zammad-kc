@@ -82,9 +82,7 @@ describe('Form - Field - Toggle List', () => {
     expect(selectOptions).toHaveLength(testOptionsWithDescription.length)
 
     selectOptions.forEach((selectOption, index) => {
-      expect(selectOption).toHaveTextContent(
-        testOptionsWithDescription[index].label,
-      )
+      expect(selectOption).toHaveTextContent(testOptionsWithDescription[index].label)
     })
   })
 })
@@ -105,10 +103,7 @@ describe('Fields - Field Toggle List - Input Checklist', () => {
       name: 'test_name',
     })
 
-    expect(view.getByLabelText('Toggle list')).toHaveAttribute(
-      'name',
-      'test_name',
-    )
+    expect(view.getByLabelText('Toggle list')).toHaveAttribute('name', 'test_name')
   })
 
   it('implements blur handler', async () => {
@@ -137,10 +132,7 @@ describe('Fields - Field Toggle List - Input Checklist', () => {
     }
 
     await waitFor(() => {
-      expect(getNode('toggleList')?.value).toEqual([
-        testOptions[1].value,
-        testOptions[2].value,
-      ])
+      expect(getNode('toggleList')?.value).toEqual([testOptions[1].value, testOptions[2].value])
     })
   })
 
@@ -176,10 +168,7 @@ describe('Fields - Field Toggle List - Input Checklist', () => {
       'test-attribute': 'test_value',
     })
 
-    expect(view.getByLabelText('Toggle list')).toHaveAttribute(
-      'test-attribute',
-      'test_value',
-    )
+    expect(view.getByLabelText('Toggle list')).toHaveAttribute('test-attribute', 'test_value')
   })
 
   it('implements standardized classes', async () => {

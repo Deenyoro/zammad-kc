@@ -15,8 +15,7 @@ import {
 describe('useTicketArticleRetryMediaDownload', () => {
   const testArticleId = ref(convertToGraphQLId('Ticket::Article', 1))
 
-  const { loading, tryAgain } =
-    useTicketArticleRetryMediaDownload(testArticleId)
+  const { loading, tryAgain } = useTicketArticleRetryMediaDownload(testArticleId)
 
   describe('tryAgain', () => {
     it('resolves on success', async () => {
@@ -47,7 +46,7 @@ describe('useTicketArticleRetryMediaDownload', () => {
         },
       })
 
-      expect(tryAgain()).rejects.toThrow()
+      expect(tryAgain()).rejects.toThrow('')
 
       const calls = await waitForTicketArticleRetryMediaDownloadMutationCalls()
 

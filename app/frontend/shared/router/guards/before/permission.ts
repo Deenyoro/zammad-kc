@@ -7,11 +7,7 @@ import log from '#shared/utils/log.ts'
 
 import { errorOptions } from '../../error.ts'
 
-import type {
-  NavigationGuard,
-  RouteLocationNormalized,
-  NavigationGuardNext,
-} from 'vue-router'
+import type { NavigationGuard, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
 
 const permissionGuard: NavigationGuard = (
   to: RouteLocationNormalized,
@@ -27,17 +23,13 @@ const permissionGuard: NavigationGuard = (
   }
 
   // check the permission for the current user...
-  const hasPermission = useSessionStore().hasPermission(
-    to.meta.requiredPermission,
-  )
+  const hasPermission = useSessionStore().hasPermission(to.meta.requiredPermission)
   if (!hasPermission) {
     log.debug(`Route guard for '${to.path}': permission - forbidden.`)
 
     errorOptions.value = {
       title: __('Forbidden'),
-      message: __(
-        "You don't have the necessary permissions to access this page.",
-      ),
+      message: __("You don't have the necessary permissions to access this page."),
       statusCode: ErrorStatusCodes.Forbidden,
       route: to.fullPath,
     }

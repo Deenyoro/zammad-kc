@@ -1,8 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import renderComponent, {
-  getTestRouter,
-} from '#tests/support/components/renderComponent.ts'
+import renderComponent, { getTestRouter } from '#tests/support/components/renderComponent.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 
 import { waitForTicketMergeMutationCalls } from '#shared/entities/ticket/graphql/mutations/merge.mocks.ts'
@@ -32,9 +30,7 @@ describe('TicketMergeFlyout', () => {
       router: true,
     })
 
-    expect(
-      wrapper.getByRole('heading', { name: 'Merge Tickets', level: 2 }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('heading', { name: 'Merge Tickets', level: 2 })).toBeInTheDocument()
 
     expect(
       await wrapper.findByRole('table', {

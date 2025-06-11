@@ -53,9 +53,7 @@ const adminPasswordAuthError = ref('')
 
 const pageTitle = computed(() => {
   if (requestSent.value) {
-    return __(
-      'Admin password login instructions were sent to your email address.',
-    )
+    return __('Admin password login instructions were sent to your email address.')
   }
 
   return __('Request password login for admin?')
@@ -77,9 +75,7 @@ const send = (data: AdminPasswordAuthRequestData) => {
       requestSent.value = true
     })
     .catch(() => {
-      adminPasswordAuthError.value = __(
-        'The admin password auth email could not be sent.',
-      )
+      adminPasswordAuthError.value = __('The admin password auth email could not be sent.')
     })
 }
 
@@ -116,12 +112,7 @@ const retry = () => {
     </CommonLabel>
 
     <template #boxActions>
-      <CommonButton
-        variant="secondary"
-        size="medium"
-        :disabled="isDisabled"
-        @click="goToLogin()"
-      >
+      <CommonButton variant="secondary" size="medium" :disabled="isDisabled" @click="goToLogin()">
         {{ $t('Cancel & Go Back') }}
       </CommonButton>
 

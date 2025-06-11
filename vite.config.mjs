@@ -1,5 +1,4 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
-/* eslint-disable security/detect-non-literal-fs-filename */
 
 import { createRequire } from 'module'
 import { readFileSync } from 'node:fs'
@@ -22,7 +21,6 @@ const SSL_PATH = resolve(homedir(), '.local/state/localhost.rb')
 
 const isEnvBooleanSet = (value) => ['true', '1'].includes(value)
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export default defineConfig(({ mode, command }) => {
   const isTesting = ['test', 'cypress'].includes(mode)
   const isBuild = command === 'build'

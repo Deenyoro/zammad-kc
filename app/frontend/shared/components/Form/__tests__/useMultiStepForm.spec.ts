@@ -4,10 +4,7 @@ import { type FormKitPlugin, getNode } from '@formkit/core'
 import { waitFor } from '@testing-library/vue'
 import { computed, ref } from 'vue'
 
-import {
-  type ExtendedMountingOptions,
-  renderComponent,
-} from '#tests/support/components/index.ts'
+import { type ExtendedMountingOptions, renderComponent } from '#tests/support/components/index.ts'
 import { waitForNextTick, waitUntil } from '#tests/support/utils.ts'
 
 import Form from '#shared/components/Form/Form.vue'
@@ -62,7 +59,7 @@ const renderForm = async (options: ExtendedMountingOptions<Props> = {}) => {
     attrs: {
       id: 'test-form',
     },
-    props: { ...(options.props || {}) },
+    props: { ...options.props },
   })
 
   await waitUntil(() => wrapper.emitted().settled)
@@ -131,8 +128,7 @@ describe('useMultiStepForm', () => {
   })
 
   it('check visited step after step switch', async () => {
-    const { multiStepPlugin, setMultiStep, visitedSteps } =
-      useMultiStepForm(formNode)
+    const { multiStepPlugin, setMultiStep, visitedSteps } = useMultiStepForm(formNode)
 
     await renderForm({
       props: {

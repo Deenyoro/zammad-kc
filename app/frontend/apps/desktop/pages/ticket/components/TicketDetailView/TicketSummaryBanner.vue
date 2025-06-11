@@ -17,11 +17,8 @@ import { useTicketSummarySeen } from '#desktop/pages/ticket/composables/useTicke
 
 const sidebar = useTicketSidebar()
 
-const {
-  toggleSummaryBanner,
-  hideBannerFromUserPreference,
-  isTicketSummaryFeatureEnabled,
-} = useTicketSummaryBanner()
+const { toggleSummaryBanner, hideBannerFromUserPreference, isTicketSummaryFeatureEnabled } =
+  useTicketSummaryBanner()
 
 const {
   currentSummaryFingerprint,
@@ -83,11 +80,7 @@ const handleHideSummaryMessage = async () => {
     data-test-id="ticket-summary-banner"
     class="ai-stripe relative flex items-center gap-1 rounded-lg px-4 py-3 before:absolute before:top-0 before:right-0 before:left-0"
   >
-    <CommonIcon
-      class="shrink-0 text-blue-800"
-      size="small"
-      name="smart-assist"
-    />
+    <CommonIcon class="shrink-0 text-blue-800" size="small" name="smart-assist" />
 
     <CommonTranslateRenderer
       class="text-sm text-gray-100 dark:text-neutral-400"

@@ -3,10 +3,7 @@
 // import { offsetLimitPagination } from '@apollo/client/utilities'
 
 import type { FieldPolicy } from '@apollo/client/cache/inmemory/policies'
-import type {
-  InMemoryCacheConfig,
-  Reference,
-} from '@apollo/client/cache/inmemory/types'
+import type { InMemoryCacheConfig, Reference } from '@apollo/client/cache/inmemory/types'
 
 const offsetLimitPagination = (
   keyArgs: FieldPolicy<unknown>['keyArgs'] = false,

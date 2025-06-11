@@ -53,10 +53,9 @@ describe('guided setup admin user creation', () => {
       view.getByText('Set up a new system').click()
 
       await waitFor(() => {
-        expect(
-          view,
-          'correctly redirects to guided setup manual',
-        ).toHaveCurrentUrl('/guided-setup/manual')
+        expect(view, 'correctly redirects to guided setup manual').toHaveCurrentUrl(
+          '/guided-setup/manual',
+        )
       })
 
       expect(view.getByText('Create Administrator Account')).toBeInTheDocument()

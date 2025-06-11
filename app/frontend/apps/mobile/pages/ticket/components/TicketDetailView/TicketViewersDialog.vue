@@ -18,17 +18,11 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { viewingUsers, idleUsers } = useTicketLiveUsersDisplay(
-  toRef(() => props.liveUsers),
-)
+const { viewingUsers, idleUsers } = useTicketLiveUsersDisplay(toRef(() => props.liveUsers))
 </script>
 
 <template>
-  <CommonDialog
-    :name="name"
-    :label="__('Ticket viewers')"
-    class="w-full p-4 text-sm"
-  >
+  <CommonDialog :name="name" :label="__('Ticket viewers')" class="w-full p-4 text-sm">
     <CommonSectionMenu
       v-if="viewingUsers.length > 0"
       class="shrink-0 gap-3 py-2"
@@ -46,11 +40,7 @@ const { viewingUsers, idleUsers } = useTicketLiveUsersDisplay(
       v-if="idleUsers.length > 0"
       class="shrink-0 gap-3 py-2"
       :header-label="__('Opened in tabs')"
-      :help="
-        __(
-          'Has ticket open in tabs, but is not actively looking at the ticket.',
-        )
-      "
+      :help="__('Has ticket open in tabs, but is not actively looking at the ticket.')"
     >
       <TicketViewerItem
         v-for="(idleUser, index) in idleUsers"

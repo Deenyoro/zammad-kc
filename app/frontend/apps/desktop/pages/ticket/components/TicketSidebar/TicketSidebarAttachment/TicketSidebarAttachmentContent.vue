@@ -27,9 +27,7 @@ const { attachments: attachmentsWithUrls } = useAttachments({
   attachments: toRef(props, 'ticketAttachments'),
 })
 
-const { showPreview } = useFilePreviewViewer(
-  computed(() => attachmentsWithUrls.value),
-)
+const { showPreview } = useFilePreviewViewer(computed(() => attachmentsWithUrls.value))
 </script>
 
 <template>

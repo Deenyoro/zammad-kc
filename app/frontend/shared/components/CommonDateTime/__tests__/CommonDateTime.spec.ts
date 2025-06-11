@@ -30,10 +30,7 @@ describe('CommonDateTime.vue', () => {
   })
 
   it('renders with prefix', async () => {
-    const view = renderDateTime(
-      { dateTime, type: 'relative' },
-      { prefix: 'prefix-slot' },
-    )
+    const view = renderDateTime({ dateTime, type: 'relative' }, { prefix: 'prefix-slot' })
     expect(view.container).toHaveTextContent('prefix-slot 1 day ago')
   })
 

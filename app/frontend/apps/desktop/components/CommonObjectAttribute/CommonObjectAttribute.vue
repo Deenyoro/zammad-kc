@@ -15,11 +15,7 @@ defineProps<Props>()
       {{ $t(label) }}
     </CommonLabel>
 
-    <CommonLabel
-      tag="div"
-      size="medium"
-      class="break-word text-gray-100! dark:text-neutral-400!"
-    >
+    <CommonLabel tag="div" size="medium" class="break-word text-gray-100! dark:text-neutral-400!">
       <slot>{{ body }}</slot>
     </CommonLabel>
   </div>

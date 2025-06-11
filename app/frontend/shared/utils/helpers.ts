@@ -12,9 +12,7 @@ export const truthy = <T>(value: Maybe<T>): value is IsTruthy<T> => {
   return !!value
 }
 
-export const edgesToArray = <T>(
-  object?: Maybe<{ edges?: Maybe<{ node: T }[]> }>,
-): T[] => {
+export const edgesToArray = <T>(object?: Maybe<{ edges?: Maybe<{ node: T }[]> }>): T[] => {
   return object?.edges?.map((edge) => edge.node) || []
 }
 
@@ -99,14 +97,10 @@ export const createDeferred = <T>() => {
     resolve = res
     reject = rej
   })
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return { resolve: resolve!, reject: reject!, promise }
 }
 
-export const waitForElement = async (
-  query: string,
-  tries = 60,
-): Promise<Element | null> => {
+export const waitForElement = async (query: string, tries = 60): Promise<Element | null> => {
   if (tries === 0) return null
   const element = document.querySelector(query)
   if (element) return element

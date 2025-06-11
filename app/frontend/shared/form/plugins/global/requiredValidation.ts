@@ -3,7 +3,7 @@
 import type { FormKitNode, FormKitProps } from '@formkit/core'
 
 const addRequired = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line no-explicit-any
   validation: string | Array<[rule: string, ...args: any]>,
 ) => {
   if (Array.isArray(validation)) {
@@ -24,7 +24,7 @@ const addRequired = (
 }
 
 const removeRequired = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line no-explicit-any
   validation: string | Array<[rule: string, ...args: any]>,
 ) => {
   if (!validation) return validation

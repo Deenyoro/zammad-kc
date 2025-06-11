@@ -70,16 +70,9 @@ const getHoverFocusStyles = (variant?: Variant) => {
 
 <template>
   <section class="flex max-w-64 min-w-58 flex-col gap-0.5">
-    <div
-      v-if="showHeaderLabel"
-      role="heading"
-      aria-level="2"
-      class="px-2 py-1.5"
-    >
+    <div v-if="showHeaderLabel" role="heading" aria-level="2" class="px-2 py-1.5">
       <slot name="header">
-        <CommonLabel
-          size="small"
-          class="line-clamp-1 text-stone-200! dark:text-neutral-500!"
+        <CommonLabel size="small" class="line-clamp-1 text-stone-200! dark:text-neutral-500!"
           >{{ i18n.t(headerLabel) }}
         </CommonLabel>
       </slot>
@@ -87,12 +80,7 @@ const getHoverFocusStyles = (variant?: Variant) => {
 
     <template v-if="filteredMenuItems || $slots.default">
       <slot>
-        <ul
-          v-if="filteredMenuItems"
-          role="menu"
-          v-bind="$attrs"
-          class="flex w-full flex-col"
-        >
+        <ul v-if="filteredMenuItems" role="menu" v-bind="$attrs" class="flex w-full flex-col">
           <template v-for="(item, index) in filteredMenuItems" :key="item.key">
             <li
               v-if="'array' in item"
@@ -114,8 +102,7 @@ const getHoverFocusStyles = (variant?: Variant) => {
                     :class="[
                       getHoverFocusStyles(subItem.variant),
                       {
-                        'last:rounded-b-xl':
-                          index === filteredMenuItems?.length - 1,
+                        'last:rounded-b-xl': index === filteredMenuItems?.length - 1,
                       },
                     ]"
                     :label="subItem.label"
@@ -137,8 +124,7 @@ const getHoverFocusStyles = (variant?: Variant) => {
               :class="[
                 {
                   'first:rounded-t-[10px]': !showHeaderLabel,
-                  'border-t border-neutral-100 dark:border-gray-900':
-                    item.separatorTop,
+                  'border-t border-neutral-100 dark:border-gray-900': item.separatorTop,
                 },
                 getHoverFocusStyles(item.variant),
               ]"

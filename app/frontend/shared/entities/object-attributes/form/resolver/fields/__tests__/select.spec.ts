@@ -6,29 +6,26 @@ import { FieldResolverSelect } from '../select.ts'
 
 describe('FieldResolverSelect', () => {
   it('should return the correct field attributes', () => {
-    const fieldResolver = new FieldResolverSelect(
-      EnumObjectManagerObjects.Ticket,
-      {
-        dataType: 'select',
-        name: 'category',
-        display: 'Category',
-        dataOption: {
-          translate: true,
-          options: {
-            a: 'a',
-            b: 'b',
-            c: 'c',
-          },
-          historical_options: {
-            a: 'a',
-            b: 'b',
-            c: 'c',
-            d: 'd',
-          },
+    const fieldResolver = new FieldResolverSelect(EnumObjectManagerObjects.Ticket, {
+      dataType: 'select',
+      name: 'category',
+      display: 'Category',
+      dataOption: {
+        translate: true,
+        options: {
+          a: 'a',
+          b: 'b',
+          c: 'c',
         },
-        isInternal: true,
+        historical_options: {
+          a: 'a',
+          b: 'b',
+          c: 'c',
+          d: 'd',
+        },
       },
-    )
+      isInternal: true,
+    })
 
     expect(fieldResolver.fieldAttributes()).toEqual({
       label: 'Category',
@@ -64,22 +61,19 @@ describe('FieldResolverSelect', () => {
   })
 
   it('should return the correct field attributes for relations', () => {
-    const fieldResolver = new FieldResolverSelect(
-      EnumObjectManagerObjects.Ticket,
-      {
-        dataType: 'select',
-        name: 'category',
-        display: 'Category',
-        dataOption: {
-          historical_options: {},
-          translate: true,
-          options: {},
-          relation: 'Group',
-          belongs_to: 'group',
-        },
-        isInternal: true,
+    const fieldResolver = new FieldResolverSelect(EnumObjectManagerObjects.Ticket, {
+      dataType: 'select',
+      name: 'category',
+      display: 'Category',
+      dataOption: {
+        historical_options: {},
+        translate: true,
+        options: {},
+        relation: 'Group',
+        belongs_to: 'group',
       },
-    )
+      isInternal: true,
+    })
 
     expect(fieldResolver.fieldAttributes()).toEqual({
       label: 'Category',

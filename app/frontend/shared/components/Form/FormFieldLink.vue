@@ -24,10 +24,7 @@ const classMap = getFieldLinkClasses()
 
 <template>
   <div :class="classMap.container">
-    <div
-      :class="classMap.base"
-      class="flex h-full items-center focus:outline-hidden"
-    >
+    <div :class="classMap.base" class="flex h-full items-center focus:outline-hidden">
       <CommonLink
         v-if="link"
         :link="link"

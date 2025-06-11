@@ -26,15 +26,9 @@ const { objectAttributes: objectAttributesConfig } = useSharedVisualConfig()
 </script>
 
 <template>
-  <Component
-    :is="objectAttributesConfig.outer"
-    v-if="fields.length || props.alwaysShowAfterFields"
-  >
+  <Component :is="objectAttributesConfig.outer" v-if="fields.length || props.alwaysShowAfterFields">
     <template v-for="field of fields" :key="field.attribute.name">
-      <Component
-        :is="objectAttributesConfig.wrapper"
-        :label="field.attribute.display"
-      >
+      <Component :is="objectAttributesConfig.wrapper" :label="field.attribute.display">
         <CommonLink
           v-if="field.link"
           :link="field.link"

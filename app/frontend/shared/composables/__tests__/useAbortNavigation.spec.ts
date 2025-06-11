@@ -64,20 +64,17 @@ describe('useAbortNavigation', () => {
     expect(confirmCallbackMock).toHaveBeenCalled()
   })
 
-  it.todo(
-    'handles onBeforeRouteLeave similarly to onBeforeRouteUpdate',
-    async () => {
-      shouldConfirmNavigationMock.mockReturnValue(true)
-      waitForVariantConfirmationMock.mockResolvedValue(true)
+  it.todo('handles onBeforeRouteLeave similarly to onBeforeRouteUpdate', async () => {
+    shouldConfirmNavigationMock.mockReturnValue(true)
+    waitForVariantConfirmationMock.mockResolvedValue(true)
 
-      useAbortNavigation({
-        confirmCallback: confirmCallbackMock,
-        shouldConfirmNavigation: <() => boolean>shouldConfirmNavigationMock,
-      })
+    useAbortNavigation({
+      confirmCallback: confirmCallbackMock,
+      shouldConfirmNavigation: <() => boolean>shouldConfirmNavigationMock,
+    })
 
-      // expect(result).toBe(true)
-      // expect(waitForVariantConfirmationMock).toHaveBeenCalledWith('unsaved')
-      expect(confirmCallbackMock).toHaveBeenCalled()
-    },
-  )
+    // expect(result).toBe(true)
+    // expect(waitForVariantConfirmationMock).toHaveBeenCalledWith('unsaved')
+    expect(confirmCallbackMock).toHaveBeenCalled()
+  })
 })

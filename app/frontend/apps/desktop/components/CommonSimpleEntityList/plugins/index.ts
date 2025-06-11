@@ -9,7 +9,6 @@ const modules = import.meta.glob<EntityModule>(['./*.ts', '!./index.ts'], {
 })
 
 const entityModules = Object.entries(modules).reduce(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (acc, [_, module]) => {
     acc[module.type] = module
     return acc

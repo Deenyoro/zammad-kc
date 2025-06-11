@@ -42,8 +42,7 @@ export interface TicketSidebarProps extends TicketSidebarContentProps {
   selected?: boolean
 }
 
-export interface TicketSidebarWrapperProps
-  extends Omit<TicketSidebarProps, 'context'> {
+export interface TicketSidebarWrapperProps extends Omit<TicketSidebarProps, 'context'> {
   badge?: TicketSidebarButtonBadgeDetails
   updateIndicator?: boolean
 }

@@ -2,10 +2,7 @@
 
 import type { Props as CommonLinkProps } from '#shared/components/CommonLink/CommonLink.vue'
 import type { ObjectAttribute } from '#shared/entities/object-attributes/types/store.ts'
-import type {
-  EnumObjectManagerObjects,
-  EnumOrderDirection,
-} from '#shared/graphql/types.ts'
+import type { EnumObjectManagerObjects, EnumOrderDirection } from '#shared/graphql/types.ts'
 
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 
@@ -89,10 +86,7 @@ export interface TableAttribute {
   headerPreferences?: TableHeaderPreference
   columnPreferences?: TableColumnPreference & {
     link?: Pick<CommonLinkProps, 'internal' | 'openInNewTab'> & {
-      getLink: (
-        item: TableAdvancedItem,
-        tableAttribute: TableAttribute,
-      ) => string
+      getLink: (item: TableAdvancedItem, tableAttribute: TableAttribute) => string
     }
   }
   dataType: ObjectAttribute['dataType']

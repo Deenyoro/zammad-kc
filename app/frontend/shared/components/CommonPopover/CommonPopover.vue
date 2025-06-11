@@ -32,11 +32,7 @@ import testFlags from '#shared/utils/testFlags.ts'
 
 import { usePopoverInstances } from './usePopoverInstances.ts'
 
-import type {
-  Placement,
-  CommonPopoverInternalInstance,
-  Orientation,
-} from './types.ts'
+import type { Placement, CommonPopoverInternalInstance, Orientation } from './types.ts'
 
 export interface Props {
   owner: HTMLElement | ComponentPublicInstance | undefined
@@ -109,7 +105,6 @@ whenever(
   },
 )
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 const currentPlacement = computed(() => {
   const placement = overflowHorizontalPlacement.value || props.placement
 
@@ -140,7 +135,7 @@ const ORIENTATION_OFFSET_WO_ARROW = 6
 const ORIENTATION_OFFSET_WITH_ARROW = 16
 
 const appName = useAppName()
-// eslint-disable-next-line sonarjs/cognitive-complexity
+
 const popoverStyle = computed(() => {
   if (appName === 'mobile') {
     return {
@@ -160,9 +155,7 @@ const popoverStyle = computed(() => {
     maxHeight: `${verticalOrientation.value ? maxHeight - 24 : maxHeight + 34}px`,
   }
 
-  const arrowOffset = props.hideArrow
-    ? PLACEMENT_OFFSET_WO_ARROW
-    : PLACEMENT_OFFSET_WITH_ARROW
+  const arrowOffset = props.hideArrow ? PLACEMENT_OFFSET_WO_ARROW : PLACEMENT_OFFSET_WITH_ARROW
 
   const placementOffset = targetElementBounds.value.width / 2 - arrowOffset
 
@@ -198,9 +191,7 @@ const popoverStyle = computed(() => {
       break
     case 'bottom':
       style.top = `${
-        targetElementBounds.value.top +
-        targetElementBounds.value.height +
-        orientationOffset
+        targetElementBounds.value.top + targetElementBounds.value.height + orientationOffset
       }px`
       break
     case 'left':
@@ -253,29 +244,17 @@ const arrowPlacementClasses = computed(() => {
   }
 
   if (verticalOrientation.value) {
-    if (
-      currentPlacement.value === 'start' ||
-      currentPlacement.value === 'arrowStart'
-    ) {
+    if (currentPlacement.value === 'start' || currentPlacement.value === 'arrowStart') {
       // eslint-disable-next-line zammad/zammad-tailwind-ltr
       classes['left-7'] = true
-    } else if (
-      currentPlacement.value === 'end' ||
-      currentPlacement.value === 'arrowEnd'
-    ) {
+    } else if (currentPlacement.value === 'end' || currentPlacement.value === 'arrowEnd') {
       // eslint-disable-next-line zammad/zammad-tailwind-ltr
       classes['right-2'] = true
     }
   } else if (!verticalOrientation.value) {
-    if (
-      currentPlacement.value === 'start' ||
-      currentPlacement.value === 'arrowStart'
-    ) {
+    if (currentPlacement.value === 'start' || currentPlacement.value === 'arrowStart') {
       classes['top-7'] = true
-    } else if (
-      currentPlacement.value === 'end' ||
-      currentPlacement.value === 'arrowEnd'
-    ) {
+    } else if (currentPlacement.value === 'end' || currentPlacement.value === 'arrowEnd') {
       classes['bottom-2'] = true
     }
   }
@@ -323,10 +302,7 @@ const checkHorizontalOverflow = () => {
     const popoverRect = popoverElementReference.getBoundingClientRect()
 
     // Check if overflowing right edge of viewport
-    if (
-      props.placement === 'start' &&
-      popoverRect.right > windowSize.width.value
-    ) {
+    if (props.placement === 'start' && popoverRect.right > windowSize.width.value) {
       overflowHorizontalPlacement.value = 'end'
     }
 
@@ -358,14 +334,10 @@ const openPopover = () => {
     closePopover()
   })
 
-  const onClickOutsideHandler = onClickOutside(
-    popoverElement,
-    () => closePopover(true),
-    {
-      ignore: [props.owner],
-      controls: true,
-    },
-  )
+  const onClickOutsideHandler = onClickOutside(popoverElement, () => closePopover(true), {
+    ignore: [props.owner],
+    controls: true,
+  })
 
   if (props?.noCloseOnClickOutside) onClickOutsideHandler.stop()
 
@@ -414,9 +386,7 @@ const { durations } = useTransitionConfig()
 const classes = getPopoverClasses()
 
 onMounted(() => {
-  testFlags.set(
-    props.id ? `common-popover.mounted-${props.id}` : 'common-popover.mounted',
-  )
+  testFlags.set(props.id ? `common-popover.mounted-${props.id}` : 'common-popover.mounted')
 })
 
 emitter.on('close-popover', () => {

@@ -25,10 +25,7 @@ import { useFlyout } from '#desktop/components/CommonFlyout/useFlyout.ts'
 import CommonLoader from '#desktop/components/CommonLoader/CommonLoader.vue'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 import CommonSimpleTable from '#desktop/components/CommonTable/CommonSimpleTable.vue'
-import type {
-  TableSimpleHeader,
-  TableItem,
-} from '#desktop/components/CommonTable/types.ts'
+import type { TableSimpleHeader, TableItem } from '#desktop/components/CommonTable/types.ts'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 
 import { useCheckTokenAccess } from '../composables/permission/useCheckTokenAccess.ts'
@@ -43,9 +40,7 @@ defineOptions({
       return redirectErrorRoute({
         type: ErrorRouteType.AuthenticatedError,
         title: __('Forbidden'),
-        message: __(
-          'Token-based API access has been disabled by the administrator.',
-        ),
+        message: __('Token-based API access has been disabled by the administrator.'),
         statusCode: ErrorStatusCodes.Forbidden,
       })
 
@@ -57,13 +52,10 @@ const { breadcrumbItems } = useBreadcrumb(__('Token Access'))
 
 const newAccessTokenFlyout = useFlyout({
   name: 'new-access-token',
-  component: () =>
-    import('../components/PersonalSettingNewAccessTokenFlyout.vue'),
+  component: () => import('../components/PersonalSettingNewAccessTokenFlyout.vue'),
 })
 
-const accessTokenListQuery = new QueryHandler(
-  useUserCurrentAccessTokenListQuery(),
-)
+const accessTokenListQuery = new QueryHandler(useUserCurrentAccessTokenListQuery())
 
 const accessTokenListQueryResult = accessTokenListQuery.result()
 const accessTokenListLoading = accessTokenListQuery.loading()
@@ -79,8 +71,7 @@ accessTokenListQuery.subscribeToMore<
     }
 
     return {
-      userCurrentAccessTokenList:
-        subscriptionData.data.userCurrentAccessTokenUpdates.tokens,
+      userCurrentAccessTokenList: subscriptionData.data.userCurrentAccessTokenUpdates.tokens,
     }
   },
 })
@@ -129,9 +120,7 @@ const deleteDevice = (accessToken: Token) => {
       },
     })),
     {
-      errorNotificationMessage: __(
-        'The personal access token could not be deleted.',
-      ),
+      errorNotificationMessage: __('The personal access token could not be deleted.'),
     },
   )
 
@@ -163,9 +152,7 @@ const tableActions: MenuItem[] = [
 ]
 
 const currentAccessTokens = computed<TableItem[]>(() => {
-  return (
-    accessTokenListQueryResult.value?.userCurrentAccessTokenList || []
-  ).map((accessToken) => {
+  return (accessTokenListQueryResult.value?.userCurrentAccessTokenList || []).map((accessToken) => {
     return {
       ...accessToken,
       permissions: accessToken.preferences?.permission?.join(', ') || '',
@@ -173,9 +160,7 @@ const currentAccessTokens = computed<TableItem[]>(() => {
   })
 })
 
-const currentAccessTokenPresent = computed(
-  () => currentAccessTokens.value.length > 0,
-)
+const currentAccessTokenPresent = computed(() => currentAccessTokens.value.length > 0)
 
 const helpText = computed(() => [
   i18n.t(
@@ -215,11 +200,7 @@ const helpText = computed(() => [
           class="min-w-150"
         >
           <template #item-suffix-name="{ item }">
-            <CommonBadge
-              v-if="item.current"
-              size="medium"
-              variant="info"
-              class="ltr:ml-2 rtl:mr-2"
+            <CommonBadge v-if="item.current" size="medium" variant="info" class="ltr:ml-2 rtl:mr-2"
               >{{ $t('This device') }}
             </CommonBadge>
           </template>

@@ -20,10 +20,7 @@ export const useNewBetaUi = () => {
   const betaUiSwitchEnabled = computed(
     () =>
       config.value.ui_desktop_beta_switch &&
-      hasPermission(
-        'user_preferences.beta_ui_switch',
-        user.value?.permissions?.names ?? [],
-      ) &&
+      hasPermission('user_preferences.beta_ui_switch', user.value?.permissions?.names ?? []) &&
       !dismissValue.value,
   )
 

@@ -36,11 +36,5 @@ const textColor = computed(() => {
 </script>
 
 <template>
-  <CommonIcon
-    size="xs"
-    :name="icon"
-    class="ltr:mr-1.5 rtl:ml-1.5"
-    :class="textColor"
-    decorative
-  />
+  <CommonIcon size="xs" :name="icon" class="ltr:mr-1.5 rtl:ml-1.5" :class="textColor" decorative />
 </template>

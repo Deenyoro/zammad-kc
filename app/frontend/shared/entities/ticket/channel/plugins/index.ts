@@ -17,9 +17,7 @@ const pluginModules = import.meta.glob<TicketChannelPlugin>(
 const ticketChannelPluginFiles = Object.values(pluginModules)
 export const ticketChannelPlugins = keyBy(ticketChannelPluginFiles, 'area')
 
-export const getTicketChannelPlugin = (
-  ticketChannel?: Maybe<EnumChannelArea>,
-) => {
+export const getTicketChannelPlugin = (ticketChannel?: Maybe<EnumChannelArea>) => {
   if (!ticketChannel) return null
 
   return ticketChannelPlugins[ticketChannel]

@@ -41,15 +41,11 @@ const isLoading = ticketRelationAndRecentListsQuery.loading()
 const tableData = ticketRelationAndRecentListsQuery.result()
 
 const ticketsByCustomer = computed(
-  () =>
-    tableData.value
-      ?.ticketsRecentByCustomer as unknown as TicketRelationAndRecentListItem[],
+  () => tableData.value?.ticketsRecentByCustomer as unknown as TicketRelationAndRecentListItem[],
 )
 
 const ticketsRecentlyViewed = computed(
-  () =>
-    tableData.value
-      ?.ticketsRecentlyViewed as unknown as TicketRelationAndRecentListItem[],
+  () => tableData.value?.ticketsRecentlyViewed as unknown as TicketRelationAndRecentListItem[],
 )
 </script>
 

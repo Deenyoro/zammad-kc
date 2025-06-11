@@ -2,11 +2,7 @@
 
 import { setupView } from '#tests/support/mock-user.ts'
 
-import {
-  createTicketArticle,
-  createTestArticleActions,
-  createTicket,
-} from './utils.ts'
+import { createTicketArticle, createTestArticleActions, createTicket } from './utils.ts'
 
 describe('article action plugins - actions', () => {
   it('successfully returns available actions for agent', () => {

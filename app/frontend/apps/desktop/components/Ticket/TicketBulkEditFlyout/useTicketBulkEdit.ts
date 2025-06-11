@@ -13,10 +13,7 @@ import type { TicketBulkEditReturn } from './types.ts'
 const TICKET_BULK_EDIT_SYMBOL = Symbol('ticket-bulk-edit')
 
 export const useTicketBulkEdit = () => {
-  const injectBulkEdit = inject<Maybe<TicketBulkEditReturn>>(
-    TICKET_BULK_EDIT_SYMBOL,
-    null,
-  )
+  const injectBulkEdit = inject<Maybe<TicketBulkEditReturn>>(TICKET_BULK_EDIT_SYMBOL, null)
 
   if (injectBulkEdit) return injectBulkEdit
 
@@ -24,9 +21,7 @@ export const useTicketBulkEdit = () => {
 
   const checkedTicketIds = ref<Set<ID>>(new Set())
 
-  const ticketIds = computed<ID[]>(() =>
-    Array.from(checkedTicketIds.value.keys()),
-  )
+  const ticketIds = computed<ID[]>(() => Array.from(checkedTicketIds.value.keys()))
 
   const groupIds = computed(() =>
     ticketIds.value.map((ticketId) => {
@@ -54,9 +49,7 @@ export const useTicketBulkEdit = () => {
   const { open } = useFlyout({
     name: 'tickets-bulk-edit',
     component: () =>
-      import(
-        '#desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue'
-      ),
+      import('#desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue'),
   })
 
   const openBulkEditFlyout = () => {

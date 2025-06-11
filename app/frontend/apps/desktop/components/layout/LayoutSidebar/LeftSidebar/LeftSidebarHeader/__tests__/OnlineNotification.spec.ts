@@ -41,15 +41,12 @@ const node = {
     title: 'Bunch of articles',
   },
 }
-vi.mock(
-  '#shared/composables/useOnlineNotification/useOnlineNotificationSound.ts',
-  () => ({
-    useOnlineNotificationSound: () => ({
-      play: playSoundSpy,
-      isEnabled: { value: true },
-    }),
+vi.mock('#shared/composables/useOnlineNotification/useOnlineNotificationSound.ts', () => ({
+  useOnlineNotificationSound: () => ({
+    play: playSoundSpy,
+    isEnabled: { value: true },
   }),
-)
+}))
 
 describe('OnlineNotification', () => {
   beforeEach(() => {
@@ -75,9 +72,7 @@ describe('OnlineNotification', () => {
       },
     })
 
-    expect(
-      wrapper.getByRole('button', { name: 'Show notifications' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Show notifications' })).toBeInTheDocument()
 
     expect(wrapper.getByIconName('logo')).toBeInTheDocument()
 
@@ -95,9 +90,9 @@ describe('OnlineNotification', () => {
       },
     })
 
-    expect(
-      wrapper.getByRole('status', { name: 'Unseen notifications count' }),
-    ).toHaveTextContent('10')
+    expect(wrapper.getByRole('status', { name: 'Unseen notifications count' })).toHaveTextContent(
+      '10',
+    )
   })
 
   it('makes a notification sound if a new unseen message comes in', async () => {
@@ -217,13 +212,9 @@ describe('OnlineNotification', () => {
       router: true,
     })
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Show notifications' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Show notifications' }))
 
-    await wrapper.events.click(
-      await wrapper.findByRole('button', { name: 'mark all as read' }),
-    )
+    await wrapper.events.click(await wrapper.findByRole('button', { name: 'mark all as read' }))
 
     const calls = await waitForOnlineNotificationMarkAllAsSeenMutationCalls()
 
@@ -251,9 +242,7 @@ describe('OnlineNotification', () => {
       router: true,
     })
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Show notifications' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Show notifications' }))
 
     const list = await wrapper.findByRole('list')
 

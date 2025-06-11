@@ -48,9 +48,7 @@ const optionTabs = computed(() => [
   {
     key: 'encryption' as SecurityOption,
     label: __('Encrypt'),
-    icon: isCurrentSecurityOption('encryption')
-      ? 'encryption-enabled'
-      : 'encryption-disabled',
+    icon: isCurrentSecurityOption('encryption') ? 'encryption-enabled' : 'encryption-disabled',
     tooltip: getTooltipText('encryption'),
     disabled: isSecurityOptionDisabled('encryption'),
   },
@@ -93,9 +91,7 @@ const selectOption = (value: Tab['key'] | Tab['key'][]) => {
         :model-value="previewMethod"
         :tabs="securityMethodTabs"
         size="medium"
-        @update:model-value="
-          changeSecurityState($event as EnumSecurityStateType)
-        "
+        @update:model-value="changeSecurityState($event as EnumSecurityStateType)"
       />
       <CommonTabGroup
         :model-value="selectedOptionTabs"

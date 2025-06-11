@@ -24,11 +24,9 @@ const getEmailAddress = (article: TicketArticle) => {
 }
 
 const getName = (article: TicketArticle) => {
-  if (props.type === 'from')
-    return article.from?.parsed?.at(0)?.name || article.from?.raw
+  if (props.type === 'from') return article.from?.parsed?.at(0)?.name || article.from?.raw
 
-  if (props.type === 'cc')
-    return article.cc?.parsed?.at(0)?.name || article.cc?.raw
+  if (props.type === 'cc') return article.cc?.parsed?.at(0)?.name || article.cc?.raw
 
   return article.to?.parsed?.at(0)?.name || article.to?.raw
 }
@@ -40,11 +38,7 @@ const email = computed(() => getEmailAddress(props.context.article))
 
 <template>
   <div class="flex gap-2">
-    <CommonLabel v-if="name" class="text-black! dark:text-white!">{{
-      $t(name)
-    }}</CommonLabel>
-    <CommonLabel v-if="email && email !== '-' && email !== name">{{
-      `<${email}>`
-    }}</CommonLabel>
+    <CommonLabel v-if="name" class="text-black! dark:text-white!">{{ $t(name) }}</CommonLabel>
+    <CommonLabel v-if="email && email !== '-' && email !== name">{{ `<${email}>` }}</CommonLabel>
   </div>
 </template>

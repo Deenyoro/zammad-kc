@@ -115,8 +115,7 @@ whenever(
           ]"
           :disabled="action.disabled"
           :style="{
-            '--color-indicator-background': editor?.getAttributes('textStyle')
-              ?.color
+            '--color-indicator-background': editor?.getAttributes('textStyle')?.color
               ? editor.getAttributes('textStyle').color
               : '#ffffff',
           }"
@@ -139,14 +138,8 @@ whenever(
       </template>
     </div>
     <template v-if="!props.noGradient">
-      <div
-        class="ShadowGradient LeftGradient"
-        :style="{ opacity: opacityGradientStart }"
-      />
-      <div
-        class="ShadowGradient RightGradient"
-        :style="{ opacity: opacityGradientEnd }"
-      />
+      <div class="ShadowGradient LeftGradient" :style="{ opacity: opacityGradientStart }" />
+      <div class="ShadowGradient RightGradient" :style="{ opacity: opacityGradientEnd }" />
     </template>
   </div>
 </template>

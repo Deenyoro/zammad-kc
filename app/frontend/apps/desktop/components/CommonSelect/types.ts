@@ -11,8 +11,7 @@ export interface CommonSelectInstance {
   isOpen: boolean
 }
 
-export interface CommonSelectInternalInstance
-  extends Omit<CommonSelectInstance, 'isOpen'> {
+export interface CommonSelectInternalInstance extends Omit<CommonSelectInstance, 'isOpen'> {
   isOpen: Ref<boolean>
 }
 

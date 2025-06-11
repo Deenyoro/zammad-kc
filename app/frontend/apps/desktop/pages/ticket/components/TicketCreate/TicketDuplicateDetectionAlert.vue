@@ -19,18 +19,12 @@ defineProps<Props>()
       <CommonLabel class="text-yellow-600 dark:text-yellow-600">
         {{ $c.ticket_duplicate_detection_body }}
       </CommonLabel>
-      <ul
-        v-for="[id, number, title] in tickets"
-        :key="id"
-        class="list-inside list-disc"
-      >
+      <ul v-for="[id, number, title] in tickets" :key="id" class="list-inside list-disc">
         <li>
           <CommonLabel class="text-yellow-600"
-            ><CommonLink
-              :link="`/tickets/${id}`"
-              class="text-yellow-600 !underline"
-              >{{ number }}</CommonLink
-            >
+            ><CommonLink :link="`/tickets/${id}`" class="text-yellow-600 !underline">{{
+              number
+            }}</CommonLink>
             {{ title }}</CommonLabel
           >
         </li>

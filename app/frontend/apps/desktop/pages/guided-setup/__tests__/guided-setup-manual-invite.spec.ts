@@ -37,10 +37,9 @@ describe('guided setup manual invite', () => {
       const view = await visitView('/guided-setup/manual/invite')
 
       await waitFor(() => {
-        expect(
-          view,
-          'correctly redirects to guided setup start screen',
-        ).toHaveCurrentUrl('/guided-setup')
+        expect(view, 'correctly redirects to guided setup start screen').toHaveCurrentUrl(
+          '/guided-setup',
+        )
       })
       view.getByText('Set up a new system')
     })
@@ -106,9 +105,7 @@ describe('guided setup manual invite', () => {
       expect(view.getByLabelText('Roles')).toBeInTheDocument()
       expect(view.getByLabelText('Group permissions')).toBeInTheDocument()
 
-      expect(
-        view.getByRole('button', { name: 'Finish Setup' }),
-      ).toBeInTheDocument()
+      expect(view.getByRole('button', { name: 'Finish Setup' })).toBeInTheDocument()
 
       await view.events.type(view.getByLabelText('Email'), 'test@example.com')
       await view.events.click(view.getAllByRole('switch')[2])
@@ -127,10 +124,7 @@ describe('guided setup manual invite', () => {
 
       expect(view.getByLabelText('Email')).toHaveValue('test@example.com')
 
-      expect(view.getAllByRole('switch')[2]).toHaveAttribute(
-        'aria-checked',
-        'true',
-      )
+      expect(view.getAllByRole('switch')[2]).toHaveAttribute('aria-checked', 'true')
 
       expect(queryByRole(combobox, 'listitem')).toBeInTheDocument()
       expect(view.getByLabelText('Full')).toBeChecked()
@@ -163,18 +157,14 @@ describe('guided setup manual invite', () => {
       expect(await view.findByText('Invitation sent!')).toBeInTheDocument()
       expect(view.getByLabelText('Email')).toHaveValue('')
 
-      expect(view.getAllByRole('switch')[2]).not.toHaveAttribute(
-        'aria-checked',
-        'true',
-      )
+      expect(view.getAllByRole('switch')[2]).not.toHaveAttribute('aria-checked', 'true')
 
       expect(queryByRole(combobox, 'listitem')).not.toBeInTheDocument()
       expect(view.getByLabelText('Full')).not.toBeChecked()
 
-      expect(
-        view,
-        'stays on the guided setup manual invite step',
-      ).toHaveCurrentUrl('/guided-setup/manual/invite')
+      expect(view, 'stays on the guided setup manual invite step').toHaveCurrentUrl(
+        '/guided-setup/manual/invite',
+      )
     })
 
     it('can display form errors', async () => {
@@ -209,15 +199,12 @@ describe('guided setup manual invite', () => {
     it('redirects to guided setup finish screen when continued', async () => {
       const view = await visitView('/guided-setup/manual/invite')
 
-      await view.events.click(
-        view.getByRole('button', { name: 'Finish Setup' }),
-      )
+      await view.events.click(view.getByRole('button', { name: 'Finish Setup' }))
 
       await waitFor(() => {
-        expect(
-          view,
-          'correctly redirects to guided setup finish screen',
-        ).toHaveCurrentUrl('/guided-setup/manual/finish')
+        expect(view, 'correctly redirects to guided setup finish screen').toHaveCurrentUrl(
+          '/guided-setup/manual/finish',
+        )
       })
     })
   })

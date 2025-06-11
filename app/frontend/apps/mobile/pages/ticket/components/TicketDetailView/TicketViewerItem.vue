@@ -4,10 +4,7 @@
 import { computed, toRef } from 'vue'
 
 import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
-import {
-  type AvatarUser,
-  type AvatarUserLive,
-} from '#shared/components/CommonUserAvatar/types.ts'
+import { type AvatarUser, type AvatarUserLive } from '#shared/components/CommonUserAvatar/types.ts'
 import { useAvatarIndicator } from '#shared/composables/useAvatarIndicator.ts'
 import { EnumTaskbarApp } from '#shared/graphql/types.ts'
 import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'

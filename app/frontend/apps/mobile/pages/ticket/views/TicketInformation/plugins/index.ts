@@ -23,6 +23,4 @@ export const ticketInformationPlugins = Object.values(pluginsModules).sort(
   (p1, p2) => p1.order - p2.order,
 )
 
-export const ticketInformationRoutes = ticketInformationPlugins.map(
-  (plugin) => plugin.route,
-)
+export const ticketInformationRoutes = ticketInformationPlugins.map((plugin) => plugin.route)

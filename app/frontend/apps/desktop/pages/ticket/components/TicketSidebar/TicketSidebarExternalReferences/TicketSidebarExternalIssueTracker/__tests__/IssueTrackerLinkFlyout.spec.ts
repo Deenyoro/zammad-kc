@@ -22,30 +22,19 @@ describe('IssueTrackerLinkFlyout', () => {
       router: true,
     })
 
-    await wrapper.events.type(
-      wrapper.getByPlaceholderText('Enter a link'),
-      'totally wrong',
-    )
+    await wrapper.events.type(wrapper.getByPlaceholderText('Enter a link'), 'totally wrong')
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Link Issue' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Link Issue' }))
 
-    expect(
-      await wrapper.findByText('Please include a valid url.'),
-    ).toBeInTheDocument()
+    expect(await wrapper.findByText('Please include a valid url.')).toBeInTheDocument()
 
     expect(mockFn).not.toHaveBeenCalled()
 
     await wrapper.events.clear(wrapper.getByPlaceholderText('Enter a link'))
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Link Issue' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Link Issue' }))
 
-    expect(
-      await wrapper.findByText('This field is required.'),
-    ).toBeInTheDocument()
+    expect(await wrapper.findByText('This field is required.')).toBeInTheDocument()
 
     expect(mockFn).not.toHaveBeenCalled()
   })
@@ -71,12 +60,8 @@ describe('IssueTrackerLinkFlyout', () => {
       'https://gitlab.com/issue/111',
     )
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Link Issue' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Link Issue' }))
 
-    expect(
-      await wrapper.findByText('The issue reference already exists.'),
-    ).toBeInTheDocument()
+    expect(await wrapper.findByText('The issue reference already exists.')).toBeInTheDocument()
   })
 })

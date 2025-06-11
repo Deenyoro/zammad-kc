@@ -8,15 +8,12 @@ const createCustomIcons = (): Record<string, string> => {
   const { icons: customIcons, aliases: customIconAliases } = useIcons()
   const reversedCustomIconAliases = invert(customIconAliases)
 
-  return Object.keys(customIcons).reduce(
-    (icons: Record<string, string>, name) => {
-      const alias = reversedCustomIconAliases[name]
-      icons[alias || name] = customIcons[name]
+  return Object.keys(customIcons).reduce((icons: Record<string, string>, name) => {
+    const alias = reversedCustomIconAliases[name]
+    icons[alias || name] = customIcons[name]
 
-      return icons
-    },
-    {},
-  )
+    return icons
+  }, {})
 }
 
 export default createCustomIcons

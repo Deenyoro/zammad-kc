@@ -6,17 +6,13 @@ import { readonly, ref, watch, computed } from 'vue'
 import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
 import { useTicketSidebar } from '#desktop/pages/ticket/composables/useTicketSidebar.ts'
 
-const ticketSummaryFingerprints = ref<Map<ID, string | null | undefined>>(
-  new Map(),
-)
+const ticketSummaryFingerprints = ref<Map<ID, string | null | undefined>>(new Map())
 
 export const useTicketSummarySeen = () => {
   const { ticket, ticketInternalId } = useTicketInformation()
   const sidebar = useTicketSidebar()
 
-  const isTicketStateMerged = computed(
-    () => ticket.value?.state.name === 'merged',
-  )
+  const isTicketStateMerged = computed(() => ticket.value?.state.name === 'merged')
 
   const isTicketSummarySidebarActive = computed(
     () => sidebar.activeSidebar.value === 'ticket-summary',

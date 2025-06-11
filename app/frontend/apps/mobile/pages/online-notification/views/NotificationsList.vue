@@ -28,10 +28,7 @@ useHeader({
 })
 
 const notifications = computed(
-  () =>
-    edgesToArray(
-      notificationsResult.value?.onlineNotifications,
-    ) as OnlineNotification[],
+  () => edgesToArray(notificationsResult.value?.onlineNotifications) as OnlineNotification[],
 )
 
 const { seenNotification, markAllRead } = useOnlineNotificationActions()
@@ -62,8 +59,7 @@ const notificationRemoved = () => {
 }
 
 // TODO: currently this triggered in some situations a real subscription on the server: https://github.com/apollographql/apollo-client/issues/10117
-const { unseenCount, notificationsCountSubscription } =
-  useOnlineNotificationCount()
+const { unseenCount, notificationsCountSubscription } = useOnlineNotificationCount()
 
 notificationsCountSubscription.watchOnResult(() => {
   notificationsHandler.refetch()
@@ -71,9 +67,7 @@ notificationsCountSubscription.watchOnResult(() => {
   mutationTriggered = false
 })
 
-const haveUnread = computed(() =>
-  unseenCount.value ? unseenCount.value > 0 : false,
-)
+const haveUnread = computed(() => (unseenCount.value ? unseenCount.value > 0 : false))
 </script>
 
 <template>

@@ -1,25 +1,16 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import {
-  mockGraphQLResult,
-  waitForGraphQLMockCalls,
-} from '#tests/graphql/builders/mocks.ts'
+import { mockGraphQLResult, waitForGraphQLMockCalls } from '#tests/graphql/builders/mocks.ts'
 import type { ExtendedRenderResult } from '#tests/support/components/renderComponent.ts'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 
 import { LoginDocument } from '#shared/graphql/mutations/login.api.ts'
-import {
-  EnumTwoFactorAuthenticationMethod,
-  type LoginMutation,
-} from '#shared/graphql/types.ts'
+import { EnumTwoFactorAuthenticationMethod, type LoginMutation } from '#shared/graphql/types.ts'
 
 const twoFactorAuthentication = () => ({
-  availableTwoFactorAuthenticationMethods: [
-    EnumTwoFactorAuthenticationMethod.AuthenticatorApp,
-  ],
-  defaultTwoFactorAuthenticationMethod:
-    EnumTwoFactorAuthenticationMethod.AuthenticatorApp,
+  availableTwoFactorAuthenticationMethods: [EnumTwoFactorAuthenticationMethod.AuthenticatorApp],
+  defaultTwoFactorAuthenticationMethod: EnumTwoFactorAuthenticationMethod.AuthenticatorApp,
   recoveryCodesAvailable: false,
 })
 
@@ -89,40 +80,28 @@ describe('two-factor login flow', () => {
       },
     })
 
-    expect(
-      view.queryByRole('button', { name: 'Cancel & Go Back' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Cancel & Go Back' })).not.toBeInTheDocument()
 
     await login(view)
 
-    expect(
-      view.queryByRole('button', { name: 'Cancel & Go Back' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Cancel & Go Back' })).not.toBeInTheDocument()
 
     await view.events.click(view.getByText('Try another method'))
 
-    expect(
-      view.getByRole('button', { name: 'Cancel & Go Back' }),
-    ).toBeInTheDocument()
+    expect(view.getByRole('button', { name: 'Cancel & Go Back' })).toBeInTheDocument()
 
-    await view.events.click(
-      view.getByText('Or use one of your recovery codes.'),
-    )
+    await view.events.click(view.getByText('Or use one of your recovery codes.'))
 
     expect(view.getByLabelText('Recovery Code')).toBeInTheDocument()
 
     await view.events.click(view.getByText('Try another method'))
 
-    await view.events.click(
-      view.getByRole('button', { name: 'Cancel & Go Back' }),
-    )
+    await view.events.click(view.getByRole('button', { name: 'Cancel & Go Back' }))
 
     expect(view.getByLabelText('Username / Email')).toBeInTheDocument()
     expect(view.getByLabelText('Password')).toBeInTheDocument()
 
-    expect(
-      view.queryByRole('button', { name: 'Cancel & Go Back' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Cancel & Go Back' })).not.toBeInTheDocument()
   })
 
   describe('alternative two-factor methods', () => {
@@ -131,8 +110,7 @@ describe('two-factor login flow', () => {
         availableTwoFactorAuthenticationMethods: [
           EnumTwoFactorAuthenticationMethod.AuthenticatorApp,
         ],
-        defaultTwoFactorAuthenticationMethod:
-          EnumTwoFactorAuthenticationMethod.AuthenticatorApp,
+        defaultTwoFactorAuthenticationMethod: EnumTwoFactorAuthenticationMethod.AuthenticatorApp,
         recoveryCodesAvailable: false,
         name: 'does not show up when only one method is available and recovery is disabled',
         available: false,
@@ -141,8 +119,7 @@ describe('two-factor login flow', () => {
         availableTwoFactorAuthenticationMethods: [
           EnumTwoFactorAuthenticationMethod.AuthenticatorApp,
         ],
-        defaultTwoFactorAuthenticationMethod:
-          EnumTwoFactorAuthenticationMethod.AuthenticatorApp,
+        defaultTwoFactorAuthenticationMethod: EnumTwoFactorAuthenticationMethod.AuthenticatorApp,
         recoveryCodesAvailable: true,
         name: 'shows up when only one method is available and recovery is enabled',
         available: true,
@@ -152,8 +129,7 @@ describe('two-factor login flow', () => {
           EnumTwoFactorAuthenticationMethod.AuthenticatorApp,
           EnumTwoFactorAuthenticationMethod.SecurityKeys,
         ],
-        defaultTwoFactorAuthenticationMethod:
-          EnumTwoFactorAuthenticationMethod.AuthenticatorApp,
+        defaultTwoFactorAuthenticationMethod: EnumTwoFactorAuthenticationMethod.AuthenticatorApp,
         recoveryCodesAvailable: false,
         name: 'shows up when multiple methods are available and recovery is disabled',
         available: true,

@@ -10,9 +10,7 @@ export enum EscalationState {
   None = 'none',
 }
 
-export const useEscalationState = (
-  escalationAt: Readonly<ToRef<string | undefined | null>>,
-) => {
+export const useEscalationState = (escalationAt: Readonly<ToRef<string | undefined | null>>) => {
   const reactiveNow = useReactiveNow()
 
   return computed(() => {

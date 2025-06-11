@@ -124,8 +124,6 @@ describe('rendering common back button', () => {
       dir: EnumTextDirection.Rtl,
     } as any
 
-    await expect(
-      view.findByIconName('chevron-right'),
-    ).resolves.toBeInTheDocument()
+    await expect(view.findByIconName('chevron-right')).resolves.toBeInTheDocument()
   })
 })

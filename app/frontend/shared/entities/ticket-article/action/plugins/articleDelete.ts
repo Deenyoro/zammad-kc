@@ -11,9 +11,7 @@ import type { TicketArticleActionPlugin, TicketArticleAction } from './types.ts'
 const deleteAction = async (article: TicketArticle) => {
   const { waitForConfirmation } = useConfirmation()
 
-  const confirmed = await waitForConfirmation(
-    __('Are you sure to remove this article?'),
-  )
+  const confirmed = await waitForConfirmation(__('Are you sure to remove this article?'))
 
   if (!confirmed) return
 
@@ -27,8 +25,7 @@ const deleteAction = async (article: TicketArticle) => {
   mutation.send()
 }
 
-const hasDeleteTimeframe = (deleteTimeframe: number) =>
-  deleteTimeframe && deleteTimeframe > 0
+const hasDeleteTimeframe = (deleteTimeframe: number) => deleteTimeframe && deleteTimeframe > 0
 
 const secondsToDelete = (article: TicketArticle, deleteTimeframe: number) => {
   if (!hasDeleteTimeframe(deleteTimeframe)) return 0
@@ -49,10 +46,7 @@ const isDeletable = (article: TicketArticle, deleteTimeframe: number) => {
 
   if (article.type?.communication && !article.internal) return false
 
-  if (
-    hasDeleteTimeframe(deleteTimeframe) &&
-    !secondsToDelete(article, deleteTimeframe)
-  )
+  if (hasDeleteTimeframe(deleteTimeframe) && !secondsToDelete(article, deleteTimeframe))
     return false
 
   return true
@@ -62,8 +56,7 @@ const actionPlugin: TicketArticleActionPlugin = {
   order: 999,
 
   addActions(ticket, article, { onDispose, recalculate, config }) {
-    const deleteTimeframe =
-      config.ui_ticket_zoom_article_delete_timeframe as number
+    const deleteTimeframe = config.ui_ticket_zoom_article_delete_timeframe as number
 
     if (!isDeletable(article, deleteTimeframe)) return []
 

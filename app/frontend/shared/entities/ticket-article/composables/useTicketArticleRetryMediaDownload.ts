@@ -27,7 +27,8 @@ export const useTicketArticleRetryMediaDownload = (articleId: Ref<string>) => {
     try {
       const result = await retryMutation.send()
 
-      if (!result?.ticketArticleRetryMediaDownload?.success) throw new Error()
+      if (!result?.ticketArticleRetryMediaDownload?.success)
+        throw new Error(__('Media download failed.'))
 
       notify({
         id: 'media-download-success',

@@ -52,9 +52,7 @@ describe('files utility', () => {
       const file2 = new File(['content'], 'file2.txt', { type: 'text/plain' })
       const files: File[] = [file1, file2]
 
-      const allowedFiles: AllowedFile[] = [
-        { label: 'Text', types: ['text/plain'], size: 5000000 },
-      ]
+      const allowedFiles: AllowedFile[] = [{ label: 'Text', types: ['text/plain'], size: 5000000 }]
 
       const result = validateFileSizes(files, allowedFiles)
 

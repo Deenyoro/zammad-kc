@@ -55,7 +55,6 @@ export const wordFilter = (editor: Element) => {
   let lastLevel = 0
   let parent: null | Element = null
 
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   editor.querySelectorAll('p').forEach((p) => {
     const curLevel = Number(p.dataset._listLevel || -1)
     if (curLevel < 0) {

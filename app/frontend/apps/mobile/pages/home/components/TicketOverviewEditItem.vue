@@ -33,9 +33,7 @@ const icon = computed(() => {
   }
 })
 
-const hasTooltip = computed(
-  () => props.overview.organizationShared || props.overview.outOfOffice,
-)
+const hasTooltip = computed(() => props.overview.organizationShared || props.overview.outOfOffice)
 
 const tooltipMessages = computed(() => {
   const messages: TooltipItemDescriptor[] = []
@@ -43,17 +41,13 @@ const tooltipMessages = computed(() => {
   if (props.overview.organizationShared)
     messages.push({
       type: 'text',
-      label: __(
-        'This overview is visible only when you are a shared organization member.',
-      ),
+      label: __('This overview is visible only when you are a shared organization member.'),
     })
 
   if (props.overview.outOfOffice)
     messages.push({
       type: 'text',
-      label: __(
-        'This overview is visible only when you are an out of office replacement.',
-      ),
+      label: __('This overview is visible only when you are an out of office replacement.'),
     })
 
   return messages
@@ -96,11 +90,6 @@ const tooltipMessages = computed(() => {
         <CommonIcon name="tooltip" size="small" />
       </CommonTooltip>
     </div>
-    <CommonIcon
-      v-if="draggable"
-      name="change-order"
-      size="small"
-      class="text-gray shrink-0"
-    />
+    <CommonIcon v-if="draggable" name="change-order" size="small" class="text-gray shrink-0" />
   </div>
 </template>

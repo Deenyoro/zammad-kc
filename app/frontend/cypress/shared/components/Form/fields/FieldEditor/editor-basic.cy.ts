@@ -13,9 +13,7 @@ describe('FieldEditor basic functionality', { retries: 2 }, () => {
 
     cy.findByRole('textbox').type('Hello, World!{selectall}')
 
-    cy.findByLabelText('Format as bold')
-      .click()
-      .should('have.class', 'bg-gray-300')
+    cy.findByLabelText('Format as bold').click().should('have.class', 'bg-gray-300')
 
     cy.findByTestId('action-bar').should('be.visible') // should not disappear on click
 
@@ -62,9 +60,7 @@ describe('FieldEditor basic functionality', { retries: 2 }, () => {
       .type('He')
       .selectText('left', 2)
       .then(() => {
-        cy.findByTestId('action-bar')
-          .findByLabelText('Format as italic')
-          .click()
+        cy.findByTestId('action-bar').findByLabelText('Format as italic').click()
       })
 
     cy.findByRole('textbox')

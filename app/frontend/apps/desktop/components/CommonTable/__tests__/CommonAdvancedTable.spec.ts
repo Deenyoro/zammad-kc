@@ -6,20 +6,14 @@ import { vi } from 'vitest'
 import { ref } from 'vue'
 
 import ticketObjectAttributes from '#tests/graphql/factories/fixtures/ticket-object-attributes.ts'
-import {
-  type ExtendedMountingOptions,
-  renderComponent,
-} from '#tests/support/components/index.ts'
+import { type ExtendedMountingOptions, renderComponent } from '#tests/support/components/index.ts'
 import { mockRouterHooks } from '#tests/support/mock-vue-router.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
 import { mockObjectManagerFrontendAttributesQuery } from '#shared/entities/object-attributes/graphql/queries/objectManagerFrontendAttributes.mocks.ts'
 import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
 import { EnumObjectManagerObjects } from '#shared/graphql/types.ts'
-import {
-  convertToGraphQLId,
-  getIdFromGraphQLId,
-} from '#shared/graphql/utils.ts'
+import { convertToGraphQLId, getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 import { i18n } from '#shared/i18n.ts'
 import type { ObjectWithId } from '#shared/types/utils.ts'
 
@@ -76,10 +70,7 @@ vi.mock('@vueuse/core', async (importOriginal) => {
   const modules = await importOriginal<typeof import('@vueuse/core')>()
   return {
     ...modules,
-    useInfiniteScroll: (
-      scrollContainer: HTMLElement,
-      callback: () => Promise<void>,
-    ) => {
+    useInfiniteScroll: (scrollContainer: HTMLElement, callback: () => Promise<void>) => {
       callback()
       return { reset: vi.fn(), isLoading: ref(false) }
     },
@@ -362,9 +353,7 @@ describe('CommonAdvancedTable', () => {
       caption: 'Table caption',
     })
 
-    expect(wrapper.getByText('Awesome Cell Header')).toHaveClass(
-      'text-red-500 font-bold',
-    )
+    expect(wrapper.getByText('Awesome Cell Header')).toHaveClass('text-red-500 font-bold')
   })
 
   it('supports adding a link to a cell', async () => {
@@ -376,8 +365,7 @@ describe('CommonAdvancedTable', () => {
             columnPreferences: {
               link: {
                 internal: true,
-                getLink: (item: ObjectWithId) =>
-                  `/tickets/${getIdFromGraphQLId(item.id)}`,
+                getLink: (item: ObjectWithId) => `/tickets/${getIdFromGraphQLId(item.id)}`,
               },
             },
           },
@@ -436,18 +424,14 @@ describe('CommonAdvancedTable', () => {
 
     await wrapper.events.click(rowCheckboxes[1])
 
-    await waitFor(() =>
-      expect(Array.from(checkedItemIds.value.keys())).toContain(items[0].id),
-    )
+    await waitFor(() => expect(Array.from(checkedItemIds.value.keys())).toContain(items[0].id))
 
     await waitFor(() => expect(rowCheckboxes[0]).not.toHaveAttribute('checked'))
     expect(rowCheckboxes[1]).not.toHaveAttribute('checked')
 
     await wrapper.events.click(rowCheckboxes[1])
 
-    expect(
-      await wrapper.findByLabelText('Deselect this entry'),
-    ).toBeInTheDocument()
+    expect(await wrapper.findByLabelText('Deselect this entry')).toBeInTheDocument()
   })
 
   it('renders checklist item as disabled if update policy is not given', async () => {
@@ -609,9 +593,7 @@ describe('CommonAdvancedTable', () => {
     })
 
     expect(
-      wrapper.getByText(
-        'You reached the table limit of 20 tickets (10 remaining).',
-      ),
+      wrapper.getByText('You reached the table limit of 20 tickets (10 remaining).'),
     ).toBeInTheDocument()
 
     scrollContainer.remove()
@@ -639,9 +621,7 @@ describe('CommonAdvancedTable', () => {
       orderBy: 'label',
     })
 
-    expect(
-      wrapper.getByText("You don't have more tickets to load."),
-    ).toBeInTheDocument()
+    expect(wrapper.getByText("You don't have more tickets to load.")).toBeInTheDocument()
 
     scrollContainer.remove()
   })
@@ -676,8 +656,6 @@ describe('CommonAdvancedTable', () => {
       caption: 'Table caption',
     })
 
-    expect(
-      wrapper.getByRole('row', { name: 'Nicole Braun 2+' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('row', { name: 'Nicole Braun 2+' })).toBeInTheDocument()
   })
 })

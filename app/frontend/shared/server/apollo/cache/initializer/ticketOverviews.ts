@@ -5,8 +5,5 @@ import registerIncomingMerge from '#shared/server/apollo/cache/utils/registerInc
 import type { InMemoryCacheConfig } from '@apollo/client/cache/inmemory/types'
 
 export default function register(config: InMemoryCacheConfig) {
-  return registerIncomingMerge(config, 'Overview', [
-    'viewColumns',
-    'orderColumns',
-  ])
+  return registerIncomingMerge(config, 'Overview', ['viewColumns', 'orderColumns'])
 }

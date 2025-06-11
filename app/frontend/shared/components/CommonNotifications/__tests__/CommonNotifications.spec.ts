@@ -2,10 +2,7 @@
 
 import { nextTick } from 'vue'
 
-import {
-  renderComponent,
-  type ExtendedRenderResult,
-} from '#tests/support/components/index.ts'
+import { renderComponent, type ExtendedRenderResult } from '#tests/support/components/index.ts'
 import { waitForTimeout } from '#tests/support/utils.ts'
 
 import CommonNotifications from '../CommonNotifications.vue'

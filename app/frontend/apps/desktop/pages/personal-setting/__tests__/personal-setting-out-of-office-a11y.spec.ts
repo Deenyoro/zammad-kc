@@ -7,7 +7,7 @@ import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
-describe('testing out of office a11y view', async () => {
+describe('testing out of office a11y view', () => {
   beforeEach(() => {
     mockUserCurrent({
       firstname: 'John',

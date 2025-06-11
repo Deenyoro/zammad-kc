@@ -3,15 +3,7 @@
 <script setup lang="ts">
 import { useEditor, EditorContent, type Editor } from '@tiptap/vue-3'
 import { useEventListener } from '@vueuse/core'
-import {
-  computed,
-  onMounted,
-  onUnmounted,
-  ref,
-  type ShallowRef,
-  toRef,
-  watch,
-} from 'vue'
+import { computed, onMounted, onUnmounted, ref, type ShallowRef, toRef, watch } from 'vue'
 
 import useValue from '#shared/components/Form/composables/useValue.ts'
 import { useAttachments } from '#shared/components/Form/fields/FieldEditor/composables/useAttachments.ts'
@@ -50,9 +42,7 @@ const disabledPlugins = Object.entries(props.context.meta || {})
   .filter(([, value]) => value.disabled)
   .map(([key]) => key as EditorCustomPlugins)
 
-const contentType = computed<EditorContentType>(
-  () => props.context.contentType || 'text/html',
-)
+const contentType = computed<EditorContentType>(() => props.context.contentType || 'text/html')
 
 const isPlainText = computed(() => contentType.value === 'text/plain')
 
@@ -61,21 +51,14 @@ if (isPlainText.value) {
   disabledPlugins.push(userMentionPluginName, 'image')
 }
 
-const editorExtensions = isPlainText.value
-  ? getPlainExtensions()
-  : getHtmlExtensions()
+const editorExtensions = isPlainText.value ? getPlainExtensions() : getHtmlExtensions()
 
 const showActionBar = ref(false)
 const editorValue = ref<string>(VITE_TEST_MODE ? props.context._value : '')
 
-const { hasImageExtension, loadFiles } = useAttachments(
-  editorExtensions,
-  props.context.formId,
-)
+const { hasImageExtension, loadFiles } = useAttachments(editorExtensions, props.context.formId)
 
-const hasTableExtension = editorExtensions.some(
-  (ext) => ext.name === 'tableKit',
-)
+const hasTableExtension = editorExtensions.some((ext) => ext.name === 'tableKit')
 
 const editor = useEditor({
   extensions: editorExtensions,
@@ -150,13 +133,11 @@ const editor = useEditor({
   },
 })
 
-getCustomExtensions(reactiveContext, editor as ShallowRef<Editor>).forEach(
-  (extension) => {
-    if (!disabledPlugins.includes(extension.name as EditorCustomPlugins)) {
-      editorExtensions.push(extension)
-    }
-  },
-)
+getCustomExtensions(reactiveContext, editor as ShallowRef<Editor>).forEach((extension) => {
+  if (!disabledPlugins.includes(extension.name as EditorCustomPlugins)) {
+    editorExtensions.push(extension)
+  }
+})
 
 if (VITE_TEST_MODE) {
   watch(
@@ -195,37 +176,27 @@ const setEditorContent = (
 ) => {
   if (!editor.value || !content) return
 
-  editor.value.commands.setContent(
-    contentType === 'text/html' ? htmlCleanup(content) : content,
-    {
-      emitUpdate,
-    },
-  )
+  editor.value.commands.setContent(contentType === 'text/html' ? htmlCleanup(content) : content, {
+    emitUpdate,
+  })
 }
 
 // Set the new editor content, when the value was changed from outside (e.g. form schema update).
-const updateValueKey = props.context.node.on(
-  'input',
-  ({ payload: newContent }) => {
-    const currentContent = isPlainText.value
-      ? editor.value?.getText()
-      : editor.value?.getHTML()
+const updateValueKey = props.context.node.on('input', ({ payload: newContent }) => {
+  const currentContent = isPlainText.value ? editor.value?.getText() : editor.value?.getHTML()
 
-    // Skip the update if the value is identical.
-    if (newContent === currentContent) return
+  // Skip the update if the value is identical.
+  if (newContent === currentContent) return
 
-    setEditorContent(newContent, contentType.value, true)
-  },
-)
+  setEditorContent(newContent, contentType.value, true)
+})
 
 // Convert the current editor content, if the content type changed from outside (e.g. form schema update).
 const updateContentTypeKey = props.context.node.on(
   'prop:contentType',
   ({ payload: newContentType }) => {
     const newContent =
-      newContentType === 'text/plain'
-        ? editor.value?.getText()
-        : editor.value?.getHTML()
+      newContentType === 'text/plain' ? editor.value?.getText() : editor.value?.getHTML()
 
     setEditorContent(newContent, newContentType, true)
   },
@@ -264,9 +235,7 @@ const editorCustomContext = {
   getEditorValue: (type: EditorContentType) => {
     if (!editor.value) return ''
 
-    return type === 'text/plain'
-      ? editor.value.getText()
-      : editor.value.getHTML()
+    return type === 'text/plain' ? editor.value.getText() : editor.value.getHTML()
   },
   addSignature,
   removeSignature,
@@ -276,20 +245,16 @@ const editorCustomContext = {
 Object.assign(props.context, editorCustomContext)
 
 onMounted(() => {
-  const onLoad = props.context.onLoad as ((
-    context: FieldEditorContext,
-  ) => void)[]
+  const onLoad = props.context.onLoad as ((context: FieldEditorContext) => void)[]
   onLoad.forEach((fn) => fn(editorCustomContext))
   onLoad.length = 0
 
   if (VITE_TEST_MODE) {
-    if (!('editors' in globalThis))
-      Object.defineProperty(globalThis, 'editors', { value: {} })
-    Object.defineProperty(
-      Reflect.get(globalThis, 'editors'),
-      props.context.node.name,
-      { value: editor.value, configurable: true },
-    )
+    if (!('editors' in globalThis)) Object.defineProperty(globalThis, 'editors', { value: {} })
+    Object.defineProperty(Reflect.get(globalThis, 'editors'), props.context.node.name, {
+      value: editor.value,
+      configurable: true,
+    })
   }
 })
 

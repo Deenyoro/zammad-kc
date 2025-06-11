@@ -4,11 +4,6 @@ import registerRelayStylePagination from '#shared/server/apollo/cache/utils/regi
 
 import type { InMemoryCacheConfig } from '@apollo/client/cache/inmemory/types'
 
-export default function register(
-  config: InMemoryCacheConfig,
-): InMemoryCacheConfig {
-  return registerRelayStylePagination(config, 'ticketArticles', [
-    'ticket',
-    'first',
-  ])
+export default function register(config: InMemoryCacheConfig): InMemoryCacheConfig {
+  return registerRelayStylePagination(config, 'ticketArticles', ['ticket', 'first'])
 }

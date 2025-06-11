@@ -20,8 +20,7 @@ const props = defineProps<{
   article: TicketArticle
 }>()
 
-const { ticket, isTicketEditable, showTicketArticleReplyForm, form } =
-  useTicketInformation()
+const { ticket, isTicketEditable, showTicketArticleReplyForm, form } = useTicketInformation()
 
 const { isTouchDevice } = useTouchDevice()
 
@@ -73,17 +72,12 @@ const actions = computed(() => {
   // Clear all side effects before recalculating actions.
   handleDisposeCallbacks()
 
-  const articleActions = createArticleActions(
-    ticket.value,
-    props.article,
-    'desktop',
-    {
-      onDispose,
-      recalculate: () => {
-        recalculateTriggerId.value += 1
-      },
+  const articleActions = createArticleActions(ticket.value, props.article, 'desktop', {
+    onDispose,
+    recalculate: () => {
+      recalculateTriggerId.value += 1
     },
-  )
+  })
 
   const popoverActions: MenuItem[] = []
   const alwaysVisibleActions: MenuItem[] = []
@@ -156,9 +150,7 @@ const actions = computed(() => {
       :entity="{ ticket, article }"
       button-size="medium"
       :placement="position === 'left' ? 'arrowStart' : 'arrowEnd'"
-      :default-button-variant="
-        position === 'left' ? 'neutral-dark' : 'neutral-light'
-      "
+      :default-button-variant="position === 'left' ? 'neutral-dark' : 'neutral-light'"
       :actions="actions.popoverActions"
       no-single-action-mode
     />

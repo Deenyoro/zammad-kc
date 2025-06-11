@@ -15,16 +15,12 @@ export const useTicketCreateView = () => {
   const ticketCreateEnabled = computed(() => {
     return (
       session.hasPermission('ticket.agent') ||
-      (session.hasPermission('ticket.customer') &&
-        application.config.customer_ticket_create)
+      (session.hasPermission('ticket.customer') && application.config.customer_ticket_create)
     )
   })
 
   const isTicketCustomer = computed(() => {
-    return (
-      session.hasPermission('ticket.customer') &&
-      !session.hasPermission('ticket.agent')
-    )
+    return session.hasPermission('ticket.customer') && !session.hasPermission('ticket.agent')
   })
 
   const checkUniqueTicketCreateRoute = (to: RouteLocationNormalized) => {

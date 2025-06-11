@@ -21,11 +21,7 @@ import TicketOverviewEditItem from '../components/TicketOverviewEditItem.vue'
 
 const overviewOrderStore = useTicketOverviewOrderStore()
 
-const {
-  overviews,
-  loading: overviewsLoading,
-  overviewsByKey,
-} = storeToRefs(overviewOrderStore)
+const { overviews, loading: overviewsLoading, overviewsByKey } = storeToRefs(overviewOrderStore)
 
 // we store local included, so they won't affect home page
 const includedIds = ref(new Set(overviewOrderStore.includedIds.values()))
@@ -40,9 +36,7 @@ watch(
 
 const includedOverviews = computed({
   get: () => {
-    return [...includedIds.value]
-      .map((id) => overviewsByKey.value[id])
-      .filter(Boolean)
+    return [...includedIds.value].map((id) => overviewsByKey.value[id]).filter(Boolean)
   },
   set: (value) => {
     includedIds.value = new Set(value.map((overview) => overview.id))
@@ -92,9 +86,7 @@ useHeader({
 })
 
 const excludedOverviews = computed(() => {
-  return overviews.value.filter(
-    (overview) => !includedIds.value.has(overview.id),
-  )
+  return overviews.value.filter((overview) => !includedIds.value.has(overview.id))
 })
 
 const removeFromFavorites = (id: string) => {
@@ -132,10 +124,7 @@ const updateDndDisabledConfig = (disabled: boolean) => {
           @action-active="updateDndDisabledConfig"
         />
       </div>
-      <div
-        v-if="!includedOverviews.length"
-        class="ms-3 flex min-h-[54px] items-center"
-      >
+      <div v-if="!includedOverviews.length" class="ms-3 flex min-h-[54px] items-center">
         <p>{{ $t('No entries') }}</p>
       </div>
     </CommonSectionMenu>
@@ -152,10 +141,7 @@ const updateDndDisabledConfig = (disabled: boolean) => {
         :overview="overview"
         @action="addToFavorites(overview.id)"
       />
-      <div
-        v-if="!excludedOverviews.length"
-        class="ms-3 flex min-h-[54px] items-center"
-      >
+      <div v-if="!excludedOverviews.length" class="ms-3 flex min-h-[54px] items-center">
         <p>{{ $t('No entries') }}</p>
       </div>
     </CommonSectionMenu>

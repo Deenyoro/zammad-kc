@@ -7,7 +7,7 @@ import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 
 import { visitViewAndMockPasswordConfirmation } from '#desktop/pages/personal-setting/__tests__/support/personal-setting-two-factor-auth.ts'
 
-describe('testing locale a11y view', async () => {
+describe('testing locale a11y view', () => {
   beforeEach(() => {
     mockApplicationConfig({
       two_factor_authentication_method_security_keys: true,

@@ -15,7 +15,8 @@ interface MentionOptions<T> {
   type: MentionType
   allowSpaces?: boolean
   items(props: { query: string; editor: Editor }): T[] | Promise<T[]>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+  // oxlint-disable-next-line no-explicit-any
   insert(props: Record<string, any>): Content | Promise<Content>
 }
 

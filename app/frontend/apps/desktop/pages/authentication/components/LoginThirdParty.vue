@@ -19,11 +19,7 @@ const { fingerprint } = useFingerprint()
   <section class="mt-2.5 w-full" data-test-id="loginThirdParty">
     <div class="mb-2.5 flex justify-center">
       <CommonLabel>
-        {{
-          $c.user_show_password_login
-            ? $t('Or sign in using')
-            : $t('Sign in using')
-        }}
+        {{ $c.user_show_password_login ? $t('Or sign in using') : $t('Sign in using') }}
       </CommonLabel>
     </div>
     <div class="flex flex-wrap gap-2">

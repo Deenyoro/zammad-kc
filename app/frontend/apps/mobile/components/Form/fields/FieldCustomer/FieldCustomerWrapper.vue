@@ -16,10 +16,7 @@ import { useUserCreate } from '#mobile/entities/user/composables/useUserCreate.t
 import FieldCustomerOptionIcon from './FieldCustomerOptionIcon.vue'
 
 const FieldAutoCompleteInput = defineAsyncComponent(
-  () =>
-    import(
-      '#mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue'
-    ),
+  () => import('#mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue'),
 )
 
 interface Props {
@@ -46,14 +43,9 @@ const { openCreateUserDialog } = useUserCreate({
     const { props: nodeProps } = props.context.node
     // If the user is not in options, add it
     if (
-      !nodeProps.options?.some(
-        (v: AutoCompleteCustomerUserOption) => v.value === user.internalId,
-      )
+      !nodeProps.options?.some((v: AutoCompleteCustomerUserOption) => v.value === user.internalId)
     ) {
-      nodeProps.options = [
-        ...(nodeProps.options || []),
-        buildEntityOption(user),
-      ]
+      nodeProps.options = [...(nodeProps.options || []), buildEntityOption(user)]
     }
     await nextTick()
     props.context.node.input(user.internalId, false)

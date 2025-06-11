@@ -7,18 +7,13 @@ import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 
 import { useBreadcrumb } from '../composables/useBreadcrumb.ts'
 
-const { modelCurrentLocale, localeOptions, isSavingLocale, translation } =
-  useLocaleUpdate()
+const { modelCurrentLocale, localeOptions, isSavingLocale, translation } = useLocaleUpdate()
 
 const { breadcrumbItems } = useBreadcrumb(__('Language'))
 </script>
 
 <template>
-  <LayoutContent
-    :breadcrumb-items="breadcrumbItems"
-    width="narrow"
-    provide-default
-  >
+  <LayoutContent :breadcrumb-items="breadcrumbItems" width="narrow" provide-default>
     <div class="mb-4">
       <FormKit
         v-model="modelCurrentLocale"

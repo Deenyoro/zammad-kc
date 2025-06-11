@@ -11,12 +11,9 @@ defineProps<Props>()
 <template>
   <div class="ltr:text-left rtl:text-right">
     <template v-if="Array.isArray(helpText)">
-      <CommonLabel
-        v-for="(text, index) in helpText"
-        :key="`${text}-${index}`"
-        tag="p"
-        >{{ text }}</CommonLabel
-      >
+      <CommonLabel v-for="(text, index) in helpText" :key="`${text}-${index}`" tag="p">{{
+        text
+      }}</CommonLabel>
     </template>
     <CommonLabel v-else tag="p">{{ helpText }}</CommonLabel>
   </div>

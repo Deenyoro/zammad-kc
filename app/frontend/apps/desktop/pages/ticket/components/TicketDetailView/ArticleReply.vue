@@ -36,10 +36,7 @@ defineEmits<{
 
 const currentTicketArticleType = computed(() => {
   if (props.isTicketCustomer) return 'web'
-  if (
-    props.createArticleType &&
-    ['phone', 'web'].includes(props.createArticleType)
-  ) {
+  if (props.createArticleType && ['phone', 'web'].includes(props.createArticleType)) {
     return 'email'
   }
 
@@ -66,21 +63,15 @@ const availableArticleTypes = computed(() => {
     return {
       articleType: type.value,
       label:
-        primaryTicketArticleType === type.value && hasEmail
-          ? __('Add reply')
-          : type.buttonLabel,
+        primaryTicketArticleType === type.value && hasEmail ? __('Add reply') : type.buttonLabel,
       icon: type.icon,
       variant:
         primaryTicketArticleType === type.value ||
-        (type.value === 'phone' &&
-          !hasEmail &&
-          availableArticleTypes.length === 2)
+        (type.value === 'phone' && !hasEmail && availableArticleTypes.length === 2)
           ? 'primary'
           : 'secondary',
       performReply: (() =>
-        type.performReply?.(
-          props.ticket,
-        )) as AppSpecificTicketArticleType['performReply'],
+        type.performReply?.(props.ticket)) as AppSpecificTicketArticleType['performReply'],
     }
   })
 })
@@ -137,11 +128,7 @@ const articlePanelMaxHeight = computed(() => screenHeight.value / 2)
 const resizeLine = ref<InstanceType<typeof ResizeLine>>()
 
 const resizeCallback = (valueY: number) => {
-  if (
-    valueY >= articlePanelMaxHeight.value ||
-    valueY < MINIMUM_ARTICLE_PANEL_HEIGHT
-  )
-    return
+  if (valueY >= articlePanelMaxHeight.value || valueY < MINIMUM_ARTICLE_PANEL_HEIGHT) return
 
   articlePanelHeight.value = valueY
 }
@@ -150,11 +137,7 @@ const resizeCallback = (valueY: number) => {
 const activeElement = useActiveElement()
 
 const handleKeyStroke = (e: KeyboardEvent, adjustment: number) => {
-  if (
-    !articlePanelHeight.value ||
-    activeElement.value !== resizeLine.value?.resizeLine
-  )
-    return
+  if (!articlePanelHeight.value || activeElement.value !== resizeLine.value?.resizeLine) return
 
   e.preventDefault()
 
@@ -178,9 +161,7 @@ const resetHeight = () => {
 
 const articleForm = ref<HTMLElement>()
 
-const { reachedTop: articleFormReachedTop } = useElementScroll(
-  articleForm as MaybeRef<HTMLElement>,
-)
+const { reachedTop: articleFormReachedTop } = useElementScroll(articleForm as MaybeRef<HTMLElement>)
 
 defineExpose({
   articlePanel,
@@ -295,9 +276,7 @@ defineExpose({
       :prefix-icon="button.icon"
       :variant="button.variant as ButtonVariant"
       size="large"
-      @click="
-        $emit('show-article-form', button.articleType, button.performReply)
-      "
+      @click="$emit('show-article-form', button.articleType, button.performReply)"
     >
       {{ $t(button.label) }}
     </CommonButton>

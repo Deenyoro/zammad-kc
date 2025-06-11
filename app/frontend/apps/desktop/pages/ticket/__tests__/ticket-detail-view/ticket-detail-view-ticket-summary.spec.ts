@@ -30,8 +30,7 @@ const triggerSummaryUpdate = async (
   data: TicketAiAssistanceSummaryUpdatesPayload,
   withInitialSubscription = true,
 ) => {
-  const mockSubscription =
-    getTicketAiAssistanceSummaryUpdatesSubscriptionHandler()
+  const mockSubscription = getTicketAiAssistanceSummaryUpdatesSubscriptionHandler()
 
   if (withInitialSubscription) {
     await mockSubscription.trigger({
@@ -111,13 +110,9 @@ describe('Ticket detail view - Ticket summary', () => {
       name: 'Content sidebar',
     })
 
-    expect(
-      within(contentSidebar).getByRole('button', { name: 'Summary' }),
-    ).toBeInTheDocument()
+    expect(within(contentSidebar).getByRole('button', { name: 'Summary' })).toBeInTheDocument()
 
-    await view.events.click(
-      within(contentSidebar).getByRole('button', { name: 'Summary' }),
-    )
+    await view.events.click(within(contentSidebar).getByRole('button', { name: 'Summary' }))
 
     expect(
       await within(contentSidebar).findByRole('heading', {
@@ -286,9 +281,7 @@ describe('Ticket detail view - Ticket summary', () => {
       await view.findByRole('heading', { level: 3, name: 'Customer Intent' }),
     ).toBeInTheDocument()
 
-    expect(
-      await view.findByText('Summary to see if subscription comes in'),
-    ).toBeInTheDocument()
+    expect(await view.findByText('Summary to see if subscription comes in')).toBeInTheDocument()
   })
 
   it('hides summary banner if user dismissed it', async () => {
@@ -329,20 +322,15 @@ describe('Ticket detail view - Ticket summary', () => {
 
     const view = await visitView('/tickets/1')
 
-    await view.events.click(
-      await view.findByRole('button', { name: 'Hide ticket summary banner' }),
-    )
+    await view.events.click(await view.findByRole('button', { name: 'Hide ticket summary banner' }))
 
     const dialog = await view.findByRole('dialog', {
       name: 'Hide Smart Assist Summary Banner?',
     })
 
-    await view.events.click(
-      within(dialog).getByRole('button', { name: 'Yes, hide it' }),
-    )
+    await view.events.click(within(dialog).getByRole('button', { name: 'Yes, hide it' }))
 
-    const calls =
-      await waitForUserCurrentTicketSummaryBannerHiddenMutationCalls()
+    const calls = await waitForUserCurrentTicketSummaryBannerHiddenMutationCalls()
 
     expect(calls.at(-1)?.variables).toEqual({ hidden: true })
 
@@ -367,9 +355,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     await waitForTicketAiAssistanceSummarizeMutationCalls()
 
-    expect(
-      await view.findByRole('status', { name: 'Has update' }),
-    ).toBeInTheDocument()
+    expect(await view.findByRole('status', { name: 'Has update' })).toBeInTheDocument()
   })
 
   it('hides update indicator when ticket summary sidebar is opened', async () => {
@@ -390,9 +376,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Summary' }))
 
-    expect(
-      view.queryByRole('status', { name: 'Has update' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('status', { name: 'Has update' })).not.toBeInTheDocument()
   })
 
   describe('errors', () => {
@@ -476,9 +460,7 @@ describe('Ticket detail view - Ticket summary', () => {
         },
       })
 
-      expect(
-        view.getByText('Authentication problem with provider.'),
-      ).toBeInTheDocument()
+      expect(view.getByText('Authentication problem with provider.')).toBeInTheDocument()
     })
 
     it('shows no ai provider is selected', async () => {
@@ -498,9 +480,7 @@ describe('Ticket detail view - Ticket summary', () => {
       await view.events.click(view.getByRole('button', { name: 'Summary' }))
 
       expect(
-        view.getByText(
-          'No AI provider is currently set up. Please contact your administrator.',
-        ),
+        view.getByText('No AI provider is currently set up. Please contact your administrator.'),
       ).toBeInTheDocument()
     })
   })
@@ -519,9 +499,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     const view = await visitView('/tickets/1')
 
-    expect(
-      view.queryByRole('button', { name: 'Summary' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Summary' })).not.toBeInTheDocument()
   })
 
   describe('ticket summary banner', () => {
@@ -546,9 +524,7 @@ describe('Ticket detail view - Ticket summary', () => {
         },
       })
 
-      expect(
-        await view.findByTestId('ticket-summary-banner'),
-      ).toHaveTextContent(
+      expect(await view.findByTestId('ticket-summary-banner')).toHaveTextContent(
         'Zammad Smart Assist ticket summary has been generated.',
       )
 
@@ -569,9 +545,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
       const view = await visitView('/tickets/1')
 
-      await view.events.click(
-        await view.findByRole('button', { name: 'See Summary' }),
-      )
+      await view.events.click(await view.findByRole('button', { name: 'See Summary' }))
 
       expect(
         await view.findByRole('complementary', { name: 'Content sidebar' }),
@@ -601,9 +575,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
       const view = await visitView('/tickets/1')
 
-      expect(
-        view.queryByRole('button', { name: 'See Summary' }),
-      ).not.toBeInTheDocument()
+      expect(view.queryByRole('button', { name: 'See Summary' })).not.toBeInTheDocument()
     })
 
     it('hides banner if feature is disabled', async () => {
@@ -620,9 +592,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
       const view = await visitView('/tickets/1')
 
-      expect(
-        view.queryByRole('button', { name: 'See Summary' }),
-      ).not.toBeInTheDocument()
+      expect(view.queryByRole('button', { name: 'See Summary' })).not.toBeInTheDocument()
     })
 
     it('hides banner if user is customer', async () => {
@@ -639,9 +609,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
       const view = await visitView('/tickets/1')
 
-      expect(
-        view.queryByRole('button', { name: 'See Summary' }),
-      ).not.toBeInTheDocument()
+      expect(view.queryByRole('button', { name: 'See Summary' })).not.toBeInTheDocument()
     })
 
     it('hides banner if provider is not available', async () => {
@@ -657,9 +625,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
       const view = await visitView('/tickets/1')
 
-      expect(
-        view.queryByRole('button', { name: 'See Summary' }),
-      ).not.toBeInTheDocument()
+      expect(view.queryByRole('button', { name: 'See Summary' })).not.toBeInTheDocument()
     })
 
     it('hides banner if ticket summary tab is active', async () => {
@@ -680,13 +646,9 @@ describe('Ticket detail view - Ticket summary', () => {
 
       const view = await visitView('/tickets/1')
 
-      await view.events.click(
-        await view.findByRole('button', { name: 'See Summary' }),
-      )
+      await view.events.click(await view.findByRole('button', { name: 'See Summary' }))
 
-      expect(
-        view.queryByRole('button', { name: 'See Summary' }),
-      ).not.toBeInTheDocument()
+      expect(view.queryByRole('button', { name: 'See Summary' })).not.toBeInTheDocument()
     })
   })
 
@@ -704,13 +666,9 @@ describe('Ticket detail view - Ticket summary', () => {
 
     const view = await visitView('/tickets/1')
 
-    await view.events.click(
-      await view.findByRole('button', { name: 'See Summary' }),
-    )
+    await view.events.click(await view.findByRole('button', { name: 'See Summary' }))
 
-    expect(
-      view.queryByRole('button', { name: 'See Summary' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'See Summary' })).not.toBeInTheDocument()
   })
 
   it('shows ticket summary is progressing in banner', async () => {
@@ -765,9 +723,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     const view = await visitView('/tickets/1')
 
-    await view.events.click(
-      await view.findByRole('button', { name: 'See Summary' }),
-    )
+    await view.events.click(await view.findByRole('button', { name: 'See Summary' }))
 
     await waitForTicketAiAssistanceSummarizeMutationCalls()
 
@@ -779,9 +735,7 @@ describe('Ticket detail view - Ticket summary', () => {
     })
 
     await waitFor(() =>
-      expect(
-        view.queryByRole('button', { name: 'See Summary' }),
-      ).toBeInTheDocument(),
+      expect(view.queryByRole('button', { name: 'See Summary' })).toBeInTheDocument(),
     )
   })
 
@@ -822,13 +776,9 @@ describe('Ticket detail view - Ticket summary', () => {
 
     const view = await visitView('/tickets/1')
 
-    await view.events.click(
-      await view.findByRole('button', { name: 'See Summary' }),
-    )
+    await view.events.click(await view.findByRole('button', { name: 'See Summary' }))
 
-    expect(
-      view.queryByRole('button', { name: 'See Summary' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'See Summary' })).not.toBeInTheDocument()
 
     // Change sidebar tab
     await view.events.click(await view.findByRole('button', { name: 'Ticket' }))
@@ -844,8 +794,6 @@ describe('Ticket detail view - Ticket summary', () => {
       error: null,
     })
 
-    expect(
-      await view.findByRole('button', { name: 'See Summary' }),
-    ).toBeInTheDocument()
+    expect(await view.findByRole('button', { name: 'See Summary' })).toBeInTheDocument()
   })
 })

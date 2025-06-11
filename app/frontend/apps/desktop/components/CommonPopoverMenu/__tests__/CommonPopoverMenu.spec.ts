@@ -101,9 +101,7 @@ describe('rendering section', () => {
   it('support click handler on item', async () => {
     const clickHandler = vi.fn()
 
-    const items: MenuItem[] = [
-      { key: 'example', onClick: clickHandler, label: 'Example' },
-    ]
+    const items: MenuItem[] = [{ key: 'example', onClick: clickHandler, label: 'Example' }]
 
     const view = renderComponent(CommonPopoverMenu, {
       shallow: false,
@@ -176,9 +174,7 @@ describe('rendering section', () => {
     }
     CustomComponent.props = ['label']
 
-    const items: MenuItem[] = [
-      { key: 'menu-item', component: CustomComponent, label: 'Menu item' },
-    ]
+    const items: MenuItem[] = [{ key: 'menu-item', component: CustomComponent, label: 'Menu item' }]
 
     const view = renderComponent(CommonPopoverMenu, {
       shallow: false,
@@ -249,25 +245,13 @@ describe('rendering section', () => {
     })
 
     expect(view.getByRole('button', { name: 'group test' })).toBeInTheDocument()
-    expect(
-      view.getByRole('button', { name: 'group test 2' }),
-    ).toBeInTheDocument()
-    expect(
-      view.getByRole('button', { name: 'group test 3' }),
-    ).toBeInTheDocument()
-    expect(
-      view.getByRole('button', { name: 'single-group test 3' }),
-    ).toBeInTheDocument()
-    expect(
-      view.getByRole('button', { name: 'single test' }),
-    ).toBeInTheDocument()
+    expect(view.getByRole('button', { name: 'group test 2' })).toBeInTheDocument()
+    expect(view.getByRole('button', { name: 'group test 3' })).toBeInTheDocument()
+    expect(view.getByRole('button', { name: 'single-group test 3' })).toBeInTheDocument()
+    expect(view.getByRole('button', { name: 'single test' })).toBeInTheDocument()
 
-    expect(
-      view.getByRole('heading', { name: 'test group', level: 3 }),
-    ).toBeInTheDocument()
+    expect(view.getByRole('heading', { name: 'test group', level: 3 })).toBeInTheDocument()
 
-    expect(
-      view.getByRole('heading', { name: 'single group', level: 3 }),
-    ).toBeInTheDocument()
+    expect(view.getByRole('heading', { name: 'single group', level: 3 })).toBeInTheDocument()
   })
 })

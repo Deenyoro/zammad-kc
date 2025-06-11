@@ -3,10 +3,7 @@
 import { faker } from '@faker-js/faker'
 
 import type { TicketState } from '#shared/graphql/types.ts'
-import {
-  convertToGraphQLId,
-  getIdFromGraphQLId,
-} from '#shared/graphql/utils.ts'
+import { convertToGraphQLId, getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 import type { DeepPartial } from '#shared/types/utils.ts'
 
 import { updateGeneratedIds } from '../../builders/utils.ts'

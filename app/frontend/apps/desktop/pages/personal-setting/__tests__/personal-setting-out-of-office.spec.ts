@@ -63,24 +63,16 @@ describe('Out of Office page', () => {
     it('loads current Out of Office settings', async () => {
       const view = await visitView('/personal-setting/out-of-office')
 
-      expect(view.getByLabelText('Reason for absence')).toHaveValue(
-        'OOF holiday',
-      )
-      expect(view.getByLabelText('Start and end date')).toHaveValue(
-        '2024-03-01 - 2024-04-01',
-      )
-      expect(view.getByLabelText('Replacement agent')).toHaveValue(
-        'Example Agent',
-      )
+      expect(view.getByLabelText('Reason for absence')).toHaveValue('OOF holiday')
+      expect(view.getByLabelText('Start and end date')).toHaveValue('2024-03-01 - 2024-04-01')
+      expect(view.getByLabelText('Replacement agent')).toHaveValue('Example Agent')
       expect(view.getByLabelText('Active')).toBeChecked()
     })
 
     it('loads data updated elsewhere', async () => {
       const view = await visitView('/personal-setting/out-of-office')
 
-      expect(view.getByLabelText('Reason for absence')).toHaveValue(
-        'OOF holiday',
-      )
+      expect(view.getByLabelText('Reason for absence')).toHaveValue('OOF holiday')
 
       mockUserCurrent({
         firstname: 'John',
@@ -104,9 +96,7 @@ describe('Out of Office page', () => {
     it('does not reset form if unrelated data was updated', async () => {
       const view = await visitView('/personal-setting/out-of-office')
 
-      expect(view.getByLabelText('Reason for absence')).toHaveValue(
-        'OOF holiday',
-      )
+      expect(view.getByLabelText('Reason for absence')).toHaveValue('OOF holiday')
 
       const input = view.getByLabelText('Reason for absence')
       await view.events.clear(input)
@@ -279,9 +269,7 @@ describe('Out of Office page', () => {
 
       expect(view.getByLabelText('Reason for absence')).toHaveValue('')
 
-      expect(view.getByLabelText('Start and end date')).toHaveValue(
-        'YYYY-MM-DD - YYYY-MM-DD',
-      )
+      expect(view.getByLabelText('Start and end date')).toHaveValue('YYYY-MM-DD - YYYY-MM-DD')
 
       expect(view.getByLabelText('Replacement agent')).toHaveValue('')
       expect(view.getByLabelText('Active')).not.toBeChecked()
@@ -334,10 +322,7 @@ describe('Out of Office page', () => {
       expect(calls.at(-1)?.variables).toEqual(
         expect.objectContaining({
           input: expect.objectContaining({
-            replacementId: convertToGraphQLId(
-              'User',
-              agentAutocompleteOptions[0].value,
-            ),
+            replacementId: convertToGraphQLId('User', agentAutocompleteOptions[0].value),
           }),
         }),
       )
@@ -378,10 +363,7 @@ describe('Out of Office page', () => {
           input: expect.objectContaining({
             startAt: '2024-01-02',
             endAt: '2024-02-02',
-            replacementId: convertToGraphQLId(
-              'User',
-              agentAutocompleteOptions[0].value,
-            ),
+            replacementId: convertToGraphQLId('User', agentAutocompleteOptions[0].value),
             enabled: true,
           }),
         }),

@@ -31,12 +31,9 @@ const schema = defineFormSchema([
   },
 ])
 
-const passwordCheckMutation = new MutationHandler(
-  useUserCurrentPasswordCheckMutation(),
-  {
-    errorNotificationMessage: __('Password could not be checked'),
-  },
-)
+const passwordCheckMutation = new MutationHandler(useUserCurrentPasswordCheckMutation(), {
+  errorNotificationMessage: __('Password could not be checked'),
+})
 
 const headerSubtitle = __('Confirm Password')
 
@@ -73,30 +70,24 @@ const footerActionOptions = computed(() => {
 })
 
 const submitForm = async (formData: FormSubmitData<Record<string, string>>) => {
-  return passwordCheckMutation
-    .send({ password: formData.password })
-    .then((data) => {
-      if (
-        !data?.userCurrentPasswordCheck?.success ||
-        !data?.userCurrentPasswordCheck?.token
-      )
-        return
+  return passwordCheckMutation.send({ password: formData.password }).then((data) => {
+    if (!data?.userCurrentPasswordCheck?.success || !data?.userCurrentPasswordCheck?.token) return
 
-      if (props.type === 'removal_confirmation') {
-        props.successCallback?.({
-          token: data.userCurrentPasswordCheck.token,
-        })
-
-        props.formSubmitCallback?.({})
-
-        return
-      }
-
-      props.formSubmitCallback?.({
-        nextState: props.type,
+    if (props.type === 'removal_confirmation') {
+      props.successCallback?.({
         token: data.userCurrentPasswordCheck.token,
       })
+
+      props.formSubmitCallback?.({})
+
+      return
+    }
+
+    props.formSubmitCallback?.({
+      nextState: props.type,
+      token: data.userCurrentPasswordCheck.token,
     })
+  })
 }
 
 defineExpose({

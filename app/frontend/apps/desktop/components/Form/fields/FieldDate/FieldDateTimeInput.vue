@@ -33,23 +33,12 @@ const contextReactive = toRef(props, 'context')
 
 const { localValue } = useValue(contextReactive)
 
-const {
-  ariaLabels,
-  displayFormat,
-  is24,
-  localeStore,
-  minDate,
-  position,
-  timePicker,
-  valueFormat,
-} = useDateTime(contextReactive)
+const { ariaLabels, displayFormat, is24, localeStore, minDate, position, timePicker, valueFormat } =
+  useDateTime(contextReactive)
 
 const config = computed(() => ({
   keepActionRow: true,
-  arrowLeft:
-    localeStore.localeData?.dir === EnumTextDirection.Rtl
-      ? 'calc(100% - 17px)'
-      : '17px',
+  arrowLeft: localeStore.localeData?.dir === EnumTextDirection.Rtl ? 'calc(100% - 17px)' : '17px',
 }))
 
 const actionRow = computed(() => ({
@@ -214,11 +203,7 @@ watch(
     const newDate = parseValue(newValue)
     const maskedDate = parse(masked.value, inputFormat.value, new Date())
 
-    if (
-      isValid(maskedDate) &&
-      maskedDate.toISOString() === newDate.toISOString()
-    )
-      return
+    if (isValid(maskedDate) && maskedDate.toISOString() === newDate.toISOString()) return
 
     masked.value = format(newDate, inputFormat.value)
   },
@@ -254,8 +239,7 @@ watch(masked, (newValue) => {
       return formatValue(date)
     })
 
-    if (!dateRangeValidation(newValues) || isEqual(localValue.value, newValues))
-      return
+    if (!dateRangeValidation(newValues) || isEqual(localValue.value, newValues)) return
 
     localValue.value = newValues
 
@@ -264,11 +248,7 @@ watch(masked, (newValue) => {
 
   const newDate = parse(newValue, inputFormat.value, new Date())
 
-  if (
-    !isValid(newDate) ||
-    (isValid(newDate) && localValue.value === formatValue(newDate))
-  )
-    return
+  if (!isValid(newDate) || (isValid(newDate) && localValue.value === formatValue(newDate))) return
 
   localValue.value = formatValue(newDate)
 })
@@ -312,8 +292,7 @@ const closed = () => {
 
   const maskedDate = parse(masked.value, inputFormat.value, new Date())
 
-  if (isValid(maskedDate) && localValue.value === formatValue(maskedDate))
-    return
+  if (isValid(maskedDate) && localValue.value === formatValue(maskedDate)) return
 
   const newDate = parseValue(localValue.value)
   masked.value = format(newDate, inputFormat.value)
@@ -341,9 +320,7 @@ const closed = () => {
       :min-date="minDate"
       :start-date="minDate || context.maxDate"
       :ignore-time-validation="!timePicker"
-      :prevent-min-max-navigation="
-        Boolean(minDate || context.maxDate || context.futureOnly)
-      "
+      :prevent-min-max-navigation="Boolean(minDate || context.maxDate || context.futureOnly)"
       :now-button-label="$t('Today')"
       :position="position"
       :action-row="actionRow"
@@ -369,12 +346,7 @@ const closed = () => {
         />
       </template>
       <template #input-icon>
-        <CommonIcon
-          :name="inputIcon"
-          size="tiny"
-          decorative
-          @click.stop="picker?.toggleMenu()"
-        />
+        <CommonIcon :name="inputIcon" size="tiny" decorative @click.stop="picker?.toggleMenu()" />
       </template>
       <template #clear-icon>
         <CommonIcon

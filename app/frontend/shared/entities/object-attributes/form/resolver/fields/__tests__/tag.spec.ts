@@ -12,20 +12,17 @@ describe('FieldResolverTag', () => {
       tag_new: true,
     })
 
-    const fieldResolver = new FieldResolverTag(
-      EnumObjectManagerObjects.Ticket,
-      {
-        dataType: 'tag',
-        name: 'tag',
-        display: 'Tag',
-        dataOption: {
-          type: 'text',
-          null: true,
-          translate: false,
-        },
-        isInternal: true,
+    const fieldResolver = new FieldResolverTag(EnumObjectManagerObjects.Ticket, {
+      dataType: 'tag',
+      name: 'tag',
+      display: 'Tag',
+      dataOption: {
+        type: 'text',
+        null: true,
+        translate: false,
       },
-    )
+      isInternal: true,
+    })
 
     expect(fieldResolver.fieldAttributes()).toEqual({
       label: 'Tag',

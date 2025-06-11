@@ -37,14 +37,9 @@ export const initializeConfirmationDialog = () => {
     if (!lastConfirmationUuid.value) return
 
     if (!confirmationDialogPerRoute.has(getRouteIdentifier(route))) {
-      confirmationDialogPerRoute.set(
-        getRouteIdentifier(route),
-        new Set<string>(),
-      )
+      confirmationDialogPerRoute.set(getRouteIdentifier(route), new Set<string>())
     }
-    confirmationDialogPerRoute
-      .get(getRouteIdentifier(route))!
-      .add(lastConfirmationUuid.value)
+    confirmationDialogPerRoute.get(getRouteIdentifier(route))!.add(lastConfirmationUuid.value)
 
     confirmationDialog.open({
       uniqueId: lastConfirmationUuid.value,

@@ -15,9 +15,7 @@ const isOrganizationInactive = computed(() => !props.item.active)
     v-tooltip="item.name"
     class="group/item flex grow gap-2 rounded-md px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:no-underline!"
     :link="`/organizations/${item.internalId}`"
-    :aria-description="
-      isOrganizationInactive ? $t('Organization is inactive.') : undefined
-    "
+    :aria-description="isOrganizationInactive ? $t('Organization is inactive.') : undefined"
     internal
   >
     <CommonIcon
@@ -29,8 +27,7 @@ const isOrganizationInactive = computed(() => !props.item.active)
     <CommonLabel
       class="block! truncate group-hover/item:text-white"
       :class="{
-        'text-neutral-500! group-hover/item:text-white!':
-          isOrganizationInactive,
+        'text-neutral-500! group-hover/item:text-white!': isOrganizationInactive,
       }"
     >
       {{ item.name }}

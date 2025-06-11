@@ -151,9 +151,7 @@ describe('basic toolbar testing', () => {
       },
     })
 
-    expect(
-      view.queryByRole('button', { name: 'Mention user' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Mention user' })).not.toBeInTheDocument()
     expect(view.queryByLabelText('Mention user')).not.toBeInTheDocument()
     expect(view.queryByText('Mention user')).not.toBeInTheDocument()
     expect(view.queryByIconName('at-sign')).not.toBeInTheDocument()
@@ -169,27 +167,19 @@ describe('basic toolbar testing', () => {
       },
     })
 
-    expect(
-      view.getByLabelText('Insert text from text module'),
-    ).toBeInTheDocument()
+    expect(view.getByLabelText('Insert text from text module')).toBeInTheDocument()
 
     expect(view.getByIconName('text-modules')).toBeInTheDocument()
 
-    expect(
-      view.getByLabelText('Insert text from Knowledge Base article'),
-    ).toBeInTheDocument()
+    expect(view.getByLabelText('Insert text from Knowledge Base article')).toBeInTheDocument()
     expect(view.getByIconName('book')).toBeInTheDocument()
 
-    expect(
-      view.queryByRole('button', { name: 'Mention user' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Mention user' })).not.toBeInTheDocument()
     expect(view.queryByLabelText('Mention user')).not.toBeInTheDocument()
 
     expect(view.queryByLabelText('Add link')).not.toBeInTheDocument()
     expect(view.queryByLabelText('Add image')).not.toBeInTheDocument()
-    expect(
-      view.queryByLabelText('Format as underlined'),
-    ).not.toBeInTheDocument()
+    expect(view.queryByLabelText('Format as underlined')).not.toBeInTheDocument()
   })
 
   describe('AiAssistantTextTools', () => {
@@ -228,10 +218,8 @@ describe('basic toolbar testing', () => {
         insertContentAt: vi.fn(),
         focus: vi.fn(),
         setTextSelection: vi.fn(),
-        improveWriting:
-          textToolsActionMock[EnumAiTextToolService.ImproveWriting],
-        fixSpellingAndGrammar:
-          textToolsActionMock[EnumAiTextToolService.SpellingAndGrammar],
+        improveWriting: textToolsActionMock[EnumAiTextToolService.ImproveWriting],
+        fixSpellingAndGrammar: textToolsActionMock[EnumAiTextToolService.SpellingAndGrammar],
         expandText: textToolsActionMock[EnumAiTextToolService.Expand],
         simplifyText: textToolsActionMock[EnumAiTextToolService.Simplify],
       },
@@ -348,17 +336,13 @@ describe('basic toolbar testing', () => {
         },
       })
 
-      await wrapper.events.click(
-        wrapper.getByRole('button', { name: 'Ai assistant text tools' }),
-      )
+      await wrapper.events.click(wrapper.getByRole('button', { name: 'Ai assistant text tools' }))
 
       const popover = await wrapper.findByRole('region', {
         name: 'Ai assistant text tools',
       })
 
-      await wrapper.events.click(
-        within(popover).getByRole('button', { name: label }),
-      )
+      await wrapper.events.click(within(popover).getByRole('button', { name: label }))
 
       expect(textToolsActionMock[aiTextToolService]).toHaveBeenCalled()
     })

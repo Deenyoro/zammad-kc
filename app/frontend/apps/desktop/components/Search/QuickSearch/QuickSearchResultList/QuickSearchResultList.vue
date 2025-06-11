@@ -29,10 +29,7 @@ const { sortedByPriorityPlugins } = useSearchPlugins()
 
 const userSearchInput = toRef(props, 'search')
 
-const debouncedSearch = refDebounced<string>(
-  userSearchInput,
-  props.debounceTime,
-)
+const debouncedSearch = refDebounced<string>(userSearchInput, props.debounceTime)
 
 const quickSearchQuery = new QueryHandler(
   useQuickSearchLazyQuery(
@@ -99,9 +96,7 @@ const { debouncedLoading } = useDebouncedLoading({
   ms: 150,
 })
 
-const hasResults = computed(() =>
-  Boolean(mappedQuickSearchResults.value?.length),
-)
+const hasResults = computed(() => Boolean(mappedQuickSearchResults.value?.length))
 
 const { resetQuickSearchInputField } = useQuickSearchInput()
 </script>

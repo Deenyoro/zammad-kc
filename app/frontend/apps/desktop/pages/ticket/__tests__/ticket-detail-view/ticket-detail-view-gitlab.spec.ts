@@ -26,9 +26,7 @@ describe('Ticket detail view - GitLab integration', () => {
 
     const sidebar = view.getByLabelText('Content sidebar')
 
-    expect(
-      within(sidebar).getByRole('button', { name: 'GitLab' }),
-    ).toBeInTheDocument()
+    expect(within(sidebar).getByRole('button', { name: 'GitLab' })).toBeInTheDocument()
   })
 
   it('hides sidebar when not available', async () => {
@@ -50,8 +48,6 @@ describe('Ticket detail view - GitLab integration', () => {
 
     const sidebar = view.getByLabelText('Content sidebar')
 
-    expect(
-      within(sidebar).queryByRole('button', { name: 'GitLab' }),
-    ).not.toBeInTheDocument()
+    expect(within(sidebar).queryByRole('button', { name: 'GitLab' })).not.toBeInTheDocument()
   })
 })

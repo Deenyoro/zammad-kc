@@ -6,19 +6,15 @@ import {
 } from '@formkit/inputs'
 import { isArray } from 'lodash-es'
 
-import type {
-  FormFieldTypeImportModules,
-  FormFieldsTypeDefinition,
-} from '#shared/types/form.ts'
-import type {
-  ImportGlobEagerDefault,
-  ImportGlobEagerOutput,
-} from '#shared/types/utils.ts'
+import type { FormFieldTypeImportModules, FormFieldsTypeDefinition } from '#shared/types/form.ts'
+import type { ImportGlobEagerDefault, ImportGlobEagerOutput } from '#shared/types/utils.ts'
 
 import type { FormKitPlugin } from '@formkit/core'
 
-const fieldModules: ImportGlobEagerOutput<FormFieldTypeImportModules> =
-  import.meta.glob('../../components/Form/fields/**/index.ts', { eager: true })
+const fieldModules: ImportGlobEagerOutput<FormFieldTypeImportModules> = import.meta.glob(
+  '../../components/Form/fields/**/index.ts',
+  { eager: true },
+)
 
 // The main field type "form" from FormKit is a fixed type.
 const fields: FormFieldsTypeDefinition = {

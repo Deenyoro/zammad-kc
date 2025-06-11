@@ -39,11 +39,7 @@ const permittedRoutes = computed(() => {
 
 <template>
   <div>
-    <CommonSectionCollapse
-      id="page-navigation"
-      :title="__('Navigation')"
-      :no-header="collapsed"
-    >
+    <CommonSectionCollapse id="page-navigation" :title="__('Navigation')" :no-header="collapsed">
       <template #default="{ headerId }">
         <nav :aria-labelledby="headerId">
           <ul class="flex basis-full flex-col" :class="{ 'gap-1': collapsed }">
@@ -76,8 +72,7 @@ const permittedRoutes = computed(() => {
                 v-else
                 class="focus-visible-app-default flex grow gap-2 rounded-lg px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:text-white! hover:no-underline! focus-visible:rounded-lg!"
                 :class="{
-                  'bg-blue-800! text-white!':
-                    router.currentRoute.value.name === route.name, // $route.name is not detected by ts
+                  'bg-blue-800! text-white!': router.currentRoute.value.name === route.name, // $route.name is not detected by ts
                 }"
                 :link="route.path.replace(/\/:\w+/, '')"
                 exact-active-class="bg-blue-800! w-full text-white!"

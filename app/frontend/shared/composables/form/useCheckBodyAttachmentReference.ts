@@ -36,10 +36,7 @@ const bodyAttachmentReferenceMatchwordExists = (body: string) => {
 export const useCheckBodyAttachmentReference = () => {
   const { waitForConfirmation } = useConfirmation()
 
-  const missingBodyAttachmentReference = (
-    body: string,
-    files?: FileUploaded[],
-  ) => {
+  const missingBodyAttachmentReference = (body: string, files?: FileUploaded[]) => {
     if (!body) return false
     if (files && files.length > 0) return false
 

@@ -61,9 +61,7 @@ describe('Form - Field - Tags - Features', () => {
 
     await waitForAutocompleteSearchTagQueryCalls()
 
-    expect(
-      wrapper.getByText('Start typing to search or enter a new tag…'),
-    ).toBeInTheDocument()
+    expect(wrapper.getByText('Start typing to search or enter a new tag…')).toBeInTheDocument()
 
     const filterElement = wrapper.getByRole('searchbox')
 
@@ -71,9 +69,7 @@ describe('Form - Field - Tags - Features', () => {
 
     await waitForAutocompleteSearchTagQueryCalls()
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'add new tag' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'add new tag' }))
 
     await waitFor(() => {
       expect(wrapper.emitted().inputRaw).toBeTruthy()
@@ -87,9 +83,7 @@ describe('Form - Field - Tags - Features', () => {
 
     await wrapper.events.keyboard('{Escape}')
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Clear Selection' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear Selection' }))
 
     expect(emittedInput[1][0]).toBeNull()
     expect(wrapper.queryByRole('listitem')).not.toBeInTheDocument()
@@ -121,9 +115,7 @@ describe('Form - Field - Tags - Features', () => {
 
     await waitForAutocompleteSearchTagQueryCalls()
 
-    expect(
-      wrapper.queryByRole('button', { name: 'add new tag' }),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button', { name: 'add new tag' })).not.toBeInTheDocument()
   })
 
   it.todo('supports selecting tags via keyboard shortcuts', async () => {
@@ -145,9 +137,7 @@ describe('Form - Field - Tags - Features', () => {
 
     await waitForAutocompleteSearchTagQueryCalls()
 
-    expect(
-      wrapper.getByText('Start typing to search or enter a new tag…'),
-    ).toBeInTheDocument()
+    expect(wrapper.getByText('Start typing to search or enter a new tag…')).toBeInTheDocument()
 
     const filterElement = wrapper.getByRole('searchbox')
 
@@ -200,9 +190,7 @@ describe('Form - Field - Tags - Query', () => {
 
     await waitForAutocompleteSearchTagQueryCalls()
 
-    expect(
-      wrapper.queryByText('Start typing to search…'),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByText('Start typing to search…')).not.toBeInTheDocument()
 
     let selectOptions = wrapper.getAllByRole('option')
 
@@ -262,9 +250,7 @@ describe('Form - Field - Tags - Query', () => {
 
     expect(wrapper.queryByRole('menu')).toBeInTheDocument()
 
-    expect(wrapper.getByRole('listitem')).toHaveTextContent(
-      testOptions[0].label,
-    )
+    expect(wrapper.getByRole('listitem')).toHaveTextContent(testOptions[0].label)
 
     expect(wrapper.getByIconName('check-square')).toBeInTheDocument()
   })

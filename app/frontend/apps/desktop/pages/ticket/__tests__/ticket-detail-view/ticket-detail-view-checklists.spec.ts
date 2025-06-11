@@ -51,9 +51,7 @@ describe('Ticket detail view', () => {
       const view = await visitView('/tickets/1')
       await view.events.click(view.getByLabelText('Checklist'))
 
-      expect(
-        view.getByRole('heading', { name: 'Checklist', level: 2 }),
-      ).toBeInTheDocument()
+      expect(view.getByRole('heading', { name: 'Checklist', level: 2 })).toBeInTheDocument()
     })
 
     it('hides checklist if it is disabled and user is agent', async () => {
@@ -65,9 +63,7 @@ describe('Ticket detail view', () => {
 
       const view = await visitView('/tickets/1')
 
-      expect(
-        view.queryByRole('heading', { name: 'Checklist', level: 2 }),
-      ).not.toBeInTheDocument()
+      expect(view.queryByRole('heading', { name: 'Checklist', level: 2 })).not.toBeInTheDocument()
     })
 
     it('hides checklist if it is enabled and user is customer', async () => {
@@ -81,9 +77,7 @@ describe('Ticket detail view', () => {
 
       const view = await visitView('/tickets/1')
 
-      expect(
-        view.queryByRole('heading', { name: 'Checklist', level: 2 }),
-      ).not.toBeInTheDocument()
+      expect(view.queryByRole('heading', { name: 'Checklist', level: 2 })).not.toBeInTheDocument()
     })
 
     it('shows checklist ticket link for readonly agent', async () => {
@@ -129,9 +123,7 @@ describe('Ticket detail view', () => {
       expect(checklist).toBeInTheDocument()
 
       // Checking display  of ticket link
-      expect(
-        view.getByRole('link', { name: 'Test Ticket' }),
-      ).toBeInTheDocument()
+      expect(view.getByRole('link', { name: 'Test Ticket' })).toBeInTheDocument()
 
       // Ticket link has single item menu, hence we have to test it does not exist in readonly
       expect(
@@ -191,9 +183,9 @@ describe('Ticket detail view', () => {
       const view = await visitView('/tickets/1')
       await view.events.click(view.getByLabelText('Checklist'))
 
-      expect(
-        view.getByRole('status', { name: 'Incomplete checklist items' }),
-      ).toHaveTextContent('1')
+      expect(view.getByRole('status', { name: 'Incomplete checklist items' })).toHaveTextContent(
+        '1',
+      )
 
       const checklistCheckboxes = view.getAllByRole('checkbox')
 
@@ -343,9 +335,7 @@ describe('Ticket detail view', () => {
 
       await view.events.click(await view.findByLabelText('State'))
 
-      await view.events.click(
-        await view.findByRole('option', { name: 'closed' }),
-      )
+      await view.events.click(await view.findByRole('option', { name: 'closed' }))
 
       await getNode('form-ticket-edit')?.settled
 
@@ -355,8 +345,7 @@ describe('Ticket detail view', () => {
           errors: [
             {
               message: 'The ticket checklist is incomplete.',
-              exception:
-                EnumUserErrorException.ServiceTicketUpdateValidatorChecklistCompletedError,
+              exception: EnumUserErrorException.ServiceTicketUpdateValidatorChecklistCompletedError,
             },
           ],
         },
@@ -405,18 +394,13 @@ describe('Ticket detail view', () => {
 
       await view.events.click(view.getByRole('button', { name: 'Ticket' }))
 
-      expect(
-        view.queryByRole('status', { name: 'Has update' }),
-      ).not.toBeInTheDocument()
+      expect(view.queryByRole('status', { name: 'Has update' })).not.toBeInTheDocument()
 
       const state = within(sidebar).getByLabelText('State')
 
       expect(within(state).getByRole('listitem')).toHaveTextContent('closed')
 
-      expect(state.closest('.formkit-outer')).toHaveAttribute(
-        'data-dirty',
-        'true',
-      )
+      expect(state.closest('.formkit-outer')).toHaveAttribute('data-dirty', 'true')
 
       await view.events.click(view.getByRole('button', { name: 'Update' }))
 
@@ -445,10 +429,7 @@ describe('Ticket detail view', () => {
         }),
       ).not.toBeInTheDocument()
 
-      expect(state.closest('.formkit-outer')).not.toHaveAttribute(
-        'data-dirty',
-        'true',
-      )
+      expect(state.closest('.formkit-outer')).not.toHaveAttribute('data-dirty', 'true')
     })
   })
 
@@ -471,16 +452,10 @@ describe('Ticket detail view', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Ticket' }))
 
-    expect(
-      view.getByRole('heading', { name: 'Ticket', level: 2 }),
-    ).toBeInTheDocument()
+    expect(view.getByRole('heading', { name: 'Ticket', level: 2 })).toBeInTheDocument()
 
-    await view.events.click(
-      view.getByRole('button', { name: 'Open Checklist' }),
-    )
+    await view.events.click(view.getByRole('button', { name: 'Open Checklist' }))
 
-    expect(
-      await view.findByRole('heading', { name: 'Checklist', level: 2 }),
-    ).toBeInTheDocument()
+    expect(await view.findByRole('heading', { name: 'Checklist', level: 2 })).toBeInTheDocument()
   })
 })

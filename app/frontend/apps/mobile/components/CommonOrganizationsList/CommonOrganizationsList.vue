@@ -31,10 +31,7 @@ const emit = defineEmits<{
       :link="`/organizations/${organization.internalId}`"
       class="flex min-h-[66px] items-center"
     >
-      <CommonOrganizationAvatar
-        :entity="organization"
-        class="ltr:mr-3 rtl:ml-3"
-      />
+      <CommonOrganizationAvatar :entity="organization" class="ltr:mr-3 rtl:ml-3" />
       <span class="truncate">
         {{ organization.name }}
       </span>

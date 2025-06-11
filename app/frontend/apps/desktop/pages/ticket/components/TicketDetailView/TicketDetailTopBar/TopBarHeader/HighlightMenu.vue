@@ -55,9 +55,7 @@ onMounted(() => {
       <button
         class="flex items-center gap-2 bg-(--highlight-color)"
         :style="{
-          '--highlight-color': isDarkMode
-            ? color?.value?.dark
-            : color?.value?.light,
+          '--highlight-color': isDarkMode ? color?.value?.dark : color?.value?.light,
           background: !isActive ? 'transparent' : undefined,
         }"
         @click="toggleHighlighterActive"
@@ -82,16 +80,8 @@ onMounted(() => {
     </div>
 
     <CommonPopover ref="popover" placement="arrowEnd" :owner="popoverTarget">
-      <CommonPopoverMenu
-        class="overflow-clip"
-        :items="items"
-        :popover="popover"
-      >
-        <template
-          v-for="(label, index) in colorLabels"
-          #[`item-${label}`]="item"
-          :key="label"
-        >
+      <CommonPopoverMenu class="overflow-clip" :items="items" :popover="popover">
+        <template v-for="(label, index) in colorLabels" #[`item-${label}`]="item" :key="label">
           <button
             :aria-label="$t((item as ExtendedMenuItem).name)"
             class="relative flex grow items-center gap-2 p-2.5 text-gray-100 outline-hidden dark:text-neutral-400"

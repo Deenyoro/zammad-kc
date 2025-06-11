@@ -5,10 +5,7 @@ import { computed } from 'vue'
 
 import { getEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/features/color-picker/initializeEditorColorMenu.ts'
 import { getFieldEditorClasses } from '#shared/components/Form/initializeFieldEditor.ts'
-import type {
-  ColorGroup,
-  ColorScheme,
-} from '#shared/composables/useColorPallet/types.ts'
+import type { ColorGroup, ColorScheme } from '#shared/composables/useColorPallet/types.ts'
 
 import type { Editor } from '@tiptap/core'
 

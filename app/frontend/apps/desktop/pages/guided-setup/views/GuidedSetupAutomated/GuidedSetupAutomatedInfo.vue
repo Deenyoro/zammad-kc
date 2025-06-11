@@ -7,9 +7,7 @@ import LayoutPublicPage from '#desktop/components/layout/LayoutPublicPage/Layout
 <template>
   <LayoutPublicPage box-size="medium" :title="__('Automated Setup')">
     <div class="text-center">
-      <CommonLabel>{{
-        $t('This system is configured for automated setup.')
-      }}</CommonLabel>
+      <CommonLabel>{{ $t('This system is configured for automated setup.') }}</CommonLabel>
       <CommonLabel>{{ $t('Please use the provided URL.') }}</CommonLabel>
     </div>
   </LayoutPublicPage>

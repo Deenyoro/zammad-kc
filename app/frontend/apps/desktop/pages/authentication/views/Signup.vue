@@ -131,12 +131,7 @@ const goToLogin = () => {
     </div>
 
     <template #boxActions>
-      <CommonButton
-        variant="secondary"
-        size="medium"
-        :disabled="isDisabled"
-        @click="goToLogin()"
-      >
+      <CommonButton variant="secondary" size="medium" :disabled="isDisabled" @click="goToLogin()">
         {{ $t('Cancel & Go Back') }}
       </CommonButton>
 
@@ -150,20 +145,13 @@ const goToLogin = () => {
       >
         {{ $t('Create my account') }}
       </CommonButton>
-      <CommonButton
-        v-else
-        variant="submit"
-        size="medium"
-        @click="resendVerifyEmail()"
-      >
+      <CommonButton v-else variant="submit" size="medium" @click="resendVerifyEmail()">
         {{ $t('Resend verification email') }}
       </CommonButton>
     </template>
 
     <template #bottomContent>
-      <div
-        class="inline-flex flex-wrap items-center justify-center p-2 text-sm"
-      >
+      <div class="inline-flex flex-wrap items-center justify-center p-2 text-sm">
         <CommonLabel class="text-center text-stone-200 dark:text-neutral-500">
           {{
             $t(

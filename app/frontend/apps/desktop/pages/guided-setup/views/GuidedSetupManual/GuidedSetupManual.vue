@@ -33,11 +33,7 @@ provide<SystemSetup>(SYSTEM_SETUP_SYMBOL, {
 </script>
 
 <template>
-  <LayoutPublicPage
-    :box-size="boxSize"
-    :hide-footer="hideFooter"
-    :title="title"
-  >
+  <LayoutPublicPage :box-size="boxSize" :hide-footer="hideFooter" :title="title">
     <RouterView />
   </LayoutPublicPage>
 </template>

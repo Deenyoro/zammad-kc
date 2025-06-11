@@ -11,10 +11,7 @@ export default <TicketSidebarPlugin>{
   title: __('GitLab'),
   component: TicketSidebarGitLab,
   permissions: ['ticket.agent'],
-  screens: [
-    TicketSidebarScreenType.TicketDetailView,
-    TicketSidebarScreenType.TicketCreate,
-  ],
+  screens: [TicketSidebarScreenType.TicketDetailView, TicketSidebarScreenType.TicketCreate],
   icon: 'gitlab',
   order: 5000,
   available: () => useApplicationStore().config.gitlab_integration,

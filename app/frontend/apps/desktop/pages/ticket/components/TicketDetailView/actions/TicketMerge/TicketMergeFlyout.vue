@@ -34,8 +34,10 @@ const props = defineProps<Props>()
 
 const { form, updateFieldValues, onChangedField } = useForm()
 
-const { formListTargetTicketOptions, targetTicketId, handleTicketClick } =
-  useTargetTicketOptions(onChangedField, updateFieldValues)
+const { formListTargetTicketOptions, targetTicketId, handleTicketClick } = useTargetTicketOptions(
+  onChangedField,
+  updateFieldValues,
+)
 
 const mergeFormSchema = [
   {
@@ -103,11 +105,7 @@ const footerActionOptions = computed<ActionFooterOptions>(() => ({
         ref="form"
         :schema="mergeFormSchema"
         should-autofocus
-        @submit="
-          submitMerge(
-            $event as FormSubmitData<Record<'targetTicketId', string>>,
-          )
-        "
+        @submit="submitMerge($event as FormSubmitData<Record<'targetTicketId', string>>)"
       />
 
       <TicketRelationAndRecentLists

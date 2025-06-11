@@ -57,9 +57,7 @@ describe('Two-factor Authentication - Password Check', () => {
 
     expect(passwordInput).not.toBeInTheDocument()
 
-    expect(flyout).toHaveAccessibleName(
-      'Set Up Two-factor Authentication: Security Keys',
-    )
+    expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Security Keys')
   })
 
   it('supports submitting form via keyboard', async () => {

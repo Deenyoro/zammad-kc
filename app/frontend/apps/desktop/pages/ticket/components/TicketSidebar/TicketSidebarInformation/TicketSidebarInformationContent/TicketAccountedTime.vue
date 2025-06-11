@@ -14,8 +14,7 @@ export interface Props {
 
 const { ticket } = defineProps<Props>()
 
-const { timeAccountingDisplayUnit, timeAccountingConfig } =
-  useTicketAccountedTime()
+const { timeAccountingDisplayUnit, timeAccountingConfig } = useTicketAccountedTime()
 
 const totalTime = computed(() => ticket?.timeUnit)
 
@@ -39,8 +38,7 @@ const shownUnits = computed(() => {
 })
 
 const shouldDisplayShowButton = computed(
-  () =>
-    allUnits.value.length > MIN_SHOWN && shownUnits.value !== allUnits.value,
+  () => allUnits.value.length > MIN_SHOWN && shownUnits.value !== allUnits.value,
 )
 
 const remainingUnitsCount = computed(() => allUnits.value.length - MIN_SHOWN)

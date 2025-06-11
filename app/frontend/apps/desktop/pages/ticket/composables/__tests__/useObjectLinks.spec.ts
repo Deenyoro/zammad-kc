@@ -44,10 +44,7 @@ describe('useObjectLinks', () => {
         ],
       })
 
-      const { linkTypesWithLinks } = useObjectLinks(
-        toRef(createDummyTicket()),
-        'Ticket',
-      )
+      const { linkTypesWithLinks } = useObjectLinks(toRef(createDummyTicket()), 'Ticket')
 
       await waitForNextTick()
 

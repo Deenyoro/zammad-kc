@@ -74,10 +74,7 @@ const selectOption = (option: RadioListOption, event?: Event) => {
           {{ $t(option.label) }}
         </CommonLabel>
 
-        <CommonLabel
-          v-if="option.description"
-          class="text-stone-200! dark:text-neutral-500!"
-        >
+        <CommonLabel v-if="option.description" class="text-stone-200! dark:text-neutral-500!">
           {{ $t(option.description) }}
         </CommonLabel>
       </div>

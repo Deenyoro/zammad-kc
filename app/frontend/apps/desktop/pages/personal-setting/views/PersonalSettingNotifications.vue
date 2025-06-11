@@ -85,8 +85,7 @@ const schema = defineFormSchema([
 ])
 
 const initialFormValues = computed<NotificationFormData>((oldValues) => {
-  const { notificationConfig = {}, notificationSound = {} } =
-    user.value?.personalSettings || {}
+  const { notificationConfig = {}, notificationSound = {} } = user.value?.personalSettings || {}
 
   const values: NotificationFormData = {
     group_ids: notificationConfig?.groupIds ?? [],
@@ -126,8 +125,7 @@ const onSubmit = async (form: FormSubmitData<NotificationFormData>) => {
   return notificationUpdateMutation
     .send({
       matrix: form.matrix as UserNotificationMatrixInput,
-      groupIds:
-        form?.group_ids?.map((id) => convertToGraphQLId('Group', id)) || [],
+      groupIds: form?.group_ids?.map((id) => convertToGraphQLId('Group', id)) || [],
       sound: {
         file: form.file as EnumNotificationSoundFile,
         enabled: form.enabled,
@@ -147,9 +145,7 @@ const onSubmit = async (form: FormSubmitData<NotificationFormData>) => {
     })
 }
 
-const resetFormToDefaults = (
-  personalSettings: UserData['personalSettings'],
-) => {
+const resetFormToDefaults = (personalSettings: UserData['personalSettings']) => {
   form.value?.resetForm({
     values: {
       matrix: personalSettings?.notificationConfig?.matrix || {},
@@ -177,8 +173,7 @@ const onResetToDefaultSettings = async () => {
     .send()
     .then((response) => {
       const personalSettings =
-        response?.userCurrentNotificationPreferencesReset?.user
-          ?.personalSettings
+        response?.userCurrentNotificationPreferencesReset?.user?.personalSettings
 
       if (!personalSettings) return
 
@@ -218,12 +213,7 @@ const onResetToDefaultSettings = async () => {
             >
               {{ $t('Reset to Default Settings') }}
             </CommonButton>
-            <CommonButton
-              size="medium"
-              type="submit"
-              variant="submit"
-              :disabled="loading"
-            >
+            <CommonButton size="medium" type="submit" variant="submit" :disabled="loading">
               {{ $t('Save Notifications') }}
             </CommonButton>
           </div>

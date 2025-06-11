@@ -7,10 +7,7 @@ import { useRouter } from 'vue-router'
 import { NotificationTypes } from '#shared/components/CommonNotifications/types.ts'
 import { useNotifications } from '#shared/components/CommonNotifications/useNotifications.ts'
 import Form from '#shared/components/Form/Form.vue'
-import type {
-  FormSchemaNode,
-  FormSubmitData,
-} from '#shared/components/Form/types.ts'
+import type { FormSchemaNode, FormSubmitData } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
 import UserError from '#shared/errors/UserError.ts'
 import { EnumPublicLinksScreen } from '#shared/graphql/types.ts'
@@ -110,12 +107,7 @@ const goToLogin = () => {
       </CommonLabel>
     </section>
     <template #boxActions>
-      <CommonButton
-        variant="secondary"
-        size="medium"
-        :disabled="isDisabled"
-        @click="goToLogin()"
-      >
+      <CommonButton variant="secondary" size="medium" :disabled="isDisabled" @click="goToLogin()">
         {{ $t('Cancel & Go Back') }}
       </CommonButton>
       <CommonButton

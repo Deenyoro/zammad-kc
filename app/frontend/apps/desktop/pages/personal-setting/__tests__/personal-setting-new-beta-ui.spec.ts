@@ -7,7 +7,7 @@ import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 
 import { useNewBetaUi } from '#desktop/composables/useNewBetaUi.ts'
 
-describe('personal new beta ui settings', async () => {
+describe('personal new beta ui settings', () => {
   beforeEach(() => {
     mockUserCurrent({
       firstname: 'John',

@@ -43,8 +43,7 @@ const plugin = computed(() => {
 const objectIds = computed(() => {
   if (props.context.screenType === TicketSidebarScreenType.TicketCreate)
     return (
-      (props.context.formValues as ExternalReferencesFormValues)
-        .externalReferences?.idoit || []
+      (props.context.formValues as ExternalReferencesFormValues).externalReferences?.idoit || []
     )
 
   return props.context.ticket?.value?.preferences?.idoit?.object_ids || []
@@ -60,9 +59,7 @@ const objectBadges = computed(() =>
     : undefined,
 )
 
-const hideSidebar = computed(
-  () => !objectIds.value?.length && !isTicketEditable.value,
-)
+const hideSidebar = computed(() => !objectIds.value?.length && !isTicketEditable.value)
 
 if (props.context.screenType === TicketSidebarScreenType.TicketDetailView) {
   watch(

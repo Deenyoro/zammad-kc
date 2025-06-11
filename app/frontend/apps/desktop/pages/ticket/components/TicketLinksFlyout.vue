@@ -32,8 +32,10 @@ const sourceTicket = toRef(props, 'sourceTicket')
 
 const { form, updateFieldValues, onChangedField } = useForm()
 
-const { formListTargetTicketOptions, targetTicketId, handleTicketClick } =
-  useTargetTicketOptions(onChangedField, updateFieldValues)
+const { formListTargetTicketOptions, targetTicketId, handleTicketClick } = useTargetTicketOptions(
+  onChangedField,
+  updateFieldValues,
+)
 
 const { linkTypes } = useObjectLinkTypes()
 

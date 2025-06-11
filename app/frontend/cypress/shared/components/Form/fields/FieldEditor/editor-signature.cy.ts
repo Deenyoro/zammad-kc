@@ -8,8 +8,7 @@ import { mountEditor } from './utils.ts'
 
 const html = String.raw
 
-const getContext = () =>
-  getNode('editor')?.context as FieldEditorContext | undefined
+const getContext = () => getNode('editor')?.context as FieldEditorContext | undefined
 
 const resolveContext = () => {
   return new Promise<Required<FieldEditorContext>>((resolve, reject) => {
@@ -59,18 +58,12 @@ describe('correctly adds signature', () => {
           cy.findByRole('textbox')
             .should(
               'have.html',
-              `${BREAK_HTML}${BREAK_HTML}${WRAPPED_SIGNATURE(
-                '1',
-                PARSED_SIGNATURE,
-              )}${BREAK_HTML}`,
+              `${BREAK_HTML}${BREAK_HTML}${WRAPPED_SIGNATURE('1', PARSED_SIGNATURE)}${BREAK_HTML}`,
             )
             .then(() => {
               context.removeSignature()
               // FIXME: Try to address the extra line break issue when removing signature.
-              cy.findByRole('textbox').should(
-                'have.html',
-                `${BREAK_HTML}${BREAK_HTML}`,
-              )
+              cy.findByRole('textbox').should('have.html', `${BREAK_HTML}${BREAK_HTML}`)
             })
         })
     })
@@ -102,10 +95,7 @@ describe('correctly adds signature', () => {
           .should('include.html', `<p>${ORIGINAL_TEXT}new</p>`) // cursor didn't move
           .then(() => {
             context.removeSignature()
-            cy.findByRole('textbox').should(
-              'have.html',
-              `<p>${ORIGINAL_TEXT}new</p>${BREAK_HTML}`,
-            )
+            cy.findByRole('textbox').should('have.html', `<p>${ORIGINAL_TEXT}new</p>${BREAK_HTML}`)
           })
       })
   })
@@ -144,9 +134,6 @@ describe('correctly adds signature', () => {
         context.removeSignature()
       })
 
-    cy.findByRole('textbox').should(
-      'contain.html',
-      `<p>text</p><p data-marker=`,
-    )
+    cy.findByRole('textbox').should('contain.html', `<p>text</p><p data-marker=`)
   })
 })

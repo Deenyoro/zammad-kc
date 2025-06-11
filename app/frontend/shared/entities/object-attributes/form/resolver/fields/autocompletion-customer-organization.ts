@@ -3,7 +3,7 @@
 import type { FieldResolverModule } from '#shared/entities/object-attributes/types/resolver.ts'
 import { camelize } from '#shared/utils/formatter.ts'
 
-import FieldResolver from '../FieldResolver.ts'
+import { FieldResolver } from '../FieldResolver.ts'
 
 export class FieldResolverAutocompletionCustomerOrganization extends FieldResolver {
   fieldType = 'organization'
@@ -13,9 +13,7 @@ export class FieldResolverAutocompletionCustomerOrganization extends FieldResolv
       props: {
         clearable: this.attributeConfig.nulloption ?? true,
         noOptionsLabelTranslation: !this.attributeConfig.translate,
-        belongsToObjectField: camelize(
-          (this.attributeConfig.belongs_to as string) || '',
-        ),
+        belongsToObjectField: camelize((this.attributeConfig.belongs_to as string) || ''),
       },
     }
   }

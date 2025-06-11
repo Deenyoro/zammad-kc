@@ -57,11 +57,7 @@ import FormLayout from './FormLayout.vue'
 import { useFormUpdaterQuery } from './graphql/queries/formUpdater.api.ts'
 import { getFormClasses } from './initializeFormClasses.ts'
 import { FormHandlerExecution, FormValidationVisibility } from './types.ts'
-import {
-  getNodeByName as getFormkitFieldNode,
-  getNodeId,
-  setErrors,
-} from './utils.ts'
+import { getNodeByName as getFormkitFieldNode, getNodeId, setErrors } from './utils.ts'
 
 import type {
   ChangedField,
@@ -107,10 +103,7 @@ export interface Props {
   // without value grouping below group name (https://github.com/formkit/formkit/issues/461).
   flattenFormGroups?: string[]
   formKitPlugins?: FormKitPlugin[]
-  formKitSectionsSchema?: Record<
-    string,
-    Partial<FormKitSchemaNode> | FormKitSchemaCondition
-  >
+  formKitSectionsSchema?: Record<string, Partial<FormKitSchemaNode> | FormKitSchemaCondition>
   class?: FormKitClasses | string | Record<string, boolean>
   formClass?: string | Record<string, string>
 
@@ -160,36 +153,25 @@ const formId = props.formId ? props.formId : getUuid()
 
 const slots: SetupContext['slots'] = useSlots()
 
-const hasSchema = computed(
-  () => Boolean(slots.default) || Boolean(props.schema),
-)
+const hasSchema = computed(() => Boolean(slots.default) || Boolean(props.schema))
 const formSchemaInitialized = ref(false)
 
 if (!hasSchema.value) {
-  log.error(
-    'No schema defined. Please use the schema prop or the default slot for the schema.',
-  )
+  log.error('No schema defined. Please use the schema prop or the default slot for the schema.')
 }
 
 // Rename prop 'class' for usage in the template, because of reserved word
 const localClass = toRef(props, 'class')
 
 const emit = defineEmits<{
-  changed: [
-    fieldName: string,
-    newValue: FormFieldValue,
-    oldValue: FormFieldValue,
-  ]
+  changed: [fieldName: string, newValue: FormFieldValue, oldValue: FormFieldValue]
   node: [node: FormKitNode]
   settled: []
   focused: []
 }>()
 
 const showInitialLoadingAnimation = ref(false)
-const debouncedShowInitialLoadingAnimation = refDebounced(
-  showInitialLoadingAnimation,
-  300,
-)
+const debouncedShowInitialLoadingAnimation = refDebounced(showInitialLoadingAnimation, 300)
 
 const formKitInitialNodesSettled = ref(false)
 const formInitialSettled = ref(false)
@@ -223,10 +205,7 @@ const autofocusFirstInput = (node: FormKitNode) => {
   })
 }
 
-const setInitialEntityObjectToContext = (
-  node: FormKitNode,
-  object = props.initialEntityObject,
-) => {
+const setInitialEntityObjectToContext = (node: FormKitNode, object = props.initialEntityObject) => {
   if (node.context && object) {
     node.context.initialEntityObject = object
   }
@@ -299,13 +278,9 @@ const values = computed<FormValues>(() => {
 const relationFields: FormUpdaterRelationField[] = []
 const relationFieldBelongsToObjectField: Record<string, string> = {}
 
-const formUpdaterProcessing = computed(
-  () => !!formNode.value?.context?.state.formUpdaterProcessing,
-)
+const formUpdaterProcessing = computed(() => !!formNode.value?.context?.state.formUpdaterProcessing)
 
-const uploadProcessing = computed(
-  () => !!formNode.value?.context?.state.uploadProcessing,
-)
+const uploadProcessing = computed(() => !!formNode.value?.context?.state.uploadProcessing)
 
 let delayedSubmit = false
 const onSubmitRaw = () => {
@@ -332,16 +307,14 @@ const afterSubmitHandling = (
 
   schemaData.flags = {}
 
-  if (
-    isObject(submitReturn) &&
-    ('reset' in submitReturn || 'finally' in submitReturn)
-  ) {
+  if (isObject(submitReturn) && ('reset' in submitReturn || 'finally' in submitReturn)) {
     if (submitReturn.reset) {
       submitReturn.reset(values, formNode.value.value as FormValues)
     } else {
       afterSubmitReset(values)
     }
 
+    // oxlint-disable-next-line eslint-plugin-promise(valid-params)
     submitReturn.finally?.()
 
     return
@@ -385,10 +358,7 @@ const onSubmit = (values: FormSubmitData) => {
   afterSubmitHandling(submitResult, values)
 }
 
-let formUpdaterQueryHandler: QueryHandler<
-  FormUpdaterQuery,
-  FormUpdaterQueryVariables
->
+let formUpdaterQueryHandler: QueryHandler<FormUpdaterQuery, FormUpdaterQueryVariables>
 
 const triggerFormUpdater = (options?: FormUpdaterOptions) => {
   handlesFormUpdater('manual', undefined, undefined, options)
@@ -397,8 +367,7 @@ const triggerFormUpdater = (options?: FormUpdaterOptions) => {
 const delayedSubmitPlugin = (node: FormKitNode) => {
   node.on('message-removed', async ({ payload }) => {
     if (
-      (payload.key === 'formUpdaterProcessing' ||
-        payload.key === 'uploadProcessing') &&
+      (payload.key === 'formUpdaterProcessing' || payload.key === 'uploadProcessing') &&
       delayedSubmit
     ) {
       // We need to wait on the "next tick", so that the validation for updated fields is ready.
@@ -440,10 +409,7 @@ const schemaData = reactive<ReactiveFormSchemData>({
   values,
   // Helper function to translate directly with the formkit syntax.
   // Wrapper is neded, because of unexpected side effects.
-  t: (
-    source: Parameters<I18N['t']>[0],
-    ...args: Array<Parameters<I18N['t']>[1]>
-  ) => {
+  t: (source: Parameters<I18N['t']>[0], ...args: Array<Parameters<I18N['t']>[1]>) => {
     return i18n.t(source, ...args)
   },
   markup,
@@ -460,9 +426,7 @@ const getInternalId = (item?: { id?: string; internalId?: number }) => {
 }
 
 let initialEntityObjectAttributeMap: Record<string, FormFieldValue> = {}
-const setInitialEntityObjectAttributeMap = (
-  initialEntityObject = props.initialEntityObject,
-) => {
+const setInitialEntityObjectAttributeMap = (initialEntityObject = props.initialEntityObject) => {
   if (isEmpty(initialEntityObject)) return
 
   const { objectAttributeValues } = initialEntityObject
@@ -493,15 +457,14 @@ const getInitialEntityObjectValue = (
 
   let value: FormFieldValue
   if (relationFieldBelongsToObjectField[fieldName]) {
-    const belongsToObject =
-      initialEntityObject[relationFieldBelongsToObjectField[fieldName]]
+    const belongsToObject = initialEntityObject[relationFieldBelongsToObjectField[fieldName]]
 
     if (!belongsToObject) return undefined
 
     if ('edges' in belongsToObject) {
-      value = edgesToArray(
-        belongsToObject as { edges?: { node: { internalId: number } }[] },
-      ).map((item) => getInternalId(item))
+      value = edgesToArray(belongsToObject as { edges?: { node: { internalId: number } }[] }).map(
+        (item) => getInternalId(item),
+      )
     } else {
       value = getInternalId(belongsToObject)
     }
@@ -530,11 +493,7 @@ const getResetFormValues = (
   const dirtyNodes: FormKitNode[] = []
   const dirtyValues: FormValues = {}
 
-  const setResetFormValue = (
-    name: string,
-    value: FormFieldValue,
-    parentName?: string,
-  ) => {
+  const setResetFormValue = (name: string, value: FormFieldValue, parentName?: string) => {
     if (parentName) {
       resetValues[parentName] ||= {}
       ;(resetValues[parentName] as Record<string, FormFieldValue>)[name] = value
@@ -544,11 +503,7 @@ const getResetFormValues = (
     resetValues[name] = value
   }
 
-  const checkValue = (
-    name: string,
-    values: FormValues,
-    parentName?: string,
-  ) => {
+  const checkValue = (name: string, values: FormValues, parentName?: string) => {
     if (name in values) {
       setResetFormValue(name, values[name], parentName)
 
@@ -565,11 +520,7 @@ const getResetFormValues = (
     return false
   }
 
-  const checkObjectValue = (
-    name: string,
-    object: EntityObject,
-    parentName?: string,
-  ) => {
+  const checkObjectValue = (name: string, object: EntityObject, parentName?: string) => {
     const objectValue = getInitialEntityObjectValue(name, object)
     if (objectValue !== undefined) {
       setResetFormValue(name, objectValue, parentName)
@@ -617,10 +568,7 @@ const getResetFormValues = (
   }
 }
 
-const resetForm = (
-  data: FormResetData = {},
-  options: FormResetOptions = {},
-) => {
+const resetForm = (data: FormResetData = {}, options: FormResetOptions = {}) => {
   if (!formNode.value) return
 
   const { object, values } = data
@@ -647,9 +595,7 @@ const resetForm = (
     resetDirty,
   )
 
-  ;(groupNode || rootNode)?.reset(
-    Object.keys(resetValues).length ? resetValues : undefined,
-  )
+  ;(groupNode || rootNode)?.reset(Object.keys(resetValues).length ? resetValues : undefined)
 
   // keep dirty nodes as dirty
   dirtyNodes.forEach((node) => {
@@ -688,13 +634,9 @@ const setInternalField = (fieldName: string, internal: boolean) => {
   internalFieldCamelizeName[fieldName] = camelize(fieldName)
 }
 
-const updateSchemaLink = (
-  specificProps: FormFieldAdditionalProps,
-  fieldName: string,
-) => {
+const updateSchemaLink = (specificProps: FormFieldAdditionalProps, fieldName: string) => {
   // native fields don't have link attribute, and we don't have a way to get rendered link from graphql
-  const values = (props.initialEntityObject?.objectAttributeValues ||
-    []) as ObjectAttributeValue[]
+  const values = (props.initialEntityObject?.objectAttributeValues || []) as ObjectAttributeValue[]
   const attribute = values.find(({ attribute }) => attribute.name === fieldName)
   specificProps.link = attribute?.renderedLink
 }
@@ -714,9 +656,7 @@ const updateSchemaDataField = (
     staticCondition || schemaData.fields[field.name]?.staticCondition,
   )
   const showField =
-    show ??
-    schemaData.fields[field.name]?.show ??
-    (showWithStaticCondition ? undefined : true)
+    show ?? schemaData.fields[field.name]?.show ?? (showWithStaticCondition ? undefined : true)
 
   // Special handling for the disabled prop, so that the form can handle also
   // the disable state from outside.
@@ -731,18 +671,10 @@ const updateSchemaDataField = (
       show: showField,
       updateFields: !!updateFields,
       staticCondition: showWithStaticCondition,
-      props: Object.assign(
-        schemaData.fields[field.name].props,
-        fieldProps,
-        specificProps,
-      ),
+      props: Object.assign(schemaData.fields[field.name].props, fieldProps, specificProps),
     }
   } else {
-    initializeFieldRelation(
-      field.name,
-      relation,
-      specificProps?.belongsToObjectField,
-    )
+    initializeFieldRelation(field.name, relation, specificProps?.belongsToObjectField)
 
     setInternalField(field.name, Boolean(fieldProps.internal))
 
@@ -755,9 +687,7 @@ const updateSchemaDataField = (
     } else {
       const initialEntityOjectValue = getInitialEntityObjectValue(field.name)
       combinedFieldProps.value =
-        initialEntityOjectValue !== undefined
-          ? initialEntityOjectValue
-          : combinedFieldProps.value
+        initialEntityOjectValue !== undefined ? initialEntityOjectValue : combinedFieldProps.value
     }
 
     // Save current initial value for later usage.
@@ -772,9 +702,7 @@ const updateSchemaDataField = (
   }
 }
 
-const updateChangedFields = (
-  changedFields: Record<string, Partial<FormSchemaField>>,
-) => {
+const updateChangedFields = (changedFields: Record<string, Partial<FormSchemaField>>) => {
   const handleUpdatedInitialFieldValue = (
     fieldName: string,
     value: FormFieldValue,
@@ -793,8 +721,7 @@ const updateChangedFields = (
   Object.keys(changedFields).forEach(async (fieldName) => {
     if (!schemaData.fields[fieldName]) return
 
-    const { initialValue, value, ...changedFieldProps } =
-      changedFields[fieldName]
+    const { initialValue, value, ...changedFieldProps } = changedFields[fieldName]
 
     const field: SetRequired<Partial<FormSchemaField>, 'name'> = {
       ...changedFieldProps,
@@ -805,9 +732,7 @@ const updateChangedFields = (
     const staticShowCondition = schemaData.fields[fieldName].staticCondition
 
     const pendingValueUpdate =
-      !showField &&
-      value !== undefined &&
-      !isEqual(value, values.value[fieldName])
+      !showField && value !== undefined && !isEqual(value, values.value[fieldName])
 
     if (pendingValueUpdate) {
       field.pendingValueUpdate = true
@@ -819,9 +744,7 @@ const updateChangedFields = (
     handleUpdatedInitialFieldValue(
       fieldName,
       value ?? initialValue,
-      showField ||
-        initialValue !== undefined ||
-        (staticShowCondition && !getNodeByName(fieldName)),
+      showField || initialValue !== undefined || (staticShowCondition && !getNodeByName(fieldName)),
       field,
     )
 
@@ -858,10 +781,7 @@ const updateChangedFields = (
   })
 }
 
-const formHandlerExecution: Record<
-  FormHandlerExecution,
-  FormHandlerFunction[]
-> = {
+const formHandlerExecution: Record<FormHandlerExecution, FormHandlerFunction[]> = {
   [FormHandlerExecution.Initial]: [],
   [FormHandlerExecution.InitialSettled]: [],
   [FormHandlerExecution.FieldChange]: [],
@@ -956,9 +876,7 @@ const handlesFormUpdater = (
     const dirtyFields: string[] = []
 
     Object.entries(schemaData.fields).forEach(([field, { props }]) => {
-      const formElement = props.id
-        ? getNode(props.id)
-        : getNodeByName(props.name)
+      const formElement = props.id ? getNode(props.id) : getNodeByName(props.name)
 
       if (!formElement) return
 
@@ -986,8 +904,7 @@ const handlesFormUpdater = (
       formNode.value &&
       parentName &&
       parentName !== formNode.value.name &&
-      (!props.flattenFormGroups ||
-        !props.flattenFormGroups.includes(parentName))
+      (!props.flattenFormGroups || !props.flattenFormGroups.includes(parentName))
     ) {
       data[parentName] ||= {}
       ;(data[parentName] as Record<string, FormFieldValue>)[changedField.name] =
@@ -1020,10 +937,7 @@ const changedInputValueHandling = (inputNode: FormKitNode) => {
       return
     }
 
-    if (
-      inputNode.props.triggerFormUpdater &&
-      !updaterChangedFields.has(node.name)
-    ) {
+    if (inputNode.props.triggerFormUpdater && !updaterChangedFields.has(node.name)) {
       handlesFormUpdater(
         inputNode.props.formUpdaterTrigger,
         {
@@ -1073,9 +987,7 @@ const buildStaticSchema = () => {
   const { getFormFieldSchema, getFormFieldsFromScreen } =
     useObjectAttributeFormFields(fixedAndSkippedFields)
 
-  const buildFormKitField = (
-    field: FormSchemaField,
-  ): FormKitSchemaComponent => {
+  const buildFormKitField = (field: FormSchemaField): FormKitSchemaComponent => {
     const fieldId = field.id || getNodeId(formId, field.name)
 
     const plugins = [changedInputValueHandling]
@@ -1328,20 +1240,17 @@ const initializeFormSchema = () => {
 
     formUpdaterScope.run(() => {
       formUpdaterQueryHandler = new QueryHandler(
-        useFormUpdaterQuery(
-          formUpdaterVariables as Ref<FormUpdaterQueryVariables>,
-          {
-            context: {
-              batch: {
-                active: false,
-              },
-              websocket: {
-                active: true,
-              },
+        useFormUpdaterQuery(formUpdaterVariables as Ref<FormUpdaterQueryVariables>, {
+          context: {
+            batch: {
+              active: false,
             },
-            fetchPolicy: 'no-cache',
+            websocket: {
+              active: true,
+            },
           },
-        ),
+          fetchPolicy: 'no-cache',
+        }),
       )
     })
 
@@ -1399,9 +1308,7 @@ if (props.schema) {
       objectAttributeObjects.push(object)
     }
 
-    const detectObjectAttributeObjects = (
-      schema: FormSchemaNode[] = props.schema,
-    ) => {
+    const detectObjectAttributeObjects = (schema: FormSchemaNode[] = props.schema) => {
       schema.forEach((item) => {
         if (typeof item === 'string') return
 
@@ -1423,9 +1330,7 @@ if (props.schema) {
 
     // We need only to fetch object attributes, when there are used in the given schema.
     if (objectAttributeObjects.length > 0) {
-      const { objectAttributesLoading } = useObjectAttributeLoadFormFields(
-        objectAttributeObjects,
-      )
+      const { objectAttributesLoading } = useObjectAttributeLoadFormFields(objectAttributeObjects)
 
       const unwatchTriggerFormInitialize = watch(
         objectAttributesLoading,
@@ -1469,17 +1374,13 @@ export default {
 </script>
 
 <template>
-  <div
-    v-if="debouncedShowInitialLoadingAnimation"
-    class="flex items-center justify-center"
-  >
+  <div v-if="debouncedShowInitialLoadingAnimation" class="flex items-center justify-center">
     <CommonIcon :class="classMap.loading" name="loading" animation="spin" />
   </div>
   <FormKit
     v-if="
       hasSchema &&
-      ((formSchemaInitialized && Object.keys(schemaData.fields).length > 0) ||
-        $slots.default)
+      ((formSchemaInitialized && Object.keys(schemaData.fields).length > 0) || $slots.default)
     "
     v-bind="$attrs"
     :id="id"
@@ -1529,9 +1430,7 @@ export default {
       :library="additionalComponentLibrary"
     >
       <div
-        v-show="
-          formKitInitialNodesSettled && !debouncedShowInitialLoadingAnimation
-        "
+        v-show="formKitInitialNodesSettled && !debouncedShowInitialLoadingAnimation"
         ref="form"
         :class="formClass"
       >

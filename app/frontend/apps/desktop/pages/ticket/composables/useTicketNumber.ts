@@ -12,8 +12,7 @@ export const useTicketNumber = (ticket: Ref<TicketById | undefined>) => {
   const { config } = storeToRefs(useApplicationStore())
 
   const ticketNumberWithTicketHook = computed(
-    () =>
-      ticketNumber.value && `${config.value.ticket_hook}${ticketNumber.value}`,
+    () => ticketNumber.value && `${config.value.ticket_hook}${ticketNumber.value}`,
   )
 
   return {

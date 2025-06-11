@@ -30,9 +30,7 @@ const tabInstances = useTemplateRef('tabs')
 const isTabMode = computed(() => !props.multiple)
 const labelSize = computed(() => (props.size === 'large' ? 'medium' : 'small'))
 
-const defaultTabIndex = computed(() =>
-  props.tabs.findIndex((tab) => tab.default),
-)
+const defaultTabIndex = computed(() => props.tabs.findIndex((tab) => tab.default))
 
 const selectedIndex = ref<number | null>(null)
 
@@ -43,9 +41,7 @@ const activeTabs = computed(() =>
 const isActiveTab = (tab: Tab) => activeTabs.value.includes(tab.key)
 
 const calcMarkerSize = () => {
-  const tabElement = tabInstances.value?.at(
-    selectedIndex.value ?? defaultTabIndex.value,
-  )
+  const tabElement = tabInstances.value?.at(selectedIndex.value ?? defaultTabIndex.value)
   if (!tabElement || !markerElement.value) return
 
   Object.assign(markerElement.value.style, {
@@ -60,9 +56,7 @@ watch(
   () => props.modelValue,
   (activeTabKey) => {
     if (props.multiple) return
-    selectedIndex.value = props.tabs.findIndex(
-      (tab) => activeTabKey === tab.key,
-    )
+    selectedIndex.value = props.tabs.findIndex((tab) => activeTabKey === tab.key)
     calcMarkerSize()
   },
 )

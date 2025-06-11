@@ -23,9 +23,7 @@ describe('email type', () => {
 
       const types = createTestArticleTypes(ticket)
 
-      expect(types).not.toContainEqual(
-        expect.objectContaining({ value: 'email' }),
-      )
+      expect(types).not.toContainEqual(expect.objectContaining({ value: 'email' }))
     })
   })
 

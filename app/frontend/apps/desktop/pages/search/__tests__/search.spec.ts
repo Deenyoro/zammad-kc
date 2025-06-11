@@ -46,9 +46,9 @@ describe('search view', () => {
   it('renders view correctly', async () => {
     const { searchContainer } = await visitSearchView()
 
-    expect(
-      within(searchContainer).getByRole('searchbox', { name: 'Search…' }),
-    ).toHaveDisplayValue('test')
+    expect(within(searchContainer).getByRole('searchbox', { name: 'Search…' })).toHaveDisplayValue(
+      'test',
+    )
   })
 
   it('write quick search input correctly to the search view input', async () => {
@@ -58,9 +58,7 @@ describe('search view', () => {
       name: 'Main sidebar',
     })
 
-    const quickSearchInput = within(primaryNavigationSidebar).getByRole(
-      'searchbox',
-    )
+    const quickSearchInput = within(primaryNavigationSidebar).getByRole('searchbox')
 
     await view.events.type(quickSearchInput, 'fooBar')
     await view.events.keyboard('{Enter}')
@@ -74,9 +72,7 @@ describe('search view', () => {
     const router = getTestRouter()
 
     await waitFor(() =>
-      expect(router.currentRoute.value.fullPath).toBe(
-        '/search/fooBar?entity=Ticket',
-      ),
+      expect(router.currentRoute.value.fullPath).toBe('/search/fooBar?entity=Ticket'),
     )
 
     const mocks = await waitForDetailSearchQueryCalls()
@@ -127,9 +123,7 @@ describe('search view', () => {
 
     const { view } = await visitSearchView()
 
-    expect(
-      view.queryByRole('button', { name: 'Bulk Action' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Bulk Action' })).not.toBeInTheDocument()
 
     const mainContent = view.getByRole('main')
 
@@ -139,9 +133,7 @@ describe('search view', () => {
 
     await view.events.click(checkboxes[0])
 
-    await view.events.click(
-      await view.findByRole('button', { name: 'Bulk Actions' }),
-    )
+    await view.events.click(await view.findByRole('button', { name: 'Bulk Actions' }))
 
     expect(
       await view.findByRole('complementary', { name: 'Tickets Bulk Edit' }),

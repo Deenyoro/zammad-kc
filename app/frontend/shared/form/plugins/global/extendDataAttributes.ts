@@ -30,10 +30,7 @@ const extendDataAttribues = (node: FormKitNode) => {
     return value != null && value !== ''
   }
 
-  context.fns.hasRule = (
-    parsedRules: FormKitValidation[],
-    ruleName: string,
-  ) => {
+  context.fns.hasRule = (parsedRules: FormKitValidation[], ruleName: string) => {
     return parsedRules.some((rule) => rule.name === ruleName)
   }
 

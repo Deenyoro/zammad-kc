@@ -14,9 +14,7 @@ export const useFormFieldOrganizationInitialOptionBuilder = () => {
   ) => {
     if (!context.belongsToObjectField || !initialEntityObject) return null
 
-    const belongsToObject = initialEntityObject[
-      context.belongsToObjectField
-    ] as Organization
+    const belongsToObject = initialEntityObject[context.belongsToObjectField] as Organization
 
     if (!belongsToObject) return null
 

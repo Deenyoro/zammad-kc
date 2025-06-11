@@ -49,7 +49,6 @@ const createInput = (
   }
   let schema: () => FormKitSchemaExtendableSection
   if (isComponent(schemaOrComponent)) {
-    // eslint-disable-next-line no-plusplus
     const cmpName = `CustomSchemaComponent${totalCreated++}`
     schema = createSection('input', () => ({
       $cmp: cmpName,

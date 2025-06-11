@@ -5,13 +5,10 @@ import type { DeepPartial } from '#shared/types/utils.ts'
 
 import { eventEntityNames } from './historyEventEntityNames.ts'
 
-export const getEntityFromObject = (
-  object?: Maybe<DeepPartial<HistoryRecordEvent['object']>>,
-) => {
+export const getEntityFromObject = (object?: Maybe<DeepPartial<HistoryRecordEvent['object']>>) => {
   return (
-    (object?.__typename === 'ObjectClass'
-      ? (object as ObjectClass).klass
-      : object?.__typename) || __('Unknown')
+    (object?.__typename === 'ObjectClass' ? (object as ObjectClass).klass : object?.__typename) ||
+    __('Unknown')
   )
 }
 

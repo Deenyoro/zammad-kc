@@ -43,11 +43,7 @@ const redirect = async (route: RouteLocationRaw) => {
       <div class="flex grow flex-col justify-center">
         <div v-if="currentPlugin" class="my-5 grow">
           <LoginHeader :title="currentPlugin.title" />
-          <component
-            :is="currentPlugin.component"
-            :data="data"
-            @redirect="redirect"
-          />
+          <component :is="currentPlugin.component" :data="data" @redirect="redirect" />
         </div>
       </div>
     </main>

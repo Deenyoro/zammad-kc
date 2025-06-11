@@ -23,8 +23,7 @@ const emit = defineEmits<{
   preview: [image: ImageViewerFile]
 }>()
 
-const { shownMore, bubbleElement, hasShowMore, toggleShowMore } =
-  useArticleToggleMore()
+const { shownMore, bubbleElement, hasShowMore, toggleShowMore } = useArticleToggleMore()
 
 const bodyClasses = computed(() =>
   props.position === 'right'
@@ -41,15 +40,12 @@ const body = computed(() => {
 
 const showAuthorInformation = computed(() => {
   const author = props.article.author.fullname // `-` => system message
-  return (
-    !props.showMetaInformation && author !== '-' && (author?.length ?? 0) > 0
-  )
+  return !props.showMetaInformation && author !== '-' && (author?.length ?? 0) > 0
 })
 
 const { setupLinksHandlers } = useHtmlLinks('/desktop')
-const { populateInlineImages } = useHtmlInlineImages(
-  toRef(props, 'inlineImages'),
-  (index) => emit('preview', props.inlineImages[index]),
+const { populateInlineImages } = useHtmlInlineImages(toRef(props, 'inlineImages'), (index) =>
+  emit('preview', props.inlineImages[index]),
 )
 
 watch(
@@ -96,17 +92,10 @@ onMounted(() => {
         {{ article.author.fullname }}
       </CommonLabel>
 
-      <CommonDateTime
-        class="text-xs ltr:ml-auto rtl:mr-auto"
-        :date-time="article.createdAt"
-      />
+      <CommonDateTime class="text-xs ltr:ml-auto rtl:mr-auto" :date-time="article.createdAt" />
     </div>
 
-    <div
-      ref="bubbleElement"
-      data-test-id="article-content"
-      class="overflow-hidden text-sm"
-    >
+    <div ref="bubbleElement" data-test-id="article-content" class="overflow-hidden text-sm">
       <!--    eslint-disable vue/no-v-html-->
       <div class="inner-article-body" v-html="body" />
     </div>

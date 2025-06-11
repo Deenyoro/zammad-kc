@@ -57,11 +57,7 @@ const signup = async (data: SignupFormData) => {
     })
     .then(async (result) => {
       const { setAuthenticatedSessionId } = useAuthenticationStore()
-      if (
-        await setAuthenticatedSessionId(
-          result?.userAddFirstAdmin?.session?.id || null,
-        )
-      ) {
+      if (await setAuthenticatedSessionId(result?.userAddFirstAdmin?.session?.id || null)) {
         // TODO: after auth handling should be at the end of the setup triggered again (maybe we need to remember it?).
         systemSetupUnlock(() => {
           router.push('/guided-setup/manual/system-information')

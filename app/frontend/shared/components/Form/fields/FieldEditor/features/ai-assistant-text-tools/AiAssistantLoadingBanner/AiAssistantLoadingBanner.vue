@@ -20,12 +20,7 @@ const appName = useAppName()
   <div
     class="ai-stripe relative flex items-center gap-1 px-4 py-3 before:absolute before:top-0 before:left-0"
   >
-    <CommonIcon
-      class="shrink-0"
-      :class="icon"
-      size="tiny"
-      name="smart-assist"
-    />
+    <CommonIcon class="shrink-0" :class="icon" size="tiny" name="smart-assist" />
 
     <CommonTranslateRenderer
       v-if="appName === 'desktop'"

@@ -122,9 +122,7 @@ describe('Article Meta', () => {
       )
 
       expect(wrapper.getByText('PGP')).toBeInTheDocument()
-      expect(
-        wrapper.getByLabelText('Success Signing Message'),
-      ).toBeInTheDocument()
+      expect(wrapper.getByLabelText('Success Signing Message')).toBeInTheDocument()
       expect(wrapper.getByText('Signed')).toBeInTheDocument()
       expect(wrapper.getByIconName('patch-check')).toBeInTheDocument()
 
@@ -161,9 +159,7 @@ describe('Article Meta', () => {
         },
       )
       expect(wrapper.getByText('PGP')).toBeInTheDocument()
-      expect(
-        wrapper.getByLabelText('Failed Signing Message'),
-      ).toBeInTheDocument()
+      expect(wrapper.getByLabelText('Failed Signing Message')).toBeInTheDocument()
 
       expect(wrapper.getByText('Sign error')).toBeInTheDocument()
       expect(wrapper.getByIconName('patch-x')).toBeInTheDocument()
@@ -203,9 +199,7 @@ describe('Article Meta', () => {
     )
 
     expect(wrapper.getByText('PGP')).toBeInTheDocument()
-    expect(
-      wrapper.getByLabelText('Success Signing Message'),
-    ).toBeInTheDocument()
+    expect(wrapper.getByLabelText('Success Signing Message')).toBeInTheDocument()
     expect(wrapper.getByText('Signed')).toBeInTheDocument()
     expect(wrapper.getByIconName('patch-check')).toBeInTheDocument()
 

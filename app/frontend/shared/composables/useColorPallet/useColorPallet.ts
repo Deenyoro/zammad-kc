@@ -406,8 +406,7 @@ const getDarkScheme = (scheme: typeof accentColors) =>
       // @ts-expect-error
       values: color.values.toSorted(
         // es2023
-        (colorA: { range: number }, colorB: { range: number }) =>
-          colorA.range - colorB.range,
+        (colorA: { range: number }, colorB: { range: number }) => colorA.range - colorB.range,
       ),
     }
   })

@@ -47,16 +47,12 @@ describe('ticket item display', () => {
     })
 
     expect(view.getByRole('group')).toHaveClass('text-yellow')
-    expect(view.getByIconName('check-circle-no')).toHaveAccessibleName(
-      '(state: open)',
-    )
+    expect(view.getByIconName('check-circle-no')).toHaveAccessibleName('(state: open)')
 
     expect(view.getByText('#12345 · John Doe')).toBeInTheDocument()
     expect(view.getByText('test ticket')).toBeInTheDocument()
 
-    expect(
-      view.getByText('edited 10 hours ago by Jane Doe'),
-    ).toBeInTheDocument()
+    expect(view.getByText('edited 10 hours ago by Jane Doe')).toBeInTheDocument()
 
     const priority = view.getByText('3 high')
 
@@ -83,9 +79,7 @@ describe('ticket item display', () => {
     })
 
     expect(view.getByRole('group')).toHaveClass('text-yellow')
-    expect(view.getByIconName('check-circle-no')).toHaveAccessibleName(
-      '(state: open)',
-    )
+    expect(view.getByIconName('check-circle-no')).toHaveAccessibleName('(state: open)')
 
     expect(view.getByText('#12345')).toBeInTheDocument()
     expect(view.queryByText(/·/)).not.toBeInTheDocument()

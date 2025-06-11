@@ -63,9 +63,7 @@ describe('TicketDetailViewTitle.vue', () => {
       router: true,
     })
 
-    expect(
-      view.queryByText('escalation', { exact: false }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByText('escalation', { exact: false })).not.toBeInTheDocument()
   })
 
   it('shows a channel alert, if applicable', () => {
@@ -77,8 +75,7 @@ describe('TicketDetailViewTitle.vue', () => {
       {},
       {
         whatsapp: {
-          timestamp_incoming:
-            testDate.setMinutes(testDate.getMinutes() - 30).valueOf() / 1000,
+          timestamp_incoming: testDate.setMinutes(testDate.getMinutes() - 30).valueOf() / 1000,
         },
       },
     )

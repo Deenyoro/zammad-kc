@@ -7,9 +7,7 @@ import type { TwoFactorPlugin } from '../types.ts'
 export default {
   name: EnumTwoFactorAuthenticationMethod.AuthenticatorApp,
   label: __('Authenticator App'),
-  description: __(
-    'Get the security code from the authenticator app on your device.',
-  ),
+  description: __('Get the security code from the authenticator app on your device.'),
   order: 200,
   icon: '2fa-authenticator-app',
   loginOptions: {

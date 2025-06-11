@@ -1,11 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import {
-  fireEvent,
-  getAllByRole,
-  getByLabelText,
-  getByRole,
-} from '@testing-library/vue'
+import { fireEvent, getAllByRole, getByLabelText, getByRole } from '@testing-library/vue'
 import { flushPromises } from '@vue/test-utils'
 
 import { visitView } from '#tests/support/components/visitView.ts'
@@ -79,10 +74,7 @@ describe('Left sidebar', () => {
     })
 
     it('restores collapsed state width', async () => {
-      localStorage.setItem(
-        'gid://zammad/User/999-left-sidebar-collapsed',
-        'true',
-      )
+      localStorage.setItem('gid://zammad/User/999-left-sidebar-collapsed', 'true')
 
       const view = await visitView('/')
 
@@ -134,10 +126,7 @@ describe('Left sidebar', () => {
       async ({ collapsed }) => {
         mockPermissions(['user_preferences', 'ticket.agent'])
 
-        localStorage.setItem(
-          'gid://zammad/User/999-left-sidebar-collapsed',
-          String(collapsed),
-        )
+        localStorage.setItem('gid://zammad/User/999-left-sidebar-collapsed', String(collapsed))
 
         const view = await visitView('/')
 
@@ -206,14 +195,10 @@ describe('Left sidebar', () => {
       await view.events.click(playgroundLink)
 
       await waitFor(() => {
-        expect(view, 'correctly redirects to playground page').toHaveCurrentUrl(
-          '/playground',
-        )
+        expect(view, 'correctly redirects to playground page').toHaveCurrentUrl('/playground')
       })
 
-      expect(
-        view.queryByRole('region', { name: 'User menu' }),
-      ).not.toBeInTheDocument()
+      expect(view.queryByRole('region', { name: 'User menu' })).not.toBeInTheDocument()
     })
 
     // TODO: Cover keyboard shortcuts menu item when ready.
@@ -235,15 +220,12 @@ describe('Left sidebar', () => {
       await view.events.click(personalSettingsLink)
 
       await waitFor(() => {
-        expect(
-          view,
-          'correctly redirects to personal settings page',
-        ).toHaveCurrentUrl('/personal-setting/appearance')
+        expect(view, 'correctly redirects to personal settings page').toHaveCurrentUrl(
+          '/personal-setting/appearance',
+        )
       })
 
-      expect(
-        view.queryByRole('region', { name: 'User menu' }),
-      ).not.toBeInTheDocument()
+      expect(view.queryByRole('region', { name: 'User menu' })).not.toBeInTheDocument()
     })
 
     it('supports signing out', async () => {
@@ -268,14 +250,10 @@ describe('Left sidebar', () => {
       await flushPromises()
 
       await waitFor(() => {
-        expect(view, 'correctly redirects to login page').toHaveCurrentUrl(
-          '/login',
-        )
+        expect(view, 'correctly redirects to login page').toHaveCurrentUrl('/login')
       })
 
-      expect(
-        view.queryByRole('region', { name: 'User menu' }),
-      ).not.toBeInTheDocument()
+      expect(view.queryByRole('region', { name: 'User menu' })).not.toBeInTheDocument()
     })
   })
 })

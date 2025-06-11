@@ -31,14 +31,7 @@ interface TraverseOptions extends FocusableOptions {
   onEnd?(): ReturnValue
 }
 
-const processKeys = new Set([
-  'Home',
-  'End',
-  'ArrowLeft',
-  'ArrowRight',
-  'ArrowUp',
-  'ArrowDown',
-])
+const processKeys = new Set(['Home', 'End', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'])
 
 const isNext = (key: string, direction: TraverseDirection = 'vertical') => {
   if (direction === 'horizontal') return key === 'ArrowRight'
@@ -52,11 +45,7 @@ const isPrevious = (key: string, direction: TraverseDirection = 'vertical') => {
   return key === 'ArrowUp' || key === 'ArrowLeft'
 }
 
-const getNextElement = (
-  elements: HTMLElement[],
-  key: string,
-  options: TraverseOptions,
-) => {
+const getNextElement = (elements: HTMLElement[], key: string, options: TraverseOptions) => {
   const currentIndex = elements.indexOf(document.activeElement as HTMLElement)
 
   if (isNext(key, options.direction)) {
@@ -67,8 +56,7 @@ const getNextElement = (
   }
 
   if (isPrevious(key, options.direction)) {
-    const previousElement =
-      elements[currentIndex - 1] || elements[elements.length - 1]
+    const previousElement = elements[currentIndex - 1] || elements[elements.length - 1]
     const goPrevious = options.onPrevious?.(key, previousElement) ?? true
     if (!goPrevious) return null
     return previousElement
@@ -109,10 +97,7 @@ export const useTraverseOptions = (
 
       if (!shouldContinue) return
 
-      let elements = getFocusableElements(
-        unrefElement(container) as HTMLElement,
-        options,
-      )
+      let elements = getFocusableElements(unrefElement(container) as HTMLElement, options)
 
       if (options.filterOption) {
         elements = elements.filter(options.filterOption)

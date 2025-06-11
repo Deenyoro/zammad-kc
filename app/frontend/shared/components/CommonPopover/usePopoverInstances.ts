@@ -5,9 +5,9 @@ import { computed, ref } from 'vue'
 import type { CommonPopoverInternalInstance } from './types.ts'
 import type { ComputedRef } from 'vue'
 
-const instances = ref(
-  new Set<CommonPopoverInternalInstance>(),
-) as unknown as ComputedRef<Set<CommonPopoverInternalInstance>>
+const instances = ref(new Set<CommonPopoverInternalInstance>()) as unknown as ComputedRef<
+  Set<CommonPopoverInternalInstance>
+>
 
 export const usePopoverInstances = () => {
   const isOpened = computed(() => {

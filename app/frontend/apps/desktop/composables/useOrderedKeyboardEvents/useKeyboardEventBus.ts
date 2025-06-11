@@ -2,13 +2,7 @@
 
 import { useMagicKeys } from '@vueuse/core'
 import { isArray } from 'lodash-es'
-import {
-  effectScope,
-  onBeforeUnmount,
-  onDeactivated,
-  shallowRef,
-  watch,
-} from 'vue'
+import { effectScope, onBeforeUnmount, onDeactivated, shallowRef, watch } from 'vue'
 
 import {
   type OrderKeyHandlerConfig,
@@ -16,9 +10,7 @@ import {
 } from '#desktop/composables/useOrderedKeyboardEvents/types.ts'
 import { useReactivate } from '#desktop/composables/useReactivate.ts'
 
-const subscribedHandlers = shallowRef<Record<string, OrderKeyHandlerConfig[]>>(
-  {},
-)
+const subscribedHandlers = shallowRef<Record<string, OrderKeyHandlerConfig[]>>({})
 
 const activeKeyboardKeys = shallowRef(new Set<string | KeyboardKey>(new Set()))
 
@@ -33,9 +25,7 @@ export const useKeyboardEventBus = (
   const keyboardKey = isArray(keyName) ? keyName.join(',') : keyName
 
   const hasHandlerConfig = (handlerConfig = config) =>
-    subscribedHandlers.value[keyboardKey]?.some(
-      (c) => c.key === handlerConfig.key,
-    )
+    subscribedHandlers.value[keyboardKey]?.some((c) => c.key === handlerConfig.key)
 
   const subscribeEvent = (handlerConfig: OrderKeyHandlerConfig) => {
     if (subscribedHandlers.value[keyboardKey] === undefined) {
@@ -63,9 +53,7 @@ export const useKeyboardEventBus = (
       const handleKeyPress = async (handlers: OrderKeyHandlerConfig[]) => {
         if (!handlers?.at(-1)) return
 
-        const { handler, beforeHandlerRuns } = handlers.at(
-          -1,
-        ) as OrderKeyHandlerConfig
+        const { handler, beforeHandlerRuns } = handlers.at(-1) as OrderKeyHandlerConfig
 
         if (beforeHandlerRuns && (await beforeHandlerRuns())) return
 
@@ -89,9 +77,7 @@ export const useKeyboardEventBus = (
 
           if (isKeyCombinationPressed)
             handleKeyPress(
-              subscribedHandlers.value[
-                keys.length > 1 ? eventKeys.join(',') : keys[0]
-              ],
+              subscribedHandlers.value[keys.length > 1 ? eventKeys.join(',') : keys[0]],
             )
         })
       })
@@ -99,9 +85,9 @@ export const useKeyboardEventBus = (
   }
 
   const unsubscribeEvent = (handlerConfig: OrderKeyHandlerConfig) => {
-    subscribedHandlers.value[keyboardKey] = subscribedHandlers.value[
-      keyboardKey
-    ].filter((config) => config.key !== handlerConfig.key)
+    subscribedHandlers.value[keyboardKey] = subscribedHandlers.value[keyboardKey].filter(
+      (config) => config.key !== handlerConfig.key,
+    )
   }
 
   const cleanup = () => {

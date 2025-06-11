@@ -75,9 +75,7 @@ export const useArticleToggleMore = () => {
     const styles = bubbleElement.value.style
 
     styles.transition = 'height 0.3s ease-in-out'
-    styles.height = shownMore.value
-      ? `${heightActual + 10}px`
-      : `${heightHidden}px`
+    styles.height = shownMore.value ? `${heightActual + 10}px` : `${heightHidden}px`
 
     const ontransitionend = () => {
       styles.transition = ''

@@ -6,7 +6,7 @@ import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
-describe('testing new-beta-ui a11y view', async () => {
+describe('testing new-beta-ui a11y view', () => {
   beforeEach(() => {
     mockPermissions(['user_preferences.beta_ui_switch'])
 

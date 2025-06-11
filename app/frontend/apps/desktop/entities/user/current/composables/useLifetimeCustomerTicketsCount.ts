@@ -9,8 +9,7 @@ export const useLifetimeCustomerTicketsCount = () => {
   const { user } = storeToRefs(useSessionStore())
   const totalCount = computed(
     () =>
-      (user.value?.preferences?.tickets_closed ?? 0) +
-      (user.value?.preferences?.tickets_open ?? 0),
+      (user.value?.preferences?.tickets_closed ?? 0) + (user.value?.preferences?.tickets_open ?? 0),
   )
 
   const hasAnyTicket = computed(() => totalCount.value > 0)

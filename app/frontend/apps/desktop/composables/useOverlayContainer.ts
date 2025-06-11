@@ -16,10 +16,7 @@ import {
 } from 'vue'
 import { useRoute, type RouteLocationNormalizedLoadedGeneric } from 'vue-router'
 
-import {
-  destroyComponent,
-  pushComponent,
-} from '#shared/components/DynamicInitializer/manage.ts'
+import { destroyComponent, pushComponent } from '#shared/components/DynamicInitializer/manage.ts'
 import testFlags from '#shared/utils/testFlags.ts'
 
 export interface OverlayContainerOptions {
@@ -51,9 +48,7 @@ export interface OverlayContainerMeta {
   lastFocusedElements: Record<string, HTMLElement>
 }
 
-export const getRouteIdentifier = (
-  route: RouteLocationNormalizedLoadedGeneric,
-) => {
+export const getRouteIdentifier = (route: RouteLocationNormalizedLoadedGeneric) => {
   if (route.meta.pageKey) return route.meta.pageKey
 
   // If no params exists, just use the name.
@@ -66,43 +61,35 @@ export const getRouteIdentifier = (
   return `${String(route.name)}_${paramHash}`
 }
 
-const overlayContainerMeta: Record<OverlayContainerType, OverlayContainerMeta> =
-  {
-    dialog: {
-      mounted: new Set<string>(),
-      options: new Map<string, OverlayContainerOptions>(),
-      opened: ref(new Set<string>()),
-      lastFocusedElements: {},
-    },
-    flyout: {
-      mounted: new Set<string>(),
-      options: new Map<string, OverlayContainerOptions>(),
-      opened: ref(new Set<string>()),
-      lastFocusedElements: {},
-    },
-  }
+const overlayContainerMeta: Record<OverlayContainerType, OverlayContainerMeta> = {
+  dialog: {
+    mounted: new Set<string>(),
+    options: new Map<string, OverlayContainerOptions>(),
+    opened: ref(new Set<string>()),
+    lastFocusedElements: {},
+  },
+  flyout: {
+    mounted: new Set<string>(),
+    options: new Map<string, OverlayContainerOptions>(),
+    opened: ref(new Set<string>()),
+    lastFocusedElements: {},
+  },
+}
 
 export const getOpenedOverlayContainers = (type: OverlayContainerType) =>
   overlayContainerMeta[type].opened.value
 
-export const isOverlayContainerOpened = (
-  type: OverlayContainerType,
-  name?: string,
-) =>
+export const isOverlayContainerOpened = (type: OverlayContainerType, name?: string) =>
   name
     ? overlayContainerMeta[type].opened.value.has(name)
     : overlayContainerMeta[type].opened.value.size > 0
 
 export const currentOverlayContainersOpen = computed(() => {
-  const openContainers: Partial<
-    Record<OverlayContainerType, string | undefined>
-  > = {}
+  const openContainers: Partial<Record<OverlayContainerType, string | undefined>> = {}
 
   Object.keys(overlayContainerMeta).forEach((type) => {
     openContainers[type as OverlayContainerType] = last(
-      Array.from(
-        overlayContainerMeta[type as OverlayContainerType].opened.value,
-      ),
+      Array.from(overlayContainerMeta[type as OverlayContainerType].opened.value),
     )
   })
 
@@ -116,10 +103,7 @@ export const getOverlayContainerMeta = (type: OverlayContainerType) => {
   }
 }
 
-const getOverlayContainerOptions = (
-  type: OverlayContainerType,
-  name: string,
-) => {
+const getOverlayContainerOptions = (type: OverlayContainerType, name: string) => {
   const options = overlayContainerMeta[type].options.get(name)
 
   if (!options) {
@@ -131,10 +115,7 @@ const getOverlayContainerOptions = (
   return options
 }
 
-export const closeOverlayContainer = async (
-  type: OverlayContainerType,
-  name: string,
-) => {
+export const closeOverlayContainer = async (type: OverlayContainerType, name: string) => {
   const [realName, uniqueId] = name.split(':')
 
   if (!overlayContainerMeta[type].opened.value.has(name)) return
@@ -152,8 +133,7 @@ export const closeOverlayContainer = async (
   const controllerElement =
     (document.querySelector(
       `[aria-haspopup="${type}"][aria-controls="${type}-${name}"]`,
-    ) as HTMLElement | null) ||
-    overlayContainerMeta[type].lastFocusedElements[name]
+    ) as HTMLElement | null) || overlayContainerMeta[type].lastFocusedElements[name]
   if (controllerElement && 'focus' in controllerElement)
     controllerElement.focus({ preventScroll: true })
 
@@ -185,9 +165,7 @@ export const openOverlayContainer = async (
     await options.beforeOpen(props.uniqueId as string | undefined)
   }
 
-  const component = defineAsyncComponent(
-    options.component as AsyncComponentLoader,
-  )
+  const component = defineAsyncComponent(options.component as AsyncComponentLoader)
 
   await pushComponent(type, uniqueName, component, props)
 
@@ -218,15 +196,11 @@ export const useOverlayContainer = (
 
   const route = useRoute()
 
-  const currentName = options.global
-    ? name
-    : `${name}_${getRouteIdentifier(route)}`
+  const currentName = options.global ? name : `${name}_${getRouteIdentifier(route)}`
 
   overlayContainerMeta[type].options.set(currentName, options)
 
-  const isOpened = computed(() =>
-    overlayContainerMeta[type].opened.value.has(currentName),
-  )
+  const isOpened = computed(() => overlayContainerMeta[type].opened.value.has(currentName))
 
   // Unmounted happens after setup, if component was unmounted so we need to add options again.
   // This happens mainly in storybook stories.

@@ -8,10 +8,7 @@ import { mockGraphQLApi } from '#tests/support/mock-graphql-api.ts'
 
 import { ObjectManagerFrontendAttributesDocument } from '#shared/entities/object-attributes/graphql/queries/objectManagerFrontendAttributes.api.ts'
 import type { TicketArticle } from '#shared/entities/ticket/types.ts'
-import {
-  EnumSecurityStateType,
-  type TicketArticleSecurityState,
-} from '#shared/graphql/types.ts'
+import { EnumSecurityStateType, type TicketArticleSecurityState } from '#shared/graphql/types.ts'
 
 import { ticketArticleObjectAttributes } from '#mobile/entities/ticket/__tests__/mocks/ticket-mocks.ts'
 import { defaultArticles } from '#mobile/pages/ticket/__tests__/mocks/detail-view.ts'
@@ -40,9 +37,7 @@ describe('visuals for metadata', () => {
       // default article has attachment that should be visible as a link
       ...defaultArticles().firstArticles!.edges[0].node,
       internalId: 1,
-      from: getAddress(
-        '"Test Admin Agent via Zammad Helpdesk" <zammad@localhost>',
-      ),
+      from: getAddress('"Test Admin Agent via Zammad Helpdesk" <zammad@localhost>'),
       to: getAddress('Nicole Braun <nicole.braun@zammad.org>'),
       subject: 'Some Email',
       cc: getAddress('Joe Mike <joe.mike@zammad.org>'),
@@ -79,25 +74,19 @@ describe('visuals for metadata', () => {
     expect(view.getByRole('region', { name: 'To' })).toHaveTextContent(
       /Nicole Braun <nicole.braun@zammad.org>/,
     )
-    expect(view.getByRole('region', { name: 'Subject' })).toHaveTextContent(
-      /Some Email/,
-    )
+    expect(view.getByRole('region', { name: 'Subject' })).toHaveTextContent(/Some Email/)
     expect(view.getByRole('region', { name: 'CC' })).toHaveTextContent(
       /Joe Mike <joe.mike@zammad.org>/,
     )
     expect(view.getByRole('region', { name: 'Reply-To' })).toHaveTextContent(
       /Arthur Miller <arthur.miller@zammad.org/,
     )
-    expect(view.getByRole('region', { name: 'Created' })).toHaveTextContent(
-      /2022-02-01 00:00$/,
-    )
+    expect(view.getByRole('region', { name: 'Created' })).toHaveTextContent(/2022-02-01 00:00$/)
 
     // FIXME: The content does not get replaced with the associated option,
     //   even though the correct object attribute is loaded.
     await waitFor(() => {
-      expect(
-        view.getByRole('region', { name: 'Detected language' }),
-      ).toHaveTextContent(/German$/)
+      expect(view.getByRole('region', { name: 'Detected language' })).toHaveTextContent(/German$/)
     })
 
     const channel = view.getByRole('region', { name: 'Channel' })
@@ -120,16 +109,12 @@ describe('visuals for metadata', () => {
       '/api/ticket_attachment/2/1/66?disposition=attachment',
     )
 
-    expect(
-      view.queryByRole('region', { name: 'Security' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('region', { name: 'Security' })).not.toBeInTheDocument()
   })
 })
 
 describe('rendering security field', () => {
-  const mockArticle = (
-    security: TicketArticleSecurityState,
-  ): TicketArticle => ({
+  const mockArticle = (security: TicketArticleSecurityState): TicketArticle => ({
     ...defaultArticles().firstArticles!.edges[0].node,
     internalId: 1,
     securityState: {
@@ -209,9 +194,7 @@ describe('rendering security field', () => {
       const view = renderEncryption(false, 'Private key could not be found.')
 
       const security = view.getByRole('region', { name: 'Security' })
-      expect(security).toHaveTextContent(
-        'Encryption error Private key could not be found.',
-      )
+      expect(security).toHaveTextContent('Encryption error Private key could not be found.')
       expect(getByIconName(security, 'encryption-error')).toBeInTheDocument()
     })
   })
@@ -243,9 +226,7 @@ describe('rendering security field', () => {
       const view = renderSign(false, 'Public key could not be found.')
 
       const security = view.getByRole('region', { name: 'Security' })
-      expect(security).toHaveTextContent(
-        'Sign error Public key could not be found.',
-      )
+      expect(security).toHaveTextContent('Sign error Public key could not be found.')
       expect(getByIconName(security, 'not-signed')).toBeInTheDocument()
     })
   })
@@ -339,9 +320,7 @@ describe('rendering WhatsApp metadata', () => {
 
       const messageStatus = view.getByRole('region', { name: 'Message Status' })
       expect(messageStatus).toHaveTextContent('read by the customer')
-      expect(
-        getByIconName(messageStatus, 'check-double-circle'),
-      ).toBeInTheDocument()
+      expect(getByIconName(messageStatus, 'check-double-circle')).toBeInTheDocument()
     })
   })
 })

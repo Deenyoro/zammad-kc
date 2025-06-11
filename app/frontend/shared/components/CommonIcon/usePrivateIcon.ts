@@ -5,9 +5,7 @@ import { computed } from 'vue'
 import type { Props } from './CommonIcon.vue'
 import type { Animations, Sizes } from './types.ts'
 
-export const usePrivateIcon = (
-  props: Omit<Props, 'size'> & { size: Sizes },
-) => {
+export const usePrivateIcon = (props: Omit<Props, 'size'> & { size: Sizes }) => {
   const animationClassMap: Record<Animations, string> = {
     pulse: 'animate-pulse',
     spin: 'animate-spin',

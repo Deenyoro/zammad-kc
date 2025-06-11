@@ -5,10 +5,7 @@ import { shallowRef, computed, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 import Form from '#shared/components/Form/Form.vue'
-import type {
-  FormSubmitData,
-  FormValues,
-} from '#shared/components/Form/types.ts'
+import type { FormSubmitData, FormValues } from '#shared/components/Form/types.ts'
 import { useBaseUrl } from '#shared/composables/useBaseUrl.ts'
 import { useLogoUrl } from '#shared/composables/useLogoUrl.ts'
 import { MutationHandler } from '#shared/server/apollo/handler/index.ts'
@@ -73,9 +70,7 @@ const initialValues: FormValues = {
 
 const form = shallowRef()
 
-const isSystemOnlineService = computed(
-  () => application.config.system_online_service,
-)
+const isSystemOnlineService = computed(() => application.config.system_online_service)
 
 const schemaData = reactive({
   isSystemOnlineService,
@@ -122,12 +117,7 @@ const setSystemInformation = async (formData: SystemInformationData) => {
     :schema="systemInformationSchema"
     :schema-data="schemaData"
     :initial-values="initialValues"
-    @submit="
-      setSystemInformation($event as FormSubmitData<SystemInformationData>)
-    "
+    @submit="setSystemInformation($event as FormSubmitData<SystemInformationData>)"
   />
-  <GuidedSetupActionFooter
-    :form="form"
-    :submit-button-text="__('Save and Continue')"
-  />
+  <GuidedSetupActionFooter :form="form" :submit-button-text="__('Save and Continue')" />
 </template>

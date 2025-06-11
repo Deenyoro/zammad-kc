@@ -18,8 +18,7 @@ provide(
   computed(() => props.collapsed),
 )
 
-const { betaUiSwitchEnabled, toggleBetaUiSwitch, dismissBetaUiSwitch } =
-  useNewBetaUi()
+const { betaUiSwitchEnabled, toggleBetaUiSwitch, dismissBetaUiSwitch } = useNewBetaUi()
 </script>
 
 <template>
@@ -55,17 +54,11 @@ const { betaUiSwitchEnabled, toggleBetaUiSwitch, dismissBetaUiSwitch } =
       </div>
 
       <div class="flex" :class="{ 'mx-auto mb-0.5 flex-col!': collapsed }">
-        <div
-          class="flex items-center justify-start"
-          :class="{ 'justify-center!': collapsed }"
-        >
+        <div class="flex items-center justify-start" :class="{ 'justify-center!': collapsed }">
           <AvatarMenu />
         </div>
 
-        <div
-          class="flex flex-1 items-center justify-end"
-          :class="{ 'justify-center!': collapsed }"
-        >
+        <div class="flex flex-1 items-center justify-end" :class="{ 'justify-center!': collapsed }">
           <MenuContainer />
         </div>
       </div>

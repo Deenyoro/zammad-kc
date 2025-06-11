@@ -3,10 +3,7 @@
 import { waitFor } from '@testing-library/vue'
 import { computed, ref } from 'vue'
 
-import {
-  type ExtendedRenderResult,
-  renderComponent,
-} from '#tests/support/components/index.ts'
+import { type ExtendedRenderResult, renderComponent } from '#tests/support/components/index.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { mockRouterHooks } from '#tests/support/mock-vue-router.ts'
@@ -148,9 +145,7 @@ const openMenuAndClickAction = async (
   index = 1,
 ) => {
   await wrapper.events.click(
-    wrapper
-      .getAllByRole('button', { name: 'Action menu button' })
-      .at(index) as HTMLElement,
+    wrapper.getAllByRole('button', { name: 'Action menu button' }).at(index) as HTMLElement,
   )
 
   expect(await wrapper.findByRole('menu')).toBeInTheDocument()
@@ -158,10 +153,7 @@ const openMenuAndClickAction = async (
   await wrapper.events.click(wrapper.getByRole('button', { name: action }))
 }
 
-const verifyChecked = async (
-  checkboxes: HTMLElement[],
-  withSubscription = true,
-) => {
+const verifyChecked = async (checkboxes: HTMLElement[], withSubscription = true) => {
   const upsertCalls = await waitForTicketChecklistItemUpsertMutationCalls()
 
   expect(upsertCalls.at(-1)?.variables).toEqual({
@@ -192,10 +184,7 @@ const verifyChecked = async (
   expect(checkboxes[0]).toBeChecked()
 }
 
-const verifyTextUpdate = async (
-  wrapper: ExtendedRenderResult,
-  withSubscription = true,
-) => {
+const verifyTextUpdate = async (wrapper: ExtendedRenderResult, withSubscription = true) => {
   if (withSubscription) {
     await mockChecklistUpdateSubscription({
       items: [
@@ -213,9 +202,7 @@ const verifyTextUpdate = async (
     })
   }
 
-  expect(
-    await wrapper.findByText('Checklist item A update'),
-  ).toBeInTheDocument()
+  expect(await wrapper.findByText('Checklist item A update')).toBeInTheDocument()
 }
 
 const renderChecklist = async () => {
@@ -274,13 +261,9 @@ describe('TicketSidebarChecklist', () => {
 
     expect(wrapper.getAllByIconName('checklist')).toHaveLength(2)
 
-    expect(
-      await wrapper.findByText('No checklist added to this ticket yet.'),
-    ).toBeInTheDocument()
+    expect(await wrapper.findByText('No checklist added to this ticket yet.')).toBeInTheDocument()
 
-    expect(
-      wrapper.queryByRole('button', { name: 'Add From a Template' }),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button', { name: 'Add From a Template' })).not.toBeInTheDocument()
   })
 
   it('displays permission denied message for checklist item if agent has no permission on linked ticket', async () => {
@@ -321,24 +304,16 @@ describe('TicketSidebarChecklist', () => {
 
     const wrapper = await renderChecklist()
 
-    expect(
-      wrapper.getByRole('heading', { name: 'Checklist', level: 2 }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('heading', { name: 'Checklist', level: 2 })).toBeInTheDocument()
 
     expect(wrapper.getAllByIconName('checklist')).toHaveLength(2)
 
-    expect(
-      await wrapper.findByRole('button', { name: 'Add Empty Checklist' }),
-    ).toBeInTheDocument()
+    expect(await wrapper.findByRole('button', { name: 'Add Empty Checklist' })).toBeInTheDocument()
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Add Empty Checklist' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Add Empty Checklist' }))
 
     await waitFor(() =>
-      expect(
-        wrapper.getByRole('button', { name: 'Add Empty Checklist' }),
-      ).not.toBeDisabled(),
+      expect(wrapper.getByRole('button', { name: 'Add Empty Checklist' })).not.toBeDisabled(),
     )
     const calls = await waitForTicketChecklistAddMutationCalls()
 
@@ -360,9 +335,7 @@ describe('TicketSidebarChecklist', () => {
     })
     const wrapper = await renderChecklist()
 
-    expect(
-      await wrapper.findByText('No checklist items yet'),
-    ).toBeInTheDocument()
+    expect(await wrapper.findByText('No checklist items yet')).toBeInTheDocument()
   })
 
   describe('actions', () => {
@@ -398,9 +371,7 @@ describe('TicketSidebarChecklist', () => {
 
       await wrapper.events.type(await wrapper.findByRole('textbox'), ' update')
 
-      await wrapper.events.click(
-        wrapper.getByRole('button', { name: 'Save changes' }),
-      )
+      await wrapper.events.click(wrapper.getByRole('button', { name: 'Save changes' }))
 
       const calls = await waitForTicketChecklistTitleUpdateMutationCalls()
 
@@ -529,10 +500,7 @@ describe('TicketSidebarChecklist', () => {
 
       await wrapper.events.click(wrapper.getByText('Checklist item A'))
 
-      await wrapper.events.type(
-        await wrapper.findByRole('textbox'),
-        ' update{enter}',
-      )
+      await wrapper.events.type(await wrapper.findByRole('textbox'), ' update{enter}')
 
       const calls = await waitForTicketChecklistItemUpsertMutationCalls()
 
@@ -576,10 +544,7 @@ describe('TicketSidebarChecklist', () => {
         },
       })
 
-      await wrapper.events.type(
-        await wrapper.findByRole('textbox'),
-        ' update{enter}',
-      )
+      await wrapper.events.type(await wrapper.findByRole('textbox'), ' update{enter}')
 
       await verifyTextUpdate(wrapper, false)
     })
@@ -622,13 +587,9 @@ describe('TicketSidebarChecklist', () => {
 
       const wrapper = await renderChecklist()
 
-      expect(
-        await wrapper.findByText('Or choose a checklist template.'),
-      ).toBeInTheDocument()
+      expect(await wrapper.findByText('Or choose a checklist template.')).toBeInTheDocument()
 
-      await wrapper.events.click(
-        wrapper.getByRole('button', { name: 'Add From a Template' }),
-      )
+      await wrapper.events.click(wrapper.getByRole('button', { name: 'Add From a Template' }))
 
       expect(await wrapper.findByRole('menu')).toBeInTheDocument()
 
@@ -667,13 +628,9 @@ describe('TicketSidebarChecklist', () => {
         }),
       ).toBeInTheDocument()
 
-      expect(
-        wrapper.queryByText('Or choose a checklist template.'),
-      ).not.toBeInTheDocument()
+      expect(wrapper.queryByText('Or choose a checklist template.')).not.toBeInTheDocument()
 
-      expect(
-        wrapper.queryByRole('button', { name: 'Add From a Template' }),
-      ).not.toBeInTheDocument()
+      expect(wrapper.queryByRole('button', { name: 'Add From a Template' })).not.toBeInTheDocument()
     })
 
     it('updates templates if they got modified', async () => {
@@ -691,9 +648,7 @@ describe('TicketSidebarChecklist', () => {
         await wrapper.findByRole('button', { name: 'Add From a Template' }),
       ).toBeInTheDocument()
 
-      await wrapper.events.click(
-        wrapper.getByRole('button', { name: 'Add From a Template' }),
-      )
+      await wrapper.events.click(wrapper.getByRole('button', { name: 'Add From a Template' }))
 
       const menuItems = wrapper.getAllByRole('menuitem')
 

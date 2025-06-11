@@ -16,9 +16,7 @@ const defaultProps: (keyof FormDefaultProps)[] = [
   'internal',
 ]
 
-const defaulfFieldDefinition: Required<
-  Pick<FormKitTypeDefinition, 'props' | 'features'>
-> = {
+const defaulfFieldDefinition: Required<Pick<FormKitTypeDefinition, 'props' | 'features'>> = {
   features: [translateWrapperProps, hideField, addBlurEvent, formLocaleDir],
   props: defaultProps,
 }

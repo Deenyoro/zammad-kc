@@ -29,10 +29,7 @@ const modelTheme = computed({
 </script>
 
 <template>
-  <CommonPopoverMenuItem
-    v-bind="{ ...$props, ...$attrs }"
-    @click="cycleThemeSwitchValue"
-  />
+  <CommonPopoverMenuItem v-bind="{ ...$props, ...$attrs }" @click="cycleThemeSwitchValue" />
   <div class="flex items-center px-2">
     <ThemeSwitch
       ref="theme-switch"

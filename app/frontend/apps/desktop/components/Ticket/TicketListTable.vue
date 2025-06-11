@@ -28,11 +28,13 @@ const props = defineProps<ListTableProps<TicketByList>>()
 
 const emit = defineEmits<ListTableEmits>()
 
-const getLink = (item: ObjectWithId) =>
-  `/tickets/${getIdFromGraphQLId(item.id)}`
+const getLink = (item: ObjectWithId) => `/tickets/${getIdFromGraphQLId(item.id)}`
 
-const { goToItem, goToItemLinkColumn, loadMore, resort, storageKeyId } =
-  useListTable(props, emit, getLink)
+const { goToItem, goToItemLinkColumn, loadMore, resort, storageKeyId } = useListTable(
+  props,
+  emit,
+  getLink,
+)
 
 const { config } = storeToRefs(useApplicationStore())
 
@@ -50,10 +52,7 @@ const userPopoverSlots: {
 <template>
   <div v-if="loading && !loadingNewPage">
     <slot name="loading">
-      <CommonTableSkeleton
-        data-test-id="table-skeleton"
-        :rows="skeletonLoadingCount"
-      />
+      <CommonTableSkeleton data-test-id="table-skeleton" :rows="skeletonLoadingCount" />
     </slot>
   </div>
 

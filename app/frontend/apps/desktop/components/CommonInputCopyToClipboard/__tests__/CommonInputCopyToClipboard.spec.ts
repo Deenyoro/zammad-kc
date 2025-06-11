@@ -9,8 +9,7 @@ import CommonInputCopyToClipboard from '../CommonInputCopyToClipboard.vue'
 const clipboardCopyMock = vi.fn()
 
 vi.mock('@vueuse/core', async () => {
-  const mod =
-    await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
+  const mod = await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
 
   return {
     ...mod,
@@ -21,10 +20,7 @@ vi.mock('@vueuse/core', async () => {
   }
 })
 
-const renderCopyToClipboard = (
-  props: Record<string, unknown> = {},
-  options: any = {},
-) => {
+const renderCopyToClipboard = (props: Record<string, unknown> = {}, options: any = {}) => {
   return renderComponent(CommonInputCopyToClipboard, {
     props,
     ...options,

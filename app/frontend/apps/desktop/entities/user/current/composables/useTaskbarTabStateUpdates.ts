@@ -45,20 +45,14 @@ export const useTaskbarTabStateUpdates = (
         !skipNextStateUpdate.value &&
         result.data?.userCurrentTaskbarItemStateUpdates.stateChanged
       ) {
-        listenFormUpdaterProcessing = form.value?.formNode.on(
-          'message-removed',
-          ({ payload }) => {
-            if (
-              !listenFormUpdaterProcessing ||
-              payload.key !== 'formUpdaterProcessing'
-            ) {
-              return
-            }
+        listenFormUpdaterProcessing = form.value?.formNode.on('message-removed', ({ payload }) => {
+          if (!listenFormUpdaterProcessing || payload.key !== 'formUpdaterProcessing') {
+            return
+          }
 
-            applyTaskbarState.value = false
-            form.value?.formNode.off(listenFormUpdaterProcessing)
-          },
-        )
+          applyTaskbarState.value = false
+          form.value?.formNode.off(listenFormUpdaterProcessing)
+        })
 
         applyTaskbarState.value = true
 

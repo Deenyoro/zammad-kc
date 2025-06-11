@@ -33,9 +33,7 @@ const ticketColorCode = computed(() => {
 <template>
   <div v-if="unauthorized" class="flex grow items-center gap-2">
     <CommonIcon class="shrink-0 text-red-500" size="tiny" name="x-lg" />
-    <CommonLabel class="text-black dark:text-white">{{
-      $t('Access denied')
-    }}</CommonLabel>
+    <CommonLabel class="text-black dark:text-white">{{ $t('Access denied') }}</CommonLabel>
   </div>
   <CommonLink
     v-else
@@ -52,11 +50,7 @@ const ticketColorCode = computed(() => {
       :aria-labelledby="ticketId"
       icon-size="tiny"
     />
-    <CommonLabel
-      :id="ticketId"
-      class="mt-0.5 text-blue-800"
-      :class="classes?.label"
-    >
+    <CommonLabel :id="ticketId" class="mt-0.5 text-blue-800" :class="classes?.label">
       {{ ticket?.title }}
     </CommonLabel>
   </CommonLink>

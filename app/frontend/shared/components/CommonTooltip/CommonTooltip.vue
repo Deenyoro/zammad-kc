@@ -22,10 +22,7 @@ defineProps<Props>()
 const tooltipTriggerElement = ref<HTMLElement>()
 
 const { tooltip: tooltipConfig } = useSharedVisualConfig()
-const { tooltipVisible, showTooltip } = useTooltipControls(
-  tooltipTriggerElement,
-  tooltipConfig,
-)
+const { tooltipVisible, showTooltip } = useTooltipControls(tooltipTriggerElement, tooltipConfig)
 </script>
 
 <template>

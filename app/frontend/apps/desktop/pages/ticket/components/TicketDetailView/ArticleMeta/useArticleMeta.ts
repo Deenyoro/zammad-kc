@@ -19,10 +19,7 @@ const getNestedProperty = (article: TicketArticle, nestedKeys: string[]) => {
   }, article)
 }
 
-const addNewFields = (
-  fields: ChannelMetaField[],
-  article: Ref<TicketArticle>,
-) => {
+const addNewFields = (fields: ChannelMetaField[], article: Ref<TicketArticle>) => {
   const plugin = lookupArticlePlugin(article.value.type?.name as string)
   if (!plugin?.additionalFields?.length) return fields
 
@@ -71,8 +68,7 @@ export const useArticleMeta = (article: Ref<TicketArticle>) => {
         props: {
           type: 'from',
         },
-        show: () =>
-          !!(article.value.from?.parsed?.[0]?.name || article.value.from?.raw),
+        show: () => !!(article.value.from?.parsed?.[0]?.name || article.value.from?.raw),
         order: 200,
       },
       {
@@ -82,8 +78,7 @@ export const useArticleMeta = (article: Ref<TicketArticle>) => {
         props: {
           type: 'to',
         },
-        show: () =>
-          !!(article.value.to?.parsed?.[0]?.name || article.value.to?.raw),
+        show: () => !!(article.value.to?.parsed?.[0]?.name || article.value.to?.raw),
         order: 300,
       },
       {
@@ -93,8 +88,7 @@ export const useArticleMeta = (article: Ref<TicketArticle>) => {
         props: {
           type: 'cc',
         },
-        show: () =>
-          !!(article.value.cc?.parsed?.[0]?.name || article.value.cc?.raw),
+        show: () => !!(article.value.cc?.parsed?.[0]?.name || article.value.cc?.raw),
         order: 350,
       },
       {

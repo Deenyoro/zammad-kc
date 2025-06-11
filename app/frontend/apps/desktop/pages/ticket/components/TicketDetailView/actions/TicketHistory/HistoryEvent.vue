@@ -19,11 +19,7 @@ const eventDetails = getEventOutput(event)
 
 <template>
   <div class="px-2">
-    <component
-      :is="eventDetails.component"
-      v-if="eventDetails.component"
-      :event="eventDetails"
-    />
+    <component :is="eventDetails.component" v-if="eventDetails.component" :event="eventDetails" />
     <HistoryEventDetails v-else :event="eventDetails" />
   </div>
 </template>

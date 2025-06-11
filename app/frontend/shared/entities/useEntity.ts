@@ -12,13 +12,10 @@ export interface EntityPlugin<T = EntityObject> {
   display: (object: T) => string
 }
 
-const entityModules: Record<string, EntityPlugin> = import.meta.glob(
-  ['./*/entity.ts'],
-  {
-    eager: true,
-    import: 'default',
-  },
-)
+const entityModules: Record<string, EntityPlugin> = import.meta.glob(['./*/entity.ts'], {
+  eager: true,
+  import: 'default',
+})
 
 export const entities = Object.values(entityModules)
 export const entitiesByName = keyBy(entities, 'name')

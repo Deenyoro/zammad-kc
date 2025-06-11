@@ -11,11 +11,7 @@ import type {
 } from './email-inbound-outbound.ts'
 import type { ShallowRef, Ref } from 'vue'
 
-export type EmailChannelSteps =
-  | 'account'
-  | 'inbound'
-  | 'inbound-messages'
-  | 'outbound'
+export type EmailChannelSteps = 'account' | 'inbound' | 'inbound-messages' | 'outbound'
 
 export interface EmailChannelForm<T> {
   form: ShallowRef<FormRef | undefined>

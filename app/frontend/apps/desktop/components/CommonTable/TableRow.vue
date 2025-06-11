@@ -45,9 +45,7 @@ const rowEventHandler = computed(() =>
     : { attrs: {}, events: {} },
 )
 
-const hasScreenReaderHelpText = computed(
-  () => !!document?.getElementById(rowId),
-)
+const hasScreenReaderHelpText = computed(() => !!document?.getElementById(rowId))
 </script>
 
 <template>
@@ -66,11 +64,7 @@ const hasScreenReaderHelpText = computed(
 
     <template v-if="!hasScreenReaderHelpText">
       <Teleport to="body">
-        <p
-          v-if="rowEventHandler.attrs['aria-describedby']"
-          :id="rowId"
-          class="sr-only absolute"
-        >
+        <p v-if="rowEventHandler.attrs['aria-describedby']" :id="rowId" class="sr-only absolute">
           {{ __('Select table row') }}
         </p>
       </Teleport>

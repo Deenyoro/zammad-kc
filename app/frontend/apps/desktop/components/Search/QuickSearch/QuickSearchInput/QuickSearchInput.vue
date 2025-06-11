@@ -47,9 +47,7 @@ const { subscribeEvent, unsubscribeEvent } = useKeyboardEventBus(
 )
 
 watch(isSearchActive, (isActive) =>
-  isActive
-    ? subscribeEvent(keyHandlerConfig)
-    : unsubscribeEvent(keyHandlerConfig),
+  isActive ? subscribeEvent(keyHandlerConfig) : unsubscribeEvent(keyHandlerConfig),
 )
 
 emitter.on('focus-quick-search-field', () => inputSearchInstance.value?.focus())

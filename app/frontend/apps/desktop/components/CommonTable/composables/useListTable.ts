@@ -17,9 +17,7 @@ export const useListTable = <T>(
 ) => {
   const { userId } = storeToRefs(useSessionStore())
 
-  const storageKeyId = computed(
-    () => `${userId.value}-table-headers-${props.tableId}`,
-  )
+  const storageKeyId = computed(() => `${userId.value}-table-headers-${props.tableId}`)
 
   const loadMore = async () => {
     await props.onLoadMore?.()

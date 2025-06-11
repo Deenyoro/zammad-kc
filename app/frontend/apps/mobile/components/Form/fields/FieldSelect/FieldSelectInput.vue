@@ -22,8 +22,7 @@ const props = defineProps<Props>()
 
 const contextReactive = toRef(props, 'context')
 
-const { hasValue, valueContainer, currentValue, clearValue } =
-  useValue(contextReactive)
+const { hasValue, valueContainer, currentValue, clearValue } = useValue(contextReactive)
 const {
   hasStatusProperty,
   sortedOptions,
@@ -37,12 +36,7 @@ const {
 const select = useTemplateRef('select')
 
 const openSelectDialog = () => {
-  if (
-    select.value?.isOpen ||
-    !props.context.options?.length ||
-    props.context.disabled
-  )
-    return
+  if (select.value?.isOpen || !props.context.options?.length || props.context.disabled) return
   select.value?.openDialog()
 }
 
@@ -98,14 +92,9 @@ setupMissingOrDisabledOptionHandling()
             <CommonTicketStateIndicator
               v-for="selectedValue in valueContainer"
               :key="selectedValue"
-              :color-code="
-                getSelectedOptionStatus(
-                  selectedValue,
-                ) as EnumTicketStateColorCode
-              "
+              :color-code="getSelectedOptionStatus(selectedValue) as EnumTicketStateColorCode"
               :label="
-                getSelectedOptionLabel(selectedValue) ||
-                i18n.t('%s (unknown)', selectedValue)
+                getSelectedOptionLabel(selectedValue) || i18n.t('%s (unknown)', selectedValue)
               "
               :data-test-status="getSelectedOptionStatus(selectedValue)"
               role="listitem"
@@ -125,9 +114,7 @@ setupMissingOrDisabledOptionHandling()
                 size="tiny"
                 class="ltr:mr-1 rtl:ml-1"
                 decorative
-              />{{
-                getSelectedOptionLabel(selectedValue) ||
-                i18n.t('%s (unknown)', selectedValue)
+              />{{ getSelectedOptionLabel(selectedValue) || i18n.t('%s (unknown)', selectedValue)
               }}{{ idx === valueContainer.length - 1 ? '' : ',' }}
             </div>
           </template>

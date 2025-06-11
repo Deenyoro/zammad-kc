@@ -19,9 +19,7 @@ import type { UserTaskbarTabEntityProps } from '../types.ts'
 
 const props = defineProps<UserTaskbarTabEntityProps<Ticket>>()
 
-const { ticketNumberWithTicketHook } = useTicketNumber(
-  toRef(props.taskbarTab, 'entity'),
-)
+const { ticketNumberWithTicketHook } = useTicketNumber(toRef(props.taskbarTab, 'entity'))
 
 const ticketUpdatesSubscription = new SubscriptionHandler(
   useTicketUpdatesSubscription({
@@ -65,12 +63,7 @@ const { user } = useSessionStore()
 // Set the notify flag whenever the result is received from the subscription.
 ticketUpdatesSubscription.onSubscribed().then(() => {
   ticketUpdatesSubscription.onResult((result) => {
-    if (
-      !result.data?.ticketUpdates ||
-      !props.taskbarTab.entity ||
-      props.taskbarTab.notify
-    )
-      return
+    if (!result.data?.ticketUpdates || !props.taskbarTab.entity || props.taskbarTab.notify) return
 
     const { ticket } = result.data.ticketUpdates
 
@@ -96,8 +89,7 @@ const currentTitle = computed(() => {
 })
 
 const currentStateColorCode = computed(
-  () =>
-    props.taskbarTab.entity?.stateColorCode || EnumTicketStateColorCode.Open,
+  () => props.taskbarTab.entity?.stateColorCode || EnumTicketStateColorCode.Open,
 )
 
 const activeBackgroundColor = computed(() => {

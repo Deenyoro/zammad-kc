@@ -18,25 +18,21 @@ export interface ImportSourceConfigurationBase {
   sslVerify?: boolean
 }
 
-export interface ImportSourceConfigurationFreshdeskData
-  extends ImportSourceConfigurationBase {
+export interface ImportSourceConfigurationFreshdeskData extends ImportSourceConfigurationBase {
   secret: string
 }
 
-export interface ImportSourceConfigurationZendeskData
-  extends ImportSourceConfigurationBase {
+export interface ImportSourceConfigurationZendeskData extends ImportSourceConfigurationBase {
   username: string
   secret: string
 }
 
-export interface ImportSourceConfigurationKayakoData
-  extends ImportSourceConfigurationBase {
+export interface ImportSourceConfigurationKayakoData extends ImportSourceConfigurationBase {
   username: string
   secret: string
 }
 
-export interface ImportSourceConfigurationOtrsData
-  extends ImportSourceConfigurationBase {
+export interface ImportSourceConfigurationOtrsData extends ImportSourceConfigurationBase {
   sslVerify: boolean
 }
 

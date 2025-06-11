@@ -17,11 +17,7 @@ export const useSorting = <
   },
 >(
   query: QueryHandler<TQueryResult, TQueryVariables>,
-  orderByParam:
-    | string
-    | Ref<string | undefined>
-    | ComputedRef<string | undefined>
-    | undefined,
+  orderByParam: string | Ref<string | undefined> | ComputedRef<string | undefined> | undefined,
   orderDirectionParam:
     | EnumOrderDirection
     | Ref<EnumOrderDirection | undefined>
@@ -31,9 +27,7 @@ export const useSorting = <
 ) => {
   // Local refs that you'll work with inside this composable
   const orderBy = ref<string | undefined>(toValue(orderByParam))
-  const orderDirection = ref<EnumOrderDirection | undefined>(
-    toValue(orderDirectionParam),
-  )
+  const orderDirection = ref<EnumOrderDirection | undefined>(toValue(orderDirectionParam))
 
   if (isRef(orderByParam)) {
     watch(orderByParam, (newValue) => {

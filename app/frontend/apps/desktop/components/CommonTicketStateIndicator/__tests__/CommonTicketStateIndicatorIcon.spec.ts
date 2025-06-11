@@ -32,9 +32,7 @@ describe('CommonTicketStateIndicator.vue', () => {
       label: 'pending reminder',
     })
 
-    expect(
-      view.getByIconName('check-circle-outline-dashed'),
-    ).toBeInTheDocument()
+    expect(view.getByIconName('check-circle-outline-dashed')).toBeInTheDocument()
   })
 
   it('renders escalated state correctly', () => {

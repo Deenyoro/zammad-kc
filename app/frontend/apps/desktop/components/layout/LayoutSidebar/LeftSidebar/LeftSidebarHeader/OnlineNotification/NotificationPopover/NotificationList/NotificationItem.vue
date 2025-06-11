@@ -21,9 +21,7 @@ const emit = defineEmits<{
   remove: [OnlineNotification]
 }>()
 
-const { link, builder, message } = useActivityMessage(
-  toRef(props, 'notification'),
-)
+const { link, builder, message } = useActivityMessage(toRef(props, 'notification'))
 
 const handleLinkClick = (notification: OnlineNotification) => {
   if (link) emit('seen', notification)

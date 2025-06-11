@@ -23,8 +23,7 @@ const resizing = ref(false)
 const currentHeader = computed(() => resizeLine.value?.parentElement)
 
 const nextHeader = computed(
-  () =>
-    currentHeader.value?.nextElementSibling as HTMLElement | null | undefined,
+  () => currentHeader.value?.nextElementSibling as HTMLElement | null | undefined,
 )
 
 const currentHeaderWidth = ref(0)
@@ -106,9 +105,7 @@ const handleTouchstart = (event: TouchEvent) => {
   resizing.value = true
 
   if (event.targetTouches[0]) resizeStartX.value = event.targetTouches[0].pageX
-  else
-    resizeStartX.value =
-      event.changedTouches[event.changedTouches.length - 1].pageX
+  else resizeStartX.value = event.changedTouches[event.changedTouches.length - 1].pageX
 
   addRemoveResizingListener('touchend')
   setCurrentHeaderWidths()

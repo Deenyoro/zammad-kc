@@ -32,11 +32,7 @@ const MAX_TAGS_VISIBLE = 5
 const areAllTagsVisible = ref(false)
 
 const tags = computed(() => {
-  if (
-    props.ticket?.tags &&
-    props.ticket.tags.length > MAX_TAGS_VISIBLE &&
-    !areAllTagsVisible.value
-  )
+  if (props.ticket?.tags && props.ticket.tags.length > MAX_TAGS_VISIBLE && !areAllTagsVisible.value)
     return props.ticket.tags.slice(0, MAX_TAGS_VISIBLE)
 
   return props.ticket?.tags ?? []
@@ -68,12 +64,9 @@ const hideNewTag = () => {
   isNewTagVisible.value = false
 }
 
-const tagAssignmentAddHandler = new MutationHandler(
-  useTagAssignmentAddMutation({}),
-  {
-    errorNotificationMessage: __('Ticket tag could not be added.'),
-  },
-)
+const tagAssignmentAddHandler = new MutationHandler(useTagAssignmentAddMutation({}), {
+  errorNotificationMessage: __('Ticket tag could not be added.'),
+})
 
 // Modify ticket tags directly in the Apollo cache, rather than waiting for subscription updates.
 //   This will help with any client changes being immediately visible on screen.
@@ -117,19 +110,14 @@ const addNewTag = (value: unknown) => {
     })
 }
 
-const tagAssignmentRemoveHandler = new MutationHandler(
-  useTagAssignmentRemoveMutation({}),
-  {
-    errorNotificationMessage: __('Ticket tag could not be removed.'),
-  },
-)
+const tagAssignmentRemoveHandler = new MutationHandler(useTagAssignmentRemoveMutation({}), {
+  errorNotificationMessage: __('Ticket tag could not be removed.'),
+})
 
 const removeTag = (tag: string) => {
   if (!props.ticket?.id || !tags.value.includes(tag)) return
 
-  const ticketTags = (props.ticket.tags || []).filter(
-    (tagName) => tagName !== tag,
-  )
+  const ticketTags = (props.ticket.tags || []).filter((tagName) => tagName !== tag)
 
   modifyTagsCache(ticketTags)
 
@@ -161,11 +149,7 @@ const { config } = useApplicationStore()
         'rounded-lg bg-blue-200 px-2.5 dark:bg-gray-700': isTicketEditable,
       }"
     >
-      <div
-        v-for="tag in tags"
-        :key="tag"
-        class="group flex h-10 grow items-center gap-1.5"
-      >
+      <div v-for="tag in tags" :key="tag" class="group flex h-10 grow items-center gap-1.5">
         <CommonLabel class="grow" prefix-icon="tag">
           <CommonLink class="line-clamp-1 text-sm leading-snug" link="#">
             {{ tag }}

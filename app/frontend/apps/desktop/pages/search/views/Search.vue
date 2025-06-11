@@ -12,14 +12,10 @@ defineProps<{
 
 defineOptions({
   beforeRouteEnter(to) {
-    return to.query.entity
-      ? true
-      : { ...to, query: { entity: EnumSearchableModels.Ticket } }
+    return to.query.entity ? true : { ...to, query: { entity: EnumSearchableModels.Ticket } }
   },
   beforeRouteUpdate(to) {
-    return to.query.entity
-      ? true
-      : { ...to, query: { entity: EnumSearchableModels.Ticket } }
+    return to.query.entity ? true : { ...to, query: { entity: EnumSearchableModels.Ticket } }
   },
 })
 </script>

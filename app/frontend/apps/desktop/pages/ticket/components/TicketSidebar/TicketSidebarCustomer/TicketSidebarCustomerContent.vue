@@ -29,9 +29,7 @@ import TicketSidebarContent from '../TicketSidebarContent.vue'
 
 interface Props extends TicketSidebarContentProps {
   customer: UserQuery['user']
-  secondaryOrganizations: ReturnType<
-    typeof normalizeEdges<Partial<Organization>>
-  >
+  secondaryOrganizations: ReturnType<typeof normalizeEdges<Partial<Organization>>>
   objectAttributes: ObjectAttribute[]
 }
 

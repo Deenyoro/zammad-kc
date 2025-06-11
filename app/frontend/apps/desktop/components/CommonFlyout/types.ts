@@ -7,10 +7,7 @@ export type FlyoutSizes = 'medium' | 'large'
 export interface ActionFooterOptions {
   hideActionButton?: boolean
   actionLabel?: string
-  actionButton?: Pick<
-    ButtonProps,
-    'prefixIcon' | 'variant' | 'type' | 'disabled'
-  >
+  actionButton?: Pick<ButtonProps, 'prefixIcon' | 'variant' | 'type' | 'disabled'>
   hideCancelButton?: boolean
   cancelLabel?: string
   cancelButton?: Pick<ButtonProps, 'prefixIcon' | 'variant' | 'disabled'>

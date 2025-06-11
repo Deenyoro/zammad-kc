@@ -29,10 +29,9 @@ describe('guided setup manual finish', () => {
       const view = await visitView('/guided-setup/manual/finish')
 
       await waitFor(() => {
-        expect(
-          view,
-          'correctly redirects to guided setup start screen',
-        ).toHaveCurrentUrl('/guided-setup')
+        expect(view, 'correctly redirects to guided setup start screen').toHaveCurrentUrl(
+          '/guided-setup',
+        )
       })
       view.getByText('Set up a new system')
     })

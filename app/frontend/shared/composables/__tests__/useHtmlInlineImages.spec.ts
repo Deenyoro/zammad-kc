@@ -54,10 +54,7 @@ describe('populateInlineImages', () => {
 
     const mockedCallback = vi.fn()
 
-    const { populateInlineImages } = useHtmlInlineImages(
-      inlineImages,
-      mockedCallback,
-    )
+    const { populateInlineImages } = useHtmlInlineImages(inlineImages, mockedCallback)
 
     populateInlineImages(elem)
 

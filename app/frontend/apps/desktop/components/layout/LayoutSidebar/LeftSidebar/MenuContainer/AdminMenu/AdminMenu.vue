@@ -9,9 +9,7 @@ import { useCollapsedState } from '#desktop/components/layout/LayoutSidebar/Left
 
 const { collapsedState } = useCollapsedState()
 
-const defaultItem = computed(() =>
-  adminItems.find((item) => item.key === 'admin'),
-)
+const defaultItem = computed(() => adminItems.find((item) => item.key === 'admin'))
 </script>
 
 <template>

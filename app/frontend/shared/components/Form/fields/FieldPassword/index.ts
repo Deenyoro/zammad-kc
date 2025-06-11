@@ -23,14 +23,11 @@ const switchPasswordVisibility = (node: FormKitNode) => {
   node.on('mounted', ({ origin }) => {
     if (origin.name !== 'password' && !props.id) return
 
-    const suffixIcon = document.getElementById(
-      props.id as string,
-    )?.nextElementSibling
+    const suffixIcon = document.getElementById(props.id as string)?.nextElementSibling
 
     if (suffixIcon)
       useEventListener(suffixIcon, 'keydown', (event: KeyboardEvent) => {
-        if (event.code === 'Space')
-          props.type = props.type === 'password' ? 'text' : 'password'
+        if (event.code === 'Space') props.type = props.type === 'password' ? 'text' : 'password'
       })
   })
 

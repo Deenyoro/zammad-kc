@@ -8,10 +8,7 @@ import { useUserQuery } from '#shared/entities/user/graphql/queries/user.api.ts'
 import QueryHandler from '#shared/server/apollo/handler/QueryHandler.ts'
 
 import { usePersistentStates } from '#desktop/pages/ticket/composables/usePersistentStates.ts'
-import type {
-  TicketSidebarProps,
-  TicketSidebarEmits,
-} from '#desktop/pages/ticket/types/sidebar.ts'
+import type { TicketSidebarProps, TicketSidebarEmits } from '#desktop/pages/ticket/types/sidebar.ts'
 
 import TicketSidebarWrapper from '../TicketSidebarWrapper.vue'
 

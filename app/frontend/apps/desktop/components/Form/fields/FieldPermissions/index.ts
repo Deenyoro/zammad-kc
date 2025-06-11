@@ -9,6 +9,7 @@ import type { PermissionsProps } from './types.ts'
 import type { FormKitBaseSlots, FormKitInputs } from '@formkit/inputs'
 
 declare module '@formkit/inputs' {
+  // oxlint-disable-next-line no-unused-vars
   interface FormKitInputProps<Props extends FormKitInputs<Props>> {
     permissions: PermissionsProps
   }

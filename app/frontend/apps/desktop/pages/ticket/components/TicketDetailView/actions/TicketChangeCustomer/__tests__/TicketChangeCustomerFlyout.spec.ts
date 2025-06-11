@@ -28,9 +28,7 @@ describe('TicketChangeCustomerFlyout', () => {
       router: true,
     })
 
-    expect(
-      wrapper.getByRole('heading', { name: 'Change Customer', level: 2 }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('heading', { name: 'Change Customer', level: 2 })).toBeInTheDocument()
 
     expect(wrapper.getByIconName('person')).toBeInTheDocument()
 

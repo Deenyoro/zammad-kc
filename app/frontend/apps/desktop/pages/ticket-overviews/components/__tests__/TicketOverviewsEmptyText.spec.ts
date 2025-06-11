@@ -13,12 +13,8 @@ describe('TicketOverviewsEmptyText', () => {
       },
     })
 
-    expect(wrapper.getByRole('heading', { level: 2 })).toHaveTextContent(
-      'No tickets found',
-    )
+    expect(wrapper.getByRole('heading', { level: 2 })).toHaveTextContent('No tickets found')
 
-    expect(
-      wrapper.getByText('Nothing to golden to find in this overview.'),
-    ).toBeInTheDocument()
+    expect(wrapper.getByText('Nothing to golden to find in this overview.')).toBeInTheDocument()
   })
 })

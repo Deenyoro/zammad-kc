@@ -58,9 +58,7 @@ const routeIdentifier = getRouteIdentifier(useRoute())
 const router = useRouter()
 
 const isActive = computed(() =>
-  props.fullscreen
-    ? true
-    : routeIdentifier === getRouteIdentifier(router.currentRoute.value),
+  props.fullscreen ? true : routeIdentifier === getRouteIdentifier(router.currentRoute.value),
 )
 
 const dialogElement = useTemplateRef<HTMLElement>('dialog')
@@ -80,10 +78,7 @@ const escapeConfig: OrderKeyHandlerConfig = {
   beforeHandlerRuns: props.escapeConfig?.beforeHandlerRuns,
 }
 
-const { unsubscribeEvent, subscribeEvent } = useKeyboardEventBus(
-  KeyboardKey.Escape,
-  escapeConfig,
-)
+const { unsubscribeEvent, subscribeEvent } = useKeyboardEventBus(KeyboardKey.Escape, escapeConfig)
 
 watch(isActive, (isActive) =>
   isActive ? subscribeEvent(escapeConfig) : unsubscribeEvent(escapeConfig),
@@ -144,9 +139,7 @@ const transition = VITE_TEST_MODE
           data-common-dialog
           class="!absolute top-1/2 z-50 flex w-[500px] -translate-y-1/2 flex-col gap-3 rounded-xl border border-neutral-100 bg-neutral-50 p-3 ltr:left-1/2 ltr:-translate-x-1/2 rtl:right-1/2 rtl:translate-x-1/2 dark:border-gray-900 dark:bg-gray-500"
         >
-          <div
-            class="flex items-center justify-between bg-neutral-50 dark:bg-gray-500"
-          >
+          <div class="flex items-center justify-between bg-neutral-50 dark:bg-gray-500">
             <slot name="header">
               <div
                 class="flex items-center gap-2 text-xl leading-snug text-gray-100 dark:text-neutral-400"

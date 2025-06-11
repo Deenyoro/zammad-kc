@@ -51,20 +51,17 @@ describe('Ticket detail: sidebar - online notifications', () => {
         },
       })
 
-      const notificationsButton =
-        await view.findByLabelText('Show notifications')
+      const notificationsButton = await view.findByLabelText('Show notifications')
 
       await view.events.click(notificationsButton)
 
       const list = await view.findByRole('region')
 
-      expect(
-        within(list).getByText('created ticket', { exact: false }),
-      ).toBeInTheDocument()
+      expect(within(list).getByText('created ticket', { exact: false })).toBeInTheDocument()
 
-      expect(
-        view.getByRole('status', { name: 'Unseen notifications count' }),
-      ).toHaveTextContent('1')
+      expect(view.getByRole('status', { name: 'Unseen notifications count' })).toHaveTextContent(
+        '1',
+      )
     })
   })
 
@@ -153,16 +150,13 @@ describe('Ticket detail: sidebar - online notifications', () => {
         },
       })
 
-      const notificationsButton =
-        await view.findByLabelText('Show notifications')
+      const notificationsButton = await view.findByLabelText('Show notifications')
 
       await view.events.click(notificationsButton)
 
       const list = await view.findByRole('region', { name: 'Notifications' })
 
-      expect(
-        within(list).getByText('No unread notifications.'),
-      ).toBeInTheDocument()
+      expect(within(list).getByText('No unread notifications.')).toBeInTheDocument()
 
       expect(
         view.queryByRole('status', { name: 'Unseen notifications count' }),

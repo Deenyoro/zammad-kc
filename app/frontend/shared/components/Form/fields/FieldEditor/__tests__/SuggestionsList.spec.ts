@@ -7,11 +7,7 @@ import { renderComponent } from '#tests/support/components/index.ts'
 
 import SuggestionsList from '#shared/components/Form/fields/FieldEditor/features/suggestions/SuggestionsList.vue'
 
-import type {
-  MentionKnowledgeBaseItem,
-  MentionTextItem,
-  MentionUserItem,
-} from '../types.ts'
+import type { MentionKnowledgeBaseItem, MentionTextItem, MentionUserItem } from '../types.ts'
 
 describe('component for rendering suggestions', () => {
   it('renders knowledge base article', () => {
@@ -55,9 +51,7 @@ describe('component for rendering suggestions', () => {
       },
     })
 
-    expect(
-      view.getByRole('option', { name: 'Category 1.1 Test 1' }),
-    ).toBeInTheDocument()
+    expect(view.getByRole('option', { name: 'Category 1.1 Test 1' })).toBeInTheDocument()
     expect(
       view.getByRole('option', { name: 'Category 2.1 Category 2.2 Test 2' }),
     ).toBeInTheDocument()
@@ -81,9 +75,7 @@ describe('component for rendering suggestions', () => {
       },
     })
 
-    expect(
-      view.getByRole('option', { name: 'Text Item key' }),
-    ).toBeInTheDocument()
+    expect(view.getByRole('option', { name: 'Text Item key' })).toBeInTheDocument()
   })
 
   it('renders user mention', () => {
@@ -109,12 +101,8 @@ describe('component for rendering suggestions', () => {
       },
     })
 
-    expect(
-      view.getByRole('option', { name: 'John Doe <john@mail.com>' }),
-    ).toBeInTheDocument()
-    expect(
-      view.getByRole('option', { name: 'Nicole Braun' }),
-    ).toBeInTheDocument()
+    expect(view.getByRole('option', { name: 'John Doe <john@mail.com>' })).toBeInTheDocument()
+    expect(view.getByRole('option', { name: 'Nicole Braun' })).toBeInTheDocument()
   })
 })
 

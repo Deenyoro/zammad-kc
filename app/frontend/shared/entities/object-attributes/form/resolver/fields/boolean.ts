@@ -2,7 +2,7 @@
 
 import type { FieldResolverModule } from '#shared/entities/object-attributes/types/resolver.ts'
 
-import FieldResolver from '../FieldResolver.ts'
+import { FieldResolver } from '../FieldResolver.ts'
 
 export class FieldResolverBoolean extends FieldResolver {
   fieldType = 'toggle'

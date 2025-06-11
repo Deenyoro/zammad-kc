@@ -72,9 +72,7 @@ export default async function mountApp(): Promise<void> {
 
   const application = useApplicationStore()
 
-  const initalizeAfterSessionCheck: Array<Promise<unknown>> = [
-    application.getConfig(),
-  ]
+  const initalizeAfterSessionCheck: Array<Promise<unknown>> = [application.getConfig()]
 
   if (session.id) {
     authentication.authenticated = true

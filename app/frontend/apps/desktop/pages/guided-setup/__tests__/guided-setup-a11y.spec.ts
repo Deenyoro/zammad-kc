@@ -175,8 +175,7 @@ describe('testing admin password request a11y', () => {
               },
               {
                 value: 'sendmail',
-                label:
-                  'Local MTA (Sendmail/Postfix/Exim/â\u0080¦) - use server setup',
+                label: 'Local MTA (Sendmail/Postfix/Exim/â\u0080¦) - use server setup',
               },
             ],
           },
@@ -241,8 +240,7 @@ describe('testing admin password request a11y', () => {
                     },
                     {
                       value: 'sendmail',
-                      label:
-                        'Local MTA (Sendmail/Postfix/Exim/â\u0080¦) - use server setup',
+                      label: 'Local MTA (Sendmail/Postfix/Exim/â\u0080¦) - use server setup',
                     },
                   ],
                 },
@@ -305,9 +303,7 @@ describe('testing admin password request a11y', () => {
       ],
     })
 
-    const view = await visitView(
-      '/guided-setup/manual/channels/email-pre-configured',
-    )
+    const view = await visitView('/guided-setup/manual/channels/email-pre-configured')
 
     const results = await axe(view.html())
     expect(results).toHaveNoViolations()

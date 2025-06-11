@@ -31,8 +31,7 @@ const CommonDateTimeMock = {
 }
 
 const ArticleMetaAddressMock = {
-  __file:
-    '#desktop/pages/ticket/components/TicketDetailView/ArticleMeta/ArticleMetaAddress.vue',
+  __file: '#desktop/pages/ticket/components/TicketDetailView/ArticleMeta/ArticleMetaAddress.vue',
   __name: 'ArticleMetaAddress',
   props: {
     context: {
@@ -49,44 +48,41 @@ const ArticleMetaAddressMock = {
   setup: vi.fn(),
 }
 
-vi.mock(
-  '#desktop/pages/ticket/components/TicketDetailView/ArticleMeta/useArticleMeta.ts',
-  () => ({
-    useArticleMeta: () => ({
-      fields: ref([
-        {
-          component: CommonDateTimeMock,
-          label: 'Created at',
-          name: 'created_at',
-          order: 100,
-          props: {
-            class: 'text-sm',
-            dateTime: '2011-12-11T11:11:11.011Z',
-            type: 'absolute',
-          },
+vi.mock('#desktop/pages/ticket/components/TicketDetailView/ArticleMeta/useArticleMeta.ts', () => ({
+  useArticleMeta: () => ({
+    fields: ref([
+      {
+        component: CommonDateTimeMock,
+        label: 'Created at',
+        name: 'created_at',
+        order: 100,
+        props: {
+          class: 'text-sm',
+          dateTime: '2011-12-11T11:11:11.011Z',
+          type: 'absolute',
         },
-        {
-          component: ArticleMetaAddressMock,
-          label: 'From',
-          name: 'from',
-          order: 200,
-          props: {
-            type: 'from',
-          },
-          show: vi.fn(),
+      },
+      {
+        component: ArticleMetaAddressMock,
+        label: 'From',
+        name: 'from',
+        order: 200,
+        props: {
+          type: 'from',
         },
-        {
-          component: undefined,
-          icon: undefined,
-          label: 'Channel',
-          name: 'channel',
-          order: 400,
-          value: undefined,
-        },
-      ]),
-    }),
+        show: vi.fn(),
+      },
+      {
+        component: undefined,
+        icon: undefined,
+        label: 'Channel',
+        name: 'channel',
+        order: 400,
+        value: undefined,
+      },
+    ]),
   }),
-)
+}))
 
 const expectedArray = [
   {

@@ -8,10 +8,7 @@ import type { FormSubmitData } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
 import { useTicketChangeCustomer } from '#shared/entities/ticket/composables/useTicketChangeCustomer.ts'
 import { useTicketFormOrganizationHandler } from '#shared/entities/ticket/composables/useTicketFormOrganizationHandler.ts'
-import type {
-  TicketById,
-  TicketCustomerUpdateFormData,
-} from '#shared/entities/ticket/types.ts'
+import type { TicketById, TicketCustomerUpdateFormData } from '#shared/entities/ticket/types.ts'
 import { defineFormSchema } from '#shared/form/defineFormSchema.ts'
 import { EnumObjectManagerObjects } from '#shared/graphql/types.ts'
 
@@ -68,9 +65,7 @@ const { changeCustomer } = useTicketChangeCustomer(toRef(props, 'ticket'), {
       :initial-entity-object="ticket"
       use-object-attributes
       :schema="formSchema"
-      @submit="
-        changeCustomer($event as FormSubmitData<TicketCustomerUpdateFormData>)
-      "
+      @submit="changeCustomer($event as FormSubmitData<TicketCustomerUpdateFormData>)"
     />
   </CommonFlyout>
 </template>

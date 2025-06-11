@@ -59,10 +59,7 @@ describe('Form - Field - Button (Formkit-BuildIn)', () => {
       },
     })
 
-    expect(view.getByText('Sign In').closest('div')).toHaveAttribute(
-      'data-variant',
-      'secondary',
-    )
+    expect(view.getByText('Sign In').closest('div')).toHaveAttribute('data-variant', 'secondary')
   })
 
   it('can be disabled', async () => {

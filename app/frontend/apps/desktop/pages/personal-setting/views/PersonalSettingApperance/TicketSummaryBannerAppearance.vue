@@ -7,11 +7,8 @@ import { useSessionStore } from '#shared/stores/session.ts'
 
 import { useTicketSummaryBanner } from '#desktop/entities/user/current/composables/useTicketSummaryBanner.ts'
 
-const {
-  hideBannerFromUserPreference,
-  toggleSummaryBanner,
-  isTicketSummaryFeatureEnabled,
-} = useTicketSummaryBanner()
+const { hideBannerFromUserPreference, toggleSummaryBanner, isTicketSummaryFeatureEnabled } =
+  useTicketSummaryBanner()
 
 const { hasPermission } = useSessionStore()
 

@@ -26,16 +26,13 @@ export const getIconByContentType = (type?: Maybe<string>) => {
     'application/msword': 'template', // .doc, .dot
     'application/vnd.ms-word': 'template',
     'application/vnd.oasis.opendocument.text': 'template',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-      'template', // .docx
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.template':
-      'template', // .dotx
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'template', // .docx
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.template': 'template', // .dotx
     'application/vnd.ms-excel': 'file', // .xls
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'file', // .xlsx
     'application/vnd.oasis.opendocument.spreadsheet': 'file',
     'application/vnd.ms-powerpoint': 'file', // .ppt
-    'application/vnd.openxmlformats-officedocument.presentationml.presentation':
-      'file', // .pptx
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'file', // .pptx
     'application/vnd.oasis.opendocument.presentation': 'file',
     // code
     'text/html': 'template',

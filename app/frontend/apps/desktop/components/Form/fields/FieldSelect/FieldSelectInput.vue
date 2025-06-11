@@ -33,8 +33,7 @@ const props = defineProps<Props>()
 
 const contextReactive = toRef(props, 'context')
 
-const { hasValue, valueContainer, currentValue, clearValue } =
-  useValue(contextReactive)
+const { hasValue, valueContainer, currentValue, clearValue } = useValue(contextReactive)
 
 const {
   sortedOptions,
@@ -60,16 +59,12 @@ const clearFilter = () => {
 
 watch(() => contextReactive.value.noFiltering, clearFilter)
 
-const deaccent = (s: string) =>
-  s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+const deaccent = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 
 const filteredOptions = computed(() => {
   // Trim and de-accent search keywords and compile them as a case-insensitive regex.
   //   Make sure to escape special regex characters!
-  const filterRegex = new RegExp(
-    escapeRegExp(deaccent(filter.value.trim())),
-    'i',
-  )
+  const filterRegex = new RegExp(escapeRegExp(deaccent(filter.value.trim())), 'i')
 
   return sortedOptions.value
     .map(
@@ -78,9 +73,7 @@ const filteredOptions = computed(() => {
           ...option,
 
           // Match options via their de-accented labels.
-          match: filterRegex.exec(
-            deaccent(option.label || String(option.value)),
-          ),
+          match: filterRegex.exec(deaccent(option.label || String(option.value))),
         }) as SelectOption,
     )
     .filter((option) => option.match)
@@ -143,10 +136,7 @@ const onCloseDropdown = () => {
 }
 
 const foldDropdown = (event: MouseEvent) => {
-  if (
-    (event?.target as HTMLElement).tagName !== 'INPUT' &&
-    selectInstance.value
-  ) {
+  if ((event?.target as HTMLElement)?.tagName !== 'INPUT' && selectInstance.value) {
     selectInstance.value.closeDropdown()
 
     return onCloseDropdown()
@@ -237,11 +227,7 @@ setupMissingOrDisabledOptionHandling()
         @blur="context.handlers.blur"
         @click.stop="handleToggleDropdown"
       >
-        <div
-          v-if="hasValue && context.multiple"
-          class="flex flex-wrap gap-1.5"
-          role="list"
-        >
+        <div v-if="hasValue && context.multiple" class="flex flex-wrap gap-1.5" role="list">
           <div
             v-for="selectedValue in valueContainer"
             :key="selectedValue"
@@ -252,8 +238,7 @@ setupMissingOrDisabledOptionHandling()
               class="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-xs text-black dark:text-white"
               :class="{
                 'bg-white dark:bg-gray-200': !context.alternativeBackground,
-                'bg-neutral-100 dark:bg-gray-200':
-                  context.alternativeBackground,
+                'bg-neutral-100 dark:bg-gray-200': context.alternativeBackground,
               }"
             >
               <CommonIcon
@@ -265,15 +250,11 @@ setupMissingOrDisabledOptionHandling()
               />
               <span
                 v-tooltip="
-                  getSelectedOptionLabel(selectedValue) ||
-                  i18n.t('%s (unknown)', selectedValue)
+                  getSelectedOptionLabel(selectedValue) || i18n.t('%s (unknown)', selectedValue)
                 "
                 class="line-clamp-3 break-words whitespace-pre-wrap"
               >
-                {{
-                  getSelectedOptionLabel(selectedValue) ||
-                  i18n.t('%s (unknown)', selectedValue)
-                }}
+                {{ getSelectedOptionLabel(selectedValue) || i18n.t('%s (unknown)', selectedValue) }}
               </span>
               <CommonIcon
                 :aria-label="i18n.t('Unselect Option')"
@@ -283,12 +264,8 @@ setupMissingOrDisabledOptionHandling()
                 role="button"
                 tabindex="0"
                 @click.stop="selectOption(getSelectedOption(selectedValue))"
-                @keypress.enter.prevent.stop="
-                  selectOption(getSelectedOption(selectedValue))
-                "
-                @keypress.space.prevent.stop="
-                  selectOption(getSelectedOption(selectedValue))
-                "
+                @keypress.enter.prevent.stop="selectOption(getSelectedOption(selectedValue))"
+                @keypress.space.prevent.stop="selectOption(getSelectedOption(selectedValue))"
               />
             </div>
           </div>
@@ -316,15 +293,11 @@ setupMissingOrDisabledOptionHandling()
             />
             <span
               v-tooltip="
-                getSelectedOptionLabel(currentValue) ||
-                i18n.t('%s (unknown)', currentValue)
+                getSelectedOptionLabel(currentValue) || i18n.t('%s (unknown)', currentValue)
               "
               class="line-clamp-3 break-words whitespace-pre-wrap"
             >
-              {{
-                getSelectedOptionLabel(currentValue) ||
-                i18n.t('%s (unknown)', currentValue)
-              }}
+              {{ getSelectedOptionLabel(currentValue) || i18n.t('%s (unknown)', currentValue) }}
             </span>
           </div>
         </div>

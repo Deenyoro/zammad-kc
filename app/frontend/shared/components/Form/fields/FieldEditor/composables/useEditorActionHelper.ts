@@ -4,12 +4,8 @@ import type { CanCommands, ChainedCommands } from '@tiptap/core'
 import type { Editor } from '@tiptap/vue-3'
 import type { ShallowRef } from 'vue'
 
-export default function useEditorActionHelper(
-  editor: ShallowRef<Editor | undefined>,
-) {
-  const focused = (
-    fn: (commands: ChainedCommands) => ChainedCommands | null | void,
-  ) => {
+export default function useEditorActionHelper(editor: ShallowRef<Editor | undefined>) {
+  const focused = (fn: (commands: ChainedCommands) => ChainedCommands | null | void) => {
     return () => {
       if (!editor.value) return
       const chain = editor.value.chain().focus()

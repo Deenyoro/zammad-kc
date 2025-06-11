@@ -22,9 +22,7 @@ const { ticket, updateRefetchingStatus } = useTicketInformation()
 const { createQueryErrorHandler } = useErrorHandler()
 
 const errorCallback = createQueryErrorHandler({
-  notFound: __(
-    'Organization with specified ID was not found. Try checking the URL for errors.',
-  ),
+  notFound: __('Organization with specified ID was not found. Try checking the URL for errors.'),
   forbidden: __('You have insufficient rights to view this organization.'),
 })
 
@@ -44,9 +42,7 @@ organizationQuery.onError((apolloError) => {
 })
 
 watchEffect(() => {
-  updateRefetchingStatus(
-    organizationLoading.value && organization.value != null,
-  )
+  updateRefetchingStatus(organizationLoading.value && organization.value != null)
 })
 
 const { openEditOrganizationDialog } = useOrganizationEdit()

@@ -14,8 +14,7 @@ export const useOnlineNotificationList = () => {
   const result = notificationsQuery.result()
 
   const notificationList = computed(
-    () =>
-      edgesToArray(result.value?.onlineNotifications) as OnlineNotification[],
+    () => edgesToArray(result.value?.onlineNotifications) as OnlineNotification[],
   )
 
   const isLoading = computed(() => {

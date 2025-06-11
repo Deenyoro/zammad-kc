@@ -19,11 +19,7 @@ const Component = defineComponent({
           },
           'Header',
         ),
-        h(
-          'main',
-          { style: ['height: 2000px;', stickyStyles.value.body] },
-          'Content',
-        ),
+        h('main', { style: ['height: 2000px;', stickyStyles.value.body] }, 'Content'),
       ])
     }
   },

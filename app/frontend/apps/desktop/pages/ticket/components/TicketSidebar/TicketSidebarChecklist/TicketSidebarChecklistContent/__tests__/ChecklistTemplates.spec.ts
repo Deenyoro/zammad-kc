@@ -24,9 +24,7 @@ describe('CheckListTemplates', () => {
       },
     })
 
-    expect(
-      wrapper.getByText('Or choose a checklist template.'),
-    ).toBeInTheDocument()
+    expect(wrapper.getByText('Or choose a checklist template.')).toBeInTheDocument()
     expect(wrapper.getByText('Add From a Template')).toBeInTheDocument()
 
     await wrapper.events.click(wrapper.getByText('Add From a Template'))

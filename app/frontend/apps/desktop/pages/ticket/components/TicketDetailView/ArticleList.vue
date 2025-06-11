@@ -18,13 +18,9 @@ import { useTicketArticleRows } from '#desktop/pages/ticket/composables/useTicke
 const route = useRoute()
 const { context } = useArticleContext()
 
-const totalCount = computed(
-  () => context.articles.value?.articles.totalCount || 0,
-)
+const totalCount = computed(() => context.articles.value?.articles.totalCount || 0)
 
-const leadingNodesCount = computed(
-  () => edgesToArray(context.articles.value?.firstArticles).length,
-)
+const leadingNodesCount = computed(() => edgesToArray(context.articles.value?.firstArticles).length)
 
 const articles = computed(() => {
   if (!context.articles.value) {
@@ -52,8 +48,7 @@ const isLoading = computed(() => context.articlesQuery.loading().value)
 
 const getArticleElement = async (key: string): Promise<Element | null> => {
   const row = rows.value.find(
-    (elem) =>
-      'article' in elem && elem.article.internalId === parseInt(key, 10),
+    (elem) => 'article' in elem && elem.article.internalId === parseInt(key, 10),
   )
 
   if (!row) return Promise.resolve(null)
@@ -65,9 +60,7 @@ const hasMoreButton = computed(() => {
   return !!rows.value.find((elem) => elem.type === 'more')
 })
 
-const getPreviousArticleElement = async (
-  key: string,
-): Promise<Element | null> => {
+const getPreviousArticleElement = async (key: string): Promise<Element | null> => {
   const elem = await getArticleElement(key)
 
   if (elem || !hasMoreButton.value) return elem
@@ -122,15 +115,8 @@ defineExpose({
       :aria-setsize="totalCount"
       :aria-posinset="rowIndex + 1"
     >
-      <ArticleBubble
-        v-if="row.type === 'article-bubble'"
-        :article="row.article"
-      />
-      <ArticleMore
-        v-else-if="row.type === 'more'"
-        :disabled="isLoading"
-        @click="loadPrevious()"
-      />
+      <ArticleBubble v-if="row.type === 'article-bubble'" :article="row.article" />
+      <ArticleMore v-else-if="row.type === 'more'" :disabled="isLoading" @click="loadPrevious()" />
       <DeliveryMessage
         v-else-if="row.type === 'delivery' && row.content"
         role="article"

@@ -40,10 +40,7 @@ type AutocompleteSearchRecipientQuery = {
   }>
 }
 
-const mockQueryResult = (
-  query: string,
-  limit: number,
-): AutocompleteSearchRecipientQuery => {
+const mockQueryResult = (query: string, limit: number): AutocompleteSearchRecipientQuery => {
   const options = testOptions.map((option) => ({
     ...option,
     labelPlaceholder: null,
@@ -53,8 +50,7 @@ const mockQueryResult = (
     __typename: 'AutocompleteEntry',
   }))
 
-  const deaccent = (s: string) =>
-    s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  const deaccent = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 
   // Trim and de-accent search keywords and compile them as a case-insensitive regex.
   //   Make sure to escape special regex characters!
@@ -63,8 +59,7 @@ const mockQueryResult = (
   // Search across options via their de-accented labels.
   const filteredOptions = options.filter(
     (option) =>
-      filterRegex.test(deaccent(option.label)) ||
-      filterRegex.test(deaccent(option.heading!)),
+      filterRegex.test(deaccent(option.label)) || filterRegex.test(deaccent(option.heading!)),
   ) as unknown as {
     __typename?: 'AutocompleteEntry'
     value: string
@@ -84,14 +79,11 @@ const mockQueryResult = (
 const mockClient = () => {
   const mockApolloClient = createMockClient()
 
-  mockApolloClient.setRequestHandler(
-    AutocompleteSearchRecipientDocument,
-    (variables) => {
-      return Promise.resolve({
-        data: mockQueryResult(variables.query, variables.limit),
-      })
-    },
-  )
+  mockApolloClient.setRequestHandler(AutocompleteSearchRecipientDocument, (variables) => {
+    return Promise.resolve({
+      data: mockQueryResult(variables.query, variables.limit),
+    })
+  })
 
   provideApolloClient(mockApolloClient)
 }
@@ -131,10 +123,7 @@ describe('Form - Field - Recipient - Features', () => {
 
     const filterElement = wrapper.getByRole('searchbox')
 
-    expect(filterElement).toHaveAttribute(
-      'placeholder',
-      'Search or enter email address…',
-    )
+    expect(filterElement).toHaveAttribute('placeholder', 'Search or enter email address…')
 
     await wrapper.events.type(filterElement, 'foo@bar.tld')
 
@@ -177,17 +166,13 @@ describe('Form - Field - Recipient - Features', () => {
 
     await wrapper.events.type(filterElement, 'bar')
 
-    expect(
-      wrapper.queryByText('Please enter a valid email address.'),
-    ).toBeInTheDocument()
+    expect(wrapper.queryByText('Please enter a valid email address.')).toBeInTheDocument()
 
     await wrapper.events.clear(filterElement)
 
     await wrapper.events.type(filterElement, 'foo@bar.tld')
 
-    expect(
-      wrapper.queryByText('Please enter a valid email address.'),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByText('Please enter a valid email address.')).not.toBeInTheDocument()
 
     const selectOptions = await wrapper.findAllByRole('option')
 
@@ -209,16 +194,11 @@ describe('Form - Field - Recipient - Features', () => {
 
     const filterElement = wrapper.getByRole('searchbox')
 
-    expect(filterElement).toHaveAttribute(
-      'placeholder',
-      'Search or enter phone number…',
-    )
+    expect(filterElement).toHaveAttribute('placeholder', 'Search or enter phone number…')
 
     await wrapper.events.type(filterElement, 'bar')
 
-    expect(
-      wrapper.queryByText("This field doesn't contain an allowed value."),
-    ).toBeInTheDocument()
+    expect(wrapper.queryByText("This field doesn't contain an allowed value.")).toBeInTheDocument()
 
     await wrapper.events.clear(filterElement)
 

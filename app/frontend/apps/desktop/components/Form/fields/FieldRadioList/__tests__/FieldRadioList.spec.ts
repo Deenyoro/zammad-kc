@@ -82,9 +82,7 @@ describe('Form - Field - Radio List', () => {
     expect(selectOptions).toHaveLength(testOptionsWithDescription.length)
 
     selectOptions.forEach((selectOption, index) => {
-      expect(selectOption).toHaveTextContent(
-        testOptionsWithDescription[index].label,
-      )
+      expect(selectOption).toHaveTextContent(testOptionsWithDescription[index].label)
     })
   })
 })
@@ -105,10 +103,7 @@ describe('Fields - Field Radio List - Input Checklist', () => {
       name: 'test_name',
     })
 
-    expect(view.getByLabelText('Radio list')).toHaveAttribute(
-      'name',
-      'test_name',
-    )
+    expect(view.getByLabelText('Radio list')).toHaveAttribute('name', 'test_name')
   })
 
   it('implements blur handler', async () => {
@@ -173,10 +168,7 @@ describe('Fields - Field Radio List - Input Checklist', () => {
       'test-attribute': 'test_value',
     })
 
-    expect(view.getByLabelText('Radio list')).toHaveAttribute(
-      'test-attribute',
-      'test_value',
-    )
+    expect(view.getByLabelText('Radio list')).toHaveAttribute('test-attribute', 'test_value')
   })
 
   it('implements standardized classes', async () => {

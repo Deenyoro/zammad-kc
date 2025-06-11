@@ -30,12 +30,7 @@ const fieldDefinition = createInput(
   FieldAutoCompleteInput,
   autoCompleteProps,
   {
-    features: [
-      addLink,
-      setAutoCompleteBehavior,
-      setFilterProps,
-      formUpdaterTrigger(),
-    ],
+    features: [addLink, setAutoCompleteBehavior, setFilterProps, formUpdaterTrigger()],
   },
   { addArrow: true },
 )

@@ -15,10 +15,7 @@ const props = defineProps<Props>()
 
 const { ticketInternalId } = useTicketInformation()
 
-const { originalFormattingUrl } = useEmailFileUrls(
-  props.article,
-  ticketInternalId,
-)
+const { originalFormattingUrl } = useEmailFileUrls(props.article, ticketInternalId)
 </script>
 
 <template>

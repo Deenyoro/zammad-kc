@@ -38,17 +38,13 @@ describe('LeftSidebarHeader', () => {
   it('displays notification button if collapsed', async () => {
     const { wrapper } = renderLeftSidebarHeader()
 
-    expect(
-      wrapper.getByRole('button', { name: 'Show notifications' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Show notifications' })).toBeInTheDocument()
   })
 
   it('displays notification button if not collapsed', async () => {
     const { wrapper } = renderLeftSidebarHeader(false)
 
-    expect(
-      wrapper.getByRole('button', { name: 'Show notifications' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Show notifications' })).toBeInTheDocument()
   })
 
   it('hides Online Notification when search is active', async () => {
@@ -56,16 +52,12 @@ describe('LeftSidebarHeader', () => {
     wrapper.getByRole('searchbox', { name: 'Search…' }).focus()
     await waitForNextTick()
 
-    expect(
-      wrapper.queryByRole('button', { name: 'Show notifications' }),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button', { name: 'Show notifications' })).not.toBeInTheDocument()
   })
 
   it('hides search field if collapsed is true', async () => {
     const { wrapper } = renderLeftSidebarHeader(true)
 
-    expect(
-      wrapper.queryByRole('searchbox', { name: 'Search…' }),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('searchbox', { name: 'Search…' })).not.toBeInTheDocument()
   })
 })

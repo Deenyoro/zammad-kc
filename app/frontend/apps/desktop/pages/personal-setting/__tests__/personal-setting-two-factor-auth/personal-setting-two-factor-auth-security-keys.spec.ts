@@ -70,9 +70,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await waitForUserCurrentPasswordCheckMutationCalls()
     await waitForUserCurrentTwoFactorGetMethodConfigurationQueryCalls()
 
-    expect(flyout).toHaveAccessibleName(
-      'Set Up Two-factor Authentication: Security Keys',
-    )
+    expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Security Keys')
 
     expect(flyout).toHaveTextContent(
       'Security keys are hardware or software credentials that can be used as your two-factor authentication method.To register a new security key with your account, press the button below.',
@@ -80,9 +78,7 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Set Up' }))
 
-    const nicknameInput = flyoutContent.getByLabelText(
-      'Name for this security key',
-    )
+    const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
     await view.events.type(nicknameInput, 'My key')
 
@@ -92,9 +88,7 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Next' }))
 
-    expect(flyout).toHaveAccessibleName(
-      'Set Up Two-factor Authentication: Save Codes',
-    )
+    expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes')
   })
 
   it('supports removal of existing security keys', async () => {
@@ -105,8 +99,7 @@ describe('Two-factor Authentication - Security Keys', () => {
         configuration: {
           enabledAuthenticationMethods: [
             {
-              authenticationMethod:
-                EnumTwoFactorAuthenticationMethod.SecurityKeys,
+              authenticationMethod: EnumTwoFactorAuthenticationMethod.SecurityKeys,
               configured: true,
             },
           ],
@@ -158,9 +151,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await waitForUserCurrentTwoFactorGetMethodConfigurationQueryCalls()
 
     expect(flyout).toHaveTextContent('foobar')
-    expect(
-      within(flyout).getByLabelText('2024-01-01 00:00'),
-    ).toBeInTheDocument()
+    expect(within(flyout).getByLabelText('2024-01-01 00:00')).toBeInTheDocument()
 
     mockUserCurrentTwoFactorRemoveMethodCredentialsMutation({
       userCurrentTwoFactorRemoveMethodCredentials: {
@@ -216,9 +207,7 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Set Up' }))
 
-    const nicknameInput = flyoutContent.getByLabelText(
-      'Name for this security key',
-    )
+    const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
     Object.defineProperty(window, 'isSecureContext', {
       value: true,
@@ -226,9 +215,7 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.type(nicknameInput, 'My key{Enter}')
 
-    expect(flyout).toHaveAccessibleName(
-      'Set Up Two-factor Authentication: Save Codes',
-    )
+    expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes')
   })
 
   it('shows client validation errors', async () => {
@@ -266,9 +253,7 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Set Up' }))
 
-    const nicknameInput = flyoutContent.getByLabelText(
-      'Name for this security key',
-    )
+    const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
     await view.events.click(view.getByRole('button', { name: 'Next' }))
 
@@ -310,9 +295,7 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Set Up' }))
 
-    const nicknameInput = flyoutContent.getByLabelText(
-      'Name for this security key',
-    )
+    const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
     await view.events.type(nicknameInput, 'My key')
 
@@ -326,9 +309,7 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Next' }))
 
-    expect(flyoutContent.getByRole('alert')).toHaveTextContent(
-      'Security key setup failed.',
-    )
+    expect(flyoutContent.getByRole('alert')).toHaveTextContent('Security key setup failed.')
 
     mockUserCurrentTwoFactorInitiateMethodConfigurationQuery({
       userCurrentTwoFactorInitiateMethodConfiguration: {},
@@ -336,9 +317,7 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Retry' }))
 
-    expect(flyout).toHaveAccessibleName(
-      'Set Up Two-factor Authentication: Save Codes',
-    )
+    expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes')
   })
 
   it('shows errors during verification phase', async () => {
@@ -376,9 +355,7 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Set Up' }))
 
-    const nicknameInput = flyoutContent.getByLabelText(
-      'Name for this security key',
-    )
+    const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
     await view.events.type(nicknameInput, 'My key')
 
@@ -411,9 +388,7 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Retry' }))
 
-    expect(flyout).toHaveAccessibleName(
-      'Set Up Two-factor Authentication: Save Codes',
-    )
+    expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes')
   })
 
   it('skips recovery codes if already setup', async () => {
@@ -451,9 +426,7 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Set Up' }))
 
-    const nicknameInput = flyoutContent.getByLabelText(
-      'Name for this security key',
-    )
+    const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
     await view.events.type(nicknameInput, 'My key')
 
@@ -472,9 +445,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     expect(flyout).not.toBeInTheDocument()
 
     expect(
-      view.getByText(
-        'Two-factor authentication method was set up successfully.',
-      ),
+      view.getByText('Two-factor authentication method was set up successfully.'),
     ).toBeInTheDocument()
   })
 })

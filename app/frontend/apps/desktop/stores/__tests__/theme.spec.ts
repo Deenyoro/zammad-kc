@@ -71,13 +71,11 @@ describe('useThemeStore', () => {
   })
 
   it('changes app theme', async () => {
-    const mockerUserCurrentAppearanceUpdate = mockUserCurrentAppearanceMutation(
-      {
-        userCurrentAppearance: {
-          success: true,
-        },
+    const mockerUserCurrentAppearanceUpdate = mockUserCurrentAppearanceMutation({
+      userCurrentAppearance: {
+        success: true,
       },
-    )
+    })
 
     const themeStore = useThemeStore()
     const { updateTheme } = themeStore
@@ -96,17 +94,15 @@ describe('useThemeStore', () => {
   })
 
   it('should change theme value back to old value when update fails', async () => {
-    const mockerUserCurrentAppearanceUpdate = mockUserCurrentAppearanceMutation(
-      {
-        userCurrentAppearance: {
-          errors: [
-            {
-              message: 'Failed to update.',
-            },
-          ],
-        },
+    const mockerUserCurrentAppearanceUpdate = mockUserCurrentAppearanceMutation({
+      userCurrentAppearance: {
+        errors: [
+          {
+            message: 'Failed to update.',
+          },
+        ],
       },
-    )
+    })
 
     const themeStore = useThemeStore()
     const { updateTheme } = themeStore

@@ -7,18 +7,12 @@ import type { ExternalDataSourceProps as Props } from '#shared/components/Form/f
 import { useFieldExternalDataSourceWrapper } from '#shared/components/Form/fields/FieldExternalDataSource/useFieldExternalDataSourceWrapper.ts'
 
 const FieldAutoCompleteInput = defineAsyncComponent(
-  () =>
-    import(
-      '#mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue'
-    ),
+  () => import('#mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue'),
 )
 
 const props = defineProps<Props>()
 
-Object.assign(
-  props.context,
-  useFieldExternalDataSourceWrapper(toRef(props, 'context')),
-)
+Object.assign(props.context, useFieldExternalDataSourceWrapper(toRef(props, 'context')))
 </script>
 
 <template>

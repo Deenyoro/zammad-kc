@@ -4,10 +4,7 @@ import { defineStore } from 'pinia'
 import { effectScope, ref } from 'vue'
 
 import { useLocalesLazyQuery } from '#shared/graphql/queries/locales.api.ts'
-import type {
-  LocalesQuery,
-  LocalesQueryVariables,
-} from '#shared/graphql/types.ts'
+import type { LocalesQuery, LocalesQueryVariables } from '#shared/graphql/types.ts'
 import localeForBrowserLanguage from '#shared/i18n/localeForBrowserLanguage.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import log from '#shared/utils/log.ts'
@@ -57,8 +54,7 @@ export const useLocaleStore = defineStore(
         })
       }
 
-      if (!newLocaleData)
-        newLocaleData = localeForBrowserLanguage(locales.value || [])
+      if (!newLocaleData) newLocaleData = localeForBrowserLanguage(locales.value || [])
 
       log.debug('localeStore.setLocale()', newLocaleData)
 

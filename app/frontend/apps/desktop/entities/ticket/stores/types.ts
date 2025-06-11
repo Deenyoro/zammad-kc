@@ -9,10 +9,7 @@ import type {
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 
 export interface TicketsByOverviewHandlerItem {
-  queryHandler: QueryHandler<
-    TicketsCachedByOverviewQuery,
-    TicketsCachedByOverviewQueryVariables
-  >
+  queryHandler: QueryHandler<TicketsCachedByOverviewQuery, TicketsCachedByOverviewQueryVariables>
   scope: EffectScope
 }
 

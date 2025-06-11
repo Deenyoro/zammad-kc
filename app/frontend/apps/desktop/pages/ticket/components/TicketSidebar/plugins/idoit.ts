@@ -11,10 +11,7 @@ export default <TicketSidebarPlugin>{
   title: __('i-doit'),
   component: TicketSidebarIdoit,
   permissions: ['ticket.agent'],
-  screens: [
-    TicketSidebarScreenType.TicketDetailView,
-    TicketSidebarScreenType.TicketCreate,
-  ],
+  screens: [TicketSidebarScreenType.TicketDetailView, TicketSidebarScreenType.TicketCreate],
   icon: 'i-doit-logo', // icon does not exist underlying cmp will use it as a base to get light and dark icon name
   order: 6000,
   available: () => useApplicationStore().config.idoit_integration,

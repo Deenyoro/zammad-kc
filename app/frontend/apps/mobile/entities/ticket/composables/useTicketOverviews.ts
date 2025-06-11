@@ -29,10 +29,7 @@ export const useTicketOverviews = () => {
     if (!overviews.loading) {
       ticketOverviewTicketCountHandler.load()
     } else {
-      useTimeoutFn(
-        () => ticketOverviewTicketCountHandler.load(),
-        POLLING_INTERVAL,
-      )
+      useTimeoutFn(() => ticketOverviewTicketCountHandler.load(), POLLING_INTERVAL)
     }
   })
 

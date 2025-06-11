@@ -24,14 +24,11 @@ export interface EmailOutboundSendmailFormData extends EmailBaseOutboundData {
   adapter: EnumChannelEmailOutboundAdapter.Sendmail
 }
 
-export interface EmailOutboundSmtpFormData
-  extends Required<EmailBaseOutboundData> {
+export interface EmailOutboundSmtpFormData extends Required<EmailBaseOutboundData> {
   adapter: EnumChannelEmailOutboundAdapter.Smtp
 }
 
-export type EmailOutboundData =
-  | EmailOutboundSendmailFormData
-  | EmailOutboundSmtpFormData
+export type EmailOutboundData = EmailOutboundSendmailFormData | EmailOutboundSmtpFormData
 
 export interface EmailInboundMessagesData {
   archive?: boolean

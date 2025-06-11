@@ -22,11 +22,7 @@ const hasOverviewSortingPreference = computed(() =>
       internal
       link="/personal-setting/ticket-overviews"
     >
-      <CommonLabel
-        size="small"
-        class="text-blue-800!"
-        prefix-icon="list-columns-reverse"
-      >
+      <CommonLabel size="small" class="text-blue-800!" prefix-icon="list-columns-reverse">
         {{ $t('reorder items') }}
       </CommonLabel>
     </CommonLink>

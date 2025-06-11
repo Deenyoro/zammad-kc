@@ -26,9 +26,7 @@ describe('Ticket detail view i-doit integration', () => {
 
     const sidebar = view.getByLabelText('Content sidebar')
 
-    expect(
-      within(sidebar).getByRole('button', { name: 'i-doit' }),
-    ).toBeInTheDocument()
+    expect(within(sidebar).getByRole('button', { name: 'i-doit' })).toBeInTheDocument()
   })
 
   it('hides i-doit integration when not available', async () => {
@@ -50,8 +48,6 @@ describe('Ticket detail view i-doit integration', () => {
 
     const sidebar = view.getByLabelText('Content sidebar')
 
-    expect(
-      within(sidebar).queryByRole('button', { name: 'i-doit' }),
-    ).not.toBeInTheDocument()
+    expect(within(sidebar).queryByRole('button', { name: 'i-doit' })).not.toBeInTheDocument()
   })
 })

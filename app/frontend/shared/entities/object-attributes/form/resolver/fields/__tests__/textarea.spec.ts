@@ -6,18 +6,15 @@ import { FieldResolverTextarea } from '../textarea.ts'
 
 describe('FieldResolverTextarea', () => {
   it('should return the correct field attributes', () => {
-    const fieldResolver = new FieldResolverTextarea(
-      EnumObjectManagerObjects.Ticket,
-      {
-        dataType: 'input',
-        name: 'text',
-        display: 'Text',
-        dataOption: {
-          maxlength: 100,
-        },
-        isInternal: true,
+    const fieldResolver = new FieldResolverTextarea(EnumObjectManagerObjects.Ticket, {
+      dataType: 'input',
+      name: 'text',
+      display: 'Text',
+      dataOption: {
+        maxlength: 100,
       },
-    )
+      isInternal: true,
+    })
 
     expect(fieldResolver.fieldAttributes()).toEqual({
       label: 'Text',

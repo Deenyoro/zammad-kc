@@ -64,10 +64,7 @@ watch(
 
 <template>
   <!--  eslint-disable vuejs-accessibility/no-static-element-interactions-->
-  <div
-    class="flex flex-col gap-1"
-    :class="{ 'overflow-y-auto outline-none': scrollable }"
-  >
+  <div class="flex flex-col gap-1" :class="{ 'overflow-y-auto outline-none': scrollable }">
     <header
       v-if="!noHeader"
       :id="headerId"
@@ -84,11 +81,7 @@ watch(
       @keydown.enter="!noCollapse && toggleCollapse()"
     >
       <slot name="title">
-        <CommonLabel
-          class="grow text-current! select-none"
-          :size="size"
-          tag="h3"
-        >
+        <CommonLabel class="grow text-current! select-none" :size="size" tag="h3">
           {{ $t(title) }}
         </CommonLabel>
       </slot>

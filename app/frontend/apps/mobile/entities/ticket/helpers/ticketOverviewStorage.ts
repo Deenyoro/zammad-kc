@@ -5,9 +5,7 @@ import { useSessionStore } from '#shared/stores/session.ts'
 export const getTicketOverviewStorage = () => {
   const session = useSessionStore()
 
-  const LOCAL_STORAGE_NAME = session.user?.id
-    ? `ticket-overviews-${session.user.id}`
-    : null
+  const LOCAL_STORAGE_NAME = session.user?.id ? `ticket-overviews-${session.user.id}` : null
 
   const getOverviews = (): string[] => {
     if (!LOCAL_STORAGE_NAME) return []

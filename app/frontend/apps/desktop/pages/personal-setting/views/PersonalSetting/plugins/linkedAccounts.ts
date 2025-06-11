@@ -24,9 +24,7 @@ export default <PersonalSettingPlugin>{
     },
   },
   order: 5000,
-  keywords: __(
-    'linked accounts,facebook,github,gitlab,google,linkedin,microsoft,saml',
-  ),
+  keywords: __('linked accounts,facebook,github,gitlab,google,linkedin,microsoft,saml'),
   show: () => {
     const { hasEnabledProviders } = useThirdPartyAuthentication()
     return hasEnabledProviders.value

@@ -15,12 +15,9 @@ export const useEmailFileUrls = (
   const originalFormattingUrl = computed(() => {
     if (article.value.type?.name !== 'email') return
 
-    const originalFormattingFile = find(
-      article.value.attachmentsWithoutInline,
-      (file) => {
-        return file.preferences?.['original-format'] === true
-      },
-    )
+    const originalFormattingFile = find(article.value.attachmentsWithoutInline, (file) => {
+      return file.preferences?.['original-format'] === true
+    })
 
     if (!originalFormattingFile) return
 

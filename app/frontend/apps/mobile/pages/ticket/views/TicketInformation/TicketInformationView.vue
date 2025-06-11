@@ -29,8 +29,7 @@ const { hasPermission } = useSessionStore()
 
 const actionsDialog = useDialog({
   name: 'ticket-actions-dialog',
-  component: () =>
-    import('../../components/TicketDetailView/TicketActionsDialog.vue'),
+  component: () => import('../../components/TicketDetailView/TicketActionsDialog.vue'),
 })
 
 const showActions = () => {
@@ -84,9 +83,7 @@ const router = useRouter()
     </template>
   </LayoutHeader>
   <div class="flex p-4" :style="stickyStyles.body">
-    <h1
-      class="line-clamp-3 flex flex-1 items-center text-xl leading-7 font-bold break-words"
-    >
+    <h1 class="line-clamp-3 flex flex-1 items-center text-xl leading-7 font-bold break-words">
       <CommonLoader position="left" :loading="loadingTicket">
         {{ ticket?.title }}
       </CommonLoader>
@@ -101,12 +98,7 @@ const router = useRouter()
     :model-value="route.name as string"
     @update:model-value="router.replace({ name: $event as string })"
   />
-  <div
-    id="route-ticket-information-tabpanel"
-    role="tabpanel"
-    aria-live="polite"
-    class="px-4"
-  >
+  <div id="route-ticket-information-tabpanel" role="tabpanel" aria-live="polite" class="px-4">
     <RouterView />
   </div>
 </template>

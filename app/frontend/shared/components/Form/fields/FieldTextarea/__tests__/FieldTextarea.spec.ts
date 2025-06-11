@@ -141,17 +141,13 @@ describe('Form - Field - Textarea (Formkit-BuildIn) - Translations', () => {
       },
     })
 
-    expect(
-      wrapper.getByLabelText('Text Example Placeholder'),
-    ).toBeInTheDocument()
+    expect(wrapper.getByLabelText('Text Example Placeholder')).toBeInTheDocument()
 
     i18n.setTranslationMap(new Map([['Body %s %s', 'Other Language %s %s']]))
 
     await nextTick()
 
-    expect(
-      wrapper.getByLabelText('Other Language Example Placeholder'),
-    ).toBeInTheDocument()
+    expect(wrapper.getByLabelText('Other Language Example Placeholder')).toBeInTheDocument()
   })
 
   it('can change translated label', async () => {
@@ -175,16 +171,12 @@ describe('Form - Field - Textarea (Formkit-BuildIn) - Translations', () => {
       },
     })
 
-    expect(
-      wrapper.getByLabelText('Text Example Placeholder'),
-    ).toBeInTheDocument()
+    expect(wrapper.getByLabelText('Text Example Placeholder')).toBeInTheDocument()
 
     await wrapper.rerender({
       label: 'Other Body %s %s',
     })
 
-    expect(
-      wrapper.getByLabelText('Anderer Text Example Placeholder'),
-    ).toBeInTheDocument()
+    expect(wrapper.getByLabelText('Anderer Text Example Placeholder')).toBeInTheDocument()
   })
 })

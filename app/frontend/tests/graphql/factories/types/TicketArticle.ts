@@ -2,10 +2,7 @@
 
 import { faker } from '@faker-js/faker'
 
-import {
-  EnumTicketArticleSenderName,
-  type TicketArticle,
-} from '#shared/graphql/types.ts'
+import { EnumTicketArticleSenderName, type TicketArticle } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import type { DeepPartial } from '#shared/types/utils.ts'
 

@@ -5,7 +5,7 @@ import { axe } from 'vitest-axe'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
-describe('testing avatar a11y view', async () => {
+describe('testing avatar a11y view', () => {
   it('has no accessibility violations', async () => {
     await visitView('/personal-setting/avatar')
 

@@ -15,13 +15,10 @@ export default Node.create({
         ({ editor, chain }) => {
           const element = document.createElement('div')
           element.innerHTML = `<div>${signature.body}</div>`
-          const slice = DOMParser.fromSchema(editor.state.schema)
-            .parseSlice(element)
-            .toJSON()
+          const slice = DOMParser.fromSchema(editor.state.schema).parseSlice(element).toJSON()
           if (!slice) return false
           const needBr =
-            signature.position === 'before' ||
-            slice.content[0]?.content?.[0].type !== 'hardBreak'
+            signature.position === 'before' || slice.content[0]?.content?.[0].type !== 'hardBreak'
           return chain()
             .insertContentAt(signature.from, [
               ...(needBr ? [{ type: 'paragraph' }] : []),
@@ -109,11 +106,7 @@ export default Node.create({
     }
   },
   renderHTML({ HTMLAttributes }) {
-    return [
-      'div',
-      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-      0,
-    ]
+    return ['div', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
   },
   parseHTML() {
     return [

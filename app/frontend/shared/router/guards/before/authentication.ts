@@ -7,22 +7,13 @@ import { useAuthenticationStore } from '#shared/stores/authentication.ts'
 import log from '#shared/utils/log.ts'
 
 import type { WatchStopHandle } from 'vue'
-import type {
-  NavigationGuard,
-  RouteLocationNormalized,
-  NavigationGuardNext,
-} from 'vue-router'
+import type { NavigationGuard, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
 
-const checkAuthenticated = (
-  to: RouteLocationNormalized,
-  next: NavigationGuardNext,
-) => {
+const checkAuthenticated = (to: RouteLocationNormalized, next: NavigationGuardNext) => {
   const { authenticated } = useAuthenticationStore()
 
   if (to.name !== 'Login' && to.meta.requiresAuth && !authenticated) {
-    log.debug(
-      `Route guard for '${to.path}': authentication - forbidden - unauthenticated.`,
-    )
+    log.debug(`Route guard for '${to.path}': authentication - forbidden - unauthenticated.`)
 
     if (to.fullPath !== '/') {
       next({ path: '/login', query: { redirect: to.fullPath } })
@@ -31,14 +22,10 @@ const checkAuthenticated = (
     }
   } else if (to.meta.redirectToDefaultRoute && authenticated) {
     // Use the default route here.
-    log.debug(
-      `Route guard for '${to.path}': authentication - forbidden - authenticated.`,
-    )
+    log.debug(`Route guard for '${to.path}': authentication - forbidden - authenticated.`)
     next('/')
   } else {
-    log.debug(
-      `Route guard for '${to.path}': authentication - allowed - public.`,
-    )
+    log.debug(`Route guard for '${to.path}': authentication - allowed - public.`)
     next()
   }
 }

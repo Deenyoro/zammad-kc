@@ -49,9 +49,7 @@ describe('Login - After Auth - Two Factor Configuration', () => {
       await view.events.click(logoutButton)
 
       await waitFor(() => {
-        expect(view, 'correctly redirects to login page').toHaveCurrentUrl(
-          '/login',
-        )
+        expect(view, 'correctly redirects to login page').toHaveCurrentUrl('/login')
       })
     })
   })
@@ -68,20 +66,14 @@ describe('Login - After Auth - Two Factor Configuration', () => {
     it('shows a list of two-factor methods', async () => {
       const view = await visitAfterAuthTwoFactorConfiguration()
 
+      expect(view.getByText('Set Up Two-factor Authentication')).toBeInTheDocument()
+
       expect(
-        view.getByText('Set Up Two-factor Authentication'),
+        view.getByText('You must protect your account with two-factor authentication.'),
       ).toBeInTheDocument()
 
       expect(
-        view.getByText(
-          'You must protect your account with two-factor authentication.',
-        ),
-      ).toBeInTheDocument()
-
-      expect(
-        view.getByText(
-          'Choose your preferred two-factor authentication method to set it up.',
-        ),
+        view.getByText('Choose your preferred two-factor authentication method to set it up.'),
       ).toBeInTheDocument()
 
       expect(
@@ -90,26 +82,20 @@ describe('Login - After Auth - Two Factor Configuration', () => {
         }),
       ).toBeInTheDocument()
 
-      expect(
-        view.getByText('Complete the sign-in with your security key.'),
-      ).toBeInTheDocument()
+      expect(view.getByText('Complete the sign-in with your security key.')).toBeInTheDocument()
 
       const authenticatorAppButton = view.getByRole('button', {
         name: 'Authenticator App',
       })
 
       expect(
-        view.getByText(
-          'Get the security code from the authenticator app on your device.',
-        ),
+        view.getByText('Get the security code from the authenticator app on your device.'),
       ).toBeInTheDocument()
 
       await view.events.click(authenticatorAppButton)
 
       expect(
-        view.getByText(
-          'To set up Authenticator App for your account, follow the steps below:',
-        ),
+        view.getByText('To set up Authenticator App for your account, follow the steps below:'),
       ).toBeInTheDocument()
 
       expect(
@@ -144,9 +130,7 @@ describe('Login - After Auth - Two Factor Configuration', () => {
       await view.events.click(logoutButton)
 
       await waitFor(() => {
-        expect(view, 'correctly redirects to login page').toHaveCurrentUrl(
-          '/login',
-        )
+        expect(view, 'correctly redirects to login page').toHaveCurrentUrl('/login')
       })
     })
   })

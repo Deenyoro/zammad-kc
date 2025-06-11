@@ -16,13 +16,9 @@ interface Props {
 
 defineProps<Props>()
 
-const { attributesLookup } = useObjectAttributes(
-  EnumObjectManagerObjects.TicketArticle,
-)
+const { attributesLookup } = useObjectAttributes(EnumObjectManagerObjects.TicketArticle)
 
-const detectedLanguageAttribute = computed(() =>
-  attributesLookup.value.get('detected_language'),
-)
+const detectedLanguageAttribute = computed(() => attributesLookup.value.get('detected_language'))
 </script>
 
 <template>

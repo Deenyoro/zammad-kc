@@ -31,10 +31,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <header
-    class="flex gap-2 rounded-t-lg"
-    :class="{ 'justify-center': collapsed }"
-  >
+  <header class="flex gap-2 rounded-t-lg" :class="{ 'justify-center': collapsed }">
     <QuickSearchInput
       v-if="!collapsed"
       v-model="searchValue"

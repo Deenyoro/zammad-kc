@@ -2,10 +2,7 @@
 
 import { nullableMock } from '#tests/support/utils.ts'
 
-import type {
-  OnlineNotificationsQuery,
-  Scalars,
-} from '#shared/graphql/types.ts'
+import type { OnlineNotificationsQuery, Scalars } from '#shared/graphql/types.ts'
 
 import type { LastArrayElement } from 'type-fest'
 

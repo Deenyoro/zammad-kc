@@ -67,10 +67,7 @@ describe('Testing "user mention" popup: "@@" command', { retries: 2 }, () => {
         const link = $el.find('a')
         expect(link).to.have.text('Bob Wandyke')
         expect(link).to.have.attr('data-mention-user-id', '3')
-        expect(link).to.have.attr(
-          'href',
-          `http://example.zammad.com/#user/profile/3`,
-        )
+        expect(link).to.have.attr('href', `http://example.zammad.com/#user/profile/3`)
       })
 
     cy.wrap(mock).should('have.been.calledWith', {

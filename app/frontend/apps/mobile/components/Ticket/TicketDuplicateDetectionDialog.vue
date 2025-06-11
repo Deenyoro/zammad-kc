@@ -22,20 +22,14 @@ defineProps<{
       <p class="mb-3 break-words whitespace-pre-wrap">
         {{ $c.ticket_duplicate_detection_body }}
       </p>
-      <CommonLink
-        v-for="[id, number, title] in tickets"
-        :key="id"
-        :link="`/tickets/${id}`"
-      >
+      <CommonLink v-for="[id, number, title] in tickets" :key="id" :link="`/tickets/${id}`">
         <div class="flex cursor-pointer ltr:pr-3 rtl:pl-3">
           <div
             class="flex flex-1 items-center gap-1 overflow-hidden border-b border-white/10 py-3 text-gray-100 ltr:pr-2 rtl:pl-2"
           >
             <div class="flex-1 truncate text-sm">
               <span>#{{ number }}</span>
-              <span
-                class="mb-1 line-clamp-3 text-lg leading-5 font-bold whitespace-normal"
-              >
+              <span class="mb-1 line-clamp-3 text-lg leading-5 font-bold whitespace-normal">
                 {{ title }}
               </span>
             </div>

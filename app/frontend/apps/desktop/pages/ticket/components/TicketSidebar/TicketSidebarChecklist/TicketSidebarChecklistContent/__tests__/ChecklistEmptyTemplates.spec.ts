@@ -17,14 +17,10 @@ describe('ChecklistEmptyTemplates', () => {
 
     const wrapper = renderChecklistContent()
 
-    expect(
-      wrapper.getByText('No checklist templates have been created yet.'),
-    ).toBeInTheDocument()
+    expect(wrapper.getByText('No checklist templates have been created yet.')).toBeInTheDocument()
 
     expect(
-      wrapper.getByText(
-        'With checklist templates you can pre-fill your checklists.',
-      ),
+      wrapper.getByText('With checklist templates you can pre-fill your checklists.'),
     ).toBeInTheDocument()
   })
 

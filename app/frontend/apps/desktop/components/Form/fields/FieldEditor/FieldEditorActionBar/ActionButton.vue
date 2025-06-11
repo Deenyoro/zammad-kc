@@ -28,8 +28,7 @@ const { pause: pauseIntersectionObserver, resume: resumeIntersectionObserver } =
   useIntersectionObserver(
     button,
     ([{ isIntersecting, target }]) => {
-      if (isIntersecting && !props.action.disabled)
-        (target as HTMLButtonElement).disabled = false
+      if (isIntersecting && !props.action.disabled) (target as HTMLButtonElement).disabled = false
       else (target as HTMLButtonElement).disabled = true
       emit('visible', isIntersecting ?? false)
     },

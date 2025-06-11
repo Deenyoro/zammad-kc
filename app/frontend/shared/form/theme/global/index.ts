@@ -28,19 +28,15 @@ const classes: FormThemeClasses = {
   checkbox: {
     wrapper: 'inline-flex items-center cursor-pointer',
     inner: 'flex',
-    input:
-      'appearance-none focus:outline-hidden focus:ring-0 focus:ring-offset-0',
-    decorator:
-      'relative invisible formkit-is-checked:visible rtl:-right-4 ltr:-left-4',
+    input: 'appearance-none focus:outline-hidden focus:ring-0 focus:ring-offset-0',
+    decorator: 'relative invisible formkit-is-checked:visible rtl:-right-4 ltr:-left-4',
     decoratorIcon: 'absolute',
   },
   radio: {
     wrapper: 'inline-flex items-center cursor-pointer',
     inner: 'flex',
-    input:
-      'appearance-none focus:outline-hidden focus:ring-0 focus:ring-offset-0',
-    decorator:
-      'relative invisible formkit-is-checked:visible rtl:-right-4 ltr:-left-4',
+    input: 'appearance-none focus:outline-hidden focus:ring-0 focus:ring-offset-0',
+    decorator: 'relative invisible formkit-is-checked:visible rtl:-right-4 ltr:-left-4',
     decoratorIcon: 'absolute',
   },
   button: {

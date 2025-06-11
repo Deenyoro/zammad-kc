@@ -1,10 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import type {
-  TicketArticleAction,
-  TicketArticleActionPlugin,
-  TicketArticleType,
-} from './types.ts'
+import type { TicketArticleAction, TicketArticleActionPlugin, TicketArticleType } from './types.ts'
 
 const actionPlugin: TicketArticleActionPlugin = {
   order: 300,
@@ -12,8 +8,7 @@ const actionPlugin: TicketArticleActionPlugin = {
   addActions(ticket, article) {
     const type = article.type?.name
 
-    if (type !== 'facebook feed comment' && type !== 'facebook feed post')
-      return []
+    if (type !== 'facebook feed comment' && type !== 'facebook feed post') return []
 
     const action: TicketArticleAction = {
       apps: ['mobile', 'desktop'],

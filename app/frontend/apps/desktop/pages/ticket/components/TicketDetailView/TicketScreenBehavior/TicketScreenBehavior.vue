@@ -61,9 +61,5 @@ const selectedItem = computed({
 </script>
 
 <template>
-  <CommonDropdown
-    v-model="selectedItem"
-    :items="behaviorOptions"
-    orientation="top"
-  />
+  <CommonDropdown v-model="selectedItem" :items="behaviorOptions" orientation="top" />
 </template>

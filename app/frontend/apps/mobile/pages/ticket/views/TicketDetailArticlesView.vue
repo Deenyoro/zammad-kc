@@ -10,10 +10,7 @@ import {
   type AddArticleCallbackArgs,
   useArticleDataHandler,
 } from '#shared/entities/ticket-article/composables/useArticleDataHandler.ts'
-import {
-  convertToGraphQLId,
-  getIdFromGraphQLId,
-} from '#shared/graphql/utils.ts'
+import { convertToGraphQLId, getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 import { edgesToArray, waitForElement } from '#shared/utils/helpers.ts'
@@ -40,14 +37,8 @@ const ticketId = computed(() => convertToGraphQLId('Ticket', props.internalId))
 // Cursor is offset-based, so the old cursor is pointing to an unavailable article,
 //  thus using the cursor for the last article of the already filtered edges.
 
-const {
-  ticket,
-  liveUserList,
-  ticketQuery,
-  scrolledToBottom,
-  newArticlesIds,
-  scrollDownState,
-} = useTicketInformation()
+const { ticket, liveUserList, ticketQuery, scrolledToBottom, newArticlesIds, scrollDownState } =
+  useTicketInformation()
 
 const scrollElement = (element: Element) => {
   scrolledToBottom.value = true
@@ -65,9 +56,7 @@ const scheduleMyArticleScroll = async (
   const difference = new Date().getTime() - originalTime
   if (difference >= 5000 || typeof document === 'undefined') return
 
-  const element = document.querySelector(
-    `#article-${articleInternalId}`,
-  ) as HTMLDivElement | null
+  const element = document.querySelector(`#article-${articleInternalId}`) as HTMLDivElement | null
 
   if (!element) {
     return new Promise((r) => requestAnimationFrame(r)).then(() =>
@@ -81,16 +70,14 @@ const scheduleMyArticleScroll = async (
 }
 
 const isAtTheBottom = () => {
-  const scrollHeight =
-    document.querySelector('main')?.scrollHeight || window.innerHeight
+  const scrollHeight = document.querySelector('main')?.scrollHeight || window.innerHeight
   const scrolledHeight = window.scrollY + window.innerHeight
   const scrollToBottom = scrollHeight - scrolledHeight
   return scrollToBottom < 20
 }
 
 const hasScroll = () => {
-  const scrollHeight =
-    document.querySelector('main')?.scrollHeight || window.innerHeight
+  const scrollHeight = document.querySelector('main')?.scrollHeight || window.innerHeight
   return scrollHeight > window.innerHeight
 }
 
@@ -125,11 +112,8 @@ const onAddArticleCallback = ({
   }
 }
 
-const {
-  ticketArticlesMin,
-  markTicketArticlesLoaded,
-  getTicketArticlesQueryVariables,
-} = useTicketArticlesQueryVariables()
+const { ticketArticlesMin, markTicketArticlesLoaded, getTicketArticlesQueryVariables } =
+  useTicketArticlesQueryVariables()
 
 const { articlesQuery, articleResult } = useArticleDataHandler(ticketId, {
   firstArticlesCount: ticketArticlesMin,
@@ -152,9 +136,7 @@ const isLoadingTicket = computed(() => {
   return ticketQuery.loading().value && !ticket.value
 })
 
-const isRefetchingTicket = computed(
-  () => ticketQuery.loading().value && !!ticket.value,
-)
+const isRefetchingTicket = computed(() => ticketQuery.loading().value && !!ticket.value)
 
 const totalCount = computed(() => articleResult.value?.articles.totalCount || 0)
 
@@ -240,10 +222,7 @@ const stopScrollWatch = watch(
   { immediate: true, flush: 'post' },
 )
 
-const { stickyStyles, headerElement } = useStickyHeader([
-  isLoadingTicket,
-  ticket,
-])
+const { stickyStyles, headerElement } = useStickyHeader([isLoadingTicket, ticket])
 
 useEventListener(
   window.document,
@@ -276,16 +255,8 @@ useEventListener(
       <TicketTitle v-if="ticket" :ticket="ticket" />
     </CommonLoader>
   </div>
-  <div
-    id="ticket-articles-list"
-    class="flex flex-1 flex-col"
-    :style="stickyStyles.body"
-  >
-    <CommonLoader
-      data-test-id="loader-list"
-      :loading="isLoadingTicket"
-      class="mt-2"
-    >
+  <div id="ticket-articles-list" class="flex flex-1 flex-col" :style="stickyStyles.body">
+    <CommonLoader data-test-id="loader-list" :loading="isLoadingTicket" class="mt-2">
       <TicketArticlesList
         v-if="ticket"
         :ticket="ticket"

@@ -2,11 +2,7 @@
 
 import { EnumTicketArticleSenderName } from '#shared/graphql/types.ts'
 
-import type {
-  TicketArticleAction,
-  TicketArticleActionPlugin,
-  TicketArticleType,
-} from './types.ts'
+import type { TicketArticleAction, TicketArticleActionPlugin, TicketArticleType } from './types.ts'
 
 const actionPlugin: TicketArticleActionPlugin = {
   order: 300,
@@ -15,10 +11,7 @@ const actionPlugin: TicketArticleActionPlugin = {
     const sender = article.sender?.name
     const type = article.type?.name
 
-    if (
-      sender !== EnumTicketArticleSenderName.Customer ||
-      type !== 'telegram personal-message'
-    )
+    if (sender !== EnumTicketArticleSenderName.Customer || type !== 'telegram personal-message')
       return []
 
     const action: TicketArticleAction = {

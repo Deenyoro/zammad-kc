@@ -2,10 +2,7 @@
 
 import '#tests/graphql/builders/mocks.ts'
 
-import {
-  renderComponent,
-  type ExtendedMountingOptions,
-} from '#tests/support/components/index.ts'
+import { renderComponent, type ExtendedMountingOptions } from '#tests/support/components/index.ts'
 import { mockRouterHooks } from '#tests/support/mock-vue-router.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 

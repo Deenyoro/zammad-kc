@@ -36,10 +36,7 @@ export const useUserDetail = (
     },
   )
 
-  userQuery.subscribeToMore<
-    UserUpdatesSubscriptionVariables,
-    UserUpdatesSubscription
-  >(() => ({
+  userQuery.subscribeToMore<UserUpdatesSubscriptionVariables, UserUpdatesSubscription>(() => ({
     document: UserUpdatesDocument,
     variables: {
       userId: userId.value!,
@@ -65,9 +62,7 @@ export const useUserDetail = (
 
   const { viewScreenAttributes } = storeToRefs(useUserObjectAttributesStore())
 
-  const secondaryOrganizations = computed(() =>
-    normalizeEdges(user.value?.secondaryOrganizations),
-  )
+  const secondaryOrganizations = computed(() => normalizeEdges(user.value?.secondaryOrganizations))
 
   return {
     loading,

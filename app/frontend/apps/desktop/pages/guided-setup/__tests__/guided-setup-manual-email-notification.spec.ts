@@ -40,10 +40,9 @@ describe('guided setup manual email notification', () => {
       const view = await visitView('/guided-setup/manual/email-notification')
 
       await waitFor(() => {
-        expect(
-          view,
-          'correctly redirects to guided setup start screen',
-        ).toHaveCurrentUrl('/guided-setup')
+        expect(view, 'correctly redirects to guided setup start screen').toHaveCurrentUrl(
+          '/guided-setup',
+        )
       })
       view.getByText('Set up a new system')
     })
@@ -69,8 +68,7 @@ describe('guided setup manual email notification', () => {
                 },
                 {
                   value: 'sendmail',
-                  label:
-                    'Local MTA (Sendmail/Postfix/Exim/â\u0080¦) - use server setup',
+                  label: 'Local MTA (Sendmail/Postfix/Exim/â\u0080¦) - use server setup',
                 },
               ],
             },
@@ -111,10 +109,9 @@ describe('guided setup manual email notification', () => {
       await view.events.click(continueButton)
 
       await waitFor(() => {
-        expect(
-          view,
-          'correctly redirects to guided setup email channel step',
-        ).toHaveCurrentUrl('/guided-setup/manual/channels')
+        expect(view, 'correctly redirects to guided setup email channel step').toHaveCurrentUrl(
+          '/guided-setup/manual/channels',
+        )
       })
     })
 
@@ -222,17 +219,12 @@ describe('guided setup manual email notification', () => {
       await view.events.click(view.getAllByRole('option')[0])
       await view.events.type(view.getByLabelText('Host'), 'mail')
 
-      await view.events.type(
-        view.getByLabelText('User'),
-        'zammad@mail.test.dc.zammad.com',
-      )
+      await view.events.type(view.getByLabelText('User'), 'zammad@mail.test.dc.zammad.com')
 
       await view.events.type(view.getByLabelText('Password'), 'zammad')
       await view.events.type(view.getByLabelText('Port'), '25')
 
-      expect(
-        getNode('email-notification-setup')?.find('sslVerify')?.value,
-      ).toBe(true)
+      expect(getNode('email-notification-setup')?.find('sslVerify')?.value).toBe(true)
 
       await view.events.click(
         view.getByRole('button', {
@@ -240,8 +232,7 @@ describe('guided setup manual email notification', () => {
         }),
       )
 
-      const calls =
-        await waitForChannelEmailValidateConfigurationOutboundMutationCalls()
+      const calls = await waitForChannelEmailValidateConfigurationOutboundMutationCalls()
 
       expect(calls.at(-1)?.variables).toEqual(
         expect.objectContaining({
@@ -260,10 +251,9 @@ describe('guided setup manual email notification', () => {
       await view.events.click(goBackButton)
 
       await waitFor(() => {
-        expect(
-          view,
-          'correctly redirects to email notification step',
-        ).toHaveCurrentUrl('/guided-setup/manual/system-information')
+        expect(view, 'correctly redirects to email notification step').toHaveCurrentUrl(
+          '/guided-setup/manual/system-information',
+        )
       })
     })
 

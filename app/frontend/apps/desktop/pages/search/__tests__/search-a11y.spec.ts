@@ -5,10 +5,7 @@ import { axe } from 'vitest-axe'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
-import {
-  EnumSearchableModels,
-  EnumTicketStateColorCode,
-} from '#shared/graphql/types.ts'
+import { EnumSearchableModels, EnumTicketStateColorCode } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import { mockDetailSearchQuery } from '#desktop/components/Search/graphql/queries/detailSearch.mocks.ts'

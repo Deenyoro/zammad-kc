@@ -77,10 +77,9 @@ describe('guided setup manual channel email', () => {
       const view = await visitView('/guided-setup/manual/channels/email')
 
       await waitFor(() => {
-        expect(
-          view,
-          'correctly redirects to guided setup start screen',
-        ).toHaveCurrentUrl('/guided-setup')
+        expect(view, 'correctly redirects to guided setup start screen').toHaveCurrentUrl(
+          '/guided-setup',
+        )
       })
       view.getByText('Set up a new system')
     })
@@ -142,13 +141,11 @@ describe('guided setup manual channel email', () => {
                     options: [
                       {
                         value: 'smtp',
-                        label:
-                          'SMTP - configure your own outgoing SMTP settings',
+                        label: 'SMTP - configure your own outgoing SMTP settings',
                       },
                       {
                         value: 'sendmail',
-                        label:
-                          'Local MTA (Sendmail/Postfix/Exim/â\u0080¦) - use server setup',
+                        label: 'Local MTA (Sendmail/Postfix/Exim/â\u0080¦) - use server setup',
                       },
                     ],
                   },
@@ -189,10 +186,7 @@ describe('guided setup manual channel email', () => {
 
       const accountForm = view.getByTestId('channel-email-account')
 
-      await view.events.type(
-        getByLabelText(accountForm, 'Full name'),
-        'Zammad Helpdesk',
-      )
+      await view.events.type(getByLabelText(accountForm, 'Full name'), 'Zammad Helpdesk')
 
       await view.events.type(
         getByLabelText(accountForm, 'Email address'),
@@ -226,10 +220,9 @@ describe('guided setup manual channel email', () => {
       )
 
       await waitFor(() => {
-        expect(
-          view,
-          'correctly redirects to guided setup invite step',
-        ).toHaveCurrentUrl('/guided-setup/manual/invite')
+        expect(view, 'correctly redirects to guided setup invite step').toHaveCurrentUrl(
+          '/guided-setup/manual/invite',
+        )
       })
     })
 
@@ -238,10 +231,7 @@ describe('guided setup manual channel email', () => {
 
       const accountForm = view.getByTestId('channel-email-account')
 
-      await view.events.type(
-        getByLabelText(accountForm, 'Full name'),
-        'Zammad Helpdesk',
-      )
+      await view.events.type(getByLabelText(accountForm, 'Full name'), 'Zammad Helpdesk')
 
       await view.events.type(
         getByLabelText(accountForm, 'Email address'),
@@ -283,10 +273,7 @@ describe('guided setup manual channel email', () => {
 
       const accountForm = view.getByTestId('channel-email-account')
 
-      await view.events.type(
-        getByLabelText(accountForm, 'Full name'),
-        'Zammad Helpdesk',
-      )
+      await view.events.type(getByLabelText(accountForm, 'Full name'), 'Zammad Helpdesk')
 
       await view.events.type(
         getByLabelText(accountForm, 'Email address'),
@@ -338,10 +325,7 @@ describe('guided setup manual channel email', () => {
 
       const accountForm = view.getByTestId('channel-email-account')
 
-      await view.events.type(
-        getByLabelText(accountForm, 'Full name'),
-        'Zammad Helpdesk',
-      )
+      await view.events.type(getByLabelText(accountForm, 'Full name'), 'Zammad Helpdesk')
 
       await view.events.type(
         getByLabelText(accountForm, 'Email address'),
@@ -387,9 +371,7 @@ describe('guided setup manual channel email', () => {
 
       expect(accountForm).toBeVisible()
 
-      expect(
-        getByText(accountForm, 'The provided password is invalid.'),
-      ).toBeInTheDocument()
+      expect(getByText(accountForm, 'The provided password is invalid.')).toBeInTheDocument()
     })
 
     it('can show inbound messages form when some messages are detected', async () => {
@@ -397,10 +379,7 @@ describe('guided setup manual channel email', () => {
 
       const accountForm = view.getByTestId('channel-email-account')
 
-      await view.events.type(
-        getByLabelText(accountForm, 'Full name'),
-        'Zammad Helpdesk',
-      )
+      await view.events.type(getByLabelText(accountForm, 'Full name'), 'Zammad Helpdesk')
 
       await view.events.type(
         getByLabelText(accountForm, 'Email address'),
@@ -426,10 +405,7 @@ describe('guided setup manual channel email', () => {
 
       const inboundForm = view.getByTestId('channel-email-inbound')
 
-      await view.events.type(
-        getByLabelText(inboundForm, 'Host'),
-        'mail.test.dc.zammad.com',
-      )
+      await view.events.type(getByLabelText(inboundForm, 'Host'), 'mail.test.dc.zammad.com')
 
       await getNode('channel-email-inbound')?.settled
 
@@ -450,9 +426,7 @@ describe('guided setup manual channel email', () => {
 
       expect(inboundForm).not.toBeVisible()
 
-      const inboundMessagesForm = view.getByTestId(
-        'channel-email-inbound-messages',
-      )
+      const inboundMessagesForm = view.getByTestId('channel-email-inbound-messages')
 
       expect(inboundMessagesForm).toBeVisible()
 
@@ -468,27 +442,17 @@ describe('guided setup manual channel email', () => {
         'You can find archived emails in Zammad anytime using the search function, like for any other ticket.',
       )
 
-      expect(
-        getByLabelText(inboundMessagesForm, 'Archive emails'),
-      ).toBeInTheDocument()
+      expect(getByLabelText(inboundMessagesForm, 'Archive emails')).toBeInTheDocument()
 
-      expect(
-        getByLabelText(inboundMessagesForm, 'Archive cut-off time'),
-      ).toBeDescribedBy(
+      expect(getByLabelText(inboundMessagesForm, 'Archive cut-off time')).toBeDescribedBy(
         'Emails before the cut-off time are imported as archived tickets. Emails after the cut-off time are imported as regular tickets.',
       )
 
-      expect(
-        getByLabelText(inboundMessagesForm, 'Archive ticket target state'),
-      ).toBeInTheDocument()
+      expect(getByLabelText(inboundMessagesForm, 'Archive ticket target state')).toBeInTheDocument()
 
-      await view.events.click(
-        getByLabelText(inboundMessagesForm, 'Archive emails'),
-      )
+      await view.events.click(getByLabelText(inboundMessagesForm, 'Archive emails'))
 
-      expect(
-        queryByLabelText(inboundMessagesForm, 'Archive cut-off time'),
-      ).not.toBeInTheDocument()
+      expect(queryByLabelText(inboundMessagesForm, 'Archive cut-off time')).not.toBeInTheDocument()
 
       expect(
         queryByLabelText(inboundMessagesForm, 'Archive ticket target state'),
@@ -502,10 +466,7 @@ describe('guided setup manual channel email', () => {
 
       const accountForm = view.getByTestId('channel-email-account')
 
-      await view.events.type(
-        getByLabelText(accountForm, 'Full name'),
-        'Zammad Helpdesk',
-      )
+      await view.events.type(getByLabelText(accountForm, 'Full name'), 'Zammad Helpdesk')
 
       await view.events.type(
         getByLabelText(accountForm, 'Email address'),
@@ -531,10 +492,7 @@ describe('guided setup manual channel email', () => {
 
       const inboundForm = view.getByTestId('channel-email-inbound')
 
-      await view.events.type(
-        getByLabelText(inboundForm, 'Host'),
-        'mail.test.dc.zammad.com',
-      )
+      await view.events.type(getByLabelText(inboundForm, 'Host'), 'mail.test.dc.zammad.com')
 
       await getNode('channel-email-inbound')?.settled
 
@@ -558,9 +516,7 @@ describe('guided setup manual channel email', () => {
       const outboundForm = view.getByTestId('channel-email-outbound')
 
       expect(outboundForm).toBeVisible()
-      expect(
-        view.getByRole('button', { name: 'Save and Continue' }),
-      ).toBeInTheDocument()
+      expect(view.getByRole('button', { name: 'Save and Continue' })).toBeInTheDocument()
     })
 
     it('can show outbound configuration form when roundtrip is unsuccessful', async () => {
@@ -568,10 +524,7 @@ describe('guided setup manual channel email', () => {
 
       const accountForm = view.getByTestId('channel-email-account')
 
-      await view.events.type(
-        getByLabelText(accountForm, 'Full name'),
-        'Zammad Helpdesk',
-      )
+      await view.events.type(getByLabelText(accountForm, 'Full name'), 'Zammad Helpdesk')
 
       await view.events.type(
         getByLabelText(accountForm, 'Email address'),
@@ -616,9 +569,7 @@ describe('guided setup manual channel email', () => {
 
       expect(outboundForm).toBeVisible()
 
-      expect(
-        getByText(outboundForm, 'Something went wrong'),
-      ).toBeInTheDocument()
+      expect(getByText(outboundForm, 'Something went wrong')).toBeInTheDocument()
     })
 
     it('can add email channel and redirect to invite step', async () => {
@@ -626,10 +577,7 @@ describe('guided setup manual channel email', () => {
 
       const accountForm = view.getByTestId('channel-email-account')
 
-      await view.events.type(
-        getByLabelText(accountForm, 'Full name'),
-        'Zammad Helpdesk',
-      )
+      await view.events.type(getByLabelText(accountForm, 'Full name'), 'Zammad Helpdesk')
 
       await view.events.type(
         getByLabelText(accountForm, 'Email address'),
@@ -655,10 +603,7 @@ describe('guided setup manual channel email', () => {
 
       const inboundForm = view.getByTestId('channel-email-inbound')
 
-      await view.events.type(
-        getByLabelText(inboundForm, 'Host'),
-        'mail.test.dc.zammad.com',
-      )
+      await view.events.type(getByLabelText(inboundForm, 'Host'), 'mail.test.dc.zammad.com')
 
       await getNode('channel-email-inbound')?.settled
 
@@ -677,9 +622,7 @@ describe('guided setup manual channel email', () => {
         }),
       )
 
-      const inboundMessagesForm = view.getByTestId(
-        'channel-email-inbound-messages',
-      )
+      const inboundMessagesForm = view.getByTestId('channel-email-inbound-messages')
 
       await view.events.type(
         getByLabelText(inboundMessagesForm, 'Archive cut-off time'),
@@ -768,10 +711,7 @@ describe('guided setup manual channel email', () => {
 
       const accountForm = view.getByTestId('channel-email-account')
 
-      await view.events.type(
-        getByLabelText(accountForm, 'Full name'),
-        'Zammad Helpdesk',
-      )
+      await view.events.type(getByLabelText(accountForm, 'Full name'), 'Zammad Helpdesk')
 
       await view.events.type(
         getByLabelText(accountForm, 'Email address'),
@@ -842,10 +782,7 @@ describe('guided setup manual channel email', () => {
 
       const accountForm = view.getByTestId('channel-email-account')
 
-      await view.events.type(
-        getByLabelText(accountForm, 'Full name'),
-        'Zammad Helpdesk',
-      )
+      await view.events.type(getByLabelText(accountForm, 'Full name'), 'Zammad Helpdesk')
 
       await view.events.type(
         getByLabelText(accountForm, 'Email address'),
@@ -871,10 +808,7 @@ describe('guided setup manual channel email', () => {
 
       const inboundForm = view.getByTestId('channel-email-inbound')
 
-      await view.events.type(
-        getByLabelText(inboundForm, 'Host'),
-        'mail.test.dc.zammad.com',
-      )
+      await view.events.type(getByLabelText(inboundForm, 'Host'), 'mail.test.dc.zammad.com')
 
       await getNode('channel-email-inbound')?.settled
 
@@ -899,9 +833,7 @@ describe('guided setup manual channel email', () => {
 
       expect(alert).not.toBeInTheDocument()
 
-      expect(
-        getByLabelText(outboundForm, 'SSL verification'),
-      ).not.toBeDisabled()
+      expect(getByLabelText(outboundForm, 'SSL verification')).not.toBeDisabled()
 
       await view.events.click(getByLabelText(outboundForm, 'SSL verification'))
 
@@ -929,9 +861,7 @@ describe('guided setup manual channel email', () => {
       await view.events.clear(getByLabelText(outboundForm, 'Port'))
 
       await waitFor(() => {
-        expect(
-          getByLabelText(outboundForm, 'SSL verification'),
-        ).not.toBeDisabled()
+        expect(getByLabelText(outboundForm, 'SSL verification')).not.toBeDisabled()
       })
 
       await view.events.click(getByLabelText(outboundForm, 'SSL verification'))
@@ -941,17 +871,13 @@ describe('guided setup manual channel email', () => {
 
         expect(alert).toBeInTheDocument()
 
-        expect(
-          getByLabelText(outboundForm, 'SSL verification'),
-        ).not.toBeDisabled()
+        expect(getByLabelText(outboundForm, 'SSL verification')).not.toBeDisabled()
       })
 
       await view.events.type(getByLabelText(outboundForm, 'Port'), '465')
 
       await waitFor(() => {
-        expect(
-          getByLabelText(outboundForm, 'SSL verification'),
-        ).not.toBeDisabled()
+        expect(getByLabelText(outboundForm, 'SSL verification')).not.toBeDisabled()
       })
 
       await waitFor(() => {
@@ -959,17 +885,13 @@ describe('guided setup manual channel email', () => {
 
         expect(alert).toBeInTheDocument()
 
-        expect(
-          getByLabelText(outboundForm, 'SSL verification'),
-        ).not.toBeDisabled()
+        expect(getByLabelText(outboundForm, 'SSL verification')).not.toBeDisabled()
       })
 
       await view.events.type(getByLabelText(outboundForm, 'Port'), '587')
 
       await waitFor(() => {
-        expect(
-          getByLabelText(outboundForm, 'SSL verification'),
-        ).not.toBeDisabled()
+        expect(getByLabelText(outboundForm, 'SSL verification')).not.toBeDisabled()
       })
 
       await waitFor(() => {
@@ -977,9 +899,7 @@ describe('guided setup manual channel email', () => {
 
         expect(alert).toBeInTheDocument()
 
-        expect(
-          getByLabelText(outboundForm, 'SSL verification'),
-        ).not.toBeDisabled()
+        expect(getByLabelText(outboundForm, 'SSL verification')).not.toBeDisabled()
       })
     })
 

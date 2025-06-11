@@ -32,9 +32,7 @@ export const ticketCreateArticleType = {
   },
 }
 
-export const useTicketCreateArticleType = (
-  additionalProps: FormFieldAdditionalProps = {},
-) => {
+export const useTicketCreateArticleType = (additionalProps: FormFieldAdditionalProps = {}) => {
   const application = useApplicationStore()
 
   const availableTypes = computed(() => {

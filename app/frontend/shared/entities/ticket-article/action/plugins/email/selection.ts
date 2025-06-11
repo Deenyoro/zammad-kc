@@ -20,10 +20,7 @@ const formatDate = (date: string) => {
   }
 }
 
-export const getReplyQuoteHeader = (
-  config: ConfigList,
-  article: TicketArticle,
-) => {
+export const getReplyQuoteHeader = (config: ConfigList, article: TicketArticle) => {
   if (!config.ui_ticket_zoom_article_email_full_quote_header) return ''
 
   const date = formatDate(article.createdAt)
@@ -46,8 +43,7 @@ export const getArticleSelection = (
   }
   if (config.ui_ticket_zoom_article_email_full_quote) {
     const cleanBody = textCleanup(article.bodyWithUrls)
-    const content =
-      article.contentType === 'text/html' ? cleanBody : textToHtml(cleanBody)
+    const content = article.contentType === 'text/html' ? cleanBody : textToHtml(cleanBody)
 
     return { content, full: true }
   }

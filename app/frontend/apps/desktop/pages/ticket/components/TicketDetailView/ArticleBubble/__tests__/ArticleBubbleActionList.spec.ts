@@ -46,16 +46,11 @@ const renderArticleBubbleActionList = () =>
 
 // :TODO adapt suite to new implementation
 describe('ArticleBubbleActionList', () => {
-  it.todo(
-    'does not show top level actions on hover (js-dom limitation)',
-    () => {
-      const wrapper = renderArticleBubbleActionList()
+  it.todo('does not show top level actions on hover (js-dom limitation)', () => {
+    const wrapper = renderArticleBubbleActionList()
 
-      expect(
-        wrapper.getByTestId('top-level-article-action-container'),
-      ).toHaveClass('opacity-0')
-    },
-  )
+    expect(wrapper.getByTestId('top-level-article-action-container')).toHaveClass('opacity-0')
+  })
 
   it.todo('has reply action', async () => {
     const wrapper = renderArticleBubbleActionList()
@@ -66,9 +61,7 @@ describe('ArticleBubbleActionList', () => {
   it('shows all popover actions', async () => {
     const wrapper = renderArticleBubbleActionList()
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Action menu button' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Action menu button' }))
 
     expect(wrapper.getAllByRole('menuitem')).toHaveLength(3)
   })

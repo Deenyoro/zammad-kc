@@ -9,9 +9,7 @@ import { useCollapsedState } from '#desktop/components/layout/LayoutSidebar/Left
 
 const { collapsedState } = useCollapsedState()
 
-const defaultItem = computed(() =>
-  menuItems.find((item) => item.key === 'ticket-create'),
-)
+const defaultItem = computed(() => menuItems.find((item) => item.key === 'ticket-create'))
 </script>
 
 <template>

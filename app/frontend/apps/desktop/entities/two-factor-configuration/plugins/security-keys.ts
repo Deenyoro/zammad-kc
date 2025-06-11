@@ -26,9 +26,7 @@ export default {
         return ''
     }
   },
-  async setup(
-    publicKey: NonNullable<CredentialCreationOptionsJSON['publicKey']>,
-  ) {
+  async setup(publicKey: NonNullable<CredentialCreationOptionsJSON['publicKey']>) {
     if (!window.isSecureContext) {
       return {
         success: false,

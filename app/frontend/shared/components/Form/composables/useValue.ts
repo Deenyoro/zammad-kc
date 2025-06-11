@@ -4,7 +4,7 @@ import { computed, type Ref } from 'vue'
 
 import { type FormFieldContext } from '../types/field.ts'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line no-explicit-any
 const useValue = <T = any>(
   context: Ref<FormFieldContext<{ multiple?: boolean; clearValue?: unknown }>>,
 ) => {
@@ -27,8 +27,7 @@ const useValue = <T = any>(
     if (!hasValue.value) return
     // if value is undefined, it is not sent to the backend
     // we want to clear the value, so we set it to null
-    const clearValue =
-      context.value.clearValue !== undefined ? context.value.clearValue : null
+    const clearValue = context.value.clearValue !== undefined ? context.value.clearValue : null
     context.value.node.input(clearValue, asyncSettling)
   }
 

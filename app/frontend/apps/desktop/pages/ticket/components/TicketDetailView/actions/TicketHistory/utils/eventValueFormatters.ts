@@ -1,10 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import { useObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
-import {
-  EnumObjectManagerObjects,
-  type HistoryRecordEvent,
-} from '#shared/graphql/types.ts'
+import { EnumObjectManagerObjects, type HistoryRecordEvent } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n.ts'
 import type { DeepPartial } from '#shared/types/utils.ts'
 import { isDateString } from '#shared/utils/datetime.ts'
@@ -40,9 +37,7 @@ export const getDisplayName = (event: DeepPartial<HistoryRecordEvent>) => {
   return event.attribute
 }
 
-export const attributeNeedsTranslation = (
-  event: DeepPartial<HistoryRecordEvent>,
-) => {
+export const attributeNeedsTranslation = (event: DeepPartial<HistoryRecordEvent>) => {
   let needsTranslation = false
 
   const objectAttribute = getObjectAttribute(event)
@@ -60,10 +55,7 @@ export const formatDateOrDateTime = (value: string) => {
   return value
 }
 
-export const formatGroup = (
-  attributeName: Maybe<string> | undefined,
-  attributeValue: string,
-) => {
+export const formatGroup = (attributeName: Maybe<string> | undefined, attributeValue: string) => {
   if (!attributeName) return attributeValue
   if (attributeName !== 'group') return attributeValue
 

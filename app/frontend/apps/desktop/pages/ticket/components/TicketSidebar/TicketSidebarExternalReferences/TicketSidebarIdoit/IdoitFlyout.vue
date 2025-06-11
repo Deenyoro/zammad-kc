@@ -28,8 +28,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { form, values, updateFieldValues, onChangedField, formSetErrors } =
-  useForm()
+const { form, values, updateFieldValues, onChangedField, formSetErrors } = useForm()
 
 const FETCH_LIMIT = 10
 const FETCH_DEBOUNCE = 300
@@ -61,9 +60,7 @@ objectSearchQuery.onError(() => {
     new UserError([
       {
         field: 'type',
-        message: __(
-          'Error fetching i-doit information. Please contact your administrator.',
-        ),
+        message: __('Error fetching i-doit information. Please contact your administrator.'),
       },
     ]),
   )
@@ -153,18 +150,13 @@ const handleObjectSelection = (selectedRows: TableItem[]) =>
       .map(({ idoitObjectId }) => idoitObjectId) as number[],
   })
 
-const preselectedObjectIds = computed(() =>
-  props.objectIds.map((id) => id.toString()),
-)
+const preselectedObjectIds = computed(() => props.objectIds.map((id) => id.toString()))
 
 // Only count newly added objects
 const isValid = computed(
   () =>
-    (
-      (values.value?.objectIds as number[])?.filter(
-        (id) => !props.objectIds.includes(id),
-      ) || []
-    ).length > 0,
+    ((values.value?.objectIds as number[])?.filter((id) => !props.objectIds.includes(id)) || [])
+      .length > 0,
 )
 
 const submitObjects = async (data: FormDataRecords) => {

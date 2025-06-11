@@ -184,14 +184,9 @@ describe('Ticket detail view', () => {
 
       const view = await visitView('/tickets/1')
 
-      await view.events.click(
-        await view.findByRole('button', { name: 'Add internal note' }),
-      )
+      await view.events.click(await view.findByRole('button', { name: 'Add internal note' }))
 
-      await view.events.type(
-        await view.findByRole('textbox', { name: 'Text' }),
-        'Foo note',
-      )
+      await view.events.type(await view.findByRole('textbox', { name: 'Text' }), 'Foo note')
 
       mockTicketUpdateMutation({
         ticketUpdate: {
@@ -199,8 +194,7 @@ describe('Ticket detail view', () => {
           errors: [
             {
               message: 'The ticket time accounting condition is met.',
-              exception:
-                EnumUserErrorException.ServiceTicketUpdateValidatorTimeAccountingError,
+              exception: EnumUserErrorException.ServiceTicketUpdateValidatorTimeAccountingError,
             },
           ],
         },
@@ -212,9 +206,7 @@ describe('Ticket detail view', () => {
         },
       })
 
-      await view.events.click(
-        await view.findByRole('button', { name: 'Update' }),
-      )
+      await view.events.click(await view.findByRole('button', { name: 'Update' }))
 
       await waitForTicketUpdateMutationCalls()
 
@@ -228,10 +220,7 @@ describe('Ticket detail view', () => {
         }),
       ).toHaveTextContent('Time Accounting')
 
-      await view.events.type(
-        await within(flyout).findByLabelText('Accounted Time'),
-        '1',
-      )
+      await view.events.type(await within(flyout).findByLabelText('Accounted Time'), '1')
 
       await getNode('form-ticket-time-accounting')?.settled
 

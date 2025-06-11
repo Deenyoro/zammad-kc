@@ -4,10 +4,7 @@
 import { computed, useTemplateRef, nextTick, watch } from 'vue'
 
 import type { TicketById } from '#shared/entities/ticket/types.ts'
-import type {
-  HistoryRecordEvent,
-  HistoryRecordIssuer,
-} from '#shared/graphql/types.ts'
+import type { HistoryRecordEvent, HistoryRecordIssuer } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n/index.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 
@@ -97,19 +94,13 @@ watch(
             :key="`${'id' in record.issuer ? record.issuer.id : record.issuer.klass}-${idxRecord}`"
             :class="{
               'rounded-b-none': idxRecord !== entry.records.length - 1,
-              'rounded-tr-none':
-                idxRecord === entry.records.length - 1 &&
-                entry.records.length > 1,
+              'rounded-tr-none': idxRecord === entry.records.length - 1 && entry.records.length > 1,
               'border-b-0': idxRecord !== entry.records.length - 1,
-              'border-t-0':
-                idxRecord === entry.records.length - 1 &&
-                entry.records.length > 1,
+              'border-t-0': idxRecord === entry.records.length - 1 && entry.records.length > 1,
             }"
             class="rounded-lg rounded-tl-none border border-neutral-100 bg-blue-200 pb-1 dark:border-gray-700 dark:bg-gray-700"
           >
-            <HistoryEventIssuer
-              :issuer="record.issuer as HistoryRecordIssuer"
-            />
+            <HistoryEventIssuer :issuer="record.issuer as HistoryRecordIssuer" />
 
             <HistoryEvent
               v-for="(event, idxEvent) in record.events"

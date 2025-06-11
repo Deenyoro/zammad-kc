@@ -118,32 +118,25 @@ describe('common object attributes interface', () => {
     expect(getRegion('Integer Field')).toHaveTextContent('600')
     expect(getRegion('DateTime Field')).toHaveTextContent('11/08/2022 05:00')
     expect(getRegion('Single Select Field')).toHaveTextContent('Display1')
-    expect(getRegion('Multi Select Field')).toHaveTextContent(
-      'Display1, Display2',
+    expect(getRegion('Multi Select Field')).toHaveTextContent('Display1, Display2')
+    expect(getRegion('Single Tree Select Field')).toHaveTextContent('key1 › key1_child1')
+    expect(getRegion('Multi Tree Select Field')).toHaveTextContent('key1, key2, key2 › key2_child1')
+    expect(getRegion('External Attribute')).toHaveTextContent('Display External')
+
+    expect(getByRole(getRegion('Phone'), 'link', { name: '+49 123456789' })).toHaveAttribute(
+      'href',
+      'tel:+49123456789',
     )
-    expect(getRegion('Single Tree Select Field')).toHaveTextContent(
-      'key1 › key1_child1',
+    expect(getByRole(getRegion('Email'), 'link', { name: 'email@email.com' })).toHaveAttribute(
+      'href',
+      'mailto:email@email.com',
     )
-    expect(getRegion('Multi Tree Select Field')).toHaveTextContent(
-      'key1, key2, key2 › key2_child1',
-    )
-    expect(getRegion('External Attribute')).toHaveTextContent(
-      'Display External',
+    expect(getByRole(getRegion('Url'), 'link', { name: 'https://url.com' })).toHaveAttribute(
+      'href',
+      'https://url.com',
     )
 
-    expect(
-      getByRole(getRegion('Phone'), 'link', { name: '+49 123456789' }),
-    ).toHaveAttribute('href', 'tel:+49123456789')
-    expect(
-      getByRole(getRegion('Email'), 'link', { name: 'email@email.com' }),
-    ).toHaveAttribute('href', 'mailto:email@email.com')
-    expect(
-      getByRole(getRegion('Url'), 'link', { name: 'https://url.com' }),
-    ).toHaveAttribute('href', 'https://url.com')
-
-    expect(
-      view.queryByRole('region', { name: 'Hidden Boolean' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('region', { name: 'Hidden Boolean' })).not.toBeInTheDocument()
   })
 
   test("don't show empty fields", () => {
@@ -349,17 +342,21 @@ describe('common object attributes interface', () => {
 
     const getRegion = (name: string) => view.getByRole('region', { name })
 
-    expect(
-      getByRole(getRegion('Integer Field'), 'link', { name: '600' }),
-    ).toHaveAttribute('href', 'https://integer.com/rendered')
-    expect(
-      getByRole(getRegion('Phone'), 'link', { name: '+49 123456789' }),
-    ).toHaveAttribute('href', 'https://phone.com/rendered')
-    expect(
-      getByRole(getRegion('Email'), 'link', { name: 'email@email.com' }),
-    ).toHaveAttribute('href', 'https://email.com/rendered')
-    expect(
-      getByRole(getRegion('Url'), 'link', { name: 'https://url.com' }),
-    ).toHaveAttribute('href', 'https://url.com')
+    expect(getByRole(getRegion('Integer Field'), 'link', { name: '600' })).toHaveAttribute(
+      'href',
+      'https://integer.com/rendered',
+    )
+    expect(getByRole(getRegion('Phone'), 'link', { name: '+49 123456789' })).toHaveAttribute(
+      'href',
+      'https://phone.com/rendered',
+    )
+    expect(getByRole(getRegion('Email'), 'link', { name: 'email@email.com' })).toHaveAttribute(
+      'href',
+      'https://email.com/rendered',
+    )
+    expect(getByRole(getRegion('Url'), 'link', { name: 'https://url.com' })).toHaveAttribute(
+      'href',
+      'https://url.com',
+    )
   })
 })

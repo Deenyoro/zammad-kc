@@ -8,9 +8,7 @@ let organizationAvatarClasses: OrganizationAvatarClassMap = {
   inactive: 'common-organization-avatar-inactive',
 }
 
-export const initializeOrganizationAvatarClasses = (
-  classes: OrganizationAvatarClassMap,
-) => {
+export const initializeOrganizationAvatarClasses = (classes: OrganizationAvatarClassMap) => {
   organizationAvatarClasses = classes
 }
 

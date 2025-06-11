@@ -27,9 +27,6 @@ export const waitUntil = <T>(
  * @param options.interval - How often to check the condition in milliseconds (defaults to 30ms)
  * @param options.message - Custom error message to show on timeout
  */
-export const waitFor = <T>(
-  callback: () => T | Promise<T>,
-  timeout = DEFAULT_TIMEOUT,
-) => {
+export const waitFor = <T>(callback: () => T | Promise<T>, timeout = DEFAULT_TIMEOUT) => {
   return vi.waitFor(callback, timeout)
 }

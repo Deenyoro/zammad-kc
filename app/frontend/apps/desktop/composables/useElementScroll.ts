@@ -29,9 +29,7 @@ export const useElementScroll = (
   const reachedTop = computed(() => y.value === 0)
 
   const scrollNode = computed(() =>
-    isRef(scrollContainerElement)
-      ? scrollContainerElement.value
-      : scrollContainerElement,
+    isRef(scrollContainerElement) ? scrollContainerElement.value : scrollContainerElement,
   )
 
   const reachedBottom = computed(
@@ -39,21 +37,14 @@ export const useElementScroll = (
       // NB: Check if this is the most optimal calculation.
       //   In Webkit based browsers it sometimes results in -0.5 right on the bottom edge,
       //   hence the need for the lower bound.
-      y.value -
-        (scrollNode.value?.scrollHeight ?? 0) +
-        (scrollNode.value?.offsetHeight ?? 0) >
-      -1,
+      y.value - (scrollNode.value?.scrollHeight ?? 0) + (scrollNode.value?.offsetHeight ?? 0) > -1,
   )
 
   const isScrollable = computed(
-    () =>
-      scrollNode.value?.scrollHeight > scrollNode.value?.clientHeight ||
-      y.value > 0,
+    () => scrollNode.value?.scrollHeight > scrollNode.value?.clientHeight || y.value > 0,
   )
 
-  const hasReachedThreshold = computed(
-    () => y.value > (options?.scrollStartThreshold?.value || 0),
-  )
+  const hasReachedThreshold = computed(() => y.value > (options?.scrollStartThreshold?.value || 0))
 
   const omitValueChanges = computed(() => {
     return !hasReachedThreshold.value || !isScrollable.value || reachedTop.value

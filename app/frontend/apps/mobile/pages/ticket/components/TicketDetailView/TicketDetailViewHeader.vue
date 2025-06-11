@@ -4,10 +4,7 @@
 import { toRef } from 'vue'
 
 import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
-import type {
-  TicketById,
-  TicketLiveAppUser,
-} from '#shared/entities/ticket/types.ts'
+import type { TicketById, TicketLiveAppUser } from '#shared/entities/ticket/types.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 
 import CommonLoader from '#mobile/components/CommonLoader/CommonLoader.vue'
@@ -66,9 +63,7 @@ const showActions = () => {
         {{ ticket && `#${ticket.number}` }}
       </div>
       <div class="text-gray">
-        {{
-          ticket && $t('created %s', i18n.relativeDateTime(ticket.createdAt))
-        }}
+        {{ ticket && $t('created %s', i18n.relativeDateTime(ticket.createdAt)) }}
       </div>
     </div>
 
@@ -82,12 +77,7 @@ const showActions = () => {
           :aria-label="$t('Show ticket viewers')"
           @click="showViewers()"
         >
-          <CommonUserAvatar
-            class="z-10"
-            :entity="liveUserList[0].user"
-            personal
-            size="xs"
-          />
+          <CommonUserAvatar class="z-10" :entity="liveUserList[0].user" personal size="xs" />
           <div
             v-if="liveUserList.length - 1"
             class="z-0 flex h-6 w-6 items-center justify-center rounded-full bg-white/80 text-xs text-black select-none ltr:-translate-x-2 rtl:translate-x-2"

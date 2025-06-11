@@ -15,9 +15,7 @@ export default {
     helpMessage: __('Verifying key information…'),
     errorHelpMessage: __('Try using your security key again.'),
     form: false,
-    async setup(
-      publicKey: NonNullable<CredentialRequestOptionsJSON['publicKey']>,
-    ) {
+    async setup(publicKey: NonNullable<CredentialRequestOptionsJSON['publicKey']>) {
       if (!window.isSecureContext) {
         return {
           success: false,

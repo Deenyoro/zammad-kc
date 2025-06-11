@@ -28,11 +28,7 @@ const sizeClasses = computed(() => {
 </script>
 
 <template>
-  <nav
-    :class="sizeClasses"
-    :aria-label="$t('Breadcrumb navigation')"
-    class="max-w-full"
-  >
+  <nav :class="sizeClasses" :aria-label="$t('Breadcrumb navigation')" class="max-w-full">
     <ol class="flex">
       <li
         v-for="(item, idx) in items"
@@ -54,9 +50,7 @@ const sizeClasses = computed(() => {
           internal
         >
           <CommonLabel size="large" class="line-clamp-1 hover:underline">{{
-            item.noOptionLabelTranslation
-              ? item.label
-              : $t(item.label as string)
+            item.noOptionLabelTranslation ? item.label : $t(item.label as string)
           }}</CommonLabel>
         </CommonLink>
 
@@ -67,11 +61,7 @@ const sizeClasses = computed(() => {
           :class="{ 'text-black dark:text-white': item.isActive }"
           aria-current="page"
         >
-          {{
-            item.noOptionLabelTranslation
-              ? item.label
-              : $t(item.label as string)
-          }}
+          {{ item.noOptionLabelTranslation ? item.label : $t(item.label as string) }}
         </component>
 
         <CommonBadge
@@ -85,9 +75,7 @@ const sizeClasses = computed(() => {
 
         <CommonIcon
           v-if="idx !== items.length - 1"
-          :name="
-            locale.localeData?.dir === 'rtl' ? 'chevron-left' : 'chevron-right'
-          "
+          :name="locale.localeData?.dir === 'rtl' ? 'chevron-left' : 'chevron-right'"
           size="xs"
           class="mx-1 inline-flex shrink-0"
         />

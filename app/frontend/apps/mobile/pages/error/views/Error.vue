@@ -25,9 +25,7 @@ const errorImage = computed(() => {
   <div class="flex min-h-screen flex-col px-4">
     <header class="fixed">
       <div class="grid h-16 grid-cols-[75px_auto_75px]">
-        <div
-          class="flex cursor-pointer items-center justify-self-start text-base"
-        >
+        <div class="flex cursor-pointer items-center justify-self-start text-base">
           <CommonBackButton fallback="/" />
         </div>
       </div>
@@ -41,9 +39,7 @@ const errorImage = computed(() => {
         {{ $t(errorOptions.title) }}
       </h2>
       <p class="text-gray mt-4 min-h-[4rem] max-w-prose text-center">
-        {{
-          $t(errorOptions.message, ...(errorOptions.messagePlaceholder || []))
-        }}
+        {{ $t(errorOptions.message, ...(errorOptions.messagePlaceholder || [])) }}
       </p>
       <p v-if="errorOptions.route" class="text-gray max-w-prose text-center">
         {{ errorOptions.route }}

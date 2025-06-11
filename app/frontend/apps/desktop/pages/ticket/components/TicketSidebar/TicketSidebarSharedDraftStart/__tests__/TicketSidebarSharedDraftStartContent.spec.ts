@@ -72,9 +72,7 @@ describe('TicketSidebarSharedDraftStartContent.vue', () => {
     expect(wrapper.getByRole('heading')).toHaveTextContent('Shared Drafts')
     expect(wrapper.getByLabelText('Create a shared draft')).toBeInTheDocument()
 
-    expect(
-      wrapper.getByRole('link', { name: 'Create Shared Draft' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('link', { name: 'Create Shared Draft' })).toBeInTheDocument()
 
     expect(wrapper.getByText('No shared drafts yet')).toBeInTheDocument()
   })
@@ -121,23 +119,17 @@ describe('TicketSidebarSharedDraftStartContent.vue', () => {
       },
     )
 
-    expect(
-      wrapper.getByRole('link', { name: 'Test shared draft 1' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('link', { name: 'Test shared draft 1' })).toBeInTheDocument()
 
     expect(wrapper.getByText('just now')).toBeInTheDocument()
     expect(wrapper.getByText('• Erika Mustermann')).toBeInTheDocument()
 
-    expect(
-      wrapper.getByRole('link', { name: 'Test shared draft 2' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('link', { name: 'Test shared draft 2' })).toBeInTheDocument()
 
     expect(wrapper.getByText('18 minutes ago')).toBeInTheDocument()
     expect(wrapper.getByText('• Max Mustermann')).toBeInTheDocument()
 
-    expect(
-      wrapper.getByRole('link', { name: 'Test shared draft 3' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('link', { name: 'Test shared draft 3' })).toBeInTheDocument()
 
     expect(wrapper.getByText('1 day ago')).toBeInTheDocument()
   })
@@ -169,9 +161,7 @@ describe('TicketSidebarSharedDraftStartContent.vue', () => {
       },
     )
 
-    await wrapper.events.click(
-      wrapper.getByRole('link', { name: 'Test shared draft 1' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('link', { name: 'Test shared draft 1' }))
 
     expect(pushComponent).toHaveBeenCalledWith(
       'flyout',
@@ -203,16 +193,11 @@ describe('TicketSidebarSharedDraftStartContent.vue', () => {
       },
     })
 
-    await wrapper.events.type(
-      wrapper.getByLabelText('Create a shared draft'),
-      'foobar',
-    )
+    await wrapper.events.type(wrapper.getByLabelText('Create a shared draft'), 'foobar')
 
     await getNode('sharedDraftTitle-undefined')?.settled
 
-    await wrapper.events.click(
-      wrapper.getByRole('link', { name: 'Create Shared Draft' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('link', { name: 'Create Shared Draft' }))
 
     const calls = await waitForTicketSharedDraftStartCreateMutationCalls()
 
@@ -263,9 +248,7 @@ describe('TicketSidebarSharedDraftStartContent.vue', () => {
       },
     )
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Update Shared Draft' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Update Shared Draft' }))
 
     const calls = await waitForTicketSharedDraftStartUpdateMutationCalls()
 

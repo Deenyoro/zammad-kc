@@ -22,14 +22,13 @@ export const useAttachments = (options: AttachmentsOptions) => {
 
   const attachments = computed<AttachmentWithUrls[]>(() => {
     return options.attachments.value.map((attachment) => {
-      const { previewUrl, inlineUrl, canDownload, downloadUrl } =
-        getAttachmentLinks(
-          {
-            internalId: attachment.internalId,
-            type: attachment.type,
-          },
-          application.config.api_path,
-        )
+      const { previewUrl, inlineUrl, canDownload, downloadUrl } = getAttachmentLinks(
+        {
+          internalId: attachment.internalId,
+          type: attachment.type,
+        },
+        application.config.api_path,
+      )
 
       return {
         ...attachment,

@@ -14,10 +14,7 @@ import type {
 import { SubscriptionHandler } from '#shared/server/apollo/handler/index.ts'
 import testFlags from '#shared/utils/testFlags.ts'
 
-let subscription: SubscriptionHandler<
-  PushMessagesSubscription,
-  PushMessagesSubscriptionVariables
->
+let subscription: SubscriptionHandler<PushMessagesSubscription, PushMessagesSubscriptionVariables>
 
 const usePushMessages = () => {
   const notify = (message: string) => {

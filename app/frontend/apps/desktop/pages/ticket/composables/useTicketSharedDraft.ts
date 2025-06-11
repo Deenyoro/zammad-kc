@@ -9,14 +9,10 @@ import { removeSignatureFromBody } from '#shared/utils/dom.ts'
 
 import { useFlyout } from '#desktop/components/CommonFlyout/useFlyout.ts'
 
-export const useTicketSharedDraft = (
-  setSkipNextStateUpdate?: (skip: boolean) => void,
-) => {
+export const useTicketSharedDraft = (setSkipNextStateUpdate?: (skip: boolean) => void) => {
   const mapSharedDraftParams = (ticketId: string, form?: FormRef) => {
-    const {
-      article: newArticle,
-      ...ticketAttributes
-    }: { article?: FormValues } = form?.values || {}
+    const { article: newArticle, ...ticketAttributes }: { article?: FormValues } =
+      form?.values || {}
 
     // Map values to the expected format
     if (newArticle) {

@@ -61,12 +61,8 @@ const openModal = () => {
   })
 }
 
-const {
-  optionValueLookup,
-  getSelectedOptionIcon,
-  getSelectedOptionValue,
-  getSelectedOptionLabel,
-} = useSelectOptions(localOptions, contextReactive)
+const { optionValueLookup, getSelectedOptionIcon, getSelectedOptionValue, getSelectedOptionLabel } =
+  useSelectOptions(localOptions, contextReactive)
 
 // Remember current optionValueLookup in node context.
 contextReactive.value.optionValueLookup = optionValueLookup

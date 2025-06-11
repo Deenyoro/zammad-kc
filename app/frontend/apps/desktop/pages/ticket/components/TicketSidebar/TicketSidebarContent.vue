@@ -33,9 +33,7 @@ const variantClass = computed(() =>
 )
 
 const iconClass = computed(() =>
-  props.variant === 'ai'
-    ? 'text-blue-800'
-    : 'text-stone-200 dark:text-neutral-500',
+  props.variant === 'ai' ? 'text-blue-800' : 'text-stone-200 dark:text-neutral-500',
 )
 // Handle scroll position (re)storing of the active sidebar, when navigating between taskbar tabs.
 useScrollPosition(scrollContainer)
@@ -75,10 +73,7 @@ onBeforeUnmount(() => {
     />
   </div>
 
-  <div
-    ref="scroll-container"
-    class="flex h-full flex-col gap-3 overflow-y-auto p-3"
-  >
+  <div ref="scroll-container" class="flex h-full flex-col gap-3 overflow-y-auto p-3">
     <slot />
   </div>
 </template>

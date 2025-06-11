@@ -95,11 +95,7 @@ export const useForm = <T = FormValues>(formRef?: Ref<FormRef | undefined>) => {
 
   const onChangedField = (
     name: string,
-    callback: (
-      newValue: FormFieldValue,
-      oldValue: FormFieldValue,
-      node: FormKitNode,
-    ) => void,
+    callback: (newValue: FormFieldValue, oldValue: FormFieldValue, node: FormKitNode) => void,
   ) => {
     const registerChangeEvent = (node: FormKitNode) => {
       node.on(`changed:${name}`, ({ payload }) => {
@@ -117,10 +113,7 @@ export const useForm = <T = FormValues>(formRef?: Ref<FormRef | undefined>) => {
   }
 
   const updateFieldValues = (fieldValues: Record<string, FormFieldValue>) => {
-    const changedFieldValues: Record<
-      string,
-      Pick<FormSchemaField, 'value'>
-    > = {}
+    const changedFieldValues: Record<string, Pick<FormSchemaField, 'value'>> = {}
 
     Object.keys(fieldValues).forEach((fieldName) => {
       changedFieldValues[fieldName] = {

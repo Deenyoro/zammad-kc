@@ -71,12 +71,9 @@ const actionItems = computed(() => {
         return
       }
 
-      const draftCreateMutation = new MutationHandler(
-        useTicketSharedDraftZoomCreateMutation(),
-        {
-          errorNotificationMessage: __('Draft could not be saved.'),
-        },
-      )
+      const draftCreateMutation = new MutationHandler(useTicketSharedDraftZoomCreateMutation(), {
+        errorNotificationMessage: __('Draft could not be saved.'),
+      })
 
       draftCreateMutation
         .send({ input: mapSharedDraftParams(props.ticketId, props.form) })

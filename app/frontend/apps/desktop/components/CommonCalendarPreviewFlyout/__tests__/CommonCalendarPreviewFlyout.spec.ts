@@ -22,9 +22,7 @@ vi.mock('#shared/utils/openExternalLink.ts', async () => ({
   default: vi.fn(),
 }))
 
-const { default: openExternalLinkMock } = await import(
-  '#shared/utils/openExternalLink.ts'
-)
+const { default: openExternalLinkMock } = await import('#shared/utils/openExternalLink.ts')
 
 const renderCommonCalendarPreviewFlyout = async (
   props: Record<string, unknown> = {},
@@ -94,9 +92,7 @@ describe('TicketSidebarSharedDraftFlyout.vue', () => {
       }),
     ).toBeInTheDocument()
 
-    expect(
-      wrapper.getByRole('heading', { name: 'Preview Calendar' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('heading', { name: 'Preview Calendar' })).toBeInTheDocument()
 
     expect(wrapper.getByText('event 1')).toBeInTheDocument()
     expect(wrapper.getByText('location 1')).toBeInTheDocument()

@@ -26,8 +26,7 @@ const linkSchemaRaw = [
   {
     type: 'security',
     name: 'security',
-    label:
-      'Security Long Name Very long Not Truncated Oh no Please Its Too Long',
+    label: 'Security Long Name Very long Not Truncated Oh no Please Its Too Long',
     required: true,
     props: {
       securityAllowed: {
@@ -381,8 +380,7 @@ const editorProps = reactive({
 })
 
 const updateEditorProps = () => {
-  editorProps.contentType =
-    editorProps.contentType === 'text/plain' ? 'text/html' : 'text/plain'
+  editorProps.contentType = editorProps.contentType === 'text/plain' ? 'text/html' : 'text/plain'
 }
 
 const editorSchema = defineFormSchema([
@@ -408,9 +406,7 @@ const logSubmit = console.log
     <LayoutHeader title="Playground">
       <template #before>1 / 3</template>
       <template #after>
-        <CommonButton class="flex-1 px-4 py-2" variant="secondary"
-          >Click
-        </CommonButton>
+        <CommonButton class="flex-1 px-4 py-2" variant="secondary">Click </CommonButton>
       </template>
     </LayoutHeader>
     <h2 class="text-xl font-bold">Buttons</h2>
@@ -422,41 +418,19 @@ const logSubmit = console.log
       <CommonButton class="flex-1 py-2" variant="submit" />
       <CommonButton class="flex-1 py-2" variant="danger" />
     </div>
-    <h3 class="text-gray mt-2 mb-2 text-lg font-semibold">
-      With transparent background
-    </h3>
+    <h3 class="text-gray mt-2 mb-2 text-lg font-semibold">With transparent background</h3>
     <div class="flex gap-3">
-      <CommonButton
-        class="flex-1 py-2"
-        variant="primary"
-        transparent-background
-      />
-      <CommonButton
-        class="flex-1 py-2"
-        variant="secondary"
-        transparent-background
-      />
+      <CommonButton class="flex-1 py-2" variant="primary" transparent-background />
+      <CommonButton class="flex-1 py-2" variant="secondary" transparent-background />
     </div>
     <div class="my-4 flex gap-3">
-      <CommonButton
-        class="flex-1 py-2"
-        variant="submit"
-        transparent-background
-      />
-      <CommonButton
-        class="flex-1 py-2"
-        variant="danger"
-        transparent-background
-      />
+      <CommonButton class="flex-1 py-2" variant="submit" transparent-background />
+      <CommonButton class="flex-1 py-2" variant="danger" transparent-background />
     </div>
 
-    <button @click="dialog.toggle({ name: 'dialog', label: 'Hello World' })">
-      Dialog
-    </button>
+    <button @click="dialog.toggle({ name: 'dialog', label: 'Hello World' })">Dialog</button>
 
-    <button type="button" @click="updateEditorProps">
-      CHANGE EDITOR PROPS
-    </button>
+    <button type="button" @click="updateEditorProps">CHANGE EDITOR PROPS</button>
 
     <button form="form">Submit</button>
 

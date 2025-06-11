@@ -17,13 +17,11 @@ interface BaseObjectAttributeDisplayOptions {
   object: ObjectLike
 }
 
-export interface ObjectAttributeDisplayOptions
-  extends BaseObjectAttributeDisplayOptions {
+export interface ObjectAttributeDisplayOptions extends BaseObjectAttributeDisplayOptions {
   attribute: ObjectAttribute
 }
 
-export interface ObjectAttributesDisplayOptions
-  extends BaseObjectAttributeDisplayOptions {
+export interface ObjectAttributesDisplayOptions extends BaseObjectAttributeDisplayOptions {
   skipAttributes?: string[]
   attributes: ObjectAttribute[]
 }
@@ -50,9 +48,7 @@ const definitionsByType = Object.values(attributesDeclarations).reduce(
   {} as Record<string, Component>,
 )
 
-export const useDisplayObjectAttribute = (
-  options: ObjectAttributeDisplayOptions,
-) => {
+export const useDisplayObjectAttribute = (options: ObjectAttributeDisplayOptions) => {
   const attributesObject = computed<Dictionary<ObjectAttributeValue>>(() => {
     return keyBy(options.object.objectAttributeValues || {}, 'attribute.name')
   })
@@ -63,21 +59,14 @@ export const useDisplayObjectAttribute = (
     return {
       attribute,
       component: definitionsByType[attribute.dataType],
-      value: getValue(
-        attribute.name,
-        object,
-        attributesObject.value,
-        attribute,
-      ),
+      value: getValue(attribute.name, object, attributesObject.value, attribute),
       link: getLink(attribute.name, attributesObject.value),
     }
   })
   return { field }
 }
 
-export const useDisplayObjectAttributes = (
-  options: ObjectAttributesDisplayOptions,
-) => {
+export const useDisplayObjectAttributes = (options: ObjectAttributesDisplayOptions) => {
   const attributesObject = computed<Dictionary<ObjectAttributeValue>>(() => {
     return keyBy(options.object.objectAttributeValues || {}, 'attribute.name')
   })
@@ -88,12 +77,7 @@ export const useDisplayObjectAttributes = (
       .map((attribute) => ({
         attribute,
         component: definitionsByType[attribute.dataType],
-        value: getValue(
-          attribute.name,
-          options.object,
-          attributesObject.value,
-          attribute,
-        ),
+        value: getValue(attribute.name, options.object, attributesObject.value, attribute),
         link: getLink(attribute.name, attributesObject.value),
       }))
       .filter(({ attribute, value, component }) => {

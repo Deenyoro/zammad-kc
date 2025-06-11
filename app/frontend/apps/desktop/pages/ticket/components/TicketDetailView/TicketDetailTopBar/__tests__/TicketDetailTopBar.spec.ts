@@ -19,11 +19,7 @@ vi.mock('#shared/composables/useCopyToClipboard.ts', async () => ({
 
 vi.mock('#desktop/pages/ticket/composables/useTicketSidebar.ts')
 
-const renderTopBar = (
-  // eslint-disable-next-line default-param-last
-  options = testOptionsTopBar,
-  props?: { hideDetails: boolean },
-) => {
+const renderTopBar = (options = testOptionsTopBar, props?: { hideDetails: boolean }) => {
   return renderComponent(
     {
       components: { TicketDetailTopBar },
@@ -96,9 +92,7 @@ describe('TicketDetailTopBar', () => {
     const wrapper = renderTopBar(readOnlyOptions)
 
     expect(wrapper.queryByText('Highlight')).not.toBeInTheDocument()
-    expect(
-      wrapper.queryByRole('button', { name: 'Welcome to Zammad!' }),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button', { name: 'Welcome to Zammad!' })).not.toBeInTheDocument()
 
     expect(
       wrapper.getByRole('heading', { name: 'Welcome to Zammad!', level: 2 }),

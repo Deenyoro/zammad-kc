@@ -18,10 +18,7 @@ import type { Props } from '#shared/components/Form/Form.vue'
 import { ObjectManagerFrontendAttributesDocument } from '#shared/entities/object-attributes/graphql/queries/objectManagerFrontendAttributes.api.ts'
 import frontendObjectAttributes from '#shared/entities/ticket/__tests__/mocks/frontendObjectAttributes.json'
 import UserError from '#shared/errors/UserError.ts'
-import {
-  EnumFormUpdaterId,
-  EnumObjectManagerObjects,
-} from '#shared/graphql/types.ts'
+import { EnumFormUpdaterId, EnumObjectManagerObjects } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import type { FormUpdaterAdditionalParams } from '#shared/types/form.ts'
 
@@ -60,7 +57,7 @@ const renderForm = async (options: ExtendedMountingOptions<Props> = {}) => {
           value: 'Some text',
         },
       ],
-      ...(options.props || {}),
+      ...options.props,
     },
   })
 
@@ -515,10 +512,7 @@ describe('Form.vue - Edge Cases', () => {
       },
     })
 
-    expect(wrapper.getByRole('link')).toHaveAttribute(
-      'href',
-      'https://example.com/rendered',
-    )
+    expect(wrapper.getByRole('link')).toHaveAttribute('href', 'https://example.com/rendered')
   })
 
   it('can use form layout in schema', async () => {
@@ -603,9 +597,7 @@ describe('Form.vue - Edge Cases', () => {
       },
     })
 
-    expect(
-      wrapper.container.querySelector('div.example-class'),
-    ).toBeInTheDocument()
+    expect(wrapper.container.querySelector('div.example-class')).toBeInTheDocument()
 
     expect(wrapper.getByText('Example Link')).toBeInTheDocument()
     expect(wrapper.getByLabelText('Title')).toBeInTheDocument()
@@ -981,17 +973,11 @@ describe('Form.vue - Empty', () => {
 
 describe('Form.vue - Reset', () => {
   const assertDirty = (element: HTMLElement) => {
-    expect(element.closest('.formkit-outer')).toHaveAttribute(
-      'data-dirty',
-      'true',
-    )
+    expect(element.closest('.formkit-outer')).toHaveAttribute('data-dirty', 'true')
   }
 
   const assertNotDirty = (element: HTMLElement) => {
-    expect(element.closest('.formkit-outer')).not.toHaveAttribute(
-      'data-dirty',
-      'true',
-    )
+    expect(element.closest('.formkit-outer')).not.toHaveAttribute('data-dirty', 'true')
   }
 
   it('resets all values to original ones', async () => {
@@ -1045,10 +1031,7 @@ describe('Form.vue - Reset', () => {
     await view.events.clear(example)
     await view.events.type(example, 'New example')
 
-    form.value.resetForm(
-      { values: { text: 'Some text' } },
-      { resetDirty: false },
-    )
+    form.value.resetForm({ values: { text: 'Some text' } }, { resetDirty: false })
     await waitForNextTick()
 
     expect(input).toHaveValue('New title')
@@ -1056,9 +1039,7 @@ describe('Form.vue - Reset', () => {
     expect(example).toHaveValue('New example')
     expect(form.value.findNodeByName('title')?.context?.state.dirty).toBe(true)
     expect(form.value.findNodeByName('text')?.context?.state.dirty).toBe(false)
-    expect(form.value.findNodeByName('example')?.context?.state.dirty).toBe(
-      true,
-    )
+    expect(form.value.findNodeByName('example')?.context?.state.dirty).toBe(true)
   })
 
   it('resets only specific group node', async () => {
@@ -1073,41 +1054,34 @@ describe('Form.vue - Reset', () => {
     await view.events.type(textarea, 'New text')
     await view.events.type(example, 'New example')
 
-    form.value.resetForm(
-      {},
-      { groupNode: form.value.findNodeByName('example') },
-    )
+    form.value.resetForm({}, { groupNode: form.value.findNodeByName('example') })
     await waitForNextTick()
     expect(input).toHaveValue('New title')
     expect(textarea).toHaveValue('New text')
     expect(example).toHaveValue('Some example')
     expect(form.value.findNodeByName('title')?.context?.state.dirty).toBe(true)
-    expect(form.value.findNodeByName('example')?.context?.state.dirty).toBe(
-      false,
-    )
+    expect(form.value.findNodeByName('example')?.context?.state.dirty).toBe(false)
   })
 
   it('should trigger reset form updater call', async () => {
-    const mockFormUpdaterApi = mockGraphQLApi(FormUpdaterDocument).willBehave(
-      (variables) => {
-        const example: Partial<FormSchemaField> = {}
+    const mockFormUpdaterApi = mockGraphQLApi(FormUpdaterDocument).willBehave((variables) => {
+      const example: Partial<FormSchemaField> = {}
 
-        if (variables.meta.reset) {
-          example.value = 'Updater example'
-        }
+      if (variables.meta.reset) {
+        example.value = 'Updater example'
+      }
 
-        return {
-          data: {
-            formUpdater: {
-              fields: {
-                example,
-              },
-              flags: {},
+      return {
+        data: {
+          formUpdater: {
+            fields: {
+              example,
             },
+            flags: {},
           },
-        }
-      },
-    )
+        },
+      }
+    })
 
     const { view, form } = await renderTicketCreateForm({
       formUpdaterId: EnumFormUpdaterId.FormUpdaterUpdaterTicketCreate,

@@ -5,10 +5,7 @@ import { isEqual } from 'lodash-es'
 import { computed, ref, toRef, watch } from 'vue'
 
 import type { FormRef } from '#shared/components/Form/types.ts'
-import {
-  MutationHandler,
-  QueryHandler,
-} from '#shared/server/apollo/handler/index.ts'
+import { MutationHandler, QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
@@ -76,9 +73,7 @@ const queryError = objectListQuery.operationError()
 
 const error = computed(() =>
   queryError.value
-    ? __(
-        `Error fetching information from i-doit. Please contact your administrator.`,
-      )
+    ? __(`Error fetching information from i-doit. Please contact your administrator.`)
     : null,
 )
 
@@ -86,12 +81,12 @@ const objectList = computed(() => {
   return result.value?.ticketExternalReferencesIdoitObjectList || []
 })
 
-const { removeObjectListCacheUpdate, modifyObjectItemAddCache } =
-  useIdoitCacheHandlers(toRef(props, 'objectIds'), toRef(props, 'ticketId'))
-
-const { addObjectIdsToForm, removeObjectFromForm } = useIdoitFormHelpers(
-  toRef(props, 'form'),
+const { removeObjectListCacheUpdate, modifyObjectItemAddCache } = useIdoitCacheHandlers(
+  toRef(props, 'objectIds'),
+  toRef(props, 'ticketId'),
 )
+
+const { addObjectIdsToForm, removeObjectFromForm } = useIdoitFormHelpers(toRef(props, 'form'))
 
 const removeObjectMutation = new MutationHandler(
   useTicketExternalReferencesIdoitObjectRemoveMutation(),
@@ -100,8 +95,7 @@ const removeObjectMutation = new MutationHandler(
 const removeObject = async ({ id }: { id: number }) => {
   const revertCacheUpdate = removeObjectListCacheUpdate(id)
 
-  if (props.screenType === TicketSidebarScreenType.TicketCreate)
-    return removeObjectFromForm(id)
+  if (props.screenType === TicketSidebarScreenType.TicketCreate) return removeObjectFromForm(id)
 
   return removeObjectMutation
     .send({
@@ -127,9 +121,7 @@ const addObjects = async (formData: FormDataRecords) => {
     })
     .then((result) => {
       if (props.screenType === TicketSidebarScreenType.TicketCreate)
-        addObjectIdsToForm(
-          result?.ticketExternalReferencesIdoitObjectAdd?.idoitObjects,
-        )
+        addObjectIdsToForm(result?.ticketExternalReferencesIdoitObjectAdd?.idoitObjects)
     })
     .finally(() => {
       skipNextObjectUpdate.value = false
@@ -213,19 +205,10 @@ if (props.ticketId) {
             @remove="removeObject"
           />
 
-          <ExternalReferenceContent
-            :label="$t('ID')"
-            :values="[object.idoitObjectId.toString()]"
-          />
+          <ExternalReferenceContent :label="$t('ID')" :values="[object.idoitObjectId.toString()]" />
 
-          <ExternalReferenceContent
-            :label="$t('Status')"
-            :values="[object.status]"
-          />
-          <ExternalReferenceContent
-            :label="$t('Type')"
-            :values="[object.type]"
-          />
+          <ExternalReferenceContent :label="$t('Status')" :values="[object.status]" />
+          <ExternalReferenceContent :label="$t('Type')" :values="[object.type]" />
         </div>
       </div>
     </CommonLoader>

@@ -1,10 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import type {
-  FormFieldValue,
-  FormSubmitData,
-  FormValues,
-} from '#shared/components/Form/types.ts'
+import type { FormFieldValue, FormSubmitData, FormValues } from '#shared/components/Form/types.ts'
 import type { ObjectAttributeValueInput } from '#shared/graphql/types.ts'
 import { convertToGraphQLId, isGraphQLId } from '#shared/graphql/utils.ts'
 import { camelize, toClassName } from '#shared/utils/formatter.ts'
@@ -23,14 +19,10 @@ export const useObjectAttributeFormData = <T = FormValues>(
     return convertToGraphQLId(toClassName(relation), value)
   }
 
-  const ensureRelationId = (
-    attribute: ObjectAttribute,
-    value: FormFieldValue,
-  ) => {
+  const ensureRelationId = (attribute: ObjectAttribute, value: FormFieldValue) => {
     const { relation } = attribute.dataOption || {}
     const isInternalID =
-      typeof value === 'number' ||
-      (typeof value === 'string' && !isGraphQLId(value))
+      typeof value === 'number' || (typeof value === 'string' && !isGraphQLId(value))
 
     if (relation && isInternalID) {
       return fullRelationId(relation, value)

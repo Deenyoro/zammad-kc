@@ -56,15 +56,13 @@ const tableHeaders: TableSimpleHeader[] = [
 const tableItems = computed(() => {
   if (!calendarEventsQueryResult.value?.calendarIcsFileEvents) return []
 
-  return calendarEventsQueryResult.value?.calendarIcsFileEvents.map(
-    (event) => ({
-      id: getUuid(),
-      summary: event.title,
-      location: event.location,
-      start: event.startDate,
-      end: event.endDate,
-    }),
-  )
+  return calendarEventsQueryResult.value?.calendarIcsFileEvents.map((event) => ({
+    id: getUuid(),
+    summary: event.title,
+    location: event.location,
+    start: event.startDate,
+    end: event.endDate,
+  }))
 })
 
 const downloadCalendar = () => {

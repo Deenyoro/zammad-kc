@@ -31,12 +31,9 @@ watch(
   },
 )
 
-const tagAssigmentUpdateHandler = new MutationHandler(
-  useTagAssignmentUpdateMutation({}),
-  {
-    errorNotificationMessage: __('Ticket tags could not be updated.'),
-  },
-)
+const tagAssigmentUpdateHandler = new MutationHandler(useTagAssignmentUpdateMutation({}), {
+  errorNotificationMessage: __('Ticket tags could not be updated.'),
+})
 
 const { notify } = useNotifications()
 

@@ -5,7 +5,7 @@ import { axe } from 'vitest-axe'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 
-describe('testing locale a11y view', async () => {
+describe('testing locale a11y view', () => {
   beforeEach(() => {
     mockApplicationConfig({
       two_factor_authentication_method_security_keys: true,

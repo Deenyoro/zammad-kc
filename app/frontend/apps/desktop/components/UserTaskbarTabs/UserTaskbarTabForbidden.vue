@@ -9,9 +9,7 @@ import type { UserTaskbarTabEntityProps } from './types.ts'
 
 const props = defineProps<UserTaskbarTabEntityProps>()
 
-const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTabLink(
-  toRef(props, 'taskbarTab'),
-)
+const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTabLink(toRef(props, 'taskbarTab'))
 </script>
 
 <template>
@@ -27,12 +25,7 @@ const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTabLink(
     :link="taskbarTabLink"
     internal
   >
-    <CommonIcon
-      name="x-lg"
-      size="small"
-      class="shrink-0 text-red-500"
-      decorative
-    />
+    <CommonIcon name="x-lg" size="small" class="shrink-0 text-red-500" decorative />
 
     <CommonLabel
       class="block! truncate text-gray-300 group-hover/tab:text-white dark:text-neutral-400"

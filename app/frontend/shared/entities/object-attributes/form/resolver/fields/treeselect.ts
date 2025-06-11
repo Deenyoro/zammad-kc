@@ -19,14 +19,9 @@ export class FieldResolverTreeselect extends FieldResolverSelect {
   multiFieldAttributeType = 'multi_tree_select'
 
   mappedOptions(): ObjectTreeSelectOption[] {
-    const mapTreeSelectOptions = (
-      options: ObjectAttributeTreeSelectOption[],
-    ) => {
+    const mapTreeSelectOptions = (options: ObjectAttributeTreeSelectOption[]) => {
       return options.reduce(
-        (
-          treeSelectOptions: ObjectTreeSelectOption[],
-          { children, name, value },
-        ) => {
+        (treeSelectOptions: ObjectTreeSelectOption[], { children, name, value }) => {
           const treeSelectOption: ObjectTreeSelectOption = {
             label: name,
             value,
@@ -45,8 +40,7 @@ export class FieldResolverTreeselect extends FieldResolverSelect {
     }
 
     return mapTreeSelectOptions(
-      this.attributeConfig
-        .options as unknown as ObjectAttributeTreeSelectOption[],
+      this.attributeConfig.options as unknown as ObjectAttributeTreeSelectOption[],
     )
   }
 }

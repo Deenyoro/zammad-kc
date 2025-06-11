@@ -5,9 +5,7 @@ import { within } from '@testing-library/vue'
 import { renderComponent } from '#tests/support/components/index.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 
-import ArticleRemoteContentBadge, {
-  type Props,
-} from '../ArticleRemoteContentBadge.vue'
+import ArticleRemoteContentBadge, { type Props } from '../ArticleRemoteContentBadge.vue'
 
 const renderBadge = (propsData: Props = {}) => {
   return renderComponent(ArticleRemoteContentBadge, {
@@ -16,8 +14,7 @@ const renderBadge = (propsData: Props = {}) => {
   })
 }
 
-const originalFormattingUrl =
-  '/ticket_attachment/12/34/56?disposition=attachment'
+const originalFormattingUrl = '/ticket_attachment/12/34/56?disposition=attachment'
 
 describe('rendering remote content badge', () => {
   beforeEach(() => {
@@ -53,14 +50,10 @@ describe('rendering remote content badge', () => {
   it('does not show original formatting link if missing', async () => {
     const view = renderBadge()
 
-    await view.events.click(
-      view.getByRole('button', { name: 'Blocked Content' }),
-    )
+    await view.events.click(view.getByRole('button', { name: 'Blocked Content' }))
 
     const popup = view.getByTestId('popupWindow')
 
-    expect(
-      within(popup).queryByText('Original Formatting'),
-    ).not.toBeInTheDocument()
+    expect(within(popup).queryByText('Original Formatting')).not.toBeInTheDocument()
   })
 })

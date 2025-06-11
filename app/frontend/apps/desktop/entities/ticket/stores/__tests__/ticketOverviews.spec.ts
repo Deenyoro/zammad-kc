@@ -70,8 +70,7 @@ describe('useTicketOverviewsStore', () => {
       ],
     })
     const store = useTicketOverviewsStore()
-    const { currentTicketOverviewLink, overviewBackgroundPollingIds } =
-      storeToRefs(store)
+    const { currentTicketOverviewLink, overviewBackgroundPollingIds } = storeToRefs(store)
 
     store.setCurrentTicketOverviewLink('overview-1')
 
@@ -83,9 +82,7 @@ describe('useTicketOverviewsStore', () => {
     store.setCurrentTicketOverviewLink('overview-2')
 
     await waitFor(() =>
-      expect(overviewBackgroundPollingIds.value).toEqual([
-        convertToGraphQLId('Overview', 1),
-      ]),
+      expect(overviewBackgroundPollingIds.value).toEqual([convertToGraphQLId('Overview', 1)]),
     )
   })
 
@@ -113,9 +110,7 @@ describe('useTicketOverviewsStore', () => {
     expect(ticketsByOverviewHandler.value).toEqual(new Map())
     expect(overviewBackgroundPollingIds.value).toEqual([])
     expect(overviewBackgroundCountPollingIds.value).toEqual(
-      expect.arrayContaining([
-        expect.stringContaining('gid://zammad/Overview'),
-      ]),
+      expect.arrayContaining([expect.stringContaining('gid://zammad/Overview')]),
     )
   })
 
@@ -172,9 +167,7 @@ describe('useTicketOverviewsStore', () => {
     const store = useTicketOverviewsStore()
     const { overviewsByLink } = storeToRefs(store)
 
-    await waitFor(() =>
-      expect(Object.keys(overviewsByLink.value).length).toBeGreaterThan(0),
-    )
+    await waitFor(() => expect(Object.keys(overviewsByLink.value).length).toBeGreaterThan(0))
   })
 
   it('sets the current ticket overview link correctly', async () => {
@@ -219,18 +212,14 @@ describe('useTicketOverviewsStore', () => {
 
     expect(ticketsByOverviewHandler.value.size).toBe(1)
 
-    expect(
-      ticketsByOverviewHandler.value.has(convertToGraphQLId('Overview', 1)),
-    ).toBe(true)
+    expect(ticketsByOverviewHandler.value.has(convertToGraphQLId('Overview', 1))).toBe(true)
 
     // Remove the handler
     store.removeTicketByOverviewHandler(convertToGraphQLId('Overview', 1))
 
     expect(ticketsByOverviewHandler.value.size).toBe(0)
 
-    expect(
-      ticketsByOverviewHandler.value.has(convertToGraphQLId('Overview', 1)),
-    ).toBe(false)
+    expect(ticketsByOverviewHandler.value.has(convertToGraphQLId('Overview', 1))).toBe(false)
   })
 
   it('updates last used overview correctly', async () => {
@@ -258,7 +247,7 @@ describe('useTicketOverviewsStore', () => {
 
     // Skip mocking and write directly to the store
     user.value = {
-      ...(user.value || {}),
+      ...user.value,
       preferences: {
         overviews_last_used: {
           2: '2021-09-02T00:00:00Z',
@@ -272,9 +261,7 @@ describe('useTicketOverviewsStore', () => {
 
     // Check if the last used overview is updated correctly
     await waitFor(() =>
-      expect(
-        lastUsedOverviews.value[convertToGraphQLId('Overview', 1)],
-      ).toBeDefined(),
+      expect(lastUsedOverviews.value[convertToGraphQLId('Overview', 1)]).toBeDefined(),
     )
 
     expect(user.value!.preferences.overviews_last_used['1']).toBeDefined()
@@ -305,7 +292,7 @@ describe('useTicketOverviewsStore', () => {
 
     // Skip mocking and write directly to the store
     user.value = {
-      ...(user.value || {}),
+      ...user.value,
       preferences: {},
     } as UserData
 
@@ -315,9 +302,7 @@ describe('useTicketOverviewsStore', () => {
 
     // Check if the last used overview is updated correctly
     await waitFor(() =>
-      expect(
-        lastUsedOverviews.value[convertToGraphQLId('Overview', 1)],
-      ).toBeDefined(),
+      expect(lastUsedOverviews.value[convertToGraphQLId('Overview', 1)]).toBeDefined(),
     )
 
     expect(user.value!.preferences.overviews_last_used['1']).toBeDefined()

@@ -30,12 +30,8 @@ const filterValueValidator = (filter: string) => {
   return true
 }
 
-const {
-  actions,
-  isValidFilterValue,
-  addUnknownValue,
-  onSearchInteractionUpdate,
-} = useAddUnknownValueAction(actionLabel, filterValueValidator)
+const { actions, isValidFilterValue, addUnknownValue, onSearchInteractionUpdate } =
+  useAddUnknownValueAction(actionLabel, filterValueValidator)
 
 const emptyInitialLabelText = computed(() => {
   if (!allowNewTags()) return __('Start typing to search…')

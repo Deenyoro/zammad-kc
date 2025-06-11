@@ -41,11 +41,7 @@ watch(
       class="absolute items-center justify-center"
       role="status"
     >
-      <CommonIcon
-        :label="__('Loading content')"
-        name="loading"
-        animation="spin"
-      />
+      <CommonIcon :label="__('Loading content')" name="loading" animation="spin" />
     </div>
     <div v-else v-bind="$attrs">
       <slot />

@@ -6,12 +6,9 @@ import type { FetchResult } from '@apollo/client/core'
 import type { DocumentNode } from 'graphql'
 import type { App } from 'vue'
 
-export type RegisterInMemoryCacheConfig = (
-  config: InMemoryCacheConfig,
-) => InMemoryCacheConfig
+export type RegisterInMemoryCacheConfig = (config: InMemoryCacheConfig) => InMemoryCacheConfig
 
-export type CacheInitializerModules =
-  ImportGlobEagerOutput<RegisterInMemoryCacheConfig>
+export type CacheInitializerModules = ImportGlobEagerOutput<RegisterInMemoryCacheConfig>
 export interface ClientErrorContext {
   logLevel: LogLevel
 }

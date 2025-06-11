@@ -2,10 +2,7 @@
 
 import type { ImportGlobEagerOutput } from './utils.ts'
 import type { FormKitTypeDefinition } from '@formkit/core'
-import type {
-  FormKitValidationRule,
-  FormKitValidationMessages,
-} from '@formkit/validation'
+import type { FormKitValidationRule, FormKitValidationMessages } from '@formkit/validation'
 import type { App } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 

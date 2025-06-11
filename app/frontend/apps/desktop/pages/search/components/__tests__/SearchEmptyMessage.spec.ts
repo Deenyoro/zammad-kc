@@ -16,15 +16,11 @@ describe('SearchEmptyMessage', () => {
   it('displays message if user has not searched yet', async () => {
     const wrapper = renderSearchEmptyMessage()
     expect(wrapper.getByIconName('search')).toBeInTheDocument()
-    expect(
-      wrapper.getByText('Start typing to get the search results.'),
-    ).toBeInTheDocument()
+    expect(wrapper.getByText('Start typing to get the search results.')).toBeInTheDocument()
 
     await wrapper.rerender({ searchTerm: '     ', result: [] })
 
-    expect(
-      wrapper.getByText('Start typing to get the search results.'),
-    ).toBeInTheDocument()
+    expect(wrapper.getByText('Start typing to get the search results.')).toBeInTheDocument()
   })
 
   it('displays no results message if user has searched', () => {
@@ -33,17 +29,13 @@ describe('SearchEmptyMessage', () => {
     expect(wrapper.getByIconName('search')).toBeInTheDocument()
     expect(wrapper.queryByText('No results found.')).not.toBeInTheDocument()
 
-    expect(
-      wrapper.getByText('No search results for this query.'),
-    ).toBeInTheDocument()
+    expect(wrapper.getByText('No search results for this query.')).toBeInTheDocument()
   })
 
   it('emits event when user clicks on clear search', async () => {
     const wrapper = renderSearchEmptyMessage('test', [])
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Clear search' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear search' }))
 
     expect(wrapper.emitted('clear-search-input')).toHaveLength(1)
   })

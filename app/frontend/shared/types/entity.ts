@@ -5,7 +5,7 @@ import type { ObjectAttributeValue } from '#shared/graphql/types.ts'
 import type { PartialDeep } from 'type-fest'
 
 export interface EntityObject {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line no-explicit-any
   [index: string]: any
   objectAttributeValues?: Maybe<Array<PartialDeep<ObjectAttributeValue>>>
 }

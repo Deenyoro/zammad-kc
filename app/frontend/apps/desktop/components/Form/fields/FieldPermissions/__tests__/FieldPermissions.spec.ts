@@ -2,12 +2,7 @@
 
 import { getNode } from '@formkit/core'
 import { FormKit } from '@formkit/vue'
-import {
-  getAllByRole,
-  getAllByTestId,
-  getByRole,
-  waitFor,
-} from '@testing-library/vue'
+import { getAllByRole, getAllByTestId, getByRole, waitFor } from '@testing-library/vue'
 
 import { renderComponent } from '#tests/support/components/index.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
@@ -118,15 +113,10 @@ describe('Form - Field - Permissions', () => {
       const labels = getAllByTestId(childPermission, 'common-label')
 
       expect(labels[0]).toHaveTextContent(
-        i18n.t(
-          testOptions[1].children![index].label,
-          testOptions[1].children![index].value,
-        ),
+        i18n.t(testOptions[1].children![index].label, testOptions[1].children![index].value),
       )
 
-      expect(labels[1]).toHaveTextContent(
-        testOptions[1].children![index].description!,
-      )
+      expect(labels[1]).toHaveTextContent(testOptions[1].children![index].description!)
     })
   })
 
@@ -205,10 +195,7 @@ describe('Form - Field - Permissions - Input Checklist', () => {
       name: 'test_name',
     })
 
-    expect(view.getByLabelText('Permissions')).toHaveAttribute(
-      'name',
-      'test_name',
-    )
+    expect(view.getByLabelText('Permissions')).toHaveAttribute('name', 'test_name')
   })
 
   it('implements blur handler', async () => {
@@ -230,9 +217,7 @@ describe('Form - Field - Permissions - Input Checklist', () => {
 
     for await (const [i, item] of [testOptions[0], testOptions[2]].entries()) {
       wrapper.events.click(
-        wrapper.getByLabelText(
-          `${i18n.t(item.label)}${item.value}${item.description}`,
-        ),
+        wrapper.getByLabelText(`${i18n.t(item.label)}${item.value}${item.description}`),
       )
 
       await waitFor(() => {
@@ -241,10 +226,7 @@ describe('Form - Field - Permissions - Input Checklist', () => {
     }
 
     await waitFor(() => {
-      expect(getNode('permissions')?.value).toEqual([
-        testOptions[0].value,
-        testOptions[2].value,
-      ])
+      expect(getNode('permissions')?.value).toEqual([testOptions[0].value, testOptions[2].value])
     })
   })
 
@@ -281,9 +263,7 @@ describe('Form - Field - Permissions - Input Checklist', () => {
 
     for (const option of testOptions) {
       expect(
-        view.getByLabelText(
-          `${i18n.t(option.label)}${option.value}${option.description}`,
-        ),
+        view.getByLabelText(`${i18n.t(option.label)}${option.value}${option.description}`),
       ).toBeDisabled()
     }
   })
@@ -293,10 +273,7 @@ describe('Form - Field - Permissions - Input Checklist', () => {
       'test-attribute': 'test_value',
     })
 
-    expect(view.getByLabelText('Permissions')).toHaveAttribute(
-      'test-attribute',
-      'test_value',
-    )
+    expect(view.getByLabelText('Permissions')).toHaveAttribute('test-attribute', 'test_value')
   })
 
   it('implements standardized classes', async () => {

@@ -75,15 +75,11 @@ describe('ArticleReply', () => {
   it('shows common article action buttons', () => {
     const wrapper = renderArticleReply()
 
-    expect(
-      wrapper.getByRole('button', { name: 'Add internal note' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Add internal note' })).toBeInTheDocument()
 
     expect(wrapper.getByIconName('pencil-square')).toBeInTheDocument()
 
-    expect(
-      wrapper.getByRole('button', { name: 'Add phone call' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Add phone call' })).toBeInTheDocument()
 
     expect(wrapper.getByIconName('telephone')).toBeInTheDocument()
   })
@@ -93,9 +89,7 @@ describe('ArticleReply', () => {
       createArticleType: 'phone',
     })
 
-    expect(
-      wrapper.getByRole('button', { name: 'Add reply' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Add reply' })).toBeInTheDocument()
 
     expect(wrapper.getByIconName('envelope')).toBeInTheDocument()
   })
@@ -105,9 +99,7 @@ describe('ArticleReply', () => {
       createArticleType: 'web',
     })
 
-    expect(
-      wrapper.getByRole('button', { name: 'Add reply' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Add reply' })).toBeInTheDocument()
 
     expect(wrapper.getByIconName('envelope')).toBeInTheDocument()
   })
@@ -130,21 +122,15 @@ describe('ArticleReply', () => {
       }),
     ).toBeInTheDocument()
 
-    expect(
-      document.querySelector('#ticketArticleReplyForm'),
-    ).toBeInTheDocument()
+    expect(document.querySelector('#ticketArticleReplyForm')).toBeInTheDocument()
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Pin this panel' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Pin this panel' }))
 
     expect(complementary).toHaveAttribute('aria-expanded', 'false')
 
     expect(wrapper.getByRole('button', { name: 'Resize article panel' }))
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Unpin this panel' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Unpin this panel' }))
 
     expect(complementary).toHaveAttribute('aria-expanded', 'true')
   })
@@ -155,44 +141,24 @@ describe('ArticleReply', () => {
       hasInternalArticle: true,
     })
 
-    expect(wrapper.getByTestId('article-reply-stripes-panel')).toHaveClass(
-      'bg-stripes',
-    )
-    expect(wrapper.getByTestId('article-reply-stripes-panel')).not.toHaveClass(
-      'border-stripes',
-    )
+    expect(wrapper.getByTestId('article-reply-stripes-panel')).toHaveClass('bg-stripes')
+    expect(wrapper.getByTestId('article-reply-stripes-panel')).not.toHaveClass('border-stripes')
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Pin this panel' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Pin this panel' }))
 
-    expect(wrapper.getByTestId('article-reply-stripes-panel')).not.toHaveClass(
-      'bg-stripes',
-    )
-    expect(wrapper.getByTestId('article-reply-stripes-panel')).toHaveClass(
-      'border-stripes',
-    )
+    expect(wrapper.getByTestId('article-reply-stripes-panel')).not.toHaveClass('bg-stripes')
+    expect(wrapper.getByTestId('article-reply-stripes-panel')).toHaveClass('border-stripes')
 
     await wrapper.rerender({
       hasInternalArticle: false,
     })
 
-    expect(wrapper.getByTestId('article-reply-stripes-panel')).not.toHaveClass(
-      'bg-stripes',
-    )
-    expect(wrapper.getByTestId('article-reply-stripes-panel')).not.toHaveClass(
-      'border-stripes',
-    )
+    expect(wrapper.getByTestId('article-reply-stripes-panel')).not.toHaveClass('bg-stripes')
+    expect(wrapper.getByTestId('article-reply-stripes-panel')).not.toHaveClass('border-stripes')
 
-    await wrapper.events.click(
-      wrapper.getByRole('button', { name: 'Unpin this panel' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Unpin this panel' }))
 
-    expect(wrapper.getByTestId('article-reply-stripes-panel')).not.toHaveClass(
-      'bg-stripes',
-    )
-    expect(wrapper.getByTestId('article-reply-stripes-panel')).not.toHaveClass(
-      'border-stripes',
-    )
+    expect(wrapper.getByTestId('article-reply-stripes-panel')).not.toHaveClass('bg-stripes')
+    expect(wrapper.getByTestId('article-reply-stripes-panel')).not.toHaveClass('border-stripes')
   })
 })

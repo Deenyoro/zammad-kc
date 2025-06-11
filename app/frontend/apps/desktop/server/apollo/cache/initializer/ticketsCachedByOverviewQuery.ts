@@ -8,10 +8,7 @@ import registerRelayStylePagination from '#shared/server/apollo/cache/utils/regi
 import { useTicketsCachedByOverviewCache } from '#desktop/entities/ticket/composables/useTicketsCachedByOverviewCache.ts'
 
 import type { InMemoryCache } from '@apollo/client/cache'
-import type {
-  FieldMergeFunction,
-  FieldPolicy,
-} from '@apollo/client/cache/inmemory/policies'
+import type { FieldMergeFunction, FieldPolicy } from '@apollo/client/cache/inmemory/policies'
 import type { InMemoryCacheConfig } from '@apollo/client/cache/inmemory/types'
 
 const modifyOverviewsCache = (
@@ -48,14 +45,12 @@ const modifyOverviewsCache = (
   })
 }
 
-export default function register(
-  config: InMemoryCacheConfig,
-): InMemoryCacheConfig {
-  const currentConfig = registerRelayStylePagination(
-    config,
-    'ticketsCachedByOverview',
-    ['overviewId', 'orderBy', 'orderDirection'],
-  )
+export default function register(config: InMemoryCacheConfig): InMemoryCacheConfig {
+  const currentConfig = registerRelayStylePagination(config, 'ticketsCachedByOverview', [
+    'overviewId',
+    'orderBy',
+    'orderDirection',
+  ])
 
   currentConfig.typePolicies ||= {}
   currentConfig.typePolicies.Query ||= {}
@@ -65,8 +60,7 @@ export default function register(
   const ticketsCachedByOverviewPolicy = currentConfig.typePolicies.Query.fields
     .ticketsCachedByOverview as FieldPolicy
 
-  const originalMerge =
-    ticketsCachedByOverviewPolicy.merge as FieldMergeFunction
+  const originalMerge = ticketsCachedByOverviewPolicy.merge as FieldMergeFunction
 
   // Override merge function to include noChange handling
   ticketsCachedByOverviewPolicy.merge = (existing, incoming, options) => {
@@ -81,10 +75,9 @@ export default function register(
       })
     }
 
-    const cachedData =
-      useTicketsCachedByOverviewCache().readTicketsByOverviewCache(
-        variables as TicketsCachedByOverviewQueryVariables,
-      )
+    const cachedData = useTicketsCachedByOverviewCache().readTicketsByOverviewCache(
+      variables as TicketsCachedByOverviewQueryVariables,
+    )
 
     // We receiving null when the query data is still the same.
     if ((cachedData || existing) && incoming.edges === null) {

@@ -17,9 +17,7 @@ export const removeSignatureFromBody = (input: FormFieldValue) => {
 
   const dom = domFrom(input)
 
-  dom
-    .querySelectorAll('div[data-signature="true"]')
-    .forEach((elem) => elem.remove())
+  dom.querySelectorAll('div[data-signature="true"]').forEach((elem) => elem.remove())
 
   return dom.innerHTML
 }
@@ -28,8 +26,7 @@ export const removeSignatureFromBody = (input: FormFieldValue) => {
  * Queries all images in the container and waits for them to load.
  * */
 export const waitForImagesToLoad = async (container: MaybeRef) => {
-  const inlineImages: HTMLImageElement[] =
-    toValue(container).querySelectorAll('img')
+  const inlineImages: HTMLImageElement[] = toValue(container).querySelectorAll('img')
 
   if (inlineImages.length > 0) {
     return Promise.allSettled<null>(

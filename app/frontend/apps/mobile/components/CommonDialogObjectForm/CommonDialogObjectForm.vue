@@ -41,11 +41,7 @@ const props = defineProps<Props>()
 const emit = defineEmits<{
   success: [data: unknown]
   error: []
-  'changed-field': [
-    fieldName: string,
-    newValue: FormFieldValue,
-    oldValue: FormFieldValue,
-  ]
+  'changed-field': [fieldName: string, newValue: FormFieldValue, oldValue: FormFieldValue]
 }>()
 
 const updateMutation = new MutationHandler(props.mutation({}), {
@@ -67,9 +63,7 @@ const initialFlatObject = {
   ...objectAtrributes,
 }
 
-const { attributesLookup: objectAttributesLookup } = useObjectAttributes(
-  props.type,
-)
+const { attributesLookup: objectAttributesLookup } = useObjectAttributes(props.type)
 
 const { waitForConfirmation } = useConfirmation()
 

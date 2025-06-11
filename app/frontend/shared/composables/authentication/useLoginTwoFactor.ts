@@ -3,10 +3,7 @@
 import { computed, ref, reactive } from 'vue'
 
 import { useTwoFactorPlugins } from '#shared/entities/two-factor/composables/useTwoFactorPlugins.ts'
-import type {
-  LoginFlow,
-  LoginCredentials,
-} from '#shared/entities/two-factor/types.ts'
+import type { LoginFlow, LoginCredentials } from '#shared/entities/two-factor/types.ts'
 import type {
   EnumTwoFactorAuthenticationMethod,
   UserLoginTwoFactorMethods,
@@ -42,10 +39,7 @@ const useLoginTwoFactor = (clearErrors: () => void) => {
     updateState('2fa', true)
   }
 
-  const askTwoFactor = (
-    twoFactor: UserLoginTwoFactorMethods,
-    formData: LoginCredentials,
-  ) => {
+  const askTwoFactor = (twoFactor: UserLoginTwoFactorMethods, formData: LoginCredentials) => {
     clearErrors()
     loginFlow.credentials = formData
     loginFlow.recoveryCodesAvailable = twoFactor.recoveryCodesAvailable
@@ -58,22 +52,15 @@ const useLoginTwoFactor = (clearErrors: () => void) => {
   }
 
   const twoFactorAllowedMethods = computed(() => {
-    return twoFactorMethods.filter((method) =>
-      loginFlow.allowedMethods.includes(method.name),
-    )
+    return twoFactorMethods.filter((method) => loginFlow.allowedMethods.includes(method.name))
   })
 
   const twoFactorPlugin = computed(() => {
-    return loginFlow.twoFactor
-      ? twoFactorMethodLookup[loginFlow.twoFactor]
-      : undefined
+    return loginFlow.twoFactor ? twoFactorMethodLookup[loginFlow.twoFactor] : undefined
   })
 
   const hasAlternativeLoginMethod = computed(() => {
-    return (
-      twoFactorAllowedMethods.value.length > 1 ||
-      loginFlow.recoveryCodesAvailable
-    )
+    return twoFactorAllowedMethods.value.length > 1 || loginFlow.recoveryCodesAvailable
   })
 
   const statePreviousMap = {

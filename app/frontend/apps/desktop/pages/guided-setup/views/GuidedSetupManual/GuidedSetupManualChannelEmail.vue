@@ -54,11 +54,8 @@ const {
   updateMetaInformationInbound,
 } = useEmailInboundForm()
 
-const {
-  formEmailInboundMessages,
-  emailInboundMessageSchema,
-  emailInboundMessageSchemaData,
-} = useEmailInboundMessagesForm(metaInformationInbound)
+const { formEmailInboundMessages, emailInboundMessageSchema, emailInboundMessageSchemaData } =
+  useEmailInboundMessagesForm(metaInformationInbound)
 
 const {
   formEmailOutbound,
@@ -116,10 +113,7 @@ const activeInboundMessageNextRoundtrip = computed(
 )
 
 const goBack = () => {
-  if (
-    activeStep.value === 'inbound' ||
-    activeInboundMessageNextRoundtrip.value
-  ) {
+  if (activeStep.value === 'inbound' || activeInboundMessageNextRoundtrip.value) {
     activeStep.value = 'account'
   } else if (activeStep.value === 'outbound' && metaInformationInbound.value) {
     activeStep.value = 'inbound-messages'
@@ -137,8 +131,7 @@ const submitButtonText = computed(() => {
 
   if (
     activeStep.value === 'inbound' ||
-    (activeStep.value !== 'outbound' &&
-      !activeInboundMessageNextRoundtrip.value)
+    (activeStep.value !== 'outbound' && !activeInboundMessageNextRoundtrip.value)
   ) {
     return __('Continue')
   }
@@ -157,8 +150,7 @@ const submitButtonVariant = computed(() => {
 
   if (
     activeStep.value === 'inbound' ||
-    (activeStep.value !== 'outbound' &&
-      !activeInboundMessageNextRoundtrip.value)
+    (activeStep.value !== 'outbound' && !activeInboundMessageNextRoundtrip.value)
   ) {
     return 'primary'
   }
@@ -173,8 +165,7 @@ const emailConfigurationCheck = computed(() => {
 
   if (
     activeStep.value === 'inbound' ||
-    (activeStep.value !== 'outbound' &&
-      !activeInboundMessageNextRoundtrip.value)
+    (activeStep.value !== 'outbound' && !activeInboundMessageNextRoundtrip.value)
   ) {
     return __('Verifying your configuration…')
   }
@@ -184,10 +175,7 @@ const emailConfigurationCheck = computed(() => {
 </script>
 
 <template>
-  <GuidedSetupStatusMessage
-    v-if="debouncedLoading"
-    :message="emailConfigurationCheck"
-  />
+  <GuidedSetupStatusMessage v-if="debouncedLoading" :message="emailConfigurationCheck" />
   <div v-show="!debouncedLoading" class="flex flex-col gap-2.5">
     <div v-show="activeStep === 'account'">
       <Form
@@ -207,14 +195,10 @@ const emailConfigurationCheck = computed(() => {
         form-class="mb-2.5"
         :handlers="[useSSLVerificationWarningHandler()]"
         :flatten-form-groups="['inbound']"
-        :form-updater-id="
-          EnumFormUpdaterId.FormUpdaterUpdaterGuidedSetupEmailInbound
-        "
+        :form-updater-id="EnumFormUpdaterId.FormUpdaterUpdaterGuidedSetupEmailInbound"
         :schema="emailInboundSchema"
         :change-fields="emailInboundFormChangeFields"
-        @submit="
-          validateEmailInbound($event as FormSubmitData<EmailInboundData>)
-        "
+        @submit="validateEmailInbound($event as FormSubmitData<EmailInboundData>)"
       />
     </div>
     <div v-show="activeStep === 'inbound-messages'">
@@ -224,16 +208,10 @@ const emailConfigurationCheck = computed(() => {
         data-test-id="channel-email-inbound-messages"
         form-class="mb-2.5"
         :handlers="[useArchiveBeforeWarningHandler()]"
-        :form-updater-id="
-          EnumFormUpdaterId.FormUpdaterUpdaterGuidedSetupEmailArchive
-        "
+        :form-updater-id="EnumFormUpdaterId.FormUpdaterUpdaterGuidedSetupEmailArchive"
         :schema="emailInboundMessageSchema"
         :schema-data="emailInboundMessageSchemaData"
-        @submit="
-          importEmailInboundMessages(
-            $event as FormSubmitData<EmailInboundMessagesData>,
-          )
-        "
+        @submit="importEmailInboundMessages($event as FormSubmitData<EmailInboundMessagesData>)"
       />
     </div>
     <div v-show="activeStep === 'outbound'">
@@ -244,14 +222,10 @@ const emailConfigurationCheck = computed(() => {
         form-class="mb-2.5"
         :handlers="[useSSLVerificationWarningHandler()]"
         :flatten-form-groups="['outbound']"
-        :form-updater-id="
-          EnumFormUpdaterId.FormUpdaterUpdaterGuidedSetupEmailOutbound
-        "
+        :form-updater-id="EnumFormUpdaterId.FormUpdaterUpdaterGuidedSetupEmailOutbound"
         :schema="emailOutboundSchema"
         :change-fields="emailOutboundFormChangeFields"
-        @submit="
-          validateEmailOutbound($event as FormSubmitData<EmailOutboundData>)
-        "
+        @submit="validateEmailOutbound($event as FormSubmitData<EmailOutboundData>)"
       />
     </div>
     <GuidedSetupActionFooter

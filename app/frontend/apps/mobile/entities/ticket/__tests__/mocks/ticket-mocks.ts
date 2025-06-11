@@ -244,24 +244,12 @@ export const ticketObjectAttributes = () => ({
     },
     {
       name: 'edit',
-      attributes: [
-        'group_id',
-        'owner_id',
-        'state_id',
-        'pending_time',
-        'priority_id',
-      ],
+      attributes: ['group_id', 'owner_id', 'state_id', 'pending_time', 'priority_id'],
       __typename: 'ObjectManagerScreenAttributes',
     },
     {
       name: 'create_middle',
-      attributes: [
-        'group_id',
-        'owner_id',
-        'state_id',
-        'pending_time',
-        'priority_id',
-      ],
+      attributes: ['group_id', 'owner_id', 'state_id', 'pending_time', 'priority_id'],
       __typename: 'ObjectManagerScreenAttributes',
     },
     {

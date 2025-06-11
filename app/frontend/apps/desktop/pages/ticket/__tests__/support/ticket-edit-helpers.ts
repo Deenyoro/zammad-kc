@@ -8,10 +8,7 @@ import { mockTicketArticlesQuery } from '#shared/entities/ticket/graphql/queries
 import { mockTicketQuery } from '#shared/entities/ticket/graphql/queries/ticket.mocks.ts'
 import { createDummyArticle } from '#shared/entities/ticket-article/__tests__/mocks/ticket-articles.ts'
 import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
-import {
-  EnumTicketArticleSenderName,
-  type Ticket,
-} from '#shared/graphql/types.ts'
+import { EnumTicketArticleSenderName, type Ticket } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import { mockUserCurrentTaskbarItemListQuery } from '#desktop/entities/user/current/graphql/queries/userCurrentTaskbarItemList.mocks.ts'

@@ -36,8 +36,7 @@ export const useTicketArticlesQueryVariables = () => {
     ticketArticlesLoaded.add(ticketId)
   }
 
-  const allTicketArticlesLoaded = (ticketId: string) =>
-    ticketArticlesLoaded.has(ticketId)
+  const allTicketArticlesLoaded = (ticketId: string) => ticketArticlesLoaded.has(ticketId)
 
   return {
     ticketArticlesMin,

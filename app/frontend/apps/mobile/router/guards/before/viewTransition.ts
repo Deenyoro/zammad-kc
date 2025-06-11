@@ -3,11 +3,7 @@
 import { ViewTransitions } from '#mobile/components/transition/TransitionViewNavigation/types.ts'
 import { useViewTransition } from '#mobile/components/transition/TransitionViewNavigation/useViewTransition.ts'
 
-import type {
-  NavigationGuard,
-  RouteLocationNormalized,
-  NavigationGuardNext,
-} from 'vue-router'
+import type { NavigationGuard, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
 
 const transitionViewGuard: NavigationGuard = (
   to: RouteLocationNormalized,
@@ -26,9 +22,7 @@ const transitionViewGuard: NavigationGuard = (
 
     if (previousLevel !== to.meta.level) {
       newViewTransition =
-        previousLevel < to.meta.level
-          ? ViewTransitions.Next
-          : ViewTransitions.Prev
+        previousLevel < to.meta.level ? ViewTransitions.Next : ViewTransitions.Prev
     }
   }
 

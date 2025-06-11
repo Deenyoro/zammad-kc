@@ -19,10 +19,7 @@ const { hasPermission } = useSessionStore()
 const { templateList } = useApplyTemplate()
 
 const templateAccess = computed(
-  () =>
-    templateList &&
-    templateList.value.length > 0 &&
-    hasPermission('ticket.agent'),
+  () => templateList && templateList.value.length > 0 && hasPermission('ticket.agent'),
 )
 
 const items = computed<DropdownItem[]>(() =>

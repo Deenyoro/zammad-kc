@@ -121,15 +121,12 @@ useEventListener('click', (e) => {
     return
   }
 
-  if (isCurrentFocusedEditorWithTypeName(e.target as HTMLElement))
-    setPopoverTarget()
+  if (isCurrentFocusedEditorWithTypeName(e.target as HTMLElement)) setPopoverTarget()
 })
 
 const handleMenuItemClick = (action: MenuItem, event: MouseEvent) => {
   if ((action as ActionItem).subMenu) {
-    const newPopoverTarget = document.getElementById(
-      `${CSS.escape(props.targetId)}`,
-    )
+    const newPopoverTarget = document.getElementById(`${CSS.escape(props.targetId)}`)
     if (newPopoverTarget) {
       popoverTarget.value = newPopoverTarget as HTMLDivElement
     }
@@ -158,11 +155,7 @@ defineExpose({ close })
       :items="actions"
       @click-item="handleMenuItemClick"
     >
-      <template
-        v-for="action in slotActionsConfig"
-        :key="action.key"
-        #[`itemRight-${action.key}`]
-      >
+      <template v-for="action in slotActionsConfig" :key="action.key" #[`itemRight-${action.key}`]>
         <CommonIcon
           v-if="action.hasSubmenu"
           class="fill-gray-100 group-hover:fill-white last:mr-2.5 dark:fill-neutral-400"

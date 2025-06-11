@@ -12,10 +12,7 @@ import {
 
 import PersonalSettingNewAccessTokenFlyout from '../PersonalSettingNewAccessTokenFlyout.vue'
 
-const renderNewAccessTokenFlyout = (
-  props: Record<string, unknown> = {},
-  options: any = {},
-) => {
+const renderNewAccessTokenFlyout = (props: Record<string, unknown> = {}, options: any = {}) => {
   return renderComponent(PersonalSettingNewAccessTokenFlyout, {
     props,
     ...options,
@@ -51,8 +48,7 @@ describe('PersonalSettingNewAccessTokenFlyout - create new access token', () => 
                   {
                     value: 'ticket.agent',
                     label: 'Agent Tickets (%s)',
-                    description:
-                      'To access the agent tickets based on group access.',
+                    description: 'To access the agent tickets based on group access.',
                   },
                 ],
               },
@@ -106,8 +102,6 @@ describe('PersonalSettingNewAccessTokenFlyout - create new access token', () => 
       }),
     )
 
-    expect(view.getByLabelText('Your Personal Access Token')).toHaveValue(
-      'new-token-1234',
-    )
+    expect(view.getByLabelText('Your Personal Access Token')).toHaveValue('new-token-1234')
   })
 })

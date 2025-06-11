@@ -51,9 +51,7 @@ routeValues.forEach((routeModule) => {
   }
 })
 
-const sortedFirstLevelRoutes = firstLevelRoutes.sort(
-  (a, b) => a.meta.order - b.meta.order,
-)
+const sortedFirstLevelRoutes = firstLevelRoutes.sort((a, b) => a.meta.order - b.meta.order)
 
 const numberOfPermanentItems = permanentItemCount
 

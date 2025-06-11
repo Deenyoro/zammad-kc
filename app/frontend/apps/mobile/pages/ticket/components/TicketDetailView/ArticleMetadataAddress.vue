@@ -24,15 +24,9 @@ const show = computed(() => {
 <template>
   <CommonSectionMenuItem v-if="address && show" :label="label">
     <div v-if="!address.parsed?.length">{{ address.raw }}</div>
-    <div
-      v-for="(contact, idx) of address.parsed || []"
-      :key="idx"
-      data-test-id="metadataAddress"
-    >
+    <div v-for="(contact, idx) of address.parsed || []" :key="idx" data-test-id="metadataAddress">
       <div>{{ contact.name }}</div>
-      <div class="text-sm text-white/75">
-        &lt;{{ contact.emailAddress }}&gt;
-      </div>
+      <div class="text-sm text-white/75">&lt;{{ contact.emailAddress }}&gt;</div>
     </div>
   </CommonSectionMenuItem>
 </template>

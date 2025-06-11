@@ -24,9 +24,7 @@ const emit = defineEmits<TicketSidebarEmits>()
 
 const { ticket } = useTicketInformation()
 
-const incompleteChecklistItemsCount = computed(
-  () => ticket.value?.checklist?.incomplete,
-)
+const incompleteChecklistItemsCount = computed(() => ticket.value?.checklist?.incomplete)
 
 const badge = computed<TicketSidebarButtonBadgeDetails | undefined>(() => {
   const label = __('Incomplete checklist items')

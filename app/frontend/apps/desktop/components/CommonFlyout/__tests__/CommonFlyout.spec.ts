@@ -81,9 +81,7 @@ describe('CommonFlyout', () => {
         resizable: false,
       })
 
-      expect(
-        flyout.queryByLabelText('Resize side panel'),
-      ).not.toBeInTheDocument()
+      expect(flyout.queryByLabelText('Resize side panel')).not.toBeInTheDocument()
     })
 
     it('renders slot content', async () => {
@@ -115,11 +113,7 @@ describe('CommonFlyout', () => {
           showBackdrop: false,
         },
         slots: {
-          default: html`<input
-            type="text"
-            placeholder="test"
-            name="test-input"
-          />`,
+          default: html`<input type="text" placeholder="test" name="test-input" />`,
         },
       })
 

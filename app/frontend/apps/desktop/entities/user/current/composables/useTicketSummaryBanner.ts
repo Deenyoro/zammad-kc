@@ -20,9 +20,7 @@ export const useTicketSummaryBanner = () => {
   const apolloClient = getApolloClient()
 
   const isTicketSummaryFeatureEnabled = computed(
-    () =>
-      !!config.value?.ai_assistance_ticket_summary &&
-      !!config.value?.ai_provider,
+    () => !!config.value?.ai_assistance_ticket_summary && !!config.value?.ai_provider,
   )
 
   const hideBannerFromUserPreference = computed(

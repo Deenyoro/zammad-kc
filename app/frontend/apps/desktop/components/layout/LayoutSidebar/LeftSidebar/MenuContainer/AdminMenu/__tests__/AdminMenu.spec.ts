@@ -10,7 +10,7 @@ import { COLLAPSED_STATE_KEY } from '#desktop/components/layout/LayoutSidebar/Le
 
 describe('AdminMenu', () => {
   describe('create ticket action button', () => {
-    it('renders setting button ', () => {
+    it('renders setting button', () => {
       mockPermissions(['admin.monitoring'])
 
       const wrapper = renderComponent(AdminMenu, {

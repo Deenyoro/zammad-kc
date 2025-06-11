@@ -59,20 +59,15 @@ const systemSetupImportStatusQuery = new QueryHandler(
 const systemSetupImportStatusQueryResult = systemSetupImportStatusQuery.result()
 
 const importIsStarted = computed(() => {
-  return Boolean(
-    systemSetupImportStatusQueryResult.value?.systemImportState?.startedAt,
-  )
+  return Boolean(systemSetupImportStatusQueryResult.value?.systemImportState?.startedAt)
 })
 
 const importJobIsFinished = computed(() => {
-  return Boolean(
-    systemSetupImportStatusQueryResult.value?.systemImportState?.finishedAt,
-  )
+  return Boolean(systemSetupImportStatusQueryResult.value?.systemImportState?.finishedAt)
 })
 
 const importJobErrorMessage = computed(() => {
-  const jobResult =
-    systemSetupImportStatusQueryResult.value?.systemImportState?.result
+  const jobResult = systemSetupImportStatusQueryResult.value?.systemImportState?.result
 
   if (!jobResult || !jobResult.error) return
 
@@ -82,8 +77,7 @@ const importJobErrorMessage = computed(() => {
 const currentSystemSetupImportProgressItems = computed(() => {
   if (!importIsStarted.value) return []
 
-  const stats =
-    systemSetupImportStatusQueryResult.value?.systemImportState?.result
+  const stats = systemSetupImportStatusQueryResult.value?.systemImportState?.result
 
   if (!stats) return []
 
@@ -93,32 +87,18 @@ const currentSystemSetupImportProgressItems = computed(() => {
     progressStats.push({
       entity,
       entityLabel: label,
-      processed:
-        stats[entity] && stats[entity].sum
-          ? String(stats[entity].sum)
-          : undefined,
-      total:
-        stats[entity] && stats[entity].total
-          ? String(stats[entity].total)
-          : undefined,
+      processed: stats[entity] && stats[entity].sum ? String(stats[entity].sum) : undefined,
+      total: stats[entity] && stats[entity].total ? String(stats[entity].total) : undefined,
       isFinished: false,
     })
   })
 
   progressStats.forEach((item) => {
-    if (
-      item.processed &&
-      item.total &&
-      Number(item.processed) > Number(item.total)
-    ) {
+    if (item.processed && item.total && Number(item.processed) > Number(item.total)) {
       item.processed = item.total
     }
 
-    if (
-      item.processed !== undefined &&
-      item.total !== undefined &&
-      item.processed === item.total
-    )
+    if (item.processed !== undefined && item.total !== undefined && item.processed === item.total)
       item.isFinished = true
   })
 
@@ -165,10 +145,7 @@ const systemInitSettingsUpdated = ref(false)
 const application = useApplicationStore()
 
 watchEffect(() => {
-  if (
-    application.config.system_init_done &&
-    application.config.import_mode === false
-  ) {
+  if (application.config.system_init_done && application.config.import_mode === false) {
     systemInitSettingsUpdated.value = true
   }
 })
@@ -180,9 +157,7 @@ if (!importIsStarted.value) {
 
 const systemInitDone = computed(() => {
   return (
-    systemInitSettingsUpdated.value &&
-    importJobIsFinished.value &&
-    !importJobErrorMessage.value
+    systemInitSettingsUpdated.value && importJobIsFinished.value && !importJobErrorMessage.value
   )
 })
 

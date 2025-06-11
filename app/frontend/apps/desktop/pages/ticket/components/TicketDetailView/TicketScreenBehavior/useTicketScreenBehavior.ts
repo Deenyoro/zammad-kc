@@ -10,18 +10,14 @@ import { useSessionStore } from '#shared/stores/session.ts'
 
 import { useUserCurrentTaskbarTabsStore } from '#desktop/entities/user/current/stores/taskbarTabs.ts'
 
-export const useTicketScreenBehavior = (
-  currentTaskbarTabId: Ref<string | undefined>,
-) => {
+export const useTicketScreenBehavior = (currentTaskbarTabId: Ref<string | undefined>) => {
   const { deleteTaskbarTab } = useUserCurrentTaskbarTabsStore()
 
   const { user } = storeToRefs(useSessionStore())
 
   const walker = useWalker()
 
-  const secondaryAction = computed(
-    () => user.value?.preferences?.secondaryAction,
-  )
+  const secondaryAction = computed(() => user.value?.preferences?.secondaryAction)
 
   const closeCurrentTaskbarTab = () => {
     if (!currentTaskbarTabId.value) return

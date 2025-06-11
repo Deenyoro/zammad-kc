@@ -13,11 +13,7 @@ import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 
 import useFlatSelectOptions from '../FieldTreeSelect/useFlatSelectOptions.ts'
 
-import {
-  GroupAccess,
-  type GroupPermissionReactive,
-  type GroupPermissionsContext,
-} from './types.ts'
+import { GroupAccess, type GroupPermissionReactive, type GroupPermissionsContext } from './types.ts'
 
 interface Props {
   context: GroupPermissionsContext
@@ -134,11 +130,7 @@ watch(
     if (!newValue || !newValue.length) {
       groupOptions.splice(0, groupOptions.length, filterGroupOptions(0))
 
-      groupPermissions.splice(
-        0,
-        groupPermissions.length,
-        getNewGroupPermission(),
-      )
+      groupPermissions.splice(0, groupPermissions.length, getNewGroupPermission())
 
       return
     }
@@ -165,14 +157,12 @@ const hasNoMoreGroups = computed(
   () =>
     !flatOptions.value.length ||
     groupPermissions.reduce((emptyGroups, groupPermission) => {
-      if (!((groupPermission.groups as unknown as SelectValue[]) || []).length)
-        emptyGroups += 1
+      if (!((groupPermission.groups as unknown as SelectValue[]) || []).length) emptyGroups += 1
       return emptyGroups
     }, 0) > 0 ||
     groupPermissions.reduce(
       (selectedGroupCount, groupPermission) =>
-        selectedGroupCount +
-        ((groupPermission.groups as unknown as SelectValue[]) || []).length,
+        selectedGroupCount + ((groupPermission.groups as unknown as SelectValue[]) || []).length,
       0,
     ) === flatOptions.value.length,
 )
@@ -195,10 +185,7 @@ const ensureGranularOrFullAccess = (
         groupAccess[key as GroupAccess] = false
       }
     })
-  } else if (
-    access !== GroupAccess.Full &&
-    groupAccess[GroupAccess.Full] === true
-  )
+  } else if (access !== GroupAccess.Full && groupAccess[GroupAccess.Full] === true)
     groupAccess[GroupAccess.Full] = false
 }
 </script>
@@ -246,18 +233,11 @@ const ensureGranularOrFullAccess = (
         :disabled="context.disabled"
         :alternative-border="true"
         @input="
-          ensureGranularOrFullAccess(
-            groupPermission.groupAccess,
-            groupAccess.access,
-            $event!,
-          )
+          ensureGranularOrFullAccess(groupPermission.groupAccess, groupAccess.access, $event!)
         "
       >
         <template #label>
-          <CommonLabel
-            class="text-gray-300! uppercase dark:text-neutral-400!"
-            size="small"
-          >
+          <CommonLabel class="text-gray-300! uppercase dark:text-neutral-400!" size="small">
             {{ $t(groupAccess.label) }}
           </CommonLabel>
         </template>

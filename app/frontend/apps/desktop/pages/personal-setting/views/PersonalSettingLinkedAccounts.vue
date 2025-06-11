@@ -11,10 +11,7 @@ import {
 import { useThirdPartyAuthentication } from '#shared/composables/authentication/useThirdPartyAuthentication.ts'
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
 import useFingerprint from '#shared/composables/useFingerprint.ts'
-import {
-  type Authorization,
-  EnumAuthenticationProvider,
-} from '#shared/graphql/types.ts'
+import { type Authorization, EnumAuthenticationProvider } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n.ts'
 import { ErrorRouteType, redirectErrorRoute } from '#shared/router/error.ts'
 import { MutationHandler } from '#shared/server/apollo/handler/index.ts'
@@ -24,10 +21,7 @@ import { ErrorStatusCodes } from '#shared/types/error.ts'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 import CommonSimpleTable from '#desktop/components/CommonTable/CommonSimpleTable.vue'
-import type {
-  TableSimpleHeader,
-  TableItem,
-} from '#desktop/components/CommonTable/types'
+import type { TableSimpleHeader, TableItem } from '#desktop/components/CommonTable/types'
 import CommonThirdPartyAuthenticationButton from '#desktop/components/CommonThirdPartyAuthenticationButton/CommonThirdPartyAuthenticationButton.vue'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import { useBreadcrumb } from '#desktop/pages/personal-setting/composables/useBreadcrumb.ts'
@@ -42,9 +36,7 @@ defineOptions({
       return redirectErrorRoute({
         type: ErrorRouteType.AuthenticatedError,
         title: __('Forbidden'),
-        message: __(
-          'There are no enabled third-party authentication providers.',
-        ),
+        message: __('There are no enabled third-party authentication providers.'),
         statusCode: ErrorStatusCodes.Forbidden,
       })
 
@@ -173,8 +165,7 @@ const tableActions = computed((): MenuItem[] => [
     key: 'delete',
     icon: 'trash3',
     variant: 'danger',
-    ariaLabel: (provider) =>
-      i18n.t('Remove account link on %s', provider?.application),
+    ariaLabel: (provider) => i18n.t('Remove account link on %s', provider?.application),
     show: (provider) => !!provider?.username,
     onClick: (provider) => unlinkAccount(provider as LinkedAccountTableItem),
   },
@@ -182,8 +173,7 @@ const tableActions = computed((): MenuItem[] => [
     key: 'setup',
     icon: 'plus-square-fill',
     variant: 'secondary',
-    ariaLabel: (provider) =>
-      i18n.t('Link account on %s', provider?.application),
+    ariaLabel: (provider) => i18n.t('Link account on %s', provider?.application),
     show: (provider) => !provider?.username,
   },
 ])

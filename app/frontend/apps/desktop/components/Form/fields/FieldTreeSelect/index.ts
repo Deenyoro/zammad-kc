@@ -12,6 +12,7 @@ import FieldTreeSelectInput from './FieldTreeSelectInput.vue'
 import type { FormKitBaseSlots, FormKitInputs } from '@formkit/inputs'
 
 declare module '@formkit/inputs' {
+  // oxlint-disable eslint(no-unused-vars)
   interface FormKitInputProps<Props extends FormKitInputs<Props>> {
     treeselect: TreeSelectProps & {
       type: 'treeselect'
@@ -38,11 +39,7 @@ const fieldDefinition = createInput(
     'sorting',
   ],
   {
-    features: [
-      addLink,
-      formUpdaterTrigger(),
-      removeValuesForNonExistingOrDisabledOptions,
-    ],
+    features: [addLink, formUpdaterTrigger(), removeValuesForNonExistingOrDisabledOptions],
   },
 )
 

@@ -88,9 +88,7 @@ describe('TicketOverviews', () => {
 
     const router = getTestRouter()
 
-    await waitFor(() =>
-      expect(router.currentRoute.value.path).toBe('/tickets/view/my_assigned'),
-    )
+    await waitFor(() => expect(router.currentRoute.value.path).toBe('/tickets/view/my_assigned'))
   })
 
   it('displays overviews correctly', async () => {
@@ -144,23 +142,19 @@ describe('TicketOverviews', () => {
       name: 'second level navigation sidebar',
     })
 
-    let currentOverviews = within(secondaryNavigationSidebar).getAllByRole(
-      'link',
-    )
+    let currentOverviews = within(secondaryNavigationSidebar).getAllByRole('link')
 
     expect(currentOverviews[0]).toHaveTextContent('My Assigned Tickets')
     expect(currentOverviews[1]).toHaveTextContent('New Tickets')
 
-    await getUserCurrentOverviewOrderingFullAttributesUpdatesSubscriptionHandler().trigger(
-      {
-        userCurrentOverviewOrderingUpdates: generateObjectData(
-          'UserCurrentOverviewOrderingUpdatesPayload',
-          {
-            overviews: overviews.reverse(),
-          },
-        ),
-      },
-    )
+    await getUserCurrentOverviewOrderingFullAttributesUpdatesSubscriptionHandler().trigger({
+      userCurrentOverviewOrderingUpdates: generateObjectData(
+        'UserCurrentOverviewOrderingUpdatesPayload',
+        {
+          overviews: overviews.reverse(),
+        },
+      ),
+    })
 
     await waitForNextTick()
 
@@ -184,35 +178,29 @@ describe('TicketOverviews', () => {
       name: 'second level navigation sidebar',
     })
 
-    expect(
-      within(secondaryNavigationSidebar).getAllByRole('link'),
-    ).toHaveLength(2)
+    expect(within(secondaryNavigationSidebar).getAllByRole('link')).toHaveLength(2)
 
-    await getUserCurrentTicketOverviewFullAttributesUpdatesSubscriptionHandler().trigger(
-      {
-        userCurrentTicketOverviewUpdates: generateObjectData(
-          'UserCurrentTicketOverviewUpdatesPayload',
-          {
-            ticketOverviews: [
-              ...overviews,
-              {
-                id: convertToGraphQLId('Overview', 3),
-                name: 'Foo Tickets',
-                link: 'foo_tickets',
-                prio: 2000,
-                orderBy: 'created_at',
-                orderDirection: EnumOrderDirection.Ascending,
-                active: true,
-              },
-            ],
-          },
-        ),
-      },
-    )
+    await getUserCurrentTicketOverviewFullAttributesUpdatesSubscriptionHandler().trigger({
+      userCurrentTicketOverviewUpdates: generateObjectData(
+        'UserCurrentTicketOverviewUpdatesPayload',
+        {
+          ticketOverviews: [
+            ...overviews,
+            {
+              id: convertToGraphQLId('Overview', 3),
+              name: 'Foo Tickets',
+              link: 'foo_tickets',
+              prio: 2000,
+              orderBy: 'created_at',
+              orderDirection: EnumOrderDirection.Ascending,
+              active: true,
+            },
+          ],
+        },
+      ),
+    })
 
-    expect(
-      within(secondaryNavigationSidebar).getAllByRole('link'),
-    ).toHaveLength(3)
+    expect(within(secondaryNavigationSidebar).getAllByRole('link')).toHaveLength(3)
   })
 
   describe('empty states', () => {
@@ -229,15 +217,11 @@ describe('TicketOverviews', () => {
         ),
       ).toBeInTheDocument()
 
-      expect(view.getByRole('heading', { level: 2 })).toHaveTextContent(
-        'No Overviews',
-      )
+      expect(view.getByRole('heading', { level: 2 })).toHaveTextContent('No Overviews')
 
       expect(view.getByIconName('exclamation-triangle')).toBeInTheDocument()
 
-      expect(
-        view.queryByLabelText('second level navigation sidebar'),
-      ).not.toBeInTheDocument()
+      expect(view.queryByLabelText('second level navigation sidebar')).not.toBeInTheDocument()
     })
   })
 
@@ -295,33 +279,21 @@ describe('TicketOverviews', () => {
       }),
     ).toBeInTheDocument()
 
-    expect(await view.findByRole('heading', { level: 2 })).toHaveTextContent(
-      'Welcome!',
-    )
+    expect(await view.findByRole('heading', { level: 2 })).toHaveTextContent('Welcome!')
 
+    expect(view.getByText('You have not created a ticket yet.')).toBeInTheDocument()
     expect(
-      view.getByText('You have not created a ticket yet.'),
+      view.getByText('The way to communicate with us is this thing called "ticket".'),
     ).toBeInTheDocument()
     expect(
-      view.getByText(
-        'The way to communicate with us is this thing called "ticket".',
-      ),
-    ).toBeInTheDocument()
-    expect(
-      view.getByText(
-        'Please click on the button below to create your first one.',
-      ),
+      view.getByText('Please click on the button below to create your first one.'),
     ).toBeInTheDocument()
 
-    await view.events.click(
-      view.getByRole('button', { name: 'Create your first ticket' }),
-    )
+    await view.events.click(view.getByRole('button', { name: 'Create your first ticket' }))
 
     const router = getTestRouter()
 
-    await waitFor(() =>
-      expect(router.currentRoute.value.name).toBe('TicketCreate'),
-    )
+    await waitFor(() => expect(router.currentRoute.value.name).toBe('TicketCreate'))
   })
 
   it('displays a message indicating no tickets are available when the overview is empty', async () => {
@@ -365,9 +337,7 @@ describe('TicketOverviews', () => {
 
     const view = await visitView('tickets/view')
 
-    expect(await view.findByRole('heading', { level: 2 })).toHaveTextContent(
-      'Empty Overview',
-    )
+    expect(await view.findByRole('heading', { level: 2 })).toHaveTextContent('Empty Overview')
 
     expect(view.getByText('No tickets in this state.')).toBeInTheDocument()
   })
@@ -465,9 +435,7 @@ describe('TicketOverviews', () => {
       const view = await visitView('tickets/view/my_assigned')
 
       expect(view.queryByRole('checkbox')).not.toBeInTheDocument()
-      expect(
-        view.queryByRole('button', { name: 'Bulk Actions' }),
-      ).not.toBeInTheDocument()
+      expect(view.queryByRole('button', { name: 'Bulk Actions' })).not.toBeInTheDocument()
     })
 
     it('selects a ticket for bulk edit', async () => {
@@ -552,17 +520,11 @@ describe('TicketOverviews', () => {
 
       await waitForUserCurrentTicketOverviewsQueryCalls()
 
-      expect(
-        view.queryByRole('button', { name: 'Bulk Action' }),
-      ).not.toBeInTheDocument()
+      expect(view.queryByRole('button', { name: 'Bulk Action' })).not.toBeInTheDocument()
 
-      await view.events.click(
-        view.getByRole('checkbox', { name: 'Select this entry' }),
-      )
+      await view.events.click(view.getByRole('checkbox', { name: 'Select this entry' }))
 
-      await view.events.click(
-        view.getByRole('button', { name: 'Bulk Actions' }),
-      )
+      await view.events.click(view.getByRole('button', { name: 'Bulk Actions' }))
 
       expect(
         await view.findByRole('complementary', { name: 'Tickets Bulk Edit' }),

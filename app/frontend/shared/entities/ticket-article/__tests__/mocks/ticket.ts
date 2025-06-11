@@ -120,7 +120,6 @@ export const createDummyTicket = <R = TicketQuery['ticket']>(options?: {
   externalReferences?: TicketQuery['ticket']['externalReferences']
   preferences?: TicketQuery['ticket']['preferences']
   sharedDraftZoomId?: number
-  // eslint-disable-next-line sonarjs/cognitive-complexity
 }): R => {
   return nullableMock({
     __typename: 'Ticket',
@@ -138,23 +137,13 @@ export const createDummyTicket = <R = TicketQuery['ticket']>(options?: {
     updatedAt: mockTicketUpdateDate.toISOString(),
     pendingTime: null,
     owner: options?.owner === undefined ? defaultOwner : options?.owner,
-    customer:
-      options?.customer === undefined ? defaultCustomer : options?.customer,
-    organization:
-      options?.organization === undefined
-        ? defaultOrganization
-        : options?.organization,
+    customer: options?.customer === undefined ? defaultCustomer : options?.customer,
+    organization: options?.organization === undefined ? defaultOrganization : options?.organization,
     state: options?.state === undefined ? defaultState : options?.state,
     group: options?.group === undefined ? defaultGroup : options?.group,
-    priority:
-      options?.defaultPriority === undefined
-        ? defaultPriority
-        : options?.defaultPriority,
+    priority: options?.defaultPriority === undefined ? defaultPriority : options?.defaultPriority,
     objectAttributeValues: [],
-    policy:
-      options?.defaultPolicy === undefined
-        ? defaultPolicy
-        : options?.defaultPolicy,
+    policy: options?.defaultPolicy === undefined ? defaultPolicy : options?.defaultPolicy,
     tags: options?.tags || [],
     timeUnit: options?.timeUnit || null,
     timeUnitsPerType: options?.timeUnitsPerType || [],

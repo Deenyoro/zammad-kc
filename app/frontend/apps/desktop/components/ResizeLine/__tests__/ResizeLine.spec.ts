@@ -59,23 +59,11 @@ describe('ResizeLine', () => {
       },
     })
 
-    expect(wrapper.getByRole('separator')).toHaveAttribute(
-      'aria-valuemax',
-      '100',
-    )
-    expect(wrapper.getByRole('separator')).toHaveAttribute(
-      'aria-valuemin',
-      '10',
-    )
-    expect(wrapper.getByRole('separator')).toHaveAttribute(
-      'aria-valuenow',
-      '50',
-    )
+    expect(wrapper.getByRole('separator')).toHaveAttribute('aria-valuemax', '100')
+    expect(wrapper.getByRole('separator')).toHaveAttribute('aria-valuemin', '10')
+    expect(wrapper.getByRole('separator')).toHaveAttribute('aria-valuenow', '50')
 
-    expect(wrapper.getByRole('separator')).toHaveAttribute(
-      'aria-orientation',
-      'horizontal',
-    )
+    expect(wrapper.getByRole('separator')).toHaveAttribute('aria-orientation', 'horizontal')
 
     expect(wrapper.getByLabelText('test-label')).toBeInTheDocument()
 
@@ -83,9 +71,6 @@ describe('ResizeLine', () => {
       orientation: 'horizontal',
     })
 
-    expect(wrapper.getByRole('separator')).toHaveAttribute(
-      'aria-orientation',
-      'vertical',
-    )
+    expect(wrapper.getByRole('separator')).toHaveAttribute('aria-orientation', 'vertical')
   })
 })

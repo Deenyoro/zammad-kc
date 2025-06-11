@@ -2,10 +2,7 @@
 
 import { setupView } from '#tests/support/mock-user.ts'
 
-import {
-  EnumTicketArticleSenderName,
-  type PolicyTicket,
-} from '#shared/graphql/types.ts'
+import { EnumTicketArticleSenderName, type PolicyTicket } from '#shared/graphql/types.ts'
 
 import {
   createEligibleTicketArticleReplyData,
@@ -33,16 +30,13 @@ describe.each([
     createEligibleTicketArticleReplyData(name, policies)
 
   describe('seeing possible article actions', () => {
-    it.skipIf(sender.includes('Customer'))(
-      `cannot reply to ${name}, if sender is Agent`,
-      () => {
-        setupView('agent')
-        const { ticket, article } = createEligibleData()
-        article.sender!.name = EnumTicketArticleSenderName.Agent
-        const actions = createTestArticleActions(ticket, article)
-        expect(actions.find((a) => a.name === name)).toBeUndefined()
-      },
-    )
+    it.skipIf(sender.includes('Customer'))(`cannot reply to ${name}, if sender is Agent`, () => {
+      setupView('agent')
+      const { ticket, article } = createEligibleData()
+      article.sender!.name = EnumTicketArticleSenderName.Agent
+      const actions = createTestArticleActions(ticket, article)
+      expect(actions.find((a) => a.name === name)).toBeUndefined()
+    })
 
     it(`cannot reply to article, if article type is not ${name}`, () => {
       setupView('agent')

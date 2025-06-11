@@ -20,10 +20,7 @@ defineOptions({
   beforeRouteEnter(to, from) {
     const application = useApplicationStore()
 
-    if (
-      !application.config.import_backend &&
-      from.name !== 'GuidedSetupImportSource'
-    ) {
+    if (!application.config.import_backend && from.name !== 'GuidedSetupImportSource') {
       return { path: `/guided-setup/import/${to.params.source}`, replace: true }
     }
   },
@@ -45,9 +42,7 @@ const sourcePlugin = guidedSetupImportSourcePluginLookup[props.source]
 setTitle(i18n.t('Start Import from %s', sourcePlugin.label))
 
 const startImport = () => {
-  const importStartMutation = new MutationHandler(
-    useSystemImportStartMutation(),
-  )
+  const importStartMutation = new MutationHandler(useSystemImportStartMutation())
 
   importStartMutation
     .send()
@@ -69,15 +64,9 @@ const startImport = () => {
         )
       }}
     </CommonLabel>
-    <CommonLink
-      class="text-sm"
-      :link="sourcePlugin.documentationURL"
-      external
-      open-in-new-tab
-      >{{
-        $t('For additional support, consult our migration guide.')
-      }}</CommonLink
-    >
+    <CommonLink class="text-sm" :link="sourcePlugin.documentationURL" external open-in-new-tab>{{
+      $t('For additional support, consult our migration guide.')
+    }}</CommonLink>
     <div
       v-if="sourcePlugin.preStartHints && sourcePlugin.preStartHints.length > 0"
       class="flex flex-col gap-1.5"

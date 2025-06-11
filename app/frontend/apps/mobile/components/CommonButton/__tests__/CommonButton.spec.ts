@@ -98,20 +98,17 @@ describe('CommonButton.vue', () => {
       variant: 'danger',
       classes: ['text-red-bright'],
     },
-  ])(
-    'supports $variant variant with transparent background',
-    async ({ variant, classes }) => {
-      const view = renderComponent(CommonButton, {
-        props: {
-          variant,
-          transparentBackground: true,
-        },
-      })
+  ])('supports $variant variant with transparent background', async ({ variant, classes }) => {
+    const view = renderComponent(CommonButton, {
+      props: {
+        variant,
+        transparentBackground: true,
+      },
+    })
 
-      const button = view.getByRole('button')
+    const button = view.getByRole('button')
 
-      expect(button).toHaveClass('bg-transparent')
-      expect(button).toHaveClasses(classes)
-    },
-  )
+    expect(button).toHaveClass('bg-transparent')
+    expect(button).toHaveClasses(classes)
+  })
 })

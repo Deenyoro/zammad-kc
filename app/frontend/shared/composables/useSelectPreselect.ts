@@ -19,8 +19,7 @@ const useSelectPreselect = (
   const { hasValue } = useValue(context)
 
   // Consider only enabled options.
-  const getPreselectValue = () =>
-    options.value?.find((option) => !option.disabled)?.value
+  const getPreselectValue = () => options.value?.find((option) => !option.disabled)?.value
 
   // Remember function to use it during the next value check.
   context.value.getPreselectValue = getPreselectValue

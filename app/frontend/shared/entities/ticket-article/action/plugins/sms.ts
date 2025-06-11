@@ -2,11 +2,7 @@
 
 import { EnumTicketArticleSenderName } from '#shared/graphql/types.ts'
 
-import type {
-  TicketArticleAction,
-  TicketArticleActionPlugin,
-  TicketArticleType,
-} from './types.ts'
+import type { TicketArticleAction, TicketArticleActionPlugin, TicketArticleType } from './types.ts'
 
 const actionPlugin: TicketArticleActionPlugin = {
   order: 300,

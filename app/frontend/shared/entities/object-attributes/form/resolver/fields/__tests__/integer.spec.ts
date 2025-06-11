@@ -6,19 +6,16 @@ import { FieldResolverInteger } from '../integer.ts'
 
 describe('FieldResovlerInput', () => {
   it('should return the correct field attributes', () => {
-    const fieldResolver = new FieldResolverInteger(
-      EnumObjectManagerObjects.Ticket,
-      {
-        dataType: 'integer',
-        name: 'count',
-        display: 'Count',
-        dataOption: {
-          min: 1,
-          max: 100,
-        },
-        isInternal: true,
+    const fieldResolver = new FieldResolverInteger(EnumObjectManagerObjects.Ticket, {
+      dataType: 'integer',
+      name: 'count',
+      display: 'Count',
+      dataOption: {
+        min: 1,
+        max: 100,
       },
-    )
+      isInternal: true,
+    })
 
     expect(fieldResolver.fieldAttributes()).toEqual({
       label: 'Count',

@@ -17,13 +17,10 @@ let tooltipTimeout: NodeJS.Timeout | null = null
 
 let tooltipRecordsCount = 0
 
-let tooltipTargetRecords: WeakMap<HTMLElement, { modifiers: Modifiers }> =
-  new WeakMap()
+let tooltipTargetRecords: WeakMap<HTMLElement, { modifiers: Modifiers }> = new WeakMap()
 
 const removeTooltips = () => {
-  document
-    .querySelectorAll('[role="tooltip"]')
-    .forEach((node) => node?.remove())
+  document.querySelectorAll('[role="tooltip"]').forEach((node) => node?.remove())
   isTooltipInDom = false
 }
 
@@ -46,10 +43,7 @@ const getModifierRecord = ($el: HTMLDivElement) => {
   return tooltipTargetRecords.get($el) || null
 }
 
-const createTooltip = (
-  { top, left }: { top: string; left: string },
-  message: string,
-) => {
+const createTooltip = ({ top, left }: { top: string; left: string }, message: string) => {
   const tooltipNode = document.createElement('div')
   tooltipNode.classList.add('tooltip')
 
@@ -168,9 +162,8 @@ const evaluateModifiers = (element: HTMLElement, options?: Modifiers) => {
   return modifications
 }
 
-const findTooltipTarget = (
-  element: HTMLDivElement | null,
-): HTMLDivElement | null => element?.closest('[data-tooltip]') || null
+const findTooltipTarget = (element: HTMLDivElement | null): HTMLDivElement | null =>
+  element?.closest('[data-tooltip]') || null
 
 const handleTooltipAddEvent = (event: MouseEvent | TouchEvent) => {
   if (isTooltipInDom) removeTooltips() // Remove tooltips if there is already one set in the DOM
@@ -193,10 +186,7 @@ const handleTooltipAddEvent = (event: MouseEvent | TouchEvent) => {
 
   const tooltipRecord = getModifierRecord(tooltipTargetNode)
 
-  const { isTruncated } = evaluateModifiers(
-    tooltipTargetNode,
-    tooltipRecord?.modifiers,
-  )
+  const { isTruncated } = evaluateModifiers(tooltipTargetNode, tooltipRecord?.modifiers)
 
   // If the content gets truncated and the modifier is set to only show the tooltip on truncation
   if (!isTruncated && tooltipRecord?.modifiers.truncate) return
@@ -288,8 +278,7 @@ export default {
     },
     updated(element: HTMLDivElement, { value: message }) {
       if (!message) {
-        if (element.getAttribute('aria-label'))
-          element.removeAttribute('aria-label')
+        if (element.getAttribute('aria-label')) element.removeAttribute('aria-label')
         return
       }
 

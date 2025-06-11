@@ -47,8 +47,7 @@ const removeTrailingLineBreaks = (parent: Element) => {
       // if <br> is the last element, remove it because editor will add one anyway
       !nextSibling ||
       // if next element is a block element, remove <br>, because it will be converted into a paragraph with a line break
-      (nextSibling.nodeType !== Node.TEXT_NODE &&
-        (nextSibling as Element).tagName !== 'BR') ||
+      (nextSibling.nodeType !== Node.TEXT_NODE && (nextSibling as Element).tagName !== 'BR') ||
       // if the next element is an empty text, remove <br>
       (nextSibling.nodeType === Node.TEXT_NODE &&
         !nextSibling.nextSibling &&

@@ -6,9 +6,7 @@ import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 
 import CommonFilePreview, { type Props } from '../CommonFilePreview.vue'
 
-const renderFilePreview = (
-  props: Props & { onPreview?(event: Event): void },
-) => {
+const renderFilePreview = (props: Props & { onPreview?(event: Event): void }) => {
   return renderComponent(CommonFilePreview, {
     props,
     router: true,
@@ -164,8 +162,6 @@ describe('preview file component', () => {
 
     await view.rerender({ noRemove: true })
 
-    expect(
-      view.queryByRole('button', { name: 'Remove name.word' }),
-    ).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Remove name.word' })).not.toBeInTheDocument()
   })
 })

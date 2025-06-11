@@ -43,12 +43,7 @@ const availableCharactersCount = computed(() => {
       aria-atomic="true"
       aria-live="polite"
     >
-      {{
-        $t(
-          'You have exceeded the character limit by %s',
-          0 - availableCharactersCount,
-        )
-      }}
+      {{ $t('You have exceeded the character limit by %s', 0 - availableCharactersCount) }}
     </span>
   </div>
 </template>

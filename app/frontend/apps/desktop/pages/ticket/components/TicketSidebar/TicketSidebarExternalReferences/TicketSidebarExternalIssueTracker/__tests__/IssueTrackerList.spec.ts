@@ -47,8 +47,7 @@ describe('IssueTrackerWrapper', () => {
           name: 'link-gitlab-issue',
           icon: 'gitlab',
           label: __('GitLab: Link issue'),
-          inputPlaceholder:
-            'https://git.example.com/group1/project1/-/issues/1',
+          inputPlaceholder: 'https://git.example.com/group1/project1/-/issues/1',
         },
         issueLinks: ['https://git.zammad.com/zammad/zammad/-/issues/356'],
         form: {},
@@ -62,10 +61,7 @@ describe('IssueTrackerWrapper', () => {
     })
 
     expect(link).toHaveTextContent('#356 Example issue for GitLab integration')
-    expect(link).toHaveAttribute(
-      'href',
-      'https://git.zammad.com/zammad/zammad/-/issues/123',
-    )
+    expect(link).toHaveAttribute('href', 'https://git.zammad.com/zammad/zammad/-/issues/123')
 
     expect(wrapper.getByText('Assignee')).toBeInTheDocument()
     expect(wrapper.getByText('Benjamin Foo')).toBeInTheDocument()
@@ -104,8 +100,7 @@ describe('IssueTrackerWrapper', () => {
           name: 'link-gitlab-issue',
           icon: 'gitlab',
           label: __('GitLab: Link issue'),
-          inputPlaceholder:
-            'https://git.example.com/group1/project1/-/issues/1',
+          inputPlaceholder: 'https://git.example.com/group1/project1/-/issues/1',
         },
         ticketId: convertToGraphQLId('Ticket', '1'),
       },
@@ -131,8 +126,7 @@ describe('IssueTrackerWrapper', () => {
           name: 'link-gitlab-issue',
           icon: 'gitlab',
           label: __('GitLab: Link issue'),
-          inputPlaceholder:
-            'https://git.example.com/group1/project1/-/issues/1',
+          inputPlaceholder: 'https://git.example.com/group1/project1/-/issues/1',
         },
         form: {
           externalReferences: [mockedIssues[0].url],

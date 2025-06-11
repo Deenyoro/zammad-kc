@@ -36,7 +36,7 @@ const userCurrentDeviceList = [
   },
 ]
 
-describe('testing devices a11y view', async () => {
+describe('testing devices a11y view', () => {
   beforeEach(() => {
     mockUserCurrent({
       firstname: 'John',

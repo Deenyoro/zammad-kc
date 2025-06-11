@@ -10,8 +10,5 @@ import {
 </script>
 
 <template>
-  <NavigationMenu
-    :categories="personalSettingCategories"
-    :entries="personalSettingItems"
-  />
+  <NavigationMenu :categories="personalSettingCategories" :entries="personalSettingItems" />
 </template>

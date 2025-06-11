@@ -51,12 +51,11 @@ describe('UserInfo', () => {
 
     expect(wrapper.getByText(user.fullname)).toBeVisible()
 
-    expect(
-      wrapper.getByRole('img', { name: `Avatar (${user.fullname})` }),
-    ).toBeVisible()
+    expect(wrapper.getByRole('img', { name: `Avatar (${user.fullname})` })).toBeVisible()
 
-    expect(
-      wrapper.getByRole('link', { name: user.organization.name }),
-    ).toHaveAttribute('href', `/organizations/${user.organization.internalId}`)
+    expect(wrapper.getByRole('link', { name: user.organization.name })).toHaveAttribute(
+      'href',
+      `/organizations/${user.organization.internalId}`,
+    )
   })
 })

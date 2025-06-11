@@ -2,17 +2,12 @@
 
 import '#tests/graphql/builders/mocks.ts'
 
-import renderComponent, {
-  initializePiniaStore,
-} from '#tests/support/components/renderComponent.ts'
+import renderComponent, { initializePiniaStore } from '#tests/support/components/renderComponent.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
 import { useRecentSearches } from '#shared/composables/useRecentSearches.ts'
-import {
-  EnumTicketStateColorCode,
-  type Organization,
-} from '#shared/graphql/types.ts'
+import { EnumTicketStateColorCode, type Organization } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import { mockUserCurrentRecentViewResetMutation } from '#desktop/entities/user/current/graphql/mutations/userCurrentRecentViewReset.mocks.ts'
@@ -54,14 +49,10 @@ describe('QuickSearch', () => {
       const wrapper = await renderQuickSearch()
 
       expect(
-        wrapper.getByText(
-          'Start typing e.g. the name of a ticket, an organization or a user.',
-        ),
+        wrapper.getByText('Start typing e.g. the name of a ticket, an organization or a user.'),
       ).toBeInTheDocument()
 
-      expect(
-        wrapper.queryByRole('button', { name: 'Clear All' }),
-      ).not.toBeInTheDocument()
+      expect(wrapper.queryByRole('button', { name: 'Clear All' })).not.toBeInTheDocument()
     })
   })
 
@@ -84,9 +75,7 @@ describe('QuickSearch', () => {
       expect(wrapper.getByText('Foobar')).toBeInTheDocument()
       expect(wrapper.getByText('Dummy')).toBeInTheDocument()
 
-      expect(
-        wrapper.getByRole('link', { name: 'Clear recent searches' }),
-      ).toBeInTheDocument()
+      expect(wrapper.getByRole('link', { name: 'Clear recent searches' })).toBeInTheDocument()
     })
 
     it('allows clearing all recent searches', async () => {
@@ -96,22 +85,16 @@ describe('QuickSearch', () => {
       addSearch('Dummy')
       await waitForNextTick()
 
-      expect(
-        wrapper.getByRole('link', { name: 'Clear recent searches' }),
-      ).toBeInTheDocument()
+      expect(wrapper.getByRole('link', { name: 'Clear recent searches' })).toBeInTheDocument()
 
       clearSearches()
       await waitForNextTick()
 
       expect(
-        wrapper.getByText(
-          'Start typing e.g. the name of a ticket, an organization or a user.',
-        ),
+        wrapper.getByText('Start typing e.g. the name of a ticket, an organization or a user.'),
       ).toBeInTheDocument()
 
-      expect(
-        wrapper.queryByRole('link', { name: 'Clear recent searches' }),
-      ).not.toBeInTheDocument()
+      expect(wrapper.queryByRole('link', { name: 'Clear recent searches' })).not.toBeInTheDocument()
     })
 
     it('allows removing individual recent searches', async () => {
@@ -167,15 +150,11 @@ describe('QuickSearch', () => {
         wrapper.getByRole('heading', { level: 3, name: 'Recently viewed' }),
       ).toBeInTheDocument()
 
-      expect(
-        wrapper.getByRole('link', { name: 'Ticket 1' }),
-      ).toBeInTheDocument()
+      expect(wrapper.getByRole('link', { name: 'Ticket 1' })).toBeInTheDocument()
 
       expect(wrapper.getByRole('link', { name: 'User 1' })).toBeInTheDocument()
 
-      expect(
-        wrapper.getByRole('link', { name: 'Organization 1' }),
-      ).toBeInTheDocument()
+      expect(wrapper.getByRole('link', { name: 'Organization 1' })).toBeInTheDocument()
     })
 
     it('allows clearing all recently viewed items', async () => {
@@ -189,9 +168,7 @@ describe('QuickSearch', () => {
 
       const wrapper = await renderQuickSearch()
 
-      expect(
-        wrapper.getByRole('link', { name: 'Clear recently viewed' }),
-      ).toBeInTheDocument()
+      expect(wrapper.getByRole('link', { name: 'Clear recently viewed' })).toBeInTheDocument()
 
       mockUserCurrentRecentViewListQuery({ userCurrentRecentViewList: [] })
 
@@ -204,14 +181,10 @@ describe('QuickSearch', () => {
       await waitForNextTick()
 
       expect(
-        wrapper.getByText(
-          'Start typing e.g. the name of a ticket, an organization or a user.',
-        ),
+        wrapper.getByText('Start typing e.g. the name of a ticket, an organization or a user.'),
       ).toBeInTheDocument()
 
-      expect(
-        wrapper.queryByRole('link', { name: 'Clear recently viewed' }),
-      ).not.toBeInTheDocument()
+      expect(wrapper.queryByRole('link', { name: 'Clear recently viewed' })).not.toBeInTheDocument()
     })
 
     it('display search results when typing', async () => {
@@ -232,9 +205,7 @@ describe('QuickSearch', () => {
 
       const wrapper = await renderQuickSearch('test')
 
-      expect(
-        await wrapper.findByText('No results for this query.'),
-      ).toBeInTheDocument()
+      expect(await wrapper.findByText('No results for this query.')).toBeInTheDocument()
     })
   })
 })

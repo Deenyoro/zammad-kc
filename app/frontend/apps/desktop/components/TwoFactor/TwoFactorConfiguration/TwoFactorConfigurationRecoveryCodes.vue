@@ -24,9 +24,7 @@ const headerIcon = computed(() => props.options?.headerIcon ?? 'shield-lock')
 
 const loading = ref(false)
 const error = ref('')
-const recoveryCodes = ref<string[] | null | undefined>(
-  props.options?.recoveryCodes,
-)
+const recoveryCodes = ref<string[] | null | undefined>(props.options?.recoveryCodes)
 
 onBeforeMount(async () => {
   if (props.options?.recoveryCodes || !props.token) return
@@ -39,9 +37,7 @@ onBeforeMount(async () => {
       errorNotificationMessage: __('Could not generate recovery codes'),
       errorCallback: (error) => {
         if (error.type === GraphQLErrorTypes.UnknownError) {
-          usePasswordCheckTwoFactor(
-            props.formSubmitCallback,
-          ).redirectToPasswordCheck()
+          usePasswordCheckTwoFactor(props.formSubmitCallback).redirectToPasswordCheck()
           return false
         }
 
@@ -53,8 +49,7 @@ onBeforeMount(async () => {
   recoveryCodesGenerate
     .send({ token: props.token })
     .then((data) => {
-      recoveryCodes.value =
-        data?.userCurrentTwoFactorRecoveryCodesGenerate?.recoveryCodes
+      recoveryCodes.value = data?.userCurrentTwoFactorRecoveryCodesGenerate?.recoveryCodes
     })
     .catch((err) => {
       if (err instanceof UserError) {
@@ -70,9 +65,7 @@ const { printPage } = usePrintMode()
 const { copyToClipboard } = useCopyToClipboard()
 
 const footerActionOptions = computed(() => ({
-  actionLabel: error.value
-    ? __('Retry')
-    : __("OK, I've saved my recovery codes"),
+  actionLabel: error.value ? __('Retry') : __("OK, I've saved my recovery codes"),
   actionButton: { variant: 'primary' },
   hideActionButton: loading.value,
   hideCancelButton: true,
@@ -104,22 +97,15 @@ defineExpose({
           class="flex flex-wrap gap-5 rounded-lg bg-blue-200 p-5 font-mono text-sm text-gray-100 dark:bg-gray-700 dark:text-neutral-400"
           data-test-id="recovery-codes"
         >
-          <div
-            v-for="recoveryCode in recoveryCodes"
-            :key="recoveryCode"
-            class="grow"
-          >
+          <div v-for="recoveryCode in recoveryCodes" :key="recoveryCode" class="grow">
             {{ recoveryCode }}
           </div>
         </div>
       </div>
       <div class="mb-1 flex justify-end gap-3">
-        <CommonButton
-          prefix-icon="printer"
-          size="medium"
-          @click.prevent="printPage()"
-          >{{ $t('Print Codes') }}</CommonButton
-        >
+        <CommonButton prefix-icon="printer" size="medium" @click.prevent="printPage()">{{
+          $t('Print Codes')
+        }}</CommonButton>
         <CommonButton
           prefix-icon="files"
           size="medium"
@@ -129,9 +115,7 @@ defineExpose({
       </div>
     </template>
     <template v-else>
-      <CommonLabel class="mx-auto my-3">{{
-        $t('Generating recovery codes…')
-      }}</CommonLabel>
+      <CommonLabel class="mx-auto my-3">{{ $t('Generating recovery codes…') }}</CommonLabel>
       <CommonLoader class="my-3" :loading="loading" :error="error" />
     </template>
   </div>

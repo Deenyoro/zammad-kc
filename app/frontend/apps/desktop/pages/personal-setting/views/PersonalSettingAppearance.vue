@@ -37,23 +37,17 @@ const themeOptions = [
   {
     value: 'dark',
     label: __('Dark'),
-    description: __(
-      'A color scheme that uses light-colored elements on a dark background.',
-    ),
+    description: __('A color scheme that uses light-colored elements on a dark background.'),
   },
   {
     value: 'light',
     label: __('Light'),
-    description: __(
-      'A color scheme that uses dark-colored elements on a light background.',
-    ),
+    description: __('A color scheme that uses dark-colored elements on a light background.'),
   },
   {
     value: 'auto',
     label: __('Sync with computer'),
-    description: __(
-      'Prefer color scheme as indicated by the operating system.',
-    ),
+    description: __('Prefer color scheme as indicated by the operating system.'),
   },
 ]
 

@@ -13,9 +13,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div
-    class="relative rounded-lg border border-current p-3 text-center text-neutral-500"
-  >
+  <div class="relative rounded-lg border border-current p-3 text-center text-neutral-500">
     <CommonLabel>&quot;{{ subject }}&quot;</CommonLabel>
     <template v-if="to">
       -&gt;

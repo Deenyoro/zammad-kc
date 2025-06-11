@@ -26,15 +26,8 @@ const notificationCount = computed(() => {
     :class="{ 'px-4': isCustomLayout }"
     data-bottom-navigation
   >
-    <div
-      v-if="!isCustomLayout"
-      class="flex h-14 w-full items-center text-center"
-    >
-      <CommonLink
-        link="/"
-        class="flex flex-1 justify-center"
-        exact-active-class="text-blue"
-      >
+    <div v-if="!isCustomLayout" class="flex h-14 w-full items-center text-center">
+      <CommonLink link="/" class="flex flex-1 justify-center" exact-active-class="text-blue">
         <CommonIcon name="home" />
       </CommonLink>
       <CommonLink

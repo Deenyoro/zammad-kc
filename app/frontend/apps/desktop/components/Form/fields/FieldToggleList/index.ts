@@ -9,6 +9,7 @@ import type { ToggleListOption, ToggleListOptionValue } from './types.ts'
 import type { FormKitBaseSlots, FormKitInputs } from '@formkit/inputs'
 
 declare module '@formkit/inputs' {
+  // oxlint-disable eslint(no-unused-vars)
   interface FormKitInputProps<Props extends FormKitInputs<Props>> {
     toggleList: {
       type: 'toggleList'

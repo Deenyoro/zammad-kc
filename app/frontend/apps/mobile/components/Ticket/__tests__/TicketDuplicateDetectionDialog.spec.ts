@@ -50,10 +50,7 @@ describe('TicketDuplicateDetectionDialog.vue', () => {
 
       expect(ticketNumberElement).toBeInTheDocument()
 
-      expect(ticketNumberElement.closest('a')).toHaveAttribute(
-        'href',
-        `/tickets/${testTicket[0]}`,
-      )
+      expect(ticketNumberElement.closest('a')).toHaveAttribute('href', `/tickets/${testTicket[0]}`)
 
       const ticketTitle = testTicket[2]
 

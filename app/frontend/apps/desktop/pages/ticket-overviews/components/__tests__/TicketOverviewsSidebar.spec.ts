@@ -47,9 +47,7 @@ describe('TicketOverviewsSidebar', () => {
   it('hides reorder items if user is has not overview sorting preference', () => {
     const wrapper = renderSidebar()
 
-    expect(
-      wrapper.queryByRole('link', { name: 'reorder items' }),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('link', { name: 'reorder items' })).not.toBeInTheDocument()
   })
 
   it('displays link which redirects to personal settings overview', async () => {
@@ -72,12 +70,8 @@ describe('TicketOverviewsSidebar', () => {
     expect(await wrapper.findByText('My Assigned Tickets')).toBeInTheDocument()
     expect(wrapper.getByText('Unassigned & Open Tickets')).toBeInTheDocument()
 
-    expect(
-      wrapper.getByRole('link', { name: 'My Assigned Tickets' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('link', { name: 'My Assigned Tickets' })).toBeInTheDocument()
 
-    expect(
-      wrapper.getByRole('link', { name: 'Unassigned & Open Tickets' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('link', { name: 'Unassigned & Open Tickets' })).toBeInTheDocument()
   })
 })

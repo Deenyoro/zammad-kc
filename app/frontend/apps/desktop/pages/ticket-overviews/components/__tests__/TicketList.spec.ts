@@ -93,14 +93,7 @@ describe('TicketList', () => {
         props: {
           overviewId: convertToGraphQLId('Overview', 1),
           overviewName: 'test tickets',
-          headers: [
-            'title',
-            'customer',
-            'group',
-            'owner',
-            'state',
-            'created_at',
-          ],
+          headers: ['title', 'customer', 'group', 'owner', 'state', 'created_at'],
           orderBy: 'group',
           orderDirection: 'ASCENDING',
         },
@@ -127,23 +120,15 @@ describe('TicketList', () => {
 
     await Promise.all(
       Object.values(headers).map(async (header) => {
-        expect(
-          await within(table).findByRole('columnheader', { name: header }),
-        ).toBeInTheDocument()
+        expect(await within(table).findByRole('columnheader', { name: header })).toBeInTheDocument()
       }),
     )
 
-    expect(
-      wrapper.getByRole('cell', { name: ticket.title }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('cell', { name: ticket.title })).toBeInTheDocument()
 
-    expect(
-      wrapper.getByRole('cell', { name: ticket.group.name! }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('cell', { name: ticket.group.name! })).toBeInTheDocument()
 
-    expect(
-      wrapper.getByRole('cell', { name: ticket.state.name }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('cell', { name: ticket.state.name })).toBeInTheDocument()
   })
 
   it('shows priority icon if flag is set', async () => {

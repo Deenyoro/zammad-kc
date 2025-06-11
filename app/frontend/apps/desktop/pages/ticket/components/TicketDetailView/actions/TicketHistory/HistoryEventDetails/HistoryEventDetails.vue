@@ -32,11 +32,9 @@ const descriptionOutput = computed(() => {
       {{ capitalize($t(event.actionName)) }}
     </CommonLabel>
 
-    <CommonLabel
-      v-if="descriptionOutput"
-      class="text-gray-100 dark:text-neutral-400"
-      >{{ descriptionOutput }}</CommonLabel
-    >
+    <CommonLabel v-if="descriptionOutput" class="text-gray-100 dark:text-neutral-400">{{
+      descriptionOutput
+    }}</CommonLabel>
 
     <CommonLabel
       v-if="event.details"

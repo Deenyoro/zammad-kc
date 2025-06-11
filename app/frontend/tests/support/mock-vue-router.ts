@@ -2,8 +2,7 @@
 
 export const mockRouterHooks = () => {
   vi.mock('vue-router', async () => {
-    const module =
-      await vi.importActual<typeof import('vue-router')>('vue-router')
+    const module = await vi.importActual<typeof import('vue-router')>('vue-router')
 
     return {
       ...module,

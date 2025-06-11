@@ -12,10 +12,7 @@ import Form from '#shared/components/Form/Form.vue'
 import type { FormSubmitData } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
 import { getNodeByName } from '#shared/components/Form/utils.ts'
-import {
-  useMacros,
-  useTicketMacros,
-} from '#shared/entities/macro/composables/useMacros.ts'
+import { useMacros, useTicketMacros } from '#shared/entities/macro/composables/useMacros.ts'
 import { useObjectAttributeFormData } from '#shared/entities/object-attributes/composables/useObjectAttributeFormData.ts'
 import { useObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
 import { getTicketNumberWithHook } from '#shared/entities/ticket/composables/getTicketNumber.ts'
@@ -186,8 +183,7 @@ const processBulkEditArticle = (
 ) => {
   if (!article) return null
 
-  const contentType =
-    getNodeByName(formId, 'body')?.context?.contentType || 'text/html'
+  const contentType = getNodeByName(formId, 'body')?.context?.contentType || 'text/html'
 
   if (contentType === 'text/html') {
     article.body = populateEditorNewLines(article.body)
@@ -202,8 +198,7 @@ const processBulkEditArticle = (
 }
 
 const { macrosLoaded, macros } = useMacros(toRef(props, 'groupIds'))
-const { activeMacro, executeMacro, disposeActiveMacro } =
-  useTicketMacros(formSubmit)
+const { activeMacro, executeMacro, disposeActiveMacro } = useTicketMacros(formSubmit)
 
 const macroMenuItems = computed<MenuItem[]>(
   () =>
@@ -217,22 +212,17 @@ const macroMenuItems = computed<MenuItem[]>(
     })) ?? [],
 )
 
-const bulkEditTickets = async (
-  formData: FormSubmitData<TicketBulkEditFormData>,
-) => {
+const bulkEditTickets = async (formData: FormSubmitData<TicketBulkEditFormData>) => {
   const cleanedFormData = Object.fromEntries(
     Object.entries(formData).filter(([, value]) => value),
   ) as FormSubmitData<TicketBulkEditFormData>
 
-  const { internalObjectAttributeValues } =
-    useObjectAttributeFormData<TicketBulkEditFormData>(
-      ticketObjectAttributesLookup.value,
-      cleanedFormData,
-    )
+  const { internalObjectAttributeValues } = useObjectAttributeFormData<TicketBulkEditFormData>(
+    ticketObjectAttributesLookup.value,
+    cleanedFormData,
+  )
 
-  const formArticle = formData.article as
-    | TicketArticleReceivedFormValues
-    | undefined
+  const formArticle = formData.article as TicketArticleReceivedFormValues | undefined
 
   const article = processBulkEditArticle(form.value!.formId, formArticle)
 
@@ -310,9 +300,7 @@ const schemaData = reactive({
       use-object-attributes
       :schema="formSchema"
       :schema-data="schemaData"
-      @submit="
-        bulkEditTickets($event as FormSubmitData<TicketBulkEditFormData>)
-      "
+      @submit="bulkEditTickets($event as FormSubmitData<TicketBulkEditFormData>)"
     />
     <template #footer="{ close }">
       <div class="flex items-center justify-end gap-4">
@@ -329,13 +317,7 @@ const schemaData = reactive({
         >
           {{ $t('Apply') }}
         </SplitButton>
-        <CommonButton
-          v-else
-          type="submit"
-          size="large"
-          variant="submit"
-          :form="formNodeId"
-        >
+        <CommonButton v-else type="submit" size="large" variant="submit" :form="formNodeId">
           {{ $t('Apply') }}
         </CommonButton>
       </div>

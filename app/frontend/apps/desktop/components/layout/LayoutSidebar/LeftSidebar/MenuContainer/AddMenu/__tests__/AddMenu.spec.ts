@@ -11,7 +11,7 @@ import { COLLAPSED_STATE_KEY } from '#desktop/components/layout/LayoutSidebar/Le
 
 describe('AddMenu', () => {
   describe('create ticket action button', () => {
-    it('renders action button ', () => {
+    it('renders action button', () => {
       mockPermissions(['ticket.agent', 'ticket.customer'])
       mockApplicationConfig({ customer_ticket_create: true })
 

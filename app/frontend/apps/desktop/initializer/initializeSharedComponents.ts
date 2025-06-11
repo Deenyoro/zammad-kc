@@ -8,18 +8,12 @@ import { initializeEditorActionBarComponent } from '#shared/components/Form/init
 export default () => {
   initializeEditorActionBarComponent(
     defineAsyncComponent(
-      () =>
-        import(
-          '#desktop/components/Form/fields/FieldEditor/FieldEditorActionBar.vue'
-        ),
+      () => import('#desktop/components/Form/fields/FieldEditor/FieldEditorActionBar.vue'),
     ),
   )
   initializeEditorActionMenu(
     defineAsyncComponent(
-      () =>
-        import(
-          '#desktop/components/Form/fields/FieldEditor/FieldEditorActionMenu.vue'
-        ),
+      () => import('#desktop/components/Form/fields/FieldEditor/FieldEditorActionMenu.vue'),
     ),
   )
 }

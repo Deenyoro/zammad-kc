@@ -109,11 +109,7 @@ const sendCredentials = (formData: FormSubmitData<LoginCredentials>) => {
       if (!twoFactor || !twoFactor.defaultTwoFactorAuthenticationMethod) {
         emit('finish')
       } else {
-        emit(
-          'ask-two-factor',
-          twoFactor as Required<UserLoginTwoFactorMethods>,
-          formData,
-        )
+        emit('ask-two-factor', twoFactor as Required<UserLoginTwoFactorMethods>, formData)
       }
     })
     .catch((error: UserError) => {
@@ -133,10 +129,7 @@ const sendCredentials = (formData: FormSubmitData<LoginCredentials>) => {
     @submit="sendCredentials($event as FormSubmitData<LoginCredentials>)"
   >
     <template #after-fields>
-      <div
-        v-if="$c.user_create_account"
-        class="mt-4 flex grow items-center justify-center"
-      >
+      <div v-if="$c.user_create_account" class="mt-4 flex grow items-center justify-center">
         <span class="ltr:mr-1 rtl:ml-1">{{ $t('New user?') }}</span>
         <CommonLink
           link="/#signup"

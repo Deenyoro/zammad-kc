@@ -8,10 +8,7 @@ import type { TicketArticle } from '#shared/entities/ticket/types.ts'
 import { EnumTicketArticleSenderName } from '#shared/graphql/types.ts'
 
 import UserPopoverWithTrigger from '#desktop/components/User/UserPopoverWithTrigger.vue'
-import {
-  useFilePreviewViewer,
-  type ViewerFile,
-} from '#desktop/composables/useFilePreviewViewer.ts'
+import { useFilePreviewViewer, type ViewerFile } from '#desktop/composables/useFilePreviewViewer.ts'
 import ArticleBubbleActionList from '#desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleActionList.vue'
 import ArticleBubbleBlockedContentWarning from '#desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleBlockedContentWarning.vue'
 import ArticleBubbleBody from '#desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleBody.vue'
@@ -52,9 +49,7 @@ const position = computed(() => {
 })
 
 const hasInternalNote = computed(
-  () =>
-    (props.article.type?.name === 'note' && props.article.internal) ||
-    props.article.internal,
+  () => (props.article.type?.name === 'note' && props.article.internal) || props.article.internal,
 )
 
 const {
@@ -123,10 +118,7 @@ const { showPreview } = useFilePreviewViewer(
         articleWrapperBorderClass,
       ]"
     >
-      <div
-        :aria-hidden="!showMetaInformation"
-        class="grid w-full grid-rows-[0fr] overflow-hidden"
-      >
+      <div :aria-hidden="!showMetaInformation" class="grid w-full grid-rows-[0fr] overflow-hidden">
         <Transition name="pseudo-transition">
           <ArticleBubbleHeader
             v-if="showMetaInformation"
@@ -141,10 +133,7 @@ const { showPreview } = useFilePreviewViewer(
 
       <ArticleBubbleSecurityStatusBar
         v-if="!showMetaInformation"
-        :class="[
-          headerAndIconBarBackgroundClass,
-          showMetaInformation ? dividerClass : '',
-        ]"
+        :class="[headerAndIconBarBackgroundClass, showMetaInformation ? dividerClass : '']"
         :article="article"
       />
 
@@ -160,10 +149,8 @@ const { showPreview } = useFilePreviewViewer(
           {
             'pt-3': showMetaInformation,
             '[&:nth-child(2)]:rounded-t-xl': !showMetaInformation,
-            'rtl:rounded-br-none [&:nth-child(2)]:ltr:rounded-br-none':
-              position === 'right',
-            'rtl:rounded-br-none [&:nth-child(2)]:ltr:rounded-bl-none':
-              position === 'left',
+            'rtl:rounded-br-none [&:nth-child(2)]:ltr:rounded-br-none': position === 'right',
+            'rtl:rounded-br-none [&:nth-child(2)]:ltr:rounded-bl-none': position === 'left',
           },
         ]"
         :position="position"

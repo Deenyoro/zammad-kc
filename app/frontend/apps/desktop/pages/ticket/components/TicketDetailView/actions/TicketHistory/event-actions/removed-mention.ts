@@ -10,10 +10,7 @@ export default <EventActionModule>{
   content: (event) => {
     return {
       description: __('Mention for'),
-      details:
-        event.object?.__typename === 'User'
-          ? (event.object as User).fullname
-          : '-',
+      details: event.object?.__typename === 'User' ? (event.object as User).fullname : '-',
     }
   },
 }

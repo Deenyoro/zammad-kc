@@ -31,38 +31,25 @@ export const CURRENT_TASKBAR_TAB_KEY = Symbol(
 ) as InjectionKey<CurrentTaskbarTabData>
 
 export const initializeCurrentTaskbarTab = (taskbarEntityKey?: string) => {
-  const { taskbarTabListByTabEntityKey } = storeToRefs(
-    useUserCurrentTaskbarTabsStore(),
-  )
+  const { taskbarTabListByTabEntityKey } = storeToRefs(useUserCurrentTaskbarTabsStore())
 
-  const currentTaskbarTab = computed<UserTaskbarTab | undefined>(
-    (existingTaskbarTab) => {
-      if (!taskbarEntityKey) return
+  const currentTaskbarTab = computed<UserTaskbarTab | undefined>((existingTaskbarTab) => {
+    if (!taskbarEntityKey) return
 
-      if (
-        existingTaskbarTab &&
-        isEqual(
-          existingTaskbarTab,
-          taskbarTabListByTabEntityKey.value[taskbarEntityKey],
-        )
-      ) {
-        return existingTaskbarTab
-      }
+    if (
+      existingTaskbarTab &&
+      isEqual(existingTaskbarTab, taskbarTabListByTabEntityKey.value[taskbarEntityKey])
+    ) {
+      return existingTaskbarTab
+    }
 
-      return taskbarTabListByTabEntityKey.value[taskbarEntityKey]
-    },
-  )
-  const currentTaskbarTabEntityAccess = computed(
-    () => currentTaskbarTab.value?.entityAccess,
-  )
+    return taskbarTabListByTabEntityKey.value[taskbarEntityKey]
+  })
+  const currentTaskbarTabEntityAccess = computed(() => currentTaskbarTab.value?.entityAccess)
 
-  const currentTaskbarTabId = computed(
-    () => currentTaskbarTab.value?.taskbarTabId,
-  )
+  const currentTaskbarTabId = computed(() => currentTaskbarTab.value?.taskbarTabId)
 
-  const currentTaskbarTabFormId = computed(
-    () => currentTaskbarTab.value?.formId || undefined,
-  )
+  const currentTaskbarTabFormId = computed(() => currentTaskbarTab.value?.formId || undefined)
 
   const currentTaskbarTabNewArticlePresent = computed(
     () => !!currentTaskbarTab.value?.formNewArticlePresent,
@@ -92,8 +79,7 @@ export const useTaskbarTab = (context?: Ref<TaskbarTabContext>) => {
     currentTaskbarTabNewArticlePresent,
   } = inject(CURRENT_TASKBAR_TAB_KEY) as CurrentTaskbarTabData
 
-  const { updateTaskbarTab, deleteTaskbarTab } =
-    useUserCurrentTaskbarTabsStore()
+  const { updateTaskbarTab, deleteTaskbarTab } = useUserCurrentTaskbarTabsStore()
 
   // Keep track of the passed context and update the store state accordingly.
   if (context) {
@@ -102,17 +88,13 @@ export const useTaskbarTab = (context?: Ref<TaskbarTabContext>) => {
       (newValue) => {
         if (!currentTaskbarTab.value?.tabEntityKey) return
 
-        taskbarTabContexts.value[currentTaskbarTab.value.tabEntityKey] =
-          newValue
+        taskbarTabContexts.value[currentTaskbarTab.value.tabEntityKey] = newValue
       },
       { immediate: true },
     )
   }
 
-  const currentTaskbarTabUpdate = (
-    taskbarTab: UserTaskbarTab,
-    state?: Record<string, unknown>,
-  ) => {
+  const currentTaskbarTabUpdate = (taskbarTab: UserTaskbarTab, state?: Record<string, unknown>) => {
     if (!currentTaskbarTabId.value) return
 
     updateTaskbarTab(currentTaskbarTabId.value, taskbarTab, state)
@@ -121,8 +103,7 @@ export const useTaskbarTab = (context?: Ref<TaskbarTabContext>) => {
   watch(
     () =>
       currentTaskbarTab.value &&
-      taskbarTabContexts.value[currentTaskbarTab.value.tabEntityKey]
-        ?.formIsDirty,
+      taskbarTabContexts.value[currentTaskbarTab.value.tabEntityKey]?.formIsDirty,
     (isDirty) => {
       if (isDirty === undefined || !currentTaskbarTab.value) return
 

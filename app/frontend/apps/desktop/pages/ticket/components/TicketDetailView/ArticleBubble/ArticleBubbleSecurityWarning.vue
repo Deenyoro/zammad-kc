@@ -14,8 +14,9 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { hasError, signingMessage, encryptionMessage, retrySecurityProcess } =
-  useArticleSecurity(toRef(props.article))
+const { hasError, signingMessage, encryptionMessage, retrySecurityProcess } = useArticleSecurity(
+  toRef(props.article),
+)
 </script>
 
 <template>
@@ -23,9 +24,7 @@ const { hasError, signingMessage, encryptionMessage, retrySecurityProcess } =
     <div>
       <h2>{{ $t('Security Error') }}</h2>
       <p v-if="signingMessage">{{ $t('Sign:') }} {{ signingMessage }}</p>
-      <p v-if="encryptionMessage">
-        {{ $t('Encryption:') }} {{ encryptionMessage }}
-      </p>
+      <p v-if="encryptionMessage">{{ $t('Encryption:') }} {{ encryptionMessage }}</p>
       <p v-if="!signingMessage && !encryptionMessage" class="block">
         {{ $t('No security information available.') }}
       </p>

@@ -42,12 +42,9 @@ const {
 const calculateBadgeType = (value: number) => {
   // If the sidebar is open in the ticket detail view,
   //   we need to subtract 1 from the value to account for the ticket itself.
-  if (props.context.screenType === TicketSidebarScreenType.TicketDetailView)
-    value -= 1
+  if (props.context.screenType === TicketSidebarScreenType.TicketDetailView) value -= 1
 
-  return value > 1
-    ? TicketSidebarButtonBadgeType.Alarming
-    : TicketSidebarButtonBadgeType.Default
+  return value > 1 ? TicketSidebarButtonBadgeType.Alarming : TicketSidebarButtonBadgeType.Default
 }
 
 const badge = computed<TicketSidebarButtonBadgeDetails | undefined>(() => {

@@ -7,7 +7,7 @@ import { waitForNextTick } from '#tests/support/utils.ts'
 
 import ThemeSwitch, { type Props } from '../ThemeSwitch.vue'
 
-export const renderThemeSwitch = (props?: Props, modelValue?: Ref) => {
+const renderThemeSwitch = (props?: Props, modelValue?: Ref) => {
   return renderComponent(ThemeSwitch, {
     props,
     vModel: {

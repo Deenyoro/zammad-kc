@@ -4,10 +4,7 @@ import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
-import {
-  EnumSystemSetupInfoStatus,
-  EnumSystemSetupInfoType,
-} from '#shared/graphql/types.ts'
+import { EnumSystemSetupInfoStatus, EnumSystemSetupInfoType } from '#shared/graphql/types.ts'
 
 import { mockSystemImportConfigurationMutation } from '../graphql/mutations/systemImportConfiguration.mocks.ts'
 import { mockSystemSetupInfoQuery } from '../graphql/queries/systemSetupInfo.mocks.ts'
@@ -60,9 +57,7 @@ describe('guided setup import source', () => {
       expect(view.getByText('API token')).toBeInTheDocument()
 
       expect(view.getByRole('button', { name: 'Go Back' })).toBeInTheDocument()
-      expect(
-        view.getByRole('button', { name: 'Save and Continue' }),
-      ).toBeInTheDocument()
+      expect(view.getByRole('button', { name: 'Save and Continue' })).toBeInTheDocument()
 
       mockSystemImportConfigurationMutation({
         systemImportConfiguration: {
@@ -87,9 +82,7 @@ describe('guided setup import source', () => {
       })
       await view.events.click(saveAndContinueButton)
 
-      expect(
-        await view.findByText('The hostname could not be found.'),
-      ).toBeInTheDocument()
+      expect(await view.findByText('The hostname could not be found.')).toBeInTheDocument()
 
       mockSystemImportConfigurationMutation({
         systemImportConfiguration: {
@@ -107,9 +100,7 @@ describe('guided setup import source', () => {
         ).toHaveCurrentUrl('/guided-setup/import/freshdesk/start')
       })
 
-      expect(
-        view.getByRole('button', { name: 'Start Import' }),
-      ).toBeInTheDocument()
+      expect(view.getByRole('button', { name: 'Start Import' })).toBeInTheDocument()
     })
 
     describe('when otrs import is used', () => {

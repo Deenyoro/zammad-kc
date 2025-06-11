@@ -4,10 +4,7 @@ import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
-import {
-  EnumSystemSetupInfoStatus,
-  EnumSystemSetupInfoType,
-} from '#shared/graphql/types.ts'
+import { EnumSystemSetupInfoStatus, EnumSystemSetupInfoType } from '#shared/graphql/types.ts'
 
 import { mockSystemImportStartMutation } from '../graphql/mutations/systemImportStart.mocks.ts'
 import { mockSystemImportStateQuery } from '../graphql/queries/systemImportState.mocks.ts'

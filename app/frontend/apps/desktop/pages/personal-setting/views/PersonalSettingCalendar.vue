@@ -10,10 +10,7 @@ import {
   useNotifications,
 } from '#shared/components/CommonNotifications/index.ts'
 import Form from '#shared/components/Form/Form.vue'
-import type {
-  FormSchemaNode,
-  FormValues,
-} from '#shared/components/Form/types.ts'
+import type { FormSchemaNode, FormValues } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
 import { useMultiStepForm } from '#shared/components/Form/useMultiStepForm.ts'
 import { defineFormSchema } from '#shared/form/defineFormSchema.ts'
@@ -35,10 +32,7 @@ const { form, isDirty, node, formReset, formSubmit, values } = useForm()
 
 const { multiStepPlugin, allSteps, activeStep } = useMultiStepForm(node)
 
-const getFormSchemaGroupSection = (
-  stepName: string,
-  children: FormSchemaNode[],
-) => {
+const getFormSchemaGroupSection = (stepName: string, children: FormSchemaNode[]) => {
   return {
     isLayout: true,
     element: 'section',
@@ -77,9 +71,7 @@ const escalationSection = getFormSchemaGroupSection('escalation', [
     name: 'escalationNotAssigned',
     type: 'toggle',
     label: __('Not assigned'),
-    help: __(
-      'Include unassigned tickets in subscription for escalated tickets.',
-    ),
+    help: __('Include unassigned tickets in subscription for escalated tickets.'),
     props: {
       variants: {
         true: 'yes',
@@ -94,9 +86,7 @@ const newOpenSection = getFormSchemaGroupSection('newOpen', [
     name: 'newOpenOwn',
     type: 'toggle',
     label: __('My tickets'),
-    help: __(
-      'Include your own tickets in subscription for new & open tickets.',
-    ),
+    help: __('Include your own tickets in subscription for new & open tickets.'),
     props: {
       variants: {
         true: 'yes',
@@ -108,9 +98,7 @@ const newOpenSection = getFormSchemaGroupSection('newOpen', [
     name: 'newOpenNotAssigned',
     type: 'toggle',
     label: __('Not assigned'),
-    help: __(
-      'Include unassigned tickets in subscription for new & open tickets.',
-    ),
+    help: __('Include unassigned tickets in subscription for new & open tickets.'),
     props: {
       variants: {
         true: 'yes',
@@ -147,11 +135,7 @@ const pendingSection = getFormSchemaGroupSection('pending', [
   },
 ])
 
-const formSchema = defineFormSchema([
-  escalationSection,
-  newOpenSection,
-  pendingSection,
-])
+const formSchema = defineFormSchema([escalationSection, newOpenSection, pendingSection])
 
 const schemaData = reactive({
   activeStep,
@@ -161,8 +145,7 @@ const calendarSubscriptionListQuery = new QueryHandler(
   useUserCurrentCalendarSubscriptionListQuery(),
 )
 
-const calendarSubscriptionListQueryResult =
-  calendarSubscriptionListQuery.result()
+const calendarSubscriptionListQueryResult = calendarSubscriptionListQuery.result()
 
 const { user } = storeToRefs(useSessionStore())
 
@@ -177,16 +160,16 @@ watch(
 
 const combinedSubscriptionURL = computed(
   () =>
-    calendarSubscriptionListQueryResult.value
-      ?.userCurrentCalendarSubscriptionList.combinedUrl ?? '',
+    calendarSubscriptionListQueryResult.value?.userCurrentCalendarSubscriptionList.combinedUrl ??
+    '',
 )
 
 // Alarm is a global option and therefore hoisted out of the multi-step form.
 //   Here we keep track of its value from the query, and update it whenever is mutated from outside.
 const alarm = computed(() =>
   Boolean(
-    calendarSubscriptionListQueryResult.value
-      ?.userCurrentCalendarSubscriptionList.globalOptions?.alarm,
+    calendarSubscriptionListQueryResult.value?.userCurrentCalendarSubscriptionList.globalOptions
+      ?.alarm,
   ),
 )
 
@@ -198,8 +181,7 @@ watch(alarm, (newValue) => {
 
 const directSubscriptionURL = computed(
   () =>
-    calendarSubscriptionListQueryResult.value
-      ?.userCurrentCalendarSubscriptionList[
+    calendarSubscriptionListQueryResult.value?.userCurrentCalendarSubscriptionList[
       activeStep.value as 'escalation' | 'newOpen' | 'pending'
     ]?.url ?? '',
 )
@@ -207,23 +189,23 @@ const directSubscriptionURL = computed(
 const formInitialValues = computed<FormValues>((oldValues) => {
   const values = {
     escalationOwn:
-      calendarSubscriptionListQueryResult.value
-        ?.userCurrentCalendarSubscriptionList.escalation?.options?.own,
+      calendarSubscriptionListQueryResult.value?.userCurrentCalendarSubscriptionList.escalation
+        ?.options?.own,
     escalationNotAssigned:
-      calendarSubscriptionListQueryResult.value
-        ?.userCurrentCalendarSubscriptionList.escalation?.options?.notAssigned,
+      calendarSubscriptionListQueryResult.value?.userCurrentCalendarSubscriptionList.escalation
+        ?.options?.notAssigned,
     newOpenOwn:
-      calendarSubscriptionListQueryResult.value
-        ?.userCurrentCalendarSubscriptionList.newOpen?.options?.own,
+      calendarSubscriptionListQueryResult.value?.userCurrentCalendarSubscriptionList.newOpen
+        ?.options?.own,
     newOpenNotAssigned:
-      calendarSubscriptionListQueryResult.value
-        ?.userCurrentCalendarSubscriptionList.newOpen?.options?.notAssigned,
+      calendarSubscriptionListQueryResult.value?.userCurrentCalendarSubscriptionList.newOpen
+        ?.options?.notAssigned,
     pendingOwn:
-      calendarSubscriptionListQueryResult.value
-        ?.userCurrentCalendarSubscriptionList.pending?.options?.own,
+      calendarSubscriptionListQueryResult.value?.userCurrentCalendarSubscriptionList.pending
+        ?.options?.own,
     pendingNotAssigned:
-      calendarSubscriptionListQueryResult.value
-        ?.userCurrentCalendarSubscriptionList.pending?.options?.notAssigned,
+      calendarSubscriptionListQueryResult.value?.userCurrentCalendarSubscriptionList.pending
+        ?.options?.notAssigned,
   } as unknown as FormValues
 
   if (oldValues && isEqual(values, oldValues)) return oldValues
@@ -260,9 +242,7 @@ const submitForm = async (data: FormValues) => {
   const calendarSubscriptionUpdateMutation = new MutationHandler(
     useUserCurrentCalendarSubscriptionUpdateMutation(),
     {
-      errorNotificationMessage: __(
-        'Updating your calendar subscription settings failed.',
-      ),
+      errorNotificationMessage: __('Updating your calendar subscription settings failed.'),
     },
   )
 

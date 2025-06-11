@@ -51,11 +51,7 @@ describe('useFileValidation', () => {
   }
 
   // :TODO move this to testing helper function
-  const createFile = (
-    mimeType: string,
-    sizeInBytes: number,
-    fileEnding: string,
-  ) => {
+  const createFile = (mimeType: string, sizeInBytes: number, fileEnding: string) => {
     const file = new File([''], `${faker.word.noun()}.${fileEnding}`, {
       type: mimeType,
     })

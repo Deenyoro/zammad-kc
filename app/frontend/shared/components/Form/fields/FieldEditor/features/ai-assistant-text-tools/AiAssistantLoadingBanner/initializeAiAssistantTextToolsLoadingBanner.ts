@@ -12,5 +12,4 @@ export const initializeAiAssistantTextToolsLoadingBanner = (
   aiAssistantTextToolsLoadingBanner = classes
 }
 
-export const getAiAssistantTextToolsLoadingBannerClasses = () =>
-  aiAssistantTextToolsLoadingBanner
+export const getAiAssistantTextToolsLoadingBannerClasses = () => aiAssistantTextToolsLoadingBanner

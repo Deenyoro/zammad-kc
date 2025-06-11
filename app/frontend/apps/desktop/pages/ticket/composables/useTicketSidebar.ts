@@ -10,10 +10,7 @@ import emitter from '#shared/utils/emitter.ts'
 import { useTicketSidebarPlugins } from '../components/TicketSidebar/plugins/index.ts'
 
 import type { TicketSidebarPlugin } from '../components/TicketSidebar/plugins/types.ts'
-import type {
-  TicketSidebarContext,
-  TicketSidebarInformation,
-} from '../types/sidebar.ts'
+import type { TicketSidebarContext, TicketSidebarInformation } from '../types/sidebar.ts'
 
 export const TICKET_SIDEBAR_SYMBOL = Symbol(
   'ticket-sidebar',
@@ -69,9 +66,9 @@ export const useProvideTicketSidebar = (context: Ref<TicketSidebarContext>) => {
     )
       return switchedSidebar.value
 
-    const sidebar = Object.entries(availableSidebarPlugins.value).filter(
+    const sidebar = Object.entries(availableSidebarPlugins.value).find(
       ([sidebar]) => shownSidebars.value[sidebar],
-    )?.[0]?.[0]
+    )?.[0]
 
     return sidebar === undefined ? ' ' : sidebar // ' ' is a fallback value for a non-selectable sidebar to prevent flickering if sidebar is loading
   })

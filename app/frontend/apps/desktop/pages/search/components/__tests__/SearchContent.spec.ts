@@ -12,10 +12,7 @@ import { mockRouterHooks } from '#tests/support/mock-vue-router.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
 import { mockObjectManagerFrontendAttributesQuery } from '#shared/entities/object-attributes/graphql/queries/objectManagerFrontendAttributes.mocks.ts'
-import {
-  EnumSearchableModels,
-  EnumTicketStateColorCode,
-} from '#shared/graphql/types.ts'
+import { EnumSearchableModels, EnumTicketStateColorCode } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import {
@@ -107,9 +104,7 @@ describe('SearchContent', () => {
   })
 
   it('displays ticket search results', async () => {
-    mockTicketSearchResult(1, [
-      createSampleTicket(469, 'Foo ticket title', 12469),
-    ])
+    mockTicketSearchResult(1, [createSampleTicket(469, 'Foo ticket title', 12469)])
 
     const wrapper = renderSearchContent({ searchTerm: 'Foo ticket title' })
 
@@ -120,9 +115,7 @@ describe('SearchContent', () => {
     // Ticket state `open` indicator.
     expect(getByIconName(table, 'check-circle-no')).toBeInTheDocument()
 
-    expect(
-      within(table).getByRole('link', { name: '12469' }),
-    ).toBeInTheDocument()
+    expect(within(table).getByRole('link', { name: '12469' })).toBeInTheDocument()
   })
 
   it('supports optional ticket priority column', async () => {
@@ -130,9 +123,7 @@ describe('SearchContent', () => {
       ui_ticket_priority_icons: true,
     })
 
-    mockTicketSearchResult(1, [
-      createSampleTicket(469, 'Foo ticket title', 12469),
-    ])
+    mockTicketSearchResult(1, [createSampleTicket(469, 'Foo ticket title', 12469)])
 
     const wrapper = renderSearchContent({ searchTerm: 'Foo ticket title' })
 
@@ -144,15 +135,11 @@ describe('SearchContent', () => {
   })
 
   it('syncs search input with URL param', async () => {
-    mockTicketSearchResult(1, [
-      createSampleTicket(469, 'Foo ticket title', 12469),
-    ])
+    mockTicketSearchResult(1, [createSampleTicket(469, 'Foo ticket title', 12469)])
 
     const wrapper = renderSearchContent({ searchTerm: 'foo-bar' })
 
-    await waitFor(() =>
-      expect(wrapper.getByRole('searchbox')).toHaveDisplayValue('foo-bar'),
-    )
+    await waitFor(() => expect(wrapper.getByRole('searchbox')).toHaveDisplayValue('foo-bar'))
   })
 
   it('displays result counts', async () => {
@@ -171,9 +158,7 @@ describe('SearchContent', () => {
 
     const wrapper = renderSearchContent({ searchTerm: 'qux' })
 
-    expect(
-      await wrapper.findByText('No search results for this query.'),
-    ).toBeInTheDocument()
+    expect(await wrapper.findByText('No search results for this query.')).toBeInTheDocument()
   })
 
   it('displays entity counts for agent', async () => {
@@ -187,14 +172,9 @@ describe('SearchContent', () => {
 
     const wrapper = renderSearchContent({ searchTerm: '123' })
 
-    await Promise.all([
-      waitForSearchCountsQueryCalls(),
-      waitForDetailSearchQueryCalls(),
-    ])
+    await Promise.all([waitForSearchCountsQueryCalls(), waitForDetailSearchQueryCalls()])
 
-    expect(
-      wrapper.getByRole('tab', { name: 'Organization 100' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('tab', { name: 'Organization 100' })).toBeInTheDocument()
     expect(wrapper.getByRole('tab', { name: 'User 250' })).toBeInTheDocument()
     expect(wrapper.getByRole('tab', { name: 'Ticket 0' })).toBeInTheDocument()
   })
@@ -206,9 +186,7 @@ describe('SearchContent', () => {
 
     await waitForDetailSearchQueryCalls()
 
-    await wrapper.events.click(
-      wrapper.getAllByRole('button', { name: 'Sorted descending' })[0],
-    )
+    await wrapper.events.click(wrapper.getAllByRole('button', { name: 'Sorted descending' })[0])
     const mocks = await waitForDetailSearchQueryCalls()
 
     expect(mocks[1].variables.orderDirection).toBe('ASCENDING')
@@ -223,9 +201,7 @@ describe('SearchContent', () => {
 
     const panel = wrapper.getByTestId('tab-panel-Ticket')
 
-    await wrapper.events.click(
-      await within(panel).findByRole('button', { name: 'Clear search' }),
-    )
+    await wrapper.events.click(await within(panel).findByRole('button', { name: 'Clear search' }))
 
     // FIXME: Does not work without this, possibly due to missing route and push on cleared search.
     wrapper.rerender({ searchTerm: '' })
@@ -235,9 +211,7 @@ describe('SearchContent', () => {
     const searchField = wrapper.getByRole('searchbox', { name: 'Search…' })
 
     await waitFor(() =>
-      expect(
-        within(panel).queryByRole('button', { name: 'Clear search' }),
-      ).not.toBeInTheDocument(),
+      expect(within(panel).queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument(),
     )
 
     expect(searchField).toHaveDisplayValue('')
@@ -250,9 +224,7 @@ describe('SearchContent', () => {
 
     const wrapper = renderSearchContent({ searchTerm: 'Customer Ticket' })
 
-    await waitFor(() =>
-      expect(wrapper.getByText('Customer Ticket')).toBeInTheDocument(),
-    )
+    await waitFor(() => expect(wrapper.getByText('Customer Ticket')).toBeInTheDocument())
   })
 
   it('only displays Action Button for ticket entity', async () => {
@@ -280,22 +252,14 @@ describe('SearchContent', () => {
 
     await wrapper.events.click(checkboxes[0])
 
-    expect(
-      wrapper.getByRole('button', { name: 'Bulk Actions' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Bulk Actions' })).toBeInTheDocument()
 
-    await wrapper.events.click(
-      wrapper.getByRole('tab', { name: 'Organization 100' }),
-    )
+    await wrapper.events.click(wrapper.getByRole('tab', { name: 'Organization 100' }))
 
-    expect(
-      wrapper.queryByRole('button', { name: 'Bulk Actions' }),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button', { name: 'Bulk Actions' })).not.toBeInTheDocument()
 
     await wrapper.events.click(wrapper.getByRole('tab', { name: 'User 100' }))
 
-    expect(
-      wrapper.queryByRole('button', { name: 'Bulk Actions' }),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button', { name: 'Bulk Actions' })).not.toBeInTheDocument()
   })
 })

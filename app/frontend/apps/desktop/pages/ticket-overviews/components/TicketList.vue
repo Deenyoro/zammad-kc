@@ -118,9 +118,7 @@ const currentCollectionSignature = computed(() => {
   return ticketsResult.value?.ticketsCachedByOverview?.collectionSignature
 })
 
-const tickets = computed(() =>
-  edgesToArray(ticketsResult.value?.ticketsCachedByOverview),
-)
+const tickets = computed(() => edgesToArray(ticketsResult.value?.ticketsCachedByOverview))
 
 onActivated(() => {
   if (foreground.value) return
@@ -177,8 +175,7 @@ const resort = (column: string, direction: EnumOrderDirection) => {
   })
 
   sort(column, direction, {
-    knownCollectionSignature:
-      cachedTickets?.ticketsCachedByOverview?.collectionSignature,
+    knownCollectionSignature: cachedTickets?.ticketsCachedByOverview?.collectionSignature,
     renewCache: false,
   })
 }
@@ -199,8 +196,7 @@ const { startPolling, stopPolling } = useQueryPolling(
 ticketsQuery.watchOnceOnResult((result) => {
   if (!queryPollingConfig.value.enabled) return
 
-  lastFirstPageCollectionSignature =
-    result.ticketsCachedByOverview.collectionSignature
+  lastFirstPageCollectionSignature = result.ticketsCachedByOverview.collectionSignature
 
   startPolling()
 })
@@ -219,8 +215,7 @@ watch(
     ticketsQuery.watchOnceOnResult((result) => {
       if (!queryPollingConfig.value.enabled) return
 
-      lastFirstPageCollectionSignature =
-        result.ticketsCachedByOverview.collectionSignature
+      lastFirstPageCollectionSignature = result.ticketsCachedByOverview.collectionSignature
 
       startPolling()
     })
@@ -246,9 +241,7 @@ ticketsQuery.onResult((result) => {
   }
 })
 
-const totalCount = computed(
-  () => ticketsResult.value?.ticketsCachedByOverview.totalCount || 0,
-)
+const totalCount = computed(() => ticketsResult.value?.ticketsCachedByOverview.totalCount || 0)
 
 const loadMore = async () => pagination.fetchNextPage()
 
@@ -256,9 +249,7 @@ const { config } = storeToRefs(useApplicationStore())
 const { user } = storeToRefs(useSessionStore())
 
 // Scrolling position is preserved when user visits another page and returns to overview page
-const { scrollPosition, restoreScrollPosition } = useScrollPosition(
-  scrollContainerElement,
-)
+const { scrollPosition, restoreScrollPosition } = useScrollPosition(scrollContainerElement)
 
 const resetScrollPosition = () => {
   scrollPosition.value = 0
@@ -268,9 +259,7 @@ const resetScrollPosition = () => {
 // Reset scroll-position back to the start, when user navigates between overviews
 onBeforeRouteUpdate(resetScrollPosition)
 
-const { reachedTop } = useElementScroll(
-  scrollContainerElement as Ref<HTMLDivElement>,
-)
+const { reachedTop } = useElementScroll(scrollContainerElement as Ref<HTMLDivElement>)
 
 const { hasAnyTicket } = useLifetimeCustomerTicketsCount()
 
@@ -315,18 +304,13 @@ onBeforeRouteUpdate(() => checkedTicketIds.value.clear())
 
 const maxItems = computed(() => config.value.ui_ticket_overview_ticket_limit)
 
-const { visibleSkeletonLoadingCount } = useSkeletonLoadingCount(
-  toRef(props, 'overviewCount'),
-)
+const { visibleSkeletonLoadingCount } = useSkeletonLoadingCount(toRef(props, 'overviewCount'))
 
 defineExpose({ tickets: readonly(tickets) })
 </script>
 
 <template>
-  <div
-    ref="scroll-container"
-    class="overflow-y-auto focus-visible:outline-none"
-  >
+  <div ref="scroll-container" class="overflow-y-auto focus-visible:outline-none">
     <TicketListTable
       :table-id="overviewId"
       :caption="$t('Overview: %s', overviewName)"

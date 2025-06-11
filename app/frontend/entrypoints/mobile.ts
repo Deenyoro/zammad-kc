@@ -9,8 +9,7 @@ mountApp()
 
 // make sure the color of the address bar and iOS/Android header matches the theme
 const meta =
-  document.head.querySelector('meta[name="theme-color"]') ||
-  document.createElement('meta')
+  document.head.querySelector('meta[name="theme-color"]') || document.createElement('meta')
 
 meta.setAttribute('name', 'theme-color')
 meta.setAttribute('content', '#191919')

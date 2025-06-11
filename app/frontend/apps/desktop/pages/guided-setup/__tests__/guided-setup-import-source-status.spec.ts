@@ -8,10 +8,7 @@ import { waitForNextTick } from '#tests/support/utils.ts'
 import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { getConfigUpdatesSubscriptionHandler } from '#shared/graphql/subscriptions/configUpdates.mocks.ts'
-import {
-  EnumSystemSetupInfoStatus,
-  EnumSystemSetupInfoType,
-} from '#shared/graphql/types.ts'
+import { EnumSystemSetupInfoStatus, EnumSystemSetupInfoType } from '#shared/graphql/types.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 
 import { mockSystemImportStateQuery } from '../graphql/queries/systemImportState.mocks.ts'
@@ -258,9 +255,7 @@ describe('guided setup import source status', () => {
 
       await waitForNextTick()
 
-      const successMessage = await view.findByText(
-        'Import finished successfully!',
-      )
+      const successMessage = await view.findByText('Import finished successfully!')
 
       expect(successMessage.role).toBe('alert')
       expect(successMessage).toBeInTheDocument()
@@ -273,9 +268,7 @@ describe('guided setup import source status', () => {
       await flushPromises()
 
       await waitFor(() => {
-        expect(view, 'correctly redirects to login page').toHaveCurrentUrl(
-          '/login',
-        )
+        expect(view, 'correctly redirects to login page').toHaveCurrentUrl('/login')
       })
     })
 
@@ -337,9 +330,7 @@ describe('guided setup import source status', () => {
 
       await waitForNextTick()
 
-      const errorMessage = await view.findByText(
-        'An error occurred while importing data.',
-      )
+      const errorMessage = await view.findByText('An error occurred while importing data.')
       expect(errorMessage.role).toBe('alert')
       expect(errorMessage).toBeInTheDocument()
 
@@ -393,9 +384,7 @@ describe('guided setup import source status', () => {
 
       await waitForNextTick()
 
-      const errorMessage = await view.findByText(
-        'An error occurred while importing data.',
-      )
+      const errorMessage = await view.findByText('An error occurred while importing data.')
       expect(errorMessage.role).toBe('alert')
       expect(errorMessage).toBeInTheDocument()
       expect(view.queryByText('Starting import…')).not.toBeInTheDocument()

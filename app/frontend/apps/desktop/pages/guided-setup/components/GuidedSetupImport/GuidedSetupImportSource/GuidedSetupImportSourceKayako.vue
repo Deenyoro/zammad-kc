@@ -56,9 +56,7 @@ const formSchema = [
   },
 ]
 
-const { configureSystemImportSource } = useImportSourceConfiguration(
-  EnumSystemImportSource.Kayako,
-)
+const { configureSystemImportSource } = useImportSourceConfiguration(EnumSystemImportSource.Kayako)
 </script>
 
 <template>
@@ -76,9 +74,7 @@ const { configureSystemImportSource } = useImportSourceConfiguration(
       form-class="mb-2.5"
       :schema="formSchema"
       @submit="
-        configureSystemImportSource(
-          $event as FormSubmitData<ImportSourceConfigurationKayakoData>,
-        )
+        configureSystemImportSource($event as FormSubmitData<ImportSourceConfigurationKayakoData>)
       "
     />
   </div>

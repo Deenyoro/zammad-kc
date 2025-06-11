@@ -88,10 +88,8 @@ export interface SampleUpdatedSubscriptionVariables {
   id: ID
 }
 
-export const SampleTypedQueryDocument: TypedDocumentNode<
-  SampleQuery,
-  SampleQueryVariables
-> = SampleDocument
+export const SampleTypedQueryDocument: TypedDocumentNode<SampleQuery, SampleQueryVariables> =
+  SampleDocument
 
 export const SampleTypedMutationDocument: TypedDocumentNode<
   SampleUpdateMutation,

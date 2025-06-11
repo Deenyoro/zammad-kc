@@ -8,9 +8,7 @@ export const getAutoCompleteOption = (organization: Partial<Organization>) => {
     label: organization.name,
     value:
       organization.internalId ||
-      (organization.id
-        ? ensureGraphqlId('Organization', organization.id)
-        : null),
+      (organization.id ? ensureGraphqlId('Organization', organization.id) : null),
     organization,
   }
 }

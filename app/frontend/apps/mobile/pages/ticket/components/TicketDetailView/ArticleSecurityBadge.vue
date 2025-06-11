@@ -29,12 +29,7 @@ const securityIcon = computed(() => {
 })
 
 const hasError = computed(() => {
-  const {
-    signingMessage,
-    signingSuccess,
-    encryptionMessage,
-    encryptionSuccess,
-  } = props.security
+  const { signingMessage, signingSuccess, encryptionMessage, encryptionSuccess } = props.security
   if (signingSuccess === false && signingMessage) return true
   if (encryptionSuccess === false && encryptionMessage) return true
   return false
@@ -164,22 +159,12 @@ const popupItems = computed(() =>
       size="tiny"
       :label="$t('Encrypted')"
     />
-    <CommonIcon
-      v-if="security.signingSuccess"
-      name="signed"
-      size="tiny"
-      :label="$t('Signed')"
-    />
+    <CommonIcon v-if="security.signingSuccess" name="signed" size="tiny" :label="$t('Signed')" />
   </button>
   <CommonSectionPopup v-model:state="showPopup" :messages="popupItems">
     <template #header>
-      <div
-        class="flex flex-col items-center gap-2 border-b border-b-white/10 p-4"
-      >
-        <div
-          v-if="hasError"
-          class="text-yellow flex w-full items-center justify-center gap-1"
-        >
+      <div class="flex flex-col items-center gap-2 border-b border-b-white/10 p-4">
+        <div v-if="hasError" class="text-yellow flex w-full items-center justify-center gap-1">
           <CommonIcon :name="securityIcon" size="tiny" />
           {{ $t('Security Error') }}
         </div>

@@ -1,10 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import type { Sizes } from '#shared/components/CommonIcon/types.ts'
-import type {
-  EnumObjectManagerObjects,
-  FormUpdaterQuery,
-} from '#shared/graphql/types.ts'
+import type { EnumObjectManagerObjects, FormUpdaterQuery } from '#shared/graphql/types.ts'
 import type { EntityObject } from '#shared/types/entity.ts'
 import type { FormUpdaterOptions } from '#shared/types/form.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
@@ -18,10 +15,7 @@ import type {
   FormKitSchemaCondition,
   FormKitSchemaNode,
 } from '@formkit/core'
-import type {
-  FormKitValidationMessages,
-  FormKitValidationRules,
-} from '@formkit/validation'
+import type { FormKitValidationMessages, FormKitValidationRules } from '@formkit/validation'
 import type { Except, Primitive, SetOptional, SetRequired } from 'type-fest'
 import type { Ref, ShallowRef } from 'vue'
 
@@ -31,14 +25,9 @@ export interface FormFieldAdditionalProps {
   [index: string]: unknown
 }
 
-type SimpleFormFieldValueBase =
-  | Primitive
-  | Primitive[]
-  | Record<string, Primitive | Primitive[]>
+type SimpleFormFieldValueBase = Primitive | Primitive[] | Record<string, Primitive | Primitive[]>
 
-type SimpleFormFieldValue =
-  | SimpleFormFieldValueBase
-  | Record<string, SimpleFormFieldValueBase>
+type SimpleFormFieldValue = SimpleFormFieldValueBase | Record<string, SimpleFormFieldValueBase>
 
 export type FormFieldValue =
   | SimpleFormFieldValue
@@ -50,8 +39,7 @@ export interface FormValues {
   [index: string]: FormFieldValue
 }
 
-export type FormSubmitData<TFormValues = FormValues> = FormKitGroupValue &
-  TFormValues
+export type FormSubmitData<TFormValues = FormValues> = FormKitGroupValue & TFormValues
 
 // https://formkit.com/essentials/validation#showing-errors
 export enum FormValidationVisibility {
@@ -89,17 +77,11 @@ export interface FormSchemaField {
   errors?: string[]
   hidden?: boolean
   id?: string
-  sectionsSchema?: Record<
-    string,
-    Partial<FormKitSchemaNode> | FormKitSchemaCondition
-  >
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  sectionsSchema?: Record<string, Partial<FormKitSchemaNode> | FormKitSchemaCondition>
+  // oxlint-disable-next-line no-explicit-any
   validation?: string | Array<[rule: string, ...args: any]>
   validationMessages?: FormKitValidationMessages
-  validationVisibility?: Exclude<
-    FormValidationVisibility,
-    FormValidationVisibility.Submit
-  >
+  validationVisibility?: Exclude<FormValidationVisibility, FormValidationVisibility.Submit>
   validationRules?: FormKitValidationRules
   config?: Record<string, unknown>
   plugins?: FormKitPlugin[]
@@ -151,20 +133,14 @@ export interface FormSchemaFieldsForObjectAttributeScreen {
   object: EnumObjectManagerObjects
 }
 
-export type FormSchemaFieldObjectAttribute = SetRequired<
-  Partial<FormSchemaField>,
-  'name'
-> & {
+export type FormSchemaFieldObjectAttribute = SetRequired<Partial<FormSchemaField>, 'name'> & {
   screen?: string
   object: EnumObjectManagerObjects
 }
 
 export type FormSchemaLayout = FormSchemaComponent | FormSchemaDOMElement
 
-export type FormSchemaNodeWithChildren = (
-  | FormSchemaLayout
-  | FormSchemaGroupOrList
-) & {
+export type FormSchemaNodeWithChildren = (FormSchemaLayout | FormSchemaGroupOrList) & {
   children:
     | (
         | FormSchemaField
@@ -210,11 +186,7 @@ export interface ChangedField {
 export type ChangedFieldFunction = {
   (
     name: string,
-    callback: (
-      newValue: FormFieldValue,
-      oldValue: FormFieldValue,
-      node: FormKitNode,
-    ) => void,
+    callback: (newValue: FormFieldValue, oldValue: FormFieldValue, node: FormKitNode) => void,
   ): void
 }
 
@@ -297,9 +269,7 @@ export interface FormRef {
   values: FormValues
   flags: Record<string, boolean>
   updateSchemaDataField: UpdateSchemaDataFieldFunction
-  updateChangedFields: (
-    changedFields: Record<string, Partial<FormSchemaField>>,
-  ) => void
+  updateChangedFields: (changedFields: Record<string, Partial<FormSchemaField>>) => void
 
   getNodeByName(id: string): FormKitNode | undefined
 

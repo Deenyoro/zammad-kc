@@ -3,7 +3,7 @@
 import { useAppName } from '#shared/composables/useAppName.ts'
 import type { FieldResolverModule } from '#shared/entities/object-attributes/types/resolver.ts'
 
-import FieldResolver from '../FieldResolver.ts'
+import { FieldResolver } from '../FieldResolver.ts'
 
 export class FieldResolverUserGroupPermissions extends FieldResolver {
   // NB: The group permissions field is currently supported only in desktop app.

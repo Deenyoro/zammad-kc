@@ -5,10 +5,7 @@ import { useLazyQuery, useQuery } from '@vue/apollo-composable'
 import { effectScope } from 'vue'
 
 import { SampleTypedQueryDocument } from '#tests/fixtures/graphqlSampleTypes.ts'
-import type {
-  SampleQuery,
-  SampleQueryVariables,
-} from '#tests/fixtures/graphqlSampleTypes.ts'
+import type { SampleQuery, SampleQueryVariables } from '#tests/fixtures/graphqlSampleTypes.ts'
 import createMockClient from '#tests/support/mock-apollo-client.ts'
 import { waitForNextTick, waitUntilSpyCalled } from '#tests/support/utils.ts'
 
@@ -233,6 +230,7 @@ describe('QueryHandler', () => {
             expect(result.data).toEqual(querySampleResult)
           }
         })
+
         await waitFirstResult(queryHandlerObject)
       })
     })
@@ -264,12 +262,8 @@ describe('QueryHandler', () => {
         expect(cancelSpy).toHaveBeenCalledTimes(2)
 
         // both resolve, because signal is not actually aborted in node
-        await expect(result1).resolves.toEqual(
-          expect.objectContaining({ data: querySampleResult }),
-        )
-        await expect(result2).resolves.toEqual(
-          expect.objectContaining({ data: querySampleResult }),
-        )
+        await expect(result1).resolves.toEqual(expect.objectContaining({ data: querySampleResult }))
+        await expect(result2).resolves.toEqual(expect.objectContaining({ data: querySampleResult }))
       })
     })
   })
@@ -374,9 +368,7 @@ describe('QueryHandler', () => {
       await scope.run(async () => {
         const queryHandlerObject = new QueryHandler(sampleQuery({ id: 1 }))
 
-        await expect(queryHandlerObject.fetchMore({})).resolves.toEqual(
-          querySampleResult,
-        )
+        await expect(queryHandlerObject.fetchMore({})).resolves.toEqual(querySampleResult)
       })
     })
   })

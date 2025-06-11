@@ -22,12 +22,7 @@ const { popover, popoverTarget, toggle } = usePopover()
     {{ $t('Or choose a checklist template.') }}
   </CommonLabel>
 
-  <CommonPopover
-    ref="popover"
-    :owner="popoverTarget"
-    placement="end"
-    orientation="autoVertical"
-  >
+  <CommonPopover ref="popover" :owner="popoverTarget" placement="end" orientation="autoVertical">
     <CommonPopoverMenu :popover="popover" :items="templates" />
   </CommonPopover>
 

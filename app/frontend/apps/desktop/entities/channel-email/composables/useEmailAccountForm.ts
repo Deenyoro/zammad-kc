@@ -47,8 +47,7 @@ export const useEmailAccountForm = () => {
     },
   ]
 
-  const { values, formSetErrors, updateFieldValues } =
-    useForm<EmailAccountData>(formEmailAccount)
+  const { values, formSetErrors, updateFieldValues } = useForm<EmailAccountData>(formEmailAccount)
 
   return {
     formEmailAccount,

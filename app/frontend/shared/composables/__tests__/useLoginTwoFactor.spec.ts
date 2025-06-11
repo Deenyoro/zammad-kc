@@ -29,9 +29,7 @@ describe('useLoginTwoFactor', () => {
     updateSecondFactor(EnumTwoFactorAuthenticationMethod.SecurityKeys)
 
     expect(clearErrors).toHaveBeenCalledOnce()
-    expect(loginFlow.twoFactor).toBe(
-      EnumTwoFactorAuthenticationMethod.SecurityKeys,
-    )
+    expect(loginFlow.twoFactor).toBe(EnumTwoFactorAuthenticationMethod.SecurityKeys)
     expect(loginFlow.state).toBe('2fa')
   })
 
@@ -74,8 +72,7 @@ describe('useLoginTwoFactor', () => {
   it('can filter for allowed two-factor methods', () => {
     const clearErrors = vi.fn()
 
-    const { loginFlow, twoFactorAllowedMethods } =
-      useLoginTwoFactor(clearErrors)
+    const { loginFlow, twoFactorAllowedMethods } = useLoginTwoFactor(clearErrors)
 
     loginFlow.allowedMethods = [
       EnumTwoFactorAuthenticationMethod.AuthenticatorApp,
@@ -122,8 +119,7 @@ describe('useLoginTwoFactor', () => {
   it('can tell if there is an alternative login method', () => {
     const clearErrors = vi.fn()
 
-    const { loginFlow, hasAlternativeLoginMethod } =
-      useLoginTwoFactor(clearErrors)
+    const { loginFlow, hasAlternativeLoginMethod } = useLoginTwoFactor(clearErrors)
 
     loginFlow.allowedMethods = [
       EnumTwoFactorAuthenticationMethod.AuthenticatorApp,

@@ -21,10 +21,7 @@ import { useSkeletonLoadingCount } from '#desktop/components/CommonTable/composa
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import { useDetailSearchLazyQuery } from '#desktop/components/Search/graphql/queries/detailSearch.api.ts'
 import { useSearchCountsLazyQuery } from '#desktop/components/Search/graphql/queries/searchCounts.api.ts'
-import {
-  searchPluginByName,
-  useSearchPlugins,
-} from '#desktop/components/Search/plugins/index.ts'
+import { searchPluginByName, useSearchPlugins } from '#desktop/components/Search/plugins/index.ts'
 import TicketBulkEditButton from '#desktop/components/Ticket/TicketBulkEditButton.vue'
 import { useTicketBulkEdit } from '#desktop/components/Ticket/TicketBulkEditFlyout/useTicketBulkEdit.ts'
 import { useElementScroll } from '#desktop/composables/useElementScroll.ts'
@@ -45,8 +42,7 @@ const props = defineProps<{
 const router = useRouter()
 
 const selectedEntity = ref(
-  (router.currentRoute.value.query.entity as EnumSearchableModels) ??
-    EnumSearchableModels.Ticket,
+  (router.currentRoute.value.query.entity as EnumSearchableModels) ?? EnumSearchableModels.Ticket,
 )
 
 watch(selectedEntity, (newValue) => {
@@ -79,8 +75,7 @@ const tabContext = computed<TaskbarTabContext>((currentContext) => {
     model: selectedEntity.value,
   }
 
-  if (currentContext && isEqual(newContext, currentContext))
-    return currentContext
+  if (currentContext && isEqual(newContext, currentContext)) return currentContext
 
   return newContext
 })
@@ -90,17 +85,14 @@ const { currentTaskbarTab, currentTaskbarTabUpdate } = useTaskbarTab(tabContext)
 watch(tabContext, (newValue) => {
   if (!currentTaskbarTab.value) return
 
-  if (isEqual(newValue, omit(currentTaskbarTab.value.entity, '__typename')))
-    return
+  if (isEqual(newValue, omit(currentTaskbarTab.value.entity, '__typename'))) return
 
   currentTaskbarTabUpdate(currentTaskbarTab.value, newValue)
 })
 
 const scrollContainerElement = useTemplateRef('scroll-container')
 
-const { reachedTop } = useElementScroll(
-  scrollContainerElement as Ref<HTMLElement>,
-)
+const { reachedTop } = useElementScroll(scrollContainerElement as Ref<HTMLElement>)
 
 const searchControlsInstance = useTemplateRef('search-controls')
 
@@ -164,9 +156,7 @@ const searchQueriesStart = () => {
   searchCountsQuery.start()
 }
 
-const searchEntityCurrentCounts = ref<
-  Partial<Record<EnumSearchableModels, number>>
->({})
+const searchEntityCurrentCounts = ref<Partial<Record<EnumSearchableModels, number>>>({})
 
 const searchPlugin = computed(() => searchPluginByName[selectedEntity.value])
 
@@ -226,12 +216,8 @@ const isLoading = computed(() => {
   return loading.value
 })
 
-const searchResultTotalCount = computed(
-  () => currentSearchResult.value?.search.totalCount ?? 0,
-)
-const searchResultItems = computed(
-  () => currentSearchResult.value?.search.items || [],
-)
+const searchResultTotalCount = computed(() => currentSearchResult.value?.search.totalCount ?? 0)
+const searchResultItems = computed(() => currentSearchResult.value?.search.items || [])
 
 // Update counts when needed, but hold the counts always in one object.
 watch([currentSearchCounts, searchResultTotalCount], () => {
@@ -273,9 +259,7 @@ const { sort, orderBy, orderDirection, isSorting } = useSorting(
 const offset = ref(0)
 const loadingNewPage = ref(false)
 
-const resetPagination = (
-  variables: Partial<DetailSearchQueryVariables> = {},
-) => {
+const resetPagination = (variables: Partial<DetailSearchQueryVariables> = {}) => {
   offset.value = 0
 
   forceDetailSearchCacheOnlyFirstPage(
@@ -319,8 +303,7 @@ const refetchQueries = () => {
   searchCountsQuery.refetch()
 }
 
-const { checkedTicketIds, openBulkEditFlyout, setOnSuccessCallback } =
-  useTicketBulkEdit()
+const { checkedTicketIds, openBulkEditFlyout, setOnSuccessCallback } = useTicketBulkEdit()
 
 watch(
   sanitizedSearchTerm,
@@ -356,9 +339,7 @@ const currentSearchResultCount = computed(
   () => searchEntityCurrentCounts.value[selectedEntity.value],
 )
 
-const { visibleSkeletonLoadingCount } = useSkeletonLoadingCount(
-  currentSearchResultCount,
-)
+const { visibleSkeletonLoadingCount } = useSkeletonLoadingCount(currentSearchResultCount)
 
 const breadcrumbItems = computed(() => [
   { label: __('Search') },
@@ -395,11 +376,7 @@ setOnSuccessCallback(() => {
 </script>
 
 <template>
-  <LayoutContent
-    content-padding
-    no-scrollable
-    :breadcrumb-items="breadcrumbItems"
-  >
+  <LayoutContent content-padding no-scrollable :breadcrumb-items="breadcrumbItems">
     <template #headerRight>
       <TicketBulkEditButton
         v-if="selectedEntity === EnumSearchableModels.Ticket"
@@ -407,10 +384,7 @@ setOnSuccessCallback(() => {
         @open-flyout="openBulkEditFlyout"
       />
     </template>
-    <div
-      class="flex h-full flex-col overflow-hidden"
-      data-test-id="search-container"
-    >
+    <div class="flex h-full flex-col overflow-hidden" data-test-id="search-container">
       <SearchControls
         ref="search-controls"
         v-model:search="modelSearchTerm"
@@ -449,9 +423,7 @@ setOnSuccessCallback(() => {
               class="absolute top-1/2 -translate-y-1/2 ltr:left-1/2 ltr:-translate-x-1/2 rtl:right-1/2 rtl:translate-x-1/2"
               :search-term="sanitizedSearchTerm"
               :results="searchResultItems"
-              @clear-search-input="
-                () => searchControlsInstance?.clearAndFocusSearch()
-              "
+              @clear-search-input="() => searchControlsInstance?.clearAndFocusSearch()"
             />
           </template>
         </component>

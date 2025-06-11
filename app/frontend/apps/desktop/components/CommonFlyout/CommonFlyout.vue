@@ -105,9 +105,7 @@ const routeIdentifier = getRouteIdentifier(useRoute())
 const router = useRouter()
 
 const isActive = computed(() =>
-  props.fullscreen
-    ? true
-    : routeIdentifier === getRouteIdentifier(router.currentRoute.value),
+  props.fullscreen ? true : routeIdentifier === getRouteIdentifier(router.currentRoute.value),
 )
 
 whenever(isActive, () => {
@@ -130,11 +128,7 @@ const close = async (isCancel?: boolean) => {
       dialogName = `${dialogName}_${routeIdentifier}`
     }
 
-    const confirmed = await waitForVariantConfirmation(
-      'unsaved',
-      undefined,
-      dialogName,
-    )
+    const confirmed = await waitForVariantConfirmation('unsaved', undefined, dialogName)
 
     if (!confirmed) return
   }
@@ -171,27 +165,18 @@ let flyoutContainerWidth: Ref<number>
 
 const gap = 16 // Gap between sidebar and flyout
 
-const storageKeys = Object.keys(localStorage).filter((key) =>
-  key.includes('sidebar-width'),
-)
+const storageKeys = Object.keys(localStorage).filter((key) => key.includes('sidebar-width'))
 
 const leftSideBarKey = storageKeys.find((key) => key.includes('left'))
 
-const leftSidebarWidth = leftSideBarKey
-  ? useLocalStorage(leftSideBarKey, 0)
-  : shallowRef(0)
+const leftSidebarWidth = leftSideBarKey ? useLocalStorage(leftSideBarKey, 0) : shallowRef(0)
 
 const { width: screenWidth } = useWindowSize()
 // Calculate the viewport width minus the left sidebar width and a threshold gap
-const flyoutMaxWidth = computed(
-  () => screenWidth.value - leftSidebarWidth.value - gap,
-)
+const flyoutMaxWidth = computed(() => screenWidth.value - leftSidebarWidth.value - gap)
 
 if (props.persistResizeWidth) {
-  flyoutContainerWidth = useLocalStorage(
-    `${flyoutId}-width`,
-    flyoutSize[props.size || 'medium'],
-  )
+  flyoutContainerWidth = useLocalStorage(`${flyoutId}-width`, flyoutSize[props.size || 'medium'])
 } else {
   flyoutContainerWidth = ref(flyoutSize[props.size || 'medium'])
 }
@@ -207,10 +192,7 @@ const resizeCallback = (valueX: number) => {
 const activeElement = useActiveElement()
 
 const handleKeyStroke = (e: KeyboardEvent, adjustment: number) => {
-  if (
-    !flyoutContainerWidth.value ||
-    activeElement.value !== resizeHandleInstance.value?.resizeLine
-  )
+  if (!flyoutContainerWidth.value || activeElement.value !== resizeHandleInstance.value?.resizeLine)
     return
 
   e.preventDefault()
@@ -264,10 +246,7 @@ const escapeConfig: OrderKeyHandlerConfig = {
   beforeHandlerRuns: props.escapeConfig?.beforeHandlerRuns,
 }
 
-const { subscribeEvent, unsubscribeEvent } = useKeyboardEventBus(
-  KeyboardKey.Escape,
-  escapeConfig,
-)
+const { subscribeEvent, unsubscribeEvent } = useKeyboardEventBus(KeyboardKey.Escape, escapeConfig)
 
 watch(isActive, (isActive) =>
   isActive ? subscribeEvent(escapeConfig) : unsubscribeEvent(escapeConfig),
@@ -288,10 +267,7 @@ watch(
     // Watch if panel gets resized to show and hide styling based on content overflow
     await nextTick()
 
-    if (
-      contentElement.value?.scrollHeight &&
-      contentElement.value?.clientHeight
-    ) {
+    if (contentElement.value?.scrollHeight && contentElement.value?.clientHeight) {
       isContentOverflowing.value =
         contentElement.value.scrollHeight > contentElement.value.clientHeight
     }
@@ -348,8 +324,7 @@ const transition = VITE_TEST_MODE
         ref="header"
         class="sticky top-0 flex items-center border-b border-neutral-100 border-b-transparent bg-neutral-50 p-3 ltr:rounded-tl-xl rtl:rounded-tr-xl dark:bg-gray-500"
         :class="{
-          'border-b-neutral-100 dark:border-b-gray-900':
-            !arrivedState.top && isContentOverflowing,
+          'border-b-neutral-100 dark:border-b-gray-900': !arrivedState.top && isContentOverflowing,
         }"
       >
         <slot name="header">

@@ -45,9 +45,7 @@ vi.mock('vue', async () => {
   }
 })
 
-const renderRenderTicketSidebarSummary = (
-  ticket: Partial<TicketById> = defaultTicket,
-) => {
+const renderRenderTicketSidebarSummary = (ticket: Partial<TicketById> = defaultTicket) => {
   const wrapper = renderComponent(TicketSidebarSummary, {
     props: {
       sidebar: 'ticket-summary',
@@ -137,9 +135,7 @@ describe('TicketSidebarSummary', () => {
 
     expect(wrapper.getAllByIconName(plugin.icon).length).toBe(2)
 
-    expect(
-      wrapper.getByRole('button', { name: plugin.title }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: plugin.title })).toBeInTheDocument()
 
     expect(
       await wrapper.findByRole('heading', {
@@ -194,9 +190,7 @@ describe('TicketSidebarSummary', () => {
 
     expect(wrapper.getAllByIconName(plugin.icon).length).toBe(2)
 
-    expect(
-      wrapper.getByRole('button', { name: plugin.title }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: plugin.title })).toBeInTheDocument()
 
     expect(
       await wrapper.findByRole('heading', {
@@ -260,9 +254,7 @@ describe('TicketSidebarSummary', () => {
     const wrapper = renderRenderTicketSidebarSummary()
 
     expect(
-      await wrapper.findByText(
-        'Be sure to check AI-generated summaries for accuracy.',
-      ),
+      await wrapper.findByText('Be sure to check AI-generated summaries for accuracy.'),
     ).toBeInTheDocument()
   })
 
@@ -290,9 +282,7 @@ describe('TicketSidebarSummary', () => {
     const wrapper = renderRenderTicketSidebarSummary()
 
     expect(
-      await wrapper.findByText(
-        'There is not enough content yet to summarize this ticket.',
-      ),
+      await wrapper.findByText('There is not enough content yet to summarize this ticket.'),
     ).toBeInTheDocument()
   })
 
@@ -306,17 +296,11 @@ describe('TicketSidebarSummary', () => {
     const wrapper = renderRenderTicketSidebarSummary()
 
     expect(
-      wrapper.getByText(
-        'Zammad Smart Assist is generating the summary for you…',
-      ),
+      wrapper.getByText('Zammad Smart Assist is generating the summary for you…'),
     ).toBeInTheDocument()
-    expect(
-      wrapper.getAllByLabelText('Placeholder for AI generated heading'),
-    ).toHaveLength(4)
+    expect(wrapper.getAllByLabelText('Placeholder for AI generated heading')).toHaveLength(4)
 
-    expect(
-      wrapper.getAllByLabelText('Placeholder for AI generated text'),
-    ).toHaveLength(16)
+    expect(wrapper.getAllByLabelText('Placeholder for AI generated text')).toHaveLength(16)
   })
 
   it('hides feature if feature flag is disabled', async () => {
@@ -341,13 +325,8 @@ describe('TicketSidebarSummary', () => {
 
     await waitForTicketAiAssistanceSummarizeMutationCalls()
 
-    expect(
-      wrapper.queryByRole('button', { name: 'Add all to checklist' }),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button', { name: 'Add all to checklist' })).not.toBeInTheDocument()
 
-    expect(
-      wrapper.queryAllByRole('button', { name: 'Add as checklist item' })
-        .length,
-    ).toBe(0)
+    expect(wrapper.queryAllByRole('button', { name: 'Add as checklist item' }).length).toBe(0)
   })
 })

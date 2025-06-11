@@ -13,8 +13,7 @@ describe('useRecentSearches', () => {
     localStorage.clear()
   })
 
-  const { recentSearches, addSearch, removeSearch, clearSearches } =
-    useRecentSearches()
+  const { recentSearches, addSearch, removeSearch, clearSearches } = useRecentSearches()
 
   test('prevents duplicate search terms', () => {
     addSearch('test search')

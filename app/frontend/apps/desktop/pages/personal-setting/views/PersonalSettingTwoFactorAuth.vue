@@ -73,13 +73,10 @@ const { breadcrumbItems } = useBreadcrumb(__('Two-factor Authentication'))
 
 const twoFactorConfigurationFlyout = useFlyout({
   name: 'two-factor-flyout',
-  component: () =>
-    import('#desktop/components/TwoFactor/TwoFactorConfigurationFlyout.vue'),
+  component: () => import('#desktop/components/TwoFactor/TwoFactorConfigurationFlyout.vue'),
 })
 
-const openTwoFactorConfigurationFlyout = async (
-  type: TwoFactorConfigurationType,
-) => {
+const openTwoFactorConfigurationFlyout = async (type: TwoFactorConfigurationType) => {
   return twoFactorConfigurationFlyout.open({
     type,
   })
@@ -88,9 +85,7 @@ const openTwoFactorConfigurationFlyout = async (
 const setDefaultTwoFactorMethod = new MutationHandler(
   useUserCurrentTwoFactorSetDefaultMethodMutation(),
   {
-    errorNotificationMessage: __(
-      'Could not set two-factor authentication method as default',
-    ),
+    errorNotificationMessage: __('Could not set two-factor authentication method as default'),
   },
 )
 
@@ -103,7 +98,7 @@ const submitTwoFactorDefaultMethod = (entity?: ObjectLike) => {
     })
     .then(() => {
       session.setUserPreference('two_factor_authentication', {
-        ...(session.user?.preferences?.two_factor_authentication || {}),
+        ...session.user?.preferences?.two_factor_authentication,
         default: entity.name,
       })
 
@@ -115,14 +110,9 @@ const submitTwoFactorDefaultMethod = (entity?: ObjectLike) => {
     })
 }
 
-const removeTwoFactorMethod = new MutationHandler(
-  useUserCurrentTwoFactorRemoveMethodMutation(),
-  {
-    errorNotificationMessage: __(
-      'Could not remove two-factor authentication method.',
-    ),
-  },
-)
+const removeTwoFactorMethod = new MutationHandler(useUserCurrentTwoFactorRemoveMethodMutation(), {
+  errorNotificationMessage: __('Could not remove two-factor authentication method.'),
+})
 
 const submitTwoFactorMethodRemoval = async (entity?: ObjectLike) => {
   if (!entity) return
@@ -146,17 +136,12 @@ const submitTwoFactorMethodRemoval = async (entity?: ObjectLike) => {
   })
 }
 
-const lookUpA11yActionLabel = (
-  entity: ObjectLike,
-  type: TwoFactorActionTypes,
-) => {
+const lookUpA11yActionLabel = (entity: ObjectLike, type: TwoFactorActionTypes) => {
   const authenticatorMethod = twoFactorConfigurationMethods.value.find(
     (method) => method.name === entity.name,
   )
 
-  return (
-    authenticatorMethod?.configurationOptions?.getActionA11yLabel(type) || ''
-  )
+  return authenticatorMethod?.configurationOptions?.getActionA11yLabel(type) || ''
 }
 
 const actions = computed<MenuItem[]>(() => [
@@ -175,9 +160,7 @@ const actions = computed<MenuItem[]>(() => [
     ariaLabel: (entity) => lookUpA11yActionLabel(entity!, 'edit'),
     icon: 'pencil',
     show: (entity) => {
-      return Boolean(
-        entity?.configured && entity?.configurationOptions.editable,
-      )
+      return Boolean(entity?.configured && entity?.configurationOptions.editable)
     },
     onClick: (entity) => openTwoFactorConfigurationFlyout(entity?.name),
   },
@@ -222,10 +205,7 @@ const actions = computed<MenuItem[]>(() => [
                 <CommonLabel class="text-black dark:text-white"
                   >{{ $t(twoFactorMethod.label) }}
                 </CommonLabel>
-                <CommonBadge
-                  v-if="twoFactorMethod.configured"
-                  variant="success"
-                >
+                <CommonBadge v-if="twoFactorMethod.configured" variant="success">
                   {{ $t('Active') }}
                 </CommonBadge>
                 <CommonBadge v-if="twoFactorMethod.default" variant="info"
@@ -271,11 +251,7 @@ const actions = computed<MenuItem[]>(() => [
             size="medium"
             @click="openTwoFactorConfigurationFlyout('recovery_codes')"
           >
-            {{
-              hasRecoveryCodes
-                ? $t('Regenerate Recovery Codes')
-                : $t('Generate Recovery Codes')
-            }}
+            {{ hasRecoveryCodes ? $t('Regenerate Recovery Codes') : $t('Generate Recovery Codes') }}
           </CommonButton>
         </div>
       </template>

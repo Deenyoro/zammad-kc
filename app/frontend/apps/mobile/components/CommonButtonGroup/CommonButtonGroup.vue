@@ -30,8 +30,7 @@ const session = useSessionStore()
 const filteredOptions = computed(() => {
   return props.options.filter(
     (option) =>
-      !option.hidden &&
-      (!option.permissions || session.hasPermission(option.permissions)),
+      !option.hidden && (!option.permissions || session.hasPermission(option.permissions)),
   )
 })
 
@@ -71,9 +70,7 @@ const isTabs = computed(() => props.as === 'tabs')
         option.class,
         {
           'opacity-50': option.disabled,
-          '!bg-gray-200':
-            option.selected ||
-            (option.value != null && modelValue === option.value),
+          '!bg-gray-200': option.selected || (option.value != null && modelValue === option.value),
           'flex-1 py-2': mode === 'full',
           'py-1': mode === 'compressed',
         },

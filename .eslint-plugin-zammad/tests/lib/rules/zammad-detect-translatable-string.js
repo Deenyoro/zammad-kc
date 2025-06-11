@@ -9,11 +9,9 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-/* eslint-disable @typescript-eslint/no-require-imports */
 const { RuleTester } = require('eslint')
 
 const rule = require('../../../lib/rules/zammad-detect-translatable-string.js')
-/* eslint-enable @typescript-eslint/no-require-imports */
 
 //------------------------------------------------------------------------------
 // Tests
@@ -48,7 +46,6 @@ ruleTester.run('zammad-detect-translatable-string', rule, {
     },
     {
       filename: 'test.ts',
-      // eslint-disable-next-line no-template-curly-in-string
       code: '"String with ${interpolation}..."', // Not fully correct, but a ``-template string does not seem to work.
     },
   ],

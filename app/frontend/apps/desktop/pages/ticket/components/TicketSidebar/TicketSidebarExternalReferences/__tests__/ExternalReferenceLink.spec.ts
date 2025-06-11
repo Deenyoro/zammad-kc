@@ -52,9 +52,7 @@ describe('IssueIntegrationContent', () => {
       router: true,
     })
 
-    expect(
-      wrapper.queryByRole('button', { name: 'Remove Zammad Test' }),
-    ).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button', { name: 'Remove Zammad Test' })).not.toBeInTheDocument()
   })
 
   it('emits remove event', () => {

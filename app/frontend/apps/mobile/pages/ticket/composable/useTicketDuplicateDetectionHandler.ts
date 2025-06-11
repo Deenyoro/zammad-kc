@@ -15,9 +15,7 @@ export interface TicketDuplicateDetectionPayload {
 }
 
 export const useTicketDuplicateDetectionHandler = (
-  showTicketDuplicateDetectionDialog: (
-    data: TicketDuplicateDetectionPayload,
-  ) => void,
+  showTicketDuplicateDetectionDialog: (data: TicketDuplicateDetectionPayload) => void,
 ): FormHandler => {
   const executeHandler = (
     execution: FormHandlerExecution,
@@ -45,8 +43,7 @@ export const useTicketDuplicateDetectionHandler = (
 
     if (!executeHandler(execution, schemaData, changedField)) return
 
-    const newFieldData =
-      changedField?.newValue as unknown as TicketDuplicateDetectionPayload
+    const newFieldData = changedField?.newValue as unknown as TicketDuplicateDetectionPayload
 
     if (!newFieldData?.count) return
 

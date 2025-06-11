@@ -32,8 +32,7 @@ import type { OutOfOfficeFormData } from '../types/out-of-office.ts'
 
 const { user } = storeToRefs(useSessionStore())
 
-const { form, isDisabled, onChangedField, formReset, values, isDirty } =
-  useForm()
+const { form, isDisabled, onChangedField, formReset, values, isDirty } = useForm()
 
 const schema = defineFormSchema([
   {
@@ -88,10 +87,7 @@ const initialFormValues = computed<OutOfOfficeFormData>((oldValues) => {
   }
 
   if (user.value?.outOfOfficeStartAt && user.value?.outOfOfficeEndAt) {
-    values.date_range = [
-      user.value?.outOfOfficeStartAt,
-      user.value?.outOfOfficeEndAt,
-    ]
+    values.date_range = [user.value?.outOfOfficeStartAt, user.value?.outOfOfficeEndAt]
   }
 
   if (oldValues && isEqual(values, oldValues)) {
@@ -125,9 +121,7 @@ onChangedField('enabled', (newValue: FormFieldValue) => {
 
 const { breadcrumbItems } = useBreadcrumb(__('Out of Office'))
 
-const formDataToInput = (
-  formData: FormSubmitData<OutOfOfficeFormData>,
-): OutOfOfficeInput => {
+const formDataToInput = (formData: FormSubmitData<OutOfOfficeFormData>): OutOfOfficeInput => {
   const replacementId = formData.replacement_id
     ? convertToGraphQLId('User', formData.replacement_id)
     : undefined
@@ -151,12 +145,9 @@ const showSuccessNotification = () => {
   })
 }
 
-const outOfOfficeMutation = new MutationHandler(
-  useUserCurrentOutOfOfficeMutation(),
-  {
-    errorNotificationMessage: __('Out of Office settings could not be saved.'),
-  },
-)
+const outOfOfficeMutation = new MutationHandler(useUserCurrentOutOfOfficeMutation(), {
+  errorNotificationMessage: __('Out of Office settings could not be saved.'),
+})
 
 const submitForm = async (formData: FormSubmitData<OutOfOfficeFormData>) => {
   return outOfOfficeMutation
@@ -178,12 +169,7 @@ const submitForm = async (formData: FormSubmitData<OutOfOfficeFormData>) => {
       >
         <template #after-fields>
           <div class="mt-5 flex items-center justify-end gap-2">
-            <CommonButton
-              variant="submit"
-              type="submit"
-              size="medium"
-              :disabled="isDisabled"
-            >
+            <CommonButton variant="submit" type="submit" size="medium" :disabled="isDisabled">
               {{ $t('Save Out of Office') }}
             </CommonButton>
           </div>

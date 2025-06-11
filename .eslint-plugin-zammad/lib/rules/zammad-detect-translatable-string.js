@@ -30,8 +30,7 @@ module.exports = {
       /^[^A-Z]/, // Only look at strings starting with upper case letters
       /\$\{/, // Ignore strings with interpolation
     ]
-    const IGNORE_METHODS = ['__']
-    const IGNORE_OBJECTS = ['log', 'console', 'i18n']
+    const IGNORE_OBJECTS = new Set(['log', 'console', 'i18n'])
 
     return {
       Literal(node) {
@@ -61,10 +60,10 @@ module.exports = {
         const { parent } = node
 
         if (parent.type === 'CallExpression') {
-          if (IGNORE_METHODS.includes(parent.callee.name)) return
+          if (parent.callee.name == '__') return
           if (
             parent.callee.type === 'MemberExpression' &&
-            IGNORE_OBJECTS.includes(parent.callee.object.name)
+            IGNORE_OBJECTS.has(parent.callee.object.name)
           ) {
             return
           }
@@ -72,8 +71,7 @@ module.exports = {
 
         context.report({
           node,
-          message:
-            'This string looks like it should be marked as translatable via __(...)',
+          message: 'This string looks like it should be marked as translatable via __(...)',
           fix(fixer) {
             return fixer.replaceText(node, `__(${node.raw})`)
           },

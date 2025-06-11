@@ -41,15 +41,9 @@ const users = computed(() => {
 <template>
   <div class="flex ltr:pr-3 rtl:pl-3">
     <div class="mt-4 flex w-14 justify-center">
-      <CommonOrganizationAvatar
-        aria-hidden="true"
-        class="bg-gray"
-        :entity="entity"
-      />
+      <CommonOrganizationAvatar aria-hidden="true" class="bg-gray" :entity="entity" />
     </div>
-    <div
-      class="flex flex-1 flex-col overflow-hidden border-b border-white/10 py-3 text-gray-100"
-    >
+    <div class="flex flex-1 flex-col overflow-hidden border-b border-white/10 py-3 text-gray-100">
       <span class="truncate">
         {{
           entity.ticketsCount?.open === 1
@@ -61,16 +55,10 @@ const users = computed(() => {
           {{ users }}
         </template>
       </span>
-      <span
-        class="mb-1 line-clamp-3 text-lg leading-5 font-bold whitespace-normal"
-      >
+      <span class="mb-1 line-clamp-3 text-lg leading-5 font-bold whitespace-normal">
         <slot> {{ entity.name }} </slot>
       </span>
-      <div
-        v-if="stringUpdated"
-        data-test-id="stringUpdated"
-        class="text-gray truncate"
-      >
+      <div v-if="stringUpdated" data-test-id="stringUpdated" class="text-gray truncate">
         {{ stringUpdated }}
       </div>
     </div>

@@ -1,12 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import {
-  onClickOutside,
-  onLongPress,
-  useElementHover,
-  whenever,
-} from '@vueuse/core'
+import { onClickOutside, onLongPress, useElementHover, whenever } from '@vueuse/core'
 import { computed, onDeactivated, onUnmounted, shallowRef, watch } from 'vue'
 
 import CommonPopover, {
@@ -64,23 +59,20 @@ const isPopoverTargetHovered = useElementHover(popoverTarget, {
   delayLeave: 200,
 })
 
-watch(
-  [isPopoverHovered, isPopoverTargetHovered],
-  ([isPopoverHovered, isPopoverTargetHovered]) => {
-    if (hasOpenedViaLongPress.value) return
+watch([isPopoverHovered, isPopoverTargetHovered], ([isPopoverHovered, isPopoverTargetHovered]) => {
+  if (hasOpenedViaLongPress.value) return
 
-    const shouldOpen = isPopoverTargetHovered || isPopoverHovered
+  const shouldOpen = isPopoverTargetHovered || isPopoverHovered
 
-    if (shouldOpen && !isOpen.value) {
-      open()
-      return
-    }
+  if (shouldOpen && !isOpen.value) {
+    open()
+    return
+  }
 
-    if (!shouldOpen && isOpen.value) {
-      close()
-    }
-  },
-)
+  if (!shouldOpen && isOpen.value) {
+    close()
+  }
+})
 
 whenever(
   () => !isOpen.value,

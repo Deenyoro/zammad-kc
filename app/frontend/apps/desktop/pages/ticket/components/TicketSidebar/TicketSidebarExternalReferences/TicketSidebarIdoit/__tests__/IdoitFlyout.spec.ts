@@ -40,9 +40,7 @@ describe('IdoitFlyout', () => {
       flyout: true,
     })
 
-    expect(wrapper.getByRole('heading', { level: 2 })).toHaveTextContent(
-      'i-doit: Link objects',
-    )
+    expect(wrapper.getByRole('heading', { level: 2 })).toHaveTextContent('i-doit: Link objects')
 
     expect(wrapper.getByIconName('i-doit-logo-light')).toBeInTheDocument()
 

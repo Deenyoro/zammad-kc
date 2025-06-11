@@ -17,9 +17,7 @@ vi.hoisted(() => {
 
 const waitForConfirmationMock = vi.fn().mockImplementation(() => true)
 
-const waitForVariantConfirmationMock = vi
-  .fn()
-  .mockImplementation((variant) => variant === 'delete')
+const waitForVariantConfirmationMock = vi.fn().mockImplementation((variant) => variant === 'delete')
 
 vi.mock('#shared/composables/useConfirmation.ts', async () => ({
   useConfirmation: () => ({
@@ -82,9 +80,7 @@ describe('TicketSharedDraftFlyout.vue', () => {
       }),
     ).toBeInTheDocument()
 
-    expect(
-      wrapper.getByRole('heading', { name: 'Preview Shared Draft' }),
-    ).toBeInTheDocument()
+    expect(wrapper.getByRole('heading', { name: 'Preview Shared Draft' })).toBeInTheDocument()
 
     expect(wrapper.getByText('Author')).toBeInTheDocument()
     expect(wrapper.getByText('Erika Mustermann')).toBeInTheDocument()

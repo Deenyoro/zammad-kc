@@ -1,8 +1,6 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-/* eslint-disable vue/no-v-html */
-
 import { computed } from 'vue'
 
 import type { Sizes } from '#shared/components/CommonIcon/types.ts'
@@ -64,6 +62,7 @@ export default {
       />
     </div>
     <CommonAlert v-else-if="error" v-bind="$attrs" variant="danger">
+      <!-- eslint-disable vue/no-v-html -->
       <span v-html="markup($t(error))" />
     </CommonAlert>
     <slot v-else />

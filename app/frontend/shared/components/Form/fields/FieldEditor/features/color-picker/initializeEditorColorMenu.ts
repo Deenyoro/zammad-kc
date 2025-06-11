@@ -7,9 +7,7 @@ let editorColorMenuClasses = {
   },
 }
 
-export const initializeEditorColorMenuClasses = (
-  classes: typeof editorColorMenuClasses,
-) => {
+export const initializeEditorColorMenuClasses = (classes: typeof editorColorMenuClasses) => {
   editorColorMenuClasses = classes
 }
 
