@@ -6,7 +6,7 @@ RSpec.describe AI::Provider::ZammadAI, required_envs: %w[ZAMMAD_AI_TOKEN ZAMMAD_
   subject(:ai_provider) { described_class.new(options: { json_response: true }) }
 
   let(:prompt_system) { '' }
-  let(:prompt_user)   { 'This is a connection test. Return in unprettified JSON \'{ "connected": "true" }\' if you got the message.' }
+  let(:prompt_user)   { 'This is a connection test. Return in unprettified JSON \'{ "connected": "true" }\' if you got the message. Respond in plain JSON format only and do not wrap it in code block markers.' }
 
   before do
     Setting.set('ai_provider', 'zammad_ai')

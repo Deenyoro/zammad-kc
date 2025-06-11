@@ -3,6 +3,7 @@
 class AI::Provider::OpenAI < AI::Provider
   OPENAI_API_BASE_URL = 'https://api.openai.com/v1'.freeze
 
+  # default model also in app/assets/javascripts/app/lib/app_post/ai_provider/open_ai.coffee
   DEFAULT_OPTIONS = {
     temperature:     0.0,
     model:           'gpt-4.1',

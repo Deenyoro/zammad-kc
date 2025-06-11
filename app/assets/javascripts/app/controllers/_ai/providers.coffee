@@ -49,13 +49,15 @@ class ProviderForm extends App.Controller
       , {})
 
   getProviderOptions: ->
-    providers = Object.entries(@providers).sort(([_, a], [__, b]) -> a.prio - b.prio)
-    providers.reduce((acc, [key, { label }]) ->
-      acc[key] = label
-      acc
-    , {})
+    Object
+      .entries(@providers)
+      .sort(([_, a], [__, b]) -> a.prio - b.prio)
+      .reduce((acc, [key, { label }]) ->
+        acc[key] = label
+        acc
+      , {})
 
-  getInputFields: (params) ->
+  getInputFields: (provider, params) ->
     {
       token: {
         name: 'token',
@@ -67,6 +69,17 @@ class ProviderForm extends App.Controller
         required: 'true',
         autocomplete: 'off',
         value: params.token,
+      }
+      model: {
+        name: 'model',
+        display: __('Model'),
+        tag: 'input',
+        type: 'text',
+        null: true,
+        single: true,
+        placeholder: provider.default_model,
+        autocomplete: 'off',
+        value: params.model,
       }
       url: {
         name: 'url',
@@ -120,17 +133,12 @@ class ProviderForm extends App.Controller
 
     currentProvider = @providers[provider]
 
-    if(currentProvider)
-      fields = @getInputFields(if App.Setting.get('ai_provider') == provider then params else {})
+    return result if !currentProvider
 
-      fieldsConfig = []
+    providerParams = if App.Setting.get('ai_provider') == provider then params else {}
+    fields         = @getInputFields(currentProvider, providerParams)
 
-      for field in currentProvider.fields
-        fieldsConfig.push(fields[field])
-
-      result = result.concat(fieldsConfig)
-
-    result
+    result.concat _.map(currentProvider.fields, (field) -> fields[field])
 
   render: (provider) ->
     config = App.Setting.get('ai_provider_config') || {}
@@ -182,9 +190,11 @@ class ProviderForm extends App.Controller
     provider = params.provider
 
     delete params.provider
+    if !params.model || params.model.trim() == ''
+      delete params.model
+
     config = params
 
     App.Setting.set('ai_provider', provider, done: -> App.Setting.set('ai_provider_config', config, notify: true))
-
 
 App.Config.set('Provider', { prio: 1000, name: __('Provider'), parent: '#ai', target: '#ai/provider', controller: AiProviders, permission: ['admin.ai'] }, 'NavBarAdmin')

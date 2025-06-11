@@ -3,6 +3,7 @@
 class AI::Provider::Anthropic < AI::Provider
   ANTHROPIC_API_BASE_URL = 'https://api.anthropic.com/v1'.freeze
 
+  # default model also in app/assets/javascripts/app/lib/app_post/ai_provider/anthropic.coffee
   DEFAULT_OPTIONS = {
     model:       'claude-3-7-sonnet-latest',
     max_tokens:  1024,

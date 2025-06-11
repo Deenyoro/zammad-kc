@@ -7,7 +7,7 @@ RSpec.describe AI::Provider::Azure, required_envs: %w[AZURE_TOKEN AZURE_URL_COMP
   subject(:ai_provider) { described_class.new(options: { json_response: true }) }
 
   let(:prompt_system) { '' }
-  let(:prompt_user)   { 'This is a connection test. Return in unprettified JSON \'{ "connected": "true" }\' if you got the message.' }
+  let(:prompt_user)   { 'This is a connection test. Return in unprettified JSON \'{ "connected": "true" }\' if you got the message. Respond in plain JSON format only and do not wrap it in code block markers.' }
 
   before do
     Setting.set('ai_provider', 'azure')

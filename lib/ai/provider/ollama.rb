@@ -2,6 +2,7 @@
 
 class AI::Provider::Ollama < AI::Provider
 
+  # default model also in app/assets/javascripts/app/lib/app_post/ai_provider/ollama.coffee
   DEFAULT_OPTIONS = {
     model:           'llama3.2',
     temperature:     0.0,

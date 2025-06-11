@@ -11,7 +11,12 @@ class AI::Provider
   attr_accessor :config, :options
 
   def initialize(config: {}, options: {})
-    @config  = config.presence || Setting.get('ai_provider_config')
+    @config = config.presence || Setting.get('ai_provider_config')
+
+    if @config[:model] && !options[:model]
+      options[:model] = @config[:model]
+    end
+
     @options = self.class::DEFAULT_OPTIONS.merge(options.deep_symbolize_keys)
   end
 
