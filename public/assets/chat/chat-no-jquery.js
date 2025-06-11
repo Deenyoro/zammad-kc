@@ -1330,7 +1330,7 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
         'Connecting': 'Bağlanıyor',
         'Connection lost': 'Bağlantı koptu',
         'Connection re-established': 'Bağlantı yeniden sağlandı',
-        'Offline': '',
+        'Offline': 'Çevrimdışı',
         'Online': 'Online',
         'Scroll down to see new messages': 'Scroll down to see new messages',
         'Send': 'Gönder',
