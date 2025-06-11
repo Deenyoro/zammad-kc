@@ -5,7 +5,7 @@ import { useTemplateRef } from 'vue'
 
 import { getEditorActionMenu } from '#shared/components/Form/fields/FieldEditor/FieldEditorActionMenu/initializeActionMenu.ts'
 import type { ActionMenuProps } from '#shared/components/Form/fields/FieldEditor/FieldEditorActionMenu/types.ts'
-import type { EditorButton } from '#shared/components/Form/fields/FieldEditor/useEditorActions.ts'
+import type { EditorButton } from '#shared/components/Form/fields/FieldEditor/types.ts'
 
 const component = getEditorActionMenu()
 

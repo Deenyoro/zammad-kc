@@ -3,6 +3,7 @@
 import Mention from '@tiptap/extension-mention'
 import { cloneDeep } from 'lodash-es'
 
+import buildMentionSuggestion from '#shared/components/Form/fields/FieldEditor/features/suggestions/suggestions.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
 import { getNodeByName } from '#shared/components/Form/utils.ts'
 import type { StoredFile } from '#shared/graphql/types.ts'
@@ -14,8 +15,6 @@ import { debouncedQuery, htmlCleanup } from '#shared/utils/helpers.ts'
 
 import { useKnowledgeBaseAnswerSuggestionContentTransformMutation } from '../graphql/mutations/knowledgeBase/suggestion/content/transform.api.ts'
 import { useKnowledgeBaseAnswerSuggestionsLazyQuery } from '../graphql/queries/knowledgeBase/answerSuggestions.api.ts'
-
-import buildMentionSuggestion from './suggestions.ts'
 
 import type { FieldEditorProps, MentionKnowledgeBaseItem } from '../types.ts'
 import type { CommandProps } from '@tiptap/core'

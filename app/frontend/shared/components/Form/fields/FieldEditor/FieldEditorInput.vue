@@ -1,34 +1,39 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { useEditor, EditorContent } from '@tiptap/vue-3'
+import { useEditor, EditorContent, type Editor } from '@tiptap/vue-3'
 import { useEventListener } from '@vueuse/core'
-import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
+import {
+  computed,
+  onMounted,
+  onUnmounted,
+  ref,
+  type ShallowRef,
+  toRef,
+  watch,
+} from 'vue'
 
-import { getEditorActionBarComponent } from '#shared/components/Form/initializeEditorComponents.ts'
-import { getFieldEditorClasses } from '#shared/components/Form/initializeFieldEditor.ts'
-import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
-import { htmlCleanup } from '#shared/utils/htmlCleanup.ts'
-
-import useValue from '../../composables/useValue.ts'
-
+import useValue from '#shared/components/Form/composables/useValue.ts'
+import { useAttachments } from '#shared/components/Form/fields/FieldEditor/composables/useAttachments.ts'
+import { useSignatureHandling } from '#shared/components/Form/fields/FieldEditor/composables/useSignatureHandling.ts'
+import { PLUGIN_NAME as userMentionPluginName } from '#shared/components/Form/fields/FieldEditor/extensions/UserMention.ts'
 import {
   getCustomExtensions,
   getHtmlExtensions,
   getPlainExtensions,
-} from './extensions/List.ts'
-import FieldEditorTableMenu from './features/table/EditorTableMenu.vue'
-import FieldEditorFooter from './FieldEditorFooter.vue'
-import { PLUGIN_NAME as userMentionPluginName } from './suggestions/UserMention.ts'
-import { useAttachments } from './useAttachments.ts'
-import { useSignatureHandling } from './useSignatureHandling.ts'
-
+} from '#shared/components/Form/fields/FieldEditor/extensions.ts'
+import FieldEditorTableMenu from '#shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue'
+import FieldEditorFooter from '#shared/components/Form/fields/FieldEditor/FieldEditorFooter.vue'
 import type {
   EditorContentType,
   EditorCustomPlugins,
   FieldEditorContext,
   FieldEditorProps,
-} from './types.ts'
+} from '#shared/components/Form/fields/FieldEditor/types.ts'
+import { getEditorActionBarComponent } from '#shared/components/Form/initializeEditorComponents.ts'
+import { getFieldEditorClasses } from '#shared/components/Form/initializeFieldEditor.ts'
+import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
+import { htmlCleanup } from '#shared/utils/htmlCleanup.ts'
 
 interface Props {
   context: FormFieldContext<FieldEditorProps>
@@ -59,12 +64,6 @@ if (isPlainText.value) {
 const editorExtensions = isPlainText.value
   ? getPlainExtensions()
   : getHtmlExtensions()
-
-getCustomExtensions(reactiveContext).forEach((extension) => {
-  if (!disabledPlugins.includes(extension.name as EditorCustomPlugins)) {
-    editorExtensions.push(extension)
-  }
-})
 
 const showActionBar = ref(false)
 const editorValue = ref<string>(VITE_TEST_MODE ? props.context._value : '')
@@ -150,6 +149,14 @@ const editor = useEditor({
     props.context.handlers.blur()
   },
 })
+
+getCustomExtensions(reactiveContext, editor as ShallowRef<Editor>).forEach(
+  (extension) => {
+    if (!disabledPlugins.includes(extension.name as EditorCustomPlugins)) {
+      editorExtensions.push(extension)
+    }
+  },
+)
 
 if (VITE_TEST_MODE) {
   watch(

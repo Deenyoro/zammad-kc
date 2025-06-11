@@ -2,21 +2,28 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { nextTick, shallowRef, toRef, ref, defineAsyncComponent } from 'vue'
+import {
+  nextTick,
+  shallowRef,
+  toRef,
+  ref,
+  defineAsyncComponent,
+  watch,
+} from 'vue'
 
+import useEditorActionHelper from '#shared/components/Form/fields/FieldEditor/composables/useEditorActionHelper.ts'
 import type {
+  EditorButton,
   EditorContentType,
   EditorCustomPlugins,
 } from '#shared/components/Form/fields/FieldEditor/types.ts'
-import useEditorActions, {
-  type EditorButton,
-} from '#shared/components/Form/fields/FieldEditor/useEditorActions.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
 import type { FieldEditorProps } from '#shared/components/Form/types.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 
 import CommonSectionPopup from '#mobile/components/CommonSectionPopup/CommonSectionPopup.vue'
 import type { PopupItemDescriptor } from '#mobile/components/CommonSectionPopup/types'
+import useEditorActions from '#mobile/components/Form/fields/FieldEditor/useEditorActions.ts'
 
 import ActionToolbar from './FieldEditorActionBar/ActionToolbar.vue'
 
@@ -41,7 +48,7 @@ defineEmits<{
 const AiAssistantTextToolsLoadingBanner = defineAsyncComponent(
   () =>
     import(
-      '#shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantLoadingBanner.vue'
+      '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue'
     ),
 )
 
@@ -49,7 +56,9 @@ const editor = toRef(props, 'editor')
 
 const hideActionBarLocally = ref(false)
 
-const { actions, isActive } = useEditorActions(
+const { isActive } = useEditorActionHelper(editor)
+
+const { actions } = useEditorActions(
   editor,
   props.contentType,
   props.disabledPlugins,
@@ -109,10 +118,17 @@ const handleSubMenuClick = (clearPopupContent = false) => {
   }
 }
 
-// :TODO this code should not live here...
 const showAiAssistantTextToolsLoadingBanner = ref(false)
 
 const { config } = storeToRefs(useApplicationStore())
+
+watch(
+  () => editor.value?.storage?.showAiTextLoader,
+  (showLoader) => {
+    showAiAssistantTextToolsLoadingBanner.value = !!showLoader
+    hideActionBarLocally.value = !!showLoader
+  },
+)
 </script>
 
 <template>
@@ -134,11 +150,9 @@ const { config } = storeToRefs(useApplicationStore())
       "
       :editor="editor"
     />
-    <!--  :TODO rethink the persistency  -->
     <CommonSectionPopup
       v-model:state="popupShown"
       :messages="subMenuPopupContent ? undefined : subMenuPopupItems"
-      persistent
       @close="handleSubMenuClick(true)"
     >
       <template #header>

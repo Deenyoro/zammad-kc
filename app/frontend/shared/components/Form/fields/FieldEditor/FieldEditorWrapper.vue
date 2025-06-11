@@ -2,9 +2,8 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, nextTick } from 'vue'
 
+import FieldEditorFooter from '#shared/components/Form/fields/FieldEditor/FieldEditorFooter.vue'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
-
-import FieldEditorFooter from './FieldEditorFooter.vue'
 
 import type {
   FieldEditorContext,
@@ -12,7 +11,10 @@ import type {
   PossibleSignature,
 } from './types.ts'
 
-const FieldEditor = defineAsyncComponent(() => import('./FieldEditorInput.vue'))
+const FieldEditor = defineAsyncComponent(
+  () =>
+    import('#shared/components/Form/fields/FieldEditor/FieldEditorInput.vue'),
+)
 
 interface Props {
   context: FormFieldContext<FieldEditorProps>

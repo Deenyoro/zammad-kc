@@ -5,7 +5,7 @@ import { onKeyDown, useEventListener, whenever } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
 import { nextTick, type Ref, ref, toRef } from 'vue'
 
-import type { EditorButton } from '#shared/components/Form/fields/FieldEditor/useEditorActions.ts'
+import type { EditorButton } from '#shared/components/Form/fields/FieldEditor/types.ts'
 import { useTraverseOptions } from '#shared/composables/useTraverseOptions.ts'
 import stopEvent from '#shared/utils/events.ts'
 

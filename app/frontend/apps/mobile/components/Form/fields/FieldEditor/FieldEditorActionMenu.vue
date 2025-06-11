@@ -6,7 +6,7 @@ import { useEventListener } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
 import type { ActionMenuProps } from '#shared/components/Form/fields/FieldEditor/FieldEditorActionMenu/types.ts'
-import type { EditorButton } from '#shared/components/Form/fields/FieldEditor/useEditorActions.ts'
+import type { EditorButton } from '#shared/components/Form/fields/FieldEditor/types.ts'
 
 import CommonSectionPopup from '#mobile/components/CommonSectionPopup/CommonSectionPopup.vue'
 import type { PopupItemDescriptor } from '#mobile/components/CommonSectionPopup/types.ts'

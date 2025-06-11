@@ -1,8 +1,8 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import type { PossibleSignature } from '#shared/components/Form/fields/FieldEditor/types.ts'
 import testFlags from '#shared/utils/testFlags.ts'
 
-import type { PossibleSignature } from './types.ts'
 import type { Editor } from '@tiptap/vue-3'
 import type { ShallowRef } from 'vue'
 

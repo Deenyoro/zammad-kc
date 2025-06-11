@@ -6,6 +6,7 @@ import {
   NotificationTypes,
   useNotifications,
 } from '#shared/components/CommonNotifications/index.ts'
+import buildMentionSuggestion from '#shared/components/Form/fields/FieldEditor/features/suggestions/suggestions.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
 import { getNodeByName } from '#shared/components/Form/utils.ts'
 import { ensureGraphqlId } from '#shared/graphql/utils.ts'
@@ -14,8 +15,6 @@ import { useApplicationStore } from '#shared/stores/application.ts'
 import { debouncedQuery } from '#shared/utils/helpers.ts'
 
 import { useMentionSuggestionsLazyQuery } from '../graphql/queries/mention/mentionSuggestions.api.ts'
-
-import buildMentionSuggestion from './suggestions.ts'
 
 import type { FieldEditorProps, MentionUserItem } from '../types.ts'
 import type { CommandProps, MarkConfig, ParentConfig } from '@tiptap/core'

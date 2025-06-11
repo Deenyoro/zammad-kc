@@ -6,10 +6,7 @@ import { renderComponent } from '#tests/support/components/index.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
-import {
-  mockAiAssistanceTextToolsMutation,
-  waitForAiAssistanceTextToolsMutationCalls,
-} from '#shared/graphql/mutations/aiAssistanceTextTools.mocks.ts'
+import { mockAiAssistanceTextToolsMutation } from '#shared/graphql/mutations/aiAssistanceTextTools.mocks.ts'
 import { EnumAiTextToolService } from '#shared/graphql/types.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 
@@ -196,6 +193,13 @@ describe('basic toolbar testing', () => {
   })
 
   describe('AiAssistantTextTools', () => {
+    const textToolsActionMock = {
+      [EnumAiTextToolService.ImproveWriting]: vi.fn(),
+      [EnumAiTextToolService.SpellingAndGrammar]: vi.fn(),
+      [EnumAiTextToolService.Expand]: vi.fn(),
+      [EnumAiTextToolService.Simplify]: vi.fn(),
+    }
+
     const createMockEditor = () => ({
       state: {
         selection: {
@@ -224,6 +228,12 @@ describe('basic toolbar testing', () => {
         insertContentAt: vi.fn(),
         focus: vi.fn(),
         setTextSelection: vi.fn(),
+        improveWriting:
+          textToolsActionMock[EnumAiTextToolService.ImproveWriting],
+        fixSpellingAndGrammar:
+          textToolsActionMock[EnumAiTextToolService.SpellingAndGrammar],
+        expandText: textToolsActionMock[EnumAiTextToolService.Expand],
+        simplifyText: textToolsActionMock[EnumAiTextToolService.Simplify],
       },
       setEditable: vi.fn(),
       on: vi.fn(),
@@ -350,16 +360,7 @@ describe('basic toolbar testing', () => {
         within(popover).getByRole('button', { name: label }),
       )
 
-      expect(mockEditor.setEditable).toHaveBeenCalledWith(false)
-
-      const calls = await waitForAiAssistanceTextToolsMutationCalls()
-
-      expect(calls.at(-1)?.variables).toEqual({
-        input: 'selected text',
-        serviceType: aiTextToolService,
-      })
-
-      expect(mockEditor.setEditable).toHaveBeenCalledWith(true)
+      expect(textToolsActionMock[aiTextToolService]).toHaveBeenCalled()
     })
   })
 })

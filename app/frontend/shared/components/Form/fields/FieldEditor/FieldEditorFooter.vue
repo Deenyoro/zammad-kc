@@ -3,9 +3,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import type { FieldEditorProps } from '#shared/components/Form/fields/FieldEditor/types.ts'
 import type { ConfidentTake } from '#shared/types/utils.ts'
-
-import type { FieldEditorProps } from './types.ts'
 
 interface Props {
   footer: ConfidentTake<FieldEditorProps, 'meta.footer'>

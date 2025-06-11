@@ -6,9 +6,8 @@ import { computed, nextTick, reactive, ref, type ComputedRef } from 'vue'
 import DraggableResizable from 'vue3-draggable-resizable'
 import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
 
+import { useImageUpload } from '#shared/components/Form/fields/FieldEditor/features/image-handler/useImageUpload.ts'
 import testFlags from '#shared/utils/testFlags.ts'
-
-import { useImageUpload } from '../useImageUpload.ts'
 
 import ImageFailedUploadOverlay from './ImageFailedUploadOverlay.vue'
 

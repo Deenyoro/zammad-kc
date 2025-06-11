@@ -5,8 +5,12 @@ import type {
   MentionSuggestionsQuery,
   TextModuleSuggestionsQuery,
 } from '#shared/graphql/types.ts'
+import type { ConfigList } from '#shared/types/config.ts'
 import type { ConfidentTake } from '#shared/types/utils.ts'
 import type { ImageFileData } from '#shared/utils/files.ts'
+
+import type { Except } from 'type-fest'
+import type { Component } from 'vue'
 
 export interface PossibleSignature {
   active?: boolean
@@ -33,6 +37,12 @@ declare module '@tiptap/core' {
     }
     images: {
       setImages(images: ImageFileData[]): ReturnType
+    }
+    aiAssistantTextTools: {
+      improveWriting: () => ReturnType
+      fixSpellingAndGrammar: () => ReturnType
+      expandText: () => ReturnType
+      simplifyText: () => ReturnType
     }
   }
 }
@@ -111,4 +121,34 @@ declare module '@tiptap/vue-3' {
   interface EditorEvents {
     'cancel-ai-assistant-text-tools-updates': void
   }
+}
+
+declare module '@tiptap/core' {
+  interface Storage {
+    showAiTextLoader: boolean
+  }
+}
+
+export interface EditorButton {
+  id: string
+  name: string
+  /**
+   * @type FieldEditorClass['actionBar']['button']['action']
+   *
+   * @info
+   * use `getFieldEditorClasses()` to get the class for the action.
+   * Define it in `initializeFieldEditorClasses()` invocation for the mobile/desktop field
+   * */
+  class?: string
+  icon: string
+  label?: string
+  contentType: EditorContentType[]
+  attributes?: Record<string, unknown>
+  command?: (e: MouseEvent) => void
+  disabled?: boolean
+  showDivider?: boolean
+  dividerClass?: string
+  permission?: string
+  show?: (config: ConfigList) => boolean
+  subMenu?: Component | Except<EditorButton, 'subMenu'>[]
 }

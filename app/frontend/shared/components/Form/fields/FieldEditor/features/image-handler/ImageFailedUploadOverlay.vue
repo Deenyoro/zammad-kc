@@ -9,7 +9,6 @@ defineProps<{
 
 <template>
   <div
-    div
     class="bg-opacity-70 absolute inset-0 flex items-center justify-center bg-black"
     :style="{
       width: width,

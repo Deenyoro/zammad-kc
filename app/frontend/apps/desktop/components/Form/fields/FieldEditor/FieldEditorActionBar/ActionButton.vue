@@ -4,7 +4,7 @@
 import { useIntersectionObserver } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
 
-import type { EditorButton } from '#shared/components/Form/fields/FieldEditor/useEditorActions.ts'
+import type { EditorButton } from '#shared/components/Form/fields/FieldEditor/types.ts'
 
 import type { Editor } from '@tiptap/core'
 

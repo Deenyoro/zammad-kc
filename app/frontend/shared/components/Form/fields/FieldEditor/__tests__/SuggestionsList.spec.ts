@@ -5,7 +5,7 @@ import { ref } from 'vue'
 
 import { renderComponent } from '#tests/support/components/index.ts'
 
-import SuggestionsList from '../SuggestionsList.vue'
+import SuggestionsList from '#shared/components/Form/fields/FieldEditor/features/suggestions/SuggestionsList.vue'
 
 import type {
   MentionKnowledgeBaseItem,

@@ -3,14 +3,14 @@
 <script setup lang="ts">
 import { toRef } from 'vue'
 
-import useNavigateOptions from './useNavigateOptions.ts'
-
+import useNavigateOptions from '#shared/components/Form/fields/FieldEditor/composables/useNavigateOptions.ts'
 import type {
   MentionKnowledgeBaseItem,
   MentionTextItem,
   MentionType,
   MentionUserItem,
-} from './types.ts'
+} from '#shared/components/Form/fields/FieldEditor/types.ts'
+
 import type { SuggestionKeyDownProps } from '@tiptap/suggestion'
 
 type PossibleItem = MentionUserItem | MentionKnowledgeBaseItem | MentionTextItem

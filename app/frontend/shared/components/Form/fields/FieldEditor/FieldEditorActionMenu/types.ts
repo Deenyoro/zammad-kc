@@ -1,7 +1,9 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import type { EditorContentType } from '#shared/components/Form/fields/FieldEditor/types.ts'
-import type { EditorButton } from '#shared/components/Form/fields/FieldEditor/useEditorActions.ts'
+import type {
+  EditorButton,
+  EditorContentType,
+} from '#shared/components/Form/fields/FieldEditor/types.ts'
 
 import type { Editor } from '@tiptap/core'
 import type { Component } from 'vue'

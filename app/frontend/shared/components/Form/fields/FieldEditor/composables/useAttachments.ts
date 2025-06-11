@@ -1,10 +1,8 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import { convertInlineImages } from '#shared/components/Form/fields/FieldEditor/utils.ts'
+import { getNodeByName } from '#shared/components/Form/utils.ts'
 import log from '#shared/utils/log.ts'
-
-import { getNodeByName } from '../../utils.ts'
-
-import { convertInlineImages } from './utils.ts'
 
 import type { Extensions } from '@tiptap/core'
 import type { Editor } from '@tiptap/vue-3'

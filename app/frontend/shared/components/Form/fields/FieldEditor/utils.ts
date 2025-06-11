@@ -1,6 +1,10 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import { DOMSerializer } from 'prosemirror-model'
+
 import { convertFileList } from '#shared/utils/files.ts'
+
+import type { Editor } from '@tiptap/core'
 
 export const populateEditorNewLines = (htmlContent: string): string => {
   const body = document.createElement('div')
@@ -36,4 +40,27 @@ export const convertInlineImages = (
       }
     },
   })
+}
+
+export const getSelection = (editor: Editor) => editor.state.selection
+
+export const getHTMLFromSelection = (
+  editor: Editor,
+  selection?: Editor['state']['selection'],
+) => {
+  const sel = selection ?? editor!.state.selection
+  const slice = sel.content()
+  const serializer = DOMSerializer.fromSchema(editor!.schema)
+  const fragment = serializer.serializeFragment(slice.content)
+  const div = document.createElement('div')
+  div.appendChild(fragment)
+
+  return div.innerHTML
+}
+
+export const updateSelectedContent = (editor: Editor, content: string) => {
+  editor!.commands.deleteSelection()
+
+  // Remove visual newlines from the model which should not play any role.
+  return editor!.commands.insertContent(content.replace(/\s*\n\s*/g, ''))
 }

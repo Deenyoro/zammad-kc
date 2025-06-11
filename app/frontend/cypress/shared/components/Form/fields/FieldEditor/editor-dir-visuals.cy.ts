@@ -20,8 +20,8 @@ describe('editor has correct dir when text local is different', () => {
 
       cy.findByRole('textbox').type(ltrWord)
       cy.findByText(ltrWord).should('not.have.attr', 'dir')
-      // click away so we don't have "|" in text field
-      cy.get('body').click()
+      // lose focus to hide the text cursor
+      cy.findByRole('textbox').blur()
       checkFormMatchesSnapshot({ type: 'ltr is default' })
     })
 
@@ -30,8 +30,8 @@ describe('editor has correct dir when text local is different', () => {
 
       cy.findByRole('textbox').type(rtlWord)
       cy.findByText(rtlWord).should('have.attr', 'dir', 'rtl')
-      // click away so we don't have "|" in text field
-      cy.get('body').click()
+      // lose focus to hide the text cursor
+      cy.findByRole('textbox').blur()
       checkFormMatchesSnapshot({ type: 'ltr is default' })
     })
   })
@@ -44,8 +44,8 @@ describe('editor has correct dir when text local is different', () => {
 
       cy.findByRole('textbox').type(ltrWord)
       cy.findByText(ltrWord).should('have.attr', 'dir', 'ltr')
-      // click away so we don't have "|" in text field
-      cy.get('body').click()
+      // lose focus to hide the text cursor
+      cy.findByRole('textbox').blur()
       checkFormMatchesSnapshot({ type: 'rtl is default' })
     })
 
@@ -54,8 +54,8 @@ describe('editor has correct dir when text local is different', () => {
 
       cy.findByRole('textbox').type(rtlWord)
       cy.findByText(rtlWord).should('not.have.attr', 'dir')
-      // click away so we don't have "|" in text field
-      cy.get('body').click()
+      // lose focus to hide the text cursor
+      cy.findByRole('textbox').blur()
       checkFormMatchesSnapshot({ type: 'rtl is default' })
     })
   })

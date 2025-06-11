@@ -1,11 +1,10 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import { useFileUploadProcessing } from '#shared/components/Form/composables/useFileUploadProcessing.ts'
 import { useFormUploadCacheAddMutation } from '#shared/components/Form/fields/FieldFile/graphql/mutations/uploadCache/add.api.ts'
 import { parseGraphqlId } from '#shared/graphql/utils.ts'
 import { MutationHandler } from '#shared/server/apollo/handler/index.ts'
 import type { ImageFileData, ImageFileSource } from '#shared/utils/files.ts'
-
-import { useFileUploadProcessing } from '../../composables/useFileUploadProcessing.ts'
 
 export const useImageUpload = (
   formId: string,

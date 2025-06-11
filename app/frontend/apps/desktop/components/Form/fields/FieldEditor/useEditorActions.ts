@@ -3,73 +3,33 @@
 import { storeToRefs } from 'pinia'
 import { computed, nextTick, onUnmounted } from 'vue'
 
-import AiAssistantTextTools from '#shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue'
-import { getAiAssistantTextToolsClasses } from '#shared/components/Form/fields/FieldEditor/AiAssistantTextTools/initializeAiAssistantTextTools.ts'
+import useEditorActionHelper from '#shared/components/Form/fields/FieldEditor/composables/useEditorActionHelper.ts'
+import { PLUGIN_NAME as KnowledgeBaseMentionName } from '#shared/components/Form/fields/FieldEditor/extensions/KnowledgeBaseSuggestion.ts'
+import { PLUGIN_NAME as TextModuleMentionName } from '#shared/components/Form/fields/FieldEditor/extensions/TextModuleSuggestion.ts'
+import { PLUGIN_NAME as UserMentionName } from '#shared/components/Form/fields/FieldEditor/extensions/UserMention.ts'
+import AiAssistantTextTools from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue'
+import { getAiAssistantTextToolsClasses } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/initializeAiAssistantTextTools.ts'
 import FieldEditorColorMenu from '#shared/components/Form/fields/FieldEditor/features/color-picker/EditorColorMenu.vue'
+import type {
+  EditorButton,
+  EditorContentType,
+} from '#shared/components/Form/fields/FieldEditor/types.ts'
+import { convertInlineImages } from '#shared/components/Form/fields/FieldEditor/utils.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import { useLocaleStore } from '#shared/stores/locale.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
-import type { ConfigList } from '#shared/types/config.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 import testFlags from '#shared/utils/testFlags.ts'
 
-import { PLUGIN_NAME as KnowledgeBaseMentionName } from './suggestions/KnowledgeBaseSuggestion.ts'
-import { PLUGIN_NAME as TextModuleMentionName } from './suggestions/TextModuleSuggestion.ts'
-import { PLUGIN_NAME as UserMentionName } from './suggestions/UserMention.ts'
-import { convertInlineImages } from './utils.ts'
-
-import type { EditorContentType } from './types.ts'
-import type { CanCommands, ChainedCommands } from '@tiptap/core'
 import type { Editor } from '@tiptap/vue-3'
-import type { Except } from 'type-fest'
-import type { Component, ShallowRef } from 'vue'
-
-export interface EditorButton {
-  id: string
-  name: string
-  /**
-   * @type FieldEditorClass['actionBar']['button']['action']
-   *
-   * @info
-   * use `getFieldEditorClasses()` to get the class for the action.
-   * Define it in `initializeFieldEditorClasses()` invocation for the mobile/desktop field
-   * */
-  class?: string
-  icon: string
-  label?: string
-  contentType: EditorContentType[]
-  attributes?: Record<string, unknown>
-  command?: (e: MouseEvent) => void
-  disabled?: boolean
-  showDivider?: boolean
-  dividerClass?: string
-  permission?: string
-  show?: (config: ConfigList) => boolean
-  subMenu?: Component | Except<EditorButton, 'subMenu'>[]
-}
+import type { ShallowRef } from 'vue'
 
 export default function useEditorActions(
   editor: ShallowRef<Editor | undefined>,
   contentType: EditorContentType,
   disabledPlugins: string[],
 ) {
-  const focused = (
-    fn: (commands: ChainedCommands) => ChainedCommands | null | void,
-  ) => {
-    return () => {
-      if (!editor.value) return
-      const chain = editor.value.chain().focus()
-      fn(chain)?.run()
-    }
-  }
-
-  const isActive = (type: string, attributes?: Record<string, unknown>) =>
-    !!editor.value?.isActive(type, attributes)
-
-  const canExecute = (func: keyof CanCommands) => {
-    if (!editor.value) return false
-    return !!editor.value?.can()[func](null as never, null as never)
-  }
+  const { focused, isActive } = useEditorActionHelper(editor)
 
   // this is primarily used by cypress tests, where it requires an actual input in the DOM tree
   let fileInput: HTMLInputElement | null = null
@@ -397,9 +357,6 @@ export default function useEditorActions(
   )
 
   return {
-    focused,
-    isActive,
-    canExecute,
     actions,
   }
 }

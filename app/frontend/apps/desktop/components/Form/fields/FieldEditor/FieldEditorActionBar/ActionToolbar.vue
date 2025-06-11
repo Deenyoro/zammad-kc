@@ -9,14 +9,13 @@ import {
 import { computed, ref, shallowRef, useTemplateRef } from 'vue'
 import { type Ref, toRef } from 'vue'
 
-import FieldEditorActionMenu from '#shared/components/Form/fields/FieldEditor/FieldEditorActionMenu.vue'
-import useEditorActions, {
-  type EditorButton,
-} from '#shared/components/Form/fields/FieldEditor/useEditorActions.ts'
+import FieldEditorActionMenu from '#shared/components/Form/fields/FieldEditor/FieldEditorActionMenu/FieldEditorActionMenu.vue'
+import type { EditorButton } from '#shared/components/Form/fields/FieldEditor/types.ts'
 import { useTraverseOptions } from '#shared/composables/useTraverseOptions.ts'
 import stopEvent from '#shared/utils/events.ts'
 
 import type { ExtendedEditorButton } from '#desktop/components/Form/fields/FieldEditor/FieldEditorActionBar/types.ts'
+import useEditorActions from '#desktop/components/Form/fields/FieldEditor/useEditorActions.ts'
 
 import ActionButton from './ActionButton.vue'
 

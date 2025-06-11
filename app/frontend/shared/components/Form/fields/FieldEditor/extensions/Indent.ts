@@ -61,8 +61,6 @@ const update = ({
   }
 }
 
-const { localeData } = useLocaleStore()
-
 export const IndentExtension = Extension.create<IndentOptions>({
   name: 'indent',
   addOptions() {
@@ -85,7 +83,7 @@ export const IndentExtension = Extension.create<IndentOptions>({
           )
             return false
 
-          return localeData?.dir === 'rtl'
+          return useLocaleStore().localeData?.dir === 'rtl'
             ? chain()
                 .setMarginRight(
                   update({
@@ -110,7 +108,7 @@ export const IndentExtension = Extension.create<IndentOptions>({
       increaseIndent:
         () =>
         ({ chain }) => {
-          return localeData?.dir === 'rtl'
+          return useLocaleStore().localeData?.dir === 'rtl'
             ? chain()
                 .setMarginRight(
                   update({
@@ -133,7 +131,7 @@ export const IndentExtension = Extension.create<IndentOptions>({
       unsetIndent:
         () =>
         ({ commands }) => {
-          return localeData?.dir === 'rtl'
+          return useLocaleStore().localeData?.dir === 'rtl'
             ? commands.unsetMarginRight()
             : commands.unsetMarginLeft()
         },

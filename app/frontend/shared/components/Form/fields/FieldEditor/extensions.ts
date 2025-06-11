@@ -10,7 +10,12 @@ import { TextStyle } from '@tiptap/extension-text-style'
 import StarterKit from '@tiptap/starter-kit'
 import { common, createLowlight } from 'lowlight'
 
+import AiAssistantTextTools from '#shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts'
+import HardBreakPlain from '#shared/components/Form/fields/FieldEditor/extensions/HardBreakPlain.ts'
+import Image from '#shared/components/Form/fields/FieldEditor/extensions/Image.ts'
 import { IndentExtension } from '#shared/components/Form/fields/FieldEditor/extensions/Indent.ts'
+import KnowledgeBaseSuggestion from '#shared/components/Form/fields/FieldEditor/extensions/KnowledgeBaseSuggestion.ts'
+import Signature from '#shared/components/Form/fields/FieldEditor/extensions/Signature.ts'
 import {
   MarginLeft,
   MarginRight,
@@ -18,19 +23,16 @@ import {
 import TextDirection, {
   type Direction,
 } from '#shared/components/Form/fields/FieldEditor/extensions/TextDirection.ts'
+import TextModuleSuggestion from '#shared/components/Form/fields/FieldEditor/extensions/TextModuleSuggestion.ts'
+import UserMention, {
+  UserLink,
+} from '#shared/components/Form/fields/FieldEditor/extensions/UserMention.ts'
+import type { FieldEditorProps } from '#shared/components/Form/fields/FieldEditor/types.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
 
-import KnowledgeBaseSuggestion from '../suggestions/KnowledgeBaseSuggestion.ts'
-import TextModuleSuggestion from '../suggestions/TextModuleSuggestion.ts'
-import UserMention, { UserLink } from '../suggestions/UserMention.ts'
-
-import HardBreakPlain from './HardBreakPlain.ts'
-import Image from './Image.ts'
-import Signature from './Signature.ts'
-
-import type { FieldEditorProps } from '../types.ts'
 import type { Extensions } from '@tiptap/core'
-import type { Ref } from 'vue'
+import type { Editor } from '@tiptap/vue-3'
+import type { Ref, ShallowRef } from 'vue'
 
 export const lowlight = createLowlight(common)
 
@@ -114,10 +116,12 @@ export const getHtmlExtensions = (): Extensions => [
 
 export const getCustomExtensions = (
   context: Ref<FormFieldContext<FieldEditorProps>>,
+  editor: ShallowRef<Editor>,
 ): Extensions => [
   Image,
   Signature,
   UserMention(context),
   KnowledgeBaseSuggestion(context),
   TextModuleSuggestion(context),
+  AiAssistantTextTools(editor),
 ]

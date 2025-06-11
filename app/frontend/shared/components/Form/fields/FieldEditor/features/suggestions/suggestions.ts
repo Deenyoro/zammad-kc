@@ -4,9 +4,9 @@ import { PluginKey } from '@tiptap/pm/state'
 import { VueRenderer } from '@tiptap/vue-3'
 import tippy, { type GetReferenceClientRect, type Instance } from 'tippy.js'
 
-import SuggestionsList from '../SuggestionsList.vue'
+import SuggestionsList from '#shared/components/Form/fields/FieldEditor/features/suggestions/SuggestionsList.vue'
+import type { MentionType } from '#shared/components/Form/fields/FieldEditor/types.ts'
 
-import type { MentionType } from '../types.ts'
 import type { Content, Editor } from '@tiptap/core'
 import type { SuggestionOptions } from '@tiptap/suggestion'
 

@@ -3,9 +3,8 @@
 import Image from '@tiptap/extension-image'
 import { VueNodeViewRenderer } from '@tiptap/vue-3'
 
+import ImageHandler from '#shared/components/Form/fields/FieldEditor/features/image-handler/ImageHandler.vue'
 import { dataURLToBlob } from '#shared/utils/files.ts'
-
-import ImageHandler from '../ImageHandler/ImageHandler.vue'
 
 export default Image.extend({
   addAttributes() {

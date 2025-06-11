@@ -3,11 +3,12 @@
 <script setup lang="ts">
 import { computed, toRef, useTemplateRef } from 'vue'
 
-import FieldEditorActionMenu from '#shared/components/Form/fields/FieldEditor/FieldEditorActionMenu.vue'
-import type { EditorContentType } from '#shared/components/Form/fields/FieldEditor/types.ts'
-import useEditorActions, {
-  type EditorButton,
-} from '#shared/components/Form/fields/FieldEditor/useEditorActions.ts'
+import useEditorActionHelper from '#shared/components/Form/fields/FieldEditor/composables/useEditorActionHelper.ts'
+import FieldEditorActionMenu from '#shared/components/Form/fields/FieldEditor/FieldEditorActionMenu/FieldEditorActionMenu.vue'
+import type {
+  EditorButton,
+  EditorContentType,
+} from '#shared/components/Form/fields/FieldEditor/types.ts'
 import { i18n } from '#shared/i18n.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 
@@ -21,7 +22,7 @@ const props = defineProps<{
 
 const editor = toRef(props, 'editor')
 
-const { focused, canExecute } = useEditorActions(editor, props.contentType, [])
+const { focused, canExecute } = useEditorActionHelper(editor)
 
 const actionMenuInstance = useTemplateRef('action-menu')
 

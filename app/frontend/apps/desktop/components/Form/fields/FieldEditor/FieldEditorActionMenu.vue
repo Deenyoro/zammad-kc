@@ -7,10 +7,11 @@ import { computed, nextTick, toRef, type Component } from 'vue'
 
 import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
 import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
-import type { EditorContentType } from '#shared/components/Form/fields/FieldEditor/types.ts'
-import useEditorActions, {
-  type EditorButton,
-} from '#shared/components/Form/fields/FieldEditor/useEditorActions.ts'
+import useEditorActionHelper from '#shared/components/Form/fields/FieldEditor/composables/useEditorActionHelper.ts'
+import type {
+  EditorButton,
+  EditorContentType,
+} from '#shared/components/Form/fields/FieldEditor/types.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 
 import CommonPopoverMenu from '#desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue'
@@ -49,11 +50,7 @@ const slotActionsConfig = computed(() =>
   })),
 )
 
-const { isActive } = useEditorActions(
-  toRef(props, 'editor'),
-  props.contentType,
-  [],
-)
+const { isActive } = useEditorActionHelper(toRef(props, 'editor'))
 
 const { open, close, popoverTarget, popover, isOpen } = usePopover()
 
