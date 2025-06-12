@@ -209,6 +209,9 @@ gem 'cld'
 # CLDR wrapper for i18n and l10n
 gem 'twitter_cldr'
 
+# AI integration
+gem 'elasticsearch', '>8.10', '<9.0', require: false
+
 # Gems used only for develop/test and not required
 # in production environments by default.
 group :development, :test do

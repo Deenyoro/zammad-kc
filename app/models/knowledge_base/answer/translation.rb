@@ -6,6 +6,7 @@ class KnowledgeBase::Answer::Translation < ApplicationModel
   include HasAgentAllowedParams
   include HasLinks
   include HasSearchIndexBackend
+  include HasVectorIndex
   include KnowledgeBase::HasUniqueTitle
   include KnowledgeBase::Answer::Translation::Search
 
@@ -45,6 +46,26 @@ class KnowledgeBase::Answer::Translation < ApplicationModel
                 'scope_id'   => answer.category_id,
                 'attachment' => answer.attachments_for_search_index_attribute_lookup,
                 'tags'       => answer.tag_list)
+  end
+
+  def vector_index_data
+    {
+      content:  "#{title}\n#{content.body.html2text}",
+      metadata: {
+        locale:      kb_locale.system_locale.locale,
+        category_id: answer.category_id,
+      },
+    }
+  end
+
+  def vector_indexing_for_record?
+    return false if !answer.visible_internally?
+
+    # For now only explicitly enabled categories or all are indexed.
+    relevant_categorie_ids = ENV.fetch('VECTOR_INDEX_FOR_KNOWLEDGE_BASE_CATEGORY_IDS', nil)
+    return false if relevant_categorie_ids&.split(',')&.exclude?(answer.category_id.to_s)
+
+    true
   end
 
   def inline_linked_objects

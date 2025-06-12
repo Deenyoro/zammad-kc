@@ -30,4 +30,5 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym 'TLS'
   inflect.acronym 'AI'
   inflect.acronym 'MD5'
+  inflect.acronym 'VectorDB'
 end
