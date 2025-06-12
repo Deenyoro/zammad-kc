@@ -43,7 +43,7 @@ if [ "$1" = 'builder' ]; then
 
   script/build/cleanup.sh
 
-  bundle exec bootsnap precompile --gemfile
+  bundle exec bootsnap precompile --gemfile app/ lib/
 fi
 
 if [ "$1" = 'runner' ]; then
