@@ -7,6 +7,9 @@ module Ticket::SearchIndex
     attributes = super
     return if !attributes
 
+    # hook number
+    attributes['hook_number'] = "#{Setting.get('ticket_hook')}#{number}"
+
     # collect article data
     # add tags
     attributes['tags'] = tag_list

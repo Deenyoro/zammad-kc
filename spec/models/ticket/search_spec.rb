@@ -91,4 +91,18 @@ RSpec.describe Ticket::Search do
       it_behaves_like 'finding the ticket by its article attribute'
     end
   end
+
+  describe 'Tickets are not found via the search using the complete ticket hook #5659', searchindex: true do
+    let(:ticket) { create(:ticket, group: Group.first) }
+    let(:agent) { create(:agent, groups: Group.all) }
+
+    before do
+      ticket
+      searchindex_model_reload([Ticket])
+    end
+
+    it 'does find the ticket by hook' do
+      expect(Ticket.search(current_user: agent, query: "#{Setting.get('ticket_hook')}#{ticket.number}")).to eq([ticket])
+    end
+  end
 end
