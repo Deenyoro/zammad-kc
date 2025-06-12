@@ -1512,4 +1512,98 @@ RSpec.describe Selector::Base, searchindex: true do
       expect(result[:count]).to eq(3)
     end
   end
+
+  # https://github.com/zammad/zammad/issues/5623
+  describe 'selectors relying on .keyword suffix fails with long articles', :aggregate_failures do
+    let(:term)        { 'ežiukas' }
+    let(:short_text) { "#{Faker::Lorem.characters(number: 30)} #{term}" }
+    let(:long_text)  { "#{term} #{Faker::Lorem.characters(number: 300)}" }
+
+    context 'when item is Ticket' do
+      let(:article_short) { create(:ticket_article, ticket: ticket_1, body: short_text) }
+      let(:article_long)  { create(:ticket_article, ticket: ticket_2, body: long_text) }
+
+      before do
+        article_short && article_long
+        searchindex_model_reload([Ticket])
+      end
+
+      it 'article body does match' do
+        condition = {
+          operator:   'AND',
+          conditions: [
+            {
+              name:     'article.body',
+              operator: 'contains',
+              value:    term,
+            },
+          ]
+        }
+
+        count, = Ticket.selectors(condition, { current_user: agent })
+        expect(count).to eq(2)
+
+        result = SearchIndexBackend.selectors('Ticket', condition, { current_user: agent })
+        expect(result[:count]).to eq(2)
+      end
+    end
+
+    context 'when item is Organization' do
+      let(:organization_short) { create(:organization, note: short_text) }
+      let(:organization_long)  { create(:organization, note: long_text) }
+
+      before do
+        organization_short && organization_long
+        searchindex_model_reload([Organization])
+      end
+
+      it 'organization note does match' do
+        condition = {
+          operator:   'AND',
+          conditions: [
+            {
+              name:     'organization.note',
+              operator: 'contains',
+              value:    term,
+            },
+          ]
+        }
+
+        count, = Organization.selectors(condition, { current_user: agent })
+        expect(count).to eq(2)
+
+        result = SearchIndexBackend.selectors('Organization', condition, { current_user: agent })
+        expect(result[:count]).to eq(2)
+      end
+    end
+
+    context 'when item is KB Answer' do
+      let(:answer_short) { create(:knowledge_base_answer_translation_content, body: short_text).translation.answer }
+      let(:answer_long) { create(:knowledge_base_answer_translation_content, body: long_text).translation.answer }
+
+      before do
+        answer_short && answer_long
+        searchindex_model_reload([KnowledgeBase::Answer::Translation])
+      end
+
+      it 'answer content does match' do
+        condition = {
+          operator:   'AND',
+          conditions: [
+            {
+              name:     'content.body',
+              operator: 'contains',
+              value:    term,
+            },
+          ]
+        }
+
+        count, = KnowledgeBase::Answer::Translation.selectors(condition, { current_user: agent })
+        expect(count).to eq(2)
+
+        result = SearchIndexBackend.selectors('KnowledgeBase::Answer::Translation', condition, { current_user: agent })
+        expect(result[:count]).to eq(2)
+      end
+    end
+  end
 end

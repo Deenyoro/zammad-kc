@@ -166,6 +166,12 @@ class Selector::SearchIndex < Selector::Base
       value_is_string = Array.wrap(data[:value]).any? { |value| value.match(%r{[A-z]}) }
     end
 
+    klass = table.classify.safe_constantize.then { _1 if _1&.include?(HasSearchIndexBackend) } ||
+            "#{target_class}::#{table.classify}".safe_constantize
+
+    field_mapping    = SearchIndexBackend.get_mapping_properties_object(klass).dig(:properties, key_tmp) if klass
+    field_is_keyword = field_mapping&.dig(:fields, :keyword, :type) == 'keyword'
+
     t = {}
 
     # use .keyword in case of compare exact values
@@ -196,15 +202,23 @@ class Selector::SearchIndex < Selector::Base
         data[:value] = user.organization_id
       end
 
-      if value_is_string
+      if value_is_string && field_is_keyword
         key_tmp += '.keyword'
       end
     end
 
     # use .keyword and wildcard search in cases where query contains non A-z chars
     if ['contains', 'contains not', 'starts with one of', 'ends with one of'].include?(data[:operator]) && value_is_string
-      wildcard_or_term = 'wildcard'
-      if !key_tmp.ends_with?('.keyword')
+      column_details = klass&.columns_hash&.dig(key_tmp)
+
+      # https://github.com/zammad/zammad/issues/5623
+      wildcard_or_term = if (column_details&.type == :string && (!column_details.limit || column_details.limit > 5000)) || (column_details&.type == :text)
+                           'match_phrase'
+                         else
+                           'wildcard'
+                         end
+
+      if field_is_keyword && !key_tmp.ends_with?('.keyword')
         key_tmp += '.keyword'
       end
 

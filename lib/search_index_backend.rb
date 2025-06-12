@@ -891,6 +891,10 @@ helper method for making HTTP calls and raising error if response was not succes
             keyword: string_raw,
           }
         }
+      elsif (value.type == :string && (!value.limit || value.limit > 5000)) || (value.type == :text)
+        result[:properties][key] = {
+          type: string_type,
+        }
       elsif value.type == :integer
         result[:properties][key] = {
           type: 'integer',

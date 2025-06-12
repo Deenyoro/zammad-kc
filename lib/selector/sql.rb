@@ -135,6 +135,9 @@ class Selector::Sql < Selector::Base
       when 'ticket_state'
         tables         |= ['INNER JOIN ticket_states ON tickets.state_id = ticket_states.id']
         sql_helper      = SqlHelper.new(object: Ticket::State)
+      when 'content'
+        tables         |= ['INNER JOIN knowledge_base_answer_translation_contents ON knowledge_base_answer_translations.content_id = knowledge_base_answer_translation_contents.id']
+        sql_helper      = SqlHelper.new(object: KnowledgeBase::Answer::Translation::Content, table_name: 'knowledge_base_answer_translation_contents')
       else
         raise "invalid selector #{attribute_table}, #{attribute_name}"
       end
