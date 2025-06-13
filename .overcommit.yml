@@ -86,6 +86,12 @@ PreCommit:
     enabled: true
     command: ['pnpm', 'lint:js:oxlint:cmd']
     flags: ['app/frontend/', '.eslint-plugin-zammad/']
+    exclude:
+      - 'app/frontend/shared/graphql/types.ts'
+      - 'app/frontend/shared/types/config.ts'
+    include:
+      - 'app/frontend/**/*'
+      - '.eslint-plugin-zammad/**/*'
   Markdownlint:
     required_executable: 'pnpm'
     enabled: true
