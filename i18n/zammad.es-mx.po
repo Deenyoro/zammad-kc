@@ -321,14 +321,14 @@ msgid "%s ago"
 msgstr "hace %s"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleFooter.vue:31
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:224
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:225
 #, fuzzy
 #| msgid "Attached Files"
 msgid "%s attached files"
 msgstr "Archivos adjuntados"
 
 #: app/assets/javascripts/app/models/data_privacy_task.coffee:32
-#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/data-privacy-task.ts:39
+#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/data-privacy-task.ts:37
 msgid "%s completed data privacy task to delete user ID |%s|"
 msgstr ""
 "%s completó la tarea de privacidad de datos para eliminar el ID de usuario |"
@@ -340,13 +340,13 @@ msgid "%s created article for |%s|"
 msgstr "%s artículo creado para |%s|"
 
 #: app/assets/javascripts/app/models/data_privacy_task.coffee:28
-#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/data-privacy-task.ts:27
+#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/data-privacy-task.ts:25
 msgid "%s created data privacy task to delete user ID |%s|"
 msgstr ""
 "%s creó una tarea de privacidad de datos para eliminar el ID de usuario |%s|"
 
 #: app/assets/javascripts/app/models/group.coffee:30
-#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/group.ts:26
+#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/group.ts:24
 msgid "%s created group |%s|"
 msgstr "%s grupo creado |%s|"
 
@@ -356,7 +356,7 @@ msgid "%s created organization |%s|"
 msgstr "%s creó la organización |%s|"
 
 #: app/assets/javascripts/app/models/role.coffee:27
-#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/role.ts:26
+#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/role.ts:24
 msgid "%s created role |%s|"
 msgstr "%s rol creado |%s|"
 
@@ -418,7 +418,7 @@ msgstr "%s grupos a %s asignaciones de roles"
 msgid "%s hours ago"
 msgstr "hace %s"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantLoadingBanner.vue:33
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:33
 #, fuzzy
 #| msgid "%s Migration"
 msgid "%s is generating text"
@@ -589,14 +589,14 @@ msgid "%s updated article for |%s|"
 msgstr "%s artículo actualizado para |%s|"
 
 #: app/assets/javascripts/app/models/data_privacy_task.coffee:30
-#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/data-privacy-task.ts:33
+#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/data-privacy-task.ts:31
 msgid "%s updated data privacy task to delete user ID |%s|"
 msgstr ""
 "%s actualizó la tarea de privacidad de datos para eliminar el ID de usuario |"
 "%s|"
 
 #: app/assets/javascripts/app/models/group.coffee:32
-#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/group.ts:28
+#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/group.ts:26
 msgid "%s updated group |%s|"
 msgstr "%s grupo actualizado |%s|"
 
@@ -606,7 +606,7 @@ msgid "%s updated organization |%s|"
 msgstr "%s organización actualizada |%s|"
 
 #: app/assets/javascripts/app/models/role.coffee:29
-#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/role.ts:28
+#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/role.ts:26
 msgid "%s updated role |%s|"
 msgstr "%s rol actualizado |%s|"
 
@@ -772,7 +772,7 @@ msgstr ""
 "También puede configurar ** notificaciones por correo electrónico **."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleFooter.vue:30
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:223
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:224
 #, fuzzy
 #| msgid "Attached Files"
 msgid "1 attached file"
@@ -1042,6 +1042,7 @@ msgstr ""
 
 #: app/controllers/ticket/summarize_controller.rb:8
 #: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:16
+#: app/services/service/ai/vectordb/base.rb:8
 #: app/services/service/ai_assistance/text_tools.rb:17
 #: app/services/service/ticket/ai_assistance/summarize.rb:16
 #, fuzzy
@@ -1284,7 +1285,7 @@ msgstr "Botón del menú de acciones para claves de seguridad"
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:19
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:15
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:16
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:616
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:618
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:118
 msgid "Actions"
 msgstr "Acciones"
@@ -1537,7 +1538,8 @@ msgstr "Suma de comprobación"
 msgid "Add attachment option to upload."
 msgstr "Agregue la opción de archivo adjunto para cargar."
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:280
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:240
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:239
 msgid "Add bullet list"
 msgstr ""
 
@@ -1564,7 +1566,8 @@ msgstr "correo"
 msgid "Add empty checklist"
 msgstr ""
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:156
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:116
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:115
 msgid "Add first level heading"
 msgstr ""
 
@@ -1574,13 +1577,15 @@ msgstr ""
 msgid "Add from a template"
 msgstr "Guardar como plantilla"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:149
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:109
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:108
 #, fuzzy
 #| msgid "Add Tag"
 msgid "Add heading"
 msgstr "Agregar Tag"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:316
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:276
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:275
 #, fuzzy
 #| msgid "Add Tag"
 msgid "Add image"
@@ -1592,8 +1597,9 @@ msgstr "Agregar Tag"
 msgid "Add internal note"
 msgstr "Añadir nota"
 
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:298
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketLinks.vue:163
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:338
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:297
 #, fuzzy
 #| msgid "Add Link"
 msgid "Add link"
@@ -1613,7 +1619,8 @@ msgstr "Agregar Tag"
 msgid "Add note"
 msgstr "Agregar Bot"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:267
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:227
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:226
 #, fuzzy
 #| msgid "Format as ordered list"
 msgid "Add ordered list"
@@ -1631,7 +1638,8 @@ msgstr ""
 msgid "Add reply"
 msgstr "responder"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:167
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:127
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:126
 msgid "Add second level heading"
 msgstr ""
 
@@ -1660,7 +1668,8 @@ msgstr ""
 msgid "Add tag"
 msgstr "Agregar Tag"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:178
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:138
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:137
 msgid "Add third level heading"
 msgstr ""
 
@@ -1862,7 +1871,8 @@ msgstr "Tickets Abiertos"
 msgid "Agents"
 msgstr "Agentes"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:111
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:71
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:70
 msgid "Ai assistant text tools"
 msgstr ""
 
@@ -2017,7 +2027,7 @@ msgstr ""
 msgid "An error has occurred"
 msgstr "Ocurrió un error: %s"
 
-#: app/frontend/shared/server/apollo/handler/BaseHandler.ts:150
+#: app/frontend/shared/server/apollo/handler/BaseHandler.ts:141
 #, fuzzy
 #| msgid "The password could not be set. Please contact your administrator."
 msgid "An error occured during the operation."
@@ -2108,7 +2118,7 @@ msgstr "Respuestas"
 msgid "Answers: %s"
 msgstr "Respuestas"
 
-#: app/assets/javascripts/app/lib/app_post/ai_provider/anthropic.coffee:3
+#: app/assets/javascripts/app/lib/app_post/ai_provider/anthropic.coffee:4
 msgid "Anthropic"
 msgstr ""
 
@@ -2190,17 +2200,17 @@ msgstr "Aplicaciones"
 
 #: app/assets/javascripts/app/views/widget/template.jst.eco:8
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:330
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:144
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:145
 msgid "Apply"
 msgstr "Aplicar"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:56
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:144
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:145
 msgid "Apply Draft"
 msgstr "Aplicar borrador"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:2
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:174
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:175
 msgid "Apply Shared Draft"
 msgstr "Aplicar borrador compartido"
 
@@ -2460,7 +2470,7 @@ msgstr "Recuento de artículos"
 msgid "Article Language Detection"
 msgstr "Aplicación"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:289
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:290
 #, fuzzy
 #| msgid "Article Count"
 msgid "Article actions"
@@ -2753,21 +2763,21 @@ msgstr "Autenticación vía %s"
 msgid "Authenticator App"
 msgstr "Autenticación"
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:270
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:268
 #, fuzzy
 #| msgid "Authentication via %s"
 msgid "Authenticator app QR code"
 msgstr "Autenticación vía %s"
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:24
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:281
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:279
 #, fuzzy
 #| msgid "Authentication via %s"
 msgid "Authenticator app secret"
 msgstr "Autenticación vía %s"
 
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:202
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:203
 msgid "Author"
 msgstr ""
 
@@ -2863,11 +2873,11 @@ msgstr ""
 "Carga automáticamente el archivo chat.css. Si quiere usar su propio CSS, "
 "simplemente configúrelo en falso."
 
-#: app/frontend/shared/components/Form/Form.vue:1288
+#: app/frontend/shared/components/Form/Form.vue:1289
 msgid "Autosave in progress…"
 msgstr ""
 
-#: app/frontend/shared/components/Form/Form.vue:1297
+#: app/frontend/shared/components/Form/Form.vue:1298
 msgid "Autosaving is taking longer than expected…"
 msgstr ""
 
@@ -2896,7 +2906,7 @@ msgstr "Tipos disponibles para un nuevo ticket"
 #: app/frontend/apps/mobile/pages/account/routes.ts:28
 #: app/frontend/apps/mobile/pages/account/views/AccountOverview.vue:128
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:175
-#: app/frontend/shared/components/CommonUserAvatar/CommonUserAvatar.vue:119
+#: app/frontend/shared/components/CommonUserAvatar/CommonUserAvatar.vue:114
 #: db/seeds/permissions.rb:433
 msgid "Avatar"
 msgstr "Avatar"
@@ -3021,7 +3031,7 @@ msgid "Be sure to check AI-generated summaries for accuracy."
 msgstr ""
 
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:813
-#: app/frontend/shared/components/Form/fields/FieldEditor/suggestions/UserMention.ts:100
+#: app/frontend/shared/components/Form/fields/FieldEditor/extensions/UserMention.ts:99
 msgid "Before you mention a user, please select a group."
 msgstr "Antes de mencionar a un usuario, seleccione un grupo."
 
@@ -3361,7 +3371,7 @@ msgstr ""
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:225
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:120
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:78
-#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantLoadingBanner.vue:51
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:51
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -3385,7 +3395,7 @@ msgstr "Cancelar"
 #: app/frontend/apps/desktop/pages/authentication/views/Signup.vue:140
 #: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:416
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:72
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:233
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:234
 msgid "Cancel & Go Back"
 msgstr "Cancelar y regresar"
 
@@ -3529,7 +3539,8 @@ msgstr "Cambiar orden"
 msgid "Change personal account password."
 msgstr "Cambia tu contraseña"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:223
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:183
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:182
 #, fuzzy
 #| msgid "Change order"
 msgid "Change text color"
@@ -4450,7 +4461,7 @@ msgstr ""
 msgid "Copy Codes"
 msgstr "Seguridad"
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:290
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:288
 #, fuzzy
 #| msgid "App Secret"
 msgid "Copy Secret"
@@ -4553,7 +4564,7 @@ msgid ""
 "Could not load the two-factor authentication configuration for this user."
 msgstr "Autenticacion requerida"
 
-#: app/models/channel/email_parser.rb:32
+#: app/models/channel/email_parser.rb:33
 msgid "Could not parse any sender attribute from the email. Checked fields:"
 msgstr ""
 
@@ -4672,7 +4683,7 @@ msgstr ""
 msgid "Create Macros"
 msgstr "Crear Macros"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:169
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:162
 #, fuzzy
 #| msgid "Create a shared draft"
 msgid "Create Shared Draft"
@@ -4734,7 +4745,7 @@ msgid "Create a new template in the admin interface."
 msgstr ""
 
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:4
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:164
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:157
 msgid "Create a shared draft"
 msgstr "Crear un borrador compartido"
 
@@ -6246,7 +6257,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/twitter/list.jst.eco:83
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:45
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:13
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:240
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:241
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:162
 #: app/frontend/shared/components/Form/fields/FieldFile/FieldFileInput.vue:158
 msgid "Delete"
@@ -6304,7 +6315,7 @@ msgstr "Borrar primero todos los registros existentes."
 msgid "Delete avatar"
 msgstr "Borrar Usuario"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:82
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:83
 #, fuzzy
 #| msgid "Delete File"
 msgid "Delete column"
@@ -6358,13 +6369,13 @@ msgstr "Borrar organización?"
 msgid "Delete records"
 msgstr "Eliminar Registros"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:54
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:55
 #, fuzzy
 #| msgid "Delete User"
 msgid "Delete row"
 msgstr "Borrar Usuario"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:139
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:140
 #, fuzzy
 #| msgid "Delete File"
 msgid "Delete table"
@@ -6472,7 +6483,7 @@ msgstr "Descripción"
 msgid "Description (shown as title tag for screen readers)"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:491
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:493
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:91
 #, fuzzy
 #| msgid "set optional"
@@ -7172,6 +7183,12 @@ msgstr ""
 msgid "Elasticsearch Total Payload Size"
 msgstr ""
 
+#: lib/ai/vectordb.rb:170
+#, fuzzy
+#| msgid "Your Email Configuration"
+msgid "Elasticsearch index does not exist"
+msgstr "Configuración de tu correo electrónico"
+
 #: lib/search_index_backend.rb:435
 msgid ""
 "Elasticsearch is not reachable. It's possible that it's not running. Please "
@@ -7726,7 +7743,8 @@ msgstr "Ingrese su nombre de usuario o correo electrónico"
 msgid "Enter credentials"
 msgstr "Ingresar credenciales"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:343
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:303
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:301
 msgid "Enter link URL"
 msgstr ""
 
@@ -7783,7 +7801,7 @@ msgstr ""
 "instalación para vincular los dos sistemas"
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:28
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:299
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:297
 msgid "Enter the security code generated by the authenticator app:"
 msgstr ""
 
@@ -8109,7 +8127,7 @@ msgid "Existing tickets (open)"
 msgstr "asignar tickets"
 
 #: app/assets/javascripts/app/views/generic/text_tools.jst.eco:14
-#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:185
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:72
 #, fuzzy
 #| msgid "Content"
 msgid "Expand"
@@ -8280,7 +8298,7 @@ msgstr ""
 msgid "Failed to save the order of the checklist items. Please try again."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:204
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:202
 msgid "Failed to set up QR code. Please try again."
 msgstr ""
 
@@ -8290,7 +8308,7 @@ msgstr ""
 msgid "Failed to update checklist item."
 msgstr "Crear nuevo cliente"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/ImageHandler/ImageFailedUploadOverlay.vue:23
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/image-handler/ImageFailedUploadOverlay.vue:22
 msgid "Failed to upload."
 msgstr ""
 
@@ -8456,7 +8474,7 @@ msgid "First response"
 msgstr "Primer respuesta"
 
 #: app/assets/javascripts/app/views/generic/text_tools.jst.eco:12
-#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:179
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:63
 msgid "Fix spelling and grammar"
 msgstr ""
 
@@ -8596,7 +8614,8 @@ msgstr "Formatee como //strikethrough//"
 msgid "Format as _underlined_"
 msgstr "Formatee como _underlined_"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:191
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:151
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:150
 #, fuzzy
 #| msgid "Format as |bold|"
 msgid "Format as bold"
@@ -8614,7 +8633,8 @@ msgstr "Formatee como encabezado h2"
 msgid "Format as h3 heading"
 msgstr "Formatee como encabezado h3"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:199
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:159
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:158
 #, fuzzy
 #| msgid "Format as ||italic||"
 msgid "Format as italic"
@@ -8624,13 +8644,15 @@ msgstr "Formatee como ||italic||"
 msgid "Format as ordered list"
 msgstr "Formatear como lista ordenada"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:215
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:175
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:174
 #, fuzzy
 #| msgid "Format as //strikethrough//"
 msgid "Format as strikethrough"
 msgstr "Formatee como //strikethrough//"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:207
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:167
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:166
 #, fuzzy
 #| msgid "Format as _underlined_"
 msgid "Format as underlined"
@@ -8782,7 +8804,7 @@ msgstr ""
 msgid "Generating recovery codes…"
 msgstr "Eliminar Registros"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantLoadingBanner.vue:44
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:44
 #, fuzzy
 #| msgid "Delete records"
 msgid "Generating text…"
@@ -9203,7 +9225,7 @@ msgid "Has processed"
 msgstr "Ha procesado"
 
 #: app/frontend/apps/desktop/components/CommonSelect/CommonSelectItem.vue:169
-#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdownItem.vue:129
+#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdownItem.vue:130
 #: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDialog.vue:338
 #, fuzzy
 #| msgid "%s subdomain"
@@ -9873,7 +9895,7 @@ msgid "Imported"
 msgstr ""
 
 #: app/assets/javascripts/app/views/generic/text_tools.jst.eco:10
-#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:173
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:54
 #, fuzzy
 #| msgid "Removes the formatting"
 msgid "Improve writing"
@@ -9978,6 +10000,12 @@ msgstr ""
 msgid "Including private key."
 msgstr ""
 
+#: lib/ai/vectordb.rb:163
+#, fuzzy
+#| msgid "Last sync"
+msgid "Incompatible Elasticsearch version"
+msgstr "Última sincronización"
+
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:10
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:376
 msgid "Incomplete Ticket Checklist"
@@ -10017,7 +10045,8 @@ msgstr "minutos"
 msgid "Increment seconds value"
 msgstr "minutos"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:293
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:253
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:252
 #, fuzzy
 #| msgid "Inserts text module"
 msgid "Indent text"
@@ -10067,51 +10096,57 @@ msgstr "No se pudo generar contenido en línea."
 msgid "Input field must be text, password, tel, fax, email or url type."
 msgstr ""
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:250
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:210
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:209
 msgid "Insert code block"
 msgstr ""
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:73
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:74
 msgid "Insert column after"
 msgstr ""
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:64
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:65
 msgid "Insert column before"
 msgstr ""
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:258
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:218
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:217
 #, fuzzy
 #| msgid "Inserts text module"
 msgid "Insert divider"
 msgstr "Inserta módulo de texto"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:239
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:199
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:198
 #, fuzzy
 #| msgid "Inserts text module"
 msgid "Insert inline code"
 msgstr "Inserta módulo de texto"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:36
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:37
 msgid "Insert row above"
 msgstr ""
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:45
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:46
 msgid "Insert row below"
 msgstr ""
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:371
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:331
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:329
 #, fuzzy
 #| msgid "Inserts text module"
 msgid "Insert table"
 msgstr "Inserta módulo de texto"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:132
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:92
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:91
 #, fuzzy
 #| msgid "Inserts knowledge base answer"
 msgid "Insert text from Knowledge Base article"
 msgstr "Inserta la respuesta de la base de conocimiento"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:140
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:100
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:99
 #, fuzzy
 #| msgid "Inserts text module"
 msgid "Insert text from text module"
@@ -10704,7 +10739,7 @@ msgid "Last change %s %s by %s"
 msgstr ""
 
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:11
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:211
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:212
 #, fuzzy
 #| msgid "has changed"
 msgid "Last changed"
@@ -11039,7 +11074,7 @@ msgstr "Carga fallida."
 #: app/assets/javascripts/app/lib/app_post/task_manager.coffee:151
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:672
 #: app/assets/javascripts/app/views/generic/page_loading.jst.eco:3
-#: app/frontend/apps/desktop/components/CommonLoader/CommonLoader.vue:63
+#: app/frontend/apps/desktop/components/CommonLoader/CommonLoader.vue:62
 #: app/frontend/apps/desktop/components/CommonSelect/CommonSelect.vue:512
 #: app/frontend/shared/form/i18n/locales.ts:58
 #: app/views/init/spinner-loading.html.erb:254
@@ -11776,6 +11811,12 @@ msgstr "Modo"
 msgid "Media Download Error"
 msgstr ""
 
+#: app/frontend/shared/entities/ticket-article/composables/useTicketArticleRetryMediaDownload.ts:30
+#, fuzzy
+#| msgid "Decryption was successful."
+msgid "Media download failed."
+msgstr "El descifrado fue exitoso."
+
 #: app/frontend/shared/entities/ticket-article/composables/useTicketArticleRetryMediaDownload.ts:43
 msgid "Media download failed. Please try again later."
 msgstr ""
@@ -11801,7 +11842,8 @@ msgstr "Miembros"
 msgid "Mention for"
 msgstr "Menciones"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:124
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:84
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:83
 #, fuzzy
 #| msgid "Mentions"
 msgid "Mention user"
@@ -11828,7 +11870,7 @@ msgstr "Mezclar"
 msgid "Merge Tickets"
 msgstr "Unir al Ticket#"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:101
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:102
 #, fuzzy
 #| msgid "Merge to Ticket#"
 msgid "Merge cells"
@@ -12040,6 +12082,12 @@ msgstr "Móvil"
 
 #: app/assets/javascripts/app/views/maintenance.jst.eco:14
 msgid "Mode"
+msgstr "Modo"
+
+#: app/assets/javascripts/app/controllers/_ai/providers.coffee:75
+#, fuzzy
+#| msgid "Mode"
+msgid "Model"
 msgstr "Modo"
 
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:272
@@ -12267,9 +12315,9 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:31
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:97
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:91
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:192
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:193
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout/IdoitObjectList.vue:20
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:165
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:158
 #: db/seeds/object_manager_attributes.rb:1705 public/assets/form/form.js:24
 msgid "Name"
 msgstr "Nombre"
@@ -12932,7 +12980,7 @@ msgstr "No se han encontrado resultados"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout/IdoitObjectList.vue:37
 #: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInputDialog.vue:402
 #: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDialog.vue:348
-#: app/frontend/shared/components/Form/fields/FieldEditor/SuggestionsList.vue:98
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/suggestions/SuggestionsList.vue:98
 msgid "No results found"
 msgstr "No se han encontrado resultados"
 
@@ -12962,7 +13010,7 @@ msgstr ""
 msgid "No settings with area 'Dashboard::Stats' defined"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:220
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:206
 #, fuzzy
 #| msgid "Shared Drafts"
 msgid "No shared drafts yet"
@@ -13024,7 +13072,7 @@ msgid ""
 "\"Manage > Webhook\""
 msgstr ""
 
-#: app/models/channel/email_parser.rb:119
+#: app/models/channel/email_parser.rb:120
 msgid "No x-zammad-session-user-id, no sender set!"
 msgstr ""
 
@@ -13424,7 +13472,7 @@ msgstr "En línea"
 msgid "Ok"
 msgstr ""
 
-#: app/assets/javascripts/app/lib/app_post/ai_provider/ollama.coffee:3
+#: app/assets/javascripts/app/lib/app_post/ai_provider/ollama.coffee:4
 msgid "Ollama"
 msgstr ""
 
@@ -13655,11 +13703,11 @@ msgid "Open tickets"
 msgstr "Tickets Abiertos"
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:21
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:254
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:252
 msgid "Open your authenticator app and scan the QR code below:"
 msgstr ""
 
-#: app/assets/javascripts/app/lib/app_post/ai_provider/open_ai.coffee:3
+#: app/assets/javascripts/app/lib/app_post/ai_provider/open_ai.coffee:4
 #, fuzzy
 #| msgid "Open"
 msgid "OpenAI"
@@ -13968,11 +14016,12 @@ msgstr "Saliente"
 msgid "Outdated Browser"
 msgstr "Navegador"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:304
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:264
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:263
 msgid "Outdent text"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorActionBar/ActionToolbar.vue:178
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorActionBar/ActionToolbar.vue:176
 #, fuzzy
 #| msgid "Username"
 msgid "Overflow menu"
@@ -14014,7 +14063,7 @@ msgstr "Vista general"
 msgid "Overviews"
 msgstr "Vista general"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:145
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:146
 msgid "Overwrite Content"
 msgstr ""
 
@@ -14555,7 +14604,7 @@ msgid "Please select at least one ticket overview"
 msgstr ""
 
 #: app/assets/javascripts/app/lib/mixins/text_tools.coffee:39
-#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:50
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:46
 #, fuzzy
 #| msgid "Please fill also some text in!"
 msgid "Please select some text first."
@@ -14647,7 +14696,7 @@ msgid "Prefer color scheme as indicated by the operating system."
 msgstr ""
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:34
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:321
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:319
 #, fuzzy
 #| msgid "Please click on the button below to create your first one."
 msgid "Press the button below to finish the setup."
@@ -14696,8 +14745,8 @@ msgstr "Vista Previa"
 msgid "Preview Calendar"
 msgstr "Nuevo Calendario"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:171
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:189
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:172
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:182
 #, fuzzy
 #| msgid "Shared Drafts"
 msgid "Preview Shared Draft"
@@ -15280,7 +15329,8 @@ msgstr "Autenticación"
 msgid "Remove checklist"
 msgstr "Quitar"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/useEditorActions.ts:231
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:191
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:190
 #, fuzzy
 #| msgid "Removes the formatting"
 msgid "Remove formatting"
@@ -15630,7 +15680,7 @@ msgstr "Cerrar pestaña"
 msgid "Resize column"
 msgstr "Borrar archivo"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/ImageHandler/ImageHandler.vue:189
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/image-handler/ImageHandler.vue:188
 msgid "Resize frame"
 msgstr ""
 
@@ -16370,7 +16420,7 @@ msgstr "Seguridad"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/authenticator_app.coffee:32
 #: app/assets/javascripts/app/controllers/widget/two_factor_login/method.coffee:3
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:312
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:310
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:43
 #: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:50
 #, fuzzy
@@ -16457,7 +16507,7 @@ msgstr "Ver más"
 #: app/assets/javascripts/app/controllers/article_view/item.coffee:447
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:111
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleBody.vue:129
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:280
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:281
 msgid "See less"
 msgstr "Ver menos"
 
@@ -16469,7 +16519,7 @@ msgstr "Ver menos"
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:134
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleBody.vue:129
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleMore.vue:17
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:280
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:281
 msgid "See more"
 msgstr "Ver más"
 
@@ -16510,7 +16560,7 @@ msgstr ""
 msgid "Select Template"
 msgstr "Elegir Plantilla"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:490
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:492
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:92
 #, fuzzy
 #| msgid "set optional"
@@ -16985,20 +17035,20 @@ msgid "Shared draft cannot be selected for this ticket."
 msgstr ""
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:87
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:115
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:108
 #, fuzzy
 #| msgid "The test run was successful."
 msgid "Shared draft has been created successfully."
 msgstr "La ejecución de la prueba fue exitosa."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:130
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:131
 #, fuzzy
 #| msgid "The object could not be updated."
 msgid "Shared draft has been deleted."
 msgstr "No se pudo actualizar el objeto."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:50
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:140
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:133
 #, fuzzy
 #| msgid "The test run was successful."
 msgid "Shared draft has been updated successfully."
@@ -17336,7 +17386,7 @@ msgid "Simple Storage Service not reachable."
 msgstr ""
 
 #: app/assets/javascripts/app/views/generic/text_tools.jst.eco:16
-#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:191
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:81
 msgid "Simplify"
 msgstr ""
 
@@ -17460,13 +17510,13 @@ msgstr ""
 msgid "Sorry, there is currently no CTI backend enabled."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:544
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:546
 #, fuzzy
 #| msgid "pending"
 msgid "Sorted ascending"
 msgstr "pendiente"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:545
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:547
 #, fuzzy
 #| msgid "pending"
 msgid "Sorted descending"
@@ -17515,7 +17565,7 @@ msgstr ""
 msgid "Split"
 msgstr "dividir"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:92
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:93
 #, fuzzy
 #| msgid "split"
 msgid "Split cells"
@@ -18142,7 +18192,7 @@ msgstr "Probando"
 #: app/assets/javascripts/app/models/signature.coffee:8
 #: app/assets/javascripts/app/models/ticket_article.coffee:11
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:20
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:223
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:224
 #: db/seeds/object_manager_attributes.rb:536
 msgid "Text"
 msgstr "Texto"
@@ -19419,7 +19469,7 @@ msgstr ""
 msgid "The required value external_credential could not be found in the cache."
 msgstr ""
 
-#: lib/ai/provider.rb:43
+#: lib/ai/provider.rb:48
 #, fuzzy
 #| msgid "The issue could not be saved."
 msgid "The response could not be processed."
@@ -19599,7 +19649,7 @@ msgstr ""
 "El texto al comienzo del asunto en una respuesta por correo electrónico, p. "
 "RE, AW o AS."
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantTextTools.vue:81
+#: app/frontend/shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts:95
 msgid ""
 "The text was modified. Your request has been aborted to prevent overwriting."
 msgstr ""
@@ -19826,7 +19876,7 @@ msgid "There is an existing draft. Do you want to overwrite it?"
 msgstr "Hay un borrador existente. ¿Quieres sobreescribirlo?"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:57
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:142
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:143
 msgid "There is existing content. Do you want to overwrite it?"
 msgstr "Hay contenido existente. ¿Quieres sobreescribirlo?"
 
@@ -21248,7 +21298,7 @@ msgstr ""
 "\"::\"."
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:2
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:230
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:228
 msgid "To set up Authenticator App for your account, follow the steps below:"
 msgstr ""
 
@@ -21289,19 +21339,19 @@ msgstr "Padre"
 msgid "Toggle dark mode"
 msgstr ""
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:129
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:130
 #, fuzzy
 #| msgid "Open note box"
 msgid "Toggle header cell"
 msgstr "Abrir el cuadro de nota"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:120
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:121
 #, fuzzy
 #| msgid "Open note box"
 msgid "Toggle header column"
 msgstr "Abrir el cuadro de nota"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:111
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:112
 #, fuzzy
 #| msgid "Open note box"
 msgid "Toggle header row"
@@ -21313,7 +21363,7 @@ msgstr "Abrir el cuadro de nota"
 msgid "Toggle the overlay"
 msgstr "Abrir el cuadro de nota"
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:62
+#: app/assets/javascripts/app/controllers/_ai/providers.coffee:64
 #: app/assets/javascripts/app/controllers/api.coffee:11
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:48
 #: app/models/channel/driver/sms/massenversand.rb:44
@@ -21746,7 +21796,7 @@ msgstr "Atributo %s"
 msgid "UID Field"
 msgstr "Fecha y Hora"
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:73
+#: app/assets/javascripts/app/controllers/_ai/providers.coffee:86
 #: app/assets/javascripts/app/views/api.jst.eco:63
 #: app/assets/javascripts/app/views/integration/check_mk.jst.eco:12
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:12
@@ -21763,15 +21813,25 @@ msgstr "URL"
 msgid "URL (AJAX endpoint)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:83
+#: app/assets/javascripts/app/controllers/_ai/providers.coffee:96
 #, fuzzy
 #| msgid "set optional"
 msgid "URL (Completions)"
 msgstr "establecer opcional"
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:93
+#: app/assets/javascripts/app/controllers/_ai/providers.coffee:106
 msgid "URL (Embeddings)"
 msgstr ""
+
+#: lib/ai/vectordb.rb:153
+msgid "Unable to connect to Elasticsearch Vector DB"
+msgstr ""
+
+#: lib/ai/vectordb.rb:52
+#, fuzzy
+#| msgid "Allow users to create new tags."
+msgid "Unable to create Elasticsearch index"
+msgstr "Permitir a los usuarios crear nuevas etiquetas."
 
 #: app/controllers/first_steps_controller.rb:215 db/seeds/overviews.rb:32
 msgid "Unassigned & Open Tickets"
@@ -21811,7 +21871,7 @@ msgid "Unknown error: Could not create a ticket from this email."
 msgstr ""
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:5
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:239
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:237
 msgid ""
 "Unless you already have it, install one of the following authenticator apps "
 "on your mobile device:"
@@ -21931,7 +21991,7 @@ msgstr ""
 msgid "Update In Min"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:207
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:197
 #, fuzzy
 #| msgid "Apply Shared Draft"
 msgid "Update Shared Draft"
@@ -22508,7 +22568,7 @@ msgid ""
 "\"shared\", which can be defined per organization)."
 msgstr ""
 
-#: app/frontend/shared/components/CommonUserAvatar/CommonUserAvatar.vue:122
+#: app/frontend/shared/components/CommonUserAvatar/CommonUserAvatar.vue:117
 #: db/seeds/object_manager_attributes.rb:1491
 msgid "VIP"
 msgstr "VIP"
@@ -23232,11 +23292,11 @@ msgid ""
 "define."
 msgstr ""
 
-#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/data-privacy-task.ts:19
+#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/data-privacy-task.ts:17
 msgid "You can no longer see the data privacy task."
 msgstr ""
 
-#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/group.ts:19
+#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/group.ts:17
 msgid "You can no longer see the group."
 msgstr ""
 
@@ -23244,7 +23304,7 @@ msgstr ""
 msgid "You can no longer see the organization."
 msgstr ""
 
-#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/role.ts:19
+#: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/role.ts:17
 msgid "You can no longer see the role."
 msgstr ""
 
@@ -23344,7 +23404,7 @@ msgstr "Al menos un usuario necesita tener permisos de administrador."
 msgid "You do not have permission to update"
 msgstr "Al menos un usuario necesita tener permisos de administrador."
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:447
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:449
 #, fuzzy
 #| msgid "You have not created a ticket yet."
 msgid "You don't have more tickets to load."
@@ -23361,7 +23421,7 @@ msgid ""
 "The customer service window closes %s."
 msgstr ""
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/FieldEditorFooter.vue:49
+#: app/frontend/shared/components/Form/fields/FieldEditor/FieldEditorFooter.vue:48
 msgid "You have exceeded the character limit by %s"
 msgstr ""
 
@@ -23464,7 +23524,7 @@ msgstr "Debe configurar los puntos finales de Zammad en% s"
 msgid "You need to configure the Zammad endpoints in the %s:"
 msgstr "Debe configurar los puntos finales de Zammad en% s"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:443
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:445
 msgid "You reached the table limit of %s tickets (%s remaining)."
 msgstr ""
 
@@ -23670,7 +23730,7 @@ msgstr ""
 msgid "Zammad Helpdesk"
 msgstr ""
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/AiAssistantTextTools/AiAssistantLoadingBanner.vue:40
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:40
 #, fuzzy
 #| msgid "This is Zammad version %s"
 msgid "Zammad Smart Assist"
@@ -24827,7 +24887,7 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:64
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:91
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14
-#: app/frontend/shared/entities/object-attributes/form/resolver/fields/active.ts:16
+#: app/frontend/shared/entities/object-attributes/form/resolver/fields/active.ts:15
 #: db/seeds/settings.rb:613
 msgid "no"
 msgstr "no"
@@ -25411,7 +25471,7 @@ msgstr "dentro del próximo (relativo)"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketSubscribers.vue:63
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:90
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:14
-#: app/frontend/shared/entities/object-attributes/form/resolver/fields/active.ts:15
+#: app/frontend/shared/entities/object-attributes/form/resolver/fields/active.ts:14
 #: db/seeds/object_manager_attributes.rb:1499 db/seeds/settings.rb:612
 msgid "yes"
 msgstr "sí"
@@ -25481,11 +25541,6 @@ msgstr "∅ Tiempo de espera hoy"
 #~| msgid "This is Zammad version %s"
 #~ msgid "Zammad Features"
 #~ msgstr "Esta es la versión Zammad %s"
-
-#, fuzzy
-#~| msgid "Allow users to create new tags."
-#~ msgid "Unable to create checklist."
-#~ msgstr "Permitir a los usuarios crear nuevas etiquetas."
 
 #, fuzzy
 #~| msgid "Microsoft"
