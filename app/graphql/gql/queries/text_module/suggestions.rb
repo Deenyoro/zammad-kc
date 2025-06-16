@@ -27,7 +27,7 @@ module Gql::Queries
         scope = scope.available_in_groups(group)
       end
 
-      scope.where('((text_modules.name LIKE :query) OR (text_modules.keywords LIKE :query))', query: "%#{SqlHelper.quote_like(query.strip)}%")
+      scope.where('((text_modules.name ILIKE :query) OR (text_modules.keywords ILIKE :query))', query: "%#{SqlHelper.quote_like(query.strip)}%")
         .limit(limit || 10)
         .reorder(:name)
     end

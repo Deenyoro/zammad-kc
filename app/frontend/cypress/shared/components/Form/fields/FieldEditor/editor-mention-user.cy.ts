@@ -2,17 +2,17 @@
 
 import { mockApolloClient } from '#cy/utils.ts'
 
-import { useNotifications } from '#shared/components/CommonNotifications/index.ts'
+import { useNotifications } from '#shared/components/CommonNotifications/useNotifications.ts'
 import { MentionSuggestionsDocument } from '#shared/components/Form/fields/FieldEditor/graphql/queries/mention/mentionSuggestions.api.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
-import { useApplicationStore } from '#shared/stores/application.ts'
 
 import { mountEditor } from './utils.ts'
 
 describe('Testing "user mention" popup: "@@" command', { retries: 2 }, () => {
   it('shows notification when no group is provided', () => {
     const { notifications } = useNotifications()
-    mountEditor()
+
+    mountEditor({}, ['ticket.agent'])
 
     cy.findByRole('textbox')
       .type('@@t')
@@ -24,22 +24,21 @@ describe('Testing "user mention" popup: "@@" command', { retries: 2 }, () => {
       })
   })
 
-  it('inserts found text', () => {
-    const app = useApplicationStore()
-    app.config.fqdn = 'example.zammad.com'
-    app.config.http_type = 'http'
+  it('inserts a text', () => {
     const client = mockApolloClient()
     const mock = cy.spy(async () => ({
       data: {
         mentionSuggestions: [
           {
-            id: btoa('Bob Wance'),
+            __typename: 'User',
+            id: convertToGraphQLId('User', '3'),
             internalId: 3,
             fullname: 'Bob Wance',
             email: 'bob@mail.com',
           },
           {
-            id: btoa('John Doe'),
+            __typename: 'User',
+            id: convertToGraphQLId('User', '4'),
             internalId: 4,
             fullname: 'John Doe',
             email: 'john@mail.com',
@@ -49,7 +48,10 @@ describe('Testing "user mention" popup: "@@" command', { retries: 2 }, () => {
     }))
     client.setRequestHandler(MentionSuggestionsDocument, mock)
 
-    mountEditor({ groupId: '1' })
+    mountEditor({ groupId: '1' }, ['ticket.agent'], {
+      fqdn: 'example.zammad.com',
+      http_type: 'http',
+    })
 
     cy.findByRole('textbox').type('@@Jo')
 

@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 import Link from '@tiptap/extension-link'
-import Mention from '@tiptap/extension-mention'
+import Mention, { type MentionOptions } from '@tiptap/extension-mention'
 
 import {
   NotificationTypes,
@@ -52,6 +52,12 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
         ({ chain }: CommandProps) =>
           chain().insertContent(` ${ACTIVATOR}`).run(),
     }),
+    addOptions() {
+      return {
+        ...(this as unknown as { parent: () => MentionOptions }).parent?.(),
+        permission: 'ticket.agent',
+      }
+    },
   }).configure({
     suggestion: buildMentionSuggestion({
       activator: ACTIVATOR,
@@ -79,30 +85,32 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
           },
         ]
       },
-      items: debouncedQuery(async ({ query }) => {
-        if (!query) {
-          return []
-        }
-        let { groupId: group } = context.value
-        if (!group) {
-          const { meta, formId } = context.value
-          const groupNodeName = meta?.[PLUGIN_NAME]?.groupNodeName
-          if (groupNodeName) {
-            const groupNode = getNodeByName(formId, groupNodeName)
-            group = groupNode?.value as string
+      items: debouncedQuery(
+        async ({ query }) => {
+          if (!query) return []
+          let { groupId: group } = context.value
+          if (!group) {
+            const { meta, formId } = context.value
+            const groupNodeName = meta?.[PLUGIN_NAME]?.groupNodeName
+            if (groupNodeName) {
+              const groupNode = getNodeByName(formId, groupNodeName)
+              group = groupNode?.value as string
+            }
           }
-        }
-        if (!group) {
-          const notifications = useNotifications()
-          notifications.notify({
-            id: 'mention-user-required-group',
-            message: __('Before you mention a user, please select a group.'),
-            type: NotificationTypes.Warn,
-          })
-          return []
-        }
-        return getUserMentions(query, group)
-      }, []),
+          if (!group) {
+            const notifications = useNotifications()
+            notifications.notify({
+              id: 'mention-user-required-group',
+              message: __('Before you mention a user, please select a group.'),
+              type: NotificationTypes.Warn,
+            })
+            return []
+          }
+          return getUserMentions(query, group)
+        },
+        [],
+        200,
+      ),
     }),
   })
 }

@@ -1,8 +1,13 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import { defineAsyncComponent, type App } from 'vue'
+
 import { initializeFileClasses } from '#shared/components/Form/fields/FieldFile/initializeFileClasses.ts'
 import { initializeToggleClasses } from '#shared/components/Form/fields/FieldToggle/initializeToggleClasses.ts'
-import { initializeFieldEditorClasses } from '#shared/components/Form/initializeFieldEditor.ts'
+import {
+  initializeFieldEditorClasses,
+  initializeEditorComponents,
+} from '#shared/components/Form/initializeFieldEditor.ts'
 import { initializeFieldLinkClasses } from '#shared/components/Form/initializeFieldLinkClasses.ts'
 import { initializeFormClasses } from '#shared/components/Form/initializeFormClasses.ts'
 import { initializeFormGroupClasses } from '#shared/components/Form/initializeFormGroupClasses.ts'
@@ -14,10 +19,11 @@ import type {
 } from '#shared/types/form.ts'
 import type { ImportGlobEagerOutput } from '#shared/types/utils.ts'
 
+import FieldEditorSuggestionList from '#desktop/components/Form/fields/FieldEditor/FieldEditorSuggestionList.vue'
+
 import { getCoreDesktopClasses } from './theme/global/getCoreDesktopClasses.ts'
 
 import type { FormKitPlugin } from '@formkit/core'
-import type { App } from 'vue'
 
 const pluginModules: ImportGlobEagerOutput<FormKitPlugin> = import.meta.glob(
   './plugins/global/*.ts',
@@ -81,6 +87,16 @@ export const initializeFormFields = () => {
     input: {
       container: 'px-2.5 py-2',
     },
+  })
+
+  initializeEditorComponents({
+    actionBar: defineAsyncComponent(
+      () => import('#desktop/components/Form/fields/FieldEditor/FieldEditorActionBar.vue'),
+    ),
+    actionMenu: defineAsyncComponent(
+      () => import('#desktop/components/Form/fields/FieldEditor/FieldEditorActionMenu.vue'),
+    ),
+    suggestionList: FieldEditorSuggestionList,
   })
 
   initializeFileClasses({

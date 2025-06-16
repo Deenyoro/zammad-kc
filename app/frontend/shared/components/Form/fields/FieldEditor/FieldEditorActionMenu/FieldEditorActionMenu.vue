@@ -3,11 +3,11 @@
 <script lang="ts" setup>
 import { useTemplateRef } from 'vue'
 
-import { getEditorActionMenu } from '#shared/components/Form/fields/FieldEditor/FieldEditorActionMenu/initializeActionMenu.ts'
 import type { ActionMenuProps } from '#shared/components/Form/fields/FieldEditor/FieldEditorActionMenu/types.ts'
 import type { EditorButton } from '#shared/components/Form/fields/FieldEditor/types.ts'
+import { getEditorComponents } from '#shared/components/Form/initializeFieldEditor.ts'
 
-const component = getEditorActionMenu()
+const actionMenuComponent = getEditorComponents().actionMenu
 
 const props = defineProps<ActionMenuProps>()
 
@@ -23,9 +23,9 @@ defineExpose({
 </script>
 
 <template>
-  <Component
+  <component
     v-bind="props"
-    :is="component"
+    :is="actionMenuComponent"
     ref="action-menu"
     @click-action="
       (action: EditorButton, event: MouseEvent) => $emit('click-action', action, event)
@@ -34,5 +34,5 @@ defineExpose({
     <template #default="slotProps">
       <slot v-bind="slotProps" />
     </template>
-  </Component>
+  </component>
 </template>

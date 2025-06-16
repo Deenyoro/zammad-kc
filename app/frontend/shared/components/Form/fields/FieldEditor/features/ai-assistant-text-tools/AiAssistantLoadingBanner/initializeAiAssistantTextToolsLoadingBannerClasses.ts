@@ -6,7 +6,7 @@ let aiAssistantTextToolsLoadingBanner = {
   button: '',
 }
 
-export const initializeAiAssistantTextToolsLoadingBanner = (
+export const initializeAiAssistantTextToolsLoadingBannerClasses = (
   classes: typeof aiAssistantTextToolsLoadingBanner,
 ) => {
   aiAssistantTextToolsLoadingBanner = classes

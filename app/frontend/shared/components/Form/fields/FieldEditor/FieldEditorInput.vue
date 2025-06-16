@@ -22,9 +22,12 @@ import type {
   FieldEditorContext,
   FieldEditorProps,
 } from '#shared/components/Form/fields/FieldEditor/types.ts'
-import { getEditorActionBarComponent } from '#shared/components/Form/initializeEditorComponents.ts'
-import { getFieldEditorClasses } from '#shared/components/Form/initializeFieldEditor.ts'
+import {
+  getFieldEditorClasses,
+  getEditorComponents,
+} from '#shared/components/Form/initializeFieldEditor.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
+import { useSessionStore } from '#shared/stores/session.ts'
 import { htmlCleanup } from '#shared/utils/htmlCleanup.ts'
 
 interface Props {
@@ -33,7 +36,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const FieldEditorActionBar = getEditorActionBarComponent()
+const actionBarComponent = getEditorComponents().actionBar
 
 const reactiveContext = toRef(props, 'context')
 const { currentValue } = useValue(reactiveContext)
@@ -133,10 +136,13 @@ const editor = useEditor({
   },
 })
 
+const { hasPermission } = useSessionStore()
+
 getCustomExtensions(reactiveContext, editor as ShallowRef<Editor>).forEach((extension) => {
-  if (!disabledPlugins.includes(extension.name as EditorCustomPlugins)) {
-    editorExtensions.push(extension)
-  }
+  if (disabledPlugins.includes(extension.name as EditorCustomPlugins)) return
+  if ('permission' in extension.options && !hasPermission(extension.options.permission)) return
+
+  editorExtensions.push(extension)
 })
 
 if (VITE_TEST_MODE) {
@@ -285,7 +291,7 @@ const classes = getFieldEditorClasses()
     </div>
 
     <component
-      :is="FieldEditorActionBar"
+      :is="actionBarComponent"
       :editor="editor"
       :content-type="contentType"
       :visible="showActionBar"

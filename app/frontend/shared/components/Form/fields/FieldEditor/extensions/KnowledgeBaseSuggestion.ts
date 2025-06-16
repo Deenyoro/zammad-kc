@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import Mention from '@tiptap/extension-mention'
+import Mention, { type MentionOptions } from '@tiptap/extension-mention'
 import { cloneDeep } from 'lodash-es'
 
 import buildMentionSuggestion from '#shared/components/Form/fields/FieldEditor/features/suggestions/suggestions.ts'
@@ -45,6 +45,12 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
         ({ chain }: CommandProps) =>
           chain().insertContent(` ${ACTIVATOR}`).run(),
     }),
+    addOptions() {
+      return {
+        ...(this as unknown as { parent: () => MentionOptions }).parent?.(),
+        permission: 'ticket.agent',
+      }
+    },
   }).configure({
     suggestion: buildMentionSuggestion({
       activator: ACTIVATOR,
@@ -73,12 +79,14 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
 
         return htmlCleanup(result?.knowledgeBaseAnswerSuggestionContentTransform?.body || '')
       },
-      items: debouncedQuery(async ({ query }) => {
-        if (!query) {
-          return []
-        }
-        return getKnowledgeBaseMentions(query)
-      }, []),
+      items: debouncedQuery(
+        async ({ query }) => {
+          if (!query) return []
+          return getKnowledgeBaseMentions(query)
+        },
+        [],
+        200,
+      ),
     }),
   })
 }

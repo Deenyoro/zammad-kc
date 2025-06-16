@@ -3,7 +3,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { getEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/features/color-picker/initializeEditorColorMenu.ts'
+import { getEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/features/color-picker/initializeEditorColorMenuClasses.ts'
 import { getFieldEditorClasses } from '#shared/components/Form/initializeFieldEditor.ts'
 import type { ColorGroup, ColorScheme } from '#shared/composables/useColorPallet/types.ts'
 

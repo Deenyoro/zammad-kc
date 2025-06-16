@@ -8,7 +8,7 @@ import { PLUGIN_NAME as KnowledgeBaseMentionName } from '#shared/components/Form
 import { PLUGIN_NAME as TextModuleMentionName } from '#shared/components/Form/fields/FieldEditor/extensions/TextModuleSuggestion.ts'
 import { PLUGIN_NAME as UserMentionName } from '#shared/components/Form/fields/FieldEditor/extensions/UserMention.ts'
 import AiAssistantTextTools from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue'
-import { getAiAssistantTextToolsClasses } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/initializeAiAssistantTextTools.ts'
+import { getAiAssistantTextToolsClasses } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/initializeAiAssistantTextToolsClasses.ts'
 import FieldEditorColorMenu from '#shared/components/Form/fields/FieldEditor/features/color-picker/EditorColorMenu.vue'
 import type {
   EditorButton,
@@ -83,6 +83,7 @@ export default function useEditorActions(
         label: __('Mention user'),
         icon: 'editor-mention-user',
         command: focused((c) => c.openUserMention()),
+        permission: 'ticket.agent',
       },
       {
         id: getUuid(),
@@ -91,6 +92,7 @@ export default function useEditorActions(
         label: __('Insert text from Knowledge Base article'),
         icon: 'editor-mention-knowledge-base',
         command: focused((c) => c.openKnowledgeBaseMention()),
+        permission: 'ticket.agent',
       },
       {
         id: getUuid(),
@@ -100,6 +102,7 @@ export default function useEditorActions(
         showDivider: true,
         icon: 'editor-mention-text-module',
         command: focused((c) => c.openTextMention()),
+        permission: 'ticket.agent',
       },
       {
         id: getUuid(),
@@ -287,32 +290,7 @@ export default function useEditorActions(
         contentType: ['text/html'],
         label: __('Add link'),
         icon: 'editor-inline-link',
-        command: focused((c) => {
-          if (!editor.value) return null
-
-          const href = prompt(__('Enter link URL'))
-          if (!href) return null
-          const { view, state } = editor.value
-          const { from, to } = view.state.selection
-          const text = state.doc.textBetween(from, to, '')
-
-          if (text) {
-            return c.toggleLink({ href })
-          }
-
-          return c.insertContent({
-            type: 'text',
-            text: href,
-            marks: [
-              {
-                type: 'link',
-                attrs: {
-                  href,
-                },
-              },
-            ],
-          })
-        }),
+        command: focused((c) => c.openLinkForm()),
       },
       {
         id: getUuid(),

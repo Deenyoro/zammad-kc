@@ -151,5 +151,10 @@ export default (editor: ShallowRef<Editor>) => {
           },
       }
     },
+    addOptions() {
+      return {
+        permission: 'ticket.agent',
+      }
+    },
   })
 }

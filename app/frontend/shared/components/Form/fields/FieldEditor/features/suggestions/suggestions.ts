@@ -2,20 +2,23 @@
 
 import { PluginKey } from '@tiptap/pm/state'
 import { VueRenderer } from '@tiptap/vue-3'
-import tippy, { type GetReferenceClientRect, type Instance } from 'tippy.js'
+import { useDebounceFn } from '@vueuse/core'
 
-import SuggestionsList from '#shared/components/Form/fields/FieldEditor/features/suggestions/SuggestionsList.vue'
 import type { MentionType } from '#shared/components/Form/fields/FieldEditor/types.ts'
+import {
+  autoUpdatePosition,
+  setFloatingPopover,
+} from '#shared/components/Form/fields/FieldEditor/utils.ts'
+import { getEditorComponents } from '#shared/components/Form/initializeFieldEditor.ts'
 
 import type { Content, Editor } from '@tiptap/core'
-import type { SuggestionOptions } from '@tiptap/suggestion'
+import type { SuggestionOptions, SuggestionProps } from '@tiptap/suggestion'
 
 interface MentionOptions<T> {
   activator: string
   type: MentionType
   allowSpaces?: boolean
   items(props: { query: string; editor: Editor }): T[] | Promise<T[]>
-
   // oxlint-disable-next-line no-explicit-any
   insert(props: Record<string, any>): Content | Promise<Content>
 }
@@ -53,60 +56,51 @@ export default function buildMentionExtension<T>(
       }
     },
     render() {
-      let component: VueRenderer
-      let popup: Instance
-      let mounted = false
+      let component: VueRenderer | null
 
-      return {
-        onStart(props) {
-          mounted = true
-          component = new VueRenderer(SuggestionsList, {
-            props: {
+      const renderFn = (loadingState: boolean) => {
+        return useDebounceFn(function (props: SuggestionProps) {
+          if (!component) {
+            component = setFloatingPopover(getEditorComponents().suggestionList!, props.editor, {
+              loading: loadingState,
+              query: props.query,
               items: props.items,
               command: props.command,
               type: options.type,
-            },
-            editor: props.editor,
-          })
-          ;[popup] = tippy('body', {
-            getReferenceClientRect: props.clientRect as GetReferenceClientRect,
-            appendTo: () => document.body,
-            content: component.element || undefined,
-            showOnCreate: true,
-            interactive: true,
-            trigger: 'manual',
-            placement: 'bottom-start',
-          })
-        },
-        onUpdate(props) {
-          if (!mounted) return
-          component.updateProps({
-            items: props.items,
-            command: props.command,
-            type: options.type,
-          })
-          popup.show()
-          popup.setProps({
-            getReferenceClientRect: props.clientRect as GetReferenceClientRect,
-          })
-        },
-        onKeyDown(props) {
-          if (!mounted) return false
+            })
+          } else {
+            component?.updateProps({
+              loading: loadingState,
+              query: props.query,
+              items: props.items,
+              command: props.command,
+              type: options.type,
+            })
+          }
 
+          autoUpdatePosition(props.editor, component!.element as HTMLElement)
+        }, 200)
+      }
+
+      return {
+        onBeforeStart: renderFn(true),
+        onStart: renderFn(false),
+        onBeforeUpdate: renderFn(true),
+        onUpdate: renderFn(false),
+
+        onKeyDown(props) {
           if (props.event.key === 'Escape') {
-            popup.hide()
+            component?.destroy()
+
             return true
           }
 
-          return component.ref?.onKeyDown(props)
+          return component?.ref?.onKeyDown(props)
         },
+
         onExit() {
-          mounted = false
-
-          // Destroy tippy.js instance, but only if it has not been destroyed yet (i.e. it was left open).
-          if (!popup.state.isDestroyed) popup.destroy()
-
-          component.destroy()
+          component?.destroy()
+          component = null
         },
       }
     },

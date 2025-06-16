@@ -1,6 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import Mention from '@tiptap/extension-mention'
+import Mention, { type MentionOptions } from '@tiptap/extension-mention'
+import { type Ref } from 'vue'
 
 import buildMentionSuggestion from '#shared/components/Form/fields/FieldEditor/features/suggestions/suggestions.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
@@ -13,7 +14,6 @@ import { useTextModuleSuggestionsLazyQuery } from '../graphql/queries/textModule
 
 import type { FieldEditorProps, MentionTextItem } from '../types.ts'
 import type { CommandProps } from '@tiptap/core'
-import type { Ref } from 'vue'
 
 export const PLUGIN_NAME = 'mentionText'
 const ACTIVATOR = '::'
@@ -65,6 +65,12 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
         ({ chain }: CommandProps) =>
           chain().insertContent(` ${ACTIVATOR}`).run(),
     }),
+    addOptions() {
+      return {
+        ...(this as unknown as { parent: () => MentionOptions }).parent?.(),
+        permission: 'ticket.agent',
+      }
+    },
   }).configure({
     suggestion: buildMentionSuggestion({
       activator: ACTIVATOR,
@@ -72,12 +78,7 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
       insert(item: MentionTextItem) {
         return htmlCleanup(item.renderedContent || '')
       },
-      items: debouncedQuery(async ({ query }) => {
-        if (!query) {
-          return []
-        }
-        return getTextModules(query)
-      }, []),
+      items: debouncedQuery(async ({ query }) => getTextModules(query), [], 200),
     }),
   })
 }

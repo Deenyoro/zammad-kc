@@ -7,7 +7,7 @@ import {
   useNotifications,
   NotificationTypes,
 } from '#shared/components/CommonNotifications/index.ts'
-import { getAiAssistantTextToolsClasses } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/initializeAiAssistantTextTools.ts'
+import { getAiAssistantTextToolsClasses } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/initializeAiAssistantTextToolsClasses.ts'
 import type { FieldEditorProps } from '#shared/components/Form/fields/FieldEditor/types.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
 

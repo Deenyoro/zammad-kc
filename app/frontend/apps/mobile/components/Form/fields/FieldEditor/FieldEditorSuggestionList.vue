@@ -16,6 +16,8 @@ import type { SuggestionKeyDownProps } from '@tiptap/suggestion'
 type PossibleItem = MentionUserItem | MentionKnowledgeBaseItem | MentionTextItem
 
 interface Props {
+  loading?: boolean
+  query: string
   items: PossibleItem[]
   type: MentionType
   command: (item: PossibleItem) => void
@@ -48,8 +50,7 @@ defineExpose({
 
 <template>
   <ul
-    v-if="items.length"
-    class="max-h-64 overflow-auto rounded bg-gray-300 text-white"
+    class="max-h-64 overflow-auto rounded bg-gray-300 text-white z-10"
     :data-test-id="`mention-${type}`"
     role="listbox"
   >
@@ -84,8 +85,22 @@ defineExpose({
         {{ item.email ? `<${item.email}>` : '' }}
       </template>
     </li>
+    <li v-if="!items.length" class="px-6 py-1 text-white">
+      <template v-if="loading">
+        {{ $t('Loading…') }}
+      </template>
+      <template v-else-if="query">
+        {{ $t('No results found') }}
+      </template>
+      <template v-else-if="type === 'knowledge-base'">
+        {{ $t('Start typing to search in Knowledge Base…') }}
+      </template>
+      <template v-else-if="type === 'text'">
+        {{ $t('Start typing to search for text modules…') }}
+      </template>
+      <template v-else-if="type === 'user'">
+        {{ $t('Start typing to search for users…') }}
+      </template>
+    </li>
   </ul>
-  <div v-else class="rounded bg-gray-300 px-6 py-1 text-white">
-    {{ $t('No results found') }}
-  </div>
 </template>

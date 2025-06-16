@@ -1215,6 +1215,8 @@ export type KnowledgeBaseAnswerTranslation = {
   id: Scalars['ID']['output'];
   /** resolver for Rails' belongs_to relationship */
   kbLocale: KnowledgeBaseLocale;
+  /** Specified only for knowledge bases with multiple locales */
+  maybeLocale?: Maybe<Scalars['String']['output']>;
   title: Scalars['String']['output'];
   /** Last update date/time of the record */
   updatedAt: Scalars['ISO8601DateTime']['output'];
@@ -6574,7 +6576,7 @@ export type KnowledgeBaseAnswerSuggestionsQueryVariables = Exact<{
 }>;
 
 
-export type KnowledgeBaseAnswerSuggestionsQuery = { __typename?: 'Queries', knowledgeBaseAnswerSuggestions?: Array<{ __typename?: 'KnowledgeBaseAnswerTranslation', id: string, title: string, categoryTreeTranslation: Array<{ __typename?: 'KnowledgeBaseCategoryTranslation', id: string, title: string }> }> | null };
+export type KnowledgeBaseAnswerSuggestionsQuery = { __typename?: 'Queries', knowledgeBaseAnswerSuggestions?: Array<{ __typename?: 'KnowledgeBaseAnswerTranslation', id: string, title: string, maybeLocale?: string | null, categoryTreeTranslation: Array<{ __typename?: 'KnowledgeBaseCategoryTranslation', id: string, title: string }> }> | null };
 
 export type MentionSuggestionsQueryVariables = Exact<{
   query: Scalars['String']['input'];
@@ -6582,7 +6584,7 @@ export type MentionSuggestionsQueryVariables = Exact<{
 }>;
 
 
-export type MentionSuggestionsQuery = { __typename?: 'Queries', mentionSuggestions?: Array<{ __typename?: 'User', id: string, internalId: number, fullname?: string | null, email?: string | null }> | null };
+export type MentionSuggestionsQuery = { __typename?: 'Queries', mentionSuggestions?: Array<{ __typename?: 'User', id: string, internalId: number, fullname?: string | null, email?: string | null, image?: string | null, vip?: boolean | null, outOfOffice?: boolean | null, outOfOfficeStartAt?: string | null, outOfOfficeEndAt?: string | null, active?: boolean | null }> | null };
 
 export type TextModuleSuggestionsQueryVariables = Exact<{
   query: Scalars['String']['input'];

@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 import CommonTranslateRenderer from '#shared/components/CommonTranslateRenderer/CommonTranslateRenderer.vue'
-import { getAiAssistantTextToolsLoadingBannerClasses } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/initializeAiAssistantTextToolsLoadingBanner.ts'
+import { getAiAssistantTextToolsLoadingBannerClasses } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/initializeAiAssistantTextToolsLoadingBannerClasses.ts'
 import { useAppName } from '#shared/composables/useAppName.ts'
 
 import type { Editor } from '@tiptap/core'

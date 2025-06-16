@@ -5,46 +5,52 @@ import { ref } from 'vue'
 
 import { renderComponent } from '#tests/support/components/index.ts'
 
-import SuggestionsList from '#shared/components/Form/fields/FieldEditor/features/suggestions/SuggestionsList.vue'
+import type {
+  MentionKnowledgeBaseItem,
+  MentionTextItem,
+  MentionUserItem,
+} from '#shared/components/Form/fields/FieldEditor/types.ts'
+import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
-import type { MentionKnowledgeBaseItem, MentionTextItem, MentionUserItem } from '../types.ts'
+import FieldEditorSuggestionList from '../FieldEditorSuggestionList.vue'
 
 describe('component for rendering suggestions', () => {
   it('renders knowledge base article', () => {
     const items: MentionKnowledgeBaseItem[] = [
       {
         __typename: 'KnowledgeBaseAnswerTranslation',
-        id: btoa('Test 1'),
+        id: convertToGraphQLId('KnowledgeBaseAnswerTranslation', 1),
         title: 'Test 1',
         categoryTreeTranslation: [
           {
             __typename: 'KnowledgeBaseCategoryTranslation',
-            id: btoa('Category 1.1'),
+            id: convertToGraphQLId('KnowledgeBaseCategoryTranslation', 1),
             title: 'Category 1.1',
           },
         ],
       },
       {
         __typename: 'KnowledgeBaseAnswerTranslation',
-        id: btoa('Test 2'),
+        id: convertToGraphQLId('KnowledgeBaseAnswerTranslation', 2),
         title: 'Test 2',
         categoryTreeTranslation: [
           {
             __typename: 'KnowledgeBaseCategoryTranslation',
-            id: btoa('Category 2.1'),
+            id: convertToGraphQLId('KnowledgeBaseCategoryTranslation', 2),
             title: 'Category 2.1',
           },
           {
             __typename: 'KnowledgeBaseCategoryTranslation',
-            id: btoa('Category 2.2'),
+            id: convertToGraphQLId('KnowledgeBaseCategoryTranslation', 3),
             title: 'Category 2.2',
           },
         ],
       },
     ]
 
-    const view = renderComponent(SuggestionsList, {
+    const view = renderComponent(FieldEditorSuggestionList, {
       props: {
+        query: 'test',
         items,
         type: 'knowledge-base',
         command: vi.fn(),
@@ -63,12 +69,13 @@ describe('component for rendering suggestions', () => {
         name: 'Text Item',
         keywords: 'key',
         renderedContent: 'content',
-        id: btoa('Text Item'),
+        id: convertToGraphQLId('TextModule', 1),
       },
     ]
 
-    const view = renderComponent(SuggestionsList, {
+    const view = renderComponent(FieldEditorSuggestionList, {
       props: {
+        query: 'text',
         items,
         type: 'text',
         command: vi.fn(),
@@ -81,20 +88,21 @@ describe('component for rendering suggestions', () => {
   it('renders user mention', () => {
     const items: MentionUserItem[] = [
       {
-        id: btoa('John Doe'),
+        id: convertToGraphQLId('User', 1),
         fullname: 'John Doe',
         internalId: 1,
         email: 'john@mail.com',
       },
       {
-        id: btoa('Nicole Braun'),
+        id: convertToGraphQLId('User', 2),
         fullname: 'Nicole Braun',
         internalId: 2,
       },
     ]
 
-    const view = renderComponent(SuggestionsList, {
+    const view = renderComponent(FieldEditorSuggestionList, {
       props: {
+        query: '*',
         items,
         type: 'user',
         command: vi.fn(),
@@ -109,17 +117,17 @@ describe('component for rendering suggestions', () => {
 describe('actions in list', () => {
   const items: MentionUserItem[] = [
     {
-      id: btoa('John Doe'),
+      id: convertToGraphQLId('User', 1),
       fullname: 'John Doe',
       internalId: 1,
     },
     {
-      id: btoa('Nicole Braun'),
+      id: convertToGraphQLId('User', 2),
       fullname: 'Nicole Braun',
       internalId: 2,
     },
     {
-      id: btoa('Erik Wise'),
+      id: convertToGraphQLId('User', 3),
       fullname: 'Erik Wise',
       internalId: 3,
     },
@@ -132,12 +140,13 @@ describe('actions in list', () => {
     const command = vi.fn()
     const view = renderComponent(
       {
-        components: { SuggestionsList },
-        template: `<SuggestionsList v-bind="$props" ref="listExposed" />`,
+        components: { FieldEditorSuggestionList },
+        template: `<FieldEditorSuggestionList v-bind="$props" ref="listExposed" />`,
         setup: () => ({ listExposed }),
       },
       {
         props: {
+          query: '*',
           items,
           type: 'user',
           command,

@@ -23,7 +23,6 @@ import { initializeDesktopVisuals } from '#desktop/initializer/desktopVisuals.ts
 import { initializeDesktopIcons } from '#desktop/initializer/initializeDesktopIcons.ts'
 import { initializeGlobalComponentStyles } from '#desktop/initializer/initializeGlobalComponentStyles.ts'
 import initializeGlobalDirectives from '#desktop/initializer/initializeGlobalDirectives.ts'
-import initializeSharedComponents from '#desktop/initializer/initializeSharedComponents.ts'
 import { ensureAfterAuth } from '#desktop/pages/authentication/after-auth/composable/useAfterAuthPlugins.ts'
 import initializeRouter from '#desktop/router/index.ts'
 import initializeApolloClient from '#desktop/server/apollo/index.ts'
@@ -62,7 +61,6 @@ export const mountApp = async () => {
       normal: { enter: 300, leave: 200 },
     },
   }) // :TODO move this argument to own config?
-  initializeSharedComponents()
 
   const session = useSessionStore()
   const authentication = useAuthenticationStore()
@@ -91,7 +89,7 @@ export const mountApp = async () => {
     await locale.setLocale()
   }
 
-  // sync theme so the store is initialized and user (if exists) and DOM have the same value
+  // sync theme so the store is initialized, and user (if exists) and DOM have the same value
   useThemeStore().syncTheme()
 
   if (VITE_TEST_MODE) {

@@ -45,10 +45,9 @@ RSpec.describe 'Desktop > Ticket > Create', app: :desktop_view, authenticated_as
 
         find('button[aria-label="Add link"]').click
 
-        # Has to be adjusted as soon as we update to new link implementation
-        prompt = page.driver.browser.switch_to.alert
-        prompt.send_keys('https://zammad.com')
-        prompt.accept
+        fill_in 'url', with: 'https://zammad.com'
+
+        click_on 'Add Link'
 
         find_treeselect('Group').search_for_option(another_group.name)
 

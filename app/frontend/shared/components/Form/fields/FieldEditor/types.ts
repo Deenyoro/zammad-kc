@@ -44,6 +44,11 @@ declare module '@tiptap/core' {
       expandText: () => ReturnType
       simplifyText: () => ReturnType
     }
+    link: {
+      toggleLink: (args: { href: string }) => ReturnType // command is set in the library extension
+      openLinkForm: () => ReturnType
+      closeLinkForm: () => ReturnType
+    }
   }
 }
 

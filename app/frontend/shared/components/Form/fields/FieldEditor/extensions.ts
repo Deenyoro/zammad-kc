@@ -15,6 +15,7 @@ import HardBreakPlain from '#shared/components/Form/fields/FieldEditor/extension
 import Image from '#shared/components/Form/fields/FieldEditor/extensions/Image.ts'
 import { IndentExtension } from '#shared/components/Form/fields/FieldEditor/extensions/Indent.ts'
 import KnowledgeBaseSuggestion from '#shared/components/Form/fields/FieldEditor/extensions/KnowledgeBaseSuggestion.ts'
+import Link from '#shared/components/Form/fields/FieldEditor/extensions/Link.ts'
 import Signature from '#shared/components/Form/fields/FieldEditor/extensions/Signature.ts'
 import {
   MarginLeft,
@@ -66,6 +67,7 @@ export const getHtmlExtensions = (): Extensions => [
     blockquote: false,
     paragraph: false,
     codeBlock: false,
+    link: false,
   }),
   Blockquote.extend({
     addAttributes() {
@@ -110,6 +112,7 @@ export const getHtmlExtensions = (): Extensions => [
       allowTableNodeSelection: true,
     },
   }),
+  Link,
   TextStyle,
   UserLink,
 ]

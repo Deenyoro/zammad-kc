@@ -9,7 +9,7 @@ let aiAssistantTextTools = {
   verticalGradient: '',
 }
 
-export const initializeAiAssistantTextTools = (classes: typeof aiAssistantTextTools) => {
+export const initializeAiAssistantTextToolsClasses = (classes: typeof aiAssistantTextTools) => {
   aiAssistantTextTools = classes
 }
 

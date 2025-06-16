@@ -3,6 +3,7 @@
 import { mockApolloClient } from '#cy/utils.ts'
 
 import { TextModuleSuggestionsDocument } from '#shared/components/Form/fields/FieldEditor/graphql/queries/textModule/textModuleSuggestions.api.ts'
+import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import { mountEditor } from './utils.ts'
 
@@ -14,7 +15,7 @@ describe('Testing "text" popup: "::" command', { retries: 2 }, () => {
         textModuleSuggestions: [
           {
             __typename: 'TextModule',
-            id: btoa('ass - Anliegen sichten'),
+            id: convertToGraphQLId('TextModule', '1'),
             name: 'ass - Anliegen sichten',
             keywords: null,
             renderedContent:
@@ -24,7 +25,7 @@ describe('Testing "text" popup: "::" command', { retries: 2 }, () => {
       },
     }))
 
-    mountEditor()
+    mountEditor({}, ['ticket.agent'])
 
     cy.findByRole('textbox').type('::ass')
 

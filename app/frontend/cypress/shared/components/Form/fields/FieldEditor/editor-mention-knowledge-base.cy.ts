@@ -4,6 +4,7 @@ import { mockApolloClient } from '#cy/utils.ts'
 
 import { KnowledgeBaseAnswerSuggestionContentTransformDocument } from '#shared/components/Form/fields/FieldEditor/graphql/mutations/knowledgeBase/suggestion/content/transform.api.ts'
 import { KnowledgeBaseAnswerSuggestionsDocument } from '#shared/components/Form/fields/FieldEditor/graphql/queries/knowledgeBase/answerSuggestions.api.ts'
+import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import { mountEditorWithAttachments } from './utils.ts'
 
@@ -15,12 +16,12 @@ describe('Testing "knowledge base" popup: "??" command', { retries: 2 }, () => {
         knowledgeBaseAnswerSuggestions: [
           {
             __typename: 'KnowledgeBaseAnswer',
-            id: btoa('How to create a ticket?'),
+            id: convertToGraphQLId('KnowledgeBaseAnswer', '1'),
             title: 'How to create a ticket?',
             categoryTreeTranslation: [
               {
                 __typename: 'KnowledgeBaseCategoryTranslation',
-                id: btoa('Category 1'),
+                id: convertToGraphQLId('KnowledgeBaseCategory', '1'),
                 title: 'Category 1',
               },
             ],
@@ -35,7 +36,7 @@ describe('Testing "knowledge base" popup: "??" command', { retries: 2 }, () => {
           body: 'knowledge base answer body',
           attachments: [
             {
-              id: 'gid://zammad/Store/2062',
+              id: convertToGraphQLId('Store', 2062),
               name: 'Zammad.png',
               size: 945213,
               type: 'image/png',
@@ -52,7 +53,7 @@ describe('Testing "knowledge base" popup: "??" command', { retries: 2 }, () => {
       },
     }))
 
-    mountEditorWithAttachments()
+    mountEditorWithAttachments(['ticket.agent'])
 
     cy.findByRole('textbox').type('??How to c') // supports space
 

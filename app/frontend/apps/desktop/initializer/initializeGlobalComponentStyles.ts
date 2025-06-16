@@ -1,8 +1,9 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import { initializeAiAssistantTextToolsLoadingBanner } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/initializeAiAssistantTextToolsLoadingBanner.ts'
-import { initializeAiAssistantTextTools } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/initializeAiAssistantTextTools.ts'
-import { initializeEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/features/color-picker/initializeEditorColorMenu.ts'
+import { initializeAiAssistantTextToolsLoadingBannerClasses } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/initializeAiAssistantTextToolsLoadingBannerClasses.ts'
+import { initializeAiAssistantTextToolsClasses } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/initializeAiAssistantTextToolsClasses.ts'
+import { initializeEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/features/color-picker/initializeEditorColorMenuClasses.ts'
+import { initializeEditorLinkFormClasses } from '#shared/components/Form/fields/FieldEditor/features/link/initializeLinkFormClasses.ts'
 import { initializeAlertClasses } from '#shared/initializer/initializeAlertClasses.ts'
 import { initializeAvatarClasses } from '#shared/initializer/initializeAvatarClasses.ts'
 import { initializeBadgeClasses } from '#shared/initializer/initializeBadgeClasses.ts'
@@ -83,7 +84,20 @@ export const initializeGlobalComponentStyles = () => {
     },
   })
 
-  initializeAiAssistantTextTools({
+  initializeEditorLinkFormClasses({
+    button: {
+      danger:
+        'bg-pink-100 hover:bg-pink-100 dark:bg-red-900 dark:hover:bg-red-900 text-red-500 px-4 py-2.5 rounded-xl focus-visible-app-default hover:outline-1 dark:hover:outline-blue-900 hover:outline-offset-1 hover:outline-blue-600',
+      secondary:
+        'bg-transparent hover:bg-transparent text-blue-800 px-4 py-2.5 rounded-xl focus-visible-app-default hover:outline-1 hover:outline-offset-1 dark:hover:outline-blue-900 hover:outline-blue-600',
+      primary:
+        'bg-blue-800 hover:bg-blue-800 text-white px-4 py-2.5 rounded-xl focus-visible-app-default hover:outline-1 hover:outline-offset-1 dark:hover:outline-blue-900 hover:outline-blue-600',
+    },
+    form: 'rounded-xl min-w-md space-y-4 px-2.5 py-2.5 pb-4 border border-neutral-50 dark:border-gray-900 dark:bg-gray-500 bg-neutral-50',
+    buttonContainer: 'flex gap-4',
+  })
+
+  initializeAiAssistantTextToolsClasses({
     popover: {
       base: 'min-w-[13.5rem] rounded-xl overflow-hidden',
       item: '',
@@ -103,7 +117,7 @@ export const initializeGlobalComponentStyles = () => {
     icon: 'dark:text-neutral-500 text-stone-400',
   })
 
-  initializeAiAssistantTextToolsLoadingBanner({
+  initializeAiAssistantTextToolsLoadingBannerClasses({
     icon: 'text-blue-800',
     label: 'text-black! dark:text-white!',
     button: 'text-blue-800',

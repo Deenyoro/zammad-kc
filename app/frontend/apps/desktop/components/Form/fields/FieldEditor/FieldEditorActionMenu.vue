@@ -172,7 +172,7 @@ defineExpose({ close })
         </li>
       </template>
     </CommonPopoverMenu>
-    <component :is="actions" v-else :editor="editor" />
+    <component :is="actions" v-else :editor="editor" @close="$emit('close-popover')" />
   </CommonPopover>
   <slot :target-id="targetId" :is-open="isOpen" />
 </template>
