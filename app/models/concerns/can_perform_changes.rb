@@ -145,7 +145,7 @@ module CanPerformChanges
   end
 
   def notification_action(object_name, object_key, action_value, _prepared_actions)
-    return if !object_name.eql?('notification')
+    return if object_name != 'notification'
 
     { name: :"notification_#{object_key}", value: action_value }
   end

@@ -11,7 +11,7 @@ class PerformChanges::Action
   end
 
   def self.phase
-    :before_save
+    raise 'not implemented'
   end
 
   def initialize(record, execution_data, perform_changes_data)

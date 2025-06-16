@@ -1,23 +1,42 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class PerformChanges::Action::AttributeUpdates < PerformChanges::Action
+  def self.phase
+    :before_save
+  end
+
   def execute(...)
     valid_attributes!
 
-    execution_data.each do |key, value|
-      next if key.eql?('subscribe') && subscribe(value)
-      next if key.eql?('unsubscribe') && unsubscribe(value)
-      next if key.eql?('tags') && tags(value)
-      next if change_date(key, value, performable)
-
-      exchange_user_id(value)
-      template_value(value)
-
-      update_key(key, value['value'])
+    execution_data.reduce(false) do |result, (key, value)|
+      needs_saving = single_execution_block(key, value)
+      result || needs_saving
     end
   end
 
   private
+
+  def single_execution_block(key, value)
+    case key
+    when 'subscribe'
+      subscribe(value)
+    when 'unsubscribe'
+      unsubscribe(value)
+    when 'tags'
+      tags(value)
+    else
+      change_date(key, value, performable) || change_attribute(key, value)
+    end
+  end
+
+  def change_attribute(key, value)
+    exchange_user_id(value)
+    template_value(value)
+
+    update_key(key, value['value'])
+
+    true
+  end
 
   def valid_attributes!
     raise "The given #{origin} contains invalid attributes, stopping!" if execution_data.keys.any? { |key| !attribute_valid?(key) }
@@ -51,7 +70,7 @@ class PerformChanges::Action::AttributeUpdates < PerformChanges::Action
       record.send(:"tag_#{operator}", tag, user_id || 1, sourceable: performable)
     end
 
-    true
+    nil
   end
 
   def tags_operator(value)
@@ -69,9 +88,11 @@ class PerformChanges::Action::AttributeUpdates < PerformChanges::Action
     user = value['pre_condition'] == 'specific' ? User.find_by(id: value['value']) : User.find_by(id: user_id)
 
     # Ignore it for non-agent users.
-    return true if !Mention.mentionable?(record, user)
+    return if !Mention.mentionable?(record, user)
 
     Mention.subscribe! record, user, sourceable: performable
+
+    nil
   end
 
   def unsubscribe(value)
@@ -82,6 +103,8 @@ class PerformChanges::Action::AttributeUpdates < PerformChanges::Action
     else
       Mention.unsubscribe! record, User.find_by(id: user_id), sourceable: performable
     end
+
+    nil
   end
 
   def exchange_user_id(value)

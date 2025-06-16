@@ -157,7 +157,7 @@ RSpec.describe 'Ticket::PerformChanges', :aggregate_failures do
     end
   end
 
-  context 'with tags in "perform" hash' do
+  context 'with tags in "perform" hash', performs_jobs: true do
     let(:user) { create(:agent, groups: [group]) }
 
     let(:perform) do
@@ -169,9 +169,28 @@ RSpec.describe 'Ticket::PerformChanges', :aggregate_failures do
     context 'with add' do
       let(:tag_operator) { 'add' }
 
+      before do
+        Transaction.execute do
+          object
+        end
+
+        perform_enqueued_jobs
+      end
+
       it 'adds the tags' do
         expect { object.perform_changes(performable, 'trigger', object, user.id) }
           .to change { object.reload.tag_list }.to(%w[tag1 tag2])
+      end
+
+      it 'schedules a search index update job' do
+        allow(SearchIndexBackend).to receive(:enabled?).and_return(true)
+
+        expect do
+          Transaction.execute do
+            object.perform_changes(performable, 'trigger')
+          end
+        end
+          .to have_enqueued_job(SearchIndexJob).with('Ticket', object.id)
       end
     end
 
@@ -179,12 +198,28 @@ RSpec.describe 'Ticket::PerformChanges', :aggregate_failures do
       let(:tag_operator) { 'remove' }
 
       before do
-        %w[tag1 tag2].each { |tag| object.tag_add(tag, 1) }
+        Transaction.execute do
+          object
+          %w[tag1 tag2].each { |tag| object.tag_add(tag, 1) }
+        end
+
+        perform_enqueued_jobs
       end
 
       it 'removes the tags' do
         expect { object.perform_changes(performable, 'trigger', object, user.id) }
           .to change { object.reload.tag_list }.to([])
+      end
+
+      it 'schedules a search index update job' do
+        allow(SearchIndexBackend).to receive(:enabled?).and_return(true)
+
+        expect do
+          Transaction.execute do
+            object.perform_changes(performable, 'trigger', object, user.id)
+          end
+        end
+          .to have_enqueued_job(SearchIndexJob).with('Ticket', object.id)
       end
     end
   end
