@@ -7,14 +7,14 @@
       .new(current_user: @current_user, context_data: { article: article })
       .execute
       .content %>
-    <% next if result['body'].blank? %>
+    <% next if result.blank? %>
   <% else %>
-    <% result = { 'body' => article.body_as_text } %>
+    <% result = article.body_as_text %>
   <% end %>
 <article>
   <sender><%= article.sender.name %></sender>
   <sender_name><%= User.find(article.origin_by_id || article.created_by_id).fullname %></sender_name>
   <visibility><%= article.internal ? 'internal' : 'public' %></visibility>
-  <text><%= result['body'] %></text>
+  <text><%= result %></text>
 </article>
 <% end %>

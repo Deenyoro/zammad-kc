@@ -23,4 +23,9 @@ class AI::Service::EmailRemoveQuote < AI::Service
   def persistable?
     true
   end
+
+  def json_response?
+    false
+  end
+
 end
