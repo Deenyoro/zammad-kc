@@ -286,7 +286,6 @@ const classes = getFieldEditorClasses()
         v-if="editor && hasTableExtension"
         :editor="editor"
         :content-type="contentType"
-        :form-id="context.formId"
       />
     </div>
 
