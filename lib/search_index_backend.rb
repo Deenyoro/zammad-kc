@@ -5,6 +5,19 @@ class SearchIndexBackend
   SUPPORTED_ES_VERSION_MINIMUM   = '7.8'.freeze
   SUPPORTED_ES_VERSION_LESS_THAN = '9'.freeze
 
+  STORE_NAMES           = %w[preferences data].freeze
+  STORE_NAMES_PER_MODEL = {
+    CoreWorkflow     => %w[condition_selected condition_saved perform],
+    Job              => %w[condition perform timeplan],
+    Macro            => %w[perform],
+    Overview         => %w[condition view order],
+    PostmasterFilter => %w[perform match],
+    Report::Profile  => %w[condition],
+    Sla              => %w[condition],
+    Template         => %w[options],
+    Trigger          => %w[condition perform],
+  }.freeze
+
 =begin
 
 info about used search index machine
@@ -872,15 +885,13 @@ helper method for making HTTP calls and raising error if response was not succes
       properties: {}
     }
 
-    store_columns = %w[preferences data condition condition_selected condition_saved perform options view order match timeplan]
-
     # for elasticsearch 6.x and later
     string_type = 'text'
     string_raw  = { type: 'keyword', ignore_above: 5012 }
     boolean_raw = { type: 'boolean' }
 
     object.columns_hash.each do |key, value|
-      if store_columns.include?(key)
+      if STORE_NAMES.include?(key) || Array.wrap(STORE_NAMES_PER_MODEL[object]).include?(key)
         result[:properties][key] = {
           type: 'flattened',
         }

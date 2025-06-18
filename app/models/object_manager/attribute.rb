@@ -62,6 +62,8 @@ class ObjectManager::Attribute < ApplicationModel
     action
     scope
     constructor
+    preferences
+    data
   ].freeze
 
   RESERVED_NAMES_PER_MODEL = {
