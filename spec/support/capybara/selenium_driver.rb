@@ -27,8 +27,6 @@ end
 # https://github.com/teamcapybara/capybara/issues/2779
 Selenium::WebDriver.logger.ignore(:clear_local_storage, :clear_session_storage)
 
-private
-
 def build_chrome_driver(app, user_agent: nil)
 
   # Turn on browser logs
