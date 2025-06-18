@@ -23,9 +23,9 @@ module Integration::ImportJobBase
 
   def job_start_create
     if !ImportJob.exists?(name: backend, finished_at: nil)
-      job = ImportJob.create(name: backend)
-      AsyncImportJob.perform_later(job)
+      ImportJob.create!(name: backend, start_after_creation: true)
     end
+
     render json: {
       result: 'ok',
     }

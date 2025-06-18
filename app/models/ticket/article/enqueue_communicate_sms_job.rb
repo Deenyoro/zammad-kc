@@ -5,7 +5,7 @@ module Ticket::Article::EnqueueCommunicateSmsJob
   extend ActiveSupport::Concern
 
   included do
-    after_create :ticket_article_enqueue_communicate_sms_job
+    after_create_commit :ticket_article_enqueue_communicate_sms_job
   end
 
   private

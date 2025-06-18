@@ -13,6 +13,7 @@ class Ticket::Article < ApplicationModel
   include HasObjectManagerAttributes
 
   include Ticket::Article::Assets
+  include Ticket::Article::PreserveContextAfterTransaction
   include Ticket::Article::EnqueueCommunicateEmailJob
   include Ticket::Article::EnqueueCommunicateFacebookJob
   include Ticket::Article::EnqueueCommunicateSmsJob

@@ -5,7 +5,7 @@ module Ticket::Article::EnqueueCommunicateTelegramJob
   extend ActiveSupport::Concern
 
   included do
-    after_create :ticket_article_enqueue_communicate_telegram_job
+    after_create_commit :ticket_article_enqueue_communicate_telegram_job
   end
 
   private

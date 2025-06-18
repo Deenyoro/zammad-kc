@@ -48,7 +48,9 @@ class TransactionDispatcher
         end
 
         # execute async backends
-        TransactionJob.perform_later(item, params)
+        ApplicationModel.current_transaction.after_commit do
+          TransactionJob.perform_later(item, params)
+        end
       end
     end
   end

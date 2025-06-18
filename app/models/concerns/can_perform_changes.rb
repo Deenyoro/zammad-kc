@@ -9,7 +9,7 @@
 # It's also possible to run a `pre_execution` for a specifc model, to prepare special data for the actions (e.g. fetch
 # the article in the ticket context, when a `article_id` is present inside the `context_data`).
 #
-# The actions can run in different phases: `initial`, `before_save`, `after_save`. The initial phase could
+# The actions can run in different phases: `initial`, `before_save`, `after_save`, `after_commit`. The initial phase could
 # also manipulate the actions for the other phases (e.g. the delete action will skip the attribute updates).
 #
 # In the ticket context you can see how it's possible to add custom model actions and also to extend the
@@ -98,6 +98,10 @@ module CanPerformChanges
 
     prepared_actions[:after_save]&.each(&:execute)
 
+    ApplicationModel.current_transaction.after_commit do
+      prepared_actions[:after_commit]&.each(&:execute)
+    end
+
     true
   end
 
@@ -130,9 +134,10 @@ module CanPerformChanges
     end
 
     prepared_actions = {
-      initial:     [],
-      before_save: [],
-      after_save:  [],
+      initial:      [],
+      before_save:  [],
+      after_save:   [],
+      after_commit: [],
     }
 
     actions.each do |action, value|

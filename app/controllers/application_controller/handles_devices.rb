@@ -60,6 +60,8 @@ module ApplicationController::HandlesDevices
 
     # add device if needed
     http_user_agent = ENV['HTTP_USER_AGENT'] || request.env['HTTP_USER_AGENT']
+
+    # This job has to be performed wether the transaction was successful or not.
     UserDeviceLogJob.perform_later(
       http_user_agent,
       remote_ip,

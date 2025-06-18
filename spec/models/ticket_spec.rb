@@ -19,7 +19,7 @@ require 'models/ticket/sets_close_time_examples'
 require 'models/ticket/sets_last_owner_update_time_examples'
 
 RSpec.describe Ticket, type: :model do
-  subject(:ticket) { create(:ticket) }
+  subject(:ticket) { create(:ticket).tap { TransactionDispatcher.commit } }
 
   it_behaves_like 'ApplicationModel', can_param: { sample_data_attribute: :title }
   it_behaves_like 'CanBeImported'
@@ -102,7 +102,7 @@ RSpec.describe Ticket, type: :model do
 
   describe 'Instance methods:' do
     describe '#merge_to' do
-      let(:target_ticket) { create(:ticket) }
+      let(:target_ticket) { create(:ticket).tap { TransactionDispatcher.commit } }
 
       context 'when source ticket has Links' do
         let(:linked_tickets) { create_list(:ticket, 3) }

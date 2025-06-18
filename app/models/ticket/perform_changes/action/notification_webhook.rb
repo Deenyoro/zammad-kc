@@ -3,7 +3,7 @@
 class Ticket::PerformChanges::Action::NotificationWebhook < Ticket::PerformChanges::Action
 
   def self.phase
-    :after_save
+    :after_commit
   end
 
   def execute(...)

@@ -115,7 +115,9 @@ class ImportOtrsController < ApplicationController
     end
 
     # start migration
-    AsyncOtrsImportJob.perform_later
+    ApplicationModel.current_transaction.after_commit do
+      AsyncOtrsImportJob.perform_later
+    end
 
     render json: {
       result: 'ok',

@@ -5,7 +5,7 @@ module Ticket::Article::EnqueueCommunicateTwitterJob
   extend ActiveSupport::Concern
 
   included do
-    after_create :ticket_article_enqueue_communicate_twitter_job
+    after_create_commit :ticket_article_enqueue_communicate_twitter_job
   end
 
   private
@@ -17,7 +17,7 @@ module Ticket::Article::EnqueueCommunicateTwitterJob
 
     # only do send email if article got created via application_server (e. g. not
     # if article and sender type is set via *.postmaster)
-    return true if ApplicationHandleInfo.postmaster?
+    return true if application_handle_info_postmaster
 
     # if sender is customer, do not communicate
     return true if !sender_id

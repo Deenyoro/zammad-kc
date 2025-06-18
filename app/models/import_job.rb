@@ -9,6 +9,10 @@ class ImportJob < ApplicationModel
   default_scope { order(started_at: :desc, id: :desc) }
   scope :running, -> { where(finished_at: nil, dry_run: false).where.not(started_at: nil) }
 
+  attr_accessor :start_after_creation
+
+  after_create_commit :enqueue_background_job, if: :start_after_creation
+
   # Starts the import backend class based on the name attribute.
   # Import backend class is initialized with the current instance.
   # Logs the start and end time (if ended successfully) and logs
@@ -77,13 +81,18 @@ class ImportJob < ApplicationModel
     return if exists?(name: params[:name], dry_run: true, finished_at: nil)
 
     params[:dry_run] = true
-    job = create(params.except(:delay))
 
-    if params.fetch(:delay, true)
-      AsyncImportJob.perform_later(job)
-    else
-      job.start
+    delay = params.fetch(:delay, true)
+
+    if delay
+      params[:start_after_creation] = true
     end
+
+    job = create!(params.except(:delay))
+
+    return if delay
+
+    job.start
   end
 
   # Queues and starts all import backends as import jobs.
@@ -190,5 +199,9 @@ class ImportJob < ApplicationModel
           )
         end
     end
+  end
+
+  def enqueue_background_job
+    AsyncImportJob.perform_later(self)
   end
 end

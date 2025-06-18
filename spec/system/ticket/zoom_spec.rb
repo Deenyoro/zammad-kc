@@ -1459,8 +1459,8 @@ RSpec.describe 'Ticket zoom', type: :system do
     let(:received_merge_trigger) { create(:trigger, :conditionable, condition_ticket_action: :received_merge) }
     let(:update_trigger)         { create(:trigger, :conditionable, condition_ticket_action: :update) }
 
-    let(:ticket)                 { create(:ticket) }
-    let(:target_ticket)          { create(:ticket) }
+    let(:ticket)                 { create(:ticket).tap { TransactionDispatcher.commit } }
+    let(:target_ticket)          { create(:ticket).tap { TransactionDispatcher.commit } }
 
     let(:user)                   { create(:agent, :preferencable, notification_group_ids: [ticket, target_ticket].map(&:group_id), groups: [ticket, target_ticket].map(&:group)) }
 

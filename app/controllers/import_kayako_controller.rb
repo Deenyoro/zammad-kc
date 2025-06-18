@@ -53,8 +53,7 @@ class ImportKayakoController < ApplicationController
     Setting.set('import_mode', true)
     Setting.set('import_backend', 'kayako')
 
-    job = ImportJob.create(name: 'Import::Kayako')
-    AsyncImportJob.perform_later(job)
+    ImportJob.create!(name: 'Import::Kayako', start_after_creation: true)
 
     render json: {
       result: 'ok',

@@ -5,8 +5,7 @@ module Ticket::SetsOnlineNotificationSeen
   extend ActiveSupport::Concern
 
   included do
-    after_create  :ticket_set_online_notification_seen
-    after_update  :ticket_set_online_notification_seen
+    after_save_commit :ticket_set_online_notification_seen
   end
 
   private

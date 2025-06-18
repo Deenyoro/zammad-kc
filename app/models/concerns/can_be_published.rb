@@ -26,7 +26,8 @@ module CanBePublished
     validate    :archived_after_published
     validate    :published_after_internal
     before_save :update_user_references
-    after_save  :schedule_touch
+
+    after_save_commit :schedule_touch
 
     after_save    :update_active_publicly
     after_destroy :update_active_publicly

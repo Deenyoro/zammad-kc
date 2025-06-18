@@ -99,8 +99,7 @@ class ImportZendeskController < ApplicationController
     Setting.set('import_mode', true)
     Setting.set('import_backend', 'zendesk')
 
-    job = ImportJob.create(name: 'Import::Zendesk')
-    AsyncImportJob.perform_later(job)
+    ImportJob.create!(name: 'Import::Zendesk', start_after_creation: true)
 
     render json: {
       result: 'ok',

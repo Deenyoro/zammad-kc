@@ -87,8 +87,7 @@ class ImportFreshdeskController < ApplicationController
     Setting.set('import_mode', true)
     Setting.set('import_backend', 'freshdesk')
 
-    job = ImportJob.create(name: 'Import::Freshdesk')
-    AsyncImportJob.perform_later(job)
+    ImportJob.create!(name: 'Import::Freshdesk', start_after_creation: true)
 
     render json: {
       result: 'ok',
