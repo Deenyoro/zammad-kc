@@ -1,5 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import { computed } from 'vue'
+
 import { convertInlineImages } from '#shared/components/Form/fields/FieldEditor/utils.ts'
 import { getNodeByName } from '#shared/components/Form/utils.ts'
 import log from '#shared/utils/log.ts'
@@ -12,7 +14,9 @@ interface LoadImagesOptions {
 }
 
 export const useAttachments = (extensions: Extensions, formId: string) => {
-  const hasImageExtension = extensions.some((extension) => extension.name === 'image')
+  const hasImageExtension = computed(() => {
+    return extensions.some((extension) => extension.name === 'image')
+  })
 
   const inlineImagesInEditor = (editor: Editor, files: File[]) => {
     convertInlineImages(files, editor.view.dom).then(async (urls) => {

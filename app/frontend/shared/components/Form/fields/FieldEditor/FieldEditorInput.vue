@@ -54,17 +54,24 @@ if (isPlainText.value) {
   disabledPlugins.push(userMentionPluginName, 'image')
 }
 
-const editorExtensions = isPlainText.value ? getPlainExtensions() : getHtmlExtensions()
+const editorExtensions = computed(() => {
+  return isPlainText.value ? getPlainExtensions() : getHtmlExtensions()
+})
 
 const showActionBar = ref(false)
 const editorValue = ref<string>(VITE_TEST_MODE ? props.context._value : '')
 
-const { hasImageExtension, loadFiles } = useAttachments(editorExtensions, props.context.formId)
+const { hasImageExtension, loadFiles } = useAttachments(
+  editorExtensions.value,
+  props.context.formId,
+)
 
-const hasTableExtension = editorExtensions.some((ext) => ext.name === 'tableKit')
+const hasTableExtension = computed(() => {
+  return editorExtensions.value.some((ext) => ext.name === 'tableKit')
+})
 
 const editor = useEditor({
-  extensions: editorExtensions,
+  extensions: editorExtensions.value,
   editorProps: {
     attributes: {
       role: 'textbox',
@@ -76,7 +83,7 @@ const editor = useEditor({
     },
     // add inlined files
     handlePaste(view, event) {
-      if (!hasImageExtension) return
+      if (!hasImageExtension.value) return
 
       const items = Array.from(event.clipboardData?.items || [])
       for (const item of items) {
@@ -101,7 +108,7 @@ const editor = useEditor({
       return false
     },
     handleDrop(view, event) {
-      if (!hasImageExtension) return
+      if (!hasImageExtension.value) return
 
       const e = event as unknown as InputEvent
       const files = e.dataTransfer?.files || null
@@ -142,7 +149,7 @@ getCustomExtensions(reactiveContext, editor as ShallowRef<Editor>).forEach((exte
   if (disabledPlugins.includes(extension.name as EditorCustomPlugins)) return
   if ('permission' in extension.options && !hasPermission(extension.options.permission)) return
 
-  editorExtensions.push(extension)
+  editorExtensions.value.push(extension)
 })
 
 if (VITE_TEST_MODE) {

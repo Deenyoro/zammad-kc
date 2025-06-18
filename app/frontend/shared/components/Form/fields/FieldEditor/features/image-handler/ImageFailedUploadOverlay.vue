@@ -1,15 +1,17 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-defineProps<{
+interface Props {
   width: string
   height: string
-}>()
+}
+
+defineProps<Props>()
 </script>
 
 <template>
   <div
-    class="bg-opacity-70 absolute inset-0 flex items-center justify-center bg-black"
+    class="absolute inset-0 flex items-center justify-center bg-black"
     :style="{
       width: width,
       height: height,

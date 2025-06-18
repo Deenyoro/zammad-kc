@@ -7,9 +7,11 @@ import DraggableResizable from 'vue3-draggable-resizable'
 import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
 
 import { useImageUpload } from '#shared/components/Form/fields/FieldEditor/features/image-handler/useImageUpload.ts'
+import { blobToBase64 } from '#shared/utils/files.ts'
 import testFlags from '#shared/utils/testFlags.ts'
 
 import ImageFailedUploadOverlay from './ImageFailedUploadOverlay.vue'
+import ImageUploadInsideOtherEditor from './ImageUploadInsideOtherEditor.vue'
 
 // eslint-disable-next-line vue/prop-name-casing
 const props = defineProps<NodeViewProps>()
@@ -25,6 +27,9 @@ const isResizing = ref(false)
 const imageLoaded = ref(false)
 const isDraggable = computed(() => props.node.attrs.isDraggable)
 const uploadCacheExists = computed(() => props.node.attrs.src.startsWith('/api/v1/attachments/'))
+const uploadInsideOtherEditor = computed(
+  () => props.node.attrs.src.startsWith('blob:') && !props.node.attrs.content,
+)
 const uploadFailed = ref(false)
 const src = computed(() => props.node.attrs.src)
 
@@ -35,7 +40,17 @@ const getNodeStyle = () =>
     return acc
   }, {})
 
-if (!props.node.attrs.src.startsWith('/api/v1/attachments/')) {
+const handleUpload = () => {
+  if (props.node.attrs.src.startsWith('/api/v1/attachments/')) return
+  if (props.node.attrs.src.startsWith('blob:') && !props.node.attrs.content) return
+
+  if (props.node.attrs.src.startsWith('file:')) {
+    uploadFailed.value = true
+    nextTick(() => testFlags.set('editor.inlineImagesFailure'))
+
+    return
+  }
+
   const { uploadImage } = useImageUpload(
     editorAttributes.value['data-form-id'] as string,
     editorAttributes.value.name as string,
@@ -47,36 +62,89 @@ if (!props.node.attrs.src.startsWith('/api/v1/attachments/')) {
   const width = style?.width ? parseFloat(style.width) : undefined
   const height = style?.height ? parseFloat(style.height) : undefined
 
-  uploadImage(
-    [
-      {
-        name: props.node.attrs.alt || 'untitled',
-        type: props.node.attrs.type || props.node.attrs.src?.match(/^data:(.+);base64/)?.at(1),
-        content: props.node.attrs.content || props.node.attrs.src,
+  if (src.value.startsWith('http')) {
+    fetch(src.value)
+      .then((response) => response.blob())
+      .then(async (blob) => {
+        blobToBase64(blob).then((base64) => {
+          // Update the node attributes with the base64 content.
+          props.updateAttributes({
+            src: URL.createObjectURL(blob),
+            width,
+            height,
+            content: null,
+          })
+
+          uploadImage(
+            [
+              {
+                name: props.node.attrs.alt || 'untitled',
+                type: props.node.attrs.type || base64.match(/^data:(.+);base64/)?.at(1),
+                content: base64,
+              },
+            ],
+            (files) => {
+              // Remember the preview src before updating the src in the node.
+              const previewSrc = props.node.attrs.src
+
+              props.updateAttributes({
+                src: files[0].src,
+                width,
+                height,
+                content: null,
+              })
+
+              nextTick(() => {
+                URL.revokeObjectURL(previewSrc)
+                testFlags.set('editor.inlineImagesLoaded')
+              })
+            },
+          ).catch(() => {
+            uploadFailed.value = true
+
+            nextTick(() => testFlags.set('editor.inlineImagesFailure'))
+          })
+        })
+      })
+      .catch(() => {
+        uploadFailed.value = true
+
+        nextTick(() => testFlags.set('editor.inlineImagesFailure'))
+      })
+  } else {
+    uploadImage(
+      [
+        {
+          name: props.node.attrs.alt || 'untitled',
+          type: props.node.attrs.type || props.node.attrs.src?.match(/^data:(.+);base64/)?.at(1),
+          content: props.node.attrs.content || props.node.attrs.src,
+        },
+      ],
+      (files) => {
+        // Remember the preview src before updating the src in the node.
+        const previewSrc = props.node.attrs.src
+
+        props.updateAttributes({
+          src: files[0].src,
+          width,
+          height,
+          content: null,
+        })
+
+        nextTick(() => {
+          URL.revokeObjectURL(previewSrc)
+          testFlags.set('editor.inlineImagesLoaded')
+        })
       },
-    ],
-    (files) => {
-      // Remember the preview src before updating the src in the node.
-      const previewSrc = props.node.attrs.src
+    ).catch(() => {
+      uploadFailed.value = true
 
-      props.updateAttributes({
-        src: files[0].src,
-        width,
-        height,
-        content: null,
-      })
-
-      nextTick(() => {
-        URL.revokeObjectURL(previewSrc)
-        testFlags.set('editor.inlineImagesLoaded')
-      })
-    },
-  ).catch(() => {
-    uploadFailed.value = true
-
-    nextTick(() => testFlags.set('editor.inlineImagesFailure'))
-  })
+      nextTick(() => testFlags.set('editor.inlineImagesFailure'))
+    })
+  }
 }
+
+handleUpload()
 
 const dimensions = reactive({
   maxWidth: 0,
@@ -136,11 +204,12 @@ const wrapperStyle = computed(() => {
     class="relative inline-block"
     :style="wrapperStyle"
     :class="{
-      'opacity-50': !uploadCacheExists,
+      'opacity-50': !uploadCacheExists || uploadInsideOtherEditor,
     }"
   >
+    <ImageUploadInsideOtherEditor v-if="uploadInsideOtherEditor" />
     <button
-      v-if="!isResizing && src"
+      v-else-if="!isResizing && src"
       class="relative inline-block"
       :disabled="uploadFailed"
       @click="isResizing = true"
@@ -152,6 +221,7 @@ const wrapperStyle = computed(() => {
         :width="`${isResized ? `${dimensions.width}px` : '100%'}`"
         :height="`${isResized ? `${dimensions.height}px` : 'auto'}`"
       />
+
       <img
         class="inline-block"
         :style="style"

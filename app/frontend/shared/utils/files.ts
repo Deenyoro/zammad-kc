@@ -190,37 +190,6 @@ export const convertFileList = async (
   return readFiles.filter((file) => file.content)
 }
 
-export const loadImageIntoBase64 = async (
-  src: string,
-  type?: string,
-  alt?: string,
-): Promise<string | null> => {
-  const img = new Image()
-  img.crossOrigin = 'anonymous'
-  const promise = new Promise<string | null>((resolve) => {
-    img.onload = () => {
-      const canvas = document.createElement('canvas')
-      canvas.width = img.width
-      canvas.height = img.height
-      const ctx = canvas.getContext('2d')
-      ctx?.drawImage(img, 0, 0, img.width, img.height)
-      const mime = type || (img.alt?.match(/\.(jpe?g)$/i) ? 'image/jpeg' : 'image/png')
-      try {
-        const base64 = canvas.toDataURL(mime)
-        resolve(base64)
-      } catch {
-        resolve(null)
-      }
-    }
-    img.onerror = () => {
-      resolve(null)
-    }
-  })
-  img.alt = alt || ''
-  img.src = src
-  return promise
-}
-
 export const canDownloadFile = (type?: Maybe<string>) => {
   return Boolean(type && type !== 'text/html')
 }
