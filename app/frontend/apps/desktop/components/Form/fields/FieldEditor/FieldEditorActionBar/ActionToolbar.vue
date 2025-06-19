@@ -9,7 +9,7 @@ import type { EditorButton } from '#shared/components/Form/fields/FieldEditor/ty
 import { useTraverseOptions } from '#shared/composables/useTraverseOptions.ts'
 import stopEvent from '#shared/utils/events.ts'
 
-import type { ExtendedEditorButton } from '#desktop/components/Form/fields/FieldEditor/FieldEditorActionBar/types.ts'
+import ActionButtonWrapper from '#desktop/components/Form/fields/FieldEditor/FieldEditorActionBar/ActionButtonWrapper.vue'
 import useEditorActions from '#desktop/components/Form/fields/FieldEditor/useEditorActions.ts'
 
 import ActionButton from './ActionButton.vue'
@@ -23,8 +23,9 @@ interface Props {
   isActive?: (type: string, attributes?: Record<string, unknown>) => boolean
 }
 
-const actionBar = useTemplateRef('action-bar')
-const actionButtons = useTemplateRef('action-button')
+// Doesn't pick up the types for some reason, verify again if resolved after an update
+const actionBar = useTemplateRef<HTMLDivElement>('action-bar')
+const actionButtons = useTemplateRef<Array<InstanceType<typeof ActionButton>>>('action-button')
 
 useIntersectionObserver(
   actionBar,
@@ -84,21 +85,13 @@ const visibleActions = ref<Map<string, boolean>>(new Map())
 const editorActions = useEditorActions(toRef(props, 'editor'), 'text/html', [])
 
 const invisibleActions = computed(() =>
-  Array.from(visibleActions.value.entries()).reduce<ExtendedEditorButton[]>(
-    (acc, [actionName, isVisible]) => {
-      if (!isVisible) {
-        const action = editorActions.actions.value.find((action) => action.name === actionName)
-        if (action)
-          acc.push({
-            ...action,
-            key: action.name,
-            noCloseOnClick: !!action.subMenu,
-          })
-      }
-      return acc
-    },
-    [],
-  ),
+  editorActions.actions.value
+    .filter((action) => visibleActions.value.get(action.name) === false)
+    .map((action) => ({
+      ...action,
+      key: action.name,
+      noCloseOnClick: !!action.subMenu,
+    })),
 )
 
 const activeActionWithSubmenu = shallowRef<EditorButton['subMenu'] | null>(null)
@@ -126,28 +119,41 @@ const handleOverlowMenuItemClick = async (action: EditorButton, event: MouseEven
     role="toolbar"
   >
     <div class="flex h-10.5 flex-wrap gap-1.5 overflow-hidden py-2 ps-2.5 pe-0.5">
-      <template v-for="(action, idx) in actions" :key="action.name">
-        <ActionButton
-          ref="action-button"
-          :action="action"
-          :action-bar="actionBar"
-          :editor="editor"
-          :is-active="isActive"
-          @click="
-            (event: MouseEvent) => {
-              action.command?.(event)
-              $emit('click-action', action, event)
-            }
-          "
-          @visible="visibleActions.set(action.name, $event)"
-        />
-        <div v-if="action.showDivider && idx < actions.length - 1">
-          <hr
-            :class="action.dividerClass"
-            class="h-full w-px border-0 bg-neutral-700 dark:bg-neutral-800"
+      <ActionButtonWrapper
+        v-for="(action, index) in actions"
+        :key="action.name"
+        :invisible-actions="invisibleActions"
+        :actions="actions"
+        :index="index"
+      >
+        <template #default="{ hideDivider }">
+          <ActionButton
+            ref="action-button"
+            :action="action"
+            :action-bar="actionBar"
+            :editor="editor"
+            :is-active="isActive"
+            @click="
+              (event: MouseEvent) => {
+                action.command?.(event)
+                $emit('click-action', action, event)
+              }
+            "
+            @visible="visibleActions.set(action.name, $event)"
           />
-        </div>
-      </template>
+          <div v-if="action.showDivider">
+            <hr
+              :class="[
+                action.dividerClass,
+                {
+                  invisible: hideDivider,
+                },
+              ]"
+              class="h-full w-px border-0 bg-neutral-700 dark:bg-neutral-800"
+            />
+          </div>
+        </template>
+      </ActionButtonWrapper>
     </div>
     <div v-if="invisibleActions.length" class="flex gap-1.5 px-2.5 py-2">
       <FieldEditorActionMenu
