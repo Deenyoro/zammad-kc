@@ -234,8 +234,9 @@ const wrapperStyle = computed(() => {
         @load="onLoadImage"
       />
     </button>
+    <!--  Resizing can only battle tested in production mode  -->
     <DraggableResizable
-      v-else-if="src"
+      v-else-if="src && !uploadFailed"
       v-model:active="isResizing"
       :h="dimensions.height"
       :w="dimensions.width"
@@ -243,10 +244,15 @@ const wrapperStyle = computed(() => {
       :draggable="false"
       lock-aspect-ratio
       parent
-      class="!relative !inline-block"
+      class="relative! inline-block!"
       @resize-end="stopResizing"
     >
-      <img class="inline-block" :alt="$t('Resize frame')" :src="src" :draggable="isDraggable" />
+      <img
+        class="block w-full h-full"
+        :alt="$t('Resize frame')"
+        :src="src"
+        :draggable="isDraggable"
+      />
     </DraggableResizable>
   </NodeViewWrapper>
 </template>

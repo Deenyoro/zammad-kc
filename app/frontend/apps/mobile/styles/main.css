@@ -118,8 +118,20 @@
       outline: none;
     }
 
+    p {
+      @apply my-2;
+    }
+
     blockquote {
-      @apply border-l-4 border-l-gray-200 px-3 py-2;
+      @apply border-l-5 border-l-gray-300 px-3 py-2;
+
+      .Agent & {
+        @apply border-l-gray-100;
+      }
+
+      .Customer & {
+        @apply border-l-blue-dark;
+      }
     }
 
     ol {
@@ -156,6 +168,10 @@
 
     a {
       @apply text-blue;
+
+      .Customer & {
+        @apply text-black underline;
+      }
     }
 
     [dir='rtl'] {
@@ -166,8 +182,61 @@
       text-align: left;
     }
 
+    pre {
+      @apply bg-black-full/20 rounded-md my-2 p-2.5;
+
+      code {
+        @apply bg-transparent p-0;
+      }
+    }
+
+    code {
+      @apply bg-black-full/20 font-mono rounded-md p-0.75;
+    }
+
     table {
-      max-width: 100%;
+      @apply max-w-full border-2 border-gray-200 border-collapse table-fixed w-full my-2 overflow-hidden;
+
+      .Agent & {
+        @apply border-gray;
+      }
+
+      .Customer & {
+        @apply border-blue-dark;
+      }
+
+      td,
+      th {
+        @apply min-w-[1em] border border-gray-200 align-top relative py-[3px] px-[5px] box-border;
+
+        .Agent & {
+          @apply border-gray;
+        }
+
+        .Customer & {
+          @apply border-blue-dark;
+        }
+
+        > * {
+          @apply m-0;
+        }
+      }
+
+      th {
+        @apply font-bold text-start bg-black-full/20;
+
+        .Agent & {
+          @apply bg-black-full/10;
+        }
+      }
+    }
+
+    hr {
+      @apply my-2 h-px bg-gray text-[0px] border-none;
+
+      .Customer & {
+        @apply bg-blue-dark;
+      }
     }
   }
 

@@ -311,55 +311,7 @@ const classes = getFieldEditorClasses()
 
 <style>
 .tiptap {
-  pre {
-    background-color: #ced4da;
-    border-radius: 6px;
-    padding: 5px;
-    margin-bottom: 6px;
-    color: #111;
-  }
-
-  pre > code {
-    background-color: transparent;
-    padding: 0;
-    margin: 0;
-  }
-
-  code {
-    background-color: #ced4da;
-    border-radius: 4px;
-    padding: 1px 2px;
-    color: #111;
-  }
-
   table {
-    border-collapse: collapse;
-    table-layout: fixed;
-    width: 100px;
-    max-width: 200px;
-    margin: 0;
-    overflow: hidden;
-
-    td,
-    th {
-      min-width: 1em;
-      border: 2px solid #ced4da;
-      padding: 3px 5px;
-      vertical-align: top;
-      box-sizing: border-box;
-      position: relative;
-
-      > * {
-        margin-bottom: 0;
-      }
-    }
-
-    th {
-      font-weight: bold;
-      text-align: left;
-      background-color: #f1f3f5;
-    }
-
     .selectedCell::after {
       z-index: 2;
       position: absolute;

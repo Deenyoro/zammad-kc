@@ -31,7 +31,7 @@ Rails.application.config.html_sanitizer_attributes_allowlist = {
   'a'          => %w[href hreflang name rel data-target-id data-target-type data-mention-user-id],
   'abbr'       => %w[title],
   'blockquote' => %w[type cite],
-  'col'        => %w[span width],
+  'col'        => %w[span width style],
   'colgroup'   => %w[span width],
   'data'       => %w[value],
   'del'        => %w[cite datetime],
@@ -41,8 +41,8 @@ Rails.application.config.html_sanitizer_attributes_allowlist = {
   'li'         => %w[value],
   'ol'         => %w[reversed start type],
   'table'      => %w[align bgcolor border cellpadding cellspacing frame rules sortable summary width style],
-  'td'         => %w[abbr align axis colspan headers rowspan valign width style],
-  'th'         => %w[abbr align axis colspan headers rowspan scope sorted valign width style],
+  'td'         => %w[abbr align axis colspan colwidth headers rowspan valign width style],
+  'th'         => %w[abbr align axis colspan colwidth headers rowspan scope sorted valign width style],
   'tr'         => %w[width style],
   'ul'         => %w[type],
   'q'          => %w[cite],
@@ -68,6 +68,9 @@ Rails.application.config.html_sanitizer_css_properties_allowlist = {
   ],
   'p'     => %w[
     white-space
+  ],
+  'col'   => %w[
+    min-width width
   ],
   'table' => %w[
     background background-color color font-size vertical-align

@@ -54,7 +54,7 @@ const getCurrentUrl = () => props.editor?.getAttributes(LINK_PLUGIN_NAME)?.href
 
 const hasActiveLinkMark = computed(getCurrentUrl)
 
-const url = ref(getCurrentUrl() || getCurrentLinkLabel())
+const url = ref(hasActiveLinkMark.value ? getCurrentUrl() : '')
 
 const linkText = ref(getCurrentLinkLabel())
 
@@ -140,7 +140,6 @@ const { button, buttonContainer, form: formClass } = getEditorEditorLinkFormClas
       "
       @keydown.esc="close"
     >
-      <FormKit v-model.trim="linkText" name="label" :label="$t('Link Text')" />
       <FormKit
         v-model.trim="url"
         name="url"
@@ -148,6 +147,7 @@ const { button, buttonContainer, form: formClass } = getEditorEditorLinkFormClas
         :link="url"
         :label="$t('Link URL')"
       />
+      <FormKit v-model.trim="linkText" name="label" :label="$t('Link Text')" />
 
       <div :class="buttonContainer">
         <button

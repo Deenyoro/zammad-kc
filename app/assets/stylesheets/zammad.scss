@@ -89,8 +89,7 @@ $mobileNavigationWidthOpen: 220px;
   --fullscreen-text: var(--text-muted);
   --fullscreen-text-link: var(--text-inverted);
   --fullscreen-text-muted: hsl(233, 7%, 26%);
-  --fullscreen-drop-shadow:
-    0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  --fullscreen-drop-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   --menu-text: hsl(0, 0%, 74%);
   --menu-text-active: white;
   --menu-text-open: white;
@@ -112,6 +111,8 @@ $mobileNavigationWidthOpen: 220px;
   --menu-border-secondary: none;
   --ai-assist-blue: hsl(192, 100%, 39%);
   --ai-assist-pink: hsl(340, 77%, 61%);
+  --table-border: hsl(0, 0%, 69%);
+  --table-header-background: hsla(0, 0%, 0%, 0.1);
 }
 
 // dark mode
@@ -184,6 +185,8 @@ $mobileNavigationWidthOpen: 220px;
   --file-icon-color: hsl(230, 7%, 21%);
   --tag-text: var(--text-normal);
   --tag-background: hsl(230, 5%, 32%);
+  --table-border: hsl(0, 0%, 72%);
+  --table-header-background: hsla(0, 0%, 0%, 0.2);
 }
 
 @mixin dark {
@@ -582,6 +585,10 @@ ul {
 
   p {
     margin: 0;
+  }
+
+  & > p {
+    margin: 8px 0;
   }
 }
 
@@ -2790,18 +2797,8 @@ input.has-error {
     flex: 1 1 0%;
 
     @include bidi-style(border-right-width, 0, border-left-width, 1px);
-    @include bidi-style(
-      border-top-right-radius,
-      0,
-      border-top-left-radius,
-      3px
-    );
-    @include bidi-style(
-      border-bottom-right-radius,
-      0,
-      border-bottom-left-radius,
-      3px
-    );
+    @include bidi-style(border-top-right-radius, 0, border-top-left-radius, 3px);
+    @include bidi-style(border-bottom-right-radius, 0, border-bottom-left-radius, 3px);
 
     &:focus + .controls-button {
       .controls-button-inner {
@@ -2828,12 +2825,7 @@ input.has-error {
         bottom: -3px;
         background: var(--shadow-highlight);
 
-        @include bidi-style(
-          border-radius,
-          0 7px 7px 0,
-          border-radius,
-          7px 0 0 7px
-        );
+        @include bidi-style(border-radius, 0 7px 7px 0, border-radius, 7px 0 0 7px);
       }
     }
   }
@@ -2953,14 +2945,9 @@ input.has-error {
     -webkit-overflow-scrolling: touch;
 
     .navigation.is-not-collapsed ~ & {
-      transform: translateX(
-        #{$mobileNavigationWidthOpen - $mobileNavigationWidth}
-      );
+      transform: translateX(#{$mobileNavigationWidthOpen - $mobileNavigationWidth});
 
-      @include rtl(
-        transform,
-        translateX(-#{$mobileNavigationWidthOpen - $mobileNavigationWidth})
-      );
+      @include rtl(transform, translateX(-#{$mobileNavigationWidthOpen - $mobileNavigationWidth}));
     }
   }
 }
@@ -3035,10 +3022,7 @@ input.has-error {
     height: 200%;
     left: -100%;
     top: -100%;
-    background: radial-gradient(
-      var(--backdrop-clue-start),
-      var(--backdrop-clue-end)
-    );
+    background: radial-gradient(var(--backdrop-clue-start), var(--backdrop-clue-end));
   }
 
   .modal-spacer {
@@ -4204,8 +4188,7 @@ ol.tabs li {
       padding: 0 10px;
       width: 100%;
 
-      $sizes:
-        '1/2', '1/3', '2/3', '1/4', '2/4', '3/4', '1/5', '2/5', '3/5', '4/5';
+      $sizes: '1/2', '1/3', '2/3', '1/4', '2/4', '3/4', '1/5', '2/5', '3/5', '4/5';
 
       @each $size in $sizes {
         &[data-width='#{$size}'] {
@@ -5164,9 +5147,7 @@ footer {
   }
 }
 
-.navigation:not(.is-not-collapsed)
-  .search:not(.filled, .focused)
-  input[type='search'] {
+.navigation:not(.is-not-collapsed) .search:not(.filled, .focused) input[type='search'] {
   @include phone {
     padding: 0;
   }
@@ -7275,11 +7256,7 @@ a.list-group-item.active > .badge,
         top: 0;
         height: 2px;
         background: var(--ai-assist-blue);
-        background: linear-gradient(
-          90deg,
-          var(--ai-assist-blue) 0%,
-          var(--ai-assist-pink) 100%
-        );
+        background: linear-gradient(90deg, var(--ai-assist-blue) 0%, var(--ai-assist-pink) 100%);
       }
     }
 
@@ -7342,11 +7319,7 @@ a.list-group-item.active > .badge,
   hr {
     height: 1px; /* +1px for the border */
     background: rgb(0, 158, 198);
-    background: linear-gradient(
-      90deg,
-      rgba(0, 158, 198, 1) 0%,
-      rgba(232, 79, 131, 1) 100%
-    );
+    background: linear-gradient(90deg, rgba(0, 158, 198, 1) 0%, rgba(232, 79, 131, 1) 100%);
   }
 
   .sidebar-block {
@@ -7401,18 +7374,12 @@ a.list-group-item.active > .badge,
   }
 }
 
-.ticket-summary-sidebar-item:has(
-    .ticket-summary-sidebar-list-item-action
-  )::before {
+.ticket-summary-sidebar-item:has(.ticket-summary-sidebar-list-item-action)::before {
   content: '';
   margin-bottom: 16px;
   height: 1px;
   background: rgb(0, 158, 198);
-  background: linear-gradient(
-    90deg,
-    rgba(0, 158, 198, 1) 0%,
-    rgba(232, 79, 131, 1) 100%
-  );
+  background: linear-gradient(90deg, rgba(0, 158, 198, 1) 0%, rgba(232, 79, 131, 1) 100%);
 }
 
 .internal-border {
@@ -7461,11 +7428,6 @@ a.list-group-item.active > .badge,
 
   @include phone {
     padding: 10px;
-  }
-
-  /* email css reset */
-  p {
-    margin: 0;
   }
 
   .is-internal & {
@@ -7534,10 +7496,7 @@ a.list-group-item.active > .badge,
     right: 0;
     top: -30px;
     height: 30px;
-    background: linear-gradient(
-      rgba(255, 255, 255, 0),
-      var(--background-secondary)
-    );
+    background: linear-gradient(rgba(255, 255, 255, 0), var(--background-secondary));
     pointer-events: none;
   }
 }
@@ -7546,10 +7505,7 @@ a.list-group-item.active > .badge,
   background: var(--background-article-customer);
 
   &::before {
-    background: linear-gradient(
-      hsla(199, 44%, 93%, 0),
-      var(--background-article-customer)
-    );
+    background: linear-gradient(hsla(199, 44%, 93%, 0), var(--background-article-customer));
   }
 }
 
@@ -8018,11 +7974,7 @@ a.list-group-item.active > .badge,
     width: 2px;
     height: 16px;
     background: var(--ai-assist-blue);
-    background: linear-gradient(
-      180deg,
-      var(--ai-assist-blue) 0%,
-      var(--ai-assist-pink) 100%
-    );
+    background: linear-gradient(180deg, var(--ai-assist-blue) 0%, var(--ai-assist-pink) 100%);
   }
 
   .icon {
@@ -8062,11 +8014,7 @@ a.list-group-item.active > .badge,
     width: 2px;
     height: 16px;
     background: var(--ai-assist-blue);
-    background: linear-gradient(
-      180deg,
-      var(--ai-assist-blue) 0%,
-      var(--ai-assist-pink) 100%
-    );
+    background: linear-gradient(180deg, var(--ai-assist-blue) 0%, var(--ai-assist-pink) 100%);
   }
 }
 
@@ -8171,11 +8119,7 @@ a.list-group-item.active > .badge,
   display: block;
   position: absolute;
   right: 0;
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--background-secondary-hover) 20px
-  );
+  background: linear-gradient(to right, transparent, var(--background-secondary-hover) 20px);
 }
 
 .attachment--preview .attachment-delete .icon {
@@ -8222,11 +8166,7 @@ a.list-group-item.active > .badge,
   display: block;
   position: absolute;
   right: 0;
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--background-secondary-hover) 20px
-  );
+  background: linear-gradient(to right, transparent, var(--background-secondary-hover) 20px);
 }
 
 .attachment--row .attachment-delete .icon {
@@ -8517,12 +8457,7 @@ a.list-group-item.active > .badge,
 }
 
 .tabsSidebar-tab:last-child {
-  @include bidi-style(
-    border-bottom-left-radius,
-    8px,
-    border-bottom-right-radius,
-    0
-  );
+  @include bidi-style(border-bottom-left-radius, 8px, border-bottom-right-radius, 0);
 }
 
 .tabsSidebar-tab .icon {
@@ -8978,10 +8913,7 @@ li.list-item-none {
 }
 
 .box--paper {
-  background-image: linear-gradient(
-    transparent 30px,
-    var(--background-modifier-border) 31px
-  );
+  background-image: linear-gradient(transparent 30px, var(--background-modifier-border) 31px);
   background-size: 100% 31px;
   line-height: 31px;
   padding-top: 31px;
@@ -11793,41 +11725,21 @@ output {
   }
 
   & > thead > tr > th:first-child {
-    @include bidi-style(
-      border-top-left-radius,
-      4px,
-      border-top-right-radius,
-      0
-    );
+    @include bidi-style(border-top-left-radius, 4px, border-top-right-radius, 0);
   }
 
   & > thead > tr > th:last-child {
-    @include bidi-style(
-      border-top-right-radius,
-      4px,
-      border-top-left-radius,
-      0
-    );
+    @include bidi-style(border-top-right-radius, 4px, border-top-left-radius, 0);
   }
 
   & > tbody:last-child > tr:last-child > td:first-child,
   & > tfoot:last-child > tr:last-child > td:first-child {
-    @include bidi-style(
-      border-bottom-left-radius,
-      4px,
-      border-bottom-right-radius,
-      0
-    );
+    @include bidi-style(border-bottom-left-radius, 4px, border-bottom-right-radius, 0);
   }
 
   & > tbody:last-child > tr:last-child > td:last-child,
   & > tfoot:last-child > tr:last-child > td:last-child {
-    @include bidi-style(
-      border-bottom-right-radius,
-      4px,
-      border-bottom-left-radius,
-      0
-    );
+    @include bidi-style(border-bottom-right-radius, 4px, border-bottom-left-radius, 0);
   }
 
   p {
@@ -11841,10 +11753,7 @@ output {
     color: var(--interactive-muted);
     background:
       linear-gradient(hsla(0, 0%, 100%, 0.02), hsla(0, 0%, 100%, 0.02)),
-      linear-gradient(
-        var(--background-primary-alt),
-        var(--background-primary-alt)
-      );
+      linear-gradient(var(--background-primary-alt), var(--background-primary-alt));
     line-height: 1;
     padding-top: 11px;
     padding-bottom: 9px;
@@ -11942,12 +11851,7 @@ output {
   background: var(--background-secondary);
   color: var(--text-normal);
 
-  @include bidi-style(
-    border-right,
-    1px solid var(--border-alt),
-    border-left,
-    none
-  );
+  @include bidi-style(border-right, 1px solid var(--border-alt), border-left, none);
 
   border-bottom: 1px solid var(--border-alt);
   border-radius: 3px 3px 0 0;
@@ -11976,12 +11880,7 @@ output {
     white-space: nowrap;
     background: var(--background-primary-alt);
 
-    @include bidi-style(
-      border-left,
-      1px solid var(--border-alt),
-      border-right,
-      none
-    );
+    @include bidi-style(border-left, 1px solid var(--border-alt), border-right, none);
 
     border-top: 1px solid var(--border-alt);
     border-radius: 3px 3px 0 0;
@@ -13309,10 +13208,13 @@ output {
   table,
   pre,
   blockquote {
-    margin-bottom: 16px;
+    margin: 8px 0;
   }
 
-  & > p,
+  p {
+    margin: 8px 0;
+  }
+
   & > table,
   & > pre,
   & > blockquote {
@@ -13326,20 +13228,32 @@ output {
   }
 
   table {
-    table-layout: auto;
+    max-width: 100%;
+    border: 2px solid var(--table-border);
+    border-collapse: collapse;
+    table-layout: fixed;
     width: 100%;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    word-break: keep-all;
+    margin: 0;
+    overflow: hidden;
 
-    col {
-      width: auto;
+    td,
+    th {
+      min-width: 1em;
+      border: 1px solid var(--table-border);
+      vertical-align: top;
+      position: relative;
+      padding: 3px 5px;
+      box-sizing: border-box;
+
+      > * {
+        margin: 0;
+      }
     }
 
-    span,
-    p,
-    a {
-      overflow-wrap: anywhere;
+    th {
+      font-weight: bold;
+      text-align: left;
+      background-color: var(--table-header-background);
     }
   }
 
@@ -13348,28 +13262,31 @@ output {
     border-left: 5px solid var(--background-primary-alt);
   }
 
-  code {
-    border: none;
-    white-space: pre-wrap;
+  pre {
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 6px;
+    border: 0;
+    background-color: var(--background-modifier-border);
+
+    code {
+      padding: 0;
+      background: transparent;
+    }
   }
 
-  pre {
-    padding: 12px 15px;
-    font-size: 13px;
-    line-height: 1.45;
-    background: var(--background-modifier-accent-light);
-    white-space: pre-wrap;
-    border-radius: 3px;
-    border: none;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
+  code {
+    padding: 3px;
+    border-radius: 6px;
+    background-color: var(--background-modifier-border);
   }
 
   hr {
-    margin-top: 6px;
-    margin-bottom: 6px;
+    margin: 8px 0;
+    height: 1px;
+    background-color: var(--background-modifier-border);
+    font-size: 0;
     border: 0;
-    border-top: 1px solid var(--background-modifier-border);
   }
 
   @include dark {
@@ -14478,12 +14395,7 @@ span.is-disabled {
     -webkit-overflow-scrolling: touch;
     transition: transform 500ms;
 
-    @include bidi-style(
-      border-left,
-      1px solid var(--border),
-      border-right,
-      none
-    );
+    @include bidi-style(border-left, 1px solid var(--border), border-right, none);
 
     @include phone {
       width: auto;

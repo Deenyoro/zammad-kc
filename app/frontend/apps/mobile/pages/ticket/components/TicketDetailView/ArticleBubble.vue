@@ -54,8 +54,12 @@ const colorClasses = computed(() => {
   const { internal, position } = props
 
   if (internal) return 'border border-blue bg-black'
-  if (position === 'left') return 'border border-black bg-white text-black'
-  return 'border border-black bg-blue text-black'
+
+  // eslint-disable-next-line zammad/zammad-detect-translatable-string
+  if (position === 'left') return 'Agent border border-black bg-white text-black'
+
+  // eslint-disable-next-line zammad/zammad-detect-translatable-string
+  return 'Customer border border-black bg-blue text-black'
 })
 
 const bubbleClasses = computed(() => {

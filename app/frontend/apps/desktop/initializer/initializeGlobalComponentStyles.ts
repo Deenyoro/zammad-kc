@@ -93,7 +93,7 @@ export const initializeGlobalComponentStyles = () => {
       primary:
         'bg-blue-800 hover:bg-blue-800 text-white px-4 py-2.5 rounded-xl focus-visible-app-default hover:outline-1 hover:outline-offset-1 dark:hover:outline-blue-900 hover:outline-blue-600',
     },
-    form: 'rounded-xl min-w-md space-y-4 px-2.5 py-2.5 pb-4 border border-neutral-50 dark:border-gray-900 dark:bg-gray-500 bg-neutral-50',
+    form: 'rounded-xl min-w-md space-y-4 px-2.5 py-2.5 pb-4 border border-neutral-100 dark:border-gray-900 dark:bg-gray-500 bg-neutral-50',
     buttonContainer: 'flex gap-4',
   })
 
