@@ -346,10 +346,12 @@ class EmailReply extends App.Controller
     # add/replace signature
     if signature && signature.active && signature.body
 
-      # if signature has changed, remove it
-      signature_id = ui.$('[data-signature=true]').data('signature-id')
+      # if signature has changed, remove it but skip signatures in quoted messages
+      # https://github.com/zammad/zammad/issues/5634
+      signature_selector = ui.$('[data-signature=true]').not('blockquote [data-signature=true]')
+      signature_id = signature_selector.data('signature-id')
       if signature_id && signature_id.toString() isnt signature.id.toString()
-        ui.$('[data-name=body] [data-signature="true"]').remove()
+        signature_selector.remove()
 
       # apply new signature
       signatureFinished = App.Utils.replaceTags(signature.body, { user: App.Session.get(), ticket: ticketCurrent, config: App.Config.all() })
