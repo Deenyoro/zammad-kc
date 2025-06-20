@@ -184,7 +184,7 @@ describe('htmlCleanup utility', () => {
 <p>#{article.body}</p>\n
 </blockquote><p><br></p>`
     const should =
-      '<p>This is a note<br></p><blockquote type="cite"><p>On .+, #{article.created_by.fullname} wrote:</p><p><br></p><p>#{article.body}</p></blockquote><p><br></p>'
+      '<p>This is a note<br></p><blockquote type="cite"><p>On .+, #{article.created_by.fullname} wrote:</p><p></p><p>#{article.body}</p></blockquote><p></p>'
     const result = htmlCleanup(source)
     assert.equal(result, should, source)
   })

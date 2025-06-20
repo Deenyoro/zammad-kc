@@ -35,7 +35,7 @@ const SIGNATURE =
   '<strong>Signature</strong><div>Context</div><br>---<br><em>Phone: +1234556778</em>'
 
 const PARSED_SIGNATURE =
-  '<strong><p>Signature</p></strong><p>Context</p><p><br>---<br><em>Phone: +1234556778</em></p>'
+  '<p><strong>Signature</strong></p><p>Context</p><p><br>---<br><em>Phone: +1234556778</em></p>'
 
 const WRAPPED_SIGNATURE = (id: string, str: string) => {
   return `<div data-signature="true" class="signature" data-signature-id="${id}">${str}</div>`

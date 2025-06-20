@@ -78,7 +78,6 @@ export default Node.create({
   },
   group: 'block',
   content: 'block*',
-  marks: '_',
   addOptions() {
     return {
       HTMLAttributes: {

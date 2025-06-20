@@ -16,6 +16,7 @@ import Image from '#shared/components/Form/fields/FieldEditor/extensions/Image.t
 import { IndentExtension } from '#shared/components/Form/fields/FieldEditor/extensions/Indent.ts'
 import KnowledgeBaseSuggestion from '#shared/components/Form/fields/FieldEditor/extensions/KnowledgeBaseSuggestion.ts'
 import Link from '#shared/components/Form/fields/FieldEditor/extensions/Link.ts'
+import { PasteHandler } from '#shared/components/Form/fields/FieldEditor/extensions/PasteHandler.ts'
 import Signature from '#shared/components/Form/fields/FieldEditor/extensions/Signature.ts'
 import {
   MarginLeft,
@@ -115,6 +116,7 @@ export const getHtmlExtensions = (): Extensions => [
   Link,
   TextStyle,
   UserLink,
+  PasteHandler,
 ]
 
 export const getCustomExtensions = (

@@ -32,9 +32,6 @@ const removeTrailingLineBreaks = (parent: Element) => {
   parent.querySelectorAll('br').forEach((element) => {
     // keep paragraphs with just a line break, but convert them into <p> tags
     if (element.parentElement?.childNodes.length === 1) {
-      if (element.parentElement.tagName !== 'DIV') {
-        return
-      }
       const p = document.createElement('p')
       for (const attr of element.parentElement.attributes) {
         p.setAttribute(attr.name, attr.value)
