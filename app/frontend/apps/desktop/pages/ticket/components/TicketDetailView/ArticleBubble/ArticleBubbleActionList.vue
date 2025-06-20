@@ -153,6 +153,7 @@ const actions = computed(() => {
       :default-button-variant="position === 'left' ? 'neutral-dark' : 'neutral-light'"
       :actions="actions.popoverActions"
       no-single-action-mode
+      z-index="20"
     />
   </div>
 </template>

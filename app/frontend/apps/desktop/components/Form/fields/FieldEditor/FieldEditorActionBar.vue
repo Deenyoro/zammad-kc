@@ -137,6 +137,7 @@ watch(
       :owner="popoverTarget"
       orientation="autoVertical"
       placement="arrowStart"
+      z-index="20"
       hide-arrow
       no-auto-focus
     >

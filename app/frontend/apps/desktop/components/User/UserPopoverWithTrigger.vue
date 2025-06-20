@@ -23,6 +23,7 @@ export interface Props {
   noLink?: boolean
   noFocusStyling?: boolean
   noHoverStyling?: boolean
+  zIndex?: string
 }
 
 const props = defineProps<Props>()
@@ -61,6 +62,7 @@ const isSystemUser = computed(() => {
     ]"
     :no-hover-styling="noHoverStyling"
     :no-focus-styling="noFocusStyling"
+    :z-index="zIndex"
     :trigger-link="!noLink ? `/user/profile/${userInternalId}` : undefined"
     :trigger-link-active-class="
       !$slots?.default?.()

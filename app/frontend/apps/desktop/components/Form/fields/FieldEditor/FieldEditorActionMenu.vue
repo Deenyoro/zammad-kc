@@ -147,6 +147,7 @@ defineExpose({ close })
     placement="start"
     no-auto-focus
     hide-arrow
+    z-index="20"
     @close="$emit('close-popover')"
   >
     <CommonPopoverMenu

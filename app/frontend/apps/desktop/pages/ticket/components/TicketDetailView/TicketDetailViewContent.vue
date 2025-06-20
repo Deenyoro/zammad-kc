@@ -596,7 +596,7 @@ whenever(
         }"
         @scroll.passive="handleScroll"
       >
-        <div class="sticky top-0 z-10">
+        <div class="sticky top-0 z-30">
           <Transition name="slide-down">
             <TicketDetailTopBar
               ref="top-bar"

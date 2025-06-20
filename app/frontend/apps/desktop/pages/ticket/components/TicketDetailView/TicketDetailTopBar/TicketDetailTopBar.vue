@@ -54,7 +54,6 @@ const events = computed(() => {
 
 <template>
   <div
-    class="z-10"
     :tabindex="!isAgentAndHasPermissionAndHasChannelAlarm ? -1 : hideDetails ? 0 : -1"
     v-on="isAgentAndHasPermissionAndHasChannelAlarm ? events : {}"
   >

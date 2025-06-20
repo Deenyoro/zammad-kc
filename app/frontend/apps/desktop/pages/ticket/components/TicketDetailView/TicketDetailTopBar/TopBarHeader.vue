@@ -47,7 +47,7 @@ const detailViewActiveClasses = computed(() => {
 
 <template>
   <header
-    class="relative z-10 grid border-b border-neutral-100 bg-neutral-50 p-3 dark:border-gray-900 dark:bg-gray-500"
+    class="grid border-b border-neutral-100 bg-neutral-50 p-3 dark:border-gray-900 dark:bg-gray-500"
     :class="detailViewActiveClasses"
   >
     <CommonBreadcrumb

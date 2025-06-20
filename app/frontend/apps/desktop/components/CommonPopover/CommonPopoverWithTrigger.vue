@@ -15,6 +15,7 @@ interface Props extends Omit<CommonPopoverProps, 'owner'> {
   triggerLinkActiveClass?: string
   noFocusStyling?: boolean
   noHoverStyling?: boolean
+  zIndex?: string
 }
 
 const props = defineProps<Props>()
@@ -97,6 +98,7 @@ onUnmounted(() => {
     :id="uniqueId"
     ref="popover"
     class="min-w-[17rem]"
+    :z-index="zIndex"
     no-close-on-click-outside
     :owner="popoverTarget"
   >

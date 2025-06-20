@@ -43,11 +43,13 @@ export interface Props {
   noAutoFocus?: boolean
   persistent?: boolean
   noCloseOnClickOutside?: boolean
+  zIndex?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   placement: 'start',
   orientation: 'autoVertical',
+  zIndex: '50',
 })
 
 const emit = defineEmits<{
@@ -142,6 +144,7 @@ const popoverStyle = computed(() => {
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
+      zIndex: props.zIndex,
     }
   }
 
@@ -202,6 +205,8 @@ const popoverStyle = computed(() => {
       break
     default:
   }
+
+  style.zIndex = props.zIndex
 
   return style
 })
@@ -403,7 +408,7 @@ emitter.on('close-popover', () => {
         :id="id"
         ref="popover"
         role="region"
-        class="popover fixed z-50 flex"
+        class="popover fixed flex"
         :class="[classes.base]"
         :style="popoverStyle"
         :aria-labelledby="owner && '$el' in owner ? owner.$el?.id : owner?.id"
@@ -423,7 +428,7 @@ emitter.on('close-popover', () => {
         :id="id"
         ref="popover"
         role="region"
-        class="popover fixed z-50 flex"
+        class="popover fixed flex"
         :class="[classes.base]"
         :style="popoverStyle"
         :aria-labelledby="owner && '$el' in owner ? owner.$el?.id : owner?.id"

@@ -29,6 +29,7 @@ export interface Props {
   customMenuButtonLabel?: string
   defaultIcon?: string
   defaultButtonVariant?: ButtonVariant | 'neutral-light' | 'neutral-dark'
+  zIndex?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -146,6 +147,7 @@ const variantClasses = computed(() => {
       <CommonPopover
         :id="menuId"
         ref="popover"
+        :z-index="zIndex"
         :placement="placement"
         :hide-arrow="hideArrow"
         :orientation="orientation"
