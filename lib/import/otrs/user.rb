@@ -64,7 +64,7 @@ module Import
 
       def unique_login(user)
         login = user[:login]
-        return login if ::User.where('login = ? AND id != ?', login.downcase, user[:id]).count.zero?
+        return login if ::User.where('login = ? AND id != ?', login.downcase, user[:id]).none?
 
         "#{login}_#{user[:id]}"
       end

@@ -53,6 +53,6 @@ RSpec.describe 'Profile > Overviews', type: :system do
   def reset_overview_order
     visit 'profile/overviews'
     page.find('a[data-type=reset]').click
-    wait.until { User::OverviewSorting.where(user: current_user).count.zero? }
+    wait.until { User::OverviewSorting.where(user: current_user).none? }
   end
 end

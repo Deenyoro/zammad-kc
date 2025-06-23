@@ -210,7 +210,7 @@ returns
 
           attributes[assoc.name.to_s].push item[:name]
         end
-        if ref.count.positive? && attributes[assoc.name.to_s].blank?
+        if ref.any? && attributes[assoc.name.to_s].blank?
           attributes.delete(assoc.name.to_s)
         end
         next

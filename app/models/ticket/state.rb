@@ -59,9 +59,9 @@ returns:
 
     %w[default_create default_follow_up].each do |default_field|
       states_with_default = Ticket::State.where(default_field => true)
-      next if states_with_default.count == 1
+      next if states_with_default.one?
 
-      if states_with_default.count.zero?
+      if states_with_default.none?
         state = Ticket::State.where(active: true).reorder(id: :asc).first
         state[default_field] = true
         state.callback_loop = true

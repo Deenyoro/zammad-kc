@@ -17,7 +17,7 @@ module ZammadSpecSupportSAML
 
     # Force create Zammad client in Keycloak.
     client = Keycloak::Admin.clients.lookup(clientId: zammad_saml_metadata)
-    if client.count.positive?
+    if client.any?
       Keycloak::Admin.clients.delete(client.first['id'])
     end
     Keycloak::Admin.clients.create(JSON.parse(saml_client_json))

@@ -24,23 +24,23 @@ class FirstStepsController < ApplicationController
       form_active = true
     end
     twitter_active = false
-    if Channel.where(area: 'Twitter::Account').count.positive?
+    if Channel.where(area: 'Twitter::Account').any?
       twitter_active = true
     end
     facebook_active = false
-    if Channel.where(area: 'Facebook::Account').count.positive?
+    if Channel.where(area: 'Facebook::Account').any?
       facebook_active = true
     end
     email_active = false
-    if Channel.where(area: 'Email::Account').count.positive?
+    if Channel.where(area: 'Email::Account').any?
       email_active = true
     end
     text_module_active = false
-    if TextModule.count.positive?
+    if TextModule.any?
       text_module_active = true
     end
     macro_active = false
-    if Macro.count > 1
+    if Macro.many?
       macro_active = true
     end
 
@@ -240,7 +240,7 @@ class FirstStepsController < ApplicationController
     return false if !overview
     return false if overview.updated_by_id != 1
     return false if !test_customer
-    return false if Group.where(active: true, name: 'Users').count.zero?
+    return false if Group.where(active: true, name: 'Users').none?
 
     true
   end

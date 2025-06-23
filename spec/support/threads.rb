@@ -15,12 +15,12 @@ module ThreadsHelper
         t.kill
         t.join # From `Timeout.timeout`: make sure thread is dead.
       end
-      break if superfluous_threads.call.count.zero?
+      break if superfluous_threads.call.none?
 
       sleep 1 # Wait a bit for stuff to settle before trying again.
     end
 
-    if superfluous_threads.call.count.positive?
+    if superfluous_threads.call.any?
       superfluous_threads.call.each do |thread|
         warn "Error: found a superfluous thread after clean-up: #{thread}"
         warn "Backtrace: #{thread.backtrace.join("\n")}"

@@ -103,7 +103,7 @@ class Whatsapp::Webhook::Message
   end
 
   def create_article
-    is_first_article = @ticket.articles.count.zero?
+    is_first_article = @ticket.articles.none?
 
     article = Ticket::Article.create!(
       ticket_id:    @ticket.id,

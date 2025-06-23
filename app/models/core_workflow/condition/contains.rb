@@ -2,6 +2,6 @@
 
 class CoreWorkflow::Condition::Contains < CoreWorkflow::Condition::Backend
   def match
-    (value & condition_value).count.positive?
+    value.intersect?(condition_value)
   end
 end

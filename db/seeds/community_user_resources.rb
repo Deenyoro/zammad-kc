@@ -18,7 +18,7 @@ user_community = User.create_or_update(
 
 UserInfo.current_user_id = user_community.id
 
-if Ticket.count.zero?
+if Ticket.none?
   ticket = Ticket.create!(
     group_id:    Group.find_by(name: 'Users').id,
     customer_id: User.find_by(login: 'nicole.braun@zammad.org').id,

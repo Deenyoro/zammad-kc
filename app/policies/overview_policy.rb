@@ -9,7 +9,7 @@ class OverviewPolicy < ApplicationPolicy
     return false if user_has_assigned_role?
 
     # If overview is restricted by individual users, user must be included.
-    if record.user_ids.count.positive? && record.user_ids.exclude?(user.id)
+    if record.user_ids.any? && record.user_ids.exclude?(user.id)
       return false
     end
 
@@ -39,6 +39,6 @@ class OverviewPolicy < ApplicationPolicy
   end
 
   def user_has_assigned_role?
-    (user.role_ids.to_set & record.role_ids.to_set).count.zero?
+    !user.role_ids.to_set.intersect?(record.role_ids.to_set)
   end
 end

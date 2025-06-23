@@ -387,7 +387,7 @@ or if you only want to create 100 tickets
   end
 
   def self.create_knowledge_base
-    return KnowledgeBase.first if KnowledgeBase.count.positive?
+    return KnowledgeBase.first if KnowledgeBase.any?
 
     params = {
       iconset:               'FontAwesome',

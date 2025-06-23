@@ -198,7 +198,7 @@ reload search index with full data
       offset          = 0
       batch_size      = 200
 
-      while query.offset(offset).limit(batch_size).count.positive?
+      while query.offset(offset).limit(batch_size).any?
         records = query.offset(offset).limit(batch_size)
 
         Parallel.map(records, { in_processes: worker }) do |record|

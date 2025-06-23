@@ -164,7 +164,7 @@ class Selector::Sql < Selector::Base
     end
 
     # Performance: use left join instead of sub select if tags value is only one element and contains all is used
-    if attribute_table == 'ticket' && attribute_name == 'tags' && block_condition[:operator] == 'contains all' && block_condition[:value].count == 1
+    if attribute_table == 'ticket' && attribute_name == 'tags' && block_condition[:operator] == 'contains all' && block_condition[:value].one?
       block_condition[:operator] = 'contains one'
     end
 

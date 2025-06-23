@@ -949,7 +949,7 @@ register a new webhooks at twitter
       message = "Unable to register webhook: #{e.message}"
       if webhook_url.include?('http://')
         message += ' Only https webhooks possible to register.'
-      elsif webhooks.count.positive?
+      elsif webhooks.any?
         message += " Already #{webhooks.count} webhooks registered. Maybe you need to delete one first."
       end
       raise message

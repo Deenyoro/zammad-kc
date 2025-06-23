@@ -95,7 +95,7 @@ module Channel::Filter::BounceDeliveryPermanentFailed
       end
     end
 
-    return [] if recipients.count > 1
+    return [] if recipients.many?
 
     recipients
   end

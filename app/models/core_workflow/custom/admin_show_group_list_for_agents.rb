@@ -30,7 +30,7 @@ class CoreWorkflow::Custom::AdminShowGroupListForAgents < CoreWorkflow::Custom::
   end
 
   def perform_user_show_group_ids?
-    return 'show' if (Array.wrap(params['role_ids']).map(&:to_i) & Role.with_permissions('ticket.agent').pluck(:id)).count.positive?
+    return 'show' if Array.wrap(params['role_ids']).map(&:to_i).intersect?(Role.with_permissions('ticket.agent').pluck(:id))
 
     'remove'
   end

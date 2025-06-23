@@ -761,7 +761,7 @@ RSpec.describe 'Ticket Create', time_zone: 'Europe/London', type: :system do
       # upload two files
       page.find('input#fileUpload_1[data-initialized="true"]', visible: :all).set(Rails.root.join('test/data/mail/mail001.box'))
       await_empty_ajax_queue
-      wait.until { page.all('div.attachment-delete.js-delete', visible: :all).count == 1 }
+      wait.until { page.all('div.attachment-delete.js-delete', visible: :all).one? }
       expect(page).to have_text('mail001.box')
       page.find('input#fileUpload_1', visible: :all).set(Rails.root.join('test/data/mail/mail002.box'))
       await_empty_ajax_queue
@@ -777,7 +777,7 @@ RSpec.describe 'Ticket Create', time_zone: 'Europe/London', type: :system do
         # even tho it worked fine
       end
       await_empty_ajax_queue
-      wait.until { page.all('div.attachment-delete.js-delete', visible: :all).count == 1 }
+      wait.until { page.all('div.attachment-delete.js-delete', visible: :all).one? }
       expect(page).to have_text('mail001.box')
       expect(page).to have_no_text('mail002.box')
 
@@ -796,7 +796,7 @@ RSpec.describe 'Ticket Create', time_zone: 'Europe/London', type: :system do
     end
 
     it 'does show an empty list of owners' do
-      wait.until { page.all('select[name=owner_id] option').count == 1 }
+      wait.until { page.all('select[name=owner_id] option').one? }
       expect(page.all('select[name=owner_id] option').count).to eq(1)
     end
   end

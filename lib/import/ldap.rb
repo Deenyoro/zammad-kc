@@ -5,7 +5,7 @@ module Import
     include Import::Mixin::Sequence
 
     def self.queueable?
-      active? && LdapSource.count.positive?
+      active? && LdapSource.any?
     end
 
     private

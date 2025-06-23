@@ -82,7 +82,7 @@ returns
       selected_group_ids = user_preferences['notification_config']['group_ids']
       if selected_group_ids.is_a?(Array)
         hit = nil
-        if selected_group_ids.blank? || (selected_group_ids[0] == '-' && selected_group_ids.count == 1)
+        if selected_group_ids.blank? || (selected_group_ids[0] == '-' && selected_group_ids.one?)
           hit = true
         else
           hit = false

@@ -2,6 +2,6 @@
 
 class CoreWorkflow::Condition::ContainsAllNot < CoreWorkflow::Condition::Backend
   def match
-    (value & condition_value).count.zero?
+    !value.intersect?(condition_value)
   end
 end

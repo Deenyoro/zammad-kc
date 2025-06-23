@@ -35,7 +35,7 @@ import text modules from i18n/text_modules/*.yml if no text modules exist yet.
   def self.load(locale)
     raise __("The required parameter 'locale' is missing.") if locale.blank?
 
-    return if !TextModule.count.zero?
+    return if TextModule.any?
 
     locale = locale.split(',').first.downcase # in case of accept_language header is given
 

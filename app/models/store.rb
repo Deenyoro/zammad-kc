@@ -107,7 +107,7 @@ remove one attachment from storage
 
     # check backend for references
     files = Store.where(store_file_id: file_id)
-    if files.count > 1 || files.first.id != store.id
+    if files.many? || files.first.id != store.id
       store.destroy!
       return true
     end

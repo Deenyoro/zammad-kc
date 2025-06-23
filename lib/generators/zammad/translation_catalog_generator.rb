@@ -31,7 +31,7 @@ class Zammad::TranslationCatalogGenerator < Rails::Generators::Base
   def generate
     options_valid?
     strings = extract_strings
-    return if strings.count.zero?
+    return if strings.none?
 
     write_strings(strings)
   end

@@ -175,7 +175,7 @@ class TestCase < ActiveSupport::TestCase
     browser_height = ENV['BROWSER_HEIGHT'] || 800
     local_browser.manage.window.resize_to(browser_width, browser_height)
     if !ENV['REMOTE_URL']&.match?(%r{saucelabs|(grid|ci)\.(zammad\.org|znuny\.com)}i)
-      if @browsers.count == 1
+      if @browsers.one?
         local_browser.manage.window.move_to(0, 0)
       else
         local_browser.manage.window.move_to(browser_width, 0)
