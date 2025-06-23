@@ -188,6 +188,14 @@ export default function useEditorActions(
       },
       {
         id: getUuid(),
+        name: 'blockquote',
+        contentType: ['text/html'],
+        label: __('Format as quoted text'),
+        icon: 'quote',
+        command: focused((c) => c.toggleBlockquote()),
+      },
+      {
+        id: getUuid(),
         name: 'removeFormatting',
         contentType: ['text/html'],
         label: __('Remove formatting'),

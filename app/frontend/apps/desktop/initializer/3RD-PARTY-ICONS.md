@@ -68,6 +68,7 @@
 - `assets/plus-circle.svg`
 - `assets/printer.svg`
 - `assets/question-circle.svg`
+- `assets/quote.svg`
 - `assets/radio-no.svg`
 - `assets/radio-yes.svg`
 - `assets/reply-all.svg`

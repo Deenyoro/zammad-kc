@@ -5,6 +5,7 @@
   - URL: <https://www.apple.com/uk/legal/intellectual-property/guidelinesfor3rdparties.html>
 
 - `assets/book.svg`
+- `assets/quote.svg`
   - Author: The Bootstrap Authors
   - License: MIT
   - URL: <https://github.com/twbs/icons>

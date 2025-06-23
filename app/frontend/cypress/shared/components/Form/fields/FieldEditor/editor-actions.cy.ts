@@ -97,6 +97,7 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
   testAction('Add first level heading', (text) => `<h1>${text}</h1>`, 'Add heading', 'heading')
   testAction('Add second level heading', (text) => `<h2>${text}</h2>`, 'Add heading', 'heading')
   testAction('Add third level heading', (text) => `<h3>${text}</h3>`, 'Add heading', 'heading')
+  testAction('Format as quoted text', (text) => `<blockquote><p>${text}</p></blockquote>`)
   testAction(
     'Add ordered list',
     (text) => `<ol><li><p>${text}</p></li></ol>`,
