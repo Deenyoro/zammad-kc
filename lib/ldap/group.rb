@@ -74,7 +74,7 @@ class Ldap
       @all_members_dn ||= begin
         all_members.index_by { |entry| entry.dn.downcase }
       end
-      @all_members_dn[target_dn]
+      @all_members_dn[target_dn.downcase]
     end
 
     def nested_users(entry)
