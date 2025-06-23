@@ -144,6 +144,7 @@ export interface EditorButton {
   class?: string
   icon: string
   label?: string
+  labelClass?: string
   contentType: EditorContentType[]
   attributes?: Record<string, unknown>
   command?: (e: MouseEvent) => void

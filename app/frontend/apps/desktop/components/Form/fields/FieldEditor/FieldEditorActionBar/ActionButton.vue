@@ -49,7 +49,7 @@ defineExpose({
     ref="button"
     v-tooltip="$t(action.label || action.name)"
     type="button"
-    class="focus-visible-app-default transition-color flex items-center gap-1 rounded-lg p-1.5 hover:bg-blue-600 hover:text-black dark:hover:bg-blue-900 dark:hover:text-white"
+    class="focus-visible-app-default aria-expanded:text-white transition-color flex items-center gap-1 rounded-lg p-1.5 hover:bg-blue-600 active:text-white hover:text-black dark:hover:bg-blue-900 dark:hover:text-white"
     :class="[
       action.class,
       {

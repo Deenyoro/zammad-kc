@@ -115,7 +115,8 @@ export default function useEditorActions(
             id: getUuid(),
             name: 'heading',
             contentType: ['text/html'],
-            label: __('Add first level heading'),
+            label: __('Heading 1'),
+            labelClass: 'text-xl! font-bold',
             icon: 'text-style-h1',
             attributes: {
               level: 1,
@@ -126,7 +127,8 @@ export default function useEditorActions(
             id: getUuid(),
             name: 'heading',
             contentType: ['text/html'],
-            label: __('Add second level heading'),
+            label: __('Heading 2'),
+            labelClass: 'text-base! font-bold',
             icon: 'text-style-h2',
             attributes: {
               level: 2,
@@ -137,7 +139,8 @@ export default function useEditorActions(
             id: getUuid(),
             name: 'heading',
             contentType: ['text/html'],
-            label: __('Add third level heading'),
+            label: __('Heading 3'),
+            labelClass: 'text-sm! font-bold',
             icon: 'text-style-h3',
             attributes: {
               level: 3,

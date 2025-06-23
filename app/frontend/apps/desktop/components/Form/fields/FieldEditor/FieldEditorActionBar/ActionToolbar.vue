@@ -170,7 +170,7 @@ const handleOverlowMenuItemClick = async (action: EditorButton, event: MouseEven
             type="button"
             class="focus-visible-app-default rounded-lg p-1.5! hover:bg-blue-600 hover:text-black dark:hover:bg-blue-900 dark:hover:text-white"
             :class="{
-              'bg-blue-800! text-white': isOpen,
+              'bg-blue-800! text-white!': isOpen,
             }"
           >
             <CommonIcon name="three-dots-vertical" size="tiny" decorative />
