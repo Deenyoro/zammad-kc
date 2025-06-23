@@ -2,7 +2,7 @@
 
 import { NotificationTypes } from '#shared/components/CommonNotifications/types.ts'
 import { useNotifications } from '#shared/components/CommonNotifications/useNotifications.ts'
-import { populateEditorNewLines } from '#shared/components/Form/fields/FieldEditor/utils.ts'
+import { transformEditorHtml } from '#shared/components/Form/fields/FieldEditor/utils.ts'
 import type { FormRef, FormSubmitData } from '#shared/components/Form/types.ts'
 import { setErrors } from '#shared/components/Form/utils.ts'
 import { useCheckBodyAttachmentReference } from '#shared/composables/form/useCheckBodyAttachmentReference.ts'
@@ -115,7 +115,7 @@ export const useTicketCreate = (
       customer: customerId ? getCustomerVariable(customerId as string) : undefined,
       article: {
         cc: formData.cc,
-        body: populateEditorNewLines(formData.body),
+        body: transformEditorHtml(formData.body),
         sender: isTicketCustomer.value
           ? 'Customer'
           : ticketCreateArticleType[formData.articleSenderType].sender,

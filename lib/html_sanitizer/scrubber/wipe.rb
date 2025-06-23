@@ -173,10 +173,13 @@ class HtmlSanitizer
         @css_values_blocklist ||= Rails.application.config.html_sanitizer_css_values_blocklist
       end
 
-      # We allowlist yahoo_quoted because Yahoo Mail marks quoted email content using
-      # <div class='yahoo_quoted'> and we rely on this class to identify quoted messages
+      # We allow usage of certain class names:
+      # - `js-signatureMarker` - because it is used to identify Zammad signature markers
+      # - `yahoo_quoted` - because Yahoo Mail marks quoted email content using <div class='yahoo_quoted'> and we rely
+      #   on  this class to identify quoted messages
+      # - `zammad-table` - because it is used to style Zammad internal tables
       def classes_allowlist
-        %w[js-signatureMarker yahoo_quoted]
+        %w[js-signatureMarker yahoo_quoted zammad-table]
       end
 
       def attributes_2_css

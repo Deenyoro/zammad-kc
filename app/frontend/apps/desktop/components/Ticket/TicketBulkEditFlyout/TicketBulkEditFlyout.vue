@@ -7,7 +7,7 @@ import {
   NotificationTypes,
   useNotifications,
 } from '#shared/components/CommonNotifications/index.ts'
-import { populateEditorNewLines } from '#shared/components/Form/fields/FieldEditor/utils.ts'
+import { transformEditorHtml } from '#shared/components/Form/fields/FieldEditor/utils.ts'
 import Form from '#shared/components/Form/Form.vue'
 import type { FormSubmitData } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
@@ -185,9 +185,7 @@ const processBulkEditArticle = (
 
   const contentType = getNodeByName(formId, 'body')?.context?.contentType || 'text/html'
 
-  if (contentType === 'text/html') {
-    article.body = populateEditorNewLines(article.body)
-  }
+  if (contentType === 'text/html') article.body = transformEditorHtml(article.body)
 
   return {
     type: article.articleType,

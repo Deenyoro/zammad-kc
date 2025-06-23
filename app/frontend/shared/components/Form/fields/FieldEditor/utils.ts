@@ -9,12 +9,10 @@ import { convertFileList } from '#shared/utils/files.ts'
 import type { Editor } from '@tiptap/core'
 import type { Component } from 'vue'
 
-export const populateEditorNewLines = (htmlContent: string): string => {
-  const body = document.createElement('div')
-  body.innerHTML = htmlContent
+const populateNewLines = (container: HTMLDivElement) => {
   // prosemirror always adds a visible linebreak inside an empty paragraph,
   // but it doesn't return it inside a schema, so we need to add it manually
-  body.querySelectorAll('p').forEach((p) => {
+  container.querySelectorAll('p').forEach((p) => {
     p.removeAttribute('data-marker')
     if (
       p.childNodes.length === 0 ||
@@ -24,7 +22,30 @@ export const populateEditorNewLines = (htmlContent: string): string => {
       p.appendChild(document.createElement('br'))
     }
   })
-  return body.innerHTML
+
+  return container
+}
+
+const addTableClasses = (container: HTMLDivElement) => {
+  container.querySelectorAll('table').forEach((table) => {
+    // Skip tables that are nested within blockquote elements.
+    if (table.closest('blockquote')) return
+
+    table.classList.add('zammad-table')
+  })
+
+  return container
+}
+
+export const transformEditorHtml = (htmlContent: string): string => {
+  let container = document.createElement('div')
+
+  container.innerHTML = htmlContent
+
+  container = populateNewLines(container)
+  container = addTableClasses(container)
+
+  return container.innerHTML
 }
 
 export const convertInlineImages = (

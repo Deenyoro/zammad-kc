@@ -586,10 +586,6 @@ ul {
   p {
     margin: 0;
   }
-
-  & > p {
-    margin: 8px 0;
-  }
 }
 
 /* fix for placeholder */
@@ -13222,6 +13218,24 @@ output {
   }
 
   table {
+    table-layout: auto;
+    width: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    word-break: keep-all;
+
+    col {
+      width: auto;
+    }
+
+    span,
+    p,
+    a {
+      overflow-wrap: anywhere;
+    }
+  }
+
+  table.zammad-table {
     max-width: 100%;
     border: 2px solid var(--table-border);
     border-collapse: collapse;

@@ -3,7 +3,7 @@
 import { isEqual } from 'lodash-es'
 import { computed, ref, watch } from 'vue'
 
-import { populateEditorNewLines } from '#shared/components/Form/fields/FieldEditor/utils.ts'
+import { transformEditorHtml } from '#shared/components/Form/fields/FieldEditor/utils.ts'
 import type { FormValues, FormRef, FormSubmitData } from '#shared/components/Form/types.ts'
 import { getNodeByName } from '#shared/components/Form/utils.ts'
 import { useCheckBodyAttachmentReference } from '#shared/composables/form/useCheckBodyAttachmentReference.ts'
@@ -115,9 +115,7 @@ export const useTicketEdit = (
 
     const contentType = getNodeByName(formId, 'body')?.context?.contentType || 'text/html'
 
-    if (contentType === 'text/html') {
-      article.body = populateEditorNewLines(article.body)
-    }
+    if (contentType === 'text/html') article.body = transformEditorHtml(article.body)
 
     return {
       type: article.articleType,
