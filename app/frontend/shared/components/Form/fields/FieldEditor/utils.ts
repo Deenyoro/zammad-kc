@@ -9,23 +9,6 @@ import { convertFileList } from '#shared/utils/files.ts'
 import type { Editor } from '@tiptap/core'
 import type { Component } from 'vue'
 
-const populateNewLines = (container: HTMLDivElement) => {
-  // prosemirror always adds a visible linebreak inside an empty paragraph,
-  // but it doesn't return it inside a schema, so we need to add it manually
-  container.querySelectorAll('p').forEach((p) => {
-    p.removeAttribute('data-marker')
-    if (
-      p.childNodes.length === 0 ||
-      p.lastChild?.nodeType !== Node.TEXT_NODE ||
-      p.textContent?.endsWith('\n')
-    ) {
-      p.appendChild(document.createElement('br'))
-    }
-  })
-
-  return container
-}
-
 const addTableClasses = (container: HTMLDivElement) => {
   container.querySelectorAll('table').forEach((table) => {
     // Skip tables that are nested within blockquote elements.
@@ -42,7 +25,6 @@ export const transformEditorHtml = (htmlContent: string): string => {
 
   container.innerHTML = htmlContent
 
-  container = populateNewLines(container)
   container = addTableClasses(container)
 
   return container.innerHTML
