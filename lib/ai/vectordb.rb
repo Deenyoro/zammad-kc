@@ -49,7 +49,7 @@ class AI::VectorDB
     )
   rescue Elastic::Transport::Transport::Error => e
     Rails.logger.error { "AI::VectorDB: #{e.message}" }
-    raise AI::VectorDB::Error, __('Unable to create Elasticsearch index')
+    raise AI::VectorDB::Error, __('The Elasticsearch index could not be created')
   end
 
   def create(content:, object_id:, object_name:, embedding:, metadata: {})
@@ -151,7 +151,7 @@ class AI::VectorDB
     client
   rescue Elastic::Transport::Transport::Error => e
     Rails.logger.error { "AI::VectorDB: #{e.message}" }
-    raise AI::VectorDB::Error, __('Unable to connect to Elasticsearch Vector DB')
+    raise AI::VectorDB::Error, __('Connection to Elasticsearch Vector DB failed')
   end
 
   def version_equates

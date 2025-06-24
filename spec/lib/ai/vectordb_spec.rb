@@ -49,7 +49,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
       end
 
       it 'raises AI::VectorDB::Error' do
-        expect { instance.migrate }.to raise_error(AI::VectorDB::Error, 'Unable to create Elasticsearch index')
+        expect { instance.migrate }.to raise_error(AI::VectorDB::Error, 'The Elasticsearch index could not be created')
       end
     end
 
