@@ -79,4 +79,18 @@ RSpec.describe 'ObjectManager::Attribute::Object::Ticket', aggregate_failures: t
       expect(ticket.attributes[attribute.name]).to eq('f')
     end
   end
+
+  # https://github.com/zammad/zammad/issues/5666
+  describe 'external data attribute is initialized correctly', db_strategy: :reset do
+    let(:attribute) { create(:object_manager_attribute_autocompletion_ajax_external_data_source) }
+
+    it 'initializes with the correct value' do
+      attribute
+      ObjectManager::Attribute.migration_execute
+
+      ticket = build(:ticket)
+
+      expect(ticket.attributes[attribute.name]).to eq({})
+    end
+  end
 end

@@ -20,6 +20,8 @@ RSpec.describe ObjectManager::Attribute::SetDefaults, time_zone: 'Europe/London'
         create("object_manager_attribute_#{key}", name: "rspec_#{key}_no_default", default: nil)
       end
 
+      create(:object_manager_attribute_autocompletion_ajax_external_data_source, name: 'rspec_external_data_source')
+
       create(:object_manager_attribute_text, name: 'rspec_empty', default: '')
 
       ObjectManager::Attribute.migration_execute
@@ -130,6 +132,21 @@ RSpec.describe ObjectManager::Attribute::SetDefaults, time_zone: 'Europe/London'
         it "#{elem} is empty" do
           expect(example.send(:"rspec_#{elem}_no_default")).to be_nil
         end
+      end
+    end
+
+    # https://github.com/zammad/zammad/issues/5666
+    context 'with external data source type' do
+      it 'saves correctly as an empty hash' do
+        ticket = create(:ticket)
+
+        expect(ticket.reload.rspec_external_data_source).to eq({})
+      end
+
+      it 'initializes correctly as an empty hash' do
+        ticket = build(:ticket)
+
+        expect(ticket.rspec_external_data_source).to eq({})
       end
     end
   end

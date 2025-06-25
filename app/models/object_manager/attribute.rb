@@ -694,15 +694,12 @@ to send no browser reload event, pass false
             options,
           )
         when 'autocompletion_ajax_external_data_source'
-          options = {
-            null: true,
-          }
-
           ActiveRecord::Migration.change_column(
             model.table_name,
             attribute.name,
             data_type,
-            options,
+            null:    false,
+            default: {},
           )
         when %r{^(integer|user_autocompletion|datetime|date)$}, %r{^(boolean|active)$}
           ActiveRecord::Migration.change_column(
@@ -749,14 +746,12 @@ to send no browser reload event, pass false
           **options,
         )
       when 'autocompletion_ajax_external_data_source'
-        options = {
-          null: true,
-        }
         ActiveRecord::Migration.add_column(
           model.table_name,
           attribute.name,
           data_type,
-          **options,
+          null:    false,
+          default: {},
         )
       when %r{^(integer|user_autocompletion)$}, %r{^(boolean|active)$}, %r{^(datetime|date)$}
         ActiveRecord::Migration.add_column(

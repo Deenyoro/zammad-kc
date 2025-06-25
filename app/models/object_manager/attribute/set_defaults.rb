@@ -55,6 +55,14 @@ class ObjectManager
         end
       end
 
+      # https://github.com/zammad/zammad/issues/5666
+      # External data source fields do not have configurable default value
+      # However, Rails 7.2 does not pick up JSONB default value on object initialization
+      # Thus using this mechanism to ensure default value is set
+      def build_value_autocompletion_ajax_external_data_source(_)
+        {}
+      end
+
       def attributes_for(record)
         query     = ObjectManager::Attribute.active.editable.for_object(record.class)
         cache_key = "#{query.cache_key_with_version}/attribute_defaults"
