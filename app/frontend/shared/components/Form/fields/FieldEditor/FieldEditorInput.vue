@@ -341,7 +341,6 @@ const classes = getFieldEditorClasses()
 }
 
 .tableWrapper {
-  padding: 1rem 0;
   overflow-x: auto;
   max-width: 100%;
 }

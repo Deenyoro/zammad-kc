@@ -23,6 +23,7 @@
       }
       p {
         margin: 8px 0;
+        min-height: 1.25rem;
       }
       blockquote {
         padding: 1px 12px;
@@ -45,16 +46,40 @@
         background: transparent;
       }
       table {
+        border-collapse: collapse;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+        border: none;
+        table-layout: auto;
+        display: block;
+        width: 100%;
+        overflow: auto;
+        word-break: keep-all;
+        margin: 0 0 16px;
+      }
+      table td {
+        border-collapse: collapse;
+      }
+      td, th {
+        padding: 7px 12px;
+      }
+      th {
+        font-weight: bold;
+        text-align: center;
+      }
+      col {
+        width: auto;
+      }
+      table.zammad-table {
         max-width: 100%;
         border: 2px solid hsl(0, 0%, 69%);
-        border-collapse: collapse;
         table-layout: fixed;
-        width: 100%;
+        display: table;
         margin: 8px 0;
         overflow: hidden;
       }
-      table td,
-      table th {
+      table.zammad-table td,
+      table.zammad-table th {
         min-width: 1em;
         border: 1px solid hsl(0, 0%, 69%);
         vertical-align: top;
@@ -62,12 +87,12 @@
         padding: 3px 5px;
         box-sizing: border-box;
       }
-      table td > *,
-      table th > * {
+      table.zammad-table td > *,
+      table.zammad-table th > * {
         margin: 0;
       }
-      table th {
-        font-weight: bold;
+      table.zammad-table th {
+        text-align: unset;
         background-color: hsla(0, 0%, 0%, 0.1);
       }
       hr {

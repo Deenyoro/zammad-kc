@@ -164,7 +164,7 @@
     }
 
     p {
-      @apply my-2;
+      @apply my-2 min-h-5;
     }
 
     blockquote {
@@ -232,16 +232,12 @@
     }
 
     table.zammad-table,
-    &:not(.Content .inner-article-body) :not(blockquote) table {
+    &:not(.Content .inner-article-body) table {
       @apply max-w-full border-2 dark:border-neutral-500 border-neutral-700 border-collapse table-fixed w-full my-2 overflow-hidden;
 
       td,
       th {
         @apply min-w-[1em] border dark:border-neutral-500 border-neutral-700 align-top relative py-[3px] px-[5px] box-border;
-
-        > * {
-          @apply m-0;
-        }
       }
 
       th {
@@ -249,8 +245,35 @@
       }
     }
 
+    table td,
+    table th {
+      > * {
+        @apply m-0;
+      }
+    }
+
     hr {
       @apply my-2 h-px bg-stone-200 dark:bg-neutral-500 text-[0px] border-none;
+    }
+  }
+
+  /*
+    Reset styles for nested tables in blockquotes and signatures.
+      There is currently no way to determine whether they are internal or external.
+      These tables will not be assigned `zammad-table` class on submission anyway.
+      We need to increase specificity to override the base styles, therefore we repeat the wrapper selector.
+  */
+  .ProseMirror blockquote .tableWrapper.tableWrapper.tableWrapper table,
+  .ProseMirror [data-signature='true'] .tableWrapper.tableWrapper table {
+    @apply max-w-none border-1 dark:border-neutral-500/60 border-neutral-700/60 table-auto w-auto m-0 overflow-auto;
+
+    td,
+    th {
+      @apply min-w-auto dark:border-neutral-500/60 border-neutral-700/60;
+    }
+
+    th {
+      @apply bg-transparent;
     }
   }
 

@@ -14,6 +14,9 @@ const addTableClasses = (container: HTMLDivElement) => {
     // Skip tables that are nested within blockquote elements.
     if (table.closest('blockquote')) return
 
+    // Skip tables that are nested within signature containers.
+    if (table.closest('[data-signature="true"]')) return
+
     table.classList.add('zammad-table')
   })
 
