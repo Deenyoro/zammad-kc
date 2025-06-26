@@ -32,7 +32,7 @@ const { updateTitle } = useTicketEditTitle(ticketId)
     <div class="flex" :class="{ 'mt-1': !hideDetails }">
       <UserPopoverWithTrigger
         v-if="ticket.customer"
-        class="h-min"
+        class="h-min z-[11]"
         :avatar-config="{
           size: hideDetails ? 'medium' : 'normal',
         }"
@@ -41,7 +41,7 @@ const { updateTitle } = useTicketEditTitle(ticketId)
 
       <CommonOrganizationAvatar
         v-if="ticket.organization"
-        class="ltr:-translate-x- -z-10 ltr:-translate-x-1.5 rtl:translate-x-1.5"
+        class="ltr:-translate-x- z-10 ltr:-translate-x-1.5 rtl:translate-x-1.5"
         :size="hideDetails ? 'medium' : 'normal'"
         :entity="ticket.organization"
       />

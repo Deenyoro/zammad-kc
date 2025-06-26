@@ -180,7 +180,7 @@ const collapseButtonClass = computed(() => {
       v-if="collapsible"
       :collapsed="isCollapsed"
       :owner-id="id"
-      class="absolute top-[49px] z-20 peer-hover:opacity-100"
+      class="absolute top-[49px] z-30 peer-hover:opacity-100"
       :inverse="position === SidebarPosition.End"
       variant="tertiary-gray"
       :collapse-label="$t('Collapse sidebar')"
