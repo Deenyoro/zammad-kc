@@ -4,6 +4,8 @@ let editorColorMenuClasses = {
   colorSchemeList: {
     base: '',
     button: '',
+    autoButton: '',
+    autoButtonIcon: '',
   },
 }
 

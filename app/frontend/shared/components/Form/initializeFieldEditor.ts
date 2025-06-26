@@ -8,6 +8,7 @@ import type { FieldEditorClass } from './types.ts'
 let editorClasses: FieldEditorClass = {
   actionBar: {
     tableMenuContainer: '',
+    tableMenuGrid: '',
     button: {
       base: '',
     },

@@ -79,8 +79,10 @@ export const initializeGlobalComponentStyles = () => {
 
   initializeEditorColorMenuClasses({
     colorSchemeList: {
-      base: 'border-b border-stone-200 dark:border-neutral-500 pb-1',
-      button: 'p-2',
+      base: 'gap-1',
+      button: 'w-4',
+      autoButton: 'h-4 bg-blue-200 text-black dark:bg-gray-700 dark:text-white',
+      autoButtonIcon: '',
     },
   })
 

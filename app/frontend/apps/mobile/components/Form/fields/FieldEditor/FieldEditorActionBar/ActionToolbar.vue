@@ -105,20 +105,14 @@ whenever(
         <button
           :title="$t(action.label || action.name)"
           type="button"
-          class="flex items-center gap-1 rounded bg-black p-2 lg:hover:bg-gray-300"
+          class="relative flex items-center gap-1 rounded bg-black p-2 lg:hover:bg-gray-300"
           :class="[
             action.class,
             {
               'bg-gray-300': isActive?.(action.name, action.attributes),
-              'color-indicator': action.name === 'textColor',
             },
           ]"
           :disabled="action.disabled"
-          :style="{
-            '--color-indicator-background': editor?.getAttributes('textStyle')?.color
-              ? editor.getAttributes('textStyle').color
-              : '#ffffff',
-          }"
           :aria-label="$t(action.label || action.name)"
           :aria-pressed="isActive?.(action.name, action.attributes)"
           tabindex="-1"
@@ -131,6 +125,15 @@ whenever(
         >
           <CommonIcon :name="action.icon" size="small" decorative />
           <CommonIcon v-if="action.subMenu" name="caret" size="xs" decorative />
+          <div
+            v-if="action.name === 'textColor'"
+            class="color-indicator absolute bottom-[0.6rem] h-1 w-1 border border-gray-400 rounded-xs box-content start-1/2 rtl:translate-x-1/2 ltr:-translate-x-1/2"
+            :style="{
+              backgroundColor: props.editor?.getAttributes('textStyle')?.color
+                ? props.editor.getAttributes('textStyle').color
+                : 'rgb(0, 0, 0)',
+            }"
+          />
         </button>
         <div v-if="action.showDivider && idx < actions.length - 1">
           <hr :class="action.dividerClass" class="h-6 w-px border-0 bg-black" />
@@ -187,22 +190,126 @@ whenever(
 }
 
 .color-indicator {
-  --color-indicator-background: transparent;
+  /* auto */
+  &[style*='background-color: rgb(0, 0, 0)'] {
+    background-color: rgb(255, 255, 255) !important;
+  }
 
-  position: relative;
+  /* neutral 1 */
+  &[style*='background-color: rgb(102, 102, 102)'] {
+    background-color: rgb(204, 204, 204) !important;
+  }
 
-  &::before {
-    content: '';
-    border: solid 1px var(--color-gray-400);
-    background: var(--color-indicator-background) !important;
-    position: absolute;
-    bottom: 0.6rem;
-    left: 50%;
-    height: 0.25rem;
-    width: 0.25rem;
-    transform: translateX(-50%);
-    border-radius: 2px;
-    box-sizing: content-box;
+  /* neutral 2 is the same for both themes */
+
+  /* neutral 3 */
+  &[style*='background-color: rgb(204, 204, 204)'] {
+    background-color: rgb(102, 102, 102) !important;
+  }
+
+  /* neutral 4 */
+  &[style*='background-color: rgb(255, 255, 255)'] {
+    background-color: rgb(0, 0, 0) !important;
+  }
+
+  /* red 1 */
+  &[style*='background-color: rgb(239, 68, 68)'] {
+    background-color: rgb(241, 152, 167) !important;
+  }
+
+  /* orange 1 */
+  &[style*='background-color: rgb(205, 121, 45)'] {
+    background-color: rgb(246, 211, 102) !important;
+  }
+
+  /* green 1 */
+  &[style*='background-color: rgb(80, 140, 70)'] {
+    background-color: rgb(170, 214, 164) !important;
+  }
+
+  /* blue 1 */
+  &[style*='background-color: rgb(48, 100, 172)'] {
+    background-color: rgb(122, 202, 247) !important;
+  }
+
+  /* purple 1 */
+  &[style*='background-color: rgb(107, 41, 132)'] {
+    background-color: rgb(201, 135, 236) !important;
+  }
+
+  /* red 2 */
+  &[style*='background-color: rgb(235, 61, 79)'] {
+    background-color: rgb(237, 97, 118) !important;
+  }
+
+  /* orange 2 */
+  &[style*='background-color: rgb(233, 159, 59)'] {
+    background-color: rgb(243, 193, 79) !important;
+  }
+
+  /* green 2 */
+  &[style*='background-color: rgb(95, 159, 84)'] {
+    background-color: rgb(127, 187, 118) !important;
+  }
+
+  /* blue 2 */
+  &[style*='background-color: rgb(70, 147, 231)'] {
+    background-color: rgb(91, 174, 243) !important;
+  }
+
+  /* purple 2 */
+  &[style*='background-color: rgb(153, 62, 195)'] {
+    background-color: rgb(179, 91, 223) !important;
+  }
+
+  /* red 3 */
+  &[style*='background-color: rgb(237, 97, 118)'] {
+    background-color: rgb(235, 61, 79) !important;
+  }
+
+  /* orange 3 */
+  &[style*='background-color: rgb(243, 193, 79)'] {
+    background-color: rgb(233, 159, 59) !important;
+  }
+
+  /* green 3 */
+  &[style*='background-color: rgb(127, 187, 118)'] {
+    background-color: rgb(95, 159, 84) !important;
+  }
+
+  /* blue 3 */
+  &[style*='background-color: rgb(91, 174, 243)'] {
+    background-color: rgb(70, 147, 231) !important;
+  }
+
+  /* purple 3 */
+  &[style*='background-color: rgb(179, 91, 223)'] {
+    background-color: rgb(153, 62, 195) !important;
+  }
+
+  /* red 4 */
+  &[style*='background-color: rgb(241, 152, 167)'] {
+    background-color: rgb(239, 68, 68) !important;
+  }
+
+  /* orange 4 */
+  &[style*='background-color: rgb(246, 211, 102)'] {
+    background-color: rgb(205, 121, 45) !important;
+  }
+
+  /* green 4 */
+  &[style*='background-color: rgb(170, 214, 164)'] {
+    background-color: rgb(80, 140, 70) !important;
+  }
+
+  /* blue 4 */
+  &[style*='background-color: rgb(122, 202, 247)'] {
+    background-color: rgb(48, 100, 172) !important;
+  }
+
+  /* purple 4 */
+  &[style*='background-color: rgb(201, 135, 236)'] {
+    background-color: rgb(107, 41, 132) !important;
   }
 }
 </style>

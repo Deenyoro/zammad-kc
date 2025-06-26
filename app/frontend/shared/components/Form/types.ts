@@ -303,6 +303,7 @@ export type FieldLinkClassMap = Record<FieldLinkClass, string>
 export type FieldEditorClass = {
   actionBar: {
     tableMenuContainer: string
+    tableMenuGrid: string
     button: {
       base: string
     }

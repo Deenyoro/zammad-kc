@@ -79,9 +79,10 @@ export const initializeFormFields = () => {
   initializeFieldEditorClasses({
     actionBar: {
       tableMenuContainer:
-        'gap-1.5 px-1.5 py-1.5 focus:outline focus:outline-1 focus:outline-offset-2 rounded-md focus:outline-blue-800',
+        'gap-1 p-2 focus:outline focus:outline-1 focus:outline-offset-2 rounded-md focus:outline-blue-800',
+      tableMenuGrid: 'gap-1',
       button: {
-        base: 'focus-visible-app-default dark:hover:bg-blue-900 hover:bg-blue-600 rounded-lg dark:hover:text-white hover:text-black transition-color p-1.5',
+        base: 'focus-visible-app-default dark:hover:bg-blue-900 hover:bg-blue-600 rounded-lg dark:hover:text-white hover:text-black transition-color',
       },
     },
     input: {

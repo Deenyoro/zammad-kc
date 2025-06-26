@@ -337,7 +337,13 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
 
     cy.findByTestId('action-bar').findByLabelText('Change text color').click()
 
-    cy.findByLabelText('Monza').click()
-    cy.findByRole('textbox').should('contain.html', '<span style="color: #B00020">world</span>')
+    cy.get('[data-test-id="popupWindow"]').within(() =>
+      cy.get('[style="background-color: rgb(239, 68, 68);"]').click(),
+    )
+
+    cy.findByRole('textbox').should(
+      'contain.html',
+      '<span style="color: rgb(239, 68, 68)">world</span>',
+    )
   })
 })

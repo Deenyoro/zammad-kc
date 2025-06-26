@@ -73,9 +73,10 @@ export const initializeFormFields = () => {
 
   initializeFieldEditorClasses({
     actionBar: {
-      tableMenuContainer: 'gap-1 p-2',
+      tableMenuContainer: 'gap-2 p-4',
+      tableMenuGrid: 'gap-2',
       button: {
-        base: 'rounded bg-black p-2 lg:hover:bg-gray-300', // Should we add a hover class here? It was there in the original code.
+        base: 'rounded-sm bg-black',
       },
     },
     input: {

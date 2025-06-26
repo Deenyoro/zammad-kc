@@ -3,10 +3,11 @@
 <script setup lang="ts">
 import { toRef } from 'vue'
 
+import { baseColors } from '#shared/components/Form/fields/FieldEditor/features/color-picker/colors/colors-base.ts'
+import { neutralColors } from '#shared/components/Form/fields/FieldEditor/features/color-picker/colors/colors-neutral.ts'
 import ColorSchemeList from '#shared/components/Form/fields/FieldEditor/features/color-picker/ColorSchemeList.vue'
 import { getEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/features/color-picker/initializeEditorColorMenuClasses.ts'
 import { getFieldEditorClasses } from '#shared/components/Form/initializeFieldEditor.ts'
-import { useColorPallet } from '#shared/composables/useColorPallet/useColorPallet.ts'
 
 import type { Editor } from '@tiptap/vue-3'
 
@@ -20,13 +21,19 @@ const emit = defineEmits<{
 
 const editor = toRef(props, 'editor')
 
-const { accentColorPallet, neutralColorPallet } = useColorPallet()
-
 const classes = getFieldEditorClasses()
 const menuClasses = getEditorColorMenuClasses()
 
 const handleSelectColor = (color: string) => {
   emit('action', color)
+}
+
+const unsetColor = () => {
+  if (!props.editor) return
+
+  props.editor.commands.unsetColor()
+
+  handleSelectColor('auto')
 }
 </script>
 
@@ -34,30 +41,44 @@ const handleSelectColor = (color: string) => {
   <div v-if="editor" class="relative">
     <div
       data-test-id="color-menu-action-bar"
-      class="Menubar relative flex max-w-md flex-col flex-wrap overflow-x-auto overflow-y-hidden"
-      :class="[classes.actionBar.tableMenuContainer]"
+      class="Menubar mx-auto flex flex-col relative max-w-md overflow-x-auto overflow-y-hidden"
+      :class="classes.actionBar.tableMenuContainer"
       role="toolbar"
       tabindex="0"
     >
-      <ColorSchemeList
-        v-for="(color, index) in neutralColorPallet"
-        :key="`${color}-${index}`"
-        :class="[menuClasses.colorSchemeList.base]"
-        :editor="editor"
-        orientation="horizontal"
-        :color-scheme="color"
-        @select-color="handleSelectColor"
-      />
-
-      <div class="flex gap-1">
+      <div class="grid grid-cols-5" :class="classes.actionBar.tableMenuGrid">
         <ColorSchemeList
-          v-for="(color, index) in accentColorPallet"
-          :key="`${color}-${index}`"
+          v-for="(palette, index) in baseColors"
+          :key="`palette-${index}`"
+          :class="menuClasses.colorSchemeList.base"
           :editor="editor"
-          :color-scheme="color"
+          :color-palette="palette"
           @select-color="handleSelectColor"
         />
       </div>
+
+      <ColorSchemeList
+        :class="menuClasses.colorSchemeList.base"
+        :editor="editor"
+        orientation="horizontal"
+        :color-palette="neutralColors"
+        @select-color="handleSelectColor"
+      >
+        <button
+          v-tooltip="i18n.t('Reset text color')"
+          class="col-span-2 rounded-xs"
+          :class="menuClasses.colorSchemeList.autoButton"
+          type="button"
+          @click="unsetColor"
+        >
+          <CommonIcon
+            class="mx-auto"
+            :class="menuClasses.colorSchemeList.autoButtonIcon"
+            name="editor-text-color"
+            size="tiny"
+          />
+        </button>
+      </ColorSchemeList>
     </div>
   </div>
 </template>
