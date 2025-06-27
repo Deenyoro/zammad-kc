@@ -562,6 +562,15 @@ ul {
   outline-style: none;
   border-radius: 3px;
 
+  /*
+  Display error of copied text in dark mode #5589
+
+  This is some hack to prevent the chrome from adding styling
+  on pasting and editing in the richtext editor. To understand it more,
+  check the tests in the spec/system/ticket/zoom_spec.rb.
+  */
+  color: unset;
+
   /* needed to make empty tags editable, otherwise no focus can be set */
   min-height: 10px;
   min-width: 20px;

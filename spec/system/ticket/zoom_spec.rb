@@ -2603,7 +2603,30 @@ RSpec.describe 'Ticket zoom', type: :system do
         field.send_keys('test ')
         field.send_keys([magic_key, 'v'])
         field.send_keys([:enter])
-        expect(field.all('span[style]').length).to eq(0)
+        field.send_keys('test ')
+        field.send_keys([magic_key, 'v'])
+        field.send_keys([:enter])
+        click '.js-submit'
+        wait.until do
+          body = Ticket::Article.last.body
+          body.include?('test') && body.exclude?('rgb')
+        end
+      end
+    end
+
+    it 'uses escape to remove last newline without stylings' do
+      within(:active_content) do
+        field.send_keys('test1')
+        field.send_keys([:enter])
+        field.send_keys([:enter])
+        field.send_keys('test2')
+        field.send_keys([:home])
+        field.send_keys([:backspace])
+        click '.js-submit'
+        wait.until do
+          body = Ticket::Article.last.body
+          body.include?('test') && body.exclude?('rgb')
+        end
       end
     end
   end
