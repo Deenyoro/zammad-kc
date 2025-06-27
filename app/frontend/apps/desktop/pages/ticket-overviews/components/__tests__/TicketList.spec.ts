@@ -148,7 +148,7 @@ describe('TicketList', () => {
 
     const { wrapper } = renderTicketList()
 
-    expect(await wrapper.findByIconName('priority-high')).toBeInTheDocument()
+    expect(await wrapper.findByIconName('priority-high-micro-2')).toBeInTheDocument()
   })
 
   it('resizes table column', async () => {

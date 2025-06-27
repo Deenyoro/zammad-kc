@@ -131,7 +131,7 @@ describe('SearchContent', () => {
       name: 'Search result for: Ticket',
     })
 
-    expect(getByIconName(table, 'priority-normal')).toBeInTheDocument()
+    expect(getByIconName(table, 'priority-normal-micro-2')).toBeInTheDocument()
   })
 
   it('syncs search input with URL param', async () => {

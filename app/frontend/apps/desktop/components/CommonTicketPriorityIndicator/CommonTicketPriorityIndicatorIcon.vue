@@ -13,11 +13,11 @@ const props = defineProps<Props>()
 const icon = computed(() => {
   switch (props.uiColor) {
     case 'high-priority':
-      return 'priority-high'
+      return 'priority-high-micro-2'
     case 'low-priority':
-      return 'priority-low'
+      return 'priority-low-micro-2'
     default:
-      return 'priority-normal'
+      return 'priority-normal-micro-2'
   }
 })
 
