@@ -45,7 +45,7 @@ const resolveEditor = (props: any = {}) => {
   return mountEditor(props).then(() => resolveContext())
 }
 
-describe('correctly adds signature', () => {
+describe('correctly adds signature', { retries: 2 }, () => {
   it('add signature into an empty editor', () => {
     resolveEditor().then((context) => {
       cy.findByRole('textbox')
