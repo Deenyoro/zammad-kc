@@ -50,7 +50,7 @@ RSpec.describe SearchIndexBackend, 'version_handling' do
     end
 
     context 'with version too high' do
-      let(:version) { '9.0.0' }
+      let(:version) { '10.0.0' }
 
       it 'returns correct information' do
         expect { described_class.info }.to raise_error(RuntimeError, "Version #{version} of configured elasticsearch is not supported.")

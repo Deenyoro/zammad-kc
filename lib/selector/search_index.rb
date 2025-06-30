@@ -60,8 +60,8 @@ class Selector::SearchIndex < Selector::Base
           {
             range: {
               options[:aggs_interval][:field] => {
-                from: options[:aggs_interval][:from],
-                to:   options[:aggs_interval][:to],
+                gte: options[:aggs_interval][:from],
+                lte: options[:aggs_interval][:to],
               },
             },
           },
