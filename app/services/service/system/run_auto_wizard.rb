@@ -3,6 +3,7 @@
 class Service::System::RunAutoWizard < Service::Base
 
   def execute(token:)
+    raise Service::System::CheckSetup::SystemSetupError, __('This system has already been configured.') if Service::System::CheckSetup.done?
     raise AutoWizardNotEnabledError if !AutoWizard.enabled?
 
     auto_wizard_data = AutoWizard.data

@@ -7,6 +7,8 @@ class Service::System::Import::ApplyConfigurationBase < Service::Base
   def initialize(url:, secret: nil, username: nil, tls_verify: true)
     super()
 
+    configured!
+
     @url = url
     @endpoint = build_endpoint
     @secret = secret
@@ -38,6 +40,10 @@ class Service::System::Import::ApplyConfigurationBase < Service::Base
     raise TLSError, __('The server presented a certificate that could not be verified.') if response.error&.include?('OpenSSL::SSL::SSLError')
 
     response
+  end
+
+  def configured!
+    raise Service::System::CheckSetup::SystemSetupError, __('This system has already been configured.') if Service::System::CheckSetup.done?
   end
 
   class UnreachableError < StandardError; end

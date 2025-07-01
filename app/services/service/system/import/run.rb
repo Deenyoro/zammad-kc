@@ -34,6 +34,7 @@ class Service::System::Import::Run < Service::Base
   end
 
   def configured!
+    raise Service::System::CheckSetup::SystemSetupError, __('This system has already been configured.') if Service::System::CheckSetup.done?
     raise ExecuteError if Setting.get('import_backend').empty?
   end
 
