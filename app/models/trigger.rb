@@ -7,6 +7,7 @@ class Trigger < ApplicationModel
   include HasSearchIndexBackend
   include CanSelector
   include CanSearch
+  include ChecksClientNotification
 
   include Trigger::Assets
 
