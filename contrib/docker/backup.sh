@@ -7,7 +7,10 @@ set -o pipefail
 : "${RESTORE_DIR:=/var/tmp/zammad/restore}"
 : "${BACKUP_TIME:=03:00}"
 : "${HOLD_DAYS:=10}"
-: "${POSTGRESQL_URL:="postgresql://${POSTGRESQL_USER}:${ESCAPED_POSTGRESQL_PASS}@${POSTGRESQL_HOST}:${POSTGRESQL_PORT}/${POSTGRESQL_DB}"}"
+
+# See DOCKERFILE for environment variables.
+ESCAPED_POSTGRESQL_PASS=$(echo "$POSTGRESQL_PASS" | ruby -ruri -e "puts URI.encode_uri_component(readline.chomp)")
+POSTGRESQL_URL="postgresql://${POSTGRESQL_USER}:${ESCAPED_POSTGRESQL_PASS}@${POSTGRESQL_HOST}:${POSTGRESQL_PORT}/${POSTGRESQL_DB}"
 
 function check_zammad_ready {
   echo 'Checking if Zammad is ready...'

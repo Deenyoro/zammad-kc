@@ -81,6 +81,15 @@ RUN bundle exec bootsnap precompile --gemfile app/ lib/
 # Final stage for app image
 FROM base
 
+# Application variables with defaults matching the Zammad docker stack.
+ENV POSTGRESQL_DB=zammad_production \
+    POSTGRESQL_HOST=zammad-postgresql \
+    POSTGRESQL_PORT=5432 \
+    POSTGRESQL_USER=zammad \
+    POSTGRESQL_PASS=zammad \
+    POSTGRESQL_OPTIONS=?pool=50 \
+    RAILS_TRUSTED_PROXIES=127.0.0.1,::1
+
 RUN groupadd --system --gid 1000 zammad && \
   useradd --create-home --home /opt/zammad --shell /bin/bash --uid 1000 --gid 1000 zammad
 
@@ -103,6 +112,5 @@ RUN ln -s "/opt/zammad/bin/docker-entrypoint" /docker-entrypoint.sh
 USER 1000:1000
 ENTRYPOINT ["/opt/zammad/bin/docker-entrypoint"]
 
-# Set labels to help portainer.io admins to access the shell and rails console.
-LABEL io.portainer.commands.bash-via-entrypoint="/opt/zammad/bin/docker-entrypoint /bin/bash"
-LABEL io.portainer.commands.rails-console="/opt/zammad/bin/docker-entrypoint bundle exec rails c"
+# Set labels to help portainer.io admins to access rails console.
+LABEL io.portainer.commands.rails-console="bundle exec rails c"

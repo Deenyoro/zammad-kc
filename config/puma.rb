@@ -1,6 +1,8 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-worker_count = Integer(ENV['WEB_CONCURRENCY'] || 0)
+# Support both ZAMMAD_WEB_CONCURRENCY (as recommended by the Zammad docker stack & documentation)
+#   and WEB_CONCURRENCY (Zammad and Rails default).
+worker_count = Integer(ENV['ZAMMAD_WEB_CONCURRENCY'] || ENV['WEB_CONCURRENCY'] || 0)
 workers worker_count
 
 threads_count_min = Integer(ENV['MIN_THREADS'] || 5)
