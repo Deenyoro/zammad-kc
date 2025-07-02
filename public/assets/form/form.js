@@ -277,6 +277,15 @@ $(function() {
         'Your Message…': 'Ditt meddelande…',
         'Your Name': 'Ditt namn',
       },
+      'tr': {
+        'Attachments': 'Ekler',
+        'Email': 'Eposta',
+        'Message': 'Mesaj',
+        'Name': 'Isim',
+        'Your Email': 'E-posta adresiniz',
+        'Your Message…': 'Mesajınız…',
+        'Your Name': 'Adınız',
+      },
       'uk': {
         'Attachments': 'Вкладення',
         'Email': 'Email',
