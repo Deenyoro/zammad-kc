@@ -188,8 +188,15 @@ module ApplicationController::RendersModels
     elsif params[:label] || params[:term]
       model_search_render_result_label(object, generic_objects)
     else
-      generic_objects_with_associations = generic_objects[:objects].map(&:attributes_with_association_ids)
-      model_index_render_result(generic_objects_with_associations)
+      result = generic_objects[:objects].map(&:attributes_with_association_ids)
+      if response_with_total_count?
+        result = {
+          records:     result,
+          total_count: generic_objects[:total_count],
+        }
+      end
+
+      model_index_render_result(result)
     end
   end
 
@@ -214,13 +221,19 @@ module ApplicationController::RendersModels
   end
 
   def model_search_render_result_expand(generic_objects)
-    list = generic_objects[:objects].map(&:attributes_with_association_names)
+    result = generic_objects[:objects].map(&:attributes_with_association_names)
+    if response_with_total_count?
+      result = {
+        records:     result,
+        total_count: generic_objects[:total_count],
+      }
+    end
 
-    render json: list, status: :ok
+    render json: result, status: :ok
   end
 
   def model_search_render_result_label(object, generic_objects)
-    rows = generic_objects[:objects].map do |row|
+    result = generic_objects[:objects].map do |row|
       realname = row.try(:fullname, recipient_line: true) || row.try(:fullname) || row.try(:name) || row.try(:id)
       value    = row.try(:email) || realname
 
@@ -231,7 +244,14 @@ module ApplicationController::RendersModels
       end
     end
 
-    render json: rows
+    if response_with_total_count?
+      result = {
+        records:     result,
+        total_count: generic_objects[:total_count],
+      }
+    end
+
+    render json: result
   end
 
 end

@@ -20,4 +20,8 @@ module ApplicationController::HasResponseExtentions
   def response_only_total_count?
     ActiveModel::Type::Boolean.new.cast params[:only_total_count]
   end
+
+  def response_with_total_count?
+    ActiveModel::Type::Boolean.new.cast params[:with_total_count]
+  end
 end

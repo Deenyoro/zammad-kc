@@ -2611,4 +2611,74 @@ RSpec.describe 'Ticket', type: :request do
       expect(Ticket.last.tag_list).to eq([])
     end
   end
+
+  describe 'ticket search parameter with_total_count only works with full=true #5687', authenticated_as: :agent, searchindex: true do
+    let(:tickets) { create_list(:ticket, 3, title: 'total test', group: Group.first) }
+
+    before do
+      tickets
+      searchindex_model_reload([Ticket])
+    end
+
+    it 'does search with -none- and with_total_count=false' do
+      get '/api/v1/tickets/search?query=total&full=false&with_total_count=false', params: {}, as: :json
+      expect(response).to have_http_status(:ok)
+      expect(json_response).to be_a(Array)
+      expect(json_response.count).to eq(3)
+    end
+
+    it 'does search with -none- and with_total_count=true' do
+      get '/api/v1/tickets/search?query=total&full=false&with_total_count=true', params: {}, as: :json
+      expect(response).to have_http_status(:ok)
+      expect(json_response).to be_a(Hash)
+      expect(json_response['total_count']).to eq(3)
+      expect(json_response['records'].count).to eq(3)
+    end
+
+    it 'does search with full=true and with_total_count=false' do
+      get '/api/v1/tickets/search?query=total&full=true', params: {}, as: :json
+      expect(response).to have_http_status(:ok)
+      expect(json_response).to be_a(Hash)
+      expect(json_response['total_count']).to eq(3)
+      expect(json_response['record_ids'].count).to eq(3)
+    end
+
+    it 'does search with full=true and with_total_count=true' do
+      get '/api/v1/tickets/search?query=total&full=true&with_total_count=true', params: {}, as: :json
+      expect(response).to have_http_status(:ok)
+      expect(json_response).to be_a(Hash)
+      expect(json_response['total_count']).to eq(3)
+      expect(json_response['record_ids'].count).to eq(3)
+    end
+
+    it 'does search with expand=true and with_total_count=false' do
+      get '/api/v1/tickets/search?query=total&expand=true&with_total_count=false', params: {}, as: :json
+      expect(response).to have_http_status(:ok)
+      expect(json_response).to be_a(Array)
+      expect(json_response.count).to eq(3)
+    end
+
+    it 'does search with expand=true and with_total_count=true' do
+      get '/api/v1/tickets/search?query=total&expand=true&with_total_count=true', params: {}, as: :json
+      expect(response).to have_http_status(:ok)
+      expect(json_response).to be_a(Hash)
+      expect(json_response['total_count']).to eq(3)
+      expect(json_response['records'].count).to eq(3)
+    end
+
+    it 'does search with term=total and with_total_count=false' do
+      get '/api/v1/tickets/search?query=total&term=total&with_total_count=false', params: {}, as: :json
+      expect(response).to have_http_status(:ok)
+      expect(json_response).to be_a(Array)
+      expect(json_response.count).to eq(3)
+    end
+
+    it 'does search with term=total and with_total_count=true' do
+      get '/api/v1/tickets/search?query=total&term=total&with_total_count=true', params: {}, as: :json
+      expect(response).to have_http_status(:ok)
+      expect(json_response).to be_a(Hash)
+      expect(json_response['total_count']).to eq(3)
+      expect(json_response['records'].count).to eq(3)
+    end
+  end
 end
