@@ -8,8 +8,8 @@ RSpec.describe 'AI::VectorDB Version Check' do # rubocop:disable RSpec/DescribeC
 
   context 'when Elasticsearch version is within the supported range' do
     before do
-      indices_client = instance_double(Elasticsearch::API::Indices::IndicesClient, exists?: true)
-      client = instance_double(Elasticsearch::Client, indices: indices_client, info: { 'version' => { 'number' => '8.12.0' } })
+      indices = instance_double(Elasticsearch::API::Indices::Actions, exists?: true)
+      client = instance_double(Elasticsearch::Client, indices:, info: { 'version' => { 'number' => '8.12.0' } })
       allow(instance).to receive_messages(client: client)
     end
 
@@ -18,27 +18,27 @@ RSpec.describe 'AI::VectorDB Version Check' do # rubocop:disable RSpec/DescribeC
     end
   end
 
-  context 'when Elasticsearch version is below the minimum required version' do
+  context 'when Elasticsearch version is below the minimum supported version' do
     before do
-      indices_client = instance_double(Elasticsearch::API::Indices::IndicesClient, exists?: true)
-      client = instance_double(Elasticsearch::Client, indices: indices_client, info: { 'version' => { 'number' => '8.10.0' } })
+      indices = instance_double(Elasticsearch::API::Indices::Actions, exists?: true)
+      client = instance_double(Elasticsearch::Client, indices: indices, info: { 'version' => { 'number' => '8.10.0' } })
       allow(instance).to receive_messages(client: client)
     end
 
     it 'raises an error' do
       expect { instance.ping! }.to raise_error(AI::VectorDB::Error, 'Incompatible Elasticsearch version')
     end
+  end
 
-    context 'when Elasticsearch version is above the maximum required version' do
-      before do
-        indices_client = instance_double(Elasticsearch::API::Indices::IndicesClient, exists?: true)
-        client = instance_double(Elasticsearch::Client, indices: indices_client, info: { 'version' => { 'number' => '8.19.0' } })
-        allow(instance).to receive_messages(client: client)
-      end
+  context 'when Elasticsearch version is above the maximum supported version' do
+    before do
+      indices = instance_double(Elasticsearch::API::Indices::Actions, exists?: true)
+      client = instance_double(Elasticsearch::Client, indices:, info: { 'version' => { 'number' => '10.0.1' } })
+      allow(instance).to receive_messages(client: client)
+    end
 
-      it 'raises an error' do
-        expect { instance.ping! }.to raise_error(AI::VectorDB::Error, 'Incompatible Elasticsearch version')
-      end
+    it 'raises an error' do
+      expect { instance.ping! }.to raise_error(AI::VectorDB::Error, 'Incompatible Elasticsearch version')
     end
   end
 end

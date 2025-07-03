@@ -8,7 +8,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
   describe '.ping!' do
     context 'when version is not suitable' do
       before do
-        allow(instance).to receive(:version_equates)
+        allow(instance).to receive(:verify_es_version!)
           .and_raise(AI::VectorDB::Error, 'Incompatible Elasticsearch version')
       end
 
@@ -19,8 +19,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
 
     context 'when ai_embeddings index does not exist' do
       before do
-        allow(instance).to receive(:version_equates)
-          .and_return(nil)
+        allow(instance).to receive(:verify_es_version!)
         allow(instance).to receive(:index_exists)
           .and_raise(AI::VectorDB::MigrationError, 'Elasticsearch index does not exist')
       end
@@ -32,7 +31,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
 
     context 'when version is suitable and ai_embeddings index exists' do
       before do
-        allow(instance).to receive_messages(version_equates: nil, index_exists: nil)
+        allow(instance).to receive_messages(verify_es_version!: nil, index_exists: nil)
       end
 
       it 'raises no error' do
@@ -55,7 +54,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
 
     context 'when migration succeeds' do
       before do
-        indices = instance_double(Elasticsearch::API::Indices::IndicesClient)
+        indices = instance_double(Elasticsearch::API::Indices::Actions)
         allow(indices).to receive_messages(create: Elasticsearch::API::Response, exists?: false)
         allow_any_instance_of(Elasticsearch::Client).to receive_messages(indices: indices, ping: true)
       end
@@ -70,7 +69,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
     context 'when index does not exist' do
       before do
         allow(instance).to receive(:client)
-          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::IndicesClient)))
+          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::Actions)))
         allow(instance.client.indices).to receive(:exists?).with(index: instance.index_name)
           .and_return(false)
       end
@@ -83,7 +82,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
     context 'when index exists' do
       before do
         allow(instance).to receive(:client)
-          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::IndicesClient)))
+          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::Actions)))
         allow(instance.client.indices).to receive(:exists?).with(index: instance.index_name)
           .and_return(true)
         allow(instance.client.indices).to receive(:delete).with(index: instance.index_name)
@@ -106,7 +105,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
     context 'when index does not exist' do
       before do
         allow(instance).to receive(:client)
-          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::IndicesClient)))
+          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::Actions)))
         allow(instance.client.indices).to receive(:exists?).with(index: instance.index_name)
           .and_return(false)
       end
@@ -120,7 +119,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
     context 'when object already exists' do
       before do
         allow(instance).to receive(:client)
-          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::IndicesClient)))
+          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::Actions)))
         allow(instance.client.indices).to receive(:exists?).with(index: instance.index_name)
           .and_return(true)
         allow(instance.client).to receive(:exists?).and_return(true)
@@ -134,7 +133,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
     context 'when object does not exist' do
       before do
         allow(instance).to receive(:client)
-          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::IndicesClient)))
+          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::Actions)))
         allow(instance.client.indices).to receive(:exists?).with(index: instance.index_name)
           .and_return(true)
         allow(instance.client).to receive_messages(exists?: false, index: true)
@@ -153,7 +152,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
     context 'when no document is found' do
       before do
         allow(instance).to receive(:client)
-          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::IndicesClient)))
+          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::Actions)))
         allow(instance.client.indices).to receive(:exists?).with(index: instance.index_name)
           .and_return(true)
         allow(instance.client).to receive_messages(exists?: false, get: nil)
@@ -181,7 +180,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
 
       before do
         allow(instance).to receive(:client)
-          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::IndicesClient)))
+          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::Actions)))
         allow(instance.client).to receive_messages(exists?: true, get: document)
       end
 
@@ -198,7 +197,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
     context 'when document does not exist' do
       before do
         allow(instance).to receive(:client)
-          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::IndicesClient)))
+          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::Actions)))
         allow(instance.client.indices).to receive(:exists?).with(index: instance.index_name)
           .and_return(true)
         allow(instance.client).to receive_messages(exists?: false, delete: nil)
@@ -212,7 +211,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
     context 'when document exists' do
       before do
         allow(instance).to receive(:client)
-          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::IndicesClient)))
+          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::Actions)))
         allow(instance.client.indices).to receive(:exists?).with(index: instance.index_name)
           .and_return(true)
         allow(instance.client).to receive_messages(exists?: true, delete: true)
@@ -234,7 +233,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
     context 'when index does not exist' do
       before do
         allow(instance).to receive(:client)
-          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::IndicesClient)))
+          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::Actions)))
         allow(instance.client.indices).to receive(:exists?).with(index: instance.index_name)
           .and_return(false)
       end
@@ -248,7 +247,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
     context 'when document already exists' do
       before do
         allow(instance).to receive(:client)
-          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::IndicesClient)))
+          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::Actions)))
         allow(instance.client.indices).to receive(:exists?).with(index: instance.index_name)
           .and_return(true)
         allow(instance.client).to receive_messages(exists?: true, index: true)
@@ -262,7 +261,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
     context 'when document does not exist' do
       before do
         allow(instance).to receive(:client)
-          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::IndicesClient)))
+          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::Actions)))
         allow(instance.client.indices).to receive(:exists?).with(index: instance.index_name)
           .and_return(true)
         allow(instance.client).to receive_messages(exists?: false, index: true)
@@ -284,7 +283,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
     context 'when index does not exist' do
       before do
         allow(instance).to receive(:client)
-          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::IndicesClient)))
+          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::Actions)))
         allow(instance.client.indices).to receive(:exists?).with(index: instance.index_name)
           .and_return(false)
       end
@@ -298,7 +297,7 @@ RSpec.describe AI::VectorDB, :aggregate_failures do
     context 'when document exists' do
       before do
         allow(instance).to receive(:client)
-          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::IndicesClient)))
+          .and_return(instance_double(Elasticsearch::Client, indices: instance_double(Elasticsearch::API::Indices::Actions)))
         allow(instance.client.indices).to receive(:exists?).with(index: instance.index_name)
           .and_return(true)
         allow(instance.client).to receive_messages(update: true)

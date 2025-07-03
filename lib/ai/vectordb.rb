@@ -3,8 +3,8 @@
 require 'elasticsearch'
 
 class AI::VectorDB
-  MINIMUM_REQUIRED_VERSION = '8.11.0'.freeze
-  MAXIMUM_REQUIRED_VERSION = '8.18.0'.freeze
+  SUPPORTED_ES_VERSION_MINIMUM   = '8.11.0'.freeze
+  SUPPORTED_ES_VERSION_LESS_THAN = '10.0.0'.freeze
 
   def config
     @config ||= {
@@ -19,7 +19,7 @@ class AI::VectorDB
   end
 
   def ping!(only_version: false)
-    version_equates
+    verify_es_version!
     index_exists if !only_version
   end
 
@@ -154,11 +154,11 @@ class AI::VectorDB
     raise AI::VectorDB::Error, __('Connection to Elasticsearch Vector DB failed')
   end
 
-  def version_equates
+  def verify_es_version!
     version = Gem::Version.new(client.info['version']['number'])
-    minimum = Gem::Version.new(MINIMUM_REQUIRED_VERSION)
-    maximum = Gem::Version.new(MAXIMUM_REQUIRED_VERSION)
-    return if version.between?(minimum, maximum)
+    minimum = Gem::Version.new(SUPPORTED_ES_VERSION_MINIMUM)
+    less_than = Gem::Version.new(SUPPORTED_ES_VERSION_LESS_THAN)
+    return if version >= minimum && version < less_than
 
     Rails.logger.error { "AI::VectorDB: Incompatible Elasticsearch version #{client.info['version']['number']}" }
     raise AI::VectorDB::Error, __('Incompatible Elasticsearch version')
