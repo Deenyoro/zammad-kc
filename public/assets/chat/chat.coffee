@@ -553,8 +553,8 @@ do($ = window.jQuery, window) ->
         'Since you didn\'t respond in the last %s minutes your conversation with <strong>%s</strong> was closed.': 'Оскільки ви не відповіли протягом останніх %s хвилин, ваша розмова з <strong>%s</strong> була завершена.'
         'Start new conversation': 'Почніть нову розмову'
         'Today': 'Сьогодні'
-        'We are sorry, it is taking longer than expected to get a slot. Please try again later or send us an email. Thank you!': ''
-        'You are on waiting list position <strong>%s</strong>.': ''
+        'We are sorry, it is taking longer than expected to get a slot. Please try again later or send us an email. Thank you!': 'Вибачте, отримання слоту займає більше часу, ніж очікувалося. Будь ласка, спробуйте пізніше або надішліть нам електронного листа. Дякуємо!'
+        'You are on waiting list position <strong>%s</strong>.': 'Ви перебуваєте у списку очікування <strong>%s</strong>.'
       'zh-cn':
         '<strong>Chat</strong> with us!': '发起<strong>即时对话</strong>!'
         'All colleagues are busy.': '所有同事都很忙。'
