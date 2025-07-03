@@ -63,6 +63,7 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
         create(:ticket_article, ticket:)
 
+        # This will wait for the job to be enqueued.
         expect(page).to have_text 'generating the summary for you'
 
         perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
@@ -154,23 +155,27 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
         create(:ticket_article, ticket:)
 
-        expect(page).to have_text 'is preparing summary'
-
         expect(page).to have_no_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
+
+        wait.until do
+          enqueued_jobs.any? { |job| job[:job] == TicketAIAssistanceSummarizeJob }
+        end
 
         perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
 
         expect(page).to have_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
       end
 
-      it 'dot is not visible when summary is updated while looking at the summar tab' do
+      it 'dot is not visible when summary is updated while looking at the summary tab' do
         click '.tabsSidebar-tab[data-tab=summary]'
 
         create(:ticket_article, ticket:)
 
-        expect(page).to have_text 'is preparing summary'
-
         expect(page).to have_no_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
+
+        wait.until do
+          enqueued_jobs.any? { |job| job[:job] == TicketAIAssistanceSummarizeJob }
+        end
 
         perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
 
@@ -183,52 +188,4 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
     end
   end
 
-  describe 'Banner' do
-    context 'when ai_provider is set' do
-      it 'displays the summary banner and opens sidebar', performs_jobs: true do
-        expect(page).to have_text('Zammad Smart Assist ticket summary has been generated.')
-
-        click_on('See Summary')
-
-        within '.sidebar[data-tab="summary"]' do
-          expect(page).to have_text('Summary')
-        end
-
-        # Hides the banner after opening the sidebar.
-        expect(page).to have_no_text('Zammad Smart Assist ticket summary has been generated.')
-
-        refresh
-
-        # Remembers the seen state of the summary.
-        expect(page).to have_no_text('Zammad Smart Assist ticket summary has been generated.')
-
-        create(:ticket_article, ticket:)
-
-        # Shows the banner while the summary is being updated.
-        expect(page).to have_text('Zammad Smart Assist is preparing summary…')
-
-        perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
-
-        # Restores the banner when the summary is updated.
-        expect(page).to have_text('Zammad Smart Assist ticket summary has been generated.')
-      end
-
-      it 'allows to hide the summary banner permanently' do
-        expect(page).to have_text('Zammad Smart Assist ticket summary has been generated.')
-
-        click_on('Hide ticket summary banner')
-
-        in_modal do
-          click '.js-submit'
-        end
-
-        expect(page).to have_no_text('has prepared a summary of this ticket.')
-        expect(agent.reload.preferences).to include(ticket_summary_banner_hidden: be_truthy)
-
-        refresh
-
-        expect(page).to have_no_text('Zammad Smart Assist ticket summary has been generated.')
-      end
-    end
-  end
 end

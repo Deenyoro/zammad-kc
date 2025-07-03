@@ -10,7 +10,6 @@ import {
 } from '#shared/components/CommonNotifications/index.ts'
 
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
-import TicketSummaryBannerAppearance from '#desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue'
 import { useThemeStore } from '#desktop/stores/theme.ts'
 
 import { useBreadcrumb } from '../composables/useBreadcrumb.ts'
@@ -65,8 +64,6 @@ const { breadcrumbItems } = useBreadcrumb(__('Appearance'))
         :options="themeOptions"
         :disabled="savingTheme"
       />
-
-      <TicketSummaryBannerAppearance />
     </div>
   </LayoutContent>
 </template>

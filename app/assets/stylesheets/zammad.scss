@@ -6978,7 +6978,6 @@ a.list-group-item.active > .badge,
 }
 
 .ticket-article,
-.ticket-ai-summary-banner,
 .article-new {
   max-width: 1080px;
   margin: 0 auto;
@@ -7234,88 +7233,6 @@ a.list-group-item.active > .badge,
       margin-top: 1px;
       width: 16px;
       height: 16px;
-    }
-  }
-}
-
-.ticket-ai-summary-banner {
-  .ticket-ai-summary-banner-inner {
-    padding: 0 55px;
-    padding-bottom: 33px;
-
-    .ticket-ai-summary-banner-bordered {
-      @include ltr(padding, 10px 10px 10px 24px);
-      @include rtl(padding, 10px 24px 10px 10px);
-
-      position: relative;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
-
-      &::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        height: 2px;
-        background: var(--ai-assist-blue);
-        background: linear-gradient(90deg, var(--ai-assist-blue) 0%, var(--ai-assist-pink) 100%);
-      }
-    }
-
-    .ticket-ai-summary-message {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      flex: 1 1 150px;
-
-      .icon {
-        flex-grow: 0;
-        flex-shrink: 0;
-        color: var(--ai-assist-blue);
-        margin-bottom: 1px;
-      }
-
-      & > * {
-        @include bidi-style(margin-right, 10px, margin-left, 0);
-      }
-    }
-
-    .ticket-ai-summary-buttons {
-      flex: 0 0 auto;
-      margin: auto;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: center;
-
-      .btn {
-        @include bidi-style(margin-right, 10px, margin-left, 0);
-
-        white-space: nowrap;
-      }
-
-      .hide-banner {
-        @include bidi-style(right, 5px, left, 5px);
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 40px;
-        height: 30px;
-        padding: 9px 10px;
-        color: var(--text-normal);
-        cursor: pointer;
-
-        .icon-diagonal-cross {
-          display: block;
-          width: 10px;
-          height: 10px;
-        }
-      }
     }
   }
 }

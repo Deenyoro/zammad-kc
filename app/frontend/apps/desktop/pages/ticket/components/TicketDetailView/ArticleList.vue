@@ -11,7 +11,6 @@ import ArticleBubble from '#desktop/pages/ticket/components/TicketDetailView/Art
 import ArticleMore from '#desktop/pages/ticket/components/TicketDetailView/ArticleMore.vue'
 import DeliveryMessage from '#desktop/pages/ticket/components/TicketDetailView/DeliveryMessage.vue'
 import SystemMessage from '#desktop/pages/ticket/components/TicketDetailView/SystemMessage.vue'
-import TicketSummaryBanner from '#desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue'
 import { useArticleContext } from '#desktop/pages/ticket/composables/useArticleContext.ts'
 import { useTicketArticleRows } from '#desktop/pages/ticket/composables/useTicketArticlesRows.ts'
 
@@ -130,7 +129,5 @@ defineExpose({
         :reaction="row.reaction"
       />
     </article>
-
-    <TicketSummaryBanner class="mx-auto w-full" />
   </section>
 </template>

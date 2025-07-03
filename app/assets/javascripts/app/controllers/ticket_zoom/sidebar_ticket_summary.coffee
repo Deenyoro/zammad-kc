@@ -68,9 +68,6 @@ class App.SidebarTicketSummary extends App.Controller
 
     @badgeRenderLocal()
 
-    # trigger shown sidebar to hide ai banner
-    App.Event.trigger('ui::ticket::summarySidebar::shown', { ticket_id: @ticket.id })
-
   sidebarIsEnabled: =>
     return false if !App.Config.get('ai_provider')
     return false if !App.Config.get('ai_assistance_ticket_summary')

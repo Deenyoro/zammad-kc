@@ -19,11 +19,5 @@ RSpec.describe 'Profile > Appearance', type: :system do
         expect(value).to eq 'dark'
       end
     end
-
-    it('dose not show ticket summary banner preference setting') do
-      within :active_content do
-        expect(page).to have_no_content('TICKET SUMMARY')
-      end
-    end
   end
 end

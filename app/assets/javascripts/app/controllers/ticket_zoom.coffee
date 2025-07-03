@@ -591,11 +591,6 @@ class App.TicketZoom extends App.Controller
         parent:           @
       )
 
-      new App.TicketZoomBannerTicketSummary(
-        ticket: @ticket
-        el:     elLocal.find('.js-ticketZoomBannerSummary')
-      )
-
     # render init content
     if elLocal
       @html elLocal
