@@ -1,96 +1,65 @@
-# Methods for initializing and using text tools in a richtext editor
+# Methods for initializing and using text tools in the richtext editor context.
 
 App.TextTools =
-  textToolsInit: (el, disabled = false, startCallback = null, stopCallback = null) ->
+  textToolsInit: (el, disabled = false) ->
     return if not App.User.current()?.permission('ticket.agent')
     return if not App.Config.get('ai_provider')
     return if not App.Config.get('ai_assistance_text_tools')
 
-    # Remove any existing text tools, start from scratch.
-    #   This is necessary to avoid duplication of text tools in article type switching context.
-    el.find('.text-tools').remove()
+    ce = el.find('[contenteditable]').data().plugin_ce
 
-    # If attachments are present, append text tools to the same container.
-    if el.find('.article-attachment:not(.hide)').length and not el.find('.article-attachment .text-tools').length
-      el.find('.article-attachment').append( $( App.view('generic/text_tools')(disabled: disabled) ) )
-      el.find('.text-tools').css('transform', el.find('.attachmentPlaceholder').css('transform'))
+    ce.onSelection((selection) ->
+      el.find('.js-textToolsDropdown').remove()
 
-    # Otherwise, append text tools into their own container.
-    else if not el.find('.text-tools--standalone').length
-      el.append( $( App.view('generic/text_tools')(disabled: disabled, no_attachment: true) ) )
+      return if not App.Config.get('ai_provider')
+      return if not App.Config.get('ai_assistance_text_tools')
+      return if not selection.content
 
-    # Initialize the dropdown menu.
-    #  This seems to be necessary only in the article reply context.
-    el.find('[data-toggle="dropdown"]').dropdown()
+      dropdown = el
+        .after( $( App.view('generic/text_tools_dropdown')(disabled: false) ) )
+        .next()
 
-    # Handle text tool actions.
-    el.off('click.text-tools-actions', '.js-action').on('click.text-tools-actions', '.js-action', (e) ->
-      e.preventDefault()
-      action = $(e.target).data('type')
-      ce = el.find('[contenteditable]').data().plugin_ce
+      if range = selection.ranges[0]
+        dropdown.offset(range.getBoundingClientRect())
 
-      el.find('[data-toggle="dropdown"]').dropdown('toggle')
+      closeDropdown = ->
+        dropdown
+          .removeClass('open')
+          .remove()
 
-      selection = ce?.getSelection()
+      dropdown.off('click.text-tools-actions', '.js-action').on('click.text-tools-actions', '.js-action', (e) ->
+        e.preventDefault()
 
-      if not selection?.content?.length
-        App.Event.trigger('notify', {
-          type:    'info'
-          msg:     __('Please select some text first.')
-          timeout: 2000
-        })
-        return
+        action = $(e.target).data('type')
 
-      params =
-        input: selection.content
-        service_type: action
+        closeDropdown()
 
-      App.TextTools.textToolsStartLoading(el, startCallback, stopCallback)
-
-      App.Ajax.request(
-        id:          'ai_assistance_text_tools'
-        type:        'POST'
-        url:         "#{App.Config.get('api_path')}/ai_assistance/text_tools"
-        data:        JSON.stringify(params)
-        processData: true
-        success: (data) ->
-          App.TextTools.textToolsStopLoading(el, stopCallback)
-          ce.replaceSelection(selection.ranges, data.output)
-        error: ->
-          App.TextTools.textToolsStopLoading(el, stopCallback)
+        new App.TextToolsModal(
+          container: el.closest('.content')
+          service: action
+          selectedText: selection.content
+          approve: (result) -> ce.replaceSelection(selection.ranges, result)
+        )
       )
+
+      dropdown
+        .addClass('open')
+        .find('.dropdown-menu')
+        .get(0)
+        .scrollIntoView(
+          block:    'start'
+          behavior: 'smooth'
+        )
+
+      setTimeout(->
+        $(window).off('click.dropdown-menu, keyup.dropdown-menu').on('click.dropdown-menu, keyup.dropdown-menu', (e) ->
+          return if e.type is 'keyup' and e.key.startsWith('Shift')
+          closeDropdown()
+          $(window).off('click.dropdown-menu, keyup.dropdown-menu')
+        )
+
+        el.one('click.dropdown-menu', (e) ->
+          closeDropdown()
+        )
+      , 100)
     )
-
-  textToolsStartLoading: (el, startCallback, stopCallback) ->
-    startCallback?() # callback is used to temporarily disable the submit button
-
-    loader = $( App.view('generic/text_tools_loading')() )
-
-    loader.off('click.text-tools-cancel', '.js-cancel').on('click.text-tools-cancel', '.js-cancel', (e) ->
-      e.preventDefault()
-      App.Ajax.abort('ai_assistance_text_tools')
-      App.TextTools.textToolsStopLoading(el, stopCallback)
-    )
-
-    el.find('[contenteditable]').prop('contenteditable', false)
-
-    if el.find('.article-attachment:not(.hide)').length > 0
-      el.find('.article-attachment').hide()
-    else
-      el.find('.text-tools').hide()
-
-    el.append(loader)
-
-  textToolsStopLoading: (el, stopCallback) ->
-    el.find('.js-loading').remove()
-
-    if el.find('.article-attachment:not(.hide)').length > 0
-      el.find('.article-attachment').show()
-    else
-      el.find('.text-tools').show()
-
-    el.find('[contenteditable]')
-      .prop('contenteditable', true)
-      .focus()
-
-    stopCallback?() # callback is used to re-enable the submit button

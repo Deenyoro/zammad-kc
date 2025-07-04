@@ -1,5 +1,6 @@
 class App.TicketZoomArticleNew extends App.Controller
   @include App.SecurityOptions
+  @include App.TextTools
 
   elements:
     '.js-textarea':                       'textarea'
@@ -271,6 +272,8 @@ class App.TicketZoomArticleNew extends App.Controller
       for attachment in @attachments
         @renderAttachment(attachment)
 
+    @textToolsInit(@textarea.parent(), false)
+
   params: =>
     params = @formParam( @$('.article-add') )
 
@@ -511,9 +514,6 @@ class App.TicketZoomArticleNew extends App.Controller
             when 'body:allowNoCaption'
               @bodyAllowNoCaption = articleType.bodyAllowNoCaption
 
-        # (Re)initialize text tools on every article type change.
-        App.TextTools.textToolsInit(@textarea.parent(), false, @richTextTextToolsStartCallback, @richTextTextToolsStopCallback)
-
     # convert remote src images to data uri
     App.Utils.htmlImage2DataUrlAsyncInline(@$('[data-name=body]'))
 
@@ -636,8 +636,6 @@ class App.TicketZoomArticleNew extends App.Controller
       options:
         duration: duration
         easing: 'easeOutQuad'
-        begin: => @$('.text-tools').hide().css('transform', "translateX(-#{@attachmentInputHolder.position().left}px)")
-        complete: => @$('.text-tools').fadeIn()
 
     @attachmentHint.velocity
       properties:
@@ -678,7 +676,6 @@ class App.TicketZoomArticleNew extends App.Controller
         options:
           duration: 300
           easing: 'easeOutQuad'
-          begin: => @$('.text-tools').hide()
 
       @attachmentHint.velocity
         properties:

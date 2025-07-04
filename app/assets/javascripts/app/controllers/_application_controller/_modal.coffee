@@ -18,6 +18,8 @@ class App.ControllerModal extends App.Controller
   buttonSubmit: true
   includeForm: true
   headPrefix: ''
+  headIcon: null
+  headIconClass: null
   shown: true
   closeOnAnyClick: false
   initalFormParams: {}
@@ -74,6 +76,8 @@ class App.ControllerModal extends App.Controller
     modal = $(App.view('modal')(
       head:              @head
       headPrefix:        @headPrefix
+      headIcon:          @headIcon
+      headIconClass:     @headIconClass
       message:           @message
       detail:            @detail
       buttonClose:       @buttonClose

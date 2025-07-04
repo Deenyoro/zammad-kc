@@ -114,12 +114,7 @@ class App.UiElement.richtext extends Spine.Module
         uploader.render()
       , 100, undefined, 'form_upload')
 
-    @textToolsInit(
-      item,
-      attribute.disabled,
-      -> item.find('[contenteditable]').trigger('textToolsStart'),
-      -> item.find('[contenteditable]').trigger('textToolsStop'),
-    ) if attribute.text_tools
+    @textToolsInit(item, false) if attribute.text_tools
 
     item
 

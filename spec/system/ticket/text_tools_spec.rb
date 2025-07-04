@@ -20,33 +20,60 @@ RSpec.describe 'AI Assistance Text Tools', authenticated_as: :authenticate, type
     allow_any_instance_of(AI::Service::TextSpellingAndGrammar).to receive(:execute).and_return(output)
   end
 
-  context 'when using ticket create' do
+  shared_examples 'showing text tools dropdown and replacing selected text' do
     before do
-      visit 'ticket/create'
+      skip('does not work with chrome driver') if Capybara.current_driver == :zammad_chrome
     end
 
-    it 'shows text tools action and replaces selected text' do
+    it 'shows text tools dropdown and replaces selected text' do
       set_editor_field_value('body', input)
-      send_keys([magic_key, 'a'])
 
-      expect(page).to have_no_css('[role=menu]')
+      # Wait for the taskbar update to finish.
+      taskbar_timestamp = Taskbar.last.updated_at
+      wait.until { Taskbar.last.updated_at != taskbar_timestamp }
 
-      click_on 'Smart Editor'
+      find("[data-name='body']").send_keys([magic_key, 'a'])
 
       expect(page).to have_css('[role=menu]')
 
       find('.js-action', text: 'Fix spelling and grammar').click
 
-      expect(page).to have_no_css('[role=menu]')
+      in_modal do
+        expect(page).to have_css('h1', text: 'Writing Assistant: Fix spelling and grammar')
+        expect(page).to have_text(input).and have_text(output[:content])
+
+        click_on 'Approve'
+      end
+
       check_editor_field_value('body', output[:content])
     end
+  end
+
+  shared_examples 'not showing text tools dropdown' do
+    it 'does not show text tools dropdown' do
+      set_editor_field_value('body', input)
+
+      # Wait for the taskbar update to finish.
+      taskbar_timestamp = Taskbar.last.updated_at
+      wait.until { Taskbar.last.updated_at != taskbar_timestamp }
+
+      find("[data-name='body']").send_keys([magic_key, 'a'])
+
+      expect(page).to have_no_css('[role=menu]')
+    end
+  end
+
+  context 'when using ticket create' do
+    before do
+      visit 'ticket/create'
+    end
+
+    it_behaves_like 'showing text tools dropdown and replacing selected text'
 
     context 'when text tools are disabled' do
       let(:ai_assistance_text_tools) { false }
 
-      it 'does not show text tools action' do
-        expect(page).to have_no_text('Smart Editor')
-      end
+      it_behaves_like 'not showing text tools dropdown'
     end
   end
 
@@ -66,28 +93,12 @@ RSpec.describe 'AI Assistance Text Tools', authenticated_as: :authenticate, type
       find('.attachmentPlaceholder-label').in_fixed_position
     end
 
-    it 'shows text tools action and replaces selected text' do
-      find('.articleNewEdit-body').send_keys(input)
-      send_keys([magic_key, 'a'])
-
-      expect(page).to have_no_css('[role=menu]')
-
-      click_on 'Smart Editor'
-
-      expect(page).to have_css('[role=menu]')
-
-      find('.js-action', text: 'Fix spelling and grammar').click
-
-      expect(page).to have_no_css('[role=menu]')
-      expect(find('.articleNewEdit-body').text).to eq(output[:content])
-    end
+    it_behaves_like 'showing text tools dropdown and replacing selected text'
 
     context 'when text tools are disabled' do
       let(:ai_assistance_text_tools) { false }
 
-      it 'does not show text tools action' do
-        expect(page).to have_text(ticket.title).and have_no_text('Smart Editor')
-      end
+      it_behaves_like 'not showing text tools dropdown'
     end
   end
 end

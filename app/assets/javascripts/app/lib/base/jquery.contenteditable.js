@@ -83,6 +83,24 @@
     this.$element.on('drop', this.onDrop.bind(this))
   }
 
+  Plugin.prototype.onSelection = function (callback) {
+    startSelectionHandler = function () {
+      endSelectionHandler = function() {
+        this.$element.closest('.content').off('mouseup.selection, keyup.selection')
+
+        // Skip empty selections.
+        sel = window.getSelection()
+        if (sel.isCollapsed) return
+
+        callback(this.getSelection())
+      }
+
+      this.$element.closest('.content').off('mouseup.selection, keyup.selection').on('mouseup.selection, keyup.selection', endSelectionHandler.bind(this))
+    }
+
+    $(document).on('selectionchange', startSelectionHandler.bind(this))
+  }
+
   Plugin.prototype.toggleBlock = function(tag) {
     sel = window.getSelection()
     node = $(sel.anchorNode)
@@ -341,9 +359,21 @@
       if (sel.rangeCount) {
         var container = $('<div />')
         for (var i = 0; i < sel.rangeCount; ++i) {
-          result.ranges.push(sel.getRangeAt(i))
-          container.append(sel.getRangeAt(i).cloneContents())
+          var range = sel.getRangeAt(i)
+
+          // Skip ranges that are not inside the element.
+          if (
+            !range.commonAncestorContainer.isSameNode(this.$element.get(0))
+            && !this.$element.get(0).contains(range.commonAncestorContainer)
+          ) continue
+
+          result.ranges.push(range)
+          container.append(range.cloneContents())
         }
+
+        // If no ranges are inside the element, return an empty result.
+        if (!result.ranges.length) return result
+
         if ( this.options.mode === 'textonly' ) {
           result.content = container.text().trim()
         }
