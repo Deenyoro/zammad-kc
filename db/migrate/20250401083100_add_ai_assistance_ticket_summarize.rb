@@ -73,7 +73,7 @@ class AddAIAssistanceTicketSummarize < ActiveRecord::Migration[7.2]
       options:     {},
       state:       {
         open_questions: true,
-        suggestions:    true,
+        suggestions:    false,
       },
       preferences: {
         authentication: true,

@@ -18,7 +18,7 @@ RSpec.describe 'Manage > AI > Ticket Summary', type: :system do
 
       expect(Setting.get('ai_assistance_ticket_summary_config')).to eq({
                                                                          'open_questions' => false,
-                                                                         'suggestions'    => false,
+                                                                         'suggestions'    => true, # by default feature was not enabled
                                                                        })
     end
 

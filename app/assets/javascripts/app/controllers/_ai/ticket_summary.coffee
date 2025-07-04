@@ -45,6 +45,7 @@ class App.TicketSummary extends App.ControllerAIFeatureBase
       }
       {
         name: __('Suggested Next Steps')
+        flags: ['experimental']
         key: 'suggestions'
         description: __('Provide some possible solutions to the problem as follow-up items.')
         active: config.suggestions,

@@ -28,6 +28,9 @@
           <%- @Icon('checkbox-checked', 'icon-checked') %>
           <span class="label-text"><%- @T(option.name) %></span>
         </label>
+        <% if Array.isArray(option.flags) and 'experimental' in option.flags: %>
+          <span class="badge badge--ai"><%- @T('Experimental') %></span>
+        <% end %>
         <span class="help-text"><%- @T(option.description) %></span>
       </div>
     <% end %>

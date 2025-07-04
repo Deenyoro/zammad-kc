@@ -6110,7 +6110,7 @@ Setting.create_if_not_exists(
   options:     {},
   state:       {
     open_questions: true,
-    suggestions:    true,
+    suggestions:    false,
   },
   preferences: {
     authentication: true,
