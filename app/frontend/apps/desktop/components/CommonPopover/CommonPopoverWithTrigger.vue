@@ -4,11 +4,12 @@
 import { onClickOutside, onLongPress, useElementHover, whenever } from '@vueuse/core'
 import { computed, onDeactivated, onUnmounted, shallowRef, watch } from 'vue'
 
+import getUuid from '#shared/utils/getUuid.ts'
+
 import CommonPopover, {
   type Props as CommonPopoverProps,
-} from '#shared/components/CommonPopover/CommonPopover.vue'
-import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
-import getUuid from '#shared/utils/getUuid.ts'
+} from '#desktop/components/CommonPopover/CommonPopover.vue'
+import { usePopover } from '#desktop/components/CommonPopover/usePopover.ts'
 
 interface Props extends Omit<CommonPopoverProps, 'owner'> {
   triggerLink?: string

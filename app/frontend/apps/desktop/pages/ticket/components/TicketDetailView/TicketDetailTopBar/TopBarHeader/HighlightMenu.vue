@@ -4,11 +4,11 @@
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 
-import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
-import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
 import { highlightColors } from '#shared/components/Form/fields/FieldEditor/features/color-picker/colors/colors-highlight.ts'
 import type { HighlightColor } from '#shared/components/Form/fields/FieldEditor/features/color-picker/colors/types.ts'
 
+import CommonPopover from '#desktop/components/CommonPopover/CommonPopover.vue'
+import { usePopover } from '#desktop/components/CommonPopover/usePopover.ts'
 import CommonPopoverMenu from '#desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 import { useThemeStore } from '#desktop/stores/theme.ts'

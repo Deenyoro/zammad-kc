@@ -3,9 +3,9 @@
 <script setup lang="ts">
 import { computed, type SetupContext, toRefs, useSlots } from 'vue'
 
-import type { CommonPopoverInstance } from '#shared/components/CommonPopover/types.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
 
+import type { CommonPopoverInstance } from '#desktop/components/CommonPopover/types.ts'
 import { usePopoverMenu } from '#desktop/components/CommonPopoverMenu/usePopoverMenu.ts'
 
 import CommonPopoverMenuItem from './CommonPopoverMenuItem.vue'

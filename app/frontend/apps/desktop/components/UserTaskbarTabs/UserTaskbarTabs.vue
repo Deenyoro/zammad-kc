@@ -8,8 +8,6 @@ import { cloneDeep } from 'lodash-es'
 import { storeToRefs } from 'pinia'
 import { type Ref, ref, watch, useTemplateRef, nextTick } from 'vue'
 
-import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
-import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
 import { useTouchDevice } from '#shared/composables/useTouchDevice.ts'
 import { EnumTaskbarEntityAccess } from '#shared/graphql/types.ts'
 import { MutationHandler } from '#shared/server/apollo/handler/index.ts'
@@ -17,6 +15,8 @@ import { startAndEndEventsDNDPlugin } from '#shared/utils/startAndEndEventsDNDPl
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonLoader from '#desktop/components/CommonLoader/CommonLoader.vue'
+import CommonPopover from '#desktop/components/CommonPopover/CommonPopover.vue'
+import { usePopover } from '#desktop/components/CommonPopover/usePopover.ts'
 import CommonSectionCollapse from '#desktop/components/CommonSectionCollapse/CommonSectionCollapse.vue'
 import { useUserCurrentTaskbarItemListPrioMutation } from '#desktop/entities/user/current/graphql/mutations/userCurrentTaskbarItemListPrio.api.ts'
 import { useUserCurrentTaskbarTabsStore } from '#desktop/entities/user/current/stores/taskbarTabs.ts'

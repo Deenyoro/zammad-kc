@@ -3,10 +3,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
-import type { Props as CommonPopoverProps } from '#shared/components/CommonPopover/CommonPopover.vue'
-import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
-
+import type { Props as CommonPopoverProps } from '#desktop/components/CommonPopover/CommonPopover.vue'
+import CommonPopover from '#desktop/components/CommonPopover/CommonPopover.vue'
+import { usePopover } from '#desktop/components/CommonPopover/usePopover.ts'
 import CommonPopoverMenu from '#desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue'
 
 import CommonButton from '../CommonButton/CommonButton.vue'

@@ -3,14 +3,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
-import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
 import { EnumTextDirection } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n/index.ts'
 import { useLocaleStore } from '#shared/stores/locale.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import type { DropdownItem } from '#desktop/components/CommonDropdown/types.ts'
+import CommonPopover from '#desktop/components/CommonPopover/CommonPopover.vue'
+import { usePopover } from '#desktop/components/CommonPopover/usePopover.ts'
 import CommonPopoverMenu from '#desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue'
 import CommonPopoverMenuItem from '#desktop/components/CommonPopoverMenu/CommonPopoverMenuItem.vue'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'

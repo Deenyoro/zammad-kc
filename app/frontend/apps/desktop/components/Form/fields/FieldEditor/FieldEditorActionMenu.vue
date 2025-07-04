@@ -5,8 +5,6 @@ import { findParentNodeClosestToPos } from '@tiptap/core'
 import { onKeyUp, useEventListener } from '@vueuse/core'
 import { computed, nextTick, toRef, type Component } from 'vue'
 
-import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
-import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
 import useEditorActionHelper from '#shared/components/Form/fields/FieldEditor/composables/useEditorActionHelper.ts'
 import type {
   EditorButton,
@@ -14,6 +12,8 @@ import type {
 } from '#shared/components/Form/fields/FieldEditor/types.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 
+import CommonPopover from '#desktop/components/CommonPopover/CommonPopover.vue'
+import { usePopover } from '#desktop/components/CommonPopover/usePopover.ts'
 import CommonPopoverMenu from '#desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 

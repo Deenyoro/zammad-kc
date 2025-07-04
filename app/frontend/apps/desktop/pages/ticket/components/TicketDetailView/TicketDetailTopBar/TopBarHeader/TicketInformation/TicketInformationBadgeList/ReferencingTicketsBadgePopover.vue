@@ -4,11 +4,11 @@
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 
-import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
-import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
 import { getTicketNumberWithHook } from '#shared/entities/ticket/composables/getTicketNumber.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 
+import CommonPopover from '#desktop/components/CommonPopover/CommonPopover.vue'
+import { usePopover } from '#desktop/components/CommonPopover/usePopover.ts'
 import CommonPopoverMenu from '#desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 import CommonTicketLabel from '#desktop/components/CommonTicketLabel/CommonTicketLabel.vue'

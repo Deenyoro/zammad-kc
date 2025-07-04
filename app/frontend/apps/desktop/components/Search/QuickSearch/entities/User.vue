@@ -16,6 +16,7 @@ const isUserInactive = computed(() => !props.item?.active)
 
 <template>
   <UserPopoverWithTrigger
+    :popover-config="{ orientation: 'right' }"
     class="group/item flex grow gap-2 rounded-md px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:no-underline!"
     :user="item as AvatarUser"
     :aria-description="isUserInactive ? $t('User is inactive.') : undefined"

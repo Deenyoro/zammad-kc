@@ -4,14 +4,14 @@
 import { computed, toRefs } from 'vue'
 
 import type { Sizes } from '#shared/components/CommonIcon/types.ts'
-import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
-import type { Orientation, Placement } from '#shared/components/CommonPopover/types.ts'
-import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import type { ButtonSize, ButtonVariant } from '#desktop/components/CommonButton/types.ts'
+import CommonPopover from '#desktop/components/CommonPopover/CommonPopover.vue'
+import type { Orientation, Placement } from '#desktop/components/CommonPopover/types.ts'
+import { usePopover } from '#desktop/components/CommonPopover/usePopover.ts'
 import CommonPopoverMenu from '#desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 import { usePopoverMenu } from '#desktop/components/CommonPopoverMenu/usePopoverMenu.ts'

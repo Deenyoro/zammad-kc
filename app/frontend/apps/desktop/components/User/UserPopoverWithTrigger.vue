@@ -3,7 +3,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { type Props as CommonPopoverProps } from '#shared/components/CommonPopover/CommonPopover.vue'
 import CommonUserAvatar, {
   type Props as CommonUserAvatarProps,
 } from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
@@ -12,6 +11,7 @@ import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 import { SYSTEM_USER_ID } from '#shared/utils/constants.ts'
 
+import { type Props as CommonPopoverProps } from '#desktop//components/CommonPopover/CommonPopover.vue'
 import CommonPopoverWithTrigger from '#desktop/components/CommonPopover/CommonPopoverWithTrigger.vue'
 import UserPopover from '#desktop/components/User/UserPopoverWithTrigger/UserPopover.vue'
 

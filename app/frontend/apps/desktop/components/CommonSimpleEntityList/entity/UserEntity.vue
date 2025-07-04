@@ -19,7 +19,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <UserPopoverWithTrigger no-focus-styling :user="entity">
+  <UserPopoverWithTrigger :popover-config="{ orientation: 'left' }" no-focus-styling :user="entity">
     <template #default="slotProps">
       <div class="flex items-center gap-2">
         <CommonUserAvatar

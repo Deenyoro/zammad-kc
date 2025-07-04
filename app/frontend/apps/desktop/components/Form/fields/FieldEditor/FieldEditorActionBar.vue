@@ -4,8 +4,6 @@
 import { storeToRefs } from 'pinia'
 import { nextTick, shallowRef, toRef, ref, defineAsyncComponent, watch } from 'vue'
 
-import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
-import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
 import useEditorActionHelper from '#shared/components/Form/fields/FieldEditor/composables/useEditorActionHelper.ts'
 import type {
   EditorButton,
@@ -17,6 +15,8 @@ import type { FieldEditorProps } from '#shared/components/Form/types.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 
 import useEditorActions from '#desktop//components/Form/fields/FieldEditor/useEditorActions.ts'
+import CommonPopover from '#desktop/components/CommonPopover/CommonPopover.vue'
+import { usePopover } from '#desktop/components/CommonPopover/usePopover.ts'
 import CommonPopoverMenu from '#desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue'
 import CommonPopoverMenuItem from '#desktop/components/CommonPopoverMenu/CommonPopoverMenuItem.vue'
 

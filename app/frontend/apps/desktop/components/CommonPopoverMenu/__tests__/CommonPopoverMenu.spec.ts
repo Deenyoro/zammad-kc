@@ -4,8 +4,8 @@ import { h } from 'vue'
 
 import { renderComponent } from '#tests/support/components/index.ts'
 
-import CommonPopover from '#shared/components/CommonPopover/CommonPopover.vue'
-import { usePopover } from '#shared/components/CommonPopover/usePopover.ts'
+import CommonPopover from '#desktop/components/CommonPopover/CommonPopover.vue'
+import { usePopover } from '#desktop/components/CommonPopover/usePopover.ts'
 
 import CommonPopoverMenu from '../CommonPopoverMenu.vue'
 
