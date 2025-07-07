@@ -40,7 +40,6 @@ export interface Props {
   placement?: Placement
   hideArrow?: boolean
   id?: string
-  noAutoFocus?: boolean
   persistent?: boolean
   noCloseOnClickOutside?: boolean
   zIndex?: string
@@ -348,7 +347,7 @@ const openPopover = () => {
 
   requestAnimationFrame(() => {
     nextTick(() => {
-      if (!props.noAutoFocus) moveNextFocusToTrap()
+      moveNextFocusToTrap()
       updateOwnerAriaExpandedState()
       testFlags.set('common-popover.opened')
 

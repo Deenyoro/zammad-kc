@@ -141,7 +141,6 @@ watch(
       placement="arrowStart"
       z-index="20"
       hide-arrow
-      no-auto-focus
     >
       <template v-if="Array.isArray(subMenuPopoverContent)">
         <CommonPopoverMenu
