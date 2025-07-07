@@ -163,7 +163,7 @@ watch(
             :icon="action.icon"
             variant="neutral"
             @click="
-              (event) => {
+              (event: MouseEvent) => {
                 action.command?.(event)
                 close()
               }
