@@ -2,13 +2,9 @@
 
 import { PluginKey } from '@tiptap/pm/state'
 import { VueRenderer } from '@tiptap/vue-3'
-import { useDebounceFn } from '@vueuse/core'
 
 import type { MentionType } from '#shared/components/Form/fields/FieldEditor/types.ts'
-import {
-  autoUpdatePosition,
-  setFloatingPopover,
-} from '#shared/components/Form/fields/FieldEditor/utils.ts'
+import { setFloatingPopover } from '#shared/components/Form/fields/FieldEditor/utils.ts'
 import { getEditorComponents } from '#shared/components/Form/initializeFieldEditor.ts'
 
 import type { Content, Editor } from '@tiptap/core'
@@ -18,9 +14,18 @@ interface MentionOptions<T> {
   activator: string
   type: MentionType
   allowSpaces?: boolean
+
   items(props: { query: string; editor: Editor }): T[] | Promise<T[]>
+
   // oxlint-disable-next-line no-explicit-any
   insert(props: Record<string, any>): Content | Promise<Content>
+}
+
+enum Type {
+  'BeforeStart' = 'onBeforeStart',
+  'Start' = 'onStart',
+  'BeforeUpdate' = 'onBeforeUpdate',
+  'Update' = 'onUpdate',
 }
 
 export default function buildMentionExtension<T>(
@@ -58,40 +63,54 @@ export default function buildMentionExtension<T>(
     render() {
       let component: VueRenderer | null
 
-      const renderFn = (loadingState: boolean) => {
-        return useDebounceFn(function (props: SuggestionProps) {
-          if (!component) {
-            component = setFloatingPopover(getEditorComponents().suggestionList!, props.editor, {
-              loading: loadingState,
-              query: props.query,
-              items: props.items,
-              command: props.command,
-              type: options.type,
-            })
-          } else {
-            component?.updateProps({
-              loading: loadingState,
-              query: props.query,
-              items: props.items,
-              command: props.command,
-              type: options.type,
-            })
-          }
+      const renderFn = (type: Type) => (props: SuggestionProps) => {
+        const loading = type === Type.BeforeUpdate || type === Type.BeforeStart
 
-          autoUpdatePosition(props.editor, component!.element as HTMLElement)
-        }, 200)
+        if (!component) {
+          if (type === Type.Update) return // onUpdate hook can run after onExit call
+
+          component = setFloatingPopover(
+            getEditorComponents().suggestionList!,
+            props.editor,
+            {
+              loading,
+              query: props.query,
+              items: props.items,
+              command: props.command,
+              type: options.type,
+            },
+            {
+              onClose: () => {
+                component = null
+              },
+            },
+          )
+        } else {
+          component?.updateProps({
+            loading,
+            query: props.query,
+            items: props.items,
+            command: props.command,
+            type: options.type,
+          })
+        }
+      }
+
+      const removeAndCleanupPopover = () => {
+        component?.el?.remove()
+        component?.destroy()
+        component = null
       }
 
       return {
-        onBeforeStart: renderFn(true),
-        onStart: renderFn(false),
-        onBeforeUpdate: renderFn(true),
-        onUpdate: renderFn(false),
+        onBeforeStart: renderFn(Type.BeforeStart), // loading = true
+        onStart: renderFn(Type.Start), // loading = false
+        onBeforeUpdate: renderFn(Type.BeforeUpdate), // loading = true
+        onUpdate: renderFn(Type.Update), // loading = false
 
         onKeyDown(props) {
           if (props.event.key === 'Escape') {
-            component?.destroy()
-
+            removeAndCleanupPopover()
             return true
           }
 
@@ -99,8 +118,7 @@ export default function buildMentionExtension<T>(
         },
 
         onExit() {
-          component?.destroy()
-          component = null
+          removeAndCleanupPopover()
         },
       }
     },

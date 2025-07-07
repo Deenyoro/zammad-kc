@@ -4,6 +4,7 @@ import { autoUpdate, computePosition, flip, shift } from '@floating-ui/dom'
 import { posToDOMRect, VueRenderer } from '@tiptap/vue-3'
 import { DOMSerializer } from 'prosemirror-model'
 
+import type { SetFloatingPopoverOptions } from '#shared/components/Form/fields/FieldEditor/types.ts'
 import { convertFileList } from '#shared/utils/files.ts'
 
 import type { Editor } from '@tiptap/core'
@@ -116,7 +117,7 @@ export const autoUpdatePosition = (editor: Editor, element: HTMLElement) => {
   setAutoUpdate(editor, element)
 }
 
-const createHandleCloseOnClick = (editor: Editor) => {
+const createHandleCloseOnClick = (editor: Editor, options?: SetFloatingPopoverOptions) => {
   const handleCloseOnClick = (event: MouseEvent) => {
     if ((event.target as HTMLElement).closest('[data-id="floating-popover"]')) return
     // Editor handles click itself
@@ -124,13 +125,20 @@ const createHandleCloseOnClick = (editor: Editor) => {
 
     document.removeEventListener('click', handleCloseOnClick)
     editor.commands.closeLinkForm()
+
+    options?.onClose?.()
   }
 
   // We must do so to keep the same handler reference
   return handleCloseOnClick
 }
 
-export const setFloatingPopover = (cmp: Component, editor: Editor, props = {}) => {
+export const setFloatingPopover = <T extends object>(
+  cmp: Component,
+  editor: Editor,
+  props: T,
+  options?: SetFloatingPopoverOptions,
+) => {
   const virtualComponent = new VueRenderer(cmp, {
     props: {
       'data-id': 'floating-popover',
@@ -151,7 +159,7 @@ export const setFloatingPopover = (cmp: Component, editor: Editor, props = {}) =
 
   autoUpdatePosition(editor, virtualComponent.element as HTMLElement)
 
-  const clickHandler = createHandleCloseOnClick(editor)
+  const clickHandler = createHandleCloseOnClick(editor, options)
 
   document.addEventListener('click', clickHandler)
 

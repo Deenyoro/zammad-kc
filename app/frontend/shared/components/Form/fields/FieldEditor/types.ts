@@ -155,3 +155,7 @@ export interface EditorButton {
   show?: (config: ConfigList) => boolean
   subMenu?: Component | Except<EditorButton, 'subMenu'>[]
 }
+
+export interface SetFloatingPopoverOptions {
+  onClose?: () => void
+}

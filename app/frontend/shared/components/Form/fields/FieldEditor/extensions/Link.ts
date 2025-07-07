@@ -87,11 +87,20 @@ export default Link.extend({
 
           setAriaLabels(id)
 
-          linkComponent = setFloatingPopover(LinkForm, editor, {
-            from,
-            to,
-            id,
-          })
+          linkComponent = setFloatingPopover(
+            LinkForm,
+            editor,
+            {
+              from,
+              to,
+              id,
+            },
+            {
+              onClose: () => {
+                editor.commands.closeLinkForm()
+              },
+            },
+          )
 
           return true
         },
