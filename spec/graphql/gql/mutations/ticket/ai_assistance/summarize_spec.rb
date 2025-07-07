@@ -20,6 +20,7 @@ RSpec.describe Gql::Mutations::Ticket::AIAssistance::Summarize, :aggregate_failu
               suggestions
             }
             fingerprintMd5
+            relevantForCurrentUser
           }
         }
       MUTATION
@@ -57,13 +58,14 @@ RSpec.describe Gql::Mutations::Ticket::AIAssistance::Summarize, :aggregate_failu
 
       it 'returns the cached summary' do
         expect(gql.result.data).to include(
-          summary:        eq({
-                               'conversationSummary' => 'example',
-                               'openQuestions'       => ['example'],
-                               'problem'             => 'example',
-                               'suggestions'         => ['example'],
-                             }),
-          fingerprintMd5: eq(Digest::MD5.hexdigest(expected_cache.slice('problem', 'summary', 'open_questions', 'suggestions').to_s)),
+          summary:                eq({
+                                       'conversationSummary' => 'example',
+                                       'openQuestions'       => ['example'],
+                                       'problem'             => 'example',
+                                       'suggestions'         => ['example'],
+                                     }),
+          fingerprintMd5:         eq(Digest::MD5.hexdigest(expected_cache.slice('problem', 'summary', 'open_questions', 'suggestions').to_s)),
+          relevantForCurrentUser: true,
         )
       end
     end

@@ -186,6 +186,30 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
         expect(page).to have_no_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
       end
+
+      it 'dot is not visible when summary is updated by myself' do
+        click '.tabsSidebar-tab[data-tab=summary]'
+        click '.tabsSidebar-tab[data-tab=customer]'
+
+        create(:ticket_article, ticket:, origin_by: agent)
+
+        expect(page).to have_no_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
+
+        wait.until do
+          enqueued_jobs.any? { |job| job[:job] == TicketAIAssistanceSummarizeJob }
+        end
+
+        perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
+
+        expect(page).to have_no_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
+
+        click '.tabsSidebar-tab[data-tab=summary]'
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_text updated_summary
+        end
+
+        expect(page).to have_no_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
+      end
     end
   end
 

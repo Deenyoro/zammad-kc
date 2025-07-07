@@ -23,6 +23,7 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
             message
             exception
           }
+          relevantForCurrentUser
         }
       }
     SUBSCRIPTION
@@ -79,15 +80,60 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
           result: include(
             'data' => include(
               'ticketAIAssistanceSummaryUpdates' => include(
-                'summary'        => expected_broadcasted_summary,
-                'reason'         => 'example',
-                'fingerprintMd5' => Digest::MD5.hexdigest(expected_summary.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+                'summary'                => expected_broadcasted_summary,
+                'reason'                 => 'example',
+                'fingerprintMd5'         => Digest::MD5.hexdigest(expected_summary.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+                'relevantForCurrentUser' => true,
               )
             )
           )
         )
       end
-    end
 
+      context 'when the summary is relevant for the current user' do
+        before do
+          another_user = create(:agent, groups: [ticket.group])
+          create(:ticket_article, :outbound_email, origin_by: another_user, ticket:, body: 'This is a test article')
+        end
+
+        it 'receives new summary data' do
+          TicketAIAssistanceSummarizeJob.new.perform(ticket, agent.locale)
+          expect(mock_channel.mock_broadcasted_messages.first).to include(
+            result: include(
+              'data' => include(
+                'ticketAIAssistanceSummaryUpdates' => include(
+                  'summary'                => expected_broadcasted_summary,
+                  'reason'                 => 'example',
+                  'fingerprintMd5'         => Digest::MD5.hexdigest(expected_summary.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+                  'relevantForCurrentUser' => true,
+                )
+              )
+            )
+          )
+        end
+      end
+
+      context 'when the summary is not relevant for the current user' do
+        before do
+          create(:ticket_article, :outbound_email, origin_by: agent, ticket:, body: 'This is a test article')
+        end
+
+        it 'receives new summary data' do
+          TicketAIAssistanceSummarizeJob.new.perform(ticket, agent.locale)
+          expect(mock_channel.mock_broadcasted_messages.first).to include(
+            result: include(
+              'data' => include(
+                'ticketAIAssistanceSummaryUpdates' => include(
+                  'summary'                => expected_broadcasted_summary,
+                  'reason'                 => 'example',
+                  'fingerprintMd5'         => Digest::MD5.hexdigest(expected_summary.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+                  'relevantForCurrentUser' => false,
+                )
+              )
+            )
+          )
+        end
+      end
+    end
   end
 end

@@ -12,6 +12,7 @@ module Gql::Subscriptions
     field :reason, String, description: 'Reason for the result of the summary generation'
     field :fingerprint_md5, String, description: 'MD5 digest of the complete summary content'
     field :error, Gql::Types::AsyncExecutionErrorType, description: 'Error that occurred during the execution of the async job'
+    field :relevant_for_current_user, Boolean, description: 'Indicates if the summary is relevant for the current user'
 
     def authorized?(ticket_id:, locale:)
       Service::CheckFeatureEnabled.new(name: 'ai_assistance_ticket_summary', exception: false).execute &&
@@ -20,16 +21,16 @@ module Gql::Subscriptions
     end
 
     def update(ticket_id:, locale:)
-      if object[:error]
-        return {
-          error: object[:error]
-        }
-      end
+      return { error: object[:error] } if object[:error]
+
+      # Fetch last article for the ticket to determine the relevance of the summary.
+      last_article = ::Ticket::Article.last_customer_agent_article(Gql::ZammadSchema.internal_id_from_id(ticket_id, type: ::Ticket))
 
       {
-        summary:         object[:summary],
-        reason:          object[:reason],
-        fingerprint_md5: object[:fingerprint_md5],
+        summary:                   object[:summary],
+        reason:                    object[:reason],
+        fingerprint_md5:           object[:fingerprint_md5],
+        relevant_for_current_user: last_article&.author&.id != context.current_user.id,
       }
     end
   end

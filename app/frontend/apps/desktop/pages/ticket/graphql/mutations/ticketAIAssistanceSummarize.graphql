@@ -1,5 +1,5 @@
-mutation ticketAIAssistanceSummarize($ticketId: ID!){
-  ticketAIAssistanceSummarize(ticketId: $ticketId){
+mutation ticketAIAssistanceSummarize($ticketId: ID!) {
+  ticketAIAssistanceSummarize(ticketId: $ticketId) {
     summary {
       conversationSummary
       openQuestions
@@ -7,5 +7,6 @@ mutation ticketAIAssistanceSummarize($ticketId: ID!){
       suggestions
     }
     fingerprintMd5
+    relevantForCurrentUser
   }
 }

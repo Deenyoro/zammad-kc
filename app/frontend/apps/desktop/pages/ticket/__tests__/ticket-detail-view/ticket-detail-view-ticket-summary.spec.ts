@@ -273,6 +273,7 @@ describe('Ticket detail view - Ticket summary', () => {
         problem: '...',
         suggestions: ['foo', 'bar'],
       },
+      relevantForCurrentUser: true,
       error: null,
     })
 
@@ -295,11 +296,40 @@ describe('Ticket detail view - Ticket summary', () => {
       ticket: createDummyTicket(),
     })
 
+    mockTicketAiAssistanceSummarizeMutation({
+      ticketAIAssistanceSummarize: {
+        relevantForCurrentUser: true,
+      },
+    })
+
     const view = await visitView('/tickets/1')
 
     await waitForTicketAiAssistanceSummarizeMutationCalls()
 
     expect(await view.findByRole('status', { name: 'Has update' })).toBeInTheDocument()
+  })
+
+  it('hides update indicator when new summary comes updated from current user', async () => {
+    mockPermissions(['ticket.agent'])
+
+    mockApplicationConfig({
+      ai_provider: 'zammad_ai',
+      ai_assistance_ticket_summary: false,
+    })
+
+    mockTicketQuery({
+      ticket: createDummyTicket(),
+    })
+
+    mockTicketAiAssistanceSummarizeMutation({
+      ticketAIAssistanceSummarize: {
+        relevantForCurrentUser: false,
+      },
+    })
+
+    const view = await visitView('/tickets/1')
+
+    expect(view.queryByRole('status', { name: 'Has update' })).not.toBeInTheDocument()
   })
 
   it('hides update indicator when ticket summary sidebar is opened', async () => {
@@ -319,6 +349,35 @@ describe('Ticket detail view - Ticket summary', () => {
     await waitForTicketAiAssistanceSummarizeMutationCalls()
 
     await view.events.click(view.getByRole('button', { name: 'Summary' }))
+
+    expect(view.queryByRole('status', { name: 'Has update' })).not.toBeInTheDocument()
+  })
+
+  it('hides update indicator when last article was created by current user', async () => {
+    mockPermissions(['ticket.agent'])
+
+    mockApplicationConfig({
+      ai_provider: 'zammad_ai',
+      ai_assistance_ticket_summary: true,
+    })
+
+    mockTicketQuery({
+      ticket: createDummyTicket(),
+    })
+
+    const view = await visitView('/tickets/1')
+
+    await waitForTicketAiAssistanceSummarizeMutationCalls()
+
+    await triggerSummaryUpdate({
+      summary: {
+        conversationSummary: 'Agent replies something',
+        openQuestions: ['...'],
+        problem: '...',
+      },
+      relevantForCurrentUser: false,
+      error: null,
+    })
 
     expect(view.queryByRole('status', { name: 'Has update' })).not.toBeInTheDocument()
   })

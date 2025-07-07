@@ -1,7 +1,4 @@
-subscription ticketAIAssistanceSummaryUpdates(
-  $ticketId: ID!
-  $locale: String!
-) {
+subscription ticketAIAssistanceSummaryUpdates($ticketId: ID!, $locale: String!) {
   ticketAIAssistanceSummaryUpdates(ticketId: $ticketId, locale: $locale) {
     summary {
       conversationSummary
@@ -14,5 +11,6 @@ subscription ticketAIAssistanceSummaryUpdates(
       message
       exception
     }
+    relevantForCurrentUser
   }
 }

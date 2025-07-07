@@ -49,11 +49,12 @@ RSpec.describe 'Ticket Summarize API endpoints', authenticated_as: :user, perfor
           make_request
 
           expect(json_response).to eq({ 'result' => {
-                                        'conversation_summary' => 'mocked conversation_summary',
-                                        'open_questions'       => 'mocked open_questions',
-                                        'suggestions'          => 'mocked suggestions',
-                                        'problem'              => 'mocked problem',
-                                        'fingerprint_md5'      => Digest::MD5.hexdigest(result.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+                                        'conversation_summary'      => 'mocked conversation_summary',
+                                        'open_questions'            => 'mocked open_questions',
+                                        'suggestions'               => 'mocked suggestions',
+                                        'problem'                   => 'mocked problem',
+                                        'fingerprint_md5'           => Digest::MD5.hexdigest(result.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+                                        'relevant_for_current_user' => true,
                                       } })
         end
 

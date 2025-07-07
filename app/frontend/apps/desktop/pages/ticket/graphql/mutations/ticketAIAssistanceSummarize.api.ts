@@ -15,6 +15,7 @@ export const TicketAiAssistanceSummarizeDocument = gql`
       suggestions
     }
     fingerprintMd5
+    relevantForCurrentUser
   }
 }
     `;

@@ -51,7 +51,7 @@ class App.SidebarTicketSummary extends App.Controller
     {
       name:       'summary'
       icon:       'smart-assist'
-      dotVisible: !@isPreparingData && @fingerprintMD5 && !@constructor.isSummarySeen(@ticket, @fingerprintMD5)
+      dotVisible: !@isPreparingData && @fingerprintMD5 && @relevantForCurrentUser && !@constructor.isSummarySeen(@ticket, @fingerprintMD5)
     }
 
   badgeRender: (el) =>
@@ -124,6 +124,7 @@ class App.SidebarTicketSummary extends App.Controller
   updateSummarySeenState: (data) =>
     @isPreparingData = (_.isNull(data?.result) or data?.error)
     @fingerprintMD5  = data?.result?.fingerprint_md5
+    @relevantForCurrentUser = data?.result?.relevant_for_current_user
 
     App.Event.trigger(
       'ui::ticket::summaryUpdate',

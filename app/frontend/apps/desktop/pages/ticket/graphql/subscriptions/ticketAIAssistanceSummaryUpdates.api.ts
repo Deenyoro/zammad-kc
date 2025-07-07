@@ -19,6 +19,7 @@ export const TicketAiAssistanceSummaryUpdatesDocument = gql`
       message
       exception
     }
+    relevantForCurrentUser
   }
 }
     `;

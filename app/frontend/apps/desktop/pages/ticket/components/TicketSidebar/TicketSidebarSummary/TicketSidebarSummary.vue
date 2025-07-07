@@ -101,9 +101,14 @@ let activeDetachedChildScope: EffectScope
 
 const ticketSummaryHandler = new MutationHandler(useTicketAiAssistanceSummarizeMutation())
 
+const isRelevantForCurrentUser = ref(true)
+
 const showUpdateIndicator = computed(
   () =>
-    !isCurrentTicketSummaryRead.value && !isTicketStateMerged.value && !isSummaryGenerating.value,
+    !isCurrentTicketSummaryRead.value &&
+    !isTicketStateMerged.value &&
+    !isSummaryGenerating.value &&
+    isRelevantForCurrentUser.value,
 )
 
 const updateLocalSummary = (
@@ -126,6 +131,8 @@ const getAIAssistanceSummary = () => {
 
   ticketSummaryHandler.send({ ticketId: ticketId.value }).then((data) => {
     if (data?.ticketAIAssistanceSummarize?.summary) updateSummaryGenerating(false)
+
+    isRelevantForCurrentUser.value = !!data?.ticketAIAssistanceSummarize?.relevantForCurrentUser
 
     updateLocalSummary(
       data?.ticketAIAssistanceSummarize?.summary,
@@ -179,6 +186,9 @@ const activateSubscription = () => {
       updateSummaryGenerating(false)
 
       if (!data?.ticketAIAssistanceSummaryUpdates) return
+
+      isRelevantForCurrentUser.value =
+        !!data.ticketAIAssistanceSummaryUpdates.relevantForCurrentUser
 
       const {
         summary: summaryData,

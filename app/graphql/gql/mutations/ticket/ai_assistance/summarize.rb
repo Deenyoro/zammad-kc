@@ -9,6 +9,7 @@ module Gql::Mutations
     field :summary, Gql::Types::Ticket::AIAssistance::SummaryType, description: 'Different parts of the generated summary'
     field :reason, String, description: 'Reason for the result of the summary generation'
     field :fingerprint_md5, String, description: 'MD5 digest of the complete summary content'
+    field :relevant_for_current_user, Boolean, description: 'Indicates if the summary is relevant for the current user'
 
     # TODO: The current cache situation is more a first PoC, it will change to an persistent store.
 
@@ -23,15 +24,19 @@ module Gql::Mutations
       )
 
       if (stored_content = summarize_service.execute&.content)
+        # Fetch last article for the ticket to determine the relevance of the summary.
+        last_article = ::Ticket::Article.last_customer_agent_article(ticket.id)
+
         return {
-          summary:         {
+          summary:                   {
             problem:              stored_content['problem'],
             conversation_summary: stored_content['summary'],
             open_questions:       stored_content['open_questions'],
             suggestions:          stored_content['suggestions'],
           },
-          reason:          stored_content['reason'],
-          fingerprint_md5: Digest::MD5.hexdigest(stored_content.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+          reason:                    stored_content['reason'],
+          fingerprint_md5:           Digest::MD5.hexdigest(stored_content.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+          relevant_for_current_user: last_article&.author&.id != context.current_user.id,
         }
       end
 
