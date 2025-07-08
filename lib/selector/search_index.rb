@@ -212,8 +212,9 @@ class Selector::SearchIndex < Selector::Base
       column_details = klass&.columns_hash&.dig(key_tmp)
 
       # https://github.com/zammad/zammad/issues/5623
+      # https://github.com/zammad/zammad/issues/5686
       wildcard_or_term = if (column_details&.type == :string && (!column_details.limit || column_details.limit > 5000)) || (column_details&.type == :text)
-                           'match_phrase'
+                           'match'
                          else
                            'wildcard'
                          end
