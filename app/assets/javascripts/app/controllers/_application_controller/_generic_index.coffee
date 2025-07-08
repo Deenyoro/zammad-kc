@@ -120,6 +120,11 @@ class App.ControllerGenericIndex extends App.Controller
 
       App[@genericObject][method](
         (collection, data) =>
+          maxPage = Math.max(1, Math.ceil(data.total_count / @pageData.pagerPerPage))
+          if @pageData.pagerSelected && @pageData.pagerSelected > maxPage
+            @pageData.pagerSelected = maxPage
+            return @navigate "#{@pageData.pagerBaseUrl}#{@pageData.pagerSelected}/#{encodeURIComponent(@searchQuery)}"
+
           @pageData.pagerTotalCount = data.total_count
           if data.total_count > @pageData.pagerPerPage || @searchQuery
             @dndCallback = undefined
