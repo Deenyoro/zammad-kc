@@ -173,7 +173,7 @@ RSpec.describe CommunicateTwitterJob, required_envs: %w[TWITTER_CONSUMER_KEY TWI
           article.ticket.save
         end
 
-        let(:error_message) { "Can't use Channel::Driver::Twitter: #<Twitter::Error::Unauthorized: Invalid or expired token.>" }
+        let(:error_message) { 'Twitter: Invalid or expired token. (Twitter::Error::Unauthorized)' }
 
         include_examples 'for failure cases'
       end

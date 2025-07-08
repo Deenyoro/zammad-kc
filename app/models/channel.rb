@@ -66,11 +66,8 @@ fetch one account
     save!
     true
   rescue => e
-    error = "Can't use Channel::Driver::#{adapter.to_classname}: #{e.inspect}"
-    logger.error error
-    logger.error e
-    self.status_in = 'error'
-    self.last_log_in = error
+    mark_as_error(e, adapter)
+
     preferences[:last_fetch] = Time.zone.now
     save!
     false
@@ -105,11 +102,7 @@ stream instance of account
 
       driver_instance
     rescue => e
-      error = "Can't use Channel::Driver::#{adapter.to_classname}: #{e.inspect}"
-      logger.error error
-      logger.error e
-      self.status_in = 'error'
-      self.last_log_in = error
+      mark_as_error(e, adapter)
       save!
     end
 
@@ -208,11 +201,7 @@ stream all accounts
           @@channel_stream_started_till_at[channel_id] = Time.zone.now
           logger.info " ...stopped stream thread for '#{channel.id}'"
         rescue => e
-          error = "Can't use stream for channel (#{channel.id}): #{e.inspect}"
-          logger.error error
-          logger.error e
-          channel.status_in = 'error'
-          channel.last_log_in = error
+          channel.mark_as_error(e, adapter, message: "Can't start stream for channel (#{channel.id}): #{e.message}")
           channel.save!
           @@channel_stream.delete(channel_id)
           @@channel_stream_started_till_at[channel_id] = Time.zone.now
@@ -272,22 +261,16 @@ send via account
   end
 
   def handle_delivery_error!(error, adapter)
-    message = "Can't use Channel::Driver::#{adapter.to_classname}: #{error.inspect}"
-
     if error.respond_to?(:retryable?) && error.retryable?
       self.status_out = 'ok'
       self.last_log_out = ''
     else
-      logger.error message
-      logger.error error
-
-      self.status_out = 'error'
-      self.last_log_out = error.inspect
+      mark_as_error(error, adapter, direction: :out)
     end
 
     save!
 
-    raise DeliveryError.new(message, error)
+    raise DeliveryError.new(mark_as_error_message(adapter, error), error)
   end
 
 =begin
@@ -315,13 +298,9 @@ process via account
       self.last_log_in = ''
       save!
     rescue => e
-      error = "Can't use Channel::Driver::#{adapter.to_classname}: #{e.inspect}"
-      logger.error error
-      logger.error e
-      self.status_in = 'error'
-      self.last_log_in = error
+      message = mark_as_error(e, adapter)
       save!
-      raise e, error
+      raise e, message
     end
     result
   end
@@ -368,12 +347,35 @@ get instance of channel driver
     raise "Failed to refresh XOAUTH2 access_token of provider '#{options[:auth][:provider]}': #{e.message}"
   end
 
+  # Marks the channel as experiencing issues
+  # Also writes a log entry with the error message
+  #
+  # @param adapter [Class, nil] The adapter class
+  # @param error [Exception, nil] The error that occured
+  # @param message [String, nil] Optional custom error message
+  # @param direction [Symbol] The direction of communication when the error occured, either :in or :out
+  def mark_as_error(error, adapter, message: nil, direction: :in)
+    message ||= mark_as_error_message(adapter, error)
+
+    logger.error message
+    logger.error error
+
+    self["status_#{direction}"] = 'error'
+    self["last_log_#{direction}"] = message
+
+    message
+  end
+
   private
 
   def email_address_check
 
     # reset non existing channel_ids
     EmailAddress.channel_cleanup
+  end
+
+  def mark_as_error_message(adapter, e)
+    "#{adapter.to_classname}: #{e.message} (#{e.class})"
   end
 
   class DeliveryError < StandardError
