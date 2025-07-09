@@ -17,7 +17,7 @@ RSpec.describe 'Ticket', type: :request do
     create(:agent, groups: Group.all, firstname: 'Tickets', lastname: 'Agent')
   end
   let!(:agent_change_only) do
-    user = create(:agent, groups: Group.all, firstname: 'Tickets', lastname: 'Agent')
+    user = create(:agent, groups: Group.all, firstname: 'Tickets', lastname: 'AgentChangeOnly')
     user.group_names_access_map = {
       ticket_group_without_create.name => %w[read change],
     }

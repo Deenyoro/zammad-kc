@@ -57,6 +57,8 @@ class User < ApplicationModel
   validate :ensure_identifier, :ensure_email
   validate :ensure_uniq_email, unless: :skip_ensure_uniq_email
 
+  validates :login, uniqueness: { case_sensitive: false }
+
   available_perform_change_actions :data_privacy_deletion_task, :attribute_updates
 
   # workflow checks should run after before_create and before_update callbacks
@@ -816,14 +818,15 @@ try to find correct name
   end
 
   def check_login
-
     # use email as login if not given
     if login.blank?
+      login_as_email = true
       self.login = email
     end
 
     # if email has changed, login is old email, change also login
-    if email_changed? && email_was == login
+    if email_changed? && login_was_email?
+      login_as_email = true
       self.login = email
     end
 
@@ -832,17 +835,23 @@ try to find correct name
       self.login = "auto-#{SecureRandom.uuid}"
     end
 
-    # check if login already exists
-    base_login = login.downcase.strip
+    login.downcase!
+    login.strip!
 
-    alternatives = [nil] + Array(1..20) + [ SecureRandom.uuid ]
-    alternatives.each do |suffix|
-      self.login = "#{base_login}#{suffix}"
-      exists = User.find_by(login: login)
-      return true if !exists || exists.id == id
-    end
+    # stop unless multiple-users-with-single-email is enabled
+    return if !Setting.get('user_email_multiple_use')
 
-    raise Exceptions::UnprocessableEntity, "Invalid user login generation for login #{login}!"
+    # stop unless login uses email as a fallback
+    return if !login_as_email
+
+    base_login = email.downcase.strip
+
+    # Finds a unique login. At first it tries to use email,
+    # then it tries to append numbers 1 to 20 and finally it appends a random UUID.
+    self.login = ([nil] + Array(1..20) + [ SecureRandom.uuid ])
+      .lazy
+      .map { |elem| "#{base_login}#{elem}" }
+      .find { |elem| !User.where(login: elem).where.not(id:).exists? }
   end
 
   def check_mail_delivery_failed
@@ -1123,5 +1132,12 @@ raise 'At least one user need to have admin permissions'
     return if destroyed? && phone.blank? && mobile.blank?
 
     Cti::CallerId.build(self)
+  end
+
+  def login_was_email?
+    return email_was == login if !Setting.get('user_email_multiple_use')
+
+    # Detects if login was set from email and then iterated
+    email_was.present? && login&.start_with?(email_was)
   end
 end

@@ -277,34 +277,110 @@ RSpec.describe User, type: :model do
     end
 
     describe '#check_login' do
-      let(:agent) { create(:agent) }
+      let(:agent) { create(:agent, login: nil) }
 
-      it 'does use the origin login' do
+      it 'does use given login' do
         new_agent = create(:agent)
         expect(new_agent.login).not_to end_with('1')
       end
 
-      it 'does number up agent logins (1)' do
-        new_agent = create(:agent, login: agent.login)
-        expect(new_agent.login).to eq("#{agent.login}1")
+      it 'ensures login is downcase and without white spaces' do
+        new_agent = create(:agent, login: ' TestUser ')
+        expect(new_agent.login).to eq('testuser')
       end
 
-      it 'does number up agent logins (5)' do
-        new_agent = create(:agent, login: agent.login)
-        4.times do
-          new_agent = create(:agent, login: agent.login)
-        end
+      it 'returns validation error if the login is already taken' do
+        new_agent = build(:agent, login: agent.login)
 
-        expect(new_agent.login).to eq("#{agent.login}5")
+        new_agent.valid?
+
+        expect(new_agent.errors[:login]).to include('has already been taken')
       end
 
-      it 'does backup with uuid in cases of many duplicates' do
-        new_agent = create(:agent, login: agent.login)
-        20.times do
-          new_agent = create(:agent, login: agent.login)
+      context 'when email-as-login was used and is changed' do
+        it 'updates login' do
+          new_agent = create(:agent, login: nil)
+
+          new_agent.update! email: Faker::Internet.unique.email
+
+          expect(new_agent.login).to eq(new_agent.email)
+        end
+      end
+
+      context 'when email is empty too' do
+        it 'generates auto-login' do
+          new_agent = create(:agent, login: nil, email: nil)
+
+          expect(new_agent.login).to start_with('auto-')
+        end
+      end
+
+      context 'when user_email_multiple_use is enabled' do
+        before { Setting.set('user_email_multiple_use', true) }
+
+        context 'when login is given' do
+          it 'raises error if the login is already taken' do
+            new_agent = build(:agent, login: agent.login)
+
+            new_agent.valid?
+
+            expect(new_agent.errors[:login]).to include('has already been taken')
+          end
         end
 
-        expect(new_agent.login.sub!(agent.login, '')).to be_a_uuid
+        context 'when login is not given' do
+          it 'uses email as fallback' do
+            new_agent = create(:agent, login: nil)
+
+            expect(new_agent.login).to eq(new_agent.email)
+          end
+
+          it 'does number up agent logins (1)' do
+            new_agent = create(:agent, login: nil, email: agent.email)
+
+            expect(new_agent.login).to eq("#{new_agent.email}1")
+          end
+
+          it 'does number up agent logins (5)' do
+            new_agent = create(:agent, login: nil, email: agent.email)
+            4.times do
+              new_agent = create(:agent, login: nil, email: agent.email)
+            end
+
+            expect(new_agent.login).to eq("#{new_agent.email}5")
+          end
+
+          it 'does backup with uuid in cases of many duplicates' do
+            new_agent = create(:agent, login: nil, email: agent.email)
+            20.times do
+              new_agent = create(:agent, login: nil, email: agent.email)
+            end
+
+            expect(new_agent.login.sub!(new_agent.email, '')).to be_a_uuid
+          end
+        end
+
+        context 'when email-as-login was used and is changed' do
+          it 'updates login' do
+            new_agent = create(:agent, login: nil)
+
+            new_agent.update! email: Faker::Internet.unique.email
+
+            expect(new_agent.login).to eq(new_agent.email)
+          end
+
+          it 'number up agent logins (1)' do
+            new_agent = create(:agent, login: nil, email: agent.email)
+
+            new_email = Faker::Internet.unique.email
+
+            agent.update! email: new_email
+
+            new_agent.update! email: new_email
+
+            expect(new_agent.login).to eq("#{new_agent.email}1")
+          end
+        end
       end
     end
 
