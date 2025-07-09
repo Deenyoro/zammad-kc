@@ -53,6 +53,8 @@ class PerformChanges::Action::AttributeUpdates < PerformChanges::Action
   def update_key(attribute, value)
     return if record[attribute].to_s.eql?(value.to_s)
 
+    value = value.strip if value.is_a?(String)
+
     record[attribute] = value
     history(attribute, value)
   end

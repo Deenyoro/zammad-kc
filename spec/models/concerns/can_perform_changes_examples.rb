@@ -38,7 +38,7 @@ RSpec.shared_examples 'CanPerformChanges', :aggregate_failures do |object_name:,
       let(:custom_attribute_text2) do
         create(:object_manager_attribute_text, name: 'custom_attribute_text2', object_name: object_name)
       end
-      let(:object) { create(object_name.downcase.to_sym, custom_attribute_text1: 'testing-example') }
+      let(:object) { create(object_name.downcase.to_sym, custom_attribute_text1: 'testing-example ') }
 
       let(:perform) do
         {
