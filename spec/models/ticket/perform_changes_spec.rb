@@ -79,6 +79,21 @@ RSpec.describe 'Ticket::PerformChanges', :aggregate_failures do
     end
   end
 
+  context 'with "ticket.state" key in "perform" hash' do
+    let(:perform) do
+      {
+        'ticket.state' => {
+          'value' => 'closed'
+        }
+      }
+    end
+
+    it 'changes #state to specified value' do
+      expect { object.perform_changes(performable, 'trigger', object, User.first) }
+        .to change { object.reload.state.name }.to('closed')
+    end
+  end
+
   # Test for backwards compatibility after PR https://github.com/zammad/zammad/pull/2862
   context 'with "pending_time" => { "value": DATE } in "perform" hash' do
     let(:perform) do
@@ -358,7 +373,7 @@ RSpec.describe 'Ticket::PerformChanges', :aggregate_failures do
 
         expect(NotificationFactory::Mailer)
           .to have_received(:template)
-          .with(hash_including(objects: objects))
+          .with(hash_including(objects: hash_including(objects)))
           .at_least(:once)
 
         expect(NotificationFactory::Mailer)
@@ -629,6 +644,38 @@ RSpec.describe 'Ticket::PerformChanges', :aggregate_failures do
         execution_type: 'trigger',
         event_type:     'info',
       )
+    end
+  end
+
+  context 'with a "ai.ai_agent" trigger', performs_jobs: true do
+    let(:ai_agent) { create(:ai_agent) }
+    let(:trigger) do
+      create(:trigger,
+             perform: {
+               'ai.ai_agent' => { 'ai_agent_id' => ai_agent.id }
+             })
+    end
+
+    let(:context_data) do
+      {
+        type:      'info',
+        execution: 'trigger',
+        changes:   { 'state_id' => %w[2 4] },
+        user_id:   1,
+      }
+    end
+
+    it 'schedules the webhooks notification job' do
+      expect { object.perform_changes(trigger, 'trigger', context_data, 1) }
+        .to have_enqueued_job(TriggerAIAgentJob).with(
+          trigger,
+          object,
+          nil,
+          changes:        { 'State' => %w[open closed] },
+          user_id:        1,
+          execution_type: 'trigger',
+          event_type:     'info',
+        )
     end
   end
 

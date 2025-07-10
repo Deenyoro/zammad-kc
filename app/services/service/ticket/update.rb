@@ -38,7 +38,7 @@ class Service::Ticket::Update < Service::BaseWithCurrentUser
 
   def save_ticket_attributes_and_apply_macro!(ticket, ticket_data, article_data, macro)
     ticket.assign_attributes(ticket_data)
-    ticket.perform_changes(macro, 'macro', ticket, current_user.id) do |object, _save_needed|
+    ticket.perform_changes(macro, 'macro', nil, current_user.id) do |object, _save_needed|
       object.save!
       create_article(ticket, article_data)
     end

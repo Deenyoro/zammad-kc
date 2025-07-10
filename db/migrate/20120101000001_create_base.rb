@@ -940,5 +940,23 @@ class CreateBase < ActiveRecord::Migration[4.2]
               unique: true,
               name:   'index_ai_stored_results_on_identifier_and_other'
     end
+
+    create_table :ai_agents do |t|
+      t.string 'name', limit: 250, null: false, default: ''
+      t.jsonb 'definition', null: false, default: {}
+      t.jsonb 'action_definition', null: false, default: {}
+
+      t.string 'note', limit: 250
+
+      t.boolean 'active', default: true, null: false
+
+      t.references :created_by, type: :integer, null: false, foreign_key: { to_table: :users }
+      t.references :updated_by, type: :integer, null: false, foreign_key: { to_table: :users }
+
+      t.timestamps limit: 3, null: false
+
+      t.index :name, unique: true
+      t.index :active
+    end
   end
 end

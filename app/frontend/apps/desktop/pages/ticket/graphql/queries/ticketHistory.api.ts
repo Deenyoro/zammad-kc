@@ -35,6 +35,10 @@ export const TicketHistoryDocument = gql`
           id
           name
         }
+        ... on AIAgent {
+          id
+          name
+        }
         ... on ObjectClass {
           klass
           info

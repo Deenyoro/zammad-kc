@@ -14,12 +14,6 @@ class AI::Service::EmailRemoveQuote < AI::Service
 
   private
 
-  def options
-    {
-      temperature: 0,
-    }
-  end
-
   def persistable?
     true
   end

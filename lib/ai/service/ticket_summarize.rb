@@ -12,7 +12,7 @@ class AI::Service::TicketSummarize < AI::Service
   def self.persistent_version(context_data, _locale)
     context_data[:ticket]
       .articles
-      .summarizable
+      .without_system_notifications
       .cache_version(:created_at)
   end
 

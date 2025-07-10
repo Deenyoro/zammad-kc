@@ -59,16 +59,24 @@ class App.UiElement.ApplicationAction
         name: __('Notification')
         model: 'Notification'
 
+    if attribute.ai_agent
+      groups.ai =
+        name: __('AI')
+        model: 'AI'
+
     # merge config
     elements = {}
     for groupKey, groupMeta of groups
       if !groupMeta.model || !App[groupMeta.model]
-        if groupKey is 'notification'
-          elements["#{groupKey}.email"] = { name: 'email', display: __('Email') }
-          elements["#{groupKey}.sms"] = { name: 'sms', display: __('SMS') }
-          elements["#{groupKey}.webhook"] = { name: 'webhook', display: __('Webhook') }
-        else if groupKey is 'article'
-          elements["#{groupKey}.note"] = { name: 'note', display: __('Note') }
+        switch groupKey
+          when 'notification'
+            elements["#{groupKey}.email"] = { name: 'email', display: __('Email') }
+            elements["#{groupKey}.sms"] = { name: 'sms', display: __('SMS') }
+            elements["#{groupKey}.webhook"] = { name: 'webhook', display: __('Webhook') }
+          when 'article'
+            elements["#{groupKey}.note"] = { name: 'note', display: __('Note') }
+          when 'ai'
+            elements["#{groupKey}.ai_agent"] = { name: 'ai_agent', display: __('AI Agent') }
       else
         for row in App[groupMeta.model].configure_attributes
 
@@ -316,20 +324,19 @@ class App.UiElement.ApplicationAction
     if groupAndAttribute
       elementRow.find('.js-attributeSelector select').val(groupAndAttribute)
 
-    notificationTypeMatch = groupAndAttribute.match(/^notification.([\w]+)$/)
-    articleTypeMatch = groupAndAttribute.match(/^article.([\w]+)$/)
+    groupAndTypeMatch = groupAndAttribute.match(/^([\w]+)\.([\w]+)$/) || []
 
-    if _.isArray(notificationTypeMatch) && notificationType = notificationTypeMatch[1]
-      elementRow.find('.js-setAttribute').html('').addClass('hide')
-      elementRow.find('.js-setArticle').html('').addClass('hide')
-      @buildNotificationArea(notificationType, elementFull, elementRow, groupAndAttribute, elements, meta, attribute)
-    else if !attribute.article_body_cc_only && _.isArray(articleTypeMatch) && articleType = articleTypeMatch[1]
-      elementRow.find('.js-setAttribute').html('').addClass('hide')
-      elementRow.find('.js-setNotification').html('').addClass('hide')
-      @buildArticleArea(articleType, elementFull, elementRow, groupAndAttribute, elements, meta, attribute)
+    for elem in ['Notification', 'Attribute', 'Article', 'AI']
+      if groupAndTypeMatch[1] isnt elem.toLowerCase()
+        elementRow.find(".js-set#{elem}").html('').addClass('hide')
+
+    if groupAndTypeMatch[1] == 'notification'
+      @buildNotificationArea(groupAndTypeMatch[2], elementFull, elementRow, groupAndAttribute, elements, meta, attribute)
+    else if groupAndTypeMatch[1] == 'ai'
+      @buildAIArea(groupAndTypeMatch[2], elementFull, elementRow, groupAndAttribute, elements, meta, attribute)
+    else if groupAndTypeMatch[1] == 'article' && !attribute.article_body_cc_only
+      @buildArticleArea(groupAndTypeMatch[2], elementFull, elementRow, groupAndAttribute, elements, meta, attribute)
     else
-      elementRow.find('.js-setNotification').html('').addClass('hide')
-      elementRow.find('.js-setArticle').html('').addClass('hide')
       if !elementRow.find('.js-setAttribute div').get(0)
         attributeSelectorElement = $( App.view('generic/ticket_perform_action/attribute_selector')(
           attribute: attribute
@@ -565,7 +572,6 @@ class App.UiElement.ApplicationAction
 
       notificationElement.find('.js-recipient select').replaceWith(selectionRecipient)
 
-
       if App.Webhook.search(filter: { active: true }).length isnt 0 || !_.isEmpty(meta.webhook_id)
         webhookSelection = App.UiElement.select.render(
           name: "#{name}::webhook_id"
@@ -668,6 +674,34 @@ class App.UiElement.ApplicationAction
       )
 
       elementRow.find('.js-encryption').html(selection)
+
+  @buildAIArea: (aiType, elementFull, elementRow, groupAndAttribute, elements, meta, attribute) ->
+    elementRow.find('.js-setAI').empty()
+
+    name = "#{attribute.name}::ai.ai_agent"
+
+    aiElement = $( App.view('generic/ticket_perform_action/ai_agent')(
+      attribute: attribute
+      name: name
+      meta: meta || {}
+    ))
+
+    aiAgentSelection = if App.AIAgent.search(filter: { active: true }).length isnt 0 || !_.isEmpty(meta.ai_agent_id)
+      App.UiElement.select.render(
+        name: "#{name}::ai_agent_id"
+        multiple: false
+        null: false
+        relation: 'AIAgent'
+        value: meta.ai_agent_id
+        translate: false
+        nulloption: true
+      )
+    else
+      App.view('generic/ticket_perform_action/ai_agent_not_available')( attribute: attribute )
+
+    aiElement.find('.js-ai-agents').html(aiAgentSelection)
+
+    elementRow.find('.js-setAI').html(aiElement).removeClass('hide')
 
   @buildArticleArea: (articleType, elementFull, elementRow, groupAndAttribute, elements, meta, attribute) ->
 

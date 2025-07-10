@@ -737,6 +737,7 @@ RSpec.describe User, type: :model do
         'Webhook'                            => { 'created_by_id' => 0, 'updated_by_id' => 0 },
         'Overview'                           => { 'created_by_id' => 1, 'updated_by_id' => 0 },
         'PGPKey'                             => { 'created_by_id' => 0, 'updated_by_id' => 0 },
+        'AI::Agent'                          => { 'created_by_id' => 0, 'updated_by_id' => 0 },
         'ActivityStream'                     => { 'created_by_id' => 0 },
         'StatsStore'                         => { 'created_by_id' => 0 },
         'TextModule'                         => { 'created_by_id' => 0, 'updated_by_id' => 0 },

@@ -4,6 +4,7 @@ module Gql::Types
   class HistoryRecordIssuerType < Gql::Types::BaseUnion
     description 'History record issuer'
     possible_types Gql::Types::UserType,
+                   Gql::Types::AI::AgentType,
                    Gql::Types::TriggerType,
                    Gql::Types::JobType,
                    Gql::Types::PostmasterFilterType,
@@ -13,6 +14,7 @@ module Gql::Types
     # ObjectClassType.
     def self.resolve_type(object, _context)
       {
+        ::AI::Agent        => Gql::Types::AI::AgentType,
         ::Job              => Gql::Types::JobType,
         ::PostmasterFilter => Gql::Types::PostmasterFilterType,
         ::Trigger          => Gql::Types::TriggerType,

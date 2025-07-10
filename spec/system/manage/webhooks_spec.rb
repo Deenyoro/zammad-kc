@@ -239,7 +239,7 @@ RSpec.describe 'Manage > Webhook', type: :system do
     let(:admin)       { create(:admin, preferences: { locale: 'de-de' }) }
     let(:webhook)     { create(:webhook) }
     let(:trigger)     { create(:trigger, perform: { 'notification.webhook' => { 'webhook_id' => webhook.id.to_s } }) }
-    let(:source)      { 'This webhook is referenced by another object and thus cannot be deleted: %s' }
+    let(:source)      { 'This %s is referenced by another object and thus cannot be deleted: %s' }
     let(:target)      { "[TRANSLATED] #{source}" }
     let(:translation) do
       Translation.where(locale: 'de-de', source:).destroy_all

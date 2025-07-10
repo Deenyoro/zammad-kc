@@ -5,7 +5,7 @@ class AI::Service
 
   PROMPT_PATH_STRING = Rails.root.join('lib/ai/service/prompts/%{type}/%{service}.txt.erb').to_s.freeze
 
-  attr_reader :current_user, :context_data, :locale, :persistence_strategy
+  attr_reader :current_user, :context_data, :locale, :persistence_strategy, :additional_options
 
   Result = Struct.new(:content, :stored_result, :fresh, keyword_init: true)
 
@@ -14,12 +14,13 @@ class AI::Service
   end
 
   # @param persistence_strategy [Symbol, NilClass] :stored_or_request, :stored_only, :request_only.
-  def initialize(context_data:, current_user: nil, persistence_strategy: :stored_or_request, prompt_system: nil, prompt_user: nil, locale: nil)
+  def initialize(context_data:, current_user: nil, persistence_strategy: :stored_or_request, prompt_system: nil, prompt_user: nil, locale: nil, additional_options: {})
     @context_data         = context_data
     @current_user         = current_user
     @prompt_system        = prompt_system
     @prompt_user          = prompt_user
     @persistence_strategy = persistence_strategy
+    @additional_options   = additional_options
     @locale               = Locale.find_by(locale: locale || @current_user&.locale || Locale.default)
   end
 
@@ -72,6 +73,9 @@ class AI::Service
   def ask_provider
     current_prompt_system = @prompt_system || render_prompt(prompt_system)
     current_prompt_user   = @prompt_user   || render_prompt(prompt_user)
+
+    Rails.logger.error "current_prompt_system: #{current_prompt_system}"
+    Rails.logger.error "current_prompt_user: #{current_prompt_user}"
 
     provider.ask(prompt_system: current_prompt_system, prompt_user: current_prompt_user)
   end
@@ -127,6 +131,6 @@ class AI::Service
   end
 
   def render_prompt(prompt_template)
-    ERB.new(prompt_template.to_s).result(binding)
+    ERB.new(prompt_template.to_s, trim_mode: '-').result(binding)
   end
 end

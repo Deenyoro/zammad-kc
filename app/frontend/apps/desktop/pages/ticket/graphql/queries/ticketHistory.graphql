@@ -1,8 +1,4 @@
-query ticketHistory(
-  $ticketId: ID
-  $ticketInternalId: Int
-  $ticketNumber: String
-) {
+query ticketHistory($ticketId: ID, $ticketInternalId: Int, $ticketNumber: String) {
   ticketHistory(
     ticket: {
       ticketId: $ticketId
@@ -32,6 +28,10 @@ query ticketHistory(
           name
         }
         ... on PostmasterFilter {
+          id
+          name
+        }
+        ... on AIAgent {
           id
           name
         }

@@ -861,7 +861,7 @@ RSpec.describe Ticket::Article, type: :model do
     end
   end
 
-  describe '.summarizable' do
+  describe '.without_system_notifications' do
     let(:ticket)    { create(:ticket) }
     let(:article_1) { create(:ticket_article, :system_outbound_email, ticket:) }
     let(:article_2) { create(:ticket_article, :inbound_web, ticket:) }
@@ -870,7 +870,7 @@ RSpec.describe Ticket::Article, type: :model do
     before { article_1 && article_2 && article_3 }
 
     it 'filters out System articles' do
-      expect(ticket.articles.summarizable).to contain_exactly(article_2, article_3)
+      expect(ticket.articles.without_system_notifications).to contain_exactly(article_2, article_3)
     end
   end
 end

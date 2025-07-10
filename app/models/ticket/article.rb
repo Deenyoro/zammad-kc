@@ -72,10 +72,11 @@ class Ticket::Article < ApplicationModel
                              :to,
                              :cc
 
-  scope :summarizable, lambda {
+  scope :without_system_notifications, lambda {
     system_sender = Ticket::Article::Sender.lookup(name: 'System')
+    note_type = Ticket::Article::Type.lookup(name: 'note')
 
-    where.not(sender_id: system_sender.id)
+    where('sender_id != ? OR type_id = ?', system_sender.id, note_type.id)
   }
 
   attr_accessor :should_clone_inline_attachments, :check_mentions_raises_error, :check_email_recipient_raises_error

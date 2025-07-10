@@ -45,7 +45,7 @@ class AI::Provider
       Rails.logger.error "Unable to parse JSON response: #{e.inspect}"
       Rails.logger.error "Response: #{result}"
 
-      raise ResponseError, __('The response could not be processed.')
+      raise OutputFormatError, __('The response could not be processed.')
     end
   end
 
@@ -76,4 +76,5 @@ class AI::Provider
 
   class RequestError < StandardError; end
   class ResponseError < StandardError; end
+  class OutputFormatError < ResponseError; end
 end
