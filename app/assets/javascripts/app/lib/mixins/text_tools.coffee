@@ -42,14 +42,16 @@ App.TextTools =
         )
       )
 
-      dropdown
-        .addClass('open')
-        .find('.dropdown-menu')
-        .get(0)
-        .scrollIntoView(
-          block:    'start'
-          behavior: 'smooth'
-        )
+      dropdown.addClass('open')
+
+      dropdownMenu = dropdown.find('.dropdown-menu')
+
+      if not dropdownMenu.visible()
+        offsetTop = 10
+        header = el.closest('.content').find('.scrollPageHeader')
+        if header.length and header.visible()
+          offsetTop += header.height()
+        dropdownMenu.ScrollTo({ offsetTop })
 
       setTimeout(->
         $(window).off('click.dropdown-menu, keyup.dropdown-menu').on('click.dropdown-menu, keyup.dropdown-menu', (e) ->
