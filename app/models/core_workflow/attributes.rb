@@ -25,6 +25,10 @@ class CoreWorkflow::Attributes
     end
   end
 
+  def new_only
+    @new_only ||= payload_class.new
+  end
+
   def selected_only
 
     # params loading and preparing is very expensive so cache it
