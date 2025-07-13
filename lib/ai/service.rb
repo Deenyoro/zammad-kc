@@ -74,9 +74,6 @@ class AI::Service
     current_prompt_system = @prompt_system || render_prompt(prompt_system)
     current_prompt_user   = @prompt_user   || render_prompt(prompt_user)
 
-    Rails.logger.error "current_prompt_system: #{current_prompt_system}"
-    Rails.logger.error "current_prompt_user: #{current_prompt_user}"
-
     provider.ask(prompt_system: current_prompt_system, prompt_user: current_prompt_user)
   end
 
