@@ -112,7 +112,7 @@ gem 'omniauth-microsoft-office365'
 gem 'omniauth_openid_connect'
 gem 'omniauth-saml'
 gem 'omniauth-twitter'
-gem 'omniauth-weibo-oauth2', git: 'https://github.com/zammad-deps/omniauth-weibo-oauth2', branch: 'unpin-dependencies'
+gem 'omniauth-weibo-oauth2'
 
 # Rate limiting
 gem 'rack-attack'
