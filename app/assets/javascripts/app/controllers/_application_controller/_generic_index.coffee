@@ -133,6 +133,9 @@ class App.ControllerGenericIndex extends App.Controller
             @table.renderState = undefined if @table
           @stopLoading()
           @renderObjects(collection)
+
+          @renderCallback() if @renderCallback
+
         params
       )
       return
@@ -142,6 +145,8 @@ class App.ControllerGenericIndex extends App.Controller
       order:  @defaultOrder
     )
     @renderObjects(objects)
+
+    @renderCallback() if @renderCallback
 
   renderObjects: (objects) =>
 
@@ -163,11 +168,13 @@ class App.ControllerGenericIndex extends App.Controller
         head:              @pageData.objects
         buttons:           @pageData.buttons
         subHead:           @pageData.subHead
+        topAlert:          @pageData.topAlert
         showDescription:   showDescription
         objects:           @pageData.objects
         searchPlaceholder: @pageData.searchPlaceholder
         searchBar:         @searchBar
         searchQuery:       @searchQuery
+        hideSearchBar:     _.isEmpty(@searchQuery) and _.isEmpty(objects)
         filterMenu:        @filterMenu
       )
 

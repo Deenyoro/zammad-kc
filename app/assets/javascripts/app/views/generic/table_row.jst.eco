@@ -81,7 +81,7 @@
         <% if @object.constructor.badges && @object.constructor.badges.length > 0: %>
           <% for badge in @object.constructor.badges: %>
             <% if badge.attribute == header.name && badge.active(@object): %>
-              <span class="badge badge--<%= badge.class %>"><%- @T(badge.display) %></span>
+              <span class="badge badge--<%= badge.class %>"<% if badge.title: %> title="<%- @Ti(badge.title) %>"<% end %>><%- @T(badge.display) %></span>
             <% end %>
           <% end %>
         <% end %>

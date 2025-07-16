@@ -58,6 +58,8 @@ class AI::Agent < ApplicationModel
   include CanSelector
   include CanSearch
   include EnsuresNoRelatedObjects
+  include AI::Agent::Assets
+  include ChecksClientNotification
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :note, length: { maximum: 250 }

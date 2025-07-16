@@ -28,3 +28,6 @@ Maybe you want to set a higher priority on any ticket with the word “urgent”
 
 Whatever it is, you can do it with triggers: actions that watch tickets for certain changes, and then fire off whenever those changes occur.
 ''')
+
+  uiUrl: =>
+    "#manage/trigger/1/id:#{@id}"

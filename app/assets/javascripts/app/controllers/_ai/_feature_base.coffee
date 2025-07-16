@@ -11,5 +11,5 @@ class App.ControllerAIFeatureBase extends App.Controller
     )
 
   missingProvider: ->
-    _.isEmpty(App.Setting.get('ai_provider'))
+    _.isEmpty(App.Config.get('ai_provider'))
 

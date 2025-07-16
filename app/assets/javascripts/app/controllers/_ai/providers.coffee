@@ -1,5 +1,5 @@
 class AiProviders extends App.Controller
-  @requiredPermission: 'admin.ai'
+  @requiredPermission: 'admin.ai_provider'
   title: __('Provider')
   description: __('This service allows you to connect Zammad with an AI provider.')
 
@@ -197,4 +197,4 @@ class ProviderForm extends App.Controller
 
     App.Setting.set('ai_provider', provider, done: -> App.Setting.set('ai_provider_config', config, notify: true))
 
-App.Config.set('Provider', { prio: 1000, name: __('Provider'), parent: '#ai', target: '#ai/provider', controller: AiProviders, permission: ['admin.ai'] }, 'NavBarAdmin')
+App.Config.set('Provider', { prio: 1000, name: __('Provider'), parent: '#ai', target: '#ai/provider', controller: AiProviders, permission: ['admin.ai_provider'] }, 'NavBarAdmin')

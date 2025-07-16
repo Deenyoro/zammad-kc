@@ -6064,7 +6064,7 @@ Setting.create_if_not_exists(
   state:       '',
   preferences: {
     authentication: true,
-    permission:     ['admin.ai'],
+    permission:     ['admin.ai_provider'],
     validations:    [
       'Setting::Validation::AIProvider',
     ],
@@ -6080,7 +6080,7 @@ Setting.create_if_not_exists(
   options:     {},
   state:       {},
   preferences: {
-    permission:  ['admin.ai'],
+    permission:  ['admin.ai_provider'],
     validations: [
       'Setting::Validation::AIProviderConfig',
     ],

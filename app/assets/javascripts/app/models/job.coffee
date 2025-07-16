@@ -34,3 +34,6 @@ class App.Job extends App.Model
     'next_run_at',
     'matching',
   ]
+
+  uiUrl: =>
+    "#manage/job/1/id:#{@id}"

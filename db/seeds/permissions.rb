@@ -223,9 +223,9 @@ Permission.create_if_not_exists(
   preferences: { prio: 1332 }
 )
 Permission.create_if_not_exists(
-  name:        'admin.ai',
-  label:       __('AI'),
-  description: __('Manage AI settings of your system.'),
+  name:        'admin.ai_provider',
+  label:       __('AI Provider'),
+  description: __('Manage AI provider of your system.'),
   preferences: { prio: 1333 }
 )
 Permission.create_if_not_exists(
@@ -239,6 +239,12 @@ Permission.create_if_not_exists(
   label:       __('Ticket Tools'),
   description: __('Manage Zammad Smart Assist text tools of your system.'),
   preferences: { prio: 1335 }
+)
+Permission.create_if_not_exists(
+  name:        'admin.ai_agent',
+  label:       __('AI Agents'),
+  description: __('Manage AI agents of your system.'),
+  preferences: { prio: 1336 }
 )
 Permission.create_if_not_exists(
   name:        'admin.integration',
