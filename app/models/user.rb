@@ -1071,20 +1071,12 @@ raise 'At least one user need to have admin permissions'
 
       next if ref_update_columns.blank?
 
-      where_sql = ref_update_columns.map { |column| "#{column} = #{id}" }.join(' OR ')
-      ref_class.where(where_sql).find_in_batches(batch_size: 1000) do |batch_list|
-        batch_list.each do |record|
-          ref_update_columns.each do |column|
-            next if record[column] != id
-
-            record[column] = 1
-          end
-          record.save!(validate: false)
-        rescue => e
-          Rails.logger.error e
-        end
+      ref_update_columns.each do |column|
+        ref_class.unscoped.where(column => id).update_all(column => 1) # rubocop:disable Rails/SkipsModelValidations
       end
     end
+
+    Rails.cache.clear
 
     true
   end
