@@ -61,4 +61,48 @@ RSpec.describe AI::Agent, current_user_id: 1, type: :model do
       expect(described_class.working_on(ticket)).to include(ai_agent)
     end
   end
+
+  describe '#assets' do
+    context 'with referencing job and trigger' do
+      let(:trigger) do
+        create(:trigger,
+               perform: {
+                 'ai.ai_agent' => { 'ai_agent_id' => ai_agent.id }
+               })
+      end
+      let(:job) do
+        create(:job,
+               perform: {
+                 'ai.ai_agent' => { 'ai_agent_id' => ai_agent.id }
+               })
+      end
+
+      before { trigger && job }
+
+      it 'includes references to referenced objects' do
+        assets = ai_agent.assets.dig(:AIAgent, ai_agent.id)
+
+        expect(assets).to include(
+          'references' => include(
+            'Job'     => contain_exactly(include('id' => job.id, 'name' => job.name)),
+            'Trigger' => contain_exactly(include('id' => trigger.id, 'name' => trigger.name)),
+          )
+        )
+      end
+
+      it 'includes assets of referenced objects' do
+        assets = ai_agent.assets
+
+        expect(assets).to include_assets_of(job, trigger)
+      end
+    end
+
+    context 'without referencing job and trigger' do
+      it 'returns empty references' do
+        assets = ai_agent.assets.dig(:AIAgent, ai_agent.id)
+
+        expect(assets).to include('references' => be_empty)
+      end
+    end
+  end
 end

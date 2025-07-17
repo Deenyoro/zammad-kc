@@ -4,6 +4,7 @@ require 'rails_helper'
 require 'models/application_model_examples'
 require 'models/concerns/has_xss_sanitized_note_examples'
 require 'models/concerns/has_timeplan_examples'
+require 'models/concerns/touches_perform_references_examples'
 
 RSpec.describe Job, type: :model do
   subject(:job) { create(:job) }
@@ -11,6 +12,7 @@ RSpec.describe Job, type: :model do
   it_behaves_like 'ApplicationModel', can_assets: { selectors: %i[condition perform] }
   it_behaves_like 'HasXssSanitizedNote', model_factory: :job
   it_behaves_like 'HasTimeplan'
+  it_behaves_like 'TouchesPerformReferences'
 
   describe 'validation' do
     it 'uses Validations::VerifyPerformRulesValidator' do

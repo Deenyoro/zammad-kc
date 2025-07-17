@@ -61,6 +61,8 @@ class AI::Agent < ApplicationModel
   include AI::Agent::Assets
   include ChecksClientNotification
 
+  PERFORMABLE_PATH = ['ai.ai_agent', 'ai_agent_id'].freeze
+
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :note, length: { maximum: 250 }
   sanitized_html :note
@@ -68,9 +70,18 @@ class AI::Agent < ApplicationModel
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
 
-  ensures_no_related_objects_path 'ai.ai_agent', 'ai_agent_id'
+  ensures_no_related_objects_path(*PERFORMABLE_PATH)
 
   scope :working_on, lambda { |ticket|
     where(id: TriggerAIAgentJob.working_on(ticket))
   }
+
+  def self.from_performable(input)
+    where(active: true).find_by id: from_performable_id(input)
+  end
+
+  def self.from_performable_id(input)
+    data = input.respond_to?(:perform) ? input.perform : input
+    data.dig(*PERFORMABLE_PATH)
+  end
 end

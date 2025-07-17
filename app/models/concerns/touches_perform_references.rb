@@ -4,39 +4,23 @@ module TouchesPerformReferences
   extend ActiveSupport::Concern
 
   included do
-    before_create :touch_perform_references
-    before_update :touch_perform_references
-    before_destroy :touch_perform_references
-  end
-
-  def touch_perform_references
-    return if !respond_to?(:perform) || perform.blank?
-
-    ai_agent_ids = collect_ai_agent_ids_from_perform(perform)
-    return if ai_agent_ids.empty?
-
-    # Touch all found AI agents.
-    AI::Agent.where(id: ai_agent_ids).each(&:touch)
+    after_save :touch_perform_references_on_save
+    after_destroy :touch_perform_references_on_destroy
   end
 
   private
 
-  def collect_ai_agent_ids_from_perform(perform_data)
-    return [] if !perform_data.is_a?(Hash)
-
-    ai_agent_ids = []
-
-    # Check current perform data
-    ai_agent_id = perform_data.dig('ai.ai_agent', 'ai_agent_id')
-    ai_agent_ids << ai_agent_id.to_i if ai_agent_id.present?
-
-    # Check previous perform data (for updates)
-    if respond_to?(:perform_was)
-      ai_agent_id = perform_was.dig('ai.ai_agent', 'ai_agent_id')
-      ai_agent_ids << ai_agent_id.to_i if ai_agent_id.present?
-    end
-
-    ai_agent_ids.uniq
+  def touch_perform_references_on_destroy
+    AI::Agent.from_performable(self)&.touch # rubocop:disable Rails/SkipsModelValidations
   end
 
+  def touch_perform_references_on_save
+    agent_id         = AI::Agent.from_performable_id(self)
+    agent_id_was     = AI::Agent.from_performable_id(perform_previously_was)
+    agent_id_changed = (agent_id.present? || agent_id_was.present?) && (agent_id != agent_id_was)
+
+    return if !agent_id_changed && !name_previously_changed?
+
+    AI::Agent.where(id: [agent_id, agent_id_was]).each(&:touch)
+  end
 end
