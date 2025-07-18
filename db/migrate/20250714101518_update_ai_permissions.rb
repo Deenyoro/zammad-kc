@@ -37,7 +37,7 @@ class UpdateAIPermissions < ActiveRecord::Migration[7.2]
 
       setting.preferences[:permission] = ['admin.ai_provider']
 
-      setting.save!
+      setting.save!(validate: false)
     end
   end
 end
