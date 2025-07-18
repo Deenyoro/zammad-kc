@@ -2630,4 +2630,29 @@ RSpec.describe 'Ticket zoom', type: :system do
       end
     end
   end
+
+  describe 'Inconsistent group search when selected value is in deeper levels of a sub group #5707', authenticated_as: :authenticate do
+    let(:ticket) { create(:ticket, group: create(:group, name: 'TreeB::AAA::BBB::CCC')) }
+
+    def authenticate
+      create(:group, name: 'TreeA')
+      create(:group, name: 'TreeA::AAA')
+      create(:group, name: 'TreeA::AAA::BBB')
+      create(:group, name: 'TreeA::AAA::BBB::CCC')
+      create(:group, name: 'TreeB')
+      create(:group, name: 'TreeB::AAA')
+      create(:group, name: 'TreeB::AAA::BBB')
+      ticket
+      create(:agent, groups: Group.all)
+    end
+
+    before do
+      visit "#ticket/zoom/#{ticket.id}"
+    end
+
+    it 'does show the right group level' do
+      page.find("div[data-attribute-name='group_id']").click
+      wait.until { page.all('span.searchableSelect-option-text').none? { |element| element.text.include?('TreeA') } }
+    end
+  end
 end

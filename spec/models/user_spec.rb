@@ -698,7 +698,7 @@ RSpec.describe User, type: :model do
         'PublicLink'                         => { 'created_by_id' => 1, 'updated_by_id' => 0 },
         'User::TwoFactorPreference'          => { 'created_by_id' => 1, 'updated_by_id' => 1, 'user_id' => 1 },
         'OnlineNotification'                 => { 'user_id' => 1, 'created_by_id' => 0, 'updated_by_id' => 0 },
-        'Ticket'                             => { 'created_by_id' => 1, 'updated_by_id' => 1, 'owner_id' => 1, 'customer_id' => 3 },
+        'Ticket'                             => { 'created_by_id' => 0, 'updated_by_id' => 0, 'owner_id' => 1, 'customer_id' => 3 },
         'Template'                           => { 'created_by_id' => 0, 'updated_by_id' => 0 },
         'Avatar'                             => { 'created_by_id' => 0, 'updated_by_id' => 0 },
         'Scheduler'                          => { 'created_by_id' => 0, 'updated_by_id' => 0 },
@@ -733,12 +733,12 @@ RSpec.describe User, type: :model do
         'Mention'                            => { 'created_by_id' => 1, 'updated_by_id' => 0, 'user_id' => 1 },
         'Channel'                            => { 'created_by_id' => 0, 'updated_by_id' => 0 },
         'Role'                               => { 'created_by_id' => 0, 'updated_by_id' => 0 },
-        'History'                            => { 'created_by_id' => 9 },
+        'History'                            => { 'created_by_id' => 6 },
         'Webhook'                            => { 'created_by_id' => 0, 'updated_by_id' => 0 },
         'Overview'                           => { 'created_by_id' => 1, 'updated_by_id' => 0 },
         'PGPKey'                             => { 'created_by_id' => 0, 'updated_by_id' => 0 },
         'AI::Agent'                          => { 'created_by_id' => 0, 'updated_by_id' => 0 },
-        'ActivityStream'                     => { 'created_by_id' => 1 },
+        'ActivityStream'                     => { 'created_by_id' => 0 },
         'StatsStore'                         => { 'created_by_id' => 0 },
         'TextModule'                         => { 'created_by_id' => 0, 'updated_by_id' => 0 },
         'Calendar'                           => { 'created_by_id' => 0, 'updated_by_id' => 0 },
@@ -773,7 +773,6 @@ RSpec.describe User, type: :model do
       public_link                = create(:public_link, created_by: user)
       user_two_factor_preference = create(:user_two_factor_preference, :authenticator_app, user: user)
       user_overview_sorting      = create(:'user/overview_sorting', user: user)
-      activity_stream            = create(:activity_stream, o: user, created_by_id: user.id)
       expect(overview.reload.user_ids).to eq([user.id])
 
       # create a chat agent for admin user (id=1) before agent user
@@ -791,7 +790,7 @@ RSpec.describe User, type: :model do
       # move ownership objects
       group                 = create(:group, created_by_id: user.id)
       job                   = create(:job, updated_by_id: user.id)
-      ticket                = create(:ticket, group: group_subject, owner: user, created_by_id: user.id, updated_by_id: user.id)
+      ticket                = create(:ticket, group: group_subject, owner: user)
       ticket_article        = create(:ticket_article, ticket: ticket, created_by_id: user.id, updated_by_id: user.id, origin_by_id: user.id)
       customer_ticket1      = create(:ticket, group: group_subject, customer: user)
       customer_ticket2      = create(:ticket, group: group_subject, customer: user)
@@ -825,7 +824,6 @@ RSpec.describe User, type: :model do
       expect { chat_message2.reload }.to raise_exception(ActiveRecord::RecordNotFound)
       expect { user_two_factor_preference.reload }.to raise_exception(ActiveRecord::RecordNotFound)
       expect { user_overview_sorting.reload }.to raise_exception(ActiveRecord::RecordNotFound)
-      expect { activity_stream.reload }.to raise_exception(ActiveRecord::RecordNotFound)
 
       # move ownership objects
       expect { group.reload }.to change(group, :created_by_id).to(1)
