@@ -532,10 +532,6 @@ msgstr "Migrare %s"
 msgid "%s is inactive, please select an active one."
 msgstr "%s este inactiv, te rugăm să selectezi unul activ."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:89
-msgid "%s is preparing summary…"
-msgstr ""
-
 #: app/frontend/shared/form/i18n/locales.ts:496
 msgid "%s is required."
 msgstr "Câmpul %s este obligatoriu."
@@ -629,6 +625,12 @@ msgstr ""
 msgid "%s required!"
 msgstr "%s trebuie introdus obligatoriu!"
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:31
+#, fuzzy
+#| msgid "Schedulers"
+msgid "%s schedulers"
+msgstr "Programatoare (Schedulers)"
+
 #: app/assets/javascripts/app/models/user.coffee:212
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/user.ts:25
 msgid "%s started a new session"
@@ -650,12 +652,6 @@ msgstr "%s a trecut la |%s|!"
 msgid "%s ticket selected"
 msgstr "%s tichete"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:90
-#, fuzzy
-#| msgid "The new ticket number could not be generated."
-msgid "%s ticket summary has been generated."
-msgstr "Noul număr de tichet nu a putut fi generat."
-
 #: app/assets/javascripts/app/views/ticket_zoom/meta.jst.eco:30
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ReferencingTicketsBadgePopover.vue:64
 #: app/frontend/apps/mobile/components/Organization/OrganizationItem.vue:51
@@ -672,6 +668,12 @@ msgstr "%s tichete găsite"
 #| msgid "%s of my tickets escalated"
 msgid "%s tickets selected"
 msgstr "%s din tichetele mele au fost escaladate"
+
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:28
+#, fuzzy
+#| msgid "Triggers"
+msgid "%s triggers"
+msgstr "Mecanisme de declanșare(triggere)"
 
 #: app/assets/javascripts/app/models/ticket_article.coffee:51
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/ticket-article.ts:28
@@ -952,13 +954,13 @@ msgstr ""
 "Dacă ai clienți cu ore de lucru diferite, poți crea mai multe calendare. "
 "Tichetele sunt legate de calendare folosind **SLA-uri**."
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:45
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:44
 msgid "A color scheme that uses dark-colored elements on a light background."
 msgstr ""
 "O schemă de culori care utilizează elemente de culoare închisă pe un fundal "
 "deschis."
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:40
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:39
 msgid "A color scheme that uses light-colored elements on a dark background."
 msgstr ""
 "O schemă de culori care utilizează elemente de culoare deschisă pe un fundal "
@@ -1057,18 +1059,57 @@ msgstr ""
 "Un webhook poate fi declanșat de trigger-e și programatoare (scheduler), nu "
 "uita să le definești!"
 
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:64
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:30
 #: app/assets/javascripts/app/controllers/manage.coffee:44
-#: db/seeds/permissions.rb:227
 #, fuzzy
 #| msgid "API"
 msgid "AI"
 msgstr "API"
+
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:6
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:42
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:79
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:60
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/utils/historyEventIssuerNames.ts:7
+#, fuzzy
+#| msgid "Agent"
+msgid "AI Agent"
+msgstr "Agent"
+
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:6
+#: app/assets/javascripts/app/views/generic/ticket_perform_action/ai_agent.jst.eco:3
+#: db/seeds/permissions.rb:245
+#, fuzzy
+#| msgid "Agents"
+msgid "AI Agents"
+msgstr "Agenți"
+
+#: db/seeds/permissions.rb:227
+#, fuzzy
+#| msgid "Provider"
+msgid "AI Provider"
+msgstr "Furnizor"
 
 #: db/seeds/settings.rb:6069
 #, fuzzy
 #| msgid "Provider"
 msgid "AI Provider Config"
 msgstr "Furnizor"
+
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:31
+msgid "AI agent used in schedulers"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:28
+msgid "AI agent used in triggers"
+msgstr ""
+
+#: app/assets/javascripts/app/models/ai_agent.coffee
+msgid ""
+"AI agents enable streamlined processing powered by AI-driven insights. You "
+"can execute AI agents via triggers or schedulers."
+msgstr ""
 
 #: db/seeds/settings.rb:6052
 #, fuzzy
@@ -1087,7 +1128,8 @@ msgid "AI provider Ollama URL is not set"
 msgstr ""
 
 #: app/controllers/ticket/summarize_controller.rb:8
-#: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:16
+#: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:17
+#: app/services/service/ai/agent/run.rb:17
 #: app/services/service/ai/vectordb/base.rb:12
 #: app/services/service/ai_assistance/text_tools.rb:17
 #: app/services/service/ticket/ai_assistance/summarize.rb:16
@@ -1107,7 +1149,7 @@ msgid "AI provider token is not set"
 msgstr "Tokenul furnizat este invalid."
 
 #: app/assets/javascripts/app/controllers/api.coffee:3
-#: app/assets/javascripts/app/views/api.jst.eco:2 db/seeds/permissions.rb:251
+#: app/assets/javascripts/app/views/api.jst.eco:2 db/seeds/permissions.rb:257
 msgid "API"
 msgstr "API"
 
@@ -1130,6 +1172,13 @@ msgstr "Autentificare API cu Token"
 #: lib/whatsapp/webhook/payload.rb:22
 msgid "API error."
 msgstr "Eroare API."
+
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:9
+#, fuzzy
+#| msgid "Email could not be verified. Please contact your administrator."
+msgid "API is not available. Please contact your Administrator and retry."
+msgstr ""
+"E-mailul nu a putut fi verificat. Te rugăm să contactezi administratorul tău."
 
 #: lib/ai/provider/concerns/handles_response.rb:22
 msgid "API server error - please try again"
@@ -1169,47 +1218,47 @@ msgstr ""
 msgid "Access denied"
 msgstr "Acces interzis"
 
-#: db/seeds/permissions.rb:339
+#: db/seeds/permissions.rb:345
 msgid "Access the agent chat features."
 msgstr "Accesează funcțiile de chat ale agentului."
 
-#: db/seeds/permissions.rb:354
+#: db/seeds/permissions.rb:360
 msgid "Access the agent phone features."
 msgstr "Accesează funcțiile de telefon ale agentului."
 
-#: db/seeds/permissions.rb:369
+#: db/seeds/permissions.rb:375
 msgid "Access the knowledge base editor features."
 msgstr "Accesează funcțiile editorului bazei de cunoștințe."
 
-#: db/seeds/permissions.rb:375
+#: db/seeds/permissions.rb:381
 msgid "Access the knowledge base reader features."
 msgstr "Accesează funcțiile pentru cititorul bazei de cunoștințe."
 
-#: db/seeds/permissions.rb:397
+#: db/seeds/permissions.rb:403
 msgid "Access the tickets as agent based on group access."
 msgstr "Accesează tichetele ca agent bazat pe regulile de acces ale grupului."
 
-#: db/seeds/permissions.rb:406
+#: db/seeds/permissions.rb:412
 msgid "Access tickets as customer."
 msgstr "Accesează tichetele ca și client."
 
-#: db/seeds/permissions.rb:330
+#: db/seeds/permissions.rb:336
 msgid "Access to the chat interface."
 msgstr "Accesează interfața de chat."
 
-#: db/seeds/permissions.rb:360
+#: db/seeds/permissions.rb:366
 msgid "Access to the knowledge base interface."
 msgstr "Accesează interfața bazei de cunoștințe."
 
-#: db/seeds/permissions.rb:345
+#: db/seeds/permissions.rb:351
 msgid "Access to the phone interface."
 msgstr "Accesează interfața telefonului."
 
-#: db/seeds/permissions.rb:382
+#: db/seeds/permissions.rb:388
 msgid "Access to the report interface."
 msgstr "Accesează interfața rapoartelor."
 
-#: db/seeds/permissions.rb:388
+#: db/seeds/permissions.rb:394
 msgid "Access to the ticket interface."
 msgstr "Accesează interfața tichetelor."
 
@@ -1284,9 +1333,9 @@ msgid "Accounts"
 msgstr "Conturi"
 
 #: app/assets/javascripts/app/controllers/_application_controller/table.coffee:759
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:115
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:123
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:82
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:109
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:118
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:109
 #: app/assets/javascripts/app/models/core_workflow.coffee:11
 #: app/assets/javascripts/app/models/trigger.coffee:7
@@ -1352,6 +1401,7 @@ msgstr ""
 "eficientă doar dacă autentificarea prin parolă este activată."
 
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:326
+#: app/assets/javascripts/app/models/ai_agent.coffee:11
 #: app/assets/javascripts/app/models/chat.coffee:257
 #: app/assets/javascripts/app/models/checklist_template.coffee:9
 #: app/assets/javascripts/app/models/core_workflow.coffee:14
@@ -1424,7 +1474,7 @@ msgstr "Adaptor"
 #: app/assets/javascripts/app/views/generic/checklist_item.jst.eco:26
 #: app/assets/javascripts/app/views/generic/postmaster_match.jst.eco:21
 #: app/assets/javascripts/app/views/generic/postmaster_set_row.jst.eco:20
-#: app/assets/javascripts/app/views/generic/ticket_perform_action/row.jst.eco:16
+#: app/assets/javascripts/app/views/generic/ticket_perform_action/row.jst.eco:17
 #: app/assets/javascripts/app/views/generic/user_permission_group.jst.eco:58
 #: app/assets/javascripts/app/views/google/list.jst.eco:8
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:44
@@ -1475,7 +1525,7 @@ msgstr "Adaugă certificat"
 msgid "Add Empty Checklist"
 msgstr "Adaugă listă de verificare goală"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistTemplates.vue:37
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistTemplates.vue:36
 msgid "Add From a Template"
 msgstr "Adaugă din schiță"
 
@@ -1526,7 +1576,7 @@ msgstr "Adaugă o notă"
 msgid "Add a Personal Access Token"
 msgstr "Adaugă un token de acces personal"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:105
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:114
 msgid "Add a data privacy deletion task"
 msgstr "Adaugă o sarcină de ștergere confidențială a datelor"
 
@@ -1829,7 +1879,7 @@ msgstr "Nume agent"
 msgid "Agent Name + FromSeparator + System Address Display Name"
 msgstr "Nume agent + Separator de la + Numele de afișare al adresei sistemului"
 
-#: db/seeds/permissions.rb:338
+#: db/seeds/permissions.rb:344
 msgid "Agent chat"
 msgstr "Chat agent"
 
@@ -1837,16 +1887,16 @@ msgstr "Chat agent"
 msgid "Agent idle timeout"
 msgstr "Timpul de inactivitate al agentului"
 
-#: app/models/role.rb:156 app/models/user.rb:736
+#: app/models/role.rb:156 app/models/user.rb:744
 msgid "Agent limit exceeded, please check your account settings."
 msgstr ""
 "Limita de agenți a fost depășită, te rugăm să verifici setările contului tău."
 
-#: db/seeds/permissions.rb:353
+#: db/seeds/permissions.rb:359
 msgid "Agent phone"
 msgstr "Telefon agent"
 
-#: db/seeds/permissions.rb:396
+#: db/seeds/permissions.rb:402
 msgid "Agent tickets"
 msgstr "Tichetele agentului"
 
@@ -1868,7 +1918,7 @@ msgstr "Alarmă"
 msgid "All Tickets"
 msgstr "Toate tichetele"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:115
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:124
 msgid ""
 "All affected tickets will be deleted immediately when this job is run, "
 "without a history entry. There is no rollback of this deletion possible."
@@ -1877,7 +1927,7 @@ msgstr ""
 "rulată, fără o intrare în istoric. Nu există posibilitatea de a reveni "
 "asupra acestei ștergeri."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:116
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:125
 msgid ""
 "All affected tickets will be scheduled for deletion when this job is run. "
 "Once the data privacy task is executed, tickets will be deleted and a "
@@ -1888,7 +1938,7 @@ msgstr ""
 "este executată, tichetele vor fi șterse și va fi păstrată o intrare în "
 "istoric. Nu există posibilitatea de a reveni asupra acestei ștergeri."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:129
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:138
 msgid ""
 "All affected users and their customer tickets will be scheduled for deletion "
 "when this job is run. Once the data privacy task is executed, users and "
@@ -1901,7 +1951,7 @@ msgstr ""
 "șterse și va fi păstrată o intrare în istoric. Nu există posibilitatea de a "
 "reveni asupra acestei ștergeri."
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:506
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:513
 msgid "All agents"
 msgstr "Toți agenții"
 
@@ -2166,8 +2216,8 @@ msgstr "Secret aplicație"
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:3
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/appearance.ts:9
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/appearance.ts:6
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:54
-#: db/seeds/permissions.rb:419
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:53
+#: db/seeds/permissions.rb:425
 msgid "Appearance"
 msgstr "Aspect"
 
@@ -2211,6 +2261,12 @@ msgstr "Aplică setările implicite curente pentru toți agenții"
 #: app/frontend/apps/desktop/components/NavigationMenu/NavigationMenuFilter.vue:76
 msgid "Apply filter…"
 msgstr "Aplică filtru…"
+
+#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:4
+#, fuzzy
+#| msgid "Provider"
+msgid "Approve"
+msgstr "Furnizor"
 
 #: app/assets/javascripts/app/controllers/_ui_element/basedate.coffee:160
 #: app/assets/javascripts/app/controllers/report.coffee:220
@@ -2491,7 +2547,7 @@ msgstr ""
 "Timp de expirare pentru atribuire în minute dacă agentul atribuit nu "
 "lucrează la el. Tichetul va fi afișat ca neatribuit."
 
-#: app/models/user.rb:639
+#: app/models/user.rb:647
 msgid ""
 "At least one identifier (firstname, lastname, phone, mobile or email) for "
 "user is required."
@@ -2509,7 +2565,7 @@ msgstr ""
 msgid "At least one object must be selected."
 msgstr "Este necesar să selectați cel puțin un obiect."
 
-#: app/models/role.rb:128 app/models/user.rb:710
+#: app/models/role.rb:128 app/models/user.rb:718
 msgid "At least one user needs to have admin permissions."
 msgstr ""
 "Este necesar ca cel puțin un utilizator să aibă drepturi de administrator."
@@ -2813,7 +2869,7 @@ msgstr "Tipuri disponibile pentru crearea unui tichet nou"
 #: app/frontend/apps/mobile/pages/account/views/AccountOverview.vue:121
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:168
 #: app/frontend/shared/components/CommonUserAvatar/CommonUserAvatar.vue:114
-#: db/seeds/permissions.rb:433
+#: db/seeds/permissions.rb:439
 msgid "Avatar"
 msgstr "Avatar"
 
@@ -3240,8 +3296,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_application_controller/after_auth_modal.coffee:9
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:382
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/twitter_reply.coffee:177
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:342
-#: app/assets/javascripts/app/views/generic/text_tools_loading.jst.eco:3
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:345
 #: app/assets/javascripts/app/views/integration/exchange_certificate_issue.jst.eco:18
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:236
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:292
@@ -3262,7 +3317,7 @@ msgstr ""
 msgid "Cancel"
 msgstr "Anulează"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal.coffee:113
+#: app/assets/javascripts/app/controllers/_application_controller/_modal.coffee:117
 #: app/assets/javascripts/app/views/admin_password_auth/request.jst.eco:8
 #: app/assets/javascripts/app/views/admin_password_auth/request_sent.jst.eco:7
 #: app/assets/javascripts/app/views/agent_ticket_create.jst.eco:55
@@ -3331,7 +3386,7 @@ msgstr "Nu se poate procesa sursa de date externă %s. %s"
 msgid "Cannot set online notifications as seen"
 msgstr "Nu se pot marca notificările online ca văzute"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:806
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:803
 msgid "Cannot upload file"
 msgstr "Nu se poate încărca fișierul"
 
@@ -3407,7 +3462,7 @@ msgstr "Data modificării"
 msgid "Change order"
 msgstr "Schimbă ordinea"
 
-#: db/seeds/permissions.rb:451
+#: db/seeds/permissions.rb:457
 msgid "Change personal account password."
 msgstr "Schimba-ți parola contului personal."
 
@@ -3593,7 +3648,7 @@ msgstr ""
 msgid "Checklist"
 msgstr "Listă de verificare"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:60
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:61
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/event-actions/checklist-item-checked.ts:10
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/utils/historyEventEntityNames.ts:10
 msgid "Checklist Item"
@@ -3613,7 +3668,7 @@ msgstr ""
 "Elementele șablonului de listă de verificare sunt limitate la 100 de "
 "elemente per listă de verificare."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:193
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:191
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:61
 #, fuzzy
 #| msgid "Ticket updated successfully."
@@ -3636,7 +3691,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/checklist_template.coffee:3
 #: app/assets/javascripts/app/views/checklist_template/index.jst.eco:7
-#: db/seeds/permissions.rb:323 db/seeds/settings.rb:6005
+#: db/seeds/permissions.rb:329 db/seeds/settings.rb:6005
 msgid "Checklists"
 msgstr "Liste de verificare"
 
@@ -4257,7 +4312,7 @@ msgstr "Conținut"
 msgid "Context"
 msgstr "Context"
 
-#: app/frontend/apps/desktop/components/SplitButton/SplitButton.vue:86
+#: app/frontend/apps/desktop/components/SplitButton/SplitButton.vue:85
 #, fuzzy
 #| msgid "Context"
 msgid "Context menu"
@@ -4376,7 +4431,7 @@ msgid "Core Workflow Ajax Mode"
 msgstr "Modul Ajax pentru fluxul de lucru de bază"
 
 #: app/assets/javascripts/app/controllers/core_workflow.coffee:3
-#: db/seeds/permissions.rb:275
+#: db/seeds/permissions.rb:281
 msgid "Core Workflows"
 msgstr "Fluxuri de lucru de bază"
 
@@ -4802,7 +4857,7 @@ msgstr "Status actual"
 msgid "Current Token"
 msgstr "Token-ul actual"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:636
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:642
 #: app/assets/javascripts/app/models/signature.coffee:21
 #: app/assets/javascripts/app/models/text_module.coffee:21
 #: app/assets/javascripts/app/views/microsoft365/user_mismatch.jst.eco:7
@@ -4871,7 +4926,7 @@ msgid "Custom address is not set"
 msgstr "Adresa personalizată nu este setată"
 
 #: app/assets/javascripts/app/controllers/_application_controller/form.coffee:208
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:505
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:512
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:14
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:28
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:14
@@ -4918,7 +4973,7 @@ msgstr ""
 msgid "Customer selection based on sender and receiver list"
 msgstr "Selecția clientului pe baza listei de expeditori și destinatari"
 
-#: db/seeds/permissions.rb:405
+#: db/seeds/permissions.rb:411
 msgid "Customer tickets"
 msgstr "Tichetele clienților"
 
@@ -4950,7 +5005,7 @@ msgid "Cut"
 msgstr "Tăiere"
 
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:20
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:39
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:38
 msgid "Dark"
 msgstr "Întunecat"
 
@@ -4969,7 +5024,7 @@ msgstr "Tablou de bord"
 
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:3
 #: app/assets/javascripts/app/views/data_privacy/index.jst.eco:3
-#: db/seeds/permissions.rb:287
+#: db/seeds/permissions.rb:293
 msgid "Data Privacy"
 msgstr "Confidențialitatea datelor"
 
@@ -6253,13 +6308,13 @@ msgstr "Șterge avatar"
 msgid "Delete column"
 msgstr "Șterge fișierul"
 
-#: db/seeds/permissions.rb:288
+#: db/seeds/permissions.rb:294
 #, fuzzy
 #| msgid "Delete all existing records first."
 msgid "Delete existing data of your system."
 msgstr "Ștergeți mai întâi toate înregistrările existente."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:102
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:111
 msgid "Delete immediately"
 msgstr "Șterge imediat"
 
@@ -6500,7 +6555,7 @@ msgstr "Nu au fost găsite rezultate."
 #: app/assets/javascripts/app/views/profile/devices.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/devices.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:31
-#: db/seeds/permissions.rb:464
+#: db/seeds/permissions.rb:470
 msgid "Devices"
 msgstr "Dispozitive"
 
@@ -6521,7 +6576,7 @@ msgid ""
 "%l"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/translation.coffee:325
+#: app/assets/javascripts/app/controllers/translation.coffee:324
 msgid ""
 "Did you know that system translations can be contributed and shared with the "
 "community on our public platform %l? It sports a very convenient user "
@@ -6596,10 +6651,6 @@ msgstr "Oprește notificările"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNewBetaUi.vue:36
 msgid "Disable the banner for the BETA switch"
-msgstr ""
-
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:31
-msgid "Disable the banner for the ticket summary smart assist"
 msgstr ""
 
 #: db/seeds/settings.rb:1326
@@ -6688,11 +6739,11 @@ msgstr "Numele afișat"
 msgid "Do not change email address (%s)"
 msgstr "Introdu numele de utilizator sau email-ul"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:662
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:668
 msgid "Do not encrypt email"
 msgstr "Nu cripta email-ul"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:648
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:654
 msgid "Do not sign email"
 msgstr "Nu semna email-ul"
 
@@ -7111,8 +7162,8 @@ msgid "Elasticsearch version"
 msgstr "Ultima sincronizare"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:3
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:67
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:47
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:73
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:54
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:44
 #: app/assets/javascripts/app/controllers/getting_started/channel.coffee:15
 #: app/assets/javascripts/app/models/email_address.coffee:2
@@ -7213,7 +7264,7 @@ msgstr "Verificare e-mail"
 msgid "Email address"
 msgstr "Adresa de e-mail"
 
-#: app/models/user.rb:649
+#: app/models/user.rb:657
 msgid "Email address '%{email}' is already used for another user."
 msgstr ""
 "Adresa de e-mail '%{email}' este deja folosită pentru un alt utilizator."
@@ -7418,10 +7469,6 @@ msgstr ""
 msgid "Enable the banner for the BETA switch"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:32
-msgid "Enable the banner for the ticket summary smart assist"
-msgstr ""
-
 #: db/seeds/settings.rb:2570
 msgid "Enable ticket auto assignment."
 msgstr "Activează alocarea automată a tichetelor."
@@ -7558,11 +7605,11 @@ msgstr ""
 msgid "Encrypt"
 msgstr "Criptează"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:663
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:669
 msgid "Encrypt email (if not possible, discard notification)"
 msgstr "Criptează e-mailul (dacă nu este posibil, elimină notificarea)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:664
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:670
 msgid "Encrypt email (if not possible, send notification anyway)"
 msgstr "Criptează e-mailul (dacă nu este posibil, trimite notificarea oricum)"
 
@@ -8046,7 +8093,7 @@ msgstr "Tichete existente"
 msgid "Existing tickets (open)"
 msgstr "Tichete existente (deschise)"
 
-#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:14
+#: app/assets/javascripts/app/views/generic/text_tools_dropdown.jst.eco:9
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:71
 #, fuzzy
 #| msgid "Content"
@@ -8059,9 +8106,21 @@ msgstr "Conținut"
 msgid "Expand sidebar"
 msgstr "Conținut"
 
+#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:21
+#, fuzzy
+#| msgid "Content"
+msgid "Expand text"
+msgstr "Conținut"
+
 #: app/frontend/apps/desktop/components/CollapseButton/CollapseButton.vue:59
 msgid "Expand this element"
 msgstr ""
+
+#: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:32
+#, fuzzy
+#| msgid "Expert"
+msgid "Experimental"
+msgstr "Expert"
 
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:223
 msgid "Expert"
@@ -8277,7 +8336,7 @@ msgstr "Fișierul '%s' se încarcă"
 msgid "File format is not allowed: %s"
 msgstr "Formatul fișierului nu este permis: %s"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:867
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:864
 #: app/frontend/shared/components/Form/fields/FieldFile/composable/useFileValidation.ts:22
 #: lib/validations/ticket_article_validator/whatsapp_message.rb:38
 msgid "File is too big. %s has to be %s or smaller."
@@ -8379,7 +8438,8 @@ msgstr "Prenume"
 msgid "First response"
 msgstr "Primul răspuns"
 
-#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:12
+#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:24
+#: app/assets/javascripts/app/views/generic/text_tools_dropdown.jst.eco:7
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:62
 msgid "Fix spelling and grammar"
 msgstr ""
@@ -9307,19 +9367,9 @@ msgstr "Bună! Care dintre produsele noastre?"
 msgid "Hide Beta UI switch"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/banner_ticket_summary.coffee:62
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:65
-msgid "Hide Smart Assist Summary Banner?"
-msgstr ""
-
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:24
 msgid "Hide authenticator app secret"
 msgstr "Ascunde secretul pentru aplicația Google Authenticator"
-
-#: app/assets/javascripts/app/views/ticket_zoom/banner_ticket_summary.jst.eco:21
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:109
-msgid "Hide ticket summary banner"
-msgstr ""
 
 #: app/assets/javascripts/app/models/ticket_priority.coffee:7
 msgid "High priority"
@@ -9675,7 +9725,7 @@ msgstr "Fișier imagine"
 
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/popup_image.coffee:18
 #: app/assets/javascripts/app/lib/app_post/image_service.coffee:134
-#: app/assets/javascripts/app/lib/base/jquery.contenteditable.js:419
+#: app/assets/javascripts/app/lib/base/jquery.contenteditable.js:449
 msgid "Image file size is too large, please try inserting a smaller file."
 msgstr ""
 
@@ -9782,7 +9832,8 @@ msgstr "Important"
 msgid "Imported"
 msgstr "Importat"
 
-#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:10
+#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:23
+#: app/assets/javascripts/app/views/generic/text_tools_dropdown.jst.eco:5
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:53
 #, fuzzy
 #| msgid "Remove formatting"
@@ -9819,8 +9870,8 @@ msgstr "inactive"
 msgid "Inbound"
 msgstr "Primite"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:131
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:140
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:139
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:149
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:34
 #: app/assets/javascripts/app/views/navigation/menu_cti_ringing.jst.eco:6
 msgid "Inbound Call"
@@ -10078,7 +10129,7 @@ msgid "Integer field"
 msgstr "Câmp număr întreg"
 
 #: app/assets/javascripts/app/controllers/integrations.coffee:3
-#: db/seeds/permissions.rb:245
+#: db/seeds/permissions.rb:251
 msgid "Integrations"
 msgstr "Integrări"
 
@@ -10165,7 +10216,7 @@ msgstr "client_id invalid în bucla de primire!"
 msgid "Invalid client_id received!"
 msgstr "client_id invalid primit!"
 
-#: app/models/user.rb:594
+#: app/models/user.rb:596
 msgid "Invalid email '%{email}'"
 msgstr "E-mail invalid '%{email}'"
 
@@ -10510,7 +10561,7 @@ msgstr "Bază de cunoștințe"
 msgid "Knowledge Base Answer"
 msgstr "Răspuns în bază de cunoștințe"
 
-#: db/seeds/permissions.rb:368
+#: db/seeds/permissions.rb:374
 msgid "Knowledge Base Editor"
 msgstr "Editor bază de cunoștințe"
 
@@ -10518,7 +10569,7 @@ msgstr "Editor bază de cunoștințe"
 msgid "Knowledge Base Feed"
 msgstr "Flux bază de cunoștințe"
 
-#: db/seeds/permissions.rb:374
+#: db/seeds/permissions.rb:380
 msgid "Knowledge Base Reader"
 msgstr "Cititor bază de cunoștințe"
 
@@ -10572,7 +10623,7 @@ msgstr "Aspectul paginii de destinație"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/locale.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLocale.vue:12
 #: app/frontend/apps/mobile/pages/account/views/AccountOverview.vue:150
-#: db/seeds/permissions.rb:426
+#: db/seeds/permissions.rb:432
 msgid "Language"
 msgstr "Limbă"
 
@@ -10714,7 +10765,7 @@ msgid "Library"
 msgstr "Bibliotecă"
 
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:26
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:44
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:43
 msgid "Light"
 msgstr "Luminos"
 
@@ -10873,7 +10924,7 @@ msgstr "Asociază șablon"
 #: app/assets/javascripts/app/views/widget/user.jst.eco:34
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/linkedAccounts.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:48
-#: db/seeds/permissions.rb:478
+#: db/seeds/permissions.rb:484
 msgid "Linked Accounts"
 msgstr "Conturi asociate"
 
@@ -11101,7 +11152,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/maintenance.coffee:3
 #: app/assets/javascripts/app/views/maintenance.jst.eco:3
-#: db/seeds/permissions.rb:293
+#: db/seeds/permissions.rb:299
 msgid "Maintenance"
 msgstr "Mentenanță"
 
@@ -11122,13 +11173,19 @@ msgstr "Mod mentenanță activat!"
 msgid "Manage"
 msgstr "Administrează"
 
+#: db/seeds/permissions.rb:246
+#, fuzzy
+#| msgid "Enter the URL of your %s system"
+msgid "Manage AI agents of your system."
+msgstr "Introduceai URL-ul sistemului dvs. %s"
+
 #: db/seeds/permissions.rb:228
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
-msgid "Manage AI settings of your system."
+msgid "Manage AI provider of your system."
 msgstr "Introduceai URL-ul sistemului dvs. %s"
 
-#: db/seeds/permissions.rb:252
+#: db/seeds/permissions.rb:258
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage API of your system."
@@ -11215,11 +11272,11 @@ msgstr "Introduceai URL-ul sistemului dvs. %s"
 msgid "Manage Zammad Smart Assist ticket summarization of your system."
 msgstr "Introduceai URL-ul sistemului dvs. %s"
 
-#: db/seeds/permissions.rb:517
+#: db/seeds/permissions.rb:523
 msgid "Manage access to New BETA UI switch."
 msgstr ""
 
-#: db/seeds/permissions.rb:312
+#: db/seeds/permissions.rb:318
 msgid "Manage active user sessions of your system."
 msgstr ""
 
@@ -11263,7 +11320,7 @@ msgstr "Introduceai URL-ul sistemului dvs. %s"
 msgid "Manage core system settings."
 msgstr "Administrați setările %s"
 
-#: db/seeds/permissions.rb:276
+#: db/seeds/permissions.rb:282
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage core workflows of your system."
@@ -11287,93 +11344,93 @@ msgstr "Introduceai URL-ul sistemului dvs. %s"
 msgid "Manage groups of your system."
 msgstr "Pentru configurarea sistemului."
 
-#: db/seeds/permissions.rb:246
+#: db/seeds/permissions.rb:252
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage integrations of your system."
 msgstr "Introduceai URL-ul sistemului dvs. %s"
 
-#: db/seeds/permissions.rb:294
+#: db/seeds/permissions.rb:300
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage maintenance mode of your system."
 msgstr "Introduceai URL-ul sistemului dvs. %s"
 
-#: db/seeds/permissions.rb:300
+#: db/seeds/permissions.rb:306
 #, fuzzy
 #| msgid "To configure your system."
 msgid "Manage monitoring of your system."
 msgstr "Pentru configurarea sistemului."
 
-#: db/seeds/permissions.rb:258
+#: db/seeds/permissions.rb:264
 msgid "Manage object attributes of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:306
+#: db/seeds/permissions.rb:312
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage packages of your system."
 msgstr "Introduceai URL-ul sistemului dvs. %s"
 
-#: db/seeds/permissions.rb:472
+#: db/seeds/permissions.rb:478
 #, fuzzy
 #| msgid "Personal Access Tokens"
 msgid "Manage personal API tokens."
 msgstr "Token-uri pentru acces personal"
 
-#: db/seeds/permissions.rb:420
+#: db/seeds/permissions.rb:426
 msgid "Manage personal appearance settings."
 msgstr ""
 
-#: db/seeds/permissions.rb:434
+#: db/seeds/permissions.rb:440
 #, fuzzy
 #| msgid "Manage %s Settings"
 msgid "Manage personal avatar settings."
 msgstr "Administrați setările %s"
 
-#: db/seeds/permissions.rb:506
+#: db/seeds/permissions.rb:512
 msgid "Manage personal calendar."
 msgstr ""
 
-#: db/seeds/permissions.rb:465
+#: db/seeds/permissions.rb:471
 #, fuzzy
 #| msgid "Continue session"
 msgid "Manage personal devices and sessions."
 msgstr "Continuă sesiunea"
 
-#: db/seeds/permissions.rb:427
+#: db/seeds/permissions.rb:433
 #, fuzzy
 #| msgid "Manage %s Settings"
 msgid "Manage personal language settings."
 msgstr "Administrați setările %s"
 
-#: db/seeds/permissions.rb:479
+#: db/seeds/permissions.rb:485
 msgid "Manage personal linked accounts."
 msgstr ""
 
-#: db/seeds/permissions.rb:486
+#: db/seeds/permissions.rb:492
 #, fuzzy
 #| msgid "Manage your notifications settings"
 msgid "Manage personal notifications settings."
 msgstr "Administrează setările tale pentru notificări"
 
-#: db/seeds/permissions.rb:441
+#: db/seeds/permissions.rb:447
 #, fuzzy
 #| msgid "Manage your notifications settings"
 msgid "Manage personal out of office settings."
 msgstr "Administrează setările tale pentru notificări"
 
-#: db/seeds/permissions.rb:496
+#: db/seeds/permissions.rb:502
 msgid "Manage personal overviews."
 msgstr ""
 
-#: db/seeds/permissions.rb:413
+#: db/seeds/permissions.rb:419
 #, fuzzy
 #| msgid "Manage %s Settings"
 msgid "Manage personal settings."
 msgstr "Administrați setările %s"
 
-#: db/seeds/permissions.rb:458
+#: db/seeds/permissions.rb:464
 #, fuzzy
 #| msgid "Authentication"
 msgid "Manage personal two-factor authentication methods."
@@ -11405,7 +11462,7 @@ msgstr "Introduceai URL-ul sistemului dvs. %s"
 msgid "Manage security settings of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:318
+#: db/seeds/permissions.rb:324
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage system report of your system."
@@ -11423,7 +11480,7 @@ msgstr "Introduceai URL-ul sistemului dvs. %s"
 msgid "Manage ticket auto assignment settings of your system."
 msgstr "Introduceai URL-ul sistemului dvs. %s"
 
-#: db/seeds/permissions.rb:324
+#: db/seeds/permissions.rb:330
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage ticket checklists of your system."
@@ -11447,7 +11504,7 @@ msgstr "Introduceai URL-ul sistemului dvs. %s"
 msgid "Manage ticket overviews of your system."
 msgstr "Overviews"
 
-#: db/seeds/permissions.rb:270
+#: db/seeds/permissions.rb:276
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage ticket priorities of your system."
@@ -11459,7 +11516,7 @@ msgstr "Introduceai URL-ul sistemului dvs. %s"
 msgid "Manage ticket settings of your system."
 msgstr "Introduceai URL-ul sistemului dvs. %s"
 
-#: db/seeds/permissions.rb:264
+#: db/seeds/permissions.rb:270
 #, fuzzy
 #| msgid "Enter the URL of your %s system"
 msgid "Manage ticket states of your system."
@@ -11481,7 +11538,7 @@ msgstr "Introduceai URL-ul sistemului dvs. %s"
 msgid "Manage time accounting settings of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:282
+#: db/seeds/permissions.rb:288
 msgid "Manage translations of your system."
 msgstr ""
 
@@ -11952,7 +12009,7 @@ msgstr "Integrare Monit"
 
 #: app/assets/javascripts/app/controllers/monitoring.coffee:3
 #: app/assets/javascripts/app/views/monitoring.jst.eco:3
-#: db/seeds/permissions.rb:299
+#: db/seeds/permissions.rb:305
 msgid "Monitoring"
 msgstr "Monitorizare"
 
@@ -11977,7 +12034,7 @@ msgstr "Dispoziție"
 msgid "More information can be found here."
 msgstr "Mai multe informații pot fi găsite aici."
 
-#: app/models/user.rb:662
+#: app/models/user.rb:670
 msgid "More than 250 secondary organizations are not allowed."
 msgstr "Nu sunt permise mai mult de 250 de organizații secundare."
 
@@ -12084,6 +12141,7 @@ msgstr "Integrare Nagios"
 #: app/assets/javascripts/app/controllers/chat.coffee:559
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:58
 #: app/assets/javascripts/app/models/_application_model.coffee:156
+#: app/assets/javascripts/app/models/ai_agent.coffee:6
 #: app/assets/javascripts/app/models/application.coffee:7
 #: app/assets/javascripts/app/models/calendar.coffee:7
 #: app/assets/javascripts/app/models/chat.coffee:251
@@ -12237,6 +12295,12 @@ msgstr "Nou"
 msgid "New & Open Tickets"
 msgstr "Tichete Deschise"
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:51
+#, fuzzy
+#| msgid "Agent"
+msgid "New AI Agent"
+msgstr "Agent"
+
 #: app/assets/javascripts/app/controllers/api.coffee:190
 msgid "New Access Token is"
 msgstr "Noul token de acces este"
@@ -12268,7 +12332,7 @@ msgstr "Atribut nou"
 msgid "New BETA UI"
 msgstr ""
 
-#: db/seeds/permissions.rb:516
+#: db/seeds/permissions.rb:522
 msgid "New BETA UI Switch"
 msgstr ""
 
@@ -12557,6 +12621,18 @@ msgstr "Fără"
 msgid "No %s configured."
 msgstr "Nici un %s configurat."
 
+#: app/assets/javascripts/app/views/generic/ticket_perform_action/ai_agent_not_available.jst.eco:1
+#, fuzzy
+#| msgid ""
+#| "No webhook available, please create a new one or activate an existing one "
+#| "at \"Manage > Webhook\""
+msgid ""
+"No AI agent available, please create a new one or activate an existing one "
+"at \"Manage > AI Agents\""
+msgstr ""
+"Niciun webhook disponibil, vă rugăm să creați unul nou sau să activați unul "
+"existent la \"Administrare > Webhook\""
+
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:14
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:59
 #, fuzzy
@@ -12720,7 +12796,7 @@ msgstr "Nici un fișier selectat."
 msgid "No file formats allowed."
 msgstr "Nu este permis nici un format de fișier."
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:649
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:654
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector_expert.coffee:803
 msgid "No filter was configured."
 msgstr "Nici filtru configurat."
@@ -12935,7 +13011,7 @@ msgstr "Indisponibil"
 msgid "Not Found"
 msgstr "Negăsit"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:238
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:236
 #, fuzzy
 #| msgid "Ticket updated successfully."
 msgid "Not all checklist items could be added."
@@ -12993,8 +13069,9 @@ msgstr "Negăsit"
 msgid "Not found - resource not found"
 msgstr "Nu au fost găsite rezultate"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:71
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:51
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:77
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:58
+#: app/assets/javascripts/app/models/ai_agent.coffee:10
 #: app/assets/javascripts/app/models/chat.coffee:252
 #: app/assets/javascripts/app/models/email_address.coffee:35
 #: app/assets/javascripts/app/models/group.coffee:14
@@ -13126,7 +13203,7 @@ msgstr "Sunet de notificare"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/notifications.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:34
 #: app/frontend/apps/mobile/pages/online-notification/routes.ts:8
-#: db/seeds/permissions.rb:485
+#: db/seeds/permissions.rb:491
 msgid "Notifications"
 msgstr "Notificări"
 
@@ -13254,7 +13331,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/object_manager.coffee:330
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoit.vue:55
-#: db/seeds/permissions.rb:257
+#: db/seeds/permissions.rb:263
 msgid "Objects"
 msgstr "Obiecte"
 
@@ -13316,7 +13393,7 @@ msgstr "Serviciu online"
 msgid "Only %s attachment allowed"
 msgstr "Sunt permise doar atașamente %s"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:832
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:829
 msgid "Only %s attachment allowed."
 msgstr "Sunt permise doar atașamente %s."
 
@@ -13550,7 +13627,7 @@ msgid "Options or relation is required."
 msgstr ""
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/start.jst.eco:8
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistTemplates.vue:22
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistTemplates.vue:21
 msgid "Or choose a checklist template."
 msgstr ""
 
@@ -13720,7 +13797,7 @@ msgstr "Alte setări"
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/outOfOffice.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:122
-#: db/seeds/permissions.rb:440
+#: db/seeds/permissions.rb:446
 msgid "Out of Office"
 msgstr "În afara biroului"
 
@@ -13767,8 +13844,8 @@ msgstr "Înlocuitor pentru \"În afara biroului\""
 msgid "Outbound"
 msgstr "Trimise"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:132
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:141
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:140
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:150
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:22
 #: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:21
 msgid "Outbound Call"
@@ -13844,7 +13921,7 @@ msgstr ""
 msgid "Overwrite Draft"
 msgstr "Suprascrie ciorna"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:504
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:511
 #: app/assets/javascripts/app/models/ticket.coffee:11
 #: app/assets/javascripts/app/views/agent_ticket_view/detail.jst.eco:42
 #: app/graphql/gql/types/overview_type.rb:96
@@ -13899,7 +13976,7 @@ msgid "Package"
 msgstr "Pachet"
 
 #: app/assets/javascripts/app/controllers/package.coffee:3
-#: db/seeds/permissions.rb:305
+#: db/seeds/permissions.rb:311
 msgid "Packages"
 msgstr "Pachete"
 
@@ -13959,7 +14036,7 @@ msgstr "Grup părinte"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/password.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:32
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:52
-#: db/seeds/object_manager_attributes.rb:1447 db/seeds/permissions.rb:450
+#: db/seeds/object_manager_attributes.rb:1447 db/seeds/permissions.rb:456
 msgid "Password"
 msgstr "Parolă"
 
@@ -14135,7 +14212,7 @@ msgstr "Ordinea personală pentru privirea generală a fost resetată."
 #: app/assets/javascripts/app/controllers/cti.coffee:322
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/phone.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/phone.ts:12
-#: db/seeds/object_manager_attributes.rb:995 db/seeds/permissions.rb:344
+#: db/seeds/object_manager_attributes.rb:995 db/seeds/permissions.rb:350
 msgid "Phone"
 msgstr "Telefon"
 
@@ -14258,7 +14335,7 @@ msgstr ""
 "este permisă doar pentru declanșatoare(triggere) și "
 "programatoare(schedulers))"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:345
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:348
 msgid "Please enter a text."
 msgstr "Vă rugăm să introduceți un text."
 
@@ -14352,7 +14429,6 @@ msgstr "Vă rugăm să selectați cel puțin un folder."
 msgid "Please select at least one ticket overview"
 msgstr "Vă rugăm să selectați cel puțin o privire generală a unui tichet"
 
-#: app/assets/javascripts/app/lib/mixins/text_tools.coffee:39
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:45
 #, fuzzy
 #| msgid "Please fill also some text in!"
@@ -14444,7 +14520,7 @@ msgstr "Webhook predefinit"
 msgid "Pre-defined webhook for %s."
 msgstr "Webhook predefinit pentru %s."
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:50
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:49
 msgid "Prefer color scheme as indicated by the operating system."
 msgstr ""
 
@@ -14628,7 +14704,7 @@ msgid "Profile language updated successfully."
 msgstr "Testul a avut succes."
 
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/personal-settings.ts:7
-#: db/seeds/permissions.rb:412
+#: db/seeds/permissions.rb:418
 #, fuzzy
 #| msgid "Proxy Settings"
 msgid "Profile settings"
@@ -14666,7 +14742,7 @@ msgstr ""
 msgid "Provide position of all items in scope"
 msgstr "Furnizați poziția tuturor elementelor din cadrul respectiv"
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:49
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:50
 msgid "Provide some possible solutions to the problem as follow-up items."
 msgstr ""
 
@@ -14976,7 +15052,7 @@ msgstr "La distanță"
 #: app/assets/javascripts/app/views/channel/topics.jst.eco:32
 #: app/assets/javascripts/app/views/generic/application_selector_row.jst.eco:28
 #: app/assets/javascripts/app/views/generic/application_selector_subclause.jst.eco:15
-#: app/assets/javascripts/app/views/generic/ticket_perform_action/row.jst.eco:13
+#: app/assets/javascripts/app/views/generic/ticket_perform_action/row.jst.eco:14
 #: app/assets/javascripts/app/views/generic/user_permission_group.jst.eco:25
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:39
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:40
@@ -15009,7 +15085,7 @@ msgstr "Șterge %s"
 msgid "Remove Link"
 msgstr "Șterge"
 
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationPopover/NotificationList/NotificationItem.vue:77
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationPopover/NotificationList/NotificationItem.vue:76
 #, fuzzy
 #| msgid "Service Notification"
 msgid "Remove Notification"
@@ -15443,6 +15519,12 @@ msgstr "Restaurează setările inițiale"
 msgid "Restrict to only the following users"
 msgstr "Restricționați doar la următorii utilizatori"
 
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:15
+#, fuzzy
+#| msgid "Result:"
+msgid "Result"
+msgstr "Rezultat:"
+
 #: app/assets/javascripts/app/views/generic/object_import/result.jst.eco:2
 msgid "Result:"
 msgstr "Rezultat:"
@@ -15454,6 +15536,7 @@ msgid "Results"
 msgstr "Rezultat:"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:161
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:12
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:9
 #: app/assets/javascripts/app/views/widget/two_factor_login/security_keys.jst.eco:16
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:68
@@ -15618,8 +15701,8 @@ msgid "SLAs"
 msgstr "SLA-uri"
 
 #: app/assets/javascripts/app/controllers/_channel/sms.coffee:3
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:68
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:48
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:74
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:55
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/sms.ts:7
 #: db/seeds/permissions.rb:137
 msgid "SMS"
@@ -15795,7 +15878,7 @@ msgstr "Condiții salvate"
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1137
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1130
 msgid "Saving failed."
 msgstr "Salvare eșuată."
 
@@ -15884,6 +15967,12 @@ msgstr "URL-ul pentru căutare este invalid."
 #: lib/external_data_source/errors.rb:34
 msgid "Search URL is missing."
 msgstr "URL-ul pentru căutare lipsește."
+
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:44
+#, fuzzy
+#| msgid "Search for users"
+msgid "Search for AI agents"
+msgstr "Caută utilizatori"
 
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:25
 #, fuzzy
@@ -16106,7 +16195,7 @@ msgstr "Căutare…"
 msgid "Secondary organizations"
 msgstr "Organizații secundare"
 
-#: app/models/user.rb:656
+#: app/models/user.rb:664
 msgid ""
 "Secondary organizations are only allowed when the primary organization is "
 "given."
@@ -16193,13 +16282,6 @@ msgstr ""
 #: lib/external_data_source/errors.rb:28
 msgid "See HTTPLog for details."
 msgstr "Consultă HTTPLog pentru detalii."
-
-#: app/assets/javascripts/app/views/ticket_zoom/banner_ticket_summary.jst.eco:19
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:105
-#, fuzzy
-#| msgid "See more"
-msgid "See Summary"
-msgstr "Vezi mai mult"
 
 #: app/assets/javascripts/app/controllers/_ui_element/ticket_duplicate_detection.coffee:71
 #: app/assets/javascripts/app/controllers/article_view/item.coffee:447
@@ -16303,6 +16385,12 @@ msgstr "Șterge utilizator"
 #| msgid "Delete User"
 msgid "Select this entry"
 msgstr "Șterge utilizator"
+
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:2
+#, fuzzy
+#| msgid "Select Template"
+msgid "Selected Text"
+msgstr "Selectează schița"
 
 #: app/assets/javascripts/app/models/core_workflow.coffee:9
 msgid "Selected conditions"
@@ -16419,8 +16507,8 @@ msgstr "Formatul expeditorului"
 msgid "Sender Format Separator"
 msgstr "Separatorul formatului expeditorului"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:126
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:135
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:134
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:144
 msgid "Sender Type"
 msgstr "Tip expeditor"
 
@@ -16428,7 +16516,7 @@ msgstr "Tip expeditor"
 msgid "Sender based on Reply-To header"
 msgstr "Expeditor bazat pe antetul Reply-To"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:503
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:510
 msgid "Sender of last article"
 msgstr "Expeditorul ultimului articol"
 
@@ -16438,7 +16526,7 @@ msgstr "Expeditorul ultimului articol"
 msgid "Sending Email Address"
 msgstr "Adresa de e-mail"
 
-#: app/models/ticket/article.rb:318
+#: app/models/ticket/article.rb:319
 msgid "Sending an email without a valid recipient is not possible."
 msgstr ""
 
@@ -16507,7 +16595,7 @@ msgstr "Expirarea sesiunii"
 
 #: app/assets/javascripts/app/controllers/session.coffee:3
 #: app/assets/javascripts/app/views/session.jst.eco:2
-#: db/seeds/permissions.rb:311
+#: db/seeds/permissions.rb:317
 msgid "Sessions"
 msgstr "Sesiuni"
 
@@ -16789,16 +16877,11 @@ msgstr ""
 "Afișează note suplimentare pentru crearea tichetului, în funcție de tipul "
 "selectat."
 
+#: app/assets/javascripts/app/views/generic/reference_list.jst.eco:19
 #: app/assets/javascripts/app/views/generic/ticket_list.jst.eco:40
 #: app/assets/javascripts/app/views/widget/ticket_stats_list.jst.eco:11
 msgid "Show all…"
 msgstr "Afișează toate…"
-
-#: app/assets/javascripts/app/views/profile/appearance.jst.eco:54
-msgid ""
-"Show an info banner in the article list indicating that a summary has been "
-"created by %s."
-msgstr ""
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:23
 msgid "Show authenticator app secret"
@@ -16814,6 +16897,7 @@ msgstr ""
 msgid "Show chat automatically"
 msgstr "Afișează chat-ul automat"
 
+#: app/assets/javascripts/app/views/generic/reference_list.jst.eco:20
 #: app/assets/javascripts/app/views/generic/ticket_list.jst.eco:41
 msgid "Show less"
 msgstr "Afișează mai puțin"
@@ -16920,11 +17004,11 @@ msgstr "Atașamente bară laterală"
 msgid "Sign"
 msgstr "Semnează"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:649
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:655
 msgid "Sign email (if not possible, discard notification)"
 msgstr "Semnează emailul (dacă nu este posibil, elimină notificarea)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:650
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:656
 msgid "Sign email (if not possible, send notification anyway)"
 msgstr "Semnează emailul (dacă nu este posibil, trimite notificarea oricum)"
 
@@ -17043,7 +17127,8 @@ msgstr ""
 msgid "Simple Storage Service not reachable."
 msgstr "Serviciul de stocare simplă nu poate fi contactat."
 
-#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:16
+#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:22
+#: app/assets/javascripts/app/views/generic/text_tools_dropdown.jst.eco:11
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:80
 msgid "Simplify"
 msgstr ""
@@ -17111,16 +17196,6 @@ msgstr "Configurare Slack"
 #: db/seeds/settings.rb:5159
 msgid "Slack integration"
 msgstr "Integrare Slack"
-
-#: app/assets/javascripts/app/views/generic/text_tools_loading.jst.eco:2
-msgid "Smart Assist is generating text…"
-msgstr ""
-
-#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:6
-#, fuzzy
-#| msgid "Start Editing"
-msgid "Smart Editor"
-msgstr "Începe editarea"
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/sms.ts:44
 msgid "Sms"
@@ -17517,10 +17592,10 @@ msgstr ""
 msgid "Submit"
 msgstr "Trimite"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:139
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:147
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:178
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:373
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:148
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:157
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:206
 #: app/assets/javascripts/app/views/widget/mention.jst.eco:4
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:52
@@ -17615,7 +17690,7 @@ msgid "Sync calendars with iCal feeds."
 msgstr "Sincronizează calendarele cu fluxurile iCalendar."
 
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:32
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:49
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:48
 msgid "Sync with computer"
 msgstr "Sincronizează cu calculatorul"
 
@@ -17643,7 +17718,7 @@ msgstr "Inițializare sistem finalizată"
 
 #: app/assets/javascripts/app/controllers/system_report.coffee:3
 #: app/assets/javascripts/app/views/system_report.jst.eco:2
-#: db/seeds/permissions.rb:317
+#: db/seeds/permissions.rb:323
 #, fuzzy
 #| msgid "System URL"
 msgid "System Report"
@@ -17865,7 +17940,7 @@ msgstr "Câmp text"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:381
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/twitter_reply.coffee:176
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:341
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:344
 msgid "Text missing"
 msgstr "Textul lipsește"
 
@@ -18299,7 +18374,7 @@ msgstr ""
 "Chat-ul va fi apărea în momentul în care conexiunea către server este "
 "stabilită și dacă există un operator activ pe chat."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:198
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:196
 #, fuzzy
 #| msgid "Ticket tags could not be updated."
 msgid "The checklist item could not be added."
@@ -18345,6 +18420,10 @@ msgstr "Conexiunea a fost refuzată."
 #: app/graphql/gql/mutations/user/current/change_password.rb:30
 msgid "The current password you provided is incorrect."
 msgstr "Parola curentă pe care ai introdus-o este incorectă."
+
+#: app/services/service/ai/vectordb/create_table.rb:18
+msgid "The currently selected AI provider does not support embeddings."
+msgstr ""
 
 #: app/assets/javascripts/app/views/generic/object_import/index.jst.eco:6
 msgid ""
@@ -18456,7 +18535,7 @@ msgstr "Fișierul nu poate fi încărcat."
 msgid "The file does not belong to the specified article."
 msgstr "Fișierul nu aparține articolului specificat."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:861
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:858
 #: app/frontend/shared/components/Form/fields/FieldFile/features/filesTypeError.ts:19
 msgid "The file type %s is not allowed."
 msgstr "Tipul de fișier %s nu este permis."
@@ -18481,7 +18560,7 @@ msgstr "Următoarele modificări vor fi făcute:"
 msgid "The following contents are provided in the system report:"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal.coffee:196
+#: app/assets/javascripts/app/controllers/_application_controller/_modal.coffee:200
 msgid ""
 "The form content has been changed. Do you want to close it and lose your "
 "changes?"
@@ -18662,7 +18741,7 @@ msgstr "Noul număr de tichet nu a putut fi generat."
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_new.coffee:68
 #: app/assets/javascripts/app/controllers/_channel/_email_signature.coffee:93
-#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:809
+#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:807
 #: app/assets/javascripts/app/controllers/customer_ticket_create.coffee:193
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:272
 #: app/assets/javascripts/app/controllers/object_manager.coffee:261
@@ -18800,19 +18879,19 @@ msgstr "Datele de autentificare furnizate sunt invalide."
 msgid "The provided email account is already in use."
 msgstr "Contul de e-mail furnizat este deja folosit."
 
-#: app/models/webhook.rb:37
+#: app/models/webhook.rb:39
 msgid "The provided endpoint is invalid, no hostname was specified."
 msgstr ""
 "Endpoint-ul furnizat este invalid, nu a fost specificat nici un hostname."
 
-#: app/models/webhook.rb:36
+#: app/models/webhook.rb:38
 msgid ""
 "The provided endpoint is invalid, no http or https protocol was specified."
 msgstr ""
 "Endpoint-ul furnizat este invalid, nu a fost specificat nici un protocol "
 "http sau https."
 
-#: app/models/webhook.rb:39
+#: app/models/webhook.rb:41
 msgid "The provided endpoint is invalid."
 msgstr "Endpoint-ul furnizat este invalid."
 
@@ -18826,7 +18905,7 @@ msgstr "Operatorul de potrivire furnizat lipește sau este invalid."
 msgid "The provided password is incorrect."
 msgstr "Semnătură"
 
-#: app/models/webhook.rb:48
+#: app/models/webhook.rb:50
 msgid "The provided payload is invalid. Please check your syntax."
 msgstr "Payload-ul furnizat este invalid. Vă rugăm să vă verificați sintaxa."
 
@@ -18843,6 +18922,12 @@ msgstr "Tokenul furnizat este invalid."
 msgid ""
 "The provider configuration is missing. Please set up the provider before "
 "proceeding in |AI > Providers|."
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:62
+msgid ""
+"The provider configuration is missing. Please set up the provider before "
+"proceeding in |AI > Provider|."
 msgstr ""
 
 #: lib/secure_mailing/pgp/incoming.rb:302
@@ -18867,7 +18952,7 @@ msgstr "Limita de solicitări pentru această operațiune a fost depășită."
 msgid "The requested %s could not be found."
 msgstr "Numele de gazdă (hostname) nu a fost găsit."
 
-#: lib/validations/verify_perform_rules_validator.rb:62
+#: lib/validations/verify_perform_rules_validator.rb:63
 msgid "The required '%{attribute}' value for %{key}, %{inner} is missing!"
 msgstr "Valoarea necesară '%{attribute}' pentru %{key}, %{inner} lipsește!"
 
@@ -19040,7 +19125,7 @@ msgstr "Lipsește parametrul necesar 'signup'."
 msgid "The required parameter 'ticket_number' is missing."
 msgstr "Lipsește parametrul necesar 'ticket_number'."
 
-#: app/models/concerns/perform_changes/action/attribute_updates.rb:117
+#: app/models/concerns/perform_changes/action/attribute_updates.rb:119
 msgid "The required parameter 'user_id' is missing."
 msgstr "Lipsește parametrul necesar 'user_id'."
 
@@ -19405,7 +19490,7 @@ msgstr "Tichetele lor"
 
 #: app/assets/javascripts/app/controllers/_manage/knowledge_base.coffee:63
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:12
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:64
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:63
 msgid "Theme"
 msgstr "Temă"
 
@@ -19586,6 +19671,15 @@ msgstr "Acestea sunt suportate:"
 #: app/assets/javascripts/app/controllers/_manage/security.coffee:13
 msgid "Third-party Applications"
 msgstr "Aplicații Third-Party"
+
+#: app/models/concerns/ensures_no_related_objects.rb:34
+msgid "This %s is referenced by another object and thus cannot be deleted: %s"
+msgstr ""
+
+#: app/assets/javascripts/app/models/ai_agent.coffee:31
+msgid ""
+"This AI agent is not used in any triggers or schedulers and will not run."
+msgstr ""
 
 #: lib/secure_mailing/pgp/incoming.rb:80
 msgid ""
@@ -20045,11 +20139,6 @@ msgstr ""
 "Acest utilizator este momentan blocat din cauza prea multor încercări eșuate "
 "de autentificare."
 
-#: app/models/webhook/ensure_no_related_objects.rb:34
-msgid ""
-"This webhook is referenced by another object and thus cannot be deleted: %s"
-msgstr ""
-
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:264
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:282
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:304
@@ -20092,7 +20181,7 @@ msgstr "Joi"
 msgid "Ticket"
 msgstr "Tichet"
 
-#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:782
+#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:780
 msgid "Ticket %s created!"
 msgstr "Tichetul % a fost creat!"
 
@@ -20164,6 +20253,13 @@ msgstr "Client tichet"
 msgid "Ticket Duplicate Detection"
 msgstr "Detectare duplicate"
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:12
+#: app/assets/javascripts/app/models/ai_agent.coffee:7
+#, fuzzy
+#| msgid "Ticket update"
+msgid "Ticket Group Dispatcher"
+msgstr "Actualizare tichet"
+
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/TicketHistoryFlyout.vue:73
 #, fuzzy
 #| msgid "Ticket Customer"
@@ -20231,7 +20327,7 @@ msgid "Ticket Owner"
 msgstr "Proprietar tichet"
 
 #: app/assets/javascripts/app/controllers/ticket_priority.coffee:16
-#: db/seeds/permissions.rb:269
+#: db/seeds/permissions.rb:275
 msgid "Ticket Priorities"
 msgstr "Priorități tichet"
 
@@ -20258,7 +20354,7 @@ msgid "Ticket State"
 msgstr "Stare tichet"
 
 #: app/assets/javascripts/app/controllers/ticket_state.coffee:3
-#: db/seeds/permissions.rb:263
+#: db/seeds/permissions.rb:269
 msgid "Ticket States"
 msgstr "Stări tichet"
 
@@ -20280,8 +20376,6 @@ msgstr "Abonări tichet"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:2
 #: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:7
-#: app/assets/javascripts/app/views/profile/appearance.jst.eco:45
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:21
 #: db/seeds/permissions.rb:233 db/seeds/settings.rb:6085
 #, fuzzy
 #| msgid "Ticket State"
@@ -20928,7 +21022,7 @@ msgstr "Token"
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/tokenAccess.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:51
-#: db/seeds/permissions.rb:471
+#: db/seeds/permissions.rb:477
 msgid "Token Access"
 msgstr "Access cu token"
 
@@ -21021,7 +21115,7 @@ msgstr "Sursă traducere"
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:414
 #: app/assets/javascripts/app/controllers/translation.coffee:3
 #: app/assets/javascripts/app/views/translation/index.jst.eco:4
-#: db/seeds/permissions.rb:281
+#: db/seeds/permissions.rb:287
 msgid "Translations"
 msgstr "Traduceri"
 
@@ -21227,7 +21321,7 @@ msgstr "Este necesară configurarea autentificării în doi pași"
 #: app/assets/javascripts/app/views/profile/password.jst.eco:22
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/twoFactorAuth.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:72
-#: db/seeds/permissions.rb:457
+#: db/seeds/permissions.rb:463
 msgid "Two-factor Authentication"
 msgstr "Autentificare în doi pași"
 
@@ -21285,8 +21379,9 @@ msgstr "Testul a avut succes."
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:426
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:240
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:79
-#: app/assets/javascripts/app/controllers/translation.coffee:289
+#: app/assets/javascripts/app/controllers/translation.coffee:288
 #: app/assets/javascripts/app/controllers/widget/ticket_bulk_form.coffee:70
+#: app/assets/javascripts/app/models/ai_agent.coffee:7
 #: app/assets/javascripts/app/models/ticket_article.coffee:12
 #: app/assets/javascripts/app/models/ticket_state.coffee:7
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:229
@@ -21374,7 +21469,7 @@ msgstr "Alege un articol"
 msgid "Unit"
 msgstr "Unitate"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/composables/useHistoryEvents.ts:37
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/composables/useHistoryEvents.ts:38
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/utils/eventHelpers.ts:11
 #, fuzzy
 #| msgid "Unknown error"
@@ -21448,8 +21543,8 @@ msgstr "Deselectează opțiunea"
 msgid "Unset default"
 msgstr "Dezactivează implicit"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:149
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:158
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:157
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:167
 #: app/assets/javascripts/app/views/widget/mention.jst.eco:7
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:52
 msgid "Unsubscribe"
@@ -21466,6 +21561,10 @@ msgstr "Tip abonare neacceptată."
 #: lib/whatsapp/webhook/payload.rb:31
 msgid "Unsupported webhook payload."
 msgstr "Payload webhook neacceptat."
+
+#: app/assets/javascripts/app/models/ai_agent.coffee:30
+msgid "Unused"
+msgstr ""
 
 #: app/assets/javascripts/app/views/translation/support.jst.eco:6
 msgid ""
@@ -21556,6 +21655,7 @@ msgstr "Actualizare reușită."
 msgid "Update the most recent tickets."
 msgstr "Actualizează cele mai recente tichete."
 
+#: app/assets/javascripts/app/models/ai_agent.coffee:12
 #: app/assets/javascripts/app/models/application.coffee:11
 #: app/assets/javascripts/app/models/calendar.coffee:14
 #: app/assets/javascripts/app/models/chat.coffee:260
@@ -21884,6 +21984,18 @@ msgstr "Folosit în liste (vizualizări și rezultate)"
 msgid "Used in object views"
 msgstr "Utilizat în afișarea obiectelor"
 
+#: app/assets/javascripts/app/models/ai_agent.coffee:9
+#, fuzzy
+#| msgid "Search for users"
+msgid "Used in schedulers"
+msgstr "Caută utilizatori"
+
+#: app/assets/javascripts/app/models/ai_agent.coffee:8
+#, fuzzy
+#| msgid "Used in object views"
+msgid "Used in triggers"
+msgstr "Utilizat în afișarea obiectelor"
+
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:530
 msgid "Used when composing a Ticket article"
 msgstr "Utilizat atunci când compui un articol de tichet"
@@ -21898,7 +22010,7 @@ msgstr "Utilizat atunci când vizualizezi un tichet"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:428
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:37
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:165
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:173
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:24
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:14
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:15
@@ -22022,7 +22134,7 @@ msgstr "Filtru utilizatori"
 msgid "User is inactive"
 msgstr "inactiv"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:21
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:22
 #, fuzzy
 #| msgid "inactive"
 msgid "User is inactive."
@@ -22187,7 +22299,7 @@ msgstr "Validare eșuată: %{errors}"
 msgid "Value"
 msgstr "Valoare"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:547
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:554
 msgid "Variables"
 msgstr "Variabile"
 
@@ -22289,7 +22401,7 @@ msgstr "Vezi asta în Zammad"
 msgid "Viewing ticket"
 msgstr "Vizualizează tichetul"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:683
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:717
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_dialog.coffee:6
 #: app/assets/javascripts/app/controllers/widget/ticket_bulk_form.coffee:71
 #: app/assets/javascripts/app/models/ticket_article.coffee:14
@@ -22367,8 +22479,8 @@ msgstr "Configurație server web"
 
 #: app/assets/javascripts/app/controllers/_channel/sms.coffee:201
 #: app/assets/javascripts/app/controllers/_integration/slack.coffee:31
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:69
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:49
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:75
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:56
 #: app/assets/javascripts/app/controllers/webhook.coffee:3
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:42
 #: db/seeds/permissions.rb:89
@@ -22546,7 +22658,7 @@ msgstr ""
 "Când pornești debugging-ul setând opțiunea §debug§ la §true§ motivul este "
 "afișat în consola javascript a browserului."
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:674
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:679
 msgid "Where"
 msgstr "Unde"
 
@@ -22671,6 +22783,22 @@ msgstr "Flux de lucru"
 msgid "Workflows"
 msgstr "Fluxuri de lucru"
 
+#: app/assets/javascripts/app/views/generic/text_tools_dropdown.jst.eco:3
+#, fuzzy
+#| msgid "Waiting in %s"
+msgid "Writing Assistant Tools"
+msgstr "Așteaptă în %s"
+
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:8
+msgid "Writing Assistant couldn’t generate text."
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:29
+#, fuzzy
+#| msgid "Waiting in %s"
+msgid "Writing Assistant: %s"
+msgstr "Așteaptă în %s"
+
 #: app/assets/javascripts/app/views/report/time_range_picker.jst.eco:2
 msgid "Year"
 msgstr "An"
@@ -22685,7 +22813,7 @@ msgstr "Galben"
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_confirm.coffee:4
 #: app/assets/javascripts/app/controllers/_manage/ticket_notification.coffee:47
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:607
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:613
 #: app/assets/javascripts/app/controllers/tag.coffee:133
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:121
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:100
@@ -22699,11 +22827,6 @@ msgstr "Da"
 #| msgid "Add attachment option to upload."
 msgid "Yes, add attachments now"
 msgstr "Adăugați opțiunea de atașament pentru upload."
-
-#: app/assets/javascripts/app/controllers/ticket_zoom/banner_ticket_summary.coffee:64
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:66
-msgid "Yes, hide it"
-msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:5
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:344
@@ -22724,14 +22847,14 @@ msgstr ""
 msgid "You are on waiting list position <strong>%s</strong>."
 msgstr "Aveți poziția <strong>%s</strong> în lista de așteptare."
 
-#: app/models/transaction/notification.rb:117
+#: app/models/transaction/notification.rb:109
 msgid ""
 "You are receiving this because you are a member of the group of this ticket."
 msgstr ""
 "Primești acest mesaj deoarece ești membru al grupului asociat cu acest "
 "tichet."
 
-#: app/models/transaction/notification.rb:292
+#: app/models/transaction/notification.rb:268
 msgid ""
 "You are receiving this because you are out-of-office replacement for a "
 "participant of this ticket."
@@ -22739,11 +22862,11 @@ msgstr ""
 "Primești acest mesaj deoarece ești înlocuitorul pentru perioada de absență "
 "al unui participant la acest tichet."
 
-#: app/models/transaction/notification.rb:85
+#: app/models/transaction/notification.rb:77
 msgid "You are receiving this because you are the owner of this ticket."
 msgstr "Primești acest mesaj deoarece ești proprietarul acestui tichet."
 
-#: app/models/transaction/notification.rb:79
+#: app/models/transaction/notification.rb:71
 msgid "You are receiving this because you were mentioned in this ticket."
 msgstr "Primești acest mesaj deoarece ești menționat în acest tichet."
 
@@ -22917,11 +23040,6 @@ msgstr ""
 "Poți oferi versiuni diferite ale bazei de cunoștințe pentru localizări "
 "diferite. Adaugă o limbă mai jos, apoi selecteaz-o în Editorul Bazei de "
 "Cunoștințe pentru a adăuga traducerile tale."
-
-#: app/assets/javascripts/app/controllers/ticket_zoom/banner_ticket_summary.coffee:63
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:63
-msgid "You can re-enable it anytime in Profile Settings > Appearance."
-msgstr ""
 
 #: app/assets/javascripts/app/views/login.jst.eco:98
 msgid "You can request your password"
@@ -23106,8 +23224,8 @@ msgstr "Este necesar să configurați endpoint-urile Zammad în %s:"
 msgid "You reached the table limit of %s tickets (%s remaining)."
 msgstr "Limita de %s tichete afișate a fost atinsă (%s rămase)"
 
-#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:762
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:357
+#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:760
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:360
 msgid ""
 "You used %s in the text but no attachment could be found. Do you want to "
 "continue?"
@@ -23287,7 +23405,7 @@ msgstr "Conexiunea ta nu este privată"
 msgid "Your language"
 msgstr "Schimbă-ți limba"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:29
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:28
 #, fuzzy
 #| msgid "%s Object(s) are created."
 msgid "Your theme has been updated."
@@ -23479,7 +23597,7 @@ msgstr "administrator"
 msgid "after (absolute)"
 msgstr "după (absolut)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:479
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:486
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:25
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:69
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:52
@@ -23491,7 +23609,7 @@ msgstr "după (relativ)"
 msgid "again"
 msgstr "din nou"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:421
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:428
 #, fuzzy
 #| msgid "My assigned Tickets"
 msgid "all subscribers"
@@ -23548,7 +23666,7 @@ msgstr "selectează automat"
 msgid "before (absolute)"
 msgstr "înainte (absolut)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:476
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:483
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:25
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:68
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:52
@@ -23600,7 +23718,7 @@ msgstr "chat"
 msgid "checked"
 msgstr "Alege un articol"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:126
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:127
 #, fuzzy
 #| msgid "Select Template"
 msgid "checked checklist item '%s'"
@@ -23685,14 +23803,14 @@ msgstr "creat"
 msgid "created %s"
 msgstr "a creat %s"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:144
-#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:539
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:152
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:544
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector_expert.coffee:632
 msgid "current user"
 msgstr "utilizatorul actual"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:427
-#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:545
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:434
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:550
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector_expert.coffee:637
 msgid "current user organization"
 msgstr "organizația utilizatorului actual"
@@ -23703,7 +23821,7 @@ msgid ""
 "password,change password"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/translation.coffee:281
+#: app/assets/javascripts/app/controllers/translation.coffee:280
 msgid "custom"
 msgstr "personalizat"
 
@@ -23854,7 +23972,7 @@ msgstr "modificat la %s de către mine"
 msgid "email"
 msgstr "e-mail"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:99
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:100
 msgid "email sent to '%s'"
 msgstr "e-mail trimis la '%s'"
 
@@ -23926,11 +24044,11 @@ msgstr "pentru ca un agent să răspundă"
 msgid "forward"
 msgstr "redirecționează"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:158
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:159
 msgid "from"
 msgstr "de la"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:481
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:488
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:25
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:73
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:52
@@ -24093,7 +24211,7 @@ msgstr "în procesare"
 msgid "inactive"
 msgstr "inactiv"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:598
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:604
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:91
 msgid "internal"
 msgstr "intern"
@@ -24234,7 +24352,7 @@ msgstr "are lungimea incorectă (trebuie să fie de %{count} caractere)"
 msgid "is the wrong length (should be 1 character)"
 msgstr "are lungimea incorectă (trebuie să fie de un caracter)"
 
-#: app/models/user.rb:860
+#: app/models/user.rb:868
 msgid "is too long"
 msgstr "este prea lung"
 
@@ -24333,7 +24451,7 @@ msgstr "fuzionat"
 msgid "merged into"
 msgstr "fuzionat în"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:617
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:623
 msgid "message"
 msgstr "mesaj"
 
@@ -24474,7 +24592,7 @@ msgstr "neatins"
 msgid "not set"
 msgstr "nesetat"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:542
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:547
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector_expert.coffee:634
 msgid "not set (not defined)"
 msgstr "nesetat (nedefinit)"
@@ -24484,7 +24602,7 @@ msgstr "nesetat (nedefinit)"
 msgid "note"
 msgstr "notiță"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:97
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:98
 msgid "notification sent to '%s'"
 msgstr "notificare trimisă la '%s'"
 
@@ -24555,7 +24673,7 @@ msgstr "în așteptarea mementoului"
 msgid "phone"
 msgstr "telefon"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:598
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:604
 msgid "public"
 msgstr "public"
 
@@ -24573,13 +24691,13 @@ msgstr "sferturi de oră"
 msgid "reached"
 msgstr "atins"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:140
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:141
 #, fuzzy
 #| msgid "%s ended switch to |%s|!"
 msgid "reacted to message from %s '%s'"
 msgstr "%s a încheiat comutarea la |%s|!"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:134
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:135
 #, fuzzy
 #| msgid "%s ended switch to |%s|!"
 msgid "reacted with a %s to message from %s '%s'"
@@ -24603,7 +24721,7 @@ msgstr "coduri de recuperare"
 msgid "reference must not be the checklist ticket."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:103
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:111
 msgid "relative"
 msgstr "relativ"
 
@@ -24620,7 +24738,7 @@ msgstr "elimină"
 msgid "remove option"
 msgstr "elimină opțiunea"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:143
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:144
 #, fuzzy
 #| msgid "%s ended switch to |%s|!"
 msgid "removed reaction to message from %s '%s'"
@@ -24771,14 +24889,14 @@ msgstr "sms"
 msgid "spaces are not allowed"
 msgstr "spațiile nu sunt permise"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:428
-#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:546
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:435
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:551
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector_expert.coffee:638
 msgid "specific organization"
 msgstr "organizație specifică"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:417
-#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:540
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:424
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:545
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector_expert.coffee:633
 msgid "specific user"
 msgstr "utilizator specific"
@@ -24805,7 +24923,7 @@ msgstr ""
 msgid "support@example.com"
 msgstr "support@example.com"
 
-#: app/assets/javascripts/app/controllers/translation.coffee:280
+#: app/assets/javascripts/app/controllers/translation.coffee:279
 msgid "system"
 msgstr "sistem"
 
@@ -24817,7 +24935,7 @@ msgstr "mesaj personal - telegram"
 msgid "theme,color,style,dark mode,night mode,light mode"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:123
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:124
 msgid "this ticket was merged into ticket %s"
 msgstr "acest tichet a fuzionat cu tichetul %s"
 
@@ -24826,7 +24944,7 @@ msgstr "acest tichet a fuzionat cu tichetul %s"
 msgid "ticket"
 msgstr "tichet"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:116
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:117
 msgid "ticket %s was merged into this ticket"
 msgstr "tichetul %s a fuzionat cu acest tichet"
 
@@ -24838,7 +24956,7 @@ msgstr "tichet.agent"
 msgid "ticket.customer"
 msgstr "tichet.client"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:480
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:487
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:25
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:72
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:52
@@ -24874,16 +24992,16 @@ msgstr ""
 msgid "translation,locale,localization"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:103
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:104
 msgid "trigger '%s' was performed because pending reminder was reached"
 msgstr ""
 "declanșatorul '%s' a fost activat deoarece s-a atins mementoul în așteptare"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:105
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:106
 msgid "trigger '%s' was performed because ticket was escalated"
 msgstr "declanșatorul '%s' a fost activat deoarece tichetul a fost escaladat"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:107
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:108
 msgid "trigger '%s' was performed because ticket will escalate soon"
 msgstr ""
 "declanșatorul '%s' a fost activat deoarece tichetul va escalada în curând"
@@ -24904,11 +25022,11 @@ msgstr "status twitter"
 msgid "twofactor,2fa,security key,passkey,authenticator app"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:423
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:430
 msgid "unassign user"
 msgstr "dezatribuie utilizatorul"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:128
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:129
 #, fuzzy
 #| msgid "Create new Customer"
 msgid "unchecked checklist item '%s'"
@@ -24965,14 +25083,14 @@ msgstr "va fi creat"
 msgid "will be deleted"
 msgstr "va fi șters"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:478
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:485
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:25
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:71
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:52
 msgid "within last (relative)"
 msgstr "în ultimele (relativ)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:477
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:484
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:25
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:70
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:52
@@ -25033,6 +25151,21 @@ msgstr "...zonei întregi a textului"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅ Timp de așteptare azi"
+
+#, fuzzy
+#~| msgid "Start Editing"
+#~ msgid "Smart Editor"
+#~ msgstr "Începe editarea"
+
+#, fuzzy
+#~| msgid "The new ticket number could not be generated."
+#~ msgid "%s ticket summary has been generated."
+#~ msgstr "Noul număr de tichet nu a putut fi generat."
+
+#, fuzzy
+#~| msgid "See more"
+#~ msgid "See Summary"
+#~ msgstr "Vezi mai mult"
 
 #, fuzzy
 #~| msgid "Allow users to create new checklists."

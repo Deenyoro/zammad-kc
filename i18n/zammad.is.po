@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zammad\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-05-19 09:00+0000\n"
+"PO-Revision-Date: 2025-07-16 09:00+0000\n"
 "Last-Translator: sigurbjartur <github@sigurbjartur.com>\n"
 "Language-Team: Icelandic <https://translations.zammad.org/projects/zammad/"
 "zammad-development/is/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11;\n"
-"X-Generator: Weblate 5.11\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #. Default date format to use for the current locale.
 #. These placeholders are supported:
@@ -526,10 +526,6 @@ msgstr "%s Flutningur"
 msgid "%s is inactive, please select an active one."
 msgstr "%s er óvirkur, vinsamlega veldu virkan."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:89
-msgid "%s is preparing summary…"
-msgstr ""
-
 #: app/frontend/shared/form/i18n/locales.ts:496
 msgid "%s is required."
 msgstr "%s er skilyrt."
@@ -548,10 +544,8 @@ msgstr "fyrir %s mánuðum síðan"
 
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:173
 #: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:61
-#, fuzzy
-#| msgid "See more"
 msgid "%s more"
-msgstr "Sjá meira"
+msgstr "%s fleira"
 
 #: app/assets/javascripts/app/views/generic/object_import/imported.jst.eco:21
 msgid "%s object(s) have been created."
@@ -621,6 +615,12 @@ msgstr ""
 msgid "%s required!"
 msgstr "%s má ekki vanta!"
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:31
+#, fuzzy
+#| msgid "Schedulers"
+msgid "%s schedulers"
+msgstr "Verkstjórar"
+
 #: app/assets/javascripts/app/models/user.coffee:212
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/user.ts:25
 msgid "%s started a new session"
@@ -642,12 +642,6 @@ msgstr "%s skipti yfir á |%s|!"
 msgid "%s ticket selected"
 msgstr "%s beiðnir"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:90
-#, fuzzy
-#| msgid "The new ticket number could not be generated."
-msgid "%s ticket summary has been generated."
-msgstr "Ekki var hægt að stofna nýtt beiðnarnúmer."
-
 #: app/assets/javascripts/app/views/ticket_zoom/meta.jst.eco:30
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ReferencingTicketsBadgePopover.vue:64
 #: app/frontend/apps/mobile/components/Organization/OrganizationItem.vue:51
@@ -664,6 +658,12 @@ msgstr "%s beiðnir fundust"
 #| msgid "%s of my tickets escalated"
 msgid "%s tickets selected"
 msgstr "%s beiðnanna minna með hækkaðan forgang"
+
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:28
+#, fuzzy
+#| msgid "Triggers"
+msgid "%s triggers"
+msgstr "Gikkir"
 
 #: app/assets/javascripts/app/models/ticket_article.coffee:51
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/ticket-article.ts:28
@@ -939,11 +939,11 @@ msgstr ""
 "If þú ert með viðskiptavini sem hafa annan afgreiðslutíma, geturðu búið til "
 "margar stundaskrár. Beiðnir tengjast stundaskrám í gegnum **ÞSS**."
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:45
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:44
 msgid "A color scheme that uses dark-colored elements on a light background."
 msgstr "Litaspjald sem notar dökka liti á ljósan bakgrunn."
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:40
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:39
 msgid "A color scheme that uses light-colored elements on a dark background."
 msgstr "Litaspjald sem notar ljósa liti á dökkan bakgrunn."
 
@@ -953,6 +953,9 @@ msgid ""
 "mails, e.g. when an agent is composing an email or a trigger is sending an "
 "auto-reply"
 msgstr ""
+"Tölvupóstfang hóps ákveður hvaða póstfang skal nota fyrir útfarandi "
+"tölvupósta, t.d. þegar þjónustufulltrúi semur tölvupóst eða kveikja sendir "
+"sjálfvirkt svar"
 
 #: db/seeds/settings.rb:4022
 msgid "A list of active import backends that gets scheduled automatically."
@@ -1033,15 +1036,54 @@ msgstr ""
 "Hleypt getur verið af vefkrók með gikk eða verkstjóra, ekki gleyma að "
 "skilgreina þá!"
 
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:64
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:30
 #: app/assets/javascripts/app/controllers/manage.coffee:44
-#: db/seeds/permissions.rb:227
 #, fuzzy
 #| msgid "API"
 msgid "AI"
 msgstr "API"
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:6
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:42
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:79
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:60
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/utils/historyEventIssuerNames.ts:7
+#, fuzzy
+#| msgid "Agent"
+msgid "AI Agent"
+msgstr "Þjónustufulltrúi"
+
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:6
+#: app/assets/javascripts/app/views/generic/ticket_perform_action/ai_agent.jst.eco:3
+#: db/seeds/permissions.rb:245
+#, fuzzy
+#| msgid "Agents"
+msgid "AI Agents"
+msgstr "Þjónustufulltrúar"
+
+#: db/seeds/permissions.rb:227
+#, fuzzy
+#| msgid "Test SMS provider"
+msgid "AI Provider"
+msgstr "Prófa SMS þjónustuveitu"
+
 #: db/seeds/settings.rb:6069
 msgid "AI Provider Config"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:31
+msgid "AI agent used in schedulers"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:28
+msgid "AI agent used in triggers"
+msgstr ""
+
+#: app/assets/javascripts/app/models/ai_agent.coffee
+msgid ""
+"AI agents enable streamlined processing powered by AI-driven insights. You "
+"can execute AI agents via triggers or schedulers."
 msgstr ""
 
 #: db/seeds/settings.rb:6052
@@ -1061,7 +1103,8 @@ msgid "AI provider Ollama URL is not set"
 msgstr ""
 
 #: app/controllers/ticket/summarize_controller.rb:8
-#: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:16
+#: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:17
+#: app/services/service/ai/agent/run.rb:17
 #: app/services/service/ai/vectordb/base.rb:12
 #: app/services/service/ai_assistance/text_tools.rb:17
 #: app/services/service/ticket/ai_assistance/summarize.rb:16
@@ -1079,7 +1122,7 @@ msgid "AI provider token is not set"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/api.coffee:3
-#: app/assets/javascripts/app/views/api.jst.eco:2 db/seeds/permissions.rb:251
+#: app/assets/javascripts/app/views/api.jst.eco:2 db/seeds/permissions.rb:257
 msgid "API"
 msgstr "API"
 
@@ -1102,6 +1145,14 @@ msgstr "Aðgangur að API með tóka"
 #: lib/whatsapp/webhook/payload.rb:22
 msgid "API error."
 msgstr "API villa."
+
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:9
+#, fuzzy
+#| msgid "Email could not be verified. Please contact your administrator."
+msgid "API is not available. Please contact your Administrator and retry."
+msgstr ""
+"Ekki tókst að staðfesta netfang. Vinsamlegast hafðu samband við "
+"kerfisstjórann þinn."
 
 #: lib/ai/provider/concerns/handles_response.rb:22
 msgid "API server error - please try again"
@@ -1137,47 +1188,47 @@ msgstr "Samþykkja Persónuverndarstefnu & Notkunarskilmála"
 msgid "Access denied"
 msgstr "Aðgengi hafnað"
 
-#: db/seeds/permissions.rb:339
+#: db/seeds/permissions.rb:345
 msgid "Access the agent chat features."
 msgstr "Aðgangur að spjalli þjónustufulltrúa."
 
-#: db/seeds/permissions.rb:354
+#: db/seeds/permissions.rb:360
 msgid "Access the agent phone features."
 msgstr "Aðgangur að símaviðmóti þjónustufulltrúa."
 
-#: db/seeds/permissions.rb:369
+#: db/seeds/permissions.rb:375
 msgid "Access the knowledge base editor features."
 msgstr "Aðgangur að þekkingarbrunnsritli."
 
-#: db/seeds/permissions.rb:375
+#: db/seeds/permissions.rb:381
 msgid "Access the knowledge base reader features."
 msgstr "Aðgangur að þekkingarbrunnslesara."
 
-#: db/seeds/permissions.rb:397
+#: db/seeds/permissions.rb:403
 msgid "Access the tickets as agent based on group access."
 msgstr "Aðgangur að beiðnum sem þjónustufulltrúi samkvæmt aðgangshóp."
 
-#: db/seeds/permissions.rb:406
+#: db/seeds/permissions.rb:412
 msgid "Access tickets as customer."
 msgstr "Skoða beiðnir sem viðskiptavinum."
 
-#: db/seeds/permissions.rb:330
+#: db/seeds/permissions.rb:336
 msgid "Access to the chat interface."
 msgstr "Aðgangur að spjallviðmóti."
 
-#: db/seeds/permissions.rb:360
+#: db/seeds/permissions.rb:366
 msgid "Access to the knowledge base interface."
 msgstr "Aðgangur á þekkingarbrunnsviðmóti."
 
-#: db/seeds/permissions.rb:345
+#: db/seeds/permissions.rb:351
 msgid "Access to the phone interface."
 msgstr "Aðgangur að símtalaviðmóti."
 
-#: db/seeds/permissions.rb:382
+#: db/seeds/permissions.rb:388
 msgid "Access to the report interface."
 msgstr "Aðgangur að skýrsluviðmóti."
 
-#: db/seeds/permissions.rb:388
+#: db/seeds/permissions.rb:394
 msgid "Access to the ticket interface."
 msgstr "Aðgangur að beiðnaviðmóti."
 
@@ -1229,10 +1280,8 @@ msgid "Accounted Time"
 msgstr "Gjaldfærður tími"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketAccountedTime.vue:79
-#, fuzzy
-#| msgid "Accounted Time"
 msgid "Accounted time unit"
-msgstr "Gjaldfærður tími"
+msgstr "Eining gjaldfærðs tíma"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:11
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:11
@@ -1254,9 +1303,9 @@ msgid "Accounts"
 msgstr "Reikningar"
 
 #: app/assets/javascripts/app/controllers/_application_controller/table.coffee:759
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:115
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:123
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:82
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:109
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:118
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:109
 #: app/assets/javascripts/app/models/core_workflow.coffee:11
 #: app/assets/javascripts/app/models/trigger.coffee:7
@@ -1322,6 +1371,7 @@ msgstr ""
 "ekkert nema að innskráning með lykilorði sé virk."
 
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:326
+#: app/assets/javascripts/app/models/ai_agent.coffee:11
 #: app/assets/javascripts/app/models/chat.coffee:257
 #: app/assets/javascripts/app/models/checklist_template.coffee:9
 #: app/assets/javascripts/app/models/core_workflow.coffee:14
@@ -1382,7 +1432,7 @@ msgstr "Gerðir athafna"
 
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:39
 msgid "Adapter"
-msgstr ""
+msgstr "Tengildi"
 
 #: app/assets/javascripts/app/controllers/_integration/pgp.coffee:90
 #: app/assets/javascripts/app/controllers/_integration/smime.coffee:75
@@ -1394,7 +1444,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/generic/checklist_item.jst.eco:26
 #: app/assets/javascripts/app/views/generic/postmaster_match.jst.eco:21
 #: app/assets/javascripts/app/views/generic/postmaster_set_row.jst.eco:20
-#: app/assets/javascripts/app/views/generic/ticket_perform_action/row.jst.eco:16
+#: app/assets/javascripts/app/views/generic/ticket_perform_action/row.jst.eco:17
 #: app/assets/javascripts/app/views/generic/user_permission_group.jst.eco:58
 #: app/assets/javascripts/app/views/google/list.jst.eco:8
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:44
@@ -1445,7 +1495,7 @@ msgstr "Bæta við skilríki"
 msgid "Add Empty Checklist"
 msgstr "Bæta tómum gátlista við"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistTemplates.vue:37
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistTemplates.vue:36
 msgid "Add From a Template"
 msgstr "Bæta við samvæmt sniðmáti"
 
@@ -1465,7 +1515,7 @@ msgstr "Bæta við einkalykli"
 
 #: app/assets/javascripts/app/controllers/_integration/pgp.coffee:92
 msgid "Add Public or Private Key"
-msgstr ""
+msgstr "Bæta við einka- eða dreifilykli"
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/web.ts:13
 msgid "Add Reply"
@@ -1496,29 +1546,25 @@ msgstr "Bæta við athugasemd"
 msgid "Add a Personal Access Token"
 msgstr "Bæta við persónulegum aðgangstóka"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:105
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:114
 msgid "Add a data privacy deletion task"
 msgstr "Bæta við persónuverndarvinnslu"
 
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:266
-#, fuzzy
-#| msgid "Add Tag"
 msgid "Add a message"
-msgstr "Bæta við merki"
+msgstr "Bæta við skilaboðum"
 
 #: app/assets/javascripts/app/views/channel/form.jst.eco:123
 msgid "Add agreement text before submit."
-msgstr ""
+msgstr "Bæta við skilmálum fyrir vistum."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:295
-#, fuzzy
-#| msgid "Pending reminder reached for Ticket |%s|"
 msgid "Add alarm to pending reminder and escalated tickets"
-msgstr "Áminning fyrir miða er náð fyrir |%s|"
+msgstr "Bæta við áminningu fyrir beiðnir sem eru á bið eða með aukinn forgang"
 
 #: app/assets/javascripts/app/views/profile/calendar_subscriptions.jst.eco:34
 msgid "Add alarm to pending reminder and escalated tickets."
-msgstr ""
+msgstr "Bæta við áminningu fyrir beiðnir sem eru á bið eða með aukinn forgang."
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:53
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:112
@@ -1529,7 +1575,7 @@ msgstr "Bæta tómum gátlista við"
 
 #: app/frontend/shared/form/i18n/locales.ts:73
 msgid "Add all values"
-msgstr ""
+msgstr "Bæta öllum gildum við"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:33
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:100
@@ -1545,30 +1591,24 @@ msgstr "Bæta við viðhengisvalkost fyrir að hlaða upp skrám."
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:253
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:249
 msgid "Add bullet list"
-msgstr ""
+msgstr "Bæta punktalista við"
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/facebook.ts:44
-#, fuzzy
-#| msgid "Add Account"
 msgid "Add comment"
-msgstr "Bæta við reikningi"
+msgstr "Bæta athugasemd við"
 
 #: app/assets/javascripts/app/views/generic/application_selector_row.jst.eco:32
 #: app/assets/javascripts/app/views/generic/application_selector_subclause.jst.eco:18
-#, fuzzy
-#| msgid "Action"
 msgid "Add condition"
-msgstr "Aðgerð"
+msgstr "Bæta skilyrði við"
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/email.ts:161
-#, fuzzy
-#| msgid "email"
 msgid "Add email"
-msgstr "tölvupóstur"
+msgstr "Bæta tölvupósti við"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/start.jst.eco:5
 msgid "Add empty checklist"
-msgstr ""
+msgstr "Bæta tómum gátlista við"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/start.jst.eco:11
 msgid "Add from a template"
@@ -1576,45 +1616,33 @@ msgstr "Vista sem sniðmát"
 
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:111
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:110
-#, fuzzy
-#| msgid "Add Tag"
 msgid "Add heading"
-msgstr "Bæta við merkispjaldi"
+msgstr "Bæta fyrirsögn við"
 
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:283
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:279
-#, fuzzy
-#| msgid "Add Tag"
 msgid "Add image"
-msgstr "Bæta við merki"
+msgstr "Bæta mynd við"
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/note.ts:15
-#, fuzzy
-#| msgid "Add a Note"
 msgid "Add internal note"
-msgstr "Bæta við athugasemd"
+msgstr "Bæta innanhúss athugasemd við"
 
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:302
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketLinks.vue:157
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:298
-#, fuzzy
-#| msgid "Add Link"
 msgid "Add link"
-msgstr "Bæta við hlekk"
+msgstr "Bæta hlekk við"
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/telegram.ts:46
 #: app/frontend/shared/entities/ticket-article/action/plugins/twitter.ts:109
 #: app/frontend/shared/entities/ticket-article/action/plugins/whatsapp.ts:187
-#, fuzzy
-#| msgid "Add Tag"
 msgid "Add message"
-msgstr "Bæta við merki"
+msgstr "Bæta skilaboðum við"
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/note.ts:15
-#, fuzzy
-#| msgid "Add Bot"
 msgid "Add note"
-msgstr "Bæta við þjark"
+msgstr "Bæta minnismiða við"
 
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:240
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:236
@@ -1633,7 +1661,7 @@ msgstr "Bæta svari við"
 
 #: app/frontend/shared/form/i18n/locales.ts:77
 msgid "Add selected values"
-msgstr ""
+msgstr "Bæta völdum gildum við"
 
 #: db/seeds/settings.rb:792
 msgid "Add sender initials to end of a tweet."
@@ -1654,7 +1682,7 @@ msgstr "Bæta merkispjaldi við"
 
 #: app/assets/javascripts/app/controllers/_channel/chat.coffee:85
 msgid "Add this class to a button on your page that should open the chat."
-msgstr ""
+msgstr "Bættu þessum klasa við hnapp sem á að opna spjallið."
 
 #: app/controllers/first_steps_controller.rb:109
 msgid "Additional Channels"
@@ -1662,7 +1690,7 @@ msgstr "Viðbótarrásir"
 
 #: db/seeds/settings.rb:3343
 msgid "Additional follow-up detection"
-msgstr ""
+msgstr "Viðbótar samhengisgreining"
 
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:201
 msgid "Additional information"
@@ -1697,16 +1725,16 @@ msgstr "Kerfisstjóri"
 
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:521
 msgid "Admin Consent"
-msgstr ""
+msgstr "Samþykki kerfisstjóra"
 
 #: app/assets/javascripts/app/controllers/admin_password_auth.coffee:23
 #: app/frontend/apps/desktop/pages/authentication/routes.ts:25
 msgid "Admin Password Login"
-msgstr ""
+msgstr "Innskráning með lykilorði kerfisstjóra"
 
 #: db/seeds/permissions.rb:5
 msgid "Admin interface"
-msgstr ""
+msgstr "Kerfisstjórnunarviðmót"
 
 #: app/assets/javascripts/app/views/admin_password_auth/request_sent.jst.eco:4
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:56
@@ -1741,6 +1769,24 @@ msgid ""
 "<br>\n"
 "<div>Your #{config.product_name} Team</div>\n"
 msgstr ""
+"Kerfisstjórningarinnskráning í #{config.product_name}\n"
+"\n"
+"<div>Hæ #{user.firstname},</div>\n"
+"<br>\n"
+"<div>Okkur hefur borist beiðni um kerfisstjórnunarinnskráningu fyrir "
+"#{config.product_name} reikninginn þinn <b>#{user.login}</b>.</div>\n"
+"<br>\n"
+"<div>Vinsamlegast smelltu á hlekkinn að neðan (eða afritaðu hlekkinn og "
+"límdu í vefskoðara) til að halda áfram:</div>\n"
+"<br>\n"
+"<div><a href=\"#{url}\">#{url}</a></div>\n"
+"<br>\n"
+"<div>Þessu hlekkur sendir þig á vefsíðu þar sem þú getur skráð þig inn.</"
+"div>\n"
+"<br>\n"
+"<dev>Ef þú vilt ekki skrá þig inn, máttu hundsa þetta skeyti.</div>\n"
+"<br>\n"
+"<div>#{config.product_name} hópurinn þinn</div>\n"
 
 #: app/assets/javascripts/app/views/getting_started/admin.jst.eco:5
 msgid "Administrator Account"
@@ -1748,7 +1794,7 @@ msgstr "Kerfisstjóraaðgangur"
 
 #: app/assets/javascripts/app/models/macro.coffee:9
 msgid "Advance to next ticket from overview"
-msgstr ""
+msgstr "Fara fram að næstu beiðni frá yfirliti"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:62
 msgid "Affects only notifications for not assigned and all tickets."
@@ -1757,23 +1803,27 @@ msgstr ""
 
 #: app/assets/javascripts/app/views/exchange/admin_consent.jst.eco:4
 msgid "After approval, please re-connect your Exchange account."
-msgstr ""
+msgstr "Endurtengdu Exchange reikninginn, að fengnu samþykki."
 
 #: app/assets/javascripts/app/views/microsoft365/admin_consent.jst.eco:4
 msgid "After approval, please re-connect your Microsoft365 mailbox."
-msgstr ""
+msgstr "Endurtengdu Microsoft365 reikninginn, að fengnu samþykki."
 
 #: app/assets/javascripts/app/views/package.jst.eco:12
 msgid ""
 "After installing, updating, or uninstalling packages the following commands "
 "need to be executed on the server:"
 msgstr ""
+"Eftir að pakkar hafa verið settir inn, uppfærðir eða fjarlægðir þarf að gefa "
+"eftirfarandi skipanir á þjóninum:"
 
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceFreshdesk.vue:93
 msgid ""
 "After the import is completed, the account associated with the API token "
 "will become your username, and the token itself will be your password."
 msgstr ""
+"Þegar innflutningi er lokið mun reikningurinn sem tengist API tókanum verða "
+"notandanafnið þitt og tókinn sjálfur verður lykilorðið þitt."
 
 #: app/assets/javascripts/app/views/session.jst.eco:11
 msgid "Age"
@@ -1793,26 +1843,26 @@ msgstr "Nafn þjónustufulltrúa"
 
 #: db/seeds/settings.rb:3256
 msgid "Agent Name + FromSeparator + System Address Display Name"
-msgstr ""
+msgstr "Nafn þjónustufulltrúa + FráDeilir + Birt nafn útsendingar"
 
-#: db/seeds/permissions.rb:338
+#: db/seeds/permissions.rb:344
 msgid "Agent chat"
 msgstr "Spjall við þjónustufulltrúa"
 
 #: db/seeds/settings.rb:3610
 msgid "Agent idle timeout"
-msgstr ""
+msgstr "Tímalokun vegna aðgerðaleysis þjónustufulltrúa"
 
-#: app/models/role.rb:156 app/models/user.rb:736
+#: app/models/role.rb:156 app/models/user.rb:744
 msgid "Agent limit exceeded, please check your account settings."
 msgstr ""
 "Hámarksfjölda þjónustufulltrúa náð, athugaðu reikningsstillingar þínar."
 
-#: db/seeds/permissions.rb:353
+#: db/seeds/permissions.rb:359
 msgid "Agent phone"
 msgstr "Símanúmer þjónustufulltrúa"
 
-#: db/seeds/permissions.rb:396
+#: db/seeds/permissions.rb:402
 msgid "Agent tickets"
 msgstr "Beiðnir þjónustufulltrúa"
 
@@ -1827,41 +1877,50 @@ msgstr ""
 
 #: app/assets/javascripts/app/views/profile/calendar_subscriptions.jst.eco:27
 msgid "Alarm"
-msgstr ""
+msgstr "Áminning"
 
 #: app/assets/javascripts/app/views/generic/notification_matrix.jst.eco:8
 #: app/assets/javascripts/app/views/profile/notification.jst.eco:30
 msgid "All Tickets"
 msgstr "Allar beiðnir"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:115
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:124
 msgid ""
 "All affected tickets will be deleted immediately when this job is run, "
 "without a history entry. There is no rollback of this deletion possible."
 msgstr ""
+"Öllum hlutaðeigandi beiðnum verður eytt þegar þessi keyrsla fer í gang, án "
+"þess að saga verði til. Það ekki hægt að láta þessa eyðingu ganga til baka."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:116
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:125
 msgid ""
 "All affected tickets will be scheduled for deletion when this job is run. "
 "Once the data privacy task is executed, tickets will be deleted and a "
 "history entry preserved. There is no rollback of this deletion possible."
 msgstr ""
+"Allar viðkomandi beiðnir verða merktar til eyðingar þegar þessi keyrsla er "
+"sett í gang. Þegar persónuverndarvinnslan keyrir, verður beiðnunum eytt og "
+"saga um það skráð. Ekki er hægt að láta þessa eyðingu ganga til baka."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:129
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:138
 msgid ""
 "All affected users and their customer tickets will be scheduled for deletion "
 "when this job is run. Once the data privacy task is executed, users and "
 "tickets will be deleted and a history entry preserved. There is no rollback "
 "of this deletion possible."
 msgstr ""
+"Allar viðkomandi notendur og beiðnir viðskiptavina þeirra verða merktar til "
+"eyðingar þegar þessi keyrsla er sett í gang. Þegar persónuverndarvinnslan "
+"keyrir, verður notendum og beiðnum eytt og saga um það skráð. Ekki er hægt "
+"að láta þessa eyðingu ganga til baka."
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:506
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:513
 msgid "All agents"
 msgstr "Allir þjónustufulltrúar"
 
 #: public/assets/chat/views/waiting.eco:7
 msgid "All colleagues are busy."
-msgstr ""
+msgstr "Allir samstarfsmenn eru uppteknir."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:131
 msgid ""
@@ -1949,17 +2008,19 @@ msgstr ""
 
 #: app/assets/javascripts/app/models/trigger.coffee:8
 msgid "Always"
-msgstr ""
+msgstr "Alltaf"
 
 #: app/assets/javascripts/app/controllers/_plugin/user_signup_check.coffee:46
 msgid ""
 "An email was sent to _%s_. Click the link in the email to verify your "
 "account."
 msgstr ""
+"Tölvupóstur hefur verið sendur til _%s_. Smelltu á hlekkinn í tölvupóstinum "
+"til að sannreyna reikninginn."
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_calendar_view.coffee:50
 msgid "An error has occurred"
-msgstr ""
+msgstr "Villa hefur komið upp"
 
 #: app/frontend/shared/server/apollo/handler/BaseHandler.ts:141
 msgid "An error occured during the operation."
@@ -1969,7 +2030,7 @@ msgstr "Villa kom upp við framkvæmd aðgerðar."
 #: app/assets/javascripts/app/views/integration/exchange_last_import.jst.eco:5
 #: app/assets/javascripts/app/views/integration/ldap_last_import.jst.eco:5
 msgid "An error occurred: %s"
-msgstr ""
+msgstr "Villa kom upp: %s"
 
 #: app/assets/javascripts/app/controllers/_integration/check_mk.coffee:57
 #: app/assets/javascripts/app/controllers/_integration/icinga.coffee:26
@@ -1980,7 +2041,7 @@ msgstr "Vakthugbúnaður byggður á opnum hugbúnaði."
 
 #: app/frontend/shared/components/Form/utils.ts:23
 msgid "An unexpected error has occurred."
-msgstr ""
+msgstr "Óvænt villa kom upp."
 
 #: app/graphql/gql/mutations/system/setup/run_auto_wizard.rb:26
 msgid "An unexpected error occurred during system setup."
@@ -1992,7 +2053,7 @@ msgstr ""
 
 #: lib/calendar_subscriptions.rb:31
 msgid "An unknown method name was requested."
-msgstr ""
+msgstr "Óskað var eftir óþekktu aðferðarnafni."
 
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:187
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:147
@@ -2022,15 +2083,28 @@ msgid ""
 "target=\"zammad_app\">View this in #{config.product_name}</a>\n"
 "</div>\n"
 msgstr ""
+"Önnur beiðni var sameinuð beiðni (#{ticket.title})\n"
+"\n"
+"<div>Hi #{recipient.firstname},</div>\n"
+"<br>\n"
+"<div>\n"
+"Önnur beiðni var sameinuð beiðni (#{ticket.title}) af "
+"\"<b>#{current_user.longname}</b>\".\n"
+"</div>\n"
+"<br>\n"
+"<div>\n"
+"  <a href=\"#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}\" "
+"target=\"zammad_app\">Skoðaðu í #{config.product_name}</a>\n"
+"</div>\n"
 
 #: app/assets/javascripts/app/models/ticket.coffee:121
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/ticket.ts:33
 msgid "Another ticket was merged into ticket |%s|"
-msgstr ""
+msgstr "Önnur beiðni var sameinuð beiðni |%s|"
 
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/link_answer_button.coffee:11
 msgid "Answer"
-msgstr ""
+msgstr "Svar"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/sidebar/answers.coffee:3
 msgid "Answers"
@@ -2045,8 +2119,9 @@ msgid "Anthropic"
 msgstr ""
 
 #: app/assets/javascripts/app/lib/app_post/iconset_picker.coffee:9
+#, fuzzy
 msgid "Anticon"
-msgstr ""
+msgstr "Anticon"
 
 #: app/assets/javascripts/app/controllers/_ui_element/postmaster_match.coffee:22
 msgid "Any recipient"
@@ -2057,6 +2132,8 @@ msgid ""
 "Apologies, we're unable to process this kind of message due to restrictions "
 "within WhatsApp Business."
 msgstr ""
+"Afsakaðu, en við getum ekki afgreitt þessa gerð skeyta vegna takmarkana í "
+"WhatsApp Business."
 
 #: db/seeds/settings.rb:1449
 msgid "App ID"
@@ -2100,19 +2177,19 @@ msgstr "Lykilorð forrits"
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:3
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/appearance.ts:9
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/appearance.ts:6
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:54
-#: db/seeds/permissions.rb:419
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:53
+#: db/seeds/permissions.rb:425
 msgid "Appearance"
-msgstr ""
+msgstr "Útlit"
 
 #: app/assets/javascripts/app/controllers/api.coffee:127
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:76
 msgid "Application"
-msgstr ""
+msgstr "Hugbúnaður"
 
 #: db/seeds/settings.rb:4
 msgid "Application secret"
-msgstr ""
+msgstr "Hugbúnaðarlykilorð"
 
 #: app/assets/javascripts/app/views/api.jst.eco:44
 msgid "Applications"
@@ -2126,15 +2203,13 @@ msgstr "Virkja"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:56
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:133
-#, fuzzy
-#| msgid "Apply"
 msgid "Apply Draft"
-msgstr "Virkja"
+msgstr "Vista drög"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:2
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:163
 msgid "Apply Shared Draft"
-msgstr ""
+msgstr "Vista deild drög"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/ApplyTemplate.vue:37
 msgid "Apply Template"
@@ -2147,6 +2222,12 @@ msgstr "Afrita sjálfgefin gildi á alla þjónustufulltrúa"
 #: app/frontend/apps/desktop/components/NavigationMenu/NavigationMenuFilter.vue:76
 msgid "Apply filter…"
 msgstr "Virkja síu…"
+
+#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:4
+#, fuzzy
+#| msgid "Test SMS provider"
+msgid "Approve"
+msgstr "Prófa SMS þjónustuveitu"
 
 #: app/assets/javascripts/app/controllers/_ui_element/basedate.coffee:160
 #: app/assets/javascripts/app/controllers/report.coffee:220
@@ -2166,26 +2247,22 @@ msgstr "Safnvista"
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:109
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:84
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:66
-#, fuzzy
-#| msgid "Archive"
 msgid "Archive Emails"
-msgstr "Safnvista"
+msgstr "Safnvista Tölvupósta"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:738
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:43
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:289
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:57
 msgid "Archive cut-off time"
-msgstr ""
+msgstr "Tímamörk safnvistunar"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:737
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:42
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:288
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:43
-#, fuzzy
-#| msgid "Archive"
 msgid "Archive emails"
-msgstr "Safnvista"
+msgstr "Safnvista tölvupósta"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:739
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:44
@@ -2200,46 +2277,38 @@ msgstr "Safnvistað"
 
 #: app/assets/javascripts/app/views/popover/kb_generic.jst.eco:23
 msgid "Archived at"
-msgstr ""
+msgstr "Safnvistað"
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/articleDelete.ts:14
-#, fuzzy
-#| msgid "Tab has changed, do you really want to close it?"
 msgid "Are you sure to remove this article?"
-msgstr "Flipi hefur breyst, ertu viss um að þú viljir loka?"
+msgstr "Ertu viss um að þú viljir fjarlægja þessa efnisgrein?"
 
 #: app/frontend/shared/components/Form/fields/FieldFile/FieldFileInput.vue:151
-#, fuzzy
-#| msgid "Tab has changed, do you really want to close it?"
 msgid "Are you sure you want to delete \"%s\"?"
-msgstr "Flipi hefur breyst, ertu viss um að þú viljir loka?"
+msgstr "Ertu viss um að þú viljir eyða \"%s\"?"
 
 #: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:43
-#, fuzzy
-#| msgid "Tab has changed, do you really want to close it?"
 msgid "Are you sure you want to delete this object?"
-msgstr "Flipi hefur breyst, ertu viss um að þú viljir loka?"
+msgstr "Ertu viss um að þú viljir eyða þessum hlut?"
 
 #: app/frontend/apps/mobile/pages/ticket/composable/useTicketsMerge.ts:62
 msgid "Are you sure you want to merge this ticket (#%s) into #%s?"
-msgstr ""
+msgstr "Ertu viss um að þú viljir sameina þessa beiðni (#%s) við #%s?"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_controller.coffee:78
 msgid ""
 "Are you sure you want to reload? You have unsaved changes that will get lost"
 msgstr ""
+"Ertu viss um að þú viljir endurhlaða? Þú ert með óvistaðar breytingar sem "
+"munu glatast"
 
 #: app/assets/javascripts/app/controllers/_application_controller/table.coffee:734
-#, fuzzy
-#| msgid "Tab has changed, do you really want to close it?"
 msgid "Are you sure you want to set \"%s\" as default?"
-msgstr "Flipi hefur breyst, ertu viss um að þú viljir loka?"
+msgstr "Ertu viss um að þú viljir setja \"%s\" sem sjálfgefið?"
 
 #: app/assets/javascripts/app/controllers/_application_controller/table.coffee:750
-#, fuzzy
-#| msgid "Tab has changed, do you really want to close it?"
 msgid "Are you sure you want to unset \"%s\" as default?"
-msgstr "Flipi hefur breyst, ertu viss um að þú viljir loka?"
+msgstr "Ertu viss um að þú viljir hætta að hafa \"%s\" sem sjálfgefið?"
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_confirm_delete.coffee:6
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:145
@@ -2269,12 +2338,16 @@ msgid ""
 "Are you sure? Default notifications settings will be applied to all active "
 "agents. This operation may take some time."
 msgstr ""
+"Ertu viss? Sjálfgefnar tilkynningastillingar verða settar á alla virka "
+"þjónustufulltrúa. Þessu aðgerð gæti tekið einhvern tíma."
 
 #: app/assets/javascripts/app/controllers/_manage/ticket_notification.coffee:34
 msgid ""
 "Are you sure? The agent default notifications settings will be reset to the "
 "system default."
 msgstr ""
+"Ertu viss? Sjálfgefnar tilkynningastillingar þjónustufulltrúa munu taka "
+"sjálfgefnar stillingar kerfis."
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:78
 msgid "Are you sure? The prepared article will be removed."
@@ -2285,6 +2358,8 @@ msgid ""
 "Are you sure? The user will have to to reconfigure all two-factor "
 "authentication methods."
 msgstr ""
+"Ertu viss? Notandinn mun þurfa að endurstilla allar tveggja-þátta "
+"auðkenningaaðferðir."
 
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:83
 msgid "Are you sure? This recent search will be lost."
@@ -2292,7 +2367,7 @@ msgstr ""
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:56
 msgid "Are you sure? You have changes that will get lost."
-msgstr ""
+msgstr "Ertu viss? Þú hefur gert breytingar sem munu glatast."
 
 #: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:54
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:73
@@ -2301,12 +2376,12 @@ msgstr ""
 #: app/frontend/apps/mobile/pages/ticket/views/TicketDetailView.vue:248
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:41
 msgid "Are you sure? You have unsaved changes that will get lost."
-msgstr ""
+msgstr "Ertu viss? Þú ert með óvistaðar breytingar sem munu glatast."
 
 #: app/assets/javascripts/app/controllers/_profile/notification.coffee:150
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:158
 msgid "Are you sure? Your notifications settings will be reset to default."
-msgstr ""
+msgstr "Ertu viss? Tilkynningastillingar þínum munu taka sjálfgefin gildi."
 
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:100
 msgid "Are you sure? Your recent searches will be lost."
@@ -2338,10 +2413,8 @@ msgid "Article Count"
 msgstr "Efnisgreinafjöldi"
 
 #: app/assets/javascripts/app/controllers/_manage/ticket.coffee:12
-#, fuzzy
-#| msgid "Change order"
 msgid "Article Language Detection"
-msgstr "Breyta röðun"
+msgstr "Tungumálagreining efnisgreinar"
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:270
 msgid "Article actions"
@@ -2353,15 +2426,13 @@ msgstr "Ekki tókst að eyða efnisgreininni."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubble.vue:126
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleHeader.vue:25
-#, fuzzy
-#| msgid "Block Notifications"
 msgid "Article meta information"
-msgstr "Loka fyrir tilkynningar"
+msgstr "Lýsiupplýsingar efnisgreinar"
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleSecurityBadge.vue:72
 #: app/frontend/shared/composables/useArticleSecurity.ts:85
 msgid "Article uses different security mechanism."
-msgstr ""
+msgstr "Efnisgrein notar aðra öryggisráðstöfun."
 
 #: app/assets/javascripts/app/models/ticket.coffee:15
 #: app/graphql/gql/types/overview_type.rb:100
@@ -2424,7 +2495,7 @@ msgid ""
 "will be shown as unassigend."
 msgstr ""
 
-#: app/models/user.rb:639
+#: app/models/user.rb:647
 msgid ""
 "At least one identifier (firstname, lastname, phone, mobile or email) for "
 "user is required."
@@ -2438,15 +2509,13 @@ msgstr ""
 msgid "At least one object must be selected."
 msgstr ""
 
-#: app/models/role.rb:128 app/models/user.rb:710
+#: app/models/role.rb:128 app/models/user.rb:718
 msgid "At least one user needs to have admin permissions."
 msgstr ""
 
 #: app/frontend/shared/components/Form/fields/FieldFile/FieldFileInput.vue:185
-#, fuzzy
-#| msgid "Attached Files"
 msgid "Attach another file"
-msgstr "Viðhengdar skrár"
+msgstr "Hengja aðra skrá við"
 
 #: app/frontend/shared/components/Form/fields/FieldFile/FieldFileInput.vue:180
 #, fuzzy
@@ -2455,10 +2524,8 @@ msgid "Attach file"
 msgstr "Viðhengdar skrár"
 
 #: app/frontend/shared/components/Form/fields/FieldFile/FieldFileInput.vue:183
-#, fuzzy
-#| msgid "Attached Files"
 msgid "Attach files"
-msgstr "Viðhengdar skrár"
+msgstr "Hengja skrár við"
 
 #: app/assets/javascripts/app/views/generic/attachments.jst.eco:4
 #: app/views/knowledge_base/public/answers/show.html.erb:17
@@ -2542,10 +2609,8 @@ msgstr "Eigindi"
 
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:32
 #: db/seeds/settings.rb:2721
-#, fuzzy
-#| msgid "Attributes"
 msgid "Attributes to compare"
-msgstr "Eigindi"
+msgstr "Eigindi til að bara saman"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/whatsapp_reply.coffee:60
 #: app/frontend/shared/entities/ticket-article/action/plugins/whatsapp.ts:19
@@ -2574,10 +2639,8 @@ msgid "Authentication"
 msgstr "Auðkenning"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:728
-#, fuzzy
-#| msgid "Authentication"
 msgid "Authentication Token"
-msgstr "Auðkenning"
+msgstr "Auðkenningartóki"
 
 #: lib/email_helper/probe.rb:276
 msgid "Authentication failed due to incorrect credentials."
@@ -2698,10 +2761,8 @@ msgid "Automatic account link on initial logon"
 msgstr "Sjálfvirk tenging aðganga við fyrstu innskráningu"
 
 #: db/seeds/settings.rb:1297
-#, fuzzy
-#| msgid "Automatic account link on initial logon"
 msgid "Automatic account linking notification"
-msgstr "Sjálfvirk tenging aðganga við fyrstu innskráningu"
+msgstr "Tilkynning um sjálfvirk samtenging reikninga"
 
 #: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:180
 msgid "Automatic reminders"
@@ -2751,7 +2812,7 @@ msgstr ""
 #: app/frontend/apps/mobile/pages/account/views/AccountOverview.vue:121
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:168
 #: app/frontend/shared/components/CommonUserAvatar/CommonUserAvatar.vue:114
-#: db/seeds/permissions.rb:433
+#: db/seeds/permissions.rb:439
 msgid "Avatar"
 msgstr "Avatar"
 
@@ -3174,8 +3235,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_application_controller/after_auth_modal.coffee:9
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:382
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/twitter_reply.coffee:177
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:342
-#: app/assets/javascripts/app/views/generic/text_tools_loading.jst.eco:3
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:345
 #: app/assets/javascripts/app/views/integration/exchange_certificate_issue.jst.eco:18
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:236
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:292
@@ -3196,7 +3256,7 @@ msgstr ""
 msgid "Cancel"
 msgstr "Hætta við"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal.coffee:113
+#: app/assets/javascripts/app/controllers/_application_controller/_modal.coffee:117
 #: app/assets/javascripts/app/views/admin_password_auth/request.jst.eco:8
 #: app/assets/javascripts/app/views/admin_password_auth/request_sent.jst.eco:7
 #: app/assets/javascripts/app/views/agent_ticket_create.jst.eco:55
@@ -3264,7 +3324,7 @@ msgstr ""
 msgid "Cannot set online notifications as seen"
 msgstr "Sýsla með stillingar fyrir tilkynningarnar mínar"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:806
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:803
 msgid "Cannot upload file"
 msgstr ""
 
@@ -3348,7 +3408,7 @@ msgstr "Breyta röðun"
 msgid "Change order"
 msgstr "Breyta röðun"
 
-#: db/seeds/permissions.rb:451
+#: db/seeds/permissions.rb:457
 msgid "Change personal account password."
 msgstr "Breyta lykilorði þíns reiknings."
 
@@ -3541,7 +3601,7 @@ msgstr ""
 msgid "Checklist"
 msgstr "Checksum"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:60
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:61
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/event-actions/checklist-item-checked.ts:10
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/utils/historyEventEntityNames.ts:10
 #, fuzzy
@@ -3561,7 +3621,7 @@ msgstr "Sniðmát gátlista"
 msgid "Checklist Template items are limited to 100 items per checklist."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:193
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:191
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:61
 #, fuzzy
 #| msgid "Ticket updated successfully."
@@ -3578,7 +3638,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/checklist_template.coffee:3
 #: app/assets/javascripts/app/views/checklist_template/index.jst.eco:7
-#: db/seeds/permissions.rb:323 db/seeds/settings.rb:6005
+#: db/seeds/permissions.rb:329 db/seeds/settings.rb:6005
 #, fuzzy
 #| msgid "Checksum"
 msgid "Checklists"
@@ -4217,7 +4277,7 @@ msgstr "Innihald"
 msgid "Context"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/SplitButton/SplitButton.vue:86
+#: app/frontend/apps/desktop/components/SplitButton/SplitButton.vue:85
 #, fuzzy
 #| msgid "Content"
 msgid "Context menu"
@@ -4347,7 +4407,7 @@ msgid "Core Workflow Ajax Mode"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/core_workflow.coffee:3
-#: db/seeds/permissions.rb:275
+#: db/seeds/permissions.rb:281
 msgid "Core Workflows"
 msgstr ""
 
@@ -4768,7 +4828,7 @@ msgstr "Núverandi staða"
 msgid "Current Token"
 msgstr "Núverandi tóki"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:636
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:642
 #: app/assets/javascripts/app/models/signature.coffee:21
 #: app/assets/javascripts/app/models/text_module.coffee:21
 #: app/assets/javascripts/app/views/microsoft365/user_mismatch.jst.eco:7
@@ -4835,7 +4895,7 @@ msgid "Custom address is not set"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_application_controller/form.coffee:208
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:505
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:512
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:14
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:28
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:14
@@ -4881,7 +4941,7 @@ msgstr ""
 msgid "Customer selection based on sender and receiver list"
 msgstr ""
 
-#: db/seeds/permissions.rb:405
+#: db/seeds/permissions.rb:411
 msgid "Customer tickets"
 msgstr "Beiðnir viðskiptavinar"
 
@@ -4908,7 +4968,7 @@ msgid "Cut"
 msgstr ""
 
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:20
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:39
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:38
 msgid "Dark"
 msgstr ""
 
@@ -4929,7 +4989,7 @@ msgstr "Mælaborð"
 
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:3
 #: app/assets/javascripts/app/views/data_privacy/index.jst.eco:3
-#: db/seeds/permissions.rb:287
+#: db/seeds/permissions.rb:293
 msgid "Data Privacy"
 msgstr "Persónuvernd gagna"
 
@@ -6074,11 +6134,11 @@ msgstr "Eyða notanda"
 msgid "Delete column"
 msgstr "Eyða skrá"
 
-#: db/seeds/permissions.rb:288
+#: db/seeds/permissions.rb:294
 msgid "Delete existing data of your system."
 msgstr "Eyða núverandi gögnum kerfissins."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:102
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:111
 #, fuzzy
 #| msgid "Delete File"
 msgid "Delete immediately"
@@ -6316,7 +6376,7 @@ msgstr "Aðgangur tækis hefur verið afturkallaður."
 #: app/assets/javascripts/app/views/profile/devices.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/devices.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:31
-#: db/seeds/permissions.rb:464
+#: db/seeds/permissions.rb:470
 msgid "Devices"
 msgstr "Tæki"
 
@@ -6337,7 +6397,7 @@ msgid ""
 "%l"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/translation.coffee:325
+#: app/assets/javascripts/app/controllers/translation.coffee:324
 msgid ""
 "Did you know that system translations can be contributed and shared with the "
 "community on our public platform %l? It sports a very convenient user "
@@ -6409,10 +6469,6 @@ msgstr "Slökkva á tilkynningum"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNewBetaUi.vue:36
 msgid "Disable the banner for the BETA switch"
-msgstr ""
-
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:31
-msgid "Disable the banner for the ticket summary smart assist"
 msgstr ""
 
 #: db/seeds/settings.rb:1326
@@ -6503,11 +6559,11 @@ msgstr "Birta nafn"
 msgid "Do not change email address (%s)"
 msgstr "Sláðu inn notandanafn þitt eða netfang"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:662
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:668
 msgid "Do not encrypt email"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:648
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:654
 msgid "Do not sign email"
 msgstr ""
 
@@ -6929,8 +6985,8 @@ msgid "Elasticsearch version"
 msgstr "Síðasta samstilling"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:3
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:67
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:47
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:73
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:54
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:44
 #: app/assets/javascripts/app/controllers/getting_started/channel.coffee:15
 #: app/assets/javascripts/app/models/email_address.coffee:2
@@ -7033,7 +7089,7 @@ msgstr "Staðfesting með tölvupósti"
 msgid "Email address"
 msgstr "Netfang"
 
-#: app/models/user.rb:649
+#: app/models/user.rb:657
 msgid "Email address '%{email}' is already used for another user."
 msgstr ""
 
@@ -7217,10 +7273,6 @@ msgstr ""
 msgid "Enable the banner for the BETA switch"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:32
-msgid "Enable the banner for the ticket summary smart assist"
-msgstr ""
-
 #: db/seeds/settings.rb:2570
 msgid "Enable ticket auto assignment."
 msgstr ""
@@ -7342,11 +7394,11 @@ msgstr "Virkjar möguleikan fyrir notendur að stofna aðgang gegnum vefviðmót
 msgid "Encrypt"
 msgstr "Dulkóða"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:663
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:669
 msgid "Encrypt email (if not possible, discard notification)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:664
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:670
 msgid "Encrypt email (if not possible, send notification anyway)"
 msgstr ""
 
@@ -7802,7 +7854,7 @@ msgstr "Beiðnir til"
 msgid "Existing tickets (open)"
 msgstr "Beiðnir sem eru til (opnar)"
 
-#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:14
+#: app/assets/javascripts/app/views/generic/text_tools_dropdown.jst.eco:9
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:71
 #, fuzzy
 #| msgid "Contents"
@@ -7815,9 +7867,21 @@ msgstr "Innihald"
 msgid "Expand sidebar"
 msgstr "Innihald"
 
+#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:21
+#, fuzzy
+#| msgid "Contents"
+msgid "Expand text"
+msgstr "Innihald"
+
 #: app/frontend/apps/desktop/components/CollapseButton/CollapseButton.vue:59
 msgid "Expand this element"
 msgstr ""
+
+#: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:32
+#, fuzzy
+#| msgid "Expert"
+msgid "Experimental"
+msgstr "Sérfræðingur"
 
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:223
 msgid "Expert"
@@ -8033,7 +8097,7 @@ msgstr ""
 msgid "File format is not allowed: %s"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:867
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:864
 #: app/frontend/shared/components/Form/fields/FieldFile/composable/useFileValidation.ts:22
 #: lib/validations/ticket_article_validator/whatsapp_message.rb:38
 msgid "File is too big. %s has to be %s or smaller."
@@ -8145,7 +8209,8 @@ msgstr "Fornafn"
 msgid "First response"
 msgstr "Upphafssvar"
 
-#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:12
+#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:24
+#: app/assets/javascripts/app/views/generic/text_tools_dropdown.jst.eco:7
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:62
 msgid "Fix spelling and grammar"
 msgstr ""
@@ -8241,10 +8306,8 @@ msgid "Forbidden"
 msgstr ""
 
 #: lib/ai/provider/concerns/handles_response.rb:16
-#, fuzzy
-#| msgid "You have not created a ticket yet."
 msgid "Forbidden - you do not have permission to access this resource"
-msgstr "Þú hefur ekki stofnað neina miða ennþá."
+msgstr ""
 
 #: app/assets/javascripts/app/models/public_link.coffee:9
 msgid "Forgot Password Screen"
@@ -9092,21 +9155,11 @@ msgstr ""
 msgid "Hide Beta UI switch"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/banner_ticket_summary.coffee:62
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:65
-msgid "Hide Smart Assist Summary Banner?"
-msgstr ""
-
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:24
 #, fuzzy
 #| msgid "Authentication"
 msgid "Hide authenticator app secret"
 msgstr "Auðkenning"
-
-#: app/assets/javascripts/app/views/ticket_zoom/banner_ticket_summary.jst.eco:21
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:109
-msgid "Hide ticket summary banner"
-msgstr ""
 
 #: app/assets/javascripts/app/models/ticket_priority.coffee:7
 #, fuzzy
@@ -9458,7 +9511,7 @@ msgstr "Myndaþjónusta"
 
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/popup_image.coffee:18
 #: app/assets/javascripts/app/lib/app_post/image_service.coffee:134
-#: app/assets/javascripts/app/lib/base/jquery.contenteditable.js:419
+#: app/assets/javascripts/app/lib/base/jquery.contenteditable.js:449
 msgid "Image file size is too large, please try inserting a smaller file."
 msgstr ""
 
@@ -9573,7 +9626,8 @@ msgstr "Flytja inn"
 msgid "Imported"
 msgstr ""
 
-#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:10
+#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:23
+#: app/assets/javascripts/app/views/generic/text_tools_dropdown.jst.eco:5
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:53
 #, fuzzy
 #| msgid "Removes the formatting"
@@ -9607,8 +9661,8 @@ msgstr "óvirkt"
 msgid "Inbound"
 msgstr "Innkomandi"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:131
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:140
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:139
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:149
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:34
 #: app/assets/javascripts/app/views/navigation/menu_cti_ringing.jst.eco:6
 msgid "Inbound Call"
@@ -9874,7 +9928,7 @@ msgid "Integer field"
 msgstr "Heiltölureitur"
 
 #: app/assets/javascripts/app/controllers/integrations.coffee:3
-#: db/seeds/permissions.rb:245
+#: db/seeds/permissions.rb:251
 msgid "Integrations"
 msgstr "Samþættingar"
 
@@ -9959,7 +10013,7 @@ msgstr ""
 msgid "Invalid client_id received!"
 msgstr ""
 
-#: app/models/user.rb:594
+#: app/models/user.rb:596
 msgid "Invalid email '%{email}'"
 msgstr ""
 
@@ -10281,7 +10335,7 @@ msgstr "Þekkingarbrunnur"
 msgid "Knowledge Base Answer"
 msgstr ""
 
-#: db/seeds/permissions.rb:368
+#: db/seeds/permissions.rb:374
 msgid "Knowledge Base Editor"
 msgstr ""
 
@@ -10291,7 +10345,7 @@ msgstr ""
 msgid "Knowledge Base Feed"
 msgstr "Þekkingarbrunnur"
 
-#: db/seeds/permissions.rb:374
+#: db/seeds/permissions.rb:380
 msgid "Knowledge Base Reader"
 msgstr ""
 
@@ -10349,7 +10403,7 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/locale.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLocale.vue:12
 #: app/frontend/apps/mobile/pages/account/views/AccountOverview.vue:150
-#: db/seeds/permissions.rb:426
+#: db/seeds/permissions.rb:432
 msgid "Language"
 msgstr "Tungumál"
 
@@ -10499,7 +10553,7 @@ msgid "Library"
 msgstr ""
 
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:26
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:44
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:43
 msgid "Light"
 msgstr ""
 
@@ -10654,7 +10708,7 @@ msgstr "Skapalón"
 #: app/assets/javascripts/app/views/widget/user.jst.eco:34
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/linkedAccounts.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:48
-#: db/seeds/permissions.rb:478
+#: db/seeds/permissions.rb:484
 msgid "Linked Accounts"
 msgstr "Tengdir aðgangar"
 
@@ -10878,7 +10932,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/maintenance.coffee:3
 #: app/assets/javascripts/app/views/maintenance.jst.eco:3
-#: db/seeds/permissions.rb:293
+#: db/seeds/permissions.rb:299
 msgid "Maintenance"
 msgstr "Viðhald"
 
@@ -10899,13 +10953,19 @@ msgstr ""
 msgid "Manage"
 msgstr "Umsjón"
 
+#: db/seeds/permissions.rb:246
+#, fuzzy
+#| msgid "Manage AI settings of your system."
+msgid "Manage AI agents of your system."
+msgstr "Sýsla um gervigreindarstillingar kerfisins."
+
 #: db/seeds/permissions.rb:228
 #, fuzzy
-#| msgid "Overviews"
-msgid "Manage AI settings of your system."
-msgstr "Yfirlit"
+#| msgid "Manage AI settings of your system."
+msgid "Manage AI provider of your system."
+msgstr "Sýsla um gervigreindarstillingar kerfisins."
 
-#: db/seeds/permissions.rb:252
+#: db/seeds/permissions.rb:258
 msgid "Manage API of your system."
 msgstr ""
 
@@ -10926,16 +10986,12 @@ msgid "Manage Google mail channel of your system."
 msgstr ""
 
 #: db/seeds/permissions.rb:162
-#, fuzzy
-#| msgid "Overviews"
 msgid "Manage Microsoft 365 Graph mail channel of your system."
-msgstr "Yfirlit"
+msgstr "Sýsla um Microsoft 365 Graph tölvupóstrás kerfisins."
 
 #: db/seeds/permissions.rb:156
-#, fuzzy
-#| msgid "Overviews"
 msgid "Manage Microsoft 365 IMAP mail channel of your system."
-msgstr "Yfirlit"
+msgstr "Sýsla um Microsoft 365 IMAP tölvupóstrás kerfisins."
 
 #: db/seeds/permissions.rb:138
 msgid "Manage SMS channel of your system."
@@ -10969,22 +11025,18 @@ msgid "Manage WhatsApp channel of your system."
 msgstr ""
 
 #: db/seeds/permissions.rb:240
-#, fuzzy
-#| msgid "Overviews"
 msgid "Manage Zammad Smart Assist text tools of your system."
-msgstr "Yfirlit"
+msgstr "Sýsla um Zammad Smart Assist textatól kerfisins."
 
 #: db/seeds/permissions.rb:234
-#, fuzzy
-#| msgid "Overviews"
 msgid "Manage Zammad Smart Assist ticket summarization of your system."
-msgstr "Yfirlit"
+msgstr "Sýsla um Zammad Smart Assist beiðnasamantekt kerfisins."
 
-#: db/seeds/permissions.rb:517
+#: db/seeds/permissions.rb:523
 msgid "Manage access to New BETA UI switch."
 msgstr ""
 
-#: db/seeds/permissions.rb:312
+#: db/seeds/permissions.rb:318
 msgid "Manage active user sessions of your system."
 msgstr ""
 
@@ -11020,7 +11072,7 @@ msgstr ""
 msgid "Manage core system settings."
 msgstr "Sýsla með grunn-kerfisstillingar."
 
-#: db/seeds/permissions.rb:276
+#: db/seeds/permissions.rb:282
 msgid "Manage core workflows of your system."
 msgstr ""
 
@@ -11036,73 +11088,73 @@ msgstr ""
 msgid "Manage groups of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:246
+#: db/seeds/permissions.rb:252
 msgid "Manage integrations of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:294
+#: db/seeds/permissions.rb:300
 msgid "Manage maintenance mode of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:300
+#: db/seeds/permissions.rb:306
 msgid "Manage monitoring of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:258
+#: db/seeds/permissions.rb:264
 msgid "Manage object attributes of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:306
+#: db/seeds/permissions.rb:312
 msgid "Manage packages of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:472
+#: db/seeds/permissions.rb:478
 msgid "Manage personal API tokens."
 msgstr "Sýsla með persónulega API tóka."
 
-#: db/seeds/permissions.rb:420
+#: db/seeds/permissions.rb:426
 msgid "Manage personal appearance settings."
 msgstr ""
 
-#: db/seeds/permissions.rb:434
+#: db/seeds/permissions.rb:440
 #, fuzzy
 #| msgid "Manage your notifications settings"
 msgid "Manage personal avatar settings."
 msgstr "Manage personal avatar settings."
 
-#: db/seeds/permissions.rb:506
+#: db/seeds/permissions.rb:512
 msgid "Manage personal calendar."
 msgstr ""
 
-#: db/seeds/permissions.rb:465
+#: db/seeds/permissions.rb:471
 msgid "Manage personal devices and sessions."
 msgstr "Sýsla um eigin tæki og setur."
 
-#: db/seeds/permissions.rb:427
+#: db/seeds/permissions.rb:433
 msgid "Manage personal language settings."
 msgstr ""
 
-#: db/seeds/permissions.rb:479
+#: db/seeds/permissions.rb:485
 msgid "Manage personal linked accounts."
 msgstr ""
 
-#: db/seeds/permissions.rb:486
+#: db/seeds/permissions.rb:492
 msgid "Manage personal notifications settings."
 msgstr "Sýsla um eigin tilkynningastillingar."
 
-#: db/seeds/permissions.rb:441
+#: db/seeds/permissions.rb:447
 msgid "Manage personal out of office settings."
 msgstr "Sýsla um eigin fjarverustillingar."
 
-#: db/seeds/permissions.rb:496
+#: db/seeds/permissions.rb:502
 msgid "Manage personal overviews."
 msgstr ""
 
-#: db/seeds/permissions.rb:413
+#: db/seeds/permissions.rb:419
 msgid "Manage personal settings."
 msgstr "Sýsla um eigin stillingar."
 
-#: db/seeds/permissions.rb:458
+#: db/seeds/permissions.rb:464
 msgid "Manage personal two-factor authentication methods."
 msgstr "Sýsla um eigin tveggja-þátta auðkenningaleiðir."
 
@@ -11126,7 +11178,7 @@ msgstr ""
 msgid "Manage security settings of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:318
+#: db/seeds/permissions.rb:324
 msgid "Manage system report of your system."
 msgstr ""
 
@@ -11138,7 +11190,7 @@ msgstr ""
 msgid "Manage ticket auto assignment settings of your system."
 msgstr "Sýsla um stillingar sjálfvirkrar úthlutunar beiðna á kerfinu þínu."
 
-#: db/seeds/permissions.rb:324
+#: db/seeds/permissions.rb:330
 msgid "Manage ticket checklists of your system."
 msgstr "Sýsla um gátlista beiðna á kerfinu þínu."
 
@@ -11154,7 +11206,7 @@ msgstr ""
 msgid "Manage ticket overviews of your system."
 msgstr "Sýsla um yfirlit beiðna á kerfinu þínu."
 
-#: db/seeds/permissions.rb:270
+#: db/seeds/permissions.rb:276
 msgid "Manage ticket priorities of your system."
 msgstr ""
 
@@ -11162,7 +11214,7 @@ msgstr ""
 msgid "Manage ticket settings of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:264
+#: db/seeds/permissions.rb:270
 msgid "Manage ticket states of your system."
 msgstr ""
 
@@ -11178,7 +11230,7 @@ msgstr ""
 msgid "Manage time accounting settings of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:282
+#: db/seeds/permissions.rb:288
 msgid "Manage translations of your system."
 msgstr ""
 
@@ -11671,7 +11723,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/monitoring.coffee:3
 #: app/assets/javascripts/app/views/monitoring.jst.eco:3
-#: db/seeds/permissions.rb:299
+#: db/seeds/permissions.rb:305
 msgid "Monitoring"
 msgstr "Vöktun"
 
@@ -11696,7 +11748,7 @@ msgstr "Stemming"
 msgid "More information can be found here."
 msgstr ""
 
-#: app/models/user.rb:662
+#: app/models/user.rb:670
 msgid "More than 250 secondary organizations are not allowed."
 msgstr ""
 
@@ -11809,6 +11861,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/chat.coffee:559
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:58
 #: app/assets/javascripts/app/models/_application_model.coffee:156
+#: app/assets/javascripts/app/models/ai_agent.coffee:6
 #: app/assets/javascripts/app/models/application.coffee:7
 #: app/assets/javascripts/app/models/calendar.coffee:7
 #: app/assets/javascripts/app/models/chat.coffee:251
@@ -11960,6 +12013,12 @@ msgstr "Nýr"
 msgid "New & Open Tickets"
 msgstr "Opnar Beiðnir"
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:51
+#, fuzzy
+#| msgid "Agent"
+msgid "New AI Agent"
+msgstr "Þjónustufulltrúi"
+
 #: app/assets/javascripts/app/controllers/api.coffee:190
 msgid "New Access Token is"
 msgstr ""
@@ -11993,7 +12052,7 @@ msgstr "Nýr eiginleiki"
 msgid "New BETA UI"
 msgstr ""
 
-#: db/seeds/permissions.rb:516
+#: db/seeds/permissions.rb:522
 msgid "New BETA UI Switch"
 msgstr ""
 
@@ -12262,6 +12321,12 @@ msgstr "Nei"
 msgid "No %s configured."
 msgstr ""
 
+#: app/assets/javascripts/app/views/generic/ticket_perform_action/ai_agent_not_available.jst.eco:1
+msgid ""
+"No AI agent available, please create a new one or activate an existing one "
+"at \"Manage > AI Agents\""
+msgstr ""
+
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:14
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:59
 #, fuzzy
@@ -12429,7 +12494,7 @@ msgstr "Engin sía."
 msgid "No file formats allowed."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:649
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:654
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector_expert.coffee:803
 msgid "No filter was configured."
 msgstr "Engin sía uppsett."
@@ -12632,7 +12697,7 @@ msgstr ""
 msgid "Not Found"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:238
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:236
 #, fuzzy
 #| msgid "Ticket updated successfully."
 msgid "Not all checklist items could be added."
@@ -12688,8 +12753,9 @@ msgstr "passar við"
 msgid "Not found - resource not found"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:71
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:51
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:77
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:58
+#: app/assets/javascripts/app/models/ai_agent.coffee:10
 #: app/assets/javascripts/app/models/chat.coffee:252
 #: app/assets/javascripts/app/models/email_address.coffee:35
 #: app/assets/javascripts/app/models/group.coffee:14
@@ -12816,7 +12882,7 @@ msgstr "Tilkynningarhljóð"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/notifications.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:34
 #: app/frontend/apps/mobile/pages/online-notification/routes.ts:8
-#: db/seeds/permissions.rb:485
+#: db/seeds/permissions.rb:491
 msgid "Notifications"
 msgstr "Tilkynningar"
 
@@ -12934,7 +13000,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/object_manager.coffee:330
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoit.vue:55
-#: db/seeds/permissions.rb:257
+#: db/seeds/permissions.rb:263
 msgid "Objects"
 msgstr "Hlutir"
 
@@ -13000,7 +13066,7 @@ msgstr ""
 msgid "Only %s attachment allowed"
 msgstr "Viðhengdar skrár"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:832
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:829
 msgid "Only %s attachment allowed."
 msgstr ""
 
@@ -13238,7 +13304,7 @@ msgid "Options or relation is required."
 msgstr "Tímabeltis er krafist."
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/start.jst.eco:8
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistTemplates.vue:22
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistTemplates.vue:21
 msgid "Or choose a checklist template."
 msgstr ""
 
@@ -13416,7 +13482,7 @@ msgstr "Stillingar"
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/outOfOffice.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:122
-#: db/seeds/permissions.rb:440
+#: db/seeds/permissions.rb:446
 msgid "Out of Office"
 msgstr ""
 
@@ -13457,8 +13523,8 @@ msgstr ""
 msgid "Outbound"
 msgstr "Útvær"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:132
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:141
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:140
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:150
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:22
 #: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:21
 msgid "Outbound Call"
@@ -13536,7 +13602,7 @@ msgstr ""
 msgid "Overwrite Draft"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:504
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:511
 #: app/assets/javascripts/app/models/ticket.coffee:11
 #: app/assets/javascripts/app/views/agent_ticket_view/detail.jst.eco:42
 #: app/graphql/gql/types/overview_type.rb:96
@@ -13593,7 +13659,7 @@ msgid "Package"
 msgstr "Pakki"
 
 #: app/assets/javascripts/app/controllers/package.coffee:3
-#: db/seeds/permissions.rb:305
+#: db/seeds/permissions.rb:311
 msgid "Packages"
 msgstr "Pakkar"
 
@@ -13655,7 +13721,7 @@ msgstr "Foreldri"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/password.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:32
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:52
-#: db/seeds/object_manager_attributes.rb:1447 db/seeds/permissions.rb:450
+#: db/seeds/object_manager_attributes.rb:1447 db/seeds/permissions.rb:456
 msgid "Password"
 msgstr "Lykilorð"
 
@@ -13834,7 +13900,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/cti.coffee:322
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/phone.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/phone.ts:12
-#: db/seeds/object_manager_attributes.rb:995 db/seeds/permissions.rb:344
+#: db/seeds/object_manager_attributes.rb:995 db/seeds/permissions.rb:350
 msgid "Phone"
 msgstr "Sími"
 
@@ -13959,7 +14025,7 @@ msgid ""
 "triggers and schedulers)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:345
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:348
 msgid "Please enter a text."
 msgstr ""
 
@@ -14052,7 +14118,6 @@ msgstr ""
 msgid "Please select at least one ticket overview"
 msgstr ""
 
-#: app/assets/javascripts/app/lib/mixins/text_tools.coffee:39
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:45
 msgid "Please select some text first."
 msgstr ""
@@ -14136,7 +14201,7 @@ msgstr ""
 msgid "Pre-defined webhook for %s."
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:50
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:49
 msgid "Prefer color scheme as indicated by the operating system."
 msgstr ""
 
@@ -14321,7 +14386,7 @@ msgid "Profile language updated successfully."
 msgstr "Profile language updated successfully."
 
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/personal-settings.ts:7
-#: db/seeds/permissions.rb:412
+#: db/seeds/permissions.rb:418
 #, fuzzy
 #| msgid "Proxy Settings"
 msgid "Profile settings"
@@ -14359,7 +14424,7 @@ msgstr ""
 msgid "Provide position of all items in scope"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:49
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:50
 msgid "Provide some possible solutions to the problem as follow-up items."
 msgstr ""
 
@@ -14680,7 +14745,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/channel/topics.jst.eco:32
 #: app/assets/javascripts/app/views/generic/application_selector_row.jst.eco:28
 #: app/assets/javascripts/app/views/generic/application_selector_subclause.jst.eco:15
-#: app/assets/javascripts/app/views/generic/ticket_perform_action/row.jst.eco:13
+#: app/assets/javascripts/app/views/generic/ticket_perform_action/row.jst.eco:14
 #: app/assets/javascripts/app/views/generic/user_permission_group.jst.eco:25
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:39
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:40
@@ -14715,7 +14780,7 @@ msgstr "Fjarlægja"
 msgid "Remove Link"
 msgstr "Fjarlægja"
 
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationPopover/NotificationList/NotificationItem.vue:77
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationPopover/NotificationList/NotificationItem.vue:76
 #, fuzzy
 #| msgid "Block Notifications"
 msgid "Remove Notification"
@@ -15143,6 +15208,12 @@ msgstr "Endurheimta sjálfgildi"
 msgid "Restrict to only the following users"
 msgstr ""
 
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:15
+#, fuzzy
+#| msgid "Restore Defaults"
+msgid "Result"
+msgstr "Endurheimta sjálfgildi"
+
 #: app/assets/javascripts/app/views/generic/object_import/result.jst.eco:2
 msgid "Result:"
 msgstr ""
@@ -15154,6 +15225,7 @@ msgid "Results"
 msgstr "Endurheimta sjálfgildi"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:161
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:12
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:9
 #: app/assets/javascripts/app/views/widget/two_factor_login/security_keys.jst.eco:16
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:68
@@ -15317,8 +15389,8 @@ msgid "SLAs"
 msgstr "Þjónustustigssamningar"
 
 #: app/assets/javascripts/app/controllers/_channel/sms.coffee:3
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:68
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:48
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:74
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:55
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/sms.ts:7
 #: db/seeds/permissions.rb:137
 msgid "SMS"
@@ -15502,7 +15574,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1137
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1130
 msgid "Saving failed."
 msgstr "Vistun misheppnaðist."
 
@@ -15597,6 +15669,12 @@ msgstr ""
 #: lib/external_data_source/errors.rb:34
 msgid "Search URL is missing."
 msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:44
+#, fuzzy
+#| msgid "Search for users"
+msgid "Search for AI agents"
+msgstr "Leita að notendum"
 
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:25
 #, fuzzy
@@ -15821,7 +15899,7 @@ msgstr "Leita…"
 msgid "Secondary organizations"
 msgstr "Samnýtt stofnun"
 
-#: app/models/user.rb:656
+#: app/models/user.rb:664
 msgid ""
 "Secondary organizations are only allowed when the primary organization is "
 "given."
@@ -15912,13 +15990,6 @@ msgstr ""
 #: lib/external_data_source/errors.rb:28
 msgid "See HTTPLog for details."
 msgstr ""
-
-#: app/assets/javascripts/app/views/ticket_zoom/banner_ticket_summary.jst.eco:19
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:105
-#, fuzzy
-#| msgid "See more"
-msgid "See Summary"
-msgstr "Sjá meira"
 
 #: app/assets/javascripts/app/controllers/_ui_element/ticket_duplicate_detection.coffee:71
 #: app/assets/javascripts/app/controllers/article_view/item.coffee:447
@@ -16014,6 +16085,12 @@ msgstr "Eyða notanda"
 #| msgid "Delete User"
 msgid "Select this entry"
 msgstr "Eyða notanda"
+
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:2
+#, fuzzy
+#| msgid "Select Template"
+msgid "Selected Text"
+msgstr "Veldu sniðmát"
 
 #: app/assets/javascripts/app/models/core_workflow.coffee:9
 msgid "Selected conditions"
@@ -16130,8 +16207,8 @@ msgstr "Forsnið sendanda"
 msgid "Sender Format Separator"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:126
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:135
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:134
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:144
 #, fuzzy
 #| msgid "Sender"
 msgid "Sender Type"
@@ -16141,7 +16218,7 @@ msgstr "Sendandi"
 msgid "Sender based on Reply-To header"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:503
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:510
 msgid "Sender of last article"
 msgstr "Sendandi síðustu efnisgreinar"
 
@@ -16151,7 +16228,7 @@ msgstr "Sendandi síðustu efnisgreinar"
 msgid "Sending Email Address"
 msgstr "Netfang"
 
-#: app/models/ticket/article.rb:318
+#: app/models/ticket/article.rb:319
 msgid "Sending an email without a valid recipient is not possible."
 msgstr ""
 
@@ -16220,7 +16297,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/session.coffee:3
 #: app/assets/javascripts/app/views/session.jst.eco:2
-#: db/seeds/permissions.rb:311
+#: db/seeds/permissions.rb:317
 msgid "Sessions"
 msgstr "Setur"
 
@@ -16516,18 +16593,13 @@ msgid ""
 "Show additional notes for ticket creation depending on the selected type."
 msgstr "Sýna viðbótarathugasemdir fyrir stofnun beiðna eftir valinni tegund."
 
+#: app/assets/javascripts/app/views/generic/reference_list.jst.eco:19
 #: app/assets/javascripts/app/views/generic/ticket_list.jst.eco:40
 #: app/assets/javascripts/app/views/widget/ticket_stats_list.jst.eco:11
 #, fuzzy
 #| msgid "Show all..."
 msgid "Show all…"
 msgstr "Sýna allt…"
-
-#: app/assets/javascripts/app/views/profile/appearance.jst.eco:54
-msgid ""
-"Show an info banner in the article list indicating that a summary has been "
-"created by %s."
-msgstr ""
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:23
 #, fuzzy
@@ -16543,6 +16615,7 @@ msgstr ""
 msgid "Show chat automatically"
 msgstr ""
 
+#: app/assets/javascripts/app/views/generic/reference_list.jst.eco:20
 #: app/assets/javascripts/app/views/generic/ticket_list.jst.eco:41
 msgid "Show less"
 msgstr ""
@@ -16656,11 +16729,11 @@ msgstr ""
 msgid "Sign"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:649
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:655
 msgid "Sign email (if not possible, discard notification)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:650
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:656
 msgid "Sign email (if not possible, send notification anyway)"
 msgstr ""
 
@@ -16793,7 +16866,8 @@ msgstr ""
 msgid "Simple Storage Service not reachable."
 msgstr ""
 
-#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:16
+#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:22
+#: app/assets/javascripts/app/views/generic/text_tools_dropdown.jst.eco:11
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:80
 msgid "Simplify"
 msgstr ""
@@ -16864,16 +16938,6 @@ msgstr ""
 #: db/seeds/settings.rb:5159
 msgid "Slack integration"
 msgstr ""
-
-#: app/assets/javascripts/app/views/generic/text_tools_loading.jst.eco:2
-msgid "Smart Assist is generating text…"
-msgstr ""
-
-#: app/assets/javascripts/app/views/generic/text_tools.jst.eco:6
-#, fuzzy
-#| msgid "Edit"
-msgid "Smart Editor"
-msgstr "Breyta"
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/sms.ts:44
 #, fuzzy
@@ -17033,10 +17097,8 @@ msgid "Start typing to find the ticket to merge into."
 msgstr ""
 
 #: app/frontend/apps/desktop/pages/search/components/SearchEmptyMessage.vue:38
-#, fuzzy
-#| msgid "Start typing to search for users…"
 msgid "Start typing to get the search results."
-msgstr "Byrjaðu að slá inn til að leita að notendum…"
+msgstr "Byrjaðu að slá inn til að fá leitarniðurstöðurnar."
 
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorSuggestionList.vue:68
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/FieldEditorSuggestionList.vue:55
@@ -17209,16 +17271,12 @@ msgid ""
 msgstr ""
 
 #: db/seeds/settings.rb:6072
-#, fuzzy
-#| msgid "Save configuration"
 msgid "Stores the AI provider configuration."
-msgstr "Vista stillingar"
+msgstr ""
 
 #: db/seeds/settings.rb:6055
-#, fuzzy
-#| msgid "Test SMS provider"
 msgid "Stores the AI provider."
-msgstr "Prófa SMS þjónustuveitu"
+msgstr ""
 
 #: db/seeds/settings.rb:5111
 msgid "Stores the GitHub configuration."
@@ -17281,10 +17339,10 @@ msgstr ""
 msgid "Submit"
 msgstr "Senda"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:139
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:147
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:178
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:373
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:148
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:157
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:206
 #: app/assets/javascripts/app/views/widget/mention.jst.eco:4
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:52
@@ -17379,7 +17437,7 @@ msgid "Sync calendars with iCal feeds."
 msgstr ""
 
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:32
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:49
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:48
 msgid "Sync with computer"
 msgstr ""
 
@@ -17409,7 +17467,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/system_report.coffee:3
 #: app/assets/javascripts/app/views/system_report.jst.eco:2
-#: db/seeds/permissions.rb:317
+#: db/seeds/permissions.rb:323
 #, fuzzy
 #| msgid "System URL"
 msgid "System Report"
@@ -17618,7 +17676,7 @@ msgstr "Innsláttarreitur"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:381
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/twitter_reply.coffee:176
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:341
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:344
 msgid "Text missing"
 msgstr "Texta vantar"
 
@@ -17714,10 +17772,8 @@ msgid "The API token could not be found."
 msgstr ""
 
 #: lib/ai/vectordb.rb:52
-#, fuzzy
-#| msgid "The access token could not be created."
 msgid "The Elasticsearch index could not be created"
-msgstr "Ekki tókst að búa til aðgangstókann."
+msgstr "Ekki tókst að stofna ElasticSearch yfirlit"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/new_controller.coffee:56
 msgid "The Knowledge Base could not be created."
@@ -18054,7 +18110,7 @@ msgstr ""
 "Spjallið mun birtast um leið og tenging við þjóninn er orðin virk og þegar "
 "einhver er tengdur til að spjalla við."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:198
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:196
 #, fuzzy
 #| msgid "Ticket tags could not be updated."
 msgid "The checklist item could not be added."
@@ -18098,6 +18154,10 @@ msgstr ""
 #: app/controllers/users_controller.rb:400
 #: app/graphql/gql/mutations/user/current/change_password.rb:30
 msgid "The current password you provided is incorrect."
+msgstr ""
+
+#: app/services/service/ai/vectordb/create_table.rb:18
+msgid "The currently selected AI provider does not support embeddings."
 msgstr ""
 
 #: app/assets/javascripts/app/views/generic/object_import/index.jst.eco:6
@@ -18189,7 +18249,7 @@ msgstr "Ekki tókst að hlaða skrána upp."
 msgid "The file does not belong to the specified article."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:861
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:858
 #: app/frontend/shared/components/Form/fields/FieldFile/features/filesTypeError.ts:19
 msgid "The file type %s is not allowed."
 msgstr "Skráagerð %s er ekki leyfð."
@@ -18214,7 +18274,7 @@ msgstr "Eftirfarandi færslur voru framkvæmdar:"
 msgid "The following contents are provided in the system report:"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal.coffee:196
+#: app/assets/javascripts/app/controllers/_application_controller/_modal.coffee:200
 msgid ""
 "The form content has been changed. Do you want to close it and lose your "
 "changes?"
@@ -18321,10 +18381,8 @@ msgstr "Ekki tókst að vista beiðnina."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerLinkFlyout.vue:43
 #: app/graphql/gql/mutations/ticket/external_references/issue_tracker_item_add.rb:26
-#, fuzzy
-#| msgid "%{name} already exists"
 msgid "The issue reference already exists."
-msgstr "The issue reference already exists."
+msgstr "Tilvísunin er þegar til."
 
 #: app/graphql/gql/mutations/ticket/external_references/issue_tracker_item_add.rb:42
 #, fuzzy
@@ -18382,7 +18440,7 @@ msgstr "Ekki var hægt að stofna nýtt beiðnarnúmer."
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_new.coffee:68
 #: app/assets/javascripts/app/controllers/_channel/_email_signature.coffee:93
-#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:809
+#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:807
 #: app/assets/javascripts/app/controllers/customer_ticket_create.coffee:193
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:272
 #: app/assets/javascripts/app/controllers/object_manager.coffee:261
@@ -18508,16 +18566,16 @@ msgstr ""
 msgid "The provided email account is already in use."
 msgstr ""
 
-#: app/models/webhook.rb:37
+#: app/models/webhook.rb:39
 msgid "The provided endpoint is invalid, no hostname was specified."
 msgstr ""
 
-#: app/models/webhook.rb:36
+#: app/models/webhook.rb:38
 msgid ""
 "The provided endpoint is invalid, no http or https protocol was specified."
 msgstr ""
 
-#: app/models/webhook.rb:39
+#: app/models/webhook.rb:41
 msgid "The provided endpoint is invalid."
 msgstr ""
 
@@ -18529,7 +18587,7 @@ msgstr ""
 msgid "The provided password is incorrect."
 msgstr "Uppgefið lykilorð er rangt."
 
-#: app/models/webhook.rb:48
+#: app/models/webhook.rb:50
 msgid "The provided payload is invalid. Please check your syntax."
 msgstr ""
 
@@ -18546,6 +18604,12 @@ msgstr ""
 msgid ""
 "The provider configuration is missing. Please set up the provider before "
 "proceeding in |AI > Providers|."
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:62
+msgid ""
+"The provider configuration is missing. Please set up the provider before "
+"proceeding in |AI > Provider|."
 msgstr ""
 
 #: lib/secure_mailing/pgp/incoming.rb:302
@@ -18572,7 +18636,7 @@ msgstr ""
 msgid "The requested %s could not be found."
 msgstr "Vélarnafnið fannst ekki."
 
-#: lib/validations/verify_perform_rules_validator.rb:62
+#: lib/validations/verify_perform_rules_validator.rb:63
 msgid "The required '%{attribute}' value for %{key}, %{inner} is missing!"
 msgstr ""
 
@@ -18742,7 +18806,7 @@ msgstr ""
 msgid "The required parameter 'ticket_number' is missing."
 msgstr ""
 
-#: app/models/concerns/perform_changes/action/attribute_updates.rb:117
+#: app/models/concerns/perform_changes/action/attribute_updates.rb:119
 msgid "The required parameter 'user_id' is missing."
 msgstr ""
 
@@ -18881,10 +18945,8 @@ msgstr ""
 "þinn."
 
 #: app/graphql/gql/concerns/handles_password_revalidation_token.rb:13
-#, fuzzy
-#| msgid "Signature"
 msgid "The supplied password revalidation token is invalid."
-msgstr "The supplied password revalidation token is invalid."
+msgstr "Uppgefinn lykilorðsstaðfestingartóki er ógildur."
 
 #: app/assets/javascripts/app/views/system_report.jst.eco:6
 msgid ""
@@ -19079,7 +19141,7 @@ msgstr "Beiðnir þeirra"
 
 #: app/assets/javascripts/app/controllers/_manage/knowledge_base.coffee:63
 #: app/assets/javascripts/app/views/profile/appearance.jst.eco:12
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:64
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:63
 msgid "Theme"
 msgstr "Þema"
 
@@ -19259,6 +19321,15 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_manage/security.coffee:13
 msgid "Third-party Applications"
 msgstr "Forrit þriðja-aðila"
+
+#: app/models/concerns/ensures_no_related_objects.rb:34
+msgid "This %s is referenced by another object and thus cannot be deleted: %s"
+msgstr ""
+
+#: app/assets/javascripts/app/models/ai_agent.coffee:31
+msgid ""
+"This AI agent is not used in any triggers or schedulers and will not run."
+msgstr ""
 
 #: lib/secure_mailing/pgp/incoming.rb:80
 msgid ""
@@ -19690,11 +19761,6 @@ msgid ""
 "This user is currently blocked because of too many failed login attempts."
 msgstr ""
 
-#: app/models/webhook/ensure_no_related_objects.rb:34
-msgid ""
-"This webhook is referenced by another object and thus cannot be deleted: %s"
-msgstr ""
-
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:264
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:282
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:304
@@ -19737,7 +19803,7 @@ msgstr "Fimmtudagur"
 msgid "Ticket"
 msgstr "Beiðni"
 
-#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:782
+#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:780
 msgid "Ticket %s created!"
 msgstr "Beiðni %s stofnuð!"
 
@@ -19797,6 +19863,13 @@ msgstr "Breyta viðskiptavin"
 #| msgid "Enable Ticket creation"
 msgid "Ticket Duplicate Detection"
 msgstr "Virkja stofnun miða"
+
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:12
+#: app/assets/javascripts/app/models/ai_agent.coffee:7
+#, fuzzy
+#| msgid "Edit Customer"
+msgid "Ticket Group Dispatcher"
+msgstr "Breyta viðskiptavin"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/TicketHistoryFlyout.vue:73
 #, fuzzy
@@ -19871,7 +19944,7 @@ msgid "Ticket Owner"
 msgstr "Nýtt yfirlit"
 
 #: app/assets/javascripts/app/controllers/ticket_priority.coffee:16
-#: db/seeds/permissions.rb:269
+#: db/seeds/permissions.rb:275
 msgid "Ticket Priorities"
 msgstr "Forgangur Beiðna"
 
@@ -19900,7 +19973,7 @@ msgid "Ticket State"
 msgstr "Staða Beiðnar"
 
 #: app/assets/javascripts/app/controllers/ticket_state.coffee:3
-#: db/seeds/permissions.rb:263
+#: db/seeds/permissions.rb:269
 msgid "Ticket States"
 msgstr "Stöður Beiðna"
 
@@ -19922,8 +19995,6 @@ msgstr "Miðaáskriftir"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:2
 #: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:7
-#: app/assets/javascripts/app/views/profile/appearance.jst.eco:45
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingApperance/TicketSummaryBannerAppearance.vue:21
 #: db/seeds/permissions.rb:233 db/seeds/settings.rb:6085
 #, fuzzy
 #| msgid "Ticket State"
@@ -20046,10 +20117,8 @@ msgid ""
 msgstr ""
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketScreenBehavior/TicketScreenBehavior.vue:56
-#, fuzzy
-#| msgid "Ticket customer updated successfully."
 msgid "Ticket screen behavior updated successfully"
-msgstr "Ticket screen behavior updated successfully"
+msgstr "Uppfærsla á skjáhegðun beiðnar heppnaðist"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector_expert.coffee:131
 msgid ""
@@ -20523,7 +20592,7 @@ msgstr "Tóki"
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:2
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/tokenAccess.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:51
-#: db/seeds/permissions.rb:471
+#: db/seeds/permissions.rb:477
 msgid "Token Access"
 msgstr "Aðgangur með tóka"
 
@@ -20624,7 +20693,7 @@ msgstr "Þýðingar"
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:414
 #: app/assets/javascripts/app/controllers/translation.coffee:3
 #: app/assets/javascripts/app/views/translation/index.jst.eco:4
-#: db/seeds/permissions.rb:281
+#: db/seeds/permissions.rb:287
 msgid "Translations"
 msgstr "Þýðingar"
 
@@ -20648,10 +20717,9 @@ msgid "Triggered because ticket was escalated"
 msgstr "%s beiðnanna minna með hækkaðan forgang"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/event-actions/time-trigger-performed.ts:24
-#, fuzzy
-#| msgid "Ticket |%s| will escalate soon!"
 msgid "Triggered because ticket will escalate soon"
-msgstr "Beiðni |%s| mun fara í hærri forgang fljótlega!"
+msgstr ""
+"Hleypt af vegna þess að beiðni |%s| mun fara í bráðlega hækka í forgangi"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/event-actions/time-trigger-performed.ts:29
 #, fuzzy
@@ -20830,7 +20898,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/profile/password.jst.eco:22
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/twoFactorAuth.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:72
-#: db/seeds/permissions.rb:457
+#: db/seeds/permissions.rb:463
 #, fuzzy
 #| msgid "Authentication"
 msgid "Two-factor Authentication"
@@ -20886,8 +20954,9 @@ msgstr "Tveggja-þátta auðkenning hefur verið sett upp."
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:426
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:240
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:79
-#: app/assets/javascripts/app/controllers/translation.coffee:289
+#: app/assets/javascripts/app/controllers/translation.coffee:288
 #: app/assets/javascripts/app/controllers/widget/ticket_bulk_form.coffee:70
+#: app/assets/javascripts/app/models/ai_agent.coffee:7
 #: app/assets/javascripts/app/models/ticket_article.coffee:12
 #: app/assets/javascripts/app/models/ticket_state.coffee:7
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:229
@@ -20977,7 +21046,7 @@ msgstr "Veldu hlut"
 msgid "Unit"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/composables/useHistoryEvents.ts:37
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/composables/useHistoryEvents.ts:38
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/utils/eventHelpers.ts:11
 #, fuzzy
 #| msgid "%s (unknown)"
@@ -21055,8 +21124,8 @@ msgstr ""
 msgid "Unset default"
 msgstr "Endurheimta sjálfgildi"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:149
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:158
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:157
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:167
 #: app/assets/javascripts/app/views/widget/mention.jst.eco:7
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:52
 msgid "Unsubscribe"
@@ -21072,6 +21141,10 @@ msgstr ""
 
 #: lib/whatsapp/webhook/payload.rb:31
 msgid "Unsupported webhook payload."
+msgstr ""
+
+#: app/assets/javascripts/app/models/ai_agent.coffee:30
+msgid "Unused"
 msgstr ""
 
 #: app/assets/javascripts/app/views/translation/support.jst.eco:6
@@ -21159,6 +21232,7 @@ msgstr ""
 msgid "Update the most recent tickets."
 msgstr "Uppfæra nýjustu beiðnirnar."
 
+#: app/assets/javascripts/app/models/ai_agent.coffee:12
 #: app/assets/javascripts/app/models/application.coffee:11
 #: app/assets/javascripts/app/models/calendar.coffee:14
 #: app/assets/javascripts/app/models/chat.coffee:260
@@ -21343,10 +21417,8 @@ msgid "Uploading"
 msgstr "Hleð upp"
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/image-handler/ImageUploadInsideOtherEditor.vue:6
-#, fuzzy
-#| msgid "Uploading"
 msgid "Uploading…"
-msgstr "Hleð upp"
+msgstr "Hleð upp…"
 
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:136
 #: app/assets/javascripts/app/views/integration/check_mk.jst.eco:3
@@ -21424,6 +21496,18 @@ msgstr "Notað í listum (yfirliti og niðurstöðum)"
 msgid "Used in object views"
 msgstr "Notað í hlutasýn"
 
+#: app/assets/javascripts/app/models/ai_agent.coffee:9
+#, fuzzy
+#| msgid "Search for users"
+msgid "Used in schedulers"
+msgstr "Leita að notendum"
+
+#: app/assets/javascripts/app/models/ai_agent.coffee:8
+#, fuzzy
+#| msgid "Used in object views"
+msgid "Used in triggers"
+msgstr "Notað í hlutasýn"
+
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:530
 msgid "Used when composing a Ticket article"
 msgstr ""
@@ -21438,7 +21522,7 @@ msgstr "Notað þegar beiðni er skoðuð"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:428
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:37
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:165
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:173
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:24
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:14
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:15
@@ -21556,7 +21640,7 @@ msgstr ""
 msgid "User is inactive"
 msgstr "óvirkt"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:21
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:22
 msgid "User is inactive."
 msgstr "Notandi er óvirkur."
 
@@ -21714,7 +21798,7 @@ msgstr ""
 msgid "Value"
 msgstr "Gildi"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:547
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:554
 msgid "Variables"
 msgstr "Breytur"
 
@@ -21820,7 +21904,7 @@ msgstr "Skoða þetta í Zammad"
 msgid "Viewing ticket"
 msgstr "Skoða beiðni"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:683
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:717
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_dialog.coffee:6
 #: app/assets/javascripts/app/controllers/widget/ticket_bulk_form.coffee:71
 #: app/assets/javascripts/app/models/ticket_article.coffee:14
@@ -21902,8 +21986,8 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_channel/sms.coffee:201
 #: app/assets/javascripts/app/controllers/_integration/slack.coffee:31
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:69
-#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:49
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:75
+#: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:56
 #: app/assets/javascripts/app/controllers/webhook.coffee:3
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:42
 #: db/seeds/permissions.rb:89
@@ -22072,7 +22156,7 @@ msgstr ""
 "Þegar þú virkjar aflúsun með því að setja valmöguleikan §debug§ yfir í "
 "§true§ þá er orsökin prentuð út í javascript console."
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:674
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:679
 msgid "Where"
 msgstr "Þar sem"
 
@@ -22194,6 +22278,18 @@ msgstr ""
 msgid "Workflows"
 msgstr ""
 
+#: app/assets/javascripts/app/views/generic/text_tools_dropdown.jst.eco:3
+msgid "Writing Assistant Tools"
+msgstr ""
+
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:8
+msgid "Writing Assistant couldn’t generate text."
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:29
+msgid "Writing Assistant: %s"
+msgstr ""
+
 #: app/assets/javascripts/app/views/report/time_range_picker.jst.eco:2
 msgid "Year"
 msgstr "Ár"
@@ -22208,7 +22304,7 @@ msgstr "Gulur"
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_confirm.coffee:4
 #: app/assets/javascripts/app/controllers/_manage/ticket_notification.coffee:47
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:607
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:613
 #: app/assets/javascripts/app/controllers/tag.coffee:133
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:121
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:100
@@ -22222,11 +22318,6 @@ msgstr "Já"
 #| msgid "Retry attachment download"
 msgid "Yes, add attachments now"
 msgstr "Reyndu aftur að hala niður viðhengi"
-
-#: app/assets/javascripts/app/controllers/ticket_zoom/banner_ticket_summary.coffee:64
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:66
-msgid "Yes, hide it"
-msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:5
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:344
@@ -22247,22 +22338,22 @@ msgstr ""
 msgid "You are on waiting list position <strong>%s</strong>."
 msgstr ""
 
-#: app/models/transaction/notification.rb:117
+#: app/models/transaction/notification.rb:109
 msgid ""
 "You are receiving this because you are a member of the group of this ticket."
 msgstr ""
 
-#: app/models/transaction/notification.rb:292
+#: app/models/transaction/notification.rb:268
 msgid ""
 "You are receiving this because you are out-of-office replacement for a "
 "participant of this ticket."
 msgstr ""
 
-#: app/models/transaction/notification.rb:85
+#: app/models/transaction/notification.rb:77
 msgid "You are receiving this because you are the owner of this ticket."
 msgstr ""
 
-#: app/models/transaction/notification.rb:79
+#: app/models/transaction/notification.rb:71
 msgid "You are receiving this because you were mentioned in this ticket."
 msgstr ""
 
@@ -22417,11 +22508,6 @@ msgid ""
 "to add your translations."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/banner_ticket_summary.coffee:63
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSummaryBanner.vue:63
-msgid "You can re-enable it anytime in Profile Settings > Appearance."
-msgstr ""
-
 #: app/assets/javascripts/app/views/login.jst.eco:98
 msgid "You can request your password"
 msgstr "Þú getur beðið um lykilorð"
@@ -22469,10 +22555,8 @@ msgid "You do not have administrator permission."
 msgstr ""
 
 #: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:41
-#, fuzzy
-#| msgid "You have not created a ticket yet."
 msgid "You do not have permission to update"
-msgstr "Þú hefur ekki stofnað neina miða ennþá."
+msgstr "Þú hefir ekki heimild til að uppfæra"
 
 #: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:389
 #, fuzzy
@@ -22590,8 +22674,8 @@ msgstr ""
 msgid "You reached the table limit of %s tickets (%s remaining)."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:762
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:357
+#: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:760
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:360
 #, fuzzy
 #| msgid ""
 #| "You use %s in text but no attachment is attached. Do you want to continue?"
@@ -22736,7 +22820,7 @@ msgstr ""
 msgid "Your language"
 msgstr "Tungumál þitt"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:29
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:28
 msgid "Your theme has been updated."
 msgstr "Þemað þitt hefur verið uppfært."
 
@@ -22917,7 +23001,7 @@ msgstr ""
 msgid "after (absolute)"
 msgstr "eftir (alger)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:479
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:486
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:25
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:69
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:52
@@ -22929,7 +23013,7 @@ msgstr "eftir (hlutfallslegt)"
 msgid "again"
 msgstr "aftur"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:421
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:428
 #, fuzzy
 #| msgid "Subscribers"
 msgid "all subscribers"
@@ -22988,7 +23072,7 @@ msgstr ""
 msgid "before (absolute)"
 msgstr "áður (alger)"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:476
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:483
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:25
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:68
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:52
@@ -23039,7 +23123,7 @@ msgstr "spjall"
 msgid "checked"
 msgstr "Veldu hlut"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:126
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:127
 #, fuzzy
 #| msgid "Checksum"
 msgid "checked checklist item '%s'"
@@ -23126,14 +23210,14 @@ msgstr "stofnað"
 msgid "created %s"
 msgstr "stofnað"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:144
-#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:539
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:152
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:544
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector_expert.coffee:632
 msgid "current user"
 msgstr "núverandi notandi"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:427
-#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:545
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:434
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:550
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector_expert.coffee:637
 msgid "current user organization"
 msgstr ""
@@ -23144,7 +23228,7 @@ msgid ""
 "password,change password"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/translation.coffee:281
+#: app/assets/javascripts/app/controllers/translation.coffee:280
 #, fuzzy
 #| msgid "customer"
 msgid "custom"
@@ -23305,7 +23389,7 @@ msgstr ""
 msgid "email"
 msgstr "tölvupóstur"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:99
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:100
 msgid "email sent to '%s'"
 msgstr ""
 
@@ -23380,11 +23464,11 @@ msgstr ""
 msgid "forward"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:158
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:159
 msgid "from"
 msgstr "frá"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:481
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:488
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:25
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:73
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:52
@@ -23559,7 +23643,7 @@ msgstr "í vinnslu"
 msgid "inactive"
 msgstr "óvirkt"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:598
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:604
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:91
 msgid "internal"
 msgstr "innri"
@@ -23702,7 +23786,7 @@ msgstr ""
 msgid "is the wrong length (should be 1 character)"
 msgstr ""
 
-#: app/models/user.rb:860
+#: app/models/user.rb:868
 msgid "is too long"
 msgstr ""
 
@@ -23809,7 +23893,7 @@ msgstr "sameinað"
 msgid "merged into"
 msgstr "sameinað"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:617
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:623
 msgid "message"
 msgstr ""
 
@@ -23950,7 +24034,7 @@ msgstr "ekki náð"
 msgid "not set"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:542
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:547
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector_expert.coffee:634
 msgid "not set (not defined)"
 msgstr "ekki sett ( ekki skilgreint)"
@@ -23960,7 +24044,7 @@ msgstr "ekki sett ( ekki skilgreint)"
 msgid "note"
 msgstr "athugasemd"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:97
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:98
 #, fuzzy
 #| msgid "Notification Sender"
 msgid "notification sent to '%s'"
@@ -24035,7 +24119,7 @@ msgstr "bíður áminningar"
 msgid "phone"
 msgstr "sími"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:598
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:604
 #, fuzzy
 #| msgid "published"
 msgid "public"
@@ -24055,11 +24139,11 @@ msgstr ""
 msgid "reached"
 msgstr "náð"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:140
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:141
 msgid "reacted to message from %s '%s'"
 msgstr "brást við skilaboðum frá %s '%s'"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:134
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:135
 msgid "reacted with a %s to message from %s '%s'"
 msgstr "brást við með %s, við skilaboðum frá %s '%s'"
 
@@ -24083,7 +24167,7 @@ msgstr ""
 msgid "reference must not be the checklist ticket."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:103
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:111
 #, fuzzy
 #| msgid "active"
 msgid "relative"
@@ -24102,7 +24186,7 @@ msgstr ""
 msgid "remove option"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:143
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:144
 msgid "removed reaction to message from %s '%s'"
 msgstr "fjarlægði viðbrögð við skilaboðum frá %s '%s'"
 
@@ -24265,14 +24349,14 @@ msgstr "sms"
 msgid "spaces are not allowed"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:428
-#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:546
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:435
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:551
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector_expert.coffee:638
 msgid "specific organization"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:417
-#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:540
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:424
+#: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:545
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector_expert.coffee:633
 msgid "specific user"
 msgstr "ákveðinn notandi"
@@ -24299,7 +24383,7 @@ msgstr ""
 msgid "support@example.com"
 msgstr "hjalp@fyrirtaeki.is"
 
-#: app/assets/javascripts/app/controllers/translation.coffee:280
+#: app/assets/javascripts/app/controllers/translation.coffee:279
 #, fuzzy
 #| msgid "System"
 msgid "system"
@@ -24313,7 +24397,7 @@ msgstr ""
 msgid "theme,color,style,dark mode,night mode,light mode"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:123
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:124
 msgid "this ticket was merged into ticket %s"
 msgstr ""
 
@@ -24322,7 +24406,7 @@ msgstr ""
 msgid "ticket"
 msgstr "beiðni"
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:116
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:117
 msgid "ticket %s was merged into this ticket"
 msgstr ""
 
@@ -24334,7 +24418,7 @@ msgstr ""
 msgid "ticket.customer"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:480
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:487
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:25
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:72
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:52
@@ -24370,15 +24454,15 @@ msgstr ""
 msgid "translation,locale,localization"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:103
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:104
 msgid "trigger '%s' was performed because pending reminder was reached"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:105
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:106
 msgid "trigger '%s' was performed because ticket was escalated"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:107
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:108
 msgid "trigger '%s' was performed because ticket will escalate soon"
 msgstr ""
 
@@ -24398,11 +24482,11 @@ msgstr "twitter staða"
 msgid "twofactor,2fa,security key,passkey,authenticator app"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:423
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:430
 msgid "unassign user"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:128
+#: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:129
 #, fuzzy
 #| msgid "Create new Customer"
 msgid "unchecked checklist item '%s'"
@@ -24461,14 +24545,14 @@ msgstr ""
 msgid "will be deleted"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:478
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:485
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:25
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:71
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:52
 msgid "within last (relative)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:477
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:484
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:25
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:70
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:52
@@ -24531,6 +24615,21 @@ msgstr "...af textasvæðinu"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅ Biðtími í dag"
+
+#, fuzzy
+#~| msgid "Edit"
+#~ msgid "Smart Editor"
+#~ msgstr "Breyta"
+
+#, fuzzy
+#~| msgid "The new ticket number could not be generated."
+#~ msgid "%s ticket summary has been generated."
+#~ msgstr "Ekki var hægt að stofna nýtt beiðnarnúmer."
+
+#, fuzzy
+#~| msgid "See more"
+#~ msgid "See Summary"
+#~ msgstr "Sjá meira"
 
 #, fuzzy
 #~| msgid "Allow users to create new tags."
