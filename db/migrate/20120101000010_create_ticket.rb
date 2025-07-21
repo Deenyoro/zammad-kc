@@ -83,6 +83,7 @@ class CreateTicket < ActiveRecord::Migration[4.2]
       t.column :type,                             :string,    limit: 100, null: true
       t.column :time_unit,                        :decimal, precision: 6, scale: 2, null: true
       t.column :preferences,                      :text, limit: 500.kilobytes + 1, null: true
+      t.column :ai_agent_running,                 :boolean, default: false, null: false
       t.column :updated_by_id,                    :integer,               null: false
       t.column :created_by_id,                    :integer,               null: false
       t.timestamps limit: 3, null: false
@@ -126,6 +127,7 @@ class CreateTicket < ActiveRecord::Migration[4.2]
     add_index :tickets, %i[group_id state_id owner_id created_at], name: 'index_tickets_on_group_id_state_id_owner_id_created_at'
     add_index :tickets, %i[group_id state_id close_at]
     add_index :tickets, %i[group_id state_id owner_id close_at], name: 'index_tickets_on_group_id_state_id_owner_id_close_at'
+    add_index :tickets, [:ai_agent_running]
     add_foreign_key :tickets, :groups
     add_foreign_key :tickets, :users, column: :owner_id
     add_foreign_key :tickets, :users, column: :customer_id

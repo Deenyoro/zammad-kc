@@ -72,10 +72,6 @@ class AI::Agent < ApplicationModel
 
   ensures_no_related_objects_path(*PERFORMABLE_PATH)
 
-  scope :working_on, lambda { |ticket|
-    where(id: TriggerAIAgentJob.working_on(ticket))
-  }
-
   def self.from_performable(input)
     where(active: true).find_by id: from_performable_id(input)
   end

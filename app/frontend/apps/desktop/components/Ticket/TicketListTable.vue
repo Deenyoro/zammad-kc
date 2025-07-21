@@ -157,7 +157,15 @@ const userPopoverSlots: {
         </UserPopoverWithTrigger>
       </template>
       <template #column-cell-stateIcon="{ item, isRowSelected }">
+        <CommonIcon
+          v-if="item.aiAgentRunning"
+          role="status"
+          :aria-label="$t('Currently processing this ticket…')"
+          size="tiny"
+          name="check-circle-no-ai"
+        />
         <CommonTicketStateIndicatorIcon
+          v-else
           class="shrink-0 outline-offset-0! group-hover:text-black group-hover:dark:text-white"
           :class="{
             'text-black! dark:text-white!': isRowSelected,

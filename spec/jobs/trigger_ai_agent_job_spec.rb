@@ -10,7 +10,7 @@ RSpec.describe TriggerAIAgentJob, type: :job do
 
   let(:perform) do
     described_class.perform_now(
-      trigger,
+      ai_agent,
       ticket,
       article,
       changes:        nil,
@@ -20,16 +20,9 @@ RSpec.describe TriggerAIAgentJob, type: :job do
     )
   end
 
-  let(:trigger) do
-    create(:trigger,
-           perform: {
-             'ai.ai_agent' => { 'ai_agent_id' => ai_agent.id }
-           })
-  end
-
   let(:job) do
     described_class.perform_later(
-      trigger,
+      ai_agent,
       ticket,
       article,
       changes:        nil,
@@ -47,52 +40,32 @@ RSpec.describe TriggerAIAgentJob, type: :job do
 
       it "doesn't perform request" do
         expect_any_instance_of(Service::AI::Agent::Run).not_to receive(:execute)
-        ActiveJob::Base.execute job.serialize
+        ActiveJob::Base.execute serialized_job
       end
     end
 
-    context 'when Trigger gets deleted' do
-      before { trigger.destroy! }
+    let(:serialized_job) { job.serialize }
+
+    context 'when AI Agent gets deleted' do
+      before { serialized_job && ai_agent.destroy! }
 
       include_examples 'handle deleted argument models'
     end
 
     context 'when Ticket gets deleted' do
-      before { article.destroy! && ticket.destroy! }
+      before { serialized_job && article.destroy! && ticket.destroy! }
 
       include_examples 'handle deleted argument models'
     end
 
     context 'when Article gets deleted' do
-      before { article.destroy! }
+      before { serialized_job && article.destroy! }
 
       include_examples 'handle deleted argument models'
     end
   end
 
   describe '#perform' do
-    let(:response_status) { 200 }
-    let(:payload) do
-      {
-        ticket:  payload_ticket,
-        article: payload_article,
-      }
-    end
-
-    let(:headers) do
-      {
-        'Content-Type'     => 'application/json; charset=utf-8',
-        'User-Agent'       => 'Zammad User Agent',
-        'X-Zammad-Trigger' => trigger.name,
-      }
-    end
-
-    let(:response_body) do
-      {}.to_json
-    end
-
-    let(:response_headers) { {} }
-
     before do
       allow(Service::AI::Agent::Run).to receive(:new).and_call_original
       allow_any_instance_of(Service::AI::Agent::Run).to receive(:execute)
@@ -105,69 +78,73 @@ RSpec.describe TriggerAIAgentJob, type: :job do
 
       expect(Service::AI::Agent::Run).to have_received(:new).with(ai_agent:, ticket:, article:)
     end
-
-    context 'when trigger was modified in meantime to not have AI agent anymore' do
-      let(:trigger) { create(:trigger) }
-
-      it 'throws no errors' do
-        expect { perform }.not_to raise_error
-      end
-
-      it 'logs an error' do
-        allow(Rails.logger).to receive(:error)
-
-        perform
-
-        expect(Rails.logger).to have_received(:error).with(%r{Can't find ai_agent_id for Trigger})
-      end
-    end
   end
 
-  describe 'Redis agents-in-progress tracker' do
+  describe 'agents-in-progress tracker' do
     context 'when adding AI Agent to the list' do
-      it 'adds AI agent to the list when job is added' do
-        described_class.perform_later(trigger, ticket, nil)
+      context 'with a job added' do
+        before { job }
 
-        expect(described_class.working_on(ticket)).to include(ai_agent.id.to_s)
-      end
+        it 'marks as AI Agent working on the ticket' do
+          expect(described_class).to be_working_on(ticket)
+        end
 
-      it 'expires added Agents after inactivity' do
-        stub_const('TriggerAIAgentJob::EXPIRE_ONGOING_AGENTS', 1)
-
-        described_class.perform_later(trigger, ticket, nil)
-
-        expect { sleep 2 }
-          .to change { described_class.working_on(ticket) }
-          .to []
+        it 'marks as AI Agent not working on the ticket, if asked to exclude the job' do
+          expect(described_class).not_to be_working_on(ticket, exclude: job)
+        end
       end
     end
 
     context 'when AI agent is already in the list' do
-      before do
-        described_class.redis.sadd(described_class.redis_key(ticket), ai_agent.id)
-      end
+      before { job }
 
       it 'removes AI agent from the list when job is done' do
         allow_any_instance_of(described_class).to receive(:perform)
 
-        expect { perform }
-          .to change { described_class.working_on(ticket) }
-          .to []
+        expect { ActiveJob::Base.execute job.serialize }
+          .to change { described_class.working_on?(ticket) }
+          .to false
+      end
+
+      it 'sets ticket ai_agent_running flag to false when job is done' do
+        ticket.update! ai_agent_running: true
+
+        expect { ActiveJob::Base.execute job.serialize }
+          .to change { ticket.reload.ai_agent_running }
+          .to false
+      end
+
+      it 'checks lock without given job' do
+        allow(described_class).to receive(:working_on).and_call_original
+
+        ActiveJob::Base.execute job.serialize
+
+        expect(described_class).to have_received(:working_on)
+          .with(ticket, exclude: have_attributes(job_id: job.job_id))
       end
 
       it 'removes AI agent from the list when job throws an error' do
         allow_any_instance_of(described_class).to receive(:perform).and_raise(Service::AI::Agent::Run::PermanentError)
 
-        expect { perform }
-          .to change { described_class.working_on(ticket) }
-          .to []
+        expect { ActiveJob::Base.execute job.serialize }
+          .to change { described_class.working_on?(ticket) }
+          .to false
       end
 
       it 'does not remove AI agent from the list when job is retried' do
         allow_any_instance_of(described_class).to receive(:perform).and_raise(Service::AI::Agent::Run::TemporaryError)
 
-        expect { perform }
-          .not_to change { described_class.working_on(ticket) }
+        expect { ActiveJob::Base.execute job.serialize }
+          .not_to change { described_class.working_on?(ticket) }
+      end
+
+      it 'does not set ticket ai_agent_running flag to false when job is retried' do
+        allow_any_instance_of(described_class).to receive(:perform).and_raise(Service::AI::Agent::Run::TemporaryError)
+
+        ticket && article
+
+        expect { ActiveJob::Base.execute job.serialize }
+          .not_to change { ticket.reload.ai_agent_running }
       end
 
       it 'removes AI agent from the list when job is retried enough times' do
@@ -179,6 +156,20 @@ RSpec.describe TriggerAIAgentJob, type: :job do
           .to change { described_class.working_on(ticket) }
           .to []
       end
+
+      it 'sets ticket ai_agent_running flag to false when job is retried enough times' do
+        ticket.update! ai_agent_running: true
+
+        job
+
+        allow_any_instance_of(described_class).to receive(:perform).and_raise(Service::AI::Agent::Run::TemporaryError)
+
+        4.times { ActiveJob::Base.execute job.serialize }
+
+        expect {  ActiveJob::Base.execute job.serialize }
+          .to change { ticket.reload.ai_agent_running }
+          .to false
+      end
     end
   end
 
@@ -187,16 +178,9 @@ RSpec.describe TriggerAIAgentJob, type: :job do
     let(:other_article)  { create(:ticket_article, ticket: other_ticket) }
     let(:other_ai_agent) { create(:ai_agent) }
 
-    let(:other_trigger) do
-      create(:trigger,
-             perform: {
-               'ai.ai_agent' => { 'ai_agent_id' => other_ai_agent.id }
-             })
-    end
-
     let(:other_job) do
       described_class.perform_later(
-        other_trigger,
+        other_ai_agent,
         other_ticket,
         other_article,
         changes:        nil,
@@ -213,7 +197,9 @@ RSpec.describe TriggerAIAgentJob, type: :job do
     it 'returns array with agent ID when an agent is working on the ticket' do
       job
 
-      expect(described_class.working_on(ticket)).to contain_exactly(ai_agent.id.to_s)
+      expect(described_class.working_on(ticket)).to contain_exactly(
+        have_attributes(lock_key: end_with(ai_agent.id.to_s))
+      )
     end
 
     context 'when multiple agents are working on the same ticket' do
@@ -224,7 +210,19 @@ RSpec.describe TriggerAIAgentJob, type: :job do
         job
         other_job
 
-        expect(described_class.working_on(ticket)).to contain_exactly(ai_agent.id.to_s, other_ai_agent.id.to_s)
+        expect(described_class.working_on(ticket)).to contain_exactly(
+          have_attributes(lock_key: end_with(ai_agent.id.to_s)),
+          have_attributes(lock_key: end_with(other_ai_agent.id.to_s))
+        )
+      end
+
+      it 'skips one of them when given as excluded' do
+        job
+        other_job
+
+        expect(described_class.working_on(ticket, exclude: other_job)).to contain_exactly(
+          have_attributes(lock_key: end_with(ai_agent.id.to_s)),
+        )
       end
     end
 
@@ -233,8 +231,34 @@ RSpec.describe TriggerAIAgentJob, type: :job do
         job
         other_job
 
-        expect(described_class.working_on(ticket)).to contain_exactly(ai_agent.id.to_s)
+        expect(described_class.working_on(ticket)).to contain_exactly(
+          have_attributes(lock_key: end_with(ai_agent.id.to_s))
+        )
       end
+    end
+  end
+
+  describe '.update_ticket' do
+    let(:ticket) { create(:ticket) }
+
+    it 'updates ticket based on working AI agents' do
+      allow(described_class).to receive(:working_on?).and_return(true)
+
+      expect { described_class.update_ticket(ticket) }
+        .to change { ticket.reload.ai_agent_running }
+        .to true
+    end
+
+    it 'touches ticket if flag is updated' do
+      allow(described_class).to receive(:working_on?).and_return(true)
+
+      expect { described_class.update_ticket(ticket) }
+        .to change { ticket.reload.updated_at }
+    end
+
+    it 'does not update ticket if flag is matching' do
+      expect { described_class.update_ticket(ticket) }
+        .not_to change { ticket.reload.updated_at }
     end
   end
 end

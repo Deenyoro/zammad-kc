@@ -68,6 +68,7 @@ class App.TicketZoomAttributeBar extends App.Controller
     sharedDraftButtonShown = group?.shared_drafts && _.contains(accessibleGroups, String(group.id))
     sharedDraftsEnabled    = group?.shared_drafts && _.contains(accessibleGroups, String(group.id))
     sharedButtonVisible    = sharedDraftsEnabled && draft? && @ticket.editable()
+    aiAgentIsRunning       = @ticket.currentView() is 'agent' && @ticket?.ai_agent_running
 
     @sharedDraftsEnabled = sharedDraftsEnabled
 
@@ -94,6 +95,7 @@ class App.TicketZoomAttributeBar extends App.Controller
       overview_id:            @overview_id
       resetButtonShown:       resetButtonShown
       sharedDraftButtonShown: sharedDraftButtonShown
+      aiAgentIsRunning:       aiAgentIsRunning
     ))
 
     @setSecondaryAction(@getAction(), localeEl)
@@ -125,6 +127,19 @@ class App.TicketZoomAttributeBar extends App.Controller
         # needs linebreak to align vertically without title
         '<br>' + content
     )
+
+    if aiAgentIsRunning
+      @el.find('.js-aiAgentAvatar').popover(
+        trigger:   'hover'
+        container: 'body'
+        html:      true
+        animation: false
+        delay:     100
+        placement: 'auto'
+        sanitize:  false
+        title: -> App.i18n.translateContent('AI Agent')
+        content: -> App.i18n.translateContent('Currently processing this ticket…')
+      )
 
   start: =>
     return if !@taskbarWatcher

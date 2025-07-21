@@ -41,27 +41,6 @@ RSpec.describe AI::Agent, current_user_id: 1, type: :model do
     end
   end
 
-  describe '.working_on' do
-    let(:ticket)   { create(:ticket) }
-    let(:article)  { create(:ticket_article, ticket:) }
-    let(:trigger) do
-      create(:trigger,
-             perform: {
-               'ai.ai_agent' => { 'ai_agent_id' => ai_agent.id }
-             })
-    end
-
-    it 'returns empty scope when no agents active' do
-      expect(described_class.working_on(ticket)).to be_empty
-    end
-
-    it 'lists agents working on a ticket' do
-      TriggerAIAgentJob.perform_later(trigger, ticket, nil)
-
-      expect(described_class.working_on(ticket)).to include(ai_agent)
-    end
-  end
-
   describe '#assets' do
     context 'with referencing job and trigger' do
       let(:trigger) do

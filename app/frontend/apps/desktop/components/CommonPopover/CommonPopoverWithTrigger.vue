@@ -11,7 +11,7 @@ import CommonPopover, {
 } from '#desktop/components/CommonPopover/CommonPopover.vue'
 import { usePopover } from '#desktop/components/CommonPopover/usePopover.ts'
 
-interface Props extends Omit<CommonPopoverProps, 'owner'> {
+export interface Props extends Omit<CommonPopoverProps, 'owner'> {
   triggerLink?: string
   triggerLinkActiveClass?: string
   noFocusStyling?: boolean

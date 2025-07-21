@@ -120,6 +120,7 @@ export const createDummyTicket = <R = TicketQuery['ticket']>(options?: {
   externalReferences?: TicketQuery['ticket']['externalReferences']
   preferences?: TicketQuery['ticket']['preferences']
   sharedDraftZoomId?: number
+  aiAgentRunning?: TicketQuery['ticket']['aiAgentRunning']
 }): R => {
   return nullableMock({
     __typename: 'Ticket',
@@ -161,5 +162,6 @@ export const createDummyTicket = <R = TicketQuery['ticket']>(options?: {
     sharedDraftZoomId: options?.sharedDraftZoomId
       ? convertToGraphQLId('Ticket::SharedDraftZoom', options.sharedDraftZoomId)
       : null,
+    aiAgentRunning: options?.aiAgentRunning,
   }) as R
 }

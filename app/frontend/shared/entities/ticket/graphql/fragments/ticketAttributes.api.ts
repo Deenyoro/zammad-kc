@@ -10,6 +10,7 @@ export const TicketAttributesFragmentDoc = gql`
   title
   createdAt
   escalationAt
+  aiAgentRunning
   updatedAt
   updatedBy {
     id

@@ -668,7 +668,7 @@ RSpec.describe 'Ticket::PerformChanges', :aggregate_failures do
     it 'schedules the webhooks notification job' do
       expect { object.perform_changes(trigger, 'trigger', context_data, 1) }
         .to have_enqueued_job(TriggerAIAgentJob).with(
-          trigger,
+          ai_agent,
           object,
           nil,
           changes:        { 'State' => %w[open closed] },

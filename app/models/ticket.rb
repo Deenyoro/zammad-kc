@@ -76,7 +76,8 @@ class Ticket < ApplicationModel
                                      :last_contact_agent_at,
                                      :last_contact_customer_at,
                                      :last_owner_update_at,
-                                     :preferences
+                                     :preferences,
+                                     :ai_agent_running
 
   search_index_attributes_relevant :organization_id,
                                    :group_id,
@@ -86,7 +87,8 @@ class Ticket < ApplicationModel
   history_attributes_ignored :create_article_type_id,
                              :create_article_sender_id,
                              :article_count,
-                             :preferences
+                             :preferences,
+                             :ai_agent_running
 
   history_relation_object 'Ticket::Article', 'Mention', 'Ticket::SharedDraftZoom', 'Checklist', 'Checklist::Item'
 

@@ -1,5 +1,14 @@
 <div class="attributeBar-avatars horizontal js-avatars hidden-xs"></div>
 
+<% if @aiAgentIsRunning: %>
+    <div  class="aiAgent-outer js-aiAgentAvatar">
+        <div class="aiAgent-inner">
+            <%- @Icon('ai-agent') %>
+        </div>
+        <div class="avatar-status"><%- @Icon('pen') %></div>
+    </div>
+<% end %>
+
 <div class="attributeBar-draft-spacer hidden-xs"></div>
 
 <div class="attributeBar-draft <% if !@sharedButtonVisible: %>hide<% end %> buttonDropdown btn js-draft align-left">

@@ -41,6 +41,7 @@ RSpec.describe Gql::Queries::Ticket, current_user_id: 1, type: :graphql do
             }
             tags
             subscribed
+            aiAgentRunning
             mentions(first: 20) {
               edges {
                 node {
@@ -123,6 +124,7 @@ RSpec.describe Gql::Queries::Ticket, current_user_id: 1, type: :graphql do
               'updatedBy' => { 'internalId' => 1 },
             ),
             'tags'                        => %w[tag1 tag2],
+            'aiAgentRunning'              => false,
             'policy'                      => {
               'agentReadAccess'   => true,
               'agentUpdateAccess' => true,
