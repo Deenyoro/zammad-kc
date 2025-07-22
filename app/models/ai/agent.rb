@@ -11,9 +11,9 @@
 # - ...',
 # `instruction_context`: {
 #    object_attributes: {
-#      group_id: [3, 4, 5],
-#      state_id: [1, 2, 3],
-#      custom_treeselect: ['Category 1', 'Category 2', 'Category 1::Sub 1'],
+#      group_id: { '3' => 'Support team for technical issues', '4' => 'Sales team for customer inquiries' },
+#      state_id: { '1' => 'New tickets awaiting assignment', '2' => 'Open tickets being worked on' },
+#      custom_treeselect: { 'Category 1' => 'Main category for general issues', 'Category 1::Sub 1' => 'Subcategory for specific problems' },
 #    }
 #  }, // Informations which are added to the instructions (e.g. relevant group information for ticket group dispatching).
 # `entity_context`: {
@@ -65,6 +65,8 @@ class AI::Agent < ApplicationModel
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :note, length: { maximum: 250 }
+  validates :agent_type, inclusion: { in: AI::Agent::Type.available_types.map { |t| t.name.demodulize }, allow_blank: true }
+
   sanitized_html :note
 
   belongs_to :created_by, class_name: 'User'
@@ -79,5 +81,29 @@ class AI::Agent < ApplicationModel
   def self.from_performable_id(input)
     data = input.respond_to?(:perform) ? input.perform : input
     data.dig(*PERFORMABLE_PATH)
+  end
+
+  def execution_definition
+    return definition if agent_type.blank?
+
+    agent_type_object.definition.deep_stringify_keys.deep_merge(definition)
+  end
+
+  def execution_action_definition
+    return action_definition if agent_type.blank?
+
+    agent_type_object.action_definition.deep_stringify_keys.deep_merge(action_definition)
+  end
+
+  private
+
+  def agent_type_class
+    return if agent_type.blank?
+
+    "AI::Agent::Type::#{agent_type}".constantize
+  end
+
+  def agent_type_object
+    @agent_type_object ||= agent_type_class&.new
   end
 end

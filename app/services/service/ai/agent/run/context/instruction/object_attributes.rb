@@ -3,7 +3,7 @@
 class Service::AI::Agent::Run::Context::Instruction::ObjectAttributes
   attr_reader :object_attribute, :filter_values
 
-  def initialize(object_attribute:, filter_values: [])
+  def initialize(object_attribute:, filter_values: {})
     @object_attribute = object_attribute
     @filter_values = filter_values
   end
@@ -14,5 +14,11 @@ class Service::AI::Agent::Run::Context::Instruction::ObjectAttributes
 
   def self.applicable?
     raise 'not implemented'
+  end
+
+  private
+
+  def filter_keys
+    @filter_keys ||= filter_values.keys
   end
 end

@@ -7889,22 +7889,27 @@ a.list-group-item.active > .badge,
   }
 }
 
-.modal-title:has(.text-tools-modal-head-icon) {
+.modal-title:has(.ai-modal-head-icon) {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.text-tools-modal-head-icon {
-  .icon {
-    fill: var(--ai-assist-blue);
+.ai-modal-head-icon {
+  display: flex;
+  align-items: center;
+  color: var(--ai-assist-blue);
+
+  svg {
+    width: 20px;
+    height: 20px;
   }
 
   &::after {
     content: '';
     margin-inline: 10px;
     display: inline-block;
-    height: 16px;
+    height: 29px;
     width: 2px;
     background: var(--ai-assist-blue);
     background: linear-gradient(180deg, var(--ai-assist-blue) 0%, var(--ai-assist-pink) 100%);
@@ -11330,6 +11335,11 @@ label + .wizard-buttonList {
 
   & + .js-preview h3 {
     margin-top: 0;
+  }
+
+  ~ .help-text {
+    display: block;
+    margin: 12px 0;
   }
 }
 
@@ -15634,5 +15644,13 @@ div.accounted-time-value {
     color: #38393e;
     text-decoration: underline;
     font-size: 12px;
+  }
+}
+
+.object-attribute-options-context-list {
+  th:last-child,
+  td:last-child {
+    width: 150px;
+    text-align: end;
   }
 }

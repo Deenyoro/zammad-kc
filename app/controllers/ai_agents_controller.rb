@@ -26,4 +26,8 @@ class AIAgentsController < ApplicationController
   def destroy
     model_destroy_render(AI::Agent, params)
   end
+
+  def types
+    render json: AI::Agent::Type.available_type_data, status: :ok
+  end
 end

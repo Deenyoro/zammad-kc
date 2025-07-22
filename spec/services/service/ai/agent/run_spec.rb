@@ -149,6 +149,67 @@ RSpec.describe Service::AI::Agent::Run do
       end
     end
 
+    context 'when AI agent has an agent_type' do
+      let(:ai_agent) { create(:ai_agent, agent_type: 'TicketGroupDispatcher', definition: agent_definition, action_definition: action_definition) }
+      let(:agent_definition) do
+        {
+          'instruction_context' => {
+            'object_attributes' => {
+              'group_id' => { Group.first.id.to_s => 'Primary support group for general inquiries' }
+            }
+          }
+        }
+      end
+      let(:action_definition) do
+        {
+          'mapping' => {
+            'ticket.group_id' => {
+              'value' => '#{ai_agent_result.group_id}' # rubocop:disable Lint/InterpolationCheck
+            }
+          }
+        }
+      end
+      let(:ai_result_content) do
+        {
+          'group_id' => Group.first.id,
+        }
+      end
+      let(:ai_result) do
+        AI::Service::Result.new(
+          content:       ai_result_content,
+          stored_result: nil,
+          fresh:         true
+        )
+      end
+
+      before do
+        allow_any_instance_of(AI::Service::AIAgent).to receive(:execute).and_return(ai_result)
+      end
+
+      it 'executes with merged definitions from agent type and database' do
+        expect { service.execute }
+          .to change { ticket.reload.group.name }.to(Group.first.name)
+      end
+
+      it 'uses merged role description from agent type and database' do
+        # Spy on the AI service to verify it receives the merged definition
+        ai_service_spy = instance_double(AI::Service::AIAgent)
+        allow(AI::Service::AIAgent).to receive(:new).and_return(ai_service_spy)
+        allow(ai_service_spy).to receive(:execute).and_return(ai_result)
+
+        service.execute
+
+        # Verify that the AI service was called with the merged definition
+        expect(AI::Service::AIAgent).to have_received(:new).with(
+          hash_including(
+            context_data: hash_including(
+              role_description: 'You are a ticket routing specialist who analyzes ticket content and assigns tickets to the most appropriate group based on the topic and context.'
+            )
+          )
+        )
+      end
+    end
+
     context 'when AI service raises an exception' do
       before do
         allow_any_instance_of(AI::Service::AIAgent).to receive(:execute).and_raise(AI::Provider::OutputFormatError, 'AI service error')

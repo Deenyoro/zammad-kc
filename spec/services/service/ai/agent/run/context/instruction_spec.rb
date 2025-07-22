@@ -6,9 +6,9 @@ RSpec.describe Service::AI::Agent::Run::Context::Instruction, type: :service do
   let(:group) { create(:group, name: 'Example Group', note: 'An example group description.') }
   let(:object_attributes_context) do
     {
-      'group_id'    => [group.id],
-      'priority_id' => [], # this means all priorities
-      'type'        => ['Incident']
+      'group_id'    => { group.id.to_s => 'Example group for testing purposes' },
+      'priority_id' => {}, # this means all priorities
+      'type'        => { 'Incident' => 'Incident type tickets' }
     }
   end
   let(:instruction_context) do
@@ -22,8 +22,9 @@ RSpec.describe Service::AI::Agent::Run::Context::Instruction, type: :service do
     {
       object_attributes: {
         'group_id'    => { items: [{
-          value: group.id,
-          label: 'Example Group',
+          value:       group.id,
+          label:       'Example Group',
+          description: 'Example group for testing purposes'
         }], label: 'Group' },
         'priority_id' => { items: Ticket::Priority.all.map do |priority|
           {
@@ -31,7 +32,7 @@ RSpec.describe Service::AI::Agent::Run::Context::Instruction, type: :service do
             label: priority.name,
           }
         end, label: 'Priority' },
-        'type'        => { items: [ { value: 'Incident', label: 'Incident' } ], label: 'Type' }
+        'type'        => { items: [ { value: 'Incident', label: 'Incident', description: 'Incident type tickets' } ], label: 'Type' }
       }
     }
   end

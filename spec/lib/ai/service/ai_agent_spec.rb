@@ -89,7 +89,7 @@ RSpec.describe AI::Service::AIAgent, :aggregate_failures do
 
       # Check for the complete JSON response structure (pretty-printed JSON format)
       expect(args[:prompt_system]).to include(<<~JSON.strip)
-        Reply in the defined plain JSON format only and do not wrap it in code block markers:
+        Reply in the defined plain JSON structure only and do not wrap it in code block markers:
 
         {
           "state_id": "integer",

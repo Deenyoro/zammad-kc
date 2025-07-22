@@ -5,7 +5,7 @@ class App.TextToolsModal extends App.ControllerModal
 
   head: null
   headIcon: 'smart-assist-elaborate'
-  headIconClass: 'text-tools-modal-head-icon'
+  headIconClass: 'ai-modal-head-icon'
 
   service: 'improve_writing' #  Object.keys of @serviceLabels
   selectedText: null

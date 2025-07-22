@@ -35,10 +35,10 @@ class Service::AI::Agent::Run::Perform::Agent < SimpleDelegator
 
   def prepare_action_mapping
     # Start with the base mapping
-    mapping = action_definition['mapping'] || {}
+    mapping = execution_action_definition['mapping'] || {}
 
     # Process conditions if they exist
-    conditions = action_definition['conditions']
+    conditions = execution_action_definition['conditions']
     return mapping if ai_result_content.blank? || conditions.blank?
 
     conditions.each do |item|
@@ -76,14 +76,14 @@ class Service::AI::Agent::Run::Perform::Agent < SimpleDelegator
   def perform_ai_result_object
     return if ai_result_content.blank?
 
-    @perform_ai_result_object ||= if definition['result_structure'].blank?
+    @perform_ai_result_object ||= if execution_definition['result_structure'].blank?
                                     result_struct = Struct.new(:content)
                                     result_struct.new(ai_result_content)
                                   else
-                                    result_struct = Struct.new(*definition['result_structure'].keys.map(&:to_sym))
+                                    result_struct = Struct.new(*execution_definition['result_structure'].keys.map(&:to_sym))
 
                                     # Ensure values are passed in the correct order by mapping them to the result_structure keys
-                                    values = definition['result_structure'].keys.map { |key| ai_result_content[key] }
+                                    values = execution_definition['result_structure'].keys.map { |key| ai_result_content[key] }
                                     result_struct.new(*values)
                                   end
   end

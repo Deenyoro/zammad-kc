@@ -946,6 +946,8 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.jsonb 'definition', null: false, default: {}
       t.jsonb 'action_definition', null: false, default: {}
 
+      t.string 'agent_type', limit: 250
+
       t.string 'note', limit: 250
 
       t.boolean 'active', default: true, null: false

@@ -102,4 +102,19 @@ RSpec.describe 'AI::Agent', :aggregate_failures, authenticated_as: :user, type: 
       expect(json_response['unprocessable_entity']).to include('AI Agent').and include("Trigger / #{trigger.name} (##{trigger.id})")
     end
   end
+
+  describe '#types' do
+    it 'returns available AI agent types' do
+      get '/api/v1/ai_agents/types', as: :json
+
+      expect(response).to have_http_status(:ok)
+      expect(json_response).to be_a(Array)
+      expect(json_response.size).to be > 0
+
+      type_data = AI::Agent::Type::TicketGroupDispatcher.new.data
+
+      expect(json_response.first).to be_a(Hash)
+      expect(json_response.first).to include(**type_data.deep_stringify_keys)
+    end
+  end
 end

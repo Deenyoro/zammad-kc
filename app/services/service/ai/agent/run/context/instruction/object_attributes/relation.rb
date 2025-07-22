@@ -13,19 +13,33 @@ class Service::AI::Agent::Run::Context::Instruction::ObjectAttributes::Relation 
 
   def prepare_for_instruction
     items.map do |item|
-      {
+      result = {
         value: item.id,
         label: item.name,
       }
+
+      # Add description if available in filter_values
+      description = find_description_for_item(item)
+
+      result[:description] = description if description.present?
+
+      result
     end
   end
 
   private
 
+  def find_description_for_item(item)
+    return filter_values[item.id.to_s] if filter_values.key?(item.id.to_s)
+    return filter_values[item.id] if filter_values.key?(item.id)
+
+    nil
+  end
+
   def items
     @items ||= begin
       if filter_values.present?
-        relation_type.where(active: true).where(id: filter_values)
+        relation_type.where(active: true).where(id: filter_keys)
       else
         relation_type.where(active: true)
       end

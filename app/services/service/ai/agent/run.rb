@@ -7,8 +7,8 @@ class Service::AI::Agent::Run < Service::Base
     super()
 
     @ai_agent = ai_agent
-    @agent_definition = ai_agent.definition
-    @action_definition = ai_agent.action_definition
+    @agent_definition = ai_agent.execution_definition
+    @action_definition = ai_agent.execution_action_definition
     @ticket = ticket
     @article = article
   end
