@@ -1,10 +1,10 @@
 class App.AIAgent extends App.Model
-  @configure 'AIAgent', 'name', 'agent_type', 'definition', 'note', 'active'
+  @configure 'AIAgent', 'name', 'agent_type', 'definition', 'action_definition', 'note', 'active'
   @extend Spine.Model.Ajax
   @url: @apiPath + '/ai_agents'
   @configure_attributes = [
     { name: 'name',       display: __('Name'),               tag: 'input',    type: 'text', limit: 250, null: false },
-    { name: 'agent_type', display: __('Type'),               tag: 'select',   relation: 'AIAgentType', null: false, nulloption: true, help: 'Lipsum' },
+    { name: 'agent_type', display: __('Type'),               tag: 'select',   relation: 'AIAgentType', null: false, nulloption: true },
     { name: 'triggers',   display: __('Used in triggers'),                    readonly: 1 },
     { name: 'jobs',       display: __('Used in schedulers'),                  readonly: 1 },
     { name: 'note',       display: __('Note'),               tag: 'textarea', null: true, note: '', limit: 250 },
@@ -22,7 +22,7 @@ class App.AIAgent extends App.Model
   ]
 
   @description = __('''
-AI agents enable streamlined processing powered by AI-driven insights. You can execute AI agents via triggers or schedulers.
+AI agents enable streamlined processing powered by artificial intelligence. You can execute AI agents via triggers or schedulers.
 ''')
 
   @badges = [

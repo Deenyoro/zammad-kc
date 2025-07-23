@@ -25,17 +25,22 @@ RSpec.describe 'AI > AI Agents', type: :system do
     end
 
     context 'with existing AI agent(s)' do
-      let(:ai_agent) { create(:ai_agent, name: 'Test Agent', agent_type: nil) }
+      let(:ai_agent) { create(:ai_agent, name: 'Test Agent', agent_type: 'TicketGroupDispatcher') }
+      let(:trigger)  { create(:trigger, perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent.id } }) }
+      let(:job)      { create(:job, perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent.id } }) }
 
       before do
-        create(:trigger, perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent.id } })
-        create(:job, perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent.id } })
+        trigger && job
       end
 
       it 'shows AI agent in the UI' do
         visit '#ai/ai_agents'
 
-        expect(page).to have_text(ai_agent.name).and have_text('unknown')
+        within :active_content do
+          expect(page).to have_text(ai_agent.name)
+            .and have_text(trigger.name)
+            .and have_text(job.name)
+        end
       end
 
       context 'with references' do
@@ -112,20 +117,24 @@ RSpec.describe 'AI > AI Agents', type: :system do
 
             check_input_field_value('name', ai_agent.name)
             fill_in 'name', with: 'Test Agent (edit)'
-            check_select_field_value('agent_type', '')
-            expect(page).to have_text('This agent is of an unknown type. Editing its entire configuration is currently not possible.')
+            check_select_field_value('agent_type', 'TicketGroupDispatcher')
+            expect(page).to have_text('This type of AI agent can dispatch incoming tickets into an appropriate group based on their content and topic.')
 
+            click_on 'Next'
+            click 'label', text: 'LIMIT GROUPS'
             click_on 'Next'
 
             expect(page).to have_text('NOTE')
             expect(page).to have_text('ACTIVE')
 
-            # Check navigation to the previous step.
+            # Check navigation to the previous steps.
+            click_on 'Back'
             click_on 'Back'
 
             check_input_field_value('name', 'Test Agent (edit)')
-            check_select_field_value('agent_type', '')
+            check_select_field_value('agent_type', 'TicketGroupDispatcher')
 
+            click_on 'Next'
             click_on 'Next'
 
             expect(page).to have_no_text('For this agent to run, it needs to be used in a trigger or a scheduler.')
@@ -164,7 +173,16 @@ RSpec.describe 'AI > AI Agents', type: :system do
 
           click_on 'Next'
 
-          expect(page).to have_text('LIMIT GROUPS')
+          # Check frontend validation of the object attribute options context field.
+          click_on 'Back'
+
+          error_message = page.find('[name="definition::instruction_context::object_attributes::group_id-required-validator"]', visible: :all)
+            .native
+            .attribute('validationMessage')
+
+          expect(error_message).to include('Please fill')
+
+          click 'label', text: 'LIMIT GROUPS'
 
           # Check navigation to the previous step.
           click_on 'Back'

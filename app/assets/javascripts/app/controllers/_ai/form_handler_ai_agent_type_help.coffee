@@ -7,13 +7,7 @@ class App.FormHandlerAIAgentTypeHelp
 
     $(form).find('select[name=agent_type]').off('change.agent_type').on('change.agent_type', (e) ->
       agent_type = $(e.target).val()
-      description = if _.isEmpty(agent_type)
-                      if attribute.disabled
-                        App.i18n.translateContent('This agent is of an unknown type. Editing its entire configuration is currently not possible.')
-                      else
-                        ''
-                    else
-                      App.AIAgentType.find(agent_type)?.description
+      description = App.AIAgentType.find(agent_type)?.description
 
       $(form).find('select[name=agent_type]')
         .closest('.form-group')

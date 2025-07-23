@@ -19,7 +19,6 @@ class AI::Agent::Type::TicketGroupDispatcher < AI::Agent::Type
           name:                    'definition::instruction_context::object_attributes::group_id',
           display:                 '',
           tag:                     'object_attribute_options_context',
-          null:                    true,
 
           limit_label:             __('Limit Groups'),
           limit_description:       __('All groups will be considered for dispatching tickets.'),

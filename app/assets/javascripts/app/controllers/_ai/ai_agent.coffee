@@ -8,69 +8,72 @@ class AIAgent extends App.ControllerAIFeatureBase
   constructor: ->
     super
 
-    App.AIAgentType.fetchFull()
+    App.AIAgentType.fetchFull(=>
 
-    callbackAgentTypeAttribute = (value, object, attribute, attributes) ->
-      return App.i18n.translateContent('||unknown||') if not object.agent_type
+      callbackAgentTypeAttribute = (value, object, attribute, attributes) ->
+        return App.AIAgentType.findByAttribute('custom', true)?.displayName() or '-' if not object.agent_type
 
-      App.AIAgentType.findByAttribute(object.agent_type).displayName()
+        App.AIAgentType.find(object.agent_type)?.displayName() or '-'
 
-    callbackReferenceAttribute = (object, attribute, key, title, translationMultiple) ->
-      return '-' if _.isEmpty(object.references?[key])
+      callbackReferenceAttribute = (object, attribute, key, title, translationMultiple) ->
+        return '-' if _.isEmpty(object.references?[key])
 
-      attribute.class = 'reference-list-popover'
-      attribute.data =
-        type: key
-        title: title
-        ids: _.map(object.references[key] || [], (obj) -> obj.id)
+        attribute.class = 'reference-list-popover'
+        attribute.data =
+          type: key
+          title: title
+          ids: _.map(object.references[key] || [], (obj) -> obj.id)
 
-      return App.i18n.translateInline(translationMultiple, object.references[key].length) if object.references[key].length > 1
+        return App.i18n.translateInline(translationMultiple, object.references[key].length) if object.references[key].length > 1
 
-      object.references[key][0].name
+        object.references[key][0].name
 
-    callbackTriggersAttribute = (value, object, attribute, attributes) ->
-      callbackReferenceAttribute object, attribute, 'Trigger', __('AI agent used in triggers'), __('%s triggers')
+      callbackTriggersAttribute = (value, object, attribute, attributes) ->
+        callbackReferenceAttribute object, attribute, 'Trigger', __('AI agent used in triggers'), __('%s triggers')
 
-    callbackJobsAttribute = (value, object, attribute, attributes) ->
-      callbackReferenceAttribute object, attribute, 'Job', __('AI agent used in schedulers'), __('%s schedulers')
+      callbackJobsAttribute = (value, object, attribute, attributes) ->
+        callbackReferenceAttribute object, attribute, 'Job', __('AI agent used in schedulers'), __('%s schedulers')
 
-    @genericController = new AIAgentIndex(
-      el: @el
-      id: @id
-      genericObject: 'AIAgent'
-      defaultSortBy: 'name'
-      searchBar: true
-      searchQuery: @search_query
-      pageData:
-        home: 'ai_agents'
-        object: __('AI Agent')
-        objects: __('AI Agents')
-        searchPlaceholder: __('Search for AI agents')
-        pagerAjax: true
-        pagerBaseUrl: '#ai/ai_agents/'
-        pagerSelected: ( @page || 1 )
-        pagerPerPage: 50
-        navupdate: '#ai/ai_agents'
-        buttons: [
-          { name: __('New AI Agent'), 'data-type': 'new', class: 'btn--success' }
+      @genericController = new AIAgentIndex(
+        el: @el
+        id: @id
+        genericObject: 'AIAgent'
+        defaultSortBy: 'name'
+        searchBar: true
+        searchQuery: @search_query
+        pageData:
+          home: 'ai_agents'
+          object: __('AI Agent')
+          objects: __('AI Agents')
+          searchPlaceholder: __('Search for AI agents')
+          pagerAjax: true
+          pagerBaseUrl: '#ai/ai_agents/'
+          pagerSelected: ( @page || 1 )
+          pagerPerPage: 50
+          navupdate: '#ai/ai_agents'
+          buttons: [
+            { name: __('New AI Agent'), 'data-type': 'new', class: 'btn--success' }
+          ]
+          tableExtend:
+            callbackAttributes:
+              agent_type: [ callbackAgentTypeAttribute ]
+              triggers: [ callbackTriggersAttribute ]
+              jobs: [ callbackJobsAttribute ]
+          topAlert: =>
+            return if not @missingProvider()
+
+            type: 'warning'
+            message: __('The provider configuration is missing. Please set up the provider before proceeding in |AI > Provider|.')
+        container: @el.closest('.content')
+        handlers: [
+          App.FormHandlerAIAgentTypeHelp.run
+          App.FormHandlerAIAgentUnusedWarning.run
         ]
-        tableExtend:
-          callbackAttributes:
-            agent_type: [ callbackAgentTypeAttribute ]
-            triggers: [ callbackTriggersAttribute ]
-            jobs: [ callbackJobsAttribute ]
-        topAlert: =>
-          return if not @missingProvider()
-
-          type: 'warning'
-          message: __('The provider configuration is missing. Please set up the provider before proceeding in |AI > Provider|.')
-      container: @el.closest('.content')
-      handlers: [
-        App.FormHandlerAIAgentTypeHelp.run
-        App.FormHandlerAIAgentUnusedWarning.run
-      ]
-      renderCallback: =>
-        @renderPopovers()
+        renderCallback: =>
+          @renderPopovers()
+        validateOnSubmit: (params) ->
+          @maybeHandleJSONParams('parse', params)
+      )
     )
 
   show: (params) =>
@@ -78,7 +81,7 @@ class AIAgent extends App.ControllerAIFeatureBase
       if key isnt 'el' && key isnt 'shown' && key isnt 'match'
         @[key] = value
 
-    @genericController.paginate(@page || 1, params)
+    @genericController?.paginate(@page || 1, params)
 
 class AIAgentIndex extends App.ControllerGenericIndex
   editControllerClass: -> EditAIAgent
@@ -165,9 +168,9 @@ AIAgentModalMixin =
     return if @agentType?.id is @params?.agent_type
 
     if @params?.agent_type
-      @agentType = App.AIAgentType.findByAttribute(@params.agent_type)
+      @agentType = App.AIAgentType.find(@params.agent_type)
     else if @item?.agent_type
-      @agentType = App.AIAgentType.findByAttribute(@item.agent_type)
+      @agentType = App.AIAgentType.find(@item.agent_type)
 
     # Always initialize fields when agent type changes
     @initializeAllFieldsLookup()
@@ -196,6 +199,8 @@ AIAgentModalMixin =
 
   contentFormParams: ->
     @params = @setFormFields(@item, {}) if _.isEmpty(@params) # init params
+    @params.agent_type = App.AIAgentType.findByAttribute('custom', true).id if @params and not @params.agent_type
+    @maybeHandleJSONParams('stringify')
     @params
 
   contentFormModel: ->
@@ -206,11 +211,16 @@ AIAgentModalMixin =
     if @step is 'initial'
       attrs = _.filter(attrs, (attr) -> attr.name is 'name' or attr.name is 'agent_type')
 
+      agent_type_attribute = attrs.find((attr) -> attr.name is 'agent_type')
+
       # Disable `agent_type` field if the item is already persisted.
       if @item?.id
-        attribute = attrs.find((attr) -> attr.name is 'agent_type')
-        attribute.disabled = true
-        attribute.null = true
+        agent_type_attribute.disabled = true
+        agent_type_attribute.null = true
+
+      # Filter out custom agent type if the item is not persisted.
+      else
+        agent_type_attribute.filter = (types) -> _.filter(types, (type) -> not type.custom)
 
     else if @step is 'metadata'
       attrs = _.filter(attrs, (attr) -> attr.name is 'note' or attr.name is 'active')
@@ -288,7 +298,7 @@ AIAgentModalMixin =
   handleNext: (e) ->
     return false if @step is 'metadata'
 
-    return if not @validateParams(e)
+    return false if not @validateParams(e)
 
     if @step is 'initial' and @steps().length
       @step = @firstStep()
@@ -318,6 +328,59 @@ AIAgentModalMixin =
 
     true
 
+  maybeHandleJSONParams: (action, params = @params) ->
+    return {} if not @agentType?.form_schema
+
+    jsonFields = ['code_editor']
+
+    # Get all supported fields from the form schema.
+    codeEditorFields = []
+    for schemaItem in @agentType.form_schema
+      for field in schemaItem.fields or []
+        if _.includes(jsonFields, field.tag)
+          codeEditorFields.push(field.name)
+
+    # Process each field.
+    for fieldName in codeEditorFields
+
+      # Split the field path by '::' delimiter.
+      pathParts = fieldName.split('::')
+
+      # Navigate through params to get the value
+      paramsValue = params
+      for part in pathParts
+        if paramsValue?[part] isnt undefined
+          paramsValue = paramsValue[part]
+        else
+          paramsValue = undefined
+          break
+
+      # Only proceed if we found a value.
+      if paramsValue isnt undefined
+
+        # Check if transformation is needed.
+        if (action is 'stringify' and _.isObject(paramsValue)) or (action is 'parse' and _.isString(paramsValue))
+
+          # Navigate/create the nested structure in params.
+          currentObj = params
+          for i in [0...pathParts.length - 1]
+            part = pathParts[i]
+            if not currentObj[part] or not _.isObject(currentObj[part])
+              currentObj[part] = {}
+            currentObj = currentObj[part]
+
+          # Set the final value
+          finalPart = pathParts[pathParts.length - 1]
+
+          try
+            currentObj[finalPart] = JSON[action](paramsValue, null, 2)
+          catch
+            return {
+              "#{fieldName}": __('Please enter a valid JSON string.')
+            }
+
+    {}
+
 class EditAIAgent extends App.ControllerGenericEdit
   @include AIAgentModalMixin
 
@@ -328,6 +391,8 @@ class EditAIAgent extends App.ControllerGenericEdit
 
   onSubmit: (e) =>
     return if @handleNext(e)
+
+    @maybeHandleJSONParams('parse')
 
     # Load the current params into the item.
     #   Super method will only know about the current step params.
@@ -348,6 +413,8 @@ class NewAIAgent extends App.ControllerGenericNew
 
   onSubmit: (e) =>
     return if @handleNext(e)
+
+    @maybeHandleJSONParams('parse')
 
     params = @formParam(e.target)
     newParams = @setFormFields(@params, params)

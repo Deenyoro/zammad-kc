@@ -18,10 +18,7 @@ RSpec.describe AI::Agent::Type, :aggregate_failures, current_user_id: 1, type: :
       type_data = described_class.available_type_data
 
       expect(type_data).to be_an(Array)
-      expect(type_data.size).to be > 0
-
-      expect(type_data.first).to be_a(Hash)
-      expect(type_data.first).to include(**AI::Agent::Type::TicketGroupDispatcher.new.data)
+        .and include(**AI::Agent::Type::TicketGroupDispatcher.new.data)
     end
   end
 end

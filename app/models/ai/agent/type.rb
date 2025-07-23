@@ -16,6 +16,7 @@ class AI::Agent::Type
       id:                self.class.name.demodulize,
       name:,
       description:,
+      custom:,
       definition:,
       action_definition:,
       form_schema:,
@@ -28,6 +29,10 @@ class AI::Agent::Type
 
   def description
     raise 'not implemented'
+  end
+
+  def custom
+    false
   end
 
   def form_schema

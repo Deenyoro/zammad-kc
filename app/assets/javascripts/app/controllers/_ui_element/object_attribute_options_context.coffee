@@ -9,6 +9,7 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
     allFlatOptions = @buildOptions(related_object_attribute)
 
     optionsSelected = []
+
     if attribute.value
       optionsSelected = @buildOptionsSelected(attribute, allFlatOptions)
 
@@ -16,15 +17,17 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
       attribute:              attribute,
       valueRaw:               JSON.stringify(attribute.value || {}),
       optionsSelected:        optionsSelected,
-      limitActive:            optionsSelected.length > 0 || !_.isObject(attribute.value),
+      limitActive:            optionsSelected.length > 0 or not _.isObject(attribute.value),
       objectAttributeDisplay: related_object_attribute.display or __('Name')
+      required:               not attribute.null
     ))
 
-    item.find('input[type="checkbox"]').off('click').on('click', ->
+    item.find('input[type="checkbox"]').off('click.limit_toggle').on('click.limit_toggle', (e) =>
       item.find('.js-objectAttributeOptionsContextListContainer, .js-objectAttributeOptionsContextLimitDescription').toggleClass('hide')
       item.find('.js-objectAttributeOptionsContext').val(JSON.stringify({}))
-
       item.find('tr[data-id]').remove()
+
+      @updateRequiredValidator(item, e.target.checked)
     )
 
     item.off('click', '.js-add'   ).on('click', '.js-add',    (e) => @onAdd(e, item, attribute.name, related_object_attribute, allFlatOptions))
@@ -115,7 +118,15 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
     catch e
       currentValue = {}
 
+    @updateRequiredValidator(item, item.find('input[type="checkbox"]').get(0).checked and _.isEmpty(currentValue))
+
     currentValue
+
+  @updateRequiredValidator: (item, validate) ->
+    if validate
+      item.find('.js-objectAttributeOptionsContextRequiredValidator').removeAttr('disabled')
+    else
+      item.find('.js-objectAttributeOptionsContextRequiredValidator').attr('disabled', true)
 
   @addValue: (item, value) ->
     currentValue = @getCurrentValue(item)

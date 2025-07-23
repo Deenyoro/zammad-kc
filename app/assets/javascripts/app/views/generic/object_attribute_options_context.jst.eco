@@ -14,8 +14,9 @@
     <% if @attribute.limit_description: %><span class="js-objectAttributeOptionsContextLimitDescription help-text<% if @limitActive: %> hide<% end %>"><%- @T(@attribute.limit_description) %></span><% end %>
   </div>
 
-  <div class="js-objectAttributeOptionsContextListContainer form-group<% if !@limitActive: %> hide<% end %>">
-    <label for="attribute-<%= @attribute.name %>-search"><%- @T(@attribute.table_label) %></label>
+  <div class="js-objectAttributeOptionsContextListContainer form-group <% if @required: %>is-required<% end %> <% if !@limitActive: %>hide<% end %>">
+    <label for="attribute-<%= @attribute.name %>-search"><%- @T(@attribute.table_label) %><% if @required: %> <span>*</span><% end %></label>
+    <% if @required: %><input class="js-objectAttributeOptionsContextRequiredValidator" type="text" name="<%= @attribute.name %>-required-validator" required style="opacity: 0; height: 0 !important; padding: 0 !important;" /><% end %>
     <table class="object-attribute-options-context-list settings-list js-objectAttributeOptionsContextList" style="width: 100%;">
       <thead>
         <th><%- @T(@objectAttributeDisplay) %></th>
