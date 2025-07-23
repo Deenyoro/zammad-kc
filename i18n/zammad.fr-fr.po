@@ -621,7 +621,7 @@ msgstr ""
 msgid "%s required!"
 msgstr "%s requis !"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:31
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:35
 #, fuzzy
 #| msgid "Schedulers"
 msgid "%s schedulers"
@@ -661,7 +661,7 @@ msgstr "%s tickets trouvés"
 msgid "%s tickets selected"
 msgstr "%s tickets sélectionnés"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:28
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:32
 #, fuzzy
 #| msgid "Triggers"
 msgid "%s triggers"
@@ -1022,7 +1022,7 @@ msgstr ""
 "Un ticket de test a été créé, vous pouvez le retrouver dans votre vue "
 "d'ensemble \"%s\" %l."
 
-#: app/models/ticket.rb:281
+#: app/models/ticket.rb:283
 msgid "A ticket cannot be merged into itself."
 msgstr "Un ticket ne peut pas être fusionné avec lui-même."
 
@@ -1057,7 +1057,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:64
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:30
-#: app/assets/javascripts/app/controllers/manage.coffee:44
+#: app/assets/javascripts/app/controllers/manage.coffee:45
 msgid "AI"
 msgstr "IA"
 
@@ -1065,7 +1065,10 @@ msgstr "IA"
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:42
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:79
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:60
+#: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:140
+#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:21
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/utils/historyEventIssuerNames.ts:7
+#: app/frontend/apps/mobile/components/AiAgent/AiAgentAvatar.vue:30
 msgid "AI Agent"
 msgstr "Agent IA"
 
@@ -1085,18 +1088,18 @@ msgstr "Fournisseur IA"
 msgid "AI Provider Config"
 msgstr "Configuration du fournisseur IA"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:31
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:35
 msgid "AI agent used in schedulers"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:28
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:32
 msgid "AI agent used in triggers"
 msgstr ""
 
 #: app/assets/javascripts/app/models/ai_agent.coffee
 msgid ""
-"AI agents enable streamlined processing powered by AI-driven insights. You "
-"can execute AI agents via triggers or schedulers."
+"AI agents enable streamlined processing powered by artificial intelligence. "
+"You can execute AI agents via triggers or schedulers."
 msgstr ""
 
 #: db/seeds/settings.rb:6052
@@ -1316,6 +1319,7 @@ msgstr "Comptes"
 #: app/assets/javascripts/app/views/api.jst.eco:62
 #: app/assets/javascripts/app/views/calendar/holiday_selector.jst.eco:7
 #: app/assets/javascripts/app/views/generic/actions.jst.eco:5
+#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:23
 #: app/assets/javascripts/app/views/generic/user_permission_group.jst.eco:7
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:32
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:33
@@ -1335,6 +1339,12 @@ msgstr "Comptes"
 #: app/assets/javascripts/app/views/twitter/account_edit.jst.eco:12
 msgid "Action"
 msgstr "Action"
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:79
+#, fuzzy
+#| msgid "Action execution"
+msgid "Action definition"
+msgstr "Exécution de l'action"
 
 #: app/assets/javascripts/app/models/trigger.coffee:8
 msgid "Action execution"
@@ -1446,6 +1456,7 @@ msgstr "Fournisseur"
 #: app/assets/javascripts/app/views/channel/topics.jst.eco:37
 #: app/assets/javascripts/app/views/generic/application_selector_row.jst.eco:32
 #: app/assets/javascripts/app/views/generic/checklist_item.jst.eco:26
+#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:53
 #: app/assets/javascripts/app/views/generic/postmaster_match.jst.eco:21
 #: app/assets/javascripts/app/views/generic/postmaster_set_row.jst.eco:20
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/row.jst.eco:17
@@ -1871,6 +1882,12 @@ msgstr "Tickets de l'agent"
 msgid "Agents"
 msgstr "Agents"
 
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:44
+#, fuzzy
+#| msgid "AI Agent"
+msgid "Ai Agent"
+msgstr "Agent IA"
+
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:71
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:70
 msgid "Ai assistant text tools"
@@ -1939,6 +1956,10 @@ msgid "All computers and browsers that have access to your Zammad appear here."
 msgstr ""
 "Tous les ordinateurs et les navigateurs qui ont accès à Zammad sont listés "
 "ici."
+
+#: app/models/ai/agent/type/ticket_group_dispatcher.rb:24
+msgid "All groups will be considered for dispatching tickets."
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:38
 #: app/frontend/apps/desktop/components/Form/fields/FieldNotifications/FieldNotificationsInput.vue:56
@@ -2800,6 +2821,12 @@ msgstr "Sauvegarde automatique en cours…"
 msgid "Autosaving is taking longer than expected…"
 msgstr "La sauvegarde automatique prend plus de temps que prévu…"
 
+#: app/models/ai/agent/type/ticket_group_dispatcher.rb:25
+#, fuzzy
+#| msgid "Available methods"
+msgid "Available Groups"
+msgstr "Méthodes disponibles"
+
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:35
 #: app/assets/javascripts/app/models/overview.coffee:8
 msgid "Available for the following roles"
@@ -2862,6 +2889,7 @@ msgstr "Azure AI"
 msgid "BCC address for all outgoing emails"
 msgstr "Adresse en copie cachée pour tous les emails sortants"
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:308
 #: app/assets/javascripts/app/views/generic/object_search/item_organization_members.jst.eco:5
 #: app/frontend/apps/desktop/components/CommonSelect/CommonSelect.vue:398
 #: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:412
@@ -3268,6 +3296,7 @@ msgstr ""
 msgid "Cancel"
 msgstr "Annuler"
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:291
 #: app/assets/javascripts/app/controllers/_application_controller/_modal.coffee:117
 #: app/assets/javascripts/app/views/admin_password_auth/request.jst.eco:8
 #: app/assets/javascripts/app/views/admin_password_auth/request_sent.jst.eco:7
@@ -3508,7 +3537,7 @@ msgstr "Canal"
 msgid "Channel Distribution"
 msgstr "Canal de provenance"
 
-#: app/assets/javascripts/app/controllers/manage.coffee:42
+#: app/assets/javascripts/app/controllers/manage.coffee:43
 msgid "Channels"
 msgstr "Canaux"
 
@@ -3692,6 +3721,14 @@ msgstr "Choisissez le groupe auquel les messages seront ajoutés."
 #: app/assets/javascripts/app/views/facebook/account_edit.jst.eco:5
 msgid "Choose the group to which page posts will get added."
 msgstr "Choisissez le groupe auquel les messages de la page seront ajoutés."
+
+#: app/models/ai/agent/type/ticket_group_dispatcher.rb:16
+msgid ""
+"Choose which groups will be considered for dispatching tickets. If you want "
+"to limit it to specific groups, please select at least two below. Make sure "
+"the groups have clear, descriptive names, as that would be the only context "
+"provided to the AI agent."
+msgstr ""
 
 #: app/assets/javascripts/app/views/profile/language.jst.eco:7
 msgid "Choose your language."
@@ -3885,14 +3922,14 @@ msgid "Close side panel"
 msgstr "Fermer le panneau latéral"
 
 #: app/assets/javascripts/app/models/macro.coffee:9
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:32
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:41
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketScreenBehavior/behaviorOptions.ts:12
 #: db/seeds/settings.rb:3040
 msgid "Close tab"
 msgstr "Fermer l'onglet"
 
 #: app/assets/javascripts/app/models/macro.coffee:9
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:37
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:46
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketScreenBehavior/behaviorOptions.ts:16
 #: db/seeds/settings.rb:3041
 msgid "Close tab on ticket close"
@@ -4823,6 +4860,14 @@ msgstr ""
 "Aucun aperçu n'est actuellement affecté à vos rôles. Veuillez contacter "
 "votre administrateur."
 
+#: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:141
+#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:25
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:163
+#: app/frontend/apps/mobile/components/Ticket/TicketItem.vue:35
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:41
+msgid "Currently processing this ticket…"
+msgstr ""
+
 #: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:130
 msgid ""
 "Currently, no overviews are assigned to your roles. Please contact your "
@@ -4834,6 +4879,12 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:28
 msgid "Custom"
 msgstr "Personnalisé"
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:6
+#, fuzzy
+#| msgid "Customer Intent"
+msgid "Custom AI Agent"
+msgstr "Intention du client"
 
 #: app/assets/javascripts/app/models/webhook.coffee:12
 msgid "Custom Payload"
@@ -5056,7 +5107,7 @@ msgstr "Déchiffrement réussi."
 #: app/assets/javascripts/app/views/calendar/index.jst.eco:32
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:228
 #: app/assets/javascripts/app/views/generic/multi_locales.jst.eco:5
-#: app/assets/javascripts/app/views/generic/table_row.jst.eco:78
+#: app/assets/javascripts/app/views/generic/table_row.jst.eco:82
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:8
 #: app/assets/javascripts/app/views/object_manager/attribute/multiselect.jst.eco:9
 #: app/assets/javascripts/app/views/object_manager/attribute/select.jst.eco:9
@@ -6584,14 +6635,14 @@ msgstr "Annuler les modifications"
 msgid "Discard unsaved reply"
 msgstr "Supprimer la réponse non enregistrée"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:58
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:64
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:138
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:134
 msgid "Discard your unsaved changes"
 msgstr "Annuler les modifications non sauvegardées"
 
 #: app/assets/javascripts/app/views/knowledge_base/content.jst.eco:18
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:25
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:34
 msgid "Discard your unsaved changes."
 msgstr "Annuler les modifications non sauvegardées."
 
@@ -6760,7 +6811,7 @@ msgid "Downloading attachments…"
 msgstr "Téléchargement des pièces jointes…"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:101
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:9
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:18
 msgid "Draft"
 msgstr "Brouillon"
 
@@ -6768,7 +6819,7 @@ msgstr "Brouillon"
 msgid "Draft Available"
 msgstr "Brouillon disponible"
 
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:9
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:18
 msgid "Draft available"
 msgstr "Brouillon disponible"
 
@@ -7571,6 +7622,10 @@ msgid "Enter the code from your two-factor authenticator app."
 msgstr ""
 "Saisir le code de votre application d'authentification à deux facteurs."
 
+#: app/models/ai/agent/type/custom_ai_agent.rb:37
+msgid "Enter the instruction for the AI agent."
+msgstr ""
+
 #: app/assets/javascripts/app/views/import/otrs.jst.eco:24
 msgid ""
 "Enter the link provided by the plugin at the end of the installation to link "
@@ -7586,6 +7641,10 @@ msgid ""
 msgstr ""
 "Saisir le lien fourni par le plugin à la fin de l'installation pour lier les "
 "2 systèmes."
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:28
+msgid "Enter the role description of the AI agent."
+msgstr ""
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:28
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:275
@@ -7672,6 +7731,10 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/password_reset.coffee:38
 msgid "Enter your username or email address"
 msgstr "Saisir votre nom d'utilisateur ou votre adresse email"
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:67
+msgid "Entity context"
+msgstr ""
 
 #: app/models/system_report/plugin/entities/counts.rb:4
 msgid "Entity counts of database objects (e.g. ticket count, user count, etc.)"
@@ -8314,6 +8377,13 @@ msgstr ""
 "Par exemple, des tickets, des utilisateurs ou des organisations modifiés "
 "récemment."
 
+#: app/models/ai/agent/type/custom_ai_agent.rb:21
+msgid ""
+"For examples, please refer to the built-in AI agent types or our "
+"documentation. This is a highly advanced feature and should be used with "
+"caution."
+msgstr ""
+
 #: app/assets/javascripts/app/views/settings/storage_provider.jst.eco:10
 msgid "For more details, please check out our online documentation %l."
 msgstr ""
@@ -8328,6 +8398,14 @@ msgstr ""
 "Pour des raisons de sécurité, le jeton d'accès à l'API n'est affiché qu'une "
 "seule fois. Vous devez le stocker dans un emplacement sécurisé avant de "
 "continuer."
+
+#: app/assets/javascripts/app/controllers/_ai/form_handler_ai_agent_unused_warning.coffee:14
+msgid "For this agent to run, it needs to be used in a trigger or a scheduler."
+msgstr ""
+
+#: app/assets/javascripts/app/models/ai_agent.coffee:31
+msgid "For this agent to run, it needs to be used in a trigger or scheduler."
+msgstr ""
 
 #: app/frontend/apps/desktop/components/layout/LayoutTaskbarTabContent.vue:62
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:38
@@ -8374,11 +8452,11 @@ msgstr "FormSchema n'a pas pu être trouvé."
 msgid "Format"
 msgstr "Format"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:583
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:592
 msgid "Format as //strikethrough//"
 msgstr "Formater en //barré//"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:565
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:574
 msgid "Format as _underlined_"
 msgstr "Formater en _souligné_"
 
@@ -8387,15 +8465,15 @@ msgstr "Formater en _souligné_"
 msgid "Format as bold"
 msgstr "Formater en gras"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:632
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:641
 msgid "Format as h1 heading"
 msgstr "Formater en titre h1"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:638
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:647
 msgid "Format as h2 heading"
 msgstr "Formater en titre h2"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:644
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:653
 msgid "Format as h3 heading"
 msgstr "Formater en titre h3"
 
@@ -8404,7 +8482,7 @@ msgstr "Formater en titre h3"
 msgid "Format as italic"
 msgstr "Formater en italique"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:626
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:635
 msgid "Format as ordered list"
 msgstr "Formater en liste numérotée"
 
@@ -8423,15 +8501,15 @@ msgstr "Barrer le texte"
 msgid "Format as underlined"
 msgstr "Formater en souligné"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:620
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:629
 msgid "Format as unordered list"
 msgstr "Formater en liste à puces"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:571
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:580
 msgid "Format as |bold|"
 msgstr "Formater en |gras|"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:577
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:586
 msgid "Format as ||italic||"
 msgstr "Formater en ||italique||"
 
@@ -8945,7 +9023,7 @@ msgstr "a été traité"
 msgid "Has submenu"
 msgstr "a un sous-menu"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:43
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:56
 msgid "Has ticket open in tabs, but is not actively looking at the ticket."
 msgstr ""
 "A le ticket ouvert dans ses onglets, mais ne le regarde pas actuellement."
@@ -9858,19 +9936,19 @@ msgstr ""
 "Ce code doit être placé à la fin du code source de la page juste avant la "
 "balise §</body>§."
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:614
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:623
 msgid "Inserts a horizontal rule"
 msgstr "Insérer une barre horizontale"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:547
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:556
 msgid "Inserts a mention for a user"
 msgstr "Insérer une mention pour un utilisateur"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:541
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:550
 msgid "Inserts knowledge base answer"
 msgstr "Insérer une réponse de la base de connaissances"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:535
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:544
 msgid "Inserts text module"
 msgstr "Insérer un modèle de texte"
 
@@ -9885,6 +9963,16 @@ msgstr "Installer le paquet"
 #: app/assets/javascripts/app/views/package.jst.eco:32
 msgid "Installed"
 msgstr "Installé"
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:34
+#, fuzzy
+#| msgid "Integrations"
+msgid "Instruction"
+msgstr "Intégrations"
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:55
+msgid "Instruction context"
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:45
 msgid "Integer field"
@@ -10196,7 +10284,7 @@ msgstr "Il n'est pas possible de supprimer l'utilisateur système."
 msgid "It is not possible to delete your current account."
 msgstr "Il n'est pas possible de supprimer votre compte actuel."
 
-#: app/models/ticket.rb:279
+#: app/models/ticket.rb:281
 msgid "It is not possible to merge into an already merged ticket."
 msgstr "Il n'est pas possible de fusionner avec un ticket déjà fusionné."
 
@@ -10419,7 +10507,7 @@ msgstr "Dernier article interne"
 msgid "Last Used"
 msgstr "Dernière utilisation"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:123
+#: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:125
 msgid "Last change %s %s by %s"
 msgstr "Dernière modification %s %s par %s"
 
@@ -10515,6 +10603,7 @@ msgid "Light"
 msgstr "Clair"
 
 #: app/assets/javascripts/app/views/profile/notification.jst.eco:17
+#: app/models/ai/agent/type/ticket_group_dispatcher.rb:23
 msgid "Limit Groups"
 msgstr "Limiter à des groupes"
 
@@ -10842,7 +10931,7 @@ msgstr ""
 "tickets"
 
 #: app/assets/javascripts/app/controllers/macro.coffee:3
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:69
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:78
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:206
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:46
 #: db/seeds/permissions.rb:47
@@ -11746,6 +11835,7 @@ msgstr "Intégration Nagios"
 
 #: app/assets/javascripts/app/controllers/_application_controller/reorder_modal.coffee:13
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:325
+#: app/assets/javascripts/app/controllers/_ui_element/object_attribute_options_context.coffee:21
 #: app/assets/javascripts/app/controllers/chat.coffee:559
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:58
 #: app/assets/javascripts/app/models/_application_model.coffee:156
@@ -11827,7 +11917,7 @@ msgstr "Nom pour cette clé de sécurité"
 msgid "Name of form submit button"
 msgstr "Nom affiché sur le bouton de validation du formulaire"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:525
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:534
 msgid "Navigate through article"
 msgstr "Naviguer à travers les articles"
 
@@ -11900,7 +11990,7 @@ msgstr "Nouveau"
 msgid "New & Open Tickets"
 msgstr "Tickets nouveaux et ouverts"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:51
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:55
 #, fuzzy
 #| msgid "AI Agent"
 msgid "New AI Agent"
@@ -12158,6 +12248,7 @@ msgstr ""
 msgid "New user?"
 msgstr "Nouvel utilisateur ?"
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:92
 #: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:112
 #: app/assets/javascripts/app/controllers/webhook.coffee:127
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/password_check.coffee:2
@@ -12175,7 +12266,7 @@ msgstr "Suivant"
 msgid "Next State"
 msgstr "Prochain état"
 
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:43
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:52
 #: app/assets/javascripts/app/views/ticket_zoom/overview_navigator.jst.eco:12
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketScreenBehavior/behaviorOptions.ts:21
 #: db/seeds/settings.rb:3042
@@ -12487,7 +12578,7 @@ msgstr "Pas de jeton !"
 msgid "No translation for this locale available"
 msgstr "Aucune traduction disponible pour cette langue"
 
-#: app/models/ticket.rb:402
+#: app/models/ticket.rb:404
 msgid "No triggers active"
 msgstr "Aucun trigger actif"
 
@@ -12527,7 +12618,7 @@ msgstr "Non merci"
 #: app/assets/javascripts/app/controllers/knowledge_base/permissions_dialog.coffee:9
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_unit.coffee:55
 #: app/assets/javascripts/app/views/data_privacy/tasks.jst.eco:65
-#: app/graphql/gql/types/ticket_type.rb:108 db/seeds/settings.rb:1980
+#: app/graphql/gql/types/ticket_type.rb:109 db/seeds/settings.rb:1980
 msgid "None"
 msgstr "Aucun"
 
@@ -13089,7 +13180,7 @@ msgstr "OpenID Connect"
 msgid "OpenID Connect Options"
 msgstr "Options OpenID Connect"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:42
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:55
 msgid "Opened in tabs"
 msgstr "Ouvert dans les onglets"
 
@@ -13583,11 +13674,11 @@ msgstr "Coller le certificat"
 msgid "Paste Private Key"
 msgstr "Coller la clé privée"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:589
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:598
 msgid "Paste from clipboard"
 msgstr "Coller depuis le presse-papiers"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:596
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:605
 msgid "Paste from clipboard (plain text)"
 msgstr "Coller depuis le presse-papiers (texte brut)"
 
@@ -13798,6 +13889,7 @@ msgstr ""
 msgid "Please enter a text."
 msgstr "Veuillez entrer un texte."
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:379
 #: app/assets/javascripts/app/controllers/webhook.coffee:96
 msgid "Please enter a valid JSON string."
 msgstr "Veuillez entrer une chaîne JSON valide."
@@ -14478,6 +14570,7 @@ msgstr "A distance"
 #: app/assets/javascripts/app/views/channel/topics.jst.eco:32
 #: app/assets/javascripts/app/views/generic/application_selector_row.jst.eco:28
 #: app/assets/javascripts/app/views/generic/application_selector_subclause.jst.eco:15
+#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:32
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/row.jst.eco:14
 #: app/assets/javascripts/app/views/generic/user_permission_group.jst.eco:25
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:39
@@ -14584,11 +14677,11 @@ msgstr "Supprimer l'authentification à deux facteurs"
 msgid "Removed reaction from message %s from %s"
 msgstr "Réaction supprimée du message %s de %s"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:650
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:659
 msgid "Removes any hyperlink"
 msgstr "Supprimer tous les liens hypertexte"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:602
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:611
 msgid "Removes the formatting"
 msgstr "Supprimer le formatage"
 
@@ -14917,6 +15010,12 @@ msgstr "Restreindre aux utilisateurs suivants"
 msgid "Result"
 msgstr "Résultat"
 
+#: app/models/ai/agent/type/custom_ai_agent.rb:43
+#, fuzzy
+#| msgid "Results"
+msgid "Result structure"
+msgstr "Résultats"
+
 #: app/assets/javascripts/app/views/generic/object_import/result.jst.eco:2
 msgid "Result:"
 msgstr "Résultat :"
@@ -14984,6 +15083,12 @@ msgstr "Rôle"
 #: app/assets/javascripts/app/controllers/_ui_element/user_permission.coffee:49
 msgid "Role %s is conflicting with role %s, do you want to continue?"
 msgstr "Le rôle %s est en conflit avec le rôle %s, voulez-vous continuer ?"
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:25
+#, fuzzy
+#| msgid "Description"
+msgid "Role description"
+msgstr "Description"
 
 #: app/assets/javascripts/app/controllers/role.coffee:3
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:193
@@ -15215,7 +15320,7 @@ msgid "Save Codes"
 msgstr "Enregistrer les codes de récupération"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_overwrite_modal.coffee:2
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:65
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:74
 msgid "Save Draft"
 msgstr "Enregistrer le brouillon"
 
@@ -15350,7 +15455,7 @@ msgstr "L'URL de recherche est invalide."
 msgid "Search URL is missing."
 msgstr "L'URL de recherche est manquante."
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:44
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:48
 #, fuzzy
 #| msgid "Search for roles"
 msgid "Search for AI agents"
@@ -16062,7 +16167,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:28
 #: app/assets/javascripts/app/controllers/_channel/web.coffee:11
 #: app/assets/javascripts/app/controllers/chat.coffee:869
-#: app/assets/javascripts/app/controllers/manage.coffee:43
+#: app/assets/javascripts/app/controllers/manage.coffee:44
 #: app/assets/javascripts/app/controllers/ticket_zoom/setting.coffee:20
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:18
 #: app/assets/javascripts/app/views/ai/providers.jst.eco:10
@@ -16140,7 +16245,7 @@ msgstr "Compte de messagerie partagé"
 msgid "Shared organization"
 msgstr "Organisation partagée"
 
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:19
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:28
 msgid "Sharing draft…"
 msgstr "Partage du brouillon…"
 
@@ -16239,12 +16344,12 @@ msgstr "Afficher l'onglet précédent"
 msgid "Show the chat when ready."
 msgstr "Afficher le chat dès qu'il est prêt."
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:93
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:104
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationView.vue:78
 msgid "Show ticket actions"
 msgstr "Afficher les actions du ticket"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:77
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:81
 msgid "Show ticket viewers"
 msgstr "Afficher les lecteurs du ticket"
 
@@ -16747,7 +16852,7 @@ msgid "Status:"
 msgstr "Statut :"
 
 #: app/assets/javascripts/app/models/macro.coffee:9
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:49
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:58
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketScreenBehavior/behaviorOptions.ts:8
 #: db/seeds/settings.rb:3043
 msgid "Stay on tab"
@@ -16844,6 +16949,7 @@ msgstr ""
 "et le même ID de message dans l'entête des références si aucun suivi n'a été "
 "reconnu à l'aide des paramètres par défaut."
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:317
 #: app/assets/javascripts/app/controllers/_application_controller/form.coffee:2
 #: app/assets/javascripts/app/controllers/tag.coffee:103
 #: app/assets/javascripts/app/controllers/widget/button_with_dropdown.coffee:12
@@ -16967,7 +17073,7 @@ msgstr "Utiliser celui de l'ordinateur"
 
 #: app/assets/javascripts/app/controllers/_manage/system.coffee:3
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:37
-#: app/assets/javascripts/app/controllers/manage.coffee:45
+#: app/assets/javascripts/app/controllers/manage.coffee:46
 #: app/assets/javascripts/app/views/generic/history.jst.eco:15
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/composables/useHistoryEvents.ts:28
 #: db/seeds/permissions.rb:197 db/seeds/ticket_article_senders.rb:5
@@ -17200,7 +17306,7 @@ msgstr "Modèles de texte"
 msgid "Text Tools"
 msgstr "Outils textuels"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:556
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:565
 msgid "Text editing"
 msgstr "Edition du texte"
 
@@ -17664,6 +17770,19 @@ msgstr "La connexion au serveur a été perdue."
 msgid "The connection was refused."
 msgstr "La connexion a été refusée."
 
+#: app/models/ai/agent/type/custom_ai_agent.rb:57
+msgid ""
+"The context is a JSON object that contains additional object attribute "
+"information for the AI agent. You can provide any object in the system, "
+"which will be included in the instruction."
+msgstr ""
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:69
+msgid ""
+"The context is a JSON object that defines what information about the current "
+"entity will be provided to the AI agent."
+msgstr ""
+
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/password_check.coffee:45
 #: app/controllers/users_controller.rb:400
 #: app/graphql/gql/mutations/user/current/change_password.rb:30
@@ -17703,6 +17822,18 @@ msgstr ""
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:118
 msgid "The default font size is 12px."
 msgstr "La taille par défaut de la police est de 12px."
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:81
+msgid ""
+"The definition is a JSON object that defines the action to be performed by "
+"the AI agent."
+msgstr ""
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:29
+msgid ""
+"The description defines the role of the AI agent. It is used to describe its "
+"purpose and behavior."
+msgstr ""
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:71
 msgid "The device could not be deleted."
@@ -17967,6 +18098,7 @@ msgstr "Recouvrement des mois"
 msgid "The new ticket number could not be generated."
 msgstr "Le nouveau numéro de ticket n'a pas pu être généré."
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:461
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_new.coffee:68
 #: app/assets/javascripts/app/controllers/_channel/_email_signature.coffee:93
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:807
@@ -18145,7 +18277,7 @@ msgstr ""
 "La configuration du fournisseur est manquante. Veuillez configurer le "
 "fournisseur avant de continuer dans |IA > Fournisseurs|."
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:62
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:66
 #, fuzzy
 #| msgid ""
 #| "The provider configuration is missing. Please set up the provider before "
@@ -18481,6 +18613,12 @@ msgstr "L'adresse e-mail spécifiée est déjà utilisée par un autre compte."
 msgid "The start date must precede or match end date."
 msgstr "La date de début doit être antérieure ou égale à la date de fin."
 
+#: app/models/ai/agent/type/custom_ai_agent.rb:45
+msgid ""
+"The structure is a JSON object that defines the result format to be returned "
+"by the AI agent."
+msgstr ""
+
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:5
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:71
 msgid ""
@@ -18549,6 +18687,12 @@ msgid ""
 "AS."
 msgstr ""
 "Le texte qui préfixe le sujet d'une réponse à un e-mail, p. ex. RE, AW ou AS."
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:38
+msgid ""
+"The text defines the instruction for the AI agent. It is used to guide it "
+"and tell it what to do."
+msgstr ""
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts:88
 msgid ""
@@ -18879,11 +19023,6 @@ msgid "This %s is referenced by another object and thus cannot be deleted: %s"
 msgstr ""
 "Ce %s est référencé par un autre objet et ne peut donc pas être supprimé : %s"
 
-#: app/assets/javascripts/app/models/ai_agent.coffee:31
-msgid ""
-"This AI agent is not used in any triggers or schedulers and will not run."
-msgstr ""
-
 #: lib/secure_mailing/pgp/incoming.rb:80
 msgid ""
 "This PGP email does not have exactly two body parts for PGP mails as "
@@ -19113,6 +19252,13 @@ msgstr "Cet hôte n'est pas joignable."
 msgid "This is Zammad version %s"
 msgstr "Ceci est la version %s de Zammad"
 
+#: app/models/ai/agent/type/custom_ai_agent.rb:10
+msgid ""
+"This is a custom AI Agent type that allows full control over all of its "
+"parts. You can define the role description, instruction and its context, "
+"entity context, result structure, and action definition."
+msgstr ""
+
 #: db/seeds/settings.rb:66
 msgid "This is a default maintenance message. Click here to change."
 msgstr ""
@@ -19328,6 +19474,12 @@ msgstr ""
 msgid "This ticket already has a checklist."
 msgstr "Ce ticket dispose déjà d'une checklist."
 
+#: app/models/ai/agent/type/ticket_group_dispatcher.rb:10
+msgid ""
+"This type of AI agent can dispatch incoming tickets into an appropriate "
+"group based on their content and topic."
+msgstr ""
+
 #: app/policies/ticket/shared_draft_start_policy.rb:26
 msgid "This user does not have access to the given group"
 msgstr "Cet utilisateur n'a pas accès au groupe spécifié"
@@ -19457,8 +19609,7 @@ msgstr "Client du ticket"
 msgid "Ticket Duplicate Detection"
 msgstr "Détection de doublons de tickets"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:12
-#: app/assets/javascripts/app/models/ai_agent.coffee:7
+#: app/models/ai/agent/type/ticket_group_dispatcher.rb:6
 #, fuzzy
 #| msgid "Ticket update"
 msgid "Ticket Group Dispatcher"
@@ -19621,7 +19772,7 @@ msgstr "Escalade du ticket"
 msgid "Ticket failed to save: %s"
 msgstr "Échec de l'enregistrement du ticket : %s"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:85
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:96
 msgid "Ticket has %s viewers"
 msgstr "Le ticket a %s lecteurs"
 
@@ -19756,7 +19907,7 @@ msgstr "La mise à jour du ticket a échoué."
 msgid "Ticket updated successfully."
 msgstr "Ticket mis à jour."
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:25
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:27
 msgid "Ticket viewers"
 msgstr "Lecteurs du ticket"
 
@@ -20718,11 +20869,11 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/smime.jst.eco:13
 #: app/assets/javascripts/app/views/knowledge_base/content.jst.eco:25
 #: app/assets/javascripts/app/views/session.jst.eco:12
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:57
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:66
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:9
 #: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:9
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:116
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:81
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:87
 msgid "Update"
 msgstr "Mise à jour"
 
@@ -21123,11 +21274,11 @@ msgstr "Rechercher des planificateurs"
 msgid "Used in triggers"
 msgstr "Utilisables dans les vues d'objets"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:530
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:539
 msgid "Used when composing a Ticket article"
 msgstr "Utilisables lors de la rédaction d'article dans un ticket"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:560
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:569
 msgid "Used when composing a text"
 msgstr "Utilisables lors de la rédaction d'un texte"
 
@@ -21227,6 +21378,7 @@ msgstr ""
 "Les informations utilisateur n'ont pas pu être récupérées, veuillez vérifier "
 "vos autorisations utilisateur liées."
 
+#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:39
 #: app/frontend/shared/composables/useAvatarIndicator.ts:77
 msgid "User is editing"
 msgstr "L'utilisateur est en train de modifier"
@@ -21498,7 +21650,7 @@ msgstr "Voir depuis la perspective utilisateur"
 msgid "View this in Zammad"
 msgstr "Voir dans Zammad"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:29
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:31
 msgid "Viewing ticket"
 msgstr "Voir le ticket"
 
@@ -22859,7 +23011,7 @@ msgstr "ne contient pas un"
 msgid "created"
 msgstr "créé"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:66
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:70
 msgid "created %s"
 msgstr "créé %s"
 
@@ -23398,7 +23550,7 @@ msgstr "n'est pas de la bonne longueur (devrait avoir %{count} caractères)"
 msgid "is the wrong length (should be 1 character)"
 msgstr "n'est pas de la bonne longueur (devrait être 1 caractère)"
 
-#: app/models/user.rb:868
+#: app/models/user.rb:860
 msgid "is too long"
 msgstr "est trop long"
 
@@ -24169,13 +24321,18 @@ msgstr "...ajouter un lien hypertexte"
 msgid "…add object title"
 msgstr "... ajouter un titre à l'objet"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:608
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:617
 msgid "…of whole text area"
 msgstr "... de toute la zone de texte"
 
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅ Temps d'attente aujourd'hui"
+
+#, fuzzy
+#~| msgid "Unknown"
+#~ msgid "||unknown||"
+#~ msgstr "Inconnu"
 
 #~ msgid "AI Agents allow to enhance triggers with AI insights AI."
 #~ msgstr ""

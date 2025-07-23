@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zammad\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-07-16 09:00+0000\n"
+"PO-Revision-Date: 2025-07-23 17:58+0000\n"
 "Last-Translator: Dusan Vuckovic <dv@zammad.com>\n"
 "Language-Team: Serbian (Cyrillic script) <https://translations.zammad.org/"
 "projects/zammad/zammad-development/sr_Cyrl/>\n"
@@ -618,11 +618,9 @@ msgstr ""
 msgid "%s required!"
 msgstr "%s је обавезно!"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:31
-#, fuzzy
-#| msgid "Schedulers"
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:35
 msgid "%s schedulers"
-msgstr "Планери"
+msgstr "%s планер(а)"
 
 #: app/assets/javascripts/app/models/user.coffee:212
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/user.ts:25
@@ -658,11 +656,9 @@ msgstr "%s тикет(а) пронађен(о)"
 msgid "%s tickets selected"
 msgstr "%s означених тикета"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:28
-#, fuzzy
-#| msgid "Triggers"
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:32
 msgid "%s triggers"
-msgstr "Окидачи"
+msgstr "%s окидач(а)"
 
 #: app/assets/javascripts/app/models/ticket_article.coffee:51
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/ticket-article.ts:28
@@ -998,7 +994,7 @@ msgid ""
 "A test ticket has been created, you can find it in your overview \"%s\" %l."
 msgstr "Отворен је пробни тикет, можете га пронаћи у вашем „%s” прегледу %l."
 
-#: app/models/ticket.rb:281
+#: app/models/ticket.rb:283
 msgid "A ticket cannot be merged into itself."
 msgstr "Није могуће спојити тикет са самим собом."
 
@@ -1032,7 +1028,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:64
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:30
-#: app/assets/javascripts/app/controllers/manage.coffee:44
+#: app/assets/javascripts/app/controllers/manage.coffee:45
 msgid "AI"
 msgstr "AI"
 
@@ -1040,7 +1036,10 @@ msgstr "AI"
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:42
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:79
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:60
+#: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:140
+#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:21
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/utils/historyEventIssuerNames.ts:7
+#: app/frontend/apps/mobile/components/AiAgent/AiAgentAvatar.vue:30
 msgid "AI Agent"
 msgstr "AI агент"
 
@@ -1051,8 +1050,6 @@ msgid "AI Agents"
 msgstr "AI агенти"
 
 #: db/seeds/permissions.rb:227
-#, fuzzy
-#| msgid "AI provider"
 msgid "AI Provider"
 msgstr "AI провајдер"
 
@@ -1060,19 +1057,25 @@ msgstr "AI провајдер"
 msgid "AI Provider Config"
 msgstr "Конфигурација AI провајдера"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:31
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:35
 msgid "AI agent used in schedulers"
-msgstr ""
+msgstr "AI агент се користи у планерима"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:28
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:32
 msgid "AI agent used in triggers"
-msgstr ""
+msgstr "AI агент се користи у окидачима"
 
 #: app/assets/javascripts/app/models/ai_agent.coffee
+#, fuzzy
+#| msgid ""
+#| "AI agents enable streamlined processing powered by AI-driven insights. "
+#| "You can execute AI agents via triggers or schedulers."
 msgid ""
-"AI agents enable streamlined processing powered by AI-driven insights. You "
-"can execute AI agents via triggers or schedulers."
+"AI agents enable streamlined processing powered by artificial intelligence. "
+"You can execute AI agents via triggers or schedulers."
 msgstr ""
+"AI агенти омогућавају аутоматизовану обраду уз помоћ вештачке интелигенције. "
+"AI агенте можете извршавати путем окидача или планера."
 
 #: db/seeds/settings.rb:6052
 msgid "AI provider"
@@ -1290,6 +1293,7 @@ msgstr "Налози"
 #: app/assets/javascripts/app/views/api.jst.eco:62
 #: app/assets/javascripts/app/views/calendar/holiday_selector.jst.eco:7
 #: app/assets/javascripts/app/views/generic/actions.jst.eco:5
+#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:23
 #: app/assets/javascripts/app/views/generic/user_permission_group.jst.eco:7
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:32
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:33
@@ -1309,6 +1313,12 @@ msgstr "Налози"
 #: app/assets/javascripts/app/views/twitter/account_edit.jst.eco:12
 msgid "Action"
 msgstr "Радња"
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:79
+#, fuzzy
+#| msgid "Action execution"
+msgid "Action definition"
+msgstr "Извршавање радње"
 
 #: app/assets/javascripts/app/models/trigger.coffee:8
 msgid "Action execution"
@@ -1420,6 +1430,7 @@ msgstr "Адаптер"
 #: app/assets/javascripts/app/views/channel/topics.jst.eco:37
 #: app/assets/javascripts/app/views/generic/application_selector_row.jst.eco:32
 #: app/assets/javascripts/app/views/generic/checklist_item.jst.eco:26
+#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:53
 #: app/assets/javascripts/app/views/generic/postmaster_match.jst.eco:21
 #: app/assets/javascripts/app/views/generic/postmaster_set_row.jst.eco:20
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/row.jst.eco:17
@@ -1839,6 +1850,10 @@ msgstr "Тикети оператера"
 msgid "Agents"
 msgstr "Оператери"
 
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:44
+msgid "Ai Agent"
+msgstr "AI агент"
+
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:71
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:70
 msgid "Ai assistant text tools"
@@ -1903,6 +1918,10 @@ msgid "All computers and browsers that have access to your Zammad appear here."
 msgstr ""
 "Сви рачунари и претраживачи којима се приступа Zammad-у ће бити излистани "
 "овде."
+
+#: app/models/ai/agent/type/ticket_group_dispatcher.rb:24
+msgid "All groups will be considered for dispatching tickets."
+msgstr "Све групе ће бити узете у обзир при додели."
 
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:38
 #: app/frontend/apps/desktop/components/Form/fields/FieldNotifications/FieldNotificationsInput.vue:56
@@ -2753,6 +2772,10 @@ msgstr "Снимање у току…"
 msgid "Autosaving is taking longer than expected…"
 msgstr "Снимање траје нешто дуже…"
 
+#: app/models/ai/agent/type/ticket_group_dispatcher.rb:25
+msgid "Available Groups"
+msgstr "Доступне групе"
+
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:35
 #: app/assets/javascripts/app/models/overview.coffee:8
 msgid "Available for the following roles"
@@ -2815,6 +2838,7 @@ msgstr "Azure AI"
 msgid "BCC address for all outgoing emails"
 msgstr "BCC адреса за све одлазеће имејл поруке"
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:308
 #: app/assets/javascripts/app/views/generic/object_search/item_organization_members.jst.eco:5
 #: app/frontend/apps/desktop/components/CommonSelect/CommonSelect.vue:398
 #: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:412
@@ -3216,6 +3240,7 @@ msgstr ""
 msgid "Cancel"
 msgstr "Откажи"
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:291
 #: app/assets/javascripts/app/controllers/_application_controller/_modal.coffee:117
 #: app/assets/javascripts/app/views/admin_password_auth/request.jst.eco:8
 #: app/assets/javascripts/app/views/admin_password_auth/request_sent.jst.eco:7
@@ -3447,7 +3472,7 @@ msgstr "Канал"
 msgid "Channel Distribution"
 msgstr "Дистрибуција канала"
 
-#: app/assets/javascripts/app/controllers/manage.coffee:42
+#: app/assets/javascripts/app/controllers/manage.coffee:43
 msgid "Channels"
 msgstr "Канали"
 
@@ -3625,6 +3650,18 @@ msgstr "Изабери групу којој ће бити додате пору
 #: app/assets/javascripts/app/views/facebook/account_edit.jst.eco:5
 msgid "Choose the group to which page posts will get added."
 msgstr "Изабери групу којој ће бити додате поруке са страница."
+
+#: app/models/ai/agent/type/ticket_group_dispatcher.rb:16
+msgid ""
+"Choose which groups will be considered for dispatching tickets. If you want "
+"to limit it to specific groups, please select at least two below. Make sure "
+"the groups have clear, descriptive names, as that would be the only context "
+"provided to the AI agent."
+msgstr ""
+"Одаберите које групе ће бити узете у обзир приликом доделе тикета. Уколико "
+"желите да се ограничете на одређене групе, молимо одаберите најмање две "
+"испод. Обратите пажњу да групе имају јасне, описне називе, јер ће то "
+"представљати једини контекст за AI агента."
 
 #: app/assets/javascripts/app/views/profile/language.jst.eco:7
 msgid "Choose your language."
@@ -3815,14 +3852,14 @@ msgid "Close side panel"
 msgstr "Затвори бочни панел"
 
 #: app/assets/javascripts/app/models/macro.coffee:9
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:32
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:41
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketScreenBehavior/behaviorOptions.ts:12
 #: db/seeds/settings.rb:3040
 msgid "Close tab"
 msgstr "Затвори прозор"
 
 #: app/assets/javascripts/app/models/macro.coffee:9
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:37
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:46
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketScreenBehavior/behaviorOptions.ts:16
 #: db/seeds/settings.rb:3041
 msgid "Close tab on ticket close"
@@ -4740,6 +4777,14 @@ msgstr ""
 "Тренутно нема прегледа додељених вашим улогама. Молимо контактирајте "
 "администратора."
 
+#: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:141
+#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:25
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:163
+#: app/frontend/apps/mobile/components/Ticket/TicketItem.vue:35
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:41
+msgid "Currently processing this ticket…"
+msgstr "Тренутно обрађује овај тикет…"
+
 #: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:130
 msgid ""
 "Currently, no overviews are assigned to your roles. Please contact your "
@@ -4751,6 +4796,12 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:28
 msgid "Custom"
 msgstr "Прилагођено"
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:6
+#, fuzzy
+#| msgid "Customer Intent"
+msgid "Custom AI Agent"
+msgstr "Намера клијента"
 
 #: app/assets/javascripts/app/models/webhook.coffee:12
 msgid "Custom Payload"
@@ -4969,7 +5020,7 @@ msgstr "Успешно дешифровање."
 #: app/assets/javascripts/app/views/calendar/index.jst.eco:32
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:228
 #: app/assets/javascripts/app/views/generic/multi_locales.jst.eco:5
-#: app/assets/javascripts/app/views/generic/table_row.jst.eco:78
+#: app/assets/javascripts/app/views/generic/table_row.jst.eco:82
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:8
 #: app/assets/javascripts/app/views/object_manager/attribute/multiselect.jst.eco:9
 #: app/assets/javascripts/app/views/object_manager/attribute/select.jst.eco:9
@@ -6444,14 +6495,14 @@ msgstr "Откажи промене"
 msgid "Discard unsaved reply"
 msgstr "Откажи несачуван одговор"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:58
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:64
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:138
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:134
 msgid "Discard your unsaved changes"
 msgstr "Откажи своје несачуване измене"
 
 #: app/assets/javascripts/app/views/knowledge_base/content.jst.eco:18
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:25
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:34
 msgid "Discard your unsaved changes."
 msgstr "Откажи своје несачуване измене."
 
@@ -6619,7 +6670,7 @@ msgid "Downloading attachments…"
 msgstr "Преузимање прилога…"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:101
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:9
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:18
 msgid "Draft"
 msgstr "Нацрт"
 
@@ -6627,7 +6678,7 @@ msgstr "Нацрт"
 msgid "Draft Available"
 msgstr "Доступан нацрт"
 
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:9
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:18
 msgid "Draft available"
 msgstr "Доступан нацрт"
 
@@ -7417,6 +7468,10 @@ msgstr "Унеси URL твог %s система."
 msgid "Enter the code from your two-factor authenticator app."
 msgstr "Унеси код из своје двофакторске апликације за аутентификацију."
 
+#: app/models/ai/agent/type/custom_ai_agent.rb:37
+msgid "Enter the instruction for the AI agent."
+msgstr ""
+
 #: app/assets/javascripts/app/views/import/otrs.jst.eco:24
 msgid ""
 "Enter the link provided by the plugin at the end of the installation to link "
@@ -7431,6 +7486,10 @@ msgid ""
 msgstr ""
 "Унеси добијени линк од додатка на крају инсталације за повезивање два "
 "система."
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:28
+msgid "Enter the role description of the AI agent."
+msgstr ""
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:28
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:275
@@ -7512,6 +7571,10 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/password_reset.coffee:38
 msgid "Enter your username or email address"
 msgstr "Унеси своје корисничко име или имејл адресу"
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:67
+msgid "Entity context"
+msgstr ""
 
 #: app/models/system_report/plugin/entities/counts.rb:4
 msgid "Entity counts of database objects (e.g. ticket count, user count, etc.)"
@@ -8142,6 +8205,13 @@ msgstr "За додатну подршку, консултујте наш вод
 msgid "For example, recently changed tickets, users, or organizations."
 msgstr "На пример, недавно измењени тикети, корисници или организације."
 
+#: app/models/ai/agent/type/custom_ai_agent.rb:21
+msgid ""
+"For examples, please refer to the built-in AI agent types or our "
+"documentation. This is a highly advanced feature and should be used with "
+"caution."
+msgstr ""
+
 #: app/assets/javascripts/app/views/settings/storage_provider.jst.eco:10
 msgid "For more details, please check out our online documentation %l."
 msgstr "За више детаља, молимо погледајте нашу онлајн документацију %l."
@@ -8154,6 +8224,18 @@ msgid ""
 msgstr ""
 "Из безбедносних разлога, API кључ ће бити приказан само једанпут. Неопходно "
 "је да га сачувате на безбедном месту пре него што наставите."
+
+#: app/assets/javascripts/app/controllers/_ai/form_handler_ai_agent_unused_warning.coffee:14
+msgid "For this agent to run, it needs to be used in a trigger or a scheduler."
+msgstr ""
+"Да би се овај агент извршавао, неопходно га је искористити у окидачу или "
+"планеру."
+
+#: app/assets/javascripts/app/models/ai_agent.coffee:31
+msgid "For this agent to run, it needs to be used in a trigger or scheduler."
+msgstr ""
+"Да би се овај агент извршавао, неопходно га је искористити у окидачу или "
+"планеру."
 
 #: app/frontend/apps/desktop/components/layout/LayoutTaskbarTabContent.vue:62
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:38
@@ -8200,11 +8282,11 @@ msgstr "Није било могуће пронаћи FormSchema."
 msgid "Format"
 msgstr "Формат"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:583
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:592
 msgid "Format as //strikethrough//"
 msgstr "Форматирај као //прецртано//"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:565
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:574
 msgid "Format as _underlined_"
 msgstr "Форматирај као _подвучено_"
 
@@ -8213,15 +8295,15 @@ msgstr "Форматирај као _подвучено_"
 msgid "Format as bold"
 msgstr "Форматирај као подебљано"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:632
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:641
 msgid "Format as h1 heading"
 msgstr "Форматирај као h1 заглавље"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:638
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:647
 msgid "Format as h2 heading"
 msgstr "Форматирај као h2 заглавље"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:644
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:653
 msgid "Format as h3 heading"
 msgstr "Форматирај као h3 заглавље"
 
@@ -8230,7 +8312,7 @@ msgstr "Форматирај као h3 заглавље"
 msgid "Format as italic"
 msgstr "Форматирај као курзив"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:626
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:635
 msgid "Format as ordered list"
 msgstr "Форматирај као листу са бројевима"
 
@@ -8249,15 +8331,15 @@ msgstr "Форматирај као прецртано"
 msgid "Format as underlined"
 msgstr "Форматирај као подвучено"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:620
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:629
 msgid "Format as unordered list"
 msgstr "Форматирај као листу са тачкама"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:571
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:580
 msgid "Format as |bold|"
 msgstr "Форматирај као |подебљано|"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:577
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:586
 msgid "Format as ||italic||"
 msgstr "Форматирај као ||курзив||"
 
@@ -8763,7 +8845,7 @@ msgstr "Обрађено је"
 msgid "Has submenu"
 msgstr "Има подмени"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:43
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:56
 msgid "Has ticket open in tabs, but is not actively looking at the ticket."
 msgstr "Има тикет отворен у прозорима, али није активан."
 
@@ -9652,19 +9734,19 @@ msgstr ""
 "буде видљиво. Неопходно је убацити га на крај изворног кода стране пре "
 "затвореног §</body>§ елемента."
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:614
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:623
 msgid "Inserts a horizontal rule"
 msgstr "Убацује хоризонталну линију"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:547
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:556
 msgid "Inserts a mention for a user"
 msgstr "Убацује помињање корисника"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:541
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:550
 msgid "Inserts knowledge base answer"
 msgstr "Убацује чланак базе знања"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:535
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:544
 msgid "Inserts text module"
 msgstr "Убацује текстуални исечак"
 
@@ -9679,6 +9761,16 @@ msgstr "Инсталирај пакет"
 #: app/assets/javascripts/app/views/package.jst.eco:32
 msgid "Installed"
 msgstr "Инсталирано"
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:34
+#, fuzzy
+#| msgid "Integrations"
+msgid "Instruction"
+msgstr "Интеграције"
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:55
+msgid "Instruction context"
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:45
 msgid "Integer field"
@@ -9979,7 +10071,7 @@ msgstr "Није могуће обрисати системског корисн
 msgid "It is not possible to delete your current account."
 msgstr "Није могуће обрисати ваш тренутни налог."
 
-#: app/models/ticket.rb:279
+#: app/models/ticket.rb:281
 msgid "It is not possible to merge into an already merged ticket."
 msgstr "Није могуће спојити већ спојени тикет."
 
@@ -10200,7 +10292,7 @@ msgstr "Последњи интерни чланак"
 msgid "Last Used"
 msgstr "Последњи пут коришћено"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:123
+#: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:125
 msgid "Last change %s %s by %s"
 msgstr "Последња промена %s %s од стране %s"
 
@@ -10296,6 +10388,7 @@ msgid "Light"
 msgstr "Светло"
 
 #: app/assets/javascripts/app/views/profile/notification.jst.eco:17
+#: app/models/ai/agent/type/ticket_group_dispatcher.rb:23
 msgid "Limit Groups"
 msgstr "Ограничи групе"
 
@@ -10620,7 +10713,7 @@ msgid "Macro group restrictions do not cover all tickets"
 msgstr "Ограничења макро групе не односе се на све тикете"
 
 #: app/assets/javascripts/app/controllers/macro.coffee:3
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:69
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:78
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:206
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:46
 #: db/seeds/permissions.rb:47
@@ -10674,16 +10767,12 @@ msgid "Manage"
 msgstr "Управљање"
 
 #: db/seeds/permissions.rb:246
-#, fuzzy
-#| msgid "Manage AI settings of your system."
 msgid "Manage AI agents of your system."
-msgstr "Управљање AI подешавањима вашег система."
+msgstr "Управљање AI агентима вашег система."
 
 #: db/seeds/permissions.rb:228
-#, fuzzy
-#| msgid "Manage roles of your system."
 msgid "Manage AI provider of your system."
-msgstr "Управљање улогама вашег система."
+msgstr "Управљање AI провајдером вашег система."
 
 #: db/seeds/permissions.rb:258
 msgid "Manage API of your system."
@@ -11520,6 +11609,7 @@ msgstr "Nagios интеграција"
 
 #: app/assets/javascripts/app/controllers/_application_controller/reorder_modal.coffee:13
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:325
+#: app/assets/javascripts/app/controllers/_ui_element/object_attribute_options_context.coffee:21
 #: app/assets/javascripts/app/controllers/chat.coffee:559
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:58
 #: app/assets/javascripts/app/models/_application_model.coffee:156
@@ -11601,7 +11691,7 @@ msgstr "Назив овог безбедносног кључа"
 msgid "Name of form submit button"
 msgstr "Назив дугмета за слање"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:525
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:534
 msgid "Navigate through article"
 msgstr "Кретање кроз чланак"
 
@@ -11673,11 +11763,9 @@ msgstr "Ново"
 msgid "New & Open Tickets"
 msgstr "Нови и отворени тикети"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:51
-#, fuzzy
-#| msgid "AI Agent"
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:55
 msgid "New AI Agent"
-msgstr "AI агент"
+msgstr "Нови AI агент"
 
 #: app/assets/javascripts/app/controllers/api.coffee:190
 msgid "New Access Token is"
@@ -11931,6 +12019,7 @@ msgstr ""
 msgid "New user?"
 msgstr "Нови корисник?"
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:92
 #: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:112
 #: app/assets/javascripts/app/controllers/webhook.coffee:127
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/password_check.coffee:2
@@ -11948,7 +12037,7 @@ msgstr "Следеће"
 msgid "Next State"
 msgstr "Следеће стање"
 
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:43
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:52
 #: app/assets/javascripts/app/views/ticket_zoom/overview_navigator.jst.eco:12
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketScreenBehavior/behaviorOptions.ts:21
 #: db/seeds/settings.rb:3042
@@ -12259,7 +12348,7 @@ msgstr "Нема кључа!"
 msgid "No translation for this locale available"
 msgstr "Нема превода за овај локал"
 
-#: app/models/ticket.rb:402
+#: app/models/ticket.rb:404
 msgid "No triggers active"
 msgstr "Нема активних окидача"
 
@@ -12299,7 +12388,7 @@ msgstr "Не, хвала"
 #: app/assets/javascripts/app/controllers/knowledge_base/permissions_dialog.coffee:9
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_unit.coffee:55
 #: app/assets/javascripts/app/views/data_privacy/tasks.jst.eco:65
-#: app/graphql/gql/types/ticket_type.rb:108 db/seeds/settings.rb:1980
+#: app/graphql/gql/types/ticket_type.rb:109 db/seeds/settings.rb:1980
 msgid "None"
 msgstr "Празно"
 
@@ -12849,7 +12938,7 @@ msgstr "OpenID Connect"
 msgid "OpenID Connect Options"
 msgstr "OpenID Connect опције"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:42
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:55
 msgid "Opened in tabs"
 msgstr "Отворено у прозорима"
 
@@ -13335,11 +13424,11 @@ msgstr "Налепи сертификат"
 msgid "Paste Private Key"
 msgstr "Налепи тајни кључ"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:589
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:598
 msgid "Paste from clipboard"
 msgstr "Налепи из привремене меморије"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:596
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:605
 msgid "Paste from clipboard (plain text)"
 msgstr "Налепи из привремене меморије (обичан текст)"
 
@@ -13548,6 +13637,7 @@ msgstr ""
 msgid "Please enter a text."
 msgstr "Молимо унесите текст."
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:379
 #: app/assets/javascripts/app/controllers/webhook.coffee:96
 msgid "Please enter a valid JSON string."
 msgstr "Молимо унесите исправан JSON низ."
@@ -14215,6 +14305,7 @@ msgstr "Удаљено"
 #: app/assets/javascripts/app/views/channel/topics.jst.eco:32
 #: app/assets/javascripts/app/views/generic/application_selector_row.jst.eco:28
 #: app/assets/javascripts/app/views/generic/application_selector_subclause.jst.eco:15
+#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:32
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/row.jst.eco:14
 #: app/assets/javascripts/app/views/generic/user_permission_group.jst.eco:25
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:39
@@ -14321,11 +14412,11 @@ msgstr "Уклони двофакторску аутентификацију"
 msgid "Removed reaction from message %s from %s"
 msgstr "Уклоњена реакција на поруку %s од %s"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:650
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:659
 msgid "Removes any hyperlink"
 msgstr "Уклони све линкове"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:602
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:611
 msgid "Removes the formatting"
 msgstr "Уклања форматирање"
 
@@ -14649,6 +14740,12 @@ msgstr "Ограничи само на следеће кориснике"
 msgid "Result"
 msgstr "Резултат"
 
+#: app/models/ai/agent/type/custom_ai_agent.rb:43
+#, fuzzy
+#| msgid "Results"
+msgid "Result structure"
+msgstr "Резултати"
+
 #: app/assets/javascripts/app/views/generic/object_import/result.jst.eco:2
 msgid "Result:"
 msgstr "Резултат:"
@@ -14714,6 +14811,12 @@ msgstr "Улога"
 #: app/assets/javascripts/app/controllers/_ui_element/user_permission.coffee:49
 msgid "Role %s is conflicting with role %s, do you want to continue?"
 msgstr "Улога %s је у конфликту са улогом %s, да ли желите да наставите?"
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:25
+#, fuzzy
+#| msgid "Description"
+msgid "Role description"
+msgstr "Опис"
 
 #: app/assets/javascripts/app/controllers/role.coffee:3
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:193
@@ -14945,7 +15048,7 @@ msgid "Save Codes"
 msgstr "Сачувај шифре"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_overwrite_modal.coffee:2
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:65
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:74
 msgid "Save Draft"
 msgstr "Сачувај нацрт"
 
@@ -15081,11 +15184,9 @@ msgstr "URL за претрагу је неисправан."
 msgid "Search URL is missing."
 msgstr "Недостаје URL за претрагу."
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:44
-#, fuzzy
-#| msgid "Search for roles"
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:48
 msgid "Search for AI agents"
-msgstr "Претражи улоге"
+msgstr "Претражи AI агенте"
 
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:25
 msgid "Search for LDAP sources"
@@ -15783,7 +15884,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:28
 #: app/assets/javascripts/app/controllers/_channel/web.coffee:11
 #: app/assets/javascripts/app/controllers/chat.coffee:869
-#: app/assets/javascripts/app/controllers/manage.coffee:43
+#: app/assets/javascripts/app/controllers/manage.coffee:44
 #: app/assets/javascripts/app/controllers/ticket_zoom/setting.coffee:20
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:18
 #: app/assets/javascripts/app/views/ai/providers.jst.eco:10
@@ -15861,7 +15962,7 @@ msgstr "Заједничко поштанско сандуче"
 msgid "Shared organization"
 msgstr "Заједничка организација"
 
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:19
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:28
 msgid "Sharing draft…"
 msgstr "Заједнички нацрт…"
 
@@ -15958,12 +16059,12 @@ msgstr "Прикажи претходни прозор"
 msgid "Show the chat when ready."
 msgstr "Прикажи ћаскање када буде спремно."
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:93
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:104
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationView.vue:78
 msgid "Show ticket actions"
 msgstr "Прикажи радње тикета"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:77
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:81
 msgid "Show ticket viewers"
 msgstr "Прикажи гледаоце тикета"
 
@@ -16460,7 +16561,7 @@ msgid "Status:"
 msgstr "Статус:"
 
 #: app/assets/javascripts/app/models/macro.coffee:9
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:49
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:58
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketScreenBehavior/behaviorOptions.ts:8
 #: db/seeds/settings.rb:3043
 msgid "Stay on tab"
@@ -16556,6 +16657,7 @@ msgstr ""
 "Предмет & референце - Додатна претрага за идентичан предмет чланка и ID "
 "поруке у заглављу референци уколико наставак није подразумевано препознат."
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:317
 #: app/assets/javascripts/app/controllers/_application_controller/form.coffee:2
 #: app/assets/javascripts/app/controllers/tag.coffee:103
 #: app/assets/javascripts/app/controllers/widget/button_with_dropdown.coffee:12
@@ -16679,7 +16781,7 @@ msgstr "Синхронизуј са рачунаром"
 
 #: app/assets/javascripts/app/controllers/_manage/system.coffee:3
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:37
-#: app/assets/javascripts/app/controllers/manage.coffee:45
+#: app/assets/javascripts/app/controllers/manage.coffee:46
 #: app/assets/javascripts/app/views/generic/history.jst.eco:15
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/composables/useHistoryEvents.ts:28
 #: db/seeds/permissions.rb:197 db/seeds/ticket_article_senders.rb:5
@@ -16906,7 +17008,7 @@ msgstr "Текстуални исечци"
 msgid "Text Tools"
 msgstr "Текстуалне алатке"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:556
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:565
 msgid "Text editing"
 msgstr "Уређивање текста"
 
@@ -17355,6 +17457,19 @@ msgstr "Изгубљена је веза са сервером."
 msgid "The connection was refused."
 msgstr "Веза је одбијена."
 
+#: app/models/ai/agent/type/custom_ai_agent.rb:57
+msgid ""
+"The context is a JSON object that contains additional object attribute "
+"information for the AI agent. You can provide any object in the system, "
+"which will be included in the instruction."
+msgstr ""
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:69
+msgid ""
+"The context is a JSON object that defines what information about the current "
+"entity will be provided to the AI agent."
+msgstr ""
+
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/password_check.coffee:45
 #: app/controllers/users_controller.rb:400
 #: app/graphql/gql/mutations/user/current/change_password.rb:30
@@ -17390,6 +17505,18 @@ msgstr ""
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:118
 msgid "The default font size is 12px."
 msgstr "Стандардна величина фонта је 12px."
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:81
+msgid ""
+"The definition is a JSON object that defines the action to be performed by "
+"the AI agent."
+msgstr ""
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:29
+msgid ""
+"The description defines the role of the AI agent. It is used to describe its "
+"purpose and behavior."
+msgstr ""
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:71
 msgid "The device could not be deleted."
@@ -17649,6 +17776,7 @@ msgstr "Одабир месеца"
 msgid "The new ticket number could not be generated."
 msgstr "Није било могуће генерисати нови број тикета."
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:461
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_new.coffee:68
 #: app/assets/javascripts/app/controllers/_channel/_email_signature.coffee:93
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:807
@@ -17819,17 +17947,13 @@ msgstr ""
 "Недостаје конфигурација провајдера. Молимо подесите провајдера пре наставка "
 "у |AI > Провајдери|."
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:62
-#, fuzzy
-#| msgid ""
-#| "The provider configuration is missing. Please set up the provider before "
-#| "proceeding in |AI > Providers|."
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:66
 msgid ""
 "The provider configuration is missing. Please set up the provider before "
 "proceeding in |AI > Provider|."
 msgstr ""
 "Недостаје конфигурација провајдера. Молимо подесите провајдера пре наставка "
-"у |AI > Провајдери|."
+"у |AI > Провајдер|."
 
 #: lib/secure_mailing/pgp/incoming.rb:302
 msgid "The public PGP key could not be found."
@@ -18149,6 +18273,12 @@ msgstr "Одабрана имејл адреса се већ користи за
 msgid "The start date must precede or match end date."
 msgstr "Датум почетка мора бити пре или исти као датум краја."
 
+#: app/models/ai/agent/type/custom_ai_agent.rb:45
+msgid ""
+"The structure is a JSON object that defines the result format to be returned "
+"by the AI agent."
+msgstr ""
+
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:5
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:71
 msgid ""
@@ -18214,6 +18344,12 @@ msgid ""
 "The text at the beginning of the subject in an email reply, e.g. RE, AW, or "
 "AS."
 msgstr "Текст на почетку предмета одговорене имејл поруке, нпр. RE, AW или AS."
+
+#: app/models/ai/agent/type/custom_ai_agent.rb:38
+msgid ""
+"The text defines the instruction for the AI agent. It is used to guide it "
+"and tell it what to do."
+msgstr ""
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts:88
 msgid ""
@@ -18531,11 +18667,6 @@ msgstr ""
 "Овај %s је референциран од стране другог објекта и стога не може бити "
 "обрисан: %s"
 
-#: app/assets/javascripts/app/models/ai_agent.coffee:31
-msgid ""
-"This AI agent is not used in any triggers or schedulers and will not run."
-msgstr ""
-
 #: lib/secure_mailing/pgp/incoming.rb:80
 msgid ""
 "This PGP email does not have exactly two body parts for PGP mails as "
@@ -18761,6 +18892,13 @@ msgstr "Није било могуће остварити везу са овим
 msgid "This is Zammad version %s"
 msgstr "Ово је Zammad верзија %s"
 
+#: app/models/ai/agent/type/custom_ai_agent.rb:10
+msgid ""
+"This is a custom AI Agent type that allows full control over all of its "
+"parts. You can define the role description, instruction and its context, "
+"entity context, result structure, and action definition."
+msgstr ""
+
 #: db/seeds/settings.rb:66
 msgid "This is a default maintenance message. Click here to change."
 msgstr "Ово је подразумевана порука одржавања. Кликните овде да је промените."
@@ -18959,6 +19097,14 @@ msgstr ""
 msgid "This ticket already has a checklist."
 msgstr "Овај тикет већ има списак задатака."
 
+#: app/models/ai/agent/type/ticket_group_dispatcher.rb:10
+msgid ""
+"This type of AI agent can dispatch incoming tickets into an appropriate "
+"group based on their content and topic."
+msgstr ""
+"Овај тип AI агента може доделити одговарајућу групу долазним тикетима на "
+"основу њиховог садржаја и теме."
+
 #: app/policies/ticket/shared_draft_start_policy.rb:26
 msgid "This user does not have access to the given group"
 msgstr "Овај корисник нема приступ датој групи"
@@ -19087,12 +19233,9 @@ msgstr "Клијент тикета"
 msgid "Ticket Duplicate Detection"
 msgstr "Откривање дупликата тикета"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:12
-#: app/assets/javascripts/app/models/ai_agent.coffee:7
-#, fuzzy
-#| msgid "Ticket update"
+#: app/models/ai/agent/type/ticket_group_dispatcher.rb:6
 msgid "Ticket Group Dispatcher"
-msgstr "Освежавање тикета"
+msgstr "Диспечер групе тикета"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/TicketHistoryFlyout.vue:73
 msgid "Ticket History"
@@ -19250,7 +19393,7 @@ msgstr "Ескалација тикета"
 msgid "Ticket failed to save: %s"
 msgstr "Неуспешно снимање тикета: %s"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:85
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:96
 msgid "Ticket has %s viewers"
 msgstr "Тикет има %s гледаоца"
 
@@ -19384,7 +19527,7 @@ msgstr "Неуспело освежавање тикета."
 msgid "Ticket updated successfully."
 msgstr "Тикет је успешно освежен."
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:25
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:27
 msgid "Ticket viewers"
 msgstr "Гледаоци тикета"
 
@@ -20303,7 +20446,7 @@ msgstr "Подаци повратног позива нису подржани."
 
 #: app/assets/javascripts/app/models/ai_agent.coffee:30
 msgid "Unused"
-msgstr ""
+msgstr "Неискоришћено"
 
 #: app/assets/javascripts/app/views/translation/support.jst.eco:6
 msgid ""
@@ -20320,11 +20463,11 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/smime.jst.eco:13
 #: app/assets/javascripts/app/views/knowledge_base/content.jst.eco:25
 #: app/assets/javascripts/app/views/session.jst.eco:12
-#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:57
+#: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:66
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:9
 #: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:9
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:116
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:81
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:87
 msgid "Update"
 msgstr "Освежи"
 
@@ -20709,22 +20852,18 @@ msgid "Used in object views"
 msgstr "Користи се у прегледима објекта"
 
 #: app/assets/javascripts/app/models/ai_agent.coffee:9
-#, fuzzy
-#| msgid "Search for schedulers"
 msgid "Used in schedulers"
-msgstr "Претражи планере"
+msgstr "Користи се у планерима"
 
 #: app/assets/javascripts/app/models/ai_agent.coffee:8
-#, fuzzy
-#| msgid "Used in object views"
 msgid "Used in triggers"
-msgstr "Користи се у прегледима објекта"
+msgstr "Користи се у окидачима"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:530
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:539
 msgid "Used when composing a Ticket article"
 msgstr "Користи се приликом писања чланка тикета"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:560
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:569
 msgid "Used when composing a text"
 msgstr "Користи се приликом писања текста"
 
@@ -20824,6 +20963,7 @@ msgstr ""
 "Није било могуће учитати информаиције о кориснику, молимо проверите дозволе "
 "вашег корисника за повезивање."
 
+#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:39
 #: app/frontend/shared/composables/useAvatarIndicator.ts:77
 msgid "User is editing"
 msgstr "Корисник уређује текст"
@@ -21093,7 +21233,7 @@ msgstr "Погледај из перспективе корисника"
 msgid "View this in Zammad"
 msgstr "Погледај у Zammad"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:29
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:31
 msgid "Viewing ticket"
 msgstr "Гледају тикета"
 
@@ -22428,7 +22568,7 @@ msgstr "не садржи једно"
 msgid "created"
 msgstr "додато"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:66
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:70
 msgid "created %s"
 msgstr "додато %s"
 
@@ -22965,7 +23105,7 @@ msgstr "је погрешне дужине (мора бити %{count} знак/
 msgid "is the wrong length (should be 1 character)"
 msgstr "је погрешне дужине (мора бити један знак)"
 
-#: app/models/user.rb:868
+#: app/models/user.rb:860
 msgid "is too long"
 msgstr "је предугачко"
 
@@ -23733,13 +23873,23 @@ msgstr "…додај URL линк објекта"
 msgid "…add object title"
 msgstr "…додај наслов објекта"
 
-#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:608
+#: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:617
 msgid "…of whole text area"
 msgstr "…целог текстуалног поља"
 
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅ Време чекања данас"
+
+#~ msgid ""
+#~ "This agent is of an unknown type. Editing its entire configuration is "
+#~ "currently not possible."
+#~ msgstr ""
+#~ "Овај агент је непознатог типа. Уређивање његове комплетне конфигурације "
+#~ "тренутно није могуће."
+
+#~ msgid "||unknown||"
+#~ msgstr "||непознато||"
 
 #~ msgid "AI Agents allow to enhance triggers with AI insights AI."
 #~ msgstr ""
