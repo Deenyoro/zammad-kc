@@ -69,6 +69,7 @@ export const TicketAttributesFragmentDoc = gql`
   group {
     id
     name
+    summaryGeneration
     emailAddress {
       name
       emailAddress

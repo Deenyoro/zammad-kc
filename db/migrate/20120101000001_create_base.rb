@@ -126,6 +126,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.boolean :follow_up_assignment,              null: false, default: true
       t.boolean :active,                            null: false, default: true
       t.boolean :shared_drafts,                     null: false, default: true
+      t.string :summary_generation,                 null: false, default: 'global_default'
       t.string :note,                   limit: 250, null: true
       t.integer :updated_by_id,                     null: false
       t.integer :created_by_id,                     null: false

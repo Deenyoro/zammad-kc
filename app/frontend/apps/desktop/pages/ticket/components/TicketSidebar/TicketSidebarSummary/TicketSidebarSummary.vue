@@ -2,13 +2,14 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { ref, effectScope, watch, type EffectScope, computed } from 'vue'
+import { computed, type EffectScope, effectScope, ref, watch } from 'vue'
 
 import { useTicketArticleUpdatesSubscription } from '#shared/entities/ticket/graphql/subscriptions/ticketArticlesUpdates.api.ts'
-import type {
-  AsyncExecutionError,
-  TicketAiAssistanceSummarizePayload,
-  TicketAiAssistanceSummary,
+import {
+  type AsyncExecutionError,
+  EnumTicketSummaryGeneration,
+  type TicketAiAssistanceSummarizePayload,
+  type TicketAiAssistanceSummary,
 } from '#shared/graphql/types.ts'
 import { MutationHandler, SubscriptionHandler } from '#shared/server/apollo/handler/index.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
@@ -24,6 +25,7 @@ import {
 import { useTicketSummaryGenerating } from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/useTicketSummaryGenerating.ts'
 import { usePersistentStates } from '#desktop/pages/ticket/composables/usePersistentStates.ts'
 import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
+import { useTicketSidebar } from '#desktop/pages/ticket/composables/useTicketSidebar.ts'
 import { useTicketSummarySeen } from '#desktop/pages/ticket/composables/useTicketSummarySeen.ts'
 import { useTicketAiAssistanceSummarizeMutation } from '#desktop/pages/ticket/graphql/mutations/ticketAIAssistanceSummarize.api.ts'
 import { useTicketAiAssistanceSummaryUpdatesSubscription } from '#desktop/pages/ticket/graphql/subscriptions/ticketAIAssistanceSummaryUpdates.api.ts'
@@ -32,24 +34,35 @@ import type { TicketSidebarEmits, TicketSidebarProps } from '#desktop/pages/tick
 import TicketSidebarWrapper from '../TicketSidebarWrapper.vue'
 
 const props = defineProps<TicketSidebarProps>()
-
-const { user, hasPermission } = useSessionStore()
-
-const { config } = storeToRefs(useApplicationStore())
-
-const { persistentStates } = usePersistentStates()
-
 const emit = defineEmits<TicketSidebarEmits>()
 
-const { ticketId } = useTicketInformation()
+const { user, hasPermission } = useSessionStore()
+const { config } = storeToRefs(useApplicationStore())
+const { persistentStates } = usePersistentStates()
+const { ticketId, ticket } = useTicketInformation()
+const { activeSidebar } = useTicketSidebar()
+
+const runWhenSidebarIsActive = computed(() => {
+  const groupSummaryGenerationOption = ticket.value?.group.summaryGeneration
+
+  if (groupSummaryGenerationOption === EnumTicketSummaryGeneration.GlobalDefault) {
+    return (
+      summaryConfig.value.generate_on === EnumTicketSummaryGeneration.OnTicketDetailOpening ||
+      activeSidebar.value === 'ticket-summary'
+    )
+  }
+
+  return (
+    groupSummaryGenerationOption === EnumTicketSummaryGeneration.OnTicketDetailOpening ||
+    activeSidebar.value === 'ticket-summary'
+  )
+})
 
 const summaryConfig = computed(
   () => config.value.ai_assistance_ticket_summary_config as SummaryConfig,
 )
 
 const isProviderConfigured = computed(() => !!config.value.ai_provider)
-
-const { ticket } = useTicketInformation()
 
 const isEnabled = computed(
   () =>
@@ -59,6 +72,7 @@ const isEnabled = computed(
       config.value.ai_assistance_ticket_summary
     ),
 )
+const showErrorDetails = computed(() => hasPermission('admin'))
 
 const headings = computed<SummaryItem[]>(() => [
   {
@@ -90,25 +104,28 @@ const { setFingerprint, storeFingerprint, isCurrentTicketSummaryRead, isTicketSt
   useTicketSummarySeen()
 
 const summary = ref<TicketAiAssistanceSummary | null>(null)
-
 const generationError = ref<AsyncExecutionError | null>(null)
+const isRelevantForCurrentUser = ref(true)
 
 const { updateSummaryGenerating, isSummaryGenerating } = useTicketSummaryGenerating()
 
-const showErrorDetails = computed(() => hasPermission('admin'))
-
-let activeDetachedChildScope: EffectScope
-
 const ticketSummaryHandler = new MutationHandler(useTicketAiAssistanceSummarizeMutation())
-
-const isRelevantForCurrentUser = ref(true)
 
 const showUpdateIndicator = computed(
   () =>
     !isCurrentTicketSummaryRead.value &&
     !isTicketStateMerged.value &&
     !isSummaryGenerating.value &&
-    isRelevantForCurrentUser.value,
+    isRelevantForCurrentUser.value &&
+    runWhenSidebarIsActive.value,
+)
+
+watch(
+  () => ticket.value?.group?.id,
+  () => {
+    // If the group changes on runtime, we need to rerun the summary generation.
+    if (runWhenSidebarIsActive.value) getAIAssistanceSummary()
+  },
 )
 
 const updateLocalSummary = (
@@ -124,7 +141,7 @@ const updateLocalSummary = (
 }
 
 const getAIAssistanceSummary = () => {
-  if (!isProviderConfigured.value) return
+  if (!isProviderConfigured.value || !runWhenSidebarIsActive.value) return
 
   summary.value = null
   updateSummaryGenerating(true)
@@ -141,20 +158,25 @@ const getAIAssistanceSummary = () => {
   })
 }
 
+watch(activeSidebar, () => {
+  if (!runWhenSidebarIsActive.value) return
+  getAIAssistanceSummary()
+})
+
 const retrySummaryGeneration = () => {
   summary.value = null
   generationError.value = null
   getAIAssistanceSummary()
 }
 
-const activateSubscription = () => {
+const activateTicketArticleUpdatesSubscription = () => {
   const articleSubscription = new SubscriptionHandler(
     useTicketArticleUpdatesSubscription(
       () => ({
         ticketId: ticketId.value,
       }),
       () => ({
-        enabled: isProviderConfigured.value,
+        enabled: isProviderConfigured.value && runWhenSidebarIsActive.value,
       }),
     ),
   )
@@ -168,7 +190,9 @@ const activateSubscription = () => {
       getAIAssistanceSummary()
     })
   })
+}
 
+const activateTicketSummarySubscription = () => {
   const ticketSummarySubscription = new SubscriptionHandler(
     useTicketAiAssistanceSummaryUpdatesSubscription(
       {
@@ -176,7 +200,7 @@ const activateSubscription = () => {
         locale: user?.preferences?.locale || config.value.locale_default,
       },
       () => ({
-        enabled: isProviderConfigured.value,
+        enabled: isProviderConfigured.value && runWhenSidebarIsActive.value,
       }),
     ),
   )
@@ -208,31 +232,36 @@ const activateSubscription = () => {
   })
 }
 
-const handleDeactivate = () => {
-  activeDetachedChildScope?.stop()
+const activateSubscriptions = () => {
+  activateTicketArticleUpdatesSubscription()
+  activateTicketSummarySubscription()
 }
 
-const handleActivation = () => {
-  activeDetachedChildScope = effectScope(true)
-  activeDetachedChildScope.run(activateSubscription)
+let subscriptionsScope: EffectScope
+
+const handleDeactivateSubscriptions = () => subscriptionsScope?.stop()
+
+const handleActivateSubscriptions = () => {
+  subscriptionsScope = effectScope()
+  subscriptionsScope.run(activateSubscriptions)
   getAIAssistanceSummary()
 }
 
-useReactivate(handleActivation, handleDeactivate)
+useReactivate(handleActivateSubscriptions, handleDeactivateSubscriptions)
 
 watch(
   isEnabled,
   (showSidebar) => {
     if (showSidebar) {
-      activeDetachedChildScope = effectScope(true)
-      activeDetachedChildScope.run(activateSubscription)
+      subscriptionsScope = effectScope()
+      subscriptionsScope.run(activateSubscriptions)
 
       getAIAssistanceSummary()
 
       emit('show')
     } else {
       emit('hide')
-      activeDetachedChildScope?.stop()
+      subscriptionsScope?.stop()
     }
   },
   { immediate: true },

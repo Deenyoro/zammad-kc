@@ -2993,7 +2993,7 @@ msgstr ""
 msgid "Checklist Template items are limited to 100 items per checklist."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:191
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:219
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:61
 msgid "Checklist item successfully added."
 msgstr ""
@@ -3622,9 +3622,9 @@ msgstr ""
 msgid "Contributing Translations"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:34
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:36
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:4
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:71
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:85
 msgid "Conversation Summary"
 msgstr ""
 
@@ -4154,9 +4154,9 @@ msgstr ""
 msgid "Customer Chat"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:27
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:29
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:66
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:80
 msgid "Customer Intent"
 msgstr ""
 
@@ -4528,6 +4528,10 @@ msgstr ""
 
 #: db/seeds/settings.rb:3645
 msgid "Defines endpoint of Elasticsearch."
+msgstr ""
+
+#: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:41
+msgid "Defines global configuration when the summary will be generated in the ticket zoom."
 msgstr ""
 
 #: db/seeds/settings.rb:3006
@@ -6102,7 +6106,7 @@ msgstr ""
 msgid "Enable or disable self-shutdown of Zammad processes after significant configuration changes. This should only be used if the controlling process manager like systemd or docker supports an automatic restart policy."
 msgstr ""
 
-#: db/seeds/settings.rb:6119
+#: db/seeds/settings.rb:6120
 msgid "Enable or disable the AI assistance text tools."
 msgstr ""
 
@@ -7236,6 +7240,10 @@ msgstr ""
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:39
 msgid "Generating text…"
+msgstr ""
+
+#: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:40
+msgid "Generation"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_integration/cti.coffee:264
@@ -10899,7 +10907,7 @@ msgstr ""
 msgid "Not Found"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:236
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:264
 msgid "Not all checklist items could be added."
 msgstr ""
 
@@ -11198,6 +11206,16 @@ msgstr ""
 msgid "On %s, %s wrote:"
 msgstr ""
 
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:72
+#: db/seeds/object_manager_attributes.rb:2412
+msgid "On ticket detail opening"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:77
+#: db/seeds/object_manager_attributes.rb:2416
+msgid "On ticket summary sidebar activation"
+msgstr ""
+
 #: app/assets/javascripts/app/views/translation/description.jst.eco:10
 msgid "On-screen Translation"
 msgstr ""
@@ -11296,9 +11314,9 @@ msgstr ""
 msgid "Open Checklist"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:41
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:43
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:76
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:90
 msgid "Open Questions"
 msgstr ""
 
@@ -12402,15 +12420,15 @@ msgstr ""
 msgid "Protocol"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:36
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:38
 msgid "Provide a summary of the conversation between customer and support agent."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:29
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:31
 msgid "Provide a summary of the problem the customer needs to get resolved."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:43
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:45
 msgid "Provide a summary of the questions raised in the conversation."
 msgstr ""
 
@@ -12419,7 +12437,7 @@ msgstr ""
 msgid "Provide position of all items in scope"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:50
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:52
 msgid "Provide some possible solutions to the problem as follow-up items."
 msgstr ""
 
@@ -13392,7 +13410,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1130
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1132
 msgid "Saving failed."
 msgstr ""
 
@@ -14944,15 +14962,19 @@ msgstr ""
 msgid "Subscription settings"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:47
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:49
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:6
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:81
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:95
 msgid "Suggested Next Steps"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:45
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:71
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/ticket-summary.ts:11
 msgid "Summary"
+msgstr ""
+
+#: db/seeds/object_manager_attributes.rb:2402
+msgid "Summary Generation"
 msgstr ""
 
 #: app/assets/javascripts/app/models/user.coffee:336
@@ -15187,7 +15209,7 @@ msgstr ""
 msgid "Text Modules"
 msgstr ""
 
-#: db/seeds/settings.rb:6116
+#: db/seeds/settings.rb:6117
 msgid "Text Tools"
 msgstr ""
 
@@ -15562,7 +15584,7 @@ msgstr ""
 msgid "The chat will show up once the connection to the server got established and if there is an operator online to chat with."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:196
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:224
 msgid "The checklist item could not be added."
 msgstr ""
 
@@ -18396,6 +18418,10 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:538
 msgid "Use double click to change level of the row."
+msgstr ""
+
+#: db/seeds/object_manager_attributes.rb:2408
+msgid "Use global default"
 msgstr ""
 
 #: app/assets/javascripts/app/models/application.coffee:8

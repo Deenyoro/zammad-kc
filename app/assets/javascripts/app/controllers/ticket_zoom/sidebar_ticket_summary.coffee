@@ -11,12 +11,20 @@ class App.SidebarTicketSummary extends App.Controller
 
     @controllerBind('config_update', @configHasChanged)
 
-    return if !@sidebarIsEnabled()
+    return if !@parent?.activeState
+
+    @ticketZoomShown()
+
+  activateSummary: =>
+    return if @summaryActivated
+
+    @summaryActivated = true
 
     @loadSummarization()
 
     # load new summary if it has changed
     @controllerBind('ticket::summary::update', (data) =>
+      return if !@sidebarIsEnabled()
       return if data.ticket_id.toString() isnt @ticket.id.toString()
       return if data.locale isnt App.i18n.get()
 
@@ -24,16 +32,60 @@ class App.SidebarTicketSummary extends App.Controller
         @renderSummarization(error: true)
         return
 
+      if !@isLoadSummaryNow()
+        @waitingSummarization = true
+        return
+
       @loadSummarization()
     )
 
     # check if new summary need ot get requested
     @controllerBind('ui::ticket::load', (data) =>
+      return if !@sidebarIsEnabled()
       return if data.ticket_id.toString() isnt @ticket.id.toString()
       return if !@summaryReloadNeeded()
 
       @loadSummarization()
     )
+
+  isLoadSummaryNow: =>
+    if @summarizeOnTicketShow()
+      !!@parent?.activeState
+    else
+      @parent?.activeState && @isVisible()
+
+  isVisible: =>
+    @parentSidebar?.currentTab == @sidebarItem()?.name
+
+  ticketZoomShown: =>
+    return if !@sidebarIsEnabled()
+
+    if @summaryActivated
+      if @waitingSummarization && @isLoadSummaryNow()
+        @loadSummarization()
+      return
+
+    return if !@summarizeOnTicketShow()
+    @activateSummary()
+
+  configHasChangedLoadSummary: =>
+    return if !@sidebarIsEnabled()
+
+    if !@isLoadSummaryNow()
+      @waitingSummarization = true
+      return
+
+    @loadSummarization()
+
+  summarizeOnTicketShow: =>
+    switch @ticket.group?.summary_generation
+      when 'on_ticket_detail_opening'
+        true
+      when 'on_ticket_summary_sidebar_activation'
+        false
+      else
+        setting = App.Config.get('ai_assistance_ticket_summary_config') || {}
+        setting['generate_on'] != 'on_ticket_summary_sidebar_activation'
 
   sidebarItem: =>
     return if !@sidebarIsEnabled()
@@ -68,6 +120,13 @@ class App.SidebarTicketSummary extends App.Controller
 
     @badgeRenderLocal()
 
+    if @summaryActivated
+      if @waitingSummarization && !@summarizeOnTicketShow()
+        @loadSummarization()
+      return
+
+    @activateSummary()
+
   sidebarIsEnabled: =>
     return false if !App.Config.get('ai_provider')
     return false if !App.Config.get('ai_assistance_ticket_summary')
@@ -84,7 +143,7 @@ class App.SidebarTicketSummary extends App.Controller
       when 'ai_assistance_ticket_summary'
         App.Event.trigger('ui::ticket::sidebarRerender', { taskKey: @taskKey })
       when 'ai_assistance_ticket_summary_config'
-        @loadSummarization()
+        @configHasChangedLoadSummary()
       when 'checklist'
         @renderSummarization({})
 
@@ -154,6 +213,9 @@ class App.SidebarTicketSummary extends App.Controller
       sender.name != 'System' && article.body?.length > 0
 
   loadSummarization: =>
+    return if !@sidebarIsEnabled()
+    @waitingSummarization = false
+
     @ajax(
       id:    "ticket-intelligence-enqueue-#{@taskKey}"
       type:  'POST'

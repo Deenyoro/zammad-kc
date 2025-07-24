@@ -104,7 +104,7 @@ export const createDummyTicket = <R = TicketQuery['ticket']>(options?: {
   organization?: TicketQuery['ticket']['organization']
   state?: TicketQuery['ticket']['state']
   articleType?: string
-  group?: TicketQuery['ticket']['group']
+  group?: Partial<TicketQuery['ticket']['group']>
   defaultPriority?: TicketQuery['ticket']['priority']
   defaultPolicy?: TicketQuery['ticket']['policy']
   mentions?: TicketQuery['ticket']['mentions']

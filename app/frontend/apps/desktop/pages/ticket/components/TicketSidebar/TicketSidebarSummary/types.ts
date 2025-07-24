@@ -18,4 +18,5 @@ export interface SummaryConfig {
   conversation_summary: boolean
   open_questions: boolean
   suggestions: boolean
+  generate_on: string
 }

@@ -2395,3 +2395,50 @@ ObjectManager::Attribute.add(
   to_delete:   false,
   position:    1800,
 )
+
+ObjectManager::Attribute.add(
+  force:       true,
+  object:      'Group',
+  name:        'summary_generation',
+  display:     __('Summary Generation'),
+  data_type:   'select',
+  data_option: {
+    default:    'global_default',
+    options:    [
+      {
+        name:  __('Use global default'),
+        value: 'global_default'
+      },
+      {
+        name:  __('On ticket detail opening'),
+        value: 'on_ticket_detail_opening'
+      },
+      {
+        name:  __('On ticket summary sidebar activation'),
+        value: 'on_ticket_summary_sidebar_activation'
+      }
+    ],
+    nulloption: false,
+    multiple:   false,
+    null:       false,
+    translate:  true,
+  },
+  editable:    true,
+  active:      true,
+  screens:     {
+    create: {
+      '-all-' => {
+        null: false,
+      },
+    },
+    edit:   {
+      '-all-' => {
+        null: false,
+      },
+    },
+  },
+  to_create:   false,
+  to_migrate:  false,
+  to_delete:   false,
+  position:    1450,
+)

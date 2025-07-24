@@ -6111,6 +6111,7 @@ Setting.create_if_not_exists(
   state:       {
     open_questions: true,
     suggestions:    false,
+    generate_on:    'on_ticket_detail_opening',
   },
   preferences: {
     authentication: true,

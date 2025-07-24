@@ -255,6 +255,8 @@ class App.TicketZoom extends App.Controller
     if @articleNew
       @articleNew.show()
 
+    @sidebarWidget?.ticketZoomShown()
+
     return if !@attributeBar
     @attributeBar.start()
 

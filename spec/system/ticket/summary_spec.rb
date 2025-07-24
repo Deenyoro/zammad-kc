@@ -13,12 +13,17 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
   let(:updated_summary)              { "updated #{Faker::Lorem.unique.sentence}" }
   let(:initial_cache_key)            { "ticket_summary_#{ticket.id}" }
   let(:updated_cache_key)            { "ticket_summary_#{ticket.id}_2" }
+  let(:ticket_summary_generation)    { 'on_ticket_detail_opening' }
 
   def authenticate
     Setting.set('ai_provider', ai_provider)
     Setting.set('ai_assistance_ticket_summary', ai_assistance_ticket_summary)
     Setting.set('checklist', checklist)
-    Setting.set('ai_assistance_ticket_summary_config', { open_questions: true, suggestions: true })
+    Setting.set('ai_assistance_ticket_summary_config', {
+                  open_questions: true,
+                  suggestions:    true,
+                  generate_on:    ticket_summary_generation
+                })
 
     article
 
@@ -46,11 +51,11 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
       allow_any_instance_of(AI::Service::TicketSummarize)
         .to receive(:ask_provider).and_return(updated_content)
     end
-
-    visit "ticket/zoom/#{ticket.id}"
   end
 
   describe 'Sidebar' do
+    before { visit "ticket/zoom/#{ticket.id}" }
+
     context 'when ai_provider is set' do
       before do
         click '.tabsSidebar-tab[data-tab=summary]'
@@ -137,6 +142,8 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
   end
 
   describe 'Dot', performs_jobs: true do
+    before { visit "ticket/zoom/#{ticket.id}" }
+
     context 'when summary was updated before opening the tab' do
       it 'dot is visible but gone after looking at the sidebar' do
         expect(page).to have_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
@@ -213,4 +220,75 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
     end
   end
 
+  describe 'Requesting a summary' do
+    let(:other_ticket) { create(:ticket, group: ticket.group) }
+
+    context 'when requesting on opening a ticket' do
+      it 'makes a request for a summary on opening a ticket' do
+        # Create multiple taskbars
+        visit "ticket/zoom/#{ticket.id}"
+        visit "ticket/zoom/#{other_ticket.id}"
+
+        visit '#dashboard'
+
+        # Reload the app to ensure the summary subscriptions are not set up
+        refresh
+
+        allow(Service::Ticket::AIAssistance::Summarize).to receive(:new).and_call_original
+
+        visit "ticket/zoom/#{ticket.id}"
+
+        within :active_content do
+          expect(page).to have_text ticket.title
+        end
+
+        # Expect exactly once, this checks if non-active taskbar is not subscribing on app load
+        expect(Service::Ticket::AIAssistance::Summarize).to have_received(:new).once
+      end
+    end
+
+    context 'when requesting on opening a sidebar' do
+      let(:ticket_summary_generation) { 'on_ticket_summary_sidebar_activation' }
+
+      it 'makes a request for a summary on clicking on sidebar' do
+        visit '#dashboard'
+
+        allow(Service::Ticket::AIAssistance::Summarize).to receive(:new).and_call_original
+
+        visit "ticket/zoom/#{ticket.id}"
+
+        expect(page).to have_text ticket.title
+
+        expect(Service::Ticket::AIAssistance::Summarize).not_to have_received(:new)
+
+        click '.tabsSidebar-tab[data-tab=summary]'
+
+        expect(Service::Ticket::AIAssistance::Summarize).to have_received(:new).once
+      end
+    end
+
+    context 'when group generation setting is configured' do
+      let(:ticket_summary_generation) { 'on_ticket_detail_opening' }
+
+      before do
+        ticket.group.update!(summary_generation: 'on_ticket_summary_sidebar_activation')
+      end
+
+      it 'uses the group setting over the default' do
+        visit '#dashboard'
+
+        allow(Service::Ticket::AIAssistance::Summarize).to receive(:new).and_call_original
+
+        visit "ticket/zoom/#{ticket.id}"
+
+        expect(page).to have_text ticket.title
+
+        expect(Service::Ticket::AIAssistance::Summarize).not_to have_received(:new)
+
+        click '.tabsSidebar-tab[data-tab=summary]'
+
+        expect(Service::Ticket::AIAssistance::Summarize).to have_received(:new).once
+      end
+    end
+  end
 end

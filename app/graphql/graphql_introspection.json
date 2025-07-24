@@ -5294,6 +5294,35 @@
         },
         {
           "kind": "ENUM",
+          "name": "EnumTicketSummaryGeneration",
+          "description": "Defines when the ticket summary should be generated",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "global_default",
+              "description": "Use global default setting.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "on_ticket_detail_opening",
+              "description": "On ticket detail opening",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "on_ticket_summary_sidebar_activation",
+              "description": "On ticket summary sidebar activation",
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
           "name": "EnumTwoFactorAuthenticationMethod",
           "description": "Possible two factor authentication methods (availability depends on system configuration)",
           "fields": null,
@@ -5865,6 +5894,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "summaryGeneration",
+              "description": "Ticket summary generation behavior for this group",
+              "args": [],
+              "type": {
+                "kind": "ENUM",
+                "name": "EnumTicketSummaryGeneration",
                 "ofType": null
               },
               "isDeprecated": false,
