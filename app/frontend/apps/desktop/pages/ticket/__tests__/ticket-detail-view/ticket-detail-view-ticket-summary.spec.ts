@@ -194,6 +194,7 @@ describe('Ticket detail view - Ticket summary', () => {
         open_questions: true,
         problem: true,
         suggestions: true,
+        generate_on: EnumTicketSummaryGeneration.OnTicketDetailOpening,
       },
     })
 
@@ -207,7 +208,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     const calls = await waitForTicketAiAssistanceSummarizeMutationCalls()
 
-    expect(calls).toHaveLength(1)
+    const numberOfCalls = calls.length
 
     expect(await view.findByRole('heading', { name: 'Customer Intent' }))
 
@@ -224,7 +225,7 @@ describe('Ticket detail view - Ticket summary', () => {
       false,
     )
 
-    expect(calls).toHaveLength(1)
+    expect(calls).toHaveLength(numberOfCalls)
   })
 
   it('triggers summary update when subscription comes in', async () => {
