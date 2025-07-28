@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 
 # core - base
-ruby '3.3.8'
+ruby '3.3.9'
 gem 'rails', '~> 7.2.0'
 gem 'rake'
 
