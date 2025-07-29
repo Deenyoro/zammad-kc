@@ -20,6 +20,7 @@ import { useSessionStore } from '#shared/stores/session.ts'
 import emitter from '#shared/utils/emitter.ts'
 
 import { initializeConfirmationDialog } from '#desktop/components/CommonConfirmationDialog/initializeConfirmationDialog.ts'
+import { useBetaDisclaimer } from '#desktop/composables/useBetaDisclaimer.ts'
 import { useTicketOverviewsStore } from '#desktop/entities/ticket/stores/ticketOverviews.ts'
 import { useUserCurrentTaskbarTabsStore } from '#desktop/entities/user/current/stores/taskbarTabs.ts'
 
@@ -41,6 +42,9 @@ usePushMessages()
 // Add a check for authenticated changes (e.g. login/logout in a other
 // browser tab or maintenance mode switch).
 useAuthenticationChanges()
+
+// Shows the warning for the usage of the desktop view(beta). REMOVE when stable.
+useBetaDisclaimer()
 
 // We need to trigger a manual translation update for the form related strings.
 const formConfig = useFormKitConfig()
