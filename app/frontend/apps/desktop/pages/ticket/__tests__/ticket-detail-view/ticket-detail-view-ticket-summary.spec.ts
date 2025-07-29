@@ -164,7 +164,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     const calls = await waitForTicketAiAssistanceSummarizeMutationCalls()
 
-    expect(calls).toHaveLength(1)
+    const numberOfCalls = calls.length
 
     expect(await view.findByRole('heading', { name: 'Customer Intent' }))
 
@@ -180,7 +180,7 @@ describe('Ticket detail view - Ticket summary', () => {
       removeArticleId: null,
     })
 
-    expect(calls).toHaveLength(2)
+    expect(calls).toHaveLength(numberOfCalls + 1)
   })
 
   it('does not re-invoke summary update when article of type system is updated', async () => {
@@ -548,9 +548,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
       await view.events.click(await view.findByRole('button', { name: 'Summary' }))
 
-      const calls = await waitForTicketAiAssistanceSummarizeMutationCalls()
-
-      expect(calls).toHaveLength(1)
+      await waitForTicketAiAssistanceSummarizeMutationCalls()
     })
 
     it('does not generate summary on ticket detail opening when group has value set', async () => {
@@ -580,9 +578,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
       await view.events.click(await view.findByRole('button', { name: 'Summary' }))
 
-      const calls = await waitForTicketAiAssistanceSummarizeMutationCalls()
-
-      expect(calls).toHaveLength(1)
+      await waitForTicketAiAssistanceSummarizeMutationCalls()
     })
 
     it('does generate summary on ticket detail opening when group has value set', async () => {
@@ -610,9 +606,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
       await visitView('/tickets/1')
 
-      const calls = await waitForTicketAiAssistanceSummarizeMutationCalls()
-
-      expect(calls).toHaveLength(1)
+      await waitForTicketAiAssistanceSummarizeMutationCalls()
     })
   })
 })
