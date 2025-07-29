@@ -359,6 +359,7 @@ class Download extends App.Controller
       value
 
     params =
+      tableId: "report_preview_#{@params.downloadBackendSelected}"
       el: @el.find('.js-dataDownloadTable')
       model: App.Ticket
       objects: tickets
