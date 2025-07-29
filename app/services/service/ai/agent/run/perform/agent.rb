@@ -19,7 +19,6 @@ class Service::AI::Agent::Run::Perform::Agent < SimpleDelegator
         objects:                { ai_agent_result: perform_ai_result_object },
         template:               action_mapping.to_json,
         escape:                 false,
-        url_encode:             true,
         ignore_missing_objects: true,
       ).render(debug_errors: false)
 
