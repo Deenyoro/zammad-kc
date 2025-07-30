@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe TriggerWebhookJob::CustomPayload::Track::Notification do
+RSpec.describe Service::Template::Interpolation::Interpolator::Webhook::Track::Notification do
   let(:ticket)  { create(:ticket) }
   let(:article) { create(:ticket_article, body: "Text with\nnew line.") }
 

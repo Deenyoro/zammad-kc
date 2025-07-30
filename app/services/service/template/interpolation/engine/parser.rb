@@ -1,11 +1,11 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-module TriggerWebhookJob::CustomPayload::Parser
+module Service::Template::Interpolation::Engine::Parser
   # This module is used to scan, collect all replacment variables within a
   # custom payload, parse them for validity and replace, escape certain
   # characters in the final payload.
 
-  private
+  extend ActiveSupport::Concern
 
   STRING_LIKE_CLASSES = %w[
     String

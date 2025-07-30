@@ -1,11 +1,11 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-module TriggerWebhookJob::CustomPayload::Validator
+module Service::Template::Interpolation::Engine::Validator
   # This module validates replacement variables if there executed reference
   # object or method is allowed. This prevents the execution of arbitrary
   # code.
 
-  private
+  extend ActiveSupport::Concern
 
   ALLOWED_SIMPLE_CLASSES = %w[
     Integer
@@ -77,7 +77,7 @@ module TriggerWebhookJob::CustomPayload::Validator
   end
 
   # Any top level object must be provided by the tracks hash (ticket, article,
-  # notification by default, any further information is related to the webhook
+  # notification by default, any further information is related to the usage object
   # content).
   def validate_object!(object, tracks)
     return "\#{no object provided}"         if object.blank?
@@ -108,7 +108,9 @@ module TriggerWebhookJob::CustomPayload::Validator
 
     # The next method to be called must be explicit allowed within the
     # referenced track classes.
-    tracks.select { |t| t.klass == klass }.each do |track|
+    available_tracks = self.class.tracks
+
+    available_tracks.select { |t| t.klass == klass }.each do |track|
       return true if track.functions.include?(method)
     end
 

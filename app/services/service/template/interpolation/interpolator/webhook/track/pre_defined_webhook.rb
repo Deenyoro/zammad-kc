@@ -1,6 +1,6 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-class TriggerWebhookJob::CustomPayload::Track::PreDefinedWebhook < TriggerWebhookJob::CustomPayload::Track
+class Service::Template::Interpolation::Interpolator::Webhook::Track::PreDefinedWebhook < Service::Template::Interpolation::Engine::Track
   WEBHOOK_PREDEFINED_CLASS_PREFIX = 'Webhook::PreDefined::'.freeze
 
   class << self
@@ -34,7 +34,7 @@ class TriggerWebhookJob::CustomPayload::Track::PreDefinedWebhook < TriggerWebhoo
 
     def generate(tracks, data)
       webhook = data[:webhook]
-      return if webhook.pre_defined_webhook_type.blank?
+      return if webhook&.pre_defined_webhook_type.blank?
 
       @type = webhook.pre_defined_webhook_type
 
