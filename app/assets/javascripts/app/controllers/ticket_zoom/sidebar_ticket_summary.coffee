@@ -39,11 +39,12 @@ class App.SidebarTicketSummary extends App.Controller
       @loadSummarization()
     )
 
-    # check if new summary need ot get requested
+    # check if new summary needs to be requested
     @controllerBind('ui::ticket::load', (data) =>
       return if !@sidebarIsEnabled()
       return if data.ticket_id.toString() isnt @ticket.id.toString()
       return if !@summaryReloadNeeded()
+      return if !@isLoadSummaryNow()
 
       @loadSummarization()
     )
@@ -78,7 +79,11 @@ class App.SidebarTicketSummary extends App.Controller
     @loadSummarization()
 
   summarizeOnTicketShow: =>
-    switch @ticket.group?.summary_generation
+    # Ticket object may have old group contents cached in some cases
+    # Load group object directly to make sure it's up to date
+    groupSetting = App.Group.find(@ticket.group_id)?.summary_generation
+
+    switch groupSetting
       when 'on_ticket_detail_opening'
         true
       when 'on_ticket_summary_sidebar_activation'
