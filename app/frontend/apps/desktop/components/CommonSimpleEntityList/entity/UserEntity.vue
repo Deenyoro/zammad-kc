@@ -28,8 +28,9 @@ defineProps<Props>()
             'outline-2! outline-blue-800!': slotProps?.isOpen && slotProps.hasOpenViaLongClick,
           }"
           :entity="entity"
+          size="small"
         />
-        <CommonLabel class="block truncate">{{ entity.fullname }}</CommonLabel>
+        <CommonLabel class="block truncate text-blue-800!">{{ entity.fullname }}</CommonLabel>
       </div>
     </template>
   </UserPopoverWithTrigger>

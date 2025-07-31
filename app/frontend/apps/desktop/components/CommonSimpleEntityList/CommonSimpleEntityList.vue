@@ -41,7 +41,13 @@ const entitySetup = computed(() => {
 </script>
 
 <template>
-  <CommonSectionCollapse :id="id" v-model="modelValue" :title="label" :no-header="!label">
+  <CommonSectionCollapse
+    :id="id"
+    v-model="modelValue"
+    :title="label"
+    :no-header="!label"
+    container-class="flex flex-col gap-1.5"
+  >
     <ul v-if="entity.array?.length" class="flex flex-col gap-1.5">
       <li v-for="item in entitySetup.array" :key="`entity-${item.id}`">
         <component :is="entitySetup.component" :entity="item" :context="entitySetup.context" />

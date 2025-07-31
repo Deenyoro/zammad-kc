@@ -2,12 +2,14 @@
 
 <script setup lang="ts">
 import { toRef } from 'vue'
+import { useRouter } from 'vue-router'
 
 import type { AvatarUser } from '#shared/components/CommonUserAvatar/types.ts'
 import ObjectAttributes from '#shared/components/ObjectAttributes/ObjectAttributes.vue'
 import { useDebouncedLoading } from '#shared/composables/useDebouncedLoading.ts'
 import { useUserDetail } from '#shared/entities/user/composables/useUserDetail.ts'
 
+import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonSimpleEntityList from '#desktop/components/CommonSimpleEntityList/CommonSimpleEntityList.vue'
 import { EntityType } from '#desktop/components/CommonSimpleEntityList/types.ts'
 import UserInfo from '#desktop/components/User/UserInfo.vue'
@@ -26,6 +28,14 @@ const { user, loading, secondaryOrganizations, objectAttributes } = useUserDetai
 const { debouncedLoading } = useDebouncedLoading({
   isLoading: loading,
 })
+
+const router = useRouter()
+
+const goToUserProfile = () => {
+  if (!user.value) return
+
+  router.push(`/user/${user.value.internalId}`)
+}
 </script>
 
 <template>
@@ -36,7 +46,8 @@ const { debouncedLoading } = useDebouncedLoading({
 
       <ObjectAttributes
         :class="{
-          'border-b border-white pb-2.5 dark:border-black': secondaryOrganizations?.totalCount,
+          'border-b border-neutral-100 dark:border-gray-900 pb-2.5':
+            secondaryOrganizations?.totalCount,
         }"
         :object="user!"
         :attributes="objectAttributes"
@@ -52,14 +63,15 @@ const { debouncedLoading } = useDebouncedLoading({
         :entity="secondaryOrganizations"
       >
         <template #trailing="{ totalCount, entities }">
-          <CommonLink
+          <CommonButton
             v-if="totalCount - entities.length"
-            class="float-right mt-2 inline-block"
+            class="self-end"
+            variant="secondary"
             size="small"
-            internal
-            :link="`/user/${user!.internalId}`"
-            >{{ $t('%s more', totalCount - entities.length) }}</CommonLink
+            @click="goToUserProfile"
           >
+            {{ $t('%s more', totalCount - entities.length) }}
+          </CommonButton>
         </template>
       </CommonSimpleEntityList>
     </template>
