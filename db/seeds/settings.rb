@@ -4236,7 +4236,7 @@ Setting.create_if_not_exists(
 
 Setting.create_if_not_exists(
   title:       __('Defines postmaster filter.'),
-  name:        '0005_postmaster_filter_trusted',
+  name:        '0000_postmaster_filter_trusted',
   area:        'Postmaster::PreFilter',
   description: __('Defines postmaster filter to remove X-Zammad headers from untrustworthy sources.'),
   options:     {},
@@ -4335,7 +4335,7 @@ Setting.create_if_not_exists(
 )
 Setting.create_if_not_exists(
   title:       __('Defines postmaster filter.'),
-  name:        '0016_postmaster_filter_secure_mailing',
+  name:        '0001_postmaster_filter_secure_mailing',
   area:        'Postmaster::PreFilter',
   description: __('Defines postmaster filter to handle secure mailing.'),
   options:     {},
