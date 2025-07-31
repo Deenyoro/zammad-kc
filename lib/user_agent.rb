@@ -231,7 +231,7 @@ class UserAgent
         body:    response.body,
         header:  response.each_header.to_h,
       )
-    when Net::HTTPInternalServerError
+    when Net::HTTPServerError # Covers Net::HTTPInternalServerError, Net::HTTPServiceUnavailable etc
       return Result.new(
         error:   "Server Error: #{response.inspect}!",
         success: false,
