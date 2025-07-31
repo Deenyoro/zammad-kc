@@ -86,13 +86,19 @@ class AI::Agent < ApplicationModel
   def execution_definition
     return definition if agent_type.blank?
 
-    agent_type_object.definition.deep_stringify_keys.deep_merge(definition)
+    agent_type_object.execution_definition.deep_stringify_keys.deep_merge(definition)
   end
 
   def execution_action_definition
     return action_definition if agent_type.blank?
 
-    agent_type_object.action_definition.deep_stringify_keys.deep_merge(action_definition)
+    agent_type_object.execution_action_definition.deep_stringify_keys.deep_merge(action_definition)
+  end
+
+  def agent_type_object
+    @agent_type_object ||= agent_type_class&.new(
+      type_enrichment_data:,
+    )
   end
 
   private
@@ -101,9 +107,5 @@ class AI::Agent < ApplicationModel
     return if agent_type.blank?
 
     "AI::Agent::Type::#{agent_type}".constantize
-  end
-
-  def agent_type_object
-    @agent_type_object ||= agent_type_class&.new
   end
 end

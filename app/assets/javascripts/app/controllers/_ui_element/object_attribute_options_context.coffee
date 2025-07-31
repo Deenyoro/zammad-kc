@@ -1,10 +1,10 @@
 # coffeelint: disable=camel_case_classes
 class App.UiElement.object_attribute_options_context extends Spine.Module
   @render: (attribute, params = {}) ->
-    related_object_attribute = @fetchObjectManagerAttribute(attribute)
+    related_object_attribute = @fetchObjectManagerAttribute(attribute, params)
 
     if !related_object_attribute
-      return console.error('Related object attribute not found', attribute.object_attribute_object, attribute.object_attribute_name)
+      return console.error('Related object attribute not found', attribute.object_attribute_object, attribute.object_attribute_name || attribute.related_object_attribute_selection_name)
 
     allFlatOptions = @buildOptions(related_object_attribute)
 
@@ -20,6 +20,7 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
       limitActive:            optionsSelected.length > 0 or not _.isObject(attribute.value),
       objectAttributeDisplay: related_object_attribute.display or __('Name')
       required:               not attribute.null
+      showDescription:        attribute.show_description or false
     ))
 
     item.find('input[type="checkbox"]').off('click.limit_toggle').on('click.limit_toggle', (e) =>
@@ -30,8 +31,9 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
       @updateRequiredValidator(item, e.target.checked)
     )
 
-    item.off('click', '.js-add'   ).on('click', '.js-add',    (e) => @onAdd(e, item, attribute.name, related_object_attribute, allFlatOptions))
-    item.off('click', '.js-remove').on('click', '.js-remove', (e) => @onRemove(e, item, attribute.name, related_object_attribute, allFlatOptions))
+    item.off('click', '.js-add'         ).on('click',  '.js-add',         (e) => @onAdd(e, item, attribute.name, related_object_attribute, allFlatOptions))
+    item.off('click', '.js-remove'      ).on('click',  '.js-remove',      (e) => @onRemove(e, item, attribute.name, related_object_attribute, allFlatOptions))
+    item.off('change', '.js-description').on('change', '.js-description', (e) => @onDescriptionChange(e, item))
 
     @renderOptionDropdownNew(item, attribute.name, related_object_attribute, allFlatOptions)
 
@@ -41,6 +43,7 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
     filteredOptionValues = @getFilteredOptionValues(item, allFlatOptions)
 
     attribute = {
+      tag:        'tree_select',
       nulloption: true,
       null:       true,
       id:         'attribute-' + name + '-search',
@@ -55,11 +58,11 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
     element = App.UiElement.ApplicationTreeSelect.render(attribute)
 
     item.find('.js-objectAttributeOptionsContextItemAddNew').html(element)
+    item.find('.js-descriptionNew').val('')
     element.find('.js-shadow').trigger('change')
 
   @getFilteredOptionValues: (item, allOptions) ->
     return if !allOptions || Object.keys(allOptions).length == 0
-
 
     currentValue = @getCurrentValue(item)
     selectedValues = Object.keys(currentValue)
@@ -72,7 +75,8 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
     e.stopPropagation()
     e.preventDefault()
 
-    newOptionValue = item.find('.js-shadow').val()
+    newOptionValue       = item.find('.js-shadow').val()
+    newOptionDescription = item.find('.js-descriptionNew').val() || ''
 
     $(e.target.closest('tr')).find('.js-input').toggleClass('has-error', !newOptionValue)
     return if !newOptionValue
@@ -88,10 +92,11 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
       .attr('data-id', newOptionValue)
 
     newRow.find('td:first-child').text(displayValue)
+    newRow.find('textarea').val(newOptionDescription)
 
     newRow.insertBefore(shadowRow)
 
-    @addValue(item, newOptionValue)
+    @addValue(item, newOptionValue, newOptionDescription)
 
     @renderOptionDropdownNew(item, name, related_object_attribute, allFlatOptions)
 
@@ -109,6 +114,19 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
     @removeValue(item, rowId)
 
     @renderOptionDropdownNew(item, name, related_object_attribute, allFlatOptions)
+
+  @onDescriptionChange: (e, item) ->
+    e.stopPropagation()
+    e.preventDefault()
+
+    # Get the associated row ID.
+    rowId = $(e.target).closest('tr').attr('data-id')
+
+    currentValue = @getCurrentValue(item)
+
+    currentValue[rowId] = $(e.target).val()
+
+    item.find('.js-objectAttributeOptionsContext').val(JSON.stringify(currentValue))
 
   @getCurrentValue: (item) ->
     currentValue = {}
@@ -128,11 +146,11 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
     else
       item.find('.js-objectAttributeOptionsContextRequiredValidator').attr('disabled', true)
 
-  @addValue: (item, value) ->
+  @addValue: (item, value, description) ->
     currentValue = @getCurrentValue(item)
 
-    # Add the value to the current value without any content yet (maybe later a description).
-    currentValue[value] = ''
+    # Add the value to the current value with the description (if any)
+    currentValue[value] = description
 
     item.find('.js-objectAttributeOptionsContext').val(JSON.stringify(currentValue))
 
@@ -143,8 +161,14 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
 
     item.find('.js-objectAttributeOptionsContext').val(JSON.stringify(currentValue))
 
-  @fetchObjectManagerAttribute: (attribute) ->
-    App[attribute.object_attribute_object].configure_attributes.find((elem) -> elem.name == attribute.object_attribute_name)
+  @fetchObjectManagerAttribute: (attribute, params) ->
+    name = if attribute.related_object_attribute_selection_name
+      [first, second] = attribute.related_object_attribute_selection_name.split('::')
+      params?[first]?[second]
+    else
+      attribute.object_attribute_name
+
+    App[attribute.object_attribute_object].configure_attributes.find((elem) -> elem.name == name)
 
   @buildOptions: (related_object_attribute) ->
     if related_object_attribute.relation
@@ -169,6 +193,7 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
           {
             value: value,
             label: allFlatOptions[value]
+            description: attribute.value[value] || ''
           }
         )
 

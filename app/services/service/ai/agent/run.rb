@@ -43,10 +43,12 @@ class Service::AI::Agent::Run < Service::Base
 
   def ai_agent_service_result
     context = Service::AI::Agent::Run::Context.new(
-      instruction_context: agent_definition['instruction_context'],
-      entity_object:       ticket,
-      entity_context:      agent_definition['entity_context'],
-      entity_article:      article,
+      instruction_context:           agent_definition['instruction_context'],
+      entity_object:                 ticket,
+      entity_context:                agent_definition['entity_context'],
+      entity_article:                article,
+      placeholder_object_attributes: ai_agent.agent_type_object&.placeholder_field_names,
+      type_enrichment_data:          ai_agent.type_enrichment_data,
     )
 
     prepared_instruction_context = context.prepare_instructions

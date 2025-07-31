@@ -62,6 +62,33 @@ RSpec.shared_examples 'CanPerformChanges', :aggregate_failures do |object_name:,
       end
     end
 
+    describe 'Allow fields with multiple value support', db_strategy: :reset do
+      let(:custom_attribute_multiselect) do
+        create(:object_manager_attribute_multiselect, name: 'custom_attribute_multiselect', object_name: object_name)
+      end
+      let(:object) { create(object_name.downcase.to_sym) }
+
+      let(:perform) do
+        {
+          "#{object_name_downcase}.custom_attribute_multiselect" => {
+            'value' => %w[key_1 key_2],
+          }
+        }
+      end
+
+      before do
+        custom_attribute_multiselect
+        ObjectManager::Attribute.migration_execute
+
+        object
+      end
+
+      it 'does set multi-select field values in trigger' do
+        object.perform_changes(performable, 'trigger', object, User.first)
+        expect(object.reload.custom_attribute_multiselect).to eq(%w[key_1 key_2])
+      end
+    end
+
     # All fields (aside from richtext) are escaped in frontend. No need to escape in database.
     # https://github.com/zammad/zammad/issues/5108
     describe 'Allow special characters', db_strategy: :reset do

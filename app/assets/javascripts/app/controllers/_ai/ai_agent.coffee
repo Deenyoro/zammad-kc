@@ -65,6 +65,7 @@ class AIAgent extends App.ControllerAIFeatureBase
             type: 'warning'
             message: __('The provider configuration is missing. Please set up the provider before proceeding in |AI > Provider|.')
         container: @el.closest('.content')
+        large: true
         handlers: [
           App.FormHandlerAIAgentTypeHelp.run
           App.FormHandlerAIAgentUnusedWarning.run
@@ -89,47 +90,27 @@ class AIAgentIndex extends App.ControllerGenericIndex
 
 AIAgentModalMixin =
   step: 'initial'
+  stepFields: []
   buttonSubmit: __('Next')
   buttonClass: 'btn--primary'
   headIcon: 'ai-agent'
   headIconClass: 'ai-modal-head-icon'
 
-  # Static fields that are always available
-  staticFields: [
-    'name'
-    'agent_type'
-    'note'
-    'active'
-  ]
-
-  # All possible fields from all steps (static + dynamic)
-  allFields: []
+  placeholderObjectAttributes: {}
 
   events:
     'click .js-back': 'handleBack'
 
-  # Initialize all fields from all possible steps
-  initializeAllFieldsLookup: ->
-
-    # Start with static fields
-    @allFields = @staticFields
-
-    # Add fields from all agent type specific steps
-    if @agentType?.form_schema
-      for schemaItem in @agentType.form_schema
-        fieldNames = _.map(schemaItem.fields or [], (field) -> field.name)
-        @allFields = @allFields.concat(fieldNames)
-
   # Set field values from params into target, but only for fields in our field list
-  setFormFields: (target, params) ->
+  setCurrentSetpFormFields: (target, params) ->
 
     # Early return if no form fields to process
-    return target if @allFields.length is 0 || !params
+    return target if @stepFields.length is 0 || !params
 
     result = $.extend(true, {}, target)
 
     # Explicitly set values from params into target, but only for our defined fields
-    for fieldName in @allFields
+    for fieldName in @stepFields
       # Handle nested field paths (e.g., "definition::instruction_context::object_attributes::group_id")
       if fieldName.indexOf('::') > -1
         # Split the field path once
@@ -144,23 +125,20 @@ AIAgentModalMixin =
             paramsValue = undefined
             break
 
-        # Only proceed if we found a value
-        if paramsValue isnt undefined
-          # Navigate/create the nested structure in result
-          currentObj = result
-          for i in [0...pathParts.length - 1]
-            part = pathParts[i]
-            if !currentObj[part] or !_.isObject(currentObj[part])
-              currentObj[part] = {}
-            currentObj = currentObj[part]
+        # Navigate/create the nested structure in result
+        currentObj = result
+        for i in [0...pathParts.length - 1]
+          part = pathParts[i]
+          if !currentObj[part] or !_.isObject(currentObj[part])
+            currentObj[part] = {}
+          currentObj = currentObj[part]
 
-          # Set the final value
-          finalPart = pathParts[pathParts.length - 1]
-          currentObj[finalPart] = paramsValue
+        # Set the final value
+        finalPart = pathParts[pathParts.length - 1]
+        currentObj[finalPart] = paramsValue
       else
         # Simple field, set value from params directly
-        if params[fieldName] isnt undefined
-          result[fieldName] = params[fieldName]
+        result[fieldName] = params[fieldName]
 
     result
 
@@ -172,8 +150,17 @@ AIAgentModalMixin =
     else if @item?.agent_type
       @agentType = App.AIAgentType.find(@item.agent_type)
 
-    # Always initialize fields when agent type changes
-    @initializeAllFieldsLookup()
+  maybeSetPlaceholderObjectAttributes: ->
+    return if not @agentType or @agentType?.placeholder_field_names.length is 0 or not @params.type_enrichment_data
+
+    for fieldName in @agentType.placeholder_field_names
+      continue if not @params.type_enrichment_data[fieldName]
+
+      placeholder_attribute = App.Ticket.configure_attributes.find((elem) => elem.name == @params.type_enrichment_data[fieldName])
+
+      continue if not placeholder_attribute
+
+      @placeholderObjectAttributes[fieldName] = placeholder_attribute
 
   steps: ->
     _.map(@agentType?.form_schema, (item) -> item.step) or []
@@ -190,21 +177,28 @@ AIAgentModalMixin =
     @steps()[_.indexOf(@steps(), @step) + 1]
 
   stepHelp: ->
-    _.find(@agentType?.form_schema, (item) -> item.help)?.help or ''
+    _.find(@agentType?.form_schema, (item) => item.step is @step and item.help)?.help or ''
+
+  stepErrors: ->
+    _.find(@agentType?.form_schema, (item) => item.step is @step and item.errors)?.errors or ''
 
   previousStep: ->
     return 'initial' if not @steps().length or @step is @firstStep()
 
     @steps()[_.indexOf(@steps(), @step) - 1]
 
+  setStepFields: (attrs) ->
+    @stepFields = _.map(attrs, (attr) -> attr.name)
+
   contentFormParams: ->
-    @params = @setFormFields(@item, {}) if _.isEmpty(@params) # init params
+    @params = $.extend(true, {}, @item) if _.isEmpty(@params) # init params
     @params.agent_type = App.AIAgentType.findByAttribute('custom', true).id if @params and not @params.agent_type
     @maybeHandleJSONParams('stringify')
     @params
 
   contentFormModel: ->
     @maybeSetAgentType()
+    @maybeSetPlaceholderObjectAttributes()
 
     attrs = $.extend(true, [], App.AIAgent.configure_attributes)
 
@@ -222,17 +216,42 @@ AIAgentModalMixin =
       else
         agent_type_attribute.filter = (types) -> _.filter(types, (type) -> not type.custom)
 
+      @setStepFields(attrs)
     else if @step is 'metadata'
       attrs = _.filter(attrs, (attr) -> attr.name is 'note' or attr.name is 'active')
 
+      @setStepFields(attrs)
     else
       attrs = _.find(@agentType.form_schema, (item) => item.step is @step)?.fields or []
+
+      # We need to set the fields before the filtering, because also fields which are not shown are interesting.
+      # E.g. when a field was existing before we need to reset the value again.
+      @setStepFields(attrs)
+
+      # Filter attrs based on conditions
+      attrs = _.filter(attrs, (attr) =>
+        # If no condition is specified, include the attribute.
+        return true if not attr.condition
+
+        # Parse the condition (format: "key.property").
+        conditionParts = attr.condition.split('.')
+        return true if conditionParts.length isnt 2
+
+        [placeholderKey, propertyName] = conditionParts
+
+        # Check if the placeholder attribute exists and has the specified property.
+        placeholderAttr = @placeholderObjectAttributes?[placeholderKey]
+        return false if not placeholderAttr
+
+        # Check if the property exists and is truthy
+        return placeholderAttr[propertyName] is true
+      )
 
     { configure_attributes: attrs }
 
   validateParams: (e) ->
     params = @formParam(e.target)
-    newParams = @setFormFields(@params, params)
+    newParams = @setCurrentSetpFormFields(@params, params)
 
     @item.load newParams
 
@@ -257,17 +276,32 @@ AIAgentModalMixin =
     @params = newParams
 
     @maybeSetAgentType()
+    @maybeSetPlaceholderObjectAttributes()
 
     true
 
   renderStep: (e) ->
     @update()
 
-    return if @step is 'initial' or @step is 'metadata' or not helpText = @stepHelp()
+    return if @step is 'initial' or @step is 'metadata'
 
-    $('<p />').addClass('text-muted')
-      .html(App.i18n.translateContent(helpText))
-      .prependTo(@controller.form)
+    if helpText = @stepHelp()
+      $('<p />').addClass('text-muted')
+        .html(App.i18n.translateContent(helpText))
+        .prependTo(@controller.form)
+
+    return if not errorTexts = @stepErrors()
+
+    alert = $('<div />').addClass('alert alert--danger')
+
+    if _.isArray(errorTexts)
+      alert.html(App.i18n.translateContent(errorTexts...))
+    else
+      alert.html(App.i18n.translateContent(errorTexts))
+
+    alert.prependTo(@controller.form)
+
+    App.ControllerForm.disable(@controller.form)
 
   handleBack: (e) ->
     return false if @step is 'initial'
@@ -384,11 +418,6 @@ AIAgentModalMixin =
 class EditAIAgent extends App.ControllerGenericEdit
   @include AIAgentModalMixin
 
-  constructor: ->
-    super
-
-    @initializeAllFieldsLookup()
-
   onSubmit: (e) =>
     return if @handleNext(e)
 
@@ -404,12 +433,13 @@ class EditAIAgent extends App.ControllerGenericEdit
 class NewAIAgent extends App.ControllerGenericNew
   @include AIAgentModalMixin
 
-  constructor: ->
+  constructor: (params) ->
+    # Clear ID passed by the clone action.
+    params.item.id = null if params.item?.id
+
     super
 
-    @item = new App[ @genericObject ]
-
-    @initializeAllFieldsLookup()
+    @item = params.item or new App[ @genericObject ]
 
   onSubmit: (e) =>
     return if @handleNext(e)
@@ -417,7 +447,7 @@ class NewAIAgent extends App.ControllerGenericNew
     @maybeHandleJSONParams('parse')
 
     params = @formParam(e.target)
-    newParams = @setFormFields(@params, params)
+    newParams = @setCurrentSetpFormFields(@params, params)
 
     @item.load(newParams)
 

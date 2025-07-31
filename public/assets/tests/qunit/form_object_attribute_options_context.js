@@ -14,28 +14,29 @@ QUnit.test("object_attribute_options_context check", assert => {
   $('#forms').append('<hr><h1>object_attribute_options_context check</h1><form id="form1"></form>')
   var el = $('#form1')
 
-  // Mock the related object attribute that would be fetched
-  var mockRelatedAttribute = {
-    display: 'Priority',
-    options: {
-      '1': '1 low',
-      '2': '2 normal',
-      '3': '3 high',
-      '4': '4 urgent'
-    }
-  }
-
-  // Mock the fetchObjectManagerAttribute method
-  var originalFetchMethod = App.UiElement.object_attribute_options_context.fetchObjectManagerAttribute
-  App.UiElement.object_attribute_options_context.fetchObjectManagerAttribute = function(_attribute) {
-    return mockRelatedAttribute
-  }
-
-  // Mock the ApplicationTreeSelect render method to return a simple element
-  var originalTreeSelectRender = App.UiElement.ApplicationTreeSelect.render
-  App.UiElement.ApplicationTreeSelect.render = function(_attribute) {
-    return $('<div class="js-shadow"><select><option value="1">1 low</option><option value="2">2 normal</option><option value="3">3 high</option><option value="4">4 urgent</option></select></div>')
-  }
+  App.TicketPriority.refresh([
+    {
+      id:         1,
+      name:       '1 low',
+      note:       'some note 1',
+      active:     true,
+      created_at: '2014-06-10T11:17:34.000Z',
+    },
+    {
+      id:         2,
+      name:       '2 normal',
+      note:       'some note 2',
+      active:     true,
+      created_at: '2014-06-10T10:17:34.000Z',
+    },
+    {
+      id:         3,
+      name:       '3 high',
+      note:       'some note 3',
+      active:     true,
+      created_at: '2014-06-10T10:17:44.000Z',
+    },
+  ])
 
   var defaults = {
     object_attribute_options_context1: { '2': '' },
@@ -56,7 +57,8 @@ QUnit.test("object_attribute_options_context check", assert => {
           table_label: 'Selected Options',
           limit_description: 'When enabled, only selected options will be available',
           default: defaults['object_attribute_options_context1'],
-          null:    true
+          null:    true,
+          show_description: true
         },
         {
           name:    'object_attribute_options_context2',
@@ -106,6 +108,10 @@ QUnit.test("object_attribute_options_context check", assert => {
   assert.equal($table1.find('tr[data-id="2"]').length, 1, 'selected option should be displayed in table')
   assert.equal($table1.find('tr[data-id="2"] td:first-child').text(), '2 normal', 'selected option should show correct display text')
 
+  // Test that description field is rendered when show_description is enabled
+  assert.equal($field1.find('textarea.js-description:visible').length, 1, 'description field should be rendered when show_description is enabled')
+  assert.equal($field1.find('textarea.js-descriptionNew').length, 1, 'new description field should be rendered when show_description is enabled')
+
   // Test toggling the limit switch
   $field2.find('input[type="checkbox"]').trigger('click')
   assert.equal($field2.find('.js-objectAttributeOptionsContextListContainer').hasClass('hide'), false, 'list container should be visible after enabling limit')
@@ -115,10 +121,6 @@ QUnit.test("object_attribute_options_context check", assert => {
   assert.equal($field2.find('.js-objectAttributeOptionsContextListContainer').hasClass('hide'), true, 'list container should be hidden after disabling limit')
   assert.equal($field2.find('.js-objectAttributeOptionsContext').val(), '{}', 'hidden input should be cleared when limit is disabled')
 
-  // Restore original methods
-  App.UiElement.object_attribute_options_context.fetchObjectManagerAttribute = originalFetchMethod
-  App.UiElement.ApplicationTreeSelect.render = originalTreeSelectRender
-
 });
 
 QUnit.test("object_attribute_options_context with relation check", assert => {
@@ -126,33 +128,27 @@ QUnit.test("object_attribute_options_context with relation check", assert => {
   $('#forms').append('<hr><h1>object_attribute_options_context with relation check</h1><form id="form2"></form>')
   var el = $('#form2')
 
-  // Mock the related object attribute with relation
-  var mockRelatedAttribute = {
-    display: 'Group',
-    relation: 'Group'
-  }
-
-  // Mock the fetchObjectManagerAttribute method
-  var originalFetchMethod = App.UiElement.object_attribute_options_context.fetchObjectManagerAttribute
-  App.UiElement.object_attribute_options_context.fetchObjectManagerAttribute = function(_attribute) {
-    return mockRelatedAttribute
-  }
-
-  // Mock the Group model for relation testing
-  var originalGroupSearch = App.Group.search
-  App.Group.search = function(_params) {
-    return [
-      { id: 1, displayName: function() { return 'Users' } },
-      { id: 2, displayName: function() { return 'Support' } },
-      { id: 3, displayName: function() { return 'Admin' } }
-    ]
-  }
-
-  // Mock the ApplicationTreeSelect render method
-  var originalTreeSelectRender = App.UiElement.ApplicationTreeSelect.render
-  App.UiElement.ApplicationTreeSelect.render = function(_attribute) {
-    return $('<div class="js-shadow"><select><option value="1">Users</option><option value="2">Support</option><option value="3">Admin</option></select></div>')
-  }
+  // Populate Group data
+  App.Group.refresh([
+    {
+      id:        1,
+      name_last: 'Users',
+      active:    true,
+      created_at: '2014-06-10T11:17:34.000Z',
+    },
+    {
+      id:         2,
+      name_last: 'Support',
+      active:    true,
+      created_at: '2014-06-10T10:17:34.000Z',
+    },
+    {
+      id:         3,
+      name_last: 'Admin',
+      active:    true,
+      created_at: '2014-06-10T10:17:44.000Z',
+    },
+  ])
 
   var defaults = {
     object_attribute_options_context3: { '1': '' },
@@ -192,10 +188,10 @@ QUnit.test("object_attribute_options_context with relation check", assert => {
   // The dropdown should be rendered with relation options
   assert.equal($dropdown.length, 1, 'dropdown should be rendered for relation-based field')
 
-  // Restore original methods
-  App.UiElement.object_attribute_options_context.fetchObjectManagerAttribute = originalFetchMethod
-  App.Group.search = originalGroupSearch
-  App.UiElement.ApplicationTreeSelect.render = originalTreeSelectRender
+  // Test that selected relation option is displayed correctly
+  var $table = $field.find('.js-objectAttributeOptionsContextList')
+  assert.equal($table.find('tr[data-id="1"]').length, 1, 'selected relation option should be displayed in table')
+  assert.equal($table.find('tr[data-id="1"] td:first-child').text(), 'Users', 'selected relation option should show correct display text')
 
 });
 
@@ -204,29 +200,32 @@ QUnit.test("object_attribute_options_context with tree options check", assert =>
   $('#forms').append('<hr><h1>object_attribute_options_context with tree options check</h1><form id="form3"></form>')
   var el = $('#form3')
 
-  // Mock the related object attribute with tree options
-  // For tree options, we need to provide the flattened options that buildFlatOptions would produce
-  var mockRelatedAttribute = {
-    display: 'Category',
-    options: [
-      { value: 'Hardware', name: 'Hardware' },
-      { value: 'Software', name: 'Software', children: [
-        { value: 'Software::Windows', name: 'Windows' },
-        { value: 'Software::Linux', name: 'Linux' }
-      ]}
-    ]
-  }
+  // Populate ObjectManagerAttribute data for category_id with simple tree options
+  App.ObjectManagerAttribute.refresh([
+    {
+      name: 'category_id',
+      object: 'Ticket',
+      display: 'Category',
+      active: true,
+      editable: true,
+      data_type: 'tree_select',
+      options: [
+        { name: 'Hardware', value: 'Hardware' },
+        { name: 'Software', value: 'Software', children: [
+          { name: 'Windows', value: 'Software::Windows' }
+        ]}
+      ],
+      default: '',
+      null: true,
+      nulloption: true,
+      maxlength: 255
+    }
+  ])
 
-  // Mock the fetchObjectManagerAttribute method
-  var originalFetchMethod = App.UiElement.object_attribute_options_context.fetchObjectManagerAttribute
-  App.UiElement.object_attribute_options_context.fetchObjectManagerAttribute = function(_attribute) {
-    return mockRelatedAttribute
-  }
-
-  // Mock the ApplicationTreeSelect render method
-  var originalTreeSelectRender = App.UiElement.ApplicationTreeSelect.render
-  App.UiElement.ApplicationTreeSelect.render = function(_attribute) {
-    return $('<div class="js-shadow"><select><option value="Hardware">Hardware</option><option value="Software::Windows">Software › Windows</option><option value="Software::Linux">Software › Linux</option></select></div>')
+  // Add the category_id attribute to App.Ticket.configure_attributes
+  var categoryAttribute = App.ObjectManagerAttribute.findByAttribute('name', 'category_id')
+  if (categoryAttribute) {
+    App.Ticket.configure_attributes.push(categoryAttribute)
   }
 
   var defaults = {
@@ -267,8 +266,136 @@ QUnit.test("object_attribute_options_context with tree options check", assert =>
   assert.equal($table.find('tr[data-id="Software::Windows"]').length, 1, 'tree option should be displayed in table')
   assert.equal($table.find('tr[data-id="Software::Windows"] td:first-child').text(), 'Software › Windows', 'tree option should show flattened display text')
 
-  // Restore original method
-  App.UiElement.object_attribute_options_context.fetchObjectManagerAttribute = originalFetchMethod
-  App.UiElement.ApplicationTreeSelect.render = originalTreeSelectRender
+});
 
+QUnit.test("object_attribute_options_context with related_object_attribute_selection_name check", assert => {
+
+  $('#forms').append('<hr><h1>object_attribute_options_context with related_object_attribute_selection_name check</h1><form id="form4"></form>')
+  var el = $('#form4')
+
+  // Populate TicketPriority data
+  App.TicketPriority.refresh([
+    {
+      id:         1,
+      name:       '1 low',
+      note:       'some note 1',
+      active:     true,
+      created_at: '2014-06-10T11:17:34.000Z',
+    },
+  ])
+
+  var defaults = {
+    object_attribute_options_context5: { '2': '' },
+  }
+
+  new App.ControllerForm({
+    el:        el,
+    params:    {
+      ticket: {
+        priority_field_name: 'priority_id'
+      }
+    },
+    model:     {
+      configure_attributes: [
+        {
+          name:    'object_attribute_options_context5',
+          display: 'ObjectAttributeOptionsContext5',
+          tag:     'object_attribute_options_context',
+          object_attribute_object: 'Ticket',
+          related_object_attribute_selection_name: 'ticket::priority_field_name',
+          limit_label: 'Limit to selected priorities',
+          table_label: 'Selected Priorities',
+          limit_description: 'When enabled, only selected priorities will be available',
+          default: defaults['object_attribute_options_context5'],
+          null:    true
+        },
+      ]
+    },
+    autofocus: true
+  })
+
+  // Test that the field is rendered correctly
+  var $field = el.find('[data-attribute-name="object_attribute_options_context5"]')
+  assert.equal($field.length, 1, 'field should be rendered with related_object_attribute_selection_name')
+
+  // Test that the hidden input exists
+  assert.equal($field.find('.js-objectAttributeOptionsContext').length, 1, 'hidden input should exist')
+
+});
+
+QUnit.test("object_attribute_options_context with tree selection filter check", assert => {
+
+  $('#forms').append('<hr><h1>object_attribute_options_context with filter check</h1><form id="form5"></form>')
+  var el = $('#form5')
+
+  // Populate TicketPriority data
+  App.TicketPriority.refresh([
+    {
+      id:         1,
+      name:       '1 low',
+      note:       'some note 1',
+      active:     true,
+      created_at: '2014-06-10T11:17:34.000Z',
+    },
+    {
+      id:         2,
+      name:       '2 normal',
+      note:       'some note 2',
+      active:     true,
+      created_at: '2014-06-10T10:17:34.000Z',
+    },
+    {
+      id:         3,
+      name:       '3 high',
+      note:       'some note 3',
+      active:     true,
+      created_at: '2014-06-10T10:17:44.000Z',
+    },
+  ])
+
+  var defaults = {
+    object_attribute_options_context5: { '2': '' },
+  }
+
+  new App.ControllerForm({
+    el:        el,
+    params:    {
+      ticket: {
+        priority_field_name: 'priority_id'
+      }
+    },
+    model:     {
+      configure_attributes: [
+        {
+          name:    'object_attribute_options_context5',
+          display: 'ObjectAttributeOptionsContext5',
+          tag:     'object_attribute_options_context',
+          object_attribute_object: 'Ticket',
+          related_object_attribute_selection_name: 'ticket::priority_field_name',
+          limit_label: 'Limit to selected priorities',
+          table_label: 'Selected Priorities',
+          limit_description: 'When enabled, only selected priorities will be available',
+          default: defaults['object_attribute_options_context5'],
+          null:    true
+        },
+      ]
+    },
+    autofocus: true
+  })
+
+  // Test that the field is rendered correctly
+  var $field = el.find('[data-attribute-name="object_attribute_options_context5"]')
+  assert.equal($field.length, 1, 'field should be rendered with related_object_attribute_selection_name')
+
+  // Test that selected option is displayed in the table
+  var $table = $field.find('.js-objectAttributeOptionsContextList')
+  assert.equal($table.find('tr[data-id="2"]').length, 1, 'selected option should be displayed in table')
+  assert.equal($table.find('tr[data-id="2"] td:first-child').text(), '2 normal', 'selected option should show correct display text')
+
+  // Test that selected option is not displayed in tree selection
+  var $tree = $field.find('.js-objectAttributeOptionsContextItemAddNew .js-optionsList')
+  assert.equal($tree.find('.js-option[data-value]').length, 3, 'number of available options in tree selection')
+  assert.ok($tree.find('.js-option[data-value="1"]').length, 'not yet chosen option is present in tree selection (1)')
+  assert.notOk($tree.find('.js-option[data-value="2"]').length, 'already chosen option is missing in tree selection (2)')
+  assert.ok($tree.find('.js-option[data-value="3"]').length, 'not yet chosen option is present in tree selection (3)')
 });

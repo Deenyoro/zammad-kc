@@ -1,10 +1,12 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class Service::AI::Agent::Run::Context::Instruction
-  attr_reader :instruction_object_attributes
+  attr_reader :instruction_object_attributes, :placeholder_object_attributes, :type_enrichment_data
 
-  def initialize(instruction_context:)
+  def initialize(instruction_context:, placeholder_object_attributes: [], type_enrichment_data: {})
     @instruction_object_attributes = instruction_context['object_attributes']
+    @placeholder_object_attributes = placeholder_object_attributes
+    @type_enrichment_data = type_enrichment_data
   end
 
   def prepare
@@ -36,7 +38,7 @@ class Service::AI::Agent::Run::Context::Instruction
 
       next if prepared_context.blank?
 
-      prepared_object_attributes[name] = {
+      prepared_object_attributes[object_attribute.name] = {
         label: object_attribute.display,
         items: prepared_context
       }
@@ -48,8 +50,17 @@ class Service::AI::Agent::Run::Context::Instruction
   def get_object_attribute(name)
     ObjectManager::Attribute.get(
       object: 'Ticket',
-      name:   name
+      name:   object_attribute_name_lookup(name)
     )
+  end
+
+  def object_attribute_name_lookup(name)
+    placeholder_name = name.sub('placeholder.', '')
+
+    return name if placeholder_object_attributes.blank?
+    return name if placeholder_object_attributes.exclude?(placeholder_name)
+
+    type_enrichment_data[placeholder_name] || name
   end
 
   def determine_object_attribute_class(object_attribute)

@@ -20,13 +20,15 @@
     <table class="object-attribute-options-context-list settings-list js-objectAttributeOptionsContextList" style="width: 100%;">
       <thead>
         <th><%- @T(@objectAttributeDisplay) %></th>
+        <% if @showDescription: %><th><%- @T('Description') %></th><% end %>
         <th><%- @T('Action') %></th>
       </thead>
       <tbody>
       <% for option in @optionsSelected: %>
         <tr data-id="<%= option.value %>">
           <td><%- @T(option.label) %></td>
-          <td class="settings-list-middle">
+          <% if @showDescription: %><td><textarea class="form-control js-description"><%- @T(option.description) %></textarea></td><% end %>
+          <td class="<% if !@showDescription: %>settings-list-middle<% end %>">
             <a class="btn btn--text btn--primary js-remove">
               <%- @Icon('trash') %>
               <%- @T('Remove') %>
@@ -37,7 +39,8 @@
 
         <tr class="hide js-objectAttributeOptionsContextShadowItemRow">
           <td></td>
-          <td class="settings-list-middle">
+          <% if @showDescription: %><td><textarea class="form-control js-description"></textarea></td><% end %>
+          <td class="<% if !@showDescription: %>settings-list-middle<% end %>">
             <a class="btn btn--text btn--primary js-remove">
               <%- @Icon('trash') %>
               <%- @T('Remove') %>
@@ -46,8 +49,9 @@
         </tr>
 
         <tr class="js-objectAttributeOptionsContextNewItemRow">
-          <td class="js-objectAttributeOptionsContextItemAddNew settings-list-middle"></td>
-          <td class="js-objectAttributeOptionsContextItemAction settings-list-middle">
+          <td class="js-objectAttributeOptionsContextItemAddNew <% if !@showDescription: %>settings-list-middle<% end %>"></td>
+          <% if @showDescription: %><td><textarea class="form-control js-descriptionNew"></textarea></td><% end %>
+          <td class="js-objectAttributeOptionsContextItemAction <% if !@showDescription: %>settings-list-middle<% end %>">
             <a class="btn btn--text btn--create js-add">
               <%- @Icon('plus-small') %>
               <%- @T('Add') %>

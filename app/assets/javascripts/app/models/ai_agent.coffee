@@ -1,5 +1,5 @@
 class App.AIAgent extends App.Model
-  @configure 'AIAgent', 'name', 'agent_type', 'definition', 'action_definition', 'note', 'active'
+  @configure 'AIAgent', 'name', 'agent_type', 'type_enrichment_data', 'definition', 'action_definition', 'note', 'active'
   @extend Spine.Model.Ajax
   @url: @apiPath + '/ai_agents'
   @configure_attributes = [

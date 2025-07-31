@@ -210,6 +210,149 @@ RSpec.describe Service::AI::Agent::Run do
       end
     end
 
+    context 'when AI agent has TicketCategorizer agent_type', db_strategy: :reset do
+      let(:ai_agent) { create(:ai_agent, agent_type: 'TicketCategorizer', definition: agent_definition, type_enrichment_data: type_enrichment_data) }
+      let(:type_enrichment_data) { { 'category' => 'custom_category', 'multiple' => false } }
+      let(:agent_definition) do
+        {
+          'instruction_context' => {
+            'object_attributes' => {
+              'placeholder.category' => {
+                'technical_support' => 'Technical issues and troubleshooting',
+                'billing'           => 'Payment and billing related questions',
+                'feature_request'   => 'Requests for new features or improvements',
+                'bug_report'        => 'Reports of software bugs or issues'
+              }
+            }
+          }
+        }
+      end
+      let(:ai_result_content) do
+        {
+          'custom_category' => 'technical_support',
+        }
+      end
+      let(:ai_result) do
+        AI::Service::Result.new(
+          content:       ai_result_content,
+          stored_result: nil,
+          fresh:         true
+        )
+      end
+
+      before do
+        # Create the custom category attribute
+        create(:object_manager_attribute_select, object_name: 'Ticket', name: 'custom_category', display: 'Custom Category', data_option_options: { 'technical_support' => 'Technical support', 'billing' => 'Billing', 'feature_request' => 'Feature request', 'bug_report' => 'Bug report' })
+        ObjectManager::Attribute.migration_execute
+
+        allow_any_instance_of(AI::Service::AIAgent).to receive(:execute).and_return(ai_result)
+      end
+
+      it 'executes with placeholder replacement and applies categorization' do
+        expect { service.execute }
+          .to change { ticket.reload.custom_category }.from('').to('technical_support')
+      end
+
+      it 'passes categories to AI service middleware' do
+        # Spy on the AI service to verify it receives the categories
+        ai_service_spy = instance_double(AI::Service::AIAgent)
+        allow(AI::Service::AIAgent).to receive(:new).and_return(ai_service_spy)
+        allow(ai_service_spy).to receive(:execute).and_return(ai_result)
+
+        service.execute
+
+        # Verify that the AI service was called with the categories in the context
+        expect(AI::Service::AIAgent).to have_received(:new).with(
+          hash_including(
+            context_data: hash_including(
+              instruction_context: {
+                object_attributes: {
+                  'custom_category' => {
+                    label: 'Custom Category',
+                    items: array_including(
+                      {
+                        value:       'technical_support',
+                        label:       'Technical support',
+                        description: 'Technical issues and troubleshooting'
+                      },
+                      {
+                        value:       'billing',
+                        label:       'Billing',
+                        description: 'Payment and billing related questions'
+                      },
+                      {
+                        value:       'feature_request',
+                        label:       'Feature request',
+                        description: 'Requests for new features or improvements'
+                      },
+                      {
+                        value:       'bug_report',
+                        label:       'Bug report',
+                        description: 'Reports of software bugs or issues'
+                      }
+                    )
+                  }
+                }
+              }
+            )
+          )
+        )
+      end
+    end
+
+    context 'when AI agent handles multiselect field', db_strategy: :reset do
+      let(:instruction_context) do
+        {
+          'object_attributes' => {
+            'custom_multiselect' => {
+              'key_1' => 'Option 1',
+              'key_2' => 'Option 2',
+              'key_3' => 'Option 3'
+            }
+          }
+        }
+      end
+      let(:result_structure) do
+        {
+          'custom_multiselect' => '[array]'
+        }
+      end
+      let(:action_definition) do
+        {
+          'mapping' => {
+            'ticket.custom_multiselect' => {
+              'value' => '#{ai_agent_result.custom_multiselect}' # rubocop:disable Lint/InterpolationCheck
+            }
+          }
+        }
+      end
+      let(:ai_result_content) do
+        {
+          'custom_multiselect' => %w[key_1 key_3]
+        }
+      end
+      let(:ai_result) do
+        AI::Service::Result.new(
+          content:       ai_result_content,
+          stored_result: nil,
+          fresh:         true
+        )
+      end
+
+      before do
+        # Create the multiselect attribute
+        create(:object_manager_attribute_multiselect, object_name: 'Ticket', name: 'custom_multiselect')
+        ObjectManager::Attribute.migration_execute
+
+        allow_any_instance_of(AI::Service::AIAgent).to receive(:execute).and_return(ai_result)
+      end
+
+      it 'executes the AI agent service and applies multiple values to the multiselect field' do
+        expect { service.execute }
+          .to change { ticket.reload.custom_multiselect }.from([]).to(%w[key_1 key_3])
+      end
+    end
+
     context 'when AI service raises an exception' do
       before do
         allow_any_instance_of(AI::Service::AIAgent).to receive(:execute).and_raise(AI::Provider::OutputFormatError, 'AI service error')

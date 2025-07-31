@@ -58,5 +58,40 @@ RSpec.describe Service::AI::Agent::Run::Context::Instruction, type: :service do
         expect(result[:object_attributes]).to eq(expected_result[:object_attributes])
       end
     end
+
+    context 'when placeholder_object_attributes are provided', aggregate_failures: true do
+      let(:placeholder_object_attributes) { ['example'] }
+      let(:type_enrichment_data) { { 'example' => 'custom_field' } }
+      let(:object_attributes_context) do
+        {
+          'placeholder.example' => { 'key_1' => 'First option description' },
+        }
+      end
+      let(:instruction) do
+        described_class.new(
+          instruction_context:           instruction_context,
+          placeholder_object_attributes: placeholder_object_attributes,
+          type_enrichment_data:          type_enrichment_data
+        )
+      end
+
+      before do
+        create(:object_manager_attribute_select, name: 'custom_field', display: 'Custom Field')
+      end
+
+      it 'uses placeholder mapping for attribute lookup' do
+        result = instruction.prepare
+
+        expect(result[:object_attributes]).to include('custom_field')
+        expect(result[:object_attributes]['custom_field'][:label]).to eq('Custom Field')
+        expect(result[:object_attributes]['custom_field'][:items]).to include(
+          hash_including(
+            value:       'key_1',
+            label:       'value_1',
+            description: 'First option description'
+          )
+        )
+      end
+    end
   end
 end

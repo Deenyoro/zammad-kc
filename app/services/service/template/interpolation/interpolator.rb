@@ -59,8 +59,7 @@ class Service::Template::Interpolation::Interpolator < Service::Base
       next if !track.respond_to?(:generate)
 
       # Use additional data if available, otherwise use empty hash
-      data = additional_track_generate_data || {}
-      track.generate(track_objects, data)
+      track.generate(track_objects, additional_track_generate_data || {})
     end
   end
 end

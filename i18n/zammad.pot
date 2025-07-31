@@ -912,7 +912,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/api.jst.eco:62
 #: app/assets/javascripts/app/views/calendar/holiday_selector.jst.eco:7
 #: app/assets/javascripts/app/views/generic/actions.jst.eco:5
-#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:23
+#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:24
 #: app/assets/javascripts/app/views/generic/user_permission_group.jst.eco:7
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:32
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:33
@@ -1043,7 +1043,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/channel/topics.jst.eco:37
 #: app/assets/javascripts/app/views/generic/application_selector_row.jst.eco:32
 #: app/assets/javascripts/app/views/generic/checklist_item.jst.eco:26
-#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:53
+#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:57
 #: app/assets/javascripts/app/views/generic/postmaster_match.jst.eco:21
 #: app/assets/javascripts/app/views/generic/postmaster_set_row.jst.eco:20
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/row.jst.eco:17
@@ -1455,6 +1455,10 @@ msgstr ""
 msgid "All agents"
 msgstr ""
 
+#: app/models/ai/agent/type/ticket_categorizer.rb:51
+msgid "All categories will be considered for categorizing tickets."
+msgstr ""
+
 #: public/assets/chat/views/waiting.eco:7
 msgid "All colleagues are busy."
 msgstr ""
@@ -1471,6 +1475,10 @@ msgstr ""
 msgid "All groups will be considered for dispatching tickets."
 msgstr ""
 
+#: app/models/ai/agent/type/ticket_prioritizer.rb:29
+msgid "All priorities will be considered for prioritizing tickets."
+msgstr ""
+
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:38
 #: app/frontend/apps/desktop/components/Form/fields/FieldNotifications/FieldNotificationsInput.vue:56
 msgid "All tickets"
@@ -1480,12 +1488,20 @@ msgstr ""
 msgid "All two-factor authentication methods were removed for this user."
 msgstr ""
 
+#: app/models/ai/agent/type/ticket_categorizer.rb:65
+msgid "Allow AI Agent to select multiple categories from all possible values."
+msgstr ""
+
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:317
 msgid "Allow future"
 msgstr ""
 
 #: app/models/object_manager/attribute/data_option_validator.rb:65
 msgid "Allow future dates toggle value is required."
+msgstr ""
+
+#: app/models/ai/agent/type/ticket_categorizer.rb:61
+msgid "Allow multiple selections"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:326
@@ -2239,8 +2255,16 @@ msgstr ""
 msgid "Autosaving is taking longer than expected…"
 msgstr ""
 
+#: app/models/ai/agent/type/ticket_categorizer.rb:52
+msgid "Available Categories"
+msgstr ""
+
 #: app/models/ai/agent/type/ticket_group_dispatcher.rb:25
 msgid "Available Groups"
+msgstr ""
+
+#: app/models/ai/agent/type/ticket_prioritizer.rb:30
+msgid "Available Priorities"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:35
@@ -2305,7 +2329,7 @@ msgstr ""
 msgid "BCC address for all outgoing emails"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:308
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:341
 #: app/assets/javascripts/app/views/generic/object_search/item_organization_members.jst.eco:5
 #: app/frontend/apps/desktop/components/CommonSelect/CommonSelect.vue:398
 #: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:412
@@ -2673,7 +2697,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:291
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:324
 #: app/assets/javascripts/app/controllers/_application_controller/_modal.coffee:117
 #: app/assets/javascripts/app/views/admin_password_auth/request.jst.eco:8
 #: app/assets/javascripts/app/views/admin_password_auth/request_sent.jst.eco:7
@@ -2753,6 +2777,10 @@ msgstr ""
 #: app/assets/javascripts/app/models/knowledge_base_answer.coffee:51
 #: app/assets/javascripts/app/views/popover/kb_generic.jst.eco:31
 msgid "Category"
+msgstr ""
+
+#: app/models/ai/agent/type/ticket_categorizer.rb:32
+msgid "Category Attribute"
 msgstr ""
 
 #: app/assets/javascripts/app/models/knowledge_base.coffee:246
@@ -2993,7 +3021,7 @@ msgstr ""
 msgid "Checklist Template items are limited to 100 items per checklist."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:253
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:258
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:61
 msgid "Checklist item successfully added."
 msgstr ""
@@ -3067,8 +3095,16 @@ msgstr ""
 msgid "Choose the group to which page posts will get added."
 msgstr ""
 
+#: app/models/ai/agent/type/ticket_categorizer.rb:43
+msgid "Choose which attribute values will be considered when categorizing tickets. If you want to limit it to specific options, please select at least two below. Make sure the options have clear names and optional descriptions, as that would comprise the context provided to the AI agent."
+msgstr ""
+
 #: app/models/ai/agent/type/ticket_group_dispatcher.rb:16
 msgid "Choose which groups will be considered for dispatching tickets. If you want to limit it to specific groups, please select at least two below. Make sure the groups have clear, descriptive names, as that would be the only context provided to the AI agent."
+msgstr ""
+
+#: app/models/ai/agent/type/ticket_prioritizer.rb:20
+msgid "Choose which priorities will be considered when prioritizing tickets. If you want to limit it to specific priorities, please select at least two below. Make sure the priorities have clear names and optional descriptions, as that would comprise the context provided to the AI agent."
 msgstr ""
 
 #: app/assets/javascripts/app/views/profile/language.jst.eco:7
@@ -5275,6 +5311,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:230
 #: app/assets/javascripts/app/views/data_privacy/index.jst.eco:7
 #: app/assets/javascripts/app/views/generic/admin/index.jst.eco:7
+#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:23
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:9
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:87
 #: app/assets/javascripts/app/views/integration/index.jst.eco:11
@@ -8982,9 +9019,17 @@ msgstr ""
 msgid "Light"
 msgstr ""
 
+#: app/models/ai/agent/type/ticket_categorizer.rb:50
+msgid "Limit Categories"
+msgstr ""
+
 #: app/assets/javascripts/app/views/profile/notification.jst.eco:17
 #: app/models/ai/agent/type/ticket_group_dispatcher.rb:23
 msgid "Limit Groups"
+msgstr ""
+
+#: app/models/ai/agent/type/ticket_prioritizer.rb:28
+msgid "Limit Priorities"
 msgstr ""
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:61
@@ -10527,7 +10572,7 @@ msgstr ""
 msgid "New user?"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:92
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:93
 #: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:112
 #: app/assets/javascripts/app/controllers/webhook.coffee:127
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/password_check.coffee:2
@@ -10827,6 +10872,10 @@ msgstr ""
 msgid "No source data submitted!"
 msgstr ""
 
+#: app/models/ai/agent/type/ticket_categorizer.rb:28
+msgid "No suitable object attributes found, please add one of the supported types first: %s"
+msgstr ""
+
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketTags.vue:178
 msgid "No tags added yet."
 msgstr ""
@@ -10912,7 +10961,7 @@ msgstr ""
 msgid "Not Found"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:298
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:303
 msgid "Not all checklist items could be added."
 msgstr ""
 
@@ -12093,7 +12142,7 @@ msgstr ""
 msgid "Please enter a text."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:379
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:412
 #: app/assets/javascripts/app/controllers/webhook.coffee:96
 msgid "Please enter a valid JSON string."
 msgstr ""
@@ -12714,7 +12763,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/channel/topics.jst.eco:32
 #: app/assets/javascripts/app/views/generic/application_selector_row.jst.eco:28
 #: app/assets/javascripts/app/views/generic/application_selector_subclause.jst.eco:15
-#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:32
+#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:34
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/row.jst.eco:14
 #: app/assets/javascripts/app/views/generic/user_permission_group.jst.eco:25
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:39
@@ -13821,6 +13870,10 @@ msgstr ""
 msgid "Select table row"
 msgstr ""
 
+#: app/models/ai/agent/type/ticket_categorizer.rb:34
+msgid "Select the attribute whose value will be automatically set by the AI agent."
+msgstr ""
+
 #: app/assets/javascripts/app/controllers/_application_controller/form.coffee:216
 msgid "Select the customer of the ticket or create one."
 msgstr ""
@@ -14896,7 +14949,7 @@ msgstr ""
 msgid "Subject & References - Additional search for same article subject and same message ID in references header if no follow-up was recognized using default settings."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:317
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:350
 #: app/assets/javascripts/app/controllers/_application_controller/form.coffee:2
 #: app/assets/javascripts/app/controllers/tag.coffee:103
 #: app/assets/javascripts/app/controllers/widget/button_with_dropdown.coffee:12
@@ -14973,7 +15026,7 @@ msgstr ""
 msgid "Suggested Next Steps"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:97
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:102
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/ticket-summary.ts:11
 msgid "Summary"
 msgstr ""
@@ -15589,7 +15642,7 @@ msgstr ""
 msgid "The chat will show up once the connection to the server got established and if there is an operator online to chat with."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:258
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:263
 msgid "The checklist item could not be added."
 msgstr ""
 
@@ -15874,7 +15927,7 @@ msgstr ""
 msgid "The new ticket number could not be generated."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:461
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:490
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_new.coffee:68
 #: app/assets/javascripts/app/controllers/_channel/_email_signature.coffee:93
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:807
@@ -16074,11 +16127,11 @@ msgstr ""
 msgid "The required attribute 'organization' is missing."
 msgstr ""
 
-#: app/jobs/trigger_webhook_job/custom_payload/track/notification.rb:35
+#: app/services/service/template/interpolation/interpolator/webhook/track/notification.rb:35
 msgid "The required event field 'execution' is missing."
 msgstr ""
 
-#: app/jobs/trigger_webhook_job/custom_payload/track/notification.rb:62
+#: app/services/service/template/interpolation/interpolator/webhook/track/notification.rb:62
 msgid "The required event field 'execution' is unknown or missing."
 msgstr ""
 
@@ -17024,12 +17077,20 @@ msgstr ""
 msgid "This ticket already has a checklist."
 msgstr ""
 
+#: app/models/ai/agent/type/ticket_categorizer.rb:15
+msgid "This type of AI agent can categorize incoming tickets into an appropriate category based on their content and topic."
+msgstr ""
+
 #: app/models/ai/agent/type/ticket_group_dispatcher.rb:10
 msgid "This type of AI agent can dispatch incoming tickets into an appropriate group based on their content and topic."
 msgstr ""
 
 #: app/models/ai/agent/type/ticket_title_rewriter.rb:10
 msgid "This type of AI agent can improve title of incoming tickets based on their content and topic."
+msgstr ""
+
+#: app/models/ai/agent/type/ticket_prioritizer.rb:10
+msgid "This type of AI agent can prioritize incoming tickets based on their content."
 msgstr ""
 
 #: app/policies/ticket/shared_draft_start_policy.rb:26
@@ -17102,6 +17163,10 @@ msgstr ""
 
 #: db/seeds/permissions.rb:215
 msgid "Ticket Auto Assignment"
+msgstr ""
+
+#: app/models/ai/agent/type/ticket_categorizer.rb:11
+msgid "Ticket Categorizer"
 msgstr ""
 
 #: db/seeds/settings.rb:2399
@@ -17193,6 +17258,10 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/ticket_priority.coffee:16
 #: db/seeds/permissions.rb:275
 msgid "Ticket Priorities"
+msgstr ""
+
+#: app/models/ai/agent/type/ticket_prioritizer.rb:6
+msgid "Ticket Prioritizer"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_priority.coffee:3

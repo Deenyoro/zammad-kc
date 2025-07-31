@@ -948,6 +948,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.jsonb 'action_definition', null: false, default: {}
 
       t.string 'agent_type', limit: 250
+      t.jsonb 'type_enrichment_data', null: false, default: {}
 
       t.string 'note', limit: 250
 

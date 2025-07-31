@@ -9,6 +9,7 @@ RSpec.describe AI::Agent::Type, :aggregate_failures, current_user_id: 1, type: :
 
       expect(described_class.available_types.map(&:name)).to include(
         'AI::Agent::Type::TicketGroupDispatcher',
+        'AI::Agent::Type::TicketCategorizer',
       )
     end
   end
