@@ -358,6 +358,8 @@ class App.SearchableSelect extends Spine.Controller
     @input.prop('selectionEnd', caretPosition)
 
   autocomplete: (value, text) ->
+    return if @attribute.multiple
+
     @suggestion = text
     @suggestionValue = value
     startIndex = text.indexOf(@query)
