@@ -313,7 +313,7 @@ returns
     end
     begin
       data = {
-        login:         hash['info']['nickname'] || hash['uid'],
+        login:         hash['login'],
         firstname:     hash['info']['name'] || hash['info']['display_name'],
         email:         hash['info']['email'],
         image_source:  hash['info']['image'],
