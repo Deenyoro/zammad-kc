@@ -22,6 +22,9 @@ class App.SidebarTicketSummary extends App.Controller
 
     @loadSummarization()
 
+    # prepopulate already summarized article IDs
+    @summaryReloadNeeded()
+
     # load new summary if it has changed
     @controllerBind('ticket::summary::update', (data) =>
       return if !@sidebarIsEnabled()
@@ -202,7 +205,7 @@ class App.SidebarTicketSummary extends App.Controller
 
   summaryReloadNeeded: =>
     ticket = App.Ticket.find(@ticket.id)
-    ticketSummarizableArticleIds = @ticketSumarizableArticleIds(ticket.article_ids)
+    ticketSummarizableArticleIds = @getTicketSummarizableArticleIds(ticket.article_ids)
 
     if @ticketSummarizableArticleIds && _.isEqual(@ticketSummarizableArticleIds, ticketSummarizableArticleIds)
       return false
@@ -210,7 +213,7 @@ class App.SidebarTicketSummary extends App.Controller
     @ticketSummarizableArticleIds = ticketSummarizableArticleIds
     true
 
-  ticketSumarizableArticleIds: (allArticleIds) ->
+  getTicketSummarizableArticleIds: (allArticleIds) ->
     allArticleIds.filter (elem) ->
       article = App.TicketArticle.find(elem)
       sender  = App.TicketArticleSender.find(article.sender_id)
