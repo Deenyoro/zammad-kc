@@ -163,12 +163,6 @@ Permission.create_if_not_exists(
   preferences: { prio: 1250 }
 )
 Permission.create_if_not_exists(
-  name:        'admin.channel_twitter',
-  label:       __('Twitter'),
-  description: __('Manage Twitter channel of your system.'),
-  preferences: { prio: 1260 }
-)
-Permission.create_if_not_exists(
   name:        'admin.channel_facebook',
   label:       __('Facebook'),
   description: __('Manage Facebook channel of your system.'),

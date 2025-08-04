@@ -786,33 +786,6 @@ Setting.create_if_not_exists(
   frontend:    true
 )
 Setting.create_if_not_exists(
-  title:       __('Twitter - tweet initials'),
-  name:        'ui_ticket_zoom_article_twitter_initials',
-  area:        'UI::TicketZoom',
-  description: __('Add sender initials to end of a tweet.'),
-  options:     {
-    form: [
-      {
-        display:   '',
-        null:      true,
-        name:      'ui_ticket_zoom_article_twitter_initials',
-        tag:       'boolean',
-        translate: true,
-        options:   {
-          true  => 'yes',
-          false => 'no',
-        },
-      },
-    ],
-  },
-  state:       true,
-  preferences: {
-    prio:       300,
-    permission: ['admin.ui'],
-  },
-  frontend:    true
-)
-Setting.create_if_not_exists(
   title:       __('Sidebar Attachments'),
   name:        'ui_ticket_zoom_attachments_preview',
   area:        'UI::TicketZoom::Preview',

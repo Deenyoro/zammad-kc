@@ -202,11 +202,6 @@ const permissions = [
         description: 'To manage Microsoft Graph channel of your system.',
       },
       {
-        value: 'admin.channel_twitter',
-        label: 'Twitter',
-        description: 'To manage Twitter channel of your system.',
-      },
-      {
         value: 'admin.channel_facebook',
         label: 'Facebook',
         description: 'To manage Facebook channel of your system.',

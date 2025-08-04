@@ -24,23 +24,19 @@ RSpec.describe 'Report', searchindex: true, type: :request do
   end
   let!(:backends) do
     {
-      'count::created':               true,
-      'count::closed':                true,
-      'count::backlog':               true,
-      'create_channels::phone_in':    true,
-      'create_channels::phone_out':   true,
-      'create_channels::email_in':    true,
-      'create_channels::email_out':   true,
-      'create_channels::web_in':      true,
-      'create_channels::twitter_in':  true,
-      'create_channels::twitter_out': true,
-      'communication::phone_in':      true,
-      'communication::phone_out':     true,
-      'communication::email_in':      true,
-      'communication::email_out':     true,
-      'communication::web_in':        true,
-      'communication::twitter_in':    true,
-      'communication::twitter_out':   true
+      'count::created':             true,
+      'count::closed':              true,
+      'count::backlog':             true,
+      'create_channels::phone_in':  true,
+      'create_channels::phone_out': true,
+      'create_channels::email_in':  true,
+      'create_channels::email_out': true,
+      'create_channels::web_in':    true,
+      'communication::phone_in':    true,
+      'communication::phone_out':   true,
+      'communication::email_in':    true,
+      'communication::email_out':   true,
+      'communication::web_in':      true,
     }
   end
 

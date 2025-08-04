@@ -110,7 +110,6 @@ export interface ConfigList {
   ui_ticket_zoom_article_email_full_quote_header?: boolean | null
   ui_ticket_zoom_article_email_subject?: boolean | null
   ui_ticket_zoom_article_note_new_internal?: boolean | null
-  ui_ticket_zoom_article_twitter_initials?: boolean | null
   ui_ticket_zoom_article_visibility_confirmation_dialog?: boolean | null
   ui_ticket_zoom_attachments_preview?: boolean | null
   ui_ticket_zoom_sidebar_article_attachments?: boolean | null

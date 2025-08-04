@@ -711,7 +711,6 @@ export enum EnumChannelArea {
   SmsAccount = 'Sms__Account',
   SmsNotification = 'Sms__Notification',
   TelegramBot = 'Telegram__Bot',
-  TwitterAccount = 'Twitter__Account',
   WhatsAppBusiness = 'WhatsApp__Business'
 }
 

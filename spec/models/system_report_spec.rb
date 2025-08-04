@@ -51,7 +51,6 @@ RSpec.describe SystemReport, current_user_id: 1, type: :model do
           'ui_user_organization_selector_with_email',
           'ui_ticket_zoom_article_email_full_quote',
           'ui_ticket_zoom_article_email_full_quote_header',
-          'ui_ticket_zoom_article_twitter_initials',
           'ui_ticket_zoom_attachments_preview',
           'ui_ticket_zoom_sidebar_article_attachments',
           'ui_ticket_create_notes',
