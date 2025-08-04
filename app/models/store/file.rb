@@ -3,6 +3,7 @@
 class Store < ApplicationModel
   class File < ApplicationModel
     include ApplicationLib
+
     after_destroy :destroy_provider
 
 =begin
