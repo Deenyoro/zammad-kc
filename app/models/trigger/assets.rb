@@ -33,14 +33,6 @@ returns
       data = assets_of_selector('condition', data)
       data = assets_of_selector('perform', data)
 
-      [Calendar, Webhook, AI::Agent].each do |klass|
-        app_model = klass.to_app_model
-        data[ app_model ] ||= {}
-        klass.find_each do |elem|
-          data = elem.assets(data)
-        end
-      end
-
       app_model_user = User.to_app_model
       data[ app_model_user ] ||= {}
 
