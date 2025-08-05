@@ -9,7 +9,6 @@ module Gql::Subscriptions
     argument :locale, String, 'The locale to use, e.g. "de-de".'
 
     field :summary, Gql::Types::Ticket::AIAssistance::SummaryType, description: 'Different parts of the generated summary'
-    field :reason, String, description: 'Reason for the result of the summary generation'
     field :fingerprint_md5, String, description: 'MD5 digest of the complete summary content'
     field :error, Gql::Types::AsyncExecutionErrorType, description: 'Error that occurred during the execution of the async job'
     field :relevant_for_current_user, Boolean, description: 'Indicates if the summary is relevant for the current user'
@@ -28,7 +27,6 @@ module Gql::Subscriptions
 
       {
         summary:                   object[:summary],
-        reason:                    object[:reason],
         fingerprint_md5:           object[:fingerprint_md5],
         relevant_for_current_user: last_article&.author&.id != context.current_user.id,
       }

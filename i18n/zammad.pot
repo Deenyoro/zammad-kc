@@ -254,7 +254,7 @@ msgid "%s hours ago"
 msgstr ""
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:28
-msgid "%s is generating text"
+msgid "%s is generating text…"
 msgstr ""
 
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:91
@@ -327,10 +327,6 @@ msgstr ""
 #: app/assets/javascripts/app/views/ticket_overview/batch_overlay_user_group.jst.eco:11
 #: app/graphql/gql/queries/autocomplete_search/generic.rb:61
 msgid "%s people"
-msgstr ""
-
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:3
-msgid "%s provides the functionality to summarize the current ticket state. It will provide a new sidebar which contains information to reduce reading time in the ticket with a summarized version of the problem, open questions and suggestions."
 msgstr ""
 
 #: app/assets/javascripts/app/models/ticket_article.coffee:53
@@ -684,7 +680,7 @@ msgid "AI provider Ollama URL is not set"
 msgstr ""
 
 #: app/controllers/ticket/summarize_controller.rb:8
-#: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:17
+#: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:16
 #: app/services/service/ai/agent/run.rb:17
 #: app/services/service/ai/vectordb/base.rb:12
 #: app/services/service/ai_assistance/text_tools.rb:17
@@ -1039,9 +1035,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/profile/linked_accounts.jst.eco:15
 #: app/assets/javascripts/app/views/tag/index.jst.eco:25
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show.jst.eco:19
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:33
 #: app/frontend/apps/desktop/components/Form/fields/FieldGroupPermissions/FieldGroupPermissionsInput.vue:258
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:100
 #: app/frontend/shared/form/i18n/locales.ts:25
 msgid "Add"
 msgstr ""
@@ -1140,18 +1134,8 @@ msgstr ""
 msgid "Add alarm to pending reminder and escalated tickets."
 msgstr ""
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:53
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:112
-msgid "Add all to checklist"
-msgstr ""
-
 #: app/frontend/shared/form/i18n/locales.ts:73
 msgid "Add all values"
-msgstr ""
-
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:33
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:100
-msgid "Add as checklist item"
 msgstr ""
 
 #: app/assets/javascripts/app/views/channel/form.jst.eco:112
@@ -2361,8 +2345,8 @@ msgstr ""
 msgid "Basic Settings"
 msgstr ""
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:61
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:106
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:49
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:113
 msgid "Be sure to check AI-generated summaries for accuracy."
 msgstr ""
 
@@ -2978,11 +2962,6 @@ msgstr ""
 
 #: app/models/checklist_template.rb:16
 msgid "Checklist Template items are limited to 100 items per checklist."
-msgstr ""
-
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:261
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:61
-msgid "Checklist item successfully added."
 msgstr ""
 
 #: app/models/checklist/item.rb:105
@@ -3602,7 +3581,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:54
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:4
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:85
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:84
 msgid "Conversation Summary"
 msgstr ""
 
@@ -4130,8 +4109,14 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:47
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:80
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:79
 msgid "Customer Intent"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:73
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:7
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:99
+msgid "Customer Sentiment"
 msgstr ""
 
 #: app/models/system_report/plugin/entities/user.rb:4
@@ -6056,20 +6041,20 @@ msgstr ""
 msgid "Enable or disable self-shutdown of Zammad processes after significant configuration changes. This should only be used if the controlling process manager like systemd or docker supports an automatic restart policy."
 msgstr ""
 
-#: db/seeds/settings.rb:6043
-msgid "Enable or disable the AI assistance text tools."
-msgstr ""
-
-#: db/seeds/settings.rb:6011
-msgid "Enable or disable the AI assistance ticket summary."
-msgstr ""
-
 #: app/assets/javascripts/app/views/maintenance.jst.eco:16
 msgid "Enable or disable the maintenance mode of Zammad. If enabled, _all non-administrators get logged out_ and _only administrators can start a new session_."
 msgstr ""
 
 #: db/seeds/settings.rb:40
 msgid "Enable or disable the maintenance mode of Zammad. If enabled, all non-administrators get logged out and only administrators can start a new session."
+msgstr ""
+
+#: db/seeds/settings.rb:6011
+msgid "Enable or disable the ticket summary."
+msgstr ""
+
+#: db/seeds/settings.rb:6044
+msgid "Enable or disable the writing assistant text tools."
 msgstr ""
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNewBetaUi.vue:37
@@ -6677,12 +6662,7 @@ msgid "Failed Tasks"
 msgstr ""
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:132
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:68
 msgid "Failed to add new checklist item."
-msgstr ""
-
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue:88
-msgid "Failed to add new checklist items."
 msgstr ""
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:145
@@ -9350,14 +9330,6 @@ msgstr ""
 msgid "Manage WhatsApp channel of your system."
 msgstr ""
 
-#: db/seeds/permissions.rb:234
-msgid "Manage Zammad Smart Assist text tools of your system."
-msgstr ""
-
-#: db/seeds/permissions.rb:228
-msgid "Manage Zammad Smart Assist ticket summarization of your system."
-msgstr ""
-
 #: db/seeds/permissions.rb:517
 msgid "Manage access to New BETA UI switch."
 msgstr ""
@@ -9538,6 +9510,10 @@ msgstr ""
 msgid "Manage ticket states of your system."
 msgstr ""
 
+#: db/seeds/permissions.rb:228
+msgid "Manage ticket summarization of your system."
+msgstr ""
+
 #: db/seeds/permissions.rb:60
 msgid "Manage ticket tags of your system."
 msgstr ""
@@ -9564,6 +9540,10 @@ msgstr ""
 
 #: db/seeds/permissions.rb:90
 msgid "Manage webhooks of your system."
+msgstr ""
+
+#: db/seeds/permissions.rb:234
+msgid "Manage writing asssistant text tools of your system."
 msgstr ""
 
 #: app/views/mailer/application.html.erb:47
@@ -10507,7 +10487,7 @@ msgid "No AI agent available, please create a new one or activate an existing on
 msgstr ""
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:59
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:58
 msgid "No AI provider is currently set up. Please contact your administrator."
 msgstr ""
 
@@ -10844,10 +10824,6 @@ msgstr ""
 msgid "Not Found"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:306
-msgid "Not all checklist items could be added."
-msgstr ""
-
 #: app/policies/controllers/taskbar_controller_policy.rb:35
 msgid "Not allowed to access this task."
 msgstr ""
@@ -11143,12 +11119,12 @@ msgstr ""
 msgid "On %s, %s wrote:"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:90
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:95
 #: db/seeds/object_manager_attributes.rb:2412
 msgid "On ticket detail opening"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:95
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:100
 #: db/seeds/object_manager_attributes.rb:2416
 msgid "On ticket summary sidebar activation"
 msgstr ""
@@ -11249,7 +11225,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:61
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:90
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:89
 msgid "Open Questions"
 msgstr ""
 
@@ -12365,13 +12341,17 @@ msgstr ""
 msgid "Provide a summary of the questions raised in the conversation."
 msgstr ""
 
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:69
+msgid "Provide a summary of the upcoming events based on the conversation."
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:75
+msgid "Provide an assessment of the customer sentiment based on the conversation."
+msgstr ""
+
 #: app/controllers/knowledge_base/categories_controller.rb:23
 #: lib/knowledge_base/menu_item_update_action.rb:92
 msgid "Provide position of all items in scope"
-msgstr ""
-
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:70
-msgid "Provide some possible solutions to the problem as follow-up items."
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/providers.coffee:3
@@ -13019,7 +12999,7 @@ msgstr ""
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:64
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:169
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:131
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:81
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:80
 #: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:172
 msgid "Retry"
 msgstr ""
@@ -14753,10 +14733,6 @@ msgstr ""
 msgid "Store"
 msgstr ""
 
-#: db/seeds/settings.rb:6025
-msgid "Stores the AI assistance ticket summarization options (e.g. which content is visible)."
-msgstr ""
-
 #: db/seeds/settings.rb:5995
 msgid "Stores the AI provider configuration."
 msgstr ""
@@ -14771,6 +14747,10 @@ msgstr ""
 
 #: db/seeds/settings.rb:5042
 msgid "Stores the GitLab configuration."
+msgstr ""
+
+#: db/seeds/settings.rb:6025
+msgid "Stores the ticket summarization options (e.g. which content is visible)."
 msgstr ""
 
 #: db/seeds/object_manager_attributes.rb:1247
@@ -14867,13 +14847,7 @@ msgstr ""
 msgid "Subscription settings"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:67
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:6
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:95
-msgid "Suggested Next Steps"
-msgstr ""
-
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:105
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:106
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/ticket-summary.ts:11
 msgid "Summary"
 msgstr ""
@@ -15112,10 +15086,6 @@ msgstr ""
 
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:3
 msgid "Text Modules"
-msgstr ""
-
-#: db/seeds/settings.rb:6040
-msgid "Text Tools"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:565
@@ -15485,10 +15455,6 @@ msgstr ""
 
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:150
 msgid "The chat will show up once the connection to the server got established and if there is an operator online to chat with."
-msgstr ""
-
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:266
-msgid "The checklist item could not be added."
 msgstr ""
 
 #: app/assets/javascripts/app/views/time_accounting/settings.jst.eco:33
@@ -16193,7 +16159,7 @@ msgid "The structure is a JSON object that defines the result format to be retur
 msgstr ""
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:71
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:70
 msgid "The summary could not be generated. Please try again later or contact your administrator."
 msgstr ""
 
@@ -16444,7 +16410,7 @@ msgid "There is no valid PGP email signer."
 msgstr ""
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:18
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:87
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:86
 msgid "There is not enough content yet to summarize this ticket."
 msgstr ""
 
@@ -17108,12 +17074,12 @@ msgstr ""
 msgid "Ticket Summary Config"
 msgstr ""
 
-#: app/models/ai/agent/type/ticket_title_rewriter.rb:6
-msgid "Ticket Title Rewriter"
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:3
+msgid "Ticket Summary provides the functionality to summarize the current ticket state. It will provide a new sidebar which contains information to reduce reading time in the ticket with a summarized version of the problem, open questions and upcoming events."
 msgstr ""
 
-#: db/seeds/permissions.rb:233
-msgid "Ticket Tools"
+#: app/models/ai/agent/type/ticket_title_rewriter.rb:6
+msgid "Ticket Title Rewriter"
 msgstr ""
 
 #: db/seeds/settings.rb:2885
@@ -18016,6 +17982,12 @@ msgstr ""
 
 #: app/assets/javascripts/app/views/translation/support.jst.eco:6
 msgid "Up to %s% of this language is already translated. Please help to make Zammad even better and complete the translation."
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:67
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:6
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:94
+msgid "Upcoming Events"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:89
@@ -18973,6 +18945,12 @@ msgstr ""
 msgid "Workflows"
 msgstr ""
 
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:35
+#: db/seeds/permissions.rb:233
+#: db/seeds/settings.rb:6041
+msgid "Writing Assistant"
+msgstr ""
+
 #: app/assets/javascripts/app/views/generic/text_tools_dropdown.jst.eco:3
 msgid "Writing Assistant Tools"
 msgstr ""
@@ -19431,15 +19409,6 @@ msgstr ""
 msgid "Zammad Helpdesk"
 msgstr ""
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:35
-msgid "Zammad Smart Assist"
-msgstr ""
-
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:64
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:112
-msgid "Zammad Smart Assist is generating the summary for you…"
-msgstr ""
-
 #: lib/user_agent.rb:126
 msgid "Zammad User Agent"
 msgstr ""
@@ -19449,6 +19418,11 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/authentication/views/Login.vue:175
 #: app/frontend/apps/mobile/pages/authentication/components/LoginHeader.vue:22
 msgid "Zammad is currently in maintenance mode. Only administrators can log in. Please wait until the maintenance window is over."
+msgstr ""
+
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:52
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:119
+msgid "Zammad is generating the summary for you…"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_plugin/maintenance.coffee:55

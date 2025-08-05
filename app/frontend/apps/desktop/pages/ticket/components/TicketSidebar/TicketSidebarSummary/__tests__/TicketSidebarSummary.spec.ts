@@ -9,6 +9,7 @@ import { mockRouterHooks } from '#tests/support/mock-vue-router.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
 import { createDummyArticle } from '#shared/entities/ticket-article/__tests__/mocks/ticket-articles.ts'
 import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
+import { EnumTicketSummaryGeneration } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import { pluginFiles } from '#desktop/pages/ticket/components/TicketSidebar/plugins/index.ts'
@@ -17,10 +18,7 @@ import TicketSidebarSummary from '#desktop/pages/ticket/components/TicketSidebar
 import { ARTICLES_INFORMATION_KEY } from '#desktop/pages/ticket/composables/useArticleContext.ts'
 import { TICKET_KEY } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
 import { TICKET_SIDEBAR_SYMBOL } from '#desktop/pages/ticket/composables/useTicketSidebar.ts'
-import {
-  mockTicketAiAssistanceSummarizeMutation,
-  waitForTicketAiAssistanceSummarizeMutationCalls,
-} from '#desktop/pages/ticket/graphql/mutations/ticketAIAssistanceSummarize.mocks.ts'
+import { mockTicketAiAssistanceSummarizeMutation } from '#desktop/pages/ticket/graphql/mutations/ticketAIAssistanceSummarize.mocks.ts'
 
 const defaultTicket = createDummyTicket()
 const testArticle = createDummyArticle({
@@ -104,26 +102,29 @@ const renderRenderTicketSidebarSummary = (ticket: Partial<TicketById> = defaultT
 }
 const ticketAIAssistanceSummarizeMock = {
   summary: {
+    customerRequest: 'Order not received after payment',
     conversationSummary:
       'The customer paid for an order but claims to have not received it. They provided the order number and requested assistance with tracking.',
     openQuestions: ['What was the payment method used?'],
-    problem: 'Order not received after payment',
-    suggestions: [
+    upcomingEvents: [
       'Check the order status in the system',
       'Verify if the shipping address is correct',
       'Contact the shipping carrier for updates',
     ],
+    customerMood: 'Frustrated',
+    customerEmotion: '🤬',
   },
 }
 
 describe('TicketSidebarSummary', () => {
-  it('displays correctly,', async () => {
+  it('displays correctly', async () => {
     mockApplicationConfig({
       ai_provider: 'zammad_ai',
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
         open_questions: true,
-        suggestions: true,
+        upcoming_events: true,
+        customer_sentiment: true,
       },
     })
 
@@ -145,10 +146,11 @@ describe('TicketSidebarSummary', () => {
     ).toBeInTheDocument()
 
     const headings = [
-      'Conversation Summary',
       'Customer Intent',
+      'Conversation Summary',
       'Open Questions',
-      'Suggested Next Steps',
+      'Upcoming Events',
+      'Customer Sentiment',
     ]
 
     headings.forEach((heading) => {
@@ -161,10 +163,11 @@ describe('TicketSidebarSummary', () => {
     })
 
     const content = [
+      ticketAIAssistanceSummarizeMock.summary.customerRequest,
       ticketAIAssistanceSummarizeMock.summary.conversationSummary,
       ...ticketAIAssistanceSummarizeMock.summary.openQuestions,
-      ticketAIAssistanceSummarizeMock.summary.problem,
-      ...ticketAIAssistanceSummarizeMock.summary.suggestions,
+      ...ticketAIAssistanceSummarizeMock.summary.upcomingEvents,
+      `${ticketAIAssistanceSummarizeMock.summary.customerEmotion} ${ticketAIAssistanceSummarizeMock.summary.customerMood}`,
     ]
 
     content.forEach((text) => {
@@ -178,7 +181,8 @@ describe('TicketSidebarSummary', () => {
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
         open_questions: false,
-        suggestions: true,
+        upcoming_events: true,
+        customer_sentiment: false,
       },
     })
 
@@ -199,9 +203,9 @@ describe('TicketSidebarSummary', () => {
       }),
     ).toBeInTheDocument()
 
-    const enabledHeadings = ['Customer Intent', 'Suggested Next Steps']
+    const enabledHeadings = ['Customer Intent', 'Conversation Summary', 'Upcoming Events']
 
-    const disabledHeadings = ['Open Questions']
+    const disabledHeadings = ['Open Questions', 'Customer Sentiment']
 
     enabledHeadings.forEach((heading) => {
       expect(
@@ -262,10 +266,12 @@ describe('TicketSidebarSummary', () => {
     mockTicketAiAssistanceSummarizeMutation({
       ticketAIAssistanceSummarize: {
         summary: {
-          problem: null,
+          customerRequest: null,
           conversationSummary: null,
           openQuestions: null,
-          suggestions: null,
+          upcomingEvents: null,
+          customerMood: null,
+          customerEmotion: null,
         },
       },
     })
@@ -275,7 +281,9 @@ describe('TicketSidebarSummary', () => {
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
         open_questions: true,
-        suggestions: true,
+        upcoming_events: true,
+        customer_sentiment: true,
+        generate_on: EnumTicketSummaryGeneration.OnTicketDetailOpening,
       },
     })
 
@@ -295,38 +303,9 @@ describe('TicketSidebarSummary', () => {
 
     const wrapper = renderRenderTicketSidebarSummary()
 
-    expect(
-      wrapper.getByText('Zammad Smart Assist is generating the summary for you…'),
-    ).toBeInTheDocument()
+    expect(wrapper.getByText('Zammad is generating the summary for you…')).toBeInTheDocument()
     expect(wrapper.getAllByLabelText('Placeholder for AI generated heading')).toHaveLength(4)
 
     expect(wrapper.getAllByLabelText('Placeholder for AI generated text')).toHaveLength(16)
-  })
-
-  it('hides feature if feature flag is disabled', async () => {
-    mockApplicationConfig({
-      checklist: false,
-    })
-
-    mockApplicationConfig({
-      ai_provider: 'zammad_ai',
-      ai_assistance_ticket_summary: true,
-      ai_assistance_ticket_summary_config: {
-        open_questions: true,
-        suggestions: true,
-      },
-    })
-
-    mockTicketAiAssistanceSummarizeMutation({
-      ticketAIAssistanceSummarize: ticketAIAssistanceSummarizeMock,
-    })
-
-    const wrapper = renderRenderTicketSidebarSummary()
-
-    await waitForTicketAiAssistanceSummarizeMutationCalls()
-
-    expect(wrapper.queryByRole('button', { name: 'Add all to checklist' })).not.toBeInTheDocument()
-
-    expect(wrapper.queryAllByRole('button', { name: 'Add as checklist item' }).length).toBe(0)
   })
 })

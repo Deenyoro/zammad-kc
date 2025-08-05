@@ -12,12 +12,13 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
       subscription ticketAIAssistanceSummaryUpdates($ticketId: ID!, $locale: String!) {
         ticketAIAssistanceSummaryUpdates(ticketId: $ticketId, locale: $locale) {
           summary {
-            problem
+            customerRequest
             conversationSummary
             openQuestions
-            suggestions
+            upcomingEvents
+            customerMood
+            customerEmotion
           }
-          reason
           fingerprintMd5
           error {
             message
@@ -44,11 +45,12 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
     context 'when a summary job is executed' do
       let(:expected_summary) do
         {
-          'problem'        => 'Houston we got a problem',
-          'summary'        => 'short summary',
-          'open_questions' => ['question 1', 'question 2'],
-          'suggestions'    => ['do this and that'],
-          'reason'         => 'example',
+          'customer_request'     => 'Houston we got a problem',
+          'conversation_summary' => 'short summary',
+          'open_questions'       => ['question 1', 'question 2'],
+          'upcoming_events'      => ['do this and that'],
+          'customer_mood'        => 'example',
+          'customer_emotion'     => 'example',
         }
       end
 
@@ -61,10 +63,12 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
 
       let(:expected_broadcasted_summary) do
         {
-          'problem'             => 'Houston we got a problem',
+          'customerRequest'     => 'Houston we got a problem',
           'conversationSummary' => 'short summary',
           'openQuestions'       => ['question 1', 'question 2'],
-          'suggestions'         => ['do this and that'],
+          'upcomingEvents'      => ['do this and that'],
+          'customerMood'        => 'example',
+          'customerEmotion'     => 'example',
         }
       end
 
@@ -81,8 +85,7 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
             'data' => include(
               'ticketAIAssistanceSummaryUpdates' => include(
                 'summary'                => expected_broadcasted_summary,
-                'reason'                 => 'example',
-                'fingerprintMd5'         => Digest::MD5.hexdigest(expected_summary.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+                'fingerprintMd5'         => Digest::MD5.hexdigest(expected_summary.sort.to_h.to_s),
                 'relevantForCurrentUser' => true,
               )
             )
@@ -103,8 +106,7 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
               'data' => include(
                 'ticketAIAssistanceSummaryUpdates' => include(
                   'summary'                => expected_broadcasted_summary,
-                  'reason'                 => 'example',
-                  'fingerprintMd5'         => Digest::MD5.hexdigest(expected_summary.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+                  'fingerprintMd5'         => Digest::MD5.hexdigest(expected_summary.sort.to_h.to_s),
                   'relevantForCurrentUser' => true,
                 )
               )
@@ -125,8 +127,7 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
               'data' => include(
                 'ticketAIAssistanceSummaryUpdates' => include(
                   'summary'                => expected_broadcasted_summary,
-                  'reason'                 => 'example',
-                  'fingerprintMd5'         => Digest::MD5.hexdigest(expected_summary.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+                  'fingerprintMd5'         => Digest::MD5.hexdigest(expected_summary.sort.to_h.to_s),
                   'relevantForCurrentUser' => false,
                 )
               )

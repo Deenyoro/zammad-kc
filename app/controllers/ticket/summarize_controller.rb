@@ -22,11 +22,8 @@ class Ticket::SummarizeController < ApplicationController
 
       render json: {
         result: {
-          problem:                   stored_content['problem'],
-          conversation_summary:      stored_content['summary'],
-          open_questions:            stored_content['open_questions'],
-          suggestions:               stored_content['suggestions'],
-          fingerprint_md5:           Digest::MD5.hexdigest(stored_content.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+          **stored_content,
+          fingerprint_md5:           Digest::MD5.hexdigest(stored_content.sort.to_h.to_s),
           relevant_for_current_user: last_article&.author&.id != current_user.id,
         },
       }

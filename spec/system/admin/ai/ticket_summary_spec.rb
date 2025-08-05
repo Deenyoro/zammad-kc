@@ -11,15 +11,16 @@ RSpec.describe 'Manage > AI > Ticket Summary', type: :system do
 
     it 'displays the ticket summary service options and can change them' do
       within(:active_content) do
-        # Find and click the suggestions checkbox by its label text
-        find('label', text: 'Suggested Next Steps').click
         find('label', text: 'Open Questions').click
+        find('label', text: 'Upcoming Events').click
+        find('label', text: 'Customer Sentiment').click
       end
 
       expect(Setting.get('ai_assistance_ticket_summary_config')).to eq({
-                                                                         'generate_on'    => 'on_ticket_detail_opening',
-                                                                         'open_questions' => false,
-                                                                         'suggestions'    => true, # by default feature was not enabled
+                                                                         'generate_on'        => 'on_ticket_detail_opening',
+                                                                         'open_questions'     => false, # true by default
+                                                                         'upcoming_events'    => false, # true by default
+                                                                         'customer_sentiment' => false, # true by default
                                                                        })
     end
 

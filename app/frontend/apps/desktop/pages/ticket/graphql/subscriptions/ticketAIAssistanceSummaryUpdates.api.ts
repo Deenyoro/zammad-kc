@@ -9,10 +9,12 @@ export const TicketAiAssistanceSummaryUpdatesDocument = gql`
     subscription ticketAIAssistanceSummaryUpdates($ticketId: ID!, $locale: String!) {
   ticketAIAssistanceSummaryUpdates(ticketId: $ticketId, locale: $locale) {
     summary {
+      customerRequest
       conversationSummary
       openQuestions
-      problem
-      suggestions
+      upcomingEvents
+      customerMood
+      customerEmotion
     }
     fingerprintMd5
     error {

@@ -3,6 +3,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { textToHtml } from '#shared/utils/helpers.ts'
+
 interface Props {
   summary: string | string[]
   label: string
@@ -25,7 +27,8 @@ const variantClass = computed(() => (props.variant ? ['ai-stripe before:h-[1px] 
         :key="content"
         class="grid grid-cols-[min-content_1fr] gap-x-2 gap-y-1 ps-2 before:col-start-1 before:mt-2 before:h-[3px] before:w-[3px] before:shrink-0 before:rounded-full before:bg-current"
       >
-        <CommonLabel class="col-2" tag="p">{{ content }}</CommonLabel>
+        <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component, vue/no-v-html -->
+        <CommonLabel class="col-2" tag="p" v-html="textToHtml(content)" />
 
         <slot name="item-trailing" :content="content" />
       </li>

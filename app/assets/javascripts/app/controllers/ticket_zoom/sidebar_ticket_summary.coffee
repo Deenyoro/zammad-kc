@@ -1,9 +1,10 @@
 class App.SidebarTicketSummary extends App.Controller
   DISPLAY_STRUCTURE: [
-    { key: 'problem', name: __('Customer Intent'), value: 'problem' },
+    { key: 'customer_request', name: __('Customer Intent'), value: 'customer_request' },
     { key: 'conversation_summary', name: __('Conversation Summary'), value: 'conversation_summary' },
     { key: 'open_questions', name: __('Open Questions'), value: 'open_questions', type: 'list' },
-    { key: 'suggestions', name: __('Suggested Next Steps'), value: 'suggestions', feature: 'checklist', type: 'list' },
+    { key: 'upcoming_events', name: __('Upcoming Events'), value: 'upcoming_events', type: 'list' },
+    { key: 'customer_sentiment', name: __('Customer Sentiment'), value: ['customer_emotion', 'customer_mood'] },
   ]
 
   constructor: ->
@@ -152,8 +153,6 @@ class App.SidebarTicketSummary extends App.Controller
         App.Event.trigger('ui::ticket::sidebarRerender', { taskKey: @taskKey })
       when 'ai_assistance_ticket_summary_config'
         @configHasChangedLoadSummary()
-      when 'checklist'
-        @renderSummarization({})
 
   getAvailableDisplayStructure: ->
     config = App.Config.get('ai_assistance_ticket_summary_config')
@@ -172,14 +171,11 @@ class App.SidebarTicketSummary extends App.Controller
     summarization = $(App.view('ticket_zoom/sidebar_ticket_summary')(
       data:              @summaryData
       noSummaryPossible: noSummaryPossible
-      checklist:         App.Config.get('checklist')
       structure:         @getAvailableDisplayStructure()
     ))
 
     summarization
       .on('click', '.js-retry', @retrySummarization)
-      .on('click', '.js-addChecklistItem', @convertFollowUpToChecklistItem)
-      .on('click', '.js-addAllToChecklist', @convertAllFollowUpsToChecklistItems)
 
     @elSidebar.html(summarization)
 
@@ -233,78 +229,6 @@ class App.SidebarTicketSummary extends App.Controller
 
       error: (xhr, status, error) ->
         # show error toaster
-    )
-
-  convertFollowUpToChecklistItem: (e) =>
-    target = $(e.target).closest('.js-addChecklistItem')
-    return if !target
-
-    text = $(target).data('content')
-    checklistId = @ticket.checklist_id
-
-    if checklistId
-      @checklistItemCreate(checklistId, text)
-    else
-      @checklistItemCreate(null, text, @ticket.id)
-
-  checklistItemCreate: (checklistId, text, ticketId) =>
-    item = new App.ChecklistItem
-    item.checklist_id = checklistId
-    item.ticket_id = ticketId
-    item.text = text
-
-    item.save(
-      done: =>
-        App.Event.trigger('ui::ticket::checklistSidebar::showLoader')
-        @notify(
-          type: 'success'
-          msg: App.i18n.translateInline('Checklist item successfully added.')
-        )
-      fail: =>
-        @notify(
-          type: 'error'
-          msg: App.i18n.translateInline('The checklist item could not be added.')
-        )
-    )
-
-  convertAllFollowUpsToChecklistItems: =>
-    checklistId = @ticket.checklist_id
-
-    itemData = _.map(@summaryData.result.suggestions, (text) ->
-      text: text
-      checked: false
-    )
-
-    if checklistId
-      @checklistItemsBulkCreate(checklistId, itemData)
-    else
-      @checklistItemsBulkCreate(null, itemData, @ticket.id)
-
-  checklistOpen: =>
-    @elSidebar
-      .closest('.content')
-      .find(".tabsSidebar-tab[data-tab='checklist']:not(.active)")
-      .click()
-
-  checklistItemsBulkCreate: (checklistId, items, ticketId) =>
-    @ajax(
-      id:   'checklist_ticket_create_bulk'
-      type: 'POST'
-      url:  "#{@apiPath}/checklist_items/create_bulk"
-      processData: true
-      data: JSON.stringify(
-        checklist_id: checklistId
-        ticket_id:    ticketId
-        items:        items
-      )
-      success:  =>
-        App.Event.trigger('ui::ticket::checklistSidebar::showLoader')
-        @checklistOpen()
-      error: =>
-        @notify(
-          type: 'error'
-          msg: App.i18n.translateInline('Not all checklist items could be added.')
-        )
     )
 
   @summarySeenLocalStorageKey: (ticket) ->

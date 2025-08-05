@@ -30,10 +30,12 @@ RSpec.describe 'Ticket Summarize API endpoints', authenticated_as: :user, perfor
       context 'when cache is present' do
         let(:result) do
           {
-            'problem'        => 'mocked problem',
-            'summary'        => 'mocked conversation_summary',
-            'open_questions' => 'mocked open_questions',
-            'suggestions'    => 'mocked suggestions',
+            'customer_request'     => 'mocked customer_request',
+            'conversation_summary' => 'mocked conversation_summary',
+            'open_questions'       => ['mocked open_questions'],
+            'upcoming_events'      => ['mocked upcoming_events'],
+            'customer_mood'        => 'mocked customer_mood',
+            'customer_emotion'     => 'mocked customer_emotion',
           }
         end
 
@@ -49,11 +51,13 @@ RSpec.describe 'Ticket Summarize API endpoints', authenticated_as: :user, perfor
           make_request
 
           expect(json_response).to eq({ 'result' => {
+                                        'customer_request'          => 'mocked customer_request',
                                         'conversation_summary'      => 'mocked conversation_summary',
-                                        'open_questions'            => 'mocked open_questions',
-                                        'suggestions'               => 'mocked suggestions',
-                                        'problem'                   => 'mocked problem',
-                                        'fingerprint_md5'           => Digest::MD5.hexdigest(result.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+                                        'open_questions'            => ['mocked open_questions'],
+                                        'upcoming_events'           => ['mocked upcoming_events'],
+                                        'customer_mood'             => 'mocked customer_mood',
+                                        'customer_emotion'          => 'mocked customer_emotion',
+                                        'fingerprint_md5'           => Digest::MD5.hexdigest(result.sort.to_h.to_s),
                                         'relevant_for_current_user' => true,
                                       } })
         end

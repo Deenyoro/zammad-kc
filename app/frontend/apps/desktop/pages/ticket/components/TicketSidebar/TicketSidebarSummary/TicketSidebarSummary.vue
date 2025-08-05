@@ -20,7 +20,6 @@ import TicketSidebarSummaryContent from '#desktop/pages/ticket/components/Ticket
 import {
   type SummaryConfig,
   type SummaryItem,
-  TicketSummaryFeature,
 } from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/types.ts'
 import { useTicketSummaryGenerating } from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/useTicketSummaryGenerating.ts'
 import { usePersistentStates } from '#desktop/pages/ticket/composables/usePersistentStates.ts'
@@ -76,7 +75,7 @@ const showErrorDetails = computed(() => hasPermission('admin'))
 
 const headings = computed<SummaryItem[]>(() => [
   {
-    key: 'problem',
+    key: 'customerRequest',
     label: __('Customer Intent'),
     active: true,
   },
@@ -91,10 +90,14 @@ const headings = computed<SummaryItem[]>(() => [
     active: summaryConfig.value.open_questions,
   },
   {
-    key: 'suggestions',
-    label: __('Suggested Next Steps'),
-    active: summaryConfig.value.suggestions,
-    feature: config.value.checklist ? TicketSummaryFeature.Checklist : undefined,
+    key: 'upcomingEvents',
+    label: __('Upcoming Events'),
+    active: summaryConfig.value.upcoming_events,
+  },
+  {
+    key: ['customerEmotion', 'customerMood'],
+    label: __('Customer Sentiment'),
+    active: summaryConfig.value.customer_sentiment,
   },
 ])
 

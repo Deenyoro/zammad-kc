@@ -81,25 +81,26 @@ describe('Ticket detail view - Ticket summary', () => {
       ai_provider: 'zammad_ai',
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
-        conversation_summary: true,
         open_questions: true,
-        problem: true,
-        suggestions: true,
+        upcoming_events: true,
+        customer_sentiment: true,
       },
     })
 
     mockTicketAiAssistanceSummarizeMutation({
       ticketAIAssistanceSummarize: {
         summary: {
+          customerRequest: 'Order not received after payment',
           conversationSummary:
             'The customer paid for an order but claims to have not received it. They provided the order number and requested assistance with tracking.',
           openQuestions: ['What was the payment method used?'],
-          problem: 'Order not received after payment',
-          suggestions: [
+          upcomingEvents: [
             'Check the order status in the system',
             'Verify if the shipping address is correct',
             'Contact the shipping carrier for updates',
           ],
+          customerMood: 'Frustrated',
+          customerEmotion: '🤬',
         },
       },
     })
@@ -147,10 +148,9 @@ describe('Ticket detail view - Ticket summary', () => {
       ai_provider: 'zammad_ai',
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
-        conversation_summary: true,
         open_questions: true,
-        problem: true,
-        suggestions: true,
+        upcoming_events: true,
+        customer_sentiment: true,
       },
     })
 
@@ -190,10 +190,9 @@ describe('Ticket detail view - Ticket summary', () => {
       ai_provider: 'zammad_ai',
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
-        conversation_summary: true,
         open_questions: true,
-        problem: true,
-        suggestions: true,
+        upcoming_events: true,
+        customer_sentiment: true,
         generate_on: EnumTicketSummaryGeneration.OnTicketDetailOpening,
       },
     })
@@ -235,25 +234,27 @@ describe('Ticket detail view - Ticket summary', () => {
       ai_provider: 'zammad_ai',
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
-        conversation_summary: true,
         open_questions: true,
-        problem: true,
-        suggestions: true,
+        upcoming_events: true,
+        customer_sentiment: true,
+        generate_on: EnumTicketSummaryGeneration.OnTicketDetailOpening,
       },
     })
 
     mockTicketAiAssistanceSummarizeMutation({
       ticketAIAssistanceSummarize: {
         summary: {
+          customerRequest: 'Order not received after payment',
           conversationSummary:
             'The customer paid for an order but claims to have not received it. They provided the order number and requested assistance with tracking.',
           openQuestions: ['What was the payment method used?'],
-          problem: 'Order not received after payment',
-          suggestions: [
+          upcomingEvents: [
             'Check the order status in the system',
             'Verify if the shipping address is correct',
             'Contact the shipping carrier for updates',
           ],
+          customerMood: 'Frustrated',
+          customerEmotion: '🤬',
         },
       },
     })
@@ -270,10 +271,12 @@ describe('Ticket detail view - Ticket summary', () => {
 
     await triggerSummaryUpdate({
       summary: {
+        customerRequest: '...',
         conversationSummary: 'Summary to see if subscription comes in',
         openQuestions: ['...'],
-        problem: '...',
-        suggestions: ['foo', 'bar'],
+        upcomingEvents: ['foo', 'bar'],
+        customerMood: '...',
+        customerEmotion: '🤬',
       },
       relevantForCurrentUser: true,
       error: null,
@@ -388,9 +391,12 @@ describe('Ticket detail view - Ticket summary', () => {
 
     await triggerSummaryUpdate({
       summary: {
+        customerRequest: '...',
         conversationSummary: 'Agent replies something',
         openQuestions: ['...'],
-        problem: '...',
+        upcomingEvents: ['...'],
+        customerMood: '...',
+        customerEmotion: '🤬',
       },
       relevantForCurrentUser: false,
       error: null,
@@ -418,10 +424,10 @@ describe('Ticket detail view - Ticket summary', () => {
         ai_provider: 'zammad_ai',
         ai_assistance_ticket_summary: true,
         ai_assistance_ticket_summary_config: {
-          conversation_summary: true,
           open_questions: true,
-          problem: true,
-          suggestions: true,
+          upcoming_events: true,
+          customer_sentiment: true,
+          generate_on: EnumTicketSummaryGeneration.OnTicketDetailOpening,
         },
       })
 
@@ -459,10 +465,10 @@ describe('Ticket detail view - Ticket summary', () => {
         ai_provider: 'zammad_ai',
         ai_assistance_ticket_summary: true,
         ai_assistance_ticket_summary_config: {
-          conversation_summary: true,
           open_questions: true,
-          problem: true,
-          suggestions: true,
+          upcoming_events: true,
+          customer_sentiment: true,
+          generate_on: EnumTicketSummaryGeneration.OnTicketDetailOpening,
         },
       })
 
@@ -488,10 +494,10 @@ describe('Ticket detail view - Ticket summary', () => {
         ai_provider: '',
         ai_assistance_ticket_summary: true,
         ai_assistance_ticket_summary_config: {
-          conversation_summary: true,
           open_questions: true,
-          problem: true,
-          suggestions: true,
+          upcoming_events: true,
+          customer_sentiment: true,
+          generate_on: EnumTicketSummaryGeneration.OnTicketDetailOpening,
         },
       })
 
@@ -530,10 +536,9 @@ describe('Ticket detail view - Ticket summary', () => {
         ai_provider: 'zammad_ai',
         ai_assistance_ticket_summary: true,
         ai_assistance_ticket_summary_config: {
-          conversation_summary: true,
           open_questions: true,
-          problem: true,
-          suggestions: true,
+          upcoming_events: true,
+          customer_sentiment: true,
           generate_on: EnumTicketSummaryGeneration.OnTicketSummarySidebarActivation,
         },
       })
@@ -558,10 +563,9 @@ describe('Ticket detail view - Ticket summary', () => {
         ai_provider: 'zammad_ai',
         ai_assistance_ticket_summary: true,
         ai_assistance_ticket_summary_config: {
-          conversation_summary: true,
           open_questions: true,
-          problem: true,
-          suggestions: true,
+          upcoming_events: true,
+          customer_sentiment: true,
           generate_on: EnumTicketSummaryGeneration.OnTicketDetailOpening,
         },
       })
@@ -588,10 +592,9 @@ describe('Ticket detail view - Ticket summary', () => {
         ai_provider: 'zammad_ai',
         ai_assistance_ticket_summary: true,
         ai_assistance_ticket_summary_config: {
-          conversation_summary: true,
           open_questions: true,
-          problem: true,
-          suggestions: true,
+          upcoming_events: true,
+          customer_sentiment: true,
           generate_on: EnumTicketSummaryGeneration.OnTicketSummarySidebarActivation,
         },
       })

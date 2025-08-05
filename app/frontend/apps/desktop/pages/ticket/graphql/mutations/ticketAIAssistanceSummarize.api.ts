@@ -9,10 +9,12 @@ export const TicketAiAssistanceSummarizeDocument = gql`
     mutation ticketAIAssistanceSummarize($ticketId: ID!) {
   ticketAIAssistanceSummarize(ticketId: $ticketId) {
     summary {
+      customerRequest
       conversationSummary
       openQuestions
-      problem
-      suggestions
+      upcomingEvents
+      customerMood
+      customerEmotion
     }
     fingerprintMd5
     relevantForCurrentUser

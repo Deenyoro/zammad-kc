@@ -9,12 +9,8 @@ import type { ObjectLike } from '#shared/types/utils.ts'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import TicketSidebarContent from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarContent.vue'
 import SummarySkeleton from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary/SummarySkeleton.vue'
-import TicketSummaryCreateChecklist from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryCreateChecklist.vue'
 import TicketSummaryItem from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent/TicketSummaryItem.vue'
-import {
-  type SummaryItem,
-  TicketSummaryFeature,
-} from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/types.ts'
+import type { SummaryItem } from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/types.ts'
 import type { TicketSidebarContentProps } from '#desktop/pages/ticket/types/sidebar.ts'
 
 interface Props extends TicketSidebarContentProps {
@@ -40,7 +36,10 @@ const noSummaryPossible = computed(() => {
 
   if (!summary) return false
 
-  return props.summaryHeadings.every((section) => !summary[section.key]?.length)
+  return props.summaryHeadings.every((section) => {
+    if (Array.isArray(section.key)) return section.key.every((key) => !summary[key]?.length)
+    return !summary[section.key]?.length
+  })
 })
 </script>
 
@@ -89,13 +88,21 @@ const noSummaryPossible = computed(() => {
       </template>
       <template v-else-if="summary">
         <template v-for="item in summaryHeadings" :key="item.key">
-          <article v-if="summary[item.key]?.length">
-            <TicketSummaryCreateChecklist
-              v-if="item.feature === TicketSummaryFeature.Checklist"
-              :summary="summary[item.key] as string[]"
+          <article
+            v-if="
+              Array.isArray(item.key)
+                ? item.key.some((key) => summary?.[key]?.length)
+                : summary[item.key]?.length
+            "
+          >
+            <TicketSummaryItem
+              :summary="
+                Array.isArray(item.key)
+                  ? item.key.map((key) => summary?.[key]).join(' ')
+                  : summary[item.key]!
+              "
               :label="item.label"
             />
-            <TicketSummaryItem v-else :summary="summary[item.key]!" :label="item.label" />
           </article>
         </template>
 
@@ -109,7 +116,7 @@ const noSummaryPossible = computed(() => {
 
       <template v-else>
         <CommonLabel size="small" class="text-stone-200! dark:text-neutral-500!" tag="p">{{
-          $t('Zammad Smart Assist is generating the summary for you…')
+          $t('Zammad is generating the summary for you…')
         }}</CommonLabel>
         <SummarySkeleton v-for="n in 4" :key="n" :style="{ 'animation-delay': `${n * 0.1}s` }" />
       </template>

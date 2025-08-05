@@ -17,15 +17,7 @@ class TicketAIAssistanceSummarizeJob < AIJob
 
     if content.nil?
       # Trigger the update for the new desktop view.
-      trigger_subscription(ticket:, locale:, data: {
-                             summary: {
-                               problem:              '',
-                               conversation_summary: '',
-                               open_questions:       [],
-                               suggestions:          [],
-                             },
-                             reason:  '',
-                           },)
+      trigger_subscription(ticket:, locale:, data: { summary: {} },)
 
       # Trigger the update for the old stack
       Sessions.broadcast({
@@ -38,14 +30,8 @@ class TicketAIAssistanceSummarizeJob < AIJob
 
     # Trigger the update for the new desktop view.
     trigger_subscription(ticket:, locale:, data: {
-                           summary:         {
-                             problem:              content['problem'],
-                             conversation_summary: content['summary'],
-                             open_questions:       content['open_questions'],
-                             suggestions:          content['suggestions']
-                           },
-                           reason:          content['reason'],
-                           fingerprint_md5: Digest::MD5.hexdigest(content.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+                           summary:         content,
+                           fingerprint_md5: Digest::MD5.hexdigest(content.sort.to_h.to_s),
                          },)
 
     # Trigger the update for the old stack

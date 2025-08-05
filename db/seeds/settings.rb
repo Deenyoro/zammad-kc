@@ -6015,7 +6015,7 @@ Setting.create_if_not_exists(
   title:       __('Ticket Summary'),
   name:        'ai_assistance_ticket_summary',
   area:        'AI::Assistance',
-  description: __('Enable or disable the AI assistance ticket summary.'),
+  description: __('Enable or disable the ticket summary.'),
   options:     {},
   state:       false,
   preferences: {
@@ -6029,12 +6029,13 @@ Setting.create_if_not_exists(
   title:       __('Ticket Summary Config'),
   name:        'ai_assistance_ticket_summary_config',
   area:        'AI::Assistance',
-  description: __('Stores the AI assistance ticket summarization options (e.g. which content is visible).'),
+  description: __('Stores the ticket summarization options (e.g. which content is visible).'),
   options:     {},
   state:       {
-    open_questions: true,
-    suggestions:    false,
-    generate_on:    'on_ticket_detail_opening',
+    open_questions:     true,
+    upcoming_events:    true,
+    customer_sentiment: true,
+    generate_on:        'on_ticket_detail_opening',
   },
   preferences: {
     authentication: true,
@@ -6044,10 +6045,10 @@ Setting.create_if_not_exists(
 )
 
 Setting.create_if_not_exists(
-  title:       __('Text Tools'),
+  title:       __('Writing Assistant'),
   name:        'ai_assistance_text_tools',
   area:        'AI::Assistance',
-  description: __('Enable or disable the AI assistance text tools.'),
+  description: __('Enable or disable the writing assistant text tools.'),
   options:     {},
   state:       true,
   preferences: {

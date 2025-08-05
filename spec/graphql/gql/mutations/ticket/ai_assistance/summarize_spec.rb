@@ -14,10 +14,12 @@ RSpec.describe Gql::Mutations::Ticket::AIAssistance::Summarize, :aggregate_failu
         mutation ticketAIAssistanceSummarize($ticketId: ID!) {
           ticketAIAssistanceSummarize(ticketId: $ticketId) {
             summary {
-              problem
+              customerRequest
               conversationSummary
               openQuestions
-              suggestions
+              upcomingEvents
+              customerMood
+              customerEmotion
             }
             fingerprintMd5
             relevantForCurrentUser
@@ -48,23 +50,26 @@ RSpec.describe Gql::Mutations::Ticket::AIAssistance::Summarize, :aggregate_failu
     context 'when the summary is already in the cache' do
       let(:expected_cache) do
         {
-          'problem'        => 'example',
-          'summary'        => 'example',
-          'open_questions' => ['example'],
-          'suggestions'    => ['example'],
-          'reason'         => 'example',
+          'customer_request'     => 'example',
+          'conversation_summary' => 'example',
+          'open_questions'       => ['example'],
+          'upcoming_events'      => ['example'],
+          'customer_mood'        => 'example',
+          'customer_emotion'     => 'example',
         }
       end
 
       it 'returns the cached summary' do
         expect(gql.result.data).to include(
           summary:                eq({
+                                       'customerRequest'     => 'example',
                                        'conversationSummary' => 'example',
                                        'openQuestions'       => ['example'],
-                                       'problem'             => 'example',
-                                       'suggestions'         => ['example'],
+                                       'upcomingEvents'      => ['example'],
+                                       'customerMood'        => 'example',
+                                       'customerEmotion'     => 'example',
                                      }),
-          fingerprintMd5:         eq(Digest::MD5.hexdigest(expected_cache.slice('problem', 'summary', 'open_questions', 'suggestions').to_s)),
+          fingerprintMd5:         eq(Digest::MD5.hexdigest(expected_cache.sort.to_h.to_s)),
           relevantForCurrentUser: true,
         )
       end

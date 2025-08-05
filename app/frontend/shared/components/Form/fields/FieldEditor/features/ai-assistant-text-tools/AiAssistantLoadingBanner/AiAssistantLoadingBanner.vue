@@ -25,14 +25,14 @@ const appName = useAppName()
     <CommonTranslateRenderer
       v-if="appName === 'desktop'"
       class="truncate text-sm"
-      :source="__('%s is generating text')"
+      :source="__('%s is generating text…')"
       :placeholders="[
         {
           type: 'label',
           props: {
             class: label,
           },
-          content: $t('Zammad Smart Assist'),
+          content: $t('Writing Assistant'),
         },
       ]"
     />

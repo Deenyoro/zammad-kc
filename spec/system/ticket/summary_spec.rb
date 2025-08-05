@@ -8,7 +8,6 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
   let(:article)                      { create(:ticket_article, ticket:) }
   let(:ai_provider)                  { 'zammad_ai' }
   let(:ai_assistance_ticket_summary) { true }
-  let(:checklist)                    { true }
   let(:initial_summary)              { "initial #{Faker::Lorem.unique.sentence}" }
   let(:updated_summary)              { "updated #{Faker::Lorem.unique.sentence}" }
   let(:initial_cache_key)            { "ticket_summary_#{ticket.id}" }
@@ -18,11 +17,11 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
   def authenticate
     Setting.set('ai_provider', ai_provider)
     Setting.set('ai_assistance_ticket_summary', ai_assistance_ticket_summary)
-    Setting.set('checklist', checklist)
     Setting.set('ai_assistance_ticket_summary_config', {
-                  open_questions: true,
-                  suggestions:    true,
-                  generate_on:    ticket_summary_generation
+                  open_questions:     true,
+                  upcoming_events:    true,
+                  customer_sentiment: true,
+                  generate_on:        ticket_summary_generation
                 })
 
     article
@@ -33,8 +32,12 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
   before do
     if defined?(initial_cache_key)
       initial_content = {
-        'summary'     => initial_summary,
-        'suggestions' => (initial_suggestions if defined?(initial_suggestions))
+        'customer_request'     => '',
+        'conversation_summary' => initial_summary,
+        'open_questions'       => [],
+        'upcoming_events'      => [],
+        'customer_mood'        => 'Neutral',
+        'customer_emotion'     => '😐',
       }
 
       AI::StoredResult.create!(
@@ -44,8 +47,12 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
       )
 
       updated_content = {
-        'summary'     => updated_summary,
-        'suggestions' => (updated_suggestions if defined?(updated_suggestions))
+        'customer_request'     => 'Customer is facing an issue with the product.',
+        'conversation_summary' => updated_summary,
+        'open_questions'       => ['What is the issue?', 'How can we help?'],
+        'upcoming_events'      => ['Next meeting on Friday', 'Follow-up call next week'],
+        'customer_mood'        => 'Happy',
+        'customer_emotion'     => '🙂',
       }.compact
 
       allow_any_instance_of(AI::Service::TicketSummarize)
@@ -79,56 +86,84 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
         end
       end
 
-      context 'when suggestions are available' do
-        let(:initial_suggestions) do
-          [
-            Faker::Lorem.unique.sentence,
-            Faker::Lorem.unique.sentence,
-            Faker::Lorem.unique.sentence,
-          ]
+      it 'shows customer intent in the summary sidebar', performs_jobs: true do
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_no_text 'Customer Intent'
+          expect(page).to have_no_text 'Customer is facing an issue with the product.'
         end
 
-        it 'shows add buttons' do
-          within '.sidebar[data-tab="summary"]' do
-            expect(page).to have_text 'Suggested Next Steps'
-            expect(find_all('button[aria-label="Add as checklist item"]').length).to eq(3)
-            expect(page).to have_button 'Add all to checklist'
+        create(:ticket_article, ticket:)
 
-            # Create the checklist & add the first item
-            find_all('button[aria-label="Add as checklist item"]').first.click
-          end
+        expect(page).to have_text 'generating the summary for you'
 
-          expect(page).to have_text 'Checklist item successfully added.'
+        perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
 
-          within '.sidebar[data-tab="summary"]' do
-            # Add to an existing checklist
-            find_all('button[aria-label="Add as checklist item"]')[1].click
-          end
-
-          expect(page).to have_text 'Checklist item successfully added.'
-
-          within '.sidebar[data-tab="summary"]' do
-            click_on 'Add all to checklist'
-          end
-
-          within '.sidebar[data-tab="checklist"]' do
-            expect(page).to have_text 'Checklist'
-            expect(find_all('table tbody tr').length).to eq(5)
-          end
-        end
-
-        context 'with checklist feature disabled' do
-          let(:checklist) { false }
-
-          it 'does not show add buttons' do
-            within '.sidebar[data-tab="summary"]' do
-              expect(page).to have_text 'Suggested Next Steps'
-              expect(page).to have_no_button 'Add'
-              expect(page).to have_no_button 'Add all to checklist'
-            end
-          end
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_text 'Customer Intent'
+          expect(page).to have_text 'Customer is facing an issue with the product.'
         end
       end
+
+      it 'shows open questions in the summary sidebar', performs_jobs: true do
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_no_text 'Open Questions'
+          expect(page).to have_no_text 'What is the issue?'
+          expect(page).to have_no_text 'How can we help?'
+        end
+
+        create(:ticket_article, ticket:)
+
+        expect(page).to have_text 'generating the summary for you'
+
+        perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
+
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_text 'Open Questions'
+          expect(page).to have_text 'What is the issue?'
+          expect(page).to have_text 'How can we help?'
+        end
+      end
+
+      it 'shows upcoming events in the summary sidebar', performs_jobs: true do
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_no_text 'Upcoming Events'
+          expect(page).to have_no_text 'Next meeting on Friday'
+          expect(page).to have_no_text 'Follow-up call next week'
+        end
+
+        create(:ticket_article, ticket:)
+
+        expect(page).to have_text 'generating the summary for you'
+
+        perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
+
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_text 'Upcoming Events'
+          expect(page).to have_text 'Next meeting on Friday'
+          expect(page).to have_text 'Follow-up call next week'
+        end
+      end
+
+      it 'shows customer sentiment and emotion in the summary sidebar', performs_jobs: true do
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_text 'Customer Sentiment'
+          expect(page).to have_text 'Neutral'
+          expect(page).to have_text '😐'
+        end
+
+        create(:ticket_article, ticket:)
+
+        expect(page).to have_text 'generating the summary for you'
+
+        perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
+
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_text 'Customer Sentiment'
+          expect(page).to have_text 'Happy'
+          expect(page).to have_text '🙂'
+        end
+      end
+
     end
 
     context 'when summary feature is disabled' do

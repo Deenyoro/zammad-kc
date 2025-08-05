@@ -7,7 +7,6 @@ module Gql::Mutations
     argument :ticket_id, GraphQL::Types::ID, loads: Gql::Types::TicketType, loads_pundit_method: :agent_read_access?, description: 'The ticket to fetch the summary for'
 
     field :summary, Gql::Types::Ticket::AIAssistance::SummaryType, description: 'Different parts of the generated summary'
-    field :reason, String, description: 'Reason for the result of the summary generation'
     field :fingerprint_md5, String, description: 'MD5 digest of the complete summary content'
     field :relevant_for_current_user, Boolean, description: 'Indicates if the summary is relevant for the current user'
 
@@ -28,14 +27,8 @@ module Gql::Mutations
         last_article = ::Ticket::Article.last_customer_agent_article(ticket.id)
 
         return {
-          summary:                   {
-            problem:              stored_content['problem'],
-            conversation_summary: stored_content['summary'],
-            open_questions:       stored_content['open_questions'],
-            suggestions:          stored_content['suggestions'],
-          },
-          reason:                    stored_content['reason'],
-          fingerprint_md5:           Digest::MD5.hexdigest(stored_content.slice('problem', 'summary', 'open_questions', 'suggestions').to_s),
+          summary:                   stored_content,
+          fingerprint_md5:           Digest::MD5.hexdigest(stored_content.sort.to_h.to_s),
           relevant_for_current_user: last_article&.author&.id != context.current_user.id,
         }
       end

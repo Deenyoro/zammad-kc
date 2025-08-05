@@ -1,6 +1,6 @@
 class App.TicketSummary extends App.ControllerAIFeatureBase
   header: __('Ticket Summary')
-  description: __('%s provides the functionality to summarize the current ticket state. It will provide a new sidebar which contains information to reduce reading time in the ticket with a summarized version of the problem, open questions and suggestions.')
+  description: __('Ticket Summary provides the functionality to summarize the current ticket state. It will provide a new sidebar which contains information to reduce reading time in the ticket with a summarized version of the problem, open questions and upcoming events.')
   requiredPermission: 'admin.ai_assistance_ticket_summary'
   events:
     'change .js-aiAssistanceTicketSummarySetting input': 'toggleAIAssistanceTicketSummarySetting'
@@ -35,7 +35,7 @@ class App.TicketSummary extends App.ControllerAIFeatureBase
     service_config = App.Setting.get('ai_assistance_ticket_summary_config') || {}
 
     @html App.view('ai/ticket_summary')(
-      description: marked(App.i18n.translateContent(@description, '**Zammad Smart Assist**'))
+      description: App.i18n.translateContent(@description)
       serviceOptions: @serviceOptions(service_config)
       generationOptions: @generationOptions(service_config['generate_on'])
       missingProvider: @missingProvider()
@@ -45,7 +45,7 @@ class App.TicketSummary extends App.ControllerAIFeatureBase
     [
       {
         name: __('Customer Intent')
-        key: 'problem'
+        key: 'customer_request'
         description: __('Provide a summary of the problem the customer needs to get resolved.')
         active: true,
         disabled: true,
@@ -64,11 +64,16 @@ class App.TicketSummary extends App.ControllerAIFeatureBase
         active: config.open_questions,
       }
       {
-        name: __('Suggested Next Steps')
-        flags: ['experimental']
-        key: 'suggestions'
-        description: __('Provide some possible solutions to the problem as follow-up items.')
-        active: config.suggestions,
+        name: __('Upcoming Events')
+        key: 'upcoming_events'
+        description: __('Provide a summary of the upcoming events based on the conversation.')
+        active: config.upcoming_events,
+      }
+      {
+        name: __('Customer Sentiment')
+        key: 'customer_sentiment'
+        description: __('Provide an assessment of the customer sentiment based on the conversation.')
+        active: config.customer_sentiment,
       }
     ]
 

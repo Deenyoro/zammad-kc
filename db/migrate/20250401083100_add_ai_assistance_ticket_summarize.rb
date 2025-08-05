@@ -14,7 +14,7 @@ class AddAIAssistanceTicketSummarize < ActiveRecord::Migration[7.2]
     Permission.create_if_not_exists(
       name:        'admin.ai_assistance_ticket_summary',
       label:       'Ticket Summary',
-      description: 'Manage Zammad Smart Assist ticket summarization of your system.',
+      description: 'Manage ticket summarization of your system.',
       preferences: { prio: 1334 }
     )
 
