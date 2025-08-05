@@ -245,13 +245,11 @@ RSpec.describe 'Form helpers', app: :desktop_view, authenticated_as: :agent, db_
     end
   end
 
-  context 'with date and datetime fields', authenticated_as: :authenticate do
-    let(:date)     { Date.parse('2022-09-07') }
-    let(:datetime) { DateTime.parse('2023-09-07T12:00:00.000Z') }
+  context 'with date field', authenticated_as: :authenticate do
+    let(:date) { Date.parse('2022-09-07') }
 
     def authenticate
-      create(:object_manager_attribute_date, object_name: object_name, name: 'date', display: 'Date', screens: screens)
-      create(:object_manager_attribute_datetime, object_name: object_name, name: 'datetime', display: 'Date Time', screens: screens)
+      create(:object_manager_attribute_date, object_name:, name: 'date', display: 'Date', screens:)
 
       ObjectManager::Attribute.migration_execute
       agent
@@ -261,16 +259,33 @@ RSpec.describe 'Form helpers', app: :desktop_view, authenticated_as: :agent, db_
       el = find_datepicker(nil, exact_text: 'Date')
       el.select_date(date)
       expect(el).to have_date(date)
+
       el.clear
       expect(el).to have_no_date(date)
+
       el.type_date(date)
       expect(el).to have_date(date)
+    end
+  end
 
+  context 'with date time field', authenticated_as: :authenticate do
+    let(:datetime) { DateTime.parse('2023-09-07T12:00:00.000Z') }
+
+    def authenticate
+      create(:object_manager_attribute_datetime, object_name:, name: 'datetime', display: 'Date Time', screens:)
+
+      ObjectManager::Attribute.migration_execute
+      agent
+    end
+
+    it 'provides test helpers' do
       el = find_datepicker('Date Time')
       el.select_datetime(datetime)
       expect(el).to have_datetime(datetime)
+
       el.clear
       expect(el).to have_no_datetime(datetime)
+
       el.type_datetime(datetime)
       expect(el).to have_datetime(datetime)
     end

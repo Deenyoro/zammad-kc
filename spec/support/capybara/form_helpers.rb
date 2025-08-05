@@ -349,8 +349,9 @@ class ZammadFormFieldCapybaraElementDelegator < SimpleDelegator
     element.find_by_id(id).click # rubocop:disable Rails/DynamicFindBy
 
     if desktop_view?
+      wait_until_closed_desktop_view
       element.click
-      wait_until_opened
+      wait_until_opened_desktop_view
     end
 
     yield if block_given?
