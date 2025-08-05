@@ -5121,56 +5121,6 @@ Setting.create_if_not_exists(
   frontend:    false
 )
 Setting.create_if_not_exists(
-  title:       __('Defines transaction backend.'),
-  name:        '6000_slack_webhook',
-  area:        'Transaction::Backend::Async',
-  description: __('Defines the transaction backend which posts messages to Slack (http://www.slack.com).'),
-  options:     {},
-  state:       'Transaction::Slack',
-  frontend:    false
-)
-Setting.create_if_not_exists(
-  title:       __('Slack integration'),
-  name:        'slack_integration',
-  area:        'Integration::Switch',
-  description: __('Defines if Slack (http://www.slack.org) is enabled or not.'),
-  options:     {
-    form: [
-      {
-        display: '',
-        null:    true,
-        name:    'slack_integration',
-        tag:     'boolean',
-        options: {
-          true  => 'yes',
-          false => 'no',
-        },
-      },
-    ],
-  },
-  state:       false,
-  preferences: {
-    prio:       1,
-    permission: ['admin.integration'],
-  },
-  frontend:    false
-)
-Setting.create_if_not_exists(
-  title:       __('Slack config'),
-  name:        'slack_config',
-  area:        'Integration::Slack',
-  description: __('Defines the Slack config.'),
-  options:     {},
-  state:       {
-    items: []
-  },
-  preferences: {
-    prio:       2,
-    permission: ['admin.integration'],
-  },
-  frontend:    false,
-)
-Setting.create_if_not_exists(
   title:       __('sipgate.io integration'),
   name:        'sipgate_integration',
   area:        'Integration::Switch',

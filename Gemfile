@@ -170,7 +170,6 @@ gem 'acts_as_list'
 # integrations
 gem 'clearbit', require: false
 gem 'net-ldap'
-gem 'slack-notifier', require: false
 gem 'zendesk_api', require: false
 
 # integrations - exchange

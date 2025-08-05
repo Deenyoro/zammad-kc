@@ -198,8 +198,6 @@ RSpec.describe SystemReport, current_user_id: 1, type: :model do
           '0100_trigger',
           '0100_notification',
           '1000_signature_detection',
-          '6000_slack_webhook',
-          'slack_integration',
           'sipgate_integration',
           'sipgate_alternative_fqdn',
           'cti_integration',
