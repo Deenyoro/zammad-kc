@@ -797,7 +797,7 @@ RSpec.describe User, type: :model do
       customer_ticket3      = create(:ticket, group: group_subject, customer: user)
       knowledge_base_answer = create(:knowledge_base_answer, archived_by_id: user.id, published_by_id: user.id, internal_by_id: user.id)
       ticket_state          = create(:ticket_state, created_by_id: user.id)
-      ticket_merged_state   = Ticket::State.find_by(name: 'merged').tap { _1.update!(updated_by_id: user.id) }
+      ticket_merged_state   = Ticket::State.find_by(name: 'merged').tap { it.update!(updated_by_id: user.id) }
 
       refs_user = Models.references('User', user.id, true)
       expect(refs_user).to eq(refs_known)

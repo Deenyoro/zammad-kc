@@ -823,11 +823,11 @@ where attributes are used in conditions
       end.deep_merge(attribute_to_references_hash_model)
   end
 
-  private_class_method def self.walk_conditions(condition, &block)
+  private_class_method def self.walk_conditions(condition, &)
     case condition
     when Hash
       if condition.key?('conditions') && condition['conditions'].is_a?(Array)
-        condition['conditions'].each { |sub| walk_conditions(sub, &block) }
+        condition['conditions'].each { |sub| walk_conditions(sub, &) }
       elsif condition.key?('name')
         yield condition['name']
       else
@@ -838,7 +838,7 @@ where attributes are used in conditions
         end
       end
     when Array
-      condition.each { |sub| walk_conditions(sub, &block) }
+      condition.each { |sub| walk_conditions(sub, &) }
     end
   end
 

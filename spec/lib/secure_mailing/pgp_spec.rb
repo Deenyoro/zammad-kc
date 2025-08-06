@@ -660,7 +660,7 @@ RSpec.describe SecureMailing::PGP, :aggregate_failures do
         let(:encrypted_mail)   { Channel::EmailParser.new.parse(pgp_mail.to_s) }
 
         # Import a mail that was signed + encrypted with the same command.
-        let(:mail) { encrypted_mail.deep_dup.tap { SecureMailing.incoming(_1) } }
+        let(:mail) { encrypted_mail.deep_dup.tap { SecureMailing.incoming(it) } }
 
         context 'when all keys are present' do
           before do
