@@ -74,13 +74,38 @@ class AI::Agent < ApplicationModel
 
   ensures_no_related_objects_path(*PERFORMABLE_PATH)
 
-  def self.from_performable(input)
-    where(active: true).find_by id: from_performable_id(input)
-  end
+  class << self
+    def from_performable(input)
+      where(active: true).find_by id: from_performable_id(input)
+    end
 
-  def self.from_performable_id(input)
-    data = input.respond_to?(:perform) ? input.perform : input
-    data.dig(*PERFORMABLE_PATH)
+    def from_performable_id(input)
+      data = input.respond_to?(:perform) ? input.perform : input
+      data.dig(*PERFORMABLE_PATH)
+    end
+
+    # Used by ObjectManager::Attribute.attribute_to_references_hash to
+    # check which attributes cannot be deleted because they are used in AI agents.
+    #
+    # @return [Hash] a hash with the attribute name as key and the AI agent names as values
+    #
+    #   {'ticket.custom_textfield' => { 'AI Agent' => ['Test AI Agent', 'Test AI Agent 2'] } }
+    #
+    def object_attribute_dependencies
+      all.each_with_object({}) do |agent, result|
+        type = agent.agent_type_object
+        next if !type
+
+        deps = type.object_attribute_dependencies
+        next if deps.blank?
+
+        deps.each do |dep|
+          key = "#{type.object_attribute_object_name.downcase}.#{dep}"
+          result[key] ||= { __('AI Agent') => [] }
+          result[key][__('AI Agent')] << agent.name
+        end
+      end
+    end
   end
 
   def execution_definition

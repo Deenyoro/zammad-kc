@@ -46,6 +46,12 @@ class AI::Agent::Type
     []
   end
 
+  def object_attribute_dependencies
+    return [] if placeholder_field_names.blank? || enrichment_data.blank?
+
+    placeholder_field_names.filter_map { |name| enrichment_data[name].presence }
+  end
+
   def form_schema
     []
   end
