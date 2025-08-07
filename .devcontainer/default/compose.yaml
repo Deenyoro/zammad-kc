@@ -22,7 +22,7 @@ services:
       - redis
 
     volumes:
-    - ../..:/workspaces:cached
+    - ../../..:/workspaces:cached
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
@@ -55,10 +55,6 @@ services:
   redis:
     image: redis:7.0
     restart: unless-stopped
-
-  # selenium:
-  #   image: selenium/standalone-chromium
-  #   restart: unless-stopped
 
 volumes:
   elasticsearch-data:

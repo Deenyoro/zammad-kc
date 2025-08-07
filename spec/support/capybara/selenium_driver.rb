@@ -1,7 +1,7 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 # This file registers the custom Zammad chrome and firefox drivers.
-# The options check if a REMOTE_URL ENV is given and change the
+# The options check if a SELENIUM_REMOTE_URL ENV is given and change the
 # configurations accordingly.
 
 Capybara.register_driver(:zammad_chrome) do |app|
@@ -58,16 +58,16 @@ def build_chrome_driver(app, user_agent: nil)
     options: chrome_options
   }
 
-  if ENV['REMOTE_URL'].present?
+  if ENV['SELENIUM_REMOTE_URL'].present?
     driver_args[:browser] = :remote
-    driver_args[:url]     = ENV['REMOTE_URL']
+    driver_args[:url]     = ENV['SELENIUM_REMOTE_URL']
     driver_args[:http_client] = Selenium::WebDriver::Remote::Http::Default.new(
       open_timeout: 120,
       read_timeout: 120
     )
   end
 
-  if ENV['BROWSER_HEADLESS'].present?
+  if ENV['SELENIUM_BROWSER_HEADLESS'].present?
     driver_args[:options].add_argument '--headless=new' # native headless for v109+
   end
 
@@ -83,7 +83,7 @@ def build_chrome_driver(app, user_agent: nil)
 
   Capybara::Selenium::Driver.new(app, **driver_args).tap do |driver|
     # Selenium 4 installs a default file_detector which finds wrong files/directories such as zammad/test.
-    driver.browser.file_detector = nil if ENV['REMOTE_URL'].present?
+    driver.browser.file_detector = nil if ENV['SELENIUM_REMOTE_URL'].present?
   end
 end
 
@@ -99,16 +99,16 @@ def build_firefox_driver(app, user_agent: nil)
     options: Selenium::WebDriver::Firefox::Options.new(profile: profile),
   }
 
-  if ENV['REMOTE_URL'].present?
+  if ENV['SELENIUM_REMOTE_URL'].present?
     driver_args[:browser] = :remote
-    driver_args[:url]     = ENV['REMOTE_URL']
+    driver_args[:url]     = ENV['SELENIUM_REMOTE_URL']
     driver_args[:http_client] = Selenium::WebDriver::Remote::Http::Default.new(
       open_timeout: 120,
       read_timeout: 120
     )
   end
 
-  if ENV['BROWSER_HEADLESS'].present?
+  if ENV['SELENIUM_BROWSER_HEADLESS'].present?
     driver_args[:options].add_argument '-headless'
   end
 
@@ -121,6 +121,6 @@ def build_firefox_driver(app, user_agent: nil)
 
   Capybara::Selenium::Driver.new(app, **driver_args).tap do |driver|
     # Selenium 4 installs a default file_detector which finds wrong files/directories such as zammad/test.
-    driver.browser.file_detector = nil if ENV['REMOTE_URL'].present?
+    driver.browser.file_detector = nil if ENV['SELENIUM_REMOTE_URL'].present?
   end
 end

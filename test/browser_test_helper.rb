@@ -38,7 +38,7 @@ class TestCase < ActiveSupport::TestCase
   end
 
   def browser
-    ENV['BROWSER'] || 'firefox'
+    ENV['SELENIUM_BROWSER'] || 'firefox'
   end
 
   def browser_support_cookies
@@ -50,7 +50,7 @@ class TestCase < ActiveSupport::TestCase
   end
 
   def browser_url
-    return ENV['BROWSER_URL'] if ENV['BROWSER_URL'].present?
+    return ENV['SELENIUM_BROWSER_URL'] if ENV['SELENIUM_BROWSER_URL'].present?
 
     "http://#{host}:3000"
   end
@@ -74,7 +74,7 @@ class TestCase < ActiveSupport::TestCase
         profile: profile
       )
 
-      if ENV['BROWSER_HEADLESS'].present?
+      if ENV['SELENIUM_BROWSER_HEADLESS'].present?
         options.add_argument '-headless'
       end
     when 'chrome'
@@ -101,7 +101,7 @@ class TestCase < ActiveSupport::TestCase
         exclude_switches: ['enable-automation'],
       )
 
-      if ENV['BROWSER_HEADLESS'].present?
+      if ENV['SELENIUM_BROWSER_HEADLESS'].present?
         options.add_argument '--headless=new' # native headless for v109+
       end
     end
@@ -117,7 +117,7 @@ class TestCase < ActiveSupport::TestCase
     # https://github.com/teamcapybara/capybara/issues/2779
     Selenium::WebDriver.logger.ignore(:clear_local_storage, :clear_session_storage)
 
-    if ENV['REMOTE_URL'].blank?
+    if ENV['SELENIUM_REMOTE_URL'].blank?
       local_browser = Selenium::WebDriver.for(browser.to_sym, options: browser_options)
       @browsers[local_browser.hash] = local_browser
       browser_instance_preferences(local_browser)
@@ -147,7 +147,7 @@ class TestCase < ActiveSupport::TestCase
 
     local_browser = Selenium::WebDriver.for(
       :remote,
-      url:         ENV['REMOTE_URL'],
+      url:         ENV['SELENIUM_REMOTE_URL'],
       http_client: http_client,
       options:     browser_options,
     )
@@ -171,10 +171,10 @@ class TestCase < ActiveSupport::TestCase
   end
 
   def browser_instance_preferences(local_browser)
-    browser_width = ENV['BROWSER_WIDTH'] || 1024
-    browser_height = ENV['BROWSER_HEIGHT'] || 800
+    browser_width = ENV['SELENIUM_BROWSER_WIDTH'] || 1024
+    browser_height = ENV['SELENIUM_BROWSER_HEIGHT'] || 800
     local_browser.manage.window.resize_to(browser_width, browser_height)
-    if !ENV['REMOTE_URL']&.match?(%r{saucelabs|(grid|ci)\.(zammad\.org|znuny\.com)}i)
+    if !ENV['SELENIUM_REMOTE_URL']&.match?(%r{saucelabs|(grid|ci)\.(zammad\.org|znuny\.com)}i)
       if @browsers.one?
         local_browser.manage.window.move_to(0, 0)
       else

@@ -1,0 +1,22 @@
+name: "zammad-devcontainer"
+
+include: [../default/compose.yaml]
+
+services:
+  selenium-chrome:
+    image: selenium/standalone-chromium
+    shm_size: 2g
+    environment:
+      START_XVFB: 'false' # not needed for headless mode
+      SE_NODE_MAX_SESSIONS: '5'
+      SE_NODE_OVERRIDE_MAX_SESSIONS: 'true'
+    restart: unless-stopped
+
+  selenium-firefox:
+    image: selenium/standalone-firefox
+    shm_size: 2g
+    environment:
+      START_XVFB: 'false' # not needed for headless mode
+      SE_NODE_MAX_SESSIONS: '5'
+      SE_NODE_OVERRIDE_MAX_SESSIONS: 'true'
+    restart: unless-stopped
