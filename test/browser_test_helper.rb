@@ -171,8 +171,8 @@ class TestCase < ActiveSupport::TestCase
   end
 
   def browser_instance_preferences(local_browser)
-    browser_width = ENV['SELENIUM_BROWSER_WIDTH'] || 1024
-    browser_height = ENV['SELENIUM_BROWSER_HEIGHT'] || 800
+    browser_width = ENV['SELENIUM_BROWSER_WIDTH'] || 1200
+    browser_height = ENV['SELENIUM_BROWSER_HEIGHT'] || 900
     local_browser.manage.window.resize_to(browser_width, browser_height)
     if !ENV['SELENIUM_REMOTE_URL']&.match?(%r{saucelabs|(grid|ci)\.(zammad\.org|znuny\.com)}i)
       if @browsers.one?
