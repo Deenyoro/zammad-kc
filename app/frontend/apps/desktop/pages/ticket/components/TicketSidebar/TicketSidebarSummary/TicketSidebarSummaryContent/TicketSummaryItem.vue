@@ -33,7 +33,8 @@ const variantClass = computed(() => (props.variant ? ['ai-stripe before:h-[1px] 
         <slot name="item-trailing" :content="content" />
       </li>
     </ol>
-    <CommonLabel v-else tag="p">{{ summary }}</CommonLabel>
+    <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component, vue/no-v-html -->
+    <CommonLabel v-else class="block!" tag="p" v-html="summary" />
     <slot name="trailing" />
   </div>
 </template>
