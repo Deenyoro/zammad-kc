@@ -10,6 +10,8 @@ import { mockAiAssistanceTextToolsMutation } from '#shared/graphql/mutations/aiA
 import { EnumAiTextToolService } from '#shared/graphql/types.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 
+import { FIELD_EDITOR_OPTIONS } from '#desktop/components/Form/fields/FieldEditor/useFieldEditorOptions.ts'
+
 import FieldEditorActionBar from '../FieldEditorActionBar.vue'
 
 // not actually executed in a unit test, should speed up tests
@@ -346,5 +348,25 @@ describe('basic toolbar testing', () => {
 
       expect(textToolsActionMock[aiTextToolService]).toHaveBeenCalled()
     })
+  })
+
+  it('allows injection of options', async () => {
+    const wrapper = renderComponent(FieldEditorActionBar, {
+      props: {
+        contentType: 'text/html',
+        visible: true,
+        disabledPlugins: [],
+        formId: getUuid(),
+      },
+      provide: [[FIELD_EDITOR_OPTIONS, { zIndex: '100' }]],
+    })
+
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Add heading' }))
+
+    const popover = await wrapper.findByRole('region', {
+      name: 'Add heading',
+    })
+
+    expect(popover).toHaveStyle('z-index: 100;')
   })
 })

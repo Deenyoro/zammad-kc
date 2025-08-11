@@ -36,6 +36,7 @@ import type { MutationSendError } from '#shared/types/error.ts'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonFlyout from '#desktop/components/CommonFlyout/CommonFlyout.vue'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
+import { provideFieldEditorOptions } from '#desktop/components/Form/fields/FieldEditor/useFieldEditorOptions.ts'
 import SplitButton from '#desktop/components/SplitButton/SplitButton.vue'
 import { useTicketUpdateBulkMutation } from '#desktop/entities/ticket/graphql/mutations/updateBulk.api.ts'
 
@@ -166,6 +167,9 @@ const formSchema = defineFormSchema([
     ],
   },
 ])
+
+// To make popover be above the flyout backdrop
+provideFieldEditorOptions({ zIndex: '40' })
 
 const { attributesLookup: ticketObjectAttributesLookup } = useObjectAttributes(
   EnumObjectManagerObjects.Ticket,
