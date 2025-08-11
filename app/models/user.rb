@@ -741,6 +741,16 @@ try to find correct name
     save!
   end
 
+  def self.admin_user_exists?(except_role_id: [], except_user_id: [])
+    admin_role_ids = Role.joins(:permissions)
+      .where(permissions: { name: ['admin', 'admin.user'], active: true }, roles: { active: true })
+      .where.not(id: except_role_id.presence).pluck(:id)
+
+    User.joins(:roles).where(roles: { id: admin_role_ids }, users: { active: true })
+      .where.not(id: except_user_id.presence)
+      .exists?
+  end
+
   private
 
   def organization_history_log(org, type)
@@ -949,7 +959,7 @@ raise 'At least one user need to have admin permissions'
     return true if !will_save_change_to_attribute?('active')
     return true if active != false
     return true if !permissions?(['admin', 'admin.user'])
-    raise Exceptions::UnprocessableEntity, __('At least one user needs to have admin permissions.') if last_admin_check_admin_count < 1
+    raise Exceptions::UnprocessableEntity, __('At least one user needs to have admin permissions.') if !User.admin_user_exists?(except_user_id: id)
 
     true
   end
@@ -957,14 +967,9 @@ raise 'At least one user need to have admin permissions'
   def last_admin_check_by_role(role)
     return true if Setting.get('import_mode')
     return true if !role.with_permission?(['admin', 'admin.user'])
-    raise Exceptions::UnprocessableEntity, __('At least one user needs to have admin permissions.') if last_admin_check_admin_count < 1
+    raise Exceptions::UnprocessableEntity, __('At least one user needs to have admin permissions.') if !User.admin_user_exists?(except_user_id: id)
 
     true
-  end
-
-  def last_admin_check_admin_count
-    admin_role_ids = Role.joins(:permissions).where(permissions: { name: ['admin', 'admin.user'], active: true }, roles: { active: true }).pluck(:id)
-    User.joins(:roles).where(roles: { id: admin_role_ids }, users: { active: true }).distinct.count - 1
   end
 
   def validate_agent_limit_by_attributes
