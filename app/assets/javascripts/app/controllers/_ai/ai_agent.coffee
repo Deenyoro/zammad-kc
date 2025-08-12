@@ -59,11 +59,6 @@ class AIAgent extends App.ControllerAIFeatureBase
               agent_type: [ callbackAgentTypeAttribute ]
               triggers: [ callbackTriggersAttribute ]
               jobs: [ callbackJobsAttribute ]
-          topAlert: =>
-            return if not @missingProvider()
-
-            type: 'warning'
-            message: __('The provider configuration is missing. Please set up the provider before proceeding in |AI > Provider|.')
         container: @el.closest('.content')
         large: true
         handlers: [
@@ -72,6 +67,7 @@ class AIAgent extends App.ControllerAIFeatureBase
         ]
         renderCallback: =>
           @renderPopovers()
+          @renderAlert()
         validateOnSubmit: (params) ->
           @maybeHandleJSONParams('parse', params)
       )

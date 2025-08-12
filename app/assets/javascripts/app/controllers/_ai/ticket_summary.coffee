@@ -9,14 +9,13 @@ class App.TicketSummary extends App.ControllerAIFeatureBase
 
   elements:
     '.js-aiAssistanceTicketSummarySetting input': 'aiAssistanceTicketSummarySetting'
-    '.js-missingProviderAlert': 'missingProviderAlert'
 
   constructor: ->
     super
 
     @controllerBind('config_update', (data) =>
-      if data.name == 'ai_assistance_ticket_summary' or data.name == 'ai_provider'
-        @missingProviderAlert.toggleClass('hide', !@showAlert())
+      if data.name == 'ai_assistance_ticket_summary'
+        @renderAlert()
         @aiAssistanceTicketSummarySetting.prop('checked', App.Config.get('ai_assistance_ticket_summary'))
       else if data.name == 'ai_assistance_ticket_summary_config'
         for key, value of data.value
@@ -38,8 +37,9 @@ class App.TicketSummary extends App.ControllerAIFeatureBase
       description: App.i18n.translateContent(@description)
       serviceOptions: @serviceOptions(service_config)
       generationOptions: @generationOptions(service_config['generate_on'])
-      missingProvider: @missingProvider()
     )
+
+    @renderAlert()
 
   serviceOptions: (config) ->
     [
@@ -79,7 +79,7 @@ class App.TicketSummary extends App.ControllerAIFeatureBase
 
   toggleAIAssistanceTicketSummarySetting:  =>
     value = @aiAssistanceTicketSummarySetting.prop('checked')
-    App.Setting.set('ai_assistance_ticket_summary', value, failLocal: @failLocal, doneLocal: @doneLocal, notify: true)
+    App.Setting.set('ai_assistance_ticket_summary', value, failLocal: @failLocal, doneLocal: @renderAlert, notify: true)
 
   toggleService: (e) ->
     value = $(e.currentTarget).prop('checked')
@@ -111,9 +111,6 @@ class App.TicketSummary extends App.ControllerAIFeatureBase
     config['generate_on'] = value
 
     App.Setting.set('ai_assistance_ticket_summary_config', config, failLocal: @failLocal, notify: true)
-
-  doneLocal: =>
-    @missingProviderAlert.toggleClass('hide', !@showAlert())
 
   failLocal: =>
     @render()

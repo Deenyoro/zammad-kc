@@ -962,5 +962,31 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.index :name, unique: true
       t.index :active
     end
+
+    create_table :ai_text_tools do |t|
+      t.string 'name', limit: 250, null: false, default: ''
+
+      t.string 'instruction', limit: 1.megabyte, null: false, default: ''
+
+      t.string 'note', limit: 250
+
+      t.boolean 'active', default: true, null: false
+
+      t.references :created_by, type: :integer, null: false, foreign_key: { to_table: :users }
+      t.references :updated_by, type: :integer, null: false, foreign_key: { to_table: :users }
+
+      t.timestamps limit: 3, null: false
+
+      t.index :name, unique: true
+      t.index :active
+    end
+
+    create_table :ai_text_tools_groups, id: false do |t|
+      t.references :text_tool, foreign_key: { to_table: :ai_text_tools }
+      t.references :group
+    end
+    add_index :ai_text_tools_groups, [:text_tool_id]
+    add_index :ai_text_tools_groups, [:group_id]
+    add_foreign_key :ai_text_tools_groups, :groups
   end
 end
