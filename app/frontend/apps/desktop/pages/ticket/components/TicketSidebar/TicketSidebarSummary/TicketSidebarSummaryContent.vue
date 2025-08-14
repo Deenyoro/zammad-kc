@@ -116,7 +116,7 @@ const noSummaryPossible = computed(() => {
 
       <template v-else>
         <CommonLabel size="small" class="text-stone-200! dark:text-neutral-500!" tag="p">{{
-          $t('Zammad is generating the summary for you…')
+          $t('Summary is being generated…')
         }}</CommonLabel>
         <SummarySkeleton v-for="n in 4" :key="n" :style="{ 'animation-delay': `${n * 0.1}s` }" />
       </template>

@@ -38,8 +38,8 @@ RSpec.describe AI::Agent, aggregate_failures: true, current_user_id: 1, type: :m
           .to raise_exception(
             be_an_instance_of(Exceptions::UnprocessableEntity)
             .and(have_attributes(
-                   message: 'This %s is referenced by another object and thus cannot be deleted: %s',
-                   entity:  eq(['AI Agent', "Trigger / #{trigger.name} (##{trigger.id})"])
+                   message: 'This object is referenced by other object(s) and thus cannot be deleted: %s',
+                   entity:  eq(["Trigger / #{trigger.name} (##{trigger.id})"])
                  ))
           )
       end

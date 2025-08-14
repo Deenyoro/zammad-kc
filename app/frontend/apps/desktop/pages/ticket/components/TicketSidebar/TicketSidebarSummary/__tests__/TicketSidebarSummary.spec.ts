@@ -303,7 +303,7 @@ describe('TicketSidebarSummary', () => {
 
     const wrapper = renderRenderTicketSidebarSummary()
 
-    expect(wrapper.getByText('Zammad is generating the summary for you…')).toBeInTheDocument()
+    expect(wrapper.getByText('Summary is being generated…')).toBeInTheDocument()
     expect(wrapper.getAllByLabelText('Placeholder for AI generated heading')).toHaveLength(4)
 
     expect(wrapper.getAllByLabelText('Placeholder for AI generated text')).toHaveLength(16)

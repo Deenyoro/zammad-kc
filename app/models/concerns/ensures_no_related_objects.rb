@@ -27,12 +27,8 @@ module EnsuresNoRelatedObjects
     validator = EnsuresNoRelatedObjects.new(self)
     return if !validator.references?
 
-    # Converts class names, including in namespaces, to nice human readable names
-    # <Webhook> => Webhook, <AI::Agent> => AI Agent
-    klass_name = ActiveSupport::Inflector.titleize(self.class.name.underscore.tr('/', '_'))
-
     raise Exceptions::UnprocessableEntity
-      .new __('This %s is referenced by another object and thus cannot be deleted: %s'), [klass_name, validator.references_text]
+      .new __('This object is referenced by other object(s) and thus cannot be deleted: %s'), [validator.references_text]
   end
 
   class EnsuresNoRelatedObjects

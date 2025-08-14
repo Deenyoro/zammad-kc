@@ -77,7 +77,7 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
         create(:ticket_article, ticket:)
 
         # This will wait for the job to be enqueued.
-        expect(page).to have_text 'generating the summary for you'
+        expect(page).to have_text 'Summary is being generated…'
 
         perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
 
@@ -94,7 +94,7 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
         create(:ticket_article, ticket:)
 
-        expect(page).to have_text 'generating the summary for you'
+        expect(page).to have_text 'Summary is being generated…'
 
         perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
 
@@ -113,7 +113,7 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
         create(:ticket_article, ticket:)
 
-        expect(page).to have_text 'generating the summary for you'
+        expect(page).to have_text 'Summary is being generated…'
 
         perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
 
@@ -133,7 +133,7 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
         create(:ticket_article, ticket:)
 
-        expect(page).to have_text 'generating the summary for you'
+        expect(page).to have_text 'Summary is being generated…'
 
         perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
 
@@ -153,7 +153,7 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
         create(:ticket_article, ticket:)
 
-        expect(page).to have_text 'generating the summary for you'
+        expect(page).to have_text 'Summary is being generated…'
 
         perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
 
@@ -176,7 +176,7 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
     end
   end
 
-  describe 'Dot', performs_jobs: true do
+  describe 'Indicator', performs_jobs: true do
     before { visit "ticket/zoom/#{ticket.id}" }
 
     context 'when summary was updated before opening the tab' do
