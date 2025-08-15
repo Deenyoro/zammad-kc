@@ -109,7 +109,7 @@ dragAndDrop({
   values: dndTaskbarTabListOrder,
   plugins: [startAndEndEventsDNDPlugin(dndStartCallback, dndEndCallback), animations()],
   dropZoneClass: 'opacity-0 no-tooltip dragging-active',
-  touchDropZoneClass: 'opacity-0 no-tooltip dragging-active',
+  synthDropZoneClass: 'opacity-0 no-tooltip dragging-active',
   draggingClass: 'dragging-active',
 })
 
