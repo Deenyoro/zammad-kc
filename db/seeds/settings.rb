@@ -6077,3 +6077,31 @@ Setting.create_if_not_exists(
   },
   frontend:    true,
 )
+
+# TODO: Unused in desktop view, drop later.
+Setting.create_if_not_exists(
+  title:       __('Richtext Bubble Menu'),
+  name:        'ui_richtext_bubble_menu',
+  area:        'UI::Richtext',
+  description: __('Defines if the bubble menu feature of the richtext editor is enabled. Note that this setting will be ignored if the writing assistant is turned on.'),
+  options:     {
+    form: [
+      {
+        display:   '',
+        null:      true,
+        name:      'ui_richtext_bubble_menu',
+        tag:       'boolean',
+        translate: true,
+        options:   {
+          true  => 'yes',
+          false => 'no',
+        },
+      },
+    ],
+  },
+  state:       true,
+  preferences: {
+    permission: ['admin.ui'],
+  },
+  frontend:    true,
+)

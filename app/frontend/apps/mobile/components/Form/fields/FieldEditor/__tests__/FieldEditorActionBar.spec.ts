@@ -246,7 +246,7 @@ describe('basic toolbar testing', () => {
       })
 
       expect(
-        wrapper.queryByRole('button', { name: 'Ai assistant text tools' }),
+        wrapper.queryByRole('button', { name: 'Writing Assistant Tools' }),
       ).not.toBeInTheDocument()
     })
 
@@ -268,7 +268,7 @@ describe('basic toolbar testing', () => {
       })
 
       expect(
-        wrapper.queryByRole('button', { name: 'Ai assistant text tools' }),
+        wrapper.queryByRole('button', { name: 'Writing Assistant Tools' }),
       ).not.toBeInTheDocument()
     })
 
@@ -290,7 +290,7 @@ describe('basic toolbar testing', () => {
       })
 
       expect(
-        wrapper.queryByRole('button', { name: 'Ai assistant text tools' }),
+        wrapper.queryByRole('button', { name: 'Writing Assistant Tools' }),
       ).not.toBeInTheDocument()
     })
 
@@ -336,7 +336,7 @@ describe('basic toolbar testing', () => {
         },
       })
 
-      await wrapper.events.click(wrapper.getByRole('button', { name: 'Ai assistant text tools' }))
+      await wrapper.events.click(wrapper.getByRole('button', { name: 'Writing Assistant Tools' }))
 
       const sectionMenu = await wrapper.findByRole('alert')
 

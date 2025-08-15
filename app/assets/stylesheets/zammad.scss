@@ -7897,11 +7897,78 @@ a.list-group-item.active > .badge,
 }
 
 .text-tools-dropdown {
-  position: absolute;
-
   .dropdown-menu {
     min-width: auto;
   }
+}
+
+.bubble-wrapper {
+  @extend .zIndex-6;
+
+  position: absolute;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  .bubble-menu {
+    position: relative;
+    display: flex;
+    background: hsl(230, 7%, 17%);
+    padding: 0;
+    border-radius: 4px;
+
+    .dropup-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateY(-100%);
+      background: hsl(230, 7%, 17%);
+    }
+
+    .divider {
+      height: 100%;
+      width: 1px;
+      margin: 0;
+      border: 0;
+    }
+
+    .bubble-menu-item {
+      min-width: 24px;
+      height: 24px;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      .icon {
+        width: 16px;
+        height: 16px;
+        color: hsl(240, 1%, 86%);
+
+        &-highlight {
+          color: hsl(202, 72%, 50%);
+        }
+
+        &-chevron {
+          width: 12px;
+          height: 12px;
+          margin-inline-start: 4px;
+          color: hsl(210, 3%, 64%);
+          fill: currentColor;
+        }
+      }
+
+      &:hover .icon {
+        color: white !important;
+      }
+    }
+  }
+}
+
+.ai-vertical-gradient {
+  background: linear-gradient(180deg, var(--ai-assist-blue) 0%, var(--ai-assist-pink) 100%);
 }
 
 .modal-title:has(.ai-modal-head-icon) {

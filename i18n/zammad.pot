@@ -42,10 +42,6 @@ msgstr "mm/dd/yyyy"
 msgid "FORMAT_DATETIME"
 msgstr "mm/dd/yyyy l:MM P"
 
-#: app/assets/javascripts/app/models/ai_text_tool.coffee
-msgid "    Write Assistant Tools simplify the process of refining an article text before saving or sending. When enabled, these tools are directly accessible within the article editor. You can even create custom tools to meet specific needs, e.g. using branch or company specific wording."
-msgstr ""
-
 #: db/seeds/settings.rb:368
 msgid "\"Database\" stores all attachments in the database (not recommended for storing large amounts of data). \"Filesystem\" stores the data in the filesystem. \"Simple Storage (S3)\" stores the data in a remote S3 compatible object filesystem. You can switch between the modules even on a system that is already in production without any loss of data."
 msgstr ""
@@ -1203,6 +1199,7 @@ msgstr ""
 msgid "Add note"
 msgstr ""
 
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:139
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:240
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:236
 msgid "Add ordered list"
@@ -1237,6 +1234,10 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_channel/chat.coffee:85
 msgid "Add this class to a button on your page that should open the chat."
+msgstr ""
+
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:146
+msgid "Add unordered list"
 msgstr ""
 
 #: app/controllers/first_steps_controller.rb:105
@@ -1380,11 +1381,6 @@ msgstr ""
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:44
 msgid "Ai Agent"
-msgstr ""
-
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:71
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:70
-msgid "Ai assistant text tools"
 msgstr ""
 
 #: app/assets/javascripts/app/views/profile/calendar_subscriptions.jst.eco:27
@@ -4335,10 +4331,6 @@ msgstr ""
 msgid "Default for new tickets"
 msgstr ""
 
-#: app/assets/javascripts/app/models/ai_text_tool.coffee:25
-msgid "Default instructions"
-msgstr ""
-
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:349
 msgid "Default time diff (hours)"
 msgstr ""
@@ -4618,6 +4610,10 @@ msgstr ""
 
 #: db/seeds/settings.rb:77
 msgid "Defines if the application is in developer mode (all users have the same password and password reset will work without email delivery)."
+msgstr ""
+
+#: db/seeds/settings.rb:6078
+msgid "Defines if the bubble menu feature of the richtext editor is enabled. Note that this setting will be ignored if the writing assistant is turned on."
 msgstr ""
 
 #: db/seeds/settings.rb:5904
@@ -7017,6 +7013,7 @@ msgstr ""
 msgid "Format as _underlined_"
 msgstr ""
 
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:83
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:156
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:152
 msgid "Format as bold"
@@ -7034,6 +7031,7 @@ msgstr ""
 msgid "Format as h3 heading"
 msgstr ""
 
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:90
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:164
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:160
 msgid "Format as italic"
@@ -7048,11 +7046,13 @@ msgstr ""
 msgid "Format as quoted text"
 msgstr ""
 
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:104
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:180
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:176
 msgid "Format as strikethrough"
 msgstr ""
 
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:97
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:172
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:168
 msgid "Format as underlined"
@@ -7608,16 +7608,19 @@ msgstr ""
 msgid "Header Menu"
 msgstr ""
 
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:118
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:118
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:117
 msgid "Heading 1"
 msgstr ""
 
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:125
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:130
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:128
 msgid "Heading 2"
 msgstr ""
 
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:132
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:142
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:139
 msgid "Heading 3"
@@ -7990,7 +7993,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/popup_image.coffee:18
 #: app/assets/javascripts/app/lib/app_post/image_service.coffee:134
-#: app/assets/javascripts/app/lib/base/jquery.contenteditable.js:449
+#: app/assets/javascripts/app/lib/base/jquery.contenteditable.js:477
 msgid "Image file size is too large, please try inserting a smaller file."
 msgstr ""
 
@@ -8354,6 +8357,10 @@ msgstr ""
 
 #: app/models/ai/agent/type/custom_ai_agent.rb:55
 msgid "Instruction context"
+msgstr ""
+
+#: app/assets/javascripts/app/models/ai_text_tool.coffee:25
+msgid "Instructions about output format will be added"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:45
@@ -12716,6 +12723,7 @@ msgstr ""
 msgid "Remove checklist"
 msgstr ""
 
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:111
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:204
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:200
 msgid "Remove formatting"
@@ -13048,6 +13056,10 @@ msgstr ""
 
 #: lib/whatsapp/retry/media.rb:67
 msgid "Retrying to download the sent media via WhatsApp failed."
+msgstr ""
+
+#: db/seeds/settings.rb:6075
+msgid "Richtext Bubble Menu"
 msgstr ""
 
 #: app/models/webhook/pre_defined/rocket_chat.rb:5
@@ -18717,10 +18729,6 @@ msgstr ""
 msgid "Warning title"
 msgstr ""
 
-#: app/assets/javascripts/app/models/ai_text_tool.coffee:25
-msgid "We add fixed instructions about output format to the system prompt."
-msgstr ""
-
 #: public/assets/chat/views/waiting_list_timeout.eco:2
 msgid "We are sorry, it is taking longer than expected to get a slot. Please try again later or send us an email. Thank you!"
 msgstr ""
@@ -19002,8 +19010,14 @@ msgid "Writing Assistant Tool"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/text_tool.coffee:17
-#: app/assets/javascripts/app/views/generic/text_tools_dropdown.jst.eco:3
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:74
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:71
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:70
 msgid "Writing Assistant Tools"
+msgstr ""
+
+#: app/assets/javascripts/app/models/ai_text_tool.coffee
+msgid "Writing Assistant Tools simplify the process of refining an article text before saving or sending. When enabled, these tools are directly accessible within the article editor. You can even create custom tools to meet specific needs, e.g. using branch or company specific wording."
 msgstr ""
 
 #: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:8

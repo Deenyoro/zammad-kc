@@ -1,6 +1,6 @@
 class App.TicketZoomArticleNew extends App.Controller
   @include App.SecurityOptions
-  @include App.TextTools
+  @include App.RichtextBubbleMenu
 
   elements:
     '.js-textarea':                       'textarea'
@@ -272,7 +272,7 @@ class App.TicketZoomArticleNew extends App.Controller
       for attachment in @attachments
         @renderAttachment(attachment)
 
-    @textToolsInit(@textarea.parent(), false)
+    @richtextBubbleMenuInit(@textarea.parent(), false)
 
   params: =>
     params = @formParam( @$('.article-add') )

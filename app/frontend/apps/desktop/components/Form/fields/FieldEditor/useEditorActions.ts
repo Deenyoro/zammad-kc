@@ -68,7 +68,7 @@ export default function useEditorActions(
         id: getUuid(),
         name: 'aiAssistantTextTools',
         contentType: ['text/html', 'text/plain'],
-        label: __('Ai assistant text tools'),
+        label: __('Writing Assistant Tools'),
         showDivider: true,
         dividerClass: verticalGradient,
         permission: 'ticket.agent',
