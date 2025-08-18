@@ -8,8 +8,8 @@ module ZammadSpecSupportSAML
     # Setup Keycloak SAML authentication.
     if !Keycloak::Admin.configured?
       Keycloak::Admin.configure do |config|
-        config.username = ENV['KEYCLOAK_ADMIN_USER']
-        config.password = ENV['KEYCLOAK_ADMIN_PASSWORD']
+        config.username = ENV['KC_BOOTSTRAP_ADMIN_USERNAME']
+        config.password = ENV['KC_BOOTSTRAP_ADMIN_PASSWORD']
         config.realm    = 'zammad'
         config.base_url = ENV['KEYCLOAK_BASE_URL']
       end
