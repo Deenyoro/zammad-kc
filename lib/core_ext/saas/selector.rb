@@ -6,6 +6,7 @@ require 'sass'
 
 $VERBOSE = false
 
+# rubocop:disable Lint/MissingCopEnableDirective
 # rubocop:disable Style/StringLiterals
 # rubocop:disable Lint/UnusedMethodArgument
 
@@ -23,6 +24,3 @@ module Sass
     end
   end
 end
-
-# rubocop:enable Style/StringLiterals
-# rubocop:enable Lint/UnusedMethodArgument

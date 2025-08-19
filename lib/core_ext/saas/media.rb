@@ -6,6 +6,7 @@ require 'sass'
 
 $VERBOSE = false
 
+# rubocop:disable Lint/MissingCopEnableDirective
 # rubocop:disable Zammad/PreferNegatedIfOverUnless
 # rubocop:disable Layout/SpaceInsideBlockBraces
 
@@ -39,6 +40,3 @@ module Sass::Media
     end
   end
 end
-
-# rubocop:enable Zammad/PreferNegatedIfOverUnless
-# rubocop:enable Layout/SpaceInsideBlockBraces

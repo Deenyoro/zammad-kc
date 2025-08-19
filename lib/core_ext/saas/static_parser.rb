@@ -6,6 +6,7 @@ require 'sass'
 
 $VERBOSE = false
 
+# rubocop:disable Lint/MissingCopEnableDirective
 # rubocop:disable Layout/EmptyLineAfterGuardClause
 # rubocop:disable Zammad/PreferNegatedIfOverUnless
 # rubocop:disable Style/RegexpLiteral
@@ -34,9 +35,3 @@ module Sass
     end
   end
 end
-
-# rubocop:enable Layout/EmptyLineAfterGuardClause
-# rubocop:enable Zammad/PreferNegatedIfOverUnless
-# rubocop:enable Style/RegexpLiteral
-# rubocop:enable Layout/SpaceInsideBlockBraces
-# rubocop:enable Performance/CollectionLiteralInLoop

@@ -8,6 +8,7 @@ require 'em-websocket'
 
 $VERBOSE = nil
 
+# rubocop:disable Lint/MissingCopEnableDirective
 # rubocop:disable Zammad/DetectTranslatableString
 # rubocop:disable Style/StringLiterals
 
@@ -47,6 +48,3 @@ module EventMachine
     end
   end
 end
-
-# rubocop:enable Zammad/DetectTranslatableString
-# rubocop:enable Style/StringLiterals

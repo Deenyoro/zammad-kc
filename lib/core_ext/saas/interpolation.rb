@@ -6,6 +6,7 @@ require 'sass'
 
 $VERBOSE = false
 
+# rubocop:disable Lint/MissingCopEnableDirective
 # rubocop:disable Layout/HeredocIndentation
 # rubocop:disable Style/StringLiterals
 # rubocop:disable Style/HashSyntax
@@ -42,8 +43,3 @@ MESSAGE
     end
   end
 end
-
-# rubocop:enable Layout/HeredocIndentation
-# rubocop:enable Style/StringLiterals
-# rubocop:enable Style/HashSyntax
-# rubocop:enable Metrics/AbcSize
