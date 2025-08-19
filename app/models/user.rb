@@ -636,7 +636,7 @@ try to find correct name
   def self.name_guess(string, email = nil)
     return if string.blank? && email.blank?
 
-    string.strip!
+    string = string.strip
     firstname = ''
     lastname = ''
 

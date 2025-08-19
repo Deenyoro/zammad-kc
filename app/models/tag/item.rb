@@ -33,7 +33,7 @@ tag_item = Tag::Item.lookup_by_name_and_create('some tag')
 =end
 
   def self.lookup_by_name_and_create(name)
-    name.strip!
+    name = name.strip
 
     tag_item = Tag::Item.lookup(name: name)
     return tag_item if tag_item

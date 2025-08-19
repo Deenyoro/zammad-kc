@@ -8,8 +8,8 @@ RSpec.describe HttpLog do
   describe 'callbacks' do
     # See https://github.com/zammad/zammad/issues/2100
     it 'converts request/response message data to UTF-8 before saving' do
-      http_log.request[:content]  = 'foo'.force_encoding('ascii-8bit')
-      http_log.response[:content] = 'bar'.force_encoding('ascii-8bit')
+      http_log.request[:content]  = 'foo'.dup.force_encoding('ascii-8bit')
+      http_log.response[:content] = 'bar'.dup.force_encoding('ascii-8bit')
 
       expect { http_log.save }
         .to change { http_log.request[:content].encoding.name }.from('ASCII-8BIT').to('UTF-8')

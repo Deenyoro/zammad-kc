@@ -137,7 +137,7 @@ examples how to use
 
         parameters = []
         parameter.split(',').each do |p|
-          p = p.strip!
+          p = p.strip
 
           if p != p.to_i.to_s
             value = debug("\#{#{object_name}.#{object_methods_s} / invalid parameter: #{p}}")

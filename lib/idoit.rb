@@ -140,7 +140,7 @@ or with filter:
   end
 
   def self._url_cleanup(url)
-    url.strip!
+    url = url.strip
     raise "Invalid endpoint '#{url}', need to start with http:// or https://" if !url.match?(%r{^http(s|)://}i)
 
     url = _url_cleanup_baseurl(url)
@@ -149,7 +149,7 @@ or with filter:
   end
 
   def self._url_cleanup_baseurl(url)
-    url.strip!
+    url = url.strip
     raise "Invalid endpoint '#{url}', need to start with http:// or https://" if !url.match?(%r{^http(s|)://}i)
 
     url.gsub!(%r{src/jsonrpc.php}, '')

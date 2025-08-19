@@ -100,16 +100,20 @@ RSpec.describe 'SAML Authentication', authenticated_as: false, integration: true
 
         cert.sign(key, OpenSSL::Digest.new('SHA256'))
 
-        pem = cert.to_pem
-        pem.gsub!('-----BEGIN CERTIFICATE-----', '')
-        pem.gsub!('-----END CERTIFICATE-----', '')
-        pem.delete!("\n").strip!
+        pem = cert
+          .to_pem
+          .gsub('-----BEGIN CERTIFICATE-----', '')
+          .gsub('-----END CERTIFICATE-----', '')
+          .delete("\n")
+          .strip
         cert = pem
 
-        pem = key.to_pem
-        pem.gsub!('-----BEGIN RSA PRIVATE KEY-----', '') # gitleaks:allow
-        pem.gsub!('-----END RSA PRIVATE KEY-----', '') # gitleaks:allow
-        pem.delete!("\n").strip!
+        pem = key
+          .to_pem
+          .gsub('-----BEGIN RSA PRIVATE KEY-----', '') # gitleaks:allow
+          .gsub('-----END RSA PRIVATE KEY-----', '') # gitleaks:allow
+          .delete("\n")
+          .strip
         key = pem
 
         {

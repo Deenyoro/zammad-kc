@@ -66,7 +66,7 @@ class PGPKey < ApplicationModel
 
   def self.params_cleanup!(params)
     if params[:key].present?
-      params[:key].strip!
+      params[:key] = params[:key].strip
       return params
     end
 
