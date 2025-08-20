@@ -4,7 +4,7 @@ class App.AITextTool extends App.Model
   @url = @apiPath + '/ai_text_tools'
   @configure_attributes = [
     { name: 'name',        display: __('Name'),                tag: 'input', type: 'text', translate: true, limit: 100, null: false },
-    { name: 'instruction', display: __('Custom instructions'), tag: 'richtext', limit: 2000, null: false, plugins: [
+    { name: 'instruction', display: __('Custom instructions'), tag: 'richtext', limit: 2000, null: false, type: 'textonly', no_images: true, plugins: [
       {
         controller: 'WidgetPlaceholder'
         params:
@@ -34,6 +34,10 @@ class App.AITextTool extends App.Model
     'group_ids',
     'note',
   ]
+
+  @getList: ->
+    App.AITextTool.search(filter: { active: true }, sortBy: 'name', order: 'ASC', translate: true)
+
   @description = __('''
 Writing Assistant Tools simplify the process of refining an article text before saving or sending. When enabled, these tools are directly accessible within the article editor. You can even create custom tools to meet specific needs, e.g. using branch or company specific wording.
 ''')

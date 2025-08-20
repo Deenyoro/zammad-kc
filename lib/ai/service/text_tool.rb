@@ -1,6 +1,6 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-class AI::Service::TextSimplify < AI::Service
+class AI::Service::TextTool < AI::Service
   private
 
   def options

@@ -63,6 +63,7 @@ export const getHTMLFromSelection = (editor: Editor, selection?: Editor['state']
   const serializer = DOMSerializer.fromSchema(editor!.schema)
   const fragment = serializer.serializeFragment(slice.content)
   const div = document.createElement('div')
+
   div.appendChild(fragment)
 
   return div.innerHTML
@@ -71,7 +72,7 @@ export const getHTMLFromSelection = (editor: Editor, selection?: Editor['state']
 export const updateSelectedContent = (editor: Editor, content: string) => {
   editor!.commands.deleteSelection()
 
-  // Remove visual newlines from the model which should not play any role.
+  // Remove visual newlines from the content which should not play any role.
   return editor!.commands.insertContent(content.replace(/\s*\n\s*/g, ''))
 }
 

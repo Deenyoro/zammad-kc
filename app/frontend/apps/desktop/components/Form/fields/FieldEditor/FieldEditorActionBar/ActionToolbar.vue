@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { onKeyDown, useEventListener, useIntersectionObserver } from '@vueuse/core'
+import { onKeyDown, useEventListener, useIntersectionObserver, whenever } from '@vueuse/core'
 import { computed, ref, shallowRef, useTemplateRef, type Ref, toRef } from 'vue'
 
 import FieldEditorActionMenu from '#shared/components/Form/fields/FieldEditor/FieldEditorActionMenu/FieldEditorActionMenu.vue'
@@ -81,6 +81,7 @@ useEventListener('click', (e) => {
 })
 
 const visibleActions = ref<Map<string, boolean>>(new Map())
+const disabledActionNames = ref<Set<string>>(new Set())
 
 const editorActions = useEditorActions(toRef(props, 'editor'), 'text/html', [])
 
@@ -96,9 +97,12 @@ const invisibleActions = computed(() =>
 
 const activeActionWithSubmenu = shallowRef<EditorButton['subMenu'] | null>(null)
 
-const activeActions = computed(() =>
-  activeActionWithSubmenu.value ? activeActionWithSubmenu.value : invisibleActions.value,
-)
+const activeActions = computed(() => {
+  const actions = activeActionWithSubmenu.value
+    ? activeActionWithSubmenu.value
+    : invisibleActions.value
+  return (actions as EditorButton[]).filter(({ name }) => disabledActionNames.value.has(name))
+})
 
 const handleOverlowMenuItemClick = async (action: EditorButton, event: MouseEvent) => {
   stopEvent(event)
@@ -107,6 +111,20 @@ const handleOverlowMenuItemClick = async (action: EditorButton, event: MouseEven
     activeActionWithSubmenu.value = action.subMenu
   }
 }
+
+// Unfortunately, we can't rely on mounted or setup hooks here, we need to await the editor to be ready
+whenever(
+  () => props.editor,
+  (editor) => {
+    if (!editor) return
+    editor.off('toggle-visibility')
+    editor.on('toggle-visibility', ({ name, active }) => {
+      if (active) disabledActionNames.value.delete(name)
+      else disabledActionNames.value.add(name)
+    })
+  },
+  { immediate: true, flush: 'post' },
+)
 </script>
 
 <template>
@@ -126,7 +144,7 @@ const handleOverlowMenuItemClick = async (action: EditorButton, event: MouseEven
         :actions="actions"
         :index="index"
       >
-        <template #default="{ hideDivider }">
+        <template v-if="!disabledActionNames.has(action.name)" #default="{ hideDivider }">
           <ActionButton
             ref="action-button"
             :action="action"

@@ -201,6 +201,11 @@
     }
     if (richtTextControl && this.options.richTextFormatKey[ e.keyCode ]) {
       e.preventDefault()
+
+      if ( this.options.mode === 'textonly' ) {
+        return
+      }
+
       if (e.keyCode == 66) {
         document.execCommand('bold')
         return true
@@ -578,6 +583,10 @@
 
     // look for images
     if (file.type.match('image.*')) {
+
+      // stop processing if input form does not accept images
+      if (this.options.noImages) return;
+
       var reader = new FileReader()
       reader.onload = $.proxy(function(e) {
         var result = e.target.result

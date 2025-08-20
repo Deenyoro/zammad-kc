@@ -52,7 +52,7 @@ class TextTool extends App.ControllerAIFeatureBase
     @genericController.paginate(@page || 1, params)
 
   showAlert: =>
-    App.Config.get('ai_assistance_text_tools') && @missingProvider()
+    App.Config.get('ai_assistance_text_tools') and @missingProvider()
 
   pageHeaderTitle: =>
     @$('.page-header-title')
@@ -89,19 +89,31 @@ TextToolModalMixin =
   headIcon: 'smart-assist-elaborate'
   headIconClass: 'ai-modal-head-icon'
 
+  formParam: (form) ->
+    params = App.ControllerForm.params(form)
+
+    # Strip HTML tags from custom instructions.
+    #   This is needed because the AI service expects plain text.
+    params.instruction = App.Utils.html2text(params.instruction)
+
+    params
+
+  contentFormParams: ->
+    params = $.extend(true, @item or {}, @fixedInstructions())
+
+    # Add HTML tags to custom instructions.
+    #   This is needed because the richtext editor needs to be able to show multiline text correctly.
+    params.instruction = App.Utils.text2html(params.instruction)
+
+    params
+
   fixedInstructions: ->
     fixed_instructions: App.Config.get('ai_assistance_text_tools_fixed_instructions')
 
 class EditTextTool extends App.ControllerGenericEdit
   @include TextToolModalMixin
 
-  contentFormParams: =>
-    $.extend(true, @item, @fixedInstructions())
-
 class NewTextTool extends App.ControllerGenericNew
   @include TextToolModalMixin
-
-  contentFormParams: =>
-    @fixedInstructions()
 
 App.Config.set('TextTool', { prio: 1400, name: __('Writing Assistant'), parent: '#ai', target: '#ai/text_tools', controller: TextTool, permission: ['admin.ai_assistance_text_tools'] }, 'NavBarAdmin')

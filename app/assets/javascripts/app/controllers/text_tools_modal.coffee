@@ -7,7 +7,6 @@ class App.TextToolsModal extends App.ControllerModal
   headIcon: 'smart-assist-elaborate'
   headIconClass: 'ai-modal-head-icon'
 
-  service: 'improve_writing' #  Object.keys of @serviceLabels
   selectedText: null
   result: null
   approve: null
@@ -17,22 +16,23 @@ class App.TextToolsModal extends App.ControllerModal
   onClose:  ->
     App.Ajax.abort('ai_assistance_text_tools')
 
-  serviceLabels: {
-    expand: __('Expand text'),
-    simplify: __('Simplify'),
-    improve_writing: __('Improve writing'),
-    spelling_and_grammar: __('Fix spelling and grammar')
-  }
-
   constructor: (params) ->
-    @service = params.service
-    @head = App.i18n.translateContent(__('Writing Assistant: %s'), @serviceLabels[@service])
+    @textTool = params.textTool
+    @head = App.i18n.translatePlain('Writing Assistant: %s', App.i18n.translatePlain(@textTool.name))
+    @contextData = params.contextData
     @selectedText = params.selectedText
     @approve = params.approve
 
     super
 
-    @requestTextTools({input: @selectedText, service_type: @service})
+    @requestTextTools(
+      id:              @textTool.id
+      input:           @selectedText
+      customer_id:     @contextData.customer_id
+      group_id:        @contextData.group_id
+      organization_id: @contextData.organization_id
+      ticket_id:       @contextData.id
+    )
 
   disableSubmit: ->
     button = @$('.modal-content').find('.js-submit')
@@ -49,8 +49,8 @@ class App.TextToolsModal extends App.ControllerModal
     @ajax(
       id:          'ai_assistance_text_tools'
       type:        'POST'
-      url:         "#{App.Config.get('api_path')}/ai_assistance/text_tools"
-      data:        JSON.stringify(params)
+      url:         "#{App.Config.get('api_path')}/ai_assistance/text_tools/#{params.id}"
+      data:        JSON.stringify(_.omit(params, 'id'))
       processData: true
       failResponseNoTrigger: true
       success: (data) =>
@@ -70,7 +70,6 @@ class App.TextToolsModal extends App.ControllerModal
     )
 
   content: -> $(App.view('generic/text_tools_modal')(
-    serviceLabel: @serviceLabels[@service]
     selectedText: @selectedText
     result: @result
     error: @error
@@ -83,7 +82,15 @@ class App.TextToolsModal extends App.ControllerModal
 
   retryTextTools: =>
     @error = false
-    @requestTextTools({input: @selectedText, service_type: @service})
+
+    @requestTextTools(
+      id:              @textTool.id
+      input:           @selectedText
+      customer_id:     @contextData.customer_id
+      group_id:        @contextData.group_id
+      organization_id: @contextData.organization_id
+      ticket_id:       @contextData.id
+    )
 
   onSubmit: =>
     @approve(@result)

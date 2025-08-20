@@ -28,7 +28,7 @@ class AddAIAssistanceTextTools < ActiveRecord::Migration[7.2]
       area:        'AI::Assistance',
       description: 'Enable or disable the writing assistant text tools.',
       options:     {},
-      state:       true,
+      state:       false,
       preferences: {
         authentication: true,
         permission:     ['admin.ai_assistance_text_tools'],

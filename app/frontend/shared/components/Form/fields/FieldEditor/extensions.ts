@@ -33,8 +33,7 @@ import type { FieldEditorProps } from '#shared/components/Form/fields/FieldEdito
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
 
 import type { Extensions } from '@tiptap/core'
-import type { Editor } from '@tiptap/vue-3'
-import type { Ref, ShallowRef } from 'vue'
+import type { Ref } from 'vue'
 
 export const lowlight = createLowlight(common)
 
@@ -121,12 +120,11 @@ export const getHtmlExtensions = (): Extensions => [
 
 export const getCustomExtensions = (
   context: Ref<FormFieldContext<FieldEditorProps>>,
-  editor: ShallowRef<Editor>,
 ): Extensions => [
   Image,
   Signature,
   UserMention(context),
   KnowledgeBaseSuggestion(context),
   TextModuleSuggestion(context),
-  AiAssistantTextTools(editor),
+  AiAssistantTextTools(context),
 ]

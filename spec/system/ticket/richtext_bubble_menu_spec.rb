@@ -17,11 +17,13 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
     Setting.set('ai_assistance_text_tools', ai_assistance_text_tools)
     Setting.set('ui_richtext_bubble_menu', ui_richtext_bubble_menu)
 
+    create(:ai_text_tool, name: 'Fix spelling and grammar', instruction: 'Fix spelling and grammar of the following text:')
+
     agent
   end
 
   before do
-    allow_any_instance_of(AI::Service::TextSpellingAndGrammar).to receive(:execute).and_return(output)
+    allow_any_instance_of(AI::Service::TextTool).to receive(:execute).and_return(output)
   end
 
   shared_examples 'showing text tools dropdown and replacing selected text' do
@@ -34,7 +36,7 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
 
       find("[data-name='body']").send_keys([magic_key, 'a'])
 
-      expect(page).to have_css('[role=menu]')
+      expect(page).to have_css('.bubble-menu[role=menu]')
 
       find("[aria-label='Writing Assistant Tools']").click
       find('.js-action', text: 'Fix spelling and grammar').click
@@ -50,11 +52,11 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
     end
   end
 
-  shared_examples 'not showing text tools dropdown' do
+  shared_examples 'not showing text tools button' do
     context 'when ai provider is not set' do
       let(:ai_provider) { '' }
 
-      it 'does not show text tools dropdown' do
+      it 'does not show text tools button' do
         set_editor_field_value('body', input)
 
         # Wait for the taskbar update to finish.
@@ -63,14 +65,15 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
 
         find("[data-name='body']").send_keys([magic_key, 'a'])
 
-        expect(page).to have_no_css('[role=menu]')
+        expect(page).to have_css('.bubble-menu[role=menu]')
+        expect(page).to have_no_css('.bubble-menu-item[aria-label="Writing Assistant Tools"]')
       end
     end
 
     context 'when bubble menu flag is not set' do
       let(:ui_richtext_bubble_menu) { false }
 
-      it 'does not show text tools dropdown' do
+      it 'does not show bubble menu' do
         set_editor_field_value('body', input)
 
         # Wait for the taskbar update to finish.
@@ -79,14 +82,14 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
 
         find("[data-name='body']").send_keys([magic_key, 'a'])
 
-        expect(page).to have_no_css('[role=menu]')
+        expect(page).to have_no_css('.bubble-menu[role=menu]')
       end
     end
 
     context 'when ai_assistance_text_tools flag is not set' do
       let(:ai_assistance_text_tools) { false }
 
-      it 'does not show text tools dropdown' do
+      it 'does not show text tools button' do
         set_editor_field_value('body', input)
 
         # Wait for the taskbar update to finish.
@@ -95,7 +98,8 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
 
         find("[data-name='body']").send_keys([magic_key, 'a'])
 
-        expect(page).to have_no_css('[role=menu]')
+        expect(page).to have_css('.bubble-menu[role=menu]')
+        expect(page).to have_no_css('.bubble-menu-item[aria-label="Writing Assistant Tools"]')
       end
     end
   end
@@ -110,7 +114,7 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
     context 'when text tools are disabled' do
       let(:ai_assistance_text_tools) { false }
 
-      it_behaves_like 'not showing text tools dropdown'
+      it_behaves_like 'not showing text tools button'
     end
   end
 
@@ -135,7 +139,7 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
     context 'when text tools are disabled' do
       let(:ai_assistance_text_tools) { false }
 
-      it_behaves_like 'not showing text tools dropdown'
+      it_behaves_like 'not showing text tools button'
     end
   end
 
@@ -153,7 +157,7 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
 
       find("[data-name='body']").send_keys([magic_key, 'a'])
 
-      expect(page).to have_css('[role=menu]')
+      expect(page).to have_css('.bubble-menu[role=menu]')
     end
 
     it 'applies bold' do

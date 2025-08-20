@@ -268,6 +268,22 @@ class App.TicketZoomArticleNew extends App.Controller
           )
         @subscribeIdTextModule = ticket.subscribe(callback)
 
+      @textTools?.releaseController()
+      @textTools = new App.WidgetTextTools(
+        el: @$('.js-textarea').parent()
+        data:
+          ticket: ticket
+          user:   App.Session.get()
+        taskKey: @taskKey
+      )
+      if !@subscribeIdTextTools
+        @subscribeIdTextTools = ticket.subscribe((ticket) =>
+          @textTools.reload(
+            ticket: ticket
+            user:   App.Session.get()
+          )
+        )
+
     if _.isArray(@attachments)
       for attachment in @attachments
         @renderAttachment(attachment)

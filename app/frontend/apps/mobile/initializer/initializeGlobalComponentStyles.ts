@@ -86,7 +86,7 @@ export const initializeGlobalComponentStyles = () => {
     popover: {
       base: '',
       item: 'border-b border-gray-300 last:border-0',
-      button: 'py-4 px-3',
+      button: 'py-4 px-3 w-full',
     },
     verticalGradient: 'bg-linear-to-t from-pink to-blue',
   })

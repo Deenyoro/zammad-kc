@@ -1,0 +1,135 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: "<ZAMMAD_AI_API_URL>/api/v1/me"
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Zammad User Agent
+      Host:
+      - ai.edenhofer.de
+      Authorization:
+      - Bearer <ZAMMAD_AI_TOKEN>
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 15 Aug 2025 14:01:38 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Vary:
+      - Accept
+      Etag:
+      - W/"467ba62b4d9ec9462839351ed0a5942d"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - ccb2a5e1-4bff-4eb2-a094-6b9c9ad73df1
+      X-Runtime:
+      - '0.085137'
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+    body:
+      encoding: ASCII-8BIT
+      string: '{"current_user":{"id":3,"email":"me@edenhofer.de","firstname":"Martin","lastname":"Edenhofer","active":true,"created_by_id":1,"created_at":"2024-07-15T23:15:06.140Z","updated_at":"2025-08-12T07:58:21.700Z","organization_id":1,"is_platform_admin":true,"is_organization_admin":false,"login_failed_count":0,"login_at":"2025-08-12T07:58:21.693Z"}}'
+  recorded_at: Fri, 15 Aug 2025 14:01:38 GMT
+- request:
+    method: post
+    uri: "<ZAMMAD_AI_API_URL>/api/v1/features/text_tool"
+    body:
+      encoding: UTF-8
+      string: '{"system_prompt":"You task is to proofread the provided input text
+        to correct any spelling and grammatical mistakes to ensure professionalism
+        and clarity, while preserving all existing HTML markup without alteration.\n\n-
+        Correct all typos, misspellings, and errors in sentence structure, punctuation,
+        and verb conjugation.\n- Maintain the language of the given input text for
+        the output.\n- Do not modify or break any HTML tags or markup present in the
+        input text.\n\nCarefully review the text to improve readability and correctness
+        without altering its original formatting or markup.\n\nFormat:\n- Write in
+        the same language as the input\n- **Always format the output as simple HTML
+        content only**\n- Use basic tags: `\u003ch1\u003e`, `\u003ch2\u003e`, `\u003cp\u003e`,
+        `\u003cstrong\u003e`, `\u003cem\u003e`, `\u003cul\u003e`, `\u003cli\u003e`\n-
+        **DO NOT include DOCTYPE, `\u003chtml\u003e`, `\u003chead\u003e`, `\u003cbody\u003e`,
+        or any document structure tags**\n- Output should be ready to insert directly
+        into an existing HTML document\n","prompt":"I ma Nicole Braun."}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Zammad User Agent
+      Host:
+      - ai.edenhofer.de
+      Content-Type:
+      - application/json; charset=utf-8
+      Authorization:
+      - Bearer <ZAMMAD_AI_TOKEN>
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 15 Aug 2025 14:01:39 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Vary:
+      - Accept
+      Etag:
+      - W/"c1c2e6f28a7e2c7d9abe553a1e4b8933"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 0dc1b54d-9a41-4fa6-8912-f3367fd73ae4
+      X-Runtime:
+      - '0.539278'
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+    body:
+      encoding: ASCII-8BIT
+      string: '[{"model":"gemma3:27b","created_at":"2025-08-15T14:01:39.124923123Z","response":"```html\n\u003cp\u003eI
+        am Nicole Braun.\u003c/p\u003e\n```","done":true,"done_reason":"stop","context":[105,2364,107,3048,4209,563,531,7724,1399,506,3847,2744,1816,531,4338,1027,49248,532,77536,23153,531,5330,66672,532,29972,236764,1651,39983,784,6330,16167,71911,2180,48736,236761,108,236772,58940,784,161119,236764,3930,90330,1013,236764,532,9825,528,13315,3904,236764,88078,236764,532,14177,89098,236761,107,236772,75133,506,5192,529,506,2238,2744,1816,573,506,3938,236761,107,236772,3574,711,17114,653,2541,1027,16167,16616,653,71911,1861,528,506,2744,1816,236761,108,31458,3846,3540,506,1816,531,4006,122499,532,79101,2180,66035,1061,3303,53892,653,71911,236761,108,11238,236787,107,236772,15642,528,506,1638,5192,618,506,2744,107,236772,5213,53787,6518,506,3938,618,3606,16167,3004,1186,1018,107,236772,6890,6079,16616,236787,41209,236754,236770,121504,41209,236754,236778,121504,41209,236758,121504,41209,22468,121504,41209,581,121504,41209,575,121504,41209,1554,67234,107,236772,5213,10009,5244,3204,13391,1692,8500,236764,41209,3185,121504,41209,2834,121504,41209,3063,121504,653,1027,2354,3904,16616,1018,107,236772,16887,1374,577,5508,531,7934,5467,1131,614,6330,16167,2354,109,236777,3504,46562,64876,236761,106,107,105,4368,107,2717,3185,107,236820,236758,236813,236777,1006,46562,64876,9047,236758,236813,107,2717],"total_duration":424421600,"load_duration":89976303,"prompt_eval_count":214,"prompt_eval_duration":81100349,"eval_count":16,"eval_duration":252458728,"uuid":"0dc1b54d-9a41-4fa6-8912-f3367fd73ae4"}]'
+  recorded_at: Fri, 15 Aug 2025 14:01:39 GMT
+recorded_with: VCR 6.3.1

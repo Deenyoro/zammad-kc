@@ -2,18 +2,19 @@
 
 App.RichtextBubbleMenu =
   richtextBubbleMenuInit: (el, disabled = false) ->
-    return if disabled or not (@bubbleMenuEnabled() and @aiTextToolsEnabled())
+    return if disabled or (not @bubbleMenuEnabled() and not App.WidgetTextTools.enabled())
 
     ce = el.find('[contenteditable]').data().plugin_ce
 
     ce.onSelection (selection) =>
       el.parent().find('.js-bubbleMenu').remove()
 
-      return if not App.Config.get('ui_richtext_bubble_menu')
-      return if not selection.content
       return if disabled
+      return if not @bubbleMenuEnabled() and not App.WidgetTextTools.enabled()
+      return if not selection.content
+      return if @type and @type isnt 'note' and @type isnt 'email' and @type isnt 'phone'
 
-      bubbleElement = el.after($(App.view('generic/richtext_bubble_menu')(items: @filteredActions()))).next()
+      bubbleElement = el.after($(App.view('generic/richtext_bubble_menu')(items: @filteredActions(ce)))).next()
 
       if range = selection.ranges[0]
         rect = range.getBoundingClientRect()
@@ -63,9 +64,6 @@ App.RichtextBubbleMenu =
   bubbleMenuEnabled: ->
     App.Config.get('ui_richtext_bubble_menu')
 
-  aiTextToolsEnabled: ->
-    App.Config.get('ai_assistance_text_tools') and App.Config.get('ai_provider')
-
   allActions: ->
     [
       {
@@ -74,9 +72,10 @@ App.RichtextBubbleMenu =
         label: __('Writing Assistant Tools')
         icon: 'smart-assist-elaborate'
         dividerClass: 'ai-vertical-gradient'
-        show: @aiTextToolsEnabled
+        show: (ce) ->
+          App.WidgetTextTools.enabled() and App.WidgetTextTools.hasAvailableTextTools(ce)
         permission: 'ticket.agent'
-        action: @renderTextToolsDropdown
+        action: App.WidgetTextTools.renderDropdown
       },
       {
         key: 'bold'
@@ -150,37 +149,9 @@ App.RichtextBubbleMenu =
       },
     ]
 
-  filteredActions: ->
+  filteredActions: (ce) ->
     _.filter(@allActions(), (item) ->
       permissionCheck = item.permission is undefined or App.User.current()?.permission(item.permission)
-      showCheck = item.show is undefined or (typeof item.show is 'function' and item.show())
+      showCheck = item.show is undefined or (typeof item.show is 'function' and item.show(ce))
       permissionCheck and showCheck
     )
-
-  renderTextToolsDropdown: (e, ce, selection, el) ->
-    bubbleMenuElement = $(e.target).closest('.js-bubbleMenu')
-    popupContainerElement = bubbleMenuElement.find('.dropup-container')
-
-    dropdownMenu = popupContainerElement.find('.dropdown-menu')
-    if dropdownMenu.length
-      return dropdownMenu.remove()
-
-    textToolsDropdown = $(App.view('generic/text_tools_dropdown')(disabled: false))
-    popupContainerElement.html(textToolsDropdown)
-
-    showTextToolsModal = (e, el, selection) ->
-      action = $(e.target).data('type')
-
-      new App.TextToolsModal(
-        container: el.closest('.content')
-        service: action
-        selectedText: selection.content
-        approve: (result) -> ce.replaceSelection(selection.ranges, result)
-      )
-
-    textToolsDropdown.off('mousedown.text-tools-dropdown').on 'mousedown.text-tools-dropdown', '.js-action', (e) ->
-      e.preventDefault()
-      showTextToolsModal(e, el, selection)
-      return false
-
-    textToolsDropdown.addClass('open')

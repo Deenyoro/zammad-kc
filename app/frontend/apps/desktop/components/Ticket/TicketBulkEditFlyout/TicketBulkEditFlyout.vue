@@ -7,6 +7,7 @@ import {
   NotificationTypes,
   useNotifications,
 } from '#shared/components/CommonNotifications/index.ts'
+import { PLUGIN_NAME as TEXT_TOOL_PLUGIN_NAME } from '#shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts'
 import { transformEditorHtml } from '#shared/components/Form/fields/FieldEditor/utils.ts'
 import Form from '#shared/components/Form/Form.vue'
 import type { FormSubmitData } from '#shared/components/Form/types.ts'
@@ -134,6 +135,9 @@ const formSchema = defineFormSchema([
                   disabled: true,
                 },
                 mentionUser: {
+                  disabled: true,
+                },
+                [TEXT_TOOL_PLUGIN_NAME]: {
                   disabled: true,
                 },
                 image: {

@@ -5,6 +5,7 @@ import { useEventListener } from '@vueuse/core'
 import { computed, nextTick, reactive, ref, watch } from 'vue'
 import { onBeforeRouteLeave, useRouter } from 'vue-router'
 
+import { PLUGIN_NAME as TEXT_TOOL_PLUGIN_NAME } from '#shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts'
 import Form from '#shared/components/Form/Form.vue'
 import type { FormSubmitData, FormSchemaNode } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
@@ -290,6 +291,12 @@ const ticketArticleMessageSection = getFormSchemaGroupSection(
               },
               mentionKnowledgeBase: {
                 attachmentsNodeName: 'attachments',
+              },
+              [TEXT_TOOL_PLUGIN_NAME]: {
+                groupNodeName: 'group_id',
+                ticketNodeName: 'ticket_id',
+                customerNodeName: 'customer_id',
+                organizationNodeName: 'organization_id',
               },
             },
           },

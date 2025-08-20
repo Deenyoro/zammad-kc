@@ -6,6 +6,7 @@ class AI::TextTool < ApplicationModel
   include HasSearchIndexBackend
   include CanSelector
   include CanSearch
+  include AI::TextTool::TriggersSubscriptions
   include HasOptionalGroups
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
