@@ -36,7 +36,7 @@ class App.ControllerForm extends App.Controller
 
     # add alert placeholder
     @form.prepend('<div class="alert alert--danger js-danger js-alert hide" role="alert"></div>')
-    @form.prepend('<div class="alert alert--success js-success hide" role="alert"></div>')
+    @form.prepend('<div class="alert alert--success js-success js-alert hide" role="alert"></div>')
 
     if @handlers.length
       @dispatchHandlers()
@@ -73,10 +73,10 @@ class App.ControllerForm extends App.Controller
     else
       translated = App.i18n.translateInline(message)
 
-    @form.find('.alert--danger').first().removeClass('hide').html(translated)
+    @form.find('.js-danger').first().removeClass('hide').html(translated)
 
   hideAlert: =>
-    @form.find('.alert--danger').addClass('hide').html()
+    @form.find('.js-alert').addClass('hide').html()
 
   html: =>
     @form.html()
