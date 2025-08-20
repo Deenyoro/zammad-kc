@@ -131,6 +131,7 @@ class KnowledgeBase::Category < ApplicationModel
   def attributes_with_association_ids
     attrs = super
     attrs[:permissions_effective] = permissions_effective
+    attrs[:child_ids] = child_ids
     attrs
   end
 
