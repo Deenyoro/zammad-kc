@@ -6065,12 +6065,7 @@ Setting.create_if_not_exists(
   area:        'AI::Assistance',
   description: __('Defines the fixed instructions that guide the AI Writing Assistant on e.g. how to format its output.'),
   options:     {},
-  state:       'Format:
-- Write in the same language as the input
-- **Always format the output as simple HTML content only**, do not wrap it in code block markers
-- Use basic tags: `<h1>`, `<h2>`, `<p>`, `<strong>`, `<em>`, `<ul>`, `<li>`
-- **DO NOT include DOCTYPE, `<html>`, `<head>`, `<body>`, or any document structure tags**
-- Output should be ready to insert directly into an existing HTML document',
+  state:       'Do not provide any explanations, code fences or additional text. Output only the corrected text.', # rubocop:disable Zammad/DetectTranslatableString
   preferences: {
     authentication: true,
     permission:     ['admin.ai_assistance_text_tools'],
