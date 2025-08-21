@@ -42,8 +42,8 @@ You have to follow these rules:
     new_instructions = 'Do not provide any explanations, code fences or additional text. Output only the corrected text.'
 
     setting.update!(
-      state_current: new_instructions,
-      state_initial: new_instructions,
+      state_current: { value: new_instructions },
+      state_initial: { value: new_instructions },
     )
   end
 end
