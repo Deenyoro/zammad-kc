@@ -23,6 +23,8 @@ RSpec.describe Gql::Queries::AIAssistance::TextTools::List, type: :graphql do
     let(:variables) { {} }
 
     before do
+      AI::TextTool.destroy_all
+
       text_tools if defined? text_tools
 
       gql.execute(query, variables: variables)
@@ -45,12 +47,6 @@ RSpec.describe Gql::Queries::AIAssistance::TextTools::List, type: :graphql do
       end
     end
 
-    shared_examples 'returning filtered list' do |list:|
-      it 'returns filtered list' do
-        expect(gql.result.data).to eq(list)
-      end
-    end
-
     context 'with an agent user', authenticated_as: :agent do
 
       context 'when no text tools exist' do
@@ -58,16 +54,28 @@ RSpec.describe Gql::Queries::AIAssistance::TextTools::List, type: :graphql do
       end
 
       context 'when text tools without groups exist' do
-        let(:text_tools) { create_list(:ai_text_tool, 3) }
+        let(:text_tools) do
+          create_list(:ai_text_tool, 3).tap do |tools|
+            tools.each_with_index do |tool, index|
+              tool.update(name: "Test text tool #{index + 1}")
+            end
+          end
+        end
 
         it_behaves_like 'returning complete list'
       end
 
       context 'when text tools with and without groups exist' do
         let(:text_tools) do
-          tools = create_list(:ai_text_tool, 3)
+          tools = create_list(:ai_text_tool, 3).tap do |tools|
+            tools.each_with_index do |tool, index|
+              tool.update(name: "Test text tool #{index + 1}")
+            end
+          end
+
           tools[0].update(groups: [group])
           tools[1].update(groups: [another_group])
+
           tools
         end
 
@@ -103,7 +111,13 @@ RSpec.describe Gql::Queries::AIAssistance::TextTools::List, type: :graphql do
       end
 
       context 'when text tools just with groups exist' do
-        let(:text_tools) { create_list(:ai_text_tool, 3, groups: [group, another_group]) }
+        let(:text_tools) do
+          create_list(:ai_text_tool, 3, groups: [group, another_group]).tap do |tools|
+            tools.each_with_index do |tool, index|
+              tool.update(name: "Test text tool #{index + 1}")
+            end
+          end
+        end
 
         context 'when agent has access to the groups' do
           let(:agent) { create(:agent, groups: [group, another_group]) }

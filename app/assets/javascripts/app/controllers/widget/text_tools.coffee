@@ -98,11 +98,18 @@ class App.WidgetTextTools extends App.Controller
     return if !App.WidgetTextTools.hasAvailableTextTools(ce)
 
     textToolsDropdown = $(App.view('generic/text_tools_dropdown')(items: App.WidgetTextTools.availableTextTools(ce), disabled: false))
+
     popupContainerElement.html(textToolsDropdown)
 
     textToolsDropdown.off('mousedown.text-tools-dropdown').on 'mousedown.text-tools-dropdown', '.js-action', (e) ->
       e.preventDefault()
       App.WidgetTextTools.showModal(e, ce, selection, el)
       return false
+
+    # Position the dropdown menu on the right side of the dropdown container when in RTL locale.
+    if App.i18n.dir() is 'rtl'
+      popupContainerElement
+        .css('left', 'auto')
+        .css('right', "#{textToolsDropdown.find('.dropdown-menu').width()}px")
 
     textToolsDropdown.addClass('open')

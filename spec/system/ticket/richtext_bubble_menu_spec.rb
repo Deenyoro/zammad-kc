@@ -9,6 +9,7 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
   let(:ui_richtext_bubble_menu)  { true }
   let(:input)                    { 'Teh qwik braun foxx jumpz ova da laizi doge.' }
   let(:output)                   { Struct.new(:content, :stored_result, :fresh, keyword_init: true).new(content: 'The quick brown fox jumps over the lazy dog.', stored_result: nil, fresh: false) }
+  let(:text_tool_name)           { Faker::Lorem.unique.sentence }
 
   def authenticate
     skip('does not work with chrome driver') if Capybara.current_driver == :zammad_chrome
@@ -17,7 +18,7 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
     Setting.set('ai_assistance_text_tools', ai_assistance_text_tools)
     Setting.set('ui_richtext_bubble_menu', ui_richtext_bubble_menu)
 
-    create(:ai_text_tool, name: 'Fix spelling and grammar', instruction: 'Fix spelling and grammar of the following text:')
+    create(:ai_text_tool, name: text_tool_name, instruction: 'Do something with the following text:')
 
     agent
   end
@@ -39,11 +40,12 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
       expect(page).to have_css('.bubble-menu[role=menu]')
 
       find("[aria-label='Writing Assistant Tools']").click
-      find('.js-action', text: 'Fix spelling and grammar').click
+      find('.js-action', text: text_tool_name).click
 
       in_modal do
-        expect(page).to have_css('h1', text: 'Writing Assistant: Fix spelling and grammar')
-        expect(page).to have_text(input).and have_text(output[:content])
+        expect(page).to have_css('h1', text: "Writing Assistant: #{text_tool_name}")
+          .and have_text(input)
+          .and have_text(output[:content])
 
         click_on 'Approve'
       end
@@ -66,7 +68,7 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
         find("[data-name='body']").send_keys([magic_key, 'a'])
 
         expect(page).to have_css('.bubble-menu[role=menu]')
-        expect(page).to have_no_css('.bubble-menu-item[aria-label="Writing Assistant Tools"]')
+          .and have_no_css('.bubble-menu-item[aria-label="Writing Assistant Tools"]')
       end
     end
 
@@ -99,7 +101,7 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
         find("[data-name='body']").send_keys([magic_key, 'a'])
 
         expect(page).to have_css('.bubble-menu[role=menu]')
-        expect(page).to have_no_css('.bubble-menu-item[aria-label="Writing Assistant Tools"]')
+          .and have_no_css('.bubble-menu-item[aria-label="Writing Assistant Tools"]')
       end
     end
   end
@@ -213,7 +215,7 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
 
       within("[data-name='body']") do
         expect(page).to have_no_css('b')
-        expect(page).to have_text('Format Me')
+          .and have_text('Format Me')
       end
     end
 

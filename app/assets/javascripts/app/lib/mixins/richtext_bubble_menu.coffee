@@ -12,15 +12,25 @@ App.RichtextBubbleMenu =
       return if disabled
       return if not @bubbleMenuEnabled() and not App.WidgetTextTools.enabled()
       return if not selection.content
+
+      # FIXME: This is a workaround to prevent the bubble menu from being shown for the plain text article types.
+      #   Consider removing this once the plain text article types are fully supported.
       return if @type and @type isnt 'note' and @type isnt 'email' and @type isnt 'phone'
 
-      bubbleElement = el.after($(App.view('generic/richtext_bubble_menu')(items: @filteredActions(ce)))).next()
+      actions = @filteredActions(ce)
+      return if not actions.length
+
+      bubbleElement = el.after($(App.view('generic/richtext_bubble_menu')(items: actions))).next()
 
       if range = selection.ranges[0]
         rect = range.getBoundingClientRect()
+        parentOffset = el.parent().offset().left + el.parent().width()
+        bubbleOffset = rect.left + bubbleElement.width()
         bubbleElement.offset({
           top: rect.top - bubbleElement.height() - 8
-          left: rect.left
+
+          # If the bubble menu would overflow the parent, move it to the left side of it.
+          left: if bubbleOffset > parentOffset then parentOffset - bubbleElement.width() else rect.left
         })
 
       closeDropdown = ->
@@ -71,7 +81,8 @@ App.RichtextBubbleMenu =
         key: 'ai-text-tools'
         label: __('Writing Assistant Tools')
         icon: 'smart-assist-elaborate'
-        dividerClass: 'ai-vertical-gradient'
+        divider: true
+        dividerClass: 'divider--full-height ai-vertical-gradient'
         show: (ce) ->
           App.WidgetTextTools.enabled() and App.WidgetTextTools.hasAvailableTextTools(ce)
         permission: 'ticket.agent'
@@ -109,6 +120,7 @@ App.RichtextBubbleMenu =
         key: 'removeFormat'
         label: __('Remove formatting')
         icon: 'remove-formatting'
+        divider: true
         action: (e, ce) ->
           ce.executeFormattingAction('removeFormat')
       },
@@ -130,6 +142,7 @@ App.RichtextBubbleMenu =
         key: 'h3'
         label: __('Heading 3')
         icon: 'type-h3'
+        divider: true
         action: (e, ce) ->
           ce.toggleBlock('h3')
       },

@@ -13,7 +13,7 @@ RSpec.describe 'AI::TextTool', :aggregate_failures, authenticated_as: :user, typ
       get '/api/v1/ai_text_tools', as: :json
 
       expect(response).to have_http_status(:ok)
-      expect(json_response).to contain_exactly(
+      expect(json_response).to include(
         include('name' => 'Summarizer'),
         include('name' => 'Rewriter')
       )
