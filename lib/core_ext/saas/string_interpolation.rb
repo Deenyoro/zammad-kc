@@ -12,6 +12,19 @@ $VERBOSE = false
 
 module Sass::Script::Tree
   class StringInterpolation < Node
+    def to_sass(opts = {})
+      quote = type == :string ? opts[:quote] || quote_for(self) || '"' : :none
+      opts = opts.merge(:quote => quote)
+
+      res = +""
+      res << quote if quote != :none
+      res << _to_sass(before, opts)
+      res << '#{' << @mid.to_sass(opts.merge(:quote => nil)) << '}'
+      res << _to_sass(after, opts)
+      res << quote if quote != :none
+      res
+    end
+
     def _perform(environment)
       res = +""
       before = @before.perform(environment)
