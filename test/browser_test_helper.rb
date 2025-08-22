@@ -85,6 +85,7 @@ class TestCase < ActiveSupport::TestCase
         prefs:            {
           'intl.accept_languages'                                => 'en-US',
           'profile.default_content_setting_values.notifications' => 1, # ALLOW notifications
+          'profile.password_manager_leak_detection'              => false, # DISABLE "Warn you if a password was compromised in a data breach" dialog
         },
         # Disable shared memory usage as it does not really provide a performance gain but cause resource limit issues in CI.
         #   https://peter.sh/experiments/chromium-command-line-switches/
@@ -226,30 +227,6 @@ class TestCase < ActiveSupport::TestCase
 
     element = instance.find_elements(css: '#login input[name="username"]')[0]
     if !element
-
-      if params[:auto_wizard]
-        watch_for(
-          browser: instance,
-          css:     'body',
-          value:   'auto wizard is enabled',
-          timeout: 10,
-        )
-        location(url: "#{browser_url}/#getting_started/auto_wizard")
-        sleep 10
-        login = instance.find_elements(css: '.user-menu .user a')[0].attribute('title')
-        if login != params[:username]
-          screenshot(browser: instance, comment: 'auto wizard login failed')
-          raise 'auto wizard login failed'
-        end
-        assert(true, 'auto wizard login ok')
-
-        clues_close(
-          browser:  instance,
-          optional: true,
-        )
-
-        return
-      end
       screenshot(browser: instance, comment: 'login_failed')
       raise 'No login box found'
     end
@@ -286,7 +263,7 @@ class TestCase < ActiveSupport::TestCase
     end
 
     if params[:success] == false
-      raise 'login successfull but should not'
+      raise 'login successful but should not'
     end
 
     clues_close(
@@ -351,29 +328,20 @@ class TestCase < ActiveSupport::TestCase
 
     instance = params[:browser] || @browser
 
-    clues = instance.find_elements(css: '.js-modal--clue .js-close')[0]
-    if !params[:optional] && !clues
+    clues = instance.find_elements(css: '.js-modal--clue.modal--clue-ready .js-close')[0]
+
+    if !clues
+      return if params[:optional]
+
       screenshot(browser: instance, comment: 'no_clues')
-      raise 'Unable to closes clues, no clues found!'
+      raise 'Unable to close clues, no clues found!'
     end
-    return if !clues
 
-    checks   = 25
-    previous = clues.location
-    (checks + 1).times do |check|
-      raise "Element still moving after #{checks} checks" if check == checks
-
-      current = clues.location
-      sleep 0.2 if ENV['CI']
-      break if previous == current
-
-      previous = current
-    end
     clues.click
 
     watch_for_disappear(
       browser: instance,
-      css:     'modal-backdrop js-backdrop',
+      css:     '.modal-backdrop.js-backdrop',
     )
 
     assert(true, 'clues closed')
@@ -1558,7 +1526,7 @@ wait untill text in selector disabppears
       sleep 1
     end
     screenshot(browser: instance, comment: 'disappear_failed')
-    raise "#{params[:css]}) still exsists"
+    raise "#{params[:css]}) still exists"
   end
 
 =begin

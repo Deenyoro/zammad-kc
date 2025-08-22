@@ -36,7 +36,8 @@ def build_chrome_driver(app, user_agent: nil)
     },
     prefs:            {
       'intl.accept_languages'                                => 'en-US',
-      'profile.default_content_setting_values.notifications' => 1, # ALLOW notifications
+      'profile.default_content_setting_values.notifications' => 1,     # ALLOW notifications
+      'profile.password_manager_leak_detection'              => false, # DISABLE "Warn you if a password was compromised in a data breach" dialog
     },
     # Disable shared memory usage as it does not really provide a performance gain but cause resource limit issues in CI.
     #   https://peter.sh/experiments/chromium-command-line-switches/
