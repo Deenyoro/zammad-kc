@@ -6051,7 +6051,7 @@ Setting.create_if_not_exists(
   area:        'AI::Assistance',
   description: __('Enable or disable the writing assistant text tools.'),
   options:     {},
-  state:       true,
+  state:       false,
   preferences: {
     authentication: true,
     permission:     ['admin.ai_assistance_text_tools'],
