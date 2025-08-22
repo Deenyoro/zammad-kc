@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: "<ZAMMAD_AI_API_URL>/api/v1/me"
+    uri: https://ai.zammad.com/api/v1/me
     body:
       encoding: US-ASCII
       string: ''
@@ -14,7 +14,7 @@ http_interactions:
       User-Agent:
       - Zammad User Agent
       Host:
-      - ai.edenhofer.de
+      - ai.zammad.com
       Authorization:
       - Bearer <ZAMMAD_AI_TOKEN>
   response:
@@ -25,7 +25,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 17 Apr 2025 10:34:35 GMT
+      - Fri, 22 Aug 2025 10:57:26 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -33,10 +33,12 @@ http_interactions:
       Connection:
       - keep-alive
       X-Frame-Options:
+      - DENY
       - SAMEORIGIN
       X-Xss-Protection:
       - '0'
       X-Content-Type-Options:
+      - nosniff
       - nosniff
       X-Permitted-Cross-Domain-Policies:
       - none
@@ -45,17 +47,21 @@ http_interactions:
       Vary:
       - Accept
       Etag:
-      - W/"42bd98b30a1a89e766a8d84a6b49330a"
+      - W/"47fec0d9a8354d74b9c8f2eb569e8cac"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 421d5d9d-b533-460f-b913-e9315d5cf62e
+      - 12171eac-989f-4958-91d9-37f9df84ce27
       X-Runtime:
-      - '0.021417'
+      - '0.002939'
       Strict-Transport-Security:
+      - max-age=63072000
       - max-age=63072000; includeSubDomains
+      Content-Security-Policy:
+      - default-src 'self'; script-src 'self'; img-src 'self'; style-src 'self' 'unsafe-inline';base-uri
+        'self';form-action 'self'; frame-src 'none';
     body:
       encoding: ASCII-8BIT
-      string: '{"current_user":{"id":9,"email":"bs@zammad.com","firstname":"Benjamin","lastname":"Scharf","active":true,"created_by_id":1,"created_at":"2025-03-24T09:40:16.024Z","updated_at":"2025-03-24T09:40:16.024Z","organization_id":2,"is_platform_admin":false,"is_organization_admin":false,"login_failed_count":null,"login_at":null}}'
-  recorded_at: Thu, 17 Apr 2025 10:34:35 GMT
+      string: '{"current_user":{"id":2,"email":"me@zammad.com","firstname":"Martin","lastname":"Edenhofer","login_failed_count":0,"login_at":"2025-08-21T12:15:14.477Z","platform_admin":true,"organization_admin":false,"active":true,"created_by_id":1,"created_at":"2025-08-21T09:38:47.872Z","updated_at":"2025-08-21T12:15:14.495Z","organization_id":null}}'
+  recorded_at: Fri, 22 Aug 2025 10:57:26 GMT
 recorded_with: VCR 6.3.1

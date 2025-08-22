@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: "<ZAMMAD_AI_API_URL>/api/v1/me"
+    uri: https://ai.zammad.com/api/v1/me
     body:
       encoding: US-ASCII
       string: ''
@@ -14,7 +14,7 @@ http_interactions:
       User-Agent:
       - Zammad User Agent
       Host:
-      - ai.edenhofer.de
+      - ai.zammad.com
       Authorization:
       - Bearer <ZAMMAD_AI_TOKEN>
   response:
@@ -25,7 +25,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 17 Apr 2025 10:34:32 GMT
+      - Fri, 22 Aug 2025 10:57:25 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -33,10 +33,12 @@ http_interactions:
       Connection:
       - keep-alive
       X-Frame-Options:
+      - DENY
       - SAMEORIGIN
       X-Xss-Protection:
       - '0'
       X-Content-Type-Options:
+      - nosniff
       - nosniff
       X-Permitted-Cross-Domain-Policies:
       - none
@@ -45,26 +47,31 @@ http_interactions:
       Vary:
       - Accept
       Etag:
-      - W/"42bd98b30a1a89e766a8d84a6b49330a"
+      - W/"47fec0d9a8354d74b9c8f2eb569e8cac"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - f18b0ee9-c654-4c9c-81df-af080dd47fbc
+      - 7e4d529f-9923-417a-802f-b3a489d98127
       X-Runtime:
-      - '0.004129'
+      - '0.003165'
       Strict-Transport-Security:
+      - max-age=63072000
       - max-age=63072000; includeSubDomains
+      Content-Security-Policy:
+      - default-src 'self'; script-src 'self'; img-src 'self'; style-src 'self' 'unsafe-inline';base-uri
+        'self';form-action 'self'; frame-src 'none';
     body:
       encoding: ASCII-8BIT
-      string: '{"current_user":{"id":9,"email":"bs@zammad.com","firstname":"Benjamin","lastname":"Scharf","active":true,"created_by_id":1,"created_at":"2025-03-24T09:40:16.024Z","updated_at":"2025-03-24T09:40:16.024Z","organization_id":2,"is_platform_admin":false,"is_organization_admin":false,"login_failed_count":null,"login_at":null}}'
-  recorded_at: Thu, 17 Apr 2025 10:34:32 GMT
+      string: '{"current_user":{"id":2,"email":"me@zammad.com","firstname":"Martin","lastname":"Edenhofer","login_failed_count":0,"login_at":"2025-08-21T12:15:14.477Z","platform_admin":true,"organization_admin":false,"active":true,"created_by_id":1,"created_at":"2025-08-21T09:38:47.872Z","updated_at":"2025-08-21T12:15:14.495Z","organization_id":null}}'
+  recorded_at: Fri, 22 Aug 2025 10:57:25 GMT
 - request:
     method: post
-    uri: "<ZAMMAD_AI_API_URL>/api/v1/features/generic"
+    uri: https://ai.zammad.com/api/v1/features/generic
     body:
       encoding: UTF-8
       string: '{"system_prompt":"","prompt":"This is a connection test. Return in
-        unprettified JSON ''{ \"connected\": \"true\" }'' if you got the message."}'
+        unprettified JSON ''{ \"connected\": \"true\" }'' if you got the message.
+        Respond in plain JSON format only and do not wrap it in code block markers."}'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -73,7 +80,7 @@ http_interactions:
       User-Agent:
       - Zammad User Agent
       Host:
-      - ai.edenhofer.de
+      - ai.zammad.com
       Content-Type:
       - application/json; charset=utf-8
       Authorization:
@@ -86,7 +93,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 17 Apr 2025 10:34:35 GMT
+      - Fri, 22 Aug 2025 10:57:25 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -94,10 +101,12 @@ http_interactions:
       Connection:
       - keep-alive
       X-Frame-Options:
+      - DENY
       - SAMEORIGIN
       X-Xss-Protection:
       - '0'
       X-Content-Type-Options:
+      - nosniff
       - nosniff
       X-Permitted-Cross-Domain-Policies:
       - none
@@ -106,18 +115,22 @@ http_interactions:
       Vary:
       - Accept
       Etag:
-      - W/"e019e23dddbce6e0d75148a9d8ddbe8c"
+      - W/"a725ce9a82eaa7659a12881632aaa0a0"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 2ed6e6d7-7f2c-4459-b6c4-ccdebdd041f2
+      - 20961201-4555-45aa-b64b-cf66be9b82a5
       X-Runtime:
-      - '2.485251'
+      - '0.587322'
       Strict-Transport-Security:
+      - max-age=63072000
       - max-age=63072000; includeSubDomains
+      Content-Security-Policy:
+      - default-src 'self'; script-src 'self'; img-src 'self'; style-src 'self' 'unsafe-inline';base-uri
+        'self';form-action 'self'; frame-src 'none';
     body:
       encoding: ASCII-8BIT
-      string: '[{"model":"llama3.2-vision","created_at":"2025-04-17T10:34:35.101494098Z","response":"{
-        \"connected\": \"true\" }","done":true,"done_reason":"stop","context":[128006,882,128007,271,2028,374,264,3717,1296,13,3494,304,653,1762,5683,1908,4823,11834,330,15647,794,330,1904,1,335,6,422,499,2751,279,1984,13,128009,128006,78191,128007,271,90,330,15647,794,330,1904,1,335],"total_duration":2354836516,"load_duration":2244066963,"prompt_eval_count":38,"prompt_eval_duration":29000000,"eval_count":9,"eval_duration":81000000,"uuid":"2ed6e6d7-7f2c-4459-b6c4-ccdebdd041f2"}]'
-  recorded_at: Thu, 17 Apr 2025 10:34:35 GMT
+      string: '[{"model":"gemma3:27b","created_at":"2025-08-22T10:57:25.819238811Z","response":"{\"connected\":
+        \"true\"}","done":true,"done_reason":"stop","context":[105,2364,107,2094,563,496,5603,1594,236761,9657,528,31508,1220,2093,10434,43836,623,18941,1083,623,3397,236775,682,236789,768,611,2506,506,3618,236761,58025,528,14529,10434,6518,1186,532,776,711,20151,625,528,3393,3355,26401,236761,106,107,105,4368,107,14937,18941,1083,623,3397,25938],"total_duration":375317831,"load_duration":70277914,"prompt_eval_count":52,"prompt_eval_duration":41998856,"eval_count":7,"eval_duration":133888282,"uuid":"f5701681-57d8-4681-8006-6e8fcc70c840"}]'
+  recorded_at: Fri, 22 Aug 2025 10:57:25 GMT
 recorded_with: VCR 6.3.1

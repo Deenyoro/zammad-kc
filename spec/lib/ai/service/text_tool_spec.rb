@@ -2,20 +2,27 @@
 
 require 'rails_helper'
 
-RSpec.describe AI::Service::TextTool, required_envs: %w[OPEN_AI_TOKEN ZAMMAD_AI_TOKEN ZAMMAD_AI_API_URL], use_vcr: true do
+RSpec.describe AI::Service::TextTool, required_envs: %w[OPEN_AI_TOKEN ZAMMAD_AI_TOKEN], use_vcr: true do
   subject(:ai_service) { described_class.new(current_user:, context_data:) }
 
   let(:current_user) { create(:user) }
 
   let(:context_data) do
     {
-      instruction:        'You task is to proofread the provided input text to correct any spelling and grammatical mistakes to ensure professionalism and clarity, while preserving all existing HTML markup without alteration.
+      instruction:        'You are a text correction AI assistant.
 
-- Correct all typos, misspellings, and errors in sentence structure, punctuation, and verb conjugation.
-- Maintain the language of the given input text for the output.
-- Do not modify or break any HTML tags or markup present in the input text.
+You are given a text, most likely in HTML format.
 
-Carefully review the text to improve readability and correctness without altering its original formatting or markup.',
+Your task is to correct:
+- spelling
+- grammar
+- punctuation
+- and sentence-structure errors.
+
+You have to follow these rules:
+- Detect the input language and make sure the corrected text is using the same language.
+- Correct only the text content, neither the HTML tags nor the given structure.
+- Preserve all HTML tags and formatting exactly as in the input.',
       fixed_instructions: Setting.get('ai_assistance_text_tools_fixed_instructions'),
       input:              'I ma Nicole Braun.',
     }
