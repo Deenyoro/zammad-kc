@@ -160,6 +160,10 @@ RSpec.describe String do
       expect("<code>test\n\ntest</code>".html2text).to eq("test\ntest")
     end
 
+    it 'makes sure there is a single space between text instead of a new line' do
+      expect("test with unicode\nėhė".html2text).to eq('test with unicode ėhė')
+    end
+
     it 'converts <table> cells and row to space-separated lines' do
       expect(<<~HTML.chomp.html2text).to eq(<<~TEXT.chomp)
         <table><tr><td>test</td><td>col</td></td></tr><tr><td>test</td><td>4711</td></tr></table>
@@ -520,7 +524,7 @@ RSpec.describe String do
       HTML
         Best regards,
         Your Team Team
-        P.S.: You receive this e-mail because you are listed in our database as person who ordered a Team license. Please click [1] here to unsubscribe from further e-mails.
+        P.S.: You receive this e-mail because you are listed in our database as person who ordered a Team license. Please click[1] here to unsubscribe from further e-mails.
         -----------------------------
 
         [1] http://www.teamviewer.example/en/company/unsubscribe.aspx?id=1009645&ident=xxx

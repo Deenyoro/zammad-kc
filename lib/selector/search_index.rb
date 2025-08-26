@@ -163,7 +163,7 @@ class Selector::SearchIndex < Selector::Base
     # so we currently guess it by checking the condition value and if it is not some kind of relation field like state_id
     value_is_string = Array.wrap(data[:value]).any?(String)
     if value_is_string && ['.id', '_id', '_ids'].any? { |value| key.ends_with?(value) } # ticket.state_id / user.organization_ids / role.id
-      value_is_string = Array.wrap(data[:value]).any? { |value| value.match(%r{[A-z]}) }
+      value_is_string = Array.wrap(data[:value]).any? { |value| value.match(%r{[[:alpha:]]}u) }
     end
 
     klass = table.classify.safe_constantize.then { it if it&.include?(HasSearchIndexBackend) } ||
