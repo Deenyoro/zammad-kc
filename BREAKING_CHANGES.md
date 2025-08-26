@@ -45,6 +45,19 @@ section like in the example below:
      proxy_set_header Host $http_host;
 ```
 
+## 6.5.2
+
+The following breaking changes occurred due to a security fix.
+
+### PGPController parameter name changes
+
+The field `key` of the "key add" endpoint was renamed to `private_key`.
+
+### SMIMEController parameter name changes
+
+- The field `data` of the "certificate add" endpoint was renamed to `certificate`.
+- The field `data` of the "private key add" endpoint was renamed to `private_key`.
+
 ## 6.5
 
 ### Textarea object manager attribute values
