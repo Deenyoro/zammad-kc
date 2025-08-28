@@ -135,6 +135,16 @@ module FieldActions # rubocop:disable Metrics/ModuleLength
     expect(editor_field.text).to have_text(value)
   end
 
+  # Check the field value of a form editor field.
+  #
+  # @example
+  #  check_editor_field_richtext_value('editor_field_name', 'rich text')
+  #
+  def check_editor_field_richtext_value(name, value)
+    editor_field = find("[data-name='#{name}']")
+    expect(editor_field.evaluate_script('this.innerHTML')).to eq(value)
+  end
+
   # Set the field value of a form editor field.
   #
   # @example
@@ -142,6 +152,18 @@ module FieldActions # rubocop:disable Metrics/ModuleLength
   #
   def set_editor_field_value(name, value)
     find("[data-name='#{name}']").set(value)
+
+    # Explicitly trigger the input event to mark the form field as "dirty".
+    execute_script("$('[data-name=\"#{name}\"]').trigger('input')")
+  end
+
+  # Set the field value of a form editor field.
+  #
+  # @example
+  #  set_editor_field_richtext_value('editor_field_name', 'rich text')
+  #
+  def set_editor_field_richtext_value(name, value)
+    find("[data-name='#{name}']").execute_script('this.innerHTML = arguments[0]', value)
 
     # Explicitly trigger the input event to mark the form field as "dirty".
     execute_script("$('[data-name=\"#{name}\"]').trigger('input')")

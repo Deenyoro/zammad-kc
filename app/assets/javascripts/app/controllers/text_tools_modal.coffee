@@ -13,6 +13,9 @@ class App.TextToolsModal extends App.ControllerModal
 
   error: false
 
+  # Store mapping of placeholders to <img> tags
+  imagePlaceholders: null
+
   onClose:  ->
     App.Ajax.abort('ai_assistance_text_tools')
 
@@ -46,6 +49,10 @@ class App.TextToolsModal extends App.ControllerModal
     @disableSubmit()
     @startLoading()
 
+    inputWithPlaceholders = @replaceImagesWithPlaceholders(@selectedText)
+    params.input = inputWithPlaceholders.text
+    @imagePlaceholders = inputWithPlaceholders.mapping
+
     @ajax(
       id:          'ai_assistance_text_tools'
       type:        'POST'
@@ -55,7 +62,8 @@ class App.TextToolsModal extends App.ControllerModal
       failResponseNoTrigger: true
       success: (data) =>
         @stopLoading()
-        @result = data.output
+        replaced = @restoreImagesFromPlaceholders(data.output, @imagePlaceholders)
+        @result = replaced
         @update()
         @enableSubmit()
 
@@ -95,3 +103,24 @@ class App.TextToolsModal extends App.ControllerModal
   onSubmit: =>
     @approve(@result)
     @close()
+
+  replaceImagesWithPlaceholders: (text) ->
+    mapping = {}
+    index = 1
+    # Regex to match <img ... src="data:image/..."> tags
+    processed = text.replace(/<img[^>]*src=["']data:image\/[^"']*["'][^>]*>/gi, (imgTag) ->
+      placeholder = "[[IMAGE_PLACEHOLDER_#{index}]]"
+      mapping[placeholder] = imgTag
+      index += 1
+      placeholder
+    )
+    { text: processed, mapping: mapping }
+
+  escapeRegExp = (string) ->
+    string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+  restoreImagesFromPlaceholders: (text, mapping) ->
+    restored = text
+    for placeholder, imgTag of mapping
+      restored = restored.replace(new RegExp(escapeRegExp(placeholder), 'g'), imgTag)
+    restored

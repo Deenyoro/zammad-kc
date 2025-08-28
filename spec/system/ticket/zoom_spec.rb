@@ -549,7 +549,7 @@ RSpec.describe 'Ticket zoom', type: :system do
       ext      = File.extname(filename)[1...]
       base64   = Base64.encode64(file).delete("\n")
 
-      "<img style='width: 1004px; max-width: 100%;' src=\\\"data:image/#{ext};base64,#{base64}\\\"><br>"
+      "<img style='width: 1004px; max-width: 100%;' src=\"data:image/#{ext};base64,#{base64}\"><br>"
     end
 
     def current_ticket
@@ -565,7 +565,7 @@ RSpec.describe 'Ticket zoom', type: :system do
         find('[name=title]').fill_in with: 'Title'
         find('[name=customer_id_completion]').fill_in with: 'customer@example.com'
         set_tree_select_value('group_id', Group.first.name)
-        find(:richtext).execute_script "this.innerHTML = \"#{ticket_article_body}\""
+        set_editor_field_richtext_value('body', ticket_article_body)
         find('.js-submit').click
       end
     end
