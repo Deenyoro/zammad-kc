@@ -1,30 +1,23 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-AI::TextTool.create_if_not_exists(
-  name:          __('Fix spelling and grammar'),
-  instruction:   'You are a text correction AI assistant.
+class WritingAssistantTools < ActiveRecord::Migration[7.2]
+  def change
+    # return if it's a new setup
+    return if !Setting.exists?(name: 'system_init_done')
 
-You are given a text, most likely in HTML format.
+    rewrite_complex_section
+    expand_draft
+    summarize_section
 
-Your task is to correct:
-- spelling
-- grammar
-- punctuation
-- and sentence-structure errors.
+    adjust_fixed_instructions
+  end
 
-You have to follow these rules:
-- Detect the input language and make sure the corrected text is using the same language.
-- Correct only the text content, neither the HTML tags nor the given structure.
-- Preserve all HTML tags and formatting exactly as in the input.',
-  note:          __('This Writing Assistant Tool corrects spelling and grammar errors in the text.'),
-  active:        true,
-  updated_by_id: 1,
-  created_by_id: 1
-)
+  private
 
-AI::TextTool.create_if_not_exists(
-  name:          __('Rewrite complex section and make it easy to understand'),
-  instruction:   'You are an AI assistant that helps to simplify demanding texts.
+  def rewrite_complex_section
+    AI::TextTool.create_if_not_exists(
+      name:          'Rewrite complex section and make it easy to understand',
+      instruction:   'You are an AI assistant that helps to simplify demanding texts.
 
 You are given a text, most likely in HTML format.
 
@@ -36,15 +29,17 @@ You have to follow these rules:
 - Keep about the same length as the original text.
 - Restructuring is allowed, but preserving the main message and key facts is most important.
 - Preserve all HTML tags (e.g. links, images) and formatting (e.g. bold, italic) whenever it makes sense.',
-  note:          __('This Writing Assistant Tool simplifies the selected text and improves comprehension.'),
-  active:        true,
-  updated_by_id: 1,
-  created_by_id: 1
-)
+      note:          'This Writing Assistant Tool simplifies the selected text and improves comprehension.',
+      active:        true,
+      updated_by_id: 1,
+      created_by_id: 1
+    )
+  end
 
-AI::TextTool.create_if_not_exists(
-  name:          __('Expand draft into well-written section'),
-  instruction:   'You are an AI assistant that helps expand existing draft text into a structured and comprehensible version of the text.
+  def expand_draft
+    AI::TextTool.create_if_not_exists(
+      name:          'Expand draft into well-written section',
+      instruction:   'You are an AI assistant that helps expand existing draft text into a structured and comprehensible version of the text.
 
 You are given a text, most likely in HTML format.
 
@@ -64,15 +59,17 @@ Follow these rules:
 - Maintain the original meaning and tone throughout.
 - The expanded output should be maximum 2–4 times longer than the draft. Do not exceed this range and do not make the output unnaturally long.
 - Preserve all HTML tags (e.g. links, images) as in the input.',
-  note:          __('This Writing Assistant Tool transforms the draft into a fully formulated text.'),
-  active:        true,
-  updated_by_id: 1,
-  created_by_id: 1
-)
+      note:          'This Writing Assistant Tool transforms the draft into a fully formulated text.',
+      active:        true,
+      updated_by_id: 1,
+      created_by_id: 1
+    )
+  end
 
-AI::TextTool.create_if_not_exists(
-  name:          __('Summarize section to about half its current size'),
-  instruction:   'You are an AI assistant summarizing texts.
+  def summarize_section
+    AI::TextTool.create_if_not_exists(
+      name:          'Summarize section to about half its current size',
+      instruction:   'You are an AI assistant summarizing texts.
 
 You are given a text, most likely in HTML format.
 
@@ -86,8 +83,22 @@ Follow these rules:
 - Preserve all key information, main arguments, and important details.
 - Maintain the original tone, but change the structure of the text when needed.
 - Preserve image and link HTML tags.',
-  note:          __('This Writing Assistant Tool creates a short summary of the selected text keeping the original meaning.'),
-  active:        true,
-  updated_by_id: 1,
-  created_by_id: 1
-)
+      note:          'This Writing Assistant Tool creates a short summary of the selected text keeping the original meaning.',
+      active:        true,
+      updated_by_id: 1,
+      created_by_id: 1
+    )
+  end
+
+  def adjust_fixed_instructions
+    setting = Setting.find_by(name: 'ai_assistance_text_tools_fixed_instructions')
+    return if setting.nil?
+
+    new_instructions = 'Do not provide any explanations, code fences or additional text. Output only the modified text.'
+
+    setting.update!(
+      state_current: { value: new_instructions },
+      state_initial: { value: new_instructions },
+    )
+  end
+end

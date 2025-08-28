@@ -6065,7 +6065,7 @@ Setting.create_if_not_exists(
   area:        'AI::Assistance',
   description: __('Defines the fixed instructions that guide the AI Writing Assistant on e.g. how to format its output.'),
   options:     {},
-  state:       'Do not provide any explanations, code fences or additional text. Output only the corrected text.', # rubocop:disable Zammad/DetectTranslatableString
+  state:       'Do not provide any explanations, code fences or additional text. Output only the modified text.', # rubocop:disable Zammad/DetectTranslatableString
   preferences: {
     authentication: true,
     permission:     ['admin.ai_assistance_text_tools'],
