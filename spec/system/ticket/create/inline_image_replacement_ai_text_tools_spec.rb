@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Ticket create > Inline Image Replacement for AI Text Tools', authenticated_as: :authenticate, type: :system do
+RSpec.describe 'Ticket create > Inline Image Replacement for AI Text Tools', authenticated_as: :authenticate, required_envs: %w[ZAMMAD_AI_TOKEN], type: :system do
   let(:group) { Group.first }
   let(:agent) { create(:agent, groups: [group]) }
 
@@ -25,6 +25,8 @@ RSpec.describe 'Ticket create > Inline Image Replacement for AI Text Tools', aut
 
   def authenticate
     skip('Bubble menu does not work when using Chrome.') if Capybara.current_driver == :zammad_chrome
+
+    allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
 
     Setting.set('ai_provider', 'zammad_ai')
     Setting.set('ai_provider_config', {

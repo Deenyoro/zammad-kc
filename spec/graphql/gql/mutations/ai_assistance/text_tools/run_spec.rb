@@ -28,6 +28,8 @@ RSpec.describe Gql::Mutations::AIAssistance::TextTools::Run, :aggregate_failures
     end
 
     before do
+      allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
+
       Setting.set('ai_assistance_text_tools', true)
       Setting.set('ai_provider', 'zammad_ai')
 

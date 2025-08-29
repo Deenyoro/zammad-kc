@@ -8,6 +8,8 @@ RSpec.describe 'Ticket Summarize API endpoints', authenticated_as: :user, perfor
   let(:article) { create(:ticket_article) }
 
   before do
+    allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
+
     Setting.set('ai_provider', 'zammad_ai')
     Setting.set('ai_assistance_ticket_summary', true)
   end

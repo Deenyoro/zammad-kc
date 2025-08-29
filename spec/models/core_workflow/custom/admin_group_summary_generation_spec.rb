@@ -14,6 +14,8 @@ RSpec.describe CoreWorkflow::Custom::AdminGroupSummaryGeneration, type: :model d
 
   context 'when settings enabled' do
     before do
+      allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
+
       Setting.set('ai_provider', 'zammad_ai')
     end
 

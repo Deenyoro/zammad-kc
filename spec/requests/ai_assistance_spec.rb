@@ -15,6 +15,8 @@ RSpec.describe 'AI Assistance API endpoint', authenticated_as: :user, type: :req
     end
 
     before do
+      allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
+
       Setting.set('ai_provider', 'zammad_ai')
       Setting.set('ai_assistance_text_tools', true)
     end

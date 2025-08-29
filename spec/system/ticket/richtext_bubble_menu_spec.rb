@@ -14,6 +14,8 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
   def authenticate
     skip('does not work with chrome driver') if Capybara.current_driver == :zammad_chrome
 
+    allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
+
     Setting.set('ai_provider', ai_provider)
     Setting.set('ai_assistance_text_tools', ai_assistance_text_tools)
     Setting.set('ui_richtext_bubble_menu', ui_richtext_bubble_menu)
