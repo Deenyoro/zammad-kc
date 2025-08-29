@@ -8482,109 +8482,6 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "LocatorOrganizationInput",
-          "description": "Locate an organization via id or internalId.",
-          "fields": null,
-          "inputFields": [
-            {
-              "name": "organizationId",
-              "description": "Organization ID",
-              "type": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "organizationInternalId",
-              "description": "Organization internalId",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "defaultValue": null
-            }
-          ],
-          "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "INPUT_OBJECT",
-          "name": "LocatorTicketInput",
-          "description": "Locate a ticket via id, internalId or number.",
-          "fields": null,
-          "inputFields": [
-            {
-              "name": "ticketId",
-              "description": "Ticket ID",
-              "type": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "ticketInternalId",
-              "description": "Ticket internalId",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "ticketNumber",
-              "description": "Ticket number",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            }
-          ],
-          "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "INPUT_OBJECT",
-          "name": "LocatorUserInput",
-          "description": "Locate a User via id or internalId.",
-          "fields": null,
-          "inputFields": [
-            {
-              "name": "userId",
-              "description": "User ID",
-              "type": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "userInternalId",
-              "description": "User internalId",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "defaultValue": null
-            }
-          ],
-          "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "INPUT_OBJECT",
           "name": "LoginInput",
           "description": "The user login fields.",
           "fields": null,
@@ -16335,14 +16232,14 @@
               "description": "Fetch an organization by ID",
               "args": [
                 {
-                  "name": "organization",
-                  "description": "Organization locator",
+                  "name": "organizationId",
+                  "description": "Organization ID",
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,
                     "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "LocatorOrganizationInput",
+                      "kind": "SCALAR",
+                      "name": "ID",
                       "ofType": null
                     }
                   },
@@ -16711,14 +16608,14 @@
               "description": "Fetch a ticket by ID",
               "args": [
                 {
-                  "name": "ticket",
-                  "description": "Ticket locator",
+                  "name": "ticketId",
+                  "description": "Ticket ID",
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,
                     "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "LocatorTicketInput",
+                      "kind": "SCALAR",
+                      "name": "ID",
                       "ofType": null
                     }
                   },
@@ -16742,14 +16639,14 @@
               "description": "Fetch ticket articles by ticket ID",
               "args": [
                 {
-                  "name": "ticket",
-                  "description": "Ticket locator",
+                  "name": "ticketId",
+                  "description": "Ticket ID",
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,
                     "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "LocatorTicketInput",
+                      "kind": "SCALAR",
+                      "name": "ID",
                       "ofType": null
                     }
                   },
@@ -16852,14 +16749,14 @@
               "description": "Fetch ticket checklist",
               "args": [
                 {
-                  "name": "ticket",
-                  "description": "Ticket locator",
+                  "name": "ticketId",
+                  "description": "Ticket ID",
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,
                     "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "LocatorTicketInput",
+                      "kind": "SCALAR",
+                      "name": "ID",
                       "ofType": null
                     }
                   },
@@ -17026,14 +16923,14 @@
               "description": "Fetch history of a ticket",
               "args": [
                 {
-                  "name": "ticket",
-                  "description": "Ticket locator",
+                  "name": "ticketId",
+                  "description": "Ticket ID",
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,
                     "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "LocatorTicketInput",
+                      "kind": "SCALAR",
+                      "name": "ID",
                       "ofType": null
                     }
                   },
@@ -17617,14 +17514,14 @@
               "description": "Fetch a user information by ID",
               "args": [
                 {
-                  "name": "user",
-                  "description": "User locator",
+                  "name": "userId",
+                  "description": "User ID",
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,
                     "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "LocatorUserInput",
+                      "kind": "SCALAR",
+                      "name": "ID",
                       "ofType": null
                     }
                   },

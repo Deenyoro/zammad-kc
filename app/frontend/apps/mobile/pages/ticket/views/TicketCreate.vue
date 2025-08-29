@@ -21,6 +21,7 @@ import type { TicketFormData } from '#shared/entities/ticket/types.ts'
 import { useUserQuery } from '#shared/entities/user/graphql/queries/user.api.ts'
 import { defineFormSchema } from '#shared/form/defineFormSchema.ts'
 import { EnumFormUpdaterId, EnumObjectManagerObjects } from '#shared/graphql/types.ts'
+import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import { i18n } from '#shared/i18n.ts'
 import { errorOptions } from '#shared/router/error.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
@@ -169,7 +170,7 @@ const userOptions = ref<unknown[]>([])
 
 const userQuery = useUserQuery(
   () => ({
-    userInternalId: Number(customUserId),
+    userId: convertToGraphQLId('User', Number(customUserId)),
     secondaryOrganizationsCount: 3,
   }),
   {

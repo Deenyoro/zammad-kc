@@ -1,9 +1,5 @@
-query user(
-  $userId: ID
-  $userInternalId: Int
-  $secondaryOrganizationsCount: Int
-) {
-  user(user: { userId: $userId, userInternalId: $userInternalId }) {
+query user($userId: ID!, $secondaryOrganizationsCount: Int) {
+  user(userId: $userId) {
     ...userDetailAttributes
     policy {
       update

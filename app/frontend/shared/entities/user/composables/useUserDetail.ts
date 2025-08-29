@@ -26,7 +26,7 @@ export const useUserDetail = (
   const userQuery = new QueryHandler(
     useUserQuery(
       () => ({
-        userId: userId.value,
+        userId: userId.value!,
         secondaryOrganizationsCount: 3,
       }),
       () => ({ enabled: Boolean(userId.value), fetchPolicy }),
@@ -45,6 +45,8 @@ export const useUserDetail = (
   }))
 
   const loadAllSecondaryOrganizations = () => {
+    if (!userId.value) return
+
     userQuery
       .refetch({
         userId: userId.value,
