@@ -14,9 +14,9 @@ class Setting < ApplicationModel
   after_save    :reset_class_cache_key
   after_commit  :reset_other_caches, :broadcast_frontend, :check_refresh
 
-  validates_with Setting::Validator
+  validates_with Setting::Validator, if: -> { !skip_validate }
 
-  attr_accessor :state
+  attr_accessor :state, :skip_validate
 
   @@current         = {}
   @@raw             = {}
@@ -37,11 +37,13 @@ set config setting
 
 =end
 
-  def self.set(name, value)
+  def self.set(name, value, validate: true)
     setting = Setting.find_by(name: name)
     if !setting
       raise "Can't find config setting '#{name}'"
     end
+
+    setting.skip_validate = !validate
 
     setting.state_current = { value: value }
     setting.save!
