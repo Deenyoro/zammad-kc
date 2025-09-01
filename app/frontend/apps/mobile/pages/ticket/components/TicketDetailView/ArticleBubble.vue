@@ -193,7 +193,11 @@ const onContextClick = () => {
             {{ username }}
           </span>
         </div>
-        <div ref="bubbleElement" data-test-id="article-content" class="overflow-hidden text-base">
+        <div
+          ref="bubbleElement"
+          data-test-id="article-content"
+          class="overflow-hidden transition-[height] duration-200 text-base"
+        >
           <!-- eslint-disable vue/no-v-html -->
           <div class="Content" v-html="body" />
         </div>

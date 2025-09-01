@@ -5,6 +5,13 @@
 @plugin '@formkit/themes/tailwindcss';
 @plugin '../../../build/zammadTailwindPlugin.js';
 
+:root {
+  /* LIMITED support -> opt in modern browsers @see https://developer.mozilla.org/en-US/docs/Web/CSS/interpolate-size */
+
+  /* allows animating of intrinsic absolute <-> relative units */
+  interpolate-size: allow-keywords;
+}
+
 @layer base {
   html {
     --safe-bottom: env(safe-area-inset-bottom);

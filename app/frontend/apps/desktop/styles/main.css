@@ -8,6 +8,13 @@
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] * ));
 
+:root {
+  /* LIMITED support -> opt in modern browsers @see https://developer.mozilla.org/en-US/docs/Web/CSS/interpolate-size */
+
+  /* allows animating of intrinsic absolute <-> relative units */
+  interpolate-size: allow-keywords;
+}
+
 @layer base {
   /* Override autofill styles in Firefox. */
   :-moz-autofill {
