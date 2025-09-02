@@ -142,7 +142,7 @@ describe('Ticket detail view multi tabs switching', () => {
       }),
     )
 
-    expect(view.getByLabelText('State')).toHaveTextContent('open')
+    await waitFor(() => expect(view.getByLabelText('State')).toHaveTextContent('open'))
 
     contentSidebar = await view.findByLabelText('Content sidebar')
     collapsableHeaderButtons = within(contentSidebar).getByTestId('controls-ticket-attributes')
