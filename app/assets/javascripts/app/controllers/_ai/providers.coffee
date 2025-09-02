@@ -21,6 +21,12 @@ class AiProviders extends App.Controller
     )
     new ProviderForm()
 
+    new App.HttpLog(
+      el: @$('.js-log')
+      facility: 'AI::Provider'
+      limit: 100
+    )
+
 class ProviderForm extends App.Controller
   events:
     '.js-provider-submit': 'update'
