@@ -86,6 +86,7 @@ RSpec.describe 'Desktop > Ticket > Edit', app: :desktop_view, authenticated_as: 
       # Title
       #
       find('[aria-label="Edit ticket title"]').click
+      wait.until { page.has_css?('button[aria-label="Save changes"]') }
       send_keys ' changed', :enter
       wait_for_gql('shared/entities/ticket/graphql/mutations/update.graphql', number: 2)
       expect(page).to have_text('Ticket updated successfully')
