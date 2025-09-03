@@ -58,6 +58,12 @@ The field `key` of the "key add" endpoint was renamed to `private_key`.
 - The field `data` of the "certificate add" endpoint was renamed to `certificate`.
 - The field `data` of the "private key add" endpoint was renamed to `private_key`.
 
+### HttpLogsController access control
+
+Logging subsystem (`HttpLog`) API access control is now more fine grained.
+In the past, any `admin.*` permission was sufficient to access this data.
+Now, only the relevant parts can be accessed (e.g. `admin.webhook`)
+
 ## 6.5
 
 ### Textarea object manager attribute values

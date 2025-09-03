@@ -26,6 +26,46 @@ optional you can put the max oldest chat entries as argument
     true
   end
 
+  # Provide a mapping of facilities to required permissions as a function to be easily extendable in custom devs.
+  def self.facilities_permission_lookup
+    {
+      'AI::Provider'       => 'admin.ai_provider',
+      'check_mk'           => 'admin.integration',
+      'clearbit'           => 'admin.integration',
+      'cti'                => 'admin.integration',
+      'EWS'                => 'admin.integration',
+      'GitHub'             => 'admin.integration',
+      'GitLab'             => 'admin.integration',
+      'idoit'              => 'admin.integration',
+      'ldap'               => 'admin.integration',
+      'PGP'                => 'admin.integration',
+      'placetel'           => 'admin.integration',
+      'S/MIME'             => 'admin.integration',
+      'SAML'               => 'admin.security',
+      'sipagte.io'         => 'admin.integration', # typo in facility name, keep for backward compatibility
+      'sipgate.io'         => 'admin.integration',
+      'webhook'            => 'admin.webhook',
+      'WhatsApp::Business' => 'admin.channel_whatsapp',
+    }
+  end
+
+  # Make sure facility is valid if given.
+  validates :facility, inclusion: { in: ->(_) { HttpLog.facilities_permission_lookup.keys } }
+
+  def self.facility_to_permission(facility)
+    return 'admin.*' if facility.blank?
+
+    return facilities_permission_lookup[facility] if facilities_permission_lookup.key?(facility)
+
+    nil
+  end
+
+  def self.facilities_by_permission
+    @facilities_by_permission ||= facilities_permission_lookup
+      .group_by { |_, permission| permission }
+      .transform_values { |values| values.map { |facility, _| facility } }
+  end
+
   private
 
   def messages_to_utf8
