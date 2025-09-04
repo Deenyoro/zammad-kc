@@ -17,7 +17,7 @@ class App.Job extends App.Model
     { name: 'matching',             display: __('Will process'),                    readonly: 1 },
     { name: 'processed',            display: __('Has processed'),                   readonly: 1 },
     { name: 'last_run_at',          display: __('Last run'),                        tag: 'datetime', readonly: 1, include_timezone: true },
-    { name: 'next_run_at',          display: __('Scheduled for'),                   tag: 'datetime', readonly: 1, include_timezone: true },
+    { name: 'next_run_at',          display: __('Scheduled for'),                   tag: 'datetime', readonly: 1, include_timezone: true, no_past_dates: true },
     { name: 'running',              display: __('Running'),                         tag: 'boolean', readonly: 1 },
     { name: 'created_by_id',        display: __('Created by'),                      relation: 'User', readonly: 1 },
     { name: 'created_at',           display: __('Created'),                         tag: 'datetime', readonly: 1 },
