@@ -60,6 +60,11 @@ RSpec.describe 'Mobile > Ticket > Information > Customer Edit', app: :mobile, au
 
     wait_for_form_to_settle('user-edit')
 
+    # Does not trigger form updater for some reason.
+    find_input('First name').clear
+    find_input('Last name').clear
+    find_input('Address').clear
+
     within_form(form_updater_gql_number: 2) do
       find_input('Text Attribute').type('foobar')
       find_input('First name').type('Foo')

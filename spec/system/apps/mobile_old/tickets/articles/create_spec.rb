@@ -241,7 +241,7 @@ RSpec.describe 'Mobile > Ticket > Article > Create', app: :mobile, authenticated
       # go to the ticket edit view
       find_link(ticket.title).click
 
-      find_input('Ticket title').type('New title')
+      find_input('Ticket title').clear.type('New title')
       find_button('Save').click
 
       wait_for_ticket_edit

@@ -293,7 +293,7 @@ class ZammadFormFieldCapybaraElementDelegator < SimpleDelegator
   def type(text, **type_options)
     return type_editor(text, **type_options) if type_editor?
 
-    input_element.fill_in with: text
+    input_element.click.send_keys(text)
 
     maybe_wait_for_form_updater
 
@@ -316,7 +316,7 @@ class ZammadFormFieldCapybaraElementDelegator < SimpleDelegator
   def clear
     return clear_date if type_date? || type_datetime?
 
-    raise 'Field does not support clearing' if !input? && !type_editor?
+    raise 'Field does not support clearing' if !input? && !type_editor? && !type_textarea?
 
     input_element.click.send_keys([magic_key, 'a'], :backspace)
 
