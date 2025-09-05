@@ -5,9 +5,10 @@ class AI::Provider::OpenAI < AI::Provider
 
   # default model also in app/assets/javascripts/app/lib/app_post/ai_provider/open_ai.coffee
   DEFAULT_OPTIONS = {
-    temperature:     0.0,
-    model:           'gpt-4.1',
-    embedding_model: 'text-embedding-3-small'
+    temperature:                0.1,
+    model:                      'gpt-4.1',
+    embedding_model:            'text-embedding-3-small',
+    models_without_temperature: ['gpt-5']
   }.freeze
 
   EMBEDDING_SIZES = {
@@ -15,27 +16,31 @@ class AI::Provider::OpenAI < AI::Provider
   }.freeze
 
   def chat(prompt_system:, prompt_user:)
+    request_body = {
+      model:           options[:model],
+      messages:        [
+        {
+          role:    'system',
+          content: prompt_system,
+        },
+        {
+          role:    'user',
+          content: prompt_user,
+        },
+      ],
+      response_format: {
+        type: options[:json_response] ? 'json_object' : 'text'
+      },
+      stream:          false,
+      store:           false,
+    }
+
+    # Only include temperature if the model supports it
+    request_body[:temperature] = options[:temperature] if model_supports_temperature?
+
     response = UserAgent.post(
       "#{OPENAI_API_BASE_URL}/chat/completions",
-      {
-        model:           options[:model],
-        messages:        [
-          {
-            role:    'system',
-            content: prompt_system,
-          },
-          {
-            role:    'user',
-            content: prompt_user,
-          },
-        ],
-        temperature:     options[:temperature],
-        response_format: {
-          type: options[:json_response] ? 'json_object' : 'text'
-        },
-        stream:          false,
-        store:           false,
-      },
+      request_body,
       {
         open_timeout:  4,
         read_timeout:  60,
@@ -97,6 +102,13 @@ class AI::Provider::OpenAI < AI::Provider
   end
 
   private
+
+  def model_supports_temperature?
+    current_model = options[:model]
+
+    # Check if any model in the list starts with the current model name
+    options[:models_without_temperature].none? { |model_pattern| current_model.start_with?(model_pattern) }
+  end
 
   def specific_metadata
     {

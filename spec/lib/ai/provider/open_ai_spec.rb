@@ -30,6 +30,16 @@ RSpec.describe AI::Provider::OpenAI, required_envs: %w[OPEN_AI_TOKEN], use_vcr: 
       it 'does exchange data with open ai endpoint' do
         expect(ai_provider.ask(prompt_system:, prompt_user:)).to match({ 'connected' => 'true' })
       end
+
+      context 'with a model that does not support temperature' do
+        before do
+          Setting.set('ai_provider_config', Setting.get('ai_provider_config').merge(model: 'gpt-5'))
+        end
+
+        it 'does exchange data with open ai endpoint' do
+          expect(ai_provider.ask(prompt_system:, prompt_user:)).to match({ 'connected' => 'true' })
+        end
+      end
     end
 
     context 'with an invalid model' do
