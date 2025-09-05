@@ -2,6 +2,9 @@
 
 env
 
+# Ensure proper permissions on root-mounted volume.
+sudo chown -R "${USER}" node_modules
+
 bin/setup --skip-server
 
 bundle exec bootsnap precompile --gemfile app/ lib/

@@ -11,6 +11,14 @@
       "addBinPath": "/workspaces/${localWorkspaceFolderBasename}/bin"
     }
   },
+  "mounts": [
+    {
+      // Avoid conflicts with host-installed node_modules with a different platform/architecture.
+      "source": "node-modules",
+      "target": "/workspaces/${localWorkspaceFolderBasename}/node_modules",
+      "type": "volume"
+    }
+  ],
   "containerEnv": {
     "SELENIUM_REMOTE_URL": "http://selenium-chrome:4444/wd/hub",
     "SELENIUM_BROWSER": "chrome",

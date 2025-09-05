@@ -11,8 +11,15 @@
       "addBinPath": "/workspaces/${localWorkspaceFolderBasename}/bin"
     },
   },
-  "containerEnv": {
-  },
+  "mounts": [
+    {
+      // Avoid conflicts with host-installed node_modules with a different platform/architecture.
+      "source": "node-modules",
+      "target": "/workspaces/${localWorkspaceFolderBasename}/node_modules",
+      "type": "volume"
+    }
+  ],
+  "containerEnv": {},
   "forwardPorts": [3000, 3001, 3036, 6042],
   "postCreateCommand": "/workspaces/${localWorkspaceFolderBasename}/.devcontainer/post_create.sh"
 }
