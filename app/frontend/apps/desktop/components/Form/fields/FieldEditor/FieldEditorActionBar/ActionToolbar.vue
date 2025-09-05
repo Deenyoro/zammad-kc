@@ -97,12 +97,11 @@ const invisibleActions = computed(() =>
 
 const activeActionWithSubmenu = shallowRef<EditorButton['subMenu'] | null>(null)
 
-const activeActions = computed(() => {
-  const actions = activeActionWithSubmenu.value
+const activeActions = computed(() =>
+  activeActionWithSubmenu.value !== null
     ? activeActionWithSubmenu.value
-    : invisibleActions.value
-  return (actions as EditorButton[]).filter(({ name }) => disabledActionNames.value.has(name))
-})
+    : invisibleActions.value.filter(({ name }) => !disabledActionNames.value.has(name)),
+)
 
 const handleOverlowMenuItemClick = async (action: EditorButton, event: MouseEvent) => {
   stopEvent(event)
@@ -177,7 +176,7 @@ whenever(
       <FieldEditorActionMenu
         :editor="editor"
         content-type="text/html"
-        :actions="activeActions"
+        :actions="activeActions!"
         @click-action="handleOverlowMenuItemClick"
         @close-popover="activeActionWithSubmenu = null"
       >

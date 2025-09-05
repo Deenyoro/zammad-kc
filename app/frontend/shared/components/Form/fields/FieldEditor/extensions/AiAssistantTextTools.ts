@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import { Extension } from '@tiptap/core'
+import { Extension, Editor } from '@tiptap/core'
 import { effectScope, ref, type Ref, watch } from 'vue'
 
 import {
@@ -10,7 +10,7 @@ import {
 import { useAiAssistanceTextToolsListQuery } from '#shared/components/Form/fields/FieldEditor/graphql/queries/aiAssistanceTextTools/aiAssistanceTextToolsList.api.ts'
 import type { FieldEditorProps } from '#shared/components/Form/fields/FieldEditor/types.ts'
 import {
-  getHTMLFromSelection,
+  getHTMLContentBetweenSelection,
   updateSelectedContent,
 } from '#shared/components/Form/fields/FieldEditor/utils.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
@@ -23,6 +23,154 @@ import { useApplicationStore } from '#shared/stores/application.ts'
 import { GraphQLErrorTypes } from '#shared/types/error.ts'
 
 import type { FormKitNode } from '@formkit/core'
+
+const createAiTextToolsController = () => {
+  let mutationCancelled = false
+
+  const createAbortableMutation = () => {
+    const abortController = new AbortController()
+    const textToolsMutation = new MutationHandler(
+      useAiAssistanceTextToolsRunMutation({
+        context: { fetchOptions: { signal: abortController.signal } },
+      }),
+      {
+        errorCallback: (error) => {
+          return !(mutationCancelled && error.type === GraphQLErrorTypes.NetworkError)
+        },
+      },
+    )
+
+    return {
+      textToolsMutation,
+      isLoading: textToolsMutation.loading(),
+      abort: () => abortController.abort(),
+    }
+  }
+
+  return {
+    mutation: createAbortableMutation(),
+    get isCancelled() {
+      return mutationCancelled
+    },
+    cancel: () => {
+      mutationCancelled = true
+    },
+    reset: () => {
+      mutationCancelled = false
+    },
+    recreate() {
+      this.mutation = createAbortableMutation()
+    },
+  }
+}
+
+const createLoaderHandler = (editor: Editor) => ({
+  showActionBarAndHideLoader: () => {
+    editor.setEditable(true)
+    editor.storage.showAiTextLoader = false
+  },
+  hideActionBarAndShowLoader: () => {
+    editor.setEditable(false)
+    editor.storage.showAiTextLoader = true
+  },
+})
+
+const getFormRenderContext = async (context: Ref<FormFieldContext<FieldEditorProps>>) => {
+  const { formId, ticketId, meta: editorMeta } = context.value
+  const meta = editorMeta?.[PLUGIN_NAME] || {}
+
+  let { customerId, groupId, organizationId } = context.value
+
+  if (!customerId && meta.customerNodeName) {
+    customerId = getNodeByName(formId, meta.customerNodeName)?.value as string
+  }
+
+  if (!organizationId && meta.organizationNodeName) {
+    organizationId = getNodeByName(formId, meta.organizationNodeName)?.value as string
+  }
+
+  if (!groupId && meta.groupNodeName) {
+    groupId = getNodeByName(formId, meta.groupNodeName)?.value as string
+  }
+
+  return {
+    customerId: customerId ? ensureGraphqlId('User', customerId) : undefined,
+    groupId: groupId ? ensureGraphqlId('Group', groupId) : undefined,
+    organizationId: organizationId ? ensureGraphqlId('Organization', organizationId) : undefined,
+    ticketId: ticketId ? ensureGraphqlId('Ticket', ticketId) : undefined,
+  }
+}
+
+const sendTextToolsMutation = async (
+  textToolId: ID,
+  input: string,
+  controller: ReturnType<typeof createAiTextToolsController>,
+  context: Ref<FormFieldContext<FieldEditorProps>>,
+) => {
+  const contextData = await getFormRenderContext(context)
+
+  const response = await controller.mutation.textToolsMutation.send({
+    input,
+    textToolId,
+    templateRenderContext: contextData,
+  })
+
+  return response?.aiAssistanceTextToolsRun?.output
+}
+
+const setupEventHandlers = (
+  editor: Editor,
+  controller: ReturnType<typeof createAiTextToolsController>,
+) => {
+  const { notify } = useNotifications()
+
+  editor.on('cancel-ai-assistant-text-tools-updates', () => {
+    controller.cancel()
+    controller.mutation.abort()
+    controller.recreate()
+    controller.reset()
+  })
+
+  editor.on('update', () => {
+    if (controller.mutation.isLoading.value) {
+      notify({
+        id: 'ai-assistant-text-tools-aborted',
+        type: NotificationTypes.Info,
+        message: __('The text was modified. Your request has been aborted to prevent overwriting.'),
+      })
+      controller.mutation.abort()
+      controller.recreate()
+    }
+  })
+}
+
+const executeTextModification = async (
+  textToolId: ID,
+  editor: Editor,
+  context: Ref<FormFieldContext<FieldEditorProps>>,
+) => {
+  const loadingHandlers = createLoaderHandler(editor)
+  const controller = createAiTextToolsController()
+
+  const normalizedRange = editor.state.selection
+  const input = getHTMLContentBetweenSelection(editor, normalizedRange)
+
+  loadingHandlers.hideActionBarAndShowLoader()
+  setupEventHandlers(editor, controller)
+
+  try {
+    const output = await sendTextToolsMutation(textToolId, input, controller, context)
+    if (!output) return
+
+    editor.chain().focus().setTextSelection(normalizedRange).run()
+    updateSelectedContent(editor, output)
+  } catch {
+    editor?.chain().focus().setTextSelection(normalizedRange).run()
+  } finally {
+    loadingHandlers.showActionBarAndHideLoader()
+    editor.chain().focus().run()
+  }
+}
 
 export const PLUGIN_NAME = 'aiAssistantTextTools'
 
@@ -99,127 +247,10 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
     },
     addCommands() {
       return {
-        modifySelectedText:
+        modifyTextWithAi:
           (textToolId) =>
           ({ editor }) => {
-            const showActionBarAndHideAiTextLoader = () => {
-              editor.setEditable(true)
-              editor.storage.showAiTextLoader = false
-            }
-
-            const hideActionBarAndShowAiTextLoader = () => {
-              editor.setEditable(false)
-              editor.storage.showAiTextLoader = true
-            }
-
-            let mutationGotCancelled = false
-
-            const useAbortableMutation = () => {
-              const abortController = new AbortController()
-
-              const textToolsMutation = new MutationHandler(
-                useAiAssistanceTextToolsRunMutation({
-                  context: { fetchOptions: { signal: abortController.signal } },
-                }),
-                {
-                  errorCallback: (error) => {
-                    return !(mutationGotCancelled && error.type === GraphQLErrorTypes.NetworkError)
-                  },
-                },
-              )
-              return {
-                textToolsMutation,
-                isLoading: textToolsMutation.loading(),
-                abortController,
-                abort: () => abortController.abort(),
-              }
-            }
-
-            let aiAssistanceTextToolsController = useAbortableMutation()
-
-            const sendTextToolsMutation = async (textToolId: ID, input: string) => {
-              const { ticketId } = context.value
-              let { customerId, groupId, organizationId } = context.value
-
-              if (!customerId && meta.customerNodeName) {
-                const node = getNodeByName(formId, meta.customerNodeName)
-                customerId = node?.value as string
-              }
-
-              if (!organizationId && meta.organizationNodeName) {
-                const node = getNodeByName(formId, meta.organizationNodeName)
-                organizationId = node?.value as string
-              }
-
-              if (!groupId && meta.groupNodeName) {
-                const node = getNodeByName(formId, meta.groupNodeName)
-                groupId = node?.value as string
-              }
-
-              const response = await aiAssistanceTextToolsController.textToolsMutation.send({
-                input,
-                textToolId: textToolId,
-                templateRenderContext: {
-                  customerId: customerId ? ensureGraphqlId('User', customerId) : undefined,
-                  groupId: groupId ? ensureGraphqlId('Group', groupId) : undefined,
-                  organizationId: organizationId
-                    ? ensureGraphqlId('Organization', organizationId)
-                    : undefined,
-                  ticketId: ticketId ? ensureGraphqlId('Ticket', ticketId) : undefined,
-                },
-              })
-
-              return response?.aiAssistanceTextToolsRun?.output
-            }
-
-            const modifySelectedText = async (textToolId: ID) => {
-              const lastSelection = editor.state.selection
-
-              const input = getHTMLFromSelection(editor, lastSelection)
-
-              hideActionBarAndShowAiTextLoader()
-
-              const { notify } = useNotifications()
-
-              editor.on('cancel-ai-assistant-text-tools-updates', () => {
-                mutationGotCancelled = true
-                aiAssistanceTextToolsController.abort()
-                aiAssistanceTextToolsController = useAbortableMutation()
-
-                mutationGotCancelled = false
-              })
-
-              editor.on('update', () => {
-                if (aiAssistanceTextToolsController.isLoading.value) {
-                  notify({
-                    id: 'ai-assistant-text-tools-aborted',
-                    type: NotificationTypes.Info,
-                    message: __(
-                      'The text was modified. Your request has been aborted to prevent overwriting.',
-                    ),
-                  })
-                  aiAssistanceTextToolsController.abort()
-                  aiAssistanceTextToolsController = useAbortableMutation()
-                }
-              })
-
-              return sendTextToolsMutation(textToolId, input)
-                .then((output) => {
-                  if (!output) return
-
-                  // Make sure the right selection is always set
-                  editor.chain().focus().setTextSelection(lastSelection).run()
-
-                  updateSelectedContent(editor, output)
-                })
-                .catch(() => {
-                  editor?.chain().focus().setTextSelection(lastSelection).run()
-                })
-                .finally(showActionBarAndHideAiTextLoader)
-            }
-            modifySelectedText(textToolId).then(() => {
-              editor.chain().focus().run()
-            })
+            executeTextModification(textToolId, editor, context)
             return true
           },
       }

@@ -67,7 +67,7 @@ const actions = computed(
       disabled: !hasSelection.value,
       command: () => {
         emit('action')
-        props.editor!.commands.modifySelectedText(tool.id)
+        props.editor!.commands.modifyTextWithAi(tool.id)
       },
     })) ?? [],
 )

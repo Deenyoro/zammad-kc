@@ -133,6 +133,9 @@ importers:
       '@tiptap/extension-text-style':
         specifier: 3.0.9
         version: 3.0.9(@tiptap/core@3.3.0(@tiptap/pm@3.0.9))
+      '@tiptap/extension-unique-id':
+        specifier: 3.0.9
+        version: 3.0.9(@tiptap/core@3.3.0(@tiptap/pm@3.0.9))(@tiptap/pm@3.0.9)
       '@tiptap/pm':
         specifier: 3.0.9
         version: 3.0.9
@@ -205,9 +208,6 @@ importers:
       pinia:
         specifier: ^3.0.3
         version: 3.0.3(typescript@5.9.2)(vue@3.5.20(typescript@5.9.2))
-      prosemirror-model:
-        specifier: ^1.25.1
-        version: 1.25.1
       qrcode:
         specifier: ^1.5.4
         version: 1.5.4
@@ -2549,6 +2549,12 @@ packages:
     resolution: {integrity: sha512-ipiXsXBxmIQGqcMOaXsnP7iQ6/VO/UIxP3X3rS4ToHgVVF5RIFSs732fv5p3R88TdlVz4hqM9S39W+JesFB2Fw==}
     peerDependencies:
       '@tiptap/core': ^3.3.0
+
+  '@tiptap/extension-unique-id@3.0.9':
+    resolution: {integrity: sha512-eb4JLRUPI0Hd0kvLwJ2p2bMrg3JrXXfYthxM3p+toBgUiqju2Tunb6HyQsNvgyy8JhgQEYKpZOEvqyTOUTxJ5g==}
+    peerDependencies:
+      '@tiptap/core': ^3.0.9
+      '@tiptap/pm': ^3.0.9
 
   '@tiptap/extensions@3.3.0':
     resolution: {integrity: sha512-Oey5aBg02FQHjldfjn6ebnzpH3x1Q9mPSgSuXNCjDQ51hak7LCGsVFhH+X9PrZtUALlEpEQWNcREgPBwqGM5ow==}
@@ -6854,6 +6860,10 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
+  uuid@10.0.0:
+    resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
+    hasBin: true
+
   uuid@11.1.0:
     resolution: {integrity: sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==}
     hasBin: true
@@ -9723,6 +9733,12 @@ snapshots:
   '@tiptap/extension-underline@3.3.0(@tiptap/core@3.3.0(@tiptap/pm@3.0.9))':
     dependencies:
       '@tiptap/core': 3.3.0(@tiptap/pm@3.0.9)
+
+  '@tiptap/extension-unique-id@3.0.9(@tiptap/core@3.3.0(@tiptap/pm@3.0.9))(@tiptap/pm@3.0.9)':
+    dependencies:
+      '@tiptap/core': 3.3.0(@tiptap/pm@3.0.9)
+      '@tiptap/pm': 3.0.9
+      uuid: 10.0.0
 
   '@tiptap/extensions@3.3.0(@tiptap/core@3.3.0(@tiptap/pm@3.0.9))(@tiptap/pm@3.0.9)':
     dependencies:
@@ -14595,6 +14611,8 @@ snapshots:
   use@3.1.1: {}
 
   util-deprecate@1.0.2: {}
+
+  uuid@10.0.0: {}
 
   uuid@11.1.0: {}
 

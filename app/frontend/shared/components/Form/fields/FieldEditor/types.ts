@@ -40,7 +40,7 @@ declare module '@tiptap/core' {
       setImages(images: ImageFileData[]): ReturnType
     }
     aiAssistantTextTools: {
-      modifySelectedText: (textToolId: ID) => ReturnType
+      modifyTextWithAi: (textToolId: ID) => ReturnType
     }
     link: {
       toggleLink: (args: { href: string }) => ReturnType // command is set in the library extension
