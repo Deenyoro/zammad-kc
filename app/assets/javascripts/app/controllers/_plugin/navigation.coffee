@@ -60,19 +60,6 @@ class Navigation extends App.Controller
       )
     )
 
-    # bell on / bell off
-    @controllerBind('bell', (data) =>
-      if data is 'on'
-        @$('.bell').addClass('show')
-        App.Audio.play( 'https://www.sounddogs.com/previews/2193/mp3/219024_SOUNDDOGS__be.mp3' )
-        @delay(
-          -> App.Event.trigger('bell', 'off')
-          3000
-        )
-      else
-        @$('.bell').removeClass('show')
-    )
-
   release: =>
     if @notificationWidget
       @notificationWidget.remove()
