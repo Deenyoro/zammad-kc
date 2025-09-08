@@ -26,4 +26,4 @@ rspec:migration:
     # Force redis usage, even if it was disabled by the initial configure_environment script of stable.
     - export REDIS_URL=redis://redis
     - bundle exec rails db:migrate
-    - RAILS_CHECK_PENDING_MIGRATIONS=1 bundle exec rspec --profile 10 spec/db -t ~searchindex
+    - RAILS_CHECK_PENDING_MIGRATIONS=1 bundle exec rspec spec/db -t ~searchindex
