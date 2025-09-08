@@ -87,6 +87,21 @@ RSpec.shared_examples 'CanPerformChanges', :aggregate_failures do |object_name:,
         object.perform_changes(performable, 'trigger', object, User.first)
         expect(object.reload.custom_attribute_multiselect).to eq(%w[key_1 key_2])
       end
+
+      context 'when single string is given for multi-select field' do
+        let(:perform) do
+          {
+            "#{object_name_downcase}.custom_attribute_multiselect" => {
+              'value' => 'key_1',
+            }
+          }
+        end
+
+        it 'does set multi-select field values in trigger' do
+          object.perform_changes(performable, 'trigger', object, User.first)
+          expect(object.reload.custom_attribute_multiselect).to eq(%w[key_1])
+        end
+      end
     end
 
     # All fields (aside from richtext) are escaped in frontend. No need to escape in database.
