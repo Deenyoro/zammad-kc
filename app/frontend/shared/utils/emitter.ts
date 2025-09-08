@@ -2,7 +2,7 @@
 
 import mitt, { type Emitter } from 'mitt'
 
-type Events = {
+export type Events = {
   sessionInvalid: void
   'expand-collapsed-content': string
   'focus-quick-search-field': void

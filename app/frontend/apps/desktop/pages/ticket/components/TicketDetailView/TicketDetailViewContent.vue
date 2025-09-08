@@ -34,6 +34,7 @@ import type { FormSubmitData, FormValues } from '#shared/components/Form/types.t
 import { useForm } from '#shared/components/Form/useForm.ts'
 import { setErrors } from '#shared/components/Form/utils.ts'
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
+import { useOnEmitter } from '#shared/composables/useOnEmitter.ts'
 import {
   useTicketMacros,
   macroScreenBehaviourMapping,
@@ -56,7 +57,6 @@ import { EnumFormUpdaterId, EnumTaskbarApp, EnumUserErrorException } from '#shar
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import { GraphQLErrorTypes, type GraphQLHandlerError } from '#shared/types/error.ts'
-import emitter from '#shared/utils/emitter.ts'
 import { waitForAnimationFrame } from '#shared/utils/helpers.ts'
 
 import { useFlyout } from '#desktop/components/CommonFlyout/useFlyout.ts'
@@ -553,7 +553,7 @@ whenever(height, () => {
   recalculateIsReachingBottom()
 })
 
-emitter.on('recompute-has-reached-article-bottom', recalculateIsReachingBottom)
+useOnEmitter('recompute-has-reached-article-bottom', recalculateIsReachingBottom)
 
 const articleListTopPadding = ref('4rem')
 

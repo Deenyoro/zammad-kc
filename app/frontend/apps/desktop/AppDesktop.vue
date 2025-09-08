@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { onBeforeMount, onBeforeUnmount, watch } from 'vue'
+import { onBeforeMount, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import CommonImageViewer from '#shared/components/CommonImageViewer/CommonImageViewer.vue'
@@ -11,13 +11,13 @@ import useAuthenticationChanges from '#shared/composables/authentication/useAuth
 import useFormKitConfig from '#shared/composables/form/useFormKitConfig.ts'
 import useAppMaintenanceCheck from '#shared/composables/useAppMaintenanceCheck.ts'
 import useMetaTitle from '#shared/composables/useMetaTitle.ts'
+import { useOnEmitter } from '#shared/composables/useOnEmitter.ts'
 import usePushMessages from '#shared/composables/usePushMessages.ts'
 import { initializeDefaultObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import { useAuthenticationStore } from '#shared/stores/authentication.ts'
 import { useLocaleStore } from '#shared/stores/locale.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
-import emitter from '#shared/utils/emitter.ts'
 
 import { initializeConfirmationDialog } from '#desktop/components/CommonConfirmationDialog/initializeConfirmationDialog.ts'
 import { useBetaDisclaimer } from '#desktop/composables/useBetaDisclaimer.ts'
@@ -54,7 +54,7 @@ useLocaleStore().$subscribe(() => {
 
 // The handling for invalid sessions. The event will be emitted, when from the server a "NotAuthorized"
 // response is received.
-emitter.on('sessionInvalid', async () => {
+useOnEmitter('sessionInvalid', async () => {
   if (authentication.authenticated) {
     await authentication.clearAuthentication()
 
@@ -82,10 +82,6 @@ watch(
   },
   { immediate: true },
 )
-
-onBeforeUnmount(() => {
-  emitter.off('sessionInvalid')
-})
 </script>
 
 <template>

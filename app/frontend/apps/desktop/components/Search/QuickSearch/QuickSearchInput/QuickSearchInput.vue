@@ -4,7 +4,7 @@
 import { useTemplateRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
-import emitter from '#shared/utils/emitter.ts'
+import { useOnEmitter } from '#shared/composables/useOnEmitter.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonInputSearch from '#desktop/components/CommonInputSearch/CommonInputSearch.vue'
@@ -50,8 +50,8 @@ watch(isSearchActive, (isActive) =>
   isActive ? subscribeEvent(keyHandlerConfig) : unsubscribeEvent(keyHandlerConfig),
 )
 
-emitter.on('focus-quick-search-field', () => inputSearchInstance.value?.focus())
-emitter.on('reset-quick-search-field', () => resetInput())
+useOnEmitter('focus-quick-search-field', () => inputSearchInstance.value?.focus())
+useOnEmitter('reset-quick-search-field', () => resetInput())
 </script>
 
 <template>
