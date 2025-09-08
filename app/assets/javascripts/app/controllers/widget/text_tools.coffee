@@ -70,13 +70,13 @@ class App.WidgetTextTools extends App.Controller
     App.Config.get('ai_assistance_text_tools') and not _.isEmpty(App.Config.get('ai_provider'))
 
   @availableTextTools: (ce) ->
-    $(ce.element).data().plugin_texttools.collection
+    $(ce.element).data().plugin_texttools?.collection or []
 
   @hasAvailableTextTools: (ce) ->
     @availableTextTools(ce).length
 
   @contextData: (ce) ->
-    $(ce.element).data().plugin_texttools.searchCondition
+    $(ce.element).data().plugin_texttools?.searchCondition or {}
 
   @showModal: (e, ce, selection, el) ->
     textToolId = $(e.target).data('id')
