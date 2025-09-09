@@ -844,7 +844,7 @@ RSpec.describe 'Ticket zoom', type: :system do
 
     it 'to next Ticket ID' do
       visit 'ticket/view/all_unassigned'
-      click_on 'Welcome to Zammad!'
+      click_on 'Help me! I am an example ticket 🎓'
       click '.js-openDropdownMacro'
       find(:macro, macro.id).click
       wait(5, interval: 1).until_constant { current_url }
