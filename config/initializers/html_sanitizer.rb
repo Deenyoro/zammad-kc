@@ -131,6 +131,7 @@ Rails.application.config.html_sanitizer_css_values_blocklist = {
     'color:#fff',
     'color:#ffffff',
     'color:rgb(0,0,0)',
+    'color:rgb(255,255,255)',
   ],
   'span'  => [
     'color:white',
@@ -140,6 +141,7 @@ Rails.application.config.html_sanitizer_css_values_blocklist = {
     'color:#fff',
     'color:#ffffff',
     'color:rgb(0,0,0)',
+    'color:rgb(255,255,255)',
   ],
   'p'     => [
     'white-space:nowrap',
