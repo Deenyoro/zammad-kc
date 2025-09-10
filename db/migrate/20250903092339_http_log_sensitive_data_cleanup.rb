@@ -13,7 +13,7 @@ class HttpLogSensitiveDataCleanup < ActiveRecord::Migration[7.2]
   def http_log_cleanup
     HttpLog.find_each(batch_size: 250) do |log|
       log.send(:filter_sensitive_data)
-      log.save!
+      log.save!(validate: false)
     end
   end
 end
