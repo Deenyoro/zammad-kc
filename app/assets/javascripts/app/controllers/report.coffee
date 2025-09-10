@@ -101,10 +101,11 @@ class Reporting extends App.ControllerAppContent
     )
 
     new Sidebar(
-      el:     @el.find('.js-aside')
-      config: @config
-      params: @params
-      ui:     @
+      el:       @el.find('.js-aside')
+      config:   @config
+      params:   @params
+      profiles: @profiles
+      ui:       @
     )
 
     new Graph(
@@ -595,11 +596,10 @@ class Sidebar extends App.Controller
 
   render: =>
     metrics = @config.metric
-    profiles = App.ReportProfile.search(filter: { active: true })
     @html App.view('report/sidebar')(
       metrics:  metrics
       params:   @params
-      profiles: profiles
+      profiles: @profiles
     )
 
   selectMetric: (e) =>

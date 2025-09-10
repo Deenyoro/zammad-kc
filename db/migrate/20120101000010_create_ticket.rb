@@ -515,6 +515,11 @@ class CreateTicket < ActiveRecord::Migration[4.2]
     add_foreign_key :report_profiles, :users, column: :created_by_id
     add_foreign_key :report_profiles, :users, column: :updated_by_id
 
+    create_table :report_profiles_roles, id: false do |t|
+      t.references :profile, null: false, foreign_key: { to_table: :report_profiles }, index: true
+      t.references :role, null: false, foreign_key: true, index: true
+    end
+
     create_table :webhooks do |t|
       t.column :name,                       :string, limit: 250,              null: false
       t.column :endpoint,                   :string, limit: 2000,             null: false
@@ -594,6 +599,7 @@ class CreateTicket < ActiveRecord::Migration[4.2]
   end
 
   def self.down
+    drop_table :report_profiles_roles
     drop_table :checklist_template_items
     drop_table :checklist_templates
     drop_table :checklist_items
