@@ -369,6 +369,10 @@ const highlightedOptions = computed(() =>
 
 const { collapseDuration, collapseEnter, collapseAfterEnter, collapseLeave } =
   useTransitionCollapse()
+
+const hasTopElement = computed(
+  () => !!(props.currentPath.length || (props.multiple && hasMoreSelectableOptions)),
+)
 </script>
 
 <template>
@@ -402,10 +406,7 @@ const { collapseDuration, collapseEnter, collapseAfterEnter, collapseLeave } =
               'rounded-b-lg border-b': !hasDirectionUp,
             }"
           >
-            <div
-              v-if="currentPath.length || (multiple && hasMoreSelectableOptions)"
-              class="flex w-full justify-between gap-2 px-2.5 py-1.5"
-            >
+            <div v-if="hasTopElement" class="flex w-full justify-between gap-2 px-2.5 py-1.5">
               <CommonLabel
                 v-if="currentPath.length"
                 class="text-blue-800 hover:text-black focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-blue-800 dark:hover:text-white"
@@ -442,7 +443,7 @@ const { collapseDuration, collapseEnter, collapseAfterEnter, collapseLeave } =
               class="w-full overflow-y-auto"
             >
               <FieldTreeSelectInputDropdownItem
-                v-for="option in filter ? highlightedOptions : currentOptions"
+                v-for="(option, index) in filter ? highlightedOptions : currentOptions"
                 :key="String(option.value)"
                 :class="{
                   'first:rounded-t-[7px]':
@@ -451,6 +452,8 @@ const { collapseDuration, collapseEnter, collapseAfterEnter, collapseLeave } =
                     (!multiple || !hasMoreSelectableOptions),
                   'last:rounded-b-[7px]': !hasDirectionUp,
                 }"
+                :index="index"
+                :has-top-button="hasTopElement"
                 :aria-setsize="flatOptions.length"
                 :aria-posinset="getCurrentIndex(option) + 1"
                 :selected="isCurrentValue(option.value)"

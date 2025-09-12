@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, useTemplateRef } from 'vue'
 
 import type {
   FlatSelectOption,
@@ -10,6 +10,8 @@ import type {
 import { i18n } from '#shared/i18n.ts'
 import { useLocaleStore } from '#shared/stores/locale.ts'
 
+import CommonDivider from '#desktop/components/CommonDivider/CommonDivider.vue'
+
 const props = defineProps<{
   option: FlatSelectOption | MatchedFlatSelectOption
   selected?: boolean
@@ -17,6 +19,8 @@ const props = defineProps<{
   noLabelTranslate?: boolean
   filter?: string
   noSelectionIndicator?: boolean
+  index?: number
+  hasTopButton?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -27,9 +31,7 @@ const emit = defineEmits<{
 const locale = useLocaleStore()
 
 const select = (option: FlatSelectOption) => {
-  if (props.option.disabled) {
-    return
-  }
+  if (props.option.disabled) return
 
   emit('select', option)
 }
@@ -45,99 +47,124 @@ const label = computed(() => {
 const goToNextPage = (option: FlatSelectOption, noFocus?: boolean) => {
   emit('next', { option, noFocus })
 }
+
+const optionElement = useTemplateRef('option-button')
+
+const handleClickOnNext = (option: FlatSelectOption | MatchedFlatSelectOption) => {
+  if (option.disabled) return optionElement.value?.click()
+  goToNextPage(option)
+}
+
+const handleNextPageOrSelect = () =>
+  props.option.disabled ? goToNextPage(props.option, true) : select(props.option)
 </script>
 
 <template>
   <div
-    :class="{
-      'cursor-pointer hover:bg-blue-600 focus:bg-blue-800 focus:text-white dark:hover:bg-blue-900 dark:hover:focus:bg-blue-800':
-        !option.disabled,
-    }"
-    tabindex="0"
-    :aria-selected="selected"
-    :aria-disabled="option.disabled ? 'true' : undefined"
-    class="group flex h-9 cursor-default items-center gap-1.5 self-stretch px-2.5 text-sm text-black outline-hidden dark:text-white"
     role="option"
-    :data-value="option.value"
-    @click="select(option)"
-    @keypress.space.prevent="select(option)"
-    @keypress.enter.prevent="select(option)"
+    :aria-selected="selected"
+    class="flex group h-9 cursor-pointer items-center self-stretch text-sm text-black outline-hidden dark:text-white"
+    :class="{
+      'group hover:bg-green-200 dark:hover:bg-gray-600 dark:active:bg-gray-700 active:bg-green-300 rtl:pr-2.5 ltr:pl-2.5 has-focus-visible:shadow-[inset_0_0_0_1px_var(--color-blue-800)] ':
+        option.disabled,
+      'px-0!': !option.hasChildren,
+    }"
   >
-    <CommonIcon
-      v-if="multiple && !noSelectionIndicator"
+    <div
+      ref="option-button"
+      role="button"
+      tabindex="0"
+      class="size-full flex items-center gap-1.5"
       :class="{
-        'fill-gray-100 group-hover:fill-black group-focus:fill-white dark:fill-neutral-400 dark:group-hover:fill-white':
+        'group/button hover:bg-blue-600 active:bg-blue-800 dark:active:bg-blue-800  dark:hover:bg-blue-900 rtl:pr-2.5 ltr:pl-2.5 focus-visible-app-default -outline-offset-1!':
           !option.disabled,
-        'fill-stone-200 dark:fill-neutral-500': option.disabled,
+        'hover:text-black  dark:hover:text-white outline-none': option.disabled,
+        'rounded-tl-lg!': !hasTopButton && index === 0,
       }"
-      size="xs"
-      decorative
-      :name="selected ? 'check-square' : 'square'"
-      class="m-0.5 shrink-0"
-    />
-    <CommonIcon
-      v-else-if="!noSelectionIndicator"
-      class="shrink-0 fill-gray-100 group-hover:fill-black group-focus:fill-white dark:fill-neutral-400 dark:group-hover:fill-white"
-      :class="{
-        invisible: !selected,
-        'fill-stone-200 dark:fill-neutral-500': option.disabled,
-      }"
-      decorative
-      size="tiny"
-      name="check2"
-    />
-    <CommonIcon
-      v-if="option.icon"
-      :name="option.icon"
-      size="tiny"
-      :class="{
-        'fill-stone-200 dark:fill-neutral-500': option.disabled,
-      }"
-      decorative
-      class="shrink-0 fill-gray-100 group-hover:fill-black group-focus:fill-white dark:fill-neutral-400 dark:group-hover:fill-white"
-    />
-    <!--      eslint-disable vue/no-v-html -->
-    <span
-      v-if="filter"
-      v-tooltip="label"
-      :class="{
-        'pointer-events-none text-stone-200 dark:text-neutral-500': option.disabled,
-      }"
-      class="grow truncate"
-      v-html="(option as MatchedFlatSelectOption).matchedPath"
-    />
-    <span
-      v-else
-      v-tooltip="label"
-      :class="{
-        'pointer-events-none text-stone-200 dark:text-neutral-500':
-          option.disabled && !option.hasChildren,
-        'pointer-events-none text-gray-100 dark:text-neutral-400':
-          option.disabled && option.hasChildren,
-      }"
-      class="grow truncate"
+      :aria-description="option.disabled ? $t('This item expands to show more options') : undefined"
+      :data-value="option.value"
+      @click="handleNextPageOrSelect"
+      @keydown.space.prevent="handleNextPageOrSelect"
+      @keydown.enter.prevent="handleNextPageOrSelect"
     >
-      {{ label }}
-    </span>
+      <CommonIcon
+        v-if="multiple && !noSelectionIndicator"
+        size="xs"
+        decorative
+        :name="selected ? 'check-square' : 'square'"
+        class="m-0.5 shrink-0 fill-gray-100 group-hover/button:fill-black group-active/button:fill-white dark:fill-neutral-400 dark:group-hover/button:fill-white"
+        :class="{
+          'opacity-30 group-hover/button:text-gray-100! group-hover/button:dark:text-neutral-400!':
+            option.disabled,
+        }"
+      />
+      <!--  We need to check if disabled is here the way to go or remove the checkbox entirely    -->
+
+      <CommonIcon
+        v-else-if="!noSelectionIndicator"
+        class="shrink-0 fill-gray-100 group-hover:fill-black dark:fill-neutral-400 group-active/button:fill-white dark:group-hover:fill-white"
+        :class="{
+          invisible: !selected,
+        }"
+        decorative
+        size="tiny"
+        name="check2"
+      />
+      <CommonIcon
+        v-if="option.icon"
+        :name="option.icon"
+        size="tiny"
+        decorative
+        class="shrink-0 fill-gray-100 group-hover/button:fill-black dark:fill-neutral-400 dark:group-hover:fill-white"
+      />
+      <!--      eslint-disable vue/no-v-html -->
+      <span
+        v-if="filter"
+        v-tooltip="label"
+        :class="{
+          'pointer-events-none text-stone-200 dark:text-neutral-500': option.disabled,
+        }"
+        class="grow truncate dark:group-hover/button:text-white group-hover/button:text-black group-active/button:text-white"
+        v-html="(option as MatchedFlatSelectOption).matchedPath"
+      />
+      <span
+        v-else
+        v-tooltip="label"
+        class="grow truncate dark:group-hover/button:text-white group-hover/button:text-black group-active/button:text-white"
+      >
+        {{ label }}
+      </span>
+
+      <CommonDivider
+        v-if="!option.disabled && option.hasChildren"
+        orientation="vertical"
+        class="h-[70%]! group-hover:invisible"
+        variant="stone"
+      />
+    </div>
+    <!--  eslint-disable vuejs-accessibility/no-static-element-interactions  -->
     <div
       v-if="option.hasChildren && !filter"
-      class="group/nav -me-2 shrink-0 flex-nowrap items-center justify-center gap-x-2.5 rounded-[5px] p-2.5 hover:bg-blue-800 group-focus:hover:bg-blue-600 dark:group-focus:hover:bg-blue-900"
+      class="shrink-0 flex items-center justify-center gap-x-2.5 p-2.5 h-full"
+      :class="{
+        'hover:bg-green-200 focus-visible-app-default -outline-offset-1! dark:hover:bg-gray-600 active:bg-green-300 dark:active:bg-gray-700':
+          !option.disabled,
+        'rounded-tr-lg': !hasTopButton && index === 0,
+      }"
       :aria-label="$t('Has submenu')"
-      role="button"
-      tabindex="-1"
-      @click.stop="goToNextPage(option, true)"
-      @keypress.enter.prevent.stop="goToNextPage(option)"
-      @keypress.space.prevent.stop="goToNextPage(option)"
+      :role="option.disabled ? 'presentation' : 'button'"
+      :tabindex="option.disabled ? -1 : 0"
+      @click="handleClickOnNext(option)"
+      @keydown.enter.prevent="handleClickOnNext(option)"
+      @keydown.space.prevent="handleClickOnNext(option)"
     >
       <CommonIcon
         :class="{
-          'group-hover:fill-black group-focus:fill-white group-focus:group-hover/nav:!fill-black dark:group-hover:fill-white dark:group-focus:group-hover/nav:!fill-white':
-            !option.disabled,
+          'dark:group-hover:fill-white group-hover:fill-black': option.disabled,
         }"
-        class="shrink-0 fill-stone-200 group-hover/nav:!fill-white dark:fill-neutral-500"
+        class="shrink-0 fill-stone-200"
         :name="locale.localeData?.dir === 'rtl' ? 'chevron-left' : 'chevron-right'"
         size="xs"
-        tabindex="-1"
         decorative
       />
     </div>

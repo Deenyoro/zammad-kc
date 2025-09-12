@@ -670,22 +670,22 @@ QUnit.test("[Core Workflow] Remove option does not work with tree select node th
   element = App.UiElement.tree_select.render(attribute)
 
   // children are removed
-  assert.equal(false, element.find("[data-value='aa::aaa']").length > 0)
+  assert.equal(false, element.find(".js-optionsList [data-value='aa::aaa']").length > 0)
 
   // one child removed, one child allowed
-  assert.equal(true, element.find("[data-value='bb::aaa'] span.searchableSelect-option-text:not(.is-inactive)").length > 0)
-  assert.equal(false, element.find("[data-value='bb::aab']").length > 0)
-  assert.equal(true, element.find("[data-value='bb'] span.searchableSelect-option-text.is-inactive").length > 0)
+  assert.equal(true, element.find(".js-optionsList [data-value='bb::aaa'] span.searchableSelect-option-text").length == 1)
+  assert.equal(false, element.find(".js-optionsList [data-value='bb::aab']").length > 0)
+  assert.equal(true, element.find(".js-optionsList [data-value='bb'] span.searchableSelect-option-button").length > 0)
 
   // parent and childs removed
-  assert.equal(false, element.find("[data-value='cc']").length > 0)
-  assert.equal(false, element.find("[data-value='cc::aaa']").length > 0)
-  assert.equal(false, element.find("[data-value='cc::aab']").length > 0)
+  assert.equal(false, element.find(".js-optionsList [data-value='cc']").length > 0)
+  assert.equal(false, element.find(".js-optionsList [data-value='cc::aaa']").length > 0)
+  assert.equal(false, element.find(".js-optionsList [data-value='cc::aab']").length > 0)
 
   // level 3 child allowed
-  assert.equal(true, element.find("[data-value='dd'] span.searchableSelect-option-text.is-inactive").length > 0)
-  assert.equal(true, element.find("[data-value='dd::aaa'] span.searchableSelect-option-text.is-inactive").length > 0)
-  assert.equal(true, element.find("[data-value='dd::aaa::bbb'] span.searchableSelect-option-text:not(.is-inactive)").length > 0)
+  assert.equal(true, element.find(".js-optionsList [data-value='dd'] span.searchableSelect-option-button").length > 0)
+  assert.equal(true, element.find(".js-optionsList [data-value='dd::aaa'] span.searchableSelect-option-button").length > 0)
+  assert.equal(true, element.find(".js-optionsList [data-value='dd::aaa::bbb'] span.searchableSelect-option-text").length == 1)
 
   attribute.value = 'aa'
   element = App.UiElement.tree_select.render(attribute)

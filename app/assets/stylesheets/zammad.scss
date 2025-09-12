@@ -12072,6 +12072,28 @@ output {
     }
   }
 
+  &-option-button {
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 11px 15px;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--supergood-color);
+    }
+
+    &:hover .recipientList-arrow {
+      opacity: 1;
+    }
+  }
+
   &.dropdown li {
     &.has-inactive {
       cursor: unset;
@@ -12111,6 +12133,16 @@ output {
       }
     }
 
+    &.inactive-with-children:hover,
+    &.inactive-with-children.is-active {
+      background: var(--supergood-color);
+
+      .icon-arrow-left,
+      .icon-arrow-right {
+        opacity: 1;
+      }
+    }
+
     &.is-hidden {
       display: none;
     }
@@ -12125,6 +12157,13 @@ output {
       span.searchableSelect-option-arrow {
         padding: 11px 15px;
         cursor: pointer;
+
+        @include bidi-style(border-left, 1px solid rgba(255, 255, 255, 0.13), border-right, none);
+
+        svg {
+          vertical-align: middle;
+          transform: translateY(-1px); // 1px off towards center line height?
+        }
 
         &:hover {
           background: var(--supergood-color);

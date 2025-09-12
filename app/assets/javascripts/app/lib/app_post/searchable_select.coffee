@@ -10,6 +10,7 @@ class App.SearchableSelect extends Spine.Controller
     'click .js-option':                               'selectItem'
     'click .js-enter .searchableSelect-option-text':  'selectItem'
     'click .searchableSelect-option-arrow':           'navigateIn'
+    'click .searchableSelect-option-button':          'navigateIn'
     'click .js-back':                                 'navigateOut'
     'mouseenter .js-option':                          'highlightItem'
     'mouseenter .js-enter':                           'highlightItem'
@@ -64,7 +65,7 @@ class App.SearchableSelect extends Spine.Controller
           if App[relation] && App[relation].exists dataId
             name = App[relation].find(dataId).displayName()
             value = dataId
-            values.push({name: name, value: value})
+            values.push({ name: name, value: value })
             tokens += App.view('generic/token')(
               name: name
               value: value
@@ -74,7 +75,7 @@ class App.SearchableSelect extends Spine.Controller
 
       else
         for value in @attribute.value
-          values.push({name: value, value: value})
+          values.push({ name: value, value: value })
           tokens += App.view('generic/token')(
             name: value
             value: value
@@ -192,11 +193,20 @@ class App.SearchableSelect extends Spine.Controller
         classes += ' js-option'
       if option.category
         classes += ' with-category'
+      if option.inactive and option.children
+        classes += ' inactive-with-children'
 
-      html += App.view('generic/searchable_select_option')
+      template =
+        if option.inactive and option.children
+          'generic/searchable_select_option_inactive_with_children'
+        else
+          'generic/searchable_select_option'
+
+      html += App.view(template)
         class:      classes
         isSelected: @isOptionSelected(option)
         option:     option
+
     html
 
   renderAllOptions: (parentName, options, level) =>
@@ -206,19 +216,26 @@ class App.SearchableSelect extends Spine.Controller
         className = if option.children then 'js-enter' else 'js-option'
         if level && level > 0
           className += ' is-hidden is-child'
+        if option.inactive and option.children
+          className += ' inactive-with-children'
 
-        html += App.view('generic/searchable_select_option')(
+        template =
+          if option.inactive and option.children
+            'generic/searchable_select_option_inactive_with_children'
+          else
+            'generic/searchable_select_option'
+
+        html += App.view(template)
           class:      className
           detail:     parentName
           isSelected: @isOptionSelected(option)
           option:     option
-        )
 
         if option.children
           # We leave it to the browser to "invert" the chevron on RTL languages.
           #   This happens automatically for inlined RTL text since chevron is considered punctuation.
           delimiter = if level is 0 then '—' else '›'
-          html += @renderAllOptions("#{parentName} #{delimiter} #{option.name}", option.children, level+1)
+          html += @renderAllOptions("#{parentName} #{delimiter} #{option.name}", option.children, level + 1)
     html
 
   onDropdownShow: (event)  =>
@@ -474,7 +491,7 @@ class App.SearchableSelect extends Spine.Controller
 
     target_menu.velocity
       properties:
-        translateX: [0, direction*100+'%']
+        translateX: [0, direction * 100 + '%']
       options:
         duration: 240
         complete: ->
@@ -485,7 +502,7 @@ class App.SearchableSelect extends Spine.Controller
 
     @currentMenu.velocity
       properties:
-        translateX: [direction*-100+'%', 0]
+        translateX: [direction * -100 + '%', 0]
       options:
         duration: 240
         complete: =>
@@ -622,7 +639,7 @@ class App.SearchableSelect extends Spine.Controller
       if option.children
         @updateAttributeOptionSelected(option.children, value)
 
-  createToken: ({name, value}) =>
+  createToken: ({ name, value }) =>
     content = {}
     if @attribute.relation
       content =
@@ -700,9 +717,9 @@ class App.SearchableSelect extends Spine.Controller
 
     if @attribute.multiple
       return if @shadowInput.val().includes("#{dataId}") if @shadowInput.val() # cast dataId to string before check
-      @currentData = {name: currentText, value: dataId}
+      @currentData = { name: currentText, value: dataId }
     else
-      @currentData = {name: currentText, value: dataId}
+      @currentData = { name: currentText, value: dataId }
       return if @shadowInput.val().includes("#{dataId}") if @shadowInput.val() # cast dataId to string before check
 
     @shadowInput.append($('<option/>').attr('selected', true).attr('value', @currentData.value).text(@currentData.name))
