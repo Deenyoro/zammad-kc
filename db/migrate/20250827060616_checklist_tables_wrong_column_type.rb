@@ -5,25 +5,30 @@ class ChecklistTablesWrongColumnType < ActiveRecord::Migration[7.2]
     # return if it's a new setup
     return if !Setting.exists?(name: 'system_init_done')
 
-    migrate_checklist_sorted_item_ids_column
-    migrate_checklist_template_sorted_item_ids_column
+    migrate_column(Checklist)
+    migrate_column(ChecklistTemplate)
+
+    Checklist.reset_column_information
+    ChecklistTemplate.reset_column_information
   end
 
   private
 
-  def migrate_checklist_sorted_item_ids_column
-    return if ActiveRecord::Base.connection.columns(:checklists).find { |c| c.name == 'sorted_item_ids' }.type == :string
+  def migrate_column(model)
+    table = model.table_name
 
-    change_column :checklists, :sorted_item_ids, :string, null: true, array: true
+    return if ActiveRecord::Base.connection.columns(table).find { |c| c.name == 'sorted_item_ids' }.type == :string
 
-    Checklist.reset_column_information
-  end
+    add_column table, :sorted_item_ids_tmp, :string, null: false, array: true, default: []
 
-  def migrate_checklist_template_sorted_item_ids_column
-    return if ActiveRecord::Base.connection.columns(:checklist_templates).find { |c| c.name == 'sorted_item_ids' }.type == :string
+    execute <<~SQL.squish
+      UPDATE #{table}
+      SET sorted_item_ids_tmp = ARRAY(
+        SELECT jsonb_array_elements_text(sorted_item_ids::jsonb)
+      );
+    SQL
 
-    change_column :checklist_templates, :sorted_item_ids, :string, null: true, array: true
-
-    ChecklistTemplate.reset_column_information
+    remove_column table, :sorted_item_ids
+    rename_column table, :sorted_item_ids_tmp, :sorted_item_ids # rubocop:disable Zammad/ExistsResetColumnInformation
   end
 end
