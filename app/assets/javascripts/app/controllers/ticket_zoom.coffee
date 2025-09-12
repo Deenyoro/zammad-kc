@@ -977,10 +977,12 @@ class App.TicketZoom extends App.Controller
     return @submitTimeAccounting(e, ticket, macro, editContollerForm) if ticket.currentView() isnt 'agent'
     return @submitTimeAccounting(e, ticket, macro, editContollerForm) if !App.Config.get('checklist')
 
-    # Warning modal should be considered only if the ticket state was changed.
-    return @submitTimeAccounting(e, ticket, macro, editContollerForm) if not @changed('ticket', 'state_id')
+    macroContainsStateChange = macro?.perform?.hasOwnProperty('ticket.state_id')
 
-    ticketState    = App.TicketState.find(ticket.state_id)
+    # Warning modal should be considered only if the ticket state was changed.
+    return @submitTimeAccounting(e, ticket, macro, editContollerForm) if not @changed('ticket', 'state_id') and not macroContainsStateChange
+
+    ticketState    = App.TicketState.find(macro?.perform?['ticket.state_id']?['value'] || ticket.state_id)
     isClosed       = ticketState.state_type.name is 'closed'
     isPendingClose = ticketState.state_type.name is 'pending action' && App.TicketState.find(ticketState.next_state_id).state_type.name is 'closed'
     return @submitTimeAccounting(e, ticket, macro, editContollerForm) if !isClosed && !isPendingClose

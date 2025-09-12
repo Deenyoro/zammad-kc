@@ -9,7 +9,7 @@ class Service::Ticket::Update < Service::BaseWithCurrentUser
 
     article_data = ticket_data.delete(:article)
 
-    validate!(current_user, ticket, ticket_data, article_data, skip_validators)
+    validate!(current_user, ticket, ticket_data, article_data, skip_validators, macro)
 
     save_ticket!(ticket, ticket_data, article_data, macro)
 
@@ -60,8 +60,8 @@ class Service::Ticket::Update < Service::BaseWithCurrentUser
     article_input[:from] = current_user.fullname
   end
 
-  def validate!(user, ticket, ticket_data, article_data, skip_validators)
-    Service::Ticket::Update::Validator.new(user:, ticket:, ticket_data:, article_data:, skip_validators:).validate!
+  def validate!(user, ticket, ticket_data, article_data, skip_validators, macro) # rubocop:disable Metrics/ParameterLists
+    Service::Ticket::Update::Validator.new(user:, ticket:, ticket_data:, article_data:, skip_validators:, macro:).validate!
   end
 
   def handle_shared_draft(ticket, ticket_data)
