@@ -71,7 +71,7 @@ class CoreWorkflow::Result::BaseOption < CoreWorkflow::Result::Backend
   end
 
   def restore_array
-    new_value = @result_object.payload_backup['params'][field].map(&:to_s) & @result_object.result[:restrict_values][field]
+    new_value = @result_object.payload_backup['params'][field]&.map(&:to_s) & @result_object.result[:restrict_values][field]
 
     new_value_rerun(field, new_value)
 
