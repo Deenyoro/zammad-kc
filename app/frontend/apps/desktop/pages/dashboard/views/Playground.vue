@@ -1817,6 +1817,14 @@ const userEntity = {
                 console.log(data?.id, data?.name, 'Change customer')
               },
             },
+            {
+              key: 'secondary',
+              label: 'Neutral',
+              variant: 'secondary',
+              onClick: (data) => {
+                console.log(data?.id, data?.name, 'Change customer')
+              },
+            },
           ]"
         />
         <h3>Single Action Item</h3>
