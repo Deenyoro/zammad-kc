@@ -275,7 +275,7 @@ describe('TicketOverviews', () => {
 
     expect(
       within(secondaryNavigationSidebar).getByRole('link', {
-        name: 'My Tickets 0', // 0 comes from the ticket count
+        name: 'My Tickets0', // 0 comes from the ticket count
       }),
     ).toBeInTheDocument()
 

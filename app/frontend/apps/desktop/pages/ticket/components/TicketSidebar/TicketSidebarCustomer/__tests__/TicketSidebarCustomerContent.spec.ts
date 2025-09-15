@@ -153,16 +153,16 @@ describe('TicketSidebarCustomerContent.vue', () => {
 
       expect(
         await wrapper.findByRole('link', {
-          name: 'Avatar (Zammad Org) Zammad Org',
+          name: 'Avatar (Zammad Org)Zammad Org',
         }),
       ).toHaveAttribute('href', '/organizations/2')
 
-      expect(wrapper.getByRole('link', { name: 'Avatar (Zammad Inc) Zammad Inc' })).toHaveAttribute(
+      expect(wrapper.getByRole('link', { name: 'Avatar (Zammad Inc)Zammad Inc' })).toHaveAttribute(
         'href',
         '/organizations/3',
       )
 
-      expect(wrapper.getByRole('link', { name: 'Avatar (Zammad Ltd) Zammad Ltd' })).toHaveAttribute(
+      expect(wrapper.getByRole('link', { name: 'Avatar (Zammad Ltd)Zammad Ltd' })).toHaveAttribute(
         'href',
         '/organizations/4',
       )
@@ -171,9 +171,9 @@ describe('TicketSidebarCustomerContent.vue', () => {
 
       expect(wrapper.getByText('Tickets')).toBeInTheDocument()
 
-      expect(wrapper.getByRole('link', { name: 'open tickets 42' })).toBeInTheDocument()
+      expect(wrapper.getByRole('link', { name: 'open tickets42' })).toBeInTheDocument()
 
-      expect(wrapper.getByRole('link', { name: 'closed tickets 10' })).toBeInTheDocument()
+      expect(wrapper.getByRole('link', { name: 'closed tickets10' })).toBeInTheDocument()
     })
   })
 

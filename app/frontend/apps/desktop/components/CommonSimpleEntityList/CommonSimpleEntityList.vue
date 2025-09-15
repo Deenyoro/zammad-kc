@@ -30,10 +30,8 @@ defineEmits<{
 const entitySetup = computed(() => {
   const { component: componentAsync, ...context } = entityModules[props.type]
 
-  const component = defineAsyncComponent(componentAsync as AsyncComponentLoader)
-
   return {
-    component,
+    component: defineAsyncComponent(componentAsync as AsyncComponentLoader),
     context,
     array: props.entity.array,
   }
