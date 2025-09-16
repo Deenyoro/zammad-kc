@@ -137,11 +137,11 @@ RSpec.describe 'AI > AI Agents', type: :system do
             click_on 'Next'
             click_on 'Next'
 
-            expect(page).to have_no_text('For this agent to run, it needs to be used in a trigger or a scheduler.')
+            expect(page).to have_no_text('For this agent to run, it needs to be used in a trigger or scheduler.')
 
             set_select_field_label('active', 'inactive')
 
-            expect(page).to have_no_text('For this agent to run, it needs to be used in a trigger or a scheduler.')
+            expect(page).to have_no_text('For this agent to run, it needs to be used in a trigger or scheduler.')
 
             click_on 'Submit'
           end
@@ -216,15 +216,15 @@ RSpec.describe 'AI > AI Agents', type: :system do
 
           click_on 'Next'
 
-          expect(page).to have_text('For this agent to run, it needs to be used in a trigger or a scheduler.')
+          expect(page).to have_text('For this agent to run, it needs to be used in a trigger or scheduler.')
 
           set_select_field_label('active', 'inactive')
 
-          expect(page).to have_no_text('For this agent to run, it needs to be used in a trigger or a scheduler.')
+          expect(page).to have_no_text('For this agent to run, it needs to be used in a trigger or scheduler.')
 
           set_select_field_label('active', 'active')
 
-          expect(page).to have_text('For this agent to run, it needs to be used in a trigger or a scheduler.')
+          expect(page).to have_text('For this agent to run, it needs to be used in a trigger or scheduler.')
 
           click_on 'Submit'
         end

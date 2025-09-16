@@ -106,7 +106,7 @@ RSpec.describe 'AI > AI Agents > Types > Ticket Categorizer', db_strategy: :rese
         click_on 'Next'
 
         # Step 4: Check meta data.
-        expect(page).to have_text('For this agent to run, it needs to be used in a trigger or a scheduler.')
+        expect(page).to have_text('For this agent to run, it needs to be used in a trigger or scheduler.')
       end
     end
   end
