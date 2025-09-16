@@ -37,6 +37,10 @@ export const TicketHistoryDocument = gql`
           id
           name
         }
+        ... on Macro {
+          id
+          name
+        }
         ... on ObjectClass {
           klass
           info

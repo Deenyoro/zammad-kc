@@ -8,6 +8,7 @@ module Gql::Types
                    Gql::Types::TriggerType,
                    Gql::Types::JobType,
                    Gql::Types::PostmasterFilterType,
+                   Gql::Types::MacroType,
                    Gql::Types::ObjectClassType
 
     # Explicit type resolution is needed because of the pseudo
@@ -18,7 +19,8 @@ module Gql::Types
         ::Job              => Gql::Types::JobType,
         ::PostmasterFilter => Gql::Types::PostmasterFilterType,
         ::Trigger          => Gql::Types::TriggerType,
-        ::User             => Gql::Types::UserType
+        ::User             => Gql::Types::UserType,
+        ::Macro            => Gql::Types::MacroType,
       }.fetch(object.class, Gql::Types::ObjectClassType)
     end
   end

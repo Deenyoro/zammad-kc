@@ -31,6 +31,7 @@ export const useHistoryEvents = () => {
       case 'PostmasterFilter':
       case 'AIAgent':
       case 'Trigger':
+      case 'Macro':
         return `${i18n.t(historyEventIssuerNames[issuer.__typename])}: ${issuer.name}`
       case 'ObjectClass':
         return `${i18n.t(historyEventIssuerNames[issuer.klass!])}: ${issuer.info}`

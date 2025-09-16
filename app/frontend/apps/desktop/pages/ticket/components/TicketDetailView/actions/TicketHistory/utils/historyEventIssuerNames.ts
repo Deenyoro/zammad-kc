@@ -5,4 +5,5 @@ export const historyEventIssuerNames: Record<string, string> = {
   PostmasterFilter: __('Postmaster Filter'),
   Trigger: __('Trigger'),
   AIAgent: __('AI Agent'),
+  Macro: __('Macro'),
 }

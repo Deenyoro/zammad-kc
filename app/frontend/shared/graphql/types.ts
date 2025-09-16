@@ -1151,7 +1151,7 @@ export type HistoryRecordEvent = {
 export type HistoryRecordEventObject = Checklist | ChecklistItem | Group | Mention | ObjectClass | Organization | Ticket | TicketArticle | TicketSharedDraftZoom | User;
 
 /** History record issuer */
-export type HistoryRecordIssuer = AiAgent | Job | ObjectClass | PostmasterFilter | Trigger | User;
+export type HistoryRecordIssuer = AiAgent | Job | Macro | ObjectClass | PostmasterFilter | Trigger | User;
 
 /** Import job information */
 export type ImportJob = {
@@ -1452,6 +1452,8 @@ export type Macro = {
   /** User that created this record */
   createdBy?: Maybe<User>;
   id: Scalars['ID']['output'];
+  /** Internal database ID */
+  internalId: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   /** Internal note */
   note?: Maybe<Scalars['String']['output']>;
@@ -6490,6 +6492,7 @@ export type TicketHistoryQueryVariables = Exact<{
 export type TicketHistoryQuery = { __typename?: 'Queries', ticketHistory: Array<{ __typename?: 'HistoryGroup', createdAt: string, records: Array<{ __typename?: 'HistoryRecord', issuer:
         | { __typename?: 'AIAgent', id: string, name: string }
         | { __typename?: 'Job', id: string, name: string }
+        | { __typename?: 'Macro', id: string, name: string }
         | { __typename?: 'ObjectClass', klass?: string | null, info?: string | null }
         | { __typename?: 'PostmasterFilter', id: string, name: string }
         | { __typename?: 'Trigger', id: string, name: string }
