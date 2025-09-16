@@ -11,7 +11,14 @@ class HttpLogSensitiveDataCleanup < ActiveRecord::Migration[7.2]
   private
 
   def http_log_cleanup
-    HttpLog.find_each(batch_size: 250) do |log|
+    facilities_no_sensitive_data = [
+      'clearbit',
+      'PGP',
+      'S/MIME',
+      'ldap',
+    ]
+
+    HttpLog.where.not(facility: facilities_no_sensitive_data).find_each(batch_size: 250) do |log|
       log.send(:filter_sensitive_data)
       log.save!(validate: false)
     end
