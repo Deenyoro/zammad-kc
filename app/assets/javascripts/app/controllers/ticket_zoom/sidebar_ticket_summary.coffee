@@ -223,7 +223,7 @@ class App.SidebarTicketSummary extends App.Controller
     @ajax(
       id:    "ticket-intelligence-enqueue-#{@taskKey}"
       type:  'POST'
-      url:   "#{@apiPath}/tickets/#{@ticket.id}/enqueue_summarize"
+      url:   "#{@apiPath}/tickets/#{@ticket.id}/summarize"
       success: (data, status, xhr) =>
         @renderSummarization(data)
 

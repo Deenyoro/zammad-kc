@@ -70,5 +70,6 @@ Zammad::Application.routes.draw do
   match api_path + '/ticket_articles/:id/retry_security_process',             to: 'ticket_articles#retry_security_process',                    via: :post
   match api_path + '/ticket_articles/:id/retry_whatsapp_attachment_download', to: 'ticket_articles#retry_whatsapp_attachment_download',        via: :post
 
-  match api_path + '/tickets/:id/enqueue_summarize', to: 'ticket/summarize#enqueue',   via: :post
+  # ticket summarize (AI)
+  match api_path + '/tickets/:id/summarize',                          to: 'ticket/summarize#summarize',   via: :post
 end

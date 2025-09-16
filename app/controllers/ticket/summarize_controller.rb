@@ -3,8 +3,8 @@
 class Ticket::SummarizeController < ApplicationController
   prepend_before_action :authenticate_and_authorize!
 
-  def enqueue
-    Service::CheckFeatureEnabled.new(name: 'ai_assistance_ticket_summary').execute
+  def summarize
+    Service::CheckFeatureEnabled.new(name: 'ai_assistance_ticket_summary', custom_exception_class: Exceptions::UnprocessableEntity).execute
     Service::CheckFeatureEnabled.new(name: 'ai_provider', custom_error_message: __('AI provider is not configured.')).execute
 
     ticket = Ticket.find(params[:id])

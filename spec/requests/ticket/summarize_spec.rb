@@ -3,20 +3,32 @@
 require 'rails_helper'
 
 RSpec.describe 'Ticket Summarize API endpoints', authenticated_as: :user, performs_jobs: true, type: :request do
-  let(:user)    { create(:agent) }
-  let(:ticket)  { article.ticket }
-  let(:article) { create(:ticket_article) }
+  let(:user)                         { create(:agent) }
+  let(:ticket)                       { article.ticket }
+  let(:article)                      { create(:ticket_article) }
+  let(:ai_assistance_ticket_summary) { true }
 
   before do
     allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
 
     Setting.set('ai_provider', 'zammad_ai')
-    Setting.set('ai_assistance_ticket_summary', true)
+    Setting.set('ai_assistance_ticket_summary', ai_assistance_ticket_summary)
   end
 
-  describe '#enqueue' do
+  describe '#summarize' do
     def make_request
-      post "/api/v1/tickets/#{ticket.id}/enqueue_summarize", as: :json
+      post "/api/v1/tickets/#{ticket.id}/summarize", as: :json
+    end
+
+    context 'when feature is disabled' do
+      let(:ai_assistance_ticket_summary) { false }
+
+      it 'raises error', :aggregate_failures do
+        make_request
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(json_response['error']).to eq('This feature is not enabled.')
+      end
     end
 
     context 'when user does not have agent access' do
