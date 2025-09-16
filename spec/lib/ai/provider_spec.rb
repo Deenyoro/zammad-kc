@@ -50,6 +50,7 @@ RSpec.describe AI::Provider do
       expect(described_class.list).to eq([
                                            AI::Provider::Anthropic,
                                            AI::Provider::Azure,
+                                           AI::Provider::Mistral,
                                            AI::Provider::Ollama,
                                            AI::Provider::OpenAI,
                                            AI::Provider::ZammadAI,
