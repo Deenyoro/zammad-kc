@@ -111,17 +111,21 @@ class App.WidgetPlaceholder extends App.Controller
     ]
 
     for item in all
-      if item.name.startsWith('Article')
+      if item.content.startsWith('#{article.')
         for replace in replaces
+          name = item.name.split(' > ')
+          name[0] = App.i18n.translateInline(replace.display)
+          name = name.join(' > ')
+
           all.push {
-            name: item.name.replace('Article', App.i18n.translateInline(replace.display))
+            name: name
             content: item.content.replace('article', replace.name)
             id: item.id.replace('article', replace.name)
             keywords: item.keywords.replace('article', replace.name)
           }
 
     all = _.filter(all, (item) ->
-      return !item.name.startsWith('Article')
+      return !item.content.startsWith('#{article.')
     )
 
     # add config
