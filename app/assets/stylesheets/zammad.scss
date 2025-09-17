@@ -12065,6 +12065,10 @@ output {
   .dropdown-menu {
     margin-top: -3px;
     max-width: 100%;
+
+    .has-query span.searchableSelect-option-arrow {
+      display: none;
+    }
   }
 
   &-option-text {
@@ -12112,12 +12116,16 @@ output {
     }
 
     &.is-selected {
-      @include bidi-style(
-        border-left,
-        5px solid var(--highlight),
-        border-right,
-        5px solid var(--highlight)
-      );
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        width: 5px;
+        height: 100%;
+        background-color: var(--highlight);
+      }
     }
 
     &.js-enter:hover,

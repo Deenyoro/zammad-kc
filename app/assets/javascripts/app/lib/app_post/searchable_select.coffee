@@ -337,7 +337,7 @@ class App.SearchableSelect extends Spine.Controller
     @clearAutocomplete()
 
   autocompleteOrNavigateIn: (event) ->
-    if @currentItem && @currentItem.hasClass('js-enter')
+    if not @query and @currentItem?.hasClass('js-enter')
       @navigateIn(event)
     else
       @fillWithAutocompleteSuggestion(event)
@@ -577,7 +577,7 @@ class App.SearchableSelect extends Spine.Controller
     event.preventDefault()
 
     if @currentItem || !@attribute.unknown
-      return if @currentItem.hasClass('has-inactive')
+      return if @currentItem.hasClass('has-inactive') or @currentItem.hasClass('inactive-with-children')
 
       valueName   = @currentItem.children('span.searchableSelect-option-text').text().trim()
       value       = @currentItem.attr('data-value')
@@ -698,7 +698,11 @@ class App.SearchableSelect extends Spine.Controller
         @textContent.match(regex)
       .removeClass 'is-hidden'
 
-    if !query
+    if query
+      @optionsList.addClass 'has-query'
+      @optionItems.filter('.inactive-with-children').addClass 'is-hidden'
+    else
+      @optionsList.removeClass 'has-query'
       @optionItems.filter('.is-child').addClass 'is-hidden'
 
     # if all are hidden
@@ -728,7 +732,8 @@ class App.SearchableSelect extends Spine.Controller
   highlightFirst: (autocomplete) ->
     @unhighlightCurrentItem()
     @currentItem = @getCurrentOptions().not('.is-hidden').first()
-    @currentItem.addClass 'is-active'
+    @currentItem.addClass('is-active')
+    @currentItem.addClass('is-highlighted') if @currentItem.hasClass('js-enter')
 
     if autocomplete
       @autocomplete @currentItem.attr('data-value'), @currentItem.children('span.searchableSelect-option-text').text().trim()
