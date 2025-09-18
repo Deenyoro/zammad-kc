@@ -27,7 +27,7 @@ Rails.application.config.html_sanitizer_tags_allowlist = %w[
 
 # attributes allowed for tags
 Rails.application.config.html_sanitizer_attributes_allowlist = {
-  :all         => %w[class dir lang title translate data-signature data-signature-id],
+  :all         => %w[class dir lang title translate data-signature data-signature-id data-signature-placeholder],
   'a'          => %w[href hreflang name rel data-target-id data-target-type data-mention-user-id],
   'abbr'       => %w[title],
   'blockquote' => %w[type cite],

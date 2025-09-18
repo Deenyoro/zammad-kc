@@ -807,14 +807,14 @@ class App.Utils
 
     @signatureIdentifyByHtmlHelper(message)
 
-  @signatureRemoveByHtml: (message) ->
+  @signatureRemoveByHtml: (message, placeholder = false) ->
     container = document.createElement('container-element')
     container.innerHTML = message
 
     brsToRemove = []
 
-    signatures = container
-      .querySelectorAll('div[data-signature]')
+    container
+      .querySelectorAll('div[data-signature-placeholder]')
       .forEach (elem) ->
         node = elem
         while(node?.previousSibling?.nodeName == 'BR')
@@ -822,6 +822,19 @@ class App.Utils
           node = node.previousSibling
 
         elem.remove()
+
+    container
+      .querySelectorAll('div[data-signature]')
+      .forEach (elem) ->
+        if placeholder
+          elem.replaceWith($('<div data-signature-placeholder="true"></div>')[0])
+        else
+          node = elem
+          while(node?.previousSibling?.nodeName == 'BR')
+            brsToRemove.push node.previousSibling
+            node = node.previousSibling
+
+          elem.remove()
 
     brsToRemove.forEach (elem) -> elem.remove()
 

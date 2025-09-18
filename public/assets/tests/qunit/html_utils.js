@@ -873,6 +873,21 @@ QUnit.test('remove signature', assert => {
   var should  = 'test 123'
   var result  = App.Utils.signatureRemoveByHtml(message)
   assert.equal(result, should)
+
+  var message = 'test 123<br><div data-signature="true" data-signature-id="1">Test Admin Agent<br>-----</div>'
+  var should  = 'test 123<br><div data-signature-placeholder=\"true\"></div>'
+  var result  = App.Utils.signatureRemoveByHtml(message, true)
+  assert.equal(result, should)
+
+  var message = '<div data-signature-placeholder=\"true\"></div>test 123<div data-signature="true" data-signature-id="1">Test Admin Agent<br>-----</div>'
+  var should  = 'test 123<div data-signature-placeholder=\"true\"></div>'
+  var result  = App.Utils.signatureRemoveByHtml(message, true)
+  assert.equal(result, should)
+
+  var message = 'test 123<br><div data-signature="true" data-signature-id="1">Test Admin Agent<br>-----</div>test 256'
+  var should  = 'test 123<br><div data-signature-placeholder=\"true\"></div>test 256'
+  var result  = App.Utils.signatureRemoveByHtml(message, true)
+  assert.equal(result, should)
 })
 
 // identify signature
