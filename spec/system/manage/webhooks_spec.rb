@@ -47,7 +47,7 @@ RSpec.describe 'Manage > Webhook', type: :system do
         expect(page).to have_field('Messaging Icon URL', with: 'https://zammad.com/assets/images/logo-200x200.png')
         expect(page).to have_field('Custom Payload', checked: false, visible: :all)
         expect(page).to have_field('custom_payload', with: custom_payload, disabled: :all, visible: :all)
-        expect(page).to have_field('Note', with: 'Pre-defined webhook for Mattermost Notifications.')
+        check_editor_field_richtext_value('note', 'Pre-defined webhook for Mattermost Notifications.')
 
         fill_in 'Endpoint', with: 'https://example.com/mattermost_endpoint'
         fill_in 'Messaging Username', with: 'username'
@@ -182,7 +182,7 @@ RSpec.describe 'Manage > Webhook', type: :system do
         expect(page).to have_field('Messaging Icon URL', with: webhook.preferences['pre_defined_webhook']['messaging_icon_url'])
         expect(page).to have_field('Custom Payload', checked: false, visible: :all)
         expect(page).to have_field('custom_payload', with: custom_payload, disabled: :all, visible: :all)
-        expect(page).to have_field('Note', with: 'Pre-defined webhook for Mattermost Notifications.')
+        check_editor_field_richtext_value('note', 'Pre-defined webhook for Mattermost Notifications.')
 
         fill_in 'Endpoint', with: 'https://example.com/mattermost_endpoint'
         fill_in 'Messaging Username', with: 'username'

@@ -7,7 +7,7 @@ class App.AIAgent extends App.Model
     { name: 'agent_type', display: __('Type'),               tag: 'select',   relation: 'AIAgentType', null: false, nulloption: true },
     { name: 'triggers',   display: __('Used in triggers'),                    readonly: 1 },
     { name: 'jobs',       display: __('Used in schedulers'),                  readonly: 1 },
-    { name: 'note',       display: __('Note'),               tag: 'textarea', null: true, note: '', limit: 250 },
+    { name: 'note',       display: __('Note'),               tag: 'richtext', null: true, note: '', limit: 250 },
     { name: 'active',     display: __('Active'),             tag: 'active',   default: true },
     { name: 'updated_at', display: __('Updated'),            tag: 'datetime', readonly: 1 },
   ]

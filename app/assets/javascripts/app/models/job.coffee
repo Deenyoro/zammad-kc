@@ -12,7 +12,7 @@ class App.Job extends App.Model
     { name: 'execution_localization',   display: __('Localization of execution changes'), tag: 'switch', null: true, label_class: 'hidden', help: __('Customize the default locale and timezone during replacement of template variables.') },
     { name: 'localization',         display: __('Locale'),                          tag: 'language', null: true, class: 'input', show_system_default_option: true, item_class: 'collapse formGroup--halfSize' },
     { name: 'timezone',             display: __('Timezone'),                        tag: 'timezone', null: true, class: 'input', show_system_default_option: true, item_class: 'collapse formGroup--halfSize' },
-    { name: 'note',                 display: __('Note'),                            tag: 'textarea', note: __('Notes are visible to agents only, never to customers.'), limit: 250, null: true },
+    { name: 'note',                 display: __('Note'),                            tag: 'richtext', note: __('Notes are visible to agents only, never to customers.'), limit: 250, null: true },
     { name: 'active',               display: __('Active'),                          tag: 'active', default: true },
     { name: 'matching',             display: __('Will process'),                    readonly: 1 },
     { name: 'processed',            display: __('Has processed'),                   readonly: 1 },

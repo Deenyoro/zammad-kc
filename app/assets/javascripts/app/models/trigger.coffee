@@ -11,7 +11,7 @@ class App.Trigger extends App.Model
     { name: 'execution_localization',   display: __('Localization of execution changes'), tag: 'switch', null: true, label_class: 'hidden', help: __('Customize the default locale and timezone during replacement of template variables.') },
     { name: 'localization',             display: __('Locale'),   tag: 'language',  null: true, class: 'input', show_system_default_option: true, item_class: 'collapse formGroup--halfSize' },
     { name: 'timezone',                 display: __('Timezone'), tag: 'timezone',  null: true, class: 'input', show_system_default_option: true, item_class: 'collapse formGroup--halfSize' },
-    { name: 'note',                     display: __('Note'),             tag: 'textarea',                limit: 250,  null: true },
+    { name: 'note',                     display: __('Note'),             tag: 'richtext',                limit: 250,  null: true },
     { name: 'active',                   display: __('Active'),           tag: 'active',    default: true },
     { name: 'updated_at',               display: __('Updated'),          tag: 'datetime',  readonly: 1 },
   ]

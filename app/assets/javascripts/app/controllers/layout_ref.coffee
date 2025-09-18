@@ -201,9 +201,9 @@ class LayoutRefCommunicationReply extends App.ControllerAppContent
     )
 
     @$('[contenteditable]').ce({
-      mode:      'textonly'
-      multiline: true
-      maxlength: 2500
+      mode:      'richtext'
+      noImages:  true
+      maxlength: 5000
     })
 
     @$('[contenteditable]').textmodule()
