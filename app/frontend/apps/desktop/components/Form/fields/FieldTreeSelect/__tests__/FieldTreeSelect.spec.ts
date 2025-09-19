@@ -1196,13 +1196,9 @@ describe('Form - Field - TreeSelect - Accessibility', () => {
 
     const listbox = getByRole(menu, 'listbox')
 
-    const selectOptions = getAllByRole(listbox, 'option')
+    const selectOptions = wrapper.getAllByTestId('option-button')
 
     expect(selectOptions).toHaveLength(testOptions.length)
-
-    selectOptions.forEach((selectOption) => {
-      expect(selectOption.firstChild).toHaveAttribute('tabindex', '0')
-    })
 
     // Sub-menu button is not part of tab-order in order to allow easier selection of options.
     //   Its function can be still triggered via keyboard arrow right/left key.
@@ -1325,20 +1321,27 @@ describe('Form - Field - TreeSelect - Accessibility', () => {
 
     await wrapper.events.type(search, '{Down}')
 
-    const selectOptions = wrapper.getAllByRole('button')
+    const selectOptions = wrapper.getAllByTestId('option-button')
 
-    expect(selectOptions[1]).toHaveFocus()
+    const submenuButton = wrapper.getByRole('button', { name: 'Has submenu' })
+
+    expect(selectOptions[0]).toHaveFocus()
 
     await wrapper.events.keyboard('{Tab}')
 
-    expect(selectOptions[2]).toHaveFocus()
+    expect(submenuButton).toHaveFocus()
+
+    await wrapper.events.keyboard('{ArrowDown}')
+
+    expect(selectOptions[0]).toHaveFocus()
 
     await wrapper.events.keyboard('{ArrowUp}')
 
-    expect(selectOptions[1]).toHaveFocus()
+    expect(selectOptions.at(-1)).toHaveFocus()
+
+    await wrapper.events.keyboard('{ArrowDown}')
 
     await wrapper.events.keyboard('{Space}')
-    // await wrapper.events.type(selectOptions[2], '{Space}')
 
     await waitFor(() => {
       expect(wrapper.emitted().inputRaw).toBeTruthy()

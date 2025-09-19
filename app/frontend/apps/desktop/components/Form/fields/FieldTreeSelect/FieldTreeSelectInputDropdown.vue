@@ -68,9 +68,8 @@ if (localValue.value == null && props.multiple) {
   localValue.value = []
 }
 
-const getFocusableOptions = () => {
-  return Array.from<HTMLElement>(dropdownElement.value?.querySelectorAll('[tabindex="0"]') || [])
-}
+const getFocusableOptions = () =>
+  Array.from<HTMLElement>(dropdownElement.value?.querySelectorAll('[data-type="option"]') || [])
 
 const showDropdown = ref(false)
 
@@ -183,7 +182,13 @@ onUnmounted(() => {
 defineExpose(exposedInstance)
 
 // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role#keyboard_interactions
-useTraverseOptions(dropdownElement, { direction: 'vertical' })
+useTraverseOptions(dropdownElement, {
+  direction: 'vertical',
+  filterOption: (element) => {
+    // Only allow navigation to option buttons, not toolbar buttons and navigation buttons
+    return element.closest('[data-type="option"]') !== null
+  },
+})
 
 // - Type-ahead is recommended for all listboxes, especially those with more than seven options
 useFocusWhenTyping(dropdownElement)
@@ -409,7 +414,7 @@ const hasTopElement = computed(
             <div v-if="hasTopElement" class="flex w-full justify-between gap-2 px-2.5 py-1.5">
               <CommonLabel
                 v-if="currentPath.length"
-                class="text-blue-800 hover:text-black focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-blue-800 dark:hover:text-white"
+                class="text-blue-800! hover:text-black! focus-visible:rounded-xs focus-visible-app-default dark:hover:text-white!"
                 :prefix-icon="locale.localeData?.dir === 'rtl' ? 'chevron-right' : 'chevron-left'"
                 :aria-label="$t('Back to previous page')"
                 size="small"
@@ -423,7 +428,7 @@ const hasTopElement = computed(
               </CommonLabel>
               <CommonLabel
                 v-if="multiple && hasMoreSelectableOptions"
-                class="ms-auto text-blue-800 hover:text-black focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:text-blue-800 dark:hover:text-white"
+                class="ms-auto text-blue-800! hover:text-black! focus-visible:rounded-xs focus-visible-app-default dark:hover:text-white!"
                 prefix-icon="check-all"
                 size="small"
                 role="button"
@@ -453,7 +458,9 @@ const hasTopElement = computed(
                   'last:rounded-b-[7px]': !hasDirectionUp,
                 }"
                 :index="index"
+                :total="filter ? highlightedOptions.length : currentOptions.length"
                 :has-top-button="hasTopElement"
+                :has-direction-up="hasDirectionUp"
                 :aria-setsize="flatOptions.length"
                 :aria-posinset="getCurrentIndex(option) + 1"
                 :selected="isCurrentValue(option.value)"
@@ -476,6 +483,8 @@ const hasTopElement = computed(
                   } as MatchedFlatSelectOption
                 "
                 no-selection-indicator
+                :index="0"
+                :total="0"
               />
               <slot name="footer" />
             </div>

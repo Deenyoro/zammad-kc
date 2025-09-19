@@ -40,7 +40,7 @@ describe('CommonDivider.vue', () => {
     expect(container).toHaveClass('py-2.5')
   })
 
-  it.each(['neutral', 'gray', 'stone'])('supports variant %s prop', (variant) => {
+  it.each(['neutral', 'gray'])('supports variant %s prop', (variant) => {
     const view = renderComponent(CommonDivider, {
       props: {
         variant,

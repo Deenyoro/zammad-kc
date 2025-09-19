@@ -8,7 +8,7 @@ import type { DividerOrientation } from './types.ts'
 interface Props {
   orientation?: DividerOrientation
   padding?: boolean
-  variant?: 'neutral' | 'gray' | 'stone'
+  variant?: 'neutral' | 'gray'
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -20,8 +20,6 @@ const backgroundClass = computed(() => {
   switch (props.variant) {
     case 'gray':
       return 'bg-white dark:bg-gray-200'
-    case 'stone':
-      return 'bg-stone-200 dark:bg-neutral-500'
     default: // neutral
       return 'bg-neutral-100 dark:bg-gray-900'
   }
