@@ -8,9 +8,10 @@ module FieldActions # rubocop:disable Metrics/ModuleLength
   #
   # @example
   #  check_input_field_value('input_field_name', 'text', visible: :all)
+  #  check_input_field_value('input_field_id', 'text', attr: 'id', visible: :all)
   #
-  def check_input_field_value(name, value, **find_options)
-    input_field = find("input[name='#{name}']", **find_options)
+  def check_input_field_value(name, value, attr: 'name', **find_options)
+    input_field = find("input[#{attr}='#{name}']", **find_options)
     expect(input_field.value).to eq(value)
   end
 

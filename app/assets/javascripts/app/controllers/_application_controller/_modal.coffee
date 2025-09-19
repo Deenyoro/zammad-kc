@@ -238,3 +238,12 @@ class App.ControllerModal extends App.Controller
   stopLoading: =>
     @$('.modal-body').removeClass('hide')
     @$('.modal-loader').addClass('hide')
+
+  copyToClipboard: (e) =>
+    e.preventDefault()
+
+    button = $(e.target).parents('[role="button"]')
+    fieldId = button.data('targetField')
+    value = $(@container).find("input[id='#{jQuery.escapeSelector(fieldId)}']").val()
+
+    @copyToClipboardWithTooltip(value, e.target, '.modal-body', true)

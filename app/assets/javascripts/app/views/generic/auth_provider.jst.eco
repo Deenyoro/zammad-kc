@@ -1,1 +1,10 @@
-<input type="text" disabled="disabled" readonly="readonly" value="<%= @attribute.value %>" class="form-control" />
+<div class="input form-group">
+  <div class="controls controls--button ignore-readonly">
+    <input readonly id="<%= @attribute.provider %>_callback_url" type="text" value="<%= @attribute.value %>" class="form-control js-select js-permanent-readonly">
+    <div class="controls-button u-clickable js-copy" role="button" data-target-field="<%= @attribute.provider %>_callback_url" aria-label="<%- @T('Copy to clipboard') %>">
+      <span class="controls-button-inner">
+        <%- @Icon('clipboard') %>
+      </span>
+    </div>
+  </div>
+</div>

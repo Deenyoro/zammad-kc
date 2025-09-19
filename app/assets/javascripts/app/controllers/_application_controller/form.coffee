@@ -806,7 +806,7 @@ class App.ControllerForm extends App.Controller
       App.Log.debug 'ControllerForm', 'enable form...', lookupForm
 
       # enable fields again
-      lookupForm.find('button, input, select, textarea, .form-control').prop('readonly', false)
+      lookupForm.find('button:not(.js-permanentReadonly), input:not(.js-permanentReadonly), select:not(.js-permanentReadonly), textarea:not(.js-permanentReadonly), .form-control:not(.js-permanentReadonly)').prop('readonly', false)
 
       # enable radio and checkbox buttons
       lookupForm.find('input[type=checkbox], input[type=radio], input[type=file]').prop('disabled', false)
