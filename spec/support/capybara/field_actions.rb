@@ -11,19 +11,19 @@ module FieldActions # rubocop:disable Metrics/ModuleLength
   #  check_input_field_value('input_field_id', 'text', attr: 'id', visible: :all)
   #
   def check_input_field_value(name, value, attr: 'name', **find_options)
-    input_field = find("input[#{attr}='#{name}']", **find_options)
-    expect(input_field.value).to eq(value)
+    expect(page).to have_css("input[#{attr}='#{name}']", **find_options) do |elem|
+      elem.value == value
+    end
   end
 
   # Set the field value of a form input field.
   #
   # @example
   #  set_input_field_value('input_field_name', 'text', visible: :all)
+  #  set_input_field_value('input_field_id', 'text', attr: 'id', visible: :all)
   #
-  def set_input_field_value(name, value, **find_options)
-    # input_field = find("input[name='#{name}']", **find_options)
-    # expect(input_field.value).to eq(value)
-    find("input[name='#{name}']", **find_options).fill_in with: value
+  def set_input_field_value(name, value, attr: 'name', **find_options)
+    find("input[#{attr}='#{name}']", **find_options).fill_in with: value
   end
 
   # Set the field value of a form tree_select field.
@@ -94,9 +94,10 @@ module FieldActions # rubocop:disable Metrics/ModuleLength
   # @example
   #  check_select_field_value('select_field_name', '1')
   #
-  def check_select_field_value(name, value)
-    select_field = find("select[name='#{name}']")
-    expect(select_field.value).to eq(value)
+  def check_select_field_value(name, value, **find_options)
+    expect(page).to have_css("select[name='#{name}']", **find_options) do |elem|
+      elem.value == value
+    end
   end
 
   # Set the field value of a form select field.
@@ -131,9 +132,10 @@ module FieldActions # rubocop:disable Metrics/ModuleLength
   # @example
   #  check_editor_field_value('editor_field_name', 'plain text')
   #
-  def check_editor_field_value(name, value)
-    editor_field = find("[data-name='#{name}']")
-    expect(editor_field.text).to have_text(value)
+  def check_editor_field_value(name, value, **find_options)
+    expect(page).to have_css("[data-name='#{name}']", **find_options) do |elem|
+      elem.text.include? value
+    end
   end
 
   # Check the field value of a form editor field.
@@ -141,9 +143,10 @@ module FieldActions # rubocop:disable Metrics/ModuleLength
   # @example
   #  check_editor_field_richtext_value('editor_field_name', 'rich text')
   #
-  def check_editor_field_richtext_value(name, value)
-    editor_field = find("[data-name='#{name}']")
-    expect(editor_field.evaluate_script('this.innerHTML')).to eq(value)
+  def check_editor_field_richtext_value(name, value, **find_options)
+    expect(page).to have_css("[data-name='#{name}']", **find_options) do |elem|
+      elem.evaluate_script('this.innerHTML') == value
+    end
   end
 
   # Set the field value of a form editor field.
@@ -175,9 +178,10 @@ module FieldActions # rubocop:disable Metrics/ModuleLength
   # @example
   #  check_date_field_value('date_field_name', '20/12/2020')
   #
-  def check_date_field_value(name, value)
-    date_attribute_field = find("div[data-name='#{name}'] input[data-item='date']")
-    expect(date_attribute_field.value).to eq(value)
+  def check_date_field_value(name, value, **find_options)
+    expect(page).to have_css("div[data-name='#{name}'] input[data-item='date']", **find_options) do |elem|
+      elem.value == value
+    end
   end
 
   # Set the field value of a form date field.
@@ -199,9 +203,10 @@ module FieldActions # rubocop:disable Metrics/ModuleLength
   # @example
   #  check_time_field_value('date_field_name', '08:00')
   #
-  def check_time_field_value(name, value)
-    date_attribute_field = find("div[data-name='#{name}'] input[data-item='time']")
-    expect(date_attribute_field.value).to eq(value)
+  def check_time_field_value(name, value, **find_options)
+    expect(page).to have_css("div[data-name='#{name}'] input[data-item='time']", **find_options) do |elem|
+      elem.value == value
+    end
   end
 
   # Set the field value of a form time field.
@@ -231,7 +236,9 @@ module FieldActions # rubocop:disable Metrics/ModuleLength
                     value
                   end
 
-    expect(find("input[name='#{name}']", visible: :all, **find_options).value).to eq(input_value)
+    expect(page).to have_css("input[name='#{name}']", visible: :all, **find_options) do |elem|
+      elem.value == input_value
+    end
   end
 
   # Set the field value of a form tokens field.
@@ -264,12 +271,8 @@ module FieldActions # rubocop:disable Metrics/ModuleLength
   #  check_switch_field_value('switch_field_name', true)
   #
   def check_switch_field_value(name, value, **find_options)
-    switch_field = find("input[name='#{name}']", visible: :all, **find_options)
-
-    if value
-      expect(switch_field).to be_checked
-    else
-      expect(switch_field).not_to be_checked
+    expect(page).to have_css("input[name='#{name}']", visible: :all, **find_options) do |elem|
+      elem.checked? == value.present?
     end
   end
 
@@ -288,8 +291,9 @@ module FieldActions # rubocop:disable Metrics/ModuleLength
   #  check_textarea_field_value('textarea_field_name', 'text', visible: :all)
   #
   def check_textarea_field_value(name, value, **find_options)
-    textarea_field = find("textarea[name='#{name}']", **find_options)
-    expect(textarea_field.value).to eq(value)
+    expect(page).to have_css("textarea[name='#{name}']", **find_options) do |elem|
+      elem.value == value
+    end
   end
 
   # Set the field value of a form textarea field.
