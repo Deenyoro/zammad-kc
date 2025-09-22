@@ -379,7 +379,7 @@ msgstr "%s (επιλογή)"
 #: app/frontend/apps/desktop/components/CommonSelect/CommonSelect.vue:272
 #: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:559
 #: app/frontend/apps/desktop/components/Form/fields/FieldSelect/FieldSelectInput.vue:253
-#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:338
+#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:343
 #: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:145
 #: app/frontend/apps/mobile/components/Form/fields/FieldSelect/FieldSelectInput.vue:97
 #: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:127
@@ -441,7 +441,7 @@ msgid "%s ago"
 msgstr "%s πριν"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleFooter.vue:31
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:212
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:216
 #, fuzzy
 #| msgid "Attached Files"
 msgid "%s attached files"
@@ -502,6 +502,12 @@ msgstr "%s πιστοποιητικά"
 #: app/frontend/shared/i18n/dates.ts:103
 msgid "%s days ago"
 msgstr "%s ημέρες πριν"
+
+#: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:53
+#, fuzzy
+#| msgid "%s tickets"
+msgid "%s deselected."
+msgstr "%s δελτία"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:709
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:260
@@ -644,6 +650,10 @@ msgstr "%s required!"
 msgid "%s schedulers"
 msgstr "Νέο χρονοδιάγραμμα"
 
+#: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:46
+msgid "%s selected. Use arrow keys to choose drop position, then press Space."
+msgstr ""
+
 #: app/assets/javascripts/app/models/user.coffee:212
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/user.ts:25
 msgid "%s started a new session"
@@ -659,7 +669,7 @@ msgstr "%s subdomain"
 msgid "%s switched to |%s|!"
 msgstr "%s switched to |%s|!"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:72
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:73
 #, fuzzy
 #| msgid "%s tickets"
 msgid "%s ticket selected"
@@ -676,7 +686,7 @@ msgstr "%s δελτία"
 msgid "%s tickets found"
 msgstr "Βρέθηκαν %s δελτία"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:73
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:74
 #, fuzzy
 #| msgid "%s of my tickets escalated."
 msgid "%s tickets selected"
@@ -863,7 +873,7 @@ msgstr ""
 "επίσης να διαμορφώσετε **ειδοποιήσεις μέσω email**."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleFooter.vue:30
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:211
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:215
 #, fuzzy
 #| msgid "Attached Files"
 msgid "1 attached file"
@@ -1206,8 +1216,8 @@ msgid "API server error - please try again"
 msgstr ""
 
 #: lib/ai/provider/anthropic.rb:66 lib/ai/provider/azure.rb:104
-#: lib/ai/provider/ollama.rb:86 lib/ai/provider/open_ai.rb:93
-#: lib/ai/provider/zammad_ai.rb:53
+#: lib/ai/provider/mistral.rb:92 lib/ai/provider/ollama.rb:86
+#: lib/ai/provider/open_ai.rb:97 lib/ai/provider/zammad_ai.rb:53
 msgid "API server not accessible"
 msgstr ""
 
@@ -1384,10 +1394,10 @@ msgstr "Λογαριασμοί"
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:181
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:49
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:36
-#: app/assets/javascripts/app/views/object_manager/attribute/multi_tree_select.jst.eco:8
+#: app/assets/javascripts/app/views/object_manager/attribute/multi_tree_select.jst.eco:9
 #: app/assets/javascripts/app/views/object_manager/attribute/multiselect.jst.eco:10
 #: app/assets/javascripts/app/views/object_manager/attribute/select.jst.eco:10
-#: app/assets/javascripts/app/views/object_manager/attribute/tree_select.jst.eco:8
+#: app/assets/javascripts/app/views/object_manager/attribute/tree_select.jst.eco:9
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:59
 #: app/assets/javascripts/app/views/package.jst.eco:51
 #: app/assets/javascripts/app/views/profile/password.jst.eco:32
@@ -1425,7 +1435,7 @@ msgstr "Εκτελέστηκε μαζική ενέργεια!"
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:19
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:15
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:16
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:519
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:520
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:100
 msgid "Actions"
 msgstr "Ενεργειες"
@@ -1460,7 +1470,7 @@ msgstr ""
 #: app/assets/javascripts/app/models/object_manager_attribute.coffee:9
 #: app/assets/javascripts/app/models/overview.coffee:66
 #: app/assets/javascripts/app/models/postmaster_filter.coffee:13
-#: app/assets/javascripts/app/models/report_profile.js.coffee:9
+#: app/assets/javascripts/app/models/report_profile.js.coffee:10
 #: app/assets/javascripts/app/models/role.coffee:11
 #: app/assets/javascripts/app/models/signature.coffee:27
 #: app/assets/javascripts/app/models/template.coffee:9
@@ -1473,6 +1483,8 @@ msgstr ""
 #: app/assets/javascripts/app/views/calendar/holiday_selector.jst.eco:4
 #: app/assets/javascripts/app/views/generic/sla_times.jst.eco:4
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:37
+#: app/assets/javascripts/app/views/object_manager/attribute/multi_tree_select.jst.eco:8
+#: app/assets/javascripts/app/views/object_manager/attribute/tree_select.jst.eco:8
 #: app/assets/javascripts/app/views/profile/password.jst.eco:29
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:70
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:209
@@ -1637,7 +1649,7 @@ msgstr "προσθέστε ένα διακριτικό πρόσβασης"
 msgid "Add a data privacy deletion task"
 msgstr ""
 
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:267
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:268
 #, fuzzy
 #| msgid "Add Tag"
 msgid "Add a message"
@@ -1740,7 +1752,7 @@ msgstr "Προσθήκη ετικέτας"
 msgid "Add note"
 msgstr "Add Bot"
 
-#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:137
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:151
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:240
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:236
 #, fuzzy
@@ -1787,7 +1799,7 @@ msgstr ""
 "Προσθέστε αυτήν την τάξη σε ένα κουμπί στη σελίδα σας που θα ξεκινήσει τη "
 "συνομιλία."
 
-#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:144
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:158
 #, fuzzy
 #| msgid "Format as ordered list"
 msgid "Add unordered list"
@@ -1801,7 +1813,7 @@ msgstr "Πρόσθετα κανάλια"
 msgid "Additional follow-up detection"
 msgstr "Επιπρόσθετος εν συνεχεία συντονισμός"
 
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:202
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:203
 #, fuzzy
 #| msgid "Block Notifications"
 msgid "Additional information"
@@ -1836,9 +1848,16 @@ msgstr ""
 msgid "Admin"
 msgstr "Διαχειριστης"
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:521
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:510
 msgid "Admin Consent"
 msgstr ""
+
+#: app/assets/javascripts/app/controllers/documentation_link.coffee:2
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/admin-documentation.ts:7
+#, fuzzy
+#| msgid "Administrator Account"
+msgid "Admin Documentation"
+msgstr "Λογαριασμός διαχειριστή"
 
 #: app/assets/javascripts/app/controllers/admin_password_auth.coffee:23
 #: app/frontend/apps/desktop/pages/authentication/routes.ts:25
@@ -1973,6 +1992,10 @@ msgstr "Ανοικτά Αιτήματα"
 msgid "Agents"
 msgstr "Χειριστές"
 
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:514
+msgid "Agents with \"%s\" permission"
+msgstr ""
+
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:44
 #, fuzzy
 #| msgid "Agent"
@@ -2008,12 +2031,6 @@ msgid ""
 "tickets will be deleted and a history entry preserved. There is no rollback "
 "of this deletion possible."
 msgstr ""
-
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:513
-#, fuzzy
-#| msgid "All Agents"
-msgid "All agents"
-msgstr "Ολοι οι χειρηστές"
 
 #: app/models/ai/agent/type/ticket_categorizer.rb:51
 msgid "All categories will be considered for categorizing tickets."
@@ -2153,7 +2170,7 @@ msgstr ""
 msgid "An error occured during the operation."
 msgstr "Unable to verify email. Please contact your administrator."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:989
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:990
 #: app/assets/javascripts/app/views/integration/exchange_last_import.jst.eco:5
 #: app/assets/javascripts/app/views/integration/ldap_last_import.jst.eco:5
 msgid "An error occurred: %s"
@@ -2275,9 +2292,9 @@ msgid "App Version"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_channel/facebook.coffee:186
-#: app/assets/javascripts/app/controllers/_channel/google.coffee:487
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:514
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:375
+#: app/assets/javascripts/app/controllers/_channel/google.coffee:476
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:503
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:364
 #: app/assets/javascripts/app/controllers/_integration/exchange.coffee:720
 #, fuzzy
 #| msgid "Account not verified"
@@ -2322,7 +2339,7 @@ msgid "Applications"
 msgstr "Εφαρμογές"
 
 #: app/assets/javascripts/app/views/widget/template.jst.eco:8
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:320
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:324
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:133
 msgid "Apply"
 msgstr "Εφαρμογή"
@@ -2362,7 +2379,7 @@ msgid "Approve"
 msgstr "Προμηθευτής"
 
 #: app/assets/javascripts/app/controllers/_ui_element/basedate.coffee:160
-#: app/assets/javascripts/app/controllers/report.coffee:220
+#: app/assets/javascripts/app/controllers/report.coffee:221
 #: app/assets/javascripts/app/controllers/time_accounting_accounted_time.coffee:26
 msgid "Apr"
 msgstr "Απρ"
@@ -2511,7 +2528,7 @@ msgstr ""
 #: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:54
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:73
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:34
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:408
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:409
 #: app/frontend/apps/mobile/pages/ticket/views/TicketDetailView.vue:248
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:41
 msgid "Are you sure? You have unsaved changes that will get lost."
@@ -2559,7 +2576,7 @@ msgstr "Article Count"
 msgid "Article Language Detection"
 msgstr "Αλλαγή αντικειμένων"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:270
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:274
 #, fuzzy
 #| msgid "Article Count"
 msgid "Article actions"
@@ -2690,7 +2707,7 @@ msgid "Attached Files"
 msgstr "Attached Files"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:181
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:314
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:315
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:225
 #, fuzzy
 #| msgid "Attachments"
@@ -2753,7 +2770,7 @@ msgid ""
 msgstr ""
 "Attention: These will be your login password after the import is completed."
 
-#: app/assets/javascripts/app/controllers/object_manager.coffee:154
+#: app/assets/javascripts/app/controllers/object_manager.coffee:158
 msgid "Attribute"
 msgstr ""
 
@@ -2789,7 +2806,7 @@ msgid "Audio file"
 msgstr "Χωρίς φίλτρο"
 
 #: app/assets/javascripts/app/controllers/_ui_element/basedate.coffee:161
-#: app/assets/javascripts/app/controllers/report.coffee:220
+#: app/assets/javascripts/app/controllers/report.coffee:221
 #: app/assets/javascripts/app/controllers/time_accounting_accounted_time.coffee:26
 msgid "Aug"
 msgstr "Αυγ"
@@ -2798,7 +2815,7 @@ msgstr "Αυγ"
 msgid "August"
 msgstr "Aυγουστος"
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:381
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:370
 #, fuzzy
 #| msgid "Authentication"
 msgid "Authenticate"
@@ -2808,7 +2825,7 @@ msgstr "Authentication"
 msgid "Authentication"
 msgstr "Authentication"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:728
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:729
 #, fuzzy
 #| msgid "Authentication"
 msgid "Authentication Token"
@@ -2869,7 +2886,7 @@ msgstr "Authentication via %s"
 msgid "Author"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleBody.vue:88
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleBody.vue:95
 msgid "Author name and article creation date"
 msgstr ""
 
@@ -2991,6 +3008,7 @@ msgstr "Αφαίρεση"
 
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:35
 #: app/assets/javascripts/app/models/overview.coffee:8
+#: app/assets/javascripts/app/models/report_profile.js.coffee:8
 msgid "Available for the following roles"
 msgstr "Διαθέσιμο για τους ακόλουθους ρόλους"
 
@@ -3060,7 +3078,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:338
 #: app/assets/javascripts/app/views/generic/object_search/item_organization_members.jst.eco:5
 #: app/frontend/apps/desktop/components/CommonSelect/CommonSelect.vue:399
-#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:413
+#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:419
 msgid "Back"
 msgstr "Πίσω"
 
@@ -3075,7 +3093,7 @@ msgid "Back to overview"
 msgstr "Πίσω στην προβολή μου"
 
 #: app/frontend/apps/desktop/components/CommonSelect/CommonSelect.vue:399
-#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:413
+#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:419
 #: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDialog.vue:181
 #, fuzzy
 #| msgid "Back to my view"
@@ -3121,7 +3139,7 @@ msgstr "Βάση DN"
 msgid "Base Objects"
 msgstr "Βασικά αντικείμενα"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:728
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:729
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:11
 #, fuzzy
 #| msgid "Authentication"
@@ -3316,7 +3334,7 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:139
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleMeta/useArticleMeta.ts:85
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:90
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:234
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:235
 #: app/frontend/shared/entities/ticket-article/action/plugins/email/forward.ts:30
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:178
 #: db/seeds/object_manager_attributes.rb:508
@@ -3469,7 +3487,7 @@ msgid ""
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_application_controller/after_auth_modal.coffee:9
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:382
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:404
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:361
 #: app/assets/javascripts/app/views/integration/exchange_certificate_issue.jst.eco:18
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:236
@@ -3504,7 +3522,7 @@ msgstr "Ακυρο"
 #: app/assets/javascripts/app/views/signup.jst.eco:7
 #: app/frontend/apps/desktop/components/CommonDialog/CommonDialogActionFooter.vue:19
 #: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:10
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:310
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:314
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactorMethods.vue:48
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:116
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordReset.vue:111
@@ -4137,7 +4155,7 @@ msgstr "Αντιγραφο"
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_description.coffee:4
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_error_modal.coffee:4
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:520
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:509
 #: app/assets/javascripts/app/controllers/_plugin/maintenance.coffee:27
 #: app/assets/javascripts/app/controllers/_settings/area_proxy.coffee:55
 #: app/assets/javascripts/app/controllers/translation.coffee:184
@@ -4305,7 +4323,7 @@ msgstr "Συνθήκες για αντικείμενα που επηρεάζον
 msgid "Conditions for shown tickets"
 msgstr "Προυποθέσεις για τα εμφανιζόμενα αιτήματα"
 
-#: app/assets/javascripts/app/controllers/widget/placeholder.coffee:130
+#: app/assets/javascripts/app/controllers/widget/placeholder.coffee:134
 msgid "Config"
 msgstr "Διαμόρφωση"
 
@@ -4574,7 +4592,7 @@ msgstr "Περιεχόμενο"
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:46
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSource.vue:52
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:136
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:524
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:525
 msgid "Continue"
 msgstr "Συνέχεια"
 
@@ -4618,6 +4636,7 @@ msgid "Conversation is transferred into another chat. Please stay tuned."
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_application_controller/_base.coffee:123
+#: app/assets/javascripts/app/controllers/_ui_element/auth_provider.coffee:31
 msgid "Copied!"
 msgstr ""
 
@@ -4677,6 +4696,8 @@ msgstr ""
 msgid "Copy ticket number"
 msgstr "Επεξεγασία Πελάτη"
 
+#: app/assets/javascripts/app/views/facebook/app_config.jst.eco:27
+#: app/assets/javascripts/app/views/generic/auth_provider.jst.eco:4
 #: app/assets/javascripts/app/views/google/app_config.jst.eco:27
 #: app/assets/javascripts/app/views/microsoft365/app_config.jst.eco:35
 #: app/assets/javascripts/app/views/microsoft_graph/app_config.jst.eco:35
@@ -4818,7 +4839,7 @@ msgid "Country"
 msgstr "Χώρα"
 
 #: app/assets/javascripts/app/controllers/_profile/token_access.coffee:81
-#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:19
+#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:15
 #: app/assets/javascripts/app/controllers/knowledge_base/add_form.coffee:14
 #: app/assets/javascripts/app/models/group.coffee:45
 #: app/assets/javascripts/app/views/agent_ticket_create.jst.eco:56
@@ -4830,7 +4851,7 @@ msgstr "Χώρα"
 #: app/frontend/apps/desktop/components/Form/fields/FieldGroupPermissions/FieldGroupPermissionsInput.vue:40
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:114
 #: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:398
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:475
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:476
 msgid "Create"
 msgstr "Δημιουργία"
 
@@ -4893,7 +4914,7 @@ msgid ""
 msgstr ""
 
 #: app/frontend/apps/mobile/pages/ticket/routes.ts:64
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:475
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:476
 #, fuzzy
 #| msgid "Create a Test Ticket"
 msgid "Create Ticket"
@@ -4996,7 +5017,7 @@ msgstr ""
 msgid "Create tag"
 msgstr "Δημιουργήθηκε στις"
 
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:524
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:525
 #, fuzzy
 #| msgid "Create a Test Ticket"
 msgid "Create ticket"
@@ -5116,7 +5137,7 @@ msgid "Created by"
 msgstr "Δημιουργήθηκε από"
 
 #: app/frontend/apps/desktop/pages/ticket/views/TicketCreate.vue:24
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:448
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:449
 #, fuzzy
 #| msgid "Create new records"
 msgid "Creating new tickets via web is disabled."
@@ -5145,7 +5166,7 @@ msgstr "Τρέχουσα κατάσταση"
 msgid "Current Token"
 msgstr "Τρέχων token"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:642
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:643
 #: app/assets/javascripts/app/models/ai_text_tool.coffee:20
 #: app/assets/javascripts/app/models/signature.coffee:21
 #: app/assets/javascripts/app/models/text_module.coffee:21
@@ -5329,7 +5350,6 @@ msgid "Dark Mode"
 msgstr "Τρόπος"
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:147
-#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:5
 #: app/assets/javascripts/app/controllers/dashboard.coffee:28
 #: app/assets/javascripts/app/controllers/package.coffee:43
 #: app/frontend/apps/desktop/pages/dashboard/routes.ts:25
@@ -5415,7 +5435,7 @@ msgid "Days"
 msgstr "Ημέρες"
 
 #: app/assets/javascripts/app/controllers/_ui_element/basedate.coffee:161
-#: app/assets/javascripts/app/controllers/report.coffee:220
+#: app/assets/javascripts/app/controllers/report.coffee:221
 #: app/assets/javascripts/app/controllers/time_accounting_accounted_time.coffee:26
 msgid "Dec"
 msgstr "Δεκ"
@@ -5886,7 +5906,7 @@ msgid ""
 "password and password reset will work without email delivery)."
 msgstr ""
 
-#: db/seeds/settings.rb:6078
+#: db/seeds/settings.rb:6073
 msgid ""
 "Defines if the bubble menu feature of the richtext editor is enabled. Note "
 "that this setting will be ignored if the writing assistant is turned on."
@@ -6716,7 +6736,7 @@ msgstr "Περιγραφή"
 msgid "Description (shown as title tag for screen readers)"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:429
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:430
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:76
 #, fuzzy
 #| msgid "reply"
@@ -6822,13 +6842,13 @@ msgstr "Συσκευές"
 msgid "Dialog window with selections"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:470
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:459
 msgid ""
 "Did you check the validity of the configured mailbox? Or consider removing "
 "this channel and switch to using a different mailbox type. %l"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:468
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:457
 msgid ""
 "Did you confirm that the user has delegation permissions for the mailbox? Or "
 "consider removing this channel and switch to using a different mailbox type. "
@@ -6855,7 +6875,7 @@ msgstr ""
 msgid "Did you plan to include attachments with this message?"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:466
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:455
 msgid ""
 "Did you verify that the user has access to the mailbox? Or consider removing "
 "this channel and switch to using a different mailbox type. %l"
@@ -6936,7 +6956,7 @@ msgstr "Απόρριψη Αλλαγών"
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:75
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:58
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:36
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:410
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:411
 #: app/frontend/apps/mobile/pages/ticket/views/TicketDetailView.vue:250
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:43
 #, fuzzy
@@ -6990,11 +7010,11 @@ msgstr "Εμφανιζόμενο όνομα"
 msgid "Do not change email address (%s)"
 msgstr "Εισάγετε το όνομα χρήστη σας ή τη διεύθυνση email."
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:668
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:669
 msgid "Do not encrypt email"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:654
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:655
 msgid "Do not sign email"
 msgstr ""
 
@@ -7186,11 +7206,9 @@ msgstr "Πρόχειρο"
 msgid "Drag and drop to reorder ticket overview list items."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:229
-#, fuzzy
-#| msgid "Drag to reorder"
-msgid "Drag and drop to reorder your tabs."
-msgstr "Σύρετε για αναδιάταξη"
+#: app/frontend/apps/desktop/composables/dragAndDrop/useAccessibleDragAndDrop.ts:64
+msgid "Drag ended for %s."
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/_application_controller/reorder_modal.coffee:2
 msgid "Drag to reorder"
@@ -7223,7 +7241,7 @@ msgstr ""
 msgid "Duplicate Detection"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:555
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:544
 #, fuzzy
 #| msgid "Email Address"
 msgid "Duplicate Email Address"
@@ -7267,7 +7285,7 @@ msgstr "Διακοπές πάσχα"
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:11
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:159
 #: app/frontend/apps/mobile/pages/home/views/Home.vue:71
-#: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:51
+#: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:46
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:54
 msgid "Edit"
 msgstr "Αλλαγή"
@@ -7849,11 +7867,11 @@ msgstr ""
 msgid "Encrypt"
 msgstr "Κρυπτογράφηση"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:669
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:670
 msgid "Encrypt email (if not possible, discard notification)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:670
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:671
 msgid "Encrypt email (if not possible, send notification anyway)"
 msgstr ""
 
@@ -8206,6 +8224,10 @@ msgstr ""
 msgid "Escalation at (Update Time)"
 msgstr ""
 
+#: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:123
+msgid "Escape pressed. No item selected."
+msgstr ""
+
 #: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:51
 #, fuzzy
 #| msgid "pending"
@@ -8271,6 +8293,12 @@ msgstr "Παράδειγμα αρχείου csv για λήψη."
 #: app/assets/javascripts/app/controllers/widget/payload_example.coffee:5
 msgid "Example Payload"
 msgstr ""
+
+#: db/seeds/community_user_resources.rb:50
+#, fuzzy
+#| msgid "Example"
+msgid "Example tag"
+msgstr "Παράδειγμα"
 
 #: app/assets/javascripts/app/views/api.jst.eco:17
 #, fuzzy
@@ -8358,6 +8386,10 @@ msgstr "Νέο Δελτίο"
 #| msgid "%s tickets found"
 msgid "Existing tickets (open)"
 msgstr "Βρέθηκαν %s δελτία"
+
+#: db/seeds/ai/text_tools.rb:46
+msgid "Expand draft into well-written section"
+msgstr ""
 
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar.vue:187
 #, fuzzy
@@ -8561,7 +8593,7 @@ msgid "Feature not configured, please contact your admin!"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/basedate.coffee:160
-#: app/assets/javascripts/app/controllers/report.coffee:220
+#: app/assets/javascripts/app/controllers/report.coffee:221
 #: app/assets/javascripts/app/controllers/time_accounting_accounted_time.coffee:26
 msgid "Feb"
 msgstr "Φεβ"
@@ -8702,6 +8734,10 @@ msgstr "Ονομα"
 msgid "First response"
 msgstr "Πρώτη απάντηση"
 
+#: db/seeds/ai/text_tools.rb:4
+msgid "Fix spelling and grammar"
+msgstr ""
+
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:3
 msgid "Fixed Email Accounts"
 msgstr "Σταθεροί λογαριασμοί email"
@@ -8710,10 +8746,14 @@ msgstr "Σταθεροί λογαριασμοί email"
 msgid "Flat Design"
 msgstr "Flat Design"
 
+#: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:90
+msgid "Focus on %s"
+msgstr ""
+
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:433
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:283
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:305
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:482
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:471
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:86
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:62
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:172
@@ -8794,9 +8834,6 @@ msgstr ""
 "το αντιγράψετε κάπου ασφαλές πριν συνεχίσετε."
 
 #: app/assets/javascripts/app/controllers/_ai/form_handler_ai_agent_unused_warning.coffee:14
-msgid "For this agent to run, it needs to be used in a trigger or a scheduler."
-msgstr ""
-
 #: app/assets/javascripts/app/models/ai_agent.coffee:31
 msgid "For this agent to run, it needs to be used in a trigger or scheduler."
 msgstr ""
@@ -8807,7 +8844,7 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:42
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:38
 #: app/frontend/apps/desktop/pages/ticket/views/TicketCreate.vue:23
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:447
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:448
 #: app/frontend/shared/errors/useErrorHandler.ts:29
 #: app/frontend/shared/router/guards/before/permission.ts:31
 msgid "Forbidden"
@@ -8858,7 +8895,7 @@ msgstr "Μορφοποίηση ως //strikethrough//"
 msgid "Format as _underlined_"
 msgstr "Μορφοποίηση ως _υπογραμμισμένο_."
 
-#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:81
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:93
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:156
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:152
 #, fuzzy
@@ -8878,7 +8915,7 @@ msgstr "Μορφοποίηση ως επικεφαλίδα h2"
 msgid "Format as h3 heading"
 msgstr "Μορφοποίηση ως επικεφαλίδα h3"
 
-#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:88
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:100
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:164
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:160
 #, fuzzy
@@ -8897,7 +8934,7 @@ msgstr "Μορφοποίηση ως λίστα παραγγελίας"
 msgid "Format as quoted text"
 msgstr "Μορφοποίηση ως μη ταξινομημένη λίστα"
 
-#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:102
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:114
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:180
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:176
 #, fuzzy
@@ -8905,7 +8942,7 @@ msgstr "Μορφοποίηση ως μη ταξινομημένη λίστα"
 msgid "Format as strikethrough"
 msgstr "Μορφοποίηση ως //strikethrough//"
 
-#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:95
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:107
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:172
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:168
 #, fuzzy
@@ -8984,6 +9021,7 @@ msgstr "Απο"
 msgid "Frontend"
 msgstr "Frontend"
 
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:514
 #: app/assets/javascripts/app/models/group.coffee:48
 #: app/frontend/apps/desktop/components/Form/fields/FieldGroupPermissions/FieldGroupPermissionsInput.vue:52
 #, fuzzy
@@ -9005,7 +9043,7 @@ msgstr "Πλήρες όνομα"
 msgid "Fully Qualified Domain Name"
 msgstr "Πλήρως αναγνωρισμένο domain name"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:678
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:679
 msgid "GET"
 msgstr ""
 
@@ -9285,7 +9323,7 @@ msgstr "Μυστικό πελάτη"
 msgid "Google Email"
 msgstr "Αποστολή Email"
 
-#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:201
+#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:188
 #: app/assets/javascripts/app/views/clues/clues_content.jst.eco:17
 #: app/frontend/apps/desktop/composables/useNewBetaUi.ts:43
 msgid "Got it"
@@ -9326,23 +9364,23 @@ msgstr "Χαιρετισμός"
 msgid "Group"
 msgstr "Ομαδα"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:310
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:350
 msgid "Group (change)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:301
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:341
 msgid "Group (create)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:328
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:368
 msgid "Group (full)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:319
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:359
 msgid "Group (overview)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:292
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:332
 msgid "Group (read)"
 msgstr ""
 
@@ -9429,13 +9467,13 @@ msgstr ""
 msgid "HTML Sanitizer Processing Timeout"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:728
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:729
 #, fuzzy
 #| msgid "Authentication"
 msgid "HTTP Authentication"
 msgstr "Authentication"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:762
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:763
 #, fuzzy
 #| msgid "Authentication"
 msgid "HTTP Authentication token"
@@ -9453,13 +9491,13 @@ msgstr "Authentication"
 msgid "HTTP Basic Authentication Username"
 msgstr "Authentication"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:751
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:752
 #, fuzzy
 #| msgid "Authentication"
 msgid "HTTP Basic Authentication password"
 msgstr "Authentication"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:740
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:741
 #, fuzzy
 #| msgid "Authentication"
 msgid "HTTP Basic Authentication username"
@@ -9485,8 +9523,8 @@ msgstr ""
 msgid "Has processed"
 msgstr "Έχει επεξεργαστεί"
 
-#: app/frontend/apps/desktop/components/CommonSelect/CommonSelectItem.vue:156
-#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdownItem.vue:125
+#: app/frontend/apps/desktop/components/CommonSelect/CommonSelectItem.vue:154
+#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdownItem.vue:149
 #: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDialog.vue:309
 msgid "Has submenu"
 msgstr ""
@@ -9542,7 +9580,7 @@ msgstr ""
 msgid "Header Menu"
 msgstr "Χρώμα επικεφαλίδας"
 
-#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:116
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:129
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:118
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:117
 #, fuzzy
@@ -9550,7 +9588,7 @@ msgstr "Χρώμα επικεφαλίδας"
 msgid "Heading 1"
 msgstr "σε αναμονή"
 
-#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:123
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:136
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:130
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:128
 #, fuzzy
@@ -9558,7 +9596,7 @@ msgstr "σε αναμονή"
 msgid "Heading 2"
 msgstr "σε αναμονή"
 
-#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:130
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:143
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:142
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:139
 #, fuzzy
@@ -9591,11 +9629,16 @@ msgid ""
 "please reply to keep it open."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:197
+#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:184
+#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:40
 #: app/frontend/apps/desktop/components/CommonPageHelp/CommonPageHelp.vue:22
 #: app/frontend/apps/desktop/components/CommonPageHelp/CommonPageHelpDialog.vue:20
 #: app/frontend/apps/desktop/composables/useNewBetaUi.ts:42
 msgid "Help"
+msgstr ""
+
+#: db/seeds/community_user_resources.rb:26
+msgid "Help me! I am an example ticket 🎓"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_plugin/translation_support.coffee:39
@@ -9610,11 +9653,11 @@ msgstr ""
 "Εδώ μπορείτε να προσθέσετε περαιτέρω συνδέσμους στη δημόσια σελίδα σας FAQ, "
 "οι οποίες θα εμφανίζονται είτε στην κεφαλίδα είτε στο υποσέλιδο."
 
-#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:20
-msgid ""
-"Here you can create new tickets, customers and organizations (depending on "
-"your configured permissions)."
-msgstr ""
+#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:16
+#, fuzzy
+#| msgid "Here you can create one."
+msgid "Here you can create new tickets and customers."
+msgstr "Εδώ μπορείτε να δημιουργήσετε ένα."
 
 #: app/assets/javascripts/app/controllers/customer_ticket_create/sidebar_customer_default.coffee:29
 msgid "Here you can create one."
@@ -9628,7 +9671,7 @@ msgid ""
 "translation for the target language."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:14
+#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:33
 #, fuzzy
 #| msgid ""
 #| "Here you can search for tickets, customers and organizations. Use the "
@@ -9650,7 +9693,7 @@ msgid ""
 "Zammad account."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:29
+#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:6
 #, fuzzy
 #| msgid ""
 #| "Here you can sign out, change the frontend language and see your last "
@@ -9666,7 +9709,7 @@ msgstr ""
 msgid "Here you define which authorization has access to the attribute."
 msgstr "Εδώ καθορίζετε ποια εξουσιοδότηση έχει πρόσβαση στο χαρακτηριστικό."
 
-#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:39
+#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:25
 #, fuzzy
 #| msgid ""
 #| "Here you find your ticket overviews for open, assigned and escalated "
@@ -9677,11 +9720,6 @@ msgid ""
 msgstr ""
 "Εδώ θα βρείτε τις επισκοπήσεις των αιτημάτων σας για ανοιχτά, καθορισμένα "
 "και κλιμακωτά αιτήματα."
-
-#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:6
-msgid "Here you see a quick overview of your and other agents' performance."
-msgstr ""
-"Εδώ βλέπετε μια γρήγορη επισκόπηση της απόδοσής σας και των άλλων εκπροσώπων."
 
 #: app/assets/javascripts/app/views/dashboard.jst.eco:12
 msgid "Here you will find the latest activities of your system."
@@ -10080,7 +10118,7 @@ msgstr "Υπηρεσία εικόνας"
 
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/popup_image.coffee:18
 #: app/assets/javascripts/app/lib/app_post/image_service.coffee:134
-#: app/assets/javascripts/app/lib/base/jquery.contenteditable.js:477
+#: app/assets/javascripts/app/lib/base/jquery.contenteditable.js:482
 msgid "Image file size is too large, please try inserting a smaller file."
 msgstr ""
 
@@ -10303,7 +10341,7 @@ msgid "Incompatible Elasticsearch version"
 msgstr "Τελευταίος συγχρονισμός"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:10
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:342
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:344
 msgid "Incomplete Ticket Checklist"
 msgstr ""
 
@@ -10525,7 +10563,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:105
 #: app/assets/javascripts/app/controllers/knowledge_base/content_controller.coffee:133
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:159
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:163
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:152
 msgid "Internal"
 msgstr "Εσωτερικός"
@@ -10830,7 +10868,7 @@ msgid "Items per page"
 msgstr "Aντικείμενα ανά σελίδα"
 
 #: app/assets/javascripts/app/controllers/_ui_element/basedate.coffee:160
-#: app/assets/javascripts/app/controllers/report.coffee:220
+#: app/assets/javascripts/app/controllers/report.coffee:221
 #: app/assets/javascripts/app/controllers/time_accounting_accounted_time.coffee:26
 msgid "Jan"
 msgstr "Ιαν"
@@ -10856,7 +10894,7 @@ msgid "Join %s"
 msgstr "Εγγραφείτε στο %s"
 
 #: app/assets/javascripts/app/controllers/_ui_element/basedate.coffee:161
-#: app/assets/javascripts/app/controllers/report.coffee:220
+#: app/assets/javascripts/app/controllers/report.coffee:221
 #: app/assets/javascripts/app/controllers/time_accounting_accounted_time.coffee:26
 msgid "Jul"
 msgstr "Ιουλ"
@@ -10866,7 +10904,7 @@ msgid "July"
 msgstr "Ιούλιος"
 
 #: app/assets/javascripts/app/controllers/_ui_element/basedate.coffee:160
-#: app/assets/javascripts/app/controllers/report.coffee:220
+#: app/assets/javascripts/app/controllers/report.coffee:221
 #: app/assets/javascripts/app/controllers/time_accounting_accounted_time.coffee:26
 msgid "Jun"
 msgstr "Ιουν"
@@ -10890,7 +10928,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:434
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:284
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:306
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:483
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:472
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:87
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:182
 msgid "Keep messages on server"
@@ -10981,7 +11019,7 @@ msgstr ""
 msgid "LDAP integration for user management."
 msgstr "Ενσωμάτωση LDAP για διαχείριση χρήστη."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:929
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:930
 #, fuzzy
 #| msgid "Labels"
 msgid "Label"
@@ -11365,7 +11403,7 @@ msgstr ""
 msgid "Links"
 msgstr "Σύνδεσμοι"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:212
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:233
 msgid "List of all user taskbar tabs"
 msgstr ""
 
@@ -11539,6 +11577,7 @@ msgid "MAC address (unique identifier of the report)"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/macro.coffee:3
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/utils/historyEventIssuerNames.ts:8
 msgid "Macro"
 msgstr "Μακροεντολή"
 
@@ -11548,7 +11587,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/macro.coffee:3
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:78
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:210
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:214
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:46
 #: db/seeds/permissions.rb:47
 msgid "Macros"
@@ -11563,7 +11602,7 @@ msgid ""
 "executed with just one click."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:386
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:375
 msgid "Mailbox type"
 msgstr ""
 
@@ -12020,7 +12059,7 @@ msgid "Mapping"
 msgstr "Χαρτογράφηση"
 
 #: app/assets/javascripts/app/controllers/_ui_element/basedate.coffee:160
-#: app/assets/javascripts/app/controllers/report.coffee:220
+#: app/assets/javascripts/app/controllers/report.coffee:221
 #: app/assets/javascripts/app/controllers/time_accounting_accounted_time.coffee:26
 msgid "Mar"
 msgstr "Μαρ"
@@ -12137,7 +12176,7 @@ msgid "Maximum number of ticket shown in overviews"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/basedate.coffee:160
-#: app/assets/javascripts/app/controllers/report.coffee:220
+#: app/assets/javascripts/app/controllers/report.coffee:221
 #: app/assets/javascripts/app/controllers/time_accounting_accounted_time.coffee:26
 msgid "May"
 msgstr "Μάι"
@@ -12292,7 +12331,7 @@ msgstr "Pretty Date"
 msgid "Method"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:678
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:679
 msgid "Method (AJAX endpoint)"
 msgstr ""
 
@@ -12410,6 +12449,10 @@ msgstr "Λεπτά"
 msgid "Mismatching phone number id."
 msgstr ""
 
+#: app/assets/javascripts/app/lib/app_post/ai_provider/mistral.coffee:4
+msgid "Mistral AI"
+msgstr ""
+
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:23
 #: db/seeds/object_manager_attributes.rb:1035
 msgid "Mobile"
@@ -12419,7 +12462,7 @@ msgstr "Κινητό"
 msgid "Mode"
 msgstr "Τρόπος"
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:75
+#: app/assets/javascripts/app/controllers/_ai/providers.coffee:81
 #, fuzzy
 #| msgid "Mode"
 msgid "Model"
@@ -12687,6 +12730,7 @@ msgid "Navigate through article"
 msgstr "Περιηγηθείτε στο άρθρο"
 
 #: app/assets/javascripts/app/views/generic/searchable_select_option.jst.eco:7
+#: app/assets/javascripts/app/views/generic/searchable_select_option_inactive_with_children.jst.eco:2
 #, fuzzy
 #| msgid "Navigate through article"
 msgid "Navigate to %s"
@@ -12714,6 +12758,10 @@ msgstr ""
 
 #: app/controllers/application_controller/handles_devices.rb:47
 msgid "Need fingerprint param!"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:41
+msgid "Need help? Check the Zammad Documentation for detailed guidance."
 msgstr ""
 
 #: lib/sessions/event/chat_base.rb:27
@@ -13092,7 +13140,7 @@ msgstr ""
 msgid "No AI provider is currently set up. Please contact your administrator."
 msgstr "Unable to verify email. Please contact your administrator."
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:916
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:917
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:42
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:5
 #: app/assets/javascripts/app/views/exchange/token_information.jst.eco:16
@@ -13339,7 +13387,7 @@ msgstr "Δε βρέθηκαν αποτελέσματα"
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:698
 #: app/frontend/apps/desktop/components/CommonSelect/CommonSelect.vue:305
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorSuggestionList.vue:66
-#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:470
+#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:480
 #: app/frontend/apps/desktop/components/NavigationMenu/NavigationMenu.vue:90
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout/IdoitObjectList.vue:34
 #: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInputDialog.vue:378
@@ -13382,7 +13430,7 @@ msgstr "Κοινοποιημένα"
 
 #: app/controllers/organizations_controller.rb:107
 #: app/controllers/text_modules_controller.rb:75
-#: app/controllers/ticket_articles_controller.rb:234
+#: app/controllers/ticket_articles_controller.rb:243
 #: app/controllers/tickets_controller.rb:480
 #: app/controllers/users_controller.rb:574
 msgid "No source data submitted!"
@@ -13447,7 +13495,7 @@ msgid "No x-zammad-session-user-id, no sender set!"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:8
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:345
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:347
 #, fuzzy
 #| msgid "Closed Tickets"
 msgid "No, just close the ticket"
@@ -13561,7 +13609,7 @@ msgstr "Δε βρέθηκαν αποτελέσματα"
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:32
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:48
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:35
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:104
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:105
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/note.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/note.ts:14
 #: db/seeds/object_manager_attributes.rb:1533
@@ -13689,7 +13737,7 @@ msgid "Notifications matrix"
 msgstr "Ειδοποίηση Αποστολέα"
 
 #: app/assets/javascripts/app/controllers/_ui_element/basedate.coffee:161
-#: app/assets/javascripts/app/controllers/report.coffee:220
+#: app/assets/javascripts/app/controllers/report.coffee:221
 #: app/assets/javascripts/app/controllers/time_accounting_accounted_time.coffee:26
 msgid "Nov"
 msgstr "Νοε"
@@ -13768,18 +13816,18 @@ msgstr ""
 msgid "Object"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/object_manager.coffee:114
+#: app/assets/javascripts/app/controllers/object_manager.coffee:118
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:3
 msgid "Object Manager"
 msgstr "Διαχειριστής αντικειμένων"
 
-#: app/assets/javascripts/app/controllers/object_manager.coffee:156
+#: app/assets/javascripts/app/controllers/object_manager.coffee:160
 #, fuzzy
 #| msgid "Object Manager"
 msgid "Object Manager Attribute"
 msgstr "Διαχειριστής αντικειμένων"
 
-#: app/assets/javascripts/app/controllers/object_manager.coffee:157
+#: app/assets/javascripts/app/controllers/object_manager.coffee:161
 #, fuzzy
 #| msgid "Object Manager"
 msgid "Object Manager Attributes"
@@ -13794,14 +13842,14 @@ msgid ""
 "Object with specified ID was not found. Try checking the URL for errors."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/object_manager.coffee:330
+#: app/assets/javascripts/app/controllers/object_manager.coffee:334
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoit.vue:55
 #: db/seeds/permissions.rb:257
 msgid "Objects"
 msgstr "Αντικείμενα"
 
 #: app/assets/javascripts/app/controllers/_ui_element/basedate.coffee:161
-#: app/assets/javascripts/app/controllers/report.coffee:220
+#: app/assets/javascripts/app/controllers/report.coffee:221
 #: app/assets/javascripts/app/controllers/time_accounting_accounted_time.coffee:26
 msgid "Oct"
 msgstr "Οκτ"
@@ -13822,7 +13870,7 @@ msgstr ""
 msgid "Ollama"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:415
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:437
 #: app/frontend/shared/entities/ticket-article/action/plugins/email/selection.ts:29
 msgid "On %s, %s wrote:"
 msgstr "Στο %s, ο %s έγραψε:"
@@ -14183,7 +14231,7 @@ msgstr "Overviews"
 #: app/frontend/apps/desktop/components/Search/plugins/organization.ts:13
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/organization.ts:13
 #: app/frontend/apps/mobile/pages/organization/routes.ts:8
-#: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:29
+#: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:30
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/plugins/organization.ts:6
 #: app/graphql/gql/types/overview_type.rb:94
 #: db/seeds/object_manager_attributes.rb:94 db/seeds/settings.rb:141
@@ -14235,7 +14283,7 @@ msgstr "Ονομα Οργανισμου"
 msgid "Organization tickets"
 msgstr "Τα αιτήματα της οργάνωσής μου"
 
-#: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:29
+#: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:30
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:25
 msgid ""
 "Organization with specified ID was not found. Try checking the URL for "
@@ -14374,7 +14422,7 @@ msgstr "Browser"
 msgid "Outdent text"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorActionBar/ActionToolbar.vue:187
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorActionBar/ActionToolbar.vue:186
 #, fuzzy
 #| msgid "Username"
 msgid "Overflow menu"
@@ -14405,7 +14453,7 @@ msgstr "Overviews"
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:158
 #: app/assets/javascripts/app/controllers/_profile/overviews.coffee:80
-#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:38
+#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:24
 #: app/assets/javascripts/app/controllers/overview.coffee:3
 #: app/assets/javascripts/app/controllers/ticket_overview.coffee:258
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/ticketOverviews.ts:6
@@ -14707,7 +14755,7 @@ msgstr "Διαγράψτε οριστικά τη βάση γνώσεων"
 msgid "Permission level for looking up tickets"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:337
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:377
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:96
 #: app/assets/javascripts/app/models/role.coffee:7
 #: app/assets/javascripts/app/views/object_manager/screens.jst.eco:5
@@ -14721,7 +14769,7 @@ msgstr "Δικαιώματα"
 msgid "Personal Access Tokens"
 msgstr "Προσωπικά διακριτικά πρόσβασης"
 
-#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:28
+#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:5
 msgid "Personal Settings"
 msgstr "Προσωπικές ρυθμίσεις"
 
@@ -14923,7 +14971,7 @@ msgstr ""
 msgid "Please proceed to login"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:385
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:407
 msgid "Please provide a recipient in \"TO\" or \"CC\"."
 msgstr ""
 
@@ -14964,7 +15012,7 @@ msgstr ""
 msgid "Please select at least one ticket overview"
 msgstr ""
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:82
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue:84
 #, fuzzy
 #| msgid "Please fill also some text in!"
 msgid "Please select some text first."
@@ -15079,7 +15127,7 @@ msgid ""
 "email communication."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:844
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:845
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:20
 #: app/assets/javascripts/app/views/channel/form.jst.eco:135
 #: app/assets/javascripts/app/views/generic/application_selector.jst.eco:15
@@ -15317,7 +15365,7 @@ msgid "Proxy address"
 msgstr "Διεύθυνση διακομιστή μεσολάβησης."
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:109
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:154
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:158
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:157
 msgid "Public"
 msgstr "Δημόσιο"
@@ -15498,7 +15546,7 @@ msgstr "Επιτυχής Ενημέρωση "
 msgid "Recently Viewed Tickets"
 msgstr "Αιτήματα που προβλήθηκαν πρόσφατα"
 
-#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:534
+#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:521
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:129
 msgid "Recently viewed"
 msgstr "Πρόσφατα προβαλλόμενα"
@@ -15710,7 +15758,7 @@ msgstr "Authentication"
 msgid "Remove checklist"
 msgstr "Αφαίρεση"
 
-#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:109
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:121
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:204
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:200
 #, fuzzy
@@ -16146,7 +16194,11 @@ msgstr ""
 msgid "Retrying to download the sent media via WhatsApp failed."
 msgstr ""
 
-#: db/seeds/settings.rb:6075
+#: db/seeds/ai/text_tools.rb:26
+msgid "Rewrite complex section and make it easy to understand"
+msgstr ""
+
+#: db/seeds/settings.rb:6070
 msgid "Richtext Bubble Menu"
 msgstr ""
 
@@ -16156,7 +16208,7 @@ msgstr ""
 msgid "Rocket Chat Notifications"
 msgstr "Αποκλεισμός ειδοποιήσεων"
 
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:283
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:323
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:216
 #: app/assets/javascripts/app/controllers/role.coffee:3
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:81
@@ -16328,7 +16380,7 @@ msgid "SSL Certificates"
 msgstr "SMS Notification"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:431
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:706
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:707
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:84
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:73
 #: app/assets/javascripts/app/models/webhook.coffee:9
@@ -16375,7 +16427,7 @@ msgstr "Σαβ"
 msgid "Saturday"
 msgstr "Σάββατο"
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:424
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:413
 #: app/assets/javascripts/app/controllers/_profile/avatar.coffee:155
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:73
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:127
@@ -16466,7 +16518,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1132
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1134
 #, fuzzy
 #| msgid "Bulk action executed!"
 msgid "Saving failed."
@@ -16529,7 +16581,7 @@ msgid "Scroll down to see new messages"
 msgstr "Μεταβείτε κάτω για να δείτε τα νέα μηνύματα"
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:169
-#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:13
+#: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:32
 #: app/assets/javascripts/app/controllers/knowledge_base/agent_controller.coffee:201
 #: app/assets/javascripts/app/views/integration/idoit_object_selector.jst.eco:3
 #: app/assets/javascripts/app/views/knowledge_base/search_field_widget.jst.eco:1
@@ -16541,7 +16593,7 @@ msgstr "Μεταβείτε κάτω για να δείτε τα νέα μηνύ�
 msgid "Search"
 msgstr "Αναζήτηση"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:694
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:695
 #, fuzzy
 #| msgid "Search"
 msgid "Search URL"
@@ -16707,7 +16759,7 @@ msgid ""
 "search result label key."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:820
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:821
 msgid "Search result label key"
 msgstr ""
 
@@ -16721,7 +16773,7 @@ msgstr ""
 msgid "Search result label key \"%s\" was not found."
 msgstr "Ηχος Ειδοποίησης"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:798
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:799
 #, fuzzy
 #| msgid "Back to search results"
 msgid "Search result list"
@@ -16732,7 +16784,7 @@ msgid ""
 "Search result list is not an array. Please provide search result list key."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:798
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:799
 msgid "Search result list key"
 msgstr ""
 
@@ -16746,7 +16798,7 @@ msgstr ""
 msgid "Search result list key \"%s\" was not found."
 msgstr "Ηχος Ειδοποίησης"
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:891
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:892
 #, fuzzy
 #| msgid "First response"
 msgid "Search result response"
@@ -16758,7 +16810,7 @@ msgid ""
 "search result value key."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:809
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:810
 msgid "Search result value key"
 msgstr ""
 
@@ -16775,7 +16827,7 @@ msgstr "Ηχος Ειδοποίησης"
 #: app/assets/javascripts/app/controllers/_ui_element/autocompletion_ajax.coffee:16
 #: app/assets/javascripts/app/controllers/_ui_element/autocompletion_ajax_customer_organization.coffee:18
 #: app/assets/javascripts/app/controllers/_ui_element/autocompletion_ajax_external_data_source.coffee:13
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:844
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:845
 #: app/assets/javascripts/app/controllers/widget/link/kb_answer.coffee:57
 #: app/assets/javascripts/app/views/generic/icon_picker.jst.eco:9
 #: app/assets/javascripts/app/views/translation/form.jst.eco:7
@@ -16816,7 +16868,7 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:149
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/email.ts:25
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:127
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:276
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:277
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:200
 #: db/seeds/permissions.rb:197
 msgid "Security"
@@ -16903,8 +16955,8 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_ui_element/ticket_duplicate_detection.coffee:71
 #: app/assets/javascripts/app/controllers/article_view/item.coffee:447
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:111
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleBody.vue:118
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:264
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleBody.vue:129
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:268
 msgid "See less"
 msgstr "Προβολή λιγότερων"
 
@@ -16914,9 +16966,9 @@ msgstr "Προβολή λιγότερων"
 #: app/assets/javascripts/app/views/data_privacy/tasks.jst.eco:41
 #: app/assets/javascripts/app/views/generic/ticket_duplicate_detection/warning.jst.eco:21
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:134
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleBody.vue:118
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleBody.vue:129
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleMore.vue:17
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:264
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:268
 msgid "See more"
 msgstr "Προβολή περισσότερων"
 
@@ -16949,7 +17001,7 @@ msgstr ""
 msgid "Select Template"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:428
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:429
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:76
 #, fuzzy
 #| msgid "reply"
@@ -16983,7 +17035,7 @@ msgstr ""
 msgid "Select the customer of the ticket or create one."
 msgstr ""
 
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:145
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:146
 msgid "Select the type of ticket your are creating"
 msgstr ""
 
@@ -17018,6 +17070,12 @@ msgstr ""
 msgid "Selected tickets do not match any macros."
 msgstr ""
 
+#: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:120
+#, fuzzy
+#| msgid "Delivery failed"
+msgid "Selection cancelled for %s."
+msgstr "Η παράδοση απέτυχε"
+
 #: app/assets/javascripts/app/models/trigger.coffee:8
 #, fuzzy
 #| msgid "Selector"
@@ -17033,7 +17091,7 @@ msgid "Selects the ticket number generator module."
 msgstr ""
 
 #: app/frontend/apps/desktop/components/CommonSelect/CommonSelect.vue:428
-#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:438
+#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:444
 #: app/frontend/apps/mobile/components/CommonSelect/CommonSelect.vue:197
 #: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInputDialog.vue:287
 #: app/frontend/apps/mobile/components/Form/fields/FieldTags/FieldTagsDialog.vue:171
@@ -17157,7 +17215,7 @@ msgid "Sent successfully!"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/basedate.coffee:161
-#: app/assets/javascripts/app/controllers/report.coffee:220
+#: app/assets/javascripts/app/controllers/report.coffee:221
 #: app/assets/javascripts/app/controllers/time_accounting_accounted_time.coffee:26
 msgid "Sep"
 msgstr "Σεπ"
@@ -17237,7 +17295,7 @@ msgstr "Authentication"
 msgid "Set Up Two-factor Authentication: %s"
 msgstr "Authentication"
 
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:119
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:120
 #, fuzzy
 #| msgid "Create your first ticket"
 msgid "Set a title for your ticket"
@@ -17458,7 +17516,7 @@ msgstr "Επιτυχής Ενημέρωση "
 msgid "Shared drafts are not activated for the selected group"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:386
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:375
 #, fuzzy
 #| msgid "Send Email"
 msgid "Shared mailbox"
@@ -17646,11 +17704,11 @@ msgstr ""
 msgid "Sign"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:655
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:656
 msgid "Sign email (if not possible, discard notification)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:656
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:657
 msgid "Sign email (if not possible, send notification anyway)"
 msgstr ""
 
@@ -17672,7 +17730,7 @@ msgstr "Εξοδος"
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:149
 #: app/frontend/apps/mobile/pages/authentication/components/LoginRecoveryCode.vue:80
 #: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:147
-#: app/frontend/apps/mobile/pages/authentication/routes.ts:13
+#: app/frontend/apps/mobile/pages/authentication/routes.ts:15
 #: app/frontend/apps/mobile/pages/playground/views/PlaygroundOverview.vue:475
 msgid "Sign in"
 msgstr "Εισοδος"
@@ -17706,6 +17764,7 @@ msgid "Sign:"
 msgstr "Εισοδος"
 
 #: app/assets/javascripts/app/controllers/_channel/_email_signature.coffee:49
+#: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:174
 #: app/assets/javascripts/app/models/group.coffee:13
 #: app/controllers/integration/smime_controller.rb:119
 #: db/seeds/object_manager_attributes.rb:2258
@@ -17758,6 +17817,7 @@ msgstr "assign tickets"
 msgid "Simple Line Icons"
 msgstr ""
 
+#: app/assets/javascripts/app/views/settings/storage_provider.jst.eco:22
 #: db/seeds/settings.rb:379
 msgid "Simple Storage (S3)"
 msgstr ""
@@ -17891,13 +17951,23 @@ msgstr ""
 msgid "Sorry, there is currently no CTI backend enabled."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:469
+#: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:139
+msgid ""
+"Sortable list focused. Use up and down arrows to navigate items. Press Space "
+"to select and item and again on another item to swap them."
+msgstr ""
+
+#: app/frontend/apps/desktop/composables/dragAndDrop/useAccessibleDragAndDrop.ts:47
+msgid "Sorted %s in user taskbar list to position %s."
+msgstr ""
+
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:470
 #, fuzzy
 #| msgid "pending"
 msgid "Sorted ascending"
 msgstr "σε αναμονή"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:470
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:471
 #, fuzzy
 #| msgid "pending"
 msgid "Sorted descending"
@@ -17935,7 +18005,7 @@ msgstr "Πηγή"
 msgid "Special character required"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:482
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:471
 msgid ""
 "Specify which folder to fetch from, or leave empty to fetch from ||inbox||."
 msgstr ""
@@ -18264,7 +18334,7 @@ msgstr "Αποστολή"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:147
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:178
-#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:373
+#: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:311
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:157
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:206
 #: app/assets/javascripts/app/views/widget/mention.jst.eco:4
@@ -18313,6 +18383,10 @@ msgstr "Subscription Settings"
 msgid "Subscription settings"
 msgstr "Subscription Settings"
 
+#: db/seeds/ai/text_tools.rb:74
+msgid "Summarize section to about half its current size"
+msgstr ""
+
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:106
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/ticket-summary.ts:11
 msgid "Summary"
@@ -18355,6 +18429,10 @@ msgstr "Κυριακή"
 
 #: db/seeds/settings.rb:5533
 msgid "Support of multilingual Knowledge Base."
+msgstr ""
+
+#: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:71
+msgid "Swapped %s with %s. %s moved to position %s."
 msgstr ""
 
 #: app/assets/javascripts/app/views/keyboard_shortcuts.jst.eco:16
@@ -18455,7 +18533,7 @@ msgstr ""
 msgid "Tab has changed, do you really want to close it?"
 msgstr "Tab has changed, do you really want to close it?"
 
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:224
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:245
 msgid "Tabs"
 msgstr ""
 
@@ -18613,7 +18691,7 @@ msgstr "Text editing"
 msgid "Text field"
 msgstr "Text editing"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:381
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:403
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:360
 msgid "Text missing"
 msgstr "Text missing"
@@ -18635,7 +18713,7 @@ msgstr "Text modules"
 msgid "Text modules are …"
 msgstr "Text modules"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:399
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:421
 msgid "Text needed"
 msgstr ""
 
@@ -18673,7 +18751,7 @@ msgstr ""
 msgid "Thanks for joining. Email sent to \"%s\"."
 msgstr "Thanks for joining. Email sent to \"%s\"."
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:245
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:249
 #, fuzzy
 #| msgid "Update successful!"
 msgid "The %s selected tickets have been updated successfully."
@@ -18685,11 +18763,11 @@ msgstr "Επιτυχής Ενημέρωση "
 msgid "The 'gpg-agent' process could not be stopped."
 msgstr "%s Object(s) are created."
 
-#: app/controllers/concerns/handles_oidc_authorization.rb:20
+#: app/controllers/concerns/handles_oidc_authorization.rb:19
 msgid "The 'logout_token' does not contain any session information."
 msgstr ""
 
-#: app/controllers/concerns/handles_oidc_authorization.rb:17
+#: app/controllers/concerns/handles_oidc_authorization.rb:16
 #, fuzzy
 #| msgid "Signature"
 msgid "The 'logout_token' is invalid."
@@ -18866,12 +18944,6 @@ msgstr "%s Object(s) are created."
 msgid "The account link was successfully removed!"
 msgstr ""
 
-#: app/controllers/reports_controller.rb:138
-#, fuzzy
-#| msgid "%s Object(s) are created."
-msgid "The active reporting profile could not be found."
-msgstr "%s Object(s) are created."
-
 #: app/assets/javascripts/app/views/exchange/admin_consent.jst.eco:2
 #: app/assets/javascripts/app/views/microsoft365/admin_consent.jst.eco:2
 #, fuzzy
@@ -18916,7 +18988,7 @@ msgstr "%s Object(s) are created."
 msgid "The article could not be set to public."
 msgstr "%s Object(s) are created."
 
-#: app/controllers/ticket_articles_controller.rb:152
+#: app/controllers/ticket_articles_controller.rb:161
 msgid "The article does not belong to the specified ticket."
 msgstr ""
 
@@ -19230,9 +19302,9 @@ msgid ""
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_channel/facebook.coffee:182
-#: app/assets/javascripts/app/controllers/_channel/google.coffee:483
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:510
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:371
+#: app/assets/javascripts/app/controllers/_channel/google.coffee:472
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:499
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:360
 #: app/assets/javascripts/app/controllers/_integration/exchange.coffee:715
 msgid "The entry could not be created."
 msgstr ""
@@ -19247,7 +19319,7 @@ msgstr ""
 msgid "The file could not be uploaded."
 msgstr "%s Object(s) are created."
 
-#: app/controllers/ticket_articles_controller.rb:166
+#: app/controllers/ticket_articles_controller.rb:175
 msgid "The file does not belong to the specified article."
 msgstr ""
 
@@ -19465,7 +19537,7 @@ msgstr "%s Object(s) are created."
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:819
 #: app/assets/javascripts/app/controllers/customer_ticket_create.coffee:193
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:272
-#: app/assets/javascripts/app/controllers/object_manager.coffee:261
+#: app/assets/javascripts/app/controllers/object_manager.coffee:265
 #: app/assets/javascripts/app/lib/app_post/user_organization_autocompletion.coffee:94
 #, fuzzy
 #| msgid "%s Object(s) are created."
@@ -19483,9 +19555,9 @@ msgstr "%s Object(s) are updated."
 #: app/assets/javascripts/app/controllers/_settings/area_switch.coffee:93
 #: app/assets/javascripts/app/controllers/_settings/area_ticket_number.coffee:134
 #: app/assets/javascripts/app/controllers/_settings/form.coffee:91
-#: app/assets/javascripts/app/controllers/object_manager.coffee:327
+#: app/assets/javascripts/app/controllers/object_manager.coffee:331
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_idoit.coffee:142
-#: app/assets/javascripts/app/controllers/user.coffee:230
+#: app/assets/javascripts/app/controllers/user.coffee:234
 #, fuzzy
 #| msgid "%s Object(s) are updated."
 msgid "The object could not be updated."
@@ -19554,7 +19626,7 @@ msgstr "Η δοκιμή σύνδεσης ήταν επιτυχής"
 msgid "The personal access token could not be deleted."
 msgstr "%s Object(s) are created."
 
-#: app/controllers/ticket_articles_controller.rb:274
+#: app/controllers/ticket_articles_controller.rb:283
 msgid ""
 "The preview cannot be generated. The format is corrupted or not supported."
 msgstr ""
@@ -19657,10 +19729,16 @@ msgstr ""
 msgid "The public PGP key could not be found."
 msgstr "%s Object(s) are updated."
 
-#: app/assets/javascripts/app/controllers/report.coffee:194
+#: app/assets/javascripts/app/controllers/report.coffee:195
 #, fuzzy
 #| msgid "%s Object(s) are created."
 msgid "The report could not be generated"
+msgstr "%s Object(s) are created."
+
+#: app/controllers/reports_controller.rb:139
+#, fuzzy
+#| msgid "%s Object(s) are created."
+msgid "The reporting profile could not be found."
 msgstr "%s Object(s) are created."
 
 #: app/assets/javascripts/app/controllers/knowledge_base/delete.coffee:31
@@ -19813,7 +19891,7 @@ msgstr ""
 msgid "The required parameter 'ticket_number' is missing."
 msgstr ""
 
-#: app/models/concerns/perform_changes/action/attribute_updates.rb:119
+#: app/models/concerns/perform_changes/action/attribute_updates.rb:125
 msgid "The required parameter 'user_id' is missing."
 msgstr ""
 
@@ -19831,7 +19909,7 @@ msgstr ""
 msgid "The response could not be processed."
 msgstr "%s Object(s) are created."
 
-#: app/controllers/ticket_articles_controller.rb:265
+#: app/controllers/ticket_articles_controller.rb:274
 msgid "The retried attachment download failed."
 msgstr ""
 
@@ -20015,7 +20093,7 @@ msgstr ""
 msgid "The text tool with the given ID could not be found."
 msgstr "%s Object(s) are created."
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts:198
+#: app/frontend/shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts:139
 msgid ""
 "The text was modified. Your request has been aborted to prevent overwriting."
 msgstr ""
@@ -20380,7 +20458,30 @@ msgid ""
 "This PGP email was encrypted with a potentially unknown encryption algorithm."
 msgstr ""
 
-#: app/controllers/ticket_articles_controller.rb:186
+#: db/seeds/ai/text_tools.rb:19
+msgid ""
+"This Writing Assistant Tool corrects spelling and grammar errors in the text."
+msgstr ""
+
+#: db/seeds/ai/text_tools.rb:89
+msgid ""
+"This Writing Assistant Tool creates a short summary of the selected text "
+"keeping the original meaning."
+msgstr ""
+
+#: db/seeds/ai/text_tools.rb:39
+msgid ""
+"This Writing Assistant Tool simplifies the selected text and improves "
+"comprehension."
+msgstr ""
+
+#: db/seeds/ai/text_tools.rb:67
+msgid ""
+"This Writing Assistant Tool transforms the draft into a fully formulated "
+"text."
+msgstr ""
+
+#: app/controllers/ticket_articles_controller.rb:195
 #, fuzzy
 #| msgid "Defines the state of auto closed tickets."
 msgid "This article does not have a raw copy available."
@@ -20419,7 +20520,7 @@ msgstr ""
 msgid "This entry already exists!"
 msgstr ""
 
-#: app/services/service/check_feature_enabled.rb:24
+#: app/services/service/check_feature_enabled.rb:8
 #, fuzzy
 #| msgid "Time Accounting"
 msgid "This feature is not enabled."
@@ -20661,6 +20762,11 @@ msgstr ""
 #: app/models/ssl_certificate.rb:11
 msgid ""
 "This is not a valid X509 certificate. Please check the certificate format."
+msgstr ""
+
+#: app/frontend/apps/desktop/components/CommonSelect/CommonSelectItem.vue:67
+#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdownItem.vue:89
+msgid "This item expands to show more options"
 msgstr ""
 
 #: app/models/channel/email_parser.rb:11
@@ -21340,7 +21446,7 @@ msgid "Ticket update failed."
 msgstr "Ενημέρωση Αιτήματος"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/useTicketEditTitle.ts:27
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:434
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:436
 #: app/frontend/apps/mobile/pages/ticket/views/TicketDetailView.vue:157
 #, fuzzy
 #| msgid "Update successful!"
@@ -21432,7 +21538,7 @@ msgstr ""
 msgid "Tickets"
 msgstr "Δελτία"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:292
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:296
 #, fuzzy
 #| msgid "Ticket update"
 msgid "Tickets Bulk Edit"
@@ -21451,7 +21557,7 @@ msgstr ""
 msgid "Tickets assigned to me: %s of %s"
 msgstr ""
 
-#: app/controllers/ticket_articles_controller.rb:227
+#: app/controllers/ticket_articles_controller.rb:236
 #: app/controllers/tickets_controller.rb:473
 msgid "Tickets can only be imported if system is in import mode."
 msgstr ""
@@ -21598,7 +21704,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:10
 #: app/controllers/time_accountings_controller.rb:85
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/TicketSimpleTable.vue:35
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:135
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:136
 #: app/graphql/gql/types/overview_type.rb:92
 #: db/seeds/object_manager_attributes.rb:32 lib/excel_sheet/ticket.rb:24
 msgid "Title"
@@ -21739,7 +21845,7 @@ msgstr "Ανοίξτε το κουτί σημειώσεων"
 msgid "Toggle the overlay"
 msgstr "Ανοίξτε το κουτί σημειώσεων"
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:64
+#: app/assets/javascripts/app/controllers/_ai/providers.coffee:70
 #: app/assets/javascripts/app/controllers/api.coffee:11
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:48
 #: app/models/channel/driver/sms/massenversand.rb:44
@@ -21829,6 +21935,10 @@ msgstr "Checksum"
 msgid "Transfer conversation to another chat:"
 msgstr ""
 
+#: app/frontend/apps/desktop/composables/dragAndDrop/useAccessibleDragAndDrop.ts:56
+msgid "Transferred %s from user taskbar list %s at position %s."
+msgstr ""
+
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:219
 #, fuzzy
 #| msgid "Translations"
@@ -21900,7 +22010,7 @@ msgstr ""
 msgid "Try Another Method"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:207
+#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:194
 msgid "Try New BETA UI"
 msgstr ""
 
@@ -22111,7 +22221,7 @@ msgstr "Νέο χαρακτηριστικό"
 msgid "UID Field"
 msgstr "Ημερομηνία και ώρα"
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:86
+#: app/assets/javascripts/app/controllers/_ai/providers.coffee:92
 #: app/assets/javascripts/app/views/api.jst.eco:63
 #: app/assets/javascripts/app/views/integration/check_mk.jst.eco:12
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:12
@@ -22124,17 +22234,17 @@ msgstr "Ημερομηνία και ώρα"
 msgid "URL"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:669
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:670
 msgid "URL (AJAX endpoint)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:96
+#: app/assets/javascripts/app/controllers/_ai/providers.coffee:102
 #, fuzzy
 #| msgid "%s (option)"
 msgid "URL (Completions)"
 msgstr "%s (επιλογή)"
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:106
+#: app/assets/javascripts/app/controllers/_ai/providers.coffee:112
 msgid "URL (Embeddings)"
 msgstr ""
 
@@ -22162,7 +22272,7 @@ msgstr "Επιλογή"
 msgid "Unit"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/composables/useHistoryEvents.ts:38
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/composables/useHistoryEvents.ts:39
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/utils/eventHelpers.ts:11
 #, fuzzy
 #| msgid "%s (unknown)"
@@ -22371,7 +22481,7 @@ msgstr "%s Object(s) are updated."
 #: app/assets/javascripts/app/models/object_manager_attribute.coffee:11
 #: app/assets/javascripts/app/models/overview.coffee:70
 #: app/assets/javascripts/app/models/postmaster_filter.coffee:12
-#: app/assets/javascripts/app/models/report_profile.js.coffee:8
+#: app/assets/javascripts/app/models/report_profile.js.coffee:9
 #: app/assets/javascripts/app/models/role.coffee:14
 #: app/assets/javascripts/app/models/signature.coffee:30
 #: app/assets/javascripts/app/models/sla.coffee:12
@@ -22564,7 +22674,7 @@ msgstr ""
 msgid "Use custom option sort"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:538
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:539
 msgid "Use double click to change level of the row."
 msgstr ""
 
@@ -22690,6 +22800,13 @@ msgstr "Χρήστης"
 msgid "User (censored):"
 msgstr ""
 
+#: app/assets/javascripts/app/controllers/documentation_link.coffee:14
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/user-documentation.ts:7
+#, fuzzy
+#| msgid "Username / email"
+msgid "User Documentation"
+msgstr "Username / email"
+
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:47
 msgid "User Filter"
 msgstr ""
@@ -22698,7 +22815,7 @@ msgstr ""
 msgid "User Mailbox"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:538
+#: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:527
 msgid "User Mismatch"
 msgstr ""
 
@@ -22797,7 +22914,7 @@ msgstr ""
 msgid "User is out of office"
 msgstr "Εκτός γραφείου"
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:386
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:375
 #, fuzzy
 #| msgid "Username / email"
 msgid "User mailbox"
@@ -22814,7 +22931,11 @@ msgstr "Ψευδόνυμο"
 msgid "User successfully unlocked!"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/user.coffee:215
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:259
+msgid "User taskbar tabs"
+msgstr ""
+
+#: app/assets/javascripts/app/controllers/user.coffee:219
 #, fuzzy
 #| msgid "Update successful!"
 msgid "User updated successfully."
@@ -22926,7 +23047,7 @@ msgstr "Εκτελέστηκε μαζική ενέργεια!"
 msgid "Validation failed: %{errors}"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:925
+#: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:926
 #: app/assets/javascripts/app/views/integration/clearbit.jst.eco:8
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:86
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:38
@@ -22942,7 +23063,7 @@ msgstr ""
 msgid "Value"
 msgstr "Τιμή"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:554
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:555
 msgid "Variables"
 msgstr "Μεταβλητές"
 
@@ -23058,13 +23179,13 @@ msgstr ""
 msgid "Viewing ticket"
 msgstr "Νέο Δελτίο"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:717
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:718
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_dialog.coffee:6
 #: app/assets/javascripts/app/controllers/widget/ticket_bulk_form.coffee:71
 #: app/assets/javascripts/app/models/ticket_article.coffee:14
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/article.jst.eco:3
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/notification.jst.eco:3
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:148
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:152
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:144
 #: db/seeds/object_manager_attributes.rb:449
 msgid "Visibility"
@@ -23229,10 +23350,6 @@ msgstr ""
 #: app/assets/javascripts/app/views/telegram/bot_add.jst.eco:18
 #: app/assets/javascripts/app/views/whatsapp/account_phone_number.jst.eco:25
 msgid "Welcome message"
-msgstr ""
-
-#: db/seeds/community_user_resources.rb:25
-msgid "Welcome to Zammad!"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/welcome.coffee:8
@@ -23436,7 +23553,7 @@ msgid "Writing Assistant Tool"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/text_tool.coffee:17
-#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:71
+#: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:82
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:71
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:70
 msgid "Writing Assistant Tools"
@@ -23454,7 +23571,7 @@ msgstr ""
 msgid "Writing Assistant couldn’t generate text."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:21
+#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:24
 msgid "Writing Assistant: %s"
 msgstr ""
 
@@ -23472,7 +23589,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_confirm.coffee:4
 #: app/assets/javascripts/app/controllers/_manage/ticket_notification.coffee:47
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:613
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:614
 #: app/assets/javascripts/app/controllers/tag.coffee:133
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:121
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:100
@@ -23488,7 +23605,7 @@ msgid "Yes, add attachments now"
 msgstr "Προσθήκη επιλογής συνημμένου για μεταφόρτωση."
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:344
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:346
 #, fuzzy
 #| msgid "Remove"
 msgid "Yes, open the checklist"
@@ -23682,7 +23799,7 @@ msgid ""
 "system that is already in production without any loss of data."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:198
+#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:185
 msgid ""
 "You can switch between the old and the New BETA UI at any moment in the "
 "Profile > New BETA UI section."
@@ -23698,7 +23815,7 @@ msgstr ""
 msgid "You can use the following script to post the data to %s."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/user.coffee:173
+#: app/assets/javascripts/app/controllers/user.coffee:150
 msgid ""
 "You cannot view or change the group permissions of an inactive user. "
 "Activate them first to manage their permissions."
@@ -23724,7 +23841,7 @@ msgstr ""
 msgid "You do not have permission to update"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:389
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:390
 msgid "You don't have more tickets to load."
 msgstr ""
 
@@ -23752,7 +23869,7 @@ msgstr ""
 msgid "You have insufficient rights to view this object."
 msgstr ""
 
-#: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:30
+#: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:31
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:26
 msgid "You have insufficient rights to view this organization."
 msgstr ""
@@ -23808,7 +23925,7 @@ msgstr ""
 msgid "You have unchecked items in the checklist."
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:339
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:341
 #, fuzzy
 #| msgid "Sure to delete this object?"
 msgid ""
@@ -23834,7 +23951,7 @@ msgstr ""
 msgid "You need to configure the Zammad endpoints in the %s:"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:385
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:386
 msgid "You reached the table limit of %s tickets (%s remaining)."
 msgstr ""
 
@@ -24183,7 +24300,7 @@ msgstr "στις"
 msgid "at least one letter is required"
 msgstr ""
 
-#: app/assets/javascripts/app/lib/app_post/utils.coffee:1063
+#: app/assets/javascripts/app/lib/app_post/utils.coffee:1076
 #: app/frontend/shared/composables/form/useCheckBodyAttachmentReference.ts:9
 msgid "attachment,attached,enclosed,enclosure"
 msgstr ""
@@ -24259,8 +24376,8 @@ msgstr "Επιλογή"
 msgid "checked checklist item '%s'"
 msgstr "Checksum"
 
-#: app/assets/javascripts/app/views/object_manager/attribute/multi_tree_select.jst.eco:24
-#: app/assets/javascripts/app/views/object_manager/attribute/tree_select.jst.eco:24
+#: app/assets/javascripts/app/views/object_manager/attribute/multi_tree_select.jst.eco:27
+#: app/assets/javascripts/app/views/object_manager/attribute/tree_select.jst.eco:27
 msgid "children"
 msgstr ""
 
@@ -24485,6 +24602,12 @@ msgstr "πρόχειρο"
 #: app/assets/javascripts/app/views/ticket_overview/batch_overlay.jst.eco:3
 msgid "drag here to cancel"
 msgstr ""
+
+#: app/assets/javascripts/app/index.coffee:215
+#, fuzzy
+#| msgid "Tue"
+msgid "due"
+msgstr "Τρι"
 
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:140
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:124
@@ -24770,14 +24893,14 @@ msgid "in process"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/active.coffee:5
-#: app/assets/javascripts/app/lib/app_post/utils.coffee:1438
+#: app/assets/javascripts/app/lib/app_post/utils.coffee:1451
 #: app/assets/javascripts/app/models/webhook.coffee:34
 #: app/assets/javascripts/app/views/generic/object_search/item_object.jst.eco:16
 #: app/assets/javascripts/app/views/generic/object_search/item_organization.jst.eco:4
 msgid "inactive"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:604
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:605
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:91
 msgid "internal"
 msgstr ""
@@ -25022,7 +25145,7 @@ msgstr "Ενωμένο"
 msgid "merged into"
 msgstr "Ενωμένο"
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:623
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:624
 msgid "message"
 msgstr ""
 
@@ -25252,7 +25375,7 @@ msgstr "υπενθύμηση αναμονής"
 msgid "phone"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:604
+#: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:605
 #, fuzzy
 #| msgid "Public"
 msgid "public"
@@ -25363,8 +25486,8 @@ msgstr ""
 msgid "ringing"
 msgstr ""
 
-#: app/assets/javascripts/app/views/object_manager/attribute/multi_tree_select.jst.eco:27
-#: app/assets/javascripts/app/views/object_manager/attribute/tree_select.jst.eco:27
+#: app/assets/javascripts/app/views/object_manager/attribute/multi_tree_select.jst.eco:30
+#: app/assets/javascripts/app/views/object_manager/attribute/tree_select.jst.eco:30
 msgid "row"
 msgstr ""
 
@@ -25381,7 +25504,7 @@ msgid "select"
 msgstr ""
 
 #: app/frontend/apps/desktop/components/CommonSelect/CommonSelect.vue:319
-#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:434
+#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:440
 #, fuzzy
 #| msgid "reply"
 msgid "select all options"
@@ -25394,7 +25517,7 @@ msgstr "απαντηση"
 msgid "select attachment…"
 msgstr "επιλογή συνημένου"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:434
+#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:440
 #, fuzzy
 #| msgid "reply"
 msgid "select visible options"
@@ -25658,7 +25781,7 @@ msgstr ""
 msgid "updated"
 msgstr "ενημερωμένο"
 
-#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:387
+#: app/assets/javascripts/app/controllers/_channel/microsoft_graph.coffee:376
 #, fuzzy
 #| msgid "Shared organization"
 msgid "user@your-organization.tld"
@@ -25761,6 +25884,21 @@ msgstr "... ολόκληρης της περιοχής κειμένου"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅ μεσος χρονοσ αναμονησ σημερα"
+
+#, fuzzy
+#~| msgid "Drag to reorder"
+#~ msgid "Drag and drop to reorder your tabs."
+#~ msgstr "Σύρετε για αναδιάταξη"
+
+#, fuzzy
+#~| msgid "All Agents"
+#~ msgid "All agents"
+#~ msgstr "Ολοι οι χειρηστές"
+
+#~ msgid "Here you see a quick overview of your and other agents' performance."
+#~ msgstr ""
+#~ "Εδώ βλέπετε μια γρήγορη επισκόπηση της απόδοσής σας και των άλλων "
+#~ "εκπροσώπων."
 
 #, fuzzy
 #~| msgid "Content"
