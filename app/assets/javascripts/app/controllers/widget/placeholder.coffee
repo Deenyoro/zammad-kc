@@ -33,7 +33,7 @@ class App.WidgetPlaceholder extends App.Controller
       list = {}
       if App[item.object] && App[item.object].configure_attributes
         for attribute in App[item.object].configure_attributes
-          if !ignoreAttributes[attribute.name] && attribute.name.substr(attribute.name.length-4,attribute.name.length) isnt '_ids'
+          if !ignoreAttributes[attribute.name] && attribute.name.substr(attribute.name.length - 4, attribute.name.length) isnt '_ids'
             list[attribute.name] = attribute
         for name in _.keys(list).sort()
           attribute = list[name]
@@ -47,11 +47,11 @@ class App.WidgetPlaceholder extends App.Controller
               subList = {}
               subAttributes = {}
               for subAttribute in App[attribute.relation].configure_attributes
-                if !ignoreSubAttributes[subAttribute.name] && subAttribute.name.substr(subAttribute.name.length-3,subAttribute.name.length) isnt '_id' && subAttribute.name.substr(subAttribute.name.length-4,subAttribute.name.length) isnt '_ids'
+                if !ignoreSubAttributes[subAttribute.name] && subAttribute.name.substr(subAttribute.name.length - 3, subAttribute.name.length) isnt '_id' && subAttribute.name.substr(subAttribute.name.length - 4, subAttribute.name.length) isnt '_ids'
                   subList[subAttribute.name] = subAttribute
               for subName in _.keys(subList).sort()
                 subAttributes[subName] = subList[subName].display
-            relation = "#{item.prefix}.#{attribute.name.substr(0,attribute.name.length-3)}"
+            relation = "#{item.prefix}.#{attribute.name.substr(0, attribute.name.length - 3)}"
             for key, display of subAttributes
               name = "\#{#{relation}.#{key}}"
               content = "\#{#{relation}.#{key}}"

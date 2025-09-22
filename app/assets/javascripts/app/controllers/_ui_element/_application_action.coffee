@@ -624,25 +624,10 @@ class App.UiElement.ApplicationAction
         placeholder: __('message')
         maxlength: messageLength
       )
+
       new App.WidgetPlaceholder(
         el: notificationElement.find('.js-body div[contenteditable="true"]').parent()
-        objects: [
-          {
-            prefix: 'ticket'
-            object: 'Ticket'
-            display: __('Ticket')
-          },
-          {
-            prefix: 'article'
-            object: 'TicketArticle'
-            display: __('Article')
-          },
-          {
-            prefix: 'user'
-            object: 'User'
-            display: __('Current User')
-          },
-        ]
+        objects: @getPlaceholderObjects(attribute)
       )
 
     elementRow.find('.js-setNotification').html(notificationElement).removeClass('hide')
@@ -732,25 +717,10 @@ class App.UiElement.ApplicationAction
       placeholder: __('message')
       maxlength: 200000
     )
+
     new App.WidgetPlaceholder(
       el: articleElement.find('.js-body div[contenteditable="true"]').parent()
-      objects: [
-        {
-          prefix: 'ticket'
-          object: 'Ticket'
-          display: __('Ticket')
-        },
-        {
-          prefix: 'article'
-          object: 'TicketArticle'
-          display: __('Article')
-        },
-        {
-          prefix: 'user'
-          object: 'User'
-          display: __('Current User')
-        },
-      ]
+      objects: @getPlaceholderObjects(attribute)
     )
 
     elementRow.find('.js-setArticle').html(articleElement).removeClass('hide')
@@ -786,3 +756,26 @@ class App.UiElement.ApplicationAction
   @removeAlerts: (item, elementRow) ->
     item.find(".js-alert[data-element-row-id='#{elementRow.data('id')}']")
       .remove()
+
+  @getPlaceholderObjects: (attribute) ->
+    objects = [
+        {
+          prefix: 'ticket'
+          object: 'Ticket'
+          display: __('Ticket')
+        },
+        {
+          prefix: 'article'
+          object: 'TicketArticle'
+          display: __('Article')
+        },
+    ]
+    if attribute?.placeholder_current_user isnt false
+      objects.push(
+        {
+          prefix: 'user'
+          object: 'User'
+          display: __('Current User')
+        }
+      )
+    objects

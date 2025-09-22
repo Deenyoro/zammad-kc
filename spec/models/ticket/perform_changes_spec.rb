@@ -695,6 +695,22 @@ RSpec.describe 'Ticket::PerformChanges', :aggregate_failures do
         internal: true,
       )
     end
+
+    context 'when note is added with current user variable' do
+      let(:perform) do
+        { 'article.note' => { 'subject' => 'Test subject note', 'internal' => 'true', 'body' => "Test body note from \#{user.firstname}" } }
+      end
+
+      it 'adds the note with the current user' do
+        object.perform_changes(performable, 'trigger', object, user.id)
+
+        expect(object.articles.reload.last).to have_attributes(
+          subject:  'Test subject note',
+          body:     "Test body note from #{user.firstname}",
+          internal: true,
+        )
+      end
+    end
   end
 
   context 'with a "ticket.subscribe" trigger for non-agent user', current_user_id: 1 do
