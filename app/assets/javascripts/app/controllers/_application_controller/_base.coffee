@@ -2,6 +2,8 @@ class App.Controller extends Spine.Controller
   @include App.LogInclude
   @include App.RenderScreen
 
+  @startLoadingDelay: 1800
+
   constructor: ->
     super
 
@@ -381,7 +383,7 @@ class App.Controller extends Spine.Controller
         el.html App.view('generic/page_loading')()
       else
         @html App.view('generic/page_loading')()
-    @initLoadingDoneDelay = @delay(later, 1800)
+    @initLoadingDoneDelay = @delay(later, @constructor.startLoadingDelay)
 
   stopLoading: =>
     return if !@initLoadingDoneDelay

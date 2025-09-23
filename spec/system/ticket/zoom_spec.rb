@@ -2655,4 +2655,22 @@ RSpec.describe 'Ticket zoom', type: :system do
       wait.until { page.all('span.searchableSelect-option-text').none? { |element| element.text.include?('TreeA') } }
     end
   end
+
+  describe 'Delay non-active taskbars to improve initial loading speed. #5776' do
+    let(:tickets) { create_list(:ticket, 3, group: Group.find_by(name: 'Users')) }
+
+    it 'does load tickets freshly and delayed' do
+      visit "#ticket/zoom/#{tickets.first.id}"
+      visit "#ticket/zoom/#{tickets.second.id}"
+      visit "#ticket/zoom/#{tickets.third.id}"
+      refresh
+      await_empty_ajax_queue
+      page.find(".tasks a[data-key=\"Ticket-#{tickets.second.id}\"]").click
+      expect(page).to have_text(tickets.second.title)
+      page.find(".tasks a[data-key=\"Ticket-#{tickets.first.id}\"]").click
+      expect(page).to have_text(tickets.first.title)
+      page.find(".tasks a[data-key=\"Ticket-#{tickets.third.id}\"]").click
+      expect(page).to have_text(tickets.third.title)
+    end
+  end
 end
