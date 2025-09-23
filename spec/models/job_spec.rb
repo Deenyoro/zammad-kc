@@ -664,4 +664,17 @@ RSpec.describe Job, type: :model do
       expect(Ticket::Article.last.attachments).to be_present
     end
   end
+
+  describe 'Scheduler config will be changed with variable execution value when executed #5792' do
+    subject(:job) { create(:job, perform: { 'ticket.title' => { 'value' => "my name is \#{ticket.customer.firstname}" } }) }
+
+    let(:customer) { create(:customer, firstname: 'Homer', lastname: 'Simpson') }
+    let(:ticket)   { create(:ticket, customer: customer) }
+
+    it 'does change ticket state to closed' do
+      ticket
+      expect { job.run(true) }.not_to change { job.reload.perform['ticket.title']['value'] }
+      expect(ticket.reload.title).to eq('my name is Homer')
+    end
+  end
 end
