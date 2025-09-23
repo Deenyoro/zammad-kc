@@ -35,6 +35,16 @@ RSpec.describe Service::Ticket::Update::Validator::ChecklistCompleted, current_u
         checklist
       end
 
+      context 'when ticket is already closed' do
+        let(:ticket_data) { { state: Ticket::State.find_by(name: 'closed') } }
+
+        before do
+          ticket.update!(state: Ticket::State.find_by(name: 'closed'))
+        end
+
+        it_behaves_like 'not raising an error'
+      end
+
       context 'when ticket is being closed' do
         let(:ticket_data) { { state: Ticket::State.find_by(name: 'closed') } }
 
@@ -65,7 +75,7 @@ RSpec.describe Service::Ticket::Update::Validator::ChecklistCompleted, current_u
 
       context 'when macro is closing the ticket' do
         let(:closed_state) { Ticket::State.find_by(name: 'closed') }
-        let(:macro) { create(:macro, perform: { 'ticket.state_id' => { 'value' => closed_state.id } }) }
+        let(:macro)        { create(:macro, perform: { 'ticket.state_id' => { 'value' => closed_state.id } }) }
 
         it_behaves_like 'raising an error'
 

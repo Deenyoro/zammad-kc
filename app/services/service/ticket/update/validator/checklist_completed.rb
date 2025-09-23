@@ -4,6 +4,7 @@ class Service::Ticket::Update::Validator
   class ChecklistCompleted < Base
 
     def valid!
+      return if ticket_already_closed?
       return if !ticket.checklist
       return if ticket.checklist.completed?
       return if !ticket_closed? && !ticket_pending_close?
@@ -18,6 +19,10 @@ class Service::Ticket::Update::Validator
     end
 
     private
+
+    def ticket_already_closed?
+      ticket.state.state_type.name == 'closed'
+    end
 
     def ticket_closed?
       explicit_ticket_closed? || macro_ticket_closed?
