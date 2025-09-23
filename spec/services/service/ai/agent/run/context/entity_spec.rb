@@ -172,7 +172,7 @@ RSpec.describe Service::AI::Agent::Run::Context::Entity, type: :service do
       end
 
       context 'when articles is set to "last" and entity_article is provided' do
-        let(:specific_article) { articles.first }
+        let(:specific_article) { articles.second }
         let(:entity) { described_class.new(entity_object: ticket, entity_context: entity_context, entity_article: specific_article) }
         let(:entity_context) do
           {
@@ -187,6 +187,28 @@ RSpec.describe Service::AI::Agent::Run::Context::Entity, type: :service do
           expect(result[:articles]).to contain_exactly(
             hash_including(
               article:        specific_article,
+              processed_body: be_present
+            )
+          )
+        end
+      end
+
+      context 'when articles is set to "first" and entity_article is provided' do
+        let(:first_article) { articles.first }
+        let(:entity) { described_class.new(entity_object: ticket, entity_context: entity_context) }
+        let(:entity_context) do
+          {
+            'object_attributes' => %w[title],
+            'articles'          => 'first'
+          }
+        end
+
+        it 'includes articles setting and only the specific processed article in result' do
+          result = entity.prepare
+
+          expect(result[:articles]).to contain_exactly(
+            hash_including(
+              article:        first_article,
               processed_body: be_present
             )
           )

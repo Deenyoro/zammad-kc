@@ -17,10 +17,10 @@ class AI::Agent::Type::TicketTitleRewriter < AI::Agent::Type
   def instruction
     "Stick to the following principles:
 
+- Always preserve the original input language (do not translate).
 - Summarize the provided content and come up with a suitable title.
 - Ignore quoted emails or quoted content.
 - Try to use a maximum of 50 characters.
-- Write in the same language as the input.
 - Do not explain your given answer.
 - Only answer with the value in the \"title\" field inside the JSON structure."
   end
@@ -28,7 +28,7 @@ class AI::Agent::Type::TicketTitleRewriter < AI::Agent::Type
   def entity_context
     {
       object_attributes: [],
-      articles:          'last',
+      articles:          'first',
     }
   end
 

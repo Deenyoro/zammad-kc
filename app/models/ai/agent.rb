@@ -18,7 +18,7 @@
 #  }, // Informations which are added to the instructions (e.g. relevant group information for ticket group dispatching).
 # `entity_context`: {
 #    object_attributes: ['title', 'priority_id'], // All attributes of the object are possible.
-#    articles: 'last|all', // The last article (current trigger article) or all articles of the object.
+#    articles: 'first|last|all', // The last article (current trigger article) or all articles of the object.
 #  },
 #  `result_structure`: {
 #    group_id: 'integer',

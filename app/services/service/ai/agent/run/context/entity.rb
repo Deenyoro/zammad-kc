@@ -68,13 +68,17 @@ class Service::AI::Agent::Run::Context::Entity
 
   def determine_articles_to_process
     return last_articles if entity_articles == 'last'
+    return first_article if entity_articles == 'first'
 
     all_articles
-
   end
 
   def last_articles
     Array(@entity_article.presence || @entity_object.articles.without_system_notifications.last).compact
+  end
+
+  def first_article
+    Array(@entity_object.articles.without_system_notifications.first)
   end
 
   def all_articles
