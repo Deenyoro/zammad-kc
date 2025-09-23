@@ -100,6 +100,9 @@ class AI::Provider::Azure < AI::Provider
         bearer_token:  config[:token],
         total_timeout: 60,
         json:          true,
+        log:           {
+          facility: 'AI::Provider',
+        },
       },
     )
 
@@ -121,6 +124,9 @@ class AI::Provider::Azure < AI::Provider
         bearer_token:  config[:token],
         total_timeout: 60,
         json:          true,
+        log:           {
+          facility: 'AI::Provider',
+        },
       },
     )
 
