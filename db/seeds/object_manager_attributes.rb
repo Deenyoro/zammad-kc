@@ -2423,7 +2423,7 @@ ObjectManager::Attribute.add(
     null:       false,
     translate:  true,
   },
-  editable:    true,
+  editable:    false,
   active:      true,
   screens:     {
     create: {
