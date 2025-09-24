@@ -93,7 +93,7 @@ returns
             lookup = class_object.lookup(login: value)
           end
           if !lookup
-            lookup = class_object.lookup(email: value)
+            lookup = class_object.lookup(email: value.downcase)
           end
         else
           lookup = class_object.lookup(name: value)
@@ -386,7 +386,7 @@ returns
               lookup = class_object.lookup(login: value)
             end
             if !lookup
-              lookup = class_object.lookup(email: value)
+              lookup = class_object.lookup(email: value.downcase)
             end
           else
             lookup = class_object.lookup(name: value)
@@ -433,7 +433,7 @@ returns
               lookup = class_object.lookup(login: item)
             end
             if !lookup
-              lookup = class_object.lookup(email: item)
+              lookup = class_object.lookup(email: item.downcase)
             end
           else
             lookup = class_object.lookup(name: item)

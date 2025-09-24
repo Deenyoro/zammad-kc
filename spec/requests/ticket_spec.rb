@@ -2681,4 +2681,26 @@ RSpec.describe 'Ticket', type: :request do
       expect(json_response['records'].count).to eq(3)
     end
   end
+
+  describe 'Case insensitive in customer mail using the API not always true #5785' do
+    let(:agent)    { create(:agent, groups: Group.all) }
+    let(:customer) { create(:customer, email: 'NEW_HERE@example.com') }
+
+    it 'does create a customer and a ticket for it', :aggregate_failures do
+      customer
+      expect(customer.reload.email).to eq('new_here@example.com')
+
+      params = {
+        title:    'a new ticket #3',
+        group_id: Group.first.id,
+        priority: '2 normal',
+        state:    'new',
+        customer: 'NEW_HERE@example.com'
+      }
+      authenticated_as(agent)
+      post '/api/v1/tickets', params: params, as: :json
+      expect(response).to have_http_status(:created)
+      expect(json_response).to be_a(Hash)
+    end
+  end
 end
