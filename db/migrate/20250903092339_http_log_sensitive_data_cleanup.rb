@@ -16,6 +16,7 @@ class HttpLogSensitiveDataCleanup < ActiveRecord::Migration[7.2]
       'PGP',
       'S/MIME',
       'ldap',
+      'EWS',
     ]
 
     HttpLog.where.not(facility: facilities_no_sensitive_data).find_each(batch_size: 250) do |log|
