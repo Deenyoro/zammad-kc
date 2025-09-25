@@ -321,7 +321,7 @@ class AppConfig extends App.ControllerModal
   buttonCancel: true
   small: true
   events:
-    'click .js-copy':   'copyToClipboard'
+    'click .js-copy':   'copyInputToClipboard'
     'click .js-select': 'selectAll'
 
   content: ->

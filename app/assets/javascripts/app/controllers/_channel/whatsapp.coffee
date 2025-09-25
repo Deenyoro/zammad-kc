@@ -260,7 +260,7 @@ class WhatsappAccountWebhookModal extends App.ControllerModal
   buttonClass: 'btn--primary'
   small: true
   events:
-    'click .js-copy':   'copyToClipboard'
+    'click .js-copy':   'copyInputToClipboard'
     'click .js-select': 'selectAll'
 
   content: =>

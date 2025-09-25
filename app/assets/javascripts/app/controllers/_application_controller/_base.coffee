@@ -131,6 +131,15 @@ class App.Controller extends Spine.Controller
 
     return tooltipCopied
 
+  copyInputToClipboard: (e) =>
+    e.preventDefault()
+
+    controls = $(e.target).parents('.controls')
+    input    = controls.find('input[readonly]')
+    value    = input.val()
+
+    @copyToClipboardWithTooltip(value, e.target, controls, true)
+
   # disable all delay's and interval's
   disconnectClient: ->
     App.Delay.reset()

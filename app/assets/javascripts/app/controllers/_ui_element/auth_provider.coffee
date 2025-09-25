@@ -15,18 +15,19 @@ class App.UiElement.auth_provider
       e.currentTarget.select()
     )
 
-    content.find('.js-copy').off('click.copyToClipboard').on('click.copyToClipboard', (e) ->
+    content.find('.js-copy').off('click.copyInputToClipboard').on('click.copyInputToClipboard', (e) ->
       e.preventDefault()
 
-      button = $(e.target).parents('[role="button"]')
-      fieldId = button.data('targetField')
-      value = content.find("input[id='#{jQuery.escapeSelector(fieldId)}']").val()
+      controls = $(e.target).parents('.controls')
+      input    = controls.find('input[readonly]')
+      value    = input.val()
 
       clipboard.writeText(value)
 
       tooltipCopied = content.find(e.target).tooltip(
         trigger:   'manual'
         placement: 'bottom'
+        container: controls
         title: ->
           App.i18n.translateContent('Copied!')
       )
