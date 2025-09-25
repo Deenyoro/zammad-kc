@@ -409,6 +409,9 @@ class App.ControllerForm extends App.Controller
   @fieldIsReadonly: (field) ->
     return field.closest('.form-group').hasClass('is-readonly')
 
+  removedFields: (el = @form) ->
+    return el.find('.form-group.is-removed').map((i, el) -> $(el).data('attributeName') || $(el).data('name')).get()
+
   attributeIsMandatory: (name) ->
     field_by_name = @constructor.findFieldByName(name, @form)
     if field_by_name.length > 0

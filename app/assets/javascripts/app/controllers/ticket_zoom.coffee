@@ -975,7 +975,7 @@ class App.TicketZoom extends App.Controller
         @autosaveStart()
         return
 
-    editContollerForm = @sidebarWidget?.get('100-TicketEdit')?.edit?.controllerFormSidebarTicket
+    editContollerForm = @sidebarWidget.get('100-TicketEdit').edit.controllerFormSidebarTicket
 
     # validate ticket by model
     errors = ticket.validate(
@@ -1047,12 +1047,12 @@ class App.TicketZoom extends App.Controller
 
   submitTimeAccounting: (e, ticket, macro, editContollerForm) =>
     if !ticket.article
-      @submitPost(e, ticket, macro)
+      @submitPost(e, ticket, macro, editContollerForm)
       return
 
     # verify if time accounting is enabled
     if !editContollerForm.getFlag('time_accounting')
-      @submitPost(e, ticket, macro)
+      @submitPost(e, ticket, macro, editContollerForm)
       return
 
     new App.TicketZoomTimeAccountingModal(
@@ -1064,7 +1064,7 @@ class App.TicketZoom extends App.Controller
         ticket.article.time_unit              = params.time_unit
         ticket.article.accounted_time_type_id = params.accounted_time_type_id
 
-        @submitPost(e, ticket, macro)
+        @submitPost(e, ticket, macro, editContollerForm)
     )
 
   saveDraft: (e) =>
@@ -1119,7 +1119,7 @@ class App.TicketZoom extends App.Controller
       error: =>
         @draftFetched()
 
-  submitPost: (e, ticket, macro) =>
+  submitPost: (e, ticket, macro, editContollerForm) =>
     taskAction = @$('.js-secondaryActionButtonLabel').data('type')
 
     if macro && macro.ux_flow_next_up
@@ -1129,12 +1129,15 @@ class App.TicketZoom extends App.Controller
     if taskAction is 'closeNextInOverview' || taskAction is 'next_from_overview'
       nextTicket = @getNextTicketInOverview()
 
+    removedFields = editContollerForm.removedFields(editContollerForm.elReplace)
+    payload       = _.omit(ticket.attributes(), removedFields)
+
     # submit changes
     @ajax(
       id: "ticket_update_#{ticket.id}"
       type: 'PUT'
       url: "#{App.Ticket.url}/#{ticket.id}?all=true"
-      data: JSON.stringify(ticket.attributes())
+      data: JSON.stringify(payload)
       processData: true
       success: (data) =>
 

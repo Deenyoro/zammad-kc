@@ -204,6 +204,7 @@ class App.ControllerGenericIndexUser extends App.ControllerGenericIndex
           # save object
           ui = @
           @item.save(
+            removedFields: @controller.removedFields(@controller.form)
             done: ->
               if ui.callback
                 item = App[ ui.genericObject ].fullLocal(@id)

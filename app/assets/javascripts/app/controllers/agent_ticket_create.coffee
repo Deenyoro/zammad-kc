@@ -780,6 +780,7 @@ class App.TicketCreate extends App.Controller
     @submitDisable(e)
     ui = @
     ticket.save(
+      removedFields: @controllerFormCreateMiddle.removedFields(@controllerFormCreateMiddle.el)
       done: ->
 
         # Reset article after ticket create, to avoid unwanted sideeffects at other places.
