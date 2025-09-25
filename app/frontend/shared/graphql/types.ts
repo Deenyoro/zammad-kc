@@ -3350,6 +3350,7 @@ export type Signature = {
 
 /** Signature */
 export type SignatureRenderedBodyArgs = {
+  groupId?: InputMaybe<Scalars['ID']['input']>;
   ticketId?: InputMaybe<Scalars['ID']['input']>;
 };
 
