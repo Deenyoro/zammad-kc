@@ -92,8 +92,7 @@ system.
 For Linux and macOS:
 
 ```screen
-npm install -g @coffeelint/cli
-npm install -g stylelint
+npm install -g coffeelint@1 stylelint
 ```
 
 ## Elasticsearch

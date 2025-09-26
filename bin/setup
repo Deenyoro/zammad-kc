@@ -16,6 +16,9 @@ FileUtils.chdir APP_ROOT do
   system("bundle check") || system!("bundle install")
   system!("CI=true pnpm install --frozen-lockfile")
 
+  # coffeelint and stylelint
+  system!("npm -g install coffeelint@1 stylelint")
+
   if !File.exist?("config/database.yml")
     puts "\n== Creating sample database configuration =="
     FileUtils.cp "config/database/database.yml", "config/database.yml"
