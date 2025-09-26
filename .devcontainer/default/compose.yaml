@@ -4,7 +4,7 @@ services:
   devcontainer:
     "image": "ghcr.io/rails/devcontainer/images/ruby:3.4.6"
 
-    environment: &zammad-environment
+    environment:
       MEMCACHE_SERVERS: memcached:11211
       # Don't specify the postgresql database here. This will get merged with an existing database.yml.
       DATABASE_URL: postgres://zammad:zammad@postgresql:5432

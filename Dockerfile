@@ -4,7 +4,7 @@
 ARG RUBY_VERSION=3.4.6
 ARG NODE_VERSION=22
 
-FROM docker.io/library/ruby:$RUBY_VERSION-slim-bookworm AS base
+FROM docker.io/library/ruby:$RUBY_VERSION-slim-trixie AS base
 
 # Rails app lives here
 WORKDIR /opt/zammad
@@ -25,7 +25,7 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Throw-away stage to get the node binary
-FROM node:${NODE_VERSION}-bookworm-slim AS node
+FROM node:${NODE_VERSION}-trixie-slim AS node
 RUN npm -g install corepack && corepack enable pnpm && \
     rm /usr/local/bin/yarn /usr/local/bin/yarnpkg
 
