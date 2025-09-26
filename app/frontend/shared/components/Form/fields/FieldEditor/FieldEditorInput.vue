@@ -268,6 +268,7 @@ const editorCustomContext = {
   focus: focusEditor,
 }
 
+// eslint-disable-next-line vue/no-mutating-props
 Object.assign(props.context, editorCustomContext)
 
 onMounted(() => {
