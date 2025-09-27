@@ -516,3 +516,10 @@ RSpec/IncludeExamples:
 Rails/FindByOrAssignmentMemoization:
   Description: 'Allow to use ||= for memoization of find_by returns'
   Enabled: false
+
+# Looks like this cop is currently broken.
+# Allowing shorthands in one-line blocks would be fine.
+# But as of now it mis-detects chained blocks as multiliners.
+Style/ItBlockParameter:
+  Description: 'Allow to use it shorthand in blocks'
+  EnforcedStyle: only_numbered_parameters
