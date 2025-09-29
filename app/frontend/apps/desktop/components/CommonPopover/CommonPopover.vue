@@ -42,6 +42,7 @@ export interface Props {
   id?: string
   persistent?: boolean
   noCloseOnClickOutside?: boolean
+  noFullWidth?: boolean
   zIndex?: string
 }
 
@@ -413,7 +414,7 @@ useOnEmitter('close-popover', () => {
         :aria-labelledby="owner && '$el' in owner ? owner.$el?.id : owner?.id"
         v-bind="$attrs"
       >
-        <div class="w-full overflow-y-auto">
+        <div class="overflow-y-auto" :class="{ 'w-full': !noFullWidth }">
           <slot />
         </div>
         <div
@@ -433,7 +434,7 @@ useOnEmitter('close-popover', () => {
         :aria-labelledby="owner && '$el' in owner ? owner.$el?.id : owner?.id"
         v-bind="$attrs"
       >
-        <div class="w-full overflow-y-auto">
+        <div class="overflow-y-auto" :class="{ 'w-full': !noFullWidth }">
           <slot />
         </div>
         <div

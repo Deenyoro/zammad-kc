@@ -523,3 +523,9 @@ Rails/FindByOrAssignmentMemoization:
 Style/ItBlockParameter:
   Description: 'Allow to use it shorthand in blocks'
   EnforcedStyle: only_numbered_parameters
+
+# There is a warning in the cop about possible performance issues,
+#  see https://docs.rubocop.org/rubocop-rails/cops_rails.html#safety-railspluckinwhere.
+Rails/PluckInWhere:
+  Description: 'Identifies places where pluck is used in where query methods and can be replaced with select.'
+  Enabled: false

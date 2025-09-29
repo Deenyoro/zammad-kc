@@ -298,6 +298,10 @@ const fetchNextPage = async () => {
 
 const refetchQueries = () => {
   detailSearchQuery.refetch({
+    // FIXME: This is a workaround to avoid broken query on re-navigation, we simply include the current variables.
+    //   If the taskbar already exists, but the search term is changed, refetch will be called with empty variables.
+    //   In parallel, another query with correct variables will be called.
+    ...searchQueryVariables.value,
     limit: offset.value + PAGE_SIZE,
   })
   searchCountsQuery.refetch()

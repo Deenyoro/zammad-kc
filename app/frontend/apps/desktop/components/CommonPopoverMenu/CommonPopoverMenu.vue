@@ -70,8 +70,11 @@ const getHoverFocusStyles = (variant?: Variant) => {
   <section class="flex max-w-64 min-w-58 flex-col gap-0.5">
     <div v-if="showHeaderLabel" role="heading" aria-level="2" class="px-2 py-1.5">
       <slot name="header">
-        <CommonLabel size="small" class="line-clamp-1 text-stone-200! dark:text-neutral-500!"
-          >{{ i18n.t(headerLabel) }}
+        <CommonLabel
+          class="line-clamp-1 text-stone-200! dark:text-neutral-500! cursor-default"
+          size="small"
+        >
+          {{ i18n.t(headerLabel) }}
         </CommonLabel>
       </slot>
     </div>

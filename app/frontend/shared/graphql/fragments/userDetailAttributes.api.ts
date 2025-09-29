@@ -49,7 +49,9 @@ export const UserDetailAttributesFragmentDoc = gql`
   hasSecondaryOrganizations
   ticketsCount {
     open
+    openSearchQuery
     closed
+    closedSearchQuery
   }
 }
     ${ObjectAttributeValuesFragmentDoc}`;

@@ -292,12 +292,12 @@ const { isTouchDevice } = useTouchDevice()
                 :taskbar-tab="taskbarTabListByTabEntityKey[tabEntityKey]"
                 :taskbar-tab-link="getTaskbarTabLink(tabEntityKey)"
                 :collapsed="collapsed"
-                class="group/link peer-focus-visible:trl:pl-(--tab-remove-bar-button-width) focus-visible-app-default rounded-none [--tab-remove-bar-button-width:2rem] group-hover/tab:ltr:pr-(--tab-remove-bar-button-width) peer-focus-visible:ltr:pr-(--tab-remove-bar-button-width) group-hover/tab:rtl:pl-(--tab-remove-bar-button-width)"
+                class="group/link peer-focus-visible:trl:pl-(--tab-remove-bar-button-width) focus-visible-app-default [--tab-remove-bar-button-width:2rem] group-hover/tab:ltr:pr-(--tab-remove-bar-button-width) peer-focus-visible:ltr:pr-(--tab-remove-bar-button-width) group-hover/tab:rtl:pl-(--tab-remove-bar-button-width)"
                 :class="{
-                  'group-first/tab:rounded-t-[10px] group-last/tab:rounded-b-[10px] focus-visible:-outline-offset-1!':
+                  'rounded-none group-first/tab:rounded-t-[10px] group-last/tab:rounded-b-[10px] focus-visible:-outline-offset-1!':
                     collapsed,
-                  'rounded-t-lg!': index === 0,
-                  'rounded-b-lg!': index === dndTaskbarTabListOrder.length - 1,
+                  'rounded-t-lg!': collapsed && index === 0,
+                  'rounded-b-lg!': collapsed && index === dndTaskbarTabListOrder.length - 1,
                   'active:cursor-grabbing': !collapsed,
                   'ltr:pr-(--tab-remove-bar-button-width) rtl:pl-(--tab-remove-bar-button-width)':
                     isTouchDevice,

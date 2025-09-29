@@ -965,6 +965,25 @@ export enum EnumTicketStateColorCode {
   Pending = 'pending'
 }
 
+/** Ticket state color code */
+export enum EnumTicketStateTypeCategory {
+  ArchivableInto = 'archivable_into',
+  Closed = 'closed',
+  Merged = 'merged',
+  Open = 'open',
+  Pending = 'pending',
+  PendingAction = 'pending_action',
+  PendingReminder = 'pending_reminder',
+  Resolved = 'resolved',
+  Viewable = 'viewable',
+  ViewableAgentEdit = 'viewable_agent_edit',
+  ViewableAgentNew = 'viewable_agent_new',
+  ViewableCustomerEdit = 'viewable_customer_edit',
+  ViewableCustomerNew = 'viewable_customer_new',
+  WorkOn = 'work_on',
+  WorkOnAll = 'work_on_all'
+}
+
 /** Defines when the ticket summary should be generated */
 export enum EnumTicketSummaryGeneration {
   /** Use global default setting. */
@@ -2884,6 +2903,8 @@ export type Queries = {
   /** Fetch a ticket signature by group ID */
   ticketSignature?: Maybe<Signature>;
   /** Fetch tickets of a given ticket overview */
+  ticketsByFilter: TicketConnection;
+  /** Fetch tickets of a given ticket overview */
   ticketsByOverview: TicketConnection;
   /** Fetch tickets of a given ticket overview */
   ticketsCachedByOverview: CachedTicketConnection;
@@ -3186,6 +3207,17 @@ export type QueriesTicketSharedDraftZoomShowArgs = {
 export type QueriesTicketSignatureArgs = {
   groupId: Scalars['ID']['input'];
   ticketId?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+/** All available queries */
+export type QueriesTicketsByFilterArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  customerId?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  stateTypeCategory?: InputMaybe<EnumTicketStateTypeCategory>;
 };
 
 
@@ -4176,8 +4208,14 @@ export type TicketConnection = {
 /** Open and closed ticket information */
 export type TicketCount = {
   __typename?: 'TicketCount';
+  /** Closed ticket count of the related object */
   closed: Scalars['Int']['output'];
+  /** Closed ticket search query of the related object */
+  closedSearchQuery?: Maybe<Scalars['String']['output']>;
+  /** Open ticket count of the related object */
   open: Scalars['Int']['output'];
+  /** Open ticket search query of the related object */
+  openSearchQuery?: Maybe<Scalars['String']['output']>;
 };
 
 /** Represents the ticket attributes to be used in ticket create. */
@@ -5856,6 +5894,15 @@ export type OverviewsWithCachedCountQueryVariables = Exact<{
 
 export type OverviewsWithCachedCountQuery = { __typename?: 'Queries', ticketOverviews: Array<{ __typename?: 'Overview', id: string, cachedTicketCount: number }> };
 
+export type TicketsByFilterQueryVariables = Exact<{
+  customerId?: InputMaybe<Scalars['ID']['input']>;
+  stateTypeCategory?: InputMaybe<EnumTicketStateTypeCategory>;
+  pageSize?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type TicketsByFilterQuery = { __typename?: 'Queries', ticketsByFilter: { __typename?: 'TicketConnection', totalCount: number, edges: Array<{ __typename?: 'TicketEdge', node: { __typename?: 'Ticket', id: string, internalId: number, number: string, title: string, stateColorCode: EnumTicketStateColorCode, state: { __typename?: 'TicketState', id: string, name: string } } }> } };
+
 export type TicketsCachedByOverviewQueryVariables = Exact<{
   overviewId: Scalars['ID']['input'];
   orderBy?: InputMaybe<Scalars['String']['input']>;
@@ -7233,7 +7280,7 @@ export type UserQueryVariables = Exact<{
 }>;
 
 
-export type UserQuery = { __typename?: 'Queries', user: { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, outOfOffice?: boolean | null, outOfOfficeStartAt?: string | null, outOfOfficeEndAt?: string | null, image?: string | null, email?: string | null, web?: string | null, vip?: boolean | null, phone?: string | null, mobile?: string | null, fax?: string | null, note?: string | null, active?: boolean | null, hasSecondaryOrganizations?: boolean | null, policy: { __typename?: 'PolicyDefault', update: boolean }, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null, organization?: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, active?: boolean | null, vip?: boolean | null, ticketsCount?: { __typename?: 'TicketCount', open: number, closed: number } | null } | null, secondaryOrganizations?: { __typename?: 'OrganizationConnection', totalCount: number, edges: Array<{ __typename?: 'OrganizationEdge', node: { __typename?: 'Organization', id: string, internalId: number, active?: boolean | null, name?: string | null } }> } | null, ticketsCount?: { __typename?: 'TicketCount', open: number, closed: number } | null } };
+export type UserQuery = { __typename?: 'Queries', user: { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, outOfOffice?: boolean | null, outOfOfficeStartAt?: string | null, outOfOfficeEndAt?: string | null, image?: string | null, email?: string | null, web?: string | null, vip?: boolean | null, phone?: string | null, mobile?: string | null, fax?: string | null, note?: string | null, active?: boolean | null, hasSecondaryOrganizations?: boolean | null, policy: { __typename?: 'PolicyDefault', update: boolean }, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null, organization?: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, active?: boolean | null, vip?: boolean | null, ticketsCount?: { __typename?: 'TicketCount', open: number, closed: number } | null } | null, secondaryOrganizations?: { __typename?: 'OrganizationConnection', totalCount: number, edges: Array<{ __typename?: 'OrganizationEdge', node: { __typename?: 'Organization', id: string, internalId: number, active?: boolean | null, name?: string | null } }> } | null, ticketsCount?: { __typename?: 'TicketCount', open: number, openSearchQuery?: string | null, closed: number, closedSearchQuery?: string | null } | null } };
 
 export type CurrentUserAttributesFragment = { __typename?: 'User', email?: string | null, id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, image?: string | null, outOfOffice?: boolean | null, outOfOfficeStartAt?: string | null, outOfOfficeEndAt?: string | null, preferences?: any | null, hasSecondaryOrganizations?: boolean | null, authorizations?: Array<{ __typename?: 'Authorization', id: string, provider: string, uid: string, username?: string | null }> | null, permissions?: { __typename?: 'UserPermission', names: Array<string> } | null, outOfOfficeReplacement?: { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, login?: string | null, phone?: string | null, email?: string | null } | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null, organization?: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, active?: boolean | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null } | null, personalSettings?: { __typename?: 'UserPersonalSettings', notificationConfig?: { __typename?: 'UserPersonalSettingsNotificationConfig', groupIds?: Array<number> | null, matrix?: { __typename?: 'UserPersonalSettingsNotificationMatrix', create?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null, escalation?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null, reminderReached?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null, update?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null } | null } | null, notificationSound?: { __typename?: 'UserPersonalSettingsNotificationSound', enabled?: boolean | null, file?: EnumNotificationSoundFile | null } | null } | null };
 
@@ -7249,7 +7296,7 @@ export type SimpleTicketAttributeFragment = { __typename?: 'Ticket', number: str
 
 export type UserAttributesFragment = { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, image?: string | null, outOfOffice?: boolean | null, outOfOfficeStartAt?: string | null, outOfOfficeEndAt?: string | null, preferences?: any | null, hasSecondaryOrganizations?: boolean | null, outOfOfficeReplacement?: { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, login?: string | null, phone?: string | null, email?: string | null } | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null, organization?: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, active?: boolean | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null } | null, personalSettings?: { __typename?: 'UserPersonalSettings', notificationConfig?: { __typename?: 'UserPersonalSettingsNotificationConfig', groupIds?: Array<number> | null, matrix?: { __typename?: 'UserPersonalSettingsNotificationMatrix', create?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null, escalation?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null, reminderReached?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null, update?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null } | null } | null, notificationSound?: { __typename?: 'UserPersonalSettingsNotificationSound', enabled?: boolean | null, file?: EnumNotificationSoundFile | null } | null } | null };
 
-export type UserDetailAttributesFragment = { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, outOfOffice?: boolean | null, outOfOfficeStartAt?: string | null, outOfOfficeEndAt?: string | null, image?: string | null, email?: string | null, web?: string | null, vip?: boolean | null, phone?: string | null, mobile?: string | null, fax?: string | null, note?: string | null, active?: boolean | null, hasSecondaryOrganizations?: boolean | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null, organization?: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, active?: boolean | null, vip?: boolean | null, ticketsCount?: { __typename?: 'TicketCount', open: number, closed: number } | null } | null, secondaryOrganizations?: { __typename?: 'OrganizationConnection', totalCount: number, edges: Array<{ __typename?: 'OrganizationEdge', node: { __typename?: 'Organization', id: string, internalId: number, active?: boolean | null, name?: string | null } }> } | null, ticketsCount?: { __typename?: 'TicketCount', open: number, closed: number } | null };
+export type UserDetailAttributesFragment = { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, outOfOffice?: boolean | null, outOfOfficeStartAt?: string | null, outOfOfficeEndAt?: string | null, image?: string | null, email?: string | null, web?: string | null, vip?: boolean | null, phone?: string | null, mobile?: string | null, fax?: string | null, note?: string | null, active?: boolean | null, hasSecondaryOrganizations?: boolean | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null, organization?: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, active?: boolean | null, vip?: boolean | null, ticketsCount?: { __typename?: 'TicketCount', open: number, closed: number } | null } | null, secondaryOrganizations?: { __typename?: 'OrganizationConnection', totalCount: number, edges: Array<{ __typename?: 'OrganizationEdge', node: { __typename?: 'Organization', id: string, internalId: number, active?: boolean | null, name?: string | null } }> } | null, ticketsCount?: { __typename?: 'TicketCount', open: number, openSearchQuery?: string | null, closed: number, closedSearchQuery?: string | null } | null };
 
 export type UserPersonalSettingsFragment = { __typename?: 'User', personalSettings?: { __typename?: 'UserPersonalSettings', notificationConfig?: { __typename?: 'UserPersonalSettingsNotificationConfig', groupIds?: Array<number> | null, matrix?: { __typename?: 'UserPersonalSettingsNotificationMatrix', create?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null, escalation?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null, reminderReached?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null, update?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null } | null } | null, notificationSound?: { __typename?: 'UserPersonalSettingsNotificationSound', enabled?: boolean | null, file?: EnumNotificationSoundFile | null } | null } | null };
 
@@ -7376,4 +7423,4 @@ export type UserUpdatesSubscriptionVariables = Exact<{
 }>;
 
 
-export type UserUpdatesSubscription = { __typename?: 'Subscriptions', userUpdates: { __typename?: 'UserUpdatesPayload', user?: { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, outOfOffice?: boolean | null, outOfOfficeStartAt?: string | null, outOfOfficeEndAt?: string | null, image?: string | null, email?: string | null, web?: string | null, vip?: boolean | null, phone?: string | null, mobile?: string | null, fax?: string | null, note?: string | null, active?: boolean | null, hasSecondaryOrganizations?: boolean | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null, organization?: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, active?: boolean | null, vip?: boolean | null, ticketsCount?: { __typename?: 'TicketCount', open: number, closed: number } | null } | null, secondaryOrganizations?: { __typename?: 'OrganizationConnection', totalCount: number, edges: Array<{ __typename?: 'OrganizationEdge', node: { __typename?: 'Organization', id: string, internalId: number, active?: boolean | null, name?: string | null } }> } | null, ticketsCount?: { __typename?: 'TicketCount', open: number, closed: number } | null } | null } };
+export type UserUpdatesSubscription = { __typename?: 'Subscriptions', userUpdates: { __typename?: 'UserUpdatesPayload', user?: { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, outOfOffice?: boolean | null, outOfOfficeStartAt?: string | null, outOfOfficeEndAt?: string | null, image?: string | null, email?: string | null, web?: string | null, vip?: boolean | null, phone?: string | null, mobile?: string | null, fax?: string | null, note?: string | null, active?: boolean | null, hasSecondaryOrganizations?: boolean | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null, organization?: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, active?: boolean | null, vip?: boolean | null, ticketsCount?: { __typename?: 'TicketCount', open: number, closed: number } | null } | null, secondaryOrganizations?: { __typename?: 'OrganizationConnection', totalCount: number, edges: Array<{ __typename?: 'OrganizationEdge', node: { __typename?: 'Organization', id: string, internalId: number, active?: boolean | null, name?: string | null } }> } | null, ticketsCount?: { __typename?: 'TicketCount', open: number, openSearchQuery?: string | null, closed: number, closedSearchQuery?: string | null } | null } | null } };

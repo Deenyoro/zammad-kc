@@ -11,6 +11,7 @@ import CommonTicketStateIndicatorIcon from '#desktop/components/CommonTicketStat
 interface Props {
   ticket?: Partial<TicketById> | null
   unauthorized?: boolean
+  noWrap?: boolean
   classes?: {
     indicator?: string
     label?: string
@@ -28,29 +29,39 @@ const ticketState = computed(() => {
 const ticketColorCode = computed(() => {
   return props.ticket?.stateColorCode || EnumTicketStateColorCode.Open
 })
+
+const iconSize = computed(() => (props.noWrap ? 'small' : 'tiny'))
 </script>
 
 <template>
   <div v-if="unauthorized" class="flex grow items-center gap-2">
-    <CommonIcon class="shrink-0 text-red-500" size="tiny" name="x-lg" />
+    <CommonIcon class="shrink-0 text-red-500" :size="iconSize" name="x-lg" />
     <CommonLabel class="text-black! dark:text-white!">{{ $t('Access denied') }}</CommonLabel>
   </div>
   <CommonLink
     v-else
-    class="flex! grow items-start gap-2 rounded-md break-words group-hover/tab:bg-blue-600 hover:no-underline! focus-visible:rounded-md focus-visible:outline-hidden group-hover/tab:dark:bg-blue-900"
-    style="word-break: normal; overflow-wrap: anywhere"
+    class="flex! grow gap-2 rounded-md break-words group-hover/tab:bg-blue-600 hover:no-underline! focus-visible:rounded-md focus-visible:outline-hidden group-hover/tab:dark:bg-blue-900"
+    :class="{ 'items-start': !noWrap, 'items-center': noWrap }"
+    :style="{
+      wordBreak: !noWrap ? 'normal' : undefined,
+      overflowWrap: !noWrap ? 'anywhere' : undefined,
+    }"
     :link="`/tickets/${ticket?.internalId}`"
     internal
   >
     <CommonTicketStateIndicatorIcon
       class="ms-0.5 mt-1 shrink-0"
-      :class="classes?.indicator || ''"
+      :class="[classes?.indicator || '', { 'ms-0! mt-0!': noWrap }]"
       :color-code="ticketColorCode"
       :label="ticketState"
       :aria-labelledby="ticketId"
-      icon-size="tiny"
+      :icon-size="iconSize"
     />
-    <CommonLabel :id="ticketId" class="mt-0.5 text-blue-800!" :class="classes?.label">
+    <CommonLabel
+      :id="ticketId"
+      class="mt-0.5 text-blue-800!"
+      :class="[classes?.label || '', { 'mt-0! line-clamp-1!': noWrap }]"
+    >
       {{ ticket?.title }}
     </CommonLabel>
   </CommonLink>

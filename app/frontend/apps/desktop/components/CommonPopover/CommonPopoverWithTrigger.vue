@@ -16,6 +16,7 @@ export interface Props extends Omit<CommonPopoverProps, 'owner'> {
   triggerLinkActiveClass?: string
   noFocusStyling?: boolean
   noHoverStyling?: boolean
+  noMinWidth?: boolean
   zIndex?: string
 }
 
@@ -98,7 +99,7 @@ onUnmounted(() => {
     v-bind="$props"
     :id="uniqueId"
     ref="popover"
-    class="min-w-[17rem]"
+    :class="{ 'min-w-[17rem]': !noMinWidth }"
     :z-index="zIndex"
     no-close-on-click-outside
     :owner="popoverTarget"
@@ -106,8 +107,10 @@ onUnmounted(() => {
     <slot
       name="popover-content"
       :popover-id="uniqueId"
+      :popover="popover"
       :is-open="isOpen"
       :has-opened-via-long-click="hasOpenedViaLongPress"
+      :close="close"
     />
   </CommonPopover>
 

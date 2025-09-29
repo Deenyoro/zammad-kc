@@ -7,6 +7,7 @@ import { useTicketLiveUsersDisplay } from '#shared/entities/ticket/composables/u
 import type { TicketLiveAppUser } from '#shared/entities/ticket/types.ts'
 
 import AiAgentPopoverWithTrigger from '#desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue'
+import UserListPopoverWithTrigger from '#desktop/components/User/UserListPopoverWithTrigger.vue'
 import UserPopoverWithTrigger from '#desktop/components/User/UserPopoverWithTrigger.vue'
 import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
 
@@ -22,13 +23,14 @@ const { liveUsers } = useTicketLiveUsersDisplay(toRef(props, 'liveUserList'))
 
 const LIVE_USER_LIMIT = 9
 
-const visibleLiveUsers = computed(() => liveUsers.value.slice(0, LIVE_USER_LIMIT))
+const visibleLiveUsers = computed(() => {
+  if (liveUsers.value.length <= LIVE_USER_LIMIT) return liveUsers.value
+  return liveUsers.value.slice(0, LIVE_USER_LIMIT - 1)
+})
 
-const liveUsersOverflow = computed(() => {
-  if (liveUsers.value.length <= LIVE_USER_LIMIT) return
-  const overflow = liveUsers.value.length - LIVE_USER_LIMIT
-  if (overflow > 999) return '+999'
-  return `+${overflow}`
+const overflowLiveUsers = computed(() => {
+  if (liveUsers.value.length <= LIVE_USER_LIMIT) return []
+  return liveUsers.value.slice(LIVE_USER_LIMIT - 1)
 })
 
 const { ticket } = useTicketInformation()
@@ -36,6 +38,8 @@ const { ticket } = useTicketInformation()
 
 <template>
   <div class="flex items-center gap-2">
+    <AiAgentPopoverWithTrigger v-if="ticket?.aiAgentRunning" />
+
     <template v-if="liveUserList?.length">
       <UserPopoverWithTrigger
         v-for="liveUser in visibleLiveUsers"
@@ -49,14 +53,13 @@ const { ticket } = useTicketInformation()
           placement: 'arrowStart',
         }"
       />
-      <div
-        v-if="liveUsersOverflow"
-        class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-200 text-sm outline-1 -outline-offset-1 outline-neutral-100 dark:bg-gray-700 dark:outline-gray-900"
-      >
-        {{ liveUsersOverflow }}
-      </div>
+      <UserListPopoverWithTrigger
+        v-if="overflowLiveUsers.length"
+        :users="overflowLiveUsers.map((liveUser) => liveUser.user)"
+        :popover-config="{
+          placement: 'arrowStart',
+        }"
+      />
     </template>
-
-    <AiAgentPopoverWithTrigger v-if="ticket?.aiAgentRunning" />
   </div>
 </template>
