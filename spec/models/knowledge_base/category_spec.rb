@@ -181,7 +181,7 @@ RSpec.describe KnowledgeBase::Category, current_user_id: 1, type: :model do
 
       it 'returns attributes with association ids' do
         expect(kb_category_with_tree.attributes_with_association_ids).to include(
-          child_ids: kb_category_with_tree.child_ids,
+          'child_ids' => kb_category_with_tree.child_ids,
         )
       end
     end
