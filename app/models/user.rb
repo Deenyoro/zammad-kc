@@ -27,7 +27,7 @@ class User < ApplicationModel
   include User::OutOfOffice
   include User::Permissions
 
-  has_and_belongs_to_many :organizations,          after_add: %i[cache_update create_organization_add_history], after_remove: %i[cache_update create_organization_remove_history], class_name: 'Organization'
+  has_and_belongs_to_many :organizations,          after_add: %i[cache_update create_organization_add_history], after_remove: %i[cache_update create_organization_remove_history], before_add: %i[check_organization_uniqueness], class_name: 'Organization'
   has_and_belongs_to_many :overviews,              dependent: :nullify
   has_many                :tokens,                 after_add: :cache_update, after_remove: :cache_update, dependent: :destroy
   has_many                :authorizations,         after_add: :cache_update, after_remove: :cache_update, dependent: :destroy
@@ -46,7 +46,7 @@ class User < ApplicationModel
   has_many                :data_privacy_tasks,     as: :deletable
   belongs_to              :organization,           inverse_of: :members, optional: true
 
-  before_validation :check_name, :check_email, :check_login, :ensure_password, :ensure_roles, :ensure_organizations, :ensure_organizations_limit
+  before_validation :check_name, :check_email, :check_login, :ensure_password, :ensure_roles, :ensure_organizations, :ensure_different_organizations, :ensure_organizations_limit
   before_validation :check_mail_delivery_failed, on: :update
   before_save       :ensure_notification_preferences, if: :reset_notification_config_before_save
   before_create     :validate_preferences, :domain_based_assignment, :set_locale
@@ -900,6 +900,12 @@ try to find correct name
     errors.add :base, __('Secondary organizations are only allowed when the primary organization is given.')
   end
 
+  def ensure_different_organizations
+    return if organization_ids.exclude?(organization_id)
+
+    errors.add :base, __('Secondary organizations cannot include the primary organization.')
+  end
+
   def ensure_organizations_limit
     return if organization_ids.size <= 250
 
@@ -1136,5 +1142,13 @@ raise 'At least one user need to have admin permissions'
 
     # Detects if login was set from email and then iterated
     email_was.present? && login&.start_with?(email_was)
+  end
+
+  def check_organization_uniqueness(new_organization)
+    return if organization != new_organization && organization_ids.exclude?(new_organization.id)
+
+    errors.add :base, __('Secondary organizations cannot include the primary organization.')
+
+    raise ActiveRecord::RecordInvalid, self
   end
 end

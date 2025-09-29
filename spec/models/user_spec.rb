@@ -1428,4 +1428,26 @@ RSpec.describe User, type: :model do
       expect(user.assets({}).deep_symbolize_keys.keys).not_to include(:TicketPriority, :Role, :TicketState, :Group)
     end
   end
+
+  describe 'Prevent an organization from being both primary and secondary #5254' do
+    let(:organizations) { create_list(:organization, 3) }
+
+    it 'is not allowed to assign the same organization as primary and secondary' do
+      expect { create(:user, organization_id: organizations.first.id, organization_ids: [organizations.first.id, organizations.second.id]) }.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Secondary organizations cannot include the primary organization.')
+    end
+
+    it 'is not allowed to add one of the secondary orgaizations as primary' do
+      user = create(:user, organization: organizations.first, organizations: [organizations.second])
+
+      expect { user.organizations << organizations.first }
+        .to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Secondary organizations cannot include the primary organization.')
+    end
+
+    it 'allows to move organization from secondary to primary' do
+      user = create(:user, organization: organizations.first, organizations: [organizations.second])
+
+      expect { user.update!(organization: organizations.second, organizations: [organizations.first]) }
+        .not_to raise_error
+    end
+  end
 end
