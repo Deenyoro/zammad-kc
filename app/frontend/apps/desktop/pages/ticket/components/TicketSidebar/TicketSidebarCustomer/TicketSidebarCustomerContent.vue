@@ -88,7 +88,7 @@ const actions = computed<MenuItem[]>(() => [
     :entity="customer"
     :actions="actions"
   >
-    <UserInfo :user="customer" />
+    <UserInfo :user="customer" has-organization-popover />
 
     <ObjectAttributes
       :attributes="objectAttributes"
@@ -103,6 +103,7 @@ const actions = computed<MenuItem[]>(() => [
       :type="EntityType.Organization"
       :label="__('Secondary organizations')"
       :entity="secondaryOrganizations"
+      has-popover
       @load-more="$emit('load-more-secondary-organizations')"
     />
 

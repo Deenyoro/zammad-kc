@@ -7,32 +7,46 @@ import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvat
 import type { UserQuery } from '#shared/graphql/types.ts'
 import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 
+import OrganizationPopoverWithTrigger from '#desktop/components/Organization/OrganizationPopoverWithTrigger.vue'
+
 interface Props {
   user: UserQuery['user']
   size?: 'small' | 'normal'
   dense?: boolean
+  noLink?: boolean
+  hasOrganizationPopover?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 'normal',
 })
 
+const component = computed(() => (props.noLink ? 'div' : 'CommonLink'))
+
 const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
 </script>
 
 <template>
   <div class="flex items-center gap-2">
-    <CommonUserAvatar v-if="user" :entity="user" :size="size" />
+    <component
+      :is="component"
+      :class="{ 'hover:no-underline!': !noLink }"
+      :link="!noLink ? `/user/profile/${getIdFromGraphQLId(user.id)}` : undefined"
+    >
+      <CommonUserAvatar v-if="user" :entity="user" :size="size" />
+    </component>
     <div class="flex flex-col justify-center gap-px">
-      <CommonLink
+      <component
+        :is="component"
         v-if="dense"
-        :link="`/user/profile/${getIdFromGraphQLId(user.id)}`"
         class="text-sm leading-snug"
+        :class="{ 'hover:no-underline!': !noLink }"
+        :link="!noLink ? `/user/profile/${getIdFromGraphQLId(user.id)}` : undefined"
       >
-        <CommonLabel :size="labelSize" class="text-blue-800!">
+        <CommonLabel :size="labelSize" :class="{ 'text-blue-800!': !noLink }">
           {{ user.fullname }}
         </CommonLabel>
-      </CommonLink>
+      </component>
       <CommonLabel v-else :size="labelSize" class="text-gray-300! dark:text-neutral-400!">
         {{ user.fullname }}
       </CommonLabel>
@@ -44,9 +58,20 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
       >
         {{ user.email }}
       </CommonLabel>
+      <OrganizationPopoverWithTrigger
+        v-else-if="user.organization && hasOrganizationPopover"
+        class="rounded-sm outline-offset-1 focus-visible:outline-2!"
+        :popover-config="{ orientation: 'left' }"
+        :organization="user.organization"
+        trigger-link-active-class="outline-2! outline-blue-800! hover:outline-blue-800!"
+      >
+        <CommonLabel :size="labelSize" class="text-blue-800!">
+          {{ user.organization.name }}
+        </CommonLabel>
+      </OrganizationPopoverWithTrigger>
       <CommonLink
         v-else-if="user.organization"
-        :link="`/organizations/${user.organization?.internalId}`"
+        :link="`/organization/profile/${user.organization?.internalId}`"
       >
         <CommonLabel :size="labelSize" class="text-blue-800!">
           {{ user.organization.name }}

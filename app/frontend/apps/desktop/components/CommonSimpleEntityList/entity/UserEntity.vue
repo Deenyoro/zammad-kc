@@ -12,6 +12,7 @@ interface Props {
   context: {
     type: EntityType
     emptyMessage: string
+    hasPopover?: boolean
   }
 }
 
@@ -19,7 +20,12 @@ defineProps<Props>()
 </script>
 
 <template>
-  <UserPopoverWithTrigger :popover-config="{ orientation: 'left' }" no-focus-styling :user="entity">
+  <UserPopoverWithTrigger
+    v-if="context.hasPopover"
+    :popover-config="{ orientation: 'left' }"
+    no-focus-styling
+    :user="entity"
+  >
     <template #default="slotProps">
       <div class="flex items-center gap-2">
         <CommonUserAvatar
@@ -34,4 +40,17 @@ defineProps<Props>()
       </div>
     </template>
   </UserPopoverWithTrigger>
+  <template v-else>
+    <CommonLink
+      :link="`/user/profile/${entity.internalId}`"
+      class="flex items-center gap-2 hover:no-underline!"
+    >
+      <CommonUserAvatar
+        class="rounded-full outline-2 outline-transparent group-hover:outline-blue-900 group-focus-visible:outline-blue-900"
+        :entity="entity"
+        size="small"
+      />
+      <CommonLabel class="block truncate text-blue-800!">{{ entity.fullname }}</CommonLabel>
+    </CommonLink>
+  </template>
 </template>

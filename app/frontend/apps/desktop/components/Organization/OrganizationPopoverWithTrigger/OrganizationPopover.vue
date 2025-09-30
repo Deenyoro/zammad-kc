@@ -4,25 +4,25 @@
 import { toRef } from 'vue'
 import { useRouter } from 'vue-router'
 
-import type { AvatarUser } from '#shared/components/CommonUserAvatar/types.ts'
+import type { AvatarOrganization } from '#shared/components/CommonOrganizationAvatar/types.ts'
 import ObjectAttributes from '#shared/components/ObjectAttributes/ObjectAttributes.vue'
 import { useDebouncedLoading } from '#shared/composables/useDebouncedLoading.ts'
-import { useUserDetail } from '#shared/entities/user/composables/useUserDetail.ts'
+import { useOrganizationDetail } from '#shared/entities/organization/composables/useOrganizationDetail.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonSimpleEntityList from '#desktop/components/CommonSimpleEntityList/CommonSimpleEntityList.vue'
 import { EntityType } from '#desktop/components/CommonSimpleEntityList/types.ts'
-import UserInfo from '#desktop/components/User/UserInfo.vue'
-import UserPopoverSkeleton from '#desktop/components/User/UserPopoverWithTrigger/skeleton/UserPopoverSkeleton.vue'
+import OrganizationInfo from '#desktop/components/Organization/OrganizationInfo.vue'
+import OrganizationPopoverSkeleton from '#desktop/components/Organization/OrganizationPopoverWithTrigger/skeleton/OrganizationPopoverSkeleton.vue'
 
 interface Props {
-  userAvatar: AvatarUser
+  organizationAvatar: AvatarOrganization
 }
 
 const props = defineProps<Props>()
 
-const { user, loading, secondaryOrganizations, objectAttributes } = useUserDetail(
-  toRef(props.userAvatar.id),
+const { organization, loading, organizationMembers, objectAttributes } = useOrganizationDetail(
+  toRef(props.organizationAvatar.id),
 )
 
 const { debouncedLoading } = useDebouncedLoading({
@@ -31,36 +31,35 @@ const { debouncedLoading } = useDebouncedLoading({
 
 const router = useRouter()
 
-const goToUserProfile = () => {
-  if (!user.value) return
+const goToOrganizationProfile = () => {
+  if (!organization.value) return
 
-  router.push(`/user/profile/${user.value.internalId}`)
+  router.push(`/organization/profile/${organization.value.internalId}`)
 }
 </script>
 
 <template>
   <section ref="popover-section" data-type="popover" class="space-y-2 p-3">
-    <UserPopoverSkeleton v-if="debouncedLoading && !user" />
+    <OrganizationPopoverSkeleton v-if="debouncedLoading && !organization" />
     <template v-else>
-      <UserInfo :user="user!" no-link />
+      <OrganizationInfo :organization="organization!" no-link />
 
       <ObjectAttributes
         :class="{
           'border-b border-neutral-100 dark:border-gray-900 pb-2.5':
-            secondaryOrganizations?.totalCount,
+            organizationMembers?.totalCount,
         }"
-        :object="user!"
+        :object="organization!"
         :attributes="objectAttributes"
-        :skip-attributes="['firstname', 'lastname', 'organization_id']"
+        :skip-attributes="['name', 'vip', 'active']"
       />
 
       <CommonSimpleEntityList
-        v-if="secondaryOrganizations?.totalCount"
-        id="customer-secondary-organizations-popover"
+        id="organization-members-popover"
+        :type="EntityType.User"
+        :label="__('Members')"
+        :entity="organizationMembers"
         no-collapse
-        :type="EntityType.Organization"
-        :label="__('Secondary organizations')"
-        :entity="secondaryOrganizations"
       >
         <template #trailing="{ totalCount, entities }">
           <CommonButton
@@ -68,7 +67,7 @@ const goToUserProfile = () => {
             class="self-end"
             variant="secondary"
             size="small"
-            @click="goToUserProfile"
+            @click="goToOrganizationProfile"
           >
             {{ $t('%s more', totalCount - entities.length) }}
           </CommonButton>

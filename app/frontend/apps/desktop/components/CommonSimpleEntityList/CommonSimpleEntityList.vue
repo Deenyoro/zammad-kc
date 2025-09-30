@@ -15,6 +15,7 @@ interface Props {
   entity: Entity<ObjectLike>
   type: EntityType
   label?: string
+  hasPopover?: boolean
 }
 
 const props = defineProps<Props>()
@@ -29,6 +30,8 @@ defineEmits<{
 
 const entitySetup = computed(() => {
   const { component: componentAsync, ...context } = entityModules[props.type]
+
+  if (props.hasPopover) context.hasPopover = true
 
   return {
     component: defineAsyncComponent(componentAsync as AsyncComponentLoader),
