@@ -730,6 +730,8 @@ class App.SearchableSelect extends Spine.Controller
     @onShadowChange()
 
   highlightFirst: (autocomplete) ->
+    return if autocomplete and document.activeElement isnt @input.get(0)
+
     @unhighlightCurrentItem()
     @currentItem = @getCurrentOptions().not('.is-hidden').first()
     @currentItem.addClass('is-active')
