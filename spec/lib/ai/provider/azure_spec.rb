@@ -1,6 +1,7 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 require 'rails_helper'
+require_relative 'shared_examples/ping'
 
 # TODO: Add AZURE_URL_EMBEDDINGS when needed.
 RSpec.describe AI::Provider::Azure, required_envs: %w[AZURE_TOKEN AZURE_URL_COMPLETIONS AZURE_HOST], use_vcr: true do
@@ -19,6 +20,8 @@ RSpec.describe AI::Provider::Azure, required_envs: %w[AZURE_TOKEN AZURE_URL_COMP
                   # url_embeddings:  ENV['AZURE_URL_EMBEDDINGS']
                 })
   end
+
+  include_examples 'provider/ping!'
 
   it 'does exchange data with azure ai endpoint' do
     expect(ai_provider.ask(prompt_system:, prompt_user:)).to match({ 'connected' => 'true' })

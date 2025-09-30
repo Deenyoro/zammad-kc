@@ -1,6 +1,7 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 require 'rails_helper'
+require_relative 'shared_examples/ping'
 
 RSpec.describe AI::Provider::ZammadAI, required_envs: %w[ZAMMAD_AI_TOKEN], use_vcr: true do
   subject(:ai_provider) { described_class.new(options: { json_response: true }) }
@@ -14,6 +15,8 @@ RSpec.describe AI::Provider::ZammadAI, required_envs: %w[ZAMMAD_AI_TOKEN], use_v
                   token: ENV['ZAMMAD_AI_TOKEN'],
                 })
   end
+
+  include_examples 'provider/ping!'
 
   it 'does exchange data with ZammadAI endpoint' do
     expect(ai_provider.ask(prompt_system:, prompt_user:)).to match({ 'connected' => 'true' })

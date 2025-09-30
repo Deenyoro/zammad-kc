@@ -101,7 +101,8 @@ class AI::Provider::Azure < AI::Provider
         total_timeout: 60,
         json:          true,
         log:           {
-          facility: 'AI::Provider',
+          facility:          'AI::Provider',
+          log_only_on_error: true,
         },
       },
     )
@@ -125,7 +126,8 @@ class AI::Provider::Azure < AI::Provider
         total_timeout: 60,
         json:          true,
         log:           {
-          facility: 'AI::Provider',
+          facility:          'AI::Provider',
+          log_only_on_error: true,
         },
       },
     )

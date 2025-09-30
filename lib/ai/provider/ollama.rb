@@ -79,7 +79,8 @@ class AI::Provider::Ollama < AI::Provider
         verify_ssl:    true,
         total_timeout: 60,
         log:           {
-          facility: 'AI::Provider',
+          facility:          'AI::Provider',
+          log_only_on_error: true,
         },
       },
     )

@@ -1,6 +1,7 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 require 'rails_helper'
+require_relative 'shared_examples/ping'
 
 RSpec.describe AI::Provider::OpenAI, required_envs: %w[OPEN_AI_TOKEN], use_vcr: true do
   subject(:ai_provider) { described_class.new(options: { json_response: true }) }
@@ -14,6 +15,8 @@ RSpec.describe AI::Provider::OpenAI, required_envs: %w[OPEN_AI_TOKEN], use_vcr: 
                   token: ENV['OPEN_AI_TOKEN'],
                 })
   end
+
+  include_examples 'provider/ping!'
 
   context 'when specifying a model' do
     context 'without a model' do
