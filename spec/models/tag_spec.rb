@@ -43,6 +43,11 @@ RSpec.describe Tag, type: :model do
           .and change { described_class.last&.tag_item&.name }.to('foo')
       end
 
+      it 'does not allow commas in the name' do
+        expect { described_class.tag_add(object: 'Ticket', item: 'foo,bar', o_id: 1, created_by_id: 1) }
+          .to raise_error(ActiveRecord::RecordInvalid, %r{Commas and stars are not allowed in name.})
+      end
+
       context 'and the name contains 8-bit Unicode characters' do
         it 'creates it and assigns it to a new Tag' do
           expect { described_class.tag_add(object: 'Ticket', item: 'fooöäüß', o_id: 1, created_by_id: 1) }

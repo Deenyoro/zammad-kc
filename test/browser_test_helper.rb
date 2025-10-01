@@ -902,6 +902,7 @@ class TestCase < ActiveSupport::TestCase
         raise 'Switch not off!' if checked
       end
     end
+    await_empty_ajax_queue(params)
   end
 
 =begin
