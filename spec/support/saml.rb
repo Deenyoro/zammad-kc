@@ -42,9 +42,9 @@ module ZammadSpecSupportSAML
     auth_saml_credentials[:uid_attribute] = uid_attribute if uid_attribute
 
     if security.present?
-      auth_saml_credentials[:security] = 'on'
-      auth_saml_credentials[:certificate] = "-----BEGIN CERTIFICATE-----\n#{security[:cert]}\n-----END CERTIFICATE-----"
-      auth_saml_credentials[:private_key] = "-----BEGIN RSA PRIVATE KEY-----\n#{security[:key]}\n-----END RSA PRIVATE KEY-----" # gitleaks:allow
+      auth_saml_credentials[:security]           = 'on'
+      auth_saml_credentials[:certificate]        = security[:cert]
+      auth_saml_credentials[:private_key]        = security[:key]
       auth_saml_credentials[:private_key_secret] = ''
     end
 

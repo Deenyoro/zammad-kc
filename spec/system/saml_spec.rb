@@ -100,31 +100,15 @@ RSpec.describe 'SAML Authentication', authenticated_as: false, integration: true
 
         cert.sign(key, OpenSSL::Digest.new('SHA256'))
 
-        pem = cert
-          .to_pem
-          .gsub('-----BEGIN CERTIFICATE-----', '')
-          .gsub('-----END CERTIFICATE-----', '')
-          .delete("\n")
-          .strip
-        cert = pem
-
-        pem = key
-          .to_pem
-          .gsub('-----BEGIN RSA PRIVATE KEY-----', '') # gitleaks:allow
-          .gsub('-----END RSA PRIVATE KEY-----', '') # gitleaks:allow
-          .delete("\n")
-          .strip
-        key = pem
-
         {
-          cert:,
-          key:
+          cert: cert.to_pem,
+          key:  key.to_pem,
         }
       end
       let(:saml_client_json) do
         client = Rails.root.join('test/data/saml/zammad-client-secure.json').read
         client.gsub!('#KEYCLOAK_ZAMMAD_BASE_URL', zammad_base_url)
-        client.gsub!('#KEYCLOAK_ZAMMAD_CERTIFICATE', security[:cert])
+        client.gsub!('#KEYCLOAK_ZAMMAD_CERTIFICATE', security[:cert].gsub('-----BEGIN CERTIFICATE-----', '').gsub('-----END CERTIFICATE-----', '').delete("\n").strip)
 
         client
       end
