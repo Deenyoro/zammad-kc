@@ -41,6 +41,8 @@ const props = defineProps<{
 
 const router = useRouter()
 
+const pageActive = ref(false)
+
 const selectedEntity = ref(
   (router.currentRoute.value.query.entity as EnumSearchableModels) ?? EnumSearchableModels.Ticket,
 )
@@ -104,6 +106,12 @@ const searchQueryVariables = computed(() => ({
   onlyIn: selectedEntity.value,
 }))
 
+const { pageInactive } = usePage({
+  pageActive,
+  metaTitle: sanitizedSearchTerm,
+  onReactivate: () => refetchQueries(),
+})
+
 const detailSearchQuery = new QueryHandler(
   useDetailSearchLazyQuery(searchQueryVariables, {
     context: {
@@ -113,6 +121,9 @@ const detailSearchQuery = new QueryHandler(
     },
     fetchPolicy: 'cache-and-network', // TODO: for now until the cache handling is implemented
   }),
+  {
+    triggerRefetchOnConnectionReconnect: () => pageActive.value,
+  },
 )
 
 const notVisibleSearchEntities = computed(() =>
@@ -144,6 +155,9 @@ const searchCountsQuery = new QueryHandler(
       enabled: searchPluginNames.value.length > 1,
     }),
   ),
+  {
+    triggerRefetchOnConnectionReconnect: () => pageActive.value,
+  },
 )
 
 const searchQueriesLoad = () => {
@@ -353,11 +367,6 @@ const breadcrumbItems = computed(() => [
     count: currentSearchResultCount.value,
   },
 ])
-
-const { pageInactive } = usePage({
-  metaTitle: sanitizedSearchTerm,
-  onReactivate: () => refetchQueries(),
-})
 
 watch(
   () => router.currentRoute.value.query.entity,

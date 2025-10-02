@@ -121,7 +121,7 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
     <CommonLink
       v-if="!isLoadingSearchResults"
       class="group/link mb-4 block"
-      :link="{ name: 'search', params: { searchTerm: search } }"
+      :link="{ name: 'Search', params: { searchTerm: search } }"
       @click="resetQuickSearchInputField"
       @keydown.enter="$event.target.click()"
     >
@@ -158,7 +158,7 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
             v-if="searchResult.remainingItemCount > 0"
             class="group/link my-1.5 ms-auto"
             :link="{
-              name: 'search',
+              name: 'Search',
               params: { searchTerm: search },
               query: { entity: searchResult.name },
             }"

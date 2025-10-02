@@ -21,6 +21,7 @@ import { useSessionStore } from '#shared/stores/session.ts'
 import { registerSW } from '#shared/sw/register.ts'
 
 import CommonConfirmation from '#mobile/components/CommonConfirmation/CommonConfirmation.vue'
+import { useConnection } from '#mobile/composables/useConnection.ts'
 
 import { useTicketOverviewsStore } from './entities/ticket/stores/ticketOverviews.ts'
 
@@ -61,7 +62,7 @@ useLocaleStore().$subscribe(() => {
 
 // The handling for invalid sessions. The event will be emitted, when from the server a "NotAuthorized"
 // response is received.
-useOnEmitter('sessionInvalid', async () => {
+useOnEmitter('session-invalid', async () => {
   if (authentication.authenticated) {
     await authentication.clearAuthentication()
 
@@ -73,6 +74,8 @@ useOnEmitter('sessionInvalid', async () => {
     })
   }
 })
+
+useConnection()
 
 // Initialize the ticket overview store after a valid session is present on
 // the app level, so that the query keeps alive.

@@ -103,6 +103,9 @@ const ticketsQuery = new QueryHandler(
       },
     },
   }),
+  {
+    triggerRefetchOnConnectionReconnect: () => foreground.value,
+  },
 )
 
 const ticketsResult = ticketsQuery.result()

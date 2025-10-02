@@ -21,6 +21,7 @@ import { useSessionStore } from '#shared/stores/session.ts'
 
 import { initializeConfirmationDialog } from '#desktop/components/CommonConfirmationDialog/initializeConfirmationDialog.ts'
 import { useBetaDisclaimer } from '#desktop/composables/useBetaDisclaimer.ts'
+import { useConnection } from '#desktop/composables/useConnection.ts'
 import { useTicketOverviewsStore } from '#desktop/entities/ticket/stores/ticketOverviews.ts'
 import { useUserCurrentTaskbarTabsStore } from '#desktop/entities/user/current/stores/taskbarTabs.ts'
 
@@ -54,7 +55,7 @@ useLocaleStore().$subscribe(() => {
 
 // The handling for invalid sessions. The event will be emitted, when from the server a "NotAuthorized"
 // response is received.
-useOnEmitter('sessionInvalid', async () => {
+useOnEmitter('session-invalid', async () => {
   if (authentication.authenticated) {
     await authentication.clearAuthentication()
 
@@ -82,6 +83,8 @@ watch(
   },
   { immediate: true },
 )
+
+useConnection()
 </script>
 
 <template>

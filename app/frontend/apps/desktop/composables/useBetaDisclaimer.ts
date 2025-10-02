@@ -23,13 +23,12 @@ export const useBetaDisclaimer = () => {
     () => route.name === 'LoginAfterAuth' || route.name === 'Login' || route.name === undefined,
   )
 
-  const dismissWarning = () => {
-    hasDismissedWarning.value = true
-  }
-
-  const { open, close } = useDialog({
+  const { open } = useDialog({
     name: DIALOG_NAME,
-    fullscreen: true,
+    global: true,
+    afterClose: () => {
+      hasDismissedWarning.value = true
+    },
     component: () =>
       new Promise((resolve) => {
         resolve(
@@ -42,7 +41,6 @@ export const useBetaDisclaimer = () => {
             content: __(
               'This new desktop UI is currently in development and not ready for production use. It may contain bugs or incomplete features.',
             ),
-            onClose: () => close().then(dismissWarning),
             footerActionOptions: {
               hideCancelButton: true,
               actionLabel: __('Confirm'),

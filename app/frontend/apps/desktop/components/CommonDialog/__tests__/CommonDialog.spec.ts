@@ -99,6 +99,34 @@ describe('visuals for common dialog', () => {
     expect(emitted.close[2]).toEqual([false])
   })
 
+  it('can not close dialog with keyboard and clicks, if noClose is set', async () => {
+    const wrapper = renderComponent(CommonDialog, {
+      props: {
+        name: 'dialog',
+        noClose: true,
+      },
+      global: {
+        stubs: {
+          teleport: true,
+        },
+      },
+      router: true,
+    })
+
+    await flushPromises()
+
+    await wrapper.events.keyboard('{Escape}')
+
+    const emitted = wrapper.emitted()
+
+    expect(emitted.close).toBeUndefined()
+
+    expect(wrapper.queryByLabelText('Close dialog')).not.toBeInTheDocument()
+
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'OK' }))
+    expect(emitted.close).toBeUndefined()
+  })
+
   it('rendering different footer button content', () => {
     const wrapper = renderComponent(CommonDialog, {
       props: {

@@ -3,13 +3,16 @@
 import mitt, { type Emitter } from 'mitt'
 
 export type Events = {
-  sessionInvalid: void
+  'session-invalid': void
   'expand-collapsed-content': string
   'focus-quick-search-field': void
   'reset-quick-search-field': void
   'main-sidebar-transition': void
   'close-popover': void
   'recompute-has-reached-article-bottom': void
+  'websocket-open': void
+  'websocket-close': void
+  reconnected: void
 }
 
 const emitter: Emitter<Events> = mitt<Events>()
