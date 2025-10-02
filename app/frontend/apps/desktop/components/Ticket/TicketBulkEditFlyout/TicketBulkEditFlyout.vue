@@ -16,7 +16,7 @@ import { getNodeByName } from '#shared/components/Form/utils.ts'
 import { useMacros, useTicketMacros } from '#shared/entities/macro/composables/useMacros.ts'
 import { useObjectAttributeFormData } from '#shared/entities/object-attributes/composables/useObjectAttributeFormData.ts'
 import { useObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
-import { getTicketNumberWithHook } from '#shared/entities/ticket/composables/getTicketNumber.ts'
+import { useTicketNumberAndTitle } from '#shared/entities/ticket/composables/useTicketNumberAndTitle.ts'
 import type {
   TicketArticleReceivedFormValues,
   TicketBulkEditFormData,
@@ -31,7 +31,6 @@ import {
 } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n.ts'
 import MutationHandler from '#shared/server/apollo/handler/MutationHandler.ts'
-import { useApplicationStore } from '#shared/stores/application.ts'
 import type { MutationSendError } from '#shared/types/error.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
@@ -53,8 +52,6 @@ const props = defineProps<Props>()
 const emit = defineEmits<{
   success: []
 }>()
-
-const application = useApplicationStore()
 
 const { form, formSetErrors, formNodeId, formSubmit } = useForm()
 
@@ -218,6 +215,8 @@ const macroMenuItems = computed<MenuItem[]>(
     })) ?? [],
 )
 
+const { getTicketNumberWithTitle } = useTicketNumberAndTitle()
+
 const bulkEditTickets = async (formData: FormSubmitData<TicketBulkEditFormData>) => {
   const cleanedFormData = Object.fromEntries(
     Object.entries(formData).filter(([, value]) => value),
@@ -263,10 +262,10 @@ const bulkEditTickets = async (formData: FormSubmitData<TicketBulkEditFormData>)
             {
               message: i18n.t(
                 `Ticket failed to save: %s (Reason: %s)`,
-                `${getTicketNumberWithHook(
-                  application.config.ticket_hook,
+                getTicketNumberWithTitle(
                   firstError.failedTicket.number,
-                )} - ${firstError.failedTicket.title}`,
+                  firstError.failedTicket.title,
+                ),
                 firstError.message,
               ),
             },

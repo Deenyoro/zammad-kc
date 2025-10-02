@@ -8,23 +8,40 @@ import type { OrganizationQuery } from '#shared/graphql/types.ts'
 
 interface Props {
   organization: OrganizationQuery['organization']
+  size?: 'small' | 'normal'
+  dense?: boolean
   noLink?: boolean
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  size: 'normal',
+})
 
-const component = computed(() => (props.noLink ? 'div' : 'CommonLink'))
+const avatarComponent = computed(() => (props.noLink || props.dense ? 'div' : 'CommonLink'))
+const nameComponent = computed(() => (props.noLink && !props.dense ? 'div' : 'CommonLink'))
+
+const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
 </script>
 
 <template>
-  <div class="flex gap-2">
+  <div class="flex items-center gap-2">
     <component
-      :is="component"
+      :is="avatarComponent"
       :class="{ 'hover:no-underline!': !noLink }"
-      :link="!noLink ? `/organization/profile/${organization.internalId}` : undefined"
+      :link="!dense && !noLink ? `/organization/profile/${organization.internalId}` : undefined"
     >
-      <CommonOrganizationAvatar class="p-3.5" :entity="organization" size="normal" />
+      <CommonOrganizationAvatar :entity="organization" :size="size" />
     </component>
-    <CommonLabel size="large">{{ organization.name }}</CommonLabel>
+    <component
+      :is="nameComponent"
+      v-if="dense"
+      :class="{ 'hover:no-underline!': !noLink }"
+      :link="dense && !noLink ? `/organization/profile/${organization.internalId}` : undefined"
+    >
+      <CommonLabel :size="labelSize" :class="{ 'text-blue-800!': !noLink }">
+        {{ organization.name }}
+      </CommonLabel>
+    </component>
+    <CommonLabel v-else :size="labelSize">{{ organization.name }}</CommonLabel>
   </div>
 </template>

@@ -1,16 +1,14 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useDebouncedLoading } from '#shared/composables/useDebouncedLoading.ts'
-import { getTicketNumberWithHook } from '#shared/entities/ticket/composables/getTicketNumber.ts'
+import { useTicketNumberAndTitle } from '#shared/entities/ticket/composables/useTicketNumberAndTitle.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
 import type { TicketsByFilterQueryVariables } from '#shared/graphql/types.ts'
 import QueryHandler from '#shared/server/apollo/handler/QueryHandler.ts'
-import { useApplicationStore } from '#shared/stores/application.ts'
 import { normalizeEdges } from '#shared/utils/helpers.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
@@ -44,8 +42,6 @@ const { debouncedLoading } = useDebouncedLoading({
   isLoading: loading,
 })
 
-const { config } = storeToRefs(useApplicationStore())
-
 const router = useRouter()
 
 const goToTicketSearch = () => {
@@ -53,6 +49,8 @@ const goToTicketSearch = () => {
 
   router.push(props.searchLink)
 }
+
+const { getTicketNumberWithTitle } = useTicketNumberAndTitle()
 </script>
 
 <template>
@@ -67,9 +65,7 @@ const goToTicketSearch = () => {
           <CommonTicketLabel
             v-for="ticket in tickets.array"
             :key="ticket.id"
-            v-tooltip="
-              `${getTicketNumberWithHook(config.ticket_hook, ticket.number)} - ${ticket.title}`
-            "
+            v-tooltip="getTicketNumberWithTitle(ticket.number, ticket.title)"
             class="h-9"
             no-wrap
             :ticket="ticket as TicketById"

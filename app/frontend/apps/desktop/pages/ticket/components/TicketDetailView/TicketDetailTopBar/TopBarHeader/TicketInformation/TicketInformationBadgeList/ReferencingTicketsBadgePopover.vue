@@ -1,11 +1,9 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 
-import { getTicketNumberWithHook } from '#shared/entities/ticket/composables/getTicketNumber.ts'
-import { useApplicationStore } from '#shared/stores/application.ts'
+import { useTicketNumberAndTitle } from '#shared/entities/ticket/composables/useTicketNumberAndTitle.ts'
 
 import CommonPopoverWithTrigger from '#desktop/components/CommonPopover/CommonPopoverWithTrigger.vue'
 import CommonPopoverMenu from '#desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue'
@@ -16,8 +14,6 @@ import type {
   ReferencingTicket,
   TicketReferenceMenuItem,
 } from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/types.ts'
-
-const { config } = storeToRefs(useApplicationStore())
 
 interface Props {
   referencingTickets: ReferencingTicket[]
@@ -35,6 +31,8 @@ const ticketReferenceMenuItems = computed<Array<MenuItem> | undefined>(() =>
 const referencingTicketsCount = computed(() => props.referencingTickets.length)
 
 const menuItemKeys = computed(() => ticketReferenceMenuItems.value?.map((item) => item.key))
+
+const { getTicketNumberWithHook, getTicketNumberWithTitle } = useTicketNumberAndTitle()
 </script>
 
 <template>
@@ -59,10 +57,10 @@ const menuItemKeys = computed(() => ticketReferenceMenuItems.value?.map((item) =
         <template v-for="key in menuItemKeys" :key="key" #[`item-${key}`]="item">
           <CommonTicketLabel
             v-tooltip="
-              `${getTicketNumberWithHook(
-                config.ticket_hook,
+              getTicketNumberWithTitle(
                 (item as unknown as TicketReferenceMenuItem).ticket.number,
-              )} - ${(item as unknown as TicketReferenceMenuItem).ticket.title}`
+                (item as unknown as TicketReferenceMenuItem).ticket.title,
+              )
             "
             class="group p-2.5 focus-visible:outline-transparent"
             :classes="{
@@ -81,7 +79,7 @@ const menuItemKeys = computed(() => ticketReferenceMenuItems.value?.map((item) =
       <CommonLabel size="small" class="text-black! dark:text-white!">
         {{
           referencingTicketsCount === 1
-            ? getTicketNumberWithHook(config.ticket_hook, referencingTickets[0].number as string)
+            ? getTicketNumberWithHook(referencingTickets[0].number)
             : $t('%s tickets', referencingTicketsCount)
         }}
       </CommonLabel>

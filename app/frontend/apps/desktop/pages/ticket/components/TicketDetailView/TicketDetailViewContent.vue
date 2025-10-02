@@ -43,6 +43,7 @@ import { useTicketArticleReplyAction } from '#shared/entities/ticket/composables
 import { useTicketEdit } from '#shared/entities/ticket/composables/useTicketEdit.ts'
 import { useTicketEditForm } from '#shared/entities/ticket/composables/useTicketEditForm.ts'
 import { useTicketLiveUserList } from '#shared/entities/ticket/composables/useTicketLiveUserList.ts'
+import { useTicketNumberAndTitle } from '#shared/entities/ticket/composables/useTicketNumberAndTitle.ts'
 import type {
   TicketArticleTimeAccountingFormData,
   TicketUpdateFormData,
@@ -77,7 +78,6 @@ import {
   initializeTicketInformation,
   provideTicketInformation,
 } from '../../composables/useTicketInformation.ts'
-import { useTicketNumber } from '../../composables/useTicketNumber.ts'
 import { useTicketSidebar, useProvideTicketSidebar } from '../../composables/useTicketSidebar.ts'
 import { type TicketSidebarContext, TicketSidebarScreenType } from '../../types/sidebar.ts'
 import TicketSidebar from '../TicketSidebar.vue'
@@ -138,10 +138,10 @@ const tabContext = computed<TaskbarTabContext>((currentContext) => {
 const { currentTaskbarTabId, currentTaskbarTabFormId, currentTaskbarTabNewArticlePresent } =
   useTaskbarTab(tabContext)
 
-const { ticketNumberWithTicketHook } = useTicketNumber(ticket)
+const { ticketNumberWithTitle } = useTicketNumberAndTitle(ticket)
 
 usePage({
-  metaTitle: computed(() => `${ticketNumberWithTicketHook.value} - ${ticket.value?.title}`),
+  metaTitle: ticketNumberWithTitle,
 })
 
 const contentContainerElement = useTemplateRef('content-container')

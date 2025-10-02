@@ -11,7 +11,7 @@ interface Props {
   entity: User
   context: {
     type: EntityType
-    emptyMessage: string
+    emptyMessage?: string
     hasPopover?: boolean
   }
 }

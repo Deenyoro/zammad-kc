@@ -11,6 +11,7 @@ import CommonTicketStateIndicatorIcon from '#desktop/components/CommonTicketStat
 interface Props {
   ticket?: Partial<TicketById> | null
   unauthorized?: boolean
+  noLink?: boolean
   noWrap?: boolean
   classes?: {
     indicator?: string
@@ -31,6 +32,8 @@ const ticketColorCode = computed(() => {
 })
 
 const iconSize = computed(() => (props.noWrap ? 'small' : 'tiny'))
+
+const component = computed(() => (props.noLink ? 'div' : 'CommonLink'))
 </script>
 
 <template>
@@ -38,7 +41,8 @@ const iconSize = computed(() => (props.noWrap ? 'small' : 'tiny'))
     <CommonIcon class="shrink-0 text-red-500" :size="iconSize" name="x-lg" />
     <CommonLabel class="text-black! dark:text-white!">{{ $t('Access denied') }}</CommonLabel>
   </div>
-  <CommonLink
+  <component
+    :is="component"
     v-else
     class="flex! grow gap-2 rounded-md break-words group-hover/tab:bg-blue-600 hover:no-underline! focus-visible:rounded-md focus-visible:outline-hidden group-hover/tab:dark:bg-blue-900"
     :class="{ 'items-start': !noWrap, 'items-center': noWrap }"
@@ -46,8 +50,8 @@ const iconSize = computed(() => (props.noWrap ? 'small' : 'tiny'))
       wordBreak: !noWrap ? 'normal' : undefined,
       overflowWrap: !noWrap ? 'anywhere' : undefined,
     }"
-    :link="`/tickets/${ticket?.internalId}`"
-    internal
+    :link="!noLink ? `/tickets/${ticket?.internalId}` : undefined"
+    :internal="!noLink ? true : undefined"
   >
     <CommonTicketStateIndicatorIcon
       class="ms-0.5 mt-1 shrink-0"
@@ -64,5 +68,5 @@ const iconSize = computed(() => (props.noWrap ? 'small' : 'tiny'))
     >
       {{ ticket?.title }}
     </CommonLabel>
-  </CommonLink>
+  </component>
 </template>
