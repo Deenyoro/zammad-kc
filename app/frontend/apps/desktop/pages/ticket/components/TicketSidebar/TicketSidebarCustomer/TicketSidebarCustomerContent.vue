@@ -144,7 +144,6 @@ const actions = computed<MenuItem[]>(() => [
                 entry.id === 'open'
                   ? EnumTicketStateTypeCategory.Open
                   : EnumTicketStateTypeCategory.Closed,
-              pageSize: 2,
             }"
             :title="entry.title!"
             :no-results="entry.count === 0"
