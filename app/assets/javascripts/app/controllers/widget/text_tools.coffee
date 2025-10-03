@@ -104,6 +104,7 @@ class App.WidgetTextTools extends App.Controller
     textToolsDropdown.off('mousedown.text-tools-dropdown').on 'mousedown.text-tools-dropdown', '.js-action', (e) ->
       e.preventDefault()
       App.WidgetTextTools.showModal(e, ce, selection, el)
+      textToolsDropdown.removeClass('open')
       return false
 
     # Position the dropdown menu on the right side of the dropdown container when in RTL locale.
