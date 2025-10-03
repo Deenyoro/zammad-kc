@@ -122,8 +122,8 @@ describe('Ticket detail view', () => {
       })
       expect(checklist).toBeInTheDocument()
 
-      // Checking display  of ticket link
-      expect(view.getByRole('link', { name: 'Test Ticket' })).toBeInTheDocument()
+      // Checking display of ticket link
+      expect(view.getByRole('link', { name: 'Ticket#53001 - Test Ticket' })).toBeInTheDocument()
 
       // Ticket link has single item menu, hence we have to test it does not exist in readonly
       expect(

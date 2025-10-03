@@ -1,9 +1,8 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { computed, toRef } from 'vue'
+import { computed } from 'vue'
 
-import { useTicketNumberAndTitle } from '#shared/entities/ticket/composables/useTicketNumberAndTitle.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
 import type { Ticket } from '#shared/graphql/types.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
@@ -24,7 +23,7 @@ export interface Props {
   zIndex?: string
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 defineOptions({
   inheritAttrs: false,
@@ -41,8 +40,6 @@ defineSlots<{
 const session = useSessionStore()
 
 const isAgent = computed(() => session.hasPermission('ticket.agent'))
-
-const { ticketNumberWithTitle } = useTicketNumberAndTitle(toRef(props, 'ticket'))
 </script>
 
 <template>
@@ -73,21 +70,9 @@ const { ticketNumberWithTitle } = useTicketNumberAndTitle(toRef(props, 'ticket')
 
     <template #default="slotProps">
       <slot v-bind="slotProps">
-        <CommonTicketLabel
-          v-tooltip="ticketNumberWithTitle"
-          class="h-9"
-          no-link
-          no-wrap
-          :ticket="ticket"
-        />
+        <CommonTicketLabel class="h-9" :ticket="ticket" no-link no-wrap />
       </slot>
     </template>
   </CommonPopoverWithTrigger>
-  <CommonTicketLabel
-    v-else
-    v-tooltip="ticketNumberWithTitle"
-    class="h-9"
-    no-wrap
-    :ticket="ticket"
-  />
+  <CommonTicketLabel v-else class="h-9" :ticket="ticket" no-wrap />
 </template>

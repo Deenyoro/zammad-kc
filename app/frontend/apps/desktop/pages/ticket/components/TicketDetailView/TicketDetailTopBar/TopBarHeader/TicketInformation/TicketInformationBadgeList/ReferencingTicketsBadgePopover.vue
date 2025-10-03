@@ -6,14 +6,12 @@ import { computed } from 'vue'
 import { useTicketNumberAndTitle } from '#shared/entities/ticket/composables/useTicketNumberAndTitle.ts'
 
 import CommonPopoverWithTrigger from '#desktop/components/CommonPopover/CommonPopoverWithTrigger.vue'
-import CommonPopoverMenu from '#desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue'
-import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
+import CommonSectionCollapse from '#desktop/components/CommonSectionCollapse/CommonSectionCollapse.vue'
 import CommonTicketLabel from '#desktop/components/CommonTicketLabel/CommonTicketLabel.vue'
-import ChecklistBadge from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ChecklistBadge.vue'
-import type {
-  ReferencingTicket,
-  TicketReferenceMenuItem,
-} from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/types.ts'
+
+import ChecklistBadge from './ChecklistBadge.vue'
+
+import type { ReferencingTicket } from './types.ts'
 
 interface Props {
   referencingTickets: ReferencingTicket[]
@@ -21,18 +19,9 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const ticketReferenceMenuItems = computed<Array<MenuItem> | undefined>(() =>
-  props.referencingTickets?.map((ticket, index) => ({
-    ticket,
-    key: `popover-checklist-title-item-${index}`,
-  })),
-)
-
 const referencingTicketsCount = computed(() => props.referencingTickets.length)
 
-const menuItemKeys = computed(() => ticketReferenceMenuItems.value?.map((item) => item.key))
-
-const { getTicketNumberWithHook, getTicketNumberWithTitle } = useTicketNumberAndTitle()
+const { getTicketNumberWithHook } = useTicketNumberAndTitle()
 </script>
 
 <template>
@@ -47,32 +36,23 @@ const { getTicketNumberWithHook, getTicketNumberWithTitle } = useTicketNumberAnd
     no-min-width
     no-full-width
   >
-    <template #popover-content="{ popover, close }">
-      <CommonPopoverMenu
-        ref="popoverMenu"
-        :header-label="$t('Tracked as checklist item in')"
-        :items="ticketReferenceMenuItems"
-        :popover="popover"
+    <template #popover-content="{ close }">
+      <CommonSectionCollapse
+        id="tickets-popover-title"
+        class="px-3 py-2 max-w-90 min-w-58"
+        :title="__('Tracked as checklist item in')"
+        container-class="flex flex-col gap-2"
+        no-collapse
       >
-        <template v-for="key in menuItemKeys" :key="key" #[`item-${key}`]="item">
-          <CommonTicketLabel
-            v-tooltip="
-              getTicketNumberWithTitle(
-                (item as unknown as TicketReferenceMenuItem).ticket.number,
-                (item as unknown as TicketReferenceMenuItem).ticket.title,
-              )
-            "
-            class="group p-2.5 focus-visible:outline-transparent"
-            :classes="{
-              indicator: 'group-focus:text-white',
-              label: 'group-focus:text-white',
-            }"
-            :ticket="(item as unknown as TicketReferenceMenuItem).ticket"
-            no-wrap
-            @click="close"
-          />
-        </template>
-      </CommonPopoverMenu>
+        <CommonTicketLabel
+          v-for="ticket in referencingTickets"
+          :key="ticket.id"
+          class="h-9"
+          :ticket="ticket"
+          no-wrap
+          @click="close"
+        />
+      </CommonSectionCollapse>
     </template>
 
     <ChecklistBadge class="cursor-pointer h-7" tag="div">

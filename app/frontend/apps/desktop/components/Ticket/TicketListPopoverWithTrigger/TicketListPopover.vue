@@ -5,7 +5,6 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useDebouncedLoading } from '#shared/composables/useDebouncedLoading.ts'
-import { useTicketNumberAndTitle } from '#shared/entities/ticket/composables/useTicketNumberAndTitle.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
 import type { TicketsByFilterQueryVariables } from '#shared/graphql/types.ts'
 import QueryHandler from '#shared/server/apollo/handler/QueryHandler.ts'
@@ -49,29 +48,27 @@ const goToTicketSearch = () => {
 
   router.push(props.searchLink)
 }
-
-const { getTicketNumberWithTitle } = useTicketNumberAndTitle()
 </script>
 
 <template>
-  <section ref="popover-section" data-type="popover" class="flex flex-col gap-3 p-3">
+  <section ref="popover-section" data-type="popover" class="px-3 py-2 flex flex-col">
     <CommonSectionCollapse id="tickets-popover-title" :title="title" no-collapse>
       <TicketListPopoverSkeleton v-if="debouncedLoading && !tickets.array.length" />
       <template v-else>
         <CommonLabel v-if="noResults || !tickets.totalCount">
           {{ $t('No results found') }}
         </CommonLabel>
-        <div v-else class="flex flex-col gap-3 max-w-[360px]">
+        <div v-else class="flex flex-col gap-2 max-w-90">
           <CommonTicketLabel
             v-for="ticket in tickets.array"
             :key="ticket.id"
-            v-tooltip="getTicketNumberWithTitle(ticket.number, ticket.title)"
             class="h-9"
             no-wrap
             :ticket="ticket as TicketById"
           />
           <CommonButton
             v-if="searchLink && tickets.array.length < tickets.totalCount"
+            class="mb-1"
             variant="secondary"
             size="small"
             @click="goToTicketSearch"

@@ -55,9 +55,8 @@ describe('TicketPopoverWithTrigger', () => {
 
   it('displays a label by default', () => {
     const wrapper = renderTicketPopover()
-    expect(
-      wrapper.getByRole('link', { name: `Ticket#${dummyTicket.number} - ${dummyTicket.title}` }),
-    ).toBeVisible()
+
+    expect(wrapper.getByRole('link', { name: dummyTicket.title })).toBeVisible()
   })
 
   it('shows a skeleton when ticket info is unavailable', async () => {

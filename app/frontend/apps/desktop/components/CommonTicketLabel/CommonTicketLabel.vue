@@ -3,6 +3,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { useTicketNumberAndTitle } from '#shared/entities/ticket/composables/useTicketNumberAndTitle.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
 import { EnumTicketStateColorCode } from '#shared/graphql/types.ts'
 
@@ -34,6 +35,8 @@ const ticketColorCode = computed(() => {
 const iconSize = computed(() => (props.noWrap ? 'small' : 'tiny'))
 
 const component = computed(() => (props.noLink ? 'div' : 'CommonLink'))
+
+const { getTicketNumberWithTitle } = useTicketNumberAndTitle()
 </script>
 
 <template>
@@ -44,6 +47,7 @@ const component = computed(() => (props.noLink ? 'div' : 'CommonLink'))
   <component
     :is="component"
     v-else
+    v-tooltip="!noLink ? getTicketNumberWithTitle(ticket?.number, ticket?.title) : undefined"
     class="flex! grow gap-2 rounded-md break-words group-hover/tab:bg-blue-600 hover:no-underline! focus-visible:rounded-md focus-visible:outline-hidden group-hover/tab:dark:bg-blue-900"
     :class="{ 'items-start': !noWrap, 'items-center': noWrap }"
     :style="{

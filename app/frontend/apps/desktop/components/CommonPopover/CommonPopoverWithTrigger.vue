@@ -131,7 +131,7 @@ onUnmounted(() => {
         'focus-visible:outline-1 focus-visible:outline-blue-800 hover:focus-visible:outline-blue-800':
           !noFocusStyling,
         'outline-transparent!': noFocusStyling,
-        'hover:outline-1 hover:outline-blue-900': !noHoverStyling,
+        'hover:outline-1 hover:outline-blue-600 hover:dark:outline-blue-900': !noHoverStyling,
       },
     ]"
     @keydown.space.prevent="open"
