@@ -24,7 +24,7 @@ const isChecklistFeatureEnabled = computed(() => !!config.value.checklist)
 
 <template>
   <div v-if="ticket" class="flex max-w-full items-center gap-2.5 text-nowrap *:h-7">
-    <CommonTicketEscalationIndicator v-if="isTicketAgent" :escalation-at="ticket.escalationAt" />
+    <CommonTicketEscalationIndicator v-if="isTicketAgent" :ticket="ticket" has-popover />
 
     <CommonTicketStateIndicator :color-code="ticket.stateColorCode" :label="ticket.state.name" />
 

@@ -71,7 +71,7 @@ const isOwnerSystemUser = computed(() => {
       </CommonLabel>
 
       <div class="flex items-center gap-2">
-        <CommonTicketEscalationIndicator class="h-7" :escalation-at="ticketData!.escalationAt" />
+        <CommonTicketEscalationIndicator class="h-7" :ticket="ticketData!" />
 
         <CommonTicketStateIndicator
           class="h-7"
