@@ -5809,6 +5809,13 @@ export type SearchCountsQueryVariables = Exact<{
 
 export type SearchCountsQuery = { __typename?: 'Queries', searchCounts: Array<{ __typename?: 'SearchCountsResult', model: EnumSearchableModels, totalCount: number }> };
 
+export type TicketInfoForPopoverQueryVariables = Exact<{
+  ticketId: Scalars['ID']['input'];
+}>;
+
+
+export type TicketInfoForPopoverQuery = { __typename?: 'Queries', ticket: { __typename?: 'Ticket', id: string, internalId: number, number: string, title: string, createdAt: string, escalationAt?: string | null, firstResponseEscalationAt?: string | null, closeEscalationAt?: string | null, updateEscalationAt?: string | null, stateColorCode: EnumTicketStateColorCode, owner: { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null }, customer: { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, image?: string | null, vip?: boolean | null, active?: boolean | null, outOfOffice?: boolean | null, outOfOfficeStartAt?: string | null, outOfOfficeEndAt?: string | null, email?: string | null }, organization?: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, vip?: boolean | null, active?: boolean | null } | null, state: { __typename?: 'TicketState', id: string, name: string, stateType: { __typename?: 'TicketStateType', id: string, name: string } }, group: { __typename?: 'Group', id: string, name?: string | null }, priority: { __typename?: 'TicketPriority', id: string, name: string } } };
+
 export type CalendarIcsFileEventsQueryVariables = Exact<{
   fileId: Scalars['ID']['input'];
 }>;

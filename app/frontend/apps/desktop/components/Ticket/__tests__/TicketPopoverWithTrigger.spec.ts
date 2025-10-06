@@ -6,13 +6,13 @@ import renderComponent from '#tests/support/components/renderComponent.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
-import {
-  mockTicketQuery,
-  waitForTicketQueryCalls,
-} from '#shared/entities/ticket/graphql/queries/ticket.mocks.ts'
 import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
+import {
+  mockTicketInfoForPopoverQuery,
+  waitForTicketInfoForPopoverQueryCalls,
+} from '../TicketPopoverWithTrigger/graphql/queries/ticketInfoForPopover.mocks.ts'
 import TicketPopoverWithTrigger, { type Props } from '../TicketPopoverWithTrigger.vue'
 
 const dummyTicket = createDummyTicket({
@@ -24,7 +24,7 @@ const dummyTicket = createDummyTicket({
 })
 
 const renderTicketPopover = (props?: Partial<Props>) => {
-  mockTicketQuery({
+  mockTicketInfoForPopoverQuery({
     ticket: dummyTicket,
   })
 
@@ -74,7 +74,7 @@ describe('TicketPopoverWithTrigger', () => {
 
     await wrapper.events.hover(wrapper.getByRole('link'))
 
-    const calls = await waitForTicketQueryCalls()
+    const calls = await waitForTicketInfoForPopoverQueryCalls()
 
     expect(calls.at(-1)?.variables).toEqual({
       ticketId: dummyTicket.id,

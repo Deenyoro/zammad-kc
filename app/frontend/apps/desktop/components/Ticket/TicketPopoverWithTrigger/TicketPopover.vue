@@ -6,7 +6,6 @@ import { computed } from 'vue'
 import ObjectAttributes from '#shared/components/ObjectAttributes/ObjectAttributes.vue'
 import { useDebouncedLoading } from '#shared/composables/useDebouncedLoading.ts'
 import { useObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
-import { useTicketQuery } from '#shared/entities/ticket/graphql/queries/ticket.api.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
 import {
   EnumObjectManagerObjects,
@@ -23,6 +22,7 @@ import CommonTicketStateIndicator from '#desktop/components/CommonTicketStateInd
 import OrganizationInfo from '#desktop/components/Organization/OrganizationInfo.vue'
 import UserInfo from '#desktop/components/User/UserInfo.vue'
 
+import { useTicketInfoForPopoverQuery } from './graphql/queries/ticketInfoForPopover.api.ts'
 import TicketPopoverSkeleton from './skeleton/TicketPopoverSkeleton.vue'
 
 interface Props {
@@ -31,18 +31,19 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const ticketQuery = new QueryHandler(
-  useTicketQuery(
+const ticketInfoForPopoverQuery = new QueryHandler(
+  useTicketInfoForPopoverQuery(
     () => ({ ticketId: props.ticket.id! }),
     () => ({ enabled: !!props.ticket.id, fetchPolicy: 'cache-and-network' }),
   ),
 )
 
-const ticketResult = ticketQuery.result()
+const ticketResult = ticketInfoForPopoverQuery.result()
+
 const ticketData = computed(() => ticketResult.value?.ticket)
 
 const { debouncedLoading } = useDebouncedLoading({
-  isLoading: ticketQuery.loading(),
+  isLoading: ticketInfoForPopoverQuery.loading(),
 })
 
 const { attributes } = useObjectAttributes(EnumObjectManagerObjects.Ticket)
@@ -65,18 +66,18 @@ const isOwnerSystemUser = computed(() => {
 <template>
   <section ref="popover-section" data-type="popover" class="space-y-2 p-3 max-w-prose">
     <TicketPopoverSkeleton v-if="debouncedLoading && !ticketData" />
-    <template v-else>
+    <template v-else-if="ticketData">
       <CommonLabel class="block!" size="large">
-        {{ ticketData!.title }}
+        {{ ticketData.title }}
       </CommonLabel>
 
       <div class="flex items-center gap-2">
-        <CommonTicketEscalationIndicator class="h-7" :ticket="ticketData!" />
+        <CommonTicketEscalationIndicator class="h-7" :ticket="ticketData as TicketById" />
 
         <CommonTicketStateIndicator
           class="h-7"
-          :color-code="ticketData!.stateColorCode"
-          :label="ticketData!.state.name"
+          :color-code="ticketData.stateColorCode"
+          :label="ticketData.state.name"
         />
       </div>
 
@@ -86,15 +87,15 @@ const isOwnerSystemUser = computed(() => {
         :title="__('Owner')"
         no-collapse
       >
-        <UserInfo :user="ticketData!.owner as User" size="small" dense />
+        <UserInfo :user="ticketData.owner as User" size="small" dense />
       </CommonSectionCollapse>
 
       <CommonSectionCollapse id="ticket-customer-popover" :title="__('Customer')" no-collapse>
-        <UserInfo :user="ticketData!.customer as User" size="small" dense />
+        <UserInfo :user="ticketData.customer as User" size="small" dense />
       </CommonSectionCollapse>
 
       <CommonSectionCollapse
-        v-if="ticketData!.organization"
+        v-if="ticketData.organization"
         id="ticket-organization-popover"
         :title="__('Organization')"
         no-collapse
@@ -102,13 +103,13 @@ const isOwnerSystemUser = computed(() => {
         <OrganizationInfo
           size="small"
           dense
-          :organization="ticketData!.organization as Organization"
+          :organization="ticketData.organization as Organization"
         />
       </CommonSectionCollapse>
 
       <ObjectAttributes
         class="border-t border-neutral-100 dark:border-gray-900 pt-2.5"
-        :object="ticketData!"
+        :object="ticketData"
         :attributes="objectAttributes"
         include-static
       />
