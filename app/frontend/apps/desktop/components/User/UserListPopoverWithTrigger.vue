@@ -5,14 +5,14 @@ import { computed } from 'vue'
 
 import type { Props as CommonUserAvatarProps } from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
 import type { TicketLiveAppUser } from '#shared/entities/ticket/types.ts'
-import type { UserQuery } from '#shared/graphql/types.ts'
+import type { User } from '#shared/graphql/types.ts'
 
 import { type Props as CommonPopoverProps } from '#desktop//components/CommonPopover/CommonPopover.vue'
 import CommonPopoverWithTrigger from '#desktop/components/CommonPopover/CommonPopoverWithTrigger.vue'
 import UserListPopover from '#desktop/components/User/UserListPopoverWithTrigger/UserListPopover.vue'
 
 export interface Props {
-  users: UserQuery['user'][]
+  users: User[]
   liveUsers?: Pick<TicketLiveAppUser, 'editing' | 'app' | 'isIdle'>[]
   popoverConfig?: Omit<CommonPopoverProps, 'owner'>
   avatarConfig?: Omit<CommonUserAvatarProps, 'entity'>

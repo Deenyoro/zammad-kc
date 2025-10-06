@@ -2,12 +2,12 @@
 
 <script setup lang="ts">
 import type { TicketLiveAppUser } from '#shared/entities/ticket/types.ts'
-import type { UserQuery } from '#shared/graphql/types.ts'
+import type { User } from '#shared/graphql/types.ts'
 
 import UserInfo from '#desktop/components/User/UserInfo.vue'
 
 interface Props {
-  users: UserQuery['user'][]
+  users: User[]
   liveUsers?: Pick<TicketLiveAppUser, 'editing' | 'app' | 'isIdle'>[]
 }
 
@@ -19,7 +19,7 @@ defineProps<Props>()
     <UserInfo
       v-for="(user, index) in users"
       :key="user.id"
-      :user="user!"
+      :user="user"
       :live="liveUsers?.[index]"
       size="small"
       dense

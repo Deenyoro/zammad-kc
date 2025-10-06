@@ -9,6 +9,7 @@ import { UserUpdatesDocument } from '#shared/graphql/subscriptions/userUpdates.a
 import type {
   UserUpdatesSubscriptionVariables,
   UserUpdatesSubscription,
+  User,
 } from '#shared/graphql/types.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import type { GraphQLHandlerError } from '#shared/types/error.ts'
@@ -60,7 +61,7 @@ export const useUserDetail = (
   const userResult = userQuery.result()
   const loading = userQuery.loading()
 
-  const user = computed(() => userResult.value?.user)
+  const user = computed(() => userResult.value?.user as User)
 
   const { viewScreenAttributes } = storeToRefs(useUserObjectAttributesStore())
 

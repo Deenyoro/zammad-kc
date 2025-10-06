@@ -5,13 +5,14 @@ import { computed } from 'vue'
 
 import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
 import type { AvatarUserLive } from '#shared/components/CommonUserAvatar/types.ts'
-import type { UserQuery } from '#shared/graphql/types.ts'
+import type { AvatarUser } from '#shared/components/CommonUserAvatar/types.ts'
+import type { User } from '#shared/graphql/types.ts'
 import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 
 import OrganizationPopoverWithTrigger from '#desktop/components/Organization/OrganizationPopoverWithTrigger.vue'
 
 interface Props {
-  user: UserQuery['user']
+  user: Partial<User>
   live?: AvatarUserLive
   size?: 'small' | 'normal'
   dense?: boolean
@@ -37,9 +38,9 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
         'hover:no-underline! hover:rounded-full hover:outline-1 hover:outline-blue-600 hover:dark:outline-blue-900':
           !dense && !noLink,
       }"
-      :link="!dense && !noLink ? `/user/profile/${getIdFromGraphQLId(user.id)}` : undefined"
+      :link="!dense && !noLink ? `/user/profile/${getIdFromGraphQLId(user.id!)}` : undefined"
     >
-      <CommonUserAvatar v-if="user" :entity="user" :live="live" :size="size" />
+      <CommonUserAvatar v-if="user" :entity="user as AvatarUser" :live="live" :size="size" />
     </component>
     <div class="flex flex-col justify-center gap-px">
       <component
@@ -47,7 +48,7 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
         v-if="dense"
         class="text-sm leading-snug"
         :class="{ group: !noLink }"
-        :link="!noLink ? `/user/profile/${getIdFromGraphQLId(user.id)}` : undefined"
+        :link="!noLink ? `/user/profile/${getIdFromGraphQLId(user.id!)}` : undefined"
       >
         <CommonLabel
           :class="{

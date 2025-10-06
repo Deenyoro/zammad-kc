@@ -46,12 +46,5 @@ export const UserDetailAttributesFragmentDoc = gql`
     }
     totalCount
   }
-  hasSecondaryOrganizations
-  ticketsCount {
-    open
-    openSearchQuery
-    closed
-    closedSearchQuery
-  }
 }
     ${ObjectAttributeValuesFragmentDoc}`;

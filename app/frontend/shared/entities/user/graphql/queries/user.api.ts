@@ -10,6 +10,13 @@ export const UserDocument = gql`
     query user($userId: ID!, $secondaryOrganizationsCount: Int) {
   user(userId: $userId) {
     ...userDetailAttributes
+    hasSecondaryOrganizations
+    ticketsCount {
+      open
+      openSearchQuery
+      closed
+      closedSearchQuery
+    }
     policy {
       update
     }
