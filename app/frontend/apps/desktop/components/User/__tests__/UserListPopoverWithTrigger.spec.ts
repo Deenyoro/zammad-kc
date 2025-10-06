@@ -2,8 +2,10 @@
 
 import { within } from '@testing-library/vue'
 
+import { findByIconName } from '#tests/support/components/iconQueries.ts'
 import renderComponent from '#tests/support/components/renderComponent.ts'
 
+import { EnumTaskbarApp } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import UserListPopoverWithTrigger, { type Props } from '../UserListPopoverWithTrigger.vue'
@@ -46,16 +48,43 @@ describe('UserListPopoverWithTrigger', () => {
 
     const popover = await wrapper.findByRole('region')
 
+    expect(await within(popover).findByRole('img', { name: 'Avatar (Nicole Braun)' })).toBeVisible()
+
     expect(
       await within(popover).findByRole('link', { name: dummyUsers[0].fullname }),
     ).toHaveAttribute('href', `/user/profile/${dummyUsers[0].internalId}`)
 
-    expect(await within(popover).findByText(dummyUsers[0].email)).toBeVisible()
+    expect(await within(popover).findByRole('img', { name: 'Avatar (Agent 1 Test)' })).toBeVisible()
 
     expect(
       await within(popover).findByRole('link', { name: dummyUsers[1].fullname }),
     ).toHaveAttribute('href', `/user/profile/${dummyUsers[1].internalId}`)
+  })
 
-    expect(await within(popover).findByText(dummyUsers[1].email)).toBeVisible()
+  it('supports optional live user information', async () => {
+    const wrapper = renderUserListPopover({
+      liveUsers: [
+        {
+          editing: true,
+          app: EnumTaskbarApp.Mobile,
+          isIdle: false,
+        },
+        {
+          editing: false,
+          app: EnumTaskbarApp.Desktop,
+          isIdle: true,
+        },
+      ],
+    })
+
+    await wrapper.events.hover(wrapper.getByText('+2'))
+
+    const popover = await wrapper.findByRole('region')
+
+    expect(await findByIconName(popover, 'phone-pencil')).toHaveAccessibleName(
+      'User is editing on mobile',
+    )
+
+    expect(await findByIconName(popover, 'user-idle-2')).toHaveAccessibleName('User is idle')
   })
 })

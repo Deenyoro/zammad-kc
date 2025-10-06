@@ -4,6 +4,7 @@
 import { computed } from 'vue'
 
 import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
+import type { AvatarUserLive } from '#shared/components/CommonUserAvatar/types.ts'
 import type { UserQuery } from '#shared/graphql/types.ts'
 import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 
@@ -11,6 +12,7 @@ import OrganizationPopoverWithTrigger from '#desktop/components/Organization/Org
 
 interface Props {
   user: UserQuery['user']
+  live?: AvatarUserLive
   size?: 'small' | 'normal'
   dense?: boolean
   noLink?: boolean
@@ -37,7 +39,7 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
       }"
       :link="!dense && !noLink ? `/user/profile/${getIdFromGraphQLId(user.id)}` : undefined"
     >
-      <CommonUserAvatar v-if="user" :entity="user" :size="size" />
+      <CommonUserAvatar v-if="user" :entity="user" :live="live" :size="size" />
     </component>
     <div class="flex flex-col justify-center gap-px">
       <component
@@ -60,15 +62,8 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
         {{ user.fullname }}
       </CommonLabel>
 
-      <CommonLabel
-        v-if="dense && user.email"
-        :size="labelSize"
-        class="text-gray-300! dark:text-neutral-400!"
-      >
-        {{ user.email }}
-      </CommonLabel>
       <OrganizationPopoverWithTrigger
-        v-else-if="user.organization && hasOrganizationPopover"
+        v-if="!dense && user.organization && hasOrganizationPopover"
         class="rounded-sm outline-offset-1 focus-visible:outline-2!"
         :popover-config="{ orientation: 'left' }"
         :organization="user.organization"
@@ -82,7 +77,7 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
         </CommonLabel>
       </OrganizationPopoverWithTrigger>
       <CommonLink
-        v-else-if="user.organization"
+        v-else-if="!dense && user.organization"
         :link="`/organization/profile/${user.organization?.internalId}`"
       >
         <CommonLabel

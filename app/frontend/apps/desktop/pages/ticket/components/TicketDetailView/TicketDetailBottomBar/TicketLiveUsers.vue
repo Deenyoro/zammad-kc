@@ -56,6 +56,13 @@ const { ticket } = useTicketInformation()
       <UserListPopoverWithTrigger
         v-if="overflowLiveUsers.length"
         :users="overflowLiveUsers.map((liveUser) => liveUser.user)"
+        :live-users="
+          overflowLiveUsers.map((liveUser) => ({
+            editing: liveUser.editing,
+            app: liveUser.app,
+            isIdle: liveUser.isIdle,
+          }))
+        "
         :popover-config="{
           placement: 'arrowStart',
         }"
