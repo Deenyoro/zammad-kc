@@ -15,6 +15,7 @@ import { initializeUserAvatarClasses } from '#shared/initializer/initializeUserA
 export const initializeGlobalComponentStyles = () => {
   initializeLinkClasses({
     base: '',
+    internal: '',
   })
 
   initializeAlertClasses({

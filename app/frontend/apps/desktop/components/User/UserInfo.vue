@@ -21,7 +21,8 @@ const props = withDefaults(defineProps<Props>(), {
   size: 'normal',
 })
 
-const component = computed(() => (props.noLink ? 'div' : 'CommonLink'))
+const avatarComponent = computed(() => (props.noLink || props.dense ? 'div' : 'CommonLink'))
+const nameComponent = computed(() => (props.noLink && !props.dense ? 'div' : 'CommonLink'))
 
 const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
 </script>
@@ -29,21 +30,29 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
 <template>
   <div class="flex items-center gap-2">
     <component
-      :is="component"
-      :class="{ 'hover:no-underline!': !noLink }"
-      :link="!noLink ? `/user/profile/${getIdFromGraphQLId(user.id)}` : undefined"
+      :is="avatarComponent"
+      :class="{
+        'hover:no-underline! hover:rounded-full hover:outline-1 hover:outline-blue-600 hover:dark:outline-blue-900':
+          !dense && !noLink,
+      }"
+      :link="!dense && !noLink ? `/user/profile/${getIdFromGraphQLId(user.id)}` : undefined"
     >
       <CommonUserAvatar v-if="user" :entity="user" :size="size" />
     </component>
     <div class="flex flex-col justify-center gap-px">
       <component
-        :is="component"
+        :is="nameComponent"
         v-if="dense"
         class="text-sm leading-snug"
-        :class="{ 'hover:no-underline!': !noLink }"
+        :class="{ group: !noLink }"
         :link="!noLink ? `/user/profile/${getIdFromGraphQLId(user.id)}` : undefined"
       >
-        <CommonLabel :size="labelSize" :class="{ 'text-blue-800!': !noLink }">
+        <CommonLabel
+          :class="{
+            'text-blue-800! group-hover:text-blue-850! group-hover:dark:text-blue-600!': !noLink,
+          }"
+          :size="labelSize"
+        >
           {{ user.fullname }}
         </CommonLabel>
       </component>
@@ -65,7 +74,10 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
         :organization="user.organization"
         trigger-link-active-class="outline-2! outline-blue-800! hover:outline-blue-800!"
       >
-        <CommonLabel :size="labelSize" class="text-blue-800!">
+        <CommonLabel
+          class="text-blue-800! hover:text-blue-850! hover:dark:text-blue-600!"
+          :size="labelSize"
+        >
           {{ user.organization.name }}
         </CommonLabel>
       </OrganizationPopoverWithTrigger>
@@ -73,7 +85,10 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
         v-else-if="user.organization"
         :link="`/organization/profile/${user.organization?.internalId}`"
       >
-        <CommonLabel :size="labelSize" class="text-blue-800!">
+        <CommonLabel
+          class="text-blue-800! hover:text-blue-850! hover:dark:text-blue-600!"
+          :size="labelSize"
+        >
           {{ user.organization.name }}
         </CommonLabel>
       </CommonLink>

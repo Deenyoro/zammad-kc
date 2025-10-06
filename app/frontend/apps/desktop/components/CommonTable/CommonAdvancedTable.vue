@@ -395,7 +395,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
 
   switch ((item as TicketById).priority?.uiColor) {
     case 'high-priority':
-      return 'text-red-500 dark:text-red-500'
+      return 'text-red-500'
     case 'low-priority':
       return 'text-stone-200 dark:text-neutral-500'
     default:
@@ -593,7 +593,7 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                     },
                     getLinkColorClasses(item),
                   ]"
-                  class="block! truncate text-sm group-hover:text-black group-focus-visible:text-white group-active:text-white hover:no-underline! group-hover:dark:text-white"
+                  class="block! truncate text-sm group-hover:text-black! group-focus-visible:text-white group-active:text-white hover:no-underline! group-hover:dark:text-white!"
                   @click.stop
                   @keydown.stop
                 >

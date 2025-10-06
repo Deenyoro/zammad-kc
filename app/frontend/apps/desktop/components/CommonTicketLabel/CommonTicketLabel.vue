@@ -49,7 +49,11 @@ const { getTicketNumberWithTitle } = useTicketNumberAndTitle()
     v-else
     v-tooltip="!noLink ? getTicketNumberWithTitle(ticket?.number, ticket?.title) : undefined"
     class="flex! grow gap-2 rounded-md break-words group-hover/tab:bg-blue-600 hover:no-underline! focus-visible:rounded-md focus-visible:outline-hidden group-hover/tab:dark:bg-blue-900"
-    :class="{ 'items-start': !noWrap, 'items-center': noWrap }"
+    :class="{
+      group: !noLink,
+      'items-start': !noWrap,
+      'items-center': noWrap,
+    }"
     :style="{
       wordBreak: !noWrap ? 'normal' : undefined,
       overflowWrap: !noWrap ? 'anywhere' : undefined,
@@ -67,7 +71,7 @@ const { getTicketNumberWithTitle } = useTicketNumberAndTitle()
     />
     <CommonLabel
       :id="ticketId"
-      class="mt-0.5 text-blue-800!"
+      class="mt-0.5 text-blue-800! group-hover:text-blue-850! group-hover:dark:text-blue-600!"
       :class="[classes?.label || '', { 'mt-0! line-clamp-1!': noWrap }]"
     >
       {{ ticket?.title }}

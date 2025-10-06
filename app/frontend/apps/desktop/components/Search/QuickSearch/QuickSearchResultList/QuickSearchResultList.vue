@@ -117,7 +117,6 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
     </div>
   </div>
   <template v-else>
-    <!-- TODO: Exchange the link to the proper route when ready. -->
     <CommonLink
       v-if="!isLoadingSearchResults"
       class="group/link mb-4 block"
@@ -126,7 +125,7 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
       @keydown.enter="$event.target.click()"
     >
       <CommonLabel
-        class="text-blue-800! group-hover/link:underline"
+        class="text-blue-800! hover:text-blue-850! hover:dark:text-blue-600!"
         prefix-icon="search-detail"
         size="small"
       >

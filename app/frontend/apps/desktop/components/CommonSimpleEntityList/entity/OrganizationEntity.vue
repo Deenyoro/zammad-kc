@@ -30,23 +30,31 @@ defineProps<Props>()
     <template #default="slotProps">
       <div class="flex items-center gap-2">
         <CommonOrganizationAvatar
-          class="rounded-full outline-2 outline-transparent group-hover:outline-blue-900 group-focus-visible:outline-blue-900"
+          class="rounded-full outline-1 outline-transparent group-hover:outline-blue-600 group-hover:dark:outline-blue-900 group-focus-visible:outline-blue-800"
           :class="{
             'outline-2! outline-blue-800!': slotProps?.isOpen && slotProps.hasOpenViaLongClick,
           }"
           :entity="entity"
           size="small"
         />
-        <CommonLabel class="block truncate text-blue-800!">{{ entity.name }}</CommonLabel>
+        <CommonLabel
+          class="block truncate text-blue-800! group-hover:text-blue-850! group-hover:dark:text-blue-600! group-focus-visible:text-blue-800!"
+        >
+          {{ entity.name }}
+        </CommonLabel>
       </div>
     </template>
   </OrganizationPopoverWithTrigger>
   <CommonLink
     v-else
     :link="`/organization/profile/${entity.internalId}`"
-    class="flex items-center gap-2 hover:no-underline!"
+    class="group flex items-center gap-2 hover:no-underline!"
   >
     <CommonOrganizationAvatar :entity="entity as AvatarOrganization" size="small" />
-    <CommonLabel class="block truncate text-blue-800!">{{ entity.name }}</CommonLabel>
+    <CommonLabel
+      class="block truncate text-blue-800! group-hover:text-blue-850! group-hover:dark:text-blue-600! group-focus-visible:text-blue-800!"
+    >
+      {{ entity.name }}
+    </CommonLabel>
   </CommonLink>
 </template>

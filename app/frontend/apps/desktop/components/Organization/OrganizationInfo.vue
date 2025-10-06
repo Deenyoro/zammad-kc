@@ -27,7 +27,10 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
   <div class="flex items-center gap-2">
     <component
       :is="avatarComponent"
-      :class="{ 'hover:no-underline!': !noLink }"
+      :class="{
+        'hover:no-underline! hover:rounded-full hover:outline-1 hover:outline-blue-600 hover:dark:outline-blue-900':
+          !dense && !noLink,
+      }"
       :link="!dense && !noLink ? `/organization/profile/${organization.internalId}` : undefined"
     >
       <CommonOrganizationAvatar :entity="organization" :size="size" />
@@ -35,10 +38,15 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
     <component
       :is="nameComponent"
       v-if="dense"
-      :class="{ 'hover:no-underline!': !noLink }"
+      :class="{ group: !noLink }"
       :link="dense && !noLink ? `/organization/profile/${organization.internalId}` : undefined"
     >
-      <CommonLabel :size="labelSize" :class="{ 'text-blue-800!': !noLink }">
+      <CommonLabel
+        :class="{
+          'text-blue-800! group-hover:text-blue-850! group-hover:dark:text-blue-600!': !noLink,
+        }"
+        :size="labelSize"
+      >
         {{ organization.name }}
       </CommonLabel>
     </component>

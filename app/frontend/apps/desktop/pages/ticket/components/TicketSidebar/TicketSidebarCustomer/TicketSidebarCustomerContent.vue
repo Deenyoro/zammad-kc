@@ -148,7 +148,7 @@ const actions = computed<MenuItem[]>(() => [
             :title="entry.title!"
             :no-results="entry.count === 0"
             :trigger-class="[
-              'focus-visible-app-default flex items-center gap-1 rounded-lg! text-sm text-gray-100 hover:bg-blue-600 hover:text-black hover:no-underline! dark:text-neutral-400 dark:hover:bg-blue-900 dark:hover:text-white',
+              'focus-visible-app-default flex items-center gap-1 rounded-lg! text-sm text-gray-100 hover:bg-blue-600 hover:text-black! hover:no-underline! dark:text-neutral-400 dark:hover:bg-blue-900 dark:hover:text-white!',
               paddingClasses,
             ]"
             :trigger-link="typeof entry.route === 'string' ? entry.route : undefined"
