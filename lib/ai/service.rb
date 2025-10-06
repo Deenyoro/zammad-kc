@@ -63,7 +63,7 @@ class AI::Service
   def request_fresh
     response = ask_provider
 
-    return if response.blank?
+    return if response.nil?
 
     stored_result = save_result(response) if persistable?
 
