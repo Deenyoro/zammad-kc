@@ -41,19 +41,21 @@ const { persistentStates } = usePersistentStates()
 const { ticketId, ticket } = useTicketInformation()
 const { activeSidebar } = useTicketSidebar()
 
+const isSummarySideBarActive = computed(() => activeSidebar.value === 'ticket-summary')
+
 const runWhenSidebarIsActive = computed(() => {
   const groupSummaryGenerationOption = ticket.value?.group.summaryGeneration
 
   if (groupSummaryGenerationOption === EnumTicketSummaryGeneration.GlobalDefault) {
     return (
       summaryConfig.value.generate_on === EnumTicketSummaryGeneration.OnTicketDetailOpening ||
-      activeSidebar.value === 'ticket-summary'
+      isSummarySideBarActive.value
     )
   }
 
   return (
     groupSummaryGenerationOption === EnumTicketSummaryGeneration.OnTicketDetailOpening ||
-    activeSidebar.value === 'ticket-summary'
+    isSummarySideBarActive.value
   )
 })
 
@@ -161,7 +163,7 @@ const getAIAssistanceSummary = () => {
   })
 }
 
-watch(activeSidebar, () => {
+watch(isSummarySideBarActive, () => {
   if (!runWhenSidebarIsActive.value) return
   getAIAssistanceSummary()
 })
