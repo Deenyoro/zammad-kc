@@ -6,6 +6,7 @@ import { computed, ref, type ComputedRef, type Ref } from 'vue'
 import type {
   OrganizationUpdatesSubscriptionVariables,
   OrganizationUpdatesSubscription,
+  Organization,
 } from '#shared/graphql/types.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import type { GraphQLHandlerError } from '#shared/types/error.ts'
@@ -54,7 +55,7 @@ export const useOrganizationDetail = (
   const organizationResult = organizationQuery.result()
   const loading = organizationQuery.loading()
 
-  const organization = computed(() => organizationResult.value?.organization)
+  const organization = computed(() => organizationResult.value?.organization as Organization)
 
   const loadAllMembers = () => {
     if (!organizationId) return

@@ -10,11 +10,15 @@ export type ReactiveFunction<TParam> = () => TParam;
 export const OrganizationDocument = gql`
     query organization($organizationId: ID!, $membersCount: Int) {
   organization(organizationId: $organizationId) {
+    ...organizationAttributes
+    ...organizationMembers
     policy {
       update
     }
-    ...organizationAttributes
-    ...organizationMembers
+    ticketsCount {
+      open
+      closed
+    }
   }
 }
     ${OrganizationAttributesFragmentDoc}

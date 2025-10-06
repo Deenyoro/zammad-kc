@@ -4,10 +4,11 @@
 import { computed } from 'vue'
 
 import CommonOrganizationAvatar from '#shared/components/CommonOrganizationAvatar/CommonOrganizationAvatar.vue'
-import type { OrganizationQuery } from '#shared/graphql/types.ts'
+import type { AvatarOrganization } from '#shared/components/CommonOrganizationAvatar/types.ts'
+import type { Organization } from '#shared/graphql/types.ts'
 
 interface Props {
-  organization: OrganizationQuery['organization']
+  organization: Partial<Organization>
   size?: 'small' | 'normal'
   dense?: boolean
   noLink?: boolean
@@ -33,7 +34,7 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
       }"
       :link="!dense && !noLink ? `/organization/profile/${organization.internalId}` : undefined"
     >
-      <CommonOrganizationAvatar :entity="organization" :size="size" />
+      <CommonOrganizationAvatar :entity="organization as AvatarOrganization" :size="size" />
     </component>
     <component
       :is="nameComponent"

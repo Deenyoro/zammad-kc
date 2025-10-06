@@ -5765,6 +5765,14 @@ export type UserUpdatesPayload = {
   user?: Maybe<User>;
 };
 
+export type OrganizationInfoForPopoverQueryVariables = Exact<{
+  organizationId: Scalars['ID']['input'];
+  membersCount?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type OrganizationInfoForPopoverQuery = { __typename?: 'Queries', organization: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, shared?: boolean | null, domain?: string | null, domainAssignment?: boolean | null, active?: boolean | null, note?: string | null, vip?: boolean | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null, allMembers?: { __typename?: 'UserConnection', totalCount: number, edges: Array<{ __typename?: 'UserEdge', node: { __typename?: 'User', id: string, internalId: number, image?: string | null, firstname?: string | null, lastname?: string | null, fullname?: string | null, email?: string | null, phone?: string | null, outOfOffice?: boolean | null, outOfOfficeStartAt?: string | null, outOfOfficeEndAt?: string | null, active?: boolean | null, vip?: boolean | null } }> } | null } };
+
 export type DetailSearchQueryVariables = Exact<{
   search: Scalars['String']['input'];
   onlyIn: EnumSearchableModels;
@@ -6628,7 +6636,7 @@ export type OrganizationUpdateMutationVariables = Exact<{
 }>;
 
 
-export type OrganizationUpdateMutation = { __typename?: 'Mutations', organizationUpdate?: { __typename?: 'OrganizationUpdatePayload', organization?: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, shared?: boolean | null, domain?: string | null, domainAssignment?: boolean | null, active?: boolean | null, note?: string | null, vip?: boolean | null, ticketsCount?: { __typename?: 'TicketCount', open: number, closed: number } | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null } | null, errors?: Array<{ __typename?: 'UserError', message: string, messagePlaceholder?: Array<string> | null, field?: string | null, exception?: EnumUserErrorException | null }> | null } | null };
+export type OrganizationUpdateMutation = { __typename?: 'Mutations', organizationUpdate?: { __typename?: 'OrganizationUpdatePayload', organization?: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, shared?: boolean | null, domain?: string | null, domainAssignment?: boolean | null, active?: boolean | null, note?: string | null, vip?: boolean | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null } | null, errors?: Array<{ __typename?: 'UserError', message: string, messagePlaceholder?: Array<string> | null, field?: string | null, exception?: EnumUserErrorException | null }> | null } | null };
 
 export type TicketOverviewOrderQueryVariables = Exact<{
   withTicketCount?: InputMaybe<Scalars['Boolean']['input']>;
@@ -6821,7 +6829,7 @@ export type AutocompleteSearchOrganizationQueryVariables = Exact<{
 }>;
 
 
-export type AutocompleteSearchOrganizationQuery = { __typename?: 'Queries', autocompleteSearchOrganization: Array<{ __typename?: 'AutocompleteSearchOrganizationEntry', value: number, label: string, labelPlaceholder?: Array<string> | null, heading?: string | null, headingPlaceholder?: Array<string> | null, disabled?: boolean | null, icon?: string | null, organization: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, shared?: boolean | null, domain?: string | null, domainAssignment?: boolean | null, active?: boolean | null, note?: string | null, vip?: boolean | null, ticketsCount?: { __typename?: 'TicketCount', open: number, closed: number } | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null } }> };
+export type AutocompleteSearchOrganizationQuery = { __typename?: 'Queries', autocompleteSearchOrganization: Array<{ __typename?: 'AutocompleteSearchOrganizationEntry', value: number, label: string, labelPlaceholder?: Array<string> | null, heading?: string | null, headingPlaceholder?: Array<string> | null, disabled?: boolean | null, icon?: string | null, organization: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, shared?: boolean | null, domain?: string | null, domainAssignment?: boolean | null, active?: boolean | null, note?: string | null, vip?: boolean | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null } }> };
 
 export type AutocompleteSearchRecipientQueryVariables = Exact<{
   input: AutocompleteSearchRecipientInput;
@@ -6887,7 +6895,7 @@ export type OnlineNotificationsCountSubscriptionVariables = Exact<{ [key: string
 
 export type OnlineNotificationsCountSubscription = { __typename?: 'Subscriptions', onlineNotificationsCount: { __typename?: 'OnlineNotificationsCountPayload', unseenCount: number } };
 
-export type OrganizationAttributesFragment = { __typename?: 'Organization', id: string, internalId: number, name?: string | null, shared?: boolean | null, domain?: string | null, domainAssignment?: boolean | null, active?: boolean | null, note?: string | null, vip?: boolean | null, ticketsCount?: { __typename?: 'TicketCount', open: number, closed: number } | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null };
+export type OrganizationAttributesFragment = { __typename?: 'Organization', id: string, internalId: number, name?: string | null, shared?: boolean | null, domain?: string | null, domainAssignment?: boolean | null, active?: boolean | null, note?: string | null, vip?: boolean | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null };
 
 export type OrganizationMembersFragment = { __typename?: 'Organization', allMembers?: { __typename?: 'UserConnection', totalCount: number, edges: Array<{ __typename?: 'UserEdge', node: { __typename?: 'User', id: string, internalId: number, image?: string | null, firstname?: string | null, lastname?: string | null, fullname?: string | null, email?: string | null, phone?: string | null, outOfOffice?: boolean | null, outOfOfficeStartAt?: string | null, outOfOfficeEndAt?: string | null, active?: boolean | null, vip?: boolean | null } }> } | null };
 
@@ -6905,7 +6913,7 @@ export type OrganizationUpdatesSubscriptionVariables = Exact<{
 }>;
 
 
-export type OrganizationUpdatesSubscription = { __typename?: 'Subscriptions', organizationUpdates: { __typename?: 'OrganizationUpdatesPayload', organization?: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, shared?: boolean | null, domain?: string | null, domainAssignment?: boolean | null, active?: boolean | null, note?: string | null, vip?: boolean | null, ticketsCount?: { __typename?: 'TicketCount', open: number, closed: number } | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null, allMembers?: { __typename?: 'UserConnection', totalCount: number, edges: Array<{ __typename?: 'UserEdge', node: { __typename?: 'User', id: string, internalId: number, image?: string | null, firstname?: string | null, lastname?: string | null, fullname?: string | null, email?: string | null, phone?: string | null, outOfOffice?: boolean | null, outOfOfficeStartAt?: string | null, outOfOfficeEndAt?: string | null, active?: boolean | null, vip?: boolean | null } }> } | null } | null } };
+export type OrganizationUpdatesSubscription = { __typename?: 'Subscriptions', organizationUpdates: { __typename?: 'OrganizationUpdatesPayload', organization?: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, shared?: boolean | null, domain?: string | null, domainAssignment?: boolean | null, active?: boolean | null, note?: string | null, vip?: boolean | null, policy: { __typename?: 'PolicyDefault', update: boolean }, ticketsCount?: { __typename?: 'TicketCount', open: number, closed: number } | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null, allMembers?: { __typename?: 'UserConnection', totalCount: number, edges: Array<{ __typename?: 'UserEdge', node: { __typename?: 'User', id: string, internalId: number, image?: string | null, firstname?: string | null, lastname?: string | null, fullname?: string | null, email?: string | null, phone?: string | null, outOfOffice?: boolean | null, outOfOfficeStartAt?: string | null, outOfOfficeEndAt?: string | null, active?: boolean | null, vip?: boolean | null } }> } | null } | null } };
 
 export type PublicLinksQueryVariables = Exact<{
   screen: EnumPublicLinksScreen;

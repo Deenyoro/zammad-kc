@@ -3,7 +3,7 @@
 <script lang="ts" setup>
 import ObjectAttributes from '#shared/components/ObjectAttributes/ObjectAttributes.vue'
 import type { ObjectAttribute } from '#shared/entities/object-attributes/types/store.ts'
-import type { OrganizationQuery, User } from '#shared/graphql/types.ts'
+import type { Organization, User } from '#shared/graphql/types.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
 import { normalizeEdges } from '#shared/utils/helpers.ts'
 
@@ -16,7 +16,7 @@ import type { TicketSidebarContentProps } from '#desktop/pages/ticket/types/side
 import TicketSidebarContent from '../TicketSidebarContent.vue'
 
 interface Props extends TicketSidebarContentProps {
-  organization: OrganizationQuery['organization']
+  organization: Organization
   organizationMembers: ReturnType<typeof normalizeEdges<Partial<User>>>
   objectAttributes: ObjectAttribute[]
 }
