@@ -628,6 +628,7 @@ whenever(
           :style="{
             'padding-top': articleListTopPadding,
           }"
+          :top-bar-height="topHeaderHeight"
           :aria-busy="isLoadingArticles"
         />
 
