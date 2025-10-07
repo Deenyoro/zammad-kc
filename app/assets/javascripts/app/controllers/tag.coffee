@@ -16,6 +16,13 @@ class Tag extends App.ControllerSubContent
     App.Setting.unsubscribe(@subscribeId)
 
   render: =>
+    currentNewTagSetting = @Config.get('tag_new') || true
+    return if currentNewTagSetting is @lastNewTagSetting
+    @lastNewTagSetting = currentNewTagSetting
+
+    @renderContent()
+
+  renderContent: =>
     content = $(App.view('tag/index')())
 
     newTagHTML = App.UiElement.tag_new.render(
@@ -29,9 +36,8 @@ class Tag extends App.ControllerSubContent
     content.find('.form-item').append(newTagHTML)
 
     @html content
-
     new Table(
-      el: @el.find('.js-Table')
+      el: @$('.js-Table')
     )
 
   setTagNew: (e) =>
@@ -50,7 +56,7 @@ class Tag extends App.ControllerSubContent
       type:  'POST'
       url:   "#{@apiPath}/tag_list"
       data:  JSON.stringify(name: names)
-      success: @render
+      success: @renderContent
     )
 
 class Table extends App.Controller
