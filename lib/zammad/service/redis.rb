@@ -5,11 +5,34 @@ module Zammad
     class Redis < ::Redis
       MIN_VERSION = '6'.freeze
 
-      def initialize
-        url = ENV['REDIS_URL'].presence || 'redis://localhost:6379'
-        driver = url.start_with?('rediss://') ? :ruby : :hiredis
+      def self.config
+        ENV['REDIS_SENTINELS'].present? ? sentinel_config : standalone_config
+      end
 
-        super(url: url, driver: driver).tap do
+      def self.standalone_config
+        {
+          driver: ENV['REDIS_URL']&.start_with?('rediss://') ? :ruby : :hiredis,
+          url:    ENV['REDIS_URL'].presence || 'redis://localhost:6379',
+        }
+      end
+
+      def self.sentinel_config
+        {
+          driver:            :hiredis,
+          name:              ENV['REDIS_SENTINEL_NAME'].presence || 'mymaster',
+          # This can only be :master, as Zammad needs to read and write.
+          role:              :master,
+          sentinel_username: ENV['REDIS_SENTINEL_USERNAME']&.strip,
+          sentinel_password: ENV['REDIS_SENTINEL_PASSWORD']&.strip,
+          sentinels:         ENV['REDIS_SENTINELS'].split(',').map do |s|
+            host, port = s.strip.split(':')
+            { host:, port: port&.to_i || 26_379 }
+          end
+        }.compact_blank!
+      end
+
+      def initialize
+        super(**self.class.config).tap do
           ensure_version!
         end
       end
