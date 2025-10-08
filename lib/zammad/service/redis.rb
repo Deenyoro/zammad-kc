@@ -22,6 +22,8 @@ module Zammad
           name:              ENV['REDIS_SENTINEL_NAME'].presence || 'mymaster',
           # This can only be :master, as Zammad needs to read and write.
           role:              :master,
+          username:          ENV['REDIS_USERNAME']&.strip,
+          password:          ENV['REDIS_PASSWORD']&.strip,
           sentinel_username: ENV['REDIS_SENTINEL_USERNAME']&.strip,
           sentinel_password: ENV['REDIS_SENTINEL_PASSWORD']&.strip,
           sentinels:         ENV['REDIS_SENTINELS'].split(',').map do |s|

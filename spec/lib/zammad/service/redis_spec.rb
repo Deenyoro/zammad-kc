@@ -52,7 +52,9 @@ RSpec.describe Zammad::Service::Redis, :aggregate_failures do
           'REDIS_SENTINELS'         => 'sentinel1.example.com:26380, sentinel2.example.com',
           'REDIS_SENTINEL_NAME'     => 'custommaster',
           'REDIS_SENTINEL_USERNAME' => 'sentineluser',
-          'REDIS_SENTINEL_PASSWORD' => 'sentinelpass'
+          'REDIS_SENTINEL_PASSWORD' => 'sentinelpass',
+          'REDIS_USERNAME'          => 'user',
+          'REDIS_PASSWORD'          => 'pass'
         }
       end
 
@@ -66,7 +68,9 @@ RSpec.describe Zammad::Service::Redis, :aggregate_failures do
             { host: 'sentinel2.example.com', port: 26_379 }
           ],
           sentinel_username: 'sentineluser',
-          sentinel_password: 'sentinelpass'
+          sentinel_password: 'sentinelpass',
+          username:          'user',
+          password:          'pass',
         )
       end
 
