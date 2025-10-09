@@ -163,8 +163,8 @@ class App.TicketZoom extends App.Controller
     @ticketUpdatedAtLastCall = newTicketRaw.updated_at
 
     # notify if ticket changed not by my self
-    if @initFetched && !ticketIsNewest && newTicketRaw.updated_by_id isnt @Session.get('id')
-      App.TaskManager.notify(@taskKey)
+    if @initFetched && !ticketIsNewest
+      @checkNotify(newTicketRaw)
     @initFetched = true
 
     if !@doNotLog
@@ -286,6 +286,10 @@ class App.TicketZoom extends App.Controller
       @overview_id = params.overview_id
 
       @renderOverviewNavigator(@el)
+
+  checkNotify: (ticket) ->
+    return if ticket.updated_by_id is @Session.get('id')
+    App.TaskManager.notify(@taskKey)
 
   # scroll to article if given
   scrollToPosition: (position, delay, article_id) =>
@@ -497,8 +501,10 @@ class App.TicketZoom extends App.Controller
     # and keep some subscriber to keep the state up to date
     if !@controllerLoadImmediately
       if @ticket && !@subscribeDelayedTicket
-        @subscribeDelayedTicket = @ticket.subscribe(=>
+        @subscribeDelayedTicket = @ticket.subscribe((subscribeTicket) =>
           return if @controllerLoadImmediately
+
+          @checkNotify(subscribeTicket)
           App.TaskManager.touch(@taskKey)
         )
 

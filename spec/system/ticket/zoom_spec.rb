@@ -2683,4 +2683,19 @@ RSpec.describe 'Ticket zoom', type: :system do
       expect(page).to have_css("#navigation [data-key='Ticket-99999999']", text: 'Not Found')
     end
   end
+
+  describe 'Not loaded tickets do not show the update indicator in taskbar entries #5814' do
+    let(:agent_update) { create(:agent, groups: Group.all) }
+
+    it 'does show updated icon when priority is changed' do
+      visit "#ticket/zoom/#{Ticket.first.id}"
+      visit '#dashboard'
+      refresh
+      await_empty_ajax_queue
+      expect(page).to have_no_css('#navigation .icon-status-modified-inner-circle')
+
+      Ticket.first.update(priority: Ticket::Priority.find_by(name: '3 high'), updated_by: agent_update)
+      expect(page).to have_css('#navigation .icon-status-modified-inner-circle')
+    end
+  end
 end
