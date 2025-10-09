@@ -30,7 +30,8 @@ class App.TicketZoom extends App.Controller
     # controllerLoadImmediately:
     # true - does mean that the controller is the active content of the taskbar and is directly marked as delayed, this will trigger the fetch asap instead of post poning it
     # false - controller is not active content of taskbar, so fetch will be post poned until user clicks on it
-    @controllerLoadImmediately = params.shown
+    # If the ticket does not come with the taskbar init, we need to load it directly to check it's existance
+    @controllerLoadImmediately = params.shown || !App.Ticket.find(params.ticket_id)
 
     # if we are in init task startup, ignore overview_id
     if !params.init

@@ -2673,4 +2673,14 @@ RSpec.describe 'Ticket zoom', type: :system do
       expect(page).to have_text(tickets.third.title)
     end
   end
+
+  describe 'Taskbars for missing tickets are never loaded unless switched to #5812' do
+    it 'does always complete loading' do
+      visit "#ticket/zoom/#{Ticket.first.id}"
+      visit '#ticket/zoom/99999999'
+      visit '#dashboard'
+      refresh
+      expect(page).to have_css("#navigation [data-key='Ticket-99999999']", text: 'Not Found')
+    end
+  end
 end
