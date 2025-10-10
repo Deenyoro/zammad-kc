@@ -55,8 +55,8 @@ For Linux and macOS:
 
 ```screen
 curl -sSL https://get.rvm.io | bash -s stable --rails
-rvm install ruby-3.4.6
-rvm --default use 3.4.6
+rvm install ruby-3.4.7
+rvm --default use 3.4.7
 ```
 
 ## NVM, Node.js and pnpm
