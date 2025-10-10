@@ -30,10 +30,15 @@ services:
   elasticsearch:
     image: elasticsearch:9.0.4
     environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - discovery.type=single-node
       - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - http.cors.enabled=true
+      - http.cors.allow-origin=/https:\/\/app.elasticvue.com/
     restart: unless-stopped
+    ports:
+      # Expose the ES service for direct access if needed, but avoid conflicts with host services.
+      - 19200:9200
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
 
