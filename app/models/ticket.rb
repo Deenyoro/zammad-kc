@@ -46,6 +46,12 @@ class Ticket < ApplicationModel
   include ChecksCoreWorkflow
   include HasTransactionDispatcher
 
+  transaction_ignore_changes_attributes :updated_at,
+                                        :article_count,
+                                        :create_article_type_id,
+                                        :create_article_sender_id,
+                                        :ai_agent_running
+
   validates :group_id, presence: true
 
   activity_stream_permission 'ticket.agent'

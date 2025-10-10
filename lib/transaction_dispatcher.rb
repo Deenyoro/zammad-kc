@@ -2,14 +2,6 @@
 
 class TransactionDispatcher
 
-  SAVED_CHANGES_KEYS_TO_IGNORE = %w[
-    updated_at
-    article_count
-    create_article_type_id
-    create_article_sender_id
-    ai_agent_running
-  ].freeze
-
   def self.reset
     EventBuffer.reset('transaction')
   end
@@ -209,7 +201,7 @@ class TransactionDispatcher
     # return if we run import mode
     return true if Setting.get('import_mode')
 
-    real_changes = record.saved_changes.except(*SAVED_CHANGES_KEYS_TO_IGNORE)
+    real_changes = record.saved_changes.except(*record.transaction_ignore_changes_attributes.map(&:to_s))
 
     # do not send anything if nothing has changed
     return true if real_changes.blank?

@@ -142,8 +142,10 @@ class App.TicketZoom extends App.Controller
     )
 
   load: (data, local = false, newTicketRaw = undefined) =>
-    if !newTicketRaw
-      newTicketRaw = data.assets.Ticket[@ticket_id]
+    @previousTicketRaw = @currentTicketRaw
+    @currentTicketRaw  = data.assets.Ticket[@ticket_id]
+
+    return if newTicketRaw
 
     view       = @ticket?.currentView()
     readable   = @ticket?.userGroupAccess('read')
@@ -158,13 +160,34 @@ class App.TicketZoom extends App.Controller
     if @view && ( !_.isEqual(@formMeta.configure_attributes, formMeta.configure_attributes) || !_.isEqual(@formMeta.dependencies, formMeta.dependencies) || !_.isEqual(@formMeta.filter, formMeta.filter) || @view isnt view || @readable isnt readable || @changeable isnt changeable || @fullable isnt fullable )
       @renderDone = false
 
-    ticketIsNewest = @ticketUpdatedAtLastCall && new Date(newTicketRaw.updated_at).getTime() <= new Date(@ticketUpdatedAtLastCall).getTime()
+    ticketIsNewest = @ticketUpdatedAtLastCall && new Date(@currentTicketRaw.updated_at).getTime() <= new Date(@ticketUpdatedAtLastCall).getTime()
     return if @renderDone && ticketIsNewest
-    @ticketUpdatedAtLastCall = newTicketRaw.updated_at
+    @ticketUpdatedAtLastCall = @currentTicketRaw.updated_at
 
-    # notify if ticket changed not by my self
+    attributes_to_ignore_for_notify = [
+      'ai_agent_running',
+      'updated_by_id',
+      'updated_at',
+    ]
+
+    # notify if ticket changed not by my self and no AI agent was active
     if @initFetched && !ticketIsNewest
-      @checkNotify(newTicketRaw)
+
+      # Compare @currentTicketRaw with ticket data to see if any relevant attribute has changed
+      ticketAttributesChanged = []
+      for key, value of @currentTicketRaw
+        if !_.isEqual(@previousTicketRaw[key], value)
+          ticketAttributesChanged.push(key)
+
+      ticketChanged = false
+      for key in ticketAttributesChanged
+        if !_.includes(attributes_to_ignore_for_notify, key)
+          ticketChanged = true
+          break
+
+      if ticketChanged
+        @checkNotify(@currentTicketRaw)
+
     @initFetched = true
 
     if !@doNotLog

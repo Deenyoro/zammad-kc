@@ -1459,14 +1459,14 @@ RSpec.describe 'Ticket zoom', type: :system do
     let(:received_merge_trigger) { create(:trigger, :conditionable, condition_ticket_action: :received_merge) }
     let(:update_trigger)         { create(:trigger, :conditionable, condition_ticket_action: :update) }
 
-    let(:ticket)                 { create(:ticket).tap { TransactionDispatcher.commit } }
-    let(:target_ticket)          { create(:ticket).tap { TransactionDispatcher.commit } }
+    let(:ticket)                 { create(:ticket).tap { |t| create(:ticket_article, ticket: t) && TransactionDispatcher.commit } }
+    let(:target_ticket)          { create(:ticket).tap { |t| create(:ticket_article, ticket: t) && TransactionDispatcher.commit } }
 
     let(:user)                   { create(:agent, :preferencable, notification_group_ids: [ticket, target_ticket].map(&:group_id), groups: [ticket, target_ticket].map(&:group)) }
 
     context 'when merging ticket' do
       before do
-        ticket.merge_to(ticket_id: target_ticket.id, user_id: 1)
+        ticket.merge_to(ticket_id: target_ticket.id, user_id: user.id)
       end
 
       it 'pulses source ticket' do

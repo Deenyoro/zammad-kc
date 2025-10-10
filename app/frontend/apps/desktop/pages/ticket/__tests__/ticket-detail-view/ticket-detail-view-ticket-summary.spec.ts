@@ -316,7 +316,10 @@ describe('Ticket detail view - Ticket summary', () => {
 
     await waitForTicketAiAssistanceSummarizeMutationCalls()
 
-    expect(await view.findByRole('status', { name: 'Has update' })).toBeInTheDocument()
+    const contentSidebar = view.getByRole('complementary', { name: 'Content sidebar' })
+    expect(
+      await within(contentSidebar).findByRole('status', { name: 'Has update' }),
+    ).toBeInTheDocument()
   })
 
   it('hides update indicator when new summary comes updated from current user', async () => {
@@ -339,7 +342,13 @@ describe('Ticket detail view - Ticket summary', () => {
 
     const view = await visitView('/tickets/1')
 
-    expect(view.queryByRole('status', { name: 'Has update' })).not.toBeInTheDocument()
+    const contentSidebar = view.getByRole('complementary', { name: 'Content sidebar' })
+
+    console.log(within(contentSidebar).queryByRole('status', { name: 'Has update' }))
+
+    expect(
+      within(contentSidebar).queryByRole('status', { name: 'Has update' }),
+    ).not.toBeInTheDocument()
   })
 
   it('hides update indicator when ticket summary sidebar is opened', async () => {
@@ -365,7 +374,11 @@ describe('Ticket detail view - Ticket summary', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Summary' }))
 
-    expect(view.queryByRole('status', { name: 'Has update' })).not.toBeInTheDocument()
+    const contentSidebar = view.getByRole('complementary', { name: 'Content sidebar' })
+
+    expect(
+      within(contentSidebar).queryByRole('status', { name: 'Has update' }),
+    ).not.toBeInTheDocument()
   })
 
   it('hides update indicator when last article was created by current user', async () => {
@@ -402,7 +415,11 @@ describe('Ticket detail view - Ticket summary', () => {
       error: null,
     })
 
-    expect(view.queryByRole('status', { name: 'Has update' })).not.toBeInTheDocument()
+    const contentSidebar = view.getByRole('complementary', { name: 'Content sidebar' })
+
+    expect(
+      within(contentSidebar).queryByRole('status', { name: 'Has update' }),
+    ).not.toBeInTheDocument()
   })
 
   describe('errors', () => {

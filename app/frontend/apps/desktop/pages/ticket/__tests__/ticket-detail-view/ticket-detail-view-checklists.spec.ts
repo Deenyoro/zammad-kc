@@ -390,11 +390,15 @@ describe('Ticket detail view', () => {
         view.queryByRole('dialog', { name: 'Incomplete Ticket Checklist' }),
       ).not.toBeInTheDocument()
 
-      expect(await view.findByRole('status', { name: 'Has update' }))
+      const contentSidebar = view.getByRole('complementary', { name: 'Content sidebar' })
+
+      expect(await within(contentSidebar).findByRole('status', { name: 'Has update' }))
 
       await view.events.click(view.getByRole('button', { name: 'Ticket' }))
 
-      expect(view.queryByRole('status', { name: 'Has update' })).not.toBeInTheDocument()
+      expect(
+        within(contentSidebar).queryByRole('status', { name: 'Has update' }),
+      ).not.toBeInTheDocument()
 
       const state = within(sidebar).getByLabelText('State')
 
