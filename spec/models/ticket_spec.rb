@@ -256,6 +256,24 @@ RSpec.describe Ticket, type: :model do
         end
       end
 
+      context 'when merging tickets with articles' do
+        let(:merge_user) { create(:user) }
+
+        it 'recalculates article_count for source and target tickets' do
+          create_list(:ticket_article, 2, :outbound_email, ticket: ticket)
+          create(:ticket_article, :system_outbound_email, ticket: ticket)
+          create(:ticket_article, :outbound_email, ticket: target_ticket)
+
+          ticket.merge_to(ticket_id: target_ticket.id, user_id: merge_user.id)
+
+          reloaded_ticket        = described_class.find(ticket.id)
+          reloaded_target_ticket = described_class.find(target_ticket.id)
+
+          expect(reloaded_ticket.article_count).to eq(reloaded_ticket.articles.non_system.count)
+          expect(reloaded_target_ticket.article_count).to eq(reloaded_target_ticket.articles.non_system.count)
+        end
+      end
+
       context 'when merging' do
         let(:merge_user) { create(:user) }
 

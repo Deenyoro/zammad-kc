@@ -78,6 +78,8 @@ class Ticket::Article < ApplicationModel
     where('sender_id != ? OR type_id = ?', system_sender.id, note_type.id)
   }
 
+  scope :non_system, -> { where.not(sender: Ticket::Article::Sender.lookup(name: 'System')) }
+
   attr_accessor :should_clone_inline_attachments, :check_mentions_raises_error, :check_email_recipient_raises_error
 
   alias should_clone_inline_attachments? should_clone_inline_attachments

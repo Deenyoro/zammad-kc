@@ -319,6 +319,16 @@ returns
 
 =begin
 
+get article_count for a ticket, excluding system generated articles
+
+=end
+
+  def compute_articles_count
+    self.article_count = articles.non_system.count
+  end
+
+=begin
+
 merge tickets
 
   ticket = Ticket.find(123)
@@ -351,11 +361,11 @@ returns
       # quiet update of reassign of articles
       Ticket::Article.where(ticket_id: id).update_all(['ticket_id = ?', data[:ticket_id]]) # rubocop:disable Rails/SkipsModelValidations
 
-      # mark target ticket as updated
-      # otherwise the "received_merge" history entry
-      # will be the same as the last updated_at
-      # which might be a long time ago
-      target_ticket.updated_at = Time.zone.now
+      # mark target ticket as updated before logging the merge
+      target_ticket.compute_articles_count
+      target_ticket.update!(
+        updated_at: Time.zone.now,
+      )
 
       # add merge event to both ticket's history (Issue #2469 - Add information "Ticket merged" to History)
       target_ticket.history_log(
@@ -381,6 +391,8 @@ returns
         created_by_id: data[:user_id],
         updated_by_id: data[:user_id],
       )
+
+      compute_articles_count
 
       # search for mention duplicates and destroy them before moving mentions
       Mention.duplicates(self, target_ticket).destroy_all
