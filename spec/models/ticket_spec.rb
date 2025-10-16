@@ -2137,5 +2137,13 @@ RSpec.describe Ticket, type: :model do
         it { is_expected.to be_ai_summary_unread(user, ai_analytics_run) }
       end
     end
+
+    context 'without a given run' do
+      before do
+        create(:ticket_article, ticket:, created_by: user)
+      end
+
+      it { is_expected.not_to be_ai_summary_unread(user, nil) }
+    end
   end
 end

@@ -45,6 +45,14 @@ class App.TextToolsModal extends App.ControllerModal
     button = @$('.modal-content').find('.js-submit')
     button.prop('disabled', false)  if button.prop
 
+  renderFeedbackWidget: (runId) =>
+    @feedbackWidget = new App.AIFeedbackWidget(
+      el: @$('.text-tools-modal').find('.js-aiTextToolFeedback')
+      runId: runId
+      hasProvidedFeedback: false
+      regenerateCallback: @retryTextTools
+    )
+
   requestTextTools: (params)  ->
     @disableSubmit()
     @startLoading()
@@ -66,6 +74,7 @@ class App.TextToolsModal extends App.ControllerModal
         @result = replaced
         @update()
         @enableSubmit()
+        @renderFeedbackWidget(data.analytics.run_id) if data?.analytics?.run_id
 
       error: =>
         @stopLoading()
@@ -88,19 +97,23 @@ class App.TextToolsModal extends App.ControllerModal
       @retryTextTools()
     )
 
-  retryTextTools: =>
+  retryTextTools: (regenerationOfId = null) =>
     @error = false
 
     @requestTextTools(
-      id:              @textTool.id
-      input:           @selectedText
-      customer_id:     @contextData.customer_id
-      group_id:        @contextData.group_id
-      organization_id: @contextData.organization_id
-      ticket_id:       @contextData.id
+      id:                 @textTool.id
+      input:              @selectedText
+      customer_id:        @contextData.customer_id
+      group_id:           @contextData.group_id
+      organization_id:    @contextData.organization_id
+      ticket_id:          @contextData.id
+      regeneration_of_id: regenerationOfId
     )
 
   onSubmit: =>
+    if @feedbackWidget
+      @feedbackWidget.recordUsage(context: { approved: true })
+
     @approve(@result)
     @close()
 

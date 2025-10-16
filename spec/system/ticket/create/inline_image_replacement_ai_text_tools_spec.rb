@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Ticket create > Inline Image Replacement for AI Text Tools', authenticated_as: :authenticate, required_envs: %w[ZAMMAD_AI_TOKEN], type: :system do
+RSpec.describe 'Ticket create > Inline Image Replacement for AI Text Tools', authenticated_as: :authenticate, type: :system do
   let(:group) { Group.first }
   let(:agent) { create(:agent, groups: [group]) }
 
@@ -16,10 +16,11 @@ RSpec.describe 'Ticket create > Inline Image Replacement for AI Text Tools', aut
   end
 
   let(:ai_service_text_tool_result) do
-    Struct.new(:content, :stored_result, :fresh, keyword_init: true).new(
-      content:       'This is a funny text with multiple images:<br>[[IMAGE_PLACEHOLDER_1]]<br>[[IMAGE_PLACEHOLDER_2]]<br>(AI EDITED)',
-      stored_result: nil,
-      fresh:         false,
+    Struct.new(:content, :stored_result, :ai_analytics_run, :fresh, keyword_init: true).new(
+      content:          'This is a funny text with multiple images:<br>[[IMAGE_PLACEHOLDER_1]]<br>[[IMAGE_PLACEHOLDER_2]]<br>(AI EDITED)',
+      stored_result:    nil,
+      ai_analytics_run: create(:ai_analytics_run),
+      fresh:            false,
     )
   end
 
@@ -29,9 +30,6 @@ RSpec.describe 'Ticket create > Inline Image Replacement for AI Text Tools', aut
     allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
 
     Setting.set('ai_provider', 'zammad_ai')
-    Setting.set('ai_provider_config', {
-                  token: ENV['ZAMMAD_AI_TOKEN'],
-                })
     Setting.set('ai_assistance_text_tools', true)
     Setting.set('ui_richtext_bubble_menu', true)
 

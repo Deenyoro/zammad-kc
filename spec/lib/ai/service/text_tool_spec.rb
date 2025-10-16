@@ -6,6 +6,7 @@ RSpec.describe AI::Service::TextTool, required_envs: %w[OPEN_AI_TOKEN ZAMMAD_AI_
   subject(:ai_service) { described_class.new(current_user:, context_data:) }
 
   let(:current_user) { create(:user) }
+  let(:text_tool)    { create(:ai_text_tool) }
 
   let(:context_data) do
     {
@@ -25,6 +26,7 @@ You have to follow these rules:
 - Preserve all HTML tags and formatting exactly as in the input.',
       fixed_instructions: Setting.get('ai_assistance_text_tools_fixed_instructions'),
       input:              'I ma Nicole Braun.',
+      text_tool:,
     }
   end
 

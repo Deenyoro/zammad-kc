@@ -9,6 +9,7 @@ class App.AIFeedbackWidget extends App.Controller
     '.js-aiFeedbackButtons':        'buttons'
     '.js-aiFeedbackAcknowledgment': 'acknowledgment'
     '.js-aiFeedbackComment':        'comment'
+    '.js-aiFeedbackAlert':          'alert'
 
   events:
     'click .js-aiPositiveReaction': 'submitPositiveReaction'
@@ -29,11 +30,10 @@ class App.AIFeedbackWidget extends App.Controller
       hasProvidedFeedback: @hasProvidedFeedback
     )
 
-  recordUsage: (payload = {}, callback = null) =>
+  recordUsage: (payload = {}, success = null, error = null) =>
     return if not @runId
 
-    @el.find('.btn, .form-control').prop('disabled', true)
-
+    @alert.addClass('hide')
     payload.ai_analytics_run_id = @runId
 
     @ajax(
@@ -42,44 +42,70 @@ class App.AIFeedbackWidget extends App.Controller
       url:         "#{@apiPath}/ai/analytics/usages"
       data:        JSON.stringify(payload)
       processData: true
-      success:     (data, status, xhr) =>
-        @el.find('.btn, .form-control').prop('disabled', false)
-        callback?(data, status, xhr)
+      success:     success
+      error:       (data, status) =>
+        details = data.responseJSON || {}
+
+        @alert
+          .html(details.error_human || details.error || __('Your feedback could not be recorded, please try again later.'))
+          .removeClass('hide')
+
+        error?(data, status)
     )
 
-  submitPositiveReaction: ->
-    @recordUsage(rating: true, =>
-      @hideQuestionAndButtons()
-      @showAcknowledgment()
+  submitPositiveReaction: (e) ->
+    @preventDefault(e)
+
+    @recordUsage(rating: true, null, =>
+      @hideAcknowledgment()
+      @showQuestionAndButtons()
     )
 
-  submitNegativeReaction: ->
-    @recordUsage(rating: false, =>
-      @hideQuestionAndButtons()
-      @hideToolbar()
-      @showComment()
+    @hideQuestionAndButtons()
+    @showAcknowledgment()
+
+  submitNegativeReaction: (e) ->
+    @preventDefault(e)
+
+    @recordUsage(rating: false, null, =>
+      @hideComment()
+      @showToolbar()
+      @showQuestionAndButtons()
     )
 
-  regenerateResult: ->
-    @el.find('.btn').prop('disabled', true)
+    @hideQuestionAndButtons()
+    @hideToolbar()
+    @showComment()
+
+  regenerateResult: (e) ->
+    @preventDefault(e)
+
     @regenerateCallback?(@runId)
 
-  cancelComment: ->
+  cancelComment: (e) ->
+    @preventDefault(e)
+
     @hideComment()
     @showToolbar()
     @showAcknowledgment()
 
-  submitComment: ->
+  submitComment: (e) ->
+    @preventDefault(e)
+
     if commentText = @comment.find('textarea').val()
-      @recordUsage(comment: commentText, =>
-        @hideComment()
-        @showToolbar()
-        @showAcknowledgment()
+      @recordUsage(comment: commentText, null, =>
+        @hideAcknowledgment()
+        @hideToolbar()
+        @showComment()
       )
-    else
-      @hideComment()
-      @showToolbar()
-      @showAcknowledgment()
+
+    @hideComment()
+    @showToolbar()
+    @showAcknowledgment()
+
+  showQuestionAndButtons: ->
+    @question.removeClass('hide')
+    @buttons.removeClass('hide')
 
   hideQuestionAndButtons: ->
     @question.addClass('hide')
@@ -93,6 +119,9 @@ class App.AIFeedbackWidget extends App.Controller
 
   showAcknowledgment: ->
     @acknowledgment.removeClass('hide')
+
+  hideAcknowledgment: ->
+    @acknowledgment.addClass('hide')
 
   showComment: ->
     @comment.removeClass('hide')

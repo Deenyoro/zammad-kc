@@ -9,6 +9,7 @@ module Gql::Mutations
     argument :template_render_context, Gql::Types::Input::TemplateRenderContextInputType, description: 'Context data for the text tool instruction rendering, e.g. customer data.'
 
     field :output, String, description: 'Returned text'
+    field :analytics, Gql::Types::AI::Analytics::MetadataType, description: 'Analytics metadata', null: true
 
     def resolve(input:, text_tool:, template_render_context:)
       output = Service::AIAssistance::TextTools.new(
@@ -18,8 +19,16 @@ module Gql::Mutations
         current_user:            context.current_user,
       ).execute
 
+      # Implicitly record the analytics usage for the current user.
+      Service::AI::Analytics::UpsertUsage
+        .new(context.current_user, output.ai_analytics_run)
+        .execute
+
       {
-        output: output[:content],
+        output:    output[:content],
+        analytics: {
+          run: output.ai_analytics_run,
+        },
       }
     end
   end

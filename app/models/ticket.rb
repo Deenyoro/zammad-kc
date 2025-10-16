@@ -654,6 +654,8 @@ returns a hex color code
   end
 
   def ai_summary_unread?(user, ai_analytics_run)
+    return false if !ai_analytics_run
+
     usage = ai_analytics_run.usages.find_by(user:)
 
     return false if usage

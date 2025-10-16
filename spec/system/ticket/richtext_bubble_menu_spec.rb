@@ -8,7 +8,7 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
   let(:ai_assistance_text_tools) { true }
   let(:ui_richtext_bubble_menu)  { true }
   let(:input)                    { 'Teh qwik braun foxx jumpz ova da laizi doge.' }
-  let(:output)                   { Struct.new(:content, :stored_result, :fresh, keyword_init: true).new(content: 'The quick brown fox jumps over the lazy dog.', stored_result: nil, fresh: false) }
+  let(:output)                   { Struct.new(:content, :stored_result, :ai_analytics_run, :fresh, keyword_init: true).new(content: 'The quick brown fox jumps over the lazy dog.', stored_result: nil, ai_analytics_run: create(:ai_analytics_run), fresh: false) }
   let(:text_tool_name)           { Faker::Lorem.unique.sentence }
 
   def authenticate

@@ -2,12 +2,15 @@
   <%- @T('Be sure to check AI-generated content for accuracy.') %>
   <% if @hasProvidedFeedback: %>
     <%- @T('You have already provided feedback, thank you.') %>
-  <% else: %>
+  <% else if @runId: %>
     <span class="js-aiFeedbackQuestion">
+      <br>
       <%- @T('Any feedback on this result?') %>
     </span>
   <% end %>
 </p>
+
+<div class="alert alert--danger hide js-aiFeedbackAlert"></div>
 
 <% if @runId: %>
   <div class="ai-feedback-toolbar horizontal center js-aiFeedbackToolbar">

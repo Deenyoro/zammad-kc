@@ -1,13 +1,14 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class Service::AIAssistance::TextTools < Service::BaseWithCurrentUser
-  attr_reader :input, :text_tool, :template_render_context
+  attr_reader :input, :text_tool, :regeneration_of, :template_render_context
 
-  def initialize(input:, text_tool:, current_user: nil, template_render_context: {})
+  def initialize(input:, text_tool:, current_user: nil, regeneration_of: nil, template_render_context: {})
     super(current_user:) if current_user.present?
 
     @input = input
     @text_tool = text_tool
+    @regeneration_of = regeneration_of
     @template_render_context = template_render_context
   end
 
@@ -22,11 +23,13 @@ class Service::AIAssistance::TextTools < Service::BaseWithCurrentUser
 
     ai_text_tool_service = AI::Service::TextTool.new(
       current_user:,
-      context_data: {
+      context_data:    {
         instruction:        rendered_text_tool_instruction,
         fixed_instructions: Setting.get('ai_assistance_text_tools_fixed_instructions'),
-        input:
+        input:,
+        text_tool:,
       },
+      regeneration_of:,
     )
 
     ai_text_tool_service.execute

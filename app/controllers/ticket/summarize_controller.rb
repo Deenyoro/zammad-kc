@@ -51,7 +51,7 @@ class Ticket::SummarizeController < ApplicationController
   end
 
   def return_stored_result(ai_result)
-    usage     = ai_result.ai_analytics_run.usage_by(current_user)
+    usage     = ai_result.ai_analytics_run&.usage_by(current_user)
     is_unread = ticket.ai_summary_unread?(current_user, ai_result.ai_analytics_run)
 
     render json: {

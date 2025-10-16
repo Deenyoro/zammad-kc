@@ -126,9 +126,10 @@ class App.SidebarTicketSummary extends App.Controller
   markAsRead: =>
     @summaryData?.analytics?.is_unread = false
     @badgeRenderLocal()
-    @feedbackWidget?.recordUsage({}, =>
-      @hasUsage = true
+    @feedbackWidget?.recordUsage({}, null, =>
+      @hasUsage = false
     )
+    @hasUsage = true
 
   shown: =>
     if not @isPreparingData and not @hasUsage
