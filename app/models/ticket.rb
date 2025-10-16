@@ -653,6 +653,17 @@ returns a hex color code
     mentions.pluck(:user_id)
   end
 
+  def ai_summary_unread?(user, ai_analytics_run)
+    usage = ai_analytics_run.usages.find_by(user:)
+
+    return false if usage
+
+    articles
+      .without_system_notifications
+      .last
+      &.author_id != user.id
+  end
+
   private
 
   def check_generate

@@ -3,10 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authenticated_as: :agent, type: :graphql do
-  let(:agent)        { create(:agent, groups: [ticket.group]) }
-  let(:ticket)       { create(:ticket) }
-  let(:variables)    { { ticketId: gql.id(ticket), locale: agent.locale } }
-  let(:mock_channel) { build_mock_channel }
+  let(:agent)            { create(:agent, groups: [ticket.group]) }
+  let(:ticket)           { create(:ticket) }
+  let(:ai_analytics_run) { create(:ai_analytics_run, related_object: ticket) }
+  let(:variables)        { { ticketId: gql.id(ticket), locale: agent.locale } }
+  let(:mock_channel)     { build_mock_channel }
   let(:subscription) do
     <<~SUBSCRIPTION
       subscription ticketAIAssistanceSummaryUpdates($ticketId: ID!, $locale: String!) {
@@ -19,12 +20,19 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
             customerMood
             customerEmotion
           }
-          fingerprintMd5
+          analytics {
+            run {
+              id
+            }
+            usage {
+              userHasProvidedFeedback
+            }
+            isUnread
+          }
           error {
             message
             exception
           }
-          relevantForCurrentUser
         }
       }
     SUBSCRIPTION
@@ -58,8 +66,9 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
 
       let(:expected_result) do
         AI::Service::Result.new(
-          content: expected_summary,
-          fresh:   true
+          content:          expected_summary,
+          fresh:            true,
+          ai_analytics_run:
         )
       end
 
@@ -86,9 +95,7 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
           result: include(
             'data' => include(
               'ticketAIAssistanceSummaryUpdates' => include(
-                'summary'                => expected_broadcasted_summary,
-                'fingerprintMd5'         => Digest::MD5.hexdigest(expected_summary.sort.to_h.to_s),
-                'relevantForCurrentUser' => true,
+                'summary' => expected_broadcasted_summary,
               )
             )
           )
@@ -107,9 +114,7 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
             result: include(
               'data' => include(
                 'ticketAIAssistanceSummaryUpdates' => include(
-                  'summary'                => expected_broadcasted_summary,
-                  'fingerprintMd5'         => Digest::MD5.hexdigest(expected_summary.sort.to_h.to_s),
-                  'relevantForCurrentUser' => true,
+                  'summary' => expected_broadcasted_summary,
                 )
               )
             )
@@ -128,13 +133,74 @@ RSpec.describe Gql::Subscriptions::Ticket::AIAssistance::SummaryUpdates, authent
             result: include(
               'data' => include(
                 'ticketAIAssistanceSummaryUpdates' => include(
-                  'summary'                => expected_broadcasted_summary,
-                  'fingerprintMd5'         => Digest::MD5.hexdigest(expected_summary.sort.to_h.to_s),
-                  'relevantForCurrentUser' => false,
+                  'summary'   => expected_broadcasted_summary,
+                  'analytics' => {
+                    'run'      => {
+                      'id' => gql.id(ai_analytics_run),
+                    },
+                    'usage'    => nil,
+                    'isUnread' => false,
+                  },
                 )
               )
             )
           )
+        end
+
+        context 'when user has already added usage' do
+          before do
+            create(:ai_analytics_usage, ai_analytics_run: ai_analytics_run, user: agent, rating:)
+          end
+
+          context 'when user added no rating yet' do
+            let(:rating) { nil }
+
+            it 'returns cached version with usage info' do
+              TicketAIAssistanceSummarizeJob.new.perform(ticket, agent.locale)
+              expect(mock_channel.mock_broadcasted_messages.first).to include(
+                result: include(
+                  'data' => include(
+                    'ticketAIAssistanceSummaryUpdates' => include(
+                      'summary'   => expected_broadcasted_summary,
+                      'analytics' => {
+                        'run'      => {
+                          'id' => gql.id(ai_analytics_run),
+                        },
+                        'usage'    => {
+                          'userHasProvidedFeedback' => false
+                        },
+                        'isUnread' => false,
+                      }
+                    )
+                  )
+                )
+              )
+            end
+          end
+
+          context 'when usage added rating too' do
+            let(:rating) { false }
+
+            it 'returns cached version with usage info' do
+              TicketAIAssistanceSummarizeJob.new.perform(ticket, agent.locale)
+              expect(mock_channel.mock_broadcasted_messages.first).to include(
+                result: include(
+                  'data' => include(
+                    'ticketAIAssistanceSummaryUpdates' => include(
+                      'summary'   => expected_broadcasted_summary,
+                      'analytics' => {
+                        'run'      => { 'id' => gql.id(ai_analytics_run) },
+                        'usage'    => {
+                          'userHasProvidedFeedback' => true,
+                        },
+                        'isUnread' => false,
+                      }
+                    )
+                  )
+                )
+              )
+            end
+          end
         end
       end
     end

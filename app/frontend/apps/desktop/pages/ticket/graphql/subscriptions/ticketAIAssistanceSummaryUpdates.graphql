@@ -8,11 +8,13 @@ subscription ticketAIAssistanceSummaryUpdates($ticketId: ID!, $locale: String!) 
       customerMood
       customerEmotion
     }
-    fingerprintMd5
     error {
       message
       exception
     }
-    relevantForCurrentUser
+    analytics {
+      ...AIAssistantAnalyticsMeta
+      isUnread
+    }
   }
 }

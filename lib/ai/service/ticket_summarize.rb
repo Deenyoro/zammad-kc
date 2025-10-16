@@ -20,6 +20,10 @@ class AI::Service::TicketSummarize < AI::Service
     true
   end
 
+  def analytics?
+    true
+  end
+
   private
 
   def options

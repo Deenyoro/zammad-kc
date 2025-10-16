@@ -5,22 +5,23 @@ class AI::Service
 
   PROMPT_PATH_STRING = Rails.root.join('lib/ai/service/prompts/%{type}/%{service}.txt.erb').to_s.freeze
 
-  attr_reader :current_user, :context_data, :locale, :persistence_strategy, :additional_options
+  attr_reader :current_user, :context_data, :locale, :persistence_strategy, :additional_options, :regeneration_of
 
-  Result = Struct.new(:content, :stored_result, :fresh, keyword_init: true)
+  Result = Struct.new(:content, :stored_result, :fresh, :ai_analytics_run, keyword_init: true)
 
   def self.list
     @list ||= descendants.sort_by(&:name)
   end
 
   # @param persistence_strategy [Symbol, NilClass] :stored_or_request, :stored_only, :request_only.
-  def initialize(context_data:, current_user: nil, persistence_strategy: :stored_or_request, prompt_system: nil, prompt_user: nil, locale: nil, additional_options: {})
+  def initialize(context_data:, current_user: nil, persistence_strategy: :stored_or_request, prompt_system: nil, prompt_user: nil, locale: nil, regeneration_of: nil, additional_options: {})
     @context_data         = context_data
     @current_user         = current_user
-    @prompt_system        = prompt_system
-    @prompt_user          = prompt_user
+    @given_prompt_system  = prompt_system
+    @given_prompt_user    = prompt_user
     @persistence_strategy = persistence_strategy
     @additional_options   = additional_options
+    @regeneration_of      = regeneration_of
     @locale               = Locale.find_by(locale: locale || @current_user&.locale || Locale.default)
   end
 
@@ -51,30 +52,48 @@ class AI::Service
   private
 
   def fetch_stored
+    return if regeneration_of
     return if !persistable?
 
     stored_result = AI::StoredResult.find_by(persistent_lookup_attributes_with_version)
 
     return if !stored_result
 
-    Result.new(content: stored_result.content, stored_result:, fresh: false)
+    Result.new(
+      content:          stored_result.content,
+      stored_result:,
+      ai_analytics_run: stored_result.ai_analytics_run,
+      fresh:            false
+    )
   end
 
   def request_fresh
     response = ask_provider
 
-    return if response.nil?
+    if response.nil?
+      save_analytics_run if analytics?
+      return
+    end
 
-    stored_result = save_result(response) if persistable?
+    ai_analytics_run = save_analytics_run(result: response) if analytics?
+    stored_result    = save_result(response, ai_analytics_run:) if persistable?
 
-    Result.new(content: response, stored_result:, fresh: true)
+    Result.new(content: response, stored_result:, ai_analytics_run:, fresh: true)
+  rescue => e
+    save_analytics_run(error: e) if analytics?
+    raise e
+  end
+
+  def prompt_system
+    @prompt_system ||= @given_prompt_system || render_prompt(prompt_system_from_file)
+  end
+
+  def prompt_user
+    @prompt_user ||= @given_prompt_user || render_prompt(prompt_user_from_file)
   end
 
   def ask_provider
-    current_prompt_system = @prompt_system || render_prompt(prompt_system)
-    current_prompt_user   = @prompt_user   || render_prompt(prompt_user)
-
-    provider.ask(prompt_system: current_prompt_system, prompt_user: current_prompt_user)
+    provider.ask(prompt_system:, prompt_user:)
   end
 
   def provider
@@ -87,11 +106,43 @@ class AI::Service
     @provider_name ||= Setting.get('ai_provider')
   end
 
-  def save_result(result)
-    AI::StoredResult.upsert!(result, persistent_lookup_attributes, persistent_version, provider.metadata)
+  def save_result(result, ai_analytics_run:)
+    AI::StoredResult
+      .find_or_initialize_by(persistent_lookup_attributes)
+      .tap do |record|
+        record.update!(
+          version:          persistent_version,
+          metadata:         provider.metadata,
+          content:          result,
+          ai_analytics_run:
+        )
+      end
+  end
+
+  def save_analytics_run(result: nil, error: nil)
+    if error
+      error_metadata = {
+        error_message: error.message,
+        error_class:   error.class.name
+      }
+    end
+
+    AI::Analytics::Run.create(
+      **persistent_lookup_attributes_with_version,
+      context:         { metadata: provider.metadata },
+      content:         result || {},
+      payload:         { prompt_system:, prompt_user: },
+      error:           error_metadata || {},
+      ai_service_name: self.class.name_service,
+      regeneration_of:
+    )
   end
 
   def persistable?
+    false
+  end
+
+  def analytics?
     false
   end
 
@@ -119,11 +170,11 @@ class AI::Service
     @prompt_file_name ||= self.class.name_service.underscore
   end
 
-  def prompt_system
+  def prompt_system_from_file
     File.read(format(PROMPT_PATH_STRING, type: 'system', service: prompt_file_name))
   end
 
-  def prompt_user
+  def prompt_user_from_file
     File.read(format(PROMPT_PATH_STRING, type: 'user', service: prompt_file_name))
   end
 

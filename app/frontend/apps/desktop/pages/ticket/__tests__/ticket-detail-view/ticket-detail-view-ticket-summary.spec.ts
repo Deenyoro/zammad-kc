@@ -278,7 +278,6 @@ describe('Ticket detail view - Ticket summary', () => {
         customerMood: '...',
         customerEmotion: '🤬',
       },
-      relevantForCurrentUser: true,
       error: null,
     })
 
@@ -308,7 +307,9 @@ describe('Ticket detail view - Ticket summary', () => {
 
     mockTicketAiAssistanceSummarizeMutation({
       ticketAIAssistanceSummarize: {
-        relevantForCurrentUser: true,
+        analytics: {
+          isUnread: true,
+        },
       },
     })
 
@@ -336,7 +337,9 @@ describe('Ticket detail view - Ticket summary', () => {
 
     mockTicketAiAssistanceSummarizeMutation({
       ticketAIAssistanceSummarize: {
-        relevantForCurrentUser: false,
+        analytics: {
+          isUnread: false,
+        },
       },
     })
 
@@ -411,7 +414,10 @@ describe('Ticket detail view - Ticket summary', () => {
         customerMood: '...',
         customerEmotion: '🤬',
       },
-      relevantForCurrentUser: false,
+      analytics: {
+        isUnread: false,
+        usage: null,
+      },
       error: null,
     })
 

@@ -192,6 +192,10 @@ The originator (origin_by, if any) or the creator of an article.
     origin_by || created_by
   end
 
+  def author_id
+    origin_by_id || created_by_id
+  end
+
 =begin
 
 get body as html

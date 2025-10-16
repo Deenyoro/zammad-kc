@@ -14,6 +14,37 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
   let(:updated_cache_key)            { "ticket_summary_#{ticket.id}_2" }
   let(:ticket_summary_generation)    { 'on_ticket_detail_opening' }
 
+  let(:initial_content) do
+    {
+      'customer_request'     => '',
+      'conversation_summary' => initial_summary,
+      'open_questions'       => [],
+      'upcoming_events'      => [],
+      'customer_mood'        => 'Neutral',
+      'customer_emotion'     => '😐',
+    }
+  end
+
+  let(:updated_content) do
+    {
+      'customer_request'     => 'Customer is facing an issue with the product.',
+      'conversation_summary' => updated_summary,
+      'open_questions'       => ['What is the issue?', 'How can we help?'],
+      'upcoming_events'      => ['Next meeting on Friday', 'Follow-up call next week'],
+      'customer_mood'        => 'Happy',
+      'customer_emotion'     => '🙂',
+    }.compact
+  end
+
+  let(:ai_analytics_run) do
+    AI::Analytics::Run.create!(
+      content:         initial_content,
+      version:         AI::Service::TicketSummarize.persistent_version({ ticket: }, Locale.find_by(locale: agent.locale)),
+      ai_service_name: 'TicketSummarize',
+      **AI::Service::TicketSummarize.persistent_lookup_attributes({ ticket: }, Locale.find_by(locale: agent.locale)),
+    )
+  end
+
   def authenticate
     allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
 
@@ -33,29 +64,17 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
   before do
     if defined?(initial_cache_key)
-      initial_content = {
-        'customer_request'     => '',
-        'conversation_summary' => initial_summary,
-        'open_questions'       => [],
-        'upcoming_events'      => [],
-        'customer_mood'        => 'Neutral',
-        'customer_emotion'     => '😐',
-      }
-
       AI::StoredResult.create!(
-        content: initial_content,
-        version: AI::Service::TicketSummarize.persistent_version({ ticket: }, Locale.find_by(locale: agent.locale)),
+        content:          initial_content,
+        version:          AI::Service::TicketSummarize.persistent_version({ ticket: }, Locale.find_by(locale: agent.locale)),
         **AI::Service::TicketSummarize.persistent_lookup_attributes({ ticket: }, Locale.find_by(locale: agent.locale)),
+        ai_analytics_run:,
       )
 
-      updated_content = {
-        'customer_request'     => 'Customer is facing an issue with the product.',
-        'conversation_summary' => updated_summary,
-        'open_questions'       => ['What is the issue?', 'How can we help?'],
-        'upcoming_events'      => ['Next meeting on Friday', 'Follow-up call next week'],
-        'customer_mood'        => 'Happy',
-        'customer_emotion'     => '🙂',
-      }.compact
+      ai_analytics_usage if defined?(ai_analytics_usage)
+
+      allow_any_instance_of(AI::Service::EmailRemoveQuote)
+        .to receive(:ask_provider).and_return(article.body_as_text)
 
       allow_any_instance_of(AI::Service::TicketSummarize)
         .to receive(:ask_provider).and_return(updated_content)
@@ -325,6 +344,128 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
         click '.tabsSidebar-tab[data-tab=summary]'
 
         expect(Service::Ticket::AIAssistance::Summarize).to have_received(:new).once
+      end
+    end
+  end
+
+  describe 'Analytics' do
+    before do |example|
+      visit "ticket/zoom/#{ticket.id}"
+
+      click '.tabsSidebar-tab[data-tab=summary]' if !example.metadata[:do_not_click_summary_tab]
+    end
+
+    context 'when the usage has not been recorded yet' do
+      it 'records usage when switching to summary tab', do_not_click_summary_tab: true do
+        expect(ai_analytics_run.usages.find_by(user: agent)).to be_nil
+
+        click '.tabsSidebar-tab[data-tab=summary]'
+
+        expect(ai_analytics_run.usages.find_by(user: agent)).to have_attributes(
+          rating: nil,
+        )
+      end
+
+      it 'records positive feedback when giving thumbs up' do
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_text('Any feedback on this result?')
+            .and have_no_text('Thank you for your feedback.')
+
+          click '.js-aiPositiveReaction'
+
+          expect(page).to have_no_text('Any feedback on this result?')
+            .and have_text('Thank you for your feedback.')
+            .and have_no_css('.js-aiFeedbackButtons')
+            .and have_css('.js-aiRegenerate')
+            .and have_no_css('.js-aiCommentField')
+        end
+
+        expect(ai_analytics_run.usages.find_by(user: agent)).to have_attributes(
+          rating: true,
+        )
+      end
+
+      it 'records negative feedback when giving thumbs down (w/ optional comment)' do
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_text('Any feedback on this result?')
+            .and have_no_text('Thank you for your feedback.')
+
+          click '.js-aiNegativeReaction'
+
+          expect(page).to have_no_text('Any feedback on this result?')
+            .and have_field('comment', placeholder: 'Thanks for the feedback. Please explain what went wrong?')
+            .and have_no_css('.js-aiFeedbackToolbar')
+        end
+
+        expect(ai_analytics_run.usages.find_by(user: agent)).to have_attributes(
+          rating: false,
+        )
+
+        within '.sidebar[data-tab="summary"]' do
+          fill_in 'comment', with: 'bad bot'
+          click '.js-aiCommentSubmit'
+
+          expect(page).to have_text('Thank you for your feedback.')
+            .and have_no_css('.js-aiCommentField')
+            .and have_css('.js-aiRegenerate')
+        end
+
+        expect(ai_analytics_run.usages.find_by(user: agent)).to have_attributes(
+          rating:  false,
+          comment: 'bad bot',
+        )
+      end
+    end
+
+    context 'when the usage has been already recorded' do
+      let(:ai_analytics_usage) { create(:ai_analytics_usage, ai_analytics_run:, user: agent, rating: nil) }
+
+      it 'does not record usage again when switching to summary tab', do_not_click_summary_tab: true do
+        expect { click '.tabsSidebar-tab[data-tab=summary]' }.not_to change(ai_analytics_usage, :updated_at)
+      end
+
+      it 'renders feedback buttons' do
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_css('.js-aiFeedbackButtons')
+            .and have_css('.js-aiRegenerate')
+            .and have_text('Any feedback on this result?')
+            .and have_no_text('Thank you for your feedback.')
+            .and have_no_text('You have already provided feedback, thank you.')
+        end
+
+      end
+
+      context 'when user has already provided feedback' do
+        let(:ai_analytics_usage) { create(:ai_analytics_usage, ai_analytics_run:, user: agent, rating: true) }
+
+        it 'does not render feedback buttons' do
+          within '.sidebar[data-tab="summary"]' do
+            expect(page).to have_no_css('.js-aiFeedbackButtons')
+              .and have_css('.js-aiRegenerate')
+              .and have_no_text('Any feedback on this result?')
+              .and have_text('You have already provided feedback, thank you.')
+          end
+        end
+      end
+    end
+
+    context 'when regenerating the summary', performs_jobs: true do
+      it 'shows new summary' do
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_text('Conversation Summary')
+            .and have_text(initial_summary)
+
+          click '.js-aiRegenerate'
+
+          # This will wait for the job to be enqueued.
+          expect(page).to have_text('Summary is being generated…')
+        end
+
+        perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
+
+        within '.sidebar[data-tab="summary"]' do
+          expect(page).to have_text(updated_summary)
+        end
       end
     end
   end

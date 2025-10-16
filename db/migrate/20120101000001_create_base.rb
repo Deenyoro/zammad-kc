@@ -924,6 +924,25 @@ class CreateBase < ActiveRecord::Migration[4.2]
     end
     add_index :system_reports, [:uuid], unique: true
 
+    create_table :ai_analytics_runs do |t|
+      t.string :identifier, null: false
+      t.string :version
+      t.string :ai_service_name, null: false, index: true
+
+      t.references :locale, null: true, foreign_key: { to_table: :locales }
+      t.references :related_object, polymorphic: true, null: true
+      t.references :triggered_by, polymorphic: true, null: true
+
+      t.references :regeneration_of, null: true, foreign_key: { to_table: :ai_analytics_runs }
+
+      t.jsonb :content, null: false, default: {}
+      t.jsonb :payload, null: false, default: {}
+      t.jsonb :context, null: false, default: {}
+      t.jsonb :error,   null: false, default: {}
+
+      t.timestamps limit: 3
+    end
+
     create_table :ai_stored_results do |t|
       t.string :identifier, null: false
       t.string :version
@@ -934,6 +953,8 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.references :locale, null: true, foreign_key: { to_table: :locales }
       t.references :related_object, polymorphic: true, null: true,
         index: { name: 'index_ai_stored_results_on_related_object' }
+
+      t.references :ai_analytics_run, null: true, foreign_key: { to_table: :ai_analytics_runs }
 
       t.timestamps limit: 3
 
@@ -988,5 +1009,19 @@ class CreateBase < ActiveRecord::Migration[4.2]
     add_index :ai_text_tools_groups, [:text_tool_id]
     add_index :ai_text_tools_groups, [:group_id]
     add_foreign_key :ai_text_tools_groups, :groups
+
+    create_table :ai_analytics_usages do |t|
+      t.references :ai_analytics_run, null: false, foreign_key: { to_table: :ai_analytics_runs }
+      t.references :user, null: false, foreign_key: { to_table: :users }, type: :integer
+
+      t.boolean :rating, null: true, default: nil # rubocop:disable Rails/ThreeStateBooleanColumn
+      t.text :comment, null: true, default: nil
+
+      t.jsonb :context, null: false, default: {}
+
+      t.timestamps limit: 3
+
+      t.index %i[ai_analytics_run_id user_id], unique: true
+    end
   end
 end

@@ -1,0 +1,46 @@
+<p class="ai-feedback-disclaimer text-muted text-small">
+  <%- @T('Be sure to check AI-generated content for accuracy.') %>
+  <% if @hasProvidedFeedback: %>
+    <%- @T('You have already provided feedback, thank you.') %>
+  <% else: %>
+    <span class="js-aiFeedbackQuestion">
+      <%- @T('Any feedback on this result?') %>
+    </span>
+  <% end %>
+</p>
+
+<% if @runId: %>
+  <div class="ai-feedback-toolbar horizontal center js-aiFeedbackToolbar">
+    <% if not @hasProvidedFeedback: %>
+      <div class="ai-feedback-buttons horizontal js-aiFeedbackButtons">
+        <button class="btn btn--muted btn--action btn--slim btn--no-margin btn--icon-only js-aiPositiveReaction">
+          <%- @Icon('thumbs-up') %>
+        </button>
+        <button class="btn btn--muted btn--action btn--slim btn--no-margin btn--icon-only js-aiNegativeReaction">
+          <%- @Icon('thumbs-down') %>
+        </button>
+      </div>
+      <p class="ai-feedback-acknowledgment js-aiFeedbackAcknowledgment hide">
+        <%- @T('Thank you for your feedback.') %>
+      </p>
+    <% end %>
+    <% if @hasRegenerate: %>
+      <div class="flex spacer"></div>
+      <button class="btn btn--secondary btn--action btn--slim btn--no-margin btn--icon-only flex-no-shrink js-aiRegenerate">
+        <%- @Icon('reload') %>
+      </button>
+    <% end %>
+  </div>
+
+  <div class="ai-feedback-comment vertical hide js-aiFeedbackComment">
+    <textarea class="form-control" name="comment" rows="3" placeholder="<%- @Ti('Thanks for the feedback. Please explain what went wrong?') %>"></textarea>
+    <div class="horizontal justify-end">
+      <button class="btn btn--action btn--split--first btn--icon-only danger-color js-aiCommentCancel">
+        <%- @Icon('diagonal-cross') %>
+      </button>
+      <button class="btn btn--action btn--split--last btn--icon-only js-aiCommentSubmit">
+        <%- @Icon('checkmark') %>
+      </button>
+    </div>
+  </div>
+<% end %>

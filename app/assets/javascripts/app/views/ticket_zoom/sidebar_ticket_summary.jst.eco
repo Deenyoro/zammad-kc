@@ -13,7 +13,7 @@
       <div class="alert alert--danger">
         <%- @T('No AI provider is currently set up. Please contact your administrator.') %>
       </div>
-    <% else if @noSummaryPossible: %>
+    <% else if @invalidSummary: %>
       <div class="alert alert--info">
         <%- @T('There is not enough content yet to summarize this ticket.') %>
       </div>
@@ -45,9 +45,7 @@
         <% end %>
       <% end %>
       </div>
-      <p class="text-muted text-small">
-        <%- @T('Be sure to check AI-generated summaries for accuracy.') %>
-      </p>
+      <div class="js-aiFeedback"></div>
     <% else: %>
       <p><%- @T('Summary is being generated…') %></p>
       <div class="loading-container">

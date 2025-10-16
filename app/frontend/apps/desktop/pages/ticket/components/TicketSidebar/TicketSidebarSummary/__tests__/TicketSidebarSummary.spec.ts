@@ -18,7 +18,10 @@ import TicketSidebarSummary from '#desktop/pages/ticket/components/TicketSidebar
 import { ARTICLES_INFORMATION_KEY } from '#desktop/pages/ticket/composables/useArticleContext.ts'
 import { TICKET_KEY } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
 import { TICKET_SIDEBAR_SYMBOL } from '#desktop/pages/ticket/composables/useTicketSidebar.ts'
-import { mockTicketAiAssistanceSummarizeMutation } from '#desktop/pages/ticket/graphql/mutations/ticketAIAssistanceSummarize.mocks.ts'
+import {
+  mockTicketAiAssistanceSummarizeMutation,
+  waitForTicketAiAssistanceSummarizeMutationCalls,
+} from '#desktop/pages/ticket/graphql/mutations/ticketAIAssistanceSummarize.mocks.ts'
 
 const defaultTicket = createDummyTicket()
 const testArticle = createDummyArticle({
@@ -92,6 +95,7 @@ const renderRenderTicketSidebarSummary = (ticket: Partial<TicketById> = defaultT
       },
     },
     router: true,
+    form: true,
     store: true,
   })
 
@@ -243,7 +247,17 @@ describe('TicketSidebarSummary', () => {
 
   it('displays content hint', async () => {
     mockTicketAiAssistanceSummarizeMutation({
-      ticketAIAssistanceSummarize: ticketAIAssistanceSummarizeMock,
+      ticketAIAssistanceSummarize: {
+        ...ticketAIAssistanceSummarizeMock,
+        analytics: {
+          run: {
+            id: convertToGraphQLId('AIAnalyticsRun', 12345),
+          },
+          usage: {
+            userHasProvidedFeedback: false,
+          },
+        },
+      },
     })
 
     mockApplicationConfig({
@@ -257,9 +271,7 @@ describe('TicketSidebarSummary', () => {
 
     const wrapper = renderRenderTicketSidebarSummary()
 
-    expect(
-      await wrapper.findByText('Be sure to check AI-generated summaries for accuracy.'),
-    ).toBeInTheDocument()
+    expect(await wrapper.findByText('Any feedback on this result?')).toBeInTheDocument()
   })
 
   it('shows info that summary is too short to be generated', async () => {
@@ -307,5 +319,136 @@ describe('TicketSidebarSummary', () => {
     expect(wrapper.getAllByLabelText('Placeholder for AI generated heading')).toHaveLength(4)
 
     expect(wrapper.getAllByLabelText('Placeholder for AI generated text')).toHaveLength(16)
+  })
+
+  it('shows message that user has provided already feedback', async () => {
+    mockApplicationConfig({
+      ai_provider: 'zammad_ai',
+      ai_assistance_ticket_summary: true,
+    })
+
+    mockTicketAiAssistanceSummarizeMutation({
+      ticketAIAssistanceSummarize: {
+        ...ticketAIAssistanceSummarizeMock,
+        analytics: {
+          run: {
+            id: convertToGraphQLId('AIAnalyticsRun', 12345),
+          },
+          usage: {
+            userHasProvidedFeedback: true,
+          },
+        },
+      },
+    })
+
+    const wrapper = renderRenderTicketSidebarSummary()
+
+    await waitForTicketAiAssistanceSummarizeMutationCalls()
+
+    expect(
+      await wrapper.findByText('You have already provided feedback, thank you.'),
+    ).toBeInTheDocument()
+  })
+
+  it('allows to regenerate AI summary', async () => {
+    const runId = convertToGraphQLId('AIAnalyticsRun', 12345)
+
+    mockApplicationConfig({
+      ai_provider: 'zammad_ai',
+      ai_assistance_ticket_summary: true,
+    })
+
+    mockTicketAiAssistanceSummarizeMutation({
+      ticketAIAssistanceSummarize: {
+        ...ticketAIAssistanceSummarizeMock,
+        analytics: {
+          run: {
+            id: runId,
+          },
+          usage: {
+            userHasProvidedFeedback: false,
+          },
+        },
+      },
+    })
+
+    const wrapper = renderRenderTicketSidebarSummary()
+
+    await waitForTicketAiAssistanceSummarizeMutationCalls()
+
+    await wrapper.events.click(await wrapper.findByRole('button', { name: 'Regenerate' }))
+
+    const calls = await waitForTicketAiAssistanceSummarizeMutationCalls()
+
+    expect(calls.at(-1)?.variables).toEqual({
+      ticketId: defaultTicket.id,
+      regenerationOfId: runId,
+    })
+  })
+
+  it('removes ask for feedback message on positive feedback', async () => {
+    const runId = convertToGraphQLId('AIAnalyticsRun', 12345)
+
+    mockApplicationConfig({
+      ai_provider: 'zammad_ai',
+      ai_assistance_ticket_summary: true,
+    })
+
+    mockTicketAiAssistanceSummarizeMutation({
+      ticketAIAssistanceSummarize: {
+        ...ticketAIAssistanceSummarizeMock,
+        analytics: {
+          run: {
+            id: runId,
+          },
+          usage: {
+            userHasProvidedFeedback: false,
+          },
+        },
+      },
+    })
+
+    const wrapper = renderRenderTicketSidebarSummary()
+
+    await waitForTicketAiAssistanceSummarizeMutationCalls()
+
+    await wrapper.events.click(await wrapper.findByRole('button', { name: 'Positive Feedback' }))
+
+    await waitForTicketAiAssistanceSummarizeMutationCalls()
+
+    expect(wrapper.queryByText('Any feedback on this result?')).not.toBeInTheDocument()
+  })
+
+  it('removes ask for feedback message on negative feedback', async () => {
+    const runId = convertToGraphQLId('AIAnalyticsRun', 12345)
+
+    mockApplicationConfig({
+      ai_provider: 'zammad_ai',
+      ai_assistance_ticket_summary: true,
+    })
+
+    mockTicketAiAssistanceSummarizeMutation({
+      ticketAIAssistanceSummarize: {
+        ...ticketAIAssistanceSummarizeMock,
+        analytics: {
+          run: {
+            id: runId,
+          },
+          usage: {
+            userHasProvidedFeedback: false,
+          },
+        },
+      },
+    })
+
+    const wrapper = renderRenderTicketSidebarSummary()
+
+    await waitForTicketAiAssistanceSummarizeMutationCalls()
+
+    await wrapper.events.click(await wrapper.findByRole('button', { name: 'Negative Feedback' }))
+
+    await waitForTicketAiAssistanceSummarizeMutationCalls()
+
+    expect(wrapper.queryByText('Any feedback on this result?')).not.toBeInTheDocument()
   })
 })

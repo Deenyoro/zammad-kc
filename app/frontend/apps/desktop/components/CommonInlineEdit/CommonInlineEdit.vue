@@ -3,15 +3,7 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
 import { escape } from 'lodash-es'
-import {
-  computed,
-  defineAsyncComponent,
-  ref,
-  nextTick,
-  watch,
-  onMounted,
-  useTemplateRef,
-} from 'vue'
+import { computed, ref, nextTick, watch, onMounted, useTemplateRef } from 'vue'
 
 import CommonLabel from '#shared/components/CommonLabel/CommonLabel.vue'
 import { useHtmlLinks } from '#shared/composables/useHtmlLinks.ts'
@@ -19,10 +11,7 @@ import { useTrapTab } from '#shared/composables/useTrapTab.ts'
 import { i18n } from '#shared/i18n/index.ts'
 import { textToHtml } from '#shared/utils/helpers.ts'
 
-const CommonButton = defineAsyncComponent(
-  () => import('#desktop/components/CommonButton/CommonButton.vue'),
-)
-
+import CommonInlineEditButtons from '#desktop/components/CommonInlineEditButtons/CommonInlineEditButtons.vue'
 export interface Props {
   value: string
   initialEditValue?: string
@@ -328,24 +317,14 @@ defineExpose({
         />
       </div>
 
-      <div class="absolute z-10 flex gap-1 ltr:right-0 rtl:left-0 rtl:-order-1">
-        <CommonButton
-          v-tooltip="cancelLabel || $t('Cancel')"
-          icon="x-lg"
-          variant="danger"
-          @click="stopEditing()"
-          @keydown.enter.stop="stopEditing()"
-        />
-        <CommonButton
-          v-tooltip="submitLabel || $t('Save changes')"
-          class="rtl:-order-1"
-          icon="check2"
-          :disabled="!isValid"
-          variant="submit"
-          @click="submitEdit"
-          @keydown.enter.stop="submitEdit"
-        />
-      </div>
+      <CommonInlineEditButtons
+        :submit-label="submitLabel"
+        :cancel-label="cancelLabel"
+        class="absolute z-10 ltr:right-0 rtl:left-0 rtl:-order-1"
+        :submit-disabled="!isValid"
+        @submit="submitEdit"
+        @cancel="stopEditing()"
+      />
     </div>
   </div>
 </template>

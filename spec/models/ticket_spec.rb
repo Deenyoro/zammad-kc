@@ -2091,4 +2091,51 @@ RSpec.describe Ticket, type: :model do
       expect(ticket.assets({}).deep_symbolize_keys.keys).not_to include(:TicketPriority, :Role, :TicketState, :Group)
     end
   end
+
+  describe '#ai_summary_unread?' do
+    subject(:ticket) { create(:ticket) }
+
+    let(:user)             { create(:agent, groups: [ticket.group]) }
+    let(:ai_analytics_run) { create(:ai_analytics_run, related_object: ticket) }
+
+    context 'when a given run is seen' do
+      let(:ai_analytics_usage) { create(:ai_analytics_usage, user:, ai_analytics_run:) }
+
+      before do
+        ai_analytics_usage
+        article
+      end
+
+      context 'when the last relevant article is from the user' do
+        let(:article) { create(:ticket_article, ticket:, created_by: user) }
+
+        it { is_expected.not_to be_ai_summary_unread(user, ai_analytics_run) }
+      end
+
+      context 'when the last relevant article is from someone else' do
+        let(:article) { create(:ticket_article, ticket:, created_by: ticket.customer) }
+
+        it { is_expected.not_to be_ai_summary_unread(user, ai_analytics_run) }
+      end
+    end
+
+    context 'when a given run is not seen yet' do
+      before do
+        ai_analytics_run
+        article
+      end
+
+      context 'when the last relevant article is from the user' do
+        let(:article) { create(:ticket_article, ticket:, created_by: user) }
+
+        it { is_expected.not_to be_ai_summary_unread(user, ai_analytics_run) }
+      end
+
+      context 'when the last relevant article is from someone else' do
+        let(:article) { create(:ticket_article, ticket:, created_by: ticket.customer) }
+
+        it { is_expected.to be_ai_summary_unread(user, ai_analytics_run) }
+      end
+    end
+  end
 end

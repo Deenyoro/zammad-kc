@@ -128,6 +128,359 @@
         },
         {
           "kind": "OBJECT",
+          "name": "AIAnalyticsMetadata",
+          "description": "AI Analytics Metadata type that returns related run ID and usage data if present",
+          "fields": [
+            {
+              "name": "isUnread",
+              "description": "Indicates if the summary is unread by the current user.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "run",
+              "description": "ID of the related AI::Analytics::Run.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "AIAnalyticsRun",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "usage",
+              "description": "AI analytics usage record.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "AIAnalyticsUsage",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "AIAnalyticsRun",
+          "description": "AI::Analytics::Run identifies an AI result that can be used for analytics purposes.",
+          "fields": [
+            {
+              "name": "createdAt",
+              "description": "Create date/time of the record",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ISO8601DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "createdBy",
+              "description": "User that created this record",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "id",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "internalId",
+              "description": "Internal database ID",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "relatedObject",
+              "description": "The ticket related to this AI result.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Ticket",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updatedAt",
+              "description": "Last update date/time of the record",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ISO8601DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updatedBy",
+              "description": "Last user that updated this record",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "AIAnalyticsUsage",
+          "description": "AI::Analytics::Usage records a usage of an AI result that can be used for analytics purposes.",
+          "fields": [
+            {
+              "name": "createdAt",
+              "description": "Create date/time of the record",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ISO8601DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "createdBy",
+              "description": "User that created this record",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "id",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "internalId",
+              "description": "Internal database ID",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updatedAt",
+              "description": "Last update date/time of the record",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ISO8601DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updatedBy",
+              "description": "Last user that updated this record",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "userHasProvidedFeedback",
+              "description": "Indicates if the user has already provided feedback for this AI result.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "AIAnalyticsUsageInput",
+          "description": "Input for the AI analytics usage.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "rating",
+              "description": "Usage rating of the AI result.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "comment",
+              "description": "Usage comment on the AI result.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "context",
+              "description": "Context data of the usage, e.g. approval status.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "AIAnalyticsUsagePayload",
+          "description": "Autogenerated return type of AIAnalyticsUsage.",
+          "fields": [
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "usage",
+              "description": "AI analytics usage record.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "AIAnalyticsUsage",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "AIAssistanceTextToolsRunPayload",
           "description": "Autogenerated return type of AIAssistanceTextToolsRun.",
           "fields": [
@@ -9386,6 +9739,43 @@
               "deprecationReason": null
             },
             {
+              "name": "aiAnalyticsUsage",
+              "description": "Record usage of an AI result for purposes of analytics",
+              "args": [
+                {
+                  "name": "aiAnalyticsRunId",
+                  "description": "ID of the AI analytics run to record the usage for.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "description": "Input for the AI analytics usage.",
+                  "type": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "AIAnalyticsUsageInput",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "AIAnalyticsUsagePayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "aiAssistanceTextToolsRun",
               "description": "Run an AI text tool service on the supplied text or HTML content",
               "args": [
@@ -10359,6 +10749,16 @@
                       "name": "ID",
                       "ofType": null
                     }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "regenerationOfId",
+                  "description": "The previous AI run to regenerate the summary for (if any)",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
                   },
                   "defaultValue": null
                 }
@@ -21256,6 +21656,18 @@
           "description": "Autogenerated return type of TicketAIAssistanceSummarize.",
           "fields": [
             {
+              "name": "analytics",
+              "description": "Analytics metadata",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "AIAnalyticsMetadata",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "errors",
               "description": "Errors encountered during execution of the mutation.",
               "args": [],
@@ -21271,30 +21683,6 @@
                     "ofType": null
                   }
                 }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "fingerprintMd5",
-              "description": "MD5 digest of the complete summary content",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "relevantForCurrentUser",
-              "description": "Indicates if the summary is relevant for the current user",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -21422,36 +21810,24 @@
           "description": "Autogenerated return type of TicketAIAssistanceSummaryUpdates.",
           "fields": [
             {
+              "name": "analytics",
+              "description": "Analytics metadata",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "AIAnalyticsMetadata",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "error",
               "description": "Error that occurred during the execution of the async job",
               "args": [],
               "type": {
                 "kind": "OBJECT",
                 "name": "AsyncExecutionError",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "fingerprintMd5",
-              "description": "MD5 digest of the complete summary content",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "relevantForCurrentUser",
-              "description": "Indicates if the summary is relevant for the current user",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,

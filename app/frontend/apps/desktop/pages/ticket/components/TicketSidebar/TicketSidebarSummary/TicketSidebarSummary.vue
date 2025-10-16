@@ -6,9 +6,9 @@ import { computed, type EffectScope, effectScope, ref, watch } from 'vue'
 
 import { useTicketArticleUpdatesSubscription } from '#shared/entities/ticket/graphql/subscriptions/ticketArticlesUpdates.api.ts'
 import {
+  type AiAnalyticsMetadata,
   type AsyncExecutionError,
   EnumTicketSummaryGeneration,
-  type TicketAiAssistanceSummarizePayload,
   type TicketAiAssistanceSummary,
 } from '#shared/graphql/types.ts'
 import { MutationHandler, SubscriptionHandler } from '#shared/server/apollo/handler/index.ts'
@@ -25,14 +25,13 @@ import { useTicketSummaryGenerating } from '#desktop/pages/ticket/components/Tic
 import { usePersistentStates } from '#desktop/pages/ticket/composables/usePersistentStates.ts'
 import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
 import { useTicketSidebar } from '#desktop/pages/ticket/composables/useTicketSidebar.ts'
-import { useTicketSummarySeen } from '#desktop/pages/ticket/composables/useTicketSummarySeen.ts'
 import { useTicketAiAssistanceSummarizeMutation } from '#desktop/pages/ticket/graphql/mutations/ticketAIAssistanceSummarize.api.ts'
 import { useTicketAiAssistanceSummaryUpdatesSubscription } from '#desktop/pages/ticket/graphql/subscriptions/ticketAIAssistanceSummaryUpdates.api.ts'
 import type { TicketSidebarEmits, TicketSidebarProps } from '#desktop/pages/ticket/types/sidebar.ts'
 
 import TicketSidebarWrapper from '../TicketSidebarWrapper.vue'
 
-const props = defineProps<TicketSidebarProps>()
+defineProps<TicketSidebarProps>()
 const emit = defineEmits<TicketSidebarEmits>()
 
 const { user, hasPermission } = useSessionStore()
@@ -105,12 +104,13 @@ const headings = computed<SummaryItem[]>(() => [
 
 const summaryHeadings = computed(() => headings.value.filter((heading) => heading.active))
 
-const { setFingerprint, storeFingerprint, isCurrentTicketSummaryRead, isTicketStateMerged } =
-  useTicketSummarySeen()
-
 const summary = ref<TicketAiAssistanceSummary | null>(null)
 const generationError = ref<AsyncExecutionError | null>(null)
-const isRelevantForCurrentUser = ref(true)
+
+const analyticsMeta = ref<AiAnalyticsMetadata | null>()
+
+const isCurrentTicketSummaryUnread = computed(() => analyticsMeta.value?.isUnread)
+const isTicketStateMerged = computed(() => ticket.value?.state.name === 'merged')
 
 const { updateSummaryGenerating, isSummaryGenerating } = useTicketSummaryGenerating()
 
@@ -118,10 +118,9 @@ const ticketSummaryHandler = new MutationHandler(useTicketAiAssistanceSummarizeM
 
 const showUpdateIndicator = computed(
   () =>
-    !isCurrentTicketSummaryRead.value &&
+    !!isCurrentTicketSummaryUnread.value &&
     !isTicketStateMerged.value &&
     !isSummaryGenerating.value &&
-    isRelevantForCurrentUser.value &&
     runWhenSidebarIsActive.value,
 )
 
@@ -133,34 +132,33 @@ watch(
   },
 )
 
-const updateLocalSummary = (
-  summaryData?: TicketAiAssistanceSummary | null,
-  fingerprint?: TicketAiAssistanceSummarizePayload['fingerprintMd5'],
-) => {
+const updateLocalSummary = (summaryData?: TicketAiAssistanceSummary | null) => {
   summary.value = summaryData ?? null
-
-  setFingerprint(fingerprint)
 
   // Reset error if the summary is returned.
   if (summaryData) generationError.value = null
 }
 
-const getAIAssistanceSummary = () => {
+const getAIAssistanceSummary = (regenerate?: boolean) => {
   if (!isProviderConfigured.value || !runWhenSidebarIsActive.value) return
 
+  generationError.value = null
   summary.value = null
   updateSummaryGenerating(true)
 
-  ticketSummaryHandler.send({ ticketId: ticketId.value }).then((data) => {
-    if (data?.ticketAIAssistanceSummarize?.summary) updateSummaryGenerating(false)
+  ticketSummaryHandler
+    .send({
+      ticketId: ticketId.value,
+      regenerationOfId: regenerate ? analyticsMeta.value?.run?.id : undefined,
+    })
+    .then((data) => {
+      if (data?.ticketAIAssistanceSummarize?.summary) updateSummaryGenerating(false)
 
-    isRelevantForCurrentUser.value = !!data?.ticketAIAssistanceSummarize?.relevantForCurrentUser
+      analyticsMeta.value = data?.ticketAIAssistanceSummarize
+        ?.analytics as AiAnalyticsMetadata | null
 
-    updateLocalSummary(
-      data?.ticketAIAssistanceSummarize?.summary,
-      data?.ticketAIAssistanceSummarize?.fingerprintMd5,
-    )
-  })
+      updateLocalSummary(data?.ticketAIAssistanceSummarize?.summary)
+    })
 }
 
 watch(isSummarySideBarActive, () => {
@@ -168,11 +166,8 @@ watch(isSummarySideBarActive, () => {
   getAIAssistanceSummary()
 })
 
-const retrySummaryGeneration = () => {
-  summary.value = null
-  generationError.value = null
-  getAIAssistanceSummary()
-}
+const retrySummaryGeneration = () => getAIAssistanceSummary(true)
+const regenerateSummary = () => getAIAssistanceSummary(true)
 
 const activateTicketArticleUpdatesSubscription = () => {
   const articleSubscription = new SubscriptionHandler(
@@ -216,14 +211,7 @@ const activateTicketSummarySubscription = () => {
 
       if (!data?.ticketAIAssistanceSummaryUpdates) return
 
-      isRelevantForCurrentUser.value =
-        !!data.ticketAIAssistanceSummaryUpdates.relevantForCurrentUser
-
-      const {
-        summary: summaryData,
-        fingerprintMd5,
-        error: errorData,
-      } = data.ticketAIAssistanceSummaryUpdates
+      const { summary: summaryData, error: errorData } = data.ticketAIAssistanceSummaryUpdates
 
       if (errorData) {
         generationError.value = errorData
@@ -231,8 +219,10 @@ const activateTicketSummarySubscription = () => {
         return
       }
 
-      if (summaryData) updateLocalSummary(summaryData, fingerprintMd5)
-      if (props.selected) storeFingerprint(fingerprintMd5)
+      if (summaryData) updateLocalSummary(summaryData)
+
+      analyticsMeta.value = data?.ticketAIAssistanceSummaryUpdates
+        ?.analytics as AiAnalyticsMetadata | null
     })
   })
 }
@@ -287,10 +277,12 @@ watch(
       :sidebar-plugin="sidebarPlugin"
       :summary="summary"
       :summary-headings="summaryHeadings"
+      :analytics-meta="analyticsMeta"
       :is-provider-configured="isProviderConfigured"
       :error="generationError"
       :show-error-details="showErrorDetails"
       @retry-get-summary="retrySummaryGeneration"
+      @regenerate-summary="regenerateSummary"
     />
   </TicketSidebarWrapper>
 </template>

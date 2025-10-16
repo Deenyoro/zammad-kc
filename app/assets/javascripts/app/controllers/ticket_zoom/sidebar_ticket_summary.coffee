@@ -112,7 +112,7 @@ class App.SidebarTicketSummary extends App.Controller
     {
       name:       'summary'
       icon:       'smart-assist'
-      dotVisible: !@isPreparingData && @fingerprintMD5 && @relevantForCurrentUser && !@constructor.isSummarySeen(@ticket, @fingerprintMD5)
+      dotVisible: @sidebarItem()?.name isnt @parentSidebar.currentTab and not @isPreparingData && @summaryData?.analytics?.is_unread
     }
 
   badgeRender: (el) =>
@@ -123,11 +123,18 @@ class App.SidebarTicketSummary extends App.Controller
     return if !@badgeEl
     @badgeEl.html(App.view('generic/sidebar_tabs_item')(@badgeDetails()))
 
-  shown: =>
-    if !@isPreparingData && @fingerprintMD5
-      @constructor.markSummaryAsSeen(@ticket, @fingerprintMD5)
-
+  markAsRead: =>
+    @summaryData?.analytics?.is_unread = false
     @badgeRenderLocal()
+    @feedbackWidget?.recordUsage({}, =>
+      @hasUsage = true
+    )
+
+  shown: =>
+    if not @isPreparingData and not @hasUsage
+      @markAsRead()
+    else
+      @badgeRenderLocal()
 
     if @summaryActivated
       if @waitingSummarization && !@summarizeOnTicketShow()
@@ -159,45 +166,47 @@ class App.SidebarTicketSummary extends App.Controller
     @DISPLAY_STRUCTURE.filter((item) -> !(item.key of config) or config[item.key] is true)
 
   renderSummarization: (data) =>
-    if data
-      @summaryData = data
-
-    @updateSummarySeenState(@summaryData)
+    @summaryData = data if data
+    @badgeRenderLocal()
 
     return if !@elSidebar
 
-    noSummaryPossible = @summaryData.result && _.every(_.values(@summaryData.result), (item) -> item is null)
+    invalidSummary = @invalidSummary()
 
     summarization = $(App.view('ticket_zoom/sidebar_ticket_summary')(
-      data:              @summaryData
-      noSummaryPossible: noSummaryPossible
-      structure:         @getAvailableDisplayStructure()
+      data:           @summaryData
+      invalidSummary: invalidSummary
+      structure:      @getAvailableDisplayStructure()
     ))
 
     summarization
       .on('click', '.js-retry', @retrySummarization)
 
+    if not invalidSummary
+      @feedbackWidget = new App.AIFeedbackWidget(
+        el:                  summarization.find('.js-aiFeedback')
+        runId:               @summaryData?.analytics?.run_id
+        hasProvidedFeedback: @summaryData?.analytics?.usage?.user_has_provided_feedback
+        regenerateCallback:  @loadSummarization
+      )
+
+      @hasUsage = not _.isNull(@summaryData?.analytics?.usage)
+      @markAsRead() if @sidebarItem()?.name is @parentSidebar.currentTab and not @hasUsage
+
     @elSidebar.html(summarization)
+
+  invalidSummary: =>
+    # In case the summary result does not follow expected structure (at least in some part), we consider it as invalid.
+    @summaryData?.result and not _.some(@getAvailableDisplayStructure(), (item) =>
+      key = item.value
+      return _.some(key, (k) => @summaryData?.result[k]?) if _.isArray(key)
+      @summaryData?.result[key]?
+    )
 
   retrySummarization: (e) =>
     @preventDefaultAndStopPropagation(e)
     @renderSummarization({})
     @loadSummarization()
-
-  updateSummarySeenState: (data) =>
-    @isPreparingData = (_.isNull(data?.result) or data?.error)
-    @fingerprintMD5  = data?.result?.fingerprint_md5
-    @relevantForCurrentUser = data?.result?.relevant_for_current_user
-
-    App.Event.trigger(
-      'ui::ticket::summaryUpdate',
-      { ticket_id: @ticket.id, isPreparingData: @isPreparingData, fingerprintMD5: @fingerprintMD5 }
-    )
-
-    if @sidebarItem()?.name == @parentSidebar.currentTab && @fingerprintMD5 && !@isPreparingData
-      @constructor.markSummaryAsSeen(@ticket, @fingerprintMD5)
-
-    @badgeRenderLocal()
 
   summaryReloadNeeded: =>
     ticket = App.Ticket.find(@ticket.id)
@@ -216,32 +225,26 @@ class App.SidebarTicketSummary extends App.Controller
 
       sender.name != 'System' && article.body?.length > 0
 
-  loadSummarization: =>
+  loadSummarization: (regenerationOfId = null) =>
     return if !@sidebarIsEnabled()
+
     @waitingSummarization = false
 
+    data = {}
+
+    data.regeneration_of_id = regenerationOfId if regenerationOfId
+
     @ajax(
-      id:    "ticket-intelligence-enqueue-#{@taskKey}"
-      type:  'POST'
-      url:   "#{@apiPath}/tickets/#{@ticket.id}/summarize"
+      id:             "ticket-summarization-#{@taskKey}"
+      type:           'POST'
+      url:            "#{@apiPath}/tickets/#{@ticket.id}/summarize"
+      data:           JSON.stringify(data)
+      preprocessData: true
       success: (data, status, xhr) =>
         @renderSummarization(data)
 
       error: (xhr, status, error) ->
         # show error toaster
     )
-
-  @summarySeenLocalStorageKey: (ticket) ->
-    "ticket-summary-seen-#{ticket.id}"
-
-  @markSummaryAsSeen: (ticket, fingerprint) =>
-    key = @summarySeenLocalStorageKey(ticket)
-    App.LocalStorage.set(key, fingerprint)
-
-  @isSummarySeen: (ticket, fingerprint) =>
-    key = @summarySeenLocalStorageKey(ticket)
-
-    App.LocalStorage.get(key) is fingerprint
-
 
 App.Config.set('350-TicketSummary', App.SidebarTicketSummary, 'TicketZoomSidebar')
