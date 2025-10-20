@@ -17,6 +17,7 @@ RSpec.describe CoreWorkflow::Custom::AdminGroupSummaryGeneration, type: :model d
       allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
 
       Setting.set('ai_provider', 'zammad_ai')
+      Setting.set('ai_assistance_ticket_summary', true)
     end
 
     it 'does show ticket generation field for group' do
@@ -30,6 +31,19 @@ RSpec.describe CoreWorkflow::Custom::AdminGroupSummaryGeneration, type: :model d
     end
 
     it 'does not show ticket generation field for group' do
+      expect(result[:visibility]['summary_generation']).to eq('remove')
+    end
+  end
+
+  context 'when feature flag disabled' do
+    before do
+      allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
+
+      Setting.set('ai_provider', 'zammad_ai')
+      Setting.set('ai_assistance_ticket_summary', false)
+    end
+
+    it 'hides ticket generation field for group' do
       expect(result[:visibility]['summary_generation']).to eq('remove')
     end
   end
