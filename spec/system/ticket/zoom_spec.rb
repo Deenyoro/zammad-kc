@@ -831,6 +831,37 @@ RSpec.describe 'Ticket zoom', type: :system do
     end
   end
 
+  describe 'customer draft', authenticated_as: :authenticate do
+    let(:customer) { create(:customer) }
+    let(:ticket)   { create(:ticket, customer: customer) }
+    let(:article)  { create(:ticket_article, ticket: ticket) }
+
+    def authenticate
+      article
+      customer
+    end
+
+    it 'restores autosaved body and keeps a supported article type (#5767)' do
+      visit "ticket/zoom/#{ticket.id}"
+
+      taskbar_timestamp = Taskbar.last.updated_at
+
+      find(:richtext).send_keys('This is a draft body from customer')
+
+      wait.until { Taskbar.last.updated_at != taskbar_timestamp }
+
+      refresh
+
+      within '.article-new' do
+        type_input = find('input[name="type"]', visible: false)
+
+        expect(type_input.value).to eq('note')
+        expect(page).to have_no_field('input[name=to]', visible: :visible)
+        expect(find('[data-name=body]')).to have_text('This is a draft body from customer')
+      end
+    end
+  end
+
   # https://github.com/zammad/zammad/issues/3260
   describe 'next in overview macro changes URL', authenticated_as: :authenticate do
     let(:next_ticket) { create(:ticket, title: 'next Ticket', group: Group.first) }

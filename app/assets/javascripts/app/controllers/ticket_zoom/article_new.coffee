@@ -37,8 +37,8 @@ class App.TicketZoomArticleNew extends App.Controller
     super
 
     @internalSelector = false
-    @type = @defaults['type'] || 'note'
     @setPossibleArticleTypes()
+    @type = @normalizeArticleType(@defaults['type'] || 'note')
 
     if @ticket.currentView() is 'agent'
       @internalSelector = true
@@ -151,6 +151,18 @@ class App.TicketZoomArticleNew extends App.Controller
     for config in @actions()
       if config && config.articleTypes
         @articleTypes = config.articleTypes(@articleTypes, @ticket, @)
+
+  normalizeArticleType: (type) =>
+    return if not type
+
+    articleTypeExists = _.some(@articleTypes, (articleType) -> articleType?.name is type)
+    return type if articleTypeExists
+
+    if @ticket?.currentView() is 'customer'
+      fallback = _.find(@articleTypes, (articleType) -> articleType?.name?)
+      return fallback?.name || 'note'
+
+    type
 
   placeCaretAtEnd: (el) ->
     el.focus()
@@ -459,6 +471,7 @@ class App.TicketZoomArticleNew extends App.Controller
     @$('[name=internal]').val(value)
 
   setArticleTypePre: (type, signaturePosition = 'bottom') =>
+    type = @normalizeArticleType(type)
     wasScrolledToBottom = @isScrolledToBottom()
 
     # reset old params
@@ -472,6 +485,7 @@ class App.TicketZoomArticleNew extends App.Controller
     @$('.js-selectableTypes').addClass('hide').filter("[data-type='#{type}']").removeClass('hide')
 
     @setPossibleArticleTypes()
+    type = @normalizeArticleType(type)
 
     # get config
     config = {}
