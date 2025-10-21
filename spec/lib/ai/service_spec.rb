@@ -17,13 +17,13 @@ class AI::Provider::SampleProvider < AI::Provider
 end
 
 class AI::Service::SampleService < AI::Service
-  def self.persistent_lookup_attributes(context_data, _locale)
+  def self.lookup_attributes(context_data, _locale)
     {
       identifier: "sample_service_#{context_data[:ticket].id}",
     }
   end
 
-  def self.persistent_version(context_data, _locale)
+  def self.lookup_version(context_data, _locale)
     context_data[:ticket].updated_at.to_i
   end
 end

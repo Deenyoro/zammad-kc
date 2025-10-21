@@ -1,7 +1,7 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class AI::Service::TicketSummarize < AI::Service
-  def self.persistent_lookup_attributes(context_data, locale)
+  def self.lookup_attributes(context_data, locale)
     {
       identifier:     'ticket_summarize',
       locale:,
@@ -9,7 +9,7 @@ class AI::Service::TicketSummarize < AI::Service
     }
   end
 
-  def self.persistent_version(context_data, _locale)
+  def self.lookup_version(context_data, _locale)
     context_data[:ticket]
       .articles
       .without_system_notifications

@@ -39,9 +39,9 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
   let(:ai_analytics_run) do
     AI::Analytics::Run.create!(
       content:         initial_content,
-      version:         AI::Service::TicketSummarize.persistent_version({ ticket: }, Locale.find_by(locale: agent.locale)),
+      version:         AI::Service::TicketSummarize.lookup_version({ ticket: }, Locale.find_by(locale: agent.locale)),
       ai_service_name: 'TicketSummarize',
-      **AI::Service::TicketSummarize.persistent_lookup_attributes({ ticket: }, Locale.find_by(locale: agent.locale)),
+      **AI::Service::TicketSummarize.lookup_attributes({ ticket: }, Locale.find_by(locale: agent.locale)),
     )
   end
 
@@ -66,8 +66,8 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
     if defined?(initial_cache_key)
       AI::StoredResult.create!(
         content:          initial_content,
-        version:          AI::Service::TicketSummarize.persistent_version({ ticket: }, Locale.find_by(locale: agent.locale)),
-        **AI::Service::TicketSummarize.persistent_lookup_attributes({ ticket: }, Locale.find_by(locale: agent.locale)),
+        version:          AI::Service::TicketSummarize.lookup_version({ ticket: }, Locale.find_by(locale: agent.locale)),
+        **AI::Service::TicketSummarize.lookup_attributes({ ticket: }, Locale.find_by(locale: agent.locale)),
         ai_analytics_run:,
       )
 

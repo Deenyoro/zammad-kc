@@ -41,11 +41,11 @@ class AI::Service
     end
   end
 
-  def self.persistent_lookup_attributes(_context_data, _locale)
+  def self.lookup_attributes(_context_data, _locale)
     raise 'not implemented'
   end
 
-  def self.persistent_version(_context_data, _locale)
+  def self.lookup_version(_context_data, _locale)
     raise 'not implemented'
   end
 
@@ -55,7 +55,7 @@ class AI::Service
     return if regeneration_of
     return if !persistable?
 
-    stored_result = AI::StoredResult.find_by(persistent_lookup_attributes_with_version)
+    stored_result = AI::StoredResult.find_by(lookup_attributes_with_version)
 
     return if !stored_result
 
@@ -108,10 +108,10 @@ class AI::Service
 
   def save_result(result, ai_analytics_run:)
     AI::StoredResult
-      .find_or_initialize_by(persistent_lookup_attributes)
+      .find_or_initialize_by(lookup_attributes)
       .tap do |record|
         record.update!(
-          version:          persistent_version,
+          version:          lookup_version,
           metadata:         provider.metadata,
           content:          result,
           ai_analytics_run:
@@ -128,7 +128,7 @@ class AI::Service
     end
 
     AI::Analytics::Run.create(
-      **persistent_lookup_attributes_with_version,
+      **lookup_attributes_with_version,
       context:         { metadata: provider.metadata },
       content:         result || {},
       payload:         { prompt_system:, prompt_user: },
@@ -146,16 +146,16 @@ class AI::Service
     false
   end
 
-  def persistent_lookup_attributes_with_version
-    persistent_lookup_attributes.merge(version: persistent_version)
+  def lookup_attributes_with_version
+    lookup_attributes.merge(version: lookup_version)
   end
 
-  def persistent_lookup_attributes
-    self.class.persistent_lookup_attributes(context_data, locale)
+  def lookup_attributes
+    self.class.lookup_attributes(context_data, locale)
   end
 
-  def persistent_version
-    self.class.persistent_version(context_data, locale)
+  def lookup_version
+    self.class.lookup_version(context_data, locale)
   end
 
   def json_response?
