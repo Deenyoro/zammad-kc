@@ -1644,3 +1644,50 @@ class App.Utils
     return string if string.length < length
 
     string.substring(0, length) + '…'
+
+  # Save a Blob to the user's disk with the given filename
+  # Usage: App.Utils.downloadBlob(blob, 'file.xlsx')
+  @downloadBlob: (blob, filename) ->
+    return if !blob
+
+    url = undefined
+    try
+      url = window.URL?.createObjectURL?(blob)
+      return if !url
+
+      link = document.createElement('a')
+      link.style.display = 'none'
+      link.href = url
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    finally
+      if url
+        try
+          window.URL.revokeObjectURL(url)
+        catch e then null
+
+  # Extract filename from Content-Disposition header
+  @resolveFilename: (xhr) ->
+    disposition = xhr?.getResponseHeader('Content-Disposition')
+    if disposition
+      match = disposition.match(/filename="?([^";]+)"?/)
+      return match[1] if match?[1]
+
+    return null
+
+  # Download file from Blob data returned by XHR request
+  @downloadFileFromBlob: (data, xhr, option = {}) ->
+    blob = if data instanceof Blob
+      data
+
+    unless blob
+      @notify(
+        type: 'error'
+        message: __('The download could not be started. Please try again later.')
+      )
+      return
+
+    filename = @resolveFilename(xhr) || option.fallbackFilename
+    @downloadBlob(blob, filename)

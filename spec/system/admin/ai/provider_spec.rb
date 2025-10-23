@@ -89,4 +89,33 @@ RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
     expect(Setting.get('ai_provider')).to eq('open_ai')
     expect(Setting.get('ai_provider_config')).to include(token: token, model: model)
   end
+
+  it 'shows feedback & logs tab with downloads and entries' do
+    within :active_content do
+      find('.nav-tabs a', text: 'Feedback & Logs').click
+    end
+
+    within '#c-feedback-logs' do
+      feedback_link = find('.js-downloadFeedback')
+      logs_link     = find('.js-downloadErrorLogs')
+
+      expect(feedback_link).to have_text('Download Feedback')
+      expect(logs_link).to have_text('Download Error Logs')
+    end
+  end
+
+  context 'when downloading analytics' do
+    it 'downloads feedback and error logs' do
+      click_on 'Feedback & Logs'
+
+      expect(page).to have_text('This service allows you to download feedback agents provide on AI features and error details about failed AI requests.')
+
+      click_on 'Download Feedback'
+
+      click_on 'Download Error Logs'
+
+      # we can't test the download itself, but we can check if the button is still there so we didn't redirect
+      expect(page).to have_text('Download Feedback')
+    end
+  end
 end

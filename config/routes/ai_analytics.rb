@@ -5,6 +5,8 @@ Zammad::Application.routes.draw do
     namespace :ai do
       namespace :analytics do
         resource :usages, only: [:update]
+
+        get 'download/:type', to: 'downloads#download'
       end
     end
   end

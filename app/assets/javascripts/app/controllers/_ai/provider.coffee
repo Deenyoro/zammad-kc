@@ -1,12 +1,31 @@
-class AiProviders extends App.Controller
+class ChannelAiProvider extends App.ControllerTabs
   @requiredPermission: 'admin.ai_provider'
-  title: __('Provider')
-  description: __('This service allows you to connect Zammad with an AI provider.')
+  header: __('Provider')
 
   constructor: ->
-    if @constructor.requiredPermission
-      @permissionCheckRedirect(@constructor.requiredPermission)
+    super
 
+    @tabs = [
+      {
+        name:       __('Settings'),
+        target:     'c-settings',
+        controller: AiProviderSettings,
+      },
+      {
+        name:       __('Feedback & Logs'),
+        target:     'c-feedback-logs',
+        controller: AiProviderFeedbackAndLogs,
+      },
+    ]
+
+    @render()
+
+
+class AiProviderSettings extends App.Controller
+  @requiredPermission: 'admin.ai_provider'
+  description : __('This service allows you to connect Zammad with an AI provider.')
+
+  constructor: ->
     super
 
     App.Setting.fetchFull(
@@ -15,17 +34,76 @@ class AiProviders extends App.Controller
     )
 
   render: =>
-    @html App.view('ai/providers')(
-      title: @title,
+    @html App.view('ai/provider')(
       description: @description,
     )
     new ProviderForm()
 
-    new App.HttpLog(
+class AiProviderFeedbackAndLogs extends App.Controller
+  @requiredPermission: 'admin.ai_provider'
+  description : __('This service allows you to download feedback agents provide on AI features and error details about failed AI requests.')
+  events:
+    'click .js-downloadFeedback': 'downloadFeedback'
+    'click .js-downloadErrorLogs': 'downloadErrorLogs'
+
+  constructor: ->
+    super
+
+    @render()
+
+  render: =>
+    @html App.view('ai/provider_logs')(
+      description: @description
+    )
+
+    @httpLog?.releaseController()
+    @httpLog = new App.HttpLog(
       el: @$('.js-log')
       facility: 'AI::Provider'
       limit: 100
     )
+
+  sendDownloadRequest: (type) ->
+    buttonSelector = if type is 'feedback' then '.js-downloadFeedback' else '.js-downloadErrorLogs'
+    button = @$(buttonSelector)
+
+    disableButton = (disabled) ->
+      button.prop('disabled', disabled)
+
+    disableButton(true)
+
+    fallbackFilename = if type is 'with_usages' then 'ai_analytics_with_usages.xlsx' else 'ai_analytics_errors.xlsx'
+
+    App.Ajax.request(
+      id: 'ai-analytics-download'
+      type: 'GET'
+      url: "#{@apiPath}/ai/analytics/download/#{type}"
+      processData: true
+      dataType: 'binary'
+      contentType: 'application/octet-stream'
+      xhrFields:
+        responseType: 'blob'
+      success: (data, status, xhr) ->
+        App.Utils.downloadFileFromBlob(data, xhr, { fallbackFilename: fallbackFilename })
+        disableButton(false)
+      error: (xhr, status, error) =>
+        @log 'error', error || status
+        @notify(
+          type: 'error'
+          msg: __('The download could not be started. Please try again later.')
+        )
+        disableButton(false)
+    )
+
+  downloadFeedback: -> @sendDownloadRequest('with_usages')
+
+  downloadErrorLogs: -> @sendDownloadRequest('errors')
+
+  release: ->
+    @httpLog?.releaseController()
+    @httpLog = null
+    super
+
 
 class ProviderForm extends App.Controller
   events:
@@ -203,4 +281,4 @@ class ProviderForm extends App.Controller
 
     App.Setting.set('ai_provider', provider, done: -> App.Setting.set('ai_provider_config', config, notify: true))
 
-App.Config.set('Provider', { prio: 1000, name: __('Provider'), parent: '#ai', target: '#ai/provider', controller: AiProviders, permission: ['admin.ai_provider'] }, 'NavBarAdmin')
+App.Config.set('Provider', { prio: 1000, name: __('Provider'), parent: '#ai', target: '#ai/provider', controller: ChannelAiProvider, permission: ['admin.ai_provider'] }, 'NavBarAdmin')
