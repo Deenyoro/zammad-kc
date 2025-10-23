@@ -68,7 +68,7 @@ class AI::Service
   end
 
   def request_fresh
-    response = ask_provider
+    response = post_transform_result(ask_provider)
 
     if response.nil?
       save_analytics_run if analytics?
@@ -89,7 +89,11 @@ class AI::Service
   end
 
   def prompt_user
-    @prompt_user ||= @given_prompt_user || render_prompt(prompt_user_from_file)
+    @prompt_user ||= begin
+      prompt = @given_prompt_user || render_prompt(prompt_user_from_file)
+
+      transform_user_prompt(prompt)
+    end
   end
 
   def ask_provider
@@ -98,7 +102,11 @@ class AI::Service
 
   def provider
     @provider ||= AI::Provider.by_name(provider_name).new(
-      options: options.merge({ service_name: self.class.name_service, json_response: json_response? })
+      options: options.merge({
+                               service_name:  self.class.name_service,
+                               json_response: json_response?,
+                               model:         additional_options[:model],
+                             })
     )
   end
 
@@ -156,6 +164,14 @@ class AI::Service
 
   def lookup_version
     self.class.lookup_version(context_data, locale)
+  end
+
+  def post_transform_result(result)
+    result
+  end
+
+  def transform_user_prompt(prompt)
+    prompt
   end
 
   def json_response?

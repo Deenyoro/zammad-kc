@@ -17,7 +17,7 @@ class AI::Provider
       options[:model] = @config[:model]
     end
 
-    @options = self.class::DEFAULT_OPTIONS.merge(options.deep_symbolize_keys)
+    @options = self.class::DEFAULT_OPTIONS.merge(options.compact.deep_symbolize_keys)
   end
 
   class << self

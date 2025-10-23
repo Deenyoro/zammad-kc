@@ -57,4 +57,80 @@ You have to follow these rules:
       expect(result.content).to include('I am Nicole Braun.')
     end
   end
+
+  context 'when result transformation is performed' do
+    before do
+      setting = Setting.find_by(name: 'ai_provider_config')
+      setting.update!(preferences: {})
+
+      Setting.set('ai_provider', 'zammad_ai')
+      Setting.set('ai_provider_config', {
+                    token: ENV['ZAMMAD_AI_TOKEN'],
+                  })
+    end
+
+    context 'when neither prompt nor result contain paragraphs but have line breaks' do
+      subject(:ai_service) do
+        described_class.new(
+          context_data: {
+            instruction:        'instruction',
+            fixed_instructions: 'fixed',
+            input:              prompt_input,
+            text_tool:          text_tool,
+          },
+          prompt_user:  prompt_input,
+        )
+      end
+
+      let(:prompt_input) { "Line one\nLine two\n\nLine three" }
+
+      it 'converts line breaks to <br>' do
+        allow(ai_service).to receive(:ask_provider).and_return("A\nB\n\nC")
+
+        result = ai_service.execute
+        expect(result.content).to eq('A<br>B<br><br>C')
+      end
+    end
+
+    context 'when prompt contains paragraphs but result does not' do
+      subject(:ai_service) do
+        described_class.new(
+          context_data: {
+            instruction:        'instruction',
+            fixed_instructions: 'fixed',
+            input:              prompt_input,
+            text_tool:          text_tool,
+          },
+          prompt_user:  prompt_input,
+        )
+      end
+
+      let(:prompt_input) { '<p>Some</p><p>Thing</p>' }
+
+      it 'wraps blank-line separated paragraphs in <p> tags' do
+        allow(ai_service).to receive(:ask_provider).and_return("Para1\n\nPara2")
+
+        result = ai_service.execute
+        expect(result.content).to eq('<p>Para1</p><p>Para2</p>')
+      end
+    end
+  end
+
+  context 'when rendering the user prompt template' do
+    let(:input) { '<div>hello</div><div data-signature="true"><div>signature inner<div>signature inner 2</div></div></div><div class="x">bye</div>' }
+
+    it 'converts non-signature divs to <p> but preserves signature block' do
+      service = described_class.new(
+        context_data: {
+          instruction:        'instruction',
+          fixed_instructions: 'fixed',
+          input:              input,
+          text_tool:          text_tool,
+        }
+      )
+
+      rendered = service.send(:prompt_user)
+      expect(rendered).to eq('<p>hello</p><div data-signature="true"><div>signature inner<div>signature inner 2</div></div></div><p class="x">bye</p>')
+    end
+  end
 end
