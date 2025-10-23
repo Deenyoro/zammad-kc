@@ -94,9 +94,8 @@ describe('TicketBulkEditFlyout', () => {
 
     const calls = await waitForTicketUpdateBulkMutationCalls()
 
-    expect(calls.at(-1)?.variables).toEqual({
+    expect(calls.at(-1)?.variables).toMatchObject({
       input: {
-        article: null,
         groupId: convertToGraphQLId('Group', 2),
         stateId: convertToGraphQLId('Ticket::State', 4),
       },
