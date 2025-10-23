@@ -93,9 +93,13 @@ class App.WidgetTextTools extends App.Controller
     bubbleMenuElement = $(e.target).closest('.js-bubbleMenu')
     popupContainerElement = bubbleMenuElement.find('.dropup-container')
 
+    popupContainerElement.parent().removeClass('show-dropdown')
     dropdownMenu = popupContainerElement.find('.dropdown-menu')
+
     return dropdownMenu.remove() if dropdownMenu.length
     return if !App.WidgetTextTools.hasAvailableTextTools(ce)
+
+    popupContainerElement.parent().addClass('show-dropdown')
 
     textToolsDropdown = $(App.view('generic/text_tools_dropdown')(items: App.WidgetTextTools.availableTextTools(ce), disabled: false))
 
@@ -105,6 +109,8 @@ class App.WidgetTextTools extends App.Controller
       e.preventDefault()
       App.WidgetTextTools.showModal(e, ce, selection, el)
       textToolsDropdown.removeClass('open')
+      popupContainerElement.parent().removeClass('show-dropdown')
+
       return false
 
     # Position the dropdown menu on the right side of the dropdown container when in RTL locale.

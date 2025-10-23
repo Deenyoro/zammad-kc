@@ -183,6 +183,8 @@ class App.SidebarTicketSummary extends App.Controller
     summarization
       .on('click', '.js-retry', @retrySummarization)
 
+    @stopStripeAnimation() if not @isSummarizationLoading(invalidSummary)
+
     if not invalidSummary
       @feedbackWidget = new App.AIFeedbackWidget(
         el:                  summarization.find('.js-aiFeedback')
@@ -203,6 +205,9 @@ class App.SidebarTicketSummary extends App.Controller
       return _.some(key, (k) => @summaryData?.result[k]?) if _.isArray(key)
       @summaryData?.result[key]?
     )
+
+  isSummarizationLoading: (invalidSummary) =>
+    not @summaryData?.error and App.Config.get('ai_provider') and not invalidSummary and not @summaryData?.result
 
   retrySummarization: (e) =>
     @preventDefaultAndStopPropagation(e)
@@ -235,6 +240,8 @@ class App.SidebarTicketSummary extends App.Controller
 
     data.regeneration_of_id = regenerationOfId if regenerationOfId
 
+    @startStripeAnimation()
+
     @ajax(
       id:             "ticket-summarization-#{@taskKey}"
       type:           'POST'
@@ -247,5 +254,15 @@ class App.SidebarTicketSummary extends App.Controller
       error: (xhr, status, error) ->
         # show error toaster
     )
+
+  startStripeAnimation: =>
+    @elSidebar?.parent()
+      .find('hr')
+      .addClass('animate')
+
+  stopStripeAnimation: =>
+    @elSidebar?.parent()
+      .find('hr')
+      .removeClass('animate')
 
 App.Config.set('350-TicketSummary', App.SidebarTicketSummary, 'TicketZoomSidebar')

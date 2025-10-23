@@ -182,6 +182,7 @@ const userPopoverSlots: {
           v-if="item.aiAgentRunning"
           role="status"
           :aria-label="$t('Currently processing this ticket…')"
+          class="animate-spin"
           size="tiny"
           name="check-circle-no-ai"
         />

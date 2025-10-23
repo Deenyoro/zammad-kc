@@ -158,17 +158,16 @@ whenever(
             "
             @visible="visibleActions.set(action.name, $event)"
           />
-          <div v-if="action.showDivider">
-            <hr
-              :class="[
-                action.dividerClass,
-                {
-                  invisible: hideDivider,
-                },
-              ]"
-              class="h-full w-px border-0 bg-neutral-700 dark:bg-neutral-800"
-            />
-          </div>
+          <hr
+            v-if="action.showDivider"
+            :class="[
+              action.dividerClass,
+              {
+                invisible: hideDivider,
+              },
+            ]"
+            class="h-full w-px border-0 bg-neutral-700 dark:bg-neutral-800"
+          />
         </template>
       </ActionButtonWrapper>
     </div>

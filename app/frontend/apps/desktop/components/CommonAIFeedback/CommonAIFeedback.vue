@@ -126,7 +126,7 @@ onMounted(async () => {
       <CommonButton
         v-if="canRegenerate"
         v-tooltip="$t('Regenerate')"
-        class="rtl:mr-auto ltr:ml-auto relative ai-stripe before:absolute before:w-[.7em] before:-bottom-0 before:h-[1px] before:left-1/2 before:-translate-x-1/2"
+        class="rtl:mr-auto ltr:ml-auto relative ai-stripe before:absolute before:w-[.7em] before:-bottom-0 before:h-[1px] before:left-1/2 before:-translate-x-1/2 hover:animate-ai-stripe focus-visible:animate-ai-stripe"
         variant="tertiary"
         size="medium"
         icon="arrow-repeat"

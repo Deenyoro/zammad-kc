@@ -5,7 +5,7 @@ class App.TextToolsModal extends App.ControllerModal
 
   head: null
   headIcon: 'smart-assist-elaborate'
-  headIconClass: 'ai-modal-head-icon'
+  headIconClass: 'ai-modal-head-icon ai-loading-stripe-animation'
 
   selectedText: null
   result: null
@@ -53,6 +53,12 @@ class App.TextToolsModal extends App.ControllerModal
       regenerateCallback: @retryTextTools
     )
 
+  startStripeAnimation: ->
+    $('.modal-content .ai-modal-head-icon').addClass('ai-loading-stripe-animation')
+
+  stopStripAnimation: ->
+    $('.modal-content .ai-modal-head-icon').removeClass('ai-loading-stripe-animation')
+
   requestTextTools: (params)  ->
     @disableSubmit()
     @startLoading()
@@ -61,6 +67,7 @@ class App.TextToolsModal extends App.ControllerModal
     params.input = inputWithPlaceholders.text
     @imagePlaceholders = inputWithPlaceholders.mapping
 
+    @startStripeAnimation()
     @ajax(
       id:          'ai_assistance_text_tools'
       type:        'POST'
@@ -75,9 +82,11 @@ class App.TextToolsModal extends App.ControllerModal
         @update()
         @enableSubmit()
         @renderFeedbackWidget(data.analytics.run_id) if data?.analytics?.run_id
+        @stopStripAnimation()
 
       error: =>
         @stopLoading()
+        @stopStripAnimation()
 
         @error = true
         @update()

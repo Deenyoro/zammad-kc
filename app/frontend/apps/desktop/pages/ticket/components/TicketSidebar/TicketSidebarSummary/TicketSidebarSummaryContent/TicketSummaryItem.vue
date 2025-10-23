@@ -1,23 +1,18 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { computed } from 'vue'
-
 import { textToHtml } from '#shared/utils/helpers.ts'
 
 interface Props {
   summary: string | string[]
   label: string
-  variant?: 'ai'
 }
 
-const props = defineProps<Props>()
-
-const variantClass = computed(() => (props.variant ? ['ai-stripe before:h-[1px] before:mb-3'] : []))
+defineProps<Props>()
 </script>
 
 <template>
-  <div class="flex flex-col" :class="variantClass">
+  <div class="flex flex-col">
     <CommonLabel class="mb-3 block! text-black! dark:text-white!" tag="h3">{{
       $t(label)
     }}</CommonLabel>

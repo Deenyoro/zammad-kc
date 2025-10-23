@@ -81,6 +81,7 @@ const showActions = () => {
           :aria-label="$t('Show ticket viewers')"
           @click="showViewers()"
         >
+          <AiAgentAvatar v-if="isAiAgentRunning" />
           <CommonUserAvatar
             v-if="liveUserList?.length"
             class="z-10"
@@ -88,7 +89,6 @@ const showActions = () => {
             personal
             size="xs"
           />
-          <AiAgentAvatar v-if="isAiAgentRunning" />
           <div
             v-if="liveUserList?.length && liveUserList.length - 1"
             class="z-0 flex h-6 w-6 items-center justify-center rounded-full bg-white/80 text-xs text-black select-none ltr:-translate-x-2 rtl:translate-x-2"

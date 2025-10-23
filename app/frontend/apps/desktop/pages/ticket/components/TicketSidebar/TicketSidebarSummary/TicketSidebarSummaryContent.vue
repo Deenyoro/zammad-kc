@@ -53,6 +53,21 @@ const noSummaryPossible = computed(() => {
     return !summary[section.key]?.length
   })
 })
+
+const titleClass = computed(() => {
+  let titleClass =
+    'ai-stripe before:-bottom-3 before:absolute relative before:left:0 before:right-0'
+
+  if (
+    props.isProviderConfigured &&
+    !errorMessage.value &&
+    !noSummaryPossible.value &&
+    !props.summary
+  )
+    titleClass += ' animate-ai-stripe'
+
+  return titleClass
+})
 </script>
 
 <template>
@@ -60,7 +75,8 @@ const noSummaryPossible = computed(() => {
     v-model="persistentStates.scrollPosition"
     :icon="sidebarPlugin.icon"
     :title="sidebarPlugin.title"
-    variant="ai"
+    :title-class="titleClass"
+    icon-class="text-blue-800"
   >
     <section class="space-y-4.5">
       <template v-if="!isProviderConfigured">
@@ -139,7 +155,6 @@ const noSummaryPossible = computed(() => {
           @rated="hasRecentlyRated = true"
         />
       </template>
-
       <template v-else>
         <CommonLabel size="small" class="text-stone-200! dark:text-neutral-500!" tag="p">{{
           $t('Summary is being generated…')

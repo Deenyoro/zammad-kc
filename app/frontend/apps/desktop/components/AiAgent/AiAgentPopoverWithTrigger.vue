@@ -27,13 +27,18 @@ defineProps<CommonPopoverWithTriggerProps>()
       </div>
     </template>
 
-    <div class="relative rounded-full p-0.5 bg-gradient-to-r from-blue-800 to-pink-200">
-      <div :aria-label="$t('AI Agent')" class="p-1 bg-neutral-50 dark:bg-gray-500 rounded-full">
+    <div
+      class="relative size-8 rounded-full before:bg-gradient-to-r before:from-blue-800 before:to-pink-200 before:absolute before:w-full before:inset-0 before:size-full before:-z-1 before:rounded-full before:animate-spin before:[animation-duration:2s]"
+    >
+      <div
+        :aria-label="$t('AI Agent')"
+        class="p-1 bg-neutral-50 dark:bg-gray-500 rounded-[inherit] border border-transparent bg-clip-padding h-full flex"
+      >
         <CommonIcon class="text-blue-800" size="base" name="ai-agent" />
       </div>
 
       <span
-        class="absolute end-0 bottom-0 flex translate-y-0.5 items-center justify-center rounded-full bg-blue-200 p-[3px] outline-1 -outline-offset-1 outline-neutral-100 ltr:translate-x-2 rtl:-translate-x-2 dark:bg-gray-700 dark:outline-gray-900"
+        class="absolute end-0 bottom-0 flex translate-y-1 items-center justify-center rounded-full bg-blue-200 p-[3px] outline-1 -outline-offset-1 outline-neutral-100 ltr:translate-x-2 rtl:-translate-x-2 dark:bg-gray-700 dark:outline-gray-900"
       >
         <CommonIcon
           :aria-label="$t('User is editing')"

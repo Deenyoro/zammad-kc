@@ -107,7 +107,6 @@ export const initializeGlobalComponentStyles = () => {
       button:
         'text-sm outline-none p-3 text-left active:text-white active:bg-blue-800 dark:active:bg-blue-800 dark:hover:text-white hover:text-black inline-block w-full dark:text-neutral-400 focus-visible:bg-blue-800 focus-visible:text-white hover:bg-blue-600 dark:hover:bg-blue-900 text-gray-100',
     },
-    verticalGradient: 'bg-linear-to-t from-pink-200 to-blue-800',
   })
 
   initializeFilePreviewClasses({

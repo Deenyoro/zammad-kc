@@ -155,9 +155,11 @@ whenever(
             }"
           />
         </button>
-        <div v-if="action.showDivider && idx < actions.length - 1">
-          <hr :class="action.dividerClass" class="h-6 w-px border-0 bg-black" />
-        </div>
+        <hr
+          v-if="action.showDivider && idx < actions.length - 1"
+          :class="action.dividerClass"
+          class="h-6 w-px border-0 bg-black"
+        />
       </template>
     </div>
     <template v-if="!props.noGradient">
