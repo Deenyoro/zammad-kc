@@ -27,7 +27,7 @@ class AI::Agent::Type::TicketTitleRewriter < AI::Agent::Type
 
   def entity_context
     {
-      object_attributes: [],
+      object_attributes: ['title'],
       articles:          'first',
     }
   end
