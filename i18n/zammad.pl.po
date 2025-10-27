@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zammad\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-08-07 05:42+0000\n"
-"Last-Translator: Martin Gruner <mg@zammad.com>\n"
+"PO-Revision-Date: 2025-10-27 07:30+0000\n"
+"Last-Translator: MBekspert <michal.bosak@ekspert.biz>\n"
 "Language-Team: Polish <https://translations.zammad.org/projects/zammad/"
 "zammad-development/pl/>\n"
 "Language: pl\n"
@@ -106,7 +106,7 @@ msgstr ""
 "_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
 "Zgłoszenie##{ticket.number}>: Eskalowane #{ticket.escalation_at}_\n"
 "Zgłoszenie (#{ticket.title}) od \"#{ticket.customer.longname}\" zostało "
-"eksalowane od \"#{ticket.escalation_at}\"!\n"
+"eskalowane od \"#{ticket.escalation_at}\"!\n"
 "\n"
 "<% if @objects[:article] %>\n"
 "#{article.body_as_text}\n"
@@ -554,9 +554,9 @@ msgstr "%s minut temu"
 msgid "%s months ago"
 msgstr "%s miesięcy temu"
 
-#: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:72
+#: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:93
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:172
-#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:73
+#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:92
 msgid "%s more"
 msgstr "%s więcej"
 
@@ -993,7 +993,7 @@ msgid ""
 msgstr ""
 "Zgłoszenie testowe zostało utworzone, znajdziesz je w swoim widoku\"%s\" %l."
 
-#: app/models/ticket.rb:283
+#: app/models/ticket.rb:295
 msgid "A ticket cannot be merged into itself."
 msgstr "Zgłoszenie nie może zostać połączone z samym sobą."
 
@@ -1040,7 +1040,7 @@ msgstr "API"
 #: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:144
 #: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:21
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/utils/historyEventIssuerNames.ts:7
-#: app/frontend/apps/mobile/components/AiAgent/AiAgentAvatar.vue:30
+#: app/frontend/apps/mobile/components/AiAgent/AiAgentAvatar.vue:34
 #: app/models/ai/agent.rb:102
 #, fuzzy
 #| msgid "Agent"
@@ -1055,6 +1055,14 @@ msgstr "Agent"
 msgid "AI Agents"
 msgstr "Agenci"
 
+#: lib/excel_sheet/ai/analytics/errors.rb:4
+msgid "AI Analytics Runs Errors"
+msgstr ""
+
+#: lib/excel_sheet/ai/analytics/with_usage.rb:4
+msgid "AI Analytics Runs With Usage"
+msgstr ""
+
 #: db/seeds/permissions.rb:221
 #, fuzzy
 #| msgid "Provider"
@@ -1066,6 +1074,13 @@ msgstr "Dostawca"
 #| msgid "Provider"
 msgid "AI Provider Config"
 msgstr "Dostawca"
+
+#: lib/excel_sheet/ai/analytics/errors.rb:26
+#: lib/excel_sheet/ai/analytics/with_usage.rb:26
+#, fuzzy
+#| msgid "Image Service"
+msgid "AI Service Name"
+msgstr "Usługa wizerunkowa"
 
 #: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:35
 msgid "AI agent used in schedulers"
@@ -1081,11 +1096,11 @@ msgid ""
 "You can execute AI agents via triggers or schedulers."
 msgstr ""
 
-#: app/services/service/ai_assistance/text_tools.rb:21
+#: app/services/service/ai_assistance/text_tools.rb:22
 msgid "AI assistance text tool is inactive."
 msgstr ""
 
-#: app/services/service/ai_assistance/text_tools.rb:20
+#: app/services/service/ai_assistance/text_tools.rb:21
 msgid "AI assistance text tool is invalid."
 msgstr ""
 
@@ -1109,8 +1124,8 @@ msgstr ""
 #: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:16
 #: app/services/service/ai/agent/run.rb:17
 #: app/services/service/ai/vectordb/base.rb:12
-#: app/services/service/ai_assistance/text_tools.rb:18
-#: app/services/service/ticket/ai_assistance/summarize.rb:16
+#: app/services/service/ai_assistance/text_tools.rb:19
+#: app/services/service/ticket/ai_assistance/summarize.rb:17
 #, fuzzy
 #| msgid "The setting 'storage_provider' was not configured."
 msgid "AI provider is not configured."
@@ -1164,7 +1179,7 @@ msgstr ""
 
 #: lib/ai/provider/anthropic.rb:67 lib/ai/provider/azure.rb:108
 #: lib/ai/provider/mistral.rb:93 lib/ai/provider/ollama.rb:87
-#: lib/ai/provider/open_ai.rb:98 lib/ai/provider/zammad_ai.rb:54
+#: lib/ai/provider/open_ai.rb:100 lib/ai/provider/zammad_ai.rb:54
 msgid "API server not accessible"
 msgstr ""
 
@@ -1584,8 +1599,8 @@ msgstr "Dodaj wszystkie wartości"
 msgid "Add attachment option to upload."
 msgstr "Dodaj opcję dodawania załącznika."
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:253
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:249
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:251
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:248
 msgid "Add bullet list"
 msgstr "Dodaj listę punktową"
 
@@ -1610,13 +1625,13 @@ msgstr "Dodaj pustą listę kontrolną"
 msgid "Add from a template"
 msgstr "Dodaj z szablonu"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:111
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:110
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:109
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:109
 msgid "Add heading"
 msgstr "Dodaj nagłówek"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:283
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:279
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:281
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:278
 msgid "Add image"
 msgstr "Dodaj obraz"
 
@@ -1624,9 +1639,9 @@ msgstr "Dodaj obraz"
 msgid "Add internal note"
 msgstr "Dodaj notatkę wenętrzną"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:302
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:300
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketLinks.vue:158
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:298
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:297
 msgid "Add link"
 msgstr "Dodaj link"
 
@@ -1640,8 +1655,8 @@ msgid "Add note"
 msgstr "Dodaj notatkę"
 
 #: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:151
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:240
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:236
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:238
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:235
 msgid "Add ordered list"
 msgstr "Dodaj listę uporządkowaną"
 
@@ -2154,6 +2169,10 @@ msgstr ""
 #: app/assets/javascripts/app/lib/app_post/iconset_picker.coffee:9
 msgid "Anticon"
 msgstr "Anticon"
+
+#: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:8
+msgid "Any feedback on this result?"
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/postmaster_match.coffee:22
 msgid "Any recipient"
@@ -2977,9 +2996,9 @@ msgstr "Uwierzytelnianie podstawowe"
 msgid "Basic Settings"
 msgstr "Ustawienia podstawowe"
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:49
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:113
-msgid "Be sure to check AI-generated summaries for accuracy."
+#: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:2
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:141
+msgid "Be sure to check AI-generated content for accuracy."
 msgstr ""
 
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:788
@@ -3291,14 +3310,14 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_application_controller/after_auth_modal.coffee:9
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:404
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:361
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:373
 #: app/assets/javascripts/app/views/integration/exchange_certificate_issue.jst.eco:18
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:236
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:292
 #: app/assets/javascripts/app/views/knowledge_base/scheduled_widget.jst.eco:4
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show.jst.eco:23
 #: app/assets/javascripts/app/views/widget/invite_user.jst.eco:17
-#: app/frontend/apps/desktop/components/CommonInlineEdit/CommonInlineEdit.vue:333
+#: app/frontend/apps/desktop/components/CommonInlineEditButtons/CommonInlineEditButtons.vue:24
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:201
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:119
 #: app/frontend/apps/mobile/components/CommonSectionPopup/CommonSectionPopup.vue:30
@@ -3351,6 +3370,12 @@ msgstr "Anuluj i wyloguj się"
 msgid "Cancel Upload"
 msgstr "Anuluj wysyłanie"
 
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:113
+#, fuzzy
+#| msgid "Cancel & Go Back"
+msgid "Cancel feedback"
+msgstr "Anuluj i Wróć"
+
 #: app/assets/javascripts/app/controllers/knowledge_base/delete_action.coffee:8
 msgid "Cannot delete category"
 msgstr "Nie można usunąć kategorii"
@@ -3379,7 +3404,7 @@ msgstr "Nie można przetworzyć zewnętrznego źródła danych %s. %s"
 msgid "Cannot set online notifications as seen"
 msgstr "Powiadomienia online nie mogą być oznaczone jako przeczytane"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:819
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:833
 msgid "Cannot upload file"
 msgstr "Nie można przesłać pliku"
 
@@ -3445,7 +3470,7 @@ msgstr "Zmień hasło"
 msgid "Change Your Password"
 msgstr "Zmień swoje hasło"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:72
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:68
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:82
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:67
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:129
@@ -3465,8 +3490,8 @@ msgstr "Zmień kolejność"
 msgid "Change personal account password."
 msgstr "Zmień hasło do konta osobistego."
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:188
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:184
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:186
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:183
 msgid "Change text color"
 msgstr "Zmień kolor tekstu"
 
@@ -3974,7 +3999,7 @@ msgstr "Zamknięte w"
 
 #: app/assets/javascripts/app/controllers/widget/ticket_stats.coffee:130
 #: app/assets/javascripts/app/controllers/widget/user.coffee:80
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:131
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:127
 msgid "Closed Tickets"
 msgstr "Zamknięte zgłoszenia"
 
@@ -4009,6 +4034,12 @@ msgstr "spacje są niedozwolone"
 
 #: app/assets/javascripts/app/controllers/widget/ticket_bulk_form.coffee:62
 msgid "Comment"
+msgstr "Komentarz"
+
+#: lib/excel_sheet/ai/analytics/with_usage.rb:46
+#, fuzzy
+#| msgid "Comment"
+msgid "Comments"
 msgstr "Komentarz"
 
 #: app/models/report.rb:194
@@ -4170,7 +4201,7 @@ msgstr "Okno dialogowe Potwierdź/wyślij"
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_confirm.coffee:6
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_destroy_confirm.coffee:6
 #: app/assets/javascripts/app/controllers/_manage/ticket_notification.coffee:46
-#: app/assets/javascripts/app/controllers/tag.coffee:143
+#: app/assets/javascripts/app/controllers/tag.coffee:149
 #: app/assets/javascripts/app/controllers/taskbar_widget.coffee:130
 #: app/assets/javascripts/app/controllers/user/manage_two_factor.coffee:112
 #: app/assets/javascripts/app/views/agent_ticket_view/bulk.jst.eco:4
@@ -4262,6 +4293,7 @@ msgstr "W przypadku problemów z logowaniem skontaktuj się z administratorem."
 #: app/assets/javascripts/app/models/knowledge_base_answer.coffee:71
 #: app/assets/javascripts/app/models/text_module.coffee:8
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:34
+#: lib/excel_sheet/ai/analytics/with_usage.rb:36
 msgid "Content"
 msgstr "Zawartość"
 
@@ -4273,7 +4305,7 @@ msgstr "Nie udało się wczytać treści."
 msgid "Content loader"
 msgstr "Moduł ładujący zawartość"
 
-#: app/models/store.rb:82
+#: app/models/store.rb:83
 msgid "Content preview could not be generated."
 msgstr "Nie udało się wygenerować podglądu treści."
 
@@ -4291,6 +4323,8 @@ msgstr "Zawartość"
 
 #: app/assets/javascripts/app/models/core_workflow.coffee:8
 #: app/assets/javascripts/app/models/public_link.coffee:9
+#: lib/excel_sheet/ai/analytics/errors.rb:38
+#: lib/excel_sheet/ai/analytics/with_usage.rb:38
 msgid "Context"
 msgstr "Kontekst"
 
@@ -4341,7 +4375,7 @@ msgstr "Współtworzenie tłumaczeń"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:54
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:4
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:86
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:85
 #, fuzzy
 #| msgid "Event Summary"
 msgid "Conversation Summary"
@@ -4764,7 +4798,8 @@ msgstr "Utworzony artykuł"
 
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:18
 #: app/assets/javascripts/app/views/time_accounting/by_ticket.jst.eco:16
-#: lib/excel_sheet/ticket.rb:56
+#: lib/excel_sheet/ai/analytics/errors.rb:40
+#: lib/excel_sheet/ai/analytics/with_usage.rb:40 lib/excel_sheet/ticket.rb:56
 msgid "Created At"
 msgstr "Utworzono"
 
@@ -4970,7 +5005,7 @@ msgstr "Czat klienta"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:47
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:81
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:80
 #, fuzzy
 #| msgid "Recent Customer Tickets"
 msgid "Customer Intent"
@@ -4978,7 +5013,7 @@ msgstr "Ostatnie zgłoszenia klienta"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:73
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:7
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:101
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:100
 #, fuzzy
 #| msgid "Recent Customer Tickets"
 msgid "Customer Sentiment"
@@ -6683,6 +6718,12 @@ msgstr "Odrzuć niezapisane zmiany"
 msgid "Discard your unsaved changes."
 msgstr "Odrzuć niezapisane zmiany."
 
+#: lib/excel_sheet/ai/analytics/with_usage.rb:44
+#, fuzzy
+#| msgid "Linked Accounts"
+msgid "Dislikes count"
+msgstr "Połączone konta"
+
 #: app/assets/javascripts/app/models/object_manager_attribute.coffee:7
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:7
 #: app/assets/javascripts/app/views/object_manager/attribute/multiselect.jst.eco:8
@@ -6734,7 +6775,7 @@ msgid "Do you really want to delete this draft?"
 msgstr "Czy na pewno chcesz usunąć tę wersję roboczą?"
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_destroy_confirm.coffee:10
-#: app/assets/javascripts/app/controllers/tag.coffee:147
+#: app/assets/javascripts/app/controllers/tag.coffee:153
 msgid "Do you really want to delete this object?"
 msgstr "Czy na pewno chcesz usunąć ten obiekt?"
 
@@ -6747,16 +6788,12 @@ msgid "Do you really want to set the visibility of this article to \"public\"?"
 msgstr "Czy na pewno chcesz ustawić widoczność tego artykułu jako „publiczną”?"
 
 #: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:65
-#, fuzzy
-#| msgid "Do you really want to delete \"%s\"?"
 msgid "Do you want to continue?"
-msgstr "Czy na pewno chcesz usunąć „%s”?"
+msgstr "Czy chcesz kontynuować?"
 
 #: app/assets/javascripts/app/views/ticket_zoom/checklist_modal.jst.eco:4
-#, fuzzy
-#| msgid "Do you really want to delete this object?"
 msgid "Do you want to handle them before closing this ticket?"
-msgstr "Czy na pewno chcesz usunąć ten obiekt?"
+msgstr "Czy chcesz się nimi zająć przed zamknięciem tego zgłoszenia?"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/whatsapp_reply.coffee:64
 #: app/frontend/shared/entities/ticket-article/action/plugins/whatsapp.ts:39
@@ -6819,6 +6856,18 @@ msgstr "Pobierz %s rekord(y)"
 msgid "Download Certificate"
 msgstr "Pobierz certyfikat"
 
+#: app/assets/javascripts/app/views/ai/provider_logs.jst.eco:9
+#, fuzzy
+#| msgid "Media Download Error"
+msgid "Download Error Logs"
+msgstr "Błąd pobierania multimediów"
+
+#: app/assets/javascripts/app/views/ai/provider_logs.jst.eco:6
+#, fuzzy
+#| msgid "Feedback"
+msgid "Download Feedback"
+msgstr "Informacja zwrotna"
+
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:59
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:37
 msgid "Download Private Key"
@@ -6838,16 +6887,12 @@ msgid "Download and install the %s Migration Plugin on your %s instance."
 msgstr "Pobierz i zainstaluj wtyczkę %s Migration Plugin na instancji %s."
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/email.ts:120
-#, fuzzy
-#| msgid "Do not sign email"
 msgid "Download original email"
-msgstr "Nie podpisuj wiadomości e-mail"
+msgstr "Pobierz oryginalny e-mail"
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/email.ts:131
-#, fuzzy
-#| msgid "Download Private Key"
 msgid "Download raw email"
-msgstr "Pobierz klucz prywatny"
+msgstr "Pobierz nieprzetworzony e-mail"
 
 #: app/assets/javascripts/app/controllers/article_view/item.coffee:319
 msgid "Downloading attachments…"
@@ -6859,32 +6904,24 @@ msgid "Draft"
 msgstr "Szkic"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketSharedDraftZoom.vue:25
-#, fuzzy
-#| msgid "Draft available"
 msgid "Draft Available"
-msgstr "Dostępny szkic"
+msgstr "Wersja robocza dostępna"
 
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:18
 msgid "Draft available"
 msgstr "Dostępny szkic"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:75
-#, fuzzy
-#| msgid "Changes could not be saved."
 msgid "Draft could not be saved."
-msgstr "Nie udało się zapisać zmian."
+msgstr "Nie udało się zapisać wersji roboczej."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:32
-#, fuzzy
-#| msgid "User could not be updated."
 msgid "Draft could not be updated."
-msgstr "Nie udało się zaktualizować użytkownika."
+msgstr "Nie udało się zaktualizować wersji roboczej."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:45
-#, fuzzy
-#| msgid "Draft"
 msgid "Drafts"
-msgstr "Szkic"
+msgstr "Szkice"
 
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingOverviewOrder.vue:52
 msgid "Drag and drop to reorder ticket overview list items."
@@ -6928,23 +6965,14 @@ msgid "Duplicate Detection"
 msgstr "Wykrywanie duplikatów"
 
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:544
-#, fuzzy
-#| msgid "Email Address"
 msgid "Duplicate Email Address"
-msgstr "Adres e-mail"
+msgstr "Duplikat adresu e-mail"
 
 #: app/assets/javascripts/app/views/cti/caller_log.jst.eco:34
 msgid "Duration"
 msgstr "Czas trwania"
 
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupImport/GuidedSetupImportSource/plugins/otrs.ts:25
-#, fuzzy
-#| msgid ""
-#| "Dynamic fields are not that common in Zammad, as we take a different "
-#| "approach to ticket attributes. Zammad also uses tags in addition to "
-#| "custom fields to classify tickets. This difference can create a new "
-#| "philosophy of your ticket attributes/tags compared to your current use of "
-#| "dynamic fields in OTRS."
 msgid ""
 "Dynamic fields are not that common in Zammad, as it takes a different "
 "approach to ticket attributes. Zammad also uses tags in addition to custom "
@@ -6952,11 +6980,11 @@ msgid ""
 "your ticket attributes/tags compared to your current use of dynamic fields "
 "in OTRS."
 msgstr ""
-"Pola dynamiczne nie są tak powszechne w Zammad, ponieważ stosujemy inne "
-"podejście do atrybutów zgłoszeń. Zammad używa również tagów oprócz pól "
-"niestandardowych do klasyfikacji zgłoszeń. Ta różnica może stworzyć nową "
-"filozofię atrybutów/tagów zgłoszeń w porównaniu do obecnego wykorzystania "
-"pól dynamicznych w OTRS."
+"Pola dynamiczne nie są zbyt powszechne w Zammad, ponieważ system ten stosuje "
+"inne podejście do atrybutów zgłoszen. Zammad, oprócz pól niestandardowych, "
+"używa również tagów do klasyfikacji zgłoszeń. Ta różnica może stworzyć nową "
+"filozofię dotyczącą atrybutów/tagów zgłoszeń w porównaniu z obecnym "
+"wykorzystaniem pól dynamicznych w OTRS."
 
 #: app/assets/javascripts/app/models/user.coffee:334
 msgid "Easter holiday"
@@ -6964,7 +6992,7 @@ msgstr "Święta Wielkanocne"
 
 #: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:59
 #: app/assets/javascripts/app/controllers/organization_profile/action_row.coffee:36
-#: app/assets/javascripts/app/controllers/tag.coffee:112
+#: app/assets/javascripts/app/controllers/tag.coffee:118
 #: app/assets/javascripts/app/controllers/translation.coffee:92
 #: app/assets/javascripts/app/controllers/user_profile/action_row.coffee:77
 #: app/assets/javascripts/app/views/calendar/index.jst.eco:85
@@ -6993,10 +7021,8 @@ msgid "Edit Answer"
 msgstr "Edytuj odpowiedź"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_controller.coffee:175
-#, fuzzy
-#| msgid "Category"
 msgid "Edit Category"
-msgstr "Kategoria"
+msgstr "Edytuj kategorię"
 
 #: app/assets/javascripts/app/controllers/agent_ticket_create/sidebar_customer.coffee:16
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_customer.coffee:26
@@ -7005,10 +7031,8 @@ msgid "Edit Customer"
 msgstr "Edytuj klienta"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_controller.coffee:171
-#, fuzzy
-#| msgid "Knowledge Base"
 msgid "Edit Knowledge Base"
-msgstr "Baza wiedzy"
+msgstr "Edytuj bazę wiedzy"
 
 #: app/assets/javascripts/app/controllers/agent_ticket_create/sidebar_organization.coffee:21
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_organization.coffee:11
@@ -7018,23 +7042,17 @@ msgid "Edit Organization"
 msgstr "Edytuj organizacje"
 
 #: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/authenticator-app.ts:20
-#, fuzzy
-#| msgid "Authenticator App"
 msgid "Edit authenticator app"
-msgstr "Aplikacja uwierzytelniająca"
+msgstr "Edytuj aplikację uwierzytelniającą"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItems.vue:121
-#, fuzzy
-#| msgid "Ticket title"
 msgid "Edit checklist title"
-msgstr "Tytuł zgłoszenia"
+msgstr "Edytuj tytuł listy kontrolnej"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show_row.jst.eco:32
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistItem.vue:67
-#, fuzzy
-#| msgid "Edit mask"
 msgid "Edit item"
-msgstr "Maska edycji"
+msgstr "Edytuj element"
 
 #: app/assets/javascripts/app/controllers/core_workflow.coffee:58
 msgid "Edit mask"
@@ -7046,22 +7064,16 @@ msgid "Edit reply"
 msgstr "Edytuj odpowiedź"
 
 #: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:22
-#, fuzzy
-#| msgid "Security Keys"
 msgid "Edit security keys"
-msgstr "Klucze Bezpieczeństwa"
+msgstr "Edytuj klucze bezpieczeństwa"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation.vue:90
-#, fuzzy
-#| msgid "Ticket title"
 msgid "Edit ticket title"
-msgstr "Tytuł zgłoszenia"
+msgstr "Edytuj tytuł zgłoszenia"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/permissions_dialog.coffee:9
-#, fuzzy
-#| msgid "Edit"
 msgid "Editor"
-msgstr "Edytuj"
+msgstr "Redaktor"
 
 #: db/seeds/settings.rb:3706
 #, fuzzy
@@ -7128,10 +7140,8 @@ msgid "Elasticsearch needs to be configured!"
 msgstr "Trzeba skonfigurować Elasticsearch!"
 
 #: app/models/system_report/plugin/search_index.rb:4
-#, fuzzy
-#| msgid "Elasticsearch SSL verification"
 msgid "Elasticsearch version"
-msgstr "Weryfikacja SSL Elasticsearch"
+msgstr "Wersja Elasticsearch"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:3
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:73
@@ -7231,8 +7241,6 @@ msgid "Email Verification"
 msgstr "Weryfikacja e-mail"
 
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailAccountForm.ts:33
-#, fuzzy
-#| msgid "Email Address"
 msgid "Email address"
 msgstr "Adres e-mail"
 
@@ -7274,10 +7282,8 @@ msgid "Email sent to \"%s\". Please verify your email account."
 msgstr "E-mail wysłany do \"%s\". Zweryfikuj swoje konto e-mail."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/HistoryEventDetails/HistoryEventDetailsEmail.vue:19
-#, fuzzy
-#| msgid "email sent to '%s'"
 msgid "Email sent to %s"
-msgstr "e-mail wysłany do '%s'"
+msgstr "E-mail wysłany do '%s'"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:738
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:43
@@ -7297,10 +7303,8 @@ msgid "Empty"
 msgstr "Pusty"
 
 #: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:362
-#, fuzzy
-#| msgid "Overview"
 msgid "Empty Overview"
-msgstr "Przegląd"
+msgstr "Pusty przegląd"
 
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:151
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:72
@@ -7487,10 +7491,8 @@ msgid "Enables console logging."
 msgstr "Włącza logowanie konsoli."
 
 #: db/seeds/settings.rb:973
-#, fuzzy
-#| msgid "Enables priority icons in ticket overviews."
 msgid "Enables display of ticket priority icons in UI."
-msgstr "Włącza ikony priorytetów w przeglądach zgłoszeń."
+msgstr "Włącza ikony priorytetów zgłoszeń w widokach."
 
 #: db/seeds/settings.rb:793
 msgid "Enables preview of attachments."
@@ -7548,10 +7550,8 @@ msgid "Enables user authentication via Microsoft 365."
 msgstr "Umożliwia uwierzytelnianie użytkowników przez Microsoft 365."
 
 #: db/seeds/settings.rb:2037
-#, fuzzy
-#| msgid "Enables user authentication via Weibo."
 msgid "Enables user authentication via OpenID Connect."
-msgstr "Umożliwia uwierzytelnianie użytkowników przez Weibo."
+msgstr "Umożliwia uwierzytelnianie użytkownika za pomocą OpenID Connect."
 
 #: db/seeds/settings.rb:1879
 msgid "Enables user authentication via SAML."
@@ -7673,7 +7673,7 @@ msgstr "Wpisz poprawny adres e-mail."
 msgid "Enter credentials"
 msgstr "Wprowadź poświadczenia"
 
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:302
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:301
 msgid "Enter link URL"
 msgstr "Wprowadź link URL"
 
@@ -7822,10 +7822,11 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_error_modal.coffee:6
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:165
 #: app/assets/javascripts/app/controllers/_settings/area_proxy.coffee:51
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:131
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:132
 #: app/assets/javascripts/app/controllers/widget/error_modal.coffee:6
 #: app/frontend/apps/desktop/components/CommonError/CommonError.vue:30
 #: app/frontend/apps/mobile/pages/error/views/Error.vue:37
+#: lib/excel_sheet/ai/analytics/errors.rb:36
 msgid "Error"
 msgstr "Błąd"
 
@@ -7834,10 +7835,9 @@ msgid "Error during execution of auto wizard."
 msgstr "Błąd podczas wykonywania automatycznego kreatora."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:63
-#, fuzzy
-#| msgid "Something went wrong. Please contact your administrator."
 msgid "Error fetching i-doit information. Please contact your administrator."
-msgstr "Coś poszło nie tak. Skontaktuj się z administratorem."
+msgstr ""
+"Błąd podczas pobierania informacji i-doit. Skontaktuj się z administratorem."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:260
 #: db/seeds/overviews.rb:160
@@ -7930,22 +7930,16 @@ msgid "Escape pressed. No item selected."
 msgstr ""
 
 #: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:51
-#, fuzzy
-#| msgid "pending"
 msgid "Event Ending"
-msgstr "aż do"
+msgstr "Zakończenie wydarzenia"
 
 #: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:42
-#, fuzzy
-#| msgid "Location"
 msgid "Event Location"
-msgstr "Miejsce"
+msgstr "Lokalizacja wydarzenia"
 
 #: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:46
-#, fuzzy
-#| msgid "Expert Settings"
 msgid "Event Starting"
-msgstr "Ustawienia zaawansowane"
+msgstr "Rozpoczęcie wydarzenia"
 
 #: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:38
 msgid "Event Summary"
@@ -8081,7 +8075,7 @@ msgstr "Istniejące zgłoszenia"
 msgid "Existing tickets (open)"
 msgstr "Istniejące zgłoszenia (otwarte)"
 
-#: db/seeds/ai/text_tools.rb:46
+#: db/seeds/ai/text_tools.rb:60
 msgid "Expand draft into well-written section"
 msgstr ""
 
@@ -8116,10 +8110,8 @@ msgid "Experts"
 msgstr "Eksperci"
 
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:34
-#, fuzzy
-#| msgid "Escalation at"
 msgid "Expiration date"
-msgstr "Eskalacja o"
+msgstr "Data ważności"
 
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:19
 #: app/assets/javascripts/app/views/profile/token_access_create.jst.eco:10
@@ -8178,22 +8170,16 @@ msgid "Facebook Developer Site"
 msgstr "Strona deweloperska Facebooka"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/facebookDirectMessage.ts:7
-#, fuzzy
-#| msgid "facebook direct-message"
 msgid "Facebook Direct Message"
-msgstr "bezpośrednia wiadomość na Facebooku"
+msgstr "Bezpośrednia wiadomość na Facebooku"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/facebookFeedComment.ts:6
-#, fuzzy
-#| msgid "facebook feed comment"
 msgid "Facebook Feed Comment"
-msgstr "komentarz na Facebooku"
+msgstr "Komentarz na Facebooku"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/facebookFeedPost.ts:7
-#, fuzzy
-#| msgid "facebook feed post"
 msgid "Facebook Feed Post"
-msgstr "post na Facebooku"
+msgstr "Post na Facebooku"
 
 #: app/assets/javascripts/app/views/data_privacy/index.jst.eco:24
 msgid "Failed Tasks"
@@ -8226,16 +8212,14 @@ msgid "Failed to save checklist order."
 msgstr "Nie udało się zapisać kolejności listy kontrolnej."
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_checklist/show.coffee:160
-#, fuzzy
-#| msgid "Invalid security code! Please try again with a new code."
 msgid "Failed to save the order of the checklist items. Please try again."
-msgstr "Nieprawidłowy kod bezpieczeństwa! Spróbuj ponownie z nowym kodem."
+msgstr ""
+"Nie udało się zapisać kolejności elementów listy kontrolnej. Spróbuj "
+"ponownie."
 
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:188
-#, fuzzy
-#| msgid "Invalid security code! Please try again with a new code."
 msgid "Failed to set up QR code. Please try again."
-msgstr "Nieprawidłowy kod bezpieczeństwa! Spróbuj ponownie z nowym kodem."
+msgstr "Nie udało się skonfigurować kodu QR. Spróbuj ponownie."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:141
 msgid "Failed to update checklist item."
@@ -8281,20 +8265,21 @@ msgstr "Luty"
 msgid "Feedback"
 msgstr "Informacja zwrotna"
 
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:15
+#, fuzzy
+#| msgid "Feedback Form"
+msgid "Feedback & Logs"
+msgstr "Formularz zwrotny"
+
 #: app/assets/javascripts/app/views/channel/form.jst.eco:34
 msgid "Feedback Form"
 msgstr "Formularz zwrotny"
 
 #: db/seeds/settings.rb:2069
-#, fuzzy
-#| msgid ""
-#| "Attribute that uniquely identifies the user. If unset, the name "
-#| "identifier returned by the IDP is used."
 msgid "Field that uniquely identifies the user. If unset, \"sub\" is used."
 msgstr ""
-"Atrybut, który jednoznacznie identyfikuje użytkownika. Jeśli nie jest "
-"ustawione, używany jest identyfikator nazwy zwrócony przez dostawcę "
-"tożsamości."
+"Pole jednoznacznie identyfikujące użytkownika. Jeśli nieustawione, używane "
+"jest „sub”."
 
 #: app/frontend/shared/components/CommonFilePreview/CommonFilePreview.vue:135
 msgid "File '%s' is uploading"
@@ -8304,7 +8289,7 @@ msgstr "Plik '%s' jest przesyłany"
 msgid "File format is not allowed: %s"
 msgstr "Format pliku jest niedozwolony: %s"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:880
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:894
 #: app/frontend/shared/components/Form/fields/FieldFile/composable/useFileValidation.ts:22
 #: lib/validations/ticket_article_validator/whatsapp_message.rb:38
 msgid "File is too big. %s has to be %s or smaller."
@@ -8559,8 +8544,8 @@ msgid "Format as _underlined_"
 msgstr "Formatuj jako _underlined_"
 
 #: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:93
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:156
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:152
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:154
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:151
 msgid "Format as bold"
 msgstr "Formatuj jako pogrubione"
 
@@ -8577,8 +8562,8 @@ msgid "Format as h3 heading"
 msgstr "Formatuj jako nagłówek h3"
 
 #: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:100
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:164
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:160
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:162
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:159
 msgid "Format as italic"
 msgstr "Formatuj jako kursywa"
 
@@ -8586,22 +8571,22 @@ msgstr "Formatuj jako kursywa"
 msgid "Format as ordered list"
 msgstr "Formatuj jako lista uporządkowana"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:196
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:192
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:194
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:191
 #, fuzzy
 #| msgid "Format as unordered list"
 msgid "Format as quoted text"
 msgstr "Formatuj jako lista nieuporządkowana"
 
 #: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:114
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:180
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:176
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:178
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:175
 msgid "Format as strikethrough"
 msgstr "Formatuj jako przekreślenie"
 
 #: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:107
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:172
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:168
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:170
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:167
 msgid "Format as underlined"
 msgstr "Formatuj jako podkreślone"
 
@@ -8622,22 +8607,16 @@ msgid "Forward"
 msgstr "Do przodu"
 
 #: app/frontend/apps/desktop/components/Search/plugins/organization.ts:15
-#, fuzzy
-#| msgid "Secondary organizations"
 msgid "Found organizations"
-msgstr "Drugorzędna organizacja"
+msgstr "Znaleziono organizacje"
 
 #: app/frontend/apps/desktop/components/Search/plugins/ticket.ts:15
-#, fuzzy
-#| msgid "Open tickets"
 msgid "Found tickets"
-msgstr "Otwarte zgłoszenia"
+msgstr "Znaleziono zgłoszenia"
 
 #: app/frontend/apps/desktop/components/Search/plugins/user.ts:15
-#, fuzzy
-#| msgid "Mention user"
 msgid "Found users"
-msgstr "Wzmianki o użytkowniku"
+msgstr "Znaleziono uzytkowników"
 
 #: app/assets/javascripts/app/views/widget/ticket_stats_frequency.jst.eco:1
 msgid "Frequency"
@@ -8687,10 +8666,8 @@ msgid "Full Name"
 msgstr "Pełna nazwa"
 
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailAccountForm.ts:24
-#, fuzzy
-#| msgid "Full Name"
 msgid "Full name"
-msgstr "Pełna nazwa"
+msgstr "Pełne imię i nazwisko"
 
 #: db/seeds/settings.rb:287
 msgid "Fully Qualified Domain Name"
@@ -8708,7 +8685,7 @@ msgstr "GID"
 msgid "Gateway"
 msgstr "Wejście"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:135
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:136
 #: app/assets/javascripts/app/lib/app_post/ajax.coffee:91
 msgid "General communication error, maybe internet is not available!"
 msgstr "Ogólny błąd komunikacji, być może internet nie jest dostępny!"
@@ -8718,16 +8695,12 @@ msgid "Generate Access Token for |%s|"
 msgstr "Wygeneruj token dostępu dla |%s|"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:254
-#, fuzzy
-#| msgid "Generate recovery codes"
 msgid "Generate Recovery Codes"
-msgstr "Wygeneruj kody przywracania"
+msgstr "Generuj kody odzyskiwania"
 
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationFlyout.vue:34
-#, fuzzy
-#| msgid "Generate recovery codes"
 msgid "Generate Recovery Codes: %s"
-msgstr "Wygeneruj kody przywracania"
+msgstr "Generuj kody odzyskiwania: %s"
 
 #: app/assets/javascripts/app/controllers/api.coffee:167
 msgid "Generate Token"
@@ -8826,10 +8799,8 @@ msgstr ""
 "Żądanie GitHub nie powiodło się. Szczegóły można znaleźć w pliku dziennika."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitHub/TicketSidebarGitHub.vue:43
-#, fuzzy
-#| msgid "Link issue"
 msgid "GitHub: Link issue"
-msgstr "Problem z łączem"
+msgstr "GitHub: Problem z linkiem"
 
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:3
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:86
@@ -8862,10 +8833,8 @@ msgstr ""
 "Żądanie GitLab nie powiodło się. Szczegóły znajdziesz w pliku dziennika."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitLab/TicketSidebarGitLab.vue:43
-#, fuzzy
-#| msgid "Link issue"
 msgid "GitLab: Link issue"
-msgstr "Problem z łączem"
+msgstr "GitLab: Problem z linkiem"
 
 #: app/controllers/selectors_controller.rb:43
 msgid "Given object does not support selector"
@@ -8950,10 +8919,8 @@ msgstr "Sekret klienta Google"
 #: app/assets/javascripts/app/views/google/index.jst.eco:3
 #: app/assets/javascripts/app/views/google/list.jst.eco:3
 #: db/seeds/permissions.rb:149
-#, fuzzy
-#| msgid "Google Maps"
 msgid "Google Email"
-msgstr "Mapy Google"
+msgstr "Poczta Google"
 
 #: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:188
 #: app/assets/javascripts/app/views/clues/clues_content.jst.eco:17
@@ -9148,11 +9115,9 @@ msgid "Has ticket open in tabs, but is not actively looking at the ticket."
 msgstr ""
 "Ma zgłoszenie otwarte w zakładkach, ale nie przegląda aktywnie zgłoszenia."
 
-#: app/frontend/apps/desktop/components/CommonUpdateIndicator/CommonUpdateIndicator.vue:8
-#, fuzzy
-#| msgid "Latest updates"
+#: app/frontend/apps/desktop/components/CommonUpdateIndicator/CommonUpdateIndicator.vue:5
 msgid "Has update"
-msgstr "Ostatnie aktualizacje"
+msgstr "Posiada aktualizację"
 
 #: app/assets/javascripts/app/views/telegram/bot_add.jst.eco:29
 #: app/assets/javascripts/app/views/telegram/bot_edit.jst.eco:26
@@ -9194,24 +9159,24 @@ msgid "Header Menu"
 msgstr "Menu nagłówka"
 
 #: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:129
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:118
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:117
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:116
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:116
 #, fuzzy
 #| msgid "pending"
 msgid "Heading 1"
 msgstr "aż do"
 
 #: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:136
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:130
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:128
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:128
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:127
 #, fuzzy
 #| msgid "pending"
 msgid "Heading 2"
 msgstr "aż do"
 
 #: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:143
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:142
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:139
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:140
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:138
 #, fuzzy
 #| msgid "pending"
 msgid "Heading 3"
@@ -9354,10 +9319,8 @@ msgid "High priority"
 msgstr "Wysoki priorytet"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/HighlightMenu.vue:66
-#, fuzzy
-#| msgid "Highlight icon"
 msgid "Highlight"
-msgstr "Ikona wyróżnienia"
+msgstr "Wyróżnienie"
 
 #: app/assets/javascripts/app/models/ticket_priority.coffee:7
 msgid "Highlight color"
@@ -9528,11 +9491,10 @@ msgstr "Kolor ikonek i linków"
 msgid "Icon Set"
 msgstr "Zbiór ikonek"
 
-#: db/seeds/settings.rb:2048
-#, fuzzy
-#| msgid "Get notified"
+#: db/seeds/settings.rb:2048 lib/excel_sheet/ai/analytics/errors.rb:24
+#: lib/excel_sheet/ai/analytics/with_usage.rb:24
 msgid "Identifier"
-msgstr "Otrzymywać powiadomienia"
+msgstr "Identyfikator"
 
 #: app/assets/javascripts/app/controllers/_channel/chat.coffee:36
 msgid "Identifier of the chat topic."
@@ -9545,10 +9507,8 @@ msgstr ""
 "agenta w tryb offline."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout/IdoitObjectList.vue:29
-#, fuzzy
-#| msgid "Used in object views"
 msgid "Idoit objects"
-msgstr "Używany w widokach obiektów"
+msgstr "Idoit obiekty"
 
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:6
 msgid ""
@@ -9639,16 +9599,12 @@ msgstr ""
 "czynność unieważni poprzednie kody odzyskiwania."
 
 #: app/assets/javascripts/app/views/settings/storage_provider.jst.eco:12
-#, fuzzy
-#| msgid ""
-#| "If you want to move already stored attachments from one backend to "
-#| "another, you need to execute the following via console."
 msgid ""
 "If you want to move already stored attachments from one backend to another, "
 "you need to execute the following rails/rake task."
 msgstr ""
-"Jeśli chcesz przenieść już zapisane załączniki z jednego urządzenia do "
-"innego, musisz wykonać to poprzez konsolę."
+"Jeśli chcesz przenieść już zapisane załączniki z jednego zasobu do drugiego, "
+"musisz wykonać następujące zadanie rails/rake."
 
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:162
 msgid ""
@@ -9823,10 +9779,8 @@ msgstr ""
 "kolejność źródeł LDAP poprzez przeciąganie i upuszczanie."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:74
-#, fuzzy
-#| msgid "inactive"
 msgid "Inactive"
-msgstr "nieaktywny"
+msgstr "Nieaktywny"
 
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:60
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:13
@@ -9917,16 +9871,12 @@ msgstr "Weryfikacja SSL Elasticsearch"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:10
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:344
-#, fuzzy
-#| msgid "Incomplete credentials"
 msgid "Incomplete Ticket Checklist"
-msgstr "Niekompletne dane uwierzytelniające"
+msgstr "Niekompletna checklista zgłoszenia"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklist.vue:30
-#, fuzzy
-#| msgid "Incomplete credentials"
 msgid "Incomplete checklist items"
-msgstr "Niekompletne dane uwierzytelniające"
+msgstr "Niekompletne elementy checklisty zgłoszenia"
 
 #: app/controllers/import_freshdesk_controller.rb:45
 #: app/controllers/import_kayako_controller.rb:35
@@ -9939,29 +9889,21 @@ msgid "Increment (SystemID.Counter)"
 msgstr "Przyrost (SystemID.Counter)"
 
 #: app/frontend/shared/components/Form/fields/FieldDate/useDateTime.ts:55
-#, fuzzy
-#| msgid "Increment hours"
 msgid "Increment hours value"
-msgstr "Inkrementuj godziny"
+msgstr "Zwiększ wartość godzin"
 
 #: app/frontend/shared/components/Form/fields/FieldDate/useDateTime.ts:57
-#, fuzzy
-#| msgid "Increment minutes"
 msgid "Increment minutes value"
-msgstr "Inkrementuj minuty"
+msgstr "Zwiększ wartość minut"
 
 #: app/frontend/shared/components/Form/fields/FieldDate/useDateTime.ts:60
-#, fuzzy
-#| msgid "Increment seconds"
 msgid "Increment seconds value"
-msgstr "Inkrementuj sekundy"
+msgstr "Zwiększ wartość sekund"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:266
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:262
-#, fuzzy
-#| msgid "Incident"
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:264
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:261
 msgid "Indent text"
-msgstr "Incydent"
+msgstr "Wcięcie tekstu"
 
 #: app/frontend/apps/desktop/components/CommonProgressBar/CommonProgressBar.vue:16
 msgid "Indicating progress"
@@ -10000,7 +9942,7 @@ msgstr ""
 "migracji na tej stronie, aby otrzymać powiadomienie, gdy tylko import "
 "zostanie pomyślnie zakończony."
 
-#: app/models/store.rb:94
+#: app/models/store.rb:95
 msgid "Inline content could not be generated."
 msgstr "Nie udało się wygenerować treści wbudowanej."
 
@@ -10008,8 +9950,8 @@ msgstr "Nie udało się wygenerować treści wbudowanej."
 msgid "Input field must be text, password, tel, fax, email or url type."
 msgstr "Pole wejściowe musi być typu tekst, hasło, tel, faks, E-mail lub url."
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:223
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:219
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:221
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:218
 msgid "Insert code block"
 msgstr "Wstaw blok kodu"
 
@@ -10021,19 +9963,17 @@ msgstr "Wstaw kolumnę po"
 msgid "Insert column before"
 msgstr "Wstaw kolumnę przed"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:231
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:227
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:229
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:226
 #, fuzzy
 #| msgid "Inserts text module"
 msgid "Insert divider"
 msgstr "Wstawia moduł tekstowy"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:212
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:208
-#, fuzzy
-#| msgid "Inserts text module"
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:210
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:207
 msgid "Insert inline code"
-msgstr "Wstawia moduł tekstowy"
+msgstr "Wstaw kod wbudowany"
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:36
 msgid "Insert row above"
@@ -10043,20 +9983,18 @@ msgstr "Wstaw wiersz powyżej"
 msgid "Insert row below"
 msgstr "Wstaw wiersz poniżej"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:310
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:330
-#, fuzzy
-#| msgid "Inserts text module"
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:308
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:329
 msgid "Insert table"
-msgstr "Wstawia moduł tekstowy"
+msgstr "Wstaw tabelę"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:92
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:91
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:90
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:90
 msgid "Insert text from Knowledge Base article"
 msgstr "Wstaw tekst z wpisu z bazy wiedzy"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:101
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:100
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:99
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:99
 msgid "Insert text from text module"
 msgstr "Wstaw tekst z modułu tekstowego"
 
@@ -10392,28 +10330,20 @@ msgid "Ionicons"
 msgstr "Ionicons"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerLinkFlyout.vue:37
-#, fuzzy
-#| msgid "%s URL"
 msgid "Issue URL"
-msgstr "%s URL"
+msgstr "URL problemu"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerList/IssueTrackerItem.vue:52
-#, fuzzy
-#| msgid "Message Status"
 msgid "Issue status"
-msgstr "Stan wiadomości"
+msgstr "Stan problemu"
 
 #: db/seeds/settings.rb:2056
-#, fuzzy
-#| msgid "no issues"
 msgid "Issuer"
-msgstr "bez problemów"
+msgstr "Wystawca"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/useIssueTracker.ts:38
-#, fuzzy
-#| msgid "no issues"
 msgid "Issues"
-msgstr "bez problemów"
+msgstr "Problemy"
 
 #: lib/validations/data_privacy_task_validator.rb:50
 msgid "It is not possible to delete the last account with admin permissions."
@@ -10428,7 +10358,7 @@ msgstr "Usunięcie użytkownika systemowego nie jest możliwe."
 msgid "It is not possible to delete your current account."
 msgstr "Usunięcie Twojego bieżącego konta nie jest możliwe."
 
-#: app/models/ticket.rb:281
+#: app/models/ticket.rb:293
 msgid "It is not possible to merge into an already merged ticket."
 msgstr ""
 "Nie można połączyć zgłoszenia ze zgłoszeniem, które zostało już połączone."
@@ -10523,10 +10453,8 @@ msgid "Keyboard Shortcuts"
 msgstr "Skróty klawiszowe"
 
 #: app/assets/javascripts/app/views/keyboard_shortcuts.jst.eco:4
-#, fuzzy
-#| msgid "Keyboard Shortcuts"
 msgid "Keyboard Shortcuts Enabled"
-msgstr "Skróty klawiszowe"
+msgstr "Włączono skróty klawiaturowe"
 
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/keyboard-shortcuts.ts:7
 msgid "Keyboard shortcuts"
@@ -10614,10 +10542,8 @@ msgid "Language"
 msgstr "Język"
 
 #: db/seeds/settings.rb:184
-#, fuzzy
-#| msgid "Geo Location Service"
 msgid "Language Detection Service"
-msgstr "Usługa geolokalizacji"
+msgstr "Usługa wykrywania języka"
 
 #: app/assets/javascripts/app/controllers/_manage/knowledge_base.coffee:108
 #: app/assets/javascripts/app/models/knowledge_base.coffee:278
@@ -10629,10 +10555,8 @@ msgid "Last Article"
 msgstr "Ostatni wpis"
 
 #: lib/excel_sheet/ticket.rb:59
-#, fuzzy
-#| msgid "Closed At"
 msgid "Last Closed At"
-msgstr "Zamknięte w"
+msgstr "Ostatnio zamknięte o"
 
 #: lib/excel_sheet/ticket.rb:71
 msgid "Last Contact Agent At"
@@ -10655,10 +10579,8 @@ msgid "Last Internal Article"
 msgstr "Ostatni wpis wewnętrzny"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:102
-#, fuzzy
-#| msgid "Last used"
 msgid "Last Used"
-msgstr "Ostatnio użyty"
+msgstr "Ostatnio używany"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:129
 msgid "Last change %s %s by %s"
@@ -10714,10 +10636,8 @@ msgid "Last name"
 msgstr "Nazwisko"
 
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:132
-#, fuzzy
-#| msgid "Latest updates"
 msgid "Last owner update"
-msgstr "Ostatnie aktualizacje"
+msgstr "Ostatnia aktualizacja właściciela"
 
 #: app/assets/javascripts/app/models/job.coffee:19
 msgid "Last run"
@@ -10757,6 +10677,12 @@ msgstr "Biblioteka"
 msgid "Light"
 msgstr "Jasny"
 
+#: lib/excel_sheet/ai/analytics/with_usage.rb:43
+#, fuzzy
+#| msgid "Linked Accounts"
+msgid "Likes count"
+msgstr "Połączone konta"
+
 #: app/models/ai/agent/type/ticket_categorizer.rb:50
 #, fuzzy
 #| msgid "Categories"
@@ -10791,10 +10717,8 @@ msgid "Limit tickets per day"
 msgstr "Limit zgłoszeń na dzień"
 
 #: app/frontend/apps/mobile/pages/home/components/TicketOverviewEditItem.vue:88
-#, fuzzy
-#| msgid "Visibility"
 msgid "Limited Visibility"
-msgstr "Widoczność"
+msgstr "Ograniczona widoczność"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:259
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/embed_video_button.coffee:11
@@ -10836,21 +10760,17 @@ msgstr "Połącz problemy GitLab ze swoimi zgłoszeniami."
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerList.vue:272
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitHub/TicketSidebarGitHub.vue:70
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitLab/TicketSidebarGitLab.vue:70
-#, fuzzy
-#| msgid "Link issue"
 msgid "Link Issue"
-msgstr "Problem z łączem"
+msgstr "Problem z linkiem"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:177
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:188
-#, fuzzy
-#| msgid "Objects"
 msgid "Link Objects"
-msgstr "Obiekty"
+msgstr "Połączone Obiekty"
 
 #: app/assets/javascripts/app/views/link/kb_answer.jst.eco:19
 msgid "Link Related Answer"
-msgstr "Link powiązana odpowiedź"
+msgstr "Dodaj linka KB"
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:150
 #, fuzzy
@@ -10859,10 +10779,8 @@ msgid "Link Text"
 msgstr "Załączone zgłoszenia"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:156
-#, fuzzy
-#| msgid "Linked Tickets"
 msgid "Link Tickets"
-msgstr "Załączone zgłoszenia"
+msgstr "Połącz zgłoszenia"
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:148
 #, fuzzy
@@ -10871,30 +10789,24 @@ msgid "Link URL"
 msgstr "Link %s"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:176
-#, fuzzy
-#| msgid "Link Accounts"
 msgid "Link account on %s"
-msgstr "Połączone konta"
+msgstr "Połącz konto na %s"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:144
 msgid "Link added successfully"
 msgstr "Link dodano pomyślnie"
 
 #: lib/validations/link_uniqueness_validator.rb:9
-#, fuzzy
-#| msgid "%{name} already exists"
 msgid "Link already exists"
-msgstr "%{name} już istnieje"
+msgstr "Link już istnieje"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_git_issue.coffee:26
 msgid "Link issue"
 msgstr "Problem z łączem"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:144
-#, fuzzy
-#| msgid "Linked Tickets"
 msgid "Link objects"
-msgstr "Załączone zgłoszenia"
+msgstr "Połączone zgłoszenia"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketLinks.vue:87
 msgid "Link removed successfully"
@@ -10911,10 +10823,8 @@ msgid "Link ticket"
 msgstr "Załączone zgłoszenia"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:62
-#, fuzzy
-#| msgid "Link template"
 msgid "Link type"
-msgstr "Szablon łącza"
+msgstr "Typ linku"
 
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:3
 #: app/assets/javascripts/app/views/popover/user.jst.eco:5
@@ -10931,8 +10841,6 @@ msgid "Linked Tickets"
 msgstr "Załączone zgłoszenia"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:185
-#, fuzzy
-#| msgid "Linked Accounts"
 msgid "Linked accounts"
 msgstr "Połączone konta"
 
@@ -10953,7 +10861,7 @@ msgstr "Strona deweloperska LinkedIn"
 #: app/assets/javascripts/app/views/link/ticket/list.jst.eco:1
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:122
 msgid "Links"
-msgstr "Linki"
+msgstr "Powiązania"
 
 #: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue:233
 msgid "List of all user taskbar tabs"
@@ -11028,6 +10936,8 @@ msgstr "Lokalne MTA (Sendmail/Postfix/Exim/…) - użyj konfiguracji serwera"
 
 #: app/assets/javascripts/app/models/job.coffee:13
 #: app/assets/javascripts/app/models/trigger.coffee:12 db/seeds/settings.rb:164
+#: lib/excel_sheet/ai/analytics/errors.rb:27
+#: lib/excel_sheet/ai/analytics/with_usage.rb:27
 msgid "Locale"
 msgstr "Język"
 
@@ -11729,7 +11639,7 @@ msgstr "Pobieranie multimediów powiodło się."
 #: app/assets/javascripts/app/views/organization_profile/object.jst.eco:20
 #: app/assets/javascripts/app/views/popover/organization.jst.eco:6
 #: app/assets/javascripts/app/views/widget/organization.jst.eco:29
-#: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:60
+#: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:81
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:65
 #: app/frontend/apps/mobile/components/Organization/OrganizationMembersList.vue:29
 msgid "Members"
@@ -11742,8 +11652,8 @@ msgstr "członkowie"
 msgid "Mention for"
 msgstr "Wzmianki o użytkowniku"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:83
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:82
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:81
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:81
 msgid "Mention user"
 msgstr "Wzmianki o użytkowniku"
 
@@ -11960,7 +11870,7 @@ msgstr "Tel. komórkowy"
 msgid "Mode"
 msgstr "Tryb"
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:81
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:159
 #, fuzzy
 #| msgid "Mode"
 msgid "Model"
@@ -12253,6 +12163,12 @@ msgstr ""
 #: db/seeds/settings.rb:2182
 msgid "Needed"
 msgstr "Wymagane"
+
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:96
+#, fuzzy
+#| msgid "Feedback"
+msgid "Negative Feedback"
+msgstr "Informacja zwrotna"
 
 #: app/controllers/sessions_controller.rb:56
 msgid ""
@@ -12628,7 +12544,7 @@ msgstr ""
 "Webhook”"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:58
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:86
 #, fuzzy
 #| msgid "The password could not be set. Please contact your administrator."
 msgid "No AI provider is currently set up. Please contact your administrator."
@@ -12745,10 +12661,8 @@ msgstr "Brak jeszcze elementów listy kontrolnej"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/start.jst.eco:14
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistEmptyTemplates.vue:15
-#, fuzzy
-#| msgid "No template created yet."
 msgid "No checklist templates have been created yet."
-msgstr "Nie utworzono jeszcze szablonu."
+msgstr "Nie utworzono jeszcze żadnych szablonów list kontrolnych."
 
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:5
 msgid "No configuration set."
@@ -12940,7 +12854,7 @@ msgstr "Brak tokena!"
 msgid "No translation for this locale available"
 msgstr "Brak dostępnych tłumaczeń dla tego regionu"
 
-#: app/models/ticket.rb:404
+#: app/models/ticket.rb:418
 msgid "No triggers active"
 msgstr "Brak aktywnych wyzwalaczy"
 
@@ -13001,7 +12915,7 @@ msgstr "Niedostępne"
 
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:160
 #: app/assets/javascripts/app/controllers/knowledge_base/agent_controller.coffee:240
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:126
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:127
 #: app/frontend/apps/desktop/components/layout/LayoutTaskbarTabContent.vue:70
 #: app/frontend/shared/errors/useErrorHandler.ts:25
 #: app/frontend/shared/router/error.ts:24
@@ -13029,7 +12943,7 @@ msgid "Not assigned"
 msgstr "nie przypisany"
 
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:158
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:122
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:123
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/show_row_display_value.jst.eco:16
 #: app/controllers/application_controller/handles_errors.rb:61
 #: app/services/service/ticket/article/create.rb:122
@@ -13402,7 +13316,7 @@ msgstr "Serwis internetowy"
 msgid "Only %s attachment allowed"
 msgstr "Dozwolony jest tylko załącznik %s"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:845
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:859
 msgid "Only %s attachment allowed."
 msgstr "Dozwolony jest tylko załącznik %s."
 
@@ -13491,7 +13405,7 @@ msgstr "Suma kontrolna"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:61
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:91
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:90
 #, fuzzy
 #| msgid "Options"
 msgid "Open Questions"
@@ -13503,7 +13417,7 @@ msgstr "Otwarte zgłoszenia# %s"
 
 #: app/assets/javascripts/app/controllers/widget/ticket_stats.coffee:122
 #: app/assets/javascripts/app/controllers/widget/user.coffee:70
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:122
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:118
 #: db/seeds/overviews.rb:109
 msgid "Open Tickets"
 msgstr "Otwarte zgłoszenia"
@@ -13518,7 +13432,7 @@ msgstr ""
 msgid "Open in new tab"
 msgstr "Otwórz w nowej karcie"
 
-#: app/frontend/apps/desktop/components/CommonInlineEdit/CommonInlineEdit.vue:76
+#: app/frontend/apps/desktop/components/CommonInlineEdit/CommonInlineEdit.vue:65
 #, fuzzy
 #| msgid "Open Tickets"
 msgid "Open link"
@@ -13874,12 +13788,12 @@ msgstr "Wychodzące:"
 msgid "Outdated Browser"
 msgstr "Nieaktualna przeglądarka"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:274
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:270
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:272
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:269
 msgid "Outdent text"
 msgstr "Usuń wcięcie na początku linii"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorActionBar/ActionToolbar.vue:186
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorActionBar/ActionToolbar.vue:185
 #, fuzzy
 #| msgid "User menu"
 msgid "Overflow menu"
@@ -14148,6 +14062,13 @@ msgstr "Wklej zawartość pliku CSV"
 msgid "Paste key"
 msgstr "Wklej klucz"
 
+#: lib/excel_sheet/ai/analytics/errors.rb:37
+#: lib/excel_sheet/ai/analytics/with_usage.rb:37
+#, fuzzy
+#| msgid "Custom Payload"
+msgid "Payload"
+msgstr "Ładunek niestandardowy"
+
 #: lib/ai/provider/concerns/handles_response.rb:14
 msgid "Payment required - please top up your account"
 msgstr ""
@@ -14342,7 +14263,7 @@ msgstr ""
 "Proszę włączyć funkcję czasu wykonania, aby z niej korzystać (obecnie "
 "dozwolone tylko dla wyzwalaczy i harmonogramów)"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:364
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:376
 msgid "Please enter a text."
 msgstr "Proszę wpisać tekst."
 
@@ -14496,6 +14417,12 @@ msgstr "Port"
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:58
 msgid "Position"
 msgstr "Pozycja"
+
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:89
+#, fuzzy
+#| msgid "Feedback"
+msgid "Positive Feedback"
+msgstr "Informacja zwrotna"
 
 #: app/models/system_report/plugin/postgre_sql.rb:4
 msgid "PostgresSQL server version"
@@ -14764,7 +14691,7 @@ msgid ""
 "text which will be part of the system prompt."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:3
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:3
 #: app/assets/javascripts/app/controllers/_channel/sms.coffee:167
 msgid "Provider"
 msgstr "Dostawca"
@@ -14860,6 +14787,10 @@ msgstr ""
 
 #: lib/ai/provider/concerns/handles_response.rb:20
 msgid "Rate limit exceeded - please wait a moment"
+msgstr ""
+
+#: app/models/ai/analytics/usage.rb:16
+msgid "Rating can only be set once"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/article_view/item.coffee:71
@@ -15011,6 +14942,12 @@ msgstr ""
 "Referencje — szukaj dalszych informacji również w nagłówkach w odpowiedzi na "
 "pytania lub referencjach."
 
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:128
+#, fuzzy
+#| msgid "Reopening rate"
+msgid "Regenerate"
+msgstr "Wskaźnik wznowionych"
+
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:254
 #, fuzzy
 #| msgid "Regenerate recovery codes"
@@ -15020,6 +14957,13 @@ msgstr "Wygeneruj ponownie kody przywracania"
 #: app/assets/javascripts/app/views/profile/password.jst.eco:111
 msgid "Regenerate recovery codes"
 msgstr "Wygeneruj ponownie kody przywracania"
+
+#: lib/excel_sheet/ai/analytics/errors.rb:34
+#: lib/excel_sheet/ai/analytics/with_usage.rb:34
+#, fuzzy
+#| msgid "Reopening rate"
+msgid "Regeneration Of ID"
+msgstr "Wskaźnik wznowionych"
 
 #: app/frontend/apps/desktop/pages/authentication/views/Login.vue:211
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:139
@@ -15037,7 +14981,21 @@ msgstr "Rejestracja udana!"
 
 #: app/assets/javascripts/app/views/link/kb_answer.jst.eco:1
 msgid "Related Answers"
-msgstr "Powiązane odpowiedzi"
+msgstr "Baza Wiedzy"
+
+#: lib/excel_sheet/ai/analytics/errors.rb:30
+#: lib/excel_sheet/ai/analytics/with_usage.rb:30
+#, fuzzy
+#| msgid "Delete Object"
+msgid "Related Object ID"
+msgstr "Usuń obiekt"
+
+#: lib/excel_sheet/ai/analytics/errors.rb:29
+#: lib/excel_sheet/ai/analytics/with_usage.rb:29
+#, fuzzy
+#| msgid "Delete Object"
+msgid "Related Object Type"
+msgstr "Usuń obiekt"
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupAutomated/GuidedSetupAutomatedRun.vue:70
 msgid "Relax, your system is being set up…"
@@ -15153,8 +15111,8 @@ msgid "Remove checklist"
 msgstr "Usuń %s"
 
 #: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:121
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:204
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:200
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:202
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:199
 msgid "Remove formatting"
 msgstr "Usuń formatowanie"
 
@@ -15275,10 +15233,8 @@ msgid "Reply-To"
 msgstr "Odpowiedz do"
 
 #: db/seeds/permissions.rb:101
-#, fuzzy
-#| msgid "Reporting"
 msgid "Report"
-msgstr "Raportowanie"
+msgstr "Raport"
 
 #: app/assets/javascripts/app/controllers/report_profile.coffee:3
 msgid "Report Profile"
@@ -15577,7 +15533,7 @@ msgstr "Wynik:"
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:64
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:169
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:131
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:80
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:108
 #: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:172
 msgid "Retry"
 msgstr "Ponów próbę"
@@ -15607,7 +15563,7 @@ msgid "Retrying to download the sent media via WhatsApp failed."
 msgstr ""
 "Ponowna próba pobrania wysłanych multimediów przez WhatsApp nie powiodła się."
 
-#: db/seeds/ai/text_tools.rb:26
+#: db/seeds/ai/text_tools.rb:33
 msgid "Rewrite complex section and make it easy to understand"
 msgstr ""
 
@@ -15902,7 +15858,7 @@ msgstr "Zapisz jako"
 msgid "Save as draft"
 msgstr "Zapisz szkic"
 
-#: app/frontend/apps/desktop/components/CommonInlineEdit/CommonInlineEdit.vue:340
+#: app/frontend/apps/desktop/components/CommonInlineEditButtons/CommonInlineEditButtons.vue:32
 #, fuzzy
 #| msgid "Discard Changes"
 msgid "Save changes"
@@ -15920,7 +15876,7 @@ msgstr "Zapisane warunki"
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1182
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1212
 msgid "Saving failed."
 msgstr "Zapisywanie nie powiodło się."
 
@@ -16228,8 +16184,8 @@ msgstr "Nie znaleziono klucza wartości wyniku wyszukiwania „%s”."
 msgid "Search…"
 msgstr "Szukaj…"
 
-#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:62
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:104
+#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:81
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:100
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:88
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:133
 #: db/seeds/object_manager_attributes.rb:1160
@@ -16588,7 +16544,7 @@ msgstr "Nadawca ostatniego wpisu"
 msgid "Sending Email Address"
 msgstr "Adres e-mail"
 
-#: app/models/ticket/article.rb:318
+#: app/models/ticket/article.rb:324
 msgid "Sending an email without a valid recipient is not possible."
 msgstr ""
 "Wysłanie wiadomości e-mail bez podania prawidłowego adresata nie jest "
@@ -16808,6 +16764,7 @@ msgstr ""
 "Przydatne do ustawienia prawidłowego klienta, jeśli wiadomość e-mail jest "
 "odbierana z systemu innej firmy w imieniu klienta."
 
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:10
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:26
 #: app/assets/javascripts/app/controllers/_channel/google.coffee:26
 #: app/assets/javascripts/app/controllers/_channel/microsoft365.coffee:26
@@ -16817,7 +16774,6 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/manage.coffee:44
 #: app/assets/javascripts/app/controllers/ticket_zoom/setting.coffee:20
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:18
-#: app/assets/javascripts/app/views/ai/providers.jst.eco:10
 #: app/assets/javascripts/app/views/channel/form.jst.eco:13
 #: app/assets/javascripts/app/views/customer_chat/index.jst.eco:8
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:28
@@ -17369,7 +17325,7 @@ msgid "Standard Group/Pool for Tickets."
 msgstr "Standardowa grupa/pula zgłoszeń."
 
 #: app/assets/javascripts/app/controllers/knowledge_base/reader_list_controller.coffee:34
-#: app/frontend/apps/desktop/components/CommonInlineEdit/CommonInlineEdit.vue:78
+#: app/frontend/apps/desktop/components/CommonInlineEdit/CommonInlineEdit.vue:67
 msgid "Start Editing"
 msgstr "Rozpocznij edycję"
 
@@ -17633,7 +17589,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:347
 #: app/assets/javascripts/app/controllers/_application_controller/form.coffee:2
-#: app/assets/javascripts/app/controllers/tag.coffee:111
+#: app/assets/javascripts/app/controllers/tag.coffee:117
 #: app/assets/javascripts/app/controllers/widget/button_with_dropdown.coffee:12
 #: app/assets/javascripts/app/views/admin_password_auth/request.jst.eco:9
 #: app/assets/javascripts/app/views/channel/form.jst.eco:42
@@ -17658,6 +17614,12 @@ msgstr ""
 #: app/frontend/shared/form/i18n/locales.ts:41
 msgid "Submit"
 msgstr "Akceptuj"
+
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:112
+#, fuzzy
+#| msgid "Feedback"
+msgid "Submit feedback"
+msgstr "Informacja zwrotna"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:147
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:178
@@ -17708,7 +17670,7 @@ msgstr "Ustawienia subskrypcji"
 msgid "Subscription settings"
 msgstr "Ustawienia subskrypcji"
 
-#: db/seeds/ai/text_tools.rb:74
+#: db/seeds/ai/text_tools.rb:91
 msgid "Summarize section to about half its current size"
 msgstr ""
 
@@ -17730,8 +17692,8 @@ msgstr "Rozpocznij nową rozmowę"
 msgid "Summary Services"
 msgstr "Usługa wizerunkowa"
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:52
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:119
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:50
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:160
 #, fuzzy
 #| msgid "The new ticket number could not be generated."
 msgid "Summary is being generated…"
@@ -18024,7 +17986,7 @@ msgid "Text field"
 msgstr "Pole tekstowe"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:403
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:360
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:372
 msgid "Text missing"
 msgstr "Brak tekstu"
 
@@ -18068,6 +18030,11 @@ msgstr "Tekst z włączoną funkcją wstawiania tłumaczenia wygląda tak"
 msgid "Textarea field"
 msgstr "Pole tekstowe"
 
+#: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:27
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:122
+msgid "Thank you for your feedback."
+msgstr ""
+
 #: app/assets/javascripts/app/views/channel/form.jst.eco:50
 msgid ""
 "Thank you for your inquiry (#%s)! We'll contact you as soon as possible."
@@ -18078,6 +18045,11 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/authentication/views/Signup.vue:122
 msgid "Thanks for joining. Email sent to \"%s\"."
 msgstr "Dziękujemy za dołączenie, e-mail wysłany do \"%s\"."
+
+#: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:39
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:107
+msgid "Thanks for the feedback. Please explain what went wrong?"
+msgstr ""
 
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:248
 #, fuzzy
@@ -18544,6 +18516,13 @@ msgstr "Nie udało się usunąć artykułu."
 msgid "The divider between TicketHook and ticket number. E. g. ': '."
 msgstr "Dzielnik między TicketHook a numerem zgłoszenia. Np. ':'."
 
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:93
+#: app/assets/javascripts/app/lib/app_post/utils.coffee:1688
+#, fuzzy
+#| msgid "Media download failed. Please try again later."
+msgid "The download could not be started. Please try again later."
+msgstr "Pobieranie multimediów nie powiodło się. Spróbuj ponownie później."
+
 #: app/assets/javascripts/app/views/microsoft365/duplicate_email_address.jst.eco:3
 #, fuzzy
 #| msgid "Phone number is already in use by another WhatsApp account."
@@ -18615,7 +18594,7 @@ msgstr "Plik nie mógł zostać załadowany."
 msgid "The file does not belong to the specified article."
 msgstr "Plik nie należy do określonego artykułu."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:874
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:888
 #: app/frontend/shared/components/Form/fields/FieldFile/features/filesTypeError.ts:19
 msgid "The file type %s is not allowed."
 msgstr "Typ pliku %s jest niedozwolony."
@@ -19294,7 +19273,7 @@ msgid ""
 msgstr ""
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:70
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:98
 #, fuzzy
 #| msgid "The password could not be set. Please contact your administrator."
 msgid ""
@@ -19370,7 +19349,7 @@ msgid ""
 "and tell it what to do."
 msgstr ""
 
-#: app/controllers/ai_assistance_controller.rb:10
+#: app/controllers/ai_assistance_controller.rb:12
 #, fuzzy
 #| msgid "The target ticket number could not be found."
 msgid "The text tool with the given ID could not be found."
@@ -19653,7 +19632,7 @@ msgid "There is no valid PGP email signer."
 msgstr "Nie ma prawidłowego podpisującego wiadomości e-mail PGP."
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:18
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:86
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:114
 #, fuzzy
 #| msgid "There is no route to this host."
 msgid "There is not enough content yet to summarize this ticket."
@@ -19730,27 +19709,27 @@ msgstr ""
 "Ta wiadomość e-mail PGP została zaszyfrowana potencjalnie nieznanym "
 "algorytmem szyfrowania."
 
-#: db/seeds/ai/text_tools.rb:19
+#: db/seeds/ai/text_tools.rb:26
 msgid ""
 "This Writing Assistant Tool corrects spelling and grammar errors in the text."
 msgstr ""
 
-#: db/seeds/ai/text_tools.rb:89
+#: db/seeds/ai/text_tools.rb:116
 msgid ""
 "This Writing Assistant Tool creates a short summary of the selected text "
 "keeping the original meaning."
 msgstr ""
 
-#: db/seeds/ai/text_tools.rb:39
+#: db/seeds/ai/text_tools.rb:84
+msgid ""
+"This Writing Assistant Tool expands the draft into a well-structured and "
+"comprehensible text."
+msgstr ""
+
+#: db/seeds/ai/text_tools.rb:53
 msgid ""
 "This Writing Assistant Tool simplifies the selected text and improves "
 "comprehension."
-msgstr ""
-
-#: db/seeds/ai/text_tools.rb:67
-msgid ""
-"This Writing Assistant Tool transforms the draft into a fully formulated "
-"text."
 msgstr ""
 
 #: app/controllers/ticket_articles_controller.rb:195
@@ -20122,11 +20101,17 @@ msgstr ""
 msgid "This service allows you to connect %s with %s."
 msgstr "Usługa ta umożliwia połączenie %s z %s."
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:4
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:26
 #, fuzzy
 #| msgid "This service allows you to connect %s with %s."
 msgid "This service allows you to connect Zammad with an AI provider."
 msgstr "Usługa ta umożliwia połączenie %s z %s."
+
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:44
+msgid ""
+"This service allows you to download feedback agents provide on AI features "
+"and error details about failed AI requests."
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/_integration/exchange.coffee:6
 msgid "This service enables Zammad to connect with your Exchange server."
@@ -20798,7 +20783,7 @@ msgstr "Identyfikator zgłoszenia"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/calendar.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/notifications.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/ticketOverviews.ts:8
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:113
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:109
 #: app/frontend/apps/mobile/pages/search/plugins/ticket.ts:9
 #: app/frontend/apps/mobile/pages/ticket/routes.ts:50
 #: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:159
@@ -21118,7 +21103,7 @@ msgstr "Przełącz tryb ciemny"
 msgid "Toggle the overlay"
 msgstr "Przełącz nakładkę"
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:70
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:148
 #: app/assets/javascripts/app/controllers/api.coffee:11
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:48
 #: app/models/channel/driver/sms/massenversand.rb:44
@@ -21232,6 +21217,20 @@ msgstr "Tłumaczenie"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/utils/historyEventIssuerNames.ts:6
 #: db/seeds/permissions.rb:77
 msgid "Trigger"
+msgstr "Wyzwalacz"
+
+#: lib/excel_sheet/ai/analytics/errors.rb:32
+#: lib/excel_sheet/ai/analytics/with_usage.rb:32
+#, fuzzy
+#| msgid "Trigger"
+msgid "Triggered By ID"
+msgstr "Wyzwalacz"
+
+#: lib/excel_sheet/ai/analytics/errors.rb:31
+#: lib/excel_sheet/ai/analytics/with_usage.rb:31
+#, fuzzy
+#| msgid "Trigger"
+msgid "Triggered By Type"
 msgstr "Wyzwalacz"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/event-actions/time-trigger-performed.ts:14
@@ -21483,7 +21482,7 @@ msgstr "Nazwa atrybutu UID"
 msgid "UID Field"
 msgstr "Pole daty"
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:92
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:170
 #: app/assets/javascripts/app/views/api.jst.eco:63
 #: app/assets/javascripts/app/views/integration/check_mk.jst.eco:12
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:12
@@ -21500,13 +21499,13 @@ msgstr "URL"
 msgid "URL (AJAX endpoint)"
 msgstr "URL (punkt końcowy AJAX)"
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:102
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:180
 #, fuzzy
 #| msgid "%s (option)"
 msgid "URL (Completions)"
 msgstr "%s (opcja)"
 
-#: app/assets/javascripts/app/controllers/_ai/providers.coffee:112
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:190
 msgid "URL (Embeddings)"
 msgstr ""
 
@@ -21639,7 +21638,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:67
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:6
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:96
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:95
 msgid "Upcoming Events"
 msgstr ""
 
@@ -21973,6 +21972,12 @@ msgstr "Wysyłam"
 msgid "Usage"
 msgstr "Użycie"
 
+#: lib/excel_sheet/ai/analytics/with_usage.rb:42
+#, fuzzy
+#| msgid "New User Accounts"
+msgid "Usages count"
+msgstr "Nowe konta użytkownika"
+
 #: lib/secure_mailing/pgp/tool/exec.rb:26
 #: lib/secure_mailing/pgp/tool/exec/agent.rb:26
 msgid ""
@@ -22180,7 +22185,7 @@ msgstr ""
 "Nie można pobrać informacji o użytkowniku, sprawdź uprawnienia użytkownika "
 "powiązania."
 
-#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:39
+#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:44
 #: app/frontend/shared/composables/useAvatarIndicator.ts:77
 #, fuzzy
 #| msgid "Text editing"
@@ -22450,6 +22455,8 @@ msgstr "Weryfikuję…"
 #: app/assets/javascripts/app/views/package.jst.eco:48
 #: app/assets/javascripts/app/views/version.jst.eco:2
 #: app/frontend/apps/mobile/pages/account/views/AccountOverview.vue:166
+#: lib/excel_sheet/ai/analytics/errors.rb:25
+#: lib/excel_sheet/ai/analytics/with_usage.rb:25
 msgid "Version"
 msgstr "Wersja"
 
@@ -22887,8 +22894,8 @@ msgstr "Oczekiwanie za %s"
 
 #: app/assets/javascripts/app/controllers/_ai/text_tool.coffee:17
 #: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:82
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:71
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:70
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:68
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:68
 #, fuzzy
 #| msgid "Waiting in %s"
 msgid "Writing Assistant Tools"
@@ -22929,7 +22936,7 @@ msgstr "Żółty"
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_confirm.coffee:4
 #: app/assets/javascripts/app/controllers/_manage/ticket_notification.coffee:47
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:614
-#: app/assets/javascripts/app/controllers/tag.coffee:141
+#: app/assets/javascripts/app/controllers/tag.coffee:147
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:121
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:100
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:23
@@ -23243,6 +23250,10 @@ msgstr ""
 "Masz 24 godziny na wysłanie wiadomości WhatsApp w tej konwersacji. Okno "
 "obsługi klienta zamyka się %s."
 
+#: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:4
+msgid "You have already provided feedback, thank you."
+msgstr ""
+
 #: app/frontend/shared/components/Form/fields/FieldEditor/FieldEditorFooter.vue:46
 msgid "You have exceeded the character limit by %s"
 msgstr "Przekroczyłeś limit znaków o %s"
@@ -23354,7 +23365,7 @@ msgid "You reached the table limit of %s tickets (%s remaining)."
 msgstr "Osiągnięto limit %s biletów (pozostało %s)."
 
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:772
-#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:376
+#: app/assets/javascripts/app/controllers/ticket_zoom/article_new.coffee:388
 msgid ""
 "You used %s in the text but no attachment could be found. Do you want to "
 "continue?"
@@ -23501,6 +23512,12 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/exchange_certificate_issue.jst.eco:6
 msgid "Your connection is not private"
 msgstr "Twoje połączenie nie jest prywatne"
+
+#: app/assets/javascripts/app/controllers/_ai/ai_feedback_widget.coffee:50
+#, fuzzy
+#| msgid "Loading failed, please try again later."
+msgid "Your feedback could not be recorded, please try again later."
+msgstr "Ładowanie nie powiodło się, proszę spróbować ponownie."
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLocale.vue:23
 msgid "Your language"
@@ -23828,7 +23845,7 @@ msgstr "zamknij"
 msgid "closed"
 msgstr "zamknięte"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:130
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:126
 #, fuzzy
 #| msgid "Closed Tickets"
 msgid "closed tickets"
@@ -24724,7 +24741,7 @@ msgstr "dozwolone są tylko małe litery, cyfry i znak „_”"
 msgid "open"
 msgstr "otwarte"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:121
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:117
 #, fuzzy
 #| msgid "Open tickets"
 msgid "open tickets"
@@ -24761,11 +24778,11 @@ msgstr "oczekujące na działanie"
 
 #: db/seeds/ticket_states.rb:35
 msgid "pending close"
-msgstr "oczekujące na zamknięcie"
+msgstr "oczekuje na zamknięcie"
 
 #: db/seeds/ticket_state_types.rb:5 db/seeds/ticket_states.rb:17
 msgid "pending reminder"
-msgstr "oczekujące na przypomnienie"
+msgstr "oczekujące przypomnienie"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/phone_reply.coffee:12
 #: db/seeds/ticket_article_types.rb:7
@@ -25808,11 +25825,6 @@ msgstr "∅ dzisiejszy czas oczekiwania"
 #~| msgid "Remove formatting"
 #~ msgid "Removed reaction"
 #~ msgstr "Usuń formatowanie"
-
-#, fuzzy
-#~| msgid "Trigger"
-#~ msgid "Triggered"
-#~ msgstr "Wyzwalacz"
 
 #, fuzzy
 #~| msgid "Select item"
