@@ -40,6 +40,8 @@ class AI::Provider::Anthropic < AI::Provider
     )
 
     data = validate_response!(response)
+    extract_response_metadata(data)
+
     data['content'].first['text']
   end
 
@@ -87,5 +89,13 @@ class AI::Provider::Anthropic < AI::Provider
 
   def headers
     self.class.headers(config)
+  end
+
+  def extract_response_metadata(data)
+    @response_metadata = {
+      prompt_tokens:     data.dig('usage', 'input_tokens'),
+      completion_tokens: data.dig('usage', 'output_tokens'),
+      total_tokens:      data.dig('usage', 'input_tokens').to_i + data.dig('usage', 'output_tokens').to_i,
+    }
   end
 end

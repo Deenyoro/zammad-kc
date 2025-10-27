@@ -36,6 +36,8 @@ class AI::Provider::Azure < AI::Provider
     )
 
     data = validate_response!(response)
+    extract_response_metadata(data)
+
     data['choices'].first['message']['content']
   end
 
@@ -138,4 +140,13 @@ class AI::Provider::Azure < AI::Provider
   end
 
   private_class_method %i[ping_chat! ping_embeddings!]
+
+  def extract_response_metadata(data)
+    @response_metadata = {
+      model:             data['model'],
+      prompt_tokens:     data.dig('usage', 'prompt_tokens'),
+      completion_tokens: data.dig('usage', 'completion_tokens'),
+      total_tokens:      data.dig('usage', 'total_tokens'),
+    }
+  end
 end

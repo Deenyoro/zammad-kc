@@ -32,6 +32,8 @@ class AI::Provider::ZammadAI < AI::Provider
     )
 
     data = validate_response!(response)
+    extract_response_metadata(data)
+
     data.first['response']
   end
 
@@ -64,5 +66,14 @@ class AI::Provider::ZammadAI < AI::Provider
 
   def self.base_url(config)
     ENV['ZAMMAD_AI_API_URL'] || config[:url] || ZAMMAD_AI_API_BASE_URL
+  end
+
+  private
+
+  def extract_response_metadata(data)
+    @response_metadata = {
+      model:          data.first['model'],
+      total_duration: data.first['total_duration'],
+    }
   end
 end

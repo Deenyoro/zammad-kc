@@ -8,7 +8,7 @@ class AI::Provider
 
   EMBEDDING_SIZES = {}.freeze
 
-  attr_accessor :config, :options
+  attr_accessor :config, :options, :response_metadata
 
   def initialize(config: {}, options: {})
     @config = config.presence || Setting.get('ai_provider_config')
@@ -18,6 +18,8 @@ class AI::Provider
     end
 
     @options = self.class::DEFAULT_OPTIONS.merge(options.compact.deep_symbolize_keys)
+
+    @response_metadata = {}
   end
 
   class << self
@@ -57,13 +59,17 @@ class AI::Provider
     {
       provider:    self.class.name,
       temperature: options[:temperature],
-    }.merge(specific_metadata)
+    }.merge(specific_metadata).merge(@response_metadata)
   end
 
   private
 
   def specific_metadata
     {}
+  end
+
+  def extract_response_metadata(_data)
+    @response_metadata = {}
   end
 
   def chat(prompt_system:, prompt_user:)

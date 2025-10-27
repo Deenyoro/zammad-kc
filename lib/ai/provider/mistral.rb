@@ -49,6 +49,8 @@ class AI::Provider::Mistral < AI::Provider
     )
 
     data = validate_response!(response)
+    extract_response_metadata(data)
+
     data['choices'].first['message']['content']
   end
 
@@ -101,6 +103,14 @@ class AI::Provider::Mistral < AI::Provider
   def specific_metadata
     {
       model: options[:model],
+    }
+  end
+
+  def extract_response_metadata(data)
+    @response_metadata = {
+      prompt_tokens:     data.dig('usage', 'prompt_tokens'),
+      completion_tokens: data.dig('usage', 'completion_tokens'),
+      total_tokens:      data.dig('usage', 'total_tokens'),
     }
   end
 end
