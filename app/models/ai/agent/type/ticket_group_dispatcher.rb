@@ -13,7 +13,7 @@ class AI::Agent::Type::TicketGroupDispatcher < AI::Agent::Type
   def form_schema
     [
       step:   'instruction_context',
-      help:   __('Choose which groups will be considered for dispatching tickets. If you want to limit it to specific groups, please select at least two below. Make sure the groups have clear, descriptive names, as that would be the only context provided to the AI agent.'),
+      help:   __('Choose which groups will be considered for dispatching tickets. If you want to limit it to specific groups, please select at least two below. Make sure the groups have clear names and optional descriptions, as that would comprise the context provided to the AI agent.'),
       fields: [
         {
           name:                    'definition::instruction_context::object_attributes::group_id',
@@ -23,6 +23,7 @@ class AI::Agent::Type::TicketGroupDispatcher < AI::Agent::Type
           limit_label:             __('Limit Groups'),
           limit_description:       __('All groups will be considered for dispatching tickets.'),
           table_label:             __('Available Groups'),
+          show_description:        true,
 
           object_attribute_name:   'group_id',
           object_attribute_object: 'Ticket',

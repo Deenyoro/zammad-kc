@@ -203,6 +203,8 @@ RSpec.describe 'AI > AI Agents', type: :system do
           tree_select_field.find("[data-display-name='#{groups.first.name}']")
             .click
 
+          find('.js-descriptionNew').fill_in(with: 'first group description')
+
           find('.js-add').click
 
           tree_select_field = page.find(%( .searchableSelect-shadow+.js-input )) # search input
@@ -211,6 +213,8 @@ RSpec.describe 'AI > AI Agents', type: :system do
 
           tree_select_field.find("[data-display-name='#{groups.second.name}']")
             .click
+
+          find('.js-descriptionNew').fill_in(with: 'second group description')
 
           find('.js-add').click
 
@@ -238,8 +242,8 @@ RSpec.describe 'AI > AI Agents', type: :system do
             'instruction_context' => {
               'object_attributes' => {
                 'group_id' => {
-                  groups.first.id.to_s  => '',
-                  groups.second.id.to_s => '',
+                  groups.first.id.to_s  => 'first group description',
+                  groups.second.id.to_s => 'second group description',
                 },
               },
             },
