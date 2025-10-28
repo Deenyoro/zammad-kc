@@ -78,7 +78,7 @@ describe('Ticket detail view - Ticket summary', () => {
     })
 
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
         open_questions: true,
@@ -145,7 +145,7 @@ describe('Ticket detail view - Ticket summary', () => {
     mockPermissions(['ticket.agent'])
 
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
         open_questions: true,
@@ -187,7 +187,7 @@ describe('Ticket detail view - Ticket summary', () => {
     mockPermissions(['ticket.agent'])
 
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
         open_questions: true,
@@ -231,7 +231,7 @@ describe('Ticket detail view - Ticket summary', () => {
     mockPermissions(['ticket.agent'])
 
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
         open_questions: true,
@@ -292,7 +292,7 @@ describe('Ticket detail view - Ticket summary', () => {
     mockPermissions(['ticket.agent'])
 
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
         generate_on: EnumTicketSummaryGeneration.OnTicketDetailOpening,
@@ -327,7 +327,7 @@ describe('Ticket detail view - Ticket summary', () => {
     mockPermissions(['ticket.agent'])
 
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: false,
     })
 
@@ -358,7 +358,7 @@ describe('Ticket detail view - Ticket summary', () => {
     mockPermissions(['ticket.agent'])
 
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
         generate_on: EnumTicketSummaryGeneration.OnTicketDetailOpening,
@@ -388,7 +388,7 @@ describe('Ticket detail view - Ticket summary', () => {
     mockPermissions(['ticket.agent'])
 
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
         generate_on: EnumTicketSummaryGeneration.OnTicketDetailOpening,
@@ -444,7 +444,7 @@ describe('Ticket detail view - Ticket summary', () => {
         },
       })
       mockApplicationConfig({
-        ai_provider: 'zammad_ai',
+        ai_provider: true,
         ai_assistance_ticket_summary: true,
         ai_assistance_ticket_summary_config: {
           open_questions: true,
@@ -485,7 +485,7 @@ describe('Ticket detail view - Ticket summary', () => {
       })
 
       mockApplicationConfig({
-        ai_provider: 'zammad_ai',
+        ai_provider: true,
         ai_assistance_ticket_summary: true,
         ai_assistance_ticket_summary_config: {
           open_questions: true,
@@ -514,7 +514,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     it('shows no ai provider is selected', async () => {
       mockApplicationConfig({
-        ai_provider: '',
+        ai_provider: false,
         ai_assistance_ticket_summary: true,
         ai_assistance_ticket_summary_config: {
           open_questions: true,
@@ -538,7 +538,7 @@ describe('Ticket detail view - Ticket summary', () => {
     mockPermissions(['ticket.agent'])
 
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: false,
     })
 
@@ -556,7 +556,7 @@ describe('Ticket detail view - Ticket summary', () => {
       mockPermissions(['ticket.agent'])
 
       mockApplicationConfig({
-        ai_provider: 'zammad_ai',
+        ai_provider: true,
         ai_assistance_ticket_summary: true,
         ai_assistance_ticket_summary_config: {
           open_questions: true,
@@ -583,7 +583,7 @@ describe('Ticket detail view - Ticket summary', () => {
       mockPermissions(['ticket.agent'])
 
       mockApplicationConfig({
-        ai_provider: 'zammad_ai',
+        ai_provider: true,
         ai_assistance_ticket_summary: true,
         ai_assistance_ticket_summary_config: {
           open_questions: true,
@@ -612,7 +612,7 @@ describe('Ticket detail view - Ticket summary', () => {
       mockPermissions(['ticket.agent'])
 
       mockApplicationConfig({
-        ai_provider: 'zammad_ai',
+        ai_provider: true,
         ai_assistance_ticket_summary: true,
         ai_assistance_ticket_summary_config: {
           open_questions: true,

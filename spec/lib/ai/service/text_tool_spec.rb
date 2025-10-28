@@ -32,10 +32,7 @@ You have to follow these rules:
 
   context 'when service is executed with OpenAI as provider' do
     before do
-      Setting.set('ai_provider', 'open_ai')
-      Setting.set('ai_provider_config', {
-                    token: ENV['OPEN_AI_TOKEN'],
-                  })
+      setup_ai_provider('open_ai', token: ENV['OPEN_AI_TOKEN'])
     end
 
     it 'check that grammar is correct' do
@@ -46,10 +43,7 @@ You have to follow these rules:
 
   context 'when service is executed with ZammadAI as provider' do
     before do
-      Setting.set('ai_provider', 'zammad_ai')
-      Setting.set('ai_provider_config', {
-                    token: ENV['ZAMMAD_AI_TOKEN'],
-                  })
+      setup_ai_provider('zammad_ai', token: ENV['ZAMMAD_AI_TOKEN'])
     end
 
     it 'check that grammar is correct' do
@@ -63,10 +57,7 @@ You have to follow these rules:
       setting = Setting.find_by(name: 'ai_provider_config')
       setting.update!(preferences: {})
 
-      Setting.set('ai_provider', 'zammad_ai')
-      Setting.set('ai_provider_config', {
-                    token: ENV['ZAMMAD_AI_TOKEN'],
-                  })
+      setup_ai_provider('zammad_ai', token: ENV['ZAMMAD_AI_TOKEN'])
     end
 
     context 'when neither prompt nor result contain paragraphs but have line breaks' do

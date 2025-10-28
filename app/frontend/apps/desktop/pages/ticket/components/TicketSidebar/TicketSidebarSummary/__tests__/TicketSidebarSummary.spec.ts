@@ -123,7 +123,7 @@ const ticketAIAssistanceSummarizeMock = {
 describe('TicketSidebarSummary', () => {
   it('displays correctly', async () => {
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
         open_questions: true,
@@ -181,7 +181,7 @@ describe('TicketSidebarSummary', () => {
 
   it('does not display headings which are disabled,', async () => {
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
         open_questions: false,
@@ -261,7 +261,7 @@ describe('TicketSidebarSummary', () => {
     })
 
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
         open_questions: true,
@@ -289,7 +289,7 @@ describe('TicketSidebarSummary', () => {
     })
 
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: true,
       ai_assistance_ticket_summary_config: {
         open_questions: true,
@@ -323,7 +323,7 @@ describe('TicketSidebarSummary', () => {
 
   it('shows message that user has provided already feedback', async () => {
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: true,
     })
 
@@ -354,7 +354,7 @@ describe('TicketSidebarSummary', () => {
     const runId = convertToGraphQLId('AIAnalyticsRun', 12345)
 
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: true,
     })
 
@@ -390,7 +390,7 @@ describe('TicketSidebarSummary', () => {
     const runId = convertToGraphQLId('AIAnalyticsRun', 12345)
 
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: true,
     })
 
@@ -423,7 +423,7 @@ describe('TicketSidebarSummary', () => {
     const runId = convertToGraphQLId('AIAnalyticsRun', 12345)
 
     mockApplicationConfig({
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
       ai_assistance_ticket_summary: true,
     })
 

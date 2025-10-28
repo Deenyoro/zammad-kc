@@ -27,8 +27,8 @@ class App.TicketSummary extends App.ControllerAIFeatureBase
             field.prop('checked', value)
     )
 
-  showAlert: =>
-    App.Config.get('ai_assistance_ticket_summary') && @missingProvider()
+  showAlert: ->
+    App.Config.get('ai_assistance_ticket_summary') && !App.Config.get('ai_provider')
 
   render: =>
     service_config = App.Setting.get('ai_assistance_ticket_summary_config') || {}

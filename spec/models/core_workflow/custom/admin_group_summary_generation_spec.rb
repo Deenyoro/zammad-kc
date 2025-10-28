@@ -16,7 +16,7 @@ RSpec.describe CoreWorkflow::Custom::AdminGroupSummaryGeneration, type: :model d
     before do
       allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
 
-      Setting.set('ai_provider', 'zammad_ai')
+      setup_ai_provider
       Setting.set('ai_assistance_ticket_summary', true)
     end
 
@@ -27,7 +27,7 @@ RSpec.describe CoreWorkflow::Custom::AdminGroupSummaryGeneration, type: :model d
 
   context 'when settings disabled' do
     before do
-      Setting.set('ai_provider', '')
+      unset_ai_provider
     end
 
     it 'does not show ticket generation field for group' do
@@ -39,7 +39,7 @@ RSpec.describe CoreWorkflow::Custom::AdminGroupSummaryGeneration, type: :model d
     before do
       allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
 
-      Setting.set('ai_provider', 'zammad_ai')
+      setup_ai_provider
       Setting.set('ai_assistance_ticket_summary', false)
     end
 

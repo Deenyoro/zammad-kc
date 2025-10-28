@@ -36,8 +36,7 @@ RSpec.describe AI::Service do
 
   before do
     stub_const('AI::Service::PROMPT_PATH_STRING', Rails.root.join('test/data/ai/prompts/%{service}_%{type}.text.erb').to_s)
-    stub_const('Setting::Validation::AIProvider::PROVIDERS', %w[sample_provider])
-    Setting.set('ai_provider', 'sample_provider')
+    setup_ai_provider 'sample_provider'
   end
 
   describe '#execute' do

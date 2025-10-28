@@ -16,7 +16,8 @@ RSpec.describe AI::Provider::Anthropic, required_envs: %w[ANTHROPIC_API_KEY], us
 
     Setting.set('ai_provider', 'anthropic')
     Setting.set('ai_provider_config', {
-                  token: ENV['ANTHROPIC_API_KEY'],
+                  token:    ENV['ANTHROPIC_API_KEY'],
+                  provider: 'anthropic',
                 })
   end
 

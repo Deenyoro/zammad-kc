@@ -29,7 +29,7 @@ RSpec.describe 'Ticket create > Inline Image Replacement for AI Text Tools', aut
 
     allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
 
-    Setting.set('ai_provider', 'zammad_ai')
+    setup_ai_provider
     Setting.set('ai_assistance_text_tools', true)
     Setting.set('ui_richtext_bubble_menu', true)
 

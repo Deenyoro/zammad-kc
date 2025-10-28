@@ -669,7 +669,7 @@ msgstr ""
 msgid "AI Provider"
 msgstr ""
 
-#: db/seeds/settings.rb:5993
+#: db/seeds/settings.rb:5990
 msgid "AI Provider Config"
 msgstr ""
 
@@ -702,12 +702,16 @@ msgstr ""
 msgid "AI provider"
 msgstr ""
 
-#: app/models/setting/validation/ai_provider_config.rb:35
+#: app/models/setting/validation/ai_provider_config.rb:7
 msgid "AI provider Azure configuration is incomplete"
 msgstr ""
 
-#: app/models/setting/validation/ai_provider_config.rb:33
+#: app/models/setting/validation/ai_provider_config.rb:6
 msgid "AI provider Ollama URL is not set"
+msgstr ""
+
+#: app/models/setting/validation/ai_provider_config.rb:68
+msgid "AI provider is missing"
 msgstr ""
 
 #: app/controllers/ticket/summarize_controller.rb:8
@@ -719,11 +723,11 @@ msgstr ""
 msgid "AI provider is not configured."
 msgstr ""
 
-#: app/models/setting/validation/ai_provider.rb:19
+#: app/models/setting/validation/ai_provider_config.rb:69
 msgid "AI provider is not supported"
 msgstr ""
 
-#: app/models/setting/validation/ai_provider_config.rb:37
+#: app/models/setting/validation/ai_provider_config.rb:8
 msgid "AI provider token is not set"
 msgstr ""
 
@@ -4667,6 +4671,10 @@ msgstr ""
 msgid "Defines if sipgate.io (http://www.sipgate.io) is enabled or not."
 msgstr ""
 
+#: db/seeds/settings.rb:5979
+msgid "Defines if the AI provider is configured."
+msgstr ""
+
 #: db/seeds/settings.rb:5058
 msgid "Defines if the GitHub (http://www.github.com) integration is enabled or not."
 msgstr ""
@@ -4687,7 +4695,7 @@ msgstr ""
 msgid "Defines if the application is in developer mode (all users have the same password and password reset will work without email delivery)."
 msgstr ""
 
-#: db/seeds/settings.rb:6073
+#: db/seeds/settings.rb:6070
 msgid "Defines if the bubble menu feature of the richtext editor is enabled. Note that this setting will be ignored if the writing assistant is turned on."
 msgstr ""
 
@@ -4951,7 +4959,7 @@ msgstr ""
 msgid "Defines the duration of customer activity (in seconds) on a call until the user profile dialog is shown."
 msgstr ""
 
-#: db/seeds/settings.rb:6059
+#: db/seeds/settings.rb:6056
 msgid "Defines the fixed instructions that guide the AI Writing Assistant on e.g. how to format its output."
 msgstr ""
 
@@ -6151,11 +6159,11 @@ msgstr ""
 msgid "Enable or disable the maintenance mode of Zammad. If enabled, all non-administrators get logged out and only administrators can start a new session."
 msgstr ""
 
-#: db/seeds/settings.rb:6012
+#: db/seeds/settings.rb:6009
 msgid "Enable or disable the ticket summary."
 msgstr ""
 
-#: db/seeds/settings.rb:6045
+#: db/seeds/settings.rb:6042
 msgid "Enable or disable the writing assistant text tools."
 msgstr ""
 
@@ -10057,7 +10065,7 @@ msgstr ""
 msgid "Mode"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:159
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:144
 msgid "Model"
 msgstr ""
 
@@ -13221,7 +13229,7 @@ msgstr ""
 msgid "Rewrite complex section and make it easy to understand"
 msgstr ""
 
-#: db/seeds/settings.rb:6070
+#: db/seeds/settings.rb:6067
 msgid "Richtext Bubble Menu"
 msgstr ""
 
@@ -14956,12 +14964,8 @@ msgstr ""
 msgid "Store"
 msgstr ""
 
-#: db/seeds/settings.rb:5996
+#: db/seeds/settings.rb:5993
 msgid "Stores the AI provider configuration."
-msgstr ""
-
-#: db/seeds/settings.rb:5979
-msgid "Stores the AI provider."
 msgstr ""
 
 #: db/seeds/settings.rb:5085
@@ -14972,7 +14976,7 @@ msgstr ""
 msgid "Stores the GitLab configuration."
 msgstr ""
 
-#: db/seeds/settings.rb:6026
+#: db/seeds/settings.rb:6023
 msgid "Stores the ticket summarization options (e.g. which content is visible)."
 msgstr ""
 
@@ -15424,7 +15428,7 @@ msgstr ""
 msgid "The 24 hour customer service window is now closed, no further WhatsApp messages can be sent."
 msgstr ""
 
-#: lib/monitoring_helper/health_checker/ai_provider_accessible.rb:17
+#: lib/monitoring_helper/health_checker/ai_provider_accessible.rb:15
 msgid "The AI Provider is not accessible."
 msgstr ""
 
@@ -15781,7 +15785,7 @@ msgstr ""
 msgid "The divider between TicketHook and ticket number. E. g. ': '."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:93
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:92
 #: app/assets/javascripts/app/lib/app_post/utils.coffee:1688
 msgid "The download could not be started. Please try again later."
 msgstr ""
@@ -16320,7 +16324,7 @@ msgstr ""
 msgid "The required value 'group_id' is missing."
 msgstr ""
 
-#: lib/ai/provider.rb:50
+#: lib/ai/provider.rb:59
 msgid "The response could not be processed."
 msgstr ""
 
@@ -17060,11 +17064,11 @@ msgstr ""
 msgid "This service allows you to connect %s with %s."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:26
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:25
 msgid "This service allows you to connect Zammad with an AI provider."
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:44
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:43
 msgid "This service allows you to download feedback agents provide on AI features and error details about failed AI requests."
 msgstr ""
 
@@ -17354,11 +17358,11 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:2
 #: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:7
 #: db/seeds/permissions.rb:227
-#: db/seeds/settings.rb:6009
+#: db/seeds/settings.rb:6006
 msgid "Ticket Summary"
 msgstr ""
 
-#: db/seeds/settings.rb:6023
+#: db/seeds/settings.rb:6020
 msgid "Ticket Summary Config"
 msgstr ""
 
@@ -17821,7 +17825,7 @@ msgstr ""
 msgid "Toggle the overlay"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:148
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:133
 #: app/assets/javascripts/app/controllers/api.coffee:11
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:48
 #: app/models/channel/driver/sms/massenversand.rb:44
@@ -18155,7 +18159,7 @@ msgstr ""
 msgid "UID Field"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:170
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:155
 #: app/assets/javascripts/app/views/api.jst.eco:63
 #: app/assets/javascripts/app/views/integration/check_mk.jst.eco:12
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:12
@@ -18172,11 +18176,11 @@ msgstr ""
 msgid "URL (AJAX endpoint)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:180
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:165
 msgid "URL (Completions)"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:190
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:175
 msgid "URL (Embeddings)"
 msgstr ""
 
@@ -19268,11 +19272,11 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_ai/text_tool.coffee:16
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:35
 #: db/seeds/permissions.rb:233
-#: db/seeds/settings.rb:6042
+#: db/seeds/settings.rb:6039
 msgid "Writing Assistant"
 msgstr ""
 
-#: db/seeds/settings.rb:6056
+#: db/seeds/settings.rb:6053
 msgid "Writing Assistant Fixed Instructions"
 msgstr ""
 

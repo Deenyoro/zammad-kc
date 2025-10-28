@@ -183,7 +183,7 @@ describe('basic toolbar testing', () => {
     it('hides feature if flag is not set', async () => {
       mockApplicationConfig({
         ai_assistance_text_tools: false,
-        ai_provider: 'openai',
+        ai_provider: true,
       })
 
       mockPermissions(['ticket.agent'])
@@ -205,7 +205,7 @@ describe('basic toolbar testing', () => {
     it('hides the feature if user is customer', async () => {
       mockApplicationConfig({
         ai_assistance_text_tools: true,
-        ai_provider: 'openai',
+        ai_provider: true,
       })
 
       mockPermissions(['ticket.customer'])

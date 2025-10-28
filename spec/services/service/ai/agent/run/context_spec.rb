@@ -147,7 +147,8 @@ RSpec.describe Service::AI::Agent::Run::Context, type: :service do
 
       before do
         articles
-        Setting.set('ai_provider', 'open_ai')
+
+        setup_ai_provider('open_ai')
 
         # Mock the AI provider to avoid real API calls
         allow(AI::Provider::OpenAI).to receive(:new).and_return(mock_provider)

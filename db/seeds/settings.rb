@@ -5983,15 +5983,12 @@ Setting.create_if_not_exists(
   title:       __('AI provider'),
   name:        'ai_provider',
   area:        'AI::Provider',
-  description: __('Stores the AI provider.'),
+  description: __('Defines if the AI provider is configured.'),
   options:     {},
-  state:       '',
+  state:       false,
   preferences: {
     authentication: true,
     permission:     ['admin.ai_provider'],
-    validations:    [
-      'Setting::Validation::AIProvider',
-    ],
   },
   frontend:    true,
 )

@@ -37,7 +37,7 @@ RSpec.describe Gql::Mutations::AIAssistance::TextTools::Run, :aggregate_failures
       allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
 
       Setting.set('ai_assistance_text_tools', true)
-      Setting.set('ai_provider', 'zammad_ai')
+      setup_ai_provider
 
       allow_any_instance_of(AI::Service::TextTool)
         .to receive(:execute)

@@ -10,7 +10,7 @@ RSpec.describe Service::AIAssistance::TextTools do
 
   context 'when text tool service is used' do
     before do
-      Setting.set('ai_provider', 'open_ai')
+      setup_ai_provider('open_ai')
       Setting.set('ai_assistance_text_tools', true)
 
       allow_any_instance_of(AI::Service::TextTool)

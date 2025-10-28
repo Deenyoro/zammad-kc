@@ -14,10 +14,7 @@ RSpec.describe AI::Provider::ZammadAI, required_envs: %w[ZAMMAD_AI_TOKEN], use_v
     setting = Setting.find_by(name: 'ai_provider_config')
     setting.update!(preferences: {})
 
-    Setting.set('ai_provider', 'zammad_ai')
-    Setting.set('ai_provider_config', {
-                  token: ENV['ZAMMAD_AI_TOKEN'],
-                })
+    setup_ai_provider('zammad_ai', token: ENV['ZAMMAD_AI_TOKEN'])
   end
 
   include_examples 'provider/ping!'

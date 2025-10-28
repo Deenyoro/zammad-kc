@@ -14,10 +14,7 @@ RSpec.describe AI::Provider::OpenAI, required_envs: %w[OPEN_AI_TOKEN], use_vcr: 
     setting = Setting.find_by(name: 'ai_provider_config')
     setting.update!(preferences: {})
 
-    Setting.set('ai_provider', 'open_ai')
-    Setting.set('ai_provider_config', {
-                  token: ENV['OPEN_AI_TOKEN'],
-                })
+    setup_ai_provider('open_ai', token: ENV['OPEN_AI_TOKEN'])
   end
 
   include_examples 'provider/ping!'

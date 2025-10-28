@@ -20,7 +20,6 @@ class ChannelAiProvider extends App.ControllerTabs
 
     @render()
 
-
 class AiProviderSettings extends App.Controller
   @requiredPermission: 'admin.ai_provider'
   description : __('This service allows you to connect Zammad with an AI provider.')
@@ -112,27 +111,13 @@ class ProviderForm extends App.Controller
   constructor: (content) ->
     super
 
-    @providers = @activeProviders()
+    @providers       = App.Config.get('AIProviders')
+    @sortedProviders = @getSortedProviderOptions()
 
     @render(content)
 
 
-  activeProviders: ->
-    allProviders = App.Config.get('AIProviders')
-
-    Object.entries(allProviders)
-      .filter(([_, provider]) ->
-        if typeof provider.active is 'function'
-          provider.active()
-        else
-          provider.active
-      )
-      .reduce((acc, [key, provider]) ->
-        acc[key] = provider
-        acc
-      , {})
-
-  getProviderOptions: ->
+  getSortedProviderOptions: ->
     Object
       .entries(@providers)
       .sort(([_, a], [__, b]) -> a.prio - b.prio)
@@ -207,7 +192,7 @@ class ProviderForm extends App.Controller
         name: 'provider'
         display: __('Provider')
         tag: 'select'
-        options: @getProviderOptions()
+        options: @sortedProviders
         null: true
         nulloption: true
         value: provider
@@ -219,14 +204,21 @@ class ProviderForm extends App.Controller
 
     return result if !currentProvider
 
-    providerParams = if App.Setting.get('ai_provider') == provider then params else {}
+    savedProvider = App.Setting.get('ai_provider_config')['provider']
+
+    providerParams = if savedProvider == provider then params else {}
     fields         = @getInputFields(currentProvider, providerParams)
 
-    result.concat _.map(currentProvider.fields, (field) -> fields[field])
+    currentProviderFields = if typeof currentProvider.fields is 'function'
+                              currentProvider.fields()
+                            else
+                              currentProvider.fields
+
+    result.concat _.map(currentProviderFields, (field) -> fields[field])
 
   render: (provider) ->
     config = App.Setting.get('ai_provider_config') || {}
-    current_provider = if provider != undefined then provider else App.Setting.get('ai_provider')
+    current_provider = if provider != undefined then provider else config['provider']
 
     configure_attributes = @providerConfiguration(current_provider, config)
 
@@ -243,8 +235,6 @@ class ProviderForm extends App.Controller
     $('.js-provider-submit').on('click', @update)
     $('select[name=provider]').on('change', (e) =>
       @render($(e.target).val()))
-
-
 
   update: (e) =>
     e.preventDefault()
@@ -271,14 +261,16 @@ class ProviderForm extends App.Controller
     @validateAndSave(params)
 
   validateAndSave: (params) ->
-    provider = params.provider
+    has_provider = !_.isEmpty(params.provider)
 
-    delete params.provider
+    if !has_provider
+      delete params.provider
+
     if !params.model || params.model.trim() == ''
       delete params.model
 
-    config = params
-
-    App.Setting.set('ai_provider', provider, done: -> App.Setting.set('ai_provider_config', config, notify: true))
+    App.Setting.set('ai_provider_config', params, done: ->
+      App.Setting.set('ai_provider', has_provider, notify: true)
+    )
 
 App.Config.set('Provider', { prio: 1000, name: __('Provider'), parent: '#ai', target: '#ai/provider', controller: ChannelAiProvider, permission: ['admin.ai_provider'] }, 'NavBarAdmin')

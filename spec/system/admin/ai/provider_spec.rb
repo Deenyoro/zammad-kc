@@ -3,11 +3,18 @@
 require 'rails_helper'
 
 RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
-  let(:admin) { create(:admin) }
+  let(:admin)                      { create(:admin) }
+  let(:self_hosted)                { false }
+  let(:initial_ai_provider_config) { {} }
 
   before do
-    setting = Setting.find_by(name: 'ai_provider_config')
-    setting.update!(preferences: {})
+    Setting.set('ai_provider_config', initial_ai_provider_config, validate: false)
+    Setting.set('ai_provider', initial_ai_provider_config.present?, validate: false)
+
+    if self_hosted
+      Setting.set('system_online_service', false)
+      Setting.set('developer_mode', false)
+    end
 
     result = UserAgent::Result.new(
       success: true,
@@ -33,8 +40,8 @@ RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
       await_empty_ajax_queue
 
       # Verify settings were saved
-      expect(Setting.get('ai_provider')).to eq('open_ai')
-      expect(Setting.get('ai_provider_config')).to eq({ 'token' => '1234111' })
+      expect(Setting.get('ai_provider')).to be(true)
+      expect(Setting.get('ai_provider_config')).to include({ provider: 'open_ai', token: '1234111' })
     end
   end
 
@@ -56,7 +63,28 @@ RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
         .and(have_field('Model', placeholder: AI::Provider::Anthropic::DEFAULT_OPTIONS[:model]))
 
       find('select[name=provider]').select('Azure AI')
-      expect(page).to have_field('URL').and(have_field('Token')).and(have_no_field('Model'))
+      expect(page)
+        .to have_field('URL')
+        .and(have_field('Token'))
+        .and(have_no_field('Model'))
+
+      find('select[name=provider]').select('Zammad AI')
+      expect(page)
+        .to have_no_field('Token')
+        .and(have_no_field('Model'))
+        .and(have_no_field('URL'))
+    end
+  end
+
+  context 'when self-hosted' do
+    let(:self_hosted) { true }
+
+    it 'shows Zammad AI Token field' do
+      find('select[name=provider]').select('Zammad AI')
+      expect(page)
+        .to have_field('Token')
+        .and(have_no_field('Model'))
+        .and(have_no_field('URL'))
     end
   end
 
@@ -86,8 +114,24 @@ RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
 
     expect(page).to have_text('Update successful.')
 
-    expect(Setting.get('ai_provider')).to eq('open_ai')
-    expect(Setting.get('ai_provider_config')).to include(token: token, model: model)
+    expect(Setting.get('ai_provider')).to be(true)
+    expect(Setting.get('ai_provider_config')).to include(provider: 'open_ai', token:, model:)
+  end
+
+  context 'with initial configuration' do
+    let(:initial_ai_provider_config) do
+      { provider: 'open_ai', token: '123' }
+    end
+
+    it 'saves clear configuration' do
+      find('select[name=provider]').select('-')
+      click '.js-provider-submit'
+
+      expect(page).to have_text('Update successful.')
+
+      expect(Setting.get('ai_provider')).to be(false)
+      expect(Setting.get('ai_provider_config')).to be_blank
+    end
   end
 
   it 'shows feedback & logs tab with downloads and entries' do

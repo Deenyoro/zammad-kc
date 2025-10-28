@@ -39,7 +39,7 @@ describe('Testing AI text tools', { retries: 2 }, () => {
 
     mountEditor({}, ['ticket.agent'], {
       ai_assistance_text_tools: true,
-      ai_provider: 'zammad_ai',
+      ai_provider: true,
     })
 
     cy.findByRole('textbox').type('Some text which should be checked.{selectall}')

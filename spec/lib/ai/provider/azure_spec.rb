@@ -15,14 +15,11 @@ RSpec.describe AI::Provider::Azure, required_envs: %w[AZURE_TOKEN AZURE_URL_COMP
     setting = Setting.find_by(name: 'ai_provider_config')
     setting.update!(preferences: {})
 
-    Setting.set('ai_provider', 'azure')
-    Setting.set('ai_provider_config', {
-                  token:           ENV['AZURE_TOKEN'],
-                  url_completions: ENV['AZURE_URL_COMPLETIONS'],
-
-                  # TODO: Enable it when needed.
-                  # url_embeddings:  ENV['AZURE_URL_EMBEDDINGS']
-                })
+    setup_ai_provider('azure',
+                      token:           ENV['AZURE_TOKEN'],
+                      url_completions: ENV['AZURE_URL_COMPLETIONS'],)
+    # TODO: Enable it when needed.
+    # url_embeddings:  ENV['AZURE_URL_EMBEDDINGS']
   end
 
   include_examples 'provider/ping!'

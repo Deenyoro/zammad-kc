@@ -52,7 +52,7 @@ RSpec.describe AI::Service::AIAgent, :aggregate_failures do
   let(:mock_result)    { { 'state_id' => 1, 'priority_id' => 2 } }
 
   before do
-    Setting.set('ai_provider', 'open_ai')
+    setup_ai_provider('open_ai')
 
     # Mock the provider to avoid real API calls
     allow(AI::Provider::OpenAI).to receive(:new).and_return(mock_provider)

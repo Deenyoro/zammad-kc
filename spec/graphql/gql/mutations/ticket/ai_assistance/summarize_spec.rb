@@ -42,7 +42,7 @@ RSpec.describe Gql::Mutations::Ticket::AIAssistance::Summarize, :aggregate_failu
       allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
 
       Setting.set('ai_assistance_ticket_summary', true)
-      Setting.set('ai_provider', 'zammad_ai')
+      setup_ai_provider
 
       ticket_article
 

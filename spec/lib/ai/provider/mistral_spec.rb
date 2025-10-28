@@ -17,10 +17,7 @@ RSpec.describe AI::Provider::Mistral, required_envs: %w[MISTRAL_API_KEY], use_vc
     setting = Setting.find_by(name: 'ai_provider_config')
     setting.update!(preferences: {})
 
-    Setting.set('ai_provider', 'mistral')
-    Setting.set('ai_provider_config', {
-                  token: ENV['MISTRAL_API_KEY'],
-                })
+    setup_ai_provider('mistral', token: ENV['MISTRAL_API_KEY'])
   end
 
   include_examples 'provider/ping!'

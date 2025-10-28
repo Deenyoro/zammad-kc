@@ -14,7 +14,7 @@ module Service::AI::VectorDB::Item
     end
 
     def execute
-      embedding = AI::Provider.by_name(Setting.get('ai_provider')).new.embed(input: content)
+      embedding = AI::Provider.current.new.embed(input: content)
 
       ai_vector_db.upsert(object_id: o_id, object_name:, content:, metadata:, embedding:) # rubocop:disable Rails/SkipsModelValidations
     end

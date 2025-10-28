@@ -55,10 +55,7 @@ RSpec.describe 'AI text tool result verification', :aggregate_failures, integrat
       setting = Setting.find_by(name: 'ai_provider_config')
       setting.update!(preferences: {})
 
-      Setting.set('ai_provider', 'zammad_ai')
-      Setting.set('ai_provider_config', {
-                    token: ENV['ZAMMAD_AI_TOKEN'],
-                  })
+      setup_ai_provider('zammad_ai', token: ENV['ZAMMAD_AI_TOKEN'])
     end
 
     context 'when "Rewrite complex section and make it easy to understand" is used' do
@@ -88,10 +85,7 @@ RSpec.describe 'AI text tool result verification', :aggregate_failures, integrat
 
   # context 'with Open AI provider' do
   #   before do
-  #     Setting.set('ai_provider', 'open_ai')
-  #     Setting.set('ai_provider_config', {
-  #                   token: ENV['OPEN_AI_TOKEN'],
-  #                 })
+  #     setup_ai_provider('open_ai', token: ENV['OPEN_AI_TOKEN'])
   #   end
 
   #   context 'when "Summarize section to about half its current size" is used' do
@@ -103,10 +97,7 @@ RSpec.describe 'AI text tool result verification', :aggregate_failures, integrat
 
   # context 'with Mistral provider' do
   #   before do
-  #     Setting.set('ai_provider', 'mistral')
-  #     Setting.set('ai_provider_config', {
-  #                   token: ENV['MISTRAL_API_KEY'],
-  #                 })
+  #     setup_ai_provider('mistral_ai', token: ENV['MISTRAL_API_KEY'])
   #   end
 
   #   context 'when "Summarize section to about half its current size" is used' do

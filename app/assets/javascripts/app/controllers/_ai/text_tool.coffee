@@ -51,8 +51,8 @@ class TextTool extends App.ControllerAIFeatureBase
 
     @genericController.paginate(@page || 1, params)
 
-  showAlert: =>
-    App.Config.get('ai_assistance_text_tools') and @missingProvider()
+  showAlert: ->
+    App.Config.get('ai_assistance_text_tools') and !App.Config.get('ai_provider')
 
   pageHeaderTitle: =>
     @$('.page-header-title')

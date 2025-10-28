@@ -111,7 +111,7 @@ class AI::Service
   end
 
   def provider_name
-    @provider_name ||= Setting.get('ai_provider')
+    @provider_name ||= Setting.get('ai_provider_config')&.dig(:provider)
   end
 
   def save_result(result, ai_analytics_run:)

@@ -22,7 +22,7 @@ class AI::Provider::ZammadAI < AI::Provider
         open_timeout:  4,
         read_timeout:  60,
         verify_ssl:    true,
-        bearer_token:  config[:token],
+        bearer_token:  self.class.token(config),
         total_timeout: 60,
         json:          true,
         log:           {
@@ -49,7 +49,7 @@ class AI::Provider::ZammadAI < AI::Provider
         open_timeout:  4,
         read_timeout:  60,
         verify_ssl:    true,
-        bearer_token:  config[:token],
+        bearer_token:  token(config),
         total_timeout: 60,
         json:          true,
         log:           {
@@ -66,6 +66,10 @@ class AI::Provider::ZammadAI < AI::Provider
 
   def self.base_url(config)
     ENV['ZAMMAD_AI_API_URL'] || config[:url] || ZAMMAD_AI_API_BASE_URL
+  end
+
+  def self.token(config)
+    config[:token].presence || ENV['ZAMMAD_AI_TOKEN']
   end
 
   private

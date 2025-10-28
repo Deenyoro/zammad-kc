@@ -39,7 +39,11 @@ RSpec.describe Service::AI::Agent::Run do
   let(:ai_provider) { 'open_ai' }
 
   before do
-    Setting.set('ai_provider', ai_provider)
+    if ai_provider.present?
+      setup_ai_provider(ai_provider, token: ENV['OPEN_AI_TOKEN'])
+    else
+      unset_ai_provider
+    end
   end
 
   describe '#execute' do

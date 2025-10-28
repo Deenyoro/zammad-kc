@@ -67,7 +67,7 @@ class App.WidgetTextTools extends App.Controller
       $(element).data().plugin_texttools.collection      = @all
 
   @enabled: ->
-    App.Config.get('ai_assistance_text_tools') and not _.isEmpty(App.Config.get('ai_provider'))
+    App.Config.get('ai_assistance_text_tools') and App.Config.get('ai_provider')
 
   @availableTextTools: (ce) ->
     $(ce.element).data().plugin_texttools?.collection or []

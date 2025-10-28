@@ -4,6 +4,5 @@ App.Config.set('mistral', {
   label:  __('Mistral AI')
   prio:   6000
   fields: ['token', 'model']
-  active: true
   default_model: 'mistral-medium-latest'
 }, 'AIProviders')

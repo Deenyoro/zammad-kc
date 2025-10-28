@@ -29,7 +29,8 @@ class AddAIAssistanceTicketSummarize < ActiveRecord::Migration[7.2]
         authentication: true,
         permission:     ['admin.ai'],
         validations:    [
-          'Setting::Validation::AIProvider',
+          # This validaiton is now gone
+          # 'Setting::Validation::AIProvider',
         ],
       },
       frontend:    true,

@@ -16,7 +16,12 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
 
     allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
 
-    Setting.set('ai_provider', ai_provider)
+    if ai_provider
+      setup_ai_provider(ai_provider)
+    else
+      unset_ai_provider
+    end
+
     Setting.set('ai_assistance_text_tools', ai_assistance_text_tools)
     Setting.set('ui_richtext_bubble_menu', ui_richtext_bubble_menu)
 
@@ -58,7 +63,7 @@ RSpec.describe 'Richtext Bubble Menu', authenticated_as: :authenticate, type: :s
 
   shared_examples 'not showing text tools button' do
     context 'when ai provider is not set' do
-      let(:ai_provider) { '' }
+      let(:ai_provider) { false }
 
       it 'does not show text tools button' do
         set_editor_field_value('body', input)

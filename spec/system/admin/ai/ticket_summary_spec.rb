@@ -38,7 +38,7 @@ RSpec.describe 'Manage > AI > Ticket Summary', type: :system do
 
     context 'without provider configured' do
       before do
-        Setting.set('ai_provider', '')
+        unset_ai_provider
         visit '/#ai/ticket_summary'
         page.refresh
       end

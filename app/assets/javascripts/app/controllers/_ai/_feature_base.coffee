@@ -15,11 +15,8 @@ class App.ControllerAIFeatureBase extends App.ControllerSubContent
 
     @controllerBind('config_update', @aiProviderConfigHasChanged)
 
-  missingProvider: ->
-    _.isEmpty(App.Config.get('ai_provider'))
-
-  showAlert: =>
-    @missingProvider()
+  showAlert: ->
+    !App.Config.get('ai_provider')
 
   renderAlert: =>
     @el.find('.js-missingProviderAlert').remove()

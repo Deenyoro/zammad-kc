@@ -23,7 +23,7 @@ RSpec.describe 'Ticket Zoom > Text Tools Analytics', authenticated_as: :authenti
 
     allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
 
-    Setting.set('ai_provider', 'zammad_ai')
+    setup_ai_provider
     Setting.set('ai_assistance_text_tools', true)
     Setting.set('ui_richtext_bubble_menu', true)
 

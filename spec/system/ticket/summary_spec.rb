@@ -48,7 +48,7 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
   def authenticate
     allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
 
-    Setting.set('ai_provider', ai_provider)
+    setup_ai_provider(ai_provider)
     Setting.set('ai_assistance_ticket_summary', ai_assistance_ticket_summary)
     Setting.set('ai_assistance_ticket_summary_config', {
                   open_questions:     true,

@@ -39,7 +39,7 @@ vi.mock('prosemirror-model', () => {
   }
 })
 
-describe.todo('keyboard interactions', () => {
+describe('keyboard interactions', () => {
   it('can use arrows to traverse toolbar', async () => {
     const view = renderComponent(FieldEditorActionBar, {
       props: {
@@ -223,7 +223,7 @@ describe('basic toolbar testing', () => {
     it('hides feature if flag is not set', async () => {
       mockApplicationConfig({
         ai_assistance_text_tools: false,
-        ai_provider: 'openai',
+        ai_provider: true,
       })
 
       mockPermissions(['ticket.agent'])
@@ -245,7 +245,7 @@ describe('basic toolbar testing', () => {
     it('hides the feature if user is customer', async () => {
       mockApplicationConfig({
         ai_assistance_text_tools: true,
-        ai_provider: 'openai',
+        ai_provider: true,
       })
 
       mockPermissions(['ticket.customer'])
@@ -289,7 +289,7 @@ describe('basic toolbar testing', () => {
     it.todo('can use custom text tools', async () => {
       mockApplicationConfig({
         ai_assistance_text_tools: true,
-        ai_provider: 'openai',
+        ai_provider: true,
       })
 
       mockAiAssistanceTextToolsListQuery({

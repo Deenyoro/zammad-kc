@@ -23,12 +23,21 @@ class AI::Provider
   end
 
   class << self
-    def list
-      @list ||= descendants.sort_by(&:name)
-    end
-
     def by_name(name)
       "AI::Provider::#{name.classify}".safe_constantize
+    end
+
+    def by_config(config)
+      provider_name = config&.dig(:provider)
+      return if provider_name.blank?
+
+      by_name(provider_name)
+    end
+
+    def current
+      return nil if !Setting.get('ai_provider')
+
+      by_config(Setting.get('ai_provider_config'))
     end
 
     def ping!(_config)

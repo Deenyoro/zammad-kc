@@ -16,7 +16,7 @@ RSpec.describe 'Manage > AI > Text Tool', type: :system do
       before do
         allow(AI::Provider::ZammadAI).to receive(:ping!).and_return(true)
 
-        Setting.set('ai_provider', 'zammad_ai')
+        setup_ai_provider
         Setting.set('ai_assistance_text_tools', true)
       end
 
@@ -33,7 +33,7 @@ RSpec.describe 'Manage > AI > Text Tool', type: :system do
 
     context 'without provider configured' do
       before do
-        Setting.set('ai_provider', '')
+        unset_ai_provider
         Setting.set('ai_assistance_text_tools', true)
       end
 

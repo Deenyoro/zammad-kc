@@ -14,7 +14,7 @@ class CoreWorkflow::Custom::AdminGroupSummaryGeneration < CoreWorkflow::Custom::
   end
 
   def visibility
-    return 'show' if Setting.get('ai_provider').present? && Setting.get('ai_assistance_ticket_summary')
+    return 'show' if Setting.get('ai_provider') && Setting.get('ai_assistance_ticket_summary')
 
     'remove'
   end
