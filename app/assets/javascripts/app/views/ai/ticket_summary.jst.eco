@@ -36,21 +36,13 @@
     <p id="generation-config-description" class="help-text"><%- @T('Defines global configuration when the summary will be generated in the ticket zoom.') %></p>
 
     <form class="js-ticketSummaryGenerationConfig ticket-summary-generation-form" id="ticket_summary_generation_action">
-      <div class="horizontal end">
-        <div class="form-item flex">
-          <fieldset>
-            <div class="controls controls--select">
-               <select class="form-control" name="generate_on" aria-labelledby="generation-config-label" aria-describedby="generation-config-description">
-                  <% for option in @generationOptions: %>
-                    <option value="<%- option.value %>" <% if option.selected: %>selected<% end %>><%- option.label %></option>
-                  <% end %>
-               </select>
-                <svg class="icon icon-arrow-down "><use xlink:href="assets/images/icons.svg?1752737559#icon-arrow-down"></use></svg>
-            </div>
-          </fieldset>
+      <div class="horizontal start">
+        <div class="flex form-item">
+          <div class="js-ticketSummaryGenerationConfigSelect"></div>
+          <span class="help-block"><%- @T('You can overwrite this setting for specific groups in the group manager. %l', '#manage/groups') %></span>
         </div>
         <button type="submit" class="btn btn--primary">Submit</button>
       </div>
-    </form
+    </form>
   </div>
 </div>

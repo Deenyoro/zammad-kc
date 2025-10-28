@@ -33,11 +33,29 @@ class App.TicketSummary extends App.ControllerAIFeatureBase
   render: =>
     service_config = App.Setting.get('ai_assistance_ticket_summary_config') || {}
 
-    @html App.view('ai/ticket_summary')(
+    content = $(App.view('ai/ticket_summary')(
       description: App.i18n.translateContent(@description)
       serviceOptions: @serviceOptions(service_config)
-      generationOptions: @generationOptions(service_config['generate_on'])
+    ))
+
+    select = App.UiElement.select.render(
+      name: 'generate_on'
+      value: service_config['generate_on']
+      options: [
+        {
+          name: __('On ticket detail opening')
+          value: 'on_ticket_detail_opening'
+        },
+        {
+          name: __('On ticket summary sidebar activation')
+          value: 'on_ticket_summary_sidebar_activation'
+        },
+      ]
     )
+
+    content.find('.js-ticketSummaryGenerationConfigSelect').html(select)
+
+    @html content
 
     @renderAlert()
 
@@ -88,20 +106,6 @@ class App.TicketSummary extends App.ControllerAIFeatureBase
     config = App.Setting.get('ai_assistance_ticket_summary_config') || {}
     config[key] = value
     App.Setting.set('ai_assistance_ticket_summary_config', config, failLocal: @failLocal, notify: true)
-
-  generationOptions: (selectedConfigName) ->
-    [
-      {
-        label: __('On ticket detail opening')
-        value: 'on_ticket_detail_opening'
-        selected: selectedConfigName == 'on_ticket_detail_opening'
-      },
-      {
-        label: __('On ticket summary sidebar activation')
-        value: 'on_ticket_summary_sidebar_activation'
-        selected: selectedConfigName == 'on_ticket_summary_sidebar_activation'
-      }
-    ]
 
   selectGenerationConfig: (e) ->
     e.preventDefault()
