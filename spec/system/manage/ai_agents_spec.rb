@@ -16,9 +16,9 @@ RSpec.describe 'AI > AI Agents', type: :system do
     end
   end
 
-  context 'when AI provider is configured', required_envs: %w[OPEN_AI_TOKEN] do
+  context 'when AI provider is configured' do
     before do
-      setup_ai_provider('open_ai', token: ENV['OPEN_AI_TOKEN'])
+      setup_ai_provider
     end
 
     context 'with existing AI agent(s)' do
