@@ -9,7 +9,7 @@ class App.TicketTimeAccountingType extends App.Model
   @configure_unset_default  = true
 
   @configure_attributes = [
-    { name: 'name',   display: __('Name'),   tag: 'input' },
+    { name: 'name',   display: __('Name'),   tag: 'input', translate: true },
     { name: 'active', display: __('Active'), tag: 'active',   default: true },
     { name: 'note',   display: __('Note'),   tag: 'richtext', limit: 250, null: true },
   ]
