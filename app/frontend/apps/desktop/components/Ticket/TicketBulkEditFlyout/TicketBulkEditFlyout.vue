@@ -29,6 +29,7 @@ import {
   type TicketUpdateBulkUserError,
   type TicketUpdateInput,
 } from '#shared/graphql/types.ts'
+import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 import { i18n } from '#shared/i18n.ts'
 import MutationHandler from '#shared/server/apollo/handler/MutationHandler.ts'
 import type { MutationSendError } from '#shared/types/error.ts'
@@ -287,6 +288,10 @@ const ticketIdsCount = computed(() => props.ticketIds.length)
 const schemaData = reactive({
   ticketIdsCount,
 })
+
+const formUpdaterAdditionalParams = computed(() => ({
+  ticketIds: props.ticketIds.map((id) => getIdFromGraphQLId(id)).join(','),
+}))
 </script>
 
 <template>
@@ -301,6 +306,7 @@ const schemaData = reactive({
       id="form-tickets-bulk-edit"
       ref="form"
       :form-updater-id="EnumFormUpdaterId.FormUpdaterUpdaterTicketBulkEdit"
+      :form-updater-additional-params="formUpdaterAdditionalParams"
       should-autofocus
       use-object-attributes
       :schema="formSchema"
