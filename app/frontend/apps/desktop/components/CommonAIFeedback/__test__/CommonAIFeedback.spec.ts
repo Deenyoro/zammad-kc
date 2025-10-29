@@ -100,7 +100,7 @@ describe('CommonAIFeedback', () => {
 
     await waitFor(() => expect(wrapper.getByRole('textbox')).toHaveValue('Never trust AI'))
 
-    await wrapper.events.click(wrapper.getByLabelText('Submit feedback'))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Submit Comment' }))
 
     const usageMutation = await waitForAiAnalyticsUsageMutationCalls()
 
@@ -123,7 +123,7 @@ describe('CommonAIFeedback', () => {
 
     await waitForAiAnalyticsUsageMutationCalls()
 
-    await wrapper.events.click(wrapper.getByLabelText('Cancel feedback'))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'No Comment' }))
 
     expect(wrapper.getByText('Thank you for your feedback.')).toBeInTheDocument()
     expect(wrapper.getByRole('button', { name: 'Regenerate' })).toBeInTheDocument()

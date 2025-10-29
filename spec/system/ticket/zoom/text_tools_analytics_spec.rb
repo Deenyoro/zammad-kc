@@ -102,7 +102,7 @@ RSpec.describe 'Ticket Zoom > Text Tools Analytics', authenticated_as: :authenti
 
     in_modal do
       fill_in 'comment', with: 'bad bot'
-      click '.js-aiCommentSubmit'
+      click_on 'Submit Comment'
 
       expect(page).to have_text('Thank you for your feedback.')
         .and have_no_css('.js-aiCommentField')

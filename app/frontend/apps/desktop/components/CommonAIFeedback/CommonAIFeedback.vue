@@ -10,7 +10,6 @@ import type { DeepPartial } from '#shared/types/utils.ts'
 
 import type { UiState } from '#desktop/components/CommonAIFeedback/types.ts'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
-import CommonInlineEditButtons from '#desktop/components/CommonInlineEditButtons/CommonInlineEditButtons.vue'
 
 interface Props {
   analyticsMeta: DeepPartial<AiAnalyticsMetadata>
@@ -107,14 +106,14 @@ onMounted(async () => {
           :placeholder="$t('Thanks for the feedback. Please explain what went wrong?')"
           type="textarea"
         />
-        <CommonInlineEditButtons
-          class="justify-end"
-          :submit-label="$t('Submit feedback')"
-          :cancel-label="$t('Cancel feedback')"
-          :submit-disabled="loading"
-          @submit="submitComment"
-          @cancel="cancelComment"
-        />
+        <div class="justify-center flex gap-1">
+          <CommonButton variant="secondary" @click="cancelComment">{{
+            $t('No Comment')
+          }}</CommonButton>
+          <CommonButton variant="tertiary" @click="submitComment">{{
+            $t('Submit Comment')
+          }}</CommonButton>
+        </div>
       </div>
 
       <div v-else class="flex-1">
