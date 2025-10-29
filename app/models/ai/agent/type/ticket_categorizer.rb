@@ -47,7 +47,7 @@ class AI::Agent::Type::TicketCategorizer < AI::Agent::Type
             display:                                 '',
             tag:                                     'object_attribute_options_context',
             default:                                 {},
-            limit_label:                             __('Limit Categories'),
+            limit_label:                             __('Limit categories and provide optional descriptions'),
             limit_description:                       __('All categories will be considered for categorizing tickets.'),
             table_label:                             __('Available Categories'),
             show_description:                        true,

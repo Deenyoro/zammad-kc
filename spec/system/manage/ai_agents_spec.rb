@@ -118,7 +118,7 @@ RSpec.describe 'AI > AI Agents', type: :system do
             expect(page).to have_text('This type of AI agent can dispatch incoming tickets into an appropriate group based on their content and topic.')
 
             click_on 'Next'
-            click 'label', text: 'LIMIT GROUPS'
+            click 'label', text: 'LIMIT GROUPS AND PROVIDE OPTIONAL DESCRIPTIONS'
             click_on 'Next'
 
             expect(page).to have_text('NOTE')
@@ -179,7 +179,7 @@ RSpec.describe 'AI > AI Agents', type: :system do
 
           expect(error_message).to include('Please fill')
 
-          click 'label', text: 'LIMIT GROUPS'
+          click 'label', text: 'LIMIT GROUPS AND PROVIDE OPTIONAL DESCRIPTIONS'
 
           # Check navigation to the previous step.
           click_on 'Back'
@@ -189,7 +189,7 @@ RSpec.describe 'AI > AI Agents', type: :system do
 
           click_on 'Next'
 
-          click 'label', text: 'LIMIT GROUPS'
+          click 'label', text: 'LIMIT GROUPS AND PROVIDE OPTIONAL DESCRIPTIONS'
 
           expect(page).to have_text('AVAILABLE GROUPS')
 
@@ -247,6 +247,45 @@ RSpec.describe 'AI > AI Agents', type: :system do
           },
           active:     true,
         )
+      end
+
+      context 'when using "Add All" button' do
+        let(:groups) { create_list(:group, 5) }
+        let(:admin)  { create(:admin, groups: groups) }
+
+        it 'works with Ticket Prioritizer' do
+          visit '#ai/ai_agents'
+
+          click_on 'New AI Agent'
+
+          in_modal do
+            fill_in 'name', with: 'Test Prioritizer Add All'
+            set_select_field_label('agent_type', 'Ticket Prioritizer')
+
+            click_on 'Next'
+
+            click 'label', text: 'LIMIT PRIORITIES AND PROVIDE OPTIONAL DESCRIPTIONS'
+
+            expect(page).to have_text('AVAILABLE PRIORITIES')
+
+            find('.js-add-all').click
+
+            expect(page).to have_text('1 low')
+            expect(page).to have_text('2 normal')
+            expect(page).to have_text('3 high')
+
+            expect(page).to have_no_css('.js-add-all')
+
+            click_on 'Next'
+
+            click_on 'Submit'
+          end
+
+          expect(page).to have_text('Test Prioritizer Add All')
+
+          agent = AI::Agent.last
+          expect(agent.definition['instruction_context']['object_attributes']['priority_id'].keys.count).to eq(3)
+        end
       end
     end
   end

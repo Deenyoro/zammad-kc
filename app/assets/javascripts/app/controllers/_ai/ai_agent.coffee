@@ -98,7 +98,7 @@ AIAgentModalMixin =
     'click .js-back': 'handleBack'
 
   # Set field values from params into target, but only for fields in our field list
-  setCurrentSetpFormFields: (target, params) ->
+  setCurrentSetupFormFields: (target, params) ->
 
     # Early return if no form fields to process
     return target if @stepFields.length is 0 || !params
@@ -247,7 +247,7 @@ AIAgentModalMixin =
 
   validateParams: (e) ->
     params = @formParam(e.target)
-    newParams = @setCurrentSetpFormFields(@params, params)
+    newParams = @setCurrentSetupFormFields(@params, params)
 
     @item.load newParams
 
@@ -443,7 +443,7 @@ class NewAIAgent extends App.ControllerGenericNew
     @maybeHandleJSONParams('parse')
 
     params = @formParam(e.target)
-    newParams = @setCurrentSetpFormFields(@params, params)
+    newParams = @setCurrentSetupFormFields(@params, params)
 
     @item.load(newParams)
 

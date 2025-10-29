@@ -20,7 +20,7 @@ class AI::Agent::Type::TicketGroupDispatcher < AI::Agent::Type
           display:                 '',
           tag:                     'object_attribute_options_context',
 
-          limit_label:             __('Limit Groups'),
+          limit_label:             __('Limit groups and provide optional descriptions'),
           limit_description:       __('All groups will be considered for dispatching tickets.'),
           table_label:             __('Available Groups'),
           show_description:        true,

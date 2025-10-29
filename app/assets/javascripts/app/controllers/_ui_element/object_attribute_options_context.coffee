@@ -21,6 +21,7 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
       objectAttributeDisplay: related_object_attribute.display or __('Name')
       required:               not attribute.null
       showDescription:        attribute.show_description or false
+      hideAddAll:             optionsSelected.length >= _.keys(allFlatOptions).length
     ))
 
     item.find('input[type="checkbox"]').off('click.limit_toggle').on('click.limit_toggle', (e) =>
@@ -32,6 +33,7 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
     )
 
     item.off('click', '.js-add'         ).on('click',  '.js-add',         (e) => @onAdd(e, item, attribute.name, related_object_attribute, allFlatOptions))
+    item.off('click', '.js-add-all'     ).on('click',  '.js-add-all',     (e) => @onAddAll(e, item, attribute.name, related_object_attribute, allFlatOptions))
     item.off('click', '.js-remove'      ).on('click',  '.js-remove',      (e) => @onRemove(e, item, attribute.name, related_object_attribute, allFlatOptions))
     item.off('change', '.js-description').on('change', '.js-description', (e) => @onDescriptionChange(e, item))
 
@@ -41,6 +43,10 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
 
   @renderOptionDropdownNew: (item, name, related_object_attribute, allFlatOptions) ->
     filteredOptionValues = @getFilteredOptionValues(item, allFlatOptions)
+
+    # Show/hide "Add All" button based on available options
+    addAllButton = item.find('.js-add-all')
+    addAllButton.toggleClass('hide', !filteredOptionValues?.length)
 
     attribute = {
       tag:        'tree_select',
@@ -99,6 +105,39 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
     @addValue(item, newOptionValue, newOptionDescription)
 
     @renderOptionDropdownNew(item, name, related_object_attribute, allFlatOptions)
+
+  @addRow: (item, optionValue, description, allFlatOptions) ->
+    displayValue = allFlatOptions?[optionValue]
+    return unless displayValue
+
+    shadowRow = item.find('.js-objectAttributeOptionsContextShadowItemRow')
+
+    newRow = shadowRow
+      .clone()
+      .removeClass('hide js-objectAttributeOptionsContextShadowItemRow')
+      .attr('data-id', optionValue)
+
+    newRow.find('td:first-child').text(displayValue)
+    newRow.find('textarea').val(description or '')
+
+    newRow.insertBefore(shadowRow)
+
+    @addValue(item, optionValue, description or '')
+
+  @onAddAll: (e, item, name, related_object_attribute, allFlatOptions) ->
+    e.stopPropagation()
+    e.preventDefault()
+
+    filteredOptionValues = @getFilteredOptionValues(item, allFlatOptions)
+    return if !filteredOptionValues?.length
+
+    for optionValue in filteredOptionValues
+      item.find('.js-shadow').val(optionValue)
+      item.find('.js-descriptionNew').val('')
+      @onAdd(e, item, name, related_object_attribute, allFlatOptions)
+
+    item.find('.js-shadow').val('')
+    item.find('.js-descriptionNew').val('')
 
   @onRemove: (e, item, name, related_object_attribute, allFlatOptions) ->
     e.stopPropagation()

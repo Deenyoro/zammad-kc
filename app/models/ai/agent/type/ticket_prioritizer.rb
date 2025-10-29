@@ -25,7 +25,7 @@ class AI::Agent::Type::TicketPrioritizer < AI::Agent::Type
           tag:                     'object_attribute_options_context',
           default:                 {},
 
-          limit_label:             __('Limit Priorities'),
+          limit_label:             __('Limit priorities and provide optional descriptions'),
           limit_description:       __('All priorities will be considered for prioritizing tickets.'),
           table_label:             __('Available Priorities'),
           show_description:        true,

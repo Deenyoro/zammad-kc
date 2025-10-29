@@ -52,10 +52,16 @@
           <td class="js-objectAttributeOptionsContextItemAddNew <% if !@showDescription: %>settings-list-middle<% end %>"></td>
           <% if @showDescription: %><td><textarea class="form-control js-descriptionNew"></textarea></td><% end %>
           <td class="js-objectAttributeOptionsContextItemAction <% if !@showDescription: %>settings-list-middle<% end %>">
-            <a class="btn btn--text btn--create js-add">
-              <%- @Icon('plus-small') %>
-              <%- @T('Add') %>
-            </a>
+            <div class="object-attribute-options-context-new-item-row-wrapper">
+              <a class="btn btn--text btn--create js-add">
+                <%- @Icon('plus-small') %>
+                <%- @T('Add') %>
+              </a>
+              <a class="btn btn--text btn--subtle js-add-all <% if @hideAddAll: %>hide<% end %>">
+                <%- @Icon('add-all') %>
+                <%- @T('Add All') %>
+              </a>
+            </div>
           </td>
         </tr>
       </tbody>
