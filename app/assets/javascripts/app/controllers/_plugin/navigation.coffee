@@ -7,6 +7,7 @@ class Navigation extends App.Controller
     '.search': 'searchContainer'
     '.js-global-search-result': 'searchResult'
     '.js-details-link': 'searchDetails'
+    '.js-toggleNotifications': 'toggleNotificationsButton'
 
   events:
     'click .js-toggleNotifications': 'toggleNotifications'
@@ -248,8 +249,12 @@ class Navigation extends App.Controller
     # renderPersonal
     @renderPersonal()
 
-    if @notificationWidget
-      @notificationWidget.remove()
+    @notificationWidget.remove() if @notificationWidget
+
+    if not @permissionCheck('ticket.agent')
+      @toggleNotificationsButton.addClass('u-unclickable')
+      return
+
     @notificationWidget = new App.OnlineNotificationWidget()
     @appEl.append @notificationWidget.el
 
