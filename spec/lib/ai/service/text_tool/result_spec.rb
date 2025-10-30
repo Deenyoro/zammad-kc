@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'AI text tool result verification', :aggregate_failures, integration: true, required_envs: %w[ZAMMAD_AI_TOKEN], use_vcr: true do # rubocop:disable RSpec/DescribeClass
-  shared_examples 'when result verification is performed' do |fixture_path, text_tool_name, options = {}|
+  shared_examples 'when result verification is performed' do |fixture_path, text_tool_name, options = {}, ai_service_additional_options = {}|
     context "with #{fixture_path.basename}" do
       let(:content)                        { JSON.parse(File.read(fixture_path)) }
       let(:text_tool_execution)            { content['text_tool_execution'] }
@@ -13,15 +13,13 @@ RSpec.describe 'AI text tool result verification', :aggregate_failures, integrat
       let(:text_tool)                      { AI::TextTool.find_by(name: text_tool_name) }
       let(:ai_text_tool_result) do
         AI::Service::TextTool.new(
-          context_data: {
+          context_data:       {
             instruction:        text_tool.instruction,
             fixed_instructions: Setting.get('ai_assistance_text_tools_fixed_instructions'),
             input:              input_text,
             text_tool:,
           },
-          # additional_options: {
-          #   model: 'mistral-small3.2:24b',
-          # }
+          additional_options: ai_service_additional_options
         ).execute
       end
 
@@ -79,6 +77,32 @@ RSpec.describe 'AI text tool result verification', :aggregate_failures, integrat
     context 'when "Fix spelling and grammar" is used' do
       fixture_files.each do |fixture_path|
         include_examples 'when result verification is performed', fixture_path, 'Fix spelling and grammar'
+      end
+    end
+
+    context 'when mistral model is used' do
+      context 'when "Rewrite complex section and make it easy to understand" is used' do
+        fixture_files.each do |fixture_path|
+          include_examples 'when result verification is performed', fixture_path, 'Rewrite complex section and make it easy to understand', {}, { model: 'mistral-small3.2:24b' }
+        end
+      end
+
+      context 'when "Expand draft into well-written section" is used' do
+        fixture_files.each do |fixture_path|
+          include_examples 'when result verification is performed', fixture_path, 'Expand draft into well-written section', { html_markup_present: true }, { model: 'mistral-small3.2:24b' }
+        end
+      end
+
+      context 'when "Summarize section to about half its current size" is used' do
+        fixture_files.each do |fixture_path|
+          include_examples 'when result verification is performed', fixture_path, 'Summarize section to about half its current size', {}, { model: 'mistral-small3.2:24b' }
+        end
+      end
+
+      context 'when "Fix spelling and grammar" is used' do
+        fixture_files.each do |fixture_path|
+          include_examples 'when result verification is performed', fixture_path, 'Fix spelling and grammar', {}, { model: 'mistral-small3.2:24b' }
+        end
       end
     end
   end

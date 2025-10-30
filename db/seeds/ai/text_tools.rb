@@ -36,11 +36,12 @@ AI::TextTool.create_if_not_exists(
 You are given a text in HTML format or simple plain text. The given text can be in any language.
 Always preserve the original input language. Never translate or convert it to another language.
 
-Your task is to simplify the text to improve comprehension.
+Your task is to simplify the text in the original input language to improve comprehension.
 
 You have to follow these rules:
-- Simplify complex words and phrases to make them easier to understand.
+- Simplify complex words and phrases to make them easier to understand in the original input language.
 - Keep about the same length as the original text.
+- Fix minor spelling and grammar issues when the intended meaning is clear, without adding missing information.
 - Restructuring is allowed whenever it improves comprehension, but preserving the main message and key facts is most important.
 - Always preserve existing HTML tags (for example <a>, <b>, <blockquote>, <br>, <code>, <div>, <em>, <h1>, <h2>, <h3>, <h4>, <h5>, <h6>, <hr>, <i>, <img>, <li>, <ol>, <p>, <pre>, <span>, <strong>, <table>, <tbody>, <td>, <th>, <thead>, <tr>, <u>, <ul>) exactly as in the input.
 
@@ -48,8 +49,8 @@ These examples are only to demonstrate language and HTML preservation, not to ha
 Input: 'This is John Doe from the <strong>Infrastructure Team</strong>. You are welcome to request a free export of your Zammad instance at <i>example-instance.zammad.com</i>. You are entitled to this twice a year, free of charge.'
 Output: 'This is John Doe from the <strong>Infrastructure Team</strong>. You can request a free copy of your Zammad data from <i>example-instance.zammad.com</i>. You are allowed to do this twice a year, without any cost.'
 
-Input: '<p>Microsoft Office installiert und Rechnungen auf das Postfach abgebildet.</p><p>Azure-App Daten gesendet > Herr Mustermann muss mit TestMail abklären, wie auf die gemeinsamen <a href=\"https://www.example.com/mailbox\">Mailboxes</a> zugegriffen werden kann und wird sich bei uns zurückmelden</p>'
-Output: '<p>Microsoft Office installiert und Rechnungen im Postfach verfügbar</p><p>Azure-App Daten gesendet. Herr Mustermann muss mit TestMail klären, wie auf die gemeinsamen <a href=\"https://www.example.com/mailbox\">E-Mail-Postfächer</a> zugegriffen werden kann. Er wird sich bei uns zurückmelden.</p>'
+Input: '<p>Microsoft Office installiert, Rechnungen im Postfach sichtbar.</p><p>Azure-App Daten gesendet, Herr Mustermann klärt mit TestMail, wie auf die gemeinsamen <a href=\"https://www.example.com/mailbox\">Mailboxes</a> zugegriffen werden kann.</p><ul><li>Nach dem letzten Windows 11-Update startet die VPN-Verbindung nicht mehr (\"Error: Connection failed\").</li><li>Neustart und Neuinstallation der <a href=\"https://www.example.com\">VPN-App</a> wurden bereits versucht.</li></ul>'
+Output: '<p>Microsoft Office installiert, Rechnungen im Postfach verfügbar.</p><p>Azure-App Daten gesendet, Herr Mustermann klärt mit TestMail, wie auf die gemeinsamen <a href=\"https://www.example.com/mailbox\">E-Mail-Postfächer</a> zugegriffen werden kann.</p><ul><li>Nach dem letzten Windows 11-Update startet die VPN-Verbindung nicht mehr (\"Error: Connection failed\").</li><li>Neustart und Neuinstallation der <a href=\"https://www.example.com\">VPN-App</a> wurden bereits versucht.</li></ul>'
 
 Input: '<p>Echa un vistazo a los desencadenantes de la documentación administrativa de Zammad.</p>'
 Output: '<p>Consulte los desencadenantes en la documentación de administración de Zammad.</p>'",
