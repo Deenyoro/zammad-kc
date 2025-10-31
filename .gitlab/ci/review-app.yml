@@ -19,13 +19,23 @@
           environment:
             - ZAMMAD_HTTP_TYPE=https
             - ZAMMAD_FQDN=${APP_FQDN}
+            - ZAMMAD_AI_TOKEN=${ZAMMAD_AI_TOKEN}
         zammad-railsserver:
+          environment:
+            - ZAMMAD_AI_TOKEN=${ZAMMAD_AI_TOKEN}
           ports:
             - "127.0.0.1:${APP_PORT}:3000"
+        zammad-scheduler:
+          environment:
+            - ZAMMAD_AI_TOKEN=${ZAMMAD_AI_TOKEN}
         zammad-websocket:
+          environment:
+            - ZAMMAD_AI_TOKEN=${ZAMMAD_AI_TOKEN}
           ports:
             - "127.0.0.1:${WS_PORT}:6042"
         zammad-backup:
+          environment:
+            - ZAMMAD_AI_TOKEN=${ZAMMAD_AI_TOKEN}
           profiles:
             - do-not-start
       YML_FILE
