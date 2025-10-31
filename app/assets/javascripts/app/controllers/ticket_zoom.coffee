@@ -331,14 +331,9 @@ class App.TicketZoom extends App.Controller
     # remember for later
     return if params.type is 'init' && !@shown
 
-    if params.article_id
-      article_id = params.article_id
-      params.article_id = undefined
-    else if @pagePositionData
-      article_id = @pagePositionData
-      @pagePositionData = undefined
-
     # scroll to article if given
+    # only switch if url contains the article id so it does not always move to the article on opening
+    article_id = window.location.hash.match(/ticket\/zoom\/\d+\/(\d+)/)?[1]
     if article_id && article_id isnt @last_article_id
       @scrollToPosition('article', 300, article_id)
 
@@ -685,8 +680,6 @@ class App.TicketZoom extends App.Controller
       @callbackDelayedShow = undefined
 
     if !@initDone
-      if @article_id
-        @pagePositionData = @article_id
       @pagePosition(type: 'init')
       @positionPageHeaderStart()
       @initDone = true
