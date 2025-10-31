@@ -1,1 +1,1 @@
-../.dev/agent-instructions.md
+../.dev/ai-agent-instructions.md
