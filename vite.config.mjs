@@ -1,5 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+/// <reference types="vitest/config" />
+
 import { createRequire } from 'module'
 import { readFileSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
@@ -154,8 +156,8 @@ export default defineConfig(({ mode, command }) => {
     test: {
       globals: true,
       // narrowing down test folder speeds up fast-glob in Vitest
-      dir: 'app/frontend',
-      setupFiles: ['app/frontend/tests/vitest.setup.ts'],
+      root: './app/frontend/apps',
+      setupFiles: ['./tests/vitest.setup.ts'],
       environment: 'jsdom',
       clearMocks: true,
       css: false,
