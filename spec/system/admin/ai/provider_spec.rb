@@ -140,11 +140,8 @@ RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
     end
 
     within '#c-feedback-logs' do
-      feedback_link = find('.js-downloadFeedback')
-      logs_link     = find('.js-downloadErrorLogs')
-
-      expect(feedback_link).to have_text('Download Feedback')
-      expect(logs_link).to have_text('Download Error Logs')
+      expect(page).to have_text('DOWNLOAD FEEDBACK')
+        .and have_text('DOWNLOAD ERROR LOGS')
     end
   end
 
@@ -154,12 +151,13 @@ RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
 
       expect(page).to have_text('This service allows you to download feedback agents provide on AI features and error details about failed AI requests.')
 
-      click_on 'Download Feedback'
+      click '.js-downloadFeedback'
 
-      click_on 'Download Error Logs'
+      click '.js-downloadErrorLogs'
 
       # we can't test the download itself, but we can check if the button is still there so we didn't redirect
-      expect(page).to have_text('Download Feedback')
+      expect(page).to have_text('DOWNLOAD FEEDBACK')
+        .and have_text('DOWNLOAD ERROR LOGS')
     end
   end
 end
