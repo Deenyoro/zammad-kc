@@ -287,6 +287,19 @@ const onContextClick = () => {
 .Content {
   word-break: normal;
   overflow-wrap: anywhere;
+
+  &:deep(img, svg) {
+    display: inline;
+  }
+
+  &:deep(pre) {
+    overflow-x: auto;
+  }
+
+  /* Wrap long lines in code blocks. */
+  &:deep(code) {
+    white-space: pre-wrap;
+  }
 }
 
 .Article:not(.Internal) {

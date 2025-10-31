@@ -76,7 +76,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="Content relative p-3 transition-[padding]"
+    class="Content overflow-hidden relative p-3 transition-[padding]"
     :class="[
       bodyClasses,
       {
@@ -150,6 +150,11 @@ onMounted(() => {
   }
 
   /* Wrap long lines in code blocks. */
+
+  &:deep(pre) {
+    display: block;
+    overflow-x: auto;
+  }
 
   &:deep(code) {
     white-space: pre-wrap;
