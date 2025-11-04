@@ -70,7 +70,6 @@
     - |
       cat - <<JSON_FILE > tmp/auto_wizard.json
       {
-        "Token": "${CI_JOB_TOKEN}",
         "Users": [
           {
             "login": "admin@example.com",
@@ -228,7 +227,7 @@
     DOCKER_COMPOSE_COMMAND: docker compose -f docker-compose.yml -f docker-compose.review-app.yml -p ${APP_NAME}
   environment:
     name: ${APP_NAME}
-    url: https://${APP_FQDN}#getting_started/auto_wizard/${CI_JOB_TOKEN}
+    url: https://${APP_FQDN}#getting_started/auto_wizard
   rules:
     - if: $CI_MERGE_REQUEST_ID
       when: manual
