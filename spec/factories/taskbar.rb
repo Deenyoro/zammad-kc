@@ -15,7 +15,8 @@ FactoryBot.define do
         ticket { create(:ticket) } # rubocop:disable FactoryBot/FactoryAssociationWithStrategy
       end
 
-      key { "Ticket-#{ticket.id}" }
+      key    { "Ticket-#{ticket.id}" }
+      params { { ticket_id: ticket.id } }
     end
 
     trait :with_user do
@@ -23,7 +24,17 @@ FactoryBot.define do
         user { create(:user) } # rubocop:disable FactoryBot/FactoryAssociationWithStrategy
       end
 
-      key { "User-#{user.id}" }
+      key    { "User-#{user.id}" }
+      params { { user_id: user.id } }
+    end
+
+    trait :with_organization do
+      transient do
+        organization { create(:organization) } # rubocop:disable FactoryBot/FactoryAssociationWithStrategy
+      end
+
+      key    { "Organization-#{organization.id}" }
+      params { { organization_id: organization.id } }
     end
 
     trait :with_search do

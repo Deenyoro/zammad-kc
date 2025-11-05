@@ -11,6 +11,7 @@ import {
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
 import { useRecentSearches } from '#shared/composables/useRecentSearches.ts'
 import { useTouchDevice } from '#shared/composables/useTouchDevice.ts'
+import { getApolloClient } from '#shared/server/apollo/client.ts'
 import MutationHandler from '#shared/server/apollo/handler/MutationHandler.ts'
 import QueryHandler from '#shared/server/apollo/handler/QueryHandler.ts'
 import SubscriptionHandler from '#shared/server/apollo/handler/SubscriptionHandler.ts'
@@ -123,6 +124,9 @@ const confirmClearRecentViewed = async () => {
   if (!confirmed) return
 
   recentViewResetMutation.send().then(() => {
+    // Evict the list cache immediately, before the subscription update comes in.
+    getApolloClient().cache.evict({ fieldName: 'userCurrentRecentViewList' })
+
     notify({
       id: 'recent-viewed-cleared',
       type: NotificationTypes.Success,

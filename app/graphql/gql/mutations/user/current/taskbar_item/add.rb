@@ -16,15 +16,23 @@ module Gql::Mutations
         preferences: { dirty: input[:dirty].presence || false }
       )
 
-      begin
-        taskbar_item = Taskbar.create!(hash)
-      rescue ActiveRecord::RecordInvalid
-        # noop
+      taskbar_item = get_taskbar_item(hash)
+
+      if (object = taskbar_item.to_object)
+        ::OnlineNotification.mark_as_seen!(object, context.current_user)
       end
 
-      taskbar_item ||= Taskbar.where(user: context.current_user, app: input[:app], key: input[:key]).first
-
       { taskbar_item: }
+    end
+
+    private
+
+    def get_taskbar_item(hash)
+      Taskbar.create!(hash)
+    rescue ActiveRecord::RecordInvalid
+      Taskbar
+        .where(user: context.current_user, app: hash[:app], key: hash[:key])
+        .first
     end
   end
 end

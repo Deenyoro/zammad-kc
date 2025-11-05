@@ -713,4 +713,44 @@ RSpec.describe OnlineNotification, type: :model do
       end
     end
   end
+
+  describe '.mark_as_seen!' do
+    let(:user) { create(:agent, groups: [group]) }
+    let(:group)        { create(:group) }
+    let(:ticket)       { create(:ticket, group:) }
+    let(:other_ticket) { create(:ticket, group:) }
+
+    let(:notification) { create(:online_notification, o: ticket, user:, seen: false) }
+    let(:notification_other_user)   { create(:online_notification, o: ticket, user: create(:agent), seen: false) }
+    let(:notification_other_ticket) { create(:online_notification, o: other_ticket, user:, seen: false) }
+    let(:notification_seen)         { create(:online_notification, o: ticket, user:, seen: true) }
+    let(:notification_other)        { create(:online_notification, o: ticket, user:, seen: false) }
+
+    context 'when many notifications exist' do
+      before do
+        [notification, notification_other_user, notification_other_ticket, notification_seen, notification_other]
+          .each { allow(it).to receive(:update!).and_call_original }
+      end
+
+      it 'updates all unseen notifications for the object/user pair' do
+        expect { described_class.mark_as_seen!(ticket, user) }
+          .to change { notification.reload.updated_at }
+          .and change { notification_other.reload.updated_at }
+          .and not_change { notification_other_user.reload.updated_at }
+          .and not_change { notification_other_ticket.reload.updated_at }
+      end
+
+      it 'triggers subscriptions only once' do
+        allow(described_class).to receive(:trigger_subscriptions).and_call_original
+        described_class.mark_as_seen!(ticket, user)
+        expect(described_class).to have_received(:trigger_subscriptions).once
+      end
+    end
+
+    it 'handles no-unseen-notifications case gracefully' do
+      allow(described_class).to receive(:trigger_subscriptions).and_call_original
+      described_class.mark_as_seen!(ticket, user)
+      expect(described_class).not_to have_received(:trigger_subscriptions)
+    end
+  end
 end

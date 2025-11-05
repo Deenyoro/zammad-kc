@@ -372,13 +372,15 @@ RSpec.describe Taskbar, performs_jobs: true, type: :model do
     let(:organization) { create(:organization) }
     let(:user)         { create(:user) }
 
-    let(:taskbar_ticket)       { create(:taskbar, params: { ticket_id: ticket.id }) }
-    let(:taskbar_ticket2)      { create(:taskbar, params: { ticket_id: ticket2.id }) }
-    let(:taskbar_organization) { create(:taskbar, params: { organization_id: organization.id }) }
-    let(:taskbar_user)         { create(:taskbar, params: { user_id: user.id }) }
+    let(:taskbar_ticket)       { create(:taskbar, :with_ticket, ticket:) }
+    let(:taskbar_ticket2)      { create(:taskbar, :with_ticket, ticket: ticket2) }
+    let(:taskbar_organization) { create(:taskbar, :with_organization, organization:) }
+    let(:taskbar_user)         { create(:taskbar, :with_user, user:) }
+    let(:taskbar_search)       { create(:taskbar, :with_search) }
+    let(:taskbar_new_ticket)   { create(:taskbar, :with_new_ticket) }
 
     before do
-      taskbar_ticket && taskbar_ticket2 && taskbar_organization && taskbar_user
+      taskbar_ticket && taskbar_ticket2 && taskbar_organization && taskbar_user && taskbar_search && taskbar_new_ticket
     end
 
     it 'returns object ids' do
@@ -395,6 +397,62 @@ RSpec.describe Taskbar, performs_jobs: true, type: :model do
         user_ids:         [user.id],
         organization_ids: []
       )
+    end
+  end
+
+  describe '#to_object' do
+    context 'when a taskbar has a related object' do
+      let(:ticket)  { create(:ticket) }
+      let(:taskbar) { create(:taskbar, :with_ticket, ticket:) }
+
+      it 'returns the related object' do
+        expect(taskbar.to_object).to eq(ticket)
+      end
+    end
+
+    context 'when a taskbar has no related object' do
+      let(:taskbar) { create(:taskbar, :with_new_ticket) }
+
+      it 'returns nil' do
+        expect(taskbar.to_object).to be_nil
+      end
+    end
+  end
+
+  describe '#to_object_class' do
+    context 'when a taskbar has a related object' do
+      let(:taskbar) { create(:taskbar, :with_organization) }
+
+      it 'returns the related object' do
+        expect(taskbar.to_object_class).to eq(Organization)
+      end
+    end
+
+    context 'when a taskbar has no related object' do
+      let(:taskbar) { create(:taskbar, :with_new_ticket) }
+
+      it 'returns nil' do
+        expect(taskbar.to_object_class).to be_nil
+      end
+    end
+  end
+
+  describe '#to_object_id' do
+    context 'when a taskbar has a related object' do
+      let(:user)    { create(:user) }
+      let(:taskbar) { create(:taskbar, :with_user, user:) }
+
+      it 'returns the related object' do
+        expect(taskbar.to_object_id).to eq(user.id)
+      end
+    end
+
+    context 'when a taskbar has no related object' do
+      let(:taskbar) { create(:taskbar, :with_new_ticket) }
+
+      it 'returns nil' do
+        expect(taskbar.to_object_id).to be_nil
+      end
     end
   end
 
@@ -430,7 +488,7 @@ RSpec.describe Taskbar, performs_jobs: true, type: :model do
 
       context 'when owner has agent access to the ticket' do
         let(:ticket) { create(:ticket) }
-        let(:user) { create(:agent, groups: [ticket.group]) }
+        let(:user)   { create(:agent, groups: [ticket.group]) }
 
         it { is_expected.to be_target_accessible_to_owner }
       end

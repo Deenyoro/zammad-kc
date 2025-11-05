@@ -262,6 +262,22 @@ returns
   end
   private_class_method :seen_state_not_merged_owner?
 
+  # Marks all notifications for object/user pair as seen.
+  # Also makes sure to trigger subscription only once.
+  def self.mark_as_seen!(object, user)
+    notifications = list_by_object(object.class.name, object.id).where(seen: false, user:)
+
+    without_callback(:commit, :after, :trigger_subscriptions) do
+      notifications.each { it.update!(seen: true) }
+    end
+
+    return if notifications.empty?
+
+    ApplicationModel.current_transaction.after_commit do
+      trigger_subscriptions(user)
+    end
+  end
+
   private
 
   def notify_clients_after_change

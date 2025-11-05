@@ -84,8 +84,6 @@ RSpec.describe 'Desktop > Ticket > Online Notifications', app: :desktop_view, au
         click_on "#{agent_b.fullname} created ticket"
       end
 
-      wait_for_mutation('onlineNotificationSeen')
-
       expect(page).to have_current_path("/desktop/tickets/#{ticket_b.id}")
 
       find('button[aria-label="Show notifications"]').click

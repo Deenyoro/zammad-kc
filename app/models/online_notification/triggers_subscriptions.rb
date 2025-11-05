@@ -9,6 +9,12 @@ module OnlineNotification::TriggersSubscriptions
   end
 
   def trigger_subscriptions
-    Gql::Subscriptions::OnlineNotificationsCount.trigger(user, scope: user.id)
+    self.class.trigger_subscriptions(user)
+  end
+
+  class_methods do
+    def trigger_subscriptions(user)
+      Gql::Subscriptions::OnlineNotificationsCount.trigger(user, scope: user.id)
+    end
   end
 end

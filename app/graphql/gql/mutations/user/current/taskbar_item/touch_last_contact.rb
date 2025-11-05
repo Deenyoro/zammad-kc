@@ -12,6 +12,10 @@ module Gql::Mutations
     def resolve(taskbar_item:)
       taskbar_item.touch_last_contact!
 
+      if (object = taskbar_item.to_object)
+        ::OnlineNotification.mark_as_seen!(object, context.current_user)
+      end
+
       { taskbar_item: }
     end
   end

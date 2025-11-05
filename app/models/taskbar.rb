@@ -46,6 +46,34 @@ class Taskbar < ApplicationModel
 
   scope :app, ->(app) { where(app:) }
 
+  def to_object_class
+    case params
+    in { user_id: }
+      User
+    in { organization_id: }
+      Organization
+    in { ticket_id: }
+      Ticket
+    else
+    end
+  end
+
+  def to_object_id
+    case params
+    in { user_id: }
+      user_id.to_i
+    in { organization_id: }
+      organization_id.to_i
+    in { ticket_id: }
+      ticket_id.to_i
+    else
+    end
+  end
+
+  def to_object
+    to_object_class&.find_by(id: to_object_id)
+  end
+
   # Returns IDs of objects referenced by the taskbars.
   # Works on scopes, relations etc.
   #
@@ -57,15 +85,12 @@ class Taskbar < ApplicationModel
   #
   def self.to_object_ids
     all.each_with_object({ user_ids: [], organization_ids: [], ticket_ids: [] }) do |elem, memo|
-      case elem.params
-      in { user_id: }
-        memo[:user_ids] << user_id.to_i
-      in { organization_id: }
-        memo[:organization_ids] << organization_id.to_i
-      in { ticket_id: }
-        memo[:ticket_ids] << ticket_id.to_i
-      else
-      end
+      object_id = elem.to_object_id
+      next if object_id.blank?
+
+      key = "#{elem.to_object_class.name.downcase}_ids"
+
+      memo[key.to_sym] << elem.to_object_id
     end
   end
 
