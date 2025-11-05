@@ -231,7 +231,7 @@ Permission.create_if_not_exists(
 Permission.create_if_not_exists(
   name:        'admin.ai_assistance_text_tools',
   label:       __('Writing Assistant'),
-  description: __('Manage writing asssistant text tools of your system.'),
+  description: __('Manage writing assistant text tools of your system.'),
   preferences: { prio: 1335 }
 )
 Permission.create_if_not_exists(

@@ -1,7 +1,7 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class ExcelSheet::AI::Analytics::WithUsage < ExcelSheet
-  TITLE               = __('AI Analytics Runs With Usage').freeze
+  TITLE               = __('AI usage and feedback log').freeze
   PRETTY_JSON_COLUMNS = %i[content payload context].freeze
 
   attr_reader :entries

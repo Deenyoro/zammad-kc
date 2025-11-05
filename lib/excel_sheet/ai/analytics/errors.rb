@@ -1,7 +1,7 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class ExcelSheet::AI::Analytics::Errors < ExcelSheet
-  TITLE               = __('AI Analytics Runs Errors').freeze
+  TITLE               = __('AI error log').freeze
   PRETTY_JSON_COLUMNS = %i[error payload context].freeze
 
   attr_reader :entries
