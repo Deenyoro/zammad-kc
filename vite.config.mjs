@@ -156,7 +156,7 @@ export default defineConfig(({ mode, command }) => {
     test: {
       globals: true,
       // narrowing down test folder speeds up fast-glob in Vitest
-      root: './app/frontend/apps',
+      root: './app/frontend',
       setupFiles: ['./tests/vitest.setup.ts'],
       environment: 'jsdom',
       clearMocks: true,
