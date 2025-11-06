@@ -117,15 +117,14 @@ class UserAgent
 
   def self.set_params(request, params, options)
     if options[:json]
-      if !request.is_a?(Net::HTTP::Get) # GET requests pass params in query, see 'parse_uri'.
-        request.add_field('Content-Type', 'application/json; charset=utf-8')
-        if params.present?
-          request.body = params.to_json
-        end
+      request.add_field('Content-Type', 'application/json; charset=utf-8')
+      if params.present?
+        request.body = params.to_json
       end
     elsif params.present?
       request.set_form_data(params)
     end
+
     request
   end
 
@@ -325,7 +324,7 @@ class UserAgent
     request = set_headers(request, options)
 
     # set params for non-get requests
-    if method != :get
+    if !request.is_a?(Net::HTTP::Get)
       request = set_params(request, params, options)
     end
 

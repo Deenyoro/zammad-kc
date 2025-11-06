@@ -259,7 +259,7 @@ RSpec.describe MicrosoftGraph, :aggregate_failures, integration: true, required_
     end
   end
 
-  describe 'retry-after handling', use_vcr: false do
+  describe 'retry-after handling', required_envs: [], use_vcr: false do
     let(:client) { described_class.new(access_token: 'token', mailbox: 'me') }
     let(:body) do
       '{

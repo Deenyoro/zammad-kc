@@ -344,7 +344,7 @@ RSpec.describe UserAgent, :aggregate_failures do
                 'method'                 => 'post',
                 'submitted'              => nil,
                 'body'                   => ['raw body'],
-                'content_type_requested' => 'application/x-www-form-urlencoded',
+                'content_type_requested' => nil,
               }
             end
 
@@ -666,7 +666,6 @@ RSpec.describe UserAgent, :aggregate_failures do
             let(:code) { '200' }
             let(:content_type)   { 'application/json; charset=utf-8' }
             let(:request_url)    { "#{host}/test_bearer_auth/delete/1" }
-            let(:request_params) { { submitted: 'some value' } }
             let(:bearer_token)   { 'test_bearer_123' }
             let(:expected_body) do
               {
