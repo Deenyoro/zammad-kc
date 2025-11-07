@@ -14,7 +14,7 @@ import type { QuickSearchPluginProps } from '../../types.ts'
 const props = defineProps<QuickSearchPluginProps>()
 
 const itemLabel = computed(() => {
-  if (props.mode === 'recently-viewed') {
+  if (props.mode === 'recently-closed') {
     return (props.item as TicketById).title
   }
 

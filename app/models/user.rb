@@ -14,6 +14,7 @@ class User < ApplicationModel
   include HasObjectManagerAttributes
   include HasTaskbars
   include HasTwoFactor
+  include HasRecentCloses
   include CanSelector
   include CanPerformChanges
   include User::Assets
@@ -43,6 +44,7 @@ class User < ApplicationModel
   has_many                :owner_tickets,          class_name: 'Ticket', foreign_key: :owner_id, inverse_of: :owner
   has_many                :overview_sortings,      dependent: :destroy
   has_many                :created_recent_views,   class_name: 'RecentView', foreign_key: :created_by_id, dependent: :destroy, inverse_of: :created_by
+  has_many                :recent_closes,          dependent: :delete_all
   has_many                :data_privacy_tasks,     as: :deletable
   belongs_to              :organization,           inverse_of: :members, optional: true
 

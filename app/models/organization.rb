@@ -12,6 +12,7 @@ class Organization < ApplicationModel
   include ChecksHtmlSanitized
   include HasObjectManagerAttributes
   include HasTaskbars
+  include HasRecentCloses
   include CanSelector
   include CanPerformChanges
 

@@ -2,11 +2,22 @@
 
 require 'rails_helper'
 
-RSpec.describe Gql::Queries::User::Current::RecentView::List, type: :graphql do
+RSpec.describe Gql::Queries::User::Current::RecentClose::List, type: :graphql do
+  let(:limit)                                     { nil }
+  let(:variables)                                 { { limit: limit } }
+  let(:group)                                     { create(:group) }
+  let(:customer)                                  { create(:customer) }
+  let(:ticket)                                    { create(:ticket, group:, customer:) }
+  let(:inaccessible_customer_ticket)              { create(:ticket, customer:) }
+  let(:user)                                      { create(:agent, groups: [group]) }
+  let(:recent_close_ticket)                       { create(:recent_close, user:, recently_closed_object: ticket, updated_at: 1.minute.ago) }
+  let(:recent_close_user)                         { create(:recent_close, user:, recently_closed_object: customer) }
+  let(:recent_close_inaccessible_customer_ticket) { create(:recent_close, user: customer, recently_closed_object: inaccessible_customer_ticket) }
+
   let(:query) do
     <<~QUERY
-      query userCurrentRecentViewList($limit: Int) {
-        userCurrentRecentViewList(limit: $limit) {
+      query userCurrentRecentCloseList($limit: Int) {
+        userCurrentRecentCloseList(limit: $limit) {
           __typename
           ... on Ticket {
             id
@@ -21,23 +32,15 @@ RSpec.describe Gql::Queries::User::Current::RecentView::List, type: :graphql do
       }
     QUERY
   end
-  let(:limit)                        { nil }
-  let(:variables)                    { { limit: limit } }
-  let(:group)                        { create(:group) }
-  let(:customer)                     { create(:customer) }
-  let(:ticket)                       { create(:ticket, group:, customer:) }
-  let(:inaccessible_customer_ticket) { create(:ticket, customer:) }
-  let(:user)                         { create(:agent, groups: [group]) }
 
   before do
-    RecentView.log('Ticket', ticket.id, user)
-    RecentView.log('User', customer.id, user)
-    RecentView.log('Ticket', inaccessible_customer_ticket.id, user)
+    recent_close_ticket && recent_close_user && recent_close_inaccessible_customer_ticket
+
     gql.execute(query, variables: variables)
   end
 
   context 'with an agent', authenticated_as: :user do
-    it 'returns data' do
+    it 'returns expected data' do
       expect(gql.result.data).to eq(
         [
           { '__typename' => 'User', 'id' => gql.id(customer) },

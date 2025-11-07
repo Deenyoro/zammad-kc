@@ -19,9 +19,9 @@ import SubscriptionHandler from '#shared/server/apollo/handler/SubscriptionHandl
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonSectionCollapse from '#desktop/components/CommonSectionCollapse/CommonSectionCollapse.vue'
 import QuickSearchResultList from '#desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue'
-import { useUserCurrentRecentViewResetMutation } from '#desktop/entities/user/current/graphql/mutations/userCurrentRecentViewReset.api.ts'
-import { useUserCurrentRecentViewListQuery } from '#desktop/entities/user/current/graphql/queries/userCurrentRecentViewList.api.ts'
-import { useUserCurrentRecentViewUpdatesSubscription } from '#desktop/entities/user/current/graphql/subscriptions/userCurrentRecentViewUpdates.api.ts'
+import { useUserCurrentRecentCloseResetMutation } from '#desktop/entities/user/current/graphql/mutations/userCurrentRecentCloseReset.api.ts'
+import { useUserCurrentRecentCloseListQuery } from '#desktop/entities/user/current/graphql/queries/userCurrentRecentCloseList.api.ts'
+import { useUserCurrentRecentCloseUpdatesSubscription } from '#desktop/entities/user/current/graphql/subscriptions/userCurrentRecentCloseUpdates.api.ts'
 
 import { searchPluginByName } from '../plugins/index.ts'
 
@@ -50,25 +50,25 @@ const { isTouchDevice } = useTouchDevice()
 const { ADD_RECENT_SEARCH_DEBOUNCE_TIME, recentSearches, addSearch, clearSearches, removeSearch } =
   useRecentSearches()
 
-const recentViewListQuery = new QueryHandler(
-  useUserCurrentRecentViewListQuery({
+const recentCloseListQuery = new QueryHandler(
+  useUserCurrentRecentCloseListQuery({
     limit: 10,
   }),
 )
 
-const recentViewListQueryResult = recentViewListQuery.result()
+const recentCloseListQueryResult = recentCloseListQuery.result()
 
-const recentViewListItems = computed(
-  () => recentViewListQueryResult.value?.userCurrentRecentViewList ?? [],
+const recentCloseListItems = computed(
+  () => recentCloseListQueryResult.value?.userCurrentRecentCloseList ?? [],
 )
 
-const recentViewUpdatesSubscription = new SubscriptionHandler(
-  useUserCurrentRecentViewUpdatesSubscription(),
+const recentCloseUpdatesSubscription = new SubscriptionHandler(
+  useUserCurrentRecentCloseUpdatesSubscription(),
 )
 
-recentViewUpdatesSubscription.onResult(({ data }) => {
-  if (data?.userCurrentRecentViewUpdates) {
-    recentViewListQuery.refetch()
+recentCloseUpdatesSubscription.onResult(({ data }) => {
+  if (data?.userCurrentRecentCloseUpdates) {
+    recentCloseListQuery.refetch()
   }
 })
 
@@ -113,24 +113,24 @@ const confirmClearRecentSearches = async () => {
   })
 }
 
-const recentViewResetMutation = new MutationHandler(useUserCurrentRecentViewResetMutation())
+const recentCloseResetMutation = new MutationHandler(useUserCurrentRecentCloseResetMutation())
 
-const confirmClearRecentViewed = async () => {
+const confirmClearRecentlyClosed = async () => {
   const confirmed = await waitForConfirmation(
-    __('Are you sure? Your recently viewed items will get lost.'),
+    __('Are you sure? Your recently closed items will get lost.'),
     { fullscreen: true },
   )
 
   if (!confirmed) return
 
-  recentViewResetMutation.send().then(() => {
+  recentCloseResetMutation.send().then(() => {
     // Evict the list cache immediately, before the subscription update comes in.
-    getApolloClient().cache.evict({ fieldName: 'userCurrentRecentViewList' })
+    getApolloClient().cache.evict({ fieldName: 'userCurrentRecentCloseList' })
 
     notify({
-      id: 'recent-viewed-cleared',
+      id: 'recently-closed-cleared',
       type: NotificationTypes.Success,
-      message: __('Recently viewed items were cleared successfully.'),
+      message: __('Recently closed items were cleared successfully.'),
     })
   })
 }
@@ -146,9 +146,9 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
       :debounce-time="DEBOUNCE_TIME"
     />
 
-    <template v-else-if="recentSearches.length > 0 || recentViewListItems.length > 0">
+    <template v-else-if="recentSearches.length || recentCloseListItems.length">
       <CommonSectionCollapse
-        v-if="recentSearches.length > 0"
+        v-if="recentSearches.length"
         id="page-recent-searches"
         :title="__('Recent searches')"
         :no-header="collapsed"
@@ -199,33 +199,34 @@ const { resetQuickSearchInputField } = useQuickSearchInput()
       </CommonSectionCollapse>
 
       <CommonSectionCollapse
-        v-if="recentViewListItems.length > 0"
-        id="page-recently-viewed"
-        :title="__('Recently viewed')"
+        v-if="recentCloseListItems.length"
+        id="page-recently-closed"
+        :title="__('Recently closed')"
         :no-header="collapsed"
         no-collapse
       >
         <template #default="{ headerId }">
           <nav :aria-labelledby="headerId">
             <ul class="m-0 flex flex-col gap-1 p-0">
-              <li v-for="item in recentViewListItems" :key="item.id" class="relative">
+              <li v-for="item in recentCloseListItems" :key="item.id" class="relative">
                 <component
                   :is="searchPluginByName[item.__typename!].quickSearchComponent"
                   :item="item"
-                  mode="recently-viewed"
+                  mode="recently-closed"
                   @click="resetQuickSearchInputField"
                 />
               </li>
             </ul>
             <div class="mt-2 mb-1 flex justify-end">
-              <CommonLink link="#" size="small" @click="confirmClearRecentViewed">
-                {{ $t('Clear recently viewed') }}
+              <CommonLink link="#" size="small" @click="confirmClearRecentlyClosed">
+                {{ $t('Clear recently closed') }}
               </CommonLink>
             </div>
           </nav>
         </template>
       </CommonSectionCollapse>
     </template>
+
     <CommonLabel v-else>
       {{ $t('Start typing e.g. the name of a ticket, an organization or a user.') }}
     </CommonLabel>

@@ -76,8 +76,6 @@ class RecentView < ApplicationModel
         data:  {}
       }
     )
-
-    Gql::Subscriptions::User::Current::RecentView::Updates.trigger({}, scope: created_by_id)
   end
 
   def self.access(object, o_id, user)

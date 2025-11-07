@@ -576,4 +576,33 @@ RSpec.describe Taskbar, performs_jobs: true, type: :model do
       end
     end
   end
+
+  describe '#log_recent_close' do
+    before do
+      allow(RecentClose).to receive(:upsert_closing_time!)
+    end
+
+    context 'when taskbar has a related object' do
+      let(:ticket)  { create(:ticket) }
+      let(:user)    { create(:agent) }
+      let(:taskbar) { create(:taskbar, :with_ticket, ticket:, user:) }
+
+      it 'calls RecentClose.upsert_closing_time!' do
+        taskbar.destroy
+
+        expect(RecentClose).to have_received(:upsert_closing_time!).with(user, ticket)
+      end
+    end
+
+    context 'when taskbar has no related object' do
+      let(:user)    { create(:agent) }
+      let(:taskbar) { create(:taskbar, user:) }
+
+      it 'deos not call RecentClose.upsert_closing_time!' do
+        taskbar.destroy
+
+        expect(RecentClose).not_to have_received(:upsert_closing_time!)
+      end
+    end
+  end
 end

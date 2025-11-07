@@ -10,6 +10,7 @@ require 'models/concerns/has_xss_sanitized_note_examples'
 require 'models/concerns/has_image_sanitized_note_examples'
 require 'models/concerns/has_object_manager_attributes_examples'
 require 'models/concerns/has_taskbars_examples'
+require 'models/concerns/has_recent_closes_examples'
 
 RSpec.describe Organization, type: :model do
   subject(:organization) { create(:organization) }
@@ -23,6 +24,7 @@ RSpec.describe Organization, type: :model do
   it_behaves_like 'HasImageSanitizedNote', model_factory: :organization
   it_behaves_like 'HasObjectManagerAttributes'
   it_behaves_like 'HasTaskbars'
+  it_behaves_like 'HasRecentCloses'
 
   describe 'Class methods:' do
     describe '.where_or_cis' do

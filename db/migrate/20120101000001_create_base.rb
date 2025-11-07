@@ -1023,5 +1023,18 @@ class CreateBase < ActiveRecord::Migration[4.2]
 
       t.index %i[ai_analytics_run_id user_id], unique: true
     end
+
+    create_table :recent_closes do |t|
+      t.references :recently_closed_object, polymorphic: true, null: false, type: :integer
+      t.references :user, null: false, foreign_key: true, type: :integer
+
+      t.timestamps limit: 3
+
+      t.index %i[recently_closed_object_type recently_closed_object_id user_id],
+              name:   'index_recent_closed_user_object',
+              unique: true
+
+      t.index :updated_at, order: { updated_at: :desc }
+    end
   end
 end

@@ -28,6 +28,7 @@ class Taskbar < ApplicationModel
   after_update    :notify_clients
   after_destroy :update_preferences_infos, :notify_clients
   after_commit :update_related_taskbars
+  after_destroy_commit :log_recent_close
 
   association_attributes_ignored :user
 
@@ -284,5 +285,13 @@ class Taskbar < ApplicationModel
       user_id,
       data,
     )
+  end
+
+  def log_recent_close
+    object = to_object
+
+    return if !object
+
+    RecentClose.upsert_closing_time!(user, to_object)
   end
 end

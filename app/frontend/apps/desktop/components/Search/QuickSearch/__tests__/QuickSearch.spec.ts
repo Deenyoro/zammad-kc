@@ -7,12 +7,17 @@ import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
 import { useRecentSearches } from '#shared/composables/useRecentSearches.ts'
-import { EnumTicketStateColorCode, type Organization } from '#shared/graphql/types.ts'
+import {
+  EnumTicketStateColorCode,
+  type Organization,
+  type Ticket,
+  type User,
+} from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
-import { mockUserCurrentRecentViewResetMutation } from '#desktop/entities/user/current/graphql/mutations/userCurrentRecentViewReset.mocks.ts'
-import { mockUserCurrentRecentViewListQuery } from '#desktop/entities/user/current/graphql/queries/userCurrentRecentViewList.mocks.ts'
-import { getUserCurrentRecentViewUpdatesSubscriptionHandler } from '#desktop/entities/user/current/graphql/subscriptions/userCurrentRecentViewUpdates.mocks.ts'
+import { mockUserCurrentRecentCloseResetMutation } from '#desktop/entities/user/current/graphql/mutations/userCurrentRecentCloseReset.mocks.ts'
+import { mockUserCurrentRecentCloseListQuery } from '#desktop/entities/user/current/graphql/queries/userCurrentRecentCloseList.mocks.ts'
+import { getUserCurrentRecentCloseUpdatesSubscriptionHandler } from '#desktop/entities/user/current/graphql/subscriptions/userCurrentRecentCloseUpdates.mocks.ts'
 
 import { mockQuickSearchQuery } from '../../graphql/queries/quickSearch.mocks.ts'
 import QuickSearch from '../QuickSearch.vue'
@@ -43,8 +48,8 @@ describe('QuickSearch', () => {
   })
 
   describe('default state', () => {
-    it('shows empty state message when no searches or recently viewed items exist', async () => {
-      mockUserCurrentRecentViewListQuery({ userCurrentRecentViewList: [] })
+    it('shows empty state message when no searches or recently closed items exist', async () => {
+      mockUserCurrentRecentCloseListQuery({ userCurrentRecentCloseList: [] })
 
       const wrapper = await renderQuickSearch()
 
@@ -58,7 +63,7 @@ describe('QuickSearch', () => {
 
   describe('recent searches', () => {
     beforeEach(() => {
-      mockUserCurrentRecentViewListQuery({ userCurrentRecentViewList: [] })
+      mockUserCurrentRecentCloseListQuery({ userCurrentRecentCloseList: [] })
     })
 
     it('displays recent searches when added', async () => {
@@ -115,39 +120,39 @@ describe('QuickSearch', () => {
     })
   })
 
-  describe('recently viewed items', () => {
-    const recentlyViewedItems = [
+  describe('recently closed items', () => {
+    const recentlyClosedItems = [
       {
         __typename: 'Ticket',
         id: convertToGraphQLId('Ticket', 2),
         title: 'Ticket 1',
         number: '1',
         stateColorCode: EnumTicketStateColorCode.Open,
-      },
+      } as Ticket,
       {
         __typename: 'User',
         id: convertToGraphQLId('User', 2),
         internalId: 2,
         fullname: 'User 1',
-      },
+      } as User,
       {
         __typename: 'Organization',
         id: convertToGraphQLId('Organization', 2),
         internalId: 2,
         name: 'Organization 1',
-      },
+      } as Organization,
     ]
 
-    it('displays recently viewed items', async () => {
+    it('displays recently closed items', async () => {
       mockPermissions(['ticket.agent'])
-      mockUserCurrentRecentViewListQuery({
-        userCurrentRecentViewList: recentlyViewedItems as Organization[],
+      mockUserCurrentRecentCloseListQuery({
+        userCurrentRecentCloseList: recentlyClosedItems,
       })
 
       const wrapper = await renderQuickSearch()
 
       expect(
-        wrapper.getByRole('heading', { level: 3, name: 'Recently viewed' }),
+        wrapper.getByRole('heading', { level: 3, name: 'Recently closed' }),
       ).toBeInTheDocument()
 
       expect(wrapper.getByRole('link', { name: 'check-circle-noTicket 1' })).toBeInTheDocument()
@@ -157,24 +162,24 @@ describe('QuickSearch', () => {
       expect(wrapper.getByRole('link', { name: 'Organization 1' })).toBeInTheDocument()
     })
 
-    it('allows clearing all recently viewed items', async () => {
-      mockUserCurrentRecentViewListQuery({
-        userCurrentRecentViewList: recentlyViewedItems as Organization[],
+    it('allows clearing all recently closed items', async () => {
+      mockUserCurrentRecentCloseListQuery({
+        userCurrentRecentCloseList: recentlyClosedItems,
       })
 
-      mockUserCurrentRecentViewResetMutation({
-        userCurrentRecentViewReset: { success: true },
+      mockUserCurrentRecentCloseResetMutation({
+        userCurrentRecentCloseReset: { success: true },
       })
 
       const wrapper = await renderQuickSearch()
 
-      expect(wrapper.getByRole('link', { name: 'Clear recently viewed' })).toBeInTheDocument()
+      expect(wrapper.getByRole('link', { name: 'Clear recently closed' })).toBeInTheDocument()
 
-      mockUserCurrentRecentViewListQuery({ userCurrentRecentViewList: [] })
+      mockUserCurrentRecentCloseListQuery({ userCurrentRecentCloseList: [] })
 
-      await getUserCurrentRecentViewUpdatesSubscriptionHandler().trigger({
-        userCurrentRecentViewUpdates: {
-          recentViewsUpdated: true,
+      await getUserCurrentRecentCloseUpdatesSubscriptionHandler().trigger({
+        userCurrentRecentCloseUpdates: {
+          recentCloseUpdated: true,
         },
       })
 
@@ -184,7 +189,7 @@ describe('QuickSearch', () => {
         wrapper.getByText('Start typing e.g. the name of a ticket, an organization or a user.'),
       ).toBeInTheDocument()
 
-      expect(wrapper.queryByRole('link', { name: 'Clear recently viewed' })).not.toBeInTheDocument()
+      expect(wrapper.queryByRole('link', { name: 'Clear recently closed' })).not.toBeInTheDocument()
     })
 
     it('display search results when typing', async () => {

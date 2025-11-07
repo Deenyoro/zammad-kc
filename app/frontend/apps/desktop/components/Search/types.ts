@@ -22,7 +22,7 @@ export type SearchPlugin = {
 
 export interface QuickSearchPluginProps {
   item: ObjectLike
-  mode: 'recently-viewed' | 'quick-search-results'
+  mode: 'recently-closed' | 'quick-search-results'
 }
 
 export interface QuickSearchResultData {

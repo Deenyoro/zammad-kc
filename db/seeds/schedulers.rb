@@ -66,6 +66,15 @@ Scheduler.create_if_not_exists(
   updated_by_id: 1,
   created_by_id: 1,
 )
+Scheduler.create_if_not_exists(
+  name:          __('Delete old recently closed entries.'),
+  method:        'RecentClose.cleanup',
+  period:        1.day,
+  prio:          2,
+  active:        true,
+  updated_by_id: 1,
+  created_by_id: 1,
+)
 Scheduler.create_or_update(
   name:          __('Delete old online notification entries.'),
   method:        'OnlineNotification.cleanup',
