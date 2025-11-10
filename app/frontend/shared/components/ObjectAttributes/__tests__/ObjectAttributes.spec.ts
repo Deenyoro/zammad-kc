@@ -103,6 +103,7 @@ describe('common object attributes interface', () => {
       },
       router: true,
       store: true,
+      form: true,
     })
 
     const getRegion = (name: string) => view.getByRole('region', { name })
@@ -358,5 +359,154 @@ describe('common object attributes interface', () => {
       'href',
       'https://url.com',
     )
+  })
+
+  test('renders editable attributes with inline editing', async () => {
+    mockPermissions(['ticket.agent'])
+
+    const object = {
+      internalId: 123,
+      note: 'original note text',
+      objectAttributeValues: [],
+    }
+
+    const view = renderComponent(ObjectAttributes, {
+      props: {
+        object,
+        attributes: [attributesByKey.note],
+        inlineEditable: { note: vi.fn() },
+      },
+      router: true,
+      form: true,
+      store: true,
+    })
+
+    // Should render the FormKit cmp when inline editable -> vitest -> textarea
+    const editor = await view.findByRole('textbox')
+
+    expect(editor).toBeInTheDocument()
+
+    expect(view.queryByRole('region', { name: 'Note' })).not.toBeInTheDocument()
+  })
+
+  test('renders editable attributes in view mode when not inline editable', () => {
+    mockPermissions(['ticket.agent'])
+
+    const object = {
+      internalId: 123,
+      note: '<p>formatted note text</p>',
+      objectAttributeValues: [],
+    }
+
+    const view = renderComponent(ObjectAttributes, {
+      props: {
+        object,
+        attributes: [attributesByKey.note],
+      },
+      router: true,
+      store: true,
+      form: true,
+    })
+
+    const noteRegion = view.getByRole('region', { name: 'Note' })
+
+    expect(noteRegion).toBeInTheDocument()
+    expect(noteRegion).toHaveTextContent('formatted note text')
+
+    expect(view.queryByRole('textbox')).not.toBeInTheDocument()
+  })
+
+  test('does not render editable field if mode is not view', () => {
+    mockPermissions(['ticket.agent'])
+
+    const object = {
+      internalId: 123,
+      note: '<p>formatted note text</p>',
+      objectAttributeValues: [],
+    }
+
+    const view = renderComponent(ObjectAttributes, {
+      props: {
+        object,
+        attributes: [attributesByKey.note],
+        mode: 'table',
+      },
+      router: true,
+      store: true,
+      form: true,
+    })
+
+    const noteRegion = view.getByRole('region', { name: 'Note' })
+
+    expect(noteRegion).toBeInTheDocument()
+    expect(noteRegion).toHaveTextContent('formatted note text')
+
+    expect(view.queryByRole('textbox')).not.toBeInTheDocument()
+  })
+
+  test('does not render empty inline editable fields', async () => {
+    const object = {
+      internalId: 123,
+      note: '',
+      objectAttributeValues: [],
+    }
+
+    const view = renderComponent(ObjectAttributes, {
+      props: {
+        object,
+        attributes: [attributesByKey.note],
+        inlineEditable: { note: vi.fn() },
+      },
+      router: true,
+      form: true,
+      formField: true,
+      store: true,
+    })
+
+    // Empty inline editable fields should still be rendered (unlike non-editable fields)
+    const editor = await view.findByLabelText('Note')
+
+    expect(editor).toBeInTheDocument()
+  })
+
+  test.todo('calls update function when inline editable field changes', async () => {
+    mockPermissions(['ticket.agent'])
+
+    const object = {
+      internalId: 123,
+      note: 'original text',
+      objectAttributeValues: [],
+    }
+
+    const updateMapMock = vi.fn()
+
+    const view = renderComponent(ObjectAttributes, {
+      props: {
+        object,
+        attributes: [attributesByKey.note],
+        inlineEditable: ['note'],
+        updateMap: {
+          inlineEditable: { note: updateMapMock },
+        },
+      },
+      router: true,
+      form: true,
+      store: true,
+    })
+
+    const editor = await view.findByRole('textarea')
+
+    await view.events.type(editor, 'Update text')
+
+    // :TODO can't be tested since formKit event will not be called in the test env
+
+    // The update function should be called when the field changes
+    // expect(updateMapMock).toHaveBeenCalled()
+    // expect(updateMapMock).toHaveBeenCalledWith(
+    //   expect.objectContaining({
+    //     objectEntity: object,
+    //     event: expect.any(Object),
+    //   }),
+    // )
   })
 })

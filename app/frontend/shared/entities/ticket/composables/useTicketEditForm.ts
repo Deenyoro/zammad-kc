@@ -3,7 +3,7 @@
 import { keyBy } from 'lodash-es'
 import { computed, shallowRef } from 'vue'
 
-import { PLUGIN_NAME as TEXT_TOOL_PLUGIN_NAME } from '#shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts'
+import { EXTENSION_NAME as TEXT_TOOL_PLUGIN_NAME } from '#shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts'
 import type { FieldEditorContext } from '#shared/components/Form/fields/FieldEditor/types.ts'
 import { FormHandlerExecution } from '#shared/components/Form/types.ts'
 import type {

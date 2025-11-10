@@ -4,16 +4,16 @@
 import { computed, nextTick, onMounted, useTemplateRef, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import {
+  KeyboardKey,
+  type OrderKeyHandlerConfig,
+} from '#shared/composables/useKeyboardEventBus/types.ts'
+import { useKeyboardEventBus } from '#shared/composables/useKeyboardEventBus/useKeyboardEventBus.ts'
 import { useTrapTab } from '#shared/composables/useTrapTab.ts'
 import { getFirstFocusableElement } from '#shared/utils/getFocusableElements.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonOverlayContainer from '#desktop/components/CommonOverlayContainer/CommonOverlayContainer.vue'
-import {
-  KeyboardKey,
-  type OrderKeyHandlerConfig,
-} from '#desktop/composables/useOrderedKeyboardEvents/types.ts'
-import { useKeyboardEventBus } from '#desktop/composables/useOrderedKeyboardEvents/useKeyboardEventBus.ts'
 import { getRouteIdentifier } from '#desktop/composables/useOverlayContainer.ts'
 
 import CommonDialogActionFooter, {

@@ -7,9 +7,9 @@ import type { ObjectAttribute } from '#shared/entities/object-attributes/types/s
 import type { ObjectAttributeValue } from '#shared/graphql/types.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
 
-import { getLink, getValue, isEmpty } from './utils.ts'
+import { getLink, getValue, isEmpty, isInlineAttributeEditable } from './utils.ts'
 
-import type { AttributeDeclaration } from './types.ts'
+import type { AttributeDeclaration, InlineEditable } from './types.ts'
 import type { Dictionary } from 'ts-essentials'
 import type { Component } from 'vue'
 
@@ -22,8 +22,9 @@ export interface ObjectAttributeDisplayOptions extends BaseObjectAttributeDispla
 }
 
 export interface ObjectAttributesDisplayOptions extends BaseObjectAttributeDisplayOptions {
-  skipAttributes?: string[]
   attributes: ObjectAttribute[]
+  skipAttributes?: string[]
+  inlineEditable?: InlineEditable
   includeStatic?: boolean
 }
 
@@ -76,7 +77,10 @@ export const useDisplayObjectAttributes = (options: ObjectAttributesDisplayOptio
     return options.attributes
       .filter((attribute) => options.includeStatic || !attribute.isStatic)
       .map((attribute) => ({
-        attribute,
+        attribute: {
+          ...attribute,
+          id: `${attribute.name}-${options.object.internalId}`,
+        },
         component: definitionsByType[attribute.dataType],
         value: getValue(attribute.name, options.object, attributesObject.value, attribute),
         link: getLink(attribute.name, attributesObject.value),
@@ -84,7 +88,7 @@ export const useDisplayObjectAttributes = (options: ObjectAttributesDisplayOptio
       .filter(({ attribute, value, component }) => {
         if (!component) return false
 
-        if (isEmpty(value)) {
+        if (isEmpty(value) && !isInlineAttributeEditable(attribute.name, options.inlineEditable)) {
           return false
         }
 

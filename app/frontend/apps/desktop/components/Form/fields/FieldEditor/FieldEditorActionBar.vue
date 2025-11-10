@@ -2,13 +2,13 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { nextTick, shallowRef, toRef, ref, defineAsyncComponent, watch } from 'vue'
+import { nextTick, shallowRef, toRef, ref, defineAsyncComponent, watch, computed } from 'vue'
 
 import useEditorActionHelper from '#shared/components/Form/fields/FieldEditor/composables/useEditorActionHelper.ts'
 import type {
   EditorButton,
   EditorContentType,
-  EditorCustomPlugins,
+  EditorCustomExtensions,
 } from '#shared/components/Form/fields/FieldEditor/types.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
 import type { FieldEditorProps } from '#shared/components/Form/types.ts'
@@ -28,13 +28,19 @@ import type { Editor } from '@tiptap/vue-3'
 import type { Except } from 'type-fest'
 import type { Component } from 'vue'
 
-const props = defineProps<{
-  editor?: Editor
-  contentType: EditorContentType
-  visible: boolean
-  disabledPlugins: EditorCustomPlugins[]
-  formContext?: FormFieldContext<FieldEditorProps>
-}>()
+const props = withDefaults(
+  defineProps<{
+    editor?: Editor
+    contentType: EditorContentType
+    visible: boolean
+    disabledExtensions?: EditorCustomExtensions[]
+    formContext?: FormFieldContext<FieldEditorProps>
+    isInlineMode?: boolean
+  }>(),
+  {
+    disabledExtensions: () => [],
+  },
+)
 
 defineEmits<{
   hide: [boolean?]
@@ -54,7 +60,7 @@ const hideActionBarLocally = ref(false)
 
 const { isActive } = useEditorActionHelper(editor)
 
-const { actions } = useEditorActions(editor, props.contentType, props.disabledPlugins)
+const { actions } = useEditorActions(editor, props.contentType, props.disabledExtensions)
 
 const { popover, popoverTarget, isOpen, open, close } = usePopover()
 
@@ -115,17 +121,28 @@ watch(
     hideActionBarLocally.value = !!showLoader
   },
 )
+
+const inlineStyle = computed(() => {
+  if (!props.isInlineMode) return {}
+
+  return {
+    '--top-header-height': '0',
+    top: '-4.5px', // needed to offset the negative vertical margin of the inline editor
+  }
+})
 </script>
 
 <template>
   <div
-    class="sticky top-(--top-header-height) z-30 -order-1 border border-blue-200 bg-neutral-50 ltr:left-0 rtl:right-0 dark:border-gray-700 dark:bg-gray-500"
+    class="sticky top-(--top-header-height) z-30 -order-1 border-x border-t border-blue-200 bg-neutral-50 ltr:left-0 rtl:right-0 dark:border-gray-700 dark:bg-gray-500"
+    :style="inlineStyle"
   >
     <ActionToolbar
       v-show="!hideActionBarLocally"
       :editor="editor"
       :visible="visible"
       :is-active="isActive"
+      :is-inline="isInlineMode"
       :actions="actions"
       @click-action="handleButtonClick"
       @blur="$emit('blur')"

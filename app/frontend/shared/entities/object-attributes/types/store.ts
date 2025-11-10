@@ -10,6 +10,7 @@ import type { JsonValue } from 'type-fest'
 import type { ComputedRef, Ref } from 'vue'
 
 export interface ObjectAttribute extends ObjectManagerFrontendAttribute {
+  id?: string
   isStatic?: boolean
   displayConfig?: string
   dataOption?: {

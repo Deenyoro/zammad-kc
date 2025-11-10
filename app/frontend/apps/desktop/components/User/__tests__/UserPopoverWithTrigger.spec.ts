@@ -78,6 +78,7 @@ const renderUserPopover = (props?: Partial<Props>, isAgent = true, isSystemUser 
       user: isSystemUser ? systemUser : (props?.user ?? dummyUser),
     },
     router: true,
+    form: true,
   })
 }
 

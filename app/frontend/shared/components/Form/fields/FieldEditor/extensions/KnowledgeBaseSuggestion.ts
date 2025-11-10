@@ -17,7 +17,8 @@ import type { FieldEditorProps, MentionKnowledgeBaseItem } from '../types.ts'
 import type { CommandProps } from '@tiptap/core'
 import type { Ref } from 'vue'
 
-export const PLUGIN_NAME = 'mentionKnowledgeBase'
+export const EXTENSION_NAME = 'mentionKnowledgeBase'
+
 const ACTIVATOR = '??'
 
 export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
@@ -37,7 +38,7 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
   )
 
   return Mention.extend({
-    name: PLUGIN_NAME,
+    name: EXTENSION_NAME,
     addCommands: () => ({
       openKnowledgeBaseMention:
         () =>
@@ -58,7 +59,7 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
       type: 'knowledge-base',
       async insert(props: MentionKnowledgeBaseItem) {
         const { meta: editorMeta = {}, formId } = context.value
-        const meta = editorMeta[PLUGIN_NAME] || {}
+        const meta = editorMeta[EXTENSION_NAME] || {}
 
         const result = await translateHandler.send({
           translationId: props.id,

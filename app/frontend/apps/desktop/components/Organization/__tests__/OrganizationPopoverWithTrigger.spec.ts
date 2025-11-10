@@ -44,6 +44,7 @@ const renderOrganizationPopover = (props?: Partial<Props>, isAgent = true) => {
       organization: props?.organization ?? dummyOrganization,
     },
     router: true,
+    form: true,
   })
 }
 

@@ -5,7 +5,7 @@ import { isEqual } from 'lodash-es'
 import { computed, markRaw, reactive } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
-import { PLUGIN_NAME as TEXT_TOOL_PLUGIN_NAME } from '#shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts'
+import { EXTENSION_NAME as TEXT_TOOL_EXTENSION_NAME } from '#shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts'
 import Form from '#shared/components/Form/Form.vue'
 import type { FormSubmitData } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
@@ -166,7 +166,7 @@ const formSchema = defineFormSchema([
                 mentionKnowledgeBase: {
                   attachmentsNodeName: 'attachments',
                 },
-                [TEXT_TOOL_PLUGIN_NAME]: {
+                [TEXT_TOOL_EXTENSION_NAME]: {
                   groupNodeName: 'group_id',
                   ticketNodeName: 'ticket_id',
                   customerNodeName: 'customer_id',

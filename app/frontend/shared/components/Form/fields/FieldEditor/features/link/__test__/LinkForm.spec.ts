@@ -6,7 +6,7 @@ import { nextTick } from 'vue'
 import renderComponent from '#tests/support/components/renderComponent.ts'
 
 import LinkForm from '#shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue'
-import { PLUGIN_NAME as LINK_PLUGIN_NAME } from '#shared/components/Form/fields/FieldEditor/features/link/types.ts'
+import { EXTENSION_NAME as LINK_EXTENSION_NAME } from '#shared/components/Form/fields/FieldEditor/features/link/types.ts'
 
 describe('LinkForm', () => {
   let editor: any
@@ -77,7 +77,7 @@ describe('LinkForm', () => {
       text: 'Example Link',
       marks: [
         {
-          type: LINK_PLUGIN_NAME,
+          type: LINK_EXTENSION_NAME,
           attrs: {
             href: 'https://example.com',
             target: '_blank',
@@ -112,13 +112,13 @@ describe('LinkForm', () => {
 
     // Verify expected editor commands were called
     expect(editor.chain).toHaveBeenCalled()
-    expect(editor.extendMarkRange).toHaveBeenCalledWith(LINK_PLUGIN_NAME)
+    expect(editor.extendMarkRange).toHaveBeenCalledWith(LINK_EXTENSION_NAME)
     expect(editor.insertContent).toHaveBeenCalledWith({
       type: 'text',
       text: 'Updated Link',
       marks: [
         {
-          type: LINK_PLUGIN_NAME,
+          type: LINK_EXTENSION_NAME,
           attrs: {
             href: 'https://updated.com',
             target: '_blank',
@@ -141,7 +141,9 @@ describe('LinkForm', () => {
     await wrapper.events.click(removeButton)
 
     expect(editor.chain).toHaveBeenCalled()
-    expect(editor.unsetMark).toHaveBeenCalledWith(LINK_PLUGIN_NAME, { extendEmptyMarkRange: true })
+    expect(editor.unsetMark).toHaveBeenCalledWith(LINK_EXTENSION_NAME, {
+      extendEmptyMarkRange: true,
+    })
     expect(editor.commands.closeLinkForm).toHaveBeenCalled()
   })
 

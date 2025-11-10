@@ -5,6 +5,7 @@ import CharacterCount from '@tiptap/extension-character-count'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import Color from '@tiptap/extension-color'
 import Paragraph from '@tiptap/extension-paragraph'
+import Placeholder from '@tiptap/extension-placeholder'
 import { TableKit } from '@tiptap/extension-table'
 import { TextStyle } from '@tiptap/extension-text-style'
 import UniqueID from '@tiptap/extension-unique-id'
@@ -36,9 +37,13 @@ import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
 import type { Extensions } from '@tiptap/core'
 import type { Ref } from 'vue'
 
+export const imageExtensionName = Image.name
+export const tableKitExtensionName = TableKit.name
+export const PlaceholderExtensionName = Placeholder.name
+
 export const lowlight = createLowlight(common)
 
-export const getPlainExtensions = (): Extensions => [
+export const getPlainExtensions = (placeholder = ''): Extensions => [
   StarterKit.configure({
     blockquote: false,
     bold: false,
@@ -64,9 +69,12 @@ export const getPlainExtensions = (): Extensions => [
   UniqueID.configure({
     types: ['paragraph', 'heading'],
   }),
+  Placeholder.configure({
+    placeholder,
+  }),
 ]
 
-export const getHtmlExtensions = (): Extensions => [
+export const getHtmlExtensions = (placeholder = ''): Extensions => [
   StarterKit.configure({
     blockquote: false,
     paragraph: false,
@@ -122,6 +130,9 @@ export const getHtmlExtensions = (): Extensions => [
   PasteHandler,
   UniqueID.configure({
     types: ['paragraph', 'heading'],
+  }),
+  Placeholder.configure({
+    placeholder,
   }),
 ]
 

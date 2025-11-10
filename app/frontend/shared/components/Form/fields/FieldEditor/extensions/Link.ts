@@ -6,7 +6,7 @@ import { type Editor, VueRenderer } from '@tiptap/vue-3'
 
 // We can't async load LinkForm, otherwise initially VueRenderer will not render it
 import LinkForm from '#shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue'
-import { PLUGIN_NAME } from '#shared/components/Form/fields/FieldEditor/features/link/types.ts'
+import { EXTENSION_NAME } from '#shared/components/Form/fields/FieldEditor/features/link/types.ts'
 import {
   getActiveNodeOrMark,
   setFloatingPopover,
@@ -19,7 +19,7 @@ const appName = useAppName()
 export default Link.extend({
   inclusive: false, // prevents bad UX to leave setting a link on the same line.
 
-  name: PLUGIN_NAME,
+  name: EXTENSION_NAME,
 
   addAttributes() {
     const attributes = {
@@ -126,7 +126,7 @@ export default Link.extend({
                 return editor.commands.closeLinkForm()
               },
               handleClick() {
-                const isLinkClicked = editor.getAttributes(PLUGIN_NAME)
+                const isLinkClicked = editor.getAttributes(EXTENSION_NAME)
                 editor.commands.closeLinkForm()
 
                 if ('href' in isLinkClicked) editor.commands.openLinkForm()

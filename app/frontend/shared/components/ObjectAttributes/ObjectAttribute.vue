@@ -11,9 +11,10 @@ import { isEmpty } from './utils.ts'
 import type { OutputMode } from './types.ts'
 
 interface Props {
-  mode?: OutputMode
   object: ObjectLike
   attribute: ObjectAttribute
+  mode?: OutputMode
+  inlineEditable?: string[]
 }
 
 const props = withDefaults(defineProps<Props>(), {

@@ -2,8 +2,8 @@
 
 import renderComponent from '#tests/support/components/renderComponent.ts'
 
-import { KeyboardKey } from '#desktop/composables/useOrderedKeyboardEvents/types.ts'
-import { useKeyboardEventBus } from '#desktop/composables/useOrderedKeyboardEvents/useKeyboardEventBus.ts'
+import { KeyboardKey } from '#shared/composables/useKeyboardEventBus/types.ts'
+import { useKeyboardEventBus } from '#shared/composables/useKeyboardEventBus/useKeyboardEventBus.ts'
 
 const mountComponent = (setup: () => object | void) =>
   renderComponent({

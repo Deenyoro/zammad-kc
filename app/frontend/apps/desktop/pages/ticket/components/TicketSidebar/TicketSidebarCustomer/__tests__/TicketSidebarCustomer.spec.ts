@@ -36,6 +36,7 @@ const renderTicketSidebarCustomer = async (
       },
     },
     router: true,
+    form: true,
     provide: [
       [
         TICKET_KEY,

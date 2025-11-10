@@ -123,7 +123,7 @@ const ticketsData = computed(() => {
     <ObjectAttributes
       :attributes="objectAttributes"
       :object="user"
-      :skip-attributes="['firstname', 'lastname']"
+      :skip-attributes="['firstname', 'lastname', 'organization_ids']"
     />
 
     <CommonOrganizationsList

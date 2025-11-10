@@ -20,8 +20,9 @@ import type { FieldEditorProps, MentionUserItem } from '../types.ts'
 import type { CommandProps, MarkConfig, ParentConfig } from '@tiptap/core'
 import type { Ref } from 'vue'
 
-export const PLUGIN_NAME = 'mentionUser'
-export const PLUGIN_LINK_NAME = 'mentionUserLink'
+export const EXTENSION_NAME = 'mentionUser'
+export const EXTENSION_LINK_NAME = 'mentionUserLink'
+
 const ACTIVATOR = '@@'
 
 export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
@@ -44,7 +45,7 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
   }
 
   return Mention.extend({
-    name: PLUGIN_NAME,
+    name: EXTENSION_NAME,
     addCommands: () => ({
       openUserMention:
         () =>
@@ -74,7 +75,7 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
             text,
             marks: [
               {
-                type: PLUGIN_LINK_NAME,
+                type: EXTENSION_LINK_NAME,
                 attrs: {
                   href,
                   target: null,
@@ -91,7 +92,7 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
           let { groupId: group } = context.value
           if (!group) {
             const { meta, formId } = context.value
-            const groupNodeName = meta?.[PLUGIN_NAME]?.groupNodeName
+            const groupNodeName = meta?.[EXTENSION_NAME]?.groupNodeName
             if (groupNodeName) {
               const groupNode = getNodeByName(formId, groupNodeName)
               group = groupNode?.value as string
@@ -116,7 +117,7 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
 }
 
 export const UserLink = Link.extend({
-  name: PLUGIN_LINK_NAME,
+  name: EXTENSION_LINK_NAME,
   addAttributes() {
     return {
       // TODO: Check if this explicit typing is still needed after the release of TipTap version. > ^3.3

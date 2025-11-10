@@ -6,9 +6,38 @@ import formUpdaterTrigger from '#shared/form/features/formUpdaterTrigger.ts'
 
 import FieldEditorWrapper from './FieldEditorWrapper.vue'
 
+import type { EditorExtensionSet, FieldEditorProps } from './types.ts'
+import type { FormKitInputs } from '@formkit/inputs'
+
+declare module '@formkit/inputs' {
+  // oxlint-disable eslint(no-unused-vars)
+  interface FormKitInputProps<Props extends FormKitInputs<Props>> {
+    editor: FieldEditorProps & {
+      type: 'editor'
+      reset?: () => void
+      inline?: boolean
+      extensionSet?: EditorExtensionSet
+    }
+  }
+
+  interface FormKitInputSlots<Props extends FormKitInputs<Props>> {
+    editor: FormKitBaseSlots<Props>
+  }
+}
+
 const fieldDefinition = createInput(
   FieldEditorWrapper,
-  ['groupId', 'ticketId', 'customerId', 'organizationId', 'meta', 'contentType'],
+  [
+    'groupId',
+    'ticketId',
+    'customerId',
+    'organizationId',
+    'meta',
+    'contentType',
+    'inline',
+    'extensionSet',
+    'reset',
+  ],
   {
     features: [formUpdaterTrigger('delayed', 500), defaultEmptyValueString],
   },

@@ -95,8 +95,8 @@ defineExpose({
     class="flex justify-center opacity-0 focus-within:opacity-100 hover:opacity-100"
     :class="
       {
-        horizontal: 'h-[12px] w-full',
-        vertical: 'h-full w-[12px]',
+        horizontal: 'h-3 w-full',
+        vertical: 'h-full w-3]',
       }[orientation]
     "
   >

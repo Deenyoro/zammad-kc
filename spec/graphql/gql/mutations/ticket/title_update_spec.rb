@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe Gql::Mutations::Ticket::TitleUpdate, :aggregate_failures, type: :graphql do
   let(:query) do
     <<~QUERY
-      mutation ticketTitleUpdate($ticketId: ID!, $input: TicketTitleUpdateInput!) {
-        ticketTitleUpdate(ticketId: $ticketId, input: $input) {
+      mutation ticketTitleUpdate($ticketId: ID!, $title: String!) {
+        ticketTitleUpdate(ticketId: $ticketId, title: $title) {
           ticket {
             id
             title
@@ -22,8 +22,7 @@ RSpec.describe Gql::Mutations::Ticket::TitleUpdate, :aggregate_failures, type: :
   let(:agent)         { create(:agent, groups: [ticket.group]) }
   let(:title)         { 'Updated Ticket Title' }
   let(:ticket)        { create(:ticket) }
-  let(:input_payload) { { title: } }
-  let(:variables)     { { ticketId: gql.id(ticket), input: input_payload } }
+  let(:variables)     { { ticketId: gql.id(ticket), title: } }
   let(:expected_base_response) do
     {
       'id'    => gql.id(Ticket.last),

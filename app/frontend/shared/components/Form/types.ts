@@ -49,7 +49,7 @@ export enum FormValidationVisibility {
   Submit = 'submit',
 }
 
-export type AllowedClasses = string | Record<string, boolean> | FormKitClasses
+export type AllowedClasses = string | Record<string, boolean | string> | FormKitClasses
 
 export interface FormSchemaField {
   if?: string
@@ -310,6 +310,7 @@ export type FieldEditorClass = {
   }
   input: {
     container: string
+    inlineContainer: string
   }
 }
 

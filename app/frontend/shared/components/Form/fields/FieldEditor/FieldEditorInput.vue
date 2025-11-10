@@ -2,23 +2,27 @@
 
 <script setup lang="ts">
 import { useEditor, EditorContent } from '@tiptap/vue-3'
+import { type Editor } from '@tiptap/vue-3'
 import { useEventListener } from '@vueuse/core'
-import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, toRef, useTemplateRef, watch } from 'vue'
 
 import useValue from '#shared/components/Form/composables/useValue.ts'
 import { useAttachments } from '#shared/components/Form/fields/FieldEditor/composables/useAttachments.ts'
 import { useSignatureHandling } from '#shared/components/Form/fields/FieldEditor/composables/useSignatureHandling.ts'
-import { PLUGIN_NAME as userMentionPluginName } from '#shared/components/Form/fields/FieldEditor/extensions/UserMention.ts'
+import { EXTENSION_NAME as userMentionExtensionName } from '#shared/components/Form/fields/FieldEditor/extensions/UserMention.ts'
 import {
+  imageExtensionName,
+  tableKitExtensionName,
   getCustomExtensions,
   getHtmlExtensions,
   getPlainExtensions,
+  PlaceholderExtensionName,
 } from '#shared/components/Form/fields/FieldEditor/extensions.ts'
 import FieldEditorTableMenu from '#shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue'
 import FieldEditorFooter from '#shared/components/Form/fields/FieldEditor/FieldEditorFooter.vue'
 import type {
   EditorContentType,
-  EditorCustomPlugins,
+  EditorCustomExtensions,
   FieldEditorContext,
   FieldEditorProps,
 } from '#shared/components/Form/fields/FieldEditor/types.ts'
@@ -27,8 +31,11 @@ import {
   getEditorComponents,
 } from '#shared/components/Form/initializeFieldEditor.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
+import { getButtonGroup } from '#shared/components/ObjectAttributes/attributes/AttributeRichtext/initializeRichtextButtons.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 import { htmlCleanup } from '#shared/utils/htmlCleanup.ts'
+
+import { useInlineMode } from './useInlineMode.ts'
 
 interface Props {
   context: FormFieldContext<FieldEditorProps>
@@ -36,48 +43,76 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const placeholder = props.context.placeholder
+  ? props.context.placeholder
+  : props.context.inline
+    ? __('Click to edit…')
+    : ''
+
+const getEditorContent = (editor: Editor, type: EditorContentType) => {
+  if (type === 'text/plain') return editor.getText()
+
+  const content = editor.getHTML()
+
+  return editor.isEmpty ? '' : content
+}
+
 const actionBarComponent = getEditorComponents().actionBar
 
 const reactiveContext = toRef(props, 'context')
 const { currentValue } = useValue(reactiveContext)
 
-const disabledPlugins = Object.entries(props.context.meta || {})
+const disabledExtensions = Object.entries(props.context.meta || {})
   .filter(([, value]) => value.disabled)
-  .map(([key]) => key as EditorCustomPlugins)
+  .map(([key]) => key as EditorCustomExtensions | string)
+
+const disableExtension = (extensionName: EditorCustomExtensions | string) => {
+  if (disabledExtensions.includes(extensionName)) return
+  disabledExtensions.push(extensionName)
+}
 
 const contentType = computed<EditorContentType>(() => props.context.contentType || 'text/html')
 
 const isPlainText = computed(() => contentType.value === 'text/plain')
 
-// remove user mention in plain text mode and inline images
+// Disable user mention and image extensions in plain text mode.
 if (isPlainText.value) {
-  disabledPlugins.push(userMentionPluginName, 'image')
+  disableExtension(userMentionExtensionName)
+  disableExtension(imageExtensionName)
 }
 
 const { hasPermission } = useSessionStore()
 
 const customExtensions = getCustomExtensions(reactiveContext)
 
+// Disable all custom extensions and tables for the basic set.
+if (props.context.extensionSet === 'basic') {
+  customExtensions.forEach((extension) =>
+    disableExtension(extension.name as EditorCustomExtensions),
+  )
+
+  disableExtension(tableKitExtensionName)
+}
+
+if (placeholder === '') disableExtension(PlaceholderExtensionName)
+
 // TODO: extensions are in general not reactive in TipTap, we need to check if all things are working as expected.
 // TODO: Maybe we need a re-creation of the editor in some edge cases... plain <-> html (check against simple channels...)
-const availableCustomExtensions = computed(() =>
-  customExtensions.filter((extension) => {
+const editorExtensions = computed(() => {
+  const baseExtensions = isPlainText.value
+    ? getPlainExtensions(placeholder)
+    : getHtmlExtensions(placeholder)
+
+  const availableExtensions = [...baseExtensions, ...customExtensions].filter((extension) => {
     const { name, options } = extension
 
-    if (disabledPlugins.includes(name as EditorCustomPlugins)) {
-      return false
-    }
-    if (options?.permission && !hasPermission(options.permission)) {
-      return false
-    }
+    if (disabledExtensions.includes(name as EditorCustomExtensions)) return false
+    if (options?.permission && !hasPermission(options.permission)) return false
 
     return true
-  }),
-)
+  })
 
-const editorExtensions = computed(() => {
-  const baseExtensions = isPlainText.value ? getPlainExtensions() : getHtmlExtensions()
-  return [...baseExtensions, ...availableCustomExtensions.value]
+  return availableExtensions
 })
 
 const showActionBar = ref(false)
@@ -150,8 +185,7 @@ const editor = useEditor({
       ? htmlCleanup(currentValue.value)
       : currentValue.value,
   onUpdate({ editor }) {
-    const content = isPlainText.value ? editor.getText() : editor.getHTML()
-    const value = content === '<p></p>' ? '' : content
+    const value = getEditorContent(editor as Editor, contentType.value)
     props.context.node.input(value)
 
     if (!VITE_TEST_MODE) return
@@ -159,6 +193,10 @@ const editor = useEditor({
   },
   onFocus() {
     showActionBar.value = true
+
+    if (!isInlineMode.value) return
+
+    isEditing.value = true
   },
   onBlur() {
     props.context.handlers.blur()
@@ -261,7 +299,7 @@ const editorCustomContext = {
   getEditorValue: (type: EditorContentType) => {
     if (!editor.value) return ''
 
-    return type === 'text/plain' ? editor.value.getText() : editor.value.getHTML()
+    return getEditorContent(editor.value, type)
   },
   addSignature,
   removeSignature,
@@ -286,17 +324,64 @@ onMounted(() => {
 })
 
 const classes = getFieldEditorClasses()
+
+const buttonGroup = getButtonGroup()
+
+const wrapperElement = useTemplateRef('wrapper')
+
+const {
+  isInlineMode,
+  isSubmitting,
+  isEditing,
+  onWrapperClick,
+  handleCancel,
+  handleChange,
+  containerInlineDesktopClasses,
+  wrapperInlineDesktopClasses,
+} = useInlineMode(toRef(props, 'context'), wrapperElement)
 </script>
 
 <template>
   <!-- TODO: questionable usability - it moves, when new line is added -->
-  <div class="flex flex-col">
-    <div :class="classes.input.container">
+  <!-- eslint-disable vuejs-accessibility/no-static-element-interactions -->
+  <div
+    ref="wrapper"
+    :role="isInlineMode ? 'button' : undefined"
+    tabindex="-1"
+    class="flex flex-col relative"
+    :class="[
+      containerInlineDesktopClasses,
+      {
+        'show-action-bar': isEditing,
+      },
+    ]"
+    @click="onWrapperClick"
+    @keydown.space="onWrapperClick"
+  >
+    <!-- Check if SR label is present on FormKit level labelSrOnly must be true -->
+    <CommonLabel
+      v-if="context.label && isInlineMode && !isEditing"
+      class="text-stone-200! absolute top-4 rtl:right-1 ltr:left-1"
+      size="small"
+    >
+      {{ context.label }}
+    </CommonLabel>
+
+    <div
+      :class="[
+        classes.input.container,
+        wrapperInlineDesktopClasses,
+        {
+          [classes.input.inlineContainer]: isInlineMode,
+        },
+      ]"
+    >
       <EditorContent
-        class="text-base ltr:text-left rtl:text-right"
+        class="text-base ltr:text-left rtl:text-right cursor-text"
         data-test-id="field-editor"
         :editor="editor"
       />
+
       <FieldEditorFooter
         v-if="context.meta?.footer && !context.meta.footer.disabled && editor"
         :footer="context.meta.footer"
@@ -308,15 +393,33 @@ const classes = getFieldEditorClasses()
         :editor="editor"
         :content-type="contentType"
       />
+
+      <!-- BUTTON group is only implemented in DESKTOP -->
+      <div v-if="isInlineMode && buttonGroup" class="flex justify-end sticky bottom-0">
+        <component
+          :is="buttonGroup"
+          :class="{ invisible: !isEditing }"
+          :submit-disabled="isSubmitting"
+          :cancel-disabled="isSubmitting"
+          @click.stop
+          @cancel="handleCancel"
+          @submit="handleChange"
+        />
+      </div>
     </div>
 
     <component
       :is="actionBarComponent"
+      :class="{
+        invisible: isInlineMode && !isEditing,
+      }"
       :editor="editor"
       :content-type="contentType"
       :visible="showActionBar"
-      :disabled-plugins="disabledPlugins"
+      :disabled-extensions="disabledExtensions"
       :form-context="reactiveContext"
+      :is-editing="isEditing"
+      :is-inline-mode="isInlineMode"
       @hide="showActionBar = false"
       @blur="focusEditor"
     />
@@ -350,6 +453,28 @@ const classes = getFieldEditorClasses()
 
     p {
       margin: 0;
+    }
+  }
+
+  p.is-editor-empty:first-child::before {
+    /* DESKTOP ONLY CLASS  */
+    color: var(--color-neutral-400);
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+    font-size: var(--text-sm);
+  }
+
+  &:focus p.is-editor-empty:first-child::before {
+    content: none;
+  }
+}
+
+.show-action-bar {
+  .tiptap {
+    p:first-child::before {
+      content: none;
     }
   }
 }

@@ -3,20 +3,23 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 
+import { isInlineAttributeEditable } from '#shared/components/ObjectAttributes/utils.ts'
 import { useSharedVisualConfig } from '#shared/composables/useSharedVisualConfig.ts'
 import type { ObjectAttribute } from '#shared/entities/object-attributes/types/store.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
 
 import { useDisplayObjectAttributes } from './useDisplayObjectAttributes.ts'
+import { useInlineEditable } from './useInlineEditable.ts'
 
-import type { OutputMode } from './types.ts'
+import type { InlineEditable, OutputMode } from './types.ts'
 
 export interface Props {
   mode?: OutputMode
   object: ObjectLike
   attributes: ObjectAttribute[]
   skipAttributes?: string[]
+  inlineEditable?: InlineEditable
   includeStatic?: boolean
   alwaysShowAfterFields?: boolean
 }
@@ -30,8 +33,17 @@ const { objectAttributes: objectAttributesConfig } = useSharedVisualConfig()
 
 const { config } = storeToRefs(useApplicationStore())
 
-const getDisplayLabel = (attribute: ObjectAttribute) =>
+const getLabel = (attribute: ObjectAttribute) =>
   attribute.displayConfig ? config.value[attribute.displayConfig] : attribute.display
+
+const getDisplayLabel = (attribute: ObjectAttribute) => {
+  // If inline editable by default it shows then the field label
+  if (isInlineAttributeEditable(attribute.name, props.inlineEditable)) return null
+
+  return getLabel(attribute)
+}
+
+useInlineEditable(props, fields)
 </script>
 
 <template>
@@ -49,6 +61,7 @@ const getDisplayLabel = (attribute: ObjectAttribute) =>
             :value="field.value"
             :config="objectAttributesConfig"
             :mode="mode"
+            :inline-editable="inlineEditable"
           />
         </CommonLink>
         <Component
@@ -58,6 +71,7 @@ const getDisplayLabel = (attribute: ObjectAttribute) =>
           :value="field.value"
           :config="objectAttributesConfig"
           :mode="mode"
+          :inline-editable="inlineEditable"
         />
       </Component>
     </template>

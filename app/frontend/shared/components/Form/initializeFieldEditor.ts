@@ -15,6 +15,7 @@ let editorClasses: FieldEditorClass = {
   },
   input: {
     container: '',
+    inlineContainer: '',
   },
 }
 

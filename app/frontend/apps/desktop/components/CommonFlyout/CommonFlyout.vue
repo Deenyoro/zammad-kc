@@ -28,6 +28,11 @@ import { useRoute, useRouter } from 'vue-router'
 import type { FormRef } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
+import {
+  type OrderKeyHandlerConfig,
+  KeyboardKey,
+} from '#shared/composables/useKeyboardEventBus/types.ts'
+import { useKeyboardEventBus } from '#shared/composables/useKeyboardEventBus/useKeyboardEventBus.ts'
 import { useTrapTab } from '#shared/composables/useTrapTab.ts'
 import { getFirstFocusableElement } from '#shared/utils/getFocusableElements.ts'
 
@@ -35,11 +40,6 @@ import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonOverlayContainer from '#desktop/components/CommonOverlayContainer/CommonOverlayContainer.vue'
 import ResizeLine from '#desktop/components/ResizeLine/ResizeLine.vue'
 import { useResizeLine } from '#desktop/components/ResizeLine/useResizeLine.ts'
-import {
-  type OrderKeyHandlerConfig,
-  KeyboardKey,
-} from '#desktop/composables/useOrderedKeyboardEvents/types.ts'
-import { useKeyboardEventBus } from '#desktop/composables/useOrderedKeyboardEvents/useKeyboardEventBus.ts'
 import { getRouteIdentifier } from '#desktop/composables/useOverlayContainer.ts'
 
 import CommonFlyoutActionFooter from './CommonFlyoutActionFooter.vue'

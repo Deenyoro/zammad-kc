@@ -77,7 +77,7 @@ const createLoaderHandler = (editor: Editor) => ({
 
 const getFormRenderContext = async (context: Ref<FormFieldContext<FieldEditorProps>>) => {
   const { formId, ticketId, meta: editorMeta } = context.value
-  const meta = editorMeta?.[PLUGIN_NAME] || {}
+  const meta = editorMeta?.[EXTENSION_NAME] || {}
 
   let { customerId, groupId, organizationId } = context.value
 
@@ -172,15 +172,15 @@ const executeTextModification = async (
   }
 }
 
-export const PLUGIN_NAME = 'aiAssistantTextTools'
+export const EXTENSION_NAME = 'aiAssistantTextTools'
 
 export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
   const { formId, ticketId, meta: editorMeta } = context.value
-  const meta = editorMeta?.[PLUGIN_NAME] || {}
+  const meta = editorMeta?.[EXTENSION_NAME] || {}
   let scope = effectScope()
 
   return Extension.create({
-    name: PLUGIN_NAME,
+    name: EXTENSION_NAME,
     addStorage() {
       return {
         showAiTextLoader: false,
@@ -223,7 +223,7 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
               if (!editor) return
 
               editor.emit('toggle-visibility', {
-                name: PLUGIN_NAME,
+                name: EXTENSION_NAME,
                 active: !!aiAssistanceTextToolsList.length,
               })
             })

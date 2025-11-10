@@ -87,6 +87,7 @@ export const initializeFormFields = () => {
     },
     input: {
       container: 'px-2.5 py-2',
+      inlineContainer: 'px-1.5! py-1!',
     },
   })
 

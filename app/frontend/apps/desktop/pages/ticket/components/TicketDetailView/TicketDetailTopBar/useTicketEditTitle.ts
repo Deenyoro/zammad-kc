@@ -17,7 +17,7 @@ export const useTicketEditTitle = (ticketId: ComputedRef<string>) => {
     return mutationUpdate
       .send({
         ticketId: ticketId.value,
-        input: { title },
+        title: title,
       })
       .then(() => {
         notify({

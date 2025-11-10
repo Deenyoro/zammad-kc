@@ -16,6 +16,7 @@ const props = defineProps<{
   filter?: string
   optionIconComponent?: ConcreteComponent
   noSelectionIndicator?: boolean
+  noInteraction?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -59,8 +60,9 @@ const goToNextPage = (option: AutoCompleteOption, noFocus?: boolean) => {
 <template>
   <div
     :class="{
-      ' hover:bg-blue-600  dark:hover:bg-blue-900 ': !option.disabled,
+      'hover:bg-blue-600 dark:hover:bg-blue-900 ': !option.disabled,
       'hover:bg-blue-800': option.disabled,
+      'pointer-events-none': noInteraction,
     }"
     tabindex="0"
     :aria-selected="selected"

@@ -4,15 +4,15 @@
 import { useTemplateRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
+import {
+  KeyboardKey,
+  type OrderKeyHandlerConfig,
+} from '#shared/composables/useKeyboardEventBus/types.ts'
+import { useKeyboardEventBus } from '#shared/composables/useKeyboardEventBus/useKeyboardEventBus.ts'
 import { useOnEmitter } from '#shared/composables/useOnEmitter.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonInputSearch from '#desktop/components/CommonInputSearch/CommonInputSearch.vue'
-import {
-  KeyboardKey,
-  type OrderKeyHandlerConfig,
-} from '#desktop/composables/useOrderedKeyboardEvents/types.ts'
-import { useKeyboardEventBus } from '#desktop/composables/useOrderedKeyboardEvents/useKeyboardEventBus.ts'
 
 const searchValue = defineModel<string>()
 

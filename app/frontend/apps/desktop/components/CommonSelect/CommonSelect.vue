@@ -466,6 +466,7 @@ const goToChildPage = ({ option, noFocus }: { option: AutoCompleteOption; noFocu
                       disabled: true,
                     }"
                     no-selection-indicator
+                    no-interaction
                   />
                 </div>
                 <CommonSelectItem
@@ -476,6 +477,7 @@ const goToChildPage = ({ option, noFocus }: { option: AutoCompleteOption; noFocu
                     disabled: true,
                   }"
                   no-selection-indicator
+                  no-interaction
                 />
               </Transition>
 

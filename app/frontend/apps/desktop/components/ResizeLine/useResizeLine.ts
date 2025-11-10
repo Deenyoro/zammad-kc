@@ -102,8 +102,6 @@ export const useResizeLine = (
     // Do not react on double click event.
     if (e.detail > 1) return
 
-    e.preventDefault()
-
     isResizing.value = true
 
     addEventListeners()

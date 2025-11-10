@@ -15,7 +15,8 @@ import { useTextModuleSuggestionsLazyQuery } from '../graphql/queries/textModule
 import type { FieldEditorProps, MentionTextItem } from '../types.ts'
 import type { CommandProps } from '@tiptap/core'
 
-export const PLUGIN_NAME = 'mentionText'
+export const EXTENSION_NAME = 'mentionText'
+
 const ACTIVATOR = '::'
 
 const LIMIT_QUERY_MODULES = 10
@@ -26,7 +27,7 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
   const getTextModules = async (query: string) => {
     const { meta: editorMeta = {}, formId } = context.value
 
-    const meta = editorMeta[PLUGIN_NAME] || {}
+    const meta = editorMeta[EXTENSION_NAME] || {}
     const { ticketId } = context.value
     let { customerId, groupId } = context.value
 
@@ -53,7 +54,7 @@ export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
   }
 
   return Mention.extend({
-    name: PLUGIN_NAME,
+    name: EXTENSION_NAME,
     addCommands: () => ({
       openTextMention:
         () =>

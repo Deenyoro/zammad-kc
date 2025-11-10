@@ -24,7 +24,9 @@ describe('FieldResolverRichtext', () => {
       label: 'Body',
       name: 'body',
       required: false,
-      props: {},
+      props: {
+        extensionSet: 'basic',
+      },
       type: 'editor',
       internal: true,
     })

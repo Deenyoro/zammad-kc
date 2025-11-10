@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import { PLUGIN_NAME as TEXT_TOOL_PLUGIN_NAME } from '#shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts'
+import { EXTENSION_NAME as TEXT_TOOL_EXTENSION_NAME } from '#shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts'
 import type {
   KnowledgeBaseAnswerSuggestionsQuery,
   MentionSuggestionsQuery,
@@ -10,6 +10,7 @@ import type { ConfigList } from '#shared/types/config.ts'
 import type { ConfidentTake } from '#shared/types/utils.ts'
 import type { ImageFileData } from '#shared/utils/files.ts'
 
+import type { FormKitEvent } from '@formkit/core'
 import type { Except } from 'type-fest'
 import type { Component } from 'vue'
 
@@ -72,10 +73,16 @@ export interface FieldEditorContext {
   getEditorValue(type: EditorContentType): string
 }
 
+export type EditorExtensionSet = 'basic'
+
 export interface FieldEditorProps {
+  placeholder?: string
   groupId?: string
   ticketId?: string
   customerId?: string
+  inline?: boolean
+  extensionSet?: EditorExtensionSet
+  reset?: () => void
   organizationId?: string
   /**
    * @default 'text/html'
@@ -111,7 +118,7 @@ export interface FieldEditorProps {
       // where to get groupId for user mention query
       groupNodeName?: string
     }
-    [TEXT_TOOL_PLUGIN_NAME]?: {
+    [TEXT_TOOL_EXTENSION_NAME]?: {
       disabled?: boolean
       // where to get id for the current customer
       customerNodeName?: string
@@ -123,7 +130,7 @@ export interface FieldEditorProps {
   }
 }
 
-export type EditorCustomPlugins = keyof ConfidentTake<FieldEditorProps, 'meta'>
+export type EditorCustomExtensions = keyof ConfidentTake<FieldEditorProps, 'meta'>
 
 declare module '@tiptap/vue-3' {
   interface EditorEvents {
@@ -168,4 +175,13 @@ export interface EditorButton {
 
 export interface SetFloatingPopoverOptions {
   onClose?: () => void
+}
+
+export interface EditChangePayload {
+  submitToStopEditing: (waitForCallback: () => Promise<boolean>) => void
+}
+export type EditorChangeCallback = (event: FormKitEvent) => void
+
+export interface EditorChangeEvent extends FormKitEvent {
+  payload: EditChangePayload
 }

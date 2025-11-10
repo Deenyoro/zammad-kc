@@ -300,14 +300,16 @@ class ZammadFormFieldCapybaraElementDelegator < SimpleDelegator
     self # support chaining
   end
 
-  def type_editor(text, click: true)
+  def type_editor(text, click: true, skip_waiting: false, wait_for: nil)
     raise 'Field does not support typing' if !type_editor?
 
     cursor_home_shortcut = mac_platform? ? %i[command up] : %i[control home]
     input_element.click.send_keys(cursor_home_shortcut) if click
     input_element.send_keys(text)
 
-    maybe_wait_for_form_updater
+    maybe_wait_for_form_updater if !skip_waiting
+
+    sleep wait_for if wait_for
 
     self # support chaining
   end

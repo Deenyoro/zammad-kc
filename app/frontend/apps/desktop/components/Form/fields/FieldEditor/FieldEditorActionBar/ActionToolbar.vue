@@ -21,6 +21,7 @@ interface Props {
   editor?: Editor
   visible?: boolean
   isActive?: (type: string, attributes?: Record<string, unknown>) => boolean
+  isInline?: boolean
 }
 
 // Doesn't pick up the types for some reason, verify again if resolved after an update
@@ -42,6 +43,7 @@ useIntersectionObserver(
 
 const props = withDefaults(defineProps<Props>(), {
   visible: true,
+  size: 'medium',
 })
 
 const editor = toRef(props, 'editor')
@@ -83,7 +85,7 @@ useEventListener('click', (e) => {
 const visibleActions = ref<Map<string, boolean>>(new Map())
 const disabledActionNames = ref<Set<string>>(new Set())
 
-const editorActions = useEditorActions(toRef(props, 'editor'), 'text/html', [])
+const editorActions = useEditorActions(toRef(props, 'editor'), 'text/html')
 
 const invisibleActions = computed(() =>
   editorActions.actions.value
@@ -135,7 +137,13 @@ whenever(
     tabindex="0"
     role="toolbar"
   >
-    <div class="flex h-10.5 flex-wrap gap-1.5 overflow-hidden py-2 ps-2.5 pe-0.5">
+    <div
+      class="flex flex-wrap gap-1.5 overflow-hidden"
+      :class="{
+        'py-2 ps-2.5 pe-0.5 h-10.5': !isInline,
+        'py-1 ps-1.5 pe-0.5 h-9': isInline,
+      }"
+    >
       <ActionButtonWrapper
         v-for="(action, index) in actions"
         :key="action.name"
@@ -171,7 +179,13 @@ whenever(
         </template>
       </ActionButtonWrapper>
     </div>
-    <div v-if="invisibleActions.length" class="flex gap-1.5 px-2.5 py-2">
+    <div
+      v-if="invisibleActions.length"
+      :class="{
+        'flex gap-1.5 px-2.5 py-2': !isInline,
+        'flex gap-1.5 px-1.5 py-1': isInline,
+      }"
+    >
       <FieldEditorActionMenu
         :editor="editor"
         content-type="text/html"

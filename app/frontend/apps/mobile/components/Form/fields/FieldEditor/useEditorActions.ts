@@ -4,9 +4,9 @@ import { storeToRefs } from 'pinia'
 import { computed, nextTick, onUnmounted } from 'vue'
 
 import useEditorActionHelper from '#shared/components/Form/fields/FieldEditor/composables/useEditorActionHelper.ts'
-import { PLUGIN_NAME as KnowledgeBaseMentionName } from '#shared/components/Form/fields/FieldEditor/extensions/KnowledgeBaseSuggestion.ts'
-import { PLUGIN_NAME as TextModuleMentionName } from '#shared/components/Form/fields/FieldEditor/extensions/TextModuleSuggestion.ts'
-import { PLUGIN_NAME as UserMentionName } from '#shared/components/Form/fields/FieldEditor/extensions/UserMention.ts'
+import { EXTENSION_NAME as KnowledgeBaseMentionName } from '#shared/components/Form/fields/FieldEditor/extensions/KnowledgeBaseSuggestion.ts'
+import { EXTENSION_NAME as TextModuleMentionName } from '#shared/components/Form/fields/FieldEditor/extensions/TextModuleSuggestion.ts'
+import { EXTENSION_NAME as UserMentionName } from '#shared/components/Form/fields/FieldEditor/extensions/UserMention.ts'
 import AiAssistantTextTools from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue'
 import FieldEditorColorMenu from '#shared/components/Form/fields/FieldEditor/features/color-picker/EditorColorMenu.vue'
 import type {
@@ -26,7 +26,7 @@ import type { ShallowRef } from 'vue'
 export default function useEditorActions(
   editor: ShallowRef<Editor | undefined>,
   contentType: EditorContentType,
-  disabledPlugins: string[],
+  disabledExtensions: string[] = [],
 ) {
   const { focused, isActive } = useEditorActionHelper(editor)
 
@@ -324,7 +324,7 @@ export default function useEditorActions(
       },
       {
         id: getUuid(),
-        name: 'table',
+        name: 'tableKit',
         contentType: ['text/html'],
         label: __('Insert table'),
         icon: 'editor-table',
@@ -340,7 +340,7 @@ export default function useEditorActions(
 
   const actions = computed(() =>
     getActionsList().filter((action) => {
-      if (disabledPlugins.includes(action.name)) return false
+      if (disabledExtensions.includes(action.name)) return false
 
       if (action.show && !action.show(applicationConfig.value)) return false
 

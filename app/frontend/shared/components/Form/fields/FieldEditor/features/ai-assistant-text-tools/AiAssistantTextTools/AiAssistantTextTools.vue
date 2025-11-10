@@ -7,7 +7,7 @@ import {
   useNotifications,
   NotificationTypes,
 } from '#shared/components/CommonNotifications/index.ts'
-import { PLUGIN_NAME } from '#shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts'
+import { EXTENSION_NAME } from '#shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts'
 import { getAiAssistantTextToolsClasses } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/initializeAiAssistantTextToolsClasses.ts'
 import type { FieldEditorProps } from '#shared/components/Form/fields/FieldEditor/types.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
@@ -30,7 +30,7 @@ const emit = defineEmits<{
 }>()
 
 const meta = props.formContext?.meta || {}
-const fieldName = meta[PLUGIN_NAME]?.groupNodeName
+const fieldName = meta[EXTENSION_NAME]?.groupNodeName
 const { formId } = props.formContext!
 
 const groupField = getNodeByName(formId as string, fieldName as string) as

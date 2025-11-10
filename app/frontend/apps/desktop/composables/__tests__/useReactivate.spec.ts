@@ -1,13 +1,11 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-// import { useReactivate } from '#desktop/composables/useReactivate.ts'
-
 import { onMounted, ref } from 'vue'
 
 import renderComponent from '#tests/support/components/renderComponent.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
-import { useReactivate } from '#desktop/composables/useReactivate.ts'
+import { useReactivate } from '#shared/composables/useReactivate.ts'
 
 describe('useReactivate', () => {
   it('should call callbacks appropriate', () => {

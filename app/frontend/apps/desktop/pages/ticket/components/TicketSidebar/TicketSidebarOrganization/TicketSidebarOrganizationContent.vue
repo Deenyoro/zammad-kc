@@ -3,6 +3,7 @@
 <script lang="ts" setup>
 import ObjectAttributes from '#shared/components/ObjectAttributes/ObjectAttributes.vue'
 import type { ObjectAttribute } from '#shared/entities/object-attributes/types/store.ts'
+import { useOrganizationNoteUpdateMutation } from '#shared/entities/organization/graphql/mutations/noteUpdate.api.ts'
 import type { Organization, User } from '#shared/graphql/types.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
 import { normalizeEdges } from '#shared/utils/helpers.ts'
@@ -56,6 +57,9 @@ const actions: MenuItem[] = [
       :object="organization"
       :attributes="objectAttributes"
       :skip-attributes="['name', 'vip', 'active']"
+      :inline-editable="{
+        note: useOrganizationNoteUpdateMutation,
+      }"
     />
 
     <CommonSimpleEntityList

@@ -67,7 +67,7 @@ const ticketsData = computed(() => getTicketData(user.value))
     <ObjectAttributes
       :attributes="objectAttributes"
       :object="user"
-      :skip-attributes="['firstname', 'lastname']"
+      :skip-attributes="['firstname', 'lastname', 'organization_ids']"
       :always-show-after-fields="user.policy.update"
     >
       <template v-if="user.policy.update" #after-fields>

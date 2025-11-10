@@ -17,7 +17,9 @@ export class FieldResolverRichtext extends FieldResolver {
   // end
   public fieldTypeAttributes() {
     return {
-      props: {},
+      props: {
+        extensionSet: 'basic',
+      },
     }
   }
 }

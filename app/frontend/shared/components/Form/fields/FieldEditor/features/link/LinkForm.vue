@@ -4,7 +4,7 @@
 import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue'
 
 import { getEditorEditorLinkFormClasses } from '#shared/components/Form/fields/FieldEditor/features/link/initializeLinkFormClasses.ts'
-import { PLUGIN_NAME as LINK_PLUGIN_NAME } from '#shared/components/Form/fields/FieldEditor/features/link/types.ts'
+import { EXTENSION_NAME as LINK_EXTENSION_NAME } from '#shared/components/Form/fields/FieldEditor/features/link/types.ts'
 import { getSelection } from '#shared/components/Form/fields/FieldEditor/utils.ts'
 import Form from '#shared/components/Form/Form.vue'
 import { useForm } from '#shared/components/Form/useForm.ts'
@@ -50,7 +50,7 @@ const getCurrentLinkLabel = () => {
   return state.doc.textBetween(from, to, '')
 }
 
-const getCurrentUrl = () => props.editor?.getAttributes(LINK_PLUGIN_NAME)?.href
+const getCurrentUrl = () => props.editor?.getAttributes(LINK_EXTENSION_NAME)?.href
 
 const hasActiveLinkMark = computed(getCurrentUrl)
 
@@ -68,7 +68,7 @@ const handleNewLink = () => {
       text: linkText.value?.length ? linkText.value : url.value,
       marks: [
         {
-          type: LINK_PLUGIN_NAME,
+          type: LINK_EXTENSION_NAME,
           attrs: {
             href: url.value,
             target: '_blank',
@@ -83,13 +83,13 @@ const handleLinkUpdate = () => {
   props
     .editor!.chain()
     .focus()
-    .extendMarkRange(LINK_PLUGIN_NAME)
+    .extendMarkRange(LINK_EXTENSION_NAME)
     .insertContent({
       type: 'text',
       text: linkText.value?.length ? linkText.value : url.value,
       marks: [
         {
-          type: LINK_PLUGIN_NAME,
+          type: LINK_EXTENSION_NAME,
           attrs: {
             href: url.value,
             target: '_blank',
@@ -113,7 +113,7 @@ const submitLink = () => {
 }
 
 const removeLink = () => {
-  props.editor!.chain().focus().unsetMark(LINK_PLUGIN_NAME, { extendEmptyMarkRange: true }).run()
+  props.editor!.chain().focus().unsetMark(LINK_EXTENSION_NAME, { extendEmptyMarkRange: true }).run()
 
   close()
 }

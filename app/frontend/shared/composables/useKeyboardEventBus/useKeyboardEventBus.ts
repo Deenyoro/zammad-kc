@@ -7,8 +7,9 @@ import { effectScope, onBeforeUnmount, onDeactivated, shallowRef, watch } from '
 import {
   type OrderKeyHandlerConfig,
   KeyboardKey,
-} from '#desktop/composables/useOrderedKeyboardEvents/types.ts'
-import { useReactivate } from '#desktop/composables/useReactivate.ts'
+} from '#shared/composables/useKeyboardEventBus/types.ts'
+
+import { useReactivate } from '../useReactivate.ts'
 
 const subscribedHandlers = shallowRef<Record<string, OrderKeyHandlerConfig[]>>({})
 

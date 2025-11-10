@@ -6,6 +6,7 @@ import { computed, type ComputedRef } from 'vue'
 import ObjectAttributes from '#shared/components/ObjectAttributes/ObjectAttributes.vue'
 import type { ObjectAttribute } from '#shared/entities/object-attributes/types/store.ts'
 import { useTicketView } from '#shared/entities/ticket/composables/useTicketView.ts'
+import { useUserNoteUpdateMutation } from '#shared/entities/user/graphql/mutations/noteUpdate.api.ts'
 import { EnumTicketStateTypeCategory, type Organization, type User } from '#shared/graphql/types.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
 import { normalizeEdges } from '#shared/utils/helpers.ts'
@@ -89,7 +90,8 @@ const actions = computed<MenuItem[]>(() => [
     <ObjectAttributes
       :attributes="objectAttributes"
       :object="customer"
-      :skip-attributes="['firstname', 'lastname', 'organization_id']"
+      :skip-attributes="['firstname', 'lastname', 'organization_id', 'organization_ids']"
+      :inline-editable="{ note: useUserNoteUpdateMutation }"
     />
 
     <CommonSimpleEntityList

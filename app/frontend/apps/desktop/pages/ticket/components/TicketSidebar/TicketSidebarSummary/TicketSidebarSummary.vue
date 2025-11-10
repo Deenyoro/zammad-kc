@@ -4,6 +4,7 @@
 import { storeToRefs } from 'pinia'
 import { computed, type EffectScope, effectScope, ref, watch } from 'vue'
 
+import { useReactivate } from '#shared/composables/useReactivate.ts'
 import { useTicketArticleUpdatesSubscription } from '#shared/entities/ticket/graphql/subscriptions/ticketArticlesUpdates.api.ts'
 import {
   type AiAnalyticsMetadata,
@@ -15,7 +16,6 @@ import { MutationHandler, SubscriptionHandler } from '#shared/server/apollo/hand
 import { useApplicationStore } from '#shared/stores/application.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 
-import { useReactivate } from '#desktop/composables/useReactivate.ts'
 import TicketSidebarSummaryContent from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue'
 import {
   type SummaryConfig,

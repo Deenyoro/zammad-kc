@@ -70,7 +70,7 @@ const goToUserProfile = () => {
         }"
         :object="user!"
         :attributes="viewScreenAttributes"
-        :skip-attributes="['firstname', 'lastname', 'organization_id']"
+        :skip-attributes="['firstname', 'lastname', 'organization_id', 'organization_ids']"
       />
 
       <CommonSimpleEntityList

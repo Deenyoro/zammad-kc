@@ -28,7 +28,10 @@ RSpec.describe 'Desktop > Ticket > Create', app: :desktop_view, authenticated_as
         find_autocomplete('CC').search_for_option(Faker::Internet.unique.email, use_action: true)
 
         text = find_editor('Text')
-        text.type('# ').type('Heading').type(:enter, click: false)
+
+        text.type('# ', skip_waiting: true, wait_for: 0.1) # markdown shortcut, editor is still considered empty
+          .type('Heading', click: false)
+          .type(:enter, click: false)
 
         find('button[aria-label="Format as bold"]').click
         text.type('Bold Text ', click: false).type(:enter, click: false)

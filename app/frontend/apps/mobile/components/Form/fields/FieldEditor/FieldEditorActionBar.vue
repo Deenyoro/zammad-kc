@@ -8,7 +8,7 @@ import useEditorActionHelper from '#shared/components/Form/fields/FieldEditor/co
 import type {
   EditorButton,
   EditorContentType,
-  EditorCustomPlugins,
+  EditorCustomExtensions,
 } from '#shared/components/Form/fields/FieldEditor/types.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
 import type { FieldEditorProps } from '#shared/components/Form/types.ts'
@@ -25,13 +25,18 @@ import type { Editor } from '@tiptap/vue-3'
 import type { Except } from 'type-fest'
 import type { Component } from 'vue'
 
-const props = defineProps<{
-  editor?: Editor
-  contentType: EditorContentType
-  visible: boolean
-  disabledPlugins: EditorCustomPlugins[]
-  formContext?: FormFieldContext<FieldEditorProps>
-}>()
+const props = withDefaults(
+  defineProps<{
+    editor?: Editor
+    contentType: EditorContentType
+    visible: boolean
+    disabledExtensions?: EditorCustomExtensions[]
+    formContext?: FormFieldContext<FieldEditorProps>
+  }>(),
+  {
+    disabledExtensions: () => [],
+  },
+)
 
 defineEmits<{
   hide: [boolean?]
@@ -51,7 +56,7 @@ const hideActionBarLocally = ref(false)
 
 const { isActive } = useEditorActionHelper(editor)
 
-const { actions } = useEditorActions(editor, props.contentType, props.disabledPlugins)
+const { actions } = useEditorActions(editor, props.contentType, props.disabledExtensions)
 
 const subMenuPopupContent = shallowRef<Component | Except<EditorButton, 'subMenu'>[]>()
 

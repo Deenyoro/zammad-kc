@@ -70,9 +70,7 @@ watch(customerId, (newValue) => {
 })
 
 // On initial setup we show the sidebar if customerId is present.
-if (customerId.value) {
-  emit('show')
-}
+if (customerId.value) emit('show')
 </script>
 
 <template>
