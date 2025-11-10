@@ -5,7 +5,7 @@ it.
 
 ## Development Environment
 
-- [How to set up a development environment](development_environment/how-to-set-up-a-development-environment.md)
+- [How to set up a development environment](development_environment/getting-started.md)
 - [Getting started](development_environment/getting-started.md)
 - [Basic information](development_environment/basic-information.md)
 
@@ -28,7 +28,6 @@ it.
 - [How to test with RSpec / Capybara](cookbook/how-to-test-with-rspec-and-capybara.md)
 - [How to test with QUnit](cookbook/how-to-test-with-qunit.md)
 - [How to test with Vitest and Cypress](cookbook/how-to-test-with-vitest-and-cypress.md)
-- [How to test the development version of Zammad via Docker](cookbook/how-to-test-develop-with-docker.md)
 - [How to setup LDAP integration](cookbook/how-to-setup-ldap-integration.md)
 - [How to setup PGP integration](cookbook/how-to-setup-pgp-integration.md)
 - [How to setup S/MIME integration](cookbook/how-to-setup-smime-integration.md)
