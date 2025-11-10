@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import { watchPausable } from '@vueuse/shared'
+import { watchPausable } from '@vueuse/core'
 import { ref, type Ref, type ComputedRef, onScopeDispose, toRef, watch, toValue } from 'vue'
 
 import type { QueryHandler } from '#shared/server/apollo/handler'
@@ -12,6 +12,12 @@ import type { OperationVariables } from '@apollo/client/core'
 export type QueryPollingOptions = {
   enabled?: boolean // Enable polling, default is true.
   randomize?: boolean // Randomize the interval (1000 milliseconds). Useful to prevent request at the same time.
+}
+
+const activePollings = new Set<() => void>()
+
+export const stopAllQueryPollings = () => {
+  activePollings.forEach((stop) => stop())
 }
 
 export const useQueryPolling = <
@@ -43,6 +49,7 @@ export const useQueryPolling = <
       return
 
     isPolling.value = true
+    activePollings.add(stopPolling)
 
     const poll = async () => {
       const pollVariables = typeof variables === 'function' ? variables() : variables?.value
@@ -63,6 +70,7 @@ export const useQueryPolling = <
 
     clearTimeout(pollTimer)
     isPolling.value = false
+    activePollings.delete(stopPolling)
   }
 
   watch(

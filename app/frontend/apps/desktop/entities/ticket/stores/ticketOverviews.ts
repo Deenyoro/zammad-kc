@@ -1,6 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import { useLocalStorage } from '@vueuse/core'
+import { differenceInSeconds } from 'date-fns'
 import { defaultsDeep, isEqual } from 'lodash-es'
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
 import { computed, effectScope, markRaw, onScopeDispose, ref, watch, type Raw } from 'vue'
@@ -12,6 +13,7 @@ import type {
 } from '#shared/graphql/types.ts'
 import { MutationHandler, QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
+import { useAuthenticationStore } from '#shared/stores/authentication.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 
 import { useUserCurrentOverviewUpdateLastUsedMutation } from '#desktop/entities/ticket/graphql/mutations/userCurrentOverviewUpdateLastUsed.api.ts'
@@ -28,8 +30,17 @@ const DEFAULT_CONFIG: TicketOverviewQueryPollingConfig = {
   page_size: 30,
   background: {
     calculation_count: 3,
-    interval_sec: 10,
     cache_ttl_sec: 10,
+    interval_sec: 10,
+    interval_ranges: [
+      { threshold_sec: 60 * 60, interval_sec: 15, cache_ttl_sec: 15 }, // 1 hour ago
+      { threshold_sec: 2 * 60 * 60, interval_sec: 20, cache_ttl_sec: 20 }, // 2 hours ago
+      { threshold_sec: 4 * 60 * 60, interval_sec: 30, cache_ttl_sec: 30 }, // 4 hour ago
+      { threshold_sec: 12 * 60 * 60, interval_sec: 45, cache_ttl_sec: 45 }, // 12 hours ago
+      { threshold_sec: 24 * 60 * 60, interval_sec: 60, cache_ttl_sec: 60 }, // 1 day ago
+      { threshold_sec: 3 * 24 * 60 * 60, interval_sec: 120, cache_ttl_sec: 120 }, // 3 days ago
+      { threshold_sec: 7 * 24 * 60 * 60, interval_sec: 180, cache_ttl_sec: 180 }, // 1 week ago
+    ],
   },
   foreground: {
     interval_sec: 5,
@@ -51,8 +62,22 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
   )
 
   const queryPollingConfig = computed<TicketOverviewQueryPollingConfig>(() => {
-    const serverConfig = config.value?.ui_ticket_overview_query_polling ?? {}
-    return defaultsDeep({}, localConfig.value, serverConfig, DEFAULT_CONFIG)
+    const serverConfig = (config.value?.ui_ticket_overview_query_polling ??
+      {}) as Partial<TicketOverviewQueryPollingConfig>
+    const localConfigValue = localConfig.value as Partial<TicketOverviewQueryPollingConfig>
+    const merged = defaultsDeep({}, localConfigValue, serverConfig, DEFAULT_CONFIG)
+
+    // Handle interval_ranges separately - use first defined value instead of merging
+    // This allows setting an empty array to disable ranges
+    if (localConfigValue.background?.interval_ranges !== undefined) {
+      merged.background.interval_ranges = localConfigValue.background.interval_ranges
+    } else if (serverConfig.background?.interval_ranges !== undefined) {
+      merged.background.interval_ranges = serverConfig.background.interval_ranges
+    } else {
+      merged.background.interval_ranges = DEFAULT_CONFIG.background.interval_ranges
+    }
+
+    return merged
   })
 
   // Register window.setQueryPollingConfig to allow for manual override for debugging.
@@ -60,6 +85,13 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
     c?: Partial<TicketOverviewQueryPollingConfig>,
   ): TicketOverviewQueryPollingConfig => {
     if (c) localConfig.value = c
+    return queryPollingConfig.value
+  }
+  window.resetQueryPollingConfig = (): TicketOverviewQueryPollingConfig => {
+    localConfig.value = {}
+    return queryPollingConfig.value
+  }
+  window.getCurrentQueryPollingConfig = (): TicketOverviewQueryPollingConfig => {
     return queryPollingConfig.value
   }
 
@@ -129,6 +161,50 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
 
   const { readTicketsByOverviewCache } = useTicketsCachedByOverviewCache()
 
+  // Extract shared logic for calculating values based on time-based ranges.
+  // This helper handles the common pattern of finding the appropriate value
+  // from a list of threshold-based ranges, given how long since last use.
+  const calculateValueFromRanges = (
+    overviewId: ID,
+    key: 'interval_sec' | 'cache_ttl_sec',
+  ): number => {
+    const ranges = queryPollingConfig.value.background.interval_ranges
+    const defaultValue = queryPollingConfig.value.background[key]
+
+    if (!ranges || ranges.length === 0) {
+      return defaultValue
+    }
+
+    const lastUsedAt = lastUsedOverviews.value[overviewId]
+    if (!lastUsedAt) {
+      return defaultValue
+    }
+
+    const secondsSinceLastUsed = differenceInSeconds(new Date(), new Date(lastUsedAt))
+
+    // Early return if even the smallest threshold is not met. Ranges should be
+    // sorted by threshold_sec in ascending order.
+    if (secondsSinceLastUsed < ranges[0].threshold_sec) {
+      return defaultValue
+    }
+
+    // Find the highest threshold that is met by checking from highest to lowest.
+    // Using find() which stops early when a match is found.
+    const matchedRange = [...ranges]
+      .reverse()
+      .find((range) => secondsSinceLastUsed >= range.threshold_sec)
+
+    return matchedRange ? ((matchedRange[key] as number | undefined) ?? defaultValue) : defaultValue
+  }
+
+  const calculatePollingInterval = (overviewId: ID): number => {
+    return calculateValueFromRanges(overviewId, 'interval_sec')
+  }
+
+  const calculateCacheTtl = (overviewId: ID): number => {
+    return calculateValueFromRanges(overviewId, 'cache_ttl_sec')
+  }
+
   const addTicketByOverviewHandler = (overviewId: ID) => {
     const overview = overviewsById.value[overviewId]
 
@@ -140,13 +216,17 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
       (): {
         handler: QueryHandler<TicketsCachedByOverviewQuery, TicketsCachedByOverviewQueryVariables>
       } => {
-        // TODO: maybe we can use same variables here and afterwards?
-        const cachedTickets = readTicketsByOverviewCache({
+        const firstCacheTtl = calculateCacheTtl(overviewId)
+
+        const getMainVariables = () => ({
           overviewId,
           orderBy: overviewsById.value[overviewId].orderBy,
           orderDirection: overviewsById.value[overviewId].orderDirection,
-          cacheTtl: queryPollingConfig.value.background.cache_ttl_sec,
+          cacheTtl: firstCacheTtl,
         })
+
+        // TODO: maybe we can use same variables here and afterwards?
+        const cachedTickets = readTicketsByOverviewCache(getMainVariables())
 
         const cachedCollectionSignature =
           cachedTickets?.ticketsCachedByOverview?.collectionSignature
@@ -155,10 +235,7 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
           useTicketsCachedByOverviewLazyQuery(
             () => ({
               pageSize: queryPollingConfig.value.page_size,
-              overviewId,
-              orderBy: overviewsById.value[overviewId].orderBy,
-              orderDirection: overviewsById.value[overviewId].orderDirection,
-              cacheTtl: queryPollingConfig.value.background.cache_ttl_sec,
+              ...getMainVariables(),
               knownCollectionSignature: cachedCollectionSignature,
             }),
             {
@@ -195,8 +272,9 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
 
         const { startPolling } = useQueryPolling(
           ticketsQuery,
-          () => queryPollingConfig.value.background.interval_sec * 1000,
+          () => calculatePollingInterval(overviewId) * 1000,
           () => ({
+            cacheTtl: calculateCacheTtl(overviewId),
             knownCollectionSignature: currentCollectionSignature.value,
           }),
           {
@@ -228,6 +306,13 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
     if (!handler) return
     handler.scope.stop()
     ticketsByOverviewHandler.value.delete(overviewId)
+  }
+
+  const removeAllTicketByOverviewHandlers = () => {
+    ticketsByOverviewHandler.value.forEach((handler) => {
+      handler.scope.stop()
+    })
+    ticketsByOverviewHandler.value.clear()
   }
 
   watch(
@@ -292,6 +377,8 @@ export const useTicketOverviewsStore = defineStore('ticketOverviews', () => {
 
     updateLastUsedOverview(overviewId)
   })
+
+  useAuthenticationStore().registerLogoutCleanup(removeAllTicketByOverviewHandlers)
 
   return {
     queryPollingConfig,

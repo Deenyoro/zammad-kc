@@ -8,13 +8,13 @@ import { GraphQLErrorTypes } from '#shared/types/error.ts'
 import emitter from '#shared/utils/emitter.ts'
 import log from '#shared/utils/log.ts'
 
-const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
+const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
   const errorContext = getErrorContext(operation)
 
   const errorMessages: Array<string> = []
 
   // If the error is an AbortError, ignore it and forward the operation to avoid communication failure
-  if (networkError?.name === 'AbortError') return forward(operation)
+  if (networkError?.name === 'AbortError') return
 
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, extensions, path }) => {

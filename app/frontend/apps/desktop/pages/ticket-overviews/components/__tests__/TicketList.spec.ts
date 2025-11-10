@@ -13,11 +13,10 @@ import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/moc
 import { EnumOrderDirection } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
-import {
-  mockTicketsCachedByOverviewQuery,
-  waitForTicketsCachedByOverviewQueryCalls,
-} from '#desktop/entities/ticket/graphql/queries/ticketsCachedByOverview.mocks.ts'
+import { waitForTicketsCachedByOverviewQueryCalls } from '#desktop/entities/ticket/graphql/queries/ticketsCachedByOverview.mocks.ts'
 import TicketList from '#desktop/pages/ticket-overviews/components/TicketList.vue'
+
+import { mockDefaultTicketsCachedByOverview } from '../../__tests__/mocks/ticket-overviews-mocks.ts'
 
 mockRouterHooks()
 
@@ -31,15 +30,8 @@ const applyMocks = (ticket: TicketById = createDummyTicket()) => {
     ui_ticket_overview_ticket_limit: 1000,
   })
 
-  mockTicketsCachedByOverviewQuery({
-    ticketsCachedByOverview: {
-      edges: [{ node: { ...ticket } }],
-      pageInfo: {
-        endCursor: 'MjU',
-        hasNextPage: true,
-      },
-      totalCount: 1,
-    },
+  mockDefaultTicketsCachedByOverview({
+    edges: [{ node: ticket }],
   })
 
   mockObjectManagerFrontendAttributesQuery({
@@ -78,16 +70,7 @@ describe('TicketList', () => {
 
   describe('loading states', () => {
     it('displays the skeleton for the table on initial load', async () => {
-      mockTicketsCachedByOverviewQuery({
-        ticketsCachedByOverview: {
-          edges: [{ node: createDummyTicket() }],
-          pageInfo: {
-            endCursor: 'MjU',
-            hasNextPage: true,
-          },
-          totalCount: 207,
-        },
-      })
+      mockDefaultTicketsCachedByOverview({ totalCount: 207 })
 
       const wrapper = renderComponent(TicketList, {
         props: {
@@ -201,15 +184,26 @@ describe('TicketList', () => {
     })
   })
 
-  it.todo('allows grouping of rows', async () => {
+  it('allows grouping of rows', async () => {
     const ticket = createDummyTicket()
 
-    applyMocks(ticket)
+    await applyMocks(ticket)
 
-    const { wrapper } = renderTicketList({ groupBy: 'customer' })
+    const { wrapper, headers } = renderTicketList({ groupBy: 'customer' })
 
-    expect(
-      await wrapper.findByRole('cell', { name: ticket.customer.fullname! }),
-    ).toBeInTheDocument()
+    const table = await wrapper.findByRole('table', {
+      name: 'Overview: test tickets',
+    })
+
+    await Promise.all(
+      Object.values(headers).map(async (header) => {
+        expect(await within(table).findByRole('columnheader', { name: header })).toBeInTheDocument()
+      }),
+    )
+
+    expect(wrapper.getByRole('cell', { name: ticket.title })).toBeInTheDocument()
+
+    // Group name with count
+    expect(wrapper.getByRole('row', { name: `${ticket.customer.fullname!}1` })).toBeInTheDocument()
   })
 })

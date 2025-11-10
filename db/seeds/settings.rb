@@ -5619,6 +5619,43 @@ Setting.create_if_not_exists(
       calculation_count: 3,
       interval_sec:      10,
       cache_ttl_sec:     10,
+      interval_ranges:   [
+        {
+          threshold_sec: 1.hour.to_i,
+          interval_sec:  15.seconds.to_i,
+          cache_ttl_sec: 15.seconds.to_i,
+        },
+        {
+          threshold_sec: 2.hours.to_i,
+          interval_sec:  20.seconds.to_i,
+          cache_ttl_sec: 20.seconds.to_i,
+        },
+        {
+          threshold_sec: 4.hours.to_i,
+          interval_sec:  30.seconds.to_i,
+          cache_ttl_sec: 30.seconds.to_i,
+        },
+        {
+          threshold_sec: 12.hours.to_i,
+          interval_sec:  45.seconds.to_i,
+          cache_ttl_sec: 45.seconds.to_i,
+        },
+        {
+          threshold_sec: 1.day.to_i,
+          interval_sec:  1.minute.to_i,
+          cache_ttl_sec: 1.minute.to_i,
+        },
+        {
+          threshold_sec: 3.days.to_i,
+          interval_sec:  2.minutes.to_i,
+          cache_ttl_sec: 2.minutes.to_i,
+        },
+        {
+          threshold_sec: 1.week.to_i,
+          interval_sec:  3.minutes.to_i,
+          cache_ttl_sec: 3.minutes.to_i,
+        },
+      ],
     },
     foreground: {
       interval_sec:  5,

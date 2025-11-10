@@ -46,6 +46,7 @@ export const useSorting = <
     column: string,
     direction: EnumOrderDirection,
     additionalVariables: Partial<TQueryVariables> = {},
+    afterSortCallback?: () => void,
   ) => {
     isSorting.value = true
     // It's fine to parse only partial variables, in this case the original variables values are used for
@@ -58,6 +59,8 @@ export const useSorting = <
       })
       .finally(() => {
         isSorting.value = false
+
+        afterSortCallback?.()
 
         requestAnimationFrame(() => {
           scrollContainer?.value?.scrollTo({ top: 0 })

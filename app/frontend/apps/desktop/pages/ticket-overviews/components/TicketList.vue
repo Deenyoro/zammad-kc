@@ -1,6 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
+import { watchPausable } from '@vueuse/core'
 import { isEqual } from 'lodash-es'
 import { storeToRefs } from 'pinia'
 import {
@@ -68,6 +69,11 @@ const pollingInterval = computed(
       ? queryPollingConfig.value.foreground.interval_sec
       : queryPollingConfig.value.background.interval_sec) * 1000,
 )
+const cacheTtl = computed(() =>
+  foreground.value
+    ? queryPollingConfig.value.foreground.cache_ttl_sec
+    : queryPollingConfig.value.background.cache_ttl_sec,
+)
 
 const ticketsQueryVariables = computed<TicketsCachedByOverviewQueryVariables>(
   (currentVariables) => {
@@ -93,6 +99,21 @@ const ticketsQueryVariables = computed<TicketsCachedByOverviewQueryVariables>(
   },
 )
 
+let currentAbortController = new AbortController()
+
+const fetchOptions = {
+  signal: currentAbortController.signal,
+}
+
+const refreshRefetchAbortController = () => {
+  // Stop polling to avoid duplicate requests during an manual refetch.
+  stopPolling()
+
+  currentAbortController.abort()
+  currentAbortController = new AbortController()
+  fetchOptions.signal = currentAbortController.signal
+}
+
 const ticketsQuery = new QueryHandler(
   useTicketsCachedByOverviewQuery(ticketsQueryVariables, {
     fetchPolicy: 'cache-and-network',
@@ -101,6 +122,7 @@ const ticketsQuery = new QueryHandler(
       batch: {
         active: false,
       },
+      fetchOptions,
     },
   }),
   {
@@ -160,6 +182,20 @@ const {
   scrollContainerElement,
 )
 
+const { startPolling, stopPolling } = useQueryPolling(
+  ticketsQuery,
+  pollingInterval,
+  () => ({
+    knownCollectionSignature: currentCollectionSignature.value,
+    renewCache: false,
+    pageSize: queryPollingConfig.value.page_size * pagination.currentPage,
+    cacheTtl: cacheTtl.value,
+  }),
+  () => ({
+    enabled: queryPollingConfig.value.enabled && !isSorting.value,
+  }),
+)
+
 const resort = (column: string, direction: EnumOrderDirection) => {
   forceTicketsByOverviewCacheOnlyFirstPage(
     {
@@ -177,31 +213,50 @@ const resort = (column: string, direction: EnumOrderDirection) => {
     orderDirection: direction,
   })
 
-  sort(column, direction, {
-    knownCollectionSignature: cachedTickets?.ticketsCachedByOverview?.collectionSignature,
-    renewCache: false,
-  })
+  refreshRefetchAbortController()
+
+  sort(
+    column,
+    direction,
+    {
+      knownCollectionSignature: cachedTickets?.ticketsCachedByOverview?.collectionSignature,
+      renewCache: false,
+    },
+    () => {
+      startPolling()
+    },
+  )
 }
 
-const { startPolling, stopPolling } = useQueryPolling(
-  ticketsQuery,
-  pollingInterval,
-  () => ({
-    knownCollectionSignature: currentCollectionSignature.value,
-    renewCache: false,
-    pageSize: queryPollingConfig.value.page_size * pagination.currentPage,
-  }),
-  () => ({
-    enabled: queryPollingConfig.value.enabled && !isSorting.value,
-  }),
+const { resume: startLoadingWatch, pause: pauseLoadingWatch } = watchPausable(
+  loading,
+  () => {
+    pauseLoadingWatch()
+    startPolling()
+  },
+  {
+    initialState: 'paused',
+  },
 )
+
+const startPollingHandler = () => {
+  // We can only start the polling directly when it's not loading in the background.
+  // Otherwise it means it was loaded from the cache and we need to wait for real
+  // network response (because of cache-and-network fetch policy).
+  if (!loading.value) {
+    startPolling()
+    return
+  }
+
+  startLoadingWatch()
+}
 
 ticketsQuery.watchOnceOnResult((result) => {
   if (!queryPollingConfig.value.enabled) return
 
   lastFirstPageCollectionSignature = result.ticketsCachedByOverview.collectionSignature
 
-  startPolling()
+  startPollingHandler()
 })
 
 onBeforeRouteLeave(() => {
@@ -220,7 +275,7 @@ watch(
 
       lastFirstPageCollectionSignature = result.ticketsCachedByOverview.collectionSignature
 
-      startPolling()
+      startPollingHandler()
     })
   },
 )
@@ -293,10 +348,16 @@ setOnSuccessCallback(() => {
     queryPollingConfig.value.page_size,
   )
 
-  ticketsQuery.refetch({
-    pageSize: queryPollingConfig.value.page_size,
-    renewCache: true,
-  })
+  refreshRefetchAbortController()
+
+  ticketsQuery
+    .refetch({
+      pageSize: queryPollingConfig.value.page_size,
+      renewCache: true,
+    })
+    .finally(() => {
+      startPolling()
+    })
 
   requestAnimationFrame(() => {
     scrollContainerElement.value?.scrollTo({ top: 0 })

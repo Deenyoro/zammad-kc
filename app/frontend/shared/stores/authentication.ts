@@ -5,6 +5,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import useFingerprint from '#shared/composables/useFingerprint.ts'
+import { stopAllQueryPollings } from '#shared/composables/useQueryPolling.ts'
 import { useLoginMutation } from '#shared/graphql/mutations/login.api.ts'
 import { useLogoutMutation } from '#shared/graphql/mutations/logout.api.ts'
 import { type EnumTwoFactorAuthenticationMethod, type LoginInput } from '#shared/graphql/types.ts'
@@ -32,18 +33,30 @@ export const useAuthenticationStore = defineStore(
   () => {
     const authenticated = useLocalStorage<boolean>('authenticated', false)
     const externalLogout = ref(false)
+    const logoutCleanup = new Set<() => void>()
+
     const { fingerprint } = useFingerprint()
 
-    const clearAuthentication = async (): Promise<void> => {
+    const registerLogoutCleanup = (cleanupCallback: () => void) => {
+      logoutCleanup.add(cleanupCallback)
+    }
+
+    const clearAuthentication = async (cleanup = true): Promise<void> => {
+      if (cleanup) {
+        logoutCleanup.forEach((cleanupCallback) => cleanupCallback())
+      }
+
       await clearApolloClientStore()
 
-      const session = useSessionStore()
-      session.resetCurrentSession()
-      authenticated.value = false
       resetAndDisposeStores(true)
 
+      const session = useSessionStore()
+
+      session.resetCurrentSession()
+      authenticated.value = false
+
       // Refresh the config after logout, to have only the non authenticated version.
-      await useApplicationStore().resetAndGetConfig()
+      useApplicationStore().resetAndGetConfig()
 
       session.initialized = false
     }
@@ -63,19 +76,24 @@ export const useAuthenticationStore = defineStore(
         }),
       )
 
+      stopAllQueryPollings()
+
+      logoutCleanup.forEach((cleanupCallback) => cleanupCallback())
+
       const result = await logoutMutation.send()
-      if (result?.logout?.success) {
-        if (result.logout.externalLogoutUrl) {
-          externalLogout.value = true
-          authenticated.value = false
-          window.location.href = result.logout.externalLogoutUrl
-          return
-        }
 
-        await clearAuthentication()
-
-        testFlags.set('logout.success')
+      if (result?.logout?.externalLogoutUrl) {
+        externalLogout.value = true
+        authenticated.value = false
+        // No success hooks for external redirect scenario.
+        window.location.href = result.logout.externalLogoutUrl
+        return
       }
+
+      // Logout cleanup is already done before, so we are setting it to false.
+      await clearAuthentication(false)
+
+      testFlags.set('logout.success')
     }
 
     const setAuthenticatedSessionId = async (newSessionId: string | null) => {
@@ -140,6 +158,8 @@ export const useAuthenticationStore = defineStore(
 
       await setAuthenticatedSessionId(result.login?.session?.id || null)
 
+      externalLogout.value = false
+
       return {
         twoFactor: result.login?.twoFactorRequired,
         afterAuth: result.login?.session?.afterAuth,
@@ -150,6 +170,7 @@ export const useAuthenticationStore = defineStore(
       authenticated,
       externalLogout,
       clearAuthentication,
+      registerLogoutCleanup,
       logout,
       login,
       refreshAfterAuthentication,

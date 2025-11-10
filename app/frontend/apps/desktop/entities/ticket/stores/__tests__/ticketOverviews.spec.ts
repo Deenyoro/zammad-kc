@@ -125,6 +125,15 @@ describe('useTicketOverviewsStore', () => {
       calculation_count: 3,
       interval_sec: 10,
       cache_ttl_sec: 10,
+      interval_ranges: [
+        { threshold_sec: 60 * 60, interval_sec: 15, cache_ttl_sec: 15 }, // 1 hour ago
+        { threshold_sec: 2 * 60 * 60, interval_sec: 20, cache_ttl_sec: 20 }, // 2 hours ago
+        { threshold_sec: 4 * 60 * 60, interval_sec: 30, cache_ttl_sec: 30 }, // 4 hour ago
+        { threshold_sec: 12 * 60 * 60, interval_sec: 45, cache_ttl_sec: 45 }, // 12 hours ago
+        { threshold_sec: 24 * 60 * 60, interval_sec: 60, cache_ttl_sec: 60 }, // 1 day ago
+        { threshold_sec: 3 * 24 * 60 * 60, interval_sec: 120, cache_ttl_sec: 120 }, // 3 days ago
+        { threshold_sec: 7 * 24 * 60 * 60, interval_sec: 180, cache_ttl_sec: 180 }, // 1 week ago
+      ],
     })
     expect(queryPollingConfig.value.foreground).toEqual({
       interval_sec: 5,
@@ -145,9 +154,10 @@ describe('useTicketOverviewsStore', () => {
       enabled: false,
       page_size: 50,
       background: {
-        calculation_count: 10,
+        calculation_count: 3,
         interval_sec: 10,
         cache_ttl_sec: 10,
+        interval_ranges: [],
       },
       foreground: {
         interval_sec: 10,

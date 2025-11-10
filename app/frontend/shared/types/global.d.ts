@@ -11,6 +11,8 @@ declare global {
     __(source: string): string
     setLogLevel(level: LogLevel, persistent: boolean): void
     setQueryPollingConfig(config?: Partial<QueryPollingConfig>): QueryPollingConfig
+    resetQueryPollingConfig(): QueryPollingConfig
+    getCurrentQueryPollingConfig(): QueryPollingConfig
   }
 }
 
@@ -18,6 +20,8 @@ declare function __(source: string): string
 declare function setLogLevel(level: LogLevel, persistent: boolean): void
 
 declare function setQueryPollingConfig(config?: Partial<QueryPollingConfig>): QueryPollingConfig
+declare function resetQueryPollingConfig(): QueryPollingConfig
+declare function getCurrentQueryPollingConfig(): QueryPollingConfig
 
 // TODO: Workaround for current problem with formkit version, remove when fixed
 declare module '@formkit/themes'

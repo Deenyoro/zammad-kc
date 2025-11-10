@@ -76,7 +76,7 @@ export const useUserCurrentTaskbarTabsStore = defineStore('userCurrentTaskbarTab
         const type = taskbarTab.callback
 
         if (!userTaskbarTabPluginByType[type]) {
-          log.warn(`Unknown taskbar tab type: ${type}.`)
+          log.debug(`Unknown taskbar tab type: ${type}.`)
           return []
         }
 

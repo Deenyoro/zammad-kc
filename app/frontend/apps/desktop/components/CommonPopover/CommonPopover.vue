@@ -291,8 +291,11 @@ const closePopover = (isInteractive = false) => {
 
   nextTick(() => {
     if (!isInteractive && props.owner) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      '$el' in props.owner ? props.owner.$el?.focus?.() : props.owner?.focus?.()
+      if ('$el' in props.owner) {
+        props.owner.$el?.focus?.()
+      } else {
+        props.owner?.focus?.()
+      }
     }
     updateOwnerAriaExpandedState()
     testFlags.set('common-popover.closed')
