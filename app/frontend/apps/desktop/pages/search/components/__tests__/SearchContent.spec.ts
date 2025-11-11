@@ -115,7 +115,9 @@ describe('SearchContent', () => {
     // Ticket state `open` indicator.
     expect(getByIconName(table, 'check-circle-no')).toBeInTheDocument()
 
-    expect(within(table).getByRole('link', { name: '12469' })).toBeInTheDocument()
+    await waitFor(() =>
+      expect(within(table).getByRole('link', { name: '12469' })).toBeInTheDocument(),
+    )
   })
 
   it('supports optional ticket priority column', async () => {

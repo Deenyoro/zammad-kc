@@ -5,6 +5,21 @@ import type { ObjectManagerFrontendAttributesPayload } from '#shared/graphql/typ
 export default (): ObjectManagerFrontendAttributesPayload => ({
   attributes: [
     {
+      name: 'number',
+      display: '#',
+      dataType: 'input',
+      dataOption: {
+        type: 'text',
+        display_config: 'ticket_hook',
+      },
+      isInternal: true,
+      screens: {
+        create_top: {},
+        edit: {},
+      },
+      __typename: 'ObjectManagerFrontendAttribute',
+    },
+    {
       name: 'title',
       display: 'Title',
       dataType: 'input',
@@ -265,6 +280,11 @@ export default (): ObjectManagerFrontendAttributesPayload => ({
     {
       name: 'create_bottom',
       attributes: ['tags'],
+      __typename: 'ObjectManagerScreenAttributes',
+    },
+    {
+      name: 'overview_bulk',
+      attributes: ['group_id', 'owner_id', 'state_id', 'pending_time', 'priority_id'],
       __typename: 'ObjectManagerScreenAttributes',
     },
   ],

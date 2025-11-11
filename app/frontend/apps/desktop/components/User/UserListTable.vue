@@ -51,17 +51,12 @@ const { goToItem, goToItemLinkColumn, loadMore, resort, storageKeyId } = useList
       :group-by="groupBy"
       :reached-scroll-top="reachedScrollTop"
       :scroll-container="scrollContainer"
-      :attributes="[
-        {
-          name: 'login',
-          label: __('Login'),
+      :attribute-extensions="{
+        login: {
           columnPreferences: {
             link: goToItemLinkColumn,
           },
-          dataType: 'input',
         },
-      ]"
-      :attribute-extensions="{
         organization_ids: {
           headerPreferences: {
             noSorting: true,

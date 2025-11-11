@@ -34,7 +34,9 @@ const { objectAttributes: objectAttributesConfig } = useSharedVisualConfig()
 const { config } = storeToRefs(useApplicationStore())
 
 const getLabel = (attribute: ObjectAttribute) =>
-  attribute.displayConfig ? config.value[attribute.displayConfig] : attribute.display
+  attribute.dataOption?.display_config
+    ? config.value[attribute.dataOption.display_config]
+    : attribute.display
 
 const getDisplayLabel = (attribute: ObjectAttribute) => {
   // If inline editable by default it shows then the field label

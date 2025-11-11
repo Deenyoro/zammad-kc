@@ -28,13 +28,11 @@ const { form } = useForm()
 const formSchema = defineFormSchema([
   {
     name: 'customer_id',
-    screen: 'edit',
     object: EnumObjectManagerObjects.Ticket,
     required: true,
   },
   {
     name: 'organization_id',
-    screen: 'edit',
     object: EnumObjectManagerObjects.Ticket,
   },
 ])

@@ -138,7 +138,7 @@ const hasEscalation = computed(() => {
     v-if="!isTicketEditable && ticket"
     :object="ticket"
     :attributes="objectAttributes"
-    :skip-attributes="['title', 'customer_id', 'organization_id']"
+    :skip-attributes="['title', 'number', 'customer_id', 'organization_id']"
   />
 
   <TicketObjectAttributes v-if="isTicketAgent && ticket" :ticket="ticket" />

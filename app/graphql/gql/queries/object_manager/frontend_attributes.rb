@@ -24,7 +24,7 @@ module Gql::Queries
         frontend_screens = {}
 
         object_attributes.each do |element|
-          next if !check_attribute_frontend_screens(frontend_screens, element.screens, element.attribute.name)
+          prepare_attribute_frontend_screens(frontend_screens, element.screens, element.attribute.name)
 
           frontend_attributes << frontend_attribute_fields(element)
         end
@@ -56,20 +56,14 @@ module Gql::Queries
         attribute[:data_option][:belongs_to] = attribute[:name].humanize(capitalize: false)
       end
 
-      def check_attribute_frontend_screens(frontend_screens, screens, name)
-        attribute_shown = false
-
+      def prepare_attribute_frontend_screens(frontend_screens, screens, name)
         screens.each do |screen, screen_data|
           frontend_screens[screen] ||= []
 
           next if !apply_screen_filter?(screen, screen_data)
 
           frontend_screens[screen] << name
-
-          attribute_shown = true
         end
-
-        attribute_shown
       end
 
       def apply_screen_filter?(screen, screen_data)

@@ -11,6 +11,10 @@ import type { ObjectAttribute } from '../types/store.ts'
 export const useObjectAttributeFormFields = (skippedFields: string[] = []) => {
   const { getObjectAttributesForObject } = useObjectAttributesStore()
 
+  const getScreensForObject = (object: EnumObjectManagerObjects) => {
+    return getObjectAttributesForObject(object).screens as unknown as Record<string, string[]>
+  }
+
   const getFormFieldSchema = (name: string, object: EnumObjectManagerObjects, screen?: string) => {
     const objectAttributesObject = getObjectAttributesForObject(object)
 
@@ -19,6 +23,10 @@ export const useObjectAttributeFormFields = (skippedFields: string[] = []) => {
     ).get(name)
 
     if (!screen) return resolvedField
+
+    const screens = getScreensForObject(object)
+
+    if (!screens[screen] || !screens[screen].includes(name)) return
 
     // We need to transform the resolved the field for the current screen (e.g. for the required information).
     const screenConfig = (
@@ -33,10 +41,7 @@ export const useObjectAttributeFormFields = (skippedFields: string[] = []) => {
   }
 
   const getFormFieldsFromScreen = (screen: string, object: EnumObjectManagerObjects) => {
-    const screens = getObjectAttributesForObject(object).screens as unknown as Record<
-      string,
-      string[]
-    >
+    const screens = getScreensForObject(object)
 
     if (!screens[screen]) return []
 

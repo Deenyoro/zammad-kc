@@ -7,11 +7,12 @@ ObjectManager::Attribute.add(
   display:     '#',
   data_type:   'input',
   data_option: {
-    type:      'text',
-    readonly:  1,
-    null:      true,
-    maxlength: 60,
-    width:     '68px',
+    display_config: 'ticket_hook',
+    type:           'text',
+    readonly:       1,
+    null:           true,
+    maxlength:      60,
+    width:          '68px',
   },
   editable:    false,
   active:      true,
@@ -69,13 +70,13 @@ ObjectManager::Attribute.add(
     placeholder:    __('Enter Person or Organization/Company'),
     minLengt:       2,
     translate:      false,
-    permission:     ['ticket.agent'],
+    permission:     ['ticket.agent', 'ticket.customer'],
   },
   editable:    false,
   active:      true,
   screens:     {
     create_top: {
-      '-all-' => {
+      'ticket.agent' => {
         null: false,
       },
     },

@@ -120,7 +120,6 @@ const formSchema = defineFormSchema([
           },
           {
             name: 'body',
-            screen: 'edit',
             object: EnumObjectManagerObjects.TicketArticle,
             props: {
               mode: ['note'],

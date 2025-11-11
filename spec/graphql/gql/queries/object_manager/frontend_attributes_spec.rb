@@ -297,6 +297,20 @@ RSpec.describe Gql::Queries::ObjectManager::FrontendAttributes, type: :graphql d
         {
           'attributes' => [
             {
+              'name'       => 'number',
+              'display'    => '#',
+              'dataType'   => 'input',
+              'dataOption' => {
+                'display_config' => 'ticket_hook',
+                'type'           => 'text',
+                'readonly'       => 1,
+                'null'           => true,
+                'maxlength'      => 60,
+                'width'          => '68px'
+              },
+              'isInternal' => true
+            },
+            {
               'name'       => 'title',
               'display'    => 'Title',
               'dataType'   => 'input',
@@ -322,7 +336,7 @@ RSpec.describe Gql::Queries::ObjectManager::FrontendAttributes, type: :graphql d
                 'placeholder'    => 'Enter Person or Organization/Company',
                 'minLengt'       => 2,
                 'translate'      => false,
-                'permission'     => ['ticket.agent'],
+                'permission'     => ['ticket.agent', 'ticket.customer'],
                 'belongs_to'     => 'customer',
               },
               'isInternal' => true,
@@ -464,6 +478,20 @@ RSpec.describe Gql::Queries::ObjectManager::FrontendAttributes, type: :graphql d
         {
           'attributes' => [
             {
+              'name'       => 'number',
+              'display'    => '#',
+              'dataType'   => 'input',
+              'dataOption' => {
+                'display_config' => 'ticket_hook',
+                'type'           => 'text',
+                'readonly'       => 1,
+                'null'           => true,
+                'maxlength'      => 60,
+                'width'          => '68px'
+              },
+              'isInternal' => true
+            },
+            {
               'name'       => 'title',
               'display'    => 'Title',
               'dataType'   => 'input',
@@ -472,6 +500,26 @@ RSpec.describe Gql::Queries::ObjectManager::FrontendAttributes, type: :graphql d
                 'maxlength' => 200,
                 'null'      => false,
                 'translate' => false
+              },
+              'isInternal' => true,
+            },
+            {
+              'name'       => 'customer_id',
+              'display'    => 'Customer',
+              'dataType'   => 'user_autocompletion',
+              'dataOption' => {
+                'autocapitalize' => false,
+                'belongs_to'     => 'customer',
+                'guess'          => true,
+                'limit'          => 200,
+                'minLengt'       => 2,
+                'multiple'       => false,
+                'null'           => false,
+                'permission'     => ['ticket.agent',
+                                     'ticket.customer'],
+                'placeholder'    => 'Enter Person or Organization/Company',
+                'relation'       => 'User',
+                'translate'      => false
               },
               'isInternal' => true,
             },
@@ -523,6 +571,33 @@ RSpec.describe Gql::Queries::ObjectManager::FrontendAttributes, type: :graphql d
                 'filter'     => Ticket::State.where(active: true).by_category_ids(:viewable),
                 'maxlength'  => 255,
                 'belongs_to' => 'state',
+              },
+              'isInternal' => true,
+            },
+            {
+              'name'       => 'priority_id',
+              'display'    => 'Priority',
+              'dataType'   => 'select',
+              'dataOption' => {
+                'belongs_to' => 'priority',
+                'default'    => 2,
+                'maxlength'  => 255,
+                'multiple'   => false,
+                'null'       => false,
+                'nulloption' => false,
+                'relation'   => 'TicketPriority',
+                'translate'  => true
+              },
+              'isInternal' => true,
+            },
+            {
+              'name'       => 'tags',
+              'display'    => 'Tags',
+              'dataType'   => 'tag',
+              'dataOption' => {
+                'null'      => true,
+                'translate' => false,
+                'type'      => 'text'
               },
               'isInternal' => true,
             },

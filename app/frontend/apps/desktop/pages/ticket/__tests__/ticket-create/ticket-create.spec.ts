@@ -3,6 +3,7 @@
 import { waitFor, within } from '@testing-library/vue'
 import { beforeEach } from 'vitest'
 
+import ticketArticleCustomerObjectAttributes from '#tests/graphql/factories/fixtures/ticket-article-customer-object-attributes.ts'
 import ticketCustomerObjectAttributes from '#tests/graphql/factories/fixtures/ticket-customer-object-attributes.ts'
 import { getTestRouter } from '#tests/support/components/renderComponent.ts'
 import { visitView } from '#tests/support/components/visitView.ts'
@@ -11,7 +12,11 @@ import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
 import { mockObjectManagerFrontendAttributesQuery } from '#shared/entities/object-attributes/graphql/queries/objectManagerFrontendAttributes.mocks.ts'
 import { waitForTicketCreateMutationCalls } from '#shared/entities/ticket/graphql/mutations/create.mocks.ts'
-import { EnumTaskbarEntity, EnumTaskbarEntityAccess } from '#shared/graphql/types.ts'
+import {
+  EnumObjectManagerObjects,
+  EnumTaskbarEntity,
+  EnumTaskbarEntityAccess,
+} from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 
@@ -435,11 +440,15 @@ describe('ticket create view', () => {
       })
 
       it('creates a new ticket', async () => {
-        // Mock frontend attributes for customer context.
-        // TODO: check if we can mock the query twice based on the variable?
-        mockObjectManagerFrontendAttributesQuery({
-          objectManagerFrontendAttributes: ticketCustomerObjectAttributes(),
+        mockObjectManagerFrontendAttributesQuery(({ object }) => {
+          const attributes =
+            object === EnumObjectManagerObjects.Ticket
+              ? ticketCustomerObjectAttributes()
+              : ticketArticleCustomerObjectAttributes()
+
+          return { objectManagerFrontendAttributes: attributes }
         })
+
         handleMockFormUpdaterQuery()
 
         const view = await visitView('/ticket/create')

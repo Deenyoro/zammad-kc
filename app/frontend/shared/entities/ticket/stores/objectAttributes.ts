@@ -7,14 +7,6 @@ export const staticObjectAttributes: EntityStaticObjectAttributes = {
   name: EnumObjectManagerObjects.Ticket,
   attributes: [
     {
-      name: 'number',
-      display: '#',
-      displayConfig: 'ticket_hook',
-      dataType: 'input',
-      isStatic: true,
-      isInternal: true,
-    },
-    {
       name: 'time_unit',
       display: __('Accounted Time'),
       dataType: 'time_unit',

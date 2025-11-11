@@ -5,6 +5,21 @@ import type { ObjectManagerFrontendAttributesPayload } from '#shared/graphql/typ
 export default (): ObjectManagerFrontendAttributesPayload => ({
   attributes: [
     {
+      name: 'login',
+      display: 'Login',
+      dataType: 'input',
+      isInternal: true,
+      dataOption: {
+        type: 'text',
+        maxlength: 100,
+        null: true,
+        autocapitalize: false,
+        item_class: 'formGroup--halfSize',
+      },
+      screens: {},
+      __typename: 'ObjectManagerFrontendAttribute',
+    },
+    {
       name: 'firstname',
       display: 'First name',
       dataType: 'input',
