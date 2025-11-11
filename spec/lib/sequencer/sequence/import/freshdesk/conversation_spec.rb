@@ -124,6 +124,23 @@ RSpec.describe Sequencer::Sequence::Import::Freshdesk::Conversation, sequencer: 
       )
     end
 
+    context 'with special to emails field situation' do
+      let(:resource) do
+        super().merge(
+          'to_emails' => 'info@zammad.org',
+          'cc_emails' => 'cc@zammad.org',
+        )
+      end
+
+      it 'handles string values for to_emails and cc_emails' do
+        process(process_payload)
+        expect(Ticket::Article.last).to have_attributes(
+          to: 'info@zammad.org',
+          cc: 'cc@zammad.org',
+        )
+      end
+    end
+
     context 'when handling special inline images' do
       context 'when inline image source contains special urls (e.g. "cid:https://...")' do
         let(:inline_image_url) { 'cid:https://eucattachment.freshdesk.com/inline/attachment?token=secret_token' }
