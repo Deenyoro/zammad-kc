@@ -354,8 +354,10 @@ onBeforeRouteUpdate(() => {
   hasLoadedMore.value = false
 })
 
+const scrollContainer = toRef(props, 'scrollContainer')
+
 const { isLoading } = useInfiniteScroll(
-  toRef(props, 'scrollContainer'),
+  scrollContainer,
   async () => {
     hasLoadedMore.value = true
     await props.onLoadMore?.()
@@ -366,6 +368,25 @@ const { isLoading } = useInfiniteScroll(
     eventListenerOptions: {
       passive: true,
     },
+  },
+)
+
+watch(
+  () => [localItems.value.length, scrollContainer.value],
+  async ([itemCount, container]) => {
+    if (!container || itemCount === 0) return
+
+    await nextTick()
+
+    // On large screens, if the container is not scrollable but additional items remain in the dataset,
+    // we need to load more items to enable the infinite scroll functionality to work properly,
+    // as the initial items count does not exceed the container height and therefore no scroll event is triggered.
+
+    if (
+      remainingItems.value > 0 &&
+      (container as HTMLElement).scrollHeight <= (container as HTMLElement).clientHeight
+    )
+      await props.onLoadMore?.()
   },
 )
 
