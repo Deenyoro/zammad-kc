@@ -66,7 +66,7 @@ class Channel::EmailParser::HeadersParser
 
     hash['x-any-recipient'] = hash.values.compact_blank.join(', ')
     hash['message_id']      = imported_fields['message-id']
-    hash['subject']         = imported_fields['subject']
+    hash['subject']         = imported_fields['subject']&.strip
     hash['date']            = begin
       Time.zone.parse(mail.date.to_s)
     rescue

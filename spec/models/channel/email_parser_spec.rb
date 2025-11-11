@@ -1938,4 +1938,26 @@ RSpec.describe Channel::EmailParser, type: :model do
       expect(job).to be_present
     end
   end
+
+  # https://github.com/zammad/zammad/issues/5227
+  describe 'decodes and trims base64/encoded email subject' do
+    context 'for a subject with encoded whitespace' do
+
+      let(:raw_mail) { <<~RAW.chomp }
+        From: sender@example.com
+        To: recipient@example.com
+        Subject: =?UTF-8?B?ICAgICAgVGVzdCBFbWFpbCBTdWJqZWN0ICAg?=
+
+        Body text
+      RAW
+
+      let(:parsed)           { described_class.new.parse(raw_mail) }
+      let(:expected_subject) { 'Test Email Subject' }
+
+      it 'decodes and trims the subject correctly' do
+        expect(parsed[:subject]).to eq(expected_subject)
+      end
+    end
+  end
+
 end
