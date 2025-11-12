@@ -8,17 +8,17 @@ import { TranslationsDocument } from '#shared/graphql/queries/translations.api.t
 import type { TranslationsPayload } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n.ts'
 
-import { useTranslationsStore } from '../translations.ts'
+import { LOCAL_STORAGE_KEY, useTranslationsStore } from '../translations.ts'
 
 const mockQueryResult = (locale: string, cacheKey: string | null): TranslationsPayload => {
-  if (cacheKey === 'MOCKED_CACHE_KEY') {
+  if (cacheKey === 'MOCKED_CACHE_KEY')
     return {
       isCacheStillValid: true,
       cacheKey,
       translations: {},
     }
-  }
-  if (locale === 'de-de') {
+
+  if (locale === 'de-de')
     return {
       isCacheStillValid: false,
       cacheKey: 'MOCKED_CACHE_KEY',
@@ -26,7 +26,7 @@ const mockQueryResult = (locale: string, cacheKey: string | null): TranslationsP
         Login: 'Anmeldung',
       },
     }
-  }
+
   return {
     isCacheStillValid: false,
     cacheKey: 'MOCKED_CACHE_KEY',
@@ -55,6 +55,10 @@ describe('Translations Store', () => {
   const translations = useTranslationsStore()
   mockClient()
 
+  beforeEach(() => {
+    localStorage.clear()
+  })
+
   it('is empty by default', () => {
     expect(translations.cacheKey).toBe('CACHE_EMPTY')
     expect(translations.translationData).toStrictEqual({})
@@ -62,8 +66,8 @@ describe('Translations Store', () => {
   })
 
   it('loads translations without cache', async () => {
-    expect.assertions(4)
     await translations.load('de-de')
+
     expect(lastQueryResult.isCacheStillValid).toBe(false)
     expect(translations.cacheKey.length).toBeGreaterThan(5)
     expect(translations.translationData).toHaveProperty('Login', 'Anmeldung')
@@ -71,16 +75,27 @@ describe('Translations Store', () => {
   })
 
   it('switch to en-us translations', async () => {
-    expect.assertions(3)
     await translations.load('en-us')
+
     expect(lastQueryResult.isCacheStillValid).toBe(false)
     expect(translations.cacheKey.length).toBeGreaterThan(5)
     expect(translations.translationData).toHaveProperty('Login', 'Login (translated)')
   })
 
   it('loads translations from a warm cache', async () => {
-    expect.assertions(5)
+    localStorage.setItem(
+      LOCAL_STORAGE_KEY,
+      JSON.stringify({
+        cacheKey: 'MOCKED_CACHE_KEY',
+        translations: {
+          Login: 'Anmeldung',
+        },
+        locale: 'de-de',
+      }),
+    )
+
     await translations.load('de-de')
+
     expect(lastQueryResult.isCacheStillValid).toBe(true)
     expect(lastQueryResult.translations).toStrictEqual({})
     expect(translations.cacheKey.length).toBeGreaterThan(5)
