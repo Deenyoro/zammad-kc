@@ -336,8 +336,10 @@ const {
   onWrapperClick,
   handleCancel,
   handleChange,
+  labelInlineDesktopClasses,
   containerInlineDesktopClasses,
   wrapperInlineDesktopClasses,
+  inputInlineDesktopTextStyles,
 } = useInlineMode(toRef(props, 'context'), wrapperElement)
 </script>
 
@@ -360,8 +362,9 @@ const {
   >
     <!-- Check if SR label is present on FormKit level labelSrOnly must be true -->
     <CommonLabel
-      v-if="context.label && isInlineMode && !isEditing"
-      class="text-stone-200! absolute top-4 rtl:right-1 ltr:left-1"
+      v-if="context.labelSrOnly && context.label && isInlineMode && !isEditing"
+      class="absolute top-4 rtl:right-1 ltr:left-1"
+      :class="labelInlineDesktopClasses"
       size="small"
     >
       {{ context.label }}
@@ -380,6 +383,7 @@ const {
         class="text-base ltr:text-left rtl:text-right cursor-text"
         data-test-id="field-editor"
         :editor="editor"
+        :style="inputInlineDesktopTextStyles"
       />
 
       <FieldEditorFooter
@@ -456,9 +460,9 @@ const {
     }
   }
 
+  /* DESKTOP ONLY CLASS  */
   p.is-editor-empty:first-child::before {
-    /* DESKTOP ONLY CLASS  */
-    color: var(--color-neutral-400);
+    color: var(--color-gray-100);
     content: attr(data-placeholder);
     float: left;
     height: 0;
@@ -468,6 +472,13 @@ const {
 
   &:focus p.is-editor-empty:first-child::before {
     content: none;
+  }
+}
+
+[data-theme='dark'] {
+  /* DESKTOP ONLY CLASS  */
+  p.is-editor-empty:first-child::before {
+    color: var(--color-neutral-400);
   }
 }
 

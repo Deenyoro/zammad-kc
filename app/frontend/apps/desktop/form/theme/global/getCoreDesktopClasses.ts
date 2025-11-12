@@ -95,7 +95,8 @@ export const getCoreDesktopClasses: FormThemeExtension = (classes: FormThemeClas
     }),
     editor: extendClasses(classes.editor, {
       wrapper: 'max-w-full',
-      input: 'min-h-[76px] text-sm text-black outline-hidden dark:text-white',
+      input:
+        'min-h-[76px] text-sm text-(--editor-text-color) outline-hidden dark:text-(--editor-text-color-dark)',
       inner: 'group rounded-t-none bg-blue-200 dark:bg-gray-700',
     }),
     // TODO: check...

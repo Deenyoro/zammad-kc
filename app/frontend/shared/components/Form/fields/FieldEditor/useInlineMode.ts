@@ -79,8 +79,10 @@ export const useInlineMode = (
     handleChange()
   })
 
-  const wrapperInlineDesktopClasses = computed(() => {
-    return appName === 'desktop'
+  const labelInlineDesktopClasses = 'text-stone-200! dark:text-neutral-500!'
+
+  const wrapperInlineDesktopClasses = computed(() =>
+    appName === 'desktop'
       ? {
           'rounded-b-lg pt-0!': isInlineMode.value,
           'focus-within:outline-1 focus:outline-none focus-within:-outline-offset-1 rounded-b-lg focus-within:outline-blue-800 hover:outline-1 hover:-outline-offset-1 hover:outline-blue-600 focus-within:hover:outline-blue-800 focus-visible:outline-1 dark:bg-gray-700 dark:hover:outline-blue-900 dark:focus-within:hover:outline-blue-800':
@@ -90,17 +92,30 @@ export const useInlineMode = (
           'bg-blue-200 focus-within:outline-1 focus:outline-none focus-within:-outline-offset-1 rounded-b-lg focus-within:outline-blue-800 hover:outline-1 hover:-outline-offset-1 hover:outline-blue-600 focus-within:hover:outline-blue-800 focus-visible:outline-1 dark:bg-gray-700 dark:hover:outline-blue-900 dark:focus-within:hover:outline-blue-800':
             isInlineMode.value && isEditing.value,
         }
-      : {}
-  })
+      : {},
+  )
 
-  const containerInlineDesktopClasses = computed(() => {
-    return appName === 'desktop'
+  const containerInlineDesktopClasses = computed(() =>
+    appName === 'desktop'
       ? {
           '-mx-1 -translate-y-2 -mb-3': isInlineMode.value,
           'rounded-b-lg dark:bg-gray-700': isEditing.value && isInlineMode.value,
         }
-      : {}
-  })
+      : {},
+  )
+
+  const inputInlineDesktopTextStyles = computed(() =>
+    appName === 'desktop'
+      ? {
+          '--editor-text-color':
+            !isInlineMode.value || isEditing.value ? 'var(--color-black)' : 'var(--color-gray-100)',
+          '--editor-text-color-dark':
+            !isInlineMode.value || isEditing.value
+              ? 'var(--color-white)'
+              : 'var(--color-neutral-400)',
+        }
+      : {},
+  )
 
   return {
     isEditing,
@@ -109,7 +124,9 @@ export const useInlineMode = (
     onWrapperClick,
     handleCancel,
     handleChange,
+    labelInlineDesktopClasses,
     containerInlineDesktopClasses,
     wrapperInlineDesktopClasses,
+    inputInlineDesktopTextStyles,
   }
 }
