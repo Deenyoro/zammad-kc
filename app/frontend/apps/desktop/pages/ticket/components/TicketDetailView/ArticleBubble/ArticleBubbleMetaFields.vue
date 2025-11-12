@@ -20,7 +20,7 @@ const { fields } = useArticleMeta(toRef(props, 'article'))
 <template>
   <div class="grid grid-cols-[max-content_1fr] gap-x-3 gap-y-2 rounded-t-xl p-3">
     <template v-for="(field, index) in fields" :key="`${field.label}-${index}`">
-      <CommonLabel class="ltr:ml-auto rtl:mr-auto">{{ $t(field.label) }} </CommonLabel>
+      <CommonLabel class="self-start ms-auto">{{ $t(field.label) }} </CommonLabel>
 
       <div class="flex items-center gap-2">
         <Component

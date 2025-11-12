@@ -38,7 +38,7 @@ const ArticleMetaAddressMock = {
       required: true,
       type: Object,
     },
-    type: {
+    metaHeader: {
       default: 'from',
       required: false,
       type: String,
@@ -68,7 +68,7 @@ vi.mock('#desktop/pages/ticket/components/TicketDetailView/ArticleMeta/useArticl
         name: 'from',
         order: 200,
         props: {
-          type: 'from',
+          metaHeader: 'from',
         },
         show: vi.fn(),
       },
@@ -102,7 +102,7 @@ const expectedArray = [
     name: 'from',
     order: 200,
     props: {
-      type: 'from',
+      metaHeader: 'from',
     },
     show: expect.any(Function),
   },
@@ -119,7 +119,7 @@ const expectedArray = [
 describe('useArticleMeta', () => {
   it('returns an array of meta fields', () => {
     const { fields } = useArticleMeta(
-      ref(createDummyArticle({ articleType: 'phone' }) as TicketArticle),
+      ref(createDummyArticle({ articleType: 'email' }) as TicketArticle),
     )
 
     expect(fields.value).toEqual(expectedArray)

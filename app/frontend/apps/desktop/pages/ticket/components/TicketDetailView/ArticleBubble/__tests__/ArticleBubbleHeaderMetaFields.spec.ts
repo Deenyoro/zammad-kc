@@ -62,6 +62,7 @@ describe('ArticleBubbleMetaFields', () => {
         subject: 'Test subject',
         to: {
           raw: 'Test Agents',
+          parsed: [{ name: 'Test Agents', emailAddress: 'tet@agents.com', isSystemAddress: false }],
         },
       },
     })

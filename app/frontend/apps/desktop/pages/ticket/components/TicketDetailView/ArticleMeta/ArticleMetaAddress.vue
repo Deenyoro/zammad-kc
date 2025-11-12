@@ -5,40 +5,44 @@ import { computed } from 'vue'
 
 import type { TicketArticle } from '#shared/entities/ticket/types.ts'
 
+import type { MetaHeader } from './types'
+
 interface Props {
   context: {
     article: TicketArticle
   }
-  type?: 'from' | 'to' | 'cc'
+  metaHeader?: MetaHeader
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  type: 'from',
+  metaHeader: 'from',
 })
 
-const getEmailAddress = (article: TicketArticle) => {
-  if (props.type === 'from') return article.from?.parsed?.at(0)?.emailAddress
-  if (props.type === 'cc') return article.cc?.parsed?.at(0)?.emailAddress
+const metaAddress = computed(() => {
+  const { context, metaHeader } = props
 
-  return article.to?.parsed?.at(0)?.emailAddress
-}
-
-const getName = (article: TicketArticle) => {
-  if (props.type === 'from') return article.from?.parsed?.at(0)?.name || article.from?.raw
-
-  if (props.type === 'cc') return article.cc?.parsed?.at(0)?.name || article.cc?.raw
-
-  return article.to?.parsed?.at(0)?.name || article.to?.raw
-}
-
-const name = computed(() => getName(props.context.article))
-
-const email = computed(() => getEmailAddress(props.context.article))
+  return context.article[metaHeader]
+})
 </script>
 
 <template>
-  <div class="flex gap-2">
-    <CommonLabel v-if="name" class="text-black! dark:text-white!">{{ $t(name) }}</CommonLabel>
-    <CommonLabel v-if="email && email !== '-' && email !== name">{{ `<${email}>` }}</CommonLabel>
+  <div
+    class="flex flex-wrap gap-1 *:not-last:after:text-sm *:not-last:after:leading-snug *:not-last:after:content-[',']"
+  >
+    <template v-if="metaAddress?.parsed?.length">
+      <template v-for="meta in metaAddress.parsed" :key="`${meta.name}-${meta.emailAddress}`">
+        <div v-if="!meta?.isSystemAddress && meta.name" class="flex items-center">
+          <CommonLabel class="text-black! dark:text-white! text-nowrap me-1">{{
+            meta.name
+          }}</CommonLabel>
+          <CommonLabel v-if="meta.emailAddress">{{ `<${meta.emailAddress}>` }}</CommonLabel>
+        </div>
+      </template>
+    </template>
+    <CommonLabel
+      v-else-if="metaAddress?.raw"
+      class="text-black! dark:text-white! text-nowrap me-2"
+      >{{ metaAddress?.raw }}</CommonLabel
+    >
   </div>
 </template>

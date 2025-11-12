@@ -13,3 +13,5 @@ export interface ChannelMetaField {
   props?: Record<string, unknown>
   show?: (article: TicketArticle) => boolean
 }
+
+export type MetaHeader = 'from' | 'to' | 'cc'

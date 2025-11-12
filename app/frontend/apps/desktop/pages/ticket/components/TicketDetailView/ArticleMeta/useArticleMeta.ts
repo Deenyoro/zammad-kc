@@ -66,9 +66,9 @@ export const useArticleMeta = (article: Ref<TicketArticle>) => {
         name: 'from',
         component: ArticleMetaFieldAddress,
         props: {
-          type: 'from',
+          metaHeader: 'from',
         },
-        show: () => !!(article.value.from?.parsed?.[0]?.name || article.value.from?.raw),
+        show: () => !!(article.value.from?.parsed?.length || article.value.from?.raw),
         order: 200,
       },
       {
@@ -76,9 +76,9 @@ export const useArticleMeta = (article: Ref<TicketArticle>) => {
         name: 'to',
         component: ArticleMetaFieldAddress,
         props: {
-          type: 'to',
+          metaHeader: 'to',
         },
-        show: () => !!(article.value.to?.parsed?.[0]?.name || article.value.to?.raw),
+        show: () => !!(article.value.to?.parsed?.length || article.value.to?.raw),
         order: 300,
       },
       {
@@ -86,9 +86,9 @@ export const useArticleMeta = (article: Ref<TicketArticle>) => {
         name: 'cc',
         component: ArticleMetaFieldAddress,
         props: {
-          type: 'cc',
+          metaHeader: 'cc',
         },
-        show: () => !!(article.value.cc?.parsed?.[0]?.name || article.value.cc?.raw),
+        show: () => !!(article.value.cc?.parsed?.length || article.value.cc?.raw),
         order: 350,
       },
       {
