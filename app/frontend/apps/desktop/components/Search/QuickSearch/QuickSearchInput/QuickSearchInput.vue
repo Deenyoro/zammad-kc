@@ -59,7 +59,7 @@ useOnEmitter('reset-quick-search-field', () => resetInput())
     <CommonInputSearch
       ref="input-search"
       v-model="searchValue"
-      wrapper-class="rounded-lg bg-blue-200 px-2.5 py-2 outline-offset-1 outline-blue-800 focus-within:outline dark:bg-gray-700"
+      wrapper-class="rounded-lg bg-blue-200 px-2.5 py-2 outline-blue-800 focus-within:outline dark:bg-gray-700"
       @focus-input="isSearchActive = true"
       @keydown.enter="goToSearchView"
     />

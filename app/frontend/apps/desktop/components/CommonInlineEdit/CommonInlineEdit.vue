@@ -194,7 +194,7 @@ const vFocus = (el: HTMLElement) => {
 // Styling
 const focusClasses = computed(() => {
   let classes =
-    'group-focus-within:before:absolute group-focus-within:before:-left-[5px] group-focus-within:before:top-1/2 group-focus-within:before:z-0 group-focus-within:before:h-[calc(100%+10px)] group-focus-within:before:w-[calc(100%+10px)] group-focus-within:before:-translate-y-1/2 group-focus-within:before:rounded-md'
+    'group-focus-within:before:absolute group-focus-within:before:-left-[5px] group-focus-within:before:top-1/2 group-focus-within:before:z-0 group-focus-within:before:h-[calc(100%+10px)] group-focus-within:before:w-[calc(100%+10px)] group-focus-within:before:-translate-y-1/2 group-focus-within:before:rounded-md group-focus-visible-within group-focus-visible:before:outline-1 group-focus-visible:before:outline-blue-800'
 
   if (props.alternativeBackground) {
     classes += ' group-focus-within:before:bg-neutral-50 dark:group-focus-within:before:bg-gray-500'
@@ -239,9 +239,11 @@ const hoverClasses = computed(() => {
     'before:absolute before:-left-[5px] before:top-1/2 before:-translate-y-1/2 before:-z-10 before:h-[calc(100%+10px)] before:w-[calc(100%+10px)] before:rounded-md'
 
   if (props.alternativeBackground) {
-    classes += ' hover:before:bg-neutral-50 dark:hover:before:bg-gray-500'
+    classes +=
+      ' hover:before:bg-neutral-50 dark:hover:before:bg-gray-500 hover:before:outline-1 hover:before:outline-blue-600 hover:dark:before:outline-blue-900'
   } else {
-    classes += ' hover:before:bg-blue-200 dark:hover:before:bg-gray-700' // default background
+    classes +=
+      ' hover:before:bg-blue-200 dark:hover:before:bg-gray-700 hover:before:outline-1 hover:before:outline-blue-600 hover:dark:before:outline-blue-900' // default background
   }
 
   return props.disabled ? '' : classes
@@ -258,7 +260,7 @@ defineExpose({
   <div
     ref="target"
     :role="activeEditingMode || disabled ? undefined : 'button'"
-    class="group relative flex w-fit items-center gap-1 focus:outline-hidden"
+    class="group relative flex w-fit items-center gap-1"
     :class="[
       disabledClasses,
       {
@@ -301,7 +303,7 @@ defineExpose({
 
     <div
       v-else
-      class="flex max-w-full items-center gap-2 before:absolute before:top-1/2 before:-left-[5px] before:z-0 before:h-[calc(100%+10px)] before:w-[calc(100%+10px)] before:-translate-y-1/2 before:rounded-md"
+      class="flex max-w-full items-center gap-2 before:absolute before:top-1/2 before:-left-[5px] before:z-0 before:h-[calc(100%+10px)] before:w-[calc(100%+10px)] before:-translate-y-1/2 before:rounded-md focus-within:before:outline-1 focus-within:before:outline-blue-800"
       :class="[{ 'w-full': block }, editBackgroundClass, fontSizeClassMap[size]]"
     >
       <div class="relative z-10 w-full ltr:pr-14 rtl:pl-14">
@@ -309,7 +311,7 @@ defineExpose({
           key="editable-content-key"
           v-model.trim="inputValue"
           v-focus
-          class="block w-full flex-shrink-0 bg-transparent text-gray-100 outline-hidden dark:text-neutral-400"
+          class="block w-full shrink-0 bg-transparent text-gray-100 outline-hidden dark:text-neutral-400"
           :class="[{ grow: block }, classes?.input || '']"
           :disabled="disabled || loading"
           :placeholder="placeholder"

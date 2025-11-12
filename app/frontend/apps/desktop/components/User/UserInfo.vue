@@ -35,7 +35,7 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
     <component
       :is="avatarComponent"
       :class="{
-        'hover:no-underline! hover:rounded-full hover:outline-1 hover:outline-blue-600 hover:dark:outline-blue-900':
+        'hover:no-underline! hover:rounded-full hover:outline-1 hover:outline-blue-600 hover:dark:outline-blue-900 focus-visible:rounded-full!':
           !dense && !noLink,
       }"
       :link="!dense && !noLink ? `/user/profile/${getIdFromGraphQLId(user.id!)}` : undefined"

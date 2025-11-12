@@ -48,9 +48,9 @@ const { durations } = useTransitionConfig()
 <template>
   <div
     ref="container"
-    class="mb-2 flex h-10 shrink-0 items-center gap-2 rounded-lg transition-colors"
+    class="mb-2 flex h-10 shrink-0 items-center gap-2 rounded-lg"
     :class="{
-      'bg-blue-200 px-2 has-[input:focus]:outline has-[input:focus]:outline-1 has-[input:focus]:outline-offset-1 has-[input:focus]:outline-blue-800 has-[input:hover]:outline has-[input:hover]:outline-1 has-[input:hover]:outline-offset-1 has-[input:hover]:outline-blue-600 has-[input:hover]:has-[input:focus]:outline-blue-800 dark:bg-gray-700 dark:has-[input:hover]:outline-blue-900 dark:has-[input:hover]:has-[input:focus]:outline-blue-800':
+      'bg-blue-200 px-2 has-[input:focus]:outline-1 has-[input:focus]:outline-blue-800 has-[input:hover]:outline-1 has-has-[input:hover]:outline-blue-600 has-[input:hover]:has-[input:focus]:outline-blue-800 dark:bg-gray-700 dark:has-[input:hover]:outline-blue-900 dark:has-[input:hover]:has-[input:focus]:outline-blue-800':
         filterFieldOpen,
     }"
   >

@@ -397,7 +397,7 @@ setOnSuccessCallback(() => {
         @open-flyout="openBulkEditFlyout"
       />
     </template>
-    <div class="flex h-full flex-col overflow-hidden" data-test-id="search-container">
+    <div class="flex h-full flex-col overflow-hidden pt-px" data-test-id="search-container">
       <SearchControls
         ref="search-controls"
         v-model:search="modelSearchTerm"

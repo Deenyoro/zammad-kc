@@ -99,7 +99,7 @@ onUnmounted(() => {
     v-bind="$props"
     :id="uniqueId"
     ref="popover"
-    :class="{ 'min-w-[17rem]': !noMinWidth }"
+    :class="{ 'min-w-68': !noMinWidth }"
     :z-index="zIndex"
     no-close-on-click-outside
     :owner="popoverTarget"
@@ -123,7 +123,7 @@ onUnmounted(() => {
     tabindex="0"
     :aria-controls="uniqueId"
     :aria-expanded="isOpen"
-    class="group"
+    class="group empty:hidden"
     :class="[
       {
         [triggerLinkActiveClass ?? '']: isOpen && hasOpenedViaLongPress,
