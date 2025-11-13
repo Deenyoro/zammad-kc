@@ -12,7 +12,7 @@ class SystemReport::Plugin::Hardware < SystemReport::Plugin
   end
 
   def total_memory
-    memory = open3_data&.dig('children')&.find { |entry| entry['description'].downcase == 'motherboard' }&.dig('children')&.find { |entry| entry['description'].downcase == 'system memory' }&.dig('size')
+    memory = open3_data&.dig('children')&.find { |entry| entry['description'].downcase == 'motherboard' }&.dig('children')&.find { |entry| entry['description']&.downcase == 'system memory' }&.dig('size')
 
     return memory if memory.present?
 
