@@ -232,6 +232,8 @@ subsequently in a separate step.
       package = JSON.parse(data[:string])
     end
 
+    ensure_dependencies_install!(package['dependencies'])
+
     # package meta data
     meta = {
       name:          package['name'],
@@ -300,6 +302,18 @@ subsequently in a separate step.
     package_db
   end
 
+  def self.ensure_dependencies_install!(dependencies = {})
+    dependencies.each do |name, version_check|
+      raise "Can't install package, because of invalid dependencies: #{name} #{version_check}!" if version_check !~ %r{^(>=|==|<=) (\d+\.\d+\.\d+)$}
+
+      operator = $1
+      version  = $2
+      next if all_packages[name] && Gem::Version.new(all_packages[name]['version']).send(operator, Gem::Version.new(version))
+
+      raise "Can't install package, because of missing dependencies: #{name} #{operator} #{version}!"
+    end
+  end
+
   def self.ensure_no_duplicate_files!(name, location)
     all_files.each do |check_package, check_files|
       next if check_package == name
@@ -311,10 +325,18 @@ subsequently in a separate step.
 
   def self.all_files
     Auth::RequestCache.fetch_value('Package/all_files') do
+      Package.all_packages.transform_values do |value|
+        value['files'].pluck('location')
+      end
+    end
+  end
+
+  def self.all_packages
+    Auth::RequestCache.fetch_value('Package/all_packages') do
       Package.all.each_with_object({}) do |package, result|
         json_file    = Package._get_bin(package.name, package.version)
         package_json = JSON.parse(json_file)
-        result[package.name] = package_json['files'].pluck('location')
+        result[package.name] = package_json
       end
     end
   end
@@ -381,6 +403,8 @@ returns
       package   = JSON.parse(json_file)
     end
 
+    ensure_dependencies_uninstall!(package['name']) if !data[:reinstall]
+
     # down migrations
     if !data[:migration_not_down]
       Package::Migration.migrate(package['name'], 'reverse')
@@ -407,6 +431,15 @@ returns
     end
 
     record
+  end
+
+  def self.ensure_dependencies_uninstall!(uninstall_name)
+    all_packages.each do |name, data|
+      next if data['dependencies'].blank?
+      next if !data['dependencies'][uninstall_name]
+
+      raise "Can't uninstall package, because of required dependencies: #{name} requires #{uninstall_name}!"
+    end
   end
 
 =begin
