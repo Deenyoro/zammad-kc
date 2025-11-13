@@ -33,8 +33,8 @@ const {
   organizationQuery,
   loading: organizationLoading,
   objectAttributes,
-  loadAllMembers,
-} = useOrganizationDetail(organizationId, errorCallback)
+  fetchMoreMembers,
+} = useOrganizationDetail(organizationId, 3, 100, errorCallback)
 
 const error = ref('')
 organizationQuery.onError((apolloError) => {
@@ -81,7 +81,7 @@ const ticketsData = computed(() => getTicketData(organization.value))
     <OrganizationMembersList
       :organization="organization"
       :disable-show-more="organizationLoading"
-      @load-more="loadAllMembers()"
+      @load-more="fetchMoreMembers()"
     />
 
     <CommonTicketStateList

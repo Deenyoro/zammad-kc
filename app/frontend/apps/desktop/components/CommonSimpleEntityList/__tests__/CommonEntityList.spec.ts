@@ -116,7 +116,7 @@ describe('CommonSimpleEntityList', () => {
 
     await wrapper.events.click(
       wrapper.getByRole('button', {
-        name: 'Show 1 more',
+        name: 'Show more',
       }),
     )
 

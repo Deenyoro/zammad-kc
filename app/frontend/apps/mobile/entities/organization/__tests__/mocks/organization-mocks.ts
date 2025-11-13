@@ -25,9 +25,11 @@ export const defaultOrganization = (): ConfidentTake<OrganizationQuery, 'organiz
     note: 'Save something as this note',
     objectAttributeValues: [],
     policy: {
+      __typename: 'PolicyDefault',
       update: true,
     },
     ticketsCount: {
+      __typename: 'TicketCount',
       open: 3,
       closed: 1,
     },
@@ -50,6 +52,9 @@ export const defaultOrganization = (): ConfidentTake<OrganizationQuery, 'organiz
           },
         },
       ],
+      pageInfo: {
+        endCursor: null,
+      },
       totalCount: 1,
     },
   })

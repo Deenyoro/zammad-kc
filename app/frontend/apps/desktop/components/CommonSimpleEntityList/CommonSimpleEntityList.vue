@@ -3,6 +3,7 @@
 <script setup lang="ts" generic="T">
 import { computed, defineAsyncComponent, type AsyncComponentLoader } from 'vue'
 
+import CommonBadge from '#shared/components/CommonBadge/CommonBadge.vue'
 import type { ObjectLike } from '#shared/types/utils.ts'
 
 import CommonSectionCollapse from '#desktop/components/CommonSectionCollapse/CommonSectionCollapse.vue'
@@ -49,6 +50,14 @@ const entitySetup = computed(() => {
     :no-header="!label"
     container-class="flex flex-col gap-1.5"
   >
+    <template #title="{ title, size }">
+      <CommonLabel class="grow text-current! select-none" :size="size" tag="h3">
+        {{ $t(title) }}
+        <CommonBadge class="leading-snug font-bold ltr:ml-1.5 rtl:mr-1.5" size="xs" rounded>
+          {{ entity.totalCount }}
+        </CommonBadge>
+      </CommonLabel>
+    </template>
     <ul v-if="entity.array?.length" class="flex flex-col gap-1.5">
       <li v-for="item in entitySetup.array" :key="`entity-${item.id}`">
         <component :is="entitySetup.component" :entity="item" :context="entitySetup.context" />

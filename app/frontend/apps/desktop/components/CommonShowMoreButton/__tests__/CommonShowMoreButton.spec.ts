@@ -28,7 +28,7 @@ describe('CommonShowMoreButton', () => {
       store: true,
     })
 
-    expect(view.container).toHaveTextContent('Show 3 more')
+    expect(view.container).toHaveTextContent('Show more')
   })
 
   it('cannot load more, if disabled', async () => {
@@ -49,7 +49,7 @@ describe('CommonShowMoreButton', () => {
       store: true,
     })
 
-    await view.events.click(view.getByRole('button', { name: 'Show 2 more' }))
+    await view.events.click(view.getByRole('button', { name: 'Show more' }))
 
     expect(view.getByRole('button')).toBeDisabled()
   })

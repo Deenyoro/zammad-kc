@@ -252,10 +252,10 @@ describe('TicketTags', () => {
 
     expect(view.queryByRole('link', { name: 'tag 6' })).not.toBeInTheDocument()
 
-    await view.events.click(view.getByRole('button', { name: 'Show 1 more' }))
+    await view.events.click(view.getByRole('button', { name: 'Show more' }))
 
     expect(view.getByRole('link', { name: 'tag 6' })).toBeInTheDocument()
 
-    expect(view.queryByRole('button', { name: 'Show 1 more' })).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Show more' })).not.toBeInTheDocument()
   })
 })

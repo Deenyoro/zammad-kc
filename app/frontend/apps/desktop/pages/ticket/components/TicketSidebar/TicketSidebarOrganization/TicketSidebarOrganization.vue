@@ -60,7 +60,7 @@ const organizationInternalId = computed(() => {
   return customer.value?.organization?.id
 })
 
-const { organization, organizationMembers, objectAttributes, loadAllMembers } =
+const { organization, organizationMembers, objectAttributes, fetchMoreMembers } =
   useOrganizationDetail(organizationInternalId)
 </script>
 
@@ -79,7 +79,7 @@ const { organization, organizationMembers, objectAttributes, loadAllMembers } =
       :organization="organization"
       :organization-members="organizationMembers"
       :object-attributes="objectAttributes"
-      @load-more-members="loadAllMembers"
+      @load-more-members="fetchMoreMembers"
     />
   </TicketSidebarWrapper>
 </template>

@@ -100,7 +100,10 @@ describe('static organization', () => {
         ...organization,
         allMembers: {
           ...organization.allMembers,
-          totalCount: 2,
+          totalCount: 3,
+          pageInfo: {
+            endCursor: 'Mw',
+          },
         },
       },
     })
@@ -134,7 +137,6 @@ describe('static organization', () => {
           allMembers: {
             ...organization.allMembers,
             edges: nullableMock([
-              ...members,
               {
                 __typename: 'UserEdge',
                 node: {
@@ -170,12 +172,16 @@ describe('static organization', () => {
                 },
               },
             ]),
+            totalCount: 3,
+            pageInfo: {
+              endCursor: 'Mw',
+            },
           },
         },
       },
     })
 
-    await view.events.click(view.getByRole('button', { name: 'Show 1 more' }))
+    await view.events.click(view.getByRole('button', { name: 'Show 2 more' }))
     await waitUntil(() => mockApi.calls.resolve > 1)
 
     const [, JD, JH, MM] = view.getAllByTestId('common-avatar')

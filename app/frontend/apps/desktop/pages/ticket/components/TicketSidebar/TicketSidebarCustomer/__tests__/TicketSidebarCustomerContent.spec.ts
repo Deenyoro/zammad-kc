@@ -167,7 +167,7 @@ describe('TicketSidebarCustomerContent.vue', () => {
         '/organization/profile/4',
       )
 
-      expect(wrapper.getByRole('button', { name: 'Show 2 more' })).toBeInTheDocument()
+      expect(wrapper.getByRole('button', { name: 'Show more' })).toBeInTheDocument()
 
       expect(wrapper.getByText('Tickets')).toBeInTheDocument()
 

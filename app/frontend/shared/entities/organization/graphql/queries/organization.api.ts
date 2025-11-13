@@ -2,16 +2,16 @@ import * as Types from '#shared/graphql/types.ts';
 
 import gql from 'graphql-tag';
 import { OrganizationAttributesFragmentDoc } from '../fragments/organizationAttributes.api';
-import { OrganizationMembersFragmentDoc } from '../fragments/organizationMembers.api';
+import { OrganizationMembersWithFetchMoreFragmentDoc } from '../fragments/organizationMembersWithFetchMore.api';
 import * as VueApolloComposable from '@vue/apollo-composable';
 import * as VueCompositionApi from 'vue';
 export type ReactiveFunction<TParam> = () => TParam;
 
 export const OrganizationDocument = gql`
-    query organization($organizationId: ID!, $membersCount: Int) {
+    query organization($organizationId: ID!, $first: Int, $after: String) {
   organization(organizationId: $organizationId) {
     ...organizationAttributes
-    ...organizationMembers
+    ...organizationMembersWithFetchMore
     policy {
       update
     }
@@ -22,7 +22,7 @@ export const OrganizationDocument = gql`
   }
 }
     ${OrganizationAttributesFragmentDoc}
-${OrganizationMembersFragmentDoc}`;
+${OrganizationMembersWithFetchMoreFragmentDoc}`;
 export function useOrganizationQuery(variables: Types.OrganizationQueryVariables | VueCompositionApi.Ref<Types.OrganizationQueryVariables> | ReactiveFunction<Types.OrganizationQueryVariables>, options: VueApolloComposable.UseQueryOptions<Types.OrganizationQuery, Types.OrganizationQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<Types.OrganizationQuery, Types.OrganizationQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<Types.OrganizationQuery, Types.OrganizationQueryVariables>> = {}) {
   return VueApolloComposable.useQuery<Types.OrganizationQuery, Types.OrganizationQueryVariables>(OrganizationDocument, variables, options);
 }

@@ -85,6 +85,6 @@ describe('TicketSidebarOrganizationContent.vue', () => {
       }),
     ).toHaveAttribute('href', '/user/profile/2')
 
-    expect(wrapper.getByRole('button', { name: 'Show 1 more' })).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Show more' })).toBeInTheDocument()
   })
 })

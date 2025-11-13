@@ -81,7 +81,7 @@ watch(
       @click="!noCollapse && toggleCollapse()"
       @keydown.enter="!noCollapse && toggleCollapse()"
     >
-      <slot name="title">
+      <slot name="title" :title="title" :size="size">
         <CommonLabel class="grow text-current! select-none" :size="size" tag="h3">
           {{ $t(title) }}
         </CommonLabel>

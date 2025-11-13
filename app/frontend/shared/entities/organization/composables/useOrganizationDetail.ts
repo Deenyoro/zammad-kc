@@ -7,6 +7,7 @@ import type {
   OrganizationUpdatesSubscriptionVariables,
   OrganizationUpdatesSubscription,
   Organization,
+  OrganizationQuery,
 } from '#shared/graphql/types.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import type { GraphQLHandlerError } from '#shared/types/error.ts'
@@ -20,16 +21,18 @@ import type { WatchQueryFetchPolicy } from '@apollo/client/core'
 
 export const useOrganizationDetail = (
   organizationId: Ref<string | undefined> | ComputedRef<string | undefined>,
+  initialPageSize = 5,
+  additionalPageSize = 100,
   errorCallback?: (error: GraphQLHandlerError) => boolean,
   fetchPolicy?: WatchQueryFetchPolicy,
 ) => {
-  const fetchMembersCount = ref<Maybe<number>>(3)
+  const fetchMembersCount = ref<number>(initialPageSize)
 
   const organizationQuery = new QueryHandler(
     useOrganizationQuery(
       () => ({
         organizationId: organizationId.value!,
-        membersCount: 3,
+        first: initialPageSize,
       }),
       () => ({
         enabled: Boolean(organizationId.value),
@@ -41,6 +44,8 @@ export const useOrganizationDetail = (
     },
   )
 
+  const organizationResult = organizationQuery.result()
+
   organizationQuery.subscribeToMore<
     OrganizationUpdatesSubscriptionVariables,
     OrganizationUpdatesSubscription
@@ -48,25 +53,50 @@ export const useOrganizationDetail = (
     document: OrganizationUpdatesDocument,
     variables: {
       organizationId: organizationId.value!,
-      membersCount: fetchMembersCount.value,
+      first: fetchMembersCount.value,
+    },
+    updateQuery: (_, { subscriptionData }) => {
+      if (!subscriptionData.data?.organizationUpdates.organization)
+        return null as unknown as OrganizationQuery
+
+      return {
+        organization: subscriptionData.data.organizationUpdates.organization,
+      }
     },
   }))
 
-  const organizationResult = organizationQuery.result()
   const loading = organizationQuery.loading()
 
   const organization = computed(() => organizationResult.value?.organization as Organization)
 
-  const loadAllMembers = () => {
+  const fetchMoreMembers = () => {
     if (!organizationId) return
 
     organizationQuery
-      .refetch({
-        organizationId: organizationId.value,
-        membersCount: null,
+      .fetchMore({
+        variables: {
+          first: additionalPageSize,
+          after: organizationResult.value?.organization?.allMembers?.pageInfo.endCursor,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult?.organization.allMembers) return previousResult
+
+          const newEdges = fetchMoreResult.organization.allMembers?.edges ?? []
+          const oldEdges = previousResult.organization.allMembers?.edges ?? []
+
+          return {
+            organization: {
+              ...previousResult.organization,
+              allMembers: {
+                ...fetchMoreResult.organization.allMembers,
+                edges: [...oldEdges, ...newEdges],
+              },
+            },
+          }
+        },
       })
       .then(() => {
-        fetchMembersCount.value = null
+        fetchMembersCount.value += additionalPageSize
       })
   }
 
@@ -80,6 +110,6 @@ export const useOrganizationDetail = (
     organization,
     objectAttributes: viewScreenAttributes,
     organizationMembers,
-    loadAllMembers,
+    fetchMoreMembers,
   }
 }

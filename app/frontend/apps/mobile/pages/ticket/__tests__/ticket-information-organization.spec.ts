@@ -102,6 +102,9 @@ describe('static organization', () => {
       allMembers: {
         ...organization.allMembers,
         edges: organization.allMembers?.edges || [],
+        pageInfo: {
+          endCursor: null,
+        },
         totalCount: 2,
       },
     })

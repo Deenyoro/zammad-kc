@@ -59,6 +59,7 @@ class Organization < ApplicationModel
       .left_outer_joins(:organization, :organizations_users)
       .distinct
       .where('organizations.id = :id OR organizations_users.organization_id = :id', id:)
+      .reorder(:id)
   end
 
   def destroy(associations: false)

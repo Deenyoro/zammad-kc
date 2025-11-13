@@ -29,7 +29,7 @@ const props = defineProps<Props>()
 
 const organizationInfoForPopoverQuery = new QueryHandler(
   useOrganizationInfoForPopoverQuery(
-    () => ({ organizationId: props.organizationAvatar.id }),
+    () => ({ organizationId: props.organizationAvatar.id, membersCount: 5 }),
     () => ({ enabled: !!props.organizationAvatar.id, fetchPolicy: 'cache-and-network' }),
   ),
 )
@@ -90,7 +90,7 @@ const goToOrganizationProfile = () => {
             size="small"
             @click="goToOrganizationProfile"
           >
-            {{ $t('%s more', totalCount - entities.length) }}
+            {{ $t('Show more') }}
           </CommonButton>
         </template>
       </CommonSimpleEntityList>

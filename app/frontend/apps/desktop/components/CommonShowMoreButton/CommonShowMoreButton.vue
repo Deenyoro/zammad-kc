@@ -14,6 +14,6 @@ defineProps<Props>()
 
 <template>
   <CommonButton v-if="entities.length < totalCount" type="button" :disabled="disabled">
-    {{ $t('Show %s more', totalCount - entities.length) }}
+    {{ $t('Show more') }}
   </CommonButton>
 </template>
