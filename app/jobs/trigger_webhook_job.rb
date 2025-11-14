@@ -64,8 +64,12 @@ class TriggerWebhookJob < ApplicationJob
   end
 
   def request
-    UserAgent.post(
-      webhook.endpoint,
+    http_method = (webhook.http_method.presence || 'post').downcase.to_sym
+    interpolated_endpoint = interpolate_endpoint
+
+    UserAgent.send(
+      http_method,
+      interpolated_endpoint,
       payload,
       {
         json:                    true,
@@ -78,6 +82,7 @@ class TriggerWebhookJob < ApplicationJob
         verify_ssl:              webhook.ssl_verify,
         user:                    webhook.basic_auth_username,
         password:                webhook.basic_auth_password,
+        bearer_token:            webhook.bearer_token,
         do_not_follow_redirects: true,
         log:                     {
           facility: 'webhook',
@@ -119,7 +124,7 @@ class TriggerWebhookJob < ApplicationJob
     # Use the new interpolation service
     interpolator = Service::Template::Interpolation::Interpolator::Webhook.new(
       template:                       payload,
-      tracks:                         tracks,
+      tracks:,
       additional_track_generate_data: webhook_data,
     )
 
@@ -145,4 +150,20 @@ class TriggerWebhookJob < ApplicationJob
     }
   end
 
+  def interpolate_endpoint
+    endpoint = webhook.endpoint
+
+    return endpoint if !endpoint.match?(%r{#\{[a-z0-9_.?!]+\}})
+
+    tracks = { ticket:, article: }
+
+    # Use the interpolation service for scanning and parsing
+    interpolator = Service::Template::Interpolation::Interpolator.new(
+      template: endpoint,
+      tracks:,
+      mode:     :string,
+    )
+
+    interpolator.execute
+  end
 end

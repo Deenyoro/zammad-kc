@@ -4,14 +4,15 @@ class Service::Template::Interpolation::Interpolator < Service::Base
   include Service::Template::Interpolation::Engine::Parser
   include Service::Template::Interpolation::Engine::Validator
 
-  attr_reader :template, :track_objects, :additional_track_generate_data
+  attr_reader :template, :track_objects, :additional_track_generate_data, :mode
 
-  def initialize(template:, tracks:, additional_track_generate_data: nil)
+  def initialize(template:, tracks:, additional_track_generate_data: nil, mode: :json)
     super()
 
     @template = template
     @track_objects = tracks
     @additional_track_generate_data = additional_track_generate_data
+    @mode = mode
   end
 
   def execute
@@ -31,13 +32,17 @@ class Service::Template::Interpolation::Interpolator < Service::Base
 
     replace(template, mappings)
 
-    begin
-      valid!(template)
-    rescue => e
-      return { error: e.message }
+    if mode == :json
+      begin
+        valid!(template)
+      rescue => e
+        return { error: e.message }
+      end
+
+      return JSON.parse(template)
     end
 
-    JSON.parse(template)
+    template
   end
 
   # The allowed classes and methods are defined within so called track classes,

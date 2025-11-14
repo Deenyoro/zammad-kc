@@ -14,6 +14,7 @@ class Webhook < ApplicationModel
   validates :name, presence: true
   validate :validate_endpoint
   validate :validate_custom_payload
+  validate :validate_http_method
 
   validates :note, length: { maximum: 500 }
   sanitized_html :note
@@ -21,6 +22,8 @@ class Webhook < ApplicationModel
   store :preferences
 
   ensures_no_related_objects_path 'notification.webhook', 'webhook_id'
+
+  HTTP_METHODS = %w[post put patch delete].freeze
 
   private
 
@@ -33,7 +36,9 @@ class Webhook < ApplicationModel
   end
 
   def validate_endpoint
-    uri = URI.parse(endpoint)
+    # Replace placeholders with dummy values for validation
+    endpoint_for_validation = endpoint&.gsub(%r{#\{[a-z0-9_.?!]+\}}, '__PLACEHOLDER__')
+    uri = URI.parse(endpoint_for_validation)
 
     errors.add(:endpoint, __('The provided endpoint is invalid, no http or https protocol was specified.')) if !uri.is_a?(URI::HTTP)
     errors.add(:endpoint, __('The provided endpoint is invalid, no hostname was specified.')) if uri.host.blank?
@@ -51,5 +56,13 @@ class Webhook < ApplicationModel
     end
 
     true
+  end
+
+  def validate_http_method
+    return true if http_method.blank?
+
+    return true if HTTP_METHODS.include?(http_method.downcase)
+
+    errors.add :http_method, __('The provided HTTP method is invalid.')
   end
 end

@@ -523,10 +523,12 @@ class CreateTicket < ActiveRecord::Migration[4.2]
     create_table :webhooks do |t|
       t.column :name,                       :string, limit: 250,              null: false
       t.column :endpoint,                   :string, limit: 2000,             null: false
+      t.column :http_method,                :string, limit: 10,               null: false, default: 'post'
       t.column :signature_token,            :string, limit: 200,              null: true
       t.column :ssl_verify,                 :boolean,                         null: false, default: true
       t.column :basic_auth_username,        :string, limit: 250,              null: true
       t.column :basic_auth_password,        :string, limit: 250,              null: true
+      t.column :bearer_token,               :string, limit: 2500,             null: true
       t.column :note,                       :string, limit: 500,              null: true
       t.column :pre_defined_webhook_type,   :string, limit: 250,              null: true
       t.column :customized_payload,         :boolean,                         null: false, default: false

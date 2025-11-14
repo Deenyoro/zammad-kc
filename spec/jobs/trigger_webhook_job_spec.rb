@@ -149,6 +149,43 @@ RSpec.describe TriggerWebhookJob, type: :job do
       end
     end
 
+    context 'with Bearer Token configured' do
+      let(:webhook) { create(:webhook, endpoint: endpoint, bearer_token: 'secret-bearer-token-123') }
+
+      it 'generates a request with Bearer Authorization header' do
+        expect(WebMock).to have_requested(:post, endpoint)
+          .with(body: payload, headers: headers)
+          .with { |req| req.headers['Authorization'] == 'Bearer secret-bearer-token-123' }
+      end
+    end
+
+    context 'without Bearer Token configured' do
+      let(:webhook)  { create(:webhook, endpoint: endpoint) }
+
+      it 'generates a request without Bearer Authorization header' do
+        expect(WebMock).to have_requested(:post, endpoint)
+          .with(body: payload, headers: headers)
+          .with { |req| !req.headers.key?('Authorization') }
+      end
+    end
+
+    context 'with different HTTP methods' do
+      %w[post put patch delete].each do |method|
+        context "with #{method.upcase} method" do
+          let(:webhook) { create(:webhook, endpoint: endpoint, http_method: method) }
+
+          before do
+            stub_request(method.to_sym, endpoint).to_return(headers: response_headers, status: response_status, body: response_body)
+            perform
+          end
+
+          it "makes a #{method.upcase} request" do
+            expect(WebMock).to have_requested(method.to_sym, endpoint)
+          end
+        end
+      end
+    end
+
     context 'when response is not JSON' do
 
       let(:response_body) { 'Thanks!' }
@@ -271,6 +308,50 @@ RSpec.describe TriggerWebhookJob, type: :job do
 
             it_behaves_like 'including correct payload'
           end
+        end
+      end
+    end
+
+    context 'with endpoint variable interpolation' do
+      let(:endpoint) { 'http://api.example.com/webhook/tickets/#{ticket.id}' } # rubocop:disable Lint/InterpolationCheck
+      let(:expected_endpoint) { "http://api.example.com/webhook/tickets/#{ticket.id}" }
+
+      before do
+        stub_request(:post, expected_endpoint).to_return(status: response_status, body: response_body)
+        perform
+      end
+
+      it 'interpolates ticket variables in the endpoint' do
+        expect(WebMock).to have_requested(:post, expected_endpoint)
+      end
+
+      context 'with multiple variables' do
+        let(:endpoint) { 'http://api.example.com/webhook?ticket=#{ticket.number}&id=#{ticket.id}' } # rubocop:disable Lint/InterpolationCheck
+        let(:expected_endpoint) { "http://api.example.com/webhook?ticket=#{ticket.number}&id=#{ticket.id}" }
+
+        it 'interpolates all variables correctly' do
+          expect(WebMock).to have_requested(:post, expected_endpoint)
+        end
+      end
+
+      context 'with special characters requiring URL encoding' do
+        before do
+          ticket.update!(title: 'Test Ticket #123: Special & Characters')
+        end
+
+        let(:endpoint) { 'http://api.example.com/webhook?title=#{ticket.title}' } # rubocop:disable Lint/InterpolationCheck
+        let(:expected_endpoint) { "http://api.example.com/webhook?title=#{CGI.escape(ticket.title)}" }
+
+        it 'URL-encodes the interpolated values' do
+          expect(WebMock).to have_requested(:post, expected_endpoint)
+        end
+      end
+
+      context 'without variables' do
+        let(:endpoint) { 'http://api.example.com/webhook/static' }
+
+        it 'uses the endpoint as-is' do
+          expect(WebMock).to have_requested(:post, endpoint)
         end
       end
     end

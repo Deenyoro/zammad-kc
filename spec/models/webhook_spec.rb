@@ -73,6 +73,36 @@ RSpec.describe Webhook, type: :model do
         expect(endpoint_errors).to be_empty
       end
     end
+
+    context 'with variable placeholders in endpoint' do
+      let(:endpoint) { 'https://example.com/webhook/#{ticket.number}' } # rubocop:disable Lint/InterpolationCheck
+
+      it { is_expected.to be_valid }
+
+      it 'has no errors' do
+        expect(endpoint_errors).to be_empty
+      end
+    end
+
+    context 'with multiple variable placeholders in endpoint' do
+      let(:endpoint) { 'https://example.com/webhook?ticket=#{ticket.number}&id=#{ticket.id}' } # rubocop:disable Lint/InterpolationCheck
+
+      it { is_expected.to be_valid }
+
+      it 'has no errors' do
+        expect(endpoint_errors).to be_empty
+      end
+    end
+
+    context 'with invalid endpoint and placeholders' do
+      let(:endpoint) { 'invalid://#{ticket.number}' } # rubocop:disable Lint/InterpolationCheck
+
+      it { is_expected.not_to be_valid }
+
+      it 'has an error' do
+        expect(endpoint_errors).to include 'The provided endpoint is invalid, no http or https protocol was specified.'
+      end
+    end
   end
 
   describe 'check custom payload' do
@@ -99,6 +129,48 @@ RSpec.describe Webhook, type: :model do
 
       it 'has an error' do
         expect(custom_payload_errors).to include 'The provided payload is invalid. Please check your syntax.'
+      end
+    end
+  end
+
+  describe 'check http_method' do
+    subject(:webhook) { build(:webhook, http_method: http_method) }
+
+    before { webhook.valid? }
+
+    let(:http_method_errors) { webhook.errors.messages[:http_method] }
+
+    context 'with valid http_method' do
+      %w[post put patch delete].each do |method|
+        context "with #{method}" do
+          let(:http_method) { method }
+
+          it { is_expected.to be_valid }
+
+          it 'has no errors' do
+            expect(http_method_errors).to be_empty
+          end
+        end
+      end
+    end
+
+    context 'with uppercase http_method' do
+      let(:http_method) { 'POST' }
+
+      it { is_expected.to be_valid }
+
+      it 'has no errors' do
+        expect(http_method_errors).to be_empty
+      end
+    end
+
+    context 'with invalid http_method' do
+      let(:http_method) { 'invalid' }
+
+      it { is_expected.not_to be_valid }
+
+      it 'has an error' do
+        expect(http_method_errors).to include 'The provided HTTP method is invalid.'
       end
     end
   end
