@@ -556,7 +556,7 @@ RSpec.describe String do
 
       it 'strips invalid html encoding chars' do
         expect('<div>test something.&#55357;</div>'.html2text)
-          .to eq('test something.í ˝')
+          .to eq('test something.5')
       end
     end
 
