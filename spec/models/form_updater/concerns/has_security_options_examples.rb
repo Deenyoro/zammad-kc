@@ -50,17 +50,14 @@ RSpec.shared_examples 'FormUpdater::HasSecurityOptions' do |type:|
         Setting.set('pgp_integration', true)
       end
 
-      security_messages =
-        {
-          'PGP'   => { 'encryption' => { message: 'There was no recipient found.', messagePlaceholder: [] }, 'sign' => { message: 'There was no PGP key found.', messagePlaceholder: [] } },
-          'SMIME' => { 'encryption' => { message: 'There was no recipient found.', messagePlaceholder: [] }, 'sign' => { message: 'There was no certificate found.', messagePlaceholder: [] } }
-        }
-
       it_behaves_like 'resolving security field', expected_result: {
         securityAllowed:        { 'SMIME' => [], 'PGP' => [] },
         securityDefaultOptions: { 'SMIME' => [], 'PGP' => [] },
         value:                  { 'method' => 'SMIME', 'options' => [] },
-        securityMessages:       security_messages,
+        securityMessages:       {
+          'PGP'   => { 'encryption' => { message: 'There was no recipient found.', messagePlaceholder: [] }, 'sign' => { message: 'There was no PGP key found.', messagePlaceholder: [] } },
+          'SMIME' => { 'encryption' => { message: 'There was no recipient found.', messagePlaceholder: [] }, 'sign' => { message: 'There was no certificate found.', messagePlaceholder: [] } }
+        },
       }
     end
 

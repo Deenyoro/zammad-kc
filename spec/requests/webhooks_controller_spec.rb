@@ -37,7 +37,7 @@ RSpec.describe Webhook, type: :request do
       end
 
       context 'with inactive template' do
-        let!(:webhook) { create(:webhook, active: false) } # rubocop:disable RSpec/LetSetup
+        let!(:webhook) { create(:webhook, active: false) }
 
         it 'returns ok' do
           expect(response).to have_http_status(:ok)

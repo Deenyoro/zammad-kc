@@ -121,8 +121,6 @@ RSpec.describe 'Profile > Language', type: :system do
       let(:customer)           { 'nicole' }
       let(:translated_content) { "Inbound Call: #{title}" }
 
-      translated_element = '.newTicket .ticket-create'
-
       before do
         fill_in 'title', with: title
         fill_in 'customer_id_completion', with: customer
@@ -132,7 +130,7 @@ RSpec.describe 'Profile > Language', type: :system do
         set_tree_select_value('group_id', group.name)
       end
 
-      include_examples 'have translations in ticket page', translated_element
+      include_examples 'have translations in ticket page', '.newTicket .ticket-create'
     end
 
     context 'with ticket zoom page' do
@@ -142,9 +140,7 @@ RSpec.describe 'Profile > Language', type: :system do
       let(:user_group)         { Group.lookup(name: 'Users') }
       let(:ticket)             { create(:ticket, group: user_group, title: title) }
 
-      translated_element = '.content.active .sidebar-content'
-
-      include_examples 'have translations in ticket page', translated_element
+      include_examples 'have translations in ticket page', '.content.active .sidebar-content'
     end
   end
 
@@ -217,8 +213,6 @@ RSpec.describe 'Profile > Language', type: :system do
       let(:customer)           { 'nicole' }
       let(:translated_content) { "Eingehender Anruf: #{title}" }
 
-      translated_element = '.newTicket .ticket-create'
-
       before do
         fill_in 'title', with: title
         fill_in 'customer_id_completion', with: customer
@@ -227,7 +221,7 @@ RSpec.describe 'Profile > Language', type: :system do
         set_tree_select_value('group_id', Group.first.name)
       end
 
-      include_examples 'have translations in ticket page', translated_element
+      include_examples 'have translations in ticket page', '.newTicket .ticket-create'
     end
 
     context 'with ticket zoom page' do
@@ -237,9 +231,7 @@ RSpec.describe 'Profile > Language', type: :system do
       let(:user_group)         { Group.lookup(name: 'Users') }
       let(:ticket)             { create(:ticket, group: user_group, title: title) }
 
-      translated_element = '.content.active .sidebar-content'
-
-      include_examples 'have translations in ticket page', translated_element
+      include_examples 'have translations in ticket page', '.content.active .sidebar-content'
     end
   end
 end

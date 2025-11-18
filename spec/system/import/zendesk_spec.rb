@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Import from Zendesk', authenticated_as: false, required_envs: %w[IMPORT_ZENDESK_ENDPOINT IMPORT_ZENDESK_ENDPOINT_KEY IMPORT_ZENDESK_ENDPOINT_USERNAME], set_up: false, type: :system do
 
-  import_zendesk_url = ENV['IMPORT_ZENDESK_ENDPOINT'].remove(%r{/api/v2/?})
+  let(:import_zendesk_url) { ENV['IMPORT_ZENDESK_ENDPOINT'].remove(%r{/api/v2/?}) }
 
   describe 'fields validation', :use_vcr do
     before do

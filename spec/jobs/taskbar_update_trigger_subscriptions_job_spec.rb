@@ -15,10 +15,8 @@ RSpec.describe TaskbarUpdateTriggerSubscriptionsJob, aggregate_failures: true, t
   let!(:taskbar_1) { create(:taskbar, :with_ticket, ticket:, app: 'desktop', user: taskbar_owner, notify: false) }
   let!(:taskbar_2) { create(:taskbar, :with_ticket, ticket:, app: 'desktop', user: taskbar_other, notify: false) }
 
-  current_taskbar_item_updates = Gql::Subscriptions::User::Current::TaskbarItemUpdates
-
   before do
-    allow(current_taskbar_item_updates).to receive(:trigger_after_update)
+    allow(Gql::Subscriptions::User::Current::TaskbarItemUpdates).to receive(:trigger_after_update)
   end
 
   describe '#perform' do
@@ -31,7 +29,7 @@ RSpec.describe TaskbarUpdateTriggerSubscriptionsJob, aggregate_failures: true, t
 
         expect(taskbar_1.reload.notify).to be(true)
         expect(taskbar_2.reload.notify).to be(true)
-        expect(current_taskbar_item_updates).to have_received(:trigger_after_update).twice
+        expect(Gql::Subscriptions::User::Current::TaskbarItemUpdates).to have_received(:trigger_after_update).twice
       end
     end
 
@@ -45,7 +43,7 @@ RSpec.describe TaskbarUpdateTriggerSubscriptionsJob, aggregate_failures: true, t
 
         expect(taskbar_1.reload.notify).to be(false)
         expect(taskbar_2.reload.notify).to be(true)
-        expect(current_taskbar_item_updates).to have_received(:trigger_after_update).twice
+        expect(Gql::Subscriptions::User::Current::TaskbarItemUpdates).to have_received(:trigger_after_update).twice
       end
     end
   end

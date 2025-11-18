@@ -7,7 +7,7 @@ RSpec.describe Channel::EmailParser, type: :model do
 
     shared_examples 'parses email correctly' do |stored_email|
       context "for #{stored_email}" do
-        let(:yml_file)                 { stored_email.ext('yml') }
+        let(:yml_file)                 { stored_email.sub_ext('.yml') }
         let(:content)                  { YAML.load_file(yml_file, permitted_classes: [ActiveSupport::HashWithIndifferentAccess]) }
         let(:parsed)                   { described_class.new.parse(File.read(stored_email)) }
         let(:expected_msg)             { content.except(:attachments) }
@@ -64,7 +64,7 @@ RSpec.describe Channel::EmailParser, type: :model do
     # Dir.glob(Rails.root.join('test/data/mail/mail*.box')).each { |mail_file| File.write(mail_file.gsub('.box', '.yml'), Channel::EmailParser.new.parse(File.read(mail_file)).slice(:from, :from_email, :from_display_name, :to, :cc, :subject, :body, :content_type, :'reply-to', :attachments).to_yaml) }
     #
     context 'when checking a bunch of stored emails for correct parsing behaviour' do
-      tests = Dir.glob(Rails.root.join('test/data/mail/mail*.box')).each do |stored_email| # rubocop:disable Rails/RootPathnameMethods
+      Rails.root.glob('test/data/mail/mail*.box').each do |stored_email|
         if ENV['MAIL_PARSER_TEST'] && stored_email.exclude?("#{ENV['MAIL_PARSER_TEST']}.box")
           next
         end
@@ -73,7 +73,7 @@ RSpec.describe Channel::EmailParser, type: :model do
       end
 
       it 'ensures tests were dynamically generated' do
-        expect(tests.count).to eq(113)
+        expect(Rails.root.glob('test/data/mail/mail*.box').count).to eq(113)
       end
     end
 

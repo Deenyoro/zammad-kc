@@ -71,7 +71,7 @@ RSpec.describe 'Mobile > Ticket > Create with security options', app: :mobile, a
       let(:recipient_email_address)   { 'pgp+smime-recipient@example.com' }
       let(:email_address)             { create(:email_address, email: system_email_address) }
       let(:group)                     { create(:group, email_address: email_address) }
-      let!(:customer)                 { create(:customer, email: recipient_email_address) } # rubocop:disable RSpec/LetSetup
+      let!(:customer)                 { create(:customer, email: recipient_email_address) }
 
       before do
         Setting.set('pgp_integration', true)
