@@ -172,42 +172,30 @@ class App.SidebarTicketSummary extends App.Controller
 
     return if !@elSidebar
 
-    invalidSummary = @invalidSummary()
-
     summarization = $(App.view('ticket_zoom/sidebar_ticket_summary')(
-      data:           @summaryData
-      invalidSummary: invalidSummary
-      structure:      @getAvailableDisplayStructure()
+      data:      @summaryData
+      structure: @getAvailableDisplayStructure()
     ))
 
     summarization
       .on('click', '.js-retry', @retrySummarization)
 
-    @stopStripeAnimation() if not @isSummarizationLoading(invalidSummary)
+    @stopStripeAnimation() if not @isSummarizationLoading()
 
-    if not invalidSummary
-      @feedbackWidget = new App.AIFeedbackWidget(
-        el:                  summarization.find('.js-aiFeedback')
-        runId:               @summaryData?.analytics?.run_id
-        hasProvidedFeedback: @summaryData?.analytics?.usage?.user_has_provided_feedback
-        regenerateCallback:  @loadSummarization
-      )
+    @feedbackWidget = new App.AIFeedbackWidget(
+      el:                  summarization.find('.js-aiFeedback')
+      runId:               @summaryData?.analytics?.run_id
+      hasProvidedFeedback: @summaryData?.analytics?.usage?.user_has_provided_feedback
+      regenerateCallback:  @loadSummarization
+    )
 
-      @hasUsage = not _.isNull(@summaryData?.analytics?.usage)
-      @markAsRead() if @sidebarItem()?.name is @parentSidebar.currentTab and not @hasUsage
+    @hasUsage = not _.isNull(@summaryData?.analytics?.usage)
+    @markAsRead() if @sidebarItem()?.name is @parentSidebar.currentTab and not @hasUsage
 
     @elSidebar.html(summarization)
 
-  invalidSummary: =>
-    # In case the summary result does not follow expected structure (at least in some part), we consider it as invalid.
-    @summaryData?.result and not _.some(@getAvailableDisplayStructure(), (item) =>
-      key = item.value
-      return _.some(key, (k) => @summaryData?.result[k]?) if _.isArray(key)
-      @summaryData?.result[key]?
-    )
-
-  isSummarizationLoading: (invalidSummary) =>
-    not @summaryData?.error and App.Config.get('ai_provider') and not invalidSummary and not @summaryData?.result
+  isSummarizationLoading: =>
+    not @summaryData?.error and App.Config.get('ai_provider') and not @summaryData?.result
 
   retrySummarization: (e) =>
     @preventDefaultAndStopPropagation(e)

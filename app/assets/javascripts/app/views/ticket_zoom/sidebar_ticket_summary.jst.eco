@@ -13,10 +13,6 @@
       <div class="alert alert--danger">
         <%- @T('No AI provider is currently set up. Please contact your administrator.') %>
       </div>
-    <% else if @invalidSummary: %>
-      <div class="alert alert--info">
-        <%- @T('There is not enough content yet to summarize this ticket.') %>
-      </div>
     <% else if @data?.result: %>
       <% for item in @structure: %>
         <% values = [] %>

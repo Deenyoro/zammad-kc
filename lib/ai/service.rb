@@ -68,7 +68,11 @@ class AI::Service
   end
 
   def request_fresh
-    response = post_transform_result(ask_provider)
+    result = ask_provider
+
+    validate_result!(result)
+
+    response = post_transform_result(result)
 
     if response.nil?
       save_analytics_run if analytics?
@@ -165,6 +169,8 @@ class AI::Service
   def lookup_version
     self.class.lookup_version(context_data, locale)
   end
+
+  def validate_result!(_result); end
 
   def post_transform_result(result)
     result

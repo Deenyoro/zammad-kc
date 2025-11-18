@@ -9,7 +9,6 @@ import { mockRouterHooks } from '#tests/support/mock-vue-router.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
 import { createDummyArticle } from '#shared/entities/ticket-article/__tests__/mocks/ticket-articles.ts'
 import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
-import { EnumTicketSummaryGeneration } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import { pluginFiles } from '#desktop/pages/ticket/components/TicketSidebar/plugins/index.ts'
@@ -272,38 +271,6 @@ describe('TicketSidebarSummary', () => {
     const wrapper = renderRenderTicketSidebarSummary()
 
     expect(await wrapper.findByText('Any feedback on this result?')).toBeInTheDocument()
-  })
-
-  it('shows info that summary is too short to be generated', async () => {
-    mockTicketAiAssistanceSummarizeMutation({
-      ticketAIAssistanceSummarize: {
-        summary: {
-          customerRequest: null,
-          conversationSummary: null,
-          openQuestions: null,
-          upcomingEvents: null,
-          customerMood: null,
-          customerEmotion: null,
-        },
-      },
-    })
-
-    mockApplicationConfig({
-      ai_provider: true,
-      ai_assistance_ticket_summary: true,
-      ai_assistance_ticket_summary_config: {
-        open_questions: true,
-        upcoming_events: true,
-        customer_sentiment: true,
-        generate_on: EnumTicketSummaryGeneration.OnTicketDetailOpening,
-      },
-    })
-
-    const wrapper = renderRenderTicketSidebarSummary()
-
-    expect(
-      await wrapper.findByText('There is not enough content yet to summarize this ticket.'),
-    ).toBeInTheDocument()
   })
 
   it('shows skeleton loader when summary is not ready', async () => {

@@ -43,27 +43,11 @@ const hasProvidedFeedback = computed(() => !!props.analyticsMeta?.usage?.userHas
 
 const hasRecentlyRated = shallowRef(false)
 
-const noSummaryPossible = computed(() => {
-  const { summary } = props
-
-  if (!summary) return false
-
-  return props.summaryHeadings.every((section) => {
-    if (Array.isArray(section.key)) return section.key.every((key) => !summary[key]?.length)
-    return !summary[section.key]?.length
-  })
-})
-
 const titleClass = computed(() => {
   let titleClass =
     'ai-stripe before:-bottom-3 before:absolute relative before:left:0 before:right-0'
 
-  if (
-    props.isProviderConfigured &&
-    !errorMessage.value &&
-    !noSummaryPossible.value &&
-    !props.summary
-  )
+  if (props.isProviderConfigured && !errorMessage.value && !props.summary)
     titleClass += ' animate-ai-stripe'
 
   return titleClass
@@ -108,11 +92,6 @@ const titleClass = computed(() => {
             $t('Retry')
           }}</CommonButton>
         </div>
-      </template>
-      <template v-else-if="noSummaryPossible">
-        <CommonAlert variant="info">
-          {{ $t('There is not enough content yet to summarize this ticket.') }}
-        </CommonAlert>
       </template>
       <template v-else-if="summary">
         <template v-for="item in summaryHeadings" :key="item.key">

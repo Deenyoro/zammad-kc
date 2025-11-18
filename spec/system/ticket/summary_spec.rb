@@ -16,12 +16,13 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
   let(:initial_content) do
     {
-      'customer_request'     => '',
+      'customer_request'     => article.body_as_text,
       'conversation_summary' => initial_summary,
       'open_questions'       => [],
       'upcoming_events'      => [],
       'customer_mood'        => 'Neutral',
       'customer_emotion'     => '😐',
+      'language'             => 'en-us',
     }
   end
 
@@ -33,6 +34,7 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
       'upcoming_events'      => ['Next meeting on Friday', 'Follow-up call next week'],
       'customer_mood'        => 'Happy',
       'customer_emotion'     => '🙂',
+      'language'             => 'en-us',
     }.compact
   end
 
@@ -91,8 +93,8 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
       it 'displays and updates summary in sidebar', performs_jobs: true do
         within '.sidebar[data-tab="summary"]' do
-          expect(page).to have_text 'Conversation Summary'
-          expect(page).to have_text initial_summary
+          expect(page).to have_text('Conversation Summary')
+            .and have_text(initial_summary)
         end
 
         create(:ticket_article, ticket:)
@@ -103,14 +105,15 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
         perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
 
         within '.sidebar[data-tab="summary"]' do
-          expect(page).to have_text updated_summary
+          expect(page).to have_text('Conversation Summary')
+            .and have_text(updated_summary)
         end
       end
 
       it 'shows customer intent in the summary sidebar', performs_jobs: true do
         within '.sidebar[data-tab="summary"]' do
-          expect(page).to have_no_text 'Customer Intent'
-          expect(page).to have_no_text 'Customer is facing an issue with the product.'
+          expect(page).to have_text('Customer Intent')
+            .and have_text(article.body_as_text)
         end
 
         create(:ticket_article, ticket:)
@@ -120,16 +123,16 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
         perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
 
         within '.sidebar[data-tab="summary"]' do
-          expect(page).to have_text 'Customer Intent'
-          expect(page).to have_text 'Customer is facing an issue with the product.'
+          expect(page).to have_text('Customer Intent')
+            .and have_text('Customer is facing an issue with the product.')
         end
       end
 
       it 'shows open questions in the summary sidebar', performs_jobs: true do
         within '.sidebar[data-tab="summary"]' do
-          expect(page).to have_no_text 'Open Questions'
-          expect(page).to have_no_text 'What is the issue?'
-          expect(page).to have_no_text 'How can we help?'
+          expect(page).to have_no_text('Open Questions')
+            .and have_no_text('What is the issue?')
+            .and have_no_text('How can we help?')
         end
 
         create(:ticket_article, ticket:)
@@ -139,17 +142,17 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
         perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
 
         within '.sidebar[data-tab="summary"]' do
-          expect(page).to have_text 'Open Questions'
-          expect(page).to have_text 'What is the issue?'
-          expect(page).to have_text 'How can we help?'
+          expect(page).to have_text('Open Questions')
+            .and have_text('What is the issue?')
+            .and have_text('How can we help?')
         end
       end
 
       it 'shows upcoming events in the summary sidebar', performs_jobs: true do
         within '.sidebar[data-tab="summary"]' do
-          expect(page).to have_no_text 'Upcoming Events'
-          expect(page).to have_no_text 'Next meeting on Friday'
-          expect(page).to have_no_text 'Follow-up call next week'
+          expect(page).to have_no_text('Upcoming Events')
+            .and have_no_text('Next meeting on Friday')
+            .and have_no_text('Follow-up call next week')
         end
 
         create(:ticket_article, ticket:)
@@ -159,17 +162,17 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
         perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
 
         within '.sidebar[data-tab="summary"]' do
-          expect(page).to have_text 'Upcoming Events'
-          expect(page).to have_text 'Next meeting on Friday'
-          expect(page).to have_text 'Follow-up call next week'
+          expect(page).to have_text('Upcoming Events')
+            .and have_text('Next meeting on Friday')
+            .and have_text('Follow-up call next week')
         end
       end
 
       it 'shows customer sentiment and emotion in the summary sidebar', performs_jobs: true do
         within '.sidebar[data-tab="summary"]' do
-          expect(page).to have_text 'Customer Sentiment'
-          expect(page).to have_text 'Neutral'
-          expect(page).to have_text '😐'
+          expect(page).to have_text('Customer Sentiment')
+            .and have_text('Neutral')
+            .and have_text('😐')
         end
 
         create(:ticket_article, ticket:)
@@ -179,9 +182,9 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
         perform_enqueued_jobs(only: TicketAIAssistanceSummarizeJob)
 
         within '.sidebar[data-tab="summary"]' do
-          expect(page).to have_text 'Customer Sentiment'
-          expect(page).to have_text 'Happy'
-          expect(page).to have_text '🙂'
+          expect(page).to have_text('Customer Sentiment')
+            .and have_text('Happy')
+            .and have_text('🙂')
         end
       end
 
@@ -192,7 +195,7 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
       it 'does not show sidebar' do
         expect(page).to have_text(ticket.title)
-        expect(page).to have_no_css('.tabsSidebar-tab[data-tab=summary]')
+          .and have_no_css('.tabsSidebar-tab[data-tab=summary]')
       end
     end
   end
