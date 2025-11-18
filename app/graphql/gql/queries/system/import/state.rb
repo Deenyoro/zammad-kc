@@ -42,9 +42,10 @@ module Gql::Queries
       finished_at = status[:result] == 'import_done' ? DateTime.now : nil
 
       data = status[:data] || {}
-      data.deep_transform_keys! { |key| key.to_s.eql?('done') ? :sum : key }
 
       if data.present?
+        data.deep_transform_keys! { |key| key.to_s == 'done' ? :sum : key }
+
         data[:Configuration] = {
           sum:   1,
           total: 1,

@@ -19,7 +19,7 @@ module Tasks
           return if status
 
           warn 'One or more files could not be verified. For further information, please check the logs.'
-          exit 1 # rubocop:disable Rails/Exit
+          exit 1
         end
       end
     end
