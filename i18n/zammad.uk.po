@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zammad\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-10-23 09:00+0000\n"
-"Last-Translator: Mantikor <nhyuga.r@gmail.com>\n"
+"PO-Revision-Date: 2025-11-19 09:00+0000\n"
+"Last-Translator: Anntoo <jdoomm@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.zammad.org/projects/zammad/"
 "zammad-development/uk/>\n"
 "Language: uk\n"
@@ -79,7 +79,7 @@ msgid ""
 msgstr ""
 "# #{ticket.title}\n"
 "_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
-"Ticket##{ticket.number}>: Створено #{current_user.longname} at "
+"Заявку№#{ticket.number}>: Створено #{current_user.longname} о "
 "#{ticket.updated_at}_\n"
 "* Група: #{ticket.group.name}\n"
 "* Власник: #{ticket.owner.fullname}\n"
@@ -104,8 +104,8 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|Заявка "
-"№#{ticket.number}>: Ескальовано о #{ticket.escalation_at}_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Заявку№#{ticket.number}>: Ескальовано о #{ticket.escalation_at}_\n"
 "Заявку (#{ticket.title}) від \"#{ticket.customer.longname}\" було "
 "ескальовано з \"#{ticket.escalation_at}\"!\n"
 "\n"
@@ -130,7 +130,7 @@ msgid ""
 msgstr ""
 "# #{ticket.title}\n"
 "_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
-"Ticket##{ticket.number}>: Останній раз оновлено о #{ticket.updated_at}_\n"
+"Заявку№#{ticket.number}>: Останній раз оновлено о #{ticket.updated_at}_\n"
 "* Група: #{ticket.group.name}\n"
 "* Власник: #{ticket.owner.fullname}\n"
 "* Статус: #{t(ticket.state.name)}\n"
@@ -154,9 +154,9 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|Заявка "
-"№#{ticket.number}>: Досягнула нагадування!_\n"
-"Заявка потребує уваги: досягнуто нагадування для (#{ticket.title}) від "
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|В заявці "
+"№#{ticket.number}>: Спрацювало нагадування!_\n"
+"Потрібна увага до заявки: спрацювало нагадування для (#{ticket.title}) від "
 "клієнта \"*#{ticket.customer.longname}*\".\n"
 "\n"
 "<% if @objects[:article] %>\n"
@@ -182,9 +182,9 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|Заявка "
-"№#{ticket.number}>: Оновлено #{current_user.longname} о #{ticket.updated_at}"
-"_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Заявку№#{ticket.number}>: Оновлено #{current_user.longname} о "
+"#{ticket.updated_at}_\n"
 "<% if @objects[:changes].present? %>\n"
 "  <% @objects[:changes].each do |key, value| %>\n"
 "  * <%= t key %>: <%= h value[0] %> -> <%= h value[1] %>\n"
@@ -210,8 +210,8 @@ msgid ""
 "<% end %>\n"
 msgstr ""
 "# #{ticket.title}\n"
-"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|Заявка "
-"№#{ticket.number}>: Буде ескальовано о #{ticket.escalation_at}_\n"
+"_<#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}|"
+"Заявка№#{ticket.number}>: Буде ескальовано о #{ticket.escalation_at}_\n"
 "Заявка (#{ticket.title}) від\"#{ticket.customer.longname}\" буде ескальована "
 "о \"#{ticket.escalation_at}\"!\n"
 "\n"
@@ -439,7 +439,7 @@ msgstr "%s вкладених файлів"
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/data-privacy-task.ts:28
 msgid "%s completed data privacy task to delete user ID |%s|"
 msgstr ""
-"%s виконав(ла) завдання знеособлення даних для видалення ідентифікатора "
+"%s створив(ла) завдання конфіденційності даних для видалення ідентифікатора "
 "користувача |%s|"
 
 #: app/assets/javascripts/app/models/ticket_article.coffee:49
@@ -512,7 +512,7 @@ msgstr "%s завершив(-ла) перемикання на |%s|!"
 #: app/assets/javascripts/app/views/integration/exchange_last_import.jst.eco:40
 #: app/assets/javascripts/app/views/integration/exchange_summary.jst.eco:8
 msgid "%s folders"
-msgstr "Теки %s"
+msgstr "Папки %s"
 
 #: app/assets/javascripts/app/views/integration/ldap_last_import.jst.eco:39
 #: app/assets/javascripts/app/views/integration/ldap_summary.jst.eco:8
@@ -551,7 +551,6 @@ msgstr "%s хвилин(и) тому"
 msgid "%s months ago"
 msgstr "%s місяця(ів) тому"
 
-#: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:93
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:172
 #: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:92
 msgid "%s more"
@@ -932,7 +931,7 @@ msgid "A color scheme that uses light-colored elements on a dark background."
 msgstr ""
 "Колірна схема, де використовуються елементи світлих тонів на темному тлі."
 
-#: db/seeds/object_manager_attributes.rb:2232
+#: db/seeds/object_manager_attributes.rb:2233
 msgid ""
 "A group's email address determines which address should be used for outgoing "
 "mails, e.g. when an agent is composing an email or a trigger is sending an "
@@ -985,7 +984,7 @@ msgid ""
 msgstr ""
 "Створена тестова заявка, Ви можете знайти її у своєму огляді \"%s\" %l."
 
-#: app/models/ticket.rb:295
+#: app/models/ticket.rb:296
 msgid "A ticket cannot be merged into itself."
 msgstr "Заявка не може бути об'єднана сама з собою."
 
@@ -1041,28 +1040,18 @@ msgstr "ШІ-Агент"
 msgid "AI Agents"
 msgstr "ШІ-Агенти"
 
-#: lib/excel_sheet/ai/analytics/errors.rb:4
-msgid "AI Analytics Runs Errors"
-msgstr ""
-
-#: lib/excel_sheet/ai/analytics/with_usage.rb:4
-msgid "AI Analytics Runs With Usage"
-msgstr ""
-
 #: db/seeds/permissions.rb:221
 msgid "AI Provider"
 msgstr "ШІ-Провайдер"
 
-#: db/seeds/settings.rb:5993
+#: db/seeds/settings.rb:6027
 msgid "AI Provider Config"
 msgstr "Конфігурація постачальника ШІ"
 
 #: lib/excel_sheet/ai/analytics/errors.rb:26
 #: lib/excel_sheet/ai/analytics/with_usage.rb:26
-#, fuzzy
-#| msgid "Image Service"
 msgid "AI Service Name"
-msgstr "Сервіс передачі зображень"
+msgstr "Назва служби ШІ"
 
 #: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:35
 msgid "AI agent used in schedulers"
@@ -1089,17 +1078,25 @@ msgstr "Текстовий інструмент допомоги ШІ неакт
 msgid "AI assistance text tool is invalid."
 msgstr "Текстовий інструмент допомоги ШІ недійсний."
 
-#: db/seeds/settings.rb:5976
+#: lib/excel_sheet/ai/analytics/errors.rb:4
+msgid "AI error log"
+msgstr "Журнал помилок ШІ"
+
+#: db/seeds/settings.rb:6013
 msgid "AI provider"
 msgstr "Постачальник ШІ"
 
-#: app/models/setting/validation/ai_provider_config.rb:35
+#: app/models/setting/validation/ai_provider_config.rb:7
 msgid "AI provider Azure configuration is incomplete"
 msgstr "Конфігурація постачальника ШІ Azure є неповною"
 
-#: app/models/setting/validation/ai_provider_config.rb:33
+#: app/models/setting/validation/ai_provider_config.rb:6
 msgid "AI provider Ollama URL is not set"
 msgstr "URL-адресу постачальника ШІ Ollama не встановлено"
+
+#: app/models/setting/validation/ai_provider_config.rb:68
+msgid "AI provider is missing"
+msgstr "Відсутній постачальник ШІ"
 
 #: app/controllers/ticket/summarize_controller.rb:8
 #: app/graphql/gql/mutations/ticket/ai_assistance/summarize.rb:16
@@ -1110,13 +1107,21 @@ msgstr "URL-адресу постачальника ШІ Ollama не встан�
 msgid "AI provider is not configured."
 msgstr "Постачальник AI не налаштований."
 
-#: app/models/setting/validation/ai_provider.rb:19
+#: app/models/setting/validation/ai_provider_config.rb:69
 msgid "AI provider is not supported"
 msgstr "Постачальник ШІ не підтримується"
 
-#: app/models/setting/validation/ai_provider_config.rb:37
+#: app/models/setting/validation/ai_provider_config.rb:8
 msgid "AI provider token is not set"
 msgstr "Токен постачальника ШІ не встановлено"
+
+#: lib/ai/service/ticket_summarize.rb:59
+msgid "AI service result is missing expected keys"
+msgstr ""
+
+#: lib/excel_sheet/ai/analytics/with_usage.rb:4
+msgid "AI usage and feedback log"
+msgstr "Журнал використання ШІ та зворотного зв'язку"
 
 #: app/assets/javascripts/app/controllers/api.coffee:3
 #: app/assets/javascripts/app/views/api.jst.eco:2 db/seeds/permissions.rb:251
@@ -1153,9 +1158,9 @@ msgstr ""
 msgid "API server error - please try again"
 msgstr "Помилка сервера API - спробуйте ще раз"
 
-#: lib/ai/provider/anthropic.rb:67 lib/ai/provider/azure.rb:108
-#: lib/ai/provider/mistral.rb:93 lib/ai/provider/ollama.rb:87
-#: lib/ai/provider/open_ai.rb:100 lib/ai/provider/zammad_ai.rb:54
+#: lib/ai/provider/anthropic.rb:69 lib/ai/provider/azure.rb:110
+#: lib/ai/provider/mistral.rb:95 lib/ai/provider/ollama.rb:89
+#: lib/ai/provider/open_ai.rb:100 lib/ai/provider/zammad_ai.rb:70
 msgid "API server not accessible"
 msgstr "Сервер API недоступний"
 
@@ -1269,7 +1274,7 @@ msgstr "Обліковий запис не підтверджено"
 #: app/assets/javascripts/app/views/time_accounting/accounted_time.jst.eco:2
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:77
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:131
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:19
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:11
 #: app/graphql/gql/types/overview_type.rb:101
 msgid "Accounted Time"
 msgstr "Облікований час"
@@ -1346,7 +1351,7 @@ msgstr "Кнопка меню дій для ключів безпеки"
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:19
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:15
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:16
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:520
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:541
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:100
 msgid "Actions"
 msgstr "Дії"
@@ -1390,7 +1395,7 @@ msgstr ""
 #: app/assets/javascripts/app/models/ticket_state.coffee:11
 #: app/assets/javascripts/app/models/ticket_time_accounting_type.coffee:13
 #: app/assets/javascripts/app/models/trigger.coffee:15
-#: app/assets/javascripts/app/models/webhook.coffee:15
+#: app/assets/javascripts/app/models/webhook.coffee:19
 #: app/assets/javascripts/app/views/calendar/holiday_selector.jst.eco:4
 #: app/assets/javascripts/app/views/generic/sla_times.jst.eco:4
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:37
@@ -1399,7 +1404,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/profile/password.jst.eco:29
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:70
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:209
-#: db/seeds/object_manager_attributes.rb:1666
+#: db/seeds/object_manager_attributes.rb:1667
 msgid "Active"
 msgstr "Активний"
 
@@ -1442,7 +1447,7 @@ msgstr "Адаптер"
 #: app/assets/javascripts/app/views/channel/topics.jst.eco:37
 #: app/assets/javascripts/app/views/generic/application_selector_row.jst.eco:32
 #: app/assets/javascripts/app/views/generic/checklist_item.jst.eco:26
-#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:57
+#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:58
 #: app/assets/javascripts/app/views/generic/postmaster_match.jst.eco:21
 #: app/assets/javascripts/app/views/generic/postmaster_set_row.jst.eco:20
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/row.jst.eco:17
@@ -1478,6 +1483,10 @@ msgstr "Додати"
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:7
 msgid "Add Account"
 msgstr "Додати обліковий запис"
+
+#: app/assets/javascripts/app/views/generic/object_attribute_options_context.jst.eco:62
+msgid "Add All"
+msgstr "Додати все"
 
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:7
 msgid "Add Bot"
@@ -1692,7 +1701,7 @@ msgstr "Додаткові примітки для типів створення
 msgid "Additional ticket edit actions"
 msgstr "Додаткові дії з редагування заявки"
 
-#: db/seeds/object_manager_attributes.rb:1406
+#: db/seeds/object_manager_attributes.rb:1407
 msgid "Address"
 msgstr "Адреса"
 
@@ -1845,7 +1854,7 @@ msgstr "Агентський чат"
 msgid "Agent idle timeout"
 msgstr "Час простою агента"
 
-#: app/models/role.rb:151 app/models/user.rb:755
+#: app/models/role.rb:151 app/models/user.rb:757
 msgid "Agent limit exceeded, please check your account settings."
 msgstr ""
 "Ліміт агента перевищено, будь ласка, перевірте налаштування свого облікового "
@@ -1971,7 +1980,7 @@ msgstr "Дозволити в минулому"
 msgid "Allow past dates toggle value is required."
 msgstr "Потрібне значення ознаки \"Дозволити минулі дати\"."
 
-#: db/seeds/object_manager_attributes.rb:2165
+#: db/seeds/object_manager_attributes.rb:2166
 msgid "Allow reopening of tickets within a certain time."
 msgstr "Дозволити повторне відкриття заявок протягом певного часу."
 
@@ -1983,7 +1992,7 @@ msgstr "Дозволити користувачам додавати нові т
 msgid "Allow users to create new tags."
 msgstr "Дозволити користувачам створювати нові теги."
 
-#: db/seeds/settings.rb:5970
+#: db/seeds/settings.rb:6007
 msgid "Allow users to switch automatically to the new desktop UI."
 msgstr ""
 "Дозвольте користувачам автоматично перемикатися на новий інтерфейс робочого "
@@ -2217,7 +2226,7 @@ msgid "Applications"
 msgstr "Програмні додатки"
 
 #: app/assets/javascripts/app/views/widget/template.jst.eco:8
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:323
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:310
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:133
 msgid "Apply"
 msgstr "Застосувати"
@@ -2379,7 +2388,7 @@ msgstr ""
 "Ви впевнені, що користувач буде змушений налаштувати всі методи двофакторної "
 "аутентифікації заново."
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:83
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:84
 msgid "Are you sure? This recent search will be lost."
 msgstr "Ви впевнені? Цей недавній пошук буде втрачено."
 
@@ -2401,13 +2410,13 @@ msgstr "Ви впевнені? У вас є незбережені зміни, �
 msgid "Are you sure? Your notifications settings will be reset to default."
 msgstr "Ви впевнені? Ваші налаштування сповіщень буде скинуто до стандартних."
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:100
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:101
 msgid "Are you sure? Your recent searches will be lost."
 msgstr "Ви впевнені? Ваші останні пошукові запити будуть втрачені."
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:119
-msgid "Are you sure? Your recently viewed items will get lost."
-msgstr "Ви впевнені? Нещодавно переглянуті елементи будуть втрачені."
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:120
+msgid "Are you sure? Your recently closed items will get lost."
+msgstr "Ви впевнені? Ваші нещодавно закриті позиції будуть загублені."
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:54
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:11
@@ -2457,12 +2466,12 @@ msgstr "У повідомленні використовується інший 
 msgid "Article#"
 msgstr "Кіл-ть повідомлень"
 
-#: db/seeds/object_manager_attributes.rb:2187
+#: db/seeds/object_manager_attributes.rb:2188
 msgid "Assign Follow-Ups"
 msgstr "Призначення на вимогу"
 
 #: app/assets/javascripts/app/models/group.coffee:11
-#: db/seeds/object_manager_attributes.rb:2196
+#: db/seeds/object_manager_attributes.rb:2197
 msgid "Assign follow-up to latest agent again."
 msgstr "Знову призначте заявку за останнім агентом."
 
@@ -2474,7 +2483,7 @@ msgstr "Призначення на вимогу"
 msgid "Assign signup roles"
 msgstr "Призначення ролей під час реєстрації"
 
-#: db/seeds/object_manager_attributes.rb:1796
+#: db/seeds/object_manager_attributes.rb:1797
 msgid "Assign users based on user domain."
 msgstr "Призначати користувачів на основі домену користувачів."
 
@@ -2491,7 +2500,7 @@ msgstr "Представник"
 msgid "Assignees"
 msgstr "Відповідальні"
 
-#: db/seeds/object_manager_attributes.rb:2088
+#: db/seeds/object_manager_attributes.rb:2089
 msgid "Assignment Timeout"
 msgstr "Час очікування призначення"
 
@@ -2501,7 +2510,7 @@ msgid "Assignment timeout"
 msgstr "Час очікування призначення"
 
 #: app/assets/javascripts/app/models/group.coffee:8
-#: db/seeds/object_manager_attributes.rb:2093
+#: db/seeds/object_manager_attributes.rb:2094
 msgid ""
 "Assignment timeout in minutes if assigned agent is not working on it. Ticket "
 "will be shown as unassigend."
@@ -2513,7 +2522,7 @@ msgstr ""
 msgid "At least one filter must be provided."
 msgstr "Повинен бути передбачений принаймні один фільтр."
 
-#: app/models/user.rb:657
+#: app/models/user.rb:659
 msgid ""
 "At least one identifier (firstname, lastname, phone, mobile or email) for "
 "user is required."
@@ -2529,7 +2538,7 @@ msgstr "Потрібно хоча б одне правило відповідн�
 msgid "At least one object must be selected."
 msgstr "Принаймні один об'єкт має бути обраний."
 
-#: app/models/role.rb:128 app/models/user.rb:734
+#: app/models/role.rb:128 app/models/user.rb:736
 msgid "At least one user needs to have admin permissions."
 msgstr "Принаймні один користувач повинен мати права адміністратора."
 
@@ -2654,6 +2663,7 @@ msgstr "Серпень"
 msgid "Authenticate"
 msgstr "Автентифікація"
 
+#: app/assets/javascripts/app/models/webhook.coffee:11
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:4
 msgid "Authentication"
 msgstr "Автентифікація"
@@ -2691,7 +2701,7 @@ msgstr "Автентифікація через %s"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/authenticator_app.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:5
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:9
-#: db/seeds/settings.rb:5817
+#: db/seeds/settings.rb:5854
 msgid "Authenticator App"
 msgstr "Програма-автентифікатор"
 
@@ -2736,7 +2746,7 @@ msgstr "Користувачі, що ігноруються автоматичн
 msgid "Auto Assignment Selector"
 msgstr "Відбірник автоматичного призначення"
 
-#: db/seeds/settings.rb:5956
+#: db/seeds/settings.rb:5993
 msgid "Auto Shutdown"
 msgstr "Автоматичне вимкнення"
 
@@ -2950,13 +2960,17 @@ msgid "Basic Settings"
 msgstr "Основні налаштування"
 
 #: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:2
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:141
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:120
 msgid "Be sure to check AI-generated content for accuracy."
 msgstr ""
 "Обов'язково перевіряйте вміст, створений штучним інтелектом, на точність."
 
+#: app/assets/javascripts/app/models/webhook.coffee:11
+msgid "Bearer Token"
+msgstr "Токен на пред'явника"
+
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:788
-#: app/frontend/shared/components/Form/fields/FieldEditor/extensions/UserMention.ts:104
+#: app/frontend/shared/components/Form/fields/FieldEditor/extensions/UserMention.ts:105
 msgid "Before you mention a user, please select a group."
 msgstr "Перш ніж Ви згадаєте користувача, будь ласка, виберіть групу."
 
@@ -3129,7 +3143,7 @@ msgstr "CA"
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:235
 #: app/frontend/shared/entities/ticket-article/action/plugins/email/forward.ts:30
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:178
-#: db/seeds/object_manager_attributes.rb:508
+#: db/seeds/object_manager_attributes.rb:509
 msgid "CC"
 msgstr "CC (Копія)"
 
@@ -3280,7 +3294,7 @@ msgstr ""
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:266
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:218
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:112
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:70
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:68
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:46
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:170
 msgid "Cancel"
@@ -3299,7 +3313,7 @@ msgstr "Скасувати"
 #: app/assets/javascripts/app/views/signup.jst.eco:7
 #: app/frontend/apps/desktop/components/CommonDialog/CommonDialogActionFooter.vue:19
 #: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:10
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:313
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:300
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactorMethods.vue:53
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:116
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordReset.vue:111
@@ -3324,10 +3338,6 @@ msgstr "Скасувати та вийти"
 #: app/assets/javascripts/app/views/ticket_zoom/article_new.jst.eco:111
 msgid "Cancel Upload"
 msgstr "Скасувати завантаження"
-
-#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:113
-msgid "Cancel feedback"
-msgstr "Скасувати відгук"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/delete_action.coffee:8
 msgid "Cannot delete category"
@@ -3404,7 +3414,7 @@ msgstr "Змінити"
 #: app/assets/javascripts/app/controllers/ticket_customer.coffee:5
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_customer.coffee:14
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket.coffee:125
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketChangeCustomer/TicketChangeCustomerFlyout.vue:52
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketChangeCustomer/TicketChangeCustomerFlyout.vue:50
 msgid "Change Customer"
 msgstr "Змінити клієнта"
 
@@ -3420,9 +3430,9 @@ msgstr "Змінити пароль"
 msgid "Change Your Password"
 msgstr "Змінити пароль"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:68
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:69
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:82
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:67
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:65
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:129
 msgid "Change customer"
 msgstr "Змінити клієнта"
@@ -3630,7 +3640,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/checklist_template.coffee:3
 #: app/assets/javascripts/app/views/checklist_template/index.jst.eco:7
-#: db/seeds/permissions.rb:323 db/seeds/settings.rb:5929
+#: db/seeds/permissions.rb:323 db/seeds/settings.rb:5966
 msgid "Checklists"
 msgstr "Списки"
 
@@ -3704,13 +3714,13 @@ msgstr ""
 msgid ""
 "Choose which groups will be considered for dispatching tickets. If you want "
 "to limit it to specific groups, please select at least two below. Make sure "
-"the groups have clear, descriptive names, as that would be the only context "
-"provided to the AI agent."
+"the groups have clear names and optional descriptions, as that would "
+"comprise the context provided to the AI agent."
 msgstr ""
 "Виберіть, які групи будуть розглядатися для відправки заявки. Якщо ви хочете "
-"обмежитися певними групами, виберіть принаймні дві з них нижче. "
-"Переконайтеся, що групи мають чіткі, описові назви, оскільки це буде єдиний "
-"контекст, наданий ШІ-Агенту."
+"обмежитися певними групами, виберіть принаймні дві з наведених нижче. "
+"Переконайтеся, що групи мають чіткі назви та необов'язкові описи, оскільки "
+"це буде контекст, який буде надано агенту ШІ."
 
 #: app/models/ai/agent/type/ticket_prioritizer.rb:20
 msgid ""
@@ -3747,35 +3757,35 @@ msgstr ""
 msgid "Christmas holiday"
 msgstr "Різдвяні свята"
 
-#: db/seeds/object_manager_attributes.rb:1326
+#: db/seeds/object_manager_attributes.rb:1327
 msgid "City"
 msgstr "Місто"
 
-#: db/seeds/schedulers.rb:160
+#: db/seeds/schedulers.rb:169
 msgid "Clean up 'Cti::Log'."
 msgstr "Очистити 'Cti::Log'."
 
-#: db/seeds/schedulers.rb:169
+#: db/seeds/schedulers.rb:178
 msgid "Clean up 'DataPrivacyTask'."
 msgstr "Очистити 'DataPrivacyTask'."
 
-#: db/seeds/schedulers.rb:151
+#: db/seeds/schedulers.rb:160
 msgid "Clean up 'HttpLog'."
 msgstr "Очистити 'HttpLog'."
 
-#: db/seeds/schedulers.rb:106
+#: db/seeds/schedulers.rb:115
 msgid "Clean up ActiveJob locks."
 msgstr "Очистити блокування ActiveJob."
 
-#: db/seeds/schedulers.rb:215
+#: db/seeds/schedulers.rb:224
 msgid "Clean up cache."
 msgstr "Очистити кеш."
 
-#: db/seeds/schedulers.rb:97
+#: db/seeds/schedulers.rb:106
 msgid "Clean up closed sessions."
 msgstr "Очистити закриті сесії."
 
-#: db/seeds/schedulers.rb:115
+#: db/seeds/schedulers.rb:124
 msgid "Clean up dead sessions."
 msgstr "Очистити мертві сесії."
 
@@ -3783,7 +3793,7 @@ msgstr "Очистити мертві сесії."
 msgid "Clean up expired sessions."
 msgstr "Очистити прострочені сесії."
 
-#: db/seeds/schedulers.rb:250
+#: db/seeds/schedulers.rb:259
 msgid "Clean up mobile taskbars."
 msgstr "Очистити панель завдань мобільних пристроїв."
 
@@ -3808,13 +3818,13 @@ msgstr "Очистити вибір"
 msgid "Clear filter"
 msgstr "Очистити фільтр"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:190
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:194
 msgid "Clear recent searches"
 msgstr "Очистити недавні пошуки"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:218
-msgid "Clear recently viewed"
-msgstr "Очистити недавно переглянуті"
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:222
+msgid "Clear recently closed"
+msgstr "Очистити нещодавно закриті"
 
 #: app/frontend/apps/desktop/pages/search/components/SearchEmptyMessage.vue:34
 msgid "Clear search"
@@ -3844,6 +3854,10 @@ msgstr "Натисніть тут"
 #: app/frontend/apps/mobile/pages/authentication/components/AfterAuth/TwoFactorConfiguration.vue:20
 msgid "Click here to set up a two-factor authentication method."
 msgstr "Натисніть тут, щоб налаштувати двофакторну автентифікацію."
+
+#: app/frontend/shared/components/Form/fields/FieldEditor/FieldEditorInput.vue:49
+msgid "Click to edit…"
+msgstr "Натисніть, щоб редагувати…"
 
 #: app/assets/javascripts/app/views/exchange/app_config.jst.eco:9
 #: app/assets/javascripts/app/views/exchange/token_information.jst.eco:28
@@ -3898,7 +3912,7 @@ msgstr "Закрити ескалацію о"
 msgid "Close In Min"
 msgstr "Закрита у хвилинах"
 
-#: db/seeds/schedulers.rb:88
+#: db/seeds/schedulers.rb:97
 msgid "Close chat sessions where participants are offline."
 msgstr "Закриті чат-сесії, коли учасники не в мережі."
 
@@ -3948,12 +3962,12 @@ msgstr "Закрито о"
 
 #: app/assets/javascripts/app/controllers/widget/ticket_stats.coffee:130
 #: app/assets/javascripts/app/controllers/widget/user.coffee:80
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:127
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:129
 msgid "Closed Tickets"
 msgstr "Закриті заявки"
 
 #: app/assets/javascripts/app/models/ticket.coffee:25
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:82
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:74
 #: app/graphql/gql/types/overview_type.rb:110
 msgid "Closing time"
 msgstr "Час закриття"
@@ -3983,10 +3997,8 @@ msgid "Comment"
 msgstr "Коментар"
 
 #: lib/excel_sheet/ai/analytics/with_usage.rb:46
-#, fuzzy
-#| msgid "Comment"
 msgid "Comments"
-msgstr "Коментар"
+msgstr "Коментарі"
 
 #: app/models/report.rb:194
 msgid "Communication"
@@ -4011,7 +4023,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:11
-#: db/seeds/settings.rb:5809
+#: db/seeds/settings.rb:5846
 msgid "Complete the sign-in with your security key."
 msgstr "Завершіть авторизацію за допомогою ключа безпеки."
 
@@ -4317,7 +4329,7 @@ msgstr "Перейти на мобільну версію"
 msgid "Contributing Translations"
 msgstr "Вклад в переклади"
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:54
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:72
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:4
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:85
 msgid "Conversation Summary"
@@ -4506,7 +4518,7 @@ msgstr "Кількість невдалих електронних листів"
 msgid "Counting entries. This may take a while."
 msgstr "Виконується підрахунок записів. Це може зайняти певний час."
 
-#: db/seeds/object_manager_attributes.rb:1366
+#: db/seeds/object_manager_attributes.rb:1367
 msgid "Country"
 msgstr "Країна"
 
@@ -4695,7 +4707,7 @@ msgid "Create ticket"
 msgstr "Створити заявку"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:356
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:417
 msgid "Create your first ticket"
 msgstr "Створити першу заявку"
 
@@ -4766,8 +4778,8 @@ msgstr "Створено внутрішнє повідомлення"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleMeta/useArticleMeta.ts:54
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/TicketSimpleTable.vue:38
 #: app/frontend/shared/entities/organization/stores/objectAttributes.ts:24
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:107
-#: app/frontend/shared/entities/user/stores/objectAttributes.ts:24
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:99
+#: app/frontend/shared/entities/user/stores/objectAttributes.ts:25
 #: app/graphql/gql/types/overview_type.rb:113
 msgid "Created at"
 msgstr "Створено в/о"
@@ -4792,7 +4804,7 @@ msgstr "Створено о:"
 #: app/assets/javascripts/app/models/ticket_article.coffee:15
 #: app/assets/javascripts/app/models/user.coffee:14
 #: app/frontend/shared/entities/organization/stores/objectAttributes.ts:14
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:96
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:88
 #: app/frontend/shared/entities/user/stores/objectAttributes.ts:14
 #: app/graphql/gql/types/overview_type.rb:112
 msgid "Created by"
@@ -4883,7 +4895,7 @@ msgstr "Користувальницький"
 msgid "Custom AI Agent"
 msgstr "Користувацький ШІ-Агент"
 
-#: app/assets/javascripts/app/models/webhook.coffee:12
+#: app/assets/javascripts/app/models/webhook.coffee:16
 msgid "Custom Payload"
 msgstr "Корисне навантаження, що налаштовується (Payload)"
 
@@ -4926,7 +4938,7 @@ msgstr "Індивідуальні інструкції"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/customer.ts:13
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/plugins/customer.ts:6
 #: app/graphql/gql/types/overview_type.rb:93
-#: db/seeds/object_manager_attributes.rb:60 db/seeds/roles.rb:23
+#: db/seeds/object_manager_attributes.rb:61 db/seeds/roles.rb:23
 #: db/seeds/ticket_article_senders.rb:4 lib/excel_sheet/ticket.rb:29
 msgid "Customer"
 msgstr "Клієнт"
@@ -4936,13 +4948,13 @@ msgstr "Клієнт"
 msgid "Customer Chat"
 msgstr "Чат із клієнтами"
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:47
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:65
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:3
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:80
 msgid "Customer Intent"
 msgstr "Наміри клієнта"
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:73
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:91
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:7
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:100
 msgid "Customer Sentiment"
@@ -4970,7 +4982,7 @@ msgstr ""
 "неможливий."
 
 #: app/assets/javascripts/app/models/organization.coffee:7
-#: db/seeds/object_manager_attributes.rb:1750
+#: db/seeds/object_manager_attributes.rb:1751
 msgid "Customers in the organization can view each other's items."
 msgstr "Клієнти однієї організації можуть переглядати заявки одне одного."
 
@@ -5094,7 +5106,7 @@ msgstr "Значення зменшення хвилин"
 msgid "Decrement seconds value"
 msgstr "Значення зменшення секунд"
 
-#: app/assets/javascripts/app/controllers/article_view/item.coffee:293
+#: app/assets/javascripts/app/controllers/article_view/item.coffee:297
 msgid "Decryption failed!"
 msgstr "Дешифрування не вдалося!"
 
@@ -5103,7 +5115,7 @@ msgstr "Дешифрування не вдалося!"
 msgid "Decryption failed! %s"
 msgstr "Не вдалося дешифрувати! %s"
 
-#: app/assets/javascripts/app/controllers/article_view/item.coffee:291
+#: app/assets/javascripts/app/controllers/article_view/item.coffee:295
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleSecurityBadge.vue:102
 #: app/frontend/shared/composables/useArticleSecurity.ts:110
 msgid "Decryption was successful."
@@ -5469,7 +5481,7 @@ msgstr "Визначає, чи увімкнено Monit (https://mmonit.com/moni
 msgid "Defines if Nagios (http://www.nagios.org) is enabled or not."
 msgstr "Визначає, чи ввімкнено Nagios (http://www.nagios.org) чи ні."
 
-#: db/seeds/settings.rb:5677
+#: db/seeds/settings.rb:5714
 msgid "Defines if PGP encryption is enabled or not."
 msgstr "Визначає, чи ввімкнено шифрування PGP, чи ні."
 
@@ -5477,7 +5489,7 @@ msgstr "Визначає, чи ввімкнено шифрування PGP, чи
 msgid "Defines if Placetel (http://www.placetel.de) is enabled or not."
 msgstr "Визначає, чи ввімкнено Placetel (http://www.placetel.de) чи ні."
 
-#: db/seeds/settings.rb:5635
+#: db/seeds/settings.rb:5672
 msgid "Defines if S/MIME encryption is enabled or not."
 msgstr "Визначає, чи ввімкнено шифрування S/MIME чи ні."
 
@@ -5493,7 +5505,7 @@ msgstr "Визначає, чи знаходиться програма в реж
 msgid "Defines if application is used as online service."
 msgstr "Визначає, чи використовується додаток як онлайн-сервіс."
 
-#: db/seeds/settings.rb:5760
+#: db/seeds/settings.rb:5797
 msgid ""
 "Defines if calendar weeks are shown in the picker of date/datetime fields to "
 "easily select the correct date."
@@ -5507,7 +5519,7 @@ msgstr ""
 "Визначає, чи увімкнена універсальна інтеграція з комп'ютерною телефонією "
 "(CTI) чи ні."
 
-#: db/seeds/settings.rb:5852
+#: db/seeds/settings.rb:5889
 msgid ""
 "Defines if recovery codes can be used by users in the event they lose access "
 "to other two-factor authentication methods."
@@ -5519,6 +5531,10 @@ msgstr ""
 msgid "Defines if sipgate.io (http://www.sipgate.io) is enabled or not."
 msgstr "Визначає, чи ввімкнено sipgate.io (http://www.sipgate.io)."
 
+#: db/seeds/settings.rb:6016
+msgid "Defines if the AI provider is configured."
+msgstr "Визначає, чи налаштований постачальник ШІ."
+
 #: db/seeds/settings.rb:5058
 msgid ""
 "Defines if the GitHub (http://www.github.com) integration is enabled or not."
@@ -5529,7 +5545,7 @@ msgid ""
 "Defines if the GitLab (http://www.gitlab.com) integration is enabled or not."
 msgstr "Визначає, чи ввімкнена інтеграція з GitLab (http://www.gitlab.com)."
 
-#: db/seeds/settings.rb:5719
+#: db/seeds/settings.rb:5756
 msgid "Defines if the PGP recipient alias configuration is enabled or not."
 msgstr "Визначає, чи ввімкнено конфігурацію псевдоніма одержувача PGP."
 
@@ -5550,7 +5566,7 @@ msgstr ""
 "однаковий пароль, і скидання пароля буде працювати без доставки електронною "
 "поштою)."
 
-#: db/seeds/settings.rb:6073
+#: db/seeds/settings.rb:6107
 msgid ""
 "Defines if the bubble menu feature of the richtext editor is enabled. Note "
 "that this setting will be ignored if the writing assistant is turned on."
@@ -5559,7 +5575,7 @@ msgstr ""
 "тексту. Зауважте, що цей параметр буде проігноровано, якщо увімкнено "
 "помічник редактора."
 
-#: db/seeds/settings.rb:5904
+#: db/seeds/settings.rb:5941
 msgid ""
 "Defines if the change of the primary organization of a user will update the "
 "100 most recent tickets for this user as well."
@@ -5607,7 +5623,7 @@ msgstr ""
 msgid "Defines if the time accounting types are enabled."
 msgstr "Визначає, чи ввімкнено типи обліку часу."
 
-#: db/seeds/settings.rb:5820
+#: db/seeds/settings.rb:5857
 msgid ""
 "Defines if the two-factor authentication method authenticator app is enabled "
 "or not."
@@ -5615,7 +5631,7 @@ msgstr ""
 "Визначає, чи ввімкнено методу двофакторної автентифікації за допомогою "
 "додатку автентифікатора."
 
-#: db/seeds/settings.rb:5788
+#: db/seeds/settings.rb:5825
 msgid ""
 "Defines if the two-factor authentication method security keys is enabled or "
 "not."
@@ -5848,7 +5864,7 @@ msgstr "Визначає конфігурацію Exchange."
 msgid "Defines the HTTP protocol of your instance."
 msgstr "Визначає протокол HTTP для вашого сервера."
 
-#: db/seeds/settings.rb:5705
+#: db/seeds/settings.rb:5742
 msgid "Defines the PGP config."
 msgstr "Визначає конфігурацію PGP."
 
@@ -5856,7 +5872,7 @@ msgstr "Визначає конфігурацію PGP."
 msgid "Defines the Placetel config."
 msgstr "Визначає конфігурацію Placetel."
 
-#: db/seeds/settings.rb:5663
+#: db/seeds/settings.rb:5700
 msgid "Defines the S/MIME config."
 msgstr "Визначає конфігурацію S/MIME."
 
@@ -5952,7 +5968,7 @@ msgstr ""
 "Визначає тривалість активності клієнта (в секундах) під час дзвінка до "
 "моменту, коли буде показано діалогове вікно профілю користувача."
 
-#: db/seeds/settings.rb:6059
+#: db/seeds/settings.rb:6093
 msgid ""
 "Defines the fixed instructions that guide the AI Writing Assistant on e.g. "
 "how to format its output."
@@ -6267,7 +6283,7 @@ msgstr "Видалити наявні дані вашої системи."
 msgid "Delete immediately"
 msgstr "Видалити негайно"
 
-#: db/seeds/schedulers.rb:178
+#: db/seeds/schedulers.rb:187
 msgid "Delete obsolete classic IMAP backup."
 msgstr "Видаліть застарілу класичну резервну копію IMAP."
 
@@ -6279,19 +6295,23 @@ msgstr "Видалити старі записи \"Нещодавно перег
 msgid "Delete old activity stream entries."
 msgstr "Видаліть старі записи потоку активності."
 
-#: db/seeds/schedulers.rb:70
+#: db/seeds/schedulers.rb:79
 msgid "Delete old online notification entries."
 msgstr "Видаліть старі записи онлайн-сповіщень."
 
-#: db/seeds/schedulers.rb:142
+#: db/seeds/schedulers.rb:70
+msgid "Delete old recently closed entries."
+msgstr "Видаліть старі нещодавно закриті записи."
+
+#: db/seeds/schedulers.rb:151
 msgid "Delete old stats store entries."
 msgstr "Видаліть старі записи зі сховища статистики."
 
-#: db/seeds/schedulers.rb:79
+#: db/seeds/schedulers.rb:88
 msgid "Delete old token entries."
 msgstr "Видаліть старі записи Токенів."
 
-#: db/seeds/schedulers.rb:206
+#: db/seeds/schedulers.rb:215
 msgid "Delete old upload cache entries."
 msgstr "Видаліть старі записи кешу завантажень."
 
@@ -6327,7 +6347,7 @@ msgstr "Видаліть цей пристрій"
 msgid "Delete this link"
 msgstr "Видаліть це посилання"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:175
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:179
 msgid "Delete this recent search"
 msgstr "Видаліть цей нещодавній пошук"
 
@@ -6368,7 +6388,7 @@ msgstr "Доставку не виконано:"
 msgid "Delivery failed: \"%s\""
 msgstr "Доставку не виконано: \"%s\""
 
-#: db/seeds/object_manager_attributes.rb:1207
+#: db/seeds/object_manager_attributes.rb:1208
 msgid "Department"
 msgstr "Відділ"
 
@@ -6396,7 +6416,7 @@ msgstr "Опис"
 msgid "Description (shown as title tag for screen readers)"
 msgstr "Опис (відображається як тег заголовка для зчитувачів з екрана)"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:430
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:451
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:76
 msgid "Deselect all entries"
 msgstr "Скасувати вибір усіх записів"
@@ -6451,7 +6471,7 @@ msgid "Detect Duplicate Ticket Creation"
 msgstr "Виявлення створених дублікатів заявок"
 
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:158
-#: db/seeds/object_manager_attributes.rb:735
+#: db/seeds/object_manager_attributes.rb:736
 msgid "Detected Language"
 msgstr "Визначена мова"
 
@@ -6627,10 +6647,8 @@ msgid "Discard your unsaved changes."
 msgstr "Відхилити незбережені зміни."
 
 #: lib/excel_sheet/ai/analytics/with_usage.rb:44
-#, fuzzy
-#| msgid "Linked Accounts"
 msgid "Dislikes count"
-msgstr "Прив’язані облікові записи"
+msgstr "Кількість дизлайків"
 
 #: app/assets/javascripts/app/models/object_manager_attribute.coffee:7
 #: app/assets/javascripts/app/views/object_manager/attribute/boolean.jst.eco:7
@@ -6665,7 +6683,7 @@ msgstr "Не зашифровувати електронну пошту"
 msgid "Do not sign email"
 msgstr "Не підписувати електронну пошту"
 
-#: db/seeds/settings.rb:5914
+#: db/seeds/settings.rb:5951
 msgid "Do not update any tickets."
 msgstr "Не оновлювати жодну заявку."
 
@@ -6710,7 +6728,7 @@ msgstr "Ви хочете обробити їх перед закриттям ц
 msgid "Document file"
 msgstr "Файл документа"
 
-#: db/seeds/object_manager_attributes.rb:1791
+#: db/seeds/object_manager_attributes.rb:1792
 msgid "Domain"
 msgstr "Домен"
 
@@ -6719,7 +6737,7 @@ msgstr "Домен"
 msgid "Domain Alias"
 msgstr "Псевдонім домену"
 
-#: db/seeds/object_manager_attributes.rb:1791
+#: db/seeds/object_manager_attributes.rb:1792
 msgid "Domain based assignment"
 msgstr "Призначення на основі домену"
 
@@ -6765,17 +6783,13 @@ msgstr "Завантажити %s запис(ів)"
 msgid "Download Certificate"
 msgstr "Завантажити сертифікат"
 
-#: app/assets/javascripts/app/views/ai/provider_logs.jst.eco:9
-#, fuzzy
-#| msgid "Media Download Error"
+#: app/assets/javascripts/app/views/ai/provider_logs.jst.eco:11
 msgid "Download Error Logs"
-msgstr "Помилка завантаження медіафайлу"
+msgstr "Завантажити журнали помилок"
 
-#: app/assets/javascripts/app/views/ai/provider_logs.jst.eco:6
-#, fuzzy
-#| msgid "Send Feedback"
+#: app/assets/javascripts/app/views/ai/provider_logs.jst.eco:7
 msgid "Download Feedback"
-msgstr "Надіслати відгук"
+msgstr "Завантажити відгук"
 
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:59
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:37
@@ -6803,7 +6817,7 @@ msgstr "Завантажити оригінал листа"
 msgid "Download raw email"
 msgstr "Завантажити необроблений лист"
 
-#: app/assets/javascripts/app/controllers/article_view/item.coffee:319
+#: app/assets/javascripts/app/controllers/article_view/item.coffee:323
 msgid "Downloading attachments…"
 msgstr "Завантаження вкладень…"
 
@@ -6943,7 +6957,7 @@ msgstr "Редагувати базу знань"
 
 #: app/assets/javascripts/app/controllers/agent_ticket_create/sidebar_organization.coffee:21
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_organization.coffee:11
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:35
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:36
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:76
 msgid "Edit Organization"
 msgstr "Редагувати організацію"
@@ -7062,7 +7076,7 @@ msgstr "Версія Elasticsearch"
 #: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceZendesk.vue:34
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/email.ts:11
 #: app/frontend/shared/entities/ticket-article/action/plugins/email.ts:160
-#: db/seeds/object_manager_attributes.rb:903 db/seeds/permissions.rb:131
+#: db/seeds/object_manager_attributes.rb:904 db/seeds/permissions.rb:131
 #: public/assets/form/form.js:32
 msgid "Email"
 msgstr "Email"
@@ -7147,7 +7161,7 @@ msgstr "Перевірка електронної пошти"
 msgid "Email address"
 msgstr "Адреса електронної пошти"
 
-#: app/models/user.rb:667
+#: app/models/user.rb:669
 msgid "Email address '%{email}' is already used for another user."
 msgstr ""
 "Адреса електронної пошти '%{email}' вже використовується для іншого "
@@ -7207,7 +7221,7 @@ msgstr ""
 msgid "Empty"
 msgstr "Порожньо"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:362
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:423
 msgid "Empty Overview"
 msgstr "Порожній огляд"
 
@@ -7253,7 +7267,7 @@ msgstr ""
 "електронної пошти та пароль). Кожен користувач повинен створити власні ключі "
 "доступу в профілі користувача."
 
-#: db/seeds/settings.rb:5849
+#: db/seeds/settings.rb:5886
 msgid "Enable Recovery Codes"
 msgstr "Увімкнути коди відновлення"
 
@@ -7277,7 +7291,7 @@ msgstr "Увімкнути автоматичне призначення для 
 msgid "Enable automatic assignment the first time an agent opens a ticket."
 msgstr "Увімкнути автоматичне призначення, коли агент уперше відкриває заявку."
 
-#: db/seeds/settings.rb:5932
+#: db/seeds/settings.rb:5969
 msgid "Enable checklists."
 msgstr "Увімкнути списки."
 
@@ -7305,7 +7319,7 @@ msgstr ""
 "Якщо Ви хочете процитувати певну фразу, просто виділіть текст і натисніть "
 "«відповісти» (ця можливість доступна завжди)."
 
-#: db/seeds/settings.rb:5959
+#: db/seeds/settings.rb:5996
 msgid ""
 "Enable or disable self-shutdown of Zammad processes after significant "
 "configuration changes. This should only be used if the controlling process "
@@ -7336,11 +7350,11 @@ msgstr ""
 "усіх не-адміністраторів завершується, і лише адміністратори зможуть почати "
 "нову сесію."
 
-#: db/seeds/settings.rb:6012
+#: db/seeds/settings.rb:6046
 msgid "Enable or disable the ticket summary."
 msgstr "Увімкніть або вимкніть підсумок заявки."
 
-#: db/seeds/settings.rb:6045
+#: db/seeds/settings.rb:6079
 msgid "Enable or disable the writing assistant text tools."
 msgstr "Увімкніть або вимкніть текстові інструменти помічника редактора."
 
@@ -7381,7 +7395,7 @@ msgstr ""
 "Вмикає попередження користувачам під час створення заявки, якщо існує заявка "
 "з такими самими атрибутами."
 
-#: db/seeds/settings.rb:5730
+#: db/seeds/settings.rb:5767
 msgid ""
 "Enables button for user authentication via %s. The button will redirect to /"
 "auth/sso on user interaction."
@@ -7516,7 +7530,7 @@ msgstr "Помилка шифрування"
 msgid "Encryption:"
 msgstr "Шифрування:"
 
-#: app/assets/javascripts/app/models/webhook.coffee:7
+#: app/assets/javascripts/app/models/webhook.coffee:8
 #: app/assets/javascripts/app/views/integration/check_mk.jst.eco:16
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:3
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:42
@@ -7534,11 +7548,11 @@ msgstr "Кінцева точка (Endpoint)"
 msgid "Endpoint Settings"
 msgstr "Налаштування кінцевої точки (Endpoint)"
 
-#: db/seeds/settings.rb:5876
+#: db/seeds/settings.rb:5913
 msgid "Enforce the setup of the two-factor authentication"
 msgstr "Примусове налаштування двофакторної автентифікації"
 
-#: db/seeds/settings.rb:5883
+#: db/seeds/settings.rb:5920
 msgid "Enforced for user roles"
 msgstr "Примусово для ролей користувачів"
 
@@ -7552,7 +7566,7 @@ msgstr "Введіть примітку або"
 
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:73
 #: app/assets/javascripts/app/controllers/ticket_customer.coffee:9
-#: db/seeds/object_manager_attributes.rb:69
+#: db/seeds/object_manager_attributes.rb:70
 msgid "Enter Person or Organization/Company"
 msgstr "Введіть особу або організацію/компанію"
 
@@ -7813,25 +7827,25 @@ msgid "Escalation Times"
 msgstr "Час ескалації"
 
 #: app/assets/javascripts/app/models/ticket.coffee:17
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:26
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:18
 #: app/graphql/gql/types/overview_type.rb:102
 msgid "Escalation at"
 msgstr "Ескалація о"
 
 #: app/assets/javascripts/app/models/ticket.coffee:20
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:47
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:39
 #: app/graphql/gql/types/overview_type.rb:105
 msgid "Escalation at (Close Time)"
 msgstr "Ескалація на (час закриття)"
 
 #: app/assets/javascripts/app/models/ticket.coffee:18
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:33
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:25
 #: app/graphql/gql/types/overview_type.rb:103
 msgid "Escalation at (First Response Time)"
 msgstr "Ескалація о (час першого реагування)"
 
 #: app/assets/javascripts/app/models/ticket.coffee:19
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:40
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:32
 #: app/graphql/gql/types/overview_type.rb:104
 msgid "Escalation at (Update Time)"
 msgstr "Ескалація на (час оновлення)"
@@ -7959,7 +7973,7 @@ msgstr "Виконати зміни на об’єктах"
 msgid "Execute configured macros"
 msgstr "Виконати налаштований макрос"
 
-#: db/seeds/schedulers.rb:187
+#: db/seeds/schedulers.rb:196
 msgid "Execute import jobs."
 msgstr "Виконати завдання імпорту."
 
@@ -7984,7 +7998,7 @@ msgstr "Існуючі заявки"
 msgid "Existing tickets (open)"
 msgstr "Існуючі заявки (відкриті)"
 
-#: db/seeds/ai/text_tools.rb:60
+#: db/seeds/ai/text_tools.rb:64
 msgid "Expand draft into well-written section"
 msgstr "Перетворіть чернетку на добре написаний розділ"
 
@@ -8137,7 +8151,7 @@ msgid "Failed to upload."
 msgstr "Не вдалося завантажити."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/fax.ts:7
-#: db/seeds/object_manager_attributes.rb:1075
+#: db/seeds/object_manager_attributes.rb:1076
 msgid "Fax"
 msgstr "Факс"
 
@@ -8173,10 +8187,8 @@ msgid "Feedback"
 msgstr "Зворотний зв'язок"
 
 #: app/assets/javascripts/app/controllers/_ai/provider.coffee:15
-#, fuzzy
-#| msgid "Feedback Form"
 msgid "Feedback & Logs"
-msgstr "Форма отримання відгуків та коментарів"
+msgstr "Відгуки та журнали"
 
 #: app/assets/javascripts/app/views/channel/form.jst.eco:34
 msgid "Feedback Form"
@@ -8289,12 +8301,12 @@ msgstr "Перші кроки"
 
 #: app/assets/javascripts/app/models/user.coffee:9
 #: app/frontend/apps/desktop/composables/authentication/useSignupForm.ts:14
-#: db/seeds/object_manager_attributes.rb:799
+#: db/seeds/object_manager_attributes.rb:800
 msgid "First name"
 msgstr "Ім'я"
 
 #: app/assets/javascripts/app/models/ticket.coffee:24
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:75
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:67
 #: app/graphql/gql/types/overview_type.rb:109
 msgid "First response"
 msgstr "Перша відповідь"
@@ -8335,12 +8347,12 @@ msgid "Folders"
 msgstr "Теки"
 
 #: app/assets/javascripts/app/models/group.coffee:9
-#: db/seeds/object_manager_attributes.rb:2131
+#: db/seeds/object_manager_attributes.rb:2132
 msgid "Follow-up for closed ticket possible or not."
 msgstr "Можливе чи ні відстеження закритих заявок."
 
 #: app/assets/javascripts/app/models/group.coffee:9
-#: db/seeds/object_manager_attributes.rb:2121
+#: db/seeds/object_manager_attributes.rb:2122
 msgid "Follow-up possible"
 msgstr "Чи можливо перевідкрити заявку"
 
@@ -8618,7 +8630,7 @@ msgstr "Згенеруйте токен"
 msgid "Generate recovery codes"
 msgstr "Згенеруйте коди відновлення"
 
-#: db/seeds/schedulers.rb:133
+#: db/seeds/schedulers.rb:142
 msgid "Generate user-based stats."
 msgstr "Створити користувальницьку статистику."
 
@@ -8659,7 +8671,7 @@ msgstr "Отримувати сповіщення"
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:10
-#: db/seeds/settings.rb:5841
+#: db/seeds/settings.rb:5878
 msgid "Get the security code from the authenticator app on your device."
 msgstr "Отримайте код безпеки з програми-автентифікатора на вашому пристрої."
 
@@ -8828,7 +8840,7 @@ msgstr "Пароль клієнта Google"
 msgid "Google Email"
 msgstr "Електронна пошта Google"
 
-#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:188
+#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:189
 #: app/assets/javascripts/app/views/clues/clues_content.jst.eco:17
 #: app/frontend/apps/desktop/composables/useNewBetaUi.ts:43
 msgid "Got it"
@@ -8864,7 +8876,7 @@ msgstr "Привітання"
 #: app/views/messaging/ticket_create/zh-tw.md.erb:3
 #: app/views/messaging/ticket_info/pt-br.md.erb:3
 #: app/views/messaging/ticket_info/zh-tw.md.erb:3
-#: db/seeds/object_manager_attributes.rb:162 db/seeds/settings.rb:2977
+#: db/seeds/object_manager_attributes.rb:163 db/seeds/settings.rb:2977
 #: lib/excel_sheet/ticket.rb:27
 msgid "Group"
 msgstr "Група"
@@ -8911,7 +8923,7 @@ msgstr "Потрібна група для визначення каналу!"
 
 #: app/assets/javascripts/app/models/role.coffee:8
 #: app/assets/javascripts/app/models/user.coffee:13
-#: db/seeds/object_manager_attributes.rb:1623
+#: db/seeds/object_manager_attributes.rb:1624
 msgid "Group permissions"
 msgstr "Групові дозволи"
 
@@ -8952,7 +8964,7 @@ msgstr "Групи"
 msgid "Groups are …"
 msgstr "Групи…"
 
-#: app/assets/javascripts/app/models/webhook.coffee:8
+#: app/assets/javascripts/app/models/webhook.coffee:15
 msgid "HMAC SHA1 Signature Token"
 msgstr "Токен підпису HMAC SHA1"
 
@@ -8973,12 +8985,8 @@ msgid "HTTP Authentication token"
 msgstr "Токен автентифікації HTTP"
 
 #: app/assets/javascripts/app/models/webhook.coffee:11
-msgid "HTTP Basic Authentication Password"
-msgstr "Пароль базової автентифікації HTTP"
-
-#: app/assets/javascripts/app/models/webhook.coffee:10
-msgid "HTTP Basic Authentication Username"
-msgstr "Ім'я користувача для базової HTTP-автентифікації"
+msgid "HTTP Basic Authentication"
+msgstr "Базова автентифікація HTTP"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:752
 msgid "HTTP Basic Authentication password"
@@ -8996,7 +9004,7 @@ msgstr "Журнал HTTP"
 msgid "HTTP type"
 msgstr "Тип HTTP"
 
-#: db/seeds/schedulers.rb:196
+#: db/seeds/schedulers.rb:205
 msgid "Handle data privacy tasks."
 msgstr "Вирішуйте завдання щодо конфіденційності даних."
 
@@ -9009,7 +9017,7 @@ msgstr ""
 msgid "Has processed"
 msgstr "Опрацьовано"
 
-#: app/frontend/apps/desktop/components/CommonSelect/CommonSelectItem.vue:154
+#: app/frontend/apps/desktop/components/CommonSelect/CommonSelectItem.vue:156
 #: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdownItem.vue:149
 #: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDialog.vue:309
 msgid "Has submenu"
@@ -9109,7 +9117,7 @@ msgstr ""
 "Привіт, вікно обслуговування клієнтів для цієї розмови закінчується, будь "
 "ласка, дайте відповідь, щоб залишити його відкритим."
 
-#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:184
+#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:185
 #: app/assets/javascripts/app/controllers/clues/first_steps_clues.coffee:40
 #: app/frontend/apps/desktop/components/CommonPageHelp/CommonPageHelp.vue:22
 #: app/frontend/apps/desktop/components/CommonPageHelp/CommonPageHelpDialog.vue:20
@@ -9718,7 +9726,7 @@ msgstr "Вхідний дзвінок"
 msgid "Inbound:"
 msgstr "Вхідні:"
 
-#: db/seeds/object_manager_attributes.rb:129
+#: db/seeds/object_manager_attributes.rb:130
 msgid "Incident"
 msgstr "Інцидент"
 
@@ -9973,7 +9981,7 @@ msgstr "Перевірка цілісності завантажених мед�
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:105
 #: app/assets/javascripts/app/controllers/knowledge_base/content_controller.coffee:133
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:160
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:142
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:152
 msgid "Internal"
 msgstr "Внутрішній"
@@ -10050,7 +10058,7 @@ msgstr "Невірний ідентифікатор клієнта (client_id) �
 msgid "Invalid client_id received!"
 msgstr "Отримано невірний ідентифікатор клієнта (client_id)!"
 
-#: app/models/user.rb:606
+#: app/models/user.rb:608
 msgid "Invalid email '%{email}'"
 msgstr "Невірно вказано email '%{email}'"
 
@@ -10261,7 +10269,7 @@ msgstr "Видалити користувача системи неможлив�
 msgid "It is not possible to delete your current account."
 msgstr "Видалити поточний обліковий запис неможливо."
 
-#: app/models/ticket.rb:293
+#: app/models/ticket.rb:294
 msgid "It is not possible to merge into an already merged ticket."
 msgstr "Об'єднання у вже об'єднану заявку неможливе."
 
@@ -10494,28 +10502,28 @@ msgid "Last changed"
 msgstr "Востаннє змінено"
 
 #: app/assets/javascripts/app/models/ticket.coffee:26
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:89
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:81
 #: app/graphql/gql/types/overview_type.rb:111
 msgid "Last closing time"
 msgstr "Останній час закриття"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:232
 #: app/assets/javascripts/app/models/ticket.coffee:21
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:54
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:46
 #: app/graphql/gql/types/overview_type.rb:106
 msgid "Last contact"
 msgstr "Останній контакт"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:236
 #: app/assets/javascripts/app/models/ticket.coffee:22
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:61
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:53
 #: app/graphql/gql/types/overview_type.rb:107
 msgid "Last contact (agent)"
 msgstr "Останній контакт (агент)"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:240
 #: app/assets/javascripts/app/models/ticket.coffee:23
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:68
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:60
 #: app/graphql/gql/types/overview_type.rb:108
 msgid "Last contact (customer)"
 msgstr "Останній контакт (клієнт)"
@@ -10533,11 +10541,11 @@ msgstr "Останній вхід до системи"
 
 #: app/assets/javascripts/app/models/user.coffee:10
 #: app/frontend/apps/desktop/composables/authentication/useSignupForm.ts:23
-#: db/seeds/object_manager_attributes.rb:851
+#: db/seeds/object_manager_attributes.rb:852
 msgid "Last name"
 msgstr "Прізвище"
 
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:132
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:124
 msgid "Last owner update"
 msgstr "Останнє оновлення власником"
 
@@ -10580,27 +10588,28 @@ msgid "Light"
 msgstr "Світла"
 
 #: lib/excel_sheet/ai/analytics/with_usage.rb:43
-#, fuzzy
-#| msgid "Linked Accounts"
 msgid "Likes count"
-msgstr "Прив’язані облікові записи"
-
-#: app/models/ai/agent/type/ticket_categorizer.rb:50
-msgid "Limit Categories"
-msgstr "Лімітні категорії"
+msgstr "Кількість лайків"
 
 #: app/assets/javascripts/app/views/profile/notification.jst.eco:17
-#: app/models/ai/agent/type/ticket_group_dispatcher.rb:23
 msgid "Limit Groups"
 msgstr "Обмежити групи"
 
-#: app/models/ai/agent/type/ticket_prioritizer.rb:28
-msgid "Limit Priorities"
-msgstr "Обмежити пріоритети"
+#: app/models/ai/agent/type/ticket_categorizer.rb:50
+msgid "Limit categories and provide optional descriptions"
+msgstr "Обмежте категорії та надайте додаткові описи"
+
+#: app/models/ai/agent/type/ticket_group_dispatcher.rb:23
+msgid "Limit groups and provide optional descriptions"
+msgstr "Обмежте групи та надайте додаткові описи"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:61
 msgid "Limit notifications to specific groups"
 msgstr "Обмежте сповіщення певними групами"
+
+#: app/models/ai/agent/type/ticket_prioritizer.rb:28
+msgid "Limit priorities and provide optional descriptions"
+msgstr "Обмежте пріоритети та надайте додаткові описи"
 
 #: db/seeds/settings.rb:3109
 msgid "Limit tickets by IP per day"
@@ -10864,8 +10873,7 @@ msgstr "Увійти до %s"
 #: app/assets/javascripts/app/models/user.coffee:8
 #: app/assets/javascripts/app/views/maintenance.jst.eco:25
 #: app/controllers/time_accountings_controller.rb:101
-#: app/frontend/apps/desktop/components/User/UserListTable.vue:57
-#: db/seeds/object_manager_attributes.rb:767
+#: db/seeds/object_manager_attributes.rb:768
 msgid "Login"
 msgstr "Вхід"
 
@@ -10929,7 +10937,7 @@ msgstr "Обмеження групи макросів не поширюютьс
 
 #: app/assets/javascripts/app/controllers/macro.coffee:3
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:78
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:211
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:193
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:46
 #: db/seeds/permissions.rb:47
 msgid "Macros"
@@ -11260,10 +11268,9 @@ msgid "Manage webhooks of your system."
 msgstr "Керування веб-хуками вашої системи."
 
 #: db/seeds/permissions.rb:234
-msgid "Manage writing asssistant text tools of your system."
+msgid "Manage writing assistant text tools of your system."
 msgstr ""
-"Керуйте текстовими інструментами помічника з написання текстів у вашій "
-"системі."
+"Керуйте текстовими інструментами помічника з написання тексту вашої системи."
 
 #: app/views/mailer/application.html.erb:47
 msgid "Manage your notification settings"
@@ -11447,7 +11454,7 @@ msgstr "Завантаження медіа-файлів успішно заве
 #: app/assets/javascripts/app/views/popover/organization.jst.eco:6
 #: app/assets/javascripts/app/views/widget/organization.jst.eco:29
 #: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:81
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:65
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:69
 #: app/frontend/apps/mobile/components/Organization/OrganizationMembersList.vue:29
 msgid "Members"
 msgstr "Користувачі"
@@ -11653,7 +11660,7 @@ msgid "Mistral AI"
 msgstr "Mistral AI"
 
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:23
-#: db/seeds/object_manager_attributes.rb:1035
+#: db/seeds/object_manager_attributes.rb:1036
 msgid "Mobile"
 msgstr "Мобільний"
 
@@ -11661,7 +11668,7 @@ msgstr "Мобільний"
 msgid "Mode"
 msgstr "Закрити на обслуговування"
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:159
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:144
 msgid "Model"
 msgstr "Модель"
 
@@ -11716,7 +11723,7 @@ msgstr "Ескальованих заявок"
 msgid "More information can be found here."
 msgstr "Більше інформації можна знайти тут."
 
-#: app/models/user.rb:686
+#: app/models/user.rb:688
 msgid "More than 250 secondary organizations are not allowed."
 msgstr "Кількість додаткових організацій не може перевищувати 250."
 
@@ -11854,7 +11861,7 @@ msgstr "Інтеграція з Nagios"
 #: app/assets/javascripts/app/models/ticket_time_accounting_type.coffee:12
 #: app/assets/javascripts/app/models/trigger.coffee:6
 #: app/assets/javascripts/app/models/user_overview_sorting_overview.coffee:4
-#: app/assets/javascripts/app/models/webhook.coffee:6
+#: app/assets/javascripts/app/models/webhook.coffee:7
 #: app/assets/javascripts/app/views/channel/topics.jst.eco:5
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:37
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:18
@@ -11883,7 +11890,7 @@ msgstr "Інтеграція з Nagios"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:181
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout/IdoitObjectList.vue:17
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:156
-#: db/seeds/object_manager_attributes.rb:1705 public/assets/form/form.js:24
+#: db/seeds/object_manager_attributes.rb:1706 public/assets/form/form.js:24
 msgid "Name"
 msgstr "Ім'я"
 
@@ -11941,7 +11948,7 @@ msgstr ""
 msgid "Need session_id."
 msgstr "Необхідний ідентифікатор сеансу (session_id)."
 
-#: app/controllers/tickets_controller.rb:437
+#: app/controllers/tickets_controller.rb:403
 msgid "Need user_id or organization_id as param"
 msgstr ""
 "Необхідний ідентифікатор користувача (user_id) або ідентифікатор організації "
@@ -11951,7 +11958,7 @@ msgstr ""
 msgid "Needed"
 msgstr "Необхідний"
 
-#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:96
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:95
 msgid "Negative Feedback"
 msgstr "Негативні відгуки"
 
@@ -12247,7 +12254,7 @@ msgstr "Новий користувач?"
 
 #: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:90
 #: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:112
-#: app/assets/javascripts/app/controllers/webhook.coffee:127
+#: app/assets/javascripts/app/controllers/webhook.coffee:165
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/password_check.coffee:2
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:120
 #: app/assets/javascripts/app/views/clues/clues_content.jst.eco:19
@@ -12301,11 +12308,16 @@ msgstr ""
 "розділі \"Керування > ШІ-Агенти\""
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:86
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:70
 msgid "No AI provider is currently set up. Please contact your administrator."
 msgstr ""
 "Наразі постачальника штучного інтелекту не налаштовано. Зверніться до "
 "адміністратора."
+
+#: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:42
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:111
+msgid "No Comment"
+msgstr "Без коментарів"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:917
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:42
@@ -12554,7 +12566,7 @@ msgstr "Ще немає спільних чернеток"
 #: app/controllers/organizations_controller.rb:107
 #: app/controllers/text_modules_controller.rb:75
 #: app/controllers/ticket_articles_controller.rb:243
-#: app/controllers/tickets_controller.rb:480
+#: app/controllers/tickets_controller.rb:446
 #: app/controllers/users_controller.rb:574
 msgid "No source data submitted!"
 msgstr "Вихідні дані не надані!"
@@ -12575,7 +12587,7 @@ msgstr "Ще не додано жодного тегу."
 msgid "No template created yet."
 msgstr "Жоден шаблон ще не створено."
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:363
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:424
 msgid "No tickets in this state."
 msgstr "Немає заявок у цьому стані."
 
@@ -12587,7 +12599,7 @@ msgstr "Нема ключа!"
 msgid "No translation for this locale available"
 msgstr "Немає перекладу для цієї мови"
 
-#: app/models/ticket.rb:418
+#: app/models/ticket.rb:419
 msgid "No triggers active"
 msgstr "Немає активних тригерів"
 
@@ -12719,7 +12731,7 @@ msgstr "Не знайдено - ресурс не знайдено"
 #: app/assets/javascripts/app/models/ticket_state.coffee:10
 #: app/assets/javascripts/app/models/ticket_time_accounting_type.coffee:14
 #: app/assets/javascripts/app/models/trigger.coffee:14
-#: app/assets/javascripts/app/models/webhook.coffee:14
+#: app/assets/javascripts/app/models/webhook.coffee:18
 #: app/assets/javascripts/app/views/channel/topics.jst.eco:6
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:38
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:54
@@ -12727,7 +12739,7 @@ msgstr "Не знайдено - ресурс не знайдено"
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:102
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/note.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/note.ts:14
-#: db/seeds/object_manager_attributes.rb:1533
+#: db/seeds/object_manager_attributes.rb:1534
 msgid "Note"
 msgstr "Примітка"
 
@@ -12756,7 +12768,7 @@ msgstr ""
 #: app/assets/javascripts/app/models/job.coffee:15
 #: app/assets/javascripts/app/models/role.coffee:10
 #: app/assets/javascripts/app/models/signature.coffee:26
-#: db/seeds/object_manager_attributes.rb:1540
+#: db/seeds/object_manager_attributes.rb:1541
 msgid "Notes are visible to agents only, never to customers."
 msgstr "Примітки відображаються лише для агентів і ніколи – для клієнтів."
 
@@ -12824,7 +12836,7 @@ msgstr "Звук сповіщення"
 #: app/assets/javascripts/app/views/profile/notification.jst.eco:2
 #: app/assets/javascripts/app/views/widget/mention.jst.eco:1
 #: app/assets/javascripts/app/views/widget/online_notification.jst.eco:3
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification.vue:151
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification.vue:146
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationPopover/NotificationHeader.vue:20
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/notifications.ts:6
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:34
@@ -12972,13 +12984,13 @@ msgstr "Ollama"
 msgid "On %s, %s wrote:"
 msgstr "На %s, %s писав:"
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:95
-#: db/seeds/object_manager_attributes.rb:2412
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:46
+#: db/seeds/object_manager_attributes.rb:2413
 msgid "On ticket detail opening"
 msgstr "Відкриття деталей заявки"
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:100
-#: db/seeds/object_manager_attributes.rb:2416
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:50
+#: db/seeds/object_manager_attributes.rb:2417
 msgid "On ticket summary sidebar activation"
 msgstr "При активації бічної панелі заявки"
 
@@ -13091,7 +13103,7 @@ msgstr "Відкрити %s"
 msgid "Open Checklist"
 msgstr "Відкрити список"
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:61
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:79
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:5
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:90
 msgid "Open Questions"
@@ -13103,7 +13115,7 @@ msgstr "Відкрити заявку№ %s"
 
 #: app/assets/javascripts/app/controllers/widget/ticket_stats.coffee:122
 #: app/assets/javascripts/app/controllers/widget/user.coffee:70
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:118
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:120
 #: db/seeds/overviews.rb:109
 msgid "Open Tickets"
 msgstr "Відкрити заявки"
@@ -13278,7 +13290,7 @@ msgstr "Порядок огляду заявок"
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:30
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/plugins/organization.ts:6
 #: app/graphql/gql/types/overview_type.rb:94
-#: db/seeds/object_manager_attributes.rb:94 db/seeds/settings.rb:141
+#: db/seeds/object_manager_attributes.rb:95 db/seeds/settings.rb:141
 #: lib/excel_sheet/ticket.rb:30
 msgid "Organization"
 msgstr "Організація"
@@ -13440,7 +13452,7 @@ msgstr "Застарілий браузер"
 msgid "Outdent text"
 msgstr "Відступ тексту"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorActionBar/ActionToolbar.vue:185
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorActionBar/ActionToolbar.vue:199
 msgid "Overflow menu"
 msgstr "Меню, що розкривається"
 
@@ -13459,7 +13471,7 @@ msgstr "Загальний огляд масок"
 msgid "Overview navigation list"
 msgstr "Огляд навігаційного списку"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:319
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:380
 msgid "Overview: %s"
 msgstr "Огляд: %s"
 
@@ -13497,7 +13509,7 @@ msgstr "Перезаписати чернетку"
 #: app/views/messaging/ticket_create/zh-tw.md.erb:4
 #: app/views/messaging/ticket_info/pt-br.md.erb:4
 #: app/views/messaging/ticket_info/zh-tw.md.erb:4
-#: db/seeds/object_manager_attributes.rb:207 lib/excel_sheet/ticket.rb:28
+#: db/seeds/object_manager_attributes.rb:208 lib/excel_sheet/ticket.rb:28
 msgid "Owner"
 msgstr "Власник"
 
@@ -13516,15 +13528,15 @@ msgstr ""
 msgid "PGP"
 msgstr "PGP"
 
-#: db/seeds/settings.rb:5716
+#: db/seeds/settings.rb:5753
 msgid "PGP Recipient Alias Configuration"
 msgstr "Налаштування псевдоніма одержувача PGP"
 
-#: db/seeds/settings.rb:5702
+#: db/seeds/settings.rb:5739
 msgid "PGP config"
 msgstr "Конфігурація PGP"
 
-#: db/seeds/settings.rb:5674
+#: db/seeds/settings.rb:5711
 msgid "PGP integration"
 msgstr "Інтеграція PGP"
 
@@ -13571,7 +13583,7 @@ msgstr "Потрібно вказати параметр 'private_key' або 'f
 msgid "Parent"
 msgstr "Джерело"
 
-#: db/seeds/object_manager_attributes.rb:2055
+#: db/seeds/object_manager_attributes.rb:2056
 msgid "Parent group"
 msgstr "Батьківська група"
 
@@ -13581,6 +13593,7 @@ msgstr "Батьківська група"
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:71
 #: app/assets/javascripts/app/controllers/password_reset_verify.coffee:44
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/password_check.coffee:8
+#: app/assets/javascripts/app/models/webhook.coffee:13
 #: app/assets/javascripts/app/views/generic/login_preview.jst.eco:38
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:19
 #: app/assets/javascripts/app/views/import/kayako.jst.eco:46
@@ -13597,7 +13610,7 @@ msgstr "Батьківська група"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/password.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:32
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:52
-#: db/seeds/object_manager_attributes.rb:1447 db/seeds/permissions.rb:450
+#: db/seeds/object_manager_attributes.rb:1448 db/seeds/permissions.rb:450
 msgid "Password"
 msgstr "Пароль"
 
@@ -13695,10 +13708,8 @@ msgstr "Вставити ключ"
 
 #: lib/excel_sheet/ai/analytics/errors.rb:37
 #: lib/excel_sheet/ai/analytics/with_usage.rb:37
-#, fuzzy
-#| msgid "Custom Payload"
 msgid "Payload"
-msgstr "Корисне навантаження, що налаштовується (Payload)"
+msgstr "Корисне навантаження"
 
 #: lib/ai/provider/concerns/handles_response.rb:14
 msgid "Payment required - please top up your account"
@@ -13719,7 +13730,7 @@ msgstr "Отримано відкладене нагадування для за
 
 #: app/assets/javascripts/app/models/ticket.coffee:13
 #: app/graphql/gql/types/overview_type.rb:98
-#: db/seeds/object_manager_attributes.rb:307
+#: db/seeds/object_manager_attributes.rb:308
 msgid "Pending till"
 msgstr "Активно до"
 
@@ -13769,7 +13780,7 @@ msgstr "Порядок персонального огляду було скин
 #: app/assets/javascripts/app/controllers/cti.coffee:322
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/phone.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/phone.ts:12
-#: db/seeds/object_manager_attributes.rb:995 db/seeds/permissions.rb:344
+#: db/seeds/object_manager_attributes.rb:996 db/seeds/permissions.rb:344
 msgid "Phone"
 msgstr "Телефон"
 
@@ -13859,7 +13870,7 @@ msgid "Please add categories and/or answers"
 msgstr "Будь ласка, додайте категорії та/або відповіді"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:12
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:349
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:410
 msgid "Please click on the button below to create your first one."
 msgstr "Будь ласка, натисніть на кнопку нижче, щоб створити першу."
 
@@ -13898,7 +13909,7 @@ msgid "Please enter a text."
 msgstr "Будь ласка, введіть текст."
 
 #: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:409
-#: app/assets/javascripts/app/controllers/webhook.coffee:96
+#: app/assets/javascripts/app/controllers/webhook.coffee:134
 msgid "Please enter a valid JSON string."
 msgstr "Будь ласка, введіть правильний рядок JSON."
 
@@ -14049,7 +14060,7 @@ msgstr "Порт"
 msgid "Position"
 msgstr "Позиція"
 
-#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:89
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:88
 msgid "Positive Feedback"
 msgstr "Позитивні відгуки"
 
@@ -14082,7 +14093,7 @@ msgstr "На базі"
 msgid "Pre-defined Webhook"
 msgstr "Попередньо визначений Webhook"
 
-#: app/assets/javascripts/app/controllers/webhook.coffee:251
+#: app/assets/javascripts/app/controllers/webhook.coffee:291
 msgid "Pre-defined webhook for %s."
 msgstr "Попередньо визначений веб-хук для %s."
 
@@ -14198,7 +14209,7 @@ msgstr "Пріоритет"
 #: app/assets/javascripts/app/views/agent_ticket_view/detail.jst.eco:39
 #: app/assets/javascripts/app/views/popover/ticket.jst.eco:30
 #: app/graphql/gql/types/overview_type.rb:99
-#: db/seeds/object_manager_attributes.rb:350 lib/excel_sheet/ticket.rb:26
+#: db/seeds/object_manager_attributes.rb:351 lib/excel_sheet/ticket.rb:26
 msgid "Priority"
 msgstr "Пріоритет"
 
@@ -14214,7 +14225,7 @@ msgstr "Приватний ключ (PEM)"
 msgid "Private key secret"
 msgstr "Секретний ключ (Private Key Secret)"
 
-#: db/seeds/object_manager_attributes.rb:130
+#: db/seeds/object_manager_attributes.rb:131
 msgid "Problem"
 msgstr "Проблема"
 
@@ -14274,24 +14285,24 @@ msgstr ""
 msgid "Protocol"
 msgstr "Протокол"
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:56
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:74
 msgid ""
 "Provide a summary of the conversation between customer and support agent."
 msgstr "Надає зведення розмови між клієнтом та агентом підтримки."
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:49
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:67
 msgid "Provide a summary of the problem the customer needs to get resolved."
 msgstr "Надає зведення проблеми, яку клієнт хоче вирішити."
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:63
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:81
 msgid "Provide a summary of the questions raised in the conversation."
 msgstr "Надає зведення питань, порушених під час розмови."
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:69
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:87
 msgid "Provide a summary of the upcoming events based on the conversation."
 msgstr "На основі розмови підготуйте підсумок майбутніх подій."
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:75
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:93
 msgid ""
 "Provide an assessment of the customer sentiment based on the conversation."
 msgstr "Надайте оцінку настрою клієнта на основі розмови."
@@ -14331,7 +14342,7 @@ msgid "Proxy address"
 msgstr "Адреса проксі-сервера"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:109
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:155
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:137
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:157
 msgid "Public"
 msgstr "Публічна"
@@ -14468,16 +14479,16 @@ msgstr "Нещодавні заявки клієнтів"
 msgid "Recent Logs"
 msgstr "Нещодавні журнали"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:94
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:95
 msgid "Recent search was removed successfully."
 msgstr "Нещодавній пошук успішно видалено."
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:111
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:112
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:251
 msgid "Recent searches"
 msgstr "Нещодавні пошукові запити"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:111
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:112
 msgid "Recent searches were cleared successfully."
 msgstr "Останні пошуки успішно очищені."
 
@@ -14487,14 +14498,17 @@ msgstr "Останні пошуки успішно очищені."
 msgid "Recently Viewed Tickets"
 msgstr "Нещодавно переглянуті заявки"
 
-#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:521
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:129
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:133
+msgid "Recently closed"
+msgstr "Нещодавно закрито"
+
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:133
+msgid "Recently closed items were cleared successfully."
+msgstr "Нещодавно закриті елементи успішно очищено."
+
+#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:526
 msgid "Recently viewed"
 msgstr "Нещодавно переглянуті"
-
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:129
-msgid "Recently viewed items were cleared successfully."
-msgstr "Нещодавно переглянуті елементи було успішно очищено."
 
 #: app/assets/javascripts/app/controllers/_channel/sms.coffee:397
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/notification.jst.eco:9
@@ -14542,7 +14556,7 @@ msgid ""
 "References - Search for follow-up also in In-Reply-To or References headers."
 msgstr "Посилання – шукати також у заголовках In-Reply-To або References."
 
-#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:128
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:127
 msgid "Regenerate"
 msgstr "Регенерувати"
 
@@ -14556,10 +14570,8 @@ msgstr "Створити нові коди відновлення"
 
 #: lib/excel_sheet/ai/analytics/errors.rb:34
 #: lib/excel_sheet/ai/analytics/with_usage.rb:34
-#, fuzzy
-#| msgid "Regenerate"
 msgid "Regeneration Of ID"
-msgstr "Регенерувати"
+msgstr "Відновлення ідентифікатора"
 
 #: app/frontend/apps/desktop/pages/authentication/views/Login.vue:211
 #: app/frontend/apps/mobile/pages/authentication/components/LoginCredentialsForm.vue:139
@@ -14581,17 +14593,13 @@ msgstr "Пов’язані відповіді"
 
 #: lib/excel_sheet/ai/analytics/errors.rb:30
 #: lib/excel_sheet/ai/analytics/with_usage.rb:30
-#, fuzzy
-#| msgid "Delete Object"
 msgid "Related Object ID"
-msgstr "Видалити об'єкт"
+msgstr "Ідентифікатор пов'язаного об'єкта"
 
 #: lib/excel_sheet/ai/analytics/errors.rb:29
 #: lib/excel_sheet/ai/analytics/with_usage.rb:29
-#, fuzzy
-#| msgid "Delete Object"
 msgid "Related Object Type"
-msgstr "Видалити об'єкт"
+msgstr "Тип пов'язаного об'єкта"
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupAutomated/GuidedSetupAutomatedRun.vue:70
 msgid "Relax, your system is being set up…"
@@ -14761,7 +14769,7 @@ msgid "Reopening rate"
 msgstr "Періодичність повторного відкриття"
 
 #: app/assets/javascripts/app/models/group.coffee:10
-#: db/seeds/object_manager_attributes.rb:2158
+#: db/seeds/object_manager_attributes.rb:2159
 msgid "Reopening time in days"
 msgstr "Час відновлення роботи в днях"
 
@@ -14833,7 +14841,11 @@ msgstr "Запит"
 msgid "Request Admin Consent"
 msgstr "Запитати згоду адміністратора"
 
-#: db/seeds/object_manager_attributes.rb:131
+#: app/assets/javascripts/app/models/webhook.coffee:9
+msgid "Request Method"
+msgstr "Метод запиту"
+
+#: db/seeds/object_manager_attributes.rb:132
 msgid "Request for Change"
 msgstr "Запит на зміну"
 
@@ -14865,7 +14877,7 @@ msgstr "Немає обов'язкового параметра «профіль
 msgid "Requirements"
 msgstr "Вимоги"
 
-#: db/seeds/settings.rb:5879
+#: db/seeds/settings.rb:5916
 msgid ""
 "Requires the setup of the two-factor authentication for certain user roles."
 msgstr ""
@@ -15081,7 +15093,7 @@ msgstr "Результати"
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:64
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:169
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:131
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:108
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:92
 #: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:172
 msgid "Retry"
 msgstr "Повторити"
@@ -15110,7 +15122,7 @@ msgstr "Повторна спроба завантажити надіслані 
 msgid "Rewrite complex section and make it easy to understand"
 msgstr "Перепишіть складний розділ та зробіть його легким для розуміння"
 
-#: db/seeds/settings.rb:6070
+#: db/seeds/settings.rb:6104
 msgid "Richtext Bubble Menu"
 msgstr "Бульбашкове меню Richtext"
 
@@ -15136,7 +15148,7 @@ msgstr "Опис ролі"
 
 #: app/assets/javascripts/app/controllers/role.coffee:3
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:193
-#: db/seeds/object_manager_attributes.rb:1578 db/seeds/permissions.rb:23
+#: db/seeds/object_manager_attributes.rb:1579 db/seeds/permissions.rb:23
 msgid "Roles"
 msgstr "Ролі"
 
@@ -15201,7 +15213,7 @@ msgstr ""
 "поширений метод (або, точніше, протокол) для надсилання зашифрованих та "
 "підписаних у цифровій формі повідомлень."
 
-#: db/seeds/settings.rb:5660
+#: db/seeds/settings.rb:5697
 msgid "S/MIME config"
 msgstr ""
 "Налаштування безпечних/багатоцільових розширень пошти Інтернету (S/MIME)"
@@ -15211,7 +15223,7 @@ msgid "S/MIME enables you to send digitally signed and encrypted messages."
 msgstr ""
 "S/MIME дозволяє надсилати зашифровані повідомлення з цифровим підписом."
 
-#: db/seeds/settings.rb:5632
+#: db/seeds/settings.rb:5669
 msgid "S/MIME integration"
 msgstr "Інтеграція з S/MIME"
 
@@ -15288,7 +15300,7 @@ msgstr "Сертифікати SSL"
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:707
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:84
 #: app/assets/javascripts/app/controllers/getting_started/email_notification.coffee:73
-#: app/assets/javascripts/app/models/webhook.coffee:9
+#: app/assets/javascripts/app/models/webhook.coffee:10
 #: app/assets/javascripts/app/views/integration/exchange.jst.eco:54
 #: app/assets/javascripts/app/views/integration/gitlab.jst.eco:18
 #: app/assets/javascripts/app/views/integration/idoit.jst.eco:24
@@ -15310,7 +15322,7 @@ msgstr "SSL/STARTTLS"
 
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:111
 #: app/frontend/shared/composables/authentication/useThirdPartyAuthentication.ts:82
-#: db/seeds/settings.rb:5748
+#: db/seeds/settings.rb:5785
 msgid "SSO"
 msgstr "SSO"
 
@@ -15355,7 +15367,7 @@ msgstr "Субота"
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:130
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:274
 #: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:64
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:81
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:79
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewActions.vue:100
 msgid "Save"
 msgstr "Зберегти"
@@ -15410,7 +15422,7 @@ msgstr "Збережені умови"
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1212
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1205
 msgid "Saving failed."
 msgstr "Збереження не вдалося."
 
@@ -15679,20 +15691,20 @@ msgid "Search…"
 msgstr "Пошук…"
 
 #: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:81
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:100
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:102
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:88
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:133
-#: db/seeds/object_manager_attributes.rb:1160
+#: db/seeds/object_manager_attributes.rb:1161
 msgid "Secondary organizations"
 msgstr "Другорядні організації"
 
-#: app/models/user.rb:674
+#: app/models/user.rb:676
 msgid ""
 "Secondary organizations are only allowed when the primary organization is "
 "given."
 msgstr "Можна вказати додаткові організації лише після встановлення основної."
 
-#: app/models/user.rb:680
+#: app/models/user.rb:682
 msgid "Secondary organizations cannot include the primary organization."
 msgstr "Вторинні організації не можуть включати первинну організацію."
 
@@ -15739,7 +15751,7 @@ msgstr "Ключ безпеки"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:5
 #: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:10
-#: db/seeds/settings.rb:5785
+#: db/seeds/settings.rb:5822
 msgid "Security Keys"
 msgstr "Ключі безпеки"
 
@@ -15775,7 +15787,7 @@ msgid "See HTTPLog for details."
 msgstr "Дивіться HTTPLog для отримання додаткової інформації."
 
 #: app/assets/javascripts/app/controllers/_ui_element/ticket_duplicate_detection.coffee:71
-#: app/assets/javascripts/app/controllers/article_view/item.coffee:447
+#: app/assets/javascripts/app/controllers/article_view/item.coffee:451
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:111
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleBody.vue:129
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleBubble.vue:268
@@ -15783,7 +15795,7 @@ msgid "See less"
 msgstr "Бачити менше"
 
 #: app/assets/javascripts/app/controllers/_ui_element/ticket_duplicate_detection.coffee:68
-#: app/assets/javascripts/app/controllers/article_view/item.coffee:443
+#: app/assets/javascripts/app/controllers/article_view/item.coffee:447
 #: app/assets/javascripts/app/controllers/data_privacy.coffee:108
 #: app/assets/javascripts/app/views/data_privacy/tasks.jst.eco:41
 #: app/assets/javascripts/app/views/generic/ticket_duplicate_detection/warning.jst.eco:21
@@ -15827,7 +15839,7 @@ msgstr "Виберіть спільну чернетку"
 msgid "Select Template"
 msgstr "Вибрати шаблон"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:429
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:450
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:76
 msgid "Select all entries"
 msgstr "Вибрати всі записи"
@@ -16000,7 +16012,7 @@ msgstr "Відправник на основі заголовка «Reply-To»"
 msgid "Sender of last article"
 msgstr "Відправник останнього повідомлення"
 
-#: db/seeds/object_manager_attributes.rb:2223
+#: db/seeds/object_manager_attributes.rb:2224
 msgid "Sending Email Address"
 msgstr "Адреса вихідної електронної пошти"
 
@@ -16250,7 +16262,7 @@ msgstr "Спільна чернетка"
 #: app/assets/javascripts/app/controllers/agent_ticket_create/sidebar_shared_draft.coffee:12
 #: app/assets/javascripts/app/models/group.coffee:17
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/shared-draft-start.ts:10
-#: db/seeds/object_manager_attributes.rb:2292
+#: db/seeds/object_manager_attributes.rb:2293
 msgid "Shared Drafts"
 msgstr "Спільні чернетки"
 
@@ -16287,7 +16299,7 @@ msgid "Shared mailbox"
 msgstr "Спільна поштова скринька"
 
 #: app/assets/javascripts/app/models/organization.coffee:7
-#: db/seeds/object_manager_attributes.rb:1745
+#: db/seeds/object_manager_attributes.rb:1746
 msgid "Shared organization"
 msgstr "Спільна організація"
 
@@ -16303,7 +16315,6 @@ msgstr "Активувати"
 msgid "Show"
 msgstr "Показати"
 
-#: app/frontend/apps/desktop/components/CommonShowMoreButton/CommonShowMoreButton.vue:17
 #: app/frontend/apps/desktop/components/Ticket/TicketListPopoverWithTrigger/TicketListPopover.vue:76
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketAccountedTime.vue:90
 #: app/frontend/apps/mobile/components/CommonShowMoreButton/CommonShowMoreButton.vue:24
@@ -16339,7 +16350,7 @@ msgstr "Показати все…"
 msgid "Show authenticator app secret"
 msgstr "Показати секрет програми-автентифікатора"
 
-#: db/seeds/settings.rb:5757
+#: db/seeds/settings.rb:5794
 msgid "Show calendar weeks in the picker of date/datetime fields"
 msgstr "Показувати календарні тижні в засобі вибору полів дати/часу"
 
@@ -16363,6 +16374,11 @@ msgstr "Показувати відповідні заявки в поперед
 #: app/frontend/apps/mobile/pages/ticket/composable/useTicketArticleContext.ts:79
 msgid "Show meta data"
 msgstr "Показати метадані"
+
+#: app/frontend/apps/desktop/components/CommonShowMoreButton/CommonShowMoreButton.vue:17
+#: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:93
+msgid "Show more"
+msgstr "Показати більше"
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:252
 msgid "Show next tab"
@@ -16509,11 +16525,11 @@ msgstr "Увійти:"
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:174
 #: app/assets/javascripts/app/models/group.coffee:13
 #: app/controllers/integration/smime_controller.rb:119
-#: db/seeds/object_manager_attributes.rb:2258
+#: db/seeds/object_manager_attributes.rb:2259
 msgid "Signature"
 msgstr "Підпис"
 
-#: app/assets/javascripts/app/controllers/article_view/item.coffee:282
+#: app/assets/javascripts/app/controllers/article_view/item.coffee:286
 msgid "Signature verification failed!"
 msgstr "Перевірка підпису не вдалася!"
 
@@ -16687,11 +16703,11 @@ msgstr ""
 msgid "Sorted %s in user taskbar list to position %s."
 msgstr "Відсортовано %s у списку панелі завдань користувача за позицією %s."
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:470
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:491
 msgid "Sorted ascending"
 msgstr "Сортування за зростанням"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:471
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:492
 msgid "Sorted descending"
 msgstr "Сортування за зменшенням"
 
@@ -16775,7 +16791,7 @@ msgstr "Розпочати новий"
 msgid "Start new conversation"
 msgstr "Почніть нову розмову"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:226
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:231
 msgid "Start typing e.g. the name of a ticket, an organization or a user."
 msgstr "Почніть вводити, наприклад, назву заявки, організації або користувача."
 
@@ -16855,7 +16871,7 @@ msgstr "Розпочато імпорт…"
 #: app/views/messaging/ticket_create/zh-tw.md.erb:5
 #: app/views/messaging/ticket_info/pt-br.md.erb:5
 #: app/views/messaging/ticket_info/zh-tw.md.erb:5
-#: db/seeds/object_manager_attributes.rb:248 lib/excel_sheet/ticket.rb:25
+#: db/seeds/object_manager_attributes.rb:249 lib/excel_sheet/ticket.rb:25
 msgid "State"
 msgstr "Статус"
 
@@ -16937,13 +16953,9 @@ msgstr "Спосіб зберігання"
 msgid "Store"
 msgstr "Зберегти"
 
-#: db/seeds/settings.rb:5996
+#: db/seeds/settings.rb:6030
 msgid "Stores the AI provider configuration."
 msgstr "Зберігає конфігурацію постачальника штучного інтелекту."
-
-#: db/seeds/settings.rb:5979
-msgid "Stores the AI provider."
-msgstr "Зберігає постачальника ШІ."
 
 #: db/seeds/settings.rb:5085
 msgid "Stores the GitHub configuration."
@@ -16953,14 +16965,14 @@ msgstr "Зберігає конфігурацію GitHub."
 msgid "Stores the GitLab configuration."
 msgstr "Зберігає конфігурацію GitLab."
 
-#: db/seeds/settings.rb:6026
+#: db/seeds/settings.rb:6060
 msgid ""
 "Stores the ticket summarization options (e.g. which content is visible)."
 msgstr ""
 "Зберігає параметри підсумовування заявки (наприклад, який вміст буде "
 "видимим)."
 
-#: db/seeds/object_manager_attributes.rb:1247
+#: db/seeds/object_manager_attributes.rb:1248
 msgid "Street"
 msgstr "Вулиця"
 
@@ -17017,9 +17029,10 @@ msgstr ""
 msgid "Submit"
 msgstr "Відправити"
 
-#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:112
-msgid "Submit feedback"
-msgstr "Надіслати відгук"
+#: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:45
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:114
+msgid "Submit Comment"
+msgstr "Надіслати коментар"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:147
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:178
@@ -17064,7 +17077,7 @@ msgstr "Налаштування підписки"
 msgid "Subscription settings"
 msgstr "Налаштування відстежування"
 
-#: db/seeds/ai/text_tools.rb:91
+#: db/seeds/ai/text_tools.rb:98
 msgid "Summarize section to about half its current size"
 msgstr "Скоротіть розділ приблизно до половини його поточного розміру"
 
@@ -17074,7 +17087,7 @@ msgid "Summary"
 msgstr "Зведення"
 
 #: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:35
-#: db/seeds/object_manager_attributes.rb:2402
+#: db/seeds/object_manager_attributes.rb:2403
 msgid "Summary Generation"
 msgstr "Генерація підсумків"
 
@@ -17082,8 +17095,8 @@ msgstr "Генерація підсумків"
 msgid "Summary Services"
 msgstr "Підсумкові послуги"
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:50
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:160
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:46
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:139
 msgid "Summary is being generated…"
 msgstr "Формується підсумок…"
 
@@ -17122,7 +17135,7 @@ msgstr "Перемкнути на нову розкладку"
 msgid "Switch to old interface"
 msgstr "Перехід на старий інтерфейс"
 
-#: db/seeds/schedulers.rb:124
+#: db/seeds/schedulers.rb:133
 msgid "Sync calendars with iCal feeds."
 msgstr "Синхронизируйте календари с каналами iCal."
 
@@ -17226,7 +17239,7 @@ msgstr "Тег \"%s\" вже існує."
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketTags.vue:75
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:164
 #: app/views/knowledge_base/public/answers/show.html.erb:30
-#: db/seeds/object_manager_attributes.rb:392 db/seeds/permissions.rb:59
+#: db/seeds/object_manager_attributes.rb:393 db/seeds/permissions.rb:59
 #: lib/excel_sheet/ticket.rb:33
 msgid "Tags"
 msgstr "Теги"
@@ -17349,7 +17362,7 @@ msgstr "Тестування"
 #: app/assets/javascripts/app/models/ticket_article.coffee:11
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:20
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:209
-#: db/seeds/object_manager_attributes.rb:536
+#: db/seeds/object_manager_attributes.rb:537
 msgid "Text"
 msgstr "Текст"
 
@@ -17409,7 +17422,7 @@ msgid "Textarea field"
 msgstr "Текстова область"
 
 #: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:27
-#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:122
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:121
 msgid "Thank you for your feedback."
 msgstr "Дякуємо, що залишили свій відгук."
 
@@ -17424,11 +17437,11 @@ msgid "Thanks for joining. Email sent to \"%s\"."
 msgstr "Дякуємо що приєдналися. Електронного листа відправлено для \"%s\"."
 
 #: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:39
-#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:107
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:106
 msgid "Thanks for the feedback. Please explain what went wrong?"
 msgstr "Дякуємо за відгук. Поясніть, будь ласка, що пішло не так?"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:248
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:230
 msgid "The %s selected tickets have been updated successfully."
 msgstr "Вибрані %s заявок були успішно оновлені."
 
@@ -17453,7 +17466,7 @@ msgstr ""
 "Цілодобове вікно обслуговування клієнтів закрите, повідомлення в WhatsApp "
 "більше не надсилаються."
 
-#: lib/monitoring_helper/health_checker/ai_provider_accessible.rb:17
+#: lib/monitoring_helper/health_checker/ai_provider_accessible.rb:15
 msgid "The AI Provider is not accessible."
 msgstr "Постачальник штучного інтелекту недоступний."
 
@@ -17887,13 +17900,10 @@ msgstr "Пристрій не вдалося видалити."
 msgid "The divider between TicketHook and ticket number. E. g. ': '."
 msgstr "Розділювач між ідентифікатором та номером заявки. Наприклад ':'."
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:93
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:92
 #: app/assets/javascripts/app/lib/app_post/utils.coffee:1688
-#, fuzzy
-#| msgid "Media download failed. Please try again later."
 msgid "The download could not be started. Please try again later."
-msgstr ""
-"Не вдалося завантажити мультимедійний файл. Будь ласка, спробуйте пізніше."
+msgstr "Не вдалося розпочати завантаження. Спробуйте ще раз пізніше."
 
 #: app/assets/javascripts/app/views/microsoft365/duplicate_email_address.jst.eco:3
 msgid "The email address |%s| is already in use by another account."
@@ -18253,6 +18263,10 @@ msgstr ""
 msgid "The product version could not be fetched."
 msgstr "Версію продукту отримати не вдалося."
 
+#: app/models/webhook.rb:66
+msgid "The provided HTTP method is invalid."
+msgstr "Наданий HTTP-метод є недійсним."
+
 #: app/controllers/import_freshdesk_controller.rb:11
 #: app/controllers/import_kayako_controller.rb:12
 #: app/controllers/import_otrs_controller.rb:11
@@ -18273,16 +18287,16 @@ msgstr "Надані облікові дані недійсні."
 msgid "The provided email account is already in use."
 msgstr "Наданий обліковий запис електронної пошти вже використовується."
 
-#: app/models/webhook.rb:39
+#: app/models/webhook.rb:44
 msgid "The provided endpoint is invalid, no hostname was specified."
 msgstr "Вказана кінцева точка є невірною, не вказано ім'я хоста."
 
-#: app/models/webhook.rb:38
+#: app/models/webhook.rb:43
 msgid ""
 "The provided endpoint is invalid, no http or https protocol was specified."
 msgstr "Вказана кінцева точка є недійсною, не вказано протокол http або https."
 
-#: app/models/webhook.rb:41
+#: app/models/webhook.rb:46
 msgid "The provided endpoint is invalid."
 msgstr "Вказана кінцева точка є невірною."
 
@@ -18294,7 +18308,7 @@ msgstr "Оператор збігу відсутній або недійсний
 msgid "The provided password is incorrect."
 msgstr "Наданий пароль є невірним."
 
-#: app/models/webhook.rb:50
+#: app/models/webhook.rb:55
 msgid "The provided payload is invalid. Please check your syntax."
 msgstr ""
 "Надане корисне навантаження є недійсним. Будь ласка, перевірте синтаксис."
@@ -18495,7 +18509,7 @@ msgstr "Відсутня обов'язковий параметр значенн
 msgid "The required value 'group_id' is missing."
 msgstr "Відсутнє значення «Ідентифікатор_групи» (group_id)."
 
-#: lib/ai/provider.rb:48
+#: lib/ai/provider.rb:59
 msgid "The response could not be processed."
 msgstr "Відповідь не вдалося обробити."
 
@@ -18503,7 +18517,7 @@ msgstr "Відповідь не вдалося обробити."
 msgid "The retried attachment download failed."
 msgstr "Повторна спроба завантаження вкладення виявилася невдалою."
 
-#: app/assets/javascripts/app/controllers/article_view/item.coffee:302
+#: app/assets/javascripts/app/controllers/article_view/item.coffee:306
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleSecurityBadge.vue:62
 #: app/frontend/shared/composables/useArticleSecurity.ts:75
 msgid "The retried security process failed!"
@@ -18521,7 +18535,7 @@ msgstr "Обрана дата є недійсною."
 msgid "The server presented a certificate that could not be verified."
 msgstr "Сервер надав сертифікат, який неможливо було перевірити."
 
-#: lib/user_agent.rb:236
+#: lib/user_agent.rb:235
 msgid ""
 "The server returned a redirect response, but the current operation does not "
 "allow redirects."
@@ -18581,13 +18595,13 @@ msgstr ""
 "Частина підпису цього PGP-листа відсутня або має неправильний тип вмісту "
 "відповідно до RFC 3156."
 
-#: app/assets/javascripts/app/controllers/article_view/item.coffee:280
+#: app/assets/javascripts/app/controllers/article_view/item.coffee:284
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleSecurityBadge.vue:85
 #: app/frontend/shared/composables/useArticleSecurity.ts:94
 msgid "The signature was successfully verified."
 msgstr "Підпис було успішно перевірено."
 
-#: app/controllers/tickets_controller.rb:391
+#: app/controllers/tickets_controller.rb:357
 msgid "The source ticket could not be found."
 msgstr "Заявку не вдалося знайти."
 
@@ -18610,7 +18624,7 @@ msgstr ""
 "повертається ШІ-агентом."
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:98
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:82
 msgid ""
 "The summary could not be generated. Please try again later or contact your "
 "administrator."
@@ -18657,7 +18671,7 @@ msgstr ""
 msgid "The system was configured successfully. You are being redirected."
 msgstr "Систему було успішно налаштовано. Вас буде перенаправлено."
 
-#: app/controllers/tickets_controller.rb:382
+#: app/controllers/tickets_controller.rb:348
 msgid "The target ticket number could not be found."
 msgstr "Номер цільової заявки знайти не вдалося."
 
@@ -18810,7 +18824,7 @@ msgstr "Перевірка конфігурації методу двофакт�
 
 #: app/assets/javascripts/app/controllers/customer_ticket_create/sidebar_customer_default.coffee:29
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:11
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:346
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:407
 msgid "The way to communicate with us is this thing called \"ticket\"."
 msgstr "Спосіб комунікації з нами і є тією річчю, що називається «заявка»."
 
@@ -18938,11 +18952,6 @@ msgstr "Немає дійсного одержувача електронної 
 msgid "There is no valid PGP email signer."
 msgstr "Немає дійсного підписувача електронної пошти PGP."
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:18
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:114
-msgid "There is not enough content yet to summarize this ticket."
-msgstr "Поки що недостатньо контенту, щоб підбити підсумки по цій заявці."
-
 #: lib/secure_mailing/pgp/tool/error.rb:160
 msgid "There was an unknown PGP error."
 msgstr "Виникла невідома помилка PGP."
@@ -19022,7 +19031,7 @@ msgstr ""
 "Цей інструмент для написання текстів виправляє орфографічні та граматичні "
 "помилки в тексті."
 
-#: db/seeds/ai/text_tools.rb:116
+#: db/seeds/ai/text_tools.rb:123
 msgid ""
 "This Writing Assistant Tool creates a short summary of the selected text "
 "keeping the original meaning."
@@ -19030,19 +19039,15 @@ msgstr ""
 "Цей інструмент створює короткий підсумок виділеного тексту зі збереженням "
 "оригінального змісту."
 
-#: db/seeds/ai/text_tools.rb:84
-#, fuzzy
-#| msgid ""
-#| "This Writing Assistant Tool transforms the draft into a fully formulated "
-#| "text."
+#: db/seeds/ai/text_tools.rb:91
 msgid ""
 "This Writing Assistant Tool expands the draft into a well-structured and "
 "comprehensible text."
 msgstr ""
-"Цей інструмент для написання текстів перетворює чернетку на повноцінний "
-"текст."
+"Цей інструмент допомагає перетворити чернетку на добре структурований і "
+"зрозумілий текст."
 
-#: db/seeds/ai/text_tools.rb:53
+#: db/seeds/ai/text_tools.rb:57
 msgid ""
 "This Writing Assistant Tool simplifies the selected text and improves "
 "comprehension."
@@ -19295,7 +19300,7 @@ msgid ""
 msgstr ""
 "Це не дійсний сертифікат X509. Будь ласка, перевірте формат сертифіката."
 
-#: app/frontend/apps/desktop/components/CommonSelect/CommonSelectItem.vue:67
+#: app/frontend/apps/desktop/components/CommonSelect/CommonSelectItem.vue:69
 #: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdownItem.vue:89
 msgid "This item expands to show more options"
 msgstr "Цей пункт розгорнеться, щоб показати більше опцій"
@@ -19420,17 +19425,19 @@ msgstr ""
 msgid "This service allows you to connect %s with %s."
 msgstr "Цей сервіс дає Вам змогу підключити %s до %s."
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:26
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:25
 msgid "This service allows you to connect Zammad with an AI provider."
 msgstr ""
 "Ця послуга дозволяє вам підключити Zammad до постачальника послуг штучного "
 "інтелекту (AI)."
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:44
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:43
 msgid ""
 "This service allows you to download feedback agents provide on AI features "
 "and error details about failed AI requests."
 msgstr ""
+"Цей сервіс дозволяє вам завантажити відгуки агентів про функції штучного "
+"інтелекту та інформацію про помилки, пов'язані з невдалими запитами до ШІ."
 
 #: app/assets/javascripts/app/controllers/_integration/exchange.coffee:6
 msgid "This service enables Zammad to connect with your Exchange server."
@@ -19708,7 +19715,7 @@ msgstr "Збільшення кількості запитів за датами
 msgid "Ticket Number ignore system_id"
 msgstr "Номер заявки ігнорує ідентифікатор системи (system_id)"
 
-#: db/seeds/settings.rb:5901
+#: db/seeds/settings.rb:5938
 msgid "Ticket Organization Reassignment"
 msgstr "Перепризначення організації заявок"
 
@@ -19786,11 +19793,11 @@ msgstr "Відстеження заявок"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:2
 #: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:7
-#: db/seeds/permissions.rb:227 db/seeds/settings.rb:6009
+#: db/seeds/permissions.rb:227 db/seeds/settings.rb:6043
 msgid "Ticket Summary"
 msgstr "Зведення за заявкою"
 
-#: db/seeds/settings.rb:6023
+#: db/seeds/settings.rb:6057
 msgid "Ticket Summary Config"
 msgstr "Конфігурація зведення за заявкою"
 
@@ -19972,7 +19979,7 @@ msgstr "Заявку оновлено"
 msgid "Ticket update failed."
 msgstr "Не вдалося оновити заявку."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/useTicketEditTitle.ts:27
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/useTicketEditTitle.ts:26
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:436
 #: app/frontend/apps/mobile/pages/ticket/views/TicketDetailView.vue:157
 msgid "Ticket updated successfully."
@@ -20074,14 +20081,14 @@ msgstr "Ідентифікатор заявки (TicketID)"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/calendar.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/notifications.ts:8
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/ticketOverviews.ts:8
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:109
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:111
 #: app/frontend/apps/mobile/pages/search/plugins/ticket.ts:9
 #: app/frontend/apps/mobile/pages/ticket/routes.ts:50
 #: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:159
 msgid "Tickets"
 msgstr "Заявки"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:295
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:281
 msgid "Tickets Bulk Edit"
 msgstr "Масове редагування заявок"
 
@@ -20101,7 +20108,7 @@ msgid "Tickets assigned to me: %s of %s"
 msgstr "Заявки, призначені для мене: %s із %s"
 
 #: app/controllers/ticket_articles_controller.rb:236
-#: app/controllers/tickets_controller.rb:473
+#: app/controllers/tickets_controller.rb:439
 msgid "Tickets can only be imported if system is in import mode."
 msgstr ""
 "Заявки можна імпортувати, тільки якщо система знаходиться в режимі імпорту."
@@ -20234,7 +20241,7 @@ msgstr "В певний час"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/TicketSimpleTable.vue:35
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:136
 #: app/graphql/gql/types/overview_type.rb:92
-#: db/seeds/object_manager_attributes.rb:32 lib/excel_sheet/ticket.rb:24
+#: db/seeds/object_manager_attributes.rb:33 lib/excel_sheet/ticket.rb:24
 msgid "Title"
 msgstr "Заголовок"
 
@@ -20251,7 +20258,7 @@ msgstr "Заголовок форми"
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:89
 #: app/frontend/shared/entities/ticket-article/action/plugins/email/forward.ts:29
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:166
-#: db/seeds/object_manager_attributes.rb:482
+#: db/seeds/object_manager_attributes.rb:483
 msgid "To"
 msgstr "Одержувач"
 
@@ -20319,7 +20326,7 @@ msgstr ""
 "Щоб зареєструвати новий ключ безпеки у своєму обліковому записі, натисніть "
 "кнопку нижче."
 
-#: app/assets/javascripts/app/models/webhook.coffee:13
+#: app/assets/javascripts/app/models/webhook.coffee:17
 msgid ""
 "To revert back to the default payload, simply turn off the \"Custom "
 "Payload\" switch above."
@@ -20383,7 +20390,7 @@ msgstr "Переключити заголовок рядка"
 msgid "Toggle the overlay"
 msgstr "Переключити оверлей"
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:148
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:133
 #: app/assets/javascripts/app/controllers/api.coffee:11
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:48
 #: app/models/channel/driver/sms/massenversand.rb:44
@@ -20425,7 +20432,7 @@ msgstr "Токен недійсний!"
 msgid "Token-based API access has been disabled by the administrator."
 msgstr "Доступ до API на основі токенів вимкнено адміністратором."
 
-#: lib/user_agent.rb:240
+#: lib/user_agent.rb:239
 msgid "Too many redirections for the original URL, halting."
 msgstr "Збій надто багато перенаправлень для вихідного URL."
 
@@ -20498,17 +20505,13 @@ msgstr "Активатор"
 
 #: lib/excel_sheet/ai/analytics/errors.rb:32
 #: lib/excel_sheet/ai/analytics/with_usage.rb:32
-#, fuzzy
-#| msgid "Trigger"
 msgid "Triggered By ID"
-msgstr "Активатор"
+msgstr "Активовано ідентифікатором"
 
 #: lib/excel_sheet/ai/analytics/errors.rb:31
 #: lib/excel_sheet/ai/analytics/with_usage.rb:31
-#, fuzzy
-#| msgid "Trigger"
 msgid "Triggered By Type"
-msgstr "Активатор"
+msgstr "Спрацьовує за типом"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketHistory/event-actions/time-trigger-performed.ts:14
 msgid "Triggered because pending reminder was reached"
@@ -20545,7 +20548,7 @@ msgstr ""
 msgid "Try Another Method"
 msgstr "Спробуйте інший метод"
 
-#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:194
+#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:195
 msgid "Try New BETA UI"
 msgstr "Спробуйте нову бета-версію інтерфейсу користувача"
 
@@ -20586,7 +20589,7 @@ msgstr "Вівторок"
 msgid "Turn chat into ticket"
 msgstr "Перетворіть чат на заявку"
 
-#: app/assets/javascripts/app/controllers/webhook.coffee:240
+#: app/assets/javascripts/app/controllers/webhook.coffee:280
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:89
 #: app/assets/javascripts/app/views/channel/email_notification_wizard.jst.eco:48
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:71
@@ -20712,7 +20715,7 @@ msgstr "Двофакторний метод був успішно налашто
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:100
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:117
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:211
-#: db/seeds/object_manager_attributes.rb:124
+#: db/seeds/object_manager_attributes.rb:125
 msgid "Type"
 msgstr "Тип"
 
@@ -20720,7 +20723,7 @@ msgstr "Тип"
 msgid "Type:"
 msgstr "Тип:"
 
-#: db/seeds/settings.rb:5967
+#: db/seeds/settings.rb:6004
 msgid "UI Desktop Beta Switch"
 msgstr "Перемикач нової бета-версії інтерфейсу користувача"
 
@@ -20736,7 +20739,7 @@ msgstr "Имя атрибута UID"
 msgid "UID Field"
 msgstr "Поле UID"
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:170
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:155
 #: app/assets/javascripts/app/views/api.jst.eco:63
 #: app/assets/javascripts/app/views/integration/check_mk.jst.eco:12
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:12
@@ -20753,11 +20756,11 @@ msgstr "URL"
 msgid "URL (AJAX endpoint)"
 msgstr "URL-адреса (кінцева точка (endpoint) AJAX)"
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:180
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:165
 msgid "URL (Completions)"
 msgstr "URL (Завершення)"
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:190
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:175
 msgid "URL (Embeddings)"
 msgstr "URL (Вбудовування)"
 
@@ -20832,7 +20835,7 @@ msgstr "Непрочитані сповіщення"
 msgid "Unsaved Changes"
 msgstr "Незбережені зміни"
 
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationButton.vue:35
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationButton.vue:34
 msgid "Unseen notifications count"
 msgstr "Кількість непрочитаних сповіщень"
 
@@ -20877,7 +20880,7 @@ msgstr ""
 "До %s% цієї мови вже перекладено. Будь ласка, допоможіть зробити Zammad ще "
 "кращим і завершити переклад."
 
-#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:67
+#: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:85
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:6
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:95
 msgid "Upcoming Events"
@@ -20930,7 +20933,7 @@ msgstr "Час оновлення"
 msgid "Update as closed"
 msgstr "Оновити як закрите"
 
-#: db/seeds/schedulers.rb:241
+#: db/seeds/schedulers.rb:250
 msgid "Update exchange oauth 2 token."
 msgstr "Оновити токен обміну oauth 2."
 
@@ -20959,7 +20962,7 @@ msgstr ""
 msgid "Update successful."
 msgstr "Оновлення успішне."
 
-#: db/seeds/settings.rb:5913
+#: db/seeds/settings.rb:5950
 msgid "Update the most recent tickets."
 msgstr "Оновити останні заявки."
 
@@ -20988,7 +20991,7 @@ msgstr "Оновити останні заявки."
 #: app/assets/javascripts/app/models/ticket_priority.coffee:11
 #: app/assets/javascripts/app/models/ticket_state.coffee:12
 #: app/assets/javascripts/app/models/trigger.coffee:16
-#: app/assets/javascripts/app/models/webhook.coffee:16
+#: app/assets/javascripts/app/models/webhook.coffee:20
 msgid "Updated"
 msgstr "Оновлено"
 
@@ -21006,8 +21009,8 @@ msgstr "Оновлено о"
 #: app/assets/javascripts/app/models/ticket.coffee:30
 #: app/assets/javascripts/app/models/user.coffee:17
 #: app/frontend/shared/entities/organization/stores/objectAttributes.ts:41
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:125
-#: app/frontend/shared/entities/user/stores/objectAttributes.ts:41
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:117
+#: app/frontend/shared/entities/user/stores/objectAttributes.ts:44
 #: app/graphql/gql/types/overview_type.rb:115
 msgid "Updated at"
 msgstr "Оновлено о"
@@ -21028,8 +21031,8 @@ msgstr "Оновлено о"
 #: app/assets/javascripts/app/models/ticket_article.coffee:17
 #: app/assets/javascripts/app/models/user.coffee:16
 #: app/frontend/shared/entities/organization/stores/objectAttributes.ts:31
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:114
-#: app/frontend/shared/entities/user/stores/objectAttributes.ts:31
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:106
+#: app/frontend/shared/entities/user/stores/objectAttributes.ts:33
 #: app/graphql/gql/types/overview_type.rb:114
 msgid "Updated by"
 msgstr "Ким оновлено"
@@ -21209,10 +21212,8 @@ msgid "Usage"
 msgstr "Використання"
 
 #: lib/excel_sheet/ai/analytics/with_usage.rb:42
-#, fuzzy
-#| msgid "New User Accounts"
 msgid "Usages count"
-msgstr "Нові облікові записи користувачів"
+msgstr "Кількість використань"
 
 #: lib/secure_mailing/pgp/tool/exec.rb:26
 #: lib/secure_mailing/pgp/tool/exec/agent.rb:26
@@ -21232,7 +21233,7 @@ msgstr "Використовувати власний параметр сорт�
 msgid "Use double click to change level of the row."
 msgstr "Використовуйте подвійне клацання, щоб змінити рівень рядка."
 
-#: db/seeds/object_manager_attributes.rb:2408
+#: db/seeds/object_manager_attributes.rb:2409
 msgid "Use global default"
 msgstr "Використовувати глобальне налаштування за замовчуванням"
 
@@ -21481,6 +21482,7 @@ msgstr ""
 msgid "UserDevice could not be found."
 msgstr "UserDevice не вдалося знайти."
 
+#: app/assets/javascripts/app/models/webhook.coffee:12
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:80
 msgid "Username"
 msgstr "Ім’я користувача"
@@ -21559,7 +21561,7 @@ msgstr ""
 "\"спільний доступ\", який можна визначити для кожної організації)."
 
 #: app/frontend/shared/components/CommonUserAvatar/CommonUserAvatar.vue:117
-#: db/seeds/object_manager_attributes.rb:1491
+#: db/seeds/object_manager_attributes.rb:1492
 msgid "VIP"
 msgstr "Важлива особа"
 
@@ -21702,9 +21704,9 @@ msgstr "Перегляд заявки"
 #: app/assets/javascripts/app/models/ticket_article.coffee:14
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/article.jst.eco:3
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/notification.jst.eco:3
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:149
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:131
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:144
-#: db/seeds/object_manager_attributes.rb:449
+#: db/seeds/object_manager_attributes.rb:450
 msgid "Visibility"
 msgstr "Видимість"
 
@@ -21761,7 +21763,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_channel/web.coffee:3
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/web.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/web.ts:12
-#: db/seeds/object_manager_attributes.rb:955 db/seeds/permissions.rb:89
+#: db/seeds/object_manager_attributes.rb:956 db/seeds/permissions.rb:89
 msgid "Web"
 msgstr "Веб"
 
@@ -21871,7 +21873,7 @@ msgstr "Вітальне повідомлення"
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:2
 #: app/assets/javascripts/app/views/welcome.jst.eco:2
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupStart.vue:43
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:340
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:401
 msgid "Welcome!"
 msgstr "Ласкаво просимо!"
 
@@ -22075,11 +22077,11 @@ msgstr "Робочі процеси"
 
 #: app/assets/javascripts/app/controllers/_ai/text_tool.coffee:16
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:35
-#: db/seeds/permissions.rb:233 db/seeds/settings.rb:6042
+#: db/seeds/permissions.rb:233 db/seeds/settings.rb:6076
 msgid "Writing Assistant"
 msgstr "Асистент з написання текстів"
 
-#: db/seeds/settings.rb:6056
+#: db/seeds/settings.rb:6090
 msgid "Writing Assistant Fixed Instructions"
 msgstr "Асистент з написання фіксованих інструкцій"
 
@@ -22346,6 +22348,11 @@ msgstr ""
 "Ви можете відкрити діалогове вікно Комбінації клавіш тут і переглянути нову "
 "покращену розкладку або повернутися до старої, якщо вам подобається."
 
+#: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:42
+msgid ""
+"You can overwrite this setting for specific groups in the group manager. %l"
+msgstr "Ви можете замінити цей параметр для певних груп у менеджері груп. %l"
+
 #: app/assets/javascripts/app/models/knowledge_base.coffee:282
 msgid ""
 "You can provide different versions of your knowledge base for different "
@@ -22372,7 +22379,7 @@ msgstr ""
 "Ви можете перемикатися між наведеними нижче бекендами для нових вкладень "
 "навіть у системі, яка вже працює, без втрати даних."
 
-#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:185
+#: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:186
 msgid ""
 "You can switch between the old and the New BETA UI at any moment in the "
 "Profile > New BETA UI section."
@@ -22426,7 +22433,7 @@ msgstr "У вас немає прав адміністратора."
 msgid "You do not have permission to update"
 msgstr "У вас немає дозволу на Оновлення"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:390
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:411
 msgid "You don't have more tickets to load."
 msgstr "У вас більше немає заявок для завантаження."
 
@@ -22495,7 +22502,7 @@ msgid "You have no unread messages"
 msgstr "У вас немає непрочитаних повідомлень"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:10
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:343
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:404
 msgid "You have not created a ticket yet."
 msgstr "Ви ще не створили заявки."
 
@@ -22549,7 +22556,7 @@ msgstr "Вам потрібно налаштувати кінцеві точки
 msgid "You need to configure the Zammad endpoints in the %s:"
 msgstr "Ви повинні налаштувати кінцеві точки Zammad у %s:"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:386
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:407
 msgid "You reached the table limit of %s tickets (%s remaining)."
 msgstr "Ви досягли ліміту в %s заявок (залишилося %s)."
 
@@ -22732,7 +22739,7 @@ msgstr "Фонд Zammad"
 msgid "Zammad Helpdesk"
 msgstr "Служба підтримки Zammad"
 
-#: lib/user_agent.rb:126
+#: lib/user_agent.rb:125
 msgid "Zammad User Agent"
 msgstr "Агент користувача (User Agent) Zammad"
 
@@ -22781,7 +22788,7 @@ msgstr "Версія Zammad"
 msgid "Zendesk"
 msgstr "Zendesk"
 
-#: db/seeds/object_manager_attributes.rb:1286
+#: db/seeds/object_manager_attributes.rb:1287
 msgid "Zip"
 msgstr "Індекс"
 
@@ -22999,7 +23006,7 @@ msgstr "закрити"
 msgid "closed"
 msgstr "закриті"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:126
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:128
 msgid "closed tickets"
 msgstr "закриті заявки"
 
@@ -23145,12 +23152,12 @@ msgid "disconnect"
 msgstr "відключити"
 
 #: app/assets/javascripts/app/models/group.coffee:9
-#: db/seeds/object_manager_attributes.rb:2128
+#: db/seeds/object_manager_attributes.rb:2129
 msgid "do not reopen ticket after certain time but create new ticket"
 msgstr "не відкривати заявку через певний час, а створювати нову заявку"
 
 #: app/assets/javascripts/app/models/group.coffee:9
-#: db/seeds/object_manager_attributes.rb:2127
+#: db/seeds/object_manager_attributes.rb:2128
 msgid "do not reopen ticket but create new ticket"
 msgstr "не відкривати заявку повторно, а створити нову заявку"
 
@@ -23457,7 +23464,7 @@ msgstr "у процесі"
 
 #: app/assets/javascripts/app/controllers/_ui_element/active.coffee:5
 #: app/assets/javascripts/app/lib/app_post/utils.coffee:1451
-#: app/assets/javascripts/app/models/webhook.coffee:34
+#: app/assets/javascripts/app/models/webhook.coffee:38
 #: app/assets/javascripts/app/views/generic/object_search/item_object.jst.eco:16
 #: app/assets/javascripts/app/views/generic/object_search/item_organization.jst.eco:4
 msgid "inactive"
@@ -23552,7 +23559,7 @@ msgstr "не є"
 msgid "is not a color. Only Hex, RGB and HSL colors are supported."
 msgstr "не є кольором. Підтримуються лише шістнадцяткові, RGB та HSL кольори."
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:93
+#: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:94
 msgid "is not a number"
 msgstr "не є числом"
 
@@ -23595,7 +23602,7 @@ msgstr "має неправильну довжину (має бути %{count} �
 msgid "is the wrong length (should be 1 character)"
 msgstr "має неправильну довжину (має бути 1 символ)"
 
-#: app/models/user.rb:871
+#: app/models/user.rb:873
 msgid "is too long"
 msgstr "занадто довгий(а)"
 
@@ -23863,7 +23870,7 @@ msgstr "дозволені тільки малі літери, цифри та '
 msgid "open"
 msgstr "відкриті"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:117
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:119
 msgid "open tickets"
 msgstr "відкриті заявки"
 
@@ -24329,7 +24336,7 @@ msgstr "упродовж наступного (відносне)"
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:81
 #: app/frontend/shared/components/ObjectAttributes/attributes/AttributeBoolean/AttributeBoolean.vue:13
 #: app/frontend/shared/entities/object-attributes/form/resolver/fields/active.ts:14
-#: db/seeds/object_manager_attributes.rb:1499 db/seeds/settings.rb:613
+#: db/seeds/object_manager_attributes.rb:1500 db/seeds/settings.rb:613
 msgid "yes"
 msgstr "так"
 
@@ -24372,6 +24379,30 @@ msgstr "…від усієї текстової ділянки"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅ Час очікування сьогодні"
+
+#~ msgid "There is not enough content yet to summarize this ticket."
+#~ msgstr "Поки що недостатньо контенту, щоб підбити підсумки по цій заявці."
+
+#~ msgid "HTTP Basic Authentication Password"
+#~ msgstr "Пароль базової автентифікації HTTP"
+
+#~ msgid "HTTP Basic Authentication Username"
+#~ msgstr "Ім'я користувача для базової HTTP-автентифікації"
+
+#~ msgid "Cancel feedback"
+#~ msgstr "Скасувати відгук"
+
+#~ msgid "Submit feedback"
+#~ msgstr "Надіслати відгук"
+
+#~ msgid "Limit Categories"
+#~ msgstr "Лімітні категорії"
+
+#~ msgid "Limit Priorities"
+#~ msgstr "Обмежити пріоритети"
+
+#~ msgid "Stores the AI provider."
+#~ msgstr "Зберігає постачальника ШІ."
 
 #~ msgid ""
 #~ "For this agent to run, it needs to be used in a trigger or a scheduler."
