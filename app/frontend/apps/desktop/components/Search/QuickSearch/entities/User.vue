@@ -23,7 +23,7 @@ const isUserInactive = computed(() => !props.item?.active)
   >
     <CommonIcon
       class="shrink-0 text-neutral-500"
-      :name="isUserInactive ? 'user-inactive' : 'person'"
+      :name="isUserInactive ? 'user-inactive' : 'user'"
       size="small"
       decorative
     />

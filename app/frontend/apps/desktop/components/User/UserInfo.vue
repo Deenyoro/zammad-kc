@@ -3,6 +3,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import type { Sizes } from '#shared/components/CommonLabel/types.ts'
 import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
 import type { AvatarUserLive } from '#shared/components/CommonUserAvatar/types.ts'
 import type { AvatarUser } from '#shared/components/CommonUserAvatar/types.ts'
@@ -18,6 +19,7 @@ interface Props {
   dense?: boolean
   noLink?: boolean
   hasOrganizationPopover?: boolean
+  titleSize?: Sizes
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,14 +33,14 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
+  <div class="flex items-center" :class="{ 'gap-2': !titleSize, 'gap-3': titleSize }">
     <component
       :is="avatarComponent"
       :class="{
         'hover:no-underline! hover:rounded-full hover:outline-1 hover:outline-blue-600 hover:dark:outline-blue-900 focus-visible:rounded-full!':
           !dense && !noLink,
       }"
-      :link="!dense && !noLink ? `/user/profile/${getIdFromGraphQLId(user.id!)}` : undefined"
+      :link="!dense && !noLink ? `/users/${getIdFromGraphQLId(user.id!)}` : undefined"
     >
       <CommonUserAvatar v-if="user" :entity="user as AvatarUser" :live="live" :size="size" />
     </component>
@@ -48,18 +50,22 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
         v-if="dense"
         class="text-sm leading-snug"
         :class="{ group: !noLink }"
-        :link="!noLink ? `/user/profile/${getIdFromGraphQLId(user.id!)}` : undefined"
+        :link="!noLink ? `/users/${getIdFromGraphQLId(user.id!)}` : undefined"
       >
         <CommonLabel
           :class="{
             'text-blue-800! group-hover:text-blue-850! group-hover:dark:text-blue-600!': !noLink,
           }"
-          :size="labelSize"
+          :size="titleSize ? titleSize : labelSize"
         >
           {{ user.fullname }}
         </CommonLabel>
       </component>
-      <CommonLabel v-else :size="labelSize" class="text-gray-300! dark:text-neutral-400!">
+      <CommonLabel
+        v-else
+        :size="titleSize ? titleSize : labelSize"
+        class="text-gray-300! dark:text-neutral-400!"
+      >
         {{ user.fullname }}
       </CommonLabel>
 

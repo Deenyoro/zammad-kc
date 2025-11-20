@@ -63,7 +63,7 @@ const isSystemUser = computed(() => {
     :no-hover-styling="noHoverStyling"
     :no-focus-styling="noFocusStyling"
     :z-index="zIndex"
-    :trigger-link="!noLink ? `/user/profile/${userInternalId}` : undefined"
+    :trigger-link="!noLink ? `/users/${userInternalId}` : undefined"
     :trigger-link-active-class="
       !$slots?.default?.()
         ? 'outline-2! outline-offset-1! outline-blue-800! hover:outline-blue-800!'

@@ -67,7 +67,7 @@ const actions = computed<MenuItem[]>(() => [
   {
     key: CUSTOMER_FLYOUT_KEY,
     label: __('Change customer'),
-    icon: 'person',
+    icon: 'user',
     show: () => ticket && isTicketAgent.value && isTicketEditable.value,
     onClick: () =>
       openChangeCustomerFlyout({

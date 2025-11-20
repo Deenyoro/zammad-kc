@@ -77,7 +77,7 @@ const sizeClasses = computed(() => {
           v-if="idx !== items.length - 1"
           :name="locale.localeData?.dir === 'rtl' ? 'chevron-left' : 'chevron-right'"
           size="xs"
-          class="mx-1 inline-flex shrink-0"
+          class="mx-1 inline-flex shrink-0 text-stone-200 dark:text-neutral-500"
         />
 
         <!-- Add a slot at the end of the last item. -->

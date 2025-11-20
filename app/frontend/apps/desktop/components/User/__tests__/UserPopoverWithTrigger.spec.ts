@@ -174,7 +174,7 @@ describe('UserPopover', () => {
 
     const avatarWrapper = wrapper.getByRole('link')
 
-    expect(avatarWrapper).toHaveAttribute('href', `/user/profile/${dummyUser.internalId}`)
+    expect(avatarWrapper).toHaveAttribute('href', `/users/${dummyUser.internalId}`)
   })
 
   it('disables link navigation when noLink is true', () => {

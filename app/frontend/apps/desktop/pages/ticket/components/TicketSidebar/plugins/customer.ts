@@ -14,7 +14,7 @@ export default <TicketSidebarPlugin>{
   component: TicketSidebarCustomer,
   permissions: ['ticket.agent'],
   screens: [TicketSidebarScreenType.TicketDetailView, TicketSidebarScreenType.TicketCreate],
-  icon: 'person',
+  icon: 'user',
   order: 1000,
   available: (context: TicketSidebarContext) => {
     // Consider the sidebar available only if a customer ID has been set to an integer ID.

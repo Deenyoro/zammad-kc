@@ -83,7 +83,7 @@ describe('TicketSidebarOrganizationContent.vue', () => {
       await wrapper.findByRole('link', {
         name: 'Avatar (Nicole Braun) Nicole Braun',
       }),
-    ).toHaveAttribute('href', '/user/profile/2')
+    ).toHaveAttribute('href', '/users/2')
 
     expect(wrapper.getByRole('button', { name: 'Show more' })).toBeInTheDocument()
   })

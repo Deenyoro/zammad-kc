@@ -52,13 +52,13 @@ describe('UserListPopoverWithTrigger', () => {
 
     expect(
       await within(popover).findByRole('link', { name: dummyUsers[0].fullname }),
-    ).toHaveAttribute('href', `/user/profile/${dummyUsers[0].internalId}`)
+    ).toHaveAttribute('href', `/users/${dummyUsers[0].internalId}`)
 
     expect(await within(popover).findByRole('img', { name: 'Avatar (Agent 1 Test)' })).toBeVisible()
 
     expect(
       await within(popover).findByRole('link', { name: dummyUsers[1].fullname }),
-    ).toHaveAttribute('href', `/user/profile/${dummyUsers[1].internalId}`)
+    ).toHaveAttribute('href', `/users/${dummyUsers[1].internalId}`)
   })
 
   it('supports optional live user information', async () => {

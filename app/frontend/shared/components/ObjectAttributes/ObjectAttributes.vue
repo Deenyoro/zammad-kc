@@ -51,7 +51,11 @@ useInlineEditable(props, fields)
 <template>
   <Component :is="objectAttributesConfig.outer" v-if="fields.length || props.alwaysShowAfterFields">
     <template v-for="field of fields" :key="field.attribute.name">
-      <Component :is="objectAttributesConfig.wrapper" :label="getDisplayLabel(field.attribute)">
+      <Component
+        :is="objectAttributesConfig.wrapper"
+        :label="getDisplayLabel(field.attribute)"
+        :attribute="field.attribute"
+      >
         <CommonLink
           v-if="field.link"
           :link="field.link"

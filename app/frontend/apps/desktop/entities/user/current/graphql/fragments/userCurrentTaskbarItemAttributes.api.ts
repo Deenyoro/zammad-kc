@@ -25,6 +25,8 @@ export const UserCurrentTaskbarItemAttributesFragmentDoc = gql`
     ... on User {
       id
       internalId
+      fullname
+      active
     }
     ... on Organization {
       id

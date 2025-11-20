@@ -30,7 +30,7 @@ describe('TicketChangeCustomerFlyout', () => {
 
     expect(wrapper.getByRole('heading', { name: 'Change Customer', level: 2 })).toBeInTheDocument()
 
-    expect(wrapper.getByIconName('person')).toBeInTheDocument()
+    expect(wrapper.getByIconName('user')).toBeInTheDocument()
 
     expect(await wrapper.findByLabelText('Customer')).toBeInTheDocument()
 

@@ -18,6 +18,7 @@ export interface ObjectAttribute extends ObjectManagerFrontendAttribute {
     permission?: string | string[]
     relation?: string
     belongs_to?: string
+    item_class?: string
     [index: string]: JsonValue | undefined
   }
 }

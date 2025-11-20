@@ -46,7 +46,7 @@ defineProps<Props>()
   </UserPopoverWithTrigger>
   <template v-else>
     <CommonLink
-      :link="`/user/profile/${entity.internalId}`"
+      :link="`/users/${entity.internalId}`"
       class="group flex items-center gap-2 hover:no-underline!"
     >
       <CommonUserAvatar

@@ -44,7 +44,7 @@ const { changeCustomer } = useTicketChangeCustomer(toRef(props, 'ticket'), {
 
 <template>
   <CommonFlyout
-    header-icon="person"
+    header-icon="user"
     no-close-on-action
     :name="ticketChangeCustomerFlyoutName"
     :header-title="__('Change Customer')"

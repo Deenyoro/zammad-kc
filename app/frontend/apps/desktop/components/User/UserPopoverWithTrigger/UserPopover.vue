@@ -53,7 +53,7 @@ const router = useRouter()
 const goToUserProfile = () => {
   if (!user.value) return
 
-  router.push(`/user/profile/${user.value.internalId}`)
+  router.push(`/users/${user.value.internalId}`)
 }
 </script>
 

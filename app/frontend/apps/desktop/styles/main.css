@@ -84,19 +84,32 @@
     - container query via optional TW `@container/form-group` class
   */
   .form-group .formkit-outer {
-    /* stylelint-disable-next-line scss/operator-no-unspaced */
     @apply col-span-2 @lg/form-group:col-span-1;
 
     /* Optional full-width style for specific fields. */
     &[data-type='editor'],
     &[data-type='file'],
     &:last-of-type:nth-of-type(odd) {
-      /* stylelint-disable-next-line scss/operator-no-unspaced */
       @apply @lg/form-group:col-span-2;
     }
 
     &.form-group-single-column {
       @apply col-span-1;
+    }
+  }
+
+  /*
+    Responsive multi-column mode for object attributes:
+    - compatibility layer for object attributes via legacy `.formGroup--halfSize` class
+    - container query via optional TW `@container/object-attributes` class
+  */
+  .object-attributes .object-attribute {
+    @apply col-span-2 @md/object-attributes:col-span-1;
+
+    /* Optional full-width style for configured attributes. */
+    &.object-attribute-spanned-column,
+    &:last-of-type:nth-of-type(odd) {
+      @apply @md/object-attributes:col-span-2;
     }
   }
 

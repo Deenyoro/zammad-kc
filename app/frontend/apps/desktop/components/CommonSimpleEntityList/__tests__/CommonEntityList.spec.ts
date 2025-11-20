@@ -36,7 +36,7 @@ describe('CommonSimpleEntityList', () => {
       expect(wrapper.getByLabelText('Avatar (Nicole Braun)')).toBeInTheDocument()
       expect(wrapper.getByLabelText('Avatar (Thomas Ernst)')).toBeInTheDocument()
       expect(wrapper.getAllByTestId('common-link')).toHaveLength(3)
-      expect(wrapper.getAllByTestId('common-link').at(0)).toHaveAttribute('href', '/user/profile/2')
+      expect(wrapper.getAllByTestId('common-link').at(0)).toHaveAttribute('href', '/users/2')
     })
 
     it('renders a list of organizations', async () => {

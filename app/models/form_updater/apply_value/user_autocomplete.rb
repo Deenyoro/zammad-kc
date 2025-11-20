@@ -20,7 +20,7 @@ class FormUpdater::ApplyValue::UserAutocomplete < FormUpdater::ApplyValue::Base
     result[field][:value] = user.id
     result[field][:options] = [{
       value:   user.id,
-      label:   user.fullname.presence || user.phone.presence || user.login,
+      label:   user.fullname.presence || user.login,
       heading: user.organization&.name,
       object:  user_obj,
     }]
