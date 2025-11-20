@@ -406,4 +406,39 @@ RSpec.describe CoreWorkflow, type: :model do
       end
     end
   end
+
+  describe 'core workflow: saved value lost on set_fixed_to action #5852' do
+    let(:ticket) { create(:ticket, group: group, state: Ticket::State.find_by(name: 'open')) }
+    let(:payload) do
+      base_payload.merge('params' => { 'id' => ticket.id }, 'screen' => 'edit')
+    end
+    let!(:workflow1) do
+      create(:core_workflow,
+             object:  'Ticket',
+             perform: {
+               'ticket.group_id': {
+                 operator:      'remove_option',
+                 remove_option: Group.where(name: group.name).map { |row| row.id.to_s },
+               },
+             })
+    end
+
+    before do
+      workflow1
+    end
+
+    it 'does not remove the saved value for the group of the ticket' do
+      expect(result[:restrict_values]['group_id']).to include(group.id.to_s)
+    end
+
+    context 'when another field is marked as changed' do
+      let(:payload) do
+        base_payload.merge('params' => { 'id' => ticket.id, 'priority_id' => Ticket::Priority.find_by(name: '3 high').id.to_s }, 'screen' => 'edit')
+      end
+
+      it 'does not remove the saved value for the group of the ticket' do
+        expect(result[:restrict_values]['group_id']).to include(group.id.to_s)
+      end
+    end
+  end
 end
