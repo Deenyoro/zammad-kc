@@ -139,7 +139,7 @@ const transition = VITE_TEST_MODE
           :is="wrapperTag"
           ref="dialog"
           data-common-dialog
-          class="!absolute top-1/2 z-50 flex w-[500px] -translate-y-1/2 flex-col gap-3 rounded-xl border border-neutral-100 bg-neutral-50 p-3 ltr:left-1/2 ltr:-translate-x-1/2 rtl:right-1/2 rtl:translate-x-1/2 dark:border-gray-900 dark:bg-gray-500"
+          class="absolute top-1/2 z-50 flex min-w-lg -translate-y-1/2 flex-col gap-3 rounded-xl border border-neutral-100 bg-neutral-50 p-3 ltr:left-1/2 ltr:-translate-x-1/2 rtl:right-1/2 rtl:translate-x-1/2 dark:border-gray-900 dark:bg-gray-500"
         >
           <div class="flex items-center justify-between bg-neutral-50 dark:bg-gray-500">
             <slot name="header">

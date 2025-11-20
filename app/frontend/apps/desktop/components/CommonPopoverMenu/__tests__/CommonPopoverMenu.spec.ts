@@ -254,4 +254,19 @@ describe('rendering section', () => {
 
     expect(view.getByRole('heading', { name: 'single group', level: 3 })).toBeInTheDocument()
   })
+
+  it('shows message if no items are available', () => {
+    const items: MenuItem[] = [{ key: 'shared-draft', label: 'Shared draft', show: () => false }]
+
+    const view = renderComponent(CommonPopoverMenu, {
+      shallow: false,
+      props: {
+        popover: null,
+        items,
+      },
+      router: true,
+    })
+
+    expect(view.baseElement).toHaveTextContent('No items available')
+  })
 })

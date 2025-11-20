@@ -3,17 +3,17 @@
 import { getNode } from '@formkit/core'
 
 import { renderComponent } from '#tests/support/components/index.ts'
-// import { mockRouterHooks } from '#tests/support/mock-vue-router.ts'
 import { mockRouterHooks } from '#tests/support/mock-vue-router.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
-import { pushComponent } from '#shared/components/DynamicInitializer/manage.ts'
 import { waitForTicketSharedDraftStartCreateMutationCalls } from '#shared/entities/ticket-shared-draft-start/graphql/mutations/ticketSharedDraftStartCreate.mocks.ts'
 import { useTicketSharedDraftStartDeleteMutation } from '#shared/entities/ticket-shared-draft-start/graphql/mutations/ticketSharedDraftStartDelete.api.ts'
 import { waitForTicketSharedDraftStartUpdateMutationCalls } from '#shared/entities/ticket-shared-draft-start/graphql/mutations/ticketSharedDraftStartUpdate.mocks.ts'
 import { useTicketSharedDraftStartSingleQuery } from '#shared/entities/ticket-shared-draft-start/graphql/queries/ticketSharedDraftStartSingle.api.ts'
 import type { TicketSharedDraftStartListQuery } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
+
+import { openFlyout } from '#desktop/components/CommonFlyout/useFlyout.ts'
 
 import { TicketSidebarScreenType } from '../../../../types/sidebar.ts'
 import sharedDraftStartSidebarPlugin from '../../plugins/shared-draft-start.ts'
@@ -23,10 +23,13 @@ vi.hoisted(() => {
   vi.setSystemTime(new Date('2024-07-03T13:48:09Z'))
 })
 
-vi.mock('#shared/components/DynamicInitializer/manage.ts', () => {
+vi.mock('#desktop/components/CommonFlyout/useFlyout.ts', async (importOriginal) => {
+  const originalModule =
+    await importOriginal<typeof import('#desktop/components/CommonFlyout/useFlyout.ts')>()
+
   return {
-    destroyComponent: vi.fn(),
-    pushComponent: vi.fn(),
+    ...originalModule,
+    openFlyout: vi.fn(),
   }
 })
 
@@ -157,25 +160,33 @@ describe('TicketSidebarSharedDraftStartContent.vue', () => {
         },
         form: {
           formId: 'test-form',
+          flags: {
+            canPreviewSharedDrafts: true,
+            newArticlePresent: true,
+          },
         },
       },
     )
 
     await wrapper.events.click(wrapper.getByRole('link', { name: 'Test shared draft 1' }))
 
-    expect(pushComponent).toHaveBeenCalledWith(
-      'flyout',
-      'shared-draft_/', // appended test route path
-      expect.anything(),
+    expect(openFlyout).toHaveBeenCalledWith(
+      'shared-draft',
       {
         form: {
           formId: 'test-form',
+          flags: {
+            canPreviewSharedDrafts: true,
+            newArticlePresent: true,
+          },
         },
         sharedDraftId: convertToGraphQLId('Ticket::SharedDraftStart', 1),
         draftType: 'start',
         metaInformationQuery: useTicketSharedDraftStartSingleQuery,
         deleteMutation: useTicketSharedDraftStartDeleteMutation,
+        setSkipNextStateUpdate: undefined,
       },
+      true,
     )
   })
 

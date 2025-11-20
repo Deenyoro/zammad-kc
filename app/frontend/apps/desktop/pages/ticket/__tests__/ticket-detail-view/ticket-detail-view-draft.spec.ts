@@ -8,6 +8,8 @@ import { mockFormUpdaterQuery } from '#shared/components/Form/graphql/queries/fo
 import { waitForTicketUpdateMutationCalls } from '#shared/entities/ticket/graphql/mutations/update.mocks.ts'
 import { mockTicketQuery } from '#shared/entities/ticket/graphql/queries/ticket.mocks.ts'
 import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
+import { mockTicketSharedDraftZoomShowQuery } from '#shared/entities/ticket-shared-draft-zoom/graphql/queries/ticketSharedDraftZoomShow.mocks.ts'
+import { mockMacrosQuery } from '#shared/graphql/queries/macros.mocks.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import { mockLinkListQuery } from '../../graphql/queries/linkList.mocks.ts'
@@ -28,6 +30,7 @@ describe('Ticket detail view - draft handling', () => {
           fields: {},
           flags: {
             hasSharedDraft: true,
+            newArticlePresent: true,
           },
         },
       })
@@ -45,6 +48,36 @@ describe('Ticket detail view - draft handling', () => {
       const menu = await view.findByRole('menu')
 
       expect(within(menu).getByText('Save as draft')).toBeInTheDocument()
+    })
+
+    it('does not show save as draft if no new article is present', async () => {
+      mockFormUpdaterQuery({
+        formUpdater: {
+          fields: {},
+          flags: {
+            hasSharedDraft: true,
+            newArticlePresent: false,
+          },
+        },
+      })
+
+      mockMacrosQuery({
+        macros: [],
+      })
+
+      mockTicketQuery({
+        ticket: createDummyTicket(),
+      })
+
+      const view = await visitView('/tickets/1')
+
+      const actionMenu = await view.findByLabelText('Additional ticket edit actions')
+
+      await view.events.click(actionMenu)
+
+      const menu = await view.findByRole('menu')
+
+      expect(within(menu).getByText('No items available')).toBeInTheDocument()
     })
 
     it('allows to apply a draft and submits draft ID to the update mutation', async () => {
@@ -113,6 +146,7 @@ describe('Ticket detail view - draft handling', () => {
           },
           flags: {
             hasSharedDraft: true,
+            newArticlePresent: false,
           },
         },
       })
@@ -126,6 +160,32 @@ describe('Ticket detail view - draft handling', () => {
       })
 
       await view.events.click(bottomButton)
+
+      mockTicketSharedDraftZoomShowQuery({
+        ticketSharedDraftZoomShow: {
+          id: convertToGraphQLId('Ticket::SharedDraftZoom', 123),
+          ticketId: convertToGraphQLId('Ticket', 1),
+          newArticle: {
+            body: '<p>Test draft content</p>',
+          },
+          ticketAttributes: {},
+          updatedAt: new Date().toISOString(),
+          updatedBy: {
+            id: convertToGraphQLId('User', 1),
+            internalId: 1,
+            firstname: 'Test',
+            lastname: 'User',
+            fullname: 'Test User',
+            email: 'test@example.com',
+            phone: null,
+            image: null,
+            outOfOffice: false,
+            outOfOfficeStartAt: null,
+            outOfOfficeEndAt: null,
+            active: true,
+          },
+        },
+      })
 
       mockFormUpdaterQuery({
         formUpdater: {

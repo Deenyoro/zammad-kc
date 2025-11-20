@@ -18,6 +18,7 @@ import type { ObjectLike } from '#shared/types/utils.ts'
 import { removeSignatureFromBody } from '#shared/utils/dom.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
+import { useFlyout } from '#desktop/components/CommonFlyout/useFlyout.ts'
 import { useTicketSharedDraft } from '#desktop/pages/ticket/composables/useTicketSharedDraft.ts'
 import type { TicketSidebarContentProps } from '#desktop/pages/ticket/types/sidebar.ts'
 
@@ -28,6 +29,12 @@ interface Props extends TicketSidebarContentProps {
 }
 
 const props = defineProps<Props>()
+
+useFlyout({
+  name: 'shared-draft',
+  component: () => import('../../TicketSharedDraftFlyout.vue'),
+  global: true,
+})
 
 const persistentStates = defineModel<ObjectLike>({ required: true })
 

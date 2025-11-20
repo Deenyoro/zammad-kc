@@ -36,6 +36,8 @@ const emit = defineEmits<{
 
 const groupIds = computed(() => (props.groupId ? [props.groupId] : undefined))
 
+const articleReplyIsPresent = computed(() => !!props.form?.flags.newArticlePresent)
+
 // For now handover ticket editable, flag, maybe later we can move the action menu in an own component.
 const { macrosLoaded, macros } = useMacros(groupIds)
 
@@ -59,7 +61,7 @@ const actionItems = computed(() => {
     groupLabel: groupLabels.drafts,
     icon: 'floppy',
     key: 'save-draft',
-    show: () => props.canUseDraft,
+    show: () => props.canUseDraft && articleReplyIsPresent.value,
     onClick: () => {
       if (props.sharedDraftId) {
         sharedDraftConflictDialog.open({

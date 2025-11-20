@@ -7,7 +7,7 @@ import { useTicketSharedDraftZoomDeleteMutation } from '#shared/entities/ticket-
 import { useTicketSharedDraftZoomShowQuery } from '#shared/entities/ticket-shared-draft-zoom/graphql/queries/ticketSharedDraftZoomShow.api.ts'
 import { removeSignatureFromBody } from '#shared/utils/dom.ts'
 
-import { useFlyout } from '#desktop/components/CommonFlyout/useFlyout.ts'
+import { openFlyout } from '#desktop/components/CommonFlyout/useFlyout.ts'
 
 export const useTicketSharedDraft = (setSkipNextStateUpdate?: (skip: boolean) => void) => {
   const mapSharedDraftParams = (ticketId: string, form?: FormRef) => {
@@ -30,30 +30,29 @@ export const useTicketSharedDraft = (setSkipNextStateUpdate?: (skip: boolean) =>
     }
   }
 
-  const sharedDraftFlyout = useFlyout({
-    name: 'shared-draft',
-    component: () => import('../components/TicketSharedDraftFlyout.vue'),
-  })
-
   const openSharedDraftFlyout = (
     draftType: 'start' | 'detail-view',
     sharedDraftId?: string | null,
     form?: FormRef,
   ) => {
-    sharedDraftFlyout.open({
-      sharedDraftId,
-      form,
-      draftType,
-      metaInformationQuery:
-        draftType === 'start'
-          ? useTicketSharedDraftStartSingleQuery
-          : useTicketSharedDraftZoomShowQuery,
-      deleteMutation:
-        draftType === 'start'
-          ? useTicketSharedDraftStartDeleteMutation
-          : useTicketSharedDraftZoomDeleteMutation,
-      setSkipNextStateUpdate,
-    })
+    openFlyout(
+      'shared-draft',
+      {
+        sharedDraftId,
+        form,
+        draftType,
+        metaInformationQuery:
+          draftType === 'start'
+            ? useTicketSharedDraftStartSingleQuery
+            : useTicketSharedDraftZoomShowQuery,
+        deleteMutation:
+          draftType === 'start'
+            ? useTicketSharedDraftStartDeleteMutation
+            : useTicketSharedDraftZoomDeleteMutation,
+        setSkipNextStateUpdate,
+      },
+      true, // global
+    )
   }
 
   return {

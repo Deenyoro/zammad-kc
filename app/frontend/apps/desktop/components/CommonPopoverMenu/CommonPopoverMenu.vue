@@ -79,13 +79,13 @@ const getHoverFocusStyles = (variant?: Variant) => {
       </slot>
     </div>
 
-    <template v-if="filteredMenuItems || $slots.default">
-      <slot>
-        <ul v-if="filteredMenuItems" role="menu" v-bind="$attrs" class="flex w-full flex-col">
+    <slot>
+      <ul role="menu" v-bind="$attrs" class="flex w-full flex-col">
+        <template v-if="filteredMenuItems?.length">
           <template v-for="(item, index) in filteredMenuItems" :key="item.key">
             <li
               v-if="'array' in item"
-              class="group flex flex-col overflow-clip pt-2.5 last:rounded-b-[10px] [&:nth-child(n+2)]:border-t [&:nth-child(n+2)]:border-neutral-100 [&:nth-child(n+2)]:dark:border-gray-900"
+              class="group flex flex-col overflow-clip pt-2.5 last:rounded-b-[10px] nth-[n+2]:border-t nth-[n+2]:border-neutral-100 nth-[n+2]:dark:border-gray-900"
               role="menuitem"
             >
               <CommonLabel
@@ -155,8 +155,11 @@ const getHoverFocusStyles = (variant?: Variant) => {
             </li>
             <slot :item="item" name="trailing-item" />
           </template>
-        </ul>
-      </slot>
-    </template>
+        </template>
+        <li v-else>
+          <CommonLabel class="p-2">{{ $t('No items available') }}</CommonLabel>
+        </li>
+      </ul>
+    </slot>
   </section>
 </template>

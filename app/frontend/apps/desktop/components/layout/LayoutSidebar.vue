@@ -154,7 +154,7 @@ const collapseButtonClass = computed(() => {
       v-if="resizable"
       ref="resize-line"
       :label="$t('Resize sidebar')"
-      class="absolute z-20 has-[+div:hover]:opacity-100"
+      class="absolute z-30 has-[+div:hover]:opacity-100"
       :class="[
         {
           'ltr:right-0 ltr:translate-x-1/2 rtl:left-0 rtl:-translate-x-1/2':

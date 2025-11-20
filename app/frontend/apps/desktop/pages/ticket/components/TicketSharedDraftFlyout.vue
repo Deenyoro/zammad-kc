@@ -21,6 +21,7 @@ import type {
   OperationMutationFunction,
   OperationQueryFunction,
 } from '#shared/types/server/apollo/handler'
+import { normalizeImageSizingInHtml } from '#shared/utils/markup.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonFlyout from '#desktop/components/CommonFlyout/CommonFlyout.vue'
@@ -63,30 +64,31 @@ const sharedDraft = computed(() => {
   return metaInformationQueryResult.value
     ?.ticketSharedDraftZoomShow as TicketSharedDraftZoomShowQuery['ticketSharedDraftZoomShow']
 })
-
 const sharedDraftContent = computed(() => {
+  if (!sharedDraft.value) return ''
+
   if (props.draftType === 'start') {
     const content =
       sharedDraft.value as TicketSharedDraftStartSingleQuery['ticketSharedDraftStartSingle']
 
-    return content.content.body
+    return normalizeImageSizingInHtml(content?.content?.body || '')
   }
 
   const newArticle =
     sharedDraft.value as TicketSharedDraftZoomShowQuery['ticketSharedDraftZoomShow']
 
-  return newArticle.newArticle.body
+  return normalizeImageSizingInHtml(newArticle?.newArticle?.body || '')
 })
 
 const close = () => {
-  closeFlyout(flyoutName)
+  closeFlyout(flyoutName, true) // global
 }
 
 const { waitForConfirmation, waitForVariantConfirmation } = useConfirmation()
 
 const { notify } = useNotifications()
 
-const sharedDrafteleteMutation = new MutationHandler(deleteMutation({}))
+const sharedDraftDeleteMutation = new MutationHandler(deleteMutation({}))
 
 const { isDirty, triggerFormUpdater, updateFieldValues, values } = useForm(toRef(props, 'form'))
 
@@ -94,7 +96,7 @@ const deleteSharedDraft = async (sharedDraftId: string) => {
   const confirmed = await waitForVariantConfirmation('delete')
   if (!confirmed) return
 
-  sharedDrafteleteMutation
+  sharedDraftDeleteMutation
     .send({
       sharedDraftId,
     })
@@ -172,6 +174,7 @@ const headerTitle = computed(() => {
       actionButton: { variant: 'primary' },
     }"
     header-icon="file-text"
+    global
     :name="flyoutName"
     @activated="metaInformationQueryHandler.refetch()"
   >

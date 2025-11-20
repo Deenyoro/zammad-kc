@@ -20,3 +20,37 @@ export const cleanupMarkup = (source: string): string =>
     .replace(/\/\/(.+?)\/\//gm, '$1')
     .replace(/§(.+?)§/gm, '$1')
     .replace(/\[(.+?)\]\((.+?)\)/gm, '$1')
+
+export const normalizeImageSizingInHtml = (html: string) => {
+  let processedHtml = html.replace(
+    /<img([^>]*)>/g,
+    (_, attrs) => `<img${attrs} class="object-contain">`,
+  )
+
+  // Update inline styles
+  processedHtml = processedHtml.replace(/<img([^>]*)style="([^"]*)"/g, (_, beforeAttrs, style) => {
+    let newStyle = style
+    const width = style.match(/width:\s*([^;]+)/)?.[1]
+    const height = style.match(/height:\s*([^;]+)/)?.[1]
+
+    if (width) {
+      newStyle = newStyle
+        .replace(/width:\s*[^;]+/, 'width:100%')
+        .replace(/height:\s*[^;]+/, 'height:100%')
+        .concat(`;max-width:${width}`)
+    }
+
+    if (height) {
+      newStyle = newStyle.replace(/height:\s*[^;]+/, 'height:100%').concat(`;max-height:${height}`)
+    }
+
+    // It is just the serialized attribute list;
+    // the helper that creates it deliberately omits the trailing >.
+    // The template later appends the closing > (or />), so class="object-contain"
+    // is still inside the <img …> tag. If you inserted > before the class,
+    // you’d end up with <img …> class="object-contain", which would sit outside the element.
+    return `<img${beforeAttrs}style="${newStyle}"`
+  })
+
+  return processedHtml
+}

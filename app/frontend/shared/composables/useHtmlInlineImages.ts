@@ -4,7 +4,7 @@ import type { ImageViewerFile } from '#shared/composables/useImageViewer.ts'
 
 import type { Ref } from 'vue'
 
-const useHtmlInlineImages = (
+export const useHtmlInlineImages = (
   inlineImages: Ref<ImageViewerFile[]>,
   onClick: (int: number) => void,
 ) => {
@@ -40,5 +40,3 @@ const useHtmlInlineImages = (
     populateInlineImages,
   }
 }
-
-export { useHtmlInlineImages }
