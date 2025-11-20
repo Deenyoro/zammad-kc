@@ -223,6 +223,10 @@ class App.TicketZoom extends App.Controller
     @fullable       = @ticket.userGroupAccess('full')
     @formMeta       = data.form_meta
 
+    if @recentlyUpdated
+      @recentlyUpdated = false
+      @reset()
+
     # render page
     # Due to modification of @renderDone in @render, we need to save the value
     beforeRenderDone = @renderDone
@@ -1168,7 +1172,7 @@ class App.TicketZoom extends App.Controller
         ticket.article = undefined
 
         # reset form after save
-        @reset()
+        @recentlyUpdated = true
 
         @load(data, false, true)
 

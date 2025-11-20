@@ -342,6 +342,7 @@ RSpec.describe 'Ticket Update', type: :system do
           select another_user.fullname, from: 'Owner'
           find('.js-submit').click
           expect(ticket.reload.owner_id).to eq(another_user.id)
+          expect(page).to have_no_text('Discard your unsaved changes.')
 
           select_text_module
           expect(find(:richtext).text).to include("#{another_user.firstname} #{another_user.lastname}")
