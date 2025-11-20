@@ -302,7 +302,9 @@ subsequently in a separate step.
     package_db
   end
 
-  def self.ensure_dependencies_install!(dependencies = {})
+  def self.ensure_dependencies_install!(dependencies)
+    return if dependencies.blank?
+
     dependencies.each do |name, version_check|
       raise "Can't install package, because of invalid dependencies: #{name} #{version_check}!" if version_check !~ %r{^(>=|==|<=) (\d+\.\d+\.\d+)$}
 
