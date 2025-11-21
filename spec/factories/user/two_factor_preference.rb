@@ -92,8 +92,7 @@ FactoryBot.define do
                                                                          user_verification: true, user_verified: true)
           page.driver.browser.add_virtual_authenticator(options)
 
-          public_key_json       = JSON.generate({ publicKey: initiate_configuration.as_json.to_h })
-          public_key_credential = page.execute_script("return webauthnJSON.create(#{public_key_json}).then((publicKeyCredential) => publicKeyCredential);")
+          public_key_credential = page.execute_script("return navigator.credentials.create({ publicKey: PublicKeyCredential.parseCreationOptionsFromJSON(#{initiate_configuration.as_json.to_h}) }).then((publicKeyCredential) => publicKeyCredential.toJSON());")
           webauthn_credential   = WebAuthn::Credential.from_create(public_key_credential)
 
           if wrong_key

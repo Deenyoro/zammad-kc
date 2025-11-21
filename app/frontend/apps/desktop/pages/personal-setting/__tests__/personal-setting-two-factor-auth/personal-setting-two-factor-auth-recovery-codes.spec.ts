@@ -4,6 +4,7 @@ import { within } from '@testing-library/vue'
 
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
+import { mockWebAuthnCreation } from '#tests/support/mock-webauthn.ts'
 
 import {
   mockUserCurrentTwoFactorGetMethodConfigurationQuery,
@@ -96,6 +97,8 @@ describe('Two-factor Authentication - Recovery Codes', () => {
       },
     })
 
+    mockWebAuthnCreation()
+
     await view.events.type(passwordInput, 'test')
     await view.events.click(view.getByRole('button', { name: 'Next' }))
 
@@ -116,6 +119,8 @@ describe('Two-factor Authentication - Recovery Codes', () => {
   })
 
   it('shows recovery codes generated in a previous step', async () => {
+    vi.stubGlobal('isSecureContext', true)
+
     const view = await visitView('/personal-setting/two-factor-auth')
 
     const actionMenuButton = view.getByRole('button', {
@@ -142,6 +147,8 @@ describe('Two-factor Authentication - Recovery Codes', () => {
       userCurrentTwoFactorGetMethodConfiguration: null,
     })
 
+    mockWebAuthnCreation()
+
     await view.events.type(passwordInput, 'test')
     await view.events.click(view.getByRole('button', { name: 'Next' }))
 
@@ -153,14 +160,6 @@ describe('Two-factor Authentication - Recovery Codes', () => {
     const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
     await view.events.type(nicknameInput, 'My key')
-
-    Object.defineProperty(window, 'isSecureContext', {
-      value: true,
-    })
-
-    vi.mock('@github/webauthn-json', () => ({
-      create: vi.fn(),
-    }))
 
     mockUserCurrentTwoFactorVerifyMethodConfigurationMutation({
       userCurrentTwoFactorVerifyMethodConfiguration: {

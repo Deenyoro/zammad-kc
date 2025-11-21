@@ -4,6 +4,7 @@ import { within } from '@testing-library/vue'
 
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
+import { createMockCredential, mockWebAuthnCreation } from '#tests/support/mock-webauthn.ts'
 
 import {
   mockUserCurrentTwoFactorGetMethodConfigurationQuery,
@@ -28,13 +29,6 @@ describe('Two-factor Authentication - Security Keys', () => {
     mockApplicationConfig({
       two_factor_authentication_method_security_keys: true,
     })
-
-    vi.mock('@github/webauthn-json', () => ({
-      create: ({ publicKey }: { publicKey: string }) => {
-        if (publicKey === 'mock-error') throw new Error()
-        return {}
-      },
-    }))
   })
 
   it('supports setting up new security keys', async () => {
@@ -64,6 +58,8 @@ describe('Two-factor Authentication - Security Keys', () => {
       userCurrentTwoFactorGetMethodConfiguration: null,
     })
 
+    mockWebAuthnCreation()
+
     await view.events.type(passwordInput, 'test')
     await view.events.click(view.getByRole('button', { name: 'Next' }))
 
@@ -81,10 +77,6 @@ describe('Two-factor Authentication - Security Keys', () => {
     const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
     await view.events.type(nicknameInput, 'My key')
-
-    Object.defineProperty(window, 'isSecureContext', {
-      value: true,
-    })
 
     await view.events.click(view.getByRole('button', { name: 'Next' }))
 
@@ -209,9 +201,7 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
-    Object.defineProperty(window, 'isSecureContext', {
-      value: true,
-    })
+    mockWebAuthnCreation()
 
     await view.events.type(nicknameInput, 'My key{Enter}')
 
@@ -299,9 +289,8 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.type(nicknameInput, 'My key')
 
-    Object.defineProperty(window, 'isSecureContext', {
-      value: true,
-    })
+    const mocks = mockWebAuthnCreation()
+    mocks.createSpy.mockRejectedValue(new Error('WebAuthn failed'))
 
     mockUserCurrentTwoFactorInitiateMethodConfigurationQuery({
       userCurrentTwoFactorInitiateMethodConfiguration: 'mock-error',
@@ -314,6 +303,8 @@ describe('Two-factor Authentication - Security Keys', () => {
     mockUserCurrentTwoFactorInitiateMethodConfigurationQuery({
       userCurrentTwoFactorInitiateMethodConfiguration: {},
     })
+
+    mocks.createSpy.mockResolvedValue(createMockCredential())
 
     await view.events.click(view.getByRole('button', { name: 'Retry' }))
 
@@ -350,6 +341,8 @@ describe('Two-factor Authentication - Security Keys', () => {
     await view.events.type(passwordInput, 'test')
     await view.events.click(view.getByRole('button', { name: 'Next' }))
 
+    mockWebAuthnCreation()
+
     await waitForUserCurrentPasswordCheckMutationCalls()
     await waitForUserCurrentTwoFactorGetMethodConfigurationQueryCalls()
 
@@ -358,10 +351,6 @@ describe('Two-factor Authentication - Security Keys', () => {
     const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
     await view.events.type(nicknameInput, 'My key')
-
-    Object.defineProperty(window, 'isSecureContext', {
-      value: true,
-    })
 
     mockUserCurrentTwoFactorVerifyMethodConfigurationMutation({
       userCurrentTwoFactorVerifyMethodConfiguration: {
@@ -430,9 +419,7 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.type(nicknameInput, 'My key')
 
-    Object.defineProperty(window, 'isSecureContext', {
-      value: true,
-    })
+    mockWebAuthnCreation()
 
     mockUserCurrentTwoFactorVerifyMethodConfigurationMutation({
       userCurrentTwoFactorVerifyMethodConfiguration: {

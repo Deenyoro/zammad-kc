@@ -3,7 +3,6 @@
 import { EnumTwoFactorAuthenticationMethod } from '#shared/graphql/types.ts'
 
 import type { TwoFactorPlugin } from '../types.ts'
-import type { CredentialRequestOptionsJSON } from '@github/webauthn-json'
 
 export default {
   name: EnumTwoFactorAuthenticationMethod.SecurityKeys,
@@ -15,7 +14,7 @@ export default {
     helpMessage: __('Verifying key information…'),
     errorHelpMessage: __('Try using your security key again.'),
     form: false,
-    async setup(publicKey: NonNullable<CredentialRequestOptionsJSON['publicKey']>) {
+    async setup(publicKeyOptions: PublicKeyCredentialRequestOptionsJSON) {
       if (!window.isSecureContext) {
         return {
           success: false,
@@ -24,14 +23,18 @@ export default {
         }
       }
       try {
-        const { get } = await import('@github/webauthn-json')
+        const publicKey = PublicKeyCredential.parseRequestOptionsFromJSON(publicKeyOptions)
+        const credential = (await navigator.credentials.get({ publicKey })) as PublicKeyCredential
 
-        const publicKeyCredential = await get({ publicKey })
+        if (!credential || credential.type !== 'public-key') {
+          throw new Error()
+        }
+
         return {
           success: true,
           payload: {
-            challenge: publicKey.challenge,
-            credential: publicKeyCredential,
+            challenge: publicKeyOptions.challenge,
+            credential: credential.toJSON(),
           },
         }
       } catch {
