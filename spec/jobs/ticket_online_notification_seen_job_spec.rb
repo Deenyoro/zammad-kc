@@ -37,8 +37,10 @@ RSpec.describe TicketOnlineNotificationSeenJob, type: :job do
       ticket.update!(state_id: Ticket::State.lookup(name: 'closed').id)
 
       # Ensure the mentioned user's notification is NOT auto-marked as seen
+      # but the ticket owner's notification IS marked as seen
       expect { described_class.perform_now(ticket.id, user.id) }
-        .not_to change { mentioned_notification.reload.seen }.from(false)
+        .to not_change { mentioned_notification.reload.seen }.from(false)
+        .and change { online_notification.reload.seen }.from(false).to(true)
     end
   end
 end
