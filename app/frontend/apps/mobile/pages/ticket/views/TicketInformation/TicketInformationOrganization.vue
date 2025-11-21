@@ -55,7 +55,7 @@ const ticketsData = computed(() => getTicketData(organization.value))
   <CommonLoader :loading="!organization && organizationLoading" :error="error">
     <div v-if="organization" class="mb-3 flex items-center gap-3">
       <CommonOrganizationAvatar size="normal" :entity="organization" />
-      <h2 class="text-lg font-semibold">
+      <h2 class="text-lg font-medium">
         {{ organization.name }}
       </h2>
     </div>

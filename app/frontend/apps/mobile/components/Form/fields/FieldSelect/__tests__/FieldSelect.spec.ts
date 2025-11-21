@@ -113,9 +113,7 @@ describe('Form - Field - Select - Dialog', () => {
 
     await wrapper.events.click(wrapper.getByLabelText('Select…'))
 
-    expect(getByText(wrapper.getByRole('listbox'), testOptions[1].label)).toHaveClass(
-      'font-semibold',
-    )
+    expect(getByText(wrapper.getByRole('listbox'), testOptions[1].label)).toHaveClass('font-medium')
 
     expect(
       wrapper.getByIconName((name, node) => {

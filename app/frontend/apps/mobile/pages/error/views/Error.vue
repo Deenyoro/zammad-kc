@@ -31,14 +31,14 @@ const errorImage = computed(() => {
       </div>
     </header>
     <main class="flex grow flex-col items-center justify-center">
-      <h1 class="mb-9 text-8xl font-extrabold">
+      <h1 class="mb-9 text-8xl font-bold">
         {{ errorOptions.statusCode }}
       </h1>
       <img :alt="$t('Error')" :src="errorImage" />
-      <h2 class="mt-9 max-w-prose text-center text-xl font-semibold">
+      <h2 class="mt-9 max-w-prose text-center text-xl font-medium">
         {{ $t(errorOptions.title) }}
       </h2>
-      <p class="text-gray mt-4 min-h-[4rem] max-w-prose text-center">
+      <p class="text-gray mt-4 min-h-16 max-w-prose text-center">
         {{ $t(errorOptions.message, ...(errorOptions.messagePlaceholder || [])) }}
       </p>
       <p v-if="errorOptions.route" class="text-gray max-w-prose text-center">

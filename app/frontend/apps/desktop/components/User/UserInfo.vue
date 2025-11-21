@@ -20,6 +20,7 @@ interface Props {
   noLink?: boolean
   hasOrganizationPopover?: boolean
   titleSize?: Sizes
+  titleClass?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -54,6 +55,7 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
       >
         <CommonLabel
           :class="{
+            [`${titleClass}`]: titleClass,
             'text-blue-800! group-hover:text-blue-850! group-hover:dark:text-blue-600!': !noLink,
           }"
           :size="titleSize ? titleSize : labelSize"
@@ -65,6 +67,7 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
         v-else
         :size="titleSize ? titleSize : labelSize"
         class="text-gray-300! dark:text-neutral-400!"
+        :class="titleClass"
       >
         {{ user.fullname }}
       </CommonLabel>

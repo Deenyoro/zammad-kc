@@ -65,7 +65,7 @@ describe('CommonButton.vue', () => {
     },
     {
       variant: 'submit',
-      classes: ['bg-yellow', 'font-semibold', 'text-black-full'],
+      classes: ['bg-yellow', 'font-medium', 'text-black-full'],
     },
     {
       variant: 'danger',
@@ -92,7 +92,7 @@ describe('CommonButton.vue', () => {
     },
     {
       variant: 'submit',
-      classes: ['font-semibold', 'text-yellow'],
+      classes: ['font-medium', 'text-yellow'],
     },
     {
       variant: 'danger',

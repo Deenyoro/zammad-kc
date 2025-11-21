@@ -74,7 +74,7 @@ const label = computed(() => {
       :name="option.icon"
       size="small"
       :class="{
-        '!text-white': selected,
+        'text-white!': selected,
         'opacity-30': option.disabled,
       }"
       decorative
@@ -82,7 +82,7 @@ const label = computed(() => {
     />
     <span
       :class="{
-        'font-semibold !text-white': selected,
+        'font-medium text-white!': selected,
         'opacity-30': option.disabled,
       }"
       class="grow text-white/80"

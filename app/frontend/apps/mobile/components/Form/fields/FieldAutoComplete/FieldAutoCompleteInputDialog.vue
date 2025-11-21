@@ -344,7 +344,7 @@ useTraverseOptions(autocompleteList)
             :class="{
               'opacity-30': option.disabled,
             }"
-            class="grow truncate text-lg leading-[22px] font-semibold"
+            class="grow truncate text-lg leading-[22px] font-medium"
           >
             {{ option.label || option.value }}
           </span>
@@ -352,7 +352,7 @@ useTraverseOptions(autocompleteList)
         <span
           v-else
           :class="{
-            'font-semibold !text-white': isCurrentValue(option.value),
+            'font-medium text-white!': isCurrentValue(option.value),
             'opacity-30': option.disabled,
           }"
           class="grow truncate text-white/80"

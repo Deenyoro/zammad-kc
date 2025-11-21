@@ -112,7 +112,7 @@ const tooltipMessages = computed(() => {
         class="flex flex-1 items-center justify-center rounded-md px-2 py-1 select-none"
         :aria-selected="previewMethod === securityType"
         :class="{
-          'bg-white font-semibold text-black': previewMethod === securityType,
+          'bg-white font-medium text-black': previewMethod === securityType,
           'bg-gray-300': previewMethod !== securityType,
         }"
         @click="changeSecurityState(securityType)"
@@ -149,7 +149,7 @@ const tooltipMessages = computed(() => {
             'bg-gray-600/50 text-white/30': isSecurityOptionDisabled(option),
             'cursor-pointer': !isSecurityOptionDisabled(option),
             'bg-gray-300 text-white': !isCurrentSecurityOption(option),
-            'bg-white font-semibold text-black': isCurrentSecurityOption(option),
+            'bg-white font-medium text-black': isCurrentSecurityOption(option),
           }"
           :tabindex="isSecurityOptionDisabled(option) ? -1 : 0"
           :disabled="isSecurityOptionDisabled(option)"

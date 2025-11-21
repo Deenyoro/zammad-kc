@@ -259,7 +259,7 @@ const onContextClick = () => {
             v-if="hasShowMore"
             :class="[
               colorClasses,
-              'flex h-7 items-center justify-center rounded-md px-2 font-semibold',
+              'flex h-7 items-center justify-center rounded-md px-2 font-medium',
             ]"
             type="button"
             @click="toggleShowMore()"

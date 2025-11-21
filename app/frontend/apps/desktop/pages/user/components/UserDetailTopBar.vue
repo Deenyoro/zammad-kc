@@ -83,7 +83,14 @@ const events = computed(() => {
   >
     <CommonBreadcrumb :items="breadcrumbItems" size="small" emphasize-last-item />
     <div class="flex mx-auto mt-3 w-full max-w-278 h-21">
-      <UserInfo :user="user" size="normal" has-organization-popover title-size="xl" no-link />
+      <UserInfo
+        :user="user"
+        size="normal"
+        has-organization-popover
+        title-size="xl"
+        title-class="font-medium"
+        no-link
+      />
     </div>
   </header>
 </template>

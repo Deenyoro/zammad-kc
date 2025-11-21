@@ -77,7 +77,7 @@ const scrollDown = () => {
           <FormKit
             v-if="canReply"
             variant="secondary"
-            input-class="flex gap-1 flex justify-center items-center font-semibold text-base px-3 py-1 !text-white formkit-variant-secondary:bg-blue rounded select-none"
+            input-class="flex gap-1 flex justify-center items-center font-medium text-base px-3 py-1 !text-white formkit-variant-secondary:bg-blue rounded select-none"
             type="button"
             @click.prevent="emit('reply')"
           >
@@ -91,7 +91,7 @@ const scrollDown = () => {
           <FormKit
             v-if="canSave"
             variant="submit"
-            input-class="font-semibold text-base px-4 py-1 !text-black formkit-variant-primary:bg-yellow rounded select-none"
+            input-class="font-medium text-base px-4 py-1 !text-black formkit-variant-primary:bg-yellow rounded select-none"
             wrapper-class="flex justify-center items-center"
             type="button"
             form="form-ticket-edit"

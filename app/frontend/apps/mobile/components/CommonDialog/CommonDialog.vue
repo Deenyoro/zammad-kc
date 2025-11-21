@@ -123,7 +123,7 @@ export default {
           <slot name="before-label" />
         </div>
         <div
-          class="line-clamp-2 max-w-[65%] text-center text-base leading-[19px] font-semibold text-white"
+          class="line-clamp-2 max-w-[65%] text-center text-base leading-[19px] font-medium text-white"
         >
           <slot name="label">
             {{ $t(label) }}

@@ -23,8 +23,8 @@ const variantClasses = computed(() => {
       if (props.transparentBackground) return ['text-blue']
       return ['bg-blue', 'text-white']
     case 'submit':
-      if (props.transparentBackground) return ['font-semibold', 'text-yellow']
-      return ['bg-yellow', 'font-semibold', 'text-black-full']
+      if (props.transparentBackground) return ['font-medium', 'text-yellow']
+      return ['bg-yellow', 'font-medium', 'text-black-full']
     case 'danger':
       if (props.transparentBackground) return ['text-red-bright']
       return ['bg-red-dark', 'text-red-bright']

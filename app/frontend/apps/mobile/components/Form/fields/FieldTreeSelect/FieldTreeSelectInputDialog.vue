@@ -187,7 +187,7 @@ const getCurrentIndex = (option: FlatSelectOption) => {
         class="ltr:mr-3 rtl:ml-3"
         :name="`chevron-${locale.localeData?.dir === 'rtl' ? 'right' : 'left'}`"
       />
-      <span class="grow font-semibold text-white/80">
+      <span class="grow font-medium text-white/80">
         {{ currentParent.label || currentParent.value }}
       </span>
     </div>
@@ -269,7 +269,7 @@ const getCurrentIndex = (option: FlatSelectOption) => {
         />
         <span
           :class="{
-            'font-semibold !text-white': isCurrentValue(option.value),
+            'font-medium text-white!': isCurrentValue(option.value),
             'opacity-30': option.disabled,
           }"
           class="grow text-white/80"

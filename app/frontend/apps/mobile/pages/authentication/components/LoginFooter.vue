@@ -20,7 +20,7 @@ const application = useApplicationStore()
       <img :src="'/assets/images/icons/logo.svg'" :alt="$t('Logo')" class="h-6 w-6" />
     </CommonLink>
     <span class="ltr:mr-1 rtl:ml-1">{{ $t('Powered by') }}</span>
-    <CommonLink link="https://zammad.org" external open-in-new-tab class="font-semibold">
+    <CommonLink link="https://zammad.org" external open-in-new-tab class="font-medium">
       {{ $t('Zammad') }}
     </CommonLink>
   </footer>

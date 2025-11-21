@@ -52,7 +52,7 @@ const ticketsData = computed(() => getTicketData(user.value))
     <div v-if="user" class="mb-3 flex items-center gap-3">
       <CommonUserAvatar aria-hidden="true" size="normal" :entity="user" />
       <div>
-        <h2 class="text-lg font-semibold">
+        <h2 class="text-lg font-medium">
           {{ user.fullname }}
         </h2>
         <h3 v-if="user.organization">

@@ -132,7 +132,7 @@ const showError = (error: UserError) => {
       >
         {{ $t('Having problems?') }}
         <button
-          class="text-gray cursor-pointer pb-2 leading-4 font-semibold"
+          class="text-gray cursor-pointer pb-2 leading-4 font-medium"
           @click.prevent="updateState('2fa-select')"
         >
           {{ $t('Try another method') }}
@@ -151,11 +151,7 @@ const showError = (error: UserError) => {
           )
         }}
       </p>
-      <CommonLink
-        link="/#admin_password_auth"
-        class="text-gray font-semibold"
-        @click="forceDesktop"
-      >
+      <CommonLink link="/#admin_password_auth" class="text-gray font-medium" @click="forceDesktop">
         {{ $t('Request the password login here.') }}
       </CommonLink>
     </section>
@@ -177,7 +173,7 @@ const showError = (error: UserError) => {
           :link="link.link"
           :title="link.description"
           :open-in-new-tab="link.newTab"
-          class="text-gray leading-4 font-semibold tracking-wide after:ml-1 after:font-medium after:text-gray-200 after:content-['|'] last:after:content-none"
+          class="text-gray leading-4 font-medium tracking-wide after:ml-1 after:font-medium after:text-gray-200 after:content-['|'] last:after:content-none"
         >
           {{ $t(link.title) }}
         </CommonLink>

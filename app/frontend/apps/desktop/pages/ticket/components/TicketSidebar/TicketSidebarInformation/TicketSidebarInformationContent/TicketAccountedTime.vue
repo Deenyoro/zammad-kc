@@ -52,7 +52,7 @@ const showDivider = computed(() => shownUnits.value.length > 1) // If more than 
       <li
         v-for="({ name, timeUnit }, index) in shownUnits"
         :key="name"
-        class="flex gap-2 first:font-semibold"
+        class="flex gap-2 first:font-medium"
         :class="{
           'border-stone-200 first:border-b first:border-solid first:pb-1 dark:border-neutral-500':
             showDivider,
