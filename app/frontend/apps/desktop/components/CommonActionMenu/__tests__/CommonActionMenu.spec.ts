@@ -25,7 +25,7 @@ describe('CommonActionMenu', () => {
     {
       key: 'change-foo',
       label: 'Change Foo',
-      icon: 'person-gear',
+      icon: 'user-settings',
       show: () => true,
       onClick: (entity?: ObjectLike) => {
         fn(entity?.id)
@@ -78,7 +78,7 @@ describe('CommonActionMenu', () => {
       await view.events.click(view.getByIconName('three-dots-vertical'))
 
       expect(view.getByIconName('trash3')).toBeInTheDocument()
-      expect(view.getByIconName('person-gear')).toBeInTheDocument()
+      expect(view.getByIconName('user-settings')).toBeInTheDocument()
 
       await view.events.click(view.getByText('Change Foo'))
 
@@ -189,7 +189,7 @@ describe('CommonActionMenu', () => {
         {
           key: 'change-foo',
           label: 'Change Foo',
-          icon: 'person-gear',
+          icon: 'user-settings',
           show: () => true,
           onClick: (entity?: ObjectLike) => {
             fn(entity?.id)

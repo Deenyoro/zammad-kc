@@ -690,7 +690,7 @@ const formSchema = defineFormSchema([
     props: {
       clearable: true,
       link: '/',
-      linkIcon: 'person-add',
+      linkIcon: 'user-add',
     },
   },
   {
@@ -1764,7 +1764,7 @@ const userEntity = {
                   key: 'personal-setting',
                   label: 'Profile settings',
                   link: '/personal-setting',
-                  icon: 'person-gear',
+                  icon: 'user-settings',
                 },
                 {
                   key: 'sign-out',
@@ -1812,7 +1812,7 @@ const userEntity = {
             {
               key: 'change-customer',
               label: 'Change Customer',
-              icon: 'person-gear',
+              icon: 'user-settings',
               onClick: (data) => {
                 console.log(data?.id, data?.name, 'Change customer')
               },
@@ -1834,7 +1834,7 @@ const userEntity = {
             {
               key: 'change-customer',
               label: 'Change Customer',
-              icon: 'person-gear',
+              icon: 'user-settings',
               onClick: (id) => {
                 console.log(id, 'Delete customer')
               },

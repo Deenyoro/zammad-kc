@@ -46,7 +46,7 @@ describe('LayoutSidebar', () => {
     })
 
     it('shows an action Button when iconCollapsed is provided and sidebar is collapsed', async () => {
-      await view.rerender({ iconCollapsed: 'person-gear' })
+      await view.rerender({ iconCollapsed: 'user-settings' })
       const collapseButton = await view.findByLabelText('Collapse sidebar')
       await view.events.click(collapseButton)
       expect(view.queryByTestId('action-button')).toBeInTheDocument()

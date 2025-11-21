@@ -60,8 +60,6 @@
 - `assets/patch-check.svg`
 - `assets/pencil-square.svg`
 - `assets/pencil.svg`
-- `assets/person-add.svg`
-- `assets/person-gear.svg`
 - `assets/phone.svg`
 - `assets/pin-angle.svg`
 - `assets/pin.svg`

@@ -12,7 +12,7 @@ const route: RouteRecordRaw[] = [
     component: () => import('./views/PersonalSetting.vue'),
     meta: {
       title: __('Profile'),
-      icon: 'person-gear',
+      icon: 'user-settings',
       requiresAuth: true,
       requiredPermission: ['*'],
       level: 2,
