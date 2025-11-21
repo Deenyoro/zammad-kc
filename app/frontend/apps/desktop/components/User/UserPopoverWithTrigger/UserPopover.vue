@@ -13,7 +13,6 @@ import type { User } from '#shared/graphql/types.ts'
 import QueryHandler from '#shared/server/apollo/handler/QueryHandler.ts'
 import { normalizeEdges } from '#shared/utils/helpers.ts'
 
-import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonSimpleEntityList from '#desktop/components/CommonSimpleEntityList/CommonSimpleEntityList.vue'
 import { EntityType } from '#desktop/components/CommonSimpleEntityList/types.ts'
 import UserInfo from '#desktop/components/User/UserInfo.vue'
@@ -29,7 +28,7 @@ const props = defineProps<Props>()
 
 const userInfoForPopoverQuery = new QueryHandler(
   useUserInfoForPopoverQuery(
-    () => ({ userId: props.userAvatar.id }),
+    () => ({ userId: props.userAvatar.id, secondaryOrganizationsCount: 5 }),
     () => ({ enabled: !!props.userAvatar.id, fetchPolicy: 'cache-and-network' }),
   ),
 )
@@ -80,19 +79,8 @@ const goToUserProfile = () => {
         :type="EntityType.Organization"
         :label="__('Secondary organizations')"
         :entity="secondaryOrganizations"
-      >
-        <template #trailing="{ totalCount, entities }">
-          <CommonButton
-            v-if="totalCount - entities.length"
-            class="self-end"
-            variant="secondary"
-            size="small"
-            @click="goToUserProfile"
-          >
-            {{ $t('%s more', totalCount - entities.length) }}
-          </CommonButton>
-        </template>
-      </CommonSimpleEntityList>
+        @load-more="goToUserProfile"
+      />
     </template>
   </section>
 </template>

@@ -60,6 +60,10 @@ export const defaultUser = (): ConfidentTake<UserQuery, 'user'> => {
           },
         },
       ],
+      pageInfo: {
+        __typename: 'PageInfo',
+        endCursor: null,
+      },
       totalCount: 1,
     },
     hasSecondaryOrganizations: true,

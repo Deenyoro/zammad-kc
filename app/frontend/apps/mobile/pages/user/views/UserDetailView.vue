@@ -41,8 +41,8 @@ const {
   loading,
   objectAttributes,
   secondaryOrganizations,
-  loadAllSecondaryOrganizations,
-} = useUserDetail(userId, errorCallback)
+  fetchMoreSecondaryOrganizations,
+} = useUserDetail(userId, 3, 100, errorCallback)
 
 useOnlineNotificationSeen(user)
 
@@ -131,7 +131,7 @@ const ticketsData = computed(() => {
       :total-count="secondaryOrganizations.totalCount"
       :disable-show-more="loading"
       :label="__('Secondary organizations')"
-      @show-more="loadAllSecondaryOrganizations()"
+      @show-more="fetchMoreSecondaryOrganizations"
     />
 
     <CommonTicketStateList

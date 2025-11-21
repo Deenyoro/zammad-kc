@@ -5,6 +5,7 @@ import type { AvatarOrganization } from '#shared/components/CommonOrganizationAv
 import CommonOrganizationAvatar from '#shared/components/CommonOrganizationAvatar/CommonOrganizationAvatar.vue'
 import type { Organization } from '#shared/graphql/types.ts'
 
+import type { Orientation } from '#desktop/components/CommonPopover/types.ts'
 import OrganizationPopoverWithTrigger from '#desktop/components/Organization/OrganizationPopoverWithTrigger.vue'
 
 import type { EntityType } from '../types.ts'
@@ -15,15 +16,17 @@ interface Props {
     type: EntityType
     emptyMessage: string
     hasPopover?: boolean
+    popoverOrientation?: Orientation
   }
 }
+
 defineProps<Props>()
 </script>
 
 <template>
   <OrganizationPopoverWithTrigger
     v-if="context.hasPopover"
-    :popover-config="{ orientation: 'left' }"
+    :popover-config="{ orientation: context.popoverOrientation ?? 'left' }"
     :organization="entity"
     no-focus-styling
   >

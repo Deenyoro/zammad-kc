@@ -1,20 +1,19 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { computed, useTemplateRef } from 'vue'
 
 import ObjectAttributes from '#shared/components/ObjectAttributes/ObjectAttributes.vue'
+import { useUserDetail } from '#shared/entities/user/composables/useUserDetail.ts'
 import { useUserEntity } from '#shared/entities/user/composables/useUserEntity.ts'
 import { useUserNoteUpdateMutation } from '#shared/entities/user/graphql/mutations/noteUpdate.api.ts'
-import { useUserQuery } from '#shared/entities/user/graphql/queries/user.api.ts'
-import { useUserObjectAttributesStore } from '#shared/entities/user/stores/objectAttributes.ts'
-import type { User } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
-import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
+import { GraphQLErrorTypes } from '#shared/types/error.ts'
 
 import CommonLoader from '#desktop/components/CommonLoader/CommonLoader.vue'
-import CommonSkeleton from '#desktop/components/CommonSkeleton/CommonSkeleton.vue'
+import CommonSectionContainer from '#desktop/components/CommonSectionContainer/CommonSectionContainer.vue'
+import CommonSimpleEntityList from '#desktop/components/CommonSimpleEntityList/CommonSimpleEntityList.vue'
+import { EntityType } from '#desktop/components/CommonSimpleEntityList/types.ts'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import { usePage } from '#desktop/composables/usePage.ts'
 import { useScrollPosition } from '#desktop/composables/useScrollPosition.ts'
@@ -29,25 +28,19 @@ const props = defineProps<Props>()
 
 const userId = computed(() => convertToGraphQLId('User', props.internalId))
 
-const userQuery = new QueryHandler(
-  useUserQuery(
-    () => ({
-      userId: userId.value,
-    }),
-    () => ({
-      fetchPolicy: 'cache-first',
-    }),
-  ),
-)
-
-const userResult = userQuery.result()
-const loading = userQuery.loading()
-
-const user = computed(() => userResult.value?.user as User)
+const { user, objectAttributes, secondaryOrganizations, fetchMoreSecondaryOrganizations } =
+  useUserDetail(
+    userId,
+    4,
+    100,
+    // NB: Silence toast notifications for particular errors, these will be handled by the layout taskbar tab component.
+    (errorHandler) =>
+      errorHandler.type !== GraphQLErrorTypes.Forbidden &&
+      errorHandler.type !== GraphQLErrorTypes.RecordNotFound,
+    'cache-first',
+  )
 
 const { userDisplayName } = useUserEntity(user)
-
-const { viewScreenAttributes } = storeToRefs(useUserObjectAttributesStore())
 
 usePage({
   metaTitle: userDisplayName,
@@ -66,7 +59,7 @@ useScrollPosition(contentContainerElement)
     content-alignment="center"
     no-scrollable
   >
-    <CommonLoader class="mt-8" :loading="loading">
+    <CommonLoader class="mt-8" :loading="!user">
       <div ref="content-container" class="h-full w-full overflow-y-auto">
         <UserDetailTopBar
           :user="user"
@@ -74,13 +67,34 @@ useScrollPosition(contentContainerElement)
           :content-container-element="contentContainerElement"
         />
         <section class="mx-auto w-full max-w-5xl grid grid-cols-2 gap-6 p-6">
-          <ObjectAttributes
-            :attributes="viewScreenAttributes"
-            :object="user"
-            :skip-attributes="['firstname', 'lastname', 'organization_id', 'organization_ids']"
-            :inline-editable="{ note: useUserNoteUpdateMutation }"
-          />
-          <CommonSkeleton class="h-64" />
+          <div class="flex flex-col gap-6">
+            <CommonSectionContainer
+              v-if="user?.hasSecondaryOrganizations"
+              :label="__('Secondary organizations')"
+              alternative-background
+            >
+              <CommonSimpleEntityList
+                id="user-secondary-organizations"
+                :type="EntityType.Organization"
+                :label="__('Secondary organizations')"
+                :entity="secondaryOrganizations"
+                label-size="medium"
+                label-class="text-black! dark:text-white! mb-2.5"
+                label-tag="h2"
+                list-class="grid grid-cols-2 gap-3"
+                has-popover
+                no-collapse
+                @load-more="fetchMoreSecondaryOrganizations"
+              />
+            </CommonSectionContainer>
+            <ObjectAttributes
+              :attributes="objectAttributes"
+              :object="user"
+              :skip-attributes="['firstname', 'lastname', 'organization_id', 'organization_ids']"
+              :inline-editable="{ note: useUserNoteUpdateMutation }"
+            />
+          </div>
+          <CommonSectionContainer :label="__('Related tickets')" class="h-64" />
         </section>
       </div>
     </CommonLoader>

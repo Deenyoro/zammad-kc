@@ -7,7 +7,7 @@ import * as VueCompositionApi from 'vue';
 export type ReactiveFunction<TParam> = () => TParam;
 
 export const UserInfoForPopoverDocument = gql`
-    query userInfoForPopover($userId: ID!, $secondaryOrganizationsCount: Int) {
+    query userInfoForPopover($userId: ID!, $secondaryOrganizationsCount: Int, $after: String) {
   user(userId: $userId) {
     ...userDetailAttributes
   }

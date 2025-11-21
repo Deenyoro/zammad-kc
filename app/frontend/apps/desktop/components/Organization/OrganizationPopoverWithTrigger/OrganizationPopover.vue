@@ -13,7 +13,6 @@ import type { Organization } from '#shared/graphql/types.ts'
 import QueryHandler from '#shared/server/apollo/handler/QueryHandler.ts'
 import { normalizeEdges } from '#shared/utils/helpers.ts'
 
-import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonSimpleEntityList from '#desktop/components/CommonSimpleEntityList/CommonSimpleEntityList.vue'
 import { EntityType } from '#desktop/components/CommonSimpleEntityList/types.ts'
 import OrganizationInfo from '#desktop/components/Organization/OrganizationInfo.vue'
@@ -81,19 +80,8 @@ const goToOrganizationProfile = () => {
         :label="__('Members')"
         :entity="organizationMembers"
         no-collapse
-      >
-        <template #trailing="{ totalCount, entities }">
-          <CommonButton
-            v-if="totalCount - entities.length"
-            class="self-end"
-            variant="secondary"
-            size="small"
-            @click="goToOrganizationProfile"
-          >
-            {{ $t('Show more') }}
-          </CommonButton>
-        </template>
-      </CommonSimpleEntityList>
+        @load-more="goToOrganizationProfile"
+      />
     </template>
   </section>
 </template>

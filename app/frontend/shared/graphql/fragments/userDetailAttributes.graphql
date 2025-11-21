@@ -30,7 +30,7 @@ fragment userDetailAttributes on User {
       closed
     }
   }
-  secondaryOrganizations(first: $secondaryOrganizationsCount) {
+  secondaryOrganizations(first: $secondaryOrganizationsCount, after: $after) {
     edges {
       node {
         id
@@ -38,6 +38,9 @@ fragment userDetailAttributes on User {
         active
         name
       }
+    }
+    pageInfo {
+      endCursor
     }
     totalCount
   }

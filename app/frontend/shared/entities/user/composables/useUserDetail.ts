@@ -10,6 +10,7 @@ import type {
   UserUpdatesSubscriptionVariables,
   UserUpdatesSubscription,
   User,
+  UserQuery,
 } from '#shared/graphql/types.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import type { GraphQLHandlerError } from '#shared/types/error.ts'
@@ -19,16 +20,18 @@ import type { WatchQueryFetchPolicy } from '@apollo/client/core'
 
 export const useUserDetail = (
   userId: Ref<string | undefined> | ComputedRef<string | undefined>,
+  initialPageSize = 5,
+  additionalPageSize = 100,
   errorCallback?: (error: GraphQLHandlerError) => boolean,
   fetchPolicy?: WatchQueryFetchPolicy,
 ) => {
-  const fetchSecondaryOrganizationsCount = ref<Maybe<number>>(3)
+  const fetchSecondaryOrganizationsCount = ref<number>(initialPageSize)
 
   const userQuery = new QueryHandler(
     useUserQuery(
       () => ({
         userId: userId.value!,
-        secondaryOrganizationsCount: 3,
+        secondaryOrganizationsCount: initialPageSize,
       }),
       () => ({ enabled: Boolean(userId.value), fetchPolicy }),
     ),
@@ -37,31 +40,57 @@ export const useUserDetail = (
     },
   )
 
+  const userResult = userQuery.result()
+
   userQuery.subscribeToMore<UserUpdatesSubscriptionVariables, UserUpdatesSubscription>(() => ({
     document: UserUpdatesDocument,
     variables: {
       userId: userId.value!,
       secondaryOrganizationsCount: fetchSecondaryOrganizationsCount.value,
     },
+    updateQuery: (_, { subscriptionData }) => {
+      if (!subscriptionData.data?.userUpdates.user) return null as unknown as UserQuery
+
+      return {
+        user: subscriptionData.data.userUpdates.user,
+      }
+    },
   }))
 
-  const loadAllSecondaryOrganizations = () => {
-    if (!userId.value) return
-
-    userQuery
-      .refetch({
-        userId: userId.value,
-        secondaryOrganizationsCount: null,
-      })
-      .then(() => {
-        fetchSecondaryOrganizationsCount.value = null
-      })
-  }
-
-  const userResult = userQuery.result()
   const loading = userQuery.loading()
 
   const user = computed(() => userResult.value?.user as User)
+
+  const fetchMoreSecondaryOrganizations = () => {
+    if (!user.value) return
+
+    userQuery
+      .fetchMore({
+        variables: {
+          secondaryOrganizationsCount: additionalPageSize,
+          after: userResult.value?.user.secondaryOrganizations?.pageInfo.endCursor,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult?.user.secondaryOrganizations) return previousResult
+
+          const newEdges = fetchMoreResult.user.secondaryOrganizations?.edges ?? []
+          const oldEdges = previousResult.user.secondaryOrganizations?.edges ?? []
+
+          return {
+            user: {
+              ...previousResult.user,
+              secondaryOrganizations: {
+                ...fetchMoreResult.user.secondaryOrganizations,
+                edges: [...oldEdges, ...newEdges],
+              },
+            },
+          }
+        },
+      })
+      .then(() => {
+        fetchSecondaryOrganizationsCount.value += additionalPageSize
+      })
+  }
 
   const { viewScreenAttributes } = storeToRefs(useUserObjectAttributesStore())
 
@@ -73,6 +102,6 @@ export const useUserDetail = (
     userQuery,
     objectAttributes: viewScreenAttributes,
     secondaryOrganizations,
-    loadAllSecondaryOrganizations,
+    fetchMoreSecondaryOrganizations,
   }
 }

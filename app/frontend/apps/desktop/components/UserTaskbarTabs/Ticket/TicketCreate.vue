@@ -5,14 +5,14 @@ import { computed, toRef } from 'vue'
 
 import { type UserTaskbarItemEntityTicketCreate } from '#shared/graphql/types.ts'
 
-import { useUserTaskbarTabLink } from '#desktop/composables/useUserTaskbarTabLink.ts'
+import { useUserTaskbarTab } from '#desktop/composables/useUserTaskbarTab.ts'
 import { useTicketCreateTitle } from '#desktop/entities/ticket/composables/useTicketCreateTitle.ts'
 
 import type { UserTaskbarTabEntityProps } from '../types.ts'
 
 const props = defineProps<UserTaskbarTabEntityProps<UserTaskbarItemEntityTicketCreate>>()
 
-const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTabLink(toRef(props, 'taskbarTab'))
+const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTab(toRef(props, 'taskbarTab'))
 
 const currentTitle = computed(() => {
   return (props.context?.formValues?.title || props.taskbarTab.entity?.title) as string

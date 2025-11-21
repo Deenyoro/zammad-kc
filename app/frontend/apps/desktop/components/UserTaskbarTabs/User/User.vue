@@ -9,13 +9,15 @@ import type { User } from '#shared/graphql/types.ts'
 import SubscriptionHandler from '#shared/server/apollo/handler/SubscriptionHandler.ts'
 import { GraphQLErrorTypes } from '#shared/types/error.ts'
 
-import { useUserTaskbarTabLink } from '#desktop/composables/useUserTaskbarTabLink.ts'
+import { useUserTaskbarTab } from '#desktop/composables/useUserTaskbarTab.ts'
 
 import type { UserTaskbarTabEntityProps } from '../types.ts'
 
 const props = defineProps<UserTaskbarTabEntityProps<User>>()
 
-const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTabLink(toRef(props, 'taskbarTab'))
+const { isTaskbarTabLoaded, tabLinkInstance, taskbarTabActive } = useUserTaskbarTab(
+  toRef(props, 'taskbarTab'),
+)
 
 const user = computed(() => props.taskbarTab.entity)
 
@@ -28,7 +30,8 @@ new SubscriptionHandler(
       initial: true,
     }),
     () => ({
-      enabled: !!user.value?.id,
+      // NB: User detail view has its own subscription handling, avoid double subscriptions.
+      enabled: !!user.value?.id && !isTaskbarTabLoaded.value,
     }),
   ),
   {

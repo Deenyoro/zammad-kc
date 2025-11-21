@@ -4,6 +4,7 @@
 import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
 import type { User } from '#shared/graphql/types.ts'
 
+import type { Orientation } from '#desktop/components/CommonPopover/types.ts'
 import type { EntityType } from '#desktop/components/CommonSimpleEntityList/types.ts'
 import UserPopoverWithTrigger from '#desktop/components/User/UserPopoverWithTrigger.vue'
 
@@ -13,6 +14,7 @@ interface Props {
     type: EntityType
     emptyMessage?: string
     hasPopover?: boolean
+    popoverOrientation?: Orientation
   }
 }
 
@@ -22,7 +24,7 @@ defineProps<Props>()
 <template>
   <UserPopoverWithTrigger
     v-if="context.hasPopover"
-    :popover-config="{ orientation: 'left' }"
+    :popover-config="{ orientation: context.popoverOrientation ?? 'left' }"
     no-focus-styling
     :user="entity"
   >

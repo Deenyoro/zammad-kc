@@ -36,7 +36,7 @@ const {
   user: customer,
   secondaryOrganizations,
   objectAttributes,
-  loadAllSecondaryOrganizations,
+  fetchMoreSecondaryOrganizations,
 } = useUserDetail(customerId)
 
 const calculateBadgeType = (value: number) => {
@@ -89,7 +89,7 @@ if (customerId.value) emit('show')
       :customer="customer"
       :secondary-organizations="secondaryOrganizations"
       :object-attributes="objectAttributes"
-      @load-more-secondary-organizations="loadAllSecondaryOrganizations"
+      @load-more-secondary-organizations="fetchMoreSecondaryOrganizations"
     />
   </TicketSidebarWrapper>
 </template>

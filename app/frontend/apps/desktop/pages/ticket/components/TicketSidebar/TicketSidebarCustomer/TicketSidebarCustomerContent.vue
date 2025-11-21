@@ -152,7 +152,6 @@ const actions = computed<MenuItem[]>(() => [
             :trigger-link="typeof entry.route === 'string' ? entry.route : undefined"
             :popover-config="{
               orientation: 'left',
-              placement: 'arrowStart',
             }"
             no-hover-styling
           >

@@ -13,6 +13,7 @@ import { usePopover } from '#desktop/components/CommonPopover/usePopover.ts'
 
 export interface Props extends Omit<CommonPopoverProps, 'owner'> {
   triggerLink?: string
+  triggerLinkClass?: string
   triggerLinkActiveClass?: string
   noFocusStyling?: boolean
   noHoverStyling?: boolean
@@ -125,6 +126,7 @@ onUnmounted(() => {
     :aria-expanded="isOpen"
     class="group empty:hidden"
     :class="[
+      triggerLinkClass ?? '',
       {
         [triggerLinkActiveClass ?? '']: isOpen && hasOpenedViaLongPress,
         'hover:no-underline!': triggerLink,

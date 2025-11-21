@@ -34,8 +34,8 @@ const errorCallback = createQueryErrorHandler({
 
 const customerId = computed(() => ticket.value?.customer.id)
 
-const { user, loading, objectAttributes, secondaryOrganizations, loadAllSecondaryOrganizations } =
-  useUserDetail(customerId, errorCallback)
+const { user, loading, objectAttributes, secondaryOrganizations, fetchMoreSecondaryOrganizations } =
+  useUserDetail(customerId, 3, 100, errorCallback)
 
 watchEffect(() => {
   updateRefetchingStatus(loading.value && user.value != null)
@@ -86,7 +86,7 @@ const ticketsData = computed(() => getTicketData(user.value))
       :total-count="secondaryOrganizations.totalCount"
       :disable-show-more="loading"
       :label="__('Secondary organizations')"
-      @show-more="loadAllSecondaryOrganizations()"
+      @show-more="fetchMoreSecondaryOrganizations"
     />
     <CommonTicketStateList
       v-if="ticketsData"

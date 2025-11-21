@@ -7,7 +7,7 @@ import * as VueCompositionApi from 'vue';
 export type ReactiveFunction<TParam> = () => TParam;
 
 export const UserDocument = gql`
-    query user($userId: ID!, $secondaryOrganizationsCount: Int) {
+    query user($userId: ID!, $secondaryOrganizationsCount: Int, $after: String) {
   user(userId: $userId) {
     ...userDetailAttributes
     hasSecondaryOrganizations

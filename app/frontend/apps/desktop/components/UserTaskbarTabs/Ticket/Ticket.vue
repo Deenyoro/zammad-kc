@@ -10,7 +10,7 @@ import { GraphQLErrorTypes } from '#shared/types/error.ts'
 
 import CommonTicketStateIndicatorIcon from '#desktop/components/CommonTicketStateIndicator/CommonTicketStateIndicatorIcon.vue'
 import CommonUpdateIndicator from '#desktop/components/CommonUpdateIndicator/CommonUpdateIndicator.vue'
-import { useUserTaskbarTabLink } from '#desktop/composables/useUserTaskbarTabLink.ts'
+import { useUserTaskbarTab } from '#desktop/composables/useUserTaskbarTab.ts'
 import { useTicketNumber } from '#desktop/pages/ticket/composables/useTicketNumber.ts'
 
 import type { UserTaskbarTabEntityProps } from '../types.ts'
@@ -32,7 +32,7 @@ new SubscriptionHandler(
   },
 )
 
-const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTabLink(toRef(props, 'taskbarTab'))
+const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTab(toRef(props, 'taskbarTab'))
 
 const isTicketUpdated = computed(() => {
   return props.taskbarTab.notify

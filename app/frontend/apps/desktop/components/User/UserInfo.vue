@@ -74,6 +74,7 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
         class="rounded-sm outline-offset-1 focus-visible:outline-2!"
         :popover-config="{ orientation: 'left' }"
         :organization="user.organization"
+        trigger-link-class="self-start"
         trigger-link-active-class="outline-2! outline-blue-800! hover:outline-blue-800!"
       >
         <CommonLabel

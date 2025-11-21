@@ -2,6 +2,8 @@
 
 import type { ObjectLike } from '#shared/types/utils.ts'
 
+import type { Orientation } from '#desktop/components/CommonPopover/types.ts'
+
 import type { Component } from 'vue'
 
 export enum EntityType {
@@ -19,4 +21,5 @@ export interface EntityModule {
   component: () => Promise<Component>
   emptyMessage: string
   hasPopover?: boolean
+  popoverOrientation?: Orientation
 }

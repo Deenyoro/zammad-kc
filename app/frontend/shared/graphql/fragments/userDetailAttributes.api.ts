@@ -35,7 +35,7 @@ export const UserDetailAttributesFragmentDoc = gql`
       closed
     }
   }
-  secondaryOrganizations(first: $secondaryOrganizationsCount) {
+  secondaryOrganizations(first: $secondaryOrganizationsCount, after: $after) {
     edges {
       node {
         id
@@ -43,6 +43,9 @@ export const UserDetailAttributesFragmentDoc = gql`
         active
         name
       }
+    }
+    pageInfo {
+      endCursor
     }
     totalCount
   }

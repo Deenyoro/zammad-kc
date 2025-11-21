@@ -3,13 +3,13 @@
 <script setup lang="ts">
 import { toRef } from 'vue'
 
-import { useUserTaskbarTabLink } from '#desktop/composables/useUserTaskbarTabLink.ts'
+import { useUserTaskbarTab } from '#desktop/composables/useUserTaskbarTab.ts'
 
 import type { UserTaskbarTabEntityProps } from './types.ts'
 
 const props = defineProps<UserTaskbarTabEntityProps>()
 
-const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTabLink(toRef(props, 'taskbarTab'))
+const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTab(toRef(props, 'taskbarTab'))
 </script>
 
 <template>

@@ -1,5 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import { watchOnce } from '@vueuse/shared'
 import { storeToRefs } from 'pinia'
 import { computed, ref, watch, type Ref } from 'vue'
 
@@ -10,7 +11,7 @@ type CommonLinkInstance = {
   $el?: HTMLElement
 }
 
-export const useUserTaskbarTabLink = (
+export const useUserTaskbarTab = (
   taskbarTab: Ref<UserTaskbarTab>,
   exactActiveCallback?: () => void,
 ) => {
@@ -45,8 +46,17 @@ export const useUserTaskbarTabLink = (
     { immediate: true, flush: 'post' },
   )
 
+  const isTaskbarTabLoaded = ref(taskbarTabActive.value)
+
+  if (!isTaskbarTabLoaded.value) {
+    watchOnce(taskbarTabActive, () => {
+      isTaskbarTabLoaded.value = true
+    })
+  }
+
   return {
     tabLinkInstance,
     taskbarTabActive,
+    isTaskbarTabLoaded,
   }
 }
