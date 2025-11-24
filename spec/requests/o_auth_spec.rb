@@ -6,13 +6,18 @@ RSpec.describe 'OAuth', type: :request do
 
   describe 'request handling' do
 
+    before do
+      # Bypass CSRF protection for OAuth requests
+      allow_any_instance_of(ActionController::RequestForgeryProtection).to receive(:valid_authenticity_token?).and_return(true)
+    end
+
     it 'does o365 - start' do
       post '/auth/microsoft_office365'
       expect(response).to have_http_status(:found)
-      expect(response.body).to include('https://login.microsoftonline.com/common/oauth2/v2.0/authorize')
-      expect(response.body).to include('redirect_uri=http%3A%2F%2Fzammad.example.com%2Fauth%2Fmicrosoft_office365%2Fcallback')
-      expect(response.body).to include('scope=openid%20User.Read%20Contacts.Read')
-      expect(response.body).to include('response_type=code')
+      expect(response.location).to include('https://login.microsoftonline.com/common/oauth2/v2.0/authorize')
+      expect(response.location).to include('redirect_uri=http%3A%2F%2Fzammad.example.com%2Fauth%2Fmicrosoft_office365%2Fcallback')
+      expect(response.location).to include('scope=openid%20User.Read%20Contacts.Read')
+      expect(response.location).to include('response_type=code')
     end
 
     it 'does o365 - callback' do
