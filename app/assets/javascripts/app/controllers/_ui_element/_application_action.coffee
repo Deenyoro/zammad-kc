@@ -438,7 +438,7 @@ class App.UiElement.ApplicationAction
       selected = ''
       if key is meta.pre_condition
         selected = 'selected="selected"'
-      selection.append("<option value=\"#{key}\" #{selected}>#{App.i18n.translateInline(value)}</option>")
+      selection.append("<option value=\"#{key}\" #{selected}>#{value}</option>")
     elementRow.find('.js-preCondition').closest('.controls').removeClass('hide')
     elementRow.find('.js-preCondition select').replaceWith(selection)
 
