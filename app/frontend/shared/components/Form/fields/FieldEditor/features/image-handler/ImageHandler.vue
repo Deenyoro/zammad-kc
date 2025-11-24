@@ -25,6 +25,7 @@ const editorAttributes = computed(() => props.editor.options.editorProps.attribu
 const isResized = ref(false)
 const isResizing = ref(false)
 const imageLoaded = ref(false)
+const failedDueToCors = ref(false)
 const isDraggable = computed(() => props.node.attrs.isDraggable)
 const uploadCacheExists = computed(() => props.node.attrs.src.startsWith('/api/v1/attachments/'))
 const uploadInsideOtherEditor = computed(
@@ -106,7 +107,12 @@ const handleUpload = () => {
           })
         })
       })
-      .catch(() => {
+      .catch((error) => {
+        // Heuristic: fetch() CORS/network issues typically surface as TypeError with generic message.
+        if ((error instanceof Error ? error.name : '') === 'TypeError') {
+          failedDueToCors.value = true
+        }
+
         uploadFailed.value = true
 
         nextTick(() => testFlags.set('editor.inlineImagesFailure'))
@@ -182,6 +188,7 @@ const stopResizing = ({ w, h }: { w: number; h: number }) => {
 
 const style = computed(() => {
   if (!imageLoaded.value || !isResized.value) return {}
+
   const { width, height } = dimensions
   return {
     width: `${width}px`,
@@ -190,7 +197,7 @@ const style = computed(() => {
   }
 })
 
-// this is needed so "dragable resize" could calculate the maximum size
+// this is needed so "draggable resize" could calculate the maximum size
 const wrapperStyle = computed(() => {
   if (!isResizing.value) return {}
   const { maxWidth, maxHeight } = dimensions
@@ -220,7 +227,11 @@ const wrapperStyle = computed(() => {
         v-if="uploadFailed"
         :width="`${isResized ? `${dimensions.width}px` : '100%'}`"
         :height="`${isResized ? `${dimensions.height}px` : 'auto'}`"
-      />
+      >
+        <template v-if="failedDueToCors" #default>
+          {{ $t('Inserting image not possible due to source restrictions') }}
+        </template>
+      </ImageFailedUploadOverlay>
 
       <img
         class="inline-block"
