@@ -453,7 +453,6 @@ msgid "%s months ago"
 msgstr "hace %s meses"
 
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:172
-#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:92
 #, fuzzy
 #| msgid "show more"
 msgid "%s more"
@@ -1095,7 +1094,7 @@ msgstr ""
 msgid "AI provider token is not set"
 msgstr "El token proporcionado no es válido."
 
-#: lib/ai/service/ticket_summarize.rb:59
+#: lib/ai/service/ticket_summarize.rb:48
 msgid "AI service result is missing expected keys"
 msgstr ""
 
@@ -1144,7 +1143,7 @@ msgstr ""
 
 #: lib/ai/provider/anthropic.rb:69 lib/ai/provider/azure.rb:110
 #: lib/ai/provider/mistral.rb:95 lib/ai/provider/ollama.rb:89
-#: lib/ai/provider/open_ai.rb:100 lib/ai/provider/zammad_ai.rb:70
+#: lib/ai/provider/open_ai.rb:100 lib/ai/provider/zammad_ai.rb:62
 msgid "API server not accessible"
 msgstr ""
 
@@ -1354,7 +1353,7 @@ msgstr "¡Acción masiva ejecutada!"
 msgid "Action menu button for authenticator app"
 msgstr "¡Acción masiva ejecutada!"
 
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:14
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:12
 #, fuzzy
 #| msgid "Bulk action executed!"
 msgid "Action menu button for security keys"
@@ -1771,7 +1770,7 @@ msgstr "Bloquear Notificaciones"
 msgid "Additional notes for ticket create types."
 msgstr "Establecer notas para los tipos de creación de tickets."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:113
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:115
 #, fuzzy
 #| msgid "Block Notifications"
 msgid "Additional ticket edit actions"
@@ -2306,17 +2305,17 @@ msgstr "Aplicaciones"
 
 #: app/assets/javascripts/app/views/widget/template.jst.eco:8
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:310
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:133
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:135
 msgid "Apply"
 msgstr "Aplicar"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:56
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:133
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:135
 msgid "Apply Draft"
 msgstr "Aplicar Borrador"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:2
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:163
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:165
 msgid "Apply Shared Draft"
 msgstr "Aplicar Borrador Compartido"
 
@@ -2897,7 +2896,7 @@ msgid "Authenticator app secret"
 msgstr "Autenticación via %s"
 
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:188
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:191
 msgid "Author"
 msgstr ""
 
@@ -3136,6 +3135,12 @@ msgstr ""
 #: app/models/report.rb:38
 msgid "Backlog"
 msgstr "Backlog"
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBarChart/useTicketStatsChart.ts:47
+msgid ""
+"Bar chart showing ticket statistics. Created and closed tickets over the "
+"last 12 months."
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/_manage/branding.coffee:9
 #: app/assets/javascripts/app/controllers/_manage/security.coffee:9
@@ -3544,7 +3549,7 @@ msgstr "Cancelar"
 #: app/frontend/apps/desktop/pages/authentication/views/Signup.vue:135
 #: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:386
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:67
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:219
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:222
 msgid "Cancel & Go Back"
 msgstr "Cancelar & Regresar"
 
@@ -4242,6 +4247,7 @@ msgid "Close this tab"
 msgstr "Cerrar pestaña"
 
 #: app/assets/javascripts/app/views/widget/ticket_stats_frequency.jst.eco:16
+#: app/frontend/apps/desktop/components/Ticket/TicketBarChart/useTicketStatsChart.ts:94
 #: app/models/report.rb:30
 msgid "Closed"
 msgstr "Cerrado"
@@ -4318,7 +4324,7 @@ msgid ""
 msgstr ""
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:6
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:11
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:10
 #: db/seeds/settings.rb:5846
 msgid "Complete the sign-in with your security key."
 msgstr ""
@@ -4665,7 +4671,7 @@ msgstr ""
 msgid "Copied!"
 msgstr ""
 
-#: app/frontend/shared/composables/useCopyToClipboard.ts:21
+#: app/frontend/shared/composables/useCopyToClipboard.ts:28
 msgid "Copied."
 msgstr ""
 
@@ -4715,7 +4721,7 @@ msgid "Copy current object number (e. g. Ticket#) to clipboard"
 msgstr ""
 "Copie el número de objeto actual (por ejemplo, Ticket#) al portapapeles"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader.vue:65
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader.vue:86
 #, fuzzy
 #| msgid "ticket.customer"
 msgid "Copy ticket number"
@@ -4738,6 +4744,12 @@ msgstr "ticket.cliente"
 #| msgid "Paste from clipboard"
 msgid "Copy to clipboard"
 msgstr "Pegar desde el portapapeles"
+
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar.vue:105
+#, fuzzy
+#| msgid "App Secret"
+msgid "Copy user name"
+msgstr "App Secret"
 
 #: db/seeds/settings.rb:601
 msgid "Core Workflow Ajax Mode"
@@ -4919,7 +4931,7 @@ msgstr "Crear base de conocimientos"
 msgid "Create Macros"
 msgstr "Crear Macros"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:160
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:167
 #, fuzzy
 #| msgid "Create a shared draft"
 msgid "Create Shared Draft"
@@ -5005,7 +5017,7 @@ msgid "Create a new template in the admin interface."
 msgstr ""
 
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:4
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:155
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:162
 msgid "Create a shared draft"
 msgstr "Crear un borrador compartido"
 
@@ -5119,6 +5131,7 @@ msgstr "Crear"
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:18
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:14
 #: app/assets/javascripts/app/views/widget/ticket_stats_frequency.jst.eco:20
+#: app/frontend/apps/desktop/components/Ticket/TicketBarChart/useTicketStatsChart.ts:94
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:92
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList.vue:36
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:124
@@ -6723,7 +6736,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:38
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:45
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:13
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:222
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:225
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:155
 #: app/frontend/shared/components/Form/fields/FieldFile/FieldFileInput.vue:154
 msgid "Delete"
@@ -7413,7 +7426,7 @@ msgstr "seleccionar archivo adjunto…"
 msgid "Draft"
 msgstr "Borrador"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketSharedDraftZoom.vue:25
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketSharedDraftZoom.vue:32
 #, fuzzy
 #| msgid "Draft available"
 msgid "Draft Available"
@@ -7423,7 +7436,7 @@ msgstr "Borrador disponible"
 msgid "Draft available"
 msgstr "Borrador disponible"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:75
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:77
 #, fuzzy
 #| msgid "Changes could not be saved."
 msgid "Draft could not be saved."
@@ -7435,7 +7448,7 @@ msgstr "No se pudieron guardar los cambios."
 msgid "Draft could not be updated."
 msgstr "No se pudo crear el usuario."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:45
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:47
 #, fuzzy
 #| msgid "Draft"
 msgid "Drafts"
@@ -7607,7 +7620,7 @@ msgstr "Editar máscara"
 msgid "Edit reply"
 msgstr "responder"
 
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:22
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:20
 #, fuzzy
 #| msgid "Security"
 msgid "Edit security keys"
@@ -11385,7 +11398,7 @@ msgid "Last change %s %s by %s"
 msgstr "Último cambio %s %s por %s"
 
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:11
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:197
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:200
 #, fuzzy
 #| msgid "has changed"
 msgid "Last changed"
@@ -11749,7 +11762,7 @@ msgstr ""
 msgid "Loading failed."
 msgstr "Carga fallida."
 
-#: app/assets/javascripts/app/lib/app_post/task_manager.coffee:151
+#: app/assets/javascripts/app/lib/app_post/task_manager/singleton.coffee:55
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:647
 #: app/assets/javascripts/app/views/generic/page_loading.jst.eco:3
 #: app/frontend/apps/desktop/components/CommonLoader/CommonLoader.vue:61
@@ -11883,7 +11896,7 @@ msgstr "Las restricciones de macrogrupos no cubren todos los boletos"
 #: app/assets/javascripts/app/controllers/macro.coffee:3
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:78
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:193
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:46
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:48
 #: db/seeds/permissions.rb:47
 msgid "Macros"
 msgstr "macros"
@@ -12539,7 +12552,7 @@ msgstr "El descifrado fue exitoso."
 #: app/assets/javascripts/app/views/organization_profile/object.jst.eco:20
 #: app/assets/javascripts/app/views/popover/organization.jst.eco:6
 #: app/assets/javascripts/app/views/widget/organization.jst.eco:29
-#: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:81
+#: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:80
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:69
 #: app/frontend/apps/mobile/components/Organization/OrganizationMembersList.vue:29
 msgid "Members"
@@ -13023,9 +13036,9 @@ msgstr "Integración de Nagios"
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:28
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:93
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:82
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:181
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:184
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout/IdoitObjectList.vue:17
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:156
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:163
 #: db/seeds/object_manager_attributes.rb:1706 public/assets/form/form.js:24
 msgid "Name"
 msgstr "Nombre"
@@ -13671,6 +13684,12 @@ msgstr ""
 msgid "No import in progress."
 msgstr "Tus tickets en proceso"
 
+#: app/frontend/apps/desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue:160
+#, fuzzy
+#| msgid "No session available."
+msgid "No items available"
+msgstr "No hay sesión disponible."
+
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_git_issue.coffee:193
 msgid "No linked issues"
 msgstr "Sin problemas vinculados"
@@ -13768,7 +13787,7 @@ msgstr "No hay sesión disponible."
 msgid "No settings with area 'Dashboard::Stats' defined"
 msgstr "No hay configuraciones con el área 'Dashboard::Stats' definida"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:206
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:213
 #, fuzzy
 #| msgid "Shared Drafts"
 msgid "No shared drafts yet"
@@ -14848,7 +14867,7 @@ msgstr "Descripciones"
 msgid "Overviews"
 msgstr "Descripciones"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:134
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:136
 #, fuzzy
 #| msgid "Overwrite Draft"
 msgid "Overwrite Content"
@@ -15573,8 +15592,8 @@ msgstr "Vista Previa"
 msgid "Preview Calendar"
 msgstr "Nuevo Calendario"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:160
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:180
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:162
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:187
 #, fuzzy
 #| msgid "Select Shared Draft"
 msgid "Preview Shared Draft"
@@ -16093,6 +16112,12 @@ msgstr "Crear un Ticket de prueba"
 msgid "Related Object Type"
 msgstr "Crear un Ticket de prueba"
 
+#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:97
+#, fuzzy
+#| msgid "Create a Test Ticket"
+msgid "Related tickets"
+msgstr "Crear un Ticket de prueba"
+
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupAutomated/GuidedSetupAutomatedRun.vue:70
 msgid "Relax, your system is being set up…"
 msgstr ""
@@ -16241,7 +16266,7 @@ msgstr "Quitar"
 msgid "Remove method"
 msgstr "Quitar"
 
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:24
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:22
 #, fuzzy
 #| msgid "Retry security process"
 msgid "Remove security keys"
@@ -16966,7 +16991,7 @@ msgstr "Condiciones guardadas"
 msgid "Save as"
 msgstr "Guardar como"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:58
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:60
 #, fuzzy
 #| msgid "Save Draft"
 msgid "Save as draft"
@@ -16990,7 +17015,7 @@ msgstr "Condiciones guardadas"
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1205
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1209
 msgid "Saving failed."
 msgstr "Error al guardar."
 
@@ -17313,8 +17338,9 @@ msgstr "No se encontró la página"
 msgid "Search…"
 msgstr "Buscar…"
 
-#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:81
+#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:80
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:102
+#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:73
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:88
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:133
 #: db/seeds/object_manager_attributes.rb:1161
@@ -17381,7 +17407,7 @@ msgstr "Seguridad"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:5
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:10
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:9
 #: db/seeds/settings.rb:5822
 #, fuzzy
 #| msgid "Security"
@@ -17393,14 +17419,14 @@ msgid "Security key \"%s\" will be removed."
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:204
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:52
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:56
 #, fuzzy
 #| msgid "SMS test failed."
 msgid "Security key setup failed."
 msgstr "La prueba de SMS falló."
 
-#: app/assets/javascripts/app/controllers/widget/two_factor_login/method/security_keys.coffee:48
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:41
+#: app/assets/javascripts/app/controllers/widget/two_factor_login/method/security_keys.coffee:47
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:44
 #, fuzzy
 #| msgid "Signature verification failed!"
 msgid "Security key verification failed."
@@ -17847,7 +17873,7 @@ msgstr "Tipo predeterminado para un nuevo boleto"
 msgid "Set outbound caller ID"
 msgstr "Establecer identificador de llamadas salientes"
 
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:20
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:18
 #, fuzzy
 #| msgid "Set as Default"
 msgid "Set security keys as default"
@@ -17888,7 +17914,7 @@ msgstr "Configurar un nuevo sistema"
 msgid "Set up authenticator app"
 msgstr "Autenticación"
 
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:18
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:16
 #, fuzzy
 #| msgid "Security"
 msgid "Set up security keys"
@@ -17981,21 +18007,21 @@ msgstr "Borradores compartidos"
 msgid "Shared draft cannot be selected for this ticket."
 msgstr "No se puede seleccionar borrador compartido para este ticket."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:84
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:108
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:86
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:115
 #, fuzzy
 #| msgid "The test run was successful."
 msgid "Shared draft has been created successfully."
 msgstr "La ejecución de la prueba fue exitosa."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:119
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:121
 #, fuzzy
 #| msgid "The entry could not be created."
 msgid "Shared draft has been deleted."
 msgstr "No se pudo crear la entrada."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:47
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:133
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:140
 #, fuzzy
 #| msgid "The test run was successful."
 msgid "Shared draft has been updated successfully."
@@ -18099,7 +18125,6 @@ msgid "Show meta data"
 msgstr "Mostrar detalles de búsqueda"
 
 #: app/frontend/apps/desktop/components/CommonShowMoreButton/CommonShowMoreButton.vue:17
-#: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:93
 #, fuzzy
 #| msgid "show more"
 msgid "Show more"
@@ -19201,7 +19226,7 @@ msgstr "Probando"
 #: app/assets/javascripts/app/models/signature.coffee:8
 #: app/assets/javascripts/app/models/ticket_article.coffee:11
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:20
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:209
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:212
 #: db/seeds/object_manager_attributes.rb:537
 msgid "Text"
 msgstr "Texto"
@@ -19527,8 +19552,8 @@ msgstr "No se pudo actualizar el objeto."
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:218
 #: app/assets/javascripts/app/controllers/widget/two_factor_login/method/security_keys.coffee:24
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:34
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:23
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:32
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:22
 msgid "The application is not running in a secure context."
 msgstr ""
 
@@ -21011,7 +21036,7 @@ msgid "There is an existing draft. Do you want to overwrite it?"
 msgstr "Hay un borrador existente. ¿Quieres sobreescribirlo?"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:57
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:131
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:133
 msgid "There is existing content. Do you want to overwrite it?"
 msgstr "Hay contenido existente. ¿Quieres sobreescribirlo?"
 
@@ -22047,6 +22072,12 @@ msgstr "Suscripciones de boletos"
 msgid "Ticket failed to save: %s"
 msgstr "No se pudo guardar el ticket: %s"
 
+#: app/frontend/apps/desktop/components/Ticket/TicketBarChart/useTicketStatsChart.ts:52
+#, fuzzy
+#| msgid "Ticket %s created!"
+msgid "Ticket frequency"
+msgstr "¡Boleto %s creado!"
+
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:96
 #, fuzzy
 #| msgid "New Overview"
@@ -22803,7 +22834,7 @@ msgid "Try another method"
 msgstr ""
 
 #: app/assets/javascripts/app/views/widget/two_factor_login/security_keys.jst.eco:15
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:16
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:15
 msgid "Try using your security key again."
 msgstr ""
 
@@ -23190,7 +23221,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:66
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:9
 #: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:9
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:116
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:118
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:87
 msgid "Update"
 msgstr "Actualizar"
@@ -23211,7 +23242,7 @@ msgstr "Actualizar escalada en"
 msgid "Update In Min"
 msgstr "Actualizar en minutos"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:197
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:204
 #, fuzzy
 #| msgid "Apply Shared Draft"
 msgid "Update Shared Draft"
@@ -23603,6 +23634,8 @@ msgstr "Se utiliza al ver un ticket"
 #: app/frontend/apps/desktop/components/Search/plugins/user.ts:13
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:117
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailOutboundForm.ts:73
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar.vue:28
+#: app/frontend/apps/desktop/pages/user/routes.ts:9
 #: app/frontend/apps/mobile/pages/user/routes.ts:7
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:32
 msgid "User"
@@ -23763,6 +23796,7 @@ msgstr ""
 msgid "User updated successfully."
 msgstr "La ejecución de la prueba fue exitosa."
 
+#: app/frontend/apps/desktop/pages/user/routes.ts:21
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:31
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:32
 msgid "User with specified ID was not found. Try checking the URL for errors."
@@ -23941,7 +23975,7 @@ msgid "Verifying and saving your import configuration…"
 msgstr "Bloquear Notificaciones"
 
 #: app/assets/javascripts/app/views/widget/two_factor_login/security_keys.jst.eco:24
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:15
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:14
 #, fuzzy
 #| msgid "Block Notifications"
 msgid "Verifying key information…"
@@ -24847,6 +24881,7 @@ msgid "You have insufficient rights to view this ticket."
 msgstr ""
 "Vaya... Lo siento, pero no tiene suficientes derechos para abrir este %s."
 
+#: app/frontend/apps/desktop/pages/user/routes.ts:20
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:32
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:33
 #, fuzzy
@@ -28247,11 +28282,6 @@ msgstr "∅ Tiempo de espera de hoy"
 
 #~ msgid "Can't merge ticket with itself!"
 #~ msgstr "¡No se puede fusionar el ticket consigo mismo!"
-
-#, fuzzy
-#~| msgid "Ticket %s created!"
-#~ msgid "Ticket Create"
-#~ msgstr "¡Boleto %s creado!"
 
 #~ msgid ""
 #~ "In addition, we have found emails in your mailbox that are older than %s "

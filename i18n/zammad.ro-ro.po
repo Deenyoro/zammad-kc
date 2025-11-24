@@ -555,7 +555,6 @@ msgid "%s months ago"
 msgstr "%s luni în urmă"
 
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:172
-#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:92
 #, fuzzy
 #| msgid "show more"
 msgid "%s more"
@@ -1153,7 +1152,7 @@ msgstr ""
 msgid "AI provider token is not set"
 msgstr "Tokenul furnizat este invalid."
 
-#: lib/ai/service/ticket_summarize.rb:59
+#: lib/ai/service/ticket_summarize.rb:48
 msgid "AI service result is missing expected keys"
 msgstr ""
 
@@ -1199,7 +1198,7 @@ msgstr ""
 
 #: lib/ai/provider/anthropic.rb:69 lib/ai/provider/azure.rb:110
 #: lib/ai/provider/mistral.rb:95 lib/ai/provider/ollama.rb:89
-#: lib/ai/provider/open_ai.rb:100 lib/ai/provider/zammad_ai.rb:70
+#: lib/ai/provider/open_ai.rb:100 lib/ai/provider/zammad_ai.rb:62
 msgid "API server not accessible"
 msgstr ""
 
@@ -1387,7 +1386,7 @@ msgstr "Executare acțiune"
 msgid "Action menu button for authenticator app"
 msgstr "Butonul de meniu pentru acțiuni al aplicației de autentificare"
 
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:14
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:12
 msgid "Action menu button for security keys"
 msgstr "Butonul de meniu pentru acțiuni al cheilor de securitate"
 
@@ -1750,7 +1749,7 @@ msgstr "Informații suplimentare și link-uri"
 msgid "Additional notes for ticket create types."
 msgstr "Note suplimentare pentru tipurile de creare a tichetelor."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:113
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:115
 #, fuzzy
 #| msgid "Additional information"
 msgid "Additional ticket edit actions"
@@ -2281,17 +2280,17 @@ msgstr "Aplicații"
 
 #: app/assets/javascripts/app/views/widget/template.jst.eco:8
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:310
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:133
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:135
 msgid "Apply"
 msgstr "Aplică"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:56
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:133
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:135
 msgid "Apply Draft"
 msgstr "Aplică ciorna"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:2
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:163
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:165
 msgid "Apply Shared Draft"
 msgstr "Aplică ciorna partajată"
 
@@ -2799,7 +2798,7 @@ msgid "Authenticator app secret"
 msgstr "Secret aplicație Google Authenticator"
 
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:188
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:191
 msgid "Author"
 msgstr "Autor"
 
@@ -3020,6 +3019,12 @@ msgstr ""
 #: app/models/report.rb:38
 msgid "Backlog"
 msgstr "Restante"
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBarChart/useTicketStatsChart.ts:47
+msgid ""
+"Bar chart showing ticket statistics. Created and closed tickets over the "
+"last 12 months."
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/_manage/branding.coffee:9
 #: app/assets/javascripts/app/controllers/_manage/security.coffee:9
@@ -3414,7 +3419,7 @@ msgstr "Anulează"
 #: app/frontend/apps/desktop/pages/authentication/views/Signup.vue:135
 #: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:386
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:67
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:219
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:222
 msgid "Cancel & Go Back"
 msgstr "Anulează și întoarce-te"
 
@@ -4068,6 +4073,7 @@ msgid "Close this tab"
 msgstr "Închide acest tab"
 
 #: app/assets/javascripts/app/views/widget/ticket_stats_frequency.jst.eco:16
+#: app/frontend/apps/desktop/components/Ticket/TicketBarChart/useTicketStatsChart.ts:94
 #: app/models/report.rb:30
 msgid "Closed"
 msgstr "Închise"
@@ -4140,7 +4146,7 @@ msgid ""
 msgstr ""
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:6
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:11
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:10
 #: db/seeds/settings.rb:5846
 msgid "Complete the sign-in with your security key."
 msgstr "Finalizează autentificarea cu cheia ta de securitate."
@@ -4471,7 +4477,7 @@ msgstr ""
 msgid "Copied!"
 msgstr "Copiat!"
 
-#: app/frontend/shared/composables/useCopyToClipboard.ts:21
+#: app/frontend/shared/composables/useCopyToClipboard.ts:28
 msgid "Copied."
 msgstr "Copiat."
 
@@ -4508,7 +4514,7 @@ msgstr "Copiază linkul permanent al articolului"
 msgid "Copy current object number (e. g. Ticket#) to clipboard"
 msgstr "Copiază numărul obiectului curent (de exemplu, Tichet#) în clipboard"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader.vue:65
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader.vue:86
 msgid "Copy ticket number"
 msgstr "Copiază numărul tichetului"
 
@@ -4527,6 +4533,12 @@ msgstr "Copiază numărul tichetului"
 #: app/assets/javascripts/app/views/whatsapp/account_webhook.jst.eco:14
 msgid "Copy to clipboard"
 msgstr "Copiază în clipboard"
+
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar.vue:105
+#, fuzzy
+#| msgid "Copy Secret"
+msgid "Copy user name"
+msgstr "Copiază secretul"
 
 #: db/seeds/settings.rb:601
 msgid "Core Workflow Ajax Mode"
@@ -4686,7 +4698,7 @@ msgstr "Creează bază de cunoștințe"
 msgid "Create Macros"
 msgstr "Creează macro-uri"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:160
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:167
 msgid "Create Shared Draft"
 msgstr "Creează un șablon partajat"
 
@@ -4764,7 +4776,7 @@ msgid "Create a new template in the admin interface."
 msgstr "Creează un șablon nou în interfața de administrare."
 
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:4
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:155
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:162
 msgid "Create a shared draft"
 msgstr "Creează o ciornă partajată"
 
@@ -4859,6 +4871,7 @@ msgstr "Create:"
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:18
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:14
 #: app/assets/javascripts/app/views/widget/ticket_stats_frequency.jst.eco:20
+#: app/frontend/apps/desktop/components/Ticket/TicketBarChart/useTicketStatsChart.ts:94
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:92
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList.vue:36
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:124
@@ -6395,7 +6408,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:38
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:45
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:13
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:222
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:225
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:155
 #: app/frontend/shared/components/Form/fields/FieldFile/FieldFileInput.vue:154
 msgid "Delete"
@@ -7047,7 +7060,7 @@ msgstr "Descarc atașamentele…"
 msgid "Draft"
 msgstr "Ciornă"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketSharedDraftZoom.vue:25
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketSharedDraftZoom.vue:32
 #, fuzzy
 #| msgid "Draft available"
 msgid "Draft Available"
@@ -7057,7 +7070,7 @@ msgstr "Ciornă disponibilă"
 msgid "Draft available"
 msgstr "Ciornă disponibilă"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:75
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:77
 #, fuzzy
 #| msgid "Changes could not be saved."
 msgid "Draft could not be saved."
@@ -7069,7 +7082,7 @@ msgstr "Modificările nu au putut fi salvate."
 msgid "Draft could not be updated."
 msgstr "Utilizatorul nu a putut fi actualizat."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:45
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:47
 #, fuzzy
 #| msgid "Draft"
 msgid "Drafts"
@@ -7233,7 +7246,7 @@ msgstr "Editează masca"
 msgid "Edit reply"
 msgstr "Editează răspuns"
 
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:22
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:20
 #, fuzzy
 #| msgid "Security"
 msgid "Edit security keys"
@@ -10873,7 +10886,7 @@ msgid "Last change %s %s by %s"
 msgstr "Ultima modificare %s %s de %s"
 
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:11
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:197
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:200
 msgid "Last changed"
 msgstr "Ultima modificare"
 
@@ -11221,7 +11234,7 @@ msgstr "Încărcare eșuată, încercați din nou mai târziu."
 msgid "Loading failed."
 msgstr "Încărcare eșuată."
 
-#: app/assets/javascripts/app/lib/app_post/task_manager.coffee:151
+#: app/assets/javascripts/app/lib/app_post/task_manager/singleton.coffee:55
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:647
 #: app/assets/javascripts/app/views/generic/page_loading.jst.eco:3
 #: app/frontend/apps/desktop/components/CommonLoader/CommonLoader.vue:61
@@ -11342,7 +11355,7 @@ msgstr "Restricțiile grupului de macro-uri nu acoperă toate tichetele"
 #: app/assets/javascripts/app/controllers/macro.coffee:3
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:78
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:193
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:46
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:48
 #: db/seeds/permissions.rb:47
 msgid "Macros"
 msgstr "Macro-uri"
@@ -11955,7 +11968,7 @@ msgstr "Descărcare media reușită."
 #: app/assets/javascripts/app/views/organization_profile/object.jst.eco:20
 #: app/assets/javascripts/app/views/popover/organization.jst.eco:6
 #: app/assets/javascripts/app/views/widget/organization.jst.eco:29
-#: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:81
+#: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:80
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:69
 #: app/frontend/apps/mobile/components/Organization/OrganizationMembersList.vue:29
 msgid "Members"
@@ -12407,9 +12420,9 @@ msgstr "Integrare Nagios"
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:28
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:93
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:82
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:181
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:184
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout/IdoitObjectList.vue:17
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:156
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:163
 #: db/seeds/object_manager_attributes.rb:1706 public/assets/form/form.js:24
 msgid "Name"
 msgstr "Nume"
@@ -13042,6 +13055,12 @@ msgstr "Nu au fost găsite foldere pentru datele de conectare furnizate."
 msgid "No import in progress."
 msgstr "Nici un import în desfășurare."
 
+#: app/frontend/apps/desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue:160
+#, fuzzy
+#| msgid "No macros available."
+msgid "No items available"
+msgstr "Nici un macro disponibil."
+
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_git_issue.coffee:193
 msgid "No linked issues"
 msgstr "Fără probleme asociate"
@@ -13135,7 +13154,7 @@ msgstr "Nici o sesiune disponibilă."
 msgid "No settings with area 'Dashboard::Stats' defined"
 msgstr "Nici o setare definită cu zona 'Dashboard::Stats'"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:206
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:213
 #, fuzzy
 #| msgid "Shared"
 msgid "No shared drafts yet"
@@ -14157,7 +14176,7 @@ msgstr "Prezentări generale"
 msgid "Overviews"
 msgstr "Prezentări generale"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:134
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:136
 msgid "Overwrite Content"
 msgstr ""
 
@@ -14842,8 +14861,8 @@ msgstr "Previzualizează %s"
 msgid "Preview Calendar"
 msgstr "Calendar nou"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:160
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:180
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:162
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:187
 #, fuzzy
 #| msgid "Shared"
 msgid "Preview Shared Draft"
@@ -15335,6 +15354,12 @@ msgstr "Creează un tichet de test"
 msgid "Related Object Type"
 msgstr "Creează un tichet de test"
 
+#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:97
+#, fuzzy
+#| msgid "Create ticket"
+msgid "Related tickets"
+msgstr "Creează tichet"
+
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupAutomated/GuidedSetupAutomatedRun.vue:70
 msgid "Relax, your system is being set up…"
 msgstr "Relaxați-vă, sistemul dvs. este configurat…"
@@ -15469,7 +15494,7 @@ msgstr "Șterge"
 msgid "Remove method"
 msgstr "Șterge metoda"
 
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:24
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:22
 #, fuzzy
 #| msgid "Security"
 msgid "Remove security keys"
@@ -16188,7 +16213,7 @@ msgstr "Salvează și continuă"
 msgid "Save as"
 msgstr "Salvare ca"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:58
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:60
 #, fuzzy
 #| msgid "Save Draft"
 msgid "Save as draft"
@@ -16212,7 +16237,7 @@ msgstr "Condiții salvate"
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1205
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1209
 msgid "Saving failed."
 msgstr "Salvare eșuată."
 
@@ -16518,8 +16543,9 @@ msgstr "Cheia valorii rezultatului căutării „%s” nu a fost găsită."
 msgid "Search…"
 msgstr "Căutare…"
 
-#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:81
+#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:80
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:102
+#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:73
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:88
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:133
 #: db/seeds/object_manager_attributes.rb:1161
@@ -16586,7 +16612,7 @@ msgstr "Cheie de securitate"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:5
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:10
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:9
 #: db/seeds/settings.rb:5822
 msgid "Security Keys"
 msgstr "Chei de securitate"
@@ -16596,12 +16622,12 @@ msgid "Security key \"%s\" will be removed."
 msgstr "Cheia de securitate „%s” va fi eliminată."
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:204
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:52
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:56
 msgid "Security key setup failed."
 msgstr "Configurarea cheii de securitate a eșuat."
 
-#: app/assets/javascripts/app/controllers/widget/two_factor_login/method/security_keys.coffee:48
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:41
+#: app/assets/javascripts/app/controllers/widget/two_factor_login/method/security_keys.coffee:47
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:44
 msgid "Security key verification failed."
 msgstr "Verificarea cheii de securitate a eșuat."
 
@@ -17030,7 +17056,7 @@ msgstr "Setează valoarea implicită pentru tichetele noi"
 msgid "Set outbound caller ID"
 msgstr "Setează ID-ul apelantului pentru apelurile efectuate"
 
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:20
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:18
 #, fuzzy
 #| msgid "Set as Default"
 msgid "Set security keys as default"
@@ -17067,7 +17093,7 @@ msgstr "Setează un nou sistem"
 msgid "Set up authenticator app"
 msgstr "Autentificare"
 
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:18
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:16
 #, fuzzy
 #| msgid "Security"
 msgid "Set up security keys"
@@ -17155,21 +17181,21 @@ msgstr "Ciorne partajate"
 msgid "Shared draft cannot be selected for this ticket."
 msgstr "Ciorna partajată nu poate fi selectată pentru acest tichet."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:84
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:108
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:86
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:115
 #, fuzzy
 #| msgid "The test run was successful."
 msgid "Shared draft has been created successfully."
 msgstr "Testul a avut succes."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:119
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:121
 #, fuzzy
 #| msgid "%s Object(s) are updated."
 msgid "Shared draft has been deleted."
 msgstr "%s Obiecte sunt actualizate."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:47
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:133
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:140
 #, fuzzy
 #| msgid "The test run was successful."
 msgid "Shared draft has been updated successfully."
@@ -17266,7 +17292,6 @@ msgid "Show meta data"
 msgstr "Afișează metadatele"
 
 #: app/frontend/apps/desktop/components/CommonShowMoreButton/CommonShowMoreButton.vue:17
-#: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:93
 #, fuzzy
 #| msgid "show more"
 msgid "Show more"
@@ -18297,7 +18322,7 @@ msgstr "Se testează"
 #: app/assets/javascripts/app/models/signature.coffee:8
 #: app/assets/javascripts/app/models/ticket_article.coffee:11
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:20
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:209
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:212
 #: db/seeds/object_manager_attributes.rb:537
 msgid "Text"
 msgstr "Text"
@@ -18575,8 +18600,8 @@ msgstr "%s Obiecte sunt actualizate."
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:218
 #: app/assets/javascripts/app/controllers/widget/two_factor_login/method/security_keys.coffee:24
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:34
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:23
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:32
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:22
 msgid "The application is not running in a secure context."
 msgstr "Aplicația nu rulează într-un context sigur."
 
@@ -19933,7 +19958,7 @@ msgid "There is an existing draft. Do you want to overwrite it?"
 msgstr "Există deja o ciornă. Doriți să o suprascrieți?"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:57
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:131
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:133
 msgid "There is existing content. Do you want to overwrite it?"
 msgstr "Există deja conținut. Doriți să-l suprascrieți?"
 
@@ -20882,6 +20907,12 @@ msgstr "Escaladarea tichetului"
 msgid "Ticket failed to save: %s"
 msgstr "Salvare tichet eșuată: %s"
 
+#: app/frontend/apps/desktop/components/Ticket/TicketBarChart/useTicketStatsChart.ts:52
+#, fuzzy
+#| msgid "Ticket %s created!"
+msgid "Ticket frequency"
+msgstr "Tichetul numărul % a fost creat!"
+
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:96
 msgid "Ticket has %s viewers"
 msgstr "Tichetul are %s vizualizatori"
@@ -21648,7 +21679,7 @@ msgid "Try another method"
 msgstr "Încearcă o altă metodă"
 
 #: app/assets/javascripts/app/views/widget/two_factor_login/security_keys.jst.eco:15
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:16
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:15
 msgid "Try using your security key again."
 msgstr "Încearcă iar să îți folosești cheia de securitate."
 
@@ -22001,7 +22032,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:66
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:9
 #: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:9
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:116
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:118
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:87
 msgid "Update"
 msgstr "Actualizare"
@@ -22022,7 +22053,7 @@ msgstr ""
 msgid "Update In Min"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:197
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:204
 #, fuzzy
 #| msgid "Shared"
 msgid "Update Shared Draft"
@@ -22467,6 +22498,8 @@ msgstr "Utilizat atunci când vizualizezi un tichet"
 #: app/frontend/apps/desktop/components/Search/plugins/user.ts:13
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:117
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailOutboundForm.ts:73
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar.vue:28
+#: app/frontend/apps/desktop/pages/user/routes.ts:9
 #: app/frontend/apps/mobile/pages/user/routes.ts:7
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:32
 msgid "User"
@@ -22621,6 +22654,7 @@ msgstr ""
 msgid "User updated successfully."
 msgstr "Tichet actualizat cu succes."
 
+#: app/frontend/apps/desktop/pages/user/routes.ts:21
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:31
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:32
 msgid "User with specified ID was not found. Try checking the URL for errors."
@@ -22788,7 +22822,7 @@ msgid "Verifying and saving your import configuration…"
 msgstr "Verific și salvez configurația ta pentru import…"
 
 #: app/assets/javascripts/app/views/widget/two_factor_login/security_keys.jst.eco:24
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:15
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:14
 msgid "Verifying key information…"
 msgstr "Verific informații cheie…"
 
@@ -23630,6 +23664,7 @@ msgstr "Ai drepturi insuficiente pentru vizualiza această organizație."
 msgid "You have insufficient rights to view this ticket."
 msgstr "Ai drepturi insuficiente pentru vizualiza acest tichet."
 
+#: app/frontend/apps/desktop/pages/user/routes.ts:20
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:32
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:33
 msgid "You have insufficient rights to view this user."
@@ -26598,11 +26633,6 @@ msgstr "∅ Timp de așteptare azi"
 #~| msgid "Edit Organization"
 #~ msgid "Edit organization"
 #~ msgstr "Editează organizația"
-
-#, fuzzy
-#~| msgid "Ticket %s created!"
-#~ msgid "Ticket Create"
-#~ msgstr "Tichetul numărul % a fost creat!"
 
 #~ msgid "Choose attributes and then save them as a new template."
 #~ msgstr "Alege atributele și salvează-le ca template nou"

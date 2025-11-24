@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zammad\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-11-10 09:00+0000\n"
+"PO-Revision-Date: 2025-11-24 09:00+0000\n"
 "Last-Translator: Murat Duman <mduman@metu.edu.tr>\n"
 "Language-Team: Turkish <https://translations.zammad.org/projects/zammad/"
 "zammad-development/tr/>\n"
@@ -552,7 +552,6 @@ msgid "%s months ago"
 msgstr "%s ay önce"
 
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchResultList/QuickSearchResultList.vue:172
-#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:92
 msgid "%s more"
 msgstr "%s daha fazla"
 
@@ -1116,9 +1115,9 @@ msgstr "Yapay zeka sağlayıcısı desteklenmiyor"
 msgid "AI provider token is not set"
 msgstr "Yapay zeka sağlayıcı belirteci ayarlanmamış"
 
-#: lib/ai/service/ticket_summarize.rb:59
+#: lib/ai/service/ticket_summarize.rb:48
 msgid "AI service result is missing expected keys"
-msgstr ""
+msgstr "YZ hizmet sonucu beklenen anahtarları içermiyor"
 
 #: lib/excel_sheet/ai/analytics/with_usage.rb:4
 msgid "AI usage and feedback log"
@@ -1161,7 +1160,7 @@ msgstr "API sunucu hatası - lütfen tekrar deneyin"
 
 #: lib/ai/provider/anthropic.rb:69 lib/ai/provider/azure.rb:110
 #: lib/ai/provider/mistral.rb:95 lib/ai/provider/ollama.rb:89
-#: lib/ai/provider/open_ai.rb:100 lib/ai/provider/zammad_ai.rb:70
+#: lib/ai/provider/open_ai.rb:100 lib/ai/provider/zammad_ai.rb:62
 msgid "API server not accessible"
 msgstr "API sunucusuna erişilemiyor"
 
@@ -1343,7 +1342,7 @@ msgstr "Eylem yürütme"
 msgid "Action menu button for authenticator app"
 msgstr "Kimlik doğrulayıcı uygulaması için eylem menüsü düğmesi"
 
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:14
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:12
 msgid "Action menu button for security keys"
 msgstr "Güvenlik anahtarları için eylem menüsü düğmesi"
 
@@ -1699,7 +1698,7 @@ msgstr "Ek bilgi ve bağlantılar"
 msgid "Additional notes for ticket create types."
 msgstr "Destek talebi oluşturma türleri için ek notlar."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:113
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:115
 msgid "Additional ticket edit actions"
 msgstr "Ek destek talebi düzenleme eylemleri"
 
@@ -2226,17 +2225,17 @@ msgstr "Uygulamalar"
 
 #: app/assets/javascripts/app/views/widget/template.jst.eco:8
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:310
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:133
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:135
 msgid "Apply"
 msgstr "Uygula"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:56
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:133
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:135
 msgid "Apply Draft"
 msgstr "Taslağı Uygula"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:2
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:163
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:165
 msgid "Apply Shared Draft"
 msgstr "Paylaşılan Taslağı Uygula"
 
@@ -2721,7 +2720,7 @@ msgid "Authenticator app secret"
 msgstr "Kimlik doğrulayıcı uygulama sırrı"
 
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:188
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:191
 msgid "Author"
 msgstr "Yazar"
 
@@ -2937,6 +2936,12 @@ msgstr ""
 msgid "Backlog"
 msgstr "Birikmiş İşler"
 
+#: app/frontend/apps/desktop/components/Ticket/TicketBarChart/useTicketStatsChart.ts:47
+msgid ""
+"Bar chart showing ticket statistics. Created and closed tickets over the "
+"last 12 months."
+msgstr ""
+
 #: app/assets/javascripts/app/controllers/_manage/branding.coffee:9
 #: app/assets/javascripts/app/controllers/_manage/security.coffee:9
 #: app/assets/javascripts/app/controllers/_manage/system.coffee:10
@@ -2972,10 +2977,8 @@ msgstr ""
 "emin olun."
 
 #: app/assets/javascripts/app/models/webhook.coffee:11
-#, fuzzy
-#| msgid "Generate Token"
 msgid "Bearer Token"
-msgstr "Belirteç Oluştur"
+msgstr "Taşıyıcı Belirteç"
 
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:788
 #: app/frontend/shared/components/Form/fields/FieldEditor/extensions/UserMention.ts:105
@@ -3324,7 +3327,7 @@ msgstr "İptal"
 #: app/frontend/apps/desktop/pages/authentication/views/Signup.vue:135
 #: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:386
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:67
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:219
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:222
 msgid "Cancel & Go Back"
 msgstr "İptal Et ve Geri Dön"
 
@@ -3863,7 +3866,7 @@ msgstr ""
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/FieldEditorInput.vue:49
 msgid "Click to edit…"
-msgstr ""
+msgstr "Düzenlemek için tıklayın…"
 
 #: app/assets/javascripts/app/views/exchange/app_config.jst.eco:9
 #: app/assets/javascripts/app/views/exchange/token_information.jst.eco:28
@@ -3957,6 +3960,7 @@ msgid "Close this tab"
 msgstr "Bu sekmeyi kapat"
 
 #: app/assets/javascripts/app/views/widget/ticket_stats_frequency.jst.eco:16
+#: app/frontend/apps/desktop/components/Ticket/TicketBarChart/useTicketStatsChart.ts:94
 #: app/models/report.rb:30
 msgid "Closed"
 msgstr "Kapalı"
@@ -4028,7 +4032,7 @@ msgstr ""
 "bulabilirsiniz %l."
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:6
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:11
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:10
 #: db/seeds/settings.rb:5846
 msgid "Complete the sign-in with your security key."
 msgstr "Güvenlik anahtarınızla oturum açma işlemini tamamlayın."
@@ -4353,7 +4357,7 @@ msgstr "Konuşma başka bir sohbete aktarılmıştır. Lütfen bekleyin."
 msgid "Copied!"
 msgstr "Kopyalandı!"
 
-#: app/frontend/shared/composables/useCopyToClipboard.ts:21
+#: app/frontend/shared/composables/useCopyToClipboard.ts:28
 msgid "Copied."
 msgstr "Kopyalandı."
 
@@ -4390,7 +4394,7 @@ msgstr "Yazı kalıcı bağlantısını kopyala"
 msgid "Copy current object number (e. g. Ticket#) to clipboard"
 msgstr "Geçerli nesne numarasını (örn. DestekTalebi#) panoya kopyala"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader.vue:65
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader.vue:86
 msgid "Copy ticket number"
 msgstr "Destek talebi numarasını kopyala"
 
@@ -4409,6 +4413,12 @@ msgstr "Destek talebi numarasını kopyala"
 #: app/assets/javascripts/app/views/whatsapp/account_webhook.jst.eco:14
 msgid "Copy to clipboard"
 msgstr "Panoya kopyala"
+
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar.vue:105
+#, fuzzy
+#| msgid "Copy Secret"
+msgid "Copy user name"
+msgstr "Gizli Anahtarı Kopyala"
 
 #: db/seeds/settings.rb:601
 msgid "Core Workflow Ajax Mode"
@@ -4564,7 +4574,7 @@ msgstr "Bilgi Tabanı Oluştur"
 msgid "Create Macros"
 msgstr "Makrolar Oluştur"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:160
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:167
 msgid "Create Shared Draft"
 msgstr "Paylaşılan Taslak Oluştur"
 
@@ -4642,7 +4652,7 @@ msgid "Create a new template in the admin interface."
 msgstr "Yönetici arayüzünde yeni bir şablon oluşturun."
 
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:4
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:155
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:162
 msgid "Create a shared draft"
 msgstr "Paylaşılan bir taslak oluşturun"
 
@@ -4739,6 +4749,7 @@ msgstr "Oluştur:"
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:18
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:14
 #: app/assets/javascripts/app/views/widget/ticket_stats_frequency.jst.eco:20
+#: app/frontend/apps/desktop/components/Ticket/TicketBarChart/useTicketStatsChart.ts:94
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:92
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList.vue:36
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:124
@@ -6234,7 +6245,7 @@ msgstr ""
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:38
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:45
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:13
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:222
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:225
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:155
 #: app/frontend/shared/components/Form/fields/FieldFile/FieldFileInput.vue:154
 msgid "Delete"
@@ -6843,7 +6854,7 @@ msgstr "Ekler indiriliyor…"
 msgid "Draft"
 msgstr "Draft"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketSharedDraftZoom.vue:25
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketSharedDraftZoom.vue:32
 msgid "Draft Available"
 msgstr "Taslak mevcut"
 
@@ -6851,7 +6862,7 @@ msgstr "Taslak mevcut"
 msgid "Draft available"
 msgstr "Taslak mevcut"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:75
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:77
 msgid "Draft could not be saved."
 msgstr "Taslak kaydedilemedi."
 
@@ -6859,7 +6870,7 @@ msgstr "Taslak kaydedilemedi."
 msgid "Draft could not be updated."
 msgstr "Taslak güncellenemedi."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:45
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:47
 msgid "Drafts"
 msgstr "Taslaklar"
 
@@ -7004,7 +7015,7 @@ msgstr "Maskeyi düzenle"
 msgid "Edit reply"
 msgstr "Yanıtı düzenle"
 
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:22
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:20
 msgid "Edit security keys"
 msgstr "Güvenlik anahtarlarını düzenle"
 
@@ -8996,10 +9007,8 @@ msgid "HTTP Authentication token"
 msgstr "HTTP Kimlik Doğrulama belirteci"
 
 #: app/assets/javascripts/app/models/webhook.coffee:11
-#, fuzzy
-#| msgid "Basic Authentication"
 msgid "HTTP Basic Authentication"
-msgstr "Temel Kimlik Doğrulama"
+msgstr "HTTP Temel Kimlik Doğrulama"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:752
 msgid "HTTP Basic Authentication password"
@@ -10504,7 +10513,7 @@ msgid "Last change %s %s by %s"
 msgstr "Son değişiklik %s %s tarafından %s"
 
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:11
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:197
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:200
 msgid "Last changed"
 msgstr "Son değişiklik"
 
@@ -10825,7 +10834,7 @@ msgstr "Yükleme başarısız oldu, lütfen daha sonra tekrar deneyin."
 msgid "Loading failed."
 msgstr "Yükleme başarısız oldu."
 
-#: app/assets/javascripts/app/lib/app_post/task_manager.coffee:151
+#: app/assets/javascripts/app/lib/app_post/task_manager/singleton.coffee:55
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:647
 #: app/assets/javascripts/app/views/generic/page_loading.jst.eco:3
 #: app/frontend/apps/desktop/components/CommonLoader/CommonLoader.vue:61
@@ -10944,7 +10953,7 @@ msgstr "Makro grup kısıtlamaları tüm destek taleplerini kapsamaz"
 #: app/assets/javascripts/app/controllers/macro.coffee:3
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:78
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:193
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:46
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:48
 #: db/seeds/permissions.rb:47
 msgid "Macros"
 msgstr "Makrolar"
@@ -11456,7 +11465,7 @@ msgstr "Medya indirme işlemi başarılı oldu."
 #: app/assets/javascripts/app/views/organization_profile/object.jst.eco:20
 #: app/assets/javascripts/app/views/popover/organization.jst.eco:6
 #: app/assets/javascripts/app/views/widget/organization.jst.eco:29
-#: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:81
+#: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:80
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:69
 #: app/frontend/apps/mobile/components/Organization/OrganizationMembersList.vue:29
 msgid "Members"
@@ -11890,9 +11899,9 @@ msgstr "Nagios entegrasyonu"
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:28
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:93
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:82
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:181
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:184
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout/IdoitObjectList.vue:17
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:156
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:163
 #: db/seeds/object_manager_attributes.rb:1706 public/assets/form/form.js:24
 msgid "Name"
 msgstr "Isim"
@@ -12475,6 +12484,10 @@ msgstr "Verilen kullanıcı kimlik bilgileri için hiçbir klasör bulunamadı."
 msgid "No import in progress."
 msgstr "Devam eden içe aktarım yok."
 
+#: app/frontend/apps/desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue:160
+msgid "No items available"
+msgstr "Mevcut öğe yok"
+
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_git_issue.coffee:193
 msgid "No linked issues"
 msgstr "Bağlantılı issue yok"
@@ -12554,7 +12567,7 @@ msgstr "Oturum mevcut değil."
 msgid "No settings with area 'Dashboard::Stats' defined"
 msgstr "'Dashboard::Stats' alanı ile tanımlanmış ayar yok"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:206
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:213
 msgid "No shared drafts yet"
 msgstr "Henüz paylaşılan taslak yok"
 
@@ -13485,7 +13498,7 @@ msgstr "Genel bakış: %s"
 msgid "Overviews"
 msgstr "Konular"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:134
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:136
 msgid "Overwrite Content"
 msgstr "İçeriğin Üzerine Yaz"
 
@@ -14144,8 +14157,8 @@ msgstr "Önizle %s"
 msgid "Preview Calendar"
 msgstr "Takvimi Önizle"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:160
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:180
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:162
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:187
 msgid "Preview Shared Draft"
 msgstr "Paylaşılan Taslağı Önizle"
 
@@ -14602,6 +14615,10 @@ msgstr "İlgili Nesne ID"
 msgid "Related Object Type"
 msgstr "İlgili Nesne Türü"
 
+#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:97
+msgid "Related tickets"
+msgstr "İlgili destek talepleri"
+
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupAutomated/GuidedSetupAutomatedRun.vue:70
 msgid "Relax, your system is being set up…"
 msgstr "Rahatlayın, sisteminiz kuruluyor…"
@@ -14720,7 +14737,7 @@ msgstr "Öğeyi kaldır"
 msgid "Remove method"
 msgstr "Yöntemi kaldır"
 
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:24
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:22
 msgid "Remove security keys"
 msgstr "Güvenlik anahtarlarını kaldır"
 
@@ -14843,10 +14860,8 @@ msgid "Request Admin Consent"
 msgstr "Yönetici Onayı İste"
 
 #: app/assets/javascripts/app/models/webhook.coffee:9
-#, fuzzy
-#| msgid "Request"
 msgid "Request Method"
-msgstr "İstek"
+msgstr "İstek Yöntemi"
 
 #: db/seeds/object_manager_attributes.rb:132
 msgid "Request for Change"
@@ -15408,7 +15423,7 @@ msgstr "Kaydet ve Devam Et"
 msgid "Save as"
 msgstr "Farklı kaydet"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:58
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:60
 msgid "Save as draft"
 msgstr "Taslak olarak kaydet"
 
@@ -15428,7 +15443,7 @@ msgstr "Kayıtlı şartlar"
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1205
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1209
 msgid "Saving failed."
 msgstr "Kaydetme başarısız oldu."
 
@@ -15694,8 +15709,9 @@ msgstr "Arama sonucu değer anahtarı \"%s\" bulunamadı."
 msgid "Search…"
 msgstr "Ara…"
 
-#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:81
+#: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:80
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:102
+#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:73
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:88
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:133
 #: db/seeds/object_manager_attributes.rb:1161
@@ -15756,7 +15772,7 @@ msgstr "Güvenlik Anahtarı"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:5
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:10
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:9
 #: db/seeds/settings.rb:5822
 msgid "Security Keys"
 msgstr "Güvenlik Anahtarları"
@@ -15766,12 +15782,12 @@ msgid "Security key \"%s\" will be removed."
 msgstr "Güvenlik anahtarı \"%s\" kaldırılacaktır."
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:204
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:52
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:56
 msgid "Security key setup failed."
 msgstr "Güvenlik anahtarı kurulumu başarısız oldu."
 
-#: app/assets/javascripts/app/controllers/widget/two_factor_login/method/security_keys.coffee:48
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:41
+#: app/assets/javascripts/app/controllers/widget/two_factor_login/method/security_keys.coffee:47
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:44
 msgid "Security key verification failed."
 msgstr "Güvenlik anahtarı doğrulaması başarısız oldu."
 
@@ -16166,7 +16182,7 @@ msgstr "Yeni destek talepleri için varsayılanı ayarla"
 msgid "Set outbound caller ID"
 msgstr "Giden arayan kimliğini ayarla"
 
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:20
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:18
 msgid "Set security keys as default"
 msgstr "Güvenlik anahtarlarını varsayılan olarak ayarla"
 
@@ -16199,7 +16215,7 @@ msgstr "Yeni bir sistem kurun"
 msgid "Set up authenticator app"
 msgstr "Kimlik doğrulayıcı uygulamasını ayarla"
 
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:18
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:16
 msgid "Set up security keys"
 msgstr "Güvenlik anahtarlarını ayarla"
 
@@ -16280,17 +16296,17 @@ msgstr "Paylaşımlı Posta Kutusu"
 msgid "Shared draft cannot be selected for this ticket."
 msgstr "Bu destek talebi için paylaşılan taslak seçilemez."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:84
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:108
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:86
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:115
 msgid "Shared draft has been created successfully."
 msgstr "Paylaşılan taslak başarıyla oluşturuldu."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:119
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:121
 msgid "Shared draft has been deleted."
 msgstr "Paylaşılan taslak silinmiştir."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:47
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:133
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:140
 msgid "Shared draft has been updated successfully."
 msgstr "Paylaşılan taslak başarıyla güncellendi."
 
@@ -16380,11 +16396,8 @@ msgid "Show meta data"
 msgstr "Meta verileri göster"
 
 #: app/frontend/apps/desktop/components/CommonShowMoreButton/CommonShowMoreButton.vue:17
-#: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:93
-#, fuzzy
-#| msgid "show more"
 msgid "Show more"
-msgstr "daha fazla göster"
+msgstr "Daha fazla göster"
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:252
 msgid "Show next tab"
@@ -17366,7 +17379,7 @@ msgstr "Testing"
 #: app/assets/javascripts/app/models/signature.coffee:8
 #: app/assets/javascripts/app/models/ticket_article.coffee:11
 #: app/assets/javascripts/app/views/ticket_shared_draft_modal.jst.eco:20
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:209
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:212
 #: db/seeds/object_manager_attributes.rb:537
 msgid "Text"
 msgstr "Metin"
@@ -17627,8 +17640,8 @@ msgstr "Görünüm güncellenemedi."
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:218
 #: app/assets/javascripts/app/controllers/widget/two_factor_login/method/security_keys.coffee:24
-#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:34
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:23
+#: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:32
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:22
 msgid "The application is not running in a secure context."
 msgstr "Uygulama güvenli bir bağlamda çalışmıyor."
 
@@ -18263,10 +18276,8 @@ msgid "The product version could not be fetched."
 msgstr "Ürün sürümü getirilemedi."
 
 #: app/models/webhook.rb:66
-#, fuzzy
-#| msgid "The provided token is invalid."
 msgid "The provided HTTP method is invalid."
-msgstr "Belirtilen belirteç geçersiz."
+msgstr "Sağlanan HTTP yöntemi geçersiz."
 
 #: app/controllers/import_freshdesk_controller.rb:11
 #: app/controllers/import_kayako_controller.rb:12
@@ -18891,7 +18902,7 @@ msgid "There is an existing draft. Do you want to overwrite it?"
 msgstr "Mevcut bir taslak var. Üzerine yazmak ister misiniz?"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:57
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:131
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:133
 msgid "There is existing content. Do you want to overwrite it?"
 msgstr "Mevcut içerik var. Üzerine yazmak istiyor musunuz?"
 
@@ -19838,6 +19849,12 @@ msgstr "Ticket escalation"
 msgid "Ticket failed to save: %s"
 msgstr "Destek talebi kaydedilemedi: %s"
 
+#: app/frontend/apps/desktop/components/Ticket/TicketBarChart/useTicketStatsChart.ts:52
+#, fuzzy
+#| msgid "Ticket %s created!"
+msgid "Ticket frequency"
+msgstr "Ticket %s created!"
+
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewHeader.vue:96
 msgid "Ticket has %s viewers"
 msgstr "Talebin %s görüntüleyicisi var"
@@ -20555,7 +20572,7 @@ msgid "Try another method"
 msgstr "Başka bir yöntem deneyin"
 
 #: app/assets/javascripts/app/views/widget/two_factor_login/security_keys.jst.eco:15
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:16
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:15
 msgid "Try using your security key again."
 msgstr "Güvenlik anahtarınızı tekrar kullanmayı deneyin."
 
@@ -20884,7 +20901,7 @@ msgstr "Yaklaşan Etkinlikler"
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:66
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:9
 #: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:9
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:116
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:118
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue:87
 msgid "Update"
 msgstr "Güncelle"
@@ -20905,7 +20922,7 @@ msgstr "Yükseltme Güncelleme Tarihi"
 msgid "Update In Min"
 msgstr "Güncelleme Aralığı (dk)"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:197
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:204
 msgid "Update Shared Draft"
 msgstr "Paylaşılan Taslağı Güncelle"
 
@@ -21331,6 +21348,8 @@ msgstr "Used when viewing a Ticket"
 #: app/frontend/apps/desktop/components/Search/plugins/user.ts:13
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:117
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailOutboundForm.ts:73
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar.vue:28
+#: app/frontend/apps/desktop/pages/user/routes.ts:9
 #: app/frontend/apps/mobile/pages/user/routes.ts:7
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:32
 msgid "User"
@@ -21457,6 +21476,7 @@ msgstr "Kullanıcı görev çubuğu sekmeleri"
 msgid "User updated successfully."
 msgstr "Kullanıcı başarıyla güncellendi."
 
+#: app/frontend/apps/desktop/pages/user/routes.ts:21
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:31
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:32
 msgid "User with specified ID was not found. Try checking the URL for errors."
@@ -21623,7 +21643,7 @@ msgid "Verifying and saving your import configuration…"
 msgstr "İçe aktarma yapılandırmanız doğrulanıyor ve kaydediliyor…"
 
 #: app/assets/javascripts/app/views/widget/two_factor_login/security_keys.jst.eco:24
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:15
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:14
 msgid "Verifying key information…"
 msgstr "Anahtar bilgiler doğrulanıyor…"
 
@@ -22459,6 +22479,7 @@ msgstr "Bu organizasyonu görüntülemek için yeterli hakkınız yok."
 msgid "You have insufficient rights to view this ticket."
 msgstr "Bu destek talebini görüntülemek için yeterli hakkınız yok."
 
+#: app/frontend/apps/desktop/pages/user/routes.ts:20
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:32
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:33
 msgid "You have insufficient rights to view this user."
@@ -25699,11 +25720,6 @@ msgstr "Bugünkü bekleme süresi"
 #~| msgid "Edit Organization"
 #~ msgid "Edit organization"
 #~ msgstr "Edit Organization"
-
-#, fuzzy
-#~| msgid "Ticket %s created!"
-#~ msgid "Ticket Create"
-#~ msgstr "Ticket %s created!"
 
 #, fuzzy
 #~| msgid "Last sync"
