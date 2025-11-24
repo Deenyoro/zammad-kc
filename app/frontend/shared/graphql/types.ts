@@ -3026,6 +3026,10 @@ export type Queries = {
   ticketsRecentByCustomer: Array<Ticket>;
   /** Fetch tickets recently viewed by the current user */
   ticketsRecentlyViewed: Array<Ticket>;
+  /** Fetch monthly ticket stats by customer */
+  ticketsStatsMonthlyByCustomer: Array<TicketStatsMonthly>;
+  /** Fetch monthly ticket stats by organization */
+  ticketsStatsMonthlyByOrganization: Array<TicketStatsMonthly>;
   /** Translations for a given locale */
   translations?: Maybe<TranslationsPayload>;
   /** Fetch a user information by ID */
@@ -3374,6 +3378,18 @@ export type QueriesTicketsRecentByCustomerArgs = {
 export type QueriesTicketsRecentlyViewedArgs = {
   exceptTicketInternalId?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** All available queries */
+export type QueriesTicketsStatsMonthlyByCustomerArgs = {
+  customerId: Scalars['ID']['input'];
+};
+
+
+/** All available queries */
+export type QueriesTicketsStatsMonthlyByOrganizationArgs = {
+  organizationId: Scalars['ID']['input'];
 };
 
 
@@ -4802,6 +4818,16 @@ export type TicketStateType = {
   updatedBy?: Maybe<User>;
 };
 
+/** Monthly ticket stats */
+export type TicketStatsMonthly = {
+  __typename?: 'TicketStatsMonthly';
+  monthLabel: Scalars['String']['output'];
+  monthNumber: Scalars['String']['output'];
+  ticketsClosed: Scalars['Int']['output'];
+  ticketsCreated: Scalars['Int']['output'];
+  year: Scalars['String']['output'];
+};
+
 /** Ticket time accounting - sum per type */
 export type TicketTimeAccountingTypeSum = {
   __typename?: 'TicketTimeAccountingTypeSum';
@@ -6069,6 +6095,20 @@ export type TicketsCachedByOverviewQueryVariables = Exact<{
 
 
 export type TicketsCachedByOverviewQuery = { __typename?: 'Queries', ticketsCachedByOverview: { __typename?: 'CachedTicketConnection', totalCount: number, collectionSignature: string, edges?: Array<{ __typename?: 'TicketEdge', cursor: string, node: { __typename?: 'Ticket', id: string, internalId: number, number: string, title: string, createdAt: string, updatedAt: string, aiAgentRunning?: boolean | null, pendingTime?: string | null, articleCount?: number | null, stateColorCode: EnumTicketStateColorCode, escalationAt?: string | null, firstResponseEscalationAt?: string | null, updateEscalationAt?: string | null, closeEscalationAt?: string | null, firstResponseAt?: string | null, closeAt?: string | null, timeUnit?: number | null, lastCloseAt?: string | null, lastContactAt?: string | null, lastContactAgentAt?: string | null, lastContactCustomerAt?: string | null, createdBy?: { __typename?: 'User', id: string, fullname?: string | null } | null, updatedBy?: { __typename?: 'User', id: string, fullname?: string | null } | null, owner: { __typename?: 'User', id: string, fullname?: string | null }, customer: { __typename?: 'User', id: string, fullname?: string | null }, organization?: { __typename?: 'Organization', id: string, name?: string | null } | null, state: { __typename?: 'TicketState', id: string, name: string, stateType: { __typename?: 'TicketStateType', id: string, name: string } }, group: { __typename?: 'Group', id: string, name?: string | null }, priority: { __typename?: 'TicketPriority', id: string, name: string, uiColor?: string | null }, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null, policy: { __typename?: 'PolicyTicket', update: boolean } } }> | null, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
+
+export type TicketsStatsMonthlyByCustomerQueryVariables = Exact<{
+  customerId: Scalars['ID']['input'];
+}>;
+
+
+export type TicketsStatsMonthlyByCustomerQuery = { __typename?: 'Queries', ticketsStatsMonthlyByCustomer: Array<{ __typename?: 'TicketStatsMonthly', monthLabel: string, monthNumber: string, ticketsClosed: number, ticketsCreated: number, year: string }> };
+
+export type TicketsStatsMonthlyByOrganizationQueryVariables = Exact<{
+  organizationId: Scalars['ID']['input'];
+}>;
+
+
+export type TicketsStatsMonthlyByOrganizationQuery = { __typename?: 'Queries', ticketsStatsMonthlyByOrganization: Array<{ __typename?: 'TicketStatsMonthly', monthLabel: string, monthNumber: string, ticketsClosed: number, ticketsCreated: number, year: string }> };
 
 export type UserCurrentTicketOverviewsQueryVariables = Exact<{
   ignoreUserConditions: Scalars['Boolean']['input'];

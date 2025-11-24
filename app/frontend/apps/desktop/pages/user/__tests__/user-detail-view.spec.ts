@@ -7,7 +7,10 @@ import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
 import { mockUserQuery } from '#shared/entities/user/graphql/queries/user.mocks.ts'
+import { getUserUpdatesSubscriptionHandler } from '#shared/graphql/subscriptions/userUpdates.mocks.ts'
 import type { OrganizationEdge, User } from '#shared/graphql/types.ts'
+
+import { waitForTicketsStatsMonthlyByCustomerQueryCalls } from '#desktop/entities/ticket/graphql/queries/ticketsStatsMonthlyByCustomer.mocks.ts'
 
 const copyToClipboardMock = vi.fn()
 
@@ -150,6 +153,15 @@ describe('User Detail View', () => {
 
     mockPermissions(['ticket.agent'])
     mockUserQuery({ user })
+  })
+
+  it('renders a user chart', async () => {
+    const view = await visitView('/users/2')
+
+    const main = view.getByRole('main')
+    const chart = within(main).getByTestId('chart')
+
+    expect(chart).toBeVisible()
   })
 
   describe('Top information bar', () => {
@@ -322,6 +334,19 @@ describe('User Detail View', () => {
           within(container).queryByRole('button', { name: 'Show more' }),
         ).not.toBeInTheDocument()
       })
+    })
+
+    it('refetches chart data when user subscription triggers', async () => {
+      await visitView('/users/2')
+
+      const calls = await waitForTicketsStatsMonthlyByCustomerQueryCalls()
+
+      expect(calls).toHaveLength(1)
+
+      await getUserUpdatesSubscriptionHandler().trigger()
+
+      // ⚠️ Currently, we react on the entire subscription update for the user. (Every attribute)
+      expect(calls).toHaveLength(2)
     })
   })
 })

@@ -165,6 +165,8 @@ vi.mock('#shared/components/CommonNotifications/useNotifications.ts', async () =
 // don't rely on tiptap, because it's not supported in JSDOM
 vi.mock('#shared/components/Form/fields/FieldEditor/FieldEditorInput.vue', async () => {
   const { computed, defineComponent } = await import('vue')
+
+  // eslint-disable-next-line vue/one-component-per-file
   const component = defineComponent({
     name: 'FieldEditorInput',
     props: { context: { type: Object, required: true } },
@@ -185,6 +187,28 @@ vi.mock('#shared/components/Form/fields/FieldEditor/FieldEditorInput.vue', async
     template: `<textarea :id="id" :name="name" v-model="value" />`,
   })
   return { __esModule: true, default: component }
+})
+
+// don't rely on vue-echarts, because it's not properly supported in JSDOM
+// canvas element with some browser apis
+vi.mock('vue-echarts', async (importOriginal) => {
+  const { defineComponent } = await import('vue')
+
+  const module = (await importOriginal()) as typeof import('vue-echarts')
+
+  // eslint-disable-next-line vue/one-component-per-file
+  const component = defineComponent({
+    name: 'VChart',
+    props: {
+      option: { type: Object, required: true },
+    },
+    setup() {
+      return {}
+    },
+    template: `<div data-test-id="chart"/>`,
+  })
+
+  return { __esModule: true, ...module, default: component }
 })
 
 // mock vueuse because of CommonDialog, it uses usePointerSwipe

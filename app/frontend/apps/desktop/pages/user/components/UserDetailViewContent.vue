@@ -15,6 +15,7 @@ import CommonSectionContainer from '#desktop/components/CommonSectionContainer/C
 import CommonSimpleEntityList from '#desktop/components/CommonSimpleEntityList/CommonSimpleEntityList.vue'
 import { EntityType } from '#desktop/components/CommonSimpleEntityList/types.ts'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
+import UserTicketBarChart from '#desktop/components/Ticket/TicketBarChart/UserTicketBarChart.vue'
 import { usePage } from '#desktop/composables/usePage.ts'
 import { useScrollPosition } from '#desktop/composables/useScrollPosition.ts'
 
@@ -28,6 +29,8 @@ const props = defineProps<Props>()
 
 const userId = computed(() => convertToGraphQLId('User', props.internalId))
 
+const chartInstance = useTemplateRef('chart')
+
 const { user, objectAttributes, secondaryOrganizations, fetchMoreSecondaryOrganizations } =
   useUserDetail(
     userId,
@@ -38,6 +41,7 @@ const { user, objectAttributes, secondaryOrganizations, fetchMoreSecondaryOrgani
       errorHandler.type !== GraphQLErrorTypes.Forbidden &&
       errorHandler.type !== GraphQLErrorTypes.RecordNotFound,
     'cache-first',
+    () => chartInstance.value?.refetchData(), // Currently, we retrigger on the every change on the user object
   )
 
 const { userDisplayName } = useUserEntity(user)
@@ -95,6 +99,8 @@ useScrollPosition(contentContainerElement)
             />
           </div>
           <CommonSectionContainer :label="__('Related tickets')" class="h-64" />
+
+          <UserTicketBarChart ref="chart" :user-id="userId" class="col-span-2" />
         </section>
       </div>
     </CommonLoader>

@@ -24,6 +24,7 @@ export const useUserDetail = (
   additionalPageSize = 100,
   errorCallback?: (error: GraphQLHandlerError) => boolean,
   fetchPolicy?: WatchQueryFetchPolicy,
+  subscriptionUpdateCallback?: () => void,
 ) => {
   const fetchSecondaryOrganizationsCount = ref<number>(initialPageSize)
 
@@ -50,6 +51,8 @@ export const useUserDetail = (
     },
     updateQuery: (_, { subscriptionData }) => {
       if (!subscriptionData.data?.userUpdates.user) return null as unknown as UserQuery
+
+      subscriptionUpdateCallback?.()
 
       return {
         user: subscriptionData.data.userUpdates.user,

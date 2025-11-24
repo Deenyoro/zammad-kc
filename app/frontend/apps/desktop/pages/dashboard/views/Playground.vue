@@ -25,6 +25,7 @@ import CommonBreadcrumb from '#desktop/components/CommonBreadcrumb/CommonBreadcr
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonButtonGroup from '#desktop/components/CommonButtonGroup/CommonButtonGroup.vue'
 import type { CommonButtonItem } from '#desktop/components/CommonButtonGroup/types.ts'
+import CommonBarChart from '#desktop/components/CommonCharts/CommonBarChart/CommonBarChart.vue'
 import CommonDialog from '#desktop/components/CommonDialog/CommonDialog.vue'
 import { useDialog } from '#desktop/components/CommonDialog/useDialog.ts'
 import CommonFlyout from '#desktop/components/CommonFlyout/CommonFlyout.vue'
@@ -1329,6 +1330,77 @@ const userEntity = {
 <template>
   <LayoutContent>
     <div>
+      <div>
+        <CommonLabel class="block!" tag="h2">Charts Examples</CommonLabel>
+        <CommonLabel class="block!" tag="h3">Bar Chart</CommonLabel>
+        <CommonBarChart
+          class="h-72!"
+          :option="{
+            title: {
+              text: 'Frequency',
+            },
+            tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                type: 'shadow',
+              },
+            },
+            legend: {
+              data: ['Created', 'Closed'],
+            },
+            grid: {
+              containLabel: true,
+            },
+            xAxis: {
+              type: 'category',
+              data: [
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dec',
+              ],
+              axisLabel: {
+                interval: 0,
+                rotate: 0,
+              },
+            },
+            yAxis: {
+              type: 'value',
+              interval: 0,
+            },
+            series: [
+              {
+                name: 'Created',
+                type: 'bar',
+                data: [45, 52, 48, 61, 55, 58, 60, 62, 65, 70, 68, 72],
+                itemStyle: {
+                  color: '#3B82F6',
+                  borderRadius: 8,
+                },
+              },
+              {
+                name: 'Closed',
+                type: 'bar',
+                data: [33, 37, 38, 43, 41, 38, 40, 42, 44, 46, 45, 47],
+                itemStyle: {
+                  color: '#10B981',
+                  borderRadius: 8,
+                },
+              },
+            ],
+            backgroundColor: 'transparent',
+          }"
+        />
+      </div>
+
       Generic skeleton
       <CommonSkeleton class="h-8 w-full" />
 
