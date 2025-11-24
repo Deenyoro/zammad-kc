@@ -193,8 +193,8 @@ $(function() {
         'Message': '메시지',
         'Name': '이름',
         'Your Email': '이메일',
-        'Your Message…': '메시지',
-        'Your Name': '전체 이름',
+        'Your Message…': '메시지…',
+        'Your Name': '이름',
       },
       'lt': {
         'Attachments': 'Prisegtukai',
