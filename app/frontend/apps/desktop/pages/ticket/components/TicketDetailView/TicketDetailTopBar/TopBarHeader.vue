@@ -1,10 +1,12 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 
 import { useCopyToClipboard } from '#shared/composables/useCopyToClipboard.ts'
 import { useTicketView } from '#shared/entities/ticket/composables/useTicketView.ts'
+import { useApplicationStore } from '#shared/stores/application.ts'
 
 import CommonBreadcrumb from '#desktop/components/CommonBreadcrumb/CommonBreadcrumb.vue'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
@@ -18,6 +20,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
 const { ticket } = useTicketInformation()
 
 const { isTicketAgent, isTicketEditable } = useTicketView(ticket)
@@ -25,6 +28,24 @@ const { isTicketAgent, isTicketEditable } = useTicketView(ticket)
 const { copyToClipboard } = useCopyToClipboard()
 
 const { ticketNumber, ticketNumberWithTicketHook } = useTicketNumber(ticket)
+
+const { config } = storeToRefs(useApplicationStore())
+
+const copyTicketNumberToClipboard = () => {
+  console.debug(
+    'copyTicketNumberToClipboard called',
+    ticketNumberWithTicketHook.value,
+    ticket.value?.internalId,
+  )
+  if (!ticketNumberWithTicketHook.value || !ticket.value?.internalId) return
+
+  copyToClipboard([
+    new ClipboardItem({
+      'text/plain': ticketNumberWithTicketHook.value,
+      'text/html': `<a href="${config.value.http_type}://${config.value.fqdn}/desktop/tickets/${ticket.value.internalId}">${ticketNumberWithTicketHook.value}</a>`,
+    }),
+  ])
+}
 
 const items = computed(() => [
   // :TODO Adjust navigations currently two h1 are present
@@ -67,7 +88,7 @@ const detailViewActiveClasses = computed(() => {
           icon="files"
           size="small"
           class="ms-1"
-          @click="copyToClipboard(ticketNumberWithTicketHook)"
+          @click="copyTicketNumberToClipboard"
         />
       </template>
     </CommonBreadcrumb>

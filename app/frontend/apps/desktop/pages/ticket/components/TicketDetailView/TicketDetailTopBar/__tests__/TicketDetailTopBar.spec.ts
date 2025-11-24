@@ -36,8 +36,11 @@ const renderTopBar = (options = testOptionsTopBar, props?: { hideDetails: boolea
 describe('TicketDetailTopBar', () => {
   beforeEach(() => {
     mockApplicationConfig({
+      fqdn: 'zammad.example.com',
+      http_type: 'http',
       ticket_hook: 'Ticket#',
     })
+
     mockChecklistTemplatesQuery({
       checklistTemplates: [],
     })
@@ -74,7 +77,17 @@ describe('TicketDetailTopBar', () => {
 
       await wrapper.events.click(wrapper.getByIconName('files'))
 
-      expect(copyToClipboardMock).toHaveBeenCalledWith('Ticket#89001')
+      expect(copyToClipboardMock).toHaveBeenCalledWith([
+        {
+          data: {
+            'text/html': '<a href="http://zammad.example.com/desktop/tickets/1">Ticket#89001</a>',
+            'text/plain': 'Ticket#89001',
+          },
+          options: {
+            presentationStyle: 'unspecified',
+          },
+        },
+      ])
     })
 
     it('shows highlight menu', () => {

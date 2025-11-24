@@ -108,6 +108,16 @@ const IntersectionObserverMock = vi.fn(() => ({
 
 globalThis.IntersectionObserver = IntersectionObserverMock as any
 
+// Mock ClipboardItem class by injecting it into the global namespace.
+globalThis.ClipboardItem = class {
+  constructor(
+    private data: Record<string, Blob | string | Promise<Blob | string>>,
+    private options: { presentationStyle: 'unspecified' | 'inline' | 'attachment' } = {
+      presentationStyle: 'unspecified',
+    },
+  ) {}
+} as any
+
 require.extensions['.css'] = () => ({})
 
 globalThis.requestAnimationFrame = (cb) => {

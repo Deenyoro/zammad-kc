@@ -3,10 +3,17 @@
 import { waitFor, within } from '@testing-library/vue'
 
 import { visitView } from '#tests/support/components/visitView.ts'
+import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
 import { mockUserQuery } from '#shared/entities/user/graphql/queries/user.mocks.ts'
 import type { OrganizationEdge, User } from '#shared/graphql/types.ts'
+
+const copyToClipboardMock = vi.fn()
+
+vi.mock('#shared/composables/useCopyToClipboard.ts', async () => ({
+  useCopyToClipboard: () => ({ copyToClipboard: copyToClipboardMock }),
+}))
 
 const user: User = {
   __typename: 'User',
@@ -136,6 +143,11 @@ const secondaryOrganizationEdges: OrganizationEdge[] = [
 
 describe('User Detail View', () => {
   beforeEach(() => {
+    mockApplicationConfig({
+      fqdn: 'zammad.example.com',
+      http_type: 'http',
+    })
+
     mockPermissions(['ticket.agent'])
     mockUserQuery({ user })
   })
@@ -152,6 +164,28 @@ describe('User Detail View', () => {
       expect(items).toHaveLength(2)
       expect(items[0]).toHaveTextContent('User')
       expect(within(items[1]).getByRole('heading')).toHaveAccessibleName('Nicole Braun')
+    })
+
+    it('copies user name', async () => {
+      const view = await visitView('/users/2')
+
+      const main = view.getByRole('main')
+      const header = within(main).getByTestId('user-detail-top-bar')
+      const breadcrumb = within(header).getByRole('navigation', { name: 'Breadcrumb navigation' })
+
+      await view.events.click(within(breadcrumb).getByRole('button', { name: 'Copy user name' }))
+
+      expect(copyToClipboardMock).toHaveBeenCalledWith([
+        {
+          data: {
+            'text/html': '<a href="http://zammad.example.com/desktop/users/2">Nicole Braun</a>',
+            'text/plain': 'Nicole Braun',
+          },
+          options: {
+            presentationStyle: 'unspecified',
+          },
+        },
+      ])
     })
 
     it('displays basic user information', async () => {

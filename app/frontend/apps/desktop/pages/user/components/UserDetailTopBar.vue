@@ -1,12 +1,16 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { computed, ref, toRef, type Ref } from 'vue'
 
+import { useCopyToClipboard } from '#shared/composables/useCopyToClipboard.ts'
 import { useTouchDevice } from '#shared/composables/useTouchDevice.ts'
 import type { User } from '#shared/graphql/types.ts'
+import { useApplicationStore } from '#shared/stores/application.ts'
 
 import CommonBreadcrumb from '#desktop/components/CommonBreadcrumb/CommonBreadcrumb.vue'
+import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import UserInfo from '#desktop/components/User/UserInfo.vue'
 import { useElementScroll } from '#desktop/composables/useElementScroll.ts'
 
@@ -28,6 +32,19 @@ const breadcrumbItems = computed(() => [
     noOptionLabelTranslation: true,
   },
 ])
+
+const { copyToClipboard } = useCopyToClipboard()
+
+const { config } = storeToRefs(useApplicationStore())
+
+const copyUserDisplayNameToClipboard = () => {
+  copyToClipboard([
+    new ClipboardItem({
+      'text/plain': props.userDisplayName,
+      'text/html': `<a href="${config.value.http_type}://${config.value.fqdn}/desktop/users/${props.user.internalId}">${props.userDisplayName}</a>`,
+    }),
+  ])
+}
 
 const { y } = useElementScroll(toRef(props, 'contentContainerElement') as Ref<HTMLDivElement>)
 
@@ -81,7 +98,19 @@ const events = computed(() => {
     }"
     v-on="events"
   >
-    <CommonBreadcrumb :items="breadcrumbItems" size="small" emphasize-last-item />
+    <CommonBreadcrumb :items="breadcrumbItems" size="small" emphasize-last-item>
+      <template #trailing>
+        <CommonButton
+          v-if="userDisplayName"
+          v-tooltip="$t('Copy user name')"
+          variant="secondary"
+          icon="files"
+          size="small"
+          class="ms-1"
+          @click="copyUserDisplayNameToClipboard"
+        />
+      </template>
+    </CommonBreadcrumb>
     <div class="flex mx-auto mt-3 w-full max-w-278 h-21">
       <UserInfo
         :user="user"

@@ -14,7 +14,7 @@ vi.mock('@vueuse/core', async () => {
 
   return {
     ...mod,
-    useClipboard: () => ({
+    useClipboardItems: () => ({
       copy: clipboardCopyMock,
       copied: clipboardCopiedMock,
     }),
@@ -35,7 +35,39 @@ describe('useCopyToClipboard', () => {
 
     copyToClipboard('foobar')
 
-    expect(clipboardCopyMock).toHaveBeenCalledWith('foobar')
+    expect(clipboardCopyMock).toHaveBeenCalledWith([
+      {
+        data: {
+          'text/plain': 'foobar',
+        },
+        options: {
+          presentationStyle: 'unspecified',
+        },
+      },
+    ])
+  })
+
+  it('supports copying content of different MIME types to clipboard', () => {
+    const { copyToClipboard } = useCopyToClipboard()
+
+    copyToClipboard([
+      new ClipboardItem({
+        'text/plain': 'foobar',
+        'text/html': '<b>foobar</b>',
+      }),
+    ])
+
+    expect(clipboardCopyMock).toHaveBeenCalledWith([
+      {
+        data: {
+          'text/html': '<b>foobar</b>',
+          'text/plain': 'foobar',
+        },
+        options: {
+          presentationStyle: 'unspecified',
+        },
+      },
+    ])
   })
 
   it('shows a notification on success', async () => {
@@ -50,7 +82,7 @@ describe('useCopyToClipboard', () => {
     expect(notifyMock).toHaveBeenCalledWith(expect.objectContaining({ message: 'Copied.' }))
   })
 
-  it('does not copy undefined nor null text to clipboard', () => {
+  it('does not copy undefined nor null values to clipboard', () => {
     const { copyToClipboard } = useCopyToClipboard()
 
     copyToClipboard(undefined)

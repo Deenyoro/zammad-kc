@@ -6,19 +6,11 @@ import getUuid from '#shared/utils/getUuid.ts'
 
 import CommonInputCopyToClipboard from '../CommonInputCopyToClipboard.vue'
 
-const clipboardCopyMock = vi.fn()
+const copyToClipboardMock = vi.fn()
 
-vi.mock('@vueuse/core', async () => {
-  const mod = await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
-
-  return {
-    ...mod,
-    useClipboard: () => ({
-      copy: clipboardCopyMock,
-      copied: vi.fn(),
-    }),
-  }
-})
+vi.mock('#shared/composables/useCopyToClipboard.ts', async () => ({
+  useCopyToClipboard: () => ({ copyToClipboard: copyToClipboardMock }),
+}))
 
 const renderCopyToClipboard = (props: Record<string, unknown> = {}, options: any = {}) => {
   return renderComponent(CommonInputCopyToClipboard, {
@@ -53,6 +45,6 @@ describe('CommonInputCopyToClipboard.vue', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Copy Token' }))
 
-    expect(clipboardCopyMock).toHaveBeenCalledWith(uuidValue)
+    expect(copyToClipboardMock).toHaveBeenCalledWith(uuidValue)
   })
 })

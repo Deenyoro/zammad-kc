@@ -36,19 +36,11 @@ const recoveryCodes = [
   'fred',
 ]
 
-const clipboardCopyMock = vi.fn()
+const copyToClipboardMock = vi.fn()
 
-vi.mock('@vueuse/core', async () => {
-  const mod = await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
-
-  return {
-    ...mod,
-    useClipboard: () => ({
-      copy: clipboardCopyMock,
-      copied: vi.fn(),
-    }),
-  }
-})
+vi.mock('#shared/composables/useCopyToClipboard.ts', async () => ({
+  useCopyToClipboard: () => ({ copyToClipboard: copyToClipboardMock }),
+}))
 
 describe('Two-factor Authentication - Recovery Codes', () => {
   beforeEach(() => {
@@ -281,6 +273,6 @@ describe('Two-factor Authentication - Recovery Codes', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Copy Codes' }))
 
-    expect(clipboardCopyMock).toHaveBeenCalledWith(recoveryCodes.join('\n'))
+    expect(copyToClipboardMock).toHaveBeenCalledWith(recoveryCodes.join('\n'))
   })
 })
