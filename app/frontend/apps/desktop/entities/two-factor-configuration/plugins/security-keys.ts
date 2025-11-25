@@ -47,9 +47,7 @@ export default {
           credential: credential.toJSON(),
         },
       }
-    } catch (e) {
-      console.log('e', e)
-
+    } catch {
       return {
         success: false,
         retry: true,
