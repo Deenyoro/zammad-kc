@@ -13,16 +13,6 @@ import { i18n } from '#shared/i18n.ts'
 
 import type { SetRequired } from 'type-fest'
 
-// Mock IntersectionObserver feature by injecting it into the global namespace.
-//   More info here: https://vitest.dev/guide/mocking.html#globals
-const IntersectionObserverMock = vi.fn(() => ({
-  disconnect: vi.fn(),
-  observe: vi.fn(),
-  takeRecords: vi.fn(),
-  unobserve: vi.fn(),
-}))
-vi.stubGlobal('IntersectionObserver', IntersectionObserverMock)
-
 const testOptions: SetRequired<SelectOption, 'label'>[] = [
   {
     value: 0,

@@ -124,7 +124,7 @@ describe('CommonSimpleTable', () => {
       },
     )
 
-    expect(view.baseElement.querySelector('table')).toMatchFileSnapshot(
+    await expect(view.baseElement.querySelector('table')).toMatchFileSnapshot(
       `${__filename}.snapshot.txt`,
     )
   })

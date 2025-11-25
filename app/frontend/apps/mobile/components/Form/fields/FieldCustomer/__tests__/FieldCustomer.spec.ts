@@ -87,7 +87,7 @@ describe('Form - Field - Customer - Features', () => {
 
     await waitForNextTick(true)
 
-    expect(wrapper.getByRole('listitem')).toHaveTextContent(`John Doe`)
+    expect(await wrapper.findByRole('listitem')).toHaveTextContent(`John Doe`)
   })
 })
 

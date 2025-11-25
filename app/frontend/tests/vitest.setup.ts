@@ -1,7 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import '@testing-library/jest-dom/vitest'
 import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev'
+import * as domMatchers from '@testing-library/jest-dom/matchers'
 import { toBeDisabled } from '@testing-library/jest-dom/matchers'
 import { configure } from '@testing-library/vue'
 import { expect, vi } from 'vitest'
@@ -11,6 +11,8 @@ import 'vitest-axe/extend-expect'
 import { ServiceWorkerHelper } from '#shared/utils/testSw.ts'
 
 import * as assertions from './support/assertions/index.ts'
+
+import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers'
 
 // Zammad custom assertions: toBeAvatarElement, toHaveClasses, toHaveImagePreview, toHaveCurrentUrl
 
@@ -99,12 +101,14 @@ Object.defineProperty(HTMLCanvasElement.prototype, 'toDataURL', {
 
 // Mock IntersectionObserver feature by injecting it into the global namespace.
 //   More info here: https://vitest.dev/guide/mocking.html#globals
-const IntersectionObserverMock = vi.fn(() => ({
-  disconnect: vi.fn(),
-  observe: vi.fn(),
-  takeRecords: vi.fn(),
-  unobserve: vi.fn(),
-}))
+const IntersectionObserverMock = vi.fn(function () {
+  return {
+    disconnect: vi.fn(),
+    observe: vi.fn(),
+    takeRecords: vi.fn(),
+    unobserve: vi.fn(),
+  }
+})
 
 globalThis.IntersectionObserver = IntersectionObserverMock as any
 
@@ -125,7 +129,7 @@ globalThis.requestAnimationFrame = (cb) => {
   return 0
 }
 
-globalThis.scrollTo = vi.fn<any>()
+globalThis.scrollTo = vi.fn()
 globalThis.matchMedia = (media: string) => ({
   matches: false,
   media,
@@ -253,7 +257,7 @@ afterEach((context) => {
 // Import the matchers for accessibility testing with aXe.
 expect.extend(matchers)
 expect.extend(assertions)
-// expect.extend(domMatchers)
+expect.extend(domMatchers)
 
 expect.extend({
   // allow aria-disabled in toBeDisabled
@@ -281,12 +285,12 @@ declare module 'vitest' {
     skipConsole: boolean
   }
 
-  // interface Assertion<T> extends TestingLibraryMatchers<null, T> {}
-}
-
-declare module 'vitest' {
-  // oxlint-disable-next-line
-  interface Assertion<T> extends matchers.AxeMatchers {}
+  interface Assertion<T = any>
+    extends matchers.AxeMatchers,
+      TestingLibraryMatchers<typeof expect.stringContaining, T> {}
+  interface AsymmetricMatchersContaining
+    extends matchers.AxeMatchers,
+      TestingLibraryMatchers<any, any> {}
 }
 
 declare global {

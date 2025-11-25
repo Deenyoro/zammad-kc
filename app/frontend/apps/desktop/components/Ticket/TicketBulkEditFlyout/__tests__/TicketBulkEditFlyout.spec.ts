@@ -132,7 +132,7 @@ describe('TicketBulkEditFlyout', () => {
 
     await wrapper.events.click(wrapper.getByLabelText('Note'))
 
-    await wrapper.events.click(wrapper.getByLabelText('Text'))
+    await wrapper.events.click(await wrapper.findByLabelText('Text'))
     await wrapper.events.type(wrapper.getByLabelText('Text'), 'Test ticket text')
 
     await wrapper.events.click(wrapper.getByRole('button', { name: 'Apply' }))

@@ -4,6 +4,7 @@ import { within } from '@testing-library/vue'
 
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import {
   mockUserCurrentTwoFactorGetMethodConfigurationQuery,
@@ -57,7 +58,9 @@ describe('Two-factor Authentication - Password Check', () => {
 
     expect(passwordInput).not.toBeInTheDocument()
 
-    expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Security Keys')
+    await waitFor(() =>
+      expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Security Keys'),
+    )
   })
 
   it('supports submitting form via keyboard', async () => {

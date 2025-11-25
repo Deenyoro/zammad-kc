@@ -3,6 +3,9 @@
 // import of these files takes 2.5 seconds for each test file!
 // need to optimize this somehow
 
+import { readdirSync } from 'node:fs'
+import { resolve } from 'node:path'
+
 import { plugin as formPlugin } from '@formkit/vue'
 import userEvent from '@testing-library/user-event'
 import { render } from '@testing-library/vue'
@@ -60,15 +63,13 @@ const appName = getTestAppName()
 const isMobile = appName !== 'desktop'
 const isDesktop = appName === 'desktop'
 
-// not eager because we don't actually want to import all those components, we only need their names
-const icons = isDesktop
-  ? import.meta.glob('../../../apps/desktop/initializer/assets/*.svg')
-  : import.meta.glob('../../../apps/mobile/initializer/assets/*.svg')
+const assetsPath = `../../../apps/${isDesktop ? 'desktop' : 'mobile'}/initializer/assets`
+const files = readdirSync(resolve(__dirname, assetsPath))
+const icons = files.map<[string, { default: string }]>((file) => {
+  return [`${assetsPath}/${file}`, { default: '' }]
+})
 
-provideIcons(
-  Object.keys(icons).map((icon) => [icon, { default: '' }]),
-  isDesktop ? desktopIconsAliases : mobileIconsAliases,
-)
+provideIcons(icons, isDesktop ? desktopIconsAliases : mobileIconsAliases)
 
 // internal Vitest variable, ideally should check expect.getState().testPath, but it's not populated in 0.34.6 (a bug)
 const { filepath } = (globalThis as any).__vitest_worker__ as any

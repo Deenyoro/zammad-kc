@@ -5,6 +5,7 @@ import { within } from '@testing-library/vue'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { createMockCredential, mockWebAuthnCreation } from '#tests/support/mock-webauthn.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import {
   mockUserCurrentTwoFactorGetMethodConfigurationQuery,
@@ -66,7 +67,9 @@ describe('Two-factor Authentication - Security Keys', () => {
     await waitForUserCurrentPasswordCheckMutationCalls()
     await waitForUserCurrentTwoFactorGetMethodConfigurationQueryCalls()
 
-    expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Security Keys')
+    await waitFor(() =>
+      expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Security Keys'),
+    )
 
     expect(flyout).toHaveTextContent(
       'Security keys are hardware or software credentials that can be used as your two-factor authentication method.To register a new security key with your account, press the button below.',
@@ -80,7 +83,9 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Next' }))
 
-    expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes')
+    await waitFor(() =>
+      expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes'),
+    )
   })
 
   it('supports removal of existing security keys', async () => {
@@ -205,7 +210,9 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.type(nicknameInput, 'My key{Enter}')
 
-    expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes')
+    await waitFor(() =>
+      expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes'),
+    )
   })
 
   it('shows client validation errors', async () => {
@@ -298,7 +305,9 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Next' }))
 
-    expect(flyoutContent.getByRole('alert')).toHaveTextContent('Security key setup failed.')
+    await waitFor(() =>
+      expect(flyoutContent.getByRole('alert')).toHaveTextContent('Security key setup failed.'),
+    )
 
     mockUserCurrentTwoFactorInitiateMethodConfigurationQuery({
       userCurrentTwoFactorInitiateMethodConfiguration: {},
@@ -308,7 +317,9 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Retry' }))
 
-    expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes')
+    waitFor(() =>
+      expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes'),
+    )
   })
 
   it('shows errors during verification phase', async () => {
@@ -377,7 +388,9 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Retry' }))
 
-    expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes')
+    await waitFor(() =>
+      expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes'),
+    )
   })
 
   it('skips recovery codes if already setup', async () => {
@@ -429,7 +442,7 @@ describe('Two-factor Authentication - Security Keys', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Next' }))
 
-    expect(flyout).not.toBeInTheDocument()
+    await waitFor(() => expect(flyout).not.toBeInTheDocument())
 
     expect(
       view.getByText('Two-factor authentication method was set up successfully.'),

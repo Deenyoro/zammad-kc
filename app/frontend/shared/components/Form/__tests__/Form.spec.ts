@@ -740,8 +740,7 @@ describe('Form.vue - with object attributes', () => {
     await waitUntil(() => wrapper.queryByLabelText('Title'))
 
     expect(wrapper.getByLabelText('Title')).toBeInTheDocument()
-    expect(wrapper.getByLabelText('Customer')).toBeInTheDocument()
-    expect(wrapper.getByLabelText('Customer')).toHaveTextContent('John Doe')
+    expect(await wrapper.findByLabelText('Customer')).toHaveTextContent('John Doe')
     expect(wrapper.getByLabelText('Group')).toBeInTheDocument()
     expect(wrapper.getByLabelText('State')).toBeInTheDocument()
   })

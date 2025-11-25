@@ -91,7 +91,8 @@ describe('Form - Field - Organization - Features', () => {
 
     await waitForNextTick(true)
 
-    expect(wrapper.getByRole('listitem')).toHaveTextContent(`Zammad Organization`)
+    const listitem = await wrapper.findByRole('listitem')
+    expect(listitem).toHaveTextContent(`Zammad Organization`)
   })
 })
 

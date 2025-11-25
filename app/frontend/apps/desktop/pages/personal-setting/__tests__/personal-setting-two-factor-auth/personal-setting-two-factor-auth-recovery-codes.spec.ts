@@ -5,6 +5,7 @@ import { within } from '@testing-library/vue'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockWebAuthnCreation } from '#tests/support/mock-webauthn.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import {
   mockUserCurrentTwoFactorGetMethodConfigurationQuery,
@@ -161,7 +162,9 @@ describe('Two-factor Authentication - Recovery Codes', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Next' }))
 
-    expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes')
+    await waitFor(() =>
+      expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes'),
+    )
 
     expect(flyoutContent.getByTestId('recovery-codes')).toHaveTextContent(
       'foobarbazquxquuxcorgegraultgarplywaldofred',

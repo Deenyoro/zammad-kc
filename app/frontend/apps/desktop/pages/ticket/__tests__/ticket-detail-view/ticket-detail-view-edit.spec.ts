@@ -318,7 +318,7 @@ describe('Ticket detail view', () => {
 
       expect(view.getByTestId('article-reply-stripes-panel')).toHaveClass('bg-stripes')
 
-      const editor = view.getByRole('textbox', { name: 'Text' })
+      const editor = await view.findByRole('textbox', { name: 'Text' })
 
       // FIXME: This is not possible to test ATM, due to TipTap editor not being supported in JSDOM.
       // expect(editor).toHaveFocus()
@@ -447,7 +447,7 @@ describe('Ticket detail view', () => {
 
       await view.events.click(await within(articles[0]).findByRole('button', { name: 'Reply' }))
 
-      await view.events.type(view.getByRole('textbox', { name: 'Text' }), 'Foo email')
+      await view.events.type(await view.findByRole('textbox', { name: 'Text' }), 'Foo email')
 
       await getNode('form-ticket-edit')?.settled
 
@@ -633,7 +633,7 @@ describe('Ticket detail view', () => {
 
       expect(await view.findByRole('heading', { level: 2, name: 'Reply' })).toBeInTheDocument()
 
-      await view.events.type(view.getByRole('textbox', { name: 'Text' }), 'Foo note')
+      await view.events.type(await view.findByRole('textbox', { name: 'Text' }), 'Foo note')
 
       await view.events.click(view.getByRole('button', { name: 'Discard your unsaved changes' }))
 
@@ -1042,7 +1042,7 @@ describe('Ticket detail view', () => {
       await view.events.click(await within(articles[0]).findByRole('button', { name: 'Reply' }))
 
       await view.events.type(
-        view.getByRole('textbox', { name: 'Text' }),
+        await view.findByRole('textbox', { name: 'Text' }),
         'Reply. Check attachment.',
       )
 

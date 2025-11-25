@@ -4,7 +4,7 @@
 
 import { createRequire } from 'module'
 import { readFileSync } from 'node:fs'
-import { resolve, dirname } from 'node:path'
+import { resolve, dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { homedir } from 'os'
 
@@ -169,6 +169,29 @@ export default defineConfig(({ mode, command }) => {
           log.includes('<Suspense> is an experimental feature')
         )
           return false
+      },
+      // perf improvements
+      server: {
+        deps: {
+          // vue-datepicker imports from date-fns and we don't want it to import ES version
+          inline: ['@vuepic/vue-datepicker'],
+        },
+      },
+      alias: [
+        // ESM version of date-fns exports a lot of extra files which takes 500ms to load on M4 Mac
+        // CJS version takes ~175ms which is also a lot, but not as much
+        {
+          find: /^date-fns$/,
+          replacement: join(dirname(require.resolve('date-fns/package.json')), 'index.cjs'),
+        },
+      ],
+      experimental: {
+        // persistent cache between reruns, invalidates if any dependency is updated
+        // vitest doesn't cache files with `import.meta.glob` inside, so it might be a good
+        // idea to put them all inside as few files as possible just for a small perf boost
+        // the perf difference is noticible when running a single/a few tests, but has
+        // negligible impact when running the whole suite due to parallelisation
+        fsModuleCache: true,
       },
     },
     plugins,

@@ -809,11 +809,11 @@ describe('ticket add/edit reply article', () => {
 
     await waitUntil(() => view.queryByRole('dialog', { name: 'Add reply' }))
 
-    await view.events.type(view.getByLabelText('Text'), 'Testing')
+    await view.events.type(await view.findByLabelText('Text'), 'Testing')
 
     await expect(view.findByRole('button', { name: 'Save' })).resolves.toBeInTheDocument()
 
-    await view.events.click(view.getByRole('combobox', { name: 'Visibility' }))
+    await view.events.click(await view.findByRole('combobox', { name: 'Visibility' }))
 
     expect(view.queryByRole('button', { name: 'Save' })).not.toBeInTheDocument()
 

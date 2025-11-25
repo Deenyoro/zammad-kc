@@ -25,7 +25,7 @@ describe('useTicketArticleRetryMediaDownload', () => {
         },
       })
 
-      expect(tryAgain()).resolves.toBeUndefined()
+      await expect(tryAgain()).resolves.toBeUndefined()
 
       const calls = await waitForTicketArticleRetryMediaDownloadMutationCalls()
 
@@ -46,7 +46,7 @@ describe('useTicketArticleRetryMediaDownload', () => {
         },
       })
 
-      expect(tryAgain()).rejects.toThrow('')
+      await expect(tryAgain()).rejects.toThrow('')
 
       const calls = await waitForTicketArticleRetryMediaDownloadMutationCalls()
 

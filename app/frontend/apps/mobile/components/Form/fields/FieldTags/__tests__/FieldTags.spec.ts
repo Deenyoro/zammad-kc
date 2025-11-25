@@ -259,7 +259,7 @@ describe('creating new tag', () => {
     const node = view.getByLabelText('Tags')
     await view.events.click(node)
 
-    const filterInput = view.getByPlaceholderText('Tag name…')
+    const filterInput = await view.findByPlaceholderText('Tag name…')
 
     await view.events.type(filterInput, `pay${key}`)
 

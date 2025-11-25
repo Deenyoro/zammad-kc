@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest'
 
 import { mockRouterHooks } from '#tests/support/mock-vue-router.ts'
 
@@ -17,8 +17,8 @@ vi.mock('#shared/composables/useConfirmation.ts', () => ({
 }))
 
 describe('useAbortNavigation', () => {
-  let confirmCallbackMock: ReturnType<typeof vi.fn>
-  let shouldConfirmNavigationMock: ReturnType<typeof vi.fn>
+  let confirmCallbackMock: Mock
+  let shouldConfirmNavigationMock: Mock
 
   beforeEach(() => {
     confirmCallbackMock = vi.fn()
