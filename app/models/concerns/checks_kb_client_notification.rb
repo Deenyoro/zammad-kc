@@ -18,9 +18,7 @@ module ChecksKbClientNotification
   end
 
   def self.all_classes
-    ActiveRecord::Base
-      .descendants
-      .select { |c| c.included_modules.include?(ChecksKbClientNotification) }
+    Models.all.keys.select { |c| c.included_modules.include?(ChecksKbClientNotification) }
   end
 
   private

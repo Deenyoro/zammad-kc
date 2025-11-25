@@ -16,7 +16,7 @@ namespace :zammad do
 
           # make sure that old column schemas are getting dropped to prevent
           # wrong schema for new db setup
-          ActiveRecord::Base.descendants.each(&:reset_column_information)
+          Models.all.each_key(&:reset_column_information)
 
           $stdout = StringIO.new
         end

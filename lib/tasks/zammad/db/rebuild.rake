@@ -8,7 +8,7 @@ namespace :zammad do
     task rebuild: :environment do
       Package::Migration.linked
       ActiveRecord::Base.connection.reconnect!
-      ActiveRecord::Base.descendants.each(&:reset_column_information)
+      Models.all.each_key(&:reset_column_information)
       Rails.cache.clear
       EventBuffer.reset('transaction')
       Setting.reload
