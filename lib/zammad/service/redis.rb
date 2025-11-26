@@ -11,7 +11,7 @@ module Zammad
 
       def self.standalone_config
         {
-          driver: ENV['REDIS_URL']&.start_with?('rediss://') ? :ruby : :hiredis,
+          driver: :hiredis,
           url:    ENV['REDIS_URL'].presence || 'redis://localhost:6379',
         }
       end

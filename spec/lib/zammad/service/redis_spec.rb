@@ -37,9 +37,9 @@ RSpec.describe Zammad::Service::Redis, :aggregate_failures do
       context 'with REDIS_URL set to a TLS URL' do
         let(:env) { { 'REDIS_URL' => 'rediss://redis.example.com:1234' } }
 
-        it 'returns the standalone config with the given URL and ruby driver' do
+        it 'returns the standalone config with the given URL and hiredis driver' do
           expect(described_class.config).to eq(
-            driver: :ruby,
+            driver: :hiredis,
             url:    'rediss://redis.example.com:1234'
           )
         end
