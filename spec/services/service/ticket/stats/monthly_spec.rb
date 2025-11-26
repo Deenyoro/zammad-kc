@@ -102,5 +102,42 @@ RSpec.describe Service::Ticket::Stats::Monthly, :aggregate_failures do
         expect(current_month[:tickets_created]).to eq(0)
       end
     end
+
+    # https://github.com/zammad/zammad/issues/5865
+    context 'when the ticket is created just before the new month' do
+      let(:ticket) { create(:ticket, group: group, created_at: Time.zone.parse('2019-06-30 23:00')) }
+
+      before do
+        ticket
+        Setting.set('timezone_default', timezone)
+        travel_to Time.zone.parse('2019-07-02 01:00')
+      end
+
+      context 'when time zome is ahead of UTC' do
+        let(:timezone) { 'Asia/Tokyo' }
+
+        it 'returns tickets according to Zammad time zone' do
+          result = service.execute(conditions: {})
+
+          current_month = result.first
+          previous_month = result.second
+          expect(current_month[:tickets_created]).to eq(1)
+          expect(previous_month[:tickets_created]).to eq(0)
+        end
+      end
+
+      context 'when time zone is behind UTC' do
+        let(:timezone) { 'America/New_York' }
+
+        it 'returns tickets according to Zammad time zone' do
+          result = service.execute(conditions: {})
+
+          current_month = result.first
+          previous_month = result.second
+          expect(current_month[:tickets_created]).to eq(0)
+          expect(previous_month[:tickets_created]).to eq(1)
+        end
+      end
+    end
   end
 end

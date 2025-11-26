@@ -2,21 +2,55 @@
 
 class Service::Ticket::Stats::Monthly < Service::BaseWithCurrentUser
   def execute(conditions:)
-    now = Time.zone.now
-    base_scope = TicketPolicy::ReadScope.new(current_user).resolve
+    Time.use_zone(Setting.get('timezone_default')) do
+      result = TicketPolicy::ReadScope
+        .new(current_user)
+        .resolve
+        .where(conditions)
+        .select(selects)
+        .take
 
-    (0..11).map do |steps_back|
-      date_to_check = now - steps_back.month
-      date_start = "#{date_to_check.year}-#{date_to_check.month}-01 00:00:00"
-      date_end   = "#{date_to_check.year}-#{date_to_check.month}-#{date_to_check.end_of_month.day} 00:00:00"
+      result_to_hashes(result)
+    end
+  end
 
+  private
+
+  def result_to_hashes(result)
+    dates.map do |date|
       {
-        year:            date_to_check.year,
-        month_number:    date_to_check.month,
-        month_label:     Date::ABBR_MONTHNAMES[date_to_check.month],
-        tickets_created: base_scope.where(created_at: (date_start..date_end), **conditions).count,
-        tickets_closed:  base_scope.where(close_at: (date_start..date_end), **conditions).count,
+        month_number:    date.month,
+        year:            date.year,
+        month_label:     Date::ABBR_MONTHNAMES[date.month],
+        tickets_created: result[count_key(date, 'created_at')],
+        tickets_closed:  result[count_key(date, 'close_at')],
       }
     end
+  end
+
+  def count_key(date, type)
+    "count_#{type}_#{date.month}_#{date.year}"
+  end
+
+  def dates
+    @dates ||= (0..11).map { it.months.ago }
+  end
+
+  def selects
+    @selects ||= dates.map do |date|
+      date_start = date.beginning_of_month
+      date_end   = date.end_of_month
+
+      [
+        count_with_filter('created_at', date),
+        count_with_filter('close_at', date),
+      ].map { ActiveRecord::Base.sanitize_sql_array([it, { date_start:, date_end: }]) }
+    end
+      .flatten
+      .join(', ')
+  end
+
+  def count_with_filter(attr, date)
+    "COUNT(*) FILTER (WHERE #{attr} BETWEEN :date_start AND :date_end) AS #{count_key(date, attr)}"
   end
 end
