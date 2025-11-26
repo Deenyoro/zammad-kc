@@ -62,7 +62,7 @@ RSpec.describe 'Mobile > Ticket > Article > Create', app: :mobile, authenticated
         internal:     true,
         content_type: 'text/html',
         sender:       Ticket::Article::Sender.lookup(name: 'Agent'),
-        body:         '<p>This is a note</p>',
+        body:         '<p dir="auto">This is a note</p>',
       )
     end
 
@@ -101,7 +101,7 @@ RSpec.describe 'Mobile > Ticket > Article > Create', app: :mobile, authenticated
         type_id:      Ticket::Article::Type.lookup(name: 'note').id,
         internal:     false,
         content_type: 'text/html',
-        body:         '<p>This is a note!</p>',
+        body:         '<p dir="auto">This is a note!</p>',
       )
     end
 
@@ -132,7 +132,7 @@ RSpec.describe 'Mobile > Ticket > Article > Create', app: :mobile, authenticated
           cc:           'zammad_test_cc@zammad.com',
           internal:     false,
           content_type: 'text/html',
-          body:         start_with("<p>This is a note!</p><p></p><div data-signature=\"true\" data-signature-id=\"#{signature.id}\"><p>#{agent.firstname}<br>Signature!</p></div>"),
+          body:         start_with("<p dir=\"auto\">This is a note!</p><p dir=\"auto\"></p><div data-signature=\"true\" dir=\"auto\" data-signature-id=\"#{signature.id}\"><p dir=\"auto\">#{agent.firstname}<br dir=\"auto\">Signature!</p></div><p dir=\"auto\"></p>"),
         )
       end
 
@@ -161,7 +161,7 @@ RSpec.describe 'Mobile > Ticket > Article > Create', app: :mobile, authenticated
           type_id:      Ticket::Article::Type.lookup(name: 'email').id,
           internal:     true,
           content_type: 'text/html',
-          body:         start_with("<p>This is a note!</p><p></p><div data-signature=\"true\" data-signature-id=\"#{signature.id}\"><p>#{agent.firstname}<br>Signature!</p></div>"),
+          body:         start_with("<p dir=\"auto\">This is a note!</p><p dir=\"auto\"></p><div data-signature=\"true\" dir=\"auto\" data-signature-id=\"#{signature.id}\"><p dir=\"auto\">#{agent.firstname}<br dir=\"auto\">Signature!</p></div><p dir=\"auto\"></p>"),
         )
       end
     end
@@ -250,7 +250,7 @@ RSpec.describe 'Mobile > Ticket > Article > Create', app: :mobile, authenticated
       expect(Ticket::Article.last).to have_attributes(
         type_id:      Ticket::Article::Type.lookup(name: 'note').id,
         content_type: 'text/html',
-        body:         '<p>This is a note!</p>',
+        body:         '<p dir="auto">This is a note!</p>',
       )
     end
 
@@ -348,7 +348,7 @@ RSpec.describe 'Mobile > Ticket > Article > Create', app: :mobile, authenticated
         internal:     false,
         content_type: 'text/html',
         sender:       Ticket::Article::Sender.lookup(name: 'Customer'),
-        body:         '<p>This is a note</p>',
+        body:         '<p dir="auto">This is a note</p>',
       )
     end
 

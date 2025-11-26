@@ -19,7 +19,7 @@ describe('Testing "text" popup: "::" command', { retries: 2 }, () => {
             name: 'ass - Anliegen sichten',
             keywords: null,
             renderedContent:
-              '<p>Vielen Dank für Ihre Anfrage.</p><p>Wir werden Ihr Anliegen sichten und uns schnellstmöglich mit Ihnen in Verbindung setzen.</p>',
+              '<p dir="auto">Vielen Dank für Ihre Anfrage.</p><p dir="auto">Wir werden Ihr Anliegen sichten und uns schnellstmöglich mit Ihnen in Verbindung setzen.</p>',
           },
         ],
       },
@@ -39,7 +39,7 @@ describe('Testing "text" popup: "::" command', { retries: 2 }, () => {
     cy.findByRole('textbox').type('{backspace}{backspace}123')
     cy.findByRole('textbox').shouldContainNormalizedHtml('Verbindung setze123')
     cy.findByRole('textbox').shouldContainNormalizedHtml(
-      '<p>Vielen Dank für Ihre Anfrage.</p><p>Wir werden Ihr Anliegen sichten und uns schnellstmöglich mit Ihnen in Verbindung setze123</p>',
+      '<p dir="auto">Vielen Dank für Ihre Anfrage.</p><p dir="auto">Wir werden Ihr Anliegen sichten und uns schnellstmöglich mit Ihnen in Verbindung setze123</p>',
     )
   })
 })

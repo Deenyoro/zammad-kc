@@ -11,7 +11,7 @@ const setDefaultDir = (dir: 'ltr' | 'rtl') => {
   document.documentElement.setAttribute('dir', dir)
 }
 
-describe('editor has correct dir when text local is different', () => {
+describe('editor handles dir automatically', () => {
   describe('when ltr is default', () => {
     beforeEach(() => setDefaultDir('ltr'))
 
@@ -19,7 +19,7 @@ describe('editor has correct dir when text local is different', () => {
       mountEditor()
 
       cy.findByRole('textbox').type(ltrWord)
-      cy.findByText(ltrWord).should('not.have.attr', 'dir')
+      cy.findByText(ltrWord).should('have.attr', 'dir')
       // lose focus to hide the text cursor
       cy.findByRole('textbox').blur()
       checkFormMatchesSnapshot({ type: 'ltr is default' })
@@ -29,7 +29,7 @@ describe('editor has correct dir when text local is different', () => {
       mountEditor()
 
       cy.findByRole('textbox').type(rtlWord)
-      cy.findByText(rtlWord).should('have.attr', 'dir', 'rtl')
+      cy.findByText(rtlWord).should('have.attr', 'dir', 'auto')
       // lose focus to hide the text cursor
       cy.findByRole('textbox').blur()
       checkFormMatchesSnapshot({ type: 'ltr is default' })
@@ -43,7 +43,7 @@ describe('editor has correct dir when text local is different', () => {
       mountEditor()
 
       cy.findByRole('textbox').type(ltrWord)
-      cy.findByText(ltrWord).should('have.attr', 'dir', 'ltr')
+      cy.findByText(ltrWord).should('have.attr', 'dir', 'auto')
       // lose focus to hide the text cursor
       cy.findByRole('textbox').blur()
       checkFormMatchesSnapshot({ type: 'rtl is default' })
@@ -53,7 +53,7 @@ describe('editor has correct dir when text local is different', () => {
       mountEditor()
 
       cy.findByRole('textbox').type(rtlWord)
-      cy.findByText(rtlWord).should('not.have.attr', 'dir')
+      cy.findByText(rtlWord).should('have.attr', 'dir')
       // lose focus to hide the text cursor
       cy.findByRole('textbox').blur()
       checkFormMatchesSnapshot({ type: 'rtl is default' })

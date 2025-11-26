@@ -48,7 +48,9 @@ describe('FieldEditor basic functionality', { retries: 2 }, () => {
     })
 
     cy.findByRole('textbox').should('have.text', 'Hello, World!')
-    cy.findByRole('textbox').shouldHaveNormalizedHtml('<p><strong>Hello, World!</strong></p>')
+    cy.findByRole('textbox').shouldHaveNormalizedHtml(
+      '<p dir="auto"><strong>Hello, World!</strong></p>',
+    )
   })
 
   // TODO: Clarify the paste handling in the editor.

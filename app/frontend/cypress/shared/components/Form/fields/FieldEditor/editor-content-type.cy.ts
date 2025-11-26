@@ -8,7 +8,7 @@ describe('changes private value depending on content type', () => {
 
     cy.findByRole('textbox').type('some kind of text')
 
-    cy.findByRole('textbox').shouldHaveNormalizedHtml('<p>some kind of text</p>')
+    cy.findByRole('textbox').shouldHaveNormalizedHtml('<p dir="auto">some kind of text</p>')
   })
 
   it('has html content type, if prop is provided', () => {
@@ -17,7 +17,7 @@ describe('changes private value depending on content type', () => {
     })
 
     cy.findByRole('textbox').type('some kind of text')
-    cy.findByRole('textbox').shouldHaveNormalizedHtml('<p>some kind of text</p>')
+    cy.findByRole('textbox').shouldHaveNormalizedHtml('<p dir="auto">some kind of text</p>')
   })
 
   it('has text content type, if prop is provided', () => {
@@ -27,6 +27,6 @@ describe('changes private value depending on content type', () => {
 
     cy.findByRole('textbox').type('some kind of text')
 
-    cy.findByRole('textbox').shouldHaveNormalizedHtml('<p>some kind of text</p>')
+    cy.findByRole('textbox').shouldHaveNormalizedHtml('<p dir="auto">some kind of text</p>')
   })
 })

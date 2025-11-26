@@ -129,6 +129,7 @@ const hasTableExtension = computed(() =>
 
 const editor = useEditor({
   extensions: editorExtensions.value,
+  textDirection: 'auto',
   editorProps: {
     attributes: {
       role: 'textbox',
@@ -380,7 +381,7 @@ const {
       ]"
     >
       <EditorContent
-        class="text-base ltr:text-left rtl:text-right cursor-text"
+        class="text-base cursor-text"
         data-test-id="field-editor"
         :editor="editor"
         :style="inputInlineDesktopTextStyles"

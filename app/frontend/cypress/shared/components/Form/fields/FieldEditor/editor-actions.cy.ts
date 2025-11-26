@@ -105,11 +105,16 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
     undefined,
     'listitem',
   )
-  testAction('Add bullet list', (text) => `<ul><li><p>${text}</p></li></ul>`, undefined, 'listitem')
+  testAction(
+    'Add bullet list',
+    (text) => `<ul dir="auto"><li><p>${text}</p></li></ul>`,
+    undefined,
+    'listitem',
+  )
 
   testAction(
     'Add ordered list',
-    () => `<ol><li><p>Something1</p></li></ol>`,
+    () => `<ol dir="auto"><li><p>Something1</p></li></ol>`,
     undefined,
     'listitem',
     'Something1',
@@ -117,7 +122,7 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
   )
   testAction(
     'Add bullet list',
-    () => `<ul><li><p>Something1</p></li></ul>`,
+    () => `<ul dir="auto"><li><p>Something1</p></li></ul>`,
     undefined,
     'listitem',
     'Something1',
@@ -132,11 +137,13 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
       cy.findByTestId('action-bar').findByLabelText('Format as bold').click()
       cy.findByRole('paragraph').type('Text')
 
-      cy.findByRole('textbox').shouldContainNormalizedHtml('<p><strong>Text</strong></p>')
+      cy.findByRole('textbox').shouldContainNormalizedHtml(
+        '<p dir="auto"><strong>Text</strong></p>',
+      )
 
       cy.findByRole('textbox').type('{selectall}')
       cy.findByTestId('action-bar').findByLabelText('Remove formatting').click()
-      cy.findByRole('textbox').shouldContainNormalizedHtml('<p>Text</p>')
+      cy.findByRole('textbox').shouldContainNormalizedHtml('<p dir="auto">Text</p>')
     })
   })
 
@@ -283,7 +290,7 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
     cy.findByRole('code').type('const vue = "awesome"')
 
     cy.findByRole('textbox').shouldContainNormalizedHtml(
-      '<pre><code>const <span class="hljs-attr">vue</span> = <span class="hljs-string">"awesome"</span></code></pre>',
+      '<pre dir="auto"><code>const <span class="hljs-attr">vue</span> = <span class="hljs-string">"awesome"</span></code></pre>',
     )
   })
 
@@ -298,12 +305,12 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
     cy.findByLabelText('Indent text').click()
 
     cy.findByRole('textbox').shouldContainNormalizedHtml(
-      '<li style="margin-left: 1rem"><p>Third</p></li>',
+      '<li dir="auto" style="margin-left: 1rem"><p dir="auto">Third</p></li>',
     )
 
     cy.findByLabelText('Indent text').click()
     cy.findByRole('textbox').shouldContainNormalizedHtml(
-      '<li style="margin-left: 2rem"><p>Third</p></li>',
+      '<li dir="auto" style="margin-left: 2rem"><p dir="auto">Third</p></li>',
     )
   })
 
@@ -318,11 +325,13 @@ describe('testing actions', { retries: { runMode: 2 } }, () => {
     cy.findByLabelText('Indent text').click()
 
     cy.findByRole('textbox').shouldContainNormalizedHtml(
-      '<li style="margin-left: 1rem"><p>Third</p></li>',
+      '<li dir="auto" style="margin-left: 1rem"><p dir="auto">Third</p></li>',
     )
 
     cy.findByLabelText('Outdent text').click()
-    cy.findByRole('textbox').shouldContainNormalizedHtml('<li><p>Third</p></li>')
+    cy.findByRole('textbox').shouldContainNormalizedHtml(
+      '<li dir="auto"><p dir="auto">Third</p></li>',
+    )
   })
 
   it('changes text color of item', () => {

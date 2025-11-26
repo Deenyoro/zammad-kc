@@ -61,8 +61,9 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
     let(:to)             { [Mail::AddressList.new(article.to).addresses.first.address] }
     let(:article)        { create(:ticket_article, :outbound_email, ticket: ticket) }
     let(:current_text)   { "#{agent.firstname}\nSignature!" }
-    let(:signature_html) { "<div data-signature=\"true\" data-signature-id=\"#{signature.id}\"><p>#{agent.firstname}<br>Signature!</p></div>" }
-    let(:result_text)    { start_with("<p>This is a note</p><p><br></p>#{signature_html}") }
+    let(:signature_html) { "<div data-signature=\"true\" dir=\"auto\" data-signature-id=\"#{signature.id}\"><p dir=\"auto\">#{agent.firstname}<br dir=\"auto\">Signature!</p></div><p dir=\"auto\"></p>" }
+    let(:result_text)    { start_with("<p dir=\"auto\">This is a note</p><p dir=\"auto\"></p>#{signature_html}") }
+
     let(:after_click) do
       lambda {
         # wait for signature to be added
@@ -115,12 +116,12 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
         end
         let(:current_text) { %r{On .+, #{article.created_by.fullname} wrote:\s+#{article.body}\s+#{agent.firstname}\nSignature!} }
         let(:result_text)  do
-          msg = '<p>This is a note<br><br></p>'
-          msg += '<blockquote type="cite">'
-          msg += "<p>On .+, #{article.created_by.fullname} wrote:</p><p><br></p>"
-          msg += "<p>#{article.body}</p>"
-          msg += '</blockquote><p><br></p>'
-          msg += '<p><br></p>'
+          msg = '<p dir="auto">This is a note<br dir="auto"></p>'
+          msg += '<blockquote dir="auto" type="cite">'
+          msg += "<p dir=\"auto\">On .+, #{article.created_by.fullname} wrote:</p><p dir=\"auto\"></p>"
+          msg += "<p dir=\"auto\">#{article.body}</p>"
+          msg += '</blockquote><p dir="auto"></p>'
+          msg += '<p dir=\"auto\"></p>'
           msg += signature_html
           a_string_matching(Regexp.new(msg))
         end
@@ -140,7 +141,7 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
         end
         let(:current_text) { "#{article.body}\n\n\n#{agent.firstname}\nSignature!" }
         let(:result_text)  do
-          start_with("<p>This is a note<br><br></p><blockquote type=\"cite\"><p>#{article.body}</p></blockquote><p><br></p><p><br></p>#{signature_html}")
+          start_with("<p dir=\"auto\">This is a note<br dir=\"auto\"></p><blockquote dir=\"auto\" type=\"cite\"><p dir=\"auto\">#{article.body}</p></blockquote><p dir=\"auto\"></p><p dir=\"auto\"></p>#{signature_html}")
         end
       end
     end
@@ -162,7 +163,7 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
         end
         let(:current_text) { "#{article.body}\n\nText before replying\n\n#{agent.firstname}\nSignature!" }
         let(:result_text)  do
-          start_with("<p>This is a note<br><br></p><blockquote type=\"cite\"><p>#{article.body}</p></blockquote><p><br></p><p>Text before replying</p><p><br></p>#{signature_html}")
+          start_with("<p dir=\"auto\">This is a note<br dir=\"auto\"></p><blockquote dir=\"auto\" type=\"cite\"><p dir=\"auto\">#{article.body}</p></blockquote><p dir=\"auto\"></p><p dir=\"auto\">Text before replying</p><p dir=\"auto\"></p>#{signature_html}")
         end
       end
     end
@@ -182,9 +183,10 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
             wait_for_test_flag('ticket-article-reply.closed')
           }
         end
-        let(:current_text) { "#{agent.firstname}\nSignature!\n#{article.body}\n\nText before replying" }
-        let(:result_text)  do
-          start_with("<p>This is a note</p>#{signature_html}<blockquote type=\"cite\"><p>#{article.body}</p></blockquote><p><br></p><p>Text before replying</p>")
+        let(:signature_html) { "<div data-signature=\"true\" dir=\"auto\" data-signature-id=\"#{signature.id}\"><p dir=\"auto\">#{agent.firstname}<br dir=\"auto\">Signature!</p></div>" }
+        let(:current_text)   { "#{agent.firstname}\nSignature!\n#{article.body}\n\nText before replying" }
+        let(:result_text) do
+          start_with("<p dir=\"auto\">This is a note</p>#{signature_html}<blockquote dir=\"auto\" type=\"cite\"><p dir=\"auto\">#{article.body}</p></blockquote><p dir=\"auto\"></p><p dir=\"auto\">Text before replying</p>")
         end
       end
     end
@@ -267,16 +269,17 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
       end
       let(:in_reply_to) { '' }
       let(:result_text) do
-        msg = '<p>This is a note</p>' # new message
-        msg += "<div data-signature=\"true\" data-signature-id=\"#{signature.id}\"><p>#{agent.firstname}<br>Signature!</p></div>" # signature is before forwarded message
-        msg += '<p><br></p><p>---Begin forwarded message:---</p><p><br></p>' # new lines and "before" message
+        msg = '<p dir="auto">This is a note</p>' # new message
+        msg += "<div data-signature=\"true\" dir=\"auto\" data-signature-id=\"#{signature.id}\"><p dir=\"auto\">#{agent.firstname}<br dir=\"auto\">Signature!</p></div><p dir=\"auto\"></p>" # signature is before forwarded message
+        msg += '<p dir="auto">---Begin forwarded message:---</p><p dir="auto"></p>' # new lines and "before" message
         # blockquote with original message and header with subject, date and "to"
-        msg += '<blockquote type="cite">'
-        msg += "<p>Subject: #{article_subject}<br>"
-        msg += 'Date: \\d{2}/\\d{2}/\\d{4} \\d{1,2}:\\d{1,2} (am|pm)<br>'
-        msg += "To: #{escape_html_wo_single_quotes(text_to)}<br><br></p>"
-        msg += "<p>#{article.body}</p>"
+        msg += '<blockquote dir="auto" type="cite">'
+        msg += "<p dir=\"auto\">Subject: #{article_subject}<br dir=\"auto\">"
+        msg += 'Date: \\d{2}/\\d{2}/\\d{4} \\d{1,2}:\\d{1,2} (am|pm)<br dir=\"auto\">'
+        msg += "To: #{escape_html_wo_single_quotes(text_to)}<br dir=\"auto\"></p>"
+        msg += "<p dir=\"auto\">#{article.body}</p>"
         msg += '</blockquote>'
+        msg += '<p dir="auto"></p>'
         a_string_matching(Regexp.new(msg))
       end
 
@@ -322,11 +325,11 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
           Regexp.new(msg)
         end
         let(:result_text) do
-          msg = '<p>This is a note</p>' # new message
-          msg += "<div data-signature=\"true\" data-signature-id=\"#{signature.id}\"><p>#{agent.firstname}<br>Signature!</p></div>" # signature is before forwarded message
-          msg += '<p><br></p><p>---Begin forwarded message:---</p><p><br></p>' # new lines and "before" message
+          msg = '<p dir="auto">This is a note</p>' # new message
+          msg += "<div data-signature=\"true\" dir=\"auto\" data-signature-id=\"#{signature.id}\"><p dir=\"auto\">#{agent.firstname}<br dir=\"auto\">Signature!</p></div><p dir=\"auto\"></p>" # signature is before forwarded message
+          msg += '<p dir="auto">---Begin forwarded message:---</p><p dir="auto"></p>' # new lines and "before" message
           # blockquote with original message and no header
-          msg += "<blockquote type=\"cite\"><p>#{article.body}</p></blockquote>"
+          msg += "<blockquote dir=\"auto\" type=\"cite\"><p dir=\"auto\">#{article.body}</p></blockquote><p dir=\"auto\"></p>"
           a_string_matching(Regexp.new(msg))
         end
 

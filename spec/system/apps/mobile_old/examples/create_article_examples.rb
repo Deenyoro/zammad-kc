@@ -7,7 +7,7 @@ RSpec.shared_examples 'mobile app: create article' do |type_label, internal: fal
   let(:to)          { nil }
   let(:cc)          { nil }
   let(:new_text)    { 'This is a note' }
-  let(:result_text) { content_type == 'text/html' ? "<p>#{new_text}</p>" : new_text }
+  let(:result_text) { content_type == 'text/html' ? "<p dir=\"auto\">#{new_text}</p>" : new_text }
 
   # expected variables:
   # ticket

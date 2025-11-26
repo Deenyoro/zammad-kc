@@ -39,7 +39,7 @@ RSpec.describe 'Mobile > Organization > Can edit organization', app: :mobile, ty
 
       organization.reload
 
-      expect(organization.note).to eq('<p>edit field</p>')
+      expect(organization.note).to eq('<p dir="auto">edit field</p>')
     end
 
     it 'can edit organization with object atrributes', db_strategy: :reset do

@@ -24,9 +24,6 @@ import {
   MarginLeft,
   MarginRight,
 } from '#shared/components/Form/fields/FieldEditor/extensions/Styles.ts'
-import TextDirection, {
-  type Direction,
-} from '#shared/components/Form/fields/FieldEditor/extensions/TextDirection.ts'
 import TextModuleSuggestion from '#shared/components/Form/fields/FieldEditor/extensions/TextModuleSuggestion.ts'
 import UserMention, {
   UserLink,
@@ -113,10 +110,6 @@ export const getHtmlExtensions = (placeholder = ''): Extensions => [
         },
       }
     },
-  }),
-  TextDirection.configure({
-    defaultDirection: document.documentElement.getAttribute('dir') as Direction,
-    types: ['paragraph', 'heading'],
   }),
   TableKit.configure({
     table: {

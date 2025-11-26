@@ -69,7 +69,7 @@ RSpec.describe 'Desktop > Ticket > Create', app: :desktop_view, authenticated_as
         customer: customer,
       )
 
-      expect(Ticket.last.articles.first.body).to start_with('<h1>Heading</h1><p><strong>Bold Text </strong></p><p><em>Italic Text </em></p><ul><li><p>Bullet List </p></li></ul><ol><li><p>Ordered List </p></li></ol><p><a rel="nofollow noreferrer noopener" href="https://zammad.com" target="_blank">https://zammad.com</a></p>')
+      expect(Ticket.last.articles.first.body).to start_with('<h1 dir="auto">Heading</h1><p dir="auto"><strong>Bold Text </strong></p><p dir="auto"><em>Italic Text </em></p><ul dir="auto"><li dir="auto"><p dir="auto">Bullet List </p></li></ul><ol dir="auto"><li dir="auto"><p dir="auto">Ordered List </p></li></ol><p dir="auto"><a rel="nofollow noreferrer noopener" href="https://zammad.com" target="_blank">https://zammad.com</a></p>')
     end
   end
 
