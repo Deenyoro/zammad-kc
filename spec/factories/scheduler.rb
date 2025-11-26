@@ -13,8 +13,6 @@ FactoryBot.define do
     note                   { 'test' }
     updated_by_id          { 1 }
     created_by_id          { 1 }
-    created_at             { 1 }
-    updated_at             { 1 }
     add_attribute(:method) { 'test' }
 
     trait :timeplan do

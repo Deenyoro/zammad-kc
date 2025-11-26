@@ -49,6 +49,8 @@ class KnowledgeBase::Answer::Translation::Content < ApplicationModel
   private
 
   def touch_translation
+    return if !translation.persisted?
+
     translation&.touch # rubocop:disable Rails/SkipsModelValidations
   end
 

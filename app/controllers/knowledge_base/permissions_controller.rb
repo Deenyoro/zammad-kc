@@ -9,7 +9,7 @@ class KnowledgeBase::PermissionsController < ApplicationController
   end
 
   def update
-    permissions_params = params.require(:permissions_dialog).permit(permissions: {})
+    permissions_params = params.expect(permissions_dialog: [permissions: {}])
 
     KnowledgeBase::PermissionsUpdate.new(@object, current_user).update_using_params!(permissions_params)
 
