@@ -11,6 +11,10 @@ module Tasks
         end
 
         def self.task_handler
+
+          # ensure umask is correct for asset handling #5846
+          set_default_umask
+
           if ::Package.app_package_installation?
             exec_command('zammad run rake zammad:package:migrate')
             exec_command('zammad run rake zammad:package:precompile')

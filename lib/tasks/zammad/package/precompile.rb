@@ -39,6 +39,10 @@ module Tasks
         end
 
         def self.task_handler
+
+          # ensure umask is correct for asset handling #5846
+          set_default_umask
+
           setup_javascript_environment
           assets_precompile
 
