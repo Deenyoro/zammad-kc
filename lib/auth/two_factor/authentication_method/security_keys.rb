@@ -107,7 +107,7 @@ class Auth::TwoFactor::AuthenticationMethod::SecurityKeys < Auth::TwoFactor::Aut
     require 'webauthn' # Only load when it is actually used
 
     WebAuthn.configure do |config|
-      config.origin = "#{Setting.get('http_type')}://#{Setting.get('fqdn')}"
+      config.allowed_origins = ["#{Setting.get('http_type')}://#{Setting.get('fqdn')}"]
       config.rp_name = issuer
       config.credential_options_timeout = 120_000
     end

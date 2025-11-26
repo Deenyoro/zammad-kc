@@ -74,7 +74,7 @@ FactoryBot.define do
         #   the emulated two factor preferences.
         credential do
           WebAuthn.configure do |config|
-            config.origin  = "#{Setting.get('http_type')}://#{Capybara.app_host.gsub(%r{^https?://}, '')}:#{Capybara.current_session.server.port}"
+            config.allowed_origins = ["#{Setting.get('http_type')}://#{Capybara.app_host.gsub(%r{^https?://}, '')}:#{Capybara.current_session.server.port}"]
             config.rp_name = Setting.get('organization').presence || Setting.get('product_name').presence || 'Zammad'
             config.credential_options_timeout = 120_000
           end
