@@ -95,7 +95,12 @@ const goToTicketSearch = () => {
           :total-count="totalCount"
           @click="pagination.fetchNextPage"
         />
-        <CommonButton variant="secondary" size="small" @click="goToTicketSearch">
+        <CommonButton
+          v-if="totalCount > 5"
+          variant="secondary"
+          size="small"
+          @click="goToTicketSearch"
+        >
           {{ $t('Search all') }}
         </CommonButton>
       </div>

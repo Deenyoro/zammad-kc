@@ -46,13 +46,14 @@ const isAgent = computed(() => session.hasPermission('ticket.agent'))
   <CommonPopoverWithTrigger
     v-if="isAgent"
     :class="[
-      !$slots?.default?.() ? 'rounded-full! focus-visible:outline-2!' : '',
+      !$slots?.default?.() ? 'rounded-md! focus-visible:outline-1!' : '',
       triggerClass ?? '',
     ]"
     :no-hover-styling="noHoverStyling"
     :no-focus-styling="noFocusStyling"
     :z-index="zIndex"
     :trigger-link="!noLink ? `/tickets/${ticket.internalId}` : undefined"
+    trigger-link-class="focus-visible:rounded-md!"
     :trigger-link-active-class="
       !$slots?.default?.()
         ? 'outline-2! outline-offset-1! outline-blue-800! hover:outline-blue-800!'
