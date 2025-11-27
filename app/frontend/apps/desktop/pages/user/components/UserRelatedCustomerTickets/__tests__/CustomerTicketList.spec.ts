@@ -123,6 +123,7 @@ describe('CustomerTicketList.vue', () => {
     expect(within(list).getAllByRole('listitem')).toHaveLength(3)
 
     expect(view.queryByRole('button', { name: 'Show more' })).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Search all' })).not.toBeInTheDocument()
   })
 
   it('renders a show more button if needed', async () => {
@@ -138,7 +139,7 @@ describe('CustomerTicketList.vue', () => {
   })
 
   it('renders a search all button', async () => {
-    const view = await renderCustomerTicketList(3, {
+    const view = await renderCustomerTicketList(6, {
       stateTypeCategory: EnumTicketStateTypeCategory.Closed,
     })
 
