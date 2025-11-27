@@ -84,12 +84,12 @@ const variantClasses = computed(() => {
 const sizeClasses = computed(() => {
   switch (props.size) {
     case 'large':
-      return ['btn-lg', 'text-base']
+      return ['text-base']
     case 'medium':
-      return ['btn-md', 'text-sm']
+      return ['text-sm']
     case 'small':
     default:
-      return ['btn-sm', 'text-xs']
+      return ['text-xs']
   }
 })
 
@@ -143,7 +143,7 @@ const iconSizeClass = computed(() => {
 
 <template>
   <button
-    class="inline-flex h-min min-h-min flex-shrink-0 flex-nowrap items-center justify-center gap-x-1 border-0 font-normal shadow-none transition-transform duration-200 hover:outline-1 hover:outline-offset-1 hover:outline-blue-600 focus:outline-0 focus:hover:outline-1 focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 focus:active:scale-[95%] dark:hover:outline-blue-900"
+    class="inline-flex h-min min-h-min shrink-0 flex-nowrap items-center justify-center gap-x-1 border-0 font-normal shadow-none transition-transform duration-200 hover:outline-1 hover:outline-offset-1 hover:outline-blue-600 focus:outline-0 focus:hover:outline-1 focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 focus:active:scale-[95%] dark:hover:outline-blue-900"
     :class="[
       ...variantClasses,
       ...sizeClasses,

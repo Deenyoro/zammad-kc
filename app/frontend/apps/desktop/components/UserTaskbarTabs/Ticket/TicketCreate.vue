@@ -31,9 +31,9 @@ const { currentViewTitle } = useTicketCreateTitle(currentTitle, currentArticleTy
     v-if="taskbarTabLink"
     ref="tabLinkInstance"
     v-tooltip="currentViewTitle"
-    class="flex grow gap-2 px-2 py-3 group-hover/tab:bg-blue-600 hover:no-underline! group-hover/tab:dark:bg-blue-900"
+    class="grow flex items-center gap-2 px-2 py-3 group-hover/tab:bg-blue-600 hover:no-underline! group-hover/tab:dark:bg-blue-900"
     :class="{
-      ['!bg-blue-800 text-white']: taskbarTabActive,
+      ['bg-blue-800! text-white']: taskbarTabActive,
       'group-focus-visible/link:text-white': collapsed,
       'rounded-lg!': !collapsed,
     }"
@@ -46,7 +46,7 @@ const { currentViewTitle } = useTicketCreateTitle(currentTitle, currentArticleTy
         'text-white!': taskbarTabActive,
       }"
       name="pencil"
-      size="small"
+      size="tiny"
       decorative
     />
 

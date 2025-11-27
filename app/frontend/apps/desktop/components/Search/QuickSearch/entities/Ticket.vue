@@ -25,13 +25,13 @@ const itemLabel = computed(() => {
 <template>
   <TicketPopoverWithTrigger
     :popover-config="{ orientation: 'right' }"
-    class="group/item flex grow gap-2 rounded-md px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:no-underline!"
+    class="group/item grow flex items-center gap-2 rounded-md px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:no-underline!"
     trigger-link-active-class="outline-2! outline-offset-1! outline-blue-800! hover:outline-blue-800!"
     :ticket="item as Ticket"
   >
     <CommonTicketStateIndicatorIcon
       class="shrink-0"
-      icon-size="small"
+      icon-size="tiny"
       :color-code="item.stateColorCode"
       :label="item.state.name"
     />

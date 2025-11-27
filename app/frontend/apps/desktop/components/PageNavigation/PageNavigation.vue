@@ -46,7 +46,7 @@ const permittedRoutes = computed(() => {
             <li class="flex justify-center">
               <CommonButton
                 v-if="collapsed"
-                class="flex-shrink-0 text-neutral-400 hover:outline-blue-900"
+                class="shrink-0 text-neutral-400 hover:outline-blue-900"
                 size="large"
                 variant="neutral"
                 :aria-label="$t('Open quick search')"
@@ -62,7 +62,7 @@ const permittedRoutes = computed(() => {
             >
               <CommonButton
                 v-if="collapsed"
-                class="focus-visible-app-default flex-shrink-0 text-neutral-400 hover:outline-blue-900"
+                class="focus-visible-app-default shrink-0 text-neutral-400 hover:outline-blue-900"
                 size="large"
                 variant="neutral"
                 :icon="route.meta.icon"
@@ -80,7 +80,7 @@ const permittedRoutes = computed(() => {
               >
                 <CommonLabel
                   class="gap-2 text-sm! text-current!"
-                  size="large"
+                  size="medium"
                   :prefix-icon="route.meta.icon"
                 >
                   {{ $t(route.meta.title) }}

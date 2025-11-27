@@ -17,15 +17,15 @@ const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTab(toRef(props, 'ta
     v-if="taskbarTabLink"
     ref="tabLinkInstance"
     v-tooltip="$t('You have insufficient rights to view this object.')"
-    class="focus-visible-app-default flex grow gap-2 px-2 py-3 group-hover/tab:bg-blue-600 hover:no-underline! group-hover/tab:dark:bg-blue-900"
+    class="focus-visible-app-default grow flex items-center gap-2 px-2 py-3 group-hover/tab:bg-blue-600 hover:no-underline! group-hover/tab:dark:bg-blue-900"
     :class="{
-      ['!bg-blue-800 text-white']: taskbarTabActive,
+      ['bg-blue-800! text-white']: taskbarTabActive,
       'rounded-lg!': !collapsed,
     }"
     :link="taskbarTabLink"
     internal
   >
-    <CommonIcon name="x-lg" size="small" class="shrink-0 text-red-500" decorative />
+    <CommonIcon name="x-lg" size="tiny" class="shrink-0 text-red-500" decorative />
 
     <CommonLabel
       class="block! truncate text-gray-300 group-hover/tab:text-white dark:text-neutral-400"

@@ -33,8 +33,6 @@ const ticketColorCode = computed(() => {
   return props.ticket?.stateColorCode || EnumTicketStateColorCode.Open
 })
 
-const iconSize = computed(() => (props.noWrap ? 'small' : 'tiny'))
-
 const component = computed(() => (props.noLink ? 'div' : 'CommonLink'))
 
 const { getTicketNumberWithTitle } = useTicketNumberAndTitle()
@@ -42,7 +40,7 @@ const { getTicketNumberWithTitle } = useTicketNumberAndTitle()
 
 <template>
   <div v-if="unauthorized" class="flex grow items-center gap-2">
-    <CommonIcon class="shrink-0 text-red-500" :size="iconSize" name="x-lg" />
+    <CommonIcon class="shrink-0 text-red-500" size="tiny" name="x-lg" />
     <CommonLabel class="text-black! dark:text-white!">{{ $t('Access denied') }}</CommonLabel>
   </div>
   <component
@@ -68,7 +66,7 @@ const { getTicketNumberWithTitle } = useTicketNumberAndTitle()
       :color-code="ticketColorCode"
       :label="ticketState"
       :aria-labelledby="ticketId"
-      :icon-size="iconSize"
+      icon-size="tiny"
     />
     <div v-if="withTimestamp" class="flex flex-col">
       <CommonLabel

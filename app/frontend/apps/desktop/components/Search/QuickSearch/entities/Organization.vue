@@ -17,14 +17,14 @@ const isOrganizationInactive = computed(() => !props.item.active)
 <template>
   <OrganizationPopoverWithTrigger
     :popover-config="{ orientation: 'right' }"
-    class="group/item flex grow gap-2 rounded-md px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:no-underline!"
+    class="group/item grow flex items-center gap-2 rounded-md px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:no-underline!"
     :organization="item as Organization"
     :aria-description="isOrganizationInactive ? $t('Organization is inactive.') : undefined"
   >
     <CommonIcon
       class="shrink-0 text-neutral-500"
       :name="isOrganizationInactive ? 'buildings-slash' : 'buildings'"
-      size="small"
+      size="tiny"
       decorative
     />
     <CommonLabel
