@@ -1,12 +1,16 @@
-query ticketsByFilter(
+query customerTicketsByFilter(
   $customerId: ID
+  $customerOrganizations: Boolean
   $stateTypeCategory: EnumTicketStateTypeCategory
   $pageSize: Int = 7
+  $cursor: String
 ) {
   ticketsByFilter(
     customerId: $customerId
+    customerOrganizations: $customerOrganizations
     stateTypeCategory: $stateTypeCategory
     first: $pageSize
+    after: $cursor
   ) {
     totalCount
     edges {
@@ -20,7 +24,11 @@ query ticketsByFilter(
           id
           name
         }
+        createdAt
       }
+    }
+    pageInfo {
+      endCursor
     }
   }
 }

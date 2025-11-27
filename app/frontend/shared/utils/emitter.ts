@@ -2,7 +2,7 @@
 
 import mitt, { type Emitter } from 'mitt'
 
-export type Events = {
+type StaticEvents = {
   'session-invalid': void
   'expand-collapsed-content': string
   'focus-quick-search-field': void
@@ -14,6 +14,12 @@ export type Events = {
   'websocket-close': void
   reconnected: void
 }
+
+type DynamicEvents = {
+  [key in `customer-ticket-list-refetch:${string}`]: void
+}
+
+export type Events = StaticEvents & DynamicEvents
 
 const emitter: Emitter<Events> = mitt<Events>()
 

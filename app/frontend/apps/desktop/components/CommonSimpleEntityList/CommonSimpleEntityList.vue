@@ -67,10 +67,16 @@ const entitySetup = computed(() => {
   >
     <template #title="{ title, size }">
       <CommonLabel
-        class="grow select-none"
-        :class="labelClass"
+        class="grow"
+        :class="[
+          labelClass,
+          {
+            'select-none': !noCollapse,
+          },
+        ]"
         :size="labelSize ?? size"
         :tag="labelTag"
+        :aria-label="$t(title)"
       >
         {{ $t(title) }}
         <CommonBadge class="leading-snug font-bold ltr:ml-1.5 rtl:mr-1.5" size="xs" rounded>

@@ -4,22 +4,22 @@ class TicketOnlineNotificationSeenJob < ApplicationJob
   include HasActiveJobLock
 
   def lock_key
+    ticket = arguments[0]
+
     # "TicketOnlineNotificationSeenJob/23/42"
-    "#{self.class.name}/#{arguments[0]}/#{arguments[1]}"
+    "#{self.class.name}/#{ticket.id}/#{arguments[1]}"
   end
 
-  def perform(ticket_id, user_id)
+  def perform(ticket, user_id)
     user_id ||= 1
 
     # set all online notifications to seen
     Transaction.execute do
-      ticket = Ticket.lookup(id: ticket_id)
-      return if ticket.nil?
       return if !OnlineNotification.seen_state?(ticket)
 
       mention_user_ids = ticket.mentions.map(&:user_id)
 
-      unseen_notifications = OnlineNotification.list_by_object('Ticket', ticket_id)
+      unseen_notifications = OnlineNotification.list_by_object('Ticket', ticket.id)
                                                .where(seen: false)
                                                .where.not(user_id: mention_user_ids)
 

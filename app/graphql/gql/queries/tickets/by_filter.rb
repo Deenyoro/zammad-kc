@@ -6,6 +6,7 @@ module Gql::Queries
     description 'Fetch tickets of a given ticket overview'
 
     argument :customer_id, GraphQL::Types::ID, required: false, description: 'Filter by customer', loads: Gql::Types::UserType
+    argument :customer_organizations, Boolean, required: false, description: "Filter by customer's organizations only"
     argument :state_type_category, Gql::Types::Enum::TicketStateTypeCategoryType, required: false, description: 'Filter by state type category'
 
     type Gql::Types::TicketType.connection_type, null: false
@@ -14,15 +15,23 @@ module Gql::Queries
       ctx.current_user.permissions?(['ticket.agent'])
     end
 
-    def resolve(state_type_category: nil, customer: nil)
+    def resolve(customer: nil, customer_organizations: nil, state_type_category: nil)
       if customer.nil? && state_type_category.nil?
         raise Exceptions::UnprocessableEntity, __('At least one filter must be provided.')
+      end
+
+      if customer_organizations && customer.nil?
+        raise Exceptions::UnprocessableEntity, __("Filtering by customer's organizations requires customer filter to be provided.")
       end
 
       scope = ::TicketPolicy::ReadScope.new(context.current_user).resolve.reorder(id: :desc)
 
       if customer
-        scope = scope.where(customer: customer)
+        scope = if customer_organizations
+                  scope.where(organization_id: customer.all_organization_ids)
+                else
+                  scope.where(customer: customer)
+                end
       end
 
       if state_type_category

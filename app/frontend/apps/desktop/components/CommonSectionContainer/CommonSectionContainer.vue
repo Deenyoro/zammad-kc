@@ -1,8 +1,11 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
+import CommonLabel from '#shared/components/CommonLabel/CommonLabel.vue'
+
 export interface Props {
   label: string
+  noHeading?: boolean
   alternativeBackground?: boolean
 }
 
@@ -19,6 +22,14 @@ const props = defineProps<Props>()
       'bg-blue-200 dark:bg-gray-700': props.alternativeBackground,
     }"
   >
+    <CommonLabel
+      v-if="!noHeading"
+      size="medium"
+      class="text-black! dark:text-white! mb-2.5"
+      tag="h2"
+    >
+      {{ label }}
+    </CommonLabel>
     <slot />
   </div>
 </template>

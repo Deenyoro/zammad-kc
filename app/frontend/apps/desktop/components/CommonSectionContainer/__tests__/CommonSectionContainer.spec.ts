@@ -45,13 +45,47 @@ describe('CommonSectionContainer', () => {
     expect(wrapper.getByText('hello world')).toBeInTheDocument()
   })
 
-  it('renders nothing when slot is empty', () => {
+  it('renders only the heading when slot is empty', () => {
     const wrapper = renderComponent(CommonSectionContainer, {
       props: {
         label: 'test-label',
       },
     })
 
-    expect(wrapper.getByRole('region', { name: 'test-label' }).textContent?.trim()).toBe('')
+    expect(wrapper.getByRole('region', { name: 'test-label' }).textContent?.trim()).toBe(
+      'test-label',
+    )
+  })
+
+  it('renders CommonLabel when noHeading is false', () => {
+    const wrapper = renderComponent(CommonSectionContainer, {
+      props: {
+        label: 'test-label',
+      },
+    })
+
+    const container = wrapper.getByRole('region')
+    const heading = wrapper.getByRole('heading', { level: 2 })
+
+    expect(heading).toBeInTheDocument()
+    expect(heading).toHaveTextContent('test-label')
+
+    expect(container).toHaveAttribute('aria-label', 'test-label')
+  })
+
+  it('hides CommonLabel when noHeading is true', () => {
+    const wrapper = renderComponent(CommonSectionContainer, {
+      props: {
+        label: 'test-label',
+        noHeading: true,
+      },
+    })
+
+    const container = wrapper.getByRole('region', { name: 'test-label' })
+
+    expect(container).toBeInTheDocument()
+    expect(wrapper.queryByText('test-label')).toBeNull()
+
+    expect(container).toHaveAttribute('aria-label', 'test-label')
   })
 })

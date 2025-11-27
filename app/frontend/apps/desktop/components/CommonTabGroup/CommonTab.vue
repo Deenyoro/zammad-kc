@@ -62,6 +62,7 @@ const iconClassMap = {
       :class="{ 'cursor-pointer': !disabled && !active }"
       size="xs"
       rounded
+      aria-hidden="true"
     >
       {{ count }}
     </CommonBadge>

@@ -9,9 +9,9 @@ import { EnumTicketStateTypeCategory } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import {
-  mockTicketsByFilterQuery,
-  waitForTicketsByFilterQueryCalls,
-} from '#desktop/entities/ticket/graphql/queries/ticketsByFilter.mocks.ts'
+  mockCustomerTicketsByFilterQuery,
+  waitForCustomerTicketsByFilterQueryCalls,
+} from '#desktop/entities/ticket/graphql/queries/customerTicketsByFilter.mocks.ts'
 
 import TicketListPopoverWithTrigger, { type Props } from '../TicketListPopoverWithTrigger.vue'
 
@@ -23,7 +23,7 @@ const dummyFilters = {
 }
 
 const renderTicketListPopover = (props?: Partial<Props>) => {
-  mockTicketsByFilterQuery({
+  mockCustomerTicketsByFilterQuery({
     ticketsByFilter: {
       totalCount: 10,
       edges: dummyTickets.map((ticket) => ({
@@ -63,7 +63,7 @@ describe('TicketListPopoverWithTrigger', () => {
 
     await wrapper.events.hover(wrapper.getByText('Open Tickets'))
 
-    const calls = await waitForTicketsByFilterQueryCalls()
+    const calls = await waitForCustomerTicketsByFilterQueryCalls()
 
     expect(calls.at(-1)?.variables).toEqual({
       customerId: dummyFilters.customerId,
@@ -84,6 +84,6 @@ describe('TicketListPopoverWithTrigger', () => {
       wrapper.debug(popover)
     })
 
-    expect(await wrapper.findByRole('button')).toBeInTheDocument()
+    expect(await wrapper.findByRole('button', { name: 'Show more' })).toBeInTheDocument()
   })
 })

@@ -20,7 +20,7 @@ RSpec.describe TicketOnlineNotificationSeenJob, type: :job do
     ticket.save!
 
     expect do
-      described_class.perform_now(ticket.id, user.id)
+      described_class.perform_now(ticket, user.id)
     end.to change { online_notification.reload.seen }
   end
 
@@ -38,7 +38,7 @@ RSpec.describe TicketOnlineNotificationSeenJob, type: :job do
 
       # Ensure the mentioned user's notification is NOT auto-marked as seen
       # but the ticket owner's notification IS marked as seen
-      expect { described_class.perform_now(ticket.id, user.id) }
+      expect { described_class.perform_now(ticket, user.id) }
         .to not_change { mentioned_notification.reload.seen }.from(false)
         .and change { online_notification.reload.seen }.from(false).to(true)
     end

@@ -176,9 +176,9 @@ describe('SearchContent', () => {
 
     await Promise.all([waitForSearchCountsQueryCalls(), waitForDetailSearchQueryCalls()])
 
-    expect(wrapper.getByRole('tab', { name: 'Organization100' })).toBeInTheDocument()
-    expect(wrapper.getByRole('tab', { name: 'User250' })).toBeInTheDocument()
-    expect(wrapper.getByRole('tab', { name: 'Ticket0' })).toBeInTheDocument()
+    expect(wrapper.getByRole('tab', { name: 'Organization' })).toHaveTextContent('100')
+    expect(wrapper.getByRole('tab', { name: 'User' })).toHaveTextContent('250')
+    expect(wrapper.getByRole('tab', { name: 'Ticket' })).toHaveTextContent('0')
   })
 
   it('allows sorting of search results', async () => {
@@ -256,11 +256,11 @@ describe('SearchContent', () => {
 
     expect(wrapper.getByRole('button', { name: 'Bulk Actions' })).toBeInTheDocument()
 
-    await wrapper.events.click(wrapper.getByRole('tab', { name: 'Organization100' }))
+    await wrapper.events.click(wrapper.getByRole('tab', { name: 'Organization' }))
 
     expect(wrapper.queryByRole('button', { name: 'Bulk Actions' })).not.toBeInTheDocument()
 
-    await wrapper.events.click(wrapper.getByRole('tab', { name: 'User100' }))
+    await wrapper.events.click(wrapper.getByRole('tab', { name: 'User' }))
 
     expect(wrapper.queryByRole('button', { name: 'Bulk Actions' })).not.toBeInTheDocument()
   })

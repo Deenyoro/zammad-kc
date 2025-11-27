@@ -5,8 +5,16 @@ require 'rails_helper'
 RSpec.describe Gql::Queries::Tickets::ByFilter, type: :graphql do
   let(:query) do
     <<~QUERY
-      query ticketsByFilter($customerId: ID, $stateTypeCategory: EnumTicketStateTypeCategory) {
-        ticketsByFilter(customerId: $customerId, stateTypeCategory: $stateTypeCategory) {
+      query ticketsByFilter(
+        $customerId: ID
+        $customerOrganizations: Boolean
+        $stateTypeCategory: EnumTicketStateTypeCategory
+      ) {
+        ticketsByFilter(
+          customerId: $customerId
+          customerOrganizations: $customerOrganizations
+          stateTypeCategory: $stateTypeCategory
+        ) {
           edges {
             node {
               id
@@ -19,8 +27,9 @@ RSpec.describe Gql::Queries::Tickets::ByFilter, type: :graphql do
   end
   let(:variables)           { { customerId: gql.id(customer), stateTypeCategory: state_type_category } }
   let(:group)               { create(:group) }
-  let(:customer)            { create(:customer) }
-  let!(:customer_ticket)    { create(:ticket, group:, customer:) }
+  let(:organization)        { create(:organization, shared: true) }
+  let(:customer)            { create(:customer, organization:) }
+  let!(:customer_ticket)    { create(:ticket, group:, customer:, organization:) }
   let(:user)                { create(:agent, groups: [group]) }
   let(:state_type_category) { 'open' }
 
@@ -63,8 +72,37 @@ RSpec.describe Gql::Queries::Tickets::ByFilter, type: :graphql do
           )
         end
       end
-    end
 
+      context "with customer's organizations only" do
+        let(:variables) { { customerId: gql.id(customer), customerOrganizations: true, stateTypeCategory: state_type_category } }
+
+        context 'with matching tickets' do
+          it 'returns data' do
+            expect(gql.result.data).to eq(
+              {
+                'edges'      => [
+                  { 'node' => { 'id' => gql.id(customer_ticket) } },
+                ],
+                'totalCount' => 1
+              }
+            )
+          end
+        end
+
+        context 'without matching tickets' do
+          let(:state_type_category) { 'closed' }
+
+          it 'returns empty data' do
+            expect(gql.result.data).to eq(
+              {
+                'edges'      => [],
+                'totalCount' => 0
+              }
+            )
+          end
+        end
+      end
+    end
   end
 
   context 'with a customer', authenticated_as: :user do

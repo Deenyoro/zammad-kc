@@ -29,6 +29,7 @@ RSpec.describe TicketUserTicketCounterJob, type: :job do
   it 'checks if customer ticket count has been updated in preferences' do
     described_class.perform_now(
       customer.id,
+      nil,
       customer.id,
     )
     customer.reload

@@ -18,6 +18,7 @@ interface Props {
     indicator?: string
     label?: string
   }
+  withTimestamp?: boolean
 }
 
 const props = defineProps<Props>()
@@ -69,7 +70,20 @@ const { getTicketNumberWithTitle } = useTicketNumberAndTitle()
       :aria-labelledby="ticketId"
       :icon-size="iconSize"
     />
+    <div v-if="withTimestamp" class="flex flex-col">
+      <CommonLabel
+        :id="ticketId"
+        class="self-start mt-0.5 text-blue-800! group-hover:text-blue-850! group-hover:dark:text-blue-600!"
+        :class="[classes?.label || '', { 'mt-0! line-clamp-1!': noWrap }]"
+      >
+        {{ ticket?.title }}
+      </CommonLabel>
+      <CommonLabel class="self-start text-stone-200 dark:text-neutral-500">
+        <CommonDateTime :date-time="ticket?.createdAt!" />
+      </CommonLabel>
+    </div>
     <CommonLabel
+      v-else
       :id="ticketId"
       class="mt-0.5 text-blue-800! group-hover:text-blue-850! group-hover:dark:text-blue-600!"
       :class="[classes?.label || '', { 'mt-0! line-clamp-1!': noWrap }]"

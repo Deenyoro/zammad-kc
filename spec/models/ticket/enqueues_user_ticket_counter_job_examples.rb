@@ -9,4 +9,8 @@ RSpec.shared_examples 'TicketEnqueuesTicketUserTicketCounterJob', type: :job do
     subject.customer = customer
     expect { subject.save }.to have_enqueued_job(TicketUserTicketCounterJob)
   end
+
+  it 'enqueues a job for the customer on create' do
+    expect { create(described_class.name.underscore) }.to have_enqueued_job(TicketUserTicketCounterJob)
+  end
 end

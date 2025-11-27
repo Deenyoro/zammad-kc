@@ -7,8 +7,9 @@ import type { Orientation } from '#desktop/components/CommonPopover/types.ts'
 import type { Component } from 'vue'
 
 export enum EntityType {
-  User = 'User',
   Organization = 'Organization',
+  Ticket = 'Ticket',
+  User = 'User',
 }
 
 export interface Entity<T = ObjectLike> {

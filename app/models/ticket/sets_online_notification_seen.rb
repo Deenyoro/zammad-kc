@@ -24,6 +24,6 @@ module Ticket::SetsOnlineNotificationSeen
 
     # set all online notifications to seen
     # send background job
-    TicketOnlineNotificationSeenJob.perform_later(id, updated_by_id)
+    TicketOnlineNotificationSeenJob.perform_later(self, updated_by_id)
   end
 end

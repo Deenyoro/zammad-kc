@@ -7,7 +7,7 @@ import * as VueCompositionApi from 'vue';
 export type ReactiveFunction<TParam> = () => TParam;
 
 export const UserDocument = gql`
-    query user($userId: ID!, $secondaryOrganizationsCount: Int, $after: String) {
+    query user($userId: ID!, $secondaryOrganizationsCount: Int, $after: String, $hasOrganizationCounts: Boolean! = false) {
   user(userId: $userId) {
     ...userDetailAttributes
     hasSecondaryOrganizations
@@ -16,6 +16,10 @@ export const UserDocument = gql`
       openSearchQuery
       closed
       closedSearchQuery
+      organizationOpen @include(if: $hasOrganizationCounts)
+      organizationOpenSearchQuery @include(if: $hasOrganizationCounts)
+      organizationClosed @include(if: $hasOrganizationCounts)
+      organizationClosedSearchQuery @include(if: $hasOrganizationCounts)
     }
     policy {
       update

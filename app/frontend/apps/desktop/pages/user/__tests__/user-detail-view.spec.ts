@@ -7,10 +7,11 @@ import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
 import { mockUserQuery } from '#shared/entities/user/graphql/queries/user.mocks.ts'
-import { getUserUpdatesSubscriptionHandler } from '#shared/graphql/subscriptions/userUpdates.mocks.ts'
 import type { OrganizationEdge, User } from '#shared/graphql/types.ts'
 
+import { waitForCustomerTicketsByFilterQueryCalls } from '#desktop/entities/ticket/graphql/queries/customerTicketsByFilter.mocks.ts'
 import { waitForTicketsStatsMonthlyByCustomerQueryCalls } from '#desktop/entities/ticket/graphql/queries/ticketsStatsMonthlyByCustomer.mocks.ts'
+import { getCustomerTicketsByFilterUpdatesSubscriptionHandler } from '#desktop/entities/ticket/graphql/subscriptions/customerTicketsByFilterUpdates.mocks.ts'
 
 const copyToClipboardMock = vi.fn()
 
@@ -51,6 +52,13 @@ const user: User = {
   policy: {
     update: true,
     destroy: true,
+  },
+  ticketsCount: {
+    __typename: 'TicketCount',
+    open: 5,
+    closed: 10,
+    organizationOpen: 15,
+    organizationClosed: 20,
   },
   createdAt: '2020-01-01T12:00:00Z',
   updatedAt: '2020-01-01T12:00:00Z',
@@ -155,15 +163,6 @@ describe('User Detail View', () => {
     mockUserQuery({ user })
   })
 
-  it('renders a user chart', async () => {
-    const view = await visitView('/users/2')
-
-    const main = view.getByRole('main')
-    const chart = within(main).getByTestId('chart')
-
-    expect(chart).toBeVisible()
-  })
-
   describe('Top information bar', () => {
     it('displays breadcrumb navigation', async () => {
       const view = await visitView('/users/2')
@@ -212,20 +211,6 @@ describe('User Detail View', () => {
     })
   })
 
-  describe('Object attributes', () => {
-    it('displays user attributes', async () => {
-      const view = await visitView('/users/2')
-
-      const main = view.getByRole('main')
-
-      expect(within(main).getByText('Email').parentElement).toHaveTextContent(
-        'nicole.braun@zammad.org',
-      )
-      expect(within(main).getByText('Phone').parentElement).toHaveTextContent('+49 123 4567890')
-      expect(within(main).getByText('Mobile').parentElement).toHaveTextContent('+49 987 6543210')
-    })
-  })
-
   describe('Secondary organizations', () => {
     it('hides section when user has no secondary organizations', async () => {
       const view = await visitView('/users/2')
@@ -261,8 +246,8 @@ describe('User Detail View', () => {
       const container = within(main).getByRole('region', { name: 'Secondary organizations' })
 
       expect(
-        within(container).getByRole('heading', { name: 'Secondary organizations 2' }),
-      ).toBeInTheDocument()
+        within(container).getByRole('heading', { name: 'Secondary organizations' }),
+      ).toHaveTextContent('2')
 
       waitFor(() => {
         expect(within(container).getByText('Secondary Org 1')).toBeInTheDocument()
@@ -294,8 +279,8 @@ describe('User Detail View', () => {
       const container = within(main).getByRole('region', { name: 'Secondary organizations' })
 
       expect(
-        within(container).getByRole('heading', { name: 'Secondary organizations 5' }),
-      ).toBeInTheDocument()
+        within(container).getByRole('heading', { name: 'Secondary organizations' }),
+      ).toHaveTextContent('5')
 
       waitFor(() => {
         expect(within(container).getByText('Secondary Org 1')).toBeInTheDocument()
@@ -335,17 +320,99 @@ describe('User Detail View', () => {
         ).not.toBeInTheDocument()
       })
     })
+  })
 
-    it('refetches chart data when user subscription triggers', async () => {
+  describe('Object attributes', () => {
+    it('displays user attributes', async () => {
+      const view = await visitView('/users/2')
+
+      const main = view.getByRole('main')
+
+      expect(within(main).getByText('Email').parentElement).toHaveTextContent(
+        'nicole.braun@zammad.org',
+      )
+      expect(within(main).getByText('Phone').parentElement).toHaveTextContent('+49 123 4567890')
+      expect(within(main).getByText('Mobile').parentElement).toHaveTextContent('+49 987 6543210')
+    })
+  })
+
+  describe('Related tickets', () => {
+    it('displays related tickets section', async () => {
+      const view = await visitView('/users/2')
+
+      const calls = await waitForCustomerTicketsByFilterQueryCalls()
+
+      expect(calls).toHaveLength(2)
+
+      const main = view.getByRole('main')
+      const relatedTicketsSection = within(main).getByRole('region', { name: 'Related tickets' })
+
+      expect(
+        within(relatedTicketsSection).getByRole('heading', { name: 'Related tickets', level: 2 }),
+      ).toBeVisible()
+
+      expect(within(relatedTicketsSection).getAllByRole('tab')).toHaveLength(2)
+
+      const userTab = within(relatedTicketsSection).getByRole('tab', { name: 'User' })
+
+      expect(userTab).toHaveTextContent('15')
+      expect(userTab).toHaveAttribute('aria-selected', 'true')
+
+      const organizationTab = within(relatedTicketsSection).getByRole('tab', {
+        name: 'Organization',
+      })
+
+      expect(organizationTab).toHaveTextContent('35')
+      expect(organizationTab).not.toHaveAttribute('aria-selected', 'true')
+
+      await view.events.click(organizationTab)
+
+      expect(userTab).not.toHaveAttribute('aria-selected', 'true')
+      expect(organizationTab).toHaveAttribute('aria-selected', 'true')
+
+      expect(calls).toHaveLength(4)
+    })
+
+    it('refetch related tickets when user subscription triggers', async () => {
+      await visitView('/users/2')
+
+      const calls = await waitForCustomerTicketsByFilterQueryCalls()
+
+      expect(calls).toHaveLength(2)
+
+      await getCustomerTicketsByFilterUpdatesSubscriptionHandler().trigger({
+        ticketCustomerTicketsByFilterUpdates: {
+          listChanged: true,
+        },
+      })
+
+      expect(calls).toHaveLength(4)
+    })
+  })
+
+  describe('Ticket frequency', () => {
+    it('renders a chart', async () => {
+      const view = await visitView('/users/2')
+
+      const main = view.getByRole('main')
+      const chart = within(main).getByTestId('chart')
+
+      expect(chart).toBeVisible()
+    })
+
+    it('refetch chart data when user subscription triggers', async () => {
       await visitView('/users/2')
 
       const calls = await waitForTicketsStatsMonthlyByCustomerQueryCalls()
 
       expect(calls).toHaveLength(1)
 
-      await getUserUpdatesSubscriptionHandler().trigger()
+      await getCustomerTicketsByFilterUpdatesSubscriptionHandler().trigger({
+        ticketCustomerTicketsByFilterUpdates: {
+          listChanged: true,
+        },
+      })
 
-      // ⚠️ Currently, we react on the entire subscription update for the user. (Every attribute)
       expect(calls).toHaveLength(2)
     })
   })

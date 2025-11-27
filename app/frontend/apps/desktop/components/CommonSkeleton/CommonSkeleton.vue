@@ -6,6 +6,7 @@ import { computed } from 'vue'
 interface Props {
   rounded?: boolean
   label?: string
+  alternativeBackground?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -13,6 +14,9 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const roundedClass = computed(() => (props.rounded ? 'rounded-full' : 'rounded-md'))
+const bgClass = computed(() =>
+  props.alternativeBackground ? 'bg-blue-300 dark:bg-gray-700' : 'bg-blue-200 dark:bg-gray-700',
+)
 </script>
 
 <template>
@@ -24,7 +28,10 @@ const roundedClass = computed(() => (props.rounded ? 'rounded-full' : 'rounded-m
     aria-valuemax="100"
     :aria-label="$t(label)"
     :aria-valuetext="$t('Please wait until content is loaded')"
-    class="bg-primary animate-pulse bg-blue-200 focus:outline-none focus-visible:rounded-md focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 focus-visible:outline-none dark:bg-gray-700"
-    :class="[roundedClass]"
+    :class="[
+      roundedClass,
+      bgClass,
+      'animate-pulse focus:outline-none focus-visible:rounded-md focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 focus-visible:outline-none',
+    ]"
   />
 </template>

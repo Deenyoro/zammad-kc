@@ -78,7 +78,7 @@ describe('CommonSimpleEntityList', () => {
       },
     })
 
-    expect(wrapper.getByText('Foo Label')).toBeInTheDocument()
+    expect(wrapper.getByRole('heading', { name: 'Foo Label', level: 3 })).toBeInTheDocument()
   })
 
   it('hides load more button if less than three entities are available', () => {
