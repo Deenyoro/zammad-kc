@@ -90,7 +90,7 @@ const { showPreview } = useFilePreviewViewer(
     ]"
   >
     <UserPopoverWithTrigger
-      class="!absolute bottom-0"
+      class="absolute! bottom-0"
       :class="{
         'ltr:-right-2.5 ltr:translate-x-full rtl:-left-2.5 rtl:-translate-x-full':
           position === 'right',
