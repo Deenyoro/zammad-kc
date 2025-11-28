@@ -121,7 +121,13 @@ class App.TextToolsModal extends App.ControllerModal
 
   onSubmit: =>
     if @feedbackWidget
-      @feedbackWidget.recordUsage(context: { approved: true })
+      @feedbackWidget.recordUsage(context: { approved: true }, null, =>
+        @notify(
+          type: 'error'
+          msg:  __('Your AI result usage could not be recorded.')
+        )
+        false
+      )
 
     @approve(@result)
     @close()

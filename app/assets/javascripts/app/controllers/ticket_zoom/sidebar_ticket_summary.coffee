@@ -128,6 +128,11 @@ class App.SidebarTicketSummary extends App.Controller
     @badgeRenderLocal()
     @feedbackWidget?.recordUsage({}, null, =>
       @hasUsage = false
+      @notify(
+        type: 'error'
+        msg:  __('Your AI result usage could not be recorded.')
+      )
+      false
     )
     @hasUsage = true
 

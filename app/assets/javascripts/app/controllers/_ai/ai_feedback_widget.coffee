@@ -30,7 +30,7 @@ class App.AIFeedbackWidget extends App.Controller
       hasProvidedFeedback: @hasProvidedFeedback
     )
 
-  recordUsage: (payload = {}, success = null, error = null) =>
+  recordUsage: (payload = {}, successCallback = null, errorCallback = null) =>
     return if not @runId
 
     @alert.addClass('hide')
@@ -42,15 +42,16 @@ class App.AIFeedbackWidget extends App.Controller
       url:         "#{@apiPath}/ai/analytics/usages"
       data:        JSON.stringify(payload)
       processData: true
-      success:     success
+      success:     successCallback
       error:       (data, status) =>
         details = data.responseJSON || {}
+
+        showFeedbackAlert = errorCallback?(data, status)
+        return if showFeedbackAlert is false
 
         @alert
           .html(details.error_human || details.error || __('Your feedback could not be recorded, please try again later.'))
           .removeClass('hide')
-
-        error?(data, status)
     )
 
   submitPositiveReaction: (e) ->
