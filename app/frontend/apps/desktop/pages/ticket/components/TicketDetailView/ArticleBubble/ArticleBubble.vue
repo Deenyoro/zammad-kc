@@ -22,9 +22,7 @@ import ArticleReactionBadge from '#desktop/pages/ticket/components/TicketDetailV
 
 const ArticleBubbleHeader = defineAsyncComponent(
   () =>
-    import(
-      '#desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleHeader.vue'
-    ),
+    import('#desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleHeader.vue'),
 )
 
 interface Props {
