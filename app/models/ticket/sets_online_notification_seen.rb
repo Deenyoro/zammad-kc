@@ -5,7 +5,7 @@ module Ticket::SetsOnlineNotificationSeen
   extend ActiveSupport::Concern
 
   included do
-    after_save_commit :ticket_set_online_notification_seen
+    after_save :ticket_set_online_notification_seen
   end
 
   private
@@ -22,8 +22,9 @@ module Ticket::SetsOnlineNotificationSeen
     # check if existing online notifications for this ticket should be set to seen
     return true if !OnlineNotification.seen_state?(self)
 
-    # set all online notifications to seen
-    # send background job
-    TicketOnlineNotificationSeenJob.perform_later(self, updated_by_id)
+    # Register after_commit callback to enqueue the job after transaction completes.
+    ApplicationModel.current_transaction.after_commit do
+      TicketOnlineNotificationSeenJob.perform_later(self, updated_by_id)
+    end
   end
 end

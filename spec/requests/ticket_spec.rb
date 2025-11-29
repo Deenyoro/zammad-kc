@@ -1817,6 +1817,44 @@ RSpec.describe 'Ticket', type: :request do
       expect(ticket.articles.count).to eq(0)
     end
 
+    it 'does ticket update with article and sets online notification as seen', performs_jobs: true do
+      other_agent = create(:agent, groups: [ticket_group])
+      ticket = create(
+        :ticket,
+        title:         'test ticket',
+        group:         ticket_group,
+        owner:         other_agent,
+        customer_id:   customer.id,
+        updated_by_id: other_agent.id,
+        created_by_id: other_agent.id,
+      )
+
+      # Create an online notification for the ticket owner (not the agent doing the update)
+      online_notification = create(:online_notification, o_id: ticket.id, user_id: other_agent.id, seen: false)
+
+      params = {
+        state:   'closed',
+        article: {
+          body:         'test article',
+          content_type: 'text/plain',
+          type:         'note',
+          sender:       'Agent',
+        }
+      }
+      authenticated_as(agent)
+
+      # Perform the update with ticket update and article in a transaction.
+      put "/api/v1/tickets/#{ticket.id}", params: params, as: :json
+
+      expect(response).to have_http_status(:ok)
+
+      # Execute the enqueued job
+      perform_enqueued_jobs
+
+      # Verify the notification was marked as seen
+      expect(online_notification.reload.seen).to be true
+    end
+
     it 'does ticket split with html - check attachments (05.01)' do
       ticket = create(
         :ticket,
