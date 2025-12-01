@@ -342,6 +342,13 @@ const {
   wrapperInlineDesktopClasses,
   inputInlineDesktopTextStyles,
 } = useInlineMode(toRef(props, 'context'), wrapperElement)
+
+const reclaimEditorFocus = (event: MouseEvent) => {
+  // Place cursor at end when clicking the wrapper directly (not editor content).
+  // Should be true only for inline mode, when button group is not sticky.
+  if ((event.target as HTMLElement).getAttribute('data-field') === 'wrapper')
+    editor.value?.commands.focus('end')
+}
 </script>
 
 <template>
@@ -371,6 +378,8 @@ const {
       {{ context.label }}
     </CommonLabel>
 
+    <!-- We don't need to make thi div a11y, since it affects only no SR users.    -->
+    <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events   -->
     <div
       :class="[
         classes.input.container,
@@ -379,6 +388,8 @@ const {
           [classes.input.inlineContainer]: isInlineMode,
         },
       ]"
+      data-field="wrapper"
+      @click="reclaimEditorFocus"
     >
       <EditorContent
         class="text-base cursor-text"
@@ -400,17 +411,17 @@ const {
       />
 
       <!-- BUTTON group is only implemented in DESKTOP -->
-      <div v-if="isInlineMode && buttonGroup" class="flex justify-end sticky bottom-0">
-        <component
-          :is="buttonGroup"
-          :class="{ invisible: !isEditing }"
-          :submit-disabled="isSubmitting"
-          :cancel-disabled="isSubmitting"
-          @click.stop
-          @cancel="handleCancel"
-          @submit="handleChange"
-        />
-      </div>
+      <component
+        :is="buttonGroup"
+        v-if="isInlineMode && buttonGroup"
+        class="sticky bottom-0 float-right"
+        :class="{ invisible: !isEditing }"
+        :submit-disabled="isSubmitting"
+        :cancel-disabled="isSubmitting"
+        @click.stop
+        @cancel="handleCancel"
+        @submit="handleChange"
+      />
     </div>
 
     <component
