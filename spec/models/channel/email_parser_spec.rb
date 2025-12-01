@@ -7,18 +7,14 @@ RSpec.describe Channel::EmailParser, type: :model do
 
     shared_examples 'parses email correctly' do |stored_email|
       context "for #{stored_email}" do
-        let(:yml_file)                 { stored_email.sub_ext('.yml') }
-        let(:content)                  { YAML.load_file(yml_file, permitted_classes: [ActiveSupport::HashWithIndifferentAccess]) }
-        let(:parsed)                   { described_class.new.parse(File.read(stored_email)) }
-        let(:expected_msg)             { content.except(:attachments) }
-        let(:parsed_msg)               { parsed.slice(*expected_msg.keys) }
-        let(:content_attachments_md5s) { (content[:attachments]&.map { |a| Digest::MD5.hexdigest(a[:data]) } || []).to_set }
-        let(:parsed_attachments_md5s)  { (parsed[:attachments]&.map { |a| Digest::MD5.hexdigest(a[:data]) } || []).to_set }
+        let(:yml_file)   { stored_email.sub_ext('.yml') }
+        let(:content)    { YAML.load_file(yml_file, permitted_classes: [ActiveSupport::HashWithIndifferentAccess]) }
+        let(:parsed)     { described_class.new.parse(File.read(stored_email)) }
+        let(:parsed_msg) { parsed.slice(*content.keys) }
 
         it 'parses correctly' do
           expect(File).to exist(yml_file)
-          expect(parsed_msg).to include(expected_msg)
-          expect(content_attachments_md5s).to be_subset(parsed_attachments_md5s)
+          expect(parsed_msg).to eq(content)
         end
       end
     end
