@@ -159,6 +159,7 @@ const inlineStyle = computed(() => {
       placement="arrowStart"
       :z-index="zIndex"
       hide-arrow
+      class="editor-action-popover"
     >
       <template v-if="Array.isArray(subMenuPopoverContent)">
         <CommonPopoverMenu

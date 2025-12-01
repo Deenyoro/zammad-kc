@@ -142,6 +142,7 @@ defineExpose({ close })
 <template>
   <CommonPopover
     ref="popover"
+    class="editor-overflow-popover"
     :owner="popoverTarget"
     orientation="autoVertical"
     placement="start"

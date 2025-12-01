@@ -73,11 +73,15 @@ export const useInlineMode = (
 
   if (!isInlineMode.value) stop()
 
-  onClickOutside(wrapperElement, () => {
-    if (!isInlineMode.value) return
+  onClickOutside(
+    wrapperElement,
+    () => {
+      if (!isInlineMode.value) return
 
-    handleChange()
-  })
+      handleChange()
+    },
+    { ignore: ['.editor-action-popover', '.editor-overflow-popover'] },
+  )
 
   const labelInlineDesktopClasses = 'text-stone-200! dark:text-neutral-500!'
 
