@@ -10,6 +10,7 @@ import CommonPopover, {
   type Props as CommonPopoverProps,
 } from '#desktop/components/CommonPopover/CommonPopover.vue'
 import { usePopover } from '#desktop/components/CommonPopover/usePopover.ts'
+import { useTransitionConfig } from '#desktop/composables/useTransitionConfig.ts'
 
 export interface Props extends Omit<CommonPopoverProps, 'owner'> {
   triggerLink?: string
@@ -25,7 +26,7 @@ const props = defineProps<Props>()
 
 const triggerTag = computed(() => (props.triggerLink ? 'CommonLink' : 'div'))
 
-const { popoverTarget, popover, isOpen, open, close } = usePopover()
+const { popoverTarget, popover, isOpen, openDelayed, open, close } = usePopover()
 
 const uniqueId = `popover-${getUuid()}`
 
@@ -53,14 +54,16 @@ onLongPress(popoverTarget, () => {
   open()
 })
 
+const { timings } = useTransitionConfig()
+
 const isPopoverHovered = useElementHover(popoverElement, {
-  delayEnter: 100,
-  delayLeave: 200,
+  delayEnter: timings.veryShort,
+  delayLeave: timings.short,
 })
 
 const isPopoverTargetHovered = useElementHover(popoverTarget, {
-  delayEnter: 100,
-  delayLeave: 200,
+  delayEnter: timings.veryShort,
+  delayLeave: timings.short,
 })
 
 watch([isPopoverHovered, isPopoverTargetHovered], ([isPopoverHovered, isPopoverTargetHovered]) => {
@@ -69,7 +72,7 @@ watch([isPopoverHovered, isPopoverTargetHovered], ([isPopoverHovered, isPopoverT
   const shouldOpen = isPopoverTargetHovered || isPopoverHovered
 
   if (shouldOpen && !isOpen.value) {
-    open()
+    openDelayed()
     return
   }
 
@@ -124,19 +127,18 @@ onUnmounted(() => {
     tabindex="0"
     :aria-controls="uniqueId"
     :aria-expanded="isOpen"
-    class="group empty:hidden"
+    class="group empty:hidden transition-none"
     :class="[
       triggerLinkClass ?? '',
       {
         [triggerLinkActiveClass ?? '']: isOpen && hasOpenedViaLongPress,
         'hover:no-underline!': triggerLink,
-        'focus-visible:outline-1 focus-visible:outline-blue-800 hover:focus-visible:outline-blue-800':
-          !noFocusStyling,
+        'focus-visible-app-default': !noFocusStyling,
         'outline-transparent!': noFocusStyling,
         'hover:outline-1 hover:outline-blue-600 hover:dark:outline-blue-900': !noHoverStyling,
       },
     ]"
-    @keydown.space.prevent="open"
+    @keydown.space.prevent="open()"
     @click="hasOpenedViaLongPress && $event.preventDefault()"
   >
     <slot

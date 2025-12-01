@@ -8,7 +8,6 @@ import { initializeAppName } from '#shared/composables/useAppName.ts'
 import { initializeTwoFactorPlugins } from '#shared/entities/two-factor/composables/initializeTwoFactorPlugins.ts'
 import initializeGlobalComponents from '#shared/initializer/globalComponents.ts'
 import initializeGlobalProperties from '#shared/initializer/globalProperties.ts'
-import { initializeAbstracts } from '#shared/initializer/initializeAbstracts.ts'
 import initializeStoreSubscriptions from '#shared/initializer/storeSubscriptions.ts'
 import { setCurrentRouter } from '#shared/router/router.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
@@ -56,11 +55,6 @@ export const mountApp = async () => {
   initializeStoreSubscriptions()
   initializeDesktopVisuals()
   initializeTwoFactorPlugins(twoFactorConfigurationPluginLookup)
-  initializeAbstracts({
-    durations: {
-      normal: { enter: 300, leave: 200 },
-    },
-  }) // :TODO move this argument to own config?
 
   const session = useSessionStore()
   const authentication = useAuthenticationStore()

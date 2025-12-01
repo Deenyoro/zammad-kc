@@ -5,9 +5,14 @@ import {
   onClickOutside,
   onKeyUp,
   useElementBounding,
+  useElementHover,
+  useTimeoutFn,
   useWindowSize,
   type UseElementBoundingReturn,
   whenever,
+  useCurrentElement,
+  type MaybeElementRef,
+  type VueInstance,
 } from '@vueuse/core'
 import {
   type ComponentPublicInstance,
@@ -16,19 +21,21 @@ import {
   onMounted,
   onUnmounted,
   ref,
+  toRef,
   type UnwrapRef,
   useTemplateRef,
 } from 'vue'
 
 import { useAppName } from '#shared/composables/useAppName.ts'
 import { useOnEmitter } from '#shared/composables/useOnEmitter.ts'
-import { useTransitionConfig } from '#shared/composables/useTransitionConfig.ts'
 import { useTrapTab } from '#shared/composables/useTrapTab.ts'
 import { EnumTextDirection } from '#shared/graphql/types.ts'
 import { getPopoverClasses } from '#shared/initializer/initializePopover.ts'
 import { useLocaleStore } from '#shared/stores/locale.ts'
 import stopEvent from '#shared/utils/events.ts'
 import testFlags from '#shared/utils/testFlags.ts'
+
+import { useTransitionConfig } from '#desktop/composables/useTransitionConfig.ts'
 
 import { usePopoverInstances } from './usePopoverInstances.ts'
 
@@ -282,6 +289,10 @@ const updateOwnerAriaExpandedState = () => {
 
 let removeOnKeyUpEscapeHandler: () => void
 
+const lastActiveElement = ref<HTMLElement>()
+
+const isLastActiveElementOwner = computed(() => lastActiveElement.value === ownerElement.value)
+
 const closePopover = (isInteractive = false) => {
   if (!showPopover.value) return
 
@@ -290,13 +301,9 @@ const closePopover = (isInteractive = false) => {
   removeOnKeyUpEscapeHandler?.()
 
   nextTick(() => {
-    if (!isInteractive && props.owner) {
-      if ('$el' in props.owner) {
-        props.owner.$el?.focus?.()
-      } else {
-        props.owner?.focus?.()
-      }
-    }
+    if (!isInteractive && props.owner && isLastActiveElementOwner.value)
+      (ownerElement.value as HTMLElement).focus()
+
     updateOwnerAriaExpandedState()
     testFlags.set('common-popover.closed')
   })
@@ -321,8 +328,14 @@ const checkHorizontalOverflow = () => {
   })
 }
 
-const openPopover = () => {
+const ownerElement = useCurrentElement(toRef(props, 'owner') as MaybeElementRef<VueInstance>)
+
+const isOwnerHovered = useElementHover(computed(() => ownerElement.value as Element))
+
+const openPopoverImmediate = () => {
   if (showPopover.value) return
+
+  lastActiveElement.value = document.activeElement as HTMLElement
 
   targetElementBounds.value = useElementBounding(
     props.owner,
@@ -360,20 +373,39 @@ const openPopover = () => {
   })
 }
 
-const togglePopover = (isInteractive = false) => {
-  if (showPopover.value) {
-    closePopover(isInteractive)
-  } else {
-    openPopover()
-  }
+const openPopoverWithHoverCheck = () => {
+  // Only open if still hovering over the owner element
+  if (!isOwnerHovered.value) return
+
+  openPopoverImmediate()
 }
+
+const { durations, timings } = useTransitionConfig()
+
+const { start: startOpenTimeout, stop: cancelOpenPopover } = useTimeoutFn(
+  openPopoverWithHoverCheck,
+  timings.veryShort,
+  { immediate: false },
+)
+
+const openPopover = () => openPopoverImmediate()
+
+const openPopoverDelayed = () => {
+  cancelOpenPopover()
+  startOpenTimeout()
+}
+
+const togglePopover = (isInteractive = false) =>
+  showPopover.value ? closePopover(isInteractive) : openPopover()
 
 const exposedInstance: CommonPopoverInternalInstance = {
   isOpen: computed(() => showPopover.value),
   openPopover,
+  openPopoverDelayed,
   closePopover,
   togglePopover,
   popoverElement,
+  cancelOpenPopover,
 }
 
 instances.value.add(exposedInstance)
@@ -388,8 +420,6 @@ defineExpose(exposedInstance)
 defineOptions({
   inheritAttrs: false,
 })
-
-const { durations } = useTransitionConfig()
 
 const classes = getPopoverClasses()
 

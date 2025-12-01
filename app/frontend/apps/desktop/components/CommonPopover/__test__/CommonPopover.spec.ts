@@ -49,7 +49,7 @@ describe('CommonPopover.vue', () => {
 
     await view.events.click(view.getByText('Click me'))
 
-    expect(view.getByText('Example Content')).toBeInTheDocument()
+    expect(await view.findByText('Example Content')).toBeInTheDocument()
 
     await view.events.click(view.getByText('Click me'))
 

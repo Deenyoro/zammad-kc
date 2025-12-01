@@ -3,9 +3,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
-import { useTransitionConfig } from '#shared/composables/useTransitionConfig.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 
+import { useTransitionConfig } from '#desktop//composables/useTransitionConfig.ts'
 import CommonBreadcrumb from '#desktop/components/CommonBreadcrumb/CommonBreadcrumb.vue'
 import type { BreadcrumbItem } from '#desktop/components/CommonBreadcrumb/types.ts'
 import CommonHelpText from '#desktop/components/CommonPageHelp/CommonHelpText.vue'

@@ -40,8 +40,6 @@ export const useTrapTab = <T extends HTMLElement>(
     active.value = false
   }
 
-  let firstNode: HTMLDivElement
-
   onKeyStroke(
     (e) => {
       if (!active.value) return
@@ -51,16 +49,6 @@ export const useTrapTab = <T extends HTMLElement>(
       if (!isTab) return
 
       trapFocus(e)
-
-      // Firefox issue:
-      // When we remove the pseudo focus node immediately (within moveNextFocusToTrap),
-      // these browsers lose the intended focus order and jump to unexpected elements in the DOM.
-      // This happens because they compute focus order before DOM changes finalize.
-      // This issue still affects Safari💥
-      if (firstNode)
-        requestAnimationFrame(() => {
-          firstNode.remove()
-        })
     },
     { target: container as Ref<EventTarget> },
   )
@@ -70,12 +58,20 @@ export const useTrapTab = <T extends HTMLElement>(
 
     const firstElementToShiftFocusOnFirstNode = document.createElement('div')
     firstElementToShiftFocusOnFirstNode.tabIndex = 0
+    firstElementToShiftFocusOnFirstNode.style.outline = 'none'
 
     requestAnimationFrame(() => {
       container.value?.prepend(firstElementToShiftFocusOnFirstNode)
-      firstNode = firstElementToShiftFocusOnFirstNode
       firstElementToShiftFocusOnFirstNode.focus()
-      firstElementToShiftFocusOnFirstNode.remove()
+
+      // We delay removal of the pseudo element to ensure that focus has shifted.
+      firstElementToShiftFocusOnFirstNode.addEventListener(
+        'blur',
+        () => {
+          firstElementToShiftFocusOnFirstNode.remove()
+        },
+        { once: true },
+      )
     })
   }
 

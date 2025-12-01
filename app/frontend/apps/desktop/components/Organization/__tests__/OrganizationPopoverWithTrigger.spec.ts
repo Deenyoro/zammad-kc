@@ -62,7 +62,6 @@ describe('OrganizationPopover', () => {
     )
 
     const popover = await wrapper.findByRole('region')
-    // :TODO a11y testing
     expect(within(popover).getAllByRole('progressbar').length).toBe(10)
   })
 

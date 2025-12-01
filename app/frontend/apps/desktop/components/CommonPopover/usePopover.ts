@@ -11,22 +11,19 @@ export const usePopover = (popoverRef?: Ref<CommonPopoverInstance | undefined>) 
 
   const isOpen = computed(() => popover.value?.isOpen)
 
-  const open = () => {
-    popover.value?.openPopover()
-  }
+  const open = () => popover.value?.openPopover()
 
-  const close = () => {
-    popover.value?.closePopover()
-  }
+  const openDelayed = () => popover.value?.openPopoverDelayed()
 
-  const toggle = (isInteractive = false) => {
-    popover.value?.togglePopover(isInteractive)
-  }
+  const close = () => popover.value?.closePopover()
+
+  const toggle = (isInteractive = false) => popover.value?.togglePopover(isInteractive)
 
   return {
     popover,
     popoverTarget,
     open,
+    openDelayed,
     close,
     toggle,
     isOpen,

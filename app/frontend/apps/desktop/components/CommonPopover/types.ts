@@ -4,8 +4,10 @@ import type { Ref, ShallowRef } from 'vue'
 
 export interface CommonPopoverInstance {
   openPopover(): void
+  openPopoverDelayed(): void
   closePopover(isInteractive?: boolean): void
   togglePopover(isInteractive?: boolean): void
+  cancelOpenPopover(): void
   isOpen: boolean
   popoverElement: HTMLDivElement | null
 }
