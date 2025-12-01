@@ -7,7 +7,8 @@ namespace :zammad do
     desc 'Resets a Zammad instance and reinitializes it'
     task reset: %i[
       zammad:db:truncate
-      zammad:db:init
+      db:migrate
+      db:seed
       zammad:setup:auto_wizard
     ]
   end
