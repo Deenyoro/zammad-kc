@@ -133,6 +133,9 @@ RSpec.describe NotificationFactory::Renderer do
           last_article:             last_article,
           last_internal_article:    last_internal_article,
           last_external_article:    last_external_article,
+          first_article:            all_articles.first,
+          first_internal_article:   all_articles.find(&:internal?),
+          first_external_article:   all_articles.find { |a| !a.internal? },
           created_article:          article,
           created_internal_article: article&.internal? ? article : nil,
           created_external_article: article&.internal? ? nil : article,
@@ -155,6 +158,59 @@ RSpec.describe NotificationFactory::Renderer do
 
         it 'correctly renders ticket tags references' do
           expect(renderer.render).to eq 'Tag1'
+        end
+      end
+
+      context 'with first_article.body as template' do
+        let(:template) { '#{first_article.body}' }
+
+        before do
+          create(:ticket_article, ticket: ticket, body: 'older', internal: false)
+          create(:ticket_article, ticket: ticket, body: 'newer', internal: true)
+        end
+
+        it 'renders the very first article body' do
+          expect(renderer.render).to eq '&gt; older<br>'
+        end
+      end
+
+      context 'with first_internal_article.body as template' do
+        let(:template) { '#{first_internal_article.body}' }
+
+        before do
+          create(:ticket_article, ticket: ticket, body: 'external', internal: false)
+          create(:ticket_article, ticket: ticket, body: 'internal1', internal: true)
+          create(:ticket_article, ticket: ticket, body: 'internal2', internal: true)
+        end
+
+        it 'renders the first internal article body' do
+          expect(renderer.render).to eq '&gt; internal1<br>'
+        end
+      end
+
+      context 'with first_external_article.body as template' do
+        let(:template) { '#{first_external_article.body}' }
+
+        before do
+          create(:ticket_article, ticket: ticket, body: 'internal', internal: true)
+          create(:ticket_article, ticket: ticket, body: 'external1', internal: false)
+          create(:ticket_article, ticket: ticket, body: 'external2', internal: false)
+        end
+
+        it 'renders the first external article body' do
+          expect(renderer.render).to eq '&gt; external1<br>'
+        end
+      end
+
+      context 'with article.body_as_text as template' do
+        let(:template) { '#{first_article.body_as_text.text2html}' }
+
+        before do
+          create(:ticket_article, ticket: ticket, body: "hello \n world", internal: false)
+        end
+
+        it 'renders the first article body as plain text' do
+          expect(renderer.render).to eq 'hello <br> world'
         end
       end
 

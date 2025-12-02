@@ -42,17 +42,23 @@ class Ticket::PerformChanges::Action < ::PerformChanges::Action # rubocop:disabl
 
   def from_all_articles
     {
-      last_article:          all_articles.last,
-      last_internal_article: all_articles.reverse.find(&:internal?),
-      last_external_article: all_articles.reverse.find { |a| !a.internal? },
+      first_article:          all_articles.first,
+      first_internal_article: all_articles.find(&:internal?),
+      first_external_article: all_articles.find { |a| !a.internal? },
+      last_article:           all_articles.last,
+      last_internal_article:  all_articles.reverse.find(&:internal?),
+      last_external_article:  all_articles.reverse.find { |a| !a.internal? },
     }
   end
 
   def from_current_article
     {
-      last_article:          article,
-      last_internal_article: article.internal? ? article : all_articles.reverse.find(&:internal?),
-      last_external_article: article.internal? ? all_articles.reverse.find { |a| !a.internal? } : article,
+      first_article:          all_articles.first,
+      first_internal_article: all_articles.find(&:internal?),
+      first_external_article: all_articles.find { |a| !a.internal? },
+      last_article:           article,
+      last_internal_article:  article.internal? ? article : all_articles.reverse.find(&:internal?),
+      last_external_article:  article.internal? ? all_articles.reverse.find { |a| !a.internal? } : article,
     }
   end
 end

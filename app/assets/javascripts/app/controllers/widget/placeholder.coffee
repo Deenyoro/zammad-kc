@@ -102,6 +102,9 @@ class App.WidgetPlaceholder extends App.Controller
 
     # modify article placeholders
     replaces = [
+      { display: __('First Article'), name: 'first_article' },
+      { display: __('First Internal Article'), name: 'first_internal_article' },
+      { display: __('First External Article'), name: 'first_external_article' },
       { display: __('Last Article'), name: 'last_article' },
       { display: __('Last Internal Article'), name: 'last_internal_article' },
       { display: __('Last External Article'), name: 'last_external_article' },
