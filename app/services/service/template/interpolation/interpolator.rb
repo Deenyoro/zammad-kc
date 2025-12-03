@@ -48,7 +48,7 @@ class Service::Template::Interpolation::Interpolator < Service::Base
   # The allowed classes and methods are defined within so called track classes,
   # see files in app/services/service/template/interpolation/engine/track.
   def self.tracks
-    @tracks ||= Service::Template::Interpolation::Engine::Track.descendants + custom_tracks
+    @tracks ||= Service::Template::Interpolation::Engine::Track.descendants.select { |k| k.name.starts_with?('Service::Template::Interpolation::Engine::Track') } + custom_tracks
   end
 
   # Custom tracks that can be overridden by subclasses
