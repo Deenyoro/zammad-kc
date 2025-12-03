@@ -253,19 +253,22 @@ class TicketsController < ApplicationController
     end
 
     ticket.with_lock do
-      ticket.update!(clean_params)
-      if params[:article].present?
-        if (shared_draft_id = params[:article][:shared_draft_id])
-          shared_draft = Ticket::SharedDraftZoom.find_by id: shared_draft_id
+      handle_shared_draft(ticket, params[:article])
 
-          if shared_draft && shared_draft.ticket != ticket
-            raise Exceptions::UnprocessableEntity, __('Shared draft cannot be selected for this ticket.')
-          end
+      macro = handle_macro_perform_changes(params['macro.id'], params['macro.perform_changes'])
 
-          shared_draft&.destroy
+      # NB: Perform optional macro actions, but only after the ticket changes were made.
+      #   This is needed because macros in the legacy app are applied in the frontend, just before the submission.
+      #   However, we can only reliably trigger some of those actions after all the ticket changes are applied.
+      if macro
+        ticket.assign_attributes(clean_params)
+        ticket.perform_changes(macro, 'macro', nil, current_user.id) do |object, _save_needed|
+          object.save!
+          article_create(ticket, params[:article]) if params[:article].present?
         end
-
-        article_create(ticket, params[:article])
+      else
+        ticket.update!(clean_params)
+        article_create(ticket, params[:article]) if params[:article].present?
       end
     end
 
@@ -542,4 +545,31 @@ class TicketsController < ApplicationController
 
     render json: ticket.reload.attributes_with_association_ids, status:
   end
+
+  def handle_shared_draft(ticket, article_data)
+    return if article_data.blank? || article_data[:shared_draft_id].blank?
+
+    shared_draft_id = article_data[:shared_draft_id]
+    shared_draft = Ticket::SharedDraftZoom.find_by id: shared_draft_id
+
+    if shared_draft && shared_draft.ticket != ticket
+      raise Exceptions::UnprocessableEntity, __('Shared draft cannot be selected for this ticket.')
+    end
+
+    shared_draft&.destroy
+  end
+
+  def handle_macro_perform_changes(id, perform_changes)
+    return if id.blank? || perform_changes.blank? || !current_user.permissions?('ticket.agent')
+
+    macro = Macro.lookup(id:)
+    return if !macro
+
+    # Filter perform config based on the keys from params, so we can perform the delayed actions only.
+    #   The rest were already applied in the frontend.
+    macro.perform = macro.perform.select { |key| perform_changes.include?(key) }
+
+    macro
+  end
+
 end

@@ -5,18 +5,22 @@ class ReferenceList extends App.PopoverProvider
   @includeData = false
 
   buildTitleFor: (elem) ->
-    type  = $(elem).data('type')
-    ids   = $(elem).data('ids').toString().split(',')
     title = $(elem).data('title')
 
-    @buildHtmlTitle({ type, ids, title })
+    @buildHtmlTitle title: title
 
   buildContentFor: (elem) ->
-    type = $(elem).data('type')
-    ids  = $(elem).data('ids').toString().split(',')
+    references = $(elem).data('references')
+    message    = $(elem).data('message')
 
     @buildHtmlContent(
-      referenceList: App.view('generic/reference_list')(objects: App[type].findAll(ids))
+      message:       message
+      referenceList: _.map(references, (reference) ->
+        title: reference.title
+        items: App.view('generic/reference_list')(
+          objects: App[reference.type].findAll(reference.ids)
+        )
+      )
     )
 
 App.PopoverProvider.registerProvider('ReferenceList', ReferenceList)

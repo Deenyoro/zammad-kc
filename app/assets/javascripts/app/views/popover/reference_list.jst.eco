@@ -1,1 +1,8 @@
-<%- @referenceList %>
+<% if @message: %>
+  <p><%- @T(@message) %></p>
+<% end %>
+
+<% for reference in @referenceList: %>
+  <h3><%= reference.title %></h3>
+  <%- reference.items %>
+<% end %>

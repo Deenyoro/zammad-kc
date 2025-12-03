@@ -25,9 +25,10 @@ RSpec.describe 'AI > AI Agents', type: :system do
       let(:ai_agent) { create(:ai_agent, name: 'Test Agent', agent_type: 'TicketGroupDispatcher') }
       let(:trigger)  { create(:trigger, perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent.id } }) }
       let(:job)      { create(:job, perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent.id } }) }
+      let(:macro)    { create(:macro, perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent.id } }) }
 
       before do
-        trigger && job
+        trigger && job && macro
       end
 
       it 'shows AI agent in the UI' do
@@ -35,17 +36,18 @@ RSpec.describe 'AI > AI Agents', type: :system do
 
         within :active_content do
           expect(page).to have_text(ai_agent.name)
-            .and have_text(trigger.name)
-            .and have_text(job.name)
+            .and have_text('Triggers (1)')
+            .and have_text('Schedulers (1)')
+            .and have_text('Macros (1)')
         end
       end
 
       context 'with references' do
 
-        # AI agent #1: one job, multiple triggers
+        # AI agent #1: multiple triggers, one job, multiple macros
         let(:ai_agent_1) { create(:ai_agent, name: 'AI Agent 1') }
 
-        # AI agent #2: multiple job, one trigger
+        # AI agent #2: one trigger, multiple jobs, multiple macros
         let(:ai_agent_2) { create(:ai_agent, name: 'AI Agent 2') }
 
         # AI agent #3: no references
@@ -55,10 +57,16 @@ RSpec.describe 'AI > AI Agents', type: :system do
           create(:trigger, name: 'Trigger1 Group Dispatcher 1', perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent_1.id } })
           create(:trigger, name: 'Trigger1 Group Dispatcher 2', perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent_1.id } })
           create(:job,     name: 'Job1 Group Dispatcher 1',     perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent_1.id } })
+          create(:macro,   name: 'Macro1 Group Dispatcher 1',   perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent_1.id } })
+          create(:macro,   name: 'Macro1 Group Dispatcher 2',   perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent_1.id } })
+          create(:macro,   name: 'Macro1 Group Dispatcher 3',   perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent_1.id } })
 
           create(:trigger, name: 'Trigger2 Group Dispatcher 1', perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent_2.id } })
           create(:job,     name: 'Job2 Group Dispatcher 1',     perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent_2.id } })
           create(:job,     name: 'Job2 Group Dispatcher 2',     perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent_2.id } })
+          create(:macro,   name: 'Macro2 Group Dispatcher 1',   perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent_2.id } })
+          create(:macro,   name: 'Macro2 Group Dispatcher 2',   perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent_2.id } })
+          create(:macro,   name: 'Macro2 Group Dispatcher 3',   perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent_2.id } })
 
           ai_agent_3
         end
@@ -68,37 +76,47 @@ RSpec.describe 'AI > AI Agents', type: :system do
 
           within ".js-tableBody tr.item[data-id='#{ai_agent_1.id}']" do
             expect(page).to have_text('AI Agent 1')
-            expect(page).to have_text('2 triggers')
-            expect(page).to have_text('Job1 Group Dispatcher 1')
+              .and have_text('Triggers (2)')
+              .and have_text('Schedulers (1)')
+              .and have_text('Macros (3)')
           end
 
           within ".js-tableBody tr.item[data-id='#{ai_agent_2.id}']" do
             expect(page).to have_text('AI Agent 2')
-            expect(page).to have_text('Trigger2 Group Dispatcher 1')
-            expect(page).to have_text('2 schedulers')
+              .and have_text('Triggers (1)')
+              .and have_text('Schedulers (2)')
+              .and have_text('Macros (3)')
           end
 
           within ".js-tableBody tr.item[data-id='#{ai_agent_3.id}']" do
             expect(page).to have_text('AI Agent 3')
             expect(page).to have_text('Unused')
+              .and have_no_text('Triggers')
+              .and have_no_text('Schedulers')
+              .and have_no_text('Macros')
 
             # Test that badge is removed when references are added.
             create(:trigger, name: 'Trigger3 Group Dispatcher 1', perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent_3.id } })
+            create(:macro, name: 'Macro3 Group Dispatcher 1', perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent_3.id } })
             await_empty_ajax_queue
-            expect(page).to have_text('Trigger3 Group Dispatcher 1')
-            expect(page).to have_no_text('Unused')
+            expect(page).to have_text('Triggers (1)')
+              .and have_text('Macros (1)')
+              .and have_no_text('Unused')
 
             # Test that references text is updated when references are changed.
             Job.last.update!(perform: { 'ai.ai_agent' => { 'ai_agent_id' => ai_agent_3.id } })
             await_empty_ajax_queue
-            expect(page).to have_text('Job2 Group Dispatcher 2')
+            expect(page).to have_text('Schedulers (1)')
 
             # Test that references are removed/badge is added when the last reference is deleted.
             Trigger.last.destroy!
             Job.last.destroy!
+            Macro.last.destroy!
             await_empty_ajax_queue
-            expect(page).to have_no_text('Trigger3 Group Dispatcher 1')
-            expect(page).to have_text('Unused')
+            expect(page).to have_no_text('Triggers')
+              .and have_no_text('Schedulers')
+              .and have_no_text('Macros')
+              .and have_text('Unused')
           end
         end
       end
@@ -122,7 +140,7 @@ RSpec.describe 'AI > AI Agents', type: :system do
             click_on 'Next'
 
             expect(page).to have_text('NOTE')
-            expect(page).to have_text('ACTIVE')
+              .and have_text('ACTIVE')
 
             # Check navigation to the previous steps.
             click_on 'Back'
@@ -134,11 +152,11 @@ RSpec.describe 'AI > AI Agents', type: :system do
             click_on 'Next'
             click_on 'Next'
 
-            expect(page).to have_no_text('For this agent to run, it needs to be used in a trigger or scheduler.')
+            expect(page).to have_no_text('For this agent to run, it needs to be used in an automation (e.g. trigger, scheduler, macro).')
 
             set_select_field_label('active', 'inactive')
 
-            expect(page).to have_no_text('For this agent to run, it needs to be used in a trigger or scheduler.')
+            expect(page).to have_no_text('For this agent to run, it needs to be used in an automation (e.g. trigger, scheduler, macro).')
 
             click_on 'Submit'
           end
@@ -217,15 +235,15 @@ RSpec.describe 'AI > AI Agents', type: :system do
 
           click_on 'Next'
 
-          expect(page).to have_text('For this agent to run, it needs to be used in a trigger or scheduler.')
+          expect(page).to have_text('For this agent to run, it needs to be used in an automation (e.g. trigger, scheduler, macro).')
 
           set_select_field_label('active', 'inactive')
 
-          expect(page).to have_no_text('For this agent to run, it needs to be used in a trigger or scheduler.')
+          expect(page).to have_no_text('For this agent to run, it needs to be used in an automation (e.g. trigger, scheduler, macro).')
 
           set_select_field_label('active', 'active')
 
-          expect(page).to have_text('For this agent to run, it needs to be used in a trigger or scheduler.')
+          expect(page).to have_text('For this agent to run, it needs to be used in an automation (e.g. trigger, scheduler, macro).')
 
           click_on 'Submit'
         end
@@ -271,10 +289,9 @@ RSpec.describe 'AI > AI Agents', type: :system do
             find('.js-add-all').click
 
             expect(page).to have_text('1 low')
-            expect(page).to have_text('2 normal')
-            expect(page).to have_text('3 high')
-
-            expect(page).to have_no_css('.js-add-all')
+              .and have_text('2 normal')
+              .and have_text('3 high')
+              .and have_no_css('.js-add-all')
 
             click_on 'Next'
 

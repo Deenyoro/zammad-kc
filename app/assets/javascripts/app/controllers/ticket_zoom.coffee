@@ -1149,7 +1149,7 @@ class App.TicketZoom extends App.Controller
   submitPost: (e, ticket, macro, editContollerForm) =>
     taskAction = @$('.js-secondaryActionButtonLabel').data('type')
 
-    if macro && macro.ux_flow_next_up
+    if macro?.ux_flow_next_up
       taskAction = macro.ux_flow_next_up
 
     nextTicket = undefined
@@ -1158,6 +1158,11 @@ class App.TicketZoom extends App.Controller
 
     removedFields = editContollerForm.removedFields(editContollerForm.elReplace)
     payload       = _.omit(ticket.attributes(), removedFields)
+
+    # Include the list of actions to perform later, if defined by macro.
+    if ticket['macro.perform_changes']
+      payload['macro.id'] = macro.id
+      payload['macro.perform_changes'] = ticket['macro.perform_changes']
 
     # submit changes
     @ajax(

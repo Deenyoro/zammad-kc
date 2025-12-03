@@ -56,7 +56,7 @@ class Service::Template::Interpolation::Interpolator::Webhook::Track::Notificati
     end
 
     def type!(event)
-      return 'info' if event[:execution].eql?('job')
+      return 'info' if event[:execution].eql?('job') || event[:execution].eql?('macro')
       return event[:type] if event[:execution].eql?('trigger')
 
       raise ArgumentError, __("The required event field 'execution' is unknown or missing.")

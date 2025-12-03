@@ -11,7 +11,7 @@ class App.FormHandlerAIAgentUnusedWarning
       if _.isEmpty(ui.params.references) and is_active
         setTimeout ->
           $('<div />').addClass('alert alert--warning js-unusedWarning')
-            .html(App.i18n.translateContent('For this agent to run, it needs to be used in a trigger or scheduler.'))
+            .html(App.i18n.translateContent('For this agent to run, it needs to be used in an automation (e.g. trigger, scheduler, macro).'))
             .insertBefore($(form))
         , 0
       else

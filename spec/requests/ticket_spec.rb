@@ -2842,4 +2842,46 @@ RSpec.describe 'Ticket', type: :request do
       end
     end
   end
+
+  describe 'performs requested macro changes after updating the ticket (#5866)' do
+    let(:ticket)   { create(:ticket) }
+    let(:agent)    { create(:agent, groups: [ticket.group]) }
+    let(:title)    { 'Updated title' }
+    let(:state)    { Ticket::State.lookup(name: 'closed') }
+    let(:priority) { Ticket::Priority.lookup(name: '3 high') }
+    let(:macro)    { create(:macro, perform:) }
+
+    let(:perform) do
+      {
+        'ticket.state_id'    => { 'value' => state.id },
+        'ticket.priority_id' => { 'value' => priority.id },
+      }
+    end
+
+    let(:params) do
+      {
+        'title'                 => title,
+        'macro.id'              => macro.id,
+        'macro.perform_changes' => ['ticket.state_id'],
+      }
+    end
+
+    context 'with an agent', authenticated_as: :agent do
+      it 'performs just the requested macro changes' do
+        expect { put "/api/v1/tickets/#{ticket.id}", params:, as: :json }
+          .to change { ticket.reload.title }.to(title)
+          .and change { ticket.reload.state }.to(state)
+          .and not_change { ticket.reload.priority }
+      end
+    end
+
+    context 'with a customer', authenticated_as: -> { ticket.customer } do
+      it 'does not perform requested macro changes' do
+        expect { put "/api/v1/tickets/#{ticket.id}", params:, as: :json }
+          .to change { ticket.reload.title }
+          .and not_change { ticket.reload.state }
+          .and not_change { ticket.reload.priority }
+      end
+    end
+  end
 end

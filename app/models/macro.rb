@@ -10,6 +10,7 @@ class Macro < ApplicationModel
   include CanSearch
   include Macro::TriggersSubscriptions
   include HasOptionalGroups
+  include TouchesPerformReferences
 
   store     :perform
   validates :perform,         'validations/verify_perform_rules': true

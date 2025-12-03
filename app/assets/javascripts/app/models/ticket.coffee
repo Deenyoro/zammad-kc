@@ -193,6 +193,11 @@ class App.Ticket extends App.Model
         for articleKey, aricleValue of content
           params.article[articleKey] = aricleValue
 
+      # perform AI agent or notification changes later
+      else if attributes[0] is 'ai' or attributes[0] is 'notification'
+        params.ticket['macro.perform_changes'] ||= []
+        params.ticket['macro.perform_changes'].push "#{attributes[0]}.#{attributes[1]}"
+
   editable: (permission = 'change') ->
     user = App.User.current()
 

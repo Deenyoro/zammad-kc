@@ -37,9 +37,8 @@ RSpec.describe 'AI > AI Agents > Types > Ticket Categorizer', db_strategy: :rese
 
         click 'label', text: 'LIMIT CATEGORIES'
         expect(page).to have_no_text('All categories will be considered for categorizing tickets.')
-
-        expect(page).to have_text('AVAILABLE CATEGORIES')
-        expect(page).to have_text('EXAMPLE INDUSTRY')
+          .and have_text('AVAILABLE CATEGORIES')
+          .and have_text('EXAMPLE INDUSTRY')
 
         tree_select_field = page.find(%( .searchableSelect-shadow+.js-input )) # search input
           .click                                                               # focus
@@ -53,7 +52,7 @@ RSpec.describe 'AI > AI Agents > Types > Ticket Categorizer', db_strategy: :rese
         find('.js-add').click
 
         expect(page).to have_text('value_1')
-        expect(page).to have_field(type: 'textarea', with: 'Description for value_1')
+          .and have_field(type: 'textarea', with: 'Description for value_1')
 
         click_on 'Next'
 
@@ -83,9 +82,8 @@ RSpec.describe 'AI > AI Agents > Types > Ticket Categorizer', db_strategy: :rese
       in_modal do
         # Step 1: Check the name and the selected agent type.
         expect(page).to have_text('Edit: AI Agent')
-
-        expect(page).to have_field('name', with: 'Test Agent')
-        expect(page).to have_select('agent_type', selected: 'Ticket Categorizer', disabled: true)
+          .and have_field('name', with: 'Test Agent')
+          .and have_select('agent_type', selected: 'Ticket Categorizer', disabled: true)
 
         click_on 'Next'
 
@@ -96,14 +94,13 @@ RSpec.describe 'AI > AI Agents > Types > Ticket Categorizer', db_strategy: :rese
 
         # Step 3: Check selected attributes and descriptions.
         expect(page).to have_text('AVAILABLE CATEGORIES')
-
-        expect(page).to have_text('value_1')
-        expect(page).to have_field(type: 'textarea', with: 'Description for value_1')
+          .and have_text('value_1')
+          .and have_field(type: 'textarea', with: 'Description for value_1')
 
         click_on 'Next'
 
         # Step 4: Check meta data.
-        expect(page).to have_text('For this agent to run, it needs to be used in a trigger or scheduler.')
+        expect(page).to have_text('For this agent to run, it needs to be used in an automation (e.g. trigger, scheduler, macro).')
       end
     end
   end

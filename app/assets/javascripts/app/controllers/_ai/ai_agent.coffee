@@ -5,6 +5,11 @@ class AIAgent extends App.ControllerAIFeatureBase
   @requiredPermission: 'admin.ai_agent'
   header: __('AI Agents')
 
+  REFERENCING_OBJECTS:
+    Trigger: __('Triggers')
+    Job: __('Schedulers')
+    Macro: __('Macros')
+
   constructor: ->
     super
 
@@ -15,24 +20,30 @@ class AIAgent extends App.ControllerAIFeatureBase
 
         App.AIAgentType.find(object.agent_type)?.displayName() or '-'
 
-      callbackReferenceAttribute = (object, attribute, key, title, translationMultiple) ->
-        return '-' if _.isEmpty(object.references?[key])
+      callbackReferencesAttribute = (value, object, attribute, attributes) =>
+        references = _.compact(_.map(Object.keys(@REFERENCING_OBJECTS), (key) =>
+          return if _.isEmpty(object.references?[key])
+
+          type:  key
+          ids:   _.map(object.references[key] || [], (obj) -> obj.id)
+          title: "#{App.i18n.translateInline(@REFERENCING_OBJECTS[key])} (#{object.references[key].length})"
+        ))
+
+        if references.length
+          title = __('AI agent used in')
+        else
+          title   = __('Unused AI agent')
+          message = __('For this agent to run, it needs to be used in an automation (e.g. trigger, scheduler, macro).')
 
         attribute.class = 'reference-list-popover'
         attribute.data =
-          type: key
-          title: title
-          ids: _.map(object.references[key] || [], (obj) -> obj.id)
+          title:      title
+          message:    message
+          references: JSON.stringify(references)
 
-        return App.i18n.translateInline(translationMultiple, object.references[key].length) if object.references[key].length > 1
+        return if not references.length # unused badge will be rendered instead
 
-        object.references[key][0].name
-
-      callbackTriggersAttribute = (value, object, attribute, attributes) ->
-        callbackReferenceAttribute object, attribute, 'Trigger', __('AI agent used in triggers'), __('%s triggers')
-
-      callbackJobsAttribute = (value, object, attribute, attributes) ->
-        callbackReferenceAttribute object, attribute, 'Job', __('AI agent used in schedulers'), __('%s schedulers')
+        _.map(references, (reference) -> reference.title).join(', ')
 
       @genericController = new AIAgentIndex(
         el: @el
@@ -57,8 +68,7 @@ class AIAgent extends App.ControllerAIFeatureBase
           tableExtend:
             callbackAttributes:
               agent_type: [ callbackAgentTypeAttribute ]
-              triggers: [ callbackTriggersAttribute ]
-              jobs: [ callbackJobsAttribute ]
+              references: [ callbackReferencesAttribute ]
         container: @el.closest('.content')
         large: true
         handlers: [
