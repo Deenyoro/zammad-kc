@@ -5,7 +5,7 @@ module Gql::Mutations::Concerns::Logout::HandlesOidcAuthorization
 
   included do
     def oidc_session?
-      session[:oidc_id_token].present? && oidc_strategy.config.end_session_endpoint.present?
+      session[:oidc_id_token].present? && oidc_end_session_endpoint.present?
     end
 
     def oidc_destroy
@@ -15,7 +15,7 @@ module Gql::Mutations::Concerns::Logout::HandlesOidcAuthorization
     end
 
     def oidc_logout_url
-      logout_url = Addressable::URI.parse(oidc_strategy.config.end_session_endpoint)
+      logout_url = Addressable::URI.parse(oidc_end_session_endpoint)
       logout_url.query_values = {
         id_token_hint:            session[:oidc_id_token],
         post_logout_redirect_uri: "#{Setting.get('http_type')}://#{Setting.get('fqdn')}/desktop/login"
@@ -24,6 +24,11 @@ module Gql::Mutations::Concerns::Logout::HandlesOidcAuthorization
       OmniAuth::Strategies::OidcDatabase.destroy_session(context[:controller].request.env, session)
 
       logout_url
+    end
+
+    def oidc_end_session_endpoint
+      # Try client_options first (for manual configuration), fall back to discovery config
+      @oidc_end_session_endpoint ||= oidc_strategy.options.client_options.end_session_endpoint || oidc_strategy.config.end_session_endpoint
     end
 
     private

@@ -24,11 +24,11 @@ module HandlesOidcAuthorization
     private
 
     def oidc_session?
-      session[:oidc_id_token].present? && oidc_strategy.config.end_session_endpoint.present?
+      session[:oidc_id_token].present? && oidc_end_session_endpoint.present?
     end
 
     def oidc_destroy
-      logout_url = Addressable::URI.parse(oidc_strategy.config.end_session_endpoint)
+      logout_url = Addressable::URI.parse(oidc_end_session_endpoint)
       logout_url.query_values = {
         id_token_hint:            session[:oidc_id_token],
         post_logout_redirect_uri: "#{Setting.get('http_type')}://#{Setting.get('fqdn')}"
@@ -39,6 +39,11 @@ module HandlesOidcAuthorization
       render json: { url: logout_url.to_s }
     rescue => e
       Rails.logger.error "OpenID Connect RP-initiated logout failed: #{e.message}"
+    end
+
+    def oidc_end_session_endpoint
+      # Try client_options first (for manual configuration), fall back to discovery config
+      @oidc_end_session_endpoint ||= oidc_strategy.options.client_options.end_session_endpoint || oidc_strategy.config.end_session_endpoint
     end
 
     def oidc_strategy
