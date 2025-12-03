@@ -17,7 +17,8 @@ echo
 echo "For Zammad installation/updates:"
 check_urls required \
   https://artifacts.elastic.co \
-  https://dl.packager.io
+  https://dl.packager.io \
+  https://go.packager.io
 check_urls optional \
   https://geo.zammad.com \
   https://google.com
