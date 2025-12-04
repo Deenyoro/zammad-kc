@@ -1157,6 +1157,7 @@ class App.TicketZoom extends App.Controller
       nextTicket = @getNextTicketInOverview()
 
     removedFields = editContollerForm.removedFields(editContollerForm.elReplace)
+    removedFields = _.omit(removedFields, macro.performKeys().ticket) if macro?.id # https://github.com/zammad/zammad/issues/5880
     payload       = _.omit(ticket.attributes(), removedFields)
 
     # Include the list of actions to perform later, if defined by macro.

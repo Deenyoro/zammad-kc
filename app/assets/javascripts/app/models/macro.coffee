@@ -34,3 +34,14 @@ You can use macros in Zammad to automate recurring sequences, saving time (and n
 
   uiUrl: =>
     "#manage/macros/1/id:#{@id}"
+
+  performKeys: ->
+    return if !@perform
+
+    result = {}
+    for key, value of @perform
+      attributes = key.split('.')
+      result[attributes[0]] ||= []
+      result[attributes[0]].push(attributes[1])
+
+    return result

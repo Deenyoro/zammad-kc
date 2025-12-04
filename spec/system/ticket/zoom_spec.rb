@@ -2731,4 +2731,20 @@ RSpec.describe 'Ticket zoom', type: :system do
       expect(page).to have_css('#navigation .icon-status-modified-inner-circle')
     end
   end
+
+  describe 'Setting relative pending reminder times via macro results in an "Missing required value for field pending_time! error #5880', authenticated_as: :authenticate do
+    let(:macro) { create(:macro, name: 'set custom pending', perform: { 'ticket.state_id' => { 'value' => '3' }, 'ticket.pending_time' => { 'operator' => 'relative', 'value' => '1', 'range' => 'week' } }) }
+
+    def authenticate
+      macro
+      true
+    end
+
+    it 'does change the state via macro' do
+      visit "#ticket/zoom/#{Ticket.first.id}"
+      click '.js-openDropdownMacro'
+      find(:macro, macro.id).click
+      wait.until { Ticket.first.state.name == 'pending reminder' && Ticket.first.pending_time.present? }
+    end
+  end
 end
