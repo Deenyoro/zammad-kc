@@ -7,4 +7,5 @@ App.Config.set('zammad_ai', {
       []
     else
       ['token']
+  required: ['token']
 }, 'AIProviders')

@@ -41,6 +41,8 @@ class Setting::Validation::AIProviderConfig < Setting::Validation::Base
       required_attributes_azure
     when 'zammad_ai'
       required_attributes_zammad
+    when 'custom_open_ai'
+      required_attributes_custom_open_ai
     else
       required_attributes_token
     end
@@ -62,6 +64,11 @@ class Setting::Validation::AIProviderConfig < Setting::Validation::Base
     return if Setting.get('system_online_service') || Setting.get('developer_mode')
 
     required_attributes_token
+  end
+
+  def required_attributes_custom_open_ai
+    raise AIProviderConfigError, __('AI provider URL is not set') if value['url'].blank?
+    raise AIProviderConfigError, __('AI Provider Model is not set') if value['model'].blank?
   end
 
   def validate_provider

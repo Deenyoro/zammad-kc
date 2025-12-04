@@ -133,9 +133,9 @@ class ProviderForm extends App.Controller
         display: __('Token'),
         tag: 'input',
         type: 'password',
-        null: false,
+        null: !provider.required?.includes('token'),
         single: true,
-        required: 'true',
+        required: provider.required?.includes('token') ? 'true' : 'false',
         autocomplete: 'off',
         value: params.token,
       }
@@ -144,9 +144,10 @@ class ProviderForm extends App.Controller
         display: __('Model'),
         tag: 'input',
         type: 'text',
-        null: true,
+        null: !provider.required?.includes('model'),
         single: true,
         placeholder: provider.default_model,
+        required: provider.required?.includes('model') ? 'true' : 'false',
         autocomplete: 'off',
         value: params.model,
       }
@@ -155,30 +156,33 @@ class ProviderForm extends App.Controller
         display: __('URL'),
         tag: 'input',
         type: 'text',
-        null: false,
+        null: !provider.required?.includes('url'),
         autocomplete: 'off',
         value: params.url,
-        placeholder: 'http://localhost:11434'
+        placeholder: provider.url_placeholder or '',
+        required: provider.required?.includes('url') ? 'true' : 'false',
       }
       url_completions: {
         name: 'url_completions',
         display: __('URL (Completions)'),
         tag: 'input',
         type: 'text',
-        null: false,
+        null: !provider.required?.includes('url_completions'),
         autocomplete: 'off',
         value: params.url_completions,
         placeholder: ''
+        required: provider.required?.includes('url_completions') ? 'true' : 'false',
       }
       url_embeddings: {
         name: 'url_embeddings',
         display: __('URL (Embeddings)'),
         tag: 'input',
         type: 'text',
-        null: false,
+        null: !provider.required?.includes('url_embeddings'),
         autocomplete: 'off',
         value: params.url_embeddings,
         placeholder: ''
+        required: provider.required?.includes('url_embeddings') ? 'true' : 'false',
       }
     }
 

@@ -41,7 +41,7 @@ RSpec.describe AI::Provider::ZammadAI, required_envs: %w[ZAMMAD_AI_TOKEN], use_v
 
   context 'when embeddings are requested' do
     it 'raises an error' do
-      expect { ai_provider.embeddings(input: 'test') }.to raise_error(RuntimeError, 'not implemented yet due to missing API')
+      expect { ai_provider.embeddings(input: 'test') }.to raise_error(NotImplementedError, 'not implemented yet due to missing API')
     end
   end
 

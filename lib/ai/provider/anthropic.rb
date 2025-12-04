@@ -46,7 +46,7 @@ class AI::Provider::Anthropic < AI::Provider
   end
 
   def embeddings(input:)
-    raise 'not implemented yet due to missing API'
+    raise NotImplementedError, 'not implemented yet due to missing API'
   end
 
   def self.ping!(config)

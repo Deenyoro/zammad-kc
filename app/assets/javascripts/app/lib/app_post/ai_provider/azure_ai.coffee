@@ -3,4 +3,5 @@ App.Config.set('azure', {
   label:  __('Azure AI')
   prio:   5000
   fields: ['url_completions', 'token'] # TODO: Add url_embeddings when needed.
+  required: ['token', 'url_completions']
 }, 'AIProviders')

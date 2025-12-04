@@ -71,7 +71,7 @@ RSpec.describe AI::Provider::Anthropic, required_envs: %w[ANTHROPIC_API_KEY], us
 
   context 'when embeddings are requested' do
     it 'raises an error' do
-      expect { ai_provider.embeddings(input: 'test') }.to raise_error(RuntimeError, 'not implemented yet due to missing API')
+      expect { ai_provider.embeddings(input: 'test') }.to raise_error(NotImplementedError, 'not implemented yet due to missing API')
     end
   end
 
