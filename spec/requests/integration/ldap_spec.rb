@@ -3,56 +3,45 @@
 require 'rails_helper'
 
 RSpec.describe 'Ldap', type: :request do
-  let!(:admin) do
-    create(:admin, groups: Group.all)
-  end
+  let(:admin) { create(:admin, groups: Group.all) }
 
-  describe 'discover' do
-    let(:params) do
+  describe 'POST /api/v1/integration/ldap/discover' do
+    let(:base_params) do
       {
-        name:       'Example LDAP',
-        host:       'example.ldap.okta.com',
-        ssl:        'ssl',
-        ssl_verify: true,
-        active:     'true'
+        name:   'Example LDAP',
+        host:   'localhost',
+        ssl:    'off',
+        active: 'true'
       }
     end
 
-    context 'when disallow bin anon is active' do
-      it 'returns special exception treatment for not allowed anonymous bind' do
-        authenticated_as(admin)
+    context 'when LDAP server does not allow anonymous bind' do
+      let(:ldap_instance) { instance_double(Net::LDAP) }
+      let(:operation_result) { Struct.new(:code, :message).new(error_code, error_message) }
 
-        post '/api/v1/integration/ldap/discover', params: params, as: :json
-
-        expect(json_response).to eq('result' => 'ok', 'error' => 'disallow-bind-anon')
+      before do
+        allow(Net::LDAP).to receive(:new).with({ host: base_params[:host], port: 389 }).and_return(ldap_instance)
+        allow(ldap_instance).to receive_messages(bind: false, get_operation_result: operation_result)
       end
 
-      context 'with other error code' do
-        let(:ldap_instance) { instance_double(Net::LDAP) }
-        let(:params) do
-          {
-            name:   'Example LDAP',
-            host:   'localhost',
-            ssl:    'off',
-            active: 'true'
-          }
-        end
-        let(:operation_result_struct) { Struct.new(:code, :message) }
+      # LDAP error 50 = Insufficient Access Rights
+      # LDAP error 53 = Unwilling to perform
+      # See: https://ldap.com/ldap-result-code-reference
+      [
+        { code: 50, message: 'Insufficient Access Rights' },
+        { code: 53, message: 'Unwilling to perform' },
+      ].each do |error|
+        context "with error code #{error[:code]} - #{error[:message]}" do
+          let(:error_code)    { error[:code] }
+          let(:error_message) { error[:message] }
 
-        before do
-          allow(Net::LDAP).to receive(:new).with({ host: params[:host], port: 389 }).and_return(ldap_instance)
-          allow(ldap_instance).to receive_messages(
-            bind:                 false,
-            get_operation_result: operation_result_struct.new(50, 'Insufficient Access Rights')
-          )
-        end
+          it 'returns disallow-bind-anon error' do
+            authenticated_as(admin)
 
-        it 'returns special exception treatment for not allowed anonymous bind' do
-          authenticated_as(admin)
+            post '/api/v1/integration/ldap/discover', params: base_params, as: :json
 
-          post '/api/v1/integration/ldap/discover', params: params, as: :json
-
-          expect(json_response).to eq('result' => 'ok', 'error' => 'disallow-bind-anon')
+            expect(json_response).to include('result' => 'ok', 'error' => 'disallow-bind-anon')
+          end
         end
       end
     end
