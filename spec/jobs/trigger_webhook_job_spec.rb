@@ -276,7 +276,7 @@ RSpec.describe TriggerWebhookJob, type: :job do
 
       context 'with customized payload' do
         let(:customized_payload) { true }
-        let(:custom_payload)     { '{"ticket":"\#{ticket.title}"}' }
+        let(:custom_payload)     { '{"ticket":"#{ticket.title}"}' }
         let(:payload) do
           {
             ticket: ticket.title,
