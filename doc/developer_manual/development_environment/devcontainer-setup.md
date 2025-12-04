@@ -9,6 +9,7 @@ This is the **recommended** way to set up your environment, as it eliminates the
 ### Stack options
 
 - Default
+- With Ollama (for local AI playground)
 - With Selenium (for integration tests)
 
 ## Prerequisites
