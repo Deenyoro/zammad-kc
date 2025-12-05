@@ -1113,6 +1113,25 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
         'We are sorry, it is taking longer than expected to get a slot. Please try again later or send us an email. Thank you!': 'Sajnáljuk, hogy a vártnál hosszabb ideig tart a helyfoglalás. Kérjük, próbálja meg később újra, vagy küldjön nekünk egy e-mailt. Köszönjük!',
         'You are on waiting list position <strong>%s</strong>.': 'Ön a várólistán a <strong>%s</strong> helyen szerepel.'
       },
+      'id': {
+        '<strong>Chat</strong> with us!': '<strong>Obrolan</strong> dengan kami!',
+        'All colleagues are busy.': 'Semua rekan sedang sibuk.',
+        'Chat closed by %s': 'Obrolan ditutup oleh %s',
+        'Compose your message…': 'Tulis pesan Anda…',
+        'Connecting': 'Menghubungkan',
+        'Connection lost': 'Koneksi terputus',
+        'Connection re-established': 'Koneksi dipulihkan',
+        'Offline': 'Offline',
+        'Online': 'Online',
+        'Scroll down to see new messages': 'Gulir ke bawah untuk melihat pesan baru',
+        'Send': 'Kirim',
+        'Since you didn\'t respond in the last %s minutes your conversation was closed.': 'Karena Anda tidak membalas dalam %s menit terakhir, percakapan Anda ditutup.',
+        'Since you didn\'t respond in the last %s minutes your conversation with <strong>%s</strong> was closed.': 'Karena Anda tidak membalas dalam %s menit terakhir, percakapan Anda dengan <strong>%s</strong> ditutup.',
+        'Start new conversation': 'Mulai percakapan baru',
+        'Today': 'Hari ini',
+        'We are sorry, it is taking longer than expected to get a slot. Please try again later or send us an email. Thank you!': 'Kami minta maaf, proses ini memakan waktu lebih lama dari yang diharapkan untuk mendapatkan slot. Silakan coba lagi nanti atau kirimkan email ke kami. Terima kasih!',
+        'You are on waiting list position <strong>%s</strong>.': 'Anda berada di posisi daftar tunggu <strong>%s</strong>.'
+      },
       'it': {
         '<strong>Chat</strong> with us!': '<strong>Chatta</strong> con noi!',
         'All colleagues are busy.': 'Tutti i colleghi sono occupati.',

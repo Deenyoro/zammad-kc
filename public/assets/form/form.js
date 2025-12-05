@@ -178,6 +178,15 @@ $(function() {
         'Your Message…': 'Az Ön üzenete…',
         'Your Name': 'Az Ön neve',
       },
+      'id': {
+        'Attachments': 'Lampiran',
+        'Email': 'Email',
+        'Message': 'Pesan',
+        'Name': 'Nama',
+        'Your Email': 'Email Anda',
+        'Your Message…': 'Pesan Anda…',
+        'Your Name': 'Nama Anda',
+      },
       'it': {
         'Attachments': 'Allegati',
         'Email': 'Email',
