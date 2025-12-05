@@ -218,7 +218,8 @@ QUnit.test("object_attribute_options_context with tree options check", assert =>
       default: '',
       null: true,
       nulloption: true,
-      maxlength: 255
+      maxlength: 255,
+      translate: true
     }
   ])
 
@@ -226,6 +227,19 @@ QUnit.test("object_attribute_options_context with tree options check", assert =>
   var categoryAttribute = App.ObjectManagerAttribute.findByAttribute('name', 'category_id')
   if (categoryAttribute) {
     App.Ticket.configure_attributes.push(categoryAttribute)
+  }
+
+  // Mock translations for the tree leaves.
+  var translateInlineOriginal = App.i18n.translateInline
+  App.i18n.translateInline = function (str) {
+    switch (str) {
+      case 'Software':
+        return 'SW'
+      case 'Windows':
+        return 'Win'
+      default:
+        return translateInlineOriginal(str)
+    }
   }
 
   var defaults = {
@@ -264,8 +278,9 @@ QUnit.test("object_attribute_options_context with tree options check", assert =>
   var $table = $field.find('.js-objectAttributeOptionsContextList')
 
   assert.equal($table.find('tr[data-id="Software::Windows"]').length, 1, 'tree option should be displayed in table')
-  assert.equal($table.find('tr[data-id="Software::Windows"] td:first-child').text(), 'Software › Windows', 'tree option should show flattened display text')
+  assert.equal($table.find('tr[data-id="Software::Windows"] td:first-child').text(), 'SW › Win', 'tree option should show flattened translated text')
 
+  App.i18n.translateInline = translateInlineOriginal
 });
 
 QUnit.test("object_attribute_options_context with related_object_attribute_selection_name check", assert => {
@@ -354,7 +369,7 @@ QUnit.test("object_attribute_options_context with tree selection filter check", 
   ])
 
   var defaults = {
-    object_attribute_options_context5: { '2': '' },
+    object_attribute_options_context6: { '2': '' },
   }
 
   new App.ControllerForm({
@@ -367,15 +382,15 @@ QUnit.test("object_attribute_options_context with tree selection filter check", 
     model:     {
       configure_attributes: [
         {
-          name:    'object_attribute_options_context5',
-          display: 'ObjectAttributeOptionsContext5',
+          name:    'object_attribute_options_context6',
+          display: 'ObjectAttributeOptionsContext6',
           tag:     'object_attribute_options_context',
           object_attribute_object: 'Ticket',
           related_object_attribute_selection_name: 'ticket::priority_field_name',
           limit_label: 'Limit to selected priorities',
           table_label: 'Selected Priorities',
           limit_description: 'When enabled, only selected priorities will be available',
-          default: defaults['object_attribute_options_context5'],
+          default: defaults['object_attribute_options_context6'],
           null:    true
         },
       ]
@@ -384,7 +399,7 @@ QUnit.test("object_attribute_options_context with tree selection filter check", 
   })
 
   // Test that the field is rendered correctly
-  var $field = el.find('[data-attribute-name="object_attribute_options_context5"]')
+  var $field = el.find('[data-attribute-name="object_attribute_options_context6"]')
   assert.equal($field.length, 1, 'field should be rendered with related_object_attribute_selection_name')
 
   // Test that selected option is displayed in the table
@@ -398,4 +413,295 @@ QUnit.test("object_attribute_options_context with tree selection filter check", 
   assert.ok($tree.find('.js-option[data-value="1"]').length, 'not yet chosen option is present in tree selection (1)')
   assert.notOk($tree.find('.js-option[data-value="2"]').length, 'already chosen option is missing in tree selection (2)')
   assert.ok($tree.find('.js-option[data-value="3"]').length, 'not yet chosen option is present in tree selection (3)')
+});
+
+QUnit.test("object_attribute_options_context select sorting check", assert => {
+
+  $('#forms').append('<hr><h1>object_attribute_options_context select sorting check</h1><form id="form6"></form>')
+  var el = $('#form6')
+
+  // Populate ObjectManagerAttribute data for select_custom_sort with select with custom sorting on
+  App.ObjectManagerAttribute.refresh([
+    {
+      name: 'select_custom_sort',
+      object: 'Ticket',
+      display: 'Select (custom sorting)',
+      active: true,
+      editable: true,
+      data_type: 'select',
+      options: [
+        { name: 'value_3', value: 'key_3' },
+        { name: 'value_1', value: 'key_1' },
+        { name: 'value_2', value: 'key_2' },
+      ],
+      default: '',
+      null: true,
+      nulloption: true,
+      maxlength: 255,
+      customsort: 'on'
+    }
+  ])
+
+  // Add the select_custom_sort attribute to App.Ticket.configure_attributes
+  App.Ticket.configure_attributes.push(
+    App.ObjectManagerAttribute.findByAttribute('name', 'select_custom_sort')
+  )
+
+  var defaults = {
+    object_attribute_options_context7: {
+      'key_1': 'value_1',
+      'key_2': 'value_2',
+      'key_3': 'value_3',
+    },
+  }
+
+  new App.ControllerForm({
+    el:        el,
+    model:     {
+      configure_attributes: [
+        {
+          name:    'object_attribute_options_context7',
+          display: 'ObjectAttributeOptionsContext7',
+          tag:     'object_attribute_options_context',
+          object_attribute_object: 'Ticket',
+          object_attribute_name: 'select_custom_sort',
+          limit_label: 'Limit to selected options',
+          default: defaults['object_attribute_options_context7'],
+          null:    true
+        },
+      ]
+    },
+    autofocus: true
+  })
+
+  var params = App.ControllerForm.params(el)
+  var test_params = {
+    object_attribute_options_context7: {
+      'key_1': 'value_1',
+      'key_2': 'value_2',
+      'key_3': 'value_3',
+    },
+  }
+  assert.deepEqual(params, test_params, 'form param check select values')
+
+  // Test that the field displays selected options in alphabetical order
+  var $field = el.find('[data-attribute-name="object_attribute_options_context7"]')
+  var $table = $field.find('.js-objectAttributeOptionsContextList')
+
+  assert.equal($table.find('tr[data-id]').length, 3, 'all selected options should be displayed in table')
+
+  $table.find('tr[data-id]').each((index, row) => {
+    var $row = $(row)
+
+    switch (index) {
+      case 0:
+        assert.equal($row.data('id'), 'key_3', 'first option value should be key_3')
+        assert.equal($row.find('td:first-child').text(), 'value_3', 'first option label should be value_3')
+        break
+      case 1:
+        assert.equal($row.data('id'), 'key_1', 'second option value should be key_1')
+        assert.equal($row.find('td:first-child').text(), 'value_1', 'second option label should be value_1')
+        break
+      case 2:
+        assert.equal($row.data('id'), 'key_2', 'third option value should be key_2')
+        assert.equal($row.find('td:first-child').text(), 'value_2', 'third option label should be value_2')
+        break
+    }
+  })
+
+  // Populate ObjectManagerAttribute data for select_alphabetical_sort with select with alphabetical sorting
+  App.ObjectManagerAttribute.refresh([
+    {
+      name: 'select_alphabetical_sort',
+      object: 'Ticket',
+      display: 'Select (alphabetical sorting)',
+      active: true,
+      editable: true,
+      data_type: 'select',
+      options: {
+        'key_1': 'value_1',
+        'key_2': 'value_2',
+        'key_3': 'value_3',
+      },
+      default: '',
+      null: true,
+      nulloption: true,
+      maxlength: 255
+    }
+  ])
+
+  // Add the select_alphabetical_sort attribute to App.Ticket.configure_attributes
+  App.Ticket.configure_attributes.push(
+    App.ObjectManagerAttribute.findByAttribute('name', 'select_alphabetical_sort')
+  )
+
+  defaults = {
+    object_attribute_options_context8: {
+      'key_3': 'value_3',
+      'key_1': 'value_1',
+      'key_2': 'value_2',
+    },
+  }
+
+  new App.ControllerForm({
+    el:        el,
+    model:     {
+      configure_attributes: [
+        {
+          name:    'object_attribute_options_context8',
+          display: 'ObjectAttributeOptionsContext8',
+          tag:     'object_attribute_options_context',
+          object_attribute_object: 'Ticket',
+          object_attribute_name: 'select_alphabetical_sort',
+          limit_label: 'Limit to selected options',
+          default: defaults['object_attribute_options_context8'],
+          null:    true
+        },
+      ]
+    },
+    autofocus: true
+  })
+
+  params = App.ControllerForm.params(el)
+  test_params = {
+    ...test_params,
+    object_attribute_options_context8: {
+      'key_3': 'value_3',
+      'key_1': 'value_1',
+      'key_2': 'value_2',
+    },
+  }
+  assert.deepEqual(params, test_params, 'form param check select values')
+
+  // Test that the field displays selected options in alphabetical order
+  $field = el.find('[data-attribute-name="object_attribute_options_context8"]')
+  $table = $field.find('.js-objectAttributeOptionsContextList')
+
+  assert.equal($table.find('tr[data-id]').length, 3, 'all selected options should be displayed in table')
+
+  $table.find('tr[data-id]').each((index, row) => {
+    var $row = $(row)
+
+    switch (index) {
+      case 0:
+        assert.equal($row.data('id'), 'key_1', 'first option value should be key_1')
+        assert.equal($row.find('td:first-child').text(), 'value_1', 'first option label should be value_1')
+        break
+      case 1:
+        assert.equal($row.data('id'), 'key_2', 'second option value should be key_2')
+        assert.equal($row.find('td:first-child').text(), 'value_2', 'second option label should be value_2')
+        break
+      case 2:
+        assert.equal($row.data('id'), 'key_3', 'third option value should be key_3')
+        assert.equal($row.find('td:first-child').text(), 'value_3', 'third option label should be value_3')
+        break
+    }
+  })
+
+  // Populate ObjectManagerAttribute data for select_translated_sort with select with translated sorting
+  App.ObjectManagerAttribute.refresh([
+    {
+      name: 'select_translated_sort',
+      object: 'Ticket',
+      display: 'Select (translated sorting)',
+      active: true,
+      editable: true,
+      data_type: 'select',
+      options: {
+        'key_1': 'value_1',
+        'key_2': 'value_2',
+        'key_3': 'value_3',
+      },
+      default: '',
+      null: true,
+      nulloption: true,
+      maxlength: 255,
+      translate: true
+    }
+  ])
+
+  // Add the select_translated_sort attribute to App.Ticket.configure_attributes
+  App.Ticket.configure_attributes.push(
+    App.ObjectManagerAttribute.findByAttribute('name', 'select_translated_sort')
+  )
+
+  // Mock translations for the option labels.
+  var translateInlineOriginal = App.i18n.translateInline
+  App.i18n.translateInline = function (str) {
+    switch (str) {
+      case 'value_1':
+        return 'BBB_value_1'
+      case 'value_2':
+        return 'CCC_value_2'
+      case 'value_3':
+        return 'AAA_value_3'
+      default:
+        return translateInlineOriginal(str)
+    }
+  }
+
+  defaults = {
+    object_attribute_options_context9: {
+      'key_3': 'value_3',
+      'key_1': 'value_1',
+      'key_2': 'value_2',
+    },
+  }
+
+  new App.ControllerForm({
+    el:        el,
+    model:     {
+      configure_attributes: [
+        {
+          name:    'object_attribute_options_context9',
+          display: 'ObjectAttributeOptionsContext9',
+          tag:     'object_attribute_options_context',
+          object_attribute_object: 'Ticket',
+          object_attribute_name: 'select_translated_sort',
+          limit_label: 'Limit to selected options',
+          default: defaults['object_attribute_options_context9'],
+          null:    true
+        },
+      ]
+    },
+    autofocus: true
+  })
+
+  params = App.ControllerForm.params(el)
+  test_params = {
+    ...test_params,
+    object_attribute_options_context9: {
+      'key_3': 'value_3',
+      'key_1': 'value_1',
+      'key_2': 'value_2',
+    },
+  }
+  assert.deepEqual(params, test_params, 'form param check select values')
+
+  // Test that the field displays selected options in translated order
+  $field = el.find('[data-attribute-name="object_attribute_options_context9"]')
+  $table = $field.find('.js-objectAttributeOptionsContextList')
+
+  assert.equal($table.find('tr[data-id]').length, 3, 'all selected options should be displayed in table')
+
+  $table.find('tr[data-id]').each((index, row) => {
+    var $row = $(row)
+
+    switch (index) {
+      case 0:
+        assert.equal($row.data('id'), 'key_3', 'first option value should be key_3')
+        assert.equal($row.find('td:first-child').text(), 'AAA_value_3', 'first option label should be AAA_value_3')
+        break
+      case 1:
+        assert.equal($row.data('id'), 'key_1', 'second option value should be key_1')
+        assert.equal($row.find('td:first-child').text(), 'BBB_value_1', 'second option label should be BBB_value_1')
+        break
+      case 2:
+        assert.equal($row.data('id'), 'key_2', 'third option value should be key_2')
+        assert.equal($row.find('td:first-child').text(), 'CCC_value_2', 'third option label should be CCC_value_2')
+        break
+    }
+  })
+
+  App.i18n.translateInline = translateInlineOriginal
 });

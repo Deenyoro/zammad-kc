@@ -3,25 +3,25 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
   @render: (attribute, params = {}) ->
     related_object_attribute = @fetchObjectManagerAttribute(attribute, params)
 
-    if !related_object_attribute
-      return console.error('Related object attribute not found', attribute.object_attribute_object, attribute.object_attribute_name || attribute.related_object_attribute_selection_name)
+    if not related_object_attribute
+      return console.error('Related object attribute not found', attribute.object_attribute_object, attribute.object_attribute_name or attribute.related_object_attribute_selection_name)
 
     allFlatOptions = @buildOptions(related_object_attribute)
 
     optionsSelected = []
 
     if attribute.value
-      optionsSelected = @buildOptionsSelected(attribute, allFlatOptions)
+      optionsSelected = @buildOptionsSelected(attribute, related_object_attribute, allFlatOptions)
 
     item = $(App.view('generic/object_attribute_options_context')(
       attribute:              attribute,
-      valueRaw:               JSON.stringify(attribute.value || {}),
+      valueRaw:               JSON.stringify(attribute.value or {}),
       optionsSelected:        optionsSelected,
       limitActive:            optionsSelected.length > 0 or not _.isObject(attribute.value),
       objectAttributeDisplay: related_object_attribute.display or __('Name')
       required:               not attribute.null
       showDescription:        attribute.show_description or false
-      hideAddAll:             optionsSelected.length >= _.keys(allFlatOptions).length
+      hideAddAll:             optionsSelected.length >= allFlatOptions.length
     ))
 
     item.find('input[type="checkbox"]').off('click.limit_toggle').on('click.limit_toggle', (e) =>
@@ -46,7 +46,7 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
 
     # Show/hide "Add All" button based on available options
     addAllButton = item.find('.js-add-all')
-    addAllButton.toggleClass('hide', !filteredOptionValues?.length)
+    addAllButton.toggleClass('hide', not filteredOptionValues?.length)
 
     attribute = {
       tag:        'tree_select',
@@ -54,6 +54,7 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
       null:       true,
       id:         'attribute-' + name + '-search',
       filter:     filteredOptionValues,
+      translate:  related_object_attribute.translate
     }
 
     if related_object_attribute.relation
@@ -68,27 +69,28 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
     element.find('.js-shadow').trigger('change')
 
   @getFilteredOptionValues: (item, allOptions) ->
-    return if !allOptions || Object.keys(allOptions).length == 0
+    return if not allOptions?.length
 
     currentValue = @getCurrentValue(item)
     selectedValues = Object.keys(currentValue)
 
-    Object.keys(allOptions)
-      .filter (optionValue) -> !_.include(selectedValues, optionValue)
-      .map    (optionValue) -> optionValue
+    _.map(
+      _.filter(allOptions, (option) -> not _.include(selectedValues, option.value)),
+      (option) -> option.value
+    )
 
   @onAdd: (e, item, name, related_object_attribute, allFlatOptions) ->
     e.stopPropagation()
     e.preventDefault()
 
     newOptionValue       = item.find('.js-shadow').val()
-    newOptionDescription = item.find('.js-descriptionNew').val() || ''
+    newOptionDescription = item.find('.js-descriptionNew').val() or ''
 
-    $(e.target.closest('tr')).find('.js-input').toggleClass('has-error', !newOptionValue)
-    return if !newOptionValue
+    $(e.target.closest('tr')).find('.js-input').toggleClass('has-error', not newOptionValue)
+    return if not newOptionValue
 
-    displayValue = allFlatOptions[newOptionValue]
-    return if !displayValue
+    displayValue = _.find(allFlatOptions, (option) -> option.value is newOptionValue)?.label
+    return if not displayValue
 
     shadowRow = item.find('.js-objectAttributeOptionsContextShadowItemRow')
 
@@ -107,8 +109,8 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
     @renderOptionDropdownNew(item, name, related_object_attribute, allFlatOptions)
 
   @addRow: (item, optionValue, description, allFlatOptions) ->
-    displayValue = allFlatOptions?[optionValue]
-    return unless displayValue
+    displayValue = _.find(allFlatOptions, (option) -> option.value is optionValue)?.label
+    return if not displayValue
 
     shadowRow = item.find('.js-objectAttributeOptionsContextShadowItemRow')
 
@@ -129,7 +131,7 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
     e.preventDefault()
 
     filteredOptionValues = @getFilteredOptionValues(item, allFlatOptions)
-    return if !filteredOptionValues?.length
+    return if not filteredOptionValues?.length
 
     for optionValue in filteredOptionValues
       item.find('.js-shadow').val(optionValue)
@@ -171,7 +173,7 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
     currentValue = {}
 
     try
-      currentValue = JSON.parse(item.find('.js-objectAttributeOptionsContext').val()) || {}
+      currentValue = JSON.parse(item.find('.js-objectAttributeOptionsContext').val()) or {}
     catch e
       currentValue = {}
 
@@ -213,39 +215,82 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
     if related_object_attribute.relation
       itemsRaw = App[related_object_attribute.relation].search(sortBy: 'name')
       activeItems = itemsRaw.filter (elem) -> elem.active
-      optionsHash = {}
-      activeItems.forEach (item) ->
-        optionsHash[item.id.toString()] = item.displayName()
-      return optionsHash
+      optionsArray = []
+      _.map(activeItems, (item) ->
+        {
+          value: item.id.toString()
+          label: item.displayName()
+        }
+      )
     else
       if _.isArray(related_object_attribute.options)
-        return @buildFlatOptions(related_object_attribute.options)
+        @buildFlatOptions(
+          related_object_attribute.options,
+          _.some(
+            related_object_attribute.options,
+            (option) -> option.children # tree structures have children
+          ),
+          related_object_attribute.translate
+        )
       else
-        return related_object_attribute.options
-
-  @buildOptionsSelected: (attribute, allFlatOptions) ->
-    optionsSelected = []
-
-    Object.keys(attribute.value).forEach (value) ->
-      if allFlatOptions[value]
-        optionsSelected.push(
+        _.map(related_object_attribute.options, (label, value) ->
           {
-            value: value,
-            label: allFlatOptions[value]
-            description: attribute.value[value] || ''
+            value: value
+            label: if related_object_attribute.translate then App.i18n.translateInline(label) else label
           }
         )
 
-    optionsSelected
+  @buildOptionsSelected: (attribute, related_object_attribute, allFlatOptions) ->
+    optionsSelected = []
 
-  @buildFlatOptions: (options) ->
-    optionsHash = {}
+    _.keys(attribute.value).forEach (value) ->
+      if option = _.find(allFlatOptions, (option) -> option.value is value)
+        optionsSelected.push(
+          {
+            value: value,
+            label: option.label
+            description: attribute.value[value] or ''
+          }
+        )
+
+    # If custom sort is enabled, sort according to the configured order.
+    #   Do this also if the options are an array (to respect the defined order).
+    if related_object_attribute.customsort is 'on' or _.isArray(related_object_attribute.options)
+      return _.sortBy(optionsSelected, (selectedOption) ->
+        _.findIndex(allFlatOptions, (option) ->
+          option.value is selectedOption.value
+        )
+      )
+
+    # Otherwise, return sorted alphabetically.
+    optionsSelected.sort (a, b) -> a.label.localeCompare(b.label)
+
+  @buildFlatOptions: (options, isTree = false, isTranslated = false) ->
+    flatOptions = []
 
     options.forEach (option) ->
-      optionsHash[option.value] = option.value.replaceAll('::', ' › ')
+      label = if isTree
+        _.map(option.value.split('::'), (part) ->
+          if isTranslated
+            App.i18n.translateInline(part)
+          else
+            part
+        ).join(' › ')
+      else if isTranslated
+        App.i18n.translateInline(option.name or option.value)
+      else
+        option.name or option.value
+
+      flatOptions.push(
+        value: option.value
+        label: label
+      )
 
       if option.children
-        childOptions = App.UiElement.object_attribute_options_context.buildFlatOptions(option.children)
-        Object.assign(optionsHash, childOptions)
+        flatOptions.push App.UiElement.object_attribute_options_context.buildFlatOptions(
+          option.children,
+          true,
+          isTranslated
+        )...
 
-    return optionsHash
+    flatOptions
