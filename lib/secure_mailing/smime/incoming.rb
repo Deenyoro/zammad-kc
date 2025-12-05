@@ -190,7 +190,9 @@ class SecureMailing::SMIME::Incoming < SecureMailing::Backend::HandlerIncoming
   def decryption_certificates
     certs = []
 
-    mail[:mail_instance].to.each { |to| certs += ::SMIMECertificate.find_by_email_address(to, filter: { key: 'private', usage: :encryption }) }
+    if mail[:mail_instance].to.present?
+      mail[:mail_instance].to.each { |to| certs += ::SMIMECertificate.find_by_email_address(to, filter: { key: 'private', usage: :encryption }) }
+    end
 
     if mail[:mail_instance].cc.present?
       mail[:mail_instance].cc.each { |cc| certs += ::SMIMECertificate.find_by_email_address(cc, filter: { key: 'private', usage: :encryption }) }
