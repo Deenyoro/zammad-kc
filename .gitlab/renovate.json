@@ -1,8 +1,13 @@
 {
   "enabledManagers": ["bundler", "npm", "github-actions"],
-  "lockFileMaintenance": { "enabled": false },
+  "lockFileMaintenance": {
+    "enabled": false
+  },
   "packageRules": [
-    { "matchCategories": ["ci"], "assignees": ["mg"] },
+    {
+      "matchCategories": ["ci"],
+      "assignees": ["mg"]
+    },
     {
       "matchCategories": ["ruby"],
       "assignees": ["mg"],
@@ -76,16 +81,17 @@
       "matchCategories": ["js"],
       "groupName": "Formkit packages",
       "groupSlug": "formkit-related",
-      "matchPackageNames": ["/^@formkit/"],
-      "excludePackageNames": ["@formkit/drag-and-drop"]
+      "matchPackageNames": ["/^@formkit/", "!@formkit/drag-and-drop"]
     },
     {
       "matchCategories": ["js"],
-      "matchPackageNames": ["pinia", "/^@vue/", "/^vue/"],
-      "excludePackageNames": [
-        "@vue/eslint-config-prettier",
-        "@vue/eslint-config-typescript",
-        "@vuepic/vue-datepicker"
+      "matchPackageNames": [
+        "pinia",
+        "/^@vue/",
+        "/^vue/",
+        "!@vue/eslint-config-prettier",
+        "!@vue/eslint-config-typescript",
+        "!@vuepic/vue-datepicker"
       ],
       "groupName": "Vue packages",
       "groupSlug": "vue"
