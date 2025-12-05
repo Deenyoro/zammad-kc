@@ -619,12 +619,6 @@ msgstr ""
 msgid "%s required!"
 msgstr "%s requerido!"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:35
-#, fuzzy
-#| msgid "Schedulers"
-msgid "%s schedulers"
-msgstr "Agendador"
-
 #: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:46
 msgid "%s selected. Use arrow keys to choose drop position, then press Space."
 msgstr ""
@@ -662,12 +656,6 @@ msgstr "%s tíquetes encontrados"
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:71
 msgid "%s tickets selected"
 msgstr "%s chamados selecionados"
-
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:32
-#, fuzzy
-#| msgid "Triggers"
-msgid "%s triggers"
-msgstr "Gatilhos (triggers)"
 
 #: app/assets/javascripts/app/models/ticket_article.coffee:51
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/ticket-article.ts:28
@@ -1064,6 +1052,12 @@ msgstr "Provedor"
 msgid "AI Provider Config"
 msgstr "Provedor"
 
+#: app/models/setting/validation/ai_provider_config.rb:71
+#, fuzzy
+#| msgid "The provided token is invalid."
+msgid "AI Provider Model is not set"
+msgstr "O token fornecido é inválido."
+
 #: lib/excel_sheet/ai/analytics/errors.rb:26
 #: lib/excel_sheet/ai/analytics/with_usage.rb:26
 #, fuzzy
@@ -1071,13 +1065,11 @@ msgstr "Provedor"
 msgid "AI Service Name"
 msgstr "Serviço de imagens"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:35
-msgid "AI agent used in schedulers"
-msgstr ""
-
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:32
-msgid "AI agent used in triggers"
-msgstr ""
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:33
+#, fuzzy
+#| msgid "Agents"
+msgid "AI agent used in"
+msgstr "Atendentes"
 
 #: app/assets/javascripts/app/models/ai_agent.coffee
 msgid ""
@@ -1115,7 +1107,13 @@ msgstr "O token fornecido é inválido."
 msgid "AI provider Ollama URL is not set"
 msgstr ""
 
-#: app/models/setting/validation/ai_provider_config.rb:68
+#: app/models/setting/validation/ai_provider_config.rb:70
+#, fuzzy
+#| msgid "The provided token is invalid."
+msgid "AI provider URL is not set"
+msgstr "O token fornecido é inválido."
+
+#: app/models/setting/validation/ai_provider_config.rb:75
 #, fuzzy
 #| msgid "Provider"
 msgid "AI provider is missing"
@@ -1132,7 +1130,7 @@ msgstr "Provedor"
 msgid "AI provider is not configured."
 msgstr "A configuração 'storage_provider' não foi configurada."
 
-#: app/models/setting/validation/ai_provider_config.rb:69
+#: app/models/setting/validation/ai_provider_config.rb:76
 msgid "AI provider is not supported"
 msgstr ""
 
@@ -1186,8 +1184,9 @@ msgid "API server error - please try again"
 msgstr ""
 
 #: lib/ai/provider/anthropic.rb:69 lib/ai/provider/azure.rb:110
-#: lib/ai/provider/mistral.rb:95 lib/ai/provider/ollama.rb:89
-#: lib/ai/provider/open_ai.rb:100 lib/ai/provider/zammad_ai.rb:62
+#: lib/ai/provider/custom_open_ai.rb:79 lib/ai/provider/mistral.rb:95
+#: lib/ai/provider/ollama.rb:89 lib/ai/provider/open_ai.rb:100
+#: lib/ai/provider/zammad_ai.rb:62
 msgid "API server not accessible"
 msgstr ""
 
@@ -1403,7 +1402,7 @@ msgstr ""
 "efetiva se o login por senha estiver ativado."
 
 #: app/assets/javascripts/app/controllers/_integration/ldap.coffee:326
-#: app/assets/javascripts/app/models/ai_agent.coffee:11
+#: app/assets/javascripts/app/models/ai_agent.coffee:10
 #: app/assets/javascripts/app/models/ai_text_tool.coffee:28
 #: app/assets/javascripts/app/models/chat.coffee:257
 #: app/assets/javascripts/app/models/checklist_template.coffee:9
@@ -2954,7 +2953,7 @@ msgstr ""
 msgid "BCC address for all outgoing emails"
 msgstr "CCO para todos os emails de saída"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:338
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:348
 #: app/assets/javascripts/app/views/generic/object_search/item_organization_members.jst.eco:5
 #: app/frontend/apps/desktop/components/CommonSelect/CommonSelect.vue:399
 #: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:419
@@ -3369,7 +3368,7 @@ msgstr ""
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:321
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:331
 #: app/assets/javascripts/app/controllers/_application_controller/_modal.coffee:119
 #: app/assets/javascripts/app/views/admin_password_auth/request.jst.eco:8
 #: app/assets/javascripts/app/views/admin_password_auth/request_sent.jst.eco:7
@@ -4994,6 +4993,10 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_ui_element/core_workflow_condition.coffee:28
 msgid "Custom"
 msgstr "Personalizado"
+
+#: app/assets/javascripts/app/lib/app_post/ai_provider/custom.coffee:4
+msgid "Custom (OpenAI Compatible)"
+msgstr ""
 
 #: app/models/ai/agent/type/custom_ai_agent.rb:6
 #, fuzzy
@@ -8583,9 +8586,11 @@ msgstr ""
 "Por questões de segurança, o token API é exibido apenas uma vez. Você deverá "
 "copiar para algum lugar seguro antes de continuar."
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:36
 #: app/assets/javascripts/app/controllers/_ai/form_handler_ai_agent_unused_warning.coffee:14
-#: app/assets/javascripts/app/models/ai_agent.coffee:31
-msgid "For this agent to run, it needs to be used in a trigger or scheduler."
+msgid ""
+"For this agent to run, it needs to be used in an automation (e.g. trigger, "
+"scheduler, macro)."
 msgstr ""
 
 #: app/frontend/apps/desktop/components/layout/LayoutTaskbarTabContent.vue:62
@@ -9076,7 +9081,6 @@ msgstr "Saudações"
 #: app/graphql/gql/types/overview_type.rb:95
 #: app/views/mailer/ticket_create/fr.html.erb:8
 #: app/views/mailer/ticket_create/zh-cn.html.erb:8
-#: app/views/mailer/ticket_create/zh-tw.html.erb:8
 #: app/views/messaging/ticket_create/pt-br.md.erb:3
 #: app/views/messaging/ticket_create/zh-tw.md.erb:3
 #: app/views/messaging/ticket_info/pt-br.md.erb:3
@@ -10042,7 +10046,6 @@ msgstr "Informações: %s"
 #: app/views/mailer/ticket_create/fr.html.erb:15
 #: app/views/mailer/ticket_create/it.html.erb:15
 #: app/views/mailer/ticket_create/zh-cn.html.erb:15
-#: app/views/mailer/ticket_create/zh-tw.html.erb:15
 #: app/views/mailer/ticket_escalation/de.html.erb:9
 #: app/views/mailer/ticket_escalation/fr.html.erb:9
 #: app/views/mailer/ticket_escalation/it.html.erb:9
@@ -11195,6 +11198,7 @@ msgstr "Macro"
 msgid "Macro group restrictions do not cover all tickets"
 msgstr "As restrições de macrogrupos não cobrem todos os tickets"
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:11
 #: app/assets/javascripts/app/controllers/macro.coffee:3
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:78
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:193
@@ -12231,7 +12235,7 @@ msgstr ""
 msgid "Need session_id."
 msgstr "Precisa de session_id."
 
-#: app/controllers/tickets_controller.rb:403
+#: app/controllers/tickets_controller.rb:405
 msgid "Need user_id or organization_id as param"
 msgstr "Precisa de usuario_id ou organizacao_id como parâmetro"
 
@@ -12271,7 +12275,7 @@ msgstr "Nova"
 msgid "New & Open Tickets"
 msgstr "Tíquetes Novos e Abertos"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:55
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:66
 #, fuzzy
 #| msgid "Agent"
 msgid "New AI Agent"
@@ -12541,7 +12545,7 @@ msgstr ""
 msgid "New user?"
 msgstr "Novo Usuário?"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:90
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:100
 #: app/assets/javascripts/app/controllers/_channel/whatsapp.coffee:112
 #: app/assets/javascripts/app/controllers/webhook.coffee:165
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/password_check.coffee:2
@@ -12880,7 +12884,7 @@ msgstr "Nenhum rascunho compartilhado ainda"
 #: app/controllers/organizations_controller.rb:107
 #: app/controllers/text_modules_controller.rb:75
 #: app/controllers/ticket_articles_controller.rb:243
-#: app/controllers/tickets_controller.rb:446
+#: app/controllers/tickets_controller.rb:448
 #: app/controllers/users_controller.rb:574
 msgid "No source data submitted!"
 msgstr "Nenhum dado de origem enviado!"
@@ -13037,7 +13041,7 @@ msgstr "Nenhum resultado encontrado"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:77
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:58
-#: app/assets/javascripts/app/models/ai_agent.coffee:10
+#: app/assets/javascripts/app/models/ai_agent.coffee:9
 #: app/assets/javascripts/app/models/ai_text_tool.coffee:27
 #: app/assets/javascripts/app/models/chat.coffee:252
 #: app/assets/javascripts/app/models/email_address.coffee:35
@@ -13868,7 +13872,6 @@ msgstr "Substituir rascunho"
 #: app/graphql/gql/types/overview_type.rb:96
 #: app/views/mailer/ticket_create/fr.html.erb:9
 #: app/views/mailer/ticket_create/zh-cn.html.erb:9
-#: app/views/mailer/ticket_create/zh-tw.html.erb:9
 #: app/views/messaging/ticket_create/pt-br.md.erb:4
 #: app/views/messaging/ticket_create/zh-tw.md.erb:4
 #: app/views/messaging/ticket_info/pt-br.md.erb:4
@@ -14281,7 +14284,7 @@ msgstr ""
 msgid "Please enter a text."
 msgstr "Por favor, digite um texto."
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:409
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:419
 #: app/assets/javascripts/app/controllers/webhook.coffee:134
 msgid "Please enter a valid JSON string."
 msgstr "Por favor, insira uma string JSON válida."
@@ -15854,7 +15857,7 @@ msgstr "Condições salvas"
 #: app/assets/javascripts/app/controllers/_integration/github.coffee:63
 #: app/assets/javascripts/app/controllers/_integration/gitlab.coffee:80
 #: app/assets/javascripts/app/controllers/_integration/idoit.coffee:93
-#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1209
+#: app/assets/javascripts/app/controllers/ticket_zoom.coffee:1214
 msgid "Saving failed."
 msgstr "Ação em massa executada."
 
@@ -15874,6 +15877,7 @@ msgstr "Agendado para"
 msgid "Scheduler"
 msgstr "Agendador"
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:10
 #: app/assets/javascripts/app/controllers/job.coffee:19
 msgid "Schedulers"
 msgstr "Agendador"
@@ -15941,7 +15945,7 @@ msgstr "A URL de pesquisa está faltando."
 msgid "Search all"
 msgstr "Procurar"
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:48
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:59
 #, fuzzy
 #| msgid "Search for users"
 msgid "Search for AI agents"
@@ -16847,7 +16851,7 @@ msgstr ""
 "Mostrar notas adicionais para a criação de chamados dependendo do tipo "
 "selecionado."
 
-#: app/assets/javascripts/app/views/generic/reference_list.jst.eco:19
+#: app/assets/javascripts/app/views/generic/reference_list.jst.eco:21
 #: app/assets/javascripts/app/views/generic/ticket_list.jst.eco:40
 #: app/assets/javascripts/app/views/widget/ticket_stats_list.jst.eco:11
 msgid "Show all…"
@@ -16867,7 +16871,7 @@ msgstr ""
 msgid "Show chat automatically"
 msgstr "Mostrar bate-papo automaticamente"
 
-#: app/assets/javascripts/app/views/generic/reference_list.jst.eco:20
+#: app/assets/javascripts/app/views/generic/reference_list.jst.eco:22
 #: app/assets/javascripts/app/views/generic/ticket_list.jst.eco:41
 msgid "Show less"
 msgstr "Mostre menos"
@@ -17390,7 +17394,6 @@ msgstr "Iniciando a importação…"
 #: app/graphql/gql/types/overview_type.rb:97
 #: app/views/mailer/ticket_create/fr.html.erb:10
 #: app/views/mailer/ticket_create/zh-cn.html.erb:10
-#: app/views/mailer/ticket_create/zh-tw.html.erb:10
 #: app/views/messaging/ticket_create/pt-br.md.erb:5
 #: app/views/messaging/ticket_create/zh-tw.md.erb:5
 #: app/views/messaging/ticket_info/pt-br.md.erb:5
@@ -17527,7 +17530,7 @@ msgstr ""
 "mesmo ID de mensagem no cabeçalho de referências, caso nenhuma continuidade "
 "tenha sido reconhecida usando as configurações padrão."
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:347
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:357
 #: app/assets/javascripts/app/controllers/_application_controller/form.coffee:2
 #: app/assets/javascripts/app/controllers/tag.coffee:117
 #: app/assets/javascripts/app/controllers/widget/button_with_dropdown.coffee:12
@@ -18716,7 +18719,7 @@ msgstr "O overlay do seletor de meses"
 msgid "The new ticket number could not be generated."
 msgstr "Não foi possível gerar o novo número do ticket."
 
-#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:487
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:497
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_new.coffee:69
 #: app/assets/javascripts/app/controllers/_channel/_email_signature.coffee:93
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:820
@@ -19162,7 +19165,7 @@ msgstr ""
 msgid "The signature was successfully verified."
 msgstr "A assinatura foi verificada com sucesso."
 
-#: app/controllers/tickets_controller.rb:357
+#: app/controllers/tickets_controller.rb:359
 msgid "The source ticket could not be found."
 msgstr "O ticket fonte não pôde ser encontrado."
 
@@ -19233,7 +19236,7 @@ msgstr ""
 msgid "The system was configured successfully. You are being redirected."
 msgstr "O sistema foi configurado com sucesso. Você está sendo redirecionado."
 
-#: app/controllers/tickets_controller.rb:348
+#: app/controllers/tickets_controller.rb:350
 msgid "The target ticket number could not be found."
 msgstr "O ticket alvo não pôde ser encontrado."
 
@@ -20693,7 +20696,7 @@ msgid "Tickets assigned to me: %s of %s"
 msgstr "Chamados atribuídos a mim: %s of %s"
 
 #: app/controllers/ticket_articles_controller.rb:236
-#: app/controllers/tickets_controller.rb:439
+#: app/controllers/tickets_controller.rb:441
 msgid "Tickets can only be imported if system is in import mode."
 msgstr ""
 "Os tickets só podem ser importados se o sistema estiver no modo de "
@@ -21135,6 +21138,7 @@ msgstr "Chamado |%s| irá escalonar em breve!"
 msgid "Triggered because time event was reached"
 msgstr "o gatilho '%s' foi acionado porque o lembrete pendente foi alcançado"
 
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:9
 #: app/assets/javascripts/app/controllers/trigger.coffee:3
 msgid "Triggers"
 msgstr "Gatilhos (triggers)"
@@ -21350,7 +21354,7 @@ msgstr "Nome do atributo UID"
 msgid "UID Field"
 msgstr "Campo de data"
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:155
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:156
 #: app/assets/javascripts/app/views/api.jst.eco:63
 #: app/assets/javascripts/app/views/integration/check_mk.jst.eco:12
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:12
@@ -21367,13 +21371,13 @@ msgstr "URL"
 msgid "URL (AJAX endpoint)"
 msgstr "URL (AJAX endpoint)"
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:165
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:167
 #, fuzzy
 #| msgid "%s (option)"
 msgid "URL (Completions)"
 msgstr "%s (opção)"
 
-#: app/assets/javascripts/app/controllers/_ai/provider.coffee:175
+#: app/assets/javascripts/app/controllers/_ai/provider.coffee:178
 msgid "URL (Embeddings)"
 msgstr ""
 
@@ -21490,9 +21494,15 @@ msgstr "Tipo de assinatura não suportado."
 msgid "Unsupported webhook payload."
 msgstr "Carga útil do webhook não suportada."
 
-#: app/assets/javascripts/app/models/ai_agent.coffee:30
+#: app/assets/javascripts/app/models/ai_agent.coffee:28
 msgid "Unused"
 msgstr ""
+
+#: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:35
+#, fuzzy
+#| msgid "Customer tickets"
+msgid "Unused AI agent"
+msgstr "Tickets do cliente"
 
 #: app/assets/javascripts/app/views/translation/support.jst.eco:6
 msgid ""
@@ -21588,7 +21598,7 @@ msgstr "Atualizado com Sucesso."
 msgid "Update the most recent tickets."
 msgstr "Atualizar os tickets mais recentes."
 
-#: app/assets/javascripts/app/models/ai_agent.coffee:12
+#: app/assets/javascripts/app/models/ai_agent.coffee:11
 #: app/assets/javascripts/app/models/application.coffee:11
 #: app/assets/javascripts/app/models/calendar.coffee:14
 #: app/assets/javascripts/app/models/chat.coffee:260
@@ -21916,24 +21926,18 @@ msgstr "Uso geral (admin apenas)"
 msgid "Used devices"
 msgstr "Este dispositivo"
 
+#: app/assets/javascripts/app/models/ai_agent.coffee:8
+#, fuzzy
+#| msgid "Moved in"
+msgid "Used in"
+msgstr "Movido de"
+
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:333
 msgid "Used in lists (views and results)"
 msgstr "Usado nas listas (visão e resultados)"
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:350
 msgid "Used in object views"
-msgstr "Usado na visão de objetos"
-
-#: app/assets/javascripts/app/models/ai_agent.coffee:9
-#, fuzzy
-#| msgid "Search for users"
-msgid "Used in schedulers"
-msgstr "Pesquisar por usuários"
-
-#: app/assets/javascripts/app/models/ai_agent.coffee:8
-#, fuzzy
-#| msgid "Used in object views"
-msgid "Used in triggers"
 msgstr "Usado na visão de objetos"
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:539
@@ -22344,14 +22348,10 @@ msgid "View from user's perspective"
 msgstr "Visualizar da perspectiva do usuário"
 
 #: app/views/mailer/ticket_create/zh-cn.html.erb:23
-#: app/views/mailer/ticket_create/zh-tw.html.erb:23
 #: app/views/mailer/ticket_escalation/it.html.erb:17
 #: app/views/mailer/ticket_escalation_warning/zh-cn.html.erb:17
-#: app/views/mailer/ticket_escalation_warning/zh-tw.html.erb:17
 #: app/views/mailer/ticket_reminder_reached/zh-cn.html.erb:17
-#: app/views/mailer/ticket_reminder_reached/zh-tw.html.erb:17
 #: app/views/mailer/ticket_update/zh-cn.html.erb:28
-#: app/views/mailer/ticket_update/zh-tw.html.erb:28
 msgid "View this in Zammad"
 msgstr "Veja isso no Zammad"
 
@@ -25085,6 +25085,26 @@ msgstr "...da area de texto"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅ tempo de espera hoje"
+
+#, fuzzy
+#~| msgid "Schedulers"
+#~ msgid "%s schedulers"
+#~ msgstr "Agendador"
+
+#, fuzzy
+#~| msgid "Triggers"
+#~ msgid "%s triggers"
+#~ msgstr "Gatilhos (triggers)"
+
+#, fuzzy
+#~| msgid "Search for users"
+#~ msgid "Used in schedulers"
+#~ msgstr "Pesquisar por usuários"
+
+#, fuzzy
+#~| msgid "Used in object views"
+#~ msgid "Used in triggers"
+#~ msgstr "Usado na visão de objetos"
 
 #, fuzzy
 #~| msgid "There is no route to this host."
