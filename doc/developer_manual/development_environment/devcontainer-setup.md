@@ -4,7 +4,8 @@
 
 Zammad provides a pre-configured development container (devcontainer) for a ready-to-use development environment.
 
-This is the **recommended** way to set up your environment, as it eliminates the need to manually install and configure dependencies.
+This is the **recommended** way to set up your environment, as it eliminates the need to manually install and
+configure dependencies.
 
 ### Stack options
 
