@@ -27,9 +27,6 @@ RSpec.describe AI::Service::TicketSummarize do
   before do
     setup_ai_provider('zammad_ai')
 
-    allow_any_instance_of(AI::Service::EmailRemoveQuote)
-      .to receive(:ask_provider).and_return(article.body_as_text)
-
     allow_any_instance_of(AI::Provider::ZammadAI)
       .to receive(:ask).and_return(llm_response)
   end

@@ -75,9 +75,6 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
       ai_analytics_usage if defined?(ai_analytics_usage)
 
-      allow_any_instance_of(AI::Service::EmailRemoveQuote)
-        .to receive(:ask_provider).and_return(article.body_as_text)
-
       allow_any_instance_of(AI::Service::TicketSummarize)
         .to receive(:ask_provider).and_return(updated_content)
     end

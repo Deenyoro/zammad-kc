@@ -3,10 +3,9 @@
   <% next if article.body.blank? -%>
   <% next if article.body_as_text.blank? -%>
   <% if article.type.name == 'email' -%>
-    <% result = AI::Service::EmailRemoveQuote
-      .new(context_data: { article: article })
-      .execute
-      .content %>
+    <% result = Text::QuoteRemover
+               .new(text: article.body_as_text(link_style: :markdown))
+               .remove %>
     <% next if result.blank? %>
   <% else -%>
     <% result = article.body_as_text %>

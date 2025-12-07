@@ -88,13 +88,18 @@ class String
 
   text = html_string.html2text
 
+  options:
+    string_only - if true, returns simplified text without link references
+    strict - if true, preserves some formatting
+    link_style - :numbered (default) uses [1] references, :markdown uses [text](url) format
+
   returns
 
     'string with text only'
 
 =end
 
-  def html2text(string_only = false, strict = false)
+  def html2text(string_only = false, strict = false, link_style: :numbered)
     string = dup
 
     # in case of invalid encoding, strip invalid chars
@@ -107,7 +112,7 @@ class String
     # remove html comments
     string.gsub!(%r{<!--.+?-->}m, '')
 
-    # find <a href=....> and replace it with [x]
+    # find <a href=....> and replace it with appropriate format
     link_list = ''
     counter   = 0
     if string_only
@@ -144,11 +149,33 @@ class String
         end
       end
     elsif string.scan(%r{<a[[:space:]]}i).count < 5_000
-      string.gsub!(%r{<a[[:space:]].*?href=("|')(.+?)("|').*?>}ix) do
-        link = $2
-        counter += 1
-        link_list += "[#{counter}] #{link}\n"
-        "[#{counter}] "
+      if link_style == :markdown
+        # Markdown style: [text](url) - always consistent format
+        string.gsub!(%r{<a[[:space:]]+(|\S+[[:space:]]+)href=("|')(.+?)("|')([[:space:]]*|[[:space:]]+[^>]*)>(.+?)<[[:space:]]*/a[[:space:]]*>}mxi) do |_placeholder|
+          link = $3
+          text = $6
+          text.gsub!(%r{<.+?>}, '')
+          link.presence&.strip!
+          text.presence&.strip!
+
+          if link.present? && text.present?
+            "[#{text}](#{link})"
+          elsif link.present? && text.blank?
+            link
+          elsif link.blank? && text.present?
+            text
+          else
+            ''
+          end
+        end
+      else
+        # Default: numbered references [1], [2], etc.
+        string.gsub!(%r{<a[[:space:]].*?href=("|')(.+?)("|').*?>}ix) do
+          link = $2
+          counter += 1
+          link_list += "[#{counter}] #{link}\n"
+          "[#{counter}] "
+        end
       end
     end
 

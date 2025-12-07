@@ -89,10 +89,9 @@ class Service::AI::Agent::Run::Context::Entity
     return if article.body.blank?
 
     result = if article.type.name == 'email'
-               AI::Service::EmailRemoveQuote
-                 .new(context_data: { article: article })
-                 .execute
-                 .content
+               Text::QuoteRemover
+               .new(text: article.body_as_text(link_style: :markdown))
+               .remove
              else
                article.body_as_text
              end

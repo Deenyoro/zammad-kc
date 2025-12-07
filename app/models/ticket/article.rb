@@ -221,11 +221,11 @@ get body as text
 
 =end
 
-  def body_as_text
+  def body_as_text(link_style: :numbered)
     return '' if !body
     return body if content_type.blank? || content_type =~ %r{text/plain}i
 
-    body.html2text
+    body.html2text(link_style:)
   end
 
 =begin
