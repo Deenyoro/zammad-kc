@@ -129,60 +129,52 @@ class ProviderForm extends App.Controller
   getInputFields: (provider, params) ->
     {
       token: {
-        name: 'token',
-        display: __('Token'),
-        tag: 'input',
-        type: 'password',
-        null: !provider.required?.includes('token'),
-        single: true,
-        required: provider.required?.includes('token') ? 'true' : 'false',
-        autocomplete: 'off',
-        value: params.token,
+        name:         'token'
+        display:      __('Token')
+        tag:          'input'
+        type:         'password'
+        single:       true
+        null:         not _.contains(provider.required, 'token')
+        autocomplete: 'off'
+        value:        params.token
       }
       model: {
-        name: 'model',
-        display: __('Model'),
-        tag: 'input',
-        type: 'text',
-        null: !provider.required?.includes('model'),
-        single: true,
-        placeholder: provider.default_model,
-        required: provider.required?.includes('model') ? 'true' : 'false',
-        autocomplete: 'off',
-        value: params.model,
+        name:         'model'
+        display:      __('Model')
+        tag:          'input'
+        type:         'text'
+        null:         not _.contains(provider.required, 'model')
+        placeholder:  provider.default_model
+        autocomplete: 'off'
+        value:        params.model
       }
       url: {
-        name: 'url',
-        display: __('URL'),
-        tag: 'input',
-        type: 'text',
-        null: !provider.required?.includes('url'),
-        autocomplete: 'off',
-        value: params.url,
-        placeholder: provider.url_placeholder or '',
-        required: provider.required?.includes('url') ? 'true' : 'false',
+        name:         'url'
+        display:      __('URL')
+        tag:          'input'
+        type:         'text'
+        null:         not _.contains(provider.required, 'url')
+        autocomplete: 'off'
+        value:        params.url
+        placeholder:  provider.url_placeholder or ''
       }
       url_completions: {
-        name: 'url_completions',
-        display: __('URL (Completions)'),
-        tag: 'input',
-        type: 'text',
-        null: !provider.required?.includes('url_completions'),
-        autocomplete: 'off',
-        value: params.url_completions,
-        placeholder: ''
-        required: provider.required?.includes('url_completions') ? 'true' : 'false',
+        name:         'url_completions'
+        display:      __('URL (Completions)')
+        tag:          'input'
+        type:         'text'
+        null:         not _.contains(provider.required, 'url_completions')
+        autocomplete: 'off'
+        value:        params.url_completions
       }
       url_embeddings: {
-        name: 'url_embeddings',
-        display: __('URL (Embeddings)'),
-        tag: 'input',
-        type: 'text',
-        null: !provider.required?.includes('url_embeddings'),
-        autocomplete: 'off',
-        value: params.url_embeddings,
-        placeholder: ''
-        required: provider.required?.includes('url_embeddings') ? 'true' : 'false',
+        name:         'url_embeddings'
+        display:      __('URL (Embeddings)')
+        tag:          'input'
+        type:         'text'
+        null:         not _.contains(provider.required, 'url_embeddings')
+        autocomplete: 'off'
+        value:        params.url_embeddings
       }
     }
 
@@ -206,7 +198,7 @@ class ProviderForm extends App.Controller
 
     currentProvider = @providers[provider]
 
-    return result if !currentProvider
+    return result if not currentProvider
 
     savedProvider = App.Setting.get('ai_provider_config')['provider']
 
@@ -222,7 +214,7 @@ class ProviderForm extends App.Controller
 
   render: (provider) ->
     config = App.Setting.get('ai_provider_config') || {}
-    current_provider = if provider != undefined then provider else config['provider']
+    current_provider = if provider isnt undefined then provider else config['provider']
 
     configure_attributes = @providerConfiguration(current_provider, config)
 
@@ -265,16 +257,18 @@ class ProviderForm extends App.Controller
     @validateAndSave(params)
 
   validateAndSave: (params) ->
-    has_provider = !_.isEmpty(params.provider)
+    has_provider = not _.isEmpty(params.provider)
 
-    if !has_provider
+    if not has_provider
       delete params.provider
 
-    if !params.model || params.model.trim() == ''
+    if not params.model or params.model.trim() is ''
       delete params.model
 
-    App.Setting.set('ai_provider_config', params, done: ->
+    App.Setting.set('ai_provider_config', params, done: =>
       App.Setting.set('ai_provider', has_provider, notify: true)
+
+      @render()
     )
 
 App.Config.set('Provider', { prio: 1000, name: __('Provider'), parent: '#ai', target: '#ai/provider', controller: ChannelAiProvider, permission: ['admin.ai_provider'] }, 'NavBarAdmin')

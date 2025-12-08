@@ -1737,7 +1737,7 @@ do($ = window.jQuery, window) ->
       # Convert <span style="mso-spacerun:yes">___</span> to string of alternating
       # breaking/non-breaking spaces of same length
       #content = content.replace(/<span\s+style\s*=\s*"\s*mso-spacerun\s*:\s*yes\s*;?\s*"\s*>([\s\u00a0]*)<\/span>/gi, (str, spaces) ->
-      #  return (spaces.length > 0) ? spaces.replace(/./, " ").slice(Math.floor(spaces.length/2)).split("").join("\u00a0") : ''
+      #  return if (spaces.length > 0) then spaces.replace(/./, " ").slice(Math.floor(spaces.length/2)).split("").join("\u00a0") else ''
       #)
 
       editor.html(content)
@@ -1762,7 +1762,7 @@ do($ = window.jQuery, window) ->
             matches = /([0-9])\./.exec(txt)
             if matches
               start = parseInt(matches[1], 10)
-              list_tag = start>1 ? '<ol start="' + start + '"></ol>' : '<ol></ol>'
+              list_tag = if start > 1 then '<ol start="' + start + '"></ol>' else '<ol></ol>'
             else
               list_tag = '<ol></ol>'
 
