@@ -7,11 +7,12 @@ import { type Ref, type ShallowRef } from 'vue'
 import { i18n } from '#shared/i18n/index.ts'
 import { startAndEndEventsDNDPlugin } from '#shared/utils/startAndEndEventsDNDPlugin.ts'
 
-import { useAnnouncer } from '#desktop/composables/accessibility/useAnnouncer.ts'
+import type { AnnouncerHandler } from '../accessibility/types'
 
 export const useAccessibleDragAndDrop = <T extends HTMLElement, C extends string>(
   parent: ShallowRef<T | null>,
   children: Ref<C[]>,
+  announceHandler: AnnouncerHandler,
   options: {
     dndStartCallback?: (parent: HTMLElement) => void
     dndEndCallback?: (parent: HTMLElement) => void
@@ -28,8 +29,6 @@ export const useAccessibleDragAndDrop = <T extends HTMLElement, C extends string
     draggingClass = '',
   } = options
 
-  const { announce } = useAnnouncer()
-
   dragAndDrop({
     // Wrong library bug it should be ShallowRef
     parent: parent as Ref<HTMLElement>,
@@ -39,10 +38,10 @@ export const useAccessibleDragAndDrop = <T extends HTMLElement, C extends string
     synthDropZoneClass: `opacity-0 dragging-active ${synthDropZoneClass}`,
     draggingClass: `dragging-active ${draggingClass}`,
     onDragstart: (state) => {
-      announce(i18n.t(`Drag started for %s.`, state.draggedNode.data.value as string))
+      announceHandler(i18n.t(`Drag started for %s.`, state.draggedNode.data.value as string))
     },
     onSort: (event) => {
-      announce(
+      announceHandler(
         i18n.t(
           'Sorted %s in user taskbar list to position %s.',
           event.draggedNodes[0].data.value as string,
@@ -51,7 +50,7 @@ export const useAccessibleDragAndDrop = <T extends HTMLElement, C extends string
       )
     },
     onTransfer: (event) => {
-      announce(
+      announceHandler(
         i18n.t(
           'Transferred %s from user taskbar list %s at position %s.',
           event.draggedNodes[0].data.value as string,
@@ -61,7 +60,7 @@ export const useAccessibleDragAndDrop = <T extends HTMLElement, C extends string
       )
     },
     onDragend: (state) => {
-      announce(i18n.t('Drag ended for %s.', state.draggedNode.data.value as string))
+      announceHandler(i18n.t('Drag ended for %s.', state.draggedNode.data.value as string))
     },
   })
 }

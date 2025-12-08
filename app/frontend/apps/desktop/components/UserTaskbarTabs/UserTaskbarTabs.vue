@@ -5,7 +5,7 @@ import { parents, updateConfig } from '@formkit/drag-and-drop'
 import { computedAsync } from '@vueuse/core'
 import { cloneDeep } from 'lodash-es'
 import { storeToRefs } from 'pinia'
-import { ref, watch, useTemplateRef, nextTick } from 'vue'
+import { ref, watch, useTemplateRef, nextTick, onMounted } from 'vue'
 
 import { useTouchDevice } from '#shared/composables/useTouchDevice.ts'
 import { EnumTaskbarEntityAccess } from '#shared/graphql/types.ts'
@@ -102,15 +102,24 @@ const dndParentElement = useTemplateRef('dnd-parent')
 const dndTaskbarTabListOrder = ref(taskbarTabListOrder.value || [])
 let isKeyboardReorder = false
 
+const { announce, messageNodeId } = useAnnouncer()
+
+const initializeDragAndDrop = () =>
+  useAccessibleDragAndDrop(dndParentElement, dndTaskbarTabListOrder, announce, {
+    dropZoneClass: 'no-tooltip',
+    synthDropZoneClass: 'no-tooltip',
+    dndStartCallback,
+    dndEndCallback,
+  })
+
 watch(taskbarTabListOrder, (newValue) => {
   if (!isKeyboardReorder) {
     dndTaskbarTabListOrder.value = cloneDeep(newValue || [])
   }
+
   // Reset flag after store update
   isKeyboardReorder = false
 })
-
-const { messageNodeId } = useAnnouncer()
 
 const {
   focusedItemIndex,
@@ -127,12 +136,15 @@ const {
   },
 })
 
-useAccessibleDragAndDrop(dndParentElement, dndTaskbarTabListOrder, {
-  dropZoneClass: 'no-tooltip',
-  synthDropZoneClass: 'no-tooltip',
-  dndStartCallback,
-  dndEndCallback,
-})
+watch(
+  () => dndTaskbarTabListOrder.value?.length,
+  (newLength, oldLength) => {
+    // If we went from 0 tabs to some tabs, or the DOM was recreated, reinitialize
+    if (!oldLength && newLength) nextTick(initializeDragAndDrop)
+  },
+)
+
+onMounted(initializeDragAndDrop)
 
 watch(
   () => props.collapsed,
