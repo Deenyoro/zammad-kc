@@ -94,10 +94,9 @@ RSpec.describe Setting::Validation::AIProviderConfig do
       end
     end
 
-    context 'when in SaaS or developer mode' do
+    context 'when in SaaS' do
       before do
         Setting.set('system_online_service', true)
-        Setting.set('developer_mode', true)
       end
 
       around do |example|

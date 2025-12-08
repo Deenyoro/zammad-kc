@@ -61,7 +61,7 @@ class Setting::Validation::AIProviderConfig < Setting::Validation::Base
   end
 
   def required_attributes_zammad
-    return if Setting.get('system_online_service') || Setting.get('developer_mode')
+    return if Setting.get('system_online_service')
 
     required_attributes_token
   end

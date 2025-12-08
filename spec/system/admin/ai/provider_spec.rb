@@ -10,11 +10,7 @@ RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
   before do
     Setting.set('ai_provider_config', initial_ai_provider_config, validate: false)
     Setting.set('ai_provider', initial_ai_provider_config.present?, validate: false)
-
-    if self_hosted
-      Setting.set('system_online_service', false)
-      Setting.set('developer_mode', false)
-    end
+    Setting.set('system_online_service', !self_hosted)
 
     result = UserAgent::Result.new(
       success: true,
