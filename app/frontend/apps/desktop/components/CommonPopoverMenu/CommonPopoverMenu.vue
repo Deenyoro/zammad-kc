@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { computed, type SetupContext, toRefs, useSlots } from 'vue'
+import { computed, toRefs, useSlots } from 'vue'
 
 import type { ObjectLike } from '#shared/types/utils.ts'
 
@@ -27,14 +27,13 @@ const emit = defineEmits<{
 
 const { items, entity } = toRefs(props)
 
-const { filteredMenuItems } = usePopoverMenu(items, entity)
+// If no explicit items prop is provided, inject from a parent provider (e.g., CommonActionMenu)
+// Otherwise, create an independent instance for this component
+const { filteredMenuItems } = usePopoverMenu(items, entity, {
+  injects: !items.value?.length,
+})
 
-/**
- * Workaround to satisfy linter
- * @bug https://github.com/vuejs/language-tools/issues/5082
- * Wait to be closed
- * */
-const slots: SetupContext['slots'] = useSlots()
+const slots = useSlots()
 
 const showHeaderLabel = computed(() => {
   if (!filteredMenuItems.value && !slots.default) return false

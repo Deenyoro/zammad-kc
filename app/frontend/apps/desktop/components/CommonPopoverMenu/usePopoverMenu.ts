@@ -14,13 +14,13 @@ const POPOVER_MENU_SYMBOL = Symbol('popover-menu')
 export const usePopoverMenu = (
   items: Ref<MenuItem[] | undefined>,
   entity: Ref<ObjectLike | undefined>,
-  options: { provides?: boolean } = {},
+  options: { provides?: boolean; injects?: boolean } = {},
 ) => {
+  const { provides = false, injects = false } = options
+
   const injectPopoverMenu = inject<Maybe<UsePopoverMenuReturn>>(POPOVER_MENU_SYMBOL, null)
 
-  if (injectPopoverMenu) return injectPopoverMenu
-
-  const { provides = false } = options
+  if (injects && injectPopoverMenu) return injectPopoverMenu
 
   const session = useSessionStore()
 

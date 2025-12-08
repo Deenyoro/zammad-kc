@@ -32,8 +32,10 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   visible: true,
-  targetId: getUuid(),
 })
+
+// Generate unique targetId per component instance to avoid cross-editor targeting
+const targetId = computed(() => props.targetId || `editor-action-menu-${getUuid()}`)
 
 const emit = defineEmits<{
   hide: []
@@ -114,7 +116,7 @@ onKeyUp(['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'], (e) => {
 useEventListener('click', (e) => {
   const target = e.target as HTMLDivElement
 
-  const targetElementWithId = target.closest(`#${CSS.escape(props.targetId)}`)
+  const targetElementWithId = target.closest(`#${CSS.escape(targetId.value)}`)
 
   if (targetElementWithId) {
     setPopoverTarget(targetElementWithId as HTMLDivElement)
@@ -126,7 +128,7 @@ useEventListener('click', (e) => {
 
 const handleMenuItemClick = (action: MenuItem, event: MouseEvent) => {
   if ((action as ActionItem).subMenu) {
-    const newPopoverTarget = document.getElementById(`${CSS.escape(props.targetId)}`)
+    const newPopoverTarget = document.getElementById(`${CSS.escape(targetId.value)}`)
     if (newPopoverTarget) {
       popoverTarget.value = newPopoverTarget as HTMLDivElement
     }
