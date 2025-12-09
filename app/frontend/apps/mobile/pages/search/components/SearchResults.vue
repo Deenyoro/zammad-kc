@@ -20,7 +20,7 @@ const plugin = computed(() => searchPlugins[props.type])
 </script>
 
 <template>
-  <template v-for="item in data" :key="item.id">
+  <template v-for="item in data" :key="item.id as string">
     <CommonLink :link="replaceTags(plugin.link, item, true)">
       <component :is="plugin.component" :entity="item" />
     </CommonLink>
