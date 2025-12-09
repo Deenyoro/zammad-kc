@@ -598,6 +598,20 @@ class CreateTicket < ActiveRecord::Migration[4.2]
       t.references :updated_by, null: false, foreign_key: { to_table: :users }
       t.timestamps limit: 3, null: false
     end
+
+    create_table :ticket_daily_event_locks do |t|
+      t.date :date, null: false
+      t.string :lock_type, null: false
+      t.string :lock_activator, null: false
+      t.references :ticket, null: false, type: :integer, foreign_key: { to_table: :tickets }
+      t.references :related_object, polymorphic: true, type: :integer, null: true
+
+      t.index %i[date lock_type lock_activator ticket_id related_object_type related_object_id],
+              name:   'index_daily_event_locks_on_unique_fields',
+              unique: true
+
+      t.timestamps limit: 3
+    end
   end
 
   def self.down

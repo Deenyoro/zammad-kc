@@ -24,6 +24,7 @@ class Ticket < ApplicationModel
   include Ticket::TriggersSubscriptions
   include Ticket::ChecksReopenAfterCertainTime
   include Ticket::Checklists
+  include Ticket::HasDailyEventLocks
 
   include ::Ticket::Escalation
   include ::Ticket::Subject

@@ -18,6 +18,7 @@ require 'models/ticket/escalation_examples'
 require 'models/ticket/resets_pending_time_seconds_examples'
 require 'models/ticket/sets_close_time_examples'
 require 'models/ticket/sets_last_owner_update_time_examples'
+require 'models/ticket/has_daily_event_locks_examples'
 
 RSpec.describe Ticket, type: :model do
   subject(:ticket) { create(:ticket).tap { TransactionDispatcher.commit } }
@@ -39,6 +40,7 @@ RSpec.describe Ticket, type: :model do
   it_behaves_like 'TicketResetsPendingTimeSeconds'
   it_behaves_like 'TicketSetsCloseTime'
   it_behaves_like 'TicketSetsLastOwnerUpdateTime'
+  it_behaves_like 'Ticket::HasDailyEventLocks'
   it_behaves_like 'Association clears cache', association: :articles, factory: :ticket_article
 
   describe 'Class methods:' do
@@ -1392,6 +1394,7 @@ RSpec.describe Ticket, type: :model do
           'Ticket::TimeAccounting'  => { 'ticket_id' => 1 },
           'Ticket::SharedDraftZoom' => { 'ticket_id' => 0 },
           'Checklist::Item'         => { 'ticket_id' => 1 },
+          'Ticket::DailyEventLock'  => { 'ticket_id' => 0 },
         }
 
         ticket         = create(:ticket)
