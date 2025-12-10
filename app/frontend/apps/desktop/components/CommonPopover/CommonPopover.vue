@@ -26,7 +26,6 @@ import {
   useTemplateRef,
 } from 'vue'
 
-import { useAppName } from '#shared/composables/useAppName.ts'
 import { useOnEmitter } from '#shared/composables/useOnEmitter.ts'
 import { useTrapTab } from '#shared/composables/useTrapTab.ts'
 import { EnumTextDirection } from '#shared/graphql/types.ts'
@@ -85,6 +84,8 @@ const hasDirectionRight = computed(() => {
 const locale = useLocaleStore()
 
 const autoOrientation = computed(() => {
+  if (overflowOrientation.value) return overflowOrientation.value
+
   if (props.orientation === 'autoVertical') {
     return hasDirectionUp.value ? 'top' : 'bottom'
   }
@@ -101,16 +102,18 @@ const autoOrientation = computed(() => {
   return props.orientation
 })
 
-const verticalOrientation = computed(() => {
-  return autoOrientation.value === 'top' || autoOrientation.value === 'bottom'
-})
+const verticalOrientation = computed(
+  () => autoOrientation.value === 'top' || autoOrientation.value === 'bottom',
+)
 
 const overflowHorizontalPlacement = ref<Placement | null>(null)
+const overflowOrientation = ref<Orientation | null>(null)
 
 whenever(
   () => !showPopover.value,
   () => {
     overflowHorizontalPlacement.value = null
+    overflowOrientation.value = null
   },
 )
 
@@ -119,8 +122,7 @@ const currentPlacement = computed(() => {
 
   if (placement === 'arrowStart' || placement === 'arrowEnd') {
     if (locale.localeData?.dir === EnumTextDirection.Rtl) {
-      if (placement === 'arrowStart') return 'arrowEnd'
-      return 'arrowStart'
+      return placement === 'arrowStart' ? 'arrowEnd' : 'arrowStart'
     }
     return placement
   }
@@ -143,18 +145,7 @@ const PLACEMENT_OFFSET_WITH_ARROW = 30
 const ORIENTATION_OFFSET_WO_ARROW = 6
 const ORIENTATION_OFFSET_WITH_ARROW = 16
 
-const appName = useAppName()
-
 const popoverStyle = computed(() => {
-  if (appName === 'mobile') {
-    return {
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      zIndex: props.zIndex,
-    }
-  }
-
   if (!targetElementBounds.value) return { top: 0, left: 0, maxHeight: 0 }
 
   const maxHeight = hasDirectionUp.value
@@ -316,14 +307,33 @@ const checkHorizontalOverflow = () => {
     const popoverElementReference = popoverElement.value as HTMLElement
     const popoverRect = popoverElementReference.getBoundingClientRect()
 
-    // Check if overflowing right edge of viewport
-    if (props.placement === 'start' && popoverRect.right > windowSize.width.value) {
-      overflowHorizontalPlacement.value = 'end'
+    // For vertical orientations (top/bottom), check horizontal placement overflow
+    if (verticalOrientation.value) {
+      // Check if overflowing right edge of viewport
+      if (
+        (props.placement === 'start' || props.placement === 'arrowStart') &&
+        popoverRect.right > windowSize.width.value
+      ) {
+        overflowHorizontalPlacement.value = props.placement === 'start' ? 'end' : 'arrowEnd'
+      }
+
+      // Check if overflowing left edge of viewport
+      if ((props.placement === 'end' || props.placement === 'arrowEnd') && popoverRect.left < 0) {
+        overflowHorizontalPlacement.value = props.placement === 'end' ? 'start' : 'arrowStart'
+      }
     }
 
-    // Check if overflowing left edge of viewport
-    if (props.placement === 'end' && popoverRect.left < 0) {
-      overflowHorizontalPlacement.value = 'start'
+    // For horizontal orientations (left/right), check if popover overflows viewport edges
+    if (!verticalOrientation.value) {
+      // When orientation is 'left' and popover overflows left edge, flip to 'right'
+      if (autoOrientation.value === 'left' && popoverRect.left < 0) {
+        overflowOrientation.value = 'right'
+      }
+
+      // When orientation is 'right' and popover overflows right edge, flip to 'left'
+      if (autoOrientation.value === 'right' && popoverRect.right > windowSize.width.value) {
+        overflowOrientation.value = 'left'
+      }
     }
   })
 }

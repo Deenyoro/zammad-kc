@@ -62,6 +62,7 @@ const isAgent = computed(() => session.hasPermission('ticket.agent'))
         ? 'outline-2! outline-offset-1! outline-blue-800! hover:outline-blue-800!'
         : ''
     "
+    trigger-link-class="inline-block"
     v-bind="{ ...popoverConfig, ...$attrs }"
   >
     <template #popover-content="{ popoverId, hasOpenedViaLongClick }">
