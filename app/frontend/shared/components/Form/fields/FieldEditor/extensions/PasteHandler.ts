@@ -11,6 +11,8 @@ export const PasteHandler = Extension.create({
   name: 'paste-handler',
 
   addProseMirrorPlugins() {
+    const { editor } = this
+
     return [
       new Plugin({
         key: PasteHandlerPluginKey,
@@ -24,12 +26,15 @@ export const PasteHandler = Extension.create({
             // If no HTML content, let ProseMirror handle plain text.
             if (!content) return false
 
-            const cleanContent = htmlCleanup(content)
+            const imageExtensionEnabled = editor.extensionManager.extensions.some(
+              (ext) => ext.name === 'image',
+            )
 
-            // Use TipTap's editor API to insert the content
-            this.editor.commands.insertContent(cleanContent)
+            const cleanContent = htmlCleanup(content, !imageExtensionEnabled)
 
             event.preventDefault()
+
+            editor.commands.insertContent(cleanContent)
 
             return true
           },
