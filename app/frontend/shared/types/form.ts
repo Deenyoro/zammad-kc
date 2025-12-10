@@ -45,6 +45,7 @@ export interface FormDefaultProps {
   labelPlaceholder?: string[]
   internal?: boolean
   disabled?: boolean
+  formUpdaterValueChange?: boolean
 }
 
 export type FormUpdaterTrigger =

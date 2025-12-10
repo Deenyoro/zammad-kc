@@ -280,18 +280,13 @@ const tabContext = computed<TaskbarTabContext>((currentContext) => {
 const { currentTaskbarTab, currentTaskbarTabId, currentTaskbarTabFormId, currentTaskbarTabDelete } =
   useTaskbarTab(tabContext)
 
-const { setSkipNextStateUpdate } = useTaskbarTabStateUpdates(
-  currentTaskbarTabId,
-  form,
-  triggerFormUpdater,
-)
+useTaskbarTabStateUpdates(currentTaskbarTabId, form, triggerFormUpdater)
 
 const sidebarContext = computed<TicketSidebarContext>(() => ({
   screenType: TicketSidebarScreenType.TicketCreate,
   form: form.value,
   formValues: values.value,
   currentTaskbarTabId,
-  setSkipNextStateUpdate,
 }))
 
 useProvideTicketSidebar(sidebarContext)
@@ -309,9 +304,6 @@ const discardChanges = async () => {
 }
 
 const applyTemplate = (templateId: string) => {
-  // Skip subscription for the current tab, to avoid not needed form updater requests.
-  setSkipNextStateUpdate(true)
-
   triggerFormUpdater({
     includeDirtyFields: true,
     additionalParams: {
@@ -362,7 +354,6 @@ const submitCreateTicket = async (event: FormSubmitData<TicketFormData>) => {
         use-object-attributes
         form-class="flex flex-col gap-3"
         @submit="submitCreateTicket($event as FormSubmitData<TicketFormData>)"
-        @changed="setSkipNextStateUpdate(true)"
       />
     </div>
     <template #sideBar="{ isCollapsed, toggleCollapse }">

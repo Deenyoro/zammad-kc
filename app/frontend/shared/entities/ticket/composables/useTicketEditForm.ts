@@ -76,6 +76,14 @@ export const useTicketEditForm = (
     return acc
   }, {} as TicketArticleTypeFields)
 
+  // Static default values for article type fields for resetting in the different situations.
+  const ticketArticleDefaultValues = {
+    articleType: undefined,
+    internal: undefined,
+    inReplyTo: undefined,
+    body: '',
+  }
+
   const { isTicketAgent, isTicketCustomer, isTicketEditable } = useTicketView(ticket)
 
   const isMobileApp = appName === 'mobile'
@@ -134,8 +142,8 @@ export const useTicketEditForm = (
         hidden: computed(() => ticketArticleTypes.value.length === 1),
         props: {
           // We need to disable the auto preselection when the field
-          // is initialized, so that we have a correct dirty state.
-          noInitialAutoPreselect: true,
+          //  so that we have a correct dirty state.
+          noAutoPreselect: true,
           options: ticketArticleTypes,
         },
       },
@@ -158,6 +166,9 @@ export const useTicketEditForm = (
               icon: 'unlock',
             },
           ],
+          // We need to disable the auto preselection when the field
+          //  so that we have a correct dirty state.
+          noAutoPreselect: true,
         },
       },
       {
@@ -250,6 +261,7 @@ export const useTicketEditForm = (
       changedField?: ChangedField,
     ) => {
       if (!schemaData.fields.articleType) return false
+
       return !(
         execution === FormHandlerExecution.FieldChange &&
         (!changedField || changedField.name !== 'articleType')
@@ -311,6 +323,7 @@ export const useTicketEditForm = (
       const articleType = ticketArticleTypeValueLookup.value[payload as string]
 
       if (!articleType) return
+
       const body = formNode.find('body', 'name') as FormKitNode
       const context = {
         body: body.context as unknown as FieldEditorContext,
@@ -330,6 +343,7 @@ export const useTicketEditForm = (
     articleSchema,
     currentArticleType,
     ticketArticleTypes,
+    ticketArticleDefaultValues,
     securityIntegration,
     isTicketAgent,
     isTicketCustomer,

@@ -306,6 +306,7 @@ describe('Form.vue', () => {
       'title',
       'Other title',
       'Other titl',
+      false,
     ])
   })
 

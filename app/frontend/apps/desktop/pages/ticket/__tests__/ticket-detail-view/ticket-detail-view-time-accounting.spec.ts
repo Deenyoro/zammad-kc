@@ -184,9 +184,12 @@ describe('Ticket detail view', () => {
 
       const view = await visitView('/tickets/1')
 
+      await getNode('form-ticket-edit-1')?.settled
+
       await view.events.click(await view.findByRole('button', { name: 'Add internal note' }))
 
-      await view.events.type(await view.findByRole('textbox', { name: 'Text' }), 'Foo note')
+      const editor = await view.findByRole('textbox', { name: 'Text' })
+      await view.events.type(editor, 'Foo note')
 
       mockTicketUpdateMutation({
         ticketUpdate: {

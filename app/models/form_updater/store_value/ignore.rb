@@ -17,6 +17,7 @@ class FormUpdater::StoreValue::Ignore < FormUpdater::StoreValue::Base
       attachments
       security
       ticket_duplicate_detection
+      isDefaultFollowUpStateSet
     ]
   end
 end

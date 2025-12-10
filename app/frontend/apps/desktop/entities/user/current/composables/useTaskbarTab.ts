@@ -109,6 +109,8 @@ export const useTaskbarTab = (context?: Ref<TaskbarTabContext>) => {
 
       if (currentTaskbarTab.value.dirty === isDirty) return
 
+      // TODO: Don't know if this is needed here, when the auto save is also triggered in this situation and will reset the state...
+      // From timing perspective this can lead to problems, because this mutation will for example still return that a "articleFormIsPresent"...
       currentTaskbarTabUpdate({
         ...currentTaskbarTab.value,
         dirty: isDirty,

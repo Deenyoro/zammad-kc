@@ -125,7 +125,7 @@ describe('Ticket detail view', () => {
 
       const view = await visitView('/tickets/1')
 
-      await getNode('form-ticket-edit')?.settled
+      await getNode('form-ticket-edit-1')?.settled
 
       expect(
         view.findByRole('heading', {
@@ -156,7 +156,7 @@ describe('Ticket detail view', () => {
 
       await view.events.click(view.getByRole('option', { name: 'closed' }))
 
-      await getNode('form-ticket-edit')?.settled
+      await getNode('form-ticket-edit-1')?.settled
 
       await view.events.click(view.getByRole('button', { name: 'Update' }))
 
@@ -312,7 +312,7 @@ describe('Ticket detail view', () => {
 
       expect(getByRole(complementary, 'heading', { level: 2, name: 'Reply' })).toBeInTheDocument()
 
-      await getNode('form-ticket-edit')?.settled
+      await getNode('form-ticket-edit-1')?.settled
 
       expect(getByLabelText(complementary, 'Visibility')).toHaveTextContent('Internal')
 
@@ -325,7 +325,7 @@ describe('Ticket detail view', () => {
 
       await view.events.type(editor, 'Foo note')
 
-      await getNode('form-ticket-edit')?.settled
+      await getNode('form-ticket-edit-1')?.settled
 
       await view.events.click(view.getByRole('button', { name: 'Update' }))
 
@@ -449,7 +449,7 @@ describe('Ticket detail view', () => {
 
       await view.events.type(await view.findByRole('textbox', { name: 'Text' }), 'Foo email')
 
-      await getNode('form-ticket-edit')?.settled
+      await getNode('form-ticket-edit-1')?.settled
 
       await view.events.click(view.getByRole('button', { name: 'Update' }))
 
@@ -595,9 +595,9 @@ describe('Ticket detail view', () => {
 
       await view.events.click(view.getByRole('button', { name: 'add new email address' }))
 
-      await getNode('form-ticket-edit')?.settled
+      await getNode('form-ticket-edit-1')?.settled
 
-      await view.events.click(view.getByRole('button', { name: 'Update' }))
+      await view.events.click(await view.findByRole('button', { name: 'Update' }))
 
       const calls = await waitForTicketUpdateMutationCalls()
 
@@ -629,7 +629,9 @@ describe('Ticket detail view', () => {
 
       const view = await visitView('/tickets/1')
 
-      await view.events.click(view.getByRole('button', { name: 'Add phone call' }))
+      await getNode('form-ticket-edit-1')?.settled
+
+      await view.events.click(await view.findByRole('button', { name: 'Add phone call' }))
 
       expect(await view.findByRole('heading', { level: 2, name: 'Reply' })).toBeInTheDocument()
 
@@ -746,8 +748,10 @@ describe('Ticket detail view', () => {
 
       const view = await visitView('/tickets/1')
 
+      await getNode('form-ticket-edit-1')?.settled
+
       // Discard changes inside the reply form
-      await view.events.click(view.getByRole('button', { name: 'Add phone call' }))
+      await view.events.click(await view.findByRole('button', { name: 'Add phone call' }))
 
       expect(await view.findByRole('heading', { level: 2, name: 'Reply' })).toBeInTheDocument()
 
@@ -890,7 +894,7 @@ describe('Ticket detail view', () => {
         },
       })
 
-      await waitForNextTick()
+      await waitForNextTick(true)
 
       // Discard changes inside the reply form
       await view.events.click(view.getByRole('button', { name: 'Add reply' }))
@@ -1037,6 +1041,8 @@ describe('Ticket detail view', () => {
 
       const view = await visitView('/tickets/1')
 
+      await getNode('form-ticket-edit-1')?.settled
+
       const articles = await view.findAllByRole('article')
 
       await view.events.click(await within(articles[0]).findByRole('button', { name: 'Reply' }))
@@ -1046,7 +1052,7 @@ describe('Ticket detail view', () => {
         'Reply. Check attachment.',
       )
 
-      await getNode('form-ticket-edit')?.settled
+      await getNode('form-ticket-edit-1')?.settled
 
       await view.events.click(view.getByRole('button', { name: 'Update' }))
 

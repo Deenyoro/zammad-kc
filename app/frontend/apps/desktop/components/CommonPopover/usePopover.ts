@@ -9,7 +9,7 @@ export const usePopover = (popoverRef?: Ref<CommonPopoverInstance | undefined>) 
   const popover: ShallowRef<CommonPopoverInstance | undefined> = popoverRef || shallowRef()
   const popoverTarget: ShallowRef<HTMLDivElement | undefined> = shallowRef()
 
-  const isOpen = computed(() => popover.value?.isOpen)
+  const isOpen = computed(() => popover.value?.isOpen || false)
 
   const open = () => popover.value?.openPopover()
 

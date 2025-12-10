@@ -7,10 +7,9 @@ import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import { useFlyout } from '#desktop/components/CommonFlyout/useFlyout.ts'
 import { useTicketSharedDraft } from '#desktop/pages/ticket/composables/useTicketSharedDraft.ts'
 
-const props = defineProps<{
+defineProps<{
   sharedDraftId?: string | null
   form?: FormRef
-  setSkipNextStateUpdate: (skip: boolean) => void
 }>()
 
 useFlyout({
@@ -19,7 +18,7 @@ useFlyout({
   global: true,
 })
 
-const { openSharedDraftFlyout } = useTicketSharedDraft(props.setSkipNextStateUpdate)
+const { openSharedDraftFlyout } = useTicketSharedDraft()
 </script>
 
 <template>

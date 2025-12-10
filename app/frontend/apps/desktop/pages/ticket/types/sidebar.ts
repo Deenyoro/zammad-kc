@@ -18,7 +18,6 @@ export interface TicketSidebarContext {
   form?: FormRef
   formValues: FormValues
   currentTaskbarTabId?: Ref<string | undefined>
-  setSkipNextStateUpdate?: (skip: boolean) => void
 }
 
 export enum TicketSidebarButtonBadgeType {

@@ -1,5 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 import { within } from '@testing-library/vue'
+import { flushPromises } from '@vue/test-utils'
 
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
@@ -33,6 +34,10 @@ describe('Ticket detail view - draft handling', () => {
             newArticlePresent: true,
           },
         },
+      })
+
+      mockMacrosQuery({
+        macros: [],
       })
 
       mockTicketQuery({
@@ -70,6 +75,7 @@ describe('Ticket detail view - draft handling', () => {
       })
 
       const view = await visitView('/tickets/1')
+      await flushPromises()
 
       const actionMenu = await view.findByLabelText('Additional ticket edit actions')
 
@@ -149,6 +155,10 @@ describe('Ticket detail view - draft handling', () => {
             newArticlePresent: false,
           },
         },
+      })
+
+      mockMacrosQuery({
+        macros: [],
       })
 
       mockTicketQuery({ ticket: createDummyTicket({ sharedDraftZoomId: 123 }) })

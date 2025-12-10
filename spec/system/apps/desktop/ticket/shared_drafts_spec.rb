@@ -46,7 +46,10 @@ RSpec.describe 'Desktop > Ticket > Shared Drafts', app: :desktop_view, authentic
       # Create an internal note for agent2
       click_on('Discard your unsaved changes')
       click_on('Discard Changes')
-      click_on('Add internal note')
+
+      within_form(form_updater_gql_number: 3) do
+        click_on('Add internal note')
+      end
 
       within_form(form_updater_gql_number: 4) do
         find_editor('Text').type("Can we send this to the customer?  @@#{agent2.firstname}")

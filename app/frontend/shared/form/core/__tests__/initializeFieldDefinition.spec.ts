@@ -14,7 +14,13 @@ describe('initializeFieldDefinition', () => {
     const definition = cloneDeep(inputTextDefinition)
     initializeFieldDefinition(definition)
 
-    expect(definition.props).toEqual(['formId', 'labelSrOnly', 'labelPlaceholder', 'internal'])
+    expect(definition.props).toEqual([
+      'formId',
+      'labelSrOnly',
+      'labelPlaceholder',
+      'internal',
+      'formUpdaterValueChange',
+    ])
   })
 
   it('check for added default props with existing props', () => {
@@ -27,6 +33,7 @@ describe('initializeFieldDefinition', () => {
       'labelSrOnly',
       'labelPlaceholder',
       'internal',
+      'formUpdaterValueChange',
     ])
   })
 
@@ -84,6 +91,7 @@ describe('initializeFieldDefinition', () => {
       'labelSrOnly',
       'labelPlaceholder',
       'internal',
+      'formUpdaterValueChange',
       'example',
     ])
     expect(definition.features).toEqual([

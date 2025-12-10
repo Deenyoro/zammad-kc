@@ -239,7 +239,7 @@ const setEditorContent = (
   contentType: EditorContentType,
   emitUpdate?: boolean,
 ) => {
-  if (!editor.value || !content) return
+  if (!editor.value || content === undefined) return
 
   editor.value.commands.setContent(contentType === 'text/html' ? htmlCleanup(content) : content, {
     emitUpdate,
@@ -248,7 +248,10 @@ const setEditorContent = (
 
 // Set the new editor content, when the value was changed from outside (e.g. form schema update).
 const updateValueKey = props.context.node.on('input', ({ payload: newContent }) => {
-  const currentContent = isPlainText.value ? editor.value?.getText() : editor.value?.getHTML()
+  // Early return when no editor exists, keep this in mind, when we have real initial value problems.
+  if (!editor.value) return
+
+  const currentContent = getEditorContent(editor.value, contentType.value)
 
   // Skip the update if the value is identical.
   if (newContent === currentContent) return
@@ -260,8 +263,9 @@ const updateValueKey = props.context.node.on('input', ({ payload: newContent }) 
 const updateContentTypeKey = props.context.node.on(
   'prop:contentType',
   ({ payload: newContentType }) => {
-    const newContent =
-      newContentType === 'text/plain' ? editor.value?.getText() : editor.value?.getHTML()
+    if (!editor.value) return
+
+    const newContent = getEditorContent(editor.value, newContentType)
 
     setEditorContent(newContent, newContentType, true)
   },

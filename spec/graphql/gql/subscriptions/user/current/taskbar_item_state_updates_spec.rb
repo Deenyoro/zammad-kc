@@ -11,7 +11,7 @@ RSpec.describe Gql::Subscriptions::User::Current::TaskbarItemStateUpdates, type:
     <<~QUERY
       subscription userCurrentTaskbarItemStateUpdates($taskbarItemId: ID!) {
         userCurrentTaskbarItemStateUpdates(taskbarItemId: $taskbarItemId) {
-          stateChanged
+          stateUpdateType
         }
       }
     QUERY
@@ -40,7 +40,7 @@ RSpec.describe Gql::Subscriptions::User::Current::TaskbarItemStateUpdates, type:
           taskbar.update!(state: { 'dummy' => 'data' })
 
           result = mock_channel.mock_broadcasted_messages.first[:result]['data']['userCurrentTaskbarItemStateUpdates']
-          expect(result).to eq({ 'stateChanged' => true })
+          expect(result).to eq({ 'stateUpdateType' => 'changed' })
         end
       end
 

@@ -19,7 +19,7 @@ const fieldDefinition = createInput(
     'options',
     'rejectNonExistentValues',
     'sorting',
-    'noInitialAutoPreselect',
+    'noAutoPreselect',
   ],
   {
     features: [addLink, formUpdaterTrigger(), removeValuesForNonExistingOptions],

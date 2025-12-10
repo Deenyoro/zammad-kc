@@ -35,7 +35,6 @@ const props = defineProps<{
   draftType: 'start' | 'detail-view'
   metaInformationQuery: OperationQueryFunction
   deleteMutation: OperationMutationFunction
-  setSkipNextStateUpdate?: (skip: boolean) => void
 }>()
 
 const emit = defineEmits<{
@@ -144,9 +143,6 @@ const applySharedDraft = async (sharedDraftId: string) => {
     sharedDraftId,
     draftType: props.draftType,
   }
-
-  // Skip subscription for the current taskbar tab, to avoid unnecessary form updater requests.
-  props.setSkipNextStateUpdate?.(true)
 
   triggerFormUpdater({ additionalParams })
 

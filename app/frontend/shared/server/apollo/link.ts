@@ -12,6 +12,7 @@ import csrfLink from './link/csrf.ts'
 import debugLink from './link/debug.ts'
 import errorLink from './link/error.ts'
 import setAuthorizationLink from './link/setAuthorization.ts'
+import skipSubscriptionResultLink from './link/skipSubscriptionResult.ts'
 import testFlagsLink from './link/testFlags.ts'
 import getBatchContext from './utils/getBatchContext.ts'
 import getWebsocketContext from './utils/getWebsocketContext.ts'
@@ -90,6 +91,7 @@ const link = from([
   errorLink,
   setAuthorizationLink,
   debugLink,
+  skipSubscriptionResultLink,
   removeTypenameFromVariables(),
   splitLink,
 ])

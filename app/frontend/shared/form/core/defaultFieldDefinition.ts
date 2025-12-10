@@ -14,6 +14,7 @@ const defaultProps: (keyof FormDefaultProps)[] = [
   'labelSrOnly',
   'labelPlaceholder',
   'internal',
+  'formUpdaterValueChange',
 ]
 
 const defaulfFieldDefinition: Required<Pick<FormKitTypeDefinition, 'props' | 'features'>> = {

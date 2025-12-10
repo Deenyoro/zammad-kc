@@ -55,6 +55,9 @@ const addonIconSize = computed(() => {
   }
 })
 
+// TODO: we should fix v-bind="props", because not everything is supported by the buttons component and
+// it will also duplicate some labels?
+
 const { popover, popoverTarget, isOpen: popoverIsOpen, toggle } = usePopover()
 </script>
 

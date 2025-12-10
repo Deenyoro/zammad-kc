@@ -6,7 +6,7 @@ import type {
   EditorContentType,
   FieldEditorContext,
 } from '#shared/components/Form/fields/FieldEditor/types.ts'
-import type { FormRefParameter } from '#shared/components/Form/types.ts'
+import type { FormRefParameter, FormSchemaField } from '#shared/components/Form/types.ts'
 import type { TicketArticlePerformOptions } from '#shared/entities/ticket-article/action/plugins/types.ts'
 
 import type { FormKitNode } from '@formkit/core'
@@ -22,30 +22,32 @@ export const useTicketArticleReplyAction = (
 
     const { articleType, ...otherOptions } = values
 
-    const typeNode = formNode?.find('articleType', 'name')
-
-    if (!typeNode) return
-
     if (formNode.context) {
       Object.assign(formNode.context, { _open: true })
     }
 
-    typeNode?.input(articleType, false)
-
-    // Trigger new fields that depend on the articleType.
-    await nextTick()
+    const changedArticleFields: Record<string, Partial<FormSchemaField>> = {
+      articleType: {
+        value: articleType,
+      },
+    }
 
     for (const [key, value] of Object.entries(otherOptions)) {
-      const node = formNode.find(key, 'name')
-      node?.input(value, false)
+      changedArticleFields[key] = {
+        value,
+      }
       // TODO: make handling more generic(?)
-      if (node && (key === 'to' || key === 'cc')) {
+      if (key === 'to' || key === 'cc') {
         const options = Array.isArray(value)
           ? value.map((v) => ({ value: v, label: v }))
           : [{ value, label: value }]
-        node.emit('prop:options', options)
+
+        changedArticleFields[key].props ||= {}
+        changedArticleFields[key].props.options = options
       }
     }
+
+    form.value?.updateChangedFields(changedArticleFields)
 
     formNode.emit('article-reply-open', articleType)
 

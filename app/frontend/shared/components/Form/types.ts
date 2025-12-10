@@ -61,6 +61,7 @@ export interface FormSchemaField {
   updateFields?: boolean
   triggerFormUpdater?: boolean
   pendingValueUpdate?: boolean
+  formUpdaterValueChange?: boolean
   type: string
   name: string
   internal?: boolean
@@ -181,6 +182,7 @@ export interface ChangedField {
   name: string
   newValue: FormFieldValue
   oldValue: FormFieldValue
+  formUpdaterValueChange?: boolean
 }
 
 export type ChangedFieldFunction = {

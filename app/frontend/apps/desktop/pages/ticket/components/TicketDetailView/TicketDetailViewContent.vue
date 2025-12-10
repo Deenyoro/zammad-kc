@@ -164,17 +164,12 @@ const groupId = computed(() =>
     : undefined,
 )
 
-const { setSkipNextStateUpdate } = useTaskbarTabStateUpdates(
-  currentTaskbarTabId,
-  form,
-  triggerFormUpdater,
-)
-
 const {
   ticketSchema,
   articleSchema,
   currentArticleType,
   ticketArticleTypes,
+  ticketArticleDefaultValues,
   securityIntegration,
   isTicketAgent,
   isTicketCustomer,
@@ -182,6 +177,22 @@ const {
   articleTypeHandler,
   articleTypeSelectHandler,
 } = useTicketEditForm(ticket, form)
+
+useTaskbarTabStateUpdates(currentTaskbarTabId, form, triggerFormUpdater, async () => {
+  newTicketArticlePresent.value = false
+
+  await nextTick()
+
+  currentArticleType.value = undefined
+
+  nextTick(() => {
+    formReset({
+      values: {
+        article: ticketArticleDefaultValues,
+      },
+    })
+  })
+})
 
 const sidebarContext = computed<TicketSidebarContext>(() => ({
   ticket,
@@ -206,8 +217,23 @@ const formEditAttributeLocation = computed(() => {
   return '#wrapper-form-ticket-edit'
 })
 
-const { isArticleFormGroupValid, newTicketArticlePresent, showTicketArticleReplyForm } =
-  useTicketArticleReply(form, currentTaskbarTabNewArticlePresent)
+const {
+  isArticleFormGroupValid,
+  newTicketArticlePresent,
+  articleFormGroupNode,
+  showTicketArticleReplyForm,
+} = useTicketArticleReply(form, currentTaskbarTabNewArticlePresent)
+
+const formArticleReplyLocation = computed(() => {
+  if (newTicketArticlePresent.value) return '#ticketArticleReplyForm'
+  return '#wrapper-form-ticket-edit'
+})
+
+const hiddenFormGroups = computed(() => {
+  if (newTicketArticlePresent.value) return
+
+  return ['article']
+})
 
 const { liveUserList } = useTicketLiveUserList(internalId, isTicketAgent, EnumTaskbarApp.Desktop)
 
@@ -223,6 +249,7 @@ provideTicketInformation({
 
 const ticketEditSchemaData = reactive({
   formEditAttributeLocation,
+  formArticleReplyLocation,
   securityIntegration,
   newTicketArticlePresent,
   currentArticleType,
@@ -248,11 +275,16 @@ const ticketEditSchema = [
     ],
   },
   {
-    if: '$newTicketArticlePresent',
     isLayout: true,
     component: 'Teleport',
+    attrs: {
+      style: {
+        if: '$newTicketArticlePresent',
+        then: 'display: none;',
+      },
+    },
     props: {
-      to: '#ticketArticleReplyForm',
+      to: '$formArticleReplyLocation',
     },
     children: [
       {
@@ -290,10 +322,15 @@ const discardChanges = async () => {
 
     await nextTick()
 
-    // Skip subscription for the current tab, to avoid not needed form updater requests.
-    setSkipNextStateUpdate(true)
+    currentArticleType.value = undefined
 
-    formReset()
+    nextTick(() => {
+      formReset({
+        values: {
+          article: ticketArticleDefaultValues,
+        },
+      })
+    })
   }
 }
 
@@ -460,7 +497,13 @@ const submitEditTicket = async (formData: FormSubmitData<TicketUpdateFormData>) 
           reset: (values: FormSubmitData<TicketUpdateFormData>, formNodeValues: FormValues) => {
             nextTick(() => {
               if (!formNodeValues) return
-              formReset({ values: { ticket: formNodeValues.ticket } })
+
+              formReset({
+                values: {
+                  ticket: formNodeValues.ticket,
+                  article: ticketArticleDefaultValues,
+                },
+              })
             })
           },
         }
@@ -496,8 +539,12 @@ const discardReplyForm = async () => {
 
   await nextTick()
 
-  // Skip subscription for the current tab, to avoid not needed form updater requests.
-  setSkipNextStateUpdate(true)
+  // Reset only the article group.
+  currentArticleType.value = undefined
+
+  nextTick(() => {
+    articleFormGroupNode.value?.reset(ticketArticleDefaultValues)
+  })
 
   return triggerFormUpdater()
 }
@@ -512,18 +559,24 @@ const handleShowArticleForm = (
 const onEditFormSettled = () => {
   watch(
     () => flags.value.newArticlePresent,
-    (newValue) => {
-      newTicketArticlePresent.value = newValue
+    (newValue, oldValue) => {
+      if (newTicketArticlePresent.value === newValue) return
+      const oldNewTicketArticlePresent = newTicketArticlePresent.value
+
+      newTicketArticlePresent.value = newValue ?? false
+
+      if (oldNewTicketArticlePresent && oldValue !== undefined && oldValue && !newValue) {
+        // Reset only the article group.
+        currentArticleType.value = undefined
+
+        nextTick(() => {
+          articleFormGroupNode.value?.reset()
+        })
+      }
     },
+    { immediate: true },
   )
 }
-
-// Reset newTicketArticlePresent when ticket changed, that the
-// taskbar information is used for the start.
-watch(ticketId, () => {
-  initialTicketValue.value = undefined
-  newTicketArticlePresent.value = undefined
-})
 
 const articleListInstance = useTemplateRef('article-list')
 
@@ -634,7 +687,7 @@ whenever(
 
         <ArticleReply
           v-if="ticket?.id && isTicketEditable"
-          v-show="!isLoadingArticles"
+          v-show="!isLoadingArticles && isInitialSettled"
           v-model:pinned="isReplyPinned"
           :ticket="ticket"
           :new-article-present="newTicketArticlePresent"
@@ -656,6 +709,7 @@ whenever(
             :schema="ticketEditSchema"
             :disabled="!isTicketEditable"
             :flatten-form-groups="['ticket']"
+            :hidden-form-groups="hiddenFormGroups"
             :handlers="[articleTypeHandler()]"
             :form-kit-plugins="[articleTypeSelectHandler]"
             :schema-data="ticketEditSchemaData"
@@ -669,7 +723,6 @@ whenever(
             }"
             @submit="submitEditTicket($event as FormSubmitData<TicketUpdateFormData>)"
             @settled="onEditFormSettled"
-            @changed="setSkipNextStateUpdate(true)"
           />
         </div>
       </div>
@@ -694,7 +747,6 @@ whenever(
         :has-available-draft="hasAvailableDraft"
         :live-user-list="liveUserList"
         :shared-draft-id="ticket?.sharedDraftZoomId"
-        :set-skip-next-state-update="setSkipNextStateUpdate"
         :ticket-id="ticketId"
         @submit="checkSubmitEditTicket"
         @discard="discardChanges"

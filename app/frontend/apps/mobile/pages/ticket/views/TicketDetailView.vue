@@ -20,6 +20,7 @@ import type { FormSubmitData, FormValues } from '#shared/components/Form/types.t
 import { useForm } from '#shared/components/Form/useForm.ts'
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
 import { useOnlineNotificationSeen } from '#shared/composables/useOnlineNotification/useOnlineNotificationSeen.ts'
+import { useTicketArticleReplyAction } from '#shared/entities/ticket/composables/useTicketArticleReplyAction.ts'
 import { useTicketEdit } from '#shared/entities/ticket/composables/useTicketEdit.ts'
 import { useTicketEditForm } from '#shared/entities/ticket/composables/useTicketEditForm.ts'
 import { useTicketView } from '#shared/entities/ticket/composables/useTicketView.ts'
@@ -194,6 +195,8 @@ const showArticleReplyDialog = () => {
   return openArticleReplyDialog({ updateFormLocation })
 }
 
+const { openReplyForm } = useTicketArticleReplyAction(form, showArticleReplyDialog)
+
 const { liveUserList } = useTicketLiveUser(
   toRef(() => props.internalId),
   isTicketAgent,
@@ -348,7 +351,7 @@ const showBottomBanner = computed(() => {
       :can-save="isTicketEditable && isDirty"
       :can-scroll-down="showScrollDown"
       :hidden="!showBottomBanner"
-      @reply="showArticleReplyDialog"
+      @reply="openReplyForm({ articleType: isTicketAgent ? 'note' : 'web' })"
       @save="submitForm"
     />
   </Teleport>

@@ -24,11 +24,7 @@ export const useTicketArticleReply = (
     },
   })
 
-  const articleFormGroupNode = computed(() => {
-    if (!newTicketArticlePresent.value) return undefined
-
-    return form.value?.getNodeByName('article')
-  })
+  const articleFormGroupNode = computed(() => form.value?.getNodeByName('article'))
 
   const isArticleFormGroupValid = computed(() => {
     return !!articleFormGroupNode.value?.context?.state.valid

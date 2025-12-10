@@ -102,6 +102,7 @@ export interface Props {
   // Maybe in the future this is no longer needed, when FormKit supports group
   // without value grouping below group name (https://github.com/formkit/formkit/issues/461).
   flattenFormGroups?: string[]
+  hiddenFormGroups?: string[]
   formKitPlugins?: FormKitPlugin[]
   formKitSectionsSchema?: Record<string, Partial<FormKitSchemaNode> | FormKitSchemaCondition>
   class?: FormKitClasses | string | Record<string, boolean>
@@ -164,7 +165,12 @@ if (!hasSchema.value) {
 const localClass = toRef(props, 'class')
 
 const emit = defineEmits<{
-  changed: [fieldName: string, newValue: FormFieldValue, oldValue: FormFieldValue]
+  changed: [
+    fieldName: string,
+    newValue: FormFieldValue,
+    oldValue: FormFieldValue,
+    formUpdaterValueChange: boolean,
+  ]
   node: [node: FormKitNode]
   settled: []
   focused: []
@@ -177,10 +183,18 @@ const formKitInitialNodesSettled = ref(false)
 const formInitialSettled = ref(false)
 const formResetRunning = ref(false)
 const formNode: Ref<FormKitNode | undefined> = ref()
+const formNodeGroups = computed(() => {
+  if (!formNode.value) return
+
+  return formNode.value.children
+    .filter((child) => child.type === 'group')
+    .map((child) => child.name)
+})
 const formElement = useTemplateRef('form')
 
 const changeFields = toRef(props, 'changeFields')
 
+const currentCreatedFormFields = new Set<string>()
 const updaterChangedFields = new Set<string>()
 const changeInitialValue = new Map<string, FormFieldValue>()
 
@@ -251,12 +265,22 @@ const setFormNode = (node: FormKitNode) => {
 const formNodeContext = computed(() => formNode.value?.context)
 
 // Build the flat value when its requested for specific form groups.
-const getFlatValues = (values: FormValues, formGroups: string[]) => {
+const getFlatValues = (
+  values: FormValues,
+  flattenFormGroups?: string[],
+  hiddenFormGroups?: string[],
+) => {
+  if (!flattenFormGroups && !hiddenFormGroups) return values
+
   const flatValues = {
     ...values,
   }
 
-  formGroups.forEach((formGroup) => {
+  hiddenFormGroups?.forEach((formGroup) => {
+    delete flatValues[formGroup]
+  })
+
+  flattenFormGroups?.forEach((formGroup) => {
     Object.assign(flatValues, flatValues[formGroup])
     delete flatValues[formGroup]
   })
@@ -270,9 +294,7 @@ const values = computed<FormValues>(() => {
     return {}
   }
 
-  if (!props.flattenFormGroups) return formNodeContext.value.value
-
-  return getFlatValues(formNodeContext.value.value, props.flattenFormGroups)
+  return getFlatValues(formNodeContext.value.value, props.flattenFormGroups, props.hiddenFormGroups)
 })
 
 const relationFields: FormUpdaterRelationField[] = []
@@ -329,9 +351,7 @@ const onSubmit = (values: FormSubmitData) => {
   // Needs to be checked, because the 'onSubmit' function is not required.
   if (!props.onSubmit) return undefined
 
-  const flatValues = props.flattenFormGroups
-    ? getFlatValues(values, props.flattenFormGroups)
-    : values
+  const flatValues = getFlatValues(values, props.flattenFormGroups, props.hiddenFormGroups)
 
   formNode.value?.clearErrors()
 
@@ -415,6 +435,8 @@ const schemaData = reactive<ReactiveFormSchemData>({
   markup,
   ...props.schemaData,
 })
+
+const schemaDataFlags = computed(() => schemaData.flags)
 
 const internalFieldCamelizeName: Record<string, string> = {}
 
@@ -571,16 +593,38 @@ const getResetFormValues = (
 const resetForm = (data: FormResetData = {}, options: FormResetOptions = {}) => {
   if (!formNode.value) return
 
-  const { object, values } = data
+  const { object, values: valuesForReset } = data
   const { resetDirty = true, resetFlags = true, groupNode } = options
 
   formResetRunning.value = true
 
   if (resetFlags) {
-    schemaData.flags = {}
+    // Preserve flags as false instead of setting to empty hash
+    Object.keys(schemaData.flags).forEach((key) => {
+      schemaData.flags[key] = false
+    })
   }
 
   const rootNode = formNode.value
+
+  // When we have given reset values and we have a form with groups on the first level, we check
+  // if all groups are given as new initial values and if not we using the existing initial values
+  // from the group inside the form.
+  if (!groupNode && formNodeGroups.value && !isEmpty(valuesForReset)) {
+    const nonGroupKeys = Object.keys(valuesForReset).filter(
+      (key) => !formNodeGroups.value?.includes(key),
+    )
+
+    formNodeGroups.value.forEach((groupName: string) => {
+      if (
+        (!props.flattenFormGroups ||
+          (props.flattenFormGroups.includes(groupName) && nonGroupKeys.length === 0)) &&
+        !(groupName in valuesForReset)
+      ) {
+        valuesForReset[groupName] = rootNode.props._init?.[groupName] || {}
+      }
+    })
+  }
 
   if (object) {
     setInitialEntityObjectAttributeMap(object)
@@ -589,7 +633,7 @@ const resetForm = (data: FormResetData = {}, options: FormResetOptions = {}) => 
 
   const { dirtyNodes, dirtyValues, resetValues } = getResetFormValues(
     rootNode,
-    values,
+    valuesForReset,
     object,
     groupNode,
     resetDirty,
@@ -602,10 +646,12 @@ const resetForm = (data: FormResetData = {}, options: FormResetOptions = {}) => 
     node.input(dirtyValues[node.name], false)
   })
 
-  formResetRunning.value = false
+  nextTick(() => {
+    formResetRunning.value = false
 
-  // Trigger the formUpdater, when the reset is done.
-  handlesFormUpdater(resetDirty ? 'form-reset' : 'form-refresh')
+    // Trigger the formUpdater, when the reset is done.
+    handlesFormUpdater(resetDirty ? 'form-reset' : 'form-refresh')
+  })
 }
 
 const localInitialValues: FormValues = { ...props.initialValues }
@@ -728,13 +774,17 @@ const updateChangedFields = (changedFields: Record<string, Partial<FormSchemaFie
       name: fieldName,
     }
 
-    const showField = !schemaData.fields[fieldName].show && field.show
+    const showField = Boolean(!schemaData.fields[fieldName].show && field.show)
     const staticShowCondition = schemaData.fields[fieldName].staticCondition
 
     const pendingValueUpdate =
-      !showField && value !== undefined && !isEqual(value, values.value[fieldName])
+      !showField &&
+      (!staticShowCondition || (staticShowCondition && currentCreatedFormFields.has(fieldName))) &&
+      value !== undefined &&
+      !isEqual(value, values.value[fieldName])
 
     if (pendingValueUpdate) {
+      field.formUpdaterValueChange = true
       field.pendingValueUpdate = true
     }
 
@@ -744,19 +794,20 @@ const updateChangedFields = (changedFields: Record<string, Partial<FormSchemaFie
     handleUpdatedInitialFieldValue(
       fieldName,
       value ?? initialValue,
-      showField || initialValue !== undefined || (staticShowCondition && !getNodeByName(fieldName)),
+      showField ||
+        initialValue !== undefined ||
+        !!(
+          (staticShowCondition ||
+            (schemaData.fields[fieldName].show && formKitInitialNodesSettled.value)) &&
+          !currentCreatedFormFields.has(fieldName)
+        ),
       field,
     )
 
     // When a field will be visible with the update call, we need to wait before on a settled form, before we
     // continue (so that we have all values present inside the form).
     // This situtation can happen, when the form is used very fast.
-    if (
-      formKitInitialNodesSettled.value &&
-      !schemaData.fields[fieldName].show &&
-      field.show &&
-      !formNode.value?.isSettled
-    ) {
+    if (formKitInitialNodesSettled.value && showField && !formNode.value?.isSettled) {
       await formNode.value?.settled
     }
 
@@ -928,16 +979,43 @@ const handlesFormUpdater = (
 
 const previousValues = new WeakMap<FormKitNode, FormFieldValue>()
 const changedInputValueHandling = (inputNode: FormKitNode) => {
-  inputNode.on('commit', ({ payload: newValue, origin: node }) => {
-    const oldValue = previousValues.get(node)
-    if (isEqual(newValue, oldValue)) return
+  inputNode.on('created', () => {
+    currentCreatedFormFields.add(inputNode.name)
+  })
 
-    if (!formKitInitialNodesSettled.value || formResetRunning.value) {
+  inputNode.on('destroying', () => {
+    currentCreatedFormFields.delete(inputNode.name)
+  })
+
+  inputNode.on('commit', ({ payload: newValue, origin: node }) => {
+    // Get the current information and reset the value again, when it was present.
+    const formUpdaterValueChange = node.props.formUpdaterValueChange ?? false
+    if (node.props.formUpdaterValueChange) {
+      node.props.formUpdaterValueChange = false
+    }
+
+    const oldValue = previousValues.get(node)
+
+    if (isEqual(newValue, oldValue)) {
+      updaterChangedFields.delete(node.name)
+      return
+    }
+
+    if (
+      !formKitInitialNodesSettled.value ||
+      formResetRunning.value ||
+      !currentCreatedFormFields.has(node.name) // It's the initial value commit for the field, when it's not "fully" created yet.
+    ) {
+      updaterChangedFields.delete(node.name)
       previousValues.set(node, cloneDeep(newValue))
       return
     }
 
-    if (inputNode.props.triggerFormUpdater && !updaterChangedFields.has(node.name)) {
+    if (
+      inputNode.props.triggerFormUpdater &&
+      !formUpdaterValueChange &&
+      !updaterChangedFields.has(node.name)
+    ) {
       handlesFormUpdater(
         inputNode.props.formUpdaterTrigger,
         {
@@ -949,16 +1027,18 @@ const changedInputValueHandling = (inputNode: FormKitNode) => {
       )
     }
 
-    emit('changed', node.name, newValue, oldValue)
+    emit('changed', node.name, newValue, oldValue, formUpdaterValueChange)
     formNode.value?.emit(`changed:${node.name}`, {
       newValue,
       oldValue,
       fieldNode: node,
+      formUpdaterValueChange,
     })
     executeFormHandler(FormHandlerExecution.FieldChange, values.value, {
       name: node.name,
       newValue,
       oldValue,
+      formUpdaterValueChange,
     })
 
     previousValues.set(node, cloneDeep(newValue))
@@ -1248,6 +1328,14 @@ const initializeFormSchema = () => {
             websocket: {
               active: true,
             },
+            skipSubscription: 'userCurrentTaskbarItemStateUpdates',
+            skipSubscriptionAddCallback: (variables: FormUpdaterQueryVariables) => {
+              return (
+                !variables.meta.initial &&
+                !variables.meta.reset &&
+                !variables.meta.additionalData.applyTaskbarState
+              )
+            },
           },
           fetchPolicy: 'no-cache',
         }),
@@ -1357,7 +1445,7 @@ defineExpose({
   formInitialSettled,
   formId,
   values,
-  flags: schemaData.flags,
+  flags: schemaDataFlags,
   updateChangedFields,
   updateSchemaDataField,
   getNodeByName,

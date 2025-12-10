@@ -1127,6 +1127,7 @@ describe('Form.vue - Form Updater - special situtations', () => {
     checkEmptyDisplayValue(wrapper, 'State')
 
     await selectValue(wrapper, 'Type', 'Incident')
+
     await waitUntil(() => mockFormUpdaterApi.calls.resolve === 2)
 
     checkDisplayValue(wrapper, 'State', 'new')
