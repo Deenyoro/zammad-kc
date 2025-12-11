@@ -24,7 +24,9 @@ class App.ExternalDataSourceAjaxSelect extends App.SearchableAjaxSelect
         )
 
         for option in @attribute.options
-          @attribute.existingTokens += App.view('generic/token')(option)
+          @attribute.existingTokens += App.view('generic/token')(
+            @prepareTokenContent({ name: option.name, value: option.value })
+          )
 
       else
         @attribute.options = [_.extend({}, { value: @attribute.value.value, name: @attribute.value.label, selected: true })]
@@ -175,8 +177,7 @@ class App.ExternalDataSourceAjaxSelect extends App.SearchableAjaxSelect
 
   createToken: ({label, value}) =>
     @input.before App.view('generic/token')(
-      name: String(label)
-      value: value
+      @prepareTokenContent({ name: label, value: value })
     )
 
   onEnter: (event) ->

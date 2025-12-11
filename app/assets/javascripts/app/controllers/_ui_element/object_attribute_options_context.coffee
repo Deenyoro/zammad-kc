@@ -270,12 +270,7 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
 
     options.forEach (option) ->
       label = if isTree
-        _.map(option.value.split('::'), (part) ->
-          if isTranslated
-            App.i18n.translateInline(part)
-          else
-            part
-        ).join(' › ')
+        App.TokenHelper.computeNameValue(option.value, isTranslated)
       else if isTranslated
         App.i18n.translateInline(option.name or option.value)
       else

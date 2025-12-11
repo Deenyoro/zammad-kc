@@ -45,6 +45,12 @@ class App.SearchableSelect extends Spine.Controller
   render: ->
     @renderElement()
 
+  computeNameValue: (name, translate) ->
+    App.TokenHelper.computeNameValue(name, translate)
+
+  prepareTokenContent: ({ name, value, displayName, object, disabled }) =>
+    App.TokenHelper.prepareTokenContent({ name, value, displayName, object, disabled, translate: @attribute.translate })
+
   renderElement: =>
     @updateAttributeOptionDisplayName(@attribute.options)
     @updateAttributeValueName()
@@ -67,19 +73,14 @@ class App.SearchableSelect extends Spine.Controller
             value = dataId
             values.push({ name: name, value: value })
             tokens += App.view('generic/token')(
-              name: name
-              value: value
-              object: relation
-              disabled: disabled
+              @prepareTokenContent({ name, value, object: relation, disabled })
             )
 
       else
         for value in @attribute.value
           values.push({ name: value, value: value })
           tokens += App.view('generic/token')(
-            name: value
-            value: value
-            disabled: disabled
+            @prepareTokenContent({ name: value, value, disabled })
           )
 
       @attribute.value = values
@@ -430,7 +431,7 @@ class App.SearchableSelect extends Spine.Controller
 
     if @attribute.multiple
       event.stopPropagation()
-      @addValueToShadowInput(currentText, dataId)
+      @addValueToShadowInput(currentText, dataId, row.data('displayName'))
     else
       @selectValue(dataId, currentText, row.data('displayName'))
       @toggleClear()
@@ -583,7 +584,7 @@ class App.SearchableSelect extends Spine.Controller
       value       = @currentItem.attr('data-value')
       displayName = @currentItem.data('displayName')
       if @attribute.multiple
-        @addValueToShadowInput(valueName, value)
+        @addValueToShadowInput(valueName, value, displayName)
       else
         @selectValue(value, valueName, displayName)
         @toggleClear()
@@ -639,18 +640,8 @@ class App.SearchableSelect extends Spine.Controller
       if option.children
         @updateAttributeOptionSelected(option.children, value)
 
-  createToken: ({ name, value }) =>
-    content = {}
-    if @attribute.relation
-      content =
-        name: String(name)
-        value: value
-        object: @attribute.relation
-    else
-      content =
-        name: String(value)
-        value: value
-
+  createToken: ({ name, value, displayName }) =>
+    content = @prepareTokenContent({ name, value, displayName, object: @attribute.relation })
     @input.before App.view('generic/token')(content)
 
   removeThisToken: (e) =>
@@ -716,17 +707,18 @@ class App.SearchableSelect extends Spine.Controller
     if @currentMenu.height() > 0
       @dropdown.height(@currentMenu.height())
 
-  addValueToShadowInput: (currentText, dataId) ->
+  addValueToShadowInput: (currentText, dataId, displayName = null) ->
     @resetSearch()
 
     if @attribute.multiple
       return if @shadowInput.val().includes("#{dataId}") if @shadowInput.val() # cast dataId to string before check
-      @currentData = { name: currentText, value: dataId }
+      @currentData = { name: currentText, value: dataId, displayName: displayName }
     else
-      @currentData = { name: currentText, value: dataId }
+      @currentData = { name: currentText, value: dataId, displayName: displayName }
       return if @shadowInput.val().includes("#{dataId}") if @shadowInput.val() # cast dataId to string before check
 
-    @shadowInput.append($('<option/>').attr('selected', true).attr('value', @currentData.value).text(@currentData.name))
+    displayTextToUse = displayName || currentText
+    @shadowInput.append($('<option/>').attr('selected', true).attr('value', @currentData.value).text(displayTextToUse))
     @onShadowChange()
 
   highlightFirst: (autocomplete) ->
