@@ -12,21 +12,24 @@ module Text
   # 2. For attributions followed by > quoted blocks, remove both
   # 3. For attributions without > markers, remove everything after
   # 4. Remove remaining standalone > quoted lines
-  # 5. Remove mobile signatures ("Sent from my iPhone")
+  # 5. Optionally remove signatures (mobile + standard "-- " delimiter)
   #
   class QuoteRemover
 
-    def initialize(text:)
+    attr_reader :remove_signatures, :text
+
+    def initialize(text:, remove_signatures: false)
       @text = text
+      @remove_signatures = remove_signatures
     end
 
     def remove
-      return @text.strip if @text.blank?
+      return text.strip if text.blank?
 
-      lines = @text.lines
+      lines = text.lines
       lines = process_attributions(lines)
       lines = remove_inline_quotes(lines)
-      lines = remove_mobile_signatures(lines)
+      lines = remove_signatures_from_lines(lines) if remove_signatures
       lines.join.strip
     end
 
@@ -157,6 +160,20 @@ module Text
       end
 
       result
+    end
+
+    # Remove all signature content from lines
+    def remove_signatures_from_lines(lines)
+      lines = remove_standard_signatures(lines)
+      remove_mobile_signatures(lines)
+    end
+
+    # Remove content starting from the signature delimiter "--"
+    def remove_standard_signatures(lines)
+      delimiter_index = lines.rindex { |line| Signature::Standard.match?(line) }
+      return lines if delimiter_index.nil?
+
+      lines[0...delimiter_index]
     end
 
     # Remove mobile signature lines
