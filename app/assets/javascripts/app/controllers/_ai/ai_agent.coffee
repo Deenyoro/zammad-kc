@@ -197,7 +197,15 @@ AIAgentModalMixin =
     @stepFields = _.map(attrs, (attr) -> attr.name)
 
   contentFormParams: ->
-    @params = $.extend(true, {}, @item) if _.isEmpty(@params) # init params
+    if _.isEmpty(@params) # init params
+      attrs = if @item?.id # editing
+        @item
+      else # cloning
+        @item?.attributes()
+
+      @params = $.extend(true, {}, attrs)
+
+
     @params.agent_type = App.AIAgentType.findByAttribute('custom', true).id if @params and not @params.agent_type
     @maybeHandleJSONParams('stringify')
     @params
@@ -445,7 +453,10 @@ class NewAIAgent extends App.ControllerGenericNew
 
     super
 
-    @item = params.item or new App[ @genericObject ]
+    @item = new App[ @genericObject ]
+
+    if params.item
+      @item.load(params.item.attributes())
 
   onSubmit: (e) =>
     return if @handleNext(e)
