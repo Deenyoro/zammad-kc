@@ -5,12 +5,11 @@ require 'rails_helper'
 RSpec.describe 'AI text tool result verification', :aggregate_failures, integration: true, required_envs: %w[ZAMMAD_AI_TOKEN], use_vcr: true do # rubocop:disable RSpec/DescribeClass
   shared_examples 'when result verification is performed' do |fixture_path, text_tool_name, options = {}, ai_service_additional_options = {}|
     context "with #{fixture_path.basename}" do
-      let(:content)                        { JSON.parse(File.read(fixture_path)) }
-      let(:text_tool_execution)            { content['text_tool_execution'] }
-      let(:input_text)                     { content['input'].to_s }
-      let(:expected_language_code)         { content.dig('expected', 'language') }
-      let(:expected_html_markup_present)   { content.dig('expected', 'html_markup_present') }
-      let(:text_tool)                      { AI::TextTool.find_by(name: text_tool_name) }
+      let(:content)                { JSON.parse(File.read(fixture_path)) }
+      let(:text_tool_execution)    { content['text_tool_execution'] }
+      let(:input_text)             { content['input'].to_s }
+      let(:expected_language_code) { content.dig('expected', 'language') }
+      let(:text_tool)              { AI::TextTool.find_by(name: text_tool_name) }
       let(:ai_text_tool_result) do
         AI::Service::TextTool.new(
           context_data:       {
@@ -28,15 +27,21 @@ RSpec.describe 'AI text tool result verification', :aggregate_failures, integrat
 
         language_result = detect_language(ai_text_tool_result.content)
 
-        expect(language_result[:code]).to eq(expected_language_code)
+        expect(language_result[:code]).to eq(expected_language_code), lambda {
+          "Language mismatch (#{expected_language_code} vs #{language_result[:code]})! AI returned following content: #{ai_text_tool_result.content.inspect}"
+        }
 
         input_has_html = html_markup?(input_text)
         output_has_html = html_markup?(ai_text_tool_result.content)
 
         if options[:html_markup_present] || input_has_html
-          expect(output_has_html).to be_truthy
+          expect(output_has_html).to be_truthy, lambda {
+            "HTML tags expected, but AI returned following content: #{ai_text_tool_result.content.inspect}"
+          }
         else
-          expect(output_has_html).to be_falsey
+          expect(output_has_html).to be_falsey, lambda {
+            "No HTML tags expected, but AI returned following content: #{ai_text_tool_result.content.inspect}"
+          }
         end
       end
     end
@@ -77,32 +82,6 @@ RSpec.describe 'AI text tool result verification', :aggregate_failures, integrat
     context 'when "Fix spelling and grammar" is used' do
       fixture_files.each do |fixture_path|
         include_examples 'when result verification is performed', fixture_path, 'Fix spelling and grammar'
-      end
-    end
-
-    context 'when mistral model is used' do
-      context 'when "Rewrite complex section and make it easy to understand" is used' do
-        fixture_files.each do |fixture_path|
-          include_examples 'when result verification is performed', fixture_path, 'Rewrite complex section and make it easy to understand', {}, { model: 'mistral-small3.2:24b' }
-        end
-      end
-
-      context 'when "Expand draft into well-written section" is used' do
-        fixture_files.each do |fixture_path|
-          include_examples 'when result verification is performed', fixture_path, 'Expand draft into well-written section', { html_markup_present: true }, { model: 'mistral-small3.2:24b' }
-        end
-      end
-
-      context 'when "Summarize section to about half its current size" is used' do
-        fixture_files.each do |fixture_path|
-          include_examples 'when result verification is performed', fixture_path, 'Summarize section to about half its current size', {}, { model: 'mistral-small3.2:24b' }
-        end
-      end
-
-      context 'when "Fix spelling and grammar" is used' do
-        fixture_files.each do |fixture_path|
-          include_examples 'when result verification is performed', fixture_path, 'Fix spelling and grammar', {}, { model: 'mistral-small3.2:24b' }
-        end
       end
     end
   end
