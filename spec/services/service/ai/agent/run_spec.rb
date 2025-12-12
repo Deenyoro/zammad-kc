@@ -355,6 +355,18 @@ RSpec.describe Service::AI::Agent::Run do
         expect { service.execute }
           .to change { ticket.reload.custom_multiselect }.from([]).to(%w[key_1 key_3])
       end
+
+      context 'when AI returns invalid options for multiselect field', application_handle: 'ai_agent_execution' do
+        let(:ai_result_content) do
+          {
+            'custom_multiselect' => %w[key_1 invalid_key]
+          }
+        end
+
+        it 'raises a PermanentError' do
+          expect { service.execute }.to raise_error(Service::AI::Agent::Run::PermanentError, %r{Custom multiselect contains invalid option: invalid_key})
+        end
+      end
     end
 
     context 'when AI service raises an exception' do

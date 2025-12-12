@@ -86,10 +86,10 @@ class AI::Agent::Type::TicketCategorizer < AI::Agent::Type
 
 - Ignore irrelevant information (e.g. personal anecdotes, small talk, signatures, out-of-office notifications).
 - Exclude segments that don't contribute any meaningful content (e.g. greetings, farewells).
-- Do not insert personal opinions about the conversation or elaborate on the answer.
-- Do not explain your given answer.
-- Only use the provided options for categorization, do not add new ones.
-- If the content does not match any of the provided options, return an empty value.
+- Never insert personal opinions about the conversation or elaborate on the answer.
+- Never explain your given answer.
+- Only use the provided options for categorization, never add new options.
+- If the content does not match any of the provided options, always return an empty value.
 - Only answer with the value in the \"\#{placeholder.category}\" field inside the JSON structure."
   end
 

@@ -11,7 +11,7 @@ class AI::Agent::Type::TicketPrioritizer < AI::Agent::Type
   end
 
   def role_description
-    'Your job is to analyze ticket content and assign ticket the most appropriate priority based on the topic and urgency.' # rubocop:disable Zammad/DetectTranslatableString
+    'Your job is to analyze the current ticket content and assign the most appropriate priority based on the current topic and identified urgency.' # rubocop:disable Zammad/DetectTranslatableString
   end
 
   def form_schema
@@ -42,8 +42,8 @@ class AI::Agent::Type::TicketPrioritizer < AI::Agent::Type
 
 - Ignore irrelevant information (e.g. personal anecdotes, small talk, signatures, out-of-office notifications).
 - Exclude segments that don't contribute any meaningful content (e.g. greetings, farewells).
-- Do not insert personal opinions about the conversation or elaborate on the answer.
-- Do not explain your given answer.
+- Never insert personal opinions about the conversation or elaborate on the answer.
+- Never explain your given answer.
 - Only answer with the value in the \"priority_id\" field inside the JSON structure."
   end
 

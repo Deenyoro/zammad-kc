@@ -47,8 +47,8 @@ class AI::Agent::Type::TicketGroupDispatcher < AI::Agent::Type
 
 - Ignore irrelevant information (e.g. personal anecdotes, small talk, signatures, out-of-office notifications).
 - Exclude segments that don't contribute any meaningful content (e.g. greetings, farewells).
-- Do not insert personal opinions about the conversation or elaborate on the answer.
-- Do not explain your given answer.
+- Never insert personal opinions about the conversation or elaborate on the answer.
+- Never explain your given answer.
 - Only answer with the value in the \"group_id\" field inside the JSON structure."
   end
 
