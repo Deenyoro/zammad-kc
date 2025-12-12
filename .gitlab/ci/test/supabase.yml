@@ -11,9 +11,9 @@ supabase:translation_stats:
   extends:
     - .template_supabase
   rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_REF_NAME =~ /^(develop|stable)$/
-      when: always
-    - when: never
+   - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_REF_NAME =~ /^(develop|stable)$/
+     when: always
+   - when: never
   script:
     - bundle exec rails runner .gitlab/supabase/translation_stats.rb
 
