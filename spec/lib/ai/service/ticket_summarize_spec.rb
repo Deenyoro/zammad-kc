@@ -13,6 +13,7 @@ RSpec.describe AI::Service::TicketSummarize do
   let(:context_data) do
     {
       ticket:,
+      articles: ticket.articles.without_system_notifications,
     }
   end
 

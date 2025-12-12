@@ -45,8 +45,8 @@ class AI::Provider
     end
   end
 
-  def ask(prompt_system:, prompt_user:)
-    result = chat(prompt_system:, prompt_user:)
+  def ask(prompt_system:, prompt_user:, prompt_image: nil)
+    result = chat(prompt_system:, prompt_user:, prompt_image:)
 
     return result if !options[:json_response]
 
@@ -81,7 +81,7 @@ class AI::Provider
     @response_metadata = {}
   end
 
-  def chat(prompt_system:, prompt_user:)
+  def chat(prompt_system:, prompt_user:, prompt_image:)
     raise 'not implemented'
   end
 

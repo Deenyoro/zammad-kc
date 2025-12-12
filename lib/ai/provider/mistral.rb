@@ -1,6 +1,9 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class AI::Provider::Mistral < AI::Provider
+  include AI::Provider::Concerns::HandlesOpenAIMessages
+  include AI::Provider::Concerns::HasConfigurableModel
+
   MISTRAL_API_BASE_URL = 'https://api.mistral.ai/v1'.freeze
 
   # default model also in app/assets/javascripts/app/lib/app_post/ai_provider/mistral.coffee
@@ -14,19 +17,10 @@ class AI::Provider::Mistral < AI::Provider
     'mistral-embed' => 1024
   }.freeze
 
-  def chat(prompt_system:, prompt_user:)
+  def chat(prompt_system:, prompt_user:, prompt_image:)
     request_body = {
-      model:           options[:model],
-      messages:        [
-        {
-          role:    'system',
-          content: prompt_system,
-        },
-        {
-          role:    'user',
-          content: prompt_user,
-        },
-      ],
+      model:           model_for(prompt_image:),
+      messages:        messages_for(prompt_system:, prompt_user:, prompt_image:),
       response_format: {
         type: options[:json_response] ? 'json_object' : 'text'
       },

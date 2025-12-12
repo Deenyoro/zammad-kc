@@ -4,7 +4,7 @@ App.Config.set('ollama', {
   label:  __('Ollama')
   prio:   3000
   url_placeholder: 'http://localhost:11434'
-  fields: ['url', 'model']
+  fields: ['url', 'model', 'ocr_active', 'ocr_model']
   required: ['url']
   default_model: 'llama3.2'
 }, 'AIProviders')

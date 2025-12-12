@@ -47,28 +47,37 @@ RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
       expect(page)
         .to have_field('Token')
         .and(have_field('Model', placeholder: AI::Provider::OpenAI::DEFAULT_OPTIONS[:model]))
+        .and(have_field('OCR Model'))
+      check_switch_field_value('ocr_active', false)
 
       find('select[name=provider]').select('Ollama')
       expect(page)
         .to have_field('URL')
         .and(have_field('Model', placeholder: AI::Provider::Ollama::DEFAULT_OPTIONS[:model]))
+        .and(have_field('OCR Model'))
+      check_switch_field_value('ocr_active', false)
 
       find('select[name=provider]').select('Anthropic')
       expect(page)
         .to have_field('Token')
         .and(have_field('Model', placeholder: AI::Provider::Anthropic::DEFAULT_OPTIONS[:model]))
+        .and(have_field('OCR Model'))
+      check_switch_field_value('ocr_active', false)
 
       find('select[name=provider]').select('Azure AI')
       expect(page)
         .to have_field('URL')
         .and(have_field('Token'))
         .and(have_no_field('Model'))
+        .and(have_field('URL (OCR)'))
+      check_switch_field_value('ocr_active', false)
 
       find('select[name=provider]').select('Zammad AI')
       expect(page)
         .to have_no_field('Token')
         .and(have_no_field('Model'))
         .and(have_no_field('URL'))
+      check_switch_field_value('ocr_active', false)
     end
   end
 
@@ -81,6 +90,7 @@ RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
         .to have_field('Token')
         .and(have_no_field('Model'))
         .and(have_no_field('URL'))
+      check_switch_field_value('ocr_active', false)
     end
   end
 

@@ -176,6 +176,36 @@ class ProviderForm extends App.Controller
         autocomplete: 'off'
         value:        params.url_embeddings
       }
+      ocr_active: {
+        name:         'ocr_active'
+        display:      __('Recognize image text (OCR)')
+        tag:          'switch'
+        null:         true
+        label_class:  'hidden'
+        default:      false
+        value:        params.ocr_active
+      }
+      ocr_model: {
+        name:         'ocr_model'
+        display:      __('OCR Model')
+        tag:          'input'
+        placeholder:  provider.default_ocr_model or ''
+        type:         'text'
+        null:         true
+        autocomplete: 'off'
+        value:        params.ocr_model
+        note:         __('Leave empty to use the base model')
+      }
+      url_ocr: {
+        name:         'url_ocr'
+        display:      __('URL (OCR)')
+        tag:          'input'
+        type:         'text'
+        null:         not _.contains(provider.required, 'url_ocr')
+        autocomplete: 'off'
+        value:        params.url_ocr
+        note:         __('Leave empty to use URL (Completions)')
+      }
     }
 
 

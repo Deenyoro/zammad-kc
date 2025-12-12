@@ -1,28 +1,20 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class AI::Provider::CustomOpenAI < AI::Provider
+  include AI::Provider::Concerns::HandlesOpenAIMessages
+  include AI::Provider::Concerns::HasConfigurableModel
 
   DEFAULT_OPTIONS = {
     temperature: 0.1,
   }.freeze
 
-  def chat(prompt_system:, prompt_user:)
+  def chat(prompt_system:, prompt_user:, prompt_image:)
     request_body = {
-      model:    options[:model],
-      messages: [
-        {
-          role:    'system',
-          content: prompt_system,
-        },
-        {
-          role:    'user',
-          content: prompt_user,
-        },
-      ],
+      model:    model_for(prompt_image:),
+      messages: messages_for(prompt_system:, prompt_user:, prompt_image:),
       stream:   false,
       store:    false,
     }
-    # Some providers require 'json_schema' instead of 'json_object'
 
     request_body[:temperature] = options[:temperature]
 

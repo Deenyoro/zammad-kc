@@ -3,7 +3,7 @@ App.Config.set('mistral', {
   key:    'mistral'
   label:  __('Mistral AI')
   prio:   6000
-  fields: ['token', 'model']
+  fields: ['token', 'model', 'ocr_active', 'ocr_model']
   required: ['token']
   default_model: 'mistral-medium-latest'
 }, 'AIProviders')

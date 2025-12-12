@@ -1,20 +1,13 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class AI::Provider::Azure < AI::Provider
-  def chat(prompt_system:, prompt_user:)
+  include AI::Provider::Concerns::HandlesOpenAIMessages
+
+  def chat(prompt_system:, prompt_user:, prompt_image:)
     response = UserAgent.post(
-      config[:url_completions],
+      chat_url_for(prompt_image:),
       {
-        messages:        [
-          {
-            role:    'system',
-            content: prompt_system,
-          },
-          {
-            role:    'user',
-            content: prompt_user,
-          },
-        ],
+        messages:        messages_for(prompt_system:, prompt_user:, prompt_image:),
         temperature:     options[:temperature],
         response_format: {
           type: options[:json_response] ? 'json_object' : 'text'
@@ -148,5 +141,11 @@ class AI::Provider::Azure < AI::Provider
       completion_tokens: data.dig('usage', 'completion_tokens'),
       total_tokens:      data.dig('usage', 'total_tokens'),
     }
+  end
+
+  def chat_url_for(prompt_image:)
+    return config[:url_completions] if !prompt_image.is_a?(::Store)
+
+    config[:url_ocr] || config[:url_completions]
   end
 end

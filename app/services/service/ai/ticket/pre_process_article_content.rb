@@ -1,0 +1,177 @@
+# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+
+class Service::AI::Ticket::PreProcessArticleContent < Service::BaseWithCurrentUser
+  IMAGE_MIME_TYPES = %w[image/jpeg image/jpg image/png image/gif image/tiff image/bmp image/webp].freeze
+  MARKER_START     = "[OCR_TEXT_START]\n".freeze
+  MARKER_END       = "\n[OCR_TEXT_END]".freeze
+
+  attr_reader :articles
+
+  def initialize(articles:, current_user: nil)
+    super(current_user:) if current_user.present?
+
+    @articles = articles
+  end
+
+  def execute
+    return prepared_articles if !ocr_active?
+
+    images = collect_all_images(prepared_articles)
+    image_texts = recognize_image_texts(images)
+    articles_with_recognized_texts(image_texts, prepared_articles)
+  end
+
+  private
+
+  def ocr_active?
+    Setting.get('ai_provider_config')[:ocr_active]
+  end
+
+  def non_plain_article?(article)
+    article.content_type && article.content_type !~ %r{text/plain}i
+  end
+
+  def prepared_articles
+    @prepared_articles ||= articles.map do |article|
+      images = select_image_attachments(article) if ocr_active?
+
+      original_body = text = article.body || ''
+
+      # Replace inline images in the HTML body with placeholders.
+      text = replace_inline_images_with_placeholders(original_body, images) if non_plain_article?(article) && ocr_active?
+
+      # Remove quotes and strip HTML to get plain text.
+      text = remove_quotes_strip_html(text, article)
+
+      # Remove inline images that were stripped from the body (e.g. in the quotes or signatures).
+      images = remove_stripped_inline_images(images, text, original_body) if non_plain_article?(article) && ocr_active?
+
+      {
+        id:            article.id,
+        sender_type:   article.sender.name,
+        sender_name:   article.author.fullname,
+        created_at:    article.created_at,
+        visibility:    article.internal ? 'internal' : 'public',
+        text:,
+        images:,
+        original_body:,
+      }.compact
+    end
+  end
+
+  def select_image_attachments(article)
+    article.attachments.select do |attachment|
+      IMAGE_MIME_TYPES.include?(attachment_mime_type(attachment))
+    end
+  end
+
+  def attachment_mime_type(attachment)
+    (attachment.preferences['Content-Type'] || attachment.preferences['Mime-Type'])&.split(';')&.first
+  end
+
+  def replace_inline_images_with_placeholders(original_body, images)
+    result = original_body
+
+    images.each do |attachment|
+      next if !inline_image_attachment?(attachment, original_body)
+
+      cid = extract_content_id(attachment)
+      result.sub!(%r{<img[^>]*?src=('|")?cid:#{cid}('|")?[^>]*?>}i, "[image:#{cid}]")
+    end
+
+    result
+  end
+
+  def inline_image_attachment?(attachment, original_body)
+    return false if attachment.preferences['Content-ID'].blank? && attachment.preferences['Content-Id'].blank?
+
+    original_body.include?(extract_content_id(attachment))
+  end
+
+  def extract_content_id(attachment)
+    (attachment.preferences['Content-ID'] || attachment.preferences['Content-Id'])&.gsub(%r{[<>]}, '')
+  end
+
+  def remove_quotes_strip_html(text, article)
+    if article.type == Ticket::Article::Type.lookup(name: 'email')
+      Text::QuoteRemover
+        .new(text: text.html2text(link_style: :markdown), remove_signatures: true)
+        .remove
+    else
+      text.html2text
+    end
+  end
+
+  def remove_stripped_inline_images(images, text, original_body)
+    images.reject do |attachment|
+      next if !inline_image_attachment?(attachment, original_body)
+
+      cid = extract_content_id(attachment)
+      text.exclude?("[image:#{cid}]")
+    end
+  end
+
+  def collect_all_images(articles)
+    articles
+      .flat_map { |article| article[:images] }
+      .uniq(&:store_file_id)
+  end
+
+  def recognize_image_texts(images)
+    image_texts = {}
+
+    images.each do |image|
+      ocr_result = AI::Service::OCR
+          .new(current_user:, context_data: { content: image.content, store: image }, prompt_image: image)
+          .execute
+
+      image_texts[image.store_file_id] = ocr_result.content
+    end
+
+    image_texts
+  end
+
+  def articles_with_recognized_texts(image_texts, articles)
+    articles.map do |article|
+      text = article[:text]
+
+      # Restore recognized texts for inline image placeholders.
+      text = replace_placeholders_with_recognized_texts(text, article[:images], article[:original_body], image_texts)
+
+      attachments = attachments_with_recognized_texts(article[:images], article[:original_body], image_texts)
+
+      {
+        **article.except(:images, :original_body),
+        text:,
+        attachments:,
+      }
+    end
+  end
+
+  def replace_placeholders_with_recognized_texts(text, images, original_body, image_texts)
+    result = text
+
+    images.each do |image|
+      next if !inline_image_attachment?(image, original_body)
+
+      cid = extract_content_id(image)
+      placeholder = "[image:#{cid}]"
+      recognized_text = image_texts[image.store_file_id] || ''
+      replacement = recognized_text.blank? ? '' : "#{MARKER_START}#{recognized_text}#{MARKER_END}"
+
+      result.gsub!(placeholder, replacement)
+    end
+
+    result
+  end
+
+  def attachments_with_recognized_texts(images, original_body, image_texts)
+    images.reject { |attachment| inline_image_attachment?(attachment, original_body) }.map do |attachment|
+      {
+        type: attachment_mime_type(attachment),
+        text: image_texts[attachment.store_file_id] || ''
+      }
+    end
+  end
+
+end

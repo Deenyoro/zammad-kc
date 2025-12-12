@@ -3,7 +3,7 @@
 class AI::Provider::ZammadAI < AI::Provider
   ZAMMAD_AI_API_BASE_URL = 'https://ai.zammad.com'.freeze
 
-  def chat(prompt_system:, prompt_user:)
+  def chat(prompt_system:, prompt_user:, prompt_image:)
     service_name = options[:service_name] || 'generic'
 
     request_body = {
@@ -13,6 +13,10 @@ class AI::Provider::ZammadAI < AI::Provider
 
     if options[:model]
       request_body[:llm] = options[:model]
+    end
+
+    if prompt_image.is_a?(::Store)
+      request_body[:images] = [Base64.strict_encode64(prompt_image.content)]
     end
 
     response = UserAgent.post(

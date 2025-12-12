@@ -1,6 +1,8 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class AI::Provider::Anthropic < AI::Provider
+  include AI::Provider::Concerns::HasConfigurableModel
+
   ANTHROPIC_API_BASE_URL = 'https://api.anthropic.com/v1'.freeze
 
   # default model also in app/assets/javascripts/app/lib/app_post/ai_provider/anthropic.coffee
@@ -10,7 +12,28 @@ class AI::Provider::Anthropic < AI::Provider
     temperature: 0.0,
   }.freeze
 
-  def chat(prompt_system:, prompt_user:)
+  def chat(prompt_system:, prompt_user:, prompt_image:)
+
+    # https://platform.claude.com/docs/en/build-with-claude/vision#base64-encoded-image-example
+    content = if prompt_image.is_a?(::Store)
+                [
+                  {
+                    type: 'text',
+                    text: prompt_user,
+                  },
+                  {
+                    type:   'image',
+                    source: {
+                      type:       'base64',
+                      media_type: prompt_image.preferences['Content-Type'],
+                      data:       Base64.strict_encode64(prompt_image.content)
+                    },
+                  },
+                ]
+              else
+                prompt_user
+              end
+
     response = UserAgent.post(
       "#{ANTHROPIC_API_BASE_URL}/messages",
       {
@@ -18,10 +41,10 @@ class AI::Provider::Anthropic < AI::Provider
         messages:    [
           {
             role:    'user',
-            content: prompt_user,
+            content:,
           },
         ],
-        model:       options[:model],
+        model:       model_for(prompt_image:),
         stream:      false,
         system:      prompt_system,
         temperature: options[:temperature],

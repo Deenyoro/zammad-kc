@@ -1,6 +1,7 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class AI::Provider::Ollama < AI::Provider
+  include AI::Provider::Concerns::HasConfigurableModel
 
   # default model also in app/assets/javascripts/app/lib/app_post/ai_provider/ollama.coffee
   DEFAULT_OPTIONS = {
@@ -15,16 +16,20 @@ class AI::Provider::Ollama < AI::Provider
     'mxbai-embed-large' => 1024,
   }.freeze
 
-  def chat(prompt_system:, prompt_user:)
+  def chat(prompt_system:, prompt_user:, prompt_image:)
     params = {
-      model:   options[:model],
+      model:   model_for(prompt_image:),
       system:  prompt_system,
       prompt:  prompt_user,
       stream:  false,
       options: {
         temperature: options[:temperature],
-      }
+      },
     }
+
+    if prompt_image.is_a?(::Store)
+      params[:images] = [Base64.strict_encode64(prompt_image.content)]
+    end
 
     if options[:json_response]
       params[:format] = 'json'

@@ -7,7 +7,7 @@ class HttpLog < ApplicationModel
   # See https://github.com/zammad/zammad/issues/2100
   before_save :messages_to_utf8
 
-  before_save :filter_sensitive_data
+  before_save :filter_sensitive_data, :truncate_long_data
 
   # Make sure facility is valid if given.
   validates :facility, inclusion: { in: ->(_) { HttpLog.facilities_permission_lookup.keys } }
@@ -17,6 +17,7 @@ class HttpLog < ApplicationModel
   TOKEN_REGEX       = %r{(access[_-]?token|api[_-]?key|secret)(["']?\s*[:=]\s*["']?)[A-Za-z0-9\-_~+/=:.]+}ix
   COOKIE_REGEX      = %r{Cookie:\s*((?:[^=;]+=[^;]+;?\s*)+)}i
   QUERY_PARAM_REGEX = %r{([?&](?:access[_-]?token|api[_-]?key|secret)=)[^&]+}i
+  BASE64_REGEX      = %r{(data:.*?;base64,)?[A-Za-z0-9+/\r\n]*={0,3}}
 
 =begin
 
@@ -100,6 +101,20 @@ optional you can put the max oldest chat entries as argument
     sanitized
   end
 
+  def self.truncate_long_data(text)
+    return text if text.blank?
+
+    truncated = text.dup
+
+    # Truncate `base64` encoded data by shortening long strings.
+    #   Include data URI prefix if present to ease the debugging.
+    truncated.gsub!(BASE64_REGEX) do |match|
+      match.length > 32 ? "#{match.first(29)}...[TRUNCATED]" : match
+    end
+
+    truncated
+  end
+
   private
 
   def messages_to_utf8
@@ -110,5 +125,10 @@ optional you can put the max oldest chat entries as argument
   def filter_sensitive_data
     request.transform_values! { |v| v.is_a?(String) ? HttpLog.mask_sensitive_data(v) : v }
     response.transform_values! { |v| v.is_a?(String) ? HttpLog.mask_sensitive_data(v) : v }
+  end
+
+  def truncate_long_data
+    request.transform_values! { |v| v.is_a?(String) ? HttpLog.truncate_long_data(v) : v }
+    response.transform_values! { |v| v.is_a?(String) ? HttpLog.truncate_long_data(v) : v }
   end
 end

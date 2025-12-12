@@ -1,6 +1,9 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 class AI::Provider::OpenAI < AI::Provider
+  include AI::Provider::Concerns::HandlesOpenAIMessages
+  include AI::Provider::Concerns::HasConfigurableModel
+
   OPENAI_API_BASE_URL = 'https://api.openai.com/v1'.freeze
 
   # default model also in app/assets/javascripts/app/lib/app_post/ai_provider/open_ai.coffee
@@ -15,19 +18,10 @@ class AI::Provider::OpenAI < AI::Provider
     'text-embedding-3-small' => 1536
   }.freeze
 
-  def chat(prompt_system:, prompt_user:)
+  def chat(prompt_system:, prompt_user:, prompt_image:)
     request_body = {
-      model:           options[:model],
-      messages:        [
-        {
-          role:    'system',
-          content: prompt_system,
-        },
-        {
-          role:    'user',
-          content: prompt_user,
-        },
-      ],
+      model:           model_for(prompt_image:),
+      messages:        messages_for(prompt_system:, prompt_user:, prompt_image:),
       response_format: {
         type: options[:json_response] ? 'json_object' : 'text'
       },

@@ -14,11 +14,12 @@ class AI::Service
   end
 
   # @param persistence_strategy [Symbol, NilClass] :stored_or_request, :stored_only, :request_only.
-  def initialize(context_data:, current_user: nil, persistence_strategy: :stored_or_request, prompt_system: nil, prompt_user: nil, locale: nil, regeneration_of: nil, additional_options: {})
+  def initialize(context_data:, current_user: nil, persistence_strategy: :stored_or_request, prompt_system: nil, prompt_user: nil, prompt_image: nil, locale: nil, regeneration_of: nil, additional_options: {})
     @context_data         = context_data
     @current_user         = current_user
     @given_prompt_system  = prompt_system
     @given_prompt_user    = prompt_user
+    @given_prompt_image   = prompt_image
     @persistence_strategy = persistence_strategy
     @additional_options   = additional_options
     @regeneration_of      = regeneration_of
@@ -100,8 +101,12 @@ class AI::Service
     end
   end
 
+  def prompt_image
+    @given_prompt_image
+  end
+
   def ask_provider
-    provider.ask(prompt_system:, prompt_user:)
+    provider.ask(prompt_system:, prompt_user:, prompt_image:)
   end
 
   def provider
@@ -143,7 +148,7 @@ class AI::Service
       **lookup_attributes_with_version,
       context:         { metadata: provider.metadata },
       content:         result || {},
-      payload:         { prompt_system:, prompt_user: },
+      payload:         { prompt_system:, prompt_user:, prompt_image: },
       error:           error_metadata || {},
       ai_service_name: self.class.name_service,
       regeneration_of:
@@ -194,6 +199,8 @@ class AI::Service
 
   def prompt_system_from_file
     File.read(format(PROMPT_PATH_STRING, type: 'system', service: prompt_file_name))
+  rescue Errno::ENOENT
+    ''
   end
 
   def prompt_user_from_file
