@@ -90,7 +90,7 @@ class AI::Provider::Anthropic < AI::Provider
       },
     )
 
-    raise AI::Provider::ResponseError, __('API server not accessible') if response.code.to_i != 200
+    validate_response!(response)
 
     nil
   end
