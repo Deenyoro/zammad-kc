@@ -138,6 +138,28 @@ RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
       expect(Setting.get('ai_provider')).to be(false)
       expect(Setting.get('ai_provider_config')).to be_blank
     end
+
+    context 'when configuration is updated elsewhere' do
+      let(:initial_ai_provider_config) do
+        { provider: 'open_ai', token: '123', ocr_active: false }
+      end
+
+      it 'shows the new configuration automatically' do
+        within :active_content do
+          check_select_field_value('provider', 'open_ai')
+          check_input_field_value('token', '123')
+          check_switch_field_value('ocr_active', false)
+        end
+
+        setup_ai_provider('zammad_ai', token: '456', ocr_active: true)
+
+        within :active_content do
+          check_select_field_value('provider', 'zammad_ai')
+          expect(page).to have_no_field('Token')
+          check_switch_field_value('ocr_active', true)
+        end
+      end
+    end
   end
 
   it 'shows feedback & logs tab with downloads and entries' do

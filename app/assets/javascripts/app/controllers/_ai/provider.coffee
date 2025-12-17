@@ -27,10 +27,10 @@ class AiProviderSettings extends App.Controller
   constructor: ->
     super
 
-    App.Setting.fetchFull(
-      @render
-      force: false
-    )
+    @subscribeId = App.Setting.subscribe(@render, initFetch: true, clear: false)
+
+  release: =>
+    App.Setting.unsubscribe(@subscribeId)
 
   render: =>
     @html App.view('ai/provider')(

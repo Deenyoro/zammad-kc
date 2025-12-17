@@ -34,6 +34,7 @@ class Form extends App.Controller
 
   constructor: ->
     super
+    @config = @currentConfig()
     @render()
 
   currentConfig: ->
@@ -54,8 +55,6 @@ class Form extends App.Controller
     App.Setting.set('sipgate_config', value, {notify: true})
 
   render: =>
-    @config = @currentConfig()
-
     @html App.view('integration/sipgate')(
       config: @config
       sipgate_token: App.Setting.get('sipgate_token')

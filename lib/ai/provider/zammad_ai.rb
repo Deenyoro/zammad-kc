@@ -73,7 +73,7 @@ class AI::Provider::ZammadAI < AI::Provider
   end
 
   def self.token(config)
-    config[:token].presence || ENV['ZAMMAD_AI_TOKEN']
+    ENV['ZAMMAD_AI_TOKEN'] || config[:token]
   end
 
   private

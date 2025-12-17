@@ -187,6 +187,7 @@ RSpec.describe Setting, type: :model do
         allow(Sessions).to receive(:broadcast)
         setting.save
         expect(Sessions).not_to have_received(:broadcast)
+          .with({ data: { name: 'broadcast_test', value: 'foo' }, event: 'config_update' }, 'public')
       end
 
       it 'does not trigger subscription' do
@@ -251,4 +252,5 @@ RSpec.describe Setting, type: :model do
       end
     end
   end
+
 end

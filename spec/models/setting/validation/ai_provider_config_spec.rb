@@ -53,7 +53,8 @@ RSpec.describe Setting::Validation::AIProviderConfig do
   end
 
   context 'when provider is ZammadAI' do
-    let(:config) { { provider: 'zammad_ai', token: } }
+    let(:config)    { { provider: 'zammad_ai', token: } }
+    let(:env_value) { nil }
 
     before do
       allow(UserAgent).to receive(:get) do |_, _, options|
@@ -65,6 +66,15 @@ RSpec.describe Setting::Validation::AIProviderConfig do
           code:    success ? 200 : 400,
         )
       end
+    end
+
+    around do |example|
+      old_env = ENV['ZAMMAD_AI_TOKEN']
+      ENV['ZAMMAD_AI_TOKEN'] = env_value
+
+      example.run
+
+      ENV['ZAMMAD_AI_TOKEN'] = old_env
     end
 
     context 'with missing token' do
@@ -99,15 +109,6 @@ RSpec.describe Setting::Validation::AIProviderConfig do
         Setting.set('system_online_service', true)
       end
 
-      around do |example|
-        old_env = ENV['ZAMMAD_AI_TOKEN']
-        ENV['ZAMMAD_AI_TOKEN'] = env_value
-
-        example.run
-
-        ENV['ZAMMAD_AI_TOKEN'] = old_env
-      end
-
       context 'when ENV variable is present' do
         let(:env_value) { 'valid' }
 
@@ -132,9 +133,9 @@ RSpec.describe Setting::Validation::AIProviderConfig do
         context 'with invalid token' do
           let(:token) { 'invalid_token' }
 
-          it 'raises error' do
+          it 'does not raise error' do
             expect { Setting.set(setting_name, config) }
-              .to raise_error(ActiveRecord::RecordInvalid)
+              .not_to raise_error
           end
         end
       end
