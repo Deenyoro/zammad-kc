@@ -3,8 +3,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { computed, ref, toRef, type Ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-import type { Sizes } from '#shared/components/CommonIcon/types.ts'
 import { useCopyToClipboard } from '#shared/composables/useCopyToClipboard.ts'
 import { useTouchDevice } from '#shared/composables/useTouchDevice.ts'
 import type { User } from '#shared/graphql/types.ts'
@@ -77,6 +77,8 @@ const events = computed(() => {
 })
 
 const { topLevelActions, secondLevelActions } = initializeActionPlugins()
+
+const router = useRouter()
 </script>
 
 <template>
@@ -116,7 +118,7 @@ const { topLevelActions, secondLevelActions } = initializeActionPlugins()
         />
       </template>
     </CommonBreadcrumb>
-    <div class="flex mx-auto mt-3 w-full max-w-278 h-21">
+    <div class="flex mx-auto mt-3 pe-17 w-full max-w-278 h-21">
       <UserInfo
         :user="user"
         size="normal"
@@ -131,24 +133,13 @@ const { topLevelActions, secondLevelActions } = initializeActionPlugins()
               v-for="action in topLevelActions"
               :key="action.key"
               role="menuitem"
-              class="outline-offset-0!"
-              @click="action?.onClick?.(user)"
+              :prefix-icon="action.icon"
+              @click="action?.onClick?.(user, router)"
             >
-              <template #label="{ iconSize }">
-                <CommonIcon
-                  v-if="action?.icon"
-                  :size="iconSize as Sizes"
-                  class="rtl:ml-0.5 ltr:mr-0.5"
-                  :class="action.variant"
-                  decorative
-                  :name="action?.icon"
-                />
-                <CommonLabel size="small" class="whitespace-nowrap text-current!">
-                  {{ $t(action.label) }}
-                </CommonLabel>
-              </template>
+              {{ $t(action.label) }}
             </CommonButton>
             <CommonActionMenu
+              button-size="large"
               role="menuitem"
               no-single-action-mode
               :actions="secondLevelActions"

@@ -20,6 +20,8 @@ export const UserDetailAttributesFragmentDoc = gql`
   mobile
   fax
   note
+  source
+  verified
   active
   objectAttributeValues {
     ...objectAttributeValues

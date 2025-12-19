@@ -17,8 +17,14 @@ export default <TicketSidebarPlugin>{
   icon: 'user',
   order: 1000,
   available: (context: TicketSidebarContext) => {
-    // Consider the sidebar available only if a customer ID has been set to an integer ID.
-    //   In case of a string value, it's probably an unknown email address and therefore no customer to show.
-    return !!(context.formValues.customer_id && typeof context.formValues.customer_id === 'number')
+    // Consider the sidebar available only if a customer ID has been set to a numeric ID.
+    //   In case of a number value, it's definitely a valid customer ID.
+    //   In case of a string value, it can be a numeric value masked as a string, so we can try to parse it.
+    //   If not, it's probably an unknown email address, and therefore we have a customer to show.
+    return (
+      context.formValues.customer_id &&
+      (typeof context.formValues.customer_id === 'number' ||
+        !Number.isNaN(parseInt(context.formValues.customer_id as string, 10)))
+    )
   },
 }

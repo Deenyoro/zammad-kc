@@ -43,6 +43,7 @@ module Gql::Types
       field :fax, String
       field :mobile, String
       field :vip, Boolean
+      field :source, String
       field :verified, Boolean
       field :active, Boolean
       field :out_of_office, Boolean

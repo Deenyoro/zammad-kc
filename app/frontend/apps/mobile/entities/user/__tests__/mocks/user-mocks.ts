@@ -28,6 +28,8 @@ export const defaultUser = (): ConfidentTake<UserQuery, 'user'> => {
     firstname: 'John',
     lastname: 'Doe',
     fullname: 'John Doe',
+    source: 'signup',
+    verified: true,
     active: true,
     vip: false,
     image: null,

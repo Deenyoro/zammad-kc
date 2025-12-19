@@ -91,10 +91,8 @@ const defaultTitle = __('New Ticket')
 const { openUserCreateFlyout } = useUserCreate()
 
 // FIXME: Try to sort out this mess!
-//   Instead of directly manipulating the form node, we should instead trigger the form updater
-//   and let it handle the update for us. Bonus points for deduplicating relevant backend code,
-//   so it's shared with the customer initial value population.
-//   See `FormUpdater::Updater::Ticket::Create` for details.
+//   Instead of directly manipulating the form node, we should instead rely on a new helper from
+//   `useForm()`, as proposed in https://github.com/zammad/coordination-desktop-view/issues/597.
 const applyNewlyCreatedCustomer = async (data: unknown) => {
   const user = (data as UserAddMutation).userAdd?.user as User
   if (!user || !form.value?.formId) return

@@ -7,6 +7,7 @@ import type { ObjectLike } from '#shared/types/utils.ts'
 import { type Props as ItemProps } from './CommonPopoverMenuItem.vue'
 
 import type { Component, ComputedRef } from 'vue'
+import type { Router } from 'vue-router'
 
 export type Variant = ButtonVariant
 
@@ -20,7 +21,7 @@ export interface MenuItem extends ItemProps {
    */
   groupLabel?: string
   separatorTop?: boolean
-  onClick?: (entity?: ObjectLike) => void
+  onClick?: (entity?: ObjectLike, router?: Router) => void
   noCloseOnClick?: boolean
   component?: Component
   variant?: Variant

@@ -1,7 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-import type { UserQuery } from '#shared/graphql/types.ts'
-import type { ConfidentTake } from '#shared/types/utils.ts'
+import type { User } from '#shared/graphql/types.ts'
 
 import { openUserEditFlyout, useUserEdit } from '#desktop/entities/user/composables/useUserEdit.ts'
 
@@ -13,12 +12,10 @@ export default <UserInfoActionPlugin>{
   icon: 'pencil',
   order: 100,
   permission: 'ticket.agent',
-  show(user) {
-    return (user as ConfidentTake<UserQuery, 'user'>)?.policy.update
-  },
+  show: (user?: User) => user?.policy.update,
   initialize: useUserEdit,
-  onClick: (user) => {
+  onClick: (user?: User) => {
     if (!user) return
-    openUserEditFlyout(user as ConfidentTake<UserQuery, 'user'>)
+    openUserEditFlyout(user)
   },
 }

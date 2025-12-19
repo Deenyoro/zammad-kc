@@ -16,7 +16,7 @@ export interface AvatarUser {
   active?: Maybe<boolean>
   image?: Maybe<string>
   id: string
-  source?: string
+  source?: Maybe<string>
 }
 
 export interface AvatarUserAccess {

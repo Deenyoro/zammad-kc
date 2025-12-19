@@ -48,6 +48,8 @@ const user: User = {
   outOfOfficeStartAt: null,
   outOfOfficeEndAt: null,
   hasSecondaryOrganizations: false,
+  source: 'signup',
+  verified: false,
   active: true,
   policy: {
     update: true,
@@ -220,7 +222,7 @@ describe('User Detail View', () => {
       const main = view.getByRole('main')
       const header = within(main).getByTestId('user-detail-top-bar')
 
-      expect(within(header).getByRole('menuitem', { name: 'New Ticket' })).toBeVisible()
+      expect(within(header).getByRole('menuitem', { name: 'New ticket' })).toBeVisible()
 
       await view.events.click(within(header).getByRole('button', { name: 'Action menu button' }))
 
@@ -243,6 +245,21 @@ describe('User Detail View', () => {
 
       const actionPopover = await view.findByRole('region', { name: 'Action menu button' })
       expect(within(actionPopover).getByRole('menuitem', { name: 'Delete' })).toBeVisible()
+    })
+
+    it('displays additional actions on some user profiles', async () => {
+      const view = await visitView('/users/2')
+
+      const main = view.getByRole('main')
+      const header = within(main).getByTestId('user-detail-top-bar')
+
+      await view.events.click(within(header).getByRole('button', { name: 'Action menu button' }))
+
+      const actionPopover = await view.findByRole('region', { name: 'Action menu button' })
+
+      expect(
+        within(actionPopover).getByRole('menuitem', { name: 'Resend verification email' }),
+      ).toBeVisible()
     })
   })
 

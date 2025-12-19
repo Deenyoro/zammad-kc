@@ -7,8 +7,9 @@ import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPublicLinksQuery } from '#shared/entities/public-links/graphql/queries/links.mocks.ts'
 import type { UserSignupMutation, UserSignupResendMutation } from '#shared/graphql/types.ts'
 
+import { UserSignupResendDocument } from '#desktop/entities/user/graphql/mutations/userSignupResend.api.ts'
+
 import { UserSignupDocument } from '../graphql/mutations/userSignup.api.ts'
-import { UserSignupResendDocument } from '../graphql/mutations/userSignupResend.api.ts'
 
 describe('testing additional signup information', () => {
   beforeEach(() => {
