@@ -60,6 +60,7 @@ Cypress.Commands.add('selectText', { prevSubject: true }, (subject, direction, s
     ])
 })
 
+// :TODO - remove this helper if we decide in the long run to not reintroduce the uniqueID extension from tiptap
 const normalizeHTML = (html) =>
   html
     // strip node ids from unique ids

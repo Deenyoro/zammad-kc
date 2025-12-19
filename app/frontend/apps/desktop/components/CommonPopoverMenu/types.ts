@@ -24,6 +24,10 @@ export interface MenuItem extends ItemProps {
   noCloseOnClick?: boolean
   component?: Component
   variant?: Variant
+  /**
+   * Shows Label when used in single action mode.
+   */
+  showLabel?: boolean
 }
 
 export interface UsePopoverMenuReturn {

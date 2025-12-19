@@ -21,6 +21,7 @@ import { NavigationMenuDensity } from '#desktop/components/NavigationMenu/types.
 import TicketListPopoverWithTrigger from '#desktop/components/Ticket/TicketListPopoverWithTrigger.vue'
 import UserInfo from '#desktop/components/User/UserInfo.vue'
 import type { TicketInformation } from '#desktop/entities/ticket/types.ts'
+import { useUserEdit } from '#desktop/entities/user/composables/useUserEdit.ts'
 import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
 import {
   type TicketSidebarContentProps,
@@ -61,6 +62,8 @@ if (props.context.screenType === TicketSidebarScreenType.TicketDetailView) {
   ;({ isTicketAgent, isTicketEditable } = useTicketView(ticket))
 }
 
+const { openUserEditFlyout } = useUserEdit()
+
 const actions = computed<MenuItem[]>(() => [
   {
     key: CUSTOMER_FLYOUT_KEY,
@@ -72,9 +75,15 @@ const actions = computed<MenuItem[]>(() => [
         ticket,
       }),
   },
+  {
+    key: 'edit-customer',
+    label: __('Edit customer'),
+    icon: 'pencil',
+    show: () => props.customer.policy.update,
+    onClick: () => openUserEditFlyout(props.customer, { title: __('Edit customer') }),
+  },
 ])
 </script>
-
 <template>
   <TicketSidebarContent
     v-model="persistentStates.scrollPosition"

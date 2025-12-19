@@ -173,6 +173,21 @@ module HasGroups
     groups_access_map(:name)
   end
 
+  # Returns the *saved* map of Group name to access
+  #
+  # IMPORTANT: Never use this method for checking access in business logic!
+  #   Instead, use `#group_names_access_map` which respects the active state.
+  #   This method ignores the active state of the instance.
+  #
+  # @example
+  #   user.saved_group_names_access_map
+  #   #=> {'Users' => 'full', 'Support' => ['read', 'change']}
+  #
+  # @return [Hash<String=>String,Array<String>>] The *saved* map of Group name to access
+  def saved_group_names_access_map
+    groups_access_map(:name, ignore_active: true)
+  end
+
   # Stores a map of Group ID to access. Deletes all other relations.
   #
   # @example
@@ -195,6 +210,21 @@ module HasGroups
   # @return [Hash<Integer=>String,Array<String>>] The map of Group ID to access
   def group_ids_access_map
     groups_access_map(:id)
+  end
+
+  # Returns the *saved* map of Group ID to access
+  #
+  # IMPORTANT: Never use this method for checking access in business logic!
+  #   Instead, use `#group_ids_access_map` which respects the active state.
+  #   This method ignores the active state of the instance.
+  #
+  # @example
+  #   user.saved_group_ids_access_map
+  #   #=> {1 => 'full', 42 => ['read', 'change']}
+  #
+  # @return [Hash<Integer=>String,Array<String>>] The *saved* map of Group ID to access
+  def saved_group_ids_access_map
+    groups_access_map(:id, ignore_active: true)
   end
 
   # Stores a map of Group ID to access. Deletes all other relations.
@@ -228,8 +258,8 @@ module HasGroups
 
   private
 
-  def groups_access_map(key)
-    return {} if !active?
+  def groups_access_map(key, ignore_active: false)
+    return {} if !ignore_active && !active?
     return {} if !groups_access_permission?
 
     groups.access.where(active: true).pluck(key, :access).each_with_object({}) do |entry, hash|

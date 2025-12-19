@@ -65,4 +65,6 @@ export abstract class FieldResolver {
   }
 
   abstract fieldTypeAttributes(): Partial<FormSchemaField>
+
+  transformFieldValue?(value: FormFieldValue): FormFieldValue
 }

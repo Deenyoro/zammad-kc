@@ -8,7 +8,6 @@ import Paragraph from '@tiptap/extension-paragraph'
 import Placeholder from '@tiptap/extension-placeholder'
 import { TableKit } from '@tiptap/extension-table'
 import { TextStyle } from '@tiptap/extension-text-style'
-import UniqueID from '@tiptap/extension-unique-id'
 import StarterKit from '@tiptap/starter-kit'
 import { common, createLowlight } from 'lowlight'
 
@@ -63,9 +62,6 @@ export const getPlainExtensions = (placeholder = ''): Extensions => [
   }),
   CharacterCount,
   HardBreakPlain,
-  UniqueID.configure({
-    types: ['paragraph', 'heading'],
-  }),
   Placeholder.configure({
     placeholder,
   }),
@@ -121,9 +117,6 @@ export const getHtmlExtensions = (placeholder = ''): Extensions => [
   TextStyle,
   UserLink,
   PasteHandler,
-  UniqueID.configure({
-    types: ['paragraph', 'heading'],
-  }),
   Placeholder.configure({
     placeholder,
   }),

@@ -211,6 +211,39 @@ describe('User Detail View', () => {
       expect(within(header).getByText('Nicole Braun', { selector: 'span' })).toBeVisible()
       expect(within(header).getByText('Zammad Foundation')).toBeVisible()
     })
+
+    it('displays actions for agent users', async () => {
+      mockPermissions(['ticket.agent'])
+
+      const view = await visitView('/users/2')
+
+      const main = view.getByRole('main')
+      const header = within(main).getByTestId('user-detail-top-bar')
+
+      expect(within(header).getByRole('menuitem', { name: 'New Ticket' })).toBeVisible()
+
+      await view.events.click(within(header).getByRole('button', { name: 'Action menu button' }))
+
+      const actionPopover = await view.findByRole('region', { name: 'Action menu button' })
+
+      expect(within(actionPopover).getByRole('menuitem', { name: 'Edit' })).toBeVisible()
+      expect(within(actionPopover).getByRole('menuitem', { name: 'History' })).toBeVisible()
+      expect(within(header).queryByRole('menuitem', { name: 'Delete' })).not.toBeInTheDocument()
+    })
+
+    it('displays actions for admin users', async () => {
+      mockPermissions(['admin.data_privacy', 'admin.user'])
+
+      const view = await visitView('/users/2')
+
+      const main = view.getByRole('main')
+      const header = within(main).getByTestId('user-detail-top-bar')
+
+      await view.events.click(within(header).getByRole('button', { name: 'Action menu button' }))
+
+      const actionPopover = await view.findByRole('region', { name: 'Action menu button' })
+      expect(within(actionPopover).getByRole('menuitem', { name: 'Delete' })).toBeVisible()
+    })
   })
 
   describe('Secondary organizations', () => {

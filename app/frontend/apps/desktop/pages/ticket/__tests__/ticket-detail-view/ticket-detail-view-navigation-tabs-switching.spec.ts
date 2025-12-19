@@ -161,7 +161,7 @@ describe('Ticket detail view multi tabs switching', () => {
     await view.events.click(await view.findByRole('button', { name: 'Change customer' }))
 
     const flyoutForFirstTicket = await view.findByRole('complementary', {
-      name: 'Change Customer',
+      name: 'Change customer',
     })
 
     expect(flyoutForFirstTicket).toBeInTheDocument()

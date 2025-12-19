@@ -62,7 +62,7 @@ export const getCoreDesktopClasses: FormThemeExtension = (classes: FormThemeClas
     checkbox: {
       outer: 'leading-none',
       wrapper: 'inline-flex items-center cursor-pointer select-none',
-      label: 'mb-0! text-sm text-gray-100 dark:text-neutral-400',
+      label: 'mb-0! text-sm text-gray-100 dark:text-neutral-400 formkit-required:after:invisible',
       inner: 'w-5 h-5 flex justify-center items-center ltr:mr-1 rtl:ml-1 formkit-label-hidden:m-0',
       input: 'peer appearance-none focus:outline-hidden focus:ring-0 focus:ring-offset-0',
       decorator:
@@ -86,7 +86,7 @@ export const getCoreDesktopClasses: FormThemeExtension = (classes: FormThemeClas
     ticket: selectInputClasses(classes.ticket),
     toggle: extendClasses(classes.toggle, {
       wrapper: 'flex h-10 flex-row-reverse items-center gap-1.5',
-      label: '!mb-0 grow',
+      label: '!mb-0 grow formkit-required:after:invisible',
       inner: 'leading-[0]',
     }),
     groupPermissions: extendClasses(classes.groupPermissions, {

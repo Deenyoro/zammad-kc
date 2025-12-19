@@ -41,7 +41,7 @@ describe('useObjectAttributeFormFields', () => {
       const objectAttributesLookup = await getObjectAttributeLookup()
 
       const { internalObjectAttributeValues, additionalObjectAttributeValues } =
-        useObjectAttributeFormData(objectAttributesLookup.value, {
+        useObjectAttributeFormData(EnumObjectManagerObjects.Ticket, objectAttributesLookup.value, {
           formId: '123456',
           name: 'Example',
           textarea: 'some example',

@@ -84,17 +84,19 @@
     - container query via optional TW `@container/form-group` class
   */
   .form-group .formkit-outer {
-    @apply col-span-2 @lg/form-group:col-span-1;
+    /* All fields default to full-width. */
+    @apply col-span-2;
 
-    /* Optional full-width style for specific fields. */
+    /* Optional single-column style for configured fields (medium+ breakpoint). */
+    &.form-group-single-column {
+      @apply @md/form-group:col-span-1;
+    }
+
+    /* Force full-width style for specific fields. */
     &[data-type='editor'],
     &[data-type='file'],
     &:last-of-type:nth-of-type(odd) {
-      @apply @lg/form-group:col-span-2;
-    }
-
-    &.form-group-single-column {
-      @apply col-span-1;
+      @apply @md/form-group:col-span-2;
     }
   }
 

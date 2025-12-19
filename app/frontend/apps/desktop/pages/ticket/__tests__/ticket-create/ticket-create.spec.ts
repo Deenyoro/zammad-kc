@@ -124,6 +124,9 @@ describe('ticket create view', () => {
       expect(within(sidebar).getByText('nicole.braun@zammad.org')).toBeInTheDocument()
       expect(within(sidebar).getByText('closed tickets')).toBeInTheDocument()
       expect(within(sidebar).getByLabelText('Open tickets')).toHaveTextContent('17')
+      await view.events.click(within(sidebar).getByLabelText('Action menu button'))
+      const popover = await view.findByRole('region', { name: 'Action menu button' })
+      expect(within(popover).getByRole('button', { name: 'Edit customer' })).toBeInTheDocument()
 
       // Sidebar Organization
       handleMockOrganizationQuery()

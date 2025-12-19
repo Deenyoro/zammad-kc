@@ -1,6 +1,7 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import type { FormSchemaField } from '#shared/components/Form/types.ts'
+import { useUserFormSchema } from '#shared/entities/user/composables/useUserFormSchema.ts'
 import { useUserUpdateMutation } from '#shared/entities/user/graphql/mutations/update.api.ts'
 import { defineFormSchema } from '#shared/form/defineFormSchema.ts'
 import type { UserQuery } from '#shared/graphql/types.ts'
@@ -13,19 +14,16 @@ import { useDialogObjectForm } from '#mobile/components/CommonDialogObjectForm/u
 export const useUserEdit = () => {
   const dialog = useDialogObjectForm('user-edit', EnumObjectManagerObjects.User)
 
+  const { buildUserSchema } = useUserFormSchema()
+
   const schema = defineFormSchema(
-    [
-      {
-        screen: 'edit',
-        object: EnumObjectManagerObjects.User,
-      },
+    buildUserSchema('edit', [
       {
         name: 'active',
-        required: true,
         screen: 'edit',
         object: EnumObjectManagerObjects.User,
       },
-    ],
+    ]),
     { showDirtyMark: true },
   )
 

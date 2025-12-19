@@ -2,6 +2,7 @@
 
 class FormUpdater::Updater::User::Create < FormUpdater::Updater
   include FormUpdater::Concerns::ChecksCoreWorkflow
+  include FormUpdater::Concerns::HasUserPermissions
 
   core_workflow_screen 'create'
 

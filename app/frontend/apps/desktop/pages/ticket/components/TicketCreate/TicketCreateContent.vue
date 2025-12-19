@@ -2,13 +2,14 @@
 
 <script setup lang="ts">
 import { isEqual } from 'lodash-es'
-import { computed, markRaw, reactive } from 'vue'
+import { computed, markRaw, nextTick, reactive } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 import { EXTENSION_NAME as TEXT_TOOL_EXTENSION_NAME } from '#shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts'
 import Form from '#shared/components/Form/Form.vue'
 import type { FormSubmitData } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
+import { getNodeByName } from '#shared/components/Form/utils.ts'
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
 import { useTicketSignature } from '#shared/composables/useTicketSignature.ts'
 import { useTicketCreate } from '#shared/entities/ticket/composables/useTicketCreate.ts'
@@ -16,15 +17,22 @@ import { useTicketCreateArticleType } from '#shared/entities/ticket/composables/
 import { useTicketFormOrganizationHandler } from '#shared/entities/ticket/composables/useTicketFormOrganizationHandler.ts'
 import type { TicketFormData } from '#shared/entities/ticket/types.ts'
 import { defineFormSchema } from '#shared/form/defineFormSchema.ts'
-import { EnumFormUpdaterId, EnumObjectManagerObjects } from '#shared/graphql/types.ts'
+import {
+  EnumFormUpdaterId,
+  EnumObjectManagerObjects,
+  type User,
+  type UserAddMutation,
+} from '#shared/graphql/types.ts'
 import { useWalker } from '#shared/router/walker.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonContentPanel from '#desktop/components/CommonContentPanel/CommonContentPanel.vue'
+import { useFieldCustomerOption } from '#desktop/components/Form/fields/FieldCustomer/useFieldCustomerOption.ts'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import { usePage } from '#desktop/composables/usePage.ts'
 import { useTicketCreateTitle } from '#desktop/entities/ticket/composables/useTicketCreateTitle.ts'
+import { useUserCreate } from '#desktop/entities/user/composables/useUserCreate.ts'
 import { useTaskbarTab } from '#desktop/entities/user/current/composables/useTaskbarTab.ts'
 import { useTaskbarTabStateUpdates } from '#desktop/entities/user/current/composables/useTaskbarTabStateUpdates.ts'
 import type { TaskbarTabContext } from '#desktop/entities/user/current/types.ts'
@@ -80,6 +88,29 @@ const { createTicket, isTicketCustomer } = useTicketCreate(form, redirectAfterCr
 
 const defaultTitle = __('New Ticket')
 
+const { openUserCreateFlyout } = useUserCreate()
+
+// FIXME: Try to sort out this mess!
+//   Instead of directly manipulating the form node, we should instead trigger the form updater
+//   and let it handle the update for us. Bonus points for deduplicating relevant backend code,
+//   so it's shared with the customer initial value population.
+//   See `FormUpdater::Updater::Ticket::Create` for details.
+const applyNewlyCreatedCustomer = async (data: unknown) => {
+  const user = (data as UserAddMutation).userAdd?.user as User
+  if (!user || !form.value?.formId) return
+
+  const customerNode = getNodeByName(form.value.formId, 'customer_id')
+  if (!customerNode) return
+
+  const { props } = customerNode
+
+  props.options = [...(props.options || []), useFieldCustomerOption(user)]
+
+  await nextTick()
+
+  customerNode.input(user.internalId, false)
+}
+
 const formSchema = defineFormSchema([
   {
     isLayout: true,
@@ -130,6 +161,24 @@ const formSchema = defineFormSchema([
           {
             screen: 'create_top',
             object: EnumObjectManagerObjects.Ticket,
+          },
+          {
+            name: 'customer_id',
+            screen: 'create_top',
+            object: EnumObjectManagerObjects.Ticket,
+            props: {
+              link: '#',
+              linkLabel: __('Create new customer'),
+              linkIcon: 'user-add',
+              onLinkClick: (e: MouseEvent) => {
+                e.preventDefault()
+
+                openUserCreateFlyout({
+                  title: __('Create new customer'),
+                  onSuccess: applyNewlyCreatedCustomer,
+                })
+              },
+            },
           },
           // Because of the current field screen settings in the backend
           // seed we need to add this manually.

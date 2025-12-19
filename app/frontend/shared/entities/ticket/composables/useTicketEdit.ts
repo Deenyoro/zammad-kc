@@ -160,7 +160,11 @@ export const useTicketEdit = (
     const article = processArticle(form.value.formId, formArticle)
 
     const { internalObjectAttributeValues, additionalObjectAttributeValues } =
-      useObjectAttributeFormData(ticketObjectAttributesLookup.value, formData)
+      useObjectAttributeFormData(
+        EnumObjectManagerObjects.Ticket,
+        ticketObjectAttributesLookup.value,
+        formData,
+      )
 
     const ticketMeta = meta || {}
 

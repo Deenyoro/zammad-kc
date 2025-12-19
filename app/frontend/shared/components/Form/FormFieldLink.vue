@@ -23,13 +23,12 @@ const classMap = getFieldLinkClasses()
 </script>
 
 <template>
-  <div :class="classMap.container">
+  <div v-if="link" :class="classMap.container">
     <div :class="classMap.base" class="flex h-full items-center focus:outline-hidden">
       <CommonLink
-        v-if="link"
+        v-tooltip="$t(linkLabel)"
         :link="link"
         :class="classMap.link"
-        :aria-label="$t(linkLabel)"
         class="flex items-center justify-center"
         open-in-new-tab
         @click="onLinkClick"

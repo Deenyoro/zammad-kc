@@ -93,7 +93,7 @@ const changedFormField = (
 
 const saveObject = async (formData: FormSubmitData) => {
   const { internalObjectAttributeValues, additionalObjectAttributeValues } =
-    useObjectAttributeFormData(objectAttributesLookup.value, formData)
+    useObjectAttributeFormData(props.type, objectAttributesLookup.value, formData)
 
   const result = await updateMutation.send({
     id: props.object?.id,

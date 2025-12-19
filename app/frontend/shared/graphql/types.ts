@@ -5956,7 +5956,7 @@ export type UserUpdatePayload = {
   __typename?: 'UserUpdatePayload';
   /** Errors encountered during execution of the mutation. */
   errors?: Maybe<Array<UserError>>;
-  /** The created user. */
+  /** The updated user. */
   user?: Maybe<User>;
 };
 

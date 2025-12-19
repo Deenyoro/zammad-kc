@@ -96,7 +96,11 @@ export const useTicketCreate = (
     )
 
     const { internalObjectAttributeValues, additionalObjectAttributeValues } =
-      useObjectAttributeFormData(ticketObjectAttributesLookup.value, formData)
+      useObjectAttributeFormData(
+        EnumObjectManagerObjects.Ticket,
+        ticketObjectAttributesLookup.value,
+        formData,
+      )
 
     // The customerId has an special handling, so we need to extract it from the internalObjectAttributeValues.
     const { customerId, ...internalValues } = internalObjectAttributeValues

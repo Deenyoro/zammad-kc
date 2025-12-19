@@ -2,6 +2,7 @@
 
 class FormUpdater::Updater::User::Edit < FormUpdater::Updater
   include FormUpdater::Concerns::ChecksCoreWorkflow
+  include FormUpdater::Concerns::HasUserPermissions
 
   core_workflow_screen 'edit'
 
@@ -33,4 +34,5 @@ class FormUpdater::Updater::User::Edit < FormUpdater::Updater
                     end,
     }
   end
+
 end

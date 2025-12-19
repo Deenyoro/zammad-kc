@@ -684,6 +684,7 @@ const updateSchemaLink = (specificProps: FormFieldAdditionalProps, fieldName: st
   // native fields don't have link attribute, and we don't have a way to get rendered link from graphql
   const values = (props.initialEntityObject?.objectAttributeValues || []) as ObjectAttributeValue[]
   const attribute = values.find(({ attribute }) => attribute.name === fieldName)
+  if (!attribute?.renderedLink) return
   specificProps.link = attribute?.renderedLink
 }
 

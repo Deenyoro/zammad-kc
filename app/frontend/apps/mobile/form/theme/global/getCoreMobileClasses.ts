@@ -56,6 +56,7 @@ const getCoreClasses: FormThemeExtension = (classes: FormThemeClasses) => {
     checkbox: extendClasses(classes.checkbox, {
       wrapper: 'w-full select-none ltr:pl-2 rtl:pr-2',
       inner: 'ltr:mr-2 rtl:ml-2',
+      label: 'formkit-required:after:invisible',
       input:
         'focus:border-blue focus:bg-blue-highlight checked:focus:color-blue checked:bg-blue checked:border-blue checked:focus:bg-blue checked:hover:bg-blue h-4 w-4 rounded-xs border-[1.5px] border-white bg-transparent',
     }),
@@ -65,7 +66,8 @@ const getCoreClasses: FormThemeExtension = (classes: FormThemeClasses) => {
     toggle: extendClasses(classes.toggle, {
       outer: 'relative px-2',
       wrapper: 'inline-flex h-14 w-full px-2',
-      label: 'flex h-full w-full cursor-pointer items-center text-base',
+      label:
+        'flex h-full w-full cursor-pointer items-center text-base formkit-required:after:invisible',
       inner: 'flex h-full items-center',
     }),
     tags: addBlockFloatingLabel(classes.tags),

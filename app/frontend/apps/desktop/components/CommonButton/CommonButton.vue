@@ -160,7 +160,7 @@ const iconSizeClass = computed(() => {
     :tabindex="disabled ? '-1' : '0'"
     :aria-disabled="disabled ? 'true' : undefined"
   >
-    <slot name="label">
+    <slot name="label" :icon-size="iconSizeClass">
       <CommonIcon
         v-if="prefixIcon"
         class="pointer-events-none shrink-0"

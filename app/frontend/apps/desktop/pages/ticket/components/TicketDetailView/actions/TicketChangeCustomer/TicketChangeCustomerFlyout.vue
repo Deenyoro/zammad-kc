@@ -47,7 +47,7 @@ const { changeCustomer } = useTicketChangeCustomer(toRef(props, 'ticket'), {
     header-icon="user"
     no-close-on-action
     :name="ticketChangeCustomerFlyoutName"
-    :header-title="__('Change Customer')"
+    :header-title="__('Change customer')"
     :form="form"
     :footer-action-options="{
       actionButton: {

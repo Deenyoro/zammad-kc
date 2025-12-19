@@ -205,6 +205,7 @@ const bulkEditTickets = async (formData: FormSubmitData<TicketBulkEditFormData>)
   ) as FormSubmitData<TicketBulkEditFormData>
 
   const { internalObjectAttributeValues } = useObjectAttributeFormData<TicketBulkEditFormData>(
+    EnumObjectManagerObjects.Ticket,
     ticketObjectAttributesLookup.value,
     cleanedFormData,
   )

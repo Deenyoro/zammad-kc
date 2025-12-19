@@ -4,15 +4,18 @@
 import { storeToRefs } from 'pinia'
 import { computed, ref, toRef, type Ref } from 'vue'
 
+import type { Sizes } from '#shared/components/CommonIcon/types.ts'
 import { useCopyToClipboard } from '#shared/composables/useCopyToClipboard.ts'
 import { useTouchDevice } from '#shared/composables/useTouchDevice.ts'
 import type { User } from '#shared/graphql/types.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 
+import CommonActionMenu from '#desktop/components/CommonActionMenu/CommonActionMenu.vue'
 import CommonBreadcrumb from '#desktop/components/CommonBreadcrumb/CommonBreadcrumb.vue'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import UserInfo from '#desktop/components/User/UserInfo.vue'
 import { useElementScroll } from '#desktop/composables/useElementScroll.ts'
+import { initializeActionPlugins } from '#desktop/pages/user/components/UserDetailTopBar/actions/index.ts'
 
 interface Props {
   user: User
@@ -72,6 +75,8 @@ const events = computed(() => {
     },
   }
 })
+
+const { topLevelActions, secondLevelActions } = initializeActionPlugins()
 </script>
 
 <template>
@@ -119,7 +124,39 @@ const events = computed(() => {
         title-size="xl"
         title-class="font-medium"
         no-link
-      />
+      >
+        <template #actions>
+          <div role="menubar" class="rtl:mr-auto ltr:ml-auto flex items-center gap-1">
+            <CommonButton
+              v-for="action in topLevelActions"
+              :key="action.key"
+              role="menuitem"
+              class="outline-offset-0!"
+              @click="action?.onClick?.(user)"
+            >
+              <template #label="{ iconSize }">
+                <CommonIcon
+                  v-if="action?.icon"
+                  :size="iconSize as Sizes"
+                  class="rtl:ml-0.5 ltr:mr-0.5"
+                  :class="action.variant"
+                  decorative
+                  :name="action?.icon"
+                />
+                <CommonLabel size="small" class="whitespace-nowrap text-current!">
+                  {{ $t(action.label) }}
+                </CommonLabel>
+              </template>
+            </CommonButton>
+            <CommonActionMenu
+              role="menuitem"
+              no-single-action-mode
+              :actions="secondLevelActions"
+              :entity="user"
+            />
+          </div>
+        </template>
+      </UserInfo>
     </div>
   </header>
 </template>
