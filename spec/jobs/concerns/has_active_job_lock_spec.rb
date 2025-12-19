@@ -27,8 +27,15 @@ RSpec.describe HasActiveJobLock, type: :job do
 
       before { create(:active_job_lock, lock_key: job_class.name, created_at: 1.minute.ago, updated_at: 1.second.ago) }
 
-      it 'allows enqueueing of perform_later jobs' do
-        expect { job_class.perform_later }.to have_enqueued_job(job_class).exactly(:once)
+      case behaviour
+      when :dismiss_running
+        it 'does not allow enqueueing of perform_later jobs' do
+          expect { job_class.perform_later }.not_to have_enqueued_job(job_class)
+        end
+      else
+        it 'allows enqueueing of perform_later jobs' do
+          expect { job_class.perform_later }.to have_enqueued_job(job_class).exactly(:once)
+        end
       end
 
       it 'allows execution of perform_now jobs' do
@@ -36,9 +43,17 @@ RSpec.describe HasActiveJobLock, type: :job do
       end
 
       context 'with a date' do
-        it 'allows enquiueing of perform_later jobs' do
-          expect { job_class.set(wait: 1.minute).perform_later }
-            .to have_enqueued_job(job_class).exactly(:once)
+        case behaviour
+        when :dismiss_running
+          it 'does not allow enqueueing of perform_later jobs' do
+            expect { job_class.set(wait: 1.minute).perform_later }
+              .not_to have_enqueued_job(job_class)
+          end
+        else
+          it 'allows enqueueing of perform_later jobs' do
+            expect { job_class.set(wait: 1.minute).perform_later }
+              .to have_enqueued_job(job_class).exactly(:once)
+          end
         end
       end
     end
@@ -211,21 +226,23 @@ RSpec.describe HasActiveJobLock, type: :job do
       end
     end
 
-    include_examples 'handle locking of jobs'
+    include_examples 'handle locking of jobs', behaviour: :dismiss
   end
 
   context 'when has upsert date lock behaviour' do
-    # let(:job_class) do
-    #   Class.new(super()) do
-    #     EXISTING_ACTIVE_JOB_LOCK_BEHAVIOUR = :upsert_date
-    #   end
-    # end
-
     before do
       stub_const "#{job_class.name}::EXISTING_ACTIVE_JOB_LOCK_BEHAVIOUR", :upsert_date
     end
 
     include_examples 'handle locking of jobs', behaviour: :upsert_date
+  end
+
+  context 'when has dismiss including when running lock behaviour' do
+    before do
+      stub_const "#{job_class.name}::EXISTING_ACTIVE_JOB_LOCK_BEHAVIOUR", :dismiss_running
+    end
+
+    include_examples 'handle locking of jobs', behaviour: :dismiss_running
   end
 
   context 'when has invalid custom lock key' do

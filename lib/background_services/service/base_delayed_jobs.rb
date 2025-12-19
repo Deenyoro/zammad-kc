@@ -17,6 +17,14 @@ class BackgroundServices
         raise 'not implemented'
       end
 
+      def self.pre_launch
+        start_time = Time.zone.now
+
+        CleanupAction.cleanup_delayed_jobs(start_time, queues:)
+
+        start_time
+      end
+
       def launch
         Delayed::Worker.reset
 

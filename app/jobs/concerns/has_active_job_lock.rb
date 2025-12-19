@@ -3,7 +3,18 @@
 module HasActiveJobLock
   class LockKeyNotGeneratable < StandardError; end
 
-  EXISTING_ACTIVE_JOB_LOCK_BEHAVIOUR = :dismiss # or upsert_date
+  # Sets default behaviour how to treat existing active job locks
+  #
+  # :dismiss - Simply do not enqueue the job if there's one enqueued.
+  #            But still enqueue if same job is already running!
+  #
+  # :dismiss_running - Simply do not enqueue the job. Even if matching job is already running!
+  #
+  # :upsert_date - If there's already a job enqueued with the same lock key AND scheduled_at date,
+  #                update the existing job's scheduled_at date.
+  #                If matching job is already runnig, enqueues a new job!
+  #
+  EXISTING_ACTIVE_JOB_LOCK_BEHAVIOUR = :dismiss
 
   extend ActiveSupport::Concern
 
@@ -130,7 +141,9 @@ module HasActiveJobLock
 
     # don't enqueue perform_later jobs if a job with the same
     # lock key exists that hasn't started to perform yet
-    existing_active_job_lock! if active_job_lock.perform_pending?
+    if self.class::EXISTING_ACTIVE_JOB_LOCK_BEHAVIOUR == :dismiss_running || active_job_lock.perform_pending?
+      existing_active_job_lock!
+    end
 
     active_job_lock.tap { |lock| lock.transfer_to(self) }
   end
@@ -144,7 +157,8 @@ module HasActiveJobLock
   end
 
   def existing_active_job_lock!
-    throw :abort if self.class::EXISTING_ACTIVE_JOB_LOCK_BEHAVIOUR == :dismiss
+    # throw :abort if self.class::EXISTING_ACTIVE_JOB_LOCK_BEHAVIOUR == :dismiss
+    throw :abort if %i[dismiss dismiss_running].include?(self.class::EXISTING_ACTIVE_JOB_LOCK_BEHAVIOUR)
 
     throw :abort if scheduled_at.blank? # apply to postponed jobs only
 

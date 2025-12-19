@@ -5,9 +5,8 @@ class BackgroundServices
     class ProcessDelayedJobs < BaseDelayedJobs
 
       def self.pre_launch
-        start_time = Time.zone.now
+        start_time = super
 
-        CleanupAction.cleanup_delayed_jobs(start_time, queues:)
         ImportJob.cleanup_import_jobs(start_time)
       end
 

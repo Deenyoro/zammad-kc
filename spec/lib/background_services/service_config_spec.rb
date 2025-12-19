@@ -53,6 +53,7 @@ RSpec.describe BackgroundServices::ServiceConfig do
         BackgroundServices::Service::ManageSessionsJobs,
         BackgroundServices::Service::ProcessScheduledJobs,
         BackgroundServices::Service::ProcessSessionsJobs,
+        BackgroundServices::Service::ProcessDelayedCommunicationInboundJobs,
         BackgroundServices::Service::ProcessDelayedJobs,
         BackgroundServices::Service::ProcessDelayedAIJobs,
       )

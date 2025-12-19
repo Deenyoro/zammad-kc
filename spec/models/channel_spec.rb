@@ -73,6 +73,41 @@ RSpec.describe Channel, type: :model do
     end
   end
 
+  describe '.fetch_async', performs_jobs: true do
+    let(:channel)              { create(:email_channel) }
+    let(:channel_inactive)     { create(:email_channel, active: false) }
+    let(:channel_notification) { create(:email_notification_channel) }
+
+    before do
+      channel
+      channel_inactive
+      channel_notification
+    end
+
+    it 'enqueues fetch jobs for active email channels only' do
+      expect { described_class.fetch_async }
+        .to have_enqueued_job(ChannelFetchJob).once
+    end
+
+    it 'enqueues fetch jobs for channels not fetched recently' do
+      channel.preferences[:last_fetch] = 1.hour.ago
+      channel.save!
+
+      expect { described_class.fetch_async }
+        .to have_enqueued_job(ChannelFetchJob).once
+    end
+
+    it 'makes sure same channel is not enqueued twice' do
+      described_class.fetch_async
+
+      travel 1.hour
+
+      described_class.fetch_async
+
+      expect(ChannelFetchJob).to have_been_enqueued.exactly(:once)
+    end
+  end
+
   context 'when authentication type is XOAUTH2' do
 
     shared_examples 'common XOAUTH2' do

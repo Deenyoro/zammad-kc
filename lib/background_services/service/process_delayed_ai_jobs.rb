@@ -9,12 +9,6 @@ class BackgroundServices
         5
       end
 
-      def self.pre_launch
-        start_time = Time.zone.now
-
-        CleanupAction.cleanup_delayed_jobs(start_time, queues:)
-      end
-
       def self.queues
         [:ai].freeze
       end

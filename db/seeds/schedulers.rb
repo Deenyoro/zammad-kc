@@ -23,7 +23,7 @@ Scheduler.create_if_not_exists(
 )
 Scheduler.create_if_not_exists(
   name:          __('Check channels.'),
-  method:        'Channel.fetch',
+  method:        'Channel.fetch_async',
   period:        30.seconds,
   prio:          1,
   active:        true,
