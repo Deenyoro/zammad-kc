@@ -189,6 +189,12 @@ const actionPlugin: TicketArticleActionPlugin = {
       view: {
         agent: ['change'],
       },
+      editorMeta: {
+        footer: {
+          maxlength: 4096,
+          allowExceedMaxLength: true,
+        },
+      },
       fields: {
         body: {
           required: false,

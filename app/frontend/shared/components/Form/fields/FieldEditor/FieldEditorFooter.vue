@@ -4,6 +4,7 @@
 import { computed } from 'vue'
 
 import type { FieldEditorProps } from '#shared/components/Form/fields/FieldEditor/types.ts'
+import { useAppName } from '#shared/composables/useAppName.ts'
 import type { ConfidentTake } from '#shared/types/utils.ts'
 
 interface Props {
@@ -18,6 +19,13 @@ const availableCharactersCount = computed(() => {
   if (!maxlength) return 0
   return maxlength - props.characters
 })
+
+const appName = useAppName()
+
+const isDesktop = appName === 'desktop'
+
+const characterClassError = isDesktop ? 'text-red-500' : 'text-red'
+const characterClassWarning = isDesktop ? 'text-yellow-600' : 'text-orange'
 </script>
 
 <template>
@@ -28,8 +36,8 @@ const availableCharactersCount = computed(() => {
       title="Available characters"
       class="text-right"
       :class="{
-        'text-red': availableCharactersCount < 0,
-        'text-orange':
+        [characterClassError]: availableCharactersCount < 0,
+        [characterClassWarning]:
           footer.warningLength &&
           availableCharactersCount >= 0 &&
           availableCharactersCount < footer.warningLength,

@@ -1,7 +1,6 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 import Blockquote from '@tiptap/extension-blockquote'
-import CharacterCount from '@tiptap/extension-character-count'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import Color from '@tiptap/extension-color'
 import Paragraph from '@tiptap/extension-paragraph'
@@ -30,6 +29,9 @@ import UserMention, {
 import type { FieldEditorProps } from '#shared/components/Form/fields/FieldEditor/types.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
 
+import { HtmlCharacterCount } from './extensions/CharacterCount/HtmlCharacterCount.ts'
+import { PlainCharacterCount } from './extensions/CharacterCount/PlainCharacterCount.ts'
+
 import type { Extensions } from '@tiptap/core'
 import type { Ref } from 'vue'
 
@@ -39,7 +41,10 @@ export const PlaceholderExtensionName = Placeholder.name
 
 export const lowlight = createLowlight(common)
 
-export const getPlainExtensions = (placeholder = ''): Extensions => [
+export const getPlainExtensions = (
+  placeholder = '',
+  meta: FieldEditorProps['meta'],
+): Extensions => [
   StarterKit.configure({
     blockquote: false,
     bold: false,
@@ -60,14 +65,18 @@ export const getPlainExtensions = (placeholder = ''): Extensions => [
       autolink: false,
     },
   }),
-  CharacterCount,
+  PlainCharacterCount.configure(
+    meta?.footer?.maxlength && !meta?.footer?.allowExceedMaxLength
+      ? { limit: meta.footer.maxlength }
+      : {},
+  ),
   HardBreakPlain,
   Placeholder.configure({
     placeholder,
   }),
 ]
 
-export const getHtmlExtensions = (placeholder = ''): Extensions => [
+export const getHtmlExtensions = (placeholder = '', meta: FieldEditorProps['meta']): Extensions => [
   StarterKit.configure({
     blockquote: false,
     paragraph: false,
@@ -87,7 +96,14 @@ export const getHtmlExtensions = (placeholder = ''): Extensions => [
       }
     },
   }),
-  CharacterCount,
+  HtmlCharacterCount.configure(
+    meta?.footer?.maxlength && !meta?.footer?.allowExceedMaxLength
+      ? {
+          limit: meta.footer.maxlength,
+        }
+      : {},
+  ),
+  // CharacterCount,
   CodeBlockLowlight.configure({ lowlight }),
   Color,
   IndentExtension,

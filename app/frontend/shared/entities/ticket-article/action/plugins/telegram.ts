@@ -61,6 +61,7 @@ const actionPlugin: TicketArticleActionPlugin = {
         footer: {
           maxlength: 10000,
           warningLength: 5000,
+          allowExceedMaxLength: true,
         },
       },
     }

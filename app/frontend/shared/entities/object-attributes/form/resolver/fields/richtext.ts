@@ -7,18 +7,16 @@ import { FieldResolver } from '../FieldResolver.ts'
 export class FieldResolverRichtext extends FieldResolver {
   fieldType = 'editor'
 
-  // TODO:
-  // def field_for_oa_type_richtext(context:, attribute:)
-  //   FormSchema::Field::Editor.new(
-  //     **base_attributes(context: context, attribute: attribute),
-  //     // TODO: the OA has a maxlength attribute, but Field::Editor does not support that yet.
-  //     // maxlength: attribute[:data_option]['maxlength']
-  //   )
-  // end
   public fieldTypeAttributes() {
     return {
       props: {
         extensionSet: 'basic',
+        // Pass maxlength from dataOption to meta.footer for character count display limit
+        meta: {
+          footer: {
+            maxlength: this.attributeConfig.maxlength ? +this.attributeConfig.maxlength : undefined,
+          },
+        },
       },
     }
   }

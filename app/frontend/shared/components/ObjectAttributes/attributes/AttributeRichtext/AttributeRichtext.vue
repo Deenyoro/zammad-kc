@@ -34,6 +34,12 @@ const enableInlineEdit = computed(
       input: 'min-h-7!',
     }"
     type="editor"
+    :meta="{
+      footer: {
+        maxlength: props.attribute?.dataOption?.maxlength,
+        disabled: true,
+      },
+    }"
     :label-sr-only="true"
     :label="attribute.display"
     :reset="handleReset"

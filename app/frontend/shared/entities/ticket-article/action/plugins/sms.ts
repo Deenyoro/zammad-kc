@@ -63,6 +63,7 @@ const actionPlugin: TicketArticleActionPlugin = {
         footer: {
           maxlength: 160,
           warningLength: 30,
+          allowExceedMaxLength: true,
         },
       },
       performReply(ticket) {

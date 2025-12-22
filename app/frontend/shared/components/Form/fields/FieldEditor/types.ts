@@ -97,6 +97,7 @@ export interface FieldEditorProps {
       text?: string
       maxlength?: number
       warningLength?: number
+      allowExceedMaxLength?: boolean
     }
     image?: {
       disabled?: boolean

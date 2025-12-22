@@ -46,6 +46,11 @@ module.exports = plugin(
     ])
     addVariant('formkit-variant-submit', ['[data-variant="submit"] &', '[data-variant="submit"]&'])
     addVariant('formkit-variant-danger', ['[data-variant="danger"] &', '[data-variant="danger"]&'])
+    addVariant('formkit-warning', [
+      '&[data-message-type="warning"]',
+      '[data-message-type="warning"] &',
+      '[data-message-type="warning"]&',
+    ])
   },
   {
     theme: {

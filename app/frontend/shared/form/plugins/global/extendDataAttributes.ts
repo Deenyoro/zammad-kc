@@ -34,6 +34,12 @@ const extendDataAttribues = (node: FormKitNode) => {
     return parsedRules.some((rule) => rule.name === ruleName)
   }
 
+  context.fns.hasWarningMessage = (messages: Record<string, Record<string, unknown>>): boolean => {
+    if (!messages) return false
+
+    return Object.values(messages).some((message) => message.type === 'warning' && message.visible)
+  }
+
   extendSchemaDefinition(node, 'outer', {
     attrs: {
       'data-populated': {
@@ -59,6 +65,11 @@ const extendDataAttribues = (node: FormKitNode) => {
       'data-triggers-form-updater': {
         if: '$triggerFormUpdater',
         then: 'true',
+        else: undefined,
+      },
+      'data-message-type': {
+        if: '$fns.hasWarningMessage($messages)',
+        then: 'warning',
         else: undefined,
       },
     },

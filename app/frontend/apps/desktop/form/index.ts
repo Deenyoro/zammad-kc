@@ -86,7 +86,8 @@ export const initializeFormFields = () => {
       },
     },
     input: {
-      container: 'px-2.5 py-2',
+      container:
+        'px-2.5 py-2 formkit-invalid:outline formkit-invalid:outline-1 formkit-invalid:-outline-offset-1 formkit-errors:-outline-offset-1  formkit-invalid:outline-red-500 formkit-errors:outline formkit-errors:outline-1 formkit-errors:outline-red-500 formkit-warning:outline-1 formkit-warning:outline-yellow-600! formkit-warning:-outline-offset-1 ',
       inlineContainer: 'px-1.5! py-1!',
     },
   })
