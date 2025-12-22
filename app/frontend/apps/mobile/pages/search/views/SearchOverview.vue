@@ -136,10 +136,9 @@ const selectRecentSearch = async (recentSearch: string) => {
   await loadByFilter(recentSearch)
 }
 
-const pluginsArray = Object.entries(searchPlugins).map(([name, plugin]) => ({
-  name,
-  ...plugin,
-}))
+const pluginsArray = Object.entries(searchPlugins).map(([name, plugin]) =>
+  Object.assign({ name }, plugin),
+)
 
 const searchPills: CommonButtonOption[] = pluginsArray.map((plugin) => ({
   value: plugin.name,

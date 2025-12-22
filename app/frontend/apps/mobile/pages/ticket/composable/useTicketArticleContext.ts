@@ -57,9 +57,10 @@ export const useTicketArticleContext = () => {
       onDispose,
     }).map<PopupItemDescriptor>((action) => {
       const { perform, link, label } = action
-      if (!perform) return { ...action, type: 'link' }
-      return {
-        type: link ? 'link' : 'button',
+      if (!perform) return Object.assign(action, { type: 'link' as const })
+
+      return Object.assign(action, {
+        type: link ? ('link' as const) : ('button' as const),
         label,
         link,
         onAction: () =>
@@ -69,7 +70,7 @@ export const useTicketArticleContext = () => {
             openReplyForm,
             getNewArticleBody,
           }),
-      }
+      })
     })
 
     return [

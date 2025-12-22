@@ -55,11 +55,10 @@ const useSelectOptions = <T extends SelectOption[] | FlatSelectOption[] | AutoCo
           ? variant.heading || ''
           : i18n.t(variant.heading, ...(variant.headingPlaceholder || []))
 
-      return {
-        ...option,
+      return Object.assign(option, {
         label,
         heading,
-      }
+      })
     })
   })
 

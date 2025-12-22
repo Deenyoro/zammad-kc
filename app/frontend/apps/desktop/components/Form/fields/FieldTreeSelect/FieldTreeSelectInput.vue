@@ -93,14 +93,11 @@ const filteredOptions = computed(() => {
   const filterRegex = new RegExp(escapeRegExp(deaccent(filter.value.trim())), 'i')
 
   return options
-    .map(
-      (option) =>
-        ({
-          ...option,
-
-          // Match options via their de-accented labels.
-          match: filterRegex.exec(deaccent(option.label || String(option.value))),
-        }) as FlatSelectOption,
+    .map((option) =>
+      Object.assign(option, {
+        // Match options via their de-accented labels.
+        match: filterRegex.exec(deaccent(option.label || String(option.value))),
+      }),
     )
     .filter((option) => option.match)
 })

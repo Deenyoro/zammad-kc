@@ -74,11 +74,11 @@ export const forwardEmail = async (
       },
       config.api_path,
     )
-    return {
-      ...file,
+
+    return Object.assign(file, {
       preview: previewUrl,
       inline: inlineUrl,
-    }
+    })
   })
   const quotedHeader =
     config.ui_ticket_zoom_article_email_full_quote_header && result

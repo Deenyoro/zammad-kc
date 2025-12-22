@@ -90,11 +90,12 @@ const editorActions = useEditorActions(toRef(props, 'editor'), 'text/html')
 const invisibleActions = computed(() =>
   editorActions.actions.value
     .filter((action) => visibleActions.value.get(action.name) === false)
-    .map((action) => ({
-      ...action,
-      key: action.name,
-      noCloseOnClick: !!action.subMenu,
-    })),
+    .map((action) =>
+      Object.assign(action, {
+        key: action.name,
+        noCloseOnClick: !!action.subMenu,
+      }),
+    ),
 )
 
 const activeActionWithSubmenu = shallowRef<EditorButton['subMenu'] | null>(null)

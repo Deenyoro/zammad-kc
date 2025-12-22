@@ -328,14 +328,11 @@ const availableOptionsWithMatches = computed(() => {
   //   Make sure to escape special regex characters!
   const filterRegex = new RegExp(escapeRegExp(deaccent(filter.value.trim())), 'i')
 
-  return availableOptions.value.map(
-    (option) =>
-      ({
-        ...option,
-
-        // Match options via their de-accented labels.
-        match: filterRegex.exec(deaccent(option.label || String(option.value))),
-      }) as AutoCompleteOption,
+  return availableOptions.value.map((option) =>
+    Object.assign(option, {
+      // Match options via their de-accented labels.
+      match: filterRegex.exec(deaccent(option.label || String(option.value))),
+    }),
   )
 })
 

@@ -41,14 +41,15 @@ type AutocompleteSearchRecipientQuery = {
 }
 
 const mockQueryResult = (query: string, limit: number): AutocompleteSearchRecipientQuery => {
-  const options = testOptions.map((option) => ({
-    ...option,
-    labelPlaceholder: null,
-    headingPlaceholder: null,
-    disabled: null,
-    icon: null,
-    __typename: 'AutocompleteEntry',
-  }))
+  const options: AutoCompleteOption[] = testOptions.map((option) =>
+    Object.assign(option, {
+      labelPlaceholder: null,
+      headingPlaceholder: null,
+      disabled: null,
+      icon: null,
+      __typename: 'AutocompleteEntry',
+    }),
+  )
 
   const deaccent = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 

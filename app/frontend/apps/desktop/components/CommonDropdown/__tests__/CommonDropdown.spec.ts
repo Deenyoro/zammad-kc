@@ -22,6 +22,7 @@ describe('CommonDropdown', () => {
         items: dropdownItems,
         actionLabel: 'text-dropdown',
       },
+      router: true,
     })
 
     await wrapper.events.click(wrapper.getByRole('button', { name: 'text-dropdown' }))
@@ -36,6 +37,7 @@ describe('CommonDropdown', () => {
         items: dropdownItems,
         actionLabel: 'action-dropdown',
       },
+      router: true,
     })
 
     await wrapper.events.click(wrapper.getByRole('button', { name: 'action-dropdown' }))
@@ -55,6 +57,7 @@ describe('CommonDropdown', () => {
         dropdownItems,
         items: dropdownItems,
       },
+      router: true,
       vModel: {
         modelValue: selectedItem,
       },

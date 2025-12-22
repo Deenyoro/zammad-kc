@@ -63,12 +63,15 @@ const flattenOptions = (
 ): FlatSelectOption[] =>
   options &&
   options.reduce((flatOptions: FlatSelectOption[], { children, ...option }) => {
-    flatOptions.push({
-      ...option,
-      parents,
-      hasChildren: Boolean(children),
-    })
+    flatOptions.push(
+      Object.assign(option, {
+        parents,
+        hasChildren: Boolean(children),
+      }),
+    )
+
     if (children) flatOptions.push(...flattenOptions(children, [...parents, option.value]))
+
     return flatOptions
   }, [])
 
