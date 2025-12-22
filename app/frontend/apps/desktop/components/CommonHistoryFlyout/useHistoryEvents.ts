@@ -6,10 +6,10 @@ import type { HistoryRecordEvent, HistoryRecordIssuer, User } from '#shared/grap
 import { i18n } from '#shared/i18n.ts'
 import type { DeepPartial } from '#shared/types/utils.ts'
 
-import { eventActionsLookup } from '../event-actions/index.ts'
-import { historyEventIssuerNames } from '../utils/historyEventIssuerNames.ts'
+import { eventActionsLookup } from './event-actions/index.ts'
+import { historyEventIssuerNames } from './utils/historyEventIssuerNames.ts'
 
-import type { EventActionOutput } from '../types.ts'
+import type { EventActionOutput } from './types.ts'
 
 export const useHistoryEvents = () => {
   const issuedBySystemService = (issuer: Partial<HistoryRecordIssuer>) => {
@@ -51,11 +51,13 @@ export const useHistoryEvents = () => {
     const module = eventActionsLookup[kebabCase(event.action)]
 
     const actionName =
-      typeof module.actionName === 'function' ? module.actionName(event) : module.actionName
+      typeof module.actionName === 'function'
+        ? module.actionName(event as HistoryRecordEvent)
+        : module.actionName
 
     return {
       component: module.component,
-      ...module.content(event),
+      ...module.content(event as HistoryRecordEvent),
       actionName: kebabCase(actionName),
     }
   }

@@ -22,11 +22,11 @@ import {
 } from '#shared/graphql/types.ts'
 import { textTruncate } from '#shared/utils/helpers.ts'
 
-import { useHistoryEvents } from '../composables/useHistoryEvents.ts'
 import HistoryEventDetailsEmail from '../HistoryEventDetails/HistoryEventDetailsEmail.vue'
 import HistoryEventDetailsMerge from '../HistoryEventDetails/HistoryEventDetailsMerge.vue'
 import HistoryEventDetailsReaction from '../HistoryEventDetails/HistoryEventDetailsReaction.vue'
 import HistoryEventDetailsTimeTriggerPerformed from '../HistoryEventDetails/HistoryEventDetailsTimeTriggerPerformed.vue'
+import { useHistoryEvents } from '../useHistoryEvents.ts'
 
 const scope = effectScope()
 

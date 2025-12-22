@@ -3,54 +3,63 @@
 <script setup lang="ts">
 import { computed, useTemplateRef, nextTick, watch } from 'vue'
 
-import type { TicketById } from '#shared/entities/ticket/types.ts'
-import type { HistoryRecordEvent, HistoryRecordIssuer } from '#shared/graphql/types.ts'
+import type {
+  EnumObjectManagerObjects,
+  HistoryGroup,
+  HistoryRecordEvent,
+  HistoryRecordIssuer,
+} from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n/index.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 
 import CommonDivider from '#desktop/components/CommonDivider/CommonDivider.vue'
 import CommonFlyout from '#desktop/components/CommonFlyout/CommonFlyout.vue'
 import CommonLoader from '#desktop/components/CommonLoader/CommonLoader.vue'
-import { useTicketHistoryQuery } from '#desktop/pages/ticket/graphql/queries/ticketHistory.api.ts'
 
 import HistoryEvent from './HistoryEvent.vue'
 import HistoryEventHeader from './HistoryEventHeader.vue'
 import HistoryEventIssuer from './HistoryEventIssuer.vue'
 
-interface Props {
-  ticket: TicketById
+import type { OperationVariables } from '@apollo/client/core'
+import type { UseQueryReturn } from '@vue/apollo-composable'
+
+interface HistoryQueryResult {
+  [key: string]: Array<HistoryGroup> | undefined
 }
 
-const { ticket } = defineProps<Props>()
+export interface Props {
+  name: string
+  query: () => UseQueryReturn<HistoryQueryResult, OperationVariables>
+  type: EnumObjectManagerObjects
+  title?: string
+}
 
-const ticketHistoryQuery = new QueryHandler(
-  useTicketHistoryQuery({
-    ticketId: ticket.id,
-  }),
+const props = defineProps<Props>()
+
+const historyQuery = new QueryHandler(props.query())
+const historyQueryResult = historyQuery.result()
+const historyQueryLoading = historyQuery.loading()
+
+const historyData = computed(() =>
+  historyQueryResult.value
+    ? (Object.values(historyQueryResult.value).flat() as HistoryGroup[])
+    : null,
 )
-const ticketHistoryQueryResult = ticketHistoryQuery.result()
-const ticketHistoryQueryLoading = ticketHistoryQuery.loading()
-
-const ticketHistory = computed(() => {
-  return ticketHistoryQueryResult.value?.ticketHistory
-})
 
 const isLoadingHistory = computed(() => {
   // Return already true when a history result already exists from the cache, also
   // when maybe a loading is in progress(because of cache + network).
-  if (ticketHistory.value !== undefined) return false
+  if (historyData.value !== undefined) return false
 
-  return ticketHistoryQueryLoading.value
+  return historyQueryLoading.value
 })
 
 const historyContainerElement = useTemplateRef('history-container')
 
 watch(
-  [historyContainerElement, ticketHistoryQueryLoading],
+  [historyContainerElement, historyQueryLoading],
   (newValue) => {
-    if (!newValue || !ticketHistoryQueryResult.value?.ticketHistory.length) {
-      return
-    }
+    if (!newValue) return
 
     nextTick(() => {
       historyContainerElement.value?.scrollIntoView({
@@ -61,26 +70,20 @@ watch(
   },
   { flush: 'post' },
 )
-
-watch(
-  () => ticket,
-  () => ticketHistoryQuery.refetch(),
-)
 </script>
 
 <template>
   <CommonFlyout
-    :header-title="__('Ticket History')"
+    :header-title="title ?? __('History')"
     header-icon="clock-history"
     size="large"
-    name="ticket-history"
-    no-close-on-action
+    :name="name"
     hide-footer
   >
     <CommonLoader :loading="isLoadingHistory" no-transition>
       <div ref="history-container">
         <div
-          v-for="(entry, idxAll) in ticketHistory"
+          v-for="(entry, idxAll) in historyData"
           :key="`${entry.createdAt}-${idxAll}`"
           class="my-3"
           :class="{

@@ -6,7 +6,7 @@ import type { HistoryRecordIssuer, User } from '#shared/graphql/types.ts'
 
 import UserPopoverWithTrigger from '#desktop/components/User/UserPopoverWithTrigger.vue'
 
-import { useHistoryEvents } from './composables/useHistoryEvents.ts'
+import { useHistoryEvents } from './useHistoryEvents.ts'
 
 interface Props {
   issuer: HistoryRecordIssuer
@@ -25,6 +25,7 @@ const { issuedBySystemService, issuedBySystemUser, getIssuerName } = useHistoryE
       name="play-circle"
       size="small"
     />
+
     <UserPopoverWithTrigger
       v-else-if="!issuedBySystemUser(issuer)"
       :avatar-config="{ noIndicator: true, size: 'xs' }"

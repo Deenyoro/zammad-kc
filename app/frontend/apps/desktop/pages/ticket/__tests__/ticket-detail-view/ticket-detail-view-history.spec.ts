@@ -74,12 +74,10 @@ describe('Ticket detail view - history', () => {
 
     await waitForNextTick()
 
-    expect(
-      await view.findByRole('heading', { name: 'Ticket History', level: 2 }),
-    ).toBeInTheDocument()
+    expect(await view.findByRole('heading', { name: 'History', level: 2 })).toBeInTheDocument()
 
     const flyout = view.getByRole('complementary', {
-      name: 'Ticket History',
+      name: 'History',
     })
 
     await waitFor(() => expect(within(flyout).getByText('Created')).toBeInTheDocument())

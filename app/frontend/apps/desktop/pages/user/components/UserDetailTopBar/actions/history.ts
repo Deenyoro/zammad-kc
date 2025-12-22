@@ -1,5 +1,12 @@
 // Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
+import type { User } from '#shared/graphql/types.ts'
+
+import {
+  openUserHistoryFlyout,
+  useUserHistory,
+} from '#desktop/entities/user/composables/useUserHistory.ts'
+
 import type { UserInfoActionPlugin } from './types.ts'
 
 export default <UserInfoActionPlugin>{
@@ -8,7 +15,6 @@ export default <UserInfoActionPlugin>{
   icon: 'clock-history',
   order: 300,
   permission: 'ticket.agent',
-  onClick: () => {
-    // :TODO
-  },
+  initialize: useUserHistory,
+  onClick: (user: User) => openUserHistoryFlyout(user.id),
 }

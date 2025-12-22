@@ -3,8 +3,8 @@
 <script setup lang="ts">
 import type { HistoryRecordEvent } from '#shared/graphql/types.ts'
 
-import { useHistoryEvents } from './composables/useHistoryEvents.ts'
 import HistoryEventDetails from './HistoryEventDetails/HistoryEventDetails.vue'
+import { useHistoryEvents } from './useHistoryEvents.ts'
 
 interface Props {
   event: HistoryRecordEvent

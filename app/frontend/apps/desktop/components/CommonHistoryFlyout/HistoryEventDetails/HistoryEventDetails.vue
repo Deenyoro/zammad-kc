@@ -27,7 +27,7 @@ const descriptionOutput = computed(() => {
 </script>
 
 <template>
-  <span>
+  <div>
     <CommonLabel class="text-gray-100 ltr:mr-1 rtl:ml-1 dark:text-neutral-400">
       {{ capitalize($t(event.actionName)) }}
     </CommonLabel>
@@ -38,7 +38,7 @@ const descriptionOutput = computed(() => {
 
     <CommonLabel
       v-if="event.details"
-      class="cursor-text rounded bg-neutral-200 px-0.5 font-mono text-black dark:bg-gray-400 dark:text-white"
+      class="cursor-text rounded bg-neutral-200 px-0.5 font-mono text-black max-w-md dark:bg-gray-400 break-word dark:text-white"
       :class="{
         'ltr:mr-1 rtl:ml-1': event.showSeparator || event.additionalDetails,
         'ltr:ml-1 rtl:mr-1': descriptionOutput,
@@ -57,8 +57,8 @@ const descriptionOutput = computed(() => {
 
     <CommonLabel
       v-if="event.additionalDetails"
-      class="cursor-text rounded bg-neutral-200 px-0.5 font-mono text-black dark:bg-gray-400 dark:text-white"
+      class="cursor-text rounded bg-neutral-200 px-0.5 font-mono text-black dark:bg-gray-400 break-word dark:text-white"
       >{{ event.additionalDetails }}</CommonLabel
     >
-  </span>
+  </div>
 </template>

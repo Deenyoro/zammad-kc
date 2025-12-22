@@ -3064,6 +3064,8 @@ export type Queries = {
   userCurrentTwoFactorGetMethodConfiguration?: Maybe<Scalars['JSON']['output']>;
   /** Fetch needed initial configuration data to initiate a authentication method configuration. */
   userCurrentTwoFactorInitiateMethodConfiguration: Scalars['JSON']['output'];
+  /** Fetch history of a user */
+  userHistory: Array<HistoryGroup>;
 };
 
 
@@ -3444,6 +3446,12 @@ export type QueriesUserCurrentTwoFactorGetMethodConfigurationArgs = {
 export type QueriesUserCurrentTwoFactorInitiateMethodConfigurationArgs = {
   methodName: EnumTwoFactorAuthenticationMethod;
   token: Scalars['String']['input'];
+};
+
+
+/** All available queries */
+export type QueriesUserHistoryArgs = {
+  userId: Scalars['ID']['input'];
 };
 
 /** Recently closed object */
@@ -6368,6 +6376,32 @@ export type UserSignupResendMutationVariables = Exact<{
 
 export type UserSignupResendMutation = { __typename?: 'Mutations', userSignupResend?: { __typename?: 'UserSignupResendPayload', success?: boolean | null, errors?: Array<{ __typename?: 'UserError', message: string, messagePlaceholder?: Array<string> | null, field?: string | null, exception?: EnumUserErrorException | null }> | null } | null };
 
+export type UserHistoryQueryVariables = Exact<{
+  userId: Scalars['ID']['input'];
+}>;
+
+
+export type UserHistoryQuery = { __typename?: 'Queries', userHistory: Array<{ __typename?: 'HistoryGroup', createdAt: string, records: Array<{ __typename?: 'HistoryRecord', issuer:
+        | { __typename?: 'AIAgent', id: string, name: string }
+        | { __typename?: 'Job', id: string, name: string }
+        | { __typename?: 'Macro', id: string, name: string }
+        | { __typename?: 'ObjectClass', klass?: string | null, info?: string | null }
+        | { __typename?: 'PostmasterFilter', id: string, name: string }
+        | { __typename?: 'Trigger', id: string, name: string }
+        | { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, phone?: string | null, email?: string | null, image?: string | null }
+      , events: Array<{ __typename?: 'HistoryRecordEvent', createdAt: string, action: string, attribute?: string | null, changes?: any | null, object:
+          | { __typename?: 'Checklist', id: string, name?: string | null }
+          | { __typename?: 'ChecklistItem', id: string, text: string, checked: boolean }
+          | { __typename?: 'Group', id: string, name?: string | null }
+          | { __typename?: 'Mention', id: string, user: { __typename?: 'User', id: string, fullname?: string | null } }
+          | { __typename?: 'ObjectClass', klass?: string | null, info?: string | null }
+          | { __typename?: 'Organization', id: string, name?: string | null }
+          | { __typename?: 'Ticket', id: string, internalId: number, number: string, title: string }
+          | { __typename?: 'TicketArticle', id: string, body: string }
+          | { __typename?: 'TicketSharedDraftZoom', id: string }
+          | { __typename?: 'User', id: string, fullname?: string | null }
+         }> }> }> };
+
 export type AdminPasswordAuthSendMutationVariables = Exact<{
   login: Scalars['String']['input'];
 }>;
@@ -7570,6 +7604,97 @@ export type UserQuery = { __typename?: 'Queries', user: { __typename?: 'User', h
 export type CurrentUserAttributesFragment = { __typename?: 'User', email?: string | null, id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, image?: string | null, outOfOffice?: boolean | null, outOfOfficeStartAt?: string | null, outOfOfficeEndAt?: string | null, preferences?: any | null, hasSecondaryOrganizations?: boolean | null, authorizations?: Array<{ __typename?: 'Authorization', id: string, provider: string, uid: string, username?: string | null }> | null, permissions?: { __typename?: 'UserPermission', names: Array<string> } | null, outOfOfficeReplacement?: { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, login?: string | null, phone?: string | null, email?: string | null } | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null, organization?: { __typename?: 'Organization', id: string, internalId: number, name?: string | null, active?: boolean | null, objectAttributeValues?: Array<{ __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null } | null, personalSettings?: { __typename?: 'UserPersonalSettings', notificationConfig?: { __typename?: 'UserPersonalSettingsNotificationConfig', groupIds?: Array<number> | null, matrix?: { __typename?: 'UserPersonalSettingsNotificationMatrix', create?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null, escalation?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null, reminderReached?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null, update?: { __typename?: 'UserPersonalSettingsNotificationMatrixRow', channel?: { __typename?: 'UserPersonalSettingsNotificationMatrixChannel', email?: boolean | null, online?: boolean | null } | null, criteria?: { __typename?: 'UserPersonalSettingsNotificationMatrixCriteria', no?: boolean | null, ownedByMe?: boolean | null, ownedByNobody?: boolean | null, subscribed?: boolean | null } | null } | null } | null } | null, notificationSound?: { __typename?: 'UserPersonalSettingsNotificationSound', enabled?: boolean | null, file?: EnumNotificationSoundFile | null } | null } | null };
 
 export type ErrorsFragment = { __typename?: 'UserError', message: string, messagePlaceholder?: Array<string> | null, field?: string | null, exception?: EnumUserErrorException | null };
+
+type HistoryIssuer_AiAgent_Fragment = { __typename?: 'AIAgent', id: string, name: string };
+
+type HistoryIssuer_Job_Fragment = { __typename?: 'Job', id: string, name: string };
+
+type HistoryIssuer_Macro_Fragment = { __typename?: 'Macro', id: string, name: string };
+
+type HistoryIssuer_ObjectClass_Fragment = { __typename?: 'ObjectClass', klass?: string | null, info?: string | null };
+
+type HistoryIssuer_PostmasterFilter_Fragment = { __typename?: 'PostmasterFilter', id: string, name: string };
+
+type HistoryIssuer_Trigger_Fragment = { __typename?: 'Trigger', id: string, name: string };
+
+type HistoryIssuer_User_Fragment = { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, phone?: string | null, email?: string | null, image?: string | null };
+
+export type HistoryIssuerFragment =
+  | HistoryIssuer_AiAgent_Fragment
+  | HistoryIssuer_Job_Fragment
+  | HistoryIssuer_Macro_Fragment
+  | HistoryIssuer_ObjectClass_Fragment
+  | HistoryIssuer_PostmasterFilter_Fragment
+  | HistoryIssuer_Trigger_Fragment
+  | HistoryIssuer_User_Fragment
+;
+
+type HistoryEventObject_Checklist_Fragment = { __typename?: 'Checklist', id: string, name?: string | null };
+
+type HistoryEventObject_ChecklistItem_Fragment = { __typename?: 'ChecklistItem', id: string, text: string, checked: boolean };
+
+type HistoryEventObject_Group_Fragment = { __typename?: 'Group', id: string, name?: string | null };
+
+type HistoryEventObject_Mention_Fragment = { __typename?: 'Mention', id: string, user: { __typename?: 'User', id: string, fullname?: string | null } };
+
+type HistoryEventObject_ObjectClass_Fragment = { __typename?: 'ObjectClass', klass?: string | null, info?: string | null };
+
+type HistoryEventObject_Organization_Fragment = { __typename?: 'Organization', id: string, name?: string | null };
+
+type HistoryEventObject_Ticket_Fragment = { __typename?: 'Ticket', id: string, internalId: number, number: string, title: string };
+
+type HistoryEventObject_TicketArticle_Fragment = { __typename?: 'TicketArticle', id: string, body: string };
+
+type HistoryEventObject_TicketSharedDraftZoom_Fragment = { __typename?: 'TicketSharedDraftZoom', id: string };
+
+type HistoryEventObject_User_Fragment = { __typename?: 'User', id: string, fullname?: string | null };
+
+export type HistoryEventObjectFragment =
+  | HistoryEventObject_Checklist_Fragment
+  | HistoryEventObject_ChecklistItem_Fragment
+  | HistoryEventObject_Group_Fragment
+  | HistoryEventObject_Mention_Fragment
+  | HistoryEventObject_ObjectClass_Fragment
+  | HistoryEventObject_Organization_Fragment
+  | HistoryEventObject_Ticket_Fragment
+  | HistoryEventObject_TicketArticle_Fragment
+  | HistoryEventObject_TicketSharedDraftZoom_Fragment
+  | HistoryEventObject_User_Fragment
+;
+
+export type HistoryEventFragment = { __typename?: 'HistoryRecordEvent', createdAt: string, action: string, attribute?: string | null, changes?: any | null, object:
+    | { __typename?: 'Checklist', id: string, name?: string | null }
+    | { __typename?: 'ChecklistItem', id: string, text: string, checked: boolean }
+    | { __typename?: 'Group', id: string, name?: string | null }
+    | { __typename?: 'Mention', id: string, user: { __typename?: 'User', id: string, fullname?: string | null } }
+    | { __typename?: 'ObjectClass', klass?: string | null, info?: string | null }
+    | { __typename?: 'Organization', id: string, name?: string | null }
+    | { __typename?: 'Ticket', id: string, internalId: number, number: string, title: string }
+    | { __typename?: 'TicketArticle', id: string, body: string }
+    | { __typename?: 'TicketSharedDraftZoom', id: string }
+    | { __typename?: 'User', id: string, fullname?: string | null }
+   };
+
+export type HistoryGroupFragment = { __typename?: 'HistoryGroup', createdAt: string, records: Array<{ __typename?: 'HistoryRecord', issuer:
+      | { __typename?: 'AIAgent', id: string, name: string }
+      | { __typename?: 'Job', id: string, name: string }
+      | { __typename?: 'Macro', id: string, name: string }
+      | { __typename?: 'ObjectClass', klass?: string | null, info?: string | null }
+      | { __typename?: 'PostmasterFilter', id: string, name: string }
+      | { __typename?: 'Trigger', id: string, name: string }
+      | { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, phone?: string | null, email?: string | null, image?: string | null }
+    , events: Array<{ __typename?: 'HistoryRecordEvent', createdAt: string, action: string, attribute?: string | null, changes?: any | null, object:
+        | { __typename?: 'Checklist', id: string, name?: string | null }
+        | { __typename?: 'ChecklistItem', id: string, text: string, checked: boolean }
+        | { __typename?: 'Group', id: string, name?: string | null }
+        | { __typename?: 'Mention', id: string, user: { __typename?: 'User', id: string, fullname?: string | null } }
+        | { __typename?: 'ObjectClass', klass?: string | null, info?: string | null }
+        | { __typename?: 'Organization', id: string, name?: string | null }
+        | { __typename?: 'Ticket', id: string, internalId: number, number: string, title: string }
+        | { __typename?: 'TicketArticle', id: string, body: string }
+        | { __typename?: 'TicketSharedDraftZoom', id: string }
+        | { __typename?: 'User', id: string, fullname?: string | null }
+       }> }> };
 
 export type ObjectAttributeValuesFragment = { __typename?: 'ObjectAttributeValue', value?: any | null, renderedLink?: string | null, attribute: { __typename?: 'ObjectManagerFrontendAttribute', name: string, display: string } };
 

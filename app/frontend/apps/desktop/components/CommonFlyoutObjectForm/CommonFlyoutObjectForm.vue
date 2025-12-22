@@ -30,15 +30,15 @@ import type { ActionFooterOptions } from '../CommonFlyout/types'
 
 export interface Props {
   name: string
-  object?: ObjectLike
-  title?: string
-  icon?: string
   type: EnumObjectManagerObjects
-  formUpdaterId?: EnumFormUpdaterId
-  formChangeFields?: Record<string, Partial<FormSchemaField>>
   errorNotificationMessage?: string
   mutation: OperationMutationFunction
   schema: FormSchemaNode[]
+  formChangeFields?: Record<string, Partial<FormSchemaField>>
+  formUpdaterId?: EnumFormUpdaterId
+  object?: ObjectLike
+  title?: string
+  icon?: string
   footerActionOptions?: ActionFooterOptions
 }
 

@@ -37,7 +37,7 @@ RSpec.describe 'Desktop > Ticket > Multitasking', app: :desktop_view, authentica
 
     wait_for_gql('apps/desktop/pages/ticket/graphql/queries/ticketHistory.graphql')
 
-    scroll_into_view(find('#flyout-ticket-history span span', text: 'Ticket Title'))
+    scroll_into_view(find('#flyout-ticket-history'))
 
     flyout = find('#flyout-ticket-history')
     preserved_scroll_offset = flyout.find('.h-full').evaluate_script('this.scrollTop')
@@ -51,6 +51,8 @@ RSpec.describe 'Desktop > Ticket > Multitasking', app: :desktop_view, authentica
     expect(page).to have_text('Ticket has been created successfully')
 
     click_on ticket.title
+
+    expect(page).to have_css('#flyout-ticket-history')
 
     flyout = find('#flyout-ticket-history')
     current_scroll_offset = flyout.find('.h-full').evaluate_script('this.scrollTop')
