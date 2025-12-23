@@ -959,6 +959,25 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
     ZammadChat.prototype.initialQueueDelay = 10000;
 
     ZammadChat.prototype.translations = {
+      'ca': {
+        '<strong>Chat</strong> with us!': '<strong>Xateu</strong> amb nosaltres!',
+        'All colleagues are busy.': 'Tot el personal està ocupat.',
+        'Chat closed by %s': 'Xat tancat per %s',
+        'Compose your message…': '',
+        'Connecting': 'Connectant',
+        'Connection lost': 'Connexió perduda',
+        'Connection re-established': 'Connexió restablerta',
+        'Offline': 'Fora de línia',
+        'Online': 'En línia',
+        'Scroll down to see new messages': 'Desplaçat més avall per veure nous missatges',
+        'Send': 'Envía',
+        'Since you didn\'t respond in the last %s minutes your conversation was closed.': 'Com que no heu respost en els darrers %s minuts, la vostra conversa s\'ha tancat.',
+        'Since you didn\'t respond in the last %s minutes your conversation with <strong>%s</strong> was closed.': 'Com que no heu respost en els darrers %s minuts, la vostra conversa amb <strong>%s</strong> s\'ha tancat.',
+        'Start new conversation': 'Inicia una conversa nova',
+        'Today': 'Avui',
+        'We are sorry, it is taking longer than expected to get a slot. Please try again later or send us an email. Thank you!': '"Ho sentim, està tardant més del que s\'esperava per aconseguir un espai. Si us plau, torna-ho a intentar més tard o envia\'ns un correu electrònic. Gràcies!',
+        'You are on waiting list position <strong>%s</strong>.': 'Estàs en la posició <strong>%s</strong> de la llista d\'espera.'
+      },
       'cs': {
         '<strong>Chat</strong> with us!': '<strong>Chatujte</strong> s námi!',
         'All colleagues are busy.': 'Všichni kolegové jsou vytíženi.',
@@ -2706,7 +2725,7 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
       last_level = 0;
       pnt = null;
       $('p', editor).each(function() {
-        var cur_level, i, j, list_tag, matches, ref, ref1, ref2, start, txt;
+        var cur_level, i, j, list_tag, matches, ref, ref1, start, txt;
         cur_level = $(this).data('_listLevel');
         if (cur_level !== void 0) {
           txt = $(this).text();
@@ -2715,9 +2734,7 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
             matches = /([0-9])\./.exec(txt);
             if (matches) {
               start = parseInt(matches[1], 10);
-              list_tag = (ref = start > 1) != null ? ref : '<ol start="' + start + {
-                '"></ol>': '<ol></ol>'
-              };
+              list_tag = start > 1 ? '<ol start="' + start + '"></ol>' : '<ol></ol>';
             } else {
               list_tag = '<ol></ol>';
             }
@@ -2731,7 +2748,7 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
             }
           }
           if (cur_level < last_level) {
-            for (i = j = ref1 = i, ref2 = last_level - cur_level; ref1 <= ref2 ? j <= ref2 : j >= ref2; i = ref1 <= ref2 ? ++j : --j) {
+            for (i = j = ref = i, ref1 = last_level - cur_level; ref <= ref1 ? j <= ref1 : j >= ref1; i = ref <= ref1 ? ++j : --j) {
               pnt = pnt.parent();
             }
           }

@@ -980,6 +980,25 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
     ZammadChat.prototype.initialQueueDelay = 10000;
 
     ZammadChat.prototype.translations = {
+      'ca': {
+        '<strong>Chat</strong> with us!': '<strong>Xateu</strong> amb nosaltres!',
+        'All colleagues are busy.': 'Tot el personal està ocupat.',
+        'Chat closed by %s': 'Xat tancat per %s',
+        'Compose your message…': '',
+        'Connecting': 'Connectant',
+        'Connection lost': 'Connexió perduda',
+        'Connection re-established': 'Connexió restablerta',
+        'Offline': 'Fora de línia',
+        'Online': 'En línia',
+        'Scroll down to see new messages': 'Desplaçat més avall per veure nous missatges',
+        'Send': 'Envía',
+        'Since you didn\'t respond in the last %s minutes your conversation was closed.': 'Com que no heu respost en els darrers %s minuts, la vostra conversa s\'ha tancat.',
+        'Since you didn\'t respond in the last %s minutes your conversation with <strong>%s</strong> was closed.': 'Com que no heu respost en els darrers %s minuts, la vostra conversa amb <strong>%s</strong> s\'ha tancat.',
+        'Start new conversation': 'Inicia una conversa nova',
+        'Today': 'Avui',
+        'We are sorry, it is taking longer than expected to get a slot. Please try again later or send us an email. Thank you!': '"Ho sentim, està tardant més del que s\'esperava per aconseguir un espai. Si us plau, torna-ho a intentar més tard o envia\'ns un correu electrònic. Gràcies!',
+        'You are on waiting list position <strong>%s</strong>.': 'Estàs en la posició <strong>%s</strong> de la llista d\'espera.'
+      },
       'cs': {
         '<strong>Chat</strong> with us!': '<strong>Chatujte</strong> s námi!',
         'All colleagues are busy.': 'Všichni kolegové jsou vytíženi.',
@@ -2691,7 +2710,7 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
     };
 
     ZammadChat.prototype.wordFilter = function(editor) {
-      var content, cur_level, el, i, j, k, l, last_level, len, len1, len2, len3, len4, len5, len6, len7, list_tag, m, matches, n, o, p, pnt, q, r, ref, ref1, ref10, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, s, start, str, txt;
+      var content, cur_level, el, i, j, k, l, last_level, len, len1, len2, len3, len4, len5, len6, len7, list_tag, m, matches, n, o, p, pnt, q, r, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, s, start, str, txt;
       content = editor.html();
       content = content.replace(/<!--[\s\S]+?-->/gi, '');
       content = content.replace(/<(!|script[^>]*>.*?<\/script(?=[>\s])|\/?(\?xml(:\w+)?|img|meta|link|style|\w:\w+)(?=[\s\/>]))[^>]*>/gi, '');
@@ -2720,9 +2739,7 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
             matches = /([0-9])\./.exec(txt);
             if (matches) {
               start = parseInt(matches[1], 10);
-              list_tag = (ref2 = start > 1) != null ? ref2 : '<ol start="' + start + {
-                '"></ol>': '<ol></ol>'
-              };
+              list_tag = start > 1 ? '<ol start="' + start + '"></ol>' : '<ol></ol>';
             } else {
               list_tag = '<ol></ol>';
             }
@@ -2737,7 +2754,7 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
             pnt.insertAdjacentHTML('beforeend', list_tag);
           }
           if (cur_level < last_level) {
-            for (i = l = ref3 = i, ref4 = last_level - cur_level; ref3 <= ref4 ? l <= ref4 : l >= ref4; i = ref3 <= ref4 ? ++l : --l) {
+            for (i = l = ref2 = i, ref3 = last_level - cur_level; ref2 <= ref3 ? l <= ref3 : l >= ref3; i = ref2 <= ref3 ? ++l : --l) {
               pnt = pnt.parentNode;
             }
           }
@@ -2751,34 +2768,34 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
           last_level = 0;
         }
       }
-      ref5 = editor.querySelectorAll('[style]');
-      for (m = 0, len2 = ref5.length; m < len2; m++) {
-        el = ref5[m];
+      ref4 = editor.querySelectorAll('[style]');
+      for (m = 0, len2 = ref4.length; m < len2; m++) {
+        el = ref4[m];
         el.removeAttribute('style');
       }
-      ref6 = editor.querySelectorAll('[align]');
-      for (n = 0, len3 = ref6.length; n < len3; n++) {
-        el = ref6[n];
+      ref5 = editor.querySelectorAll('[align]');
+      for (n = 0, len3 = ref5.length; n < len3; n++) {
+        el = ref5[n];
         el.removeAttribute('align');
       }
-      ref7 = editor.querySelectorAll('span');
-      for (o = 0, len4 = ref7.length; o < len4; o++) {
-        el = ref7[o];
+      ref6 = editor.querySelectorAll('span');
+      for (o = 0, len4 = ref6.length; o < len4; o++) {
+        el = ref6[o];
         el.outerHTML = el.innerHTML;
       }
-      ref8 = editor.querySelectorAll('span:empty');
-      for (q = 0, len5 = ref8.length; q < len5; q++) {
-        el = ref8[q];
+      ref7 = editor.querySelectorAll('span:empty');
+      for (q = 0, len5 = ref7.length; q < len5; q++) {
+        el = ref7[q];
         el.remove();
       }
-      ref9 = editor.querySelectorAll("[class^='Mso']");
-      for (r = 0, len6 = ref9.length; r < len6; r++) {
-        el = ref9[r];
+      ref8 = editor.querySelectorAll("[class^='Mso']");
+      for (r = 0, len6 = ref8.length; r < len6; r++) {
+        el = ref8[r];
         el.removeAttribute('class');
       }
-      ref10 = editor.querySelectorAll('p:empty');
-      for (s = 0, len7 = ref10.length; s < len7; s++) {
-        el = ref10[s];
+      ref9 = editor.querySelectorAll('p:empty');
+      for (s = 0, len7 = ref9.length; s < len7; s++) {
+        el = ref9[s];
         el.remove();
       }
       return editor;
