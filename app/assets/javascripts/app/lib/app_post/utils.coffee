@@ -66,7 +66,7 @@ class App.Utils
 
     ]
     'IMG': [
-      'width', 'height',
+      'width', 'height', 'max-width'
     ]
 
   @cssValuesBacklist:
@@ -1505,7 +1505,10 @@ class App.Utils
       App.Utils._htmlImage2DataUrlAsync(@,
         success: (img, data) ->
           element.attr('src', data)
-          element.css('max-width','100%')
+
+          unless element.css('max-width') isnt 'none'
+            element.css('max-width', '100%')
+
           params.success(element, data) if params.success
         fail: (img) ->
           element.remove()
