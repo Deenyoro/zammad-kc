@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class Service::AIAssistance::TextTools < Service::BaseWithCurrentUser
   attr_reader :input, :text_tool, :regeneration_of, :template_render_context

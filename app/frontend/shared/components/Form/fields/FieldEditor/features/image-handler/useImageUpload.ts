@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { useFileUploadProcessing } from '#shared/components/Form/composables/useFileUploadProcessing.ts'
 import { useFormUploadCacheAddMutation } from '#shared/components/Form/fields/FieldFile/graphql/mutations/uploadCache/add.api.ts'

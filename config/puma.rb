@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 # Support both ZAMMAD_WEB_CONCURRENCY (as recommended by the Zammad docker stack & documentation)
 #   and WEB_CONCURRENCY (Zammad and Rails default).

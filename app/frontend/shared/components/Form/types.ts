@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import type { Sizes } from '#shared/components/CommonIcon/types.ts'
 import type { EnumObjectManagerObjects, FormUpdaterQuery } from '#shared/graphql/types.ts'

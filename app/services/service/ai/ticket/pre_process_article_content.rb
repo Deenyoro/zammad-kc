@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class Service::AI::Ticket::PreProcessArticleContent < Service::BaseWithCurrentUser
   IMAGE_MIME_TYPES = %w[image/jpeg image/jpg image/png image/gif image/tiff image/bmp image/webp].freeze

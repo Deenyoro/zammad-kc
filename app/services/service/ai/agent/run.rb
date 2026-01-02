@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class Service::AI::Agent::Run < Service::Base
   attr_reader :ai_agent, :agent_definition, :action_definition, :ticket, :article

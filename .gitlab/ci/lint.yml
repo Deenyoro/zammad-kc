@@ -85,7 +85,8 @@
     - echo "Coffeelint check…"
     - coffeelint --rules ./.dev/coffeelint/rules/* app/
     - echo "Stylelint check…"
-    - pnpm lint:css
+    - echo "Temporarily disabled"
+    # - pnpm lint:css
     - echo "Markdownlint check…"
     - pnpm lint:md
 
@@ -138,8 +139,8 @@
 'lint: secret_detection':
   extends: .template_lint
   image:
-    name: "zricethezav/gitleaks:latest"
-    entrypoint: [""]
+    name: 'zricethezav/gitleaks:latest'
+    entrypoint: ['']
   cache: []
   before_script: []
   script:

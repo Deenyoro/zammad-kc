@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 # This service save a ticket with most of validations and all calbacks like triggers.
 # But it skips custom object attributes validations.

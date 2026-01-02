@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class Tag::Item < ApplicationModel
   validates :name, presence: true, format: { without: %r{,|\*}, message: __('Commas and stars are not allowed in name.') }

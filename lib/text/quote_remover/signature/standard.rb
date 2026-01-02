@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class Text::QuoteRemover::Signature::Standard < Text::QuoteRemover::Signature
   # Standard email signature delimiter: "-- " or "--" on its own line.

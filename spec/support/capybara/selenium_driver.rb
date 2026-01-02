@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 # This file registers the custom Zammad chrome and firefox drivers.
 # The options check if a SELENIUM_REMOTE_URL ENV is given and change the

@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class Service::Template::Interpolation::Interpolator::Webhook::Track::PreDefinedWebhook < Service::Template::Interpolation::Engine::Track
   WEBHOOK_PREDEFINED_CLASS_PREFIX = 'Webhook::PreDefined::'.freeze

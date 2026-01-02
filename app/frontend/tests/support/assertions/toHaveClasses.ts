@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 export default function toHaveClasses(this: any, received: unknown, classes: string[]) {
   if (!received || (!(received instanceof HTMLElement) && !(received instanceof SVGElement))) {
     return {

@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 module Supabase
   REQUIRED_ENV_VARS = %w[SUPABASE_HOSTNAME SUPABASE_ANON_API_KEY SUPABASE_USERNAME SUPABASE_PASSWORD].freeze

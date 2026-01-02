@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { Extension, Editor } from '@tiptap/core'
 import { effectScope, ref, type Ref, watch } from 'vue'

@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class Text::QuoteRemover::AttributionPattern::MsOriginalMessage < Text::QuoteRemover::AttributionPattern
   # "Original Message" and "Original Appointment" in common languages

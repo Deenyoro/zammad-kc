@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { initializeAiAssistantTextToolsLoadingBannerClasses } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/initializeAiAssistantTextToolsLoadingBannerClasses.ts'
 import { initializeAiAssistantTextToolsClasses } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/initializeAiAssistantTextToolsClasses.ts'

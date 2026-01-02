@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import type { TicketArticle, TicketById } from '#shared/entities/ticket/types.ts'
 import { getTicketView } from '#shared/entities/ticket/utils/getTicketView.ts'

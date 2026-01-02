@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class AI::Provider::ZammadAI < AI::Provider
   ZAMMAD_AI_API_BASE_URL = 'https://ai.zammad.com'.freeze

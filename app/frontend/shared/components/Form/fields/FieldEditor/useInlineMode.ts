@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { onClickOutside } from '@vueuse/core'
 import { computed, ref, watch, type Ref, type ShallowRef } from 'vue'

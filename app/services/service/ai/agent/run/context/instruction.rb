@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class Service::AI::Agent::Run::Context::Instruction
   attr_reader :instruction_object_attributes, :placeholder_object_attributes, :type_enrichment_data

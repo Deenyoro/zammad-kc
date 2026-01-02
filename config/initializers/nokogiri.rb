@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 # Nokogori has a default limit of 400 for the maximum tree depth.
 # Some emails have a very nested HTML structure that exceeds this limit.

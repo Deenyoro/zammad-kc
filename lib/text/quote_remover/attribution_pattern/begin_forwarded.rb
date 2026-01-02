@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class Text::QuoteRemover::AttributionPattern::BeginForwarded < Text::QuoteRemover::AttributionPattern
   # "Begin forwarded message" in common languages (Apple Mail style)

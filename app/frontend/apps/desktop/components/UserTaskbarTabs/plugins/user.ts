@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { UserTaskbarTabAttributesFragmentDoc } from '#shared/entities/user/graphql/fragments/userTaskbarTabAttributes.api.ts'
 import { EnumTaskbarEntity, type User as UserType } from '#shared/graphql/types.ts'
