@@ -11,7 +11,7 @@
     "lint:ts": "vue-tsc --noEmit",
     "lint:js": "pnpm lint:js:oxlint:cmd app/frontend/ .eslint-plugin-zammad/ && pnpm lint:js:eslint:cmd app/frontend/ .eslint-plugin-zammad/",
     "lint:js:fix": "pnpm lint:js:oxlint:cmd --fix app/frontend/ .eslint-plugin-zammad/ && pnpm lint:js:eslint:cmd --fix app/frontend/ .eslint-plugin-zammad/",
-    "lint:js:eslint:cmd": "eslint --cache --cache-location ./tmp/eslintcache.js --cache-strategy content",
+    "lint:js:eslint:cmd": "eslint --cache --cache-location ./tmp/cache/.eslintcache.js --cache-strategy content",
     "lint:js:oxlint:cmd": "oxlint --tsconfig tsconfig.json",
     "lint:css": "pnpm lint:css:cmd **/*.{scss,css,vue}",
     "lint:css:cmd": "stylelint",
