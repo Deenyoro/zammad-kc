@@ -86,10 +86,7 @@ describe('OrganizationPopover', () => {
 
     const avatarWrapper = wrapper.getByRole('link')
 
-    expect(avatarWrapper).toHaveAttribute(
-      'href',
-      `/organization/profile/${dummyOrganization.internalId}`,
-    )
+    expect(avatarWrapper).toHaveAttribute('href', `/organizations/${dummyOrganization.internalId}`)
   })
 
   it('disables link navigation when noLink is true', () => {

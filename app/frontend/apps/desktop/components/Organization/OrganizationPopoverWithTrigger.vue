@@ -56,13 +56,12 @@ const isAgent = computed(() => session.hasPermission('ticket.agent'))
     :no-hover-styling="noHoverStyling"
     :no-focus-styling="noFocusStyling"
     :z-index="zIndex"
-    :trigger-link="!noLink ? `/organization/profile/${organizationInternalId}` : undefined"
+    :trigger-link="!noLink ? `/organizations/${organizationInternalId}` : undefined"
     :trigger-link-active-class="
       !$slots?.default?.()
         ? 'outline-2! outline-offset-1! outline-blue-800! hover:outline-blue-800!'
         : ''
     "
-    trigger-link-class="inline-block"
     v-bind="{ ...popoverConfig, ...$attrs }"
   >
     <template #popover-content="{ popoverId, hasOpenedViaLongClick }">

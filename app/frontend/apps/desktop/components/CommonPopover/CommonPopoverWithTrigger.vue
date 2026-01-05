@@ -124,6 +124,7 @@ onUnmounted(() => {
     ref="popoverTarget"
     :role="triggerLink ? undefined : 'button'"
     :link="triggerLink ? triggerLink : undefined"
+    :disabled="(triggerLink && hasOpenedViaLongPress) || undefined"
     tabindex="0"
     :aria-controls="uniqueId"
     :aria-expanded="isOpen"

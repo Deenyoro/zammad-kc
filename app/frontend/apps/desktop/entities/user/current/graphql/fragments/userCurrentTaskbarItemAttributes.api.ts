@@ -31,6 +31,8 @@ export const UserCurrentTaskbarItemAttributesFragmentDoc = gql`
     ... on Organization {
       id
       internalId
+      name
+      active
     }
   }
   entityAccess

@@ -5,7 +5,9 @@ import { computed, type ComputedRef, type Ref } from 'vue'
 import { useEntity } from '#shared/entities/useEntity.ts'
 import type { User } from '#shared/graphql/types.ts'
 
-export const useUserEntity = (user: Ref<User | undefined> | ComputedRef<User | undefined>) => {
+export const useUserEntity = (
+  user: Ref<Partial<User> | undefined> | ComputedRef<Partial<User> | undefined>,
+) => {
   const entity = useEntity('User')
 
   const userDisplayName = computed(() => {

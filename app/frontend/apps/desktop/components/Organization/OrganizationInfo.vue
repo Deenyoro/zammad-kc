@@ -1,10 +1,12 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, toRef } from 'vue'
 
+import type { Sizes } from '#shared/components/CommonLabel/types.ts'
 import CommonOrganizationAvatar from '#shared/components/CommonOrganizationAvatar/CommonOrganizationAvatar.vue'
 import type { AvatarOrganization } from '#shared/components/CommonOrganizationAvatar/types.ts'
+import { useOrganizationEntity } from '#shared/entities/organization/composables/useOrganizationEntity.ts'
 import type { Organization } from '#shared/graphql/types.ts'
 
 interface Props {
@@ -12,6 +14,8 @@ interface Props {
   size?: 'small' | 'normal'
   dense?: boolean
   noLink?: boolean
+  titleSize?: Sizes
+  titleClass?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -22,17 +26,19 @@ const avatarComponent = computed(() => (props.noLink || props.dense ? 'div' : 'C
 const nameComponent = computed(() => (props.noLink && !props.dense ? 'div' : 'CommonLink'))
 
 const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
+
+const { organizationDisplayName } = useOrganizationEntity(toRef(props, 'organization'))
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
+  <div class="flex items-center w-full" :class="{ 'gap-2': !titleSize, 'gap-3': titleSize }">
     <component
       :is="avatarComponent"
       :class="{
         'hover:no-underline! hover:rounded-full hover:outline-1 hover:outline-blue-600 hover:dark:outline-blue-900 focus-visible:rounded-full!':
           !dense && !noLink,
       }"
-      :link="!dense && !noLink ? `/organization/profile/${organization.internalId}` : undefined"
+      :link="!dense && !noLink ? `/organizations/${organization.internalId}` : undefined"
     >
       <CommonOrganizationAvatar :entity="organization as AvatarOrganization" :size="size" />
     </component>
@@ -40,17 +46,20 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
       :is="nameComponent"
       v-if="dense"
       :class="{ group: !noLink }"
-      :link="dense && !noLink ? `/organization/profile/${organization.internalId}` : undefined"
+      :link="dense && !noLink ? `/organizations/${organization.internalId}` : undefined"
     >
       <CommonLabel
         :class="{
+          [`${titleClass}`]: titleClass,
           'text-blue-800! group-hover:text-blue-850! group-hover:dark:text-blue-600!': !noLink,
         }"
-        :size="labelSize"
+        :size="titleSize ? titleSize : labelSize"
       >
-        {{ organization.name }}
+        {{ organizationDisplayName }}
       </CommonLabel>
     </component>
-    <CommonLabel v-else :size="labelSize">{{ organization.name }}</CommonLabel>
+    <CommonLabel v-else :class="titleClass" :size="titleSize ? titleSize : labelSize">
+      {{ organizationDisplayName }}
+    </CommonLabel>
   </div>
 </template>

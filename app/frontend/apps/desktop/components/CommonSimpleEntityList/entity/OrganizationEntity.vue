@@ -50,7 +50,7 @@ defineProps<Props>()
   </OrganizationPopoverWithTrigger>
   <CommonLink
     v-else
-    :link="`/organization/profile/${entity.internalId}`"
+    :link="`/organizations/${entity.internalId}`"
     class="group flex items-center gap-2 hover:no-underline!"
   >
     <CommonOrganizationAvatar :entity="entity as AvatarOrganization" size="small" />

@@ -142,7 +142,7 @@ describe('TicketSidebarCustomerContent.vue', () => {
 
       expect(wrapper.getByRole('link', { name: 'Zammad Foundation' })).toHaveAttribute(
         'href',
-        '/organization/profile/1',
+        '/organizations/1',
       )
 
       expect(wrapper.getByText('Email')).toBeInTheDocument()
@@ -155,16 +155,16 @@ describe('TicketSidebarCustomerContent.vue', () => {
         await wrapper.findByRole('link', {
           name: 'Avatar (Zammad Org)Zammad Org',
         }),
-      ).toHaveAttribute('href', '/organization/profile/2')
+      ).toHaveAttribute('href', '/organizations/2')
 
       expect(wrapper.getByRole('link', { name: 'Avatar (Zammad Inc)Zammad Inc' })).toHaveAttribute(
         'href',
-        '/organization/profile/3',
+        '/organizations/3',
       )
 
       expect(wrapper.getByRole('link', { name: 'Avatar (Zammad Ltd)Zammad Ltd' })).toHaveAttribute(
         'href',
-        '/organization/profile/4',
+        '/organizations/4',
       )
 
       expect(wrapper.getByRole('button', { name: 'Show more' })).toBeInTheDocument()

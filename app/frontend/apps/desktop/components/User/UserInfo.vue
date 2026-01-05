@@ -1,13 +1,15 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, toRef } from 'vue'
 
 import type { Sizes } from '#shared/components/CommonLabel/types.ts'
 import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
 import type { AvatarUserLive } from '#shared/components/CommonUserAvatar/types.ts'
 import type { AvatarUser } from '#shared/components/CommonUserAvatar/types.ts'
-import type { User } from '#shared/graphql/types.ts'
+import { useOrganizationEntity } from '#shared/entities/organization/composables/useOrganizationEntity.ts'
+import { useUserEntity } from '#shared/entities/user/composables/useUserEntity.ts'
+import type { Organization, User } from '#shared/graphql/types.ts'
 import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 
 import OrganizationPopoverWithTrigger from '#desktop/components/Organization/OrganizationPopoverWithTrigger.vue'
@@ -31,6 +33,12 @@ const avatarComponent = computed(() => (props.noLink || props.dense ? 'div' : 'C
 const nameComponent = computed(() => (props.noLink && !props.dense ? 'div' : 'CommonLink'))
 
 const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
+
+const { userDisplayName } = useUserEntity(toRef(props, 'user'))
+
+const organization = computed(() => props.user.organization as Partial<Organization>)
+
+const { organizationDisplayName } = useOrganizationEntity(organization)
 </script>
 
 <template>
@@ -60,7 +68,7 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
           }"
           :size="titleSize ? titleSize : labelSize"
         >
-          {{ user.fullname }}
+          {{ userDisplayName }}
         </CommonLabel>
       </component>
       <CommonLabel
@@ -69,7 +77,7 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
         class="text-gray-300! dark:text-neutral-400!"
         :class="titleClass"
       >
-        {{ user.fullname }}
+        {{ userDisplayName }}
       </CommonLabel>
 
       <OrganizationPopoverWithTrigger
@@ -84,18 +92,18 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
           class="text-blue-800! hover:text-blue-850! hover:dark:text-blue-600!"
           :size="labelSize"
         >
-          {{ user.organization.name }}
+          {{ organizationDisplayName }}
         </CommonLabel>
       </OrganizationPopoverWithTrigger>
       <CommonLink
         v-else-if="!dense && user.organization"
-        :link="`/organization/profile/${user.organization?.internalId}`"
+        :link="`/organizations/${user.organization?.internalId}`"
       >
         <CommonLabel
           class="text-blue-800! hover:text-blue-850! hover:dark:text-blue-600!"
           :size="labelSize"
         >
-          {{ user.organization.name }}
+          {{ organizationDisplayName }}
         </CommonLabel>
       </CommonLink>
     </div>

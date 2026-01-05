@@ -54,7 +54,7 @@ const router = useRouter()
 const goToOrganizationProfile = () => {
   if (!organization.value) return
 
-  router.push(`/organization/profile/${organization.value.internalId}`)
+  router.push(`/organizations/${organization.value.internalId}`)
 }
 </script>
 
