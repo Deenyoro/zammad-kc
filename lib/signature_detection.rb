@@ -206,18 +206,18 @@ returns
     Ticket::Article.where(type_id: article_type.id)
                    .reorder(id: :desc)
                    .find_each(batch_size: 10) do |article|
-      user = User.lookup(id: article.created_by_id)
-      next if !user.preferences[:signature_detection]
+                     user = User.lookup(id: article.created_by_id)
+                     next if !user.preferences[:signature_detection]
 
-      signature_line = find_signature_line(
-        user.preferences[:signature_detection],
-        article.body,
-        article.content_type,
-      )
-      next if !signature_line
+                     signature_line = find_signature_line(
+                       user.preferences[:signature_detection],
+                       article.body,
+                       article.content_type,
+                     )
+                     next if !signature_line
 
-      article.preferences[:signature_detection] = signature_line
-      article.save if article.changed?
+                     article.preferences[:signature_detection] = signature_line
+                     article.save if article.changed?
     end
     true
   end
