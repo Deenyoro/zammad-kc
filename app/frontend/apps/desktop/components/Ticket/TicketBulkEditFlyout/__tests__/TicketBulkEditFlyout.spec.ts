@@ -72,7 +72,7 @@ describe('TicketBulkEditFlyout', () => {
   it('renders correctly', async () => {
     const wrapper = renderBulkEditFlyout()
 
-    expect(wrapper.getByRole('heading', { level: 2 })).toHaveTextContent('Tickets Bulk Edit')
+    expect(wrapper.getByRole('heading', { level: 2 })).toHaveTextContent('Tickets bulk edit')
 
     expect(wrapper.getByIconName('collection-play')).toBeInTheDocument()
 

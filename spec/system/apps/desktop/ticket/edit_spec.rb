@@ -129,15 +129,15 @@ RSpec.describe 'Desktop > Ticket > Edit', app: :desktop_view, authenticated_as: 
       #       expect(page).to have_no_css('label', text: 'Select field')
       #
       #       within '#user-taskbar-tabs' do
-      #         expect(page).to have_text("Test initial changed\nReceived Call")
+      #         expect(page).to have_text("Test initial changed\nReceived call")
       #
       #         o1 = find('li.draggable', text: 'Test initial changed')
-      #         o2 = find('li.draggable', text: 'Received Call')
+      #         o2 = find('li.draggable', text: 'Received call')
       #         o1.drag_to(o2)
       #
       #         wait_for_gql('apps/desktop/entities/user/current/graphql/mutations/userCurrentTaskbarItemListPrio.graphql')
       #
-      #         expect(page).to have_text("Received Call\nTest initial changed")
+      #         expect(page).to have_text("Received call\nTest initial changed")
       #       end
 
       #       logout
@@ -145,7 +145,7 @@ RSpec.describe 'Desktop > Ticket > Edit', app: :desktop_view, authenticated_as: 
       #       login(username: agent.login, password: 'test')
 
       #       within '#user-taskbar-tabs' do
-      #         expect(page).to have_text("Received Call\nTest initial changed")
+      #         expect(page).to have_text("Received call\nTest initial changed")
       #       end
     end
   end

@@ -183,7 +183,7 @@ describe('visuals for common dialog', () => {
     expect(wrapper.getByTestId('select')).toHaveFocus()
 
     await wrapper.events.keyboard('{Tab}')
-    expect(wrapper.getByRole('button', { name: 'Cancel & Go Back' })).toHaveFocus()
+    expect(wrapper.getByRole('button', { name: 'Cancel & go back' })).toHaveFocus()
 
     await wrapper.events.keyboard('{Tab}')
     expect(wrapper.getByRole('button', { name: 'OK' })).toHaveFocus()

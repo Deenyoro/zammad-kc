@@ -17,7 +17,7 @@ describe('TicketBulkEditButton', () => {
       },
     })
 
-    expect(wrapper.queryByRole('button', { name: 'Bulk Actions' })).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button', { name: 'Bulk actions' })).not.toBeInTheDocument()
 
     const checkedTicketIds = new Set([convertToGraphQLId('Ticket', 2)])
 
@@ -25,7 +25,7 @@ describe('TicketBulkEditButton', () => {
       checkedTicketIds,
     })
 
-    expect(wrapper.getByRole('button', { name: 'Bulk Actions' })).toHaveTextContent('Bulk Actions')
+    expect(wrapper.getByRole('button', { name: 'Bulk actions' })).toHaveTextContent('Bulk actions')
     expect(wrapper.getByIconName('collection-play')).toBeInTheDocument()
   })
 

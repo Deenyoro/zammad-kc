@@ -41,14 +41,14 @@ const { betaUiSwitchEnabled, toggleBetaUiSwitch, dismissBetaUiSwitch } = useNewB
           @input-raw="toggleBetaUiSwitch()"
         />
         <!-- <CommonLink class="truncate text-white hover:text-white!" link="#" size="small">
-          {{ $t('Send Feedback') }}
+          {{ $t('Send feedback') }}
         </CommonLink> -->
         <CommonIcon
           class="absolute end-3 text-white"
           name="x"
           :fixed-size="{ width: 16, height: 16 }"
           role="button"
-          :aria-label="$t('Hide Beta UI switch')"
+          :aria-label="$t('Hide BETA UI switch')"
           @click="dismissBetaUiSwitch"
         />
       </div>

@@ -160,12 +160,12 @@ describe('UserTaskbarTabs.vue', () => {
     const tab = wrapper.getByRole('listitem')
 
     expect(getByIconName(tab, 'pencil')).toBeInTheDocument()
-    expect(tab).toHaveTextContent('Received Call: Test title')
+    expect(tab).toHaveTextContent('Received call: Test title')
 
     const link = getByRole(tab, 'link')
 
     expect(link).toHaveAttribute('href', '/desktop/tickets/create/999')
-    expect(link).toHaveAccessibleName('Received Call: Test title')
+    expect(link).toHaveAccessibleName('Received call: Test title')
 
     expect(getByRole(tab, 'button', { name: 'Close this tab' })).toBeInTheDocument()
   })

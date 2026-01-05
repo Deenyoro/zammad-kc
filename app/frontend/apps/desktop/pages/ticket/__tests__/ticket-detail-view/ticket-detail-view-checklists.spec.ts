@@ -356,12 +356,12 @@ describe('Ticket detail view', () => {
       await waitForTicketUpdateMutationCalls()
 
       let dialog = await view.findByRole('dialog', {
-        name: 'Incomplete Ticket Checklist',
+        name: 'Incomplete ticket checklist',
       })
 
       expect(
         within(dialog).getByRole('heading', {
-          name: 'Incomplete Ticket Checklist',
+          name: 'Incomplete ticket checklist',
           level: 3,
         }),
       ).toBeInTheDocument()
@@ -387,7 +387,7 @@ describe('Ticket detail view', () => {
       ).toBeInTheDocument()
 
       expect(
-        view.queryByRole('dialog', { name: 'Incomplete Ticket Checklist' }),
+        view.queryByRole('dialog', { name: 'Incomplete ticket checklist' }),
       ).not.toBeInTheDocument()
 
       const contentSidebar = view.getByRole('complementary', { name: 'Content sidebar' })
@@ -409,7 +409,7 @@ describe('Ticket detail view', () => {
       await view.events.click(view.getByRole('button', { name: 'Update' }))
 
       dialog = await view.findByRole('dialog', {
-        name: 'Incomplete Ticket Checklist',
+        name: 'Incomplete ticket checklist',
       })
 
       mockTicketUpdateMutation({
@@ -429,7 +429,7 @@ describe('Ticket detail view', () => {
 
       expect(
         view.queryByRole('dialog', {
-          name: 'Incomplete Ticket Checklist',
+          name: 'Incomplete ticket checklist',
         }),
       ).not.toBeInTheDocument()
 
@@ -458,7 +458,7 @@ describe('Ticket detail view', () => {
 
     expect(view.getByRole('heading', { name: 'Ticket', level: 2 })).toBeInTheDocument()
 
-    await view.events.click(view.getByRole('button', { name: 'Open Checklist' }))
+    await view.events.click(view.getByRole('button', { name: 'Open checklist' }))
 
     expect(await view.findByRole('heading', { name: 'Checklist', level: 2 })).toBeInTheDocument()
   })

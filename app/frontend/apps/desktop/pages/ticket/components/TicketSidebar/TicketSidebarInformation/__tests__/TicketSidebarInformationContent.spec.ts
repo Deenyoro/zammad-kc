@@ -166,7 +166,7 @@ describe('TicketSidebarInformationContent', () => {
       })
 
       expect(
-        wrapper.queryByRole('heading', { name: 'Accounted Time', level: 3 }),
+        wrapper.queryByRole('heading', { name: 'Accounted time', level: 3 }),
       ).not.toBeInTheDocument()
     })
 
@@ -185,7 +185,7 @@ describe('TicketSidebarInformationContent', () => {
         ],
       })
 
-      expect(wrapper.getByRole('heading', { name: 'Accounted Time', level: 3 })).toBeInTheDocument()
+      expect(wrapper.getByRole('heading', { name: 'Accounted time', level: 3 })).toBeInTheDocument()
     })
 
     it('hides tags, links, accounted time if user has readonly permission and no entries are present', () => {
@@ -211,7 +211,7 @@ describe('TicketSidebarInformationContent', () => {
       expect(wrapper.queryByRole('heading', { name: 'Links', level: 3 })).not.toBeInTheDocument()
 
       expect(
-        wrapper.queryByRole('heading', { name: 'Accounted Time', level: 3 }),
+        wrapper.queryByRole('heading', { name: 'Accounted time', level: 3 }),
       ).not.toBeInTheDocument()
     })
   })

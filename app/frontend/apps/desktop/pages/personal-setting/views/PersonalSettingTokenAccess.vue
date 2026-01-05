@@ -48,7 +48,7 @@ defineOptions({
   },
 })
 
-const { breadcrumbItems } = useBreadcrumb(__('Token Access'))
+const { breadcrumbItems } = useBreadcrumb(__('Token access'))
 
 const newAccessTokenFlyout = useFlyout({
   name: 'new-access-token',
@@ -99,7 +99,7 @@ const tableHeaders: TableSimpleHeader[] = [
   },
   {
     key: 'lastUsedAt',
-    label: __('Last Used'),
+    label: __('Last used'),
     type: 'timestamp',
   },
 ]
@@ -187,7 +187,7 @@ const helpText = computed(() => [
           size="medium"
           @click="newAccessTokenFlyout.open()"
         >
-          {{ $t('New Personal Access Token') }}
+          {{ $t('New personal access token') }}
         </CommonButton>
       </div>
     </template>
@@ -198,7 +198,7 @@ const helpText = computed(() => [
           :headers="tableHeaders"
           :items="currentAccessTokens"
           :actions="tableActions"
-          :caption="$t('Personal Access Tokens')"
+          :caption="$t('Personal access tokens')"
           class="min-w-150"
         >
           <template #item-suffix-name="{ item }">

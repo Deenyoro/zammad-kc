@@ -5,7 +5,7 @@ import { useCheckTokenAccess } from '../../../composables/permission/useCheckTok
 import type { PersonalSettingPlugin } from './types.ts'
 
 export default <PersonalSettingPlugin>{
-  label: __('Token Access'),
+  label: __('Token access'),
   category: {
     label: __('Security'),
     id: 'category-security',
@@ -18,7 +18,7 @@ export default <PersonalSettingPlugin>{
     component: () => import('../../PersonalSettingTokenAccess.vue'),
     level: 2,
     meta: {
-      title: __('Token Access'),
+      title: __('Token access'),
       requiresAuth: true,
       requiredPermission: 'user_preferences.access_token',
     },

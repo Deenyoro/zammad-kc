@@ -174,7 +174,7 @@ RSpec.describe 'Mobile > Ticket > Article > Create', app: :mobile, authenticated
           find('[data-name="article-context"]').click
         end
 
-        click_on 'Delete Article'
+        click_on 'Delete article'
         click_on 'OK'
 
         wait_for_subscription_update('ticketArticleUpdates', number: number)
@@ -263,7 +263,7 @@ RSpec.describe 'Mobile > Ticket > Article > Create', app: :mobile, authenticated
     end
 
     context 'when creating sms article' do
-      include_examples 'mobile app: create article', 'Sms', conditional: true do
+      include_examples 'mobile app: create article', 'SMS', conditional: true do
         let(:article) do
           create(
             :ticket_article,

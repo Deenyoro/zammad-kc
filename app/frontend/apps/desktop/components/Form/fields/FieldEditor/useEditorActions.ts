@@ -65,7 +65,7 @@ export default function useEditorActions(
       id: getUuid(),
       name: AiAssistanceTextToolsName,
       contentType: ['text/html', 'text/plain'],
-      label: __('Writing Assistant Tools'),
+      label: __('Writing assistant tools'),
       showDivider: true,
       dividerClass:
         'bg-linear-to-t from-pink-200 to-blue-800 [button[aria-expanded=true]+&]:animate-ai-stripe-vertical [button:hover+&]:animate-ai-stripe-vertical [button:focus-visible+&]:animate-ai-stripe-vertical',
@@ -87,7 +87,7 @@ export default function useEditorActions(
       id: getUuid(),
       name: KnowledgeBaseMentionName,
       contentType: ['text/html', 'text/plain'],
-      label: __('Insert text from Knowledge Base article'),
+      label: __('Insert text from knowledge base answer'),
       icon: 'editor-mention-knowledge-base',
       command: focused((c) => c.openKnowledgeBaseMention()),
       permission: 'ticket.agent',

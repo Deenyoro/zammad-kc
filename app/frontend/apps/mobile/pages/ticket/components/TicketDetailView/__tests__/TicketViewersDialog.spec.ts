@@ -71,7 +71,7 @@ describe('displaying ticket viewer dialog', () => {
         'Currently processing this ticket…',
       )
 
-      expect(view.getByLabelText('AI Agent')).toBeInTheDocument()
+      expect(view.getByLabelText('AI agent')).toBeInTheDocument()
     })
   })
 })

@@ -67,7 +67,7 @@ const pageError = computed(() => {
     case EnumTaskbarEntityAccess.NotFound:
       return {
         statusCode: ErrorStatusCodes.NotFound,
-        title: __('Not Found'),
+        title: __('Not found'),
         message:
           (currentRouteMeta.messageNotFound as string) ??
           __('Object with specified ID was not found. Try checking the URL for errors.'),

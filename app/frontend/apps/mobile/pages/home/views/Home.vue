@@ -19,7 +19,7 @@ const menu: MenuItem[] = [
   {
     type: 'link',
     link: '/tickets/view',
-    label: __('Ticket Overviews'),
+    label: __('Ticket overviews'),
     icon: { name: 'all-tickets', size: 'base' },
     iconBg: 'bg-pink',
     permission: ['ticket.agent', 'ticket.customer'],
@@ -67,7 +67,7 @@ const ticketOverview = computed<MenuItem[]>(() => {
     <CommonSectionMenu
       v-if="session.hasPermission(['ticket.agent', 'ticket.customer'])"
       :items="ticketOverview"
-      :header-label="__('Ticket Overview')"
+      :header-label="__('Ticket overview')"
       :action-label="__('Edit')"
       action-link="/favorite/ticket-overviews/edit"
     >

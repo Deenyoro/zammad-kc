@@ -14,7 +14,7 @@ const props = defineProps<UserTaskbarTabEntityProps<UserTaskbarItemEntitySearch>
 const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTab(toRef(props, 'taskbarTab'))
 
 const currentTitle = computed(
-  () => props.context?.query || props.taskbarTab.entity?.query || __('Extended Search'),
+  () => props.context?.query || props.taskbarTab.entity?.query || __('Extended search'),
 )
 </script>
 

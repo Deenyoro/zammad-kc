@@ -7,7 +7,7 @@ import type { ActionFooterProps } from './types.ts'
 
 withDefaults(defineProps<ActionFooterProps>(), {
   actionLabel: __('Update'),
-  cancelLabel: __('Cancel & Go Back'),
+  cancelLabel: __('Cancel & go back'),
 })
 
 const emit = defineEmits<{

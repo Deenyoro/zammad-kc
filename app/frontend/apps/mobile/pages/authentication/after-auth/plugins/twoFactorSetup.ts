@@ -9,5 +9,5 @@ import type { AfterAuthPlugin } from '../types.ts'
 export default {
   name: EnumAfterAuthType.TwoFactorConfiguration,
   component: TwoFactorConfiguration,
-  title: __('Two-Factor Authentication Configuration Is Required'),
+  title: __('Two-factor authentication configuration is required'),
 } satisfies AfterAuthPlugin

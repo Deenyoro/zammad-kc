@@ -163,9 +163,9 @@ describe('avatar personal settings', () => {
 
     await waitForNextTick()
 
-    expect(await view.findByRole('dialog', { name: 'Delete Object' })).toBeInTheDocument()
+    expect(await view.findByRole('dialog', { name: 'Delete object' })).toBeInTheDocument()
 
-    await view.events.click(view.getByRole('button', { name: 'Delete Object' }))
+    await view.events.click(view.getByRole('button', { name: 'Delete object' }))
 
     const calls = await waitForUserCurrentAvatarDeleteMutationCalls()
     expect(calls).toHaveLength(1)
@@ -206,7 +206,7 @@ describe('avatar personal settings', () => {
     await waitForNextTick()
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Crop Image',
+      name: 'Crop image',
     })
     expect(flyout).toBeInTheDocument()
 
@@ -306,7 +306,7 @@ describe('avatar personal settings', () => {
       ).toBeInTheDocument()
 
       const captureButton = view.getByRole('button', {
-        name: 'Capture From Camera',
+        name: 'Capture from camera',
       })
 
       await view.events.click(captureButton)

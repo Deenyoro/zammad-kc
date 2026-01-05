@@ -211,10 +211,10 @@ const onResetToDefaultSettings = async () => {
               :disabled="loading"
               @click="onResetToDefaultSettings"
             >
-              {{ $t('Reset to Default Settings') }}
+              {{ $t('Reset to default settings') }}
             </CommonButton>
             <CommonButton size="medium" type="submit" variant="submit" :disabled="loading">
-              {{ $t('Save Notifications') }}
+              {{ $t('Save notifications') }}
             </CommonButton>
           </div>
         </template>

@@ -7,7 +7,7 @@ import TicketSidebarSharedDraftStart from '../TicketSidebarSharedDraftStart/Tick
 import type { TicketSidebarPlugin } from './types.ts'
 
 export default <TicketSidebarPlugin>{
-  title: __('Shared Drafts'),
+  title: __('Shared drafts'),
   component: TicketSidebarSharedDraftStart,
   permissions: ['ticket.agent'],
   screens: [TicketSidebarScreenType.TicketCreate],

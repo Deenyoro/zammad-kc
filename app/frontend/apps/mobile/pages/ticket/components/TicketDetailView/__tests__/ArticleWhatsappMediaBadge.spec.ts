@@ -21,7 +21,7 @@ describe('rendering media error badge for Whatsapp', () => {
     })
 
     expect(view.getByIconName('update')).toBeInTheDocument()
-    expect(view.getByText('Media Download Error')).toBeInTheDocument()
+    expect(view.getByText('Media download error')).toBeInTheDocument()
 
     await view.events.click(view.getByRole('button'))
 

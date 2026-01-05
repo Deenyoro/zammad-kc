@@ -45,7 +45,7 @@ RSpec.describe 'Desktop > Ticket > Shared Drafts', app: :desktop_view, authentic
 
       # Create an internal note for agent2
       click_on('Discard your unsaved changes')
-      click_on('Discard Changes')
+      click_on('Discard changes')
 
       within_form(form_updater_gql_number: 3) do
         click_on('Add internal note')
@@ -87,9 +87,9 @@ RSpec.describe 'Desktop > Ticket > Shared Drafts', app: :desktop_view, authentic
           find_editor('Text').type('force overwrite dialog')
         end
 
-        click_on('Draft Available')
+        click_on('Draft available')
         click_on('Apply')
-        click_on('Overwrite Content')
+        click_on('Overwrite content')
 
         within_form(form_updater_gql_number: 4) do
           find_editor('Text').clear.type('article text content - now with modification')
@@ -97,7 +97,7 @@ RSpec.describe 'Desktop > Ticket > Shared Drafts', app: :desktop_view, authentic
 
         click_on('Additional ticket edit actions')
         click_on('Save as draft')
-        click_on('Overwrite Draft')
+        click_on('Overwrite draft')
 
         wait_for_gql('shared/entities/ticket-shared-draft-zoom/graphql/mutations/ticketSharedDraftZoomUpdate.graphql')
 
@@ -105,7 +105,7 @@ RSpec.describe 'Desktop > Ticket > Shared Drafts', app: :desktop_view, authentic
 
         # Create an internal note for agent1
         click_on('Discard your unsaved changes')
-        click_on('Discard Changes')
+        click_on('Discard changes')
         click_on('Add internal note')
 
         within_form(form_updater_gql_number: 8) do
@@ -137,9 +137,9 @@ RSpec.describe 'Desktop > Ticket > Shared Drafts', app: :desktop_view, authentic
         find_editor('Text').type('force overwrite dialog')
       end
 
-      click_on('Draft Available')
+      click_on('Draft available')
       click_on('Apply')
-      click_on('Overwrite Content')
+      click_on('Overwrite content')
 
       wait_for_form_updater(4)
 
@@ -147,7 +147,7 @@ RSpec.describe 'Desktop > Ticket > Shared Drafts', app: :desktop_view, authentic
 
       wait_for_gql('shared/entities/ticket/graphql/mutations/update.graphql')
 
-      expect(page).to have_no_text('Draft Available')
+      expect(page).to have_no_text('Draft available')
 
       expect(ticket.articles.count).to eq(4)
       expect(ticket.articles.last.body).to include('article text content - now with modification')

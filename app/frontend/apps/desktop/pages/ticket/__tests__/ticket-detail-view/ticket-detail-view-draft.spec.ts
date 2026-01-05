@@ -166,7 +166,7 @@ describe('Ticket detail view - draft handling', () => {
       const view = await visitView('/tickets/1')
 
       const bottomButton = await view.findByRole('button', {
-        name: 'Draft Available',
+        name: 'Draft available',
       })
 
       await view.events.click(bottomButton)

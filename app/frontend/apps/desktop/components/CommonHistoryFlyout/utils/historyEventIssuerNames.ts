@@ -2,8 +2,8 @@
 
 export const historyEventIssuerNames: Record<string, string> = {
   Job: __('Scheduler'),
-  PostmasterFilter: __('Postmaster Filter'),
+  PostmasterFilter: __('Postmaster filter'),
   Trigger: __('Trigger'),
-  AIAgent: __('AI Agent'),
+  AIAgent: __('AI agent'),
   Macro: __('Macro'),
 }

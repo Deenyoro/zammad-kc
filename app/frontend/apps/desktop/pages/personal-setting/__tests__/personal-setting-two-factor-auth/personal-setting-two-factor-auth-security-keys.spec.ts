@@ -42,7 +42,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await view.events.click(actionMenuButton)
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Set Up Two-factor Authentication: Confirm Password',
+      name: 'Set up two-factor authentication: Confirm password',
     })
 
     const flyoutContent = within(flyout)
@@ -68,14 +68,14 @@ describe('Two-factor Authentication - Security Keys', () => {
     await waitForUserCurrentTwoFactorGetMethodConfigurationQueryCalls()
 
     await waitFor(() =>
-      expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Security Keys'),
+      expect(flyout).toHaveAccessibleName('Set up two-factor authentication: Security keys'),
     )
 
     expect(flyout).toHaveTextContent(
       'Security keys are hardware or software credentials that can be used as your two-factor authentication method.To register a new security key with your account, press the button below.',
     )
 
-    await view.events.click(view.getByRole('button', { name: 'Set Up' }))
+    await view.events.click(view.getByRole('button', { name: 'Set up' }))
 
     const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
@@ -84,7 +84,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await view.events.click(view.getByRole('button', { name: 'Next' }))
 
     await waitFor(() =>
-      expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes'),
+      expect(flyout).toHaveAccessibleName('Set up two-factor authentication: Save codes'),
     )
   })
 
@@ -116,7 +116,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await view.events.click(actionMenuItem)
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Set Up Two-factor Authentication: Confirm Password',
+      name: 'Set up two-factor authentication: Confirm password',
     })
 
     const flyoutContent = within(flyout)
@@ -179,7 +179,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await view.events.click(actionMenuButton)
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Set Up Two-factor Authentication: Confirm Password',
+      name: 'Set up two-factor authentication: Confirm password',
     })
 
     const flyoutContent = within(flyout)
@@ -202,7 +202,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await waitForUserCurrentPasswordCheckMutationCalls()
     await waitForUserCurrentTwoFactorGetMethodConfigurationQueryCalls()
 
-    await view.events.click(view.getByRole('button', { name: 'Set Up' }))
+    await view.events.click(view.getByRole('button', { name: 'Set up' }))
 
     const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
@@ -211,7 +211,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await view.events.type(nicknameInput, 'My key{Enter}')
 
     await waitFor(() =>
-      expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes'),
+      expect(flyout).toHaveAccessibleName('Set up two-factor authentication: Save codes'),
     )
   })
 
@@ -225,7 +225,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await view.events.click(actionMenuButton)
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Set Up Two-factor Authentication: Confirm Password',
+      name: 'Set up two-factor authentication: Confirm password',
     })
 
     const flyoutContent = within(flyout)
@@ -248,7 +248,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await waitForUserCurrentPasswordCheckMutationCalls()
     await waitForUserCurrentTwoFactorGetMethodConfigurationQueryCalls()
 
-    await view.events.click(view.getByRole('button', { name: 'Set Up' }))
+    await view.events.click(view.getByRole('button', { name: 'Set up' }))
 
     const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
@@ -267,7 +267,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await view.events.click(actionMenuButton)
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Set Up Two-factor Authentication: Confirm Password',
+      name: 'Set up two-factor authentication: Confirm password',
     })
 
     const flyoutContent = within(flyout)
@@ -290,7 +290,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await waitForUserCurrentPasswordCheckMutationCalls()
     await waitForUserCurrentTwoFactorGetMethodConfigurationQueryCalls()
 
-    await view.events.click(view.getByRole('button', { name: 'Set Up' }))
+    await view.events.click(view.getByRole('button', { name: 'Set up' }))
 
     const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
@@ -318,7 +318,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await view.events.click(view.getByRole('button', { name: 'Retry' }))
 
     waitFor(() =>
-      expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes'),
+      expect(flyout).toHaveAccessibleName('Set up two-factor authentication: Save codes'),
     )
   })
 
@@ -332,7 +332,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await view.events.click(actionMenuButton)
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Set Up Two-factor Authentication: Confirm Password',
+      name: 'Set up two-factor authentication: Confirm password',
     })
 
     const flyoutContent = within(flyout)
@@ -357,7 +357,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await waitForUserCurrentPasswordCheckMutationCalls()
     await waitForUserCurrentTwoFactorGetMethodConfigurationQueryCalls()
 
-    await view.events.click(view.getByRole('button', { name: 'Set Up' }))
+    await view.events.click(view.getByRole('button', { name: 'Set up' }))
 
     const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
@@ -389,7 +389,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await view.events.click(view.getByRole('button', { name: 'Retry' }))
 
     await waitFor(() =>
-      expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes'),
+      expect(flyout).toHaveAccessibleName('Set up two-factor authentication: Save codes'),
     )
   })
 
@@ -403,7 +403,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await view.events.click(actionMenuButton)
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Set Up Two-factor Authentication: Confirm Password',
+      name: 'Set up two-factor authentication: Confirm password',
     })
 
     const flyoutContent = within(flyout)
@@ -426,7 +426,7 @@ describe('Two-factor Authentication - Security Keys', () => {
     await waitForUserCurrentPasswordCheckMutationCalls()
     await waitForUserCurrentTwoFactorGetMethodConfigurationQueryCalls()
 
-    await view.events.click(view.getByRole('button', { name: 'Set Up' }))
+    await view.events.click(view.getByRole('button', { name: 'Set up' }))
 
     const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 

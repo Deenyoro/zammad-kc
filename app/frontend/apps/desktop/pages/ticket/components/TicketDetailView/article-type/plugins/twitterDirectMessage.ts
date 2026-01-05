@@ -4,6 +4,6 @@ import type { ChannelModule } from '#desktop/pages/ticket/components/TicketDetai
 
 export default <ChannelModule>{
   name: 'twitter direct message',
-  label: __('Twitter Direct Message'),
+  label: __('Twitter direct message'),
   icon: 'twitter',
 }

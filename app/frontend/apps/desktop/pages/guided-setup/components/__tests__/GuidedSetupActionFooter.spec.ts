@@ -112,7 +112,7 @@ describe('GuidedSetupActionFooter.vue', () => {
       ...wrapperParameters,
     })
 
-    const goBackButton = view.getByRole('button', { name: 'Go Back' })
+    const goBackButton = view.getByRole('button', { name: 'Go back' })
 
     expect(goBackButton).toBeInTheDocument()
   })
@@ -127,7 +127,7 @@ describe('GuidedSetupActionFooter.vue', () => {
       ...wrapperParameters,
     })
 
-    const goBackButton = view.getByRole('button', { name: 'Go Back' })
+    const goBackButton = view.getByRole('button', { name: 'Go back' })
 
     expect(goBackButton).toBeInTheDocument()
 

@@ -43,7 +43,7 @@ describe('Ticket create i-doit links', () => {
       await view.events.click(view.getByRole('button', { name: 'i-doit' }))
 
       await waitFor(() =>
-        expect(view.getByRole('heading', { level: 1, name: 'New Ticket' })).toBeInTheDocument(),
+        expect(view.getByRole('heading', { level: 1, name: 'New ticket' })).toBeInTheDocument(),
       )
 
       await view.events.type(view.getByLabelText('Title'), 'Test Ticket')

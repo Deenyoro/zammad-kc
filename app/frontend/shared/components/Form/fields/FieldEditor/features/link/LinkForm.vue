@@ -147,7 +147,7 @@ const { button, buttonContainer, form: formClass } = getEditorEditorLinkFormClas
         :link="url"
         :label="$t('Link URL')"
       />
-      <FormKit v-model.trim="linkText" name="label" :label="$t('Link Text')" />
+      <FormKit v-model.trim="linkText" name="label" :label="$t('Link text')" />
 
       <div :class="buttonContainer">
         <button
@@ -157,7 +157,7 @@ const { button, buttonContainer, form: formClass } = getEditorEditorLinkFormClas
           @click="removeLink"
           @keydown.enter.stop="removeLink"
         >
-          {{ $t('Remove Link') }}
+          {{ $t('Remove link') }}
         </button>
 
         <button
@@ -171,7 +171,7 @@ const { button, buttonContainer, form: formClass } = getEditorEditorLinkFormClas
         </button>
 
         <button :class="button.primary" type="submit">
-          {{ $t('Add Link') }}
+          {{ $t('Add link') }}
         </button>
       </div>
     </Form>

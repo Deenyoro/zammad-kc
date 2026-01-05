@@ -39,7 +39,7 @@ const { systemSetupUnlock } = useSystemSetupInfoStore()
 
 const sourcePlugin = guidedSetupImportSourcePluginLookup[props.source]
 
-setTitle(i18n.t('Start Import from %s', sourcePlugin.label))
+setTitle(i18n.t('Start import from %s', sourcePlugin.label))
 
 const startImport = () => {
   const importStartMutation = new MutationHandler(useSystemImportStartMutation())
@@ -90,7 +90,7 @@ const startImport = () => {
   </div>
   <GuidedSetupActionFooter
     :go-back-route="`/guided-setup/import/${source}`"
-    :submit-button-text="__('Start Import')"
+    :submit-button-text="__('Start import')"
     @submit="startImport"
   />
 </template>

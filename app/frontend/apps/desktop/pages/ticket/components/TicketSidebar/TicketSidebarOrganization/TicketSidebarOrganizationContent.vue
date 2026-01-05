@@ -33,7 +33,7 @@ defineEmits<{
 const actions: MenuItem[] = [
   {
     key: 'edit-organization',
-    label: __('Edit Organization'),
+    label: __('Edit organization'),
     icon: 'organization-edit',
     show: (entity) => entity?.policy.update,
     onClick: (id) => {

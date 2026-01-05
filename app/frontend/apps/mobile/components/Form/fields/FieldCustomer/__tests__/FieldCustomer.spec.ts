@@ -137,7 +137,7 @@ describe('Form - Field - Customer - Query', () => {
       'background-image': `url(${testOptions[0].user.image})`,
     })
 
-    await wrapper.events.click(wrapper.getByLabelText('Clear Search'))
+    await wrapper.events.click(wrapper.getByLabelText('Clear search'))
 
     expect(filterElement).toHaveValue('')
 

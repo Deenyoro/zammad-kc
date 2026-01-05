@@ -36,20 +36,20 @@ describe('TicketLinksFlyout', () => {
       router: true,
     })
 
-    expect(wrapper.getByRole('heading', { name: 'Link Tickets', level: 2 })).toBeInTheDocument()
+    expect(wrapper.getByRole('heading', { name: 'Link tickets', level: 2 })).toBeInTheDocument()
 
     expect(wrapper.getByLabelText('Link ticket')).toBeInTheDocument()
     expect(wrapper.getByLabelText('Link type')).toBeInTheDocument()
 
     expect(
       await wrapper.findByRole('table', {
-        name: 'Recent Customer Tickets',
+        name: 'Recent customer tickets',
       }),
     ).toBeInTheDocument()
 
     expect(
       wrapper.getByRole('table', {
-        name: 'Recently Viewed Tickets',
+        name: 'Recently viewed tickets',
       }),
     ).toBeInTheDocument()
   })

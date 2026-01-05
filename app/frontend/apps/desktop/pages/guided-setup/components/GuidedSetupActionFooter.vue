@@ -82,7 +82,7 @@ const submit = () => {
       :disabled="isDisabled"
       @click="goBack()"
     >
-      {{ $t('Go Back') }}
+      {{ $t('Go back') }}
     </CommonButton>
     <CommonButton
       v-if="skipRoute || onSkip"

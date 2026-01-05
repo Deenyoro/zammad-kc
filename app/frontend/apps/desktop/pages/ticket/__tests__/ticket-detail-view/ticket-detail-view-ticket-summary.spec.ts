@@ -117,7 +117,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     expect(
       await within(contentSidebar).findByRole('heading', {
-        name: 'Customer Intent',
+        name: 'Customer intent',
         level: 3,
       }),
     ).toBeInTheDocument()
@@ -166,7 +166,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     const numberOfCalls = calls.length
 
-    expect(await view.findByRole('heading', { name: 'Customer Intent' }))
+    expect(await view.findByRole('heading', { name: 'Customer intent' }))
 
     await triggerArticleUpdate({
       addArticle: {
@@ -209,7 +209,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     const numberOfCalls = calls.length
 
-    expect(await view.findByRole('heading', { name: 'Customer Intent' }))
+    expect(await view.findByRole('heading', { name: 'Customer intent' }))
 
     await triggerArticleUpdate(
       {
@@ -282,7 +282,7 @@ describe('Ticket detail view - Ticket summary', () => {
     })
 
     expect(
-      await view.findByRole('heading', { level: 3, name: 'Customer Intent' }),
+      await view.findByRole('heading', { level: 3, name: 'Customer intent' }),
     ).toBeInTheDocument()
 
     expect(await view.findByText('Summary to see if subscription comes in')).toBeInTheDocument()

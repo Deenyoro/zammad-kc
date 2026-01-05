@@ -163,7 +163,7 @@ describe('Left sidebar', () => {
       await view.events.click(avatarButton)
 
       const appearanceButton = view.getByRole('button', { name: 'Appearance' })
-      const appearanceSwitch = view.getByRole('checkbox', { name: 'Dark Mode' })
+      const appearanceSwitch = view.getByRole('checkbox', { name: 'Dark mode' })
 
       expect(appearanceSwitch).toBePartiallyChecked()
 

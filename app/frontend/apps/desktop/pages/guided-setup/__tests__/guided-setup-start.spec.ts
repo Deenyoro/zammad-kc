@@ -68,8 +68,8 @@ describe('guided setup start', () => {
         )
       })
 
-      expect(view.getByRole('button', { name: 'Go Back' })).toBeInTheDocument()
-      expect(view.getByText('Create Administrator Account')).toBeInTheDocument()
+      expect(view.getByRole('button', { name: 'Go back' })).toBeInTheDocument()
+      expect(view.getByText('Create administrator account')).toBeInTheDocument()
     })
 
     it('shows guided setup screen and opens import setup on click', async () => {
@@ -104,7 +104,7 @@ describe('guided setup start', () => {
       expect(view.getByRole('button', { name: 'KayakoBeta' })).toBeInTheDocument()
       expect(view.getByRole('button', { name: 'OTRSBeta' })).toBeInTheDocument()
       expect(view.getByRole('button', { name: 'ZendeskBeta' })).toBeInTheDocument()
-      expect(view.getByRole('button', { name: 'Go Back' })).toBeInTheDocument()
+      expect(view.getByRole('button', { name: 'Go back' })).toBeInTheDocument()
     })
 
     it('shows guided setup manual screen when lock exists', async () => {
@@ -129,8 +129,8 @@ describe('guided setup start', () => {
         )
       })
 
-      expect(view.getByRole('button', { name: 'Go Back' })).toBeInTheDocument()
-      expect(view.getByText('Create Administrator Account')).toBeInTheDocument()
+      expect(view.getByRole('button', { name: 'Go back' })).toBeInTheDocument()
+      expect(view.getByText('Create administrator account')).toBeInTheDocument()
     })
 
     it('redirects to home screen on back navigation, if the setup was completed', async () => {

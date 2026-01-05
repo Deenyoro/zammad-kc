@@ -19,7 +19,7 @@ describe('TicketObjectAttributes', () => {
       },
     })
 
-    const accountedTime = wrapper.getByLabelText('Total Accounted Time')
+    const accountedTime = wrapper.getByLabelText('Total accounted time')
 
     expect(accountedTime).toHaveTextContent('1.1')
 
@@ -38,7 +38,7 @@ describe('TicketObjectAttributes', () => {
       },
     })
 
-    expect(wrapper.queryByLabelText('Total Accounted Time')).not.toBeInTheDocument()
+    expect(wrapper.queryByLabelText('Total accounted time')).not.toBeInTheDocument()
   })
 
   it('renders the pre-defined time accounting unit', () => {
@@ -56,7 +56,7 @@ describe('TicketObjectAttributes', () => {
       },
     })
 
-    const accountedTime = wrapper.getByLabelText('Total Accounted Time')
+    const accountedTime = wrapper.getByLabelText('Total accounted time')
 
     expect(accountedTime).toHaveTextContent('1.1 minute(s)')
   })
@@ -77,7 +77,7 @@ describe('TicketObjectAttributes', () => {
       },
     })
 
-    const accountedTime = wrapper.getByLabelText('Total Accounted Time')
+    const accountedTime = wrapper.getByLabelText('Total accounted time')
 
     expect(accountedTime).toHaveTextContent('1.1 person day(s)')
   })

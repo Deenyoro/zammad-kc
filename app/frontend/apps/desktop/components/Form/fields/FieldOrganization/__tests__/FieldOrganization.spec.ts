@@ -164,7 +164,7 @@ describe('Form - Field - Organization - Query', () => {
     // Organization with ID 1 should have a silver crown (VIP).
     expect(getByIconName(selectOptions[0], 'crown-silver')).toBeInTheDocument()
 
-    await wrapper.events.click(wrapper.getByLabelText('Clear Search'))
+    await wrapper.events.click(wrapper.getByLabelText('Clear search'))
 
     expect(filterElement).toHaveValue('')
 

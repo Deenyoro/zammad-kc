@@ -124,7 +124,7 @@ const actions = computed<MenuItem[]>(() => [
           {
             id: 'open',
             label: __('open tickets'),
-            title: __('Open Tickets'),
+            title: __('Open tickets'),
             icon: 'check-circle-no',
             iconColor: 'fill-yellow-500',
             count: customer?.ticketsCount?.open || 0,
@@ -133,7 +133,7 @@ const actions = computed<MenuItem[]>(() => [
           {
             id: 'closed',
             label: __('closed tickets'),
-            title: __('Closed Tickets'),
+            title: __('Closed tickets'),
             icon: 'check-circle-outline',
             iconColor: 'fill-green-400',
             count: customer?.ticketsCount?.closed || 0,

@@ -154,10 +154,10 @@ const captureImage = () => {
 
       <div v-else class="flex flex-row gap-2">
         <CommonButton v-if="!image" variant="primary" size="medium" @click="captureImage">
-          {{ $t('Capture From Camera') }}
+          {{ $t('Capture from camera') }}
         </CommonButton>
         <CommonButton v-else variant="remove" size="medium" @click="discardImage">
-          {{ $t('Discard Snapshot') }}
+          {{ $t('Discard snapshot') }}
         </CommonButton>
       </div>
     </div>

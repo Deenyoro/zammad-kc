@@ -26,7 +26,7 @@ import { useSystemSetup } from '../../composables/useSystemSetup.ts'
 const { setBoxSize, setTitle } = useSystemSetup()
 
 setBoxSize?.('large')
-setTitle(__('Invite Colleagues'))
+setTitle(__('Invite colleagues'))
 
 const { form } = useForm()
 
@@ -82,8 +82,8 @@ const inviteUser = async (formData: FormSubmitData) => {
   />
   <GuidedSetupActionFooter
     :form="form"
-    :submit-button-text="__('Send Invitation')"
-    :continue-button-text="__('Finish Setup')"
+    :submit-button-text="__('Send invitation')"
+    :continue-button-text="__('Finish setup')"
     continue-route="/guided-setup/manual/finish"
   />
 </template>

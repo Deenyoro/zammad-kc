@@ -10,7 +10,7 @@ const actionPlugin: TicketArticleActionPlugin = {
       apps: ['mobile', 'desktop'],
       value: 'web',
       label: __('Web'),
-      buttonLabel: __('Add Reply'),
+      buttonLabel: __('Add reply'),
       icon: 'web',
       view: {
         customer: ['change'],

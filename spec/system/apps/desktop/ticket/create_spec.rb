@@ -16,10 +16,10 @@ RSpec.describe 'Desktop > Ticket > Create', app: :desktop_view, authenticated_as
     end
 
     it 'creates a new ticket' do
-      find('[role="tab"]', text: 'Send Email').click
+      find('[role="tab"]', text: 'Send email').click
 
       within_form(form_updater_gql_number: 2) do
-        expect(page).to have_css('h1', text: 'New Ticket')
+        expect(page).to have_css('h1', text: 'New ticket')
         find_input('Title').type('Example Ticket Title')
         expect(page).to have_css('h1', text: 'Example Ticket Title')
 
@@ -50,7 +50,7 @@ RSpec.describe 'Desktop > Ticket > Create', app: :desktop_view, authenticated_as
 
         fill_in 'url', with: 'https://zammad.com'
 
-        click_on 'Add Link'
+        find('[data-id="floating-popover"] button[type="submit"]', text: 'Add link').click
 
         find_treeselect('Group').search_for_option(another_group.name)
 
@@ -102,7 +102,7 @@ RSpec.describe 'Desktop > Ticket > Create', app: :desktop_view, authenticated_as
     end
 
     it 'applies the template correctly' do
-      click_on 'Apply Template'
+      click_on 'Apply template'
       click_on template.name
 
       wait_for_form_updater(2)

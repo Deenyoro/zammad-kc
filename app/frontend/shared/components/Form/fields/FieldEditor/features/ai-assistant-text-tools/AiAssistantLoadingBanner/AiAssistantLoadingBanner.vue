@@ -32,7 +32,7 @@ const appName = useAppName()
           props: {
             class: label,
           },
-          content: $t('Writing Assistant'),
+          content: $t('Writing assistant'),
         },
       ]"
     />

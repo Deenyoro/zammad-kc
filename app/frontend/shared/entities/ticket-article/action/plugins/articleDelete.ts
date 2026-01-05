@@ -74,7 +74,7 @@ const actionPlugin: TicketArticleActionPlugin = {
 
     const action: TicketArticleAction = {
       apps: ['mobile', 'desktop'],
-      label: __('Delete Article'),
+      label: __('Delete article'),
       name: 'articleDelete',
       icon: 'trash',
       perform: () => deleteAction(article),

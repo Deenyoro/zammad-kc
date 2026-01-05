@@ -7,7 +7,7 @@ import CommonDialog from '#desktop/components/CommonDialog/CommonDialog.vue'
 <template>
   <CommonDialog
     name="connection-lost"
-    :header-title="__('Lost Network Connection')"
+    :header-title="__('Lost network connection')"
     wrapper-tag="article"
     hide-footer
     no-close

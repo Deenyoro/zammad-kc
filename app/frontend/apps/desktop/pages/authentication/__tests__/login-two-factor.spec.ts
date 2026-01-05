@@ -61,7 +61,7 @@ describe('two-factor login flow', () => {
 
     await login(view)
 
-    expect(view.queryByLabelText('Security Code')).toBeInTheDocument()
+    expect(view.queryByLabelText('Security code')).toBeInTheDocument()
     expect(view.queryByTestId('loginThirdParty')).not.toBeInTheDocument()
   })
 
@@ -80,28 +80,28 @@ describe('two-factor login flow', () => {
       },
     })
 
-    expect(view.queryByRole('button', { name: 'Cancel & Go Back' })).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Cancel & go back' })).not.toBeInTheDocument()
 
     await login(view)
 
-    expect(view.queryByRole('button', { name: 'Cancel & Go Back' })).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Cancel & go back' })).not.toBeInTheDocument()
 
     await view.events.click(view.getByText('Try another method'))
 
-    expect(view.getByRole('button', { name: 'Cancel & Go Back' })).toBeInTheDocument()
+    expect(view.getByRole('button', { name: 'Cancel & go back' })).toBeInTheDocument()
 
     await view.events.click(view.getByText('Or use one of your recovery codes.'))
 
-    expect(view.getByLabelText('Recovery Code')).toBeInTheDocument()
+    expect(view.getByLabelText('Recovery code')).toBeInTheDocument()
 
     await view.events.click(view.getByText('Try another method'))
 
-    await view.events.click(view.getByRole('button', { name: 'Cancel & Go Back' }))
+    await view.events.click(view.getByRole('button', { name: 'Cancel & go back' }))
 
     expect(view.getByLabelText('Username / Email')).toBeInTheDocument()
     expect(view.getByLabelText('Password')).toBeInTheDocument()
 
-    expect(view.queryByRole('button', { name: 'Cancel & Go Back' })).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Cancel & go back' })).not.toBeInTheDocument()
   })
 
   describe('alternative two-factor methods', () => {

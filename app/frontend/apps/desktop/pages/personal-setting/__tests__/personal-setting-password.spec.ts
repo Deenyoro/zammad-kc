@@ -21,7 +21,7 @@ const changePassword = async (
     await view.findByLabelText('Confirm new password'),
     newPasswordConfirm || newPassword,
   )
-  await view.events.click(view.getByRole('button', { name: 'Change Password' }))
+  await view.events.click(view.getByRole('button', { name: 'Change password' }))
 }
 
 describe('password personal settings', () => {
@@ -57,7 +57,7 @@ describe('password personal settings', () => {
     expect(view.getByText('New password')).toBeInTheDocument()
     expect(view.getByText('Confirm new password')).toBeInTheDocument()
 
-    expect(view.getByRole('button', { name: 'Change Password' })).toBeInTheDocument()
+    expect(view.getByRole('button', { name: 'Change password' })).toBeInTheDocument()
   })
 
   it('shows an error message when e.g. current password is incorrect', async () => {

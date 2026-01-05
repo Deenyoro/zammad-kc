@@ -99,11 +99,11 @@ describe('guided setup manual email notification', () => {
       await flushPromises()
       await getNode('email-notification-setup')?.settled
 
-      expect(view.getByText('Email Notification')).toBeInTheDocument()
+      expect(view.getByText('Email notification')).toBeInTheDocument()
       expect(view.getByLabelText('Send mails via')).toBeInTheDocument()
 
       const continueButton = view.getByRole('button', {
-        name: 'Save and Continue',
+        name: 'Save and continue',
       })
 
       await view.events.click(continueButton)
@@ -228,7 +228,7 @@ describe('guided setup manual email notification', () => {
 
       await view.events.click(
         view.getByRole('button', {
-          name: 'Save and Continue',
+          name: 'Save and continue',
         }),
       )
 
@@ -246,7 +246,7 @@ describe('guided setup manual email notification', () => {
     it('can go back to system information step', async () => {
       const view = await visitView('/guided-setup/manual/email-notification')
 
-      const goBackButton = view.getByRole('button', { name: 'Go Back' })
+      const goBackButton = view.getByRole('button', { name: 'Go back' })
 
       await view.events.click(goBackButton)
 

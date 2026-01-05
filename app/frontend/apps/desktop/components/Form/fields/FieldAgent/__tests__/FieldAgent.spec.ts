@@ -183,7 +183,7 @@ describe('Form - Field - Agent - Query', () => {
       backgroundImage: `url(/${logo})`,
     })
 
-    await wrapper.events.click(wrapper.getByLabelText('Clear Search'))
+    await wrapper.events.click(wrapper.getByLabelText('Clear search'))
 
     expect(filterElement).toHaveValue('')
 

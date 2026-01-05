@@ -66,7 +66,7 @@ const submitLink = async (data: SubmitData) => {
       actionButton: {
         type: 'submit',
       },
-      actionLabel: $t('Link Issue'),
+      actionLabel: $t('Link issue'),
     }"
   >
     <Form

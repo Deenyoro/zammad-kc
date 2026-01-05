@@ -5,7 +5,7 @@ import { useApplicationConfigTwoFactor } from '#shared/composables/authenticatio
 import type { PersonalSettingPlugin } from './types.ts'
 
 export default <PersonalSettingPlugin>{
-  label: __('Two-factor Authentication'),
+  label: __('Two-factor authentication'),
   category: {
     label: __('Security'),
     id: 'category-security',
@@ -17,7 +17,7 @@ export default <PersonalSettingPlugin>{
     component: () => import('../../PersonalSettingTwoFactorAuth.vue'),
     level: 2,
     meta: {
-      title: __('Two-factor Authentication'),
+      title: __('Two-factor authentication'),
       requiresAuth: true,
       requiredPermission: 'user_preferences.two_factor_authentication',
     },

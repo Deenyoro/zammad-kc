@@ -123,7 +123,7 @@ const actionCloseFlyout = () => {
 
 <template>
   <CommonFlyout
-    :header-title="__('New Personal Access Token')"
+    :header-title="__('New personal access token')"
     :form="form"
     :footer-action-options="footerActionOptions"
     header-icon="key"
@@ -140,8 +140,8 @@ const actionCloseFlyout = () => {
       }}</CommonLabel>
       <CommonInputCopyToClipboard
         :value="accessToken"
-        :label="__('Your Personal Access Token')"
-        :copy-button-text="__('Copy Token')"
+        :label="__('Your personal access token')"
+        :copy-button-text="__('Copy token')"
       />
     </div>
     <Form

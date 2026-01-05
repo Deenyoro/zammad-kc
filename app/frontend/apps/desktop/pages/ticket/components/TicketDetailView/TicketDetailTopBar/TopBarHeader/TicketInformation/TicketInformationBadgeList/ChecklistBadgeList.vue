@@ -28,7 +28,7 @@ const isCompleted = computed(() => checklist.value?.completed)
 <template>
   <ChecklistBadge
     v-if="!isCompleted && totalItemsCount"
-    v-tooltip="$t('Open Checklist')"
+    v-tooltip="$t('Open checklist')"
     role="button"
     tabindex="0"
     class="cursor-pointer hover:outline-1 hover:outline-offset-1 hover:outline-blue-600 focus:outline-transparent focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 active:outline-blue-800 dark:hover:outline-blue-900 dark:active:outline-blue-800"

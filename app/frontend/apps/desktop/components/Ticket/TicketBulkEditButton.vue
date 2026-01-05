@@ -30,6 +30,6 @@ const isAgentUser = computed(() => hasPermission('ticket.agent'))
     prefix-icon="collection-play"
     variant="primary"
     @click="$emit('open-flyout')"
-    >{{ $t('Bulk Actions') }}</CommonButton
+    >{{ $t('Bulk actions') }}</CommonButton
   >
 </template>

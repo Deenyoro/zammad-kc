@@ -14,7 +14,7 @@ interface Props {
 }
 
 withDefaults(defineProps<Props>(), {
-  copyButtonText: __('Copy Text'),
+  copyButtonText: __('Copy text'),
 })
 
 const { copyToClipboard } = useCopyToClipboard()

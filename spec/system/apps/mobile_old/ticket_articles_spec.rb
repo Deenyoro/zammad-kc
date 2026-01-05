@@ -36,7 +36,7 @@ RSpec.describe 'Mobile > Ticket > Articles', app: :mobile, authenticated_as: :ag
 
       it 'deletes article' do
         find('[data-name="article-context"]').click
-        click_on 'Delete Article'
+        click_on 'Delete article'
         click_on 'OK'
 
         expect(page).to have_no_text(article.body)
@@ -89,9 +89,9 @@ RSpec.describe 'Mobile > Ticket > Articles', app: :mobile, authenticated_as: :ag
 
       all('[data-name="article-context"]').last.click
 
-      expect(page).to have_button('Delete Article')
+      expect(page).to have_button('Delete article')
 
-      click_on 'Delete Article'
+      click_on 'Delete article'
       click_on 'OK'
 
       expect(page).to have_no_text(articles.last.body)
@@ -157,22 +157,22 @@ RSpec.describe 'Mobile > Ticket > Articles', app: :mobile, authenticated_as: :ag
     it 'updates state on successful retry' do
       create(:smime_certificate, :with_private, fixture: 'smime1@example.com')
 
-      find_button('Security Error').click
+      find_button('Security error').click
       find_button('Try again').click
 
       # visually updates state
       expect(find('[aria-label="Signed"]')).to be_present
 
       expect(page).to have_text('The signature was successfully verified.')
-      expect(page).to have_no_text('Security Error')
+      expect(page).to have_no_text('Security error')
     end
 
     it 'shows error on unsucessful retry' do
-      find_button('Security Error').click
+      find_button('Security error').click
       find_button('Try again').click
 
       expect(page).to have_text('The certificate for verification could not be found.')
-      expect(page).to have_text('Security Error')
+      expect(page).to have_text('Security error')
       expect(page).to have_no_css('[aria-label="Signed"]')
     end
   end

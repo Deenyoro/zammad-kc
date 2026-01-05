@@ -37,7 +37,7 @@ export const useBetaDisclaimer = () => {
             fullscreen: true,
             name: DIALOG_NAME,
             global: true,
-            headerTitle: __('New Desktop UI — Alpha Version'),
+            headerTitle: __('New desktop UI — Alpha version'),
             content: __(
               'This new desktop UI is currently in development and not ready for production use. It may contain bugs or incomplete features.',
             ),

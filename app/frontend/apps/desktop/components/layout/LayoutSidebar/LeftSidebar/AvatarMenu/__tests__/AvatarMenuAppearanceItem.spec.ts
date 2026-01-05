@@ -27,7 +27,7 @@ describe('avatar menu appearance item', () => {
     })
 
     expect(view.getByText('Appearance')).toBeInTheDocument()
-    const appearanceSwitch = view.getByRole('checkbox', { name: 'Dark Mode' })
+    const appearanceSwitch = view.getByRole('checkbox', { name: 'Dark mode' })
 
     expect(appearanceSwitch).toBeChecked()
 

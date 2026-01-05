@@ -105,9 +105,9 @@ describe('devices personal settings', () => {
 
     await waitForNextTick()
 
-    expect(await view.findByRole('dialog', { name: 'Delete Object' })).toBeInTheDocument()
+    expect(await view.findByRole('dialog', { name: 'Delete object' })).toBeInTheDocument()
 
-    await view.events.click(view.getByRole('button', { name: 'Delete Object' }))
+    await view.events.click(view.getByRole('button', { name: 'Delete object' }))
 
     checkSimpleTableContent(view, [rowContents[0]])
   })

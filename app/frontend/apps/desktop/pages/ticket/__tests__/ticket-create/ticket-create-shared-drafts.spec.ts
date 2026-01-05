@@ -83,7 +83,7 @@ describe('ticket create view - shared drafts sidebar', () => {
 
       await getNode(`sharedDraftTitle-TicketCreateScreen-${uid}`)?.settled
 
-      await view.events.click(aside.getByRole('link', { name: 'Create Shared Draft' }))
+      await view.events.click(aside.getByRole('link', { name: 'Create shared draft' }))
 
       const calls = await waitForTicketSharedDraftStartCreateMutationCalls()
 
@@ -163,7 +163,7 @@ describe('ticket create view - shared drafts sidebar', () => {
 
       const flyout = within(
         view.getByRole('complementary', {
-          name: 'Preview Shared Draft',
+          name: 'Preview shared draft',
         }),
       )
 
@@ -173,11 +173,11 @@ describe('ticket create view - shared drafts sidebar', () => {
 
       await view.events.click(flyout.getByRole('button', { name: 'Apply' }))
 
-      expect(await view.findByRole('dialog', { name: 'Apply Draft' })).toBeInTheDocument()
+      expect(await view.findByRole('dialog', { name: 'Apply draft' })).toBeInTheDocument()
 
       const dialog = within(
         view.getByRole('dialog', {
-          name: 'Apply Draft',
+          name: 'Apply draft',
         }),
       )
 
@@ -192,12 +192,12 @@ describe('ticket create view - shared drafts sidebar', () => {
         shared_draft_id: { value: getIdFromGraphQLId(draftToMock.id) },
       })
 
-      await view.events.click(dialog.getByRole('button', { name: 'Overwrite Content' }))
+      await view.events.click(dialog.getByRole('button', { name: 'Overwrite content' }))
 
       await waitFor(() => {
         expect(
           view.queryByRole('dialog', {
-            name: 'Apply Draft',
+            name: 'Apply draft',
           }),
         ).not.toBeInTheDocument()
       })
@@ -278,13 +278,13 @@ describe('ticket create view - shared drafts sidebar', () => {
 
       const flyout = within(
         view.getByRole('complementary', {
-          name: 'Preview Shared Draft',
+          name: 'Preview shared draft',
         }),
       )
 
       await view.events.click(flyout.getByRole('button', { name: 'Apply' }))
 
-      const dialog = within(await view.findByRole('dialog', { name: 'Apply Draft' }))
+      const dialog = within(await view.findByRole('dialog', { name: 'Apply draft' }))
 
       handleMockFormUpdaterQuery({
         shared_draft_id: {
@@ -295,17 +295,17 @@ describe('ticket create view - shared drafts sidebar', () => {
         },
       })
 
-      await view.events.click(dialog.getByRole('button', { name: 'Overwrite Content' }))
+      await view.events.click(dialog.getByRole('button', { name: 'Overwrite content' }))
 
       await waitFor(() => {
         expect(
           view.queryByRole('complementary', {
-            name: 'Preview Shared Draft',
+            name: 'Preview shared draft',
           }),
         ).not.toBeInTheDocument()
       })
 
-      await view.events.click(aside.getByRole('button', { name: 'Update Shared Draft' }))
+      await view.events.click(aside.getByRole('button', { name: 'Update shared draft' }))
 
       const calls = await waitForTicketSharedDraftStartUpdateMutationCalls()
 
@@ -322,7 +322,7 @@ describe('ticket create view - shared drafts sidebar', () => {
         'Shared draft has been updated successfully.',
       )
 
-      expect(aside.getByRole('button', { name: 'Update Shared Draft' })).toBeInTheDocument()
+      expect(aside.getByRole('button', { name: 'Update shared draft' })).toBeInTheDocument()
     })
 
     it('supports deleting shared drafts', async () => {
@@ -371,15 +371,15 @@ describe('ticket create view - shared drafts sidebar', () => {
 
       const flyout = within(
         view.getByRole('complementary', {
-          name: 'Preview Shared Draft',
+          name: 'Preview shared draft',
         }),
       )
 
       await view.events.click(flyout.getByRole('button', { name: 'Delete' }))
 
-      const dialog = within(await view.findByRole('dialog', { name: 'Delete Object' }))
+      const dialog = within(await view.findByRole('dialog', { name: 'Delete object' }))
 
-      await view.events.click(dialog.getByRole('button', { name: 'Delete Object' }))
+      await view.events.click(dialog.getByRole('button', { name: 'Delete object' }))
 
       const calls = await waitForTicketSharedDraftStartDeleteMutationCalls()
 
@@ -390,7 +390,7 @@ describe('ticket create view - shared drafts sidebar', () => {
       await waitFor(() => {
         expect(
           view.queryByRole('complementary', {
-            name: 'Preview Shared Draft',
+            name: 'Preview shared draft',
           }),
         ).not.toBeInTheDocument()
       })

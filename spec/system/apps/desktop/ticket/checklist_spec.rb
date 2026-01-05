@@ -86,7 +86,7 @@ RSpec.describe 'Desktop > Ticket > Checklist', app: :desktop_view, authenticated
 
     open_checklist
 
-    click_on 'Add From a Template'
+    click_on 'Add from a template'
     click_on checklist_template.name
   end
 
@@ -151,7 +151,7 @@ RSpec.describe 'Desktop > Ticket > Checklist', app: :desktop_view, authenticated
   def try_closing
     close_ticket
 
-    expect(page).to have_text('Incomplete Ticket Checklist')
+    expect(page).to have_text('Incomplete ticket checklist')
 
     click_on 'Yes, open the checklist'
   end

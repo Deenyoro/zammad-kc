@@ -47,7 +47,7 @@ describe('guided setup import selection', () => {
       expect(view.getByRole('button', { name: 'KayakoBeta' })).toBeInTheDocument()
       expect(view.getByRole('button', { name: 'OTRSBeta' })).toBeInTheDocument()
       expect(view.getByRole('button', { name: 'ZendeskBeta' })).toBeInTheDocument()
-      expect(view.getByRole('button', { name: 'Go Back' })).toBeInTheDocument()
+      expect(view.getByRole('button', { name: 'Go back' })).toBeInTheDocument()
 
       const importSourceButton = view.getByRole('button', {
         name: 'FreshdeskBeta',

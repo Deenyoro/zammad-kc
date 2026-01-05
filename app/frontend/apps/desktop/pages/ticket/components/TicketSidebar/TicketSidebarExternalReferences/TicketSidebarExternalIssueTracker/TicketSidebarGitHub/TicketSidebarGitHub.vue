@@ -67,7 +67,7 @@ const actions = computed((): MenuItem[] =>
     ? [
         {
           key: 'link-github-issue',
-          label: __('Link Issue'),
+          label: __('Link issue'),
           show: () => isTicketEditable.value,
           onClick: () => issueTrackerListInstance.value?.openFlyout(),
           icon: 'link-45deg',

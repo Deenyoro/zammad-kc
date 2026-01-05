@@ -36,7 +36,7 @@ describe('Login - After Auth - Two Factor Configuration', () => {
       )
 
       const logoutButton = view.getByRole('button', {
-        name: 'Cancel & Sign Out',
+        name: 'Cancel & sign out',
       })
 
       mockLogoutMutation({
@@ -66,7 +66,7 @@ describe('Login - After Auth - Two Factor Configuration', () => {
     it('shows a list of two-factor methods', async () => {
       const view = await visitAfterAuthTwoFactorConfiguration()
 
-      expect(view.getByText('Set Up Two-factor Authentication')).toBeInTheDocument()
+      expect(view.getByText('Set up two-factor authentication')).toBeInTheDocument()
 
       expect(
         view.getByText('You must protect your account with two-factor authentication.'),
@@ -78,14 +78,14 @@ describe('Login - After Auth - Two Factor Configuration', () => {
 
       expect(
         view.getByRole('button', {
-          name: 'Security Keys',
+          name: 'Security keys',
         }),
       ).toBeInTheDocument()
 
       expect(view.getByText('Complete the sign-in with your security key.')).toBeInTheDocument()
 
       const authenticatorAppButton = view.getByRole('button', {
-        name: 'Authenticator App',
+        name: 'Authenticator app',
       })
 
       expect(
@@ -95,29 +95,29 @@ describe('Login - After Auth - Two Factor Configuration', () => {
       await view.events.click(authenticatorAppButton)
 
       expect(
-        view.getByText('To set up Authenticator App for your account, follow the steps below:'),
+        view.getByText('To set up an authenticator app for your account, follow the steps below:'),
       ).toBeInTheDocument()
 
       expect(
         view.getByRole('button', {
-          name: 'Set Up',
+          name: 'Set up',
         }),
       ).toBeInTheDocument()
 
       const goBackButton = view.getByRole('button', {
-        name: 'Go Back',
+        name: 'Go back',
       })
 
       await view.events.click(goBackButton)
 
       expect(
         view.getByRole('button', {
-          name: 'Authenticator App',
+          name: 'Authenticator app',
         }),
       ).toBeInTheDocument()
 
       const logoutButton = view.getByRole('button', {
-        name: 'Cancel & Sign Out',
+        name: 'Cancel & sign out',
       })
 
       mockLogoutMutation({

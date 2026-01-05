@@ -160,7 +160,7 @@ describe('TicketLiveUsers', () => {
     it('indicates that agent is processing this ticket', async () => {
       const wrapper = renderTicketLiveUsers(undefined, { aiAgentRunning: true })
 
-      expect(wrapper.getByLabelText('AI Agent')).toBeInTheDocument()
+      expect(wrapper.getByLabelText('AI agent')).toBeInTheDocument()
     })
   })
 })

@@ -140,7 +140,7 @@ describe('Fields - FieldDate', () => {
 
       expect(input).toHaveDisplayValue('2020-02-10')
 
-      await view.events.click(view.getByLabelText('Clear Selection'))
+      await view.events.click(view.getByLabelText('Clear selection'))
 
       const emittedInput = view.emitted().inputRaw as Array<Array<InputEvent>>
 

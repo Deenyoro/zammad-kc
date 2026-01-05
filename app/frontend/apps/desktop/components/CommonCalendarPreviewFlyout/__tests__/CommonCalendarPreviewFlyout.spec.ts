@@ -88,11 +88,11 @@ describe('TicketSidebarSharedDraftFlyout.vue', () => {
 
     expect(
       wrapper.getByRole('complementary', {
-        name: 'Preview Calendar',
+        name: 'Preview calendar',
       }),
     ).toBeInTheDocument()
 
-    expect(wrapper.getByRole('heading', { name: 'Preview Calendar' })).toBeInTheDocument()
+    expect(wrapper.getByRole('heading', { name: 'Preview calendar' })).toBeInTheDocument()
 
     expect(wrapper.getByText('event 1')).toBeInTheDocument()
     expect(wrapper.getByText('location 1')).toBeInTheDocument()

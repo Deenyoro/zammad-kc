@@ -39,7 +39,7 @@ const discardImage = () => {
 
 <template>
   <CommonFlyout
-    :header-title="__('Crop Image')"
+    :header-title="__('Crop image')"
     :footer-action-options="{
       actionLabel: __('Save'),
       actionButton: { variant: 'submit' },
@@ -52,7 +52,7 @@ const discardImage = () => {
     <div class="flex flex-col gap-3">
       <div v-if="croppedImage" class="flex flex-row items-center gap-1">
         <CommonAvatar :image="croppedImage.content" size="normal" />
-        <CommonLabel>{{ $t('Avatar Preview') }}</CommonLabel>
+        <CommonLabel>{{ $t('Avatar preview') }}</CommonLabel>
       </div>
 
       <Cropper

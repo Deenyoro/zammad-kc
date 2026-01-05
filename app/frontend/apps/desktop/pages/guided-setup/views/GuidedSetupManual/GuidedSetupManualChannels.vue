@@ -17,7 +17,7 @@ const router = useRouter()
 
 const { setTitle } = useSystemSetup()
 
-setTitle(__('Connect Channels'))
+setTitle(__('Connect channels'))
 
 const setupEmailChannel = () => {
   router.push('channels/email')
@@ -30,7 +30,7 @@ const setupEmailChannel = () => {
       {{ $t('Set up the communication channels you want to use with your Zammad.') }}
     </CommonLabel>
     <CommonButton variant="primary" size="large" @click="setupEmailChannel()">
-      {{ $t('Email Channel') }}
+      {{ $t('Email channel') }}
     </CommonButton>
   </div>
   <GuidedSetupActionFooter

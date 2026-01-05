@@ -58,7 +58,7 @@ const { notify } = useNotifications()
 const walker = useWalker()
 
 useHeader({
-  title: __('Ticket Overview'),
+  title: __('Ticket overview'),
   backUrl: '/',
   backAvoidHomeButton: true,
   actionTitle: __('Save'),
@@ -78,7 +78,7 @@ useHeader({
 
     notify({
       id: 'overview-save',
-      message: __('Ticket Overview settings are saved.'),
+      message: __('Ticket overview settings are saved.'),
       type: NotificationTypes.Success,
     })
     walker.back('/')

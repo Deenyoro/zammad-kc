@@ -261,7 +261,7 @@ describe('guided setup import source status', () => {
       expect(successMessage).toBeInTheDocument()
 
       const goToLoginButton = view.getByRole('button', {
-        name: 'Go to Login',
+        name: 'Go to login',
       })
       await view.events.click(goToLoginButton)
 

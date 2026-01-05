@@ -135,13 +135,12 @@ const confirmResetOverviewOrder = async () => {
 
         <div class="flex flex-col items-end">
           <CommonButton
-            :aria-label="$t('Reset Overview Order')"
             class="mt-4"
             variant="danger"
             size="medium"
             @click.stop="confirmResetOverviewOrder"
           >
-            {{ $t('Reset Overview Order') }}
+            {{ $t('Reset overview order') }}
           </CommonButton>
         </div>
       </div>

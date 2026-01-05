@@ -589,7 +589,7 @@ describe('Form - Field - TreeSelect - Features', () => {
     expect(listitem).toHaveTextContent(testOptions[1].label!)
 
     const clearSelectionButton = wrapper.getByRole('button', {
-      name: 'Clear Selection',
+      name: 'Clear selection',
     })
 
     await wrapper.events.click(clearSelectionButton)
@@ -889,7 +889,7 @@ describe('Form - Field - TreeSelect - Features', () => {
       clearable: true,
     })
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear Selection' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear selection' }))
 
     await waitFor(() => {
       expect(wrapper.emitted().inputRaw).toBeTruthy()
@@ -936,7 +936,7 @@ describe('Form - Field - TreeSelect - Features', () => {
       multiple: true,
     })
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear Selection' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear selection' }))
 
     await waitFor(() => {
       expect(wrapper.emitted().inputRaw).toBeTruthy()
@@ -1040,7 +1040,7 @@ describe('Form - Field - TreeSelect - Features', () => {
     expect(selectOptions).toHaveLength(1)
     expect(selectOptions[0]).toHaveTextContent('Item A › Item 2 › Item IV')
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear Search' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear search' }))
 
     expect(filterElement).toHaveValue('')
 
@@ -1174,12 +1174,12 @@ describe('Form - Field - TreeSelect - Accessibility', () => {
 
     const listitem = wrapper.getByRole('listitem')
 
-    expect(getByRole(listitem, 'button', { name: 'Unselect Option' })).toHaveAttribute(
+    expect(getByRole(listitem, 'button', { name: 'Unselect option' })).toHaveAttribute(
       'tabindex',
       '0',
     )
 
-    expect(wrapper.getByRole('button', { name: 'Clear Selection' })).toHaveAttribute(
+    expect(wrapper.getByRole('button', { name: 'Clear selection' })).toHaveAttribute(
       'tabindex',
       '0',
     )
@@ -1295,7 +1295,7 @@ describe('Form - Field - TreeSelect - Accessibility', () => {
       },
     })
 
-    expect(wrapper.getByRole('button')).toHaveAttribute('aria-label', 'Clear Selection')
+    expect(wrapper.getByRole('button')).toHaveAttribute('aria-label', 'Clear selection')
   })
 
   it('supports keyboard navigation', async () => {
@@ -1351,7 +1351,7 @@ describe('Form - Field - TreeSelect - Accessibility', () => {
 
     expect(emittedInput[0][0]).toBe(testOptions[0].value)
 
-    await wrapper.events.type(wrapper.getByRole('button', { name: 'Clear Selection' }), '{Space}')
+    await wrapper.events.type(wrapper.getByRole('button', { name: 'Clear selection' }), '{Space}')
 
     await waitFor(() => {
       expect(emittedInput[1][0]).toBe(null)

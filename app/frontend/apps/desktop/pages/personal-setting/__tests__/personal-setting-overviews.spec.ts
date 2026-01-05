@@ -79,7 +79,7 @@ describe('personal settings for token access', () => {
     })
 
     const resetButton = view.getByRole('button', {
-      name: 'Reset Overview Order',
+      name: 'Reset overview order',
     })
 
     expect(resetButton).toBeInTheDocument()

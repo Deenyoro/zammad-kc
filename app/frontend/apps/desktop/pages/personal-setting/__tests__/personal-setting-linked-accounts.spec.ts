@@ -72,11 +72,11 @@ describe('linked accounts page', () => {
 
       await view.events.click(view.getByLabelText('Remove account link on GitHub'))
 
-      expect(await view.findByRole('dialog', { name: 'Delete Object' })).toBeInTheDocument()
+      expect(await view.findByRole('dialog', { name: 'Delete object' })).toBeInTheDocument()
 
       expect(view.getByText('Are you sure you want to delete this object?')).toBeInTheDocument()
 
-      await view.events.click(view.getByRole('button', { name: 'Delete Object' }))
+      await view.events.click(view.getByRole('button', { name: 'Delete object' }))
 
       const mockCalls = await waitForUserCurrentRemoveLinkedAccountMutationCalls()
 

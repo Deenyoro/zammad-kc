@@ -41,7 +41,7 @@ const { viewingUsers, idleUsers } = useTicketLiveUsersDisplay(toRef(() => props.
     <CommonSectionMenu v-if="isAiAgentRunning" :help="__('Currently processing this ticket…')">
       <div class="p-3 flex gap-3 items-center">
         <AiAgentAvatar size="large" />
-        <CommonLabel size="large" class="text-white">{{ $t('Ai Agent') }}</CommonLabel>
+        <CommonLabel size="large" class="text-white">{{ $t('AI agent') }}</CommonLabel>
         <CommonIcon
           class="rtl:mr-auto ltr:ml-auto"
           :label="$t('Currently processing this ticket…')"

@@ -193,7 +193,7 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
 
     context 'when article has multiple email addresses, can reply all' do
       include_examples 'mobile app: reply article', 'Email', attachments: true do
-        let(:trigger_label) { 'Reply All' }
+        let(:trigger_label) { 'Reply all' }
         let(:to)            { ['e1@example.com', 'e2@example.com'] }
         let(:cc)            { ['e3@example.com'] }
         let(:article)       { create(:ticket_article, :outbound_email, ticket: ticket, to: to.join(', '), cc: cc.join(', ')) }
@@ -354,7 +354,7 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
     end
 
     context 'with default fields' do
-      include_examples 'mobile app: reply article', 'Sms', 'with default fields' do
+      include_examples 'mobile app: reply article', 'SMS', 'with default fields' do
         let(:to) { ['+41234567890'] }
       end
     end
@@ -362,7 +362,7 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
     context 'with additional custom recipient' do
       let(:phone_number) { Faker::PhoneNumber.cell_phone_in_e164 }
 
-      include_examples 'mobile app: reply article', 'Sms', 'to another recipient number' do
+      include_examples 'mobile app: reply article', 'SMS', 'to another recipient number' do
         let(:new_to)    { phone_number }
         let(:result_to) { [phone_number, '+41234567890'] }
       end

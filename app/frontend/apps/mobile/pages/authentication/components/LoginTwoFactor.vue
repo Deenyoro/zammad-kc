@@ -44,7 +44,7 @@ const schema: FormSchemaNode[] = [
       {
         type: 'text',
         name: 'code',
-        label: __('Security Code'),
+        label: __('Security code'),
         required: true,
         props: {
           autocomplete: 'one-time-code',

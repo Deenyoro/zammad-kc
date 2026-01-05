@@ -57,7 +57,7 @@ const footerActionOptions = computed(() => {
       variant = 'primary'
       break
     case 'register':
-      actionLabel = __('Set Up')
+      actionLabel = __('Set up')
       disabled = true
       break
     case 'retry':
@@ -66,7 +66,7 @@ const footerActionOptions = computed(() => {
       break
     case 'overview':
     default:
-      actionLabel = __('Set Up')
+      actionLabel = __('Set up')
       variant = 'submit'
   }
 

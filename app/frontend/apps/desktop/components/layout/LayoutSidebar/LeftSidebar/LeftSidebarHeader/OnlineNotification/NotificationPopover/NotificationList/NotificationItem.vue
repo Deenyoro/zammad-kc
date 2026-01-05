@@ -73,7 +73,7 @@ const handleLinkClick = (notification: OnlineNotification) => {
 
       <CommonButton
         :aria-labelledby="`notification-${notification.id}`"
-        :aria-description="$t('Remove Notification')"
+        :aria-description="$t('Remove notification')"
         class="opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
         icon="x-lg"
         variant="remove"

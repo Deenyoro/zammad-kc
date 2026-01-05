@@ -269,7 +269,7 @@ defineExpose({
         class="block ltr:w-full rtl:w-full"
         @click="openFlyout"
       >
-        {{ $t('Link Issue') }}
+        {{ $t('Link issue') }}
       </CommonButton>
 
       <div v-else role="list" class="space-y-5">

@@ -24,7 +24,7 @@ describe('IssueTrackerLinkFlyout', () => {
 
     await wrapper.events.type(wrapper.getByPlaceholderText('Enter a link'), 'totally wrong')
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Link Issue' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Link issue' }))
 
     expect(await wrapper.findByText('Please include a valid url.')).toBeInTheDocument()
 
@@ -32,7 +32,7 @@ describe('IssueTrackerLinkFlyout', () => {
 
     await wrapper.events.clear(wrapper.getByPlaceholderText('Enter a link'))
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Link Issue' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Link issue' }))
 
     expect(await wrapper.findByText('This field is required.')).toBeInTheDocument()
 
@@ -60,7 +60,7 @@ describe('IssueTrackerLinkFlyout', () => {
       'https://gitlab.com/issue/111',
     )
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Link Issue' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Link issue' }))
 
     expect(await wrapper.findByText('The issue reference already exists.')).toBeInTheDocument()
   })

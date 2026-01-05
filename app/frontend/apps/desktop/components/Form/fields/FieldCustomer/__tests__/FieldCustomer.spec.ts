@@ -90,7 +90,7 @@ describe('Form - Field - Customer - Features', () => {
 
     await wrapper.events.keyboard('{Escape}')
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear Selection' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear selection' }))
 
     expect(emittedInput[1][0]).toBeNull()
 

@@ -279,7 +279,7 @@ const formUpdaterAdditionalParams = computed(() => ({
 <template>
   <CommonFlyout
     :name="flyoutName"
-    :header-title="__('Tickets Bulk Edit')"
+    :header-title="__('Tickets bulk edit')"
     header-icon="collection-play"
     size="large"
     no-close-on-action
@@ -298,7 +298,7 @@ const formUpdaterAdditionalParams = computed(() => ({
     <template #footer="{ close }">
       <div class="flex items-center justify-end gap-4">
         <CommonButton size="large" variant="secondary" @click="close">
-          {{ $t('Cancel & Go Back') }}
+          {{ $t('Cancel & go back') }}
         </CommonButton>
         <SplitButton
           v-if="!macrosLoaded || macroMenuItems.length"

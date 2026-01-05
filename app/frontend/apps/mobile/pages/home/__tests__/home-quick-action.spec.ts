@@ -21,7 +21,7 @@ describe('testing quick action', () => {
     await view.events.click(view.getByLabelText('Create new ticket'))
 
     await waitFor(() => {
-      expect(view.queryByText('Create Ticket')).toBeInTheDocument()
+      expect(view.queryByText('Create ticket')).toBeInTheDocument()
     })
   })
 })

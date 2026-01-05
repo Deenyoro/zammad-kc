@@ -189,13 +189,13 @@ const checkSelectClearable = (
   if (clearable) {
     expect(
       getByRole(wrapper.getByLabelText(label), 'button', {
-        name: 'Clear Selection',
+        name: 'Clear selection',
       }),
     ).toBeInTheDocument()
   } else {
     expect(
       queryByRole(wrapper.getByLabelText(label), 'button', {
-        name: 'Clear Selection',
+        name: 'Clear selection',
       }),
     )
   }

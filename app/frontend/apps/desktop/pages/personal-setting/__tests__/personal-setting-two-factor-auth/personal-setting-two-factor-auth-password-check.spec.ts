@@ -33,7 +33,7 @@ describe('Two-factor Authentication - Password Check', () => {
     await view.events.click(actionMenuButton)
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Set Up Two-factor Authentication: Confirm Password',
+      name: 'Set up two-factor authentication: Confirm password',
     })
 
     const flyoutContent = within(flyout)
@@ -59,7 +59,7 @@ describe('Two-factor Authentication - Password Check', () => {
     expect(passwordInput).not.toBeInTheDocument()
 
     await waitFor(() =>
-      expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Security Keys'),
+      expect(flyout).toHaveAccessibleName('Set up two-factor authentication: Security keys'),
     )
   })
 
@@ -73,7 +73,7 @@ describe('Two-factor Authentication - Password Check', () => {
     await view.events.click(actionMenuButton)
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Set Up Two-factor Authentication: Confirm Password',
+      name: 'Set up two-factor authentication: Confirm password',
     })
 
     const flyoutContent = within(flyout)
@@ -103,7 +103,7 @@ describe('Two-factor Authentication - Password Check', () => {
     await view.events.click(actionMenuButton)
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Set Up Two-factor Authentication: Confirm Password',
+      name: 'Set up two-factor authentication: Confirm password',
     })
 
     const flyoutContent = within(flyout)
@@ -125,7 +125,7 @@ describe('Two-factor Authentication - Password Check', () => {
     await view.events.click(actionMenuButton)
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Set Up Two-factor Authentication: Confirm Password',
+      name: 'Set up two-factor authentication: Confirm password',
     })
 
     const flyoutContent = within(flyout)

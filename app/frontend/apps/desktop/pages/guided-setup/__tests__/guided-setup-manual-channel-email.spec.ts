@@ -181,8 +181,8 @@ describe('guided setup manual channel email', () => {
     it('can redirect to invite step when guess is successful', async () => {
       const view = await visitView('/guided-setup/manual/channels/email')
 
-      expect(view.getByText('Email Account')).toBeInTheDocument()
-      expect(view.getByRole('button', { name: 'Go Back' })).toBeInTheDocument()
+      expect(view.getByText('Email account')).toBeInTheDocument()
+      expect(view.getByRole('button', { name: 'Go back' })).toBeInTheDocument()
 
       const accountForm = view.getByTestId('channel-email-account')
 
@@ -215,7 +215,7 @@ describe('guided setup manual channel email', () => {
 
       await view.events.click(
         view.getByRole('button', {
-          name: 'Connect and Continue',
+          name: 'Connect and continue',
         }),
       )
 
@@ -251,7 +251,7 @@ describe('guided setup manual channel email', () => {
 
       await view.events.click(
         view.getByRole('button', {
-          name: 'Connect and Continue',
+          name: 'Connect and continue',
         }),
       )
 
@@ -308,7 +308,7 @@ describe('guided setup manual channel email', () => {
 
       await view.events.click(
         view.getByRole('button', {
-          name: 'Connect and Continue',
+          name: 'Connect and continue',
         }),
       )
 
@@ -365,7 +365,7 @@ describe('guided setup manual channel email', () => {
 
       await view.events.click(
         view.getByRole('button', {
-          name: 'Connect and Continue',
+          name: 'Connect and continue',
         }),
       )
 
@@ -399,7 +399,7 @@ describe('guided setup manual channel email', () => {
 
       await view.events.click(
         view.getByRole('button', {
-          name: 'Connect and Continue',
+          name: 'Connect and continue',
         }),
       )
 
@@ -486,7 +486,7 @@ describe('guided setup manual channel email', () => {
 
       await view.events.click(
         view.getByRole('button', {
-          name: 'Connect and Continue',
+          name: 'Connect and continue',
         }),
       )
 
@@ -516,7 +516,7 @@ describe('guided setup manual channel email', () => {
       const outboundForm = view.getByTestId('channel-email-outbound')
 
       expect(outboundForm).toBeVisible()
-      expect(view.getByRole('button', { name: 'Save and Continue' })).toBeInTheDocument()
+      expect(view.getByRole('button', { name: 'Save and continue' })).toBeInTheDocument()
     })
 
     it('can show outbound configuration form when roundtrip is unsuccessful', async () => {
@@ -559,7 +559,7 @@ describe('guided setup manual channel email', () => {
 
       await view.events.click(
         view.getByRole('button', {
-          name: 'Connect and Continue',
+          name: 'Connect and continue',
         }),
       )
 
@@ -597,7 +597,7 @@ describe('guided setup manual channel email', () => {
 
       await view.events.click(
         view.getByRole('button', {
-          name: 'Connect and Continue',
+          name: 'Connect and continue',
         }),
       )
 
@@ -666,7 +666,7 @@ describe('guided setup manual channel email', () => {
 
       await view.events.click(
         view.getByRole('button', {
-          name: 'Save and Continue',
+          name: 'Save and continue',
         }),
       )
 
@@ -731,7 +731,7 @@ describe('guided setup manual channel email', () => {
 
       await view.events.click(
         view.getByRole('button', {
-          name: 'Connect and Continue',
+          name: 'Connect and continue',
         }),
       )
 
@@ -802,7 +802,7 @@ describe('guided setup manual channel email', () => {
 
       await view.events.click(
         view.getByRole('button', {
-          name: 'Connect and Continue',
+          name: 'Connect and continue',
         }),
       )
 
@@ -906,7 +906,7 @@ describe('guided setup manual channel email', () => {
     it('can go back to channels step', async () => {
       const view = await visitView('/guided-setup/manual/channels/email')
 
-      const goBackButton = view.getByRole('button', { name: 'Go Back' })
+      const goBackButton = view.getByRole('button', { name: 'Go back' })
 
       await view.events.click(goBackButton)
 

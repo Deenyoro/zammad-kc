@@ -51,15 +51,15 @@ describe('ticket create view', () => {
 
       await view.events.type(await view.findByLabelText('Title'), 'Test Ticket')
 
-      await view.events.click(await view.findByRole('button', { name: 'Discard Changes' }))
+      await view.events.click(await view.findByRole('button', { name: 'Discard changes' }))
 
       const dialog = await view.findByRole('dialog', {
-        name: 'Unsaved Changes',
+        name: 'Unsaved changes',
       })
 
       const dialogView = within(dialog)
 
-      await view.events.click(dialogView.getByRole('button', { name: 'Cancel & Go Back' }))
+      await view.events.click(dialogView.getByRole('button', { name: 'Cancel & go back' }))
 
       expect(view.getByText('Test Ticket')).toBeInTheDocument()
     })
@@ -99,7 +99,7 @@ describe('ticket create view', () => {
       // Page title defaults back when title is cleared
       await view.events.clear(view.getByLabelText('Title'))
       await waitFor(() =>
-        expect(view.getByRole('heading', { level: 1, name: 'New Ticket' })).toBeInTheDocument(),
+        expect(view.getByRole('heading', { level: 1, name: 'New ticket' })).toBeInTheDocument(),
       )
 
       await view.events.type(view.getByLabelText('Title'), 'Test Ticket')
@@ -198,12 +198,12 @@ describe('ticket create view', () => {
     it('renders view correctly', async () => {
       const view = await visitView('/ticket/create')
 
-      expect(await view.findByRole('heading', { level: 1, name: 'New Ticket' })).toBeInTheDocument()
+      expect(await view.findByRole('heading', { level: 1, name: 'New ticket' })).toBeInTheDocument()
 
       expect(view.getByRole('tablist')).toBeInTheDocument()
 
       // Default tab is the first one
-      expect(view.getByRole('tab', { selected: true, name: 'Received Call' })).toBeInTheDocument()
+      expect(view.getByRole('tab', { selected: true, name: 'Received call' })).toBeInTheDocument()
 
       rendersFields(view)
     })
@@ -211,13 +211,13 @@ describe('ticket create view', () => {
     it('cancels ticket creation', async () => {
       const view = await visitView('/ticket/create')
 
-      expect(await view.findByRole('heading', { level: 1, name: 'New Ticket' })).toBeInTheDocument()
+      expect(await view.findByRole('heading', { level: 1, name: 'New ticket' })).toBeInTheDocument()
 
-      await view.events.click(view.getByRole('button', { name: 'Cancel & Go Back' }))
+      await view.events.click(view.getByRole('button', { name: 'Cancel & go back' }))
 
       await waitFor(() =>
         expect(
-          view.queryByRole('heading', { level: 1, name: 'New Ticket' }),
+          view.queryByRole('heading', { level: 1, name: 'New ticket' }),
         ).not.toBeInTheDocument(),
       )
     })
@@ -225,9 +225,9 @@ describe('ticket create view', () => {
     it('shows send email article type', async () => {
       const view = await visitView('/ticket/create')
 
-      await view.events.click(await view.findByText('Send Email'))
+      await view.events.click(await view.findByText('Send email'))
 
-      expect(view.getByRole('tab', { selected: true, name: 'Send Email' })).toBeInTheDocument()
+      expect(view.getByRole('tab', { selected: true, name: 'Send email' })).toBeInTheDocument()
       expect(view.getByLabelText('CC')).toBeInTheDocument()
       rendersFields(view)
     })
@@ -235,9 +235,9 @@ describe('ticket create view', () => {
     it('shows outbound call article type', async () => {
       const view = await visitView('/ticket/create')
 
-      await view.events.click(await view.findByText('Outbound Call'))
+      await view.events.click(await view.findByText('Outbound call'))
 
-      expect(view.getByRole('tab', { selected: true, name: 'Outbound Call' })).toBeInTheDocument()
+      expect(view.getByRole('tab', { selected: true, name: 'Outbound call' })).toBeInTheDocument()
       rendersFields(view)
     })
 
@@ -290,18 +290,18 @@ describe('ticket create view', () => {
 
       const view = await visitView('/ticket/create')
 
-      expect(await view.findByRole('button', { name: 'Cancel & Go Back' })).toBeInTheDocument()
+      expect(await view.findByRole('button', { name: 'Cancel & go back' })).toBeInTheDocument()
 
       await view.events.type(view.getByLabelText('Title'), 'Test Ticket')
 
       await waitFor(() =>
-        expect(view.queryByRole('button', { name: 'Cancel & Go Back' })).not.toBeInTheDocument(),
+        expect(view.queryByRole('button', { name: 'Cancel & go back' })).not.toBeInTheDocument(),
       )
 
-      await view.events.click(await view.findByRole('button', { name: 'Discard Changes' }))
+      await view.events.click(await view.findByRole('button', { name: 'Discard changes' }))
 
       const dialog = await view.findByRole('dialog', {
-        name: 'Unsaved Changes',
+        name: 'Unsaved changes',
       })
 
       expect(dialog).toBeInTheDocument()
@@ -312,7 +312,7 @@ describe('ticket create view', () => {
         await dialogView.findByText('Are you sure? You have unsaved changes that will get lost.'),
       )
 
-      await view.events.click(dialogView.getByRole('button', { name: 'Discard Changes' }))
+      await view.events.click(dialogView.getByRole('button', { name: 'Discard changes' }))
 
       // should not be in the document anymore
       await waitFor(() => expect(view.queryByLabelText('Title')).not.toBeInTheDocument())
@@ -344,7 +344,7 @@ describe('ticket create view', () => {
 
       const view = await visitView(`/ticket/create/${uid}`)
 
-      expect(await view.findByRole('button', { name: 'Cancel & Go Back' })).toBeInTheDocument()
+      expect(await view.findByRole('button', { name: 'Cancel & go back' })).toBeInTheDocument()
 
       await view.events.type(view.getByLabelText('Title'), 'Test Ticket')
 

@@ -10,7 +10,7 @@ describe('ConnectionLostDialog', () => {
 
     expect(wrapper.getByRole('dialog')).toBeInTheDocument()
     expect(
-      wrapper.getByRole('heading', { level: 3, name: 'Lost Network Connection' }),
+      wrapper.getByRole('heading', { level: 3, name: 'Lost network connection' }),
     ).toBeInTheDocument()
     expect(wrapper.getByText('Trying to reconnect…')).toBeInTheDocument()
     expect(wrapper.getByIconName('wifi-off')).toBeInTheDocument()

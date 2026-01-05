@@ -212,7 +212,7 @@ setupMissingOrDisabledOptionHandling()
       </div>
       <CommonIcon
         v-if="context.clearable && hasValue && !context.disabled"
-        :label="__('Clear Selection')"
+        :label="__('Clear selection')"
         class="text-gray absolute -mt-5 shrink-0 ltr:right-2 rtl:left-2"
         name="close-small"
         size="base"

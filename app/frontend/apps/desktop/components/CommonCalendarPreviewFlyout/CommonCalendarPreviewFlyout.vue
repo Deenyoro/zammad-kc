@@ -35,20 +35,20 @@ const calendarEventsQueryLoading = calendarEventsQuery.loading()
 const tableHeaders: TableSimpleHeader[] = [
   {
     key: 'summary',
-    label: __('Event Summary'),
+    label: __('Event summary'),
   },
   {
     key: 'location',
-    label: __('Event Location'),
+    label: __('Event location'),
   },
   {
     key: 'start',
-    label: __('Event Starting'),
+    label: __('Event starting'),
     type: 'timestamp_absolute',
   },
   {
     key: 'end',
-    label: __('Event Ending'),
+    label: __('Event ending'),
     type: 'timestamp_absolute',
   },
 ]
@@ -82,7 +82,7 @@ const downloadCalendar = () => {
 
 <template>
   <CommonFlyout
-    :header-title="__('Preview Calendar')"
+    :header-title="__('Preview calendar')"
     :footer-action-options="{
       actionLabel: __('Download'),
       actionButton: { variant: 'primary' },
@@ -93,7 +93,7 @@ const downloadCalendar = () => {
   >
     <CommonLoader :loading="calendarEventsQueryLoading">
       <CommonSimpleTable
-        :caption="__('Preview Calendar')"
+        :caption="__('Preview calendar')"
         class="mb-4 w-full"
         :headers="tableHeaders"
         :items="tableItems"

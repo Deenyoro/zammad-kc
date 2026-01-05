@@ -158,7 +158,7 @@ const { collapseDuration, collapseEnter, collapseAfterEnter, collapseLeave } =
         <CommonIcon
           v-if="option.children && !valueLookup[option.value]"
           class="shrink-0 fill-stone-200 hover:fill-black focus:outline-hidden focus-visible:rounded-xs focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:fill-neutral-500 dark:hover:fill-white"
-          :aria-label="i18n.t('Toggle Group')"
+          :aria-label="i18n.t('Toggle group')"
           :name="collapseLookup[option.value] ? 'chevron-up' : 'chevron-down'"
           size="xs"
           role="button"

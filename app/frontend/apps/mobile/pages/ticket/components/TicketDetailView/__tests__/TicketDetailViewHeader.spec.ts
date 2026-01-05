@@ -110,7 +110,7 @@ describe('tickets zoom header', () => {
         router: true,
       })
 
-      expect(view.getByLabelText('AI Agent')).toBeInTheDocument()
+      expect(view.getByLabelText('AI agent')).toBeInTheDocument()
     })
   })
 })

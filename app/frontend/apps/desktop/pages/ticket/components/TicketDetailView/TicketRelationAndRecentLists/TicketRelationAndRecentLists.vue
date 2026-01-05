@@ -54,7 +54,7 @@ const ticketsRecentlyViewed = computed(
     <div class="space-y-6">
       <TicketSimpleTable
         v-if="ticketsByCustomer && ticketsByCustomer.length > 0"
-        :label="$t('Recent Customer Tickets')"
+        :label="$t('Recent customer tickets')"
         :tickets="ticketsByCustomer"
         :selected-ticket-id="selectedTicketId"
         @click-ticket="$emit('click-ticket', $event)"
@@ -62,7 +62,7 @@ const ticketsRecentlyViewed = computed(
 
       <TicketSimpleTable
         v-if="ticketsRecentlyViewed && ticketsRecentlyViewed.length > 0"
-        :label="$t('Recently Viewed Tickets')"
+        :label="$t('Recently viewed tickets')"
         :selected-ticket-id="selectedTicketId"
         :tickets="ticketsRecentlyViewed"
         @click-ticket="$emit('click-ticket', $event)"

@@ -47,7 +47,7 @@ const shownUnits = computed(() => {
 
 <template>
   <CommonSectionMenu v-if="isShown">
-    <CommonSectionMenuItem v-if="ticketData.timeUnit" :label="__('Total Accounted Time')">
+    <CommonSectionMenuItem v-if="ticketData.timeUnit" :label="__('Total accounted time')">
       {{ ticketData.timeUnit }}
       {{ $t(timeAccountingDisplayUnit) }}
     </CommonSectionMenuItem>

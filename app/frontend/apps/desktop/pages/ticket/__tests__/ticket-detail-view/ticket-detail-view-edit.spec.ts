@@ -644,7 +644,7 @@ describe('Ticket detail view', () => {
       expect(confirmDialog).toBeInTheDocument()
 
       await view.events.click(
-        within(confirmDialog).getByRole('button', { name: 'Discard Changes' }),
+        within(confirmDialog).getByRole('button', { name: 'Discard changes' }),
       )
 
       await waitFor(() =>
@@ -761,9 +761,9 @@ describe('Ticket detail view', () => {
 
       await view.events.click(view.getByRole('button', { name: 'Discard unsaved reply' }))
 
-      expect(await view.findByRole('dialog', { name: 'Unsaved Changes' })).toBeInTheDocument()
+      expect(await view.findByRole('dialog', { name: 'Unsaved changes' })).toBeInTheDocument()
 
-      await view.events.click(view.getByRole('button', { name: 'Discard Changes' }))
+      await view.events.click(view.getByRole('button', { name: 'Discard changes' }))
 
       // Verify that ticket attributes state is not lost
       expect(view.getByLabelText('State')).toHaveTextContent('closed')
@@ -907,9 +907,9 @@ describe('Ticket detail view', () => {
         }),
       )
 
-      expect(await view.findByRole('dialog', { name: 'Unsaved Changes' })).toBeInTheDocument()
+      expect(await view.findByRole('dialog', { name: 'Unsaved changes' })).toBeInTheDocument()
 
-      await view.events.click(view.getByRole('button', { name: 'Discard Changes' }))
+      await view.events.click(view.getByRole('button', { name: 'Discard changes' }))
 
       await waitFor(() => {
         expect(
@@ -924,10 +924,10 @@ describe('Ticket detail view', () => {
       await view.events.click(view.getByRole('button', { name: 'Discard unsaved reply' }))
 
       const dialog = await view.findByRole('dialog', {
-        name: 'Unsaved Changes',
+        name: 'Unsaved changes',
       })
 
-      await view.events.click(within(dialog).getByRole('button', { name: 'Discard Changes' }))
+      await view.events.click(within(dialog).getByRole('button', { name: 'Discard changes' }))
 
       await waitFor(() => {
         expect(

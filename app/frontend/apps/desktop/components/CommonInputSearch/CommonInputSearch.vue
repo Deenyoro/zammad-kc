@@ -114,7 +114,7 @@ const onKeydown = (event: KeyboardEvent) => emit('keydown', event)
         :class="{
           invisible: !filter?.length,
         }"
-        :aria-label="$t('Clear Search')"
+        :aria-label="$t('Clear search')"
         :aria-hidden="!filter?.length ? 'true' : undefined"
         name="backspace2"
         size="xs"

@@ -73,7 +73,7 @@ const ticketsData = computed(() => getTicketData(organization.value))
           transparent-background
           @click="openEditOrganizationDialog(organization!)"
         >
-          {{ $t('Edit Organization') }}
+          {{ $t('Edit organization') }}
         </CommonButton>
       </template>
     </ObjectAttributes>

@@ -253,7 +253,7 @@ describe('static organization', () => {
 
     await waitUntil(() => mockApi.calls.error)
 
-    await expect(view.findByText('Not Found')).resolves.toBeInTheDocument()
+    await expect(view.findByText('Not found')).resolves.toBeInTheDocument()
   })
 
   it('redirects to error page if access to organization is forbidden', async () => {

@@ -85,7 +85,7 @@ const tooltipMessages = computed(() => {
         class="shrink-0"
         name="visibility"
         :messages="tooltipMessages"
-        :heading="__('Limited Visibility')"
+        :heading="__('Limited visibility')"
       >
         <CommonIcon name="tooltip" size="small" />
       </CommonTooltip>

@@ -276,7 +276,7 @@ class ZammadFormFieldCapybaraElementDelegator < SimpleDelegator
   def clear_selection
     raise 'Field does not support clearing selection' if !type_select? && !type_treeselect? && !autocomplete?
 
-    element.find('[role="button"][aria-label="Clear Selection"]').click
+    element.find('[role="button"][aria-label="Clear selection"]').click
 
     maybe_wait_for_form_updater
 
@@ -770,7 +770,7 @@ class ZammadFormFieldCapybaraElementDelegator < SimpleDelegator
         maybe_wait_for_form_updater
 
         if !use_action
-          find('[aria-label="Clear Search"]').click
+          find('[aria-label="Clear search"]').click
         end
       end
     end
@@ -959,7 +959,7 @@ class ZammadFormFieldCapybaraElementDelegator < SimpleDelegator
   end
 
   def clear_date
-    element.find('[role="button"][aria-label="Clear Selection"]').click
+    element.find('[role="button"][aria-label="Clear selection"]').click
 
     maybe_wait_for_form_updater
 

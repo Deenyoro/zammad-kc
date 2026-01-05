@@ -550,7 +550,7 @@ describe('Form - Field - Select - Options', () => {
     expect(selectOptions).toHaveLength(1)
     expect(selectOptions[0]).toHaveTextContent('Item C')
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear Search' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear search' }))
 
     // Because of clicking outside the input is a toggle, we need to click twice
     await wrapper.events.click(wrapper.getByLabelText('Select'))
@@ -682,7 +682,7 @@ describe('Form - Field - Select - Features', () => {
     expect(listitem).toHaveTextContent(testOptions[1].label)
 
     const clearSelectionButton = wrapper.getByRole('button', {
-      name: 'Clear Selection',
+      name: 'Clear selection',
     })
 
     await wrapper.events.click(clearSelectionButton)
@@ -958,7 +958,7 @@ describe('Form - Field - Select - Features', () => {
       clearable: true,
     })
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear Selection' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear selection' }))
 
     await waitFor(() => {
       expect(wrapper.emitted().inputRaw).toBeTruthy()
@@ -1005,7 +1005,7 @@ describe('Form - Field - Select - Features', () => {
       multiple: true,
     })
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear Selection' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear selection' }))
 
     await waitFor(() => {
       expect(wrapper.emitted().inputRaw).toBeTruthy()
@@ -1086,12 +1086,12 @@ describe('Form - Field - Select - Accessibility', () => {
 
     const listitem = wrapper.getByRole('listitem')
 
-    expect(getByRole(listitem, 'button', { name: 'Unselect Option' })).toHaveAttribute(
+    expect(getByRole(listitem, 'button', { name: 'Unselect option' })).toHaveAttribute(
       'tabindex',
       '0',
     )
 
-    expect(wrapper.getByRole('button', { name: 'Clear Selection' })).toHaveAttribute(
+    expect(wrapper.getByRole('button', { name: 'Clear selection' })).toHaveAttribute(
       'tabindex',
       '0',
     )
@@ -1200,7 +1200,7 @@ describe('Form - Field - Select - Accessibility', () => {
       },
     })
 
-    expect(wrapper.getByRole('button', { name: 'Clear Selection' })).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Clear selection' })).toBeInTheDocument()
   })
 
   it('supports keyboard navigation', async () => {
@@ -1246,7 +1246,7 @@ describe('Form - Field - Select - Accessibility', () => {
 
     expect(emittedInput[0][0]).toBe(testOptions[2].value)
 
-    wrapper.events.type(wrapper.getByRole('button', { name: 'Clear Selection' }), '{Space}')
+    wrapper.events.type(wrapper.getByRole('button', { name: 'Clear selection' }), '{Space}')
 
     await waitFor(() => {
       expect(emittedInput[1][0]).toBe(null)

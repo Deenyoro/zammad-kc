@@ -49,8 +49,8 @@ describe('LinkForm', () => {
     })
 
     expect(wrapper.getByRole('textbox', { name: 'Link URL' })).toBeTruthy()
-    expect(wrapper.getByRole('textbox', { name: 'Link Text' })).toBeTruthy()
-    expect(wrapper.getByRole('button', { name: 'Add Link' })).toBeTruthy()
+    expect(wrapper.getByRole('textbox', { name: 'Link text' })).toBeTruthy()
+    expect(wrapper.getByRole('button', { name: 'Add link' })).toBeTruthy()
   })
 
   it('should add a new link on submit when no active link exists', async () => {
@@ -64,10 +64,10 @@ describe('LinkForm', () => {
       wrapper.getByRole('textbox', { name: 'Link URL' }),
       'https://example.com',
     )
-    await wrapper.events.type(wrapper.getByRole('textbox', { name: 'Link Text' }), 'Example Link')
+    await wrapper.events.type(wrapper.getByRole('textbox', { name: 'Link text' }), 'Example Link')
 
     // Submit the form
-    await wrapper.events.click(wrapper.getByText('Add Link'))
+    await wrapper.events.click(wrapper.getByText('Add link'))
 
     // Verify expected editor commands were called
     expect(editor.chain).toHaveBeenCalled()
@@ -106,9 +106,9 @@ describe('LinkForm', () => {
       wrapper.getByRole('textbox', { name: 'Link URL' }),
       'https://updated.com',
     )
-    await wrapper.events.type(wrapper.getByRole('textbox', { name: 'Link Text' }), 'Updated Link')
+    await wrapper.events.type(wrapper.getByRole('textbox', { name: 'Link text' }), 'Updated Link')
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Add Link' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Add link' }))
 
     // Verify expected editor commands were called
     expect(editor.chain).toHaveBeenCalled()
@@ -137,7 +137,7 @@ describe('LinkForm', () => {
       form: true,
     })
 
-    const removeButton = wrapper.getByText('Remove Link')
+    const removeButton = wrapper.getByText('Remove link')
     await wrapper.events.click(removeButton)
 
     expect(editor.chain).toHaveBeenCalled()

@@ -58,7 +58,7 @@ describe('guided setup admin user creation', () => {
         )
       })
 
-      expect(view.getByText('Create Administrator Account')).toBeInTheDocument()
+      expect(view.getByText('Create administrator account')).toBeInTheDocument()
 
       const firstNameField = view.getByLabelText('First name')
       const lastNameField = view.getByLabelText('Last name')

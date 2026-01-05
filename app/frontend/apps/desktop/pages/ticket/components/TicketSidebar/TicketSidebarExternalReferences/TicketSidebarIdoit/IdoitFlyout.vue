@@ -174,7 +174,7 @@ const submitObjects = async (data: FormDataRecords) => {
     no-close-on-action
     :form="form"
     :footer-action-options="{
-      actionLabel: $t('Link Objects'),
+      actionLabel: $t('Link objects'),
       actionButton: {
         type: 'submit',
         disabled: !isValid,

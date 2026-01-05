@@ -89,11 +89,11 @@ const useLoginTwoFactor = (clearErrors: () => void) => {
   const loginPageTitle = computed(() => {
     const productName = application.config.product_name
     if (loginFlow.state === 'credentials') return productName
-    if (loginFlow.state === 'recovery-code') return __('Recovery Code')
+    if (loginFlow.state === 'recovery-code') return __('Recovery code')
     if (loginFlow.state === '2fa') {
       return twoFactorPlugin.value?.label ?? productName
     }
-    return __('Try Another Method')
+    return __('Try another method')
   })
 
   return {

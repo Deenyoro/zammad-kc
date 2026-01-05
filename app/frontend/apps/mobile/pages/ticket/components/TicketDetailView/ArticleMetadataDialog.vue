@@ -55,7 +55,7 @@ const links = computed(() => {
     const { ticketInternalId } = props
     const url = `/ticket_attachment/${ticketInternalId}/${articleInternalId}/${attachmentInternalId}?disposition=attachment`
     links.push({
-      label: __('Original Formatting'),
+      label: __('Original formatting'),
       api: true,
       url,
       target: '_blank',
@@ -82,7 +82,7 @@ const detectedLanguageAttribute = computed(() => attributesLookup.value.get('det
 </script>
 
 <template>
-  <CommonDialog :label="__('Meta Data')" :name="name" class="p-4">
+  <CommonDialog :label="__('Meta data')" :name="name" class="p-4">
     <CommonSectionMenu>
       <ArticleMetadataAddress :address="article.from" :label="__('From')" />
       <ArticleMetadataAddress :address="article.replyTo" :label="__('Reply-To')" />
@@ -117,7 +117,7 @@ const detectedLanguageAttribute = computed(() => attributesLookup.value.get('det
           </CommonLink>
         </div>
       </CommonSectionMenuItem>
-      <CommonSectionMenuItem v-if="articleDeliveryStatus" :label="__('Message Status')">
+      <CommonSectionMenuItem v-if="articleDeliveryStatus" :label="__('Message status')">
         <CommonIcon :name="articleDeliveryStatus.icon" size="tiny" class="inline" />
         {{ $t(articleDeliveryStatus.message) }}
       </CommonSectionMenuItem>

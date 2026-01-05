@@ -11,22 +11,22 @@ import { TicketCreateArticleType } from '../types.ts'
 export const ticketCreateArticleType = {
   [TicketCreateArticleType.PhoneIn]: {
     icon: 'phone-in',
-    label: __('Received Call'),
-    title: __('Received Call: %s'),
+    label: __('Received call'),
+    title: __('Received call: %s'),
     sender: 'Customer',
     type: 'phone',
   },
   [TicketCreateArticleType.PhoneOut]: {
     icon: 'phone-out',
-    label: __('Outbound Call'),
-    title: __('Outbound Call: %s'),
+    label: __('Outbound call'),
+    title: __('Outbound call: %s'),
     sender: 'Agent',
     type: 'phone',
   },
   [TicketCreateArticleType.EmailOut]: {
     icon: 'mail-out',
-    label: __('Send Email'),
-    title: __('Send Email: %s'),
+    label: __('Send email'),
+    title: __('Send email: %s'),
     sender: 'Agent',
     type: 'email',
   },

@@ -96,7 +96,7 @@ describe('testing login error handling', () => {
 
     await view.events.click(view.getByText('Sign in'))
 
-    await view.events.type(view.getByLabelText('Security Code'), '123456')
+    await view.events.type(view.getByLabelText('Security code'), '123456')
 
     await view.events.click(view.getByText('Sign in'))
 

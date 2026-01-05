@@ -18,7 +18,7 @@ defineProps<CommonPopoverWithTriggerProps>()
     <template #popover-content="{ popoverId }">
       <div :id="popoverId" class="p-3">
         <CommonLabel class="text-base! dark:text-white! text-black! block!" tag="h3">
-          {{ $t('AI Agent') }}
+          {{ $t('AI agent') }}
         </CommonLabel>
 
         <CommonLabel tag="p">
@@ -31,10 +31,9 @@ defineProps<CommonPopoverWithTriggerProps>()
       class="relative size-8 rounded-full before:bg-gradient-to-r before:from-blue-800 before:to-pink-200 before:absolute before:w-full before:inset-0 before:size-full before:-z-1 before:rounded-full before:animate-spin before:[animation-duration:2s]"
     >
       <div
-        :aria-label="$t('AI Agent')"
         class="p-1 bg-neutral-50 dark:bg-gray-500 rounded-[inherit] border border-transparent bg-clip-padding h-full flex"
       >
-        <CommonIcon class="text-blue-800" size="base" name="ai-agent" />
+        <CommonIcon class="text-blue-800" size="base" name="ai-agent" :label="__('AI agent')" />
       </div>
 
       <span

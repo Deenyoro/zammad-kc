@@ -123,7 +123,7 @@ describe('search view', () => {
 
     const { view } = await visitSearchView()
 
-    expect(view.queryByRole('button', { name: 'Bulk Action' })).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Bulk actions' })).not.toBeInTheDocument()
 
     const mainContent = view.getByRole('main')
 
@@ -133,10 +133,10 @@ describe('search view', () => {
 
     await view.events.click(checkboxes[0])
 
-    await view.events.click(await view.findByRole('button', { name: 'Bulk Actions' }))
+    await view.events.click(await view.findByRole('button', { name: 'Bulk actions' }))
 
     expect(
-      await view.findByRole('complementary', { name: 'Tickets Bulk Edit' }),
+      await view.findByRole('complementary', { name: 'Tickets bulk edit' }),
     ).toBeInTheDocument()
 
     const ticketState = await view.findByLabelText('State')

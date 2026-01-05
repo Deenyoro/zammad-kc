@@ -77,7 +77,7 @@ describe('Ticket detail view', () => {
       expect(
         within(sidebar).getByRole('heading', {
           level: 3,
-          name: 'Accounted Time',
+          name: 'Accounted time',
         }),
       ).toBeInTheDocument()
 
@@ -214,16 +214,16 @@ describe('Ticket detail view', () => {
       await waitForTicketUpdateMutationCalls()
 
       const flyout = await view.findByRole('complementary', {
-        name: 'Time Accounting',
+        name: 'Time accounting',
       })
 
       expect(
         within(flyout).getByRole('heading', {
           level: 2,
         }),
-      ).toHaveTextContent('Time Accounting')
+      ).toHaveTextContent('Time accounting')
 
-      await view.events.type(await within(flyout).findByLabelText('Accounted Time'), '1')
+      await view.events.type(await within(flyout).findByLabelText('Accounted time'), '1')
 
       await getNode('form-ticket-time-accounting')?.settled
 
@@ -236,7 +236,7 @@ describe('Ticket detail view', () => {
 
       await view.events.click(
         within(flyout).getByRole('button', {
-          name: 'Account Time',
+          name: 'Account time',
         }),
       )
 
@@ -254,7 +254,7 @@ describe('Ticket detail view', () => {
 
       expect(
         view.queryByRole('complementary', {
-          name: 'Time Accounting',
+          name: 'Time accounting',
         }),
       ).not.toBeInTheDocument()
     })

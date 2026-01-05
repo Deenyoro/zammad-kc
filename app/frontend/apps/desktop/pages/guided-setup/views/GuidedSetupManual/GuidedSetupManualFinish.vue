@@ -12,7 +12,7 @@ const { setBoxSize, setHideFooter, setTitle } = useSystemSetup()
 setBoxSize?.('medium')
 setHideFooter?.(true)
 
-setTitle(__('Setup Finished'))
+setTitle(__('Setup finished'))
 
 const router = useRouter()
 

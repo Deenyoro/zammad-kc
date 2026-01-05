@@ -72,7 +72,7 @@ export default {
       <slot name="controls" />
       <CommonIcon
         v-if="filter && filter.length"
-        :aria-label="i18n.t('Clear Search')"
+        :aria-label="i18n.t('Clear search')"
         class="text-gray"
         size="base"
         name="input-cancel"

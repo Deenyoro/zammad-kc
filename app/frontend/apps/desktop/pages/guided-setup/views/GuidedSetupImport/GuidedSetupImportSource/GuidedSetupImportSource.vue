@@ -49,7 +49,7 @@ const { form, debouncedLoading, onContinueButtonCallback } = useImportSource()
 
     <GuidedSetupActionFooter
       :form="form"
-      :submit-button-text="onContinueButtonCallback ? __('Continue') : __('Save and Continue')"
+      :submit-button-text="onContinueButtonCallback ? __('Continue') : __('Save and continue')"
       :submit-button-type="onContinueButtonCallback ? 'button' : 'submit'"
       :submit-button-variant="onContinueButtonCallback ? 'primary' : 'submit'"
       :on-submit="onContinueButtonCallback"

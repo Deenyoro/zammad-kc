@@ -29,7 +29,7 @@ const schema: FormSchemaNode[] = [
       {
         type: 'text',
         name: 'code',
-        label: __('Recovery Code'),
+        label: __('Recovery code'),
         required: true,
       },
     ],

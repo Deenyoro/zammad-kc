@@ -98,14 +98,14 @@ describe('guided setup manual invite', () => {
 
       await flushPromises()
 
-      expect(view.getByText('Invite Colleagues')).toBeInTheDocument()
+      expect(view.getByText('Invite colleagues')).toBeInTheDocument()
       expect(view.getByLabelText('First name')).toBeInTheDocument()
       expect(view.getByLabelText('Last name')).toBeInTheDocument()
       expect(view.getByLabelText('Email')).toBeInTheDocument()
       expect(view.getByLabelText('Roles')).toBeInTheDocument()
       expect(view.getByLabelText('Group permissions')).toBeInTheDocument()
 
-      expect(view.getByRole('button', { name: 'Finish Setup' })).toBeInTheDocument()
+      expect(view.getByRole('button', { name: 'Finish setup' })).toBeInTheDocument()
 
       await view.events.type(view.getByLabelText('Email'), 'test@example.com')
       await view.events.click(view.getAllByRole('switch')[2])
@@ -130,7 +130,7 @@ describe('guided setup manual invite', () => {
       expect(view.getByLabelText('Full')).toBeChecked()
 
       const inviteButton = view.getByRole('button', {
-        name: 'Send Invitation',
+        name: 'Send invitation',
       })
 
       await view.events.click(inviteButton)
@@ -184,7 +184,7 @@ describe('guided setup manual invite', () => {
       })
 
       const inviteButton = view.getByRole('button', {
-        name: 'Send Invitation',
+        name: 'Send invitation',
       })
 
       await view.events.click(inviteButton)
@@ -199,7 +199,7 @@ describe('guided setup manual invite', () => {
     it('redirects to guided setup finish screen when continued', async () => {
       const view = await visitView('/guided-setup/manual/invite')
 
-      await view.events.click(view.getByRole('button', { name: 'Finish Setup' }))
+      await view.events.click(view.getByRole('button', { name: 'Finish setup' }))
 
       await waitFor(() => {
         expect(view, 'correctly redirects to guided setup finish screen').toHaveCurrentUrl(

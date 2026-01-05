@@ -7,7 +7,7 @@ export default <EventActionModule>{
   actionName: (event) => (event.changes?.to === 'true' ? 'checked' : 'unchecked'),
   content: (event) => {
     return {
-      entityName: __('Checklist Item'),
+      entityName: __('Checklist item'),
       details: event.changes?.from || '',
     }
   },

@@ -121,7 +121,7 @@ setupMissingOrDisabledOptionHandling()
         </div>
         <CommonIcon
           v-if="context.clearable && hasValue && !context.disabled"
-          :aria-label="i18n.t('Clear Selection')"
+          :aria-label="i18n.t('Clear selection')"
           class="text-gray absolute -mt-5 shrink-0 ltr:right-2 rtl:left-2"
           name="close-small"
           size="base"

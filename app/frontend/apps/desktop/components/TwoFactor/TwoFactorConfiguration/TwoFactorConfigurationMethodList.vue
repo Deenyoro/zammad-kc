@@ -22,7 +22,7 @@ const switchTo = (nextState: TwoFactorConfigurationType) => {
 
 const footerActionOptions = computed(() => ({
   hideActionButton: true,
-  cancelLabel: __('Cancel & Sign Out'),
+  cancelLabel: __('Cancel & sign out'),
 }))
 
 defineExpose({

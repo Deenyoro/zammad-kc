@@ -165,7 +165,7 @@ describe('useHistoryEvents', () => {
 
       const { getIssuerName } = useHistoryEvents()
 
-      expect(getIssuerName(issuer)).toBe('Postmaster Filter: Internal Mails')
+      expect(getIssuerName(issuer)).toBe('Postmaster filter: Internal Mails')
     })
 
     it('returns issuer name in case issuer is a postmaster filter', () => {
@@ -277,7 +277,7 @@ describe('useHistoryEvents', () => {
         expect(getEventOutput(event)).toEqual({
           actionName: 'checked',
           component: undefined,
-          entityName: 'Checklist Item',
+          entityName: 'Checklist item',
           details: 'print tickets',
         })
       })
@@ -299,7 +299,7 @@ describe('useHistoryEvents', () => {
         expect(getEventOutput(event)).toEqual({
           actionName: 'unchecked',
           component: undefined,
-          entityName: 'Checklist Item',
+          entityName: 'Checklist item',
           details: 'print tickets',
         })
       })
@@ -532,7 +532,7 @@ describe('useHistoryEvents', () => {
           actionName: 'removed',
           component: undefined,
           attributeName: '',
-          entityName: 'Checklist Item',
+          entityName: 'Checklist item',
           details: 'dummy',
         })
       })

@@ -64,7 +64,7 @@ const contentTooltip = computed(() => {
 
   if (isHoverTargetLink.value) return i18n.t('Open link')
 
-  return props.label || i18n.t('Start Editing')
+  return props.label || i18n.t('Start editing')
 })
 
 const checkValidity = (edit: string) => {

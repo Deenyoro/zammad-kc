@@ -83,10 +83,10 @@ describe('guided setup import source start', () => {
 
       const view = await visitView('/guided-setup/import/freshdesk/start')
 
-      expect(view.getByText('Start Import from Freshdesk')).toBeInTheDocument()
-      expect(view.getByRole('button', { name: 'Go Back' })).toBeInTheDocument()
+      expect(view.getByText('Start import from Freshdesk')).toBeInTheDocument()
+      expect(view.getByRole('button', { name: 'Go back' })).toBeInTheDocument()
 
-      const startButton = view.getByRole('button', { name: 'Start Import' })
+      const startButton = view.getByRole('button', { name: 'Start import' })
       expect(startButton).toBeInTheDocument()
 
       await view.events.click(startButton)
@@ -118,7 +118,7 @@ describe('guided setup import source start', () => {
 
       const view = await visitView('/guided-setup/import/freshdesk/start')
 
-      const goBackButton = view.getByRole('button', { name: 'Go Back' })
+      const goBackButton = view.getByRole('button', { name: 'Go back' })
       expect(goBackButton).toBeInTheDocument()
 
       await view.events.click(goBackButton)

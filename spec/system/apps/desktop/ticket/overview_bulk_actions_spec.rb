@@ -102,7 +102,7 @@ RSpec.describe 'Desktop > Overviews > Bulk Actions', app: :desktop_view, authent
           .click
       end
 
-      click_on 'Bulk Actions'
+      click_on 'Bulk actions'
     end
 
     # NB: Due to dropdown menus being mounted to the end of the document body, we need the scope outside of the flyout
@@ -130,7 +130,7 @@ RSpec.describe 'Desktop > Overviews > Bulk Actions', app: :desktop_view, authent
           .click
       end
 
-      click_on 'Bulk Actions'
+      click_on 'Bulk actions'
     end
 
     # NB: Due to dropdown menus being mounted to the end of the document body, we need the scope outside of the flyout
@@ -159,7 +159,7 @@ RSpec.describe 'Desktop > Overviews > Bulk Actions', app: :desktop_view, authent
           .click
       end
 
-      click_on 'Bulk Actions'
+      click_on 'Bulk actions'
     end
 
     within 'aside[role="complementary"]' do
@@ -177,7 +177,7 @@ RSpec.describe 'Desktop > Overviews > Bulk Actions', app: :desktop_view, authent
         .and have_no_text(spam_tickets.second.number)
         .and have_no_text(spam_tickets.third.number)
         .and have_no_text(spam_tickets.fourth.number)
-        .and have_text('Empty Overview')
+        .and have_text('Empty overview')
         .and have_text('No tickets in this state.')
     end
   end

@@ -130,7 +130,7 @@ describe('Form - Field - Ticket - Query', () => {
 
     expect(getByIconName(selectOptions[0], 'check-circle-no')).toBeInTheDocument()
 
-    await wrapper.events.click(wrapper.getByLabelText('Clear Search'))
+    await wrapper.events.click(wrapper.getByLabelText('Clear search'))
 
     expect(filterElement).toHaveValue('')
 

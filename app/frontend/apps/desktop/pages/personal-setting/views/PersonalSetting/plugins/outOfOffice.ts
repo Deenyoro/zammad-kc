@@ -3,7 +3,7 @@
 import type { PersonalSettingPlugin } from './types.ts'
 
 export default <PersonalSettingPlugin>{
-  label: __('Out of Office'),
+  label: __('Out of office'),
   category: {
     label: __('Profile'),
     id: 'category-profile',
@@ -16,7 +16,7 @@ export default <PersonalSettingPlugin>{
     component: () => import('../../PersonalSettingOutOfOffice.vue'),
     level: 2,
     meta: {
-      title: __('Out of Office'),
+      title: __('Out of office'),
       requiresAuth: true,
       requiredPermission: 'user_preferences.out_of_office+ticket.agent',
     },

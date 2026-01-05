@@ -36,13 +36,13 @@ describe('TicketSimpleTableWrapper', () => {
 
     expect(
       await wrapper.findByRole('table', {
-        name: 'Recent Customer Tickets',
+        name: 'Recent customer tickets',
       }),
     ).toBeInTheDocument()
 
     expect(
       wrapper.getByRole('table', {
-        name: 'Recently Viewed Tickets',
+        name: 'Recently viewed tickets',
       }),
     ).toBeInTheDocument()
 

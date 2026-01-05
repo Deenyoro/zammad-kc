@@ -164,7 +164,7 @@ const openFlyout = (sharedDraftStartId: string) => {
       validation="required:trim"
       link="/"
       link-icon="plus-square-fill"
-      :link-label="__('Create Shared Draft')"
+      :link-label="__('Create shared draft')"
       @link-click.prevent="createSharedDraft"
       @keypress.enter.prevent="createSharedDraft"
     />
@@ -184,7 +184,7 @@ const openFlyout = (sharedDraftStartId: string) => {
               v-tooltip="sharedDraftStart.name"
               link="#"
               class="line-clamp-1"
-              :aria-label="$t('Preview Shared Draft')"
+              :aria-label="$t('Preview shared draft')"
               internal
               @click.prevent="openFlyout(sharedDraftStart.id)"
             >
@@ -201,7 +201,7 @@ const openFlyout = (sharedDraftStartId: string) => {
           </div>
           <CommonButton
             v-if="currentSharedDraftId === sharedDraftStart.id"
-            v-tooltip="__('Update Shared Draft')"
+            v-tooltip="__('Update shared draft')"
             variant="submit"
             size="small"
             icon="arrow-repeat"

@@ -18,9 +18,9 @@ export const useTicketCreateTitle = (
   const currentViewTitle = computed(() => {
     // Customer users should get a generic title prefix, since they cannot control the type of the first article.
     if (isTicketCustomer.value) {
-      if (!currentTitle.value) return i18n.t('New Ticket')
+      if (!currentTitle.value) return i18n.t('New ticket')
 
-      return i18n.t('New Ticket: %s', currentTitle.value)
+      return i18n.t('New ticket: %s', currentTitle.value)
     }
 
     if (!currentArticleType.value) {

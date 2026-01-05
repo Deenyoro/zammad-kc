@@ -121,7 +121,7 @@ const actions = computed<MenuItem[]>(() => [
       v-if="ticket?.timeUnit && isTicketAgent"
       id="ticket-time-accounting"
       v-model="persistentStates.collapseTimeAccounting"
-      :title="__('Accounted Time')"
+      :title="__('Accounted time')"
     >
       <TicketAccountedTime :ticket="ticket!" />
     </CommonSectionCollapse>

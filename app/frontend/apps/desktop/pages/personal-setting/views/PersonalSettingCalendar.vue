@@ -257,15 +257,15 @@ const submitForm = async (data: FormValues) => {
 
 const tabs = [
   {
-    label: __('Escalated Tickets'),
+    label: __('Escalated tickets'),
     key: 'escalation',
   },
   {
-    label: __('New & Open Tickets'),
+    label: __('New & open tickets'),
     key: 'newOpen',
   },
   {
-    label: __('Pending Tickets'),
+    label: __('Pending tickets'),
     key: 'pending',
   },
 ]

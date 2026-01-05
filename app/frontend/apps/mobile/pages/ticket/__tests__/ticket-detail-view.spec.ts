@@ -350,7 +350,7 @@ describe('calling API to retry encryption', () => {
 
     await waitUntilTicketLoaded()
 
-    const securityError = view.getByRole('button', { name: 'Security Error' })
+    const securityError = view.getByRole('button', { name: 'Security error' })
     await view.events.click(securityError)
 
     const retryResult = {
@@ -409,7 +409,7 @@ describe('calling API to retry encryption', () => {
 
     await waitUntilTicketLoaded()
 
-    const securityError = view.getByRole('button', { name: 'Security Error' })
+    const securityError = view.getByRole('button', { name: 'Security error' })
     await view.events.click(securityError)
 
     const retryResult = {
@@ -476,11 +476,11 @@ describe('remote content removal', () => {
 
     await waitUntilTicketLoaded()
 
-    const blockedContent = view.getByRole('button', { name: 'Blocked Content' })
+    const blockedContent = view.getByRole('button', { name: 'Blocked content' })
 
     await view.events.click(blockedContent)
 
-    await view.events.click(view.getByText('Original Formatting'))
+    await view.events.click(view.getByText('Original formatting'))
 
     expect(view.queryByTestId('popupWindow')).not.toBeInTheDocument()
   })

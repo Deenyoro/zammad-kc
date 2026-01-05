@@ -100,7 +100,7 @@ describe('playing with overviews', () => {
     expect(notify).toHaveBeenCalledWith({
       id: 'overview-save',
       type: NotificationTypes.Success,
-      message: 'Ticket Overview settings are saved.',
+      message: 'Ticket overview settings are saved.',
     })
   })
 

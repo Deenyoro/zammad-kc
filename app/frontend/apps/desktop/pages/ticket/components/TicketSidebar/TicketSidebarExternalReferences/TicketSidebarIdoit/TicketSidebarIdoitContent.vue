@@ -185,7 +185,7 @@ if (props.ticketId) {
       class="block ltr:w-full rtl:w-full"
       @click="openFlyout"
     >
-      {{ $t('Link Objects') }}
+      {{ $t('Link objects') }}
     </CommonButton>
 
     <CommonLoader v-if="objectIds?.length" :loading="isLoading" :error="error">

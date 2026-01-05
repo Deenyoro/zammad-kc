@@ -87,7 +87,7 @@ describe('Form - Field - Recipient - Features', () => {
 
     const listitem = within(wrapper.getByRole('listitem'))
 
-    await wrapper.events.click(listitem.getByRole('button', { name: 'Unselect Option' }))
+    await wrapper.events.click(listitem.getByRole('button', { name: 'Unselect option' }))
 
     expect(emittedInput[1][0]).toEqual([])
   })
@@ -149,7 +149,7 @@ describe('Form - Field - Recipient - Query', () => {
     expect(selectOptions).toHaveLength(1)
     expect(selectOptions[0]).toHaveTextContent(testOptions[0].label)
 
-    await wrapper.events.click(wrapper.getByLabelText('Clear Search'))
+    await wrapper.events.click(wrapper.getByLabelText('Clear search'))
 
     expect(filterElement).toHaveValue('')
 

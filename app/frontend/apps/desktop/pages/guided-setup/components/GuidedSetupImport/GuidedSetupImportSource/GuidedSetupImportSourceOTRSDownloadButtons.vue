@@ -13,7 +13,7 @@ const downloadPluginAndContinue = (downloadLink: string) => {
 
 const otrsPlugins: CommonButtonItem[] = [
   {
-    label: i18n.t('Migration Plugin for %s', 'OTRS 6'),
+    label: i18n.t('Migration plugin for %s', 'OTRS 6'),
     variant: 'primary',
     size: 'medium',
     icon: 'download',
@@ -23,7 +23,7 @@ const otrsPlugins: CommonButtonItem[] = [
       ),
   },
   {
-    label: i18n.t('Migration Plugin for %s', 'OTRS 5'),
+    label: i18n.t('Migration plugin for %s', 'OTRS 5'),
     variant: 'primary',
     size: 'medium',
     icon: 'download',
@@ -33,7 +33,7 @@ const otrsPlugins: CommonButtonItem[] = [
       ),
   },
   {
-    label: i18n.t('Migration Plugin for %s', 'OTRS 4'),
+    label: i18n.t('Migration plugin for %s', 'OTRS 4'),
     variant: 'primary',
     size: 'medium',
     icon: 'download',
@@ -43,7 +43,7 @@ const otrsPlugins: CommonButtonItem[] = [
       ),
   },
   {
-    label: i18n.t('Migration Plugin for %s', 'OTRS 3.3-3.1'),
+    label: i18n.t('Migration plugin for %s', 'OTRS 3.3-3.1'),
     variant: 'primary',
     size: 'medium',
     icon: 'download',

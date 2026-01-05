@@ -115,9 +115,9 @@ describe('personal settings for token access', () => {
 
     const view = await visitView('/personal-setting/token-access')
 
-    const tableLabel = 'Personal Access Tokens'
+    const tableLabel = 'Personal access tokens'
 
-    const tableHeaders = ['Name', 'Permissions', 'Created', 'Expires', 'Last Used', 'Actions']
+    const tableHeaders = ['Name', 'Permissions', 'Created', 'Expires', 'Last used', 'Actions']
 
     checkSimpleTableHeader(view, tableHeaders, tableLabel)
     checkSimpleTableContent(view, rowContents, tableLabel)
@@ -147,9 +147,9 @@ describe('personal settings for token access', () => {
 
     await waitForNextTick()
 
-    expect(await view.findByRole('dialog', { name: 'Delete Object' })).toBeInTheDocument()
+    expect(await view.findByRole('dialog', { name: 'Delete object' })).toBeInTheDocument()
 
-    await view.events.click(view.getByRole('button', { name: 'Delete Object' }))
+    await view.events.click(view.getByRole('button', { name: 'Delete object' }))
 
     checkSimpleTableContent(view, [rowContents[1]])
   })
@@ -224,13 +224,13 @@ describe('personal settings for token access', () => {
     const view = await visitView('/personal-setting/token-access')
 
     const newAccessTokenButton = view.getByRole('button', {
-      name: 'New Personal Access Token',
+      name: 'New personal access token',
     })
 
     await view.events.click(newAccessTokenButton)
 
     const flyout = await view.findByRole('complementary', {
-      name: 'New Personal Access Token',
+      name: 'New personal access token',
     })
     expect(flyout).toBeInTheDocument()
 
@@ -268,7 +268,7 @@ describe('personal settings for token access', () => {
 
     await view.events.click(view.getByRole('button', { name: 'Create' }))
 
-    expect(await view.findByLabelText('Your Personal Access Token')).toHaveValue('new-token-1234')
+    expect(await view.findByLabelText('Your personal access token')).toHaveValue('new-token-1234')
 
     await view.events.click(
       view.getByRole('button', {

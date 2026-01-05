@@ -127,7 +127,7 @@ const tooltipMessages = computed(() => {
         v-if="tooltipMessages.length"
         :name="`security-${context.node.name}`"
         :messages="tooltipMessages"
-        :heading="__('Security Information')"
+        :heading="__('Security information')"
       >
         <CommonIcon name="tooltip" size="small" />
       </CommonTooltip>

@@ -423,7 +423,7 @@ const { isLoadingTemplates, checklistTemplatesMenuItems } =
             :disabled="isAddingNewChecklist"
             @click="createNewChecklist()"
           >
-            {{ $t('Add Empty Checklist') }}
+            {{ $t('Add empty checklist') }}
           </CommonButton>
 
           <ChecklistTemplates

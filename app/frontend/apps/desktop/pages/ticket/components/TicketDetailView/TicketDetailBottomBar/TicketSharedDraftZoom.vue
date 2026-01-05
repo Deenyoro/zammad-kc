@@ -28,7 +28,7 @@ const { openSharedDraftFlyout } = useTicketSharedDraft()
       size="large"
       variant="tertiary"
       @click="openSharedDraftFlyout('detail-view', sharedDraftId, form)"
-      >{{ $t('Draft Available') }}</CommonButton
+      >{{ $t('Draft available') }}</CommonButton
     >
   </div>
 </template>

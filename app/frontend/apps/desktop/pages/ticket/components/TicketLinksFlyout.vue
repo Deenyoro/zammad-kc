@@ -153,7 +153,7 @@ const addLink = async (
 
 <template>
   <CommonFlyout
-    :header-title="__('Link Tickets')"
+    :header-title="__('Link tickets')"
     header-icon="link"
     name="ticket-link"
     size="large"

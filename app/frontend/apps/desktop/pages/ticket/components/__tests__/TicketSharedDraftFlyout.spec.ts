@@ -76,11 +76,11 @@ describe('TicketSharedDraftFlyout.vue', () => {
 
     expect(
       wrapper.getByRole('complementary', {
-        name: 'Preview Shared Draft',
+        name: 'Preview shared draft',
       }),
     ).toBeInTheDocument()
 
-    expect(wrapper.getByRole('heading', { name: 'Preview Shared Draft' })).toBeInTheDocument()
+    expect(wrapper.getByRole('heading', { name: 'Preview shared draft' })).toBeInTheDocument()
 
     expect(wrapper.getByText('Author')).toBeInTheDocument()
     expect(wrapper.getByText('Erika Mustermann')).toBeInTheDocument()

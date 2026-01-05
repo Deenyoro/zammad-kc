@@ -171,7 +171,7 @@ describe('basic toolbar testing', () => {
 
     expect(view.getByIconName('text-modules')).toBeInTheDocument()
 
-    expect(view.getByLabelText('Insert text from Knowledge Base article')).toBeInTheDocument()
+    expect(view.getByLabelText('Insert text from knowledge base answer')).toBeInTheDocument()
     expect(view.getByIconName('book')).toBeInTheDocument()
 
     expect(view.queryByRole('button', { name: 'Mention user' })).not.toBeInTheDocument()

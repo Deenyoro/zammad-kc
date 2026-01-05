@@ -36,7 +36,7 @@ describe('QuickSearchInput', () => {
 
     await waitForNextTick()
 
-    expect(wrapper.getByRole('button', { name: 'Reset Search' })).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Reset search' })).toBeInTheDocument()
   })
 
   it('emits search active when focused', () => {
@@ -70,13 +70,13 @@ describe('QuickSearchInput', () => {
 
     const searchField = wrapper.getByRole('searchbox', { name: 'Search…' })
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear Search' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear search' }))
 
     expect(modelValue.value).toBe('')
     expect(searchField).toHaveFocus()
     expect(searchActive.value).toBe(true)
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Reset Search' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Reset search' }))
 
     expect(searchActive.value).toBe(false)
   })

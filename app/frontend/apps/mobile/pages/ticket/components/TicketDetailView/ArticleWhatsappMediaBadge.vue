@@ -48,7 +48,7 @@ const popupItems = computed(() =>
     @keydown.space.prevent="showPopup = !showPopup"
   >
     <CommonIcon name="update" decorative size="xs" />
-    {{ $t('Media Download Error') }}
+    {{ $t('Media download error') }}
   </button>
   <CommonSectionPopup v-model:state="showPopup" :messages="popupItems">
     <template #header>
@@ -58,7 +58,7 @@ const popupItems = computed(() =>
           class="text-yellow flex w-full items-center justify-center gap-1"
         >
           <CommonIcon name="update" size="tiny" />
-          {{ $t('Media Download Error') }}
+          {{ $t('Media download error') }}
         </div>
         <div v-if="loading" class="flex w-full items-center justify-center gap-1">
           <CommonIcon name="loading" animation="spin" />

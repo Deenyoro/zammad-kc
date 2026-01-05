@@ -30,17 +30,17 @@ describe('TicketMergeFlyout', () => {
       router: true,
     })
 
-    expect(wrapper.getByRole('heading', { name: 'Merge Tickets', level: 2 })).toBeInTheDocument()
+    expect(wrapper.getByRole('heading', { name: 'Merge tickets', level: 2 })).toBeInTheDocument()
 
     expect(
       await wrapper.findByRole('table', {
-        name: 'Recent Customer Tickets',
+        name: 'Recent customer tickets',
       }),
     ).toBeInTheDocument()
 
     expect(
       wrapper.getByRole('table', {
-        name: 'Recently Viewed Tickets',
+        name: 'Recently viewed tickets',
       }),
     ).toBeInTheDocument()
 
@@ -67,7 +67,7 @@ describe('TicketMergeFlyout', () => {
 
     expect(
       await wrapper.findByRole('table', {
-        name: 'Recent Customer Tickets',
+        name: 'Recent customer tickets',
       }),
     ).toBeInTheDocument()
 

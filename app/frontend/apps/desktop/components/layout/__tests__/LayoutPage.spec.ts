@@ -136,7 +136,7 @@ describe('LayoutPage', () => {
       const toggle = wrapper.getByLabelText('New BETA UI')
 
       const button = wrapper.getByRole('button', {
-        name: 'Hide Beta UI switch',
+        name: 'Hide BETA UI switch',
       })
 
       await wrapper.events.click(button)

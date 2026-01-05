@@ -72,10 +72,10 @@ describe('TicketSidebarSharedDraftStartContent.vue', () => {
       },
     })
 
-    expect(wrapper.getByRole('heading')).toHaveTextContent('Shared Drafts')
+    expect(wrapper.getByRole('heading')).toHaveTextContent('Shared drafts')
     expect(wrapper.getByLabelText('Create a shared draft')).toBeInTheDocument()
 
-    expect(wrapper.getByRole('link', { name: 'Create Shared Draft' })).toBeInTheDocument()
+    expect(wrapper.getByRole('link', { name: 'Create shared draft' })).toBeInTheDocument()
 
     expect(wrapper.getByText('No shared drafts yet')).toBeInTheDocument()
   })
@@ -208,7 +208,7 @@ describe('TicketSidebarSharedDraftStartContent.vue', () => {
 
     await getNode('sharedDraftTitle-undefined')?.settled
 
-    await wrapper.events.click(wrapper.getByRole('link', { name: 'Create Shared Draft' }))
+    await wrapper.events.click(wrapper.getByRole('link', { name: 'Create shared draft' }))
 
     const calls = await waitForTicketSharedDraftStartCreateMutationCalls()
 
@@ -259,7 +259,7 @@ describe('TicketSidebarSharedDraftStartContent.vue', () => {
       },
     )
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Update Shared Draft' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Update shared draft' }))
 
     const calls = await waitForTicketSharedDraftStartUpdateMutationCalls()
 

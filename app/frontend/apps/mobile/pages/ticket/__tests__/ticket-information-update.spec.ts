@@ -147,7 +147,7 @@ describe('rendering escalation times', () => {
   const yesterday = new Date(2022, 1, 0, 0, 0, 0, 0)
   const tomorrow = new Date(2022, 1, 2, 0, 0, 0, 0)
 
-  const regions = ['First Response Time', 'Update Time', 'Solution Time']
+  const regions = ['First response time', 'Update time', 'Solution time']
 
   const escalatedClasses = 'text-red-bright bg-red-highlight'
   const warningClasses = 'text-yellow bg-yellow-highlight'
@@ -173,7 +173,7 @@ describe('rendering escalation times', () => {
 
     const { view } = await visitTicketInformation(ticket)
 
-    expect(view.getByText('Escalation Times')).toBeInTheDocument()
+    expect(view.getByText('Escalation times')).toBeInTheDocument()
 
     regions.forEach((region, index) => {
       if (dates[index] === null) {
@@ -197,7 +197,7 @@ describe('rendering escalation times', () => {
 
     const { view } = await visitTicketInformation(ticket)
 
-    expect(view.queryByText('Escalation Times')).not.toBeInTheDocument()
+    expect(view.queryByText('Escalation times')).not.toBeInTheDocument()
     regions.forEach((region) => {
       expect(view.queryByRole('region', { name: region })).not.toBeInTheDocument()
     })

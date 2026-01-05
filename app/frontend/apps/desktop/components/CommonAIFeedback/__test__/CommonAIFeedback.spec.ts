@@ -45,7 +45,7 @@ describe('CommonAIFeedback', () => {
 
     await waitForAiAnalyticsUsageMutationCalls()
 
-    await wrapper.events.click(wrapper.getByLabelText('Positive Feedback'))
+    await wrapper.events.click(wrapper.getByLabelText('Positive feedback'))
 
     const usageMutation = await waitForAiAnalyticsUsageMutationCalls()
 
@@ -66,7 +66,7 @@ describe('CommonAIFeedback', () => {
 
     await waitForAiAnalyticsUsageMutationCalls()
 
-    await wrapper.events.click(wrapper.getByLabelText('Negative Feedback'))
+    await wrapper.events.click(wrapper.getByLabelText('Negative feedback'))
 
     const usageMutation = await waitForAiAnalyticsUsageMutationCalls()
 
@@ -87,7 +87,7 @@ describe('CommonAIFeedback', () => {
 
     await waitForAiAnalyticsUsageMutationCalls()
 
-    await wrapper.events.click(wrapper.getByLabelText('Negative Feedback'))
+    await wrapper.events.click(wrapper.getByLabelText('Negative feedback'))
 
     await waitForAiAnalyticsUsageMutationCalls()
 
@@ -100,7 +100,7 @@ describe('CommonAIFeedback', () => {
 
     await waitFor(() => expect(wrapper.getByRole('textbox')).toHaveValue('Never trust AI'))
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Submit Comment' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Submit comment' }))
 
     const usageMutation = await waitForAiAnalyticsUsageMutationCalls()
 
@@ -119,11 +119,11 @@ describe('CommonAIFeedback', () => {
 
     await waitForAiAnalyticsUsageMutationCalls()
 
-    await wrapper.events.click(wrapper.getByLabelText('Negative Feedback'))
+    await wrapper.events.click(wrapper.getByLabelText('Negative feedback'))
 
     await waitForAiAnalyticsUsageMutationCalls()
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'No Comment' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'No comment' }))
 
     expect(wrapper.getByText('Thank you for your feedback.')).toBeInTheDocument()
     expect(wrapper.getByRole('button', { name: 'Regenerate' })).toBeInTheDocument()
@@ -163,7 +163,7 @@ describe('CommonAIFeedback', () => {
     })
 
     expect(wrapper.getByRole('button', { name: 'Regenerate' })).toBeInTheDocument()
-    expect(wrapper.queryByRole('button', { name: 'Positive Feedback' })).not.toBeInTheDocument()
-    expect(wrapper.queryByRole('button', { name: 'Negative Feedback' })).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button', { name: 'Positive feedback' })).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button', { name: 'Negative feedback' })).not.toBeInTheDocument()
   })
 })

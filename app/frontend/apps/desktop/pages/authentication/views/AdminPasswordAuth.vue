@@ -113,7 +113,7 @@ const retry = () => {
 
     <template #boxActions>
       <CommonButton variant="secondary" size="medium" :disabled="isDisabled" @click="goToLogin()">
-        {{ $t('Cancel & Go Back') }}
+        {{ $t('Cancel & go back') }}
       </CommonButton>
 
       <CommonButton

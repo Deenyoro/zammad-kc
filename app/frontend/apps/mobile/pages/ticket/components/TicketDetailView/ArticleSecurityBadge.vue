@@ -141,7 +141,7 @@ const popupItems = computed(() =>
     @keydown.space.prevent="showPopup = !showPopup"
   >
     <CommonIcon :name="securityIcon" decorative size="xs" />
-    {{ $t('Security Error') }}
+    {{ $t('Security error') }}
   </button>
   <button
     v-else-if="canView"
@@ -166,7 +166,7 @@ const popupItems = computed(() =>
       <div class="flex flex-col items-center gap-2 border-b border-b-white/10 p-4">
         <div v-if="hasError" class="text-yellow flex w-full items-center justify-center gap-1">
           <CommonIcon :name="securityIcon" size="tiny" />
-          {{ $t('Security Error') }}
+          {{ $t('Security error') }}
         </div>
         <div
           v-if="security.signingMessage"

@@ -63,7 +63,7 @@ describe('PersonalSettingNewAccessTokenFlyout - create new access token', () => 
     const view = renderNewAccessTokenFlyout()
 
     await view.findByRole('complementary', {
-      name: 'New Personal Access Token',
+      name: 'New personal access token',
     })
 
     expect(await view.findByLabelText('Name')).toBeInTheDocument()
@@ -102,6 +102,6 @@ describe('PersonalSettingNewAccessTokenFlyout - create new access token', () => 
       }),
     )
 
-    expect(view.getByLabelText('Your Personal Access Token')).toHaveValue('new-token-1234')
+    expect(view.getByLabelText('Your personal access token')).toHaveValue('new-token-1234')
   })
 })

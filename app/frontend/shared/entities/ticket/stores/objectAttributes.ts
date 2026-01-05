@@ -8,7 +8,7 @@ export const staticObjectAttributes: EntityStaticObjectAttributes = {
   attributes: [
     {
       name: 'time_unit',
-      display: __('Accounted Time'),
+      display: __('Accounted time'),
       dataType: 'time_unit',
       isStatic: true,
       isInternal: true,
@@ -22,21 +22,21 @@ export const staticObjectAttributes: EntityStaticObjectAttributes = {
     },
     {
       name: 'first_response_escalation_at',
-      display: __('Escalation at (First Response Time)'),
+      display: __('Escalation at (First response time)'),
       dataType: 'datetime',
       isStatic: true,
       isInternal: true,
     },
     {
       name: 'update_escalation_at',
-      display: __('Escalation at (Update Time)'),
+      display: __('Escalation at (Update time)'),
       dataType: 'datetime',
       isStatic: true,
       isInternal: true,
     },
     {
       name: 'close_escalation_at',
-      display: __('Escalation at (Close Time)'),
+      display: __('Escalation at (Close time)'),
       dataType: 'datetime',
       isStatic: true,
       isInternal: true,

@@ -50,11 +50,11 @@ describe('Ticket detail view ticket merge', () => {
     await view.events.click(await view.findByRole('button', { name: 'Merge' }))
 
     expect(
-      await view.findByRole('heading', { name: 'Merge Tickets', level: 2 }),
+      await view.findByRole('heading', { name: 'Merge tickets', level: 2 }),
     ).toBeInTheDocument()
 
-    expect(await view.findByText('Recent Customer Tickets')).toBeInTheDocument()
-    expect(view.getByText('Recently Viewed Tickets')).toBeInTheDocument()
+    expect(await view.findByText('Recent customer tickets')).toBeInTheDocument()
+    expect(view.getByText('Recently viewed tickets')).toBeInTheDocument()
     expect(view.getByText('Foo Car')).toBeInTheDocument()
   })
 })

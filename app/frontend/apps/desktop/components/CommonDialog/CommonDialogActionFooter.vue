@@ -16,7 +16,7 @@ export interface Props {
 
 withDefaults(defineProps<Props>(), {
   actionLabel: __('OK'),
-  cancelLabel: __('Cancel & Go Back'),
+  cancelLabel: __('Cancel & go back'),
 })
 
 const emit = defineEmits<{

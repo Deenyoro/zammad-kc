@@ -26,7 +26,7 @@ RSpec.describe 'Desktop > Login', app: :desktop_view, authenticated_as: false, t
     it 'can login with correct code' do
       expect(page).to have_no_text('Try another method')
 
-      find_input('Security Code').type(code)
+      find_input('Security code').type(code)
       find_button('Sign in').click
 
       expect(page).to have_css("[aria-label=\"#{user.fullname}\"]")

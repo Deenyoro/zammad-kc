@@ -4,7 +4,7 @@ import type { AvatarMenuPlugin } from './index.ts'
 
 export default <AvatarMenuPlugin>{
   key: 'user-documentation',
-  label: __('User Documentation'),
+  label: __('User documentation'),
   permission: ['ticket.agent', 'report', 'knowledge_base.*', 'chat.agent', 'cti.agent'],
   link: 'https://next.zammad.org/en/documentation/use/general.html', // TODO: change link when new user documentation is released
   linkExternal: true,

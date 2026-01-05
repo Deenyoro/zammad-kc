@@ -23,7 +23,7 @@ describe('ArticleBubbleSecurityWarning', () => {
   it('does not display anything if there are no security issues', () => {
     const wrapper = renderHeaderWarning(createDummyArticle())
 
-    expect(wrapper.queryByText('Security Error')).not.toBeInTheDocument()
+    expect(wrapper.queryByText('Security error')).not.toBeInTheDocument()
   })
 
   it('does not display anything in case of a signing success', () => {
@@ -31,7 +31,7 @@ describe('ArticleBubbleSecurityWarning', () => {
       createDummyArticle({ securityState: { signingSuccess: true } }),
     )
 
-    expect(wrapper.queryByText('Security Error')).not.toBeInTheDocument()
+    expect(wrapper.queryByText('Security error')).not.toBeInTheDocument()
   })
 
   it('displays a warning in case of a signing error', () => {
@@ -44,7 +44,7 @@ describe('ArticleBubbleSecurityWarning', () => {
       }),
     )
 
-    expect(wrapper.queryByText('Security Error')).toBeInTheDocument()
+    expect(wrapper.queryByText('Security error')).toBeInTheDocument()
     expect(wrapper.queryByText('Sign: signing failure')).toBeInTheDocument()
   })
 
@@ -53,7 +53,7 @@ describe('ArticleBubbleSecurityWarning', () => {
       createDummyArticle({ securityState: { encryptionSuccess: true } }),
     )
 
-    expect(wrapper.queryByText('Security Error')).not.toBeInTheDocument()
+    expect(wrapper.queryByText('Security error')).not.toBeInTheDocument()
   })
 
   it('displays a warning in case of a decryption error', () => {
@@ -66,7 +66,7 @@ describe('ArticleBubbleSecurityWarning', () => {
       }),
     )
 
-    expect(wrapper.queryByText('Security Error')).toBeInTheDocument()
+    expect(wrapper.queryByText('Security error')).toBeInTheDocument()
     expect(wrapper.queryByText('Encryption: decryption failure')).toBeInTheDocument()
   })
 
@@ -82,7 +82,7 @@ describe('ArticleBubbleSecurityWarning', () => {
       }),
     )
 
-    expect(wrapper.queryByText('Security Error')).toBeInTheDocument()
+    expect(wrapper.queryByText('Security error')).toBeInTheDocument()
     expect(wrapper.queryByText('Sign: signing failure')).toBeInTheDocument()
     expect(wrapper.queryByText('Encryption: decryption failure')).toBeInTheDocument()
   })

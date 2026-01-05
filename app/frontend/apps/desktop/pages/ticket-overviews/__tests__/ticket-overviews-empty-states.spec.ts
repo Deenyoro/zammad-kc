@@ -26,7 +26,7 @@ describe('Ticket Overviews > Empty states', () => {
       ),
     ).toBeInTheDocument()
 
-    expect(view.getByRole('heading', { level: 2 })).toHaveTextContent('No Overviews')
+    expect(view.getByRole('heading', { level: 2 })).toHaveTextContent('No overviews')
 
     expect(view.getByIconName('exclamation-triangle')).toBeInTheDocument()
 
@@ -99,7 +99,7 @@ describe('Ticket Overviews > Empty states', () => {
 
     const view = await visitView('tickets/view')
 
-    expect(await view.findByRole('heading', { level: 2 })).toHaveTextContent('Empty Overview')
+    expect(await view.findByRole('heading', { level: 2 })).toHaveTextContent('Empty overview')
 
     expect(view.getByText('No tickets in this state.')).toBeInTheDocument()
   })

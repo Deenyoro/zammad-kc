@@ -41,8 +41,8 @@ const actionPlugin: TicketArticleActionPlugin = {
     const type: TicketArticleType = {
       apps: ['mobile', 'desktop'],
       value: 'sms',
-      label: __('Sms'),
-      buttonLabel: __('Add sms'),
+      label: __('SMS'),
+      buttonLabel: __('Add SMS'),
       icon: 'message',
       view: {
         agent: ['change'],

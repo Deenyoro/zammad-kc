@@ -31,17 +31,17 @@ const headerTitle = computed(() => {
   switch (props.type) {
     case 'recovery_codes':
       return i18n.t(
-        'Generate Recovery Codes: %s',
+        'Generate recovery codes: %s',
         i18n.t(activeComponentInstance.value?.headerSubtitle),
       )
     case 'removal_confirmation':
       return i18n.t(
-        'Remove Two-factor Authentication: %s',
+        'Remove two-factor authentication: %s',
         i18n.t(activeComponentInstance.value?.headerSubtitle),
       )
     default:
       return i18n.t(
-        'Set Up Two-factor Authentication: %s',
+        'Set up two-factor authentication: %s',
         i18n.t(activeComponentInstance.value?.headerSubtitle),
       )
   }

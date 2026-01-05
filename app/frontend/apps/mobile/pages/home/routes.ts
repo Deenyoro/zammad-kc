@@ -25,7 +25,7 @@ const route: RouteRecordRaw[] = [
     name: 'TicketOverviews',
     component: () => import('./views/FavoriteTicketOverviewsEdit.vue'),
     meta: {
-      title: __('Ticket Overview'),
+      title: __('Ticket overview'),
       requiresAuth: true,
       requiredPermission: ['ticket.agent', 'ticket.customer'],
       hasBottomNavigation: true,

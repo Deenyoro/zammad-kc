@@ -68,10 +68,10 @@ describe('Two-factor Authentication - Recovery Codes', () => {
       },
     })
 
-    await view.events.click(view.getByRole('button', { name: 'Regenerate Recovery Codes' }))
+    await view.events.click(view.getByRole('button', { name: 'Regenerate recovery codes' }))
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Generate Recovery Codes: Confirm Password',
+      name: 'Generate recovery codes: Confirm password',
     })
 
     const flyoutContent = within(flyout)
@@ -98,7 +98,7 @@ describe('Two-factor Authentication - Recovery Codes', () => {
     await waitForUserCurrentPasswordCheckMutationCalls()
     await waitForUserCurrentTwoFactorRecoveryCodesGenerateMutationCalls()
 
-    expect(flyout).toHaveAccessibleName('Generate Recovery Codes: Save Codes')
+    expect(flyout).toHaveAccessibleName('Generate recovery codes: Save codes')
 
     expect(
       flyoutContent.getByText(
@@ -123,7 +123,7 @@ describe('Two-factor Authentication - Recovery Codes', () => {
     await view.events.click(actionMenuButton)
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Set Up Two-factor Authentication: Confirm Password',
+      name: 'Set up two-factor authentication: Confirm password',
     })
 
     const flyoutContent = within(flyout)
@@ -148,7 +148,7 @@ describe('Two-factor Authentication - Recovery Codes', () => {
     await waitForUserCurrentPasswordCheckMutationCalls()
     await waitForUserCurrentTwoFactorGetMethodConfigurationQueryCalls()
 
-    await view.events.click(view.getByRole('button', { name: 'Set Up' }))
+    await view.events.click(view.getByRole('button', { name: 'Set up' }))
 
     const nicknameInput = flyoutContent.getByLabelText('Name for this security key')
 
@@ -163,7 +163,7 @@ describe('Two-factor Authentication - Recovery Codes', () => {
     await view.events.click(view.getByRole('button', { name: 'Next' }))
 
     await waitFor(() =>
-      expect(flyout).toHaveAccessibleName('Set Up Two-factor Authentication: Save Codes'),
+      expect(flyout).toHaveAccessibleName('Set up two-factor authentication: Save codes'),
     )
 
     expect(flyoutContent.getByTestId('recovery-codes')).toHaveTextContent(
@@ -188,10 +188,10 @@ describe('Two-factor Authentication - Recovery Codes', () => {
       },
     })
 
-    await view.events.click(view.getByRole('button', { name: 'Regenerate Recovery Codes' }))
+    await view.events.click(view.getByRole('button', { name: 'Regenerate recovery codes' }))
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Generate Recovery Codes: Confirm Password',
+      name: 'Generate recovery codes: Confirm password',
     })
 
     const flyoutContent = within(flyout)
@@ -224,7 +224,7 @@ describe('Two-factor Authentication - Recovery Codes', () => {
       value: vi.fn(),
     })
 
-    await view.events.click(view.getByRole('button', { name: 'Print Codes' }))
+    await view.events.click(view.getByRole('button', { name: 'Print codes' }))
 
     expect(window.print).toHaveBeenCalledOnce()
   })
@@ -246,10 +246,10 @@ describe('Two-factor Authentication - Recovery Codes', () => {
       },
     })
 
-    await view.events.click(view.getByRole('button', { name: 'Regenerate Recovery Codes' }))
+    await view.events.click(view.getByRole('button', { name: 'Regenerate recovery codes' }))
 
     const flyout = await view.findByRole('complementary', {
-      name: 'Generate Recovery Codes: Confirm Password',
+      name: 'Generate recovery codes: Confirm password',
     })
 
     const flyoutContent = within(flyout)
@@ -274,7 +274,7 @@ describe('Two-factor Authentication - Recovery Codes', () => {
     await waitForUserCurrentPasswordCheckMutationCalls()
     await waitForUserCurrentTwoFactorRecoveryCodesGenerateMutationCalls()
 
-    await view.events.click(view.getByRole('button', { name: 'Copy Codes' }))
+    await view.events.click(view.getByRole('button', { name: 'Copy codes' }))
 
     expect(copyToClipboardMock).toHaveBeenCalledWith(recoveryCodes.join('\n'))
   })

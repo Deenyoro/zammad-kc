@@ -52,10 +52,10 @@ describe('Ticket detail view links', () => {
 
     await view.events.click(await view.findByRole('button', { name: 'Add link' }))
 
-    expect(await view.findByRole('heading', { name: 'Link Tickets', level: 2 })).toBeInTheDocument()
+    expect(await view.findByRole('heading', { name: 'Link tickets', level: 2 })).toBeInTheDocument()
 
-    expect(await view.findByText('Recent Customer Tickets')).toBeInTheDocument()
-    expect(view.getByText('Recently Viewed Tickets')).toBeInTheDocument()
+    expect(await view.findByText('Recent customer tickets')).toBeInTheDocument()
+    expect(view.getByText('Recently viewed tickets')).toBeInTheDocument()
     expect(view.getByText('Foo Car')).toBeInTheDocument()
 
     const rows = view.getAllByRole('row', {

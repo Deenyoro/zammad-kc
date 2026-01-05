@@ -58,19 +58,19 @@ const showDraft = () => {
 <template>
   <CommonDialog
     :name="dialogName"
-    :header-title="__('Save Draft')"
+    :header-title="__('Save draft')"
     :content="__('There is an existing draft. Do you want to overwrite it?')"
   >
     <template #footer>
       <div class="flex items-center gap-2 ltr:justify-end rtl:flex-row-reverse rtl:justify-start">
         <CommonButton size="large" variant="secondary" @click="close()">
-          {{ $t('Cancel & Go Back') }}
+          {{ $t('Cancel & go back') }}
         </CommonButton>
         <CommonButton size="large" prefix-icon="file-text" variant="tertiary" @click="showDraft()">
-          {{ $t('Show Draft') }}
+          {{ $t('Show draft') }}
         </CommonButton>
         <CommonButton size="large" variant="danger" @click="updateDraft()">
-          {{ $t('Overwrite Draft') }}
+          {{ $t('Overwrite draft') }}
         </CommonButton>
       </div>
     </template>

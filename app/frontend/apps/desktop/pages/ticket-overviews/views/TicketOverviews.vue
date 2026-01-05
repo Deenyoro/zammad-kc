@@ -124,7 +124,7 @@ const { checkedTicketIds, openBulkEditFlyout } = useTicketBulkEdit()
       />
       <TicketOverviewsEmptyText
         v-else
-        :title="$t('No Overviews')"
+        :title="$t('No overviews')"
         :text="
           $t(
             'Currently, no overviews are assigned to your roles. Please contact your administrator.',

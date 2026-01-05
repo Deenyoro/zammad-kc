@@ -86,7 +86,7 @@ const { ticketArticleSenderTypeField } = useTicketCreateArticleType()
 
 const { createTicket, isTicketCustomer } = useTicketCreate(form, redirectAfterCreate)
 
-const defaultTitle = __('New Ticket')
+const defaultTitle = __('New ticket')
 
 const { openUserCreateFlyout } = useUserCreate()
 
@@ -418,10 +418,10 @@ const submitCreateTicket = async (event: FormSubmitData<TicketFormData>) => {
           variant="danger"
           :disabled="isDisabled"
           @click="discardChanges"
-          >{{ __('Discard Changes') }}</CommonButton
+          >{{ __('Discard changes') }}</CommonButton
         >
         <CommonButton v-else size="large" variant="secondary" @click="goBack">{{
-          __('Cancel & Go Back')
+          __('Cancel & go back')
         }}</CommonButton>
       </template>
 

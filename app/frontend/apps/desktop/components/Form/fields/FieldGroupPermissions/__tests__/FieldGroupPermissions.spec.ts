@@ -199,7 +199,7 @@ describe('Fields - FieldGroupPermissions', () => {
     const combobox = view.getAllByRole('combobox')[1]
     const listitem = getAllByRole(combobox, 'listitem')[1]
 
-    await view.events.click(getByRole(listitem, 'button', { name: 'Unselect Option' }))
+    await view.events.click(getByRole(listitem, 'button', { name: 'Unselect option' }))
 
     await waitFor(async () => {
       expect(getNode('groupPermissions')?.value).toEqual([

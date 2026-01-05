@@ -62,7 +62,7 @@ describe('TicketChecklistBadges', () => {
 
     expect(wrapper.getByIconName('checklist')).toBeInTheDocument()
 
-    expect(wrapper.getByRole('button', { name: 'Open Checklist' })).toHaveTextContent(
+    expect(wrapper.getByRole('button', { name: 'Open checklist' })).toHaveTextContent(
       'checked2 of 5',
     ) // because of margin
   })
@@ -83,7 +83,7 @@ describe('TicketChecklistBadges', () => {
       provide: [[TICKET_KEY, mockTicket(data)]],
     })
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Open Checklist' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Open checklist' }))
 
     expect(switchSidebar).toHaveBeenCalledWith('checklist')
   })

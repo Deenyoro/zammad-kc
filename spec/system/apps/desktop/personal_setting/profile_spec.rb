@@ -78,7 +78,7 @@ RSpec.describe 'Desktop > Personal Setting > Profile', app: :desktop_view, authe
 
       expect(page).to have_text('JD')
       find('input[data-test-id="fileUploadInput"]', visible: :all).set(Rails.root.join('test/data/image/1000x1000.png'))
-      expect(page).to have_text('Avatar Preview')
+      expect(page).to have_text('Avatar preview')
       click_on 'Save'
 
       expect(page).to have_text('Your avatar has been uploaded')

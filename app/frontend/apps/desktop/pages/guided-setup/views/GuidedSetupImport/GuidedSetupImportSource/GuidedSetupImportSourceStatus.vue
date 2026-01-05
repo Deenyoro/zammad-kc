@@ -231,7 +231,7 @@ const goToLogin = () => {
     v-if="systemInitDone"
     submit-button-variant="primary"
     submit-button-type="button"
-    :submit-button-text="__('Go to Login')"
+    :submit-button-text="__('Go to login')"
     @submit="goToLogin"
   />
 </template>

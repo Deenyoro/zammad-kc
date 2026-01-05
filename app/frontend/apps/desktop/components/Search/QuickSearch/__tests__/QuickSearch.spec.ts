@@ -57,7 +57,7 @@ describe('QuickSearch', () => {
         wrapper.getByText('Start typing e.g. the name of a ticket, an organization or a user.'),
       ).toBeInTheDocument()
 
-      expect(wrapper.queryByRole('button', { name: 'Clear All' })).not.toBeInTheDocument()
+      expect(wrapper.queryByRole('button', { name: 'Clear all' })).not.toBeInTheDocument()
     })
   })
 

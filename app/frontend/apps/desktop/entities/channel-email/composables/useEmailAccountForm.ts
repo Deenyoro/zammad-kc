@@ -24,7 +24,7 @@ export const useEmailAccountForm = () => {
           label: __('Full name'),
           type: 'text',
           props: {
-            placeholder: __('Organization Support'),
+            placeholder: __('Organization support'),
           },
           required: true,
         },

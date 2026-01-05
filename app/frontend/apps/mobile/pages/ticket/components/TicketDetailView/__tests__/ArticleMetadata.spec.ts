@@ -103,7 +103,7 @@ describe('visuals for metadata', () => {
     expect(raw).toHaveTextContent('Raw')
     expect(raw).toHaveAttribute('href', '/api/ticket_article_plain/1')
 
-    expect(attachment).toHaveTextContent('Original Formatting')
+    expect(attachment).toHaveTextContent('Original formatting')
     expect(attachment).toHaveAttribute(
       'href',
       '/api/ticket_attachment/2/1/66?disposition=attachment',
@@ -279,7 +279,7 @@ describe('rendering WhatsApp metadata', () => {
         store: true,
       })
 
-      const messageStatus = view.getByRole('region', { name: 'Message Status' })
+      const messageStatus = view.getByRole('region', { name: 'Message status' })
       expect(messageStatus).toHaveTextContent('sent to the customer')
       expect(getByIconName(messageStatus, 'check')).toBeInTheDocument()
     })
@@ -298,7 +298,7 @@ describe('rendering WhatsApp metadata', () => {
         store: true,
       })
 
-      const messageStatus = view.getByRole('region', { name: 'Message Status' })
+      const messageStatus = view.getByRole('region', { name: 'Message status' })
       expect(messageStatus).toHaveTextContent('delivered to the customer')
       expect(getByIconName(messageStatus, 'check-double')).toBeInTheDocument()
     })
@@ -318,7 +318,7 @@ describe('rendering WhatsApp metadata', () => {
         store: true,
       })
 
-      const messageStatus = view.getByRole('region', { name: 'Message Status' })
+      const messageStatus = view.getByRole('region', { name: 'Message status' })
       expect(messageStatus).toHaveTextContent('read by the customer')
       expect(getByIconName(messageStatus, 'check-double-circle')).toBeInTheDocument()
     })

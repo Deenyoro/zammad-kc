@@ -49,11 +49,11 @@ describe('guided setup manual channels', () => {
     it('can redirect to email channel step', async () => {
       const view = await visitView('/guided-setup/manual/channels')
 
-      expect(view.getByText('Connect Channels')).toBeInTheDocument()
+      expect(view.getByText('Connect channels')).toBeInTheDocument()
       expect(view.getByRole('button', { name: 'Skip' })).toBeInTheDocument()
 
       const emailChannelButton = view.getByRole('button', {
-        name: 'Email Channel',
+        name: 'Email channel',
       })
 
       await view.events.click(emailChannelButton)
@@ -68,7 +68,7 @@ describe('guided setup manual channels', () => {
     it('can go back to email notification step', async () => {
       const view = await visitView('/guided-setup/manual/channels')
 
-      const goBackButton = view.getByRole('button', { name: 'Go Back' })
+      const goBackButton = view.getByRole('button', { name: 'Go back' })
 
       await view.events.click(goBackButton)
 

@@ -25,7 +25,7 @@ defineOptions({
 
 const { setTitle } = useSystemSetup()
 
-setTitle(__('Create Administrator Account'))
+setTitle(__('Create administrator account'))
 
 const router = useRouter()
 

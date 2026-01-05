@@ -32,7 +32,7 @@ watch([openTicketsCount, closedTicketsCount], ([open, closed]) => {
   <div class="flex flex-col gap-3">
     <CustomerTicketList
       :customer="customer"
-      :label="__('Open Tickets')"
+      :label="__('Open tickets')"
       :state-type-category="EnumTicketStateTypeCategory.Open"
       :customer-organizations="customerOrganizations"
       @count="openTicketsCount = $event"
@@ -40,7 +40,7 @@ watch([openTicketsCount, closedTicketsCount], ([open, closed]) => {
     <CommonDivider />
     <CustomerTicketList
       :customer="customer"
-      :label="__('Closed Tickets')"
+      :label="__('Closed tickets')"
       :state-type-category="EnumTicketStateTypeCategory.Closed"
       :customer-organizations="customerOrganizations"
       @count="closedTicketsCount = $event"

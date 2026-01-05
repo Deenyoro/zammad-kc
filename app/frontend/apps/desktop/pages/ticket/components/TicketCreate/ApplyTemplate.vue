@@ -34,7 +34,7 @@ const items = computed<DropdownItem[]>(() =>
   <template v-if="templateAccess">
     <CommonDropdown
       :items="items"
-      :action-label="$t('Apply Template')"
+      :action-label="$t('Apply template')"
       orientation="top"
       @handle-action="emit('select-template', $event.key)"
     />

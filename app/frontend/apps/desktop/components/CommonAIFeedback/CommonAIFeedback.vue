@@ -85,14 +85,14 @@ onMounted(async () => {
     <div class="flex items-center gap-1 min-h-7">
       <template v-if="showActions">
         <CommonButton
-          v-tooltip="$t('Positive Feedback')"
+          v-tooltip="$t('Positive feedback')"
           variant="neutral"
           icon="hand-thumbs-up"
           :disabled="loading"
           @click="submitPositiveFeedback"
         />
         <CommonButton
-          v-tooltip="$t('Negative Feedback')"
+          v-tooltip="$t('Negative feedback')"
           variant="neutral"
           icon="hand-thumbs-down"
           :disabled="loading"
@@ -108,10 +108,10 @@ onMounted(async () => {
         />
         <div class="justify-center flex gap-1">
           <CommonButton variant="secondary" @click="cancelComment">{{
-            $t('No Comment')
+            $t('No comment')
           }}</CommonButton>
           <CommonButton variant="tertiary" @click="submitComment">{{
-            $t('Submit Comment')
+            $t('Submit comment')
           }}</CommonButton>
         </div>
       </div>

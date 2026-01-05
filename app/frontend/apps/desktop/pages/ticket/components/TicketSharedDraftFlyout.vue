@@ -131,8 +131,8 @@ const applySharedDraft = async (sharedDraftId: string) => {
     const confirmed = await waitForConfirmation(
       __('There is existing content. Do you want to overwrite it?'),
       {
-        headerTitle: __('Apply Draft'),
-        buttonLabel: __('Overwrite Content'),
+        headerTitle: __('Apply draft'),
+        buttonLabel: __('Overwrite content'),
         buttonVariant: 'danger',
       },
     )
@@ -155,10 +155,10 @@ const applySharedDraft = async (sharedDraftId: string) => {
 
 const headerTitle = computed(() => {
   if (props.draftType === 'start') {
-    return __('Preview Shared Draft')
+    return __('Preview shared draft')
   }
 
-  return __('Apply Shared Draft')
+  return __('Apply shared draft')
 })
 </script>
 
@@ -215,7 +215,7 @@ const headerTitle = computed(() => {
     <template #footer>
       <div class="flex items-center justify-end gap-4">
         <CommonButton size="large" variant="secondary" @click="close">
-          {{ $t('Cancel & Go Back') }}
+          {{ $t('Cancel & go back') }}
         </CommonButton>
         <CommonButton size="large" variant="danger" @click="deleteSharedDraft(sharedDraftId)">
           {{ $t('Delete') }}

@@ -59,7 +59,7 @@ const footerActionOptions = computed(() => ({
   actionLabel: activeComponentInstance.value?.footerActionOptions?.actionLabel,
   actionButton: activeComponentInstance.value?.footerActionOptions?.actionButton,
   hideCancelButton: activeComponentInstance.value?.footerActionOptions?.hideCancelButton,
-  cancelLabel: activeComponentInstance.value?.footerActionOptions?.cancelLabel || __('Go Back'),
+  cancelLabel: activeComponentInstance.value?.footerActionOptions?.cancelLabel || __('Go back'),
   cancelButton: activeComponentInstance.value?.footerActionOptions?.cancelButton,
 }))
 

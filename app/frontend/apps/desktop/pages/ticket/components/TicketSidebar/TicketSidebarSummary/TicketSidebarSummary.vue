@@ -77,27 +77,27 @@ const showErrorDetails = computed(() => hasPermission('admin'))
 const headings = computed<SummaryItem[]>(() => [
   {
     key: 'customerRequest',
-    label: __('Customer Intent'),
+    label: __('Customer intent'),
     active: true,
   },
   {
     key: 'conversationSummary',
-    label: __('Conversation Summary'),
+    label: __('Conversation summary'),
     active: true,
   },
   {
     key: 'openQuestions',
-    label: __('Open Questions'),
+    label: __('Open questions'),
     active: summaryConfig.value.open_questions,
   },
   {
     key: 'upcomingEvents',
-    label: __('Upcoming Events'),
+    label: __('Upcoming events'),
     active: summaryConfig.value.upcoming_events,
   },
   {
     key: ['customerEmotion', 'customerMood'],
-    label: __('Customer Sentiment'),
+    label: __('Customer sentiment'),
     active: summaryConfig.value.customer_sentiment,
   },
 ])

@@ -194,7 +194,7 @@ describe('NotificationList', () => {
       wrapper.getByRole('button', {
         name: 'Admin Foo updated ticket Bunch of articles',
       }),
-    ).toHaveAttribute('aria-description', 'Remove Notification')
+    ).toHaveAttribute('aria-description', 'Remove notification')
 
     expect(wrapper.emitted('remove')).toEqual([[list[0]]])
   })

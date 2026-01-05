@@ -76,7 +76,7 @@ const userPopoverSlots: {
       :attributes="[
         {
           name: 'priorityIcon',
-          label: __('Priority Icon'),
+          label: __('Priority icon'),
           headerPreferences: {
             noResize: true,
             hideLabel: true,
@@ -88,7 +88,7 @@ const userPopoverSlots: {
         },
         {
           name: 'stateIcon',
-          label: __('State Icon'),
+          label: __('State icon'),
           headerPreferences: {
             noResize: true,
             hideLabel: true,

@@ -15,7 +15,7 @@ const route: RouteRecordRaw[] = [
         name: 'GuidedSetupStart',
         component: () => import('./views/GuidedSetupStart.vue'),
         meta: {
-          title: __('Get Started'),
+          title: __('Get started'),
           requiresAuth: false,
           requiredPermission: null,
           hasOwnLandmarks: true,
@@ -26,7 +26,7 @@ const route: RouteRecordRaw[] = [
         name: 'GuidedSetupAutomatedInfo',
         component: () => import('./views/GuidedSetupAutomated/GuidedSetupAutomatedInfo.vue'),
         meta: {
-          title: __('Automated Setup'),
+          title: __('Automated setup'),
           requiresAuth: false,
           requiredPermission: null,
           hasOwnLandmarks: true,
@@ -38,7 +38,7 @@ const route: RouteRecordRaw[] = [
         props: true,
         component: () => import('./views/GuidedSetupAutomated/GuidedSetupAutomatedRun.vue'),
         meta: {
-          title: __('Automated Setup'),
+          title: __('Automated setup'),
           requiresAuth: false,
           requiredPermission: null,
           hasOwnLandmarks: true,
@@ -55,7 +55,7 @@ const route: RouteRecordRaw[] = [
             name: 'GuidedSetupManualAdmin',
             component: () => import('./views/GuidedSetupManual/GuidedSetupManualAdmin.vue'),
             meta: {
-              title: __('Create Administrator Account'),
+              title: __('Create administrator account'),
               requiresAuth: false,
               requiredPermission: null,
               hasOwnLandmarks: true,
@@ -67,7 +67,7 @@ const route: RouteRecordRaw[] = [
             name: 'GuidedSetupManualFinish',
             component: () => import('./views/GuidedSetupManual/GuidedSetupManualFinish.vue'),
             meta: {
-              title: __('Setup Finished'),
+              title: __('Setup finished'),
               requiresAuth: true,
               requiredPermission: 'admin.wizard',
               hasOwnLandmarks: true,
@@ -79,7 +79,7 @@ const route: RouteRecordRaw[] = [
             component: () =>
               import('./views/GuidedSetupManual/GuidedSetupManualSystemInformation.vue'),
             meta: {
-              title: __('System Information'),
+              title: __('System information'),
               requiresAuth: true,
               requiredPermission: 'admin.wizard',
               hasOwnLandmarks: true,
@@ -91,7 +91,7 @@ const route: RouteRecordRaw[] = [
             component: () =>
               import('./views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue'),
             meta: {
-              title: __('Email Notification'),
+              title: __('Email notification'),
               requiresAuth: true,
               requiredPermission: 'admin.wizard',
               hasOwnLandmarks: true,
@@ -102,7 +102,7 @@ const route: RouteRecordRaw[] = [
             name: 'GuidedSetupManualChannels',
             component: () => import('./views/GuidedSetupManual/GuidedSetupManualChannels.vue'),
             meta: {
-              title: __('Connect Channels'),
+              title: __('Connect channels'),
               requiresAuth: true,
               requiredPermission: 'admin.wizard',
               hasOwnLandmarks: true,
@@ -113,7 +113,7 @@ const route: RouteRecordRaw[] = [
             name: 'GuidedSetupManualChannelEmail',
             component: () => import('./views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue'),
             meta: {
-              title: __('Email Account'),
+              title: __('Email account'),
               requiresAuth: true,
               requiredPermission: 'admin.wizard',
               hasOwnLandmarks: true,
@@ -125,7 +125,7 @@ const route: RouteRecordRaw[] = [
             component: () =>
               import('./views/GuidedSetupManual/GuidedSetupManualChannelEmailPreConfigured.vue'),
             meta: {
-              title: __('Connect Channels'),
+              title: __('Connect channels'),
               requiresAuth: true,
               requiredPermission: 'admin.wizard',
               hasOwnLandmarks: true,
@@ -137,7 +137,7 @@ const route: RouteRecordRaw[] = [
             component: () =>
               import('./views/GuidedSetupManual/GuidedSetupManualInviteColleagues.vue'),
             meta: {
-              title: __('Invite Colleagues'),
+              title: __('Invite colleagues'),
               requiresAuth: true,
               requiredPermission: 'admin.wizard',
               hasOwnLandmarks: true,
@@ -168,7 +168,7 @@ const route: RouteRecordRaw[] = [
             component: () =>
               import('./views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSource.vue'),
             meta: {
-              title: __('Import from Source'),
+              title: __('Import from source'),
               requiresAuth: false,
               requiredPermission: null,
               hasOwnLandmarks: true,
@@ -181,7 +181,7 @@ const route: RouteRecordRaw[] = [
             component: () =>
               import('./views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStart.vue'),
             meta: {
-              title: __('Start Import from Source'),
+              title: __('Start import from source'),
               requiresAuth: false,
               requiredPermission: null,
               hasOwnLandmarks: true,
@@ -194,7 +194,7 @@ const route: RouteRecordRaw[] = [
             component: () =>
               import('./views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue'),
             meta: {
-              title: __('Status Import'),
+              title: __('Status import'),
               requiresAuth: false,
               requiredPermission: null,
               hasOwnLandmarks: true,

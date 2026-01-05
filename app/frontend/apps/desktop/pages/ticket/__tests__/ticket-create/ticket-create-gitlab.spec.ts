@@ -121,7 +121,7 @@ describe('Ticket create - GitLab links', () => {
     await view.events.click(view.getByRole('button', { name: 'GitLab' }))
 
     await waitFor(() =>
-      expect(view.getByRole('heading', { level: 1, name: 'New Ticket' })).toBeInTheDocument(),
+      expect(view.getByRole('heading', { level: 1, name: 'New ticket' })).toBeInTheDocument(),
     )
 
     await view.events.type(view.getByLabelText('Title'), 'Test Ticket')
@@ -152,7 +152,7 @@ describe('Ticket create - GitLab links', () => {
 
     await view.events.click(
       await within(sidebar).findByRole('button', {
-        name: 'Link Issue',
+        name: 'Link issue',
       }),
     )
 
@@ -188,7 +188,7 @@ describe('Ticket create - GitLab links', () => {
       },
     })
 
-    await view.events.click(within(flyout).getByRole('button', { name: 'Link Issue' }))
+    await view.events.click(within(flyout).getByRole('button', { name: 'Link issue' }))
 
     expect(await within(sidebar).findByText('#123 Issue 1')).toBeInTheDocument()
 

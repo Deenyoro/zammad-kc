@@ -31,7 +31,7 @@ const sizeClass = computed(() => {
     class="relative rounded-full before:size-full before:absolute before:animate-spin before:[animation-duration:2s] before:z-0 before:rounded-full before:bg-gradient-to-r before:from-blue before:to-pink before:inset-0"
   >
     <div
-      :aria-label="$t('AI Agent')"
+      :aria-label="$t('AI agent')"
       class="p-1 relative z-1 bg-gray-600/90 border border-transparent bg-clip-padding rounded-full flex"
     >
       <CommonIcon class="text-blue w-full h-full" size="tiny" name="ai-agent" />

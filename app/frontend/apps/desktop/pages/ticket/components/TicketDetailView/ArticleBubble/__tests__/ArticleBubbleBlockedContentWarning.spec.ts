@@ -20,7 +20,7 @@ describe('ArticleBubbleBlockedContentWarning', () => {
       },
     })
     expect(wrapper.queryByIconName('exclamation-triangle')).not.toBeInTheDocument()
-    expect(wrapper.queryByText('Original Formatting')).not.toBeInTheDocument()
+    expect(wrapper.queryByText('Original formatting')).not.toBeInTheDocument()
   })
 
   // TODO: still skipped?!
@@ -41,6 +41,6 @@ describe('ArticleBubbleBlockedContentWarning', () => {
       },
     })
     expect(wrapper.getByIconName('exclamation-triangle')).toBeInTheDocument()
-    expect(wrapper.getByText('Original Formatting')).toBeInTheDocument()
+    expect(wrapper.getByText('Original formatting')).toBeInTheDocument()
   })
 })

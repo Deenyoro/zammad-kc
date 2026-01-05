@@ -48,7 +48,7 @@ describe('CommonFlyout', () => {
     })
 
     it('renders a default cancel label', () => {
-      expect(flyout.getByText('Cancel & Go Back')).toBeInTheDocument()
+      expect(flyout.getByText('Cancel & go back')).toBeInTheDocument()
     })
 
     it('renders a custom cancel label', async () => {
@@ -131,7 +131,7 @@ describe('CommonFlyout', () => {
 
     describe('events', () => {
       it('emits close event when cancel button is clicked', async () => {
-        await flyout.events.click(flyout.getByText('Cancel & Go Back'))
+        await flyout.events.click(flyout.getByText('Cancel & go back'))
 
         expect(flyout.emitted('close')).toHaveLength(1)
       })

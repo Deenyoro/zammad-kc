@@ -26,7 +26,7 @@ RSpec.describe 'Mobile > Ticket > Create with security options', app: :mobile, a
       next_step
 
       # Step 2.
-      find_radio('articleSenderType').select_choice('Send Email')
+      find_radio('articleSenderType').select_choice('Send email')
       next_step
 
       # Step 3.

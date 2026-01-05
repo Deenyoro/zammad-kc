@@ -355,7 +355,7 @@ const closed = () => {
           size="xs"
           tabindex="0"
           role="button"
-          :aria-label="$t('Clear Selection')"
+          :aria-label="$t('Clear selection')"
           @click.stop="picker?.clearValue()"
         />
       </template>

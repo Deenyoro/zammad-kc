@@ -473,7 +473,7 @@ export default {
     class="h-16!"
     :style="stickyStyles.header"
     back-url="/"
-    :title="__('Create Ticket')"
+    :title="__('Create ticket')"
   >
     <template #after>
       <CommonButton

@@ -156,7 +156,7 @@ const authenticatorApps = [
 ]
 
 const footerActionOptions = computed(() => ({
-  actionLabel: __('Set Up'),
+  actionLabel: __('Set up'),
   actionButton: { variant: 'submit', type: 'submit' },
 }))
 
@@ -205,7 +205,7 @@ defineExpose({
   <CommonLoader :loading="loading" :error="initiationError" />
   <div v-show="!loading" class="space-y-2 text-sm text-gray-100 dark:text-neutral-400">
     <CommonLabel
-      >{{ $t('To set up Authenticator App for your account, follow the steps below:') }}
+      >{{ $t('To set up an authenticator app for your account, follow the steps below:') }}
     </CommonLabel>
     <ol class="list-decimal space-y-3 ltr:pl-4 rtl:pr-4">
       <li>
@@ -263,7 +263,7 @@ defineExpose({
                 prefix-icon="files"
                 size="medium"
                 @click.stop="copyToClipboard(secretCode)"
-                >{{ $t('Copy Secret') }}</CommonButton
+                >{{ $t('Copy secret') }}</CommonButton
               >
             </div>
           </Transition>
@@ -283,7 +283,7 @@ defineExpose({
           <FormKit
             name="securityCode"
             type="text"
-            :placeholder="$t('Security Code')"
+            :placeholder="$t('Security code')"
             aria-labelledby="security-code-description"
             validation="required"
           />

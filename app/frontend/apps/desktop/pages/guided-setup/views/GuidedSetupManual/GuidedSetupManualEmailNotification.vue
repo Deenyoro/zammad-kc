@@ -27,7 +27,7 @@ defineOptions({
 const router = useRouter()
 
 const { setTitle } = useSystemSetup()
-setTitle(__('Email Notification'))
+setTitle(__('Email notification'))
 
 const { formEmailOutbound, emailOutboundSchema, emailOutboundFormChangeFields } =
   useEmailOutboundForm()
@@ -36,7 +36,7 @@ const emailNotificationSchema = [
   // For now this is hidden, but should be changeable at some point: https://github.com/zammad/zammad/issues/3343
   {
     name: 'notification_sender',
-    label: __('Notification Sender'),
+    label: __('Notification sender'),
     type: 'hidden',
   },
   ...emailOutboundSchema,
@@ -105,7 +105,7 @@ const probeEmailNotification = async (data: EmailNotificationData) => {
       go-back-route="/guided-setup/manual/system-information"
       skip-route="/guided-setup/manual/channels"
       :form="formEmailOutbound"
-      :submit-button-text="__('Save and Continue')"
+      :submit-button-text="__('Save and continue')"
     />
   </div>
 </template>

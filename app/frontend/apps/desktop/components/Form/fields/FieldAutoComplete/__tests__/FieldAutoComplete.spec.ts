@@ -211,7 +211,7 @@ describe('Form - Field - AutoComplete - Query', () => {
     expect(selectOptions).toHaveLength(1)
     expect(selectOptions[0]).toHaveTextContent(testOptions[0].label)
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear Search' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Clear search' }))
 
     expect(filterElement).toHaveValue('')
 
@@ -999,12 +999,12 @@ describe('Form - Field - AutoComplete - Accessibility', () => {
 
     const listitem = wrapper.getByRole('listitem')
 
-    expect(getByRole(listitem, 'button', { name: 'Unselect Option' })).toHaveAttribute(
+    expect(getByRole(listitem, 'button', { name: 'Unselect option' })).toHaveAttribute(
       'tabindex',
       '0',
     )
 
-    expect(wrapper.getByRole('button', { name: 'Clear Selection' })).toHaveAttribute(
+    expect(wrapper.getByRole('button', { name: 'Clear selection' })).toHaveAttribute(
       'tabindex',
       '0',
     )
@@ -1134,7 +1134,7 @@ describe('Form - Field - AutoComplete - Accessibility', () => {
       },
     })
 
-    expect(wrapper.getByRole('button')).toHaveAttribute('aria-label', 'Clear Selection')
+    expect(wrapper.getByRole('button')).toHaveAttribute('aria-label', 'Clear selection')
   })
 
   it('supports keyboard navigation', async () => {
@@ -1180,7 +1180,7 @@ describe('Form - Field - AutoComplete - Accessibility', () => {
 
     expect(emittedInput[0][0]).toBe(testOptions[2].value)
 
-    wrapper.events.type(wrapper.getByRole('button', { name: 'Clear Selection' }), '{Space}')
+    wrapper.events.type(wrapper.getByRole('button', { name: 'Clear selection' }), '{Space}')
 
     await waitFor(() => {
       expect(emittedInput[1][0]).toBe(null)

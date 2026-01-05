@@ -191,7 +191,7 @@ describe('Ticket detail view macros', () => {
     })
 
     expect(
-      await view.findByRole('button', { name: 'AI Agent User is editing' }),
+      await view.findByRole('button', { name: 'AI agent User is editing' }),
     ).toBeInTheDocument()
   })
 })

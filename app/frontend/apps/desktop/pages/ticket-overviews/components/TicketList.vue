@@ -420,7 +420,7 @@ defineExpose({ tickets: readonly(tickets) })
 
         <TicketOverviewsEmptyText
           v-else
-          :title="$t('Empty Overview')"
+          :title="$t('Empty overview')"
           :text="$t('No tickets in this state.')"
           with-illustration
         />

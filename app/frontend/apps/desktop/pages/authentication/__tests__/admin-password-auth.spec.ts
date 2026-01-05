@@ -44,6 +44,6 @@ describe('requesting a token for the admin password auth', () => {
 
     expect(await view.findByRole('button', { name: 'Retry' })).toBeInTheDocument()
 
-    expect(await view.findByRole('button', { name: 'Cancel & Go Back' })).toBeInTheDocument()
+    expect(await view.findByRole('button', { name: 'Cancel & go back' })).toBeInTheDocument()
   })
 })

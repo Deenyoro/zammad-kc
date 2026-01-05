@@ -254,14 +254,14 @@ describe('SearchContent', () => {
 
     await wrapper.events.click(checkboxes[0])
 
-    expect(wrapper.getByRole('button', { name: 'Bulk Actions' })).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Bulk actions' })).toBeInTheDocument()
 
     await wrapper.events.click(wrapper.getByRole('tab', { name: 'Organization' }))
 
-    expect(wrapper.queryByRole('button', { name: 'Bulk Actions' })).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button', { name: 'Bulk actions' })).not.toBeInTheDocument()
 
     await wrapper.events.click(wrapper.getByRole('tab', { name: 'User' }))
 
-    expect(wrapper.queryByRole('button', { name: 'Bulk Actions' })).not.toBeInTheDocument()
+    expect(wrapper.queryByRole('button', { name: 'Bulk actions' })).not.toBeInTheDocument()
   })
 })

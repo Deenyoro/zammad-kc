@@ -26,24 +26,24 @@ describe('CommonInputCopyToClipboard.vue', () => {
   it('show disabled input field with value and copy button', async () => {
     const view = renderCopyToClipboard({
       value: uuidValue,
-      label: 'A Label',
+      label: 'A label',
     })
 
-    const input = view.getByLabelText('A Label')
+    const input = view.getByLabelText('A label')
 
     expect(input).toHaveValue(uuidValue)
     expect(input).toHaveAttribute('readonly')
-    expect(view.getByRole('button', { name: 'Copy Text' })).toBeInTheDocument()
+    expect(view.getByRole('button', { name: 'Copy text' })).toBeInTheDocument()
   })
 
   it('click copy button with a custom copy label', async () => {
     const view = renderCopyToClipboard({
       value: uuidValue,
-      label: 'A Label',
-      copyButtonText: 'Copy Token',
+      label: 'A label',
+      copyButtonText: 'Copy token',
     })
 
-    await view.events.click(view.getByRole('button', { name: 'Copy Token' }))
+    await view.events.click(view.getByRole('button', { name: 'Copy token' }))
 
     expect(copyToClipboardMock).toHaveBeenCalledWith(uuidValue)
   })

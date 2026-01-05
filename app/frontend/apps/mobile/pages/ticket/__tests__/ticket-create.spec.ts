@@ -286,7 +286,7 @@ describe('Creating new ticket as agent', () => {
     await waitUntil(() => mockFormUpdater.calls.resolve)
     await nextStep(view)
 
-    await view.events.click(view.getByLabelText('Send Email'))
+    await view.events.click(view.getByLabelText('Send email'))
     await nextStep(view)
 
     expect(view.getByLabelText('CC')).toBeInTheDocument()

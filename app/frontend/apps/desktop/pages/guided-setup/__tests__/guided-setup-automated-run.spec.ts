@@ -38,7 +38,7 @@ describe('guided setup automated run', () => {
 
       const view = await visitView('/guided-setup/automated/run')
 
-      expect(view.getByText('Automated Setup')).toBeInTheDocument()
+      expect(view.getByText('Automated setup')).toBeInTheDocument()
       expect(view.getByIconName('spinner')).toBeInTheDocument()
 
       expect(
@@ -68,7 +68,7 @@ describe('guided setup automated run', () => {
       const view = await visitView('/guided-setup/automated/run')
       await flushPromises()
 
-      expect(view.getByText('Automated Setup')).toBeInTheDocument()
+      expect(view.getByText('Automated setup')).toBeInTheDocument()
       expect(view.queryByIconName('spinner')).not.toBeInTheDocument()
 
       expect(

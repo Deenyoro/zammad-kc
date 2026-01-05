@@ -3,6 +3,6 @@ import type { ChannelModule } from '#desktop/pages/ticket/components/TicketDetai
 
 export default <ChannelModule>{
   name: 'facebook feed comment',
-  label: __('Facebook Feed Comment'),
+  label: __('Facebook feed comment'),
   icon: 'facebook',
 }

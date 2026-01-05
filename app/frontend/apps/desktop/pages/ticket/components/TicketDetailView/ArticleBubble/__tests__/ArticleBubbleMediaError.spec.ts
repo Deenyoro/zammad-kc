@@ -69,7 +69,7 @@ describe('ArticleBubbleMediaError', () => {
     })
 
     const retryButton = within(warning).getByRole('button', {
-      name: 'Retry Attachment Download',
+      name: 'Retry attachment download',
     })
 
     await wrapper.events.click(retryButton)

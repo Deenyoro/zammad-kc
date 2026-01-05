@@ -22,7 +22,7 @@ const route: RouteRecordRaw[] = [
     name: 'AdminPasswordAuth',
     component: () => import('./views/AdminPasswordAuth.vue'),
     meta: {
-      title: __('Admin Password Login'),
+      title: __('Admin password login'),
       requiresAuth: false,
       requiredPermission: null,
       redirectToDefaultRoute: true,
@@ -107,7 +107,7 @@ const route: RouteRecordRaw[] = [
     props: true,
     component: () => import('./views/SignupVerify.vue'),
     meta: {
-      title: __('Email Verification'),
+      title: __('Email verification'),
       requiresAuth: false,
       requiredPermission: null,
       redirectToDefaultRoute: true,

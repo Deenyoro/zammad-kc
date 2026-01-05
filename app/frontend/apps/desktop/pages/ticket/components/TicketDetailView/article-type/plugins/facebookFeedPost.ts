@@ -4,6 +4,6 @@ import type { ChannelModule } from '#desktop/pages/ticket/components/TicketDetai
 
 export default <ChannelModule>{
   name: 'facebook feed post',
-  label: __('Facebook Feed Post'),
+  label: __('Facebook feed post'),
   icon: 'facebook',
 }

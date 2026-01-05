@@ -144,7 +144,7 @@ describe('TicketSidebarIdoit', () => {
 
     await waitForNextTick()
 
-    expect(wrapper.getByRole('button', { name: 'Link Objects' })).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Link objects' })).toBeInTheDocument()
 
     expect(wrapper.queryByRole('status', { name: 'Objects' })).not.toBeInTheDocument()
 

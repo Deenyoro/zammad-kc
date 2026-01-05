@@ -38,7 +38,7 @@ const retryDownload = async () => {
         :disabled="loading"
         @click="retryDownload"
       >
-        {{ $t('Retry Attachment Download') }}
+        {{ $t('Retry attachment download') }}
       </CommonButton>
     </div>
   </CommonAlert>

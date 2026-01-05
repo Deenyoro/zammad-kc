@@ -33,6 +33,6 @@ const { popover, popoverTarget, toggle } = usePopover()
     variant="secondary"
     @click="toggle(true)"
   >
-    {{ $t('Add From a Template') }}
+    {{ $t('Add from a template') }}
   </CommonButton>
 </template>

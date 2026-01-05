@@ -28,7 +28,7 @@ const router = useRouter()
 
 const { setTitle } = useSystemSetup()
 
-setTitle(__('Connect Channels'))
+setTitle(__('Connect channels'))
 
 const emailAddressesQuery = new QueryHandler(
   useEmailAddressesQuery({

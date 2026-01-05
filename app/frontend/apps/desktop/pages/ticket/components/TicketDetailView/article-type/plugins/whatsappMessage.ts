@@ -7,12 +7,12 @@ import ArticleMetaWhatsappMessageStatus from '#desktop/pages/ticket/components/T
 
 export default <ChannelModule>{
   name: 'whatsapp message',
-  label: __('WhatsApp Message'),
+  label: __('WhatsApp message'),
   icon: 'whatsapp',
   additionalFields: [
     {
       name: 'preferences.whatsapp',
-      label: __('Message Status'),
+      label: __('Message status'),
       show: (article) => {
         const { hasDeliveryStatus } = useWhatsapp(article)
         return hasDeliveryStatus.value

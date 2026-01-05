@@ -90,7 +90,7 @@ const ariaChecked = computed(() => {
         'bg-blue-800! dark:bg-blue-800!': isDark,
       },
     ]"
-    :aria-label="$t('Dark Mode')"
+    :aria-label="$t('Dark mode')"
     :aria-checked="ariaChecked"
     tabindex="0"
     @click="updateLocalValue"

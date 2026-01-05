@@ -38,7 +38,7 @@ const { originalFormattingUrl } = useEmailFileUrls(props.article, ticketInternal
         size="medium"
         open-in-new-tab
       >
-        {{ $t('Original Formatting') }}
+        {{ $t('Original formatting') }}
       </CommonLink>
     </CommonLabel>
   </div>

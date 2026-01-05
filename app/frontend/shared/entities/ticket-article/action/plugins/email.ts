@@ -102,7 +102,7 @@ const actionPlugin: TicketArticleActionPlugin = {
         apps: ['mobile', 'desktop'],
         name: 'email-reply-all',
         view: { agent: ['change'] },
-        label: __('Reply All'),
+        label: __('Reply all'),
         icon: 'reply-alt',
         alwaysVisible: true,
         perform: (t, a, o) => replyToEmail(t, a, o, config, true),

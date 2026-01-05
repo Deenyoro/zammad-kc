@@ -92,7 +92,7 @@ const footerActionOptions = computed<ActionFooterOptions>(() => ({
 
 <template>
   <CommonFlyout
-    :header-title="__('Merge Tickets')"
+    :header-title="__('Merge tickets')"
     header-icon="merge"
     size="large"
     no-close-on-action

@@ -168,7 +168,7 @@ describe('TicketSidebarGitHub', () => {
 
     expect(wrapper.getByRole('button', { name: 'GitHub' })).toBeInTheDocument()
 
-    expect(wrapper.getByRole('button', { name: 'Link Issue' })).toBeInTheDocument()
+    expect(wrapper.getByRole('button', { name: 'Link issue' })).toBeInTheDocument()
 
     expect(wrapper.queryByRole('status', { name: 'Issues' })).not.toBeInTheDocument()
 
@@ -201,7 +201,7 @@ describe('TicketSidebarGitHub', () => {
     await wrapper.events.click(await wrapper.findByRole('button', { name: 'Action menu button' }))
 
     expect(await wrapper.findByIconName('link-45deg')).toBeInTheDocument()
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Link Issue' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Link issue' }))
 
     const flyout = await wrapper.findByRole('complementary', {
       name: 'GitHub: Link issue',
@@ -216,7 +216,7 @@ describe('TicketSidebarGitHub', () => {
       'https://git.zammad.com/zammad/zammad/-/issues/124',
     )
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Link Issue' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Link issue' }))
 
     const calls = await waitForTicketExternalReferencesIssueTrackerItemAddMutationCalls()
 
@@ -232,7 +232,7 @@ describe('TicketSidebarGitHub', () => {
 
     expect(wrapper.queryByRole('button', { name: 'Action menu button' })).not.toBeInTheDocument()
 
-    await wrapper.events.click(await wrapper.findByRole('button', { name: 'Link Issue' }))
+    await wrapper.events.click(await wrapper.findByRole('button', { name: 'Link issue' }))
 
     const flyout = await wrapper.findByRole('complementary', {
       name: 'GitHub: Link issue',

@@ -83,11 +83,11 @@ describe('CommonTicketEscalationIndicator.vue', () => {
 
     const popover = await view.findByRole('region')
 
-    expect(within(popover).getByText('Escalation Times')).toBeVisible()
+    expect(within(popover).getByText('Escalation times')).toBeVisible()
 
-    const container = within(popover).getByLabelText('First Response Time')
+    const container = within(popover).getByLabelText('First response time')
 
-    expect(within(container).getByText('First Response Time')).toBeVisible()
+    expect(within(container).getByText('First response time')).toBeVisible()
     expect(within(container).getByText('in 1 month')).toBeVisible()
   })
 
@@ -111,11 +111,11 @@ describe('CommonTicketEscalationIndicator.vue', () => {
 
     const popover = await view.findByRole('region')
 
-    expect(within(popover).getByText('Escalation Times')).toBeVisible()
+    expect(within(popover).getByText('Escalation times')).toBeVisible()
 
-    const container = within(popover).getByLabelText('Update Time')
+    const container = within(popover).getByLabelText('Update time')
 
-    expect(within(container).getByText('Update Time')).toBeVisible()
+    expect(within(container).getByText('Update time')).toBeVisible()
     expect(within(container).getByText('in 1 month')).toBeVisible()
   })
 
@@ -139,11 +139,11 @@ describe('CommonTicketEscalationIndicator.vue', () => {
 
     const popover = await view.findByRole('region')
 
-    expect(within(popover).getByText('Escalation Times')).toBeVisible()
+    expect(within(popover).getByText('Escalation times')).toBeVisible()
 
-    const container = within(popover).getByLabelText('Solution Time')
+    const container = within(popover).getByLabelText('Solution time')
 
-    expect(within(container).getByText('Solution Time')).toBeVisible()
+    expect(within(container).getByText('Solution time')).toBeVisible()
     expect(within(container).getByText('in 1 month')).toBeVisible()
   })
 
@@ -168,10 +168,10 @@ describe('CommonTicketEscalationIndicator.vue', () => {
 
     const popover = await view.findByRole('region')
 
-    expect(within(popover).getByText('Escalation Times')).toBeVisible()
-    expect(within(popover).queryByLabelText('First Response Time')).toBeInTheDocument()
-    expect(within(popover).queryByLabelText('Update Time')).not.toBeInTheDocument()
-    expect(within(popover).queryByLabelText('Solution Time')).toBeInTheDocument()
+    expect(within(popover).getByText('Escalation times')).toBeVisible()
+    expect(within(popover).queryByLabelText('First response time')).toBeInTheDocument()
+    expect(within(popover).queryByLabelText('Update time')).not.toBeInTheDocument()
+    expect(within(popover).queryByLabelText('Solution time')).toBeInTheDocument()
   })
 
   it('renders no popover when hasPopover is false', async () => {

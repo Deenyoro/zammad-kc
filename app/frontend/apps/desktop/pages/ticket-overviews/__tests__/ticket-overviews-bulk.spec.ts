@@ -35,7 +35,7 @@ describe('Ticket Overviews > Bulk edit tickets', () => {
     const view = await visitView('tickets/view/my_assigned')
 
     expect(view.queryByRole('checkbox')).not.toBeInTheDocument()
-    expect(view.queryByRole('button', { name: 'Bulk Actions' })).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Bulk actions' })).not.toBeInTheDocument()
   })
 
   it('selects a ticket for bulk edit', async () => {
@@ -94,14 +94,14 @@ describe('Ticket Overviews > Bulk edit tickets', () => {
 
     await waitForUserCurrentTicketOverviewsQueryCalls()
 
-    expect(view.queryByRole('button', { name: 'Bulk Action' })).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'Bulk action' })).not.toBeInTheDocument()
 
     await view.events.click(view.getByRole('checkbox', { name: 'Select this entry' }))
 
-    await view.events.click(view.getByRole('button', { name: 'Bulk Actions' }))
+    await view.events.click(view.getByRole('button', { name: 'Bulk actions' }))
 
     expect(
-      await view.findByRole('complementary', { name: 'Tickets Bulk Edit' }),
+      await view.findByRole('complementary', { name: 'Tickets bulk edit' }),
     ).toBeInTheDocument()
 
     const ticketState = await view.findByLabelText('State')

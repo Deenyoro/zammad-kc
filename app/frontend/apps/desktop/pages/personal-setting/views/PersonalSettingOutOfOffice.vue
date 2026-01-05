@@ -119,7 +119,7 @@ onChangedField('enabled', (newValue: FormFieldValue) => {
   Object.assign(formChangeFields, buildFormChangesHash(!!newValue))
 })
 
-const { breadcrumbItems } = useBreadcrumb(__('Out of Office'))
+const { breadcrumbItems } = useBreadcrumb(__('Out of office'))
 
 const formDataToInput = (formData: FormSubmitData<OutOfOfficeFormData>): OutOfOfficeInput => {
   const replacementId = formData.replacement_id
@@ -141,12 +141,12 @@ const showSuccessNotification = () => {
   notify({
     id: 'out-of-office-saved',
     type: NotificationTypes.Success,
-    message: __('Out of Office settings have been saved successfully'),
+    message: __('Out of office settings have been saved successfully'),
   })
 }
 
 const outOfOfficeMutation = new MutationHandler(useUserCurrentOutOfOfficeMutation(), {
-  errorNotificationMessage: __('Out of Office settings could not be saved.'),
+  errorNotificationMessage: __('Out of office settings could not be saved.'),
 })
 
 const submitForm = async (formData: FormSubmitData<OutOfOfficeFormData>) => {
@@ -170,7 +170,7 @@ const submitForm = async (formData: FormSubmitData<OutOfOfficeFormData>) => {
         <template #after-fields>
           <div class="mt-5 flex items-center justify-end gap-2">
             <CommonButton variant="submit" type="submit" size="medium" :disabled="isDisabled">
-              {{ $t('Save Out of Office') }}
+              {{ $t('Save out of office') }}
             </CommonButton>
           </div>
         </template>

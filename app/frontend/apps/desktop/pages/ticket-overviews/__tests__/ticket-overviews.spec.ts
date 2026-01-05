@@ -58,7 +58,7 @@ describe('TicketOverviews', () => {
 
     expect(
       await view.findByRole('table', { name: 'Overview: My Assigned Tickets' }),
-    ).toHaveTextContent('My Assigned TicketsState Icon') //  deeper test is in TicketList
+    ).toHaveTextContent('My Assigned TicketsState icon') //  deeper test is in TicketList
   })
 
   it('reorders overviews when subscription comes in', async () => {

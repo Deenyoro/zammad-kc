@@ -34,7 +34,7 @@ describe('actions inside article context', () => {
     await view.events.click(contextTriggers[0])
     await view.events.click(view.getByText('Show meta data'))
 
-    expect(view.getByText('Meta Data')).toBeInTheDocument()
+    expect(view.getByText('Meta data')).toBeInTheDocument()
     expect(view.getByRole('region', { name: 'Created' })).toHaveTextContent(/2022-01-29 00:00/)
 
     // content is tested inside unit test

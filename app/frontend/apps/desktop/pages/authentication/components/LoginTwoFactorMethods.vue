@@ -50,6 +50,6 @@ const emit = defineEmits<{
   </div>
 
   <CommonButton class="mt-5" size="large" block @click="emit('cancel')">
-    {{ $t('Cancel & Go Back') }}
+    {{ $t('Cancel & go back') }}
   </CommonButton>
 </template>

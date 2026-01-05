@@ -23,7 +23,7 @@ const application = useApplicationStore()
 const { logoUrl } = useLogoUrl()
 
 const { setTitle } = useSystemSetup()
-setTitle(__('System Information'))
+setTitle(__('System information'))
 
 const systemInformationSchema = [
   {
@@ -119,5 +119,5 @@ const setSystemInformation = async (formData: SystemInformationData) => {
     :initial-values="initialValues"
     @submit="setSystemInformation($event as FormSubmitData<SystemInformationData>)"
   />
-  <GuidedSetupActionFooter :form="form" :submit-button-text="__('Save and Continue')" />
+  <GuidedSetupActionFooter :form="form" :submit-button-text="__('Save and continue')" />
 </template>

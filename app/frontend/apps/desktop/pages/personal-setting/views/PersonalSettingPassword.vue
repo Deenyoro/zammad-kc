@@ -127,7 +127,7 @@ const submitForm = async (formData: FormSubmitData<ChangePasswordFormData>) => {
         <template #after-fields>
           <div class="mt-5 flex items-center justify-end gap-2">
             <CommonButton variant="submit" type="submit" size="medium" :disabled="isDisabled">
-              {{ $t('Change Password') }}
+              {{ $t('Change password') }}
             </CommonButton>
           </div>
         </template>

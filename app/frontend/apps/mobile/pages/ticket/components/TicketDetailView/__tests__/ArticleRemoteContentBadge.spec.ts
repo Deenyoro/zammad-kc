@@ -26,7 +26,7 @@ describe('rendering remote content badge', () => {
   it('renders the button and popup on click', async () => {
     const view = renderBadge({ originalFormattingUrl })
 
-    const button = view.getByRole('button', { name: 'Blocked Content' })
+    const button = view.getByRole('button', { name: 'Blocked content' })
 
     expect(view.getByIconName('warning')).toBeInTheDocument()
 
@@ -34,14 +34,14 @@ describe('rendering remote content badge', () => {
 
     const popup = view.getByTestId('popupWindow')
 
-    expect(within(popup).getByText('Blocked Content')).toBeInTheDocument()
+    expect(within(popup).getByText('Blocked content')).toBeInTheDocument()
     expect(
       within(popup).getByText(
         'This message contains images or other content hosted by an external source. It was blocked, but you can download the original formatting here.',
       ),
     ).toBeInTheDocument()
 
-    const link = within(popup).getByText('Original Formatting')
+    const link = within(popup).getByText('Original formatting')
 
     expect(link).toHaveAttribute('href', `/api/v1${originalFormattingUrl}`)
     expect(link).toHaveAttribute('target', '_blank')
@@ -50,10 +50,10 @@ describe('rendering remote content badge', () => {
   it('does not show original formatting link if missing', async () => {
     const view = renderBadge()
 
-    await view.events.click(view.getByRole('button', { name: 'Blocked Content' }))
+    await view.events.click(view.getByRole('button', { name: 'Blocked content' }))
 
     const popup = view.getByTestId('popupWindow')
 
-    expect(within(popup).queryByText('Original Formatting')).not.toBeInTheDocument()
+    expect(within(popup).queryByText('Original formatting')).not.toBeInTheDocument()
   })
 })

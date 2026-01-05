@@ -378,7 +378,7 @@ const handleIncompleteChecklist = async (error: UserError) => {
       'You have unchecked items in the checklist. Do you want to handle them before closing this ticket?',
     ),
     {
-      headerTitle: __('Incomplete Ticket Checklist'),
+      headerTitle: __('Incomplete ticket checklist'),
       headerIcon: 'checklist',
       buttonLabel: __('Yes, open the checklist'),
       cancelLabel: __('No, just close the ticket'),

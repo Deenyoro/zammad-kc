@@ -62,7 +62,7 @@ describe('Two-factor Authentication - Authenticator App', () => {
 
     expect(view.getByLabelText('Authenticator app secret')).toHaveTextContent(dummySecret)
 
-    await view.events.click(view.getByRole('button', { name: 'Copy Secret' }))
+    await view.events.click(view.getByRole('button', { name: 'Copy secret' }))
 
     expect(copyToClipboardMock).toHaveBeenCalledWith(dummySecret)
   })
@@ -100,7 +100,7 @@ describe('Two-factor Authentication - Authenticator App', () => {
       action: 'setup',
     })
 
-    await view.events.type(flyoutContent.getByPlaceholderText('Security Code'), '123456')
+    await view.events.type(flyoutContent.getByPlaceholderText('Security code'), '123456')
 
     mockUserCurrentTwoFactorVerifyMethodConfigurationMutation({
       userCurrentTwoFactorVerifyMethodConfiguration: {
@@ -117,7 +117,7 @@ describe('Two-factor Authentication - Authenticator App', () => {
 
     const footer = within(flyoutContent.getByLabelText('Side panel footer'))
 
-    await view.events.click(footer.getByRole('button', { name: 'Set Up' }))
+    await view.events.click(footer.getByRole('button', { name: 'Set up' }))
 
     expect(
       flyoutContent.getByText('Invalid security code! Please try again with a new code.'),
@@ -131,7 +131,7 @@ describe('Two-factor Authentication - Authenticator App', () => {
       action: 'setup',
     })
 
-    await view.events.type(flyoutContent.getByPlaceholderText('Security Code'), '123456')
+    await view.events.type(flyoutContent.getByPlaceholderText('Security code'), '123456')
 
     mockUserCurrentTwoFactorVerifyMethodConfigurationMutation({
       userCurrentTwoFactorVerifyMethodConfiguration: {
@@ -142,10 +142,10 @@ describe('Two-factor Authentication - Authenticator App', () => {
 
     const footer = within(flyoutContent.getByLabelText('Side panel footer'))
 
-    await view.events.click(footer.getByRole('button', { name: 'Set Up' }))
+    await view.events.click(footer.getByRole('button', { name: 'Set up' }))
 
     expect(
-      flyoutContent.getByText('Set Up Two-factor Authentication: Save Codes'),
+      flyoutContent.getByText('Set up two-factor authentication: Save codes'),
     ).toBeInTheDocument()
 
     await view.events.click(

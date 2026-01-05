@@ -128,7 +128,7 @@ describe('Form - Field - Permissions', () => {
     const permissions = wrapper.getAllByRole('treeitem')
 
     const toggleButton = getByRole(permissions[1], 'button', {
-      name: 'Toggle Group',
+      name: 'Toggle group',
     })
 
     await wrapper.events.click(toggleButton)

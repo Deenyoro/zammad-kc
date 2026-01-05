@@ -61,13 +61,13 @@ export const useEmailChannelConfiguration = (
   const stepTitle = computed(() => {
     switch (activeStep.value) {
       case 'inbound':
-        return __('Email Inbound')
+        return __('Email inbound')
       case 'inbound-messages':
-        return __('Archive Emails')
+        return __('Archive emails')
       case 'outbound':
-        return __('Email Outbound')
+        return __('Email outbound')
       default:
-        return __('Email Account')
+        return __('Email account')
     }
   })
 

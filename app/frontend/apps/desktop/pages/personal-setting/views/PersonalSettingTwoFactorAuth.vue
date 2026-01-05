@@ -69,7 +69,7 @@ watch(hasEnabledMethods, (newValue) => {
   )
 })
 
-const { breadcrumbItems } = useBreadcrumb(__('Two-factor Authentication'))
+const { breadcrumbItems } = useBreadcrumb(__('Two-factor authentication'))
 
 const twoFactorConfigurationFlyout = useFlyout({
   name: 'two-factor-flyout',
@@ -251,7 +251,7 @@ const actions = computed<MenuItem[]>(() => [
             size="medium"
             @click="openTwoFactorConfigurationFlyout('recovery_codes')"
           >
-            {{ hasRecoveryCodes ? $t('Regenerate Recovery Codes') : $t('Generate Recovery Codes') }}
+            {{ hasRecoveryCodes ? $t('Regenerate recovery codes') : $t('Generate recovery codes') }}
           </CommonButton>
         </div>
       </template>

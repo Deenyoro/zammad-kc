@@ -26,7 +26,7 @@ RSpec.describe 'Mobile > Login', app: :mobile, authenticated_as: false, type: :s
     it 'can login with correct code' do
       expect(page).to have_no_text('Try another method')
 
-      find_input('Security Code').type(code)
+      find_input('Security code').type(code)
       find_button('Sign in').click
 
       expect(page).to have_text('Home')

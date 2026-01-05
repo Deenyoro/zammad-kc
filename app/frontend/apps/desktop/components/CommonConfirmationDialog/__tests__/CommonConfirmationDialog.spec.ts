@@ -69,10 +69,10 @@ describe('dialog confirm behaviour', () => {
 
     await waitForNextTick()
 
-    expect(wrapper.getByRole('dialog', { name: 'Delete Object' })).toBeInTheDocument()
+    expect(wrapper.getByRole('dialog', { name: 'Delete object' })).toBeInTheDocument()
     expect(wrapper.getByText('Are you sure you want to delete this object?')).toBeInTheDocument()
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Delete Object' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Delete object' }))
     expect(confirmCallbackSpy).toHaveBeenCalledTimes(1)
   })
 
@@ -121,7 +121,7 @@ describe('dialog confirm behaviour', () => {
 
     await waitForNextTick()
 
-    await wrapper.events.click(wrapper.getByRole('button', { name: 'Cancel & Go Back' }))
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Cancel & go back' }))
 
     expect(cancelCallbackSpy).toHaveBeenCalledTimes(1)
   })

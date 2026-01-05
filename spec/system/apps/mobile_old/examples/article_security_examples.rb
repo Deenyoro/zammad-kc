@@ -20,7 +20,7 @@ RSpec.shared_examples 'mobile app: article security' do |integration:, ticket_cr
       expect(find_button('Sign', disabled: !sign).disabled?).to be(!sign)
 
       click('button[aria-describedby="tooltip-security-security"]')
-      expect(page).to have_css('[aria-label="Security Information"]')
+      expect(page).to have_css('[aria-label="Security information"]')
     end
   end
 

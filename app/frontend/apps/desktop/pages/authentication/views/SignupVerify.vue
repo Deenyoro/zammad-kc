@@ -107,7 +107,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <LayoutPublicPage box-size="small" :title="__('Email Verification')">
+  <LayoutPublicPage box-size="small" :title="__('Email verification')">
     <div class="mt-1 text-center">
       <CommonLabel>
         {{ $t(message) }}

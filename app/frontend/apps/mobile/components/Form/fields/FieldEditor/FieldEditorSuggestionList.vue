@@ -51,7 +51,7 @@ defineExpose({
 const emptyMessage = computed(() => {
   if (props.loading) return i18n.t('Loading…')
   if (props.query) return i18n.t('No results found')
-  if (props.type === 'knowledge-base') return i18n.t('Start typing to search in Knowledge Base…')
+  if (props.type === 'knowledge-base') return i18n.t('Start typing to search in knowledge base…')
   if (props.type === 'text') return i18n.t('Start typing to search for text modules…')
   if (props.type === 'user') return i18n.t('Start typing to search for users…')
 

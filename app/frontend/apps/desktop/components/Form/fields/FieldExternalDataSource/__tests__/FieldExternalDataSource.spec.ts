@@ -93,7 +93,7 @@ describe('Form - Field - External Data Source - Query', () => {
     expect(selectOptions[0]).toHaveTextContent(testOptions[0].label)
     expect(selectOptions[1]).toHaveTextContent(testOptions[1].label)
 
-    await wrapper.events.click(wrapper.getByLabelText('Clear Search'))
+    await wrapper.events.click(wrapper.getByLabelText('Clear search'))
 
     expect(filterElement).toHaveValue('')
 

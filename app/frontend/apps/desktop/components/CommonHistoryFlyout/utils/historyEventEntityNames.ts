@@ -5,8 +5,8 @@
 export const eventEntityNames: Record<string, string> = {
   TicketArticle: __('Article'),
   'Ticket::Article': __('Article'),
-  TicketSharedDraftZoom: __('Shared Draft'),
-  'Ticket::SharedDraftZoom': __('Shared Draft'),
-  ChecklistItem: __('Checklist Item'),
-  'Checklist::Item': __('Checklist Item'),
+  TicketSharedDraftZoom: __('Shared draft'),
+  'Ticket::SharedDraftZoom': __('Shared draft'),
+  ChecklistItem: __('Checklist item'),
+  'Checklist::Item': __('Checklist item'),
 }
