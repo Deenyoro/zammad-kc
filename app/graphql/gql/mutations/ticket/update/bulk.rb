@@ -3,6 +3,7 @@
 module Gql::Mutations
   class Ticket::Update::Bulk < BaseMutation
     include Gql::Mutations::Ticket::Concerns::HandlesGroup
+    include Gql::Concerns::RequiresTicketAgentPermission
 
     description 'Bulk-update tickets.'
 
@@ -13,10 +14,6 @@ module Gql::Mutations
     field :success, Boolean, description: 'Were the tickets updated successfully?'
     # Overwrite the default errors field.
     field :errors, [Gql::Types::Ticket::Update::BulkUserErrorType], description: 'Did the bulk update fail?'
-
-    def self.authorize(_obj, ctx)
-      ctx.current_user.permissions?(['ticket.agent'])
-    end
 
     def resolve(tickets:, input:, macro: nil)
       return group_has_no_email_error if !group_has_email?(input: input)

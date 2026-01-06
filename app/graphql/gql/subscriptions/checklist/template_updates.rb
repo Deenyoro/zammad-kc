@@ -12,6 +12,7 @@ module Gql::Subscriptions
 
     def self.authorize(_obj, ctx)
       ensure_checklist_feature_active!
+
       super
     end
 

@@ -1,10 +1,10 @@
 # Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 module Gql::Subscriptions
-  class Ticket::OrganizationTicketsByFilterUpdates < BaseSubscription
+  class Ticket::ByOrganizationUpdates < BaseSubscription
     description 'Updated organization tickets by filter'
 
-    argument :organization_id, GraphQL::Types::ID, required: false, description: 'Filter by organization', loads: Gql::Types::OrganizationType
+    argument :organization_id, GraphQL::Types::ID, description: 'Filter by organization', loads: Gql::Types::OrganizationType
 
     field :list_changed, Boolean, description: 'Signals that the organization tickets list has changed'
 

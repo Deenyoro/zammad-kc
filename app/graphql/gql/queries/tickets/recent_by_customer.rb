@@ -2,6 +2,7 @@
 
 module Gql::Queries
   class Tickets::RecentByCustomer < BaseQuery
+    include Gql::Concerns::RequiresTicketAgentPermission
 
     description 'Fetch recent customer tickets'
 
@@ -10,10 +11,6 @@ module Gql::Queries
     argument :limit, Integer, required: false, description: 'Limit for the amount of entries'
 
     type [Gql::Types::TicketType], null: false
-
-    def self.authorize(_obj, ctx)
-      ctx.current_user.permissions?(['ticket.agent'])
-    end
 
     def resolve(customer:, limit: 6, except_ticket_internal_id: nil)
       open_by_customer(customer:, except_ticket_internal_id:, limit:).all.presence ||

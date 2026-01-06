@@ -7,8 +7,15 @@ import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
 import { mockOrganizationQuery } from '#shared/entities/organization/graphql/queries/organization.mocks.ts'
-import type { Organization } from '#shared/graphql/types.ts'
+import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
+import { EnumTicketStateTypeCategory, type Organization } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
+
+import {
+  mockTicketsByOrganizationQuery,
+  waitForTicketsByOrganizationQueryCalls,
+} from '#desktop/entities/ticket/graphql/queries/ticketsByOrganization.mocks.ts'
+import { getTicketByOrganizationUpdatesSubscriptionHandler } from '#desktop/entities/ticket/graphql/subscriptions/ticketByOrganizationUpdates.mocks.ts'
 
 const copyToClipboardMock = vi.fn()
 
@@ -176,10 +183,72 @@ describe('Organization Detail View', () => {
     it('shows member count', async () => {})
   })
 
-  describe.skip('Related tickets', () => {
-    it('displays related tickets', async () => {})
+  describe('Organization tickets', () => {
+    beforeEach(() => {
+      const dummyTickets = Array.from({ length: 7 }, () => createDummyTicket())
 
-    it('refetch related tickets when organization subscription triggers')
+      mockTicketsByOrganizationQuery((variables) => {
+        const totalCount = variables.stateTypeCategory === EnumTicketStateTypeCategory.Open ? 4 : 3
+        const start = variables.stateTypeCategory === EnumTicketStateTypeCategory.Open ? 0 : 3
+        const end = totalCount - 1
+
+        return {
+          ticketsByOrganization: {
+            totalCount,
+            edges: dummyTickets.slice(start, end).map((ticket) => ({
+              node: ticket,
+            })),
+          },
+        }
+      })
+    })
+
+    it('displays organization tickets section', async () => {
+      const { main } = await visitOrganizationView()
+
+      const calls = await waitForTicketsByOrganizationQueryCalls()
+
+      expect(calls).toHaveLength(2)
+
+      const organizationTicketsSection = within(main).getByRole('region', {
+        name: 'Organization tickets',
+      })
+
+      expect(
+        within(organizationTicketsSection).getByRole('heading', {
+          name: 'Organization tickets',
+          level: 2,
+        }),
+      ).toBeVisible()
+
+      const openTicketsHeading = await within(organizationTicketsSection).findByRole('heading', {
+        name: 'Open tickets',
+      })
+
+      expect(openTicketsHeading).toHaveTextContent('4')
+
+      const closedTicketsHeading = await within(organizationTicketsSection).findByRole('heading', {
+        name: 'Closed tickets',
+      })
+
+      expect(closedTicketsHeading).toHaveTextContent('3')
+    })
+
+    it('refetch tickets when organization subscription triggers', async () => {
+      await visitOrganizationView()
+
+      const calls = await waitForTicketsByOrganizationQueryCalls()
+
+      expect(calls).toHaveLength(2)
+
+      await getTicketByOrganizationUpdatesSubscriptionHandler().trigger({
+        ticketByOrganizationUpdates: {
+          listChanged: true,
+        },
+      })
+
+      expect(calls).toHaveLength(4)
+    })
   })
 
   describe.skip('Ticket frequency chart', () => {

@@ -16,7 +16,9 @@ type StaticEvents = {
 }
 
 type DynamicEvents = {
-  [key in `customer-ticket-list-refetch:${string}`]: void
+  [key in
+    | `customer-ticket-list-refetch:${string}`
+    | `organization-ticket-list-refetch:${string}`]: void
 }
 
 export type Events = StaticEvents & DynamicEvents

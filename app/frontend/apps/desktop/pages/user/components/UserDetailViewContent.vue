@@ -21,7 +21,7 @@ import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import UserTicketBarChart from '#desktop/components/Ticket/TicketBarChart/UserTicketBarChart.vue'
 import { usePage } from '#desktop/composables/usePage.ts'
 import { useScrollPosition } from '#desktop/composables/useScrollPosition.ts'
-import { useCustomerTicketsByFilterUpdatesSubscription } from '#desktop/entities/ticket/graphql/subscriptions/customerTicketsByFilterUpdates.api.ts'
+import { useTicketByCustomerUpdatesSubscription } from '#desktop/entities/ticket/graphql/subscriptions/ticketByCustomerUpdates.api.ts'
 
 import UserDetailTopBar from './UserDetailTopBar.vue'
 import UserRelatedCustomerTickets from './UserRelatedCustomerTickets.vue'
@@ -76,14 +76,14 @@ const customerTicketsTabs = computed(() => [
 
 const activeCustomerTicketsTab = ref<'user' | 'organization'>('user')
 
-const customerTicketsByFilterSubscription = new SubscriptionHandler(
-  useCustomerTicketsByFilterUpdatesSubscription(() => ({
-    customerId: userId.value!,
+const customerTicketsSubscription = new SubscriptionHandler(
+  useTicketByCustomerUpdatesSubscription(() => ({
+    customerId: userId.value,
   })),
 )
 
-customerTicketsByFilterSubscription.onResult(({ data }) => {
-  if (!data?.ticketCustomerTicketsByFilterUpdates.listChanged) return
+customerTicketsSubscription.onResult(({ data }) => {
+  if (!data?.ticketByCustomerUpdates.listChanged) return
 
   chartInstance.value?.refetchData()
 

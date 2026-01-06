@@ -18,6 +18,8 @@ export const OrganizationDocument = gql`
     ticketsCount {
       open
       closed
+      openSearchQuery
+      closedSearchQuery
     }
   }
 }

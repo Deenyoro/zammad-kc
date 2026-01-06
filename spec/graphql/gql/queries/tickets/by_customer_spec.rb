@@ -2,15 +2,15 @@
 
 require 'rails_helper'
 
-RSpec.describe Gql::Queries::Tickets::ByFilter, type: :graphql do
+RSpec.describe Gql::Queries::Tickets::ByCustomer, type: :graphql do
   let(:query) do
     <<~QUERY
-      query ticketsByFilter(
-        $customerId: ID
+      query ticketsByCustomer(
+        $customerId: ID!
         $customerOrganizations: Boolean
         $stateTypeCategory: EnumTicketStateTypeCategory
       ) {
-        ticketsByFilter(
+        ticketsByCustomer(
           customerId: $customerId
           customerOrganizations: $customerOrganizations
           stateTypeCategory: $stateTypeCategory
@@ -38,11 +38,11 @@ RSpec.describe Gql::Queries::Tickets::ByFilter, type: :graphql do
   end
 
   context 'with an agent', authenticated_as: :user do
-    context 'without filters' do
+    context 'without customer filter' do
       let(:variables) { {} }
 
       it 'returns an error' do
-        expect(gql.result.error_type).to eq(Exceptions::UnprocessableEntity)
+        expect(gql.result.error_message).to eq('Variable $customerId of type ID! was provided invalid value')
       end
     end
 

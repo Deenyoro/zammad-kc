@@ -17876,16 +17876,30 @@
               "deprecationReason": null
             },
             {
-              "name": "ticketsByFilter",
-              "description": "Fetch tickets of a given ticket overview",
+              "name": "ticketsByCustomer",
+              "description": "Fetch tickets of a given customer with optional filters",
               "args": [
+                {
+                  "name": "stateTypeCategory",
+                  "description": "Filter by state type category",
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "EnumTicketStateTypeCategory",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
                 {
                   "name": "customerId",
                   "description": "Filter by customer",
                   "type": {
-                    "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
                   },
                   "defaultValue": null
                 },
@@ -17900,12 +17914,83 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "after",
+                  "description": "Returns the elements in the list that come after the specified cursor.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "before",
+                  "description": "Returns the elements in the list that come before the specified cursor.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "first",
+                  "description": "Returns the first _n_ elements from the list.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "last",
+                  "description": "Returns the last _n_ elements from the list.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "TicketConnection",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ticketsByOrganization",
+              "description": "Fetch tickets of a given organization with optional filters",
+              "args": [
+                {
                   "name": "stateTypeCategory",
                   "description": "Filter by state type category",
                   "type": {
                     "kind": "ENUM",
                     "name": "EnumTicketStateTypeCategory",
                     "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "organizationId",
+                  "description": "Filter by organization",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
                   },
                   "defaultValue": null
                 },
@@ -19721,6 +19806,68 @@
               "deprecationReason": null
             },
             {
+              "name": "ticketByCustomerUpdates",
+              "description": "Updated customer tickets by filter",
+              "args": [
+                {
+                  "name": "customerId",
+                  "description": "Filter by customer",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "TicketByCustomerUpdatesPayload",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ticketByOrganizationUpdates",
+              "description": "Updated organization tickets by filter",
+              "args": [
+                {
+                  "name": "organizationId",
+                  "description": "Filter by organization",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "TicketByOrganizationUpdatesPayload",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "ticketChecklistUpdates",
               "description": "Subscription for ticket checklist changes.",
               "args": [
@@ -19745,33 +19892,6 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "TicketChecklistUpdatesPayload",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "ticketCustomerTicketsByFilterUpdates",
-              "description": "Updated customer tickets by filter",
-              "args": [
-                {
-                  "name": "customerId",
-                  "description": "Filter by customer",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "TicketCustomerTicketsByFilterUpdatesPayload",
                   "ofType": null
                 }
               },
@@ -19817,33 +19937,6 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "TicketLiveUserUpdatesPayload",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "ticketOrganizationTicketsByFilterUpdates",
-              "description": "Updated organization tickets by filter",
-              "args": [
-                {
-                  "name": "organizationId",
-                  "description": "Filter by organization",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "TicketOrganizationTicketsByFilterUpdatesPayload",
                   "ofType": null
                 }
               },
@@ -23591,6 +23684,52 @@
         },
         {
           "kind": "OBJECT",
+          "name": "TicketByCustomerUpdatesPayload",
+          "description": "Autogenerated return type of TicketByCustomerUpdates.",
+          "fields": [
+            {
+              "name": "listChanged",
+              "description": "Signals that the customer tickets list has changed",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "TicketByOrganizationUpdatesPayload",
+          "description": "Autogenerated return type of TicketByOrganizationUpdates.",
+          "fields": [
+            {
+              "name": "listChanged",
+              "description": "Signals that the organization tickets list has changed",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "TicketChecklistAddPayload",
           "description": "Autogenerated return type of TicketChecklistAdd.",
           "fields": [
@@ -24113,13 +24252,9 @@
               "description": "Closed ticket count of the related object's organizations",
               "args": [],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                }
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -24141,13 +24276,9 @@
               "description": "Open ticket count of the related object's organizations",
               "args": [],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                }
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -24424,29 +24555,6 @@
             }
           ],
           "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
-          "name": "TicketCustomerTicketsByFilterUpdatesPayload",
-          "description": "Autogenerated return type of TicketCustomerTicketsByFilterUpdates.",
-          "fields": [
-            {
-              "name": "listChanged",
-              "description": "Signals that the customer tickets list has changed",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
           "enumValues": null,
           "possibleTypes": null
         },
@@ -25644,29 +25752,6 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "Ticket",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
-          "name": "TicketOrganizationTicketsByFilterUpdatesPayload",
-          "description": "Autogenerated return type of TicketOrganizationTicketsByFilterUpdates.",
-          "fields": [
-            {
-              "name": "listChanged",
-              "description": "Signals that the organization tickets list has changed",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,

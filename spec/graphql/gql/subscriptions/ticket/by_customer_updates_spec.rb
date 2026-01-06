@@ -2,20 +2,19 @@
 
 require 'rails_helper'
 
-RSpec.describe Gql::Subscriptions::Ticket::OrganizationTicketsByFilterUpdates, performs_jobs: true, type: :graphql do
+RSpec.describe Gql::Subscriptions::Ticket::ByCustomerUpdates, performs_jobs: true, type: :graphql do
   let(:subscription) do
     <<~SUBSCRIPTION
-      subscription ticketOrganizationTicketsByFilterUpdates($organizationId: ID) {
-        ticketOrganizationTicketsByFilterUpdates(organizationId: $organizationId) {
+      subscription ticketByCustomerUpdates($customerId: ID!) {
+        ticketByCustomerUpdates(customerId: $customerId) {
           listChanged
         }
       }
     SUBSCRIPTION
   end
 
-  let(:organization)    { create(:organization) }
-  let(:filter_customer) { create(:customer, organization: organization) }
-  let(:variables)       { { organizationId: gql.id(organization) } }
+  let(:filter_customer) { create(:customer) }
+  let(:variables)       { { customerId: gql.id(filter_customer) } }
   let(:mock_channel)    { build_mock_channel }
 
   shared_examples 'requires agent permission' do
@@ -37,20 +36,20 @@ RSpec.describe Gql::Subscriptions::Ticket::OrganizationTicketsByFilterUpdates, p
       expect(gql.result.data).to eq({ 'listChanged' => nil })
     end
 
-    it 'receives updates when a ticket for the organization changes' do
+    it 'receives updates when a matching ticket changes' do
       mock_channel.mock_broadcasted_messages.clear
 
-      create(:ticket, customer: filter_customer, organization: organization)
+      create(:ticket, customer: filter_customer)
 
       perform_enqueued_jobs
 
-      result = mock_channel.mock_broadcasted_messages.first.dig(:result, 'data', 'ticketOrganizationTicketsByFilterUpdates')
+      result = mock_channel.mock_broadcasted_messages.first.dig(:result, 'data', 'ticketByCustomerUpdates')
       expect(result).to eq({ 'listChanged' => true })
     end
   end
 
   context 'with a customer', authenticated_as: :customer_user do
-    let(:customer_user) { filter_customer }
+    let(:customer_user) { create(:customer) }
 
     it_behaves_like 'requires agent permission'
   end

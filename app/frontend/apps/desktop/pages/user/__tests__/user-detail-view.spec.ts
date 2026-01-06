@@ -9,9 +9,9 @@ import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { mockUserQuery } from '#shared/entities/user/graphql/queries/user.mocks.ts'
 import type { OrganizationEdge, User } from '#shared/graphql/types.ts'
 
-import { waitForCustomerTicketsByFilterQueryCalls } from '#desktop/entities/ticket/graphql/queries/customerTicketsByFilter.mocks.ts'
+import { waitForTicketsByCustomerQueryCalls } from '#desktop/entities/ticket/graphql/queries/ticketsByCustomer.mocks.ts'
 import { waitForTicketsStatsMonthlyByCustomerQueryCalls } from '#desktop/entities/ticket/graphql/queries/ticketsStatsMonthlyByCustomer.mocks.ts'
-import { getCustomerTicketsByFilterUpdatesSubscriptionHandler } from '#desktop/entities/ticket/graphql/subscriptions/customerTicketsByFilterUpdates.mocks.ts'
+import { getTicketByCustomerUpdatesSubscriptionHandler } from '#desktop/entities/ticket/graphql/subscriptions/ticketByCustomerUpdates.mocks.ts'
 
 const copyToClipboardMock = vi.fn()
 
@@ -392,7 +392,7 @@ describe('User Detail View', () => {
     it('displays related tickets section', async () => {
       const view = await visitView('/users/2')
 
-      const calls = await waitForCustomerTicketsByFilterQueryCalls()
+      const calls = await waitForTicketsByCustomerQueryCalls()
 
       expect(calls).toHaveLength(2)
 
@@ -428,12 +428,12 @@ describe('User Detail View', () => {
     it('refetch related tickets when user subscription triggers', async () => {
       await visitView('/users/2')
 
-      const calls = await waitForCustomerTicketsByFilterQueryCalls()
+      const calls = await waitForTicketsByCustomerQueryCalls()
 
       expect(calls).toHaveLength(2)
 
-      await getCustomerTicketsByFilterUpdatesSubscriptionHandler().trigger({
-        ticketCustomerTicketsByFilterUpdates: {
+      await getTicketByCustomerUpdatesSubscriptionHandler().trigger({
+        ticketByCustomerUpdates: {
           listChanged: true,
         },
       })
@@ -459,8 +459,8 @@ describe('User Detail View', () => {
 
       expect(calls).toHaveLength(1)
 
-      await getCustomerTicketsByFilterUpdatesSubscriptionHandler().trigger({
-        ticketCustomerTicketsByFilterUpdates: {
+      await getTicketByCustomerUpdatesSubscriptionHandler().trigger({
+        ticketByCustomerUpdates: {
           listChanged: true,
         },
       })

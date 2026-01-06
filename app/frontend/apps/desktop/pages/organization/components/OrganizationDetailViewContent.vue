@@ -8,14 +8,19 @@ import { useOrganizationDetail } from '#shared/entities/organization/composables
 import { useOrganizationEntity } from '#shared/entities/organization/composables/useOrganizationEntity.ts'
 import { useOrganizationNoteUpdateMutation } from '#shared/entities/organization/graphql/mutations/noteUpdate.api.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
+import SubscriptionHandler from '#shared/server/apollo/handler/SubscriptionHandler.ts'
 import { GraphQLErrorTypes } from '#shared/types/error.ts'
+import emitter from '#shared/utils/emitter.ts'
 
 import CommonLoader from '#desktop/components/CommonLoader/CommonLoader.vue'
+import CommonSectionContainer from '#desktop/components/CommonSectionContainer/CommonSectionContainer.vue'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import { usePage } from '#desktop/composables/usePage.ts'
 import { useScrollPosition } from '#desktop/composables/useScrollPosition.ts'
+import { useTicketByOrganizationUpdatesSubscription } from '#desktop/entities/ticket/graphql/subscriptions/ticketByOrganizationUpdates.api.ts'
 
 import OrganizationDetailTopBar from './OrganizationDetailTopBar.vue'
+import OrganizationRelatedTickets from './OrganizationRelatedTickets.vue'
 
 interface Props {
   internalId: string
@@ -45,6 +50,20 @@ usePage({
 const contentContainerElement = useTemplateRef('content-container')
 
 useScrollPosition(contentContainerElement)
+
+const organizationTicketsSubscription = new SubscriptionHandler(
+  useTicketByOrganizationUpdatesSubscription(() => ({
+    organizationId: organizationId.value,
+  })),
+)
+
+organizationTicketsSubscription.onResult(({ data }) => {
+  if (!data?.ticketByOrganizationUpdates.listChanged) return
+
+  // TODO: refetch chart data
+
+  emitter.emit(`organization-ticket-list-refetch:${organizationId.value}`)
+})
 </script>
 
 <template>
@@ -73,7 +92,9 @@ useScrollPosition(contentContainerElement)
             />
           </div>
 
-          <!-- TODO: Organization tickets -->
+          <CommonSectionContainer class="self-start" :label="__('Organization tickets')">
+            <OrganizationRelatedTickets :organization="organization" />
+          </CommonSectionContainer>
 
           <!-- TODO: Ticket frequency chart -->
         </section>

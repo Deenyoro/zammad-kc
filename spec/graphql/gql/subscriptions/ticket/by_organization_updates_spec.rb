@@ -2,19 +2,20 @@
 
 require 'rails_helper'
 
-RSpec.describe Gql::Subscriptions::Ticket::CustomerTicketsByFilterUpdates, performs_jobs: true, type: :graphql do
+RSpec.describe Gql::Subscriptions::Ticket::ByOrganizationUpdates, performs_jobs: true, type: :graphql do
   let(:subscription) do
     <<~SUBSCRIPTION
-      subscription ticketCustomerTicketsByFilterUpdates($customerId: ID) {
-        ticketCustomerTicketsByFilterUpdates(customerId: $customerId) {
+      subscription ticketByOrganizationUpdates($organizationId: ID!) {
+        ticketByOrganizationUpdates(organizationId: $organizationId) {
           listChanged
         }
       }
     SUBSCRIPTION
   end
 
-  let(:filter_customer) { create(:customer) }
-  let(:variables)       { { customerId: gql.id(filter_customer) } }
+  let(:organization)    { create(:organization) }
+  let(:filter_customer) { create(:customer, organization: organization) }
+  let(:variables)       { { organizationId: gql.id(organization) } }
   let(:mock_channel)    { build_mock_channel }
 
   shared_examples 'requires agent permission' do
@@ -36,20 +37,20 @@ RSpec.describe Gql::Subscriptions::Ticket::CustomerTicketsByFilterUpdates, perfo
       expect(gql.result.data).to eq({ 'listChanged' => nil })
     end
 
-    it 'receives updates when a matching ticket changes' do
+    it 'receives updates when a ticket for the organization changes' do
       mock_channel.mock_broadcasted_messages.clear
 
-      create(:ticket, customer: filter_customer)
+      create(:ticket, customer: filter_customer, organization: organization)
 
       perform_enqueued_jobs
 
-      result = mock_channel.mock_broadcasted_messages.first.dig(:result, 'data', 'ticketCustomerTicketsByFilterUpdates')
+      result = mock_channel.mock_broadcasted_messages.first.dig(:result, 'data', 'ticketByOrganizationUpdates')
       expect(result).to eq({ 'listChanged' => true })
     end
   end
 
   context 'with a customer', authenticated_as: :customer_user do
-    let(:customer_user) { create(:customer) }
+    let(:customer_user) { filter_customer }
 
     it_behaves_like 'requires agent permission'
   end

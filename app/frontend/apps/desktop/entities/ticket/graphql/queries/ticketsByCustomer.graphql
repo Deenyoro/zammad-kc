@@ -1,11 +1,11 @@
-query customerTicketsByFilter(
-  $customerId: ID
+query ticketsByCustomer(
+  $customerId: ID!
   $customerOrganizations: Boolean
   $stateTypeCategory: EnumTicketStateTypeCategory
   $pageSize: Int = 7
   $cursor: String
 ) {
-  ticketsByFilter(
+  ticketsByCustomer(
     customerId: $customerId
     customerOrganizations: $customerOrganizations
     stateTypeCategory: $stateTypeCategory

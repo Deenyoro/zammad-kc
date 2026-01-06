@@ -5,5 +5,8 @@ import registerNotNormalizedObjectFieldsMerge from '#shared/server/apollo/cache/
 import type { InMemoryCacheConfig } from '@apollo/client/cache/inmemory/types'
 
 export default function register(config: InMemoryCacheConfig) {
-  return registerNotNormalizedObjectFieldsMerge(config, 'Organization', ['allMembers'])
+  return registerNotNormalizedObjectFieldsMerge(config, 'Organization', [
+    'allMembers',
+    'ticketsCount',
+  ])
 }

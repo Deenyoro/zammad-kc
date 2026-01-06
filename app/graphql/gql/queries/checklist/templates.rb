@@ -3,6 +3,7 @@
 module Gql::Queries
   class Checklist::Templates < BaseQuery
     include Gql::Concerns::EnsuresChecklistFeatureActive
+    include Gql::Concerns::RequiresTicketAgentPermission
 
     description 'Fetch checklist templates'
 
@@ -12,7 +13,8 @@ module Gql::Queries
 
     def self.authorize(_obj, ctx)
       ensure_checklist_feature_active!
-      ctx.current_user.permissions?(['ticket.agent'])
+
+      super
     end
 
     def resolve(only_active:)

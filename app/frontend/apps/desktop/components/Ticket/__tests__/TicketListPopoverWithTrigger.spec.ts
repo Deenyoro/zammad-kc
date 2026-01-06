@@ -9,9 +9,9 @@ import { EnumTicketStateTypeCategory } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import {
-  mockCustomerTicketsByFilterQuery,
-  waitForCustomerTicketsByFilterQueryCalls,
-} from '#desktop/entities/ticket/graphql/queries/customerTicketsByFilter.mocks.ts'
+  mockTicketsByCustomerQuery,
+  waitForTicketsByCustomerQueryCalls,
+} from '#desktop/entities/ticket/graphql/queries/ticketsByCustomer.mocks.ts'
 
 import TicketListPopoverWithTrigger, { type Props } from '../TicketListPopoverWithTrigger.vue'
 
@@ -23,8 +23,8 @@ const dummyFilters = {
 }
 
 const renderTicketListPopover = (props?: Partial<Props>) => {
-  mockCustomerTicketsByFilterQuery({
-    ticketsByFilter: {
+  mockTicketsByCustomerQuery({
+    ticketsByCustomer: {
       totalCount: 10,
       edges: dummyTickets.map((ticket) => ({
         node: ticket,
@@ -63,7 +63,7 @@ describe('TicketListPopoverWithTrigger', () => {
 
     await wrapper.events.hover(wrapper.getByText('Open Tickets'))
 
-    const calls = await waitForCustomerTicketsByFilterQueryCalls()
+    const calls = await waitForTicketsByCustomerQueryCalls()
 
     expect(calls.at(-1)?.variables).toEqual({
       customerId: dummyFilters.customerId,

@@ -7,7 +7,7 @@ import { useRouter } from 'vue-router'
 import { useDebouncedLoading } from '#shared/composables/useDebouncedLoading.ts'
 import { useOnEmitter } from '#shared/composables/useOnEmitter.ts'
 import { usePagination } from '#shared/composables/usePagination.ts'
-import { EnumTicketStateTypeCategory, type User } from '#shared/graphql/types.ts'
+import { EnumTicketStateTypeCategory, type Organization } from '#shared/graphql/types.ts'
 import QueryHandler from '#shared/server/apollo/handler/QueryHandler.ts'
 import { normalizeEdges } from '#shared/utils/helpers.ts'
 
@@ -15,56 +15,50 @@ import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonShowMoreButton from '#desktop/components/CommonShowMoreButton/CommonShowMoreButton.vue'
 import CommonSimpleEntityList from '#desktop/components/CommonSimpleEntityList/CommonSimpleEntityList.vue'
 import { EntityType } from '#desktop/components/CommonSimpleEntityList/types.ts'
-import { useTicketsByCustomerQuery } from '#desktop/entities/ticket/graphql/queries/ticketsByCustomer.api.ts'
+import { useTicketsByOrganizationQuery } from '#desktop/entities/ticket/graphql/queries/ticketsByOrganization.api.ts'
 
-import CustomerTicketListSkeleton from './skeleton/CustomerTicketListSkeleton.vue'
+import OrganizationTicketListSkeleton from './skeleton/OrganizationTicketListSkeleton.vue'
 
 export interface Props {
-  customer: User
+  organization: Organization
   label: string
   stateTypeCategory: EnumTicketStateTypeCategory
-  customerOrganizations?: boolean
 }
 
 const props = defineProps<Props>()
 
-const customerTicketsQuery = new QueryHandler(
-  useTicketsByCustomerQuery(() => ({
-    customerId: props.customer.id,
-    customerOrganizations: props.customerOrganizations,
+const organizationTicketsQuery = new QueryHandler(
+  useTicketsByOrganizationQuery(() => ({
+    organizationId: props.organization.id,
     stateTypeCategory: props.stateTypeCategory,
     pageSize: 5,
   })),
 )
 
-const customerTicketsResult = customerTicketsQuery.result()
+const organizationTicketsResult = organizationTicketsQuery.result()
 
-const loading = customerTicketsQuery.loading()
+const loading = organizationTicketsQuery.loading()
 
 const { debouncedLoading } = useDebouncedLoading({
   isLoading: loading,
 })
 
-const customerTickets = computed(() =>
-  normalizeEdges(customerTicketsResult.value?.ticketsByCustomer),
+const organizationTickets = computed(() =>
+  normalizeEdges(organizationTicketsResult.value?.ticketsByOrganization),
 )
 
-const pagination = usePagination(customerTicketsQuery, 'ticketsByCustomer', 100)
+const pagination = usePagination(organizationTicketsQuery, 'ticketsByOrganization', 100)
 
-useOnEmitter(`customer-ticket-list-refetch:${props.customer.id}`, () => {
-  customerTicketsQuery.refetch()
+useOnEmitter(`organization-ticket-list-refetch:${props.organization.id}`, () => {
+  organizationTicketsQuery.refetch()
 })
 
 const searchQuery = computed(() => {
   switch (props.stateTypeCategory) {
     case EnumTicketStateTypeCategory.Open:
-      if (props.customerOrganizations)
-        return props.customer.ticketsCount?.organizationOpenSearchQuery
-      return props.customer.ticketsCount?.openSearchQuery
+      return props.organization.ticketsCount?.openSearchQuery
     case EnumTicketStateTypeCategory.Closed:
-      if (props.customerOrganizations)
-        return props.customer.ticketsCount?.organizationClosedSearchQuery
-      return props.customer.ticketsCount?.closedSearchQuery
+      return props.organization.ticketsCount?.closedSearchQuery
     default:
       return undefined
   }
@@ -80,13 +74,13 @@ const goToTicketSearch = () => {
 </script>
 
 <template>
-  <CustomerTicketListSkeleton v-if="debouncedLoading && !customerTickets.array.length" />
+  <OrganizationTicketListSkeleton v-if="debouncedLoading && !organizationTickets.array.length" />
   <CommonSimpleEntityList
     v-else
-    :id="`customer-ticket-list-${customerOrganizations ? 'orgs-' : ''}${stateTypeCategory}`"
+    :id="`organization-ticket-list-${stateTypeCategory}`"
     :type="EntityType.Ticket"
     :label="label"
-    :entity="customerTickets"
+    :entity="organizationTickets"
     has-popover
     no-collapse
   >

@@ -19,6 +19,8 @@ export const OrganizationUpdatesDocument = gql`
       ticketsCount {
         open
         closed
+        openSearchQuery
+        closedSearchQuery
       }
     }
   }

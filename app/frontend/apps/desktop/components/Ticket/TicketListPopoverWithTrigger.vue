@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 import type { Props as CommonUserAvatarProps } from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
-import type { CustomerTicketsByFilterQueryVariables } from '#shared/graphql/types.ts'
+import type { TicketsByCustomerQueryVariables } from '#shared/graphql/types.ts'
 
 import { type Props as CommonPopoverProps } from '#desktop//components/CommonPopover/CommonPopover.vue'
 import CommonPopoverWithTrigger from '#desktop/components/CommonPopover/CommonPopoverWithTrigger.vue'
@@ -10,7 +10,7 @@ import CommonPopoverWithTrigger from '#desktop/components/CommonPopover/CommonPo
 import TicketListPopover from './TicketListPopoverWithTrigger/TicketListPopover.vue'
 
 export interface Props {
-  filters: CustomerTicketsByFilterQueryVariables
+  filters: TicketsByCustomerQueryVariables
   title: string
   noResults?: boolean
   popoverConfig?: Omit<CommonPopoverProps, 'owner'>
