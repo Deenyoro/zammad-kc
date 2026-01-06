@@ -301,7 +301,7 @@ describe('User Detail View', () => {
         within(container).getByRole('heading', { name: 'Secondary organizations' }),
       ).toHaveTextContent('2')
 
-      waitFor(() => {
+      await waitFor(() => {
         expect(within(container).getByText('Secondary Org 1')).toBeInTheDocument()
         expect(within(container).getByText('Secondary Org 2')).toBeInTheDocument()
       })
@@ -334,7 +334,7 @@ describe('User Detail View', () => {
         within(container).getByRole('heading', { name: 'Secondary organizations' }),
       ).toHaveTextContent('5')
 
-      waitFor(() => {
+      await waitFor(() => {
         expect(within(container).getByText('Secondary Org 1')).toBeInTheDocument()
         expect(within(container).getByText('Secondary Org 2')).toBeInTheDocument()
         expect(within(container).getByText('Secondary Org 3')).toBeInTheDocument()
@@ -360,7 +360,7 @@ describe('User Detail View', () => {
 
       await view.events.click(within(container).getByRole('button', { name: 'Show more' }))
 
-      waitFor(() => {
+      await waitFor(() => {
         expect(within(container).getByText('Secondary Org 1')).toBeInTheDocument()
         expect(within(container).getByText('Secondary Org 2')).toBeInTheDocument()
         expect(within(container).getByText('Secondary Org 3')).toBeInTheDocument()

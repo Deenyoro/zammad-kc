@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { within } from '@testing-library/vue'
+import { waitFor, within } from '@testing-library/vue'
 
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
@@ -8,7 +8,11 @@ import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
 import { mockOrganizationQuery } from '#shared/entities/organization/graphql/queries/organization.mocks.ts'
 import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
-import { EnumTicketStateTypeCategory, type Organization } from '#shared/graphql/types.ts'
+import {
+  EnumTicketStateTypeCategory,
+  type Organization,
+  type UserEdge,
+} from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import {
@@ -41,38 +45,14 @@ const organizationData: Organization = {
   updatedBy: null,
   __typename: 'Organization',
   allMembers: {
-    edges: [
-      {
-        node: {
-          id: convertToGraphQLId('User', 2),
-          internalId: 2,
-          image: null,
-          firstname: 'Nicole',
-          lastname: 'Braun',
-          fullname: 'Nicole Braun',
-          email: 'nicole.braun@zammad.org',
-          phone: '22',
-          outOfOffice: false,
-          outOfOfficeStartAt: null,
-          outOfOfficeEndAt: null,
-          active: true,
-          vip: false,
-          createdAt: '2026-01-01T00:00:00Z',
-          updatedAt: '2026-01-01T00:00:00Z',
-          policy: { update: true, destroy: true, __typename: 'PolicyDefault' },
-          __typename: 'User',
-        },
-        cursor: 'MQ', // 🤔 should not be in the type
-        __typename: 'UserEdge',
-      },
-    ],
+    edges: [],
     pageInfo: {
       endCursor: 'MQ',
       hasNextPage: false,
       hasPreviousPage: false,
       __typename: 'PageInfo',
     },
-    totalCount: 1,
+    totalCount: 0,
     __typename: 'UserConnection',
   },
   policy: {
@@ -88,6 +68,79 @@ const organizationData: Organization = {
     __typename: 'TicketCount',
   },
 }
+
+const userEdges: UserEdge[] = [
+  {
+    cursor: 'MQ',
+    __typename: 'UserEdge',
+    node: {
+      __typename: 'User',
+      id: convertToGraphQLId('User', 1),
+      internalId: 1,
+      fullname: 'User 1',
+      active: true,
+      createdAt: '2026-01-01T00:00:00Z',
+      updatedAt: '2026-01-01T00:00:00Z',
+      policy: { update: true, destroy: true, __typename: 'PolicyDefault' },
+    },
+  },
+  {
+    cursor: 'MQ',
+    __typename: 'UserEdge',
+    node: {
+      __typename: 'User',
+      id: convertToGraphQLId('User', 2),
+      internalId: 2,
+      fullname: 'User 2',
+      active: true,
+      createdAt: '2026-01-01T00:00:00Z',
+      updatedAt: '2026-01-01T00:00:00Z',
+      policy: { update: true, destroy: true, __typename: 'PolicyDefault' },
+    },
+  },
+  {
+    cursor: 'MQ',
+    __typename: 'UserEdge',
+    node: {
+      __typename: 'User',
+      id: convertToGraphQLId('User', 3),
+      internalId: 3,
+      fullname: 'User 3',
+      active: true,
+      createdAt: '2026-01-01T00:00:00Z',
+      updatedAt: '2026-01-01T00:00:00Z',
+      policy: { update: true, destroy: true, __typename: 'PolicyDefault' },
+    },
+  },
+  {
+    cursor: 'MQ',
+    __typename: 'UserEdge',
+    node: {
+      __typename: 'User',
+      id: convertToGraphQLId('User', 4),
+      internalId: 4,
+      fullname: 'User 4',
+      active: true,
+      createdAt: '2026-01-01T00:00:00Z',
+      updatedAt: '2026-01-01T00:00:00Z',
+      policy: { update: true, destroy: true, __typename: 'PolicyDefault' },
+    },
+  },
+  {
+    cursor: 'MQ',
+    __typename: 'UserEdge',
+    node: {
+      __typename: 'User',
+      id: convertToGraphQLId('User', 5),
+      internalId: 5,
+      fullname: 'User 5',
+      active: true,
+      createdAt: '2026-01-01T00:00:00Z',
+      updatedAt: '2026-01-01T00:00:00Z',
+      policy: { update: true, destroy: true, __typename: 'PolicyDefault' },
+    },
+  },
+]
 
 const visitOrganizationView = async () => {
   const view = await visitView(`organization/profile/${organizationData.internalId}`)
@@ -172,16 +225,136 @@ describe('Organization Detail View', () => {
     })
   })
 
-  describe.skip('Organization members', () => {
-    it('displays list of organization members', async () => {
+  describe('Organization members', () => {
+    it('hides section when organization has no members', async () => {
       const { main } = await visitOrganizationView()
 
-      expect(main).toBeInTheDocument()
+      expect(within(main).queryByRole('region', { name: 'Members' })).not.toBeInTheDocument()
     })
 
-    it('displays member details (name, email, role)', async () => {})
+    it('displays section when organization has some members', async () => {
+      const organizationWithMembers: Organization = {
+        ...organizationData,
+        allMembers: {
+          edges: userEdges.slice(0, 2),
+          pageInfo: {
+            endCursor: 'Mx',
+            hasNextPage: false,
+            hasPreviousPage: false,
+            __typename: 'PageInfo',
+          },
+          totalCount: 2,
+          __typename: 'UserConnection',
+        },
+      }
 
-    it('shows member count', async () => {})
+      mockOrganizationQuery({ organization: organizationWithMembers })
+
+      const { main } = await visitOrganizationView()
+
+      const container = within(main).getByRole('region', { name: 'Members' })
+
+      expect(within(container).getByRole('heading', { name: 'Members' })).toHaveTextContent('2')
+
+      await waitFor(() => {
+        expect(within(container).getByText('User 1')).toBeInTheDocument()
+        expect(within(container).getByText('User 2')).toBeInTheDocument()
+      })
+    })
+
+    it('supports fetching more members', async () => {
+      const organizationWithMembers: Organization = {
+        ...organizationData,
+        allMembers: {
+          edges: userEdges.slice(0, 4),
+          pageInfo: {
+            endCursor: 'Mx',
+            hasNextPage: true,
+            hasPreviousPage: false,
+            __typename: 'PageInfo',
+          },
+          totalCount: 5,
+          __typename: 'UserConnection',
+        },
+      }
+
+      mockOrganizationQuery({ organization: organizationWithMembers })
+
+      const { main, view } = await visitOrganizationView()
+
+      const container = within(main).getByRole('region', { name: 'Members' })
+
+      expect(within(container).getByRole('heading', { name: 'Members' })).toHaveTextContent('5')
+
+      await waitFor(() => {
+        expect(within(container).getByText('User 1')).toBeInTheDocument()
+        expect(within(container).getByText('User 2')).toBeInTheDocument()
+        expect(within(container).getByText('User 3')).toBeInTheDocument()
+        expect(within(container).getByText('User 4')).toBeInTheDocument()
+
+        expect(within(container).queryByText('User 5')).not.toBeInTheDocument()
+
+        expect(within(container).getByRole('button', { name: 'Show more' })).toBeInTheDocument()
+      })
+
+      mockOrganizationQuery({
+        organization: {
+          ...organizationWithMembers,
+          allMembers: {
+            edges: userEdges.slice(4),
+            pageInfo: {
+              endCursor: null,
+            },
+            totalCount: 5,
+          },
+        },
+      })
+
+      await view.events.click(within(container).getByRole('button', { name: 'Show more' }))
+
+      await waitFor(() => {
+        expect(within(container).getByText('User 1')).toBeInTheDocument()
+        expect(within(container).getByText('User 2')).toBeInTheDocument()
+        expect(within(container).getByText('User 3')).toBeInTheDocument()
+        expect(within(container).getByText('User 4')).toBeInTheDocument()
+        expect(within(container).getByText('User 5')).toBeInTheDocument()
+
+        expect(
+          within(container).queryByRole('button', { name: 'Show more' }),
+        ).not.toBeInTheDocument()
+      })
+    })
+
+    it('redirects to user search with organization filter when clicking search all', async () => {
+      const organizationWithMembers: Organization = {
+        ...organizationData,
+        allMembers: {
+          edges: userEdges.slice(0, 4),
+          pageInfo: {
+            endCursor: 'Mx',
+            hasNextPage: true,
+            hasPreviousPage: false,
+            __typename: 'PageInfo',
+          },
+          totalCount: 5,
+          __typename: 'UserConnection',
+        },
+      }
+
+      mockOrganizationQuery({ organization: organizationWithMembers })
+
+      const { main, view } = await visitOrganizationView()
+
+      const container = within(main).getByRole('region', { name: 'Members' })
+
+      await view.events.click(within(container).getByRole('button', { name: 'Search all' }))
+
+      await waitFor(() => {
+        expect(view.router.currentRoute.value.fullPath).toBe(
+          '/search/organization.id:1 OR organizations.id:1?entity=User',
+        )
+      })
+    })
   })
 
   describe('Organization tickets', () => {

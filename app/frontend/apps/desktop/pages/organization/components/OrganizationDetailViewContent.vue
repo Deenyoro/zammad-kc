@@ -2,6 +2,7 @@
 
 <script setup lang="ts">
 import { computed, useTemplateRef } from 'vue'
+import { useRouter } from 'vue-router'
 
 import ObjectAttributes from '#shared/components/ObjectAttributes/ObjectAttributes.vue'
 import { useOrganizationDetail } from '#shared/entities/organization/composables/useOrganizationDetail.ts'
@@ -12,8 +13,12 @@ import SubscriptionHandler from '#shared/server/apollo/handler/SubscriptionHandl
 import { GraphQLErrorTypes } from '#shared/types/error.ts'
 import emitter from '#shared/utils/emitter.ts'
 
+import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonLoader from '#desktop/components/CommonLoader/CommonLoader.vue'
 import CommonSectionContainer from '#desktop/components/CommonSectionContainer/CommonSectionContainer.vue'
+import CommonShowMoreButton from '#desktop/components/CommonShowMoreButton/CommonShowMoreButton.vue'
+import CommonSimpleEntityList from '#desktop/components/CommonSimpleEntityList/CommonSimpleEntityList.vue'
+import { EntityType } from '#desktop/components/CommonSimpleEntityList/types.ts'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import OrganizationTicketBarChart from '#desktop/components/Ticket/TicketBarChart/OrganizationTicketBarChart.vue'
 import { usePage } from '#desktop/composables/usePage.ts'
@@ -27,20 +32,23 @@ interface Props {
   internalId: string
 }
 
+const router = useRouter()
+
 const props = defineProps<Props>()
 
 const organizationId = computed(() => convertToGraphQLId('Organization', props.internalId))
 
-const { organization, objectAttributes } = useOrganizationDetail(
-  organizationId,
-  4,
-  100,
-  // NB: Silence toast notifications for particular errors, these will be handled by the layout taskbar tab component.
-  (errorHandler) =>
-    errorHandler.type !== GraphQLErrorTypes.Forbidden &&
-    errorHandler.type !== GraphQLErrorTypes.RecordNotFound,
-  'cache-first',
-)
+const { organization, objectAttributes, organizationMembers, fetchMoreMembers } =
+  useOrganizationDetail(
+    organizationId,
+    4,
+    100,
+    // NB: Silence toast notifications for particular errors, these will be handled by the layout taskbar tab component.
+    (errorHandler) =>
+      errorHandler.type !== GraphQLErrorTypes.Forbidden &&
+      errorHandler.type !== GraphQLErrorTypes.RecordNotFound,
+    'cache-first',
+  )
 
 const { organizationDisplayName } = useOrganizationEntity(organization)
 
@@ -51,6 +59,14 @@ usePage({
 const contentContainerElement = useTemplateRef('content-container')
 
 useScrollPosition(contentContainerElement)
+
+const onSearchAll = () => {
+  if (!organization.value?.internalId) return
+
+  const { internalId } = organization.value
+
+  router.push(`/search/organization.id:${internalId} OR organizations.id:${internalId}?entity=User`)
+}
 
 const chartInstance = useTemplateRef('chart')
 
@@ -86,7 +102,44 @@ organizationTicketsSubscription.onResult(({ data }) => {
         />
         <section class="mx-auto w-full max-w-5xl grid grid-cols-2 gap-6 p-6">
           <div class="self-start flex flex-col gap-6">
-            <!-- TODO: Members -->
+            <CommonSectionContainer
+              v-if="organizationMembers?.totalCount > 0"
+              :label="__('Members')"
+              no-heading
+              alternative-background
+            >
+              <CommonSimpleEntityList
+                id="user-secondary-organizations"
+                :type="EntityType.User"
+                :label="__('Members')"
+                :entity="organizationMembers"
+                label-size="medium"
+                label-class="text-black! dark:text-white! mb-2.5"
+                label-tag="h2"
+                list-class="grid grid-cols-2 gap-3"
+                has-popover
+                no-collapse
+              >
+                <template #trailing="{ entities, totalCount }">
+                  <div class="flex justify-end gap-1.5">
+                    <CommonShowMoreButton
+                      class="self-end"
+                      :entities="entities"
+                      :total-count="totalCount"
+                      @click="fetchMoreMembers"
+                    />
+                    <CommonButton
+                      v-if="totalCount > 4"
+                      variant="secondary"
+                      size="small"
+                      @click="onSearchAll"
+                    >
+                      {{ $t('Search all') }}
+                    </CommonButton>
+                  </div>
+                </template>
+              </CommonSimpleEntityList>
+            </CommonSectionContainer>
             <ObjectAttributes
               :attributes="objectAttributes"
               :object="organization"
