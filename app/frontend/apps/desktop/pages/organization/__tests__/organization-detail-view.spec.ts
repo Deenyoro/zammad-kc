@@ -15,6 +15,7 @@ import {
   mockTicketsByOrganizationQuery,
   waitForTicketsByOrganizationQueryCalls,
 } from '#desktop/entities/ticket/graphql/queries/ticketsByOrganization.mocks.ts'
+import { waitForTicketsStatsMonthlyByOrganizationQueryCalls } from '#desktop/entities/ticket/graphql/queries/ticketsStatsMonthlyByOrganization.mocks.ts'
 import { getTicketByOrganizationUpdatesSubscriptionHandler } from '#desktop/entities/ticket/graphql/subscriptions/ticketByOrganizationUpdates.mocks.ts'
 
 const copyToClipboardMock = vi.fn()
@@ -82,8 +83,8 @@ const organizationData: Organization = {
   ticketsCount: {
     open: 11,
     closed: 6,
-    organizationOpen: 11,
-    organizationClosed: 6,
+    openSearchQuery: 'openSearchQuery',
+    closedSearchQuery: 'closedSearchQuery',
     __typename: 'TicketCount',
   },
 }
@@ -251,9 +252,28 @@ describe('Organization Detail View', () => {
     })
   })
 
-  describe.skip('Ticket frequency chart', () => {
-    it('renders a chart', async () => {})
+  describe('Ticket frequency chart', () => {
+    it('renders a chart', async () => {
+      const { main } = await visitOrganizationView()
+      const chart = within(main).getByTestId('chart')
 
-    it('refetch chart data when organization subscription triggers', async () => {})
+      expect(chart).toBeVisible()
+    })
+
+    it('refetch chart data when organization subscription triggers', async () => {
+      await visitOrganizationView()
+
+      const calls = await waitForTicketsStatsMonthlyByOrganizationQueryCalls()
+
+      expect(calls).toHaveLength(1)
+
+      await getTicketByOrganizationUpdatesSubscriptionHandler().trigger({
+        ticketByOrganizationUpdates: {
+          listChanged: true,
+        },
+      })
+
+      expect(calls).toHaveLength(2)
+    })
   })
 })

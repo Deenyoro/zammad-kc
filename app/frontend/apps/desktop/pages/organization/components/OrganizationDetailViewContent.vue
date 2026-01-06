@@ -15,6 +15,7 @@ import emitter from '#shared/utils/emitter.ts'
 import CommonLoader from '#desktop/components/CommonLoader/CommonLoader.vue'
 import CommonSectionContainer from '#desktop/components/CommonSectionContainer/CommonSectionContainer.vue'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
+import OrganizationTicketBarChart from '#desktop/components/Ticket/TicketBarChart/OrganizationTicketBarChart.vue'
 import { usePage } from '#desktop/composables/usePage.ts'
 import { useScrollPosition } from '#desktop/composables/useScrollPosition.ts'
 import { useTicketByOrganizationUpdatesSubscription } from '#desktop/entities/ticket/graphql/subscriptions/ticketByOrganizationUpdates.api.ts'
@@ -51,6 +52,8 @@ const contentContainerElement = useTemplateRef('content-container')
 
 useScrollPosition(contentContainerElement)
 
+const chartInstance = useTemplateRef('chart')
+
 const organizationTicketsSubscription = new SubscriptionHandler(
   useTicketByOrganizationUpdatesSubscription(() => ({
     organizationId: organizationId.value,
@@ -60,7 +63,7 @@ const organizationTicketsSubscription = new SubscriptionHandler(
 organizationTicketsSubscription.onResult(({ data }) => {
   if (!data?.ticketByOrganizationUpdates.listChanged) return
 
-  // TODO: refetch chart data
+  chartInstance.value?.refetchData()
 
   emitter.emit(`organization-ticket-list-refetch:${organizationId.value}`)
 })
@@ -96,7 +99,11 @@ organizationTicketsSubscription.onResult(({ data }) => {
             <OrganizationRelatedTickets :organization="organization" />
           </CommonSectionContainer>
 
-          <!-- TODO: Ticket frequency chart -->
+          <OrganizationTicketBarChart
+            ref="chart"
+            class="col-span-2"
+            :organization-id="organizationId"
+          />
         </section>
       </div>
     </CommonLoader>
