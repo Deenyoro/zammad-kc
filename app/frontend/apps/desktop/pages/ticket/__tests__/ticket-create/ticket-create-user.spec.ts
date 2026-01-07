@@ -1,7 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { within } from '@testing-library/vue'
-// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import FormUpdaterUser from '#tests/graphql/factories/types/FormUpdaterUser.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
@@ -66,7 +65,7 @@ describe('ticket create view - user create action', () => {
       },
     })
 
-    await view.events.click(view.getByLabelText('Create new customer'))
+    await view.events.click(await view.findByLabelText('Create new customer'))
 
     const flyout = await view.findByRole('complementary', { name: 'Create new customer' })
 
