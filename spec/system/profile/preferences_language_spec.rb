@@ -56,7 +56,7 @@ RSpec.describe 'Profile > Language', type: :system do
   context 'when user locale is English (en-gb)', authenticated_as: :session_user do
     let(:locale)              { 'en-gb' }
     let(:translated_content)  { 'Overview' }
-    let(:full_current_locale) { 'English (Great Britain)' }
+    let(:full_current_locale) { 'English (United Kingdom)' }
     let(:priority)            { 'PRIORITY' }
     let(:owner)               { 'OWNER' }
 
@@ -72,7 +72,7 @@ RSpec.describe 'Profile > Language', type: :system do
 
     context 'when profile language is changed' do
       let(:new_locale) { 'de-de' }
-      let(:full_current_locale) { 'Deutsch' }
+      let(:full_current_locale) { 'Deutsch - German' }
 
       before do
         within :active_content do
@@ -147,7 +147,7 @@ RSpec.describe 'Profile > Language', type: :system do
   context 'when user locale is Deutsch', authenticated_as: :session_user do
     let(:locale) { 'de-de' }
     let(:translated_content)  { 'Übersichten' }
-    let(:full_current_locale) { 'Deutsch' }
+    let(:full_current_locale) { 'Deutsch - German' }
     let(:priority)            { 'PRIORITÄT' }
     let(:owner)               { 'BESITZER' }
 
@@ -163,7 +163,7 @@ RSpec.describe 'Profile > Language', type: :system do
 
     context 'when profile language is changed' do
       let(:new_locale) { 'en-gb' }
-      let(:full_current_locale) { 'English (Great Britain)' }
+      let(:full_current_locale) { 'English (United Kingdom)' }
       let(:translated_content)  { 'Übersichten' }
 
       before do

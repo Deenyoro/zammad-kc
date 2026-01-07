@@ -25,7 +25,7 @@ RSpec.describe Gql::Queries::Locales, type: :graphql do
       {
         'locale' => 'de-de',
         'alias'  => 'de',
-        'name'   => 'Deutsch',
+        'name'   => 'Deutsch - German',
         'dir'    => 'ltr',
         'active' => active,
       }

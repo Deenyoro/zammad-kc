@@ -151,7 +151,7 @@ const { forceDesktop } = useForceDesktop()
         :options="localeOptions"
         :disabled="isSavingLocale"
         :no-options-label-translation="true"
-        sorting="label"
+        sorting="value"
       />
 
       <template #help>

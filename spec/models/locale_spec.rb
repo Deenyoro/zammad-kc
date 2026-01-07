@@ -33,7 +33,7 @@ RSpec.describe Locale, type: :model do
       end
 
       it 'imports locale data correctly' do
-        expect(described_class.find_by(locale: 'de-de')).to have_attributes(locale: 'de-de', alias: 'de', name: 'Deutsch', dir: 'ltr', active: true)
+        expect(described_class.find_by(locale: 'de-de')).to have_attributes(locale: 'de-de', alias: 'de', name: 'Deutsch - German', dir: 'ltr', active: true)
       end
     end
   end

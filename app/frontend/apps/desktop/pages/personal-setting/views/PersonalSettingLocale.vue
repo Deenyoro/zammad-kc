@@ -23,7 +23,7 @@ const { breadcrumbItems } = useBreadcrumb(__('Language'))
         :label="$t('Your language')"
         :disabled="isSavingLocale"
         :no-options-label-translation="true"
-        sorting="label"
+        sorting="value"
         :options="localeOptions"
       />
 
