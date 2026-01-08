@@ -44,6 +44,7 @@ export abstract class FieldResolver {
       label: this.label,
       name: this.name,
       required: 'null' in this.attributeConfig && !this.attributeConfig.null, // will normally be overriden with the screen config
+      help: this.attributeConfig.note as string | undefined,
       internal: this.internal,
       ...this.fieldTypeAttributes(),
     }

@@ -6,10 +6,9 @@ import {
   openUserHistoryFlyout,
   useUserHistory,
 } from '#desktop/entities/user/composables/useUserHistory.ts'
+import type { DetailViewActionPlugin } from '#desktop/types/actions.ts'
 
-import type { UserInfoActionPlugin } from './types.ts'
-
-export default <UserInfoActionPlugin>{
+export default <DetailViewActionPlugin>{
   key: 'history-user',
   label: __('History'),
   icon: 'clock-history',

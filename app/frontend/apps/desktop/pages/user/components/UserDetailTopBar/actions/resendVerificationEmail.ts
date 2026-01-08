@@ -8,14 +8,14 @@ import type { User } from '#shared/graphql/types.ts'
 import { MutationHandler } from '#shared/server/apollo/handler/index.ts'
 
 import { useUserSignupResendMutation } from '#desktop/entities/user/graphql/mutations/userSignupResend.api.ts'
+import type { DetailViewActionPlugin } from '#desktop/types/actions.ts'
 
-import type { UserInfoActionPlugin } from './types.ts'
-
-export default <UserInfoActionPlugin>{
+export default <DetailViewActionPlugin>{
   key: 'resend-verification-email',
   label: __('Resend verification email'),
   icon: 'envelope',
   order: 400,
+  permission: ['ticket.agent', 'admin.user'],
   show: (user: User) => !user.verified && user.source === 'signup' && user.email,
   onClick: (user: User) => {
     if (!user.email) return

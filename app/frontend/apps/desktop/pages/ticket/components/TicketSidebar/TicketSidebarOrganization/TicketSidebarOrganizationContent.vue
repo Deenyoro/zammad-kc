@@ -12,6 +12,7 @@ import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 import CommonSimpleEntityList from '#desktop/components/CommonSimpleEntityList/CommonSimpleEntityList.vue'
 import { EntityType } from '#desktop/components/CommonSimpleEntityList/types.ts'
 import OrganizationInfo from '#desktop/components/Organization/OrganizationInfo.vue'
+import { useOrganizationEdit } from '#desktop/entities/organization/composables/useOrganizationEdit.ts'
 import type { TicketSidebarContentProps } from '#desktop/pages/ticket/types/sidebar.ts'
 
 import TicketSidebarContent from '../TicketSidebarContent.vue'
@@ -22,7 +23,7 @@ interface Props extends TicketSidebarContentProps {
   objectAttributes: ObjectAttribute[]
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const persistentStates = defineModel<ObjectLike>({ required: true })
 
@@ -30,15 +31,16 @@ defineEmits<{
   'load-more-members': []
 }>()
 
+const { openOrganizationEditFlyout } = useOrganizationEdit()
+
 const actions: MenuItem[] = [
   {
     key: 'edit-organization',
     label: __('Edit organization'),
-    icon: 'organization-edit',
+    icon: 'pencil',
     show: (entity) => entity?.policy.update,
-    onClick: (id) => {
-      console.log(id, 'Edit organization')
-    },
+    onClick: () =>
+      openOrganizationEditFlyout(props.organization, { title: __('Edit organization') }),
   },
 ]
 </script>

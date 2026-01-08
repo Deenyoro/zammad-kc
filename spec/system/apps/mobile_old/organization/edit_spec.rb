@@ -35,7 +35,7 @@ RSpec.describe 'Mobile > Organization > Can edit organization', app: :mobile, ty
         save_organization
       end
 
-      wait_for_gql('apps/mobile/entities/organization/graphql/mutations/update.graphql')
+      wait_for_gql('shared/entities/organization/graphql/mutations/update.graphql')
 
       organization.reload
 
@@ -67,7 +67,7 @@ RSpec.describe 'Mobile > Organization > Can edit organization', app: :mobile, ty
         save_organization(3)
       end
 
-      wait_for_gql('apps/mobile/entities/organization/graphql/mutations/update.graphql')
+      wait_for_gql('shared/entities/organization/graphql/mutations/update.graphql')
 
       organization.reload
       expect(organization.name).to eq('new name')

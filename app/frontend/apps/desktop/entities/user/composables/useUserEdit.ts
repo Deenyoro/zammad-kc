@@ -16,19 +16,16 @@ const USER_EDIT_FLYOUT_NAME = 'user-edit-flyout'
 
 const { buildUserSchema } = useUserFormSchema()
 
-const userEditFormSchema = defineFormSchema(
-  [
-    {
-      isLayout: true,
-      component: 'FormGroup',
-      props: {
-        class: '@container/form-group',
-      },
-      children: buildUserSchema('edit'),
+const userEditFormSchema = defineFormSchema([
+  {
+    isLayout: true,
+    component: 'FormGroup',
+    props: {
+      class: '@container/form-group',
     },
-  ],
-  { showDirtyMark: true },
-)
+    children: buildUserSchema('edit'),
+  },
+])
 
 const buildUserEditFormChangeFields = (): Record<string, Partial<FormSchemaField>> => {
   const noteMetaDisabled = {

@@ -10,6 +10,7 @@ import { useOrganizationEntity } from '#shared/entities/organization/composables
 import { useOrganizationNoteUpdateMutation } from '#shared/entities/organization/graphql/mutations/noteUpdate.api.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import SubscriptionHandler from '#shared/server/apollo/handler/SubscriptionHandler.ts'
+import { useSessionStore } from '#shared/stores/session.ts'
 import { GraphQLErrorTypes } from '#shared/types/error.ts'
 import emitter from '#shared/utils/emitter.ts'
 
@@ -68,12 +69,19 @@ const onSearchAll = () => {
   router.push(`/search/organization.id:${internalId} OR organizations.id:${internalId}?entity=User`)
 }
 
+const { hasPermission } = useSessionStore()
+
 const chartInstance = useTemplateRef('chart')
 
 const organizationTicketsSubscription = new SubscriptionHandler(
-  useTicketByOrganizationUpdatesSubscription(() => ({
-    organizationId: organizationId.value,
-  })),
+  useTicketByOrganizationUpdatesSubscription(
+    () => ({
+      organizationId: organizationId.value,
+    }),
+    {
+      enabled: hasPermission('ticket.agent'),
+    },
+  ),
 )
 
 organizationTicketsSubscription.onResult(({ data }) => {
@@ -148,11 +156,16 @@ organizationTicketsSubscription.onResult(({ data }) => {
             />
           </div>
 
-          <CommonSectionContainer class="self-start" :label="__('Organization tickets')">
+          <CommonSectionContainer
+            v-if="hasPermission('ticket.agent')"
+            class="self-start"
+            :label="__('Organization tickets')"
+          >
             <OrganizationRelatedTickets :organization="organization" />
           </CommonSectionContainer>
 
           <OrganizationTicketBarChart
+            v-if="hasPermission('ticket.agent')"
             ref="chart"
             class="col-span-2"
             :organization-id="organizationId"

@@ -2,10 +2,11 @@
 
 import type { User } from '#shared/graphql/types.ts'
 
-import type { UserInfoActionPlugin } from './types.ts'
+import type { DetailViewActionPlugin } from '#desktop/types/actions.ts'
+
 import type { Router } from 'vue-router'
 
-export default <UserInfoActionPlugin>{
+export default <DetailViewActionPlugin>{
   key: 'new-ticket',
   label: __('New ticket'),
   icon: 'plus-square-fill',

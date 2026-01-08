@@ -9,6 +9,7 @@ import { useUserEntity } from '#shared/entities/user/composables/useUserEntity.t
 import { useUserNoteUpdateMutation } from '#shared/entities/user/graphql/mutations/noteUpdate.api.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import SubscriptionHandler from '#shared/server/apollo/handler/SubscriptionHandler.ts'
+import { useSessionStore } from '#shared/stores/session.ts'
 import { GraphQLErrorTypes } from '#shared/types/error.ts'
 import emitter from '#shared/utils/emitter.ts'
 
@@ -59,6 +60,8 @@ const contentContainerElement = useTemplateRef('content-container')
 
 useScrollPosition(contentContainerElement)
 
+const { hasPermission } = useSessionStore()
+
 const customerTicketsTabs = computed(() => [
   {
     key: 'user',
@@ -77,9 +80,14 @@ const customerTicketsTabs = computed(() => [
 const activeCustomerTicketsTab = ref<'user' | 'organization'>('user')
 
 const customerTicketsSubscription = new SubscriptionHandler(
-  useTicketByCustomerUpdatesSubscription(() => ({
-    customerId: userId.value,
-  })),
+  useTicketByCustomerUpdatesSubscription(
+    () => ({
+      customerId: userId.value,
+    }),
+    {
+      enabled: hasPermission('ticket.agent'),
+    },
+  ),
 )
 
 customerTicketsSubscription.onResult(({ data }) => {
@@ -136,7 +144,11 @@ customerTicketsSubscription.onResult(({ data }) => {
             />
           </div>
 
-          <CommonSectionContainer class="self-start" :label="__('Related tickets')">
+          <CommonSectionContainer
+            v-if="hasPermission('ticket.agent')"
+            class="self-start"
+            :label="__('Related tickets')"
+          >
             <CommonTabGroup
               v-model="activeCustomerTicketsTab"
               class="mb-3"
@@ -157,7 +169,12 @@ customerTicketsSubscription.onResult(({ data }) => {
             </KeepAlive>
           </CommonSectionContainer>
 
-          <UserTicketBarChart ref="chart" :user-id="userId" class="col-span-2" />
+          <UserTicketBarChart
+            v-if="hasPermission('ticket.agent')"
+            ref="chart"
+            :user-id="userId"
+            class="col-span-2"
+          />
         </section>
       </div>
     </CommonLoader>

@@ -2,7 +2,7 @@
 
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 
-export interface UserInfoActionPlugin extends MenuItem {
+export interface DetailViewActionPlugin extends MenuItem {
   order: number
   /**
    * Top level means action will be rendered directly in the user info actions bar.

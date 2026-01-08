@@ -143,7 +143,7 @@ const userEdges: UserEdge[] = [
 ]
 
 const visitOrganizationView = async () => {
-  const view = await visitView(`organization/profile/${organizationData.internalId}`)
+  const view = await visitView(`/organizations/${organizationData.internalId}`)
 
   const main = view.getByRole('main')
   const header = within(main).getByTestId('organization-detail-top-bar')
@@ -207,11 +207,37 @@ describe('Organization Detail View', () => {
       expect(within(header).getByText('Zammad Foundation', { selector: 'span' })).toBeVisible()
     })
 
-    it.todo('displays actions for agent users')
+    it('displays actions for agent users', async () => {
+      mockPermissions(['ticket.agent'])
 
-    it.todo('displays actions for admin users')
+      const { view, header } = await visitOrganizationView()
 
-    it.todo('displays additional actions on some organization profiles')
+      expect(within(header).getByRole('menuitem', { name: 'New user' })).toBeVisible()
+
+      await view.events.click(within(header).getByRole('button', { name: 'Action menu button' }))
+
+      const actionPopover = await view.findByRole('region', { name: 'Action menu button' })
+
+      expect(within(actionPopover).getByRole('menuitem', { name: 'Edit' })).toBeVisible()
+      expect(within(actionPopover).getByRole('menuitem', { name: 'History' })).toBeVisible()
+    })
+
+    it('displays actions for admin users', async () => {
+      mockPermissions(['admin.organization', 'admin.user'])
+
+      const { view, header } = await visitOrganizationView()
+
+      expect(within(header).getByRole('menuitem', { name: 'New user' })).toBeVisible()
+
+      await view.events.click(within(header).getByRole('button', { name: 'Action menu button' }))
+
+      const actionPopover = await view.findByRole('region', { name: 'Action menu button' })
+
+      expect(within(actionPopover).getByRole('menuitem', { name: 'Edit' })).toBeVisible()
+
+      // FIXME: Enable history action test when implemented.
+      // expect(within(actionPopover).getByRole('menuitem', { name: 'History' })).toBeVisible()
+    })
   })
 
   describe('Object attributes', () => {

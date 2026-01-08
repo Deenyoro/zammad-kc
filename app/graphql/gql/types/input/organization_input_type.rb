@@ -10,6 +10,7 @@ module Gql::Types::Input
     argument :shared, Boolean, required: false, description: 'The organization shared flag'
     argument :domain, String, required: false, description: 'The organization domain'
     argument :domain_assignment, Boolean, required: false, description: 'The organization domain assignment flag'
+    argument :vip, Boolean, required: false, description: 'The organization VIP flag'
     argument :active, Boolean, required: false, description: 'The organization active flag'
     argument :note, String, required: false, description: 'The organization note'
   end

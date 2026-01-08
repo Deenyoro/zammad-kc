@@ -3,16 +3,21 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { computed, ref, toRef, type Ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { useCopyToClipboard } from '#shared/composables/useCopyToClipboard.ts'
 import { useTouchDevice } from '#shared/composables/useTouchDevice.ts'
 import type { Organization } from '#shared/graphql/types.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
+import { useSessionStore } from '#shared/stores/session.ts'
 
+import CommonActionMenu from '#desktop/components/CommonActionMenu/CommonActionMenu.vue'
 import CommonBreadcrumb from '#desktop/components/CommonBreadcrumb/CommonBreadcrumb.vue'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import OrganizationInfo from '#desktop/components/Organization/OrganizationInfo.vue'
 import { useElementScroll } from '#desktop/composables/useElementScroll.ts'
+
+import { initializeActionPlugins } from './OrganizationDetailTopBar/actions/index.ts'
 
 interface Props {
   organization: Organization
@@ -72,6 +77,20 @@ const events = computed(() => {
     },
   }
 })
+
+const { topLevelActions, secondLevelActions } = initializeActionPlugins()
+
+const { hasPermission } = useSessionStore()
+
+const allowedTopLevelActions = computed(() =>
+  topLevelActions.filter(
+    (item) =>
+      (item.permission ? hasPermission(item.permission) : true) &&
+      (item.show ? item.show(props.organization) : true),
+  ),
+)
+
+const router = useRouter()
 </script>
 
 <template>
@@ -118,7 +137,28 @@ const events = computed(() => {
         title-size="xl"
         title-class="font-medium"
         no-link
-      />
+      >
+        <template #actions>
+          <div role="menubar" class="rtl:mr-auto ltr:ml-auto flex items-center gap-1.5">
+            <CommonButton
+              v-for="action in allowedTopLevelActions"
+              :key="action.key"
+              role="menuitem"
+              :prefix-icon="action.icon"
+              @click="action?.onClick?.(organization, router)"
+            >
+              {{ $t(action.label) }}
+            </CommonButton>
+            <CommonActionMenu
+              button-size="large"
+              :entity="organization"
+              role="menuitem"
+              no-single-action-mode
+              :actions="secondLevelActions"
+            />
+          </div>
+        </template>
+      </OrganizationInfo>
     </div>
   </header>
 </template>

@@ -4,10 +4,15 @@ import type { FormSchemaField } from '#shared/components/Form/types.ts'
 import { useUserFormSchema } from '#shared/entities/user/composables/useUserFormSchema.ts'
 import { useUserAddMutation } from '#shared/entities/user/graphql/mutations/add.api.ts'
 import { defineFormSchema } from '#shared/form/defineFormSchema.ts'
-import { EnumFormUpdaterId, EnumObjectManagerObjects } from '#shared/graphql/types.ts'
+import {
+  EnumFormUpdaterId,
+  EnumObjectManagerObjects,
+  type Organization,
+} from '#shared/graphql/types.ts'
 
 import { openFlyout } from '#desktop/components/CommonFlyout/useFlyout.ts'
 import { useFlyoutObjectForm } from '#desktop/components/CommonFlyoutObjectForm/useFlyoutObjectForm.ts'
+import { useFieldOrganizationOption } from '#desktop/components/Form/fields/FieldOrganization/useFieldOrganizationOption.ts'
 
 const USER_CREATE_FLYOUT_NAME = 'user-create-flyout'
 
@@ -24,7 +29,7 @@ const userCreateFormSchema = defineFormSchema([
   },
 ])
 
-const buildUserEditFormChangeFields = () => {
+const buildUserEditFormChangeFields = (organization?: Organization) => {
   const noteMetaDisabled = {
     mentionText: {
       disabled: true,
@@ -44,16 +49,20 @@ const buildUserEditFormChangeFields = () => {
       },
     },
     organization_id: {
-      helpClass: '',
+      initialValue: organization?.internalId,
+      props: {
+        options: organization ? [useFieldOrganizationOption(organization)] : [],
+      },
     },
   } satisfies Record<string, Partial<FormSchemaField>>
 }
 
 export const openUserCreateFlyout = async (options?: {
   title?: string
+  organization?: Organization
   onSuccess?: (data: unknown) => void
 }) => {
-  const formChangeFields = buildUserEditFormChangeFields()
+  const formChangeFields = buildUserEditFormChangeFields(options?.organization)
 
   return openFlyout(USER_CREATE_FLYOUT_NAME, {
     name: USER_CREATE_FLYOUT_NAME,

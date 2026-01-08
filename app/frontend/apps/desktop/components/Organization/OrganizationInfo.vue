@@ -61,5 +61,6 @@ const { organizationDisplayName } = useOrganizationEntity(toRef(props, 'organiza
     <CommonLabel v-else :class="titleClass" :size="titleSize ? titleSize : labelSize">
       {{ organizationDisplayName }}
     </CommonLabel>
+    <slot name="actions" />
   </div>
 </template>

@@ -9,6 +9,7 @@ import { useCopyToClipboard } from '#shared/composables/useCopyToClipboard.ts'
 import { useTouchDevice } from '#shared/composables/useTouchDevice.ts'
 import type { User } from '#shared/graphql/types.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
+import { useSessionStore } from '#shared/stores/session.ts'
 
 import CommonActionMenu from '#desktop/components/CommonActionMenu/CommonActionMenu.vue'
 import CommonBreadcrumb from '#desktop/components/CommonBreadcrumb/CommonBreadcrumb.vue'
@@ -78,6 +79,16 @@ const events = computed(() => {
 
 const { topLevelActions, secondLevelActions } = initializeActionPlugins()
 
+const { hasPermission } = useSessionStore()
+
+const allowedTopLevelActions = computed(() =>
+  topLevelActions.filter(
+    (item) =>
+      (item.permission ? hasPermission(item.permission) : true) &&
+      (item.show ? item.show(props.user) : true),
+  ),
+)
+
 const router = useRouter()
 </script>
 
@@ -128,9 +139,9 @@ const router = useRouter()
         no-link
       >
         <template #actions>
-          <div role="menubar" class="rtl:mr-auto ltr:ml-auto flex items-center gap-1">
+          <div role="menubar" class="rtl:mr-auto ltr:ml-auto flex items-center gap-1.5">
             <CommonButton
-              v-for="action in topLevelActions"
+              v-for="action in allowedTopLevelActions"
               :key="action.key"
               role="menuitem"
               :prefix-icon="action.icon"

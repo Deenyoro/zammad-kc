@@ -3,10 +3,9 @@
 import type { User } from '#shared/graphql/types.ts'
 
 import { useNewBetaUi } from '#desktop/composables/useNewBetaUi.ts'
+import type { DetailViewActionPlugin } from '#desktop/types/actions.ts'
 
-import type { UserInfoActionPlugin } from './types.ts'
-
-export default <UserInfoActionPlugin>{
+export default <DetailViewActionPlugin>{
   key: 'delete-user',
   label: __('Delete'),
   icon: 'trash',

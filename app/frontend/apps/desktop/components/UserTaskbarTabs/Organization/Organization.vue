@@ -60,7 +60,7 @@ new SubscriptionHandler(
         'text-white!': taskbarTabActive,
       }"
       size="tiny"
-      :name="isOrganizationInactive ? 'buildings-slashed' : 'buildings'"
+      :name="isOrganizationInactive ? 'buildings-slash' : 'buildings'"
     />
     <CommonLabel
       class="block! truncate text-gray-300 group-focus-visible/link:text-white dark:text-neutral-400 group-hover/tab:dark:text-white"
