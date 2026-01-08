@@ -4,6 +4,8 @@ module Gql::Concerns::HandlesAuthorization
   extend ActiveSupport::Concern
 
   included do
+    class_attribute :required_permissions, default: []
+    class_attribute :require_authentication, default: false
 
     #
     # Custom static authorization handling.
@@ -15,8 +17,16 @@ module Gql::Concerns::HandlesAuthorization
       end
 
       # Override this method if an object requires custom authorization, e.g. based on Pundit.
-      def authorize(...)
-        true # Authorization is granted by default.
+      def authorize(_obj, ctx)
+        # Public queries override this to allow unauthenticated access.
+        return true if !require_authentication?
+
+        # throws exception if not authorized
+        user = ctx.current_user
+        # Default authorization: require authentication, and optionally permissions.
+        return true if required_permissions.blank?
+
+        user&.permissions?(required_permissions)
       end
 
       #
@@ -47,6 +57,16 @@ module Gql::Concerns::HandlesAuthorization
       # Invoke policy directly to get back the actual result,
       #   not the original object as returned by 'authorize'.
       Pundit.policy(context.current_user, record).public_send(query)
+    end
+  end
+
+  class_methods do
+    def requires_permission(*permissions)
+      self.required_permissions = permissions
+    end
+
+    def requires_authentication(value)
+      self.require_authentication = value
     end
   end
 end

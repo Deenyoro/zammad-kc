@@ -18,6 +18,9 @@ module Gql::Mutations
 
     field :errors, [Gql::Types::UserErrorType], description: 'Errors encountered during execution of the mutation.'
 
+    # Require authentication by default for mutations.
+    requires_authentication true
+
     # Override this for mutations that don't need CSRF verification.
     def self.requires_csrf_verification?
       true
@@ -27,11 +30,6 @@ module Gql::Mutations
       ctx = args[-1] # This may be called with 2 or 3 params, context is last.
       # CSRF - since this is expensive it is only called by mutations.
       verify_csrf_token(ctx) if requires_csrf_verification?
-    end
-
-    # Require authentication by default for mutations.
-    def self.authorize(_obj, ctx)
-      ctx.current_user
     end
 
     def self.verify_csrf_token(ctx)

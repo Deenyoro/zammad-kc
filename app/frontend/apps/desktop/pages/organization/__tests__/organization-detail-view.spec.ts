@@ -235,8 +235,7 @@ describe('Organization Detail View', () => {
 
       expect(within(actionPopover).getByRole('menuitem', { name: 'Edit' })).toBeVisible()
 
-      // FIXME: Enable history action test when implemented.
-      // expect(within(actionPopover).getByRole('menuitem', { name: 'History' })).toBeVisible()
+      expect(within(actionPopover).getByRole('menuitem', { name: 'History' })).toBeVisible()
     })
   })
 

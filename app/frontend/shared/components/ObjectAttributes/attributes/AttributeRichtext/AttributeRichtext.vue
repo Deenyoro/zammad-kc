@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, toRef } from 'vue'
 
 import { isInlineAttributeEditable } from '#shared/components/ObjectAttributes/utils.ts'
 
@@ -10,7 +10,7 @@ import type { ObjectAttributeProps } from '../../types.ts'
 
 const props = defineProps<ObjectAttributeProps<ObjectAttributeRichtext, string>>()
 
-const modelValue = ref(props.value)
+const modelValue = toRef(props, 'value')
 
 const handleReset = () => {
   modelValue.value = props.value

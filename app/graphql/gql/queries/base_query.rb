@@ -12,9 +12,7 @@ module Gql::Queries
     argument_class Gql::Types::BaseArgument
 
     # Require authentication by default for queries.
-    def self.authorize(_obj, ctx)
-      ctx.current_user
-    end
+    requires_authentication true
 
     def self.register_in_schema(schema)
       schema.field graphql_field_name, resolver: self

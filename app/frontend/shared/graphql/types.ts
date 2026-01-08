@@ -2982,6 +2982,8 @@ export type Queries = {
   onlineNotifications: OnlineNotificationConnection;
   /** Fetch an organization by ID */
   organization: Organization;
+  /** Fetch history of an organization */
+  organizationHistory: Array<HistoryGroup>;
   /** Fetch the version of Zammad */
   productAbout: Scalars['String']['output'];
   /** Fetch public links */
@@ -3212,6 +3214,12 @@ export type QueriesOnlineNotificationsArgs = {
 
 /** All available queries */
 export type QueriesOrganizationArgs = {
+  organizationId: Scalars['ID']['input'];
+};
+
+
+/** All available queries */
+export type QueriesOrganizationHistoryArgs = {
   organizationId: Scalars['ID']['input'];
 };
 
@@ -6118,6 +6126,32 @@ export type EmailAddressesQueryVariables = Exact<{
 
 
 export type EmailAddressesQuery = { __typename?: 'Queries', emailAddresses: Array<{ __typename?: 'EmailAddress', name: string, email: string, active: boolean }> };
+
+export type OrganizationHistoryQueryVariables = Exact<{
+  organizationId: Scalars['ID']['input'];
+}>;
+
+
+export type OrganizationHistoryQuery = { __typename?: 'Queries', organizationHistory: Array<{ __typename?: 'HistoryGroup', createdAt: string, records: Array<{ __typename?: 'HistoryRecord', issuer:
+        | { __typename?: 'AIAgent', id: string, name: string }
+        | { __typename?: 'Job', id: string, name: string }
+        | { __typename?: 'Macro', id: string, name: string }
+        | { __typename?: 'ObjectClass', klass?: string | null, info?: string | null }
+        | { __typename?: 'PostmasterFilter', id: string, name: string }
+        | { __typename?: 'Trigger', id: string, name: string }
+        | { __typename?: 'User', id: string, internalId: number, firstname?: string | null, lastname?: string | null, fullname?: string | null, phone?: string | null, email?: string | null, image?: string | null }
+      , events: Array<{ __typename?: 'HistoryRecordEvent', createdAt: string, action: string, attribute?: string | null, changes?: any | null, object:
+          | { __typename?: 'Checklist', id: string, name?: string | null }
+          | { __typename?: 'ChecklistItem', id: string, text: string, checked: boolean }
+          | { __typename?: 'Group', id: string, name?: string | null }
+          | { __typename?: 'Mention', id: string, user: { __typename?: 'User', id: string, fullname?: string | null } }
+          | { __typename?: 'ObjectClass', klass?: string | null, info?: string | null }
+          | { __typename?: 'Organization', id: string, name?: string | null }
+          | { __typename?: 'Ticket', id: string, internalId: number, number: string, title: string }
+          | { __typename?: 'TicketArticle', id: string, body: string }
+          | { __typename?: 'TicketSharedDraftZoom', id: string }
+          | { __typename?: 'User', id: string, fullname?: string | null }
+         }> }> }> };
 
 export type TicketUpdateBulkMutationVariables = Exact<{
   ticketIds: Array<Scalars['ID']['input']> | Scalars['ID']['input'];

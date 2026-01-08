@@ -11,9 +11,8 @@ module Gql::Subscriptions
 
     description 'Base class for all subscriptions'
 
-    def self.authorize(_obj, ctx)
-      ctx.current_user
-    end
+    # Require authentication by default for subscriptions.
+    requires_authentication true
 
     # Add DSL to specify if a subscription is broadcastable.
     def self.broadcastable(broadcastable = nil)

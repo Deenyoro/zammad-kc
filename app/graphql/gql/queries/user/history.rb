@@ -2,6 +2,8 @@
 
 module Gql::Queries
   class User::History < BaseQuery
+    requires_permission 'ticket.agent', 'admin.user'
+
     description 'Fetch history of a user'
 
     argument :user_id, ID, loads: Gql::Types::UserType, description: 'User ID'

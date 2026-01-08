@@ -13,7 +13,7 @@ export default <DetailViewActionPlugin>{
   label: __('History'),
   icon: 'clock-history',
   order: 300,
-  permission: 'ticket.agent',
+  permission: ['ticket.agent', 'admin.user'],
   initialize: useUserHistory,
   onClick: (user: User) => openUserHistoryFlyout(user.id),
 }

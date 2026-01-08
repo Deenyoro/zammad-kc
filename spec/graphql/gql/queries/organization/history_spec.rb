@@ -2,19 +2,19 @@
 
 require 'rails_helper'
 
-RSpec.describe Gql::Queries::User::History, timezone: 'Europe/Berlin', type: :graphql do
-  context 'when fetching history of a user' do
-    let(:user)   { create(:user) }
-    let(:group)  { create(:group) }
-    let(:owner)  { create(:user) }
-    let(:ticket) { create(:ticket, group:, owner:, created_by: owner) }
+RSpec.describe Gql::Queries::Organization::History, timezone: 'Europe/Berlin', type: :graphql do
+  context 'when fetching history of an organization' do
+    let(:organization)   { create(:organization) }
+    let(:group)          { create(:group) }
+    let(:owner)          { create(:user) }
+    let(:ticket)         { create(:ticket, group:, owner:, created_by: owner) }
 
-    let(:variables) { { userId: gql.id(user) } }
+    let(:variables) { { organizationId: gql.id(organization) } }
 
     let(:query) do
       <<~QUERY
-        query userHistory($userId: ID!) {
-          userHistory(userId: $userId) {
+        query organizationHistory($organizationId: ID!) {
+          organizationHistory(organizationId: $organizationId) {
             createdAt
             records {
               issuer {
@@ -98,15 +98,15 @@ RSpec.describe Gql::Queries::User::History, timezone: 'Europe/Berlin', type: :gr
         end
       end
 
-      context 'when user has admin.user permission' do
-        let(:authenticated) { create(:user, roles: [create(:role, permissions: Permission.where(name: 'admin.user'))]) }
+      context 'when user has admin.organization permission' do
+        let(:authenticated) { create(:user, roles: [create(:role, permissions: Permission.where(name: 'admin.organization'))]) }
 
         it 'returns grouped history records' do
           expect(gql.result.data).to be_present
         end
       end
 
-      context 'when user has both ticket.agent and admin.user permissions' do
+      context 'when user has both ticket.agent and admin.organization permissions' do
         let(:authenticated) { create(:admin, groups: [group]) }
 
         it 'returns grouped history records' do
