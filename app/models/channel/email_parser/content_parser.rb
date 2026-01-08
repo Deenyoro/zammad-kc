@@ -68,9 +68,43 @@ class Channel::EmailParser::ContentParser
   end
 
   def skip_attachments?(part, parent)
-    part_in_visible_parts?(part) ||
-      (part.content_type&.start_with?('text/plain') && !part.attachment?) ||
-      (parent&.content_type&.start_with?('multipart/mixed') && part.content_type&.start_with?('text/html') && !part.attachment?)
+    return true if part_in_visible_parts?(part)
+    return true if part_is_auto_generated_text_body?(part)
+    return true if part_is_plain_text_body?(part)
+    return true if part_is_html_alternative_in_mixed?(part, parent)
+
+    false
+  end
+
+  # https://github.com/zammad/zammad/issues/5905
+  def part_is_auto_generated_text_body?(part)
+    return false if part.attachment?
+
+    part.content_type.blank?
+  end
+
+  def part_is_plain_text_body?(part)
+    return false if part.attachment?
+
+    plain_text_part?(part)
+  end
+
+  def part_is_html_alternative_in_mixed?(part, parent)
+    return false if part.attachment?
+
+    mixed_part?(parent) && html_part?(part)
+  end
+
+  def mixed_part?(part)
+    part&.content_type&.start_with?('multipart/mixed')
+  end
+
+  def plain_text_part?(part)
+    part.content_type&.start_with?('text/plain')
+  end
+
+  def html_part?(part)
+    part.content_type&.start_with?('text/html')
   end
 
   def part_in_visible_parts?(part)

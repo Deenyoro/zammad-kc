@@ -51,6 +51,27 @@ RSpec.describe Channel::EmailParser, type: :model do
       end
     end
 
+    # https://github.com/zammad/zammad/issues/5905
+    describe 'when mail does not declare a content type' do
+      subject(:parsed) { described_class.new.parse(raw_mail) }
+
+      let(:raw_mail) { <<~RAW.chomp }
+        Date: Mon, 15 Dec 2025 21:49:11 +0100
+        To: support@test.local
+        From: user6@example.com
+        Subject: Ticket #6
+        Message-Id: <20251215214911.090380@macbookpro.fritz.box>
+        X-Mailer: swaks v20240103.0 jetmore.org/john/code/swaks/
+
+        This is test email 6
+      RAW
+
+      it 'parses the body without treating it as an attachment' do
+        expect(parsed[:attachments]).to be_empty
+        expect(parsed[:body].strip).to eq('This is test email 6')
+      end
+    end
+
     # To write new .yml files for emails you can use the following code:
     #
     # File.write('test/data/mail/mailXXX.yml', Channel::EmailParser.new.parse(File.read('test/data/mail/mailXXX.box')).slice(:from, :from_email, :from_display_name, :to, :cc, :subject, :body, :content_type, :'reply-to', :attachments).to_yaml)
@@ -61,7 +82,7 @@ RSpec.describe Channel::EmailParser, type: :model do
     #
     context 'when checking a bunch of stored emails for correct parsing behaviour' do
       Rails.root.glob('test/data/mail/mail*.box').each do |stored_email|
-        if ENV['MAIL_PARSER_TEST'] && stored_email.exclude?("#{ENV['MAIL_PARSER_TEST']}.box")
+        if ENV['MAIL_PARSER_TEST'] && stored_email.to_s.exclude?("#{ENV['MAIL_PARSER_TEST']}.box")
           next
         end
 
