@@ -7,9 +7,9 @@ class HtmlSanitizer
 
       scrubber = HtmlSanitizer::Scrubber::Outgoing::ImageSize.new
 
-      return Loofah.scrub_document(string, scrubber).to_html if string.include? '<html'
+      chunk = string.include?('<html') ? :document : :fragment
 
-      Loofah.html5_fragment(string).scrub!(scrubber).to_html
+      ScrubHtml.new(string, scrubber, chunk:).scrub!.to_html
     end
   end
 end

@@ -95,7 +95,7 @@ generate email with S/MIME
 
           found_content_ids[$1] = true
         end
-        Loofah.html5_fragment(html_alternative.body.to_s).scrub!(scrubber)
+        ScrubHtml.new(html_alternative.body.to_s, scrubber).scrub!
       rescue => e
         logger.error e
       end

@@ -3,10 +3,7 @@
 class HtmlSanitizer
   class DynamicImageSize
     def sanitize(string)
-      Loofah
-        .html5_fragment(string)
-        .scrub!(HtmlSanitizer::Scrubber::ImageSize.new)
-        .to_html
+      ScrubHtml.new(string, HtmlSanitizer::Scrubber::ImageSize.new).scrub!.to_html
     end
   end
 end

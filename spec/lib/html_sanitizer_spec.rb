@@ -213,9 +213,27 @@ Building dependency tree...</code></pre>'
         stub_const('Nokogiri::Gumbo::DEFAULT_MAX_TREE_DEPTH', 3)
       end
 
-      it 'returns an error message' do
+      it 'collapses empty nested divs and succeeds' do
+        # Empty nested divs get collapsed, reducing depth
         expect(described_class.strict('<div><div><div><div></div></div></div></div>'))
-          .to match(HtmlSanitizer::UNPROCESSABLE_HTML_MSG)
+          .to eq('')
+      end
+
+      it 'collapses empty wrapper divs and preserves content' do
+        # Only the innermost div with content is kept
+        expect(described_class.strict('<div><div><div><div>content</div></div></div></div>'))
+          .to eq('<div>content</div>')
+      end
+
+      it 'preserves content at different nesting levels' do
+        # Outer div has direct content "outer", middle wrappers get collapsed
+        expect(described_class.strict('<div>outer<div><div><div>inner</div></div></div></div>'))
+          .to eq('<div>outer<div>inner</div></div>')
+      end
+
+      it 'preserves non-div elements and their wrappers' do
+        expect(described_class.strict('<div><div><div><div><span>content</span></div></div></div></div>'))
+          .to eq('<div><span>content</span></div>')
       end
     end
 

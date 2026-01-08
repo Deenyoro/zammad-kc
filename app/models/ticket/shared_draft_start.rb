@@ -47,11 +47,7 @@ class Ticket::SharedDraftStart < ApplicationModel
   def body_with_base64
     scrubber = HtmlSanitizer::Scrubber::InsertInlineImages.new(attachments)
 
-    sanitized = Loofah
-      .html5_fragment(body)
-      .scrub!(scrubber)
-
-    sanitized.to_s
+    ScrubHtml.new(body, scrubber).scrub!.to_s
   end
 
   # Adds backwards compatibility for the old desktop app

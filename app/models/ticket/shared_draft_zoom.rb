@@ -40,11 +40,7 @@ class Ticket::SharedDraftZoom < ApplicationModel
   def body_with_base64
     scrubber = HtmlSanitizer::Scrubber::InsertInlineImages.new(attachments)
 
-    sanitized = Loofah
-      .html5_fragment(body)
-      .scrub!(scrubber)
-
-    sanitized.to_s
+    ScrubHtml.new(body, scrubber).scrub!.to_s
   end
 
   # Returns images with src=/api/v1/attachments/1337

@@ -5,9 +5,7 @@ class HtmlSanitizer
     def sanitize(string, prefix)
       scrubber = HtmlSanitizer::Scrubber::InlineImages.new(prefix)
 
-      sanitized = Loofah
-        .html5_fragment(string)
-        .scrub!(scrubber)
+      sanitized = ScrubHtml.new(string, [scrubber]).scrub!
 
       [sanitized.to_html, scrubber.attachments_inline]
     end
