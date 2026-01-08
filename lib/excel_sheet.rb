@@ -143,6 +143,9 @@ class ExcelSheet
       end
     end
 
+    # Direct attribute access if no value found yet.
+    value = record.try(attribute) if !value
+
     # if no value exists, check additional values
     if !value && additional && additional[attribute.to_sym]
       value = additional[attribute.to_sym]
