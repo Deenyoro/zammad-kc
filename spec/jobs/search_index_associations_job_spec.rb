@@ -32,7 +32,7 @@ RSpec.describe SearchIndexAssociationsJob, performs_jobs: true, searchindex: tru
     result = false
     30.times do
       result = described_class.perform_now('Organization', organization.id)
-      puts 'Waiting for elastic search to complete mass update...' # rubocop:disable Rails/Output
+      puts 'Waiting for elastic search to complete mass update...'
       break if result == true
 
       sleep 1

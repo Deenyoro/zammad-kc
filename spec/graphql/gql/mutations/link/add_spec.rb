@@ -45,7 +45,7 @@ RSpec.describe Gql::Mutations::Link::Add, :aggregate_failures, type: :graphql do
     next if RSpec.configuration.formatters.first
       .class.name.exclude?('DocumentationFormatter')
 
-    puts "with link type: #{type}" # rubocop:disable Rails/Output
+    puts "with link type: #{type}"
   end
 
   context 'with unauthenticated session' do

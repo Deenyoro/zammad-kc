@@ -18,13 +18,11 @@ RSpec.describe Gql::RecordLoader, :aggregate_failures, authenticated_as: :agent,
       end
       next if !debug
 
-      # rubocop:disable Rails/Output
       puts payload[:name], payload[:sql], payload[:cached]
       caller.reject { |line| line.match(%r{gems|spec}) }.first(30).each do |relevant_caller_line|
         puts("  ↳ #{relevant_caller_line.sub(Rails.root.join('/').to_s, '')}")
       end
       puts ''
-      # rubocop:enable Rails/Output
     end
 
     ActiveSupport::Notifications.subscribed(callback, 'sql.active_record') do
