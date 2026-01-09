@@ -10,8 +10,7 @@ RSpec.describe AI::Service::OCR, integration: true, required_envs: %w[ZAMMAD_AI_
 
   let(:context_data) do
     {
-      content: prompt_image.content,
-      store:   prompt_image,
+      store: prompt_image,
     }
   end
 

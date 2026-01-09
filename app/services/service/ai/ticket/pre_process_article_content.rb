@@ -123,7 +123,7 @@ class Service::AI::Ticket::PreProcessArticleContent < Service::BaseWithCurrentUs
 
     images.each do |image|
       ocr_result = AI::Service::OCR
-          .new(current_user:, context_data: { content: image.content, store: image }, prompt_image: image)
+          .new(current_user:, context_data: { store: image }, prompt_image: image)
           .execute
 
       image_texts[image.store_file_id] = ocr_result.content

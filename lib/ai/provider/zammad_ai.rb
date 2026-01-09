@@ -16,7 +16,7 @@ class AI::Provider::ZammadAI < AI::Provider
     end
 
     if prompt_image.is_a?(::Store)
-      request_body[:images] = [Base64.strict_encode64(prompt_image.content)]
+      request_body[:images] = [Base64.strict_encode64(prompt_image.content_ocr)]
     end
 
     response = UserAgent.post(

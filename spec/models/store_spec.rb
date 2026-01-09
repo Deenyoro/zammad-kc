@@ -363,6 +363,40 @@ RSpec.describe Store, type: :model do
       end
     end
 
+    describe '#image_resize' do
+      subject(:store_instance) { described_class.new(filename: 'upload2.jpg') }
+
+      let(:content)   { Rails.root.join('test/data/upload/upload2.jpg').binread }
+      let(:width)     { 200 }
+      let(:temp_file) { Tempfile.new.path }
+
+      before do
+        allow(Rails.cache).to receive(:fetch).and_call_original
+      end
+
+      it 'caches by default' do
+        result = store_instance.send(:image_resize, content, width)
+
+        expect(Rails.cache).to have_received(:fetch)
+
+        File.binwrite(temp_file, result)
+
+        expect(Rszr::Image.load(temp_file).width).to eq(width)
+      end
+
+      it 'skips caching when asked not to' do
+        allow(Rails.cache).to receive(:fetch).and_call_original
+
+        result = store_instance.send(:image_resize, content, width, no_cache: true)
+
+        expect(Rails.cache).not_to have_received(:fetch)
+
+        File.binwrite(temp_file, result)
+
+        expect(Rszr::Image.load(temp_file).width).to eq(width)
+      end
+    end
+
     describe '#inline?' do
       context 'when Content-Disposition is inline' do
         let(:preferences) { { 'Content-Disposition' => 'inline' } }

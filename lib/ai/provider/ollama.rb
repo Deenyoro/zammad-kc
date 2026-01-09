@@ -28,7 +28,7 @@ class AI::Provider::Ollama < AI::Provider
     }
 
     if prompt_image.is_a?(::Store)
-      params[:images] = [Base64.strict_encode64(prompt_image.content)]
+      params[:images] = [Base64.strict_encode64(prompt_image.content_ocr)]
     end
 
     if options[:json_response]

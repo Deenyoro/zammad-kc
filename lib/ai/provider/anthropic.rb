@@ -26,7 +26,7 @@ class AI::Provider::Anthropic < AI::Provider
                     source: {
                       type:       'base64',
                       media_type: prompt_image.preferences['Content-Type'],
-                      data:       Base64.strict_encode64(prompt_image.content)
+                      data:       Base64.strict_encode64(prompt_image.content_ocr)
                     },
                   },
                 ]
