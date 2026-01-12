@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/fliebe92/ruby-keycloak-admin
+  revision: ef2cf3a24f98fdfad3aa1a4872bc63f52761a29e
+  specs:
+    ruby-keycloak-admin (26.0.8)
+      hashie (>= 5.0.0)
+      httparty (>= 0.21, < 0.25)
+
+GIT
   remote: https://github.com/zammad-deps/autodiscover
   revision: ee9b53dfa797ce6d4f970b82beea7fbdd2df56bb
   specs:
@@ -303,7 +311,8 @@ GEM
       redis-client (= 0.26.3)
     htmlentities (4.4.2)
     http_parser.rb (0.8.0)
-    httparty (0.21.0)
+    httparty (0.24.0)
+      csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     httpclient (2.9.0)
@@ -384,8 +393,8 @@ GEM
     minitest (5.26.2)
     msgpack (1.8.0)
     multi_json (1.17.0)
-    multi_xml (0.7.2)
-      bigdecimal (~> 3.1)
+    multi_xml (0.8.1)
+      bigdecimal (>= 3.1, < 5)
     multipart-post (2.4.1)
     mutex_m (0.3.0)
     nestful (1.1.4)
@@ -683,9 +692,6 @@ GEM
       lint_roller (~> 1.1)
       rubocop (~> 1.72, >= 1.72.1)
       rubocop-rspec (~> 3.5)
-    ruby-keycloak-admin (26.0.8)
-      hashie (~> 5.0.0)
-      httparty (~> 0.21.0)
     ruby-progressbar (1.13.0)
     ruby-saml (1.18.1)
       nokogiri (>= 1.13.10)
@@ -951,7 +957,7 @@ DEPENDENCIES
   rubocop-rake
   rubocop-rspec
   rubocop-rspec_rails
-  ruby-keycloak-admin
+  ruby-keycloak-admin!
   sass-rails (~> 5)
   selenium-webdriver
   shoulda-matchers

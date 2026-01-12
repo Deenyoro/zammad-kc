@@ -265,7 +265,7 @@ group :development, :test do
   gem 'localhost'
 
   # Keycloak admin tool for setting up SAML auth tests
-  gem 'ruby-keycloak-admin'
+  gem 'ruby-keycloak-admin', git: 'https://github.com/fliebe92/ruby-keycloak-admin'
 
   # Debugging and profiling
   gem 'pry-doc' # This gem is very large, so don't include it in production.
