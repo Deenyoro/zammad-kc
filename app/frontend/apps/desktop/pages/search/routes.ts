@@ -14,7 +14,7 @@ const route: RouteRecordRaw[] = [
       title: __('Search'),
       requiresAuth: true,
       pageKey: 'search',
-      requiredPermission: ['ticket.agent', 'ticket.customer'],
+      requiredPermission: [],
       taskbarTabEntity: EnumTaskbarEntity.Search,
       isTaskbarTabPossible: (route) => !!route.query.entity,
       level: 2,
