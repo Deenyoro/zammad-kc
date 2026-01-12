@@ -119,4 +119,4 @@ class App.TicketSummary extends App.ControllerAIFeatureBase
   failLocal: =>
     @render()
 
-App.Config.set('Summary', { prio: 1200, name: __('Ticket Summary'), parent: '#ai', target: '#ai/ticket_summary', controller: App.TicketSummary, permission: ['admin.ai_assistance_ticket_summary'] }, 'NavBarAdmin')
+App.Config.set('Summary', { prio: 1100, name: __('Ticket Summary'), parent: '#ai', target: '#ai/ticket_summary', controller: App.TicketSummary, permission: ['admin.ai_assistance_ticket_summary'] }, 'NavBarAdmin')

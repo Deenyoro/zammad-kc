@@ -116,4 +116,4 @@ class EditTextTool extends App.ControllerGenericEdit
 class NewTextTool extends App.ControllerGenericNew
   @include TextToolModalMixin
 
-App.Config.set('TextTool', { prio: 1400, name: __('Writing Assistant'), parent: '#ai', target: '#ai/text_tools', controller: TextTool, permission: ['admin.ai_assistance_text_tools'] }, 'NavBarAdmin')
+App.Config.set('TextTool', { prio: 1200, name: __('Writing Assistant'), parent: '#ai', target: '#ai/text_tools', controller: TextTool, permission: ['admin.ai_assistance_text_tools'] }, 'NavBarAdmin')
