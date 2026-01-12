@@ -34,7 +34,7 @@ import TicketSidebarWrapper from '../TicketSidebarWrapper.vue'
 defineProps<TicketSidebarProps>()
 const emit = defineEmits<TicketSidebarEmits>()
 
-const { user, hasPermission } = useSessionStore()
+const { user } = useSessionStore()
 const { config } = storeToRefs(useApplicationStore())
 const { persistentStates } = usePersistentStates()
 const { ticketId, ticket } = useTicketInformation()
@@ -72,7 +72,6 @@ const isEnabled = computed(
       config.value.ai_assistance_ticket_summary
     ),
 )
-const showErrorDetails = computed(() => hasPermission('admin'))
 
 const headings = computed<SummaryItem[]>(() => [
   {
@@ -280,7 +279,6 @@ watch(
       :analytics-meta="analyticsMeta"
       :is-provider-configured="isProviderConfigured"
       :error="generationError"
-      :show-error-details="showErrorDetails"
       @retry-get-summary="retrySummaryGeneration"
       @regenerate-summary="regenerateSummary"
     />

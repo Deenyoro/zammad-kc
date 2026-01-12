@@ -34,8 +34,12 @@ class TicketAIAssistanceSummarizeJob < AIJob
                            }
                          })
 
-    # Trigger the update for the old stack without real date (it will be refetched on frontend decision).
-    broadcast({ ticket_id: ticket.id, locale:, error: true })
+    ai_analytics_run = AI::Analytics::Run.where(related_object: ticket).where.not(error: nil).last
+
+    # Trigger the update for the old stack without real data (it will be refetched on frontend decision).
+    # But add the analaytic run entry from this error to have the possibility that the error can be shown in the
+    # desktop app.
+    broadcast({ ticket_id: ticket.id, error: true, ai_analytics_run_id: ai_analytics_run&.id })
   end
 
   private

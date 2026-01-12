@@ -34,6 +34,9 @@ const createAiTextToolsController = () => {
         context: { fetchOptions: { signal: abortController.signal } },
       }),
       {
+        errorNotificationMessage: __(
+          'Writing assistant could not generate text. Please try again or contact your administrator.',
+        ),
         errorCallback: (error) => {
           return !(mutationCancelled && error.type === GraphQLErrorTypes.NetworkError)
         },

@@ -3,6 +3,9 @@
     <% if @data?.error: %>
       <div class="alert alert--danger">
         <%- @T('The summary could not be generated. Please try again later or contact your administrator.') %>
+        <% if @data?.error_message: %>
+          <p><%- @T('API server error: %s', @T(@data.error_message)) %></p>
+        <% end %>
       </div>
       <div class="retry-container">
         <a class="btn btn--secondary btn--action btn--text js-retry" href="#">

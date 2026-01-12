@@ -437,7 +437,7 @@ describe('Ticket detail view - Ticket summary', () => {
       })
     })
 
-    it('shows error message to agent if summary generation fails', async () => {
+    it('shows detailed error message to agent if summary generation fails', async () => {
       mockTicketAiAssistanceSummarizeMutation({
         ticketAIAssistanceSummarize: {
           summary: null,
@@ -468,48 +468,17 @@ describe('Ticket detail view - Ticket summary', () => {
         },
       })
 
-      expect(
-        view.getByText(
-          'The summary could not be generated. Please try again later or contact your administrator.',
-        ),
-      ).toBeInTheDocument()
-    })
-
-    it('shows specific error message to admin', async () => {
-      mockPermissions(['ticket.agent', 'admin'])
-
-      mockTicketAiAssistanceSummarizeMutation({
-        ticketAIAssistanceSummarize: {
-          summary: null,
-        },
+      const contentSidebar = await view.findByRole('complementary', {
+        name: 'Content sidebar',
       })
 
-      mockApplicationConfig({
-        ai_provider: true,
-        ai_assistance_ticket_summary: true,
-        ai_assistance_ticket_summary_config: {
-          open_questions: true,
-          upcoming_events: true,
-          customer_sentiment: true,
-          generate_on: EnumTicketSummaryGeneration.OnTicketDetailOpening,
-        },
-      })
+      const alert = await within(contentSidebar).findByRole('alert')
 
-      const view = await visitView('/tickets/1')
+      expect(alert).toHaveTextContent(
+        'The summary could not be generated. Please try again later or contact your administrator.',
+      )
 
-      await view.events.click(view.getByRole('button', { name: 'Summary' }))
-
-      await waitForTicketAiAssistanceSummarizeMutationCalls()
-
-      await triggerSummaryUpdate({
-        summary: null,
-        error: {
-          message: 'Authentication problem with provider.',
-          exception: 'Error',
-        },
-      })
-
-      expect(view.getByText('Authentication problem with provider.')).toBeInTheDocument()
+      expect(alert).toHaveTextContent('API server error: Authentication problem with provider.')
     })
 
     it('shows no ai provider is selected', async () => {

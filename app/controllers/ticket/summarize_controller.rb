@@ -23,7 +23,19 @@ class Ticket::SummarizeController < ApplicationController
       ).execute
 
     if ai_result&.content.blank?
-      enqueue_job
+      # When AI analytics error ID is present, return this error message instead of enqueuing a new job.
+      if params[:ai_analytics_run_error_id].present?
+        ai_analytics_run_error = AI::Analytics::Run.find(params[:ai_analytics_run_error_id])
+
+        render json: {
+          result:        nil,
+          error:         true,
+          error_message: ai_analytics_run_error.error['error_message'],
+        }
+      else
+        enqueue_job
+      end
+
       return
     end
 

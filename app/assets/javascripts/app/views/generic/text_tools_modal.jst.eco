@@ -5,8 +5,10 @@
   <% if @error: %>
     <div class="error-container">
       <div class="alert alert--danger">
-          <p><%- @T("Writing Assistant couldn't generate text.") %></p>
-          <p><%- @T('API is not available. Please contact your Administrator and retry.') %></p>
+        <p><%- @T('Writing assistant could not generate text. Please try again or contact your administrator.') %></p>
+        <% if @error_message: %>
+          <p><%- @T('API server error: %s', @T(@error_message)) %></p>
+        <% end %>
       </div>
 
       <button type="button" class="js-retry btn btn--positive btn--secondary"><%- @Icon('reload') %> <%- @T('Retry') %></button>

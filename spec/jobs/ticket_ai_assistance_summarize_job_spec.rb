@@ -115,7 +115,7 @@ RSpec.describe TicketAIAssistanceSummarizeJob, type: :job do
           .to have_received(:broadcast)
           .with({
                   event: 'ticket::summary::update',
-                  data:  { ticket_id: ticket.id, locale:, error: true }
+                  data:  { ticket_id: ticket.id, error: true, ai_analytics_run_id: nil }
                 })
       end
     end

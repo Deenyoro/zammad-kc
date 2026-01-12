@@ -84,11 +84,14 @@ class App.TextToolsModal extends App.ControllerModal
         @renderFeedbackWidget(data.analytics.run_id) if data?.analytics?.run_id
         @stopStripAnimation()
 
-      error: =>
+      error: (data) =>
+        details = data.responseJSON || {}
+
         @stopLoading()
         @stopStripAnimation()
 
         @error = true
+        @error_message = details.error
         @update()
 
         @disableSubmit()
@@ -99,6 +102,7 @@ class App.TextToolsModal extends App.ControllerModal
     selectedText: @selectedText
     result: @result
     error: @error
+    error_message: @error_message
   ))
 
   setupListenerForRetry: =>

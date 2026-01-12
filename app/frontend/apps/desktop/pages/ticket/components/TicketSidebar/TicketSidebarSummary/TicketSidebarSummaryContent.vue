@@ -21,7 +21,6 @@ import type { TicketSidebarContentProps } from '#desktop/pages/ticket/types/side
 interface Props extends TicketSidebarContentProps {
   summary: Maybe<TicketAiAssistanceSummary>
   error: Maybe<AsyncExecutionError>
-  showErrorDetails: boolean
   summaryHeadings: SummaryItem[]
   isProviderConfigured: boolean
   analyticsMeta?: AiAnalyticsMetadata | null
@@ -83,8 +82,8 @@ const titleClass = computed(() => {
                   )
                 }}
               </CommonLabel>
-              <CommonLabel v-if="showErrorDetails" class="text-red-500 dark:text-red-500">
-                {{ errorMessage }}
+              <CommonLabel v-if="errorMessage" class="text-red-500 dark:text-red-500">
+                {{ $t('API server error: %s', $t(errorMessage)) }}
               </CommonLabel>
             </div>
           </CommonAlert>
