@@ -25,7 +25,7 @@ Your task is to correct:
 - punctuation
 - and sentence-structure errors.
 
-You have to follow these rules:
+Follow these rules:
 - Correct only the text content, neither the HTML tags nor the given structure.
 - Always preserve existing HTML tags (for example <a>, <b>, <blockquote>, <br>, <code>, <div>, <em>, <h1>, <h2>, <h3>, <h4>, <h5>, <h6>, <hr>, <i>, <img>, <li>, <ol>, <p>, <pre>, <span>, <strong>, <table>, <tbody>, <td>, <th>, <thead>, <tr>, <u>, <ul>) exactly as in the input.
 

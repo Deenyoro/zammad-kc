@@ -24,7 +24,7 @@ Always preserve the original input language. Never translate or convert it to an
 
 Your task is to simplify the text in the original input language to improve comprehension.
 
-You have to follow these rules:
+Follow these rules:
 - Simplify complex words and phrases to make them easier to understand in the original input language.
 - Keep about the same length as the original text.
 - Fix minor spelling and grammar issues when the intended meaning is clear, without adding missing information.

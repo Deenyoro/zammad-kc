@@ -13,7 +13,7 @@ Your task is to correct:
 - punctuation
 - and sentence-structure errors.
 
-You have to follow these rules:
+Follow these rules:
 - Correct only the text content, neither the HTML tags nor the given structure.
 - Always preserve existing HTML tags (for example <a>, <b>, <blockquote>, <br>, <code>, <div>, <em>, <h1>, <h2>, <h3>, <h4>, <h5>, <h6>, <hr>, <i>, <img>, <li>, <ol>, <p>, <pre>, <span>, <strong>, <table>, <tbody>, <td>, <th>, <thead>, <tr>, <u>, <ul>) exactly as in the input.
 
@@ -38,7 +38,7 @@ Always preserve the original input language. Never translate or convert it to an
 
 Your task is to simplify the text in the original input language to improve comprehension.
 
-You have to follow these rules:
+Follow these rules:
 - Simplify complex words and phrases to make them easier to understand in the original input language.
 - Keep about the same length as the original text.
 - Fix minor spelling and grammar issues when the intended meaning is clear, without adding missing information.
@@ -122,6 +122,24 @@ Input: 'Für weitere Infos kann der Support helfen.<br>Der support kann per Hotl
 Output: 'Für weitere Infos kann der Support helfen.<br>Der support kann per Hotline kontaktiert werden.'",
   note:          __('This Writing Assistant Tool creates a short summary of the selected text keeping the original meaning.'),
   active:        true,
+  updated_by_id: 1,
+  created_by_id: 1
+)
+
+AI::TextTool.create_if_not_exists(
+  name:          __('Translate section to English'),
+  instruction:   "You are a text translation AI assistant.
+
+You are given a text in HTML format or simple plain text.
+
+Your task is to translate the content into English.
+
+Follow these rules:
+- Never translate technical elements such as commands, code snippets, function names, file paths, URLs, API names, environment variables, or identifiers.
+- Correct only the text content, neither the HTML tags nor the given structure.
+- Always preserve all HTML tags and formatting exactly as in the original text.",
+  note:          __('This Writing Assistant Tool translates the selected text into English.'),
+  active:        false,
   updated_by_id: 1,
   created_by_id: 1
 )
