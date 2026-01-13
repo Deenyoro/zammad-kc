@@ -4,7 +4,7 @@ import { waitFor } from '@testing-library/vue'
 
 import { renderComponent } from '#tests/support/components/index.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
-import { mockPermissions } from '#tests/support/mock-permissions.ts'
+import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
 import LayoutPage from '#desktop/components/layout/LayoutPage.vue'
@@ -66,10 +66,12 @@ describe('LayoutPage', () => {
     })
 
     beforeEach(() => {
-      mockPermissions(['user_preferences.beta_ui_switch'])
-
       mockApplicationConfig({
         ui_desktop_beta_switch: true,
+      })
+
+      mockUserCurrent({
+        hasBetaUiSwitchAvailable: true,
       })
     })
 
@@ -104,7 +106,9 @@ describe('LayoutPage', () => {
     })
 
     it('hides the switch if the user has no permissions', async () => {
-      mockPermissions(['ticket.customer'])
+      mockUserCurrent({
+        hasBetaUiSwitchAvailable: false,
+      })
 
       const wrapper = renderComponent(LayoutPage, {
         router: true,

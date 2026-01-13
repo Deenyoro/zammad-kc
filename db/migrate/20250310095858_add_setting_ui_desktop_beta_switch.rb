@@ -2,7 +2,8 @@
 
 class AddSettingUiDesktopBetaSwitch < ActiveRecord::Migration[7.2]
   def up
-    return if Setting.exists?(name: 'ui_desktop_beta_switch')
+    # return if it's a new setup
+    return if !Setting.exists?(name: 'system_init_done')
 
     Setting.create_if_not_exists(
       title:       'UI Desktop Beta Switch',

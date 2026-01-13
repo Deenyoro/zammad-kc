@@ -110,6 +110,7 @@ const userData = {
     __typename: 'Permission',
     names: ['admin'],
   },
+  hasBetaUiSwitchAvailable: false,
   hasSecondaryOrganizations: false,
   outOfOffice: false,
   outOfOfficeStartAt: null,

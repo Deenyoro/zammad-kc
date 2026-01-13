@@ -35,7 +35,7 @@ const permittedEntries = computed(() => {
         )
           return false
 
-        if (typeof entry.show === 'function') return entry.show()
+        if (typeof entry.show === 'function') return entry.show(session.user)
 
         return true
       })

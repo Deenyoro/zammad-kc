@@ -233,6 +233,8 @@ RSpec.describe SystemReport, current_user_id: 1, type: :model do
           'ai_assistance_text_tools_fixed_instructions',
           'ai_provider',
           'ui_richtext_bubble_menu',
+          'ui_desktop_beta_switch_admin_menu',
+          'ui_desktop_beta_switch_role_ids'
         ]
       end
 

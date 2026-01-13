@@ -282,7 +282,9 @@ module FieldActions # rubocop:disable Metrics/ModuleLength
   #  set_switch_field_value('switch_field_name', false)
   #
   def set_switch_field_value(name, value, **find_options)
-    find("input[name='#{name}']", visible: :all, **find_options).set(value)
+    switch = find("input[name='#{name}']", visible: :all, **find_options)
+    label = find("input[name='#{name}'] + label", **find_options)
+    label.click if (value && !switch.checked?) || (!value && switch.checked?)
   end
 
   # Check the field value of a form textarea field.

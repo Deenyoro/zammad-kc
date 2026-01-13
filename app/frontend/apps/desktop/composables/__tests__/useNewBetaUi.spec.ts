@@ -1,7 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
-import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 
 import { useNewBetaUi } from '#desktop/composables/useNewBetaUi.ts'
@@ -28,11 +27,8 @@ describe('useNewBetaUi', () => {
       mockApplicationConfig({ ui_desktop_beta_switch: true })
 
       mockUserCurrent({
-        lastname: 'Doe',
-        firstname: 'John',
+        hasBetaUiSwitchAvailable: false,
       })
-
-      mockPermissions([])
 
       const { betaUiSwitchEnabled } = useNewBetaUi()
 
@@ -43,11 +39,8 @@ describe('useNewBetaUi', () => {
       mockApplicationConfig({ ui_desktop_beta_switch: true })
 
       mockUserCurrent({
-        lastname: 'Doe',
-        firstname: 'John',
+        hasBetaUiSwitchAvailable: true,
       })
-
-      mockPermissions(['user_preferences.beta_ui_switch'])
 
       localStorage.setItem('beta-ui-switch-dismiss', 'true')
 
@@ -60,11 +53,8 @@ describe('useNewBetaUi', () => {
       mockApplicationConfig({ ui_desktop_beta_switch: true })
 
       mockUserCurrent({
-        lastname: 'Doe',
-        firstname: 'John',
+        hasBetaUiSwitchAvailable: true,
       })
-
-      mockPermissions(['user_preferences.beta_ui_switch'])
 
       localStorage.setItem('beta-ui-switch-dismiss', 'false')
 

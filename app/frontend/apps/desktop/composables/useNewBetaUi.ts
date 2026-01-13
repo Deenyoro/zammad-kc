@@ -7,7 +7,6 @@ import { computed } from 'vue'
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
-import hasPermission from '#shared/utils/hasPermission.ts'
 
 export const useNewBetaUi = () => {
   const { user } = storeToRefs(useSessionStore())
@@ -19,8 +18,8 @@ export const useNewBetaUi = () => {
 
   const betaUiSwitchEnabled = computed(
     () =>
-      config.value.ui_desktop_beta_switch &&
-      hasPermission('user_preferences.beta_ui_switch', user.value?.permissions?.names ?? []) &&
+      config.value?.ui_desktop_beta_switch &&
+      user.value?.hasBetaUiSwitchAvailable &&
       !dismissValue.value,
   )
 

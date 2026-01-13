@@ -162,7 +162,6 @@ class Navigation extends App.Controller
       )
 
     @renderDesktopBetaSwitch()
-    @controllerBind('ui:beta:saved', @renderDesktopBetaSwitch)
 
   renderDesktopBetaSwitch: =>
     if not App.DesktopBetaSwitch.isSwitchVisible()

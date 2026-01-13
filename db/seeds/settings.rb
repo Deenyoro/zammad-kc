@@ -6017,6 +6017,24 @@ Setting.create_if_not_exists(
 )
 
 Setting.create_if_not_exists(
+  title:       __('UI Desktop BETA Switch Admin Menu'),
+  name:        'ui_desktop_beta_switch_admin_menu',
+  area:        'UI::Desktop',
+  description: __('Allow admins to manage availability and access to the desktop BETA UI switch.'),
+  state:       false,
+  frontend:    true,
+)
+
+Setting.create_if_not_exists(
+  title:       __('UI Desktop BETA Switch Roles'),
+  name:        'ui_desktop_beta_switch_role_ids',
+  area:        'UI::Desktop',
+  description: __('Defines which roles are allowed to access the desktop UI beta switch.'),
+  state:       [],
+  frontend:    true,
+)
+
+Setting.create_if_not_exists(
   title:       __('AI provider'),
   name:        'ai_provider',
   area:        'AI::Provider',

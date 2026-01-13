@@ -181,6 +181,18 @@ Permission.create_if_not_exists(
   preferences: { prio: 1290 }
 )
 Permission.create_if_not_exists(
+  name:        'admin.beta_ui',
+  label:       'BETA UI',
+  description: __('Manage BETA UI settings of your system.'),
+  preferences: {
+    prio:    1295,
+    setting: {
+      name:  'ui_desktop_beta_switch_admin_menu',
+      value: true,
+    },
+  },
+)
+Permission.create_if_not_exists(
   name:        'admin.branding',
   label:       __('Branding'),
   description: __('Manage branding settings of your system.'),
