@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zammad\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-12-22 09:00+0000\n"
+"PO-Revision-Date: 2026-01-12 09:00+0000\n"
 "Last-Translator: Murat Duman <mduman@metu.edu.tr>\n"
 "Language-Team: Turkish <https://translations.zammad.org/projects/zammad/"
 "zammad-development/tr/>\n"
@@ -372,14 +372,14 @@ msgid "%s (option)"
 msgstr "%s (seçenek)"
 
 #: app/frontend/apps/desktop/components/CommonSelect/CommonSelect.vue:272
-#: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:559
+#: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:556
 #: app/frontend/apps/desktop/components/Form/fields/FieldSelect/FieldSelectInput.vue:253
 #: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:343
 #: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:145
 #: app/frontend/apps/mobile/components/Form/fields/FieldSelect/FieldSelectInput.vue:97
-#: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:127
+#: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:130
 #: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDialog.vue:288
-#: app/frontend/shared/composables/useSelectOptions.ts:122
+#: app/frontend/shared/composables/useSelectOptions.ts:121
 msgid "%s (unknown)"
 msgstr "%s (bilinmiyor)"
 
@@ -1019,9 +1019,6 @@ msgstr "YAPAY ZEKA"
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:79
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:60
 #: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:144
-#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:21
-#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventIssuerNames.ts:7
-#: app/frontend/apps/mobile/components/AiAgent/AiAgentAvatar.vue:34
 #: app/models/ai/agent.rb:102
 msgid "AI Agent"
 msgstr "Yapay Zeka Temsilci"
@@ -1048,6 +1045,13 @@ msgstr "YZ Sağlayıcı Modeli ayarlanmamış"
 #: lib/excel_sheet/ai/analytics/with_usage.rb:26
 msgid "AI Service Name"
 msgstr "AI Hizmet Adı"
+
+#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:21
+#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventIssuerNames.ts:7
+#: app/frontend/apps/mobile/components/AiAgent/AiAgentAvatar.vue:34
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:44
+msgid "AI agent"
+msgstr "YZ temsilci"
 
 #: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:33
 msgid "AI agent used in"
@@ -1144,14 +1148,16 @@ msgstr "API Belirteci Erişimi"
 msgid "API error."
 msgstr "API hatası."
 
-#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:9
-msgid "API is not available. Please contact your Administrator and retry."
-msgstr ""
-"API kullanılabilir değil. Lütfen Yöneticinizle iletişime geçin ve yeniden "
-"deneyin."
-
 #: lib/ai/provider/concerns/handles_response.rb:14
 msgid "API server error - please try again"
+msgstr "API sunucu hatası - lütfen tekrar deneyin"
+
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:10
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:7
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:86
+#, fuzzy
+#| msgid "API server error - please try again"
+msgid "API server error: %s"
 msgstr "API sunucu hatası - lütfen tekrar deneyin"
 
 #: lib/ai/provider/azure.rb:128
@@ -1247,7 +1253,6 @@ msgid "Account SID"
 msgstr "Hesap güvenlik tanımlayıcıları (SID)"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:6
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:128
 msgid "Account Time"
 msgstr "Süreyi Hesapla"
 
@@ -1261,17 +1266,24 @@ msgstr "Hesap zaten mevcut!"
 msgid "Account not verified"
 msgstr "Hesap onaylanmamış"
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:128
+msgid "Account time"
+msgstr "Süreyi hesapla"
+
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:37
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:28
 #: app/assets/javascripts/app/models/ticket.coffee:16
 #: app/assets/javascripts/app/views/ticket_zoom/time_unit.jst.eco:2
 #: app/assets/javascripts/app/views/time_accounting/accounted_time.jst.eco:2
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:77
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:124
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:11
 #: app/graphql/gql/types/overview_type.rb:101
 msgid "Accounted Time"
 msgstr "Hesaplanan Süre"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:77
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:124
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:11
+msgid "Accounted time"
+msgstr "Hesaplanan süre"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketAccountedTime.vue:79
 msgid "Accounted time unit"
@@ -1421,7 +1433,6 @@ msgstr "Etkinlik Akışı"
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:16
 #: app/assets/javascripts/app/views/time_accounting/types.jst.eco:4
 #: app/controllers/time_accountings_controller.rb:111
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:110
 msgid "Activity Type"
 msgstr "Etkinlik Türü"
 
@@ -1429,6 +1440,10 @@ msgstr "Etkinlik Türü"
 #: app/assets/javascripts/app/controllers/time_accounting_types.coffee:51
 msgid "Activity Types"
 msgstr "Etkinlik Türleri"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:110
+msgid "Activity type"
+msgstr "Etkinlik türü"
 
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:39
 msgid "Adapter"
@@ -1493,20 +1508,11 @@ msgstr "Bot Ekle"
 msgid "Add Certificate"
 msgstr "Sertifika Ekle"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:426
-msgid "Add Empty Checklist"
-msgstr "Boş Kontrol Listesi Ekle"
-
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistTemplates.vue:36
-msgid "Add From a Template"
-msgstr "Şablondan Ekle"
-
 #: app/assets/javascripts/app/views/integration/pgp.jst.eco:5
 msgid "Add Key"
 msgstr "Anahtar Ekle"
 
 #: app/assets/javascripts/app/views/link/ticket/list.jst.eco:10
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:174
 msgid "Add Link"
 msgstr "Bağlantı Ekle"
 
@@ -1519,9 +1525,9 @@ msgstr "Özel Anahtar Ekle"
 msgid "Add Public or Private Key"
 msgstr "Açık veya Özel Anahtar Ekle"
 
-#: app/frontend/shared/entities/ticket-article/action/plugins/web.ts:13
-msgid "Add Reply"
-msgstr "Yanıt Ekle"
+#: app/frontend/shared/entities/ticket-article/action/plugins/sms.ts:45
+msgid "Add SMS"
+msgstr "SMS ekle"
 
 #: app/assets/javascripts/app/views/ssl_certificates.jst.eco:5
 msgid "Add SSL Certificate"
@@ -1595,10 +1601,12 @@ msgid "Add email"
 msgstr "Eposta ekle"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/start.jst.eco:5
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:426
 msgid "Add empty checklist"
 msgstr "Boş kontrol listesi ekle"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/start.jst.eco:11
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistTemplates.vue:36
 msgid "Add from a template"
 msgstr "Şablondan ekle"
 
@@ -1619,6 +1627,7 @@ msgstr "İç not ekle"
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:300
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketLinks.vue:158
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:297
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:174
 msgid "Add link"
 msgstr "Bağlantı ekle"
 
@@ -1644,16 +1653,13 @@ msgstr "Telefon görüşmesi ekle"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:66
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:36
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewActions.vue:88
+#: app/frontend/shared/entities/ticket-article/action/plugins/web.ts:13
 msgid "Add reply"
 msgstr "Yanıt ekle"
 
 #: app/frontend/shared/form/i18n/locales.ts:77
 msgid "Add selected values"
 msgstr "Seçilen değerleri ekle"
-
-#: app/frontend/shared/entities/ticket-article/action/plugins/sms.ts:45
-msgid "Add sms"
-msgstr "Sms ekle"
 
 #: app/assets/javascripts/app/views/generic/application_selector_row.jst.eco:35
 #: app/assets/javascripts/app/views/generic/application_selector_subclause.jst.eco:21
@@ -1714,18 +1720,24 @@ msgid "Admin Consent"
 msgstr "Yönetici Onayı"
 
 #: app/assets/javascripts/app/controllers/documentation_link.coffee:2
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/admin-documentation.ts:7
 msgid "Admin Documentation"
 msgstr "Yönetici Dokümantasyonu"
 
 #: app/assets/javascripts/app/controllers/admin_password_auth.coffee:23
-#: app/frontend/apps/desktop/pages/authentication/routes.ts:25
 msgid "Admin Password Login"
 msgstr "Yönetici Şifre Girişi"
+
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/admin-documentation.ts:7
+msgid "Admin documentation"
+msgstr "Yönetici dokümantasyonu"
 
 #: db/seeds/permissions.rb:5
 msgid "Admin interface"
 msgstr "Yönetici arayüzü"
+
+#: app/frontend/apps/desktop/pages/authentication/routes.ts:25
+msgid "Admin password login"
+msgstr "Yönetici şifre girişi"
 
 #: app/assets/javascripts/app/views/admin_password_auth/request_sent.jst.eco:4
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:56
@@ -1861,10 +1873,6 @@ msgstr "Temsilciler"
 msgid "Agents with \"%s\" permission"
 msgstr "\"%s\" iznine sahip temsilciler"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:44
-msgid "Ai Agent"
-msgstr "Yapay zeka Temsilci"
-
 #: app/assets/javascripts/app/views/profile/calendar_subscriptions.jst.eco:27
 msgid "Alarm"
 msgstr "Alarm"
@@ -1915,7 +1923,7 @@ msgstr ""
 msgid "All colleagues are busy."
 msgstr "Tüm meslektaşlar meşgul."
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:131
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:130
 msgid ""
 "All computers and browsers from which you logged in to Zammad appear here."
 msgstr ""
@@ -2043,7 +2051,9 @@ msgid "An error has occurred"
 msgstr "Bir hata oluştu"
 
 #: app/frontend/shared/server/apollo/handler/BaseHandler.ts:141
-msgid "An error occured during the operation."
+#, fuzzy
+#| msgid "An error occured during the operation."
+msgid "An error occurred during the operation."
 msgstr "İşlem sırasında bir hata oluştu."
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:990
@@ -2205,7 +2215,7 @@ msgid "Appearance"
 msgstr "Görünüm"
 
 #: app/assets/javascripts/app/controllers/api.coffee:127
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:76
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:75
 msgid "Application"
 msgstr "Uygulama"
 
@@ -2224,26 +2234,32 @@ msgid "Apply"
 msgstr "Uygula"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:56
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:134
 msgid "Apply Draft"
 msgstr "Taslağı Uygula"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:2
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:161
 msgid "Apply Shared Draft"
 msgstr "Paylaşılan Taslağı Uygula"
-
-#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/ApplyTemplate.vue:37
-msgid "Apply Template"
-msgstr "Şablon Uygula"
 
 #: app/assets/javascripts/app/views/settings/ticket_notifications.jst.eco:10
 msgid "Apply current defaults to all agents"
 msgstr "Mevcut varsayılanları tüm temsilcilere uygulayın"
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:134
+msgid "Apply draft"
+msgstr "Taslağı uygula"
+
 #: app/frontend/apps/desktop/components/NavigationMenu/NavigationMenuFilter.vue:76
 msgid "Apply filter…"
 msgstr "Filtre uygula…"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:161
+msgid "Apply shared draft"
+msgstr "Paylaşılan taslağı uygula"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/ApplyTemplate.vue:37
+msgid "Apply template"
+msgstr "Şablon uygula"
 
 #: app/assets/javascripts/app/controllers/text_tools_modal.coffee:4
 msgid "Approve"
@@ -2266,7 +2282,6 @@ msgstr "Arşiv"
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:12
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:109
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:84
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:66
 msgid "Archive Emails"
 msgstr "Epostaları Arşivle"
 
@@ -2280,6 +2295,7 @@ msgstr "Arşiv kesim zamanı"
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:737
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:42
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:288
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:66
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:43
 msgid "Archive emails"
 msgstr "Epostaları arşivle"
@@ -2513,10 +2529,6 @@ msgstr ""
 "Atanan temsilci üzerinde çalışmıyorsa dakika cinsinden atama zaman aşımı. "
 "Destek talebi atanmamış olarak gösterilecektir."
 
-#: app/graphql/gql/queries/tickets/by_filter.rb:20
-msgid "At least one filter must be provided."
-msgstr "En az bir filtre sağlanmalıdır."
-
 #: app/models/user.rb:659
 msgid ""
 "At least one identifier (firstname, lastname, phone, mobile or email) for "
@@ -2590,7 +2602,7 @@ msgid "Attendees"
 msgstr "Katılımcılar"
 
 #: app/assets/javascripts/app/models/user.coffee:12
-#: app/frontend/apps/desktop/entities/user/composables/useUserEdit.ts:83
+#: app/frontend/apps/desktop/entities/user/composables/useUserEdit.ts:80
 #: app/frontend/apps/mobile/entities/user/composables/useUserEdit.ts:67
 msgid ""
 "Attention! Changing the organization will update the user's most recent "
@@ -2700,10 +2712,13 @@ msgstr "%s ile kimlik doğrulama"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/authenticator_app.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:5
-#: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:9
 #: db/seeds/settings.rb:5854
 msgid "Authenticator App"
 msgstr "Kimlik Doğrulayıcı Uygulaması"
+
+#: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:9
+msgid "Authenticator app"
+msgstr "Kimlik doğrulayıcı uygulaması"
 
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:246
 msgid "Authenticator app QR code"
@@ -2773,8 +2788,8 @@ msgstr "AutoWizard devre dışı"
 #: app/frontend/apps/desktop/pages/guided-setup/routes.ts:29
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupAutomated/GuidedSetupAutomatedInfo.vue:8
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupAutomated/GuidedSetupAutomatedRun.vue:75
-msgid "Automated Setup"
-msgstr "Otomatik Kurulum"
+msgid "Automated setup"
+msgstr "Otomatik kurulum"
 
 #: db/seeds/settings.rb:1245
 msgid "Automatic account link on initial logon"
@@ -2853,14 +2868,14 @@ msgstr "Yeni bir destek talebi için kullanılabilir türler"
 msgid "Avatar"
 msgstr "Avatar"
 
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCropImageFlyout.vue:55
-msgid "Avatar Preview"
-msgstr "Avatar Önizlemesi"
-
 #: app/graphql/gql/mutations/user/current/avatar/delete.rb:18
 #: app/graphql/gql/mutations/user/current/avatar/select.rb:18
 msgid "Avatar could not be found."
 msgstr "Avatar bulunamadı."
+
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCropImageFlyout.vue:55
+msgid "Avatar preview"
+msgstr "Avatar önizlemesi"
 
 #: app/frontend/shared/components/CommonAvatar/CommonAvatar.vue:44
 msgid "Avatar with initials %s"
@@ -2967,7 +2982,7 @@ msgid "Basic Settings"
 msgstr "Temel Ayarlar"
 
 #: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:2
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:120
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:119
 msgid "Be sure to check AI-generated content for accuracy."
 msgstr ""
 "Yapay zeka tarafından oluşturulan içeriğin doğruluğunu kontrol ettiğinizden "
@@ -3020,13 +3035,13 @@ msgstr "Bildirimleri Engelle"
 msgid "Block caller IDs based on sender caller ID."
 msgstr "Gönderen arayan kimliğine göre arayan kimliklerini engelleyin."
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleRemoteContentBadge.vue:42
-msgid "Blocked Content"
-msgstr "Engellenen İçerik"
-
 #: app/assets/javascripts/app/models/chat.coffee:254
 msgid "Blocked IPs (separated by ;)"
 msgstr "Engellenen IP'ler (; ile ayrılmış)"
+
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleRemoteContentBadge.vue:42
+msgid "Blocked content"
+msgstr "Engellenen içerik"
 
 #: app/assets/javascripts/app/models/chat.coffee:256
 msgid "Blocked countries"
@@ -3073,10 +3088,6 @@ msgstr "İçerik haritası navigasyon"
 msgid "Browser"
 msgstr "Tarayıcı"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditButton.vue:33
-msgid "Bulk Actions"
-msgstr "Toplu İşlemler"
-
 #: app/assets/javascripts/app/lib/mixins/ticket_mass_updatable.coffee:22
 msgid "Bulk action executed!"
 msgstr "Toplu işlem gerçekleştirildi!"
@@ -3088,6 +3099,10 @@ msgstr "Toplu işlem başarısız oldu"
 #: app/assets/javascripts/app/controllers/widget/ticket_bulk_form.coffee:199
 msgid "Bulk action stopped by error(s): %s!"
 msgstr "Toplu işlem, hata(lar) nedeniyle durduruldu: %s!"
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditButton.vue:33
+msgid "Bulk actions"
+msgstr "Toplu işlemler"
 
 #: app/assets/javascripts/app/views/generic/object_import/index.jst.eco:5
 msgid "Bulk import allows you to create and update many records at once."
@@ -3295,7 +3310,7 @@ msgstr ""
 #: app/frontend/apps/mobile/components/CommonSectionPopup/CommonSectionPopup.vue:30
 #: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInputDialog.vue:244
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:266
-#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:218
+#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:217
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:136
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:68
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:46
@@ -3314,6 +3329,13 @@ msgstr "İptal"
 #: app/assets/javascripts/app/views/password/reset_change.jst.eco:8
 #: app/assets/javascripts/app/views/password/reset_sent.jst.eco:7
 #: app/assets/javascripts/app/views/signup.jst.eco:7
+msgid "Cancel & Go Back"
+msgstr "İptal Et ve Geri Dön"
+
+#: app/assets/javascripts/app/controllers/after_auth/two_factor_configuration.coffee:3
+msgid "Cancel & Sign out"
+msgstr "İptal Et ve Çıkış Yap"
+
 #: app/frontend/apps/desktop/components/CommonDialog/CommonDialogActionFooter.vue:19
 #: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:10
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:301
@@ -3325,17 +3347,13 @@ msgstr "İptal"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:424
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:67
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:218
-msgid "Cancel & Go Back"
-msgstr "İptal Et ve Geri Dön"
+msgid "Cancel & go back"
+msgstr "İptal et ve geri dön"
 
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationMethodList.vue:25
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationPasswordCheck.vue:63
-msgid "Cancel & Sign Out"
-msgstr "İptal Et ve Oturumu Kapat"
-
-#: app/assets/javascripts/app/controllers/after_auth/two_factor_configuration.coffee:3
-msgid "Cancel & Sign out"
-msgstr "İptal Et ve Çıkış Yap"
+msgid "Cancel & sign out"
+msgstr "İptal et ve çıkış yap"
 
 #: app/assets/javascripts/app/views/generic/attachment.jst.eco:20
 #: app/assets/javascripts/app/views/ticket_zoom/article_new.jst.eco:111
@@ -3375,8 +3393,8 @@ msgid "Cannot upload file"
 msgstr "Dosya yüklenemiyor"
 
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCameraFlyout.vue:157
-msgid "Capture From Camera"
-msgstr "Kameradan Görüntü Yakala"
+msgid "Capture from camera"
+msgstr "Kameradan görüntü yakala"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/sidebar/categories.coffee:3
 msgid "Categories"
@@ -3425,10 +3443,6 @@ msgstr "Müşteri Değiştir"
 msgid "Change Objects"
 msgstr "Nesneleri Değiştir"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:130
-msgid "Change Password"
-msgstr "Şifre Değiştir"
-
 #: app/assets/javascripts/app/views/profile/password.jst.eco:8
 msgid "Change Your Password"
 msgstr "Şifrenizi Değiştirin"
@@ -3449,6 +3463,10 @@ msgstr "Tarih değiştir"
 #: app/assets/javascripts/app/views/knowledge_base/sidebar/generic_list.jst.eco:10
 msgid "Change order"
 msgstr "Sıralamayı değiştir"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:130
+msgid "Change password"
+msgstr "Şifre değiştir"
 
 #: db/seeds/permissions.rb:451
 msgid "Change personal account password."
@@ -3547,7 +3565,7 @@ msgstr "Kanallar"
 #: app/frontend/shared/components/Form/fields/FieldEditor/extensions/CharacterCount/HtmlCharacterCount.ts:35
 #: app/frontend/shared/components/Form/fields/FieldEditor/extensions/CharacterCount/PlainCharacterCount.ts:29
 msgid "Character limit reached"
-msgstr ""
+msgstr "Karakter sınırına ulaşıldı"
 
 #: app/assets/javascripts/app/controllers/_channel/chat.coffee:3
 #: app/assets/javascripts/app/controllers/chat.coffee:98
@@ -3616,8 +3634,6 @@ msgid "Checklist"
 msgstr "Kontrol Listesi"
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:61
-#: app/frontend/apps/desktop/components/CommonHistoryFlyout/event-actions/checklist-item-checked.ts:10
-#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventEntityNames.ts:10
 msgid "Checklist Item"
 msgstr "Kontrol listesi öğesi"
 
@@ -3634,6 +3650,11 @@ msgid "Checklist Template items are limited to 100 items per checklist."
 msgstr ""
 "Kontrol listesi şablonu öğeleri, kontrol listesi başına 100 öğe ile "
 "sınırlıdır."
+
+#: app/frontend/apps/desktop/components/CommonHistoryFlyout/event-actions/checklist-item-checked.ts:10
+#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventEntityNames.ts:10
+msgid "Checklist item"
+msgstr "Kontrol listesi öğesi"
 
 #: app/models/checklist/item.rb:105
 msgid "Checklist items are limited to 100 items per checklist."
@@ -3811,20 +3832,7 @@ msgstr "Süresi dolan oturumları temizleyin."
 msgid "Clean up mobile taskbars."
 msgstr "Mobil görev çubuklarını temizleyin."
 
-#: app/frontend/apps/desktop/components/CommonInputSearch/CommonInputSearch.vue:117
-#: app/frontend/shared/components/CommonInputSearch/CommonInputSearch.vue:75
-msgid "Clear Search"
-msgstr "Aramayı Temizle"
-
 #: app/assets/javascripts/app/views/generic/searchable_select.jst.eco:56
-#: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:643
-#: app/frontend/apps/desktop/components/Form/fields/FieldDate/FieldDateTimeInput.vue:358
-#: app/frontend/apps/desktop/components/Form/fields/FieldSelect/FieldSelectInput.vue:306
-#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:362
-#: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:151
-#: app/frontend/apps/mobile/components/Form/fields/FieldDate/FieldDateTimeInput.vue:140
-#: app/frontend/apps/mobile/components/Form/fields/FieldSelect/FieldSelectInput.vue:124
-#: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:212
 msgid "Clear Selection"
 msgstr "Seçimi Temizle"
 
@@ -3840,9 +3848,22 @@ msgstr "Son aramaları temizle"
 msgid "Clear recently closed"
 msgstr "Yakın zamanda kapatılanları temizle"
 
+#: app/frontend/apps/desktop/components/CommonInputSearch/CommonInputSearch.vue:117
 #: app/frontend/apps/desktop/pages/search/components/SearchEmptyMessage.vue:34
+#: app/frontend/shared/components/CommonInputSearch/CommonInputSearch.vue:75
 msgid "Clear search"
 msgstr "Aramayı Temizle"
+
+#: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:640
+#: app/frontend/apps/desktop/components/Form/fields/FieldDate/FieldDateTimeInput.vue:358
+#: app/frontend/apps/desktop/components/Form/fields/FieldSelect/FieldSelectInput.vue:306
+#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:359
+#: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:151
+#: app/frontend/apps/mobile/components/Form/fields/FieldDate/FieldDateTimeInput.vue:140
+#: app/frontend/apps/mobile/components/Form/fields/FieldSelect/FieldSelectInput.vue:124
+#: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:215
+msgid "Clear selection"
+msgstr "Seçimi temizle"
 
 #: app/frontend/shared/components/Form/fields/FieldDate/useDateTime.ts:92
 msgid "Clear the value"
@@ -3978,10 +3999,14 @@ msgstr "Kapatıldığı Tarih"
 
 #: app/assets/javascripts/app/controllers/widget/ticket_stats.coffee:130
 #: app/assets/javascripts/app/controllers/widget/user.coffee:80
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:136
-#: app/frontend/apps/desktop/pages/user/components/UserRelatedCustomerTickets.vue:43
 msgid "Closed Tickets"
 msgstr "Kapalı Destek Talepleri"
+
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationRelatedTickets.vue:27
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:136
+#: app/frontend/apps/desktop/pages/user/components/UserRelatedCustomerTickets.vue:43
+msgid "Closed tickets"
+msgstr "Kapalı destek talepleri"
 
 #: app/assets/javascripts/app/models/ticket.coffee:25
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:74
@@ -4120,7 +4145,6 @@ msgid "Confirm"
 msgstr "Onayla"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/password_check.coffee:4
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationPasswordCheck.vue:38
 msgid "Confirm Password"
 msgstr "Şifreyi Onayla"
 
@@ -4136,6 +4160,7 @@ msgstr "Birleştirmeyi onayla"
 msgid "Confirm new password"
 msgstr "Yeni şifreyi onayla"
 
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationPasswordCheck.vue:38
 #: app/frontend/apps/desktop/composables/authentication/useSignupForm.ts:53
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordResetVerify.vue:58
 msgid "Confirm password"
@@ -4202,9 +4227,6 @@ msgstr "Bağlan"
 #: app/assets/javascripts/app/controllers/getting_started/channel_email_pre_configured.coffee:11
 #: app/assets/javascripts/app/views/getting_started/channel.jst.eco:5
 #: app/assets/javascripts/app/views/getting_started/email_pre_configured.jst.eco:5
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:105
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmailPreConfigured.vue:31
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannels.vue:20
 msgid "Connect Channels"
 msgstr "Kanalları Bağla"
 
@@ -4231,8 +4253,14 @@ msgid "Connect Microsoft 365 App"
 msgstr "Microsoft 365 Uygulamasını Bağla"
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:129
-msgid "Connect and Continue"
-msgstr "Bağlan ve Devam Et"
+msgid "Connect and continue"
+msgstr "Bağlan ve devam et"
+
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:105
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmailPreConfigured.vue:31
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannels.vue:20
+msgid "Connect channels"
+msgstr "Kanalları bağla"
 
 #: public/assets/chat/views/loader.eco:6
 msgid "Connecting"
@@ -4351,13 +4379,16 @@ msgstr "Çevirilere Katkıda Bulunma"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:72
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:4
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:85
 msgid "Conversation Summary"
 msgstr "Görüşme Özeti"
 
 #: lib/sessions/event/chat_transfer.rb:30
 msgid "Conversation is transferred into another chat. Please stay tuned."
 msgstr "Konuşma başka bir sohbete aktarılmıştır. Lütfen bekleyin."
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:84
+msgid "Conversation summary"
+msgstr "Görüşme özeti"
 
 #: app/assets/javascripts/app/controllers/_application_controller/_base.coffee:125
 #: app/assets/javascripts/app/controllers/_ui_element/auth_provider.coffee:32
@@ -4373,22 +4404,6 @@ msgstr "Kopyalandı."
 msgid "Copy"
 msgstr "Kopyala"
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:113
-msgid "Copy Codes"
-msgstr "Kodları Kopyala"
-
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:266
-msgid "Copy Secret"
-msgstr "Gizli Anahtarı Kopyala"
-
-#: app/frontend/apps/desktop/components/CommonInputCopyToClipboard/CommonInputCopyToClipboard.vue:17
-msgid "Copy Text"
-msgstr "Metni Kopyala"
-
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:144
-msgid "Copy Token"
-msgstr "Belirteci Kopyala"
-
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:287
 msgid "Copy URL"
 msgstr "URL'yi kopyala"
@@ -4397,9 +4412,25 @@ msgstr "URL'yi kopyala"
 msgid "Copy article permalink"
 msgstr "Yazı kalıcı bağlantısını kopyala"
 
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:113
+msgid "Copy codes"
+msgstr "Kodları kopyala"
+
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:356
 msgid "Copy current object number (e. g. Ticket#) to clipboard"
 msgstr "Geçerli nesne numarasını (örn. DestekTalebi#) panoya kopyala"
+
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailTopBar.vue:124
+msgid "Copy organization display name"
+msgstr "Organizasyonun görünen adını kopyala"
+
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:266
+msgid "Copy secret"
+msgstr "Gizli anahtarı kopyala"
+
+#: app/frontend/apps/desktop/components/CommonInputCopyToClipboard/CommonInputCopyToClipboard.vue:17
+msgid "Copy text"
+msgstr "Metni kopyala"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader.vue:86
 msgid "Copy ticket number"
@@ -4421,7 +4452,11 @@ msgstr "Destek talebi numarasını kopyala"
 msgid "Copy to clipboard"
 msgstr "Panoya kopyala"
 
-#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar.vue:112
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:144
+msgid "Copy token"
+msgstr "Belirteci kopyala"
+
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar.vue:123
 msgid "Copy user display name"
 msgstr "Kullanıcı görünen adını kopyala"
 
@@ -4518,7 +4553,7 @@ msgid "Could not set two-factor authentication method as default"
 msgstr "İki faktörlü kimlik doğrulama yöntemi varsayılan olarak ayarlanamadı"
 
 #: app/assets/javascripts/app/controllers/widget/link.coffee:69
-#: app/assets/javascripts/app/controllers/widget/link/kb_answer.coffee:106
+#: app/assets/javascripts/app/controllers/widget/link/kb_answer.coffee:108
 msgid "Couldn't save changes"
 msgstr "Değişiklikler kaydedilemedi"
 
@@ -4552,7 +4587,7 @@ msgstr "Ülke"
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:8
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:4
 #: app/frontend/apps/desktop/components/Form/fields/FieldGroupPermissions/FieldGroupPermissionsInput.vue:43
-#: app/frontend/apps/desktop/entities/user/composables/useUserCreate.ts:69
+#: app/frontend/apps/desktop/entities/user/composables/useUserCreate.ts:78
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:114
 #: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:169
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:476
@@ -4562,11 +4597,6 @@ msgstr "Oluştur"
 #: app/assets/javascripts/app/controllers/getting_started/admin.coffee:13
 msgid "Create Admin"
 msgstr "Yönetici Oluştur"
-
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:58
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualAdmin.vue:28
-msgid "Create Administrator Account"
-msgstr "Yönetici Hesabı Oluştur"
 
 #: lib/excel_sheet/ticket.rb:31
 msgid "Create Channel"
@@ -4579,10 +4609,6 @@ msgstr "Bilgi Tabanı Oluştur"
 #: app/controllers/first_steps_controller.rb:93
 msgid "Create Macros"
 msgstr "Makrolar Oluştur"
-
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:167
-msgid "Create Shared Draft"
-msgstr "Paylaşılan Taslak Oluştur"
 
 #: app/controllers/first_steps_controller.rb:88
 msgid "Create Text Modules"
@@ -4635,11 +4661,6 @@ msgstr ""
 "\n"
 "Bir listeden placeholder seçmek için \"::\" girmeniz yeterlidir."
 
-#: app/frontend/apps/mobile/pages/ticket/routes.ts:64
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:476
-msgid "Create Ticket"
-msgstr "Destek Talebi Oluştur"
-
 #: app/controllers/first_steps_controller.rb:82
 msgid "Create a Test Ticket"
 msgstr "Test Destek Talebi Oluşturun"
@@ -4669,6 +4690,11 @@ msgstr "Bir çeviri oluşturun"
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualAdmin.vue:84
 msgid "Create account"
 msgstr "Hesap oluştur"
+
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:58
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualAdmin.vue:28
+msgid "Create administrator account"
+msgstr "Yönetici hesabı oluştur"
 
 #: db/seeds/permissions.rb:114
 msgid "Create and set up Knowledge Base."
@@ -4719,11 +4745,16 @@ msgid ""
 msgstr ""
 "Hizmet Seviyesi Anlaşması için destek taleplerini ayıran kurallar oluşturun."
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:167
+msgid "Create shared draft"
+msgstr "Paylaşılan taslak oluştur"
+
 #: app/frontend/apps/mobile/components/Form/fields/FieldTags/FieldTagsDialog.vue:154
 msgid "Create tag"
 msgstr "Etiket oluştur"
 
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:525
+#: app/frontend/apps/mobile/pages/ticket/routes.ts:64
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:476
 msgid "Create ticket"
 msgstr "Destek talebi oluştur"
 
@@ -4846,9 +4877,12 @@ msgid "Creation mask"
 msgstr "Oluşturma maskesi"
 
 #: app/assets/javascripts/app/controllers/_profile/avatar.coffee:156
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCropImageFlyout.vue:42
 msgid "Crop Image"
 msgstr "Resmi Kırp"
+
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCropImageFlyout.vue:42
+msgid "Crop image"
+msgstr "Resmi kırp"
 
 #: app/assets/javascripts/app/views/monitoring.jst.eco:44
 msgid "Current Status"
@@ -4975,13 +5009,11 @@ msgstr "Müşteri Sohbeti"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:65
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:80
 msgid "Customer Intent"
 msgstr "Kullanıcı Niyeti"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:91
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:7
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:100
 msgid "Customer Sentiment"
 msgstr "Kullanıcı Duyarlılığı"
 
@@ -4989,9 +5021,17 @@ msgstr "Kullanıcı Duyarlılığı"
 msgid "Customer and agent ratio (role based user counts)"
 msgstr "Kullanıcı ve temsilci oranı (rol tabanlı kullanıcı sayıları)"
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:79
+msgid "Customer intent"
+msgstr "Kullanıcı niyeti"
+
 #: db/seeds/settings.rb:3374
 msgid "Customer selection based on sender and receiver list"
 msgstr "Gönderici ve alıcı listesine göre müşteri seçimi"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:99
+msgid "Customer sentiment"
+msgstr "Kullanıcı duyarlılığı"
 
 #: db/seeds/permissions.rb:405
 msgid "Customer tickets"
@@ -5029,9 +5069,12 @@ msgid "Dark"
 msgstr "Karanlık"
 
 #: app/assets/javascripts/app/controllers/dark_mode.coffee:33
-#: app/frontend/apps/desktop/components/ThemeSwitch/ThemeSwitch.vue:93
 msgid "Dark Mode"
 msgstr "Karanlık Mod"
+
+#: app/frontend/apps/desktop/components/ThemeSwitch/ThemeSwitch.vue:93
+msgid "Dark mode"
+msgstr "Karanlık mod"
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:147
 #: app/assets/javascripts/app/controllers/dashboard.coffee:28
@@ -6257,15 +6300,11 @@ msgstr ""
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:45
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:13
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:221
-#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/delete.ts:11
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/delete.ts:10
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:155
 #: app/frontend/shared/components/Form/fields/FieldFile/FieldFileInput.vue:154
 msgid "Delete"
 msgstr "Sil"
-
-#: app/frontend/shared/entities/ticket-article/action/plugins/articleDelete.ts:77
-msgid "Delete Article"
-msgstr "Yazıyı Sil"
 
 #: app/assets/javascripts/app/controllers/_profile/avatar.coffee:47
 msgid "Delete Avatar?"
@@ -6283,10 +6322,6 @@ msgstr "Dosya Sil"
 msgid "Delete Knowledge Base"
 msgstr "Bilgi Tabanını Sil"
 
-#: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:41
-msgid "Delete Object"
-msgstr "Nesneyi Sil"
-
 #: app/assets/javascripts/app/views/data_privacy/tasks.jst.eco:9
 msgid "Delete Ticket"
 msgstr "Destek Talebini Sil"
@@ -6303,6 +6338,10 @@ msgstr "Tüm alt kategorileri ve yanıtları silin, ardından tekrar deneyin."
 msgid "Delete all existing records first."
 msgstr "Önce mevcut tüm kayıtları silin."
 
+#: app/frontend/shared/entities/ticket-article/action/plugins/articleDelete.ts:77
+msgid "Delete article"
+msgstr "Yazıyı sil"
+
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:155
 msgid "Delete avatar"
 msgstr "Avatarı sil"
@@ -6318,6 +6357,10 @@ msgstr "Sisteminizdeki mevcut verileri silin."
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:111
 msgid "Delete immediately"
 msgstr "Hemen sil"
+
+#: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:41
+msgid "Delete object"
+msgstr "Nesneyi sil"
 
 #: db/seeds/schedulers.rb:196
 msgid "Delete obsolete classic IMAP backup."
@@ -6649,19 +6692,15 @@ msgstr "Discard"
 
 #: app/assets/javascripts/app/controllers/taskbar_widget.coffee:128
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:37
-#: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:56
-#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:421
 msgid "Discard Changes"
 msgstr "Evet"
-
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCameraFlyout.vue:160
-msgid "Discard Snapshot"
-msgstr "Anlık Görüntüyü At"
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:81
 msgid "Discard article"
 msgstr "Yazıyı sil"
 
+#: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:56
+#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:421
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:75
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:59
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:36
@@ -6670,6 +6709,10 @@ msgstr "Yazıyı sil"
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:43
 msgid "Discard changes"
 msgstr "Değişiklikleri gözardı et"
+
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCameraFlyout.vue:160
+msgid "Discard snapshot"
+msgstr "Anlık görüntüyü at"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:238
 msgid "Discard unsaved reply"
@@ -6870,11 +6913,8 @@ msgstr "Ekler indiriliyor…"
 msgid "Draft"
 msgstr "Draft"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketSharedDraftZoom.vue:31
-msgid "Draft Available"
-msgstr "Taslak mevcut"
-
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:18
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketSharedDraftZoom.vue:31
 msgid "Draft available"
 msgstr "Taslak mevcut"
 
@@ -6977,8 +7017,9 @@ msgstr "Paskalya bayramı"
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:44
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:51
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:11
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailTopBar/actions/edit.ts:13
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:159
-#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/edit.ts:11
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/edit.ts:10
 #: app/frontend/apps/mobile/pages/home/views/Home.vue:71
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:46
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:54
@@ -7005,8 +7046,6 @@ msgstr "Bilgi Tabanını Düzenle"
 
 #: app/assets/javascripts/app/controllers/agent_ticket_create/sidebar_organization.coffee:21
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_organization.coffee:11
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:36
-#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:76
 msgid "Edit Organization"
 msgstr "Edit Organization"
 
@@ -7031,6 +7070,12 @@ msgstr "Öğeyi düzenle"
 msgid "Edit mask"
 msgstr "Maskeyi düzenle"
 
+#: app/frontend/apps/desktop/entities/organization/composables/useOrganizationEdit.ts:59
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:39
+#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:76
+msgid "Edit organization"
+msgstr "Edit organization"
+
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:36
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewActions.vue:88
 msgid "Edit reply"
@@ -7044,7 +7089,7 @@ msgstr "Güvenlik anahtarlarını düzenle"
 msgid "Edit ticket title"
 msgstr "Destek talebi başlığını düzenle"
 
-#: app/frontend/apps/desktop/entities/user/composables/useUserEdit.ts:68
+#: app/frontend/apps/desktop/entities/user/composables/useUserEdit.ts:65
 msgid "Edit user"
 msgstr "Kullanıcı düzenle"
 
@@ -7160,8 +7205,6 @@ msgstr "Email - subject field"
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:22
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:8
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:6
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:70
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:116
 msgid "Email Account"
 msgstr "Email Account"
 
@@ -7180,21 +7223,14 @@ msgstr "Email Accounts"
 msgid "Email Address"
 msgstr "Email Address"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannels.vue:33
-msgid "Email Channel"
-msgstr "E-posta Kanalı"
-
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:83
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:67
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:64
 msgid "Email Inbound"
 msgstr "Gelen E-posta"
 
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:162
 #: app/assets/javascripts/app/views/channel/email_notification_wizard.jst.eco:8
 #: app/assets/javascripts/app/views/getting_started/email_notification.jst.eco:6
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:94
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:30
 msgid "Email Notification"
 msgstr "Email Notification"
 
@@ -7204,14 +7240,13 @@ msgstr "E-posta Bildirimleri"
 
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:140
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:105
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:68
 msgid "Email Outbound"
 msgstr "Email Outbound"
 
-#: app/frontend/apps/desktop/pages/authentication/routes.ts:110
-#: app/frontend/apps/desktop/pages/authentication/views/SignupVerify.vue:110
-msgid "Email Verification"
-msgstr "E-posta Doğrulama"
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:70
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:116
+msgid "Email account"
+msgstr "Email account"
 
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailAccountForm.ts:33
 msgid "Email address"
@@ -7226,10 +7261,27 @@ msgstr ""
 msgid "Email addresses"
 msgstr "Eposta adresleri"
 
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannels.vue:33
+msgid "Email channel"
+msgstr "E-posta kanalı"
+
 #: app/assets/javascripts/app/controllers/email_verify.coffee:53
 #: app/frontend/apps/desktop/pages/authentication/views/SignupVerify.vue:49
 msgid "Email could not be verified. Please contact your administrator."
 msgstr "E-posta doğrulanamadı. Lütfen yöneticinizle iletişime geçin."
+
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:64
+msgid "Email inbound"
+msgstr "Gelen e-posta"
+
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:94
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:30
+msgid "Email notification"
+msgstr "E-posta bildirimi"
+
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:68
+msgid "Email outbound"
+msgstr "Giden e-posta"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:913
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:405
@@ -7257,6 +7309,11 @@ msgstr ""
 msgid "Email sent to %s"
 msgstr "Eposta %s'ye gönderildi"
 
+#: app/frontend/apps/desktop/pages/authentication/routes.ts:110
+#: app/frontend/apps/desktop/pages/authentication/views/SignupVerify.vue:110
+msgid "Email verification"
+msgstr "E-posta doğrulama"
+
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:738
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:43
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:289
@@ -7275,8 +7332,8 @@ msgid "Empty"
 msgstr "Empty"
 
 #: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:423
-msgid "Empty Overview"
-msgstr "Boş Genel Bakış"
+msgid "Empty overview"
+msgstr "Boş genel bakış"
 
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:151
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:72
@@ -7656,7 +7713,7 @@ msgstr "Bağlantı URL'sini girin"
 msgid "Enter one of your unused recovery codes."
 msgstr "Kullanılmayan kurtarma kodlarınızdan birini girin."
 
-#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:212
+#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:211
 msgid "Enter search and select a type to search for"
 msgstr "Aramaya girin ve aramak için bir tür seçin"
 
@@ -7813,7 +7870,6 @@ msgid "Error fetching i-doit information. Please contact your administrator."
 msgstr ""
 "i-doit bilgileri alınırken hata oluştu. Lütfen yöneticinizle iletişime geçin."
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:260
 #: db/seeds/overviews.rb:160
 msgid "Escalated Tickets"
 msgstr "Yükseltilmiş Destek Talepleri"
@@ -7864,14 +7920,16 @@ msgstr ""
 "target=\"zammad_app\">#{config.product_name} üzerinde görüntüle</a>\n"
 "</div>\n"
 
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:260
+msgid "Escalated tickets"
+msgstr "Yükseltilmiş destek talepleri"
+
 #: lib/excel_sheet/ticket.rb:74
 msgid "Escalation At"
 msgstr "Yükseltilme Zamanı"
 
 #: app/assets/javascripts/app/lib/app_post/popover_provider/escalation_popover_provider.coffee:8
 #: app/assets/javascripts/app/views/sla/index.jst.eco:35
-#: app/frontend/apps/desktop/components/CommonTicketEscalationIndicator/CommonTicketEscalationIndicator.vue:31
-#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:146
 msgid "Escalation Times"
 msgstr "Escalation Times"
 
@@ -7882,42 +7940,60 @@ msgid "Escalation at"
 msgstr "Escalation at"
 
 #: app/assets/javascripts/app/models/ticket.coffee:20
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:39
 #: app/graphql/gql/types/overview_type.rb:105
 msgid "Escalation at (Close Time)"
 msgstr "Kademe atlama (Kapatma Zamanı)"
 
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:39
+#, fuzzy
+#| msgid "Escalation at (Close Time)"
+msgid "Escalation at (Close time)"
+msgstr "Kademe atlama (Kapatma Zamanı)"
+
 #: app/assets/javascripts/app/models/ticket.coffee:18
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:25
 #: app/graphql/gql/types/overview_type.rb:103
 msgid "Escalation at (First Response Time)"
 msgstr "Kademe atlama (İlk Cevap Zamanı)"
 
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:25
+msgid "Escalation at (First response time)"
+msgstr "Kademe atlama (İlk cevap zamanı)"
+
 #: app/assets/javascripts/app/models/ticket.coffee:19
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:32
 #: app/graphql/gql/types/overview_type.rb:104
 msgid "Escalation at (Update Time)"
 msgstr "Kademe atlama (Güncelleme Zamanı)"
+
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:32
+msgid "Escalation at (Update time)"
+msgstr "Kademe atlama (Güncelleme zamanı)"
+
+#: app/frontend/apps/desktop/components/CommonTicketEscalationIndicator/CommonTicketEscalationIndicator.vue:31
+#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:146
+#, fuzzy
+#| msgid "Escalation Times"
+msgid "Escalation times"
+msgstr "Escalation Times"
 
 #: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:123
 msgid "Escape pressed. No item selected."
 msgstr "Escape tuşuna basıldı. Seçili öğe yok."
 
 #: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:51
-msgid "Event Ending"
-msgstr "Etkinlik Bitişi"
+msgid "Event ending"
+msgstr "Etkinlik bitişi"
 
 #: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:42
-msgid "Event Location"
-msgstr "Etkinlik Konumu"
+msgid "Event location"
+msgstr "Etkinlik konumu"
 
 #: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:46
-msgid "Event Starting"
-msgstr "Etkinlik Başlangıcı"
+msgid "Event starting"
+msgstr "Etkinlik başlangıcı"
 
 #: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:38
-msgid "Event Summary"
-msgstr "Etkinlik Özeti"
+msgid "Event summary"
+msgstr "Etkinlik özeti"
 
 #: app/assets/javascripts/app/models/knowledge_base.coffee:271
 msgid ""
@@ -8096,9 +8172,12 @@ msgid "Expires at"
 msgstr "Son kullanma tarihi"
 
 #: app/assets/javascripts/app/controllers/search.coffee:57
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/Search/Search.vue:17
 msgid "Extended Search"
 msgstr "Extended Search"
+
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/Search/Search.vue:17
+msgid "Extended search"
+msgstr "Genişletilmiş arama"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:73
 msgid "External data source field"
@@ -8140,16 +8219,16 @@ msgid "Facebook Developer Site"
 msgstr "Facebook Geliştirici Sitesi"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/facebookDirectMessage.ts:7
-msgid "Facebook Direct Message"
-msgstr "Facebook Doğrudan Mesaj"
+msgid "Facebook direct message"
+msgstr "Facebook doğrudan mesaj"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/facebookFeedComment.ts:6
-msgid "Facebook Feed Comment"
-msgstr "Facebook Akış Yorumu"
+msgid "Facebook feed comment"
+msgstr "Facebook akış yorumu"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/facebookFeedPost.ts:7
-msgid "Facebook Feed Post"
-msgstr "Facebook Akış Gönderisi"
+msgid "Facebook feed post"
+msgstr "Facebook akış gönderisi"
 
 #: app/assets/javascripts/app/views/data_privacy/index.jst.eco:24
 msgid "Failed Tasks"
@@ -8291,14 +8370,6 @@ msgstr "Dosya sistemi"
 msgid "Filter"
 msgstr "Filtre"
 
-#: app/graphql/gql/queries/tickets/by_filter.rb:24
-msgid ""
-"Filtering by customer's organizations requires customer filter to be "
-"provided."
-msgstr ""
-"Kullanıcı kuruluşlarına göre filtreleme, kullanıcı filtresinin sağlanmasını "
-"gerektirir."
-
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:103
 msgid "Find a ticket"
 msgstr "Bir destek talebi bulun"
@@ -8324,8 +8395,8 @@ msgid "Finish"
 msgstr "Bitir"
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualInviteColleagues.vue:86
-msgid "Finish Setup"
-msgstr "Kurulumu Bitir"
+msgid "Finish setup"
+msgstr "Kurulumu bitir"
 
 #: app/assets/javascripts/app/controllers/widget/placeholder.coffee:105
 msgid "First Article"
@@ -8358,8 +8429,6 @@ msgstr "Dakika bazında İlk Yanıt farkı"
 #: app/assets/javascripts/app/views/generic/sla_times.jst.eco:17
 #: app/assets/javascripts/app/views/popover/escalation.jst.eco:5
 #: app/assets/javascripts/app/views/sla/index.jst.eco:37
-#: app/frontend/apps/desktop/components/CommonTicketEscalationIndicator/CommonTicketEscalationIndicator.vue:36
-#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:149
 msgid "First Response Time"
 msgstr "First Response Time"
 
@@ -8382,6 +8451,11 @@ msgstr "İlk isim"
 #: app/graphql/gql/types/overview_type.rb:109
 msgid "First response"
 msgstr "İlk yanıt"
+
+#: app/frontend/apps/desktop/components/CommonTicketEscalationIndicator/CommonTicketEscalationIndicator.vue:36
+#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:149
+msgid "First response time"
+msgstr "İlk yanıt zamanı"
 
 #: db/seeds/ai/text_tools.rb:4
 msgid "Fix spelling and grammar"
@@ -8687,22 +8761,19 @@ msgstr "Genel iletişim hatası, belki internet mevcut değildir!"
 msgid "Generate Access Token for |%s|"
 msgstr "|%s| için Erişim Belirteci Oluştur"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:254
-msgid "Generate Recovery Codes"
-msgstr "Kurtarma Kodları Oluştur"
-
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationFlyout.vue:34
-msgid "Generate Recovery Codes: %s"
-msgstr "Kurtarma Kodları Oluştur: %s"
-
 #: app/assets/javascripts/app/controllers/api.coffee:167
 msgid "Generate Token"
 msgstr "Belirteç Oluştur"
 
 #: app/assets/javascripts/app/controllers/_profile/password.coffee:241
 #: app/assets/javascripts/app/views/profile/password.jst.eco:113
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:254
 msgid "Generate recovery codes"
 msgstr "Kurtarma kodları oluştur"
+
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationFlyout.vue:34
+msgid "Generate recovery codes: %s"
+msgstr "Kurtarma kodları oluştur: %s"
 
 #: db/seeds/schedulers.rb:142
 msgid "Generate user-based stats."
@@ -8735,13 +8806,16 @@ msgid "Geo Location Service"
 msgstr "Geo Location Service"
 
 #: app/assets/javascripts/app/controllers/getting_started.coffee:10
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:18
 msgid "Get Started"
 msgstr "Başlayın"
 
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:174
 msgid "Get notified"
 msgstr "Haberdar olun"
+
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:18
+msgid "Get started"
+msgstr "Başla"
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:6
 #: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:10
@@ -8853,11 +8927,11 @@ msgstr "Verilen saat dilimi geçerli değil."
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:98
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:105
 #: app/assets/javascripts/app/views/signup/verify.jst.eco:10
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationWizard.vue:62
-#: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:85
 msgid "Go Back"
 msgstr "Geri Git"
 
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationWizard.vue:62
+#: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:85
 #: app/frontend/apps/mobile/components/CommonBackButton/CommonBackButton.vue:41
 #: app/frontend/apps/mobile/pages/authentication/views/Login.vue:90
 msgid "Go back"
@@ -8868,8 +8942,8 @@ msgid "Go home"
 msgstr "Ana sayfaya git"
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:234
-msgid "Go to Login"
-msgstr "Giriş Yap'a git"
+msgid "Go to login"
+msgstr "Giriş yap'a git"
 
 #: lib/secure_mailing/pgp/incoming.rb:55
 msgid "Good signature"
@@ -9292,7 +9366,7 @@ msgid "Hi! Which one of our products?"
 msgstr "Selam! Ürünlerimizden hangisi?"
 
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarFooterMenu.vue:51
-msgid "Hide Beta UI switch"
+msgid "Hide BETA UI switch"
 msgstr "Beta kullanıcı arayüzü düğmesini gizle"
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:24
@@ -9329,8 +9403,9 @@ msgstr "Mevcut bir destek talebine yazı eklemek için ipucu."
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket.coffee:114
 #: app/assets/javascripts/app/controllers/user_profile/action_row.coffee:62
 #: app/frontend/apps/desktop/components/CommonHistoryFlyout/CommonHistoryFlyout.vue:77
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailTopBar/actions/history.ts:13
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:57
-#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/history.ts:14
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/history.ts:13
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:121
 msgid "History"
 msgstr "Geçmiş"
@@ -9739,8 +9814,8 @@ msgid "Import from %s"
 msgstr "%s'den içe aktar"
 
 #: app/frontend/apps/desktop/pages/guided-setup/routes.ts:171
-msgid "Import from Source"
-msgstr "Kaynaktan İçe Aktar"
+msgid "Import from source"
+msgstr "Kaynaktan içe aktar"
 
 #: app/assets/javascripts/app/models/ticket_priority.coffee:8
 msgid "Important"
@@ -9861,7 +9936,6 @@ msgid "Incompatible Elasticsearch version"
 msgstr "Uyumsuz Elasticsearch sürümü"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:10
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:381
 msgid "Incomplete Ticket Checklist"
 msgstr "Eksik Destek Talebi Kontrol Listesi"
 
@@ -9874,6 +9948,10 @@ msgstr "Tamamlanmamış kontrol listesi öğeleri"
 #: app/controllers/import_zendesk_controller.rb:67
 msgid "Incomplete credentials"
 msgstr "Eksik kimlik bilgileri"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:381
+msgid "Incomplete ticket checklist"
+msgstr "Eksik destek talebi kontrol listesi"
 
 #: db/seeds/settings.rb:2440
 msgid "Increment (SystemID.Counter)"
@@ -9979,8 +10057,8 @@ msgstr "Tablo ekle"
 
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:90
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:90
-msgid "Insert text from Knowledge Base article"
-msgstr "Bilgi Tabanı yazısından metin ekle"
+msgid "Insert text from knowledge base answer"
+msgstr "Bilgi tabanı yanıtından metin ekle"
 
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:99
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:99
@@ -10061,13 +10139,13 @@ msgstr "İndirilen WhatsApp medyasının bütünlük doğrulaması başarısız 
 msgid "Internal"
 msgstr "Internal"
 
-#: app/frontend/shared/errors/useErrorHandler.ts:33
-msgid "Internal Error"
-msgstr "Dahili Hata"
-
 #: app/assets/javascripts/app/views/knowledge_base/feed_dialog.jst.eco:2
 msgid "Internal Knowledge Base feed:"
 msgstr "Dahili Bilgi Tabanı akışı:"
+
+#: app/frontend/shared/errors/useErrorHandler.ts:33
+msgid "Internal error"
+msgstr "Dahili hata"
 
 #: app/models/import_job.rb:172
 msgid ""
@@ -10290,8 +10368,6 @@ msgstr "Invite Agents"
 
 #: app/assets/javascripts/app/controllers/_dashboard/first_steps.coffee:41
 #: app/assets/javascripts/app/views/getting_started/agent.jst.eco:5
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:140
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualInviteColleagues.vue:29
 msgid "Invite Colleagues"
 msgstr "Invite Colleagues"
 
@@ -10302,6 +10378,11 @@ msgstr "Invite Customer"
 #: app/controllers/first_steps_controller.rb:60
 msgid "Invite agents/colleagues to help working on tickets"
 msgstr "Invite agents/colleagues to help working on tickets"
+
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:140
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualInviteColleagues.vue:29
+msgid "Invite colleagues"
+msgstr "Meslektaşlarınızı davet edin"
 
 #: app/controllers/first_steps_controller.rb:66
 msgid "Invite customers to create issues in Zammad"
@@ -10559,10 +10640,6 @@ msgstr "Son Harici Yazı"
 msgid "Last Internal Article"
 msgstr "Son Dahili Yazı"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:102
-msgid "Last Used"
-msgstr "Son Kullanım"
-
 #: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:129
 msgid "Last change %s %s by %s"
 msgstr "Son değişiklik %s %s tarafından %s"
@@ -10634,6 +10711,7 @@ msgid "Last sync at:"
 msgstr "Son senkronizasyon:"
 
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:20
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:102
 msgid "Last used"
 msgstr "Last used"
 
@@ -10704,8 +10782,8 @@ msgid "Limit tickets per day"
 msgstr "Günlük destek talebi limiti"
 
 #: app/frontend/apps/mobile/pages/home/components/TicketOverviewEditItem.vue:88
-msgid "Limited Visibility"
-msgstr "Sınırlı Görünürlük"
+msgid "Limited visibility"
+msgstr "Sınırlı görünürlük"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:259
 #: app/assets/javascripts/app/controllers/_ui_element/richtext_additions/embed_video_button.coffee:11
@@ -10743,35 +10821,15 @@ msgstr "Github issue'lerini ticketlarına bağla."
 msgid "Link GitLab issues to your tickets."
 msgstr "Github issue'lerini ticketlarına bağla."
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerLinkFlyout.vue:69
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerList.vue:272
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitHub/TicketSidebarGitHub.vue:70
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitLab/TicketSidebarGitLab.vue:70
-msgid "Link Issue"
-msgstr "Bağlantı Sorunu"
-
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:177
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:188
-msgid "Link Objects"
-msgstr "Bağlantı Nesneleri"
-
 #: app/assets/javascripts/app/views/link/kb_answer.jst.eco:19
 msgid "Link Related Answer"
 msgstr "Link Related Answer"
-
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:150
-msgid "Link Text"
-msgstr "Bağlantı Metni"
-
-#: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:156
-msgid "Link Tickets"
-msgstr "Destek Taleplerini Bağla"
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:148
 msgid "Link URL"
 msgstr "Bağlantı URL'si"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:176
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:179
 msgid "Link account on %s"
 msgstr "Hesabı %s'ye bağla"
 
@@ -10784,9 +10842,14 @@ msgid "Link already exists"
 msgstr "Bağlantı zaten mevcut"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_git_issue.coffee:26
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerLinkFlyout.vue:69
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerList.vue:272
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitHub/TicketSidebarGitHub.vue:70
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitLab/TicketSidebarGitLab.vue:70
 msgid "Link issue"
 msgstr "Link Hatası"
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:177
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:144
 msgid "Link objects"
 msgstr "Nesneleri bağla"
@@ -10799,9 +10862,17 @@ msgstr "Bağlantı başarıyla kaldırıldı"
 msgid "Link template"
 msgstr "Bağlantı şablonu"
 
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:150
+msgid "Link text"
+msgstr "Metni bağlantıla"
+
 #: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:53
 msgid "Link ticket"
 msgstr "Destek talebini bağla"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:156
+msgid "Link tickets"
+msgstr "Destek taleplerini bağla"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:62
 msgid "Link type"
@@ -10810,8 +10881,6 @@ msgstr "Bağlantı türü"
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:3
 #: app/assets/javascripts/app/views/popover/user.jst.eco:5
 #: app/assets/javascripts/app/views/widget/user.jst.eco:34
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/linkedAccounts.ts:8
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:48
 #: db/seeds/permissions.rb:478
 msgid "Linked Accounts"
 msgstr "Linked Accounts"
@@ -10821,7 +10890,8 @@ msgstr "Linked Accounts"
 msgid "Linked Tickets"
 msgstr "Linked Tickets"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:185
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/linkedAccounts.ts:8
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:48
 msgid "Linked accounts"
 msgstr "Bağlantılı hesaplar"
 
@@ -10984,13 +11054,13 @@ msgstr "Logo"
 msgid "Logout"
 msgstr "Oturumu kapat"
 
-#: app/frontend/apps/desktop/components/ConnectionLostDialog/ConnectionLostDialog.vue:10
-msgid "Lost Network Connection"
-msgstr "Kayıp Ağ Bağlantısı"
-
 #: db/seeds/settings.rb:1077
 msgid "Lost Password"
 msgstr "Lost Password"
+
+#: app/frontend/apps/desktop/components/ConnectionLostDialog/ConnectionLostDialog.vue:10
+msgid "Lost network connection"
+msgstr "Ağ bağlantısı kesildi"
 
 #: app/assets/javascripts/app/lib/app_post/websocket.coffee:351
 msgid "Lost network connection!"
@@ -11511,8 +11581,8 @@ msgid "Me"
 msgstr "Ben"
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleWhatsappMediaBadge.vue:51
-msgid "Media Download Error"
-msgstr "Medya İndirme Hatası"
+msgid "Media download error"
+msgstr "Medya indirme hatası"
 
 #: app/frontend/shared/entities/ticket-article/composables/useTicketArticleRetryMediaDownload.ts:31
 msgid "Media download failed."
@@ -11530,7 +11600,8 @@ msgstr "Medya indirme işlemi başarılı oldu."
 #: app/assets/javascripts/app/views/popover/organization.jst.eco:6
 #: app/assets/javascripts/app/views/widget/organization.jst.eco:29
 #: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:80
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:69
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailViewContent.vue:115
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:71
 #: app/frontend/apps/mobile/components/Organization/OrganizationMembersList.vue:29
 msgid "Members"
 msgstr "Üyeler"
@@ -11552,14 +11623,11 @@ msgstr "Kullanıcıdan bahsedin"
 msgid "Merge"
 msgstr "birleştir"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketMerge/TicketMergeFlyout.vue:95
-msgid "Merge Tickets"
-msgstr "Destek Taleplerini Birleştir"
-
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:101
 msgid "Merge cells"
 msgstr "Hücreleri birleştir"
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketMerge/TicketMergeFlyout.vue:95
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:46
 msgid "Merge tickets"
 msgstr "Destek taleplerini birleştir"
@@ -11587,8 +11655,6 @@ msgid "Message"
 msgstr "Mesaj"
 
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:46
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/whatsappMessage.ts:15
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:120
 msgid "Message Status"
 msgstr "Mesaj Durumu"
 
@@ -11599,6 +11665,11 @@ msgstr "Message after sending form"
 #: db/seeds/settings.rb:64
 msgid "Message for login page."
 msgstr "Giriş sayfası için mesaj."
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/whatsappMessage.ts:15
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:120
+msgid "Message status"
+msgstr "Mesaj durumu"
 
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:26
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:35
@@ -11618,8 +11689,8 @@ msgid "Messaging Username"
 msgstr "Mesajlaşma Kullanıcı Adı"
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:85
-msgid "Meta Data"
-msgstr "Meta Veri"
+msgid "Meta data"
+msgstr "Meta veri"
 
 #: app/assets/javascripts/app/views/widget/http_log_show.jst.eco:11
 msgid "Method"
@@ -11678,9 +11749,12 @@ msgid "Migrate now!"
 msgstr "Şimdi geçiş yapın!"
 
 #: app/assets/javascripts/app/views/import/otrs.jst.eco:10
-#: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceOTRSDownloadButtons.vue:16
 msgid "Migration Plugin for %s"
 msgstr "Migration Plugin for %s"
+
+#: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceOTRSDownloadButtons.vue:16
+msgid "Migration plugin for %s"
+msgstr "%s için geçiş eklentisi"
 
 #: app/controllers/import_otrs_controller.rb:107
 msgid "Migrator can't read OTRS output!"
@@ -12033,8 +12107,8 @@ msgid "Needed"
 msgstr "Needed"
 
 #: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:95
-msgid "Negative Feedback"
-msgstr "Olumsuz Geri Bildirim"
+msgid "Negative feedback"
+msgstr "Olumsuz geri bildirim"
 
 #: app/controllers/sessions_controller.rb:56
 msgid ""
@@ -12059,8 +12133,8 @@ msgid "New"
 msgstr "Yeni"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:264
-msgid "New & Open Tickets"
-msgstr "Yeni ve Açık Destek Talepleri"
+msgid "New & open tickets"
+msgstr "Yeni ve açık destek talepleri"
 
 #: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:66
 msgid "New AI Agent"
@@ -12119,10 +12193,6 @@ msgstr "Yeni Kontrol Listesi Şablonu"
 msgid "New Deletion Task"
 msgstr "Yeni Silme Görevi"
 
-#: app/frontend/apps/desktop/composables/useBetaDisclaimer.ts:40
-msgid "New Desktop UI — Alpha Version"
-msgstr "Yeni Masaüstü Kullanıcı Arayüzü - Alfa Sürümü"
-
 #: app/assets/javascripts/app/controllers/group.coffee:28
 msgid "New Group"
 msgstr "New Group"
@@ -12142,11 +12212,6 @@ msgstr "New Organization"
 #: app/assets/javascripts/app/controllers/overview.coffee:31
 msgid "New Overview"
 msgstr "New Overview"
-
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:126
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:188
-msgid "New Personal Access Token"
-msgstr "Yeni Kişisel Erişim Belirteci"
 
 #: app/assets/javascripts/app/controllers/ticket_priority.coffee:20
 msgid "New Priority"
@@ -12193,19 +12258,12 @@ msgstr "Yeni Şablon"
 #: app/assets/javascripts/app/controllers/user_profile/action_row.coffee:70
 #: app/assets/javascripts/app/views/customer_ticket_create.jst.eco:6
 #: app/assets/javascripts/app/views/navigation/menu_cti_ringing.jst.eco:25
-#: app/frontend/apps/desktop/entities/ticket/composables/useTicketCreateTitle.ts:21
-#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:89
-#: app/frontend/apps/desktop/pages/ticket/routes.ts:19
 msgid "New Ticket"
 msgstr "Yeni Destek Talebi"
 
 #: app/assets/javascripts/app/controllers/ticket_state.coffee:23
 msgid "New Ticket State"
 msgstr "Yeni Destek Talebi Durumu"
-
-#: app/frontend/apps/desktop/entities/ticket/composables/useTicketCreateTitle.ts:23
-msgid "New Ticket: %s"
-msgstr "Yeni Destek Talebi: %s"
 
 #: app/assets/javascripts/app/views/translation/index.jst.eco:11
 msgid "New Translation"
@@ -12241,6 +12299,10 @@ msgstr "Yeni İş Akışı"
 msgid "New Writing Assistant Tool"
 msgstr "Yeni Yazım Asistanı Aracı"
 
+#: app/frontend/apps/desktop/composables/useBetaDisclaimer.ts:40
+msgid "New desktop UI — Alpha version"
+msgstr "Yeni masaüstü kullanıcı arayüzü - Alfa sürümü"
+
 #: app/assets/javascripts/app/controllers/_integration/clearbit.coffee:66
 msgid "New organizations are shared."
 msgstr "Yeni organizasyonlar paylaşılır."
@@ -12249,6 +12311,11 @@ msgstr "Yeni organizasyonlar paylaşılır."
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:63
 msgid "New password"
 msgstr "Yeni parola"
+
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:126
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:190
+msgid "New personal access token"
+msgstr "Yeni kişisel erişim belirteci"
 
 #: app/assets/javascripts/app/views/knowledge_base/public_menu_form_item_row.jst.eco:12
 msgid "New tab"
@@ -12260,7 +12327,10 @@ msgstr "New text module"
 
 #: app/frontend/apps/desktop/components/Form/fields/FieldNotifications/FieldNotificationsInput.vue:74
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/MenuContainer/AddMenu/plugins/ticket-create.ts:12
-#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/newTicket.ts:10
+#: app/frontend/apps/desktop/entities/ticket/composables/useTicketCreateTitle.ts:21
+#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:89
+#: app/frontend/apps/desktop/pages/ticket/routes.ts:19
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/newTicket.ts:11
 msgid "New ticket"
 msgstr "Yeni destek talebi"
 
@@ -12322,7 +12392,12 @@ msgstr ""
 "target=\"zammad_app\">Görüntüle #{config.product_name}</a>\n"
 "</div>\n"
 
-#: app/frontend/apps/desktop/entities/user/composables/useUserCreate.ts:60
+#: app/frontend/apps/desktop/entities/ticket/composables/useTicketCreateTitle.ts:23
+msgid "New ticket: %s"
+msgstr "Yeni destek talebi: %s"
+
+#: app/frontend/apps/desktop/entities/user/composables/useUserCreate.ts:69
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailTopBar/actions/newUser.ts:13
 msgid "New user"
 msgstr "Yeni kullanıcı"
 
@@ -12386,15 +12461,14 @@ msgstr ""
 "Mevcut Yapay Zeka Temsilcisi yok, lütfen \"Yönet > Yapay Zeka Temsilcileri\" "
 "bölümünden yeni bir tane oluşturun veya mevcut olanı etkinleştirin"
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:70
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:17
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:69
 msgid "No AI provider is currently set up. Please contact your administrator."
 msgstr ""
 "Şu anda hiçbir yapay zeka sağlayıcısı ayarlanmamıştır. Lütfen yöneticinizle "
 "iletişime geçin."
 
 #: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:42
-#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:111
 msgid "No Comment"
 msgstr "Yorum yok"
 
@@ -12441,10 +12515,6 @@ msgstr "Yapılandırılmış Microsoft 365 uygulaması yok!"
 #: lib/external_credential/microsoft_graph.rb:9
 msgid "No Microsoft Graph app configured!"
 msgstr "Yapılandırılmış Microsoft Graph uygulaması yok!"
-
-#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:127
-msgid "No Overviews"
-msgstr "Genel Bakış Yok"
 
 #: db/seeds/settings.rb:577
 msgid "No Proxy"
@@ -12500,6 +12570,10 @@ msgstr "Henüz kontrol listesi öğesi yok"
 msgid "No checklist templates have been created yet."
 msgstr "Henüz hiçbir kontrol listesi şablonu oluşturulmamıştır."
 
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:111
+msgid "No comment"
+msgstr "Yorum yok"
+
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:5
 msgid "No configuration set."
 msgstr "Yapılandırma seti yok."
@@ -12523,7 +12597,7 @@ msgstr "E-posta yok!"
 
 #: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:128
 #: app/frontend/apps/mobile/pages/online-notification/views/NotificationsList.vue:85
-#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:248
+#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:247
 #: app/frontend/apps/mobile/pages/ticket/components/TicketList/TicketList.vue:138
 msgid "No entries"
 msgstr "Girdi yok"
@@ -12577,6 +12651,10 @@ msgstr "Üye bulunamadı"
 msgid "No organizations found"
 msgstr "Hiçbir organizasyon bulunamadı"
 
+#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:127
+msgid "No overviews"
+msgstr "Genel bakış yok"
+
 #: app/models/setting/validation/saml/security.rb:34
 msgid "No private key found."
 msgstr "Özel anahtar bulunamadı."
@@ -12585,7 +12663,7 @@ msgstr "Özel anahtar bulunamadı."
 msgid "No proxy for the following hosts."
 msgstr "No proxy for the following hosts."
 
-#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:261
+#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:260
 msgid "No recent searches"
 msgstr "Son arama yok"
 
@@ -12737,9 +12815,6 @@ msgstr "Mevcut değil"
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:160
 #: app/assets/javascripts/app/controllers/knowledge_base/agent_controller.coffee:240
 #: app/assets/javascripts/app/controllers/ticket_zoom.coffee:127
-#: app/frontend/apps/desktop/components/layout/LayoutTaskbarTabContent.vue:70
-#: app/frontend/shared/errors/useErrorHandler.ts:25
-#: app/frontend/shared/router/error.ts:24
 #: app/helpers/knowledge_base_public_page_title_helper.rb:25
 msgid "Not Found"
 msgstr "Bulunamadı"
@@ -12784,6 +12859,9 @@ msgid "Not configured"
 msgstr "Not configured"
 
 #: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabNotFound.vue:36
+#: app/frontend/apps/desktop/components/layout/LayoutTaskbarTabContent.vue:70
+#: app/frontend/shared/errors/useErrorHandler.ts:25
+#: app/frontend/shared/router/error.ts:24
 msgid "Not found"
 msgstr "Bulunamadı"
 
@@ -12870,7 +12948,6 @@ msgstr "Uyarı:"
 msgid "Notification"
 msgstr "Bildirim"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:39
 #: db/seeds/settings.rb:3427
 msgid "Notification Sender"
 msgstr "Notification Sender"
@@ -12886,6 +12963,10 @@ msgstr "Bildirim matrisi"
 #: app/frontend/apps/mobile/pages/online-notification/components/NotificationItem.vue:46
 msgid "Notification read"
 msgstr "Bildirim okundu"
+
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:39
+msgid "Notification sender"
+msgstr "Bildirim göndericisi"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:168
 msgid "Notification settings could not be reset."
@@ -13181,13 +13262,8 @@ msgstr "Açık"
 msgid "Open %s"
 msgstr "Açık %s"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ChecklistBadgeList.vue:31
-msgid "Open Checklist"
-msgstr "Kontrol Listesini Aç"
-
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:79
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:90
 msgid "Open Questions"
 msgstr "Soruları Aç"
 
@@ -13197,8 +13273,6 @@ msgstr "Open Ticket# %s"
 
 #: app/assets/javascripts/app/controllers/widget/ticket_stats.coffee:122
 #: app/assets/javascripts/app/controllers/widget/user.coffee:70
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:127
-#: app/frontend/apps/desktop/pages/user/components/UserRelatedCustomerTickets.vue:35
 #: db/seeds/overviews.rb:109
 msgid "Open Tickets"
 msgstr "Açık Destek Talepleri"
@@ -13207,6 +13281,10 @@ msgstr "Açık Destek Talepleri"
 msgid "Open and closed tickets ratio (ticket counts based on state)"
 msgstr ""
 "Açık ve kapalı destek talebi oranı (durumlara göre destek talebi sayıları)"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ChecklistBadgeList.vue:31
+msgid "Open checklist"
+msgstr "Kontrol listesini aç"
 
 #: app/assets/javascripts/app/models/public_link.coffee:10
 msgid "Open in new tab"
@@ -13223,6 +13301,10 @@ msgstr "Makro seçimini aç"
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:463
 msgid "Open note box"
 msgstr "Open note box"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:89
+msgid "Open questions"
+msgstr "Soruları aç"
 
 #: app/frontend/apps/desktop/components/PageNavigation/PageNavigation.vue:52
 msgid "Open quick search"
@@ -13257,7 +13339,10 @@ msgid "Open ticket indicator"
 msgstr "Açık destek talebi göstergesi"
 
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:38
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationRelatedTickets.vue:21
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomer.vue:51
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:127
+#: app/frontend/apps/desktop/pages/user/components/UserRelatedCustomerTickets.vue:35
 msgid "Open tickets"
 msgstr "Açık destek talepleri"
 
@@ -13367,8 +13452,10 @@ msgstr "Destek talepleri genel bakışlarının sırası"
 #: app/controllers/time_accountings_controller.rb:93
 #: app/frontend/apps/desktop/components/Search/plugins/organization.ts:13
 #: app/frontend/apps/desktop/components/Ticket/TicketPopoverWithTrigger/TicketPopover.vue:100
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailTopBar.vue:33
+#: app/frontend/apps/desktop/pages/organization/routes.ts:9
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/organization.ts:13
-#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:70
+#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:73
 #: app/frontend/apps/mobile/pages/organization/routes.ts:8
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:30
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/plugins/organization.ts:6
@@ -13388,15 +13475,15 @@ msgstr "Organization Name"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:390
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:12
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailAccountForm.ts:27
 msgid "Organization Support"
 msgstr "Organization Support"
 
-#: app/frontend/apps/mobile/entities/organization/composables/useOrganizationEdit.ts:77
+#: app/frontend/apps/desktop/entities/organization/composables/useOrganizationEdit.ts:67
+#: app/frontend/apps/mobile/entities/organization/composables/useOrganizationEdit.ts:76
 msgid "Organization could not be updated."
 msgstr "Organizasyon güncellenemedi."
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/Organization.vue:22
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/Organization.vue:26
 msgid "Organization is inactive."
 msgstr "Organizasyon etkin değil."
 
@@ -13408,10 +13495,16 @@ msgstr "Organizasyon logosu"
 msgid "Organization name"
 msgstr "Organizasyon adı"
 
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailAccountForm.ts:27
+msgid "Organization support"
+msgstr "Organizasyon desteği"
+
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailViewContent.vue:162
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:79
 msgid "Organization tickets"
 msgstr "Organizasyon destek talepleri"
 
+#: app/frontend/apps/desktop/pages/organization/routes.ts:21
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:30
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:25
 msgid ""
@@ -13449,15 +13542,18 @@ msgid "Origin By"
 msgstr "Tarafından"
 
 #: app/assets/javascripts/app/controllers/article_view/item.coffee:92
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleBlockedContentWarning.vue:41
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:58
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleRemoteContentBadge.vue:21
 msgid "Original Formatting"
 msgstr "Original Formatting"
 
 #: app/assets/javascripts/app/controllers/translation.coffee:81
 msgid "Original Translation"
 msgstr "Orijinal Çeviri"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleBlockedContentWarning.vue:41
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:58
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleRemoteContentBadge.vue:21
+msgid "Original formatting"
+msgstr "Orijinal biçimlendirme"
 
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:86
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:103
@@ -13467,19 +13563,9 @@ msgstr "Diğer Ayarlar"
 
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:3
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:2
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/outOfOffice.ts:6
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:122
 #: db/seeds/permissions.rb:440
 msgid "Out of Office"
 msgstr "Ofis dışında"
-
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:149
-msgid "Out of Office settings could not be saved."
-msgstr "Ofis Dışı ayarları kaydedilemedi."
-
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:144
-msgid "Out of Office settings have been saved successfully"
-msgstr "Ofis Dışı ayarları başarıyla kaydedildi"
 
 #: lib/validations/out_of_office_validator.rb:31
 msgid "Out of Office start date has to be earlier than or equal to end date"
@@ -13493,6 +13579,11 @@ msgstr ""
 "Tüm açık destek taleplerinden (şirket genelinde) kaç tanesi size atanmış "
 "durumda?"
 
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/outOfOffice.ts:6
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:122
+msgid "Out of office"
+msgstr "Ofis dışında"
+
 #: app/frontend/shared/composables/useAvatarIndicator.ts:72
 msgid "Out of office active"
 msgstr "Ofis dışı aktif"
@@ -13501,6 +13592,14 @@ msgstr "Ofis dışı aktif"
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:192
 msgid "Out of office replacement"
 msgstr "Out of office replacement"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:149
+msgid "Out of office settings could not be saved."
+msgstr "Ofis dışı ayarları kaydedilemedi."
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:144
+msgid "Out of office settings have been saved successfully"
+msgstr "Ofis dışı ayarları başarıyla kaydedildi"
 
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:99
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:24
@@ -13516,13 +13615,16 @@ msgstr "Giden"
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:140
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:150
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:22
-#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:21
 msgid "Outbound Call"
 msgstr "Giden Arama"
 
+#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:21
+msgid "Outbound call"
+msgstr "Giden arama"
+
 #: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:22
-msgid "Outbound Call: %s"
-msgstr "Giden Çağrı: %s"
+msgid "Outbound call: %s"
+msgstr "Giden arama: %s"
 
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_channel_distribution.jst.eco:16
 msgid "Outbound:"
@@ -13537,7 +13639,7 @@ msgstr "Eski Tarayıcı"
 msgid "Outdent text"
 msgstr "Çıkıntılı metin"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorActionBar/ActionToolbar.vue:199
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorActionBar/ActionToolbar.vue:200
 msgid "Overflow menu"
 msgstr "Taşma menüsü"
 
@@ -13573,14 +13675,17 @@ msgstr "Genel bakış: %s"
 msgid "Overviews"
 msgstr "Konular"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:135
-msgid "Overwrite Content"
-msgstr "İçeriğin Üzerine Yaz"
-
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_overwrite_modal.coffee:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:73
 msgid "Overwrite Draft"
 msgstr "Taslağın Üzerine Yaz"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:135
+msgid "Overwrite content"
+msgstr "İçeriğin üzerine yaz"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:73
+msgid "Overwrite draft"
+msgstr "Taslağın üzerine yaz"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:511
 #: app/assets/javascripts/app/models/ticket.coffee:11
@@ -13803,14 +13908,14 @@ msgstr "Ödeme gerekli - lütfen hesabınıza para yükleyin"
 msgid "Pending Reached Tickets"
 msgstr "Bekleme Süresi Dolan Talepler"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:268
-msgid "Pending Tickets"
-msgstr "Bekleyen Destek Talepleri"
-
 #: app/assets/javascripts/app/models/ticket.coffee:113
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/ticket.ts:25
 msgid "Pending reminder reached for ticket |%s|"
 msgstr "Destek talebi |%s| için bekleme hatırlatma süresine ulaşıldı"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:268
+msgid "Pending tickets"
+msgstr "Bekleyen destek talepleri"
 
 #: app/assets/javascripts/app/models/ticket.coffee:13
 #: app/graphql/gql/types/overview_type.rb:98
@@ -13845,7 +13950,6 @@ msgid "Permissions"
 msgstr "İzinler"
 
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:12
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:199
 msgid "Personal Access Tokens"
 msgstr "Personal Access Tokens"
 
@@ -13856,6 +13960,10 @@ msgstr "Personal Settings"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:131
 msgid "Personal access token has been deleted."
 msgstr "Kişisel erişim belirteci silindi."
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:201
+msgid "Personal access tokens"
+msgstr "Kişisel erişim belirteçleri"
 
 #: app/assets/javascripts/app/controllers/_profile/overviews.coffee:77
 msgid "Personal overview order was reset."
@@ -13891,7 +13999,7 @@ msgstr ""
 "Telefon numarası zaten başka bir WhatsApp hesabı tarafından kullanılıyor."
 
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:7
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:169
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:171
 msgid "Pick a name for the application, and we'll give you a unique token."
 msgstr "Pick a name for the application, and we'll give you a unique token."
 
@@ -14144,8 +14252,8 @@ msgid "Position"
 msgstr "Pozisyon"
 
 #: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:88
-msgid "Positive Feedback"
-msgstr "Olumlu Geri Bildirim"
+msgid "Positive feedback"
+msgstr "Olumlu geri bildirim"
 
 #: app/models/system_report/plugin/postgre_sql.rb:4
 msgid "PostgresSQL server version"
@@ -14153,9 +14261,12 @@ msgstr "PostgresSQL sunucu sürümü"
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:40
 #: app/assets/javascripts/app/controllers/_channel/_email_filter.coffee:31
-#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventIssuerNames.ts:5
 msgid "Postmaster Filter"
 msgstr "Posta Yöneticisi Filtresi"
+
+#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventIssuerNames.ts:5
+msgid "Postmaster filter"
+msgstr "Posta yöneticisi filtresi"
 
 #: app/assets/javascripts/app/views/admin_password_auth/request.jst.eco:16
 #: app/assets/javascripts/app/views/admin_password_auth/request_sent.jst.eco:14
@@ -14227,18 +14338,13 @@ msgstr "Önizleme"
 msgid "Preview %s"
 msgstr "Önizle %s"
 
-#: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:85
-msgid "Preview Calendar"
-msgstr "Takvimi Önizle"
-
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:158
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:187
-msgid "Preview Shared Draft"
-msgstr "Paylaşılan Taslağı Önizle"
-
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:20
 msgid "Preview Width"
 msgstr "Preview Width"
+
+#: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:85
+msgid "Preview calendar"
+msgstr "Takvimi önizle"
 
 #: app/assets/javascripts/app/views/data_privacy/preview.jst.eco:6
 msgid "Preview customer tickets"
@@ -14247,6 +14353,11 @@ msgstr "Müşteri destek taleplerini gözden geçirin"
 #: app/assets/javascripts/app/views/data_privacy/preview.jst.eco:10
 msgid "Preview owner tickets"
 msgstr "Sahip destek taleplerini gözden geçirin"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:158
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:187
+msgid "Preview shared draft"
+msgstr "Paylaşılan taslağı önizle"
 
 #: app/assets/javascripts/app/views/clues/clues_content.jst.eco:11
 #: app/frontend/shared/form/i18n/locales.ts:69
@@ -14278,8 +14389,8 @@ msgid "Print"
 msgstr "Yazdır"
 
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:107
-msgid "Print Codes"
-msgstr "Kodları Yazdır"
+msgid "Print codes"
+msgstr "Kodları yazdır"
 
 #: app/assets/javascripts/app/models/public_link.coffee:11
 #: app/assets/javascripts/app/models/user_overview_sorting.coffee:8
@@ -14297,8 +14408,8 @@ msgid "Priority"
 msgstr "Öncelik"
 
 #: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:79
-msgid "Priority Icon"
-msgstr "Öncelik Simgesi"
+msgid "Priority icon"
+msgstr "Öncelik simgesi"
 
 #: db/seeds/settings.rb:1968
 msgid "Private key (PEM)"
@@ -14547,17 +14658,19 @@ msgid "Reauthenticate"
 msgstr "Yeniden Doğrula"
 
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:18
-#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:14
 msgid "Received Call"
 msgstr "Gelen Arama"
 
+#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:14
+msgid "Received call"
+msgstr "Gelen arama"
+
 #: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:15
-msgid "Received Call: %s"
-msgstr "Alınan Çağrı: %s"
+msgid "Received call: %s"
+msgstr "Alınan arama: %s"
 
 #: app/assets/javascripts/app/views/agent_ticket_merge.jst.eco:5
 #: app/assets/javascripts/app/views/link/ticket/add.jst.eco:30
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketRelationAndRecentLists/TicketRelationAndRecentLists.vue:57
 msgid "Recent Customer Tickets"
 msgstr "Recent Customer Tickets"
 
@@ -14565,12 +14678,16 @@ msgstr "Recent Customer Tickets"
 msgid "Recent Logs"
 msgstr "En Son Kayıtlar"
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketRelationAndRecentLists/TicketRelationAndRecentLists.vue:57
+msgid "Recent customer tickets"
+msgstr "Son kullanıcı destek talepleri"
+
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:95
 msgid "Recent search was removed successfully."
 msgstr "Son arama başarıyla kaldırıldı."
 
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:112
-#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:251
+#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:250
 msgid "Recent searches"
 msgstr "Son aramalar"
 
@@ -14580,7 +14697,6 @@ msgstr "Son aramalar başarıyla temizlendi."
 
 #: app/assets/javascripts/app/views/agent_ticket_merge.jst.eco:8
 #: app/assets/javascripts/app/views/link/ticket/add.jst.eco:36
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketRelationAndRecentLists/TicketRelationAndRecentLists.vue:65
 msgid "Recently Viewed Tickets"
 msgstr "Son Görüntülenen Destek Talepleri"
 
@@ -14595,6 +14711,10 @@ msgstr "Yakın zamanda kapatılan öğeler başarıyla temizlendi."
 #: app/assets/javascripts/app/controllers/_plugin/navigation.coffee:526
 msgid "Recently viewed"
 msgstr "Recently viewed"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketRelationAndRecentLists/TicketRelationAndRecentLists.vue:65
+msgid "Recently viewed tickets"
+msgstr "Son görüntülenen destek talepleri"
 
 #: app/assets/javascripts/app/controllers/_channel/sms.coffee:397
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/notification.jst.eco:9
@@ -14614,15 +14734,18 @@ msgstr ""
 "created."
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_login/method/recovery_codes.coffee:2
-#: app/frontend/apps/desktop/pages/authentication/components/LoginRecoveryCode.vue:27
-#: app/frontend/apps/mobile/pages/authentication/components/LoginRecoveryCode.vue:32
-#: app/frontend/shared/composables/authentication/useLoginTwoFactor.ts:92
 msgid "Recovery Code"
 msgstr "Kurtarma Kodu"
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/recovery_codes.coffee:4
 msgid "Recovery Codes"
 msgstr "Kurtarma Kodları"
+
+#: app/frontend/apps/desktop/pages/authentication/components/LoginRecoveryCode.vue:27
+#: app/frontend/apps/mobile/pages/authentication/components/LoginRecoveryCode.vue:32
+#: app/frontend/shared/composables/authentication/useLoginTwoFactor.ts:92
+msgid "Recovery code"
+msgstr "Kurtarma kodu"
 
 #: app/assets/javascripts/app/views/profile/password.jst.eco:104
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:236
@@ -14652,11 +14775,8 @@ msgstr ""
 msgid "Regenerate"
 msgstr "Yeniden Üret"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:254
-msgid "Regenerate Recovery Codes"
-msgstr "Kurtarma Kodlarını Yeniden Oluştur"
-
 #: app/assets/javascripts/app/views/profile/password.jst.eco:111
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:254
 msgid "Regenerate recovery codes"
 msgstr "Kurtarma kodlarını yeniden oluştur"
 
@@ -14693,7 +14813,7 @@ msgstr "İlgili Nesne ID"
 msgid "Related Object Type"
 msgstr "İlgili Nesne Türü"
 
-#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:139
+#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:150
 msgid "Related tickets"
 msgstr "İlgili destek talepleri"
 
@@ -14755,23 +14875,11 @@ msgstr "Kaldır"
 msgid "Remove %s"
 msgstr "%s'yi kaldır"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:160
-msgid "Remove Link"
-msgstr "Bağlantıyı Kaldır"
-
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationPopover/NotificationList/NotificationItem.vue:76
-msgid "Remove Notification"
-msgstr "Bildirimi Kaldır"
-
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationFlyout.vue:39
-msgid "Remove Two-factor Authentication: %s"
-msgstr "İki Faktörlü Kimlik Doğrulamayı Kaldır: %s"
-
 #: app/assets/javascripts/app/controllers/user/manage_two_factor.coffee:53
 msgid "Remove a configured two-factor authentication method"
 msgstr "Yapılandırılmış iki faktörlü kimlik doğrulama yöntemini kaldırma"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:168
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:171
 msgid "Remove account link on %s"
 msgstr "%s üzerindeki hesap bağlantısını kaldır"
 
@@ -14811,9 +14919,17 @@ msgstr "Resmi kaldır"
 msgid "Remove item"
 msgstr "Öğeyi kaldır"
 
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:160
+msgid "Remove link"
+msgstr "Bağlantıyı kaldır"
+
 #: app/assets/javascripts/app/views/user/manage_two_factor.jst.eco:5
 msgid "Remove method"
 msgstr "Yöntemi kaldır"
+
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationPopover/NotificationList/NotificationItem.vue:76
+msgid "Remove notification"
+msgstr "Bildirimi kaldır"
 
 #: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:22
 msgid "Remove security keys"
@@ -14830,6 +14946,10 @@ msgstr "Bu etiketi kaldır"
 #: app/assets/javascripts/app/controllers/_profile/password.coffee:176
 msgid "Remove two-factor authentication"
 msgstr "İki faktörlü kimlik doğrulamayı kaldır"
+
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationFlyout.vue:39
+msgid "Remove two-factor authentication: %s"
+msgstr "İki faktörlü kimlik doğrulamayı kaldır: %s"
 
 #: app/frontend/apps/desktop/components/CommonHistoryFlyout/HistoryEventDetails/HistoryEventDetailsReaction.vue:16
 msgid "Removed reaction from message %s from %s"
@@ -14892,8 +15012,8 @@ msgid "Reply"
 msgstr "Yanıtla"
 
 #: app/frontend/shared/entities/ticket-article/action/plugins/email.ts:105
-msgid "Reply All"
-msgstr "Hepsini Yanıtla"
+msgid "Reply all"
+msgstr "Tümünü yanıtla"
 
 #: lib/validations/ticket_article_validator/whatsapp_message.rb:62
 msgid "Reply allowed only for open tickets"
@@ -14984,7 +15104,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/user_profile/action_row.coffee:84
 #: app/assets/javascripts/app/views/signup/verify.jst.eco:11
 #: app/frontend/apps/desktop/pages/authentication/views/Signup.vue:149
-#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/resendVerificationEmail.ts:16
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/resendVerificationEmail.ts:15
 msgid "Resend verification email"
 msgstr "Resend verification email"
 
@@ -14997,10 +15117,6 @@ msgstr "Resend verification email"
 msgid "Reset"
 msgstr "Sıfırla"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOverviews.vue:138
-msgid "Reset Overview Order"
-msgstr "Genel Bakış Sırasını Sıfırla"
-
 #: app/assets/javascripts/app/controllers/password_reset.coffee:23
 #: app/assets/javascripts/app/controllers/password_reset_verify.coffee:22
 msgid "Reset Password"
@@ -15010,13 +15126,14 @@ msgstr "Reset Password"
 msgid "Reset Password failed!"
 msgstr "Şifre Sıfırlama başarısız oldu!"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchInput/QuickSearchInput.vue:68
-msgid "Reset Search"
-msgstr "Aramayı Sıfırla"
-
 #: app/assets/javascripts/app/controllers/_profile/overviews.coffee:35
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOverviews.vue:143
 msgid "Reset overview order"
 msgstr "Genel bakış sırasını sıfırla"
+
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchInput/QuickSearchInput.vue:68
+msgid "Reset search"
+msgstr "Aramayı sıfırla"
 
 #: app/assets/javascripts/app/models/setting.coffee:60
 msgid "Reset successful."
@@ -15026,15 +15143,12 @@ msgstr "Sıfırlama başarılı."
 msgid "Reset text color"
 msgstr "Metin rengini sıfırla"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:214
-msgid "Reset to Default Settings"
-msgstr "Varsayılan Ayarlara Sıfırla"
-
 #: app/assets/javascripts/app/views/settings/ticket_notifications.jst.eco:11
 msgid "Reset to default"
 msgstr "Varsayılana sıfırla"
 
 #: app/assets/javascripts/app/views/profile/notification.jst.eco:75
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:214
 msgid "Reset to default settings"
 msgstr "Varsayılan ayarlara sıfırla"
 
@@ -15167,7 +15281,7 @@ msgstr "Restore Defaults"
 msgid "Restrict to only the following users"
 msgstr "Yalnızca aşağıdaki kullanıcılarla kısıtlayın"
 
-#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:15
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:17
 msgid "Result"
 msgstr "Sonuç"
 
@@ -15184,31 +15298,25 @@ msgid "Results"
 msgstr "Sonuçlar"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:161
-#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:12
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:9
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:14
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:12
 #: app/assets/javascripts/app/views/widget/two_factor_login/security_keys.jst.eco:16
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:68
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:64
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:169
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:131
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:92
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:91
 #: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:172
 msgid "Retry"
 msgstr "Yeniden Dene"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleMediaError.vue:41
-msgid "Retry Attachment Download"
-msgstr "Eklentiyi İndirmeyi Yeniden Dene"
-
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleSecurityWarning.vue:36
-msgid "Retry Security Process"
-msgstr "Güvenlik Sürecini Yeniden Dene"
-
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:112
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleMediaError.vue:41
 msgid "Retry attachment download"
 msgstr "Eklentiyi indirmeyi yeniden dene"
 
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:97
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleSecurityWarning.vue:36
 msgid "Retry security process"
 msgstr "Güvenlik sürecini yeniden deneyin"
 
@@ -15355,6 +15463,7 @@ msgstr "SLAs"
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:74
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:55
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/sms.ts:7
+#: app/frontend/shared/entities/ticket-article/action/plugins/sms.ts:44
 #: db/seeds/permissions.rb:137
 msgid "SMS"
 msgstr "SMS"
@@ -15473,30 +15582,20 @@ msgid "Save"
 msgstr "Kaydet"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/recovery_codes.coffee:14
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:21
 msgid "Save Codes"
 msgstr "Kodları Kaydet"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_overwrite_modal.coffee:2
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:74
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:61
 msgid "Save Draft"
 msgstr "Taslağı Kaydet"
-
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:217
-msgid "Save Notifications"
-msgstr "Bildirimleri Kaydet"
-
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:173
-msgid "Save Out of Office"
-msgstr "Ofis Dışındayı Kaydet"
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSource.vue:52
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:140
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:108
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualSystemInformation.vue:122
-msgid "Save and Continue"
-msgstr "Kaydet ve Devam Et"
+msgid "Save and continue"
+msgstr "Kaydet ve devam et"
 
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:22
 msgid "Save as"
@@ -15510,10 +15609,26 @@ msgstr "Taslak olarak kaydet"
 msgid "Save changes"
 msgstr "Değişiklikleri kaydet"
 
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:21
+msgid "Save codes"
+msgstr "Kodları kaydet"
+
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:217
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:273
 msgid "Save configuration"
 msgstr "Save configuration"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:61
+msgid "Save draft"
+msgstr "Taslağı kaydet"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:217
+msgid "Save notifications"
+msgstr "Bildirimleri kaydet"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:173
+msgid "Save out of office"
+msgstr "Ofis dışındayı kaydet"
 
 #: app/assets/javascripts/app/models/core_workflow.coffee:10
 msgid "Saved conditions"
@@ -15590,7 +15705,7 @@ msgstr "Scroll down to see new messages"
 #: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:363
 #: app/frontend/apps/desktop/pages/search/routes.ts:10
 #: app/frontend/apps/mobile/pages/search/routes.ts:8
-#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:221
+#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:220
 msgid "Search"
 msgstr "Ara"
 
@@ -15606,7 +15721,9 @@ msgstr "Arama URL'si geçersiz."
 msgid "Search URL is missing."
 msgstr "Arama URL'si eksik."
 
-#: app/frontend/apps/desktop/pages/user/components/UserRelatedCustomerTickets/CustomerTicketList.vue:104
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailViewContent.vue:145
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationRelatedTickets/OrganizationTicketList.vue:100
+#: app/frontend/apps/desktop/pages/user/components/UserRelatedCustomerTickets/CustomerTicketList.vue:106
 msgid "Search all"
 msgstr "Tümünü ara"
 
@@ -15696,7 +15813,7 @@ msgstr "İş akışlarını ara"
 msgid "Search for writing assistant tools"
 msgstr "Yazı asistanı araçlarını ara"
 
-#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:231
+#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:230
 msgid "Search for…"
 msgstr "Ara…"
 
@@ -15783,7 +15900,7 @@ msgstr "Arama sonucu değer anahtarı \"%s\" bulunamadı."
 #: app/assets/javascripts/app/controllers/_ui_element/autocompletion_ajax_customer_organization.coffee:18
 #: app/assets/javascripts/app/controllers/_ui_element/autocompletion_ajax_external_data_source.coffee:13
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:845
-#: app/assets/javascripts/app/controllers/widget/link/kb_answer.coffee:57
+#: app/assets/javascripts/app/controllers/widget/link/kb_answer.coffee:59
 #: app/assets/javascripts/app/views/generic/icon_picker.jst.eco:9
 #: app/assets/javascripts/app/views/translation/form.jst.eco:7
 #: app/frontend/apps/desktop/components/CommonInputSearch/CommonInputSearch.vue:24
@@ -15795,7 +15912,7 @@ msgstr "Ara…"
 
 #: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:81
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:109
-#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:113
+#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:121
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:88
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:133
 #: db/seeds/object_manager_attributes.rb:1161
@@ -15834,21 +15951,12 @@ msgstr "Güvenlik"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/authenticator_app.coffee:32
 #: app/assets/javascripts/app/controllers/widget/two_factor_login/method.coffee:3
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:286
-#: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:40
-#: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:47
 msgid "Security Code"
 msgstr "Güvenlik Kodu"
 
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:90
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleSecurityWarning.vue:25
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleSecurityBadge.vue:144
 msgid "Security Error"
 msgstr "Güvenlik Hatası"
-
-#: app/frontend/apps/mobile/components/Form/fields/FieldSecurity/FieldSecurityInput.vue:130
-msgid "Security Information"
-msgstr "Güvenlik Bilgileri"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:4
 msgid "Security Key"
@@ -15856,10 +15964,24 @@ msgstr "Güvenlik Anahtarı"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:5
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:9
 #: db/seeds/settings.rb:5822
 msgid "Security Keys"
 msgstr "Güvenlik Anahtarları"
+
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:286
+#: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:40
+#: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:47
+msgid "Security code"
+msgstr "Güvenlik kodu"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleSecurityWarning.vue:25
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleSecurityBadge.vue:144
+msgid "Security error"
+msgstr "Güvenlik hatası"
+
+#: app/frontend/apps/mobile/components/Form/fields/FieldSecurity/FieldSecurityInput.vue:130
+msgid "Security information"
+msgstr "Güvenlik bilgileri"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:74
 msgid "Security key \"%s\" will be removed."
@@ -15876,6 +15998,7 @@ msgid "Security key verification failed."
 msgstr "Güvenlik anahtarı doğrulaması başarısız oldu."
 
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:376
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:9
 msgid "Security keys"
 msgstr "Güvenlik anahtarları"
 
@@ -16038,21 +16161,8 @@ msgid "Send"
 msgstr "Gönder"
 
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:26
-#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:28
 msgid "Send Email"
 msgstr "Postayı gönder"
-
-#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:29
-msgid "Send Email: %s"
-msgstr "Eposta Gönder: %s"
-
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarFooterMenu.vue:44
-msgid "Send Feedback"
-msgstr "Geri Bildirim Gönder"
-
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualInviteColleagues.vue:85
-msgid "Send Invitation"
-msgstr "Davetiye Gönder"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:408
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:65
@@ -16063,6 +16173,22 @@ msgstr "Send Mails via"
 #: app/assets/javascripts/app/views/maintenance.jst.eco:33
 msgid "Send a message to all logged in users."
 msgstr "Send a message to all logged in users."
+
+#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:28
+msgid "Send email"
+msgstr "Eposta gönder"
+
+#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:29
+msgid "Send email: %s"
+msgstr "Eposta gönder: %s"
+
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarFooterMenu.vue:44
+msgid "Send feedback"
+msgstr "Geri bildirim gönder"
+
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualInviteColleagues.vue:85
+msgid "Send invitation"
+msgstr "Davetiye gönder"
 
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailOutboundForm.ts:48
 msgid "Send mails via"
@@ -16197,18 +16323,8 @@ msgstr "Sessions"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/authenticator_app.coffee:2
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:2
 #: app/assets/javascripts/app/views/profile/password.jst.eco:90
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:159
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:60
 msgid "Set Up"
 msgstr "Kurulum"
-
-#: app/frontend/apps/desktop/pages/authentication/after-auth/plugins/twoFactorSetup.ts:12
-msgid "Set Up Two-factor Authentication"
-msgstr "İki Faktörlü Kimlik Doğrulamayı Ayarla"
-
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationFlyout.vue:44
-msgid "Set Up Two-factor Authentication: %s"
-msgstr "İki Faktörlü Kimlik Doğrulamayı Ayarla: %s"
 
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:120
 msgid "Set a title for your ticket"
@@ -16286,6 +16402,8 @@ msgstr "İç not olarak ayarla"
 msgid "Set to public"
 msgstr "Herkese açık olarak ayarla"
 
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:159
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:60
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:150
 msgid "Set up"
 msgstr "Kurulum"
@@ -16310,8 +16428,13 @@ msgstr "Set up the communication channels you want to use with your Zammad."
 
 #: app/assets/javascripts/app/controllers/after_auth/two_factor_configuration.coffee:2
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal.coffee:6
+#: app/frontend/apps/desktop/pages/authentication/after-auth/plugins/twoFactorSetup.ts:12
 msgid "Set up two-factor authentication"
 msgstr "İki faktörlü kimlik doğrulamayı ayarla"
+
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationFlyout.vue:44
+msgid "Set up two-factor authentication: %s"
+msgstr "İki faktörlü kimlik doğrulamayı ayarla: %s"
 
 #: db/seeds/settings.rb:3349
 msgid ""
@@ -16350,22 +16473,20 @@ msgstr "Ayarlar %s"
 
 #: app/assets/javascripts/app/controllers/getting_started/finish.coffee:7
 #: app/assets/javascripts/app/views/getting_started/finish.jst.eco:5
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:70
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualFinish.vue:15
 msgid "Setup Finished"
 msgstr "Setup Finished"
+
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:70
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualFinish.vue:15
+msgid "Setup finished"
+msgstr "Kurulum tamamlandı"
 
 #: app/assets/javascripts/app/controllers/_integration/clearbit.coffee:66
 msgid "Shared"
 msgstr "Shared"
 
-#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventEntityNames.ts:8
-msgid "Shared Draft"
-msgstr "Paylaşılan Taslak"
-
 #: app/assets/javascripts/app/controllers/agent_ticket_create/sidebar_shared_draft.coffee:12
 #: app/assets/javascripts/app/models/group.coffee:17
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/shared-draft-start.ts:10
 #: db/seeds/object_manager_attributes.rb:2293
 msgid "Shared Drafts"
 msgstr "Paylaşılan Taslaklar"
@@ -16373,6 +16494,10 @@ msgstr "Paylaşılan Taslaklar"
 #: app/assets/javascripts/app/views/microsoft_graph/list.jst.eco:61
 msgid "Shared Mailbox"
 msgstr "Paylaşımlı Posta Kutusu"
+
+#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventEntityNames.ts:8
+msgid "Shared draft"
+msgstr "Paylaşılan taslak"
 
 #: app/controllers/tickets_controller.rb:89
 #: app/services/service/ticket/create.rb:180
@@ -16393,6 +16518,10 @@ msgstr "Paylaşılan taslak silinmiştir."
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:140
 msgid "Shared draft has been updated successfully."
 msgstr "Paylaşılan taslak başarıyla güncellendi."
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/shared-draft-start.ts:10
+msgid "Shared drafts"
+msgstr "Paylaşılan taslaklar"
 
 #: app/graphql/gql/queries/ticket/shared_draft/start/list.rb:20
 msgid "Shared drafts are not activated for the selected group"
@@ -16425,7 +16554,6 @@ msgid "Show %s more"
 msgstr "%s daha fazla göster"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_overwrite_modal.coffee:23
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:70
 msgid "Show Draft"
 msgstr "Taslağı Göster"
 
@@ -16461,6 +16589,10 @@ msgstr "Tarih/tarih-saat alanlarının seçicisinde takvim haftalarını göster
 msgid "Show chat automatically"
 msgstr "Sohbeti otomatik olarak göster"
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:70
+msgid "Show draft"
+msgstr "Taslağı göster"
+
 #: app/assets/javascripts/app/views/generic/reference_list.jst.eco:22
 #: app/assets/javascripts/app/views/generic/ticket_list.jst.eco:41
 msgid "Show less"
@@ -16474,7 +16606,7 @@ msgstr "Uyarıda eşleşen destek talep(ler)i göster"
 msgid "Show matching tickets in the warning"
 msgstr "Uyarıda eşleşen destek taleplerini göster"
 
-#: app/frontend/apps/mobile/pages/ticket/composable/useTicketArticleContext.ts:79
+#: app/frontend/apps/mobile/pages/ticket/composable/useTicketArticleContext.ts:80
 msgid "Show meta data"
 msgstr "Meta verileri göster"
 
@@ -16742,17 +16874,16 @@ msgstr "Atla"
 msgid "Slack Notifications"
 msgstr "Slack Bildirimleri"
 
-#: app/frontend/shared/entities/ticket-article/action/plugins/sms.ts:44
-msgid "Sms"
-msgstr "Sms"
-
 #: app/assets/javascripts/app/views/generic/sla_times.jst.eco:71
 #: app/assets/javascripts/app/views/popover/escalation.jst.eco:17
 #: app/assets/javascripts/app/views/sla/index.jst.eco:49
-#: app/frontend/apps/desktop/components/CommonTicketEscalationIndicator/CommonTicketEscalationIndicator.vue:44
-#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:157
 msgid "Solution Time"
 msgstr "Çözüm Zamanı"
+
+#: app/frontend/apps/desktop/components/CommonTicketEscalationIndicator/CommonTicketEscalationIndicator.vue:44
+#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:157
+msgid "Solution time"
+msgstr "Çözüm süresi"
 
 #: app/assets/javascripts/app/views/translation/description.jst.eco:12
 msgid "Some Text"
@@ -16854,25 +16985,28 @@ msgid "Standard Group/Pool for Tickets."
 msgstr "Destek Talepleri için Standart Grup/Havuz."
 
 #: app/assets/javascripts/app/controllers/knowledge_base/reader_list_controller.coffee:34
-#: app/frontend/apps/desktop/components/CommonInlineEdit/CommonInlineEdit.vue:67
 msgid "Start Editing"
 msgstr "Düzenlemeye Başla"
-
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStart.vue:42
-msgid "Start Import"
-msgstr "İçe Aktarmayı Başlat"
-
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStart.vue:42
-msgid "Start Import from %s"
-msgstr "%s den İçe Aktarmayı Başlat"
-
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:184
-msgid "Start Import from Source"
-msgstr "Kaynaktan İçe Aktarmayı Başlat"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:51
 msgid "Start and end date"
 msgstr "Başlangıç ve bitiş tarihi"
+
+#: app/frontend/apps/desktop/components/CommonInlineEdit/CommonInlineEdit.vue:67
+msgid "Start editing"
+msgstr "Düzenlemeye başla"
+
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStart.vue:42
+msgid "Start import"
+msgstr "İçe aktarmayı başlat"
+
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStart.vue:42
+msgid "Start import from %s"
+msgstr "%s den içe aktarmayı başlat"
+
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:184
+msgid "Start import from source"
+msgstr "Kaynaktan içe aktarmayı başlat"
 
 #: app/assets/javascripts/app/views/channel/form.jst.eco:92
 msgid "Start modal dialog for form."
@@ -16915,9 +17049,12 @@ msgstr "Kullanıcıları aramak için yazmaya başlayın…"
 
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:641
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorSuggestionList.vue:67
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/FieldEditorSuggestionList.vue:54
 msgid "Start typing to search in Knowledge Base…"
 msgstr "Bilgi Tabanında arama yapmak için yazmaya başlayın…"
+
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/FieldEditorSuggestionList.vue:54
+msgid "Start typing to search in knowledge base…"
+msgstr "Bilgi tabanında arama yapmak için yazmaya başlayın…"
 
 #: app/frontend/apps/desktop/components/Form/fields/FieldTags/FieldTagsWrapper.vue:39
 msgid "Start typing to search or enter a new tag…"
@@ -16974,8 +17111,8 @@ msgid "State"
 msgstr "Durum"
 
 #: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:91
-msgid "State Icon"
-msgstr "Durum Simgesi"
+msgid "State icon"
+msgstr "Durum simgesi"
 
 #: db/seeds/settings.rb:5446
 msgid "Stats Backend"
@@ -16994,13 +17131,13 @@ msgstr "Durum"
 msgid "Status Code:"
 msgstr "Durum Kodu:"
 
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:197
-msgid "Status Import"
-msgstr "Durum İçe Aktarımı"
-
 #: app/assets/javascripts/app/views/profile/calendar_subscriptions.jst.eco:41
 msgid "Status Type"
 msgstr "Status Type"
+
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:197
+msgid "Status import"
+msgstr "Durum içe aktarımı"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_idoit.jst.eco:10
 msgid "Status:"
@@ -17128,9 +17265,12 @@ msgid "Submit"
 msgstr "Gönder"
 
 #: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:45
-#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:114
 msgid "Submit Comment"
 msgstr "Yorum Gönder"
+
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:114
+msgid "Submit comment"
+msgstr "Yorum gönder"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:147
 #: app/assets/javascripts/app/controllers/_ui_element/_application_selector.coffee:178
@@ -17179,7 +17319,7 @@ msgstr "Abonelik ayarları"
 msgid "Summarize section to about half its current size"
 msgstr "Bölümü mevcut boyutunun yaklaşık yarısı kadar özetleyin"
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:106
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:110
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/ticket-summary.ts:11
 msgid "Summary"
 msgstr "Özet"
@@ -17193,8 +17333,8 @@ msgstr "Otomatik Özet Oluşturma"
 msgid "Summary Services"
 msgstr "Özet Hizmetleri"
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:46
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:139
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:49
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:138
 msgid "Summary is being generated…"
 msgstr "Özet oluşturuluyor…"
 
@@ -17255,11 +17395,6 @@ msgstr "Sistem"
 msgid "System Address Display Name"
 msgstr "Sistem Adresi Görünen Adı"
 
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:82
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualSystemInformation.vue:26
-msgid "System Information"
-msgstr "Sistem Bilgileri"
-
 #: db/seeds/settings.rb:17
 msgid "System Init Done"
 msgstr "Sistem Başlatıldı"
@@ -17279,6 +17414,11 @@ msgstr "System URL"
 #: app/assets/javascripts/app/controllers/_ui_element/timezone.coffee:20
 msgid "System default - %s"
 msgstr "Sistem varsayılanı - %s"
+
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:82
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualSystemInformation.vue:26
+msgid "System information"
+msgstr "Sistem bilgileri"
 
 #: app/models/knowledge_base.rb:19
 msgid ""
@@ -17707,7 +17847,7 @@ msgstr "WhatsApp web kancası yükü doğrulanamadı."
 msgid "The access token could not be created."
 msgstr "Erişim belirteci oluşturulamadı."
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:156
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:159
 msgid "The account link was successfully removed!"
 msgstr "Hesap bağlantısı başarıyla kaldırıldı!"
 
@@ -18007,7 +18147,7 @@ msgid "The divider between TicketHook and ticket number. E. g. ': '."
 msgstr "TicketHook ve destek talebi numarası arasındaki ayırıcı. Örn. ': '."
 
 #: app/assets/javascripts/app/controllers/_ai/provider.coffee:92
-#: app/assets/javascripts/app/lib/app_post/utils.coffee:1688
+#: app/assets/javascripts/app/lib/app_post/utils.coffee:1691
 msgid "The download could not be started. Please try again later."
 msgstr "İndirme işlemi başlatılamadı. Lütfen daha sonra tekrar deneyin."
 
@@ -18714,7 +18854,7 @@ msgstr ""
 "JSON nesnesidir."
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:82
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:81
 msgid ""
 "The summary could not be generated. Please try again later or contact your "
 "administrator."
@@ -18793,7 +18933,7 @@ msgstr ""
 msgid "The text tool with the given ID could not be found."
 msgstr "Verilen ID'ye sahip metin aracı bulunamadı."
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts:139
+#: app/frontend/shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts:142
 msgid ""
 "The text was modified. Your request has been aborted to prevent overwriting."
 msgstr ""
@@ -19169,8 +19309,8 @@ msgstr ""
 "Bu sınıf, başlatma sırasında düğmeye eklenir ve sohbet bağlantısı "
 "kurulduktan sonra kaldırılır."
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:154
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:204
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:153
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:206
 msgid "This device"
 msgstr "Bu cihaz"
 
@@ -19799,23 +19939,9 @@ msgstr "Destek Talebi Numarasında system_id göz ardı edilsin"
 msgid "Ticket Organization Reassignment"
 msgstr "Destek Talebinin Organizasyon Değişikliği"
 
-#: app/frontend/apps/mobile/pages/home/routes.ts:28
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:61
-#: app/frontend/apps/mobile/pages/home/views/Home.vue:22
-msgid "Ticket Overview"
-msgstr "Destek Talebi Genel Bakışı"
-
 #: db/seeds/settings.rb:5603
 msgid "Ticket Overview Query Polling"
 msgstr "Talep Genel Bakışında Sorgu Periyodu"
-
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:81
-msgid "Ticket Overview settings are saved."
-msgstr "Destek Talebi Genel Bakış ayarları kaydedilir."
-
-#: app/frontend/apps/mobile/pages/home/views/Home.vue:22
-msgid "Ticket Overviews"
-msgstr "Destek Talebi Genel Bakışları"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:25
 msgid "Ticket Owner"
@@ -19959,6 +20085,20 @@ msgstr "Destek talebi başarıyla birleştirildi"
 #: app/frontend/apps/desktop/components/Form/fields/FieldTicket/FieldTicketWrapper.vue:36
 msgid "Ticket number or title"
 msgstr "Destek talebi numarası veya başlığı"
+
+#: app/frontend/apps/mobile/pages/home/routes.ts:28
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:61
+#: app/frontend/apps/mobile/pages/home/views/Home.vue:22
+msgid "Ticket overview"
+msgstr "Destek talebi genel bakışı"
+
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:81
+msgid "Ticket overview settings are saved."
+msgstr "Destek talebi genel bakış ayarları kaydedilir."
+
+#: app/frontend/apps/mobile/pages/home/views/Home.vue:22
+msgid "Ticket overviews"
+msgstr "Destek talebi genel bakışları"
 
 #: app/assets/javascripts/app/controllers/_profile/notification.coffee:69
 #: app/assets/javascripts/app/controllers/_ui_element/notification_matrix.coffee:11
@@ -20174,10 +20314,6 @@ msgstr "DestekTalepID"
 msgid "Tickets"
 msgstr "Destek Talepleri"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:282
-msgid "Tickets Bulk Edit"
-msgstr "Destek Talepleri Toplu Düzenleme"
-
 #: app/assets/javascripts/app/views/settings/ticket_auto_assignment.jst.eco:13
 msgid ""
 "Tickets are only assigned automatically if they do not already have an owner."
@@ -20191,6 +20327,10 @@ msgstr "Destek talepleri \"%s\" sütununa (%s) göre sıralanır."
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_load_measure.jst.eco:18
 msgid "Tickets assigned to me: %s of %s"
 msgstr "Bana atanan destek talepleri: %s / %s"
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:282
+msgid "Tickets bulk edit"
+msgstr "Destek talepleri toplu düzenle"
 
 #: app/controllers/ticket_articles_controller.rb:236
 #: app/controllers/tickets_controller.rb:441
@@ -20229,7 +20369,6 @@ msgstr "Zaman"
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:134
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:12
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:136
 #: db/seeds/permissions.rb:107 db/seeds/settings.rb:4041
 msgid "Time Accounting"
 msgstr "Süre Hesaplama"
@@ -20270,6 +20409,10 @@ msgstr "Time Units"
 #: lib/excel_sheet/ticket.rb:34
 msgid "Time Units Total"
 msgstr "Time Units Total"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:136
+msgid "Time accounting"
+msgstr "Süre hesaplama"
 
 #: app/assets/javascripts/app/views/time_accounting/settings.jst.eco:16
 msgid "Time accounting unit"
@@ -20426,10 +20569,16 @@ msgid "To select placeholders from a list, just enter \"::\"."
 msgstr "To select placeholders from a list, just enter \"::\"."
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:2
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:208
 msgid "To set up Authenticator App for your account, follow the steps below:"
 msgstr ""
 "Hesabınız için Authenticator Uygulamasını kurmak için aşağıdaki adımları "
+"izleyin:"
+
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:208
+msgid ""
+"To set up an authenticator app for your account, follow the steps below:"
+msgstr ""
+"Hesabınız için authenticator uygulamasını kurmak için aşağıdaki adımları "
 "izleyin:"
 
 #: app/assets/javascripts/app/views/object_manager/attribute/autocompletion_ajax_external_data_source.jst.eco:21
@@ -20452,13 +20601,13 @@ msgstr "Bugün"
 msgid "Toggle AM/PM mode"
 msgstr "ÖÖ/ÖS modunu aç/kapat"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldPermissions/FieldPermissionsInput.vue:161
-msgid "Toggle Group"
-msgstr "Grubu Aç/Kapat"
-
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:443
 msgid "Toggle dark mode"
 msgstr "Karanlık modu aç/kapat"
+
+#: app/frontend/apps/desktop/components/Form/fields/FieldPermissions/FieldPermissionsInput.vue:161
+msgid "Toggle group"
+msgstr "Grubu aç/kapat"
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:129
 msgid "Toggle header cell"
@@ -20488,11 +20637,14 @@ msgstr "Belirteç"
 #: app/assets/javascripts/app/controllers/_profile/token_access.coffee:3
 #: app/assets/javascripts/app/views/api.jst.eco:12
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:2
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/tokenAccess.ts:8
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:51
 #: db/seeds/permissions.rb:471
 msgid "Token Access"
 msgstr "Token Access"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/tokenAccess.ts:8
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:51
+msgid "Token access"
+msgstr "Belirteç erişimi"
 
 #: app/models/token/permissions.rb:20
 msgid "Token authorization failed."
@@ -20540,8 +20692,8 @@ msgid "Total"
 msgstr "Toplam"
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketObjectAttributes.vue:50
-msgid "Total Accounted Time"
-msgstr "Toplam Hesaplanan Süre"
+msgid "Total accounted time"
+msgstr "Toplam hesaplanan süre"
 
 #: db/seeds/settings.rb:946
 msgid "Total display of the number of objects in a grouping."
@@ -20632,7 +20784,6 @@ msgstr ""
 "yürütülür (örneğin, bekleme süresi, eskalasyon)."
 
 #: app/assets/javascripts/app/views/widget/two_factor_login/try_another_method.jst.eco:2
-#: app/frontend/shared/composables/authentication/useLoginTwoFactor.ts:96
 msgid "Try Another Method"
 msgstr "Başka Bir Yöntem Deneyin"
 
@@ -20649,6 +20800,7 @@ msgstr "Tekrar deneyin"
 #: app/assets/javascripts/app/views/widget/two_factor_login/help_text.jst.eco:4
 #: app/frontend/apps/desktop/pages/authentication/views/Login.vue:256
 #: app/frontend/apps/mobile/pages/authentication/views/Login.vue:138
+#: app/frontend/shared/composables/authentication/useLoginTwoFactor.ts:96
 msgid "Try another method"
 msgstr "Başka bir yöntem deneyin"
 
@@ -20709,10 +20861,6 @@ msgstr "Twitter App Credentials"
 msgid "Twitter Developer Site"
 msgstr "Twitter Geliştirici Sitesi"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/twitterDirectMessage.ts:7
-msgid "Twitter Direct Message"
-msgstr "Twitter Direkt Mesaj"
-
 #: db/seeds/settings.rb:1359
 msgid "Twitter Key"
 msgstr "Twitter Key"
@@ -20721,18 +20869,16 @@ msgstr "Twitter Key"
 msgid "Twitter Secret"
 msgstr "Twitter Sırrı"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/twitterStatus.ts:7
-msgid "Twitter Status"
-msgstr "Twitter Durumu"
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/twitterDirectMessage.ts:7
+msgid "Twitter direct message"
+msgstr "Twitter doğrudan mesaj"
 
-#: app/frontend/apps/mobile/pages/authentication/after-auth/plugins/twoFactorSetup.ts:12
-msgid "Two-Factor Authentication Configuration Is Required"
-msgstr "İki Faktörlü Kimlik Doğrulama Yapılandırması Gereklidir"
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/twitterStatus.ts:7
+msgid "Twitter status"
+msgstr "Twitter durumu"
 
 #: app/assets/javascripts/app/controllers/_manage/security.coffee:11
 #: app/assets/javascripts/app/views/profile/password.jst.eco:22
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/twoFactorAuth.ts:8
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:72
 #: db/seeds/permissions.rb:457
 msgid "Two-factor Authentication"
 msgstr "İki Faktörlü Kimlik Doğrulama"
@@ -20740,6 +20886,15 @@ msgstr "İki Faktörlü Kimlik Doğrulama"
 #: app/assets/javascripts/app/controllers/_manage/security.coffee:11
 msgid "Two-factor Authentication Methods"
 msgstr "İki Faktörlü Kimlik Doğrulama Yöntemleri"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/twoFactorAuth.ts:8
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:72
+msgid "Two-factor authentication"
+msgstr "İki faktörlü kimlik doğrulama"
+
+#: app/frontend/apps/mobile/pages/authentication/after-auth/plugins/twoFactorSetup.ts:12
+msgid "Two-factor authentication configuration is required"
+msgstr "İki faktörlü kimlik doğrulama yapılandırması gereklidir"
 
 #: app/controllers/application_controller/authenticates.rb:59
 msgid "Two-factor authentication is not supported with HTTP BasicAuth."
@@ -20922,17 +21077,17 @@ msgid "Unread notifications"
 msgstr "Okunmamış bildirimler"
 
 #: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:53
-msgid "Unsaved Changes"
-msgstr "Kaydedilmemiş Değişiklikler"
+msgid "Unsaved changes"
+msgstr "Kaydedilmemiş değişiklikler"
 
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationButton.vue:34
 msgid "Unseen notifications count"
 msgstr "Görülmeyen bildirim sayısı"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:569
+#: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:566
 #: app/frontend/apps/desktop/components/Form/fields/FieldSelect/FieldSelectInput.vue:260
-#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:318
-msgid "Unselect Option"
+#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:315
+msgid "Unselect option"
 msgstr "Seçimi kaldır"
 
 #: app/assets/javascripts/app/controllers/_application_controller/table.coffee:744
@@ -20976,9 +21131,12 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:85
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:6
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:95
 msgid "Upcoming Events"
 msgstr "Yaklaşan Etkinlikler"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:94
+msgid "Upcoming events"
+msgstr "Yaklaşan etkinlikler"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:89
 #: app/assets/javascripts/app/controllers/knowledge_base/content_controller.coffee:88
@@ -21011,15 +21169,9 @@ msgstr "Yükseltme Güncelleme Tarihi"
 msgid "Update In Min"
 msgstr "Güncelleme Aralığı (dk)"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:204
-msgid "Update Shared Draft"
-msgstr "Paylaşılan Taslağı Güncelle"
-
 #: app/assets/javascripts/app/views/generic/sla_times.jst.eco:32
 #: app/assets/javascripts/app/views/popover/escalation.jst.eco:11
 #: app/assets/javascripts/app/views/sla/index.jst.eco:41
-#: app/frontend/apps/desktop/components/CommonTicketEscalationIndicator/CommonTicketEscalationIndicator.vue:40
-#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:153
 msgid "Update Time"
 msgstr "Update Time"
 
@@ -21041,8 +21193,12 @@ msgid ""
 msgstr ""
 "Update existing records with the attributes specified in the import data."
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:204
+msgid "Update shared draft"
+msgstr "Paylaşılan taslağı güncelle"
+
 #: app/assets/javascripts/app/controllers/_profile/calendar_subscriptions.coffee:81
-#: app/assets/javascripts/app/controllers/_profile/language.coffee:58
+#: app/assets/javascripts/app/controllers/_profile/language.coffee:64
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:48
 #: app/assets/javascripts/app/controllers/_profile/notification.coffee:171
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:134
@@ -21058,6 +21214,11 @@ msgstr "Güncelleme başarılı."
 #: db/seeds/settings.rb:5950
 msgid "Update the most recent tickets."
 msgstr "En son destek taleplerini güncelle."
+
+#: app/frontend/apps/desktop/components/CommonTicketEscalationIndicator/CommonTicketEscalationIndicator.vue:40
+#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:153
+msgid "Update time"
+msgstr "Güncelleme zamanı"
 
 #: app/assets/javascripts/app/models/ai_agent.coffee:11
 #: app/assets/javascripts/app/models/application.coffee:11
@@ -21376,7 +21537,7 @@ msgstr "Used anywhere"
 msgid "Used anywhere (admin only)"
 msgstr "Used anywhere (admin only)"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:145
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:144
 msgid "Used devices"
 msgstr "Kullanılan cihazlar"
 
@@ -21433,8 +21594,8 @@ msgstr "Used when viewing a Ticket"
 #: app/frontend/apps/desktop/components/Search/plugins/user.ts:13
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:117
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailOutboundForm.ts:73
-#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar.vue:31
-#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:35
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar.vue:32
+#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:36
 #: app/frontend/apps/desktop/pages/user/routes.ts:9
 #: app/frontend/apps/mobile/pages/user/routes.ts:7
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:32
@@ -21446,7 +21607,6 @@ msgid "User (censored):"
 msgstr "Kullanıcı (sansürlü):"
 
 #: app/assets/javascripts/app/controllers/documentation_link.coffee:14
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/user-documentation.ts:7
 msgid "User Documentation"
 msgstr "Kullanıcı Dokümantasyonu"
 
@@ -21472,15 +21632,19 @@ msgstr "Kullanıcı kimlik doğrulaması başarısız oldu."
 
 #: app/assets/javascripts/app/controllers/getting_started/admin.coffee:108
 #: app/assets/javascripts/app/controllers/signup.coffee:102
-#: app/frontend/apps/desktop/entities/user/composables/useUserCreate.ts:67
+#: app/frontend/apps/desktop/entities/user/composables/useUserCreate.ts:76
 #: app/frontend/apps/mobile/entities/user/composables/useUserCreate.ts:48
 msgid "User could not be created."
 msgstr "Kullanıcı oluşturulamadı."
 
-#: app/frontend/apps/desktop/entities/user/composables/useUserEdit.ts:95
+#: app/frontend/apps/desktop/entities/user/composables/useUserEdit.ts:92
 #: app/frontend/apps/mobile/entities/user/composables/useUserEdit.ts:81
 msgid "User could not be updated."
 msgstr "Kullanıcı güncellenemedi."
+
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/user-documentation.ts:7
+msgid "User documentation"
+msgstr "Kullanıcı dokümantasyonu"
 
 #: lib/external_credential/google.rb:47
 msgid "User email could not be extracted from 'id_token'."
@@ -21506,7 +21670,7 @@ msgstr ""
 "Kullanıcı bilgileri alınamadı, lütfen bağlantı kullanıcısı izinlerinizi "
 "kontrol edin."
 
-#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:44
+#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:43
 #: app/frontend/shared/composables/useAvatarIndicator.ts:77
 msgid "User is editing"
 msgstr "Kullanıcı düzenleme yapıyor"
@@ -21527,7 +21691,7 @@ msgstr "Kullanıcı işlem yapmıyor"
 msgid "User is inactive"
 msgstr "Kullanıcı etkin değil"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:22
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:24
 msgid "User is inactive."
 msgstr "Kullanıcı etkin değil."
 
@@ -21577,7 +21741,7 @@ msgid "UserDevice could not be found."
 msgstr "UserDevice bulunamadı."
 
 #: app/assets/javascripts/app/models/webhook.coffee:12
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:80
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:79
 msgid "Username"
 msgstr "Kullanıcı adı"
 
@@ -22006,8 +22170,8 @@ msgid "WhatsApp Business Account ID"
 msgstr "WhatsApp İşletme Hesabı Kimliği"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/whatsappMessage.ts:10
-msgid "WhatsApp Message"
-msgstr "WhatsApp Mesajı"
+msgid "WhatsApp message"
+msgstr "WhatsApp mesajı"
 
 #: app/assets/javascripts/app/models/trigger.coffee:8
 msgid ""
@@ -22162,7 +22326,6 @@ msgid "Workflows"
 msgstr "İş Akışları"
 
 #: app/assets/javascripts/app/controllers/_ai/text_tool.coffee:16
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:35
 #: db/seeds/permissions.rb:233 db/seeds/settings.rb:6076
 msgid "Writing Assistant"
 msgstr "Yazı Asistanı"
@@ -22177,8 +22340,6 @@ msgstr "Yazı Asistanı Aracı"
 
 #: app/assets/javascripts/app/controllers/_ai/text_tool.coffee:17
 #: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:82
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:68
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:68
 msgid "Writing Assistant Tools"
 msgstr "Yazım Asistanı Araçları"
 
@@ -22195,13 +22356,31 @@ msgstr ""
 "özel araçlar bile oluşturabilirsiniz, örneğin şubeye veya şirkete özgü "
 "ifadeler kullanmak gibi."
 
-#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:8
-msgid "Writing Assistant couldn't generate text."
-msgstr "Yazım Asistanı metin oluşturamadı."
-
 #: app/assets/javascripts/app/controllers/text_tools_modal.coffee:24
 msgid "Writing Assistant: %s"
 msgstr "Yazım Asistanı: %s"
+
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:35
+msgid "Writing assistant"
+msgstr "Yazı asistanı"
+
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:8
+#: app/frontend/shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts:38
+#, fuzzy
+#| msgid ""
+#| "The summary could not be generated. Please try again later or contact "
+#| "your administrator."
+msgid ""
+"Writing assistant could not generate text. Please try again or contact your "
+"administrator."
+msgstr ""
+"Özet oluşturulamadı. Lütfen daha sonra tekrar deneyin veya yöneticinize "
+"başvurun."
+
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:68
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:68
+msgid "Writing assistant tools"
+msgstr "Yazım asistanı araçları"
 
 #: app/assets/javascripts/app/views/report/time_range_picker.jst.eco:2
 msgid "Year"
@@ -22376,7 +22555,7 @@ msgstr ""
 "arama işlevini kullanarak istediğiniz zaman bulabilirsiniz."
 
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:4
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:167
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:169
 msgid ""
 "You can generate a personal access token for each application you use that "
 "needs access to the Zammad API."
@@ -22552,6 +22731,7 @@ msgstr "Diğer kullanıcılardan bahsetmek için yeterli izniniz yok."
 msgid "You have insufficient rights to view this object."
 msgstr "Bu destek talebini görüntülemek için yeterli hakkınız yok."
 
+#: app/frontend/apps/desktop/pages/organization/routes.ts:19
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:31
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:26
 msgid "You have insufficient rights to view this organization."
@@ -22694,8 +22874,8 @@ msgstr ""
 "<br>\n"
 "<p>#{config.product_name} Ekibiniz</p>\n"
 
-#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:127
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:133
+#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:131
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:137
 msgid "Your AI result usage could not be recorded."
 msgstr "YZ sonuç kullanımınız kaydedilemedi."
 
@@ -22727,10 +22907,6 @@ msgstr "Adınız"
 #: app/assets/javascripts/app/controllers/_profile/token_access.coffee:150
 msgid "Your New Personal Access Token"
 msgstr "Yeni Kişisel Erişim Belirteciniz"
-
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:143
-msgid "Your Personal Access Token"
-msgstr "Kişisel Erişim Belirteciniz"
 
 #: app/assets/javascripts/app/views/getting_started/email_pre_configured.jst.eco:7
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmailPreConfigured.vue:59
@@ -22787,6 +22963,10 @@ msgstr "Geri bildiriminiz kaydedilemedi, lütfen daha sonra tekrar deneyin."
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLocale.vue:23
 msgid "Your language"
 msgstr "Diliniz"
+
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:143
+msgid "Your personal access token"
+msgstr "Kişisel erişim belirteciniz"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:28
 msgid "Your theme has been updated."
@@ -24477,6 +24657,120 @@ msgstr "...tüm metin alanının"
 msgid "∅ Waiting time today"
 msgstr "Bugünkü bekleme süresi"
 
+#~ msgid "API is not available. Please contact your Administrator and retry."
+#~ msgstr ""
+#~ "API kullanılabilir değil. Lütfen Yöneticinizle iletişime geçin ve yeniden "
+#~ "deneyin."
+
+#~ msgid "Writing Assistant couldn't generate text."
+#~ msgstr "Yazım Asistanı metin oluşturamadı."
+
+#~ msgid "At least one filter must be provided."
+#~ msgstr "En az bir filtre sağlanmalıdır."
+
+#~ msgid ""
+#~ "Filtering by customer's organizations requires customer filter to be "
+#~ "provided."
+#~ msgstr ""
+#~ "Kullanıcı kuruluşlarına göre filtreleme, kullanıcı filtresinin "
+#~ "sağlanmasını gerektirir."
+
+#~ msgid "Add Empty Checklist"
+#~ msgstr "Boş Kontrol Listesi Ekle"
+
+#~ msgid "Add From a Template"
+#~ msgstr "Şablondan Ekle"
+
+#~ msgid "Add Reply"
+#~ msgstr "Yanıt Ekle"
+
+#~ msgid "Add sms"
+#~ msgstr "Sms ekle"
+
+#~ msgid "Ai Agent"
+#~ msgstr "Yapay zeka Temsilci"
+
+#~ msgid "Cancel & Sign Out"
+#~ msgstr "İptal Et ve Oturumu Kapat"
+
+#~ msgid "Clear Search"
+#~ msgstr "Aramayı Temizle"
+
+#~ msgid "Create Shared Draft"
+#~ msgstr "Paylaşılan Taslak Oluştur"
+
+#~ msgid "Create Ticket"
+#~ msgstr "Destek Talebi Oluştur"
+
+#~ msgid "Draft Available"
+#~ msgstr "Taslak mevcut"
+
+#~ msgid "Facebook Direct Message"
+#~ msgstr "Facebook Doğrudan Mesaj"
+
+#~ msgid "Facebook Feed Comment"
+#~ msgstr "Facebook Akış Yorumu"
+
+#~ msgid "Facebook Feed Post"
+#~ msgstr "Facebook Akış Gönderisi"
+
+#~ msgid "Generate Recovery Codes"
+#~ msgstr "Kurtarma Kodları Oluştur"
+
+#~ msgid "Insert text from Knowledge Base article"
+#~ msgstr "Bilgi Tabanı yazısından metin ekle"
+
+#~ msgid "Last Used"
+#~ msgstr "Son Kullanım"
+
+#~ msgid "Link Issue"
+#~ msgstr "Bağlantı Sorunu"
+
+#~ msgid "Link Objects"
+#~ msgstr "Bağlantı Nesneleri"
+
+#~ msgid "Link Tickets"
+#~ msgstr "Destek Taleplerini Bağla"
+
+#~ msgid "Lost Network Connection"
+#~ msgstr "Kayıp Ağ Bağlantısı"
+
+#~ msgid "Merge Tickets"
+#~ msgstr "Destek Taleplerini Birleştir"
+
+#~ msgid "Regenerate Recovery Codes"
+#~ msgstr "Kurtarma Kodlarını Yeniden Oluştur"
+
+#~ msgid "Reply All"
+#~ msgstr "Hepsini Yanıtla"
+
+#~ msgid "Reset Overview Order"
+#~ msgstr "Genel Bakış Sırasını Sıfırla"
+
+#~ msgid "Reset to Default Settings"
+#~ msgstr "Varsayılan Ayarlara Sıfırla"
+
+#~ msgid "Retry Attachment Download"
+#~ msgstr "Eklentiyi İndirmeyi Yeniden Dene"
+
+#~ msgid "Retry Security Process"
+#~ msgstr "Güvenlik Sürecini Yeniden Dene"
+
+#~ msgid "Set Up Two-factor Authentication"
+#~ msgstr "İki Faktörlü Kimlik Doğrulamayı Ayarla"
+
+#~ msgid "Set Up Two-factor Authentication: %s"
+#~ msgstr "İki Faktörlü Kimlik Doğrulamayı Ayarla: %s"
+
+#~ msgid "Sms"
+#~ msgstr "Sms"
+
+#~ msgid "Twitter Direct Message"
+#~ msgstr "Twitter Direkt Mesaj"
+
+#~ msgid "Twitter Status"
+#~ msgstr "Twitter Durumu"
+
 #~ msgid "Ticket History"
 #~ msgstr "Destek Talebi Geçmişi"
 
@@ -25814,11 +26108,6 @@ msgstr "Bugünkü bekleme süresi"
 #~| msgid "internal"
 #~ msgid "Make internal"
 #~ msgstr "internal"
-
-#, fuzzy
-#~| msgid "Edit Organization"
-#~ msgid "Edit organization"
-#~ msgstr "Edit Organization"
 
 #, fuzzy
 #~| msgid "Last sync"

@@ -246,14 +246,14 @@ msgid "%s (option)"
 msgstr "%s オプション"
 
 #: app/frontend/apps/desktop/components/CommonSelect/CommonSelect.vue:272
-#: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:559
+#: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:556
 #: app/frontend/apps/desktop/components/Form/fields/FieldSelect/FieldSelectInput.vue:253
 #: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDropdown.vue:343
 #: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:145
 #: app/frontend/apps/mobile/components/Form/fields/FieldSelect/FieldSelectInput.vue:97
-#: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:127
+#: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:130
 #: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInputDialog.vue:288
-#: app/frontend/shared/composables/useSelectOptions.ts:122
+#: app/frontend/shared/composables/useSelectOptions.ts:121
 msgid "%s (unknown)"
 msgstr ""
 
@@ -916,9 +916,6 @@ msgstr "API"
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:79
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:60
 #: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:144
-#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:21
-#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventIssuerNames.ts:7
-#: app/frontend/apps/mobile/components/AiAgent/AiAgentAvatar.vue:34
 #: app/models/ai/agent.rb:102
 #, fuzzy
 #| msgid "Agent"
@@ -957,6 +954,15 @@ msgstr "時間会計"
 #| msgid "Image Service"
 msgid "AI Service Name"
 msgstr "画像サービス"
+
+#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:21
+#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventIssuerNames.ts:7
+#: app/frontend/apps/mobile/components/AiAgent/AiAgentAvatar.vue:34
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:44
+#, fuzzy
+#| msgid "Agent"
+msgid "AI agent"
+msgstr "担当者"
 
 #: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:33
 #, fuzzy
@@ -1064,15 +1070,17 @@ msgstr ""
 msgid "API error."
 msgstr "APIエラー"
 
-#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:9
-#, fuzzy
-#| msgid "Unable to verify email. Please contact your administrator."
-msgid "API is not available. Please contact your Administrator and retry."
-msgstr "メールを確認できません。 管理者に問い合わせて下さい。"
-
 #: lib/ai/provider/concerns/handles_response.rb:14
 msgid "API server error - please try again"
 msgstr ""
+
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:10
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:7
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:86
+#, fuzzy
+#| msgid "API error."
+msgid "API server error: %s"
+msgstr "APIエラー"
 
 #: lib/ai/provider/azure.rb:128
 msgid "API server not accessible"
@@ -1183,7 +1191,6 @@ msgid "Account SID"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:6
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:128
 msgid "Account Time"
 msgstr "アカウント時間"
 
@@ -1197,16 +1204,27 @@ msgstr ""
 msgid "Account not verified"
 msgstr "アカウントが確認されていません"
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:128
+#, fuzzy
+#| msgid "Account Time"
+msgid "Account time"
+msgstr "アカウント時間"
+
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:37
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:28
 #: app/assets/javascripts/app/models/ticket.coffee:16
 #: app/assets/javascripts/app/views/ticket_zoom/time_unit.jst.eco:2
 #: app/assets/javascripts/app/views/time_accounting/accounted_time.jst.eco:2
+#: app/graphql/gql/types/overview_type.rb:101
+msgid "Accounted Time"
+msgstr "作業時間"
+
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:77
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:124
 #: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:11
-#: app/graphql/gql/types/overview_type.rb:101
-msgid "Accounted Time"
+#, fuzzy
+#| msgid "Accounted Time"
+msgid "Accounted time"
 msgstr "作業時間"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketAccountedTime.vue:79
@@ -1368,7 +1386,6 @@ msgstr "アクティビティーの流れ"
 #: app/assets/javascripts/app/views/time_accounting/by_activity.jst.eco:16
 #: app/assets/javascripts/app/views/time_accounting/types.jst.eco:4
 #: app/controllers/time_accountings_controller.rb:111
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:110
 #, fuzzy
 #| msgid "Active"
 msgid "Activity Type"
@@ -1379,6 +1396,12 @@ msgstr "有効"
 #, fuzzy
 #| msgid "Active"
 msgid "Activity Types"
+msgstr "有効"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:110
+#, fuzzy
+#| msgid "Active"
+msgid "Activity type"
 msgstr "有効"
 
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:39
@@ -1446,16 +1469,6 @@ msgstr "Botを追加"
 msgid "Add Certificate"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:426
-msgid "Add Empty Checklist"
-msgstr ""
-
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistTemplates.vue:36
-#, fuzzy
-#| msgid "Templates"
-msgid "Add From a Template"
-msgstr "テンプレート"
-
 #: app/assets/javascripts/app/views/integration/pgp.jst.eco:5
 #, fuzzy
 #| msgid "reply"
@@ -1463,7 +1476,6 @@ msgid "Add Key"
 msgstr "返信"
 
 #: app/assets/javascripts/app/views/link/ticket/list.jst.eco:10
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:174
 msgid "Add Link"
 msgstr "リンクを追加"
 
@@ -1476,11 +1488,9 @@ msgstr ""
 msgid "Add Public or Private Key"
 msgstr ""
 
-#: app/frontend/shared/entities/ticket-article/action/plugins/web.ts:13
-#, fuzzy
-#| msgid "reply"
-msgid "Add Reply"
-msgstr "返信"
+#: app/frontend/shared/entities/ticket-article/action/plugins/sms.ts:45
+msgid "Add SMS"
+msgstr ""
 
 #: app/assets/javascripts/app/views/ssl_certificates.jst.eco:5
 msgid "Add SSL Certificate"
@@ -1564,10 +1574,12 @@ msgid "Add email"
 msgstr "メール"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/start.jst.eco:5
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent.vue:426
 msgid "Add empty checklist"
 msgstr ""
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_checklist/start.jst.eco:11
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarChecklist/TicketSidebarChecklistContent/ChecklistTemplates.vue:36
 #, fuzzy
 #| msgid "Save as template"
 msgid "Add from a template"
@@ -1596,6 +1608,7 @@ msgstr "メモを追加"
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:300
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketLinks.vue:158
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:297
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:174
 #, fuzzy
 #| msgid "Add Link"
 msgid "Add link"
@@ -1629,6 +1642,7 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:66
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:36
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewActions.vue:88
+#: app/frontend/shared/entities/ticket-article/action/plugins/web.ts:13
 #, fuzzy
 #| msgid "reply"
 msgid "Add reply"
@@ -1637,12 +1651,6 @@ msgstr "返信"
 #: app/frontend/shared/form/i18n/locales.ts:77
 msgid "Add selected values"
 msgstr ""
-
-#: app/frontend/shared/entities/ticket-article/action/plugins/sms.ts:45
-#, fuzzy
-#| msgid "Add Tag"
-msgid "Add sms"
-msgstr "タグを追加"
 
 #: app/assets/javascripts/app/views/generic/application_selector_row.jst.eco:35
 #: app/assets/javascripts/app/views/generic/application_selector_subclause.jst.eco:21
@@ -1713,22 +1721,32 @@ msgid "Admin Consent"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/documentation_link.coffee:2
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/admin-documentation.ts:7
 #, fuzzy
 #| msgid "Administrator Account"
 msgid "Admin Documentation"
 msgstr "管理者アカウント"
 
 #: app/assets/javascripts/app/controllers/admin_password_auth.coffee:23
-#: app/frontend/apps/desktop/pages/authentication/routes.ts:25
 #, fuzzy
 #| msgid "Bind Password"
 msgid "Admin Password Login"
 msgstr "ユーザに対するパスワード"
 
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/admin-documentation.ts:7
+#, fuzzy
+#| msgid "Administrator Account"
+msgid "Admin documentation"
+msgstr "管理者アカウント"
+
 #: db/seeds/permissions.rb:5
 msgid "Admin interface"
 msgstr ""
+
+#: app/frontend/apps/desktop/pages/authentication/routes.ts:25
+#, fuzzy
+#| msgid "Bind Password"
+msgid "Admin password login"
+msgstr "ユーザに対するパスワード"
 
 #: app/assets/javascripts/app/views/admin_password_auth/request_sent.jst.eco:4
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:56
@@ -1856,12 +1874,6 @@ msgstr "担当者"
 msgid "Agents with \"%s\" permission"
 msgstr ""
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:44
-#, fuzzy
-#| msgid "Agent"
-msgid "Ai Agent"
-msgstr "担当者"
-
 #: app/assets/javascripts/app/views/profile/calendar_subscriptions.jst.eco:27
 msgid "Alarm"
 msgstr ""
@@ -1900,7 +1912,7 @@ msgstr ""
 msgid "All colleagues are busy."
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:131
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:130
 #, fuzzy
 #| msgid ""
 #| "All computers and browsers that have access to your Zammad appear here."
@@ -2027,7 +2039,7 @@ msgstr ""
 #: app/frontend/shared/server/apollo/handler/BaseHandler.ts:141
 #, fuzzy
 #| msgid "Unable to verify email. Please contact your administrator."
-msgid "An error occured during the operation."
+msgid "An error occurred during the operation."
 msgstr "メールを確認できません。 管理者に問い合わせて下さい。"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:990
@@ -2190,7 +2202,7 @@ msgid "Appearance"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/api.coffee:127
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:76
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:75
 msgid "Application"
 msgstr ""
 
@@ -2209,32 +2221,42 @@ msgid "Apply"
 msgstr "適用"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:56
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:134
 #, fuzzy
 #| msgid "Apply"
 msgid "Apply Draft"
 msgstr "適用"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_modal.coffee:2
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:161
 msgid "Apply Shared Draft"
 msgstr ""
-
-#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/ApplyTemplate.vue:37
-#, fuzzy
-#| msgid "Templates"
-msgid "Apply Template"
-msgstr "テンプレート"
 
 #: app/assets/javascripts/app/views/settings/ticket_notifications.jst.eco:10
 msgid "Apply current defaults to all agents"
 msgstr ""
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:134
+#, fuzzy
+#| msgid "Apply"
+msgid "Apply draft"
+msgstr "適用"
 
 #: app/frontend/apps/desktop/components/NavigationMenu/NavigationMenuFilter.vue:76
 #, fuzzy
 #| msgid "Apply"
 msgid "Apply filter…"
 msgstr "適用"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:161
+#, fuzzy
+#| msgid "Apply"
+msgid "Apply shared draft"
+msgstr "適用"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/ApplyTemplate.vue:37
+#, fuzzy
+#| msgid "Templates"
+msgid "Apply template"
+msgstr "テンプレート"
 
 #: app/assets/javascripts/app/controllers/text_tools_modal.coffee:4
 #, fuzzy
@@ -2259,7 +2281,6 @@ msgstr "アーカイブ"
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:12
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:109
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:84
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:66
 #, fuzzy
 #| msgid "Archive"
 msgid "Archive Emails"
@@ -2275,6 +2296,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:737
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:42
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:288
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:66
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundMessagesForm.ts:43
 #, fuzzy
 #| msgid "Archive"
@@ -2529,10 +2551,6 @@ msgstr ""
 "割り当てたエージェントが対応していない場合は、割当てが数分でタイムアウトしま"
 "す。 チケットは未割り当てとして表示されます。"
 
-#: app/graphql/gql/queries/tickets/by_filter.rb:20
-msgid "At least one filter must be provided."
-msgstr ""
-
 #: app/models/user.rb:659
 msgid ""
 "At least one identifier (firstname, lastname, phone, mobile or email) for "
@@ -2612,7 +2630,7 @@ msgid "Attendees"
 msgstr ""
 
 #: app/assets/javascripts/app/models/user.coffee:12
-#: app/frontend/apps/desktop/entities/user/composables/useUserEdit.ts:83
+#: app/frontend/apps/desktop/entities/user/composables/useUserEdit.ts:80
 #: app/frontend/apps/mobile/entities/user/composables/useUserEdit.ts:67
 msgid ""
 "Attention! Changing the organization will update the user's most recent "
@@ -2729,11 +2747,16 @@ msgstr "%sで認証"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/authenticator_app.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:5
-#: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:9
 #: db/seeds/settings.rb:5854
 #, fuzzy
 #| msgid "Authentication"
 msgid "Authenticator App"
+msgstr "認証"
+
+#: app/frontend/shared/entities/two-factor/plugins/authenticator-app.ts:9
+#, fuzzy
+#| msgid "Authentication"
+msgid "Authenticator app"
 msgstr "認証"
 
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:246
@@ -2814,7 +2837,7 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/guided-setup/routes.ts:29
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupAutomated/GuidedSetupAutomatedInfo.vue:8
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupAutomated/GuidedSetupAutomatedRun.vue:75
-msgid "Automated Setup"
+msgid "Automated setup"
 msgstr ""
 
 #: db/seeds/settings.rb:1245
@@ -2904,18 +2927,18 @@ msgstr ""
 msgid "Avatar"
 msgstr "アバター"
 
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCropImageFlyout.vue:55
-#, fuzzy
-#| msgid "Preview"
-msgid "Avatar Preview"
-msgstr "プレビュー"
-
 #: app/graphql/gql/mutations/user/current/avatar/delete.rb:18
 #: app/graphql/gql/mutations/user/current/avatar/select.rb:18
 #, fuzzy
 #| msgid "%s Object(s) are updated."
 msgid "Avatar could not be found."
 msgstr "%s オブジェクトを更新。"
+
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCropImageFlyout.vue:55
+#, fuzzy
+#| msgid "Preview"
+msgid "Avatar preview"
+msgstr "プレビュー"
 
 #: app/frontend/shared/components/CommonAvatar/CommonAvatar.vue:44
 msgid "Avatar with initials %s"
@@ -3024,7 +3047,7 @@ msgid "Basic Settings"
 msgstr "基本設定"
 
 #: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:2
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:120
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:119
 msgid "Be sure to check AI-generated content for accuracy."
 msgstr ""
 
@@ -3076,15 +3099,15 @@ msgstr "通知をブロック"
 msgid "Block caller IDs based on sender caller ID."
 msgstr "送信者呼出しIDに基づく、ブロックされた呼出しIDです。"
 
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleRemoteContentBadge.vue:42
-#, fuzzy
-#| msgid "Blocked countries"
-msgid "Blocked Content"
-msgstr "ブロック済みカントリー"
-
 #: app/assets/javascripts/app/models/chat.coffee:254
 msgid "Blocked IPs (separated by ;)"
 msgstr "ブロック済みIP"
+
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleRemoteContentBadge.vue:42
+#, fuzzy
+#| msgid "Blocked countries"
+msgid "Blocked content"
+msgstr "ブロック済みカントリー"
 
 #: app/assets/javascripts/app/models/chat.coffee:256
 msgid "Blocked countries"
@@ -3135,12 +3158,6 @@ msgstr "組織の共有"
 msgid "Browser"
 msgstr "ブラウザー"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditButton.vue:33
-#, fuzzy
-#| msgid "Actions"
-msgid "Bulk Actions"
-msgstr "操作"
-
 #: app/assets/javascripts/app/lib/mixins/ticket_mass_updatable.coffee:22
 msgid "Bulk action executed!"
 msgstr "バルクアクションが実行されました！"
@@ -3154,6 +3171,12 @@ msgstr "バルクアクションが実行されました！"
 #: app/assets/javascripts/app/controllers/widget/ticket_bulk_form.coffee:199
 msgid "Bulk action stopped by error(s): %s!"
 msgstr ""
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditButton.vue:33
+#, fuzzy
+#| msgid "Actions"
+msgid "Bulk actions"
+msgstr "操作"
 
 #: app/assets/javascripts/app/views/generic/object_import/index.jst.eco:5
 msgid "Bulk import allows you to create and update many records at once."
@@ -3377,7 +3400,7 @@ msgstr ""
 #: app/frontend/apps/mobile/components/CommonSectionPopup/CommonSectionPopup.vue:30
 #: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInputDialog.vue:244
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:266
-#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:218
+#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:217
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:136
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:68
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:46
@@ -3396,6 +3419,15 @@ msgstr "取消"
 #: app/assets/javascripts/app/views/password/reset_change.jst.eco:8
 #: app/assets/javascripts/app/views/password/reset_sent.jst.eco:7
 #: app/assets/javascripts/app/views/signup.jst.eco:7
+msgid "Cancel & Go Back"
+msgstr "キャンセルして戻る"
+
+#: app/assets/javascripts/app/controllers/after_auth/two_factor_configuration.coffee:3
+#, fuzzy
+#| msgid "Sign out"
+msgid "Cancel & Sign out"
+msgstr "サインアウト"
+
 #: app/frontend/apps/desktop/components/CommonDialog/CommonDialogActionFooter.vue:19
 #: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:10
 #: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:301
@@ -3407,20 +3439,16 @@ msgstr "取消"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:424
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:67
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:218
-msgid "Cancel & Go Back"
+#, fuzzy
+#| msgid "Cancel & Go Back"
+msgid "Cancel & go back"
 msgstr "キャンセルして戻る"
 
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationMethodList.vue:25
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationPasswordCheck.vue:63
 #, fuzzy
 #| msgid "Sign out"
-msgid "Cancel & Sign Out"
-msgstr "サインアウト"
-
-#: app/assets/javascripts/app/controllers/after_auth/two_factor_configuration.coffee:3
-#, fuzzy
-#| msgid "Sign out"
-msgid "Cancel & Sign out"
+msgid "Cancel & sign out"
 msgstr "サインアウト"
 
 #: app/assets/javascripts/app/views/generic/attachment.jst.eco:20
@@ -3461,7 +3489,7 @@ msgid "Cannot upload file"
 msgstr ""
 
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCameraFlyout.vue:157
-msgid "Capture From Camera"
+msgid "Capture from camera"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/knowledge_base/sidebar/categories.coffee:3
@@ -3517,12 +3545,6 @@ msgstr "顧客を変更"
 msgid "Change Objects"
 msgstr "オブジェクトの変更"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:130
-#, fuzzy
-#| msgid "Change your password"
-msgid "Change Password"
-msgstr "パスワードを変更してください"
-
 #: app/assets/javascripts/app/views/profile/password.jst.eco:8
 #, fuzzy
 #| msgid "Change your password"
@@ -3549,6 +3571,12 @@ msgstr "順序を変更"
 #: app/assets/javascripts/app/views/knowledge_base/sidebar/generic_list.jst.eco:10
 msgid "Change order"
 msgstr "順序を変更"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:130
+#, fuzzy
+#| msgid "Change your password"
+msgid "Change password"
+msgstr "パスワードを変更してください"
 
 #: db/seeds/permissions.rb:451
 #, fuzzy
@@ -3754,8 +3782,6 @@ msgid "Checklist"
 msgstr "チェックサム"
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:61
-#: app/frontend/apps/desktop/components/CommonHistoryFlyout/event-actions/checklist-item-checked.ts:10
-#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventEntityNames.ts:10
 #, fuzzy
 #| msgid "Checksum"
 msgid "Checklist Item"
@@ -3774,6 +3800,13 @@ msgstr "テンプレートを選択"
 #: app/models/checklist_template.rb:16
 msgid "Checklist Template items are limited to 100 items per checklist."
 msgstr ""
+
+#: app/frontend/apps/desktop/components/CommonHistoryFlyout/event-actions/checklist-item-checked.ts:10
+#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventEntityNames.ts:10
+#, fuzzy
+#| msgid "Checksum"
+msgid "Checklist item"
+msgstr "チェックサム"
 
 #: app/models/checklist/item.rb:105
 msgid "Checklist items are limited to 100 items per checklist."
@@ -3938,22 +3971,7 @@ msgstr ""
 msgid "Clean up mobile taskbars."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/CommonInputSearch/CommonInputSearch.vue:117
-#: app/frontend/shared/components/CommonInputSearch/CommonInputSearch.vue:75
-#, fuzzy
-#| msgid "Search"
-msgid "Clear Search"
-msgstr "検索"
-
 #: app/assets/javascripts/app/views/generic/searchable_select.jst.eco:56
-#: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:643
-#: app/frontend/apps/desktop/components/Form/fields/FieldDate/FieldDateTimeInput.vue:358
-#: app/frontend/apps/desktop/components/Form/fields/FieldSelect/FieldSelectInput.vue:306
-#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:362
-#: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:151
-#: app/frontend/apps/mobile/components/Form/fields/FieldDate/FieldDateTimeInput.vue:140
-#: app/frontend/apps/mobile/components/Form/fields/FieldSelect/FieldSelectInput.vue:124
-#: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:212
 #, fuzzy
 #| msgid "Selector"
 msgid "Clear Selection"
@@ -3977,11 +3995,26 @@ msgstr "検索"
 msgid "Clear recently closed"
 msgstr "最近見た"
 
+#: app/frontend/apps/desktop/components/CommonInputSearch/CommonInputSearch.vue:117
 #: app/frontend/apps/desktop/pages/search/components/SearchEmptyMessage.vue:34
+#: app/frontend/shared/components/CommonInputSearch/CommonInputSearch.vue:75
 #, fuzzy
 #| msgid "Search"
 msgid "Clear search"
 msgstr "検索"
+
+#: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:640
+#: app/frontend/apps/desktop/components/Form/fields/FieldDate/FieldDateTimeInput.vue:358
+#: app/frontend/apps/desktop/components/Form/fields/FieldSelect/FieldSelectInput.vue:306
+#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:359
+#: app/frontend/apps/mobile/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:151
+#: app/frontend/apps/mobile/components/Form/fields/FieldDate/FieldDateTimeInput.vue:140
+#: app/frontend/apps/mobile/components/Form/fields/FieldSelect/FieldSelectInput.vue:124
+#: app/frontend/apps/mobile/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:215
+#, fuzzy
+#| msgid "Selector"
+msgid "Clear selection"
+msgstr "セレクター"
 
 #: app/frontend/shared/components/Form/fields/FieldDate/useDateTime.ts:92
 #, fuzzy
@@ -4126,9 +4159,15 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/widget/ticket_stats.coffee:130
 #: app/assets/javascripts/app/controllers/widget/user.coffee:80
+msgid "Closed Tickets"
+msgstr "完了チケット"
+
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationRelatedTickets.vue:27
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:136
 #: app/frontend/apps/desktop/pages/user/components/UserRelatedCustomerTickets.vue:43
-msgid "Closed Tickets"
+#, fuzzy
+#| msgid "Closed Tickets"
+msgid "Closed tickets"
 msgstr "完了チケット"
 
 #: app/assets/javascripts/app/models/ticket.coffee:25
@@ -4281,7 +4320,6 @@ msgid "Confirm"
 msgstr "設定"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/password_check.coffee:4
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationPasswordCheck.vue:38
 #, fuzzy
 #| msgid "Bind Password"
 msgid "Confirm Password"
@@ -4305,6 +4343,7 @@ msgstr "設定"
 msgid "Confirm new password"
 msgstr "ユーザに対するパスワード"
 
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationPasswordCheck.vue:38
 #: app/frontend/apps/desktop/composables/authentication/useSignupForm.ts:53
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordResetVerify.vue:58
 #, fuzzy
@@ -4362,9 +4401,6 @@ msgstr "接続"
 #: app/assets/javascripts/app/controllers/getting_started/channel_email_pre_configured.coffee:11
 #: app/assets/javascripts/app/views/getting_started/channel.jst.eco:5
 #: app/assets/javascripts/app/views/getting_started/email_pre_configured.jst.eco:5
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:105
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmailPreConfigured.vue:31
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannels.vue:20
 msgid "Connect Channels"
 msgstr "チャネルを接続"
 
@@ -4395,8 +4431,16 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:129
 #, fuzzy
 #| msgid "Continue"
-msgid "Connect and Continue"
+msgid "Connect and continue"
 msgstr "続ける"
+
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:105
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmailPreConfigured.vue:31
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannels.vue:20
+#, fuzzy
+#| msgid "Connect Channels"
+msgid "Connect channels"
+msgstr "チャネルを接続"
 
 #: public/assets/chat/views/loader.eco:6
 msgid "Connecting"
@@ -4532,12 +4576,15 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:72
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:4
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:85
 msgid "Conversation Summary"
 msgstr ""
 
 #: lib/sessions/event/chat_transfer.rb:30
 msgid "Conversation is transferred into another chat. Please stay tuned."
+msgstr ""
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:84
+msgid "Conversation summary"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_application_controller/_base.coffee:125
@@ -4554,30 +4601,6 @@ msgstr ""
 msgid "Copy"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:113
-#, fuzzy
-#| msgid "Security"
-msgid "Copy Codes"
-msgstr "セキュリティー"
-
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:266
-#, fuzzy
-#| msgid "App Secret"
-msgid "Copy Secret"
-msgstr "アプリの秘訣"
-
-#: app/frontend/apps/desktop/components/CommonInputCopyToClipboard/CommonInputCopyToClipboard.vue:17
-#, fuzzy
-#| msgid "App Secret"
-msgid "Copy Text"
-msgstr "アプリの秘訣"
-
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:144
-#, fuzzy
-#| msgid "Security"
-msgid "Copy Token"
-msgstr "セキュリティー"
-
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:287
 #, fuzzy
 #| msgid "Custom URL"
@@ -4590,9 +4613,33 @@ msgstr "カスタム URL"
 msgid "Copy article permalink"
 msgstr "記事"
 
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:113
+#, fuzzy
+#| msgid "Security"
+msgid "Copy codes"
+msgstr "セキュリティー"
+
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:356
 msgid "Copy current object number (e. g. Ticket#) to clipboard"
 msgstr "現在のオブジェクト番号（Ticket#など）をクリップボードにコピー"
+
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailTopBar.vue:124
+#, fuzzy
+#| msgid "App Secret"
+msgid "Copy organization display name"
+msgstr "アプリの秘訣"
+
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:266
+#, fuzzy
+#| msgid "App Secret"
+msgid "Copy secret"
+msgstr "アプリの秘訣"
+
+#: app/frontend/apps/desktop/components/CommonInputCopyToClipboard/CommonInputCopyToClipboard.vue:17
+#, fuzzy
+#| msgid "App Secret"
+msgid "Copy text"
+msgstr "アプリの秘訣"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader.vue:86
 #, fuzzy
@@ -4618,7 +4665,13 @@ msgstr "顧客を編集"
 msgid "Copy to clipboard"
 msgstr "クリップボードにコピー: Ctrl+C、Enter"
 
-#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar.vue:112
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:144
+#, fuzzy
+#| msgid "Security"
+msgid "Copy token"
+msgstr "セキュリティー"
+
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar.vue:123
 #, fuzzy
 #| msgid "App Secret"
 msgid "Copy user display name"
@@ -4716,7 +4769,7 @@ msgid "Could not set two-factor authentication method as default"
 msgstr "認証"
 
 #: app/assets/javascripts/app/controllers/widget/link.coffee:69
-#: app/assets/javascripts/app/controllers/widget/link/kb_answer.coffee:106
+#: app/assets/javascripts/app/controllers/widget/link/kb_answer.coffee:108
 #, fuzzy
 #| msgid "Reset changes"
 msgid "Couldn't save changes"
@@ -4752,7 +4805,7 @@ msgstr "国"
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:8
 #: app/assets/javascripts/app/views/widget/shared_draft.jst.eco:4
 #: app/frontend/apps/desktop/components/Form/fields/FieldGroupPermissions/FieldGroupPermissionsInput.vue:43
-#: app/frontend/apps/desktop/entities/user/composables/useUserCreate.ts:69
+#: app/frontend/apps/desktop/entities/user/composables/useUserCreate.ts:78
 #: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:114
 #: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:169
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:476
@@ -4762,13 +4815,6 @@ msgstr "作成"
 #: app/assets/javascripts/app/controllers/getting_started/admin.coffee:13
 msgid "Create Admin"
 msgstr "管理を作成"
-
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:58
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualAdmin.vue:28
-#, fuzzy
-#| msgid "Administrator Account"
-msgid "Create Administrator Account"
-msgstr "管理者アカウント"
 
 #: lib/excel_sheet/ticket.rb:31
 msgid "Create Channel"
@@ -4781,12 +4827,6 @@ msgstr ""
 #: app/controllers/first_steps_controller.rb:93
 msgid "Create Macros"
 msgstr "マクロの作成"
-
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:167
-#, fuzzy
-#| msgid "Created at"
-msgid "Create Shared Draft"
-msgstr "次で作成済"
 
 #: app/controllers/first_steps_controller.rb:88
 msgid "Create Text Modules"
@@ -4816,13 +4856,6 @@ msgid ""
 "\n"
 "To select placeholders from a list, just enter \"::\"."
 msgstr ""
-
-#: app/frontend/apps/mobile/pages/ticket/routes.ts:64
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:476
-#, fuzzy
-#| msgid "Create a Test Ticket"
-msgid "Create Ticket"
-msgstr "テストチケットの作成"
 
 #: app/controllers/first_steps_controller.rb:82
 msgid "Create a Test Ticket"
@@ -4859,6 +4892,13 @@ msgstr "Create a translation"
 #| msgid "Create my account"
 msgid "Create account"
 msgstr "アカウント作成"
+
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:58
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualAdmin.vue:28
+#, fuzzy
+#| msgid "Administrator Account"
+msgid "Create administrator account"
+msgstr "管理者アカウント"
 
 #: db/seeds/permissions.rb:114
 #, fuzzy
@@ -4918,13 +4958,20 @@ msgid ""
 msgstr ""
 "サービス内容契約（SLA）についてのチケットを選び出すルールを生成します。"
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:167
+#, fuzzy
+#| msgid "Created at"
+msgid "Create shared draft"
+msgstr "次で作成済"
+
 #: app/frontend/apps/mobile/components/Form/fields/FieldTags/FieldTagsDialog.vue:154
 #, fuzzy
 #| msgid "Created at"
 msgid "Create tag"
 msgstr "次で作成済"
 
-#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:525
+#: app/frontend/apps/mobile/pages/ticket/routes.ts:64
+#: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:476
 #, fuzzy
 #| msgid "Create a Test Ticket"
 msgid "Create ticket"
@@ -5063,9 +5110,14 @@ msgid "Creation mask"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_profile/avatar.coffee:156
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCropImageFlyout.vue:42
 msgid "Crop Image"
 msgstr ""
+
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCropImageFlyout.vue:42
+#, fuzzy
+#| msgid "Remove"
+msgid "Crop image"
+msgstr "削除"
 
 #: app/assets/javascripts/app/views/monitoring.jst.eco:44
 msgid "Current Status"
@@ -5196,7 +5248,6 @@ msgstr "顧客チャット"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:65
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:80
 #, fuzzy
 #| msgid "Recent Customer Tickets"
 msgid "Customer Intent"
@@ -5204,7 +5255,6 @@ msgstr "最近の顧客チケット"
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:91
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:7
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:100
 #, fuzzy
 #| msgid "Recent Customer Tickets"
 msgid "Customer Sentiment"
@@ -5214,9 +5264,21 @@ msgstr "最近の顧客チケット"
 msgid "Customer and agent ratio (role based user counts)"
 msgstr ""
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:79
+#, fuzzy
+#| msgid "Recent Customer Tickets"
+msgid "Customer intent"
+msgstr "最近の顧客チケット"
+
 #: db/seeds/settings.rb:3374
 msgid "Customer selection based on sender and receiver list"
 msgstr "送受信リストによる顧客選択"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:99
+#, fuzzy
+#| msgid "Recent Customer Tickets"
+msgid "Customer sentiment"
+msgstr "最近の顧客チケット"
 
 #: db/seeds/permissions.rb:405
 #, fuzzy
@@ -5254,10 +5316,15 @@ msgid "Dark"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/dark_mode.coffee:33
-#: app/frontend/apps/desktop/components/ThemeSwitch/ThemeSwitch.vue:93
 #, fuzzy
 #| msgid "Mode"
 msgid "Dark Mode"
+msgstr "モード"
+
+#: app/frontend/apps/desktop/components/ThemeSwitch/ThemeSwitch.vue:93
+#, fuzzy
+#| msgid "Mode"
+msgid "Dark mode"
 msgstr "モード"
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:147
@@ -6400,17 +6467,11 @@ msgstr ""
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:45
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:13
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:221
-#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/delete.ts:11
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/delete.ts:10
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:155
 #: app/frontend/shared/components/Form/fields/FieldFile/FieldFileInput.vue:154
 msgid "Delete"
 msgstr "削除"
-
-#: app/frontend/shared/entities/ticket-article/action/plugins/articleDelete.ts:77
-#, fuzzy
-#| msgid "Delete File"
-msgid "Delete Article"
-msgstr "ファイルを削除"
 
 #: app/assets/javascripts/app/controllers/_profile/avatar.coffee:47
 msgid "Delete Avatar?"
@@ -6427,12 +6488,6 @@ msgstr "ファイルを削除"
 #: app/assets/javascripts/app/controllers/knowledge_base/delete.coffee:40
 msgid "Delete Knowledge Base"
 msgstr "ナレッジベースの削除"
-
-#: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:41
-#, fuzzy
-#| msgid "Create a Test Ticket"
-msgid "Delete Object"
-msgstr "テストチケットの作成"
 
 #: app/assets/javascripts/app/views/data_privacy/tasks.jst.eco:9
 #, fuzzy
@@ -6451,6 +6506,12 @@ msgstr ""
 #: app/assets/javascripts/app/views/generic/object_import/index.jst.eco:19
 msgid "Delete all existing records first."
 msgstr "Delete all existing records first."
+
+#: app/frontend/shared/entities/ticket-article/action/plugins/articleDelete.ts:77
+#, fuzzy
+#| msgid "Delete File"
+msgid "Delete article"
+msgstr "ファイルを削除"
 
 #: app/frontend/apps/mobile/pages/account/views/PersonalSettingAvatar.vue:155
 #, fuzzy
@@ -6475,6 +6536,12 @@ msgstr "Delete all existing records first."
 #| msgid "Delete File"
 msgid "Delete immediately"
 msgstr "ファイルを削除"
+
+#: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:41
+#, fuzzy
+#| msgid "Create a Test Ticket"
+msgid "Delete object"
+msgstr "テストチケットの作成"
 
 #: db/seeds/schedulers.rb:196
 msgid "Delete obsolete classic IMAP backup."
@@ -6835,15 +6902,7 @@ msgstr "廃棄"
 
 #: app/assets/javascripts/app/controllers/taskbar_widget.coffee:128
 #: app/assets/javascripts/app/views/object_manager/index.jst.eco:37
-#: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:56
-#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:421
 msgid "Discard Changes"
-msgstr "変更を廃棄"
-
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCameraFlyout.vue:160
-#, fuzzy
-#| msgid "Discard Changes"
-msgid "Discard Snapshot"
 msgstr "変更を廃棄"
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:81
@@ -6852,6 +6911,8 @@ msgstr "変更を廃棄"
 msgid "Discard article"
 msgstr "変更を廃棄"
 
+#: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:56
+#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:421
 #: app/frontend/apps/mobile/components/CommonDialogObjectForm/CommonDialogObjectForm.vue:75
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:59
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketAction/TicketActionChangeCustomerDialog.vue:36
@@ -6861,6 +6922,12 @@ msgstr "変更を廃棄"
 #, fuzzy
 #| msgid "Discard Changes"
 msgid "Discard changes"
+msgstr "変更を廃棄"
+
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingAvatarCameraFlyout.vue:160
+#, fuzzy
+#| msgid "Discard Changes"
+msgid "Discard snapshot"
 msgstr "変更を廃棄"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleReply.vue:238
@@ -7095,11 +7162,8 @@ msgstr "添付物の選択…"
 msgid "Draft"
 msgstr "下書き"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketSharedDraftZoom.vue:31
-msgid "Draft Available"
-msgstr ""
-
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:18
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketSharedDraftZoom.vue:31
 msgid "Draft available"
 msgstr ""
 
@@ -7213,8 +7277,9 @@ msgstr "イースター休暇"
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:44
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:51
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:11
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailTopBar/actions/edit.ts:13
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:159
-#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/edit.ts:11
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/edit.ts:10
 #: app/frontend/apps/mobile/pages/home/views/Home.vue:71
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:46
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:54
@@ -7245,8 +7310,6 @@ msgstr "ナレッジベース"
 
 #: app/assets/javascripts/app/controllers/agent_ticket_create/sidebar_organization.coffee:21
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_organization.coffee:11
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:36
-#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:76
 msgid "Edit Organization"
 msgstr "組織を編集"
 
@@ -7279,6 +7342,14 @@ msgstr "分類"
 msgid "Edit mask"
 msgstr ""
 
+#: app/frontend/apps/desktop/entities/organization/composables/useOrganizationEdit.ts:59
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:39
+#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:76
+#, fuzzy
+#| msgid "Edit Organization"
+msgid "Edit organization"
+msgstr "組織を編集"
+
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleReplyDialog.vue:36
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketDetailViewActions.vue:88
 #, fuzzy
@@ -7298,7 +7369,7 @@ msgstr "セキュリティー"
 msgid "Edit ticket title"
 msgstr "チケットのアップデート"
 
-#: app/frontend/apps/desktop/entities/user/composables/useUserEdit.ts:68
+#: app/frontend/apps/desktop/entities/user/composables/useUserEdit.ts:65
 #, fuzzy
 #| msgid "Edit Customer"
 msgid "Edit user"
@@ -7424,8 +7495,6 @@ msgstr "Eメール件名"
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:22
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:8
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:6
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:70
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:116
 msgid "Email Account"
 msgstr "メールアカウント"
 
@@ -7444,23 +7513,14 @@ msgstr "メールアカウント"
 msgid "Email Address"
 msgstr "メールアドレス"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannels.vue:33
-#, fuzzy
-#| msgid "Channel"
-msgid "Email Channel"
-msgstr "チャネル"
-
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:83
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:67
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:64
 msgid "Email Inbound"
 msgstr "受信メール"
 
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:162
 #: app/assets/javascripts/app/views/channel/email_notification_wizard.jst.eco:8
 #: app/assets/javascripts/app/views/getting_started/email_notification.jst.eco:6
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:94
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:30
 msgid "Email Notification"
 msgstr "メール通知"
 
@@ -7470,16 +7530,15 @@ msgstr ""
 
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:140
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:105
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:68
 msgid "Email Outbound"
 msgstr "送信メール"
 
-#: app/frontend/apps/desktop/pages/authentication/routes.ts:110
-#: app/frontend/apps/desktop/pages/authentication/views/SignupVerify.vue:110
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:70
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:116
 #, fuzzy
-#| msgid "Email Notification"
-msgid "Email Verification"
-msgstr "メール通知"
+#| msgid "Email Account"
+msgid "Email account"
+msgstr "メールアカウント"
 
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailAccountForm.ts:33
 #, fuzzy
@@ -7497,12 +7556,37 @@ msgstr ""
 msgid "Email addresses"
 msgstr "メールアドレス"
 
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannels.vue:33
+#, fuzzy
+#| msgid "Channel"
+msgid "Email channel"
+msgstr "チャネル"
+
 #: app/assets/javascripts/app/controllers/email_verify.coffee:53
 #: app/frontend/apps/desktop/pages/authentication/views/SignupVerify.vue:49
 #, fuzzy
 #| msgid "Unable to verify email. Please contact your administrator."
 msgid "Email could not be verified. Please contact your administrator."
 msgstr "メールを確認できません。 管理者に問い合わせて下さい。"
+
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:64
+#, fuzzy
+#| msgid "Email Inbound"
+msgid "Email inbound"
+msgstr "受信メール"
+
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:94
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:30
+#, fuzzy
+#| msgid "Email Notification"
+msgid "Email notification"
+msgstr "メール通知"
+
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailChannelConfiguration.ts:68
+#, fuzzy
+#| msgid "Email Outbound"
+msgid "Email outbound"
+msgstr "送信メール"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:913
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:405
@@ -7528,6 +7612,13 @@ msgstr ""
 msgid "Email sent to %s"
 msgstr "招待を送信しました！"
 
+#: app/frontend/apps/desktop/pages/authentication/routes.ts:110
+#: app/frontend/apps/desktop/pages/authentication/views/SignupVerify.vue:110
+#, fuzzy
+#| msgid "Email Notification"
+msgid "Email verification"
+msgstr "メール通知"
+
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:738
 #: app/assets/javascripts/app/controllers/_channel/email_archive.coffee:43
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:289
@@ -7545,7 +7636,7 @@ msgstr "空にする"
 #: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:423
 #, fuzzy
 #| msgid "Overview"
-msgid "Empty Overview"
+msgid "Empty overview"
 msgstr "概要"
 
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:151
@@ -7927,7 +8018,7 @@ msgstr ""
 msgid "Enter one of your unused recovery codes."
 msgstr ""
 
-#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:212
+#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:211
 msgid "Enter search and select a type to search for"
 msgstr ""
 
@@ -8097,7 +8188,6 @@ msgstr ""
 msgid "Error fetching i-doit information. Please contact your administrator."
 msgstr "メールを確認できません。 管理者に問い合わせて下さい。"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:260
 #: db/seeds/overviews.rb:160
 #, fuzzy
 #| msgid "Escalation Times"
@@ -8130,14 +8220,18 @@ msgid ""
 "</div>\n"
 msgstr ""
 
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:260
+#, fuzzy
+#| msgid "Escalation Times"
+msgid "Escalated tickets"
+msgstr "エスカレーション時間"
+
 #: lib/excel_sheet/ticket.rb:74
 msgid "Escalation At"
 msgstr ""
 
 #: app/assets/javascripts/app/lib/app_post/popover_provider/escalation_popover_provider.coffee:8
 #: app/assets/javascripts/app/views/sla/index.jst.eco:35
-#: app/frontend/apps/desktop/components/CommonTicketEscalationIndicator/CommonTicketEscalationIndicator.vue:31
-#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:146
 msgid "Escalation Times"
 msgstr "エスカレーション時間"
 
@@ -8148,22 +8242,44 @@ msgid "Escalation at"
 msgstr ""
 
 #: app/assets/javascripts/app/models/ticket.coffee:20
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:39
 #: app/graphql/gql/types/overview_type.rb:105
 msgid "Escalation at (Close Time)"
 msgstr ""
 
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:39
+#, fuzzy
+#| msgid "Escalation Times"
+msgid "Escalation at (Close time)"
+msgstr "エスカレーション時間"
+
 #: app/assets/javascripts/app/models/ticket.coffee:18
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:25
 #: app/graphql/gql/types/overview_type.rb:103
 msgid "Escalation at (First Response Time)"
 msgstr ""
 
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:25
+#, fuzzy
+#| msgid "First Response Time"
+msgid "Escalation at (First response time)"
+msgstr "初回応答期限"
+
 #: app/assets/javascripts/app/models/ticket.coffee:19
-#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:32
 #: app/graphql/gql/types/overview_type.rb:104
 msgid "Escalation at (Update Time)"
 msgstr ""
+
+#: app/frontend/shared/entities/ticket/stores/objectAttributes.ts:32
+#, fuzzy
+#| msgid "Escalation Times"
+msgid "Escalation at (Update time)"
+msgstr "エスカレーション時間"
+
+#: app/frontend/apps/desktop/components/CommonTicketEscalationIndicator/CommonTicketEscalationIndicator.vue:31
+#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:146
+#, fuzzy
+#| msgid "Escalation Times"
+msgid "Escalation times"
+msgstr "エスカレーション時間"
 
 #: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:123
 msgid "Escape pressed. No item selected."
@@ -8172,24 +8288,26 @@ msgstr ""
 #: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:51
 #, fuzzy
 #| msgid "pending"
-msgid "Event Ending"
+msgid "Event ending"
 msgstr "保留中"
 
 #: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:42
 #, fuzzy
 #| msgid "Location"
-msgid "Event Location"
+msgid "Event location"
 msgstr "ロケーション"
 
 #: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:46
 #, fuzzy
 #| msgid "Personal Settings"
-msgid "Event Starting"
+msgid "Event starting"
 msgstr "個人設定"
 
 #: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:38
-msgid "Event Summary"
-msgstr ""
+#, fuzzy
+#| msgid "Ticket update"
+msgid "Event summary"
+msgstr "チケットのアップデート"
 
 #: app/assets/javascripts/app/models/knowledge_base.coffee:271
 #, fuzzy
@@ -8388,8 +8506,13 @@ msgid "Expires at"
 msgstr "期限切れ"
 
 #: app/assets/javascripts/app/controllers/search.coffee:57
-#: app/frontend/apps/desktop/components/UserTaskbarTabs/Search/Search.vue:17
 msgid "Extended Search"
+msgstr "詳細検索"
+
+#: app/frontend/apps/desktop/components/UserTaskbarTabs/Search/Search.vue:17
+#, fuzzy
+#| msgid "Extended Search"
+msgid "Extended search"
 msgstr "詳細検索"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:73
@@ -8441,19 +8564,19 @@ msgstr "アプリの秘訣"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/facebookDirectMessage.ts:7
 #, fuzzy
-msgid "Facebook Direct Message"
+msgid "Facebook direct message"
 msgstr "ツイッターのダイレクトメッセージ"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/facebookFeedComment.ts:6
 #, fuzzy
 #| msgid "App Secret"
-msgid "Facebook Feed Comment"
+msgid "Facebook feed comment"
 msgstr "アプリの秘訣"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/facebookFeedPost.ts:7
 #, fuzzy
 #| msgid "App Secret"
-msgid "Facebook Feed Post"
+msgid "Facebook feed post"
 msgstr "アプリの秘訣"
 
 #: app/assets/javascripts/app/views/data_privacy/index.jst.eco:24
@@ -8607,12 +8730,6 @@ msgstr ""
 msgid "Filter"
 msgstr "フィルタ"
 
-#: app/graphql/gql/queries/tickets/by_filter.rb:24
-msgid ""
-"Filtering by customer's organizations requires customer filter to be "
-"provided."
-msgstr ""
-
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:103
 #, fuzzy
 #| msgid "assign tickets"
@@ -8644,7 +8761,7 @@ msgstr "完了"
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualInviteColleagues.vue:86
 #, fuzzy
 #| msgid "Finish"
-msgid "Finish Setup"
+msgid "Finish setup"
 msgstr "完了"
 
 #: app/assets/javascripts/app/controllers/widget/placeholder.coffee:105
@@ -8684,8 +8801,6 @@ msgstr ""
 #: app/assets/javascripts/app/views/generic/sla_times.jst.eco:17
 #: app/assets/javascripts/app/views/popover/escalation.jst.eco:5
 #: app/assets/javascripts/app/views/sla/index.jst.eco:37
-#: app/frontend/apps/desktop/components/CommonTicketEscalationIndicator/CommonTicketEscalationIndicator.vue:36
-#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:149
 msgid "First Response Time"
 msgstr "初回応答期限"
 
@@ -8710,6 +8825,13 @@ msgstr "姓"
 #: app/graphql/gql/types/overview_type.rb:109
 msgid "First response"
 msgstr "最初の応答"
+
+#: app/frontend/apps/desktop/components/CommonTicketEscalationIndicator/CommonTicketEscalationIndicator.vue:36
+#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:149
+#, fuzzy
+#| msgid "First Response Time"
+msgid "First response time"
+msgstr "初回応答期限"
 
 #: db/seeds/ai/text_tools.rb:4
 msgid "Fix spelling and grammar"
@@ -9043,27 +9165,22 @@ msgstr ""
 msgid "Generate Access Token for |%s|"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:254
-#, fuzzy
-#| msgid "Delete records"
-msgid "Generate Recovery Codes"
-msgstr "レコード削除"
-
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationFlyout.vue:34
-#, fuzzy
-#| msgid "Delete records"
-msgid "Generate Recovery Codes: %s"
-msgstr "レコード削除"
-
 #: app/assets/javascripts/app/controllers/api.coffee:167
 msgid "Generate Token"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_profile/password.coffee:241
 #: app/assets/javascripts/app/views/profile/password.jst.eco:113
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:254
 #, fuzzy
 #| msgid "Delete records"
 msgid "Generate recovery codes"
+msgstr "レコード削除"
+
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationFlyout.vue:34
+#, fuzzy
+#| msgid "Delete records"
+msgid "Generate recovery codes: %s"
 msgstr "レコード削除"
 
 #: db/seeds/schedulers.rb:142
@@ -9101,7 +9218,6 @@ msgid "Geo Location Service"
 msgstr "Geo ロケーションサービス"
 
 #: app/assets/javascripts/app/controllers/getting_started.coffee:10
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:18
 msgid "Get Started"
 msgstr ""
 
@@ -9109,6 +9225,12 @@ msgstr ""
 #, fuzzy
 #| msgid "Account not verified"
 msgid "Get notified"
+msgstr "アカウントが確認されていません"
+
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:18
+#, fuzzy
+#| msgid "Account not verified"
+msgid "Get started"
 msgstr "アカウントが確認されていません"
 
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/authenticator_app.coffee:6
@@ -9223,11 +9345,11 @@ msgstr ""
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:98
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:105
 #: app/assets/javascripts/app/views/signup/verify.jst.eco:10
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationWizard.vue:62
-#: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:85
 msgid "Go Back"
 msgstr "戻る"
 
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationWizard.vue:62
+#: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupActionFooter.vue:85
 #: app/frontend/apps/mobile/components/CommonBackButton/CommonBackButton.vue:41
 #: app/frontend/apps/mobile/pages/authentication/views/Login.vue:90
 msgid "Go back"
@@ -9240,7 +9362,7 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:234
 #, fuzzy
 #| msgid "Login"
-msgid "Go to Login"
+msgid "Go to login"
 msgstr "ログイン"
 
 #: lib/secure_mailing/pgp/incoming.rb:55
@@ -9698,7 +9820,7 @@ msgid "Hi! Which one of our products?"
 msgstr ""
 
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarFooterMenu.vue:51
-msgid "Hide Beta UI switch"
+msgid "Hide BETA UI switch"
 msgstr ""
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:24
@@ -9738,8 +9860,9 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket.coffee:114
 #: app/assets/javascripts/app/controllers/user_profile/action_row.coffee:62
 #: app/frontend/apps/desktop/components/CommonHistoryFlyout/CommonHistoryFlyout.vue:77
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailTopBar/actions/history.ts:13
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent.vue:57
-#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/history.ts:14
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/history.ts:13
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:121
 msgid "History"
 msgstr "履歴"
@@ -10158,7 +10281,7 @@ msgstr "次からインポート"
 #: app/frontend/apps/desktop/pages/guided-setup/routes.ts:171
 #, fuzzy
 #| msgid "Import from"
-msgid "Import from Source"
+msgid "Import from source"
 msgstr "次からインポート"
 
 #: app/assets/javascripts/app/models/ticket_priority.coffee:8
@@ -10274,7 +10397,6 @@ msgid "Incompatible Elasticsearch version"
 msgstr "最終同期"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/checklist_modal.coffee:10
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:381
 msgid "Incomplete Ticket Checklist"
 msgstr ""
 
@@ -10289,6 +10411,12 @@ msgstr "新規顧客を作成"
 #: app/controllers/import_zendesk_controller.rb:67
 msgid "Incomplete credentials"
 msgstr ""
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailViewContent.vue:381
+#, fuzzy
+#| msgid "Create new Customer"
+msgid "Incomplete ticket checklist"
+msgstr "新規顧客を作成"
 
 #: db/seeds/settings.rb:2440
 msgid "Increment (SystemID.Counter)"
@@ -10409,7 +10537,7 @@ msgstr "次のテキストモジュール"
 #: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:90
 #, fuzzy
 #| msgid "Delete Knowledge Base"
-msgid "Insert text from Knowledge Base article"
+msgid "Insert text from knowledge base answer"
 msgstr "ナレッジベースの削除"
 
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:99
@@ -10502,17 +10630,17 @@ msgstr ""
 msgid "Internal"
 msgstr ""
 
-#: app/frontend/shared/errors/useErrorHandler.ts:33
-#, fuzzy
-#| msgid "internal"
-msgid "Internal Error"
-msgstr "内部"
-
 #: app/assets/javascripts/app/views/knowledge_base/feed_dialog.jst.eco:2
 #, fuzzy
 #| msgid "Delete Knowledge Base"
 msgid "Internal Knowledge Base feed:"
 msgstr "ナレッジベースの削除"
+
+#: app/frontend/shared/errors/useErrorHandler.ts:33
+#, fuzzy
+#| msgid "internal"
+msgid "Internal error"
+msgstr "内部"
 
 #: app/models/import_job.rb:172
 msgid ""
@@ -10720,8 +10848,6 @@ msgstr "エージェントを招待"
 
 #: app/assets/javascripts/app/controllers/_dashboard/first_steps.coffee:41
 #: app/assets/javascripts/app/views/getting_started/agent.jst.eco:5
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:140
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualInviteColleagues.vue:29
 msgid "Invite Colleagues"
 msgstr "同僚を招待"
 
@@ -10732,6 +10858,13 @@ msgstr "顧客を招待"
 #: app/controllers/first_steps_controller.rb:60
 msgid "Invite agents/colleagues to help working on tickets"
 msgstr "チケットに共に対応するため、エージェント/同僚を招待"
+
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:140
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualInviteColleagues.vue:29
+#, fuzzy
+#| msgid "Invite Colleagues"
+msgid "Invite colleagues"
+msgstr "同僚を招待"
 
 #: app/controllers/first_steps_controller.rb:66
 msgid "Invite customers to create issues in Zammad"
@@ -11018,12 +11151,6 @@ msgstr ""
 msgid "Last Internal Article"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:102
-#, fuzzy
-#| msgid "Last used"
-msgid "Last Used"
-msgstr "直近の利用"
-
 #: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:129
 msgid "Last change %s %s by %s"
 msgstr ""
@@ -11105,6 +11232,7 @@ msgid "Last sync at:"
 msgstr "最近のsync"
 
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:20
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:102
 msgid "Last used"
 msgstr "直近の利用"
 
@@ -11180,7 +11308,7 @@ msgstr ""
 #: app/frontend/apps/mobile/pages/home/components/TicketOverviewEditItem.vue:88
 #, fuzzy
 #| msgid "Visibility"
-msgid "Limited Visibility"
+msgid "Limited visibility"
 msgstr "可視性"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:259
@@ -11219,37 +11347,9 @@ msgstr ""
 msgid "Link GitLab issues to your tickets."
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerLinkFlyout.vue:69
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerList.vue:272
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitHub/TicketSidebarGitHub.vue:70
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitLab/TicketSidebarGitLab.vue:70
-#, fuzzy
-#| msgid "Link %s"
-msgid "Link Issue"
-msgstr "リンク %s"
-
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:177
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:188
-#, fuzzy
-#| msgid "Objects"
-msgid "Link Objects"
-msgstr "オブジェクト"
-
 #: app/assets/javascripts/app/views/link/kb_answer.jst.eco:19
 msgid "Link Related Answer"
 msgstr ""
-
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:150
-#, fuzzy
-#| msgid "Open Tickets"
-msgid "Link Text"
-msgstr "オープンチケット"
-
-#: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:156
-#, fuzzy
-#| msgid "Open Tickets"
-msgid "Link Tickets"
-msgstr "オープンチケット"
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:148
 #, fuzzy
@@ -11257,7 +11357,7 @@ msgstr "オープンチケット"
 msgid "Link URL"
 msgstr "リンク %s"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:176
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:179
 #, fuzzy
 #| msgid "Link Accounts"
 msgid "Link account on %s"
@@ -11276,9 +11376,14 @@ msgid "Link already exists"
 msgstr "%s オブジェクトを削除。"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_git_issue.coffee:26
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerLinkFlyout.vue:69
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/IssueTrackerList.vue:272
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitHub/TicketSidebarGitHub.vue:70
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarExternalIssueTracker/TicketSidebarGitLab/TicketSidebarGitLab.vue:70
 msgid "Link issue"
 msgstr ""
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout.vue:177
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/TicketSidebarIdoitContent.vue:144
 #, fuzzy
 #| msgid "Open Tickets"
@@ -11297,10 +11402,22 @@ msgstr "アップデートができました！"
 msgid "Link template"
 msgstr "テンプレート"
 
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:150
+#, fuzzy
+#| msgid "Open Tickets"
+msgid "Link text"
+msgstr "オープンチケット"
+
 #: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:53
 #, fuzzy
 #| msgid "Open Tickets"
 msgid "Link ticket"
+msgstr "オープンチケット"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:156
+#, fuzzy
+#| msgid "Open Tickets"
+msgid "Link tickets"
 msgstr "オープンチケット"
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketLinksFlyout.vue:62
@@ -11312,8 +11429,6 @@ msgstr "テンプレート"
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:3
 #: app/assets/javascripts/app/views/popover/user.jst.eco:5
 #: app/assets/javascripts/app/views/widget/user.jst.eco:34
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/linkedAccounts.ts:8
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:48
 #: db/seeds/permissions.rb:478
 msgid "Linked Accounts"
 msgstr "リンクされたアカウント"
@@ -11323,7 +11438,8 @@ msgstr "リンクされたアカウント"
 msgid "Linked Tickets"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:185
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/linkedAccounts.ts:8
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:48
 #, fuzzy
 #| msgid "Linked Accounts"
 msgid "Linked accounts"
@@ -11494,15 +11610,15 @@ msgstr "ロゴ"
 msgid "Logout"
 msgstr "ログアウト"
 
-#: app/frontend/apps/desktop/components/ConnectionLostDialog/ConnectionLostDialog.vue:10
-#, fuzzy
-#| msgid "Test Connection"
-msgid "Lost Network Connection"
-msgstr "テスト接続"
-
 #: db/seeds/settings.rb:1077
 msgid "Lost Password"
 msgstr "紛失パスワード"
+
+#: app/frontend/apps/desktop/components/ConnectionLostDialog/ConnectionLostDialog.vue:10
+#, fuzzy
+#| msgid "Test Connection"
+msgid "Lost network connection"
+msgstr "テスト接続"
 
 #: app/assets/javascripts/app/lib/app_post/websocket.coffee:351
 msgid "Lost network connection!"
@@ -12135,8 +12251,10 @@ msgid "Me"
 msgstr "モード"
 
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleWhatsappMediaBadge.vue:51
-msgid "Media Download Error"
-msgstr ""
+#, fuzzy
+#| msgid "Connection test successful"
+msgid "Media download error"
+msgstr "接続テスト成功"
 
 #: app/frontend/shared/entities/ticket-article/composables/useTicketArticleRetryMediaDownload.ts:31
 #, fuzzy
@@ -12158,7 +12276,8 @@ msgstr "接続テスト成功"
 #: app/assets/javascripts/app/views/popover/organization.jst.eco:6
 #: app/assets/javascripts/app/views/widget/organization.jst.eco:29
 #: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:80
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:69
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailViewContent.vue:115
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:71
 #: app/frontend/apps/mobile/components/Organization/OrganizationMembersList.vue:29
 msgid "Members"
 msgstr "メンバー"
@@ -12184,18 +12303,13 @@ msgstr "メンション"
 msgid "Merge"
 msgstr "結合"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketMerge/TicketMergeFlyout.vue:95
-#, fuzzy
-#| msgid "Merge to Ticket#"
-msgid "Merge Tickets"
-msgstr "Ticket#にマージ"
-
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:101
 #, fuzzy
 #| msgid "Merge to Ticket#"
 msgid "Merge cells"
 msgstr "Ticket#にマージ"
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/actions/TicketMerge/TicketMergeFlyout.vue:95
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketActionsDialog.vue:46
 #, fuzzy
 #| msgid "Merge to Ticket#"
@@ -12231,8 +12345,6 @@ msgid "Message"
 msgstr "メッセージ"
 
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:46
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/whatsappMessage.ts:15
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:120
 #, fuzzy
 #| msgid "Messages"
 msgid "Message Status"
@@ -12245,6 +12357,13 @@ msgstr "フォーム送信後のメッセージ"
 #: db/seeds/settings.rb:64
 msgid "Message for login page."
 msgstr ""
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/whatsappMessage.ts:15
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:120
+#, fuzzy
+#| msgid "Messages"
+msgid "Message status"
+msgstr "メッセージ"
 
 #: app/assets/javascripts/app/views/telegram/index.jst.eco:26
 #: app/assets/javascripts/app/views/whatsapp/index.jst.eco:35
@@ -12272,7 +12391,7 @@ msgstr "ユーザー名"
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:85
 #, fuzzy
 #| msgid "Show Search Details"
-msgid "Meta Data"
+msgid "Meta data"
 msgstr "検索の詳細を表示"
 
 #: app/assets/javascripts/app/views/widget/http_log_show.jst.eco:11
@@ -12344,8 +12463,13 @@ msgid "Migrate now!"
 msgstr ""
 
 #: app/assets/javascripts/app/views/import/otrs.jst.eco:10
-#: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceOTRSDownloadButtons.vue:16
 msgid "Migration Plugin for %s"
+msgstr "%s用の移行プラグイン"
+
+#: app/frontend/apps/desktop/pages/guided-setup/components/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceOTRSDownloadButtons.vue:16
+#, fuzzy
+#| msgid "Migration Plugin for %s"
+msgid "Migration plugin for %s"
 msgstr "%s用の移行プラグイン"
 
 #: app/controllers/import_otrs_controller.rb:107
@@ -12727,7 +12851,7 @@ msgstr "必要"
 #: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:95
 #, fuzzy
 #| msgid "Feedback"
-msgid "Negative Feedback"
+msgid "Negative feedback"
 msgstr "フィードバック"
 
 #: app/controllers/sessions_controller.rb:56
@@ -12753,7 +12877,7 @@ msgstr "新規"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:264
 #, fuzzy
 #| msgid "Open Tickets"
-msgid "New & Open Tickets"
+msgid "New & open tickets"
 msgstr "オープンチケット"
 
 #: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:66
@@ -12823,10 +12947,6 @@ msgstr "テンプレート"
 msgid "New Deletion Task"
 msgstr ""
 
-#: app/frontend/apps/desktop/composables/useBetaDisclaimer.ts:40
-msgid "New Desktop UI — Alpha Version"
-msgstr ""
-
 #: app/assets/javascripts/app/controllers/group.coffee:28
 msgid "New Group"
 msgstr "新規グループ"
@@ -12848,13 +12968,6 @@ msgstr "新規組織"
 #: app/assets/javascripts/app/controllers/overview.coffee:31
 msgid "New Overview"
 msgstr "新規概要"
-
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:126
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:188
-#, fuzzy
-#| msgid "Your New Personal Access Token"
-msgid "New Personal Access Token"
-msgstr "あなたの新規パーソナルアクセストークン"
 
 #: app/assets/javascripts/app/controllers/ticket_priority.coffee:20
 #, fuzzy
@@ -12909,9 +13022,6 @@ msgstr "テンプレート"
 #: app/assets/javascripts/app/controllers/user_profile/action_row.coffee:70
 #: app/assets/javascripts/app/views/customer_ticket_create.jst.eco:6
 #: app/assets/javascripts/app/views/navigation/menu_cti_ringing.jst.eco:25
-#: app/frontend/apps/desktop/entities/ticket/composables/useTicketCreateTitle.ts:21
-#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:89
-#: app/frontend/apps/desktop/pages/ticket/routes.ts:19
 msgid "New Ticket"
 msgstr "新規チケット"
 
@@ -12919,12 +13029,6 @@ msgstr "新規チケット"
 #, fuzzy
 #| msgid "New Ticket"
 msgid "New Ticket State"
-msgstr "新規チケット"
-
-#: app/frontend/apps/desktop/entities/ticket/composables/useTicketCreateTitle.ts:23
-#, fuzzy
-#| msgid "New Ticket"
-msgid "New Ticket: %s"
 msgstr "新規チケット"
 
 #: app/assets/javascripts/app/views/translation/index.jst.eco:11
@@ -12963,6 +13067,10 @@ msgstr ""
 msgid "New Writing Assistant Tool"
 msgstr ""
 
+#: app/frontend/apps/desktop/composables/useBetaDisclaimer.ts:40
+msgid "New desktop UI — Alpha version"
+msgstr ""
+
 #: app/assets/javascripts/app/controllers/_integration/clearbit.coffee:66
 msgid "New organizations are shared."
 msgstr ""
@@ -12971,6 +13079,13 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingPassword.vue:63
 msgid "New password"
 msgstr "新しいパスワード"
+
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:126
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:190
+#, fuzzy
+#| msgid "Your New Personal Access Token"
+msgid "New personal access token"
+msgstr "あなたの新規パーソナルアクセストークン"
 
 #: app/assets/javascripts/app/views/knowledge_base/public_menu_form_item_row.jst.eco:12
 msgid "New tab"
@@ -12982,7 +13097,10 @@ msgstr "次のテキストモジュール"
 
 #: app/frontend/apps/desktop/components/Form/fields/FieldNotifications/FieldNotificationsInput.vue:74
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/MenuContainer/AddMenu/plugins/ticket-create.ts:12
-#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/newTicket.ts:10
+#: app/frontend/apps/desktop/entities/ticket/composables/useTicketCreateTitle.ts:21
+#: app/frontend/apps/desktop/pages/ticket/components/TicketCreate/TicketCreateContent.vue:89
+#: app/frontend/apps/desktop/pages/ticket/routes.ts:19
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/newTicket.ts:11
 #, fuzzy
 #| msgid "New Ticket"
 msgid "New ticket"
@@ -13020,7 +13138,14 @@ msgid ""
 "</div>\n"
 msgstr ""
 
-#: app/frontend/apps/desktop/entities/user/composables/useUserCreate.ts:60
+#: app/frontend/apps/desktop/entities/ticket/composables/useTicketCreateTitle.ts:23
+#, fuzzy
+#| msgid "New Ticket"
+msgid "New ticket: %s"
+msgstr "新規チケット"
+
+#: app/frontend/apps/desktop/entities/user/composables/useUserCreate.ts:69
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailTopBar/actions/newUser.ts:13
 #, fuzzy
 #| msgid "New User"
 msgid "New user"
@@ -13094,15 +13219,14 @@ msgid ""
 "at \"Manage > AI Agents\""
 msgstr ""
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:70
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:17
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:69
 #, fuzzy
 #| msgid "Unable to verify email. Please contact your administrator."
 msgid "No AI provider is currently set up. Please contact your administrator."
 msgstr "メールを確認できません。 管理者に問い合わせて下さい。"
 
 #: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:42
-#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:111
 #, fuzzy
 #| msgid "Comment"
 msgid "No Comment"
@@ -13161,12 +13285,6 @@ msgstr "%sが設定されていません。"
 #| msgid "No %s configured."
 msgid "No Microsoft Graph app configured!"
 msgstr "%sが設定されていません。"
-
-#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:127
-#, fuzzy
-#| msgid "Overviews"
-msgid "No Overviews"
-msgstr "概要"
 
 #: db/seeds/settings.rb:577
 msgid "No Proxy"
@@ -13230,6 +13348,12 @@ msgstr ""
 msgid "No checklist templates have been created yet."
 msgstr "まだテンプレートは作成されていません。"
 
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:111
+#, fuzzy
+#| msgid "Comment"
+msgid "No comment"
+msgstr "コメント"
+
 #: app/assets/javascripts/app/views/integration/ldap.jst.eco:5
 #, fuzzy
 #| msgid "Save configuration"
@@ -13257,7 +13381,7 @@ msgstr ""
 
 #: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:128
 #: app/frontend/apps/mobile/pages/online-notification/views/NotificationsList.vue:85
-#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:248
+#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:247
 #: app/frontend/apps/mobile/pages/ticket/components/TicketList/TicketList.vue:138
 #, fuzzy
 #| msgid "No Entries"
@@ -13329,6 +13453,12 @@ msgstr "該当なし"
 msgid "No organizations found"
 msgstr "組織"
 
+#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:127
+#, fuzzy
+#| msgid "Overviews"
+msgid "No overviews"
+msgstr "概要"
+
 #: app/models/setting/validation/saml/security.rb:34
 #, fuzzy
 #| msgid "No results found"
@@ -13339,7 +13469,7 @@ msgstr "該当なし"
 msgid "No proxy for the following hosts."
 msgstr "以下のホストはプロキシを除外します。"
 
-#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:261
+#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:260
 #, fuzzy
 #| msgid "Previous tab"
 msgid "No recent searches"
@@ -13505,9 +13635,6 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:160
 #: app/assets/javascripts/app/controllers/knowledge_base/agent_controller.coffee:240
 #: app/assets/javascripts/app/controllers/ticket_zoom.coffee:127
-#: app/frontend/apps/desktop/components/layout/LayoutTaskbarTabContent.vue:70
-#: app/frontend/shared/errors/useErrorHandler.ts:25
-#: app/frontend/shared/router/error.ts:24
 #: app/helpers/knowledge_base_public_page_title_helper.rb:25
 msgid "Not Found"
 msgstr ""
@@ -13552,6 +13679,9 @@ msgid "Not configured"
 msgstr "未設定"
 
 #: app/frontend/apps/desktop/components/UserTaskbarTabs/UserTaskbarTabNotFound.vue:36
+#: app/frontend/apps/desktop/components/layout/LayoutTaskbarTabContent.vue:70
+#: app/frontend/shared/errors/useErrorHandler.ts:25
+#: app/frontend/shared/router/error.ts:24
 #, fuzzy
 #| msgid "No results found"
 msgid "Not found"
@@ -13642,7 +13772,6 @@ msgstr "通知"
 msgid "Notification"
 msgstr "通知"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:39
 #: db/seeds/settings.rb:3427
 msgid "Notification Sender"
 msgstr "通知の送信者"
@@ -13661,6 +13790,12 @@ msgstr "通知の送信者"
 #, fuzzy
 #| msgid "Notification Sender"
 msgid "Notification read"
+msgstr "通知の送信者"
+
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualEmailNotification.vue:39
+#, fuzzy
+#| msgid "Notification Sender"
+msgid "Notification sender"
 msgstr "通知の送信者"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:168
@@ -13999,15 +14134,8 @@ msgstr "対応中"
 msgid "Open %s"
 msgstr "対応中"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ChecklistBadgeList.vue:31
-#, fuzzy
-#| msgid "Checksum"
-msgid "Open Checklist"
-msgstr "チェックサム"
-
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:79
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:90
 #, fuzzy
 #| msgid "Options"
 msgid "Open Questions"
@@ -14019,8 +14147,6 @@ msgstr "Ticket# %sに対応"
 
 #: app/assets/javascripts/app/controllers/widget/ticket_stats.coffee:122
 #: app/assets/javascripts/app/controllers/widget/user.coffee:70
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:127
-#: app/frontend/apps/desktop/pages/user/components/UserRelatedCustomerTickets.vue:35
 #: db/seeds/overviews.rb:109
 msgid "Open Tickets"
 msgstr "オープンチケット"
@@ -14028,6 +14154,12 @@ msgstr "オープンチケット"
 #: app/models/system_report/plugin/entities/ticket.rb:4
 msgid "Open and closed tickets ratio (ticket counts based on state)"
 msgstr ""
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ChecklistBadgeList.vue:31
+#, fuzzy
+#| msgid "Checksum"
+msgid "Open checklist"
+msgstr "チェックサム"
 
 #: app/assets/javascripts/app/models/public_link.coffee:10
 #, fuzzy
@@ -14048,6 +14180,12 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:463
 msgid "Open note box"
 msgstr "メモボックスを開く"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:89
+#, fuzzy
+#| msgid "Options"
+msgid "Open questions"
+msgstr "オプション"
 
 #: app/frontend/apps/desktop/components/PageNavigation/PageNavigation.vue:52
 #, fuzzy
@@ -14096,7 +14234,10 @@ msgid "Open ticket indicator"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_manage/ticket_duplicate_detection.coffee:38
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationRelatedTickets.vue:21
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomer.vue:51
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:127
+#: app/frontend/apps/desktop/pages/user/components/UserRelatedCustomerTickets.vue:35
 #, fuzzy
 #| msgid "Open Tickets"
 msgid "Open tickets"
@@ -14232,8 +14373,10 @@ msgstr "概要"
 #: app/controllers/time_accountings_controller.rb:93
 #: app/frontend/apps/desktop/components/Search/plugins/organization.ts:13
 #: app/frontend/apps/desktop/components/Ticket/TicketPopoverWithTrigger/TicketPopover.vue:100
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailTopBar.vue:33
+#: app/frontend/apps/desktop/pages/organization/routes.ts:9
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/organization.ts:13
-#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:70
+#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:73
 #: app/frontend/apps/mobile/pages/organization/routes.ts:8
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:30
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/plugins/organization.ts:6
@@ -14253,17 +14396,17 @@ msgstr "組織名"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:390
 #: app/assets/javascripts/app/views/getting_started/email.jst.eco:12
-#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailAccountForm.ts:27
 msgid "Organization Support"
 msgstr "組織サポート"
 
-#: app/frontend/apps/mobile/entities/organization/composables/useOrganizationEdit.ts:77
+#: app/frontend/apps/desktop/entities/organization/composables/useOrganizationEdit.ts:67
+#: app/frontend/apps/mobile/entities/organization/composables/useOrganizationEdit.ts:76
 #, fuzzy
 #| msgid "%s Object(s) are updated."
 msgid "Organization could not be updated."
 msgstr "%s オブジェクトを更新。"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/Organization.vue:22
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/Organization.vue:26
 #, fuzzy
 #| msgid "Organization Name"
 msgid "Organization is inactive."
@@ -14281,12 +14424,20 @@ msgstr "組織"
 msgid "Organization name"
 msgstr "組織名"
 
+#: app/frontend/apps/desktop/entities/channel-email/composables/useEmailAccountForm.ts:27
+#, fuzzy
+#| msgid "Organization Support"
+msgid "Organization support"
+msgstr "組織サポート"
+
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailViewContent.vue:162
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:79
 #, fuzzy
 #| msgid "My Organization Tickets"
 msgid "Organization tickets"
 msgstr "私の組織のチケット"
 
+#: app/frontend/apps/desktop/pages/organization/routes.ts:21
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:30
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:25
 msgid ""
@@ -14326,9 +14477,6 @@ msgid "Origin By"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/article_view/item.coffee:92
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleBlockedContentWarning.vue:41
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:58
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleRemoteContentBadge.vue:21
 msgid "Original Formatting"
 msgstr "独自フォーマット"
 
@@ -14336,6 +14484,14 @@ msgstr "独自フォーマット"
 #, fuzzy
 #| msgid "Original Formatting"
 msgid "Original Translation"
+msgstr "独自フォーマット"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleBlockedContentWarning.vue:41
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue:58
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleRemoteContentBadge.vue:21
+#, fuzzy
+#| msgid "Original Formatting"
+msgid "Original formatting"
 msgstr "独自フォーマット"
 
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:86
@@ -14348,21 +14504,9 @@ msgstr "設定"
 
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:3
 #: app/assets/javascripts/app/views/profile/out_of_office.jst.eco:2
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/outOfOffice.ts:6
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:122
 #: db/seeds/permissions.rb:440
 msgid "Out of Office"
 msgstr "不在"
-
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:149
-#, fuzzy
-#| msgid "%s Object(s) are updated."
-msgid "Out of Office settings could not be saved."
-msgstr "%s オブジェクトを更新。"
-
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:144
-msgid "Out of Office settings have been saved successfully"
-msgstr ""
 
 #: lib/validations/out_of_office_validator.rb:31
 msgid "Out of Office start date has to be earlier than or equal to end date"
@@ -14371,6 +14515,13 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_dashboard/stats/ticket_load_measure.coffee:11
 msgid "Out of all open tickets (company-wide), how many are assigned to you?"
 msgstr ""
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/outOfOffice.ts:6
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:122
+#, fuzzy
+#| msgid "Out of Office"
+msgid "Out of office"
+msgstr "不在"
 
 #: app/frontend/shared/composables/useAvatarIndicator.ts:72
 #, fuzzy
@@ -14382,6 +14533,18 @@ msgstr "代理 ( 不在の時 )"
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:192
 msgid "Out of office replacement"
 msgstr "代理 ( 不在の時 )"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:149
+#, fuzzy
+#| msgid "%s Object(s) are updated."
+msgid "Out of office settings could not be saved."
+msgstr "%s オブジェクトを更新。"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:144
+#, fuzzy
+#| msgid "Update successful!"
+msgid "Out of office settings have been saved successfully"
+msgstr "アップデートができました！"
 
 #: app/assets/javascripts/app/views/channel/email_account_overview.jst.eco:99
 #: app/assets/javascripts/app/views/channel/sms_account_overview.jst.eco:24
@@ -14397,14 +14560,19 @@ msgstr "送信"
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:140
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:150
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:22
-#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:21
 msgid "Outbound Call"
+msgstr "外部呼び出し"
+
+#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:21
+#, fuzzy
+#| msgid "Outbound Call"
+msgid "Outbound call"
 msgstr "外部呼び出し"
 
 #: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:22
 #, fuzzy
 #| msgid "Outbound Call"
-msgid "Outbound Call: %s"
+msgid "Outbound call: %s"
 msgstr "外部呼び出し"
 
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_channel_distribution.jst.eco:16
@@ -14424,7 +14592,7 @@ msgstr "ブラウザー"
 msgid "Outdent text"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorActionBar/ActionToolbar.vue:199
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorActionBar/ActionToolbar.vue:200
 #, fuzzy
 #| msgid "Username"
 msgid "Overflow menu"
@@ -14466,13 +14634,16 @@ msgstr "概要"
 msgid "Overviews"
 msgstr "概要"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:135
-msgid "Overwrite Content"
+#: app/assets/javascripts/app/controllers/ticket_shared_draft_overwrite_modal.coffee:5
+msgid "Overwrite Draft"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_shared_draft_overwrite_modal.coffee:5
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:135
+msgid "Overwrite content"
+msgstr ""
+
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:73
-msgid "Overwrite Draft"
+msgid "Overwrite draft"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:511
@@ -14724,18 +14895,18 @@ msgstr ""
 msgid "Pending Reached Tickets"
 msgstr "私の保留中の到達チケット"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:268
-#, fuzzy
-#| msgid "My pending reached Tickets"
-msgid "Pending Tickets"
-msgstr "私の保留中の到達チケット"
-
 #: app/assets/javascripts/app/models/ticket.coffee:113
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/ticket.ts:25
 #, fuzzy
 #| msgid "Pending reminder reached for Ticket |%s|"
 msgid "Pending reminder reached for ticket |%s|"
 msgstr "チケット |%s| に対する保留のリマインダーに到達"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingCalendar.vue:268
+#, fuzzy
+#| msgid "My pending reached Tickets"
+msgid "Pending tickets"
+msgstr "私の保留中の到達チケット"
 
 #: app/assets/javascripts/app/models/ticket.coffee:13
 #: app/graphql/gql/types/overview_type.rb:98
@@ -14772,7 +14943,6 @@ msgid "Permissions"
 msgstr "許可"
 
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:12
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:199
 msgid "Personal Access Tokens"
 msgstr "パーソナルアクセストークン"
 
@@ -14784,6 +14954,12 @@ msgstr "個人設定"
 #, fuzzy
 #| msgid "Personal Access Tokens"
 msgid "Personal access token has been deleted."
+msgstr "パーソナルアクセストークン"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:201
+#, fuzzy
+#| msgid "Personal Access Tokens"
+msgid "Personal access tokens"
 msgstr "パーソナルアクセストークン"
 
 #: app/assets/javascripts/app/controllers/_profile/overviews.coffee:77
@@ -14821,7 +14997,7 @@ msgid "Phone number is already in use by another WhatsApp account."
 msgstr ""
 
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:7
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:169
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:171
 msgid "Pick a name for the application, and we'll give you a unique token."
 msgstr ""
 "アプリケーションに名称を付けていただくと、一意のトークンを差し上げます。"
@@ -15071,7 +15247,7 @@ msgstr ""
 #: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:88
 #, fuzzy
 #| msgid "Feedback"
-msgid "Positive Feedback"
+msgid "Positive feedback"
 msgstr "フィードバック"
 
 #: app/models/system_report/plugin/postgre_sql.rb:4
@@ -15080,8 +15256,13 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_application_controller/_modal_generic_history.coffee:40
 #: app/assets/javascripts/app/controllers/_channel/_email_filter.coffee:31
-#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventIssuerNames.ts:5
 msgid "Postmaster Filter"
+msgstr "ポストマスターフィルター"
+
+#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventIssuerNames.ts:5
+#, fuzzy
+#| msgid "Postmaster Filter"
+msgid "Postmaster filter"
 msgstr "ポストマスターフィルター"
 
 #: app/assets/javascripts/app/views/admin_password_auth/request.jst.eco:16
@@ -15153,22 +15334,15 @@ msgstr "プレビュー"
 msgid "Preview %s"
 msgstr "プレビュー"
 
-#: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:85
-#, fuzzy
-#| msgid "New Calendar"
-msgid "Preview Calendar"
-msgstr "新規カレンダー"
-
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:158
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:187
-#, fuzzy
-#| msgid "Shared"
-msgid "Preview Shared Draft"
-msgstr "共有"
-
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:20
 msgid "Preview Width"
 msgstr "プレビュー幅"
+
+#: app/frontend/apps/desktop/components/CommonCalendarPreviewFlyout/CommonCalendarPreviewFlyout.vue:85
+#, fuzzy
+#| msgid "New Calendar"
+msgid "Preview calendar"
+msgstr "新規カレンダー"
 
 #: app/assets/javascripts/app/views/data_privacy/preview.jst.eco:6
 msgid "Preview customer tickets"
@@ -15177,6 +15351,13 @@ msgstr "カスタマーチケットをプレビューする"
 #: app/assets/javascripts/app/views/data_privacy/preview.jst.eco:10
 msgid "Preview owner tickets"
 msgstr "オーナーチケットをプレビューする"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:158
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:187
+#, fuzzy
+#| msgid "Shared"
+msgid "Preview shared draft"
+msgstr "共有"
 
 #: app/assets/javascripts/app/views/clues/clues_content.jst.eco:11
 #: app/frontend/shared/form/i18n/locales.ts:69
@@ -15218,7 +15399,7 @@ msgstr ""
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:107
 #, fuzzy
 #| msgid "Security"
-msgid "Print Codes"
+msgid "Print codes"
 msgstr "セキュリティー"
 
 #: app/assets/javascripts/app/models/public_link.coffee:11
@@ -15239,7 +15420,7 @@ msgstr "優先度"
 #: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:79
 #, fuzzy
 #| msgid "Priority"
-msgid "Priority Icon"
+msgid "Priority icon"
 msgstr "優先度"
 
 #: db/seeds/settings.rb:1968
@@ -15509,19 +15690,23 @@ msgid "Reauthenticate"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:18
-#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:14
 msgid "Received Call"
+msgstr "内部呼び出し"
+
+#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:14
+#, fuzzy
+#| msgid "Received Call"
+msgid "Received call"
 msgstr "内部呼び出し"
 
 #: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:15
 #, fuzzy
 #| msgid "Received Call"
-msgid "Received Call: %s"
+msgid "Received call: %s"
 msgstr "内部呼び出し"
 
 #: app/assets/javascripts/app/views/agent_ticket_merge.jst.eco:5
 #: app/assets/javascripts/app/views/link/ticket/add.jst.eco:30
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketRelationAndRecentLists/TicketRelationAndRecentLists.vue:57
 msgid "Recent Customer Tickets"
 msgstr "最近の顧客チケット"
 
@@ -15531,6 +15716,12 @@ msgstr "最近の顧客チケット"
 msgid "Recent Logs"
 msgstr "最近のログ"
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketRelationAndRecentLists/TicketRelationAndRecentLists.vue:57
+#, fuzzy
+#| msgid "Recent Customer Tickets"
+msgid "Recent customer tickets"
+msgstr "最近の顧客チケット"
+
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:95
 #, fuzzy
 #| msgid "Update successful!"
@@ -15538,7 +15729,7 @@ msgid "Recent search was removed successfully."
 msgstr "アップデートができました！"
 
 #: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearch.vue:112
-#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:251
+#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:250
 #, fuzzy
 #| msgid "Last sync"
 msgid "Recent searches"
@@ -15552,7 +15743,6 @@ msgstr "アップデートができました！"
 
 #: app/assets/javascripts/app/views/agent_ticket_merge.jst.eco:8
 #: app/assets/javascripts/app/views/link/ticket/add.jst.eco:36
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketRelationAndRecentLists/TicketRelationAndRecentLists.vue:65
 #, fuzzy
 #| msgid "Recent viewed Tickets"
 msgid "Recently Viewed Tickets"
@@ -15574,6 +15764,12 @@ msgstr "アップデートができました！"
 msgid "Recently viewed"
 msgstr "最近見た"
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketRelationAndRecentLists/TicketRelationAndRecentLists.vue:65
+#, fuzzy
+#| msgid "Recent viewed Tickets"
+msgid "Recently viewed tickets"
+msgstr "最近見たチケット"
+
 #: app/assets/javascripts/app/controllers/_channel/sms.coffee:397
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/notification.jst.eco:9
 msgid "Recipient"
@@ -15590,9 +15786,6 @@ msgid ""
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_login/method/recovery_codes.coffee:2
-#: app/frontend/apps/desktop/pages/authentication/components/LoginRecoveryCode.vue:27
-#: app/frontend/apps/mobile/pages/authentication/components/LoginRecoveryCode.vue:32
-#: app/frontend/shared/composables/authentication/useLoginTwoFactor.ts:92
 #, fuzzy
 #| msgid "Security"
 msgid "Recovery Code"
@@ -15602,6 +15795,14 @@ msgstr "セキュリティー"
 #, fuzzy
 #| msgid "Security"
 msgid "Recovery Codes"
+msgstr "セキュリティー"
+
+#: app/frontend/apps/desktop/pages/authentication/components/LoginRecoveryCode.vue:27
+#: app/frontend/apps/mobile/pages/authentication/components/LoginRecoveryCode.vue:32
+#: app/frontend/shared/composables/authentication/useLoginTwoFactor.ts:92
+#, fuzzy
+#| msgid "Security"
+msgid "Recovery code"
 msgstr "セキュリティー"
 
 #: app/assets/javascripts/app/views/profile/password.jst.eco:104
@@ -15632,13 +15833,8 @@ msgstr ""
 msgid "Regenerate"
 msgstr "レポートレート"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:254
-#, fuzzy
-#| msgid "Delete records"
-msgid "Regenerate Recovery Codes"
-msgstr "レコード削除"
-
 #: app/assets/javascripts/app/views/profile/password.jst.eco:111
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:254
 #, fuzzy
 #| msgid "Delete records"
 msgid "Regenerate recovery codes"
@@ -15683,7 +15879,7 @@ msgstr "テストチケットの作成"
 msgid "Related Object Type"
 msgstr "テストチケットの作成"
 
-#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:139
+#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:150
 #, fuzzy
 #| msgid "Create a Test Ticket"
 msgid "Related tickets"
@@ -15751,29 +15947,11 @@ msgstr "削除"
 msgid "Remove %s"
 msgstr "削除"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:160
-#, fuzzy
-#| msgid "Remove"
-msgid "Remove Link"
-msgstr "削除"
-
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationPopover/NotificationList/NotificationItem.vue:76
-#, fuzzy
-#| msgid "Block Notifications"
-msgid "Remove Notification"
-msgstr "通知をブロック"
-
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationFlyout.vue:39
-#, fuzzy
-#| msgid "Authentication"
-msgid "Remove Two-factor Authentication: %s"
-msgstr "認証"
-
 #: app/assets/javascripts/app/controllers/user/manage_two_factor.coffee:53
 msgid "Remove a configured two-factor authentication method"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:168
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:171
 #, fuzzy
 #| msgid "Authentication"
 msgid "Remove account link on %s"
@@ -15831,11 +16009,23 @@ msgstr "削除"
 msgid "Remove item"
 msgstr "削除"
 
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/link/LinkForm.vue:160
+#, fuzzy
+#| msgid "Remove"
+msgid "Remove link"
+msgstr "削除"
+
 #: app/assets/javascripts/app/views/user/manage_two_factor.jst.eco:5
 #, fuzzy
 #| msgid "Remove"
 msgid "Remove method"
 msgstr "削除"
+
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationPopover/NotificationList/NotificationItem.vue:76
+#, fuzzy
+#| msgid "Block Notifications"
+msgid "Remove notification"
+msgstr "通知をブロック"
 
 #: app/frontend/apps/desktop/entities/two-factor-configuration/plugins/security-keys.ts:22
 #, fuzzy
@@ -15857,6 +16047,12 @@ msgstr "削除"
 #, fuzzy
 #| msgid "Authentication"
 msgid "Remove two-factor authentication"
+msgstr "認証"
+
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationFlyout.vue:39
+#, fuzzy
+#| msgid "Authentication"
+msgid "Remove two-factor authentication: %s"
 msgstr "認証"
 
 #: app/frontend/apps/desktop/components/CommonHistoryFlyout/HistoryEventDetails/HistoryEventDetailsReaction.vue:16
@@ -15934,7 +16130,7 @@ msgstr "返信"
 #: app/frontend/shared/entities/ticket-article/action/plugins/email.ts:105
 #, fuzzy
 #| msgid "reply"
-msgid "Reply All"
+msgid "Reply all"
 msgstr "返信"
 
 #: lib/validations/ticket_article_validator/whatsapp_message.rb:62
@@ -16034,7 +16230,7 @@ msgstr "認証"
 #: app/assets/javascripts/app/controllers/user_profile/action_row.coffee:84
 #: app/assets/javascripts/app/views/signup/verify.jst.eco:11
 #: app/frontend/apps/desktop/pages/authentication/views/Signup.vue:149
-#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/resendVerificationEmail.ts:16
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/resendVerificationEmail.ts:15
 msgid "Resend verification email"
 msgstr "確認メールを再送信"
 
@@ -16047,12 +16243,6 @@ msgstr "確認メールを再送信"
 msgid "Reset"
 msgstr "リセット"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOverviews.vue:138
-#, fuzzy
-#| msgid "Reset Password"
-msgid "Reset Overview Order"
-msgstr "パスワードをリセット"
-
 #: app/assets/javascripts/app/controllers/password_reset.coffee:23
 #: app/assets/javascripts/app/controllers/password_reset_verify.coffee:22
 msgid "Reset Password"
@@ -16062,17 +16252,18 @@ msgstr "パスワードをリセット"
 msgid "Reset Password failed!"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchInput/QuickSearchInput.vue:68
-#, fuzzy
-#| msgid "Search"
-msgid "Reset Search"
-msgstr "検索"
-
 #: app/assets/javascripts/app/controllers/_profile/overviews.coffee:35
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOverviews.vue:143
 #, fuzzy
 #| msgid "Reset Password"
 msgid "Reset overview order"
 msgstr "パスワードをリセット"
+
+#: app/frontend/apps/desktop/components/Search/QuickSearch/QuickSearchInput/QuickSearchInput.vue:68
+#, fuzzy
+#| msgid "Search"
+msgid "Reset search"
+msgstr "検索"
 
 #: app/assets/javascripts/app/models/setting.coffee:60
 #, fuzzy
@@ -16086,12 +16277,6 @@ msgstr "接続テスト成功"
 msgid "Reset text color"
 msgstr "順序を変更"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:214
-#, fuzzy
-#| msgid "Restore Defaults"
-msgid "Reset to Default Settings"
-msgstr "デフォルトを復元"
-
 #: app/assets/javascripts/app/views/settings/ticket_notifications.jst.eco:11
 #, fuzzy
 #| msgid "Restore Defaults"
@@ -16099,6 +16284,7 @@ msgid "Reset to default"
 msgstr "デフォルトを復元"
 
 #: app/assets/javascripts/app/views/profile/notification.jst.eco:75
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:214
 #, fuzzy
 #| msgid "Restore Defaults"
 msgid "Reset to default settings"
@@ -16198,7 +16384,7 @@ msgstr "デフォルトを復元"
 msgid "Restrict to only the following users"
 msgstr "次のユーザーに限定されます"
 
-#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:15
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:17
 #, fuzzy
 #| msgid "Restore Defaults"
 msgid "Result"
@@ -16221,37 +16407,27 @@ msgid "Results"
 msgstr "デフォルトを復元"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:161
-#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:12
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:9
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:14
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:12
 #: app/assets/javascripts/app/views/widget/two_factor_login/security_keys.jst.eco:16
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:68
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:64
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:169
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:131
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:92
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:91
 #: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:172
 msgid "Retry"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleMediaError.vue:41
-#, fuzzy
-#| msgid "Add attachment option to upload."
-msgid "Retry Attachment Download"
-msgstr "アップロードに添付オプションを追加。"
-
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleSecurityWarning.vue:36
-#, fuzzy
-#| msgid "Security"
-msgid "Retry Security Process"
-msgstr "セキュリティー"
-
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:112
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleMediaError.vue:41
 #, fuzzy
 #| msgid "Add attachment option to upload."
 msgid "Retry attachment download"
 msgstr "アップロードに添付オプションを追加。"
 
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:97
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleSecurityWarning.vue:36
 msgid "Retry security process"
 msgstr ""
 
@@ -16399,6 +16575,7 @@ msgstr "SLA"
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:74
 #: app/assets/javascripts/app/controllers/_ui_element/object_perform_action.coffee:55
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/sms.ts:7
+#: app/frontend/shared/entities/ticket-article/action/plugins/sms.ts:44
 #: db/seeds/permissions.rb:137
 msgid "SMS"
 msgstr "SMS"
@@ -16521,7 +16698,6 @@ msgid "Save"
 msgstr "保存"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/recovery_codes.coffee:14
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:21
 #, fuzzy
 #| msgid "Security"
 msgid "Save Codes"
@@ -16529,23 +16705,10 @@ msgstr "セキュリティー"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_overwrite_modal.coffee:2
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:74
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:61
 #, fuzzy
 #| msgid "Draft"
 msgid "Save Draft"
 msgstr "下書き"
-
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:217
-#, fuzzy
-#| msgid "Block Notifications"
-msgid "Save Notifications"
-msgstr "通知をブロック"
-
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:173
-#, fuzzy
-#| msgid "Out of Office"
-msgid "Save Out of Office"
-msgstr "不在"
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSource.vue:52
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualChannelEmail.vue:140
@@ -16553,7 +16716,7 @@ msgstr "不在"
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualSystemInformation.vue:122
 #, fuzzy
 #| msgid "Continue"
-msgid "Save and Continue"
+msgid "Save and continue"
 msgstr "続ける"
 
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:22
@@ -16572,10 +16735,34 @@ msgstr "下書き"
 msgid "Save changes"
 msgstr "変更を廃棄"
 
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationRecoveryCodes.vue:21
+#, fuzzy
+#| msgid "Security"
+msgid "Save codes"
+msgstr "セキュリティー"
+
 #: app/assets/javascripts/app/views/integration/exchange_wizard.jst.eco:217
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:273
 msgid "Save configuration"
 msgstr "設定保存"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:61
+#, fuzzy
+#| msgid "Draft"
+msgid "Save draft"
+msgstr "下書き"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingNotifications.vue:217
+#, fuzzy
+#| msgid "Block Notifications"
+msgid "Save notifications"
+msgstr "通知をブロック"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:173
+#, fuzzy
+#| msgid "Out of Office"
+msgid "Save out of office"
+msgstr "不在"
 
 #: app/assets/javascripts/app/models/core_workflow.coffee:10
 msgid "Saved conditions"
@@ -16656,7 +16843,7 @@ msgstr "下にスクロールして、新規メッセージを見て下さい"
 #: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:363
 #: app/frontend/apps/desktop/pages/search/routes.ts:10
 #: app/frontend/apps/mobile/pages/search/routes.ts:8
-#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:221
+#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:220
 msgid "Search"
 msgstr "検索"
 
@@ -16674,7 +16861,9 @@ msgstr ""
 msgid "Search URL is missing."
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/user/components/UserRelatedCustomerTickets/CustomerTicketList.vue:104
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailViewContent.vue:145
+#: app/frontend/apps/desktop/pages/organization/components/OrganizationRelatedTickets/OrganizationTicketList.vue:100
+#: app/frontend/apps/desktop/pages/user/components/UserRelatedCustomerTickets/CustomerTicketList.vue:106
 #, fuzzy
 #| msgid "Search"
 msgid "Search all"
@@ -16806,7 +16995,7 @@ msgstr "ユーザーを検索"
 msgid "Search for writing assistant tools"
 msgstr "組織の共有"
 
-#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:231
+#: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:230
 #, fuzzy
 #| msgid "Search"
 msgid "Search for…"
@@ -16901,7 +17090,7 @@ msgstr "通知音"
 #: app/assets/javascripts/app/controllers/_ui_element/autocompletion_ajax_customer_organization.coffee:18
 #: app/assets/javascripts/app/controllers/_ui_element/autocompletion_ajax_external_data_source.coffee:13
 #: app/assets/javascripts/app/controllers/_ui_element/object_manager_attribute.coffee:845
-#: app/assets/javascripts/app/controllers/widget/link/kb_answer.coffee:57
+#: app/assets/javascripts/app/controllers/widget/link/kb_answer.coffee:59
 #: app/assets/javascripts/app/views/generic/icon_picker.jst.eco:9
 #: app/assets/javascripts/app/views/translation/form.jst.eco:7
 #: app/frontend/apps/desktop/components/CommonInputSearch/CommonInputSearch.vue:24
@@ -16915,7 +17104,7 @@ msgstr "検索"
 
 #: app/frontend/apps/desktop/components/User/UserPopoverWithTrigger/UserPopover.vue:81
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:109
-#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:113
+#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:121
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationCustomer.vue:88
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:133
 #: db/seeds/object_manager_attributes.rb:1161
@@ -16954,25 +17143,14 @@ msgstr "セキュリティー"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/authenticator_app.coffee:32
 #: app/assets/javascripts/app/controllers/widget/two_factor_login/method.coffee:3
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:286
-#: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:40
-#: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:47
 #, fuzzy
 #| msgid "Security"
 msgid "Security Code"
 msgstr "セキュリティー"
 
 #: app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco:90
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleSecurityWarning.vue:25
-#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleSecurityBadge.vue:144
 msgid "Security Error"
 msgstr ""
-
-#: app/frontend/apps/mobile/components/Form/fields/FieldSecurity/FieldSecurityInput.vue:130
-#, fuzzy
-#| msgid "Block Notifications"
-msgid "Security Information"
-msgstr "通知をブロック"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:4
 #, fuzzy
@@ -16982,12 +17160,32 @@ msgstr "セキュリティー"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:4
 #: app/assets/javascripts/app/lib/app_post/two_factor_methods/security_keys.coffee:5
-#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:9
 #: db/seeds/settings.rb:5822
 #, fuzzy
 #| msgid "Security"
 msgid "Security Keys"
 msgstr "セキュリティー"
+
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:286
+#: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactor.vue:40
+#: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:47
+#, fuzzy
+#| msgid "Security"
+msgid "Security code"
+msgstr "セキュリティー"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleSecurityWarning.vue:25
+#: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleSecurityBadge.vue:144
+#, fuzzy
+#| msgid "Security"
+msgid "Security error"
+msgstr "セキュリティー"
+
+#: app/frontend/apps/mobile/components/Form/fields/FieldSecurity/FieldSecurityInput.vue:130
+#, fuzzy
+#| msgid "Block Notifications"
+msgid "Security information"
+msgstr "通知をブロック"
 
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:74
 msgid "Security key \"%s\" will be removed."
@@ -17008,6 +17206,7 @@ msgid "Security key verification failed."
 msgstr "確認メールを再送信"
 
 #: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:376
+#: app/frontend/shared/entities/two-factor/plugins/security-keys.ts:9
 #, fuzzy
 #| msgid "Security"
 msgid "Security keys"
@@ -17192,27 +17391,8 @@ msgid "Send"
 msgstr "送信"
 
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:26
-#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:28
 msgid "Send Email"
 msgstr "Eメールの送信"
-
-#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:29
-#, fuzzy
-#| msgid "Send Email"
-msgid "Send Email: %s"
-msgstr "Eメールの送信"
-
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarFooterMenu.vue:44
-#, fuzzy
-#| msgid "Feedback"
-msgid "Send Feedback"
-msgstr "フィードバック"
-
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualInviteColleagues.vue:85
-#, fuzzy
-#| msgid "Shared organization"
-msgid "Send Invitation"
-msgstr "組織の共有"
 
 #: app/assets/javascripts/app/controllers/_channel/email.coffee:408
 #: app/assets/javascripts/app/controllers/getting_started/channel_email.coffee:65
@@ -17223,6 +17403,30 @@ msgstr "次でメールを送信"
 #: app/assets/javascripts/app/views/maintenance.jst.eco:33
 msgid "Send a message to all logged in users."
 msgstr "ログインしたユーザー全てにメッセージを送信。"
+
+#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:28
+#, fuzzy
+#| msgid "Send Email"
+msgid "Send email"
+msgstr "Eメールの送信"
+
+#: app/frontend/shared/entities/ticket/composables/useTicketCreateArticleType.ts:29
+#, fuzzy
+#| msgid "Send Email"
+msgid "Send email: %s"
+msgstr "Eメールの送信"
+
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarFooterMenu.vue:44
+#, fuzzy
+#| msgid "Feedback"
+msgid "Send feedback"
+msgstr "フィードバック"
+
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualInviteColleagues.vue:85
+#, fuzzy
+#| msgid "Shared organization"
+msgid "Send invitation"
+msgstr "組織の共有"
 
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailOutboundForm.ts:48
 #, fuzzy
@@ -17366,22 +17570,8 @@ msgstr "セッション"
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/authenticator_app.coffee:2
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal/security_keys.coffee:2
 #: app/assets/javascripts/app/views/profile/password.jst.eco:90
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:159
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:60
 msgid "Set Up"
 msgstr ""
-
-#: app/frontend/apps/desktop/pages/authentication/after-auth/plugins/twoFactorSetup.ts:12
-#, fuzzy
-#| msgid "Authentication"
-msgid "Set Up Two-factor Authentication"
-msgstr "認証"
-
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationFlyout.vue:44
-#, fuzzy
-#| msgid "Authentication"
-msgid "Set Up Two-factor Authentication: %s"
-msgstr "認証"
 
 #: app/frontend/apps/mobile/pages/ticket/views/TicketCreate.vue:120
 #, fuzzy
@@ -17475,6 +17665,8 @@ msgstr "内部に設定"
 msgid "Set to public"
 msgstr "公開に設定"
 
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:159
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationSecurityKeys.vue:60
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:150
 msgid "Set up"
 msgstr ""
@@ -17505,9 +17697,16 @@ msgstr "Zammadで使いたい通信チャネルを設定してください。"
 
 #: app/assets/javascripts/app/controllers/after_auth/two_factor_configuration.coffee:2
 #: app/assets/javascripts/app/controllers/widget/two_factor_configuration/modal.coffee:6
+#: app/frontend/apps/desktop/pages/authentication/after-auth/plugins/twoFactorSetup.ts:12
 #, fuzzy
 #| msgid "Authentication"
 msgid "Set up two-factor authentication"
+msgstr "認証"
+
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfigurationFlyout.vue:44
+#, fuzzy
+#| msgid "Authentication"
+msgid "Set up two-factor authentication: %s"
 msgstr "認証"
 
 #: db/seeds/settings.rb:3349
@@ -17546,24 +17745,22 @@ msgstr "設定"
 
 #: app/assets/javascripts/app/controllers/getting_started/finish.coffee:7
 #: app/assets/javascripts/app/views/getting_started/finish.jst.eco:5
+msgid "Setup Finished"
+msgstr "設定完了"
+
 #: app/frontend/apps/desktop/pages/guided-setup/routes.ts:70
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualFinish.vue:15
-msgid "Setup Finished"
+#, fuzzy
+#| msgid "Setup Finished"
+msgid "Setup finished"
 msgstr "設定完了"
 
 #: app/assets/javascripts/app/controllers/_integration/clearbit.coffee:66
 msgid "Shared"
 msgstr "共有"
 
-#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventEntityNames.ts:8
-#, fuzzy
-#| msgid "Shared"
-msgid "Shared Draft"
-msgstr "共有"
-
 #: app/assets/javascripts/app/controllers/agent_ticket_create/sidebar_shared_draft.coffee:12
 #: app/assets/javascripts/app/models/group.coffee:17
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/shared-draft-start.ts:10
 #: db/seeds/object_manager_attributes.rb:2293
 #, fuzzy
 #| msgid "Shared"
@@ -17574,6 +17771,12 @@ msgstr "共有"
 #, fuzzy
 #| msgid "Shared"
 msgid "Shared Mailbox"
+msgstr "共有"
+
+#: app/frontend/apps/desktop/components/CommonHistoryFlyout/utils/historyEventEntityNames.ts:8
+#, fuzzy
+#| msgid "Shared"
+msgid "Shared draft"
 msgstr "共有"
 
 #: app/controllers/tickets_controller.rb:89
@@ -17601,6 +17804,12 @@ msgstr "%s オブジェクトを更新。"
 #| msgid "Update successful!"
 msgid "Shared draft has been updated successfully."
 msgstr "アップデートができました！"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/shared-draft-start.ts:10
+#, fuzzy
+#| msgid "Shared"
+msgid "Shared drafts"
+msgstr "共有"
 
 #: app/graphql/gql/queries/ticket/shared_draft/start/list.rb:20
 msgid "Shared drafts are not activated for the selected group"
@@ -17639,7 +17848,6 @@ msgid "Show %s more"
 msgstr "もっと見る"
 
 #: app/assets/javascripts/app/controllers/ticket_shared_draft_overwrite_modal.coffee:23
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:70
 #, fuzzy
 #| msgid "Draft"
 msgid "Show Draft"
@@ -17680,6 +17888,12 @@ msgstr ""
 msgid "Show chat automatically"
 msgstr ""
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketSharedDraftConflictDialog.vue:70
+#, fuzzy
+#| msgid "Draft"
+msgid "Show draft"
+msgstr "下書き"
+
 #: app/assets/javascripts/app/views/generic/reference_list.jst.eco:22
 #: app/assets/javascripts/app/views/generic/ticket_list.jst.eco:41
 msgid "Show less"
@@ -17693,7 +17907,7 @@ msgstr ""
 msgid "Show matching tickets in the warning"
 msgstr ""
 
-#: app/frontend/apps/mobile/pages/ticket/composable/useTicketArticleContext.ts:79
+#: app/frontend/apps/mobile/pages/ticket/composable/useTicketArticleContext.ts:80
 #, fuzzy
 #| msgid "Show Search Details"
 msgid "Show meta data"
@@ -18002,18 +18216,17 @@ msgstr "スキップ"
 msgid "Slack Notifications"
 msgstr "通知をブロック"
 
-#: app/frontend/shared/entities/ticket-article/action/plugins/sms.ts:44
-#, fuzzy
-#| msgid "sms"
-msgid "Sms"
-msgstr "SMS"
-
 #: app/assets/javascripts/app/views/generic/sla_times.jst.eco:71
 #: app/assets/javascripts/app/views/popover/escalation.jst.eco:17
 #: app/assets/javascripts/app/views/sla/index.jst.eco:49
+msgid "Solution Time"
+msgstr "解決期限"
+
 #: app/frontend/apps/desktop/components/CommonTicketEscalationIndicator/CommonTicketEscalationIndicator.vue:44
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:157
-msgid "Solution Time"
+#, fuzzy
+#| msgid "Solution Time"
+msgid "Solution time"
 msgstr "解決期限"
 
 #: app/assets/javascripts/app/views/translation/description.jst.eco:12
@@ -18122,31 +18335,36 @@ msgid "Standard Group/Pool for Tickets."
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/knowledge_base/reader_list_controller.coffee:34
-#: app/frontend/apps/desktop/components/CommonInlineEdit/CommonInlineEdit.vue:67
 msgid "Start Editing"
 msgstr ""
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:51
+msgid "Start and end date"
+msgstr ""
+
+#: app/frontend/apps/desktop/components/CommonInlineEdit/CommonInlineEdit.vue:67
+#, fuzzy
+#| msgid "Text editing"
+msgid "Start editing"
+msgstr "テキスト編集"
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStart.vue:42
 #, fuzzy
 #| msgid "Import"
-msgid "Start Import"
+msgid "Start import"
 msgstr "インポート"
 
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStart.vue:42
 #, fuzzy
 #| msgid "Import from"
-msgid "Start Import from %s"
+msgid "Start import from %s"
 msgstr "次からインポート"
 
 #: app/frontend/apps/desktop/pages/guided-setup/routes.ts:184
 #, fuzzy
 #| msgid "Import from"
-msgid "Start Import from Source"
+msgid "Start import from source"
 msgstr "次からインポート"
-
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOutOfOffice.vue:51
-msgid "Start and end date"
-msgstr ""
 
 #: app/assets/javascripts/app/views/channel/form.jst.eco:92
 msgid "Start modal dialog for form."
@@ -18193,10 +18411,15 @@ msgstr "ユーザーを検索"
 
 #: app/assets/javascripts/app/lib/base/jquery.textmodule.js:641
 #: app/frontend/apps/desktop/components/Form/fields/FieldEditor/FieldEditorSuggestionList.vue:67
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/FieldEditorSuggestionList.vue:54
 #, fuzzy
 #| msgid "Search for users"
 msgid "Start typing to search in Knowledge Base…"
+msgstr "ユーザーを検索"
+
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/FieldEditorSuggestionList.vue:54
+#, fuzzy
+#| msgid "Search for users"
+msgid "Start typing to search in knowledge base…"
 msgstr "ユーザーを検索"
 
 #: app/frontend/apps/desktop/components/Form/fields/FieldTags/FieldTagsWrapper.vue:39
@@ -18268,7 +18491,7 @@ msgstr "状態"
 #: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:91
 #, fuzzy
 #| msgid "State"
-msgid "State Icon"
+msgid "State icon"
 msgstr "状態"
 
 #: db/seeds/settings.rb:5446
@@ -18290,14 +18513,14 @@ msgstr "ステータス"
 msgid "Status Code:"
 msgstr "ステータスコード"
 
+#: app/assets/javascripts/app/views/profile/calendar_subscriptions.jst.eco:41
+msgid "Status Type"
+msgstr "ステータスタイプ"
+
 #: app/frontend/apps/desktop/pages/guided-setup/routes.ts:197
 #, fuzzy
 #| msgid "Status Type"
-msgid "Status Import"
-msgstr "ステータスタイプ"
-
-#: app/assets/javascripts/app/views/profile/calendar_subscriptions.jst.eco:41
-msgid "Status Type"
+msgid "Status import"
 msgstr "ステータスタイプ"
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_idoit.jst.eco:10
@@ -18429,10 +18652,15 @@ msgid "Submit"
 msgstr "送信"
 
 #: app/assets/javascripts/app/views/ai/ai_feedback_widget.jst.eco:45
-#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:114
 #, fuzzy
 #| msgid "Comment"
 msgid "Submit Comment"
+msgstr "コメント"
+
+#: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:114
+#, fuzzy
+#| msgid "Comment"
+msgid "Submit comment"
 msgstr "コメント"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:147
@@ -18490,7 +18718,7 @@ msgstr "サブスクリプション設定"
 msgid "Summarize section to about half its current size"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:106
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:110
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/plugins/ticket-summary.ts:11
 msgid "Summary"
 msgstr ""
@@ -18508,8 +18736,8 @@ msgstr "通知をブロック"
 msgid "Summary Services"
 msgstr "画像サービス"
 
-#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:46
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:139
+#: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:49
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:138
 #, fuzzy
 #| msgid "%s Object(s) are created."
 msgid "Summary is being generated…"
@@ -18574,13 +18802,6 @@ msgstr "システム"
 msgid "System Address Display Name"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:82
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualSystemInformation.vue:26
-#, fuzzy
-#| msgid "Block Notifications"
-msgid "System Information"
-msgstr "通知をブロック"
-
 #: db/seeds/settings.rb:17
 msgid "System Init Done"
 msgstr ""
@@ -18604,6 +18825,13 @@ msgstr "システムのURL"
 #| msgid "Restore Defaults"
 msgid "System default - %s"
 msgstr "デフォルトを復元"
+
+#: app/frontend/apps/desktop/pages/guided-setup/routes.ts:82
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupManual/GuidedSetupManualSystemInformation.vue:26
+#, fuzzy
+#| msgid "Block Notifications"
+msgid "System information"
+msgstr "通知をブロック"
 
 #: app/models/knowledge_base.rb:19
 msgid ""
@@ -19062,7 +19290,7 @@ msgstr "%s オブジェクトを作成。"
 msgid "The access token could not be created."
 msgstr "%s オブジェクトを作成。"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:156
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:159
 #, fuzzy
 #| msgid "The import was successful."
 msgid "The account link was successfully removed!"
@@ -19380,7 +19608,7 @@ msgid "The divider between TicketHook and ticket number. E. g. ': '."
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/provider.coffee:92
-#: app/assets/javascripts/app/lib/app_post/utils.coffee:1688
+#: app/assets/javascripts/app/lib/app_post/utils.coffee:1691
 #, fuzzy
 #| msgid "Unable to verify email. Please contact your administrator."
 msgid "The download could not be started. Please try again later."
@@ -20164,7 +20392,7 @@ msgid ""
 msgstr ""
 
 #: app/assets/javascripts/app/views/ticket_zoom/sidebar_ticket_summary.jst.eco:5
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:82
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummaryContent.vue:81
 #, fuzzy
 #| msgid "Unable to verify email. Please contact your administrator."
 msgid ""
@@ -20236,7 +20464,7 @@ msgstr ""
 msgid "The text tool with the given ID could not be found."
 msgstr "%s オブジェクトを作成。"
 
-#: app/frontend/shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts:139
+#: app/frontend/shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts:142
 msgid ""
 "The text was modified. Your request has been aborted to prevent overwriting."
 msgstr ""
@@ -20642,8 +20870,8 @@ msgid ""
 "once the chat connection is established."
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:154
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:204
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:153
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:206
 msgid "This device"
 msgstr ""
 
@@ -21270,30 +21498,10 @@ msgstr ""
 msgid "Ticket Organization Reassignment"
 msgstr "組織のチケット"
 
-#: app/frontend/apps/mobile/pages/home/routes.ts:28
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:61
-#: app/frontend/apps/mobile/pages/home/views/Home.vue:22
-#, fuzzy
-#| msgid "New Overview"
-msgid "Ticket Overview"
-msgstr "新規概要"
-
 #: db/seeds/settings.rb:5603
 #, fuzzy
 #| msgid "New Overview"
 msgid "Ticket Overview Query Polling"
-msgstr "新規概要"
-
-#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:81
-#, fuzzy
-#| msgid "Overviews"
-msgid "Ticket Overview settings are saved."
-msgstr "概要"
-
-#: app/frontend/apps/mobile/pages/home/views/Home.vue:22
-#, fuzzy
-#| msgid "New Overview"
-msgid "Ticket Overviews"
 msgstr "新規概要"
 
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:25
@@ -21478,6 +21686,26 @@ msgstr "アップデートができました！"
 #| msgid "Ticket Number Format"
 msgid "Ticket number or title"
 msgstr "チケット番号のフォーマット"
+
+#: app/frontend/apps/mobile/pages/home/routes.ts:28
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:61
+#: app/frontend/apps/mobile/pages/home/views/Home.vue:22
+#, fuzzy
+#| msgid "New Overview"
+msgid "Ticket overview"
+msgstr "新規概要"
+
+#: app/frontend/apps/mobile/pages/home/views/FavoriteTicketOverviewsEdit.vue:81
+#, fuzzy
+#| msgid "Overviews"
+msgid "Ticket overview settings are saved."
+msgstr "概要"
+
+#: app/frontend/apps/mobile/pages/home/views/Home.vue:22
+#, fuzzy
+#| msgid "New Overview"
+msgid "Ticket overviews"
+msgstr "新規概要"
 
 #: app/assets/javascripts/app/controllers/_profile/notification.coffee:69
 #: app/assets/javascripts/app/controllers/_ui_element/notification_matrix.coffee:11
@@ -21671,12 +21899,6 @@ msgstr ""
 msgid "Tickets"
 msgstr "チケット"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:282
-#, fuzzy
-#| msgid "Ticket update"
-msgid "Tickets Bulk Edit"
-msgstr "チケットのアップデート"
-
 #: app/assets/javascripts/app/views/settings/ticket_auto_assignment.jst.eco:13
 msgid ""
 "Tickets are only assigned automatically if they do not already have an owner."
@@ -21689,6 +21911,12 @@ msgstr ""
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_load_measure.jst.eco:18
 msgid "Tickets assigned to me: %s of %s"
 msgstr "私に割り当てられたチケット: %s 中 %s"
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:282
+#, fuzzy
+#| msgid "Ticket update"
+msgid "Tickets bulk edit"
+msgstr "チケットのアップデート"
 
 #: app/controllers/ticket_articles_controller.rb:236
 #: app/controllers/tickets_controller.rb:441
@@ -21728,7 +21956,6 @@ msgstr "時間"
 #: app/assets/javascripts/app/controllers/_ui_element/object_selector.coffee:134
 #: app/assets/javascripts/app/controllers/ticket_zoom/time_accounting_modal.coffee:12
 #: app/assets/javascripts/app/controllers/time_accounting.coffee:3
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:136
 #: db/seeds/permissions.rb:107 db/seeds/settings.rb:4041
 msgid "Time Accounting"
 msgstr "時間会計"
@@ -21779,6 +22006,12 @@ msgstr "時間単位"
 #: lib/excel_sheet/ticket.rb:34
 msgid "Time Units Total"
 msgstr "総時間単位"
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TimeAccountingFlyout.vue:136
+#, fuzzy
+#| msgid "Time Accounting"
+msgid "Time accounting"
+msgstr "時間会計"
 
 #: app/assets/javascripts/app/views/time_accounting/settings.jst.eco:16
 #, fuzzy
@@ -21928,8 +22161,12 @@ msgid "To select placeholders from a list, just enter \"::\"."
 msgstr "リストからプレースホルダーを選択するには、 \"::\" を入力してください。"
 
 #: app/assets/javascripts/app/views/widget/two_factor_configuration/authenticator_app.jst.eco:2
-#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:208
 msgid "To set up Authenticator App for your account, follow the steps below:"
+msgstr ""
+
+#: app/frontend/apps/desktop/components/TwoFactor/TwoFactorConfiguration/TwoFactorConfigurationAuthenticatorApp.vue:208
+msgid ""
+"To set up an authenticator app for your account, follow the steps below:"
 msgstr ""
 
 #: app/assets/javascripts/app/views/object_manager/attribute/autocompletion_ajax_external_data_source.jst.eco:21
@@ -21951,15 +22188,15 @@ msgstr "今日"
 msgid "Toggle AM/PM mode"
 msgstr ""
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldPermissions/FieldPermissionsInput.vue:161
-#, fuzzy
-#| msgid "Parent"
-msgid "Toggle Group"
-msgstr "親"
-
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:443
 msgid "Toggle dark mode"
 msgstr ""
+
+#: app/frontend/apps/desktop/components/Form/fields/FieldPermissions/FieldPermissionsInput.vue:161
+#, fuzzy
+#| msgid "Parent"
+msgid "Toggle group"
+msgstr "親"
 
 #: app/frontend/shared/components/Form/fields/FieldEditor/features/table/EditorTableMenu.vue:129
 #, fuzzy
@@ -21997,10 +22234,15 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_profile/token_access.coffee:3
 #: app/assets/javascripts/app/views/api.jst.eco:12
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:2
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/tokenAccess.ts:8
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:51
 #: db/seeds/permissions.rb:471
 msgid "Token Access"
+msgstr "トークンアクセス"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/tokenAccess.ts:8
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:51
+#, fuzzy
+#| msgid "Token Access"
+msgid "Token access"
 msgstr "トークンアクセス"
 
 #: app/models/token/permissions.rb:20
@@ -22055,7 +22297,7 @@ msgstr "総数: %s"
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketObjectAttributes.vue:50
 #, fuzzy
 #| msgid "Accounted Time"
-msgid "Total Accounted Time"
+msgid "Total accounted time"
 msgstr "作業時間"
 
 #: db/seeds/settings.rb:946
@@ -22163,7 +22405,6 @@ msgid ""
 msgstr ""
 
 #: app/assets/javascripts/app/views/widget/two_factor_login/try_another_method.jst.eco:2
-#: app/frontend/shared/composables/authentication/useLoginTwoFactor.ts:96
 msgid "Try Another Method"
 msgstr ""
 
@@ -22182,6 +22423,7 @@ msgstr "再度"
 #: app/assets/javascripts/app/views/widget/two_factor_login/help_text.jst.eco:4
 #: app/frontend/apps/desktop/pages/authentication/views/Login.vue:256
 #: app/frontend/apps/mobile/pages/authentication/views/Login.vue:138
+#: app/frontend/shared/composables/authentication/useLoginTwoFactor.ts:96
 msgid "Try another method"
 msgstr ""
 
@@ -22242,12 +22484,6 @@ msgstr "ツイッターアプリの認証情報"
 msgid "Twitter Developer Site"
 msgstr "ツイッターの秘密"
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/twitterDirectMessage.ts:7
-#, fuzzy
-#| msgid "twitter direct-message"
-msgid "Twitter Direct Message"
-msgstr "ツイッターのダイレクトメッセージ"
-
 #: db/seeds/settings.rb:1359
 msgid "Twitter Key"
 msgstr "ツイッターのキー"
@@ -22256,20 +22492,20 @@ msgstr "ツイッターのキー"
 msgid "Twitter Secret"
 msgstr "ツイッターの秘密"
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/twitterDirectMessage.ts:7
+#, fuzzy
+#| msgid "twitter direct-message"
+msgid "Twitter direct message"
+msgstr "ツイッターのダイレクトメッセージ"
+
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/twitterStatus.ts:7
 #, fuzzy
 #| msgid "twitter status"
-msgid "Twitter Status"
+msgid "Twitter status"
 msgstr "ツイッターのステータス"
-
-#: app/frontend/apps/mobile/pages/authentication/after-auth/plugins/twoFactorSetup.ts:12
-msgid "Two-Factor Authentication Configuration Is Required"
-msgstr ""
 
 #: app/assets/javascripts/app/controllers/_manage/security.coffee:11
 #: app/assets/javascripts/app/views/profile/password.jst.eco:22
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/twoFactorAuth.ts:8
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:72
 #: db/seeds/permissions.rb:457
 #, fuzzy
 #| msgid "Authentication"
@@ -22280,6 +22516,19 @@ msgstr "認証"
 #, fuzzy
 #| msgid "Authentication"
 msgid "Two-factor Authentication Methods"
+msgstr "認証"
+
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSetting/plugins/twoFactorAuth.ts:8
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:72
+#, fuzzy
+#| msgid "Authentication"
+msgid "Two-factor authentication"
+msgstr "認証"
+
+#: app/frontend/apps/mobile/pages/authentication/after-auth/plugins/twoFactorSetup.ts:12
+#, fuzzy
+#| msgid "Authentication"
+msgid "Two-factor authentication configuration is required"
 msgstr "認証"
 
 #: app/controllers/application_controller/authenticates.rb:59
@@ -22489,7 +22738,7 @@ msgstr "通知"
 #: app/frontend/apps/desktop/components/CommonConfirmationDialog/CommonConfirmationDialog.vue:53
 #, fuzzy
 #| msgid "Discard Changes"
-msgid "Unsaved Changes"
+msgid "Unsaved changes"
 msgstr "変更を廃棄"
 
 #: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationButton.vue:34
@@ -22498,11 +22747,13 @@ msgstr "変更を廃棄"
 msgid "Unseen notifications count"
 msgstr "通知"
 
-#: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:569
+#: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:566
 #: app/frontend/apps/desktop/components/Form/fields/FieldSelect/FieldSelectInput.vue:260
-#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:318
-msgid "Unselect Option"
-msgstr ""
+#: app/frontend/apps/desktop/components/Form/fields/FieldTreeSelect/FieldTreeSelectInput.vue:315
+#, fuzzy
+#| msgid "select"
+msgid "Unselect option"
+msgstr "選択"
 
 #: app/assets/javascripts/app/controllers/_application_controller/table.coffee:744
 #, fuzzy
@@ -22547,8 +22798,11 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/ticket_summary.coffee:85
 #: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:6
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:95
 msgid "Upcoming Events"
+msgstr ""
+
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSummary/TicketSidebarSummary.vue:94
+msgid "Upcoming events"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:89
@@ -22582,17 +22836,9 @@ msgstr ""
 msgid "Update In Min"
 msgstr ""
 
-#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:204
-#, fuzzy
-#| msgid "Shared"
-msgid "Update Shared Draft"
-msgstr "共有"
-
 #: app/assets/javascripts/app/views/generic/sla_times.jst.eco:32
 #: app/assets/javascripts/app/views/popover/escalation.jst.eco:11
 #: app/assets/javascripts/app/views/sla/index.jst.eco:41
-#: app/frontend/apps/desktop/components/CommonTicketEscalationIndicator/CommonTicketEscalationIndicator.vue:40
-#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:153
 msgid "Update Time"
 msgstr "更新期限"
 
@@ -22613,8 +22859,14 @@ msgid ""
 "Update existing records with the attributes specified in the import data."
 msgstr "インポートデータにて指定された属性で既存レコードを更新"
 
+#: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarSharedDraftStart/TicketSidebarSharedDraftStartContent.vue:204
+#, fuzzy
+#| msgid "Shared"
+msgid "Update shared draft"
+msgstr "共有"
+
 #: app/assets/javascripts/app/controllers/_profile/calendar_subscriptions.coffee:81
-#: app/assets/javascripts/app/controllers/_profile/language.coffee:58
+#: app/assets/javascripts/app/controllers/_profile/language.coffee:64
 #: app/assets/javascripts/app/controllers/_profile/linked_accounts.coffee:48
 #: app/assets/javascripts/app/controllers/_profile/notification.coffee:171
 #: app/assets/javascripts/app/controllers/_profile/out_of_office.coffee:134
@@ -22632,6 +22884,13 @@ msgstr ""
 #| msgid "%s Object(s) are updated."
 msgid "Update the most recent tickets."
 msgstr "%s オブジェクトを更新。"
+
+#: app/frontend/apps/desktop/components/CommonTicketEscalationIndicator/CommonTicketEscalationIndicator.vue:40
+#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationDetails.vue:153
+#, fuzzy
+#| msgid "Update Time"
+msgid "Update time"
+msgstr "更新期限"
 
 #: app/assets/javascripts/app/models/ai_agent.coffee:11
 #: app/assets/javascripts/app/models/application.coffee:11
@@ -22899,7 +23158,7 @@ msgstr "どこでも使用"
 msgid "Used anywhere (admin only)"
 msgstr "どこでも使用 (管理者のみ)"
 
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:145
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingDevices.vue:144
 #, fuzzy
 #| msgid "Devices"
 msgid "Used devices"
@@ -22960,8 +23219,8 @@ msgstr "チケット表示時に使用"
 #: app/frontend/apps/desktop/components/Search/plugins/user.ts:13
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailInboundForm.ts:117
 #: app/frontend/apps/desktop/entities/channel-email/composables/useEmailOutboundForm.ts:73
-#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar.vue:31
-#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:35
+#: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar.vue:32
+#: app/frontend/apps/desktop/pages/user/components/UserDetailViewContent.vue:36
 #: app/frontend/apps/desktop/pages/user/routes.ts:9
 #: app/frontend/apps/mobile/pages/user/routes.ts:7
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:32
@@ -22973,7 +23232,6 @@ msgid "User (censored):"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/documentation_link.coffee:14
-#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/user-documentation.ts:7
 #, fuzzy
 #| msgid "Username / email"
 msgid "User Documentation"
@@ -23003,19 +23261,25 @@ msgstr "確認メールを再送信"
 
 #: app/assets/javascripts/app/controllers/getting_started/admin.coffee:108
 #: app/assets/javascripts/app/controllers/signup.coffee:102
-#: app/frontend/apps/desktop/entities/user/composables/useUserCreate.ts:67
+#: app/frontend/apps/desktop/entities/user/composables/useUserCreate.ts:76
 #: app/frontend/apps/mobile/entities/user/composables/useUserCreate.ts:48
 #, fuzzy
 #| msgid "%s Object(s) are created."
 msgid "User could not be created."
 msgstr "%s オブジェクトを作成。"
 
-#: app/frontend/apps/desktop/entities/user/composables/useUserEdit.ts:95
+#: app/frontend/apps/desktop/entities/user/composables/useUserEdit.ts:92
 #: app/frontend/apps/mobile/entities/user/composables/useUserEdit.ts:81
 #, fuzzy
 #| msgid "%s Object(s) are created."
 msgid "User could not be updated."
 msgstr "%s オブジェクトを作成。"
+
+#: app/frontend/apps/desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/user-documentation.ts:7
+#, fuzzy
+#| msgid "Username / email"
+msgid "User documentation"
+msgstr "ユーザー名/メールアドレス"
 
 #: lib/external_credential/google.rb:47
 msgid "User email could not be extracted from 'id_token'."
@@ -23039,7 +23303,7 @@ msgid ""
 "permissions."
 msgstr ""
 
-#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:44
+#: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:43
 #: app/frontend/shared/composables/useAvatarIndicator.ts:77
 #, fuzzy
 #| msgid "Text editing"
@@ -23068,7 +23332,7 @@ msgstr ""
 msgid "User is inactive"
 msgstr "非アクティブ"
 
-#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:22
+#: app/frontend/apps/desktop/components/Search/QuickSearch/entities/User.vue:24
 #, fuzzy
 #| msgid "inactive"
 msgid "User is inactive."
@@ -23130,7 +23394,7 @@ msgid "UserDevice could not be found."
 msgstr "%s オブジェクトを更新。"
 
 #: app/assets/javascripts/app/models/webhook.coffee:12
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:80
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:79
 msgid "Username"
 msgstr "ユーザー名"
 
@@ -23576,7 +23840,7 @@ msgstr ""
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/whatsappMessage.ts:10
 #, fuzzy
 #| msgid "Add Tag"
-msgid "WhatsApp Message"
+msgid "WhatsApp message"
 msgstr "タグを追加"
 
 #: app/assets/javascripts/app/models/trigger.coffee:8
@@ -23738,7 +24002,6 @@ msgid "Workflows"
 msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/text_tool.coffee:16
-#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:35
 #: db/seeds/permissions.rb:233 db/seeds/settings.rb:6076
 msgid "Writing Assistant"
 msgstr ""
@@ -23753,8 +24016,6 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/text_tool.coffee:17
 #: app/assets/javascripts/app/lib/mixins/richtext_bubble_menu.coffee:82
-#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:68
-#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:68
 msgid "Writing Assistant Tools"
 msgstr ""
 
@@ -23766,15 +24027,31 @@ msgid ""
 "needs, e.g. using branch or company specific wording."
 msgstr ""
 
-#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:8
-#, fuzzy
-#| msgid "%s Object(s) are created."
-msgid "Writing Assistant couldn't generate text."
-msgstr "%s オブジェクトを作成。"
-
 #: app/assets/javascripts/app/controllers/text_tools_modal.coffee:24
 msgid "Writing Assistant: %s"
 msgstr ""
+
+#: app/frontend/shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/AiAssistantLoadingBanner.vue:35
+#, fuzzy
+#| msgid "Shared organization"
+msgid "Writing assistant"
+msgstr "組織の共有"
+
+#: app/assets/javascripts/app/views/generic/text_tools_modal.jst.eco:8
+#: app/frontend/shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts:38
+#, fuzzy
+#| msgid "Unable to verify email. Please contact your administrator."
+msgid ""
+"Writing assistant could not generate text. Please try again or contact your "
+"administrator."
+msgstr "メールを確認できません。 管理者に問い合わせて下さい。"
+
+#: app/frontend/apps/desktop/components/Form/fields/FieldEditor/useEditorActions.ts:68
+#: app/frontend/apps/mobile/components/Form/fields/FieldEditor/useEditorActions.ts:68
+#, fuzzy
+#| msgid "Shared organization"
+msgid "Writing assistant tools"
+msgstr "組織の共有"
 
 #: app/assets/javascripts/app/views/report/time_range_picker.jst.eco:2
 msgid "Year"
@@ -23934,7 +24211,7 @@ msgid ""
 msgstr ""
 
 #: app/assets/javascripts/app/views/profile/token_access.jst.eco:4
-#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:167
+#: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTokenAccess.vue:169
 msgid ""
 "You can generate a personal access token for each application you use that "
 "needs access to the Zammad API."
@@ -24103,6 +24380,7 @@ msgstr ""
 msgid "You have insufficient rights to view this object."
 msgstr ""
 
+#: app/frontend/apps/desktop/pages/organization/routes.ts:19
 #: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:31
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:26
 msgid "You have insufficient rights to view this organization."
@@ -24239,8 +24517,8 @@ msgid ""
 "<p>Your #{config.product_name} Team</p>\n"
 msgstr ""
 
-#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:127
-#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:133
+#: app/assets/javascripts/app/controllers/text_tools_modal.coffee:131
+#: app/assets/javascripts/app/controllers/ticket_zoom/sidebar_ticket_summary.coffee:137
 #, fuzzy
 #| msgid "%s Object(s) are created."
 msgid "Your AI result usage could not be recorded."
@@ -24279,12 +24557,6 @@ msgstr "姓名"
 
 #: app/assets/javascripts/app/controllers/_profile/token_access.coffee:150
 msgid "Your New Personal Access Token"
-msgstr "あなたの新規パーソナルアクセストークン"
-
-#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:143
-#, fuzzy
-#| msgid "Your New Personal Access Token"
-msgid "Your Personal Access Token"
 msgstr "あなたの新規パーソナルアクセストークン"
 
 #: app/assets/javascripts/app/views/getting_started/email_pre_configured.jst.eco:7
@@ -24354,6 +24626,12 @@ msgstr ""
 #| msgid "Change your language."
 msgid "Your language"
 msgstr "言語変更"
+
+#: app/frontend/apps/desktop/pages/personal-setting/components/PersonalSettingNewAccessTokenFlyout.vue:143
+#, fuzzy
+#| msgid "Your New Personal Access Token"
+msgid "Your personal access token"
+msgstr "あなたの新規パーソナルアクセストークン"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingAppearance.vue:28
 #, fuzzy
@@ -26201,6 +26479,150 @@ msgid "∅ Waiting time today"
 msgstr "∅ Waiting time today"
 
 #, fuzzy
+#~| msgid "Unable to verify email. Please contact your administrator."
+#~ msgid "API is not available. Please contact your Administrator and retry."
+#~ msgstr "メールを確認できません。 管理者に問い合わせて下さい。"
+
+#, fuzzy
+#~| msgid "%s Object(s) are created."
+#~ msgid "Writing Assistant couldn't generate text."
+#~ msgstr "%s オブジェクトを作成。"
+
+#, fuzzy
+#~| msgid "Templates"
+#~ msgid "Add From a Template"
+#~ msgstr "テンプレート"
+
+#, fuzzy
+#~| msgid "reply"
+#~ msgid "Add Reply"
+#~ msgstr "返信"
+
+#, fuzzy
+#~| msgid "Add Tag"
+#~ msgid "Add sms"
+#~ msgstr "タグを追加"
+
+#, fuzzy
+#~| msgid "Agent"
+#~ msgid "Ai Agent"
+#~ msgstr "担当者"
+
+#, fuzzy
+#~| msgid "Sign out"
+#~ msgid "Cancel & Sign Out"
+#~ msgstr "サインアウト"
+
+#, fuzzy
+#~| msgid "Search"
+#~ msgid "Clear Search"
+#~ msgstr "検索"
+
+#, fuzzy
+#~| msgid "Created at"
+#~ msgid "Create Shared Draft"
+#~ msgstr "次で作成済"
+
+#, fuzzy
+#~| msgid "Create a Test Ticket"
+#~ msgid "Create Ticket"
+#~ msgstr "テストチケットの作成"
+
+#, fuzzy
+#~ msgid "Facebook Direct Message"
+#~ msgstr "ツイッターのダイレクトメッセージ"
+
+#, fuzzy
+#~| msgid "Delete records"
+#~ msgid "Generate Recovery Codes"
+#~ msgstr "レコード削除"
+
+#, fuzzy
+#~| msgid "Delete Knowledge Base"
+#~ msgid "Insert text from Knowledge Base article"
+#~ msgstr "ナレッジベースの削除"
+
+#, fuzzy
+#~| msgid "Last used"
+#~ msgid "Last Used"
+#~ msgstr "直近の利用"
+
+#, fuzzy
+#~| msgid "Link %s"
+#~ msgid "Link Issue"
+#~ msgstr "リンク %s"
+
+#, fuzzy
+#~| msgid "Objects"
+#~ msgid "Link Objects"
+#~ msgstr "オブジェクト"
+
+#, fuzzy
+#~| msgid "Open Tickets"
+#~ msgid "Link Tickets"
+#~ msgstr "オープンチケット"
+
+#, fuzzy
+#~| msgid "Merge to Ticket#"
+#~ msgid "Merge Tickets"
+#~ msgstr "Ticket#にマージ"
+
+#, fuzzy
+#~| msgid "Delete records"
+#~ msgid "Regenerate Recovery Codes"
+#~ msgstr "レコード削除"
+
+#, fuzzy
+#~| msgid "reply"
+#~ msgid "Reply All"
+#~ msgstr "返信"
+
+#, fuzzy
+#~| msgid "Reset Password"
+#~ msgid "Reset Overview Order"
+#~ msgstr "パスワードをリセット"
+
+#, fuzzy
+#~| msgid "Restore Defaults"
+#~ msgid "Reset to Default Settings"
+#~ msgstr "デフォルトを復元"
+
+#, fuzzy
+#~| msgid "Add attachment option to upload."
+#~ msgid "Retry Attachment Download"
+#~ msgstr "アップロードに添付オプションを追加。"
+
+#, fuzzy
+#~| msgid "Security"
+#~ msgid "Retry Security Process"
+#~ msgstr "セキュリティー"
+
+#, fuzzy
+#~| msgid "Authentication"
+#~ msgid "Set Up Two-factor Authentication"
+#~ msgstr "認証"
+
+#, fuzzy
+#~| msgid "Authentication"
+#~ msgid "Set Up Two-factor Authentication: %s"
+#~ msgstr "認証"
+
+#, fuzzy
+#~| msgid "sms"
+#~ msgid "Sms"
+#~ msgstr "SMS"
+
+#, fuzzy
+#~| msgid "twitter direct-message"
+#~ msgid "Twitter Direct Message"
+#~ msgstr "ツイッターのダイレクトメッセージ"
+
+#, fuzzy
+#~| msgid "twitter status"
+#~ msgid "Twitter Status"
+#~ msgstr "ツイッターのステータス"
+
+#, fuzzy
 #~| msgid "Edit Customer"
 #~ msgid "Ticket History"
 #~ msgstr "顧客を編集"
@@ -27020,11 +27442,6 @@ msgstr "∅ Waiting time today"
 #~| msgid "internal"
 #~ msgid "Make internal"
 #~ msgstr "内部"
-
-#, fuzzy
-#~| msgid "Edit Organization"
-#~ msgid "Edit organization"
-#~ msgstr "組織を編集"
 
 #~ msgid "Choose attributes and then save them as a new template."
 #~ msgstr "属性を選択し、新規テンプレートとして保存します。"
