@@ -196,22 +196,22 @@ do($ = window.jQuery, window) ->
     translations:
     # ZAMMAD_TRANSLATIONS_START
       'ca':
-        '<strong>Chat</strong> with us!': '<strong>Xateu</strong> amb nosaltres!'
+        '<strong>Chat</strong> with us!': '<strong>Xateja</strong> amb nosaltres!'
         'All colleagues are busy.': 'Tot el personal està ocupat.'
         'Chat closed by %s': 'Xat tancat per %s'
-        'Compose your message…': ''
+        'Compose your message…': 'Redacta el teu missatge…'
         'Connecting': 'Connectant'
         'Connection lost': 'Connexió perduda'
         'Connection re-established': 'Connexió restablerta'
         'Offline': 'Fora de línia'
         'Online': 'En línia'
         'Scroll down to see new messages': 'Desplaçat més avall per veure nous missatges'
-        'Send': 'Envía'
+        'Send': 'Envia'
         'Since you didn\'t respond in the last %s minutes your conversation was closed.': 'Com que no heu respost en els darrers %s minuts, la vostra conversa s\'ha tancat.'
         'Since you didn\'t respond in the last %s minutes your conversation with <strong>%s</strong> was closed.': 'Com que no heu respost en els darrers %s minuts, la vostra conversa amb <strong>%s</strong> s\'ha tancat.'
         'Start new conversation': 'Inicia una conversa nova'
         'Today': 'Avui'
-        'We are sorry, it is taking longer than expected to get a slot. Please try again later or send us an email. Thank you!': '"Ho sentim, està tardant més del que s\'esperava per aconseguir un espai. Si us plau, torna-ho a intentar més tard o envia\'ns un correu electrònic. Gràcies!'
+        'We are sorry, it is taking longer than expected to get a slot. Please try again later or send us an email. Thank you!': 'Ho sentim, està tardant més del que s\'esperava per aconseguir un espai. Si us plau, torna-ho a intentar més tard o envia\'ns un correu electrònic. Gràcies!'
         'You are on waiting list position <strong>%s</strong>.': 'Estàs en la posició <strong>%s</strong> de la llista d\'espera.'
       'cs':
         '<strong>Chat</strong> with us!': '<strong>Chatujte</strong> s námi!'
