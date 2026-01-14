@@ -47,7 +47,7 @@ describe('Fields - FieldDate', () => {
       expect(input).toHaveDisplayValue('YYYY-MM-DD')
 
       await view.events.click(input)
-      await view.events.click(view.getByText('12'))
+      await view.events.click(await view.findByText('12'))
 
       const emittedInput = view.emitted().inputRaw as Array<Array<InputEvent>>
 
@@ -84,12 +84,12 @@ describe('Fields - FieldDate', () => {
 
       expect(view.queryByText('Today')).not.toBeInTheDocument()
 
-      await view.events.click(view.getByText('12'))
+      await view.events.click(await view.findByText('12'))
       await view.events.click(view.getByText('14'))
 
       const emittedInput = view.emitted().inputRaw as Array<Array<InputEvent>>
 
-      expect(emittedInput[0][0]).toEqual(['2021-04-12', '2021-04-14'])
+      expect(emittedInput[1][0]).toEqual(['2021-04-12', '2021-04-14'])
       expect(input).toHaveDisplayValue('2021-04-12 - 2021-04-14')
     })
 
@@ -137,7 +137,7 @@ describe('Fields - FieldDate', () => {
       expect(input).toHaveDisplayValue('YYYY-MM-DD')
 
       await view.events.click(input)
-      await view.events.click(view.getByText('Today'))
+      await view.events.click(await view.findByText('Today'))
 
       const emittedInput = view.emitted().inputRaw as Array<Array<InputEvent>>
 
@@ -195,7 +195,7 @@ describe('Fields - FieldDate', () => {
       const input = view.getByLabelText('Date')
 
       await view.events.click(input)
-      await view.events.click(view.getByText('12'))
+      await view.events.click(await view.findByText('12'))
 
       expect(input).toHaveDisplayValue('YYYY-MM-DD')
 
@@ -212,7 +212,7 @@ describe('Fields - FieldDate', () => {
       const input = view.getByLabelText('Date')
 
       await view.events.click(input)
-      await view.events.click(view.getByText('15'))
+      await view.events.click(await view.findByText('15'))
 
       expect(input).toHaveDisplayValue('YYYY-MM-DD')
 
@@ -220,7 +220,8 @@ describe('Fields - FieldDate', () => {
         maxDate: '2021-04-15',
       })
 
-      await view.events.click(view.getByText('15'))
+      await view.events.click(input)
+      await view.events.click(await view.findByText('15'))
 
       expect(input).toHaveDisplayValue('2021-04-15')
     })
@@ -243,7 +244,7 @@ describe('Fields - FieldDate', () => {
 
       await view.events.click(input)
 
-      const dialog = view.getByRole('dialog')
+      const dialog = await view.findByRole('dialog')
 
       expect(dialog).toHaveClass('dp__theme_dark')
     })
@@ -260,7 +261,7 @@ describe('Fields - FieldDate', () => {
       expect(input).toHaveDisplayValue('YYYY-MM-DD hh:mm')
 
       await view.events.click(input)
-      await view.events.click(view.getByText('Today'))
+      await view.events.click(await view.findByText('Today'))
 
       const emittedInput = view.emitted().inputRaw as Array<Array<InputEvent>>
 
@@ -320,7 +321,7 @@ describe('Fields - FieldDate', () => {
       expect(input).toHaveDisplayValue('MM/DD/YYYY hh:mm pp')
 
       await view.events.click(input)
-      await view.events.click(view.getByText('Today'))
+      await view.events.click(await view.findByText('Today'))
 
       expect(input).toHaveDisplayValue('04/13/2021 11:10 am')
     })

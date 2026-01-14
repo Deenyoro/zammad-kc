@@ -24,7 +24,7 @@ export class I18N {
   }
 
   locale() {
-    return document.documentElement.getAttribute('lang') || 'en-US'
+    return document.documentElement.getAttribute('lang') || 'en-us'
   }
 
   date(dateString: string): string {

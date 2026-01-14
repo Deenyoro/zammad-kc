@@ -2,9 +2,7 @@
 
 import { computed, type Ref } from 'vue'
 
-import { EnumTextDirection } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n.ts'
-import { useLocaleStore } from '#shared/stores/locale.ts'
 
 import type { DateTimeContext } from './types.ts'
 
@@ -15,12 +13,6 @@ export const useDateTime = (context: Ref<DateTimeContext>) => {
     if (timePicker.value) return 'iso'
     return 'yyyy-MM-dd'
   })
-
-  const localeStore = useLocaleStore()
-
-  const position = computed(() =>
-    localeStore.localeData?.dir === EnumTextDirection.Rtl ? 'right' : 'left',
-  )
 
   const minDate = computed(() => {
     if (context.value.futureOnly) return new Date()
@@ -38,7 +30,10 @@ export const useDateTime = (context: Ref<DateTimeContext>) => {
     result = result.replace(/l/g, 'h')
     result = result.replace(/P/g, 'aaa')
 
-    return result
+    return {
+      input: result,
+      preview: result,
+    }
   })
 
   const is24 = computed(() => i18n.getTimeFormatType() === '24hour')
@@ -113,9 +108,7 @@ export const useDateTime = (context: Ref<DateTimeContext>) => {
     ariaLabels,
     displayFormat,
     is24,
-    localeStore,
     minDate,
-    position,
     timePicker,
     valueFormat,
   }

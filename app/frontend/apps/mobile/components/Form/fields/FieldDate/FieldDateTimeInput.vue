@@ -1,15 +1,17 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import VueDatePicker from '@vuepic/vue-datepicker'
+import { VueDatePicker } from '@vuepic/vue-datepicker'
 import { useEventListener } from '@vueuse/core'
 import { computed, nextTick, ref, toRef } from 'vue'
 
 import useValue from '#shared/components/Form/composables/useValue.ts'
 import type { DateTimeContext } from '#shared/components/Form/fields/FieldDate/types.ts'
+import { useDateFnsLocale } from '#shared/components/Form/fields/FieldDate/useDateFnsLocale.ts'
 import { useDateTime } from '#shared/components/Form/fields/FieldDate/useDateTime.ts'
 import { i18n } from '#shared/i18n.ts'
 import testFlags from '#shared/utils/testFlags.ts'
+
 import '@vuepic/vue-datepicker/dist/main.css'
 
 interface Props {
@@ -18,15 +20,18 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const { dateFnsLocale } = useDateFnsLocale()
+
 const contextReactive = toRef(props, 'context')
 
 const { localValue } = useValue(contextReactive)
 
-const { ariaLabels, displayFormat, is24, minDate, position, timePicker, valueFormat } =
+const { ariaLabels, displayFormat, is24, minDate, timePicker, valueFormat } =
   useDateTime(contextReactive)
 
 const config = {
   keepActionRow: true,
+  monthChangeOnScroll: false,
 }
 
 const actionRow = {
@@ -34,6 +39,7 @@ const actionRow = {
   showCancel: false,
   showNow: true,
   showPreview: false,
+  nowBtnLabel: i18n.t('Today'),
 }
 
 const input = ref<HTMLInputElement>()
@@ -82,29 +88,30 @@ useEventListener('click', (e) => {
       ref="picker"
       v-model="localValue"
       :class="{ 'pointer-events-none': context.disabled }"
-      :uid="context.id"
       :model-type="valueFormat"
-      :name="context.node.name"
-      :clearable="!!context.clearable"
       :disabled="context.disabled"
       :range="context.range"
-      :enable-time-picker="timePicker"
-      :format="displayFormat"
-      :is-24="is24"
-      :locale="i18n.locale()"
+      :time-config="{
+        enableTimePicker: timePicker,
+        is24: is24,
+        ignoreTimeValidation: !timePicker,
+      }"
+      :formats="displayFormat"
+      :locale="dateFnsLocale"
       :max-date="context.maxDate"
       :min-date="minDate"
       :start-date="minDate || context.maxDate"
-      :ignore-time-validation="!timePicker"
       :prevent-min-max-navigation="Boolean(minDate || context.maxDate || context.futureOnly)"
-      :now-button-label="$t('Today')"
-      :position="position"
       :action-row="actionRow"
       :config="config"
       :aria-labels="ariaLabels"
       :inline="{ input: true }"
-      :month-change-on-scroll="false"
-      :text-input="{ openMenu: 'toggle' }"
+      :text-input="{ openMenu: 'toggle', format: displayFormat.input }"
+      :input-attrs="{
+        id: context.id,
+        name: context.node.name,
+        clearable: !!context.clearable,
+      }"
       auto-apply
       dark
       @open="expandPicker"
@@ -123,15 +130,15 @@ useEventListener('click', (e) => {
           type="text"
           v-bind="context.attrs"
           @input="onInput"
-          @keypress.enter="onEnter"
-          @keypress.tab="onTab"
-          @keypress="onKeypress"
+          @keydown.enter="onEnter"
+          @keydown.tab="onTab"
+          @keydown="onKeypress"
           @paste="onPaste"
           @blur="onBlur"
           @focus="expandPicker"
         />
         <div v-if="showPicker" class="w-full" :class="{ 'pe-2': context.link }">
-          <div class="h-[1px] w-full bg-white/10"></div>
+          <div class="h-px w-full bg-white/10" />
         </div>
       </template>
       <template #clear-icon>

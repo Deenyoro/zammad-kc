@@ -4,18 +4,17 @@
 
 <script setup lang="ts">
 import { getNode, type FormKitNode } from '@formkit/core'
-import VueDatePicker, { type DatePickerInstance } from '@vuepic/vue-datepicker'
+import { VueDatePicker } from '@vuepic/vue-datepicker'
 import { isValid, format, formatISO, parse, parseISO } from 'date-fns'
 import { isEqual } from 'lodash-es'
-import { storeToRefs } from 'pinia'
-import { computed, nextTick, ref, toRef, watch } from 'vue'
+import { computed, nextTick, toRef, watch, useTemplateRef } from 'vue'
 import { IMask, useIMask } from 'vue-imask'
 
 import useValue from '#shared/components/Form/composables/useValue.ts'
 import type { DateTimeContext } from '#shared/components/Form/fields/FieldDate/types.ts'
+import { useDateFnsLocale } from '#shared/components/Form/fields/FieldDate/useDateFnsLocale.ts'
 import { useDateTime } from '#shared/components/Form/fields/FieldDate/useDateTime.ts'
 import dateRange from '#shared/form/validation/rules/date-range.ts'
-import { EnumTextDirection } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n.ts'
 import testFlags from '#shared/utils/testFlags.ts'
 
@@ -33,12 +32,11 @@ const contextReactive = toRef(props, 'context')
 
 const { localValue } = useValue(contextReactive)
 
-const { ariaLabels, displayFormat, is24, localeStore, minDate, position, timePicker, valueFormat } =
+const { ariaLabels, displayFormat, is24, minDate, timePicker, valueFormat } =
   useDateTime(contextReactive)
 
 const config = computed(() => ({
   keepActionRow: true,
-  arrowLeft: localeStore.localeData?.dir === EnumTextDirection.Rtl ? 'calc(100% - 17px)' : '17px',
 }))
 
 const actionRow = computed(() => ({
@@ -48,6 +46,7 @@ const actionRow = computed(() => ({
   //   even if only one date was selected.
   showNow: !props.context.range,
   showPreview: false,
+  nowBtnLabel: i18n.t('Today'),
 }))
 
 const inputIcon = computed(() => {
@@ -56,14 +55,16 @@ const inputIcon = computed(() => {
   return 'calendar-event'
 })
 
-const picker = ref<DatePickerInstance>()
+const pickerInstance = useTemplateRef('picker')
 
-const { isDarkMode } = storeToRefs(useThemeStore())
+const isDarkMode = toRef(useThemeStore(), 'isDarkMode')
 
 const localeFormat = computed(() => {
   if (timePicker.value) return i18n.getDateTimeFormat()
   return i18n.getDateFormat()
 })
+
+const { dateFnsLocale } = useDateFnsLocale()
 
 // Date/time placeholders used in the locale format:
 // - 'dd' - 2-digit day
@@ -305,28 +306,31 @@ const closed = () => {
     <VueDatePicker
       ref="picker"
       v-model="localValue"
-      :uid="context.id"
       :model-type="valueFormat"
-      :name="context.node.name"
-      :clearable="!!context.clearable"
       :disabled="context.disabled"
       :range="context.range"
-      :enable-time-picker="timePicker"
-      :format="displayFormat"
-      :is-24="is24"
+      :time-config="{
+        enableTimePicker: timePicker,
+        is24: is24,
+        ignoreTimeValidation: !timePicker,
+      }"
+      :formats="displayFormat"
       :dark="isDarkMode"
-      :locale="i18n.locale()"
+      :locale="dateFnsLocale"
       :max-date="context.maxDate"
       :min-date="minDate"
       :start-date="minDate || context.maxDate"
-      :ignore-time-validation="!timePicker"
       :prevent-min-max-navigation="Boolean(minDate || context.maxDate || context.futureOnly)"
-      :now-button-label="$t('Today')"
-      :position="position"
+      :floating="{ placement: 'top-start', strategy: 'absolute', arrow: false, flip: true }"
       :action-row="actionRow"
       :config="config"
       :aria-labels="ariaLabels"
-      :text-input="{ openMenu: 'open' }"
+      :text-input="{ openMenu: 'open', format: displayFormat.input }"
+      :input-attrs="{
+        id: context.id,
+        name: context.node.name,
+        clearable: !!context.clearable,
+      }"
       auto-apply
       offset="12"
       @open="open"
@@ -346,7 +350,12 @@ const closed = () => {
         />
       </template>
       <template #input-icon>
-        <CommonIcon :name="inputIcon" size="tiny" decorative @click.stop="picker?.toggleMenu()" />
+        <CommonIcon
+          :name="inputIcon"
+          size="tiny"
+          decorative
+          @click.stop="pickerInstance?.toggleMenu()"
+        />
       </template>
       <template #clear-icon>
         <CommonIcon
@@ -356,7 +365,7 @@ const closed = () => {
           tabindex="0"
           role="button"
           :aria-label="$t('Clear selection')"
-          @click.stop="picker?.clearValue()"
+          @click.stop="pickerInstance?.clearValue()"
         />
       </template>
       <template #clock-icon>
@@ -630,16 +639,6 @@ const closed = () => {
 
   .dp--arrow-btn-nav .dp__inner_nav {
     color: var(--color-blue-800);
-  }
-
-  /* NB: Fix orientation of the popover arrow in RTL locales. */
-
-  .dp__arrow_top:where([dir='rtl'], [dir='rtl'] *) {
-    transform: translate(-50%, -50%) rotate(-45deg);
-  }
-
-  .dp__arrow_bottom:where([dir='rtl'], [dir='rtl'] *) {
-    transform: translate(-50%, 50%) rotate(45deg);
   }
 
   .dp__overlay_container {
