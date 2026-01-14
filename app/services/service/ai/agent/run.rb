@@ -28,6 +28,11 @@ class Service::AI::Agent::Run < Service::Base
 
     ai_agent_perform_template = Service::AI::Agent::Run::Perform::Agent.new(ai_agent:, ai_result: ai_agent_result)
 
+    # When ai result content is not matching the expected result structure, raise an temporary error to retry the job.
+    if !ai_agent_perform_template.result_structure_matches_content?
+      raise TemporaryError, __('AI agent result content does not match expected result structure.')
+    end
+
     begin
       ApplicationHandleInfo.use('ai_agent_execution') do
         ticket.perform_changes(ai_agent_perform_template, 'ai_agent', {

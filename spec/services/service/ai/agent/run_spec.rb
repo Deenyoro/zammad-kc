@@ -74,6 +74,15 @@ RSpec.describe Service::AI::Agent::Run do
           .and change { ticket.reload.state.name }.to('open')
       end
 
+      context 'when AI result content does not match result structure' do
+        let(:ai_result_content) { 'unexpected string content' }
+
+        it 'raises a TemporaryError to retry the job' do
+          expect { service.execute }
+            .to raise_error(Service::AI::Agent::Run::TemporaryError, 'AI agent result content does not match expected result structure.')
+        end
+      end
+
       context 'when no result structure is present' do
         let(:result_structure) { nil }
         let(:action_definition) do
@@ -85,7 +94,7 @@ RSpec.describe Service::AI::Agent::Run do
             }
           }
         end
-        let(:ai_result_content) { Ticket::Priority.lookup(name: '3 high').id }
+        let(:ai_result_content) { Ticket::Priority.lookup(name: '3 high').id.to_s }
 
         it 'executes the AI agent service and applies changes to the ticket based on AI result' do
           expect { service.execute }.to change { ticket.reload.priority.name }.to('3 high')
@@ -215,7 +224,7 @@ RSpec.describe Service::AI::Agent::Run do
     end
 
     context 'when AI agent has TicketCategorizer agent_type', db_strategy: :reset do
-      let(:ai_agent) { create(:ai_agent, agent_type: 'TicketCategorizer', definition: agent_definition, type_enrichment_data: type_enrichment_data) }
+      let(:ai_agent)             { create(:ai_agent, agent_type: 'TicketCategorizer', definition: agent_definition, type_enrichment_data: type_enrichment_data) }
       let(:type_enrichment_data) { { 'category' => 'custom_category', 'multiple' => false } }
       let(:agent_definition) do
         {
