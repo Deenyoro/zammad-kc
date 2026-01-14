@@ -126,6 +126,25 @@ class AI::Agent < ApplicationModel
     )
   end
 
+  def self.working_on_ticket?(ticket)
+    ActiveJobLock
+      .exists?(['lock_key LIKE ?', "TriggerAIAgentJob/Ticket/#{ticket.id}/AIAgent/%"])
+  end
+
+  # Checks for tickets that are marked as ai_agent_running but have no active AI agent jobs.
+  def self.cleanup_orphan_jobs
+    Ticket
+      .where(ai_agent_running: true)
+      .find_each do
+        is_working = AI::Agent.working_on_ticket?(it)
+
+        next if is_working
+
+        it.update_columns ai_agent_running: false # rubocop:disable Rails/SkipsModelValidations
+        it.cache_delete # Clear cache after direct DB update
+      end
+  end
+
   private
 
   def agent_type_class

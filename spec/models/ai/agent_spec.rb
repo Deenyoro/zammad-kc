@@ -151,4 +151,123 @@ RSpec.describe AI::Agent, aggregate_failures: true, current_user_id: 1, type: :m
       end
     end
   end
+
+  describe '.working_on_ticket' do
+    let(:ticket) { create(:ticket) }
+    let(:article)        { create(:ticket_article, ticket: ticket) }
+    let(:ai_agent)       { create(:ai_agent) }
+    let(:other_ticket)   { create(:ticket) }
+    let(:other_article)  { create(:ticket_article, ticket: other_ticket) }
+    let(:other_ai_agent) { create(:ai_agent) }
+
+    def make_job(agent, ticket, article)
+      TriggerAIAgentJob.perform_later(
+        agent,
+        ticket,
+        article,
+        changes:        nil,
+        user_id:        nil,
+        execution_type: nil,
+        event_type:     nil,
+      )
+    end
+
+    context 'when no agents are enqueued' do
+      it 'returns false' do
+        expect(described_class).not_to be_working_on_ticket(ticket)
+      end
+    end
+
+    context 'when an agent on the ticket is enqueued' do
+      it 'returns true' do
+        make_job(ai_agent, ticket, article)
+
+        expect(described_class).to be_working_on_ticket(ticket)
+      end
+    end
+
+    context 'when an agent on another ticket is enqueued' do
+      it 'returns false' do
+        make_job(ai_agent, other_ticket, other_article)
+
+        expect(described_class).not_to be_working_on_ticket(ticket)
+      end
+    end
+
+    context 'when multiple agents on the same ticket are enqueued' do
+      it 'returns true' do
+        make_job(ai_agent, ticket, article)
+        make_job(other_ai_agent, ticket, article)
+
+        expect(described_class).to be_working_on_ticket(ticket)
+      end
+    end
+
+    context 'when same agent on multiple tickets is enqueued' do
+      it 'returns true' do
+        make_job(ai_agent, ticket, article)
+        make_job(ai_agent, other_ticket, other_article)
+
+        expect(described_class).to be_working_on_ticket(ticket)
+      end
+    end
+  end
+
+  describe '.cleanup_orphan_jobs' do
+    let(:ticket) { create(:ticket, ai_agent_running:) }
+
+    before do
+      allow(described_class).to receive(:working_on_ticket?).with(ticket).and_return(job_enqueued)
+      allow(Rails.cache).to receive(:delete)
+    end
+
+    context 'when a ticket ai_agent_running flag is true but no jobs are enqueued' do
+      let(:ai_agent_running) { true }
+      let(:job_enqueued)     { false }
+
+      it 'resets the ai_agent_running flag' do
+        expect { described_class.cleanup_orphan_jobs }
+          .to change { ticket.reload.ai_agent_running }
+          .to false
+      end
+
+      it 'clears the ticket cache' do
+        described_class.cleanup_orphan_jobs
+
+        expect(Rails.cache).to have_received(:delete).with("Ticket::aws::#{ticket.id}")
+      end
+    end
+
+    context 'when a ticket ai_agent_running flag is true and a job is enqueued' do
+      let(:ai_agent_running) { true }
+      let(:job_enqueued)     { true }
+
+      it 'does not touch the ticket' do
+        expect { described_class.cleanup_orphan_jobs }
+          .not_to change { ticket.reload.ai_agent_running }
+      end
+
+      it 'does not clear the ticket cache' do
+        described_class.cleanup_orphan_jobs
+
+        expect(Rails.cache).not_to have_received(:delete)
+      end
+    end
+
+    context 'when a ticket ai_agent_running flag is false but a job is enqueued' do
+      let(:ai_agent_running) { false }
+      let(:job_enqueued)     { true }
+
+      it 'does not touch the ticket' do
+        expect { described_class.cleanup_orphan_jobs }
+          .not_to change { ticket.reload.ai_agent_running }
+      end
+
+      it 'does not clear the ticket cache' do
+        described_class.cleanup_orphan_jobs
+
+        expect(Rails.cache).not_to have_received(:delete)
+      end
+    end
+  end
 end

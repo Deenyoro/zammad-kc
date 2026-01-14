@@ -27,11 +27,11 @@ class TriggerAIAgentJob < AIJob
     job.mark_as_gone!
   end
 
-  discard_on(ActiveJob::DeserializationError) do |job, e|
+  # Please note that ticket.ai_agent_running flag may get stuck after this error.
+  # Next successful job execution will clean it up.
+  discard_on(ActiveJob::DeserializationError) do |_job, e|
     Rails.logger.info 'AI Agent, Ticket or Article may got removed before TriggerAIAgentJob could be executed. Discarding job. See exception for further details.'
     Rails.logger.info e
-
-    job.mark_as_gone!
   end
 
   def lock_key
@@ -61,34 +61,13 @@ class TriggerAIAgentJob < AIJob
     mark_as_gone!
   end
 
-  def self.working_on(ticket, exclude: nil)
-    ActiveJobLock
-      .where('lock_key LIKE ?', "#{name}/Ticket/#{ticket.id}/AIAgent/%")
-      .then do |scope|
-        next scope if !exclude
-
-        scope.where.not(active_job_id: exclude.job_id)
-      end
-  end
-
-  def self.working_on?(ticket, exclude: nil)
-    working_on(ticket, exclude:).exists?
-  end
-
   def mark_as_gone!
-    # arguments are empty if it was not possible to deserialize them
-    return if arguments.empty?
+    ticket = arguments[1]
 
-    @ai_agent = arguments[0]
-    @ticket   = arguments[1]
+    return if ticket.nil?
 
-    self.class.update_ticket(ticket, exclude: self)
-  end
-
-  def self.update_ticket(ticket, exclude: nil)
-    ticket.with_lock do
-      ticket.ai_agent_running = working_on?(ticket, exclude:)
-      ticket.save!
+    ApplicationModel.current_transaction.after_commit do
+      AIAgentMarkAsGone.perform_later(ticket)
     end
   end
 end
