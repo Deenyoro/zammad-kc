@@ -140,5 +140,30 @@ RSpec.describe Service::AI::Ticket::PreProcessArticleContent do
         )
       end
     end
+
+    context 'with skip_quotes_strip_first_article option', aggregate_failures: true do
+      subject(:service) { described_class.new(articles:, skip_quotes_strip_first_article: true) }
+
+      let(:ocr_active) { false }
+
+      let(:articles) do
+        [
+          create(:ticket_article, :inbound_email, ticket: ticket, content_type: 'text/html',
+                 body: '<p>First message</p><blockquote>quoted text</blockquote>'),
+          create(:ticket_article, :inbound_email, ticket: ticket, content_type: 'text/html',
+                 body: '<p>Reply message</p><blockquote>quoted text</blockquote>'),
+        ]
+      end
+
+      it 'keeps quotes in the first article but removes them in subsequent articles' do
+        result = service.execute
+
+        expect(result.first[:text]).to include('quoted text')
+        expect(result.first[:text]).not_to include('<p>')
+
+        expect(result.second[:text]).not_to include('quoted text')
+        expect(result.second[:text]).not_to include('<p>')
+      end
+    end
   end
 end

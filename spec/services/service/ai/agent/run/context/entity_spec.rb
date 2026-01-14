@@ -151,6 +151,51 @@ RSpec.describe Service::AI::Agent::Run::Context::Entity, type: :service do
         end
       end
 
+      context 'when processing email articles and articles is set to "all"' do
+        let(:entity_context) do
+          {
+            'object_attributes' => %w[title],
+            'articles'          => 'all'
+          }
+        end
+
+        let(:articles) do
+          [
+            create(
+              :ticket_article,
+              :inbound_email,
+              ticket:       ticket,
+              content_type: 'text/html',
+              body:         '<p>First message</p><blockquote>quoted text</blockquote>',
+              created_at:   2.minutes.ago,
+            ),
+            create(
+              :ticket_article,
+              :inbound_email,
+              ticket:       ticket,
+              content_type: 'text/html',
+              body:         '<p>Reply message</p><blockquote>quoted text</blockquote>',
+              created_at:   1.minute.ago,
+            ),
+          ]
+        end
+
+        it 'skips quote removal for the first article', aggregate_failures: true do
+          result = entity.prepare
+
+          expect(result[:articles]).to contain_exactly(
+            hash_including(
+              article:        articles.first,
+              processed_body: include('quoted text').and(not_include('<p>')),
+            ),
+            hash_including(
+              article:        articles.second,
+              processed_body: not_include('quoted text').and(not_include('<p>')),
+            ),
+          )
+        end
+      end
+
       context 'when articles is set to "last"' do
         let(:entity_context) do
           {

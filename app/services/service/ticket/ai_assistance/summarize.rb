@@ -22,7 +22,7 @@ class Service::Ticket::AIAssistance::Summarize < Service::BaseWithCurrentUser
     articles = ticket.articles.without_system_notifications
 
     if persistence_strategy != :stored_only
-      prepared_articles = Service::AI::Ticket::PreProcessArticleContent.new(articles:).execute
+      prepared_articles = Service::AI::Ticket::PreProcessArticleContent.new(articles:, skip_quotes_strip_first_article: true).execute
     end
 
     summarize = AI::Service::TicketSummarize.new(
