@@ -135,7 +135,7 @@ RSpec.describe 'Mobile > Ticket > Update', app: :mobile, authenticated_as: :agen
 
         expect(page).to have_no_css('label', text: 'Pending until')
 
-        date = 1.day.from_now.beginning_of_minute
+        date = 1.day.from_now.change(hour: 3).beginning_of_minute
 
         within_form(form_updater_gql_number: 1) do
           find_select('State').select_option('pending reminder')
@@ -154,7 +154,7 @@ RSpec.describe 'Mobile > Ticket > Update', app: :mobile, authenticated_as: :agen
         submit_form
 
         ticket.reload
-        expect(ticket.pending_time.localtime).to eq(date)
+        expect(ticket.pending_time).to eq(date)
       end
 
       it 'can save form on another page' do
