@@ -24,7 +24,7 @@ import { useBetaDisclaimer } from '#desktop/composables/useBetaDisclaimer.ts'
 import { useConnection } from '#desktop/composables/useConnection.ts'
 import { useTicketOverviewsStore } from '#desktop/entities/ticket/stores/ticketOverviews.ts'
 import { useUserCurrentTaskbarTabsStore } from '#desktop/entities/user/current/stores/taskbarTabs.ts'
-
+import { useAppUsageStore } from '#desktop/stores/appUsage.ts'
 const router = useRouter()
 
 const authentication = useAuthenticationStore()
@@ -80,6 +80,7 @@ watch(
     useUserCurrentTaskbarTabsStore()
     useTicketOverviewsStore()
     initializeDefaultObjectAttributes()
+    useAppUsageStore()
   },
   { immediate: true },
 )
