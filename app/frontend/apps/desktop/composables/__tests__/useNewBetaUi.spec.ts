@@ -14,6 +14,8 @@ vi.mock('#shared/composables/useConfirmation.ts', () => ({
 }))
 
 describe('useNewBetaUi', () => {
+  afterAll(() => vi.clearAllMocks())
+
   describe('betaUiSwitchEnabled', () => {
     it('returns false when config.ui_desktop_beta_switch is false', () => {
       mockApplicationConfig({ ui_desktop_beta_switch: false })
@@ -65,9 +67,8 @@ describe('useNewBetaUi', () => {
   })
 
   describe('toggleBetaUiSwitch', () => {
-    vi.mock('#shared/utils/pwa.ts')
-
     beforeEach(() => {
+      vi.doMock('#shared/utils/pwa.ts')
       Object.defineProperty(window, 'location', {
         value: {
           ...window.location,

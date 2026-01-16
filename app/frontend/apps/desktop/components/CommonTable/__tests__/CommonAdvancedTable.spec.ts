@@ -496,8 +496,6 @@ describe('CommonAdvancedTable', () => {
     expect(rowCheckboxes[0]).toBeDisabled()
   })
 
-  it.todo('supports checking all items', () => {}) // TODO: need first to be implemented in the component.
-
   it('supports disabling checkbox item for specific rows', async () => {
     const checkedItemIds = ref(new Set())
 

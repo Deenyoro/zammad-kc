@@ -1,13 +1,14 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { within } from '@testing-library/vue'
+import { ref } from 'vue'
 
 import { renderComponent } from '#tests/support/components/index.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
-import { mockAiAssistanceTextToolsListQuery } from '#shared/components/Form/fields/FieldEditor/graphql/queries/aiAssistanceTextTools/aiAssistanceTextToolsList.mocks.ts'
 import { mockAiAssistanceTextToolsRunMutation } from '#shared/graphql/mutations/aiAssistanceTextToolsRun.mocks.ts'
+import { useAiAssistantTextToolsStore } from '#shared/stores/aiAssistantTextTools.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 
 import FieldEditorActionBar from '../FieldEditorActionBar.vue'
@@ -157,7 +158,8 @@ describe('basic toolbar testing', () => {
     expect(view.queryByIconName('at-sign')).not.toBeInTheDocument()
   })
 
-  it.todo("don't see plain text actions", async () => {
+  it("don't see plain text actions", async () => {
+    mockPermissions(['ticket.agent'])
     const view = renderComponent(FieldEditorActionBar, {
       props: {
         contentType: 'text/plain',
@@ -183,7 +185,7 @@ describe('basic toolbar testing', () => {
   })
 
   describe('AiAssistantTextTools', () => {
-    const modifySelectedText = vi.fn()
+    const modifyTextWithAi = vi.fn()
     const createMockEditor = () => ({
       state: {
         selection: {
@@ -207,12 +209,13 @@ describe('basic toolbar testing', () => {
       })),
       isActive: vi.fn(() => true),
       getAttributes: vi.fn(() => ({})),
+      isFocused: false,
       commands: {
         deleteSelection: vi.fn(),
         insertContentAt: vi.fn(),
         focus: vi.fn(),
         setTextSelection: vi.fn(),
-        modifySelectedText,
+        modifyTextWithAi,
       },
       setEditable: vi.fn(),
       on: vi.fn(),
@@ -286,19 +289,10 @@ describe('basic toolbar testing', () => {
       ).not.toBeInTheDocument()
     })
 
-    it.todo('can use custom text tools', async () => {
+    it('can use custom text tools', async () => {
       mockApplicationConfig({
         ai_assistance_text_tools: true,
         ai_provider: true,
-      })
-
-      mockAiAssistanceTextToolsListQuery({
-        aiAssistanceTextToolsList: [
-          {
-            name: 'Expand',
-            active: true,
-          },
-        ],
       })
 
       mockPermissions(['ticket.agent'])
@@ -308,25 +302,51 @@ describe('basic toolbar testing', () => {
           output: 'selected text',
         },
       })
+
       const mockEditor = createMockEditor()
+
+      const formId = getUuid()
+
+      // Mock the store's lookupResult to return our test data
+      // Mock query would be cleaner, but makes troubles
+      const store = useAiAssistantTextToolsStore()
+
+      vi.spyOn(store, 'lookupResult').mockReturnValue(
+        ref({
+          aiAssistanceTextToolsList: [
+            {
+              id: 'expand-tool-123',
+              name: 'Expand',
+              active: true,
+            },
+          ],
+        }),
+      )
 
       const wrapper = renderComponent(FieldEditorActionBar, {
         props: {
           contentType: 'text/plain',
           visible: true,
           disabledPlugins: [],
-          formId: getUuid(),
+          formId,
           editor: mockEditor,
+          formContext: {
+            formId,
+            node: {
+              value: null,
+            },
+          },
         },
       })
 
-      await wrapper.events.click(wrapper.getByRole('button', { name: 'Writing Assistant Tools' }))
+      const button = await wrapper.findByRole('button', { name: 'Writing assistant tools' })
+      await wrapper.events.click(button)
 
       const sectionMenu = await wrapper.findByRole('alert')
 
       await wrapper.events.click(within(sectionMenu).getByRole('button', { name: 'Expand' }))
 
-      expect(modifySelectedText).toHaveBeenCalled()
+      expect(modifyTextWithAi).toHaveBeenCalledWith('expand-tool-123')
     })
   })
 })

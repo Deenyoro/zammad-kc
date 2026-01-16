@@ -22,22 +22,6 @@ describe('useElementScroll', () => {
     document.body.removeChild(container)
   })
 
-  it.todo('detects scrolling down', async () => {
-    const { isScrollingDown } = useElementScroll(ref(container))
-    container.scrollTop = 100 // Scroll down
-    container.dispatchEvent(new Event('scroll'))
-    expect(isScrollingDown.value).toBe(true)
-  })
-
-  it.todo('detects scrolling up', async () => {
-    const { isScrollingDown } = useElementScroll(ref(container))
-    container.scrollTop = 100 // Scroll down
-    container.dispatchEvent(new Event('scroll'))
-    expect(isScrollingDown.value).toBe(true)
-  })
-
-  it.todo('detects scrolling after start threshold', async () => {})
-
   it('detects reaching top', async () => {
     const { reachedTop } = useElementScroll(ref(container))
     container.scrollTop = 500

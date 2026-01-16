@@ -562,7 +562,7 @@ describe('Form - Field - TreeSelect - Options', () => {
 describe('Form - Field - TreeSelect - Features', () => {
   // FIXME: Updating value prop does not seem to mutate it.
   //   It could be a bug in FormKit, though. Retry with next release.
-  it.todo('supports value mutation', async () => {
+  it.skip('supports value mutation', async () => {
     const wrapper = renderComponent(FormKit, {
       ...wrapperParameters,
       props: {

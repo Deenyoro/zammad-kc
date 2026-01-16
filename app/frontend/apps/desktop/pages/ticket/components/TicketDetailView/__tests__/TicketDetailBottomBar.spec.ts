@@ -101,8 +101,21 @@ describe('TicketDetailBottomBar', () => {
   })
 
   describe('Drafts', () => {
-    it.todo('should not display draft information if ticket has no draft')
-    it.todo('should display draft information if ticket has a draft')
+    it('should not display draft information if ticket has no draft', () => {
+      const wrapper = renderTicketDetailBottomBar({
+        hasAvailableDraft: false,
+      })
+
+      expect(wrapper.queryByRole('button', { name: 'Draft available' })).not.toBeInTheDocument()
+    })
+
+    it('should display draft information if ticket has a draft', () => {
+      const wrapper = renderTicketDetailBottomBar({
+        hasAvailableDraft: true,
+      })
+
+      expect(wrapper.getByRole('button', { name: 'Draft available' })).toBeInTheDocument()
+    })
   })
 
   describe('Macros', () => {

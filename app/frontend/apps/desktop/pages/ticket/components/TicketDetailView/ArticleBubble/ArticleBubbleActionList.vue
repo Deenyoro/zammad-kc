@@ -137,7 +137,7 @@ const actions = computed(() => {
     >
       <CommonButton
         class="px-1 py-0.5! text-xs! focus-visible:outline-offset-0! focus-visible:outline-blue-800!"
-        :class="[buttonVariantClassExtension]"
+        :class="buttonVariantClassExtension"
         :prefix-icon="action.icon"
         size="large"
         @click="action.onClick"

@@ -1,10 +1,14 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { fireEvent, waitFor } from '@testing-library/vue'
-import { beforeEach, describe, vi } from 'vitest'
+import { describe, vi } from 'vitest'
 
 import renderComponent from '#tests/support/components/renderComponent.ts'
 import { mockLocale } from '#tests/support/mock-locale.ts'
+
+vi.mock('#shared/composables/useTouchDevice.ts', () => ({
+  useTouchDevice: vi.fn().mockReturnValue({ isTouchDevice: { value: true } }),
+}))
 
 describe('TooltipDirective', () => {
   describe('on non-touch device', () => {
@@ -53,12 +57,6 @@ describe('TooltipDirective', () => {
   })
 
   describe('on touch device', () => {
-    beforeEach(() => {
-      vi.mock('#shared/composables/useTouchDevice.ts', () => ({
-        useTouchDevice: vi.fn().mockReturnValue({ isTouchDevice: { value: true } }),
-      }))
-    })
-
     it('should hide tooltip on first touch', async () => {
       const wrapper = renderComponent({
         template: `
@@ -95,37 +93,6 @@ describe('TooltipDirective', () => {
       })
 
       expect(translationSpy).toHaveBeenCalledOnce()
-    })
-  })
-
-  describe('modifiers', () => {
-    it.todo('detects truncation if modifier is set', async () => {
-      // :TODO - Move this to a real browser env -> Cypress
-      let wrapper = renderComponent({
-        template: `
-        <div :style="{width: '400px'}">
-          <div v-tooltip.truncate="'Foo Test world'">Short Text</div>
-        </div>
-      `,
-      })
-
-      await wrapper.events.hover(wrapper.getByText('Short Text'))
-
-      await waitFor(() => {
-        expect(wrapper.queryByText('Foo Test world')).not.toBeInTheDocument()
-      })
-
-      wrapper = renderComponent({
-        template: `
-      <div :style="{width: '50px'}">
-        <div v-tooltip.truncate="'Foo Test world'">This is a very long text that will be truncated</div>
-      </div>
-    `,
-      })
-
-      await wrapper.events.hover(
-        wrapper.getByText('This is a very long text that will be truncated'),
-      )
     })
   })
 })

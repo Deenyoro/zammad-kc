@@ -20,8 +20,8 @@ import { mockTicketExternalReferencesIdoitObjectSearchQuery } from '#desktop/pag
 
 describe('Ticket create i-doit links', () => {
   describe('ticket creation', () => {
-    it.todo('submits a new ticket with i-doit objects', async () => {
-      await mockApplicationConfig({
+    it.skip('submits a new ticket with i-doit objects', async () => {
+      mockApplicationConfig({
         idoit_integration: true,
         ui_task_mananger_max_task_count: 30,
         ui_ticket_create_available_types: ['phone-in', 'phone-out', 'email-out'],

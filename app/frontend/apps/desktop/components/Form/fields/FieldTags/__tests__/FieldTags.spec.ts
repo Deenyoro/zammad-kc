@@ -118,7 +118,7 @@ describe('Form - Field - Tags - Features', () => {
     expect(wrapper.queryByRole('button', { name: 'add new tag' })).not.toBeInTheDocument()
   })
 
-  it.todo('supports selecting tags via keyboard shortcuts', async () => {
+  it('supports selecting tags via keyboard shortcuts', async () => {
     const wrapper = renderComponent(FormKit, {
       ...wrapperParameters,
       props: {
@@ -155,20 +155,25 @@ describe('Form - Field - Tags - Features', () => {
       autocompleteSearchTag: [testOptions[0]],
     })
 
-    // :TODO fix test
-    await wrapper.events.type(filterElement, 'tag 1') // enter
+    await wrapper.events.type(filterElement, 'tag 1{Tab}')
 
-    expect(emittedInput[1][0]).toEqual(['tag', 'tag 1'])
+    await waitForAutocompleteSearchTagQueryCalls()
+
+    await waitFor(() => {
+      expect(emittedInput.at(-1)?.[0]).toEqual(['tag', 'tag 1'])
+    })
 
     mockAutocompleteSearchTagQuery({
       autocompleteSearchTag: [testOptions[1]],
     })
 
-    await wrapper.events.type(filterElement, 'tag 2{Tab}') // tab
+    await wrapper.events.type(filterElement, 'tag 2{Tab}')
 
-    expect(await wrapper.findByText('tag 2')).toBeInTheDocument()
+    await waitForAutocompleteSearchTagQueryCalls()
 
-    expect(emittedInput[2][0]).toEqual(['tag', 'tag 1', 'tag 2'])
+    await waitFor(() => {
+      expect(emittedInput.at(-1)?.[0]).toEqual(['tag', 'tag 1', 'tag 2'])
+    })
   })
 })
 

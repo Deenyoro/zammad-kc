@@ -1,5 +1,7 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
+import { computed } from 'vue'
+
 import { renderComponent } from '#tests/support/components/index.ts'
 
 import { createDummyArticle } from '#shared/entities/ticket-article/__tests__/mocks/ticket-articles.ts'
@@ -10,14 +12,25 @@ import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import { provideTicketInformationMocks } from '#desktop/entities/ticket/__tests__/mocks/provideTicketInformationMocks.ts'
 import ArticleBubbleActionList from '#desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubbleActionList.vue'
 
-const renderArticleBubbleActionList = () =>
-  renderComponent(
+const renderArticleBubbleActionList = (options?: {
+  position?: 'left' | 'right'
+  articleOverrides?: Parameters<typeof createDummyArticle>[0]
+  provideOverrides?: Parameters<typeof provideTicketInformationMocks>[1]
+  withGroupEmail?: boolean
+}) => {
+  const {
+    position = 'left',
+    articleOverrides,
+    provideOverrides,
+    withGroupEmail = true,
+  } = options || {}
+
+  return renderComponent(
     {
       components: {
         ArticleBubbleActionList,
       },
       setup() {
-        const position = 'left'
         const article = createDummyArticle({
           senderName: EnumTicketArticleSenderName.Agent,
           articleType: 'email',
@@ -31,11 +44,21 @@ const renderArticleBubbleActionList = () =>
               name: 'test.txt',
             },
           ],
+          ...articleOverrides,
         })
 
-        const ticket = createDummyTicket()
+        const ticket = createDummyTicket({
+          group: {
+            emailAddress: withGroupEmail
+              ? {
+                  emailAddress: 'support@example.com',
+                  name: 'Support',
+                }
+              : null,
+          },
+        })
 
-        provideTicketInformationMocks(ticket)
+        provideTicketInformationMocks(ticket, provideOverrides)
 
         return { position, article }
       },
@@ -43,16 +66,16 @@ const renderArticleBubbleActionList = () =>
     },
     { router: true, store: true },
   )
+}
 
-// :TODO adapt suite to new implementation
 describe('ArticleBubbleActionList', () => {
-  it.todo('does not show top level actions on hover (js-dom limitation)', () => {
+  it('does not show top level actions on hover (js-dom limitation)', () => {
     const wrapper = renderArticleBubbleActionList()
 
     expect(wrapper.getByTestId('top-level-article-action-container')).toHaveClass('opacity-0')
   })
 
-  it.todo('has reply action', async () => {
+  it('has reply action', async () => {
     const wrapper = renderArticleBubbleActionList()
 
     expect(wrapper.getByRole('button', { name: 'Reply' })).toBeInTheDocument()
@@ -63,6 +86,47 @@ describe('ArticleBubbleActionList', () => {
 
     await wrapper.events.click(wrapper.getByRole('button', { name: 'Action menu button' }))
 
-    expect(wrapper.getAllByRole('menuitem')).toHaveLength(3)
+    const items = wrapper.getAllByRole('menuitem')
+    expect(items.length).toBeGreaterThanOrEqual(3)
+    expect(wrapper.getByRole('menuitem', { name: 'Forward' })).toBeInTheDocument()
+    expect(wrapper.getByRole('menuitem', { name: 'Download original email' })).toBeInTheDocument()
+    expect(wrapper.getByRole('menuitem', { name: 'Download raw email' })).toBeInTheDocument()
+  })
+
+  it('does not show reply all when single recipient', async () => {
+    const wrapper = renderArticleBubbleActionList({})
+
+    expect(wrapper.queryByRole('button', { name: 'Reply all' })).not.toBeInTheDocument()
+  })
+
+  it('shows two popover actions when original email unavailable', async () => {
+    const wrapper = renderArticleBubbleActionList({
+      articleOverrides: { attachmentsWithoutInline: [] },
+    })
+
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Action menu button' }))
+
+    const items = wrapper.getAllByRole('menuitem')
+
+    expect(items.length).toBeGreaterThanOrEqual(2)
+    expect(wrapper.getByRole('menuitem', { name: 'Forward' })).toBeInTheDocument()
+    expect(wrapper.getByRole('menuitem', { name: 'Download raw email' })).toBeInTheDocument()
+    expect(
+      wrapper.queryByRole('menuitem', { name: 'Download original email' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('renders right-position actions with reversed order class', () => {
+    const wrapper = renderArticleBubbleActionList({ position: 'right' })
+
+    expect(wrapper.getByTestId('top-level-article-action-container')).toHaveClass('-order-1!')
+  })
+
+  it('does not render actions when ticket is not editable', () => {
+    const wrapper = renderArticleBubbleActionList({
+      provideOverrides: { isTicketEditable: computed(() => false) },
+    })
+
+    expect(wrapper.queryByTestId('top-level-article-action-container')).not.toBeInTheDocument()
   })
 })

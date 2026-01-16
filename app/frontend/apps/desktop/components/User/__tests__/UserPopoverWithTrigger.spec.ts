@@ -109,7 +109,7 @@ describe('UserPopover', () => {
     expect(within(popover).getByText(dummyUser.organization.name)).toBeVisible()
   })
 
-  it.todo('displays organization names with remaining count', async () => {
+  it('displays organization names with remaining count', async () => {
     const secondaryOrganizations = {
       edges: [
         {
@@ -139,24 +139,34 @@ describe('UserPopover', () => {
             name: 'Apple',
           },
         },
+        {
+          node: {
+            id: convertToGraphQLId('Organization', 5),
+            internalId: 5,
+            active: true,
+            vip: false,
+            name: 'Tesla',
+          },
+        },
       ],
-      totalCount: 4,
+      totalCount: 5,
     }
 
-    mockUserInfoForPopoverQuery({
+    const wrapper = renderUserPopover({
       user: {
         ...dummyUser,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         secondaryOrganizations,
       },
     })
-
-    const wrapper = renderUserPopover()
 
     await wrapper.events.hover(wrapper.getByRole('img', { name: `Avatar (${dummyUser.fullname})` }))
 
     const calls = await waitForUserInfoForPopoverQueryCalls()
 
     expect(calls.at(-1)?.variables).toEqual({
+      secondaryOrganizationsCount: 5,
       userId: dummyUser.id,
     })
 
@@ -166,7 +176,7 @@ describe('UserPopover', () => {
     expect(within(popover).getByText('Audi')).toBeVisible()
     expect(within(popover).getByText('Apple')).toBeVisible()
 
-    expect(within(popover).getByRole('link', { name: '1 more' })).toBeVisible()
+    expect(within(popover).getByRole('button', { name: 'Show more' })).toBeVisible()
   })
 
   it('renders as link by default', () => {

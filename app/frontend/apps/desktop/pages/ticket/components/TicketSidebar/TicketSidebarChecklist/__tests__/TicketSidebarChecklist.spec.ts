@@ -578,7 +578,7 @@ describe('TicketSidebarChecklist', () => {
   })
 
   describe('checklist templates', () => {
-    it.todo('applies template to ticket checklist', async () => {
+    it('applies template to ticket checklist', async () => {
       mockTicketChecklistQuery({
         ticketChecklist: null,
       })
@@ -598,6 +598,7 @@ describe('TicketSidebarChecklist', () => {
       const calls = await waitForTicketChecklistAddMutationCalls()
 
       expect(calls.at(-1)?.variables).toEqual({
+        createFirstItem: true,
         templateId: convertToGraphQLId('Checklist::Item', 1),
         ticketId: convertToGraphQLId('Ticket', 1),
       })

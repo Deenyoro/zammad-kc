@@ -150,15 +150,6 @@ describe('useThemeStore', () => {
   })
 
   describe('isDarkMode', () => {
-    it.todo('returns true when user prefers dark media theme', async () => {
-      // :TODO mock media theme does not update preferredColorScheme
-      mockMediaTheme(EnumAppearanceTheme.Dark)
-
-      const { isDarkMode } = useThemeStore()
-
-      expect(isDarkMode).toBe(true)
-    })
-
     it('returns false when user prefers light media theme', async () => {
       mockMediaTheme(EnumAppearanceTheme.Light)
 

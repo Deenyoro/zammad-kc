@@ -9,7 +9,14 @@ const { mockMediaTheme } = await import('#tests/support/mock-mediaTheme.ts')
 const { waitForNextTick } = await import('#tests/support/utils.ts')
 const { i18n } = await import('#shared/i18n.ts')
 
-export {}
+vi.mock('@vueuse/core', async () => {
+  const mod = await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
+
+  return {
+    ...mod,
+    usePreferredColorScheme: () => computed(() => 'dark'),
+  }
+})
 
 const now = new Date('2021-04-13T11:10:00Z')
 
@@ -228,15 +235,6 @@ describe('Fields - FieldDate', () => {
 
     it('renders in dark mode when user prefers dark media theme', async () => {
       mockMediaTheme(EnumAppearanceTheme.Dark)
-
-      vi.mock('@vueuse/core', async () => {
-        const mod = await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
-
-        return {
-          ...mod,
-          usePreferredColorScheme: () => computed(() => 'dark'),
-        }
-      })
 
       const view = await renderDateField()
 
