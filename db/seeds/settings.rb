@@ -3150,6 +3150,15 @@ Setting.create_if_not_exists(
 )
 
 Setting.create_if_not_exists(
+  title:       __('Form Allowed Parameters'),
+  name:        'form_allowed_params',
+  area:        'Form::API',
+  description: __('Defines which parameters are allowed to be submitted via the form API.'),
+  state:       [],
+  frontend:    false
+)
+
+Setting.create_if_not_exists(
   title:       __('Ticket Subject Size'),
   name:        'ticket_subject_size',
   area:        'Email::Base',
