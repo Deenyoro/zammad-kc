@@ -3,7 +3,7 @@
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 
-import { useNewBetaUi } from '#desktop/composables/useNewBetaUi.ts'
+import { useBetaUi } from '#desktop/components/BetaUi/composables/useBetaUi.ts'
 
 const waitForConfirmationMock = vi.fn().mockImplementation(() => true)
 
@@ -20,7 +20,7 @@ describe('useNewBetaUi', () => {
     it('returns false when config.ui_desktop_beta_switch is false', () => {
       mockApplicationConfig({ ui_desktop_beta_switch: false })
 
-      const { betaUiSwitchEnabled } = useNewBetaUi()
+      const { betaUiSwitchEnabled } = useBetaUi()
 
       expect(betaUiSwitchEnabled.value).toBe(false)
     })
@@ -32,7 +32,7 @@ describe('useNewBetaUi', () => {
         hasBetaUiSwitchAvailable: false,
       })
 
-      const { betaUiSwitchEnabled } = useNewBetaUi()
+      const { betaUiSwitchEnabled } = useBetaUi()
 
       expect(betaUiSwitchEnabled.value).toBe(false)
     })
@@ -46,7 +46,7 @@ describe('useNewBetaUi', () => {
 
       localStorage.setItem('beta-ui-switch-dismiss', 'true')
 
-      const { betaUiSwitchEnabled } = useNewBetaUi()
+      const { betaUiSwitchEnabled } = useBetaUi()
 
       expect(betaUiSwitchEnabled.value).toBe(false)
     })
@@ -60,7 +60,7 @@ describe('useNewBetaUi', () => {
 
       localStorage.setItem('beta-ui-switch-dismiss', 'false')
 
-      const { betaUiSwitchEnabled } = useNewBetaUi()
+      const { betaUiSwitchEnabled } = useBetaUi()
 
       expect(betaUiSwitchEnabled.value).toBe(true)
     })
@@ -78,18 +78,32 @@ describe('useNewBetaUi', () => {
       })
     })
 
-    it('sets switchValue to undefined', () => {
-      const { switchValue, toggleBetaUiSwitch } = useNewBetaUi()
+    it('sets switchValue and hasFeedbackConsent to undefined', () => {
+      const { hasFeedbackConsent, switchValue, toggleBetaUiSwitch } = useBetaUi()
 
       expect(switchValue.value).not.toBe(undefined)
+      expect(hasFeedbackConsent.value).not.toBe(undefined)
 
       toggleBetaUiSwitch()
 
       expect(switchValue.value).toBe(undefined)
+      expect(hasFeedbackConsent.value).toBe(undefined)
+    })
+
+    it('supports skipping setting hasFeedbackConsent to undefined', () => {
+      const { hasFeedbackConsent, switchValue, toggleBetaUiSwitch } = useBetaUi()
+
+      expect(switchValue.value).not.toBe(undefined)
+      expect(hasFeedbackConsent.value).not.toBe(undefined)
+
+      toggleBetaUiSwitch('/', true)
+
+      expect(switchValue.value).toBe(undefined)
+      expect(hasFeedbackConsent.value).not.toBe(undefined)
     })
 
     it('redirects to root URL', () => {
-      const { toggleBetaUiSwitch } = useNewBetaUi()
+      const { toggleBetaUiSwitch } = useBetaUi()
 
       expect(window.location.href).toBe('/desktop')
 
@@ -101,7 +115,7 @@ describe('useNewBetaUi', () => {
 
   describe('dismissBetaUiSwitch', () => {
     it('shows confirmation dialog', () => {
-      const { dismissBetaUiSwitch } = useNewBetaUi()
+      const { dismissBetaUiSwitch } = useBetaUi()
 
       dismissBetaUiSwitch()
 
@@ -111,7 +125,7 @@ describe('useNewBetaUi', () => {
     it('sets dismissValue to true', () => {
       localStorage.setItem('beta-ui-switch-dismiss', 'false')
 
-      const { dismissValue, dismissBetaUiSwitch } = useNewBetaUi()
+      const { dismissValue, dismissBetaUiSwitch } = useBetaUi()
 
       expect(dismissValue.value).toBe(false)
 
@@ -125,7 +139,7 @@ describe('useNewBetaUi', () => {
     it('toggles dismissValue', () => {
       localStorage.setItem('beta-ui-switch-dismiss', 'false')
 
-      const { dismissValue, toggleDismissBetaUiSwitch } = useNewBetaUi()
+      const { dismissValue, toggleDismissBetaUiSwitch } = useBetaUi()
 
       expect(dismissValue.value).toBe(false)
 

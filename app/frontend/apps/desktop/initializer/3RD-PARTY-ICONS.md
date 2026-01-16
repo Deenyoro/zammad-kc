@@ -77,6 +77,8 @@
 - `assets/speedometer2.svg`
 - `assets/spinner.svg`
 - `assets/square.svg`
+- `assets/star.svg`
+- `assets/star-fill.svg`
 - `assets/stopwatch.svg`
 - `assets/sun.svg`
 - `assets/tag.svg`

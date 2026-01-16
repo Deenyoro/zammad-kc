@@ -529,6 +529,11 @@ const application = useApplicationStore()
 
 const formSchema = defineFormSchema([
   {
+    type: 'rating',
+    name: 'rating',
+    label: 'How would you rate the Zammad BETA UI?',
+  },
+  {
     type: 'editor',
     name: 'editor',
     label: 'Editor',

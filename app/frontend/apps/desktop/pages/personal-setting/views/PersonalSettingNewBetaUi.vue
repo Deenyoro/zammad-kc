@@ -3,14 +3,14 @@
 <script setup lang="ts">
 import { FormKit } from '@formkit/vue'
 
+import { useBetaUi } from '#desktop/components/BetaUi/composables/useBetaUi.ts'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
-import { useNewBetaUi } from '#desktop/composables/useNewBetaUi.ts'
 
 import { useBreadcrumb } from '../composables/useBreadcrumb.ts'
 
 const { breadcrumbItems } = useBreadcrumb(__('New BETA UI'))
 
-const { toggleBetaUiSwitch, toggleDismissBetaUiSwitch, dismissValue } = useNewBetaUi()
+const { toggleBetaUiSwitch, toggleDismissBetaUiSwitch, dismissValue } = useBetaUi()
 </script>
 
 <template>

@@ -2,17 +2,33 @@
 
 import { createPinia, setActivePinia } from 'pinia'
 
+import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
+import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
+
 import { useAppUsageStore } from '../appUsage.ts'
 
-describe('useAppUsageStore', () => {
+const grantAccessToBetaFeedback = () => {
+  mockApplicationConfig({
+    ui_desktop_beta_switch: true,
+  })
+  mockUserCurrent({
+    hasBetaUiSwitchAvailable: true,
+  })
+
+  localStorage.setItem('beta-ui-switch', 'true')
+  localStorage.setItem('beta-ui-feedback-consent', 'true')
+}
+
+describe('useAppUsageStore - when tracking usage', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
-    localStorage.clear()
     vi.useFakeTimers()
+    vi.clearAllMocks()
   })
 
   afterEach(() => {
     vi.useRealTimers()
+    localStorage.clear()
   })
 
   it('should initialize with default values', () => {
@@ -70,6 +86,8 @@ describe('useAppUsageStore', () => {
     })
 
     it('should identify current milestone key at 1h milestone', () => {
+      grantAccessToBetaFeedback()
+
       const store = useAppUsageStore()
 
       expect(store.currentMilestoneKey).toBe(null)
@@ -80,6 +98,8 @@ describe('useAppUsageStore', () => {
     })
 
     it('should identify current milestone key at 5h milestone', () => {
+      grantAccessToBetaFeedback()
+
       const store = useAppUsageStore()
 
       vi.advanceTimersByTime(5 * 60 * 60 * 1000)
@@ -88,6 +108,8 @@ describe('useAppUsageStore', () => {
     })
 
     it('should identify current milestone key at 20h milestone', () => {
+      grantAccessToBetaFeedback()
+
       const store = useAppUsageStore()
 
       vi.advanceTimersByTime(20 * 60 * 60 * 1000)
@@ -96,6 +118,8 @@ describe('useAppUsageStore', () => {
     })
 
     it('should trigger milestone dialog when milestone is reached and not yet triggered', () => {
+      grantAccessToBetaFeedback()
+
       const store = useAppUsageStore()
 
       expect(store.shouldTriggerMilestoneDialog).toBe(false)
@@ -110,6 +134,8 @@ describe('useAppUsageStore', () => {
     })
 
     it('should not trigger milestone dialog after it has been triggered', () => {
+      grantAccessToBetaFeedback()
+
       const store = useAppUsageStore()
 
       vi.advanceTimersByTime(60 * 60 * 1000)
@@ -122,6 +148,8 @@ describe('useAppUsageStore', () => {
     })
 
     it('should track milestone trigger history', () => {
+      grantAccessToBetaFeedback()
+
       const store = useAppUsageStore()
 
       expect(store.triggeredMilestones['1h']).toBe(false)

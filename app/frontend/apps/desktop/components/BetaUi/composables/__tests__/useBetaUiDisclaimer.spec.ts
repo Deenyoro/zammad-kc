@@ -6,16 +6,16 @@ import renderComponent, { initializePiniaStore } from '#tests/support/components
 
 import { useAuthenticationStore } from '#shared/stores/authentication.ts'
 
-import { useBetaDisclaimer } from '../useBetaDisclaimer.ts'
+import { useBetaUiDisclaimer } from '../useBetaUiDisclaimer.ts'
 
 const DummyComponent = {
   template: '<div></div>',
   setup() {
-    useBetaDisclaimer()
+    useBetaUiDisclaimer()
   },
 }
 
-describe('useDesktopViewWarning', () => {
+describe('useBetaUiDisclaimer', () => {
   beforeEach(() => {
     localStorage.setItem('beta-ui-disclaimer', 'false')
 
@@ -30,14 +30,14 @@ describe('useDesktopViewWarning', () => {
   it('opens dialog if not dismissed and confirms', async () => {
     const wrapper = renderComponent(DummyComponent, {
       router: true,
-      store: true,
       dialog: true,
     })
 
-    expect(await wrapper.findByText('New desktop UI — Alpha version')).toBeInTheDocument()
+    expect(await wrapper.findByText('New desktop BETA UI')).toBeInTheDocument()
+
     expect(
       wrapper.getByText(
-        'This new desktop UI is currently in development and not ready for production use. It may contain bugs or incomplete features.',
+        'This new desktop BETA UI is currently in development and not ready for production use. It may contain bugs or incomplete features.',
       ),
     ).toBeInTheDocument()
 

@@ -2,7 +2,7 @@
 
 import type { User } from '#shared/graphql/types.ts'
 
-import { useNewBetaUi } from '#desktop/composables/useNewBetaUi.ts'
+import { useBetaUi } from '#desktop/components/BetaUi/composables/useBetaUi.ts'
 import type { DetailViewActionPlugin } from '#desktop/types/actions.ts'
 
 export default <DetailViewActionPlugin>{
@@ -14,7 +14,7 @@ export default <DetailViewActionPlugin>{
   onClick: (user?: User) => {
     if (!user) return
 
-    const { switchValue, toggleBetaUiSwitch } = useNewBetaUi()
+    const { switchValue, toggleBetaUiSwitch } = useBetaUi()
 
     const url = `/#system/data_privacy/${user.internalId}`
 
@@ -24,6 +24,6 @@ export default <DetailViewActionPlugin>{
     }
 
     // Make sure to clear the beta switch flag, so the admin does not end up in redirect loop.
-    toggleBetaUiSwitch(url)
+    toggleBetaUiSwitch(url, true)
   },
 }

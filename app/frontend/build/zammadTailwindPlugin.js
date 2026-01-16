@@ -66,6 +66,9 @@ module.exports = plugin(
         minWidth: {
           '1/2': '50%',
         },
+        animation: {
+          'ping-once': 'ping .3s cubic-bezier(0, 0, 0.2, 1)',
+        },
       },
     },
   },

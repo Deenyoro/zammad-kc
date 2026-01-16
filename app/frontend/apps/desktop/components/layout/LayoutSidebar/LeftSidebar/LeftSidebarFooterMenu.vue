@@ -4,10 +4,10 @@
 import { FormKit } from '@formkit/vue'
 import { computed, provide } from 'vue'
 
+import { useBetaUi } from '#desktop/components/BetaUi/composables/useBetaUi.ts'
 import AvatarMenu from '#desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/AvatarMenu.vue'
 import MenuContainer from '#desktop/components/layout/LayoutSidebar/LeftSidebar/MenuContainer/MenuContainer.vue'
 import { COLLAPSED_STATE_KEY } from '#desktop/components/layout/LayoutSidebar/LeftSidebar/useCollapsedState.ts'
-import { useNewBetaUi } from '#desktop/composables/useNewBetaUi.ts'
 
 const props = defineProps<{
   collapsed?: boolean
@@ -18,7 +18,7 @@ provide(
   computed(() => props.collapsed),
 )
 
-const { betaUiSwitchEnabled, toggleBetaUiSwitch, dismissBetaUiSwitch } = useNewBetaUi()
+const { betaUiSwitchEnabled, toggleBetaUiSwitch, dismissBetaUiSwitch } = useBetaUi()
 </script>
 
 <template>

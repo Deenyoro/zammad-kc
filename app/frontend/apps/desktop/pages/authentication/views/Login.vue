@@ -17,10 +17,10 @@ import { EnumPublicLinksScreen } from '#shared/graphql/types.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import { useAuthenticationStore } from '#shared/stores/authentication.ts'
 
+import { useBetaUi } from '#desktop/components/BetaUi/composables/useBetaUi.ts'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonPublicLinks from '#desktop/components/CommonPublicLinks/CommonPublicLinks.vue'
 import LayoutPublicPage from '#desktop/components/layout/LayoutPublicPage/LayoutPublicPage.vue'
-import { useNewBetaUi } from '#desktop/composables/useNewBetaUi.ts'
 import LoginThirdParty from '#desktop/pages/authentication/components/LoginThirdParty.vue'
 
 import { ensureAfterAuth } from '../after-auth/composable/useAfterAuthPlugins.ts'
@@ -164,7 +164,7 @@ const showPasswordLogin = computed(
     verifyTokenResult?.value,
 )
 
-const { switchValue, toggleBetaUiSwitch } = useNewBetaUi()
+const { switchValue, toggleBetaUiSwitch } = useBetaUi()
 </script>
 
 <template>
@@ -302,7 +302,7 @@ const { switchValue, toggleBetaUiSwitch } = useNewBetaUi()
           size="medium"
           link="/"
           external
-          @click="toggleBetaUiSwitch()"
+          @click="toggleBetaUiSwitch('/', true)"
         >
           {{ $t('Switch to old interface') }}
         </CommonLink>

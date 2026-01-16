@@ -4,6 +4,8 @@ import { useIdle, useIntervalFn, useLocalStorage } from '@vueuse/core'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { computed, onScopeDispose, watch } from 'vue'
 
+import { useBetaUi } from '#desktop/components/BetaUi/composables/useBetaUi.ts'
+import { useBetaUiFeedbackConsentState } from '#desktop/components/BetaUi/composables/useBetaUiFeedbackConsentState.ts'
 import type {
   MilestonesHistoryRecords,
   MilestoneKey,
@@ -20,17 +22,28 @@ const MILESTONES = [
 ] as const
 
 const useTimeTracker = (tickCallback: (time: number) => void, options: TimeTrackerOptions = {}) => {
-  const { tickTime = TICK_TIME_MS } = options
+  const { tickTime = TICK_TIME_MS, enabled = () => true } = options
 
   const { idle } = useIdle(IDLE_TIME_OUT_MS)
 
   const isActive = computed(() => !idle.value)
+  const runTimer = computed(enabled)
 
-  const { resume, pause } = useIntervalFn(() => {
-    tickCallback(tickTime)
-  }, tickTime)
+  const { resume, pause } = useIntervalFn(
+    () => {
+      tickCallback(tickTime)
+    },
+    tickTime,
+    { immediate: false },
+  )
 
-  watch(isActive, (active) => (active ? resume() : pause()))
+  watch(
+    [isActive, runTimer],
+    ([active, run]) => {
+      return active && run ? resume() : pause()
+    },
+    { immediate: true },
+  )
 
   onScopeDispose(pause)
 
@@ -61,9 +74,13 @@ export const useAppUsageStore = defineStore('appUsage', () => {
     totalAppUsageTime.value += millisecondsCount
   }
 
-  // :TODO pause and activate tracking based on consent flag + second flag
-  // watch()
-  useTimeTracker(updateTotalUsage)
+  const { hasFeedbackConsent } = useBetaUiFeedbackConsentState()
+  const { switchValue, betaUiSwitchAvailable } = useBetaUi()
+
+  useTimeTracker(updateTotalUsage, {
+    enabled: () =>
+      !!betaUiSwitchAvailable.value && !!switchValue.value && hasFeedbackConsent.value === 'true',
+  })
 
   const triggerMilestone = (key: MilestoneKey, trigger: boolean) => {
     milestoneHistory.value[key] = trigger

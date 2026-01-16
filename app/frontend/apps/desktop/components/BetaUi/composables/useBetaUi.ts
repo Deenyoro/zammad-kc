@@ -1,30 +1,34 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { useLocalStorage } from '@vueuse/core'
-import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, toRef } from 'vue'
 
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 
-export const useNewBetaUi = () => {
-  const { user } = storeToRefs(useSessionStore())
-  const { config } = storeToRefs(useApplicationStore())
+import { useBetaUiFeedbackConsentState } from './useBetaUiFeedbackConsentState.ts'
+
+export const useBetaUi = () => {
+  const user = toRef(useSessionStore(), 'user')
+  const config = toRef(useApplicationStore(), 'config')
 
   const switchValue = useLocalStorage('beta-ui-switch', false)
 
   const dismissValue = useLocalStorage('beta-ui-switch-dismiss', false)
 
-  const betaUiSwitchEnabled = computed(
-    () =>
-      config.value?.ui_desktop_beta_switch &&
-      user.value?.hasBetaUiSwitchAvailable &&
-      !dismissValue.value,
+  const betaUiSwitchAvailable = computed(
+    () => config.value?.ui_desktop_beta_switch && user.value?.hasBetaUiSwitchAvailable,
   )
 
-  const toggleBetaUiSwitch = (redirectTo = '/') => {
+  const betaUiSwitchEnabled = computed(() => betaUiSwitchAvailable.value && !dismissValue.value)
+
+  const { hasFeedbackConsent } = useBetaUiFeedbackConsentState()
+
+  const toggleBetaUiSwitch = (redirectTo = '/', skipFeedbackConsentClear = false) => {
     switchValue.value = undefined
+
+    if (!skipFeedbackConsentClear) hasFeedbackConsent.value = undefined
 
     window.location.href = redirectTo
   }
@@ -54,7 +58,9 @@ export const useNewBetaUi = () => {
   }
 
   return {
+    betaUiSwitchAvailable,
     betaUiSwitchEnabled,
+    hasFeedbackConsent,
     switchValue,
     dismissValue,
     toggleBetaUiSwitch,

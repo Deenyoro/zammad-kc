@@ -5,7 +5,7 @@ import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 
-import { useNewBetaUi } from '#desktop/composables/useNewBetaUi.ts'
+import { useBetaUi } from '#desktop/components/BetaUi/composables/useBetaUi.ts'
 
 describe('personal new beta ui settings', () => {
   beforeEach(() => {
@@ -42,7 +42,7 @@ describe('personal new beta ui settings', () => {
     )
     expect(dismissCheckbox).toBeInTheDocument()
 
-    const { switchValue, dismissValue } = useNewBetaUi()
+    const { switchValue, dismissValue } = useBetaUi()
 
     expect(switchValue.value).toBe(false)
     expect(dismissValue.value).toBe(false)

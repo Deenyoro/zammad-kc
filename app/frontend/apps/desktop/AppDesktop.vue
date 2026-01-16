@@ -19,12 +19,16 @@ import { useAuthenticationStore } from '#shared/stores/authentication.ts'
 import { useLocaleStore } from '#shared/stores/locale.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 
+import { useBetaUiDisclaimer } from '#desktop/components/BetaUi/composables/useBetaUiDisclaimer.ts'
+import { useBetaUiFeedbackConsent } from '#desktop/components/BetaUi/composables/useBetaUiFeedbackConsent.ts'
 import { initializeConfirmationDialog } from '#desktop/components/CommonConfirmationDialog/initializeConfirmationDialog.ts'
-import { useBetaDisclaimer } from '#desktop/composables/useBetaDisclaimer.ts'
 import { useConnection } from '#desktop/composables/useConnection.ts'
 import { useTicketOverviewsStore } from '#desktop/entities/ticket/stores/ticketOverviews.ts'
 import { useUserCurrentTaskbarTabsStore } from '#desktop/entities/user/current/stores/taskbarTabs.ts'
 import { useAppUsageStore } from '#desktop/stores/appUsage.ts'
+
+import { useBetaUi } from './components/BetaUi/composables/useBetaUi.ts'
+
 const router = useRouter()
 
 const authentication = useAuthenticationStore()
@@ -44,8 +48,20 @@ usePushMessages()
 // browser tab or maintenance mode switch).
 useAuthenticationChanges()
 
-// Shows the warning for the usage of the desktop view(beta). REMOVE when stable.
-useBetaDisclaimer()
+// TODO: Remove when desktop view is stable.
+const { switchValue } = useBetaUi()
+
+// Shows the feedback consent for the BETA usage of the desktop view.
+//  The user has by this point enrolled into the BETA program.
+if (switchValue.value) {
+  useBetaUiFeedbackConsent()
+}
+
+// Shows the warning for the BETA usage of the desktop view.
+//   The user has not yet enrolled into the BETA program.
+else {
+  useBetaUiDisclaimer()
+}
 
 // We need to trigger a manual translation update for the form related strings.
 const formConfig = useFormKitConfig()

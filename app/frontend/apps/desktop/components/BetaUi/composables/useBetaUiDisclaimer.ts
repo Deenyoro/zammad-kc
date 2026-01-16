@@ -10,12 +10,14 @@ import { useAuthenticationStore } from '#shared/stores/authentication.ts'
 import CommonDialog from '#desktop//components/CommonDialog/CommonDialog.vue'
 import { useDialog } from '#desktop/components/CommonDialog/useDialog.ts'
 
-export const useBetaDisclaimer = () => {
+export const useBetaUiDisclaimer = () => {
   const DIALOG_NAME = 'beta-ui-disclaimer'
 
   // In capybara the initial value should be true, to not have to close the dialog on every test run
   const hasDismissedWarning = useLocalStorage('beta-ui-disclaimer', VITE_TEST_MODE)
+
   const route = useRoute()
+
   const { authenticated } = storeToRefs(useAuthenticationStore())
 
   const afterAuthRouteActive = computed(
@@ -33,13 +35,14 @@ export const useBetaDisclaimer = () => {
       new Promise((resolve) => {
         resolve(
           h(CommonDialog, {
+            class: 'max-w-lg',
             wrapperTag: 'article',
             fullscreen: true,
             name: DIALOG_NAME,
             global: true,
-            headerTitle: __('New desktop UI — Alpha version'),
+            headerTitle: __('New desktop BETA UI'),
             content: __(
-              'This new desktop UI is currently in development and not ready for production use. It may contain bugs or incomplete features.',
+              'This new desktop BETA UI is currently in development and not ready for production use. It may contain bugs or incomplete features.',
             ),
             footerActionOptions: {
               hideCancelButton: true,

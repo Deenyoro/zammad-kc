@@ -113,6 +113,7 @@ describe('visuals for common dialog', () => {
     expect(wrapper.queryByLabelText('Close dialog')).not.toBeInTheDocument()
 
     await wrapper.events.click(wrapper.getByRole('button', { name: 'OK' }))
+
     expect(emitted.close).toBeUndefined()
   })
 

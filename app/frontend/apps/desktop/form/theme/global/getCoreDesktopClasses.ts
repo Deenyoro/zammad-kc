@@ -83,6 +83,10 @@ export const getCoreDesktopClasses: FormThemeExtension = (classes: FormThemeClas
     autocomplete: selectInputClasses(classes.autocomplete),
     agent: selectInputClasses(classes.agent),
     customer: selectInputClasses(classes.customer),
+    rating: extendClasses(classes.rating, {
+      label: 'mb-3',
+      inner: 'mb-1',
+    }),
     recipient: selectInputClasses(classes.recipient),
     ticket: selectInputClasses(classes.ticket),
     toggle: extendClasses(classes.toggle, {
