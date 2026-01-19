@@ -4,6 +4,7 @@ import { computed, type Ref } from 'vue'
 
 import CommonDateTime from '#shared/components/CommonDateTime/CommonDateTime.vue'
 import type { TicketArticle } from '#shared/entities/ticket/types.ts'
+import { i18n } from '#shared/i18n.ts'
 
 import { lookupArticlePlugin } from '#desktop/pages/ticket/components/TicketDetailView/article-type/index.ts'
 import ArticleMetaFieldAddress from '#desktop/pages/ticket/components/TicketDetailView/ArticleMeta/ArticleMetaAddress.vue'
@@ -45,7 +46,6 @@ const addNewFields = (fields: ChannelMetaField[], article: Ref<TicketArticle>) =
 
 export const useArticleMeta = (article: Ref<TicketArticle>) => {
   const links = computed(() => article.value.preferences?.links || [])
-
   const fields = computed(() => {
     const plugin = lookupArticlePlugin(article.value.type?.name as string)
 
@@ -101,7 +101,7 @@ export const useArticleMeta = (article: Ref<TicketArticle>) => {
       {
         label: __('Channel'),
         name: 'channel',
-        value: plugin?.name,
+        value: i18n.t(plugin?.metaLabel),
         icon: plugin?.icon,
         links: article.value.preferences?.links,
         component: plugin?.channel?.component,

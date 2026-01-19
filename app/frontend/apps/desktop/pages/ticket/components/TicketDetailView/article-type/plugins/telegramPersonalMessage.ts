@@ -5,5 +5,6 @@ import type { ChannelModule } from '#desktop/pages/ticket/components/TicketDetai
 export default <ChannelModule>{
   name: 'telegram',
   label: __('Telegram'),
+  metaLabel: __('telegram'),
   icon: 'telegram',
 }

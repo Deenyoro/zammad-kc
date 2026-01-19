@@ -9,6 +9,7 @@ export default <ChannelModule>{
   name: 'email',
   icon: 'mail',
   label: __('Email'),
+  metaLabel: __('email'),
   additionalFields: [
     { name: 'subject', order: 350, label: __('Subject') },
     {

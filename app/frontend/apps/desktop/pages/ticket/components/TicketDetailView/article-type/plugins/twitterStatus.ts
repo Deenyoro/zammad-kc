@@ -5,5 +5,6 @@ import type { ChannelModule } from '#desktop/pages/ticket/components/TicketDetai
 export default <ChannelModule>{
   name: 'twitter status',
   label: __('Twitter status'),
+  metaLabel: __('twitter status'),
   icon: 'twitter',
 }

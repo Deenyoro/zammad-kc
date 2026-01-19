@@ -18,6 +18,8 @@ interface TranslationsCacheValue {
 
 export const LOCAL_STORAGE_KEY = 'translationsStoreCache'
 
+const CACHE_KEY_EMPTY_NAME = 'CACHE_EMPTY'
+
 const loadCache = (locale: string): TranslationsCacheValue => {
   const cached = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_KEY) || '{}')
 
@@ -61,7 +63,7 @@ const getTranslationsQuery = () => {
 export const useTranslationsStore = defineStore(
   'translations',
   () => {
-    const cacheKey = ref<string>('CACHE_EMPTY')
+    const cacheKey = ref<string>(CACHE_KEY_EMPTY_NAME)
     const translationData = ref<Record<string, string>>({})
 
     const load = async (newLocale: string): Promise<void> => {
@@ -69,26 +71,32 @@ export const useTranslationsStore = defineStore(
 
       const cachedData = loadCache(newLocale)
 
+      // Always start with the cache key we already have for the requested locale so the
+      // backend can decide if the cache is still valid and omit the payload if possible.
+      cacheKey.value = cachedData.cacheKey || CACHE_KEY_EMPTY_NAME
+
       const translationsQuery = getTranslationsQuery()
 
       const { data: result } = await translationsQuery.query({
         variables: {
-          cacheKey: cachedData.cacheKey,
+          cacheKey: cacheKey.value,
           locale: newLocale,
         },
       })
 
-      if (!result?.translations) {
-        return
-      }
+      if (!result?.translations) return
 
-      if (result.translations.isCacheStillValid && cachedData.locale === newLocale) {
-        cacheKey.value = cachedData.cacheKey
-        translationData.value = cachedData.translations
-      } else {
-        cacheKey.value = result.translations.cacheKey || 'CACHE_EMPTY'
-        translationData.value = result.translations.translations
+      const isCacheValid = result.translations.isCacheStillValid && cachedData.locale === newLocale
 
+      cacheKey.value = isCacheValid
+        ? cachedData.cacheKey || cacheKey.value
+        : result.translations.cacheKey || CACHE_KEY_EMPTY_NAME
+
+      translationData.value = isCacheValid
+        ? cachedData.translations
+        : result.translations.translations || {}
+
+      if (!isCacheValid) {
         setCache(newLocale, {
           cacheKey: cacheKey.value,
           translations: translationData.value,
@@ -96,7 +104,7 @@ export const useTranslationsStore = defineStore(
         })
       }
 
-      i18n.setTranslationMap(new Map(Object.entries(translationData.value)))
+      i18n.setTranslationMap(new Map(Object.entries(translationData.value || {})))
 
       log.debug('translations.load() setting new translation map', newLocale, translationData.value)
     }

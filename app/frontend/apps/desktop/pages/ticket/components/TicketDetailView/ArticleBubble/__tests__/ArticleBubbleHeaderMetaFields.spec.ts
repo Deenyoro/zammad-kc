@@ -56,25 +56,30 @@ const renderWrapper = (
 const iconAliasMap: Record<string, string> = iconAliasMapRaw
 
 describe('ArticleBubbleMetaFields', () => {
-  it.each(articleTypeModules)('displays meta field for channel $name', ({ name, icon }) => {
-    const wrapper = renderWrapper(name as ArticleTypeName, {
-      articleData: {
-        subject: 'Test subject',
-        to: {
-          raw: 'Test Agents',
-          parsed: [{ name: 'Test Agents', emailAddress: 'tet@agents.com', isSystemAddress: false }],
+  it.each(articleTypeModules)(
+    'displays meta field for channel $name',
+    ({ name, metaLabel, icon }) => {
+      const wrapper = renderWrapper(name as ArticleTypeName, {
+        articleData: {
+          subject: 'Test subject',
+          to: {
+            raw: 'Test Agents',
+            parsed: [
+              { name: 'Test Agents', emailAddress: 'tet@agents.com', isSystemAddress: false },
+            ],
+          },
         },
-      },
-    })
+      })
 
-    hasBaseInformation(wrapper)
+      hasBaseInformation(wrapper)
 
-    expect(wrapper.getByText('Channel')).toBeInTheDocument()
-    expect(wrapper.getByText(name)).toBeInTheDocument()
-    expect(wrapper.getByIconName(iconAliasMap[icon] || icon)).toBeInTheDocument()
+      expect(wrapper.getByText('Channel')).toBeInTheDocument()
+      expect(wrapper.getByText(metaLabel)).toBeInTheDocument()
+      expect(wrapper.getByIconName(iconAliasMap[icon] || icon)).toBeInTheDocument()
 
-    hasAdditionalFields(wrapper, name as ArticleTypeName)
-  })
+      hasAdditionalFields(wrapper, name as ArticleTypeName)
+    },
+  )
 
   describe('hidden features', () => {
     it('displays links on channel field if available', () => {

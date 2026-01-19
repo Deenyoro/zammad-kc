@@ -8,6 +8,7 @@ import ArticleMetaWhatsappMessageStatus from '#desktop/pages/ticket/components/T
 export default <ChannelModule>{
   name: 'whatsapp message',
   label: __('WhatsApp message'),
+  metaLabel: __('whatsapp message'),
   icon: 'whatsapp',
   additionalFields: [
     {

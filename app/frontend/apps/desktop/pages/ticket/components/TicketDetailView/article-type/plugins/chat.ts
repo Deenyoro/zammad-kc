@@ -4,5 +4,6 @@ import type { ChannelModule } from '#desktop/pages/ticket/components/TicketDetai
 export default <ChannelModule>{
   name: 'chat',
   label: __('Chat'),
+  metaLabel: __('chat'),
   icon: 'chat',
 }

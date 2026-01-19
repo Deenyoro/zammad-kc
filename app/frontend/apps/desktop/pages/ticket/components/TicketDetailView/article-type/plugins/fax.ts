@@ -5,5 +5,6 @@ import type { ChannelModule } from '#desktop/pages/ticket/components/TicketDetai
 export default <ChannelModule>{
   name: 'fax',
   label: __('Fax'),
+  metaLabel: __('fax'),
   icon: 'fax',
 }

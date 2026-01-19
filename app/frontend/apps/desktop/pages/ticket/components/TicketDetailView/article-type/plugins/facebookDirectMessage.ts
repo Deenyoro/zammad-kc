@@ -5,5 +5,6 @@ import type { ChannelModule } from '#desktop/pages/ticket/components/TicketDetai
 export default <ChannelModule>{
   name: 'facebook direct message',
   label: __('Facebook direct message'),
+  metaLabel: __('facebook direct message'),
   icon: 'facebook',
 }

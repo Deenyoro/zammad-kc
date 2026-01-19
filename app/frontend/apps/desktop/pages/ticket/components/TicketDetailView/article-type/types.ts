@@ -15,6 +15,7 @@ export interface ChannelField {
 export interface ChannelModule {
   name: string
   label: string
+  metaLabel: string
   icon: string
   additionalFields?: ChannelField[]
   channel?: {
