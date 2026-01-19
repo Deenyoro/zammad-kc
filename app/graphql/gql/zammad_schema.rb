@@ -19,6 +19,16 @@ class Gql::ZammadSchema < GraphQL::Schema
 
   max_depth 8, count_introspection_fields: false
 
+  def self.introspection_enabled?
+    override = ENV['ZAMMAD_GRAPHQL_INTROSPECTION']
+
+    return ActiveRecord::Type::Boolean.new.cast(override) if override.present?
+
+    !Rails.env.production?
+  end
+
+  disable_introspection_entry_points if !introspection_enabled?
+
   # Required for loads:, other types like unions need to implement type resolution directly.
   def self.resolve_type(abstract_type, _obj, _ctx)
     abstract_type
@@ -143,4 +153,5 @@ class Gql::ZammadSchema < GraphQL::Schema
     end
   end
   private_class_method :build_record_invalid_errors
+
 end
