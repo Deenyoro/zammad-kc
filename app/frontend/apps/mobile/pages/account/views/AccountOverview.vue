@@ -1,8 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, ref, toRef } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useRawHTMLIcon } from '#shared/components/CommonIcon/useRawHTMLIcon.ts'
@@ -36,7 +35,7 @@ useHeader({
 })
 
 const session = useSessionStore()
-const { user } = storeToRefs(session)
+const user = toRef(session, 'user')
 
 const { modelCurrentLocale, localeOptions, isSavingLocale, translation } = useLocaleUpdate()
 

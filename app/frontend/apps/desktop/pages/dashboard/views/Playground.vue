@@ -4,8 +4,7 @@
 <script setup lang="ts">
 import { reset } from '@formkit/core'
 import gql from 'graphql-tag'
-import { storeToRefs } from 'pinia'
-import { computed, h, onMounted, reactive, ref, watch, type Ref, useTemplateRef } from 'vue'
+import { computed, h, onMounted, reactive, ref, watch, type Ref, useTemplateRef, toRef } from 'vue'
 
 import CommonAlert from '#shared/components/CommonAlert/CommonAlert.vue'
 import CommonTranslateRenderer from '#shared/components/CommonTranslateRenderer/CommonTranslateRenderer.vue'
@@ -894,8 +893,7 @@ watch(progressBarValue, (newValue) => {
   }, 1000)
 })
 
-const session = useSessionStore()
-const { user } = storeToRefs(session)
+const user = toRef(useSessionStore(), 'user')
 
 const { isOpen: popoverIsOpen, popover, popoverTarget, toggle } = usePopover()
 

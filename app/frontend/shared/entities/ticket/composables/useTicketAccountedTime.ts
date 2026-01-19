@@ -1,12 +1,11 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, toRef } from 'vue'
 
 import { useApplicationStore } from '#shared/stores/application.ts'
 
 export const useTicketAccountedTime = () => {
-  const { config: applicationConfig } = storeToRefs(useApplicationStore())
+  const applicationConfig = toRef(useApplicationStore(), 'config')
 
   const timeAccountingConfig = computed(() => ({
     time_accounting_types: applicationConfig.value.time_accounting_types,

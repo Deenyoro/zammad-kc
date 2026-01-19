@@ -1,8 +1,7 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { watchOnce } from '@vueuse/shared'
-import { storeToRefs } from 'pinia'
-import { computed, ref, watch, type Ref } from 'vue'
+import { computed, ref, toRef, watch, type Ref } from 'vue'
 
 import type { UserTaskbarTab } from '#desktop/components/UserTaskbarTabs/types.ts'
 import { useUserCurrentTaskbarTabsStore } from '#desktop/entities/user/current/stores/taskbarTabs.ts'
@@ -17,7 +16,10 @@ export const useUserTaskbarTab = (
 ) => {
   const tabLinkInstance = ref<CommonLinkInstance>()
 
-  const { activeTaskbarTabEntityKey } = storeToRefs(useUserCurrentTaskbarTabsStore())
+  const activeTaskbarTabEntityKey = toRef(
+    useUserCurrentTaskbarTabsStore(),
+    'activeTaskbarTabEntityKey',
+  )
 
   const taskbarTabActive = computed(
     () => activeTaskbarTabEntityKey.value === taskbarTab.value.tabEntityKey,

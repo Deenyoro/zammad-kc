@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
+import { toRef } from 'vue'
 
 import { isInlineAttributeEditable } from '#shared/components/ObjectAttributes/utils.ts'
 import { useSharedVisualConfig } from '#shared/composables/useSharedVisualConfig.ts'
@@ -31,7 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
 const { fields } = useDisplayObjectAttributes(props)
 const { objectAttributes: objectAttributesConfig } = useSharedVisualConfig()
 
-const { config } = storeToRefs(useApplicationStore())
+const config = toRef(useApplicationStore(), 'config')
 
 const getLabel = (attribute: ObjectAttribute) =>
   attribute.dataOption?.display_config

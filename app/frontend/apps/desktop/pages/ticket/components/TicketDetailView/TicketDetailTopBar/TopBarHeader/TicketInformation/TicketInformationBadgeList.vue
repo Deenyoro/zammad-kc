@@ -1,8 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, toRef } from 'vue'
 
 import { useTicketView } from '#shared/entities/ticket/composables/useTicketView.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
@@ -15,7 +14,7 @@ import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicke
 
 const { ticket } = useTicketInformation()
 
-const { config } = storeToRefs(useApplicationStore())
+const config = toRef(useApplicationStore(), 'config')
 
 const { isTicketAgent } = useTicketView(ticket)
 

@@ -1,7 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { storeToRefs } from 'pinia'
-import { computed, provide } from 'vue'
+import { computed, provide, toRef } from 'vue'
 import { THEME_KEY } from 'vue-echarts'
 
 import { EnumAppearanceTheme } from '#shared/graphql/types.ts'
@@ -9,7 +8,7 @@ import { EnumAppearanceTheme } from '#shared/graphql/types.ts'
 import { useThemeStore } from '#desktop/stores/theme.ts'
 
 export const useChartTheme = () => {
-  const { isDarkMode } = storeToRefs(useThemeStore())
+  const isDarkMode = toRef(useThemeStore(), 'isDarkMode')
 
   const colorTheme = computed(() =>
     isDarkMode.value ? EnumAppearanceTheme.Dark : EnumAppearanceTheme.Light,

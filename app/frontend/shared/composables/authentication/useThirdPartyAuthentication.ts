@@ -1,7 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, toRef } from 'vue'
 
 import { EnumAuthenticationProvider } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n.ts'
@@ -10,7 +9,7 @@ import type { ThirdPartyAuthProvider } from '#shared/types/authentication.ts'
 
 export const useThirdPartyAuthentication = () => {
   const application = useApplicationStore()
-  const { config } = storeToRefs(application)
+  const config = toRef(application, 'config')
 
   const providers = computed<ThirdPartyAuthProvider[]>(() => {
     return [

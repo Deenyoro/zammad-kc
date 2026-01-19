@@ -2,8 +2,7 @@
 
 <script setup lang="ts">
 import { isEqual } from 'lodash-es'
-import { storeToRefs } from 'pinia'
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, reactive, ref, watch, toRef } from 'vue'
 
 import {
   NotificationTypes,
@@ -147,7 +146,7 @@ const calendarSubscriptionListQuery = new QueryHandler(
 
 const calendarSubscriptionListQueryResult = calendarSubscriptionListQuery.result()
 
-const { user } = storeToRefs(useSessionStore())
+const user = toRef(useSessionStore(), 'user')
 
 // Refetch calendar subscription list query when the user preference has changed.
 watch(

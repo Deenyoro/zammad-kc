@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { storeToRefs } from 'pinia'
+import { toRef } from 'vue'
 
 import { getTailwindStyleValue } from '#shared/utils/tailwind.ts'
 
@@ -10,7 +10,7 @@ import { useThemeStore } from '#desktop/stores/theme.ts'
 const CHART_FONT_FAMILY = 'Fira Sans, Helvetica Neue, Helvetica, Arial, sans-serif'
 
 export const useChartStyles = () => {
-  const { isDarkMode } = storeToRefs(useThemeStore())
+  const isDarkMode = toRef(useThemeStore(), 'isDarkMode')
 
   const colorMap = {
     'neutral-50': getTailwindStyleValue('--color-neutral-50'),

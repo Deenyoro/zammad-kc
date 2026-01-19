@@ -1,14 +1,13 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { storeToRefs } from 'pinia'
-import { computed, type Ref } from 'vue'
+import { computed, toRef, type Ref } from 'vue'
 
 import { useApplicationStore } from '#shared/stores/application.ts'
 
 import type { TicketById } from '../types.ts'
 
 export const useTicketNumberAndTitle = (ticket?: Ref<Partial<TicketById> | undefined>) => {
-  const { config } = storeToRefs(useApplicationStore())
+  const config = toRef(useApplicationStore(), 'config')
 
   const getTicketNumberWithHook = (ticketNumber?: number | string) => {
     if (!ticketNumber) return ''

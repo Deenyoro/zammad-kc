@@ -1,7 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { storeToRefs } from 'pinia'
-import { computed, nextTick, onUnmounted } from 'vue'
+import { computed, nextTick, onUnmounted, toRef } from 'vue'
 
 import useEditorActionHelper from '#shared/components/Form/fields/FieldEditor/composables/useEditorActionHelper.ts'
 import { EXTENSION_NAME as AiAssistanceTextToolsName } from '#shared/components/Form/fields/FieldEditor/extensions/AiAssistantTextTools.ts'
@@ -55,7 +54,7 @@ export default function useEditorActions(
     fileInput = null
   })
 
-  const { config: applicationConfig } = storeToRefs(useApplicationStore())
+  const applicationConfig = toRef(useApplicationStore(), 'config')
   const { hasPermission } = useSessionStore()
 
   const { localeData } = useLocaleStore()

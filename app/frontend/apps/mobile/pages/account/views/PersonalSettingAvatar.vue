@@ -1,8 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { reactive, shallowRef, watch, ref, computed } from 'vue'
+import { reactive, shallowRef, watch, ref, computed, toRef } from 'vue'
 import { Cropper, type CropperResult } from 'vue-advanced-cropper'
 import { useRouter } from 'vue-router'
 import 'vue-advanced-cropper/dist/style.css'
@@ -56,7 +55,7 @@ watch(activeAvatar, (newValue) => {
   state.resizedImage = newValue?.imageResize || ''
 })
 
-const { user } = storeToRefs(useSessionStore())
+const user = toRef(useSessionStore(), 'user')
 
 const avatarDeleteDisabled = computed(() => {
   return !activeAvatar.value?.deletable

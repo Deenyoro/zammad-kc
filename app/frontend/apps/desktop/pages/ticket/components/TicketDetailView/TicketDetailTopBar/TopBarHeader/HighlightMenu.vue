@@ -1,8 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, toRef } from 'vue'
 
 import { highlightColors } from '#shared/components/Form/fields/FieldEditor/features/color-picker/colors/colors-highlight.ts'
 import type { HighlightColor } from '#shared/components/Form/fields/FieldEditor/features/color-picker/colors/types.ts'
@@ -30,7 +29,7 @@ const isActive = ref(false)
 
 const { popover, popoverTarget, toggle, close, isOpen } = usePopover()
 
-const { isDarkMode } = storeToRefs(useThemeStore())
+const isDarkMode = toRef(useThemeStore(), 'isDarkMode')
 
 const selectColor = (event: ExtendedMenuItem) => {
   color.value = event

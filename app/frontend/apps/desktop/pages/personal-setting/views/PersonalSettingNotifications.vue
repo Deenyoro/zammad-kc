@@ -2,8 +2,7 @@
 
 <script setup lang="ts">
 import { isEqual } from 'lodash-es'
-import { storeToRefs } from 'pinia'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, toRef } from 'vue'
 
 import {
   NotificationTypes,
@@ -33,7 +32,7 @@ import type { NotificationFormData } from '#desktop/pages/personal-setting/types
 
 const { breadcrumbItems } = useBreadcrumb(__('Notifications'))
 
-const { user } = storeToRefs(useSessionStore())
+const user = toRef(useSessionStore(), 'user')
 
 const { notify } = useNotifications()
 

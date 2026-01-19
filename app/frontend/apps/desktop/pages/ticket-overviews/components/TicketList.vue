@@ -303,8 +303,8 @@ const totalCount = computed(() => ticketsResult.value?.ticketsCachedByOverview.t
 
 const loadMore = async () => pagination.fetchNextPage()
 
-const { config } = storeToRefs(useApplicationStore())
-const { user } = storeToRefs(useSessionStore())
+const config = toRef(useApplicationStore(), 'config')
+const user = toRef(useSessionStore(), 'user')
 
 // Scrolling position is preserved when user visits another page and returns to overview page
 const { scrollPosition, restoreScrollPosition } = useScrollPosition(scrollContainerElement)

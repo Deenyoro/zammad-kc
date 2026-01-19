@@ -1,8 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, ref, toRef } from 'vue'
 
 import {
   NotificationTypes,
@@ -47,7 +46,7 @@ defineOptions({
 const { notify } = useNotifications()
 const { breadcrumbItems } = useBreadcrumb(__('Linked accounts'))
 
-const { user } = storeToRefs(useSessionStore())
+const user = toRef(useSessionStore(), 'user')
 
 const { enabledProviders } = useThirdPartyAuthentication()
 const { fingerprint } = useFingerprint()

@@ -24,8 +24,8 @@ export const useLocaleUpdate = () => {
   const { notify } = useNotifications()
 
   const localeStore = useLocaleStore()
-  const { localeData, locales } = storeToRefs(localeStore)
   const { setLocale } = localeStore
+  const { localeData, locales } = storeToRefs(localeStore)
 
   const modelCurrentLocale = computed({
     get: () => localeData.value?.locale ?? 'en',

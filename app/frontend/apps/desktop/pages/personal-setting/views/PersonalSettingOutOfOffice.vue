@@ -2,8 +2,7 @@
 
 <script setup lang="ts">
 import { isEqual } from 'lodash-es'
-import { storeToRefs } from 'pinia'
-import { reactive, computed, watch } from 'vue'
+import { reactive, computed, watch, toRef } from 'vue'
 
 import {
   NotificationTypes,
@@ -30,7 +29,7 @@ import { useUserCurrentOutOfOfficeMutation } from '../graphql/mutations/userCurr
 
 import type { OutOfOfficeFormData } from '../types/out-of-office.ts'
 
-const { user } = storeToRefs(useSessionStore())
+const user = toRef(useSessionStore(), 'user')
 
 const { form, isDisabled, onChangedField, formReset, values, isDirty } = useForm()
 

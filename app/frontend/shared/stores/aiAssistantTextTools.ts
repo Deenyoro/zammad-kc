@@ -1,8 +1,8 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { without } from 'lodash-es'
-import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia'
-import { computed, ref } from 'vue'
+import { acceptHMRUpdate, defineStore } from 'pinia'
+import { computed, ref, toRef } from 'vue'
 
 import { useAiTextToolUpdatesSubscription } from '#shared/graphql/subscriptions/aiTextToolUpdates.api.ts'
 import type {
@@ -13,7 +13,7 @@ import { QueryHandler, SubscriptionHandler } from '#shared/server/apollo/handler
 import { useApplicationStore } from '#shared/stores/application.ts'
 
 export const useAiAssistantTextToolsStore = defineStore('aiTextTools', () => {
-  const { config } = storeToRefs(useApplicationStore())
+  const config = toRef(useApplicationStore(), 'config')
   // null key returns a list of all text tools
   const usageKeys = ref<(number | null)[]>([])
   const queryByUsageKey = ref<

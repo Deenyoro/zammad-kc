@@ -1,8 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, toRef } from 'vue'
 import { useRouter } from 'vue-router'
 
 import type { AvatarOrganization } from '#shared/components/CommonOrganizationAvatar/types.ts'
@@ -47,7 +46,7 @@ const { debouncedLoading } = useDebouncedLoading({
 
 const organizationMembers = computed(() => normalizeEdges(organization.value?.allMembers) || [])
 
-const { viewScreenAttributes } = storeToRefs(useOrganizationObjectAttributesStore())
+const viewScreenAttributes = toRef(useOrganizationObjectAttributesStore(), 'viewScreenAttributes')
 
 const router = useRouter()
 

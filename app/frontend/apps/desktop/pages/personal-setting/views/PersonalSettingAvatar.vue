@@ -1,8 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { computed, useTemplateRef } from 'vue'
+import { computed, useTemplateRef, toRef } from 'vue'
 
 import CommonAvatar from '#shared/components/CommonAvatar/CommonAvatar.vue'
 import { NotificationTypes } from '#shared/components/CommonNotifications/types.ts'
@@ -42,7 +41,7 @@ import { UserCurrentAvatarUpdatesDocument } from '../graphql/subscriptions/userC
 
 import type { ApolloCache, NormalizedCacheObject } from '@apollo/client/core'
 
-const { user } = storeToRefs(useSessionStore())
+const user = toRef(useSessionStore(), 'user')
 
 const { breadcrumbItems } = useBreadcrumb(__('Avatar'))
 

@@ -1,8 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, toRef } from 'vue'
 
 import { useCopyToClipboard } from '#shared/composables/useCopyToClipboard.ts'
 import { useTicketView } from '#shared/entities/ticket/composables/useTicketView.ts'
@@ -29,7 +28,7 @@ const { copyToClipboard } = useCopyToClipboard()
 
 const { ticketNumber, ticketNumberWithTicketHook } = useTicketNumber(ticket)
 
-const { config } = storeToRefs(useApplicationStore())
+const config = toRef(useApplicationStore(), 'config')
 
 const copyTicketNumberToClipboard = () => {
   console.debug(

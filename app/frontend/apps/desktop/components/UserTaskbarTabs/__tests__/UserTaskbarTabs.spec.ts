@@ -1,7 +1,7 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { getByRole, waitFor } from '@testing-library/vue'
-import { storeToRefs } from 'pinia'
+import { toRef } from 'vue'
 import { type RouteRecordRaw } from 'vue-router'
 
 import { getAllByIconName, getByIconName } from '#tests/support/components/iconQueries.ts'
@@ -630,7 +630,10 @@ describe('UserTaskbarTabs.vue', () => {
 
     // Simulate currently active tab by changing the store state directly.
     //   Normally, this would be set by the route navigation guard (`activeTaskbarTab`).
-    const { activeTaskbarTabEntityKey } = storeToRefs(useUserCurrentTaskbarTabsStore())
+    const activeTaskbarTabEntityKey = toRef(
+      useUserCurrentTaskbarTabsStore(),
+      'activeTaskbarTabEntityKey',
+    )
 
     activeTaskbarTabEntityKey.value = 'TicketCreateScreen-999'
 

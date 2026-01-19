@@ -1,8 +1,7 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { useLocalStorage } from '@vueuse/core'
-import { storeToRefs } from 'pinia'
-import { computed, h, nextTick, watch } from 'vue'
+import { computed, h, nextTick, toRef, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { useAuthenticationStore } from '#shared/stores/authentication.ts'
@@ -18,7 +17,7 @@ export const useBetaUiDisclaimer = () => {
 
   const route = useRoute()
 
-  const { authenticated } = storeToRefs(useAuthenticationStore())
+  const authenticated = toRef(useAuthenticationStore(), 'authenticated')
 
   const afterAuthRouteActive = computed(
     // route.name is undefined when you visit or reload the after auth phase e.g two-factor auth

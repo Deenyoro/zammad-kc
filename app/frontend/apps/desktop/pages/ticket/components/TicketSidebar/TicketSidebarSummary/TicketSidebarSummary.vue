@@ -1,8 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { computed, type EffectScope, effectScope, ref, watch } from 'vue'
+import { computed, type EffectScope, effectScope, ref, watch, toRef } from 'vue'
 
 import { useReactivate } from '#shared/composables/useReactivate.ts'
 import { useTicketArticleUpdatesSubscription } from '#shared/entities/ticket/graphql/subscriptions/ticketArticlesUpdates.api.ts'
@@ -35,7 +34,7 @@ defineProps<TicketSidebarProps>()
 const emit = defineEmits<TicketSidebarEmits>()
 
 const { user } = useSessionStore()
-const { config } = storeToRefs(useApplicationStore())
+const config = toRef(useApplicationStore(), 'config')
 const { persistentStates } = usePersistentStates()
 const { ticketId, ticket } = useTicketInformation()
 const { activeSidebar } = useTicketSidebar()

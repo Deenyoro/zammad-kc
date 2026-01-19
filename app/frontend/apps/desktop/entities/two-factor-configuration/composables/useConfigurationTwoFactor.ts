@@ -1,7 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { storeToRefs } from 'pinia'
-import { computed, watch } from 'vue'
+import { computed, toRef, watch } from 'vue'
 
 import { useApplicationConfigTwoFactor } from '#shared/composables/authentication/useApplicationConfigTwoFactor.ts'
 import type {
@@ -19,8 +18,7 @@ export const useConfigurationTwoFactor = () => {
   const { twoFactorEnabledMethods, hasEnabledMethods, hasEnabledRecoveryCodes } =
     useApplicationConfigTwoFactor()
 
-  const session = useSessionStore()
-  const { user } = storeToRefs(session)
+  const user = toRef(useSessionStore(), 'user')
 
   const defaultTwoFactorMethod = computed<EnumTwoFactorAuthenticationMethod>(() => {
     return user.value?.preferences?.two_factor_authentication?.default

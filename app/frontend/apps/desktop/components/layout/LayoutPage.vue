@@ -3,8 +3,7 @@
 <script setup lang="ts">
 import { type MaybeElementRef, useCurrentElement, type VueInstance } from '@vueuse/core'
 import { delay } from 'lodash-es'
-import { storeToRefs } from 'pinia'
-import { ref, useTemplateRef, watch } from 'vue'
+import { ref, toRef, useTemplateRef, watch } from 'vue'
 
 import { useTrapTab } from '#shared/composables/useTrapTab.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
@@ -20,7 +19,7 @@ import QuickSearch from '#desktop/components/Search/QuickSearch/QuickSearch.vue'
 import UserTaskbarTabs from '#desktop/components/UserTaskbarTabs/UserTaskbarTabs.vue'
 import { useResizeGridColumns } from '#desktop/composables/useResizeGridColumns.ts'
 
-const { config } = storeToRefs(useApplicationStore())
+const config = toRef(useApplicationStore(), 'config')
 
 const noTransition = ref(false)
 

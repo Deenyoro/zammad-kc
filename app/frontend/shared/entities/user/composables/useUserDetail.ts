@@ -1,7 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { storeToRefs } from 'pinia'
-import { computed, type ComputedRef, ref, type Ref } from 'vue'
+import { computed, type ComputedRef, ref, type Ref, toRef } from 'vue'
 
 import { useUserQuery } from '#shared/entities/user/graphql/queries/user.api.ts'
 import { useUserObjectAttributesStore } from '#shared/entities/user/stores/objectAttributes.ts'
@@ -95,7 +94,7 @@ export const useUserDetail = (
       })
   }
 
-  const { viewScreenAttributes } = storeToRefs(useUserObjectAttributesStore())
+  const viewScreenAttributes = toRef(useUserObjectAttributesStore(), 'viewScreenAttributes')
 
   const secondaryOrganizations = computed(() => normalizeEdges(user.value?.secondaryOrganizations))
 

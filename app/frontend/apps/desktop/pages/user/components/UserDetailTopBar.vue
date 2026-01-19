@@ -1,7 +1,6 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { computed, ref, toRef, type Ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -39,7 +38,7 @@ const breadcrumbItems = computed(() => [
 
 const { copyToClipboard } = useCopyToClipboard()
 
-const { config } = storeToRefs(useApplicationStore())
+const config = toRef(useApplicationStore(), 'config')
 
 const copyUserDisplayNameToClipboard = () => {
   copyToClipboard([

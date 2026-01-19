@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
+import { toRef } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
@@ -21,8 +21,8 @@ interface Props {
 const props = defineProps<Props>()
 
 const taskbarTabStore = useUserCurrentTaskbarTabsStore()
-
-const { activeTaskbarTabEntityKey } = storeToRefs(taskbarTabStore)
+const { deleteTaskbarTab } = taskbarTabStore
+const activeTaskbarTabEntityKey = toRef(taskbarTabStore, 'activeTaskbarTabEntityKey')
 
 const { isTouchDevice } = useTouchDevice()
 
@@ -61,7 +61,7 @@ const confirmRemoveUserTaskbarTab = async () => {
   }
 
   // The store will handle redirection to a historical route.
-  taskbarTabStore.deleteTaskbarTab(props.taskbarTab.taskbarTabId)
+  deleteTaskbarTab(props.taskbarTab.taskbarTabId)
 }
 </script>
 

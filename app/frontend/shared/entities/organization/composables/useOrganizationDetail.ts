@@ -1,7 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { storeToRefs } from 'pinia'
-import { computed, ref, type ComputedRef, type Ref } from 'vue'
+import { computed, ref, type ComputedRef, type Ref, toRef } from 'vue'
 
 import type {
   OrganizationUpdatesSubscriptionVariables,
@@ -100,7 +99,7 @@ export const useOrganizationDetail = (
       })
   }
 
-  const { viewScreenAttributes } = storeToRefs(useOrganizationObjectAttributesStore())
+  const viewScreenAttributes = toRef(useOrganizationObjectAttributesStore(), 'viewScreenAttributes')
 
   const organizationMembers = computed(() => normalizeEdges(organization.value?.allMembers) || [])
 

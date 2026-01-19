@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
+import { toRef } from 'vue'
 
 import type { AvatarUser } from '#shared/components/CommonUserAvatar/types.ts'
 import ObjectAttributeContent from '#shared/components/ObjectAttributes/ObjectAttribute.vue'
@@ -37,7 +37,7 @@ const { goToItem, goToItemLinkColumn, loadMore, resort, storageKeyId } = useList
   getLink,
 )
 
-const { config } = storeToRefs(useApplicationStore())
+const config = toRef(useApplicationStore(), 'config')
 
 const { bulkEditActive, checkedTicketIds } = useTicketBulkEdit()
 
