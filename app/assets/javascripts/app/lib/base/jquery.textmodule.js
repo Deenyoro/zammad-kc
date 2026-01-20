@@ -385,6 +385,13 @@
       }
 
       document.execCommand('insertHTML', false, string)
+
+      var sel = rangy.getSelection();
+      if (!sel.rangeCount) return
+
+      var range = sel.getRangeAt(0);
+      range.collapse(false);
+      sel.setSingleRange(range);
     }
     else {
       var sel = rangy.getSelection();
