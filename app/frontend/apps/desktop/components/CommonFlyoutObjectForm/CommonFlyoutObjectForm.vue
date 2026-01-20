@@ -22,6 +22,7 @@ import type {
 import { MutationHandler } from '#shared/server/apollo/handler/index.ts'
 import type { OperationMutationFunction } from '#shared/types/server/apollo/handler.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
+import getUuid from '#shared/utils/getUuid.ts'
 
 import CommonFlyout from '#desktop/components/CommonFlyout/CommonFlyout.vue'
 import { closeFlyout } from '#desktop/components/CommonFlyout/useFlyout.ts'
@@ -63,6 +64,10 @@ const updateMutation = new MutationHandler(props.mutation({}), {
 })
 
 const { form } = useForm()
+
+// Generate a unique form ID to prevent state sharing between multiple flyout instances
+// Formkit relies on it to manage form state internally and not reuse the same form in memory
+const formNodeId = computed(() => `${props.name}-${getUuid()}`)
 
 const objectAttributes: Record<string, string> =
   props.object?.objectAttributeValues?.reduce(
@@ -120,7 +125,7 @@ const saveObject = async (formData: FormSubmitData) => {
     no-close-on-action
   >
     <Form
-      :id="name"
+      :id="formNodeId"
       ref="form"
       class="pb-6 pt-4"
       should-autofocus
