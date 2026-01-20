@@ -43,7 +43,7 @@ class App.UiElement.richtext extends Spine.Module
         for file in attribute.attachments
           renderFile(file)
 
-      App.Event.bind('ui::ticket::addArticleAttachent', (data) ->
+      App.Event.bind('ui::ticket::addArticleAttachment', (data) ->
         form_id = item.closest('form').find('[name=form_id]').val()
 
         return if data.form_id isnt form_id

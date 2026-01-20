@@ -454,7 +454,7 @@
         _this.paste(text)
         _this.close(true)
 
-        App.Event.trigger('ui::ticket::addArticleAttachent', {
+        App.Event.trigger('ui::ticket::addArticleAttachment', {
           attachments: attachments,
           form_id: form_id
         })

@@ -290,7 +290,7 @@ class EmailReply extends App.Controller
       processData: true
       success: (data, status, xhr) ->
         return if _.isEmpty(data.attachments)
-        App.Event.trigger('ui::ticket::addArticleAttachent', {
+        App.Event.trigger('ui::ticket::addArticleAttachment', {
           ticket: ticket
           article: article
           attachments: data.attachments

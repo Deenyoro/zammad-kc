@@ -90,7 +90,7 @@ class App.TicketZoomArticleNew extends App.Controller
     @controllerBind('ui::ticket::shared_draft_saved',       @sharedDraftSaved)
 
     # add article attachment
-    @controllerBind('ui::ticket::addArticleAttachent', (data) =>
+    @controllerBind('ui::ticket::addArticleAttachment', (data) =>
       return if data.ticket?.id?.toString() isnt @ticket_id.toString() && data.form_id isnt @form_id
       return if _.isEmpty(data.attachments)
       for file in data.attachments
@@ -787,7 +787,7 @@ class App.TicketZoomArticleNew extends App.Controller
       data: JSON.stringify({ form_id: @form_id })
       processData: true
       success: (data, status, xhr) =>
-        App.Event.trigger('ui::ticket::addArticleAttachent', {
+        App.Event.trigger('ui::ticket::addArticleAttachment', {
           ticket:      @ticket
           attachments: data.attachments
           form_id:     @form_id
