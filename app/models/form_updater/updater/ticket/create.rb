@@ -25,20 +25,21 @@ class FormUpdater::Updater::Ticket::Create < FormUpdater::Updater
     customer_user = ::User.find_by(id: customer_id)
 
     if customer_user
-      values['customer_id'] = customer_id
+      # We use the internal_id to avoid coercing the customer_id if it's a string
+      values['customer_id'] = customer_user.id
 
       customer_object = customer_user.attributes
         .slice('active', 'email', 'firstname', 'fullname', 'image', 'lastname', 'mobile', 'out_of_office', 'out_of_office_end_at', 'out_of_office_start_at', 'phone', 'source', 'vip')
         .merge({
                  '__typename' => 'User',
-                 'id'         => Gql::ZammadSchema.id_from_internal_id('User', customer_id),
+                 'id'         => Gql::ZammadSchema.id_from_internal_id('User', customer_user.id),
                })
 
       # For customer_id we need also to add the user as an option.
       # TODO: maybe we can have some generic way for this, because we are also have it in other places (e.g. applies tempalte).
       result['customer_id'] ||= {}
       result['customer_id'][:options] = [{
-        value:   customer_id,
+        value:   customer_user.id,
         label:   customer_user.fullname.presence || customer_user.phone.presence || customer_user.login,
         heading: customer_user.organization&.name,
         object:  customer_object
