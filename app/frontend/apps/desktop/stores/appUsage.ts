@@ -82,8 +82,8 @@ export const useAppUsageStore = defineStore('appUsage', () => {
       !!betaUiSwitchAvailable.value && !!switchValue.value && hasFeedbackConsent.value === 'true',
   })
 
-  const triggerMilestone = (key: MilestoneKey, trigger: boolean) => {
-    milestoneHistory.value[key] = trigger
+  const triggerMilestone = (key: MilestoneKey) => {
+    milestoneHistory.value[key] = true
   }
 
   const currentMilestoneKey = computed<MilestoneKey | null>(() => {
@@ -96,10 +96,21 @@ export const useAppUsageStore = defineStore('appUsage', () => {
     return milestone?.key ?? null
   })
 
-  const shouldTriggerMilestoneDialog = computed(() => {
-    if (!currentMilestoneKey.value) return false
+  const neverAskAgainForTimedFeedback = useLocalStorage(
+    'beta-ui-feedback-never-ask-again-timed',
+    false,
+  )
 
-    return !milestoneHistory.value[currentMilestoneKey.value]
+  const setNeverAskAgainForTimedFeedback = (value = true) => {
+    neverAskAgainForTimedFeedback.value = value
+  }
+
+  const shouldTriggerMilestoneDialog = computed(() => {
+    if (!currentMilestoneKey.value || !hasFeedbackConsent.value) return false
+
+    return (
+      !milestoneHistory.value[currentMilestoneKey.value] && !neverAskAgainForTimedFeedback.value
+    )
   })
 
   return {
@@ -108,6 +119,7 @@ export const useAppUsageStore = defineStore('appUsage', () => {
     triggerMilestone,
     currentMilestoneKey,
     shouldTriggerMilestoneDialog,
+    setNeverAskAgainForTimedFeedback,
   }
 })
 

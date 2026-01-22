@@ -24,12 +24,14 @@ const dummySchema = defineFormSchema([
     name: 'rating',
     label: __("You've been using the new UI for 2 hours."),
     type: 'rating',
+    required: true,
     disabled: true,
   },
   {
     name: 'comment',
-    label: __('Any additional feedback?'),
+    label: __('Comment'),
     type: 'text',
+    required: true,
     disabled: true,
   },
 ])
@@ -71,22 +73,26 @@ const dummySchema = defineFormSchema([
     >
       <div class="basis-full">
         <CommonLabel class="text-black dark:text-white">
-          {{ $t('Anonymized data we need to collect is:') }}
+          {{ $t('The data we need to collect includes:') }}
         </CommonLabel>
         <ul class="ps-6 list-disc text-gray-100 dark:text-neutral-400">
           <li>
             <CommonLabel>
-              {{ $t('star rating of the new UI, repeated in a few timely iterations') }}
+              {{
+                $t(
+                  'anonymized rating and comment on the new UI, repeated in a few timely iterations',
+                )
+              }}
             </CommonLabel>
           </li>
           <li>
             <CommonLabel>
-              {{ $t('for this, we need to track the usage time of the new UI') }}
+              {{ $t('anonymized tracked usage time of the new UI') }}
             </CommonLabel>
           </li>
           <li>
             <CommonLabel>
-              {{ $t('the Zammad instance where the usage of the new UI is tracked.') }}
+              {{ $t('name of the Zammad instance with tracked usage time of the new UI.') }}
             </CommonLabel>
           </li>
         </ul>

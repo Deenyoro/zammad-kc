@@ -67,7 +67,7 @@ const horizontalArrowKey = (direction?: 'start' | 'end') => {
   <!-- The outer div is focusable to allow keyboard navigation and control, and is hidden from screen readers. -->
   <div
     data-test-id="field-rating-input"
-    class="inline-flex items-center focus-visible:outline focus-visible:rounded-lg focus-visible:outline-offset-4 focus-visible:outline-blue-800"
+    class="inline-flex items-center focus-visible:outline focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:bg-gray-700 bg-blue-200 p-2 px-2.25 rounded-2xl"
     tabindex="0"
     aria-hidden="true"
     v-bind="context.attrs"

@@ -128,7 +128,7 @@ describe('useAppUsageStore - when tracking usage', () => {
 
       expect(store.shouldTriggerMilestoneDialog).toBe(true)
 
-      store.triggerMilestone('1h', true)
+      store.triggerMilestone('1h')
 
       expect(store.shouldTriggerMilestoneDialog).toBe(false)
     })
@@ -142,7 +142,7 @@ describe('useAppUsageStore - when tracking usage', () => {
 
       expect(store.shouldTriggerMilestoneDialog).toBe(true)
 
-      store.triggerMilestone('1h', true)
+      store.triggerMilestone('1h')
 
       expect(store.shouldTriggerMilestoneDialog).toBe(false)
     })
@@ -155,8 +155,8 @@ describe('useAppUsageStore - when tracking usage', () => {
       expect(store.triggeredMilestones['1h']).toBe(false)
       expect(store.triggeredMilestones['5h']).toBe(false)
 
-      store.triggerMilestone('1h', true)
-      store.triggerMilestone('5h', true)
+      store.triggerMilestone('1h')
+      store.triggerMilestone('5h')
 
       expect(store.triggeredMilestones['1h']).toBe(true)
       expect(store.triggeredMilestones['5h']).toBe(true)

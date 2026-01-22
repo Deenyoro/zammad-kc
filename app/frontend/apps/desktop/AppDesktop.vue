@@ -28,6 +28,7 @@ import { useUserCurrentTaskbarTabsStore } from '#desktop/entities/user/current/s
 import { useAppUsageStore } from '#desktop/stores/appUsage.ts'
 
 import { useBetaUi } from './components/BetaUi/composables/useBetaUi.ts'
+import { useBetaUiFeedbackRouteGuard } from './components/BetaUi/composables/useBetaUiFeedbackRouteGuard.ts'
 
 const router = useRouter()
 
@@ -55,6 +56,7 @@ const { switchValue } = useBetaUi()
 //  The user has by this point enrolled into the BETA program.
 if (switchValue.value) {
   useBetaUiFeedbackConsent()
+  useBetaUiFeedbackRouteGuard()
 }
 
 // Shows the warning for the BETA usage of the desktop view.

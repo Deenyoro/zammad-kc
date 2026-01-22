@@ -12,6 +12,7 @@ export interface Props {
   hideCancelButton?: boolean
   cancelLabel?: string
   cancelButton?: Pick<ButtonProps, 'prefixIcon' | 'variant'>
+  formNodeId?: string
 }
 
 withDefaults(defineProps<Props>(), {
@@ -50,6 +51,8 @@ const action = () => {
       size="large"
       :prefix-icon="actionButton?.prefixIcon"
       :variant="actionButton?.variant || 'primary'"
+      :type="formNodeId ? 'submit' : undefined"
+      :form="formNodeId"
       @click="action()"
     >
       {{ $t(actionLabel) }}
