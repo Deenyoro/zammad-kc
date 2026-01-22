@@ -18,7 +18,7 @@ class App.UiElement.tag
       # Compare the original value with the current input while typing
       # to correctly create labels and distinguish existing ones from newly added labels.
       val = field.val()
-      if val.startsWith(initialValue)
+      if val?.startsWith(initialValue)
         addedValue = val.slice(initialValue.length)
       field.val(initialValue)
 
