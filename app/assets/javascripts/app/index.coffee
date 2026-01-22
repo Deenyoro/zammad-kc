@@ -159,7 +159,7 @@ class App extends Spine.Controller
       # translate content
       if attributeConfig.tag is 'active' || attributeConfig.translate || (isObject && item.translate && item.translate())
         isHtmlEscape = true
-        resultLocal  = App.i18n.translateContent(resultLocal)
+        resultLocal  = App.i18n.translateInline(resultLocal)
 
       # transform date
       if attributeConfig.tag is 'date'
