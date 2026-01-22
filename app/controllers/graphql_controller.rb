@@ -18,6 +18,8 @@ class GraphqlController < ApplicationController
     end
 
     render json: single_query
+  rescue GraphqlValidations::Error => e
+    render json: { errors: [{ message: e.message }] }, status: :unprocessable_entity
   rescue => e
     raise e if !Rails.env.development?
 

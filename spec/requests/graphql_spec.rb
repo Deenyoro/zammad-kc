@@ -41,4 +41,28 @@ RSpec.describe 'GraphQL', type: :request do
       end
     end
   end
+
+  describe 'custom errors for DDOS-like queries' do
+    before do
+      allow(Gql::ZammadSchema)
+        .to receive(:execute)
+        .and_raise(GraphqlValidations::Error, 'Abusive query detected')
+
+      post '/graphql', params: { query: '{ abusiveQuery }' }, as: :json
+    end
+
+    it 'returns unprocessable entity status' do
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+
+    it 'returns JSON error for abusive queries' do
+      expect(json_response).to eq(
+        'errors' => [
+          {
+            'message' => 'Abusive query detected',
+          }
+        ]
+      )
+    end
+  end
 end

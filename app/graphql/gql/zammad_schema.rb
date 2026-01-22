@@ -154,4 +154,23 @@ class Gql::ZammadSchema < GraphQL::Schema
   end
   private_class_method :build_record_invalid_errors
 
+  def self.static_validator
+    @static_validator ||= GraphQL::StaticValidation::Validator.new(
+      schema: self,
+      rules:  [
+        GraphqlValidations::DirectivesCount,
+        GraphqlValidations::AliasesCount,
+        GraphqlValidations::FieldUnique,
+        *GraphQL::StaticValidation::ALL_RULES
+      ]
+    )
+  end
+
+  def self.max_aliases_count
+    5
+  end
+
+  def self.max_directives_count
+    5
+  end
 end
