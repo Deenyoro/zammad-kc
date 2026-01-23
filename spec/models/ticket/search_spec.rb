@@ -106,6 +106,30 @@ RSpec.describe Ticket::Search do
     end
   end
 
+  # https://github.com/zammad/zammad/issues/5889
+  describe 'Ticket search after user association update', searchindex: true do
+    let(:query)        { 'RTF document' }
+    let(:group)        { create(:group) }
+    let(:customer)     { create(:customer) }
+    let(:organization) { create(:organization) }
+    let(:ticket)       { create(:ticket, group:, organization:, customer:) }
+    let(:article)      { create(:ticket_article, :with_attachment, ticket:, attachment_filename: 'test.rtf') }
+    let(:user)         { create(:agent, groups: [group]) }
+
+    before do
+      article
+      searchindex_model_reload([Ticket, User, Organization])
+    end
+
+    it 'does not delete the attachment from the search index' do
+      organization.update!(name: 'NewOrgName')
+      organization.search_index_update_associations
+      SearchIndexBackend.refresh
+
+      expect(Ticket.search(query: query, current_user: user)).to include ticket
+    end
+  end
+
   describe 'access check' do
     let(:shared) { true }
     let(:organization)   { create(:organization, shared:) }

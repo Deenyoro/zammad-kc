@@ -961,11 +961,6 @@ helper method for making HTTP calls and raising error if response was not succes
       }
     end
 
-    # do not return attachments since they could contain invalid utf-8 #5575
-    result[:_source] = {
-      excludes: ['attachment', 'article.attachment']
-    }
-
     result
   end
 

@@ -571,7 +571,9 @@ FactoryBot.define do
 
     trait :with_attachment do
       transient do
-        attachment { File.open('spec/fixtures/files/upload/hello_world.txt') }
+        attachment_filename { 'hello_world.txt' }
+        attachment_path     { 'spec/fixtures/files/upload' }
+        attachment          { File.open(File.join(attachment_path, attachment_filename)) }
       end
 
       after(:create) do |article, context|
