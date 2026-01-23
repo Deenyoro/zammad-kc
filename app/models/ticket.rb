@@ -90,7 +90,9 @@ class Ticket < ApplicationModel
   search_index_attributes_relevant :organization_id,
                                    :group_id,
                                    :state_id,
-                                   :priority_id
+                                   :priority_id,
+                                   :customer_id,
+                                   :owner_id
 
   history_attributes_ignored :create_article_type_id,
                              :create_article_sender_id,

@@ -184,6 +184,56 @@ RSpec.describe Ticket::Search do
       end
 
       include_examples 'search for tickets'
+
+      # https://github.com/zammad/zammad/issues/5899
+      context 'when related user is updated' do
+        let(:group)           { create(:group) }
+        let(:current_user)    { create(:agent, groups: [group]) }
+        let(:user)            { create(:agent_and_customer, firstname: 'OldName') }
+        let(:ticket_owner)    { create(:ticket, group:, owner: user) }
+        let(:ticket_customer) { create(:ticket, group:, customer: user) }
+        let(:query)           { 'NewName' }
+
+        before do
+          ticket_owner && ticket_customer
+
+          searchindex_model_reload([Ticket, User])
+        end
+
+        it 'updates the search index accordingly' do
+          user.update!(firstname: query)
+          user.search_index_update_associations
+          SearchIndexBackend.refresh
+
+          expect(Ticket.search(query:, current_user:))
+            .to include ticket_owner, ticket_customer
+        end
+      end
+
+      context 'when related organization is updated' do
+        let(:group)           { create(:group) }
+        let(:current_user)    { create(:agent, groups: [group]) }
+        let(:user)            { create(:agent_and_customer, firstname: 'OldName') }
+        let(:organization)    { create(:organization, name: 'OldOrgName') }
+        let(:customer)        { create(:customer, organization:) }
+        let(:ticket)          { create(:ticket, group:, organization:, customer:) }
+        let(:query)           { 'NewOrgName' }
+
+        before do
+          ticket
+
+          searchindex_model_reload([Ticket, User])
+        end
+
+        it 'updates the search index accordingly' do
+          organization.update!(name: query)
+          organization.search_index_update_associations
+          SearchIndexBackend.refresh
+
+          expect(Ticket.search(query:, current_user:))
+            .to include ticket
+        end
+      end
     end
 
     context 'with db only' do
