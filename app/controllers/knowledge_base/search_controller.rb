@@ -92,7 +92,8 @@ class KnowledgeBase::SearchController < ApplicationController
       date:  object.updated_at,
       url:   url,
       title: meta.dig(:highlight, 'title')&.first || object.title,
-      body:  meta.dig(:highlight, 'content.body')&.first || strip_tags(object.content.body).truncate(100),
+      body:  strip_repeating_whitespace(meta.dig(:highlight, 'content.body')&.first ||
+                                        object.content.body_text_only.truncate(100))
     }
 
     if params[:include_tags]
@@ -222,5 +223,9 @@ class KnowledgeBase::SearchController < ApplicationController
     translation = category.translation_preferred(kb_locale)
 
     @category_translations_cache[cache_key] = translation
+  end
+
+  def strip_repeating_whitespace(input)
+    input.gsub(%r{\s+}, ' ')
   end
 end

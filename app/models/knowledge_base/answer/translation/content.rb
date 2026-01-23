@@ -42,8 +42,15 @@ class KnowledgeBase::Answer::Translation::Content < ApplicationModel
 
   def search_index_attribute_lookup(include_references: true)
     attrs = super
-    attrs['body'] = ActionController::Base.helpers.strip_tags attrs['body']
+    attrs['body'] = body_text_only
     attrs
+  end
+
+  def body_text_only
+    body
+      .gsub(%r{<br\s*/?>}i, "\n")
+      .gsub(%r{<div\s*>}i, "\n")
+      .then { ActionController::Base.helpers.strip_tags(it) }
   end
 
   private

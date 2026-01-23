@@ -7,6 +7,11 @@ RSpec.describe 'Knowledge Base search with details', searchindex: true, type: :r
 
   before do
     published_answer
+
+    if defined?(answer_body)
+      published_answer.translations.first.content.update!(body: answer_body)
+    end
+
     searchindex_model_reload([KnowledgeBase::Translation, KnowledgeBase::Category::Translation, KnowledgeBase::Answer::Translation])
   end
 
@@ -134,6 +139,40 @@ RSpec.describe 'Knowledge Base search with details', searchindex: true, type: :r
       post endpoint, params: { query: search_phrase, per_page: 7, page: 0 }
 
       expect(json_response['result'].count).to be 7
+    end
+  end
+
+  # https://github.com/zammad/zammad/issues/5902
+  context 'when preparing body for use in preview' do
+    let(:answer_body) { 'This is a test answer.<br>It contains line breaks.<div></div><div>It should be <b>handled</b> properly.</div>' }
+
+    context 'with ElasticSearch' do
+      context 'when no highlighting' do
+        it 'does not merge words around line breaks' do
+          post endpoint, params: { query: published_answer.translations.first.title }
+
+          expect(json_response['details'][0]['body'])
+            .to include('This is a test answer. It contains line breaks. It should be handled properly.')
+        end
+      end
+
+      context 'when body has highlighting' do
+        it 'does not merge words around line breaks' do
+          post endpoint, params: { query: 'test answer' }
+
+          expect(json_response['details'][0]['body'])
+            .to include('This is a <em>test</em> <em>answer</em>. It contains line breaks. It should be handled properly.')
+        end
+      end
+    end
+
+    context 'with SQL fallback', searchindex: false do
+      it 'does not merge words around line breaks' do
+        post endpoint, params: { query: published_answer.translations.first.title }
+
+        expect(json_response['details'][0]['body'])
+          .to include('This is a test answer. It contains line breaks. It should be handled properly.')
+      end
     end
   end
 
