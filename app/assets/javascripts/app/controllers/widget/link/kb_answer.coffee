@@ -66,6 +66,9 @@ class App.WidgetLinkKbAnswer extends App.WidgetLink
     @searchableSelect.addClass('hidden')
 
   didSubmit: =>
+    if @shadowField.val() == ''
+      return
+
     @clearDelay('hideField')
     @inputField.attr('disabled', true)
     @saveToServer(@shadowField.val())
