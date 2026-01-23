@@ -6,23 +6,13 @@ import { defineFormSchema } from '#shared/form/defineFormSchema.ts'
 
 import CommonDialog from '#desktop/components/CommonDialog/CommonDialog.vue'
 import CommonDialogActionFooter from '#desktop/components/CommonDialog/CommonDialogActionFooter.vue'
-import { closeDialog } from '#desktop/components/CommonDialog/useDialog.ts'
 
-import { DIALOG_NAME } from './composables/useBetaUiFeedbackConsent.ts'
-import { useBetaUiFeedbackConsentState } from './composables/useBetaUiFeedbackConsentState.ts'
-
-const { hasFeedbackConsent } = useBetaUiFeedbackConsentState()
-
-const handleFeedbackConsent = (consent: boolean) => {
-  // The feedback consent is considered given when the dialog is closed without canceling.
-  hasFeedbackConsent.value = consent.toString() as 'true' | 'false'
-  closeDialog(DIALOG_NAME, true)
-}
+import { handleFeedbackConsent } from './composables/useBetaUiFeedbackConsent.ts'
 
 const dummySchema = defineFormSchema([
   {
     name: 'rating',
-    label: __("You've been using the new UI for 2 hours."),
+    label: __('You were using the new BETA UI for 5 hours.'),
     type: 'rating',
     required: true,
     disabled: true,
@@ -73,7 +63,7 @@ const dummySchema = defineFormSchema([
     >
       <div class="basis-full">
         <CommonLabel class="text-black dark:text-white">
-          {{ $t('The data we need to collect includes:') }}
+          {{ $t('The data we need to collect consists of:') }}
         </CommonLabel>
         <ul class="ps-6 list-disc text-gray-100 dark:text-neutral-400">
           <li>

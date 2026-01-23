@@ -1,7 +1,10 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
+
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
+import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { useBetaUi } from '#desktop/components/BetaUi/composables/useBetaUi.ts'
 
@@ -12,6 +15,23 @@ vi.mock('#shared/composables/useConfirmation.ts', () => ({
     waitForConfirmation: waitForConfirmationMock,
   }),
 }))
+
+vi.mock(
+  '#desktop/components/BetaUi/FeedbackDialog/useFeedbackDialog.ts',
+  async (originalModule) => {
+    const module =
+      await originalModule<typeof import('#desktop/components/CommonDialog/useDialog.ts')>()
+
+    return {
+      ...module,
+      useFeedbackDialog: () => ({
+        openFeedbackDialog: ({ callback }: { callback: () => void }) => {
+          callback()
+        },
+      }),
+    }
+  },
+)
 
 describe('useNewBetaUi', () => {
   afterAll(() => vi.clearAllMocks())
@@ -111,6 +131,31 @@ describe('useNewBetaUi', () => {
 
       expect(window.location.href).toBe('/')
     })
+
+    it('clears usage states', async () => {
+      localStorage.setItem('app-usage-total-time', `${1 * 60 * 60 * 1000}`) // 1 hour
+      localStorage.setItem(
+        'app-usage-milestones-trigger-history',
+        JSON.stringify({
+          '1h': true,
+          '5h': false,
+          '20h': false,
+        }),
+      )
+      const { toggleBetaUiSwitch } = useBetaUi()
+
+      toggleBetaUiSwitch('/', true)
+
+      await waitFor(() => expect(localStorage.getItem('app-usage-total-time')).toBe('0'))
+
+      expect(localStorage.getItem('app-usage-milestones-trigger-history')).toBe(
+        JSON.stringify({
+          '1h': false,
+          '5h': false,
+          '20h': false,
+        }),
+      )
+    })
   })
 
   describe('dismissBetaUiSwitch', () => {
@@ -134,22 +179,22 @@ describe('useNewBetaUi', () => {
       expect(dismissValue.value).toBe(true)
     })
   })
+})
 
-  describe('toggleDismissBetaUiSwitch', () => {
-    it('toggles dismissValue', () => {
-      localStorage.setItem('beta-ui-switch-dismiss', 'false')
+describe('toggleDismissBetaUiSwitch', () => {
+  it('toggles dismissValue', () => {
+    localStorage.setItem('beta-ui-switch-dismiss', 'false')
 
-      const { dismissValue, toggleDismissBetaUiSwitch } = useBetaUi()
+    const { dismissValue, toggleDismissBetaUiSwitch } = useBetaUi()
 
-      expect(dismissValue.value).toBe(false)
+    expect(dismissValue.value).toBe(false)
 
-      toggleDismissBetaUiSwitch()
+    toggleDismissBetaUiSwitch()
 
-      expect(dismissValue.value).toBe(true)
+    expect(dismissValue.value).toBe(true)
 
-      toggleDismissBetaUiSwitch()
+    toggleDismissBetaUiSwitch()
 
-      expect(dismissValue.value).toBe(false)
-    })
+    expect(dismissValue.value).toBe(false)
   })
 })

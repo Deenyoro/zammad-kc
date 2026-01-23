@@ -1,5 +1,7 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
+
 import { useApolloClient } from '@vue/apollo-composable'
 import { random } from 'lodash-es'
 
@@ -8,6 +10,8 @@ import { random } from 'lodash-es'
 
 import { useNotifications } from '#shared/components/CommonNotifications/useNotifications.ts'
 import { useLocaleStore } from '#shared/stores/locale.ts'
+
+import { initializeBetaUiFeedbackConsentDialog } from '#desktop/components/BetaUi/composables/useBetaUiFeedbackConsent.ts'
 
 import mockApolloClient from '../mock-apollo-client.ts'
 
@@ -123,6 +127,10 @@ export const visitView = async (
   const view = renderComponent(
     {
       template: html` <LayoutTest${isDesktop ? 'DesktopView' : 'MobileView'} />`,
+      setup() {
+        if (!isDesktop) return
+        initializeBetaUiFeedbackConsentDialog()
+      },
       components: {
         LayoutTestDesktopView,
         LayoutTestMobileView,

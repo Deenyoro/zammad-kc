@@ -429,7 +429,7 @@ export type BetaUiFeedbackInput = {
   /** The feedback comment text */
   comment: Scalars['String']['input'];
   /** The feedback rating (1-5) */
-  rating: Scalars['Int']['input'];
+  rating?: InputMaybe<Scalars['Int']['input']>;
   /** Time spent in the BETA UI in minutes */
   timeSpent: Scalars['Int']['input'];
   /** The type of feedback */

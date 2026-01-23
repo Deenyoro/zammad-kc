@@ -5,6 +5,8 @@ import { FormKit } from '@formkit/vue'
 import { computed, provide } from 'vue'
 
 import { useBetaUi } from '#desktop/components/BetaUi/composables/useBetaUi.ts'
+import { showFeedbackConsent } from '#desktop/components/BetaUi/composables/useBetaUiFeedbackConsent.ts'
+import { useFeedbackDialog } from '#desktop/components/BetaUi/FeedbackDialog/useFeedbackDialog.ts'
 import AvatarMenu from '#desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/AvatarMenu.vue'
 import MenuContainer from '#desktop/components/layout/LayoutSidebar/LeftSidebar/MenuContainer/MenuContainer.vue'
 import { COLLAPSED_STATE_KEY } from '#desktop/components/layout/LayoutSidebar/LeftSidebar/useCollapsedState.ts'
@@ -18,7 +20,15 @@ provide(
   computed(() => props.collapsed),
 )
 
-const { betaUiSwitchEnabled, toggleBetaUiSwitch, dismissBetaUiSwitch } = useBetaUi()
+const {
+  switchValue,
+  toggleBetaUiSwitch,
+  betaUiSwitchEnabled,
+  dismissBetaUiSwitch,
+  hasFeedbackConsent,
+} = useBetaUi()
+
+const { openFeedbackDialog } = useFeedbackDialog()
 </script>
 
 <template>
@@ -33,16 +43,24 @@ const { betaUiSwitchEnabled, toggleBetaUiSwitch, dismissBetaUiSwitch } = useBeta
       >
         <FormKit
           type="toggle"
-          :label="__('New BETA UI')"
+          :label="__('BETA UI')"
           :value="true"
           :variants="{ true: 'True', false: 'False' }"
           wrapper-class="!flex-row"
           label-class="!text-white truncate"
           @input-raw="toggleBetaUiSwitch()"
         />
-        <!-- <CommonLink class="truncate text-white hover:text-white!" link="#" size="small">
-          {{ $t('Send feedback') }}
-        </CommonLink> -->
+        <CommonLink
+          v-if="switchValue"
+          class="truncate text-white hover:text-white! hover:underline!"
+          link="#"
+          size="small"
+          @click="
+            () => (hasFeedbackConsent === 'true' ? openFeedbackDialog() : showFeedbackConsent())
+          "
+        >
+          {{ $t('Feedback') }}
+        </CommonLink>
         <CommonIcon
           class="absolute end-3 text-white"
           name="x"

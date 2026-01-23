@@ -7,7 +7,7 @@ As an administrator, you can configure which roles in your Zammad instance can g
 
 Each of the users can then provide consent or not for the participation in the BETA program.
 
-Answers will be anonymized and the data collected may include:
+Answers will be anonymized and the data collected consists of:
 - Zammad instance name
 - star rating of the new UI
 - text comments on the new UI

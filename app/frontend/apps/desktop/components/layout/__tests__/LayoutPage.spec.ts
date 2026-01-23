@@ -20,6 +20,23 @@ vi.mock('#shared/server/apollo/client.ts', () => ({
   }),
 }))
 
+vi.mock(
+  '#desktop/components/BetaUi/FeedbackDialog/useFeedbackDialog.ts',
+  async (originalModule) => {
+    const module =
+      await originalModule<typeof import('#desktop/components/CommonDialog/useDialog.ts')>()
+
+    return {
+      ...module,
+      useFeedbackDialog: () => ({
+        openFeedbackDialog: ({ callback }: { callback: () => void }) => {
+          callback()
+        },
+      }),
+    }
+  },
+)
+
 describe('LayoutPage', () => {
   it('expands search and focus quick search input', async () => {
     const wrapper = renderComponent(LayoutPage, {
@@ -81,7 +98,7 @@ describe('LayoutPage', () => {
         form: true,
       })
 
-      const toggle = wrapper.getByLabelText('New BETA UI')
+      const toggle = wrapper.getByLabelText('BETA UI')
 
       expect(toggle).toBeChecked()
 
@@ -102,7 +119,7 @@ describe('LayoutPage', () => {
         form: true,
       })
 
-      expect(wrapper.queryByLabelText('New BETA UI')).not.toBeInTheDocument()
+      expect(wrapper.queryByLabelText('BETA UI')).not.toBeInTheDocument()
     })
 
     it('hides the switch if the user has no permissions', async () => {
@@ -115,7 +132,7 @@ describe('LayoutPage', () => {
         form: true,
       })
 
-      expect(wrapper.queryByLabelText('New BETA UI')).not.toBeInTheDocument()
+      expect(wrapper.queryByLabelText('BETA UI')).not.toBeInTheDocument()
     })
 
     it('hides the switch if the user has dismissed it', async () => {
@@ -126,7 +143,7 @@ describe('LayoutPage', () => {
         form: true,
       })
 
-      expect(wrapper.queryByLabelText('New BETA UI')).not.toBeInTheDocument()
+      expect(wrapper.queryByLabelText('BETA UI')).not.toBeInTheDocument()
 
       localStorage.removeItem('beta-ui-switch-dismiss')
     })
@@ -137,7 +154,7 @@ describe('LayoutPage', () => {
         form: true,
       })
 
-      const toggle = wrapper.getByLabelText('New BETA UI')
+      const toggle = wrapper.getByLabelText('BETA UI')
 
       const button = wrapper.getByRole('button', {
         name: 'Hide BETA UI switch',

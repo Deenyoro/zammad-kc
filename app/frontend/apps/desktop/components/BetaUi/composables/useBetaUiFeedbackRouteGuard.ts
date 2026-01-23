@@ -18,7 +18,7 @@ export const useBetaUiFeedbackRouteGuard = () => {
 
     const milestone = currentMilestoneKey.value ?? undefined
 
-    openFeedbackDialog(milestone)
+    openFeedbackDialog({ milestone })
 
     if (milestone) appUsageStore.triggerMilestone(milestone)
   })

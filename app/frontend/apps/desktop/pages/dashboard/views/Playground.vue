@@ -1338,7 +1338,7 @@ const { openFeedbackDialog } = useFeedbackDialog()
     <div>
       <h3>Feedback Dialog</h3>
       <div class="space-x-2 mb-4">
-        <CommonButton variant="primary" @click="openFeedbackDialog('5h')"
+        <CommonButton variant="primary" @click="openFeedbackDialog({ milestone: '5h' })"
           >Open Timed Feedback Dialog</CommonButton
         >
 

@@ -1,18 +1,21 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { useDialog } from '#desktop/components/CommonDialog/useDialog.ts'
-import type { MilestoneKey } from '#desktop/types/appUsage.ts'
 
-export const FEEDBACK_DIALOG_NAME = 'beta-ui-feedback'
+export enum EnumFeedbackDialog {
+  Generic = 'beta-ui-generic-feedback',
+  SwitchBack = 'beta-ui-switch-back-feedback',
+}
 
-export const useFeedbackDialog = () => {
+export const useFeedbackDialog = (name = EnumFeedbackDialog.Generic) => {
   const { open } = useDialog({
-    name: FEEDBACK_DIALOG_NAME,
+    name,
     global: true,
-    component: () => import('../FeedbackDialog/FeedbackDialog.vue'),
+    component: () =>
+      name === EnumFeedbackDialog.Generic
+        ? import('../FeedbackDialog/FeedbackDialog.vue')
+        : import('../FeedbackDialog/SwitchBackFeedbackDialog.vue'),
   })
 
-  const openFeedbackDialog = (milestone?: MilestoneKey) => open({ milestone })
-
-  return { openFeedbackDialog }
+  return { openFeedbackDialog: open }
 }

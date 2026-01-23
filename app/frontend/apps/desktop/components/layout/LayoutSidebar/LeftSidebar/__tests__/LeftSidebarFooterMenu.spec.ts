@@ -52,6 +52,52 @@ describe('layout sidebar footer menu', () => {
       form: true,
     })
 
-    expect(view.getByText('New BETA UI')).toBeInTheDocument()
+    expect(view.getByText('BETA UI')).toBeInTheDocument()
+  })
+
+  it('has no feedback link when the user is not in BETA program', async () => {
+    mockApplicationConfig({
+      ui_desktop_beta_switch: true,
+    })
+
+    mockUserCurrent({
+      hasBetaUiSwitchAvailable: true,
+    })
+
+    const view = renderComponent(LeftSidebarFooterMenu, {
+      router: true,
+      form: true,
+      dialog: true,
+    })
+
+    expect(view.queryByText('Feedback')).not.toBeInTheDocument()
+  })
+
+  it('opens manual feedback dialog', async () => {
+    mockApplicationConfig({
+      ui_desktop_beta_switch: true,
+    })
+
+    mockUserCurrent({
+      hasBetaUiSwitchAvailable: true,
+    })
+
+    localStorage.setItem('beta-ui-switch', 'true')
+
+    const view = renderComponent(LeftSidebarFooterMenu, {
+      router: true,
+      form: true,
+      dialog: true,
+    })
+
+    const feedbackLink = view.getByText('Feedback')
+
+    await view.events.click(feedbackLink)
+
+    const feedbackDialog = await view.findByRole('dialog', { name: 'Send feedback on the BETA UI' })
+
+    expect(feedbackDialog).toBeVisible()
+
+    localStorage.removeItem('beta-ui-switch')
   })
 })

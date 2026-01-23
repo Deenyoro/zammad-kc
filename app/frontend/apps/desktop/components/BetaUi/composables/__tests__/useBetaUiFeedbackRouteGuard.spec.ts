@@ -76,7 +76,7 @@ describe('Ui beta timed feedback', () => {
 
     await nextTick()
 
-    expect(openFeedbackDialog).toHaveBeenCalledWith('1h')
+    expect(openFeedbackDialog).toHaveBeenCalledWith({ milestone: '1h' })
     expect(triggerSpy).toHaveBeenCalledWith('1h')
     expect(store.triggeredMilestones['1h']).toBe(true)
     expect(store.shouldTriggerMilestoneDialog).toBe(false)

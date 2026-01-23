@@ -7,30 +7,71 @@ import { useConfirmation } from '#shared/composables/useConfirmation.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 
+import { useAppUsage } from '#desktop/composables/BetaUi/useAppUsage.ts'
+
+import { EnumFeedbackDialog, useFeedbackDialog } from '../FeedbackDialog/useFeedbackDialog.ts'
+
 import { useBetaUiFeedbackConsentState } from './useBetaUiFeedbackConsentState.ts'
 
-export const useBetaUi = () => {
+export const initializeBetaUi = () => {
   const user = toRef(useSessionStore(), 'user')
+
   const config = toRef(useApplicationStore(), 'config')
 
-  const switchValue = useLocalStorage('beta-ui-switch', false)
-
-  const dismissValue = useLocalStorage('beta-ui-switch-dismiss', false)
+  const { resetTotalAppUsageTime, setNeverAskAgainForTimedFeedback, resetMilestoneHistory } =
+    useAppUsage()
 
   const betaUiSwitchAvailable = computed(
     () => config.value?.ui_desktop_beta_switch && user.value?.hasBetaUiSwitchAvailable,
   )
 
+  const switchValue = useLocalStorage('beta-ui-switch', false)
+
+  const clearSwitchAndRedirect = (redirectTo: string) => {
+    switchValue.value = undefined
+
+    window.location.href = redirectTo
+
+    resetTotalAppUsageTime()
+    setNeverAskAgainForTimedFeedback(false)
+    resetMilestoneHistory()
+  }
+
+  return { switchValue, clearSwitchAndRedirect, betaUiSwitchAvailable, user }
+}
+
+export const useBetaUi = () => {
+  const { switchValue, clearSwitchAndRedirect, betaUiSwitchAvailable, user } = initializeBetaUi()
+  const dismissValue = useLocalStorage('beta-ui-switch-dismiss', false)
+
   const betaUiSwitchEnabled = computed(() => betaUiSwitchAvailable.value && !dismissValue.value)
 
   const { hasFeedbackConsent } = useBetaUiFeedbackConsentState()
 
-  const toggleBetaUiSwitch = (redirectTo = '/', skipFeedbackConsentClear = false) => {
-    switchValue.value = undefined
+  const { openFeedbackDialog } = useFeedbackDialog(EnumFeedbackDialog.SwitchBack)
 
-    if (!skipFeedbackConsentClear) hasFeedbackConsent.value = undefined
+  const clearFeedbackConsentAndRedirect = (redirectTo: string) => {
+    hasFeedbackConsent.value = undefined
 
-    window.location.href = redirectTo
+    clearSwitchAndRedirect(redirectTo)
+  }
+
+  const toggleBetaUiSwitch = (redirectTo = '/', skipFeedback = false) => {
+    if (skipFeedback) {
+      clearSwitchAndRedirect(redirectTo)
+      return
+    }
+
+    if (hasFeedbackConsent.value !== 'true') {
+      clearFeedbackConsentAndRedirect(redirectTo)
+      return
+    }
+
+    openFeedbackDialog({
+      callback: () => {
+        clearFeedbackConsentAndRedirect(redirectTo)
+      },
+    })
   }
 
   const dismissBetaUiSwitch = () => {

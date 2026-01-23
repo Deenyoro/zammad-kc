@@ -185,6 +185,7 @@ export const useOverlayContainer = (
   const { name } = options
 
   const vm = getCurrentInstance()
+
   if (!vm) {
     throw new Error(
       `Overlay container '${name}' from type '${type}' was not initialized inside setup context.`,
@@ -212,7 +213,7 @@ export const useOverlayContainer = (
     overlayContainerMeta[type].mounted.delete(currentName)
     await closeOverlayContainer(type, currentName)
     // Was mounted during hmr.
-    if (!overlayContainerMeta[type].mounted.has(currentName)) {
+    if (!overlayContainerMeta[type].mounted.has(currentName) && !options.global) {
       overlayContainerMeta[type].options.delete(currentName)
     }
   })

@@ -6,13 +6,19 @@ import { EnumBetaUiFeedbackType } from '#shared/graphql/types.ts'
 
 import { waitForBetaUiSendFeedbackMutationCalls } from '../../graphql/mutations/betaUiSendFeedback.mocks.ts'
 import FeedbackDialog from '../FeedbackDialog.vue'
-import { FEEDBACK_DIALOG_NAME } from '../useFeedbackDialog.ts'
+import { EnumFeedbackDialog } from '../useFeedbackDialog.ts'
 
 const closeDialogMock = vi.hoisted(() => vi.fn())
 
-vi.mock('#desktop/components/CommonDialog/useDialog.ts', () => ({
-  closeDialog: closeDialogMock,
-}))
+vi.mock('#desktop/components/CommonDialog/useDialog.ts', async (originalModule) => {
+  const module =
+    await originalModule<typeof import('#desktop/components/CommonDialog/useDialog.ts')>()
+
+  return {
+    ...module,
+    closeDialog: closeDialogMock,
+  }
+})
 
 const renderFeedbackDialog = (props = {}) =>
   renderComponent(FeedbackDialog, {
@@ -85,7 +91,7 @@ describe('FeedbackDialog', () => {
 
       await wrapper.events.click(wrapper.getByRole('button', { name: 'Skip' }))
 
-      expect(closeDialogMock).toHaveBeenCalledWith(FEEDBACK_DIALOG_NAME, true)
+      expect(closeDialogMock).toHaveBeenCalledWith(EnumFeedbackDialog.Generic, true)
     })
   })
 

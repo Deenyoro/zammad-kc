@@ -20,7 +20,10 @@ import { useLocaleStore } from '#shared/stores/locale.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 
 import { useBetaUiDisclaimer } from '#desktop/components/BetaUi/composables/useBetaUiDisclaimer.ts'
-import { useBetaUiFeedbackConsent } from '#desktop/components/BetaUi/composables/useBetaUiFeedbackConsent.ts'
+import {
+  useBetaUiFeedbackConsent,
+  initializeBetaUiFeedbackConsentDialog,
+} from '#desktop/components/BetaUi/composables/useBetaUiFeedbackConsent.ts'
 import { initializeConfirmationDialog } from '#desktop/components/CommonConfirmationDialog/initializeConfirmationDialog.ts'
 import { useConnection } from '#desktop/composables/useConnection.ts'
 import { useTicketOverviewsStore } from '#desktop/entities/ticket/stores/ticketOverviews.ts'
@@ -54,6 +57,9 @@ const { switchValue } = useBetaUi()
 
 // Shows the feedback consent for the BETA usage of the desktop view.
 //  The user has by this point enrolled into the BETA program.
+
+initializeBetaUiFeedbackConsentDialog() // Calling it within the check also doesn't pick up the setup scope 😱
+
 if (switchValue.value) {
   useBetaUiFeedbackConsent()
   useBetaUiFeedbackRouteGuard()

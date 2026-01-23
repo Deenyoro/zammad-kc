@@ -6,11 +6,16 @@ import renderComponent, { initializePiniaStore } from '#tests/support/components
 
 import { useAuthenticationStore } from '#shared/stores/authentication.ts'
 
-import { useBetaUiFeedbackConsent } from '../useBetaUiFeedbackConsent.ts'
+import {
+  initializeBetaUiFeedbackConsentDialog,
+  useBetaUiFeedbackConsent,
+} from '../useBetaUiFeedbackConsent.ts'
 
 const DummyComponent = {
   template: '<div></div>',
   setup() {
+    initializeBetaUiFeedbackConsentDialog()
+
     useBetaUiFeedbackConsent()
   },
 }
