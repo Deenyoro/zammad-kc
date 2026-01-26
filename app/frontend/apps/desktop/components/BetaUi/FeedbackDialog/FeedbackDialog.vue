@@ -64,11 +64,9 @@ const schema = markRaw([
         name: 'neverAskAgain',
         type: 'checkbox',
         label: __('Never ask me again'),
-        classes: { outer: 'text-left flex flex-col gap-1' },
+        classes: { outer: 'text-left flex flex-col gap-1', help: 'max-w-md' },
         hidden: !props.milestone,
-        help: __(
-          'You can always send your feedback using the button next to the BETA switch or in your profile settings.',
-        ),
+        help: __('You can send feedback from the BETA button or profile settings.'),
         sectionsSchema: {
           help: {
             if: 'true',

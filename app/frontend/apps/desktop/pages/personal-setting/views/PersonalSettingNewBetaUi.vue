@@ -13,7 +13,7 @@ import {
 import { useFeedbackDialog } from '#desktop/components/BetaUi/FeedbackDialog/useFeedbackDialog.ts'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
-import { useAppUsageStore } from '#desktop/stores/appUsage.ts'
+import { useAppUsage } from '#desktop/composables/BetaUi/useAppUsage.ts'
 
 import { useBreadcrumb } from '../composables/useBreadcrumb.ts'
 
@@ -31,7 +31,7 @@ const { openFeedbackDialog } = useFeedbackDialog()
 
 const { waitForConfirmation } = useConfirmation()
 
-const { setNeverAskAgainForTimedFeedback } = useAppUsageStore()
+const { setNeverAskAgainForTimedFeedback, neverAskAgainForTimedFeedback } = useAppUsage()
 
 const leaveFeedbackProgram = () => {
   waitForConfirmation(__('You can always re-join later.'), {
@@ -85,15 +85,10 @@ const leaveFeedbackProgram = () => {
         <FormKit
           v-if="hasFeedbackConsent === 'true'"
           type="checkbox"
-          :model-value="!dismissValue"
           :label="__('Do not ask automatically for feedback on the BETA UI')"
-          :aria-label="
-            dismissValue
-              ? $t('Disable the banner for the BETA switch')
-              : $t('Enable the banner for the BETA switch')
-          "
           name="toggle-dismiss-beta-ui-switch"
-          @click="setNeverAskAgainForTimedFeedback"
+          :model-value="neverAskAgainForTimedFeedback"
+          @update:model-value="setNeverAskAgainForTimedFeedback"
         />
 
         <div class="flex gap-4">
