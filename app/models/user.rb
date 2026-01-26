@@ -704,7 +704,7 @@ try to find correct name
   end
 
   def all_organization_ids
-    ([organization_id] + organization_ids).uniq
+    ([organization_id] + organization_ids).compact.uniq
   end
 
   def organization_id?(organization_id)

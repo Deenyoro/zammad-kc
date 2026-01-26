@@ -149,24 +149,27 @@ customerTicketsSubscription.onResult(({ data }) => {
             class="self-start"
             :label="__('Related tickets')"
           >
-            <CommonTabGroup
-              v-model="activeCustomerTicketsTab"
-              class="mb-3"
-              :tabs="customerTicketsTabs"
-            />
-            <KeepAlive>
-              <UserRelatedCustomerTickets
-                v-if="activeCustomerTicketsTab === 'user'"
-                id="tab-panel-user"
-                :customer="user"
+            <template v-if="user.organization">
+              <CommonTabGroup
+                v-model="activeCustomerTicketsTab"
+                class="mb-3"
+                :tabs="customerTicketsTabs"
               />
-              <UserRelatedCustomerTickets
-                v-else-if="activeCustomerTicketsTab === 'organization'"
-                id="tab-panel-organization"
-                :customer="user"
-                customer-organizations
-              />
-            </KeepAlive>
+              <KeepAlive>
+                <UserRelatedCustomerTickets
+                  v-if="activeCustomerTicketsTab === 'user'"
+                  id="tab-panel-user"
+                  :customer="user"
+                />
+                <UserRelatedCustomerTickets
+                  v-else-if="activeCustomerTicketsTab === 'organization'"
+                  id="tab-panel-organization"
+                  :customer="user"
+                  customer-organizations
+                />
+              </KeepAlive>
+            </template>
+            <UserRelatedCustomerTickets v-else :customer="user" />
           </CommonSectionContainer>
 
           <UserTicketBarChart

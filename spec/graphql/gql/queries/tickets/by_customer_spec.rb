@@ -101,6 +101,23 @@ RSpec.describe Gql::Queries::Tickets::ByCustomer, type: :graphql do
             )
           end
         end
+
+        context 'with customer without organization' do
+          let(:customer_without_org) { create(:customer, organization: nil) }
+          let(:customer_without_org_2) { create(:customer, organization: nil) }
+          let(:ticket_without_org)     { create(:ticket, group:, customer: customer_without_org, organization: nil) }
+          let(:ticket_without_org_2)   { create(:ticket, group:, customer: customer_without_org_2, organization: nil) }
+          let(:variables)              { { customerId: gql.id(customer_without_org), customerOrganizations: true, stateTypeCategory: state_type_category } }
+
+          it 'returns no tickets from other users without organization' do
+            expect(gql.result.data).to eq(
+              {
+                'edges'      => [],
+                'totalCount' => 0
+              }
+            )
+          end
+        end
       end
     end
   end

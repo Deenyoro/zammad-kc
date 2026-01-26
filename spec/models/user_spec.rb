@@ -1454,4 +1454,29 @@ RSpec.describe User, type: :model do
         .not_to raise_error
     end
   end
+
+  describe '#all_organization_ids' do
+    it 'returns empty array when user has no organizations' do
+      user = create(:user, organization: nil, organization_ids: [])
+
+      expect(user.all_organization_ids).to eq([])
+    end
+
+    it 'returns only primary organization id when user has only primary organization' do
+      organization = create(:organization)
+      user = create(:user, organization: organization, organization_ids: [])
+
+      expect(user.all_organization_ids).to eq([organization.id])
+    end
+
+    it 'returns both primary and secondary organization ids' do
+      organization1 = create(:organization)
+      organization2 = create(:organization)
+      organization3 = create(:organization)
+
+      user = create(:user, organization: organization1, organizations: [organization2, organization3])
+
+      expect(user.all_organization_ids).to contain_exactly(organization1.id, organization2.id, organization3.id)
+    end
+  end
 end
