@@ -59,7 +59,6 @@ RSpec.describe 'Desktop > Personal Setting > Profile', app: :desktop_view, authe
       o2 = find('li.draggable', text: 'My Assigned Tickets')
       o1.drag_to(o2)
 
-      expect(page).to have_text('The order of your ticket overviews was updated.')
       expect(page).to have_text("My Assigned Tickets\nTest Overview")
 
       within '#page-navigation' do

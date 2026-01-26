@@ -15,6 +15,7 @@ import MutationHandler from '#shared/server/apollo/handler/MutationHandler.ts'
 import QueryHandler from '#shared/server/apollo/handler/QueryHandler.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
+import CommonEmptyMessage from '#desktop/components/CommonEmptyMessage/CommonEmptyMessage.vue'
 import CommonLoader from '#desktop/components/CommonLoader/CommonLoader.vue'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import { UserCurrentOverviewOrderingUpdatesDocument } from '#desktop/entities/ticket/graphql/subscriptions/userCurrentOverviewOrderingUpdates.api.ts'
@@ -74,17 +75,9 @@ const updateOverviewList = (newValue: OverviewItem[]) => {
     },
   )
 
-  overviewUpdateOrderMutation
-    .send({
-      overviewIds: newValue.map((overview) => overview.id),
-    })
-    .then(() => {
-      notify({
-        id: 'overview-ordering-success',
-        type: NotificationTypes.Success,
-        message: __('The order of your ticket overviews was updated.'),
-      })
-    })
+  return overviewUpdateOrderMutation.send({
+    overviewIds: newValue.map((overview) => overview.id),
+  })
 }
 
 const { waitForVariantConfirmation } = useConfirmation()
@@ -122,8 +115,8 @@ const confirmResetOverviewOrder = async () => {
 <template>
   <LayoutContent :breadcrumb-items="breadcrumbItems" width="narrow">
     <CommonLoader class="mt-5 mb-3" :loading="overviewListQueryLoading">
-      <div class="mb-4">
-        <CommonLabel id="label-ticket-overview-order" class="!mt-0.5 mb-1 !block"
+      <div v-if="overviewList.length" class="mb-4">
+        <CommonLabel id="label-ticket-overview-order" class="mt-0.5! mb-1 block!"
           >{{ $t('Order of ticket overviews') }}
         </CommonLabel>
 
@@ -144,6 +137,17 @@ const confirmResetOverviewOrder = async () => {
           </CommonButton>
         </div>
       </div>
+      <CommonEmptyMessage
+        v-else
+        class="text-center"
+        :title="$t('No overviews')"
+        :text="
+          $t(
+            'Currently, no overviews are assigned to your roles. Please contact your administrator.',
+          )
+        "
+        icon="exclamation-triangle"
+      />
     </CommonLoader>
   </LayoutContent>
 </template>

@@ -18,7 +18,7 @@ export default <PersonalSettingPlugin>{
     meta: {
       title: __('Overviews'),
       requiresAuth: true,
-      requiredPermission: 'user_preferences.overview_sorting',
+      requiredPermission: 'user_preferences.overview_sorting+ticket.agent',
     },
   },
   order: 2000,

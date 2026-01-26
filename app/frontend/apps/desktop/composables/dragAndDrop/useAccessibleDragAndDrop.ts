@@ -9,7 +9,7 @@ import { startAndEndEventsDNDPlugin } from '#shared/utils/startAndEndEventsDNDPl
 
 import type { AnnouncerHandler } from '../accessibility/types'
 
-export const useAccessibleDragAndDrop = <T extends HTMLElement, C extends string>(
+export const useAccessibleDragAndDrop = <T extends HTMLElement, C extends object | string>(
   parent: ShallowRef<T | null>,
   children: Ref<C[]>,
   announceHandler: AnnouncerHandler,
@@ -19,6 +19,7 @@ export const useAccessibleDragAndDrop = <T extends HTMLElement, C extends string
     dropZoneClass?: string
     synthDropZoneClass?: string
     draggingClass?: string
+    getValue?: (item: C) => string
   } = {},
 ) => {
   const {
@@ -27,6 +28,7 @@ export const useAccessibleDragAndDrop = <T extends HTMLElement, C extends string
     dropZoneClass = '',
     synthDropZoneClass = '',
     draggingClass = '',
+    getValue = (item) => (typeof item === 'string' ? item : String(item)),
   } = options
 
   dragAndDrop({
@@ -38,13 +40,15 @@ export const useAccessibleDragAndDrop = <T extends HTMLElement, C extends string
     synthDropZoneClass: `opacity-0 dragging-active ${synthDropZoneClass}`,
     draggingClass: `dragging-active ${draggingClass}`,
     onDragstart: (state) => {
-      announceHandler(i18n.t(`Drag started for %s.`, state.draggedNode.data.value as string))
+      announceHandler(
+        i18n.t(`Drag started for %s.`, getValue(state.draggedNode.data.value as unknown as C)),
+      )
     },
     onSort: (event) => {
       announceHandler(
         i18n.t(
           'Sorted %s in user taskbar list to position %s.',
-          event.draggedNodes[0].data.value as string,
+          getValue(event.draggedNodes[0].data.value as unknown as C),
           event.position + 1,
         ),
       )
@@ -53,14 +57,16 @@ export const useAccessibleDragAndDrop = <T extends HTMLElement, C extends string
       announceHandler(
         i18n.t(
           'Transferred %s from user taskbar list %s at position %s.',
-          event.draggedNodes[0].data.value as string,
+          getValue(event.draggedNodes[0].data.value as unknown as C),
           event.sourceParent.el === (parent as Ref<HTMLElement>).value ? 1 : 2, // Compare source parent element to our list parent to determine list index
           event.targetIndex + 1,
         ),
       )
     },
     onDragend: (state) => {
-      announceHandler(i18n.t('Drag ended for %s.', state.draggedNode.data.value as string))
+      announceHandler(
+        i18n.t('Drag ended for %s.', getValue(state.draggedNode.data.value as unknown as C)),
+      )
     },
   })
 }

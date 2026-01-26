@@ -31,6 +31,7 @@ import hasPermission from '#shared/utils/hasPermission.ts'
 import { edgesToArray } from '#shared/utils/helpers.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
+import CommonEmptyMessage from '#desktop/components/CommonEmptyMessage/CommonEmptyMessage.vue'
 import { useSkeletonLoadingCount } from '#desktop/components/CommonTable/composables/useSkeletonLoadingCount.ts'
 import { useTicketBulkEdit } from '#desktop/components/Ticket/TicketBulkEditFlyout/useTicketBulkEdit.ts'
 import TicketListTable from '#desktop/components/Ticket/TicketListTable.vue'
@@ -40,7 +41,6 @@ import { useTicketsCachedByOverviewCache } from '#desktop/entities/ticket/compos
 import { useTicketsCachedByOverviewQuery } from '#desktop/entities/ticket/graphql/queries/ticketsCachedByOverview.api.ts'
 import { useTicketOverviewsStore } from '#desktop/entities/ticket/stores/ticketOverviews.ts'
 import { useLifetimeCustomerTicketsCount } from '#desktop/entities/user/current/composables/useLifetimeCustomerTicketsCount.ts'
-import TicketOverviewsEmptyText from '#desktop/pages/ticket-overviews/components/TicketOverviewsEmptyText.vue'
 
 interface Props {
   overviewId: string
@@ -395,9 +395,9 @@ defineExpose({ tickets: readonly(tickets) })
       @sort="resort"
     >
       <template #empty-list>
-        <TicketOverviewsEmptyText
+        <CommonEmptyMessage
           v-if="isCustomerAndCanCreateTickets && !hasAnyTicket"
-          class="space-y-2.5"
+          class="absolute space-y-2.5 top-1/2 w-full -translate-y-1/2 text-center ltr:left-1/2 ltr:-translate-x-1/2 rtl:right-1/2 rtl:translate-x-1/2"
           :title="$t('Welcome!')"
         >
           <CommonLabel class="block!" tag="p">{{
@@ -416,10 +416,11 @@ defineExpose({ tickets: readonly(tickets) })
             @click="router.push({ name: 'TicketCreate' })"
             >{{ $t('Create your first ticket') }}
           </CommonButton>
-        </TicketOverviewsEmptyText>
+        </CommonEmptyMessage>
 
-        <TicketOverviewsEmptyText
+        <CommonEmptyMessage
           v-else
+          class="absolute top-1/2 w-full -translate-y-1/2 text-center ltr:left-1/2 ltr:-translate-x-1/2 rtl:right-1/2 rtl:translate-x-1/2"
           :title="$t('Empty overview')"
           :text="$t('No tickets in this state.')"
           with-illustration

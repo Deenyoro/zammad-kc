@@ -1,28 +1,35 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { ref, computed, type Ref } from 'vue'
+import { ref, computed } from 'vue'
 
 import { i18n } from '#shared/i18n/index.ts'
 
 import { useAnnouncer } from '#desktop/composables/accessibility/useAnnouncer.ts'
 
-export function useKeyboardKeysForDragAndDrop({
+import type { ShallowOrDeepRef } from '@vueuse/shared'
+
+export function useKeyboardKeysForDragAndDrop<T extends object | string>({
   items,
   onReorder,
+  getValue = (item) => (typeof item === 'string' ? item : String(item)),
 }: {
-  items: Ref<string[]>
-  onReorder?: (newOrder: string[]) => void
+  items: ShallowOrDeepRef<T[]>
+  onReorder?: (newOrder: T[]) => void
+  getValue?: (item: T) => string
 }) {
   const { announce } = useAnnouncer()
 
   const focusedItemIndex = ref<number | null>(null)
   const selectedItemIndex = ref<number | null>(null)
 
+  const getActiveItem = () => items.value[focusedItemIndex.value ?? 0]
+  const getActiveItemValue = () => getValue(getActiveItem())
+
   let listHasFocus = false
 
   const focusedItemId = computed(() =>
     focusedItemIndex.value !== null && items.value.length > 0
-      ? `item-${items.value[focusedItemIndex.value]}`
+      ? `item-${getValue(getActiveItem())}`
       : undefined,
   )
 
@@ -44,13 +51,13 @@ export function useKeyboardKeysForDragAndDrop({
         announce(
           i18n.t(
             '%s selected. Use arrow keys to choose drop position, then press Space.',
-            items.value[currentItemIndex],
+            getActiveItemValue(),
           ),
         )
       } else if (selectedItemIndex.value === currentItemIndex) {
         // Same item: Deselect
         selectedItemIndex.value = null
-        announce(i18n.t('%s deselected.', items.value[currentItemIndex]))
+        announce(i18n.t('%s deselected.', getActiveItemValue()))
       } else {
         // Different item: Swap positions
         const fromIndex = selectedItemIndex.value
@@ -69,9 +76,9 @@ export function useKeyboardKeysForDragAndDrop({
         announce(
           i18n.t(
             'Swapped %s with %s. %s moved to position %s.',
-            fromValue,
-            toValue,
-            fromValue,
+            getValue(fromValue),
+            getValue(toValue),
+            getValue(fromValue),
             toIndex + 1,
           ),
         )
@@ -87,7 +94,7 @@ export function useKeyboardKeysForDragAndDrop({
 
         // moves focus to the next item (wraps to start)
         focusedItemIndex.value = currentItemIndex === null ? 0 : (currentItemIndex + 1) % itemCount
-        announce(i18n.t('Focus on %s', items.value[focusedItemIndex.value]))
+        announce(i18n.t('Focus on %s', getActiveItemValue()))
         break
       }
       case 'ArrowUp': {
@@ -96,7 +103,7 @@ export function useKeyboardKeysForDragAndDrop({
         // moves focus to the previous item (wraps to end)
         focusedItemIndex.value =
           currentItemIndex === null ? itemCount - 1 : (currentItemIndex - 1 + itemCount) % itemCount
-        announce(i18n.t('Focus on %s', items.value[focusedItemIndex.value] as string))
+        announce(i18n.t('Focus on %s', getActiveItemValue()))
         break
       }
       case ' ': {
@@ -117,7 +124,7 @@ export function useKeyboardKeysForDragAndDrop({
         event.preventDefault()
 
         if (selectedItemIndex.value !== null) {
-          announce(i18n.t('Selection cancelled for %s.', items.value[selectedItemIndex.value]))
+          announce(i18n.t('Selection cancelled for %s.', getActiveItemValue()))
           selectedItemIndex.value = null
         } else {
           announce(__('Escape pressed. No item selected.'))

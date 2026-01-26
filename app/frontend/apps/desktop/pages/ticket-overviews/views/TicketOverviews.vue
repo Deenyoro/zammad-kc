@@ -4,12 +4,12 @@
 import { until } from '@vueuse/core'
 import { computed } from 'vue'
 
+import CommonEmptyMessage from '#desktop/components/CommonEmptyMessage/CommonEmptyMessage.vue'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import LayoutSidebar from '#desktop/components/layout/LayoutSidebar.vue'
 import TicketBulkEditButton from '#desktop/components/Ticket/TicketBulkEditButton.vue'
 import { useTicketBulkEdit } from '#desktop/components/Ticket/TicketBulkEditFlyout/useTicketBulkEdit.ts'
 import TicketList from '#desktop/pages/ticket-overviews/components/TicketList.vue'
-import TicketOverviewsEmptyText from '#desktop/pages/ticket-overviews/components/TicketOverviewsEmptyText.vue'
 import TicketOverviewsSidebar from '#desktop/pages/ticket-overviews/components/TicketOverviewsSidebar.vue'
 import { useTicketOverviews } from '#desktop/pages/ticket-overviews/composables/useTicketOverviews.ts'
 
@@ -122,8 +122,9 @@ const { checkedTicketIds, openBulkEditFlyout } = useTicketBulkEdit()
         :group-by="currentOverview.groupBy || undefined"
         :overview-count="currentOverviewCount"
       />
-      <TicketOverviewsEmptyText
+      <CommonEmptyMessage
         v-else
+        class="absolute top-1/2 w-full -translate-y-1/2 text-center ltr:left-1/2 ltr:-translate-x-1/2 rtl:right-1/2 rtl:translate-x-1/2"
         :title="$t('No overviews')"
         :text="
           $t(

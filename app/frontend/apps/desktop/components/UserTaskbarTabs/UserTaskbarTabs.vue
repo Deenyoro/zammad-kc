@@ -5,7 +5,7 @@ import { parents, updateConfig } from '@formkit/drag-and-drop'
 import { computedAsync } from '@vueuse/core'
 import { cloneDeep } from 'lodash-es'
 import { storeToRefs } from 'pinia'
-import { ref, watch, useTemplateRef, nextTick, onMounted } from 'vue'
+import { watch, useTemplateRef, nextTick, onMounted, shallowRef } from 'vue'
 
 import { useTouchDevice } from '#shared/composables/useTouchDevice.ts'
 import { EnumTaskbarEntityAccess } from '#shared/graphql/types.ts'
@@ -99,7 +99,7 @@ const dndEndCallback = (parent: HTMLElement) => {
 }
 
 const dndParentElement = useTemplateRef('dnd-parent')
-const dndTaskbarTabListOrder = ref(taskbarTabListOrder.value || [])
+const dndTaskbarTabListOrder = shallowRef(taskbarTabListOrder.value || [])
 let isKeyboardReorder = false
 
 const { announce, messageNodeId } = useAnnouncer()
