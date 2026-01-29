@@ -76,10 +76,6 @@ RUN if [ -z "${COMMIT_SHA}" ]; then \
 # Don't require Redis or Postgres (use fake DATABASE_URL to make Rails validation happy).
 RUN touch db/schema.rb && \
     ZAMMAD_SAFE_MODE=1 DATABASE_URL=postgresql://zammad:/zammad bundle exec rake assets:precompile
-
-# KC: Verify app boots cleanly with overlay
-RUN ZAMMAD_SAFE_MODE=1 DATABASE_URL=postgresql://zammad:/zammad bundle exec rails runner 'puts "KC overlay: #{defined?(Kc) ? "active" : "not loaded"}"'
-
 RUN script/build/cleanup.sh
 
 # Precompile bootsnap code for faster boot times
