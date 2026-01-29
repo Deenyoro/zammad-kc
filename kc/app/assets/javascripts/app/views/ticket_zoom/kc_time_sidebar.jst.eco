@@ -80,7 +80,13 @@
       <% end %>
       <div class="form-group">
         <label class="formGroup-label"><%- @T('Time') %></label>
-        <input type="number" class="form-control form-control--small js-timeInput" step="0.25" min="0.25" placeholder="0.00">
+        <div style="display: flex; gap: 6px;">
+          <input type="number" class="form-control form-control--small js-timeInput" step="0.25" min="0.25" placeholder="0.00" style="flex: 1;">
+          <select class="form-control form-control--small js-unitSelect" style="flex: 0 0 auto; width: auto;">
+            <option value="minute"><%- @T('Minutes') %></option>
+            <option value="hour"><%- @T('Hours') %></option>
+          </select>
+        </div>
       </div>
       <button class="btn btn--primary btn--small js-addEntry"><%- @T('Add') %></button>
     </div>
