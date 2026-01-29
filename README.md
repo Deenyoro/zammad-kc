@@ -1,53 +1,76 @@
-# Welcome to Zammad
+# Zammad KC Fork
 
-Are you juggling countless customer inquiries across multiple channels?
-Struggling to keep your support team on the same page?
-Or spending more time managing your helpdesk than delivering exceptional support to your customers?
+A customized fork of [Zammad](https://github.com/zammad/zammad) with business-specific extensions built on top of the KC overlay system. All custom code lives in `kc/` and is applied at Docker build time via `rsync --ignore-existing` — upstream files are never modified, so pulling new Zammad releases produces zero merge conflicts in application code.
 
-Zammad is your Swiss Army knife - a web-based, open-source helpdesk and customer support platform
-packed with features to streamline customer communication across channels like email, chat, telephone and social media.
+## What This Fork Adds
 
-## The Software
+### Per-Agent Time Tracking
 
-The Zammad software is and will stay open source. It is licensed under the GNU AGPLv3.
-The source code is [available on GitHub](https://github.com/zammad/zammad) and owned by
-the [Zammad Foundation](https://zammad-foundation.org/), which is independent of commercial
-providers such as Zammad GmbH.
+The upstream time accounting sidebar only shows totals grouped by activity type. This fork replaces it with a per-agent breakdown:
 
-## The Company - Zammad GmbH
+- Each time entry is assigned to a specific agent (via a new `agent_id` column on `ticket_time_accountings`)
+- The ticket sidebar groups entries by agent with individual totals
+- Agents can add and delete time entries inline from the sidebar
+- If the KC backend is unavailable (e.g. routes not loaded), the sidebar automatically falls back to the upstream widget
 
-The development of Zammad is carried out by the [amazing team of people](https://zammad.com/en/company)
-at [Zammad GmbH](https://zammad.com/) in collaboration with the community.
-We love to create open source software for you. If you want to ensure the Zammad software
-has a bright and sustainable future, consider becoming a Zammad customer!
+**Files:** `zz_kc_time_unit.coffee`, `kc_time_unit.jst.eco`, `time_accounting_agent.rb`, migration
 
-> Are you tired of complex setup, configuration, backup and update tasks? Let us handle this stuff for you! 🚀
->
-> The easiest and often most cost-effective way to operate Zammad is [our cloud service](https://zammad.com/en/pricing).
-> Give it a try with a [free trial instance](https://zammad.com/en/getting-started)!
+### Admin Time Management Reporting
 
-## Status
+A new admin page under **System > KC - Time Management** with two tabs:
 
-- Toolchain: [![CI](https://github.com/zammad/zammad/workflows/CI/badge.svg)](https://github.com/zammad/zammad/actions/workflows/ci.yaml)
-  [![docker-release workflow](https://github.com/zammad/zammad/workflows/docker-release/badge.svg)](https://github.com/zammad/zammad/actions/workflows/docker-release.yaml)
-  [![documentation status](https://readthedocs.org/projects/zammad/badge/)](https://docs.zammad.org)
-- Docker container images: [![Docker images for Zammad](https://img.shields.io/badge/version-stable-blue.svg)](https://hub.docker.com/r/zammad/zammad-docker-compose)
-  [![Dockerhub Pulls](https://badgen.net/docker/pulls/zammad/zammad-docker-compose?icon=docker&label=pulls)](https://hub.docker.com/r/zammad/zammad-docker-compose/)
-- Helm chart for Kubernetes: [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/zammad)](https://artifacthub.io/packages/helm/zammad/zammad)
-  [![Release downloads](https://img.shields.io/github/downloads/zammad/zammad-helm/total.svg)](https://github.com/zammad/zammad-helm/releases)
-- Download DEB/RPM: [![binary packages for Zammad stable](https://img.shields.io/badge/Branch-stable-blue.svg)](https://packager.io/gh/zammad/zammad/refs/stable)
-  [![binary packages for Zammad develop](https://img.shields.io/badge/Branch-develop-lightgrey.svg)](https://packager.io/gh/zammad/zammad/refs/develop)
-- License: [![AGPL license](https://img.shields.io/badge/License-AGPL%203.0-brightgreen.svg)](https://github.com/zammad/zammad/blob/develop/LICENSE)
+- **By User** — aggregated time units per agent for a selected month/year
+- **By Organization** — aggregated time units per customer organization for a selected month/year
 
-## Further Information
+Both views support Excel export for download.
 
-- [Installing & Getting Started](https://docs.zammad.org)
-- [Screenshots](https://zammad.org/screenshots)
-- [Developer Manual](/doc/developer_manual/index.md)
-- [REST API](https://docs.zammad.org/en/latest/api/intro.html)
-- For reporting security vulnerabilities, please see [our security policy](SECURITY.md).
-- [Contributing](https://zammad.org/participate)
+**Files:** `kc_time_management.coffee`, `time_management_controller.rb`, ECO templates
 
-Thanks! ❤️ ❤️ ❤️
+### Note / Email Reply Convert Button
 
- Your Zammad Team
+A button in the legacy desktop-app ticket compose area that lets agents convert between "note" and "email reply" article types while preserving the typed body content. When converting to email, the customer's email address is auto-populated in the To field and the email signature is inserted.
+
+The button only appears when both article types are available (e.g. hides when the group has no email address configured).
+
+**Files:** `kc_convert_type.coffee`
+
+### Multi-Tab Support (Session Takeover Disabled)
+
+Zammad's default behavior kicks you out of all other tabs when you open a new one (session takeover). This fork disables that behavior so agents can work with multiple Zammad tabs open simultaneously.
+
+**Files:** `kc_disable_session_takeover.rb`
+
+## How It Works
+
+All custom code lives in the `kc/` directory. During the Docker build, `kc/script/apply-overlay.sh` copies KC files into the Zammad app tree using `rsync --ignore-existing`. Upstream files are never overwritten.
+
+- **Ruby backend** — Concerns prepended into upstream models via `kc_loader.rb`, new controllers/services under the `Kc::` namespace
+- **Routes** — Scoped under `/api/v1/kc/`, auto-loaded by Zammad's route glob
+- **Legacy frontend** — CoffeeScript plugins registered via `App.Config.set`, ECO templates under KC-specific view paths
+- **Migrations** — Standard Rails migrations with idempotent guards (`column_exists?`, `table_exists?`)
+
+### Upstream Sync
+
+```bash
+git remote add upstream https://github.com/zammad/zammad.git
+git fetch upstream
+git merge upstream/develop
+```
+
+Zero conflicts in `app/`, `config/`, `lib/`, `db/`. The only files that can conflict are `Dockerfile` and `script/build/cleanup.sh` (minimal, clearly marked with `# KC:` comments).
+
+### Hardening
+
+Every KC file is hardened against upstream changes:
+
+- Ruby initializers use `safe_constantize` and `rescue` blocks — if upstream renames or removes a class we depend on, the app boots with a warning instead of crashing
+- CoffeeScript files guard against missing upstream classes and fall back gracefully
+- The auth policy fails closed (denies access) on unexpected errors
+- The migration checks `table_exists?` and `column_exists?` before every operation
+- The overlay build script detects file collisions and aborts with a clear error
+
+See `kc/README.md` for the full developer guide on adding new extensions.
+
+## Upstream
+
+This fork is based on [Zammad](https://github.com/zammad/zammad), an open-source helpdesk/customer support platform licensed under the GNU AGPLv3. See [LICENSE](LICENSE) for details.
