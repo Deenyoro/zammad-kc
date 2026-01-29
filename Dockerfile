@@ -38,7 +38,7 @@ SHELL ["/bin/bash", "-o", "errexit", "-o", "pipefail", "-c"]
 
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libimlib2-dev libpq-dev libyaml-dev && \
+    apt-get install --no-install-recommends -y build-essential git libimlib2-dev libpq-dev libyaml-dev rsync && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install application gems
@@ -59,6 +59,10 @@ RUN pnpm install --frozen-lockfile
 # Copy application code
 COPY . .
 
+# KC: Apply custom code overlay and install custom gems
+RUN if [ -x kc/script/apply-overlay.sh ]; then kc/script/apply-overlay.sh; fi
+RUN if [ -f Gemfile.local ]; then bundle install && rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache; fi
+
 # Append build information to the Zammad VERSION.
 RUN if [ -z "${COMMIT_SHA}" ]; then \
     echo "Error: the required build argument \$COMMIT_SHA is missing."; \
@@ -72,6 +76,9 @@ RUN if [ -z "${COMMIT_SHA}" ]; then \
 # Don't require Redis or Postgres (use fake DATABASE_URL to make Rails validation happy).
 RUN touch db/schema.rb && \
     ZAMMAD_SAFE_MODE=1 DATABASE_URL=postgresql://zammad:/zammad bundle exec rake assets:precompile
+
+# KC: Verify app boots cleanly with overlay
+RUN ZAMMAD_SAFE_MODE=1 DATABASE_URL=postgresql://zammad:/zammad bundle exec rails runner 'puts "KC overlay: #{defined?(Kc) ? "active" : "not loaded"}"'
 
 RUN script/build/cleanup.sh
 
