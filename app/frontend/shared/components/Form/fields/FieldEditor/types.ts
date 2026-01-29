@@ -170,7 +170,7 @@ export interface EditorButton {
   showDivider?: boolean
   dividerClass?: string
   permission?: string
-  show?: (config: ConfigList) => boolean
+  show?: (config?: ConfigList) => boolean
   subMenu?: Component | Except<EditorButton, 'subMenu'>[]
 }
 
