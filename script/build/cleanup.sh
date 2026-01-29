@@ -35,3 +35,6 @@ rm -rf tmp/*
 
 # Delete node_modules folder - only required during building
 rm -rf node_modules
+
+# Remove KC overlay source directory (contents already applied to app tree)
+rm -rf kc
