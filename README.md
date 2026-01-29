@@ -195,12 +195,13 @@ Migrations are copied into `db/migrate/` by the overlay and execute during conta
 
 ### Per-Agent Time Tracking
 
-The upstream time accounting sidebar groups entries by activity type. KC replaces it with a per-agent breakdown:
+A dedicated **Time Tracking** sidebar tab (clock icon) appears alongside the built-in ticket, customer, organization, and checklist tabs:
 
 - A new `agent_id` column on `ticket_time_accountings` tracks which agent performed the work (distinct from `created_by_id` which is the user who logged the entry)
-- The ticket sidebar groups time entries by agent, showing individual totals and line items
-- Agents can add new time entries (selecting agent, activity type, and duration) and delete existing ones directly from the sidebar
-- If the KC API endpoint returns 404 (e.g. overlay routes not loaded), the widget permanently falls back to the upstream render for that browser session — the sidebar never breaks
+- The sidebar tab groups time entries by agent, showing individual totals and line items
+- Agents can add new time entries (selecting agent, activity type, and duration) and delete existing ones directly from the tab
+- The tab is always visible for agents — no need to have existing time logged before adding entries
+- If the KC API endpoint returns 404 (e.g. overlay routes not loaded), the tab hides itself and the upstream time widget continues to work normally
 
 ### Admin Time Management Reporting
 

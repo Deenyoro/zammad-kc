@@ -1,97 +1,146 @@
-# Onboarding for AI Agents
+# CLAUDE.md
 
-Purpose: Give an AI coding agent a fast, reliable mental model of this repo to ship changes with minimal trial-and-error.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Summary
 
-- Zammad is an open-source helpdesk/customer support platform.
-  It’s a Ruby on Rails app with two modern Vue 3 frontends (desktop-view and mobile)
-  and one legacy desktop-app under app/assets.
-- For authoritative setup, runtime, and environment details, always refer to:
-  - [`../doc/developer_manual/`](../doc/developer_manual/) (index: [`../doc/developer_manual/index.md`](../doc/developer_manual/index.md))
-  - [`../package.json`](../package.json), [`../Gemfile`](../Gemfile), [`../config/database.yml`](../config/database.yml),
-    [`../Procfile.dev`](../Procfile.dev), [`../vite.config.mjs`](../vite.config.mjs), [`../tsconfig.base.json`](../tsconfig.base.json),
-    [`../.oxlintrc.json`](../eslint.config.ts), and other config files in the repo.
-- Apps:
-  - desktop-app (legacy, [`../app/assets`](../app/assets)): legacy UI using REST API + CoffeeScript/Sprockets.
-    Uses the Spine.js MVC framework for frontend structure and state management.
-  - desktop-view ([`../app/frontend/apps/desktop`](../app/frontend/apps/desktop)): new UI using Vue + GraphQL.
-  - mobile ([`../app/frontend/apps/mobile`](../app/frontend/apps/mobile)): new UI using Vue + GraphQL.
+Zammad is an open-source helpdesk/customer support platform. It's a Ruby on Rails app with two modern Vue 3 frontends (desktop-view and mobile) and one legacy desktop-app under `app/assets/`. This fork includes a KC overlay system for custom code isolation (see KC Overlay section below).
 
-## Tech stack (see configs for details)
+## Common Commands
 
-- Legacy desktop-app: CoffeeScript, Spine.js, Sprockets, REST API
-  (see [`../app/assets/`](../app/assets/), [`../coffeelint.json`](../coffeelint.json), QUnit in `../test/`)
-- New desktop-view and mobile apps: Vue 3, TypeScript, Pinia, Apollo Client (GraphQL), Tailwind CSS, VueUse,
-  Vitest, Testing Library, Cypress, pnpm, vite-plugin-ruby, vite-plugin-pwa, ESLint, Stylelint, Prettier
-  (see [`../package.json`](../package.json), [`../vite.config.mjs`](../vite.config.mjs),
-  [`../tsconfig.base.json`](../tsconfig.base.json), [`../eslint.config.ts`](../eslint.config.ts))
-- Backend: Ruby on Rails, PostgreSQL, Redis, ActionCable, Delayed Job, GraphQL
-  (see [`../Gemfile`](../Gemfile), [`../config/`](../config/))
+### Development Server
 
-## Project structure (high-level)
+```bash
+bin/dev                    # Start all services (Rails :3000, Vite :3036, WebSocket :6042, Worker)
+pnpm dev:https             # Start with HTTPS (self-signed certs)
+```
 
-- [`../app/assets/`](../app/assets/): legacy desktop-app (CoffeeScript/Sprockets)
-- [`../app/frontend/`](../app/frontend/): Vue + TS frontends
-- [`../app/frontend/apps/desktop`](../app/frontend/apps/desktop),
-  [`../app/frontend/apps/mobile`](../app/frontend/apps/mobile): app-specific code
-- [`../app/frontend/shared/`](../app/frontend/shared/): cross-app modules (components, utils, stores, graphql, i18n)
-- [`../app/frontend/tests/`](../app/frontend/tests/): vitest setup and helpers
-- Rails standard: [`../app/controllers/`](../app/controllers/), [`../app/models/`](../app/models/), [`../app/views/`](../app/views/),
-  [`../app/jobs/`](../app/jobs/), [`../app/mailers/`](../app/mailers/), [`../app/helpers/`](../app/helpers/), [`../app/channels/`](../app/channels/),
-  [`../app/policies/`](../app/policies/)
-- [`../app/services/`](../app/services/): business logic modules (not Rails standard, but common)
-- [`../app/graphql/`](../app/graphql/): GraphQL API definitions and resolvers
-- Other key folders: [`../bin/`](../bin/), [`../config/`](../config/), [`../db/`](../db/), [`../doc/developer_manual/`](../doc/developer_manual/),
-  [`../script/`](../script/), [`../spec/`](../spec/), [`../test/`](../test/)
+### Testing
 
-## lib/ directory overview
+**RSpec (Ruby backend):**
+```bash
+bundle exec rspec spec/path/to_spec.rb          # Single file
+bundle exec rspec spec/path/to_spec.rb:42        # Single test by line number
+bundle exec rspec --only-failures                # Re-run failures
+```
 
-- The [`../lib/`](../lib/) directory contains core extensions, helpers, integrations, and business logic modules
-  that are not part of the Rails standard structure but are essential for Zammad's backend functionality.
-- It includes:
-  - **Helpers and utilities:** e.g., `email_helper.rb`, `migration_helper.rb`, `sql_helper.rb`, `image_helper.rb`,
-    `time_range_helper.rb`, `session_helper.rb`, `notification_factory.rb`, and more.
-  - **Integrations:** Subfolders and files for external services such as `github/`, `gitlab/`, `microsoft_graph/`,
-    `facebook.rb`, `telegram_helper.rb`, `whatsapp/`, and others.
-  - **Business logic and features:** e.g., `auto_wizard.rb`, `bulk_import_info.rb`, `calendar_subscriptions/`,
-    `escalation/`, `excel_sheet/`, `external_data_source/`, `knowledge_base/`, `password_policy/`,
-    `secure_mailing/`, `stats/`, `tasks/`, etc.
-  - **Core extensions:** e.g., `core_ext/` for Ruby or Rails extensions.
-  - **Background services and operations:** e.g., `background_services/`, `operations_rate_limiter.rb`,
-    `sequencer/`, `transaction_dispatcher.rb`.
-  - **Other:** `app_version.rb`, `exceptions.rb`, `models.rb`, `version.rb`, and more.
-- Many subfolders contain related modules or classes grouped by feature or integration.
+Before first run: `RAILS_ENV=test bundle exec rake db:drop db:create zammad:ci:test:prepare`
 
-## Runtime, environment, and coding standards
+**Vitest (Vue/TypeScript):**
+```bash
+pnpm test                              # Watch mode (all tests)
+pnpm test CommonLink.spec.ts           # Single file (watch mode)
+pnpm test --run                        # Run once, no watch
+```
 
-- All runtime and environment constraints are defined in config files. See above for references.
-- For setup, troubleshooting, testing, linting, and coding standards, always consult the Developer Manual
-  ([`../doc/developer_manual/`](../doc/developer_manual/)).
-- For tool versions, scripts, and environment variables, see [`../package.json`](../package.json), [`../Gemfile`](../Gemfile),
-  and other config files.
-- For path aliases, see [`../tsconfig.base.json`](../tsconfig.base.json).
-  For copyright/i18n, see [`../eslint.config.ts`](../eslint.config.ts).
+**Cypress (component tests):**
+```bash
+pnpm test:ct                           # Interactive UI
+pnpm test:ci:ct                        # Headless CI mode
+```
 
-## Legacy desktop-app tips
+**QUnit (legacy JS):**
+```bash
+QUNIT_TEST=name rspec spec/system/js/q_unit_spec.rb    # Specific test
+```
 
-- Location: [`../app/assets/javascripts`](../app/assets/javascripts) and [`../app/assets/stylesheets`](../app/assets/stylesheets).
-- Uses Spine.js for MVC structure. Most modules are Spine classes.
-- Uses REST API endpoints (see Rails controllers for routes).
-- Linting: [`../coffeelint.json`](../coffeelint.json). Testing: QUnit in [`../test/`](../test/).
-- Prefer new work in desktop-view/mobile; keep legacy changes minimal.
+### Linting
 
-## Vue apps tips
+```bash
+pnpm lint                  # All frontend linting (TS + JS + CSS + Markdown)
+pnpm lint:fix              # All with auto-fix
+pnpm lint:ts               # TypeScript type checking (vue-tsc --noEmit)
+pnpm lint:js               # JS/TS (oxlint + ESLint)
+pnpm lint:css              # Stylelint
+bundle exec rubocop --parallel   # Ruby
+```
 
-- Use path aliases from [`../tsconfig.base.json`](../tsconfig.base.json).
-- Do not cross-import between desktop/mobile apps (ESLint enforces boundaries).
-- Use Vitest and Testing Library for unit/component tests ([`../app/frontend/tests/`](../app/frontend/tests/)).
-- Use Tailwind CSS utilities for styling. Lint with Stylelint and Prettier.
-- For i18n, wrap user-facing strings and see [`../eslint.config.ts`](../eslint.config.ts) for rules.
+### Code Generation
 
-## When in doubt
+```bash
+pnpm generate-graphql-api          # Regenerate GraphQL introspection + TS types
+pnpm generate-setting-types        # Regenerate setting type definitions
+rails generate zammad:translation_catalog   # Extract translatable strings
+```
 
-- The Developer Manual ([`../doc/developer_manual/`](../doc/developer_manual/)) is the source of truth for setup,
-  testing, and standards.
-- Prefer referencing config files over duplicating information here.
-- Keep PRs focused; include tests for new code.
+### Database
+
+```bash
+rails db:migrate                   # Run pending migrations
+rails db:drop zammad:db:init       # Reset development database
+```
+
+## Architecture
+
+### Three Frontend Apps
+
+| App | Path | Stack | API |
+|-----|------|-------|-----|
+| desktop-app (legacy) | `app/assets/` | CoffeeScript, Spine.js, Sprockets | REST |
+| desktop-view (new) | `app/frontend/apps/desktop/` | Vue 3, TypeScript, Pinia | GraphQL |
+| mobile | `app/frontend/apps/mobile/` | Vue 3, TypeScript, Pinia | GraphQL |
+
+Shared frontend code lives in `app/frontend/shared/` (components, composables, stores, GraphQL operations, entities). ESLint enforces that desktop and mobile apps never cross-import—both import only from `#shared`.
+
+Path aliases are defined in `tsconfig.base.json` (e.g., `#shared/` maps to `app/frontend/shared/`).
+
+### GraphQL Schema (Auto-Discovery)
+
+The GraphQL API uses automatic class registration—no manifest files:
+- Entry points (`app/graphql/gql/entry_points/`) dynamically discover all descendants via `eager_load_recursive`
+- Queries extend `Gql::Queries::BaseQuery`, mutations extend `Gql::Mutations::BaseMutation`
+- Schema field names are auto-derived from class names (`graphql_field_name`)
+- Mutations return errors via `error_response()` as `[UserErrorType]` arrays
+- Frontend operations live in `app/frontend/shared/graphql/` with `.api.ts` (documents) and `.mocks.ts` (test mocks) files
+
+### Authorization Stack
+
+Multi-layer: GraphQL declarations → Pundit policies → field-level filtering.
+- GraphQL layer: `requires_authentication`, `requires_permission(*perms)` class methods
+- Policy layer (`app/policies/`): `ApplicationPolicy` with Pundit; `FieldScope` for field-level allow/deny
+- User context threading: `UserInfo.with_user_id(user_id) { block }` used in resolvers, jobs, and services
+
+### Real-Time Updates (ActionCable + GraphQL Subscriptions)
+
+- `GraphqlChannel` (`app/channels/`) receives GraphQL documents via ActionCable
+- Subscriptions extend `Gql::Subscriptions::BaseSubscription` with `broadcastable` and `trigger` methods
+- Frontend uses Apollo Client subscription transport over WebSocket
+
+### Service Object Pattern
+
+`app/services/service/` contains business logic:
+- `Service::Base` — override `execute()`
+- `Service::BaseWithCurrentUser` — injects `current_user:`
+- Called from mutations, controllers, and jobs
+
+### Background Jobs
+
+`app/jobs/` — standard `ApplicationJob` subclasses processed by Delayed Job. Jobs use `UserInfo.with_user_id()` when user context is needed.
+
+### Frontend Form System
+
+`app/frontend/shared/form/` provides declarative form schemas via `defineFormSchema()` with plugins for reactive field updates, validation, conditional visibility, and data binding.
+
+### Frontend Testing Patterns
+
+- **GraphQL Automocker**: Generates mock data from schema introspection (`app/frontend/tests/graphql/builders/`)
+- Key helpers: `mockGraphQLResult()`, `getGraphQLSubscriptionHandler()`, `renderComponent()`
+- Custom assertions: `toBeAvatarElement`, `toHaveClasses`, `toHaveCurrentUrl`
+- Tests use `data-test-id` attributes for element queries
+
+### KC Overlay System
+
+Zero-conflict custom code isolation (`kc/` directory):
+- Uses `rsync --ignore-existing` during Docker build—never overwrites upstream files
+- Extension via `prepend` for concerns, `Kc::` namespace for new code
+- Auto-discovery: concerns registered in `kc/config/initializers/kc_loader.rb`, routes via glob, frontend pages via Vite glob on `pages/kc/routes.ts`
+- Gems added via `Gemfile.local`, migrations run with standard `rails db:migrate`
+- API routes scoped under `/api/v1/kc/`
+
+## Code Style Notes
+
+- Frontend: 2-space indent, UTF-8, LF line endings, max 100 char lines (see `.editorconfig`)
+- Ruby: RuboCop config in `.dev/rubocop/default.yml` (`.rubocop.yml` is a wrapper)
+- CoffeeScript: rules in `coffeelint.json` with custom rules in `.dev/coffeelint/rules/`
+- Prefer new work in desktop-view/mobile; keep legacy desktop-app changes minimal
+- Wrap user-facing strings for i18n
