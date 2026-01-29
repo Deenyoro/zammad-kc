@@ -26,7 +26,7 @@ class Kc::TimeManagementController < ApplicationController
         id:         entry.id,
         time_unit:  entry.time_unit,
         type_id:    entry.type_id,
-        type_name:  types[entry.type_id]&.dig(:name) || types[entry.type_id]&.try(:name) || '-',
+        type_name:  types[entry.type_id]&.try(:name) || '-',
         agent_id:   agent_id,
         agent_name: agents[agent_id]&.fullname || '-',
         created_at: entry.created_at,
