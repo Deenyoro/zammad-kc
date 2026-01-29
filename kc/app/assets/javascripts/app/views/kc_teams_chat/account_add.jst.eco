@@ -1,0 +1,36 @@
+<form>
+  <p class="help-text">
+    <%- @T('Enter your Azure AD application credentials. You will be redirected to Microsoft to authorize access.') %>
+  </p>
+
+  <div class="form-group">
+    <label for="client_id"><%- @T('Application (Client) ID') %> <span class="text-danger">*</span></label>
+    <input type="text" name="client_id" id="client_id" class="form-control" required placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+  </div>
+
+  <div class="form-group">
+    <label for="client_secret"><%- @T('Client Secret') %> <span class="text-danger">*</span></label>
+    <input type="password" name="client_secret" id="client_secret" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+    <label for="tenant_id"><%- @T('Directory (Tenant) ID') %> <span class="text-danger">*</span></label>
+    <input type="text" name="tenant_id" id="tenant_id" class="form-control" required placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+  </div>
+
+  <div class="form-group">
+    <label for="group_id"><%- @T('Destination Group') %></label>
+    <select name="group_id" id="group_id" class="form-control">
+      <% for group in @groups: %>
+        <option value="<%= group.id %>"><%= group.displayName() %></option>
+      <% end %>
+    </select>
+    <p class="help-text"><%- @T('Incoming Teams chat messages will create tickets in this group.') %></p>
+  </div>
+
+  <div class="form-group">
+    <label for="thread_window_hours"><%- @T('Thread Window (hours)') %></label>
+    <input type="number" name="thread_window_hours" id="thread_window_hours" class="form-control" value="24" min="0">
+    <p class="help-text"><%- @T('Messages within this window are grouped into the same ticket. Set to 0 for a single ongoing ticket per chat.') %></p>
+  </div>
+</form>
