@@ -29,8 +29,6 @@ class AddKcTeamsChatSetting < ActiveRecord::Migration[7.0]
         permission: ['admin'],
       },
       frontend:     false,
-      updated_by_id: 1,
-      created_by_id: 1,
     )
   end
 
