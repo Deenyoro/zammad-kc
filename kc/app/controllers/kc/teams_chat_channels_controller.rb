@@ -33,9 +33,9 @@ class Kc::TeamsChatChannelsController < ApplicationController
     }
   end
 
-  # GET /api/v1/kc/teams_chat_channels/authorize
+  # GET /api/v1/kc/teams_chat_channels/authorize_oauth
   # Initiates the OAuth2 flow — returns the Microsoft login URL.
-  def authorize
+  def authorize_oauth
     graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
     if graph_class.nil?
       render json: { error: 'Teams Chat integration not available' }, status: :service_unavailable
