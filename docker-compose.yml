@@ -1,0 +1,162 @@
+services:
+  zammad-postgresql:
+    image: ghcr.io/cloudnative-pg/postgresql:16.1-18
+    container_name: zammad-postgresql
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  zammad-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+    container_name: zammad-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=${ES_JAVA_OPTS}
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:9200/_cluster/health || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+    restart: unless-stopped
+
+  zammad-redis:
+    image: redis:7-alpine
+    container_name: zammad-redis
+    command: redis-server --requirepass ${REDIS_PASS}
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASS}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  zammad-memcached:
+    image: memcached:1.6-alpine
+    container_name: zammad-memcached
+    command: memcached -m ${MEMCACHED_SIZE}
+    ports:
+      - "11211:11211"
+    restart: unless-stopped
+
+  zammad-init:
+    image: ${ZAMMAD_IMAGE}
+    container_name: zammad-init
+    command: ["zammad-init"]
+    depends_on:
+      zammad-postgresql:
+        condition: service_healthy
+      zammad-elasticsearch:
+        condition: service_healthy
+      zammad-redis:
+        condition: service_healthy
+    environment: &zammad-environment
+      RAILS_ENV: production
+      POSTGRESQL_HOST: zammad-postgresql
+      POSTGRESQL_PORT: "5432"
+      POSTGRESQL_USER: ${POSTGRES_USER}
+      POSTGRESQL_PASS: ${POSTGRES_PASS}
+      POSTGRESQL_DB: ${POSTGRES_DB}
+      POSTGRESQL_DB_CREATE: ${POSTGRES_DB_CREATE}
+      REDIS_URL: "redis://:${REDIS_PASS}@zammad-redis:6379"
+      MEMCACHE_SERVERS: "zammad-memcached:11211"
+      ELASTICSEARCH_HOST: "zammad-elasticsearch"
+      ELASTICSEARCH_PORT: "9200"
+      ELASTICSEARCH_SCHEMA: "http"
+      ELASTICSEARCH_ENABLED: "true"
+      ELASTICSEARCH_REINDEX: "true"
+    volumes:
+      - zammad-storage:/opt/zammad/storage
+    restart: on-failure
+
+  zammad-railsserver:
+    image: ${ZAMMAD_IMAGE}
+    container_name: zammad-railsserver
+    command: ["zammad-railsserver"]
+    depends_on:
+      zammad-init:
+        condition: service_completed_successfully
+      zammad-postgresql:
+        condition: service_healthy
+      zammad-elasticsearch:
+        condition: service_healthy
+      zammad-redis:
+        condition: service_healthy
+    environment:
+      <<: *zammad-environment
+      ZAMMAD_RAILSSERVER_HOST: "0.0.0.0"
+    volumes:
+      - zammad-storage:/opt/zammad/storage
+    restart: unless-stopped
+
+  zammad-websocket:
+    image: ${ZAMMAD_IMAGE}
+    container_name: zammad-websocket
+    command: ["zammad-websocket"]
+    depends_on:
+      zammad-init:
+        condition: service_completed_successfully
+    environment:
+      <<: *zammad-environment
+    volumes:
+      - zammad-storage:/opt/zammad/storage
+    restart: unless-stopped
+
+  zammad-scheduler:
+    image: ${ZAMMAD_IMAGE}
+    container_name: zammad-scheduler
+    command: ["zammad-scheduler"]
+    depends_on:
+      zammad-init:
+        condition: service_completed_successfully
+    environment:
+      <<: *zammad-environment
+    volumes:
+      - zammad-storage:/opt/zammad/storage
+    restart: unless-stopped
+
+  zammad-nginx:
+    image: ${ZAMMAD_IMAGE}
+    container_name: zammad-nginx
+    command: ["zammad-nginx"]
+    ports:
+      - "${NGINX_PORT}:8080"
+    depends_on:
+      zammad-init:
+        condition: service_completed_successfully
+      zammad-railsserver:
+        condition: service_started
+      zammad-websocket:
+        condition: service_started
+    environment:
+      <<: *zammad-environment
+      NGINX_SERVER_SCHEME: ${NGINX_SERVER_SCHEME}
+      ZAMMAD_RAILSSERVER_HOST: "zammad-railsserver"
+      ZAMMAD_RAILSSERVER_PORT: "3000"
+      ZAMMAD_WEBSOCKET_HOST: "zammad-websocket"
+      ZAMMAD_WEBSOCKET_PORT: "6042"
+    volumes:
+      - zammad-storage:/opt/zammad/storage
+    restart: unless-stopped
+
+volumes:
+  postgresql-data:
+  elasticsearch-data:
+  zammad-storage:
