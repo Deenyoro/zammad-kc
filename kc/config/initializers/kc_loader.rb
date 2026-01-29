@@ -2,17 +2,14 @@
 #
 # This initializer:
 #   1. Defines the top-level Kc module
-#   2. Registers lib/kc/ on the autoload path
-#   3. Uses Rails `to_prepare` to prepend KC concerns into upstream models
+#   2. Uses Rails `to_prepare` to prepend KC concerns into upstream models
 #
-# It runs after all upstream initializers because the filename sorts last
-# alphabetically within config/initializers/.
+# Autoloading: lib/kc/ is already autoloaded by Zammad's config.autoload_lib
+# in config/application.rb. Files under app/ (models, controllers, services,
+# concerns) are autoloaded by Rails conventions. No manual path registration
+# is needed.
 
 module Kc; end
-
-# Make lib/kc/ autoloadable so classes like Kc::MyService resolve automatically.
-Rails.application.config.autoload_paths    << Rails.root.join('lib/kc')
-Rails.application.config.eager_load_paths  << Rails.root.join('lib/kc')
 
 Rails.application.config.to_prepare do
   Rails.logger.info 'KC: Loading custom overlay extensions...'
