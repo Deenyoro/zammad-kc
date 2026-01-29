@@ -1,0 +1,90 @@
+<div class="kc-time-sidebar">
+  <div class="kc-time-total" style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e0e0e0;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <strong><%- @T('Total') %></strong>
+      <span>
+        <strong><%= @total.toFixed(2) %></strong>
+        <% if @displayUnit: %>
+          <span class="text-muted"><%- @T(@displayUnit) %></span>
+        <% end %>
+      </span>
+    </div>
+  </div>
+
+  <% if @agentGroups.length is 0: %>
+    <p class="text-muted"><%- @T('No time entries yet.') %></p>
+  <% end %>
+
+  <% for group in @agentGroups: %>
+  <div class="kc-time-agent-group" style="margin-bottom: 10px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; font-weight: bold; margin-bottom: 4px;">
+      <span><%= group.agent_name %></span>
+      <span>
+        <%= group.total.toFixed(2) %>
+        <% if @displayUnit: %>
+          <span class="text-muted" style="font-weight: normal;"><%- @T(@displayUnit) %></span>
+        <% end %>
+      </span>
+    </div>
+    <% visibleEntries = if @showAllEntries then group.entries else group.entries.slice(0, 5) %>
+    <% for entry in visibleEntries: %>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 0 2px 10px;">
+      <span class="text-muted"><%= entry.type_name || '-' %></span>
+      <span>
+        <%= parseFloat(entry.time_unit).toFixed(2) %>
+        <% if @editable: %>
+          <a href="#" class="js-deleteEntry text-muted" data-entry-id="<%= entry.id %>" title="<%- @T('Delete') %>" style="margin-left: 6px;">&times;</a>
+        <% end %>
+      </span>
+    </div>
+    <% end %>
+  </div>
+  <% end %>
+
+  <% if @showMore: %>
+  <div style="margin-bottom: 8px;">
+    <a href="#" class="js-showMoreEntries"><%- @T('show more') %></a>
+  </div>
+  <% end %>
+
+  <% if @editable: %>
+  <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #e0e0e0;">
+    <a href="#" class="js-toggleAddForm">
+      <% if @showAddForm: %>
+        <%- @T('Cancel') %>
+      <% else: %>
+        <%- @T('+ Add Time Entry') %>
+      <% end %>
+    </a>
+
+    <% if @showAddForm: %>
+    <div style="margin-top: 8px;">
+      <div class="form-group">
+        <label class="formGroup-label"><%- @T('Agent') %></label>
+        <select class="form-control form-control--small js-agentSelect">
+          <% for agent in @agents: %>
+          <option value="<%= agent.id %>"><%= agent.displayName() %></option>
+          <% end %>
+        </select>
+      </div>
+      <% if @types.length: %>
+      <div class="form-group">
+        <label class="formGroup-label"><%- @T('Activity Type') %></label>
+        <select class="form-control form-control--small js-typeSelect">
+          <option value=""><%- @T('None') %></option>
+          <% for type in @types: %>
+          <option value="<%= type.id %>"><%= type.name %></option>
+          <% end %>
+        </select>
+      </div>
+      <% end %>
+      <div class="form-group">
+        <label class="formGroup-label"><%- @T('Time') %></label>
+        <input type="number" class="form-control form-control--small js-timeInput" step="0.25" min="0.25" placeholder="0.00">
+      </div>
+      <button class="btn btn--primary btn--small js-addEntry"><%- @T('Add') %></button>
+    </div>
+    <% end %>
+  </div>
+  <% end %>
+</div>
