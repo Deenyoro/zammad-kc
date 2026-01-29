@@ -1,13 +1,47 @@
 # KC: Admin page for Time Management reporting.
-# Registered under System > KC - Time Management.
+# Registered under KC Extensions > Time Management.
+#
+# This file also registers the "KC Extensions" top-level admin section
+# and its route handler. All KC admin pages should use parent: '#kc_extensions'.
 #
 # Hardening: The @include of App.TimeAccountingUnitMixin is guarded — if
 # upstream removes or renames it the controllers still render (they just
 # won't have the unit-formatting helper).  API errors are shown inline.
 
+# ---------- Route handler for KC Extensions section ----------
+# Mirrors Zammad's ManageRouter pattern for admin section navigation.
+
+class KcExtensionsRouter extends App.ControllerPermanent
+  @requiredPermission: ['admin']
+
+  constructor: (params) ->
+    super
+    @authenticateCheckRedirect()
+
+    App.TaskManager.execute(
+      key:        'KcExtensions'
+      controller: 'Manage'
+      params:     params
+      show:       true
+      persistent: true
+    )
+
+App.Config.set('kc_extensions/:target', KcExtensionsRouter, 'Routes')
+
+# ---------- Top-level admin section ----------
+
+App.Config.set('KcExtensions', {
+  prio:       8500
+  name:       __('KC Extensions')
+  target:     '#kc_extensions'
+  permission: ['admin']
+}, 'NavBarAdmin')
+
+# ---------- Time Management controller ----------
+
 class KcTimeManagement extends App.ControllerTabs
   @requiredPermission: 'admin'
-  header: __('KC - Time Management')
+  header: __('Time Management')
 
   constructor: ->
     super
@@ -133,4 +167,11 @@ class KcTimeManagementByOrganization extends App.Controller
     @month = $(e.target).data('type')
     @render()
 
-App.Config.set('KcTimeManagement', { prio: 8600, name: __('KC - Time Management'), parent: '#system', target: '#system/kc_time_management', controller: KcTimeManagement, permission: ['admin'] }, 'NavBarAdmin')
+App.Config.set('KcTimeManagement', {
+  prio:       1000
+  name:       __('Time Management')
+  parent:     '#kc_extensions'
+  target:     '#kc_extensions/kc_time_management'
+  controller: KcTimeManagement
+  permission: ['admin']
+}, 'NavBarAdmin')
