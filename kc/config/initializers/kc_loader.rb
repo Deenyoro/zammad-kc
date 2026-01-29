@@ -59,6 +59,7 @@ Rails.application.config.to_prepare do
   end
 
   kc_prepend.call('Ticket::TimeAccounting', 'Kc::TimeAccountingAgent')
+  kc_prepend.call('Ticket::Article', 'Kc::EnqueueCommunicateTeamsChatJob')
 
   Rails.logger.info 'KC: Overlay loading complete.'
 end
