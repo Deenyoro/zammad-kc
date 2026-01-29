@@ -336,7 +336,7 @@ module Kc
 end
 ```
 
-The `kc_loader.rb` initializer adds `lib/kc/` to both `autoload_paths` and `eager_load_paths`, so classes under `Kc::` resolve automatically without requiring manual `require` statements.
+Zammad's `config.autoload_lib` in `config/application.rb` already autoloads the entire `lib/` directory, so `lib/kc/` classes resolve automatically without requiring manual `require` statements.
 
 ### Adding Custom Gems
 
