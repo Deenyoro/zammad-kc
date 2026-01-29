@@ -224,6 +224,7 @@ class SidebarKcTime extends App.Controller
     agentId  = @elSidebar.find('.js-agentSelect').val()
     typeId   = @elSidebar.find('.js-typeSelect').val()
     timeUnit = @elSidebar.find('.js-timeInput').val()
+    unit     = @elSidebar.find('.js-unitSelect').val()
 
     if !timeUnit || parseFloat(timeUnit) <= 0
       @notify(
@@ -232,6 +233,9 @@ class SidebarKcTime extends App.Controller
       )
       return
 
+    timeValue = parseFloat(timeUnit)
+    timeValue = timeValue * 60 if unit is 'hour'
+
     @ajax(
       id:   "kc_sidebar_time_create_#{@ticket.id}"
       type: 'POST'
@@ -239,7 +243,7 @@ class SidebarKcTime extends App.Controller
       data: JSON.stringify(
         agent_id:  agentId
         type_id:   typeId || null
-        time_unit: parseFloat(timeUnit)
+        time_unit: timeValue
       )
       contentType: 'application/json'
       processData: false
