@@ -45,7 +45,6 @@ class Kc::TimeManagementController < ApplicationController
       time_unit:     params[:time_unit],
       type_id:       params[:type_id].presence,
       created_by_id: current_user.id,
-      updated_by_id: current_user.id,
     }
     if Ticket::TimeAccounting.column_names.include?('agent_id')
       attrs[:agent_id] = params[:agent_id].presence
