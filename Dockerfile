@@ -61,7 +61,7 @@ COPY . .
 
 # KC: Apply custom code overlay and install custom gems
 RUN if [ -x kc/script/apply-overlay.sh ]; then kc/script/apply-overlay.sh; fi
-RUN if [ -f Gemfile.local ]; then bundle install && rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache; fi
+RUN if [ -f Gemfile.local ]; then BUNDLE_DEPLOYMENT="" bundle install && rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache; fi
 
 # Append build information to the Zammad VERSION.
 RUN if [ -z "${COMMIT_SHA}" ]; then \
