@@ -241,7 +241,8 @@ class SidebarKcTime extends App.Controller
         type_id:   typeId || null
         time_unit: parseFloat(timeUnit)
       )
-      processData: true
+      contentType: 'application/json'
+      processData: false
       success: =>
         @showAddForm = false
         @fetchKcEntries()
