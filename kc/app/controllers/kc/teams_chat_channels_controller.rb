@@ -13,7 +13,7 @@
 #   - Session params cleaned up after callback
 class Kc::TeamsChatChannelsController < ApplicationController
   skip_before_action :verify_csrf_token, only: [:callback]
-  prepend_before_action :authenticate_and_authorize!
+  prepend_before_action :authenticate_and_authorize!, except: [:callback]
 
   CHANNEL_AREA = 'MicrosoftTeamsChat::Account'.freeze
 
@@ -64,18 +64,20 @@ class Kc::TeamsChatChannelsController < ApplicationController
     render json: { authorize_url: url }
   end
 
-  # GET /api/v1/kc/teams_chat_channels/callback
-  # Handles the OAuth2 callback from Microsoft.
+  # GET/POST /api/v1/kc/teams_chat_channels/callback
+  # Handles the OAuth2 callback from Microsoft (form_post mode).
+  # No auth — validated by OAuth state parameter stored in session.
+  # Renders HTML that closes the popup and refreshes the parent window.
   def callback
     if params[:error].present?
-      render json: { error: params[:error_description] || params[:error] }, status: :unprocessable_entity
+      render_callback_error(params[:error_description] || params[:error])
       return
     end
 
     state = params[:state].to_s
     saved_state = session[:kc_teams_chat_oauth_state].to_s
     if saved_state.blank? || !ActiveSupport::SecurityUtils.secure_compare(state, saved_state)
-      render json: { error: 'Invalid OAuth state' }, status: :unprocessable_entity
+      render_callback_error('Invalid OAuth state')
       return
     end
 
@@ -85,7 +87,7 @@ class Kc::TeamsChatChannelsController < ApplicationController
 
     graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
     if graph_class.nil?
-      render json: { error: 'Teams Chat integration not available' }, status: :service_unavailable
+      render_callback_error('Teams Chat integration not available')
       return
     end
 
@@ -98,7 +100,7 @@ class Kc::TeamsChatChannelsController < ApplicationController
     graph.exchange_code(params[:code], callback_url)
     user_info = graph.me
 
-    channel = Channel.create!(
+    Channel.create!(
       area:    CHANNEL_AREA,
       options: {
         adapter:             'kc_microsoft_teams_chat',
@@ -114,11 +116,14 @@ class Kc::TeamsChatChannelsController < ApplicationController
       },
       group_id:      saved_params[:group_id].presence&.to_i || Group.first&.id,
       active:        true,
-      updated_by_id: current_user.id,
-      created_by_id: current_user.id,
+      updated_by_id: 1,
+      created_by_id: 1,
     )
 
-    render json: channel
+    render_callback_success
+  rescue => e
+    Rails.logger.error "KC Teams Chat OAuth callback failed: #{e.message}"
+    render_callback_error(e.message)
   end
 
   # PUT /api/v1/kc/teams_chat_channels/:id
@@ -175,5 +180,14 @@ class Kc::TeamsChatChannelsController < ApplicationController
     fqdn      = Setting.get('fqdn')
     http_type = Setting.get('http_type') || 'https'
     "#{http_type}://#{fqdn}/api/v1/kc/teams_chat_channels/callback"
+  end
+
+  def render_callback_success
+    render html: '<html><body><script>window.opener && window.opener.location.reload(); window.close();</script><p>Success! This window will close automatically.</p></body></html>'.html_safe, layout: false
+  end
+
+  def render_callback_error(message)
+    escaped = ERB::Util.html_escape(message)
+    render html: "<html><body><h2>OAuth Error</h2><p>#{escaped}</p><p><a href=\"javascript:window.close()\">Close this window</a></p></body></html>".html_safe, layout: false, status: :unprocessable_entity
   end
 end
