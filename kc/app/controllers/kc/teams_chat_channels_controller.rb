@@ -182,12 +182,18 @@ class Kc::TeamsChatChannelsController < ApplicationController
     "#{http_type}://#{fqdn}/api/v1/kc/teams_chat_channels/callback"
   end
 
+  def admin_teams_chat_url
+    fqdn      = Setting.get('fqdn')
+    http_type = Setting.get('http_type') || 'https'
+    "#{http_type}://#{fqdn}/#kc_extensions/kc_teams_chat"
+  end
+
   def render_callback_success
-    render html: '<html><body><script>window.opener && window.opener.location.reload(); window.close();</script><p>Success! This window will close automatically.</p></body></html>'.html_safe, layout: false
+    redirect_to admin_teams_chat_url, allow_other_host: true
   end
 
   def render_callback_error(message)
     escaped = ERB::Util.html_escape(message)
-    render html: "<html><body><h2>OAuth Error</h2><p>#{escaped}</p><p><a href=\"javascript:window.close()\">Close this window</a></p></body></html>".html_safe, layout: false, status: :unprocessable_entity
+    render html: "<html><body><h2>OAuth Error</h2><p>#{escaped}</p><p><a href=\"#{ERB::Util.html_escape(admin_teams_chat_url)}\">Back to Teams Chat settings</a></p></body></html>".html_safe, layout: false, status: :unprocessable_entity
   end
 end
