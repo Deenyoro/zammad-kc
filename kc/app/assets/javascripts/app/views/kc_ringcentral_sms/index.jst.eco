@@ -1,0 +1,93 @@
+<div class="page-header">
+  <div class="page-header-title">
+    <h1><%- @T('RingCentral SMS') %></h1>
+  </div>
+  <div class="page-header-meta">
+    <a class="btn btn--success js-new"><%- @T('Add Account') %></a>
+  </div>
+</div>
+
+<div class="page-content">
+  <div class="kc-ringcentral-settings" style="margin-bottom: 20px;">
+    <h2><%- @T('Settings') %></h2>
+    <table class="settings-list" style="max-width: 700px;">
+      <tr>
+        <td style="width: 280px;">
+          <span><%- @T('Ticket Title Template') %></span>
+          <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Use {phone} for the sender phone number.') %></p>
+        </td>
+        <td>
+          <input type="text" name="ticket_title_template" class="form-control" value="<%= @settings.ticket_title_template %>" style="width: 300px;">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span><%- @T('Thread Window') %></span>
+          <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Hours before a new ticket is created for the same phone number. 0 = one ticket per conversation.') %></p>
+        </td>
+        <td>
+          <input type="number" name="thread_window_hours" class="form-control form-control--small" value="<%= @settings.thread_window_hours %>" min="0" max="8760" style="width: 80px;">
+          <span class="text-muted"><%- @T('hours') %></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span><%- @T('Poll Interval') %></span>
+          <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Fallback polling frequency for missed webhooks.') %></p>
+        </td>
+        <td>
+          <input type="number" name="poll_interval_seconds" class="form-control form-control--small" value="<%= @settings.poll_interval_seconds %>" min="10" max="3600" style="width: 80px;">
+          <span class="text-muted"><%- @T('seconds') %></span>
+        </td>
+      </tr>
+    </table>
+    <button class="btn btn--primary js-saveSettings" style="margin-top: 10px;"><%- @T('Save Settings') %></button>
+  </div>
+
+  <hr>
+  <% if !@channels.length: %>
+    <table class="settings-list settings-list--stretch settings-list--placeholder">
+      <thead><tr><th><%- @T('No RingCentral SMS accounts configured yet.') %>
+    </table>
+  <% else: %>
+    <% for channel in @channels: %>
+      <% options = channel.options || {} %>
+      <div class="action <% if channel.active isnt true: %>is-inactive<% end %>" data-id="<%= channel.id %>">
+        <div class="action-block action-row">
+          <h2>
+            <%- @Icon('status', if channel.active then 'supergood-color inline' else 'error-color inline') %>
+            <%= options.phone_number || '-' %>
+            <% if options.user_display_name: %>
+              <span class="text-muted"><%= options.user_display_name %></span>
+            <% end %>
+          </h2>
+        </div>
+        <div class="action-flow action-flow--row">
+          <div class="action-block">
+            <h3><%- @T('Phone Number') %></h3>
+            <%= options.phone_number || '-' %>
+          </div>
+          <%- @Icon('arrow-right', 'action-flow-icon') %>
+          <div class="action-block">
+            <h3><%- @T('Group') %></h3>
+            <% if channel.group_id: %>
+              <% group = App.Group.find(channel.group_id) %>
+              <%= group?.displayName() || '-' %>
+            <% else: %>
+              -
+            <% end %>
+          </div>
+        </div>
+        <div class="action-controls">
+          <div class="btn btn--danger btn--secondary js-deleteAccount"><%- @T('Delete') %></div>
+          <% if channel.active is true: %>
+            <div class="btn btn--secondary js-disableAccount"><%- @T('Disable') %></div>
+          <% else: %>
+            <div class="btn btn--secondary js-enableAccount"><%- @T('Enable') %></div>
+          <% end %>
+          <div class="btn js-editAccount"><%- @T('Edit') %></div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

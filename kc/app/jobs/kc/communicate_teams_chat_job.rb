@@ -54,7 +54,7 @@ class Kc::CommunicateTeamsChatJob < ApplicationJob
     graph.refresh_access_token!
     persist_tokens(channel, graph)
 
-    # Send the message
+    # Send the text message
     body_content = article.body || ''
     content_type = article.content_type == 'text/html' ? 'html' : 'text'
     result = graph.send_chat_message(chat_id, body_content, content_type: content_type)
@@ -69,6 +69,9 @@ class Kc::CommunicateTeamsChatJob < ApplicationJob
       article.preferences[:teams_chat][:sent_at]          = Time.current.iso8601
       article.save!
     end
+
+    # Send image attachments as separate messages (hostedContents, max 4 MB each)
+    send_image_attachments(article, graph, chat_id)
 
     Rails.logger.info "KC Teams Chat: Sent article #{article_id} to chat #{chat_id}"
   rescue => e
@@ -107,6 +110,35 @@ class Kc::CommunicateTeamsChatJob < ApplicationJob
       return channel_id if channel_id.present?
     end
     nil
+  end
+
+  IMAGE_MIME_TYPES = %w[image/png image/jpeg image/gif image/webp image/bmp image/pjpeg].freeze
+  MAX_HOSTED_CONTENT_SIZE = 4.megabytes
+
+  def send_image_attachments(article, graph, chat_id)
+    image_attachments = article.attachments.select do |att|
+      mime = att.preferences['Content-Type'] || att.preferences['Mime-Type'] || ''
+      IMAGE_MIME_TYPES.include?(mime.split(';').first&.strip&.downcase)
+    end
+    return if image_attachments.empty?
+
+    image_attachments.each do |att|
+      mime = (att.preferences['Content-Type'] || att.preferences['Mime-Type'] || 'image/png').split(';').first.strip
+      content = att.content
+      if content.blank?
+        Rails.logger.warn "KC Teams Chat: Skipping empty attachment #{att.filename} for article #{article.id}"
+        next
+      end
+      if content.bytesize > MAX_HOSTED_CONTENT_SIZE
+        Rails.logger.warn "KC Teams Chat: Skipping attachment #{att.filename} (#{content.bytesize} bytes) — exceeds 4 MB hostedContents limit"
+        next
+      end
+
+      graph.send_chat_image(chat_id, content, content_type: mime, filename: att.filename)
+      Rails.logger.info "KC Teams Chat: Sent image '#{att.filename}' for article #{article.id} to chat #{chat_id}"
+    rescue => e
+      Rails.logger.error "KC Teams Chat: Failed to send image '#{att.filename}' for article #{article.id}: #{e.message}"
+    end
   end
 
   def persist_tokens(channel, graph)
