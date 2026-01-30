@@ -19,7 +19,6 @@ class CreateKcRingcentralSubscriptions < ActiveRecord::Migration[7.0]
       t.timestamps limit: 3
 
       t.index :subscription_id, unique: true
-      t.index :channel_id
       t.index :expires_at
     end
   end
