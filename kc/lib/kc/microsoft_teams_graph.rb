@@ -108,6 +108,30 @@ module Kc
       graph_post(url, payload)
     end
 
+    # Sends an image as a standalone chat message using hostedContents.
+    # content_bytes must be raw binary image data (will be base64-encoded).
+    # content_type should be the MIME type (e.g. 'image/png').
+    # Returns the created message hash.
+    def send_chat_image(chat_id, content_bytes, content_type:, filename: 'image')
+      url = "#{GRAPH_BASE_URL}/chats/#{chat_id}/messages"
+      encoded = Base64.strict_encode64(content_bytes)
+      temporary_id = SecureRandom.hex(8)
+      payload = {
+        body: {
+          contentType: 'html',
+          content:     "<img src=\"../hostedContents/#{temporary_id}/$value\" alt=\"#{ERB::Util.html_escape(filename)}\">",
+        },
+        hostedContents: [
+          {
+            '@microsoft.graph.temporaryId': temporary_id,
+            contentBytes:                   encoded,
+            contentType:                    content_type,
+          },
+        ],
+      }
+      graph_post(url, payload)
+    end
+
     # Fetches a single chat message by ID.
     def get_chat_message(chat_id, message_id)
       url = "#{GRAPH_BASE_URL}/chats/#{chat_id}/messages/#{message_id}"

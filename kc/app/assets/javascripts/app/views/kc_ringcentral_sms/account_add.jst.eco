@@ -1,0 +1,32 @@
+<form>
+  <p class="help-text">
+    <%- @T('Enter your RingCentral application credentials. You will be redirected to RingCentral to authorize access.') %>
+  </p>
+
+  <div class="form-group">
+    <label for="client_id"><%- @T('Client ID') %> <span class="text-danger">*</span></label>
+    <input type="text" name="client_id" id="client_id" class="form-control" required>
+    <p class="help-text"><%- @T('Found in your RingCentral Developer Console app settings.') %></p>
+  </div>
+
+  <div class="form-group">
+    <label for="client_secret"><%- @T('Client Secret') %> <span class="text-danger">*</span></label>
+    <input type="password" name="client_secret" id="client_secret" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+    <label for="group_id"><%- @T('Destination Group') %></label>
+    <select name="group_id" id="group_id" class="form-control">
+      <% for group in @groups: %>
+        <option value="<%= group.id %>"><%= group.displayName() %></option>
+      <% end %>
+    </select>
+    <p class="help-text"><%- @T('Incoming SMS messages will create tickets in this group.') %></p>
+  </div>
+
+  <div class="form-group">
+    <label for="thread_window_hours"><%- @T('Thread Window (hours)') %></label>
+    <input type="number" name="thread_window_hours" id="thread_window_hours" class="form-control" value="24" min="0">
+    <p class="help-text"><%- @T('Messages within this window are grouped into the same ticket. Set to 0 for a single ongoing ticket per phone number.') %></p>
+  </div>
+</form>
