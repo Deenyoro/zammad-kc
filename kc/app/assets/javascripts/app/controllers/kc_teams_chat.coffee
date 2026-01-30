@@ -172,12 +172,22 @@ class KcTeamsChatAccountAdd extends App.ControllerModal
       @showAlert(__('Please fill in all required fields.'))
       return
 
-    # Full-page GET redirect to authorize endpoint. The server stores
-    # OAuth state in the session and 302-redirects to Microsoft login.
-    # Microsoft redirects back via GET (response_mode=query), preserving
-    # the session cookie (SameSite=Lax allows top-level GET navigations).
-    query = $.param(params)
-    window.location.href = "#{@apiPath}/kc/teams_chat_channels/authorize?#{query}"
+    # POST credentials to server (never in URL/query string).
+    # Server stores them in session and returns the Microsoft login URL.
+    # Then we do a full-page GET redirect to that URL.
+    @ajax(
+      id:          'kc_teams_chat_authorize'
+      type:        'POST'
+      url:         "#{@apiPath}/kc/teams_chat_channels/authorize"
+      data:        JSON.stringify(params)
+      contentType: 'application/json'
+      success: (data) =>
+        window.location.href = data.authorize_url
+      error: (xhr) =>
+        @formEnable(e)
+        data = xhr.responseJSON || {}
+        @showAlert(data.error || __('Failed to start authorization.'))
+    )
 
 
 # ---------------------------------------------------------------------------
