@@ -10,7 +10,8 @@
 # Safety:
 #   - safe_constantize on KC classes
 #   - Per-channel rescue so one broken channel doesn't stop the others
-#   - Skips own outbound messages
+#   - Skips own bot messages (Zammad-sent via communicate job)
+#   - Detects agent/staff senders by email → creates internal notes
 #   - Skips messages older than channel creation time
 #   - Deduplicates by Graph message ID
 class Kc::PollTeamsChatMessagesJob < ApplicationJob
@@ -167,6 +168,13 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
         end
       end
 
+      # Detect if sender is a Zammad agent/admin by email
+      is_agent = false
+      if sender_email.present?
+        agent_user = User.find_by(email: sender_email.downcase)
+        is_agent = agent_user.present? && (agent_user.role?('Agent') || agent_user.role?('Admin'))
+      end
+
       message_data = {
         chat_id:           chat_id,
         message_id:        message['id'] || message[:id],
@@ -177,6 +185,7 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
         body_content_type: body['contentType'] || body[:contentType],
         created_at:        msg_created,
         tenant_id:         tenant_id,
+        is_agent:          is_agent,
       }
 
       # process() handles dedup internally via message_id
