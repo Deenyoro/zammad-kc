@@ -110,9 +110,12 @@ class Kc::CommunicateTeamsChatJob < ApplicationJob
   end
 
   def persist_tokens(channel, graph)
-    channel.options[:access_token]  = graph.access_token
-    channel.options[:refresh_token] = graph.refresh_token
-    channel.save!
+    channel.with_lock do
+      channel.reload
+      channel.options[:access_token]  = graph.access_token
+      channel.options[:refresh_token] = graph.refresh_token
+      channel.save!
+    end
   rescue => e
     Rails.logger.error "KC Teams Chat Job: Failed to persist tokens: #{e.message}"
   end

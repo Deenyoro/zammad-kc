@@ -94,7 +94,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
     raise 'Missing chat_id for Teams Chat delivery' if chat_id.blank?
 
     body_content = attr[:body] || ''
-    content_type = body_content.include?('<') ? 'html' : 'text'
+    content_type = attr[:content_type].to_s.include?('html') ? 'html' : 'text'
 
     graph.send_chat_message(chat_id, body_content, content_type: content_type)
   end
@@ -224,9 +224,8 @@ class Channel::Driver::KcMicrosoftTeamsChat
 
   def build_conversation_key(channel, message_data)
     tenant_id = message_data[:tenant_id] || channel.options&.dig(:tenant_id)
-    user_id   = message_data[:from_user_id]
     chat_id   = message_data[:chat_id]
-    "#{tenant_id}:#{user_id}:#{chat_id}"
+    "#{tenant_id}:#{chat_id}"
   end
 
   def find_existing_ticket(conversation_key, thread_window)
