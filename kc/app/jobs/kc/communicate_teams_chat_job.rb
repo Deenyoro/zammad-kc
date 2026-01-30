@@ -102,7 +102,7 @@ class Kc::CommunicateTeamsChatJob < ApplicationJob
     ticket.articles
           .where(sender_id: customer_sender.id)
           .order(created_at: :desc)
-          .find_each do |art|
+          .each do |art|
       channel_id = art.preferences&.dig(:teams_chat, :channel_id)
       return channel_id if channel_id.present?
     end
