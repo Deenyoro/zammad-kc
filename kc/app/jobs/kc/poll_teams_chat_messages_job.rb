@@ -111,9 +111,12 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
       Rails.logger.error "KC Teams Poll: Failed for discovered chat #{chat_id_safe}: #{e.message}"
     end
 
-    # Record discovery time
-    channel.options[:last_poll_discovery_at] = Time.current.iso8601
-    channel.save!
+    # Record discovery time (locked to avoid race with concurrent token persistence)
+    channel.with_lock do
+      channel.reload
+      channel.options[:last_poll_discovery_at] = Time.current.iso8601
+      channel.save!
+    end
   rescue => e
     Rails.logger.error "KC Teams Poll: Discovery failed for channel #{channel.id}: #{e.message}"
   end

@@ -1,6 +1,6 @@
-# KC: Scheduler entry for backup polling of Teams chat messages every
-# 15 minutes. Catches any messages missed by the webhook pathway
-# (e.g. during subscription gaps or Graph outages).
+# KC: Scheduler entry for polling Teams chat messages every 30 seconds.
+# Active chats are polled each cycle; full discovery runs at a
+# configurable interval (default 2 minutes).
 #
 # Safety:
 #   - Idempotent via create_if_not_exists
