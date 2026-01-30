@@ -4,11 +4,13 @@
 # flows for Teams chat conversations.
 #
 # Inbound flow:
-#   Webhook → Job → driver.process(adapter_options, message_data, channel)
+#   Webhook/Poll → Job → driver.process(adapter_options, message_data, channel)
 #   - Deduplicates by Graph message ID
-#   - Creates or finds customer User from Teams user info
+#   - Creates or finds User from Teams user info
 #   - Threads messages into tickets by conversation_key + time window
-#   - Creates Ticket::Article with type 'teams_chat_message'
+#   - Customer messages: creates Ticket::Article with type 'teams_chat_message'
+#   - Agent messages (sent from Teams app, not Zammad): creates internal note
+#     labeled "Sent via Teams" for conversation context
 #
 # Outbound flow:
 #   Agent article → Job → driver.deliver(options, article_attributes)
@@ -54,15 +56,34 @@ class Channel::Driver::KcMicrosoftTeamsChat
       return nil
     end
 
-    transaction_class.execute(reset_user_id: true, context: 'teams_chat') do
-      user   = find_or_create_user(message_data)
-      ticket = find_or_create_ticket(channel, message_data, user)
+    # Agent messages: find existing ticket only (don't create new ones for outbound context)
+    if message_data[:is_agent]
+      ticket = nil
+      conversation_key = build_conversation_key(channel, message_data)
+      if conversation_key.present?
+        thread_window = thread_window_hours(channel)
+        ticket = find_existing_ticket(conversation_key, thread_window)
+      end
 
-      UserInfo.current_user_id = user.id
+      if ticket.nil?
+        Rails.logger.debug "KC Teams Chat: Skipping agent message #{message_data[:message_id]} — no matching ticket"
+        return nil
+      end
 
-      article = create_article(ticket, channel, message_data, user, message_id)
-
-      { ticket: ticket, article: article }
+      transaction_class.execute(reset_user_id: true, context: 'teams_chat') do
+        user = find_or_create_user(message_data)
+        UserInfo.current_user_id = user.id
+        article = create_agent_article(ticket, channel, message_data, user, message_id)
+        { ticket: ticket, article: article }
+      end
+    else
+      transaction_class.execute(reset_user_id: true, context: 'teams_chat') do
+        user   = find_or_create_user(message_data)
+        ticket = find_or_create_ticket(channel, message_data, user)
+        UserInfo.current_user_id = user.id
+        article = create_article(ticket, channel, message_data, user, message_id)
+        { ticket: ticket, article: article }
+      end
     end
   end
 
@@ -206,6 +227,45 @@ class Channel::Driver::KcMicrosoftTeamsChat
           chat_id:    message_data[:chat_id],
           message_id: message_data[:message_id],
           channel_id: channel.id,
+        },
+      },
+      updated_by_id: user.id,
+      created_by_id: user.id,
+    )
+    article.save!
+    article
+  end
+
+  def create_agent_article(ticket, channel, message_data, user, message_id)
+    article_type = Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first
+    sender       = Ticket::Article::Sender.find_by(name: 'Agent')
+
+    content_type = message_data[:body_content_type] == 'html' ? 'text/html' : 'text/plain'
+    body_content = message_data[:body_content] || ''
+
+    # Append label for plain text; for HTML, wrap in a div
+    if content_type == 'text/html'
+      body_content = "#{body_content}<br><br><em>— Sent via Teams (not through Zammad)</em>"
+    else
+      body_content = "#{body_content}\n\n— Sent via Teams (not through Zammad)"
+    end
+
+    article = Ticket::Article.new(
+      ticket_id:     ticket.id,
+      type_id:       article_type&.id,
+      sender_id:     sender&.id,
+      from:          message_data[:from_display_name],
+      subject:       nil,
+      body:          body_content,
+      content_type:  content_type,
+      message_id:    message_id,
+      internal:      true,
+      preferences:   {
+        teams_chat: {
+          chat_id:          message_data[:chat_id],
+          message_id:       message_data[:message_id],
+          channel_id:       channel.id,
+          outbound_capture: true,
         },
       },
       updated_by_id: user.id,
