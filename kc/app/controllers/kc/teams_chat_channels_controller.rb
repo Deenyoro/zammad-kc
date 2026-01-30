@@ -12,6 +12,7 @@
 #   - OAuth state validated with secure_compare
 #   - Session params cleaned up after callback
 class Kc::TeamsChatChannelsController < ApplicationController
+  skip_before_action :verify_csrf_token, only: [:callback]
   prepend_before_action :authenticate_and_authorize!
 
   CHANNEL_AREA = 'MicrosoftTeamsChat::Account'.freeze
