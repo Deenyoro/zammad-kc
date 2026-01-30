@@ -17,7 +17,8 @@ class KcTeamsChat extends App.ControllerSubContent
     'click .js-deleteAccount':  'deleteAccount'
     'click .js-enableAccount':  'enableAccount'
     'click .js-disableAccount': 'disableAccount'
-    'click .js-syncDirectory':  'syncDirectory'
+    'click .js-syncDirectory':      'syncDirectory'
+    'click .js-reauthenticate':     'reauthenticateAccount'
     'click .js-saveSettings':   'saveSettings'
 
   constructor: ->
@@ -140,6 +141,20 @@ class KcTeamsChat extends App.ControllerSubContent
       error: =>
         @notify(type: 'error', msg: __('Failed to start directory sync.'))
         btn.prop('disabled', false).text(App.i18n.translateInline('Sync Now'))
+    )
+
+  reauthenticateAccount: (e) =>
+    e.preventDefault()
+    id = $(e.currentTarget).closest('[data-id]').data('id')
+    @ajax(
+      id:   "kc_teams_chat_reauth_#{id}"
+      type: 'POST'
+      url:  "#{@apiPath}/kc/teams_chat_channels/#{id}/reauthenticate"
+      success: (data) =>
+        window.location.href = data.authorize_url
+      error: (xhr) =>
+        data = xhr.responseJSON || {}
+        @notify(type: 'error', msg: data.error || __('Failed to start reauthentication.'))
     )
 
   saveSettings: (e) =>

@@ -19,6 +19,7 @@ Zammad::Application.routes.draw do
     put    'teams_chat_channels/:id',          to: 'kc/teams_chat_channels#update'
     post   'teams_chat_channels/:id/enable',   to: 'kc/teams_chat_channels#enable'
     post   'teams_chat_channels/:id/disable',  to: 'kc/teams_chat_channels#disable'
+    post   'teams_chat_channels/:id/reauthenticate', to: 'kc/teams_chat_channels#reauthenticate'
     post   'teams_chat_channels/:id/sync_directory', to: 'kc/teams_chat_channels#sync_directory'
     delete 'teams_chat_channels/:id',          to: 'kc/teams_chat_channels#destroy'
 
