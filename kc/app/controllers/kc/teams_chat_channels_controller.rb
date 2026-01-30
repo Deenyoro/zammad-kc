@@ -110,25 +110,38 @@ class Kc::TeamsChatChannelsController < ApplicationController
     graph.exchange_code(params[:code], callback_url)
     user_info = graph.me
 
-    Channel.create!(
-      area:    CHANNEL_AREA,
-      options: {
-        adapter:             'kc_microsoft_teams_chat',
-        client_id:           saved_params[:client_id],
-        client_secret:       saved_params[:client_secret],
-        tenant_id:           saved_params[:tenant_id],
-        access_token:        graph.access_token,
-        refresh_token:       graph.refresh_token,
-        user_display_name:   user_info['displayName'] || user_info[:displayName],
-        user_email:          user_info['mail'] || user_info['userPrincipalName'] || user_info[:mail],
-        user_id:             user_info['id'] || user_info[:id],
-        thread_window_hours: saved_params[:thread_window_hours],
-      },
-      group_id:      saved_params[:group_id].presence&.to_i || Group.first&.id,
-      active:        true,
-      updated_by_id: saved_user_id,
-      created_by_id: saved_user_id,
-    )
+    if saved_params[:channel_id].present?
+      # Reauthentication — update existing channel with fresh tokens
+      channel = Channel.find_by!(id: saved_params[:channel_id], area: CHANNEL_AREA)
+      channel.options[:access_token]      = graph.access_token
+      channel.options[:refresh_token]     = graph.refresh_token
+      channel.options[:user_display_name] = user_info['displayName'] || user_info[:displayName]
+      channel.options[:user_email]        = user_info['mail'] || user_info['userPrincipalName'] || user_info[:mail]
+      channel.options[:user_id]           = user_info['id'] || user_info[:id]
+      channel.updated_by_id = saved_user_id
+      channel.save!
+    else
+      # New channel creation
+      Channel.create!(
+        area:    CHANNEL_AREA,
+        options: {
+          adapter:             'kc_microsoft_teams_chat',
+          client_id:           saved_params[:client_id],
+          client_secret:       saved_params[:client_secret],
+          tenant_id:           saved_params[:tenant_id],
+          access_token:        graph.access_token,
+          refresh_token:       graph.refresh_token,
+          user_display_name:   user_info['displayName'] || user_info[:displayName],
+          user_email:          user_info['mail'] || user_info['userPrincipalName'] || user_info[:mail],
+          user_id:             user_info['id'] || user_info[:id],
+          thread_window_hours: saved_params[:thread_window_hours],
+        },
+        group_id:      saved_params[:group_id].presence&.to_i || Group.first&.id,
+        active:        true,
+        updated_by_id: saved_user_id,
+        created_by_id: saved_user_id,
+      )
+    end
 
     render_callback_success
   rescue => e
@@ -170,6 +183,41 @@ class Kc::TeamsChatChannelsController < ApplicationController
 
     Kc::TeamsDirectorySyncJob.perform_later(channel.id)
     render json: { message: 'Directory sync started' }
+  end
+
+  # POST /api/v1/kc/teams_chat_channels/:id/reauthenticate
+  # Initiates OAuth re-authorization for an existing channel.
+  # Uses the channel's stored credentials — no modal needed.
+  def reauthenticate
+    channel = Channel.find_by!(id: params[:id], area: CHANNEL_AREA)
+    options = channel.options.with_indifferent_access
+
+    graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
+    if graph_class.nil?
+      render json: { error: 'Teams Chat integration not available' }, status: :unprocessable_entity
+      return
+    end
+
+    graph = graph_class.new(
+      client_id:     options[:client_id],
+      client_secret: options[:client_secret],
+      tenant_id:     options[:tenant_id],
+    )
+
+    state = SecureRandom.hex(24)
+    session[:kc_teams_chat_oauth_state]   = state
+    session[:kc_teams_chat_oauth_user_id] = current_user.id
+    session[:kc_teams_chat_oauth_params]  = {
+      client_id:           options[:client_id],
+      client_secret:       options[:client_secret],
+      tenant_id:           options[:tenant_id],
+      group_id:            channel.group_id,
+      thread_window_hours: options[:thread_window_hours],
+      channel_id:          channel.id,
+    }
+
+    url = graph.authorize_url(callback_url, state)
+    render json: { authorize_url: url }
   end
 
   # POST /api/v1/kc/teams_chat_channels/:id/enable
