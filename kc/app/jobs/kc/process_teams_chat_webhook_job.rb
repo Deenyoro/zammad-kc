@@ -82,7 +82,8 @@ class Kc::ProcessTeamsChatWebhookJob < ApplicationJob
     if message_data[:from_user_id].present?
       begin
         user_info = graph.get_user(message_data[:from_user_id])
-        message_data[:from_email] = user_info['mail'] || user_info['userPrincipalName'] || user_info[:mail]
+        message_data[:from_email] = user_info['mail'] || user_info[:mail] ||
+                                         user_info['userPrincipalName'] || user_info[:userPrincipalName]
       rescue => e
         Rails.logger.debug { "KC Teams Job: Could not fetch user email: #{e.message}" }
       end
