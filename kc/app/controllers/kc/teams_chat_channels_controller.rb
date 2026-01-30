@@ -29,6 +29,12 @@ class Kc::TeamsChatChannelsController < ApplicationController
       channel_ids.push(channel.id)
     end
 
+    # Include KC settings in assets so the frontend Spine collection has them
+    # (App.Setting.get/set requires the Setting model to be loaded).
+    Setting.where("name LIKE 'kc_teams_chat_%'").each do |setting|
+      assets = setting.assets(assets)
+    end
+
     render json: {
       assets:      assets,
       channel_ids: channel_ids,
