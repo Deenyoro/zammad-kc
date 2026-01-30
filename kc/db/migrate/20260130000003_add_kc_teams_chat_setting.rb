@@ -35,7 +35,7 @@ class AddKcTeamsChatSetting < ActiveRecord::Migration[7.0]
       title:       'Teams Chat Active Lookback (hours)',
       name:        'kc_teams_chat_active_lookback_hours',
       area:        'Kc::TeamsChat',
-      description: 'How many hours back to consider a ticket "active" for priority polling. Active chats are polled every scheduler run (~1 min).',
+      description: 'How many hours back to consider a ticket "active" for priority polling. Active chats are polled every ~30 seconds.',
       options:     {
         form: [
           {
@@ -70,7 +70,30 @@ class AddKcTeamsChatSetting < ActiveRecord::Migration[7.0]
           },
         ],
       },
-      state:        5,
+      state:        2,
+      preferences:  {
+        permission: ['admin'],
+      },
+      frontend:     true,
+    )
+
+    Setting.create_if_not_exists(
+      title:       'Teams Chat Ticket Title Template',
+      name:        'kc_teams_chat_ticket_title_template',
+      area:        'Kc::TeamsChat',
+      description: 'Template for new ticket titles. Use {user_name} as a placeholder for the sender name.',
+      options:     {
+        form: [
+          {
+            display:  'Ticket Title Template',
+            null:     false,
+            name:     'kc_teams_chat_ticket_title_template',
+            tag:      'input',
+            type:     'text',
+          },
+        ],
+      },
+      state:        'Teams Message from {user_name}',
       preferences:  {
         permission: ['admin'],
       },
@@ -82,5 +105,6 @@ class AddKcTeamsChatSetting < ActiveRecord::Migration[7.0]
     Setting.find_by(name: 'kc_teams_chat_thread_window_hours')&.destroy
     Setting.find_by(name: 'kc_teams_chat_active_lookback_hours')&.destroy
     Setting.find_by(name: 'kc_teams_chat_discovery_interval_minutes')&.destroy
+    Setting.find_by(name: 'kc_teams_chat_ticket_title_template')&.destroy
   end
 end
