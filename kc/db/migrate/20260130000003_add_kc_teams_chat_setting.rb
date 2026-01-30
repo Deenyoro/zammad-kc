@@ -28,11 +28,59 @@ class AddKcTeamsChatSetting < ActiveRecord::Migration[7.0]
       preferences:  {
         permission: ['admin'],
       },
-      frontend:     false,
+      frontend:     true,
+    )
+
+    Setting.create_if_not_exists(
+      title:       'Teams Chat Active Lookback (hours)',
+      name:        'kc_teams_chat_active_lookback_hours',
+      area:        'Kc::TeamsChat',
+      description: 'How many hours back to consider a ticket "active" for priority polling. Active chats are polled every scheduler run (~1 min).',
+      options:     {
+        form: [
+          {
+            display:  'Active Lookback (hours)',
+            null:     false,
+            name:     'kc_teams_chat_active_lookback_hours',
+            tag:      'input',
+            type:     'text',
+          },
+        ],
+      },
+      state:        2,
+      preferences:  {
+        permission: ['admin'],
+      },
+      frontend:     true,
+    )
+
+    Setting.create_if_not_exists(
+      title:       'Teams Chat Discovery Interval (minutes)',
+      name:        'kc_teams_chat_discovery_interval_minutes',
+      area:        'Kc::TeamsChat',
+      description: 'How often (in minutes) to do a full scan of all Teams chats. New conversations are found during discovery.',
+      options:     {
+        form: [
+          {
+            display:  'Discovery Interval (minutes)',
+            null:     false,
+            name:     'kc_teams_chat_discovery_interval_minutes',
+            tag:      'input',
+            type:     'text',
+          },
+        ],
+      },
+      state:        5,
+      preferences:  {
+        permission: ['admin'],
+      },
+      frontend:     true,
     )
   end
 
   def down
     Setting.find_by(name: 'kc_teams_chat_thread_window_hours')&.destroy
+    Setting.find_by(name: 'kc_teams_chat_active_lookback_hours')&.destroy
+    Setting.find_by(name: 'kc_teams_chat_discovery_interval_minutes')&.destroy
   end
 end
