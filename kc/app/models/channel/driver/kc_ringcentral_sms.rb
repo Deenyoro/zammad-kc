@@ -74,7 +74,7 @@ class Channel::Driver::KcRingcentralSms
   # @param attr [Hash] article attributes (:body, :to_phone, etc.)
   # @param _notification [Boolean] ignored
   # @return [Hash] RingCentral API response
-  def deliver(options, attr, _notification = false)
+  def deliver(options, attr, _notification = false, channel: nil)
     return if Setting.get('import_mode')
 
     options = options.with_indifferent_access
@@ -90,6 +90,16 @@ class Channel::Driver::KcRingcentralSms
       refresh_token: options[:refresh_token],
     )
     rc.refresh_access_token!
+
+    # RingCentral rotates refresh tokens — persist new tokens back to channel.
+    if channel.present?
+      channel.with_lock do
+        channel.reload
+        channel.options[:access_token]  = rc.access_token
+        channel.options[:refresh_token] = rc.refresh_token
+        channel.save!
+      end
+    end
 
     from_phone = options[:phone_number]
     to_phone   = attr[:to_phone]

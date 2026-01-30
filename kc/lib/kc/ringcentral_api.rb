@@ -132,9 +132,18 @@ module Kc
 
       # Attachment parts
       Array(attachments).first(10).each_with_index do |att, idx|
+        # Sanitize filename: strip quotes, newlines, and non-ASCII to prevent
+        # header injection in the multipart Content-Disposition.
+        safe_filename = (att[:filename] || "attachment_#{idx}").to_s
+                          .gsub(/["\\]/, '_')
+                          .gsub(/[\r\n]/, '')
+                          .encode('ASCII', invalid: :replace, undef: :replace, replace: '_')
+                          .truncate(200, omission: '')
+        safe_content_type = (att[:content_type] || 'application/octet-stream').to_s
+                              .gsub(/[\r\n]/, '')
         body_parts << "--#{boundary}\r\n"
-        body_parts << "Content-Type: #{att[:content_type] || 'application/octet-stream'}\r\n"
-        body_parts << "Content-Disposition: form-data; name=\"attachment#{idx}\"; filename=\"#{att[:filename]}\"\r\n\r\n"
+        body_parts << "Content-Type: #{safe_content_type}\r\n"
+        body_parts << "Content-Disposition: form-data; name=\"attachment#{idx}\"; filename=\"#{safe_filename}\"\r\n\r\n"
         body_parts << att[:data]
         body_parts << "\r\n"
       end
@@ -216,7 +225,7 @@ module Kc
     # Creates a webhook subscription for instant SMS notifications.
     # event_filters: Array of resource paths to watch.
     # Returns the subscription hash (including id, expirationTime).
-    def create_subscription(notification_url, event_filters, client_state: nil, expires_in: nil)
+    def create_subscription(notification_url, event_filters, expires_in: nil)
       url = "#{API_BASE_URL}/restapi/v1.0/subscription"
       payload = {
         eventFilters:  Array(event_filters),

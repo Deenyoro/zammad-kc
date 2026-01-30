@@ -18,7 +18,9 @@ class Kc::RingcentralSmsWebhookController < ApplicationController
 
   # POST /api/v1/kc/ringcentral_sms_webhook
   def webhook
-    # RingCentral validation handshake: echo Validation-Token header back
+    # RingCentral validation handshake: echo Validation-Token header back.
+    # This is sent during subscription creation — respond with the same
+    # header value to prove we own the endpoint.
     validation_token = request.headers['Validation-Token'] || request.headers['HTTP_VALIDATION_TOKEN']
     if validation_token.present?
       response.headers['Validation-Token'] = validation_token
@@ -26,15 +28,10 @@ class Kc::RingcentralSmsWebhookController < ApplicationController
       return
     end
 
-    # Parse notification body
-    body = request.body.read
-    notification = begin
-      JSON.parse(body).with_indifferent_access
-    rescue JSON::ParserError
-      Rails.logger.warn 'KC RingCentral Webhook: Invalid JSON body'
-      render json: {}, status: :ok
-      return
-    end
+    # Rails has already parsed the JSON body into params via middleware.
+    # Using request.body.read would return an empty string because the
+    # IO stream has already been consumed. Use params directly instead.
+    notification = params.to_unsafe_h.with_indifferent_access
 
     # Guard: if the subscriptions table doesn't exist yet (migration pending),
     # ACK the webhook to prevent retries but skip processing.
@@ -47,6 +44,12 @@ class Kc::RingcentralSmsWebhookController < ApplicationController
 
     # Validate subscription exists
     subscription_id = notification[:subscriptionId]
+    if subscription_id.blank?
+      Rails.logger.warn 'KC RingCentral Webhook: Missing subscriptionId in notification'
+      render json: {}, status: :ok
+      return
+    end
+
     subscription = sub_class.find_by(subscription_id: subscription_id)
 
     if subscription.nil?
