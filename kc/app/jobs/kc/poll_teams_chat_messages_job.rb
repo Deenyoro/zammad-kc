@@ -1,19 +1,21 @@
-# KC: Backup polling job for Teams chat messages.
+# KC: Polling job for Teams chat messages.
 #
-# Runs every 15 minutes via Scheduler. Polls recent messages from each
-# active chat subscription to catch any messages that were missed by
-# the webhook pathway (e.g. during subscription gaps, Graph outages,
-# or notification delivery failures).
+# Runs every 60 seconds via Scheduler. Two modes per cycle:
+#   - Active chats (have open tickets updated in last 2 hours): polled every run
+#   - Full discovery (list all chats via Graph API): every 5 minutes
 #
-# Uses the channel driver's process() method which deduplicates by
-# Graph message ID, so re-processing already-seen messages is safe.
+# Only processes messages created after the channel was connected, so
+# historical messages from before enrollment are never imported.
 #
 # Safety:
 #   - safe_constantize on KC classes
 #   - Per-channel rescue so one broken channel doesn't stop the others
 #   - Skips own outbound messages
-#   - Guards on missing subscription table
+#   - Skips messages older than channel creation time
+#   - Deduplicates by Graph message ID
 class Kc::PollTeamsChatMessagesJob < ApplicationJob
+  DISCOVERY_INTERVAL = 5.minutes
+
   def perform
     Channel.where(area: 'MicrosoftTeamsChat::Account', active: true).find_each do |channel|
       poll_channel(channel)
@@ -36,13 +38,7 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
       return
     end
 
-    sub_class = 'Kc::TeamsSubscription'.safe_constantize
-    if sub_class.nil? || !sub_class.table_exists?
-      Rails.logger.warn 'KC Teams Poll: Kc::TeamsSubscription not available — skipping'
-      return
-    end
-
-    opts  = channel.options
+    opts  = channel.options.with_indifferent_access
     graph = graph_class.new(
       client_id:     opts[:client_id],
       client_secret: opts[:client_secret],
@@ -59,18 +55,71 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
       return
     end
 
-    # Poll messages from each subscribed chat
-    subscriptions = sub_class.where(channel: channel)
-    subscriptions.find_each do |sub|
-      poll_chat(channel, graph, sub.chat_id, opts[:tenant_id])
+    # Always poll active chats (those with open tickets updated recently)
+    active_chat_ids = active_chat_ids_for(channel)
+    active_chat_ids.each do |chat_id|
+      poll_chat(channel, graph, chat_id, opts[:tenant_id])
     rescue => e
-      Rails.logger.error "KC Teams Poll: Failed for chat #{sub.chat_id}: #{e.message}"
+      Rails.logger.error "KC Teams Poll: Failed for active chat #{chat_id}: #{e.message}"
     end
+
+    # Full discovery via Graph API every 5 minutes
+    last_discovery = opts[:last_poll_discovery_at]
+    if last_discovery.blank? || Time.zone.parse(last_discovery.to_s) < DISCOVERY_INTERVAL.ago
+      discover_and_poll(channel, graph, opts, active_chat_ids)
+    end
+  end
+
+  # Returns chat_ids that have open tickets with recent activity.
+  def active_chat_ids_for(channel)
+    closed_state_ids = Ticket::State
+                         .joins(:state_type)
+                         .where(ticket_state_types: { name: 'closed' })
+                         .select(:id)
+
+    Ticket.where('preferences LIKE ?', '%teams_chat%')
+          .where.not(state_id: closed_state_ids)
+          .where('updated_at >= ?', 2.hours.ago)
+          .select(:id, :preferences)
+          .filter_map { |t| t.preferences.dig('teams_chat', 'chat_id') }
+          .uniq
+  end
+
+  def discover_and_poll(channel, graph, opts, already_polled_ids)
+    begin
+      chats_result = graph.list_chats(top: 50)
+      chats = chats_result['value'] || chats_result[:value] || []
+    rescue => e
+      Rails.logger.error "KC Teams Poll: Failed to list chats for channel #{channel.id}: #{e.message}"
+      return
+    end
+
+    Rails.logger.info "KC Teams Poll: Discovery found #{chats.size} chats for channel #{channel.id}"
+
+    chats.each do |chat|
+      chat_id = chat['id'] || chat[:id]
+      next if chat_id.blank?
+      next if already_polled_ids.include?(chat_id)
+
+      poll_chat(channel, graph, chat_id, opts[:tenant_id])
+    rescue => e
+      chat_id_safe = (chat['id'] || chat[:id]) rescue 'unknown'
+      Rails.logger.error "KC Teams Poll: Failed for discovered chat #{chat_id_safe}: #{e.message}"
+    end
+
+    # Record discovery time
+    channel.options[:last_poll_discovery_at] = Time.current.iso8601
+    channel.save!
+  rescue => e
+    Rails.logger.error "KC Teams Poll: Discovery failed for channel #{channel.id}: #{e.message}"
   end
 
   def poll_chat(channel, graph, chat_id, tenant_id)
     result = graph.list_chat_messages(chat_id, top: 20)
     messages = result['value'] || result[:value] || []
+
+    # Only process messages created after the channel was connected
+    channel_created_at = channel.created_at
 
     driver = Channel::Driver::KcMicrosoftTeamsChat.new
 
@@ -78,6 +127,13 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
       # Only process user messages (not system/event messages)
       message_type = message['messageType'] || message[:messageType]
       next if message_type != 'message'
+
+      # Skip messages from before the channel was created
+      msg_created = message['createdDateTime'] || message[:createdDateTime]
+      if msg_created.present?
+        msg_time = Time.zone.parse(msg_created.to_s) rescue nil
+        next if msg_time && msg_time < channel_created_at
+      end
 
       from      = message['from'] || message[:from] || {}
       from_user = from['user'] || from[:user] || {}
@@ -87,7 +143,7 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
       sender_id = (from_user['id'] || from_user[:id]).to_s
       next if sender_id.present? && sender_id == channel.options[:user_id].to_s
 
-      # Look up sender email via Graph API (same as webhook job)
+      # Look up sender email via Graph API
       sender_email = nil
       if sender_id.present?
         begin
@@ -107,12 +163,11 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
         from_email:        sender_email,
         body_content:      body['content'] || body[:content],
         body_content_type: body['contentType'] || body[:contentType],
-        created_at:        message['createdDateTime'] || message[:createdDateTime],
+        created_at:        msg_created,
         tenant_id:         tenant_id,
       }
 
       # process() handles dedup internally via message_id
-      # 3-arg Zammad convention: (adapter_options, params, channel)
       driver.process(channel.options, message_data, channel)
     rescue => e
       msg_id = (message['id'] || message[:id]) rescue 'unknown'
