@@ -14,12 +14,13 @@ class KcRingcentralSms extends App.ControllerSubContent
   header: __('RingCentral SMS')
 
   events:
-    'click .js-new':            'addAccount'
-    'click .js-editAccount':    'editAccount'
-    'click .js-deleteAccount':  'deleteAccount'
-    'click .js-enableAccount':  'enableAccount'
-    'click .js-disableAccount': 'disableAccount'
-    'click .js-saveSettings':   'saveSettings'
+    'click .js-new':                    'addAccount'
+    'click .js-editAccount':            'editAccount'
+    'click .js-deleteAccount':          'deleteAccount'
+    'click .js-enableAccount':          'enableAccount'
+    'click .js-disableAccount':         'disableAccount'
+    'click .js-saveSettings':           'saveSettings'
+    'click .js-saveMissedCallSettings': 'saveMissedCallSettings'
 
   constructor: ->
     super
@@ -51,9 +52,13 @@ class KcRingcentralSms extends App.ControllerSubContent
     @html App.view('kc_ringcentral_sms/index')(
       channels: channels
       settings:
-        ticket_title_template: App.Setting.get('kc_ringcentral_sms_ticket_title_template') ? 'SMS from {phone}'
-        thread_window_hours:   App.Setting.get('kc_ringcentral_sms_thread_window_hours') ? 24
-        poll_interval_seconds: App.Setting.get('kc_ringcentral_sms_poll_interval_seconds') ? 60
+        ticket_title_template:        App.Setting.get('kc_ringcentral_sms_ticket_title_template') ? 'SMS from {phone}'
+        thread_window_hours:          App.Setting.get('kc_ringcentral_sms_thread_window_hours') ? 24
+        poll_interval_seconds:        App.Setting.get('kc_ringcentral_sms_poll_interval_seconds') ? 60
+        missed_call_ticket:           App.Setting.get('kc_ringcentral_sms_missed_call_ticket') is true
+        missed_call_ticket_title:     App.Setting.get('kc_ringcentral_sms_missed_call_ticket_title') ? 'Missed call from {phone}'
+        missed_call_autoreply:        App.Setting.get('kc_ringcentral_sms_missed_call_autoreply') is true
+        missed_call_autoreply_message: App.Setting.get('kc_ringcentral_sms_missed_call_autoreply_message') ? 'We are sorry for missing your call. A ticket has been created and our team will follow up with you shortly.'
     )
 
   addAccount: (e) =>
@@ -145,6 +150,31 @@ class KcRingcentralSms extends App.ControllerSubContent
           fail: =>
             failed = true
             @notify(type: 'error', msg: __('Failed to save settings.'))
+        )
+
+  saveMissedCallSettings: (e) =>
+    e.preventDefault()
+    form = $(e.currentTarget).closest('.page-content')
+
+    settings =
+      kc_ringcentral_sms_missed_call_ticket:           form.find('[name=missed_call_ticket]').is(':checked')
+      kc_ringcentral_sms_missed_call_ticket_title:     form.find('[name=missed_call_ticket_title]').val() || 'Missed call from {phone}'
+      kc_ringcentral_sms_missed_call_autoreply:        form.find('[name=missed_call_autoreply]').is(':checked')
+      kc_ringcentral_sms_missed_call_autoreply_message: form.find('[name=missed_call_autoreply_message]').val() || 'We are sorry for missing your call. A ticket has been created and our team will follow up with you shortly.'
+
+    pending = Object.keys(settings).length
+    failed  = false
+
+    for name, value of settings
+      do (name, value) =>
+        App.Setting.set(name, value,
+          done: =>
+            pending -= 1
+            if pending is 0 && !failed
+              @notify(type: 'success', msg: __('Missed call settings saved.'))
+          fail: =>
+            failed = true
+            @notify(type: 'error', msg: __('Failed to save missed call settings.'))
         )
 
 
