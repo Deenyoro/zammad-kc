@@ -157,8 +157,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
 
     # Create new ticket
     group = Group.find_by(id: channel.group_id) || Group.first
-    title = message_data[:body_content].to_s.truncate(80, omission: '...')
-    title = 'Teams Chat Message' if title.blank?
+    title = build_ticket_title(message_data, user)
 
     ticket = Ticket.new(
       title:         title,
@@ -214,6 +213,13 @@ class Channel::Driver::KcMicrosoftTeamsChat
     )
     article.save!
     article
+  end
+
+  def build_ticket_title(message_data, user)
+    template = Setting.get('kc_teams_chat_ticket_title_template').to_s.presence || 'Teams Message from {user_name}'
+    display_name = message_data[:from_display_name].to_s.presence || user.fullname.presence || 'Unknown'
+    title = template.gsub('{user_name}', display_name)
+    title.truncate(100, omission: '...')
   end
 
   def build_conversation_key(channel, message_data)

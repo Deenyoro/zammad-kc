@@ -11,7 +11,7 @@ class AddKcTeamsPollScheduler < ActiveRecord::Migration[7.0]
     Scheduler.create_if_not_exists(
       name:          'Poll Microsoft Teams Chat messages.',
       method:        'Kc::PollTeamsChatMessagesJob.perform_now',
-      period:        1.minute,
+      period:        30.seconds,
       prio:          4,
       active:        true,
       updated_by_id: 1,
