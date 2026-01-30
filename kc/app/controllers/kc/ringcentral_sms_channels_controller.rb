@@ -1,7 +1,9 @@
 # KC: Admin API controller for RingCentral SMS channel management.
 #
 # Provides:
-#   - OAuth authorize/callback flow for RingCentral
+#   - Two-step OAuth authorize/callback flow for RingCentral
+#     (callback stores credentials + phone list in session;
+#      user picks a phone number; complete_setup creates the channel)
 #   - CRUD operations for SMS channels
 #   - Enable/disable channel toggling
 #
@@ -73,6 +75,10 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
   # GET/POST /api/v1/kc/ringcentral_sms_channels/callback
   # Handles the OAuth2 callback from RingCentral.
   # No auth — validated by OAuth state parameter stored in session.
+  #
+  # Instead of creating the channel immediately, stores credentials and
+  # available phone numbers in session, then redirects to the phone
+  # selection page so the user can choose which number to use.
   def callback
     if params[:error].present?
       Rails.logger.error "KC RingCentral SMS OAuth error: #{params[:error_description] || params[:error]}"
@@ -106,43 +112,110 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
 
     rc.exchange_code(params[:code], callback_url)
 
-    # Fetch extension info and SMS-capable phone number
-    ext_info     = rc.extension_info
-    phone_result = rc.phone_numbers
+    # Fetch extension info and ALL SMS-capable phone numbers
+    ext_info      = rc.extension_info
+    phone_result  = rc.phone_numbers
     phone_records = phone_result['records'] || phone_result[:records] || []
 
-    # Find the first SMS-capable phone number
-    sms_phone = phone_records.find do |p|
+    sms_phones = phone_records.select do |p|
       features = p['features'] || p[:features] || []
       features.include?('SmsSender') || features.include?('MmsSender')
     end
 
-    phone_number = sms_phone && (sms_phone['phoneNumber'] || sms_phone[:phoneNumber])
-    if phone_number.blank?
+    if sms_phones.empty?
       Rails.logger.error 'KC RingCentral SMS: No SMS-capable phone number found on this extension'
       render_callback_error('No SMS-capable phone number found on this RingCentral extension.')
       return
+    end
+
+    available_phones = sms_phones.map do |p|
+      {
+        phone_number: p['phoneNumber'] || p[:phoneNumber],
+        usage_type:   p['usageType']   || p[:usageType],
+        label:        p['label']       || p[:label],
+      }
     end
 
     user_display_name = ext_info['name'] || ext_info[:name] || ''
     user_email        = ext_info.dig('contact', 'email') || ext_info.dig(:contact, :email) || ''
     extension_id      = ext_info['id'] || ext_info[:id]
 
+    # Store everything in session for the phone selection step
+    session[:kc_ringcentral_sms_pending_setup] = {
+      client_id:            saved_params[:client_id],
+      client_secret:        saved_params[:client_secret],
+      access_token:         rc.access_token,
+      refresh_token:        rc.refresh_token,
+      user_display_name:    user_display_name,
+      user_email:           user_email,
+      extension_id:         extension_id.to_s,
+      group_id:             saved_params[:group_id],
+      thread_window_hours:  saved_params[:thread_window_hours],
+      user_id:              saved_user_id,
+      available_phones:     available_phones,
+    }
+
+    redirect_to phone_select_url, allow_other_host: true
+  rescue => e
+    Rails.logger.error "KC RingCentral SMS OAuth callback failed: #{e.message}"
+    render_callback_error
+  end
+
+  # GET /api/v1/kc/ringcentral_sms_channels/pending_setup
+  # Returns the pending setup data (available phone numbers) stored in session.
+  def pending_setup
+    pending = session[:kc_ringcentral_sms_pending_setup]
+    if pending.blank?
+      render json: { error: 'No pending setup found. Please start the OAuth flow again.' }, status: :not_found
+      return
+    end
+
+    pending = pending.with_indifferent_access
+    render json: {
+      available_phones:  pending[:available_phones] || [],
+      user_display_name: pending[:user_display_name],
+      user_email:        pending[:user_email],
+    }
+  end
+
+  # POST /api/v1/kc/ringcentral_sms_channels/complete_setup
+  # Creates the channel with the user-selected phone number.
+  def complete_setup
+    pending = session[:kc_ringcentral_sms_pending_setup]
+    if pending.blank?
+      render json: { error: 'No pending setup found. Please start the OAuth flow again.' }, status: :unprocessable_entity
+      return
+    end
+
+    pending = pending.with_indifferent_access
+
+    selected_phone = params[:phone_number].to_s.strip
+    available = (pending[:available_phones] || []).map { |p| (p[:phone_number] || p['phone_number']).to_s }
+    if selected_phone.blank? || !available.include?(selected_phone)
+      render json: { error: 'Invalid phone number selection.' }, status: :unprocessable_entity
+      return
+    end
+
+    session.delete(:kc_ringcentral_sms_pending_setup)
+
+    saved_user_id = pending[:user_id] || current_user.id
+
     channel = Channel.create!(
       area:    CHANNEL_AREA,
       options: {
-        adapter:             'kc_ringcentral_sms',
-        client_id:           saved_params[:client_id],
-        client_secret:       saved_params[:client_secret],
-        access_token:        rc.access_token,
-        refresh_token:       rc.refresh_token,
-        phone_number:        phone_number,
-        user_display_name:   user_display_name,
-        user_email:          user_email,
-        extension_id:        extension_id.to_s,
-        thread_window_hours: saved_params[:thread_window_hours],
+        adapter:                  'kc_ringcentral_sms',
+        client_id:                pending[:client_id],
+        client_secret:            pending[:client_secret],
+        access_token:             pending[:access_token],
+        refresh_token:            pending[:refresh_token],
+        phone_number:             selected_phone,
+        available_phone_numbers:  available,
+        user_display_name:        pending[:user_display_name],
+        user_email:               pending[:user_email],
+        extension_id:             pending[:extension_id],
+        thread_window_hours:      pending[:thread_window_hours],
       },
-      group_id:      saved_params[:group_id].presence&.to_i || Group.first&.id,
+      group_id:      pending[:group_id].presence&.to_i || Group.first&.id,
       active:        true,
       updated_by_id: saved_user_id,
       created_by_id: saved_user_id,
@@ -158,10 +231,10 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
       end
     end
 
-    render_callback_success
+    render json: { channel_id: channel.id }
   rescue => e
-    Rails.logger.error "KC RingCentral SMS OAuth callback failed: #{e.message}"
-    render_callback_error
+    Rails.logger.error "KC RingCentral SMS complete_setup failed: #{e.message}"
+    render json: { error: 'Failed to create channel.' }, status: :unprocessable_entity
   end
 
   # PUT /api/v1/kc/ringcentral_sms_channels/:id
@@ -174,6 +247,14 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
 
     if params[:thread_window_hours].present?
       channel.options[:thread_window_hours] = params[:thread_window_hours].to_i
+    end
+
+    if params[:phone_number].present?
+      available = channel.options[:available_phone_numbers] || channel.options['available_phone_numbers'] || []
+      selected  = params[:phone_number].to_s.strip
+      if available.include?(selected)
+        channel.options[:phone_number] = selected
+      end
     end
 
     channel.save!
@@ -226,8 +307,10 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
     "#{http_type}://#{fqdn}/#kc_extensions/kc_ringcentral_sms"
   end
 
-  def render_callback_success
-    redirect_to admin_ringcentral_sms_url, allow_other_host: true
+  def phone_select_url
+    fqdn      = Setting.get('fqdn')
+    http_type = Setting.get('http_type') || 'https'
+    "#{http_type}://#{fqdn}/#kc_extensions/kc_ringcentral_sms/select_phone"
   end
 
   def render_callback_error(message = nil)
