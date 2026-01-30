@@ -179,9 +179,12 @@ class Kc::TeamsSubscriptionManager
   end
 
   def persist_tokens(graph)
-    channel.options[:access_token]  = graph.access_token
-    channel.options[:refresh_token] = graph.refresh_token
-    channel.save!
+    channel.with_lock do
+      channel.reload
+      channel.options[:access_token]  = graph.access_token
+      channel.options[:refresh_token] = graph.refresh_token
+      channel.save!
+    end
   rescue => e
     Rails.logger.error "KC Teams: Failed to persist tokens for channel #{channel.id}: #{e.message}"
   end

@@ -11,6 +11,7 @@
 #   - safe_constantize on KC classes
 #   - OAuth state validated with secure_compare
 #   - Session params cleaned up after callback
+#   - Credentials never sent via GET query string
 class Kc::TeamsChatChannelsController < ApplicationController
   skip_before_action :verify_csrf_token, only: [:callback]
   prepend_before_action :authenticate_and_authorize!, except: [:callback]
@@ -34,13 +35,13 @@ class Kc::TeamsChatChannelsController < ApplicationController
     }
   end
 
-  # GET /api/v1/kc/teams_chat_channels/authorize
-  # Stores OAuth params in session and redirects to Microsoft login.
-  # Called via full-page navigation (not AJAX) so session cookie is set.
+  # POST /api/v1/kc/teams_chat_channels/authorize
+  # Stores OAuth params in session and returns the Microsoft login URL.
+  # Credentials are POSTed via AJAX (never in query string).
   def authorize_oauth
     graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
     if graph_class.nil?
-      redirect_to admin_teams_chat_url, allow_other_host: true
+      render json: { error: 'Teams Chat integration not available' }, status: :unprocessable_entity
       return
     end
 
@@ -52,6 +53,7 @@ class Kc::TeamsChatChannelsController < ApplicationController
 
     state = SecureRandom.hex(24)
     session[:kc_teams_chat_oauth_state] = state
+    session[:kc_teams_chat_oauth_user_id] = current_user.id
     session[:kc_teams_chat_oauth_params] = {
       client_id:           params[:client_id],
       client_secret:       params[:client_secret],
@@ -61,33 +63,35 @@ class Kc::TeamsChatChannelsController < ApplicationController
     }
 
     url = graph.authorize_url(callback_url, state)
-    redirect_to url, allow_other_host: true
+    render json: { authorize_url: url }
   end
 
   # GET/POST /api/v1/kc/teams_chat_channels/callback
-  # Handles the OAuth2 callback from Microsoft (form_post mode).
+  # Handles the OAuth2 callback from Microsoft.
   # No auth — validated by OAuth state parameter stored in session.
-  # Renders HTML that closes the popup and refreshes the parent window.
   def callback
     if params[:error].present?
-      render_callback_error(params[:error_description] || params[:error])
+      Rails.logger.error "KC Teams Chat OAuth error from Microsoft: #{params[:error_description] || params[:error]}"
+      render_callback_error
       return
     end
 
     state = params[:state].to_s
     saved_state = session[:kc_teams_chat_oauth_state].to_s
     if saved_state.blank? || !ActiveSupport::SecurityUtils.secure_compare(state, saved_state)
-      render_callback_error('Invalid OAuth state')
+      render_callback_error
       return
     end
 
-    saved_params = (session[:kc_teams_chat_oauth_params] || {}).with_indifferent_access
+    saved_params  = (session[:kc_teams_chat_oauth_params] || {}).with_indifferent_access
+    saved_user_id = session[:kc_teams_chat_oauth_user_id] || 1
     session.delete(:kc_teams_chat_oauth_state)
     session.delete(:kc_teams_chat_oauth_params)
+    session.delete(:kc_teams_chat_oauth_user_id)
 
     graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
     if graph_class.nil?
-      render_callback_error('Teams Chat integration not available')
+      render_callback_error
       return
     end
 
@@ -116,14 +120,14 @@ class Kc::TeamsChatChannelsController < ApplicationController
       },
       group_id:      saved_params[:group_id].presence&.to_i || Group.first&.id,
       active:        true,
-      updated_by_id: 1,
-      created_by_id: 1,
+      updated_by_id: saved_user_id,
+      created_by_id: saved_user_id,
     )
 
     render_callback_success
   rescue => e
     Rails.logger.error "KC Teams Chat OAuth callback failed: #{e.message}"
-    render_callback_error(e.message)
+    render_callback_error
   end
 
   # PUT /api/v1/kc/teams_chat_channels/:id
@@ -192,8 +196,8 @@ class Kc::TeamsChatChannelsController < ApplicationController
     redirect_to admin_teams_chat_url, allow_other_host: true
   end
 
-  def render_callback_error(message)
-    escaped = ERB::Util.html_escape(message)
-    render html: "<html><body><h2>OAuth Error</h2><p>#{escaped}</p><p><a href=\"#{ERB::Util.html_escape(admin_teams_chat_url)}\">Back to Teams Chat settings</a></p></body></html>".html_safe, layout: false, status: :unprocessable_entity
+  def render_callback_error
+    escaped_url = ERB::Util.html_escape(admin_teams_chat_url)
+    render html: "<html><body><h2>OAuth Error</h2><p>Authorization failed. Please check your Azure AD credentials and try again.</p><p><a href=\"#{escaped_url}\">Back to Teams Chat settings</a></p></body></html>".html_safe, layout: false, status: :unprocessable_entity
   end
 end

@@ -54,6 +54,9 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
       return
     end
 
+    # Cache user email lookups within this poll cycle to avoid rate limits
+    @user_email_cache = {}
+
     # Always poll active chats (those with open tickets updated recently)
     lookback = (Setting.get('kc_teams_chat_active_lookback_hours')&.to_i || 2).clamp(1, 168)
     active_chat_ids = active_chat_ids_for(channel, lookback)
@@ -144,15 +147,20 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
       sender_id = (from_user['id'] || from_user[:id]).to_s
       next if sender_id.present? && sender_id == channel.options[:user_id].to_s
 
-      # Look up sender email via Graph API
+      # Look up sender email via Graph API (cached per poll cycle)
       sender_email = nil
       if sender_id.present?
-        begin
-          user_info = graph.get_user(sender_id)
-          sender_email = user_info['mail'] || user_info[:mail] ||
-                         user_info['userPrincipalName'] || user_info[:userPrincipalName]
-        rescue => e
-          Rails.logger.debug "KC Teams Poll: Could not fetch user #{sender_id}: #{e.message}"
+        if @user_email_cache.key?(sender_id)
+          sender_email = @user_email_cache[sender_id]
+        else
+          begin
+            user_info = graph.get_user(sender_id)
+            sender_email = user_info['mail'] || user_info[:mail] ||
+                           user_info['userPrincipalName'] || user_info[:userPrincipalName]
+          rescue => e
+            Rails.logger.debug "KC Teams Poll: Could not fetch user #{sender_id}: #{e.message}"
+          end
+          @user_email_cache[sender_id] = sender_email
         end
       end
 
@@ -177,9 +185,12 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
   end
 
   def persist_tokens(channel, graph)
-    channel.options[:access_token]  = graph.access_token
-    channel.options[:refresh_token] = graph.refresh_token
-    channel.save!
+    channel.with_lock do
+      channel.reload
+      channel.options[:access_token]  = graph.access_token
+      channel.options[:refresh_token] = graph.refresh_token
+      channel.save!
+    end
   rescue => e
     Rails.logger.error "KC Teams Poll: Failed to persist tokens: #{e.message}"
   end

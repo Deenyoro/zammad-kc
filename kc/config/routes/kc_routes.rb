@@ -14,8 +14,8 @@ Zammad::Application.routes.draw do
 
     # Teams Chat channel admin
     get    'teams_chat_channels',              to: 'kc/teams_chat_channels#index'
-    get    'teams_chat_channels/authorize',    to: 'kc/teams_chat_channels#authorize_oauth'
-    get    'teams_chat_channels/callback',     to: 'kc/teams_chat_channels#callback'
+    post   'teams_chat_channels/authorize',    to: 'kc/teams_chat_channels#authorize_oauth'
+    match  'teams_chat_channels/callback',     to: 'kc/teams_chat_channels#callback', via: [:get, :post]
     put    'teams_chat_channels/:id',          to: 'kc/teams_chat_channels#update'
     post   'teams_chat_channels/:id/enable',   to: 'kc/teams_chat_channels#enable'
     post   'teams_chat_channels/:id/disable',  to: 'kc/teams_chat_channels#disable'
