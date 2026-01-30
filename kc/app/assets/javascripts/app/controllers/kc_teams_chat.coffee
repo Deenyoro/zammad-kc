@@ -141,26 +141,12 @@ class KcTeamsChatAccountAdd extends App.ControllerModal
       @showAlert(__('Please fill in all required fields.'))
       return
 
-    @ajax(
-      id:   'kc_teams_chat_authorize'
-      type: 'POST'
-      url:  "#{@apiPath}/kc/teams_chat_channels/authorize"
-      data: JSON.stringify(params)
-      contentType: 'application/json'
-      processData: true
-      success: (data) =>
-        if data.authorize_url
-          # Full-page redirect (not popup) so session cookie is preserved
-          # for the OAuth callback. Matches Zammad's MS365/Google pattern.
-          window.location.href = data.authorize_url
-        else
-          @formEnable(e)
-          @showAlert(__('Failed to initiate OAuth flow.'))
-      error: (xhr) =>
-        @formEnable(e)
-        data = xhr.responseJSON || {}
-        @showAlert(data.error || __('Failed to connect.'))
-    )
+    # Full-page GET redirect to authorize endpoint. The server stores
+    # OAuth state in the session and 302-redirects to Microsoft login.
+    # Microsoft redirects back via GET (response_mode=query), preserving
+    # the session cookie (SameSite=Lax allows top-level GET navigations).
+    query = $.param(params)
+    window.location.href = "#{@apiPath}/kc/teams_chat_channels/authorize?#{query}"
 
 
 # ---------------------------------------------------------------------------
