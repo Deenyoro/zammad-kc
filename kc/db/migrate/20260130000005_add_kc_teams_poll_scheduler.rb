@@ -9,9 +9,9 @@ class AddKcTeamsPollScheduler < ActiveRecord::Migration[7.0]
     return if !Setting.exists?(name: 'system_init_done')
 
     Scheduler.create_if_not_exists(
-      name:          'Poll Microsoft Teams Chat messages (backup).',
+      name:          'Poll Microsoft Teams Chat messages.',
       method:        'Kc::PollTeamsChatMessagesJob.perform_now',
-      period:        15.minutes,
+      period:        1.minute,
       prio:          4,
       active:        true,
       updated_by_id: 1,
@@ -21,6 +21,6 @@ class AddKcTeamsPollScheduler < ActiveRecord::Migration[7.0]
   end
 
   def down
-    Scheduler.find_by(name: 'Poll Microsoft Teams Chat messages (backup).')&.destroy
+    Scheduler.find_by(name: 'Poll Microsoft Teams Chat messages.')&.destroy
   end
 end
