@@ -19,6 +19,7 @@ Zammad::Application.routes.draw do
     put    'teams_chat_channels/:id',          to: 'kc/teams_chat_channels#update'
     post   'teams_chat_channels/:id/enable',   to: 'kc/teams_chat_channels#enable'
     post   'teams_chat_channels/:id/disable',  to: 'kc/teams_chat_channels#disable'
+    post   'teams_chat_channels/:id/sync_directory', to: 'kc/teams_chat_channels#sync_directory'
     delete 'teams_chat_channels/:id',          to: 'kc/teams_chat_channels#destroy'
 
     # Teams Chat webhook (public — no auth, validated by clientState)
@@ -37,5 +38,11 @@ Zammad::Application.routes.draw do
 
     # RingCentral SMS webhook (public — no auth, validated by subscription lookup)
     post 'ringcentral_sms_webhook', to: 'kc/ringcentral_sms_webhook#webhook'
+
+    # New conversation initiation (agent-facing)
+    post 'conversations/sms',          to: 'kc/new_conversations#sms'
+    post 'conversations/teams',        to: 'kc/new_conversations#teams'
+    get  'conversations/sms_users',    to: 'kc/new_conversations#sms_users'
+    get  'conversations/teams_contacts', to: 'kc/new_conversations#teams_contacts'
   end
 end
