@@ -9,11 +9,19 @@
 
 <div class="page-content">
   <div class="kc-teams-settings" style="margin-bottom: 20px;">
-    <h2><%- @T('Polling Settings') %></h2>
-    <p class="text-muted"><%- @T('Configure how frequently Teams chats are polled for new messages.') %></p>
-    <table class="settings-list" style="max-width: 600px;">
+    <h2><%- @T('Settings') %></h2>
+    <table class="settings-list" style="max-width: 700px;">
       <tr>
         <td style="width: 280px;">
+          <span><%- @T('Ticket Title Template') %></span>
+          <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Use {user_name} for the sender name.') %></p>
+        </td>
+        <td>
+          <input type="text" name="ticket_title_template" class="form-control" value="<%= @settings.ticket_title_template %>" style="width: 300px;">
+        </td>
+      </tr>
+      <tr>
+        <td>
           <span><%- @T('Thread Window') %></span>
           <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Hours before a new ticket is created for the same chat. 0 = one ticket per chat.') %></p>
         </td>
@@ -25,7 +33,7 @@
       <tr>
         <td>
           <span><%- @T('Active Chat Lookback') %></span>
-          <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Chats with recent tickets are polled every minute. This sets how far back to look.') %></p>
+          <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Chats with recent tickets are polled every ~30 seconds.') %></p>
         </td>
         <td>
           <input type="number" name="active_lookback_hours" class="form-control form-control--small" value="<%= @settings.active_lookback_hours %>" min="1" max="168" style="width: 80px;">

@@ -49,9 +49,10 @@ class KcTeamsChat extends App.ControllerSubContent
     @html App.view('kc_teams_chat/index')(
       channels: channels
       settings:
+        ticket_title_template:      App.Setting.get('kc_teams_chat_ticket_title_template') ? 'Teams Message from {user_name}'
         thread_window_hours:        App.Setting.get('kc_teams_chat_thread_window_hours') ? 24
         active_lookback_hours:      App.Setting.get('kc_teams_chat_active_lookback_hours') ? 2
-        discovery_interval_minutes: App.Setting.get('kc_teams_chat_discovery_interval_minutes') ? 5
+        discovery_interval_minutes: App.Setting.get('kc_teams_chat_discovery_interval_minutes') ? 2
     )
 
   addAccount: (e) =>
@@ -126,9 +127,10 @@ class KcTeamsChat extends App.ControllerSubContent
     form = $(e.currentTarget).closest('.kc-teams-settings')
 
     settings =
+      kc_teams_chat_ticket_title_template:      form.find('[name=ticket_title_template]').val() || 'Teams Message from {user_name}'
       kc_teams_chat_thread_window_hours:        parseInt(form.find('[name=thread_window_hours]').val()) || 24
       kc_teams_chat_active_lookback_hours:      parseInt(form.find('[name=active_lookback_hours]').val()) || 2
-      kc_teams_chat_discovery_interval_minutes: parseInt(form.find('[name=discovery_interval_minutes]').val()) || 5
+      kc_teams_chat_discovery_interval_minutes: parseInt(form.find('[name=discovery_interval_minutes]').val()) || 2
 
     pending = Object.keys(settings).length
     failed  = false
