@@ -45,7 +45,7 @@ module Kc
         client_id:     client_id,
         response_type: 'code',
         redirect_uri:  redirect_uri,
-        response_mode: 'form_post',
+        response_mode: 'query',
         scope:         OAUTH_SCOPES,
         state:         state,
       }
