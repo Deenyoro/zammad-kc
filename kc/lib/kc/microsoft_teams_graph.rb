@@ -209,9 +209,9 @@ module Kc
     def graph_post(url, payload)
       response = UserAgent.post(
         url,
-        payload.to_json,
+        payload,
         {
-          headers:       auth_headers.merge('Content-Type' => 'application/json'),
+          headers:       auth_headers,
           json:          true,
           open_timeout:  10,
           read_timeout:  30,
@@ -225,9 +225,9 @@ module Kc
     def graph_patch(url, payload)
       response = UserAgent.patch(
         url,
-        payload.to_json,
+        payload,
         {
-          headers:       auth_headers.merge('Content-Type' => 'application/json'),
+          headers:       auth_headers,
           json:          true,
           open_timeout:  10,
           read_timeout:  30,
