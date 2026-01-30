@@ -17,6 +17,7 @@ class KcTeamsChat extends App.ControllerSubContent
     'click .js-deleteAccount':  'deleteAccount'
     'click .js-enableAccount':  'enableAccount'
     'click .js-disableAccount': 'disableAccount'
+    'click .js-syncDirectory':  'syncDirectory'
     'click .js-saveSettings':   'saveSettings'
 
   constructor: ->
@@ -53,6 +54,7 @@ class KcTeamsChat extends App.ControllerSubContent
         thread_window_hours:        App.Setting.get('kc_teams_chat_thread_window_hours') ? 24
         active_lookback_hours:      App.Setting.get('kc_teams_chat_active_lookback_hours') ? 2
         discovery_interval_minutes: App.Setting.get('kc_teams_chat_discovery_interval_minutes') ? 2
+        deactivate_stale:           App.Setting.get('kc_teams_directory_deactivate_stale') ? false
     )
 
   addAccount: (e) =>
@@ -69,9 +71,10 @@ class KcTeamsChat extends App.ControllerSubContent
     return if !channel
 
     new KcTeamsChatAccountEdit(
-      container: @el.closest('.content')
-      channel:   channel
-      callback:  @load
+      container:     @el.closest('.content')
+      channel:       channel
+      organizations: App.Organization.all()
+      callback:      @load
     )
 
   deleteAccount: (e) =>
@@ -122,6 +125,23 @@ class KcTeamsChat extends App.ControllerSubContent
         @notify(type: 'error', msg: __('Failed to disable account.'))
     )
 
+  syncDirectory: (e) =>
+    e.preventDefault()
+    id = $(e.currentTarget).closest('[data-id]').data('id')
+    btn = $(e.currentTarget)
+    btn.prop('disabled', true).text(App.i18n.translateInline('Syncing…'))
+    @ajax(
+      id:   "kc_teams_chat_sync_#{id}"
+      type: 'POST'
+      url:  "#{@apiPath}/kc/teams_chat_channels/#{id}/sync_directory"
+      success: =>
+        @notify(type: 'success', msg: __('Directory sync started. Refresh to see results.'))
+        btn.prop('disabled', false).text(App.i18n.translateInline('Sync Now'))
+      error: =>
+        @notify(type: 'error', msg: __('Failed to start directory sync.'))
+        btn.prop('disabled', false).text(App.i18n.translateInline('Sync Now'))
+    )
+
   saveSettings: (e) =>
     e.preventDefault()
     form = $(e.currentTarget).closest('.kc-teams-settings')
@@ -131,6 +151,7 @@ class KcTeamsChat extends App.ControllerSubContent
       kc_teams_chat_thread_window_hours:        parseInt(form.find('[name=thread_window_hours]').val()) || 24
       kc_teams_chat_active_lookback_hours:      parseInt(form.find('[name=active_lookback_hours]').val()) || 2
       kc_teams_chat_discovery_interval_minutes: parseInt(form.find('[name=discovery_interval_minutes]').val()) || 2
+      kc_teams_directory_deactivate_stale:      form.find('[name=deactivate_stale]').is(':checked')
 
     pending = Object.keys(settings).length
     failed  = false
@@ -200,17 +221,21 @@ class KcTeamsChatAccountEdit extends App.ControllerModal
 
   content: ->
     groups = App.Group.all()
+    organizations = @organizations || App.Organization.all()
     options = @channel.options || {}
     App.view('kc_teams_chat/account_edit')(
-      channel: @channel
-      options: options
-      groups:  groups
+      channel:       @channel
+      options:       options
+      groups:        groups
+      organizations: organizations
     )
 
   onSubmit: (e) =>
     @formDisable(e)
 
     params = @formParams()
+    # Checkbox not included in formParams when unchecked — set explicitly
+    params.directory_sync = @el.find('[name=directory_sync]').is(':checked')
 
     @ajax(
       id:   "kc_teams_chat_update_#{@channel.id}"

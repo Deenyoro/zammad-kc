@@ -22,7 +22,7 @@ module Kc
   class MicrosoftTeamsGraph
     GRAPH_BASE_URL = 'https://graph.microsoft.com/v1.0'.freeze
     LOGIN_BASE_URL = 'https://login.microsoftonline.com'.freeze
-    OAUTH_SCOPES   = 'offline_access openid profile email Chat.Read Chat.ReadWrite ChatMessage.Send User.Read'.freeze
+    OAUTH_SCOPES   = 'offline_access openid profile email Chat.Read Chat.ReadWrite Chat.Create ChatMessage.Send User.Read User.Read.All'.freeze
 
     attr_reader :client_id, :client_secret, :tenant_id
     attr_accessor :access_token, :refresh_token
@@ -208,7 +208,73 @@ module Kc
       graph_get("#{GRAPH_BASE_URL}/chats/#{chat_id}?$expand=members")
     end
 
+    # Creates or gets an existing 1:1 chat with a user.
+    # The Graph API is idempotent — if a 1:1 chat already exists between
+    # the authenticated user and the recipient, it returns the existing chat.
+    #
+    # @param recipient_user_id [String] Azure AD user ID of the recipient
+    # @return [Hash] chat object including 'id'
+    def create_chat(recipient_user_id)
+      url = "#{GRAPH_BASE_URL}/chats"
+      payload = {
+        chatType: 'oneOnOne',
+        members:  [
+          {
+            '@odata.type':    '#microsoft.graph.aadUserConversationMember',
+            'roles':          ['owner'],
+            'user@odata.bind': "#{GRAPH_BASE_URL}/users/#{me_user_id}",
+          },
+          {
+            '@odata.type':    '#microsoft.graph.aadUserConversationMember',
+            'roles':          ['owner'],
+            'user@odata.bind': "#{GRAPH_BASE_URL}/users/#{recipient_user_id}",
+          },
+        ],
+      }
+      graph_post(url, payload)
+    end
+
+    # Searches tenant users by display name.
+    #
+    # @param query [String] search prefix for displayName
+    # @param top [Integer] max results (default 10)
+    # @return [Hash] Graph response with 'value' array of user objects
+    def search_users(query, top: 10)
+      encoded_query = ERB::Util.url_encode(query)
+      url = "#{GRAPH_BASE_URL}/users?$filter=startswith(displayName,'#{encoded_query}')&$top=#{top}&$select=id,displayName,mail,jobTitle"
+      graph_get(url)
+    end
+
+    # Fetches all users from the tenant directory with pagination.
+    # Yields batches of user objects to the given block, or returns the first page if no block given.
+    #
+    # @param top [Integer] page size (default 100, max 999)
+    # @yield [Array<Hash>] batch of user objects
+    # @return [Hash, nil] first page result if no block given
+    def list_all_users(top: 100, &block)
+      url = "#{GRAPH_BASE_URL}/users?$top=#{top}&$select=id,displayName,mail,jobTitle,department,userPrincipalName,accountEnabled"
+      loop do
+        result = graph_get(url)
+        users = result['value'] || []
+        break if users.empty?
+
+        if block
+          block.call(users)
+        else
+          return result
+        end
+
+        url = result['@odata.nextLink']
+        break if url.blank?
+      end
+    end
+
     private
+
+    # Returns the authenticated user's ID, caching it for the lifetime of this instance.
+    def me_user_id
+      @me_user_id ||= me['id']
+    end
 
     # ------------------------------------------------------------------
     # HTTP helpers using Zammad's UserAgent

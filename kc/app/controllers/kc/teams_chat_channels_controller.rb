@@ -31,7 +31,7 @@ class Kc::TeamsChatChannelsController < ApplicationController
 
     # Include KC settings in assets so the frontend Spine collection has them
     # (App.Setting.get/set requires the Setting model to be loaded).
-    Setting.where("name LIKE 'kc_teams_chat_%'").each do |setting|
+    Setting.where("name LIKE 'kc_teams_chat_%' OR name LIKE 'kc_teams_directory_%'").each do |setting|
       assets = setting.assets(assets)
     end
 
@@ -148,8 +148,28 @@ class Kc::TeamsChatChannelsController < ApplicationController
       channel.options[:thread_window_hours] = params[:thread_window_hours].to_i
     end
 
+    if params.key?(:organization_id)
+      channel.options[:organization_id] = params[:organization_id].presence&.to_i
+    end
+
+    if params.key?(:directory_sync)
+      channel.options[:directory_sync] = ActiveModel::Type::Boolean.new.cast(params[:directory_sync])
+    end
+
     channel.save!
     render json: channel
+  end
+
+  # POST /api/v1/kc/teams_chat_channels/:id/sync_directory
+  def sync_directory
+    channel = Channel.find_by(id: params[:id], area: CHANNEL_AREA)
+    if channel.nil?
+      render json: { error: 'Channel not found' }, status: :not_found
+      return
+    end
+
+    Kc::TeamsDirectorySyncJob.perform_later(channel.id)
+    render json: { message: 'Directory sync started' }
   end
 
   # POST /api/v1/kc/teams_chat_channels/:id/enable

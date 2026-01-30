@@ -29,4 +29,26 @@
     <input type="number" name="thread_window_hours" id="thread_window_hours" class="form-control" value="<%= @options.thread_window_hours || 24 %>" min="0">
     <p class="help-text"><%- @T('Messages within this window are grouped into the same ticket. Set to 0 for a single ongoing ticket per chat.') %></p>
   </div>
+
+  <hr>
+  <h3><%- @T('Directory Sync') %></h3>
+
+  <div class="form-group">
+    <label for="organization_id"><%- @T('Organization') %></label>
+    <select name="organization_id" id="organization_id" class="form-control">
+      <option value="" <% if !@options.organization_id: %>selected<% end %>><%- @T('(Auto-create from tenant)') %></option>
+      <% for org in @organizations: %>
+        <option value="<%= org.id %>" <% if org.id is @options.organization_id: %>selected<% end %>><%= org.displayName() %></option>
+      <% end %>
+    </select>
+    <p class="help-text"><%- @T('Imported Azure AD users will be assigned to this organization.') %></p>
+  </div>
+
+  <div class="form-group">
+    <label class="inline-label">
+      <input type="checkbox" name="directory_sync" value="true" <% if @options.directory_sync: %>checked<% end %>>
+      <%- @T('Enable Directory Sync') %>
+    </label>
+    <p class="help-text"><%- @T('When enabled, this channel participates in Azure AD user import.') %></p>
+  </div>
 </form>
