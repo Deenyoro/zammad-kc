@@ -269,6 +269,25 @@ module Kc
     end
 
     # ------------------------------------------------------------------
+    # Call Log (for missed call detection)
+    # ------------------------------------------------------------------
+
+    # Fetches call log entries from the RingCentral API.
+    # Options: direction ('Inbound'), result ('Missed'), date_from (ISO 8601),
+    #          per_page (default 100), type ('Voice')
+    def get_call_log(direction: nil, result: nil, date_from: nil, per_page: 100, type: nil)
+      url = "#{API_BASE_URL}/restapi/v1.0/account/~/extension/~/call-log"
+      params = { perPage: per_page, view: 'Simple' }
+      params[:direction] = direction if direction.present?
+      params[:result]    = result    if result.present?
+      params[:dateFrom]  = date_from if date_from.present?
+      params[:type]      = type      if type.present?
+
+      query = params.to_query
+      api_get("#{url}?#{query}")
+    end
+
+    # ------------------------------------------------------------------
     # Phone normalization helpers
     # ------------------------------------------------------------------
 
