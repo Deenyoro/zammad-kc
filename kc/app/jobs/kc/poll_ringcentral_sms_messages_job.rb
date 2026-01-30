@@ -1,20 +1,26 @@
 # KC: Polling job for RingCentral SMS messages.
 #
 # Runs every 60 seconds via Scheduler. Polls the RingCentral message store
-# for inbound SMS/MMS messages since last poll. Acts as a fallback for
+# for SMS/MMS messages since last poll. Acts as a fallback for
 # missed webhook notifications.
+#
+# Two-pass polling:
+#   1. Inbound messages → creates customer-facing ticket articles
+#   2. Outbound messages → captures replies sent from the RingCentral app
+#      (not through Zammad) as internal notes for conversation context.
+#      Zammad-sent outbound messages are skipped via dedup (their RC
+#      message ID is already stored on the article by the communicate job).
 #
 # Safety:
 #   - safe_constantize on KC classes
 #   - Per-channel rescue so one broken channel doesn't stop the others
-#   - Skips outbound messages
 #   - Only processes messages created after last poll (or channel creation)
 class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
 
   def perform
     Channel.where(area: 'RingCentralSms::Account', active: true).find_each do |channel|
       poll_channel(channel)
-    rescue => e
+    rescue StandardError => e
       Rails.logger.error "KC RingCentral Poll: Failed for channel #{channel.id}: #{e.message}"
     end
   end
@@ -44,7 +50,7 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
     begin
       rc.refresh_access_token!
       persist_tokens(channel, rc)
-    rescue => e
+    rescue StandardError => e
       Rails.logger.error "KC RingCentral Poll: Token refresh failed for channel #{channel.id}: #{e.message}"
       return
     end
@@ -64,7 +70,7 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
         date_from:    date_from,
         per_page:     100,
       )
-    rescue => e
+    rescue StandardError => e
       Rails.logger.error "KC RingCentral Poll: Message store query failed for channel #{channel.id}: #{e.message}"
       return
     end
@@ -76,10 +82,13 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
 
     messages.each do |message|
       process_polled_message(driver, channel, message, opts)
-    rescue => e
-      msg_id = (message['id'] || message[:id]) rescue 'unknown'
+    rescue StandardError => e
+      msg_id = (message['id'] || message[:id]) rescue 'unknown' # rubocop:disable Style/RescueModifier
       Rails.logger.error "KC RingCentral Poll: Failed to process message #{msg_id}: #{e.message}"
     end
+
+    # Pass 2: poll outbound messages for replies sent from the RC app
+    poll_outbound_messages(driver, channel, rc, opts, date_from)
 
     # Update last_poll_at timestamp
     channel.with_lock do
@@ -87,7 +96,7 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
       channel.options[:last_poll_at] = Time.current.utc.iso8601
       channel.save!
     end
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error "KC RingCentral Poll: Failed to update last_poll_at for channel #{channel.id}: #{e.message}"
   end
 
@@ -130,6 +139,60 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
     driver.process(channel.options, message_data, channel)
   end
 
+  def poll_outbound_messages(driver, channel, rc, opts, date_from)
+    begin
+      result = rc.get_message_store(
+        message_type: 'SMS',
+        direction:    'Outbound',
+        date_from:    date_from,
+        per_page:     100,
+      )
+    rescue StandardError => e
+      Rails.logger.error "KC RingCentral Poll: Outbound message store query failed for channel #{channel.id}: #{e.message}"
+      return
+    end
+
+    messages = result['records'] || result[:records] || []
+    return if messages.empty?
+
+    Rails.logger.info "KC RingCentral Poll: Found #{messages.size} outbound messages for channel #{channel.id}"
+
+    messages.each do |message|
+      process_outbound_message(driver, channel, message, opts)
+    rescue StandardError => e
+      msg_id = (message['id'] || message[:id]) rescue 'unknown' # rubocop:disable Style/RescueModifier
+      Rails.logger.error "KC RingCentral Poll: Failed to process outbound message #{msg_id}: #{e.message}"
+    end
+  end
+
+  def process_outbound_message(driver, channel, message, opts)
+    message = message.with_indifferent_access
+
+    # Skip non-SMS
+    msg_type = message[:type].to_s
+    return unless %w[SMS Pager].include?(msg_type)
+
+    # Only process outbound
+    return unless message[:direction].to_s == 'Outbound'
+
+    from_phone = message.dig(:from, :phoneNumber) || message.dig(:from, :extensionNumber)
+    to_entries  = Array(message[:to])
+    to_phone    = to_entries.first&.dig(:phoneNumber) || to_entries.first&.dig(:extensionNumber)
+
+    return if to_phone.blank?
+
+    message_data = {
+      message_id: message[:id].to_s,
+      from_phone: from_phone || opts[:phone_number],
+      to_phone:   to_phone,
+      text:       message[:subject] || '',
+      direction:  message[:direction],
+      created_at: message[:creationTime] || message[:lastModifiedTime],
+    }
+
+    driver.process_outbound(channel.options, message_data, channel)
+  end
+
   def persist_tokens(channel, rc)
     channel.with_lock do
       channel.reload
@@ -137,7 +200,7 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
       channel.options[:refresh_token] = rc.refresh_token
       channel.save!
     end
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error "KC RingCentral Poll: Failed to persist tokens: #{e.message}"
   end
 end

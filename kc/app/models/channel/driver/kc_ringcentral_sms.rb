@@ -16,6 +16,12 @@
 #   - Sends SMS via RingCentral API POST /sms
 #   - MMS attachments sent separately (text first, then attachments)
 #
+# Outbound capture (native RC app replies):
+#   Poll job → driver.process_outbound(adapter_options, message_data, channel)
+#   - Deduplicates by RC message ID (Zammad-sent messages already have articles)
+#   - Finds existing ticket by conversation_key; skips if no ticket exists
+#   - Creates internal note article labeled "Sent via RingCentral" for context
+#
 # Hardening:
 #   - safe_constantize on all KC/upstream classes
 #   - Defensive nil checks throughout
@@ -63,6 +69,85 @@ class Channel::Driver::KcRingcentralSms
 
       # Download MMS attachments if present
       download_attachments(article, channel, message_data) if message_data[:attachments].present?
+
+      { ticket: ticket, article: article }
+    end
+  end
+
+  # Process an outbound RingCentral SMS sent from the native RC app (not Zammad).
+  #
+  # Creates an internal note on the matching ticket so agents can see the
+  # full conversation context. Zammad-sent outbound messages are skipped
+  # via dedup (their RC message ID is already stored on the article by
+  # the communicate job).
+  #
+  # @param _adapter_options [Hash] channel options (unused)
+  # @param message_data [Hash] parsed message payload
+  # @param channel [Channel] the RingCentral SMS channel
+  # @return [Hash, nil] { ticket:, article: } or nil if skipped
+  def process_outbound(_adapter_options, message_data, channel)
+    message_data = message_data.with_indifferent_access
+
+    # Dedup: skip if we already have an article with this RC message ID.
+    # Zammad-sent outbound messages get their RC message ID stored by the communicate job.
+    rc_message_id = message_data[:message_id].to_s
+    dedup_key     = "rc_sms:#{rc_message_id}"
+    return nil if rc_message_id.present? && Ticket::Article.exists?(message_id: dedup_key)
+
+    # Find existing ticket by conversation_key — don't create tickets for outbound
+    from_phone = message_data[:from_phone]
+    to_phone   = message_data[:to_phone]
+    return nil if to_phone.blank?
+
+    rc_class = 'Kc::RingcentralApi'.safe_constantize
+    conversation_key = if rc_class
+                         rc_class.conversation_key(from_phone, to_phone)
+                       else
+                         [normalize_phone(from_phone), normalize_phone(to_phone)].compact.sort.join(':')
+                       end
+
+    thread_window = thread_window_hours(channel)
+    ticket = find_existing_ticket(conversation_key, thread_window) if conversation_key.present?
+    if ticket.nil?
+      Rails.logger.debug "KC RingCentral SMS: Skipping outbound message #{rc_message_id} — no matching ticket"
+      return nil
+    end
+
+    # Find the agent user who owns this phone number (sender), fall back to system user
+    agent = find_agent_for_channel(channel)
+
+    transaction_class = 'Transaction'.safe_constantize
+    return nil if transaction_class.nil?
+
+    transaction_class.execute(reset_user_id: true, context: 'ringcentral_sms') do
+      UserInfo.current_user_id = agent.id
+
+      article_type = Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first
+      sender       = Ticket::Article::Sender.find_by(name: 'Agent')
+
+      article = Ticket::Article.new(
+        ticket_id:     ticket.id,
+        type_id:       article_type&.id,
+        sender_id:     sender&.id,
+        from:          normalize_phone(from_phone) || from_phone.to_s,
+        subject:       nil,
+        body:          "#{message_data[:text]}\n\n— Sent via RingCentral SMS (not through Zammad)",
+        content_type:  'text/plain',
+        message_id:    dedup_key,
+        internal:      true,
+        preferences:   {
+          ringcentral_sms: {
+            message_id:      message_data[:message_id],
+            channel_id:      channel.id,
+            from_phone:      normalize_phone(from_phone),
+            to_phone:        normalize_phone(to_phone),
+            outbound_capture: true,
+          },
+        },
+        updated_by_id: agent.id,
+        created_by_id: agent.id,
+      )
+      article.save!
 
       { ticket: ticket, article: article }
     end
@@ -129,6 +214,24 @@ class Channel::Driver::KcRingcentralSms
       updated_by_id: 1,
       created_by_id: 1,
     )
+  end
+
+  def find_agent_for_channel(channel)
+    # Try to find an agent/admin user who belongs to this channel's group
+    group = Group.find_by(id: channel.group_id)
+    if group
+      agent = User.joins(:roles, :groups)
+                  .where(roles: { name: %w[Agent Admin] })
+                  .where(groups: { id: group.id })
+                  .where(active: true)
+                  .first
+    end
+    # Broader fallback: any active agent/admin
+    agent ||= User.joins(:roles)
+                   .where(roles: { name: %w[Agent Admin] })
+                   .where(active: true)
+                   .first
+    agent || User.find(1) # Last resort: system user
   end
 
   def find_or_create_ticket(channel, message_data, user, from_phone, to_phone)
