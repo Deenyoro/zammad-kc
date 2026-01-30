@@ -134,12 +134,7 @@ class KcTeamsChatAccountAdd extends App.ControllerModal
   onSubmit: (e) =>
     @formDisable(e)
 
-    params =
-      client_id:           @$('[name=client_id]').val()
-      client_secret:       @$('[name=client_secret]').val()
-      tenant_id:           @$('[name=tenant_id]').val()
-      group_id:            @$('[name=group_id]').val()
-      thread_window_hours: @$('[name=thread_window_hours]').val()
+    params = @formParams()
 
     if !params.client_id || !params.client_secret || !params.tenant_id
       @formEnable(e)
@@ -188,9 +183,7 @@ class KcTeamsChatAccountEdit extends App.ControllerModal
   onSubmit: (e) =>
     @formDisable(e)
 
-    params =
-      group_id:            @$('[name=group_id]').val()
-      thread_window_hours: @$('[name=thread_window_hours]').val()
+    params = @formParams()
 
     @ajax(
       id:   "kc_teams_chat_update_#{@channel.id}"
