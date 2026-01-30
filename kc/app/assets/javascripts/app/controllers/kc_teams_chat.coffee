@@ -143,9 +143,11 @@ class KcTeamsChatAccountAdd extends App.ControllerModal
 
     @ajax(
       id:   'kc_teams_chat_authorize'
-      type: 'GET'
+      type: 'POST'
       url:  "#{@apiPath}/kc/teams_chat_channels/authorize"
-      data: params
+      data: JSON.stringify(params)
+      contentType: 'application/json'
+      processData: true
       success: (data) =>
         if data.authorize_url
           # Open Microsoft login in a new window
