@@ -12,11 +12,12 @@ class KcTeamsChat extends App.ControllerSubContent
   header: __('Teams Chat')
 
   events:
-    'click .js-new':           'addAccount'
-    'click .js-editAccount':   'editAccount'
-    'click .js-deleteAccount': 'deleteAccount'
-    'click .js-enableAccount': 'enableAccount'
-    'click .js-disableAccount':'disableAccount'
+    'click .js-new':            'addAccount'
+    'click .js-editAccount':    'editAccount'
+    'click .js-deleteAccount':  'deleteAccount'
+    'click .js-enableAccount':  'enableAccount'
+    'click .js-disableAccount': 'disableAccount'
+    'click .js-saveSettings':   'saveSettings'
 
   constructor: ->
     super
@@ -47,6 +48,10 @@ class KcTeamsChat extends App.ControllerSubContent
 
     @html App.view('kc_teams_chat/index')(
       channels: channels
+      settings:
+        thread_window_hours:        App.Setting.get('kc_teams_chat_thread_window_hours') ? 24
+        active_lookback_hours:      App.Setting.get('kc_teams_chat_active_lookback_hours') ? 2
+        discovery_interval_minutes: App.Setting.get('kc_teams_chat_discovery_interval_minutes') ? 5
     )
 
   addAccount: (e) =>
@@ -115,6 +120,30 @@ class KcTeamsChat extends App.ControllerSubContent
       error: =>
         @notify(type: 'error', msg: __('Failed to disable account.'))
     )
+
+  saveSettings: (e) =>
+    e.preventDefault()
+    form = $(e.currentTarget).closest('.kc-teams-settings')
+
+    settings =
+      kc_teams_chat_thread_window_hours:        parseInt(form.find('[name=thread_window_hours]').val()) || 24
+      kc_teams_chat_active_lookback_hours:      parseInt(form.find('[name=active_lookback_hours]').val()) || 2
+      kc_teams_chat_discovery_interval_minutes: parseInt(form.find('[name=discovery_interval_minutes]').val()) || 5
+
+    pending = Object.keys(settings).length
+    failed  = false
+
+    for name, value of settings
+      do (name, value) =>
+        App.Setting.set(name, value,
+          done: =>
+            pending -= 1
+            if pending is 0 && !failed
+              @notify(type: 'success', msg: __('Settings saved.'))
+          fail: =>
+            failed = true
+            @notify(type: 'error', msg: __('Failed to save settings.'))
+        )
 
 
 # ---------------------------------------------------------------------------

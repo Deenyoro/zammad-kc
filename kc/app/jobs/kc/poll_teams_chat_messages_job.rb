@@ -14,7 +14,6 @@
 #   - Skips messages older than channel creation time
 #   - Deduplicates by Graph message ID
 class Kc::PollTeamsChatMessagesJob < ApplicationJob
-  DISCOVERY_INTERVAL = 5.minutes
 
   def perform
     Channel.where(area: 'MicrosoftTeamsChat::Account', active: true).find_each do |channel|
@@ -56,22 +55,24 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
     end
 
     # Always poll active chats (those with open tickets updated recently)
-    active_chat_ids = active_chat_ids_for(channel)
+    lookback = (Setting.get('kc_teams_chat_active_lookback_hours')&.to_i || 2).clamp(1, 168)
+    active_chat_ids = active_chat_ids_for(channel, lookback)
     active_chat_ids.each do |chat_id|
       poll_chat(channel, graph, chat_id, opts[:tenant_id])
     rescue => e
       Rails.logger.error "KC Teams Poll: Failed for active chat #{chat_id}: #{e.message}"
     end
 
-    # Full discovery via Graph API every 5 minutes
+    # Full discovery via Graph API at configurable interval
+    discovery_interval = (Setting.get('kc_teams_chat_discovery_interval_minutes')&.to_i || 5).clamp(1, 60).minutes
     last_discovery = opts[:last_poll_discovery_at]
-    if last_discovery.blank? || Time.zone.parse(last_discovery.to_s) < DISCOVERY_INTERVAL.ago
+    if last_discovery.blank? || Time.zone.parse(last_discovery.to_s) < discovery_interval.ago
       discover_and_poll(channel, graph, opts, active_chat_ids)
     end
   end
 
   # Returns chat_ids that have open tickets with recent activity.
-  def active_chat_ids_for(channel)
+  def active_chat_ids_for(channel, lookback_hours)
     closed_state_ids = Ticket::State
                          .joins(:state_type)
                          .where(ticket_state_types: { name: 'closed' })
@@ -79,7 +80,7 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
 
     Ticket.where('preferences LIKE ?', '%teams_chat%')
           .where.not(state_id: closed_state_ids)
-          .where('updated_at >= ?', 2.hours.ago)
+          .where('updated_at >= ?', lookback_hours.hours.ago)
           .select(:id, :preferences)
           .filter_map { |t| t.preferences.dig('teams_chat', 'chat_id') }
           .uniq
