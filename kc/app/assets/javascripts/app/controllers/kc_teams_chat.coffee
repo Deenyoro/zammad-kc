@@ -150,11 +150,9 @@ class KcTeamsChatAccountAdd extends App.ControllerModal
       processData: true
       success: (data) =>
         if data.authorize_url
-          # Open Microsoft login in a new window
-          window.open(data.authorize_url, '_blank', 'width=600,height=700')
-          @close()
-          @callback() if @callback
-
+          # Full-page redirect (not popup) so session cookie is preserved
+          # for the OAuth callback. Matches Zammad's MS365/Google pattern.
+          window.location.href = data.authorize_url
         else
           @formEnable(e)
           @showAlert(__('Failed to initiate OAuth flow.'))
