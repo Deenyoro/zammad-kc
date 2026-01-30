@@ -25,13 +25,15 @@ Zammad::Application.routes.draw do
     post 'teams_chat_webhook', to: 'kc/teams_chat_webhook#webhook'
 
     # RingCentral SMS channel admin
-    get    'ringcentral_sms_channels',              to: 'kc/ringcentral_sms_channels#index'
-    post   'ringcentral_sms_channels/authorize',    to: 'kc/ringcentral_sms_channels#authorize_oauth'
-    match  'ringcentral_sms_channels/callback',     to: 'kc/ringcentral_sms_channels#callback', via: [:get, :post]
-    put    'ringcentral_sms_channels/:id',          to: 'kc/ringcentral_sms_channels#update'
-    post   'ringcentral_sms_channels/:id/enable',   to: 'kc/ringcentral_sms_channels#enable'
-    post   'ringcentral_sms_channels/:id/disable',  to: 'kc/ringcentral_sms_channels#disable'
-    delete 'ringcentral_sms_channels/:id',          to: 'kc/ringcentral_sms_channels#destroy'
+    get    'ringcentral_sms_channels',                to: 'kc/ringcentral_sms_channels#index'
+    post   'ringcentral_sms_channels/authorize',      to: 'kc/ringcentral_sms_channels#authorize_oauth'
+    match  'ringcentral_sms_channels/callback',       to: 'kc/ringcentral_sms_channels#callback', via: [:get, :post]
+    get    'ringcentral_sms_channels/pending_setup',  to: 'kc/ringcentral_sms_channels#pending_setup'
+    post   'ringcentral_sms_channels/complete_setup', to: 'kc/ringcentral_sms_channels#complete_setup'
+    put    'ringcentral_sms_channels/:id',            to: 'kc/ringcentral_sms_channels#update'
+    post   'ringcentral_sms_channels/:id/enable',     to: 'kc/ringcentral_sms_channels#enable'
+    post   'ringcentral_sms_channels/:id/disable',    to: 'kc/ringcentral_sms_channels#disable'
+    delete 'ringcentral_sms_channels/:id',            to: 'kc/ringcentral_sms_channels#destroy'
 
     # RingCentral SMS webhook (public — no auth, validated by subscription lookup)
     post 'ringcentral_sms_webhook', to: 'kc/ringcentral_sms_webhook#webhook'

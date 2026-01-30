@@ -4,9 +4,10 @@
 # Provides:
 #   - List of connected RingCentral SMS accounts
 #   - Add account via OAuth flow (client_id, secret, group)
-#   - Edit account (group, thread window)
+#   - Edit account (group, thread window, phone number)
 #   - Enable / Disable / Delete accounts
 #   - Global settings (ticket title template, thread window, poll interval)
+#   - Phone number selection page (post-OAuth)
 
 class KcRingcentralSms extends App.ControllerSubContent
   @requiredPermission: 'admin'
@@ -188,7 +189,7 @@ class KcRingcentralSmsAccountAdd extends App.ControllerModal
 
 
 # ---------------------------------------------------------------------------
-# Edit account modal — update group and thread window
+# Edit account modal — update group, thread window, and phone number
 # ---------------------------------------------------------------------------
 class KcRingcentralSmsAccountEdit extends App.ControllerModal
   head: __('Edit RingCentral SMS Account')
@@ -223,6 +224,103 @@ class KcRingcentralSmsAccountEdit extends App.ControllerModal
         data = xhr.responseJSON || {}
         @showAlert(data.error || __('Failed to save.'))
     )
+
+
+# ---------------------------------------------------------------------------
+# Phone number selection page — shown after OAuth callback
+# ---------------------------------------------------------------------------
+class KcRingcentralSmsPhoneSelect extends App.ControllerAppContent
+  @requiredPermission: 'admin'
+
+  constructor: ->
+    super
+    @title __('Select Phone Number')
+    @fetch()
+
+  fetch: =>
+    @html '<div class="page-header"><h1>' + App.i18n.translateContent('Select Phone Number') + '</h1></div><div class="page-content"><div class="loading icon"></div></div>'
+    @ajax(
+      id:   'kc_ringcentral_sms_pending_setup'
+      type: 'GET'
+      url:  "#{@apiPath}/kc/ringcentral_sms_channels/pending_setup"
+      success: (data) =>
+        @availablePhones  = data.available_phones || []
+        @userDisplayName  = data.user_display_name
+        @userEmail        = data.user_email
+        @render()
+      error: (xhr) =>
+        data = xhr.responseJSON || {}
+        @html """
+          <div class="page-header"><h1>#{App.i18n.translateContent('Select Phone Number')}</h1></div>
+          <div class="page-content">
+            <div class="alert alert--danger">#{App.i18n.translateContent(data.error || 'No pending setup found. Please start the OAuth flow again.')}</div>
+            <p><a href="#kc_extensions/kc_ringcentral_sms">#{App.i18n.translateContent('Back to RingCentral SMS')}</a></p>
+          </div>
+        """
+    )
+
+  render: =>
+    phoneOptions = ''
+    for phone in @availablePhones
+      label = phone.phone_number
+      if phone.label
+        label = "#{phone.phone_number} (#{phone.label})"
+      else if phone.usage_type
+        label = "#{phone.phone_number} (#{phone.usage_type})"
+      phoneOptions += "<option value=\"#{App.Utils.htmlEscape(phone.phone_number)}\">#{App.Utils.htmlEscape(label)}</option>"
+
+    accountInfo = App.Utils.htmlEscape(@userDisplayName || '')
+    if @userEmail
+      accountInfo += " &mdash; #{App.Utils.htmlEscape(@userEmail)}"
+
+    @html """
+      <div class="page-header"><h1>#{App.i18n.translateContent('Select Phone Number')}</h1></div>
+      <div class="page-content">
+        <div class="box box--message">
+          <h2>#{App.i18n.translateContent('RingCentral Account Connected')}</h2>
+          <p class="text-muted">#{accountInfo}</p>
+          <p>#{App.i18n.translateContent('Please select the phone number you want to use for SMS messaging:')}</p>
+          <form class="js-phoneSelectForm">
+            <div class="form-group">
+              <label for="phone_number">#{App.i18n.translateContent('Phone Number')}</label>
+              <select name="phone_number" id="phone_number" class="form-control">#{phoneOptions}</select>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn--primary js-submit">#{App.i18n.translateContent('Complete Setup')}</button>
+              <a href="#kc_extensions/kc_ringcentral_sms" class="btn btn--text">#{App.i18n.translateContent('Cancel')}</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    """
+
+    @el.find('.js-phoneSelectForm').on('submit', @onSubmit)
+
+  onSubmit: (e) =>
+    e.preventDefault()
+    @el.find('.js-submit').prop('disabled', true).text(App.i18n.translateContent('Creating channel…'))
+
+    selectedPhone = @el.find('[name=phone_number]').val()
+
+    @ajax(
+      id:   'kc_ringcentral_sms_complete_setup'
+      type: 'POST'
+      url:  "#{@apiPath}/kc/ringcentral_sms_channels/complete_setup"
+      data: JSON.stringify(phone_number: selectedPhone)
+      contentType: 'application/json'
+      success: (data) =>
+        @navigate '#kc_extensions/kc_ringcentral_sms'
+      error: (xhr) =>
+        @el.find('.js-submit').prop('disabled', false).text(App.i18n.translateContent('Complete Setup'))
+        data = xhr.responseJSON || {}
+        @notify(type: 'error', msg: data.error || __('Failed to complete setup.'))
+    )
+
+
+# ---------------------------------------------------------------------------
+# Route registration for phone selection page
+# ---------------------------------------------------------------------------
+App.Config.set('kc_extensions/kc_ringcentral_sms/select_phone', KcRingcentralSmsPhoneSelect, 'Routes')
 
 
 # ---------------------------------------------------------------------------
