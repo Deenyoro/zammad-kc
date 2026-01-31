@@ -191,6 +191,8 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
         created_at:        msg_created,
         tenant_id:         tenant_id,
         is_agent:          is_agent,
+        attachments:       message['attachments'] || message[:attachments] || [],
+        hosted_contents:   message['hostedContents'] || message[:hostedContents] || [],
       }
 
       # process() handles dedup internally via message_id
