@@ -1,0 +1,46 @@
+<div class="main flex">
+  <div class="page-header">
+    <div class="page-header-title">
+      <h1><%- @T('New SMS Conversation') %></h1>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <form class="js-smsForm">
+      <div class="form-group">
+        <label for="kc-sms-recipient"><%- @T('Recipient') %></label>
+        <div class="controls">
+          <input id="kc-sms-recipient" type="text" class="form-control js-recipientSearch" placeholder="<%- @Ti('Search by name or phone number...') %>" autocomplete="off">
+          <div class="js-recipientResults" style="display:none; border:1px solid #ddd; max-height:200px; overflow-y:auto; position:absolute; z-index:100; background:#fff; width:100%;"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="kc-sms-phone"><%- @T('Phone Number') %> <span class="text-danger">*</span></label>
+        <input id="kc-sms-phone" type="tel" class="form-control js-phoneNumber" name="phone_number" placeholder="+1234567890" required>
+        <input type="hidden" class="js-customerId" name="customer_id" value="">
+      </div>
+
+      <div class="form-group">
+        <label for="kc-sms-group"><%- @T('Group') %></label>
+        <select id="kc-sms-group" class="form-control js-group" name="group_id">
+          <% for group in @groups: %>
+            <option value="<%= group.id %>"<%= ' selected' if group.id is @defaultGroupId %>><%= group.displayName() %></option>
+          <% end %>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="kc-sms-body"><%- @T('Message') %> <span class="text-danger">*</span></label>
+        <textarea id="kc-sms-body" class="form-control js-body" name="body" rows="5" placeholder="<%- @Ti('Type your SMS message...') %>" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn--primary js-submit"><%- @T('Send SMS') %></button>
+        <span class="js-loading" style="display:none;"><span class="loading icon"></span> <%- @T('Sending...') %></span>
+      </div>
+
+      <div class="js-error alert alert--danger" style="display:none;"></div>
+    </form>
+  </div>
+</div>
