@@ -236,7 +236,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
       sender_id:     sender&.id,
       from:          message_data[:from_display_name],
       subject:       nil,
-      body:          message_data[:body_content] || '',
+      body:          sanitize_teams_body(message_data[:body_content], message_data[:attachments]),
       content_type:  content_type,
       message_id:    message_id,
       internal:      false,
@@ -339,42 +339,53 @@ class Channel::Driver::KcMicrosoftTeamsChat
       Rails.logger.error "KC Teams Chat: Failed to download hosted content #{hc_id}: #{e.message}"
     end
 
-    # 2. File attachments (non-inline) — referenced in message['attachments']
+    # 2. File attachments — referenced in message['attachments']
+    #    Teams file uploads have contentType "reference" with a SharePoint contentUrl.
+    #    Download via Graph's sharing API (encodes the URL as a sharing token).
     attachments = Array(message_data[:attachments])
     attachments.each do |att|
       att = att.with_indifferent_access
       content_url = att[:contentUrl]
       next if content_url.blank?
 
-      # Skip reference-type attachments (e.g. links, adaptive cards)
+      filename = att[:name].presence || "attachment_#{att[:id]}"
       content_type_att = att[:contentType].to_s
-      next if content_type_att.blank? || content_type_att.include?('reference')
 
       begin
-        response = UserAgent.get(
-          content_url,
-          {},
-          {
-            headers:       { 'Authorization' => "Bearer #{graph.access_token}" },
-            open_timeout:  10,
-            read_timeout:  30,
-            total_timeout: 60,
-            log:           { facility: 'kc_teams_graph' },
-          },
-        )
-        next unless response.success?
+        if content_type_att.include?('reference')
+          # SharePoint file upload — download via Graph sharing API
+          data = download_sharepoint_file(graph, content_url)
+          next if data.blank?
 
-        filename = att[:name].presence || "attachment_#{att[:id]}"
+          mime = mime_from_filename(filename)
+        else
+          next if content_type_att.blank?
+          response = UserAgent.get(
+            content_url,
+            {},
+            {
+              headers:       { 'Authorization' => "Bearer #{graph.access_token}" },
+              open_timeout:  10,
+              read_timeout:  30,
+              total_timeout: 60,
+              log:           { facility: 'kc_teams_graph' },
+            },
+          )
+          next unless response.success?
+
+          data = response.body
+          mime = content_type_att
+        end
 
         Store.create!(
           object:      'Ticket::Article',
           o_id:        article.id,
-          data:        response.body,
+          data:        data,
           filename:    filename,
-          preferences: { 'Content-Type' => content_type_att },
+          preferences: { 'Content-Type' => mime },
         )
       rescue => e
-        Rails.logger.error "KC Teams Chat: Failed to download attachment #{att[:name] || att[:id]}: #{e.message}"
+        Rails.logger.error "KC Teams Chat: Failed to download attachment #{filename}: #{e.message}"
       end
     end
   end
@@ -392,6 +403,49 @@ class Channel::Driver::KcMicrosoftTeamsChat
       refresh_token: opts[:refresh_token],
     )
     graph
+  end
+
+  # Downloads a file from SharePoint via the Graph sharing API.
+  # Encodes the SharePoint URL as a sharing token and fetches the file content.
+  def download_sharepoint_file(graph, sharepoint_url)
+    # Encode URL as a Graph sharing token: "u!" + base64url(url)
+    encoded = 'u!' + Base64.urlsafe_encode64(sharepoint_url).chomp('=')
+    download_url = "https://graph.microsoft.com/v1.0/shares/#{encoded}/driveItem/content"
+
+    response = UserAgent.get(
+      download_url,
+      {},
+      {
+        headers:       { 'Authorization' => "Bearer #{graph.access_token}" },
+        open_timeout:  10,
+        read_timeout:  60,
+        total_timeout: 120,
+        log:           { facility: 'kc_teams_graph' },
+      },
+    )
+
+    unless response.success?
+      Rails.logger.error "KC Teams Chat: SharePoint download failed (#{response.code}) for #{sharepoint_url}"
+      return nil
+    end
+
+    response.body
+  end
+
+  MIME_EXTENSIONS = {
+    'png' => 'image/png', 'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg',
+    'gif' => 'image/gif', 'webp' => 'image/webp', 'bmp' => 'image/bmp',
+    'svg' => 'image/svg+xml', 'pdf' => 'application/pdf',
+    'doc' => 'application/msword', 'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'xls' => 'application/vnd.ms-excel', 'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'ppt' => 'application/vnd.ms-powerpoint', 'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'txt' => 'text/plain', 'csv' => 'text/csv', 'zip' => 'application/zip',
+    'mp4' => 'video/mp4', 'mp3' => 'audio/mpeg',
+  }.freeze
+
+  def mime_from_filename(filename)
+    ext = File.extname(filename.to_s).delete('.').downcase
+    MIME_EXTENSIONS[ext] || 'application/octet-stream'
   end
 
   def detect_hosted_content_type(body_html, hc_id)
@@ -447,6 +501,20 @@ class Channel::Driver::KcMicrosoftTeamsChat
     return channel_window.to_i if channel_window.present?
 
     Setting.get('kc_teams_chat_thread_window_hours')&.to_i || 24
+  end
+
+  # Strips HTML attachment tags from the body and ensures a non-empty body
+  # for Zammad's article validation. When a Teams user sends only an image/file,
+  # the body is just an <attachment> tag which has no visible text.
+  def sanitize_teams_body(body_content, attachments)
+    text = body_content.to_s
+    # Remove <attachment> placeholder tags that Teams uses for file references
+    cleaned = text.gsub(/<attachment[^>]*>.*?<\/attachment>/mi, '').strip
+    return cleaned if cleaned.present?
+
+    # Body was empty or only contained attachment tags — use a placeholder
+    has_attachments = Array(attachments).any? { |a| a.is_a?(Hash) }
+    has_attachments ? '(attachment)' : '-'
   end
 
 end
