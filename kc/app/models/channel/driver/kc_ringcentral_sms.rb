@@ -290,7 +290,7 @@ class Channel::Driver::KcRingcentralSms
       sender_id:     sender&.id,
       from:          normalize_phone(from_phone),
       subject:       nil,
-      body:          message_data[:text] || '',
+      body:          message_data[:text].to_s.strip.presence || (message_data[:attachments].present? ? '(MMS)' : '-'),
       content_type:  'text/plain',
       message_id:    dedup_key,
       internal:      false,
