@@ -145,6 +145,26 @@ module Kc
       graph_get(url)
     end
 
+    # Downloads a hosted content blob (inline image) from a chat message.
+    # Returns raw binary data.
+    def get_hosted_content(chat_id, message_id, hosted_content_id)
+      url = "#{GRAPH_BASE_URL}/chats/#{chat_id}/messages/#{message_id}/hostedContents/#{hosted_content_id}/$value"
+      response = UserAgent.get(
+        url,
+        {},
+        {
+          headers:       auth_headers,
+          open_timeout:  10,
+          read_timeout:  30,
+          total_timeout: 60,
+          log:           { facility: 'kc_teams_graph' },
+        },
+      )
+      raise "Graph API error (#{response.code}): Failed to download hosted content" unless response.success?
+
+      response.body
+    end
+
     # ------------------------------------------------------------------
     # Webhook Subscriptions
     # ------------------------------------------------------------------
