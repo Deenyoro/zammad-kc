@@ -23,7 +23,7 @@ class Kc::CommunicateTeamsChatJob < ApplicationJob
     chat_prefs    = ticket.preferences&.dig(:teams_chat) || {}
     article_prefs = article.preferences&.dig(:teams_chat) || {}
     chat_id       = article_prefs[:chat_id] || chat_prefs[:chat_id]
-    channel_id    = article_prefs[:channel_id] || find_channel_id(ticket)
+    channel_id    = article_prefs[:channel_id] || chat_prefs[:channel_id] || find_channel_id(ticket)
 
     if chat_id.blank? || channel_id.blank?
       Rails.logger.warn "KC Teams Chat Job: Missing chat_id or channel_id for article #{article_id}"
