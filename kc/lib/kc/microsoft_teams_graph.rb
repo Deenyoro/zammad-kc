@@ -22,7 +22,7 @@ module Kc
   class MicrosoftTeamsGraph
     GRAPH_BASE_URL = 'https://graph.microsoft.com/v1.0'.freeze
     LOGIN_BASE_URL = 'https://login.microsoftonline.com'.freeze
-    OAUTH_SCOPES   = 'offline_access openid profile email Chat.Read Chat.ReadWrite Chat.Create ChatMessage.Send User.Read User.Read.All'.freeze
+    OAUTH_SCOPES   = 'offline_access openid profile email Chat.Read Chat.ReadWrite Chat.Create ChatMessage.Send User.Read User.Read.All UserAuthenticationMethod.Read.All'.freeze
 
     attr_reader :client_id, :client_secret, :tenant_id
     attr_accessor :access_token, :refresh_token
@@ -194,6 +194,12 @@ module Kc
       graph_get("#{GRAPH_BASE_URL}/users/#{user_id}")
     end
 
+    # Fetches authentication phone methods for a user (MFA-registered phones).
+    # Requires UserAuthenticationMethod.Read.All permission.
+    def get_user_phone_methods(user_id)
+      graph_get("#{GRAPH_BASE_URL}/users/#{user_id}/authentication/phoneMethods")
+    end
+
     # ------------------------------------------------------------------
     # Chats
     # ------------------------------------------------------------------
@@ -271,7 +277,7 @@ module Kc
     # @yield [Array<Hash>] batch of user objects
     # @return [Hash, nil] first page result if no block given
     def list_all_users(top: 100, &block)
-      url = "#{GRAPH_BASE_URL}/users?$top=#{top}&$select=id,displayName,mail,jobTitle,department,userPrincipalName,accountEnabled"
+      url = "#{GRAPH_BASE_URL}/users?$top=#{top}&$select=id,displayName,mail,jobTitle,department,userPrincipalName,accountEnabled,mobilePhone"
       loop do
         result = graph_get(url)
         users = result['value'] || []
