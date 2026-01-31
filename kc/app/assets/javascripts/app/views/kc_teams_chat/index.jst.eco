@@ -59,6 +59,24 @@
           <input type="checkbox" name="deactivate_stale" <% if @settings.deactivate_stale: %>checked<% end %>>
         </td>
       </tr>
+      <tr>
+        <td>
+          <span><%- @T('Sync Mobile Phone') %></span>
+          <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Pull mobile numbers from Azure AD profiles. Falls back to MFA-registered phone numbers. Requires UserAuthenticationMethod.Read.All permission.') %></p>
+        </td>
+        <td>
+          <input type="checkbox" name="sync_phone" <% if @settings.sync_phone: %>checked<% end %>>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span><%- @T('Sync Job Title') %></span>
+          <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Store Azure AD job titles in user notes as [Teams Job Title: ...].') %></p>
+        </td>
+        <td>
+          <input type="checkbox" name="sync_job_title" <% if @settings.sync_job_title: %>checked<% end %>>
+        </td>
+      </tr>
     </table>
     <button class="btn btn--primary js-saveSettings" style="margin-top: 10px;"><%- @T('Save Settings') %></button>
   </div>

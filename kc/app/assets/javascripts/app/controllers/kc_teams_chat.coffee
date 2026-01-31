@@ -56,6 +56,8 @@ class KcTeamsChat extends App.ControllerSubContent
         active_lookback_hours:      App.Setting.get('kc_teams_chat_active_lookback_hours') ? 2
         discovery_interval_minutes: App.Setting.get('kc_teams_chat_discovery_interval_minutes') ? 2
         deactivate_stale:           App.Setting.get('kc_teams_directory_deactivate_stale') ? false
+        sync_phone:                 App.Setting.get('kc_teams_directory_sync_phone') ? false
+        sync_job_title:             App.Setting.get('kc_teams_directory_sync_job_title') ? false
     )
 
   addAccount: (e) =>
@@ -167,6 +169,8 @@ class KcTeamsChat extends App.ControllerSubContent
       kc_teams_chat_active_lookback_hours:      parseInt(form.find('[name=active_lookback_hours]').val()) || 2
       kc_teams_chat_discovery_interval_minutes: parseInt(form.find('[name=discovery_interval_minutes]').val()) || 2
       kc_teams_directory_deactivate_stale:      form.find('[name=deactivate_stale]').is(':checked')
+      kc_teams_directory_sync_phone:            form.find('[name=sync_phone]').is(':checked')
+      kc_teams_directory_sync_job_title:        form.find('[name=sync_job_title]').is(':checked')
 
     pending = Object.keys(settings).length
     failed  = false
