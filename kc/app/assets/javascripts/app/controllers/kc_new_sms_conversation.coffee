@@ -74,7 +74,7 @@ class App.KcNewSmsConversationContent extends App.Controller
       phone = user.phone || user.mobile || ''
       name = user.name || ''
       html += """
-        <div class="js-selectRecipient" data-id="#{user.id}" data-phone="#{phone}" data-name="#{name}"
+        <div class="js-selectRecipient" data-id="#{user.id}" data-phone="#{App.Utils.htmlEscape(phone)}" data-name="#{App.Utils.htmlEscape(name)}"
              style="padding:8px 12px; cursor:pointer; border-bottom:1px solid #eee;">
           <strong>#{App.Utils.htmlEscape(name)}</strong>
           <span class="text-muted">#{App.Utils.htmlEscape(phone)}</span>
