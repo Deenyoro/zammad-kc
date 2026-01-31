@@ -251,6 +251,7 @@ class Kc::NewConversationsController < ApplicationController
         type_id:       article_type&.id,
         sender_id:     sender&.id,
         from:          current_user.fullname,
+        to:            display_name,
         subject:       nil,
         body:          body,
         content_type:  'text/plain',
