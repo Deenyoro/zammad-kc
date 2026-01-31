@@ -30,7 +30,7 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
 
     # The "to" phone is the customer's phone (the from_phone on inbound messages)
     to_phone   = article_prefs[:to_phone] || sms_prefs[:from_phone]
-    channel_id = article_prefs[:channel_id] || find_channel_id(ticket)
+    channel_id = article_prefs[:channel_id] || sms_prefs[:channel_id] || find_channel_id(ticket)
 
     if to_phone.blank? || channel_id.blank?
       Rails.logger.warn "KC RingCentral SMS Job: Missing to_phone or channel_id for article #{article_id}"
