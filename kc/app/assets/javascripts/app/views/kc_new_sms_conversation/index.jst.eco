@@ -1,7 +1,7 @@
 <div class="main flex">
   <div class="page-header">
     <div class="page-header-title">
-      <h1><%- @T('New SMS Conversation') %></h1>
+      <h1><%- @T('New SMS Message (RingCentral)') %></h1>
     </div>
   </div>
 
@@ -19,6 +19,13 @@
         <label for="kc-sms-phone"><%- @T('Phone Number') %> <span class="text-danger">*</span></label>
         <input id="kc-sms-phone" type="tel" class="form-control js-phoneNumber" name="phone_number" placeholder="+1234567890" required>
         <input type="hidden" class="js-customerId" name="customer_id" value="">
+      </div>
+
+      <div class="form-group">
+        <label for="kc-sms-from"><%- @T('From Number') %> <span class="text-danger">*</span></label>
+        <select id="kc-sms-from" class="form-control js-fromNumber" name="channel_id">
+          <option value=""><%- @T('Loading...') %></option>
+        </select>
       </div>
 
       <div class="form-group">
