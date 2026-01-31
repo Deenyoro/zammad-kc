@@ -203,6 +203,13 @@ class Channel::Driver::KcMicrosoftTeamsChat
       created_by_id: user.id,
     )
     ticket.save!
+
+    # Backdate ticket to original message time so it reflects when the conversation started
+    original_time = message_data[:created_at].present? ? Time.zone.parse(message_data[:created_at].to_s) : nil
+    if original_time
+      ticket.update_columns(created_at: original_time)
+    end
+
     ticket
   end
 
@@ -217,6 +224,9 @@ class Channel::Driver::KcMicrosoftTeamsChat
     end
 
     content_type = message_data[:body_content_type] == 'html' ? 'text/html' : 'text/plain'
+
+    # Use the original Teams message timestamp, not the poll time
+    original_time = message_data[:created_at].present? ? Time.zone.parse(message_data[:created_at].to_s) : nil
 
     article = Ticket::Article.new(
       ticket_id:     ticket.id,
@@ -239,6 +249,11 @@ class Channel::Driver::KcMicrosoftTeamsChat
       created_by_id: user.id,
     )
     article.save!
+
+    # Backdate to original message time so ticket timeline is accurate
+    if original_time
+      article.update_columns(created_at: original_time, updated_at: original_time)
+    end
     article
   end
 
@@ -278,6 +293,13 @@ class Channel::Driver::KcMicrosoftTeamsChat
       created_by_id: user.id,
     )
     article.save!
+
+    # Backdate to original message time
+    original_time = message_data[:created_at].present? ? Time.zone.parse(message_data[:created_at].to_s) : nil
+    if original_time
+      article.update_columns(created_at: original_time, updated_at: original_time)
+    end
+
     article
   end
 
