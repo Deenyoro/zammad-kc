@@ -131,6 +131,12 @@ class Kc::TeamsDirectorySyncJob < ApplicationJob
       update_attrs[:organization_id] = organization.id if organization
       update_attrs[:active]          = true unless user.active
 
+      # Replace placeholder teams.local emails with real Azure AD email
+      if email.present? && user.email.to_s.end_with?('@teams.local')
+        # Only replace if no other user already has this email
+        update_attrs[:email] = email unless User.where(email: email).where.not(id: user.id).exists?
+      end
+
       user.update!(update_attrs) if update_attrs.present?
     else
       user = User.create!(
