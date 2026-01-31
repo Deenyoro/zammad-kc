@@ -76,6 +76,8 @@ class Kc::ProcessTeamsChatWebhookJob < ApplicationJob
       body_content_type: body['contentType'] || body[:contentType],
       created_at:        message['createdDateTime'] || message[:createdDateTime],
       tenant_id:         opts[:tenant_id],
+      attachments:       message['attachments'] || message[:attachments] || [],
+      hosted_contents:   message['hostedContents'] || message[:hostedContents] || [],
     }
 
     # Try to get the sender's email for better user matching
