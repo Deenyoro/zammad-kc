@@ -130,7 +130,13 @@ class Channel::Driver::KcMicrosoftTeamsChat
     # Try to find by Teams authorization first
     if teams_uid.present?
       auth = Authorization.find_by(provider: 'microsoft_teams', uid: teams_uid)
-      return auth.user if auth&.user
+      if auth&.user
+        # If we now have a real email and user still has a placeholder, update it
+        if email.present? && auth.user.email.to_s.end_with?('@teams.local')
+          auth.user.update!(email: email) unless User.where(email: email).where.not(id: auth.user.id).exists?
+        end
+        return auth.user
+      end
     end
 
     # Try to find by email
