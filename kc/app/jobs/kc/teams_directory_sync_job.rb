@@ -37,12 +37,15 @@ class Kc::TeamsDirectorySyncJob < ApplicationJob
     stats = { users_created: 0, users_updated: 0, users_deactivated: 0 }
     synced_user_ids = []
 
+    sync_phone     = Setting.get('kc_teams_directory_sync_phone')
+    sync_job_title = Setting.get('kc_teams_directory_sync_job_title')
+
     graph.list_all_users do |batch|
       batch.each do |ad_user|
         next if ad_user['accountEnabled'] == false
 
         begin
-          user, created = sync_user(ad_user, organization)
+          user, created = sync_user(ad_user, organization, graph: graph, sync_phone: sync_phone, sync_job_title: sync_job_title)
           synced_user_ids << user.id
           created ? stats[:users_created] += 1 : stats[:users_updated] += 1
         rescue => e
@@ -105,7 +108,7 @@ class Kc::TeamsDirectorySyncJob < ApplicationJob
     end
   end
 
-  def sync_user(ad_user, organization)
+  def sync_user(ad_user, organization, graph: nil, sync_phone: false, sync_job_title: false)
     ad_id = ad_user['id']
     email = (ad_user['mail'].presence || ad_user['userPrincipalName']).to_s.downcase.strip
     display_name = ad_user['displayName'] || ''
@@ -137,9 +140,24 @@ class Kc::TeamsDirectorySyncJob < ApplicationJob
         update_attrs[:email] = email unless User.where(email: email).where.not(id: user.id).exists?
       end
 
+      # Sync mobile phone from Azure AD profile or MFA phone methods
+      if sync_phone
+        phone = resolve_mobile_phone(ad_user, ad_id, graph)
+        update_attrs[:mobile] = phone if phone.present? && user.mobile.blank?
+      end
+
+      # Sync job title into user note field
+      if sync_job_title
+        new_note = build_note_with_job_title(user.note, ad_user['jobTitle'])
+        update_attrs[:note] = new_note if new_note != user.note
+      end
+
       user.update!(update_attrs) if update_attrs.present?
     else
-      user = User.create!(
+      mobile = sync_phone ? resolve_mobile_phone(ad_user, ad_id, graph) : nil
+      note   = sync_job_title ? build_note_with_job_title(nil, ad_user['jobTitle']) : nil
+
+      create_attrs = {
         firstname:       firstname,
         lastname:        lastname,
         email:           email.presence,
@@ -149,7 +167,11 @@ class Kc::TeamsDirectorySyncJob < ApplicationJob
         role_ids:        Role.where(name: 'Customer').pluck(:id),
         updated_by_id:   1,
         created_by_id:   1,
-      )
+      }
+      create_attrs[:mobile] = mobile if mobile.present?
+      create_attrs[:note]   = note if note.present?
+
+      user = User.create!(create_attrs)
       created = true
     end
 
@@ -164,6 +186,46 @@ class Kc::TeamsDirectorySyncJob < ApplicationJob
     end
 
     [user, created]
+  end
+
+  # Resolves a mobile phone number: tries the AD profile mobilePhone field first,
+  # then falls back to the Graph Authentication Methods API for MFA-registered phones.
+  def resolve_mobile_phone(ad_user, ad_id, graph)
+    phone = ad_user['mobilePhone'].presence
+    return phone if phone.present?
+    return nil if graph.nil?
+
+    begin
+      result = graph.get_user_phone_methods(ad_id)
+      methods = result['value'] || []
+      mobile_method = methods.find { |m| m['phoneType'] == 'mobile' }
+      mobile_method&.dig('phoneNumber').presence
+    rescue => e
+      Rails.logger.warn "KC Teams Directory Sync: Failed to fetch phone methods for #{ad_id}: #{e.message}"
+      nil
+    end
+  end
+
+  JOB_TITLE_MARKER = /\[Teams Job Title: [^\]]*\]/
+
+  # Updates the note field with a job title marker, preserving other content.
+  def build_note_with_job_title(current_note, job_title)
+    note = current_note.to_s
+
+    if job_title.present?
+      marker = "[Teams Job Title: #{job_title}]"
+      if note.match?(JOB_TITLE_MARKER)
+        note.sub(JOB_TITLE_MARKER, marker)
+      elsif note.blank?
+        marker
+      else
+        "#{note}\n#{marker}"
+      end
+    else
+      # Remove marker if job title is blank
+      cleaned = note.sub(JOB_TITLE_MARKER, '').strip
+      cleaned.presence
+    end
   end
 
   def split_name(display_name)
