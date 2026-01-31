@@ -299,9 +299,12 @@ class Kc::NewConversationsController < ApplicationController
     render json: {
       channels:           channels.map { |c|
         opts = c.options || {}
+        org_name = Organization.find_by(id: opts[:organization_id])&.name
+        user_name = opts[:user_display_name].presence
+        label = [org_name, user_name].compact.join(' - ').presence || "Channel #{c.id}"
         {
           id:    c.id,
-          label: opts[:display_name].presence || opts[:tenant_id].presence || "Channel #{c.id}",
+          label: label,
         }
       },
       default_channel_id: Setting.get('kc_teams_default_channel_id').to_s,
