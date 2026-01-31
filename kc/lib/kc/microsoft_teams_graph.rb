@@ -198,9 +198,28 @@ module Kc
     # Chats
     # ------------------------------------------------------------------
 
-    # Lists the authenticated user's chats.
-    def list_chats(top: 50)
-      graph_get("#{GRAPH_BASE_URL}/me/chats?$top=#{top}&$expand=members")
+    # Lists the authenticated user's chats with full pagination.
+    # Yields batches of chat objects to the given block, or returns the first page if no block given.
+    #
+    # @param top [Integer] page size (default 50)
+    # @yield [Array<Hash>] batch of chat objects
+    # @return [Hash, nil] first page result if no block given
+    def list_chats(top: 50, &block)
+      url = "#{GRAPH_BASE_URL}/me/chats?$top=#{top}&$expand=members"
+      loop do
+        result = graph_get(url)
+        chats = result['value'] || []
+        break if chats.empty?
+
+        if block
+          block.call(chats)
+        else
+          return result
+        end
+
+        url = result['@odata.nextLink']
+        break if url.blank?
+      end
     end
 
     # Gets a single chat by ID.

@@ -51,7 +51,9 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
       graph.refresh_access_token!
       persist_tokens(channel, graph)
     rescue => e
-      Rails.logger.error "KC Teams Poll: Token refresh failed for channel #{channel.id}: #{e.message}"
+      Rails.logger.error "KC Teams Poll: Token refresh failed for channel #{channel.id}: #{e.message} — " \
+                         'ALL polling skipped for this channel until token is fixed. ' \
+                         'Reauthenticate the channel in Admin > KC Extensions > Teams Chat.'
       return
     end
 
@@ -91,26 +93,29 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
   end
 
   def discover_and_poll(channel, graph, opts, already_polled_ids)
+    total_discovered = 0
+
     begin
-      chats_result = graph.list_chats(top: 50)
-      chats = chats_result['value'] || chats_result[:value] || []
+      graph.list_chats(top: 50) do |batch|
+        total_discovered += batch.size
+
+        batch.each do |chat|
+          chat_id = chat['id'] || chat[:id]
+          next if chat_id.blank?
+          next if already_polled_ids.include?(chat_id)
+
+          poll_chat(channel, graph, chat_id, opts[:tenant_id])
+        rescue => e
+          chat_id_safe = (chat['id'] || chat[:id]) rescue 'unknown'
+          Rails.logger.error "KC Teams Poll: Failed for discovered chat #{chat_id_safe}: #{e.message}"
+        end
+      end
     rescue => e
       Rails.logger.error "KC Teams Poll: Failed to list chats for channel #{channel.id}: #{e.message}"
       return
     end
 
-    Rails.logger.info "KC Teams Poll: Discovery found #{chats.size} chats for channel #{channel.id}"
-
-    chats.each do |chat|
-      chat_id = chat['id'] || chat[:id]
-      next if chat_id.blank?
-      next if already_polled_ids.include?(chat_id)
-
-      poll_chat(channel, graph, chat_id, opts[:tenant_id])
-    rescue => e
-      chat_id_safe = (chat['id'] || chat[:id]) rescue 'unknown'
-      Rails.logger.error "KC Teams Poll: Failed for discovered chat #{chat_id_safe}: #{e.message}"
-    end
+    Rails.logger.info "KC Teams Poll: Discovery found #{total_discovered} chats for channel #{channel.id}"
 
     # Record discovery time (locked to avoid race with concurrent token persistence)
     channel.with_lock do
