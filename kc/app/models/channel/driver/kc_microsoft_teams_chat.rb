@@ -74,6 +74,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
         user = find_or_create_user(message_data)
         UserInfo.current_user_id = user.id
         article = create_agent_article(ticket, channel, message_data, user, message_id)
+        download_and_attach_files(article, channel, message_data)
         { ticket: ticket, article: article }
       end
     else
@@ -82,6 +83,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
         ticket = find_or_create_ticket(channel, message_data, user)
         UserInfo.current_user_id = user.id
         article = create_article(ticket, channel, message_data, user, message_id)
+        download_and_attach_files(article, channel, message_data)
         { ticket: ticket, article: article }
       end
     end
@@ -301,6 +303,106 @@ class Channel::Driver::KcMicrosoftTeamsChat
     end
 
     article
+  end
+
+  IMAGE_MIME_TYPES = %w[image/png image/jpeg image/gif image/webp image/bmp image/pjpeg].freeze
+
+  # Downloads inline images (hostedContents) and file attachments from a
+  # Teams message and stores them on the Zammad article.
+  def download_and_attach_files(article, channel, message_data)
+    graph = build_graph_client(channel)
+    return if graph.nil?
+
+    chat_id    = message_data[:chat_id]
+    message_id = message_data[:message_id]
+
+    # 1. Inline images — extract hostedContents IDs from the HTML body
+    body_html = message_data[:body_content].to_s
+    hosted_ids = body_html.scan(%r{hostedContents/([^/]+)/\$value}i).flatten.uniq
+    hosted_ids.each_with_index do |hc_id, idx|
+      data = graph.get_hosted_content(chat_id, message_id, hc_id)
+      next if data.blank?
+
+      # Determine content type from the body img tag or default to png
+      content_type = detect_hosted_content_type(body_html, hc_id) || 'image/png'
+      ext = content_type.split('/').last.sub('jpeg', 'jpg')
+      filename = "teams_image_#{idx + 1}.#{ext}"
+
+      Store.create!(
+        object:      'Ticket::Article',
+        o_id:        article.id,
+        data:        data,
+        filename:    filename,
+        preferences: { 'Content-Type' => content_type },
+      )
+    rescue => e
+      Rails.logger.error "KC Teams Chat: Failed to download hosted content #{hc_id}: #{e.message}"
+    end
+
+    # 2. File attachments (non-inline) — referenced in message['attachments']
+    attachments = Array(message_data[:attachments])
+    attachments.each do |att|
+      att = att.with_indifferent_access
+      content_url = att[:contentUrl]
+      next if content_url.blank?
+
+      # Skip reference-type attachments (e.g. links, adaptive cards)
+      content_type_att = att[:contentType].to_s
+      next if content_type_att.blank? || content_type_att.include?('reference')
+
+      begin
+        response = UserAgent.get(
+          content_url,
+          {},
+          {
+            headers:       { 'Authorization' => "Bearer #{graph.access_token}" },
+            open_timeout:  10,
+            read_timeout:  30,
+            total_timeout: 60,
+            log:           { facility: 'kc_teams_graph' },
+          },
+        )
+        next unless response.success?
+
+        filename = att[:name].presence || "attachment_#{att[:id]}"
+
+        Store.create!(
+          object:      'Ticket::Article',
+          o_id:        article.id,
+          data:        response.body,
+          filename:    filename,
+          preferences: { 'Content-Type' => content_type_att },
+        )
+      rescue => e
+        Rails.logger.error "KC Teams Chat: Failed to download attachment #{att[:name] || att[:id]}: #{e.message}"
+      end
+    end
+  end
+
+  def build_graph_client(channel)
+    graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
+    return nil if graph_class.nil?
+
+    opts = channel.options
+    graph = graph_class.new(
+      client_id:     opts[:client_id],
+      client_secret: opts[:client_secret],
+      tenant_id:     opts[:tenant_id],
+      access_token:  opts[:access_token],
+      refresh_token: opts[:refresh_token],
+    )
+    graph
+  end
+
+  def detect_hosted_content_type(body_html, hc_id)
+    # Try to find a data-content-type or similar attribute near the hostedContents reference
+    # Graph typically uses image/png or image/jpeg for inline images
+    if body_html.include?("#{hc_id}")
+      return 'image/gif' if body_html =~ /#{Regexp.escape(hc_id)}[^>]*\.gif/i
+      return 'image/jpeg' if body_html =~ /#{Regexp.escape(hc_id)}[^>]*\.jpe?g/i
+      return 'image/webp' if body_html =~ /#{Regexp.escape(hc_id)}[^>]*\.webp/i
+    end
+    nil # default handled by caller
   end
 
   def build_ticket_title(message_data, user)
