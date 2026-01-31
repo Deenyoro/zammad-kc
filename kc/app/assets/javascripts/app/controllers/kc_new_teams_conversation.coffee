@@ -98,13 +98,13 @@ class App.KcNewTeamsConversationContent extends App.Controller
       title = contact.job_title || ''
       entry = """
         <div class="js-selectContact" data-id="#{contact.id}" data-name="#{App.Utils.htmlEscape(name)}" data-email="#{App.Utils.htmlEscape(email)}"
-             style="padding:8px 12px; cursor:pointer; border-bottom:1px solid #eee;">
+             style="padding:8px 12px; cursor:pointer; border-bottom:1px solid var(--border);">
           <strong>#{App.Utils.htmlEscape(name)}</strong>
       """
       if email
-        entry += " <span class=\"text-muted\">#{App.Utils.htmlEscape(email)}</span>"
+        entry += " <span style=\"opacity:.7;\">#{App.Utils.htmlEscape(email)}</span>"
       if title
-        entry += "<br><small class=\"text-muted\">#{App.Utils.htmlEscape(title)}</small>"
+        entry += "<br><small style=\"opacity:.7;\">#{App.Utils.htmlEscape(title)}</small>"
       entry += '</div>'
       html += entry
 
