@@ -40,6 +40,29 @@ class App.KcNewSmsConversationContent extends App.Controller
 
     @searchTimer = null
     @recipientResults = @el.find('.js-recipientResults')
+    @loadChannels()
+
+  loadChannels: ->
+    @ajax(
+      id:   'kc-sms-channels'
+      type: 'GET'
+      url:  "#{App.Config.get('api_path')}/kc/conversations/sms_channels"
+      success: (data) =>
+        select = @el.find('.js-fromNumber')
+        select.empty()
+        channels = data.channels || []
+        defaultId = (data.default_channel_id || '').toString()
+        for ch in channels
+          label = ch.phone_number || "Channel #{ch.id}"
+          option = $('<option>').val(ch.id).text(label)
+          if defaultId && ch.id.toString() is defaultId
+            option.prop('selected', true)
+          select.append(option)
+        if channels.length is 0
+          select.append($('<option>').val('').text('No channels available'))
+      error: =>
+        @el.find('.js-fromNumber').html('<option value="">Failed to load channels</option>')
+    )
 
   onRecipientSearch: (e) ->
     query = $(e.target).val().trim()
@@ -104,6 +127,7 @@ class App.KcNewSmsConversationContent extends App.Controller
     body        = @el.find('.js-body').val()?.trim()
     groupId     = @el.find('.js-group').val()
     customerId  = @el.find('.js-customerId').val()
+    channelId   = @el.find('.js-fromNumber').val()
 
     if !phoneNumber || !body
       @showError('Phone number and message are required.')
@@ -122,6 +146,7 @@ class App.KcNewSmsConversationContent extends App.Controller
         body:         body
         group_id:     groupId
         customer_id:  customerId
+        channel_id:   channelId
       )
       contentType: 'application/json'
       success: (data) =>
@@ -146,4 +171,4 @@ class App.KcNewSmsConversationContent extends App.Controller
     @el.find('.js-error').hide()
 
 App.Config.set('kc/new_sms', KcNewSmsConversation, 'Routes')
-App.Config.set('KcNewSms', { prio: 8004, parent: '#new', name: __('New SMS'), translate: true, target: '#kc/new_sms', permission: ['ticket.agent'] }, 'NavBarRight')
+App.Config.set('KcNewSms', { prio: 8004, parent: '#new', name: __('New SMS Message (RingCentral)'), translate: true, target: '#kc/new_sms', permission: ['ticket.agent'] }, 'NavBarRight')

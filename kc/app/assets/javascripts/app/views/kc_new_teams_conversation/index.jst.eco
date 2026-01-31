@@ -25,6 +25,13 @@
       </div>
 
       <div class="form-group">
+        <label for="kc-teams-from"><%- @T('From Account') %> <span class="text-danger">*</span></label>
+        <select id="kc-teams-from" class="form-control js-fromAccount" name="channel_id">
+          <option value=""><%- @T('Loading...') %></option>
+        </select>
+      </div>
+
+      <div class="form-group">
         <label for="kc-teams-group"><%- @T('Group') %></label>
         <select id="kc-teams-group" class="form-control js-group" name="group_id">
           <% for group in @groups: %>

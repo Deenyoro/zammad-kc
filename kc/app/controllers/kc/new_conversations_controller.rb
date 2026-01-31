@@ -33,8 +33,8 @@ class Kc::NewConversationsController < ApplicationController
       return
     end
 
-    # Find the active RingCentral SMS channel
-    channel = Channel.where(area: 'RingCentralSms::Account', active: true).first
+    # Find the active RingCentral SMS channel (use selected, default setting, or first)
+    channel = resolve_sms_channel(params[:channel_id])
     if channel.nil?
       render json: { error: 'No active RingCentral SMS channel configured' }, status: :unprocessable_entity
       return
@@ -167,8 +167,8 @@ class Kc::NewConversationsController < ApplicationController
       return
     end
 
-    # Find the active Teams channel
-    channel = Channel.where(area: 'MicrosoftTeamsChat::Account', active: true).first
+    # Find the active Teams channel (use selected, default setting, or first)
+    channel = resolve_teams_channel(params[:channel_id])
     if channel.nil?
       render json: { error: 'No active Microsoft Teams channel configured' }, status: :unprocessable_entity
       return
@@ -271,6 +271,41 @@ class Kc::NewConversationsController < ApplicationController
   rescue => e
     Rails.logger.error "KC NewConversations#teams failed: #{e.message}\n#{e.backtrace&.first(5)&.join("\n")}"
     render json: { error: e.message }, status: :internal_server_error
+  end
+
+  # GET /api/v1/kc/conversations/sms_channels
+  #
+  # Returns all active RingCentral SMS channels with phone numbers,
+  # plus the admin-configured default channel ID.
+  def sms_channels
+    channels = Channel.where(area: 'RingCentralSms::Account', active: true)
+    render json: {
+      channels:           channels.map { |c|
+        {
+          id:           c.id,
+          phone_number: c.options&.dig(:phone_number),
+        }
+      },
+      default_channel_id: Setting.get('kc_ringcentral_sms_default_channel_id').to_s,
+    }
+  end
+
+  # GET /api/v1/kc/conversations/teams_channels
+  #
+  # Returns all active Microsoft Teams channels with display labels,
+  # plus the admin-configured default channel ID.
+  def teams_channels
+    channels = Channel.where(area: 'MicrosoftTeamsChat::Account', active: true)
+    render json: {
+      channels:           channels.map { |c|
+        opts = c.options || {}
+        {
+          id:    c.id,
+          label: opts[:display_name].presence || opts[:tenant_id].presence || "Channel #{c.id}",
+        }
+      },
+      default_channel_id: Setting.get('kc_teams_default_channel_id').to_s,
+    }
   end
 
   # GET /api/v1/kc/conversations/sms_users?query=...
@@ -403,6 +438,26 @@ class Kc::NewConversationsController < ApplicationController
     end
   rescue => e
     Rails.logger.error "KC NewConversations: Failed to persist tokens: #{e.message}"
+  end
+
+  def resolve_sms_channel(channel_id)
+    channels = Channel.where(area: 'RingCentralSms::Account', active: true)
+    return channels.find_by(id: channel_id) || channels.first if channel_id.present?
+
+    default_id = Setting.get('kc_ringcentral_sms_default_channel_id').to_s.presence
+    return channels.find_by(id: default_id) || channels.first if default_id
+
+    channels.first
+  end
+
+  def resolve_teams_channel(channel_id)
+    channels = Channel.where(area: 'MicrosoftTeamsChat::Account', active: true)
+    return channels.find_by(id: channel_id) || channels.first if channel_id.present?
+
+    default_id = Setting.get('kc_teams_default_channel_id').to_s.presence
+    return channels.find_by(id: default_id) || channels.first if default_id
+
+    channels.first
   end
 
   def normalize_phone_fallback(number)

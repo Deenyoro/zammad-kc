@@ -41,9 +41,11 @@ Zammad::Application.routes.draw do
     post 'ringcentral_sms_webhook', to: 'kc/ringcentral_sms_webhook#webhook'
 
     # New conversation initiation (agent-facing)
-    post 'conversations/sms',          to: 'kc/new_conversations#sms'
-    post 'conversations/teams',        to: 'kc/new_conversations#teams'
-    get  'conversations/sms_users',    to: 'kc/new_conversations#sms_users'
+    post 'conversations/sms',            to: 'kc/new_conversations#sms'
+    post 'conversations/teams',          to: 'kc/new_conversations#teams'
+    get  'conversations/sms_users',      to: 'kc/new_conversations#sms_users'
+    get  'conversations/sms_channels',   to: 'kc/new_conversations#sms_channels'
     get  'conversations/teams_contacts', to: 'kc/new_conversations#teams_contacts'
+    get  'conversations/teams_channels', to: 'kc/new_conversations#teams_channels'
   end
 end

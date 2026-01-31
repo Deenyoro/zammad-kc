@@ -40,6 +40,29 @@ class App.KcNewTeamsConversationContent extends App.Controller
 
     @searchTimer = null
     @contactResults = @el.find('.js-contactResults')
+    @loadChannels()
+
+  loadChannels: ->
+    @ajax(
+      id:   'kc-teams-channels'
+      type: 'GET'
+      url:  "#{App.Config.get('api_path')}/kc/conversations/teams_channels"
+      success: (data) =>
+        select = @el.find('.js-fromAccount')
+        select.empty()
+        channels = data.channels || []
+        defaultId = (data.default_channel_id || '').toString()
+        for ch in channels
+          label = ch.label || "Channel #{ch.id}"
+          option = $('<option>').val(ch.id).text(label)
+          if defaultId && ch.id.toString() is defaultId
+            option.prop('selected', true)
+          select.append(option)
+        if channels.length is 0
+          select.append($('<option>').val('').text('No channels available'))
+      error: =>
+        @el.find('.js-fromAccount').html('<option value="">Failed to load channels</option>')
+    )
 
   onContactSearch: (e) ->
     query = $(e.target).val().trim()
@@ -119,6 +142,7 @@ class App.KcNewTeamsConversationContent extends App.Controller
     email       = @el.find('.js-email').val()?.trim()
     body        = @el.find('.js-body').val()?.trim()
     groupId     = @el.find('.js-group').val()
+    channelId   = @el.find('.js-fromAccount').val()
 
     if !teamsUserId || !displayName
       @showError('Please select a Teams contact first.')
@@ -142,6 +166,7 @@ class App.KcNewTeamsConversationContent extends App.Controller
         email:         email
         body:          body
         group_id:      groupId
+        channel_id:    channelId
       )
       contentType: 'application/json'
       success: (data) =>
