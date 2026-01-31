@@ -1,0 +1,49 @@
+<div class="main flex">
+  <div class="page-header">
+    <div class="page-header-title">
+      <h1><%- @T('New Teams Conversation') %></h1>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <form class="js-teamsForm">
+      <div class="form-group">
+        <label for="kc-teams-contact"><%- @T('Contact') %> <span class="text-danger">*</span></label>
+        <div class="controls">
+          <input id="kc-teams-contact" type="text" class="form-control js-contactSearch" placeholder="<%- @Ti('Search Teams directory by name...') %>" autocomplete="off">
+          <div class="js-contactResults" style="display:none; border:1px solid #ddd; max-height:200px; overflow-y:auto; position:absolute; z-index:100; background:#fff; width:100%;"></div>
+        </div>
+      </div>
+
+      <div class="js-selectedContact alert alert--info" style="display:none;">
+        <strong class="js-contactName"></strong>
+        <span class="js-contactEmail text-muted"></span>
+        <a href="#" class="js-clearContact pull-right"><%- @T('Clear') %></a>
+        <input type="hidden" class="js-teamsUserId" name="teams_user_id" value="">
+        <input type="hidden" class="js-displayName" name="display_name" value="">
+        <input type="hidden" class="js-email" name="email" value="">
+      </div>
+
+      <div class="form-group">
+        <label for="kc-teams-group"><%- @T('Group') %></label>
+        <select id="kc-teams-group" class="form-control js-group" name="group_id">
+          <% for group in @groups: %>
+            <option value="<%= group.id %>"<%= ' selected' if group.id is @defaultGroupId %>><%= group.displayName() %></option>
+          <% end %>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="kc-teams-body"><%- @T('Message') %> <span class="text-danger">*</span></label>
+        <textarea id="kc-teams-body" class="form-control js-body" name="body" rows="5" placeholder="<%- @Ti('Type your Teams message...') %>" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn--primary js-submit"><%- @T('Send Teams Message') %></button>
+        <span class="js-loading" style="display:none;"><span class="loading icon"></span> <%- @T('Sending...') %></span>
+      </div>
+
+      <div class="js-error alert alert--danger" style="display:none;"></div>
+    </form>
+  </div>
+</div>
