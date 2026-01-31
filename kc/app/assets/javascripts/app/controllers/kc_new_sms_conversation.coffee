@@ -79,8 +79,7 @@ class App.KcNewSmsConversationContent extends App.Controller
     @ajax(
       id:   'kc-sms-user-search'
       type: 'GET'
-      url:  "#{App.Config.get('api_path')}/kc/conversations/sms_users"
-      data: { query: query }
+      url:  "#{App.Config.get('api_path')}/kc/conversations/sms_users?query=#{encodeURIComponent(query)}"
       success: (data) =>
         @renderRecipientResults(data.users || [])
       error: =>
