@@ -1,7 +1,7 @@
 # KC: Polling job for Teams chat messages.
 #
-# Runs every 60 seconds via Scheduler. Two modes per cycle:
-#   - Active chats (have open tickets updated in last 2 hours): polled every run
+# Runs every 30 seconds via Scheduler. Two modes per cycle:
+#   - Active chats (have any open ticket): polled every run
 #   - Full discovery (list all chats via Graph API): every 5 minutes
 #
 # Only processes messages created after the channel was connected, so
@@ -60,9 +60,9 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
     # Cache user email lookups within this poll cycle to avoid rate limits
     @user_email_cache = {}
 
-    # Always poll active chats (those with open tickets updated recently)
-    lookback = (Setting.get('kc_teams_chat_active_lookback_hours')&.to_i || 2).clamp(1, 168)
-    active_chat_ids = active_chat_ids_for(channel, lookback)
+    # Always poll chats that have open tickets — no lookback window.
+    # Discovery is only needed for finding NEW chats without tickets yet.
+    active_chat_ids = active_chat_ids_for(channel)
     active_chat_ids.each do |chat_id|
       poll_chat(channel, graph, chat_id, opts[:tenant_id])
     rescue => e
@@ -77,8 +77,8 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
     end
   end
 
-  # Returns chat_ids that have open tickets with recent activity.
-  def active_chat_ids_for(channel, lookback_hours)
+  # Returns chat_ids that have ANY open ticket — always poll these every cycle.
+  def active_chat_ids_for(channel)
     closed_state_ids = Ticket::State
                          .joins(:state_type)
                          .where(ticket_state_types: { name: 'closed' })
@@ -86,7 +86,6 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
 
     Ticket.where('preferences LIKE ?', '%teams_chat%')
           .where.not(state_id: closed_state_ids)
-          .where('updated_at >= ?', lookback_hours.hours.ago)
           .select(:id, :preferences)
           .filter_map { |t| t.preferences.dig('teams_chat', 'chat_id') }
           .uniq
