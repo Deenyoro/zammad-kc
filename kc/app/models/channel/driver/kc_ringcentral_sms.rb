@@ -98,7 +98,8 @@ class Channel::Driver::KcRingcentralSms
     # attachments, each MMS gets a separate RC message ID stored in preferences.
     # Without this check, the poll job creates ghost outbound captures.
     if rc_message_id.present?
-      return nil if Ticket::Article.where('preferences LIKE ?', "%#{rc_message_id}%")
+      sanitized_rc_id = ActiveRecord::Base.sanitize_sql_like(rc_message_id)
+      return nil if Ticket::Article.where('preferences LIKE ?', "%#{sanitized_rc_id}%")
                                    .where('preferences LIKE ?', '%mms_message_ids%')
                                    .exists?
     end
