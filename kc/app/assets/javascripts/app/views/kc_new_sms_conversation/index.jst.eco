@@ -9,8 +9,9 @@
     <form class="js-smsForm">
       <div class="form-group">
         <label for="kc-sms-recipient"><%- @T('Recipient') %></label>
-        <div class="controls">
+        <div class="controls" style="position:relative;">
           <input id="kc-sms-recipient" type="text" class="form-control js-recipientSearch" placeholder="<%- @Ti('Search by name or phone number...') %>" autocomplete="off">
+          <a href="#" class="js-clearRecipient" style="display:none; position:absolute; right:10px; top:8px; color:var(--text-muted); text-decoration:none; font-size:16px;" title="<%- @Ti('Clear recipient') %>">&times;</a>
           <div class="js-recipientResults" style="display:none; border:1px solid var(--border); max-height:200px; overflow-y:auto; position:absolute; z-index:100; background:var(--background-primary); color:var(--text-normal); width:100%; border-radius:3px; box-shadow:0 6px 12px rgba(0,0,0,.175);"></div>
         </div>
       </div>
