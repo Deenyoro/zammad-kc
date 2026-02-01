@@ -42,6 +42,16 @@ class App.KcNewSmsConversationContent extends App.Controller
     @recipientResults = @el.find('.js-recipientResults')
     @loadChannels()
 
+    # Close dropdown when clicking outside
+    @outsideClickHandler = (e) =>
+      return if $(e.target).closest('.js-recipientResults, .js-recipientSearch').length
+      @recipientResults.hide().empty()
+    $(document).on('click.kcSmsRecipient', @outsideClickHandler)
+
+  release: ->
+    $(document).off('click.kcSmsRecipient')
+    super
+
   loadChannels: ->
     @ajax(
       id:   'kc-sms-channels'
@@ -118,11 +128,15 @@ class App.KcNewSmsConversationContent extends App.Controller
         html += """
           <div class="js-selectRecipient" data-id="#{user.id}" data-phone="#{App.Utils.htmlEscape(num.value)}" data-name="#{App.Utils.htmlEscape(name)}"
                style="padding:8px 12px; cursor:pointer; border-bottom:1px solid var(--border);"
-               onmouseover="this.style.background='var(--highlight)'" onmouseout="this.style.background='transparent'">
+               onmouseover="this.style.background='rgba(0,0,0,.05)'" onmouseout="this.style.background='transparent'">
             <strong>#{App.Utils.htmlEscape(name)}#{App.Utils.htmlEscape(tag)}</strong>
             <span style="opacity:.7; margin-left:8px;">#{App.Utils.htmlEscape(num.value)}</span>
           </div>
         """
+
+    if !html
+      @recipientResults.hide().empty()
+      return
 
     @recipientResults.html(html).show()
 
