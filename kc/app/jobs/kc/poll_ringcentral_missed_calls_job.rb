@@ -168,15 +168,14 @@ class Kc::PollRingcentralMissedCallsJob < ApplicationJob
   end
 
   # Stores the session ID in channel options so auto-reply-only mode
-  # can dedup without creating tickets. Keeps only the last 200 IDs
-  # to prevent unbounded growth.
+  # can dedup without creating tickets. Keeps only the last 1000 IDs
+  # to prevent unbounded growth while covering high-volume scenarios.
   def mark_processed(channel, session_id)
     channel.with_lock do
       channel.reload
       ids = Array(channel.options[:processed_missed_call_ids])
       ids << session_id unless ids.include?(session_id)
-      # Keep only the most recent 200 to bound storage
-      channel.options[:processed_missed_call_ids] = ids.last(200)
+      channel.options[:processed_missed_call_ids] = ids.last(1000)
       channel.save!
     end
   rescue StandardError => e
