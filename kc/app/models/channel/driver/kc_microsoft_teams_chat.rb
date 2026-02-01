@@ -306,6 +306,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
   end
 
   IMAGE_MIME_TYPES = %w[image/png image/jpeg image/gif image/webp image/bmp image/pjpeg].freeze
+  MAX_ATTACHMENT_BYTES = 25 * 1024 * 1024 # 25 MB per file
 
   # Downloads inline images (hostedContents) and file attachments from a
   # Teams message and stores them on the Zammad article.
@@ -322,6 +323,10 @@ class Channel::Driver::KcMicrosoftTeamsChat
     hosted_ids.each_with_index do |hc_id, idx|
       data = graph.get_hosted_content(chat_id, message_id, hc_id)
       next if data.blank?
+      if data.bytesize > MAX_ATTACHMENT_BYTES
+        Rails.logger.warn "KC Teams Chat: Skipping oversized hosted content #{hc_id} (#{data.bytesize} bytes)"
+        next
+      end
 
       # Determine content type from the body img tag or default to png
       content_type = detect_hosted_content_type(body_html, hc_id) || 'image/png'
@@ -375,6 +380,11 @@ class Channel::Driver::KcMicrosoftTeamsChat
 
           data = response.body
           mime = content_type_att
+        end
+
+        if data.bytesize > MAX_ATTACHMENT_BYTES
+          Rails.logger.warn "KC Teams Chat: Skipping oversized attachment #{filename} (#{data.bytesize} bytes)"
+          next
         end
 
         Store.create!(

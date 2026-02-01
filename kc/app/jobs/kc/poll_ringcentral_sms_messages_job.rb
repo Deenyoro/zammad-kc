@@ -51,7 +51,8 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
       rc.refresh_access_token!
       persist_tokens(channel, rc)
     rescue StandardError => e
-      Rails.logger.error "KC RingCentral Poll: Token refresh failed for channel #{channel.id}: #{e.message}"
+      Rails.logger.error "KC RingCentral Poll: Token refresh failed for channel #{channel.id}: #{e.message} — " \
+                         'Polling skipped this cycle. Reauthenticate the channel in Admin > KC Extensions > RingCentral SMS if this persists.'
       return
     end
 
