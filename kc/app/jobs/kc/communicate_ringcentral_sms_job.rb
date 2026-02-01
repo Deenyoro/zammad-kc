@@ -71,6 +71,7 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
     end
 
     # Step 2: Send attachments as separate MMS messages (no text body)
+    mms_message_ids = []
     attachments = article.attachments
     if attachments.any?
       attachments.each do |store|
@@ -80,7 +81,9 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
             content_type: store.preferences&.dig('Content-Type') || 'application/octet-stream',
             data:         store.content,
           }]
-          rc.send_mms(from: from_phone, to: to_phone, text: '', attachments: att_data)
+          mms_result = rc.send_mms(from: from_phone, to: to_phone, text: '', attachments: att_data)
+          mms_id = mms_result && (mms_result['id'] || mms_result[:id])
+          mms_message_ids << mms_id.to_s if mms_id.present?
         rescue => e
           Rails.logger.error "KC RingCentral SMS Job: Failed to send attachment #{store.filename} for article #{article_id}: #{e.message}"
           # Continue sending remaining attachments
@@ -88,11 +91,14 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
       end
     end
 
-    # Store the returned RC message ID on the article
+    # Store the returned RC message ID(s) on the article for dedup.
+    # The poll job uses these to avoid creating ghost outbound captures
+    # for MMS companion messages.
     rc_message_id = sms_result && (sms_result['id'] || sms_result[:id])
     article.message_id = "rc_sms:#{rc_message_id}" if rc_message_id.present?
     article.preferences[:ringcentral_sms] ||= {}
     article.preferences[:ringcentral_sms][:rc_message_id]    = rc_message_id
+    article.preferences[:ringcentral_sms][:mms_message_ids]  = mms_message_ids if mms_message_ids.any?
     article.preferences[:ringcentral_sms][:delivery_status]  = 'sent'
     article.preferences[:ringcentral_sms][:sent_at]          = Time.current.iso8601
     article.save!

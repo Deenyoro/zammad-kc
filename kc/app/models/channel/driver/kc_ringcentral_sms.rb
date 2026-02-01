@@ -94,6 +94,15 @@ class Channel::Driver::KcRingcentralSms
     dedup_key     = "rc_sms:#{rc_message_id}"
     return nil if rc_message_id.present? && Ticket::Article.exists?(message_id: dedup_key)
 
+    # Also check MMS companion message IDs — when Zammad sends an SMS with
+    # attachments, each MMS gets a separate RC message ID stored in preferences.
+    # Without this check, the poll job creates ghost outbound captures.
+    if rc_message_id.present?
+      return nil if Ticket::Article.where('preferences LIKE ?', "%#{rc_message_id}%")
+                                   .where('preferences LIKE ?', '%mms_message_ids%')
+                                   .exists?
+    end
+
     # Find existing ticket by conversation_key — don't create tickets for outbound
     from_phone = message_data[:from_phone]
     to_phone   = message_data[:to_phone]
