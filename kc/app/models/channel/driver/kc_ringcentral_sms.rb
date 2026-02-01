@@ -325,13 +325,19 @@ class Channel::Driver::KcRingcentralSms
       begin
         data = rc.get_message_attachment(message_data[:message_id], att[:id])
 
+        # Skip empty/broken attachments (e.g. failed downloads)
+        next if data.nil? || data.bytesize < 10
+
+        content_type = att[:content_type] || 'application/octet-stream'
+        filename = att[:filename].presence || mms_attachment_filename(att[:id], content_type)
+
         Store.create!(
           object:      'Ticket::Article',
           o_id:        article.id,
           data:        data,
-          filename:    att[:filename] || "attachment_#{att[:id]}",
+          filename:    filename,
           preferences: {
-            'Content-Type' => att[:content_type] || 'application/octet-stream',
+            'Content-Type' => content_type,
           },
         )
       rescue => e
@@ -388,6 +394,27 @@ class Channel::Driver::KcRingcentralSms
     when 11 then "+#{digits}"
     else "+#{digits}"
     end
+  end
+
+  # Generate a filename with proper extension from content type.
+  # RingCentral MMS attachments often have no fileName field.
+  def mms_attachment_filename(attachment_id, content_type)
+    ext = case content_type.to_s.downcase
+          when 'image/jpeg', 'image/jpg' then '.jpg'
+          when 'image/png'               then '.png'
+          when 'image/gif'               then '.gif'
+          when 'image/webp'              then '.webp'
+          when 'image/heic'              then '.heic'
+          when 'video/mp4'               then '.mp4'
+          when 'video/3gpp'              then '.3gp'
+          when 'audio/mpeg'              then '.mp3'
+          when 'audio/ogg'               then '.ogg'
+          when 'application/pdf'         then '.pdf'
+          else
+            subtype = content_type.to_s.split('/').last
+            subtype.present? && subtype != 'octet-stream' ? ".#{subtype}" : ''
+          end
+    "mms_#{attachment_id}#{ext}"
   end
 
 end

@@ -43,14 +43,20 @@ class Kc::ProcessRingcentralSmsWebhookJob < ApplicationJob
       return
     end
 
-    # Build attachment list from message
-    attachments = Array(message_body[:attachments]).map do |att|
+    # Build attachment list from message (skip "Text" type — that's the SMS body, not a real attachment)
+    attachments = Array(message_body[:attachments]).filter_map do |att|
+      next if att[:type].to_s == 'Text'
+      next if att[:id].blank?
+
+      content_type = att[:contentType] || 'application/octet-stream'
+      filename = att[:fileName] || mms_filename(att[:id], content_type)
+
       {
         id:           att[:id].to_s,
-        content_type: att[:contentType] || att[:type] || 'application/octet-stream',
-        filename:     att[:fileName] || "attachment_#{att[:id]}",
+        content_type: content_type,
+        filename:     filename,
       }
-    end.select { |a| a[:id].present? }
+    end
 
     message_data = {
       message_id:  message_id,
@@ -65,5 +71,29 @@ class Kc::ProcessRingcentralSmsWebhookJob < ApplicationJob
     # Process through channel driver (3-arg Zammad convention)
     driver = Channel::Driver::KcRingcentralSms.new
     driver.process(channel.options, message_data, channel)
+  end
+
+  private
+
+  # Generate a filename with proper extension from content type.
+  # RingCentral MMS attachments have no fileName field.
+  def mms_filename(attachment_id, content_type)
+    ext = case content_type.to_s.downcase
+          when 'image/jpeg', 'image/jpg' then '.jpg'
+          when 'image/png'               then '.png'
+          when 'image/gif'               then '.gif'
+          when 'image/webp'              then '.webp'
+          when 'image/heic'              then '.heic'
+          when 'video/mp4'               then '.mp4'
+          when 'video/3gpp'              then '.3gp'
+          when 'audio/mpeg'              then '.mp3'
+          when 'audio/ogg'               then '.ogg'
+          when 'application/pdf'         then '.pdf'
+          when %r{^image/}              then ".#{content_type.split('/').last}"
+          when %r{^video/}              then ".#{content_type.split('/').last}"
+          when %r{^audio/}              then ".#{content_type.split('/').last}"
+          else                               ''
+          end
+    "mms_#{attachment_id}#{ext}"
   end
 end
