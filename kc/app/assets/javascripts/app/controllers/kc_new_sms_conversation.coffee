@@ -86,6 +86,19 @@ class App.KcNewSmsConversationContent extends App.Controller
         @recipientResults.hide().empty()
     )
 
+  # Normalize a phone number to E.164 format (+1XXXXXXXXXX for US numbers).
+  # Strips non-digit characters (except leading +), then ensures +1 prefix.
+  normalizePhone: (raw) ->
+    return '' unless raw
+    digits = raw.replace(/[^\d]/g, '')
+    return '' unless digits.length >= 7
+    if digits.length is 10
+      "+1#{digits}"
+    else if digits.length is 11 and digits[0] is '1'
+      "+#{digits}"
+    else
+      "+#{digits}"
+
   renderRecipientResults: (users) ->
     if users.length is 0
       @recipientResults.hide().empty()
@@ -93,23 +106,34 @@ class App.KcNewSmsConversationContent extends App.Controller
 
     html = ''
     for user in users
-      phone = user.phone || user.mobile || ''
       name = user.name || ''
-      html += """
-        <div class="js-selectRecipient" data-id="#{user.id}" data-phone="#{App.Utils.htmlEscape(phone)}" data-name="#{App.Utils.htmlEscape(name)}"
-             style="padding:8px 12px; cursor:pointer; border-bottom:1px solid var(--border);">
-          <strong>#{App.Utils.htmlEscape(name)}</strong>
-          <span style="opacity:.7;">#{App.Utils.htmlEscape(phone)}</span>
-        </div>
-      """
+      # Build a separate entry for each available number so the agent can pick
+      numbers = []
+      numbers.push({ label: 'phone', value: user.phone })  if user.phone
+      numbers.push({ label: 'mobile', value: user.mobile }) if user.mobile and user.mobile isnt user.phone
+      # Fallback: if somehow both are blank (shouldn't happen), skip
+      continue if numbers.length is 0
+      for num in numbers
+        tag = if numbers.length > 1 then " (#{num.label})" else ''
+        html += """
+          <div class="js-selectRecipient" data-id="#{user.id}" data-phone="#{App.Utils.htmlEscape(num.value)}" data-name="#{App.Utils.htmlEscape(name)}"
+               style="padding:8px 12px; cursor:pointer; border-bottom:1px solid var(--border);"
+               onmouseover="this.style.background='var(--highlight)'" onmouseout="this.style.background='transparent'">
+            <strong>#{App.Utils.htmlEscape(name)}#{App.Utils.htmlEscape(tag)}</strong>
+            <span style="opacity:.7; margin-left:8px;">#{App.Utils.htmlEscape(num.value)}</span>
+          </div>
+        """
 
     @recipientResults.html(html).show()
 
     @recipientResults.find('.js-selectRecipient').on('click', (e) =>
       el = $(e.currentTarget)
-      @el.find('.js-phoneNumber').val(el.data('phone'))
+      rawPhone = el.data('phone')?.toString() || ''
+      normalized = @normalizePhone(rawPhone)
+      @el.find('.js-phoneNumber').val(normalized)
       @el.find('.js-customerId').val(el.data('id'))
       @el.find('.js-recipientSearch').val(el.data('name'))
+      @el.find('.js-clearRecipient').show()
       @recipientResults.hide().empty()
     )
 
@@ -117,20 +141,29 @@ class App.KcNewSmsConversationContent extends App.Controller
     e.preventDefault()
     @el.find('.js-phoneNumber').val('')
     @el.find('.js-customerId').val('')
-    @el.find('.js-recipientSearch').val('')
+    @el.find('.js-recipientSearch').val('').focus()
+    @el.find('.js-clearRecipient').hide()
 
   onSubmit: (e) ->
     e.preventDefault()
 
-    phoneNumber = @el.find('.js-phoneNumber').val()?.trim()
+    rawPhone    = @el.find('.js-phoneNumber').val()?.trim()
     body        = @el.find('.js-body').val()?.trim()
     groupId     = @el.find('.js-group').val()
     customerId  = @el.find('.js-customerId').val()
     channelId   = @el.find('.js-fromNumber').val()
 
-    if !phoneNumber || !body
+    if !rawPhone || !body
       @showError('Phone number and message are required.')
       return
+
+    # Normalize the phone number to E.164 (+1XXXXXXXXXX)
+    phoneNumber = @normalizePhone(rawPhone)
+    if !phoneNumber
+      @showError('Please enter a valid phone number.')
+      return
+    # Update the field so the user sees the corrected format
+    @el.find('.js-phoneNumber').val(phoneNumber)
 
     @hideError()
     @el.find('.js-submit').prop('disabled', true)
