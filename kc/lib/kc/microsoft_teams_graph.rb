@@ -22,7 +22,7 @@ module Kc
   class MicrosoftTeamsGraph
     GRAPH_BASE_URL = 'https://graph.microsoft.com/v1.0'.freeze
     LOGIN_BASE_URL = 'https://login.microsoftonline.com'.freeze
-    OAUTH_SCOPES   = 'offline_access openid profile email Chat.Read Chat.ReadWrite Chat.Create ChatMessage.Send User.Read User.Read.All UserAuthenticationMethod.Read.All'.freeze
+    OAUTH_SCOPES   = 'offline_access openid profile email Chat.Read Chat.ReadWrite Chat.Create ChatMessage.Send User.Read User.Read.All UserAuthenticationMethod.Read.All Files.Read.All Sites.Read.All'.freeze
 
     attr_reader :client_id, :client_secret, :tenant_id
     attr_accessor :access_token, :refresh_token
