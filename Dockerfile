@@ -76,6 +76,16 @@ RUN if [ -z "${COMMIT_SHA}" ]; then \
 # Don't require Redis or Postgres (use fake DATABASE_URL to make Rails validation happy).
 RUN touch db/schema.rb && \
     ZAMMAD_SAFE_MODE=1 DATABASE_URL=postgresql://zammad:/zammad bundle exec rake assets:precompile
+
+# Verify assets were actually compiled
+RUN if [ ! -f public/assets/.sprockets-manifest-*.json ]; then \
+      echo "ERROR: Assets precompilation failed - manifest file not found"; \
+      ls -la public/assets/ || true; \
+      exit 1; \
+    fi && \
+    echo "✓ Assets precompiled successfully" && \
+    ls -lh public/assets/.sprockets-manifest-*.json
+
 RUN script/build/cleanup.sh
 
 # Precompile bootsnap code for faster boot times
