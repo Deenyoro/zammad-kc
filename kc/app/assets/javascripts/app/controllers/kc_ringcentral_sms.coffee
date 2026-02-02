@@ -19,6 +19,7 @@ class KcRingcentralSms extends App.ControllerSubContent
     'click .js-deleteAccount':          'deleteAccount'
     'click .js-enableAccount':          'enableAccount'
     'click .js-disableAccount':         'disableAccount'
+    'click .js-reauthenticate':         'reauthenticateAccount'
     'click .js-saveSettings':           'saveSettings'
     'click .js-saveMissedCallSettings': 'saveMissedCallSettings'
 
@@ -126,6 +127,20 @@ class KcRingcentralSms extends App.ControllerSubContent
         @load()
       error: =>
         @notify(type: 'error', msg: __('Failed to disable account.'))
+    )
+
+  reauthenticateAccount: (e) =>
+    e.preventDefault()
+    id = $(e.currentTarget).closest('[data-id]').data('id')
+    @ajax(
+      id:   "kc_ringcentral_sms_reauth_#{id}"
+      type: 'POST'
+      url:  "#{@apiPath}/kc/ringcentral_sms_channels/#{id}/reauthenticate"
+      success: (data) =>
+        window.location.href = data.authorize_url
+      error: (xhr) =>
+        data = xhr.responseJSON || {}
+        @notify(type: 'error', msg: data.error || __('Failed to start reauthentication.'))
     )
 
   saveSettings: (e) =>

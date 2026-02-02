@@ -99,9 +99,15 @@
     <% for channel in @channels: %>
       <% options = channel.options || {} %>
       <div class="action <% if channel.active isnt true: %>is-inactive<% end %>" data-id="<%= channel.id %>">
+        <% if options.last_auth_error: %>
+          <div class="alert alert--warning" style="margin-bottom: 10px;">
+            <strong><%- @T('Authentication Error') %>:</strong> <%= options.last_auth_error %>
+            <br><small class="text-muted"><%- @T('Click "Reauthenticate" below to fix this issue.') %></small>
+          </div>
+        <% end %>
         <div class="action-block action-row">
           <h2>
-            <%- @Icon('status', if channel.active then 'supergood-color inline' else 'error-color inline') %>
+            <%- @Icon('status', if options.last_auth_error then 'error-color inline' else if channel.active then 'supergood-color inline' else 'error-color inline') %>
             <%= options.phone_number || '-' %>
             <% if options.user_display_name: %>
               <span class="text-muted"><%= options.user_display_name %></span>
@@ -131,6 +137,7 @@
           <% else: %>
             <div class="btn btn--secondary js-enableAccount"><%- @T('Enable') %></div>
           <% end %>
+          <div class="btn btn--secondary js-reauthenticate"><%- @T('Reauthenticate') %></div>
           <div class="btn js-editAccount"><%- @T('Edit') %></div>
         </div>
       </div>
