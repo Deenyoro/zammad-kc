@@ -60,6 +60,10 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
     # Cache user email lookups within this poll cycle to avoid rate limits
     @user_email_cache = {}
 
+    # Initialize subscription manager for auto-creating webhooks
+    manager_class = 'Kc::TeamsSubscriptionManager'.safe_constantize
+    @subscription_manager = manager_class&.new(channel)
+
     # Always poll chats that have open tickets — no lookback window.
     # Discovery is only needed for finding NEW chats without tickets yet.
     active_chat_ids = active_chat_ids_for(channel)
@@ -127,6 +131,16 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
   end
 
   def poll_chat(channel, graph, chat_id, tenant_id)
+    # Automatically create webhook subscription for this chat (if not already exists)
+    if @subscription_manager
+      begin
+        @subscription_manager.ensure_subscription(chat_id)
+      rescue => e
+        Rails.logger.debug "KC Teams Poll: Failed to ensure subscription for chat #{chat_id}: #{e.message}"
+        # Non-critical: continue polling even if webhook creation fails
+      end
+    end
+
     result = graph.list_chat_messages(chat_id, top: 20)
     messages = result['value'] || result[:value] || []
 
