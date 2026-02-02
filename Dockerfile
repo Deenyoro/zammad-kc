@@ -78,13 +78,14 @@ RUN touch db/schema.rb && \
     ZAMMAD_SAFE_MODE=1 DATABASE_URL=postgresql://zammad:/zammad bundle exec rake assets:precompile
 
 # Verify assets were actually compiled
-RUN if [ ! -f public/assets/.sprockets-manifest-*.json ]; then \
+RUN MANIFEST_COUNT=$(find public/assets -name '.sprockets-manifest-*.json' | wc -l); \
+    if [ "$MANIFEST_COUNT" -eq 0 ]; then \
       echo "ERROR: Assets precompilation failed - manifest file not found"; \
       ls -la public/assets/ || true; \
       exit 1; \
     fi && \
     echo "✓ Assets precompiled successfully" && \
-    ls -lh public/assets/.sprockets-manifest-*.json
+    find public/assets -name '.sprockets-manifest-*.json' -exec ls -lh {} \;
 
 RUN script/build/cleanup.sh
 
