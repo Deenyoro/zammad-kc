@@ -147,6 +147,7 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
     # Determine cutoff date
     # Use poll_cutoff_date if configured (to avoid importing messages from
     # before the addon was deployed). Otherwise use channel creation time.
+    opts = channel.options.with_indifferent_access
     cutoff_date = opts[:poll_cutoff_date]
     channel_created_at = if cutoff_date.present?
                            Time.zone.parse(cutoff_date.to_s) rescue channel.created_at
