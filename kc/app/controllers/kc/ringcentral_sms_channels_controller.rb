@@ -145,6 +145,7 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
     session[:kc_ringcentral_sms_pending_setup] = {
       client_id:            saved_params[:client_id],
       client_secret:        saved_params[:client_secret],
+      server_url:           saved_params[:server_url],
       access_token:         rc.access_token,
       refresh_token:        rc.refresh_token,
       user_display_name:    user_display_name,
@@ -152,8 +153,10 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
       extension_id:         extension_id.to_s,
       group_id:             saved_params[:group_id],
       thread_window_hours:  saved_params[:thread_window_hours],
+      poll_cutoff_date:     saved_params[:poll_cutoff_date],
       user_id:              saved_user_id,
       available_phones:     available_phones,
+      channel_id:           saved_params[:channel_id], # For reauthentication
     }
 
     redirect_to phone_select_url, allow_other_host: true
@@ -201,27 +204,43 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
 
     saved_user_id = pending[:user_id] || current_user.id
 
-    channel = Channel.create!(
-      area:    CHANNEL_AREA,
-      options: {
-        adapter:                  'kc_ringcentral_sms',
-        client_id:                pending[:client_id],
-        client_secret:            pending[:client_secret],
-        access_token:             pending[:access_token],
-        refresh_token:            pending[:refresh_token],
-        phone_number:             selected_phone,
-        available_phone_numbers:  available,
-        user_display_name:        pending[:user_display_name],
-        user_email:               pending[:user_email],
-        extension_id:             pending[:extension_id],
-        thread_window_hours:      pending[:thread_window_hours],
-        poll_cutoff_date:         pending[:poll_cutoff_date],
-      },
-      group_id:      pending[:group_id].presence&.to_i || Group.first&.id,
-      active:        true,
-      updated_by_id: saved_user_id,
-      created_by_id: saved_user_id,
-    )
+    if pending[:channel_id].present?
+      # Reauthentication — update existing channel with fresh tokens
+      channel = Channel.find_by!(id: pending[:channel_id], area: CHANNEL_AREA)
+      channel.options[:access_token]      = pending[:access_token]
+      channel.options[:refresh_token]     = pending[:refresh_token]
+      channel.options[:user_display_name] = pending[:user_display_name]
+      channel.options[:user_email]        = pending[:user_email]
+      channel.options[:extension_id]      = pending[:extension_id]
+      channel.options[:phone_number]      = selected_phone if available.include?(selected_phone)
+      channel.options[:available_phone_numbers] = available
+      channel.updated_by_id = saved_user_id
+      channel.save!
+    else
+      # New channel creation
+      channel = Channel.create!(
+        area:    CHANNEL_AREA,
+        options: {
+          adapter:                  'kc_ringcentral_sms',
+          client_id:                pending[:client_id],
+          client_secret:            pending[:client_secret],
+          server_url:               pending[:server_url],
+          access_token:             pending[:access_token],
+          refresh_token:            pending[:refresh_token],
+          phone_number:             selected_phone,
+          available_phone_numbers:  available,
+          user_display_name:        pending[:user_display_name],
+          user_email:               pending[:user_email],
+          extension_id:             pending[:extension_id],
+          thread_window_hours:      pending[:thread_window_hours],
+          poll_cutoff_date:         pending[:poll_cutoff_date],
+        },
+        group_id:      pending[:group_id].presence&.to_i || Group.first&.id,
+        active:        true,
+        updated_by_id: saved_user_id,
+        created_by_id: saved_user_id,
+      )
+    end
 
     # Create webhook subscription for instant SMS notifications
     manager_class = 'Kc::RingcentralSubscriptionManager'.safe_constantize
@@ -265,6 +284,43 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
 
     channel.save!
     render json: channel
+  end
+
+  # POST /api/v1/kc/ringcentral_sms_channels/:id/reauthenticate
+  # Initiates OAuth re-authorization for an existing channel.
+  # Uses the channel's stored credentials — no modal needed.
+  def reauthenticate
+    channel = Channel.find_by!(id: params[:id], area: CHANNEL_AREA)
+    options = channel.options.with_indifferent_access
+
+    rc_class = 'Kc::RingcentralApi'.safe_constantize
+    if rc_class.nil?
+      render json: { error: 'RingCentral SMS integration not available' }, status: :unprocessable_entity
+      return
+    end
+
+    rc = rc_class.new(
+      client_id:     options[:client_id],
+      client_secret: options[:client_secret],
+      server_url:    options[:server_url],
+    )
+
+    state = SecureRandom.hex(24)
+    session[:kc_ringcentral_sms_oauth_state]   = state
+    session[:kc_ringcentral_sms_oauth_user_id] = current_user.id
+    session[:kc_ringcentral_sms_oauth_params]  = {
+      client_id:           options[:client_id],
+      client_secret:       options[:client_secret],
+      server_url:          options[:server_url],
+      group_id:            channel.group_id,
+      thread_window_hours: options[:thread_window_hours],
+      poll_cutoff_date:    options[:poll_cutoff_date],
+      phone_number:        options[:phone_number],
+      channel_id:          channel.id,
+    }
+
+    url = rc.authorize_url(callback_url, state)
+    render json: { authorize_url: url }
   end
 
   # POST /api/v1/kc/ringcentral_sms_channels/:id/enable

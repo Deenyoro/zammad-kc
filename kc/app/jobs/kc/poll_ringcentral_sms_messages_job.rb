@@ -50,7 +50,9 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
     begin
       rc.refresh_access_token!
       persist_tokens(channel, rc)
+      clear_auth_error(channel)
     rescue StandardError => e
+      store_auth_error(channel, e.message)
       Rails.logger.error "KC RingCentral Poll: Token refresh failed for channel #{channel.id}: #{e.message} — " \
                          'Polling skipped this cycle. Reauthenticate the channel in Admin > KC Extensions > RingCentral SMS if this persists.'
       return
@@ -216,6 +218,30 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
     end
   rescue StandardError => e
     Rails.logger.error "KC RingCentral Poll: Failed to persist tokens: #{e.message}"
+  end
+
+  def store_auth_error(channel, message)
+    channel.with_lock do
+      channel.reload
+      channel.options[:last_auth_error] = message
+      channel.options[:last_auth_error_at] = Time.current.utc.iso8601
+      channel.save!
+    end
+  rescue StandardError => e
+    Rails.logger.error "KC RingCentral Poll: Failed to store auth error: #{e.message}"
+  end
+
+  def clear_auth_error(channel)
+    channel.with_lock do
+      channel.reload
+      if channel.options[:last_auth_error].present?
+        channel.options.delete(:last_auth_error)
+        channel.options.delete(:last_auth_error_at)
+        channel.save!
+      end
+    end
+  rescue StandardError => e
+    Rails.logger.error "KC RingCentral Poll: Failed to clear auth error: #{e.message}"
   end
 
   # Generate a filename with proper extension from content type.

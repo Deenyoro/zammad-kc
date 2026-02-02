@@ -33,6 +33,7 @@ Zammad::Application.routes.draw do
     get    'ringcentral_sms_channels/pending_setup',  to: 'kc/ringcentral_sms_channels#pending_setup'
     post   'ringcentral_sms_channels/complete_setup', to: 'kc/ringcentral_sms_channels#complete_setup'
     put    'ringcentral_sms_channels/:id',            to: 'kc/ringcentral_sms_channels#update'
+    post   'ringcentral_sms_channels/:id/reauthenticate', to: 'kc/ringcentral_sms_channels#reauthenticate'
     post   'ringcentral_sms_channels/:id/enable',     to: 'kc/ringcentral_sms_channels#enable'
     post   'ringcentral_sms_channels/:id/disable',    to: 'kc/ringcentral_sms_channels#disable'
     delete 'ringcentral_sms_channels/:id',            to: 'kc/ringcentral_sms_channels#destroy'
