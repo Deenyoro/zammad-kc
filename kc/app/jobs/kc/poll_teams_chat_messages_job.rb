@@ -144,8 +144,15 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
     result = graph.list_chat_messages(chat_id, top: 20)
     messages = result['value'] || result[:value] || []
 
-    # Only process messages created after the channel was connected
-    channel_created_at = channel.created_at
+    # Determine cutoff date
+    # Use poll_cutoff_date if configured (to avoid importing messages from
+    # before the addon was deployed). Otherwise use channel creation time.
+    cutoff_date = opts[:poll_cutoff_date]
+    channel_created_at = if cutoff_date.present?
+                           Time.zone.parse(cutoff_date.to_s) rescue channel.created_at
+                         else
+                           channel.created_at
+                         end
 
     driver = Channel::Driver::KcMicrosoftTeamsChat.new
 

@@ -66,6 +66,7 @@ class Kc::TeamsChatChannelsController < ApplicationController
       tenant_id:           params[:tenant_id],
       group_id:            params[:group_id],
       thread_window_hours: params[:thread_window_hours],
+      poll_cutoff_date:    params[:poll_cutoff_date],
     }
 
     url = graph.authorize_url(callback_url, state)
@@ -135,6 +136,7 @@ class Kc::TeamsChatChannelsController < ApplicationController
           user_email:          user_info['mail'] || user_info['userPrincipalName'] || user_info[:mail],
           user_id:             user_info['id'] || user_info[:id],
           thread_window_hours: saved_params[:thread_window_hours],
+          poll_cutoff_date:    saved_params[:poll_cutoff_date],
         },
         group_id:      saved_params[:group_id].presence&.to_i || Group.first&.id,
         active:        true,
@@ -159,6 +161,10 @@ class Kc::TeamsChatChannelsController < ApplicationController
 
     if params[:thread_window_hours].present?
       channel.options[:thread_window_hours] = params[:thread_window_hours].to_i
+    end
+
+    if params[:poll_cutoff_date].present?
+      channel.options[:poll_cutoff_date] = params[:poll_cutoff_date]
     end
 
     if params.key?(:organization_id)
