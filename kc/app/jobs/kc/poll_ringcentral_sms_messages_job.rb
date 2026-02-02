@@ -57,9 +57,16 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
     end
 
     # Determine poll window
+    # Use last_poll_at if available. On first poll, use poll_cutoff_date if
+    # configured (to avoid importing messages from before the addon was deployed).
+    # If neither is set, use channel creation time (full backfill).
     last_poll = opts[:last_poll_at]
+    cutoff_date = opts[:poll_cutoff_date]
+
     date_from = if last_poll.present?
                   last_poll.to_s
+                elsif cutoff_date.present?
+                  cutoff_date.to_s
                 else
                   channel.created_at.utc.iso8601
                 end
