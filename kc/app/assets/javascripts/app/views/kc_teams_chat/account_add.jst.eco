@@ -33,4 +33,10 @@
     <input type="number" name="thread_window_hours" id="thread_window_hours" class="form-control" value="24" min="0">
     <p class="help-text"><%- @T('Messages within this window are grouped into the same ticket. Set to 0 for a single ongoing ticket per chat.') %></p>
   </div>
+
+  <div class="form-group">
+    <label for="poll_cutoff_date"><%- @T('Poll Cutoff Date') %></label>
+    <input type="datetime-local" name="poll_cutoff_date" id="poll_cutoff_date" class="form-control">
+    <p class="help-text"><%- @T('If set, only messages created after this date will be imported. Leave empty to import all historical messages.') %></p>
+  </div>
 </form>
