@@ -53,8 +53,20 @@ class Kc::TeamsSubscriptionManager
     graph = build_graph_client
     return if graph.nil?
 
-    graph.refresh_access_token!
-    persist_tokens(graph)
+    begin
+      graph.refresh_access_token!
+      persist_tokens(graph)
+      # Clear any previous token failure alerts since refresh succeeded
+      Kc::TokenAlertService.clear_alerts(channel: channel, service: 'Microsoft Teams')
+    rescue => e
+      Rails.logger.error "KC Teams: Token refresh failed for channel #{channel.id}: #{e.message}"
+      Kc::TokenAlertService.alert_token_failure(
+        channel: channel,
+        service: 'Microsoft Teams',
+        error: e.message
+      )
+      return
+    end
 
     subs = sub_class.where(channel: channel).expiring_soon(within: RENEW_WINDOW.minutes)
 
@@ -106,8 +118,20 @@ class Kc::TeamsSubscriptionManager
     graph = build_graph_client
     return nil if graph.nil?
 
-    graph.refresh_access_token!
-    persist_tokens(graph)
+    begin
+      graph.refresh_access_token!
+      persist_tokens(graph)
+      # Clear any previous token failure alerts since refresh succeeded
+      Kc::TokenAlertService.clear_alerts(channel: channel, service: 'Microsoft Teams')
+    rescue => e
+      Rails.logger.error "KC Teams: Token refresh failed for channel #{channel.id}: #{e.message}"
+      Kc::TokenAlertService.alert_token_failure(
+        channel: channel,
+        service: 'Microsoft Teams',
+        error: e.message
+      )
+      return nil
+    end
 
     client_state     = SecureRandom.hex(32)
     notification_url = webhook_url
