@@ -66,6 +66,7 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
       client_secret:       params[:client_secret],
       group_id:            params[:group_id],
       thread_window_hours: params[:thread_window_hours],
+      poll_cutoff_date:    params[:poll_cutoff_date],
     }
 
     url = rc.authorize_url(callback_url, state)
@@ -214,6 +215,7 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
         user_email:               pending[:user_email],
         extension_id:             pending[:extension_id],
         thread_window_hours:      pending[:thread_window_hours],
+        poll_cutoff_date:         pending[:poll_cutoff_date],
       },
       group_id:      pending[:group_id].presence&.to_i || Group.first&.id,
       active:        true,
@@ -247,6 +249,10 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
 
     if params[:thread_window_hours].present?
       channel.options[:thread_window_hours] = params[:thread_window_hours].to_i
+    end
+
+    if params[:poll_cutoff_date].present?
+      channel.options[:poll_cutoff_date] = params[:poll_cutoff_date]
     end
 
     if params[:phone_number].present?
