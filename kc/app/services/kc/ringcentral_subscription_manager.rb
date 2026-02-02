@@ -57,8 +57,20 @@ class Kc::RingcentralSubscriptionManager
     rc = build_rc_client
     return if rc.nil?
 
-    rc.refresh_access_token!
-    persist_tokens(rc)
+    begin
+      rc.refresh_access_token!
+      persist_tokens(rc)
+      # Clear any previous token failure alerts since refresh succeeded
+      Kc::TokenAlertService.clear_alerts(channel: channel, service: 'RingCentral')
+    rescue => e
+      Rails.logger.error "KC RingCentral: Token refresh failed for channel #{channel.id}: #{e.message}"
+      Kc::TokenAlertService.alert_token_failure(
+        channel: channel,
+        service: 'RingCentral',
+        error: e.message
+      )
+      return
+    end
 
     subs = sub_class.where(channel: channel).expiring_soon(within: RENEW_WINDOW.hours)
 
@@ -110,8 +122,20 @@ class Kc::RingcentralSubscriptionManager
     rc = build_rc_client
     return nil if rc.nil?
 
-    rc.refresh_access_token!
-    persist_tokens(rc)
+    begin
+      rc.refresh_access_token!
+      persist_tokens(rc)
+      # Clear any previous token failure alerts since refresh succeeded
+      Kc::TokenAlertService.clear_alerts(channel: channel, service: 'RingCentral')
+    rescue => e
+      Rails.logger.error "KC RingCentral: Token refresh failed for channel #{channel.id}: #{e.message}"
+      Kc::TokenAlertService.alert_token_failure(
+        channel: channel,
+        service: 'RingCentral',
+        error: e.message
+      )
+      return nil
+    end
 
     client_state     = SecureRandom.hex(32)
     notification_url = webhook_url
