@@ -7,7 +7,8 @@
 # Safety:
 #   - safe_constantize on KC classes
 #   - Defensive nil checks on Graph response fields
-#   - Skips system messages and own outbound messages
+#   - Skips system messages
+#   - Connected account messages (sent directly in Teams) are captured as internal notes
 class Kc::ProcessTeamsChatWebhookJob < ApplicationJob
   retry_on StandardError, wait: 10.seconds, attempts: 3
 
@@ -62,9 +63,14 @@ class Kc::ProcessTeamsChatWebhookJob < ApplicationJob
     from_user = from['user'] || from[:user] || {}
     body      = message['body'] || message[:body] || {}
 
-    # Skip messages sent by the bot user (our own outbound messages)
     sender_id = (from_user['id'] || from_user[:id]).to_s
-    return if sender_id.present? && sender_id == opts[:user_id].to_s
+
+    # Check if sender is the connected account (Zammad service user).
+    # DON'T skip these messages — they might be sent directly in Teams
+    # (not through Zammad). The driver's dedup check handles Zammad-sent
+    # messages via message_id. If the message isn't in Zammad, it was sent
+    # directly in Teams and should be captured as an internal note.
+    is_connected_account = sender_id.present? && sender_id == opts[:user_id].to_s
 
     message_data = {
       chat_id:           chat_id,
@@ -90,6 +96,22 @@ class Kc::ProcessTeamsChatWebhookJob < ApplicationJob
         Rails.logger.debug { "KC Teams Job: Could not fetch user email: #{e.message}" }
       end
     end
+
+    # Detect if sender is a Zammad agent/admin by email OR is the connected account
+    is_agent = false
+    if is_connected_account
+      # Messages from the connected account (Zammad service user) sent directly
+      # in Teams should be treated as agent messages for context capture.
+      is_agent = true
+      Rails.logger.info "KC Teams Job: Detected connected account message in chat #{chat_id} — treating as agent for context capture"
+    elsif message_data[:from_email].present?
+      agent_user = User.find_by(email: message_data[:from_email].downcase)
+      is_agent = agent_user.present? && (agent_user.role?('Agent') || agent_user.role?('Admin'))
+      if is_agent
+        Rails.logger.info "KC Teams Job: Detected agent message from #{message_data[:from_email]} in chat #{chat_id}"
+      end
+    end
+    message_data[:is_agent] = is_agent
 
     # Process through channel driver (3-arg Zammad convention)
     driver = Channel::Driver::KcMicrosoftTeamsChat.new
