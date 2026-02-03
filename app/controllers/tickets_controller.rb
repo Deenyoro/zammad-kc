@@ -313,6 +313,8 @@ class TicketsController < ApplicationController
   def ticket_related
 
     ticket = Ticket.find(params[:ticket_id])
+    authorize!(ticket, :show?)
+
     assets = ticket.assets({})
 
     tickets = TicketPolicy::ReadScope.new(current_user).resolve
