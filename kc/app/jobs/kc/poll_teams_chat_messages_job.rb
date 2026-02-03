@@ -199,6 +199,9 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
       if sender_email.present?
         agent_user = User.find_by(email: sender_email.downcase)
         is_agent = agent_user.present? && (agent_user.role?('Agent') || agent_user.role?('Admin'))
+        if is_agent
+          Rails.logger.info "KC Teams Poll: Detected agent message from #{sender_email} in chat #{chat_id}"
+        end
       end
 
       message_data = {

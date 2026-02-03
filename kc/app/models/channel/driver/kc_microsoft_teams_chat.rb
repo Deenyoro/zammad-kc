@@ -66,9 +66,11 @@ class Channel::Driver::KcMicrosoftTeamsChat
       end
 
       if ticket.nil?
-        Rails.logger.debug "KC Teams Chat: Skipping agent message #{message_data[:message_id]} — no matching ticket"
+        Rails.logger.info "KC Teams Chat: Skipping agent message #{message_data[:message_id]} — no matching ticket for conversation_key #{conversation_key}"
         return nil
       end
+
+      Rails.logger.info "KC Teams Chat: Creating agent note for message #{message_data[:message_id]} in ticket #{ticket.id} from #{message_data[:from_email]}"
 
       transaction_class.execute(reset_user_id: true, context: 'teams_chat') do
         user = find_or_create_user(message_data)
