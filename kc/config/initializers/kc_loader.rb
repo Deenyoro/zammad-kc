@@ -61,7 +61,6 @@ Rails.application.config.to_prepare do
   kc_prepend.call('Ticket::TimeAccounting', 'Kc::TimeAccountingAgent')
   kc_prepend.call('Ticket::Article', 'Kc::EnqueueCommunicateTeamsChatJob')
   kc_prepend.call('Ticket::Article', 'Kc::EnqueueCommunicateRingcentralSmsJob')
-  kc_prepend.call('Ticket::Article', 'Kc::FixArticleOriginBySender')
 
   Rails.logger.info 'KC: Overlay loading complete.'
 end
