@@ -13,12 +13,12 @@ class FormUpdater::ApplyValue::FormId < FormUpdater::ApplyValue::Base
       .attachments
       .reject(&:inline?)
       .map do |attachment|
-      attachments << {
-        id:   Gql::ZammadSchema.id_from_object(attachment),
-        name: attachment.filename,
-        size: attachment.size,
-        type: attachment.preferences['Content-Type'],
-      }
+        attachments << {
+          id:   Gql::ZammadSchema.id_from_object(attachment),
+          name: attachment.filename,
+          size: attachment.size,
+          type: attachment.preferences['Content-Type'],
+        }
     end
 
     result['attachments'] ||= {}
