@@ -107,7 +107,8 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
           next if chat_id.blank?
           next if already_polled_ids.include?(chat_id)
 
-          poll_chat(channel, graph, chat_id, opts[:tenant_id])
+          # Pass chat info from discovery to avoid extra API call
+          poll_chat(channel, graph, chat_id, opts[:tenant_id], chat_info: chat)
         rescue => e
           chat_id_safe = (chat['id'] || chat[:id]) rescue 'unknown'
           Rails.logger.error "KC Teams Poll: Failed for discovered chat #{chat_id_safe}: #{e.message}"
@@ -130,7 +131,7 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
     Rails.logger.error "KC Teams Poll: Discovery failed for channel #{channel.id}: #{e.message}"
   end
 
-  def poll_chat(channel, graph, chat_id, tenant_id)
+  def poll_chat(channel, graph, chat_id, tenant_id, chat_info: nil)
     # Automatically create webhook subscription for this chat (if not already exists)
     if @subscription_manager
       begin
@@ -140,6 +141,16 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
         # Non-critical: continue polling even if webhook creation fails
       end
     end
+
+    # Fetch chat details if not already provided (needed for group chat topic)
+    chat_info ||= begin
+      graph.get_chat(chat_id)
+    rescue => e
+      Rails.logger.debug "KC Teams Poll: Could not fetch chat details for #{chat_id}: #{e.message}"
+      {}
+    end
+    chat_type = chat_info['chatType'] || chat_info[:chatType]
+    chat_topic = chat_info['topic'] || chat_info[:topic]
 
     result = graph.list_chat_messages(chat_id, top: 20)
     messages = result['value'] || result[:value] || []
@@ -225,6 +236,8 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
         created_at:        msg_created,
         tenant_id:         tenant_id,
         is_agent:          is_agent,
+        chat_type:         chat_type,
+        chat_topic:        chat_topic,
         attachments:       message['attachments'] || message[:attachments] || [],
         hosted_contents:   message['hostedContents'] || message[:hostedContents] || [],
       }

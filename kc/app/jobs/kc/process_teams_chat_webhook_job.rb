@@ -72,6 +72,17 @@ class Kc::ProcessTeamsChatWebhookJob < ApplicationJob
     # directly in Teams and should be captured as an internal note.
     is_connected_account = sender_id.present? && sender_id == opts[:user_id].to_s
 
+    # Fetch chat details to determine if this is a group chat
+    chat_type = nil
+    chat_topic = nil
+    begin
+      chat_info = graph.get_chat(chat_id)
+      chat_type = chat_info['chatType'] || chat_info[:chatType]
+      chat_topic = chat_info['topic'] || chat_info[:topic]
+    rescue => e
+      Rails.logger.debug { "KC Teams Job: Could not fetch chat details: #{e.message}" }
+    end
+
     message_data = {
       chat_id:           chat_id,
       message_id:        message['id'] || message[:id],
@@ -82,6 +93,8 @@ class Kc::ProcessTeamsChatWebhookJob < ApplicationJob
       body_content_type: body['contentType'] || body[:contentType],
       created_at:        message['createdDateTime'] || message[:createdDateTime],
       tenant_id:         opts[:tenant_id],
+      chat_type:         chat_type,
+      chat_topic:        chat_topic,
       attachments:       message['attachments'] || message[:attachments] || [],
       hosted_contents:   message['hostedContents'] || message[:hostedContents] || [],
     }
