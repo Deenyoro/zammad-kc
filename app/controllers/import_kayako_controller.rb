@@ -67,7 +67,7 @@ class ImportKayakoController < ApplicationController
       Setting.reload
     end
 
-    model_show_render_item(job)
+    model_item_render(job)
   end
 
   private

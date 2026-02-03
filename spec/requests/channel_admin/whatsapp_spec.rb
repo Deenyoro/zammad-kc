@@ -13,7 +13,9 @@ RSpec.describe 'WhatsApp channel admin API endpoints', aggregate_failures: true,
     it 'creates a channel' do
       params = attributes_for(:whatsapp_channel)[:options]
 
-      allow_any_instance_of(Service::Channel::Whatsapp::Create).to receive(:execute)
+      allow_any_instance_of(Service::Channel::Whatsapp::Create)
+        .to receive(:execute)
+        .and_return(create(:whatsapp_channel))
       allow(Service::Channel::Whatsapp::Create).to receive(:new).and_call_original
 
       post '/api/v1/channels/admin/whatsapp', params: params
@@ -29,13 +31,20 @@ RSpec.describe 'WhatsApp channel admin API endpoints', aggregate_failures: true,
     it 'updates a channel' do
       params = attributes_for(:whatsapp_channel)[:options]
 
-      allow_any_instance_of(Service::Channel::Whatsapp::Update).to receive(:execute)
+      allow_any_instance_of(Service::Channel::Whatsapp::Update)
+        .to receive(:execute)
+        .and_return(channel)
       allow(Service::Channel::Whatsapp::Update).to receive(:new).and_call_original
 
       put "/api/v1/channels/admin/whatsapp/#{channel.id}", params: params
 
       expect(response).to have_http_status(:ok)
       expect(Service::Channel::Whatsapp::Update).to have_received(:new)
+      expect(json_response).to include(
+        'options' => include(
+          'access_token' => SensitiveParamsHelper::SENSITIVE_MASK
+        )
+      )
     end
   end
 

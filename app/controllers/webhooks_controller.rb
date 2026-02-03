@@ -45,4 +45,10 @@ class WebhooksController < ApplicationController
     render json:   Service::Template::Interpolation::Interpolator::Webhook.replacements(pre_defined_webhook_type: params[:pre_defined_webhook_type]),
            status: :ok
   end
+
+  private
+
+  def sensitive_attributes(_input, _object)
+    Webhook::SENSITIVE_FIELDS
+  end
 end
