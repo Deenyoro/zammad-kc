@@ -173,9 +173,14 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
       from_user = from['user'] || from[:user] || {}
       body      = message['body'] || message[:body] || {}
 
-      # Skip messages sent by the bot user (our own outbound messages)
       sender_id = (from_user['id'] || from_user[:id]).to_s
-      next if sender_id.present? && sender_id == channel.options[:user_id].to_s
+
+      # Check if sender is the connected account (Zammad service user).
+      # DON'T skip these messages — they might be sent directly in Teams
+      # (not through Zammad). The driver's dedup check handles Zammad-sent
+      # messages via message_id. If the message isn't in Zammad, it was sent
+      # directly in Teams and should be captured as an internal note.
+      is_connected_account = sender_id.present? && sender_id == channel.options[:user_id].to_s
 
       # Look up sender email via Graph API (cached per poll cycle)
       sender_email = nil
@@ -194,9 +199,14 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
         end
       end
 
-      # Detect if sender is a Zammad agent/admin by email
+      # Detect if sender is a Zammad agent/admin by email OR is the connected account
       is_agent = false
-      if sender_email.present?
+      if is_connected_account
+        # Messages from the connected account (Zammad service user) sent directly
+        # in Teams should be treated as agent messages for context capture.
+        is_agent = true
+        Rails.logger.info "KC Teams Poll: Detected connected account message in chat #{chat_id} — treating as agent for context capture"
+      elsif sender_email.present?
         agent_user = User.find_by(email: sender_email.downcase)
         is_agent = agent_user.present? && (agent_user.role?('Agent') || agent_user.role?('Admin'))
         if is_agent
