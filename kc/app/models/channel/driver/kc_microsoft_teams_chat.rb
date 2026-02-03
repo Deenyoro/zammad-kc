@@ -498,7 +498,6 @@ class Channel::Driver::KcMicrosoftTeamsChat
   #   - Topic looks auto-generated (comma-separated names): use "Group Chat #<short_id>"
   def group_chat_display_name(message_data)
     chat_type = message_data[:chat_type].to_s
-    Rails.logger.debug "KC Teams Chat: group_chat_display_name called with chat_type='#{chat_type}', chat_topic='#{message_data[:chat_topic]}'"
     return nil unless chat_type == 'group'
 
     chat_topic = message_data[:chat_topic].to_s.strip
@@ -528,11 +527,9 @@ class Channel::Driver::KcMicrosoftTeamsChat
   # Updates an existing ticket's title if it's a group chat and the title is wrong.
   # Called when processing messages for existing tickets.
   def maybe_update_group_chat_title(ticket, message_data)
-    Rails.logger.debug "KC Teams Chat: maybe_update_group_chat_title for ticket #{ticket.id}, chat_type='#{message_data[:chat_type]}'"
     return unless message_data[:chat_type].to_s == 'group'
 
     expected_name = group_chat_display_name(message_data)
-    Rails.logger.debug "KC Teams Chat: expected_name='#{expected_name}' for ticket #{ticket.id}"
     return if expected_name.blank?
 
     template = Setting.get('kc_teams_chat_ticket_title_template').to_s.presence || 'Teams Message from {user_name}'
