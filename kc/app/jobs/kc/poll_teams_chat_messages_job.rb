@@ -146,11 +146,12 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
     chat_info ||= begin
       graph.get_chat(chat_id)
     rescue => e
-      Rails.logger.debug "KC Teams Poll: Could not fetch chat details for #{chat_id}: #{e.message}"
+      Rails.logger.warn "KC Teams Poll: Could not fetch chat details for #{chat_id}: #{e.message}"
       {}
     end
     chat_type = chat_info['chatType'] || chat_info[:chatType]
     chat_topic = chat_info['topic'] || chat_info[:topic]
+    Rails.logger.info "KC Teams Poll: Chat #{chat_id} — type='#{chat_type}', topic='#{chat_topic}'"
 
     result = graph.list_chat_messages(chat_id, top: 20)
     messages = result['value'] || result[:value] || []
