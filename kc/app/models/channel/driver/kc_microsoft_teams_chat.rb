@@ -473,7 +473,17 @@ class Channel::Driver::KcMicrosoftTeamsChat
 
   def build_ticket_title(message_data, user)
     template = Setting.get('kc_teams_chat_ticket_title_template').to_s.presence || 'Teams Message from {user_name}'
-    display_name = message_data[:from_display_name].to_s.presence || user.fullname.presence || 'Unknown'
+
+    # For group chats, use the chat topic (group name) instead of the sender's name
+    chat_type = message_data[:chat_type].to_s
+    chat_topic = message_data[:chat_topic].to_s.presence
+
+    display_name = if chat_type == 'group' && chat_topic.present?
+                     chat_topic
+                   else
+                     message_data[:from_display_name].to_s.presence || user.fullname.presence || 'Unknown'
+                   end
+
     title = template.gsub('{user_name}', display_name)
     title.truncate(100, omission: '...')
   end
