@@ -91,8 +91,9 @@ describe('Ticket detail view - Ticket summary', () => {
       ticketAIAssistanceSummarize: {
         summary: {
           customerRequest: 'Order not received after payment',
-          conversationSummary:
+          conversationSummary: [
             'The customer paid for an order but claims to have not received it. They provided the order number and requested assistance with tracking.',
+          ],
           openQuestions: ['What was the payment method used?'],
           upcomingEvents: [
             'Check the order status in the system',
@@ -245,8 +246,9 @@ describe('Ticket detail view - Ticket summary', () => {
       ticketAIAssistanceSummarize: {
         summary: {
           customerRequest: 'Order not received after payment',
-          conversationSummary:
+          conversationSummary: [
             'The customer paid for an order but claims to have not received it. They provided the order number and requested assistance with tracking.',
+          ],
           openQuestions: ['What was the payment method used?'],
           upcomingEvents: [
             'Check the order status in the system',
@@ -272,7 +274,7 @@ describe('Ticket detail view - Ticket summary', () => {
     await triggerSummaryUpdate({
       summary: {
         customerRequest: '...',
-        conversationSummary: 'Summary to see if subscription comes in',
+        conversationSummary: ['Summary to see if subscription comes in'],
         openQuestions: ['...'],
         upcomingEvents: ['foo', 'bar'],
         customerMood: '...',
@@ -408,7 +410,7 @@ describe('Ticket detail view - Ticket summary', () => {
     await triggerSummaryUpdate({
       summary: {
         customerRequest: '...',
-        conversationSummary: 'Agent replies something',
+        conversationSummary: ['Agent replies something'],
         openQuestions: ['...'],
         upcomingEvents: ['...'],
         customerMood: '...',

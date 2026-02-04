@@ -4099,7 +4099,7 @@ export type TicketAiAssistanceSummarizePayload = {
 /** The ticket summary */
 export type TicketAiAssistanceSummary = {
   __typename?: 'TicketAIAssistanceSummary';
-  conversationSummary?: Maybe<Scalars['String']['output']>;
+  conversationSummary?: Maybe<Array<Scalars['String']['output']>>;
   customerEmotion?: Maybe<Scalars['String']['output']>;
   customerMood?: Maybe<Scalars['String']['output']>;
   customerRequest?: Maybe<Scalars['String']['output']>;
@@ -6768,7 +6768,7 @@ export type TicketAiAssistanceSummarizeMutationVariables = Exact<{
 }>;
 
 
-export type TicketAiAssistanceSummarizeMutation = { __typename?: 'Mutations', ticketAIAssistanceSummarize?: { __typename?: 'TicketAIAssistanceSummarizePayload', summary?: { __typename?: 'TicketAIAssistanceSummary', customerRequest?: string | null, conversationSummary?: string | null, openQuestions?: Array<string> | null, upcomingEvents?: Array<string> | null, customerMood?: string | null, customerEmotion?: string | null } | null, analytics?: { __typename?: 'AIAnalyticsMetadata', isUnread?: boolean | null, run?: { __typename?: 'AIAnalyticsRun', id: string } | null, usage?: { __typename?: 'AIAnalyticsUsage', userHasProvidedFeedback?: boolean | null } | null } | null } | null };
+export type TicketAiAssistanceSummarizeMutation = { __typename?: 'Mutations', ticketAIAssistanceSummarize?: { __typename?: 'TicketAIAssistanceSummarizePayload', summary?: { __typename?: 'TicketAIAssistanceSummary', customerRequest?: string | null, conversationSummary?: Array<string> | null, openQuestions?: Array<string> | null, upcomingEvents?: Array<string> | null, customerMood?: string | null, customerEmotion?: string | null } | null, analytics?: { __typename?: 'AIAnalyticsMetadata', isUnread?: boolean | null, run?: { __typename?: 'AIAnalyticsRun', id: string } | null, usage?: { __typename?: 'AIAnalyticsUsage', userHasProvidedFeedback?: boolean | null } | null } | null } | null };
 
 export type TicketChecklistAddMutationVariables = Exact<{
   ticketId: Scalars['ID']['input'];
@@ -6999,7 +6999,7 @@ export type TicketAiAssistanceSummaryUpdatesSubscriptionVariables = Exact<{
 }>;
 
 
-export type TicketAiAssistanceSummaryUpdatesSubscription = { __typename?: 'Subscriptions', ticketAIAssistanceSummaryUpdates: { __typename?: 'TicketAIAssistanceSummaryUpdatesPayload', summary?: { __typename?: 'TicketAIAssistanceSummary', customerRequest?: string | null, conversationSummary?: string | null, openQuestions?: Array<string> | null, upcomingEvents?: Array<string> | null, customerMood?: string | null, customerEmotion?: string | null } | null, error?: { __typename?: 'AsyncExecutionError', message: string, exception: string } | null, analytics?: { __typename?: 'AIAnalyticsMetadata', isUnread?: boolean | null, run?: { __typename?: 'AIAnalyticsRun', id: string } | null, usage?: { __typename?: 'AIAnalyticsUsage', userHasProvidedFeedback?: boolean | null } | null } | null } };
+export type TicketAiAssistanceSummaryUpdatesSubscription = { __typename?: 'Subscriptions', ticketAIAssistanceSummaryUpdates: { __typename?: 'TicketAIAssistanceSummaryUpdatesPayload', summary?: { __typename?: 'TicketAIAssistanceSummary', customerRequest?: string | null, conversationSummary?: Array<string> | null, openQuestions?: Array<string> | null, upcomingEvents?: Array<string> | null, customerMood?: string | null, customerEmotion?: string | null } | null, error?: { __typename?: 'AsyncExecutionError', message: string, exception: string } | null, analytics?: { __typename?: 'AIAnalyticsMetadata', isUnread?: boolean | null, run?: { __typename?: 'AIAnalyticsRun', id: string } | null, usage?: { __typename?: 'AIAnalyticsUsage', userHasProvidedFeedback?: boolean | null } | null } | null } };
 
 export type TicketChecklistUpdatesSubscriptionVariables = Exact<{
   ticketId: Scalars['ID']['input'];
