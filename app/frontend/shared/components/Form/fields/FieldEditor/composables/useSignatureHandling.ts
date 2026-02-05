@@ -32,8 +32,11 @@ export const useSignatureHandling = (editor: ShallowRef<Editor | undefined>) => 
     // don't use "chain()", because we change positions a lot
     // and chain doesn't know about it
     editor.value.commands.removeSignature()
+
     const { position, from } = resolveSignaturePosition(editor.value)
+
     editor.value.commands.addSignature({ ...signature, position, from })
+
     const getNewPosition = (editor: Editor) => {
       if (signature.position != null) {
         return signature.position

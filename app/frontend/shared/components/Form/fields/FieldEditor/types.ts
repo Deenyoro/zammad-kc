@@ -15,10 +15,9 @@ import type { Except } from 'type-fest'
 import type { Component } from 'vue'
 
 export interface PossibleSignature {
-  active?: boolean
   position?: number
-  body: string
-  id: number
+  renderedBody: string
+  internalId: number
 }
 
 declare module '@tiptap/core' {
@@ -71,6 +70,7 @@ export interface FieldEditorContext {
   removeSignature(): void
   focus(): void
   getEditorValue(type: EditorContentType): string
+  signature?: Pick<PossibleSignature, 'internalId' | 'renderedBody'> | null
 }
 
 export type EditorExtensionSet = 'basic'
@@ -82,6 +82,7 @@ export interface FieldEditorProps {
   customerId?: string
   inline?: boolean
   extensionSet?: EditorExtensionSet
+  signature?: Pick<PossibleSignature, 'internalId' | 'renderedBody'> | null
   reset?: () => void
   organizationId?: string
   /**

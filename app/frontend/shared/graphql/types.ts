@@ -3065,8 +3065,6 @@ export type Queries = {
   ticketSharedDraftStartSingle: TicketSharedDraftStart;
   /** Get a single ticket shared draft in detail view */
   ticketSharedDraftZoomShow: TicketSharedDraftZoom;
-  /** Fetch a ticket signature by group ID */
-  ticketSignature?: Maybe<Signature>;
   /** Fetch tickets of a given customer with optional filters */
   ticketsByCustomer: TicketConnection;
   /** Fetch tickets of a given organization with optional filters */
@@ -3383,13 +3381,6 @@ export type QueriesTicketSharedDraftZoomShowArgs = {
 
 
 /** All available queries */
-export type QueriesTicketSignatureArgs = {
-  groupId: Scalars['ID']['input'];
-  ticketId?: InputMaybe<Scalars['ID']['input']>;
-};
-
-
-/** All available queries */
 export type QueriesTicketsByCustomerArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
@@ -3566,33 +3557,6 @@ export type SessionAfterAuth = {
   __typename?: 'SessionAfterAuth';
   data?: Maybe<Scalars['JSON']['output']>;
   type: EnumAfterAuthType;
-};
-
-/** Signature */
-export type Signature = {
-  __typename?: 'Signature';
-  active: Scalars['Boolean']['output'];
-  body?: Maybe<Scalars['String']['output']>;
-  /** Create date/time of the record */
-  createdAt: Scalars['ISO8601DateTime']['output'];
-  /** User that created this record */
-  createdBy?: Maybe<User>;
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  /** Internal note */
-  note?: Maybe<Scalars['String']['output']>;
-  renderedBody?: Maybe<Scalars['String']['output']>;
-  /** Last update date/time of the record */
-  updatedAt: Scalars['ISO8601DateTime']['output'];
-  /** Last user that updated this record */
-  updatedBy?: Maybe<User>;
-};
-
-
-/** Signature */
-export type SignatureRenderedBodyArgs = {
-  groupId?: InputMaybe<Scalars['ID']['input']>;
-  ticketId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 /** Represents a stored file. */
@@ -7902,14 +7866,6 @@ export type SessionQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type SessionQuery = { __typename?: 'Queries', session: { __typename?: 'Session', id: string, afterAuth?: { __typename?: 'SessionAfterAuth', type: EnumAfterAuthType, data?: any | null } | null } };
-
-export type TicketSignatureQueryVariables = Exact<{
-  groupId: Scalars['ID']['input'];
-  ticketId?: InputMaybe<Scalars['ID']['input']>;
-}>;
-
-
-export type TicketSignatureQuery = { __typename?: 'Queries', ticketSignature?: { __typename?: 'Signature', id: string, renderedBody?: string | null } | null };
 
 export type TranslationsQueryVariables = Exact<{
   locale: Scalars['String']['input'];

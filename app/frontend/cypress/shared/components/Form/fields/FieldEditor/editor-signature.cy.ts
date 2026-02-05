@@ -52,8 +52,8 @@ describe('correctly adds signature', { retries: 2 }, () => {
         .shouldHaveNormalizedHtml(`${BREAK_HTML}`)
         .then(() => {
           context.addSignature({
-            body: SIGNATURE,
-            id: 1,
+            renderedBody: SIGNATURE,
+            internalId: 1,
           })
           cy.findByRole('textbox')
             .shouldHaveNormalizedHtml(
@@ -77,8 +77,8 @@ describe('correctly adds signature', { retries: 2 }, () => {
       .then(resolveContext)
       .then((context) => {
         context.addSignature({
-          body: SIGNATURE,
-          id: 2,
+          renderedBody: SIGNATURE,
+          internalId: 2,
         })
         cy.findByRole('textbox').shouldContainNormalizedHtml(
           `<p dir="auto">${ORIGINAL_TEXT}</p>${BREAK_HTML}${WRAPPED_SIGNATURE(
@@ -113,8 +113,8 @@ describe('correctly adds signature', { retries: 2 }, () => {
       .then(resolveContext)
       .then((context) => {
         context.addSignature({
-          body: SIGNATURE,
-          id: 3,
+          renderedBody: SIGNATURE,
+          internalId: 3,
         })
       })
 
