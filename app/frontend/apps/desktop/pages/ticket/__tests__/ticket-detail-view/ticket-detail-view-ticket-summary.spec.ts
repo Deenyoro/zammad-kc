@@ -112,9 +112,9 @@ describe('Ticket detail view - Ticket summary', () => {
       name: 'Content sidebar',
     })
 
-    expect(within(contentSidebar).getByRole('button', { name: 'Summary' })).toBeInTheDocument()
+    expect(within(contentSidebar).getByRole('button', { name: 'AI summary' })).toBeInTheDocument()
 
-    await view.events.click(within(contentSidebar).getByRole('button', { name: 'Summary' }))
+    await view.events.click(within(contentSidebar).getByRole('button', { name: 'AI summary' }))
 
     expect(
       await within(contentSidebar).findByRole('heading', {
@@ -138,7 +138,7 @@ describe('Ticket detail view - Ticket summary', () => {
     })
 
     expect(
-      within(contentSidebar).queryByRole('button', { name: 'Summary' }),
+      within(contentSidebar).queryByRole('button', { name: 'AI summary' }),
     ).not.toBeInTheDocument()
   })
 
@@ -161,7 +161,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     const view = await visitView('/tickets/1')
 
-    await view.events.click(view.getByRole('button', { name: 'Summary' }))
+    await view.events.click(view.getByRole('button', { name: 'AI summary' }))
 
     const calls = await waitForTicketAiAssistanceSummarizeMutationCalls()
 
@@ -204,7 +204,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     const view = await visitView('/tickets/1')
 
-    await view.events.click(view.getByRole('button', { name: 'Summary' }))
+    await view.events.click(view.getByRole('button', { name: 'AI summary' }))
 
     const calls = await waitForTicketAiAssistanceSummarizeMutationCalls()
 
@@ -269,7 +269,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     const view = await visitView('/tickets/1')
 
-    await view.events.click(view.getByRole('button', { name: 'Summary' }))
+    await view.events.click(view.getByRole('button', { name: 'AI summary' }))
 
     await triggerSummaryUpdate({
       summary: {
@@ -377,7 +377,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     await waitForTicketAiAssistanceSummarizeMutationCalls()
 
-    await view.events.click(view.getByRole('button', { name: 'Summary' }))
+    await view.events.click(view.getByRole('button', { name: 'AI summary' }))
 
     const contentSidebar = view.getByRole('complementary', { name: 'Content sidebar' })
 
@@ -458,7 +458,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
       const view = await visitView('/tickets/1')
 
-      await view.events.click(view.getByRole('button', { name: 'Summary' }))
+      await view.events.click(view.getByRole('button', { name: 'AI summary' }))
 
       await waitForTicketAiAssistanceSummarizeMutationCalls()
 
@@ -497,7 +497,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
       const view = await visitView('/tickets/1')
 
-      await view.events.click(view.getByRole('button', { name: 'Summary' }))
+      await view.events.click(view.getByRole('button', { name: 'AI summary' }))
 
       expect(
         view.getByText('No AI provider is currently set up. Please contact your administrator.'),
@@ -519,7 +519,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
     const view = await visitView('/tickets/1')
 
-    expect(view.queryByRole('button', { name: 'Summary' })).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: 'AI summary' })).not.toBeInTheDocument()
   })
 
   describe('ticket summary generation is set to "OnTicketSummarySidebarActivation"', () => {
@@ -545,7 +545,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
       const view = await visitView('/tickets/1')
 
-      await view.events.click(await view.findByRole('button', { name: 'Summary' }))
+      await view.events.click(await view.findByRole('button', { name: 'AI summary' }))
 
       await waitForTicketAiAssistanceSummarizeMutationCalls()
     })
@@ -574,7 +574,7 @@ describe('Ticket detail view - Ticket summary', () => {
 
       const view = await visitView('/tickets/1')
 
-      await view.events.click(await view.findByRole('button', { name: 'Summary' }))
+      await view.events.click(await view.findByRole('button', { name: 'AI summary' }))
 
       await waitForTicketAiAssistanceSummarizeMutationCalls()
     })

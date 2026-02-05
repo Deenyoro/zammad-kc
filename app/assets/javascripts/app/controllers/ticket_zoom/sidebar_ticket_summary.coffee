@@ -107,7 +107,7 @@ class App.SidebarTicketSummary extends App.Controller
       name:           'summary'
       badgeIcon:      'smart-assist'
       badgeCallback:  @badgeRender
-      sidebarHead:     __('Summary')
+      sidebarHead:     __('AI Summary')
       sidebarCallback: @sidebarCallback
       sidebarActions:  []
     }
