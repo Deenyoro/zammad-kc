@@ -67,7 +67,7 @@ export const useTicketSignature = (senderTypeName: 'email' | 'email-out' = 'emai
             internalId: signature.internalId,
           })
         },
-        { immediate: true, flush: 'post' },
+        { flush: 'post' },
       )
     }
 

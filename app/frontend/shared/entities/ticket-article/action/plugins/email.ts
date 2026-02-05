@@ -1,7 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { uniq } from 'lodash-es'
-import { nextTick } from 'vue'
 import { ref } from 'vue'
 
 import { useEmailFileUrls } from '#shared/composables/useEmailFileUrls.ts'
@@ -153,8 +152,11 @@ const actionPlugin: TicketArticleActionPlugin = {
         body.removeSignature()
       },
       onOpened(_, { body }) {
+        // solve the issue in firefox that the signature is not inserted
         // always reset position if reply is added as a new article
-        nextTick(() => addSignature({ body }, 1))
+        requestAnimationFrame(() => {
+          addSignature({ body }, 1)
+        })
       },
       onSelected(_, { body }) {
         // try to dynamically set cursor position, depending on where it was before signature was added

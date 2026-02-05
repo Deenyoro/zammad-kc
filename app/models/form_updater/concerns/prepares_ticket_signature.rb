@@ -23,12 +23,12 @@ module FormUpdater::Concerns::PreparesTicketSignature
     end
 
     # Fake a ticket object for create screen if a group is present (#4448).
-    ticket = Struct.new(:group).new(group) if ticket.nil?
+    object = Struct.new(:group).new(group) if object.nil?
 
     result['body'][:signature] = {
       internalId:   group_signature.id,
       renderedBody: NotificationFactory::Renderer.new(
-        objects:  { user: current_user, ticket: ticket },
+        objects:  { user: current_user, ticket: object },
         template: group_signature.body,
         escape:   false
       ).render(debug_errors: false),
@@ -40,12 +40,6 @@ module FormUpdater::Concerns::PreparesTicketSignature
 
     @group_signature ||= Signature.find(group.signature_id)
   rescue ActiveRecord::RecordNotFound
-    nil
-  end
-
-  def ticket
-    @ticket ||= Gql::ZammadSchema.authorized_object_from_id id, type: ::Ticket, user: current_user
-  rescue ActiveRecord::RecordNotFound, Exceptions::Forbidden
     nil
   end
 

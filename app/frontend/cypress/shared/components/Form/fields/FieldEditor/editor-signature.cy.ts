@@ -35,7 +35,7 @@ const SIGNATURE =
   '<strong>Signature</strong><div>Context</div><br>---<br><em>Phone: +1234556778</em>'
 
 const PARSED_SIGNATURE =
-  '<p dir="auto"><strong>Signature</strong></p><p dir="auto">Context</p><p dir="auto"><br dir="auto">---<br dir="auto"><em>Phone: +1234556778</em></p>'
+  '<p dir="auto"><strong>Signature</strong></p><p dir="auto">Context</p><p dir="auto"><br dir="auto">---<em>Phone: +1234556778</em></p>'
 
 const WRAPPED_SIGNATURE = (id: string, str: string) => {
   return `<div data-signature="true" dir="auto" class="signature" data-signature-id="${id}">${str}</div>`
@@ -57,12 +57,11 @@ describe('correctly adds signature', { retries: 2 }, () => {
           })
           cy.findByRole('textbox')
             .shouldHaveNormalizedHtml(
-              `${BREAK_HTML}${BREAK_HTML}${WRAPPED_SIGNATURE('1', PARSED_SIGNATURE)}${BREAK_HTML}`,
+              `${BREAK_HTML}${WRAPPED_SIGNATURE('1', PARSED_SIGNATURE)}${BREAK_HTML}`,
             )
             .then(() => {
               context.removeSignature()
-              // FIXME: Try to address the extra line break issue when removing signature.
-              cy.findByRole('textbox').shouldContainNormalizedHtml(`${BREAK_HTML}${BREAK_HTML}`)
+              cy.findByRole('textbox').shouldContainNormalizedHtml(`${BREAK_HTML}`)
             })
         })
     })
