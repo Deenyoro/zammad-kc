@@ -81,6 +81,11 @@ RUN bundle exec bootsnap precompile --gemfile app/ lib/
 # Final stage for app image
 FROM base
 
+# Ensure latest patches are applied.
+RUN apt-get update -qq && \
+    apt-get upgrade -y && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
 # Application variables with defaults matching the Zammad docker stack.
 ENV POSTGRESQL_DB=zammad_production \
     POSTGRESQL_HOST=zammad-postgresql \
