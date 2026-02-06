@@ -41,6 +41,16 @@ Zammad::Application.routes.draw do
     # RingCentral SMS webhook (public — no auth, validated by subscription lookup)
     post 'ringcentral_sms_webhook', to: 'kc/ringcentral_sms_webhook#webhook'
 
+    # Scheduled articles (agent-facing)
+    get    'tickets/:ticket_id/scheduled_articles',     to: 'kc/scheduled_articles#index'
+    post   'tickets/:ticket_id/scheduled_articles',     to: 'kc/scheduled_articles#create'
+    delete 'tickets/:ticket_id/scheduled_articles/:id', to: 'kc/scheduled_articles#destroy'
+
+    # API Health Check (admin)
+    get    'api_health_check',            to: 'kc/api_health_check#index'
+    put    'api_health_check',            to: 'kc/api_health_check#update'
+    post   'api_health_check/check_now',  to: 'kc/api_health_check#check_now'
+
     # New conversation initiation (agent-facing)
     post 'conversations/sms',            to: 'kc/new_conversations#sms'
     post 'conversations/teams',          to: 'kc/new_conversations#teams'

@@ -1,0 +1,93 @@
+<div class="page-header">
+  <div class="page-header-title">
+    <h1><%- @T('API Health Check') %></h1>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <h2><%- @T('Ticket Settings') %></h2>
+  <p class="text-muted"><%- @T('Configure how alert tickets are created when an API connection fails.') %></p>
+  <table class="settings-list" style="max-width: 700px;">
+    <tr>
+      <td style="width: 200px;">
+        <span><%- @T('Group') %></span>
+      </td>
+      <td>
+        <select name="group_id" class="form-control" style="width: 300px;">
+          <option value=""><%- @T('Default (Users)') %></option>
+          <% for group in @groups: %>
+            <option value="<%= group.id %>" <% if String(@settings.group_id) is String(group.id): %>selected<% end %>><%= group.displayName() %></option>
+          <% end %>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Priority') %></span>
+      </td>
+      <td>
+        <select name="priority_id" class="form-control" style="width: 300px;">
+          <option value=""><%- @T('Default (high)') %></option>
+          <% for priority in @priorities: %>
+            <option value="<%= priority.id %>" <% if String(@settings.priority_id) is String(priority.id): %>selected<% end %>><%= priority.displayName() %></option>
+          <% end %>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Owner') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Optional') %></p>
+      </td>
+      <td>
+        <select name="owner_id" class="form-control" style="width: 300px;">
+          <option value=""><%- @T('Unassigned') %></option>
+          <% for user in @admins: %>
+            <option value="<%= user.id %>" <% if String(@settings.owner_id) is String(user.id): %>selected<% end %>><%= user.displayName() %></option>
+          <% end %>
+        </select>
+      </td>
+    </tr>
+  </table>
+
+  <hr>
+
+  <h2><%- @T('Monitored Channels') %></h2>
+  <p class="text-muted"><%- @T('Select which API connections to monitor. Health checks run every 5 minutes.') %></p>
+
+  <% if @channels.length: %>
+    <table class="table table-striped table-hover" style="max-width: 800px;">
+      <thead>
+        <tr>
+          <th style="width: 40px;">
+            <input type="checkbox" class="js-selectAll">
+          </th>
+          <th><%- @T('Type') %></th>
+          <th><%- @T('Account Name') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for ch in @channels: %>
+          <tr>
+            <td>
+              <input type="checkbox" class="js-channelCheckbox" value="<%= ch.id %>" <% if @monitoredIds.indexOf(ch.id) isnt -1: %>checked<% end %>>
+            </td>
+            <td><%= ch.area_label %></td>
+            <td><%= ch.account_name %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else: %>
+    <div class="well">
+      <%- @T('No active API channels found. Connect a Microsoft Graph Email, Teams Chat, or RingCentral SMS account first.') %>
+    </div>
+  <% end %>
+
+  <div style="margin-top: 20px;">
+    <button class="btn btn--primary js-save"><%- @T('Save Settings') %></button>
+    <button class="btn js-checkNow" style="margin-left: 10px;"><%- @T('Check Now') %></button>
+  </div>
+
+</div>
