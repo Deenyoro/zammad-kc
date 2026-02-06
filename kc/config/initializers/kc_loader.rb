@@ -62,6 +62,8 @@ Rails.application.config.to_prepare do
   kc_prepend.call('Ticket::Article', 'Kc::EnqueueCommunicateTeamsChatJob')
   kc_prepend.call('Ticket::Article', 'Kc::EnqueueCommunicateRingcentralSmsJob')
   kc_prepend.call('Ticket::Article', 'Kc::FixOriginBySenderOverride')
+  kc_prepend.call('Ticket::Article', 'Kc::ResetsWaitingForReplyState')
+  kc_prepend.call('Ticket', 'Kc::PreventsLockedTicketReopen')
 
   Rails.logger.info 'KC: Overlay loading complete.'
 end
