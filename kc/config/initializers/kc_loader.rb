@@ -64,6 +64,7 @@ Rails.application.config.to_prepare do
   kc_prepend.call('Ticket::Article', 'Kc::FixOriginBySenderOverride')
   kc_prepend.call('Ticket::Article', 'Kc::ResetsWaitingForReplyState')
   kc_prepend.call('Ticket', 'Kc::PreventsLockedTicketReopen')
+  kc_prepend.call('Transaction::Notification', 'Kc::SuppressInternalNoteNotifications')
 
   Rails.logger.info 'KC: Overlay loading complete.'
 end
