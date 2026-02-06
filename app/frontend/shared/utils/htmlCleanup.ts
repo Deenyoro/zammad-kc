@@ -75,7 +75,11 @@ const replaceEmptyTableCells = (parent: Element) => {
   })
 }
 
-export const htmlCleanup = (html: string, removeImages = false): string => {
+export const htmlCleanup = (
+  html: string,
+  removeImages = false,
+  returnElement = false,
+): string | Element => {
   const element = document.createElement('div') as Element
   element.innerHTML = html
 
@@ -93,6 +97,8 @@ export const htmlCleanup = (html: string, removeImages = false): string => {
   replaceEmptyTableCells(element)
 
   // we don't need to remove attributes here, because the editor doesn't put unknown attributes on html elements
+
+  if (returnElement) return element
 
   // remove empty new lines, editor considers them actual new lines
   // and this will affect lists, where new line is a new list item

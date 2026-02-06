@@ -65,7 +65,7 @@ export default function useEditorActions(
         id: getUuid(),
         name: 'aiAssistantTextTools',
         contentType: ['text/html', 'text/plain'],
-        label: __('Writing assistant tools'),
+        label: __('AI writing assistant tools'),
         showDivider: true,
         dividerClass:
           '[button[aria-expanded=true]+&]:animate-ai-stripe-vertical [button:hover+&]:animate-ai-stripe-vertical [button:focus-visible+&]:animate-ai-stripe-vertical bg-linear-to-t from-pink to-blue',
