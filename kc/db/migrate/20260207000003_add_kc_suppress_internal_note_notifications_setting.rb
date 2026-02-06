@@ -29,7 +29,7 @@ class AddKcSuppressInternalNoteNotificationsSetting < ActiveRecord::Migration[7.
       preferences:  {
         permission: ['admin'],
       },
-      frontend:     false,
+      frontend:     true,
     )
 
     Setting.create_if_not_exists(
@@ -55,7 +55,7 @@ class AddKcSuppressInternalNoteNotificationsSetting < ActiveRecord::Migration[7.
       preferences:  {
         permission: ['admin'],
       },
-      frontend:     false,
+      frontend:     true,
     )
   end
 
