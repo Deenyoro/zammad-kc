@@ -9,7 +9,7 @@ class AddKcSuppressInternalNoteNotificationsSetting < ActiveRecord::Migration[7.
     Setting.create_if_not_exists(
       title:       'Suppress Internal Note Notifications',
       name:        'kc_suppress_internal_note_notifications',
-      area:        'Kc::Extensions',
+      area:        'Kc::NotificationSettings',
       description: 'When enabled, agent email and online notifications are suppressed for internal notes (including internal articles from Teams Chat messages).',
       options:     {
         form: [
@@ -35,7 +35,7 @@ class AddKcSuppressInternalNoteNotificationsSetting < ActiveRecord::Migration[7.
     Setting.create_if_not_exists(
       title:       'Suppress All Note Notifications',
       name:        'kc_suppress_all_note_notifications',
-      area:        'Kc::Extensions',
+      area:        'Kc::NotificationSettings',
       description: 'When enabled, agent email and online notifications are suppressed for ALL notes (both internal and public). This is a superset of the internal-only setting.',
       options:     {
         form: [
