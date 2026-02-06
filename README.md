@@ -59,6 +59,53 @@ A button in the ticket compose area that converts between "note" and "email repl
 - When converting to note: removes the email signature
 - Only appears when both article types are available for the current ticket group
 
+### New Conversation Initiators
+
+Agent-facing pages for starting outbound conversations without an existing ticket.
+
+- **New SMS:** Compose and send an SMS via RingCentral from the "+" new task dropdown, with recipient search by name/phone, channel selection, and optional "create ticket only" mode that sets up SMS routing without sending
+- **New Teams Chat:** Start a 1:1 Teams chat from the "+" dropdown, with Azure AD directory search, automatic chat creation via Graph API, and customer user linking
+
+### Scheduled Replies
+
+Queue replies for future delivery with a datetime picker in the ticket compose area.
+
+- **Schedule button** added to the ticket update dropdown alongside existing actions
+- **Datetime picker modal** with future-time validation
+- **Pending reply banner** in the ticket timeline shows scheduled time, preview, and cancel button
+- **Background job** polls every 60 seconds with pessimistic locking (SELECT FOR UPDATE SKIP LOCKED) to prevent double-send
+- Works with all article types: email, Teams Chat, RingCentral SMS, and notes
+- Supports attachment transfer and ticket attribute changes at send time
+
+### Waiting for Reply State
+
+A custom ticket state for tracking tickets where the agent is waiting for a customer response.
+
+- Uses the existing "open" state type so it integrates into Zammad's category system (open ticket counts, agent dropdowns, overviews)
+- **Auto-transitions to "open"** when a customer creates a non-internal communication article (SMS, Teams, API)
+- Postmaster (email) and web frontend already handle this natively; this concern covers the remaining paths
+
+### Closed (Locked) States
+
+Two custom ticket states that prevent customers from reopening tickets.
+
+- **closed (locked)** — permanent lock using the 'closed' state type. Customer follow-ups create articles but never change the ticket state.
+- **closed (locked until)** — timed lock using 'pending action' state type. The built-in pending scheduler auto-transitions to regular "closed" when pending_time expires, after which normal reopen rules apply.
+- Agents and admins can always change state; system context (triggers, macros, schedulers) is allowed
+- Customer articles are still created and visible to agents — only the state change is blocked
+
+### API Health Check
+
+Proactive monitoring of external API connections with automatic alerting.
+
+- Checks Microsoft Graph Email, Teams Chat, and RingCentral SMS channels every 5 minutes
+- Refreshes OAuth tokens and makes a lightweight API call to verify connectivity
+- **Auto-creates alert tickets** on failure with actionable instructions (24-hour dedup)
+- **Auto-closes alert tickets** with a recovery note when the connection is restored
+- Configurable group, priority, and owner for alert tickets
+- Admin page at **System > KC Extensions > API Health Check** for channel selection and settings
+- Manual "Check Now" button for on-demand verification
+
 ### Multi-Tab Support
 
 Allows agents to work across multiple browser tabs simultaneously. Zammad's default behavior disconnects previous tabs when a new one is opened — this is disabled so agents can have multiple tickets open without interruption.

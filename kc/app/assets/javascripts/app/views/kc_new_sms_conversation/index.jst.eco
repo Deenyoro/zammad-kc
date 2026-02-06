@@ -44,8 +44,16 @@
       </div>
 
       <div class="form-group">
+        <label class="checkbox-replacement" style="display:inline-block; cursor:pointer;">
+          <input type="checkbox" class="js-skipSend" name="skip_send" value="1">
+          <%- @T("Don't send initial SMS (create ticket only)") %>
+        </label>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('The ticket will be created with SMS routing so replies are sent as texts, but the initial message will not be texted to the recipient.') %></p>
+      </div>
+
+      <div class="form-group">
         <button type="submit" class="btn btn--primary js-submit"><%- @T('Send SMS') %></button>
-        <span class="js-loading" style="display:none;"><span class="loading icon"></span> <%- @T('Sending...') %></span>
+        <span class="js-loading" style="display:none;"><span class="loading icon"></span> <span class="js-loadingText"><%- @T('Sending...') %></span></span>
       </div>
 
       <div class="js-error alert alert--danger" style="display:none;"></div>
