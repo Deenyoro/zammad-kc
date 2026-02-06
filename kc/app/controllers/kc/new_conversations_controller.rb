@@ -17,16 +17,23 @@ class Kc::NewConversationsController < ApplicationController
   # The EnqueueCommunicateRingcentralSmsJob concern fires automatically
   # on article creation, which triggers the CommunicateRingcentralSmsJob.
   #
+  # When skip_send is true, the article is created as an internal note
+  # instead of ringcentral_sms_message. This prevents the SMS from being
+  # sent while still setting up the ticket with SMS routing so future
+  # agent replies are delivered as texts.
+  #
   # Params:
   #   phone_number [String] recipient phone number (required)
   #   body         [String] message text (required)
   #   group_id     [Integer] destination group (optional, falls back to channel default)
   #   customer_id  [Integer] existing Zammad user ID (optional)
+  #   skip_send    [Boolean] if true, create ticket without sending SMS (optional)
   def sms
     phone_number = params[:phone_number].to_s.strip
     body         = params[:body].to_s.strip
     group_id     = params[:group_id]
     customer_id  = params[:customer_id]
+    skip_send    = ActiveModel::Type::Boolean.new.cast(params[:skip_send])
 
     if phone_number.blank? || body.blank?
       render json: { error: 'phone_number and body are required' }, status: :unprocessable_entity
@@ -112,29 +119,55 @@ class Kc::NewConversationsController < ApplicationController
         created_by_id: current_user.id,
       )
 
-      article_type = Ticket::Article::Type.find_by(name: 'ringcentral_sms_message') ||
-                     Ticket::Article::Type.find_by(name: 'note')
-      sender = Ticket::Article::Sender.find_by(name: 'Agent')
+      if skip_send
+        # Internal note — won't trigger SMS delivery, but ticket has SMS routing
+        article_type = Ticket::Article::Type.find_by(name: 'note')
+        sender       = Ticket::Article::Sender.find_by(name: 'Agent')
 
-      Ticket::Article.create!(
-        ticket_id:     ticket.id,
-        type_id:       article_type&.id,
-        sender_id:     sender&.id,
-        from:          from_phone,
-        to:            normalized_phone,
-        subject:       nil,
-        body:          body,
-        content_type:  'text/plain',
-        internal:      false,
-        preferences:   {
-          ringcentral_sms: {
-            to_phone:   normalized_phone,
-            channel_id: channel.id,
+        Ticket::Article.create!(
+          ticket_id:     ticket.id,
+          type_id:       article_type&.id,
+          sender_id:     sender&.id,
+          from:          current_user.fullname,
+          to:            normalized_phone,
+          subject:       nil,
+          body:          body,
+          content_type:  'text/plain',
+          internal:      true,
+          preferences:   {
+            ringcentral_sms: {
+              to_phone:   normalized_phone,
+              channel_id: channel.id,
+            },
           },
-        },
-        updated_by_id: current_user.id,
-        created_by_id: current_user.id,
-      )
+          updated_by_id: current_user.id,
+          created_by_id: current_user.id,
+        )
+      else
+        article_type = Ticket::Article::Type.find_by(name: 'ringcentral_sms_message') ||
+                       Ticket::Article::Type.find_by(name: 'note')
+        sender = Ticket::Article::Sender.find_by(name: 'Agent')
+
+        Ticket::Article.create!(
+          ticket_id:     ticket.id,
+          type_id:       article_type&.id,
+          sender_id:     sender&.id,
+          from:          from_phone,
+          to:            normalized_phone,
+          subject:       nil,
+          body:          body,
+          content_type:  'text/plain',
+          internal:      false,
+          preferences:   {
+            ringcentral_sms: {
+              to_phone:   normalized_phone,
+              channel_id: channel.id,
+            },
+          },
+          updated_by_id: current_user.id,
+          created_by_id: current_user.id,
+        )
+      end
     end
 
     render json: { id: ticket.id, number: ticket.number }
@@ -325,7 +358,7 @@ class Kc::NewConversationsController < ApplicationController
     sanitized = "%#{ActiveRecord::Base.sanitize_sql_like(query)}%"
     users = User.where(active: true)
                 .where('(firstname ILIKE :q OR lastname ILIKE :q OR phone ILIKE :q OR mobile ILIKE :q)', q: sanitized)
-                .where('phone IS NOT NULL AND phone != ? OR mobile IS NOT NULL AND mobile != ?', '', '')
+                .where('(phone IS NOT NULL AND phone != ?) OR (mobile IS NOT NULL AND mobile != ?)', '', '')
                 .limit(20)
                 .select(:id, :firstname, :lastname, :phone, :mobile)
 

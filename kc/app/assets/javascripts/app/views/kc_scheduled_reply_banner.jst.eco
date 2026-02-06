@@ -1,0 +1,33 @@
+<% for item in @items: %>
+<div class="ticket-article-item kc-scheduled-reply" data-scheduled-id="<%= item.id %>">
+  <div class="article-content">
+    <div class="bubble-gap">
+      <div class="internal-border">
+        <div class="textBubble kc-scheduled-bubble">
+          <div class="kc-scheduled-header">
+            <%- @Icon('clock') %>
+            <strong><%- @T('Scheduled for') %> <%- @humanTime(item.scheduled_at) %></strong>
+            <% if item.article_type: %>
+              <span class="kc-scheduled-type"><%- @T(item.article_type) %></span>
+            <% end %>
+          </div>
+          <div class="kc-scheduled-preview">
+            <% if item.to: %>
+              <div class="kc-scheduled-meta"><%- @T('To') %>: <%= item.to %></div>
+            <% end %>
+            <% if item.cc: %>
+              <div class="kc-scheduled-meta"><%- @T('CC') %>: <%= item.cc %></div>
+            <% end %>
+            <div class="kc-scheduled-body"><%= item.body_preview %></div>
+          </div>
+          <div class="kc-scheduled-actions">
+            <button type="button" class="btn btn--danger btn--small js-cancelScheduledReply" data-id="<%= item.id %>" aria-label="<%- @T('Cancel Scheduled Reply') %>">
+              <%- @Icon('trash') %> <%- @T('Cancel Scheduled Reply') %>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

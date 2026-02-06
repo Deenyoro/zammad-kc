@@ -24,6 +24,7 @@ class App.KcNewSmsConversationContent extends App.Controller
     'submit .js-smsForm':        'onSubmit'
     'input .js-recipientSearch': 'onRecipientSearch'
     'click .js-clearRecipient':  'onClearRecipient'
+    'change .js-skipSend':       'onSkipSendToggle'
 
   constructor: ->
     super
@@ -158,6 +159,13 @@ class App.KcNewSmsConversationContent extends App.Controller
     @el.find('.js-recipientSearch').val('').focus()
     @el.find('.js-clearRecipient').hide()
 
+  onSkipSendToggle: (e) ->
+    skipSend = $(e.currentTarget).is(':checked')
+    if skipSend
+      @el.find('.js-submit').text(App.i18n.translateInline('Create Ticket'))
+    else
+      @el.find('.js-submit').text(App.i18n.translateInline('Send SMS'))
+
   onSubmit: (e) ->
     e.preventDefault()
 
@@ -166,6 +174,7 @@ class App.KcNewSmsConversationContent extends App.Controller
     groupId     = @el.find('.js-group').val()
     customerId  = @el.find('.js-customerId').val()
     channelId   = @el.find('.js-fromNumber').val()
+    skipSend    = @el.find('.js-skipSend').is(':checked')
 
     if !rawPhone || !body
       @showError('Phone number and message are required.')
@@ -182,6 +191,8 @@ class App.KcNewSmsConversationContent extends App.Controller
     @hideError()
     @el.find('.js-submit').prop('disabled', true)
     @el.find('.js-loading').show()
+    loadingText = if skipSend then App.i18n.translateInline('Creating ticket...') else App.i18n.translateInline('Sending...')
+    @el.find('.js-loadingText').text(loadingText)
 
     @ajax(
       id:   'kc-new-sms-conversation'
@@ -193,6 +204,7 @@ class App.KcNewSmsConversationContent extends App.Controller
         group_id:     groupId
         customer_id:  customerId
         channel_id:   channelId
+        skip_send:    skipSend
       )
       contentType: 'application/json'
       success: (data) =>
