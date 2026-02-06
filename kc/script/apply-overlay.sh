@@ -70,6 +70,24 @@ for dir in ${OVERLAY_DIRS}; do
   fi
 done
 
+# --- Duplicate migration version detection ------------------------------------
+# After overlay, all migrations (upstream + KC) live in db/migrate/. Check that
+# no two files share the same version number prefix — Rails will refuse to boot.
+DUPES=$(ls -1 "${APP_ROOT}/db/migrate/" | sed 's/_.*//' | sort | uniq -d)
+if [ -n "${DUPES}" ]; then
+  echo "=========================================="
+  echo "KC: FATAL — Duplicate migration version(s) detected!"
+  for ver in ${DUPES}; do
+    echo "  Version ${ver}:"
+    ls -1 "${APP_ROOT}/db/migrate/${ver}_"* 2>/dev/null | sed 's|.*/|    |'
+  done
+  echo "KC: Each migration must have a unique version number."
+  echo "KC: Fix the duplicates above and rebuild."
+  echo "=========================================="
+  exit 1
+fi
+echo "KC: Migration version check passed (no duplicates)"
+
 # --- Final report ------------------------------------------------------------
 if [ "${COLLISIONS}" -gt 0 ]; then
   echo "=========================================="
