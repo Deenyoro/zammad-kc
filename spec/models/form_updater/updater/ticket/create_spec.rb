@@ -9,6 +9,7 @@ require 'models/form_updater/concerns/applies_ticket_shared_draft_examples'
 require 'models/form_updater/concerns/applies_split_ticket_article_examples'
 require 'models/form_updater/concerns/stores_taskbar_state_examples'
 require 'models/form_updater/concerns/applies_taskbar_state_examples'
+require 'models/form_updater/concerns/prepares_ticket_signature_examples'
 
 RSpec.describe(FormUpdater::Updater::Ticket::Create) do
   subject(:resolved_result) do
@@ -208,4 +209,5 @@ RSpec.describe(FormUpdater::Updater::Ticket::Create) do
   include_examples 'FormUpdater::AppliesSplitTicketArticle'
   include_examples 'FormUpdater::StoresTaskbarState', taskbar_key: 'TicketCreateScreen-1234', taskbar_callback: 'TicketCreate', store_state_collect_group_key: nil, store_state_group_keys: nil
   include_examples 'FormUpdater::AppliesTaskbarState', taskbar_key: 'TicketCreateScreen-1234', taskbar_callback: 'TicketCreate', apply_state_group_keys: nil
+  include_examples 'FormUpdater::PreparesTicketSignature'
 end

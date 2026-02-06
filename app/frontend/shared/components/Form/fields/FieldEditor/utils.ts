@@ -222,3 +222,29 @@ export const getReferenceClientRect = (editor: Editor) => {
 
   return rectUnion(...selectedCells.map((cell) => cell.getBoundingClientRect()))
 }
+
+export const getPreviousNodeFromPosition = (
+  editor: Editor,
+  position: number,
+  options = {} as { fallbackToCursorPosition: boolean },
+) => {
+  const { fallbackToCursorPosition = true } = options
+
+  let previousNode = null
+  const insertPosition = editor.state.doc.resolve(position)
+
+  // We need a fallback to cursor position when inserting at position 0 and we are on root level
+  // depth checks if we are on root level
+  if (position > 0 && insertPosition.depth > 0) {
+    const prevNodePos = insertPosition.before(insertPosition.depth)
+    previousNode = editor.state.doc.nodeAt(prevNodePos)
+  }
+
+  if (!previousNode && fallbackToCursorPosition) {
+    const { $from } = editor.state.selection
+    const prevNodePos = $from.before($from.depth)
+    previousNode = editor.state.doc.nodeAt(prevNodePos)
+  }
+
+  return previousNode
+}
