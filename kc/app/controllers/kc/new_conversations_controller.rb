@@ -222,18 +222,7 @@ class Kc::NewConversationsController < ApplicationController
       return
     end
 
-    opts  = channel.options
-    graph = graph_class.new(
-      client_id:     opts[:client_id],
-      client_secret: opts[:client_secret],
-      tenant_id:     opts[:tenant_id],
-      access_token:  opts[:access_token],
-      refresh_token: opts[:refresh_token],
-    )
-
-    # Refresh tokens and create/get the 1:1 chat
-    graph.refresh_access_token!
-    persist_tokens(channel, graph)
+    graph = graph_class.with_channel_tokens(channel)
 
     chat_result = graph.create_chat(teams_user_id)
     chat_id = chat_result['id'] || chat_result[:id]
@@ -253,7 +242,7 @@ class Kc::NewConversationsController < ApplicationController
     title = title_template.gsub('{user_name}', display_name).truncate(100, omission: '...')
 
     # Build conversation key
-    tenant_id = opts[:tenant_id]
+    tenant_id = channel.options[:tenant_id]
     conversation_key = "#{tenant_id}:#{chat_id}"
 
     transaction_class = 'Transaction'.safe_constantize
@@ -405,17 +394,7 @@ class Kc::NewConversationsController < ApplicationController
       return
     end
 
-    opts  = channel.options
-    graph = graph_class.new(
-      client_id:     opts[:client_id],
-      client_secret: opts[:client_secret],
-      tenant_id:     opts[:tenant_id],
-      access_token:  opts[:access_token],
-      refresh_token: opts[:refresh_token],
-    )
-
-    graph.refresh_access_token!
-    persist_tokens(channel, graph)
+    graph = graph_class.with_channel_tokens(channel)
 
     result   = graph.search_users(query, top: 10)
     contacts = Array(result['value'] || result[:value])
@@ -472,17 +451,6 @@ class Kc::NewConversationsController < ApplicationController
     end
 
     user
-  end
-
-  def persist_tokens(channel, graph)
-    channel.with_lock do
-      channel.reload
-      channel.options[:access_token]  = graph.access_token
-      channel.options[:refresh_token] = graph.refresh_token
-      channel.save!
-    end
-  rescue => e
-    Rails.logger.error "KC NewConversations: Failed to persist tokens: #{e.message}"
   end
 
   def resolve_sms_channel(channel_id)

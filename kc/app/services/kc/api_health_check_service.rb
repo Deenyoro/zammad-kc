@@ -127,20 +127,6 @@ class Kc::ApiHealthCheckService
   end
 
   # ---------------------------------------------------------------------------
-  # Token persistence
-  # ---------------------------------------------------------------------------
-  def persist_tokens(channel, access_token:, refresh_token:)
-    channel.with_lock do
-      channel.reload
-      channel.options[:access_token]  = access_token
-      channel.options[:refresh_token] = refresh_token
-      channel.save!
-    end
-  rescue => e
-    Rails.logger.error "KC HealthCheck: Failed to persist tokens for channel #{channel.id}: #{e.message}"
-  end
-
-  # ---------------------------------------------------------------------------
   # Alert ticket management
   # ---------------------------------------------------------------------------
   def create_alert(channel, service_name, error)
