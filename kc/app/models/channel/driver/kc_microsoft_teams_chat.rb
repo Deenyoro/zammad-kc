@@ -104,23 +104,28 @@ class Channel::Driver::KcMicrosoftTeamsChat
   # @param attr [Hash] article attributes (:body, :chat_id, etc.)
   # @param _notification [Boolean] ignored
   # @return [Hash] Graph API response with created message data
-  def deliver(options, attr, _notification = false)
+  def deliver(options, attr, _notification = false, channel: nil)
     return if Setting.get('import_mode')
 
-    options = options.with_indifferent_access
-    attr    = attr.with_indifferent_access
+    attr = attr.with_indifferent_access
 
     graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
     raise 'KC Teams Chat: MicrosoftTeamsGraph class not found' if graph_class.nil?
 
-    graph = graph_class.new(
-      client_id:     options[:client_id],
-      client_secret: options[:client_secret],
-      tenant_id:     options[:tenant_id],
-      access_token:  options[:access_token],
-      refresh_token: options[:refresh_token],
-    )
-    graph.refresh_access_token!
+    if channel.present?
+      graph = graph_class.with_channel_tokens(channel)
+    else
+      # Fallback if no channel object passed (shouldn't happen in practice)
+      options = options.with_indifferent_access
+      graph = graph_class.new(
+        client_id:     options[:client_id],
+        client_secret: options[:client_secret],
+        tenant_id:     options[:tenant_id],
+        access_token:  options[:access_token],
+        refresh_token: options[:refresh_token],
+      )
+      graph.refresh_access_token!
+    end
 
     chat_id = attr[:chat_id]
     raise 'Missing chat_id for Teams Chat delivery' if chat_id.blank?
@@ -413,15 +418,12 @@ class Channel::Driver::KcMicrosoftTeamsChat
     graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
     return nil if graph_class.nil?
 
-    opts = channel.options
-    graph = graph_class.new(
-      client_id:     opts[:client_id],
-      client_secret: opts[:client_secret],
-      tenant_id:     opts[:tenant_id],
-      access_token:  opts[:access_token],
-      refresh_token: opts[:refresh_token],
-    )
-    graph
+    # Use atomic token refresh — tokens are already fresh from the caller's
+    # with_channel_tokens call, so this will typically skip the refresh.
+    graph_class.with_channel_tokens(channel)
+  rescue => e
+    Rails.logger.error "KC Teams Chat: Failed to build graph client for attachment download: #{e.message}"
+    nil
   end
 
   # Downloads a file from SharePoint via the Graph sharing API.
