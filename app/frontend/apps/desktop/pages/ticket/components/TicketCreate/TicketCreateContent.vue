@@ -160,24 +160,6 @@ const formSchema = defineFormSchema([
             screen: 'create_top',
             object: EnumObjectManagerObjects.Ticket,
           },
-          {
-            name: 'customer_id',
-            screen: 'create_top',
-            object: EnumObjectManagerObjects.Ticket,
-            props: {
-              link: '#',
-              linkLabel: __('Create new customer'),
-              linkIcon: 'user-add',
-              onLinkClick: (e: MouseEvent) => {
-                e.preventDefault()
-
-                openUserCreateFlyout({
-                  title: __('Create new customer'),
-                  onSuccess: applyNewlyCreatedCustomer,
-                })
-              },
-            },
-          },
           // Because of the current field screen settings in the backend
           // seed we need to add this manually.
           {
@@ -306,6 +288,24 @@ const changedFields = reactive({
   // Workaround until the object attribute for body is required so core worklow is returning it correctly.
   body: {
     required: true,
+  },
+
+  // The customer_id field needs some additional props for the creation of new customers (it can not be
+  // directly in the schema definition, because it will lose the correct position in the form).
+  customer_id: {
+    props: {
+      link: '#',
+      linkLabel: __('Create new customer'),
+      linkIcon: 'user-add',
+      onLinkClick: (e: MouseEvent) => {
+        e.preventDefault()
+
+        openUserCreateFlyout({
+          title: __('Create new customer'),
+          onSuccess: applyNewlyCreatedCustomer,
+        })
+      },
+    },
   },
 })
 
