@@ -212,8 +212,8 @@ class Kc::PollRingcentralMissedCallsJob < ApplicationJob
         created_by_id: user.id,
       )
 
-      article_type = Ticket::Article::Type.find_by(name: 'note')
-      sender       = Ticket::Article::Sender.find_by(name: 'Customer')
+      article_type = Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first
+      sender       = Ticket::Article::Sender.find_by(name: 'Customer') || Ticket::Article::Sender.first
 
       body_lines = ["Missed call from #{from_phone} at #{time_display}."]
       body_lines << "Number dialed: #{to_phone}" if to_phone.present? && to_phone != from_phone
