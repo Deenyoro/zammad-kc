@@ -93,13 +93,15 @@ class Kc::TokenAlertService
         title: alert_ticket_title(service, channel),
         group: group,
         customer_id: 1, # System user
-        state: Ticket::State.find_by(name: 'new'),
-        priority: Ticket::Priority.find_by(name: 'high') || Ticket::Priority.find_by(name: '2 normal'),
+        state: Ticket::State.find_by(name: 'new') || Ticket::State.first,
+        priority: Ticket::Priority.find_by(name: 'high') || Ticket::Priority.find_by(name: '2 normal') || Ticket::Priority.first,
         preferences: {
           kc_token_alert: true,
           kc_channel_id: channel.id,
           kc_service: service,
         },
+        updated_by_id: 1,
+        created_by_id: 1,
       ).tap do |ticket|
         create_initial_article(ticket, channel, service, error)
       end
@@ -115,13 +117,19 @@ class Kc::TokenAlertService
         internal: true,
         type: Ticket::Article::Type.find_by(name: 'note'),
         sender: Ticket::Article::Sender.find_by(name: 'System'),
+        updated_by_id: 1,
+        created_by_id: 1,
       )
       ticket
     end
 
     def close_ticket(ticket, service)
+      closed_state = Ticket::State.find_by(name: 'closed')
+      return if closed_state.nil?
+
       ticket.update!(
-        state: Ticket::State.find_by(name: 'closed'),
+        state: closed_state,
+        updated_by_id: 1,
       )
 
       Ticket::Article.create!(
@@ -133,6 +141,8 @@ class Kc::TokenAlertService
         internal: true,
         type: Ticket::Article::Type.find_by(name: 'note'),
         sender: Ticket::Article::Sender.find_by(name: 'System'),
+        updated_by_id: 1,
+        created_by_id: 1,
       )
     end
 
@@ -146,6 +156,8 @@ class Kc::TokenAlertService
         internal: true,
         type: Ticket::Article::Type.find_by(name: 'note'),
         sender: Ticket::Article::Sender.find_by(name: 'System'),
+        updated_by_id: 1,
+        created_by_id: 1,
       )
     end
 
