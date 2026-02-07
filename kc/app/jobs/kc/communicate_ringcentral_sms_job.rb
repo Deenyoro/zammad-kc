@@ -49,18 +49,8 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
       return
     end
 
-    opts = channel.options.with_indifferent_access
-    rc = rc_class.new(
-      client_id:     opts[:client_id],
-      client_secret: opts[:client_secret],
-      access_token:  opts[:access_token],
-      refresh_token: opts[:refresh_token],
-    )
-
-    rc.refresh_access_token!
-    persist_tokens(channel, rc)
-
-    from_phone = opts[:phone_number]
+    rc = rc_class.with_channel_tokens(channel)
+    from_phone = channel.options.with_indifferent_access[:phone_number]
     # Strip HTML tags — Zammad stores article bodies as HTML but SMS needs plain text.
     body_text  = article.body.present? ? ActionController::Base.helpers.strip_tags(article.body).strip : ''
 
@@ -139,16 +129,5 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
       return channel_id if channel_id.present?
     end
     nil
-  end
-
-  def persist_tokens(channel, rc)
-    channel.with_lock do
-      channel.reload
-      channel.options[:access_token]  = rc.access_token
-      channel.options[:refresh_token] = rc.refresh_token
-      channel.save!
-    end
-  rescue => e
-    Rails.logger.error "KC RingCentral SMS Job: Failed to persist tokens: #{e.message}"
   end
 end
