@@ -58,14 +58,17 @@ class Kc::TeamsDirectorySyncJob < ApplicationJob
       stats[:users_deactivated] = deactivate_stale_users(organization, synced_user_ids)
     end
 
-    # Store sync stats on channel
-    channel.options[:last_directory_sync] = {
-      completed_at:      Time.current.iso8601,
-      users_created:     stats[:users_created],
-      users_updated:     stats[:users_updated],
-      users_deactivated: stats[:users_deactivated],
-    }
-    channel.save!
+    # Store sync stats on channel (locked to avoid race with concurrent token persistence)
+    channel.with_lock do
+      channel.reload
+      channel.options[:last_directory_sync] = {
+        completed_at:      Time.current.iso8601,
+        users_created:     stats[:users_created],
+        users_updated:     stats[:users_updated],
+        users_deactivated: stats[:users_deactivated],
+      }
+      channel.save!
+    end
 
     Rails.logger.info "KC Teams Directory Sync: Channel #{channel_id} complete — " \
                       "created=#{stats[:users_created]}, updated=#{stats[:users_updated]}, deactivated=#{stats[:users_deactivated]}"
@@ -74,25 +77,10 @@ class Kc::TeamsDirectorySyncJob < ApplicationJob
   private
 
   def build_graph_client(channel)
-    options = channel.options.with_indifferent_access
     graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
     raise 'MicrosoftTeamsGraph class not available' if graph_class.nil?
 
-    graph = graph_class.new(
-      client_id:     options[:client_id],
-      client_secret: options[:client_secret],
-      tenant_id:     options[:tenant_id],
-      access_token:  options[:access_token],
-      refresh_token: options[:refresh_token],
-    )
-
-    # Refresh token before sync to ensure valid access
-    graph.refresh_access_token!
-    channel.options[:access_token]  = graph.access_token
-    channel.options[:refresh_token] = graph.refresh_token
-    channel.save!
-
-    graph
+    graph_class.with_channel_tokens(channel)
   end
 
   def resolve_organization(channel, options)

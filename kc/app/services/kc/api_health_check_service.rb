@@ -90,23 +90,9 @@ class Kc::ApiHealthCheckService
       return
     end
 
-    opts = channel.options
-    graph = graph_class.new(
-      client_id:     opts[:client_id],
-      client_secret: opts[:client_secret],
-      tenant_id:     opts[:tenant_id],
-      access_token:  opts[:access_token],
-      refresh_token: opts[:refresh_token],
-    )
-
-    # Refresh token
-    graph.refresh_access_token!
-
-    # Verify user access
+    # Atomic token refresh + verify user access
+    graph = graph_class.with_channel_tokens(channel, force_refresh: true)
     graph.me
-
-    # Persist refreshed tokens
-    persist_tokens(channel, access_token: graph.access_token, refresh_token: graph.refresh_token)
 
     Rails.logger.info "KC HealthCheck: #{service_name} channel #{channel.id} — OK"
     clear_alerts(channel, service_name)
