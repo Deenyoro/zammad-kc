@@ -207,15 +207,19 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
     if pending[:channel_id].present?
       # Reauthentication — update existing channel with fresh tokens
       channel = Channel.find_by!(id: pending[:channel_id], area: CHANNEL_AREA)
-      channel.options[:access_token]      = pending[:access_token]
-      channel.options[:refresh_token]     = pending[:refresh_token]
-      channel.options[:user_display_name] = pending[:user_display_name]
-      channel.options[:user_email]        = pending[:user_email]
-      channel.options[:extension_id]      = pending[:extension_id]
-      channel.options[:phone_number]      = selected_phone if available.include?(selected_phone)
-      channel.options[:available_phone_numbers] = available
-      channel.updated_by_id = saved_user_id
-      channel.save!
+      channel.with_lock do
+        channel.reload
+        channel.options[:access_token]      = pending[:access_token]
+        channel.options[:refresh_token]     = pending[:refresh_token]
+        channel.options[:token_refreshed_at] = Time.current.utc.iso8601
+        channel.options[:user_display_name] = pending[:user_display_name]
+        channel.options[:user_email]        = pending[:user_email]
+        channel.options[:extension_id]      = pending[:extension_id]
+        channel.options[:phone_number]      = selected_phone if available.include?(selected_phone)
+        channel.options[:available_phone_numbers] = available
+        channel.updated_by_id = saved_user_id
+        channel.save!
+      end
     else
       # New channel creation
       channel = Channel.create!(
@@ -227,6 +231,7 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
           server_url:               pending[:server_url],
           access_token:             pending[:access_token],
           refresh_token:            pending[:refresh_token],
+          token_refreshed_at:       Time.current.utc.iso8601,
           phone_number:             selected_phone,
           available_phone_numbers:  available,
           user_display_name:        pending[:user_display_name],

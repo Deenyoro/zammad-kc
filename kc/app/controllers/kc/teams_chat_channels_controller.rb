@@ -114,13 +114,17 @@ class Kc::TeamsChatChannelsController < ApplicationController
     if saved_params[:channel_id].present?
       # Reauthentication — update existing channel with fresh tokens
       channel = Channel.find_by!(id: saved_params[:channel_id], area: CHANNEL_AREA)
-      channel.options[:access_token]      = graph.access_token
-      channel.options[:refresh_token]     = graph.refresh_token
-      channel.options[:user_display_name] = user_info['displayName'] || user_info[:displayName]
-      channel.options[:user_email]        = user_info['mail'] || user_info['userPrincipalName'] || user_info[:mail]
-      channel.options[:user_id]           = user_info['id'] || user_info[:id]
-      channel.updated_by_id = saved_user_id
-      channel.save!
+      channel.with_lock do
+        channel.reload
+        channel.options[:access_token]      = graph.access_token
+        channel.options[:refresh_token]     = graph.refresh_token
+        channel.options[:token_refreshed_at] = Time.current.utc.iso8601
+        channel.options[:user_display_name] = user_info['displayName'] || user_info[:displayName]
+        channel.options[:user_email]        = user_info['mail'] || user_info['userPrincipalName'] || user_info[:mail]
+        channel.options[:user_id]           = user_info['id'] || user_info[:id]
+        channel.updated_by_id = saved_user_id
+        channel.save!
+      end
     else
       # New channel creation
       Channel.create!(
@@ -132,6 +136,7 @@ class Kc::TeamsChatChannelsController < ApplicationController
           tenant_id:           saved_params[:tenant_id],
           access_token:        graph.access_token,
           refresh_token:       graph.refresh_token,
+          token_refreshed_at:  Time.current.utc.iso8601,
           user_display_name:   user_info['displayName'] || user_info[:displayName],
           user_email:          user_info['mail'] || user_info['userPrincipalName'] || user_info[:mail],
           user_id:             user_info['id'] || user_info[:id],
