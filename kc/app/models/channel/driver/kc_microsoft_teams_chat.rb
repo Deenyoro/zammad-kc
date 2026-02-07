@@ -112,20 +112,13 @@ class Channel::Driver::KcMicrosoftTeamsChat
     graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
     raise 'KC Teams Chat: MicrosoftTeamsGraph class not found' if graph_class.nil?
 
-    if channel.present?
-      graph = graph_class.with_channel_tokens(channel)
-    else
-      # Fallback if no channel object passed (shouldn't happen in practice)
-      options = options.with_indifferent_access
-      graph = graph_class.new(
-        client_id:     options[:client_id],
-        client_secret: options[:client_secret],
-        tenant_id:     options[:tenant_id],
-        access_token:  options[:access_token],
-        refresh_token: options[:refresh_token],
-      )
-      graph.refresh_access_token!
+    # Look up channel if not passed (e.g. when called from Zammad's Channel#deliver)
+    if channel.nil?
+      channel = Channel.find_by(area: 'MicrosoftTeamsChat::Account', active: true)
+      raise 'KC Teams Chat: No Teams Chat channel found' if channel.nil?
     end
+
+    graph = graph_class.with_channel_tokens(channel)
 
     chat_id = attr[:chat_id]
     raise 'Missing chat_id for Teams Chat delivery' if chat_id.blank?
