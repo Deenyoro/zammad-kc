@@ -35,6 +35,50 @@ module Kc
       @refresh_token = refresh_token
     end
 
+    # Atomically reads tokens from a channel, refreshes if needed, persists,
+    # and returns a ready-to-use client. Uses database-level locking to prevent
+    # race conditions between concurrent threads (poll, send, health check).
+    #
+    # RingCentral access tokens last 1 hour. We skip refresh if the token
+    # was refreshed within the last 50 minutes to avoid unnecessary rotation
+    # of the refresh token (which RingCentral invalidates on each use).
+    #
+    # @param channel [Channel] the RingCentral SMS channel
+    # @param force_refresh [Boolean] force token refresh (e.g. for health checks)
+    # @return [Kc::RingcentralApi] client with valid tokens
+    def self.with_channel_tokens(channel, force_refresh: false)
+      channel.with_lock do
+        channel.reload
+        opts = channel.options.with_indifferent_access
+
+        rc = new(
+          client_id:     opts[:client_id],
+          client_secret: opts[:client_secret],
+          access_token:  opts[:access_token],
+          refresh_token: opts[:refresh_token],
+        )
+
+        last_refresh = opts[:token_refreshed_at]
+        last_refresh_time = begin
+                              Time.zone.parse(last_refresh.to_s)
+                            rescue ArgumentError, TypeError
+                              Time.at(0)
+                            end
+
+        needs_refresh = force_refresh || last_refresh.blank? || last_refresh_time < 50.minutes.ago
+
+        if needs_refresh
+          rc.refresh_access_token!
+          channel.options[:access_token]      = rc.access_token
+          channel.options[:refresh_token]     = rc.refresh_token
+          channel.options[:token_refreshed_at] = Time.current.utc.iso8601
+          channel.save!
+        end
+
+        rc
+      end
+    end
+
     # ------------------------------------------------------------------
     # OAuth2 helpers
     # ------------------------------------------------------------------

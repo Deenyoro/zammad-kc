@@ -54,13 +54,11 @@ class Kc::RingcentralSubscriptionManager
     sub_class = subscription_class
     return if sub_class.nil?
 
-    rc = build_rc_client
-    return if rc.nil?
+    rc_class = 'Kc::RingcentralApi'.safe_constantize
+    return if rc_class.nil?
 
     begin
-      rc.refresh_access_token!
-      persist_tokens(rc)
-      # Clear any previous token failure alerts since refresh succeeded
+      rc = rc_class.with_channel_tokens(channel)
       Kc::TokenAlertService.clear_alerts(channel: channel, service: 'RingCentral')
     rescue => e
       Rails.logger.error "KC RingCentral: Token refresh failed for channel #{channel.id}: #{e.message}"
@@ -86,14 +84,13 @@ class Kc::RingcentralSubscriptionManager
     sub_class = subscription_class
     return if sub_class.nil?
 
-    rc = build_rc_client
-    if rc
-      begin
-        rc.refresh_access_token!
-      rescue => e
-        Rails.logger.warn "KC RingCentral: Token refresh failed during cleanup: #{e.message}"
-      end
-    end
+    rc_class = 'Kc::RingcentralApi'.safe_constantize
+    rc = begin
+           rc_class&.with_channel_tokens(channel)
+         rescue => e
+           Rails.logger.warn "KC RingCentral: Token refresh failed during cleanup: #{e.message}"
+           nil
+         end
 
     sub_class.where(channel: channel).find_each do |sub|
       if rc
@@ -119,13 +116,11 @@ class Kc::RingcentralSubscriptionManager
   end
 
   def create_subscription
-    rc = build_rc_client
-    return nil if rc.nil?
+    rc_class = 'Kc::RingcentralApi'.safe_constantize
+    return nil if rc_class.nil?
 
     begin
-      rc.refresh_access_token!
-      persist_tokens(rc)
-      # Clear any previous token failure alerts since refresh succeeded
+      rc = rc_class.with_channel_tokens(channel)
       Kc::TokenAlertService.clear_alerts(channel: channel, service: 'RingCentral')
     rescue => e
       Rails.logger.error "KC RingCentral: Token refresh failed for channel #{channel.id}: #{e.message}"
@@ -186,30 +181,4 @@ class Kc::RingcentralSubscriptionManager
     "#{http_type}://#{fqdn}/api/v1/kc/ringcentral_sms_webhook"
   end
 
-  def build_rc_client
-    rc_class = 'Kc::RingcentralApi'.safe_constantize
-    if rc_class.nil?
-      Rails.logger.error 'KC RingCentral: RingcentralApi class not found'
-      return nil
-    end
-
-    opts = channel.options.with_indifferent_access
-    rc_class.new(
-      client_id:     opts[:client_id],
-      client_secret: opts[:client_secret],
-      access_token:  opts[:access_token],
-      refresh_token: opts[:refresh_token],
-    )
-  end
-
-  def persist_tokens(rc)
-    channel.with_lock do
-      channel.reload
-      channel.options[:access_token]  = rc.access_token
-      channel.options[:refresh_token] = rc.refresh_token
-      channel.save!
-    end
-  rescue => e
-    Rails.logger.error "KC RingCentral: Failed to persist tokens for channel #{channel.id}: #{e.message}"
-  end
 end

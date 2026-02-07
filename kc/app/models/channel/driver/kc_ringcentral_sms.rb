@@ -172,31 +172,26 @@ class Channel::Driver::KcRingcentralSms
   def deliver(options, attr, _notification = false, channel: nil)
     return if Setting.get('import_mode')
 
-    options = options.with_indifferent_access
-    attr    = attr.with_indifferent_access
+    attr = attr.with_indifferent_access
 
     rc_class = 'Kc::RingcentralApi'.safe_constantize
     raise 'KC RingCentral SMS: RingcentralApi class not found' if rc_class.nil?
 
-    rc = rc_class.new(
-      client_id:     options[:client_id],
-      client_secret: options[:client_secret],
-      access_token:  options[:access_token],
-      refresh_token: options[:refresh_token],
-    )
-    rc.refresh_access_token!
-
-    # RingCentral rotates refresh tokens — persist new tokens back to channel.
     if channel.present?
-      channel.with_lock do
-        channel.reload
-        channel.options[:access_token]  = rc.access_token
-        channel.options[:refresh_token] = rc.refresh_token
-        channel.save!
-      end
+      rc = rc_class.with_channel_tokens(channel)
+    else
+      # Fallback if no channel object passed (shouldn't happen in practice)
+      options = options.with_indifferent_access
+      rc = rc_class.new(
+        client_id:     options[:client_id],
+        client_secret: options[:client_secret],
+        access_token:  options[:access_token],
+        refresh_token: options[:refresh_token],
+      )
+      rc.refresh_access_token!
     end
 
-    from_phone = options[:phone_number]
+    from_phone = (channel&.options || options).with_indifferent_access[:phone_number]
     to_phone   = attr[:to_phone]
     raise 'Missing to_phone for RingCentral SMS delivery' if to_phone.blank?
     raise 'Missing phone_number in channel options' if from_phone.blank?
