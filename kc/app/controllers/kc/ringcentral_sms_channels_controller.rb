@@ -145,7 +145,6 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
     session[:kc_ringcentral_sms_pending_setup] = {
       client_id:            saved_params[:client_id],
       client_secret:        saved_params[:client_secret],
-      server_url:           saved_params[:server_url],
       access_token:         rc.access_token,
       refresh_token:        rc.refresh_token,
       user_display_name:    user_display_name,
@@ -228,7 +227,6 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
           adapter:                  'kc_ringcentral_sms',
           client_id:                pending[:client_id],
           client_secret:            pending[:client_secret],
-          server_url:               pending[:server_url],
           access_token:             pending[:access_token],
           refresh_token:            pending[:refresh_token],
           token_refreshed_at:       Time.current.utc.iso8601,
@@ -320,7 +318,6 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
     session[:kc_ringcentral_sms_oauth_params]  = {
       client_id:           options[:client_id],
       client_secret:       options[:client_secret],
-      server_url:          options[:server_url],
       group_id:            channel.group_id,
       thread_window_hours: options[:thread_window_hours],
       poll_cutoff_date:    options[:poll_cutoff_date],
