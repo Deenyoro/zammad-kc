@@ -38,24 +38,16 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
       return
     end
 
-    opts  = channel.options.with_indifferent_access
-    graph = graph_class.new(
-      client_id:     opts[:client_id],
-      client_secret: opts[:client_secret],
-      tenant_id:     opts[:tenant_id],
-      access_token:  opts[:access_token],
-      refresh_token: opts[:refresh_token],
-    )
-
     begin
-      graph.refresh_access_token!
-      persist_tokens(channel, graph)
+      graph = graph_class.with_channel_tokens(channel)
     rescue => e
       Rails.logger.error "KC Teams Poll: Token refresh failed for channel #{channel.id}: #{e.message} — " \
                          'ALL polling skipped for this channel until token is fixed. ' \
                          'Reauthenticate the channel in Admin > KC Extensions > Teams Chat.'
       return
     end
+
+    opts = channel.options.with_indifferent_access
 
     # Cache user email lookups within this poll cycle to avoid rate limits
     @user_email_cache = {}
@@ -250,14 +242,4 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
     end
   end
 
-  def persist_tokens(channel, graph)
-    channel.with_lock do
-      channel.reload
-      channel.options[:access_token]  = graph.access_token
-      channel.options[:refresh_token] = graph.refresh_token
-      channel.save!
-    end
-  rescue => e
-    Rails.logger.error "KC Teams Poll: Failed to persist tokens: #{e.message}"
-  end
 end
