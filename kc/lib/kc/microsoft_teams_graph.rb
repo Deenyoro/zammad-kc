@@ -75,7 +75,18 @@ module Kc
           channel.options[:access_token]      = graph.access_token
           channel.options[:refresh_token]     = graph.refresh_token
           channel.options[:token_refreshed_at] = Time.current.utc.iso8601
-          channel.save!
+          begin
+            channel.save!
+          rescue => e
+            # Token already rotated server-side — old refresh token is dead.
+            # Fall back to direct column update to avoid permanent token loss.
+            Rails.logger.error "KC TeamsGraph: Token save failed (#{e.message}), attempting direct update for channel #{channel.id}"
+            begin
+              channel.update_columns(options: channel.options)
+            rescue => e2
+              Rails.logger.error "KC TeamsGraph: CRITICAL — Failed to persist refreshed tokens for channel #{channel.id}: #{e2.message}. Channel may need re-authentication."
+            end
+          end
         end
 
         graph

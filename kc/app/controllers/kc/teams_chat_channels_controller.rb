@@ -160,27 +160,32 @@ class Kc::TeamsChatChannelsController < ApplicationController
   def update
     channel = Channel.find_by!(id: params[:id], area: CHANNEL_AREA)
 
-    if params[:group_id].present?
-      channel.group_id = params[:group_id]
+    channel.with_lock do
+      channel.reload
+
+      if params[:group_id].present?
+        channel.group_id = params[:group_id]
+      end
+
+      if params[:thread_window_hours].present?
+        channel.options[:thread_window_hours] = params[:thread_window_hours].to_i
+      end
+
+      if params[:poll_cutoff_date].present?
+        channel.options[:poll_cutoff_date] = params[:poll_cutoff_date]
+      end
+
+      if params.key?(:organization_id)
+        channel.options[:organization_id] = params[:organization_id].presence&.to_i
+      end
+
+      if params.key?(:directory_sync)
+        channel.options[:directory_sync] = ActiveModel::Type::Boolean.new.cast(params[:directory_sync])
+      end
+
+      channel.save!
     end
 
-    if params[:thread_window_hours].present?
-      channel.options[:thread_window_hours] = params[:thread_window_hours].to_i
-    end
-
-    if params[:poll_cutoff_date].present?
-      channel.options[:poll_cutoff_date] = params[:poll_cutoff_date]
-    end
-
-    if params.key?(:organization_id)
-      channel.options[:organization_id] = params[:organization_id].presence&.to_i
-    end
-
-    if params.key?(:directory_sync)
-      channel.options[:directory_sync] = ActiveModel::Type::Boolean.new.cast(params[:directory_sync])
-    end
-
-    channel.save!
     render json: channel
   end
 

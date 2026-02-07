@@ -177,21 +177,15 @@ class Channel::Driver::KcRingcentralSms
     rc_class = 'Kc::RingcentralApi'.safe_constantize
     raise 'KC RingCentral SMS: RingcentralApi class not found' if rc_class.nil?
 
-    if channel.present?
-      rc = rc_class.with_channel_tokens(channel)
-    else
-      # Fallback if no channel object passed (shouldn't happen in practice)
-      options = options.with_indifferent_access
-      rc = rc_class.new(
-        client_id:     options[:client_id],
-        client_secret: options[:client_secret],
-        access_token:  options[:access_token],
-        refresh_token: options[:refresh_token],
-      )
-      rc.refresh_access_token!
+    # Look up channel if not passed (e.g. when called from Zammad's Channel#deliver)
+    if channel.nil?
+      channel = Channel.find_by(area: 'RingCentralSms::Account', active: true)
+      raise 'KC RingCentral SMS: No RingCentral SMS channel found' if channel.nil?
     end
 
-    from_phone = (channel&.options || options).with_indifferent_access[:phone_number]
+    rc = rc_class.with_channel_tokens(channel)
+
+    from_phone = channel.options.with_indifferent_access[:phone_number]
     to_phone   = attr[:to_phone]
     raise 'Missing to_phone for RingCentral SMS delivery' if to_phone.blank?
     raise 'Missing phone_number in channel options' if from_phone.blank?
