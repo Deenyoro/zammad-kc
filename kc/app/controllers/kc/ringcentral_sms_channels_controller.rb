@@ -312,7 +312,6 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
     rc = rc_class.new(
       client_id:     options[:client_id],
       client_secret: options[:client_secret],
-      server_url:    options[:server_url],
     )
 
     state = SecureRandom.hex(24)
