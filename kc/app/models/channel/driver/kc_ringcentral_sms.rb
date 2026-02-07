@@ -133,7 +133,7 @@ class Channel::Driver::KcRingcentralSms
       UserInfo.current_user_id = agent.id
 
       article_type = Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first
-      sender       = Ticket::Article::Sender.find_by(name: 'Agent')
+      sender       = Ticket::Article::Sender.find_by(name: 'Agent') || Ticket::Article::Sender.first
 
       article = Ticket::Article.new(
         ticket_id:     ticket.id,
@@ -275,12 +275,12 @@ class Channel::Driver::KcRingcentralSms
 
   def create_article(ticket, channel, message_data, user, dedup_key, from_phone)
     article_type = Ticket::Article::Type.find_by(name: 'ringcentral_sms_message')
-    sender       = Ticket::Article::Sender.find_by(name: 'Customer')
+    sender       = Ticket::Article::Sender.find_by(name: 'Customer') || Ticket::Article::Sender.first
 
     # Fallback if article type migration hasn't run yet
     if article_type.nil?
       Rails.logger.warn 'KC RingCentral SMS: ringcentral_sms_message article type not found, falling back to note'
-      article_type = Ticket::Article::Type.find_by(name: 'note')
+      article_type = Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first
     end
 
     article = Ticket::Article.new(
@@ -312,13 +312,10 @@ class Channel::Driver::KcRingcentralSms
     rc_class = 'Kc::RingcentralApi'.safe_constantize
     return if rc_class.nil?
 
-    opts = channel.options.with_indifferent_access
-    rc = rc_class.new(
-      client_id:     opts[:client_id],
-      client_secret: opts[:client_secret],
-      access_token:  opts[:access_token],
-      refresh_token: opts[:refresh_token],
-    )
+    # Use atomic token refresh — tokens are typically fresh from the caller's
+    # with_channel_tokens call, so the 50-min cache will skip the refresh.
+    # Critical for the webhook job path which has no prior token refresh.
+    rc = rc_class.with_channel_tokens(channel)
 
     Array(message_data[:attachments]).each do |att|
       begin

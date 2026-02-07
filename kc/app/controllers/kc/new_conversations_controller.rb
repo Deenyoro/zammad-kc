@@ -121,8 +121,8 @@ class Kc::NewConversationsController < ApplicationController
 
       if skip_send
         # Internal note — won't trigger SMS delivery, but ticket has SMS routing
-        article_type = Ticket::Article::Type.find_by(name: 'note')
-        sender       = Ticket::Article::Sender.find_by(name: 'Agent')
+        article_type = Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first
+        sender       = Ticket::Article::Sender.find_by(name: 'Agent') || Ticket::Article::Sender.first
 
         Ticket::Article.create!(
           ticket_id:     ticket.id,
@@ -154,8 +154,9 @@ class Kc::NewConversationsController < ApplicationController
         end
       else
         article_type = Ticket::Article::Type.find_by(name: 'ringcentral_sms_message') ||
-                       Ticket::Article::Type.find_by(name: 'note')
-        sender = Ticket::Article::Sender.find_by(name: 'Agent')
+                       Ticket::Article::Type.find_by(name: 'note') ||
+                       Ticket::Article::Type.first
+        sender = Ticket::Article::Sender.find_by(name: 'Agent') || Ticket::Article::Sender.first
 
         Ticket::Article.create!(
           ticket_id:     ticket.id,
@@ -274,8 +275,9 @@ class Kc::NewConversationsController < ApplicationController
       )
 
       article_type = Ticket::Article::Type.find_by(name: 'teams_chat_message') ||
-                     Ticket::Article::Type.find_by(name: 'note')
-      sender = Ticket::Article::Sender.find_by(name: 'Agent')
+                     Ticket::Article::Type.find_by(name: 'note') ||
+                     Ticket::Article::Type.first
+      sender = Ticket::Article::Sender.find_by(name: 'Agent') || Ticket::Article::Sender.first
 
       Ticket::Article.create!(
         ticket_id:     ticket.id,

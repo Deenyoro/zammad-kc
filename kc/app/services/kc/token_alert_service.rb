@@ -35,7 +35,7 @@ class Kc::TokenAlertService
 
     # Closes any open alert tickets for this channel/service when auth succeeds.
     def clear_alerts(channel:, service:)
-      find_alert_tickets(channel, service, state: 'open').each do |ticket|
+      find_alert_tickets(channel, service, states: %w[new open]).each do |ticket|
         close_ticket(ticket, service)
       end
     rescue => e
@@ -63,7 +63,7 @@ class Kc::TokenAlertService
 
     def find_or_create_alert_ticket(channel, service, error)
       # Look for existing open ticket
-      existing = find_alert_tickets(channel, service, state: 'open').first
+      existing = find_alert_tickets(channel, service, states: %w[new open]).first
 
       if existing
         update_ticket(existing, service, error)
@@ -72,13 +72,13 @@ class Kc::TokenAlertService
       end
     end
 
-    def find_alert_tickets(channel, service, state: nil)
+    def find_alert_tickets(channel, service, states: nil)
       query = Ticket.where(
         title: alert_ticket_title(service, channel),
       )
 
-      if state
-        state_ids = Ticket::State.where(name: state).pluck(:id)
+      if states
+        state_ids = Ticket::State.where(name: states).pluck(:id)
         query = query.where(state_id: state_ids)
       end
 
@@ -94,7 +94,7 @@ class Kc::TokenAlertService
         group: group,
         customer_id: 1, # System user
         state: Ticket::State.find_by(name: 'new') || Ticket::State.first,
-        priority: Ticket::Priority.find_by(name: 'high') || Ticket::Priority.find_by(name: '2 normal') || Ticket::Priority.first,
+        priority: Ticket::Priority.find_by(name: '3 high') || Ticket::Priority.find_by(name: '2 normal') || Ticket::Priority.first,
         preferences: {
           kc_token_alert: true,
           kc_channel_id: channel.id,
@@ -115,8 +115,8 @@ class Kc::TokenAlertService
         subject: "Token refresh still failing",
         body: ticket_update_body(error),
         internal: true,
-        type: Ticket::Article::Type.find_by(name: 'note'),
-        sender: Ticket::Article::Sender.find_by(name: 'System'),
+        type: Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first,
+        sender: Ticket::Article::Sender.find_by(name: 'System') || Ticket::Article::Sender.first,
         updated_by_id: 1,
         created_by_id: 1,
       )
@@ -139,8 +139,8 @@ class Kc::TokenAlertService
         subject: "Token refresh successful",
         body: "Authentication has been restored. Token refresh is now working correctly.",
         internal: true,
-        type: Ticket::Article::Type.find_by(name: 'note'),
-        sender: Ticket::Article::Sender.find_by(name: 'System'),
+        type: Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first,
+        sender: Ticket::Article::Sender.find_by(name: 'System') || Ticket::Article::Sender.first,
         updated_by_id: 1,
         created_by_id: 1,
       )
@@ -154,8 +154,8 @@ class Kc::TokenAlertService
         subject: "Token refresh failure detected",
         body: ticket_body(channel, service, error),
         internal: true,
-        type: Ticket::Article::Type.find_by(name: 'note'),
-        sender: Ticket::Article::Sender.find_by(name: 'System'),
+        type: Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first,
+        sender: Ticket::Article::Sender.find_by(name: 'System') || Ticket::Article::Sender.first,
         updated_by_id: 1,
         created_by_id: 1,
       )

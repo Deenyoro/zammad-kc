@@ -224,12 +224,12 @@ class Channel::Driver::KcMicrosoftTeamsChat
 
   def create_article(ticket, channel, message_data, user, message_id)
     article_type = Ticket::Article::Type.find_by(name: 'teams_chat_message')
-    sender       = Ticket::Article::Sender.find_by(name: 'Customer')
+    sender       = Ticket::Article::Sender.find_by(name: 'Customer') || Ticket::Article::Sender.first
 
     # Fallback: if the article type migration hasn't run yet, use 'note'
     if article_type.nil?
       Rails.logger.warn 'KC Teams Chat: teams_chat_message article type not found, falling back to note'
-      article_type = Ticket::Article::Type.find_by(name: 'note')
+      article_type = Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first
     end
 
     content_type = message_data[:body_content_type] == 'html' ? 'text/html' : 'text/plain'
@@ -268,7 +268,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
 
   def create_agent_article(ticket, channel, message_data, user, message_id)
     article_type = Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first
-    sender       = Ticket::Article::Sender.find_by(name: 'Agent')
+    sender       = Ticket::Article::Sender.find_by(name: 'Agent') || Ticket::Article::Sender.first
 
     content_type = message_data[:body_content_type] == 'html' ? 'text/html' : 'text/plain'
     body_content = message_data[:body_content] || ''

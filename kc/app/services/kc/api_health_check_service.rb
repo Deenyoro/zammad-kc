@@ -90,8 +90,9 @@ class Kc::ApiHealthCheckService
       return
     end
 
-    # Atomic token refresh + verify user access
-    graph = graph_class.with_channel_tokens(channel, force_refresh: true)
+    # Use cached token (refreshed within 50-min window) — avoids unnecessary
+    # token rotation which burns through refresh tokens on every health check cycle.
+    graph = graph_class.with_channel_tokens(channel)
     graph.me
 
     Rails.logger.info "KC HealthCheck: #{service_name} channel #{channel.id} — OK"
@@ -113,8 +114,11 @@ class Kc::ApiHealthCheckService
       return
     end
 
-    # Force refresh to verify the token is actually valid
-    rc = rc_class.with_channel_tokens(channel, force_refresh: true)
+    # Use cached token (refreshed within 50-min window) — avoids unnecessary
+    # token rotation. RingCentral invalidates refresh tokens on each use, so
+    # force_refresh every 5 min would burn ~12 tokens/hour and reintroduce the
+    # race condition that causes permanent token death on pod kill.
+    rc = rc_class.with_channel_tokens(channel)
 
     # Verify extension access
     rc.extension_info
