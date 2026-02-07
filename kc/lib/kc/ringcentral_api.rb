@@ -65,7 +65,10 @@ module Kc
                               Time.at(0)
                             end
 
-        needs_refresh = force_refresh || last_refresh.blank? || last_refresh_time < 50.minutes.ago
+        needs_refresh = force_refresh ||
+                        last_refresh.blank? ||
+                        last_refresh_time < 50.minutes.ago ||
+                        opts[:access_token].blank?
 
         if needs_refresh
           rc.refresh_access_token!
