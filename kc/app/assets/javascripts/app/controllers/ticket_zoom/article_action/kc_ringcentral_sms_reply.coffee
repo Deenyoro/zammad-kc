@@ -48,11 +48,20 @@ class KcRingcentralSmsReply
 
   @articleTypes: (articleTypes, ticket, ui) ->
     return articleTypes if ticket.currentView() is 'customer'
-    return articleTypes if !ticket || !ticket.create_article_type_id
+    return articleTypes if !ticket
 
-    articleTypeCreate = App.TicketArticleType.find(ticket.create_article_type_id)
-    return articleTypes if !articleTypeCreate
-    return articleTypes if articleTypeCreate.name isnt 'ringcentral_sms_message'
+    # Check if this is an SMS ticket via create_article_type_id or ticket preferences
+    isSmsTicket = false
+    if ticket.create_article_type_id
+      articleTypeCreate = App.TicketArticleType.find(ticket.create_article_type_id)
+      isSmsTicket = true if articleTypeCreate && articleTypeCreate.name is 'ringcentral_sms_message'
+
+    # Fallback: check ticket preferences (covers skip-send tickets where
+    # create_article_type_id may not match on older tickets)
+    if !isSmsTicket && ticket.preferences && ticket.preferences.ringcentral_sms
+      isSmsTicket = true
+
+    return articleTypes if !isSmsTicket
 
     articleTypes.push {
       name:       'ringcentral_sms_message'

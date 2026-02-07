@@ -44,11 +44,13 @@
       </div>
 
       <div class="form-group">
-        <label class="checkbox-replacement" style="display:inline-block; cursor:pointer;">
+        <label class="inline-label checkbox-replacement">
           <input type="checkbox" class="js-skipSend" name="skip_send" value="1">
-          <%- @T("Don't send initial SMS (create ticket only)") %>
+          <%- @Icon('checkbox', 'icon-unchecked') %>
+          <%- @Icon('checkbox-checked', 'icon-checked') %>
+          <span class="label-text"><%- @T("Don't send initial SMS (create ticket only)") %></span>
         </label>
-        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('The ticket will be created with SMS routing so replies are sent as texts, but the initial message will not be texted to the recipient.') %></p>
+        <p class="help-text"><%- @T('The ticket will be created with SMS routing so replies are sent as texts, but the initial message will not be texted to the recipient.') %></p>
       </div>
 
       <div class="form-group">
