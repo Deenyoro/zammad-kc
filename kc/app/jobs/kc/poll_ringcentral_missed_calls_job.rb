@@ -47,21 +47,14 @@ class Kc::PollRingcentralMissedCallsJob < ApplicationJob
       return
     end
 
-    opts = channel.options.with_indifferent_access
-    rc = rc_class.new(
-      client_id:     opts[:client_id],
-      client_secret: opts[:client_secret],
-      access_token:  opts[:access_token],
-      refresh_token: opts[:refresh_token],
-    )
-
     begin
-      rc.refresh_access_token!
-      persist_tokens(channel, rc)
+      rc = rc_class.with_channel_tokens(channel)
     rescue StandardError => e
       Rails.logger.error "KC RingCentral Missed Calls: Token refresh failed for channel #{channel.id}: #{e.message}"
       return
     end
+
+    opts = channel.options.with_indifferent_access
 
     # Determine poll window
     last_poll = opts[:last_missed_call_poll_at]
@@ -280,14 +273,4 @@ class Kc::PollRingcentralMissedCallsJob < ApplicationJob
     )
   end
 
-  def persist_tokens(channel, rc)
-    channel.with_lock do
-      channel.reload
-      channel.options[:access_token]  = rc.access_token
-      channel.options[:refresh_token] = rc.refresh_token
-      channel.save!
-    end
-  rescue StandardError => e
-    Rails.logger.error "KC RingCentral Missed Calls: Failed to persist tokens: #{e.message}"
-  end
 end
