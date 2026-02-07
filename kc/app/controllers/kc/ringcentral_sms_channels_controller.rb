@@ -267,27 +267,32 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
   def update
     channel = Channel.find_by!(id: params[:id], area: CHANNEL_AREA)
 
-    if params[:group_id].present?
-      channel.group_id = params[:group_id]
-    end
+    channel.with_lock do
+      channel.reload
 
-    if params[:thread_window_hours].present?
-      channel.options[:thread_window_hours] = params[:thread_window_hours].to_i
-    end
-
-    if params[:poll_cutoff_date].present?
-      channel.options[:poll_cutoff_date] = params[:poll_cutoff_date]
-    end
-
-    if params[:phone_number].present?
-      available = channel.options[:available_phone_numbers] || channel.options['available_phone_numbers'] || []
-      selected  = params[:phone_number].to_s.strip
-      if available.include?(selected)
-        channel.options[:phone_number] = selected
+      if params[:group_id].present?
+        channel.group_id = params[:group_id]
       end
+
+      if params[:thread_window_hours].present?
+        channel.options[:thread_window_hours] = params[:thread_window_hours].to_i
+      end
+
+      if params[:poll_cutoff_date].present?
+        channel.options[:poll_cutoff_date] = params[:poll_cutoff_date]
+      end
+
+      if params[:phone_number].present?
+        available = channel.options[:available_phone_numbers] || channel.options['available_phone_numbers'] || []
+        selected  = params[:phone_number].to_s.strip
+        if available.include?(selected)
+          channel.options[:phone_number] = selected
+        end
+      end
+
+      channel.save!
     end
 
-    channel.save!
     render json: channel
   end
 
