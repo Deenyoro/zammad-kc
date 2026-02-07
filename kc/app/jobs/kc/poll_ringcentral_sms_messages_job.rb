@@ -39,17 +39,8 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
       return
     end
 
-    opts = channel.options.with_indifferent_access
-    rc = rc_class.new(
-      client_id:     opts[:client_id],
-      client_secret: opts[:client_secret],
-      access_token:  opts[:access_token],
-      refresh_token: opts[:refresh_token],
-    )
-
     begin
-      rc.refresh_access_token!
-      persist_tokens(channel, rc)
+      rc = rc_class.with_channel_tokens(channel)
       clear_auth_error(channel)
     rescue StandardError => e
       store_auth_error(channel, e.message)
@@ -57,6 +48,8 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
                          'Polling skipped this cycle. Reauthenticate the channel in Admin > KC Extensions > RingCentral SMS if this persists.'
       return
     end
+
+    opts = channel.options.with_indifferent_access
 
     # Determine poll window
     # Use last_poll_at if available. On first poll, use poll_cutoff_date if
@@ -207,17 +200,6 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
     }
 
     driver.process_outbound(channel.options, message_data, channel)
-  end
-
-  def persist_tokens(channel, rc)
-    channel.with_lock do
-      channel.reload
-      channel.options[:access_token]  = rc.access_token
-      channel.options[:refresh_token] = rc.refresh_token
-      channel.save!
-    end
-  rescue StandardError => e
-    Rails.logger.error "KC RingCentral Poll: Failed to persist tokens: #{e.message}"
   end
 
   def store_auth_error(channel, message)

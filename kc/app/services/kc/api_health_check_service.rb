@@ -127,22 +127,11 @@ class Kc::ApiHealthCheckService
       return
     end
 
-    opts = channel.options
-    rc = rc_class.new(
-      client_id:     opts[:client_id],
-      client_secret: opts[:client_secret],
-      access_token:  opts[:access_token],
-      refresh_token: opts[:refresh_token],
-    )
-
-    # Refresh token
-    rc.refresh_access_token!
+    # Force refresh to verify the token is actually valid
+    rc = rc_class.with_channel_tokens(channel, force_refresh: true)
 
     # Verify extension access
     rc.extension_info
-
-    # Persist refreshed tokens (RingCentral rotates refresh tokens)
-    persist_tokens(channel, access_token: rc.access_token, refresh_token: rc.refresh_token)
 
     Rails.logger.info "KC HealthCheck: #{service_name} channel #{channel.id} — OK"
     clear_alerts(channel, service_name)
@@ -194,17 +183,19 @@ class Kc::ApiHealthCheckService
     return if closed_state.nil?
 
     Ticket.where(title: title, state_id: open_state_ids).find_each do |ticket|
-      ticket.update!(state: closed_state)
+      ticket.update!(state: closed_state, updated_by_id: 1)
 
       Ticket::Article.create!(
-        ticket:   ticket,
-        from:     "System (#{service_name})",
-        to:       alert_group&.name || 'System',
-        subject:  'Connection restored',
-        body:     "API health check for #{service_name} is now passing. Connection has been restored.\n\nTime: #{Time.current.strftime('%Y-%m-%d %H:%M:%S %Z')}",
-        internal: true,
-        type:     Ticket::Article::Type.find_by(name: 'note'),
-        sender:   Ticket::Article::Sender.find_by(name: 'System'),
+        ticket:        ticket,
+        from:          "System (#{service_name})",
+        to:            alert_group&.name || 'System',
+        subject:       'Connection restored',
+        body:          "API health check for #{service_name} is now passing. Connection has been restored.\n\nTime: #{Time.current.strftime('%Y-%m-%d %H:%M:%S %Z')}",
+        internal:      true,
+        type:          Ticket::Article::Type.find_by(name: 'note'),
+        sender:        Ticket::Article::Sender.find_by(name: 'System'),
+        updated_by_id: 1,
+        created_by_id: 1,
       )
     end
   rescue => e
@@ -244,12 +235,14 @@ class Kc::ApiHealthCheckService
     owner_id = Setting.get('kc_api_health_check_owner_id')
 
     attrs = {
-      title:       title,
-      group:       group,
-      customer_id: 1, # System user
-      state:       Ticket::State.find_by(name: 'new'),
-      priority:    priority,
-      preferences: {
+      title:         title,
+      group:         group,
+      customer_id:   1, # System user
+      state:         Ticket::State.find_by(name: 'new'),
+      priority:      priority,
+      updated_by_id: 1,
+      created_by_id: 1,
+      preferences:   {
         kc_api_health_check: true,
         kc_channel_id:       channel.id,
         kc_service:          service_name,
@@ -260,14 +253,16 @@ class Kc::ApiHealthCheckService
     ticket = Ticket.create!(attrs)
 
     Ticket::Article.create!(
-      ticket:   ticket,
-      from:     "System (#{service_name})",
-      to:       group.name,
-      subject:  'API health check failure detected',
-      body:     alert_body(channel, service_name, error),
-      internal: true,
-      type:     Ticket::Article::Type.find_by(name: 'note'),
-      sender:   Ticket::Article::Sender.find_by(name: 'System'),
+      ticket:        ticket,
+      from:          "System (#{service_name})",
+      to:            group.name,
+      subject:       'API health check failure detected',
+      body:          alert_body(channel, service_name, error),
+      internal:      true,
+      type:          Ticket::Article::Type.find_by(name: 'note'),
+      sender:        Ticket::Article::Sender.find_by(name: 'System'),
+      updated_by_id: 1,
+      created_by_id: 1,
     )
 
     ticket
@@ -275,14 +270,16 @@ class Kc::ApiHealthCheckService
 
   def add_failure_note(ticket, service_name, error)
     Ticket::Article.create!(
-      ticket:   ticket,
-      from:     "System (#{service_name})",
-      to:       alert_group.name,
-      subject:  'Health check still failing',
-      body:     "API health check is still failing.\n\nLatest Error: #{error}\nTime: #{Time.current.strftime('%Y-%m-%d %H:%M:%S %Z')}\n\nPlease investigate and re-authenticate if necessary.",
-      internal: true,
-      type:     Ticket::Article::Type.find_by(name: 'note'),
-      sender:   Ticket::Article::Sender.find_by(name: 'System'),
+      ticket:        ticket,
+      from:          "System (#{service_name})",
+      to:            alert_group.name,
+      subject:       'Health check still failing',
+      body:          "API health check is still failing.\n\nLatest Error: #{error}\nTime: #{Time.current.strftime('%Y-%m-%d %H:%M:%S %Z')}\n\nPlease investigate and re-authenticate if necessary.",
+      internal:      true,
+      type:          Ticket::Article::Type.find_by(name: 'note'),
+      sender:        Ticket::Article::Sender.find_by(name: 'System'),
+      updated_by_id: 1,
+      created_by_id: 1,
     )
     ticket
   end
