@@ -143,6 +143,15 @@ class Kc::NewConversationsController < ApplicationController
           updated_by_id: current_user.id,
           created_by_id: current_user.id,
         )
+
+        # Override create_article_type_id so the frontend recognizes this as
+        # an SMS ticket and offers the SMS reply article type. Without this,
+        # the first article (a note) sets create_article_type_id to "note"
+        # and the SMS reply option never appears.
+        sms_type = Ticket::Article::Type.find_by(name: 'ringcentral_sms_message')
+        if sms_type
+          ticket.update_columns(create_article_type_id: sms_type.id)
+        end
       else
         article_type = Ticket::Article::Type.find_by(name: 'ringcentral_sms_message') ||
                        Ticket::Article::Type.find_by(name: 'note')
