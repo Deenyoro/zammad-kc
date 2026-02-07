@@ -36,22 +36,14 @@ class Kc::ProcessTeamsChatWebhookJob < ApplicationJob
     end
 
     # Fetch full message from Graph API
-    opts  = channel.options
-    graph = graph_class.new(
-      client_id:     opts[:client_id],
-      client_secret: opts[:client_secret],
-      tenant_id:     opts[:tenant_id],
-      access_token:  opts[:access_token],
-      refresh_token: opts[:refresh_token],
-    )
-
     begin
-      graph.refresh_access_token!
-      persist_tokens(channel, graph)
+      graph = graph_class.with_channel_tokens(channel)
     rescue => e
       Rails.logger.error "KC Teams Job: Token refresh failed: #{e.message}"
       raise
     end
+
+    opts = channel.options
 
     message = graph.get_chat_message(chat_id, message_id)
 
@@ -133,14 +125,4 @@ class Kc::ProcessTeamsChatWebhookJob < ApplicationJob
 
   private
 
-  def persist_tokens(channel, graph)
-    channel.with_lock do
-      channel.reload
-      channel.options[:access_token]  = graph.access_token
-      channel.options[:refresh_token] = graph.refresh_token
-      channel.save!
-    end
-  rescue => e
-    Rails.logger.error "KC Teams Job: Failed to persist tokens: #{e.message}"
-  end
 end

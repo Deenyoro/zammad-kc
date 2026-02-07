@@ -50,13 +50,11 @@ class Kc::TeamsSubscriptionManager
     sub_class = subscription_class
     return if sub_class.nil?
 
-    graph = build_graph_client
-    return if graph.nil?
+    graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
+    return if graph_class.nil?
 
     begin
-      graph.refresh_access_token!
-      persist_tokens(graph)
-      # Clear any previous token failure alerts since refresh succeeded
+      graph = graph_class.with_channel_tokens(channel)
       Kc::TokenAlertService.clear_alerts(channel: channel, service: 'Microsoft Teams')
     rescue => e
       Rails.logger.error "KC Teams: Token refresh failed for channel #{channel.id}: #{e.message}"
@@ -82,14 +80,13 @@ class Kc::TeamsSubscriptionManager
     sub_class = subscription_class
     return if sub_class.nil?
 
-    graph = build_graph_client
-    if graph
-      begin
-        graph.refresh_access_token!
-      rescue => e
-        Rails.logger.warn "KC Teams: Token refresh failed during cleanup: #{e.message}"
-      end
-    end
+    graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
+    graph = begin
+              graph_class&.with_channel_tokens(channel)
+            rescue => e
+              Rails.logger.warn "KC Teams: Token refresh failed during cleanup: #{e.message}"
+              nil
+            end
 
     sub_class.where(channel: channel).find_each do |sub|
       if graph
@@ -115,13 +112,11 @@ class Kc::TeamsSubscriptionManager
   end
 
   def create_subscription(chat_id)
-    graph = build_graph_client
-    return nil if graph.nil?
+    graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
+    return nil if graph_class.nil?
 
     begin
-      graph.refresh_access_token!
-      persist_tokens(graph)
-      # Clear any previous token failure alerts since refresh succeeded
+      graph = graph_class.with_channel_tokens(channel)
       Kc::TokenAlertService.clear_alerts(channel: channel, service: 'Microsoft Teams')
     rescue => e
       Rails.logger.error "KC Teams: Token refresh failed for channel #{channel.id}: #{e.message}"
@@ -185,31 +180,4 @@ class Kc::TeamsSubscriptionManager
     "#{http_type}://#{fqdn}/api/v1/kc/teams_chat_webhook"
   end
 
-  def build_graph_client
-    graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
-    if graph_class.nil?
-      Rails.logger.error 'KC Teams: MicrosoftTeamsGraph class not found'
-      return nil
-    end
-
-    opts = channel.options
-    graph_class.new(
-      client_id:     opts[:client_id],
-      client_secret: opts[:client_secret],
-      tenant_id:     opts[:tenant_id],
-      access_token:  opts[:access_token],
-      refresh_token: opts[:refresh_token],
-    )
-  end
-
-  def persist_tokens(graph)
-    channel.with_lock do
-      channel.reload
-      channel.options[:access_token]  = graph.access_token
-      channel.options[:refresh_token] = graph.refresh_token
-      channel.save!
-    end
-  rescue => e
-    Rails.logger.error "KC Teams: Failed to persist tokens for channel #{channel.id}: #{e.message}"
-  end
 end
