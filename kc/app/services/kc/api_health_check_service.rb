@@ -164,8 +164,8 @@ class Kc::ApiHealthCheckService
         subject:       'Connection restored',
         body:          "API health check for #{service_name} is now passing. Connection has been restored.\n\nTime: #{Time.current.strftime('%Y-%m-%d %H:%M:%S %Z')}",
         internal:      true,
-        type:          Ticket::Article::Type.find_by(name: 'note'),
-        sender:        Ticket::Article::Sender.find_by(name: 'System'),
+        type:          Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first,
+        sender:        Ticket::Article::Sender.find_by(name: 'System') || Ticket::Article::Sender.first,
         updated_by_id: 1,
         created_by_id: 1,
       )
@@ -204,14 +204,20 @@ class Kc::ApiHealthCheckService
   def create_alert_ticket(channel, service_name, error, title)
     group    = alert_group
     priority = alert_priority
+
+    if group.nil?
+      Rails.logger.error "KC HealthCheck: Cannot create alert ticket — no group available"
+      return nil
+    end
+
     owner_id = Setting.get('kc_api_health_check_owner_id')
 
     attrs = {
       title:         title,
       group:         group,
       customer_id:   1, # System user
-      state:         Ticket::State.find_by(name: 'new'),
-      priority:      priority,
+      state:         Ticket::State.find_by(name: 'new') || Ticket::State.first,
+      priority:      priority || Ticket::Priority.first,
       updated_by_id: 1,
       created_by_id: 1,
       preferences:   {
@@ -231,8 +237,8 @@ class Kc::ApiHealthCheckService
       subject:       'API health check failure detected',
       body:          alert_body(channel, service_name, error),
       internal:      true,
-      type:          Ticket::Article::Type.find_by(name: 'note'),
-      sender:        Ticket::Article::Sender.find_by(name: 'System'),
+      type:          Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first,
+      sender:        Ticket::Article::Sender.find_by(name: 'System') || Ticket::Article::Sender.first,
       updated_by_id: 1,
       created_by_id: 1,
     )
@@ -244,12 +250,12 @@ class Kc::ApiHealthCheckService
     Ticket::Article.create!(
       ticket:        ticket,
       from:          "System (#{service_name})",
-      to:            alert_group.name,
+      to:            alert_group&.name || 'System',
       subject:       'Health check still failing',
       body:          "API health check is still failing.\n\nLatest Error: #{error}\nTime: #{Time.current.strftime('%Y-%m-%d %H:%M:%S %Z')}\n\nPlease investigate and re-authenticate if necessary.",
       internal:      true,
-      type:          Ticket::Article::Type.find_by(name: 'note'),
-      sender:        Ticket::Article::Sender.find_by(name: 'System'),
+      type:          Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first,
+      sender:        Ticket::Article::Sender.find_by(name: 'System') || Ticket::Article::Sender.first,
       updated_by_id: 1,
       created_by_id: 1,
     )
