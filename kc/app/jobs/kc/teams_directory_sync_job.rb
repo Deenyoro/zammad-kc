@@ -180,17 +180,28 @@ class Kc::TeamsDirectorySyncJob < ApplicationJob
   # then falls back to the Graph Authentication Methods API for MFA-registered phones.
   def resolve_mobile_phone(ad_user, ad_id, graph)
     phone = ad_user['mobilePhone'].presence
-    return phone if phone.present?
-    return nil if graph.nil?
+    if phone.blank? && graph.present?
+      begin
+        result = graph.get_user_phone_methods(ad_id)
+        methods = result['value'] || []
+        mobile_method = methods.find { |m| m['phoneType'] == 'mobile' }
+        phone = mobile_method&.dig('phoneNumber').presence
+      rescue => e
+        Rails.logger.warn "KC Teams Directory Sync: Failed to fetch phone methods for #{ad_id}: #{e.message}"
+      end
+    end
 
-    begin
-      result = graph.get_user_phone_methods(ad_id)
-      methods = result['value'] || []
-      mobile_method = methods.find { |m| m['phoneType'] == 'mobile' }
-      mobile_method&.dig('phoneNumber').presence
-    rescue => e
-      Rails.logger.warn "KC Teams Directory Sync: Failed to fetch phone methods for #{ad_id}: #{e.message}"
-      nil
+    normalize_phone(phone)
+  end
+
+  def normalize_phone(number)
+    return nil if number.blank?
+
+    digits = number.to_s.gsub(/[^\d]/, '')
+    case digits.length
+    when 10 then "+1#{digits}"
+    when 11 then "+#{digits}"
+    else "+#{digits}"
     end
   end
 
