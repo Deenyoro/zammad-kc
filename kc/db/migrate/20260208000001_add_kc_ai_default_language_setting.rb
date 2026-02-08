@@ -9,7 +9,7 @@
 #   - Guarded by system_init_done check
 #   - Idempotent via create_if_not_exists
 #   - Safe destroy in down migration
-class AddKcAiDefaultLanguageSetting < ActiveRecord::Migration[7.0]
+class AddKcAIDefaultLanguageSetting < ActiveRecord::Migration[7.0]
   def up
     # Guard: only run after Zammad is fully initialized
     return if !Setting.exists?(name: 'system_init_done')
