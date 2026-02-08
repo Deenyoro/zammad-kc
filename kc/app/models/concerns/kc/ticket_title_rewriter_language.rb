@@ -1,11 +1,18 @@
 # frozen_string_literal: true
 
-# KC Overlay: Forces ticket title rewriter to use the configured default language.
+# KC Overlay: Override ticket title rewriter to use configured default language.
 #
-# The upstream instruction says "preserve the original input language" but
-# the AI model often ignores this and generates random languages. This
-# override uses the kc_ai_default_language setting to enforce a specific
-# language, or falls back to the original behavior if not set.
+# Problem: The upstream instruction says "preserve the original input language"
+# but AI models often ignore this and generate titles in random languages.
+#
+# Solution: This overlay reads kc_ai_default_language setting and explicitly
+# instructs the AI to use that language. Falls back to upstream behavior if
+# the setting is missing or empty.
+#
+# Hardening:
+#   - Safe Setting.get with rescue (survives if Setting class changes)
+#   - Validates language code against known list
+#   - Falls back gracefully to upstream behavior on any error
 module Kc::TicketTitleRewriterLanguage
   extend ActiveSupport::Concern
 
@@ -25,20 +32,38 @@ module Kc::TicketTitleRewriterLanguage
   }.freeze
 
   def instruction
-    default_language = Setting.get('kc_ai_default_language').presence
+    language_name = kc_resolve_language_name
 
-    language_instruction = if default_language && LANGUAGE_NAMES[default_language]
-                             "- Always generate the title in #{LANGUAGE_NAMES[default_language]}, regardless of the input language."
+    language_instruction = if language_name
+                             "- Always generate the title in #{language_name}, regardless of the input language."
                            else
                              '- Always preserve the original input language (do not translate).'
                            end
 
-    "Stick to the following principles:
+    <<~INSTRUCTION.strip
+      Stick to the following principles:
 
-#{language_instruction}
-- Summarize the provided content and come up with a suitable title.
-- Try to use a maximum of 50 characters.
-- Never explain your given answer.
-- Only answer with the value in the \"title\" field inside the JSON structure."
+      #{language_instruction}
+      - Summarize the provided content and come up with a suitable title.
+      - Try to use a maximum of 50 characters.
+      - Never explain your given answer.
+      - Only answer with the value in the "title" field inside the JSON structure.
+    INSTRUCTION
+  end
+
+  private
+
+  # Safely retrieve the configured language name.
+  # Returns nil if setting is missing, empty, or invalid.
+  def kc_resolve_language_name
+    return nil unless defined?(Setting)
+
+    language_code = Setting.get('kc_ai_default_language')
+    return nil if language_code.blank?
+
+    LANGUAGE_NAMES[language_code.to_s.strip]
+  rescue StandardError => e
+    Rails.logger.warn("KC: Failed to read kc_ai_default_language setting: #{e.message}")
+    nil
   end
 end
