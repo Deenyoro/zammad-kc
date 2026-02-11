@@ -160,24 +160,6 @@ const formSchema = defineFormSchema([
             screen: 'create_top',
             object: EnumObjectManagerObjects.Ticket,
           },
-          {
-            name: 'customer_id',
-            screen: 'create_top',
-            object: EnumObjectManagerObjects.Ticket,
-            props: {
-              link: '#',
-              linkLabel: __('Create new customer'),
-              linkIcon: 'user-add',
-              onLinkClick: (e: MouseEvent) => {
-                e.preventDefault()
-
-                openUserCreateFlyout({
-                  title: __('Create new customer'),
-                  onSuccess: applyNewlyCreatedCustomer,
-                })
-              },
-            },
-          },
           // Because of the current field screen settings in the backend
           // seed we need to add this manually.
           {
@@ -307,6 +289,24 @@ const changedFields = reactive({
   body: {
     required: true,
   },
+
+  // The customer_id field needs some additional props for the creation of new customers (it can not be
+  // directly in the schema definition, because it will lose the correct position in the form).
+  customer_id: {
+    props: {
+      link: '#',
+      linkLabel: __('Create new customer'),
+      linkIcon: 'user-add',
+      onLinkClick: (e: MouseEvent) => {
+        e.preventDefault()
+
+        openUserCreateFlyout({
+          title: __('Create new customer'),
+          onSuccess: applyNewlyCreatedCustomer,
+        })
+      },
+    },
+  },
 })
 
 const { signatureHandling } = useTicketSignature()
@@ -418,10 +418,10 @@ const submitCreateTicket = async (event: FormSubmitData<TicketFormData>) => {
           variant="danger"
           :disabled="isDisabled"
           @click="discardChanges"
-          >{{ __('Discard changes') }}</CommonButton
+          >{{ $t('Discard changes') }}</CommonButton
         >
         <CommonButton v-else size="large" variant="secondary" @click="goBack">{{
-          __('Cancel & go back')
+          $t('Cancel & go back')
         }}</CommonButton>
       </template>
 
@@ -433,7 +433,7 @@ const submitCreateTicket = async (event: FormSubmitData<TicketFormData>) => {
         type="submit"
         :form="formNodeId"
         :disabled="isDisabled"
-        >{{ __('Create') }}</CommonButton
+        >{{ $t('Create') }}</CommonButton
       >
     </template>
   </LayoutContent>

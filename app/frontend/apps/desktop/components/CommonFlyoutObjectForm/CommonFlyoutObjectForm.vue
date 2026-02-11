@@ -14,11 +14,8 @@ import type {
 import { useForm } from '#shared/components/Form/useForm.ts'
 import { useObjectAttributeFormData } from '#shared/entities/object-attributes/composables/useObjectAttributeFormData.ts'
 import { useObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
-import type {
-  EnumFormUpdaterId,
-  EnumObjectManagerObjects,
-  ObjectAttributeValue,
-} from '#shared/graphql/types.ts'
+import { flattenObjectAttributeValues } from '#shared/entities/object-attributes/utils.ts'
+import type { EnumFormUpdaterId, EnumObjectManagerObjects } from '#shared/graphql/types.ts'
 import { MutationHandler } from '#shared/server/apollo/handler/index.ts'
 import type { OperationMutationFunction } from '#shared/types/server/apollo/handler.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
@@ -69,14 +66,7 @@ const { form } = useForm()
 // Formkit relies on it to manage form state internally and not reuse the same form in memory
 const formNodeId = computed(() => `${props.name}-${getUuid()}`)
 
-const objectAttributes: Record<string, string> =
-  props.object?.objectAttributeValues?.reduce(
-    (acc: Record<string, string>, cur: ObjectAttributeValue) => {
-      acc[cur.attribute.name] = cur.value
-      return acc
-    },
-    {},
-  ) || {}
+const objectAttributes = flattenObjectAttributeValues(props.object?.objectAttributeValues)
 
 const initialFlatObject = {
   ...props.object,

@@ -144,7 +144,7 @@ class Gql::ZammadSchema < GraphQL::Schema
 
   def self.build_record_invalid_errors(record, user_locale)
     record.errors.map do |e|
-      field_name = e.attribute.to_s.camelize(:lower)
+      field_name = e.attribute.to_s
 
       {
         field:   field_name == 'base' ? nil : field_name,
