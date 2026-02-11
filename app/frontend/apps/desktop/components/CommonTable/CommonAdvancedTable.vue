@@ -10,6 +10,7 @@ import ObjectAttributeContent from '#shared/components/ObjectAttributes/ObjectAt
 import { useOnEmitter } from '#shared/composables/useOnEmitter.ts'
 import { useObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
 import type { ObjectAttribute } from '#shared/entities/object-attributes/types/store.ts'
+import { flattenObjectAttributeValues } from '#shared/entities/object-attributes/utils.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
 import { EnumObjectManagerObjects, EnumOrderDirection } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n.ts'
@@ -296,6 +297,27 @@ const groupByAttributeItemName = computed(() => {
   return groupByAttribute.value.dataOption?.belongs_to || groupByAttribute.value.name
 })
 
+const extractGroupByValue = (
+  item: TableAdvancedItem,
+  name: string,
+  isRelation: boolean,
+): string | number => {
+  // Relation: Use related object's identifier in case we're dealing with a relation,
+  //   otherwise use item's own value (e.g. state of a ticket).
+  const value = (isRelation && item[name] ? (item[name] as ObjectLike).id : item[name]) as
+    | string
+    | number
+
+  if (value) return value
+
+  // Custom object manager attribute.
+  const objectAttributeValues = flattenObjectAttributeValues(
+    (item as ObjectLike).objectAttributeValues,
+  )
+
+  return objectAttributeValues[name] as string | number
+}
+
 const groupByRowCounts = computed(() => {
   if (!groupByAttribute.value || !groupByAttributeItemName.value) return
 
@@ -306,9 +328,7 @@ const groupByRowCounts = computed(() => {
   let lastValue: string | number
 
   return localItems.value.reduce((groupByRowIds: string[][], item) => {
-    const value = (isRelation && item[name] ? (item[name] as ObjectLike).id : item[name]) as
-      | string
-      | number
+    const value = extractGroupByValue(item, name, isRelation)
 
     if ((lastValue && value !== lastValue) || (groupByRowIds.length > 0 && !lastValue && value)) {
       groupByValueIndex += 1

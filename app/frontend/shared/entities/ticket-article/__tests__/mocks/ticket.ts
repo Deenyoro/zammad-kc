@@ -125,6 +125,7 @@ export const createDummyTicket = <R = TicketQuery['ticket']>(options?: {
   firstResponseEscalationAt?: TicketQuery['ticket']['firstResponseEscalationAt']
   updateEscalationAt?: TicketQuery['ticket']['updateEscalationAt']
   closeEscalationAt?: TicketQuery['ticket']['closeEscalationAt']
+  objectAttributeValues?: TicketQuery['ticket']['objectAttributeValues']
 }): R => {
   return nullableMock({
     __typename: 'Ticket',
@@ -147,7 +148,7 @@ export const createDummyTicket = <R = TicketQuery['ticket']>(options?: {
     state: options?.state === undefined ? defaultState : options?.state,
     group: options?.group === undefined ? defaultGroup : options?.group,
     priority: options?.defaultPriority === undefined ? defaultPriority : options?.defaultPriority,
-    objectAttributeValues: [],
+    objectAttributeValues: options?.objectAttributeValues || [],
     policy: options?.defaultPolicy === undefined ? defaultPolicy : options?.defaultPolicy,
     tags: options?.tags || [],
     timeUnit: options?.timeUnit || null,

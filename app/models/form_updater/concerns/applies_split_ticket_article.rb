@@ -4,7 +4,7 @@ module FormUpdater::Concerns::AppliesSplitTicketArticle
   extend ActiveSupport::Concern
 
   def resolve
-    if agent? && selected_ticket_article.present?
+    if meta[:initial] && agent? && selected_ticket_article.present?
       apply_ticket_article
     end
 

@@ -8,13 +8,9 @@ import type {
 } from '#shared/types/server/apollo/client.ts'
 import type { ImportGlobEagerDefault } from '#shared/types/utils.ts'
 
-import possibleTypes from './possibleTypes.ts'
-
 import type { InMemoryCacheConfig } from '@apollo/client/cache/inmemory/types'
 
-let cacheConfig: InMemoryCacheConfig = {
-  possibleTypes,
-}
+let cacheConfig: InMemoryCacheConfig = {}
 
 const cacheInitializerModules: CacheInitializerModules = import.meta.glob(
   './cache/initializer/*.ts',

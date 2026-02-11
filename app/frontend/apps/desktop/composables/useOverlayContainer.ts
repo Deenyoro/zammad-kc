@@ -41,7 +41,7 @@ export interface OverlayContainerOptions {
 export type OverlayContainerType = 'dialog' | 'flyout'
 
 export interface OverlayContainerMeta {
-  mounted: Set<string>
+  mounted: Map<string, number>
   options: Map<string, OverlayContainerOptions>
   opened: Ref<Set<string>>
   lastFocusedElements: Record<string, HTMLElement>
@@ -62,13 +62,13 @@ export const getRouteIdentifier = (route: RouteLocationNormalizedLoadedGeneric) 
 
 const overlayContainerMeta: Record<OverlayContainerType, OverlayContainerMeta> = {
   dialog: {
-    mounted: new Set<string>(),
+    mounted: new Map<string, number>(),
     options: new Map<string, OverlayContainerOptions>(),
     opened: ref(new Set<string>()),
     lastFocusedElements: {},
   },
   flyout: {
-    mounted: new Set<string>(),
+    mounted: new Map<string, number>(),
     options: new Map<string, OverlayContainerOptions>(),
     opened: ref(new Set<string>()),
     lastFocusedElements: {},
@@ -102,10 +102,41 @@ export const getOverlayContainerMeta = (type: OverlayContainerType) => {
   }
 }
 
+// Handle the current reference of the overlay container for the different situations.
+// It could be that the usage is more then once, that it should not be removed completely.
+const getOverlayReferenceCount = (type: OverlayContainerType, name: string): number => {
+  return overlayContainerMeta[type].mounted.get(name) || 0
+}
+
+const addOverlayReference = (
+  type: OverlayContainerType,
+  name: string,
+  options: OverlayContainerOptions,
+) => {
+  const refCount = getOverlayReferenceCount(type, name)
+  overlayContainerMeta[type].mounted.set(name, refCount + 1)
+  overlayContainerMeta[type].options.set(name, options)
+}
+
+const removeOverlayReference = (type: OverlayContainerType, name: string): void => {
+  const refCount = getOverlayReferenceCount(type, name)
+  const newRefCount = refCount - 1
+
+  if (newRefCount > 0) {
+    overlayContainerMeta[type].mounted.set(name, newRefCount)
+  } else {
+    overlayContainerMeta[type].mounted.delete(name)
+  }
+}
+
 const getOverlayContainerOptions = (type: OverlayContainerType, name: string) => {
   const options = overlayContainerMeta[type].options.get(name)
 
   if (!options) {
+    console.error(`[${type}] getOverlayContainerOptions ERROR: ${name}`, {
+      availableOptions: Array.from(overlayContainerMeta[type].options.keys()),
+      mounted: Array.from(overlayContainerMeta[type].mounted.entries()),
+    })
     throw new Error(
       `Overlay container '${name}' from type '${type}' was not initialized with 'useOverlayContainer'.`,
     )
@@ -202,18 +233,17 @@ export const useOverlayContainer = (
 
   const isOpened = computed(() => overlayContainerMeta[type].opened.value.has(currentName))
 
-  // Unmounted happens after setup, if component was unmounted so we need to add options again.
-  // This happens mainly in storybook stories.
   onMounted(() => {
-    overlayContainerMeta[type].mounted.add(currentName)
-    overlayContainerMeta[type].options.set(currentName, options)
+    addOverlayReference(type, currentName, options)
   })
 
   onUnmounted(async () => {
-    overlayContainerMeta[type].mounted.delete(currentName)
+    removeOverlayReference(type, currentName)
+
     await closeOverlayContainer(type, currentName)
-    // Was mounted during hmr.
-    if (!overlayContainerMeta[type].mounted.has(currentName) && !options.global) {
+
+    // Only delete the overlay options when no components are using it anymore
+    if (!overlayContainerMeta[type].mounted.has(currentName)) {
       overlayContainerMeta[type].options.delete(currentName)
     }
   })

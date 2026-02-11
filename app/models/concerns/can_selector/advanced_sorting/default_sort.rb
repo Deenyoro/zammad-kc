@@ -9,7 +9,7 @@ module CanSelector
 
       def calculate_sorting
         if object.columns_hash[adjusted_column.to_s].type == :string
-          "#{raw_selectors_quoted_column(adjusted_column)} #{collate} #{direction}"
+          "COALESCE(#{raw_selectors_quoted_column(adjusted_column)}, '') #{collate} #{direction}"
         else
           "#{raw_selectors_quoted_column(adjusted_column)} #{direction}"
         end

@@ -14,6 +14,11 @@ export const useDateTime = (context: Ref<DateTimeContext>) => {
     return 'yyyy-MM-dd'
   })
 
+  const maxDate = computed(() => {
+    if (context.value.pastOnly) return new Date()
+    return context.value.maxDate
+  })
+
   const minDate = computed(() => {
     if (context.value.futureOnly) return new Date()
     return context.value.minDate
@@ -108,6 +113,7 @@ export const useDateTime = (context: Ref<DateTimeContext>) => {
     ariaLabels,
     displayFormat,
     is24,
+    maxDate,
     minDate,
     timePicker,
     valueFormat,

@@ -16,9 +16,9 @@ RSpec.describe CanSelector::AdvancedSorting::DefaultSort do
     context 'when given a string column' do
       let(:column) { 'number' }
 
-      it 'includes collation on Postgres' do
+      it 'includes collation on Postgres and treats NULL as empty string' do
         expect(instance.calculate_sorting)
-          .to eq('"tickets"."number" COLLATE "de-DE-x-icu" ASC')
+          .to eq('COALESCE("tickets"."number", \'\') COLLATE "de-DE-x-icu" ASC')
       end
     end
 
