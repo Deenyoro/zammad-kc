@@ -8,6 +8,7 @@ export interface IndentOptions {
   types: string[]
   min: number
   max: number
+  excludeShortcutTypes: string[]
 }
 
 declare module '@tiptap/core' {
@@ -65,6 +66,7 @@ export const IndentExtension = Extension.create<IndentOptions>({
       types: ['listItem', 'heading', 'paragraph', 'blockquote'],
       min: 0,
       max: Number.POSITIVE_INFINITY,
+      excludeShortcutTypes: ['listItem'],
     }
   },
   addCommands() {
@@ -133,9 +135,16 @@ export const IndentExtension = Extension.create<IndentOptions>({
 
   addKeyboardShortcuts() {
     return {
-      // Tab: () => this.editor.commands.increaseIndent(),
-      'Shift-Tab': () => this.editor.commands.decreaseIndent(),
-      Backspace: () => this.editor.commands.decreaseIndent(true),
+      Backspace: () => {
+        const { state } = this.editor
+        const { $from } = state.selection
+
+        // Check if we're in an excluded node type
+        if (this.options.excludeShortcutTypes.some((type) => $from.node(-1)?.type.name === type))
+          return false // Let other extensions handle it e.g list extension
+
+        return this.editor.commands.decreaseIndent(true)
+      },
     }
   },
 })

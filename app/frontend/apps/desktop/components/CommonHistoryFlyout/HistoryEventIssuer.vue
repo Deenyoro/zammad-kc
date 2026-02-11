@@ -27,7 +27,7 @@ const { issuedBySystemService, issuedBySystemUser, getIssuerName } = useHistoryE
     />
 
     <UserPopoverWithTrigger
-      v-else-if="!issuedBySystemUser(issuer)"
+      v-else-if="!issuedBySystemService(issuer) && !issuedBySystemUser(issuer)"
       :avatar-config="{ noIndicator: true, size: 'xs' }"
       :popover-config="{ orientation: 'left' }"
       :user="issuer as User"

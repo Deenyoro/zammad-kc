@@ -50,7 +50,10 @@ const paddingClasses = computed(() =>
                 :class="entry.iconColor"
                 :name="entry.icon"
               />
-              <CommonLabel class="line-clamp-1! grow text-current!" :aria-label="$t(entry.title)">
+              <CommonLabel
+                class="block! w-0 grow text-current! truncate"
+                :aria-label="$t(entry.title)"
+              >
                 {{ $t(entry.label) }}
               </CommonLabel>
               <CommonBadge

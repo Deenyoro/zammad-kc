@@ -55,6 +55,21 @@ state after the update.
 User records cannot have the same organization set as both primary and secondary anymore, and trying to
 do this will now result in an API error.
 
+### Catalan locale change
+
+The previously used Catalan locale used a wrong internal locale code and was deprecated. There is now a
+new Catalan locale with the correct code "ca". The deprecated one will be removed in a future release of Zammad.
+
+The update will switch all Catalan agent user profiles to the new 'Catalan (Català)' locale for their language preference.
+
+Please note that Knowledge Bases using the deprecated Catalan locale will not be switched automatically. Please note
+that changing the locale of a Knowledge Base causes a change in the public URLs. Therefore you can migrate
+Knowledge Base at your own pace by running the following command:
+
+```ruby
+zammad run rails r "KnowledgeBase::Locale.find_by(system_locale: Locale.find_by(locale: 'es-ca')).update!(system_locale: Locale.find_by(locale: 'ca'))"
+```
+
 ## 6.5.2
 
 The following breaking changes occurred due to a security fix.
@@ -101,7 +116,7 @@ The structure of the **full search** (e.g. `/ticket/search?full=true`) remains t
 
 Some objects used an object-related hash key, such as `ticket_ids`. This is now always `record_ids`.
 
-The **count search** (e.g. `/ticket/search?only_total_count=true`) is a  new feature.
+The **count search** (e.g. `/ticket/search?only_total_count=true`) is a new feature.
 
 ### API performance optimization of asset return data
 
@@ -244,8 +259,8 @@ now it is forbidden.
 On existing systems, the group names that contain the now reserved delimiter will be renamed, with sets of double colons
 being replaced by a dash (`-`) during the migration process.
 
-Additionally, existing custom group object attributes named _name\_last_ and _parent\_id_ will be renamed too, by adding
-an underscore in front (_\_name\_last_ and _\_parent\_id_). This is due to these attributes now being part of the group
+Additionally, existing custom group object attributes named _name_last_ and _parent_id_ will be renamed too, by adding
+an underscore in front (_\_name_last_ and _\_parent_id_). This is due to these attributes now being part of the group
 model, requiring dedicated table columns under the reserved names.
 
 ### Disallowed URL Values in User's Name Attributes
