@@ -159,6 +159,23 @@ describe('Fields - FieldDate', () => {
       expect(input).toBeDisabled()
     })
 
+    it('disables days after today, if pastOnly present', async () => {
+      const view = await renderDateField({
+        pastOnly: true,
+      })
+
+      const input = view.getByLabelText('Date')
+
+      await view.events.click(input)
+      await view.events.click(await view.findByText('14'))
+
+      expect(input).toHaveDisplayValue('')
+
+      await view.events.click(view.getByText('13'))
+
+      expect(input).toHaveDisplayValue('2021-04-13')
+    })
+
     it('disables days before today, if futureOnly present', async () => {
       const view = await renderDateField({
         futureOnly: true,

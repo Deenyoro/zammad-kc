@@ -26,7 +26,7 @@ const contextReactive = toRef(props, 'context')
 
 const { localValue } = useValue(contextReactive)
 
-const { ariaLabels, displayFormat, is24, minDate, timePicker, valueFormat } =
+const { ariaLabels, displayFormat, is24, maxDate, minDate, timePicker, valueFormat } =
   useDateTime(contextReactive)
 
 const config = {
@@ -98,10 +98,12 @@ useEventListener('click', (e) => {
       }"
       :formats="displayFormat"
       :locale="dateFnsLocale"
-      :max-date="context.maxDate"
+      :max-date="maxDate"
       :min-date="minDate"
-      :start-date="minDate || context.maxDate"
-      :prevent-min-max-navigation="Boolean(minDate || context.maxDate || context.futureOnly)"
+      :start-date="minDate || maxDate"
+      :prevent-min-max-navigation="
+        Boolean(minDate || maxDate || context.futureOnly || context.pastOnly)
+      "
       :action-row="actionRow"
       :config="config"
       :aria-labels="ariaLabels"

@@ -656,4 +656,83 @@ describe('CommonAdvancedTable', () => {
 
     expect(wrapper.getByRole('row', { name: 'Nicole Braun2+' })).toBeInTheDocument()
   })
+
+  it('supports grouping with object manager attributes', async () => {
+    const ticketObjectAttributesPayload = ticketObjectAttributes()
+    mockObjectManagerFrontendAttributesQuery({
+      objectManagerFrontendAttributes: {
+        ...ticketObjectAttributesPayload,
+        attributes: [
+          ...ticketObjectAttributesPayload.attributes,
+          {
+            name: 'dummy',
+            display: 'dummy',
+            dataType: 'input',
+            dataOption: {
+              default: '',
+              type: 'url',
+              maxlength: 120,
+              null: true,
+              options: {},
+              relation: '',
+            },
+            isInternal: false,
+            screens: {
+              create_middle: {
+                shown: true,
+                required: false,
+                item_class: 'column',
+              },
+              edit: {
+                shown: true,
+                required: false,
+              },
+            },
+            __typename: 'ObjectManagerFrontendAttribute',
+          },
+        ],
+      },
+    })
+
+    const items = [
+      createDummyTicket(),
+      createDummyTicket({
+        ticketId: '2',
+        title: faker.word.sample(),
+        objectAttributeValues: [
+          {
+            attribute: {
+              name: 'dummy',
+              display: 'dummy',
+            },
+            value: 'grouping1',
+            renderedLink: null,
+          },
+        ],
+      }),
+    ]
+
+    const wrapper = await renderTable({
+      headers: [
+        'priorityIcon',
+        'stateIcon',
+        'title',
+        'customer',
+        'organization',
+        'group',
+        'owner',
+        'state',
+        'created_at',
+        'dummy',
+      ],
+      items,
+      hasCheckboxColumn: true,
+      totalItems: 30,
+      maxItems: 30,
+      groupBy: 'dummy',
+      caption: 'Table caption',
+    })
+
+    expect(wrapper.getByRole('row', { name: 'grouping11+' })).toBeInTheDocument()
+  })
 })

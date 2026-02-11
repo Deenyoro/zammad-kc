@@ -24,6 +24,7 @@ import { NotificationTypes } from '#shared/components/CommonNotifications/types.
 import { useNotifications } from '#shared/components/CommonNotifications/useNotifications.ts'
 import { useObjectAttributeFormFields } from '#shared/entities/object-attributes/composables/useObjectAttributeFormFields.ts'
 import { useObjectAttributeLoadFormFields } from '#shared/entities/object-attributes/composables/useObjectAttributeLoadFormFields.ts'
+import { flattenObjectAttributeValues } from '#shared/entities/object-attributes/utils.ts'
 import UserError from '#shared/errors/UserError.ts'
 import type {
   EnumObjectManagerObjects,
@@ -457,14 +458,7 @@ const setInitialEntityObjectAttributeMap = (initialEntityObject = props.initialE
 
   // Reduce object attribute values to flat structure
   initialEntityObjectAttributeMap =
-    objectAttributeValues.reduce((acc: Record<string, FormFieldValue>, cur) => {
-      const { attribute } = cur
-
-      if (!attribute || !attribute.name) return acc
-
-      acc[attribute.name] = cur.value
-      return acc
-    }, {}) || {}
+    flattenObjectAttributeValues<FormFieldValue>(objectAttributeValues)
 }
 
 // Initialize the initial entity object attribute map during the setup in a static way.
