@@ -102,6 +102,7 @@ onMounted(async () => {
 
       <div v-else-if="showCommentField" ref="comment-field" class="w-full space-y-2">
         <FormKit
+          id="feedback-comment"
           v-model="comment"
           :placeholder="$t('Thanks for the feedback. Please explain what went wrong?')"
           type="textarea"
