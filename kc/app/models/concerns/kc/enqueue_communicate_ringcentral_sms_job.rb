@@ -33,6 +33,10 @@ module Kc
       sender = Ticket::Article::Sender.find_by(id: sender_id)
       return if sender.nil? || sender.name != 'Agent'
 
+      # Skip delivery when flagged (skip_send tickets — article created for
+      # routing/type purposes only, no actual SMS should be sent)
+      return if preferences&.dig(:ringcentral_sms, :skip_send)
+
       job_class = 'Kc::CommunicateRingcentralSmsJob'.safe_constantize
       if job_class.nil?
         Rails.logger.error 'KC: CommunicateRingcentralSmsJob class not found — cannot enqueue RingCentral SMS delivery'
