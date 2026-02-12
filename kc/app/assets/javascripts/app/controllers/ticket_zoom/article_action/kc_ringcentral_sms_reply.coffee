@@ -63,6 +63,12 @@ class KcRingcentralSmsReply
 
     return articleTypes if !isSmsTicket
 
+    # Default the compose area to SMS for SMS tickets when no type is saved
+    # in the task bar state. This runs before normalizeArticleType so setting
+    # ui.defaults.type here makes the compose area open in SMS mode.
+    if ui.defaults && !ui.defaults.type
+      ui.defaults.type = 'ringcentral_sms_message'
+
     articleTypes.push {
       name:       'ringcentral_sms_message'
       icon:       'message'
