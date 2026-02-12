@@ -5,7 +5,7 @@ class CreateTicketDailyEventLocks < ActiveRecord::Migration[7.2]
     # return if it's a new setup
     return if !Setting.exists?(name: 'system_init_done')
 
-    create_table :ticket_daily_event_locks do |t|
+    create_table :ticket_daily_event_locks, id: :integer do |t|
       t.date :date, null: false
       t.string :lock_type, null: false
       t.string :lock_activator, null: false
