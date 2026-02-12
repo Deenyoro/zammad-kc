@@ -17,10 +17,10 @@ class Kc::NewConversationsController < ApplicationController
   # The EnqueueCommunicateRingcentralSmsJob concern fires automatically
   # on article creation, which triggers the CommunicateRingcentralSmsJob.
   #
-  # When skip_send is true, the article is created as an internal note
-  # instead of ringcentral_sms_message. This prevents the SMS from being
-  # sent while still setting up the ticket with SMS routing so future
-  # agent replies are delivered as texts.
+  # When skip_send is true, the article is still created as
+  # ringcentral_sms_message (so the ticket behaves as an SMS ticket
+  # with correct defaults), but the delivery concern skips the actual
+  # send via a skip_send flag in article preferences.
   #
   # Params:
   #   phone_number [String] recipient phone number (required)
@@ -119,65 +119,37 @@ class Kc::NewConversationsController < ApplicationController
         created_by_id: current_user.id,
       )
 
-      if skip_send
-        # Internal note — won't trigger SMS delivery, but ticket has SMS routing
-        article_type = Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first
-        sender       = Ticket::Article::Sender.find_by(name: 'Agent') || Ticket::Article::Sender.first
+      # Always create article as ringcentral_sms_message type so the ticket
+      # naturally behaves as an SMS ticket (correct create_article_type_id,
+      # reply defaults to SMS, etc). When skip_send is true, we flag it in
+      # preferences so the delivery concern skips the actual send.
+      article_type = Ticket::Article::Type.find_by(name: 'ringcentral_sms_message') ||
+                     Ticket::Article::Type.find_by(name: 'note') ||
+                     Ticket::Article::Type.first
+      sender = Ticket::Article::Sender.find_by(name: 'Agent') || Ticket::Article::Sender.first
 
-        Ticket::Article.create!(
-          ticket_id:     ticket.id,
-          type_id:       article_type&.id,
-          sender_id:     sender&.id,
-          from:          current_user.fullname,
-          to:            normalized_phone,
-          subject:       nil,
-          body:          body,
-          content_type:  'text/plain',
-          internal:      true,
-          preferences:   {
-            ringcentral_sms: {
-              to_phone:   normalized_phone,
-              channel_id: channel.id,
-            },
-          },
-          updated_by_id: current_user.id,
-          created_by_id: current_user.id,
-        )
+      article_prefs = {
+        ringcentral_sms: {
+          to_phone:   normalized_phone,
+          channel_id: channel.id,
+        },
+      }
+      article_prefs[:ringcentral_sms][:skip_send] = true if skip_send
 
-        # Override create_article_type_id so the frontend recognizes this as
-        # an SMS ticket and offers the SMS reply article type. Without this,
-        # the first article (a note) sets create_article_type_id to "note"
-        # and the SMS reply option never appears.
-        sms_type = Ticket::Article::Type.find_by(name: 'ringcentral_sms_message')
-        if sms_type
-          ticket.update_columns(create_article_type_id: sms_type.id)
-        end
-      else
-        article_type = Ticket::Article::Type.find_by(name: 'ringcentral_sms_message') ||
-                       Ticket::Article::Type.find_by(name: 'note') ||
-                       Ticket::Article::Type.first
-        sender = Ticket::Article::Sender.find_by(name: 'Agent') || Ticket::Article::Sender.first
-
-        Ticket::Article.create!(
-          ticket_id:     ticket.id,
-          type_id:       article_type&.id,
-          sender_id:     sender&.id,
-          from:          from_phone,
-          to:            normalized_phone,
-          subject:       nil,
-          body:          body,
-          content_type:  'text/plain',
-          internal:      false,
-          preferences:   {
-            ringcentral_sms: {
-              to_phone:   normalized_phone,
-              channel_id: channel.id,
-            },
-          },
-          updated_by_id: current_user.id,
-          created_by_id: current_user.id,
-        )
-      end
+      Ticket::Article.create!(
+        ticket_id:     ticket.id,
+        type_id:       article_type&.id,
+        sender_id:     sender&.id,
+        from:          from_phone,
+        to:            normalized_phone,
+        subject:       nil,
+        body:          body,
+        content_type:  'text/plain',
+        internal:      false,
+        preferences:   article_prefs,
+        updated_by_id: current_user.id,
+        created_by_id: current_user.id,
+      )
     end
 
     render json: { id: ticket.id, number: ticket.number }
