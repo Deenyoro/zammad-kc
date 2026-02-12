@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { defineAsyncComponent, type App } from 'vue'
+import { type App } from 'vue'
 
 import { initializeFileClasses } from '#shared/components/Form/fields/FieldFile/initializeFileClasses.ts'
 import { initializeToggleClasses } from '#shared/components/Form/fields/FieldToggle/initializeToggleClasses.ts'
@@ -19,6 +19,8 @@ import type {
 } from '#shared/types/form.ts'
 import type { ImportGlobEagerOutput } from '#shared/types/utils.ts'
 
+import FieldEditorActionBar from '#desktop/components/Form/fields/FieldEditor/FieldEditorActionBar.vue'
+import FieldEditorActionMenu from '#desktop/components/Form/fields/FieldEditor/FieldEditorActionMenu.vue'
 import FieldEditorSuggestionList from '#desktop/components/Form/fields/FieldEditor/FieldEditorSuggestionList.vue'
 
 import { getCoreDesktopClasses } from './theme/global/getCoreDesktopClasses.ts'
@@ -97,12 +99,8 @@ export const initializeFormFields = () => {
   })
 
   initializeEditorComponents({
-    actionBar: defineAsyncComponent(
-      () => import('#desktop/components/Form/fields/FieldEditor/FieldEditorActionBar.vue'),
-    ),
-    actionMenu: defineAsyncComponent(
-      () => import('#desktop/components/Form/fields/FieldEditor/FieldEditorActionMenu.vue'),
-    ),
+    actionBar: FieldEditorActionBar,
+    actionMenu: FieldEditorActionMenu,
     suggestionList: FieldEditorSuggestionList,
   })
 
