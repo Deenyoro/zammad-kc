@@ -29,6 +29,7 @@ import { useThemeStore } from '#desktop/stores/theme.ts'
 
 import App from './AppDesktop.vue'
 import { setCurrentApp } from './currentApp.ts'
+import { preloadComponents } from './initializer/preloadComponents.ts'
 
 export const mountApp = async () => {
   const app = createApp(App)
@@ -48,6 +49,7 @@ export const mountApp = async () => {
   initializeDesktopIcons()
   initializeForm(app)
   initializeFormFields()
+  preloadComponents()
   initializeGlobalComponentStyles()
   initializeGlobalComponents(app)
   initializeGlobalProperties(app)
