@@ -122,7 +122,7 @@ class Gql::ZammadSchema < GraphQL::Schema
       when ActiveRecord::RecordInvalid
         next { errors: build_record_invalid_errors(err.record, user_locale) }
       when ActiveRecord::RecordNotUnique
-        next { errors: [ message: Translation.translate(user_locale, 'This object already exists.') ] }
+        next { errors: [ { message: Translation.translate(user_locale, 'This object already exists.') } ] }
       end
     end
 

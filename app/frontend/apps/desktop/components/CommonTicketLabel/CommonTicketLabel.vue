@@ -71,7 +71,7 @@ const { getTicketNumberWithTitle } = useTicketNumberAndTitle()
     <div v-if="withTimestamp" class="flex flex-col">
       <CommonLabel
         :id="ticketId"
-        class="self-start mt-0.5 text-blue-800! group-hover:text-blue-850! group-hover:dark:text-blue-600!"
+        class="mt-0.5 self-start text-blue-800! group-hover:text-blue-850! group-hover:dark:text-blue-600!"
         :class="[classes?.label || '', { 'mt-0! line-clamp-1!': noWrap }]"
       >
         {{ ticket?.title }}

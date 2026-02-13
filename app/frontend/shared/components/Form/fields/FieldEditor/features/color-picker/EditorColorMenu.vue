@@ -41,7 +41,7 @@ const unsetColor = () => {
   <div v-if="editor" class="relative">
     <div
       data-test-id="color-menu-action-bar"
-      class="Menubar mx-auto flex flex-col relative max-w-md overflow-x-auto overflow-y-hidden"
+      class="Menubar relative mx-auto flex max-w-md flex-col overflow-x-auto overflow-y-hidden"
       :class="classes.actionBar.tableMenuContainer"
       role="toolbar"
       tabindex="0"

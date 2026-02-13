@@ -115,7 +115,7 @@ const titleClass = computed(() => {
 
         <CommonLabel
           size="small"
-          class="w-full border-t block! border-neutral-100 pt-2 text-stone-200! dark:border-gray-900 dark:text-neutral-500!"
+          class="block! w-full border-t border-neutral-100 pt-2 text-stone-200! dark:border-gray-900 dark:text-neutral-500!"
           tag="p"
           >{{ $t('Be sure to check AI-generated content for accuracy.') }}
           <span v-if="analyticsMeta?.run?.id && !hasRecentlyRated">{{

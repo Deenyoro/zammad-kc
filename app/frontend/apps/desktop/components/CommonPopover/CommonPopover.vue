@@ -457,7 +457,7 @@ useOnEmitter('close-popover', () => {
         :aria-labelledby="owner && '$el' in owner ? owner.$el?.id : owner?.id"
         v-bind="$attrs"
       >
-        <div class="overflow-y-auto" :class="{ 'w-full': !noFullWidth }">
+        <div class="max-w-md overflow-y-auto" :class="{ 'w-full': !noFullWidth }">
           <slot />
         </div>
         <div
@@ -477,7 +477,7 @@ useOnEmitter('close-popover', () => {
         :aria-labelledby="owner && '$el' in owner ? owner.$el?.id : owner?.id"
         v-bind="$attrs"
       >
-        <div class="overflow-y-auto" :class="{ 'w-full': !noFullWidth }">
+        <div class="max-w-md overflow-y-auto" :class="{ 'w-full': !noFullWidth }">
           <slot />
         </div>
         <div

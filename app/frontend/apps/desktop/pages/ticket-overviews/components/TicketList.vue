@@ -397,7 +397,7 @@ defineExpose({ tickets: readonly(tickets) })
       <template #empty-list>
         <CommonEmptyMessage
           v-if="isCustomerAndCanCreateTickets && !hasAnyTicket"
-          class="absolute space-y-2.5 top-1/2 w-full -translate-y-1/2 text-center ltr:left-1/2 ltr:-translate-x-1/2 rtl:right-1/2 rtl:translate-x-1/2"
+          class="absolute top-1/2 w-full -translate-y-1/2 space-y-2.5 text-center ltr:left-1/2 ltr:-translate-x-1/2 rtl:right-1/2 rtl:translate-x-1/2"
           :title="$t('Welcome!')"
         >
           <CommonLabel class="block!" tag="p">{{

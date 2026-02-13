@@ -70,7 +70,7 @@ const getHoverFocusStyles = (variant?: Variant) => {
     <div v-if="showHeaderLabel" role="heading" aria-level="2" class="px-2 py-1.5">
       <slot name="header">
         <CommonLabel
-          class="line-clamp-1 text-stone-200! dark:text-neutral-500! cursor-default"
+          class="line-clamp-1 cursor-default text-stone-200! dark:text-neutral-500!"
           size="small"
         >
           {{ i18n.t(headerLabel) }}
@@ -134,7 +134,7 @@ const getHoverFocusStyles = (variant?: Variant) => {
               <slot :name="`item-${item.key}`" v-bind="item">
                 <component
                   :is="item.component || CommonPopoverMenuItem"
-                  class="focus-visible-app-default flex grow p-2.5 focus-visible:-outline-offset-1!"
+                  class="flex grow p-2.5 focus-visible-app-default focus-visible:-outline-offset-1!"
                   :class="{
                     'rounded-t-lg!': index === 0 && !showHeaderLabel,
                     'rounded-b-lg!': index === filteredMenuItems?.length - 1,

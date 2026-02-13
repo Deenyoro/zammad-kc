@@ -14,14 +14,14 @@ const { links } = usePublicLinks(props.screen)
 <template>
   <nav
     v-if="links.length"
-    class="inline-flex flex-wrap items-center justify-center py-2 divide-x divide-neutral-500"
+    class="inline-flex flex-wrap items-center justify-center divide-x divide-neutral-500 py-2"
   >
     <template v-for="link in links" :key="link.id">
       <CommonLink
         :link="link.link"
         :title="link.description"
         :open-in-new-tab="link.newTab"
-        class="px-2 my-1"
+        class="my-1 px-2"
         size="medium"
       >
         {{ $t(link.title) }}

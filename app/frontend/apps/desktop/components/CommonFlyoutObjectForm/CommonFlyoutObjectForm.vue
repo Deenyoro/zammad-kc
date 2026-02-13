@@ -117,7 +117,7 @@ const saveObject = async (formData: FormSubmitData) => {
     <Form
       :id="formNodeId"
       ref="form"
-      class="pb-6 pt-4"
+      class="pt-4 pb-6"
       should-autofocus
       use-object-attributes
       :schema="schema"

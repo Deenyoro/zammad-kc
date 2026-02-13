@@ -39,7 +39,7 @@ const { getTicketNumberWithHook } = useTicketNumberAndTitle()
     <template #popover-content="{ close }">
       <CommonSectionCollapse
         id="tickets-popover-title"
-        class="px-3 py-2 max-w-90 min-w-58"
+        class="max-w-90 min-w-58 px-3 py-2"
         :title="__('Tracked as checklist item in')"
         container-class="flex flex-col gap-2"
         no-collapse
@@ -55,7 +55,7 @@ const { getTicketNumberWithHook } = useTicketNumberAndTitle()
       </CommonSectionCollapse>
     </template>
 
-    <ChecklistBadge class="cursor-pointer h-7" tag="div">
+    <ChecklistBadge class="h-7 cursor-pointer" tag="div">
       <CommonLabel size="small" class="text-black! dark:text-white!">
         {{
           referencingTicketsCount === 1

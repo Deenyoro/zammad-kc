@@ -180,8 +180,8 @@ module Gql::Types
 
     def time_accounting_type_sum(type_id, entries)
       [
-        name:      time_accounting_types[type_id] || __('None'),
-        time_unit: entries.inject(0) { |sum, entry| sum + entry.time_unit },
+        { name:      time_accounting_types[type_id] || __('None'),
+          time_unit: entries.inject(0) { |sum, entry| sum + entry.time_unit } },
       ]
     end
 

@@ -15,7 +15,7 @@ const defaultItem = computed(() => menuItems.find((item) => item.key === 'ticket
 <template>
   <CommonActionMenu
     :class="{
-      'p-2 rounded-md hover:outline hover:outline-blue-900! has-focus-visible:outline has-focus-visible:outline-offset-0! has-focus-visible:outline-blue-800! has-focus-visible:*:outline-none':
+      'rounded-md p-2 hover:outline hover:outline-blue-900! has-focus-visible:outline has-focus-visible:outline-offset-0! has-focus-visible:outline-blue-800! has-focus-visible:*:outline-none':
         menuItems.length === 1,
     }"
     orientation="autoVertical"
