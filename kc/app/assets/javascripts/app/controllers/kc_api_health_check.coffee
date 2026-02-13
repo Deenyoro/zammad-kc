@@ -4,6 +4,7 @@
 # Provides:
 #   - Ticket settings configuration (group, priority, owner)
 #   - Channel selection for monitoring
+#   - Discord bot health check configuration
 #   - Immediate health check trigger
 
 class KcApiHealthCheck extends App.ControllerSubContent
@@ -34,6 +35,14 @@ class KcApiHealthCheck extends App.ControllerSubContent
           group_id:    data.group_id
           priority_id: data.priority_id
           owner_id:    data.owner_id
+        @discordBot =
+          enabled:            data.discord_bot_enabled || false
+          url:                data.discord_bot_url || 'http://zammad-discord-bot:3100/healthz'
+          interval:           data.discord_bot_interval || 30
+          failure_threshold:  data.discord_bot_failure_threshold || 4
+          priority_id:        data.discord_bot_priority_id
+          group_id:           data.discord_bot_group_id
+          owner_id:           data.discord_bot_owner_id
         @render()
       error: (xhr) =>
         @stopLoading()
@@ -49,6 +58,7 @@ class KcApiHealthCheck extends App.ControllerSubContent
       channels:    @channels
       monitoredIds: @monitoredIds
       settings:    @settings
+      discordBot:  @discordBot
       groups:      groups
       priorities:  priorities
       admins:      admins
@@ -78,15 +88,35 @@ class KcApiHealthCheck extends App.ControllerSubContent
     priorityId = parseInt(priorityId) || null
     ownerId    = parseInt(ownerId) || null
 
+    # Collect Discord bot settings
+    discordBotEnabled          = @el.find('[name=discord_bot_enabled]').is(':checked')
+    discordBotUrl              = @el.find('[name=discord_bot_url]').val() || ''
+    discordBotInterval         = parseInt(@el.find('[name=discord_bot_interval]').val()) || 30
+    discordBotFailureThreshold = parseInt(@el.find('[name=discord_bot_failure_threshold]').val()) || 4
+    discordBotPriorityId       = @el.find('[name=discord_bot_priority_id]').val() || null
+    discordBotGroupId          = @el.find('[name=discord_bot_group_id]').val() || null
+    discordBotOwnerId          = @el.find('[name=discord_bot_owner_id]').val() || null
+
+    discordBotPriorityId = parseInt(discordBotPriorityId) || null
+    discordBotGroupId    = parseInt(discordBotGroupId) || null
+    discordBotOwnerId    = parseInt(discordBotOwnerId) || null
+
     @ajax(
       id:          'kc_api_health_check_update'
       type:        'PUT'
       url:         "#{@apiPath}/kc/api_health_check"
       data:        JSON.stringify(
-        monitored_channel_ids: monitoredIds
-        group_id:              groupId
-        priority_id:           priorityId
-        owner_id:              ownerId
+        monitored_channel_ids:      monitoredIds
+        group_id:                   groupId
+        priority_id:                priorityId
+        owner_id:                   ownerId
+        discord_bot_enabled:        discordBotEnabled
+        discord_bot_url:            discordBotUrl
+        discord_bot_interval:       discordBotInterval
+        discord_bot_failure_threshold: discordBotFailureThreshold
+        discord_bot_priority_id:    discordBotPriorityId
+        discord_bot_group_id:       discordBotGroupId
+        discord_bot_owner_id:       discordBotOwnerId
       )
       contentType: 'application/json'
       success: =>
