@@ -35,7 +35,7 @@ const paddingClasses = computed(() =>
       <li v-for="entry in items" :key="entry.id || entry.label">
         <slot v-bind="{ entry, paddingClasses, countSize, countVariant }">
           <CommonLink
-            class="focus-visible-app-default flex items-center gap-1 rounded-lg! text-sm text-gray-100 hover:bg-blue-600 hover:text-black! hover:no-underline! dark:text-neutral-400 dark:hover:bg-blue-900 dark:hover:text-white!"
+            class="flex items-center gap-1 rounded-lg! text-sm text-gray-100 focus-visible-app-default hover:bg-blue-600 hover:text-black! hover:no-underline! dark:text-neutral-400 dark:hover:bg-blue-900 dark:hover:text-white!"
             :class="[paddingClasses]"
             exact-active-class="bg-blue-800! w-full text-white! hover:text-white!"
             internal
@@ -51,7 +51,7 @@ const paddingClasses = computed(() =>
                 :name="entry.icon"
               />
               <CommonLabel
-                class="block! w-0 grow text-current! truncate"
+                class="block! w-0 grow truncate text-current!"
                 :aria-label="$t(entry.title)"
               >
                 {{ $t(entry.label) }}

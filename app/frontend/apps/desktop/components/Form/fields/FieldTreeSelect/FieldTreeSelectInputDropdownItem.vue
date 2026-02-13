@@ -66,9 +66,9 @@ const handleNextPageOrSelect = () =>
   <div
     role="option"
     :aria-selected="selected"
-    class="flex group h-9 cursor-pointer items-center self-stretch text-sm text-black outline-hidden dark:text-white"
+    class="group flex h-9 cursor-pointer items-center self-stretch text-sm text-black outline-hidden dark:text-white"
     :class="{
-      'hover:bg-blue-800 has-focus-visible:shadow-[inset_0_0_0_1px_var(--color-blue-800)] ':
+      'hover:bg-blue-800 has-focus-visible:shadow-[inset_0_0_0_1px_var(--color-blue-800)]':
         option.disabled,
       'first:rounded-t-[7px]': !hasTopButton && hasDirectionUp,
     }"
@@ -78,11 +78,11 @@ const handleNextPageOrSelect = () =>
       tabindex="0"
       data-type="option"
       data-test-id="option-button"
-      class="size-full text-left flex items-center gap-1.5 rtl:pr-2.5 ltr:pl-2.5"
+      class="flex size-full items-center gap-1.5 text-left ltr:pl-2.5 rtl:pr-2.5"
       :class="{
-        'group/button hover:bg-blue-600 dark:hover:bg-blue-900 focus-visible-app-default -outline-offset-1!':
+        'group/button focus-visible-app-default -outline-offset-1! hover:bg-blue-600 dark:hover:bg-blue-900':
           !option.disabled,
-        'hover:text-black  dark:hover:text-white outline-none': option.disabled,
+        'outline-none hover:text-black dark:hover:text-white': option.disabled,
         'rounded-tl-[7px]!': !hasTopButton && hasDirectionUp && isFirstItem,
         'rounded-bl-[7px]': !hasDirectionUp && isLastItem,
       }"
@@ -125,13 +125,13 @@ const handleNextPageOrSelect = () =>
         :class="{
           'pointer-events-none text-stone-200 dark:text-neutral-500': option.disabled,
         }"
-        class="grow truncate dark:group-hover/button:text-white group-hover/button:text-black"
+        class="grow truncate group-hover/button:text-black dark:group-hover/button:text-white"
         v-html="(option as MatchedFlatSelectOption).matchedPath"
       />
       <span
         v-else
         v-tooltip="label"
-        class="grow truncate dark:group-hover/button:text-white group-hover/button:text-black"
+        class="grow truncate group-hover/button:text-black dark:group-hover/button:text-white"
         :class="{ 'group-hover:text-white': option.disabled }"
       >
         {{ label }}
@@ -140,7 +140,7 @@ const handleNextPageOrSelect = () =>
     <!--  eslint-disable vuejs-accessibility/no-static-element-interactions  -->
     <div
       v-if="option.hasChildren && !filter"
-      class="group/next shrink-0 m-0.5 flex items-center justify-center gap-x-2.5 p-2.5 rounded-lg"
+      class="group/next m-0.5 flex shrink-0 items-center justify-center gap-x-2.5 rounded-lg p-2.5"
       :class="{
         'focus-visible-app-default -outline-offset-1! hover:bg-blue-800': !option.disabled,
         'rounded-tr-lg': !hasTopButton && isFirstItem && hasDirectionUp,
@@ -156,7 +156,7 @@ const handleNextPageOrSelect = () =>
       <CommonIcon
         class="shrink-0 fill-blue-800!"
         :class="{
-          'group-hover:fill-white! ': option.disabled,
+          'group-hover:fill-white!': option.disabled,
           'group-hover/next:fill-white!': !option.disabled,
         }"
         :name="locale.localeData?.dir === 'rtl' ? 'chevron-left' : 'chevron-right'"

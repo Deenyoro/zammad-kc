@@ -16,24 +16,24 @@ class AI::Agent::Type::TicketPrioritizer < AI::Agent::Type
 
   def form_schema
     [
-      step:   'instruction_context',
-      help:   __('Choose which priorities will be considered when prioritizing tickets. If you want to limit it to specific priorities, please select at least two below. Make sure the priorities have clear names and optional descriptions, as that would comprise the context provided to the AI agent.'),
-      fields: [
-        {
-          name:                    'definition::instruction_context::object_attributes::priority_id',
-          display:                 '',
-          tag:                     'object_attribute_options_context',
-          default:                 {},
+      { step:   'instruction_context',
+        help:   __('Choose which priorities will be considered when prioritizing tickets. If you want to limit it to specific priorities, please select at least two below. Make sure the priorities have clear names and optional descriptions, as that would comprise the context provided to the AI agent.'),
+        fields: [
+          {
+            name:                    'definition::instruction_context::object_attributes::priority_id',
+            display:                 '',
+            tag:                     'object_attribute_options_context',
+            default:                 {},
 
-          limit_label:             __('Limit priorities and provide optional descriptions'),
-          limit_description:       __('All priorities will be considered for prioritizing tickets.'),
-          table_label:             __('Available Priorities'),
-          show_description:        true,
+            limit_label:             __('Limit priorities and provide optional descriptions'),
+            limit_description:       __('All priorities will be considered for prioritizing tickets.'),
+            table_label:             __('Available Priorities'),
+            show_description:        true,
 
-          object_attribute_name:   'priority_id',
-          object_attribute_object: 'Ticket',
-        },
-      ],
+            object_attribute_name:   'priority_id',
+            object_attribute_object: 'Ticket',
+          },
+        ] },
     ]
   end
 

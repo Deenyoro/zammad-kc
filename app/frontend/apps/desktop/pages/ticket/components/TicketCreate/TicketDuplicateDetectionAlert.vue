@@ -24,7 +24,7 @@ defineProps<Props>()
           <CommonLabel class="text-yellow-600!">
             <CommonLink
               :link="`/tickets/${id}`"
-              class="text-yellow-600 hover:text-yellow-700! hover:dark:text-yellow-500! underline hover:underline!"
+              class="text-yellow-600 underline hover:text-yellow-700! hover:underline! hover:dark:text-yellow-500!"
               size="medium"
             >
               {{ number }}

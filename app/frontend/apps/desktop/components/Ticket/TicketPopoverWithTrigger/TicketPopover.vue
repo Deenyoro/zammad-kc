@@ -64,7 +64,7 @@ const isOwnerSystemUser = computed(() => {
 </script>
 
 <template>
-  <section ref="popover-section" data-type="popover" class="space-y-2 p-3 max-w-prose">
+  <section ref="popover-section" data-type="popover" class="max-w-prose space-y-2 p-3">
     <TicketPopoverSkeleton v-if="debouncedLoading && !ticketData" />
     <template v-else-if="ticketData">
       <CommonLabel class="block!" size="large">
@@ -108,7 +108,7 @@ const isOwnerSystemUser = computed(() => {
       </CommonSectionCollapse>
 
       <ObjectAttributes
-        class="border-t border-neutral-100 dark:border-gray-900 pt-2.5"
+        class="border-t border-neutral-100 pt-2.5 dark:border-gray-900"
         :object="ticketData"
         :attributes="objectAttributes"
         include-static

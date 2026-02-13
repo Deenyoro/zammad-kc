@@ -513,7 +513,7 @@ useFormBlock(
         aria-haspopup="menu"
         :aria-expanded="expanded"
         :name="context.node.name"
-        class="formkit-disabled:pointer-events-none flex grow items-center gap-2.5 px-2.5 py-2 text-black focus:outline-hidden dark:text-white"
+        class="flex grow items-center gap-2.5 px-2.5 py-2 text-black focus:outline-hidden dark:text-white formkit-disabled:pointer-events-none"
         :aria-labelledby="`label-${context.id}`"
         :aria-disabled="context.disabled"
         :aria-describedby="context.describedBy"
@@ -564,7 +564,7 @@ useFormBlock(
               </span>
               <CommonIcon
                 :aria-label="i18n.t('Unselect option')"
-                class="shrink-0 fill-stone-200 hover:fill-black focus:outline-hidden focus-visible:rounded-xs focus-visible-app-default dark:fill-neutral-500 dark:hover:fill-white"
+                class="shrink-0 fill-stone-200 focus-visible-app-default hover:fill-black focus:outline-hidden focus-visible:rounded-xs dark:fill-neutral-500 dark:hover:fill-white"
                 name="x-lg"
                 size="xs"
                 role="button"
@@ -638,7 +638,7 @@ useFormBlock(
         <CommonIcon
           v-if="context.clearable && hasValue && !context.disabled"
           :aria-label="i18n.t('Clear selection')"
-          class="shrink-0 fill-stone-200 hover:fill-black focus:outline-hidden focus-visible:rounded-xs focus-visible-app-default! dark:fill-neutral-500 dark:hover:fill-white"
+          class="shrink-0 fill-stone-200 focus-visible-app-default! hover:fill-black focus:outline-hidden focus-visible:rounded-xs dark:fill-neutral-500 dark:hover:fill-white"
           name="x-lg"
           size="xs"
           role="button"

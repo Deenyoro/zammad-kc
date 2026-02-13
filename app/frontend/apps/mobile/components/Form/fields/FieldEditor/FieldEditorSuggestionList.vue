@@ -61,7 +61,7 @@ const emptyMessage = computed(() => {
 
 <template>
   <ul
-    class="max-h-64 overflow-auto rounded bg-gray-300 text-white z-10"
+    class="z-10 max-h-64 overflow-auto rounded bg-gray-300 text-white"
     :data-test-id="`mention-${type}`"
     role="listbox"
   >
@@ -87,7 +87,7 @@ const emptyMessage = computed(() => {
         <div>
           {{ item.name }}
         </div>
-        <div v-if="item.keywords" class="border-gray-150 rounded border border-solid px-1 text-sm">
+        <div v-if="item.keywords" class="rounded border border-solid border-gray-150 px-1 text-sm">
           {{ item.keywords }}
         </div>
       </div>

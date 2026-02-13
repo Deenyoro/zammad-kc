@@ -395,7 +395,7 @@ const goToChildPage = ({ option, noFocus }: { option: AutoCompleteOption; noFocu
             >
               <CommonLabel
                 v-if="isChildPage"
-                class="text-blue-800! hover:text-black! focus-visible:rounded-xs focus-visible-app-default dark:text-blue-800! dark:hover:text-white!"
+                class="text-blue-800! focus-visible-app-default hover:text-black! focus-visible:rounded-xs dark:text-blue-800! dark:hover:text-white!"
                 :aria-label="$t('Back to previous page')"
                 :prefix-icon="locale.localeData?.dir === 'rtl' ? 'chevron-right' : 'chevron-left'"
                 size="small"
@@ -412,7 +412,7 @@ const goToChildPage = ({ option, noFocus }: { option: AutoCompleteOption; noFocu
                   v-for="action of dropdownActions"
                   :key="action.key"
                   :prefix-icon="action.icon"
-                  class="text-blue-800! hover:text-black! focus-visible:rounded-xs focus-visible-app-default dark:text-blue-800! dark:hover:text-white!"
+                  class="text-blue-800! focus-visible-app-default hover:text-black! focus-visible:rounded-xs dark:text-blue-800! dark:hover:text-white!"
                   size="small"
                   role="button"
                   tabindex="0"

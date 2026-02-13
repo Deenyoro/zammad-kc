@@ -31,7 +31,7 @@ defineProps<Props>()
           {{ $t('Escalation times') }}
         </CommonLabel>
 
-        <div class="flex gap-2.5 flex-col">
+        <div class="flex flex-col gap-2.5">
           <CommonTicketEscalationIndicatorItem
             :label="$t('First response time')"
             :escalation-time="ticket?.firstResponseEscalationAt"

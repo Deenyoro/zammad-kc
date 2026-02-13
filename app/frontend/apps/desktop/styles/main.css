@@ -144,7 +144,7 @@
     @apply relative;
 
     &::before {
-      @apply absolute top-px bottom-px w-[7px] rounded-ss-lg rounded-es-lg content-[''] start-px;
+      @apply absolute start-px top-px bottom-px w-[7px] rounded-ss-lg rounded-es-lg content-[''];
 
       background: repeating-linear-gradient(
           45deg,
@@ -190,7 +190,7 @@
     }
 
     blockquote {
-      @apply border-s-5 border-s-neutral-100 dark:border-s-gray-500 px-3 py-px;
+      @apply border-s-5 border-s-neutral-100 px-3 py-px dark:border-s-gray-500;
 
       .Content--customer & {
         @apply border-s-blue-300 dark:border-s-stone-700;
@@ -207,7 +207,7 @@
 
     ol,
     ul {
-      @apply pb-2 ms-5;
+      @apply ms-5 pb-2;
 
       ol,
       ul {
@@ -232,7 +232,7 @@
     }
 
     a {
-      @apply text-blue-800 hover:underline hover:text-blue-850 hover:dark:text-blue-600;
+      @apply text-blue-800 hover:text-blue-850 hover:underline hover:dark:text-blue-600;
     }
 
     [dir='rtl'] {
@@ -244,7 +244,7 @@
     }
 
     pre {
-      @apply bg-black/10 dark:bg-black/20 rounded-md my-2 p-2.5;
+      @apply my-2 rounded-md bg-black/10 p-2.5 dark:bg-black/20;
 
       code {
         @apply bg-transparent p-0;
@@ -252,20 +252,20 @@
     }
 
     code {
-      @apply bg-black/10 font-mono dark:bg-black/20 rounded-md p-0.75;
+      @apply rounded-md bg-black/10 p-0.75 font-mono dark:bg-black/20;
     }
 
     table.zammad-table,
     &:not(.Content .inner-article-body) table {
-      @apply max-w-full border-2 dark:border-neutral-500 border-neutral-700 border-collapse table-fixed w-full my-2 overflow-hidden;
+      @apply my-2 w-full max-w-full table-fixed border-collapse overflow-hidden border-2 border-neutral-700 dark:border-neutral-500;
 
       td,
       th {
-        @apply min-w-[1em] border dark:border-neutral-500 border-neutral-700 align-top relative py-[3px] px-[5px] box-border;
+        @apply relative box-border min-w-[1em] border border-neutral-700 px-[5px] py-[3px] align-top dark:border-neutral-500;
       }
 
       th {
-        @apply font-bold text-start dark:bg-black/20 bg-black/10;
+        @apply bg-black/10 text-start font-bold dark:bg-black/20;
       }
     }
 
@@ -277,7 +277,7 @@
     }
 
     hr {
-      @apply my-2 h-px bg-stone-200 dark:bg-neutral-500 text-[0px] border-none;
+      @apply my-2 h-px border-none bg-stone-200 text-[0px] dark:bg-neutral-500;
     }
 
     [data-theme='dark'] & {
@@ -425,11 +425,11 @@
   */
   .ProseMirror blockquote .tableWrapper.tableWrapper.tableWrapper table,
   .ProseMirror [data-signature='true'] .tableWrapper.tableWrapper table {
-    @apply max-w-none border-1 dark:border-neutral-500/60 border-neutral-700/60 table-auto w-auto m-0 overflow-auto;
+    @apply m-0 w-auto max-w-none table-auto overflow-auto border-1 border-neutral-700/60 dark:border-neutral-500/60;
 
     td,
     th {
-      @apply min-w-auto dark:border-neutral-500/60 border-neutral-700/60;
+      @apply min-w-auto border-neutral-700/60 dark:border-neutral-500/60;
     }
 
     th {

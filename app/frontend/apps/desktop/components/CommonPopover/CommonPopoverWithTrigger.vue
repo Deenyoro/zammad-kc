@@ -128,7 +128,7 @@ onUnmounted(() => {
     tabindex="0"
     :aria-controls="uniqueId"
     :aria-expanded="isOpen"
-    class="group empty:hidden transition-none"
+    class="group transition-none empty:hidden"
     :class="[
       triggerLinkClass ?? '',
       {

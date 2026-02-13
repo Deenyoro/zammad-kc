@@ -47,7 +47,7 @@ new SubscriptionHandler(
   <CommonLink
     v-if="taskbarTabLink"
     ref="tabLinkInstance"
-    class="grow flex items-center gap-2 rounded-md px-2 py-3 group-hover/tab:bg-blue-600 hover:no-underline! focus-visible:rounded-md focus-visible:outline-hidden group-hover/tab:dark:bg-blue-900"
+    class="flex grow items-center gap-2 rounded-md px-2 py-3 group-hover/tab:bg-blue-600 hover:no-underline! focus-visible:rounded-md focus-visible:outline-hidden group-hover/tab:dark:bg-blue-900"
     :link="taskbarTabLink"
     :class="{
       'bg-blue-800!': taskbarTabActive,

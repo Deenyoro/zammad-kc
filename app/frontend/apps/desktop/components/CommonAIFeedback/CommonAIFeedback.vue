@@ -82,7 +82,7 @@ onMounted(async () => {
       {{ label }}
     </CommonLabel>
 
-    <div class="flex items-center gap-1 min-h-7">
+    <div class="flex min-h-7 items-center gap-1">
       <template v-if="showActions">
         <CommonButton
           v-tooltip="$t('Positive feedback')"
@@ -107,7 +107,7 @@ onMounted(async () => {
           :placeholder="$t('Thanks for the feedback. Please explain what went wrong?')"
           type="textarea"
         />
-        <div class="justify-center flex gap-1">
+        <div class="flex justify-center gap-1">
           <CommonButton variant="secondary" @click="cancelComment">{{
             $t('No comment')
           }}</CommonButton>
@@ -126,7 +126,7 @@ onMounted(async () => {
       <CommonButton
         v-if="canRegenerate"
         v-tooltip="$t('Regenerate')"
-        class="rtl:mr-auto ltr:ml-auto relative ai-stripe before:absolute before:w-[.7em] before:-bottom-0 before:h-[1px] before:left-1/2 before:-translate-x-1/2 hover:animate-ai-stripe focus-visible:animate-ai-stripe"
+        class="relative ai-stripe before:absolute before:-bottom-0 before:left-1/2 before:h-[1px] before:w-[.7em] before:-translate-x-1/2 hover:animate-ai-stripe focus-visible:animate-ai-stripe ltr:ml-auto rtl:mr-auto"
         variant="tertiary"
         size="medium"
         icon="arrow-repeat"
