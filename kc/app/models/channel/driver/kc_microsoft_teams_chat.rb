@@ -422,7 +422,11 @@ class Channel::Driver::KcMicrosoftTeamsChat
 
     # Append links for large files to the article body
     if linked_files.any?
-      links_html = linked_files.map { |f| "<li><a href=\"#{f[:url]}\" target=\"_blank\">#{f[:name]}</a> (#{f[:size_mb]} MB)</li>" }.join
+      links_html = linked_files.map do |f|
+        escaped_url  = ERB::Util.html_escape(f[:url])
+        escaped_name = ERB::Util.html_escape(f[:name])
+        "<li><a href=\"#{escaped_url}\" target=\"_blank\" rel=\"noopener noreferrer\">#{escaped_name}</a> (#{f[:size_mb]} MB)</li>"
+      end.join
       suffix = "<br><br><strong>Large attachments (view in Teams/SharePoint):</strong><ul>#{links_html}</ul>"
       article.update!(body: article.body.to_s + suffix)
     end
