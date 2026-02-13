@@ -53,6 +53,92 @@
 
   <hr>
 
+  <h2><%- @T('Discord Bot Health Check') %></h2>
+  <p class="text-muted"><%- @T('Monitors the Discord bot process. Checks the health endpoint at a configurable interval. After consecutive failures exceeding the threshold, an alert ticket is created automatically.') %></p>
+  <table class="settings-list" style="max-width: 700px;">
+    <tr>
+      <td style="width: 200px;">
+        <span><%- @T('Enabled') %></span>
+      </td>
+      <td>
+        <label class="inline-label">
+          <input type="checkbox" name="discord_bot_enabled" value="true" <% if @discordBot.enabled: %>checked<% end %>>
+          <%- @T('Enable Discord bot health monitoring') %>
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Health URL') %></span>
+      </td>
+      <td>
+        <input type="text" name="discord_bot_url" class="form-control" style="width: 400px;" value="<%= @discordBot.url %>" placeholder="http://zammad-discord-bot:3100/healthz">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Check Interval') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Seconds') %></p>
+      </td>
+      <td>
+        <input type="number" name="discord_bot_interval" class="form-control" style="width: 100px;" value="<%= @discordBot.interval %>" min="10" step="1">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Failure Threshold') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Consecutive failures before alert') %></p>
+      </td>
+      <td>
+        <input type="number" name="discord_bot_failure_threshold" class="form-control" style="width: 100px;" value="<%= @discordBot.failure_threshold %>" min="1" step="1">
+        <% downtime = (@discordBot.failure_threshold || 4) * (@discordBot.interval || 30) %>
+        <p class="text-muted" style="margin: 4px 0 0;"><%- @T('Alert after ~%s seconds of downtime', downtime) %></p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Priority') %></span>
+      </td>
+      <td>
+        <select name="discord_bot_priority_id" class="form-control" style="width: 300px;">
+          <option value=""><%- @T('Default (highest available)') %></option>
+          <% for priority in @priorities: %>
+            <option value="<%= priority.id %>" <% if String(@discordBot.priority_id) is String(priority.id): %>selected<% end %>><%= priority.displayName() %></option>
+          <% end %>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Group') %></span>
+      </td>
+      <td>
+        <select name="discord_bot_group_id" class="form-control" style="width: 300px;">
+          <option value=""><%- @T('Default (same as API health check)') %></option>
+          <% for group in @groups: %>
+            <option value="<%= group.id %>" <% if String(@discordBot.group_id) is String(group.id): %>selected<% end %>><%= group.displayName() %></option>
+          <% end %>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Owner') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Optional') %></p>
+      </td>
+      <td>
+        <select name="discord_bot_owner_id" class="form-control" style="width: 300px;">
+          <option value=""><%- @T('Unassigned') %></option>
+          <% for user in @admins: %>
+            <option value="<%= user.id %>" <% if String(@discordBot.owner_id) is String(user.id): %>selected<% end %>><%= user.displayName() %></option>
+          <% end %>
+        </select>
+      </td>
+    </tr>
+  </table>
+
+  <hr>
+
   <h2><%- @T('Monitored Channels') %></h2>
   <p class="text-muted"><%- @T('Select which API connections to monitor. Health checks run every 5 minutes.') %></p>
 
