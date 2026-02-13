@@ -25,7 +25,7 @@ const props = defineProps<Props>()
     <CommonLabel
       v-if="!noHeading"
       size="medium"
-      class="text-black! dark:text-white! mb-2.5"
+      class="mb-2.5 text-black! dark:text-white!"
       tag="h2"
     >
       {{ label }}

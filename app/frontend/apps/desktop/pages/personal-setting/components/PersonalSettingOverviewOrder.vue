@@ -70,7 +70,7 @@ const {
       :aria-label="$t('Overview order list')"
       :aria-activedescendant="focusedItemId"
       :aria-describedby="messageNodeId"
-      class="flex group flex-col p-1 focus-visible-app-default focus-visible:-outline-offset-1! rounded-lg isolate"
+      class="group isolate flex flex-col rounded-lg p-1 focus-visible-app-default focus-visible:-outline-offset-1!"
       @focus="handleFocus"
       @blur="handleBlur"
       @keydown="handleKeydown"
@@ -78,12 +78,12 @@ const {
       <li
         v-for="(value, index) in dndLocalValue"
         :key="value.id"
-        class="draggable rounded-lg flex min-h-9 cursor-grab items-start gap-2.5 p-2.5 active:cursor-grabbing"
+        class="draggable flex min-h-9 cursor-grab items-start gap-2.5 rounded-lg p-2.5 active:cursor-grabbing"
         draggable="true"
         :class="{
-          'group-focus-visible:outline outline-blue-900 -outline-offset-1':
+          '-outline-offset-1 outline-blue-900 group-focus-visible:outline':
             index == focusedItemIndex,
-          'outline outline-blue-800! -outline-offset-1': index == selectedItemIndex,
+          'outline -outline-offset-1 outline-blue-800!': index == selectedItemIndex,
         }"
       >
         <CommonIcon

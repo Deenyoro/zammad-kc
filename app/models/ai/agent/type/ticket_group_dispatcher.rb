@@ -12,23 +12,23 @@ class AI::Agent::Type::TicketGroupDispatcher < AI::Agent::Type
 
   def form_schema
     [
-      step:   'instruction_context',
-      help:   __('Choose which groups will be considered for dispatching tickets. If you want to limit it to specific groups, please select at least two below. Make sure the groups have clear names and optional descriptions, as that would comprise the context provided to the AI agent.'),
-      fields: [
-        {
-          name:                    'definition::instruction_context::object_attributes::group_id',
-          display:                 '',
-          tag:                     'object_attribute_options_context',
+      { step:   'instruction_context',
+        help:   __('Choose which groups will be considered for dispatching tickets. If you want to limit it to specific groups, please select at least two below. Make sure the groups have clear names and optional descriptions, as that would comprise the context provided to the AI agent.'),
+        fields: [
+          {
+            name:                    'definition::instruction_context::object_attributes::group_id',
+            display:                 '',
+            tag:                     'object_attribute_options_context',
 
-          limit_label:             __('Limit groups and provide optional descriptions'),
-          limit_description:       __('All groups will be considered for dispatching tickets.'),
-          table_label:             __('Available Groups'),
-          show_description:        true,
+            limit_label:             __('Limit groups and provide optional descriptions'),
+            limit_description:       __('All groups will be considered for dispatching tickets.'),
+            table_label:             __('Available Groups'),
+            show_description:        true,
 
-          object_attribute_name:   'group_id',
-          object_attribute_object: 'Ticket',
-        },
-      ],
+            object_attribute_name:   'group_id',
+            object_attribute_object: 'Ticket',
+          },
+        ] },
     ]
   end
 

@@ -74,7 +74,7 @@ const emptyMessage = computed(() => {
 
 <template>
   <ul
-    class="max-h-79 max-w-154 overflow-y-auto rounded-xl border border-neutral-100 bg-neutral-50 dark:border-gray-900 dark:bg-gray-500 z-50"
+    class="z-50 max-h-79 max-w-154 overflow-y-auto rounded-xl border border-neutral-100 bg-neutral-50 dark:border-gray-900 dark:bg-gray-500"
     :data-test-id="`mention-${type}`"
     role="listbox"
   >
@@ -92,7 +92,7 @@ const emptyMessage = computed(() => {
     >
       <div v-if="isKnowledgeBaseItem(item)" class="flex flex-col gap-px">
         <CommonLabel
-          class="inline! truncate text-stone-200 dark:text-neutral-500 group-hover:text-black dark:group-hover:text-white"
+          class="inline! truncate text-stone-200 group-hover:text-black dark:text-neutral-500 dark:group-hover:text-white"
           :class="{ 'text-black! dark:text-white!': selectedIndex === index }"
           size="small"
         >

@@ -67,7 +67,7 @@ const horizontalArrowKey = (direction?: 'start' | 'end') => {
   <!-- The outer div is focusable to allow keyboard navigation and control, and is hidden from screen readers. -->
   <div
     data-test-id="field-rating-input"
-    class="inline-flex items-center focus-visible:outline focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:bg-gray-700 bg-blue-200 p-2 px-2.25 rounded-2xl"
+    class="inline-flex items-center rounded-2xl bg-blue-200 p-2 px-2.25 focus-visible:outline focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:bg-gray-700"
     tabindex="0"
     aria-hidden="true"
     v-bind="context.attrs"
@@ -77,9 +77,9 @@ const horizontalArrowKey = (direction?: 'start' | 'end') => {
     @keydown.arrow-up.prevent="increaseRating()"
     @keydown.arrow-down.prevent="decreaseRating()"
   >
-    <span v-for="star in 5" :key="star" class="relative w-5.5 h-4">
+    <span v-for="star in 5" :key="star" class="relative h-4 w-5.5">
       <CommonIcon
-        class="absolute w-5.5 h-4 text-transparent"
+        class="absolute h-4 w-5.5 text-transparent"
         :class="{
           'animate-ping-once text-black! dark:text-white!': star === (Number(localValue) || 0),
           invisible: hover === null || hover !== star,
@@ -90,7 +90,7 @@ const horizontalArrowKey = (direction?: 'start' | 'end') => {
       <!-- This rule is save to disable because the element below is not part of tab order, the parent is. -->
       <!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
       <CommonIcon
-        class="relative w-5.5 h-4 cursor-pointer outline-0 formkit-disabled:opacity-50"
+        class="relative h-4 w-5.5 cursor-pointer outline-0 formkit-disabled:opacity-50"
         :data-test-id="`field-rating-star-${star}`"
         :class="{
           'text-black dark:text-white':

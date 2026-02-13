@@ -50,7 +50,7 @@ const goToUserProfile = () => {
 </script>
 
 <template>
-  <section ref="popover-section" data-type="popover" class="px-3 py-2 flex flex-col">
+  <section ref="popover-section" data-type="popover" class="flex flex-col px-3 py-2">
     <TicketListPopoverSkeleton v-if="debouncedLoading && !tickets.array.length" />
     <CommonSimpleEntityList
       v-else
