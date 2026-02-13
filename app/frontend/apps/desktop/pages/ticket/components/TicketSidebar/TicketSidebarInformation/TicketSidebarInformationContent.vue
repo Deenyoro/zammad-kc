@@ -67,8 +67,8 @@ const actions = computed<MenuItem[]>(() => [
     onClick: () =>
       openTicketMergeFlyout({
         ticket,
+        currentTaskbarTabId: props.context.currentTaskbarTabId,
       }),
-    currentTaskbarTabId: props.context.currentTaskbarTabId,
   },
   {
     key: ticketChangeCustomerFlyoutName,
