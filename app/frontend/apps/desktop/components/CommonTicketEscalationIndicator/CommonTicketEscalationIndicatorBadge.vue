@@ -20,7 +20,7 @@ const escalationState = useEscalationState(toRef(props.ticket, 'escalationAt'))
   <CommonBadge
     v-if="ticket?.escalationAt && escalationState !== EscalationState.None"
     :variant="escalationState === EscalationState.Escalated ? 'danger' : 'warning'"
-    class="uppercase h-7"
+    class="h-7 uppercase"
     :class="hasPopover ? 'cursor-pointer' : ''"
     role="alert"
   >

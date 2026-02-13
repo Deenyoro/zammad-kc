@@ -114,8 +114,8 @@ customerTicketsSubscription.onResult(({ data }) => {
           :user-display-name="userDisplayName"
           :content-container-element="contentContainerElement"
         />
-        <section class="mx-auto w-full max-w-5xl grid grid-cols-2 gap-6 p-6">
-          <div class="self-start flex flex-col gap-6">
+        <section class="mx-auto grid w-full max-w-5xl grid-cols-2 gap-6 p-6">
+          <div class="flex flex-col gap-6 self-start">
             <CommonSectionContainer
               v-if="user?.hasSecondaryOrganizations"
               :label="__('Secondary organizations')"

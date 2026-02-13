@@ -58,7 +58,10 @@ const sizeClasses = computed(() => {
           :is="items.at(-1) === item ? 'h1' : 'span'"
           v-else
           class="line-clamp-1"
-          :class="{ 'text-black dark:text-white': item.isActive }"
+          :class="{
+            'text-black dark:text-white': item.isActive,
+            'break-all': items.at(-1) === item,
+          }"
           aria-current="page"
         >
           {{ item.noOptionLabelTranslation ? item.label : $t(item.label as string) }}

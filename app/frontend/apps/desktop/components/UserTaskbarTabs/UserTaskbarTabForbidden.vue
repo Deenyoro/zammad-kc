@@ -17,7 +17,7 @@ const { tabLinkInstance, taskbarTabActive } = useUserTaskbarTab(toRef(props, 'ta
     v-if="taskbarTabLink"
     ref="tabLinkInstance"
     v-tooltip="$t('You have insufficient rights to view this object.')"
-    class="focus-visible-app-default grow flex items-center gap-2 px-2 py-3 group-hover/tab:bg-blue-600 hover:no-underline! group-hover/tab:dark:bg-blue-900"
+    class="flex grow items-center gap-2 px-2 py-3 focus-visible-app-default group-hover/tab:bg-blue-600 hover:no-underline! group-hover/tab:dark:bg-blue-900"
     :class="{
       ['bg-blue-800! text-white']: taskbarTabActive,
       'rounded-lg!': !collapsed,

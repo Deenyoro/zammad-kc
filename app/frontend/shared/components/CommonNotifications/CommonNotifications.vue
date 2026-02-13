@@ -36,7 +36,7 @@ const clickHandler = (notification: Notification) => {
           class="flex justify-center"
         >
           <div
-            class="m-3 flex cursor-pointer items-center w-max"
+            class="m-3 flex w-max cursor-pointer items-center"
             :class="[notificationTypeClassMap.base, getClassName(notification)]"
             role="button"
             tabindex="0"

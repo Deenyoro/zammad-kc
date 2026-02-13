@@ -259,7 +259,7 @@ const wrapperStyle = computed(() => {
       @resize-end="stopResizing"
     >
       <img
-        class="block w-full h-full"
+        class="block h-full w-full"
         :alt="$t('Resize frame')"
         :src="src"
         :draggable="isDraggable"

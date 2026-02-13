@@ -32,7 +32,7 @@ RSpec.describe Gql::Subscriptions::TemplateUpdates, :aggregate_failures, authent
     it 'receives template updates' do
       template.active = false
       template.save!
-      expect(mock_channel.mock_broadcasted_messages.first.dig(:result, 'data', 'templateUpdates', 'templates')).to eq(['name' => template.name])
+      expect(mock_channel.mock_broadcasted_messages.first.dig(:result, 'data', 'templateUpdates', 'templates')).to eq([{ 'name' => template.name }])
       expect(only_active_mock_channel.mock_broadcasted_messages.first.dig(:result, 'data', 'templateUpdates', 'templates')).to eq([])
     end
 

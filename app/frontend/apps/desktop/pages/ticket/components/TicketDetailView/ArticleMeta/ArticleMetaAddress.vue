@@ -32,7 +32,7 @@ const metaAddress = computed(() => {
     <template v-if="metaAddress?.parsed?.length">
       <template v-for="meta in metaAddress.parsed" :key="`${meta.name}-${meta.emailAddress}`">
         <div v-if="meta.name || meta.emailAddress" class="flex items-center">
-          <CommonLabel v-if="meta.name" class="text-black! dark:text-white! text-nowrap me-1">{{
+          <CommonLabel v-if="meta.name" class="me-1 text-nowrap text-black! dark:text-white!">{{
             meta.name
           }}</CommonLabel>
           <CommonLabel v-if="meta.emailAddress">{{ `<${meta.emailAddress}>` }}</CommonLabel>
@@ -41,7 +41,7 @@ const metaAddress = computed(() => {
     </template>
     <CommonLabel
       v-else-if="metaAddress?.raw"
-      class="text-black! dark:text-white! text-nowrap me-2"
+      class="me-2 text-nowrap text-black! dark:text-white!"
       >{{ metaAddress?.raw }}</CommonLabel
     >
   </div>

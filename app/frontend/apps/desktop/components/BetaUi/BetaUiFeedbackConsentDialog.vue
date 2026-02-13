@@ -30,7 +30,7 @@ const dummySchema = defineFormSchema([
 <template>
   <CommonDialog
     name="beta-ui-feedback-consent"
-    class="max-w-2xl flex flex-col gap-6 text-start"
+    class="flex max-w-2xl flex-col gap-6 text-start"
     :header-title="__('Want to join the BETA UI feedback program?')"
     wrapper-tag="article"
     no-close
@@ -38,7 +38,7 @@ const dummySchema = defineFormSchema([
     fullscreen
   >
     <div
-      class="flex h-46 items-end justify-center rounded-sm bg-yellow-500 border border-neutral-100 dark:border-gray-900"
+      class="flex h-46 items-end justify-center rounded-sm border border-neutral-100 bg-yellow-500 dark:border-gray-900"
     >
       <img
         class="dark:hidden"
@@ -59,13 +59,13 @@ const dummySchema = defineFormSchema([
       }}
     </CommonLabel>
     <div
-      class="p-3 flex justify-center gap-3 rounded-sm bg-blue-200 dark:bg-gray-700 border border-neutral-100 dark:border-gray-900"
+      class="flex justify-center gap-3 rounded-sm border border-neutral-100 bg-blue-200 p-3 dark:border-gray-900 dark:bg-gray-700"
     >
       <div class="basis-full">
         <CommonLabel class="text-black dark:text-white">
           {{ $t('The data we need to collect consists of:') }}
         </CommonLabel>
-        <ul class="ps-6 list-disc text-gray-100 dark:text-neutral-400">
+        <ul class="list-disc ps-6 text-gray-100 dark:text-neutral-400">
           <li>
             <CommonLabel>
               {{
@@ -89,7 +89,7 @@ const dummySchema = defineFormSchema([
       </div>
       <div class="basis-full">
         <div
-          class="p-3 rounded-sm bg-neutral-50 dark:bg-gray-500 border border-neutral-100 dark:border-gray-900"
+          class="rounded-sm border border-neutral-100 bg-neutral-50 p-3 dark:border-gray-900 dark:bg-gray-500"
         >
           <Form :schema="dummySchema" />
         </div>

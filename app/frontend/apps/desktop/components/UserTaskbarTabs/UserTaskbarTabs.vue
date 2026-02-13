@@ -274,7 +274,7 @@ const { isTouchDevice } = useTouchDevice()
             :class="{
               'flex flex-col gap-1.5 overflow-y-auto p-1': !collapsed,
             }"
-            class="focus-visible-app-default focus-visible:-outline-offset-1! rounded-lg"
+            class="rounded-lg focus-visible-app-default focus-visible:-outline-offset-1!"
             @focus="handleFocus"
             @blur="handleBlur"
             @keydown="handleKeydown"

@@ -171,7 +171,7 @@ const inlineStyle = computed(() => {
           <CommonPopoverMenuItem
             v-for="action in subMenuPopoverContent"
             :key="action.id"
-            class="focus-visible-app-default hover:bg-blue-600 active:bg-blue-800! active:**:text-white! hover:dark:bg-blue-900 last:rounded-b-[calc(var(--radius-lg)+3px)] first:rounded-t-[calc(var(--radius-lg)+3px)] flex grow p-2.5 focus-visible:-outline-offset-1!"
+            class="flex grow p-2.5 focus-visible-app-default first:rounded-t-[calc(var(--radius-lg)+3px)] last:rounded-b-[calc(var(--radius-lg)+3px)] hover:bg-blue-600 focus-visible:-outline-offset-1! active:bg-blue-800! active:**:text-white! hover:dark:bg-blue-900"
             :class="{
               'bg-blue-800! **:text-white!': isActive(action.name, action.attributes),
             }"

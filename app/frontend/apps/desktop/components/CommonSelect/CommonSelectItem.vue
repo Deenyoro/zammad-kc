@@ -60,14 +60,14 @@ const goToNextPage = (option: AutoCompleteOption, noFocus?: boolean) => {
 <template>
   <div
     :class="{
-      'hover:bg-blue-600 dark:hover:bg-blue-900 ': !option.disabled,
+      'hover:bg-blue-600 dark:hover:bg-blue-900': !option.disabled,
       'hover:bg-blue-800': option.disabled,
       'pointer-events-none': noInteraction,
     }"
     tabindex="0"
     :aria-selected="selected"
     :aria-description="option.disabled ? $t('This item expands to show more options') : undefined"
-    class="group focus-visible:shadow-[inset_0_0_0_1px_var(--color-blue-800)] flex h-9 cursor-pointer items-center gap-1.5 self-stretch px-2.5 text-sm text-black outline-hidden dark:text-white"
+    class="group flex h-9 cursor-pointer items-center gap-1.5 self-stretch px-2.5 text-sm text-black outline-hidden focus-visible:shadow-[inset_0_0_0_1px_var(--color-blue-800)] dark:text-white"
     role="option"
     data-test-id="select-item"
     :data-value="option.value"
@@ -80,7 +80,7 @@ const goToNextPage = (option: AutoCompleteOption, noFocus?: boolean) => {
       :class="{
         'fill-gray-100 group-hover:fill-black dark:fill-neutral-400 dark:group-hover:fill-white':
           !option.disabled,
-        'fill-stone-200 dark:fill-neutral-500 group-hover:fill-white': option.disabled,
+        'fill-stone-200 group-hover:fill-white dark:fill-neutral-500': option.disabled,
       }"
       size="xs"
       decorative
@@ -92,7 +92,7 @@ const goToNextPage = (option: AutoCompleteOption, noFocus?: boolean) => {
       class="shrink-0 fill-gray-100 group-hover:fill-black dark:fill-neutral-400 dark:group-hover:fill-white"
       :class="{
         invisible: !selected,
-        'fill-stone-200 dark:fill-neutral-500 group-hover:fill-white': option.disabled,
+        'fill-stone-200 group-hover:fill-white dark:fill-neutral-500': option.disabled,
       }"
       decorative
       size="tiny"
@@ -104,7 +104,7 @@ const goToNextPage = (option: AutoCompleteOption, noFocus?: boolean) => {
       :name="option.icon"
       size="tiny"
       :class="{
-        'fill-stone-200 dark:fill-neutral-500 group-hover:fill-white': option.disabled,
+        'fill-stone-200 group-hover:fill-white dark:fill-neutral-500': option.disabled,
       }"
       decorative
       class="shrink-0 fill-gray-100 group-hover:fill-black dark:fill-neutral-400 dark:group-hover:fill-white"
@@ -125,7 +125,7 @@ const goToNextPage = (option: AutoCompleteOption, noFocus?: boolean) => {
         v-if="heading"
         class="text-stone-200 dark:text-neutral-500"
         :class="{
-          'group-hover:text-black  group-hover:dark:text-white': !option.disabled,
+          'group-hover:text-black group-hover:dark:text-white': !option.disabled,
           'group-hover:text-white': option.disabled,
         }"
         >&nbsp;– {{ heading }}</span
@@ -135,7 +135,7 @@ const goToNextPage = (option: AutoCompleteOption, noFocus?: boolean) => {
       v-else
       v-tooltip="label + (heading ? ` – ${heading}` : '')"
       :class="{
-        'text-stone-200 dark:text-neutral-500 group-hover:text-white': option.disabled,
+        'text-stone-200 group-hover:text-white dark:text-neutral-500': option.disabled,
       }"
       class="grow truncate"
     >
@@ -144,7 +144,7 @@ const goToNextPage = (option: AutoCompleteOption, noFocus?: boolean) => {
         v-if="heading"
         class="text-stone-200 dark:text-neutral-500"
         :class="{
-          'group-hover:text-black  group-hover:dark:text-white': !option.disabled,
+          'group-hover:text-black group-hover:dark:text-white': !option.disabled,
           'group-hover:text-white': option.disabled,
         }"
         >– {{ heading }}</span

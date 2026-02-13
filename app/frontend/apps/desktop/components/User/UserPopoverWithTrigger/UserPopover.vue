@@ -64,7 +64,7 @@ const goToUserProfile = () => {
 
       <ObjectAttributes
         :class="{
-          'border-b border-neutral-100 dark:border-gray-900 pb-2.5':
+          'border-b border-neutral-100 pb-2.5 dark:border-gray-900':
             secondaryOrganizations?.totalCount,
         }"
         :object="user!"

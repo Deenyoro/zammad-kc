@@ -282,9 +282,9 @@ RSpec.describe Gql::Mutations::Ticket::Update, :aggregate_failures, type: :graph
           expect(gql.result.data).to eq({
                                           'ticket' => nil,
                                           'errors' => [
-                                            'message'   => 'The ticket checklist is incomplete.',
-                                            'field'     => nil,
-                                            'exception' => exception,
+                                            { 'message'   => 'The ticket checklist is incomplete.',
+                                              'field'     => nil,
+                                              'exception' => exception },
                                           ],
                                         })
         end

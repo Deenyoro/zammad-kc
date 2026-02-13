@@ -94,14 +94,14 @@ const router = useRouter()
 
 <template>
   <header
-    class="absolute top-0 left-0 right-0 z-30 w-full h-17 border-b border-neutral-100 bg-neutral-50 p-3 dark:border-gray-900 dark:bg-gray-500"
+    class="absolute top-0 right-0 left-0 z-30 h-17 w-full border-b border-neutral-100 bg-neutral-50 p-3 dark:border-gray-900 dark:bg-gray-500"
     :style="{
       transform: `translateY(${y - (137 + 70) > 0 ? 0 : y - (137 + 70)}px)`,
     }"
     aria-hidden="true"
     v-on="events"
   >
-    <div class="flex mx-auto w-full max-w-266">
+    <div class="mx-auto flex w-full max-w-266">
       <OrganizationInfo :organization="organization" size="small" title-size="large" no-link />
     </div>
   </header>
@@ -129,7 +129,7 @@ const router = useRouter()
         />
       </template>
     </CommonBreadcrumb>
-    <div class="flex mx-auto mt-3 pe-17 w-full max-w-278 h-21">
+    <div class="mx-auto mt-3 flex h-21 w-full max-w-278 pe-17">
       <OrganizationInfo
         :organization="organization"
         size="normal"
@@ -138,7 +138,7 @@ const router = useRouter()
         no-link
       >
         <template #actions>
-          <div role="menubar" class="rtl:mr-auto ltr:ml-auto flex items-center gap-1.5">
+          <div role="menubar" class="flex items-center gap-1.5 ltr:ml-auto rtl:mr-auto">
             <CommonButton
               v-for="action in allowedTopLevelActions"
               :key="action.key"

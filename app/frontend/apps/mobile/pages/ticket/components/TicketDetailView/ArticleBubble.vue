@@ -196,7 +196,7 @@ const onContextClick = () => {
         <div
           ref="bubbleElement"
           data-test-id="article-content"
-          class="overflow-hidden transition-[height] duration-200 text-base"
+          class="overflow-hidden text-base transition-[height] duration-200"
         >
           <!-- eslint-disable vue/no-v-html -->
           <div class="Content" v-html="body" />
