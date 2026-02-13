@@ -313,7 +313,16 @@ class Channel::Driver::KcMicrosoftTeamsChat
   end
 
   IMAGE_MIME_TYPES = %w[image/png image/jpeg image/gif image/webp image/bmp image/pjpeg].freeze
-  MAX_ATTACHMENT_BYTES = 5 * 1024 * 1024 # 5 MB per file — larger files get linked instead of downloaded
+  DEFAULT_ATTACHMENT_MAX_MB = 5 # Fallback when setting is nil/invalid
+
+  # Reads the configurable attachment size limit from Settings, falling back
+  # to DEFAULT_ATTACHMENT_MAX_MB. Returns bytes.
+  def max_attachment_bytes
+    mb = Setting.get('kc_teams_attachment_max_mb')
+    mb = mb.to_i if mb.is_a?(String) || mb.is_a?(Float)
+    mb = DEFAULT_ATTACHMENT_MAX_MB if !mb.is_a?(Integer) || mb <= 0
+    mb * 1024 * 1024
+  end
 
   # Downloads inline images (hostedContents) and file attachments from a
   # Teams message and stores them on the Zammad article.
@@ -330,7 +339,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
     hosted_ids.each_with_index do |hc_id, idx|
       data = graph.get_hosted_content(chat_id, message_id, hc_id)
       next if data.blank?
-      if data.bytesize > MAX_ATTACHMENT_BYTES
+      if data.bytesize > max_attachment_bytes
         Rails.logger.warn "KC Teams Chat: Skipping oversized hosted content #{hc_id} (#{data.bytesize} bytes)"
         next
       end
@@ -353,7 +362,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
 
     # 2. File attachments — referenced in message['attachments']
     #    Teams file uploads have contentType "reference" with a SharePoint contentUrl.
-    #    Files over MAX_ATTACHMENT_BYTES are NOT downloaded — a link to the file
+    #    Files over the configured max size are NOT downloaded — a link to the file
     #    is appended to the article body instead to prevent memory issues.
     attachments = Array(message_data[:attachments])
     linked_files = []
@@ -371,7 +380,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
           # SharePoint file upload — check size via driveItem metadata before downloading
           meta = sharepoint_driveitem_metadata(graph, content_url)
           file_size = meta[:size]
-          if file_size && file_size > MAX_ATTACHMENT_BYTES
+          if file_size && file_size > max_attachment_bytes
             size_mb = (file_size.to_f / 1024 / 1024).round(1)
             Rails.logger.info "KC Teams Chat: Linking large SharePoint file #{filename} (#{size_mb} MB) instead of downloading"
             linked_files << { name: filename, size_mb: size_mb, url: meta[:web_url] || content_url }
@@ -401,7 +410,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
           mime = content_type_att
         end
 
-        if data.bytesize > MAX_ATTACHMENT_BYTES
+        if data.bytesize > max_attachment_bytes
           size_mb = (data.bytesize.to_f / 1024 / 1024).round(1)
           Rails.logger.info "KC Teams Chat: Linking oversized attachment #{filename} (#{size_mb} MB)"
           linked_files << { name: filename, size_mb: size_mb, url: content_url }

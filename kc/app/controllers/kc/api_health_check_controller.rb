@@ -40,8 +40,8 @@ class Kc::ApiHealthCheckController < ApplicationController
       end
     end
 
-    # Include health check settings in assets
-    Setting.where("name LIKE 'kc_api_health_check_%'").each do |setting|
+    # Include health check settings in assets (both API and Discord bot)
+    Setting.where("name LIKE 'kc_api_health_check_%' OR name LIKE 'kc_discord_bot_health_check_%'").each do |setting|
       assets = setting.assets(assets)
     end
 
@@ -63,6 +63,14 @@ class Kc::ApiHealthCheckController < ApplicationController
       group_id:             Setting.get('kc_api_health_check_group_id'),
       priority_id:          Setting.get('kc_api_health_check_priority_id'),
       owner_id:             Setting.get('kc_api_health_check_owner_id'),
+      # Discord bot health check settings
+      discord_bot_enabled:            Setting.get('kc_discord_bot_health_check_enabled') || false,
+      discord_bot_url:                Setting.get('kc_discord_bot_health_check_url') || 'http://zammad-discord-bot:3100/healthz',
+      discord_bot_interval:           Setting.get('kc_discord_bot_health_check_interval') || 30,
+      discord_bot_failure_threshold:  Setting.get('kc_discord_bot_health_check_failure_threshold') || 4,
+      discord_bot_priority_id:        Setting.get('kc_discord_bot_health_check_priority_id'),
+      discord_bot_group_id:           Setting.get('kc_discord_bot_health_check_group_id'),
+      discord_bot_owner_id:           Setting.get('kc_discord_bot_health_check_owner_id'),
     }
   end
 
@@ -77,6 +85,23 @@ class Kc::ApiHealthCheckController < ApplicationController
     Setting.set('kc_api_health_check_group_id', params[:group_id]) if params.key?(:group_id)
     Setting.set('kc_api_health_check_priority_id', params[:priority_id]) if params.key?(:priority_id)
     Setting.set('kc_api_health_check_owner_id', params[:owner_id]) if params.key?(:owner_id)
+
+    # Discord bot health check settings
+    if params.key?(:discord_bot_enabled)
+      Setting.set('kc_discord_bot_health_check_enabled', params[:discord_bot_enabled] == true || params[:discord_bot_enabled] == 'true')
+    end
+    Setting.set('kc_discord_bot_health_check_url', params[:discord_bot_url]) if params.key?(:discord_bot_url)
+    if params.key?(:discord_bot_interval)
+      val = params[:discord_bot_interval].to_i
+      Setting.set('kc_discord_bot_health_check_interval', val > 0 ? val : 30)
+    end
+    if params.key?(:discord_bot_failure_threshold)
+      val = params[:discord_bot_failure_threshold].to_i
+      Setting.set('kc_discord_bot_health_check_failure_threshold', val > 0 ? val : 4)
+    end
+    Setting.set('kc_discord_bot_health_check_priority_id', params[:discord_bot_priority_id]) if params.key?(:discord_bot_priority_id)
+    Setting.set('kc_discord_bot_health_check_group_id', params[:discord_bot_group_id]) if params.key?(:discord_bot_group_id)
+    Setting.set('kc_discord_bot_health_check_owner_id', params[:discord_bot_owner_id]) if params.key?(:discord_bot_owner_id)
 
     render json: { ok: true }
   end
