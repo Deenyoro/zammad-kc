@@ -18,7 +18,7 @@ const { userDisplayName, isUserInactive } = useUserEntity(toRef(props, 'item'))
 <template>
   <UserPopoverWithTrigger
     :popover-config="{ orientation: 'right' }"
-    class="group/item grow flex items-center gap-2 rounded-md px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:no-underline!"
+    class="group/item flex grow items-center gap-2 rounded-md px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:no-underline!"
     trigger-link-active-class="outline-2! outline-offset-1! outline-blue-800! hover:outline-blue-800!"
     :user="item as AvatarUser"
     :aria-description="isUserInactive ? $t('User is inactive.') : undefined"

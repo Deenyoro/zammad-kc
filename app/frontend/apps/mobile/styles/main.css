@@ -151,7 +151,7 @@
 
     ol,
     ul {
-      @apply pb-2 ms-5;
+      @apply ms-5 pb-2;
 
       p {
         display: inline;
@@ -187,7 +187,7 @@
     }
 
     pre {
-      @apply bg-black-full/20 rounded-md my-2 p-2.5;
+      @apply my-2 rounded-md bg-black-full/20 p-2.5;
 
       code {
         @apply bg-transparent p-0;
@@ -195,12 +195,12 @@
     }
 
     code {
-      @apply bg-black-full/20 font-mono rounded-md p-0.75;
+      @apply rounded-md bg-black-full/20 p-0.75 font-mono;
     }
 
     table.zammad-table,
     &:not(.Content) table {
-      @apply max-w-full border-2 border-gray-200 border-collapse table-fixed w-full my-2 overflow-hidden;
+      @apply my-2 w-full max-w-full table-fixed border-collapse overflow-hidden border-2 border-gray-200;
 
       .Agent & {
         @apply border-gray;
@@ -212,7 +212,7 @@
 
       td,
       th {
-        @apply min-w-[1em] border border-gray-200 align-top relative py-[3px] px-[5px] box-border;
+        @apply relative box-border min-w-[1em] border border-gray-200 px-[5px] py-[3px] align-top;
 
         .Agent & {
           @apply border-gray;
@@ -224,7 +224,7 @@
       }
 
       th {
-        @apply font-bold text-start bg-black-full/20;
+        @apply bg-black-full/20 text-start font-bold;
 
         .Agent & {
           @apply bg-black-full/10;
@@ -240,7 +240,7 @@
     }
 
     hr {
-      @apply my-2 h-px bg-gray text-[0px] border-none;
+      @apply my-2 h-px border-none bg-gray text-[0px];
 
       .Customer & {
         @apply bg-blue-dark;
@@ -256,7 +256,7 @@
   */
   .ProseMirror blockquote .tableWrapper.tableWrapper.tableWrapper table,
   .ProseMirror [data-signature='true'] .tableWrapper.tableWrapper table {
-    @apply max-w-none border-1 border-gray-200/60 table-auto w-auto m-0 overflow-auto;
+    @apply m-0 w-auto max-w-none table-auto overflow-auto border-1 border-gray-200/60;
 
     td,
     th {
@@ -447,7 +447,7 @@
 }
 
 @utility required {
-  @apply after:bg-yellow after:ms-1 after:inline-block after:size-1 after:shrink-0 after:self-center after:rounded-full after:align-middle after:leading-0 after:content-[''];
+  @apply after:ms-1 after:inline-block after:size-1 after:shrink-0 after:self-center after:rounded-full after:bg-yellow after:align-middle after:leading-0 after:content-[''];
 }
 
 @utility ai-stripe {

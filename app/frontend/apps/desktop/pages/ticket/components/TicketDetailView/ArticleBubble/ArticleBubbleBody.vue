@@ -76,7 +76,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="Content overflow-hidden relative p-3 transition-[padding]"
+    class="Content relative overflow-hidden p-3 transition-[padding]"
     :class="[
       bodyClasses,
       {
@@ -105,7 +105,7 @@ onMounted(() => {
     <div
       ref="bubbleElement"
       data-test-id="article-content"
-      class="overflow-hidden transition-[height] duration-200 text-sm"
+      class="overflow-hidden text-sm transition-[height] duration-200"
     >
       <!--    eslint-disable vue/no-v-html-->
       <div class="inner-article-body" v-html="body" />

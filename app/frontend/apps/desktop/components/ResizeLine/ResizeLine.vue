@@ -96,7 +96,7 @@ defineExpose({
     :class="
       {
         horizontal: 'h-3 w-full',
-        vertical: 'h-full w-3]',
+        vertical: 'h-full w-3',
       }[orientation]
     "
   >

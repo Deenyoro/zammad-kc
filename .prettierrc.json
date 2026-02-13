@@ -3,5 +3,21 @@
   "$schema": "https://json.schemastore.org/prettierrc",
   "semi": false,
   "singleQuote": true,
-  "printWidth": 100
+  "printWidth": 100,
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindStylesheet": "./app/frontend/apps/desktop/styles/main.css",
+  "overrides": [
+    {
+      "files": ["./app/frontend/apps/desktop/**"],
+      "options": {
+        "tailwindStylesheet": "./app/frontend/apps/desktop/styles/main.css"
+      }
+    },
+    {
+      "files": ["./app/frontend/apps/mobile/**"],
+      "options": {
+        "tailwindStylesheet": "./app/frontend/apps/mobile/styles/main.css"
+      }
+    }
+  ]
 }

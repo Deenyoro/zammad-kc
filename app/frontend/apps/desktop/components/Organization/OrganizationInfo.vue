@@ -31,11 +31,11 @@ const { organizationDisplayName } = useOrganizationEntity(toRef(props, 'organiza
 </script>
 
 <template>
-  <div class="flex items-center w-full" :class="{ 'gap-2': !titleSize, 'gap-3': titleSize }">
+  <div class="flex w-full items-center" :class="{ 'gap-2': !titleSize, 'gap-3': titleSize }">
     <component
       :is="avatarComponent"
       :class="{
-        'hover:no-underline! hover:rounded-full hover:outline-1 hover:outline-blue-600 hover:dark:outline-blue-900 focus-visible:rounded-full!':
+        'hover:rounded-full hover:no-underline! hover:outline-1 hover:outline-blue-600 focus-visible:rounded-full! hover:dark:outline-blue-900':
           !dense && !noLink,
       }"
       :link="!dense && !noLink ? `/organizations/${organization.internalId}` : undefined"

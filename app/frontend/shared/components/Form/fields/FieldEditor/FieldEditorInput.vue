@@ -368,7 +368,7 @@ const reclaimEditorFocus = (event: MouseEvent) => {
     ref="wrapper"
     :role="isInlineMode ? 'button' : undefined"
     tabindex="-1"
-    class="flex flex-col relative"
+    class="relative flex flex-col"
     :class="[
       containerInlineDesktopClasses,
       {
@@ -381,7 +381,7 @@ const reclaimEditorFocus = (event: MouseEvent) => {
     <!-- Check if SR label is present on FormKit level labelSrOnly must be true -->
     <CommonLabel
       v-if="context.labelSrOnly && context.label && isInlineMode && !isEditing"
-      class="absolute top-4 rtl:right-1 ltr:left-1"
+      class="absolute top-4 ltr:left-1 rtl:right-1"
       :class="labelInlineDesktopClasses"
       size="small"
     >
@@ -402,7 +402,7 @@ const reclaimEditorFocus = (event: MouseEvent) => {
       @click="reclaimEditorFocus"
     >
       <EditorContent
-        class="text-base cursor-text"
+        class="cursor-text text-base"
         data-test-id="field-editor"
         :editor="editor"
         :style="inputInlineDesktopTextStyles"
