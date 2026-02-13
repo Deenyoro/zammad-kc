@@ -49,6 +49,7 @@ const { organizationDisplayName } = useOrganizationEntity(toRef(props, 'organiza
       :link="dense && !noLink ? `/organizations/${organization.internalId}` : undefined"
     >
       <CommonLabel
+        class="line-clamp-2! break-word"
         :class="{
           [`${titleClass}`]: titleClass,
           'text-blue-800! group-hover:text-blue-850! group-hover:dark:text-blue-600!': !noLink,
@@ -58,7 +59,12 @@ const { organizationDisplayName } = useOrganizationEntity(toRef(props, 'organiza
         {{ organizationDisplayName }}
       </CommonLabel>
     </component>
-    <CommonLabel v-else :class="titleClass" :size="titleSize ? titleSize : labelSize">
+    <CommonLabel
+      v-else
+      class="line-clamp-2! break-word"
+      :class="titleClass"
+      :size="titleSize ? titleSize : labelSize"
+    >
       {{ organizationDisplayName }}
     </CommonLabel>
     <slot name="actions" />

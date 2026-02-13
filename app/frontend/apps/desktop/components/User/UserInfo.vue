@@ -66,6 +66,7 @@ const { organizationDisplayName } = useOrganizationEntity(organization)
             [`${titleClass}`]: titleClass,
             'text-blue-800! group-hover:text-blue-850! group-hover:dark:text-blue-600!': !noLink,
           }"
+          class="line-clamp-2! break-word"
           :size="titleSize ? titleSize : labelSize"
         >
           {{ userDisplayName }}
@@ -74,7 +75,7 @@ const { organizationDisplayName } = useOrganizationEntity(organization)
       <CommonLabel
         v-else
         :size="titleSize ? titleSize : labelSize"
-        class="text-gray-300! dark:text-neutral-400!"
+        class="line-clamp-1! break-word text-gray-300! dark:text-neutral-400!"
         :class="titleClass"
       >
         {{ userDisplayName }}
@@ -89,7 +90,7 @@ const { organizationDisplayName } = useOrganizationEntity(organization)
         trigger-link-active-class="outline-2! outline-blue-800! hover:outline-blue-800!"
       >
         <CommonLabel
-          class="text-blue-800! hover:text-blue-850! hover:dark:text-blue-600!"
+          class="line-clamp-2! break-word text-blue-800! hover:text-blue-850! hover:dark:text-blue-600!"
           :size="labelSize"
         >
           {{ organizationDisplayName }}
@@ -100,7 +101,7 @@ const { organizationDisplayName } = useOrganizationEntity(organization)
         :link="`/organizations/${user.organization?.internalId}`"
       >
         <CommonLabel
-          class="text-blue-800! hover:text-blue-850! hover:dark:text-blue-600!"
+          class="line-clamp-2! break-word text-blue-800! hover:text-blue-850! hover:dark:text-blue-600!"
           :size="labelSize"
         >
           {{ organizationDisplayName }}

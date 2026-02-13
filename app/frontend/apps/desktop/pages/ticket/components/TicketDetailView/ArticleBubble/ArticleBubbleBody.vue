@@ -95,11 +95,14 @@ onMounted(() => {
         {{ $t('Author name and article creation date') }}
       </p>
 
-      <CommonLabel class="font-bold" size="small" variant="neutral">
+      <CommonLabel class="line-clamp-1! font-bold" size="small" variant="neutral">
         {{ article.author.fullname }}
       </CommonLabel>
 
-      <CommonDateTime class="text-xs ltr:ml-auto rtl:mr-auto" :date-time="article.createdAt" />
+      <CommonDateTime
+        class="shrink-0 text-xs ltr:ml-auto rtl:mr-auto"
+        :date-time="article.createdAt"
+      />
     </div>
 
     <div

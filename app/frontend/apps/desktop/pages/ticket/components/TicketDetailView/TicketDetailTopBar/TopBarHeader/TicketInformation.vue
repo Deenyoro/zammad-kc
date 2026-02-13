@@ -47,7 +47,7 @@ const { updateTitle } = useTicketEditTitle(ticketId)
       />
     </div>
 
-    <div class="grow basis-full">
+    <div class="min-w-0 grow basis-full">
       <div
         class="flex flex-col justify-center"
         :class="{
@@ -55,17 +55,11 @@ const { updateTitle } = useTicketEditTitle(ticketId)
         }"
       >
         <div v-if="!hideDetails" class="mb-1 flex items-center gap-1">
-          <CommonLabel
-            tag="p"
-            class="flex items-center gap-1"
-            :class="{
-              'after:inline-block after:h-[.12rem] after:w-[.12rem] after:shrink-0 after:rounded-full after:bg-current':
-                ticket.organization,
-            }"
-          >
+          <CommonLabel tag="p" class="line-clamp-1! max-w-1/2 shrink break-all">
             {{ ticket.customer.fullname }}
           </CommonLabel>
-          <CommonLabel v-if="ticket.organization?.name">
+          <span v-if="ticket.organization?.name" aria-hidden="true"> &middot; </span>
+          <CommonLabel v-if="ticket.organization?.name" class="line-clamp-1! flex-1 grow break-all">
             {{ ticket.organization?.name }}
           </CommonLabel>
         </div>

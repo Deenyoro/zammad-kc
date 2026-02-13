@@ -41,7 +41,7 @@ defineProps<Props>()
           size="small"
         />
         <CommonLabel
-          class="block truncate text-blue-800! group-hover:text-blue-850! group-focus-visible:text-blue-800! group-hover:dark:text-blue-600!"
+          class="line-clamp-2! break-word text-blue-800! group-hover:text-blue-850! group-focus-visible:text-blue-800! group-hover:dark:text-blue-600!"
         >
           {{ entity.name }}
         </CommonLabel>
@@ -55,7 +55,7 @@ defineProps<Props>()
   >
     <CommonOrganizationAvatar :entity="entity as AvatarOrganization" size="small" />
     <CommonLabel
-      class="block truncate text-blue-800! group-hover:text-blue-850! group-focus-visible:text-blue-800! group-hover:dark:text-blue-600!"
+      class="line-clamp-2! break-word text-blue-800! group-hover:text-blue-850! group-focus-visible:text-blue-800! group-hover:dark:text-blue-600!"
     >
       {{ entity.name }}
     </CommonLabel>
