@@ -313,7 +313,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
   end
 
   IMAGE_MIME_TYPES = %w[image/png image/jpeg image/gif image/webp image/bmp image/pjpeg].freeze
-  MAX_ATTACHMENT_BYTES = 25 * 1024 * 1024 # 25 MB per file
+  MAX_ATTACHMENT_BYTES = 5 * 1024 * 1024 # 5 MB per file — larger files get linked instead of downloaded
 
   # Downloads inline images (hostedContents) and file attachments from a
   # Teams message and stores them on the Zammad article.
@@ -353,8 +353,11 @@ class Channel::Driver::KcMicrosoftTeamsChat
 
     # 2. File attachments — referenced in message['attachments']
     #    Teams file uploads have contentType "reference" with a SharePoint contentUrl.
-    #    Download via Graph's sharing API (encodes the URL as a sharing token).
+    #    Files over MAX_ATTACHMENT_BYTES are NOT downloaded — a link to the file
+    #    is appended to the article body instead to prevent memory issues.
     attachments = Array(message_data[:attachments])
+    linked_files = []
+
     attachments.each do |att|
       att = att.with_indifferent_access
       content_url = att[:contentUrl]
@@ -365,7 +368,16 @@ class Channel::Driver::KcMicrosoftTeamsChat
 
       begin
         if content_type_att.include?('reference')
-          # SharePoint file upload — download via Graph sharing API
+          # SharePoint file upload — check size via driveItem metadata before downloading
+          meta = sharepoint_driveitem_metadata(graph, content_url)
+          file_size = meta[:size]
+          if file_size && file_size > MAX_ATTACHMENT_BYTES
+            size_mb = (file_size.to_f / 1024 / 1024).round(1)
+            Rails.logger.info "KC Teams Chat: Linking large SharePoint file #{filename} (#{size_mb} MB) instead of downloading"
+            linked_files << { name: filename, size_mb: size_mb, url: meta[:web_url] || content_url }
+            next
+          end
+
           data = download_sharepoint_file(graph, content_url)
           next if data.blank?
 
@@ -390,7 +402,9 @@ class Channel::Driver::KcMicrosoftTeamsChat
         end
 
         if data.bytesize > MAX_ATTACHMENT_BYTES
-          Rails.logger.warn "KC Teams Chat: Skipping oversized attachment #{filename} (#{data.bytesize} bytes)"
+          size_mb = (data.bytesize.to_f / 1024 / 1024).round(1)
+          Rails.logger.info "KC Teams Chat: Linking oversized attachment #{filename} (#{size_mb} MB)"
+          linked_files << { name: filename, size_mb: size_mb, url: content_url }
           next
         end
 
@@ -404,6 +418,13 @@ class Channel::Driver::KcMicrosoftTeamsChat
       rescue => e
         Rails.logger.error "KC Teams Chat: Failed to download attachment #{filename}: #{e.message}"
       end
+    end
+
+    # Append links for large files to the article body
+    if linked_files.any?
+      links_html = linked_files.map { |f| "<li><a href=\"#{f[:url]}\" target=\"_blank\">#{f[:name]}</a> (#{f[:size_mb]} MB)</li>" }.join
+      suffix = "<br><br><strong>Large attachments (view in Teams/SharePoint):</strong><ul>#{links_html}</ul>"
+      article.update!(body: article.body.to_s + suffix)
     end
   end
 
@@ -444,6 +465,33 @@ class Channel::Driver::KcMicrosoftTeamsChat
     end
 
     response.body
+  end
+
+  # Fetches driveItem metadata (size and webUrl) from SharePoint without
+  # downloading the file content.  Returns { size: Integer, web_url: String }
+  # or an empty hash on failure.
+  def sharepoint_driveitem_metadata(graph, sharepoint_url)
+    encoded = 'u!' + Base64.urlsafe_encode64(sharepoint_url).chomp('=')
+    metadata_url = "https://graph.microsoft.com/v1.0/shares/#{encoded}/driveItem?$select=size,webUrl"
+
+    response = UserAgent.get(
+      metadata_url,
+      {},
+      {
+        headers:       { 'Authorization' => "Bearer #{graph.access_token}" },
+        open_timeout:  5,
+        read_timeout:  10,
+        total_timeout: 15,
+        log:           { facility: 'kc_teams_graph' },
+      },
+    )
+    return {} unless response.success?
+
+    data = JSON.parse(response.body)
+    { size: data['size'], web_url: data['webUrl'] }
+  rescue => e
+    Rails.logger.debug "KC Teams Chat: Could not fetch SharePoint driveItem metadata: #{e.message}"
+    {}
   end
 
   MIME_EXTENSIONS = {
