@@ -212,7 +212,7 @@ setupMissingOrDisabledOptionHandling()
         aria-haspopup="menu"
         :aria-expanded="expanded"
         :name="context.node.name"
-        class="formkit-disabled:pointer-events-none flex grow items-center gap-2.5 px-2.5 py-2 text-black focus:outline-hidden dark:text-white"
+        class="flex grow items-center gap-2.5 px-2.5 py-2 text-black focus:outline-hidden dark:text-white formkit-disabled:pointer-events-none"
         :aria-labelledby="`label-${context.id}`"
         :aria-disabled="context.disabled"
         :data-multiple="context.multiple"

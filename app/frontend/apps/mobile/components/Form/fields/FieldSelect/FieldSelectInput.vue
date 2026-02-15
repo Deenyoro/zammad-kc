@@ -77,7 +77,7 @@ setupMissingOrDisabledOptionHandling()
         aria-haspopup="dialog"
         :aria-expanded="expanded"
         :name="context.node.name"
-        class="formkit-disabled:pointer-events-none flex grow items-center focus:outline-hidden"
+        class="flex grow items-center focus:outline-hidden formkit-disabled:pointer-events-none"
         :aria-labelledby="`label-${context.id}`"
         :aria-disabled="context.disabled"
         :data-multiple="context.multiple"
@@ -122,7 +122,7 @@ setupMissingOrDisabledOptionHandling()
         <CommonIcon
           v-if="context.clearable && hasValue && !context.disabled"
           :aria-label="i18n.t('Clear selection')"
-          class="text-gray absolute -mt-5 shrink-0 ltr:right-2 rtl:left-2"
+          class="absolute -mt-5 shrink-0 text-gray ltr:right-2 rtl:left-2"
           name="close-small"
           size="base"
           role="button"

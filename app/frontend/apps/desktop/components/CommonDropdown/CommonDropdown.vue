@@ -82,7 +82,7 @@ const actionItems = computed(() =>
       <template v-for="(item, index) in items" :key="item.key" #[`item-${item.key}`]>
         <div class="group flex grow cursor-pointer items-center">
           <CommonPopoverMenuItem
-            class="focus-visible-app-default flex grow items-center gap-2 p-2.5 focus-visible:-outline-offset-1!"
+            class="flex grow items-center gap-2 p-2.5 focus-visible-app-default focus-visible:-outline-offset-1!"
             :class="{
               'rounded-t-lg!': index === 0,
               'rounded-b-lg!': index === items?.length - 1,
