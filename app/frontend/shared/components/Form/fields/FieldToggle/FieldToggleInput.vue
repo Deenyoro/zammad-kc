@@ -109,7 +109,7 @@ const classMap = getToggleClasses()
     :id="context.id"
     type="button"
     role="switch"
-    class="formkit-disabled:pointer-events-none relative inline-flex flex-shrink-0 cursor-pointer items-center rounded-full"
+    class="relative inline-flex flex-shrink-0 cursor-pointer items-center rounded-full formkit-disabled:pointer-events-none"
     :class="[
       context.classes.input,
       classMap.track,
