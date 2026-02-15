@@ -51,8 +51,24 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
 
     rc = rc_class.with_channel_tokens(channel)
     from_phone = channel.options.with_indifferent_access[:phone_number]
-    # Strip HTML tags — Zammad stores article bodies as HTML but SMS needs plain text.
-    body_text  = article.body.present? ? ActionController::Base.helpers.strip_tags(article.body).strip : ''
+    # Convert HTML body to plain text for SMS:
+    # 1. Convert <br> and block-closing tags to newlines before stripping
+    # 2. Strip remaining HTML tags
+    # 3. Decode HTML entities (&nbsp; &amp; &lt; etc.)
+    # 4. Normalize non-breaking spaces and collapse runs of whitespace
+    body_text = if article.body.present?
+                  text = article.body
+                  text = text.gsub(%r{<br\s*/?>}i, "\n")
+                  text = text.gsub(%r{</(?:p|div|li|tr)>}i, "\n")
+                  text = ActionController::Base.helpers.strip_tags(text)
+                  text = CGI.unescapeHTML(text)
+                  text = text.gsub("\u00A0", ' ')
+                  text = text.gsub(/[^\S\n]+/, ' ')
+                  text = text.gsub(/\n{3,}/, "\n\n")
+                  text.strip
+                else
+                  ''
+                end
 
     # Step 1: Send text as plain SMS (always, even if attachments exist)
     sms_result = nil
