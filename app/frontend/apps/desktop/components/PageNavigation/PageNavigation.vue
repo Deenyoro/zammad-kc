@@ -62,7 +62,7 @@ const permittedRoutes = computed(() => {
             >
               <CommonButton
                 v-if="collapsed"
-                class="focus-visible-app-default shrink-0 text-neutral-400 hover:outline-blue-900"
+                class="shrink-0 text-neutral-400 focus-visible-app-default hover:outline-blue-900"
                 size="large"
                 variant="neutral"
                 :icon="route.meta.icon"
@@ -70,7 +70,7 @@ const permittedRoutes = computed(() => {
               />
               <CommonLink
                 v-else
-                class="focus-visible-app-default flex grow gap-2 rounded-lg px-2 py-3 text-neutral-400 hover:bg-blue-900 hover:text-white! hover:no-underline! focus-visible:rounded-lg!"
+                class="flex grow gap-2 rounded-lg px-2 py-3 text-neutral-400 focus-visible-app-default hover:bg-blue-900 hover:text-white! hover:no-underline! focus-visible:rounded-lg!"
                 :class="{
                   'bg-blue-800! text-white!': router.currentRoute.value.name === route.name, // $route.name is not detected by ts
                 }"

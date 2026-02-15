@@ -96,7 +96,7 @@ const router = useRouter()
       <CommonLink
         v-if="singleMenuItem?.link"
         v-tooltip="$t(singleActionAriaLabel)"
-        class="focus-visible-app-default flex"
+        class="flex focus-visible-app-default"
         :aria-label="$t(singleActionAriaLabel)"
         :disabled="disabled"
         :link="singleMenuItem.link"
