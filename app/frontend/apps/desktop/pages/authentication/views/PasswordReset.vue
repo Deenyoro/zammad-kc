@@ -20,6 +20,12 @@ import LayoutPublicPage from '#desktop/components/layout/LayoutPublicPage/Layout
 
 import { useUserPasswordResetSendMutation } from '../graphql/mutations/userPasswordResetSend.api.ts'
 
+interface Props {
+  login?: string
+}
+
+const props = defineProps<Props>()
+
 defineOptions({
   beforeRouteEnter(to) {
     const application = useApplicationStore()
@@ -42,6 +48,7 @@ const formSchema: FormSchemaNode[] = [
     label: __('Username / Email'),
     name: 'login',
     required: true,
+    value: props.login,
   },
 ]
 

@@ -66,7 +66,21 @@ describe('ticket create view - splitting of a ticket article', () => {
           },
         ],
       },
-      customer_id: { value: 1 },
+      customer_id: {
+        value: 1,
+        options: [
+          {
+            value: 1,
+            label: 'customer1@example.com',
+            object: {
+              __typename: 'User',
+              id: convertToGraphQLId('User', 1),
+              internalId: 1,
+              email: 'customer1@example.com',
+            },
+          },
+        ],
+      },
       link_ticket_id: { value: ticketId },
       pending_time: { show: false },
     })

@@ -168,7 +168,8 @@ export interface ReactiveFormSchemaDataField {
   props: Except<
     SetOptional<FormSchemaField, 'type'>,
     'show' | 'props' | 'updateFields' | 'relation'
-  >
+  > &
+    FormFieldAdditionalProps
 }
 
 export interface ReactiveFormSchemData {
@@ -271,7 +272,10 @@ export interface FormRef {
   values: FormValues
   flags: Record<string, boolean>
   updateSchemaDataField: UpdateSchemaDataFieldFunction
-  updateChangedFields: (changedFields: Record<string, Partial<FormSchemaField>>) => void
+  updateChangedFields: (
+    changedFields: Record<string, Partial<FormSchemaField>>,
+    changesCanTriggerFormUpdater?: boolean,
+  ) => void
 
   getNodeByName(id: string): FormKitNode | undefined
 

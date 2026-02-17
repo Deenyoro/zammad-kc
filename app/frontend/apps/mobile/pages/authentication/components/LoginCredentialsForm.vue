@@ -1,9 +1,11 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
+import { computed, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useNotifications } from '#shared/components/CommonNotifications/index.ts'
+import { useClearFormInput } from '#shared/components/Form/composables/useClearFormInput.ts'
 import Form from '#shared/components/Form/Form.vue'
 import type { FormSubmitData } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
@@ -26,7 +28,6 @@ const emit = defineEmits<{
   ]
 }>()
 
-const application = useApplicationStore()
 const { forceDesktop } = useForceDesktop()
 
 const loginSchema = defineFormSchema([
@@ -69,26 +70,32 @@ const loginSchema = defineFormSchema([
         label: __('Remember me'),
         wrapperClass: '!h-6',
       },
-      // TODO support if/then in form-schema
-      ...(application.config.user_lost_password
-        ? [
-            {
-              isLayout: true,
-              component: 'CommonLink',
-              props: {
-                class: 'text-right text-white',
-                link: '/#password_reset',
-                onClick: forceDesktop,
-              },
-              children: __('Forgot password?'),
-            },
-          ]
-        : []),
+      {
+        if: '$userLostPassword === true',
+        isLayout: true,
+        component: 'CommonLink',
+        props: {
+          class: 'text-right text-white text-sm',
+          link: '/#password_reset',
+          onClick: forceDesktop,
+        },
+        children: __('Forgot password?'),
+      },
     ],
   },
 ])
 
+const application = useApplicationStore()
+
+const userLostPassword = computed(() => application.config.user_lost_password)
+
+const schemaData = reactive({
+  userLostPassword,
+})
+
 const { form, isDisabled } = useForm()
+
+const { clearAndFocus: clearAndFocusPasswordField } = useClearFormInput(form, 'password')
 
 const { clearAllNotifications } = useNotifications()
 
@@ -116,6 +123,9 @@ const sendCredentials = (formData: FormSubmitData<LoginCredentials>) => {
       if (error instanceof UserError) {
         emit('error', error)
       }
+
+      // Clear the password field on any error and refocus it, in order to facilitate easier retry.
+      clearAndFocusPasswordField()
     })
 }
 </script>
@@ -126,6 +136,7 @@ const sendCredentials = (formData: FormSubmitData<LoginCredentials>) => {
     ref="form"
     class="text-left"
     :schema="loginSchema"
+    :schema-data="schemaData"
     @submit="sendCredentials($event as FormSubmitData<LoginCredentials>)"
   >
     <template #after-fields>
@@ -133,7 +144,7 @@ const sendCredentials = (formData: FormSubmitData<LoginCredentials>) => {
         <span class="ltr:mr-1 rtl:ml-1">{{ $t('New user?') }}</span>
         <CommonLink
           link="/#signup"
-          class="cursor-pointer !text-yellow underline select-none"
+          class="cursor-pointer text-sm text-yellow underline select-none"
           @click="forceDesktop"
         >
           {{ $t('Register') }}
