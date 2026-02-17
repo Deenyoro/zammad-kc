@@ -32,6 +32,7 @@ const formSchema = defineFormSchema([
     required: true,
   },
   {
+    show: false,
     name: 'organization_id',
     object: EnumObjectManagerObjects.Ticket,
   },

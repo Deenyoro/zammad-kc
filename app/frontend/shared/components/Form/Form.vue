@@ -252,9 +252,11 @@ const setFormNode = (node: FormKitNode) => {
 
       formInitialSettled.value = true
 
-      executeFormHandler(FormHandlerExecution.InitialSettled, values.value)
+      nextTick(() => {
+        executeFormHandler(FormHandlerExecution.InitialSettled, values.value)
 
-      if (props.shouldAutofocus) autofocusFirstInput(node)
+        if (props.shouldAutofocus) autofocusFirstInput(node)
+      })
     })
   })
 
@@ -743,7 +745,16 @@ const updateSchemaDataField = (
   }
 }
 
-const updateChangedFields = (changedFields: Record<string, Partial<FormSchemaField>>) => {
+// We have some flags which are used for some detection related to some additional logic.
+// - formUpdaterValueChange: This flag is set when the value is changed by the form updater to avoid re-trigger of
+// the form updater (this is needed because "updaterChangedFields" can already be reseted again, but value changes can be delayed).
+// - pendingValueUpdate: This flag is set when the value is changed by the form updater and the value is not yet updated in
+// the form, to avoid some code exection especially in select fields.
+// - updaterChangedFields: This flag is set when the field is changed by the form updater, to avoid re-trigger of the form updater.
+const updateChangedFields = (
+  changedFields: Record<string, Partial<FormSchemaField>>,
+  changesCanTriggerFormUpdater = false,
+) => {
   const handleUpdatedInitialFieldValue = (
     fieldName: string,
     value: FormFieldValue,
@@ -779,7 +790,7 @@ const updateChangedFields = (changedFields: Record<string, Partial<FormSchemaFie
       !isEqual(value, values.value[fieldName])
 
     if (pendingValueUpdate) {
-      field.formUpdaterValueChange = true
+      field.formUpdaterValueChange = !changesCanTriggerFormUpdater
       field.pendingValueUpdate = true
     }
 
@@ -806,7 +817,9 @@ const updateChangedFields = (changedFields: Record<string, Partial<FormSchemaFie
       await formNode.value?.settled
     }
 
-    updaterChangedFields.add(fieldName)
+    // Only add the field when changes can not trigger additional form updater requests.
+    if (!changesCanTriggerFormUpdater) updaterChangedFields.add(fieldName)
+
     updateSchemaDataField(field)
 
     if (!formKitInitialNodesSettled.value) return
@@ -891,6 +904,27 @@ const executeFormUpdaterRefetch = () => {
   nextFormUpdaterVariables = null
 }
 
+const updateDataWithChangedField = (
+  data: FormValues,
+  changedField: FormUpdaterChangedFieldInput,
+  changedFieldNode?: FormKitNode,
+) => {
+  const parentName = changedFieldNode?.parent?.name
+
+  // Currently we are only supporting one level.
+  if (
+    formNode.value &&
+    parentName &&
+    parentName !== formNode.value.name &&
+    (!props.flattenFormGroups || !props.flattenFormGroups.includes(parentName))
+  ) {
+    data[parentName] ||= {}
+    ;(data[parentName] as Record<string, FormFieldValue>)[changedField.name] = changedField.newValue
+  } else {
+    data[changedField.name] = changedField.newValue
+  }
+}
+
 const handlesFormUpdater = (
   trigger: FormUpdaterTrigger,
   changedField?: FormUpdaterChangedFieldInput,
@@ -906,6 +940,20 @@ const handlesFormUpdater = (
     (!changedField || props.formUpdaterInitialOnly)
   )
     return
+
+  // Check if we already have a pending formUpdater request in the same tick
+  if (nextFormUpdaterVariables && changedField) {
+    // Add this change to additionalChangedFields instead of overriding the primary one
+    if (!nextFormUpdaterVariables.meta.additionalChangedFields) {
+      nextFormUpdaterVariables.meta.additionalChangedFields = []
+    }
+    nextFormUpdaterVariables.meta.additionalChangedFields.push(changedField)
+
+    // Also update the data object to include the new value
+    updateDataWithChangedField(nextFormUpdaterVariables.data, changedField, changedFieldNode)
+
+    return
+  }
 
   const meta: FormUpdaterMetaInput = {
     // We need a unique requestId, so that the query will always be executed on changes, also when the variables
@@ -942,22 +990,7 @@ const handlesFormUpdater = (
     meta.reset = true
   } else if (changedField) {
     meta.changedField = changedField
-
-    const parentName = changedFieldNode?.parent?.name
-
-    // Currently we are only supporting one level.
-    if (
-      formNode.value &&
-      parentName &&
-      parentName !== formNode.value.name &&
-      (!props.flattenFormGroups || !props.flattenFormGroups.includes(parentName))
-    ) {
-      data[parentName] ||= {}
-      ;(data[parentName] as Record<string, FormFieldValue>)[changedField.name] =
-        changedField.newValue
-    } else {
-      data[changedField.name] = changedField.newValue
-    }
+    updateDataWithChangedField(data, changedField, changedFieldNode)
   }
 
   // We mark this as raw, because we want no deep reactivity on the form updater query variables.
@@ -969,7 +1002,12 @@ const handlesFormUpdater = (
     relationFields,
   })
 
-  if (trigger !== 'blur') executeFormUpdaterRefetch()
+  if (trigger !== 'blur') {
+    // Execute in next tick to allow same-tick changes to be collected
+    nextTick(() => {
+      executeFormUpdaterRefetch()
+    })
+  }
 }
 
 const previousValues = new WeakMap<FormKitNode, FormFieldValue>()
@@ -999,11 +1037,17 @@ const changedInputValueHandling = (inputNode: FormKitNode) => {
     if (
       !formKitInitialNodesSettled.value ||
       formResetRunning.value ||
-      !currentCreatedFormFields.has(node.name) // It's the initial value commit for the field, when it's not "fully" created yet.
+      (!currentCreatedFormFields.has(node.name) && !newValue) // It's the initial value commit for the field, when it's not "fully" created yet.
     ) {
       updaterChangedFields.delete(node.name)
       previousValues.set(node, cloneDeep(newValue))
       return
+    }
+
+    const changedFieldData: ChangedField = {
+      name: node.name,
+      newValue,
+      oldValue,
     }
 
     if (
@@ -1011,15 +1055,7 @@ const changedInputValueHandling = (inputNode: FormKitNode) => {
       !formUpdaterValueChange &&
       !updaterChangedFields.has(node.name)
     ) {
-      handlesFormUpdater(
-        inputNode.props.formUpdaterTrigger,
-        {
-          name: node.name,
-          newValue,
-          oldValue,
-        },
-        node,
-      )
+      handlesFormUpdater(inputNode.props.formUpdaterTrigger, changedFieldData, node)
     }
 
     emit('changed', node.name, newValue, oldValue, formUpdaterValueChange)
@@ -1030,14 +1066,12 @@ const changedInputValueHandling = (inputNode: FormKitNode) => {
       formUpdaterValueChange,
     })
     executeFormHandler(FormHandlerExecution.FieldChange, values.value, {
-      name: node.name,
-      newValue,
-      oldValue,
+      ...changedFieldData,
       formUpdaterValueChange,
     })
 
-    previousValues.set(node, cloneDeep(newValue))
     updaterChangedFields.delete(node.name)
+    previousValues.set(node, cloneDeep(newValue))
   })
 
   inputNode.on('blur', async () => {
@@ -1209,7 +1243,7 @@ watchOnce(formKitInitialNodesSettled, () => {
   watch(
     changeFields,
     (newValue) => {
-      updateChangedFields(newValue)
+      updateChangedFields(newValue, true)
     },
     {
       deep: true,

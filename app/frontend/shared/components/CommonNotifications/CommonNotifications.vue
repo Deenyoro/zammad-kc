@@ -44,6 +44,7 @@ const clickHandler = (notification: Notification) => {
             @click="clickHandler(notification)"
           >
             <CommonIcon
+              class="shrink-0 self-start"
               :name="`common-notification-${notification.type}`"
               size="small"
               decorative

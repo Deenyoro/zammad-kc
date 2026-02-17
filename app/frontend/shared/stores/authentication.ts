@@ -4,18 +4,26 @@ import { useLocalStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
+import {
+  NotificationTypes,
+  useNotifications,
+} from '#shared/components/CommonNotifications/index.ts'
 import useFingerprint from '#shared/composables/useFingerprint.ts'
 import { stopAllQueryPollings } from '#shared/composables/useQueryPolling.ts'
 import { useLoginMutation } from '#shared/graphql/mutations/login.api.ts'
 import { useLogoutMutation } from '#shared/graphql/mutations/logout.api.ts'
 import { type EnumTwoFactorAuthenticationMethod, type LoginInput } from '#shared/graphql/types.ts'
+import { i18n } from '#shared/i18n.ts'
 import { clearApolloClientStore } from '#shared/server/apollo/client.ts'
 import { MutationHandler } from '#shared/server/apollo/handler/index.ts'
+import { GraphQLErrorTypes } from '#shared/types/error.ts'
 import testFlags from '#shared/utils/testFlags.ts'
 
 import { useApplicationStore } from './application.ts'
 import { resetAndDisposeStores } from './index.ts'
 import { useSessionStore } from './session.ts'
+
+const FORCE_RELOAD_TIMEOUT = 1000
 
 interface LoginOptions {
   login: string
@@ -134,6 +142,35 @@ export const useAuthenticationStore = defineStore(
         }
       }
 
+      const showForcedReloadNotification = (reloadTimeout: number) => {
+        const { notify } = useNotifications()
+
+        let totalDisplayTime = -1000 // account for initial notification delay
+
+        const callback = () => window.location.reload()
+
+        const interval = setInterval(() => {
+          totalDisplayTime += FORCE_RELOAD_TIMEOUT
+
+          const timeRemaining = reloadTimeout - totalDisplayTime
+
+          notify({
+            id: 'invalid-csrf-token',
+            message: i18n.t(
+              'Security token verification failed. This may be just temporary, click here to reload and try again. Reloading in %s second(s)…',
+              Math.ceil(timeRemaining / 1000),
+            ),
+            type: NotificationTypes.Warn,
+            persistent: true,
+            callback,
+          })
+          if (totalDisplayTime < reloadTimeout) return
+
+          clearInterval(interval)
+          callback() // actual forced reload
+        }, FORCE_RELOAD_TIMEOUT)
+      }
+
       const loginMutation = new MutationHandler(
         useLoginMutation({
           variables: {
@@ -148,6 +185,16 @@ export const useAuthenticationStore = defineStore(
             },
           },
         }),
+        {
+          errorCallback: (error) => {
+            if (error.type === GraphQLErrorTypes.InvalidCsrfToken) {
+              showForcedReloadNotification(10000)
+              return false // skip showing an extra error toast
+            }
+
+            return true
+          },
+        },
       )
 
       const result = await loginMutation.send()

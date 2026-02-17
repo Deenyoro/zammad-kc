@@ -32,7 +32,6 @@ module ApplicationController::PreventsCsrf
     # call Rails method to verify CRSF token
     return true if valid_authenticity_token?(session, params[:authenticity_token] || request.headers['X-CSRF-Token'])
 
-    logger.info 'CSRF token verification failed'
-    raise Exceptions::NotAuthorized, 'CSRF token verification failed!'
+    raise Exceptions::InvalidCSRFToken
   end
 end
