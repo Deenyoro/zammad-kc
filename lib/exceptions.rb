@@ -4,6 +4,12 @@ module Exceptions
 
   class NotAuthorized < StandardError; end
 
+  class InvalidCSRFToken < NotAuthorized
+    def initialize
+      super(__('CSRF token verification failed.'))
+    end
+  end
+
   class Forbidden < StandardError; end
 
   class UnprocessableEntity < StandardError

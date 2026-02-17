@@ -10,19 +10,15 @@ class FormUpdater::ApplyValue::UserAutocomplete < FormUpdater::ApplyValue::Base
     user = User.find_by(id: config['value'])
     return if !user
 
-    user_obj = user.attributes
-      .slice('active', 'email', 'firstname', 'fullname', 'image', 'lastname', 'mobile', 'out_of_office', 'out_of_office_end_at', 'out_of_office_start_at', 'phone', 'source', 'vip')
-      .merge({
-               '__typename' => 'User',
-               'id'         => Gql::ZammadSchema.id_from_internal_id('User', user.id),
-             })
+    # Serialize user with organization relation and computed fields
+    user_serialized = FormUpdater::Graphql::Serializers::User.serialize(user)
 
     result[field][:value] = user.id
     result[field][:options] = [{
       value:   user.id,
       label:   user.fullname.presence || user.login,
       heading: user.organization&.name,
-      object:  user_obj,
+      object:  user_serialized,
     }]
   end
 end

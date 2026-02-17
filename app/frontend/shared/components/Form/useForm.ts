@@ -112,7 +112,10 @@ export const useForm = <T = FormValues>(formRef?: Ref<FormRef | undefined>) => {
     }
   }
 
-  const updateFieldValues = (fieldValues: Record<string, FormFieldValue>) => {
+  const updateFieldValues = (
+    fieldValues: Record<string, FormFieldValue>,
+    canTriggerFormUpdater = false,
+  ) => {
     const changedFieldValues: Record<string, Pick<FormSchemaField, 'value'>> = {}
 
     Object.keys(fieldValues).forEach((fieldName) => {
@@ -121,7 +124,7 @@ export const useForm = <T = FormValues>(formRef?: Ref<FormRef | undefined>) => {
       }
     })
 
-    form.value?.updateChangedFields(changedFieldValues)
+    form.value?.updateChangedFields(changedFieldValues, canTriggerFormUpdater)
   }
 
   const values = computed<T>(() => {

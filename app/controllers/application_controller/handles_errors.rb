@@ -110,6 +110,9 @@ module ApplicationController::HandlesErrors
     elsif e.is_a?(Exceptions::UnprocessableEntity)
       data[:error_human] = data[:error]
       data[:unprocessable_entity] = e.entity
+    elsif e.is_a?(Exceptions::InvalidCSRFToken)
+      data[:error_human] = data[:error]
+      data[:invalid_csrf_token] = true
     elsif [ActionController::RoutingError, ActiveRecord::RecordNotFound, Exceptions::NotAuthorized, Exceptions::Forbidden, Store::Provider::S3::Error, Authorization::Provider::AccountError, Exceptions::MissingAttribute, ActionController::ParameterMissing].include?(e.class)
       data[:error_human] = data[:error]
     end

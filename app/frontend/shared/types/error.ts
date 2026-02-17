@@ -13,6 +13,8 @@ export enum GraphQLErrorTypes {
 
   // This exception actually means 'NotAuthenticated'
   NotAuthorized = 'Exceptions::NotAuthorized',
+
+  InvalidCsrfToken = 'Exceptions::InvalidCSRFToken',
 }
 
 export type GraphQLErrorTypeKeys = keyof GraphQLErrorTypes
