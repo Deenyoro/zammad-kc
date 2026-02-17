@@ -80,7 +80,18 @@ const getImageInViewer = (view: ExtendedRenderResult) => {
 describe('Fields - FieldFile', () => {
   beforeEach(() => {
     mockApplicationConfig({
-      'active_storage.web_image_content_types': ['image/png'],
+      'active_storage.content_types_allowed_inline': [
+        'image/webp',
+        'image/avif',
+        'image/png',
+        'image/gif',
+        'image/jpeg',
+        'image/tiff',
+        'image/bmp',
+        'image/vnd.adobe.photoshop',
+        'image/vnd.microsoft.icon',
+        'image/jpg',
+      ],
     })
   })
 

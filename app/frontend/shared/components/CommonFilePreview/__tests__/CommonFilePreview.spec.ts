@@ -19,11 +19,17 @@ describe('preview file component', () => {
     mockApplicationConfig({
       ui_ticket_zoom_attachments_preview: true,
       api_path: '/api',
-      'active_storage.web_image_content_types': [
+      'active_storage.content_types_allowed_inline': [
+        'image/webp',
+        'image/avif',
         'image/png',
-        'image/jpeg',
-        'image/jpg',
         'image/gif',
+        'image/jpeg',
+        'image/tiff',
+        'image/bmp',
+        'image/vnd.adobe.photoshop',
+        'image/vnd.microsoft.icon',
+        'image/jpg',
       ],
     })
   })
