@@ -17,7 +17,7 @@ class App.Auth
         params.success(data, status, xhr)
 
       error: (xhr, statusText, error) =>
-        @_loginError()
+        @_loginError(xhr)
         params.error(xhr, statusText, error)
     )
 
@@ -40,7 +40,7 @@ class App.Auth
           callback()
 
       error: (xhr, statusText, error) =>
-        @_loginError()
+        @_loginError(xhr)
     )
 
   @logout: (rerender = true, callback) ->
@@ -71,7 +71,7 @@ class App.Auth
           @_logout(rerender, callback)
 
         error: (xhr, statusText, error) =>
-          @_loginError()
+          @_loginError(xhr)
       )
     Spine.Ajax.queue(performLogut)
 
@@ -195,7 +195,10 @@ class App.Auth
     if callback
       callback()
 
-  @_loginError: ->
+  @_loginError: (data) ->
+    details = data.responseJSON || {}
+    App.Event.trigger('maintenance', type: 'invalid_csrf_token') if details.invalid_csrf_token
+
     App.Log.debug 'Auth', '_loginError:error'
 
     # empty session

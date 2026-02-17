@@ -217,11 +217,11 @@ RSpec.describe Gql::Mutations::Login, :aggregate_failures, type: :request do
 
     context 'without CSRF token', allow_forgery_protection: true do
       it 'fails with error message' do
-        expect(graphql_response['errors'][0]).to include('message' => 'CSRF token verification failed!')
+        expect(graphql_response['errors'][0]).to include('message' => 'CSRF token verification failed.')
       end
 
       it 'fails with error type' do
-        expect(graphql_response['errors'][0]['extensions']).to include({ 'type' => 'Exceptions::NotAuthorized' })
+        expect(graphql_response['errors'][0]['extensions']).to include({ 'type' => 'Exceptions::InvalidCSRFToken' })
       end
     end
 
