@@ -52,7 +52,7 @@ export const initializeGlobalComponentStyles = () => {
 
   initializeNotificationClasses({
     base: 'rounded px-4 py-2',
-    baseContainer: 'ltr:right-0 rtl:left-0',
+    baseContainer: 'mx-auto max-w-full',
     error: 'bg-red/60 text-white',
     info: 'bg-white text-black',
     message: 'ltr:ml-2 rtl:mr-2',

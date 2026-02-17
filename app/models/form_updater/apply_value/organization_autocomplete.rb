@@ -7,13 +7,17 @@ class FormUpdater::ApplyValue::OrganizationAutocomplete < FormUpdater::ApplyValu
   end
 
   def map_value(field:, config:)
-    org = Organization.find_by(id: config['value'])
-    return if !org
+    organization = Organization.find_by(id: config['value'])
+    return if !organization
 
-    result[field][:value] = org.id
+    # Serialize organization
+    organization_serialized = FormUpdater::Graphql::Serializers::Organization.serialize(organization)
+
+    result[field][:value] = organization.id
     result[field][:options] = [{
-      value: org.id,
-      label: org.name,
+      value:        organization.id,
+      label:        organization.name,
+      organization: organization_serialized,
     }]
   end
 end

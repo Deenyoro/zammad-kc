@@ -5,7 +5,8 @@ import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
-import { mockLoginMutation } from '#shared/graphql/mutations/login.mocks.ts'
+import { mockLoginMutation, mockLoginMutationError } from '#shared/graphql/mutations/login.mocks.ts'
+import { GraphQLErrorTypes } from '#shared/types/error.ts'
 
 describe('password login', () => {
   it('shows if the setting is turned on', async () => {
@@ -99,6 +100,47 @@ describe('password login', () => {
     await waitFor(() => {
       // We can check current url with the new custom assertion `.toHaveCurrentUrl()`.
       expect(view, 'correctly redirects to home').toHaveCurrentUrl('/')
+    })
+  })
+
+  it('clears and focuses password field on errors', async () => {
+    mockApplicationConfig({
+      user_show_password_login: true,
+    })
+
+    const view = await visitView('/login')
+
+    const username = view.getByLabelText('Username / Email')
+
+    await view.events.type(username, 'admin@example.com')
+
+    const password = view.getByLabelText('Password')
+
+    await view.events.type(password, 'wrong-password')
+
+    // Sanity check.
+    expect(username).toHaveValue('admin@example.com')
+    expect(password).toHaveValue('wrong-password')
+
+    mockLoginMutationError(
+      'Login failed. Have you double-checked your credentials and completed the email verification step?',
+      {
+        type: GraphQLErrorTypes.NotAuthorized,
+      },
+    )
+
+    await view.events.click(view.getByRole('button', { name: 'Sign in' }))
+
+    await waitFor(() => {
+      expect(
+        view.getByText(
+          'Login failed. Have you double-checked your credentials and completed the email verification step?',
+        ),
+      ).toHaveRole('alert')
+
+      expect(username).toHaveValue('admin@example.com')
+      expect(password).toHaveValue('')
+      expect(password).toHaveFocus()
     })
   })
 })

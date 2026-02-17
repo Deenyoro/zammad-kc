@@ -71,11 +71,15 @@ const renderTicketCreateForm = async ({
   onSubmit,
   clearValuesAfterSubmit,
   formUpdaterAdditionalParams,
+  handlers,
+  schema: customSchema,
 }: {
   formUpdaterId?: EnumFormUpdaterId
   onSubmit?: () => unknown
   clearValuesAfterSubmit?: boolean
   formUpdaterAdditionalParams?: FormUpdaterAdditionalParams
+  handlers?: Props['handlers']
+  schema?: FormSchemaField[]
 } = {}) => {
   return new Promise<{
     view: ExtendedRenderResult
@@ -83,12 +87,12 @@ const renderTicketCreateForm = async ({
   }>((resolve) => {
     const view = renderComponent(
       {
-        template: `<div><Form ref="form" id="form-ticket-create" :schema="schema" :form-updater-id="formUpdaterId" :form-updater-additional-params="formUpdaterAdditionalParams" :clear-values-after-submit="clearValuesAfterSubmit" @submit="onSubmit" /></div>`,
+        template: `<div><Form ref="form" id="form-ticket-create" :schema="schema" :form-updater-id="formUpdaterId" :form-updater-additional-params="formUpdaterAdditionalParams" :clear-values-after-submit="clearValuesAfterSubmit" :handlers="handlers" @submit="onSubmit" /></div>`,
         components: {
           Form,
         },
         setup() {
-          const schema = [
+          const schema = customSchema || [
             {
               type: 'text',
               name: 'title',
@@ -131,6 +135,7 @@ const renderTicketCreateForm = async ({
             formUpdaterId,
             formUpdaterAdditionalParams,
             clearValuesAfterSubmit,
+            handlers,
             onSubmit,
           }
         },
@@ -1270,5 +1275,93 @@ describe('Form.vue - Autosave notification', () => {
     await vi.advanceTimersByTimeAsync(6000)
 
     expect(notifications.notify).not.toHaveBeenCalled()
+  })
+})
+
+describe('Form.vue - Same-tick value changes', () => {
+  it('should handle multiple value changes in the same tick by using additionalChangedFields', async () => {
+    const mockFormUpdaterApi = mockGraphQLApi(FormUpdaterDocument).willBehave(() => {
+      return {
+        data: {
+          formUpdater: {
+            fields: {},
+            flags: {},
+          },
+        },
+      }
+    })
+
+    const { view, form } = await renderTicketCreateForm({
+      formUpdaterId: EnumFormUpdaterId.FormUpdaterUpdaterTicketCreate,
+      schema: [
+        {
+          type: 'text',
+          name: 'customerId',
+          label: 'Customer',
+          triggerFormUpdater: true,
+        },
+        {
+          type: 'text',
+          name: 'organizationId',
+          label: 'Organization',
+          triggerFormUpdater: true,
+        },
+      ],
+      handlers: [
+        {
+          execution: [FormHandlerExecution.FieldChange],
+          callback: (_execution, _reactivity, { changedField, findNodeByName }) => {
+            // Simulate a form handler that changes organizationId when customerId changes
+            if (changedField?.name === 'customerId') {
+              const organizationNode = findNodeByName('organizationId')
+
+              // Synchronously update the organizationId in the same tick
+              organizationNode?.input('org-123', false)
+            }
+          },
+        },
+      ],
+    })
+
+    await waitUntil(() => form.value.formInitialSettled)
+
+    // Remember the initial call count
+    const initialCallCount = mockFormUpdaterApi.calls.behave
+
+    const customerInput = view.getByLabelText('Customer')
+    await view.events.type(customerInput, 'customer-123')
+
+    // Wait for the new formUpdater call to complete
+    await waitUntil(() => mockFormUpdaterApi.calls.behave === initialCallCount + 1)
+
+    // Get all calls after the initial ones
+    const calls = mockFormUpdaterApi.spies.behave.mock.calls.slice(initialCallCount)
+
+    // There should only be one formUpdater call for the value changes
+    expect(calls).toHaveLength(1)
+
+    const [variables] = calls[0]
+
+    // The primary changed field should be customerId
+    expect(variables.meta.changedField).toEqual({
+      name: 'customerId',
+      newValue: 'customer-123',
+      oldValue: '',
+    })
+
+    // The additionalChangedFields should contain organizationId
+    expect(variables.meta.additionalChangedFields).toEqual([
+      {
+        name: 'organizationId',
+        newValue: 'org-123',
+        oldValue: '',
+      },
+    ])
+
+    // Verify that the data object includes both field values
+    expect(variables.data).toMatchObject({
+      customerId: 'customer-123',
+      organizationId: 'org-123',
+    })
   })
 })

@@ -184,18 +184,22 @@ RSpec.describe(FormUpdater::Updater::Ticket::Create) do
         expect(resolved_result.resolve[:fields]).to include(
           'customer_id' => include(
             initialValue: customer.id,
-            options:      [{
-              value:   customer.id,
-              label:   customer.fullname,
-              heading: customer.organization.name,
-              object:  customer.attributes
-                .slice('active', 'email', 'firstname', 'fullname', 'image', 'lastname', 'mobile', 'out_of_office', 'out_of_office_end_at', 'out_of_office_start_at', 'phone', 'source', 'vip')
-                .merge({
-                         '__typename' => 'User',
-                         'id'         => Gql::ZammadSchema.id_from_internal_id('User', customer.id),
-                       })
-
-            }]
+            options:      include(
+              include(
+                value:   customer.id,
+                label:   customer.fullname,
+                heading: customer.organization.name,
+                object:  include(
+                  '__typename'   => 'User',
+                  'id'           => Gql::ZammadSchema.id_from_internal_id('User', customer.id),
+                  'organization' => include(
+                    '__typename' => 'Organization',
+                    'id'         => Gql::ZammadSchema.id_from_internal_id('Organization', customer.organization.id),
+                    'name'       => customer.organization.name,
+                  )
+                )
+              )
+            )
           )
         )
       end
