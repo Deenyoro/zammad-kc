@@ -1,6 +1,7 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { waitFor, within } from '@testing-library/vue'
+import { capitalize } from 'lodash-es'
 
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
@@ -448,6 +449,70 @@ describe('Organization Detail View', () => {
 
       expect(calls).toHaveLength(4)
     })
+
+    it('hides organization tickets section when organization has no tickets', async () => {
+      mockOrganizationQuery({
+        organization: {
+          ...organizationData,
+          ticketsCount: {
+            open: 0,
+            closed: 0,
+            openSearchQuery: 'openSearchQuery',
+            closedSearchQuery: 'closedSearchQuery',
+            __typename: 'TicketCount',
+          },
+        },
+      })
+
+      const { main } = await visitOrganizationView()
+
+      expect(
+        within(main).queryByRole('region', {
+          name: 'Organization tickets',
+        }),
+      ).not.toBeInTheDocument()
+    })
+
+    it.each(['open', 'closed'])(
+      'hides %s tickets section when organization has no such tickets',
+      async (state) => {
+        mockOrganizationQuery({
+          organization: {
+            ...organizationData,
+            ticketsCount: {
+              [state]: 0,
+              [state === 'open' ? 'closed' : 'open']: 5,
+            },
+          },
+        })
+
+        const { main } = await visitOrganizationView()
+
+        const calls = await waitForTicketsByOrganizationQueryCalls()
+
+        expect(calls).toHaveLength(1) // the "other" one
+
+        const organizationTicketsSection = within(main).getByRole('region', {
+          name: 'Organization tickets',
+        })
+
+        expect(
+          within(organizationTicketsSection).queryByRole('heading', {
+            name: `${capitalize(state)} tickets`,
+            level: 3,
+          }),
+        ).not.toBeInTheDocument()
+
+        waitFor(() => {
+          expect(
+            within(organizationTicketsSection).queryByRole('heading', {
+              name: `${state === 'open' ? 'Closed tickets' : 'Open tickets'}`,
+              level: 3,
+            }),
+          ).toBeVisible()
+        })
+      },
+    )
   })
 
   describe('Ticket frequency chart', () => {
