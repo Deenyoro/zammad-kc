@@ -9,7 +9,7 @@ import type { ChannelModule } from '#desktop/pages/ticket/components/TicketDetai
 
 export default <ChannelModule>{
   name: 'ringcentral_sms_message',
-  label: __('SMS'),
-  metaLabel: __('sms'),
+  label: __('RingCentral SMS'),
+  metaLabel: __('RingCentral SMS'),
   icon: 'sms',
 }
