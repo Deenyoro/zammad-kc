@@ -18,6 +18,10 @@ class Controllers::Kc::TimeManagementControllerPolicy < Controllers::Application
     agent_access?
   end
 
+  def form_options?
+    user.permissions?('ticket.agent') || user.permissions?('admin')
+  end
+
   private
 
   def agent_access?

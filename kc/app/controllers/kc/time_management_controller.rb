@@ -55,6 +55,29 @@ class Kc::TimeManagementController < ApplicationController
     render json: { id: entry.id }, status: :created
   end
 
+  # GET /api/v1/kc/time_entry_options
+  # Returns agents (active users with ticket.agent permission) and activity
+  # types for the add-entry form.  Used by the Vue desktop-view sidebar.
+  def form_options
+    agents = User.where(active: true).select { |u| u.permissions?('ticket.agent') }
+    agents = agents.sort_by { |u| u.firstname.to_s.downcase }.map do |u|
+      { id: u.id, name: u.fullname }
+    end
+
+    types = []
+    type_class = 'Ticket::TimeAccounting::Type'.safe_constantize
+    if type_class
+      types = type_class.where(active: true).order(:name).map do |t|
+        { id: t.id, name: t.name }
+      end
+    end
+
+    render json: { agents: agents, types: types }
+  rescue => e
+    Rails.logger.warn "KC: form_options failed: #{e.message}"
+    render json: { agents: [], types: [] }
+  end
+
   # DELETE /api/v1/kc/tickets/:ticket_id/time_entries/:id
   def destroy_entry
     ticket = Ticket.find(params[:ticket_id])
