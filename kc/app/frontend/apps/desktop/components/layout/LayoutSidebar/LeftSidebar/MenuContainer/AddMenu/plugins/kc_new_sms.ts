@@ -7,11 +7,11 @@
 import type { AddMenuItem } from '#desktop/components/layout/LayoutSidebar/LeftSidebar/types.ts'
 
 export default {
-  key: 'kc-new-sms',
+  key: 'kc-new-rcsms',
   permission: ['ticket.agent'],
   order: 200,
-  label: __('New SMS'),
+  label: __('New SMS Message (RingCentral)'),
   variant: 'secondary',
   icon: 'sms',
-  link: '/kc/new-sms',
+  link: '/kc/new_rcsms',
 } as AddMenuItem
