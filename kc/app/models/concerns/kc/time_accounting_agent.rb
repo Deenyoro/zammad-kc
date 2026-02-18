@@ -13,12 +13,12 @@ module Kc
   module TimeAccountingAgent
     extend ActiveSupport::Concern
 
-    included do
+    prepended do
       if table_exists? && column_names.include?('agent_id')
         belongs_to :agent, class_name: 'User', optional: true
       end
     rescue => e
-      Rails.logger.warn "KC: TimeAccountingAgent included block failed: #{e.message}"
+      Rails.logger.warn "KC: TimeAccountingAgent prepended block failed: #{e.message}"
     end
 
     def effective_agent
