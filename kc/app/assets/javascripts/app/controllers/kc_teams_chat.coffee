@@ -153,7 +153,10 @@ class KcTeamsChat extends App.ControllerSubContent
       type: 'POST'
       url:  "#{@apiPath}/kc/teams_chat_channels/#{id}/reauthenticate"
       success: (data) =>
-        window.location.href = data.authorize_url
+        if data.authorize_url && data.authorize_url.match(/^https:\/\//)
+          window.location.href = data.authorize_url
+        else
+          @notify(type: 'error', msg: __('Invalid authorization URL received.'))
       error: (xhr) =>
         data = xhr.responseJSON || {}
         @notify(type: 'error', msg: data.error || __('Failed to start reauthentication.'))
@@ -222,7 +225,11 @@ class KcTeamsChatAccountAdd extends App.ControllerModal
       data:        JSON.stringify(params)
       contentType: 'application/json'
       success: (data) =>
-        window.location.href = data.authorize_url
+        if data.authorize_url && data.authorize_url.match(/^https:\/\//)
+          window.location.href = data.authorize_url
+        else
+          @formEnable(e)
+          @showAlert(__('Invalid authorization URL received.'))
       error: (xhr) =>
         @formEnable(e)
         data = xhr.responseJSON || {}

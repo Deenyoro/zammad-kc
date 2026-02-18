@@ -47,8 +47,8 @@ class KcRingcentralSmsReply
     true
 
   @articleTypes: (articleTypes, ticket, ui) ->
-    return articleTypes if ticket.currentView() is 'customer'
     return articleTypes if !ticket
+    return articleTypes if ticket.currentView() is 'customer'
 
     # Check if this is an SMS ticket via create_article_type_id or ticket preferences
     isSmsTicket = false

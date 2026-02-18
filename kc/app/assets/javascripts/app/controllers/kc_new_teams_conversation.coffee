@@ -42,6 +42,10 @@ class App.KcNewTeamsConversationContent extends App.Controller
     @contactResults = @el.find('.js-contactResults')
     @loadChannels()
 
+  release: ->
+    clearTimeout(@searchTimer) if @searchTimer
+    super
+
   loadChannels: ->
     @ajax(
       id:   'kc-teams-channels'

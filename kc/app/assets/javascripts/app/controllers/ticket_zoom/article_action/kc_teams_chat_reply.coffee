@@ -47,8 +47,8 @@ class KcTeamsChatReply
     true
 
   @articleTypes: (articleTypes, ticket, ui) ->
-    return articleTypes if ticket.currentView() is 'customer'
     return articleTypes if !ticket || !ticket.create_article_type_id
+    return articleTypes if ticket.currentView() is 'customer'
 
     articleTypeCreate = App.TicketArticleType.find(ticket.create_article_type_id)
     return articleTypes if !articleTypeCreate

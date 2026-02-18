@@ -1,5 +1,7 @@
 module Kc
   module SuppressInternalNoteNotifications
+    extend ActiveSupport::Concern
+
     def article_by_item
       result = super
       return result if result.nil?
@@ -14,6 +16,9 @@ module Kc
         return nil
       end
 
+      result
+    rescue => e
+      Rails.logger.warn "KC: SuppressInternalNoteNotifications error: #{e.message}"
       result
     end
   end
