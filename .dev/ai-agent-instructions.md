@@ -146,12 +146,16 @@ All custom code lives in `kc/`. During Docker build, `kc/script/apply-overlay.sh
 ### Current Concern Prepends (kc_loader.rb)
 
 ```
-Ticket::TimeAccounting ← Kc::TimeAccountingAgent
-Ticket::Article        ← Kc::EnqueueCommunicateTeamsChatJob
-Ticket::Article        ← Kc::EnqueueCommunicateRingcentralSmsJob
-Ticket::Article        ← Kc::FixOriginBySenderOverride
-Ticket::Article        ← Kc::ResetsWaitingForReplyState
-Ticket                 ← Kc::PreventsLockedTicketReopen
+Ticket::TimeAccounting          ← Kc::TimeAccountingAgent
+Ticket::Article                 ← Kc::EnqueueCommunicateTeamsChatJob
+Ticket::Article                 ← Kc::EnqueueCommunicateRingcentralSmsJob
+Ticket::Article                 ← Kc::FixOriginBySenderOverride
+Ticket::Article                 ← Kc::ResetsWaitingForReplyState
+Ticket                          ← Kc::PreventsLockedTicketReopen
+Transaction::Notification       ← Kc::SuppressInternalNoteNotifications
+AI::Agent::Type::TicketTitleRewriter ← Kc::TicketTitleRewriterLanguage
+MicrosoftGraph::ApiError        ← Kc::MicrosoftGraphApiErrorTypeSafety
+MicrosoftGraph                  ← Kc::MicrosoftGraphErrorHandling
 ```
 
 ### KC Coding Patterns
