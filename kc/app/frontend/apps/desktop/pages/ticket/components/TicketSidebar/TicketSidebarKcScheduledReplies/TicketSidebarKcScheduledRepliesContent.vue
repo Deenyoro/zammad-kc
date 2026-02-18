@@ -133,6 +133,27 @@ const resetComposeForm = () => {
   })
 }
 
+// Collect current ticket attribute changes from the form, matching the legacy
+// controller.ticketParams() which captures state/owner/priority changes.
+const getTicketAttributes = (): Record<string, unknown> | undefined => {
+  const formRef = props.context.form
+  if (!formRef?.values) return undefined
+
+  const formValues = formRef.values as Record<string, unknown>
+  // Ticket-level fields are at the top level of form values (not nested).
+  // Filter out the 'article' sub-object — everything else is ticket attributes.
+  const attrs: Record<string, unknown> = {}
+  let hasAttrs = false
+  for (const [key, value] of Object.entries(formValues)) {
+    if (key === 'article') continue
+    if (value !== undefined && value !== null && value !== '') {
+      attrs[key] = value
+      hasAttrs = true
+    }
+  }
+  return hasAttrs ? attrs : undefined
+}
+
 const handleSchedule = async () => {
   if (!canSchedule.value || scheduling.value) return
 
@@ -148,8 +169,10 @@ const handleSchedule = async () => {
 
   scheduling.value = true
   try {
+    const ticketAttributes = getTicketAttributes()
     await createScheduledArticle({
       article_data: articleData,
+      ticket_attributes: ticketAttributes,
       scheduled_at: new Date(scheduledAt.value).toISOString(),
     })
     scheduledAt.value = ''
@@ -162,6 +185,8 @@ const handleSchedule = async () => {
 }
 
 const handleCancel = async (articleId: number) => {
+  // Confirm before canceling (matching legacy App.ControllerConfirm behavior)
+  if (!window.confirm(i18n.t('Cancel this scheduled reply?'))) return
   await cancelScheduledArticle(articleId)
 }
 </script>

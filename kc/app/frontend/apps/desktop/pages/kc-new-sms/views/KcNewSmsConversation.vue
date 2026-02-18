@@ -111,7 +111,7 @@ const onSearchInput = () => {
   if (searchTimeout) clearTimeout(searchTimeout)
 
   // Skip search when a user is already selected — the watch fires when
-  // selectUser() sets searchQuery to the user's name, but we don't want
+  // selectEntry() sets searchQuery to the user's name, but we don't want
   // to re-search.  Legacy CoffeeScript avoids this because programmatic
   // .val() doesn't fire DOM input events; Vue watch does.
   if (selectedUser.value) return
@@ -141,11 +141,55 @@ const onSearchInput = () => {
   }, 300)
 }
 
-const selectUser = (user: SmsUser) => {
-  selectedUser.value = user
-  customerId.value = user.id
-  phoneNumber.value = user.phone || user.mobile || ''
-  searchQuery.value = user.name
+// Normalize a phone number to E.164 format (+1XXXXXXXXXX for US numbers).
+// Mirrors the legacy CoffeeScript normalizePhone() exactly.
+const normalizePhone = (raw: string): string => {
+  if (!raw) return ''
+  const digits = raw.replace(/[^\d]/g, '')
+  if (digits.length < 7) return ''
+  if (digits.length === 10) return `+1${digits}`
+  if (digits.length === 11 && digits[0] === '1') return `+${digits}`
+  return `+${digits}`
+}
+
+interface SearchResultEntry {
+  userId: number
+  userName: string
+  phone: string
+  label: string
+}
+
+// Build separate entries for phone vs. mobile (matching legacy per-number selection).
+const searchResultEntries = computed<SearchResultEntry[]>(() => {
+  const entries: SearchResultEntry[] = []
+  for (const user of searchResults.value) {
+    if (user.phone) {
+      const suffix = user.mobile && user.mobile !== user.phone ? ' (phone)' : ''
+      entries.push({
+        userId: user.id,
+        userName: user.name,
+        phone: user.phone,
+        label: `${user.name}${suffix}`,
+      })
+    }
+    if (user.mobile && user.mobile !== user.phone) {
+      const suffix = user.phone ? ' (mobile)' : ''
+      entries.push({
+        userId: user.id,
+        userName: user.name,
+        phone: user.mobile,
+        label: `${user.name}${suffix}`,
+      })
+    }
+  }
+  return entries
+})
+
+const selectEntry = (entry: SearchResultEntry) => {
+  selectedUser.value = { id: entry.userId, name: entry.userName, phone: entry.phone, mobile: null }
+  customerId.value = entry.userId
+  phoneNumber.value = normalizePhone(entry.phone)
+  searchQuery.value = entry.userName
   showResults.value = false
 }
 
@@ -171,12 +215,25 @@ const submitLabel = computed(() => {
 const submit = async () => {
   if (!canSubmit.value || submitting.value) return
 
+  // Normalize phone to E.164 before sending (matches legacy behavior)
+  const normalized = normalizePhone(phoneNumber.value.trim())
+  if (!normalized) {
+    notify({
+      id: 'kc-sms-phone-invalid',
+      type: NotificationTypes.Error,
+      message: __('Please enter a valid phone number.'),
+    })
+    return
+  }
+  // Update the field so the user sees the corrected format
+  phoneNumber.value = normalized
+
   submitting.value = true
   try {
     const result = await kcApiFetch<CreateResponse>('/conversations/sms', {
       method: 'POST',
       body: JSON.stringify({
-        phone_number: phoneNumber.value.trim(),
+        phone_number: normalized,
         body: body.value.trim(),
         group_id: groupId.value || undefined,
         customer_id: customerId.value || undefined,
@@ -244,25 +301,19 @@ watch(searchQuery, onSearchInput)
           </button>
         </div>
         <div
-          v-if="showResults"
+          v-if="showResults && searchResultEntries.length > 0"
           class="absolute z-10 mt-1 w-full rounded border border-neutral-300 bg-white shadow-lg dark:border-neutral-600 dark:bg-neutral-800"
         >
           <button
-            v-for="user in searchResults"
-            :key="user.id"
+            v-for="(entry, idx) in searchResultEntries"
+            :key="`${entry.userId}-${idx}`"
             type="button"
             class="block w-full px-3 py-2 text-left text-sm hover:bg-blue-50 dark:hover:bg-neutral-700"
-            @click="selectUser(user)"
+            @click="selectEntry(entry)"
           >
-            <div class="font-medium">{{ user.name }}</div>
+            <div class="font-medium">{{ entry.label }}</div>
             <div class="text-xs text-neutral-500">
-              <span v-if="user.phone"
-                >{{ $t('Phone') }}: {{ user.phone }}</span
-              >
-              <span v-if="user.phone && user.mobile"> | </span>
-              <span v-if="user.mobile"
-                >{{ $t('Mobile') }}: {{ user.mobile }}</span
-              >
+              {{ entry.phone }}
             </div>
           </button>
         </div>
