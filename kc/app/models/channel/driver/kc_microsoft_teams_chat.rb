@@ -142,7 +142,11 @@ class Channel::Driver::KcMicrosoftTeamsChat
       if auth&.user
         # If we now have a real email and user still has a placeholder, update it
         if email.present? && auth.user.email.to_s.end_with?('@teams.local')
-          auth.user.update!(email: email) unless User.where(email: email).where.not(id: auth.user.id).exists?
+          begin
+            auth.user.update!(email: email) unless User.where(email: email).where.not(id: auth.user.id).exists?
+          rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique => e
+            Rails.logger.debug { "KC: Teams user email update skipped (#{e.message})" }
+          end
         end
         return auth.user
       end

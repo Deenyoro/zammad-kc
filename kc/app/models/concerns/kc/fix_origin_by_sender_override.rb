@@ -64,7 +64,7 @@ module Kc::FixOriginBySenderOverride
   private
 
   # Override the buggy upstream method
-  def metadata_general_process_origin_by
+  def metadata_general_process_origin_by # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     return if origin_by_id.blank?
 
     # Defensive: ensure created_by_id is present
@@ -105,5 +105,7 @@ module Kc::FixOriginBySenderOverride
       return if origin_by == created_by_id
       self.sender = Ticket::Article::Sender.lookup(name: 'Customer')
     end
+  rescue => e
+    Rails.logger.error "KC: FixOriginBySenderOverride#metadata_general_process_origin_by failed: #{e.message}"
   end
 end

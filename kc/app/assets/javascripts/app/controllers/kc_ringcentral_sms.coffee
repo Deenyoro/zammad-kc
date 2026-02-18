@@ -305,7 +305,7 @@ class KcRingcentralSmsPhoneSelect extends App.ControllerAppContent
         @html """
           <div class="page-header"><h1>#{App.i18n.translateContent('Select Phone Number')}</h1></div>
           <div class="page-content">
-            <div class="alert alert--danger">#{App.i18n.translateContent(data.error || 'No pending setup found. Please start the OAuth flow again.')}</div>
+            <div class="alert alert--danger">#{App.Utils.htmlEscape(data.error || App.i18n.translateInline('No pending setup found. Please start the OAuth flow again.'))}</div>
             <p><a href="#kc_extensions/kc_ringcentral_sms">#{App.i18n.translateContent('Back to RingCentral SMS')}</a></p>
           </div>
         """
