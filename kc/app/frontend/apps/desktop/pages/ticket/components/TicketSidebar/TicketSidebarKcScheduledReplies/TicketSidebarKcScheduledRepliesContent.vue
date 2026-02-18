@@ -173,79 +173,81 @@ const handleCancel = async (articleId: number) => {
     :icon="sidebarPlugin.icon"
   >
     <CommonLoader :loading="loading">
-      <!-- Pending scheduled replies list -->
-      <div v-if="scheduledArticles.length > 0" class="space-y-3">
-        <div
-          v-for="item in scheduledArticles"
-          :key="item.id"
-          class="rounded border border-neutral-200 p-2 dark:border-neutral-700"
-        >
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-medium">{{
-              formatDateTime(item.scheduled_at)
-            }}</span>
-            <span
-              class="rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-800 dark:bg-blue-900/40 dark:text-blue-200"
+      <div class="flex flex-col gap-3">
+        <!-- Pending scheduled replies list -->
+        <div v-if="scheduledArticles.length > 0" class="space-y-3">
+          <div
+            v-for="item in scheduledArticles"
+            :key="item.id"
+            class="rounded border border-neutral-200 p-2 dark:border-neutral-700"
+          >
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium">{{
+                formatDateTime(item.scheduled_at)
+              }}</span>
+              <span
+                class="rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-800 dark:bg-blue-900/40 dark:text-blue-200"
+              >
+                {{ articleTypeLabel(item.article_data?.type) }}
+              </span>
+            </div>
+            <div
+              v-if="item.article_data?.to"
+              class="mt-1 text-xs text-neutral-500"
             >
-              {{ articleTypeLabel(item.article_data?.type) }}
-            </span>
+              {{ $t('To') }}: {{ item.article_data.to }}
+            </div>
+            <div
+              v-if="item.article_data?.cc"
+              class="mt-1 text-xs text-neutral-500"
+            >
+              {{ $t('CC') }}: {{ item.article_data.cc }}
+            </div>
+            <div
+              v-if="item.article_data?.body"
+              class="mt-1 text-xs text-neutral-500"
+            >
+              {{ truncate(stripHtml(item.article_data.body)) }}
+            </div>
+            <button
+              v-if="isEditable"
+              type="button"
+              class="mt-1.5 text-xs text-red-500 hover:text-red-700"
+              @click="handleCancel(item.id)"
+            >
+              {{ $t('Cancel Scheduled Reply') }}
+            </button>
           </div>
-          <div
-            v-if="item.article_data?.to"
-            class="mt-1 text-xs text-neutral-500"
-          >
-            {{ $t('To') }}: {{ item.article_data.to }}
-          </div>
-          <div
-            v-if="item.article_data?.cc"
-            class="mt-1 text-xs text-neutral-500"
-          >
-            {{ $t('CC') }}: {{ item.article_data.cc }}
-          </div>
-          <div
-            v-if="item.article_data?.body"
-            class="mt-1 text-xs text-neutral-500"
-          >
-            {{ truncate(stripHtml(item.article_data.body)) }}
-          </div>
-          <button
-            v-if="isEditable"
-            type="button"
-            class="mt-1.5 text-xs text-red-500 hover:text-red-700"
-            @click="handleCancel(item.id)"
-          >
-            {{ $t('Cancel Scheduled Reply') }}
-          </button>
         </div>
-      </div>
 
-      <div v-else class="text-sm text-neutral-500">
-        {{ $t('No scheduled replies.') }}
-      </div>
+        <div v-else class="text-sm text-neutral-500">
+          {{ $t('No scheduled replies.') }}
+        </div>
 
-      <!-- Schedule current reply — only shown when compose area is open -->
-      <div
-        v-if="isEditable && newTicketArticlePresent"
-        class="mt-4 border-t border-neutral-200 pt-3 dark:border-neutral-700"
-      >
-        <label class="mb-2 block text-xs font-medium">{{
-          $t('Schedule Current Reply')
-        }}</label>
-        <div class="space-y-2">
-          <input
-            v-model="scheduledAt"
-            type="datetime-local"
-            :min="minDateTime"
-            class="w-full rounded border border-neutral-300 bg-white px-2 py-1 text-sm dark:border-neutral-600 dark:bg-neutral-800"
-          />
-          <button
-            type="button"
-            class="w-full rounded bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-            :disabled="!canSchedule || scheduling"
-            @click="handleSchedule"
-          >
-            {{ scheduling ? $t('Scheduling...') : $t('Schedule Reply') }}
-          </button>
+        <!-- Schedule current reply — only shown when compose area is open -->
+        <div
+          v-if="isEditable && newTicketArticlePresent"
+          class="border-t border-neutral-200 pt-3 dark:border-neutral-700"
+        >
+          <label class="mb-2 block text-xs font-medium">{{
+            $t('Schedule Current Reply')
+          }}</label>
+          <div class="space-y-2">
+            <input
+              v-model="scheduledAt"
+              type="datetime-local"
+              :min="minDateTime"
+              class="w-full rounded border border-neutral-300 bg-white px-2 py-1 text-sm dark:border-neutral-600 dark:bg-neutral-800"
+            />
+            <button
+              type="button"
+              class="w-full rounded bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+              :disabled="!canSchedule || scheduling"
+              @click="handleSchedule"
+            >
+              {{ scheduling ? $t('Scheduling...') : $t('Schedule Reply') }}
+            </button>
+          </div>
         </div>
       </div>
     </CommonLoader>

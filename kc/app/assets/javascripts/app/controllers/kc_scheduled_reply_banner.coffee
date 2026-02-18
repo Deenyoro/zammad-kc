@@ -170,7 +170,7 @@ class KcScheduledReplyBanner extends App.Controller
   ARTICLE_TYPE_LABELS:
     'email':                    'Email'
     'teams_chat_message':       'Teams Chat'
-    'ringcentral_sms_message':  'SMS'
+    'ringcentral_sms_message':  'RingCentral SMS'
     'note':                     'Note'
     'phone':                    'Phone'
     'web':                      'Web'

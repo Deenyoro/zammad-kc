@@ -195,13 +195,25 @@ class Kc::PollRingcentralMissedCallsJob < ApplicationJob
                        start_time.to_s
                      end
 
+      # Use ringcentral_sms_message as the create article type so both frontends
+      # recognize this as an SMS ticket and offer the SMS reply option.
+      sms_article_type = Ticket::Article::Type.find_by(name: 'ringcentral_sms_message')
+
       ticket = Ticket.create!(
-        title:         title,
-        group_id:      group.id,
-        customer_id:   user.id,
-        state_id:      Ticket::State.find_by(default_create: true)&.id || Ticket::State.find_by(name: 'new')&.id,
-        priority_id:   Ticket::Priority.find_by(default_create: true)&.id || Ticket::Priority.first&.id,
-        preferences:   {
+        title:                  title,
+        group_id:               group.id,
+        customer_id:            user.id,
+        state_id:               Ticket::State.find_by(default_create: true)&.id || Ticket::State.find_by(name: 'new')&.id,
+        priority_id:            Ticket::Priority.find_by(default_create: true)&.id || Ticket::Priority.first&.id,
+        create_article_type_id: sms_article_type&.id,
+        preferences:            {
+          # SMS preferences enable reply-via-SMS in both legacy and Vue frontends
+          ringcentral_sms: {
+            from_phone: from_phone,
+            to_phone:   to_phone,
+            channel_id: channel.id,
+          },
+          # Preserve missed call metadata for reporting/auditing
           ringcentral_missed_call: {
             from_phone: from_phone,
             to_phone:   to_phone,

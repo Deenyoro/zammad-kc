@@ -72,110 +72,112 @@ const handleDelete = async (entryId: number) => {
     :icon="sidebarPlugin.icon"
   >
     <CommonLoader :loading="loading">
-      <!-- Total -->
-      <div class="mb-3 text-sm">
-        <span class="font-medium">{{ $t('Total') }}:</span>
-        {{ formatTime(total) }}
-      </div>
+      <div class="flex flex-col gap-3">
+        <!-- Total -->
+        <div class="text-sm">
+          <span class="font-medium">{{ $t('Total') }}:</span>
+          {{ formatTime(total) }}
+        </div>
 
-      <!-- Agent groups -->
-      <div v-if="agentGroups.length > 0" class="space-y-3">
-        <div
-          v-for="group in visibleGroups"
-          :key="String(group.agentId)"
-          class="rounded border border-neutral-200 p-2 dark:border-neutral-700"
-        >
+        <!-- Agent groups -->
+        <div v-if="agentGroups.length > 0" class="space-y-3">
           <div
-            class="flex items-center justify-between text-sm font-medium"
+            v-for="group in visibleGroups"
+            :key="String(group.agentId)"
+            class="rounded border border-neutral-200 p-2 dark:border-neutral-700"
           >
-            <span>{{ group.agentName }}</span>
-            <span class="text-neutral-500">{{
-              formatTime(group.total)
-            }}</span>
-          </div>
-          <div class="mt-1 space-y-0.5">
             <div
-              v-for="entry in group.entries"
-              :key="entry.id"
-              class="flex items-center justify-between text-xs text-neutral-500"
+              class="flex items-center justify-between text-sm font-medium"
             >
-              <span
-                >{{ entry.type_name || '-' }} &mdash;
-                {{ formatTime(entry.time_unit) }}</span
+              <span>{{ group.agentName }}</span>
+              <span class="text-neutral-500">{{
+                formatTime(group.total)
+              }}</span>
+            </div>
+            <div class="mt-1 space-y-0.5">
+              <div
+                v-for="entry in group.entries"
+                :key="entry.id"
+                class="flex items-center justify-between text-xs text-neutral-500"
               >
-              <button
-                v-if="isEditable"
-                type="button"
-                class="text-red-400 hover:text-red-600"
-                :aria-label="$t('Delete time entry')"
-                @click="handleDelete(entry.id)"
-              >
-                &times;
-              </button>
+                <span
+                  >{{ entry.type_name || '-' }} &mdash;
+                  {{ formatTime(entry.time_unit) }}</span
+                >
+                <button
+                  v-if="isEditable"
+                  type="button"
+                  class="text-red-400 hover:text-red-600"
+                  :aria-label="$t('Delete time entry')"
+                  @click="handleDelete(entry.id)"
+                >
+                  &times;
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div v-else class="text-sm text-neutral-500">
-        {{ $t('No time entries recorded.') }}
-      </div>
-
-      <!-- Show more -->
-      <button
-        v-if="agentGroups.length > MAX_VISIBLE_GROUPS && !showAll"
-        type="button"
-        class="mt-2 text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400"
-        @click="showAll = true"
-      >
-        {{ $t('Show all (%s)', String(agentGroups.length)) }}
-      </button>
-
-      <!-- Add form -->
-      <div
-        v-if="isEditable"
-        class="mt-4 border-t border-neutral-200 pt-3 dark:border-neutral-700"
-      >
-        <div v-if="showAddForm" class="space-y-2">
-          <div>
-            <label class="mb-1 block text-xs font-medium">{{
-              $t('Time (minutes)')
-            }}</label>
-            <input
-              v-model.number="newTimeUnit"
-              type="number"
-              min="1"
-              step="1"
-              class="w-full rounded border border-neutral-300 bg-white px-2 py-1 text-sm dark:border-neutral-600 dark:bg-neutral-800"
-              :placeholder="$t('Minutes')"
-            />
-          </div>
-          <div class="flex gap-2">
-            <button
-              type="button"
-              class="rounded bg-blue-600 px-3 py-1 text-xs text-white hover:bg-blue-700 disabled:opacity-50"
-              :disabled="!newTimeUnit || newTimeUnit <= 0 || adding"
-              @click="handleAdd"
-            >
-              {{ adding ? $t('Adding...') : $t('Add') }}
-            </button>
-            <button
-              type="button"
-              class="text-xs text-neutral-500 hover:text-neutral-700"
-              @click="showAddForm = false"
-            >
-              {{ $t('Cancel') }}
-            </button>
-          </div>
+        <div v-else class="text-sm text-neutral-500">
+          {{ $t('No time entries recorded.') }}
         </div>
+
+        <!-- Show more -->
         <button
-          v-else
+          v-if="agentGroups.length > MAX_VISIBLE_GROUPS && !showAll"
           type="button"
           class="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400"
-          @click="showAddForm = true"
+          @click="showAll = true"
         >
-          + {{ $t('Add Time Entry') }}
+          {{ $t('Show all (%s)', String(agentGroups.length)) }}
         </button>
+
+        <!-- Add form -->
+        <div
+          v-if="isEditable"
+          class="border-t border-neutral-200 pt-3 dark:border-neutral-700"
+        >
+          <div v-if="showAddForm" class="space-y-2">
+            <div>
+              <label class="mb-1 block text-xs font-medium">{{
+                $t('Time (minutes)')
+              }}</label>
+              <input
+                v-model.number="newTimeUnit"
+                type="number"
+                min="1"
+                step="1"
+                class="w-full rounded border border-neutral-300 bg-white px-2 py-1 text-sm dark:border-neutral-600 dark:bg-neutral-800"
+                :placeholder="$t('Minutes')"
+              />
+            </div>
+            <div class="flex gap-2">
+              <button
+                type="button"
+                class="rounded bg-blue-600 px-3 py-1 text-xs text-white hover:bg-blue-700 disabled:opacity-50"
+                :disabled="!newTimeUnit || newTimeUnit <= 0 || adding"
+                @click="handleAdd"
+              >
+                {{ adding ? $t('Adding...') : $t('Add') }}
+              </button>
+              <button
+                type="button"
+                class="text-xs text-neutral-500 hover:text-neutral-700"
+                @click="showAddForm = false"
+              >
+                {{ $t('Cancel') }}
+              </button>
+            </div>
+          </div>
+          <button
+            v-else
+            type="button"
+            class="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400"
+            @click="showAddForm = true"
+          >
+            + {{ $t('Add Time Entry') }}
+          </button>
+        </div>
       </div>
     </CommonLoader>
   </TicketSidebarContent>

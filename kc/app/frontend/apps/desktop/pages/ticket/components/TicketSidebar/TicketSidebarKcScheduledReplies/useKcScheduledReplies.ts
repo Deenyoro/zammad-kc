@@ -39,7 +39,7 @@ interface CreateParams {
 const ARTICLE_TYPE_LABELS: Record<string, string> = {
   email: __('Email'),
   teams_chat_message: __('Teams Chat'),
-  ringcentral_sms_message: __('SMS'),
+  ringcentral_sms_message: __('RingCentral SMS'),
   note: __('Note'),
   phone: __('Phone'),
   web: __('Web'),
