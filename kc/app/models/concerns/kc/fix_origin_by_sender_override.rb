@@ -33,7 +33,7 @@ module Kc::FixOriginBySenderOverride
     ringcentral_sms_message
   ].freeze
 
-  included do
+  prepended do
     check_upstream_bug_status
   end
 

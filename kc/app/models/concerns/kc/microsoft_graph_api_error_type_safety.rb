@@ -50,7 +50,7 @@
 module Kc::MicrosoftGraphApiErrorTypeSafety
   extend ActiveSupport::Concern
 
-  included do
+  prepended do
     kc_check_upstream_api_error_bug
   end
 
