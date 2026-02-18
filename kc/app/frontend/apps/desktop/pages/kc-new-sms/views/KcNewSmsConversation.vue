@@ -214,7 +214,7 @@ watch(searchQuery, onSearchInput)
 
 <template>
   <LayoutContent
-    :breadcrumb-items="[{ label: __('New SMS'), route: '/kc/new-sms' }]"
+    :breadcrumb-items="[{ label: __('New SMS Message (RingCentral)'), route: '/kc/new_rcsms' }]"
     width="narrow"
   >
     <div class="space-y-4">
