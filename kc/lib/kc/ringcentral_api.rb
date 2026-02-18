@@ -283,19 +283,23 @@ module Kc
     # Creates a webhook subscription for instant SMS notifications.
     # event_filters: Array of resource paths to watch.
     # Returns the subscription hash (including id, expirationTime).
-    def create_subscription(notification_url, event_filters, expires_in: nil)
+    def create_subscription(notification_url, event_filters, expires_in: nil, verification_token: nil)
       url = "#{API_BASE_URL}/restapi/v1.0/subscription"
-      payload = {
-        eventFilters:  Array(event_filters),
-        deliveryMode:  {
-          transportType: 'WebHook',
-          address:       notification_url,
-        },
-        expirationTime: expires_in ? expires_in.seconds.from_now.utc.iso8601 : nil,
-      }.compact
 
-      # RingCentral doesn't have clientState in the subscription body;
-      # we store it locally for validation via the Validation-Token header pattern.
+      delivery_mode = {
+        transportType: 'WebHook',
+        address:       notification_url,
+      }
+      # verificationToken is sent back by RingCentral as a Verification-Token
+      # HTTP header with every webhook notification, allowing us to authenticate
+      # that notifications genuinely originate from RingCentral.
+      delivery_mode[:verificationToken] = verification_token if verification_token.present?
+
+      payload = {
+        eventFilters: Array(event_filters),
+        deliveryMode: delivery_mode,
+        expiresIn:    expires_in,
+      }.compact
 
       api_post(url, payload)
     end

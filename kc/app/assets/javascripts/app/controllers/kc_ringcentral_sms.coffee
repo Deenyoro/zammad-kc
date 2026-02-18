@@ -40,7 +40,7 @@ class KcRingcentralSms extends App.ControllerSubContent
         @render()
       error: (xhr) =>
         @stopLoading()
-        @html '<div class="alert alert--danger">Failed to load RingCentral SMS channels.</div>'
+        @html '<div class="alert alert--danger">' + App.i18n.translateInline('Failed to load RingCentral SMS channels.') + '</div>'
     )
 
   render: =>
@@ -236,7 +236,7 @@ class KcRingcentralSmsAccountAdd extends App.ControllerModal
       error: (xhr) =>
         @formEnable(e)
         data = xhr.responseJSON || {}
-        @showAlert(data.error || __('Failed to start authorization.'))
+        @showAlert(App.Utils.htmlEscape(data.error) || __('Failed to start authorization.'))
     )
 
 
@@ -274,7 +274,7 @@ class KcRingcentralSmsAccountEdit extends App.ControllerModal
       error: (xhr) =>
         @formEnable(e)
         data = xhr.responseJSON || {}
-        @showAlert(data.error || __('Failed to save.'))
+        @showAlert(App.Utils.htmlEscape(data.error) || __('Failed to save.'))
     )
 
 
