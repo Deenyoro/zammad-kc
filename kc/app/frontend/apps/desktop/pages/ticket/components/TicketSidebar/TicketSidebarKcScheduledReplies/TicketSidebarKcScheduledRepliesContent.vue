@@ -50,7 +50,7 @@ const minDateTime = computed(() => {
 
 const formatDateTime = (isoString: string): string => {
   try {
-    return i18n.dateTime(isoString, 'long')
+    return i18n.dateTime(isoString)
   } catch {
     return isoString
   }
@@ -223,9 +223,9 @@ const handleCancel = async (articleId: number) => {
         {{ $t('No scheduled replies.') }}
       </div>
 
-      <!-- Schedule current reply -->
+      <!-- Schedule current reply — only shown when compose area is open -->
       <div
-        v-if="isEditable"
+        v-if="isEditable && newTicketArticlePresent"
         class="mt-4 border-t border-neutral-200 pt-3 dark:border-neutral-700"
       >
         <label class="mb-2 block text-xs font-medium">{{

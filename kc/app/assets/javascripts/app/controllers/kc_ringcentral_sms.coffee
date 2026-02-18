@@ -137,7 +137,10 @@ class KcRingcentralSms extends App.ControllerSubContent
       type: 'POST'
       url:  "#{@apiPath}/kc/ringcentral_sms_channels/#{id}/reauthenticate"
       success: (data) =>
-        window.location.href = data.authorize_url
+        if data.authorize_url && data.authorize_url.match(/^https:\/\//)
+          window.location.href = data.authorize_url
+        else
+          @notify(type: 'error', msg: __('Invalid authorization URL received.'))
       error: (xhr) =>
         data = xhr.responseJSON || {}
         @notify(type: 'error', msg: data.error || __('Failed to start reauthentication.'))
@@ -225,7 +228,11 @@ class KcRingcentralSmsAccountAdd extends App.ControllerModal
       data:        JSON.stringify(params)
       contentType: 'application/json'
       success: (data) =>
-        window.location.href = data.authorize_url
+        if data.authorize_url && data.authorize_url.match(/^https:\/\//)
+          window.location.href = data.authorize_url
+        else
+          @formEnable(e)
+          @showAlert(__('Invalid authorization URL received.'))
       error: (xhr) =>
         @formEnable(e)
         data = xhr.responseJSON || {}

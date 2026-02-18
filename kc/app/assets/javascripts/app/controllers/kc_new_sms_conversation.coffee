@@ -50,6 +50,7 @@ class App.KcNewSmsConversationContent extends App.Controller
     $(document).on('click.kcSmsRecipient', @outsideClickHandler)
 
   release: ->
+    clearTimeout(@searchTimer) if @searchTimer
     $(document).off('click.kcSmsRecipient')
     super
 
