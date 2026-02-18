@@ -3,7 +3,7 @@
      scheduling the current article compose form for future delivery. -->
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 
 import {
   NotificationTypes,
@@ -27,7 +27,8 @@ const props = defineProps<TicketSidebarContentProps>()
 const persistentStates = defineModel<ObjectLike>({ required: true })
 
 const { notify } = useNotifications()
-const { ticketInternalId, isTicketEditable } = useTicketInformation()
+const { ticketInternalId, isTicketEditable, newTicketArticlePresent, form } =
+  useTicketInformation()
 
 const {
   scheduledArticles,
@@ -80,27 +81,36 @@ const formatRecipient = (value: unknown): string | undefined => {
   return undefined
 }
 
+// Read article form data from the FormRef (context.form.values), NOT from
+// context.formValues which only has customer_id/organization_id.
+// The form values are structured as { article: { body, articleType, ... } }.
 const getArticleFormData = (): Record<string, unknown> | null => {
-  if (!props.context.formValues) return null
+  const formRef = props.context.form
+  if (!formRef?.values) return null
 
-  const fv = props.context.formValues
-  // Handle both nested (article.body) and flat (body) form structures —
-  // the actual shape depends on whether the ticket detail form nests
-  // article fields or keeps them top-level.
-  const article = (fv.article as Record<string, unknown>) || {}
+  const formValues = formRef.values as Record<string, unknown>
+  const article = (formValues.article as Record<string, unknown>) || {}
 
-  const body = article.body || fv.body || ''
+  const body = article.body || ''
   if (!body) return null
 
-  return {
+  const data: Record<string, unknown> = {
     body,
-    type: article.articleType || fv.articleType || 'note',
-    to: formatRecipient(article.to || fv.to),
-    cc: formatRecipient(article.cc || fv.cc),
-    subject: article.subject || fv.subject,
-    internal: article.internal ?? fv.internal ?? false,
-    content_type: article.contentType || fv.contentType || 'text/html',
+    type: article.articleType || 'note',
+    to: formatRecipient(article.to),
+    cc: formatRecipient(article.cc),
+    subject: article.subject,
+    internal: article.internal ?? false,
+    content_type: article.contentType || 'text/html',
   }
+
+  // Include form_id so the backend can transfer cached attachments
+  // (UploadCache) to the scheduled article when it fires.
+  if (formRef.formId) {
+    data.form_id = formRef.formId
+  }
+
+  return data
 }
 
 const canSchedule = computed(() => {
@@ -108,6 +118,20 @@ const canSchedule = computed(() => {
   const selectedTime = new Date(scheduledAt.value)
   return selectedTime > new Date()
 })
+
+// Reset the compose form after successful scheduling, matching the legacy
+// frontend's controller.taskReset() behavior. Hides the article reply area
+// and resets the article form group to default values.
+const resetComposeForm = () => {
+  if (newTicketArticlePresent) {
+    newTicketArticlePresent.value = false
+  }
+
+  nextTick(() => {
+    const articleNode = form.value?.getNodeByName('article')
+    articleNode?.reset()
+  })
+}
 
 const handleSchedule = async () => {
   if (!canSchedule.value || scheduling.value) return
@@ -129,6 +153,7 @@ const handleSchedule = async () => {
       scheduled_at: new Date(scheduledAt.value).toISOString(),
     })
     scheduledAt.value = ''
+    resetComposeForm()
   } catch {
     // error notification handled by composable
   } finally {
