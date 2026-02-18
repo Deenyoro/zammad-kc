@@ -19,8 +19,4 @@ class Kc::DiscordBotHealthCheckJob < ApplicationJob
 
     service_class.new.execute
   end
-
-  def self.perform_now
-    new.perform
-  end
 end

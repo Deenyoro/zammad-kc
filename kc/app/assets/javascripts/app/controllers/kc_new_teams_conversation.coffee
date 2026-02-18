@@ -148,11 +148,11 @@ class App.KcNewTeamsConversationContent extends App.Controller
     channelId   = @el.find('.js-fromAccount').val()
 
     if !teamsUserId || !displayName
-      @showError('Please select a Teams contact first.')
+      @showError(__('Please select a Teams contact first.'))
       return
 
     if !body
-      @showError('Message is required.')
+      @showError(__('Message is required.'))
       return
 
     @hideError()
@@ -181,9 +181,9 @@ class App.KcNewTeamsConversationContent extends App.Controller
         @el.find('.js-submit').prop('disabled', false)
         @el.find('.js-loading').hide()
         try
-          msg = JSON.parse(xhr.responseText)?.error || 'Failed to send Teams message'
+          msg = JSON.parse(xhr.responseText)?.error || __('Failed to send Teams message')
         catch
-          msg = 'Failed to send Teams message'
+          msg = __('Failed to send Teams message')
         @showError(msg)
     )
 

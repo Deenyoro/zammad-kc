@@ -3,6 +3,7 @@ module Kc
     extend ActiveSupport::Concern
 
     def article_by_item
+      result = nil
       result = super
       return result if result.nil?
 
