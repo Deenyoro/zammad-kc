@@ -229,5 +229,5 @@ class App.KcNewSmsConversationContent extends App.Controller
   hideError: ->
     @el.find('.js-error').hide()
 
-App.Config.set('kc/new_sms', KcNewSmsConversation, 'Routes')
-App.Config.set('KcNewSms', { prio: 8004, parent: '#new', name: __('New SMS Message (RingCentral)'), translate: true, target: '#kc/new_sms', permission: ['ticket.agent'] }, 'NavBarRight')
+App.Config.set('kc/new_rcsms', KcNewSmsConversation, 'Routes')
+App.Config.set('KcNewSms', { prio: 8004, parent: '#new', name: __('New SMS Message (RingCentral)'), translate: true, target: '#kc/new_rcsms', permission: ['ticket.agent'] }, 'NavBarRight')
