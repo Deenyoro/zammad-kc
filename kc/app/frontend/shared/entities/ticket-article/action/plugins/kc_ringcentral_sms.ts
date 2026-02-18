@@ -89,8 +89,8 @@ const actionPlugin: TicketArticleActionPlugin = {
     const type: TicketArticleType = {
       apps: ['mobile', 'desktop'],
       value: 'ringcentral_sms_message',
-      label: __('SMS'),
-      buttonLabel: __('Add SMS'),
+      label: __('RingCentral SMS'),
+      buttonLabel: __('RingCentral SMS'),
       icon: 'message',
       view: {
         agent: ['change'],
