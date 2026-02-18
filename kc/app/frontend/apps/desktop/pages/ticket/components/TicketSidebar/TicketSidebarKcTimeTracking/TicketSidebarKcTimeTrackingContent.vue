@@ -2,7 +2,7 @@
      Shows time entries grouped by agent, with add/delete controls. -->
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import type { ObjectLike } from '#shared/types/utils.ts'
 
@@ -19,15 +19,33 @@ const persistentStates = defineModel<ObjectLike>({ required: true })
 
 const { ticketInternalId, isTicketEditable } = useTicketInformation()
 
-const { agentGroups, total, loading, addEntry, deleteEntry } =
-  useKcTimeTracking(ticketInternalId)
+const {
+  agentGroups,
+  total,
+  loading,
+  agentOptions,
+  typeOptions,
+  addEntry,
+  deleteEntry,
+} = useKcTimeTracking(ticketInternalId)
 
 const MAX_VISIBLE_GROUPS = 5
 
 const showAll = ref(false)
 const showAddForm = ref(false)
-const newTimeUnit = ref<number | null>(null)
+const newTimeValue = ref<number | null>(null)
+const newTimeUnit = ref<'minute' | 'hour'>('minute')
+const selectedAgentId = ref<string>('')
+const selectedTypeId = ref<string>('')
 const adding = ref(false)
+
+// Default to the first agent when options load (matching legacy behavior where
+// the browser's <select> always has the first option selected by default).
+watch(agentOptions, (opts) => {
+  if (opts.length > 0 && !selectedAgentId.value) {
+    selectedAgentId.value = String(opts[0].id)
+  }
+})
 
 const visibleGroups = computed(() => {
   if (showAll.value) return agentGroups.value
@@ -46,12 +64,29 @@ const formatTime = (minutes: number): string => {
 }
 
 const handleAdd = async () => {
-  if (!newTimeUnit.value || newTimeUnit.value <= 0) return
+  if (!newTimeValue.value || newTimeValue.value <= 0) return
 
   adding.value = true
   try {
-    await addEntry(newTimeUnit.value)
-    newTimeUnit.value = null
+    // Convert hours to minutes if needed (backend always stores minutes)
+    const timeInMinutes =
+      newTimeUnit.value === 'hour'
+        ? newTimeValue.value * 60
+        : newTimeValue.value
+
+    await addEntry({
+      time_unit: timeInMinutes,
+      agent_id: selectedAgentId.value
+        ? Number(selectedAgentId.value)
+        : undefined,
+      type_id: selectedTypeId.value
+        ? Number(selectedTypeId.value)
+        : undefined,
+    })
+    newTimeValue.value = null
+    newTimeUnit.value = 'minute'
+    selectedAgentId.value = ''
+    selectedTypeId.value = ''
     showAddForm.value = false
   } catch {
     // error notification handled by composable
@@ -138,24 +173,74 @@ const handleDelete = async (entryId: number) => {
           class="border-t border-neutral-200 pt-3 dark:border-neutral-700"
         >
           <div v-if="showAddForm" class="space-y-2">
+            <!-- Agent selector -->
+            <div v-if="agentOptions.length > 0">
+              <label class="mb-1 block text-xs font-medium">{{
+                $t('Agent')
+              }}</label>
+              <select
+                v-model="selectedAgentId"
+                class="w-full rounded border border-neutral-300 bg-white px-2 py-1 text-sm dark:border-neutral-600 dark:bg-neutral-800"
+              >
+                <option
+                  v-for="agent in agentOptions"
+                  :key="agent.id"
+                  :value="String(agent.id)"
+                >
+                  {{ agent.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Activity type selector -->
+            <div v-if="typeOptions.length > 0">
+              <label class="mb-1 block text-xs font-medium">{{
+                $t('Activity Type')
+              }}</label>
+              <select
+                v-model="selectedTypeId"
+                class="w-full rounded border border-neutral-300 bg-white px-2 py-1 text-sm dark:border-neutral-600 dark:bg-neutral-800"
+              >
+                <option value="">{{ $t('None') }}</option>
+                <option
+                  v-for="type in typeOptions"
+                  :key="type.id"
+                  :value="String(type.id)"
+                >
+                  {{ type.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Time value + unit selector -->
             <div>
               <label class="mb-1 block text-xs font-medium">{{
-                $t('Time (minutes)')
+                $t('Time')
               }}</label>
-              <input
-                v-model.number="newTimeUnit"
-                type="number"
-                min="1"
-                step="1"
-                class="w-full rounded border border-neutral-300 bg-white px-2 py-1 text-sm dark:border-neutral-600 dark:bg-neutral-800"
-                :placeholder="$t('Minutes')"
-              />
+              <div class="flex gap-1.5">
+                <input
+                  v-model.number="newTimeValue"
+                  type="number"
+                  min="0.25"
+                  step="0.25"
+                  class="min-w-0 flex-1 rounded border border-neutral-300 bg-white px-2 py-1 text-sm dark:border-neutral-600 dark:bg-neutral-800"
+                  placeholder="0.00"
+                />
+                <select
+                  v-model="newTimeUnit"
+                  class="shrink-0 rounded border border-neutral-300 bg-white px-2 py-1 text-sm dark:border-neutral-600 dark:bg-neutral-800"
+                >
+                  <option value="minute">{{ $t('Minutes') }}</option>
+                  <option value="hour">{{ $t('Hours') }}</option>
+                </select>
+              </div>
             </div>
+
             <div class="flex gap-2">
               <button
                 type="button"
                 class="rounded bg-blue-600 px-3 py-1 text-xs text-white hover:bg-blue-700 disabled:opacity-50"
-                :disabled="!newTimeUnit || newTimeUnit <= 0 || adding"
+                :disabled="!newTimeValue || newTimeValue <= 0 || adding"
                 @click="handleAdd"
               >
                 {{ adding ? $t('Adding...') : $t('Add') }}
