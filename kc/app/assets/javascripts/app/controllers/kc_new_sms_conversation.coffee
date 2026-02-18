@@ -178,13 +178,13 @@ class App.KcNewSmsConversationContent extends App.Controller
     skipSend    = @el.find('.js-skipSend').is(':checked')
 
     if !rawPhone || !body
-      @showError('Phone number and message are required.')
+      @showError(__('Phone number and message are required.'))
       return
 
     # Normalize the phone number to E.164 (+1XXXXXXXXXX)
     phoneNumber = @normalizePhone(rawPhone)
     if !phoneNumber
-      @showError('Please enter a valid phone number.')
+      @showError(__('Please enter a valid phone number.'))
       return
     # Update the field so the user sees the corrected format
     @el.find('.js-phoneNumber').val(phoneNumber)
@@ -217,9 +217,9 @@ class App.KcNewSmsConversationContent extends App.Controller
         @el.find('.js-submit').prop('disabled', false)
         @el.find('.js-loading').hide()
         try
-          msg = JSON.parse(xhr.responseText)?.error || 'Failed to send SMS'
+          msg = JSON.parse(xhr.responseText)?.error || __('Failed to send SMS')
         catch
-          msg = 'Failed to send SMS'
+          msg = __('Failed to send SMS')
         @showError(msg)
     )
 

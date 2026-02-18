@@ -58,6 +58,18 @@ class Kc::RingcentralSmsWebhookController < ApplicationController
       return
     end
 
+    # Validate Verification-Token header if client_state is configured.
+    # RingCentral sends the verificationToken (set during subscription creation)
+    # as a Verification-Token HTTP header with every notification.
+    if subscription.client_state.present?
+      verification_token = request.headers['Verification-Token'] || request.headers['HTTP_VERIFICATION_TOKEN']
+      unless ActiveSupport::SecurityUtils.secure_compare(subscription.client_state, verification_token.to_s)
+        Rails.logger.warn "KC RingCentral Webhook: Verification-Token mismatch for subscription #{subscription_id}"
+        render json: {}, status: :ok
+        return
+      end
+    end
+
     # Enqueue async processing — don't block the webhook response
     job_class = 'Kc::ProcessRingcentralSmsWebhookJob'.safe_constantize
     if job_class.nil?
