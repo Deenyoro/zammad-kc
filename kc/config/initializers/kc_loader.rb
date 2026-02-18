@@ -66,6 +66,8 @@ Rails.application.config.to_prepare do
   kc_prepend.call('Ticket', 'Kc::PreventsLockedTicketReopen')
   kc_prepend.call('Transaction::Notification', 'Kc::SuppressInternalNoteNotifications')
   kc_prepend.call('AI::Agent::Type::TicketTitleRewriter', 'Kc::TicketTitleRewriterLanguage')
+  kc_prepend.call('MicrosoftGraph::ApiError', 'Kc::MicrosoftGraphApiErrorTypeSafety')
+  kc_prepend.call('MicrosoftGraph', 'Kc::MicrosoftGraphErrorHandling')
 
   Rails.logger.info 'KC: Overlay loading complete.'
 end
