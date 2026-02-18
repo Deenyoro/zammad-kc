@@ -18,7 +18,7 @@
 #   manager.cleanup_channel_subscriptions
 #
 class Kc::TeamsSubscriptionManager
-  EXPIRATION_MINUTES = 55   # Graph max for chat resources is ~60 min
+  EXPIRATION_MINUTES = 55   # Graph max for chatMessage is 4320 min (3 days), but >60 min requires lifecycleNotificationUrl
   RENEW_WINDOW       = 15   # Renew if expiring within this many minutes
 
   attr_reader :channel

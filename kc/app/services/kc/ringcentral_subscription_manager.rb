@@ -138,7 +138,8 @@ class Kc::RingcentralSubscriptionManager
     result = rc.create_subscription(
       notification_url,
       [SMS_EVENT_FILTER],
-      expires_in: EXPIRATION_SECONDS,
+      expires_in:         EXPIRATION_SECONDS,
+      verification_token: client_state,
     )
 
     sub_class = subscription_class
