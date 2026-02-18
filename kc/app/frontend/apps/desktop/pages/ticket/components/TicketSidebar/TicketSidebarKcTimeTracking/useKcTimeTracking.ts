@@ -27,12 +27,37 @@ export interface KcAgentGroup {
   entries: KcTimeEntry[]
 }
 
+export interface KcAgentOption {
+  id: number
+  name: string
+}
+
+export interface KcTypeOption {
+  id: number
+  name: string
+}
+
+interface FormOptionsResponse {
+  agents: KcAgentOption[]
+  types: KcTypeOption[]
+}
+
+export interface AddEntryParams {
+  time_unit: number
+  agent_id?: number
+  type_id?: number
+}
+
 export const useKcTimeTracking = (ticketInternalId: Ref<number>) => {
   const { notify } = useNotifications()
 
   const entries = ref<KcTimeEntry[]>([])
   const loading = ref(false)
   const available = ref(true)
+
+  // Form options (agents + activity types)
+  const agentOptions = ref<KcAgentOption[]>([])
+  const typeOptions = ref<KcTypeOption[]>([])
 
   const total = computed(() =>
     entries.value.reduce((sum, e) => sum + e.time_unit, 0),
@@ -74,11 +99,28 @@ export const useKcTimeTracking = (ticketInternalId: Ref<number>) => {
     }
   }
 
-  const addEntry = async (timeUnit: number) => {
+  const loadFormOptions = async () => {
+    try {
+      const data = await kcApiFetch<FormOptionsResponse>(
+        '/time_entry_options',
+      )
+      agentOptions.value = data.agents
+      typeOptions.value = data.types
+    } catch {
+      agentOptions.value = []
+      typeOptions.value = []
+    }
+  }
+
+  const addEntry = async (params: AddEntryParams) => {
     try {
       await kcApiFetch(`/tickets/${ticketInternalId.value}/time_entries`, {
         method: 'POST',
-        body: JSON.stringify({ time_unit: timeUnit }),
+        body: JSON.stringify({
+          time_unit: params.time_unit,
+          agent_id: params.agent_id || undefined,
+          type_id: params.type_id || undefined,
+        }),
       })
       await loadEntries()
     } catch (error) {
@@ -87,6 +129,7 @@ export const useKcTimeTracking = (ticketInternalId: Ref<number>) => {
         type: NotificationTypes.Error,
         message: (error as Error).message || __('Failed to add time entry.'),
       })
+      throw error
     }
   }
 
@@ -110,7 +153,10 @@ export const useKcTimeTracking = (ticketInternalId: Ref<number>) => {
   watch(
     ticketInternalId,
     (id) => {
-      if (id) loadEntries()
+      if (id) {
+        loadEntries()
+        loadFormOptions()
+      }
     },
     { immediate: true },
   )
@@ -121,7 +167,10 @@ export const useKcTimeTracking = (ticketInternalId: Ref<number>) => {
     available,
     total,
     agentGroups,
+    agentOptions,
+    typeOptions,
     loadEntries,
+    loadFormOptions,
     addEntry,
     deleteEntry,
   }

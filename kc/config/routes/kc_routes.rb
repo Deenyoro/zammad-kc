@@ -7,6 +7,7 @@ Zammad::Application.routes.draw do
     get    'tickets/:ticket_id/time_entries',     to: 'kc/time_management#ticket_entries'
     post   'tickets/:ticket_id/time_entries',     to: 'kc/time_management#create_entry'
     delete 'tickets/:ticket_id/time_entries/:id', to: 'kc/time_management#destroy_entry'
+    get    'time_entry_options',                  to: 'kc/time_management#form_options'
 
     # Reporting (admin)
     get 'time_management/by_user/:year/:month',         to: 'kc/time_management#by_user'

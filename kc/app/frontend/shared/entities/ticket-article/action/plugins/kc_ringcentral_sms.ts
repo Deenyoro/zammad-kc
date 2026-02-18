@@ -4,7 +4,7 @@
 // (kc_ringcentral_sms_reply.coffee) for the modern frontend.
 //
 // Adds "ringcentral_sms_message" as:
-//   - A reply action on inbound RingCentral SMS articles
+//   - A reply action on all RingCentral SMS articles (both inbound and outbound)
 //   - An available article type in the compose area for SMS tickets
 //   - The primary (default) reply channel for SMS tickets
 //
@@ -16,8 +16,6 @@
 // and pre-filled as the recipient when composing a reply. The backend delivery job
 // (Kc::CommunicateRingcentralSmsJob) also falls back to this preference when
 // article-level preferences are absent.
-
-import { EnumTicketArticleSenderName } from '#shared/graphql/types.ts'
 
 import type {
   TicketArticleAction,
@@ -54,11 +52,9 @@ const actionPlugin: TicketArticleActionPlugin = {
   order: 310,
 
   addActions(ticket, article) {
-    if (
-      article.sender?.name !== EnumTicketArticleSenderName.Customer ||
-      article.type?.name !== 'ringcentral_sms_message'
-    )
-      return []
+    // Legacy shows reply on ALL ringcentral_sms_message articles regardless
+    // of sender direction (Agent or Customer). Do NOT filter by sender.
+    if (article.type?.name !== 'ringcentral_sms_message') return []
 
     const action: TicketArticleAction = {
       apps: ['mobile', 'desktop'],
