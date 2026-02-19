@@ -12,6 +12,7 @@ export default <TicketSidebarPlugin>{
   component: TicketSidebarGitHub,
   permissions: ['ticket.agent'],
   screens: [TicketSidebarScreenType.TicketDetailView, TicketSidebarScreenType.TicketCreate],
+  views: ['agent'],
   icon: 'github',
   order: 4000,
   available: () => useApplicationStore().config.github_integration,
