@@ -142,8 +142,11 @@ watch(
     if (isEqual(newValue, groupPermissions)) return
 
     const newValues = cloneDeep(newValue || []) as GroupPermissionReactive[]
+
     newValues.forEach((groupPermission, index) => {
-      groupPermission.key = getUuid()
+      // Ensure the existing group permissions retain the same key, otherwise set a random one.
+      groupPermission.key = groupPermission.key || getUuid()
+
       groupOptions[index] = filterGroupOptions(index)
     })
 
