@@ -74,7 +74,8 @@ class ObjectManager::Attribute < ApplicationModel
 
   belongs_to :object_lookup, optional: true
 
-  validates :name, presence: true
+  validates :name,    presence: true
+  validates :display, presence: true
   validates :data_type, inclusion: { in: DATA_TYPES, msg: '%{value} is not a valid data type' }
   validate :inactive_must_be_unused_by_references, unless: :active?
   validate :data_type_must_not_change, on: :update

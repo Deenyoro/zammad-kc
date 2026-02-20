@@ -132,6 +132,24 @@ RSpec.describe ObjectManager::Attribute, type: :model do
     end
   end
 
+  describe 'validate that display label is not blank' do
+    subject(:attr) { create(:object_manager_attribute_text) }
+
+    context 'when display label is blank' do
+      it 'is not valid' do
+        attr.display = ''
+        expect(attr).not_to be_valid
+      end
+
+      it 'adds an error message' do
+        attr.display = ''
+        attr.valid?
+
+        expect(attr.errors[:display]).to include("can't be blank")
+      end
+    end
+  end
+
   describe 'validate that referenced attributes are not set as inactive' do
     subject(:attr) { create(:object_manager_attribute_text) }
 
