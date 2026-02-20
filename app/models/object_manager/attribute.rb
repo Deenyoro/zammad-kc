@@ -79,6 +79,7 @@ class ObjectManager::Attribute < ApplicationModel
   validates :data_type, inclusion: { in: DATA_TYPES, msg: '%{value} is not a valid data type' }
   validate :inactive_must_be_unused_by_references, unless: :active?
   validate :data_type_must_not_change, on: :update
+  validate :prevent_internal_flag_change, on: :update
 
   validates_with ObjectManager::Attribute::DataOptionValidator
 
@@ -88,8 +89,9 @@ class ObjectManager::Attribute < ApplicationModel
 
   before_validation :set_base_options
 
-  before_create :ensure_multiselect
-  before_update :ensure_multiselect
+  before_create  :ensure_multiselect
+  before_update  :ensure_multiselect
+  before_destroy :internal_attribute_indelible, if: :internal?
 
   scope :active,     -> { where(active:   true) }
   scope :editable,   -> { where(editable: true) }
@@ -1040,6 +1042,19 @@ is certain attribute used by triggers, overviews or schedulers
     return if (data_type_change - allowable_changes).empty?
 
     errors.add(:data_type, __("can't be altered after creation (you can delete the attribute and create another with the desired value)"))
+  end
+
+  def prevent_internal_flag_change
+    return if !respond_to?(:internal_changed?)
+    return if !internal_changed?
+
+    errors.add(:internal, __("can't be modified"))
+  end
+
+  def internal_attribute_indelible
+    errors.add(:base, __('Internal attributes cannot be deleted'))
+
+    throw :abort
   end
 
   def local_data_attr

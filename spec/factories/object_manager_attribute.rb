@@ -13,6 +13,7 @@ FactoryBot.define do
     sequence(:display)        { |n| "Display Name #{n}" }
     data_option_new           { {} }
     editable                  { true }
+    internal                  { false }
     active                    { true }
     add_attribute(:to_create) { true }
     to_migrate                { true }
