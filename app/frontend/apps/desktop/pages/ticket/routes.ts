@@ -2,7 +2,7 @@
 
 import { EnumTaskbarEntity } from '#shared/graphql/types.ts'
 
-import type { RouteRecordRaw } from 'vue-router'
+import type { RouteLocationNormalized, RouteRecordRaw } from 'vue-router'
 
 const route: RouteRecordRaw[] = [
   {
@@ -35,6 +35,12 @@ const route: RouteRecordRaw[] = [
       requiresAuth: true,
       requiredPermission: ['ticket.agent', 'ticket.customer'],
       taskbarTabEntity: EnumTaskbarEntity.TicketZoom,
+      skipRedirect: (toRoute: RouteLocationNormalized) => {
+        // Allow article anchors to pass for ticket detail
+        // important to allow scrolling to the article
+        const location = toRoute.hash && toRoute.hash.slice(1)
+        return location.startsWith('article-')
+      },
       isTaskbarTabPossible: (route) => !!route.params.internalId,
       messageForbidden: __('You have insufficient rights to view this ticket.'),
       messageNotFound: __(
