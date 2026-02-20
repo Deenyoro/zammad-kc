@@ -88,8 +88,10 @@ describe('TicketSidebarAttachmentContent', () => {
   it('renders attachments', async () => {
     const wrapper = renderAttachmentContent()
 
-    expect(await wrapper.findByText('image010.jpg')).toBeInTheDocument()
-    expect(await wrapper.findByText('Test PDF.pdf')).toBeInTheDocument()
-    expect(await wrapper.findByText('Entsorgungstermine.ics')).toBeInTheDocument()
+    expect(await wrapper.findByRole('link', { name: 'Download image010.jpg' })).toBeInTheDocument()
+    expect(await wrapper.findByRole('link', { name: 'Download Test PDF.pdf' })).toBeInTheDocument()
+    expect(
+      await wrapper.findByRole('link', { name: 'Download Entsorgungstermine.ics' }),
+    ).toBeInTheDocument()
   })
 })

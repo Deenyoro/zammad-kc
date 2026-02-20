@@ -170,4 +170,39 @@ describe('preview file component', () => {
 
     expect(view.queryByRole('button', { name: 'Remove name.word' })).not.toBeInTheDocument()
   })
+
+  it('keeps file extension visible when truncating file name', async () => {
+    const view = renderFilePreview({
+      file: {
+        name: 'this_is_a_very_long_filename_that_will_definitely_truncate.pdf',
+        type: 'application/pdf',
+        size: 1024,
+      },
+    })
+
+    expect(
+      view.getByText('this_is_a_very_long_filename_that_will_definitely_truncate'),
+    ).toBeInTheDocument()
+
+    expect(view.getByText('.pdf')).toBeInTheDocument()
+
+    const baseSpan = view.getByText('this_is_a_very_long_filename_that_will_definitely_truncate')
+    expect(baseSpan).toHaveClass('line-clamp-1 break-all')
+  })
+
+  it.each([
+    ['.gitignore', '.gitignore', null],
+    ['no-extension', 'no-extension', null],
+    ['archive.tar.gz', 'archive.tar', '.gz'],
+  ])('splits filename "%s" into base "%s" and ext "%s"', (full, base, ext) => {
+    const view = renderFilePreview({
+      file: { name: full, type: 'text/plain', size: 100 },
+    })
+
+    expect(view.getByText(base)).toBeInTheDocument()
+
+    if (ext) {
+      expect(view.getByText(ext)).toBeInTheDocument()
+    }
+  })
 })
