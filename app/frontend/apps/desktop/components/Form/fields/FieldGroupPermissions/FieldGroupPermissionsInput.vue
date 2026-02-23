@@ -199,7 +199,7 @@ const ensureGranularOrFullAccess = (
 <template>
   <output
     :id="context.id"
-    class="flex w-full flex-col space-y-2 rounded-lg p-2 focus:outline-1 focus:-outline-offset-1 focus:outline-blue-800 hover:focus:outline-blue-800"
+    class="flex w-full flex-col space-y-2 rounded-lg p-2 focus-visible:outline-1 focus-visible:-outline-offset-1 focus-visible:outline-blue-800 hover:focus-visible:outline-blue-800"
     :class="context.classes.input"
     :name="context.node.name"
     role="list"
