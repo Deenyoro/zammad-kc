@@ -22,7 +22,7 @@ class MacroPolicy < ApplicationPolicy
   private
 
   def admin?
-    user.permissions?('admin.group')
+    user.permissions?('admin.macro')
   end
 
   def agent_accessible?

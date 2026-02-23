@@ -22,6 +22,10 @@ import {
 } from './mocks/ticket-overviews-mocks.ts'
 
 describe('TicketOverviews', () => {
+  beforeEach(() => {
+    mockPermissions(['ticket.agent'])
+  })
+
   it('redirects when overview does not exist', async () => {
     mockDefaultOverviewQueries()
 
@@ -36,7 +40,6 @@ describe('TicketOverviews', () => {
 
   it('displays overviews correctly', async () => {
     mockDefaultOverviewQueries()
-    mockPermissions(['ticket.agent'])
 
     const view = await visitView('tickets/view/my_assigned')
 

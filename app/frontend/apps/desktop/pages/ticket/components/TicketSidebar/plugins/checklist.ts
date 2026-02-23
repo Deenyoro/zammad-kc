@@ -12,6 +12,7 @@ export default <TicketSidebarPlugin>{
   component: TicketSidebarChecklist,
   permissions: ['ticket.agent'],
   screens: [TicketSidebarScreenType.TicketDetailView],
+  views: ['agent'],
   icon: 'checklist',
   order: 8000,
   available: () => {

@@ -8,7 +8,7 @@ import { TableKitExtensionName } from '#shared/components/Form/fields/FieldEdito
 import { EXTENSION_NAME as TextModuleMentionName } from '#shared/components/Form/fields/FieldEditor/extensions/TextModuleSuggestion.ts'
 import { EXTENSION_NAME as UserMentionName } from '#shared/components/Form/fields/FieldEditor/extensions/UserMention.ts'
 import AiAssistantTextTools from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/AiAssistantTextTools.vue'
-import FieldEditorColorMenu from '#shared/components/Form/fields/FieldEditor/features/color-picker/EditorColorMenu.vue'
+import EditorColorMenu from '#shared/components/Form/fields/FieldEditor/features/color-picker/EditorColorMenu.vue'
 import type {
   EditorButton,
   EditorContentType,
@@ -182,7 +182,7 @@ export default function useEditorActions(
         contentType: ['text/html'],
         label: __('Change text color'),
         icon: 'editor-text-color',
-        subMenu: FieldEditorColorMenu,
+        subMenu: EditorColorMenu,
       },
       {
         id: getUuid(),

@@ -76,5 +76,26 @@ RSpec.describe Gql::Queries::User::Current::RecentClose::List, type: :graphql do
     end
   end
 
+  context 'with an admin without agent permissions', authenticated_as: :user do
+    let(:admin) { create(:admin) }
+    let(:user)  { admin }
+
+    before do
+      admin.roles.each { |role| role.permission_revoke('ticket.agent') }
+      admin.reload
+
+      # Re-run the query with updated permissions; existing recent_closes for this user
+      gql.execute(query, variables: variables)
+    end
+
+    it 'returns data without tickets' do
+      expect(gql.result.data).to eq(
+        [
+          { '__typename' => 'User', 'id' => gql.id(customer) },
+        ]
+      )
+    end
+  end
+
   it_behaves_like 'graphql responds with error if unauthenticated'
 end

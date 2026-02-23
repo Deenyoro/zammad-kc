@@ -1093,8 +1093,10 @@ const changedInputValueHandling = (inputNode: FormKitNode) => {
 }
 
 const buildStaticSchema = () => {
-  const { getFormFieldSchema, getFormFieldsFromScreen } =
-    useObjectAttributeFormFields(fixedAndSkippedFields)
+  const { getFormFieldSchema, getFormFieldsFromScreen } = useObjectAttributeFormFields(
+    fixedAndSkippedFields,
+    props.initialEntityObject?.policy,
+  )
 
   const buildFormKitField = (field: FormSchemaField): FormKitSchemaComponent => {
     const fieldId = field.id || getNodeId(formId, field.name)

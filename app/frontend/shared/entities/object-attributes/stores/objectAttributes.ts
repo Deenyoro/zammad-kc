@@ -8,6 +8,7 @@ import log from '#shared/utils/log.ts'
 
 import type {
   EntityStaticObjectAttributes,
+  EntityPolicyBasedObjectAttributeScreenMapper,
   ObjectAttribute,
   ObjectAttributesObject,
 } from '../types/store.ts'
@@ -17,6 +18,13 @@ const staticObjectAttributesEntityModules: Record<string, EntityStaticObjectAttr
     eager: true,
     import: 'staticObjectAttributes',
   })
+
+const policyBasedObjectAttributeScreenMapperModules: Record<
+  string,
+  { policyBasedObjectAttributeScreenMapper?: EntityPolicyBasedObjectAttributeScreenMapper }
+> = import.meta.glob(['../../*/stores/objectAttributes.ts'], {
+  eager: true,
+})
 
 export const entitiesStaticObjectAttributes = Object.values(staticObjectAttributesEntityModules)
 export const staticObjectAttributesByEntity = entitiesStaticObjectAttributes.reduce<
@@ -28,6 +36,26 @@ export const staticObjectAttributesByEntity = entitiesStaticObjectAttributes.red
   },
   {} as Record<EnumObjectManagerObjects, ObjectAttribute[]>,
 )
+
+export const entitiesPolicyBasedObjectAttributeScreenMappers = Object.values(
+  policyBasedObjectAttributeScreenMapperModules,
+)
+  .map((module) => module.policyBasedObjectAttributeScreenMapper)
+  .filter((item): item is EntityPolicyBasedObjectAttributeScreenMapper => item !== undefined)
+
+export const policyBasedObjectAttributeScreenMappersByEntity =
+  entitiesPolicyBasedObjectAttributeScreenMappers.reduce<
+    Record<EnumObjectManagerObjects, EntityPolicyBasedObjectAttributeScreenMapper['mappings']>
+  >(
+    (result, entityItem) => {
+      result[entityItem.name] = entityItem.mappings
+      return result
+    },
+    {} as Record<
+      EnumObjectManagerObjects,
+      EntityPolicyBasedObjectAttributeScreenMapper['mappings']
+    >,
+  )
 
 export const useObjectAttributesStore = defineStore('objectAttributes', () => {
   const objectAttributesObjectLookup = ref<Record<string, ObjectAttributesObject>>({})

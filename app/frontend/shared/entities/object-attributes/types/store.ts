@@ -4,6 +4,7 @@ import type { FormSchemaField } from '#shared/components/Form/types.ts'
 import type {
   EnumObjectManagerObjects,
   ObjectManagerFrontendAttribute,
+  PolicyDefault,
 } from '#shared/graphql/types.ts'
 
 import type { JsonValue } from 'type-fest'
@@ -26,6 +27,13 @@ export interface ObjectAttribute extends ObjectManagerFrontendAttribute {
 export interface EntityStaticObjectAttributes {
   name: EnumObjectManagerObjects
   attributes: ObjectAttribute[]
+}
+
+export interface EntityPolicyBasedObjectAttributeScreenMapper<TPolicy = PolicyDefault> {
+  name: EnumObjectManagerObjects
+  mappings: {
+    [key: string]: (policy: TPolicy) => string
+  }
 }
 
 export interface ObjectAttributesObject {

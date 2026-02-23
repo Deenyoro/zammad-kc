@@ -170,11 +170,11 @@ $(function() {
         'Your Name': 'Vaše ime',
       },
       'hu': {
-        'Attachments': 'Csatolmányok',
+        'Attachments': 'Mellékletek',
         'Email': 'E-mail',
         'Message': 'Üzenet',
         'Name': 'Név',
-        'Your Email': 'Az Ön e-mail címe',
+        'Your Email': 'Az Ön e-mail-címe',
         'Your Message…': 'Az Ön üzenete…',
         'Your Name': 'Az Ön neve',
       },

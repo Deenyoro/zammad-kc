@@ -35,8 +35,8 @@ RSpec.describe Gql::Queries::ApplicationConfig, type: :graphql do
 
       it 'returns data for Rails.application.config' do
         expect(gql.result.data).to include({
-                                             'key'   => 'active_storage.web_image_content_types',
-                                             'value' => Rails.application.config.active_storage.web_image_content_types,
+                                             'key'   => 'active_storage.content_types_allowed_inline',
+                                             'value' => Rails.application.config.active_storage.content_types_allowed_inline,
                                            })
       end
 

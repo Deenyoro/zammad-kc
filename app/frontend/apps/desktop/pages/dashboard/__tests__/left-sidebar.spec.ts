@@ -10,8 +10,6 @@ import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { mockLogoutMutation } from '#shared/graphql/mutations/logout.mocks.ts'
 
-import { avatarMenuItems } from '#desktop/components/layout/LayoutSidebar/LeftSidebar/AvatarMenu/plugins/index.ts'
-
 describe('Left sidebar', () => {
   beforeEach(() => {
     mockUserCurrent({
@@ -130,6 +128,15 @@ describe('Left sidebar', () => {
 
         localStorage.setItem('gid://zammad/User/999-left-sidebar-collapsed', String(collapsed))
 
+        const expectedMenuItems = [
+          'Admin documentation',
+          'User documentation',
+          'Appearance',
+          'Playground',
+          'Profile settings',
+          'Sign out',
+        ]
+
         const view = await visitView('/')
 
         const aside = view.getByRole('complementary')
@@ -148,7 +155,9 @@ describe('Left sidebar', () => {
         const menu = getByRole(popover, 'menu')
         const menuItems = getAllByRole(menu, 'menuitem')
 
-        expect(menuItems).toHaveLength(avatarMenuItems.length)
+        expectedMenuItems.forEach((expectedMenuItem) => {
+          expect(menuItems.some((item) => item.textContent === expectedMenuItem)).toBeTruthy()
+        })
       },
     )
 

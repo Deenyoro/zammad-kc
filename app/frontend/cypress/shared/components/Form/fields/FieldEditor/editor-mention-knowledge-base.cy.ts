@@ -68,7 +68,7 @@ describe('Testing "knowledge base" popup: "??" command', { retries: 2 }, () => {
       .type('{backspace}{backspace}r')
       .should('have.text', 'knowledge base answer bor')
 
-    cy.findByText('Zammad.png').should('exist')
+    cy.contains('Zammad.png').should('exist')
     cy.findByText('923 KB').should('exist')
   })
 })

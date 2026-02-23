@@ -9,6 +9,7 @@ import {
   type AllowedFile,
   sanitizedContentType,
   canPreviewFile,
+  allowedImageTypes,
 } from '#shared/utils/files.ts'
 
 describe('files utility', () => {
@@ -109,11 +110,17 @@ describe('files utility', () => {
   describe('canPreviewFile', () => {
     beforeEach(() => {
       mockApplicationConfig({
-        'active_storage.web_image_content_types': [
-          'image/png',
-          'image/jpeg',
-          'image/gif',
+        'active_storage.content_types_allowed_inline': [
           'image/webp',
+          'image/avif',
+          'image/png',
+          'image/gif',
+          'image/jpeg',
+          'image/tiff',
+          'image/bmp',
+          'image/vnd.adobe.photoshop',
+          'image/vnd.microsoft.icon',
+          'image/jpg',
         ],
       })
     })
@@ -134,6 +141,56 @@ describe('files utility', () => {
       const type = 'application/octet-stream'
       const result = canPreviewFile(type)
       expect(result).toBe(false)
+    })
+  })
+
+  describe('allowedImageTypes', () => {
+    beforeEach(() => {
+      mockApplicationConfig({
+        'active_storage.content_types_allowed_inline': [
+          'image/webp',
+          'image/avif',
+          'image/png',
+          'image/gif',
+          'image/jpeg',
+          'image/tiff',
+          'image/bmp',
+          'image/vnd.adobe.photoshop',
+          'image/vnd.microsoft.icon',
+          'image/jpg',
+        ],
+      })
+    })
+
+    it.each(['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'image/webp'])(
+      'includes %s in the list',
+      (contentType) => {
+        const result = allowedImageTypes()
+        expect(result).toContain(contentType)
+      },
+    )
+
+    it('does not include non-inline types', () => {
+      mockApplicationConfig({
+        'active_storage.content_types_allowed_inline': [
+          'image/webp',
+          'image/png',
+          'image/jpeg',
+          'image/jpg',
+        ],
+      })
+
+      const result = allowedImageTypes()
+      expect(result).not.toContain('image/gif')
+    })
+
+    it('returns empty list if there are no configured inline types', () => {
+      mockApplicationConfig({
+        'active_storage.content_types_allowed_inline': [],
+      })
+
+      const result = allowedImageTypes()
+      expect(result).toHaveLength(0)
     })
   })
 })

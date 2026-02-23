@@ -98,6 +98,7 @@ describe('ticket create view', () => {
 
       // Page title defaults back when title is cleared
       await view.events.clear(view.getByLabelText('Title'))
+
       await waitFor(() =>
         expect(view.getByRole('heading', { level: 1, name: 'New ticket' })).toBeInTheDocument(),
       )
@@ -120,12 +121,15 @@ describe('ticket create view', () => {
       // Sidebar CUSTOMER
       expect(within(sidebar).getByLabelText('Avatar (Nicole Braun)')).toBeInTheDocument()
       expect(within(sidebar).getByText('Zammad Foundation')).toBeInTheDocument()
-      expect(within(sidebar).getByText('open tickets')).toBeInTheDocument()
       expect(within(sidebar).getByText('nicole.braun@zammad.org')).toBeInTheDocument()
-      expect(within(sidebar).getByText('closed tickets')).toBeInTheDocument()
+      expect(within(sidebar).getByText('open tickets')).toBeInTheDocument()
+      expect(within(sidebar).queryByText('closed tickets')).not.toBeInTheDocument() // 0 closed tickets
       expect(within(sidebar).getByLabelText('Open tickets')).toHaveTextContent('17')
+
       await view.events.click(within(sidebar).getByLabelText('Action menu button'))
+
       const popover = await view.findByRole('region', { name: 'Action menu button' })
+
       expect(within(popover).getByRole('button', { name: 'Edit customer' })).toBeInTheDocument()
 
       // Sidebar Organization
@@ -134,7 +138,6 @@ describe('ticket create view', () => {
       await view.events.click(view.getByLabelText('Organization'))
 
       expect(view.getByText('Organization')).toBeInTheDocument()
-
       expect(view.getByText('Members')).toBeInTheDocument()
       expect(await view.findByLabelText('Avatar (Nicole Braun)')).toBeInTheDocument()
 

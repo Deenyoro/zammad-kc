@@ -18,9 +18,9 @@ import { edgesToArray, waitForElement } from '#shared/utils/helpers.ts'
 import CommonLoader from '#mobile/components/CommonLoader/CommonLoader.vue'
 import { useHeader } from '#mobile/composables/useHeader.ts'
 
-import TicketArticlesList from '../components/TicketDetailView/ArticlesList.vue'
-import TicketHeader from '../components/TicketDetailView/TicketDetailViewHeader.vue'
-import TicketTitle from '../components/TicketDetailView/TicketDetailViewTitle.vue'
+import ArticlesList from '../components/TicketDetailView/ArticlesList.vue'
+import TicketDetailViewHeader from '../components/TicketDetailView/TicketDetailViewHeader.vue'
+import TicketDetailViewTitle from '../components/TicketDetailView/TicketDetailViewTitle.vue'
 import { useTicketArticlesQueryVariables } from '../composable/useTicketArticlesVariables.ts'
 import { useTicketInformation } from '../composable/useTicketInformation.ts'
 
@@ -241,7 +241,7 @@ useEventListener(
     class="relative backdrop-blur-lg"
     :style="stickyStyles.header"
   >
-    <TicketHeader
+    <TicketDetailViewHeader
       :ticket="ticket"
       :live-user-list="liveUserList"
       :loading-ticket="isLoadingTicket"
@@ -252,12 +252,12 @@ useEventListener(
       data-test-id="loader-title"
       class="flex border-b-[0.5px] border-white/10 bg-gray-600/90 px-4 py-5"
     >
-      <TicketTitle v-if="ticket" :ticket="ticket" />
+      <TicketDetailViewTitle v-if="ticket" :ticket="ticket" />
     </CommonLoader>
   </div>
   <div id="ticket-articles-list" class="flex flex-1 flex-col" :style="stickyStyles.body">
     <CommonLoader data-test-id="loader-list" :loading="isLoadingTicket" class="mt-2">
-      <TicketArticlesList
+      <ArticlesList
         v-if="ticket"
         :ticket="ticket"
         :articles="articles"

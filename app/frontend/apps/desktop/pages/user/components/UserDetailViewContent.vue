@@ -145,7 +145,10 @@ customerTicketsSubscription.onResult(({ data }) => {
           </div>
 
           <CommonSectionContainer
-            v-if="hasPermission('ticket.agent')"
+            v-if="
+              hasPermission('ticket.agent') &&
+              (user.ticketsCount?.open || user.ticketsCount?.closed)
+            "
             class="self-start"
             :label="__('Related tickets')"
           >

@@ -132,6 +132,24 @@ RSpec.describe ObjectManager::Attribute, type: :model do
     end
   end
 
+  describe 'validate that display label is not blank' do
+    subject(:attr) { create(:object_manager_attribute_text) }
+
+    context 'when display label is blank' do
+      it 'is not valid' do
+        attr.display = ''
+        expect(attr).not_to be_valid
+      end
+
+      it 'adds an error message' do
+        attr.display = ''
+        attr.valid?
+
+        expect(attr.errors[:display]).to include("can't be blank")
+      end
+    end
+  end
+
   describe 'validate that referenced attributes are not set as inactive' do
     subject(:attr) { create(:object_manager_attribute_text) }
 
@@ -168,6 +186,61 @@ RSpec.describe ObjectManager::Attribute, type: :model do
       let(:is_referenced) { true }
 
       it { is_expected.to be_valid }
+    end
+  end
+
+  describe 'Internal flag handling' do
+    subject(:attr) { create(:object_manager_attribute_text, internal: initial_value) }
+
+    before { attr.internal = new_value }
+
+    shared_examples 'preventing internal flag modification' do
+      it { is_expected.not_to be_valid }
+
+      it 'includes appropriate error message' do
+        attr.valid?
+        expect(attr.errors.full_messages).to include("Internal can't be modified")
+      end
+    end
+
+    context 'when changing from false to true' do
+      let(:initial_value) { false }
+      let(:new_value)     { true }
+
+      it_behaves_like 'preventing internal flag modification'
+    end
+
+    context 'when changing from true to false' do
+      let(:initial_value) { true }
+      let(:new_value)     { false }
+
+      it_behaves_like 'preventing internal flag modification'
+    end
+
+    context 'when destroying an internal attribute' do
+      let(:initial_value) { true }
+      let(:new_value)     { true }
+
+      it 'is not allowed' do
+        expect { attr.destroy }.not_to change(described_class, :count)
+      end
+
+      it 'includes appropriate error message' do
+        attr.destroy
+        expect(attr.errors.full_messages).to include('Internal attributes cannot be deleted')
+      end
+
+      it 'raises an error when using destroy!' do
+        expect { attr.destroy! }.to raise_error(ActiveRecord::RecordNotDestroyed)
+      end
+
+      it 'includes appropriate error message when using destroy!' do
+        begin
+          attr.destroy!
+        rescue ActiveRecord::RecordNotDestroyed
+          expect(attr.errors.full_messages).to include('Internal attributes cannot be deleted')
+        end
+      end
     end
   end
 
