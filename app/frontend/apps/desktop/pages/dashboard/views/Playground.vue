@@ -774,6 +774,11 @@ const formSchema = defineFormSchema([
     },
   },
   {
+    name: 'checkbox_0',
+    label: "I'm a checkbox, check me please!",
+    type: 'checkbox',
+  },
+  {
     type: 'select',
     name: 'select_1',
     label: 'Single select',

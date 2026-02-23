@@ -201,6 +201,7 @@ const sidebarContext = computed<TicketSidebarContext>(() => ({
   ticket,
   isTicketEditable,
   screenType: TicketSidebarScreenType.TicketDetailView,
+  view: isTicketAgent.value ? 'agent' : 'customer',
   form: form.value,
   formValues: {
     // TODO: Workaround, to make the sidebars working for now.

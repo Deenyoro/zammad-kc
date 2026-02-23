@@ -19,11 +19,17 @@ describe('preview file component', () => {
     mockApplicationConfig({
       ui_ticket_zoom_attachments_preview: true,
       api_path: '/api',
-      'active_storage.web_image_content_types': [
+      'active_storage.content_types_allowed_inline': [
+        'image/webp',
+        'image/avif',
         'image/png',
-        'image/jpeg',
-        'image/jpg',
         'image/gif',
+        'image/jpeg',
+        'image/tiff',
+        'image/bmp',
+        'image/vnd.adobe.photoshop',
+        'image/vnd.microsoft.icon',
+        'image/jpg',
       ],
     })
   })
@@ -163,5 +169,40 @@ describe('preview file component', () => {
     await view.rerender({ noRemove: true })
 
     expect(view.queryByRole('button', { name: 'Remove name.word' })).not.toBeInTheDocument()
+  })
+
+  it('keeps file extension visible when truncating file name', async () => {
+    const view = renderFilePreview({
+      file: {
+        name: 'this_is_a_very_long_filename_that_will_definitely_truncate.pdf',
+        type: 'application/pdf',
+        size: 1024,
+      },
+    })
+
+    expect(
+      view.getByText('this_is_a_very_long_filename_that_will_definitely_truncate'),
+    ).toBeInTheDocument()
+
+    expect(view.getByText('.pdf')).toBeInTheDocument()
+
+    const baseSpan = view.getByText('this_is_a_very_long_filename_that_will_definitely_truncate')
+    expect(baseSpan).toHaveClass('line-clamp-1 break-all')
+  })
+
+  it.each([
+    ['.gitignore', '.gitignore', null],
+    ['no-extension', 'no-extension', null],
+    ['archive.tar.gz', 'archive.tar', '.gz'],
+  ])('splits filename "%s" into base "%s" and ext "%s"', (full, base, ext) => {
+    const view = renderFilePreview({
+      file: { name: full, type: 'text/plain', size: 100 },
+    })
+
+    expect(view.getByText(base)).toBeInTheDocument()
+
+    if (ext) {
+      expect(view.getByText(ext)).toBeInTheDocument()
+    }
   })
 })

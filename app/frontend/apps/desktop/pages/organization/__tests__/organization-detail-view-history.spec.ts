@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { within } from '@testing-library/vue'
+import { waitFor, within } from '@testing-library/vue'
 
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
@@ -151,8 +151,10 @@ describe('Organization Detail View - History Flyout', () => {
 
       const flyout = await view.findByRole('complementary', { name: 'History' })
 
-      expect(within(flyout).getByText('Test Admin Agent')).toBeVisible()
-      expect(within(flyout).getByText('2025-11-24 08:32')).toBeVisible()
+      waitFor(() => {
+        expect(within(flyout).getByText('Test Admin Agent')).toBeVisible()
+        expect(within(flyout).getByText('2025-11-24 08:32')).toBeVisible()
+      })
     })
   })
 

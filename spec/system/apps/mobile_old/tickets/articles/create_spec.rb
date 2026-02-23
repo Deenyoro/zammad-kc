@@ -400,8 +400,8 @@ RSpec.describe 'Mobile > Ticket > Article > Create', app: :mobile, authenticated
 
       save_article
 
-      # The fize will always be less than it actually is even without resizing
-      # Chrome has the best compression, so we check that actual value is lower than Firefox's compresssion
+      # The size will always be less than it actually is even without resizing
+      # Chrome has the best compression, so we check that actual value is lower than Firefox's compression
       expect(Store.last.size.to_i).to be <= 25_686
     end
   end

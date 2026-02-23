@@ -20,11 +20,11 @@ module Tasks
           if ::Package.app_package_installation?
             exec_command('zammad run pnpm install --production=false')
             exec_command('zammad run pnpm run generate-setting-types')
-            exec_command('zammad run pnpm run generate-graphql-api')
+            exec_command('ZAMMAD_GRAPHQL_INTROSPECTION=true zammad run pnpm run generate-graphql-api')
           else
             exec_command('pnpm install --production=false')
             exec_command('pnpm run generate-setting-types')
-            exec_command('pnpm run generate-graphql-api')
+            exec_command('ZAMMAD_GRAPHQL_INTROSPECTION=true pnpm run generate-graphql-api')
           end
         end
 

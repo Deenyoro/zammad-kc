@@ -35,7 +35,7 @@ class ObjectManager
 
         Time.use_zone(Setting.get('timezone_default')) do
           diff
-            .days
+            .hours
             .from_now
             .to_date
         end
@@ -48,7 +48,7 @@ class ObjectManager
 
         Time.use_zone(Setting.get('timezone_default')) do
           diff
-            .hours
+            .minutes
             .from_now
             .change(usec: 0, sec: 0)
             .utc

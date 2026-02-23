@@ -4,6 +4,7 @@ import { computed } from 'vue'
 
 import { convertInlineImages } from '#shared/components/Form/fields/FieldEditor/utils.ts'
 import { getNodeByName } from '#shared/components/Form/utils.ts'
+import { allowedImageTypes } from '#shared/utils/files.ts'
 import log from '#shared/utils/log.ts'
 
 import type { Extensions } from '@tiptap/core'
@@ -38,8 +39,8 @@ export const useAttachments = (extensions: Extensions, formId: string) => {
     }
   }
 
-  // there is also a gif, but desktop only inlines these two for now
-  const imagesMimeType = new Set(['image/png', 'image/jpeg'])
+  const imagesMimeType = allowedImageTypes()
+
   const loadFiles = (
     files: FileList | File[] | null | undefined,
     editor: Editor | undefined,
@@ -53,7 +54,7 @@ export const useAttachments = (extensions: Extensions, formId: string) => {
     const otherFiles: File[] = []
 
     for (const file of files) {
-      if (imagesMimeType.has(file.type)) {
+      if (imagesMimeType.includes(file.type)) {
         inlineImages.push(file)
       } else {
         otherFiles.push(file)

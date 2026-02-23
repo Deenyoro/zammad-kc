@@ -40,11 +40,13 @@ export const useProvideTicketSidebar = (context: Ref<TicketSidebarContext>) => {
   const availableSidebarPlugins = computed<Record<string, TicketSidebarPlugin>>(
     (currentAvailableSidebarPlugins) => {
       const newCurrentSidebarPlugins = Object.fromEntries(
-        Object.entries(sidebarPlugins).filter(([, sidebarPlugin]) =>
-          typeof sidebarPlugin.available === 'function'
-            ? sidebarPlugin.available(context.value)
-            : true,
-        ),
+        Object.entries(sidebarPlugins)
+          .filter(([, sidebarPlugin]) => sidebarPlugin.views.includes(context.value.view))
+          .filter(([, sidebarPlugin]) =>
+            typeof sidebarPlugin.available === 'function'
+              ? sidebarPlugin.available(context.value)
+              : true,
+          ),
       )
 
       if (

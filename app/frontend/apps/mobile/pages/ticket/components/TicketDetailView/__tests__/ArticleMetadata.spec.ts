@@ -13,7 +13,7 @@ import { EnumSecurityStateType, type TicketArticleSecurityState } from '#shared/
 import { ticketArticleObjectAttributes } from '#mobile/entities/ticket/__tests__/mocks/ticket-mocks.ts'
 import { defaultArticles } from '#mobile/pages/ticket/__tests__/mocks/detail-view.ts'
 
-import ArticleMetadata from '../ArticleMetadataDialog.vue'
+import ArticleMetadataDialog from '../ArticleMetadataDialog.vue'
 
 // parsed is tested in unit test
 const getAddress = (raw: string) => ({
@@ -58,7 +58,7 @@ describe('visuals for metadata', () => {
       },
     }
 
-    const view = renderComponent(ArticleMetadata, {
+    const view = renderComponent(ArticleMetadataDialog, {
       props: {
         name: 'article',
         article,
@@ -125,7 +125,7 @@ describe('rendering security field', () => {
 
   describe('renders type', () => {
     it('renders S/MIME type when provided', () => {
-      const view = renderComponent(ArticleMetadata, {
+      const view = renderComponent(ArticleMetadataDialog, {
         props: {
           name: 'article',
           article: mockArticle({
@@ -146,7 +146,7 @@ describe('rendering security field', () => {
     })
 
     it('renders PGP type when provided', () => {
-      const view = renderComponent(ArticleMetadata, {
+      const view = renderComponent(ArticleMetadataDialog, {
         props: {
           name: 'article',
           article: mockArticle({
@@ -171,7 +171,7 @@ describe('rendering security field', () => {
     const mockEncryption = (success: boolean, comment: string) =>
       mockArticle({ encryptionSuccess: success, encryptionMessage: comment })
     const renderEncryption = (success: boolean, comment: string) => {
-      return renderComponent(ArticleMetadata, {
+      return renderComponent(ArticleMetadataDialog, {
         props: {
           name: 'article',
           article: mockEncryption(success, comment),
@@ -203,7 +203,7 @@ describe('rendering security field', () => {
     const mockSign = (success: boolean, comment: string) =>
       mockArticle({ signingSuccess: success, signingMessage: comment })
     const renderSign = (success: boolean, comment: string) => {
-      return renderComponent(ArticleMetadata, {
+      return renderComponent(ArticleMetadataDialog, {
         props: {
           name: 'article',
           article: mockSign(success, comment),
@@ -239,7 +239,7 @@ describe('rendering security field', () => {
       encryptionSuccess: true,
     })
 
-    const view = renderComponent(ArticleMetadata, {
+    const view = renderComponent(ArticleMetadataDialog, {
       props: {
         name: 'article',
         article,
@@ -267,7 +267,7 @@ describe('rendering WhatsApp metadata', () => {
 
   describe('renders message status', () => {
     it('renders correct icon + text for "sent"', () => {
-      const view = renderComponent(ArticleMetadata, {
+      const view = renderComponent(ArticleMetadataDialog, {
         props: {
           name: 'article',
           article: mockArticle({
@@ -285,7 +285,7 @@ describe('rendering WhatsApp metadata', () => {
     })
 
     it('renders correct icon + text for "delivered"', () => {
-      const view = renderComponent(ArticleMetadata, {
+      const view = renderComponent(ArticleMetadataDialog, {
         props: {
           name: 'article',
           article: mockArticle({
@@ -304,7 +304,7 @@ describe('rendering WhatsApp metadata', () => {
     })
 
     it('renders correct icon + text for "read"', () => {
-      const view = renderComponent(ArticleMetadata, {
+      const view = renderComponent(ArticleMetadataDialog, {
         props: {
           name: 'article',
           article: mockArticle({

@@ -33,7 +33,7 @@ module Gql::Queries
 
     def rails_application_config
       [
-        'active_storage.web_image_content_types',
+        'active_storage.content_types_allowed_inline',
       ].map do |config_name|
         (method, key) = config_name.split('.')
 

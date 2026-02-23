@@ -2,9 +2,9 @@
 
 import createInput from '#shared/form/core/createInput.ts'
 
-import FieldInputSearch from './FieldSearch.vue'
+import FieldSearchInput from './FieldSearchInput.vue'
 
-const fieldDefinition = createInput(FieldInputSearch, ['noBorder'])
+const fieldDefinition = createInput(FieldSearchInput, ['noBorder'])
 
 export default {
   fieldType: 'search',

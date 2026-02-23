@@ -11,6 +11,7 @@ export default <TicketSidebarPlugin>{
   component: TicketSidebarInformation,
   permissions: ['ticket.agent', 'ticket.customer'],
   screens: [TicketSidebarScreenType.TicketDetailView],
+  views: ['agent', 'customer'],
   icon: 'chat-left-text',
   order: 100,
 }

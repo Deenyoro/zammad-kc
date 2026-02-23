@@ -1,6 +1,7 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { waitFor, within } from '@testing-library/vue'
+import { capitalize } from 'lodash-es'
 
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
@@ -444,6 +445,88 @@ describe('User Detail View', () => {
 
         expect(calls).toHaveLength(4)
       })
+
+      it('hides organization section when user has no organization', async () => {
+        const newUser = { ...user, organization: null }
+
+        mockUserQuery({ user: newUser })
+
+        const view = await visitView('/users/2')
+
+        const calls = await waitForTicketsByCustomerQueryCalls()
+
+        expect(calls).toHaveLength(2)
+
+        const main = view.getByRole('main')
+        const relatedTicketsSection = within(main).getByRole('region', { name: 'Related tickets' })
+
+        expect(within(relatedTicketsSection).queryAllByRole('tab')).toHaveLength(0)
+        expect(within(relatedTicketsSection).queryByText('User')).not.toBeInTheDocument()
+        expect(within(relatedTicketsSection).queryByText('Organization')).not.toBeInTheDocument()
+      })
+
+      it('hides related tickets section when user has no tickets', async () => {
+        const newUser = {
+          ...user,
+          ticketsCount: {
+            open: 0,
+            closed: 0,
+            organizationOpen: 0,
+            organizationClosed: 0,
+          },
+        }
+
+        mockUserQuery({ user: newUser })
+
+        const view = await visitView('/users/2')
+
+        const main = view.getByRole('main')
+
+        expect(
+          within(main).queryByRole('region', { name: 'Related tickets' }),
+        ).not.toBeInTheDocument()
+      })
+
+      it.each(['open', 'closed'])(
+        'hides %s tickets section when user has no such tickets',
+        async (state) => {
+          const newUser = {
+            ...user,
+            organization: null,
+            ticketsCount: {
+              [state]: 0,
+              [state === 'open' ? 'closed' : 'open']: 5,
+            },
+          }
+
+          mockUserQuery({ user: newUser })
+
+          const view = await visitView('/users/2')
+
+          const calls = await waitForTicketsByCustomerQueryCalls()
+
+          expect(calls).toHaveLength(1) // the "other" one
+
+          const main = view.getByRole('main')
+          const relatedTicketsSection = within(main).getByRole('region', {
+            name: 'Related tickets',
+          })
+
+          expect(
+            within(relatedTicketsSection).queryByRole('heading', {
+              name: `${capitalize(state)} tickets`,
+              level: 3,
+            }),
+          ).not.toBeInTheDocument()
+
+          expect(
+            within(relatedTicketsSection).queryByRole('heading', {
+              name: `${state === 'open' ? 'Closed tickets' : 'Open tickets'}`,
+              level: 3,
+            }),
+          ).toBeVisible()
+        },
+      )
     })
 
     describe('Ticket frequency', () => {
@@ -472,24 +555,5 @@ describe('User Detail View', () => {
         expect(calls).toHaveLength(2)
       })
     })
-  })
-
-  it('hides organization section when user has no organization', async () => {
-    const newUser = { ...user, organization: null }
-
-    mockUserQuery({ user: newUser })
-
-    const view = await visitView('/users/2')
-
-    const calls = await waitForTicketsByCustomerQueryCalls()
-
-    expect(calls).toHaveLength(2)
-
-    const main = view.getByRole('main')
-    const relatedTicketsSection = within(main).getByRole('region', { name: 'Related tickets' })
-
-    expect(within(relatedTicketsSection).queryAllByRole('tab')).toHaveLength(0)
-    expect(within(relatedTicketsSection).queryByText('User')).not.toBeInTheDocument()
-    expect(within(relatedTicketsSection).queryByText('Organization')).not.toBeInTheDocument()
   })
 })

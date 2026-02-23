@@ -12,6 +12,7 @@ export default <TicketSidebarPlugin>{
   component: TicketSidebarSummary,
   permissions: ['ticket.agent'],
   screens: [TicketSidebarScreenType.TicketDetailView],
+  views: ['agent'],
   icon: 'smart-assist',
   order: 6500,
   available: () => {

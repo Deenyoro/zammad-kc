@@ -80,7 +80,18 @@ const getImageInViewer = (view: ExtendedRenderResult) => {
 describe('Fields - FieldFile', () => {
   beforeEach(() => {
     mockApplicationConfig({
-      'active_storage.web_image_content_types': ['image/png'],
+      'active_storage.content_types_allowed_inline': [
+        'image/webp',
+        'image/avif',
+        'image/png',
+        'image/gif',
+        'image/jpeg',
+        'image/tiff',
+        'image/bmp',
+        'image/vnd.adobe.photoshop',
+        'image/vnd.microsoft.icon',
+        'image/jpg',
+      ],
     })
   })
 
@@ -148,7 +159,7 @@ describe('Fields - FieldFile', () => {
     const file = new File([], 'foo.txt', { type: 'text/plain' })
     const { view } = await uploadFiles([file])
 
-    const filePreview = view.getByText('foo.txt')
+    const filePreview = view.getByRole('link', { name: 'Download foo.txt' })
     expect(filePreview).toBeInTheDocument()
 
     await view.events.click(filePreview)
@@ -175,7 +186,7 @@ describe('Fields - FieldFile', () => {
     const elementImage1 = view.getByRole('button', {
       name: 'Preview image1.png',
     })
-    const elementPdf = view.getByText('pdf.pdf')
+    const elementPdf = view.getByRole('link', { name: 'Download pdf.pdf' })
     const elementImage2 = view.getByRole('button', {
       name: 'Preview image2.png',
     })

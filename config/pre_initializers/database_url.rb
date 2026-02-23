@@ -13,5 +13,8 @@ if !File.exist?(database_yml_path) && ENV['DATABASE_URL'].blank?
 
   escaped_postgresql_pass = URI.encode_uri_component(ENV['POSTGRESQL_PASS'] || '')
 
-  ENV['DATABASE_URL'] = "postgres://#{ENV['POSTGRESQL_USER']}:#{escaped_postgresql_pass}@#{ENV['POSTGRESQL_HOST']}:#{ENV['POSTGRESQL_PORT']}/#{ENV['POSTGRESQL_DB']}#{ENV['POSTGRESQL_OPTIONS']}"
+  postgresql_options = ENV['POSTGRESQL_OPTIONS'] || ''
+  postgresql_options = "?#{postgresql_options}" if !postgresql_options.start_with?('?')
+
+  ENV['DATABASE_URL'] = "postgres://#{ENV['POSTGRESQL_USER']}:#{escaped_postgresql_pass}@#{ENV['POSTGRESQL_HOST']}:#{ENV['POSTGRESQL_PORT']}/#{ENV['POSTGRESQL_DB']}#{postgresql_options}"
 end

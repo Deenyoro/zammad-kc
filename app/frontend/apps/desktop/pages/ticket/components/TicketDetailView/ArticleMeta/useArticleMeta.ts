@@ -7,8 +7,8 @@ import type { TicketArticle } from '#shared/entities/ticket/types.ts'
 import { i18n } from '#shared/i18n.ts'
 
 import { lookupArticlePlugin } from '#desktop/pages/ticket/components/TicketDetailView/article-type/index.ts'
-import ArticleMetaFieldAddress from '#desktop/pages/ticket/components/TicketDetailView/ArticleMeta/ArticleMetaAddress.vue'
-import ArticleMetaFieldDetectedLanguage from '#desktop/pages/ticket/components/TicketDetailView/ArticleMeta/ArticleMetaDetectedLanguage.vue'
+import ArticleMetaAddress from '#desktop/pages/ticket/components/TicketDetailView/ArticleMeta/ArticleMetaAddress.vue'
+import ArticleMetaDetectedLanguage from '#desktop/pages/ticket/components/TicketDetailView/ArticleMeta/ArticleMetaDetectedLanguage.vue'
 import type { ChannelMetaField } from '#desktop/pages/ticket/components/TicketDetailView/ArticleMeta/types.ts'
 
 const getNestedProperty = (article: TicketArticle, nestedKeys: string[]) => {
@@ -64,7 +64,7 @@ export const useArticleMeta = (article: Ref<TicketArticle>) => {
       {
         label: __('From'),
         name: 'from',
-        component: ArticleMetaFieldAddress,
+        component: ArticleMetaAddress,
         props: {
           metaHeader: 'from',
         },
@@ -74,7 +74,7 @@ export const useArticleMeta = (article: Ref<TicketArticle>) => {
       {
         label: __('To'),
         name: 'to',
-        component: ArticleMetaFieldAddress,
+        component: ArticleMetaAddress,
         props: {
           metaHeader: 'to',
         },
@@ -84,7 +84,7 @@ export const useArticleMeta = (article: Ref<TicketArticle>) => {
       {
         label: __('CC'),
         name: 'cc',
-        component: ArticleMetaFieldAddress,
+        component: ArticleMetaAddress,
         props: {
           metaHeader: 'cc',
         },
@@ -94,7 +94,7 @@ export const useArticleMeta = (article: Ref<TicketArticle>) => {
       {
         label: __('Detected language'),
         name: 'detectedLanguage',
-        component: ArticleMetaFieldDetectedLanguage,
+        component: ArticleMetaDetectedLanguage,
         show: () => !!article.value.detectedLanguage?.length,
         order: 375,
       },

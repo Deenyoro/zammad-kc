@@ -57,6 +57,28 @@ RSpec.describe 'ObjectManager Attributes', type: :request do
       expect(json_response['name']).to eq('test1')
     end
 
+    it 'does not add new ticket text object with empty display' do
+      authenticated_as(admin)
+
+      params = {
+        name:        'test_empty_display',
+        object:      'Ticket',
+        display:     '',
+        active:      true,
+        data_type:   'input',
+        data_option: {
+          default:   'test',
+          type:      'text',
+          maxlength: 120
+        },
+        screens:     {},
+        id:          'c-197'
+      }
+
+      post '/api/v1/object_manager_attributes', params: params, as: :json
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+
     it 'does add new ticket text object - no default' do
       authenticated_as(admin)
       post '/api/v1/object_manager_attributes', params: {}, as: :json

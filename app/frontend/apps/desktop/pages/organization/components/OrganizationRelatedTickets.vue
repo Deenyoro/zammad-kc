@@ -17,12 +17,14 @@ defineProps<Props>()
 <template>
   <div class="flex flex-col gap-3">
     <OrganizationTicketList
+      v-if="organization.ticketsCount?.open"
       :organization="organization"
       :label="__('Open tickets')"
       :state-type-category="EnumTicketStateTypeCategory.Open"
     />
-    <CommonDivider />
+    <CommonDivider v-if="organization.ticketsCount?.open && organization.ticketsCount?.closed" />
     <OrganizationTicketList
+      v-if="organization.ticketsCount?.closed"
       :organization="organization"
       :label="__('Closed tickets')"
       :state-type-category="EnumTicketStateTypeCategory.Closed"
