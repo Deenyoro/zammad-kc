@@ -11,6 +11,7 @@ export default <TicketSidebarPlugin>{
   component: TicketSidebarSharedDraftStart,
   permissions: ['ticket.agent'],
   screens: [TicketSidebarScreenType.TicketCreate],
+  views: ['agent'],
   icon: 'file-text',
   order: 3000,
   available: (context) => !!context.formValues.group_id,

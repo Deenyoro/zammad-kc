@@ -1,6 +1,6 @@
-Jegy cikk frissítve  (#{ticket.title})
+Frissített jegybejegyzés (#{ticket.title})
 
-<div>Üdvözöljük #{recipient.firstname},</div>
+<div>Kedves #{recipient.firstname}!</div>
 <br>
 <div>
 <%= @objects[:article].preferences.dig('whatsapp', 'reaction', 'author') %> ezzel reagált: <%= @objects[:article].preferences.dig('whatsapp', 'reaction', 'emoji') %> az ő üzentére: #{article.created_by.fullname}:
@@ -15,5 +15,5 @@ Jegy cikk frissítve  (#{ticket.title})
 <% end %>
 <br>
 <div>
-  <a href="#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}/#{article.id}" target="zammad_app">Tekintse meg itt: #{config.product_name}</a>
+  <a href="#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}/#{article.id}" target="zammad_app">Nézze meg itt: #{config.product_name}</a>
 </div>

@@ -6,10 +6,10 @@ import { delay, isEqual, merge } from 'lodash-es'
 import { computed, nextTick, onMounted, ref, type Ref, toRef, useTemplateRef, watch } from 'vue'
 import { onBeforeRouteUpdate } from 'vue-router'
 
-import ObjectAttributeContent from '#shared/components/ObjectAttributes/ObjectAttribute.vue'
+import ObjectAttribute from '#shared/components/ObjectAttributes/ObjectAttribute.vue'
 import { useOnEmitter } from '#shared/composables/useOnEmitter.ts'
 import { useObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
-import type { ObjectAttribute } from '#shared/entities/object-attributes/types/store.ts'
+import type { ObjectAttribute as ObjectAttributeType } from '#shared/entities/object-attributes/types/store.ts'
 import { flattenObjectAttributeValues } from '#shared/entities/object-attributes/utils.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
 import { EnumObjectManagerObjects, EnumOrderDirection } from '#shared/graphql/types.ts'
@@ -638,9 +638,9 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                   @click.stop
                   @keydown.stop
                 >
-                  <ObjectAttributeContent
+                  <ObjectAttribute
                     mode="table"
-                    :attribute="tableAttribute as unknown as ObjectAttribute"
+                    :attribute="tableAttribute as unknown as ObjectAttributeType"
                     :object="item"
                   />
                 </CommonLink>
@@ -654,9 +654,9 @@ const getLinkColorClasses = (item: TableAdvancedItem) => {
                     },
                   ]"
                 >
-                  <ObjectAttributeContent
+                  <ObjectAttribute
                     mode="table"
-                    :attribute="tableAttribute as unknown as ObjectAttribute"
+                    :attribute="tableAttribute as unknown as ObjectAttributeType"
                     :object="item"
                   />
                 </CommonLabel>

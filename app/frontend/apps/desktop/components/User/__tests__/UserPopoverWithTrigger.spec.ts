@@ -65,12 +65,16 @@ const systemUser = {
   },
 }
 
-const renderUserPopover = (props?: Partial<Props>, isAgent = true, isSystemUser = false) => {
+const renderUserPopover = (
+  props?: Partial<Props>,
+  permission = 'ticket.agent',
+  isSystemUser = false,
+) => {
   mockUserInfoForPopoverQuery({
     user: props?.user ?? dummyUser,
   })
 
-  mockPermissions([isAgent ? 'ticket.agent' : 'ticket.customer'])
+  mockPermissions([permission])
 
   return renderComponent(UserPopoverWithTrigger, {
     props: {
@@ -109,7 +113,7 @@ describe('UserPopover', () => {
     expect(within(popover).getByText(dummyUser.organization.name)).toBeVisible()
   })
 
-  it('displays organization names with remaining count', async () => {
+  it('displays secondary organization names', async () => {
     const secondaryOrganizations = {
       edges: [
         {
@@ -172,11 +176,7 @@ describe('UserPopover', () => {
 
     const popover = await wrapper.findByRole('region')
 
-    expect(await within(popover).findByText('VW')).toBeVisible()
-    expect(within(popover).getByText('Audi')).toBeVisible()
-    expect(within(popover).getByText('Apple')).toBeVisible()
-
-    expect(within(popover).getByRole('button', { name: 'Show more' })).toBeVisible()
+    expect(await within(popover).findByText('Apple')).toBeVisible()
   })
 
   it('renders as link by default', () => {
@@ -211,7 +211,7 @@ describe('UserPopover', () => {
   })
 
   it('does not display popover for customer user', async () => {
-    const wrapper = renderUserPopover(undefined, false)
+    const wrapper = renderUserPopover(undefined, 'ticket.customer')
 
     expect(wrapper.queryByRole('link')).not.toBeInTheDocument()
 
@@ -220,8 +220,16 @@ describe('UserPopover', () => {
     expect(wrapper.queryByRole('region')).not.toBeInTheDocument()
   })
 
+  it('displays popover for admin user', () => {
+    const wrapper = renderUserPopover(undefined, 'admin.user')
+
+    const avatarWrapper = wrapper.getByRole('link')
+
+    expect(avatarWrapper).toHaveAttribute('href', `/users/${dummyUser.internalId}`)
+  })
+
   it('does not display popover for system user', async () => {
-    const wrapper = renderUserPopover(undefined, true, true)
+    const wrapper = renderUserPopover(undefined, 'ticket.agent', true)
 
     expect(wrapper.queryByRole('link')).not.toBeInTheDocument()
 

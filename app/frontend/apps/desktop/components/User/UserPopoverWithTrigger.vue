@@ -44,7 +44,7 @@ const userInternalId = computed(() => getIdFromGraphQLId(props.user.id))
 
 const session = useSessionStore()
 
-const isAgent = computed(() => session.hasPermission('ticket.agent'))
+const hasUserAccess = computed(() => session.hasPermission(['ticket.agent', 'admin.user']))
 
 const isSystemUser = computed(() => {
   const { id } = props.user
@@ -55,7 +55,7 @@ const isSystemUser = computed(() => {
 
 <template>
   <CommonPopoverWithTrigger
-    v-if="isAgent && !isSystemUser"
+    v-if="hasUserAccess && !isSystemUser"
     :class="[
       !$slots?.default?.() ? 'rounded-full! focus-visible:outline-2!' : '',
       triggerClass ?? '',
@@ -86,7 +86,9 @@ const isSystemUser = computed(() => {
       </slot>
     </template>
   </CommonPopoverWithTrigger>
-  <slot v-else>
-    <CommonUserAvatar v-bind="{ ...avatarConfig, ...$attrs }" :entity="user" />
-  </slot>
+  <div v-else class="pointer-events-none" v-bind="$attrs">
+    <slot>
+      <CommonUserAvatar v-bind="avatarConfig" :entity="user" />
+    </slot>
+  </div>
 </template>

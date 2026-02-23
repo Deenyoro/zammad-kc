@@ -70,6 +70,23 @@ const ariaLabel = computed(() => {
   return props.file.name // cannot download and preview, probably just uploaded pdf
 })
 
+const fileNameParts = computed(() => {
+  const name = props.file.name.trim() || 'file'
+  const lastDot = name.lastIndexOf('.')
+
+  // No extension if:
+  // - no dot in filename (README)
+  // - dot is first character → hidden file (.gitignore)
+  if (lastDot <= 0) {
+    return { base: name, ext: '' }
+  }
+
+  return {
+    base: name.slice(0, lastDot),
+    ext: name.slice(lastDot),
+  }
+})
+
 const onPreviewClick = (event: Event) => {
   if (!canPreview.value) return
 
@@ -139,9 +156,10 @@ const classMap = getFilePreviewClasses()
         <CommonIcon v-else size="base" decorative :name="icon" />
       </div>
       <div class="flex flex-1 flex-col overflow-hidden" :class="classMap.base">
-        <span class="line-clamp-1">
-          {{ file.name }}
-        </span>
+        <div class="flex">
+          <span class="line-clamp-1 min-w-0 break-all">{{ fileNameParts.base }}</span>
+          <span v-if="fileNameParts.ext" class="shrink-0">{{ fileNameParts.ext }}</span>
+        </div>
         <span v-if="file.size" class="line-clamp-1" :class="[classMap.size, sizeClass]">
           {{ humanizeFileSize(file.size) }}
         </span>

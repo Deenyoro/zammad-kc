@@ -13,6 +13,7 @@ export default <TicketSidebarPlugin>{
   component: TicketSidebarAttachment,
   permissions: ['ticket.agent', 'ticket.customer'],
   screens: [TicketSidebarScreenType.TicketDetailView],
+  views: ['agent', 'customer'],
   icon: 'paperclip',
   order: 7000,
   available: () => {

@@ -43,12 +43,14 @@ const organizationInternalId = computed(() => getIdFromGraphQLId(props.organizat
 
 const session = useSessionStore()
 
-const isAgent = computed(() => session.hasPermission('ticket.agent'))
+const hasOrganizationAccess = computed(() =>
+  session.hasPermission(['ticket.agent', 'admin.organization']),
+)
 </script>
 
 <template>
   <CommonPopoverWithTrigger
-    v-if="isAgent"
+    v-if="hasOrganizationAccess"
     :class="[
       !$slots?.default?.() ? 'rounded-full! focus-visible:outline-2!' : '',
       triggerClass ?? '',
@@ -78,7 +80,9 @@ const isAgent = computed(() => session.hasPermission('ticket.agent'))
       </slot>
     </template>
   </CommonPopoverWithTrigger>
-  <slot v-else>
-    <CommonOrganizationAvatar v-bind="{ ...avatarConfig, ...$attrs }" :entity="organization" />
-  </slot>
+  <div v-else class="pointer-events-none" v-bind="$attrs">
+    <slot>
+      <CommonOrganizationAvatar v-bind="avatarConfig" :entity="organization" />
+    </slot>
+  </div>
 </template>

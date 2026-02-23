@@ -19,6 +19,8 @@ const renderSidebar = () =>
 
 describe('TicketOverviewsSidebar', () => {
   beforeEach(() => {
+    mockPermissions(['ticket.agent'])
+
     mockDefaultOverviewQueries([
       {
         id: convertToGraphQLId('Overview', 1),

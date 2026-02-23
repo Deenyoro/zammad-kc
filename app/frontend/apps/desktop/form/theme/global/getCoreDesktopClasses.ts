@@ -42,7 +42,7 @@ export const getCoreDesktopClasses: FormThemeExtension = (classes: FormThemeClas
       prefixIcon:
         'relative flex h-4 w-4 items-center justify-center fill-current text-stone-200 hover:text-black focus-visible:rounded-xs focus-visible:outline-1 focus-visible:-outline-offset-1 focus-visible:outline-blue-800 ltr:ml-2.5 rtl:mr-2.5 dark:text-neutral-500 dark:hover:text-white',
       suffixIcon:
-        'relative flex h-4 w-4 items-center justify-center fill-current text-stone-200 hover:text-black focus-visible:rounded-xs focus-visible:outline-1 focus-visible:-outline-offset-1 focus-visible:outline-blue-800 ltr:mr-2.5 rtl:ml-2.5 dark:text-neutral-500 dark:hover:text-white',
+        'relative flex h-4 w-4 items-center justify-center fill-current text-stone-200 hover:text-black focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 ltr:mr-2.5 rtl:ml-2.5 dark:text-neutral-500 dark:hover:text-white',
     }),
     form: extendClasses(classes.form, {
       messages: 'mb-2.5 flex-wrap space-y-2',
@@ -62,12 +62,13 @@ export const getCoreDesktopClasses: FormThemeExtension = (classes: FormThemeClas
     datetime: textInputClasses(classes.datetime),
     checkbox: {
       outer: 'leading-none',
-      wrapper: 'inline-flex items-center cursor-pointer select-none',
+      wrapper:
+        'inline-flex items-center cursor-pointer select-none [&:has(:focus-visible)]:outline [&:has(:focus-visible)]:outline-1 [&:has(:focus-visible)]:outline-offset-1 [&:has(:focus-visible)]:rounded-xs [&:has(:focus-visible)]:outline-blue-800',
       label: 'mb-0! text-sm text-gray-100 dark:text-neutral-400 formkit-required:after:invisible',
       inner: 'w-5 h-5 flex justify-center items-center ltr:mr-1 rtl:ml-1 formkit-label-hidden:m-0',
       input: 'peer appearance-none focus:outline-hidden focus:ring-0 focus:ring-offset-0',
       decorator:
-        'w-3 h-3 relative border peer-hover:border-blue-600 dark:peer-hover:border-blue-900 peer-focus:border-blue-800 peer-focus:outline peer-focus:outline-1 peer-focus:-outline-offset-1 peer-focus:outline-blue-800 rounded-xs bg-transparent peer-hover:text-blue-600 dark:peer-hover:text-blue-900 peer-focus:text-blue-800 formkit-checked:peer-hover:border-blue-600 dark:formkit-checked:peer-hover:border-blue-900 formkit-checked:peer-focus:border-blue-800 formkit-checked:peer-focus:outline-blue-800 formkit-checked:peer-hover:text-blue-600 dark:formkit-checked:peer-hover:text-blue-900 formkit-checked:peer-focus:text-blue-800',
+        'w-3 h-3 relative border rounded-xs bg-transparent peer-hover:border-black dark:peer-hover:border-white formkit-is-checked:peer-hover:border-black formkit-is-checked:peer-hover:text-black dark:formkit-is-checked:peer-hover:border-white dark:formkit-is-checked:peer-hover:text-white',
       decoratorIcon:
         'absolute invisible formkit-is-checked:visible -top-px ltr:-left-px rtl:-right-px',
     },
