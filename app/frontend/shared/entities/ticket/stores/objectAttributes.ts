@@ -1,7 +1,10 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import type { EntityStaticObjectAttributes } from '#shared/entities/object-attributes/types/store.ts'
-import { EnumObjectManagerObjects } from '#shared/graphql/types.ts'
+import type {
+  EntityPolicyBasedObjectAttributeScreenMapper,
+  EntityStaticObjectAttributes,
+} from '#shared/entities/object-attributes/types/store.ts'
+import { EnumObjectManagerObjects, type PolicyTicket } from '#shared/graphql/types.ts'
 
 export const staticObjectAttributes: EntityStaticObjectAttributes = {
   name: EnumObjectManagerObjects.Ticket,
@@ -128,3 +131,18 @@ export const staticObjectAttributes: EntityStaticObjectAttributes = {
     },
   ],
 }
+
+export const policyBasedObjectAttributeScreenMapper: EntityPolicyBasedObjectAttributeScreenMapper<PolicyTicket> =
+  {
+    name: EnumObjectManagerObjects.Ticket,
+    mappings: {
+      edit: (policy: PolicyTicket) => {
+        // edit_customer screen is used by Agent-Customers in tickets they have customer access to.
+        // Regular customers still use the edit screen.
+        // It is not possible to detect Agent-Customer or regular customer here.
+        // This function returns edit_customer for anybody who has no agent access to the given ticket.
+        // Then resolveScreenName() at useObjectAttributeFormFields.ts will figure out the final screen name.
+        return policy.agentReadAccess ? 'edit' : 'edit_customer'
+      },
+    },
+  }

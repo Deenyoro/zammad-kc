@@ -113,6 +113,7 @@ const actions = computed<MenuItem[]>(() => [
     />
 
     <CommonSectionCollapse
+      v-if="customer.ticketsCount?.open || customer.ticketsCount?.closed"
       id="customer-tickets"
       v-model="persistentStates.collapseTickets"
       :title="__('Tickets')"
@@ -129,6 +130,7 @@ const actions = computed<MenuItem[]>(() => [
             iconColor: 'fill-yellow-500',
             count: customer?.ticketsCount?.open || 0,
             route: `/search/${customer?.ticketsCount?.openSearchQuery ?? ''}?entity=Ticket`,
+            show: () => Boolean(customer?.ticketsCount?.open),
           },
           {
             id: 'closed',
@@ -138,6 +140,7 @@ const actions = computed<MenuItem[]>(() => [
             iconColor: 'fill-green-400',
             count: customer?.ticketsCount?.closed || 0,
             route: `/search/${customer?.ticketsCount?.closedSearchQuery ?? ''}?entity=Ticket`,
+            show: () => Boolean(customer?.ticketsCount?.closed),
           },
         ]"
       >

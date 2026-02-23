@@ -33,6 +33,7 @@ export interface RouteRecordMeta {
   level?: number
   pageKey?: string
   permanentItem?: boolean
+  skipRedirect?: (toRoute: RouteLocationNormalizedGeneric) => boolean
 }
 
 export type Link = RouteLocationRaw

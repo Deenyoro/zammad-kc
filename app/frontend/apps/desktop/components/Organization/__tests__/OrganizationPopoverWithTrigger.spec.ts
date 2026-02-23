@@ -31,12 +31,12 @@ const dummyOrganization = {
   active: true,
 }
 
-const renderOrganizationPopover = (props?: Partial<Props>, isAgent = true) => {
+const renderOrganizationPopover = (props?: Partial<Props>, permission = 'ticket.agent') => {
   mockOrganizationInfoForPopoverQuery({
     organization: props?.organization ?? dummyOrganization,
   })
 
-  mockPermissions([isAgent ? 'ticket.agent' : 'ticket.customer'])
+  mockPermissions([permission])
 
   return renderComponent(OrganizationPopoverWithTrigger, {
     props: {
@@ -113,8 +113,16 @@ describe('OrganizationPopover', () => {
     expect(avatarWrapper).toHaveClass(customClass)
   })
 
+  it('displays popover for admin user', async () => {
+    const wrapper = renderOrganizationPopover(undefined, 'admin.organization')
+
+    const avatarWrapper = wrapper.getByRole('link')
+
+    expect(avatarWrapper).toHaveAttribute('href', `/organizations/${dummyOrganization.internalId}`)
+  })
+
   it('does not display popover for customer user', async () => {
-    const wrapper = renderOrganizationPopover(undefined, false)
+    const wrapper = renderOrganizationPopover(undefined, 'ticket.customer')
 
     expect(wrapper.queryByRole('link')).not.toBeInTheDocument()
 

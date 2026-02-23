@@ -14,6 +14,7 @@ export default <TicketSidebarPlugin>{
   component: TicketSidebarCustomer,
   permissions: ['ticket.agent'],
   screens: [TicketSidebarScreenType.TicketDetailView, TicketSidebarScreenType.TicketCreate],
+  views: ['agent'],
   icon: 'user',
   order: 1000,
   available: (context: TicketSidebarContext) => {

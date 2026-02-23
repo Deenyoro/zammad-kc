@@ -25,7 +25,7 @@ import { initializeMobileVisuals } from '#mobile/initializer/mobileVisuals.ts'
 import initializeRouter from '#mobile/router/index.ts'
 import initializeApolloClient from '#mobile/server/apollo/index.ts'
 
-import App from './AppMobile.vue'
+import AppMobile from './AppMobile.vue'
 import { ensureAfterAuth } from './pages/authentication/after-auth/composable/useAfterAuthPlugins.ts'
 
 const { forceDesktopLocalStorage } = useForceDesktop()
@@ -35,7 +35,7 @@ const { forceDesktopLocalStorage } = useForceDesktop()
 if (forceDesktopLocalStorage.value) window.location.href = '/'
 
 export default async function mountApp(): Promise<void> {
-  const app = createApp(App)
+  const app = createApp(AppMobile)
   initializeAppName('mobile')
 
   // Remember the current created app.

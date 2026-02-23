@@ -1,8 +1,8 @@
-Jegy emlékeztető elérve (#{ticket.title})
+Jegyemlékeztető elérve (#{ticket.title})
 
-<div>Üdvözlet #{recipient.firstname},</div>
+<div>Kedves #{recipient.firstname}!</div>
 <br>
-<div>Egy jegy figyelmet igényel: emlékeztető elérve (#{ticket.title}) "<b>#{ticket.customer.longname}</b>" ügyfélnél.</div>
+<div>Egy jegy figyelmet igényel: emlékeztető elérve (#{ticket.title}) „<b>#{ticket.customer.longname}</b>” ügyféllel.</div>
 <br>
 <% if @objects[:article] %>
   <div>
@@ -14,5 +14,5 @@ Jegy emlékeztető elérve (#{ticket.title})
 <% end %>
 <br>
 <div>
-  <a href="#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}" target="zammad_app">Megnyitás: #{config.product_name}</a>
+  <a href="#{config.http_type}://#{config.fqdn}/#ticket/zoom/#{ticket.id}" target="zammad_app">Nézze meg itt: #{config.product_name}</a>
 </div>

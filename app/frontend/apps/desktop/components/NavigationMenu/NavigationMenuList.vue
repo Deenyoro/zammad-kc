@@ -24,6 +24,8 @@ const props = withDefaults(defineProps<Props>(), {
   countSize: 'xs',
 })
 
+const availableItems = computed(() => props.items.filter((entry) => entry.show?.() ?? true))
+
 const paddingClasses = computed(() =>
   props.density === NavigationMenuDensity.Dense ? 'px-2 py-1' : 'px-2 py-3',
 )
@@ -32,7 +34,7 @@ const paddingClasses = computed(() =>
 <template>
   <nav class="flex p-0">
     <ul class="m-0 flex basis-full flex-col gap-1 p-0">
-      <li v-for="entry in items" :key="entry.id || entry.label">
+      <li v-for="entry in availableItems" :key="entry.id || entry.label">
         <slot v-bind="{ entry, paddingClasses, countSize, countVariant }">
           <CommonLink
             class="flex items-center gap-1 rounded-lg! text-sm text-gray-100 focus-visible-app-default hover:bg-blue-600 hover:text-black! hover:no-underline! dark:text-neutral-400 dark:hover:bg-blue-900 dark:hover:text-white!"

@@ -12,7 +12,7 @@ module Gql::Types::ObjectManager
     field :data_type, String, null: false
     field :data_option, GraphQL::Types::JSON
     # field :data_option_new, String
-    field :editable, Boolean, null: false
+    field :internal, Boolean, null: false
     field :active, Boolean, null: false
     field :screens, GraphQL::Types::JSON
     # field :to_create, Boolean, null: false

@@ -331,6 +331,7 @@ useTaskbarTabStateUpdates(currentTaskbarTabId, form, triggerFormUpdater)
 
 const sidebarContext = computed<TicketSidebarContext>(() => ({
   screenType: TicketSidebarScreenType.TicketCreate,
+  view: isTicketCustomer.value ? 'customer' : 'agent',
   form: form.value,
   formValues: values.value,
   currentTaskbarTabId,

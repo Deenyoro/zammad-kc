@@ -2565,7 +2565,7 @@ export type ObjectAttributeValueInput = {
   value?: InputMaybe<Scalars['JSON']['input']>;
 };
 
-/** Custom object fields (only editable & active) */
+/** Custom object fields (only non-internal & active) */
 export type ObjectAttributeValuesInterface = {
   objectAttributeValues?: Maybe<Array<ObjectAttributeValue>>;
 };

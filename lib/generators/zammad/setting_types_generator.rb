@@ -32,7 +32,7 @@ class Zammad::SettingTypesGenerator < Rails::Generators::Base
     <<~MSG
       export interface ConfigList {
         api_path: string
-        'active_storage.web_image_content_types': string[]
+        'active_storage.content_types_allowed_inline': string[]
         'auth_saml_credentials.display_name'?: string
         'auth_openid_connect_credentials.display_name'?: string
       #{fields.join("\n")}

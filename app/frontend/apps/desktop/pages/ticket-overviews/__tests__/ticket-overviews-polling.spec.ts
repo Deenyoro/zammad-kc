@@ -8,6 +8,7 @@ import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
 import { waitForTicketsCachedByOverviewQueryCalls } from '#desktop/entities/ticket/graphql/queries/ticketsCachedByOverview.mocks.ts'
+import { waitForUserCurrentTicketOverviewsQueryCalls } from '#desktop/entities/ticket/graphql/queries/userCurrentTicketOverviews.mocks.ts'
 
 import {
   mockDefaultOverviewQueries,
@@ -28,6 +29,9 @@ describe('Ticket Overviews > Polling', () => {
     mockDefaultTicketsCachedByOverview()
 
     mockUserCurrent({
+      permissions: {
+        names: ['ticket.agent'],
+      },
       preferences: {
         overviews_last_used: {},
       },
@@ -55,6 +59,8 @@ describe('Ticket Overviews > Polling', () => {
 
     await visitView('tickets/view/my_assigned')
 
+    await waitForUserCurrentTicketOverviewsQueryCalls()
+
     const mocks = await waitForTicketsCachedByOverviewQueryCalls()
     expect(mocks).toHaveLength(1)
 
@@ -69,6 +75,9 @@ describe('Ticket Overviews > Polling', () => {
     mockDefaultTicketsCachedByOverview()
 
     mockUserCurrent({
+      permissions: {
+        names: ['ticket.agent'],
+      },
       preferences: {
         overviews_last_used: {
           '2': new Date().toISOString(),
@@ -98,10 +107,12 @@ describe('Ticket Overviews > Polling', () => {
 
     await visitView('tickets/view/my_assigned')
 
+    await waitForUserCurrentTicketOverviewsQueryCalls()
+
     const mocks = await waitForTicketsCachedByOverviewQueryCalls()
     expect(mocks).toHaveLength(2)
 
-    vi.advanceTimersByTime(6000)
+    await vi.advanceTimersByTimeAsync(6000)
     await waitForNextTick()
 
     expect(mocks).toHaveLength(3)

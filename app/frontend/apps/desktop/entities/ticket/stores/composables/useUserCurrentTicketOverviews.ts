@@ -97,13 +97,21 @@ const initializeOverviewsSubscriptions = (
 }
 
 export const useUserCurrentTicketOverviews = () => {
+  const { hasPermission } = useSessionStore()
   const user = toRef(useSessionStore(), 'user')
 
+  const hasAgentOrCustomerPermission = computed(() =>
+    hasPermission(['ticket.agent', 'ticket.customer']),
+  )
+
   const overviewHandler = new QueryHandler(
-    useUserCurrentTicketOverviewsQuery({
-      withTicketCount: false,
-      ignoreUserConditions: false,
-    }),
+    useUserCurrentTicketOverviewsQuery(
+      {
+        withTicketCount: false,
+        ignoreUserConditions: false,
+      },
+      () => ({ enabled: hasAgentOrCustomerPermission.value }),
+    ),
   )
 
   initializeOverviewsSubscriptions(overviewHandler)

@@ -37,7 +37,7 @@ const updateValue = (key: ToggleListOptionValue, state: boolean | undefined) => 
   if (state === true && !values.includes(key)) {
     values.push(key)
     localValue.value = values
-  } else if (state === false) {
+  } else if (state === false && values.includes(key)) {
     localValue.value = values.filter((value) => value !== key)
   }
 }

@@ -50,4 +50,27 @@ describe('Ticket detail view - GitLab integration', () => {
 
     expect(within(sidebar).queryByRole('button', { name: 'GitLab' })).not.toBeInTheDocument()
   })
+
+  it('hides sidebar when Agent-Customer see a specific ticket as a customer', async () => {
+    mockPermissions(['ticket.agent', 'ticket.customer'])
+
+    await mockApplicationConfig({
+      gitlab_integration: true,
+    })
+
+    mockTicketQuery({
+      ticket: createDummyTicket({
+        defaultPolicy: {
+          update: true,
+          agentReadAccess: false,
+        },
+      }),
+    })
+
+    const view = await visitView('/tickets/1')
+
+    const sidebar = view.getByLabelText('Content sidebar')
+
+    expect(within(sidebar).queryByRole('button', { name: 'GitLab' })).not.toBeInTheDocument()
+  })
 })
