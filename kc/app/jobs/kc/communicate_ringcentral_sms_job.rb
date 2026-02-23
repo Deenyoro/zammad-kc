@@ -61,6 +61,7 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
                   text = text.gsub(%r{<br\s*/?>}i, "\n")
                   text = text.gsub(%r{</(?:p|div|li|tr)>}i, "\n")
                   text = ActionController::Base.helpers.strip_tags(text)
+                  text = text.gsub('&nbsp;', ' ')
                   text = CGI.unescapeHTML(text)
                   text = text.gsub("\u00A0", ' ')
                   text = text.gsub(/[^\S\n]+/, ' ')
