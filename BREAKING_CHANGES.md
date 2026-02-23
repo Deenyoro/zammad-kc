@@ -70,6 +70,16 @@ Knowledge Base at your own pace by running the following command:
 zammad run rails r "KnowledgeBase::Locale.find_by(system_locale: Locale.find_by(locale: 'es-ca')).update!(system_locale: Locale.find_by(locale: 'ca'))"
 ```
 
+### Slack integration removed
+
+The slack integration was remved from the codebase. It is recommended that you
+[switch to pre-built webhooks instead](https://admin-docs.zammad.org/en/latest/manage/webhook/examples/slack-notifications.html).
+Existing Slack integrations should be migrated manually, if not already done.
+
+### Twitter integration removed
+
+The Twitter integration was removed due to problems with API licensing. There is no replacement available.
+
 ## 6.5.2
 
 The following breaking changes occurred due to a security fix.
