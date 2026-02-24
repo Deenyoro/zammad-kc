@@ -369,8 +369,13 @@ RSpec.describe Gql::Mutations::Ticket::Update, :aggregate_failures, type: :graph
       end
 
       context 'when trying to change the group_id' do
-        let(:other_group) { create(:group) }
-        let(:input_payload) { input_base_payload.tap { |h| h[:groupId] = gql.id(other_group) } }
+        let(:other_group)   { create(:group) }
+        let(:input_payload) do
+          input_base_payload
+            .tap { |h| h[:groupId] = gql.id(other_group) }
+            .tap { |h| h.delete(:ownerId) }
+            .tap { |h| h.delete(:customer) }
+        end
 
         it 'ignores the group_id change and keeps the original group' do
           gql.execute(query, variables:)
