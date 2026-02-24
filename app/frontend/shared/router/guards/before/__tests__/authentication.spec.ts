@@ -28,11 +28,12 @@ describe('authenticationGuard', () => {
         requiresAuth: true,
       },
     } as RouteLocationNormalized
-    const next = vi.fn()
 
-    authenticationGuard(to, from, next)
+    useAuthenticationStore().authenticated = false
 
-    expect(next).toHaveBeenCalledWith({
+    const result = authenticationGuard(to, from, vi.fn())
+
+    expect(result).toEqual({
       path: '/login',
       query: {
         redirect: '/tickets',
@@ -49,11 +50,12 @@ describe('authenticationGuard', () => {
         requiresAuth: true,
       },
     } as RouteLocationNormalized
-    const next = vi.fn()
 
-    authenticationGuard(to, from, next)
+    useAuthenticationStore().authenticated = false
 
-    expect(next).toHaveBeenCalledWith({
+    const result = authenticationGuard(to, from, vi.fn())
+
+    expect(result).toEqual({
       path: '/login',
     })
   })
@@ -66,13 +68,12 @@ describe('authenticationGuard', () => {
         requiresAuth: true,
       },
     } as RouteLocationNormalized
-    const next = vi.fn()
 
     useAuthenticationStore().authenticated = true
 
-    authenticationGuard(to, from, next)
+    const result = authenticationGuard(to, from, vi.fn())
 
-    expect(next).toHaveBeenCalledWith()
+    expect(result).toBe(true)
   })
 
   it('should redirect login route to main route for already authenticated user', () => {
@@ -84,13 +85,12 @@ describe('authenticationGuard', () => {
         redirectToDefaultRoute: true,
       },
     } as RouteLocationNormalized
-    const next = vi.fn()
 
     useAuthenticationStore().authenticated = true
 
-    authenticationGuard(to, from, next)
+    const result = authenticationGuard(to, from, vi.fn())
 
-    expect(next).toHaveBeenCalledWith('/')
+    expect(result).toBe('/')
   })
 
   it('should give access, because requires no authentication', () => {
@@ -101,10 +101,11 @@ describe('authenticationGuard', () => {
         requiresAuth: false,
       },
     } as RouteLocationNormalized
-    const next = vi.fn()
 
-    authenticationGuard(to, from, next)
+    useAuthenticationStore().authenticated = false
 
-    expect(next).toHaveBeenCalledWith()
+    const result = authenticationGuard(to, from, vi.fn())
+
+    expect(result).toBe(true)
   })
 })
