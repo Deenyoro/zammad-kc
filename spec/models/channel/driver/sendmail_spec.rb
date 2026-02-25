@@ -1,6 +1,7 @@
 # Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 require 'rails_helper'
+require_relative 'using_bcc_examples'
 
 RSpec.describe Channel::Driver::Sendmail do
   context 'with env var ZAMMAD_MAIL_TO_FILE present' do
@@ -55,6 +56,8 @@ RSpec.describe Channel::Driver::Sendmail do
 
   describe '#deliver' do
     let(:channel) { create(:email_notification_channel, :sendmail) }
+
+    it_behaves_like 'using BCC'
 
     context 'when an error is raised', aggregate_failures: true do
       before do

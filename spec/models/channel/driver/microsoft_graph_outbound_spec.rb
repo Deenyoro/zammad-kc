@@ -1,6 +1,7 @@
 # Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 require 'rails_helper'
+require_relative 'using_bcc_examples'
 
 RSpec.describe Channel::Driver::MicrosoftGraphOutbound, :aggregate_failures, integration: true, required_envs: %w[MICROSOFTGRAPH_REFRESH_TOKEN MICROSOFT365_CLIENT_ID MICROSOFT365_CLIENT_SECRET MICROSOFT365_CLIENT_TENANT MICROSOFT365_USER], use_vcr: true do # , retry: 5, retry_wait: 30.seconds do
   let(:channel) do
@@ -30,6 +31,8 @@ RSpec.describe Channel::Driver::MicrosoftGraphOutbound, :aggregate_failures, int
         expect { channel.deliver(mail) }.not_to raise_error
         expect(channel.reload.status_out).to eq('ok')
       end
+
+      it_behaves_like 'using BCC'
     end
 
     context 'without valid token' do

@@ -349,13 +349,13 @@
     {
       "warning_type": "SQL Injection",
       "warning_code": 0,
-      "fingerprint": "8451fd5b9ed57f184e85861ec2a85fdb2d394ffa45e8cd20f00740f6fa271533",
+      "fingerprint": "7f248c60e38d8f73ba5f3ae896d1c9ac18e8f961c4d34a6c308deba5bf51430c",
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "app/models/concerns/can_search.rb",
-      "line": 306,
+      "line": 309,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "Arel.sql(\"array_position(ARRAY[#{ids.join(\",\")}], id)\")",
+      "code": "Arel.sql(\"array_position(ARRAY[#{ids.join(\",\")}]::bigint[], id::bigint)\")",
       "render_path": null,
       "location": {
         "type": "method",

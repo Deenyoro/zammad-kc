@@ -209,6 +209,16 @@ const useSelectOptions = <T extends SelectOption[] | FlatSelectOption[] | AutoCo
     // Remember current optionValueLookup in node context.
     context.value.optionValueLookup = optionValueLookup
 
+    // Add helper function to allow features to dynamically add missing options
+    context.value.addMissingOption = (value: SelectValue, label: string): void => {
+      // Check if option already exists to prevent duplicates
+      if (
+        !appendedOptions.value.some((opt: SelectOption | FlatSelectOption) => opt.value === value)
+      ) {
+        appendedOptions.value.push({ value, label } as T[number])
+      }
+    }
+
     // TODO: Workaround for empty string, because currently the "nulloption" exists also for multiselect fields (#4513).
     if (context.value.multiple) {
       watch(
@@ -263,6 +273,16 @@ const useSelectOptions = <T extends SelectOption[] | FlatSelectOption[] | AutoCo
     // Set up a watcher that clears a missing option value or disabled options on subsequent mutations
     //  of the options prop (in this case, the dedicated "rejectNonExistentValues" flag is ignored).
     watch(options, () => handleValuesForNonExistingOrDisabledOptions())
+
+    // Remove appended options that now exist in real options (to prevent duplicates after formUpdater)
+    watch(options, (newOptions) => {
+      if (newOptions && appendedOptions.value.length > 0) {
+        appendedOptions.value = appendedOptions.value.filter(
+          (appendedOpt: SelectOption | FlatSelectOption) =>
+            !newOptions.some((opt) => opt.value === appendedOpt.value),
+        )
+      }
+    })
   }
 
   return {

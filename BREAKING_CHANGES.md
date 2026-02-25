@@ -57,17 +57,17 @@ do this will now result in an API error.
 
 ### Catalan locale change
 
-The previously used Catalan locale used a wrong internal locale code and was deprecated. There is now a
-new Catalan locale with the correct code "ca". The deprecated one will be removed in a future release of Zammad.
+The previously available Catalan locale used a wrong internal locale code and was deprecated. There is now a
+new Catalan locale with the correct code "ca". The deprecated locale will be removed in a future release of Zammad.
+An automatic update will switch the language preference of all Catalan user profiles to the new 'Catalan (Català)'
+locale during the migration.
 
-The update will switch all Catalan agent user profiles to the new 'Catalan (Català)' locale for their language preference.
-
-Please note that Knowledge Bases using the deprecated Catalan locale will not be switched automatically. Please note
-that changing the locale of a Knowledge Base causes a change in the public URLs. Therefore you can migrate
-Knowledge Base at your own pace by running the following command:
+The following applies only in case you are already using Knowledge Base with Catalan language. Please note the
+deprecated Catalan locale will not be updated automatically. Changing the locale of a Knowledge Base causes a change in
+the public URLs. You can migrate Knowledge Base at your own pace by running the following command:
 
 ```ruby
-zammad run rails r "KnowledgeBase::Locale.find_by(system_locale: Locale.find_by(locale: 'es-ca')).update!(system_locale: Locale.find_by(locale: 'ca'))"
+zammad run rails r "KnowledgeBase::Locale.find_by(system_locale: Locale.find_by(locale: 'es-ca'))&.update!(system_locale: Locale.find_by(locale: 'ca'))"
 ```
 
 ### Slack integration removed

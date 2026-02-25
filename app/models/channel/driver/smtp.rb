@@ -38,7 +38,7 @@ class Channel::Driver::Smtp < Channel::Driver::BaseEmailOutbound
 
     options = prepare_options(options, attr)
 
-    attr = prepare_message_attrs(attr)
+    attr = prepare_message_attrs(attr, notification)
 
     smtp_params = build_smtp_params(options)
 

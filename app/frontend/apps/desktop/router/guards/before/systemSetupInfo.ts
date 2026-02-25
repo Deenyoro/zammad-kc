@@ -3,34 +3,28 @@
 import { useApplicationStore } from '#shared/stores/application.ts'
 import log from '#shared/utils/log.ts'
 
-import type { NavigationGuard, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
+import type { NavigationGuard, RouteLocationNormalized } from 'vue-router'
 
-const systemSetupInfo: NavigationGuard = (
-  to: RouteLocationNormalized,
-  from: RouteLocationNormalized,
-  next: NavigationGuardNext,
-) => {
+const systemSetupInfo: NavigationGuard = (to: RouteLocationNormalized) => {
   const application = useApplicationStore()
 
   if (
     application.config.system_init_done ||
     (to.fullPath && to.fullPath.startsWith('/guided-setup'))
   ) {
-    next()
-    return
+    return true
   }
 
   if (application.config.import_mode) {
     log.debug(`Route guard for '${to.path}': system setup - import mode.`)
-    next({
+    return {
       path: `/guided-setup/import/${application.config.import_backend}/status`,
       replace: true,
-    })
-    return
+    }
   }
 
   log.debug(`Route guard for '${to.path}': system setup - not initialized.`)
-  next({ path: '/guided-setup', replace: true })
+  return { path: '/guided-setup', replace: true }
 }
 
 export default systemSetupInfo

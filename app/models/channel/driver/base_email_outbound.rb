@@ -7,16 +7,8 @@ class Channel::Driver::BaseEmailOutbound
     raise 'not implemented'
   end
 
-  def prepare_message_attrs(attr)
-    # set system_bcc of config if defined
-    system_bcc = Setting.get('system_bcc')
-    email_address_validation = EmailAddressValidation.new(system_bcc)
-    if system_bcc.present? && email_address_validation.valid?
-      attr[:bcc] ||= ''
-      attr[:bcc] += ', ' if attr[:bcc].present?
-      attr[:bcc] += system_bcc
-    end
-
+  def prepare_message_attrs(attr, notification)
+    prepare_bcc_header(attr) if !notification
     prepare_idn_outbound(attr)
   end
 
@@ -60,5 +52,21 @@ class Channel::Driver::BaseEmailOutbound
 
   def server_identifier(_options)
     raise 'not implemented'
+  end
+
+  def prepare_bcc_header(attr)
+    system_bcc = Setting.get('system_bcc')
+
+    return if system_bcc.blank?
+
+    email_address_validation = EmailAddressValidation.new(system_bcc)
+
+    return if !email_address_validation.valid?
+
+    attr[:bcc] ||= ''
+    attr[:bcc] += ', ' if attr[:bcc].present?
+    attr[:bcc] += system_bcc
+
+    attr
   end
 end
