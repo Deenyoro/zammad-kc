@@ -1,12 +1,10 @@
 # Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 require 'rails_helper'
+require_relative 'using_bcc_examples'
 
-RSpec.describe Channel::Driver::Smtp, integration: true, required_envs: %w[MAIL_SERVER MAIL_ADDRESS MAIL_PASS] do
-  let(:server_host)     { ENV['MAIL_SERVER'] }
-  let(:server_login)    { ENV['MAIL_ADDRESS'] }
-  let(:server_password) { ENV['MAIL_PASS'] }
-  let(:email_address)   { create(:email_address, name: 'me Helpdesk', email: "some-zammad-#{server_login}") }
+RSpec.describe Channel::Driver::Smtp do
+  let(:email_address)   { create(:email_address, name: 'me Helpdesk', email: 'some-zammad@example.org') }
   let(:group)           { create(:group, name: 'DeliverTest', email_address: email_address) }
   let(:channel) do
     create(:email_channel,
@@ -32,8 +30,12 @@ RSpec.describe Channel::Driver::Smtp, integration: true, required_envs: %w[MAIL_
     ticket && article
   end
 
-  context 'when modifying channel options', :aggregate_failures do
-    let(:outbound) { { adapter: 'sendmail' } }
+  context 'when modifying channel options', :aggregate_failures, integration: true, required_envs: %w[MAIL_SERVER MAIL_ADDRESS MAIL_PASS] do
+    let(:server_host)     { ENV['MAIL_SERVER'] }
+    let(:server_login)    { ENV['MAIL_ADDRESS'] }
+    let(:server_password) { ENV['MAIL_PASS'] }
+    let(:email_address)   { create(:email_address, name: 'me Helpdesk', email: "some-zammad-#{server_login}") }
+    let(:outbound)        { { adapter: 'sendmail' } }
 
     it 'updates article delivery preferences' do
       expect(article.preferences).not_to include(:delivery_retry,
@@ -215,7 +217,9 @@ RSpec.describe Channel::Driver::Smtp, integration: true, required_envs: %w[MAIL_
   end
 
   describe '#deliver' do
-    let(:channel) { create(:email_channel, :smtp) }
+    let(:channel)   { create(:email_channel, :smtp) }
+
+    it_behaves_like 'using BCC'
 
     context 'when an error is raised', aggregate_failures: true do
       before do
@@ -246,7 +250,7 @@ RSpec.describe Channel::Driver::Smtp, integration: true, required_envs: %w[MAIL_
       end
 
       context 'when it was sending a notification' do
-        let(:error) { Net::SMTPUnknownError.new(error_response, message: 'smtp error') }
+        let(:error)          { Net::SMTPUnknownError.new(error_response, message: 'smtp error') }
         let(:error_response) { Net::SMTP::Response.parse("#{error_code} dummy error") }
 
         context 'when the error is silenceable' do

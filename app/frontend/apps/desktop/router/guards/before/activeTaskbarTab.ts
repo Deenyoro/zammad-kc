@@ -5,13 +5,9 @@ import log from '#shared/utils/log.ts'
 
 import { useUserCurrentTaskbarTabsStore } from '#desktop/entities/user/current/stores/taskbarTabs.ts'
 
-import type { NavigationGuard, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
+import type { NavigationGuard, RouteLocationNormalized } from 'vue-router'
 
-const activeTaskbarTab: NavigationGuard = async (
-  to: RouteLocationNormalized,
-  from: RouteLocationNormalized,
-  next: NavigationGuardNext,
-) => {
+const activeTaskbarTab: NavigationGuard = async (to: RouteLocationNormalized) => {
   if (
     !to.meta?.taskbarTabEntity ||
     (typeof to.meta.isTaskbarTabPossible === 'function' && !to.meta.isTaskbarTabPossible(to))
@@ -23,9 +19,7 @@ const activeTaskbarTab: NavigationGuard = async (
       useUserCurrentTaskbarTabsStore().resetActiveTaskbarTab()
     }
 
-    next()
-
-    return
+    return true
   }
 
   const taskbarTabStore = useUserCurrentTaskbarTabsStore()
@@ -51,7 +45,7 @@ const activeTaskbarTab: NavigationGuard = async (
     `Route guard for '${to.path}': active taskbar tab with entity key '${taskbarTabEntityKey}'.`,
   )
 
-  next()
+  return true
 }
 
 export default activeTaskbarTab

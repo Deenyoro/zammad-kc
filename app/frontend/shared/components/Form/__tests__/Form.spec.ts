@@ -1173,6 +1173,59 @@ describe('Form.vue - Reset', () => {
 
     expect(input).toHaveValue('')
   })
+
+  it('adds missing entity option on resetForm when value from historicalOptions (addMissingEntityObjectOption)', async () => {
+    const { view, form } = await renderTicketCreateForm({
+      schema: [
+        {
+          type: 'select',
+          name: 'example',
+          label: 'Example',
+          props: {
+            options: [
+              { label: 'Open', value: 1 },
+              { label: 'Closed', value: 2 },
+            ],
+            historicalOptions: {
+              4: 'Deleted',
+            },
+          },
+        },
+      ],
+    })
+
+    const exampleField = view.getByLabelText('Example')
+
+    // Verify only regular options available initially (no historical option yet)
+    await view.events.click(exampleField)
+    let options = view.getAllByRole('option')
+    expect(options).toHaveLength(2)
+    expect(options[0]).toHaveTextContent('Open')
+    expect(options[1]).toHaveTextContent('Closed')
+
+    // Close dropdown
+    await view.events.click(exampleField)
+
+    // Reset form with entity that has historical value
+    // This is where addMissingEntityObjectOption should activate
+    form.value.resetForm({
+      values: { example: 4 },
+      object: { example: 4 }, // Pass as initialEntityObject
+    })
+    await waitForNextTick()
+
+    // The plugin should have added the missing option and set the value
+    expect(exampleField).toHaveTextContent('Deleted')
+
+    // Verify the historical option is now available in dropdown
+    await view.events.click(exampleField)
+    options = view.getAllByRole('option')
+
+    expect(options).toHaveLength(3)
+    expect(options[0]).toHaveTextContent('Open')
+    expect(options[1]).toHaveTextContent('Closed')
+    expect(options[2]).toHaveTextContent('Deleted')
+  })
 })
 
 describe('Form.vue - Autosave notification', () => {

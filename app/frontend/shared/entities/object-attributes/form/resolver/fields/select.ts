@@ -9,6 +9,8 @@ import { camelize } from '#shared/utils/formatter.ts'
 
 import { FieldResolver } from '../FieldResolver.ts'
 
+import type { Dictionary } from 'ts-essentials'
+
 export type ObjectSelectValue = string | number | boolean
 
 export interface ObjectSelectOption {
@@ -16,6 +18,9 @@ export interface ObjectSelectOption {
   disabled?: boolean
   value: ObjectSelectValue
 }
+
+export type OptionValueLookup = Dictionary<ObjectSelectOption>
+export type SelectValueWithoutBoolean = Exclude<ObjectSelectValue, boolean>
 
 export class FieldResolverSelect extends FieldResolver {
   fieldType = 'select'

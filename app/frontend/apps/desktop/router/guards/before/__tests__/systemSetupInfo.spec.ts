@@ -20,11 +20,10 @@ describe('systemGuard', () => {
       fullPath: '/test',
       meta: {},
     } as RouteLocationNormalized
-    const next = vi.fn()
 
-    systemGuard(to, from, next)
+    const result = systemGuard(to, from, vi.fn())
 
-    expect(next).toHaveBeenCalledWith({
+    expect(result).toEqual({
       path: '/guided-setup',
       replace: true,
     })
@@ -43,11 +42,10 @@ describe('systemGuard', () => {
       fullPath: '/test',
       meta: {},
     } as RouteLocationNormalized
-    const next = vi.fn()
 
-    systemGuard(to, from, next)
+    const result = systemGuard(to, from, vi.fn())
 
-    expect(next).toHaveBeenCalledWith({
+    expect(result).toEqual({
       path: '/guided-setup/import/otrs/status',
       replace: true,
     })
@@ -64,11 +62,10 @@ describe('systemGuard', () => {
       fullPath: '/test',
       meta: {},
     } as RouteLocationNormalized
-    const next = vi.fn()
 
-    systemGuard(to, from, next)
+    const result = systemGuard(to, from, vi.fn())
 
-    expect(next).toHaveBeenCalledWith()
+    expect(result).toBe(true)
   })
 
   it('should do nothing, when guided-setup is inside the path', () => {
@@ -82,10 +79,9 @@ describe('systemGuard', () => {
       fullPath: '/guided-setup/manual/admin',
       meta: {},
     } as RouteLocationNormalized
-    const next = vi.fn()
 
-    systemGuard(to, from, next)
+    const result = systemGuard(to, from, vi.fn())
 
-    expect(next).toHaveBeenCalledWith()
+    expect(result).toBe(true)
   })
 })

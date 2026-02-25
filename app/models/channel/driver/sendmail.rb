@@ -9,7 +9,7 @@ class Channel::Driver::Sendmail < Channel::Driver::BaseEmailOutbound
     # return if we run import mode
     return if Setting.get('import_mode')
 
-    attr = prepare_message_attrs(attr)
+    attr = prepare_message_attrs(attr, notification)
 
     deliver_mail(attr, notification)
   end

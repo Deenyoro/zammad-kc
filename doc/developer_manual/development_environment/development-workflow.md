@@ -8,8 +8,47 @@ Zammad provides several Rake tasks to streamline development and setup.
 
 ### Database Tasks
 
+- `rails zammad:bootstrap:reset` - Quickly reset an existing development database
 - `rails db:drop zammad:db:init` – Reset an existing development database (without running `auto_wizard`)
 - `rails db:migrate` – Run any pending Rails migrations
+
+#### Quickly reset an existing development database
+
+> [!Tip]
+>
+> `rails zammad:bootstrap:reset`
+> is pretty handy when you quickly want to restart fresh
+> without rebuilding the container
+>
+> One command in few seconds vs multiple clicks around your Docker stack.
+
+It's much **faster then rebuilding**,
+but essentially **does the same** thing.
+
+##### Explanation
+
+`rails zammad:bootstrap:reset`:
+
+- truncates DB
+- migrates it
+- seeds it
+- runs `auto_wizard` so `rails zammad:setup:auto_wizard` is not needed afterward
+
+##### Use it when
+
+- you want to reset from scratch
+- without removing your data volumes
+- or rebuilding the `devcontainer`
+
+#### Reset an existing development database (without running `auto_wizard`)
+
+> [!Caution]
+>
+> `rails zammad:bootstrap:init` is mostly not needed for `development`.
+
+Use `rails zammad:bootstrap:init` only if you are intending to initialize a
+previously uninitialized environment like for example `production`
+or run on a fresh install.
 
 ### Package Tasks
 

@@ -20,7 +20,7 @@ interface Props {
 const props = defineProps<Props>()
 
 defineOptions({
-  async beforeRouteEnter(to, _, next) {
+  async beforeRouteEnter(to) {
     const {
       overviews,
       overviewsLoading,
@@ -35,33 +35,33 @@ defineOptions({
 
     if (overviewLink in overviewsByLink.value || overviews.value.length === 0) {
       setCurrentTicketOverviewLink(overviewLink || '')
-      return next()
+      return true
     }
 
     const nextOverviewLink = currentTicketOverviewLink.value || overviews.value[0].link
     setCurrentTicketOverviewLink(nextOverviewLink)
 
-    next({
+    return {
       name: 'TicketOverview',
       params: { overviewLink: nextOverviewLink },
-    })
+    }
   },
-  beforeRouteUpdate(to, _, next) {
+  beforeRouteUpdate(to) {
     const { currentTicketOverviewLink, overviews, setCurrentTicketOverviewLink } =
       useTicketOverviews()
 
     if (to.params.overviewLink) {
       setCurrentTicketOverviewLink(to.params.overviewLink as string)
-      return next()
+      return true
     }
 
     const nextOverviewLink = currentTicketOverviewLink.value || overviews.value[0].link
     setCurrentTicketOverviewLink(nextOverviewLink)
 
-    next({
+    return {
       name: 'TicketOverview',
       params: { overviewLink: nextOverviewLink },
-    })
+    }
   },
 })
 
