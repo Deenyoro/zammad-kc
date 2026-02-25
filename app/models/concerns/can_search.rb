@@ -301,7 +301,11 @@ returns
     # Returns a relation with objects referenced by the ids in their original order.
     #
     def where_ordered_ids(ids)
-      order_by = "array_position(ARRAY[#{ids.join(',')}], id)"
+      # Casting to bigint is required for PostgreSQL 13 only.
+      # Newer versions figure out types automatically.
+      # This can be removed once PostgreSQL 13 support is dropped.
+      # https://github.com/zammad/zammad/issues/5927
+      order_by = "array_position(ARRAY[#{ids.join(',')}]::bigint[], id::bigint)"
 
       where(id: ids).reorder(Arel.sql(order_by))
     end

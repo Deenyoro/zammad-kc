@@ -54,6 +54,7 @@ class App.TicketSummary extends App.ControllerAIFeatureBase
           value: 'on_ticket_summary_sidebar_activation'
         },
       ]
+      translate: true
     )
 
     content.find('.js-ticketSummaryGenerationConfigSelect').html(select)

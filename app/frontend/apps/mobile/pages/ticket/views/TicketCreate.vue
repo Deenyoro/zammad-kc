@@ -440,7 +440,7 @@ const changedFields = reactive({
 
 <script lang="ts">
 export default {
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to) {
     const { ticketCreateEnabled } = useTicketCreateView()
 
     if (!ticketCreateEnabled.value) {
@@ -451,18 +451,16 @@ export default {
         route: to.fullPath,
       }
 
-      next({
+      return {
         name: 'Error',
         query: {
           redirect: '1',
         },
         replace: true,
-      })
-
-      return
+      }
     }
 
-    next()
+    return true
   },
 }
 </script>

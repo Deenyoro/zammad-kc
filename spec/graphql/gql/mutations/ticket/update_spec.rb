@@ -307,8 +307,42 @@ RSpec.describe Gql::Mutations::Ticket::Update, :aggregate_failures, type: :graph
       end
     end
 
-    context 'with a customer', authenticated_as: :customer do
+    context 'with an agent-customer', authenticated_as: :agent_customer do
+      let(:agent_customer) { create(:agent_and_customer) }
+      let(:customer)       { agent_customer }
+
       let(:input_payload) { input_base_payload.tap { |h| h.delete(:customer) } }
+
+      let(:expected_response) do
+        expected_base_response.merge(
+          {
+            'owner'    => { 'fullname' => '-' },
+            'priority' => { 'name' => Ticket::Priority.where(default_create: true).first.name },
+          }
+        )
+      end
+
+      it 'updates the ticket with filtered values' do
+        gql.execute(query, variables: variables)
+        expect(gql.result.data[:ticket]).to eq(expected_response)
+      end
+
+      context 'when sending a different customerId' do
+        let(:input_payload) { input_base_payload.tap { |h| h[:customer][:id] = gql.id(create(:customer)) } }
+
+        it 'updates the ticket with filtered values' do
+          gql.execute(query, variables: variables)
+          expect(gql.result.data[:ticket]).to eq(expected_response)
+        end
+      end
+    end
+
+    context 'with a customer', authenticated_as: :customer do
+      let(:input_payload) do
+        input_base_payload
+          .tap { |h| h.delete(:customer) }
+          .tap { |h| h.delete(:ownerId) }
+      end
 
       let(:expected_response) do
         expected_base_response.merge(
