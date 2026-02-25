@@ -519,7 +519,7 @@ describe('UserTaskbarTabs.vue', () => {
     expect(list.getAttribute('aria-describedby')).toBe(messageNodeId)
 
     expect(wrapper.getByTestId(messageNodeId)).toHaveTextContent(
-      'Sortable list focused. Use up and down arrows to navigate items. Press Space to select and item and again on another item to swap them.',
+      'Sortable list focused. Use up and down arrows to navigate items. Press Space to select an item and again on another item to swap them.',
     )
 
     await wrapper.events.keyboard('{Space}') // select first
