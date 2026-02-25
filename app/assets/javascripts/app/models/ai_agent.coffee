@@ -4,7 +4,7 @@ class App.AIAgent extends App.Model
   @url: @apiPath + '/ai_agents'
   @configure_attributes = [
     { name: 'name',       display: __('Name'),               tag: 'input',    type: 'text', limit: 250, null: false },
-    { name: 'agent_type', display: __('Type'),               tag: 'select',   relation: 'AIAgentType', null: false, nulloption: true, translate: true },
+    { name: 'agent_type', display: __('Type'),               tag: 'select',   relation: 'AIAgentType', null: false, nulloption: true },
     { name: 'references', display: __('Used in'),                             readonly: 1 },
     { name: 'note',       display: __('Note'),               tag: 'richtext', null: true, note: '', limit: 250 },
     { name: 'active',     display: __('Active'),             tag: 'active',   default: true },
