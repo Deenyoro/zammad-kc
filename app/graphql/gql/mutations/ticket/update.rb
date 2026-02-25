@@ -15,6 +15,12 @@ module Gql::Mutations
     requires_permission 'ticket.agent', 'ticket.customer'
 
     def resolve(ticket:, input:, meta: nil)
+      Gql::Types::Input::Ticket::UpdateInputType.sanitize_agent_only_fields!(
+        input.to_h,
+        user:     context.current_user,
+        group_id: ticket.group_id
+      )
+
       return group_has_no_email_error if !group_has_email?(input: input)
 
       {

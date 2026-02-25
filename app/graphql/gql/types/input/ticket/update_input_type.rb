@@ -4,10 +4,6 @@ module Gql::Types::Input::Ticket
   class UpdateInputType < BaseInputType
     description 'Represents the ticket attributes to be used in ticket update.'
 
-    only_for_ticket_agents = lambda do |payload, context|
-      context.current_user.permissions?('ticket.agent') ? payload : BaseInputType::ArgumentFilteredOut.new
-    end
-
     # Arguments optional in update.
     argument :group_id, GraphQL::Types::ID, required: false, description: 'The group of the ticket.', loads: Gql::Types::GroupType
     argument :title, Gql::Types::NonEmptyStringType, required: false, description: 'The title of the ticket.'
@@ -17,8 +13,10 @@ module Gql::Types::Input::Ticket
              GraphQL::Types::ID,
              required:    false,
              description: 'The shared draft used to update this ticket.',
-             loads:       Gql::Types::Ticket::SharedDraftZoomType,
-             prepare:     only_for_ticket_agents
+             loads:       Gql::Types::Ticket::SharedDraftZoomType
 
+    def self.agent_only_fields
+      super + %w[shared_draft_id]
+    end
   end
 end

@@ -7,19 +7,14 @@ import log from '#shared/utils/log.ts'
 
 import { errorOptions } from '../../error.ts'
 
-import type { NavigationGuard, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
+import type { NavigationGuard, RouteLocationNormalized } from 'vue-router'
 
-const permissionGuard: NavigationGuard = (
-  to: RouteLocationNormalized,
-  from: RouteLocationNormalized,
-  next: NavigationGuardNext,
-) => {
+const permissionGuard: NavigationGuard = (to: RouteLocationNormalized) => {
   // When no required permission are defined or no authentication
   // exists, the permission check can be skipped.
   if (!to.meta.requiredPermission || !useAuthenticationStore().authenticated) {
     log.debug(`Route guard for '${to.path}': permission - skip.`)
-    next()
-    return
+    return true
   }
 
   // check the permission for the current user...
@@ -34,18 +29,17 @@ const permissionGuard: NavigationGuard = (
       route: to.fullPath,
     }
 
-    next({
+    return {
       name: 'Error',
       query: {
         redirect: '1',
       },
       replace: true,
-    })
-    return
+    }
   }
 
   log.debug(`Route guard for '${to.path}': permission - allowed.`)
-  next()
+  return true
 }
 
 export default permissionGuard

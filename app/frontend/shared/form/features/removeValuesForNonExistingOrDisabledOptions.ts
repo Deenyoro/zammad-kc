@@ -1,15 +1,12 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import type {
-  ObjectSelectOption,
   ObjectSelectValue,
+  OptionValueLookup,
+  SelectValueWithoutBoolean,
 } from '#shared/entities/object-attributes/form/resolver/fields/select.ts'
 
 import type { FormKitFrameworkContext, FormKitNode } from '@formkit/core'
-import type { Dictionary } from 'ts-essentials'
-
-type OptionValueLookup = Dictionary<ObjectSelectOption>
-type SelectValueWithoutBoolean = Exclude<ObjectSelectValue, boolean>
 
 const removeValuesForNonExistingOrDisabledOptions = (node: FormKitNode) => {
   const handleNewInputValue = (
@@ -50,9 +47,10 @@ const removeValuesForNonExistingOrDisabledOptions = (node: FormKitNode) => {
 
     if (!context) return
 
-    node.at('$root')?.settled.then(() => {
+    const rootNode = node.at('$root')!
+
+    rootNode.settled.then(() => {
       node.hook.input((payload, next) => {
-        // eslint-disable no-callback-in-promise
         if (!context.fns.hasValue(payload) || !context.optionValueLookup) return next(payload)
 
         return next(handleNewInputValue(payload, context))
