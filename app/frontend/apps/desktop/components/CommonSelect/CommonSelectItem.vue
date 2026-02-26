@@ -24,6 +24,10 @@ const emit = defineEmits<{
   next: [{ option: AutoCompleteOption; noFocus?: boolean }]
 }>()
 
+const goToNextPage = (option: AutoCompleteOption, noFocus?: boolean) => {
+  emit('next', { option, noFocus })
+}
+
 const selectOrGoToNextPage = (option: SelectOption, focus?: boolean) =>
   props.option.disabled ? goToNextPage(option as AutoCompleteOption, focus) : emit('select', option)
 
@@ -51,10 +55,6 @@ const heading = computed(() => {
 const OptionIconComponent = props.optionIconComponent
 
 const locale = useLocaleStore()
-
-const goToNextPage = (option: AutoCompleteOption, noFocus?: boolean) => {
-  emit('next', { option, noFocus })
-}
 </script>
 
 <template>
