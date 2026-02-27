@@ -16,7 +16,9 @@ class App.Model extends Spine.Model
     @constructor.className
 
   displayName: ->
-    return @name || '-'
+    return App.i18n.translatePlain(@name) or '-' if @translate()
+
+    @name or '-'
 
   # shows the icon representing the object itself (e. g. the organization icon in organization profile or ticket sidebar)
   icon: (user) ->

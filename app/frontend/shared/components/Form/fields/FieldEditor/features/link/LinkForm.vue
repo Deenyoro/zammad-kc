@@ -33,6 +33,10 @@ onMounted(async () => {
   container.value?.querySelector('input')?.focus()
 })
 
+const getCurrentUrl = () => props.editor?.getAttributes(LINK_EXTENSION_NAME)?.href
+
+const hasActiveLinkMark = computed(getCurrentUrl)
+
 const getCurrentLinkLabel = () => {
   const { state } = props.editor!
   const { from, to } = state.selection
@@ -49,11 +53,6 @@ const getCurrentLinkLabel = () => {
 
   return state.doc.textBetween(from, to, '')
 }
-
-const getCurrentUrl = () => props.editor?.getAttributes(LINK_EXTENSION_NAME)?.href
-
-const hasActiveLinkMark = computed(getCurrentUrl)
-
 const url = ref(hasActiveLinkMark.value ? getCurrentUrl() : '')
 
 const linkText = ref(getCurrentLinkLabel())

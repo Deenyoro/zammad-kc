@@ -23,6 +23,7 @@ import { generateGraphqlMockId, hasNodeParent, setNodeParent } from './utils.ts'
 
 const _require = createRequire(import.meta.url)
 const introspection = _require('../../../../graphql/graphql_introspection.json')
+// oxlint-disable no-use-before-define
 
 export interface ResolversMeta {
   variables: Record<string, unknown>

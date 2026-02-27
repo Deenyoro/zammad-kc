@@ -88,6 +88,7 @@ import type {
 import type { Except, SetRequired } from 'type-fest'
 import type { Component, Ref, SetupContext } from 'vue'
 
+// oxlint-disable no-use-before-define
 export interface Props {
   id?: string
   schema?: FormSchemaNode[]

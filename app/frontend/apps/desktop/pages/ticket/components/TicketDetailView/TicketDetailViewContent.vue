@@ -181,6 +181,13 @@ const {
 
 const { signatureHandling } = useTicketSignature('email')
 
+const {
+  isArticleFormGroupValid,
+  newTicketArticlePresent,
+  articleFormGroupNode,
+  showTicketArticleReplyForm,
+} = useTicketArticleReply(form, currentTaskbarTabNewArticlePresent)
+
 useTaskbarTabStateUpdates(currentTaskbarTabId, form, triggerFormUpdater, async () => {
   newTicketArticlePresent.value = false
 
@@ -220,13 +227,6 @@ const formEditAttributeLocation = computed(() => {
   if (activeSidebar.value === 'information') return '#ticketEditAttributeForm'
   return '#wrapper-form-ticket-edit'
 })
-
-const {
-  isArticleFormGroupValid,
-  newTicketArticlePresent,
-  articleFormGroupNode,
-  showTicketArticleReplyForm,
-} = useTicketArticleReply(form, currentTaskbarTabNewArticlePresent)
 
 const formArticleReplyLocation = computed(() => {
   if (newTicketArticlePresent.value) return '#ticketArticleReplyForm'
