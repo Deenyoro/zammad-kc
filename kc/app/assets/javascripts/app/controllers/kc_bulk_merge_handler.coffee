@@ -25,13 +25,10 @@ class KcBulkMergeHandler extends App.Controller
     catch e
       console.warn '[KC] KcBulkMergeHandler release failed', e
 
-  # Safe setting check — App.Setting.get() throws if the setting doesn't
-  # exist in the frontend collection (e.g. migration hasn't run yet).
+  # Use App.Config.get() — frontend settings are delivered via the login
+  # response into App.Config, NOT into the App.Setting Spine collection.
   isEnabled: ->
-    try
-      return App.Setting.get('kc_bulk_merge') isnt false
-    catch
-      true
+    App.Config.get('kc_bulk_merge') isnt false
 
   # ---------- DOM injection ----------
 
