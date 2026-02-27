@@ -13,6 +13,7 @@ export default <TicketSidebarPlugin>{
   component: TicketSidebarKcTimeTracking,
   permissions: ['ticket.agent'],
   screens: [TicketSidebarScreenType.TicketDetailView],
+  views: ['agent'],
   icon: 'clock',
   order: 7500,
 }
