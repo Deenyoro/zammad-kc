@@ -15,18 +15,6 @@ import { mockOverviewsWithCachedCountQuery } from '#desktop/entities/ticket/grap
 import { mockTicketsCachedByOverviewQuery } from '#desktop/entities/ticket/graphql/queries/ticketsCachedByOverview.mocks.ts'
 import { mockUserCurrentTicketOverviewsQuery } from '#desktop/entities/ticket/graphql/queries/userCurrentTicketOverviews.mocks.ts'
 
-export const mockDefaultOverviewQueries = (overviews?: DeepPartial<Overview>[]): void => {
-  const usedOverviews = overviews ?? getDefaultOverviews()
-
-  mockUserCurrentTicketOverviewsQuery({
-    userCurrentTicketOverviews: usedOverviews,
-  })
-
-  mockOverviewsWithCachedCountQuery({
-    ticketOverviews: usedOverviews,
-  })
-}
-
 export const getDefaultOverviews = () => [
   {
     id: convertToGraphQLId('Overview', 1),
@@ -51,6 +39,18 @@ export const getDefaultOverviews = () => [
     active: true,
   },
 ]
+
+export const mockDefaultOverviewQueries = (overviews?: DeepPartial<Overview>[]): void => {
+  const usedOverviews = overviews ?? getDefaultOverviews()
+
+  mockUserCurrentTicketOverviewsQuery({
+    userCurrentTicketOverviews: usedOverviews,
+  })
+
+  mockOverviewsWithCachedCountQuery({
+    ticketOverviews: usedOverviews,
+  })
+}
 
 export const mockDefaultTicketsCachedByOverview = (
   options: DeepPartial<TicketsCachedByOverviewQuery['ticketsCachedByOverview']> = {},

@@ -110,7 +110,7 @@ RSpec.describe 'Desktop > Personal Setting > Profile', app: :desktop_view, authe
 
     it 'user can use direct subscription URL' do
       find_toggle('Not assigned').toggle_on
-      expect(page).to have_text('You calendar subscription settings were updated.')
+      expect(page).to have_text('Your calendar subscription settings were updated.')
 
       visit(find_input('Direct subscription URL').input_element.value)
       expect(page).to have_no_text("new ticket: 'Normal ticket'")

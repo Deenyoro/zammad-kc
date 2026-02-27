@@ -44,6 +44,14 @@ export const useQueryPolling = <
 
   const intervalRef = toRef(interval)
 
+  const stopPolling = () => {
+    if (!isPolling.value) return
+
+    clearTimeout(pollTimer)
+    isPolling.value = false
+    activePollings.delete(stopPolling)
+  }
+
   const startPolling = () => {
     if (isPolling.value || (toValue(options)?.enabled !== undefined && !toValue(options)?.enabled))
       return
@@ -63,14 +71,6 @@ export const useQueryPolling = <
 
     // Schedule first poll after interval instead of running immediately
     pollTimer = setTimeout(poll, intervalRef.value + randomizeInterval)
-  }
-
-  const stopPolling = () => {
-    if (!isPolling.value) return
-
-    clearTimeout(pollTimer)
-    isPolling.value = false
-    activePollings.delete(stopPolling)
   }
 
   watch(

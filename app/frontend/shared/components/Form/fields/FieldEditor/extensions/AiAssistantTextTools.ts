@@ -24,6 +24,8 @@ import { GraphQLErrorTypes } from '#shared/types/error.ts'
 
 import type { FormKitNode } from '@formkit/core'
 
+export const EXTENSION_NAME = 'aiAssistantTextTools'
+
 const createAiTextToolsController = () => {
   let mutationCancelled = false
 
@@ -174,8 +176,6 @@ const executeTextModification = async (
     editor.chain().focus().run()
   }
 }
-
-export const EXTENSION_NAME = 'aiAssistantTextTools'
 
 export default (context: Ref<FormFieldContext<FieldEditorProps>>) => {
   const { formId, ticketId, meta: editorMeta } = context.value
