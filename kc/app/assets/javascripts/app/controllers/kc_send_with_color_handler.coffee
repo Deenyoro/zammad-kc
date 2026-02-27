@@ -41,10 +41,17 @@ class KcSendWithColorHandler extends App.Controller
 
   # ---------- DOM injection ----------
 
+  # Safe setting check — App.Setting.get() throws if the setting doesn't
+  # exist in the frontend collection (e.g. migration hasn't run yet).
+  isEnabled: ->
+    try
+      return App.Setting.get('kc_strip_email_text_color') isnt false
+    catch
+      false
+
   injectAll: =>
     try
-      # Only show when the global setting is enabled
-      return if !App.Setting.get('kc_strip_email_text_color')
+      return if !@isEnabled()
 
       $('.js-submitDropdown .dropdown-menu').each (i, menu) =>
         @injectIntoMenu($(menu))
