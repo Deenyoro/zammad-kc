@@ -2,6 +2,11 @@
 #
 # Extends App.ControllerModal with a single datetime field.
 # On submit, calls @submitCallback with the selected datetime.
+#
+# This modal uses container (rendered inside ticket content area) which
+# is required for formParams() and event delegation to work. However,
+# Bootstrap's hidden.bs.modal event never fires for container modals,
+# so we override close() to force cleanup after the animation.
 class App.KcScheduleReplyModal extends App.ControllerModal
   buttonClose: true
   buttonCancel: true
@@ -61,7 +66,22 @@ class App.KcScheduleReplyModal extends App.ControllerModal
 
     # Fire callback before close — the AJAX call is async (returns immediately),
     # so the modal animation completes well before the server responds and
-    # taskReset() runs. This avoids the race condition where taskReset()
-    # would orphan the modal backdrop.
+    # taskReset() runs.
     @submitCallback(params) if @submitCallback
     @close()
+
+  # Override close to force cleanup. Bootstrap's hidden.bs.modal never fires
+  # for container modals, so the base class's localOnClosed (which calls
+  # modal('remove')) never runs. We manually remove the modal and backdrop
+  # after the 300ms fade-out animation completes.
+  close: (e) =>
+    if e
+      e.preventDefault()
+    @initalFormParamsIgnore = true
+    @el.modal('hide')
+    @delay(=>
+      @onClose?()
+      @el.remove()
+      @container?.find('.modal-backdrop').remove()
+      $('body').removeClass('modal-open')
+    , 400)
