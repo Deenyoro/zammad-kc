@@ -52,6 +52,9 @@ Zammad::Application.routes.draw do
     put    'api_health_check',            to: 'kc/api_health_check#update'
     post   'api_health_check/check_now',  to: 'kc/api_health_check#check_now'
 
+    # Bulk merge (agent-facing)
+    post 'bulk_merge', to: 'kc/bulk_merge#create'
+
     # New conversation initiation (agent-facing)
     post 'conversations/sms',            to: 'kc/new_conversations#sms'
     post 'conversations/teams',          to: 'kc/new_conversations#teams'
