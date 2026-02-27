@@ -105,15 +105,6 @@ const fetchOptions = {
   signal: currentAbortController.signal,
 }
 
-const refreshRefetchAbortController = () => {
-  // Stop polling to avoid duplicate requests during an manual refetch.
-  stopPolling()
-
-  currentAbortController.abort()
-  currentAbortController = new AbortController()
-  fetchOptions.signal = currentAbortController.signal
-}
-
 const ticketsQuery = new QueryHandler(
   useTicketsCachedByOverviewQuery(ticketsQueryVariables, {
     fetchPolicy: 'cache-and-network',
@@ -130,17 +121,65 @@ const ticketsQuery = new QueryHandler(
   },
 )
 
+const scrollContainerElement = useTemplateRef('scroll-container')
+
+const {
+  sort,
+  orderBy: localOrderBy,
+  orderDirection: localOrderDirection,
+  isSorting,
+} = useSorting(
+  ticketsQuery,
+  toRef(props, 'orderBy'),
+  toRef(props, 'orderDirection'),
+  scrollContainerElement,
+)
+
+const pagination = usePagination(
+  ticketsQuery,
+  'ticketsCachedByOverview',
+  queryPollingConfig.value.page_size,
+  () => ({
+    knownCollectionSignature: null,
+    renewCache: false,
+  }),
+)
+
 const ticketsResult = ticketsQuery.result()
+
+const currentCollectionSignature = computed(() => {
+  return ticketsResult.value?.ticketsCachedByOverview?.collectionSignature
+})
+
+const { startPolling, stopPolling } = useQueryPolling(
+  ticketsQuery,
+  pollingInterval,
+  () => ({
+    knownCollectionSignature: currentCollectionSignature.value,
+    renewCache: false,
+    pageSize: queryPollingConfig.value.page_size * pagination.currentPage,
+    cacheTtl: cacheTtl.value,
+  }),
+  () => ({
+    enabled: queryPollingConfig.value.enabled && !isSorting.value,
+  }),
+)
+
+const refreshRefetchAbortController = () => {
+  // Stop polling to avoid duplicate requests during an manual refetch.
+  stopPolling()
+
+  currentAbortController.abort()
+  currentAbortController = new AbortController()
+  fetchOptions.signal = currentAbortController.signal
+}
+
 const loading = ticketsQuery.loading()
 
 const isLoadingTickets = computed(() => {
   if (ticketsResult.value !== undefined) return false
 
   return loading.value
-})
-
-const currentCollectionSignature = computed(() => {
-  return ticketsResult.value?.ticketsCachedByOverview?.collectionSignature
 })
 
 const tickets = computed(() => edgesToArray(ticketsResult.value?.ticketsCachedByOverview))
@@ -157,44 +196,6 @@ onActivated(() => {
 onDeactivated(() => {
   foreground.value = false
 })
-
-const pagination = usePagination(
-  ticketsQuery,
-  'ticketsCachedByOverview',
-  queryPollingConfig.value.page_size,
-  () => ({
-    knownCollectionSignature: null,
-    renewCache: false,
-  }),
-)
-
-const scrollContainerElement = useTemplateRef('scroll-container')
-
-const {
-  sort,
-  orderBy: localOrderBy,
-  orderDirection: localOrderDirection,
-  isSorting,
-} = useSorting(
-  ticketsQuery,
-  toRef(props, 'orderBy'),
-  toRef(props, 'orderDirection'),
-  scrollContainerElement,
-)
-
-const { startPolling, stopPolling } = useQueryPolling(
-  ticketsQuery,
-  pollingInterval,
-  () => ({
-    knownCollectionSignature: currentCollectionSignature.value,
-    renewCache: false,
-    pageSize: queryPollingConfig.value.page_size * pagination.currentPage,
-    cacheTtl: cacheTtl.value,
-  }),
-  () => ({
-    enabled: queryPollingConfig.value.enabled && !isSorting.value,
-  }),
-)
 
 const resort = (column: string, direction: EnumOrderDirection) => {
   forceTicketsByOverviewCacheOnlyFirstPage(

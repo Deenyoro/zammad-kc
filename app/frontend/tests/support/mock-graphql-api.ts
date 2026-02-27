@@ -53,6 +53,7 @@ export interface MockGraphQLInstance {
   }
 }
 
+// oxlint-disable no-use-before-define
 export const mockGraphQLApi = (operationDocument: DocumentNode): MockGraphQLInstance => {
   const resolveSpy = vi.fn()
   const errorSpy = vi.fn()

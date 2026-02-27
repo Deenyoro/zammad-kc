@@ -74,15 +74,12 @@ export const useResizeLine = (
     resizeCallback(positionY)
   }
 
+  // oxlint-disable no-use-before-define
+
   const resize = (event: MouseEvent | TouchEvent) => {
     if (options?.orientation === 'vertical') return handleVerticalResize(event)
 
     handleHorizontalResize(event)
-  }
-
-  const endResizing = () => {
-    removeListeners()
-    isResizing.value = false
   }
 
   const removeListeners = () => {
@@ -91,6 +88,12 @@ export const useResizeLine = (
     document.removeEventListener('mousemove', resize)
     document.removeEventListener('mouseup', endResizing)
   }
+
+  const endResizing = () => {
+    removeListeners()
+    isResizing.value = false
+  }
+
   const addEventListeners = () => {
     document.addEventListener('touchend', endResizing)
     document.addEventListener('touchmove', resize)

@@ -83,6 +83,8 @@ const hasDirectionRight = computed(() => {
 
 const locale = useLocaleStore()
 
+const overflowOrientation = ref<Orientation | null>(null)
+
 const autoOrientation = computed(() => {
   if (overflowOrientation.value) return overflowOrientation.value
 
@@ -107,7 +109,6 @@ const verticalOrientation = computed(
 )
 
 const overflowHorizontalPlacement = ref<Placement | null>(null)
-const overflowOrientation = ref<Orientation | null>(null)
 
 whenever(
   () => !showPopover.value,
@@ -281,6 +282,7 @@ const updateOwnerAriaExpandedState = () => {
 let removeOnKeyUpEscapeHandler: () => void
 
 const lastActiveElement = ref<HTMLElement>()
+const ownerElement = useCurrentElement(toRef(props, 'owner') as MaybeElementRef<VueInstance>)
 
 const isLastActiveElementOwner = computed(() => lastActiveElement.value === ownerElement.value)
 
@@ -337,8 +339,6 @@ const checkHorizontalOverflow = () => {
     }
   })
 }
-
-const ownerElement = useCurrentElement(toRef(props, 'owner') as MaybeElementRef<VueInstance>)
 
 const isOwnerHovered = useElementHover(computed(() => ownerElement.value as Element))
 

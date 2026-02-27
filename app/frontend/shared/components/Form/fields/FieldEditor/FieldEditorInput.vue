@@ -122,6 +122,21 @@ const { hasImageExtension, loadFiles } = useAttachments(
   props.context.formId,
 )
 
+const wrapperElement = useTemplateRef('wrapper')
+
+const {
+  isInlineMode,
+  isSubmitting,
+  isEditing,
+  onWrapperClick,
+  handleCancel,
+  handleChange,
+  labelInlineDesktopClasses,
+  containerInlineDesktopClasses,
+  wrapperInlineDesktopClasses,
+  inputInlineDesktopTextStyles,
+} = useInlineMode(toRef(props, 'context'), wrapperElement)
+
 const editor = useEditor({
   extensions: editorExtensions.value,
   textDirection: 'auto',
@@ -329,21 +344,6 @@ onMounted(() => {
 const classes = getFieldEditorClasses()
 
 const buttonGroup = getButtonGroup()
-
-const wrapperElement = useTemplateRef('wrapper')
-
-const {
-  isInlineMode,
-  isSubmitting,
-  isEditing,
-  onWrapperClick,
-  handleCancel,
-  handleChange,
-  labelInlineDesktopClasses,
-  containerInlineDesktopClasses,
-  wrapperInlineDesktopClasses,
-  inputInlineDesktopTextStyles,
-} = useInlineMode(toRef(props, 'context'), wrapperElement)
 
 watch(isEditing, (editing) => {
   if (!isInlineMode.value && editing) return

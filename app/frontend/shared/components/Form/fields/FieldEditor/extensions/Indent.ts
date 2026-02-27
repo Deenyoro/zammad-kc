@@ -4,6 +4,7 @@ import { Extension } from '@tiptap/core'
 
 import { useLocaleStore } from '#shared/stores/locale.ts'
 
+import { clamp } from '../utils.ts'
 export interface IndentOptions {
   types: string[]
   min: number
@@ -148,5 +149,3 @@ export const IndentExtension = Extension.create<IndentOptions>({
     }
   },
 })
-
-const clamp = (val: number, min: number, max: number) => (val < min ? min : val > max ? max : val)
