@@ -59,5 +59,14 @@ class App.KcScheduleReplyModal extends App.ControllerModal
       @formValidate(form: @form.el, errors: { scheduled_at: __('must be in the future') })
       return false
 
+    # Defer callback until modal is fully closed (onClosed fires after
+    # hidden.bs.modal). Calling submitCallback here would race with the
+    # fade-out animation — if the AJAX response triggers taskReset()
+    # before the animation completes, the modal backdrop is orphaned.
+    @confirmedParams = params
     @close()
-    @submitCallback(params) if @submitCallback
+
+  onClosed: ->
+    if @confirmedParams && @submitCallback
+      @submitCallback(@confirmedParams)
+      @confirmedParams = null
