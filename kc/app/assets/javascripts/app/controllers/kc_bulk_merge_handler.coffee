@@ -1,22 +1,19 @@
 # KC: Bulk merge from ticket overview.
 #
 # This controller:
-#   1. Injects a "merge (into parent)" option into the state_id dropdown
-#      in the bulk action bar
-#   2. When "Confirmation" is clicked with merge selected, opens a modal
-#      with parent ticket search
+#   1. Injects a "Merge" button into the bulk action bar (next to "Confirmation")
+#   2. When clicked, opens a modal with parent ticket search
 #   3. On submit, calls POST /api/v1/kc/bulk_merge
 #   4. Only shows when kc_bulk_merge setting is enabled
+#
+# Uses a standalone button (not a state dropdown option) to avoid interference
+# with Zammad's CoreWorkflow form handlers which strip non-existent state values.
 #
 # Registered as a Plugin so it auto-initializes with the application.
 class KcBulkMergeHandler extends App.Controller
   constructor: ->
     super
     try
-      # Capture-phase listener intercepts Confirmation clicks BEFORE
-      # TicketBulkForm's delegated handler fires.
-      document.addEventListener('click', @onCaptureClick, true)
-
       @startObserver()
       @injectAll()
     catch e
@@ -24,7 +21,6 @@ class KcBulkMergeHandler extends App.Controller
 
   release: =>
     try
-      document.removeEventListener('click', @onCaptureClick, true)
       @stopObserver()
     catch e
       console.warn '[KC] KcBulkMergeHandler release failed', e
@@ -43,12 +39,15 @@ class KcBulkMergeHandler extends App.Controller
     try
       return if !@isEnabled()
 
-      $('.bulkAction-form select[name="state_id"]').each (i, select) =>
-        $select = $(select)
-        return if $select.find('option[value="kc_merge"]').length > 0
-        $select.append(
-          $('<option>').val('kc_merge').text(App.i18n.translateInline('merge (into parent)'))
-        )
+      $('.bulkAction-form .js-action-step').each (i, step) =>
+        $step = $(step)
+        return if $step.find('.js-kc-bulk-merge').length > 0
+        mergeBtn = $('<div>')
+          .addClass('btn btn--secondary js-kc-bulk-merge')
+          .css('margin-left', '10px')
+          .text(App.i18n.translateInline('Merge'))
+          .on('click', @onMergeClick)
+        $step.find('.js-confirm').after(mergeBtn)
     catch e
       console.warn '[KC] injectAll (merge) failed', e
 
@@ -75,26 +74,18 @@ class KcBulkMergeHandler extends App.Controller
     catch e
       console.warn '[KC] stopObserver failed', e
 
-  # ---------- Capture-phase click handler ----------
-  #
-  # Fires before TicketBulkForm's delegated 'click .js-confirm' handler.
-  # Only intercepts when state dropdown is set to "kc_merge".
+  # ---------- Merge button click handler ----------
 
-  onCaptureClick: (e) =>
+  onMergeClick: (e) =>
     try
-      target = $(e.target)
-      confirmBtn = target.closest('.js-confirm')
-      return if confirmBtn.length is 0
-      form = confirmBtn.closest('.bulkAction-form')
-      return if form.length is 0
-      return if form.find('select[name="state_id"]').val() isnt 'kc_merge'
-
-      e.stopPropagation()
       e.preventDefault()
+      e.stopPropagation()
 
-      ticketIdsStr = form.find('input[name="ticket_ids"]').val()
-      return if !ticketIdsStr
-      ticketIds = ticketIdsStr.split(',').map((id) -> parseInt(id, 10)).filter((id) -> !isNaN(id))
+      # Read ticket IDs from checked checkboxes (same approach as TicketBulkForm.submit)
+      ticketIds = []
+      $('.table [name="bulk"]:checked').each (index, element) ->
+        id = parseInt($(element).val(), 10)
+        ticketIds.push(id) if !isNaN(id)
 
       if ticketIds.length is 0
         App.Event.trigger('notify', { type: 'error', msg: App.i18n.translateInline('No tickets selected.') })
@@ -102,7 +93,7 @@ class KcBulkMergeHandler extends App.Controller
 
       new KcBulkMergeModal(ticketIds: ticketIds)
     catch e
-      console.warn '[KC] onCaptureClick failed', e
+      console.warn '[KC] onMergeClick failed', e
 
 App.Config.set('KcBulkMergeHandler', KcBulkMergeHandler, 'Plugins')
 
