@@ -180,6 +180,12 @@ class KcBulkMergeHandler extends App.Controller
 
     bulkForm.append(step)
 
+    # Prevent Enter in the merge step from triggering the parent form's submit
+    step.on('keydown.kcBulkMerge', (e) ->
+      if e.keyCode is 13
+        e.preventDefault()
+    )
+
     # Focus the search input
     setTimeout((=> @searchInput.trigger('focus')), 50)
 
@@ -337,8 +343,9 @@ class KcBulkMergeHandler extends App.Controller
             msg: App.i18n.translateInline('Successfully merged %s ticket(s).', data.merged_count)
           })
 
-          # Uncheck all, hide bulk bar, refresh overview
-          $('.table [name="bulk"]:checked').prop('checked', false)
+          # Uncheck all (trigger change so bulk form's show/hide logic fires),
+          # hide bulk bar, refresh overview
+          $('.table [name="bulk"]:checked').prop('checked', false).first().trigger('change')
           @closeMergeStep()
           App.Event.trigger('overview:fetch')
 
@@ -365,13 +372,14 @@ class KcBulkMergeHandler extends App.Controller
       @parentTicketId = null
       mergeStep = $('.kc-bulk-merge-step')
       if mergeStep.length > 0
+        bulkAction = mergeStep.closest('.bulkAction')
         bulkForm = mergeStep.closest('.bulkAction-form')
         mergeStep.remove()
         bulkForm.find('.js-action-step').removeClass('hide')
-      $(document).off('click.kcBulkMergeOutside')
 
-      # Hide the bulk action bar
-      mergeStep.closest('.bulkAction')?.addClass('hide')
+        # Hide the bulk action bar (must reference before .remove() detaches the element)
+        bulkAction.addClass('hide')
+      $(document).off('click.kcBulkMergeOutside')
     catch e
       console.warn '[KC] closeMergeStep failed', e
 
