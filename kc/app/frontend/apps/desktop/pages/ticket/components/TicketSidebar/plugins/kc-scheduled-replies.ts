@@ -14,6 +14,7 @@ export default <TicketSidebarPlugin>{
   component: TicketSidebarKcScheduledReplies,
   permissions: ['ticket.agent'],
   screens: [TicketSidebarScreenType.TicketDetailView],
+  views: ['agent'],
   icon: 'calendar-event',
   order: 7600,
 }

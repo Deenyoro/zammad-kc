@@ -68,6 +68,25 @@ Rails.application.config.to_prepare do
   kc_prepend.call('AI::Agent::Type::TicketTitleRewriter', 'Kc::TicketTitleRewriterLanguage')
   kc_prepend.call('MicrosoftGraph::ApiError', 'Kc::MicrosoftGraphApiErrorTypeSafety')
   kc_prepend.call('MicrosoftGraph', 'Kc::MicrosoftGraphErrorHandling')
+  kc_prepend.call('TicketArticleCommunicateEmailJob', 'Kc::EmailColorStripSignal')
+
+  # Channel::EmailBuild is a module with singleton methods (def self.xxx),
+  # so the concern must be prepended onto its singleton_class.
+  begin
+    target  = 'Channel::EmailBuild'.safe_constantize
+    concern = 'Kc::StripEmailTextColor'.safe_constantize
+
+    if target.nil?
+      Rails.logger.warn "KC: SKIP prepend — target 'Channel::EmailBuild' not found"
+    elsif concern.nil?
+      Rails.logger.warn "KC: SKIP prepend — concern 'Kc::StripEmailTextColor' not found"
+    else
+      target.singleton_class.prepend(concern)
+      Rails.logger.info "KC: Prepended #{concern} into #{target}.singleton_class"
+    end
+  rescue => e
+    Rails.logger.error "KC: Failed to prepend Kc::StripEmailTextColor into Channel::EmailBuild: #{e.message}"
+  end
 
   Rails.logger.info 'KC: Overlay loading complete.'
 end
