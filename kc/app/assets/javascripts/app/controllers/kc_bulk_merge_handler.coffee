@@ -163,13 +163,13 @@ class KcBulkMergeModal extends App.ControllerModal
   doSearch: (query) =>
     App.Ajax.request(
       type: 'GET'
-      url:  "#{App.Config.get('api_path')}/tickets/search"
+      url:  "#{App.Config.get('api_path')}/tickets/search?full=true"
       data: { query: query, limit: 10 }
       success: (data) =>
         try
           App.Collection.loadAssets(data.assets) if data.assets
           tickets = []
-          for id in (data.tickets || [])
+          for id in (data.record_ids || [])
             ticket = App.Ticket.find(id)
             tickets.push(ticket) if ticket
           @showResults(tickets)
