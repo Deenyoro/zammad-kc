@@ -34,6 +34,7 @@ import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonEmptyMessage from '#desktop/components/CommonEmptyMessage/CommonEmptyMessage.vue'
 import { useSkeletonLoadingCount } from '#desktop/components/CommonTable/composables/useSkeletonLoadingCount.ts'
 import { useTicketBulkEdit } from '#desktop/components/Ticket/TicketBulkEditFlyout/useTicketBulkEdit.ts'
+import { useKcBulkMerge } from '#desktop/components/Ticket/KcTicketBulkMergeFlyout/useKcBulkMerge.ts'
 import TicketListTable from '#desktop/components/Ticket/TicketListTable.vue'
 import { useElementScroll } from '#desktop/composables/useElementScroll.ts'
 import { useScrollPosition } from '#desktop/composables/useScrollPosition.ts'
@@ -342,7 +343,7 @@ const localHeaders = computed(() => {
 
 const { setOnSuccessCallback, checkedTicketIds } = useTicketBulkEdit()
 
-setOnSuccessCallback(() => {
+const refetchAfterBulkAction = () => {
   forceTicketsByOverviewCacheOnlyFirstPage(
     ticketsQueryVariables.value,
     lastFirstPageCollectionSignature,
@@ -363,7 +364,13 @@ setOnSuccessCallback(() => {
   requestAnimationFrame(() => {
     scrollContainerElement.value?.scrollTo({ top: 0 })
   })
-})
+}
+
+setOnSuccessCallback(refetchAfterBulkAction)
+
+// KC: Register refetch callback for bulk merge flyout too
+const { setOnSuccessCallback: setMergeOnSuccessCallback } = useKcBulkMerge(checkedTicketIds)
+setMergeOnSuccessCallback(refetchAfterBulkAction)
 
 onBeforeRouteUpdate(() => checkedTicketIds.value.clear())
 

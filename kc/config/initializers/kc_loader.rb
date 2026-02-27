@@ -64,6 +64,7 @@ Rails.application.config.to_prepare do
   kc_prepend.call('Ticket::Article', 'Kc::FixOriginBySenderOverride')
   kc_prepend.call('Ticket::Article', 'Kc::ResetsWaitingForReplyState')
   kc_prepend.call('Ticket', 'Kc::PreventsLockedTicketReopen')
+  kc_prepend.call('Ticket', 'Kc::MergeToClosedState')
   kc_prepend.call('Transaction::Notification', 'Kc::SuppressInternalNoteNotifications')
   kc_prepend.call('AI::Agent::Type::TicketTitleRewriter', 'Kc::TicketTitleRewriterLanguage')
   kc_prepend.call('MicrosoftGraph::ApiError', 'Kc::MicrosoftGraphApiErrorTypeSafety')
@@ -86,6 +87,24 @@ Rails.application.config.to_prepare do
     end
   rescue => e
     Rails.logger.error "KC: Failed to prepend Kc::StripEmailTextColor into Channel::EmailBuild: #{e.message}"
+  end
+
+  # Channel::Filter::FollowUpMerged is a module with singleton methods,
+  # so the concern must be prepended onto its singleton_class.
+  begin
+    target  = 'Channel::Filter::FollowUpMerged'.safe_constantize
+    concern = 'Kc::FollowUpClosedParent'.safe_constantize
+
+    if target.nil?
+      Rails.logger.warn "KC: SKIP prepend — target 'Channel::Filter::FollowUpMerged' not found"
+    elsif concern.nil?
+      Rails.logger.warn "KC: SKIP prepend — concern 'Kc::FollowUpClosedParent' not found"
+    else
+      target.singleton_class.prepend(concern)
+      Rails.logger.info "KC: Prepended #{concern} into #{target}.singleton_class"
+    end
+  rescue => e
+    Rails.logger.error "KC: Failed to prepend Kc::FollowUpClosedParent into Channel::Filter::FollowUpMerged: #{e.message}"
   end
 
   Rails.logger.info 'KC: Overlay loading complete.'
