@@ -108,8 +108,8 @@ class KcBulkMergeModal extends App.ControllerModal
   shown: true
   small: true
 
-  constructor: ->
-    @ticketIds = @options.ticketIds || []
+  constructor: (options = {}) ->
+    @ticketIds = options.ticketIds || []
     @parentTicketId = null
     super
 
