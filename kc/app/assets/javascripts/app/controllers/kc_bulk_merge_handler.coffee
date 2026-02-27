@@ -170,7 +170,7 @@ class KcBulkMergeModal extends App.ControllerModal
   onSearch: =>
     query = @searchInput.val()?.trim()
     return @resultsList.hide() if !query || query.length < 2
-    @delay(=> @doSearch(query), 300, 'kc-merge-search')
+    @delay((=> @doSearch(query)), 300, 'kc-merge-search')
 
   doSearch: (query) =>
     App.Ajax.request(
