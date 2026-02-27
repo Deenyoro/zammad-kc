@@ -29,7 +29,9 @@ class AddKcBulkMergeSetting < ActiveRecord::Migration[7.0]
         ],
       },
       state:        true,
-      preferences:  {},
+      preferences:  {
+        permission: ['admin'],
+      },
       frontend:     true,
     )
   end
