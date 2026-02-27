@@ -1,8 +1,8 @@
 # KC: Bulk merge from ticket overview.
 #
 # This controller:
-#   1. Injects a "merge" option into the bulk action state dropdown
-#   2. When selected, shows a parent ticket search input
+#   1. Injects a "Merge" button next to "Confirmation" in the bulk action bar
+#   2. When clicked, transitions to a merge step with parent ticket search
 #   3. On submit, calls POST /api/v1/kc/bulk_merge
 #   4. Only shows when kc_bulk_merge setting is enabled
 #
@@ -11,34 +11,26 @@
 # HARDENING:
 #   - All DOM manipulation wrapped in try/catch
 #   - MutationObserver with debounce for re-injection on DOM changes
-#   - Reset behavior when "merge" is deselected or bulk bar hides
 #   - Safe DOM element construction (no raw HTML string concatenation)
 class KcBulkMergeHandler extends App.Controller
   constructor: ->
     super
     try
-      @mergeMode = false
       @parentTicketId = null
-      @searchResults = []
 
-      # Watch for DOM changes
+      # Watch for DOM changes (bulk form is rendered dynamically)
       @startObserver()
 
-      # Inject into existing dropdowns
+      # Inject into any existing bulk forms
       @injectAll()
-
-      # Listen for state dropdown changes
-      $(document).on('change.kcBulkMerge', '#form-ticket-bulk select[name="state_id"]', @onStateChange)
     catch e
       console.warn '[KC] KcBulkMergeHandler init failed', e
 
   release: =>
     try
-      @mergeMode = false
       @parentTicketId = null
       $(document).off('.kcBulkMerge')
       @stopObserver()
-      @removeMergeUI()
     catch e
       console.warn '[KC] KcBulkMergeHandler release failed', e
 
@@ -48,20 +40,27 @@ class KcBulkMergeHandler extends App.Controller
     try
       return if !App.Setting.get('kc_bulk_merge')
 
-      $('#form-ticket-bulk select[name="state_id"]').each (i, select) =>
-        @injectIntoSelect($(select))
+      # Find all bulk action forms and inject a Merge button next to Confirmation
+      $('.bulkAction-form .js-action-step').each (i, actionStep) =>
+        @injectMergeButton($(actionStep))
     catch e
       console.warn '[KC] injectAll (merge) failed', e
 
-  injectIntoSelect: (select) =>
-    return if !select || select.length is 0
-    return if select.find('option[value="kc_merge"]').length > 0
+  injectMergeButton: (actionStep) =>
+    return if !actionStep || actionStep.length is 0
+    # Skip if already injected
+    return if actionStep.find('.kc-bulk-merge-btn').length > 0
 
-    mergeOption = $('<option>')
-      .attr('value', 'kc_merge')
-      .text(App.i18n.translateInline('Merge into...'))
+    confirmBtn = actionStep.find('.js-confirm')
+    return if confirmBtn.length is 0
 
-    select.append(mergeOption)
+    mergeBtn = $('<div>')
+      .addClass('btn btn--primary kc-bulk-merge-btn')
+      .text(App.i18n.translateInline('Merge'))
+      .css('white-space', 'nowrap')
+      .on('click.kcBulkMerge', @onMergeBtnClick)
+
+    confirmBtn.after(mergeBtn)
 
   # ---------- MutationObserver ----------
 
@@ -90,64 +89,39 @@ class KcBulkMergeHandler extends App.Controller
     catch e
       console.warn '[KC] stopObserver (merge) failed', e
 
-  # ---------- State change handler ----------
+  # ---------- Merge button click — transition to merge step ----------
 
-  onStateChange: (e) =>
+  onMergeBtnClick: (e) =>
     try
-      select = $(e.currentTarget)
-      if select.val() is 'kc_merge'
-        @enterMergeMode(select)
-      else if @mergeMode
-        @exitMergeMode(select)
+      e.preventDefault()
+      e.stopPropagation()
+
+      bulkForm = $(e.currentTarget).closest('.bulkAction-form')
+      return if bulkForm.length is 0
+
+      @parentTicketId = null
+
+      # Hide the normal action step and confirm step
+      bulkForm.find('.js-action-step').addClass('hide')
+      bulkForm.find('.js-confirm-step').addClass('hide')
+
+      # Remove any previous merge step
+      bulkForm.find('.kc-bulk-merge-step').remove()
+
+      # Build and show the merge step
+      @buildMergeStep(bulkForm)
     catch e
-      console.warn '[KC] onStateChange (merge) failed', e
+      console.warn '[KC] onMergeBtnClick failed', e
 
-  # ---------- Merge mode ----------
-
-  enterMergeMode: (stateSelect) =>
-    @mergeMode = true
-    @parentTicketId = null
-
-    bulkForm = stateSelect.closest('.bulkAction-form')
-    return if bulkForm.length is 0
-
-    # Hide normal bulk form fields (group, owner, priority, etc.) except state
-    bulkForm.find('#form-ticket-bulk .form-group').each ->
-      el = $(this)
-      attrName = el.data('attribute-name')
-      if attrName and attrName isnt 'state_id'
-        el.addClass('kc-bulk-merge-hidden hide')
-
-    # Hide the normal confirm button
-    bulkForm.find('.js-confirm').addClass('kc-bulk-merge-hidden hide')
-
-    # Inject merge UI after state dropdown
-    @buildMergeUI(bulkForm)
-
-  exitMergeMode: (stateSelect) =>
-    @mergeMode = false
-    @parentTicketId = null
-
-    bulkForm = stateSelect.closest('.bulkAction-form')
-    return if bulkForm.length is 0
-
-    @removeMergeUI()
-
-    # Restore hidden fields
-    bulkForm.find('.kc-bulk-merge-hidden').removeClass('kc-bulk-merge-hidden hide')
-
-  buildMergeUI: (bulkForm) =>
-    # Remove any existing merge UI
-    $('.kc-bulk-merge-ui').remove()
-
-    container = $('<div>').addClass('kc-bulk-merge-ui form-group').css({
+  buildMergeStep: (bulkForm) =>
+    step = $('<div>').addClass('kc-bulk-merge-step').css({
       'display': 'flex'
       'align-items': 'center'
       'gap': '10px'
-      'flex': '1'
+      'padding': '10px'
     })
 
-    # Parent ticket search input
+    # Parent ticket search input + results dropdown
     inputWrap = $('<div>').addClass('kc-bulk-merge-search-wrap').css({
       'position': 'relative'
       'flex': '1'
@@ -161,13 +135,13 @@ class KcBulkMergeHandler extends App.Controller
 
     @resultsList = $('<ul>').addClass('kc-bulk-merge-results').css({
       'position': 'absolute'
-      'top': '100%'
+      'bottom': '100%'
       'left': '0'
       'right': '0'
       'z-index': '1050'
       'background': '#fff'
       'border': '1px solid #ddd'
-      'border-top': 'none'
+      'border-bottom': 'none'
       'max-height': '200px'
       'overflow-y': 'auto'
       'list-style': 'none'
@@ -187,37 +161,49 @@ class KcBulkMergeHandler extends App.Controller
     inputWrap.append(@searchInput)
     inputWrap.append(@resultsList)
 
-    # Merge button
-    @mergeButton = $('<div>')
+    # Action buttons
+    cancelBtn = $('<a>')
+      .addClass('btn btn--text btn--secondary kc-bulk-merge-cancel')
+      .text(App.i18n.translateInline('Go Back'))
+      .on('click.kcBulkMerge', (e) => @onMergeCancel(e, bulkForm))
+
+    @mergeSubmitBtn = $('<div>')
       .addClass('btn btn--primary kc-bulk-merge-submit')
       .text(App.i18n.translateInline('Merge'))
       .css('white-space', 'nowrap')
+      .on('click.kcBulkMerge', @onMergeSubmit)
 
-    container.append(inputWrap)
-    container.append(@selectedDisplay)
-    container.append(@mergeButton)
+    step.append(inputWrap)
+    step.append(@selectedDisplay)
+    step.append(cancelBtn)
+    step.append(@mergeSubmitBtn)
 
-    # Insert into the first step
-    actionStep = bulkForm.find('.js-action-step')
-    actionStep.append(container)
+    bulkForm.append(step)
+
+    # Focus the search input
+    setTimeout((=> @searchInput.trigger('focus')), 50)
 
     # Bind events
     @searchInput.on('input.kcBulkMerge', @onSearchInput)
     @searchInput.on('keydown.kcBulkMerge', @onSearchKeydown)
-    @mergeButton.on('click.kcBulkMerge', @onMergeSubmit)
 
     # Close results on outside click
     $(document).on('click.kcBulkMergeOutside', (e) =>
       if !$(e.target).closest('.kc-bulk-merge-search-wrap').length
-        @resultsList.hide()
+        @resultsList?.hide()
     )
 
-  removeMergeUI: =>
+  onMergeCancel: (e, bulkForm) =>
     try
-      $('.kc-bulk-merge-ui').remove()
+      e.preventDefault()
+      @parentTicketId = null
+
+      # Remove merge step, restore action step
+      bulkForm.find('.kc-bulk-merge-step').remove()
+      bulkForm.find('.js-action-step').removeClass('hide')
       $(document).off('click.kcBulkMergeOutside')
     catch e
-      # silent
+      console.warn '[KC] onMergeCancel failed', e
 
   # ---------- Parent ticket search ----------
 
@@ -238,7 +224,7 @@ class KcBulkMergeHandler extends App.Controller
     # Enter to select first result
     if e.keyCode is 13
       e.preventDefault()
-      firstResult = @resultsList.find('li').first()
+      firstResult = @resultsList.find('li[data-ticket-id]').first()
       if firstResult.length > 0
         firstResult.trigger('click')
 
@@ -299,7 +285,7 @@ class KcBulkMergeHandler extends App.Controller
   selectParentTicket: (ticket) =>
     @parentTicketId = ticket.id
     @searchInput.val("##{ticket.number} - #{ticket.title}")
-    @selectedDisplay.text("→ ##{ticket.number}").show()
+    @selectedDisplay.text("\u2192 ##{ticket.number}").show()
     @resultsList.hide()
 
   # ---------- Submit ----------
@@ -334,7 +320,7 @@ class KcBulkMergeHandler extends App.Controller
         return
 
       # Disable button during request
-      @mergeButton.addClass('is-disabled').text(App.i18n.translateInline('Merging...'))
+      @mergeSubmitBtn.addClass('is-disabled').text(App.i18n.translateInline('Merging...'))
 
       App.Ajax.request(
         type: 'POST'
@@ -351,9 +337,9 @@ class KcBulkMergeHandler extends App.Controller
             msg: App.i18n.translateInline('Successfully merged %s ticket(s).', data.merged_count)
           })
 
-          # Uncheck all, reset state, refresh overview
+          # Uncheck all, hide bulk bar, refresh overview
           $('.table [name="bulk"]:checked').prop('checked', false)
-          @resetStateDropdown()
+          @closeMergeStep()
           App.Event.trigger('overview:fetch')
 
         error: (xhr) =>
@@ -368,18 +354,25 @@ class KcBulkMergeHandler extends App.Controller
             msg: msg
           })
 
-          @mergeButton.removeClass('is-disabled').text(App.i18n.translateInline('Merge'))
+          @mergeSubmitBtn.removeClass('is-disabled').text(App.i18n.translateInline('Merge'))
       )
     catch e
       console.warn '[KC] onMergeSubmit failed', e
-      @mergeButton?.removeClass('is-disabled')?.text(App.i18n.translateInline('Merge'))
+      @mergeSubmitBtn?.removeClass('is-disabled')?.text(App.i18n.translateInline('Merge'))
 
-  resetStateDropdown: =>
+  closeMergeStep: =>
     try
-      select = $('#form-ticket-bulk select[name="state_id"]')
-      select.val('')
-      @exitMergeMode(select)
+      @parentTicketId = null
+      mergeStep = $('.kc-bulk-merge-step')
+      if mergeStep.length > 0
+        bulkForm = mergeStep.closest('.bulkAction-form')
+        mergeStep.remove()
+        bulkForm.find('.js-action-step').removeClass('hide')
+      $(document).off('click.kcBulkMergeOutside')
+
+      # Hide the bulk action bar
+      mergeStep.closest('.bulkAction')?.addClass('hide')
     catch e
-      console.warn '[KC] resetStateDropdown failed', e
+      console.warn '[KC] closeMergeStep failed', e
 
 App.Config.set('KcBulkMergeHandler', KcBulkMergeHandler, 'Plugins')
