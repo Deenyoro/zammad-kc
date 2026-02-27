@@ -155,6 +155,7 @@ class KcScheduleReplyHandler extends App.Controller
       # Show the datetime picker modal
       @modalOpen = true
       new App.KcScheduleReplyModal(
+        container:      contentEl
         submitCallback: @onScheduleConfirm
         onClose: => @modalOpen = false
       )
