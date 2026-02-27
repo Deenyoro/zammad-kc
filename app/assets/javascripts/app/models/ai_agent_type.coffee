@@ -3,6 +3,3 @@ class App.AIAgentType extends App.Model
   @extend Spine.Model.Ajax
   @url: @apiPath + '/ai_agents/types'
   @configure_translate = true
-
-  displayName: =>
-    App.i18n.translateInline(@name) || '-'

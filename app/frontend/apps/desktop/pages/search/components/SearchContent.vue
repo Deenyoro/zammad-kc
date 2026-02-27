@@ -41,11 +41,21 @@ const props = defineProps<{
 
 const router = useRouter()
 
-const pageActive = ref(false)
-
 const selectedEntity = ref(
   (router.currentRoute.value.query.entity as EnumSearchableModels) ?? EnumSearchableModels.Ticket,
 )
+
+const pageActive = ref(false)
+const offset = ref(0)
+
+const { sortedByNamePlugins, searchPluginNames } = useSearchPlugins()
+
+const notVisibleSearchEntities = computed(() =>
+  searchPluginNames.value.filter((name) => name !== selectedEntity.value),
+)
+
+// Remember this in a static way to avoid unnecessary re-fetchtings of the search counts.
+let staticNotVisibleSearchEntities = notVisibleSearchEntities.value
 
 watch(selectedEntity, (newValue) => {
   router.replace({
@@ -98,19 +108,11 @@ const { reachedTop } = useElementScroll(scrollContainerElement as Ref<HTMLElemen
 
 const searchControlsInstance = useTemplateRef('search-controls')
 
-const { sortedByNamePlugins, searchPluginNames } = useSearchPlugins()
-
 const searchQueryVariables = computed(() => ({
   search: sanitizedSearchTerm.value,
   limit: PAGE_SIZE,
   onlyIn: selectedEntity.value,
 }))
-
-const { pageInactive } = usePage({
-  pageActive,
-  metaTitle: sanitizedSearchTerm,
-  onReactivate: () => refetchQueries(),
-})
 
 const detailSearchQuery = new QueryHandler(
   useDetailSearchLazyQuery(searchQueryVariables, {
@@ -125,17 +127,6 @@ const detailSearchQuery = new QueryHandler(
     triggerRefetchOnConnectionReconnect: () => pageActive.value,
   },
 )
-
-const notVisibleSearchEntities = computed(() =>
-  searchPluginNames.value.filter((name) => name !== selectedEntity.value),
-)
-
-// Remember this in a static way to avoid unnecessary re-fetchtings of the search counts.
-let staticNotVisibleSearchEntities = notVisibleSearchEntities.value
-
-watch(notVisibleSearchEntities, (newValue) => {
-  staticNotVisibleSearchEntities = newValue
-})
 
 const searchCountsQuery = new QueryHandler(
   useSearchCountsLazyQuery(
@@ -159,6 +150,27 @@ const searchCountsQuery = new QueryHandler(
     triggerRefetchOnConnectionReconnect: () => pageActive.value,
   },
 )
+
+const refetchQueries = () => {
+  detailSearchQuery.refetch({
+    // FIXME: This is a workaround to avoid broken query on re-navigation, we simply include the current variables.
+    //   If the taskbar already exists, but the search term is changed, refetch will be called with empty variables.
+    //   In parallel, another query with correct variables will be called.
+    ...searchQueryVariables.value,
+    limit: offset.value + PAGE_SIZE,
+  })
+  searchCountsQuery.refetch()
+}
+
+const { pageInactive } = usePage({
+  pageActive,
+  metaTitle: sanitizedSearchTerm,
+  onReactivate: () => refetchQueries(),
+})
+
+watch(notVisibleSearchEntities, (newValue) => {
+  staticNotVisibleSearchEntities = newValue
+})
 
 const searchQueriesLoad = () => {
   detailSearchQuery.load()
@@ -270,7 +282,6 @@ const { sort, orderBy, orderDirection, isSorting } = useSorting(
   scrollContainerElement,
 )
 
-const offset = ref(0)
 const loadingNewPage = ref(false)
 
 const resetPagination = (variables: Partial<DetailSearchQueryVariables> = {}) => {
@@ -308,17 +319,6 @@ const fetchNextPage = async () => {
   } finally {
     loadingNewPage.value = false
   }
-}
-
-const refetchQueries = () => {
-  detailSearchQuery.refetch({
-    // FIXME: This is a workaround to avoid broken query on re-navigation, we simply include the current variables.
-    //   If the taskbar already exists, but the search term is changed, refetch will be called with empty variables.
-    //   In parallel, another query with correct variables will be called.
-    ...searchQueryVariables.value,
-    limit: offset.value + PAGE_SIZE,
-  })
-  searchCountsQuery.refetch()
 }
 
 const { checkedTicketIds, openBulkEditFlyout, setOnSuccessCallback } = useTicketBulkEdit()

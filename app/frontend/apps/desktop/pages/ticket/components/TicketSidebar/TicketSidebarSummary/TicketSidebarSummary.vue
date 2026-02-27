@@ -41,6 +41,10 @@ const { activeSidebar } = useTicketSidebar()
 
 const isSummarySideBarActive = computed(() => activeSidebar.value === 'ticket-summary')
 
+const summaryConfig = computed(
+  () => config.value.ai_assistance_ticket_summary_config as SummaryConfig,
+)
+
 const runWhenSidebarIsActive = computed(() => {
   const groupSummaryGenerationOption = ticket.value?.group.summaryGeneration
 
@@ -56,10 +60,6 @@ const runWhenSidebarIsActive = computed(() => {
     isSummarySideBarActive.value
   )
 })
-
-const summaryConfig = computed(
-  () => config.value.ai_assistance_ticket_summary_config as SummaryConfig,
-)
 
 const isProviderConfigured = computed(() => !!config.value.ai_provider)
 
@@ -125,14 +125,6 @@ const showUpdateIndicator = computed(
     runWhenSidebarIsActive.value,
 )
 
-watch(
-  () => ticket.value?.group?.id,
-  () => {
-    // If the group changes on runtime, we need to rerun the summary generation.
-    if (runWhenSidebarIsActive.value) getAIAssistanceSummary()
-  },
-)
-
 const updateLocalSummary = (summaryData?: TicketAiAssistanceSummary | null) => {
   summary.value = summaryData ?? null
 
@@ -161,6 +153,14 @@ const getAIAssistanceSummary = (regenerate?: boolean) => {
       updateLocalSummary(data?.ticketAIAssistanceSummarize?.summary)
     })
 }
+
+watch(
+  () => ticket.value?.group?.id,
+  () => {
+    // If the group changes on runtime, we need to rerun the summary generation.
+    if (runWhenSidebarIsActive.value) getAIAssistanceSummary()
+  },
+)
 
 watch(isSummarySideBarActive, () => {
   if (!runWhenSidebarIsActive.value) return
