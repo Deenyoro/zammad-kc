@@ -6,7 +6,7 @@ RSpec.describe 'AI Assistance API endpoint', authenticated_as: :user, type: :req
   let(:user)             { create(:agent) }
   let(:input)            { Faker::Lorem.unique.sentence }
   let(:ai_analytics_run) { create(:ai_analytics_run) }
-  let(:output)           { Struct.new(:content, :stored_result, :fresh, :ai_analytics_run, keyword_init: true).new(content: Faker::Lorem.unique.paragraph, stored_result: nil, fresh: false, ai_analytics_run:) }
+  let(:output)           { Struct.new(:content, :stored_result, :fresh, :ai_analytics_run).new(content: Faker::Lorem.unique.paragraph, stored_result: nil, fresh: false, ai_analytics_run:) }
 
   describe '#text_tools' do
     let(:params) do

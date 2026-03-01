@@ -153,8 +153,8 @@ class CoreWorkflow::Attributes
 
   # dont cache this else the result object will work with references and cache bugs occur
   def visibility_default
-    object_elements.each_with_object({}) do |attribute, result|
-      result[ attribute[:name] ] = screen_value(attribute, 'shown') == false ? 'remove' : 'show'
+    object_elements.to_h do |attribute|
+      [attribute[:name], screen_value(attribute, 'shown') == false ? 'remove' : 'show']
     end
   end
 
@@ -167,8 +167,8 @@ class CoreWorkflow::Attributes
 
   # dont cache this else the result object will work with references and cache bugs occur
   def mandatory_default
-    object_elements.each_with_object({}) do |attribute, result|
-      result[ attribute[:name] ] = attribute_mandatory?(attribute)
+    object_elements.to_h do |attribute|
+      [attribute[:name], attribute_mandatory?(attribute)]
     end
   end
 
@@ -183,8 +183,8 @@ class CoreWorkflow::Attributes
 
   # dont cache this else the result object will work with references and cache bugs occur
   def readonly_default
-    object_elements.each_with_object({}) do |attribute, result|
-      result[ attribute[:name] ] = false
+    object_elements.to_h do |attribute|
+      [attribute[:name], false]
     end
   end
 

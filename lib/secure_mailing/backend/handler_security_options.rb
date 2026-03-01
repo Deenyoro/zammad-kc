@@ -6,15 +6,13 @@ class SecureMailing::Backend::HandlerSecurityOptions < SecureMailing::Backend::H
     :possible?,
     :active_by_default?,
     :message,
-    :message_placeholders,
-    keyword_init: true
+    :message_placeholders
   )
 
   SECURITY_OPTIONS_RESULT = Struct.new(
     :type,
     :encryption,
-    :signing,
-    keyword_init: true
+    :signing
   )
 
   attr_reader :ticket, :article

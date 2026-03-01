@@ -52,8 +52,10 @@ RSpec.describe SearchKnowledgeBaseBackend do
             SearchIndexBackend.make_request_and_validate(url, data: { index: { 'highlight.max_analyzed_offset': 1000 } }, method: :put)
           end
 
+          let(:attachment) { fixture_file_upload('spec/fixtures/files/upload/lipsum.pdf') }
+
           let :published_answer do
-            create(:knowledge_base_answer, :published, :with_attachment, attachment: File.open('spec/fixtures/files/upload/lipsum.pdf'), category: category)
+            create(:knowledge_base_answer, :published, :with_attachment, attachment:, category: category)
           end
 
           it 'lists item with an attachment' do
