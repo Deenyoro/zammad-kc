@@ -79,7 +79,7 @@ const loginSchema = defineFormSchema([
           link: '/#password_reset',
           onClick: forceDesktop,
         },
-        children: __('Forgot password?'),
+        children: '$t("Forgot password?")',
       },
     ],
   },
