@@ -151,7 +151,7 @@ const loginSchema = [
           class: 'text-right text-sm',
           link: passwordResetLink,
         },
-        children: __('Forgot password?'),
+        children: '$t("Forgot password?")',
       },
     ],
   },
