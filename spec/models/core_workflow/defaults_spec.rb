@@ -241,6 +241,15 @@ RSpec.describe 'CoreWorkflow > Defaults', type: :model do
         expect(result[:restrict_values]['state_id']).not_to include('')
       end
     end
+
+  end
+
+  describe '.perform - Default - State for agent and customer user' do
+    let(:action_user) { create(:agent_and_customer, groups: [ticket.group]) }
+
+    it 'does show all create_middle states that an agent would see' do
+      expect(result[:restrict_values]['state_id']).to eq([''] + Ticket::State.by_category_ids(:viewable_agent_new).map(&:to_s))
+    end
   end
 
   describe '.perform - Default - Priority' do
