@@ -29,7 +29,7 @@ const userQuery = new QueryHandler(
   useUserQuery(
     () => ({
       userId: convertToGraphQLId('User', customerId.value),
-      secondaryOrganizationsCount: 3,
+      secondaryOrganizationsCount: 5,
     }),
     () => ({ enabled: Boolean(customerId.value), fetchPolicy: 'cache-first' }),
   ),
