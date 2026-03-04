@@ -16,6 +16,9 @@ module Kc
 
       if record&.bcc.present?
         Thread.current[:kc_article_bcc] = record.bcc
+        Rails.logger.info "KC: EmailJobBcc — article #{article_id} has bcc=#{record.bcc.inspect}, set thread-local"
+      else
+        Rails.logger.info "KC: EmailJobBcc — article #{article_id} has no bcc value"
       end
 
       super

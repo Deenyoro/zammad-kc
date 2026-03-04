@@ -4,14 +4,20 @@
 # (after Note at 100 and KcConvertType at 150, before EmailReply at 200).
 #
 # How it works:
+#   - Model registration: Adds 'bcc' to App.TicketArticle.attributes so that
+#     Spine.js includes it in toJSON() / attributes() serialization. Without
+#     this, formParam() collects the BCC value but JSON.stringify drops it
+#     because Spine only serializes @configure'd attributes.
 #   - articleTypes: Adds 'bcc' to the email type's attributes array so the
 #     form-group show/hide logic (article_new.coffee line 512-514) includes it.
 #   - setArticleTypePost: Injects the BCC form-group DOM element after CC if
 #     it doesn't already exist, then applies tokanice for email tokenization.
-#
-# The existing formParam() in article_new.coffee automatically collects all
-# named inputs, so 'bcc' will be included in form submission data. The
-# param_cleanup on the backend allows it through because the bcc column exists.
+
+# Register 'bcc' in the Spine.js model so article.toJSON() includes it.
+# This file loads after models (controllers/ is required after models/).
+if App.TicketArticle?.attributes?
+  if 'bcc' not in App.TicketArticle.attributes
+    App.TicketArticle.attributes.push('bcc')
 
 class KcBccField extends App.Controller
   @action: (actions, ticket, article, ui) ->
