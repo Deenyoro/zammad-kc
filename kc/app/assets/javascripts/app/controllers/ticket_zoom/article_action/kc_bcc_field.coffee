@@ -12,9 +12,18 @@
 #     form-group show/hide logic (article_new.coffee line 512-514) includes it.
 #   - setArticleTypePost: Injects the BCC form-group DOM element after CC if
 #     it doesn't already exist, then applies tokanice for email tokenization.
+#   - Access control: Checks kc_bcc_access setting to gate UI visibility.
+
+# Helper to check BCC access based on admin setting
+_bccAllowed = ->
+  access = App.Setting.get('kc_bcc_access') ? 'all'
+  return false if access is 'disabled'
+  return false if access is 'admin' and !App.User.current()?.permission('admin')
+  true
 
 # Register 'bcc' in the Spine.js model so article.toJSON() includes it.
-# This file loads after models (controllers/ is required after models/).
+# This must always be present regardless of setting — the attribute must be
+# serializable even if the UI field is hidden.
 if App.TicketArticle?.attributes?
   if 'bcc' not in App.TicketArticle.attributes
     App.TicketArticle.attributes.push('bcc')
@@ -27,6 +36,7 @@ class KcBccField extends App.Controller
     true
 
   @articleTypes: (articleTypes, ticket, ui) ->
+    return articleTypes if !_bccAllowed()
     for articleType in articleTypes
       if articleType.name is 'email'
         if 'bcc' not in articleType.attributes
@@ -35,6 +45,7 @@ class KcBccField extends App.Controller
 
   @setArticleTypePost: (type, ticket, ui, signaturePosition) ->
     return if type isnt 'email'
+    return if !_bccAllowed()
 
     # Check if BCC form-group already exists
     existingBcc = ui.$('[name=bcc]').closest('.form-group')
