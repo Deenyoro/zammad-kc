@@ -160,9 +160,14 @@ class ImportOtrsController < ApplicationController
 
   def import_status
     result = Import::OTRS.status_bg
+
     if result[:result] == 'import_done'
       Setting.reload
+
+      render json: { setup_done: true }
+      return
     end
+
     render json: result
   end
 

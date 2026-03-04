@@ -269,17 +269,18 @@ class App.UiElement.object_attribute_options_context extends Spine.Module
     flatOptions = []
 
     options.forEach (option) ->
-      label = if isTree
-        App.TokenHelper.computeNameValue(option.value, isTranslated)
-      else if isTranslated
-        App.i18n.translateInline(option.name or option.value)
-      else
-        option.name or option.value
+      if !option.disabled
+        label = if isTree
+          App.TokenHelper.computeNameValue(option.value, isTranslated)
+        else if isTranslated
+          App.i18n.translateInline(option.name or option.value)
+        else
+          option.name or option.value
 
-      flatOptions.push(
-        value: option.value
-        label: label
-      )
+        flatOptions.push(
+          value: option.value
+          label: label
+        )
 
       if option.children
         flatOptions.push App.UiElement.object_attribute_options_context.buildFlatOptions(

@@ -5,6 +5,7 @@ import { computed, toRef } from 'vue'
 
 import { useOrganizationEntity } from '#shared/entities/organization/composables/useOrganizationEntity.ts'
 import { useOrganizationUpdatesSubscription } from '#shared/entities/organization/graphql/subscriptions/organizationUpdates.api.ts'
+import { SECONDARY_ORGANIZATIONS_FETCH_COUNT } from '#shared/entities/user/composables/useUserDetail.ts'
 import type { Organization } from '#shared/graphql/types.ts'
 import SubscriptionHandler from '#shared/server/apollo/handler/SubscriptionHandler.ts'
 import { GraphQLErrorTypes } from '#shared/types/error.ts'
@@ -27,6 +28,7 @@ new SubscriptionHandler(
   useOrganizationUpdatesSubscription(
     () => ({
       organizationId: organization.value!.id,
+      first: SECONDARY_ORGANIZATIONS_FETCH_COUNT,
       initial: true,
     }),
     () => ({

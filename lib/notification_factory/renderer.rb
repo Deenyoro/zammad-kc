@@ -1,11 +1,6 @@
 # Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class NotificationFactory::Renderer
-  ARTICLE_TAGS = %i[
-    article last_article last_internal_article last_external_article
-    first_article first_internal_article first_external_article
-    created_article created_internal_article created_external_article
-  ].freeze
 
 =begin
 
@@ -59,9 +54,15 @@ examples how to use
     # do validation, ignore some methods
     return "\#{#{key} / not allowed}" if !data_key_valid?(key)
 
+    article_tags = %w[
+      article last_article last_internal_article last_external_article
+      first_article first_internal_article first_external_article
+      created_article created_internal_article created_external_article
+    ]
+
     # aliases
     map = { 'ticket.tags' => 'ticket.tag_list', 'ticket.group.name' => 'ticket.group.fullname', 'group.name' => 'group.fullname' }
-    ARTICLE_TAGS.each do |tag|
+    article_tags.each do |tag|
       map["#{tag}.body"] = "#{tag}.body_as_text_with_quote.text2html"
     end
 
@@ -72,7 +73,7 @@ examples how to use
     # escape in html mode
     if escape
       no_escape = {}
-      ARTICLE_TAGS.each do |tag|
+      article_tags.each do |tag|
         no_escape["#{tag}.body_as_html"] = true
         no_escape["#{tag}.body_as_text_with_quote.text2html"] = true
         no_escape["#{tag}.body_as_text.text2html"] = true

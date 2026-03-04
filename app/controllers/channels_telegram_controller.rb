@@ -23,7 +23,7 @@ class ChannelsTelegramController < ApplicationController
     rescue => e
       raise Exceptions::UnprocessableEntity, e.message
     end
-    render json: channel
+    render json: mask_sensitive_values(channel.as_json, channel)
   end
 
   def update
@@ -33,7 +33,7 @@ class ChannelsTelegramController < ApplicationController
     rescue => e
       raise Exceptions::UnprocessableEntity, e.message
     end
-    render json: channel
+    render json: mask_sensitive_values(channel.as_json, channel)
   end
 
   def enable

@@ -16,7 +16,7 @@ module Gql::Types::Input::Ticket
              loads:       Gql::Types::Ticket::SharedDraftZoomType
 
     def self.agent_only_fields
-      super + %w[shared_draft_id]
+      super + %w[shared_draft_id group_id]
     end
   end
 end

@@ -33,8 +33,14 @@ const errorCallback = createQueryErrorHandler({
 
 const organizationId = computed(() => convertToGraphQLId('Organization', props.internalId))
 
-const { organization, loading, objectAttributes, organizationQuery, fetchMoreMembers } =
-  useOrganizationDetail(organizationId, 3, 100, errorCallback)
+const {
+  organization,
+  organizationMembers,
+  loading,
+  objectAttributes,
+  organizationQuery,
+  fetchMoreMembers,
+} = useOrganizationDetail(organizationId, 3, 100, errorCallback)
 
 useOnlineNotificationSeen(organization)
 
@@ -73,11 +79,7 @@ const ticketData = computed(() => getTicketData(organization.value))
       :skip-attributes="['name']"
     />
 
-    <OrganizationMembersList
-      :organization="organization"
-      :disable-show-more="loading"
-      @load-more="fetchMoreMembers()"
-    />
+    <OrganizationMembersList :members="organizationMembers" @load-more="fetchMoreMembers()" />
 
     <CommonTicketStateList
       v-if="ticketData"

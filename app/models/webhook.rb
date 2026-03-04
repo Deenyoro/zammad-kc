@@ -8,6 +8,9 @@ class Webhook < ApplicationModel
   include CanSelector
   include CanSearch
   include EnsuresNoRelatedObjects
+  include CanSensitiveAssets
+
+  SENSITIVE_FIELDS = %i[bearer_token signature_token basic_auth_password].freeze
 
   before_save :reset_custom_payload
 

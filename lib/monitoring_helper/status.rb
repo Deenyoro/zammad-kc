@@ -29,14 +29,14 @@ module MonitoringHelper
     end
 
     def counts
-      INCLUDE_CLASSES.each_with_object({}) do |elem, memo|
-        memo[elem.table_name] = elem.count
+      INCLUDE_CLASSES.to_h do |elem|
+        [elem.table_name, elem.count]
       end
     end
 
     def last_created_at
-      INCLUDE_CLASSES.each_with_object({}) do |elem, memo|
-        memo[elem.table_name] = elem.last&.created_at
+      INCLUDE_CLASSES.to_h do |elem|
+        [elem.table_name, elem.last&.created_at]
       end
     end
 
