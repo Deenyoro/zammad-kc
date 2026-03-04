@@ -3,6 +3,8 @@
 class Integration::SMIMEController < ApplicationController
   prepend_before_action :authenticate_and_authorize!
 
+  SENSITIVE_FIELDS = %w[private_key_secret].freeze
+
   def certificate_download
     cert = SMIMECertificate.find(params[:id])
 
@@ -26,7 +28,9 @@ class Integration::SMIMEController < ApplicationController
   end
 
   def certificate_list
-    list = SMIMECertificate.all.map { |cert| cert_obj_to_json(cert) }
+    list = SMIMECertificate
+      .all
+      .map { |cert| mask_sensitive_values(cert_obj_to_json(cert), nil) }
 
     render json: list
   end

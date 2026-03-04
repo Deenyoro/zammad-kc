@@ -53,7 +53,7 @@ class Service::AI::Agent::Run::Context::Instruction::ObjectAttributes::Options <
   def collect_matching_options(options, filter_keys)
     result = []
     options.each do |option|
-      if filter_keys.include?(option['value'])
+      if option['disabled'].blank? && filter_keys.include?(option['value'])
         option_result = build_option_structure(option).except(:children)
 
         # Add description if available in filter_values
@@ -74,7 +74,9 @@ class Service::AI::Agent::Run::Context::Instruction::ObjectAttributes::Options <
   def collect_all_options_flat(options)
     result = []
     options.each do |option|
-      result << build_option_structure(option).except(:children)
+      if option['disabled'].blank?
+        result << build_option_structure(option).except(:children)
+      end
       if option['children'].present?
         result += collect_all_options_flat(option['children'])
       end

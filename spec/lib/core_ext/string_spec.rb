@@ -1994,4 +1994,22 @@ RSpec.describe String do
       end
     end
   end
+
+  describe '#contains_html?' do
+    it 'returns true if string contains HTML tags' do
+      expect('<p>test</p>'.contains_html?).to be(true)
+    end
+
+    it 'returns false if string does not contain HTML tags' do
+      expect('test'.contains_html?).to be(false)
+    end
+
+    it 'returns true if string contains HTML entities' do
+      expect('&lt;'.contains_html?).to be(true)
+    end
+
+    it 'returns false if string contains escapedHTML entities' do
+      expect('&amp;amp;lt;'.contains_html?).to be(false)
+    end
+  end
 end

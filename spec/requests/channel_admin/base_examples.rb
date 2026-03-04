@@ -6,13 +6,15 @@ RSpec.shared_examples 'base channel management' do |factory:, path:|
 
     before { channel }
 
-    it 'lists channels' do
+    it 'lists channels', aggregate_failures: true do
       get "/api/v1/channels/admin/#{path}", as: :json
 
       expect(json_response).to include(
         'channel_ids' => [channel.id],
         'assets'      => be_present
       )
+
+      expect(response.body).to include(SensitiveParamsHelper::SENSITIVE_MASK)
     end
   end
 

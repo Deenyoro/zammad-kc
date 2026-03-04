@@ -2222,6 +2222,10 @@ RSpec.describe 'Ticket', type: :request do
       get "/api/v1/ticket_related/#{ticket1.id}", params: {}, as: :json
       expect(response).to have_http_status(:ok)
 
+      authenticated_as(create(:agent, groups: []))
+      get "/api/v1/ticket_related/#{ticket1.id}", params: {}, as: :json
+      expect(response).to have_http_status(:forbidden)
+
       authenticated_as(customer)
       get "/api/v1/ticket_related/#{ticket1.id}", params: {}, as: :json
       expect(response).to have_http_status(:forbidden)

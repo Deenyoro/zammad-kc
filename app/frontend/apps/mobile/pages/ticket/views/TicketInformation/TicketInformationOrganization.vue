@@ -30,6 +30,7 @@ const organizationId = computed(() => ticket.value?.organization?.id)
 
 const {
   organization,
+  organizationMembers,
   organizationQuery,
   loading: organizationLoading,
   objectAttributes,
@@ -79,7 +80,7 @@ const ticketsData = computed(() => getTicketData(organization.value))
     </ObjectAttributes>
 
     <OrganizationMembersList
-      :organization="organization"
+      :members="organizationMembers"
       :disable-show-more="organizationLoading"
       @load-more="fetchMoreMembers()"
     />

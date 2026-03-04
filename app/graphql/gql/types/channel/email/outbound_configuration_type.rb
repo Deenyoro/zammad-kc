@@ -8,7 +8,6 @@ module Gql::Types
     field :host, String, description: 'Hostname for the email service to connect to'
     field :port, Integer
     field :user, String, description: 'Username for the email service to connect with'
-    field :password, String
     field :ssl_verify, Boolean, description: 'Whether to perform SSL verification'
   end
 end

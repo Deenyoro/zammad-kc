@@ -3,6 +3,7 @@
 <script setup lang="ts">
 import { computed, toRef } from 'vue'
 
+import { SECONDARY_ORGANIZATIONS_FETCH_COUNT } from '#shared/entities/user/composables/useUserDetail.ts'
 import { useUserEntity } from '#shared/entities/user/composables/useUserEntity.ts'
 import { useUserUpdatesSubscription } from '#shared/graphql/subscriptions/userUpdates.api.ts'
 import type { User } from '#shared/graphql/types.ts'
@@ -28,6 +29,7 @@ new SubscriptionHandler(
     () => ({
       userId: user.value!.id,
       initial: true,
+      secondaryOrganizationsCount: SECONDARY_ORGANIZATIONS_FETCH_COUNT,
     }),
     () => ({
       // NB: User detail view has its own subscription handling, avoid double subscriptions.

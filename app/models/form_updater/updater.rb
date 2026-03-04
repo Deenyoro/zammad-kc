@@ -19,8 +19,8 @@ class FormUpdater::Updater
     @flags  = {}
 
     # Build lookup for relation fields for better usage.
-    @relation_fields = relation_fields.each_with_object({}) do |relation_field, lookup|
-      lookup[relation_field[:name]] = relation_field.to_h
+    @relation_fields = relation_fields.to_h do |relation_field|
+      [relation_field[:name], relation_field.to_h]
     end
   end
 

@@ -1,6 +1,8 @@
 # Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class ExternalCredentialsController < ApplicationController
+  include ExternalCredential::SensitiveAttributes
+
   prepend_before_action :authenticate_and_authorize!
 
   def index

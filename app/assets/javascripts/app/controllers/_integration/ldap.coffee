@@ -182,7 +182,7 @@ class Form extends App.Controller
   setConfig: (value) =>
     @item.name = value.name
     @item.active = value.active
-    @item.preferences = _.omit(value, ['id', 'name', 'active'])
+    @item.preferences = _.omit(value, ['id', 'name', 'active', 'ldap_source_id'])
     @item.save(
       done: =>
         @showIndex()
@@ -521,6 +521,7 @@ class ConnectionWizard extends App.ControllerWizardModal
     params.host       = @wizardConfig.host
     params.ssl        = @wizardConfig.ssl
     params.ssl_verify = @wizardConfig.ssl_verify
+    params.ldap_source_id = @wizardConfig.id if @wizardConfig.id
     @ajax(
       id:   'ldap_bind'
       type: 'POST'
@@ -820,7 +821,7 @@ class LdapSourceIndex extends App.ControllerGenericIndex
         item = new App.LdapSource(
           name: config.name
           active: config.active
-          preferences: _.omit(config, ['id', 'name', 'active'])
+          preferences: _.omit(config, ['id', 'name', 'active', 'ldap_source_id'])
         )
         item.save(
           done: ->

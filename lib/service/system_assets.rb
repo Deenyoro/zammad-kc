@@ -2,7 +2,7 @@
 
 module Service
   class SystemAssets
-    SendableAsset = Struct.new(:content, :filename, :type, keyword_init: true)
+    SendableAsset = Struct.new(:content, :filename, :type)
 
     def self.backend(identifier)
       "#{name}::#{identifier.camelize}".safe_constantize

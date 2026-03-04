@@ -2,7 +2,7 @@
 
 class KnowledgeBase
   class AccessibleCategories
-    CategoriesStruct = Struct.new(:editor, :reader, :public_reader, keyword_init: true) do
+    CategoriesStruct = Struct.new(:editor, :reader, :public_reader) do
       def initialize(editor: [], reader: [], public_reader: [])
         super
       end

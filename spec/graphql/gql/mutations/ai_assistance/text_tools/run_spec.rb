@@ -7,7 +7,7 @@ RSpec.describe Gql::Mutations::AIAssistance::TextTools::Run, :aggregate_failures
     let(:agent)            { create(:agent) }
     let(:input)            { Faker::Lorem.unique.sentence }
     let(:ai_analytics_run) { create(:ai_analytics_run) }
-    let(:output)           { Struct.new(:content, :stored_result, :ai_analytics_run, :fresh, keyword_init: true).new(content: Faker::Lorem.unique.paragraph, stored_result: nil, ai_analytics_run: ai_analytics_run, fresh: false) }
+    let(:output)           { Struct.new(:content, :stored_result, :ai_analytics_run, :fresh).new(content: Faker::Lorem.unique.paragraph, stored_result: nil, ai_analytics_run: ai_analytics_run, fresh: false) }
     let(:text_tool)        { create(:ai_text_tool) }
 
     let(:query) do

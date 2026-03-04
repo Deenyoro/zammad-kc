@@ -2,6 +2,8 @@
 
 class ExternalCredential < ApplicationModel
   include ApplicationLib
+  include CanSensitiveAssets
+  include ExternalCredential::SensitiveAttributes
 
   validates :name, presence: true
   store     :credentials

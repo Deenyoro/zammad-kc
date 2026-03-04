@@ -114,7 +114,7 @@ RSpec.describe ObjectManager::Attribute::SetDefaults, time_zone: 'Europe/London'
 
     context 'when overriding default to empty value' do
       subject(:example) do
-        params = DEFAULT_VALUES.keys.each_with_object({}) { |elem, memo| memo["rspec_#{elem}"] = nil }
+        params = DEFAULT_VALUES.keys.to_h { |elem| ["rspec_#{elem}", nil] }
         create(:ticket, params)
       end
 
