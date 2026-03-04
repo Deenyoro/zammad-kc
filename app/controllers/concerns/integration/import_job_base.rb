@@ -70,7 +70,7 @@ module Integration::ImportJobBase
     end
 
     if job
-      model_show_render_item(job)
+      model_item_render(job)
     else
       render json: {}
     end

@@ -10,7 +10,7 @@ RSpec.describe 'Ticket Zoom > Text Tools Analytics', authenticated_as: :authenti
   let(:reply_body)       { Faker::Lorem.unique.paragraph }
 
   let(:ai_service_text_tool_result) do
-    Struct.new(:content, :stored_result, :ai_analytics_run, :fresh, keyword_init: true).new(
+    Struct.new(:content, :stored_result, :ai_analytics_run, :fresh).new(
       content:          Faker::Lorem.unique.paragraph,
       stored_result:    nil,
       ai_analytics_run:,

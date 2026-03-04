@@ -16,8 +16,8 @@ FactoryBot.define do
     public_holidays do
       next if public_holiday_date.blank?
 
-      Array(public_holiday_date).each_with_object({}) do |elem, memo|
-        memo[elem.to_s] = { active: true, summary: 'public holiday trait' }
+      Array(public_holiday_date).to_h do |elem|
+        [elem.to_s, { active: true, summary: 'public holiday trait' }]
       end
     end
 

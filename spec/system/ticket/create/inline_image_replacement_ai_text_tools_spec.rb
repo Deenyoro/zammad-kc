@@ -16,7 +16,7 @@ RSpec.describe 'Ticket create > Inline Image Replacement for AI Text Tools', aut
   end
 
   let(:ai_service_text_tool_result) do
-    Struct.new(:content, :stored_result, :ai_analytics_run, :fresh, keyword_init: true).new(
+    Struct.new(:content, :stored_result, :ai_analytics_run, :fresh).new(
       content:          'This is a funny text with multiple images:<br>[[IMAGE_PLACEHOLDER_1]]<br>[[IMAGE_PLACEHOLDER_2]]<br>(AI EDITED)',
       stored_result:    nil,
       ai_analytics_run: create(:ai_analytics_run),

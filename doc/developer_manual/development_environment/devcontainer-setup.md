@@ -10,6 +10,7 @@ configure dependencies.
 ### Stack options
 
 - Default
+- With Mailserver (for local email testing)
 - With Ollama (for local AI playground)
 - With Selenium (for integration tests)
 

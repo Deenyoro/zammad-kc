@@ -6,8 +6,8 @@ module Taskbar::List
 
   class_methods do
     def reorder_list(user, order)
-      order_as_hash = order.each_with_object({}) do |elem, sum|
-        sum[elem[:id]] = elem[:prio]
+      order_as_hash = order.to_h do |elem|
+        [elem[:id], elem[:prio]]
       end
 
       ActiveRecord::Base.transaction do |transaction|

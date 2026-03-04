@@ -331,6 +331,12 @@ class String
     text.chomp
   end
 
+  def contains_html?
+    text = CGI.escapeHTML(self)
+    text.gsub!('&amp;amp;', '&amp;')
+    self != text
+  end
+
 =begin
 
   html = text_string.text2html

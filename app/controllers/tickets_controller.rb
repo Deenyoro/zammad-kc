@@ -247,7 +247,7 @@ class TicketsController < ApplicationController
 
     # overwrite params
     if !current_user.permissions?('ticket.agent')
-      %i[owner owner_id customer customer_id organization organization_id preferences].each do |key|
+      %i[group group_id owner owner_id customer customer_id organization organization_id preferences].each do |key|
         clean_params.delete(key)
       end
     end
@@ -313,6 +313,8 @@ class TicketsController < ApplicationController
   def ticket_related
 
     ticket = Ticket.find(params[:ticket_id])
+    authorize!(ticket, :show?)
+
     assets = ticket.assets({})
 
     tickets = TicketPolicy::ReadScope.new(current_user).resolve

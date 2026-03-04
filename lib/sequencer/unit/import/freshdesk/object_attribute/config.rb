@@ -147,8 +147,8 @@ class Sequencer::Unit::Import::Freshdesk::ObjectAttribute::Config < Sequencer::U
   end
 
   def options
-    resource['choices'].each_with_object({}) do |choice, result|
-      result[choice] = choice
+    resource['choices'].to_h do |choice|
+      [choice, choice]
     end
   end
 end

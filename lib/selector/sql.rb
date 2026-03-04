@@ -1,6 +1,8 @@
 # Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class Selector::Sql < Selector::Base
+  VALID_BLOCK_OPERATORS = %w[AND OR NOT].freeze
+
   VALID_OPERATORS = [
     'after (absolute)',
     'after (relative)',
@@ -85,6 +87,8 @@ class Selector::Sql < Selector::Base
   end
 
   def run_block(block, level)
+    validate_block_operator!(block)
+
     block_query = block[:conditions].map do |sub_block|
       run(sub_block, level + 1)
     end
@@ -621,11 +625,15 @@ class Selector::Sql < Selector::Base
     raise 'unknown selector'
   end
 
-  def validate_operator!(condition)
-    if condition[:operator].blank?
-      raise "Invalid condition, operator missing #{condition.inspect}"
-    end
+  def validate_block_operator!(condition)
+    raise "Invalid condition, block operator missing #{condition.inspect}" if condition[:operator].blank?
+    return true if self.class.valid_block_operator?(condition[:operator])
 
+    raise "Invalid condition, block operator '#{condition[:operator]}' is invalid #{condition.inspect}"
+  end
+
+  def validate_operator!(condition)
+    raise "Invalid condition, operator missing #{condition.inspect}" if condition[:operator].blank?
     return true if self.class.valid_operator?(condition[:operator])
 
     raise "Invalid condition, operator '#{condition[:operator]}' is invalid #{condition.inspect}"
@@ -668,6 +676,10 @@ class Selector::Sql < Selector::Base
 
   def update_action_requires_changed_attributes?(condition, check)
     condition[:value] == 'update' && check && options[:changes_required] && changed_attributes.blank?
+  end
+
+  def self.valid_block_operator?(operator)
+    VALID_BLOCK_OPERATORS.include?(operator)
   end
 
   def self.valid_operator?(operator)

@@ -1671,14 +1671,12 @@ RSpec.describe 'User', performs_jobs: true, type: :request do
     let(:user) { create(:user) }
     let(:avatar_mime_type) { 'image/png' }
     let(:avatar) do
-      file = File.open('test/data/image/1000x1000.png', 'rb')
-      contents = file.read
       Avatar.add(
         object:        'User',
         o_id:          user.id,
         default:       true,
         resize:        {
-          content:   contents,
+          content:   File.binread('test/data/image/1000x1000.png'),
           mime_type: avatar_mime_type,
         },
         source:        'web',

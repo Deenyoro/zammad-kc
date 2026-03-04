@@ -218,7 +218,7 @@ returns
 
                      article.preferences[:signature_detection] = signature_line
                      article.save if article.changed?
-    end
+                   end
     true
   end
 

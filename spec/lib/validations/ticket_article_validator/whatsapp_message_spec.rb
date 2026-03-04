@@ -128,7 +128,7 @@ RSpec.describe Validations::TicketArticleValidator::WhatsappMessage do
       instance = build(:whatsapp_article, :with_prepended_attachment,
                        sender_name: 'Agent',
                        ticket:,
-                       attachment:  File.open('spec/fixtures/files/upload/test.rtf'))
+                       attachment:  fixture_file_upload('spec/fixtures/files/upload/test.rtf', 'application/rtf'))
 
       described_class.new(instance).validate
 

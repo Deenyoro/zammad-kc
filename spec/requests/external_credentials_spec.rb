@@ -62,6 +62,28 @@ RSpec.describe 'External Credentials', type: :request do
           expect(json_response).to eq([])
         end
       end
+
+      context 'with some content' do
+        let(:credential) { create(:facebook_credential) }
+
+        before { credential }
+
+        it 'responds with sanitized data' do
+          get '/api/v1/external_credentials?expand=true', as: :json
+
+          expect(response).to have_http_status(:ok)
+          expect(json_response).to include(
+            include(
+              'id'          => credential.id,
+              'name'        => credential.name,
+              'credentials' => {
+                'application_id'     => credential[:credentials][:application_id],
+                'application_secret' => SensitiveParamsHelper::SENSITIVE_MASK,
+              }
+            )
+          )
+        end
+      end
     end
 
     context 'for Facebook' do

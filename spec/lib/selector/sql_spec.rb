@@ -934,7 +934,8 @@ RSpec.describe Selector::Sql do
   end
 
   describe '.valid?' do
-    let(:instance) { described_class.new(selector: { operator: 'AND', conditions: [ condition ] }, options: {}) }
+    let(:block_operator) { 'AND' }
+    let(:instance) { described_class.new(selector: { operator: block_operator, conditions: [ condition ] }, options: {}) }
 
     context 'with valid conditions' do
       let(:condition) do
@@ -1015,6 +1016,21 @@ RSpec.describe Selector::Sql do
 
       it 'validates' do
         expect(instance.valid?).to be true
+      end
+    end
+
+    context 'with invalid block conditions' do
+      let(:block_operator) { ';;;' }
+      let(:condition) do
+        {
+          name:          'ticket.organization_id',
+          operator:      'is',
+          pre_condition: 'not_set',
+        }
+      end
+
+      it 'does not validate' do
+        expect(instance.valid?).to be false
       end
     end
   end

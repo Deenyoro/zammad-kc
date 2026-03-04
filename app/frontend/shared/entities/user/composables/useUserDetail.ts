@@ -17,21 +17,24 @@ import { normalizeEdges } from '#shared/utils/helpers.ts'
 
 import type { WatchQueryFetchPolicy } from '@apollo/client/core'
 
+export const SECONDARY_ORGANIZATIONS_FETCH_COUNT = 5
+
 export const useUserDetail = (
   userId: Ref<string | undefined> | ComputedRef<string | undefined>,
-  initialPageSize = 5,
+  initialDisplayLimit = 5,
   additionalPageSize = 100,
   errorCallback?: (error: GraphQLHandlerError) => boolean,
-  fetchPolicy?: WatchQueryFetchPolicy,
+  fetchPolicy: WatchQueryFetchPolicy = 'cache-and-network',
   hasOrganizationCounts = false,
 ) => {
-  const fetchSecondaryOrganizationsCount = ref<number>(initialPageSize)
+  // Track whether show-more has been clicked for this instance
+  const hasLoadedMore = ref(false)
 
   const userQuery = new QueryHandler(
     useUserQuery(
       () => ({
         userId: userId.value!,
-        secondaryOrganizationsCount: initialPageSize,
+        secondaryOrganizationsCount: SECONDARY_ORGANIZATIONS_FETCH_COUNT,
         hasOrganizationCounts,
       }),
       () => ({ enabled: Boolean(userId.value), fetchPolicy }),
@@ -47,7 +50,9 @@ export const useUserDetail = (
     document: UserUpdatesDocument,
     variables: {
       userId: userId.value!,
-      secondaryOrganizationsCount: fetchSecondaryOrganizationsCount.value,
+      secondaryOrganizationsCount: hasLoadedMore.value
+        ? userResult.value?.user.secondaryOrganizations?.totalCount
+        : SECONDARY_ORGANIZATIONS_FETCH_COUNT,
       hasOrganizationCounts,
     },
     updateQuery: (_, { subscriptionData }) => {
@@ -66,37 +71,36 @@ export const useUserDetail = (
   const fetchMoreSecondaryOrganizations = () => {
     if (!user.value) return
 
-    userQuery
-      .fetchMore({
-        variables: {
-          secondaryOrganizationsCount: additionalPageSize,
-          after: userResult.value?.user.secondaryOrganizations?.pageInfo.endCursor,
-        },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult?.user.secondaryOrganizations) return previousResult
+    hasLoadedMore.value = true
 
-          const newEdges = fetchMoreResult.user.secondaryOrganizations?.edges ?? []
-          const oldEdges = previousResult.user.secondaryOrganizations?.edges ?? []
-
-          return {
-            user: {
-              ...previousResult.user,
-              secondaryOrganizations: {
-                ...fetchMoreResult.user.secondaryOrganizations,
-                edges: [...oldEdges, ...newEdges],
-              },
-            },
-          }
-        },
-      })
-      .then(() => {
-        fetchSecondaryOrganizationsCount.value += additionalPageSize
-      })
+    userQuery.fetchMore({
+      variables: {
+        secondaryOrganizationsCount: additionalPageSize,
+        after: userResult.value?.user.secondaryOrganizations?.pageInfo.endCursor,
+      },
+    })
   }
 
   const viewScreenAttributes = toRef(useUserObjectAttributesStore(), 'viewScreenAttributes')
 
-  const secondaryOrganizations = computed(() => normalizeEdges(user.value?.secondaryOrganizations))
+  const allSecondaryOrganizations = computed(() =>
+    normalizeEdges(user.value?.secondaryOrganizations),
+  )
+
+  const secondaryOrganizations = computed(() => {
+    const all = allSecondaryOrganizations.value
+
+    // Once show-more was clicked, show all cached items
+    if (hasLoadedMore.value) {
+      return all
+    }
+
+    // Initially show only initialDisplayLimit items
+    return {
+      array: all.array.slice(0, initialDisplayLimit),
+      totalCount: all.totalCount,
+    }
+  })
 
   return {
     loading,

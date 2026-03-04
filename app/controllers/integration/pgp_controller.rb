@@ -3,6 +3,8 @@
 class Integration::PGPController < ApplicationController
   prepend_before_action :authenticate_and_authorize!
 
+  SENSITIVE_FIELDS = %w[passphrase].freeze
+
   def key_list
     model_index_render(PGPKey, params)
   end

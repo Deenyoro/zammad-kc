@@ -15,5 +15,6 @@ class ApplicationController < ActionController::Base
   include ApplicationController::LogsHttpAccess
   include ApplicationController::Authorizes
   include ApplicationController::Klass
+  include ApplicationController::HandlesSensitiveParams
   include ApplicationHelper
 end

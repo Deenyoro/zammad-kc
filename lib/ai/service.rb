@@ -7,7 +7,7 @@ class AI::Service
 
   attr_reader :current_user, :context_data, :locale, :persistence_strategy, :additional_options, :regeneration_of
 
-  Result = Struct.new(:content, :stored_result, :fresh, :ai_analytics_run, keyword_init: true)
+  Result = Struct.new(:content, :stored_result, :fresh, :ai_analytics_run)
 
   def self.list
     @list ||= descendants.sort_by(&:name)

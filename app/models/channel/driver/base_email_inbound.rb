@@ -3,7 +3,7 @@
 class Channel::Driver::BaseEmailInbound < Channel::EmailParser
   ACTIVE_CHECK_INTERVAL = 20
 
-  MessageResult = Struct.new(:success, :after_action, keyword_init: true)
+  MessageResult = Struct.new(:success, :after_action)
 
   def fetchable?(_channel)
     true
