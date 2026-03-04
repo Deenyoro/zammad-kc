@@ -13,7 +13,6 @@ class AI::Provider::CustomOpenAI < AI::Provider
       model:    model_for(prompt_image:),
       messages: messages_for(prompt_system:, prompt_user:, prompt_image:),
       stream:   false,
-      store:    false,
     }
 
     request_body[:temperature] = options[:temperature]
