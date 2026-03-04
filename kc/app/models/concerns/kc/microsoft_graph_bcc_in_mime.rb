@@ -23,6 +23,9 @@ module Kc
       if mail.bcc.present?
         bcc_value = Array(mail.bcc).join(', ')
         mime_string = "Bcc: #{bcc_value}\r\n#{mime_string}"
+        Rails.logger.info "KC: MicrosoftGraphBccInMime — injected Bcc header: #{bcc_value}"
+      else
+        Rails.logger.info "KC: MicrosoftGraphBccInMime — no bcc on mail object"
       end
 
       headers = { 'Content-Type' => 'text/plain' }
