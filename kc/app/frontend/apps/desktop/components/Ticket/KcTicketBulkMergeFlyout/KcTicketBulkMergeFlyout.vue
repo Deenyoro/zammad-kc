@@ -3,6 +3,7 @@
      calls the KC REST API /api/v1/kc/bulk_merge. -->
 
 <script setup lang="ts">
+import gql from 'graphql-tag'
 import { computed, ref } from 'vue'
 
 import {
@@ -12,16 +13,50 @@ import {
 import Form from '#shared/components/Form/Form.vue'
 import type { FormSubmitData } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
-import { defineFormSchema } from '#shared/form/defineFormSchema.ts'
 import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 import { i18n } from '#shared/i18n.ts'
+import { getApolloClient } from '#shared/server/apollo/client.ts'
+
+import CommonLabel from '#shared/components/CommonLabel/CommonLabel.vue'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonFlyout from '#desktop/components/CommonFlyout/CommonFlyout.vue'
-
 import { closeFlyout } from '#desktop/components/CommonFlyout/useFlyout.ts'
+import type { TicketRelationAndRecentListItem } from '#desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/types.ts'
+import { useTargetTicketOptions } from '#desktop/pages/ticket/composables/useTargetTicketOptions.ts'
 
 import { kcApiFetch } from '#shared/composables/useKcApi.ts'
+
+import KcSelectedTicketsList from './KcSelectedTicketsList.vue'
+
+// Inline fragment for reading ticket data from Apollo cache.
+// These fields match TicketRelationAndRecentListItem requirements.
+const TICKET_CACHE_FRAGMENT = gql`
+  fragment KcBulkMergeTicket on Ticket {
+    id
+    internalId
+    number
+    title
+    createdAt
+    stateColorCode
+    customer {
+      id
+      fullname
+    }
+    organization {
+      id
+      name
+    }
+    state {
+      id
+      name
+    }
+    group {
+      id
+      name
+    }
+  }
+`
 
 interface Props {
   ticketIds: ID[]
@@ -33,39 +68,47 @@ const emit = defineEmits<{
   success: []
 }>()
 
-const { form, formNodeId } = useForm()
+const { form, formNodeId, updateFieldValues, onChangedField } = useForm()
+
+const {
+  formListTargetTicketOptions,
+  targetTicketId,
+  handleTicketClick,
+} = useTargetTicketOptions(onChangedField, updateFieldValues)
 
 const flyoutName = 'kc-tickets-bulk-merge'
 
-const formSchema = defineFormSchema([
+// Read selected tickets from Apollo cache (populated by overview query)
+const selectedTickets = computed<TicketRelationAndRecentListItem[]>(() => {
+  const client = getApolloClient()
+  const tickets: TicketRelationAndRecentListItem[] = []
+
+  for (const id of props.ticketIds) {
+    const data = client.cache.readFragment<TicketRelationAndRecentListItem>({
+      id: client.cache.identify({ __typename: 'Ticket', id }),
+      fragment: TICKET_CACHE_FRAGMENT,
+    })
+    if (data) tickets.push(data)
+  }
+
+  return tickets
+})
+
+// Raw schema array (not defineFormSchema) — matches upstream pattern for
+// passing options to the ticket field type.
+const mergeFormSchema = [
   {
-    isLayout: true,
-    component: 'FormGroup',
-    children: [
-      {
-        isLayout: true,
-        component: 'CommonLabel',
-        children: {
-          if: '$ticketIdsCount === 1',
-          then: '$t("Merge %s ticket into parent:", $ticketIdsCount)',
-          else: '$t("Merge %s tickets into parent:", $ticketIdsCount)',
-        },
-      },
-      {
-        name: 'parent_ticket_id',
-        type: 'ticket',
-        label: __('Parent ticket'),
-        required: true,
-        props: {
-          clearable: true,
-        },
-      },
-    ],
+    name: 'targetTicketId',
+    type: 'ticket',
+    label: __('Parent ticket'),
+    options: formListTargetTicketOptions,
+    clearable: true,
+    required: true,
   },
-])
+]
 
 interface BulkMergeFormData {
-  parent_ticket_id: string
+  targetTicketId: string
 }
 
 interface BulkMergeResponse {
@@ -78,19 +121,13 @@ const { notify } = useNotifications()
 
 const submitting = ref(false)
 
-const ticketIdsCount = computed(() => props.ticketIds.length)
-
-const schemaData = computed(() => ({
-  ticketIdsCount: ticketIdsCount.value,
-}))
-
 const submitMerge = async (formData: FormSubmitData<BulkMergeFormData>) => {
   submitting.value = true
 
   try {
     // Convert GraphQL IDs to internal IDs for the REST API
     const childIds = props.ticketIds.map((id) => getIdFromGraphQLId(id))
-    const parentId = getIdFromGraphQLId(formData.parent_ticket_id)
+    const parentId = getIdFromGraphQLId(formData.targetTicketId)
 
     const result = await kcApiFetch<BulkMergeResponse>('/bulk_merge', {
       method: 'POST',
@@ -131,14 +168,29 @@ const submitMerge = async (formData: FormSubmitData<BulkMergeFormData>) => {
     size="medium"
     no-close-on-action
   >
-    <Form
-      id="form-kc-tickets-bulk-merge"
-      ref="form"
-      should-autofocus
-      :schema="formSchema"
-      :schema-data="schemaData"
-      @submit="submitMerge($event as FormSubmitData<BulkMergeFormData>)"
-    />
+    <div class="space-y-6">
+      <CommonLabel>
+        {{
+          ticketIds.length === 1
+            ? $t('Merge %s ticket into parent:', ticketIds.length)
+            : $t('Merge %s tickets into parent:', ticketIds.length)
+        }}
+      </CommonLabel>
+
+      <Form
+        id="form-kc-tickets-bulk-merge"
+        ref="form"
+        should-autofocus
+        :schema="mergeFormSchema"
+        @submit="submitMerge($event as FormSubmitData<BulkMergeFormData>)"
+      />
+
+      <KcSelectedTicketsList
+        :tickets="selectedTickets"
+        :selected-ticket-id="targetTicketId"
+        @click-ticket="handleTicketClick"
+      />
+    </div>
     <template #footer="{ close }">
       <div class="flex items-center justify-end gap-4">
         <CommonButton size="large" variant="secondary" @click="close">

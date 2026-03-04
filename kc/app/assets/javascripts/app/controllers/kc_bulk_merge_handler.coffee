@@ -108,13 +108,81 @@ class KcBulkMergeModal extends App.ControllerModal
   constructor: (options = {}) ->
     @ticketIds = options.ticketIds || []
     @parentTicketId = null
+    @ensureStyles()
     super
+
+  ensureStyles: ->
+    return if $('#kc-bulk-merge-styles').length > 0
+    $('<style id="kc-bulk-merge-styles">').text("""
+      .kc-bulk-merge-list {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0 0;
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+      }
+      .kc-bulk-merge-list-item {
+        padding: 8px 12px;
+        cursor: pointer;
+        border-bottom: 1px solid #eee;
+      }
+      .kc-bulk-merge-list-item:hover {
+        background: #f5f5f5;
+      }
+      .kc-bulk-merge-list-item--empty {
+        padding: 8px 12px;
+        color: #999;
+        cursor: default;
+      }
+      .kc-bulk-merge-section-label {
+        font-weight: bold;
+        margin: 10px 0 5px;
+        color: #333;
+        font-size: 12px;
+      }
+      .kc-bulk-merge-section-label--first {
+        margin-top: 0;
+      }
+      .kc-bulk-merge-selected-info {
+        margin-top: 10px;
+        padding: 8px 12px;
+        background: #e8f4e8;
+        border-radius: 3px;
+      }
+    """).appendTo('head')
 
   content: ->
     el = $('<div>')
 
     el.append(
       $('<p>').text(App.i18n.translateInline('Select the parent ticket to merge %s ticket(s) into:', @ticketIds.length))
+    )
+
+    # --- Selected Tickets section ---
+    el.append(
+      $('<div>').addClass('kc-bulk-merge-section-label kc-bulk-merge-section-label--first')
+        .text(App.i18n.translateInline('Selected Tickets'))
+    )
+
+    selectedList = $('<ul>').addClass('kc-bulk-merge-list')
+    for ticketId in @ticketIds
+      do (ticketId) =>
+        ticket = App.Ticket.find(ticketId)
+        if ticket
+          li = $('<li>')
+            .addClass('kc-bulk-merge-list-item')
+            .attr('data-ticket-id', ticket.id)
+            .text("##{ticket.number} - #{ticket.title}")
+            .on('click', => @selectParent(ticket))
+          selectedList.append(li)
+    el.append(selectedList)
+
+    # --- Search section ---
+    el.append(
+      $('<div>').addClass('kc-bulk-merge-section-label')
+        .text(App.i18n.translateInline('Or search for another ticket:'))
     )
 
     @searchInput = $('<input>')
@@ -125,25 +193,10 @@ class KcBulkMergeModal extends App.ControllerModal
 
     el.append(@searchInput)
 
-    @resultsList = $('<ul>').css(
-      'list-style':    'none'
-      'padding':       '0'
-      'margin':        '10px 0 0'
-      'max-height':    '200px'
-      'overflow-y':    'auto'
-      'border':        '1px solid #ddd'
-      'border-radius': '3px'
-      'display':       'none'
-    )
+    @resultsList = $('<ul>').addClass('kc-bulk-merge-list').hide()
     el.append(@resultsList)
 
-    @selectedInfo = $('<div>').css(
-      'display':       'none'
-      'margin-top':    '10px'
-      'padding':       '8px 12px'
-      'background':    '#e8f4e8'
-      'border-radius': '3px'
-    )
+    @selectedInfo = $('<div>').addClass('kc-bulk-merge-selected-info').hide()
     el.append(@selectedInfo)
 
     # Bind search after modal render
@@ -161,10 +214,28 @@ class KcBulkMergeModal extends App.ControllerModal
     @delay((=> @doSearch(query)), 300, 'kc-merge-search')
 
   doSearch: (query) =>
+    # Strip ticket_hook prefix (e.g. "Ticket#") for number detection
+    ticketHook = App.Config.get('ticket_hook') || ''
+    cleanQuery = query
+    if ticketHook && cleanQuery.indexOf(ticketHook) is 0
+      cleanQuery = cleanQuery.substring(ticketHook.length).trim()
+
+    # Detect numeric query for direct number search
+    isNumeric = /^\d+$/.test(cleanQuery)
+
+    requestData = { limit: 10 }
+
+    if isNumeric
+      # Use condition parameter for exact number matching via SQL path
+      requestData.query = ''
+      requestData.condition = JSON.stringify({ 'ticket.number': { operator: 'contains', value: cleanQuery } })
+    else
+      requestData.query = query
+
     App.Ajax.request(
       type: 'GET'
       url:  "#{App.Config.get('api_path')}/tickets/search?full=true"
-      data: { query: query, limit: 10 }
+      data: requestData
       success: (data) =>
         try
           App.Collection.loadAssets(data.assets) if data.assets
@@ -184,7 +255,7 @@ class KcBulkMergeModal extends App.ControllerModal
 
     if tickets.length is 0
       @resultsList.append(
-        $('<li>').css({ padding: '8px 12px', color: '#999' })
+        $('<li>').addClass('kc-bulk-merge-list-item--empty')
           .text(App.i18n.translateInline('No tickets found'))
       )
       @resultsList.show()
@@ -192,14 +263,10 @@ class KcBulkMergeModal extends App.ControllerModal
 
     for ticket in tickets
       do (ticket) =>
-        li = $('<li>').css(
-          'padding':       '8px 12px'
-          'cursor':        'pointer'
-          'border-bottom': '1px solid #eee'
-        ).attr('data-ticket-id', ticket.id)
+        li = $('<li>')
+          .addClass('kc-bulk-merge-list-item')
+          .attr('data-ticket-id', ticket.id)
           .text("##{ticket.number} - #{ticket.title}")
-          .on('mouseenter', -> $(this).css('background', '#f5f5f5'))
-          .on('mouseleave', -> $(this).css('background', '#fff'))
           .on('click', => @selectParent(ticket))
 
         @resultsList.append(li)
