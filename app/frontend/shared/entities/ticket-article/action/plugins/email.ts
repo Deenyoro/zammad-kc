@@ -129,6 +129,7 @@ const actionPlugin: TicketArticleActionPlugin = {
     const fields: Partial<TicketFieldsType> = {
       to: { required: true },
       cc: {},
+      bcc: {}, // KC: BCC field
       subject: {},
       body: {
         required: true,
