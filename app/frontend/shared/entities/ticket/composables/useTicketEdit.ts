@@ -136,6 +136,13 @@ export const useTicketEdit = (
       body: article.body,
       internal: article.internal,
       cc: article.cc,
+      // KC: Read BCC from window bridge (set by kc_bcc_field.ts plugin)
+      bcc: (window as any).__kcBccValue
+        ? String((window as any).__kcBccValue)
+            .split(',')
+            .map((s: string) => s.trim())
+            .filter(Boolean)
+        : undefined,
       to: article.to,
       subject: article.subject,
       subtype: article.subtype,
@@ -176,6 +183,9 @@ export const useTicketEdit = (
     }
 
     const article = processArticle(form.value.formId, formArticle, shouldPreserveTextColor)
+
+    // KC: Clear BCC value after consumption so it doesn't leak to subsequent submits
+    ;(window as any).__kcBccValue = ''
 
     const { internalObjectAttributeValues, additionalObjectAttributeValues } =
       useObjectAttributeFormData(
