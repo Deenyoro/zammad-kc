@@ -12,7 +12,7 @@ RSpec.shared_examples 'CanPerformChanges', :aggregate_failures do |object_name:,
     end
 
     before do
-      stub_const('PERFORMABLE_STRUCT', Struct.new(:id, :perform, keyword_init: true))
+      stub_const('PERFORMABLE_STRUCT', Struct.new(:id, :perform))
     end
 
     context 'when data privacy deletion task should be created', if: data_privacy_deletion_task do

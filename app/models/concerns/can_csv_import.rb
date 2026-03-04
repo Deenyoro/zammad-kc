@@ -70,7 +70,7 @@ returns
         raise "Unable to parse empty file/string for #{self}." if data[:string].blank?
         raise "Unable to parse file/string without header for #{self}." if header.blank?
         raise "No records found in file/string for #{self}." if rows.first.blank?
-        raise "No lookup column like #{lookup_keys.map(&:to_s).join(',')} for #{self} found." if !header.intersect?(lookup_keys.map(&:to_s))
+        raise "No lookup column like #{lookup_keys.join(',')} for #{self} found." if !header.intersect?(lookup_keys.map(&:to_s))
       rescue => e
         return {
           try:    try,
@@ -83,7 +83,7 @@ returns
       payload = rows.map do |row|
         header.zip(row).to_h
                 .compact.transform_values(&:strip)
-                .transform_values { |value| (value.include?('~~~') ? value.split('~~~') : value) }
+                .transform_values { |value| value.include?('~~~') ? value.split('~~~') : value }
                 .except(nil).transform_keys(&:to_sym)
                 .except(*csv_attributes_ignored)
                 .merge(data[:fixed_params] || {})

@@ -18,3 +18,7 @@ Rails.application.config.filter_parameters += [
   %r{.+key}i,  # privateKey, apiKey, ...
   %r{.+cert}i, # idp_cert, idpCert, …
 ]
+
+# NOTE: Besides this global logging filter, Zammad also masks/unmasks sensitive parameters in controllers,
+#   which uses different logic. Check `app/controllers/application_controller/handles_sensitive_params.rb`
+#   and other files overriding the `sensitive_attributes` method for details.`

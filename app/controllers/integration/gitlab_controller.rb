@@ -3,8 +3,12 @@
 class Integration::GitLabController < ApplicationController
   prepend_before_action :authenticate_and_authorize!
 
+  SENSITIVE_FIELDS = [:api_token].freeze
+
   def verify
-    gitlab = ::GitLab.new(endpoint: params[:endpoint], api_token: params[:api_token], verify_ssl: params[:verify_ssl])
+    unmasked_params = unmask_sensitive_params(params, Setting.get('gitlab_config'))
+
+    gitlab = ::GitLab.new(endpoint: unmasked_params[:endpoint], api_token: unmasked_params[:api_token], verify_ssl: unmasked_params[:verify_ssl])
 
     gitlab.verify!
 

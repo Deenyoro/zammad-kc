@@ -37,7 +37,8 @@ RSpec.describe 'Integration PGP', :aggregate_failures, authenticated_as: :user, 
             'name'            => pgp_key.name,
             'email_addresses' => pgp_key.email_addresses,
             'expires_at'      => pgp_key.expires_at,
-            'secret'          => false
+            'secret'          => false,
+            'passphrase'      => SensitiveParamsHelper::SENSITIVE_MASK,
           )
         end
       end
@@ -107,7 +108,8 @@ RSpec.describe 'Integration PGP', :aggregate_failures, authenticated_as: :user, 
             'name'            => pgp_key.name,
             'email_addresses' => pgp_key.email_addresses,
             'expires_at'      => pgp_key.expires_at,
-            'secret'          => false
+            'secret'          => false,
+            'passphrase'      => SensitiveParamsHelper::SENSITIVE_MASK,
           )
         end
       end

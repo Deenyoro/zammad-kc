@@ -1,8 +1,26 @@
 # Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class Channel < ApplicationModel
-  include Channel::Assets
   include Channel::Area::Whatsapp
+  include CanSensitiveAssets
+
+  SENSITIVE_FIELDS = [
+    # Classic Email (IMAP, POP3, SMTP with the plain text password)
+    'options.inbound.options.password', 'options.outbound.options.password',
+
+    # XOAUTH2 email (Google, Microsoft IMAP&Graph)
+    # options.auth.access_token is also used for Facebhook (non-email)
+    'options.auth.access_token', 'options.auth.refresh_token', 'options.auth.client_secret',
+
+    # SMS (MessageBird, Masenversand, Twilio)
+    'options.token',
+
+    # Telegram
+    'options.api_token',
+
+    # Whatsapp
+    'options.access_token', 'options.app_secret',
+  ].freeze
 
   belongs_to :group, optional: true
 

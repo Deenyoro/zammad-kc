@@ -24,4 +24,11 @@ class LdapSourcesController < ApplicationController
   def destroy
     model_destroy_render(LdapSource, params)
   end
+
+  private
+
+  def sensitive_attributes(_input, _object)
+    LdapSource::SENSITIVE_FIELDS
+  end
+
 end

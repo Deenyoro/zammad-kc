@@ -46,4 +46,38 @@ RSpec.describe 'Ldap', type: :request do
       end
     end
   end
+
+  describe 'bind' do
+    let(:params) { { bind_pw: 'test' } }
+
+    context 'with unmasked password' do
+      it 'uses the password' do
+        authenticated_as(admin)
+
+        allow(Ldap).to receive(:new).and_call_original
+        post '/api/v1/integration/ldap/bind', params: params, as: :json
+        expect(Ldap).to have_received(:new).with(hash_including(bind_pw: 'test'))
+      end
+    end
+
+    context 'with masked password' do
+      let!(:ldap_source) do
+        create(:ldap_source, :with_config).tap do |ls|
+          ls.preferences[:bind_pw] = 'stored_password'
+          ls.save!
+        end
+      end
+      let(:params) { { ldap_source_id: ldap_source.id, bind_pw: SensitiveParamsHelper::SENSITIVE_MASK } }
+
+      it 'uses the stored password' do
+        authenticated_as(admin)
+
+        allow(Ldap).to receive(:new).and_call_original
+
+        post '/api/v1/integration/ldap/bind', params: params, as: :json
+
+        expect(Ldap).to have_received(:new).with(hash_including(bind_pw: 'stored_password'))
+      end
+    end
+  end
 end

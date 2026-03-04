@@ -49,7 +49,7 @@ RSpec.describe 'Integration SMIME', type: :request do
 
     context 'GET requests' do
 
-      let!(:certificate) { create(:smime_certificate, fixture: email_address) }
+      let!(:certificate) { create(:smime_certificate, fixture: email_address, private_key_secret: 'real secret') }
 
       it 'lists certificates' do
         get endpoint, as: :json
@@ -71,9 +71,15 @@ RSpec.describe 'Integration SMIME', type: :request do
           subject_alternative_name
           usage
         ]
-        expect(json_response.first['usage']).to match_array(%w[Signature Encryption])
-        expect(json_response.first['subject_alternative_name']).to include(email_address)
-        expect(json_response.any? { |e| e['id'] == certificate.id }).to be true
+
+        expect(json_response).to include(
+          include(
+            'id'                       => certificate.id,
+            'usage'                    => match_array(%w[Signature Encryption]),
+            'subject_alternative_name' => include(email_address),
+            'private_key_secret'       => SensitiveParamsHelper::SENSITIVE_MASK,
+          )
+        )
       end
     end
 

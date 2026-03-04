@@ -203,8 +203,8 @@ export const useEmailChannelConfiguration = (
 
           await validateConfigurationRoundtripAndChannelAdd(
             data,
-            inboundConfiguration,
-            outboundConfiguration,
+            { ...inboundConfiguration, password: data.password },
+            { ...outboundConfiguration, password: data.password },
           )
         } else {
           emailChannelForms.emailInbound.updateFieldValues({

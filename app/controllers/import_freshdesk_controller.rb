@@ -97,11 +97,19 @@ class ImportFreshdeskController < ApplicationController
   def import_status
     job = ImportJob.find_by(name: 'Import::Freshdesk')
 
-    if job.finished_at.present?
-      Setting.reload
+    if job.nil?
+      render json: { setup_done: true }
+      return
     end
 
-    model_show_render_item(job)
+    if job.finished_at.present?
+      Setting.reload
+
+      render json: { setup_done: true }
+      return
+    end
+
+    model_item_render(job)
   end
 
   private

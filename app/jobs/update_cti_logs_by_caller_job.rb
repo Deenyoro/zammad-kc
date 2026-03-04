@@ -10,6 +10,6 @@ class UpdateCtiLogsByCallerJob < ApplicationJob
             .offset(offset)
             .each do |log|
               log.update(preferences: preferences)
-    end
+            end
   end
 end

@@ -13,7 +13,7 @@ defineProps<Props>()
 <template>
   <button
     v-if="entities.length < totalCount"
-    class="flex min-h-[54px] items-center justify-center gap-2"
+    class="flex min-h-13.5 items-center justify-center gap-2"
     :class="{
       'cursor-default text-gray-100/50': disabled,
       'text-blue': !disabled,

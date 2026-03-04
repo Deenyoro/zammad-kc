@@ -546,7 +546,6 @@ export type ChannelEmailInboundConfiguration = {
   folder?: Maybe<Scalars['String']['output']>;
   /** Hostname for the email service to connect to */
   host?: Maybe<Scalars['String']['output']>;
-  password?: Maybe<Scalars['String']['output']>;
   port?: Maybe<Scalars['Int']['output']>;
   ssl?: Maybe<EnumChannelEmailSsl>;
   /** Whether to perform SSL verification */
@@ -597,7 +596,6 @@ export type ChannelEmailOutboundConfiguration = {
   adapter: EnumChannelEmailOutboundAdapter;
   /** Hostname for the email service to connect to */
   host?: Maybe<Scalars['String']['output']>;
-  password?: Maybe<Scalars['String']['output']>;
   port?: Maybe<Scalars['Int']['output']>;
   /** Whether to perform SSL verification */
   sslVerify?: Maybe<Scalars['Boolean']['output']>;
@@ -6069,7 +6067,7 @@ export type ChannelEmailGuessConfigurationMutationVariables = Exact<{
 }>;
 
 
-export type ChannelEmailGuessConfigurationMutation = { __typename?: 'Mutations', channelEmailGuessConfiguration?: { __typename?: 'ChannelEmailGuessConfigurationPayload', result: { __typename?: 'ChannelEmailGuessConfigurationResult', inboundConfiguration?: { __typename?: 'ChannelEmailInboundConfiguration', adapter: EnumChannelEmailInboundAdapter, host?: string | null, port?: number | null, ssl?: EnumChannelEmailSsl | null, user?: string | null, password?: string | null, sslVerify?: boolean | null, folder?: string | null } | null, outboundConfiguration?: { __typename?: 'ChannelEmailOutboundConfiguration', adapter: EnumChannelEmailOutboundAdapter, host?: string | null, port?: number | null, user?: string | null, password?: string | null, sslVerify?: boolean | null } | null, mailboxStats?: { __typename?: 'ChannelEmailInboundMailboxStats', contentMessages?: number | null } | null }, errors?: Array<{ __typename?: 'UserError', message: string, messagePlaceholder?: Array<string> | null, field?: string | null, exception?: EnumUserErrorException | null }> | null } | null };
+export type ChannelEmailGuessConfigurationMutation = { __typename?: 'Mutations', channelEmailGuessConfiguration?: { __typename?: 'ChannelEmailGuessConfigurationPayload', result: { __typename?: 'ChannelEmailGuessConfigurationResult', inboundConfiguration?: { __typename?: 'ChannelEmailInboundConfiguration', adapter: EnumChannelEmailInboundAdapter, host?: string | null, port?: number | null, ssl?: EnumChannelEmailSsl | null, user?: string | null, sslVerify?: boolean | null, folder?: string | null } | null, outboundConfiguration?: { __typename?: 'ChannelEmailOutboundConfiguration', adapter: EnumChannelEmailOutboundAdapter, host?: string | null, port?: number | null, user?: string | null, sslVerify?: boolean | null } | null, mailboxStats?: { __typename?: 'ChannelEmailInboundMailboxStats', contentMessages?: number | null } | null }, errors?: Array<{ __typename?: 'UserError', message: string, messagePlaceholder?: Array<string> | null, field?: string | null, exception?: EnumUserErrorException | null }> | null } | null };
 
 export type ChannelEmailSetNotificationConfigurationMutationVariables = Exact<{
   outboundConfiguration: ChannelEmailOutboundConfigurationInput;

@@ -6,7 +6,6 @@ import type {
   OrganizationUpdatesSubscriptionVariables,
   OrganizationUpdatesSubscription,
   Organization,
-  OrganizationQuery,
 } from '#shared/graphql/types.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import type { GraphQLHandlerError } from '#shared/types/error.ts'
@@ -18,20 +17,23 @@ import { useOrganizationObjectAttributesStore } from '../stores/objectAttributes
 
 import type { WatchQueryFetchPolicy } from '@apollo/client/core'
 
+export const SECONDARY_ORGANIZATIONS_FETCH_COUNT = 5
+
 export const useOrganizationDetail = (
   organizationId: Ref<string | undefined> | ComputedRef<string | undefined>,
-  initialPageSize = 5,
+  initialDisplayLimit = 5,
   additionalPageSize = 100,
   errorCallback?: (error: GraphQLHandlerError) => boolean,
   fetchPolicy?: WatchQueryFetchPolicy,
 ) => {
-  const fetchMembersCount = ref<number>(initialPageSize)
+  // Track whether show-more has been clicked for this instance
+  const hasLoadedMore = ref(false)
 
   const organizationQuery = new QueryHandler(
     useOrganizationQuery(
       () => ({
         organizationId: organizationId.value!,
-        first: initialPageSize,
+        first: SECONDARY_ORGANIZATIONS_FETCH_COUNT,
       }),
       () => ({
         enabled: Boolean(organizationId.value),
@@ -52,15 +54,12 @@ export const useOrganizationDetail = (
     document: OrganizationUpdatesDocument,
     variables: {
       organizationId: organizationId.value!,
-      first: fetchMembersCount.value,
-    },
-    updateQuery: (_, { subscriptionData }) => {
-      if (!subscriptionData.data?.organizationUpdates.organization)
-        return null as unknown as OrganizationQuery
-
-      return {
-        organization: subscriptionData.data.organizationUpdates.organization,
-      }
+      // Once the user has expanded the list, request enough members in each
+      // subscription update to cover all previously loaded items so that the
+      // relay-pagination cache is not silently reset to the first page only.
+      first: hasLoadedMore.value
+        ? organizationResult.value?.organization.allMembers?.totalCount
+        : SECONDARY_ORGANIZATIONS_FETCH_COUNT,
     },
   }))
 
@@ -71,37 +70,36 @@ export const useOrganizationDetail = (
   const fetchMoreMembers = () => {
     if (!organizationId) return
 
-    organizationQuery
-      .fetchMore({
-        variables: {
-          first: additionalPageSize,
-          after: organizationResult.value?.organization?.allMembers?.pageInfo.endCursor,
-        },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult?.organization.allMembers) return previousResult
+    hasLoadedMore.value = true
 
-          const newEdges = fetchMoreResult.organization.allMembers?.edges ?? []
-          const oldEdges = previousResult.organization.allMembers?.edges ?? []
-
-          return {
-            organization: {
-              ...previousResult.organization,
-              allMembers: {
-                ...fetchMoreResult.organization.allMembers,
-                edges: [...oldEdges, ...newEdges],
-              },
-            },
-          }
-        },
-      })
-      .then(() => {
-        fetchMembersCount.value += additionalPageSize
-      })
+    organizationQuery.fetchMore({
+      variables: {
+        first: additionalPageSize,
+        after: organizationResult.value?.organization?.allMembers?.pageInfo.endCursor,
+      },
+    })
   }
 
   const viewScreenAttributes = toRef(useOrganizationObjectAttributesStore(), 'viewScreenAttributes')
 
-  const organizationMembers = computed(() => normalizeEdges(organization.value?.allMembers) || [])
+  const allOrganizationMembers = computed(
+    () => normalizeEdges(organization.value?.allMembers) || [],
+  )
+
+  const organizationMembers = computed(() => {
+    const all = allOrganizationMembers.value
+
+    // Once show-more was clicked, show all cached items
+    if (hasLoadedMore.value) {
+      return all
+    }
+
+    // Initially show only initialDisplayLimit items
+    return {
+      array: all.array.slice(0, initialDisplayLimit),
+      totalCount: all.totalCount,
+    }
+  })
 
   return {
     loading,
