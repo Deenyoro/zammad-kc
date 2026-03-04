@@ -69,6 +69,7 @@ Rails.application.config.to_prepare do
   kc_prepend.call('AI::Agent::Type::TicketTitleRewriter', 'Kc::TicketTitleRewriterLanguage')
   kc_prepend.call('MicrosoftGraph::ApiError', 'Kc::MicrosoftGraphApiErrorTypeSafety')
   kc_prepend.call('MicrosoftGraph', 'Kc::MicrosoftGraphErrorHandling')
+  kc_prepend.call('MicrosoftGraph', 'Kc::MicrosoftGraphBccInMime')
   kc_prepend.call('TicketArticleCommunicateEmailJob', 'Kc::EmailColorStripSignal')
   kc_prepend.call('Service::Ticket::Article::Create', 'Kc::ArticlePreprocessBcc')
   kc_prepend.call('TicketArticleCommunicateEmailJob', 'Kc::EmailJobBcc')
