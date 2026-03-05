@@ -1,16 +1,23 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
+import { getTestRouter } from '#tests/support/components/renderComponent.ts'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { mockUserCurrent } from '#tests/support/mock-userCurrent.ts'
+import { waitForNextTick } from '#tests/support/utils.ts'
 
 import { mockFormUpdaterQuery } from '#shared/components/Form/graphql/queries/formUpdater.mocks.ts'
 import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
+import { EnumBulkUpdateStatusStatus } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
-import { waitForTicketUpdateBulkMutationCalls } from '#desktop/entities/ticket/graphql/mutations/updateBulk.mocks.ts'
+import {
+  mockTicketUpdateBulkMutation,
+  waitForTicketUpdateBulkMutationCalls,
+} from '#desktop/entities/ticket/graphql/mutations/updateBulk.mocks.ts'
 import { waitForTicketsCachedByOverviewQueryCalls } from '#desktop/entities/ticket/graphql/queries/ticketsCachedByOverview.mocks.ts'
 import { waitForUserCurrentTicketOverviewsQueryCalls } from '#desktop/entities/ticket/graphql/queries/userCurrentTicketOverviews.mocks.ts'
+import { getUserCurrentTicketBulkUpdateStatusUpdatesSubscriptionHandler } from '#desktop/entities/ticket/graphql/subscriptions/ticketBulkUpdateStatusUpdates.mocks.ts'
 
 import {
   mockDefaultOverviewQueries,
@@ -90,6 +97,16 @@ describe('Ticket Overviews > Bulk edit tickets', () => {
       },
     })
 
+    mockTicketUpdateBulkMutation({
+      ticketUpdateBulk: {
+        async: false,
+        total: 10,
+        failedCount: 0,
+        inaccessibleTicketIds: [],
+        invalidTicketIds: [],
+      },
+    })
+
     const view = await visitView('tickets/view/my_assigned')
 
     await waitForUserCurrentTicketOverviewsQueryCalls()
@@ -117,13 +134,275 @@ describe('Ticket Overviews > Bulk edit tickets', () => {
     const calls = await waitForTicketUpdateBulkMutationCalls()
 
     expect(calls.at(-1)?.variables).toEqual({
-      input: {
-        article: null,
-        stateId: convertToGraphQLId('Ticket::State', 4),
+      perform: {
+        input: {
+          article: null,
+          stateId: convertToGraphQLId('Ticket::State', 4),
+        },
       },
-      ticketIds: [ticket.id],
+      selector: {
+        ticketIds: [ticket.id],
+      },
     })
 
     expect(await waitForTicketsCachedByOverviewQueryCalls()).toHaveLength(2)
+  })
+})
+
+describe('Ticket Overviews > Async bulk update notifications', () => {
+  const setupBulkUpdateView = async () => {
+    mockDefaultOverviewQueries()
+    mockDefaultTicketsCachedByOverview({ edges: [{ node: createDummyTicket() }] })
+    mockUserCurrent({
+      permissions: { names: ['ticket.agent'] },
+      preferences: { overviews_last_used: {} },
+    })
+
+    mockFormUpdaterQuery({
+      formUpdater: {
+        fields: {
+          state_id: { options: [{ value: 4, label: 'closed' }] },
+          pending_time: { show: false },
+        },
+      },
+    })
+
+    mockTicketUpdateBulkMutation({
+      ticketUpdateBulk: {
+        async: true,
+        total: 10,
+        failedCount: 0,
+        invalidTicketIds: [],
+        inaccessibleTicketIds: [],
+      },
+    })
+
+    const view = await visitView('tickets/view/my_assigned')
+
+    await waitForUserCurrentTicketOverviewsQueryCalls()
+
+    await view.events.click(view.getByRole('checkbox', { name: 'Select this entry' }))
+    await view.events.click(view.getByRole('button', { name: 'Bulk actions' }))
+
+    const ticketState = await view.findByLabelText('State')
+    await view.events.click(ticketState)
+    await view.events.click(view.getByRole('option', { name: 'closed' }))
+    await view.events.click(view.getByRole('button', { name: 'Apply' }))
+
+    await waitForTicketUpdateBulkMutationCalls()
+
+    return view
+  }
+
+  it('shows an info notification with a progress bar once an async bulk update is pending', async () => {
+    const view = await setupBulkUpdateView()
+
+    expect(await view.findByText('Bulk action in progress…')).toBeInTheDocument()
+
+    const progressBar = view.getByRole('progressbar')
+    expect(progressBar).toBeInTheDocument()
+    expect(progressBar).toHaveAttribute('max', '10')
+  })
+
+  it('updates the progress bar as the subscription reports progress', async () => {
+    const view = await setupBulkUpdateView()
+
+    await view.findByText('Bulk action in progress…')
+
+    await getUserCurrentTicketBulkUpdateStatusUpdatesSubscriptionHandler().trigger({
+      userCurrentTicketBulkUpdateStatusUpdates: {
+        bulkUpdateStatus: {
+          status: EnumBulkUpdateStatusStatus.Running,
+          total: 10,
+          processedCount: 5,
+          failedCount: 0,
+        },
+      },
+    })
+
+    await waitForNextTick()
+
+    const progressBar = view.getByRole('progressbar')
+    expect(progressBar).toHaveAttribute('value', '5')
+    expect(progressBar).toHaveAttribute('max', '10')
+  })
+
+  it('keeps the notification visible when navigating away from the overview', async () => {
+    const view = await setupBulkUpdateView()
+
+    await view.findByText('Bulk action in progress…')
+
+    const router = getTestRouter()
+    await router.push('/dashboard')
+
+    expect(view.getByText('Bulk action in progress…')).toBeInTheDocument()
+    expect(view.getByRole('progressbar')).toBeInTheDocument()
+  })
+
+  it('hides the notification after the user dismisses it and does not show it again on subsequent updates', async () => {
+    const view = await setupBulkUpdateView()
+
+    await view.findByText('Bulk action in progress…')
+
+    await view.events.click(view.getByRole('button', { name: 'Close notification' }))
+
+    expect(view.queryByText('Bulk action in progress…')).not.toBeInTheDocument()
+
+    await getUserCurrentTicketBulkUpdateStatusUpdatesSubscriptionHandler().trigger({
+      userCurrentTicketBulkUpdateStatusUpdates: {
+        bulkUpdateStatus: {
+          status: EnumBulkUpdateStatusStatus.Running,
+          total: 10,
+          processedCount: 5,
+          failedCount: 0,
+        },
+      },
+    })
+
+    await waitForNextTick()
+
+    expect(view.queryByText('Bulk action in progress…')).not.toBeInTheDocument()
+  })
+
+  it('shows the notification after logging out and back in while a bulk update is still running', async () => {
+    mockUserCurrent({
+      permissions: { names: ['ticket.agent'] },
+      preferences: { overviews_last_used: {} },
+    })
+    mockDefaultOverviewQueries()
+    mockDefaultTicketsCachedByOverview({ edges: [{ node: createDummyTicket() }] })
+
+    const view = await visitView('tickets/view/my_assigned')
+
+    expect(view.queryByText('Bulk action in progress…')).not.toBeInTheDocument()
+
+    const router = getTestRouter()
+    await router.push('/dashboard')
+
+    await getUserCurrentTicketBulkUpdateStatusUpdatesSubscriptionHandler().trigger({
+      userCurrentTicketBulkUpdateStatusUpdates: {
+        bulkUpdateStatus: {
+          status: EnumBulkUpdateStatusStatus.Running,
+          total: 10,
+          processedCount: 5,
+          failedCount: 0,
+        },
+      },
+    })
+
+    await waitForNextTick()
+
+    await view.findByText('Bulk action in progress…')
+  })
+
+  it('shows the notification again if a new bulk update operation is started after the previous one completed', async () => {
+    mockTicketUpdateBulkMutation({
+      ticketUpdateBulk: {
+        async: true,
+        total: 10,
+        failedCount: 0,
+        invalidTicketIds: [],
+        inaccessibleTicketIds: [],
+      },
+    })
+
+    const view = await setupBulkUpdateView()
+
+    await view.findByText('Bulk action in progress…')
+
+    await getUserCurrentTicketBulkUpdateStatusUpdatesSubscriptionHandler().trigger({
+      userCurrentTicketBulkUpdateStatusUpdates: {
+        bulkUpdateStatus: {
+          status: EnumBulkUpdateStatusStatus.Succeeded,
+          total: 10,
+          processedCount: 10,
+          failedCount: 0,
+        },
+      },
+    })
+
+    await waitForNextTick()
+
+    expect(view.queryByText('Bulk action in progress…')).not.toBeInTheDocument()
+
+    // Start a new bulk update operation
+    await view.events.click(view.getByRole('checkbox', { name: 'Select this entry' }))
+    await view.events.click(view.getByRole('button', { name: 'Bulk actions' }))
+
+    const ticketState = await view.findByLabelText('State')
+    await view.events.click(ticketState)
+    await view.events.click(view.getByRole('option', { name: 'closed' }))
+    await view.events.click(view.getByRole('button', { name: 'Apply' }))
+
+    await waitForTicketUpdateBulkMutationCalls()
+
+    expect(await view.findByText('Bulk action in progress…')).toBeInTheDocument()
+  })
+
+  it('replaces the progress notification with a success notification when the operation completes', async () => {
+    const view = await setupBulkUpdateView()
+
+    await view.findByText('Bulk action in progress…')
+
+    await getUserCurrentTicketBulkUpdateStatusUpdatesSubscriptionHandler().trigger({
+      userCurrentTicketBulkUpdateStatusUpdates: {
+        bulkUpdateStatus: {
+          status: EnumBulkUpdateStatusStatus.Succeeded,
+          total: 10,
+          processedCount: 10,
+          failedCount: 0,
+        },
+      },
+    })
+
+    expect(await view.findByText('Bulk action successful for 10 ticket(s).')).toBeInTheDocument()
+    expect(view.queryByText('Bulk action in progress…')).not.toBeInTheDocument()
+    expect(view.queryByRole('progressbar')).not.toBeInTheDocument()
+  })
+
+  it('shows an additional error notification when some tickets fail during the bulk update', async () => {
+    const view = await setupBulkUpdateView()
+
+    await view.findByText('Bulk action in progress…')
+
+    await getUserCurrentTicketBulkUpdateStatusUpdatesSubscriptionHandler().trigger({
+      userCurrentTicketBulkUpdateStatusUpdates: {
+        bulkUpdateStatus: {
+          status: EnumBulkUpdateStatusStatus.Succeeded,
+          total: 10,
+          processedCount: 10,
+          failedCount: 3,
+        },
+      },
+    })
+
+    expect(await view.findByText('Bulk action successful for 7 ticket(s).')).toBeInTheDocument()
+    expect(
+      view.getByText('Bulk action failed for 3 ticket(s). Check attribute values and try again.'),
+    ).toBeInTheDocument()
+  })
+
+  it('shows only an error notification when all tickets fail during the bulk update', async () => {
+    const view = await setupBulkUpdateView()
+
+    await view.findByText('Bulk action in progress…')
+
+    await getUserCurrentTicketBulkUpdateStatusUpdatesSubscriptionHandler().trigger({
+      userCurrentTicketBulkUpdateStatusUpdates: {
+        bulkUpdateStatus: {
+          status: EnumBulkUpdateStatusStatus.Failed,
+          total: 5,
+          processedCount: 5,
+          failedCount: 5,
+        },
+      },
+    })
+
+    expect(
+      await view.findByText(
+        'Bulk action failed for 5 ticket(s). Check attribute values and try again.',
+      ),
+    ).toBeInTheDocument()
+    expect(view.queryByText(/Bulk action successful/)).not.toBeInTheDocument()
   })
 })

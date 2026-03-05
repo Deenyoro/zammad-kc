@@ -32,7 +32,7 @@ import SearchControls from '#desktop/pages/search/components/SearchControls.vue'
 import SearchEmptyMessage from '#desktop/pages/search/components/SearchEmptyMessage.vue'
 import { useDetailSearchCache } from '#desktop/pages/search/composables/useDetailSearchCache.ts'
 
-const MAX_ITEMS = 1000
+const MAX_ITEMS = 2000
 const PAGE_SIZE = 30
 
 const props = defineProps<{
@@ -321,12 +321,58 @@ const fetchNextPage = async () => {
   }
 }
 
-const { checkedTicketIds, openBulkEditFlyout, setOnSuccessCallback } = useTicketBulkEdit()
+const selectAllActive = ref(false)
+
+const {
+  checkedTicketIds,
+  bulkCount,
+  bulkHasMoreItems,
+  bulkContext,
+  openBulkEditFlyout,
+  setOnSuccessCallback,
+} = useTicketBulkEdit()
+
+const ticketSelectionBindings = computed(() => {
+  // Only the Ticket entity supports bulk actions for now
+  // Avoid warnings bind it only to the ticket search results component
+  if (selectedEntity.value !== EnumSearchableModels.Ticket) return {}
+
+  return {
+    checkedTicketIds: checkedTicketIds.value,
+    'onUpdate:checkedTicketIds': (value: typeof checkedTicketIds.value) => {
+      checkedTicketIds.value = value
+    },
+    selectAllActive: selectAllActive.value,
+    'onUpdate:selectAllActive': (value: boolean) => {
+      selectAllActive.value = value
+    },
+  }
+})
+
+watch(selectAllActive, (newValue) => {
+  if (!newValue) {
+    bulkCount.value = 0
+    bulkHasMoreItems.value = false
+
+    return
+  }
+
+  if (searchResultTotalCount.value > MAX_ITEMS) {
+    bulkCount.value = MAX_ITEMS
+    bulkHasMoreItems.value = true
+  } else {
+    bulkCount.value = searchResultTotalCount.value
+    bulkHasMoreItems.value = false
+  }
+})
 
 watch(
   sanitizedSearchTerm,
   (newValue, oldValue) => {
-    if (newValue !== oldValue) checkedTicketIds.value.clear()
+    if (newValue !== oldValue) {
+      checkedTicketIds.value.clear()
+      bulkContext.value = { searchQuery: newValue }
+    }
 
     if (newValue && detailSearchQuery.isFirstRun()) {
       searchQueriesLoad()
@@ -414,6 +460,7 @@ setOnSuccessCallback(() => {
         <component
           :is="searchPlugin.detailSearchComponent"
           :key="selectedEntity"
+          v-bind="ticketSelectionBindings"
           :table-id="`search-${selectedEntity}-table`"
           :caption="`Search result for: ${searchPlugin.label}`"
           :items="searchResultItems"

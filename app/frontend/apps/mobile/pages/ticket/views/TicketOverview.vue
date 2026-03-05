@@ -9,7 +9,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { useStickyHeader } from '#shared/composables/useStickyHeader.ts'
 import { EnumOrderDirection } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n.ts'
-import { useApplicationStore } from '#shared/stores/application.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 
 import CommonLoader from '#mobile/components/CommonLoader/CommonLoader.vue'
@@ -21,7 +20,7 @@ import { useTicketOverviews } from '#mobile/entities/ticket/composables/useTicke
 import TicketList from '../components/TicketList/TicketList.vue'
 import TicketOrderBySelector from '../components/TicketList/TicketOrderBySelector.vue'
 
-const application = useApplicationStore()
+const MAX_COUNT = 2000
 
 const props = defineProps<{
   overviewLink: string
@@ -194,7 +193,7 @@ const showRefetch = ref(false)
           :overview-ticket-count="selectedOverview.ticketCount"
           :order-by="orderBy"
           :order-direction="orderDirection"
-          :max-count="application.config.ui_ticket_overview_ticket_limit"
+          :max-count="MAX_COUNT"
           :hidden-columns="hiddenColumns"
           @refetch="showRefetch = $event"
         />

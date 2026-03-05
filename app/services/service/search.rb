@@ -15,15 +15,13 @@ class Service::Search < Service::BaseWithCurrentUser
   # @param query [String] to search for
   # @param objects [Array<ActiveRecord::Base>] searchable classes with search_preferences method present
   # @param options [Hash] options to forward to CanSearch and SearchIndexBackend. E.g. offset and limit.
+  # @option options [Boolean] :only_ids, if true, only return object ids instead of full objects (default: false)
   def initialize(current_user:, query:, objects:, options: {})
     super(current_user:)
 
     @query   = query
     @objects = objects
-    @options = options
-      .compact_blank
-      .with_defaults(limit: 10) # limit can be overriden
-      .merge!(with_total_count: true, full: true) # those options are mandatory; :only_total_count can still be passed and will override
+    @options = prepare_options(options)
   end
 
   def execute
@@ -51,13 +49,36 @@ class Service::Search < Service::BaseWithCurrentUser
       return model.search(query:, current_user:, **options)
     end
 
-    SearchIndexBackend
-      .search_by_index(query, model.name, options)
-      .tap do |result|
-        next if result.blank?
-        next if !result[:object_metadata] # in case of :only_total_count
+    result = SearchIndexBackend.search_by_index(query, model.name, options)
+    enrich_with_metadata model, result
+  end
 
-        result[:objects] = model.where_ordered_ids(result[:object_metadata].pluck(:id))
-      end
+  def enrich_with_metadata(model, result)
+    return result if result.blank?
+
+    if options[:only_ids]
+      return result.pluck(:id)
+    end
+
+    if result[:object_metadata] # if this is not :only_total_count
+      object_ids       = result[:object_metadata].pluck(:id)
+      result[:objects] = model.where_ordered_ids(object_ids)
+    end
+
+    result
+  end
+
+  def prepare_options(input)
+    output = input
+      .compact_blank
+      .with_defaults(limit: 10) # limit can be overriden
+      .merge(with_total_count: true, full: true) # those options are mandatory; :only_total_count can still be passed and will override
+
+    if output[:only_ids]
+      output[:with_total_count] = false
+      output[:full] = false
+    end
+
+    output
   end
 end
