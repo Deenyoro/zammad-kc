@@ -1,5 +1,5 @@
 class AddKcBccAccessSetting < ActiveRecord::Migration[7.2]
-  def change
+  def up
     return if !Setting.exists?(name: 'system_init_done')
 
     Setting.create_if_not_exists(
@@ -26,5 +26,9 @@ class AddKcBccAccessSetting < ActiveRecord::Migration[7.2]
       preferences: { permission: ['admin'] },
       frontend:    true,
     )
+  end
+
+  def down
+    Setting.find_by(name: 'kc_bcc_access')&.destroy
   end
 end

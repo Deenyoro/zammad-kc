@@ -14,7 +14,7 @@ class KcTeamsChatReply
   @action: (actions, ticket, article, ui) ->
     return actions if !ticket.editable()
     return actions if ticket.currentView() is 'customer'
-    return actions if article.type.name isnt 'teams_chat_message'
+    return actions if article.type?.name isnt 'teams_chat_message'
 
     actions.push {
       name: __('reply')
