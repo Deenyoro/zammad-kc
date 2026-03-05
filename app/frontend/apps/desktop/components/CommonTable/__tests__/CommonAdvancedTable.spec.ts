@@ -12,7 +12,7 @@ import { waitForNextTick } from '#tests/support/utils.ts'
 
 import { mockObjectManagerFrontendAttributesQuery } from '#shared/entities/object-attributes/graphql/queries/objectManagerFrontendAttributes.mocks.ts'
 import { createDummyTicket } from '#shared/entities/ticket-article/__tests__/mocks/ticket.ts'
-import { EnumObjectManagerObjects } from '#shared/graphql/types.ts'
+import { EnumObjectManagerObjects, EnumOrderDirection } from '#shared/graphql/types.ts'
 import { convertToGraphQLId, getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 import { i18n } from '#shared/i18n.ts'
 import type { ObjectWithId } from '#shared/types/utils.ts'
@@ -79,10 +79,12 @@ vi.mock('@vueuse/core', async (importOriginal) => {
 
 const renderTable = async (
   props: AdvancedTableProps,
-  options: ExtendedMountingOptions<AdvancedTableProps> = { form: true },
+  options: ExtendedMountingOptions<AdvancedTableProps> = {},
 ) => {
   const wrapper = renderComponent(CommonAdvancedTable, {
     router: true,
+    form: true,
+    store: true,
     ...options,
     props: {
       object: EnumObjectManagerObjects.Ticket,
@@ -108,7 +110,7 @@ describe('CommonAdvancedTable', () => {
     const wrapper = await renderTable({
       headers: tableHeaders,
       items: tableItems,
-      totalItems: 100,
+      totalItemsCount: 100,
       caption: 'Table caption',
     })
 
@@ -129,7 +131,7 @@ describe('CommonAdvancedTable', () => {
       {
         headers: tableHeaders,
         items: tableItems,
-        totalItems: 100,
+        totalItemsCount: 100,
         actions: tableActions,
         caption: 'Table caption',
       },
@@ -148,7 +150,7 @@ describe('CommonAdvancedTable', () => {
       {
         headers: tableHeaders,
         items: tableItems,
-        totalItems: 100,
+        totalItemsCount: 100,
         actions: tableActions,
         caption: 'Table caption',
       },
@@ -170,7 +172,7 @@ describe('CommonAdvancedTable', () => {
       {
         headers: tableHeaders,
         items: tableItems,
-        totalItems: 100,
+        totalItemsCount: 100,
         actions: tableActions,
         caption: 'Table caption',
       },
@@ -182,9 +184,7 @@ describe('CommonAdvancedTable', () => {
       },
     )
 
-    await expect(view.baseElement.querySelector('table')).toMatchFileSnapshot(
-      `${__filename}.snapshot.txt`,
-    )
+    await expect(view.getByRole('table')).toMatchFileSnapshot(`${__filename}.snapshot.txt`)
   })
 
   it('supports text truncation in cell content', async () => {
@@ -226,7 +226,7 @@ describe('CommonAdvancedTable', () => {
           untruncated: 'Some text not to be truncated',
         },
       ],
-      totalItems: 100,
+      totalItemsCount: 100,
       caption: 'Table caption',
     })
 
@@ -247,7 +247,7 @@ describe('CommonAdvancedTable', () => {
         headers: tableHeaders,
         items: tableItems,
         actions: tableActions,
-        totalItems: 100,
+        totalItemsCount: 100,
         caption: 'Table caption',
       },
       {
@@ -288,7 +288,7 @@ describe('CommonAdvancedTable', () => {
         },
         template: `
           <CommonAdvancedTable @click-row="mockedCallback" :headers="tableHeaders" :attributes="attributes"
-                               :items="items" :total-items="100" caption="Table caption" />`,
+                               :items="items" :total-items-count="100" caption="Table caption" />`,
       },
       { form: true },
     )
@@ -318,15 +318,15 @@ describe('CommonAdvancedTable', () => {
           name: 'foo',
         },
       ],
-      totalItems: 100,
+      totalItemsCount: 100,
       caption: 'Table caption',
     })
 
     const row = wrapper.getByTestId('table-row')
 
-    expect(row).toHaveClass('!bg-blue-800')
+    expect(row).toHaveClass('bg-blue-800!')
 
-    expect(within(row).getAllByRole('cell')[1].children[0]).toHaveClass(
+    expect(within(row).getAllByRole('cell')[1].children[0].children[0]).toHaveClass(
       'text-black! dark:text-white!',
     )
   })
@@ -349,7 +349,7 @@ describe('CommonAdvancedTable', () => {
         },
       ],
       items: [],
-      totalItems: 100,
+      totalItemsCount: 100,
       caption: 'Table caption',
     })
 
@@ -371,7 +371,7 @@ describe('CommonAdvancedTable', () => {
           },
         },
         items: [tableItems[0]],
-        totalItems: 100,
+        totalItemsCount: 100,
         caption: 'Table caption',
       },
       {
@@ -387,7 +387,7 @@ describe('CommonAdvancedTable', () => {
     expect(linkCell).not.toHaveAttribute('target')
   })
 
-  it('supports checking a item in a row', async () => {
+  it('supports selecting a row', async () => {
     const checkedItemIds = ref(new Set())
 
     const items = [
@@ -405,14 +405,18 @@ describe('CommonAdvancedTable', () => {
       {
         headers: ['label'],
         items,
-        hasCheckboxColumn: true,
-        totalItems: 100,
+        hasBulkAction: true,
+        totalItemsCount: 100,
         caption: 'Table caption',
       },
       { form: true, vModel: { checkedItemIds } },
     )
 
-    expect(wrapper.getAllByRole('checkbox')).toHaveLength(2)
+    const tbody = wrapper.getAllByRole('rowgroup')[1]
+
+    const checkboxes = within(tbody).getAllByRole('checkbox')
+
+    expect(checkboxes).toHaveLength(2)
 
     const rowCheckboxes = wrapper.getAllByRole('checkbox', {
       name: 'Select this entry',
@@ -434,7 +438,237 @@ describe('CommonAdvancedTable', () => {
     expect(await wrapper.findByLabelText('Deselect this entry')).toBeInTheDocument()
   })
 
-  it('renders checklist item as disabled if update policy is not given', async () => {
+  it('supports multi-selecting rows', async () => {
+    const checkedItemIds = ref(new Set())
+
+    const items = [
+      {
+        id: convertToGraphQLId('Ticket', 1),
+        label: 'selection data 1',
+      },
+      {
+        id: convertToGraphQLId('Ticket', 2),
+        label: 'selection data 2',
+      },
+      {
+        id: convertToGraphQLId('Ticket', 3),
+        label: 'selection data 3',
+      },
+    ]
+
+    const wrapper = await renderTable(
+      {
+        headers: ['label'],
+        items,
+        hasBulkAction: true,
+        totalItemsCount: 100,
+        caption: 'Table caption',
+      },
+      { form: true, vModel: { checkedItemIds } },
+    )
+
+    let rowCheckboxes = wrapper.getAllByRole('checkbox', {
+      name: 'Select this entry',
+    })
+
+    // Select first item.
+    await wrapper.events.click(rowCheckboxes[0])
+
+    // Press Shift key, select third item and release Shift key to select all items in between.
+    //   https://testing-library.com/docs/user-event/keyboard/
+    await wrapper.events.keyboard('{Shift>}')
+    await wrapper.events.click(rowCheckboxes[2])
+    await wrapper.events.keyboard('{/Shift}')
+
+    await waitFor(() => {
+      expect(Array.from(checkedItemIds.value.keys())).toEqual(items.map((i) => i.id))
+    })
+
+    rowCheckboxes = wrapper.getAllByRole('checkbox', {
+      name: 'Deselect this entry',
+    })
+
+    // Deselect third item.
+    await wrapper.events.click(rowCheckboxes[2])
+
+    // Press Shift key, select first item and release Shift key to deselect all items in between.
+    //   https://testing-library.com/docs/user-event/keyboard/
+    await wrapper.events.keyboard('{Shift>}')
+    await wrapper.events.click(rowCheckboxes[0])
+    await wrapper.events.keyboard('{/Shift}')
+
+    await waitFor(() => {
+      expect(Array.from(checkedItemIds.value.keys())).toEqual([])
+    })
+  })
+
+  describe('auto-select with deselection tracking', () => {
+    it('tracks deselected items when auto-select is active', async () => {
+      const checkedItemIds = ref(new Set())
+
+      const items = [
+        {
+          id: convertToGraphQLId('Ticket', 1),
+          label: 'selection data 1',
+        },
+        {
+          id: convertToGraphQLId('Ticket', 2),
+          label: 'selection data 2',
+        },
+        {
+          id: convertToGraphQLId('Ticket', 3),
+          label: 'selection data 3',
+        },
+      ]
+
+      const wrapper = await renderTable(
+        {
+          headers: ['label'],
+          items,
+          hasBulkAction: true,
+          totalItemsCount: 100,
+          caption: 'Table caption',
+        },
+        { form: true, vModel: { checkedItemIds } },
+      )
+
+      const selectAllButton = wrapper.getByRole('checkbox', {
+        name: 'Select all entries',
+      })
+
+      await wrapper.events.click(selectAllButton)
+
+      // Now deselect one item
+      const rowCheckboxes = wrapper.getAllByRole('checkbox', {
+        name: 'Deselect this entry',
+      })
+
+      await wrapper.events.click(rowCheckboxes[0])
+
+      // The deselected item should be removed from selectedItemIds
+      // but the count should consider it as deselected from the total
+      await waitFor(() => {
+        expect(checkedItemIds.value.has(items[0].id)).toBe(false)
+      })
+    })
+
+    it('does not re-add deselected items when new items load', async () => {
+      const checkedItemIds = ref(new Set())
+
+      const initialItems = [
+        {
+          id: convertToGraphQLId('Ticket', 1),
+          label: 'selection data 1',
+        },
+        {
+          id: convertToGraphQLId('Ticket', 2),
+          label: 'selection data 2',
+        },
+      ]
+
+      const wrapper = await renderTable(
+        {
+          headers: ['label'],
+          items: initialItems,
+          hasBulkAction: true,
+          totalItemsCount: 100,
+          caption: 'Table caption',
+        },
+        { form: true, vModel: { checkedItemIds } },
+      )
+
+      const selectAllButton = wrapper.getByRole('checkbox', {
+        name: 'Select all entries',
+      })
+      await wrapper.events.click(selectAllButton)
+
+      await waitFor(() => {
+        expect(checkedItemIds.value.size).toBe(2)
+      })
+
+      // Deselect one item
+      const rowCheckboxes = wrapper.getAllByRole('checkbox', {
+        name: 'Deselect this entry',
+      })
+
+      await wrapper.events.click(rowCheckboxes[0])
+
+      await waitFor(() => {
+        expect(checkedItemIds.value.size).toBe(1)
+      })
+
+      // Load more items (simulating infinite scroll)
+      const newItems = [
+        ...initialItems,
+        {
+          id: convertToGraphQLId('Ticket', 3),
+          label: 'selection data 3',
+        },
+      ]
+
+      await wrapper.rerender({
+        headers: ['label'],
+        items: newItems,
+        hasBulkAction: true,
+        totalItemsCount: 100,
+        caption: 'Table caption',
+      })
+
+      await waitForNextTick()
+
+      // The deselected item (item 1) should still be deselected
+      // Only the new item (item 3) should be auto-selected
+      expect(checkedItemIds.value.has(initialItems[0].id)).toBe(false)
+    })
+
+    it('resets auto-select state when all checked items are cleared externally', async () => {
+      const checkedItemIds = ref(new Set())
+      const selectAllActive = ref(false)
+
+      const items = [
+        {
+          id: convertToGraphQLId('Ticket', 1),
+          label: 'selection data 1',
+        },
+        {
+          id: convertToGraphQLId('Ticket', 2),
+          label: 'selection data 2',
+        },
+      ]
+
+      const wrapper = await renderTable(
+        {
+          headers: ['label'],
+          items,
+          hasBulkAction: true,
+          totalItemsCount: 100,
+          caption: 'Table caption',
+        },
+        { form: true, vModel: { checkedItemIds, selectAllActive } },
+      )
+
+      const selectAllEntriesCheckbox = wrapper.getByRole('checkbox', {
+        name: 'Select all entries',
+      })
+
+      await wrapper.events.click(selectAllEntriesCheckbox)
+
+      const selectAllResultsButton = wrapper.getByRole('button', {
+        name: 'Select all 100 results',
+      })
+
+      await wrapper.events.click(selectAllResultsButton)
+
+      await waitFor(() => expect(selectAllActive.value).toBe(true))
+
+      checkedItemIds.value = new Set()
+
+      await waitFor(() => expect(selectAllActive.value).toBe(false))
+      expect(wrapper.queryByTestId('tableMetaHeader')).not.toBeInTheDocument()
+    })
+  })
+
+  it('renders disabled checkbox if update policy is not given', async () => {
     const checkedItemIds = ref(new Set())
 
     const items = [
@@ -453,19 +687,21 @@ describe('CommonAdvancedTable', () => {
       {
         headers: ['label'],
         items,
-        hasCheckboxColumn: true,
-        totalItems: 100,
+        hasBulkAction: true,
+        totalItemsCount: 100,
         caption: 'Table caption',
       },
       { form: true, vModel: { checkedItemIds } },
     )
 
-    const rowCheckboxes = wrapper.getAllByRole('checkbox')
+    const tbody = wrapper.getAllByRole('rowgroup')[1]
+
+    const rowCheckboxes = within(tbody).getAllByRole('checkbox')
 
     expect(rowCheckboxes[0]).toBeDisabled()
   })
 
-  it('renders checklist item as disabled', async () => {
+  it('renders disabled checkbox if item is disabled', async () => {
     const checkedItemIds = ref(new Set())
 
     const items = [
@@ -484,56 +720,18 @@ describe('CommonAdvancedTable', () => {
       {
         headers: ['label'],
         items,
-        hasCheckboxColumn: true,
-        totalItems: 100,
+        hasBulkAction: true,
+        totalItemsCount: 100,
         caption: 'Table caption',
       },
       { form: true, vModel: { checkedItemIds } },
     )
 
-    const rowCheckboxes = wrapper.getAllByRole('checkbox')
+    const tbody = wrapper.getAllByRole('rowgroup')[1]
+
+    const rowCheckboxes = within(tbody).getAllByRole('checkbox')
 
     expect(rowCheckboxes[0]).toBeDisabled()
-  })
-
-  it('supports disabling checkbox item for specific rows', async () => {
-    const checkedItemIds = ref(new Set())
-
-    const items = [
-      {
-        id: convertToGraphQLId('Ticket', 1),
-        disabled: true,
-        label: 'selection data 1',
-      },
-      {
-        id: convertToGraphQLId('Ticket', 2),
-        disabled: true,
-        label: 'selection data 2',
-      },
-    ]
-
-    const wrapper = await renderTable(
-      {
-        headers: ['label'],
-        items,
-        hasCheckboxColumn: true,
-        totalItems: 100,
-        caption: 'Table caption',
-      },
-      { form: true, vModel: { checkedItemIds } },
-    )
-
-    const checkboxes = wrapper.getAllByRole('checkbox')
-
-    expect(checkboxes[1]).toBeDisabled()
-    expect(checkboxes[1]).not.toBeChecked()
-
-    expect(checkboxes[0]).toBeDisabled()
-    expect(checkboxes[0]).not.toBeChecked()
-
-    await wrapper.events.click(checkboxes[1])
-
-    expect(checkedItemIds.value.size).toBe(0)
   })
 
   it('supports sorting', async () => {
@@ -553,19 +751,148 @@ describe('CommonAdvancedTable', () => {
     const wrapper = await renderTable({
       headers: ['title'],
       items,
-      hasCheckboxColumn: true,
-      totalItems: 100,
+      hasBulkAction: true,
+      totalItemsCount: 100,
       caption: 'Table caption',
       orderBy: 'label',
     })
 
     const sortButton = await wrapper.findByRole('button', {
-      name: 'Sorted descending',
+      name: 'Sort by Title ascending',
     })
 
     await wrapper.events.click(sortButton)
 
     expect(wrapper.emitted('sort').at(-1)).toEqual(['title', 'ASCENDING'])
+  })
+
+  it('supports disabling checkbox for specific rows', async () => {
+    const checkedItemIds = ref(new Set())
+
+    const items = [
+      {
+        id: convertToGraphQLId('Ticket', 1),
+        disabled: true,
+        label: 'selection data 1',
+      },
+      {
+        id: convertToGraphQLId('Ticket', 2),
+        disabled: true,
+        label: 'selection data 2',
+      },
+    ]
+
+    const wrapper = await renderTable(
+      {
+        headers: ['label'],
+        items,
+        hasBulkAction: true,
+        totalItemsCount: 100,
+        caption: 'Table caption',
+      },
+      { form: true, vModel: { checkedItemIds } },
+    )
+
+    const tbody = wrapper.getAllByRole('rowgroup')[1]
+
+    const checkboxes = within(tbody).getAllByRole('checkbox')
+
+    expect(checkboxes[1]).toBeDisabled()
+    expect(checkboxes[1]).not.toBeChecked()
+
+    expect(checkboxes[0]).toBeDisabled()
+    expect(checkboxes[0]).not.toBeChecked()
+
+    await wrapper.events.click(checkboxes[1])
+
+    expect(checkedItemIds.value.size).toBe(0)
+  })
+
+  it('disables bulk action checkboxes when disableBulkAction is enabled', async () => {
+    const checkedItemIds = ref(new Set())
+
+    const items = [
+      {
+        id: convertToGraphQLId('Ticket', 1),
+        label: 'selection data 1',
+      },
+      {
+        id: convertToGraphQLId('Ticket', 2),
+        label: 'selection data 2',
+      },
+    ]
+
+    const wrapper = await renderTable(
+      {
+        headers: ['label'],
+        items,
+        hasBulkAction: true,
+        disableBulkAction: true,
+        totalItemsCount: 100,
+        caption: 'Table caption',
+      },
+      { form: true, vModel: { checkedItemIds } },
+    )
+
+    const selectAllCheckbox = wrapper.getByRole('checkbox', {
+      name: 'Select all entries',
+    })
+
+    const tbody = wrapper.getAllByRole('rowgroup')[1]
+
+    const rowCheckboxes = within(tbody).getAllByRole('checkbox')
+
+    expect(selectAllCheckbox).toHaveAttribute('aria-disabled', 'true')
+    expect(rowCheckboxes[0]).toHaveAttribute('aria-disabled', 'true')
+    expect(rowCheckboxes[1]).toHaveAttribute('aria-disabled', 'true')
+
+    await wrapper.events.click(rowCheckboxes[0])
+
+    expect(checkedItemIds.value.size).toBe(0)
+  })
+
+  it('clears selection when sort order changes', async () => {
+    const checkedItemIds = ref(new Set())
+
+    const items = [
+      {
+        id: convertToGraphQLId('Ticket', 1),
+        title: 'selection data 1',
+      },
+      {
+        id: convertToGraphQLId('Ticket', 2),
+        title: 'selection data 2',
+      },
+    ]
+
+    const wrapper = await renderTable(
+      {
+        headers: ['title'],
+        items,
+        hasBulkAction: true,
+        totalItemsCount: 100,
+        caption: 'Table caption',
+        orderBy: 'title',
+        orderDirection: EnumOrderDirection.Descending,
+      },
+      { vModel: { checkedItemIds } },
+    )
+
+    const rowCheckboxes = wrapper.getAllByRole('checkbox', {
+      name: 'Select this entry',
+    })
+
+    await wrapper.events.click(rowCheckboxes[0])
+
+    expect(checkedItemIds.value.has(items[0].id)).toBe(true)
+
+    const sortButton = wrapper.getByRole('button', {
+      name: 'Sort by Title ascending',
+    })
+
+    await wrapper.events.click(sortButton)
+
+    await waitFor(() => expect(checkedItemIds.value.size).toBe(0))
   })
 
   it('informs the user about reached limits', async () => {
@@ -582,8 +909,8 @@ describe('CommonAdvancedTable', () => {
     const wrapper = await renderTable({
       headers: ['title'],
       items,
-      hasCheckboxColumn: true,
-      totalItems: 30,
+      hasBulkAction: true,
+      totalItemsCount: 30,
       maxItems: 20,
       scrollContainer,
       caption: 'Table caption',
@@ -611,8 +938,8 @@ describe('CommonAdvancedTable', () => {
     const wrapper = await renderTable({
       headers: ['title'],
       items,
-      hasCheckboxColumn: true,
-      totalItems: 30,
+      hasBulkAction: true,
+      totalItemsCount: 30,
       maxItems: 30,
       scrollContainer,
       caption: 'Table caption',
@@ -647,8 +974,8 @@ describe('CommonAdvancedTable', () => {
         'created_at',
       ],
       items,
-      hasCheckboxColumn: true,
-      totalItems: 30,
+      hasBulkAction: true,
+      totalItemsCount: 30,
       maxItems: 30,
       groupBy: 'customer',
       caption: 'Table caption',
@@ -726,8 +1053,8 @@ describe('CommonAdvancedTable', () => {
         'dummy',
       ],
       items,
-      hasCheckboxColumn: true,
-      totalItems: 30,
+      hasBulkAction: true,
+      totalItemsCount: 30,
       maxItems: 30,
       groupBy: 'dummy',
       caption: 'Table caption',

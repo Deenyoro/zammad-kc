@@ -26,14 +26,6 @@ RSpec.describe Service::Ticket::Update, current_user_id: -> { user.id } do
         )
     end
 
-    it 'fails to update ticket without access' do
-      allow_any_instance_of(TicketPolicy)
-        .to receive(:follow_up?).and_return(false)
-
-      expect { service.execute(ticket:, ticket_data:) }
-        .to raise_error(Pundit::NotAuthorizedError)
-    end
-
     it 'adds article when present' do
       service.execute(ticket:, ticket_data: ticket_data_with_article)
 

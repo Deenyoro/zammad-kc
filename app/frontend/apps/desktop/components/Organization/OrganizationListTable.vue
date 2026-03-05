@@ -54,7 +54,7 @@ const { goToItem, goToItemLinkColumn, loadMore, resort, storageKeyId } = useList
         },
       }"
       :items="items"
-      :total-items="totalCount"
+      :total-items-count="totalCount"
       :storage-key-id="storageKeyId"
       :max-items="maxItems"
       :is-sorting="resorting"

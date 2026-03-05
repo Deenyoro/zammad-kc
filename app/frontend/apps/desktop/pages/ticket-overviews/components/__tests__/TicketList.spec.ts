@@ -26,10 +26,6 @@ vi.hoisted(() => {
 })
 
 const applyMocks = (ticket: TicketById = createDummyTicket()) => {
-  mockApplicationConfig({
-    ui_ticket_overview_ticket_limit: 1000,
-  })
-
   mockDefaultTicketsCachedByOverview({
     edges: [{ node: ticket }],
   })
@@ -135,7 +131,7 @@ describe('TicketList', () => {
   })
 
   it('resizes table column', async () => {
-    await applyMocks()
+    applyMocks()
 
     const { wrapper, headers } = renderTicketList()
 
@@ -150,7 +146,7 @@ describe('TicketList', () => {
     const firstResizeButton = resizeButtons[0]
     const firstTableHeader = tableHeaders[0]
 
-    expect(firstTableHeader).toHaveStyle({ width: '25px' })
+    expect(firstTableHeader).toHaveStyle({ width: '21px' })
 
     firstResizeButton.focus()
     // Does not work in test environment
@@ -159,24 +155,22 @@ describe('TicketList', () => {
   })
 
   it('sorts table column', async () => {
-    await applyMocks()
+    applyMocks()
 
     const { wrapper } = renderTicketList()
 
-    const sortButtons = await wrapper.findAllByRole('button', {
-      name: 'Sorted ascending',
+    const sortButton = await wrapper.findByRole('button', {
+      name: 'Sort by Title ascending',
     })
 
-    const firstSortButton = sortButtons[0]
-
-    await wrapper.events.click(firstSortButton)
+    await wrapper.events.click(sortButton)
 
     const mock = await waitForTicketsCachedByOverviewQueryCalls()
 
     expect(mock.at(-1)?.variables).toEqual({
       cacheTtl: 5,
       knownCollectionSignature: undefined,
-      orderBy: 'created_at',
+      orderBy: 'title',
       orderDirection: EnumOrderDirection.Ascending,
       overviewId: convertToGraphQLId('Overview', 1),
       pageSize: 30,

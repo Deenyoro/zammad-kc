@@ -117,7 +117,7 @@ RSpec.describe 'Desktop > Overviews > Bulk Actions', app: :desktop_view, authent
       click_on 'Apply'
     end
 
-    expect(page).to have_text('The 2 selected tickets have been updated successfully.')
+    expect(page).to have_text('Bulk action successful for 2 ticket(s).')
 
     within 'main' do
       expect(page).to have_no_text(similar_tickets.first.number)
@@ -145,7 +145,7 @@ RSpec.describe 'Desktop > Overviews > Bulk Actions', app: :desktop_view, authent
       click_on 'Apply'
     end
 
-    expect(page).to have_text('The 3 selected tickets have been updated successfully.')
+    expect(page).to have_text('Bulk action successful for 3 ticket(s).')
 
     within 'main' do
       expect(page).to have_no_text(exploding_tickets.first.number)
@@ -170,7 +170,7 @@ RSpec.describe 'Desktop > Overviews > Bulk Actions', app: :desktop_view, authent
     #   container here.
     click_on 'Close & Tag as Spam'
 
-    expect(page).to have_text('The 4 selected tickets have been updated successfully.')
+    expect(page).to have_text('Bulk action successful for 4 ticket(s).')
 
     within 'main' do
       expect(page).to have_no_text(spam_tickets.first.number)

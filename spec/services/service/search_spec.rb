@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Service::Search do
   let(:query)        { 'test_phrase' }
-  let(:current_user) { create(:agent) }
+  let(:current_user) { create(:agent, groups: [Ticket.first.group]) }
   let(:objects)      { [User, Organization, Ticket] }
   let(:options)      { {} }
   let(:instance)     { described_class.new(current_user:, query:, objects:, options:) }
@@ -39,6 +39,59 @@ RSpec.describe Service::Search do
 
       it 'searches given model only' do
         expect(instance.execute.result.keys).to eq [User]
+      end
+    end
+
+    context 'with :only_ids option' do
+      let(:options) { { only_ids: true } }
+
+      context 'with ElasticSearch', searchindex: true do
+        before do
+          customer
+          organization
+
+          searchindex_model_reload([Ticket, User, Organization])
+        end
+
+        it 'returns only object ids in the result' do
+          expect(instance.execute.result).to include(
+            User         => [customer.id.to_s],
+            Organization => [organization.id.to_s],
+            Ticket       => be_blank
+          )
+        end
+
+        context 'when searching for a ticket' do
+          let(:query)   { 'Help' }
+          let(:objects) { [Ticket] }
+
+          it 'returns ticket ID' do
+            expect(instance.execute.result).to include(
+              Ticket => [Ticket.first.id.to_s]
+            )
+          end
+        end
+      end
+
+      context 'with SQL fallback' do
+        it 'returns only object ids in the result' do
+          expect(instance.execute.result).to include(
+            User         => [customer.id],
+            Organization => [organization.id],
+            Ticket       => be_blank
+          )
+        end
+
+        context 'when searching for a ticket' do
+          let(:query)   { 'Help' }
+          let(:objects) { [Ticket] }
+
+          it 'returns ticket ID' do
+            expect(instance.execute.result).to include(
+              Ticket => [Ticket.first.id]
+            )
+          end
+        end
       end
     end
   end
@@ -115,7 +168,7 @@ RSpec.describe Service::Search do
 
   describe '#models' do
     let(:instance) { described_class.new(current_user: user, query: 'test', objects: Models.searchable) }
-    let(:models) { instance.send(:models) }
+    let(:models)   { instance.send(:models) }
 
     before do
       Setting.set('chat', true)
