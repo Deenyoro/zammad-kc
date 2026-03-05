@@ -80,10 +80,10 @@ const loadChannels = async () => {
     const data = await kcApiFetch<ChannelsResponse>(
       '/conversations/teams_channels',
     )
-    channels.value = data.channels
-    if (data.default_channel_id) {
+    channels.value = data?.channels ?? []
+    if (data?.default_channel_id) {
       channelId.value = data.default_channel_id
-    } else if (data.channels.length > 0) {
+    } else if (channels.value.length > 0) {
       channelId.value = String(data.channels[0].id)
     }
   } catch {
@@ -98,7 +98,7 @@ const loadChannels = async () => {
 const loadGroups = async () => {
   try {
     const data = await zammadApiFetch<ZammadGroup[]>('/groups')
-    groups.value = data.filter((g) => g.active)
+    groups.value = Array.isArray(data) ? data.filter((g) => g.active) : []
   } catch {
     // Groups are optional — the backend uses the channel default.
   }

@@ -10,6 +10,7 @@
 class CreateKcScheduledArticles < ActiveRecord::Migration[7.0]
   def up
     return if !Setting.exists?(name: 'system_init_done')
+    return if table_exists?(:kc_scheduled_articles)
 
     create_table :kc_scheduled_articles do |t|
       t.bigint   :ticket_id,        null: false

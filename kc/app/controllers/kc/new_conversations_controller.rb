@@ -155,7 +155,7 @@ class Kc::NewConversationsController < ApplicationController
     render json: { id: ticket.id, number: ticket.number }
   rescue => e
     Rails.logger.error "KC NewConversations#sms failed: #{e.message}\n#{e.backtrace&.first(5)&.join("\n")}"
-    render json: { error: e.message }, status: :internal_server_error
+    render json: { error: __('Failed to create SMS conversation. Check server logs for details.') }, status: :internal_server_error
   end
 
   # POST /api/v1/kc/conversations/teams
@@ -275,7 +275,7 @@ class Kc::NewConversationsController < ApplicationController
     render json: { id: ticket.id, number: ticket.number }
   rescue => e
     Rails.logger.error "KC NewConversations#teams failed: #{e.message}\n#{e.backtrace&.first(5)&.join("\n")}"
-    render json: { error: e.message }, status: :internal_server_error
+    render json: { error: __('Failed to create Teams conversation. Check server logs for details.') }, status: :internal_server_error
   end
 
   # GET /api/v1/kc/conversations/sms_channels
@@ -385,7 +385,7 @@ class Kc::NewConversationsController < ApplicationController
     }
   rescue => e
     Rails.logger.error "KC NewConversations#teams_contacts failed: #{e.message}"
-    render json: { error: e.message }, status: :internal_server_error
+    render json: { error: __('Failed to search Teams contacts. Check server logs for details.') }, status: :internal_server_error
   end
 
   private

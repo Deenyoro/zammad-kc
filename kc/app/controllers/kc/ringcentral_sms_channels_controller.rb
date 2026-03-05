@@ -291,7 +291,7 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
       channel.save!
     end
 
-    render json: channel
+    render json: { id: channel.id, assets: channel.assets({}) }
   end
 
   # POST /api/v1/kc/ringcentral_sms_channels/:id/reauthenticate

@@ -343,7 +343,8 @@ module Kc
     # @param top [Integer] max results (default 10)
     # @return [Hash] Graph response with 'value' array of user objects
     def search_users(query, top: 10)
-      encoded_query = ERB::Util.url_encode(query)
+      sanitized = query.gsub("'", "''")
+      encoded_query = ERB::Util.url_encode(sanitized)
       url = "#{GRAPH_BASE_URL}/users?$filter=startswith(displayName,'#{encoded_query}')&$top=#{top}&$select=id,displayName,mail,jobTitle"
       graph_get(url)
     end

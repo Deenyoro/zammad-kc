@@ -61,7 +61,7 @@ class Kc::ScheduledArticlesController < ApplicationController
     end
 
     # Fail-fast: validate body is present at creation time (not just at execution)
-    article_hash = params_to_hash(article_data)
+    article_hash = article_data_hash(article_data)
     if article_hash[:body].blank? && article_hash['body'].blank?
       render json: { error: __('Article body is required') }, status: :unprocessable_entity
       return
@@ -88,12 +88,12 @@ class Kc::ScheduledArticlesController < ApplicationController
       return
     end
 
-    ticket_attrs_hash = params_to_hash(params[:ticket_attributes])
+    ticket_attrs = ticket_attrs_hash(params[:ticket_attributes])
 
     scheduled = kc_model_class.new(
       ticket_id:         ticket.id,
       article_data:      article_hash,
-      ticket_attributes: ticket_attrs_hash,
+      ticket_attributes: ticket_attrs,
       scheduled_at:      scheduled_at,
       status:            'pending',
       created_by_id:     current_user.id,
@@ -144,24 +144,31 @@ class Kc::ScheduledArticlesController < ApplicationController
 
   private
 
-  def authenticate_and_authorize!
-    authentication_check
-    return if current_user&.permissions?('ticket.agent')
-
-    raise Exceptions::Forbidden, __('Not authorized (agent permission required)')
-  end
-
   def kc_model_class
     @kc_model_class ||= 'Kc::ScheduledArticle'.safe_constantize
   end
 
-  def params_to_hash(param)
+  PERMITTED_ARTICLE_KEYS = %w[
+    body type type_id sender sender_id to cc bcc subject internal
+    content_type form_id preferences subtype
+  ].freeze
+
+  PERMITTED_TICKET_KEYS = %w[
+    state_id state priority_id priority owner_id owner
+    group_id group pending_time
+  ].freeze
+
+  def article_data_hash(param)
     return {} if param.blank?
 
-    if param.respond_to?(:to_unsafe_h)
-      param.to_unsafe_h
-    else
-      param.to_h
-    end
+    raw = param.respond_to?(:to_unsafe_h) ? param.to_unsafe_h : param.to_h
+    raw.stringify_keys.slice(*PERMITTED_ARTICLE_KEYS)
+  end
+
+  def ticket_attrs_hash(param)
+    return {} if param.blank?
+
+    raw = param.respond_to?(:to_unsafe_h) ? param.to_unsafe_h : param.to_h
+    raw.stringify_keys.slice(*PERMITTED_TICKET_KEYS)
   end
 end
