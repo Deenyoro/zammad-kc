@@ -1,6 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { computed, reactive, toRef } from 'vue'
 
 import {
@@ -15,7 +16,6 @@ import { getNodeByName } from '#shared/components/Form/utils.ts'
 import { useMacros, useTicketMacros } from '#shared/entities/macro/composables/useMacros.ts'
 import { useObjectAttributeFormData } from '#shared/entities/object-attributes/composables/useObjectAttributeFormData.ts'
 import { useObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
-import { useTicketNumberAndTitle } from '#shared/entities/ticket/composables/useTicketNumberAndTitle.ts'
 import type {
   TicketArticleReceivedFormValues,
   TicketBulkEditFormData,
@@ -23,9 +23,10 @@ import type {
 import UserError from '#shared/errors/UserError.ts'
 import { defineFormSchema } from '#shared/form/defineFormSchema.ts'
 import {
+  EnumBulkUpdateStatusStatus,
   EnumFormUpdaterId,
   EnumObjectManagerObjects,
-  type TicketUpdateBulkUserError,
+  type TicketBulkSelectorInput,
   type TicketUpdateInput,
 } from '#shared/graphql/types.ts'
 import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
@@ -39,21 +40,28 @@ import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
 import { provideFieldEditorOptions } from '#desktop/components/Form/fields/FieldEditor/useFieldEditorOptions.ts'
 import SplitButton from '#desktop/components/SplitButton/SplitButton.vue'
 import { useTicketUpdateBulkMutation } from '#desktop/entities/ticket/graphql/mutations/updateBulk.api.ts'
+import { useTicketBulkUpdateStore } from '#desktop/entities/user/current/stores/ticketBulkUpdate.ts'
 
 import { closeFlyout } from '../../CommonFlyout/useFlyout.ts'
+
+import type { TicketBulkOverviewContext, TicketBulkSearchContext } from './useTicketBulkEdit.ts'
 
 interface Props {
   ticketIds: ID[]
   groupIds: ID[]
+  bulkContext: TicketBulkOverviewContext | TicketBulkSearchContext
+  bulkCount: number
+  bulkHasMoreItems?: boolean
 }
 
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
   success: []
+  failure: [ID[]]
 }>()
 
-const { form, formSetErrors, formNodeId, formSubmit } = useForm()
+const { form, formClearMessage, formSetMessage, formSetErrors, formNodeId, formSubmit } = useForm()
 
 const flyoutName = 'tickets-bulk-edit'
 
@@ -66,9 +74,13 @@ const formSchema = defineFormSchema([
         isLayout: true,
         component: 'CommonLabel',
         children: {
-          if: '$ticketIdsCount === 1',
-          then: '$t("%s ticket selected", $ticketIdsCount)',
-          else: '$t("%s tickets selected", $ticketIdsCount)',
+          if: '$bulkCount > 0',
+          then: {
+            if: '$bulkHasMoreItems',
+            then: '$t("Max %s ticket(s) selected", $ticketIdsCount)',
+            else: '$t("All %s ticket(s) selected", $ticketIdsCount)',
+          },
+          else: '$t("%s ticket(s) selected", $ticketIdsCount)',
         },
       },
       {
@@ -197,9 +209,27 @@ const macroMenuItems = computed<MenuItem[]>(
     })) ?? [],
 )
 
-const { getTicketNumberWithTitle } = useTicketNumberAndTitle()
-
 const bulkEditTickets = async (formData: FormSubmitData<TicketBulkEditFormData>) => {
+  const store = useTicketBulkUpdateStore()
+  const { isRunning } = storeToRefs(store)
+  const { setTicketBulkUpdateStatus } = store
+
+  if (isRunning.value) {
+    formSetErrors(
+      new UserError([
+        {
+          message: i18n.t(
+            'Another bulk update is currently in progress. Please wait until it is finished before starting a new one.',
+          ),
+        },
+      ]),
+    )
+
+    return
+  }
+
+  formClearMessage('ticket-bulk-update-succeeded')
+
   const cleanedFormData = Object.fromEntries(
     Object.entries(formData).filter(([, value]) => value),
   ) as FormSubmitData<TicketBulkEditFormData>
@@ -214,61 +244,128 @@ const bulkEditTickets = async (formData: FormSubmitData<TicketBulkEditFormData>)
 
   const article = processBulkEditArticle(form.value!.formId, formArticle)
 
+  let selector: TicketBulkSelectorInput = {}
+
+  if (props.bulkCount) {
+    if ('overviewId' in props.bulkContext) selector = { overviewId: props.bulkContext.overviewId }
+    else if ('searchQuery' in props.bulkContext)
+      selector = { searchQuery: props.bulkContext.searchQuery }
+    else
+      throw new Error(
+        // eslint-disable-next-line zammad/zammad-detect-translatable-string
+        'Invalid ticket bulk context: bulkCount is positive but no valid context provided',
+      )
+  } else selector = { ticketIds: props.ticketIds }
+
   try {
     const result = await updateBulkMutation.send({
-      ticketIds: props.ticketIds,
-      input: {
-        ...internalObjectAttributeValues,
-        article,
-      } as TicketUpdateInput,
-      macroId: activeMacro.value?.id,
+      selector,
+      perform: {
+        input: {
+          ...internalObjectAttributeValues,
+          article,
+        } as TicketUpdateInput,
+        macroId: activeMacro.value?.id,
+      },
     })
 
     if (result) {
+      const total = result.ticketUpdateBulk?.total || 0
+
+      if (result.ticketUpdateBulk?.async) {
+        setTicketBulkUpdateStatus({
+          status: EnumBulkUpdateStatusStatus.Pending,
+          processedCount: 0,
+          total,
+        })
+
+        emit('success')
+        closeFlyout(flyoutName)
+
+        return
+      }
+
+      const failedCount = result.ticketUpdateBulk?.failedCount ?? 0
+      const invalidTicketIds = result.ticketUpdateBulk?.invalidTicketIds ?? []
+      const invalidTicketCount = invalidTicketIds.length
+
+      // In case there are invalid tickets, show alert messages and allow retry.
+      if (invalidTicketCount) {
+        // Only if some tickets were processed successfully.
+        if (total - failedCount > 0) {
+          formSetMessage({
+            key: 'ticket-bulk-update-succeeded',
+            value: i18n.t('Bulk action successful for %s ticket(s).', total - failedCount),
+            type: 'success',
+          })
+        }
+
+        formSetErrors(
+          new UserError([
+            {
+              message: i18n.t(
+                'Bulk action failed for %s ticket(s). Check attribute values and try again.',
+                invalidTicketCount,
+              ),
+            },
+          ]),
+        )
+
+        emit('failure', invalidTicketIds)
+
+        return
+      }
+
+      // Otherwise, close the flyout and show toast messages.
+      else if (failedCount) {
+        // Only if some tickets were processed successfully.
+        if (total - failedCount > 0) {
+          notify({
+            id: 'ticket-bulk-update-succeeded',
+            type: NotificationTypes.Success,
+            message: __('Bulk action successful for %s ticket(s).'),
+            messagePlaceholder: [(total - failedCount).toString()],
+            durationMS: 5000,
+          })
+        }
+
+        notify({
+          id: 'ticket-bulk-update-failed',
+          type: NotificationTypes.Error,
+          message: __('Bulk action failed for %s ticket(s). Check attribute values and try again.'),
+          messagePlaceholder: [failedCount.toString()],
+          durationMS: 5000,
+        })
+
+        emit('failure', invalidTicketIds)
+        closeFlyout(flyoutName)
+
+        return
+      }
+
       notify({
-        id: 'tickets-updated-bulk',
+        id: 'ticket-bulk-update-succeeded',
         type: NotificationTypes.Success,
-        message: __('The %s selected tickets have been updated successfully.'),
-        messagePlaceholder: [props.ticketIds.length.toString()],
+        message: __('Bulk action successful for %s ticket(s).'),
+        messagePlaceholder: [total.toString()],
       })
 
       emit('success')
       closeFlyout(flyoutName)
     }
   } catch (error) {
-    if (error instanceof UserError) {
-      const firstError = error.errors[0] as TicketUpdateBulkUserError
-
-      if (firstError.failedTicket) {
-        formSetErrors(
-          new UserError([
-            {
-              message: i18n.t(
-                `Ticket failed to save: %s (Reason: %s)`,
-                getTicketNumberWithTitle(
-                  firstError.failedTicket.number,
-                  firstError.failedTicket.title,
-                ),
-                firstError.message,
-              ),
-            },
-          ]),
-        )
-
-        return
-      }
-    }
-
     formSetErrors(error as MutationSendError)
   } finally {
     disposeActiveMacro()
   }
 }
 
-const ticketIdsCount = computed(() => props.ticketIds.length)
+const ticketIdsCount = computed(() => props.bulkCount || props.ticketIds.length)
 
 const schemaData = reactive({
   ticketIdsCount,
+  bulkCount: props.bulkCount,
+  bulkHasMoreItems: props.bulkHasMoreItems,
 })
 
 const formUpdaterAdditionalParams = computed(() => ({

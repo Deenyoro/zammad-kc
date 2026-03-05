@@ -28,6 +28,7 @@ import { initializeConfirmationDialog } from '#desktop/components/CommonConfirma
 import { useConnection } from '#desktop/composables/useConnection.ts'
 import { useTicketOverviewsStore } from '#desktop/entities/ticket/stores/ticketOverviews.ts'
 import { useUserCurrentTaskbarTabsStore } from '#desktop/entities/user/current/stores/taskbarTabs.ts'
+import { useTicketBulkUpdateStore } from '#desktop/entities/user/current/stores/ticketBulkUpdate.ts'
 import { useAppUsageStore } from '#desktop/stores/appUsage.ts'
 
 import { useBetaUi } from './components/BetaUi/composables/useBetaUi.ts'
@@ -105,6 +106,7 @@ watch(
     useTicketOverviewsStore()
     initializeDefaultObjectAttributes()
     useAppUsageStore()
+    useTicketBulkUpdateStore()
   },
   { immediate: true },
 )

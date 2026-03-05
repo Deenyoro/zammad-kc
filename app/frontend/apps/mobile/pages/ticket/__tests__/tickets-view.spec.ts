@@ -4,7 +4,6 @@ import { waitFor } from '@testing-library/vue'
 import { stringifyQuery } from 'vue-router'
 
 import { visitView } from '#tests/support/components/visitView.ts'
-import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 import { mockTicketOverviews } from '#tests/support/mocks/ticket-overviews.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
@@ -153,10 +152,6 @@ describe.skip('paginating ticket list', () => {
       endCursor: 'cursor',
     })
 
-    mockApplicationConfig({
-      ui_ticket_overview_ticket_limit: 2000,
-    })
-
     const view = await visitView(`/tickets/view`)
 
     await waitFor(() => view.getByText('Ticket 1'))
@@ -176,10 +171,6 @@ describe.skip('paginating ticket list', () => {
     const ticketOverviewsApi = mockTicketsByOverview([ticketDefault()], {
       hasNextPage: true,
       endCursor: 'cursor',
-    })
-
-    mockApplicationConfig({
-      ui_ticket_overview_ticket_limit: 2000,
     })
 
     const view = await visitView(`/tickets/view`)
@@ -206,10 +197,6 @@ describe.skip('paginating ticket list', () => {
     const ticketOverviewsApi = mockTicketsByOverview([ticketDefault()], {
       hasNextPage: true,
       endCursor: 'cursor',
-    })
-
-    mockApplicationConfig({
-      ui_ticket_overview_ticket_limit: 2000,
     })
 
     const view = await visitView(`/tickets/view`)

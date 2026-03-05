@@ -22,6 +22,7 @@ class AI::Provider::Ollama < AI::Provider
       system:  prompt_system,
       prompt:  prompt_user,
       stream:  false,
+      think:   false,
       options: {
         temperature: options[:temperature],
       },

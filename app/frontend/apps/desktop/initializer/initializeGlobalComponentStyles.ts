@@ -1,5 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
+import { initializeProgressBarClasses } from '#shared/components/CommonProgressBar/initializeProgressBarClasses.ts'
 import { initializeAiAssistantTextToolsLoadingBannerClasses } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantLoadingBanner/initializeAiAssistantTextToolsLoadingBannerClasses.ts'
 import { initializeAiAssistantTextToolsClasses } from '#shared/components/Form/fields/FieldEditor/features/ai-assistant-text-tools/AiAssistantTextTools/initializeAiAssistantTextToolsClasses.ts'
 import { initializeEditorColorMenuClasses } from '#shared/components/Form/fields/FieldEditor/features/color-picker/initializeEditorColorMenuClasses.ts'
@@ -65,7 +66,7 @@ export const initializeGlobalComponentStyles = () => {
   })
 
   initializeNotificationClasses({
-    base: 'grid gap-1.5 text-center md:text-start text-sm items-center justify-center md:justify-start grid-flow-row md:grid-flow-col md:grid-cols-[auto_minmax(auto,_1fr)] w-full rounded-lg p-2 border-transparent',
+    base: 'rounded-lg p-2 border-transparent focus-visible-app-default',
     baseContainer: 'mx-auto',
     error: 'bg-pink-100 dark:bg-red-900 text-red-500',
     info: 'bg-blue-500 dark:bg-blue-950 text-blue-800',
@@ -126,4 +127,6 @@ export const initializeGlobalComponentStyles = () => {
     label: 'text-black! dark:text-white!',
     button: 'text-blue-800',
   })
+
+  initializeProgressBarClasses('focus-visible-app-default')
 }
