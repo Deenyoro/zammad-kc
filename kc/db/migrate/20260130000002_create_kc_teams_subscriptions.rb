@@ -8,6 +8,7 @@
 #   - Idempotent — guards with table_exists?
 class CreateKcTeamsSubscriptions < ActiveRecord::Migration[7.0]
   def up
+    return if !Setting.exists?(name: 'system_init_done')
     return if table_exists?(:kc_teams_subscriptions)
 
     create_table :kc_teams_subscriptions do |t|

@@ -8,6 +8,8 @@
 #   - Backfill guard — only backfills if created_by_id column exists.
 class AddAgentIdToTicketTimeAccountings < ActiveRecord::Migration[7.0]
   def up
+    return if !Setting.exists?(name: 'system_init_done')
+
     unless table_exists?(:ticket_time_accountings)
       say 'KC: ticket_time_accountings table not found — skipping (upstream renamed or removed?)'
       return

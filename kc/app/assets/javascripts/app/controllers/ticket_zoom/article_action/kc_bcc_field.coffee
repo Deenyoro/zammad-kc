@@ -14,9 +14,11 @@
 #     it doesn't already exist, then applies tokanice for email tokenization.
 #   - Access control: Checks kc_bcc_access setting to gate UI visibility.
 
-# Helper to check BCC access based on admin setting
+# Helper to check BCC access based on admin setting.
+# Uses App.Config (populated from frontend:true settings for all users),
+# NOT App.Setting (admin-only Spine model gated by SettingPolicy).
 _bccAllowed = ->
-  access = App.Setting.get('kc_bcc_access') ? 'all'
+  access = App.Config.get('kc_bcc_access') ? 'all'
   return false if access is 'disabled'
   return false if access is 'admin' and !App.User.current()?.permission('admin')
   true

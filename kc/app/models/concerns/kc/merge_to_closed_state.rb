@@ -42,10 +42,17 @@ module Kc
         # Add KC note explaining the merge
         parent_ticket = Ticket.find_by(id: data[:ticket_id])
         if parent_ticket
+          note_type   = Ticket::Article::Type.lookup(name: 'note')
+          agent_sender = Ticket::Article::Sender.lookup(name: 'Agent')
+          if note_type.nil? || agent_sender.nil?
+            Rails.logger.warn 'KC: MergeToClosedState — article type/sender lookup failed, skipping note'
+            return result
+          end
+
           Ticket::Article.create!(
             ticket_id:     id,
-            type_id:       Ticket::Article::Type.lookup(name: 'note').id,
-            sender_id:     Ticket::Article::Sender.lookup(name: 'Agent').id,
+            type_id:       note_type.id,
+            sender_id:     agent_sender.id,
             body:          "This ticket has been closed and merged into ticket ##{parent_ticket.number}. All correspondence has been moved to the parent ticket.",
             internal:      false,
             created_by_id: data[:user_id] || UserInfo.current_user_id || 1,

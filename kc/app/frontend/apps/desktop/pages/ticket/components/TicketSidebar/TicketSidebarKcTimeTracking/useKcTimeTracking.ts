@@ -89,7 +89,7 @@ export const useKcTimeTracking = (ticketInternalId: Ref<number>) => {
       const data = await kcApiFetch<KcTimeEntry[]>(
         `/tickets/${ticketInternalId.value}/time_entries`,
       )
-      entries.value = data
+      entries.value = Array.isArray(data) ? data : []
       available.value = true
     } catch {
       entries.value = []
@@ -104,8 +104,8 @@ export const useKcTimeTracking = (ticketInternalId: Ref<number>) => {
       const data = await kcApiFetch<FormOptionsResponse>(
         '/time_entry_options',
       )
-      agentOptions.value = data.agents
-      typeOptions.value = data.types
+      agentOptions.value = data?.agents ?? []
+      typeOptions.value = data?.types ?? []
     } catch {
       agentOptions.value = []
       typeOptions.value = []

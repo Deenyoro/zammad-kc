@@ -18,6 +18,8 @@
 #   - Per-user rescue so one bad record doesn't abort the entire sync
 #   - Stores sync stats in channel.options[:last_directory_sync]
 class Kc::TeamsDirectorySyncJob < ApplicationJob
+  retry_on StandardError, wait: 30.seconds, attempts: 3
+
   def perform(channel_id)
     channel = Channel.find_by(id: channel_id, area: 'MicrosoftTeamsChat::Account')
     if channel.nil?

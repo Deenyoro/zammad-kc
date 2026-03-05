@@ -67,7 +67,7 @@ export const useKcScheduledReplies = (ticketInternalId: Ref<number>) => {
       const data = await kcApiFetch<KcScheduledArticle[]>(
         `/tickets/${ticketInternalId.value}/scheduled_articles`,
       )
-      scheduledArticles.value = data
+      scheduledArticles.value = Array.isArray(data) ? data : []
       available.value = true
     } catch {
       scheduledArticles.value = []
