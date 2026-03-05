@@ -440,6 +440,7 @@ setOnSuccessCallback(() => {
       <TicketBulkEditButton
         v-if="selectedEntity === EnumSearchableModels.Ticket"
         :checked-ticket-ids="checkedTicketIds"
+        :total-count="searchResultTotalCount"
         @open-flyout="openBulkEditFlyout"
       />
     </template>

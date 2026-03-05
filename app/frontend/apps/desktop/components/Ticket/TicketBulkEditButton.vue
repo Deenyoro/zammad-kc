@@ -11,6 +11,7 @@ import { useTicketBulkUpdateStore } from '#desktop/entities/user/current/stores/
 
 interface Props {
   checkedTicketIds: Set<ID>
+  totalCount?: number
 }
 
 defineProps<Props>()
@@ -24,20 +25,21 @@ const { hasPermission } = useSessionStore()
 const isAgentUser = computed(() => hasPermission('ticket.agent'))
 
 const { isRunning } = storeToRefs(useTicketBulkUpdateStore())
-
-const buttonLabel = computed(() => (isRunning.value ? __('Bulk in progress…') : __('Bulk actions')))
-const buttonVariant = computed(() => (isRunning.value ? 'neutral' : 'primary'))
 </script>
 
 <template>
-  <CommonButton
-    v-if="isAgentUser && checkedTicketIds.size"
-    data-test-id="ticket-bulk-edit-button"
-    size="medium"
-    prefix-icon="collection-play"
-    :variant="buttonVariant"
-    :disabled="isRunning"
-    @click="$emit('open-flyout')"
-    >{{ $t(buttonLabel) }}</CommonButton
-  >
+  <template v-if="isAgentUser && totalCount">
+    <CommonLabel v-if="isRunning" size="small">
+      {{ $t('Bulk action in progress…') }}
+    </CommonLabel>
+    <CommonButton
+      v-else-if="checkedTicketIds.size"
+      size="medium"
+      prefix-icon="collection-play"
+      variant="primary"
+      @click="$emit('open-flyout')"
+    >
+      {{ $t('Bulk actions') }}
+    </CommonButton>
+  </template>
 </template>

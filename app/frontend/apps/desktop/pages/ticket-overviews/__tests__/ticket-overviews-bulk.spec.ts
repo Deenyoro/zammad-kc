@@ -197,7 +197,8 @@ describe('Ticket Overviews > Async bulk update notifications', () => {
   it('shows an info notification with a progress bar once an async bulk update is pending', async () => {
     const view = await setupBulkUpdateView()
 
-    expect(await view.findByText('Bulk action in progress…')).toBeInTheDocument()
+    // We expect two of the same labels: one in the notification message and one instead of the bulk actions button.
+    expect(await view.findAllByText('Bulk action in progress…')).toHaveLength(2)
 
     const progressBar = view.getByRole('progressbar')
     expect(progressBar).toBeInTheDocument()
@@ -207,7 +208,8 @@ describe('Ticket Overviews > Async bulk update notifications', () => {
   it('updates the progress bar as the subscription reports progress', async () => {
     const view = await setupBulkUpdateView()
 
-    await view.findByText('Bulk action in progress…')
+    // We expect two of the same labels: one in the notification message and one instead of the bulk actions button.
+    expect(await view.findAllByText('Bulk action in progress…')).toHaveLength(2)
 
     await getUserCurrentTicketBulkUpdateStatusUpdatesSubscriptionHandler().trigger({
       userCurrentTicketBulkUpdateStatusUpdates: {
@@ -230,7 +232,8 @@ describe('Ticket Overviews > Async bulk update notifications', () => {
   it('keeps the notification visible when navigating away from the overview', async () => {
     const view = await setupBulkUpdateView()
 
-    await view.findByText('Bulk action in progress…')
+    // We expect two of the same labels: one in the notification message and one instead of the bulk actions button.
+    expect(await view.findAllByText('Bulk action in progress…')).toHaveLength(2)
 
     const router = getTestRouter()
     await router.push('/dashboard')
@@ -242,11 +245,13 @@ describe('Ticket Overviews > Async bulk update notifications', () => {
   it('hides the notification after the user dismisses it and does not show it again on subsequent updates', async () => {
     const view = await setupBulkUpdateView()
 
-    await view.findByText('Bulk action in progress…')
+    // We expect two of the same labels: one in the notification message and one instead of the bulk actions button.
+    expect(await view.findAllByText('Bulk action in progress…')).toHaveLength(2)
 
     await view.events.click(view.getByRole('button', { name: 'Close notification' }))
 
-    expect(view.queryByText('Bulk action in progress…')).not.toBeInTheDocument()
+    // After dismissing, the notification should be gone, but the label replacing the button should still be there.
+    expect(view.getAllByText('Bulk action in progress…')).toHaveLength(1)
 
     await getUserCurrentTicketBulkUpdateStatusUpdatesSubscriptionHandler().trigger({
       userCurrentTicketBulkUpdateStatusUpdates: {
@@ -261,6 +266,23 @@ describe('Ticket Overviews > Async bulk update notifications', () => {
 
     await waitForNextTick()
 
+    // Still there.
+    expect(view.getAllByText('Bulk action in progress…')).toHaveLength(1)
+
+    await getUserCurrentTicketBulkUpdateStatusUpdatesSubscriptionHandler().trigger({
+      userCurrentTicketBulkUpdateStatusUpdates: {
+        bulkUpdateStatus: {
+          status: EnumBulkUpdateStatusStatus.Succeeded,
+          total: 10,
+          processedCount: 10,
+          failedCount: 0,
+        },
+      },
+    })
+
+    await waitForNextTick()
+
+    // And... it's gone.
     expect(view.queryByText('Bulk action in progress…')).not.toBeInTheDocument()
   })
 
@@ -308,7 +330,8 @@ describe('Ticket Overviews > Async bulk update notifications', () => {
 
     const view = await setupBulkUpdateView()
 
-    await view.findByText('Bulk action in progress…')
+    // We expect two of the same labels: one in the notification message and one instead of the bulk actions button.
+    expect(await view.findAllByText('Bulk action in progress…')).toHaveLength(2)
 
     await getUserCurrentTicketBulkUpdateStatusUpdatesSubscriptionHandler().trigger({
       userCurrentTicketBulkUpdateStatusUpdates: {
@@ -336,13 +359,15 @@ describe('Ticket Overviews > Async bulk update notifications', () => {
 
     await waitForTicketUpdateBulkMutationCalls()
 
-    expect(await view.findByText('Bulk action in progress…')).toBeInTheDocument()
+    // We expect two of the same labels: one in the notification message and one instead of the bulk actions button.
+    expect(await view.findAllByText('Bulk action in progress…')).toHaveLength(2)
   })
 
   it('replaces the progress notification with a success notification when the operation completes', async () => {
     const view = await setupBulkUpdateView()
 
-    await view.findByText('Bulk action in progress…')
+    // We expect two of the same labels: one in the notification message and one instead of the bulk actions button.
+    expect(await view.findAllByText('Bulk action in progress…')).toHaveLength(2)
 
     await getUserCurrentTicketBulkUpdateStatusUpdatesSubscriptionHandler().trigger({
       userCurrentTicketBulkUpdateStatusUpdates: {
@@ -363,7 +388,8 @@ describe('Ticket Overviews > Async bulk update notifications', () => {
   it('shows an additional error notification when some tickets fail during the bulk update', async () => {
     const view = await setupBulkUpdateView()
 
-    await view.findByText('Bulk action in progress…')
+    // We expect two of the same labels: one in the notification message and one instead of the bulk actions button.
+    expect(await view.findAllByText('Bulk action in progress…')).toHaveLength(2)
 
     await getUserCurrentTicketBulkUpdateStatusUpdatesSubscriptionHandler().trigger({
       userCurrentTicketBulkUpdateStatusUpdates: {
@@ -377,6 +403,9 @@ describe('Ticket Overviews > Async bulk update notifications', () => {
     })
 
     expect(await view.findByText('Bulk action successful for 7 ticket(s).')).toBeInTheDocument()
+    expect(view.queryByText('Bulk action in progress…')).not.toBeInTheDocument()
+    expect(view.queryByRole('progressbar')).not.toBeInTheDocument()
+
     expect(
       view.getByText('Bulk action failed for 3 ticket(s). Check attribute values and try again.'),
     ).toBeInTheDocument()
@@ -385,7 +414,8 @@ describe('Ticket Overviews > Async bulk update notifications', () => {
   it('shows only an error notification when all tickets fail during the bulk update', async () => {
     const view = await setupBulkUpdateView()
 
-    await view.findByText('Bulk action in progress…')
+    // We expect two of the same labels: one in the notification message and one instead of the bulk actions button.
+    expect(await view.findAllByText('Bulk action in progress…')).toHaveLength(2)
 
     await getUserCurrentTicketBulkUpdateStatusUpdatesSubscriptionHandler().trigger({
       userCurrentTicketBulkUpdateStatusUpdates: {
@@ -398,11 +428,15 @@ describe('Ticket Overviews > Async bulk update notifications', () => {
       },
     })
 
+    expect(view.queryByText('Bulk action in progress…')).not.toBeInTheDocument()
+    expect(view.queryByRole('progressbar')).not.toBeInTheDocument()
+
     expect(
       await view.findByText(
         'Bulk action failed for 5 ticket(s). Check attribute values and try again.',
       ),
     ).toBeInTheDocument()
+
     expect(view.queryByText(/Bulk action successful/)).not.toBeInTheDocument()
   })
 })
