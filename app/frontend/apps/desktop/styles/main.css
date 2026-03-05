@@ -453,6 +453,72 @@
     position: absolute;
     z-index: -10;
   }
+
+  .progress-bar {
+    &.progress-bar--primary {
+      --pb-fill: var(--color-blue-800);
+      --pb-track: var(--color-blue-200);
+
+      [data-theme='dark'] & {
+        --pb-track: var(--color-gray-700);
+      }
+    }
+
+    &.progress-bar--inverted {
+      --pb-fill: var(--color-black);
+      --pb-track: rgba(0, 0, 0, 0.1);
+
+      [data-theme='dark'] & {
+        --pb-fill: var(--color-white);
+        --pb-track: rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    background-color: var(--pb-track);
+
+    &::-webkit-progress-bar {
+      border-radius: 1rem;
+      background-color: var(--pb-track);
+    }
+
+    &::-webkit-progress-value {
+      border-radius: 0;
+      background-color: var(--pb-fill);
+      transition: width 1s;
+    }
+
+    &::-moz-progress-bar {
+      border-radius: 0;
+      background-color: var(--pb-fill);
+    }
+
+    &:indeterminate {
+      background-image: repeating-linear-gradient(
+        90deg,
+        var(--pb-fill) -1%,
+        var(--pb-fill) 10%,
+        transparent 10%,
+        transparent 90%
+      );
+      background-size: 200%;
+      background-position-x: 15%;
+      animation: progress-loading 5s ease-in-out infinite;
+    }
+
+    &:indeterminate::-moz-progress-bar {
+      background-color: var(--pb-track);
+      background-image: repeating-linear-gradient(
+        90deg,
+        var(--pb-fill) -1%,
+        var(--pb-fill) 10%,
+        transparent 10%,
+        transparent 90%
+      );
+      background-size: 200%;
+      background-position-x: 15%;
+      animation: progress-loading 5s ease-in-out infinite;
+    }
+  }
 }
 
 [data-theme='dark'] .bg-stripes::before {
@@ -524,6 +590,12 @@
     animation: gradient 2s infinite;
     animation-fill-mode: forwards;
     animation-timing-function: linear;
+  }
+}
+
+@keyframes progress-loading {
+  50% {
+    background-position-x: -115%;
   }
 }
 

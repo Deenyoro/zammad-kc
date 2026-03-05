@@ -115,6 +115,7 @@ const { openBulkMergeFlyout } = useKcBulkMerge(checkedTicketIds)
         />
         <TicketBulkEditButton
           :checked-ticket-ids="checkedTicketIds"
+          :total-count="currentOverviewCount"
           @open-flyout="openBulkEditFlyout"
         />
       </template>

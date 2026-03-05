@@ -7,6 +7,9 @@ import gql from 'graphql-tag'
 import { computed, h, onMounted, reactive, ref, watch, type Ref, useTemplateRef, toRef } from 'vue'
 
 import CommonAlert from '#shared/components/CommonAlert/CommonAlert.vue'
+import { NotificationTypes } from '#shared/components/CommonNotifications/types.ts'
+import { useNotifications } from '#shared/components/CommonNotifications/useNotifications.ts'
+import CommonProgressBar from '#shared/components/CommonProgressBar/CommonProgressBar.vue'
 import CommonTranslateRenderer from '#shared/components/CommonTranslateRenderer/CommonTranslateRenderer.vue'
 import CommonUserAvatar from '#shared/components/CommonUserAvatar/CommonUserAvatar.vue'
 import Form from '#shared/components/Form/Form.vue'
@@ -37,7 +40,6 @@ import type { Orientation, Placement } from '#desktop/components/CommonPopover/t
 import { usePopover } from '#desktop/components/CommonPopover/usePopover.ts'
 import CommonPopoverMenu from '#desktop/components/CommonPopoverMenu/CommonPopoverMenu.vue'
 import type { MenuItem } from '#desktop/components/CommonPopoverMenu/types.ts'
-import CommonProgressBar from '#desktop/components/CommonProgressBar/CommonProgressBar.vue'
 import CommonSkeleton from '#desktop/components/CommonSkeleton/CommonSkeleton.vue'
 import CommonTabGroup from '#desktop/components/CommonTabGroup/CommonTabGroup.vue'
 import { useTabGroup } from '#desktop/components/CommonTabGroup/useTabGroup.ts'
@@ -881,6 +883,37 @@ const formInitialValues: FormValues = {
   // date_0: [new Date(), new Date(new Date().setDate(new Date().getDate() + 7))],
 }
 
+const progressBarNotificationValue = ref(0)
+
+const increaseProgressBarNotificationValue = () => {
+  if (progressBarNotificationValue.value < 1) {
+    progressBarNotificationValue.value += 0.01
+  }
+}
+
+const { notify } = useNotifications()
+
+const notifyWithProgress = (progress: number) => {
+  notify({
+    id: 'playground-notification-progress',
+    type: NotificationTypes.Info,
+    message: `${(progress * 100).toFixed(0)}% Progress Notification`,
+    persistent: true,
+    currentProgress: progress,
+  })
+}
+const rampUpProgressBarNotificationValue = () => {
+  // reset if already done
+  if (progressBarNotificationValue.value == 1) {
+    progressBarNotificationValue.value = 0
+  }
+
+  // show 0 progress toast
+  notifyWithProgress(0)
+  // wait before increasing
+  setTimeout(() => setInterval(increaseProgressBarNotificationValue, 500), 2000)
+}
+
 const progressBarValue = ref(0)
 
 const increaseProgressBar = () => {
@@ -891,12 +924,47 @@ onMounted(() => {
   setInterval(increaseProgressBar, 2000)
 })
 
+const notifyAllTypes = () => {
+  notify({
+    id: 'playground-notification-info',
+    type: NotificationTypes.Info,
+    message: 'ℹ️ Info Notification',
+  })
+  notify({
+    id: 'playground-notification-success',
+    type: NotificationTypes.Success,
+    message: 'Success! ✅',
+  })
+  notify({
+    id: 'playground-notification-warn',
+    type: NotificationTypes.Warn,
+    message: 'Warn Notification: ⚠️',
+  })
+  notify({
+    id: 'playground-notification-error',
+    type: NotificationTypes.Error,
+    message: 'Error Notification: ❌!',
+  })
+}
+
 watch(progressBarValue, (newValue) => {
   if (newValue < 100) return
 
   setTimeout(() => {
     progressBarValue.value = 0
   }, 1000)
+})
+
+watch(progressBarNotificationValue, (newValue) => {
+  if (newValue < 1) notifyWithProgress(progressBarNotificationValue.value)
+  else
+    notify({
+      id: 'playground-notification-progress',
+      type: NotificationTypes.Success,
+      message: `${progressBarNotificationValue.value * 100}% Progress Notification`,
+      persistent: false,
+      currentProgress: progressBarNotificationValue.value,
+    })
 })
 
 const user = toRef(useSessionStore(), 'user')
@@ -1118,6 +1186,7 @@ const tableItemsAdvanced = reactive<TableAdvancedItem[]>([
     name: 'Tom Cook',
     title: 'Director of Product',
     email: 'tom.cook@example.com',
+    disabled: true,
     role: 'Member',
   },
   {
@@ -1125,6 +1194,7 @@ const tableItemsAdvanced = reactive<TableAdvancedItem[]>([
     name: 'Whitney Francis',
     title: 'Copywriter',
     email: 'whitney.francis@example.com',
+    disabled: true,
     role: 'Admin',
   },
   {
@@ -1341,11 +1411,90 @@ const { openFeedbackDialog } = useFeedbackDialog()
 <template>
   <LayoutContent>
     <div>
+      <h3>Notifications / Alerts</h3>
+      <div class="mb-4 space-x-2">
+        <CommonButton variant="danger" @click="notifyAllTypes()">
+          Open "all" Notification</CommonButton
+        >
+
+        <CommonButton
+          variant="primary"
+          @click="
+            notify({
+              id: 'playground-notification-success',
+              type: NotificationTypes.Success,
+              message: 'Success! ✅',
+            })
+          "
+          >Open "success" Notification</CommonButton
+        >
+
+        <CommonButton
+          variant="secondary"
+          @click="
+            notify({
+              id: 'playground-notification-warn',
+              type: NotificationTypes.Warn,
+              message: 'Warn Notification: ⚠️',
+            })
+          "
+        >
+          Open "warn" Notification</CommonButton
+        >
+        <CommonButton
+          variant="danger"
+          @click="
+            notify({
+              id: 'playground-notification-error',
+              type: NotificationTypes.Error,
+              message: 'Error Notification: ❌!',
+            })
+          "
+        >
+          Open "error" Notification</CommonButton
+        >
+
+        <CommonButton
+          variant="neutral"
+          @click="
+            notify({
+              id: 'playground-notification-info',
+              type: NotificationTypes.Info,
+              message: 'ℹ️ Info Notification',
+            })
+          "
+        >
+          Open "info" Notification</CommonButton
+        >
+
+        <CommonButton
+          variant="tertiary"
+          @click="
+            notify({
+              id: 'playground-notification-pinned',
+              type: NotificationTypes.Success,
+              message: '📌 Persistent (Pinned) Notification',
+              persistent: true,
+            })
+          "
+        >
+          'Open "Persistent (Pinned)" Notification'
+        </CommonButton>
+
+        <CommonButton variant="subtle" @click="rampUpProgressBarNotificationValue">
+          'Open "Progress 0..100%" Notification'
+        </CommonButton>
+
+        <CommonButton variant="subtle" @click="notifyWithProgress(0.5)">
+          'Open "Progress 50% stucked" Notification'
+        </CommonButton>
+      </div>
+
       <h3>Feedback Dialog</h3>
       <div class="mb-4 space-x-2">
         <CommonButton variant="primary" @click="openFeedbackDialog({ milestone: '5h' })"
-          >Open Timed Feedback Dialog</CommonButton
-        >
+          >Open Timed Feedback Dialog
+        </CommonButton>
 
         <CommonButton variant="primary" @click="openFeedbackDialog()"
           >Open Manual Feedback Dialog</CommonButton
@@ -1598,7 +1747,10 @@ const { openFeedbackDialog } = useFeedbackDialog()
         <div class="flex flex-col gap-3">
           <div class="flex flex-col gap-2">
             <CommonLabel size="small">What is the meaning of life?</CommonLabel>
+            <CommonLabel size="small"> Variant:Primary</CommonLabel>
             <CommonProgressBar />
+            <CommonLabel size="small"> Variant:Inverted</CommonLabel>
+            <CommonProgressBar variant="inverted" />
           </div>
 
           <div class="flex items-end gap-2">
@@ -1610,7 +1762,15 @@ const { openFeedbackDialog } = useFeedbackDialog()
                 </CommonLabel>
               </div>
 
-              <CommonProgressBar :value="progressBarValue.toString()" max="100" />
+              <CommonLabel size="small">Size: Normal</CommonLabel>
+              <CommonProgressBar class="mb-4" :value="progressBarValue.toString()" max="100" />
+              <CommonLabel size="small">Size: Small</CommonLabel>
+              <CommonProgressBar
+                :value="progressBarValue.toString()"
+                size="small"
+                variant="inverted"
+                max="100"
+              />
             </div>
 
             <CommonIcon
@@ -1632,7 +1792,8 @@ const { openFeedbackDialog } = useFeedbackDialog()
           :headers="tableHeaders"
           :items="tableItems"
           :actions="tableActions"
-        ></CommonSimpleTable>
+        >
+        </CommonSimpleTable>
       </div>
 
       <h2 class="mt-8 mb-2">Table (Advanced)</h2>
@@ -1643,8 +1804,8 @@ const { openFeedbackDialog } = useFeedbackDialog()
           :items="tableItemsAdvanced"
           :actions="tableActions"
           :max-items="8"
-          :total-items="10"
-          has-checkbox-column
+          :total-items-count="10"
+          has-bulk-action
           caption="test advanced table"
           table-id="2"
           :attributes="[
@@ -1712,7 +1873,7 @@ const { openFeedbackDialog } = useFeedbackDialog()
 
         <div class="my-4 flex items-center gap-4">
           <CommonUserAvatar
-            class="cursor-pointer border border-neutral-100 outline outline-2 outline-transparent hover:outline-blue-600 focus:outline-blue-800 dark:border-gray-900 dark:hover:outline-blue-900 dark:hover:focus:outline-blue-800"
+            class="cursor-pointer border border-neutral-100 outline-2 outline-transparent hover:outline-blue-600 focus:outline-blue-800 dark:border-gray-900 dark:hover:outline-blue-900 dark:hover:focus:outline-blue-800"
             tabindex="0"
             :entity="{
               id: 'gid://zammad/User/1',
@@ -1745,7 +1906,7 @@ const { openFeedbackDialog } = useFeedbackDialog()
             size="xs"
           />
           <CommonUserAvatar
-            class="cursor-pointer border border-neutral-100 outline outline-2 outline-transparent hover:outline-blue-600 focus:outline-blue-800 dark:border-gray-900 dark:hover:outline-blue-900 dark:hover:focus:outline-blue-800"
+            class="cursor-pointer border border-neutral-100 outline-2 outline-transparent hover:outline-blue-600 focus:outline-blue-800 dark:border-gray-900 dark:hover:outline-blue-900 dark:hover:focus:outline-blue-800"
             tabindex="0"
             :entity="{
               id: 'gid://zammad/User/3',
@@ -1990,7 +2151,8 @@ const { openFeedbackDialog } = useFeedbackDialog()
         </Form>
         <pre
           class="flex flex-wrap gap-5 rounded-lg bg-blue-200 p-5 font-mono text-sm text-wrap text-gray-100 dark:bg-gray-700 dark:text-neutral-400"
-          >{{ formValues }}</pre
+        >
+          {{ formValues }}</pre
         >
       </div>
 
@@ -2035,15 +2197,15 @@ const { openFeedbackDialog } = useFeedbackDialog()
           >Disabled</SplitButton
         >
         <SplitButton variant="submit" size="large" addon-disabled @click="onSplitButtonClick"
-          >Addon disabled</SplitButton
-        >
+          >Addon disabled
+        </SplitButton>
         <SplitButton
           variant="submit"
           size="large"
           :items="splitButtonMenuItems"
           @click="onSplitButtonClick"
-          >Update</SplitButton
-        >
+          >Update
+        </SplitButton>
       </div>
     </div>
   </LayoutContent>

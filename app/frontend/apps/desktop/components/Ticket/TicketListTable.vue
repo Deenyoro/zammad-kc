@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { toRef } from 'vue'
+import { ref, toRef, watch } from 'vue'
 
 import type { AvatarUser } from '#shared/components/CommonUserAvatar/types.ts'
 import ObjectAttributeContent from '#shared/components/ObjectAttributes/ObjectAttribute.vue'
@@ -39,7 +39,30 @@ const { goToItem, goToItemLinkColumn, loadMore, resort, storageKeyId } = useList
 
 const config = toRef(useApplicationStore(), 'config')
 
-const { bulkEditActive, checkedTicketIds } = useTicketBulkEdit()
+const selectAllActive = ref(false)
+
+/**
+ * User can only perform one bulk update task at a time
+ */
+const { bulkEditActive, checkedTicketIds, isBulkTaskRunning, bulkCount, bulkHasMoreItems } =
+  useTicketBulkEdit()
+
+watch(selectAllActive, (newValue) => {
+  if (!newValue) {
+    bulkCount.value = 0
+    bulkHasMoreItems.value = false
+
+    return
+  }
+
+  if (props.totalCount > props.maxItems) {
+    bulkCount.value = props.maxItems
+    bulkHasMoreItems.value = true
+  } else {
+    bulkCount.value = props.totalCount
+    bulkHasMoreItems.value = false
+  }
+})
 
 const userPopoverSlots: {
   slotName: string
@@ -51,153 +74,165 @@ const userPopoverSlots: {
 </script>
 
 <template>
-  <div v-if="loading && !loadingNewPage">
-    <slot name="loading">
-      <CommonTableSkeleton data-test-id="table-skeleton" :rows="skeletonLoadingCount" />
-    </slot>
-  </div>
+  <div>
+    <div v-if="loading && !loadingNewPage">
+      <slot name="loading">
+        <CommonTableSkeleton data-test-id="table-skeleton" :rows="skeletonLoadingCount" />
+      </slot>
+    </div>
 
-  <template v-else-if="!loading && !items.length">
-    <slot name="empty-list" />
-  </template>
+    <template v-else-if="!loading && !items.length">
+      <slot name="empty-list" />
+    </template>
 
-  <div v-else-if="items.length">
-    <CommonAdvancedTable
-      v-model:checked-item-ids="checkedTicketIds"
-      :has-checkbox-column="bulkEditActive"
-      :caption="caption"
-      :object="EnumObjectManagerObjects.Ticket"
-      :headers="headers"
-      :order-by="orderBy"
-      :order-direction="orderDirection"
-      :group-by="groupBy"
-      :reached-scroll-top="reachedScrollTop"
-      :scroll-container="scrollContainer"
-      :attributes="[
-        {
-          name: 'priorityIcon',
-          label: __('Priority icon'),
-          headerPreferences: {
-            noResize: true,
-            hideLabel: true,
-            displayWidth: 25,
-            noSorting: true,
+    <div v-else-if="items.length">
+      <CommonAdvancedTable
+        v-model:checked-item-ids="checkedTicketIds"
+        v-model:select-all-active="selectAllActive"
+        :has-bulk-action="bulkEditActive"
+        :disable-bulk-action="isBulkTaskRunning"
+        :caption="caption"
+        :object="EnumObjectManagerObjects.Ticket"
+        :headers="headers"
+        :order-by="orderBy"
+        :order-direction="orderDirection"
+        :group-by="groupBy"
+        :reached-scroll-top="reachedScrollTop"
+        :scroll-container="scrollContainer"
+        :attributes="[
+          {
+            name: 'priorityIcon',
+            label: __('Priority icon'),
+            headerPreferences: {
+              noResize: true,
+              hideLabel: true,
+              displayWidth: 21,
+              noSorting: true,
+              headerClass: 'p-0!',
+            },
+            columnPreferences: {
+              noPadding: true,
+              alignContent: 'left',
+            },
+            dataType: 'icon',
           },
-          columnPreferences: {},
-          dataType: 'icon',
-        },
-        {
-          name: 'stateIcon',
-          label: __('State icon'),
-          headerPreferences: {
-            noResize: true,
-            hideLabel: true,
-            displayWidth: 30,
-            noSorting: true,
+          {
+            name: 'stateIcon',
+            label: __('State icon'),
+            headerPreferences: {
+              noResize: true,
+              hideLabel: true,
+              displayWidth: 25,
+              noSorting: true,
+              headerClass: 'p-0!',
+            },
+            columnPreferences: {
+              noPadding: true,
+              alignContent: 'center',
+            },
+            dataType: 'icon',
           },
-          columnPreferences: {},
-          dataType: 'icon',
-        },
-      ]"
-      :attribute-extensions="{
-        title: {
-          columnPreferences: {
-            link: goToItemLinkColumn,
+        ]"
+        :attribute-extensions="{
+          title: {
+            columnPreferences: {
+              link: goToItemLinkColumn,
+            },
           },
-        },
-        number: {
-          label: config.ticket_hook,
-          columnPreferences: {
-            link: goToItemLinkColumn,
+          number: {
+            label: config.ticket_hook,
+            columnPreferences: {
+              link: goToItemLinkColumn,
+            },
           },
-        },
-      }"
-      :items="items"
-      :total-items="totalCount"
-      :storage-key-id="storageKeyId"
-      :max-items="maxItems"
-      :is-sorting="resorting"
-      @load-more="loadMore"
-      @click-row="goToItem"
-      @sort="resort"
-    >
-      <template #column-cell-priorityIcon="{ item, isRowSelected }">
-        <CommonTicketPriorityIndicatorIcon
-          :ui-color="(item as TicketByList).priority?.uiColor"
-          with-text-color
-          class="shrink-0 outline-offset-0! group-hover:text-black group-hover:dark:text-white"
-          :class="{
-            'ltr:text-black rtl:text-black dark:text-white': isRowSelected,
-          }"
-        />
-      </template>
-      <template
-        v-for="{ slotName, ticketAttribute } in userPopoverSlots"
-        :key="slotName"
-        #[slotName]="{ item, isRowSelected, attribute }"
+        }"
+        :items="items"
+        :total-items-count="totalCount"
+        :storage-key-id="storageKeyId"
+        :max-items="maxItems"
+        :is-sorting="resorting"
+        @load-more="loadMore"
+        @click-row="goToItem"
+        @sort="resort"
       >
-        <UserPopoverWithTrigger
-          :popover-config="{ orientation: 'autoHorizontal' }"
-          :user="(item as TicketByList)[ticketAttribute] as AvatarUser"
-          class="outline-none!"
-          no-trigger-link
+        <template #column-cell-priorityIcon="{ item, isRowSelected }">
+          <CommonTicketPriorityIndicatorIcon
+            :ui-color="(item as TicketByList).priority?.uiColor"
+            with-text-color
+            class="shrink-0 outline-offset-0! group-hover:text-black group-hover:dark:text-white"
+            :class="{
+              'ltr:text-black rtl:text-black dark:text-white': isRowSelected,
+            }"
+          />
+        </template>
+        <template
+          v-for="{ slotName, ticketAttribute } in userPopoverSlots"
+          :key="slotName"
+          #[slotName]="{ item, isRowSelected, attribute }"
         >
-          <CommonLabel
-            class="block! shrink-0 truncate outline-offset-0! group-hover:text-black! group-hover:dark:text-white!"
+          <UserPopoverWithTrigger
+            :popover-config="{ orientation: 'autoHorizontal' }"
+            :user="(item as TicketByList)[ticketAttribute] as AvatarUser"
+            class="w-full outline-none!"
+            no-trigger-link
+          >
+            <CommonLabel
+              class="block! shrink-0 truncate outline-offset-0! group-hover:text-black! group-hover:dark:text-white!"
+              :class="{
+                'text-black! dark:text-white!': isRowSelected,
+              }"
+            >
+              <ObjectAttributeContent
+                mode="table"
+                :attribute="attribute as unknown as ObjectAttribute"
+                :object="item"
+              />
+            </CommonLabel>
+          </UserPopoverWithTrigger>
+        </template>
+        <template #column-cell-organization_id="{ item, isRowSelected, attribute }">
+          <OrganizationPopoverWithTrigger
+            :popover-config="{ orientation: 'autoHorizontal' }"
+            :organization="(item as TicketByList).organization!"
+            class="w-full outline-none!"
+            no-link
+          >
+            <CommonLabel
+              class="block! shrink-0 truncate outline-offset-0! group-hover:text-black! group-hover:dark:text-white!"
+              :class="{
+                'text-black! dark:text-white!': isRowSelected,
+              }"
+            >
+              <ObjectAttributeContent
+                mode="table"
+                :attribute="attribute as unknown as ObjectAttribute"
+                :object="item"
+              />
+            </CommonLabel>
+          </OrganizationPopoverWithTrigger>
+        </template>
+        <template #column-cell-stateIcon="{ item, isRowSelected }">
+          <CommonIcon
+            v-if="item.aiAgentRunning"
+            role="status"
+            :aria-label="$t('Currently processing this ticket…')"
+            class="animate-spin"
+            size="tiny"
+            name="check-circle-no-ai"
+          />
+          <CommonTicketStateIndicatorIcon
+            v-else
+            class="shrink-0 outline-offset-0! group-hover:text-black group-hover:dark:text-white"
             :class="{
               'text-black! dark:text-white!': isRowSelected,
             }"
-          >
-            <ObjectAttributeContent
-              mode="table"
-              :attribute="attribute as unknown as ObjectAttribute"
-              :object="item"
-            />
-          </CommonLabel>
-        </UserPopoverWithTrigger>
-      </template>
-      <template #column-cell-organization_id="{ item, isRowSelected, attribute }">
-        <OrganizationPopoverWithTrigger
-          :popover-config="{ orientation: 'autoHorizontal' }"
-          :organization="(item as TicketByList).organization!"
-          class="outline-none!"
-          no-link
-        >
-          <CommonLabel
-            class="block! shrink-0 truncate outline-offset-0! group-hover:text-black! group-hover:dark:text-white!"
-            :class="{
-              'text-black! dark:text-white!': isRowSelected,
-            }"
-          >
-            <ObjectAttributeContent
-              mode="table"
-              :attribute="attribute as unknown as ObjectAttribute"
-              :object="item"
-            />
-          </CommonLabel>
-        </OrganizationPopoverWithTrigger>
-      </template>
-      <template #column-cell-stateIcon="{ item, isRowSelected }">
-        <CommonIcon
-          v-if="item.aiAgentRunning"
-          role="status"
-          :aria-label="$t('Currently processing this ticket…')"
-          class="animate-spin"
-          size="tiny"
-          name="check-circle-no-ai"
-        />
-        <CommonTicketStateIndicatorIcon
-          v-else
-          class="shrink-0 outline-offset-0! group-hover:text-black group-hover:dark:text-white"
-          :class="{
-            'text-black! dark:text-white!': isRowSelected,
-          }"
-          :color-code="(item as TicketByList).stateColorCode"
-          :label="(item as TicketByList).state.name"
-          :aria-labelledby="(item as TicketByList).id"
-          icon-size="tiny"
-        />
-      </template>
-    </CommonAdvancedTable>
+            :color-code="(item as TicketByList).stateColorCode"
+            :label="(item as TicketByList).state.name"
+            :aria-labelledby="(item as TicketByList).id"
+            icon-size="tiny"
+          />
+        </template>
+      </CommonAdvancedTable>
+    </div>
   </div>
 </template>

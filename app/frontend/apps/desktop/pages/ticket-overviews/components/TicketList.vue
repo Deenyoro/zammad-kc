@@ -43,6 +43,8 @@ import { useTicketsCachedByOverviewQuery } from '#desktop/entities/ticket/graphq
 import { useTicketOverviewsStore } from '#desktop/entities/ticket/stores/ticketOverviews.ts'
 import { useLifetimeCustomerTicketsCount } from '#desktop/entities/user/current/composables/useLifetimeCustomerTicketsCount.ts'
 
+const MAX_ITEMS = 2000
+
 interface Props {
   overviewId: string
   orderBy: string
@@ -341,7 +343,17 @@ const localHeaders = computed(() => {
   return extendedHeaders
 })
 
-const { setOnSuccessCallback, checkedTicketIds } = useTicketBulkEdit()
+const { setOnSuccessCallback, checkedTicketIds, bulkContext } = useTicketBulkEdit()
+
+watch(
+  () => props.overviewId,
+  (newValue) => {
+    bulkContext.value = {
+      overviewId: newValue,
+    }
+  },
+  { immediate: true },
+)
 
 const refetchAfterBulkAction = () => {
   forceTicketsByOverviewCacheOnlyFirstPage(
@@ -374,8 +386,6 @@ setMergeOnSuccessCallback(refetchAfterBulkAction)
 
 onBeforeRouteUpdate(() => checkedTicketIds.value.clear())
 
-const maxItems = computed(() => config.value.ui_ticket_overview_ticket_limit)
-
 const { visibleSkeletonLoadingCount } = useSkeletonLoadingCount(toRef(props, 'overviewCount'))
 
 defineExpose({ tickets: readonly(tickets) })
@@ -394,7 +404,7 @@ defineExpose({ tickets: readonly(tickets) })
       :scroll-container="scrollContainerElement"
       :items="tickets"
       :total-count="totalCount"
-      :max-items="maxItems"
+      :max-items="MAX_ITEMS"
       :resorting="isSorting"
       :loading="isLoadingTickets"
       :skeleton-loading-count="visibleSkeletonLoadingCount"

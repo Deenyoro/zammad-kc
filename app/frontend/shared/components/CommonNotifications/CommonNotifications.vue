@@ -4,60 +4,63 @@
 import type { Notification } from '#shared/components/CommonNotifications/types.ts'
 import { useNotifications } from '#shared/components/CommonNotifications/useNotifications.ts'
 import { getNotificationClasses } from '#shared/initializer/initializeNotificationClasses.ts'
-import { markup } from '#shared/utils/markup.ts'
 
+import CommonNotificationsItem from './CommonNotificationsItem.vue'
 const notificationTypeClassMap = getNotificationClasses()
 
 const { notifications, removeNotification } = useNotifications()
 
-const getClassName = (notification: Notification) => {
-  return notificationTypeClassMap[notification.type]
-}
+/**
+ * @param clickFromCloseButton
+ * When persistent is active we only close the notification on close button click
+ * We reuse the same callback
+ */
+const handleClose = (notification: Notification, clickFromCloseButton = false) => {
+  if (notification.persistent && !clickFromCloseButton) return
 
-const clickHandler = (notification: Notification) => {
   const { callback } = notification
+
   removeNotification(notification.id)
+
   if (callback) callback()
 }
 </script>
 
 <template>
-  <div id="Notifications" class="flex w-full justify-center">
-    <div class="fixed top-0 z-50" :class="notificationTypeClassMap.baseContainer" role="alert">
-      <TransitionGroup
-        tag="div"
-        enter-class="opacity-0"
-        leave-active-class="transition-opacity duration-1000 opacity-0"
-      >
-        <div
-          v-for="notification in notifications"
-          :key="notification.id"
-          data-test-id="notification"
-          class="flex justify-center"
-        >
-          <div
-            class="m-3 flex w-max cursor-pointer items-center"
-            :class="[notificationTypeClassMap.base, getClassName(notification)]"
-            role="button"
-            tabindex="0"
-            @keydown.enter="clickHandler(notification)"
-            @click="clickHandler(notification)"
-          >
-            <CommonIcon
-              class="shrink-0 self-start"
-              :name="`common-notification-${notification.type}`"
-              size="small"
-              decorative
-            />
-            <!-- eslint-disable vue/no-v-html -->
-            <span
-              class="text-sm"
-              :class="notificationTypeClassMap.message"
-              v-html="markup($t(notification.message, ...(notification.messagePlaceholder || [])))"
-            />
-          </div>
-        </div>
-      </TransitionGroup>
-    </div>
+  <div
+    id="Notifications"
+    class="fixed top-0 z-50 ltr:left-1/2 ltr:-translate-x-1/2 rtl:right-1/2 rtl:translate-x-1/2"
+    :class="notificationTypeClassMap.baseContainer"
+    role="alert"
+    aria-live="polite"
+    aria-atomic="true"
+  >
+    <TransitionGroup
+      tag="ol"
+      class="flex flex-col items-center"
+      enter-from-class="opacity-0"
+      leave-to-class="hidden"
+      leave-active-class="absolute"
+      leave-to-active-class="transition-all duration-1000"
+      enter-from-active-class="transition-all duration-1000"
+      move-class="transition-all duration-1000"
+    >
+      <li v-for="notification in notifications" :key="notification.id">
+        <CommonNotificationsItem
+          class="m-3 grid w-fit gap-1"
+          :class="[
+            notificationTypeClassMap.base,
+            notificationTypeClassMap[notification.type],
+            {
+              'cursor-pointer': !notification.currentProgress,
+              'grid-cols-[min-content_1fr_fit-content]': notification.currentProgress,
+              'grid-cols-[min-content_1fr]': !notification.currentProgress,
+            },
+          ]"
+          :notification="notification"
+          @close="handleClose"
+        />
+      </li>
+    </TransitionGroup>
   </div>
 </template>

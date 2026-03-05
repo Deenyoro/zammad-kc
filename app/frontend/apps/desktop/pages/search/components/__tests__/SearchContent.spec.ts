@@ -188,7 +188,7 @@ describe('SearchContent', () => {
 
     await waitForDetailSearchQueryCalls()
 
-    await wrapper.events.click(wrapper.getAllByRole('button', { name: 'Sorted descending' })[0])
+    await wrapper.events.click(wrapper.getByRole('button', { name: 'Sort by Title ascending' }))
     const mocks = await waitForDetailSearchQueryCalls()
 
     expect(mocks[1].variables.orderDirection).toBe('ASCENDING')

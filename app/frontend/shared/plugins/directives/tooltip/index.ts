@@ -235,6 +235,9 @@ const addEventListeners = () => {
   window.addEventListener('mouseout', handleTooltipRemoveEvent, {
     passive: true,
   })
+  window.addEventListener('mousedown', handleTooltipRemoveEvent, {
+    passive: true,
+  })
 }
 
 const cleanupEventHandlers = () => {
@@ -245,6 +248,7 @@ const cleanupEventHandlers = () => {
   window.removeEventListener('mouseover', handleTooltipAddEvent)
   window.removeEventListener('mousemove', handleEvent)
   window.removeEventListener('mouseout', handleTooltipRemoveEvent)
+  window.removeEventListener('mousedown', handleTooltipRemoveEvent)
 
   window.removeEventListener('scroll', handleTooltipRemoveEvent)
 }

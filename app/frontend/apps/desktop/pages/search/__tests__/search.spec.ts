@@ -17,7 +17,10 @@ import {
   waitForDetailSearchQueryCalls,
 } from '#desktop/components/Search/graphql/queries/detailSearch.mocks.ts'
 import { waitForSearchCountsQueryCalls } from '#desktop/components/Search/graphql/queries/searchCounts.mocks.ts'
-import { waitForTicketUpdateBulkMutationCalls } from '#desktop/entities/ticket/graphql/mutations/updateBulk.mocks.ts'
+import {
+  mockTicketUpdateBulkMutation,
+  waitForTicketUpdateBulkMutationCalls,
+} from '#desktop/entities/ticket/graphql/mutations/updateBulk.mocks.ts'
 
 const visitSearchView = async (searchTerm = 'test') => {
   const view = await visitView(`/search/${searchTerm}`)
@@ -147,17 +150,32 @@ describe('search view', () => {
 
     await view.events.click(view.getByRole('option', { name: 'closed' }))
 
+    mockTicketUpdateBulkMutation({
+      ticketUpdateBulk: {
+        async: false,
+        total: 1,
+        failedCount: 0,
+        inaccessibleTicketIds: [],
+        invalidTicketIds: [],
+      },
+    })
+
     await view.events.click(view.getByRole('button', { name: 'Apply' }))
 
     const calls = await waitForTicketUpdateBulkMutationCalls()
 
     expect(calls.at(-1)?.variables).toEqual({
-      input: {
-        article: null,
-        stateId: convertToGraphQLId('Ticket::State', 4),
+      perform: {
+        input: {
+          article: null,
+          stateId: convertToGraphQLId('Ticket::State', 4),
+        },
       },
-      ticketIds: [ticket.id],
+      selector: {
+        ticketIds: [ticket.id],
+      },
     })
+
     expect(await waitForDetailSearchQueryCalls()).toHaveLength(2)
     expect(await waitForSearchCountsQueryCalls()).toHaveLength(2)
   })

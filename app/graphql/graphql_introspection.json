@@ -5096,6 +5096,47 @@
         },
         {
           "kind": "ENUM",
+          "name": "EnumBulkUpdateStatusStatus",
+          "description": "Bulk update status type",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "none",
+              "description": "No bulk update in progress",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "pending",
+              "description": "Bulk update is pending and will start soon",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "running",
+              "description": "Bulk update is currently running",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "succeeded",
+              "description": "Bulk update completed successfully",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "failed",
+              "description": "Bulk update failed",
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
           "name": "EnumChannelArea",
           "description": "The channel area type",
           "fields": null,
@@ -12169,48 +12210,30 @@
               "description": "Bulk-update tickets.",
               "args": [
                 {
-                  "name": "ticketIds",
-                  "description": "The tickets to be updated",
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "LIST",
-                      "name": null,
-                      "ofType": {
-                        "kind": "NON_NULL",
-                        "name": null,
-                        "ofType": {
-                          "kind": "SCALAR",
-                          "name": "ID",
-                          "ofType": null
-                        }
-                      }
-                    }
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "input",
-                  "description": "The ticket data",
+                  "name": "selector",
+                  "description": "The selector for bulk ticket update.",
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "TicketUpdateInput",
+                      "name": "TicketBulkSelectorInput",
                       "ofType": null
                     }
                   },
                   "defaultValue": null
                 },
                 {
-                  "name": "macroId",
-                  "description": "The macro to apply onto ticket",
+                  "name": "perform",
+                  "description": "The bulk update action to be performed on the selected tickets.",
                   "type": {
-                    "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "TicketBulkPerformInput",
+                      "ofType": null
+                    }
                   },
                   "defaultValue": null
                 }
@@ -20239,6 +20262,22 @@
               "deprecationReason": null
             },
             {
+              "name": "userCurrentTicketBulkUpdateStatusUpdates",
+              "description": "Updates for ticket bulk update status changes for the current user.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "UserCurrentTicketBulkUpdateStatusUpdatesPayload",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "userCurrentTicketOverviewUpdates",
               "description": "Updates to overviews according to the sorting of the current user",
               "args": [
@@ -23679,6 +23718,149 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "TicketArticle",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "TicketBulkPerformInput",
+          "description": "Represents the bulk update action to be performed on the selected tickets.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "input",
+              "description": "The ticket data",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "TicketUpdateInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "macroId",
+              "description": "The macro to apply onto ticket",
+              "type": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "TicketBulkSelectorInput",
+          "description": "Represents the selector for bulk ticket update.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "ticketIds",
+              "description": "The tickets to be updated",
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "overviewId",
+              "description": "Ticket overview for selecting tickets",
+              "type": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "searchQuery",
+              "description": "Search query to filter tickets",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "TicketBulkUpdateStatus",
+          "description": "Ticket bulk update status information",
+          "fields": [
+            {
+              "name": "failedCount",
+              "description": "Number of tickets that failed to update",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "processedCount",
+              "description": "Number of tickets processed so far",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "status",
+              "description": "Current status of the bulk update",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "EnumBulkUpdateStatusStatus",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "total",
+              "description": "Total number of tickets to be updated",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -27151,8 +27333,20 @@
           "description": "Autogenerated return type of TicketUpdateBulk.",
           "fields": [
             {
+              "name": "async",
+              "description": "Whether the update is being processed asynchronously. This will be true if the number of tickets exceeds the defined threshold.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "errors",
-              "description": "Did the bulk update fail?",
+              "description": "Errors encountered during execution of the mutation.",
               "args": [],
               "type": {
                 "kind": "LIST",
@@ -27162,7 +27356,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "TicketUpdateBulkUserError",
+                    "name": "UserError",
                     "ofType": null
                   }
                 }
@@ -27171,68 +27365,65 @@
               "deprecationReason": null
             },
             {
-              "name": "success",
-              "description": "Were the tickets updated successfully?",
+              "name": "failedCount",
+              "description": "",
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
-          "name": "TicketUpdateBulkUserError",
-          "description": "Represents an error during a ticket bulk update mutation.",
-          "fields": [
-            {
-              "name": "errorType",
-              "description": "Exception class",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "failedTicket",
-              "description": "Ticket which caused the bulk update transaction to fail and be rolled back",
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "Ticket",
+                "name": "Int",
                 "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "message",
-              "description": null,
+              "name": "inaccessibleTicketIds",
+              "description": "Tickets that are no longer accessible to the user.",
               "args": [],
               "type": {
-                "kind": "NON_NULL",
+                "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "invalidTicketIds",
+              "description": "Tickets that failed to update due to validation errors or other issues.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "total",
+              "description": "Total number of tickets selected for update.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -30331,6 +30522,33 @@
                 "kind": "OBJECT",
                 "name": "UserTaskbarItem",
                 "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "UserCurrentTicketBulkUpdateStatusUpdatesPayload",
+          "description": "Autogenerated return type of UserCurrentTicketBulkUpdateStatusUpdates.",
+          "fields": [
+            {
+              "name": "bulkUpdateStatus",
+              "description": "Current status of the bulk update",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "TicketBulkUpdateStatus",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null

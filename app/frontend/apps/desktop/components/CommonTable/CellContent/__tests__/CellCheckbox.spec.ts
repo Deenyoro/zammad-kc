@@ -6,7 +6,7 @@ import renderComponent from '#tests/support/components/renderComponent.ts'
 
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
-import CellCheckbox from '../CellContent/CellCheckbox.vue'
+import CellCheckbox from '../CellCheckbox.vue'
 
 describe('CellCheckbox.vue', () => {
   const id = convertToGraphQLId('Ticket', 1)
@@ -36,7 +36,7 @@ describe('CellCheckbox.vue', () => {
       props: { item: { ...item, policy: { update: false } }, itemIds },
     })
 
-    expect(wrapper.getByRole('checkbox')).toHaveClass('opacity-30')
+    expect(wrapper.getByRole('checkbox')).toHaveClass('opacity-50')
     expect(wrapper.getByRole('checkbox')).toBeDisabled()
   })
 
@@ -45,7 +45,7 @@ describe('CellCheckbox.vue', () => {
       props: { item: { ...item, disabled: true }, itemIds },
     })
 
-    expect(wrapper.getByRole('checkbox')).toHaveClass('opacity-30')
+    expect(wrapper.getByRole('checkbox')).toHaveClass('opacity-50')
     expect(wrapper.getByRole('checkbox')).toBeDisabled()
   })
 
