@@ -29,7 +29,7 @@ const rowEventHandler = computed(() =>
           'aria-describedby': rowId,
           tabindex: props.hasCheckbox ? -1 : 0,
           class:
-            'group focus-visible:outline-transparent cursor-pointer active:bg-blue-800 active:dark:bg-blue-800 focus-visible:bg-blue-800 focus-visible:dark:bg-blue-900 focus-within:text-white hover:bg-blue-600 dark:hover:bg-blue-900',
+            'group focus-visible:outline-transparent active:bg-blue-800 active:dark:bg-blue-800 focus-visible:bg-blue-800 focus-visible:dark:bg-blue-900 focus-within:text-white hover:bg-blue-600 dark:hover:bg-blue-900',
         },
         events: {
           click: () => {
@@ -53,7 +53,7 @@ const hasScreenReaderHelpText = computed(() => !!document?.getElementById(rowId)
     :class="{
       'odd:bg-blue-200 odd:dark:bg-gray-700': !noAutoStriping,
       'bg-blue-200 dark:bg-gray-700': isStriped === true,
-      '!bg-blue-800': !hasCheckbox && isRowSelected,
+      'bg-blue-800!': !hasCheckbox && isRowSelected,
     }"
     style="clip-path: xywh(0 0 100% 100% round 0.375rem)"
     data-test-id="table-row"

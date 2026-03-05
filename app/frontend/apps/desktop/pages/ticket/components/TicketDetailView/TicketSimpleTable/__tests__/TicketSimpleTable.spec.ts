@@ -110,7 +110,7 @@ describe('TicketSimpleData', () => {
     })
 
     expect(wrapper.getByRole('row', { description: 'Select table row' })).toHaveClass(
-      'odd:bg-blue-200 odd:dark:bg-gray-700 group focus-visible:outline-transparent cursor-pointer active:bg-blue-800 active:dark:bg-blue-800 focus-visible:bg-blue-800 focus-visible:dark:bg-blue-900 focus-within:text-white hover:bg-blue-600 dark:hover:bg-blue-900',
+      'odd:bg-blue-200 odd:dark:bg-gray-700 bg-blue-800! group focus-visible:outline-transparent active:bg-blue-800 active:dark:bg-blue-800 focus-visible:bg-blue-800 focus-visible:dark:bg-blue-900 focus-within:text-white hover:bg-blue-600 dark:hover:bg-blue-900',
     )
   })
 })

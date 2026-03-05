@@ -35,6 +35,7 @@
 - `assets/crown-right.svg`
 - `assets/crown-silver.svg`
 - `assets/dash-circle.svg`
+- `assets/dash-square.svg`
 - `assets/download.svg`
 - `assets/envelope.svg`
 - `assets/exclamation-triangle.svg`

@@ -19,6 +19,40 @@ class MigrationHelper
 
 =begin
 
+This function renames reserved words for all models:
+
+Renames 'data' for all models to '_data':
+
+  MigrationHelper.rename_custom_object_attribute_reserved('data')
+
+Renames 'data' for model 'Ticket' to '_data':
+
+  MigrationHelper.rename_custom_object_attribute_reserved('data', models: %w[Ticket])
+
+Returns:
+
+  true
+
+=end
+
+  def self.rename_custom_object_attribute_reserved(name, models: [])
+    filtered = ObjectManager.list_objects.filter { |model_name| models.blank? || models.include?(model_name) }
+
+    # pre checks to ensure rename is ok before any mutation
+    filtered.each do |model_name|
+      name_valid = ObjectManager::Attribute::RESERVED_NAMES.include?(name) ||
+                   Array.wrap(ObjectManager::Attribute::RESERVED_NAMES_PER_MODEL[model_name]).include?(name)
+
+      raise "Failed to rename '#{name}' because it is neither a global reserved word nor a reserved word for object #{model_name}!" if !name_valid
+    end
+
+    filtered.each { |model_name| rename_custom_object_attribute(model_name, name) } # rubocop:disable Style/CombinableLoops
+
+    true
+  end
+
+=begin
+
   object_attribute = MigrationHelper.custom_object_attribute('Organization', 'vip')
 
   returns ObjectManager::Attribute

@@ -208,6 +208,29 @@
       "note": "Admin configured RegExp"
     },
     {
+      "warning_type": "Remote Code Execution",
+      "warning_code": 25,
+      "fingerprint": "4fece0b57f4c3096ec1d0746b032c8b0c96b1a5c9225858a075f5006b558339b",
+      "check_name": "Deserialize",
+      "message": "Use of `Marshal.load` may be dangerous",
+      "file": "app/services/service/ticket/bulk/single_item_update.rb",
+      "line": 58,
+      "link": "https://brakemanscanner.org/docs/warning_types/unsafe_deserialization",
+      "code": "Marshal.load(Marshal.dump(perform[:input]))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Service::Ticket::Bulk::SingleItemUpdate",
+        "method": "ticket_data"
+      },
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        502
+      ],
+      "note": ""
+    },
+    {
       "warning_type": "SQL Injection",
       "warning_code": 0,
       "fingerprint": "54c6ff0714c6d869037e344ea22bedcece2d2bc3b88f1cdfffe72ce62d8ef816",
@@ -821,5 +844,5 @@
       "note": ""
     }
   ],
-  "brakeman_version": "8.0.1"
+  "brakeman_version": "8.0.4"
 }
