@@ -94,12 +94,4 @@ class Kc::BulkMergeController < ApplicationController
     render json: { error: e.message }, status: :unprocessable_entity
   end
 
-  private
-
-  def authenticate_and_authorize!
-    authentication_check
-    return if current_user&.permissions?('ticket.agent')
-
-    raise Exceptions::Forbidden, __('Not authorized (agent permission required)')
-  end
 end

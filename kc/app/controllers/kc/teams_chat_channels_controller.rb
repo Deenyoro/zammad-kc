@@ -186,7 +186,7 @@ class Kc::TeamsChatChannelsController < ApplicationController
       channel.save!
     end
 
-    render json: channel
+    render json: { id: channel.id, assets: channel.assets({}) }
   end
 
   # POST /api/v1/kc/teams_chat_channels/:id/sync_directory
