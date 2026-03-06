@@ -4,7 +4,7 @@ import type { SelectValue } from '#shared/components/CommonSelect/types.ts'
 import type { TreeSelectProps } from '#shared/components/Form/fields/FieldTreeSelect/types.ts'
 import createInput from '#shared/form/core/createInput.ts'
 import addLink from '#shared/form/features/addLink.ts'
-import addMissingEntityObjectOption from '#shared/form/features/addMissingEntityObjectOption.ts'
+import addOrRemoveMissingEntityObjectOption from '#shared/form/features/addOrRemoveMissingEntityObjectOption.ts'
 import formUpdaterTrigger from '#shared/form/features/formUpdaterTrigger.ts'
 import removeValuesForNonExistingOrDisabledOptions from '#shared/form/features/removeValuesForNonExistingOrDisabledOptions.ts'
 
@@ -43,7 +43,7 @@ const fieldDefinition = createInput(
     features: [
       addLink,
       formUpdaterTrigger(),
-      addMissingEntityObjectOption,
+      addOrRemoveMissingEntityObjectOption,
       removeValuesForNonExistingOrDisabledOptions,
     ],
   },
