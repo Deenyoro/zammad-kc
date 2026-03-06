@@ -32,7 +32,11 @@ RSpec.describe Gql::Subscriptions::User::Current::Ticket::BulkUpdateStatusUpdate
 
       context 'when a bulk update is running' do
         before do
-          TicketBulkUpdateJob.perform_later(user: target, perform: {}, ticket_ids: [1, 2, 3], total: 100, processed_count: 50)
+          allow(TicketBulkUpdateJob)
+            .to receive(:fetch_running_status)
+            .and_return(
+              status: 'running', total: 100, processed_count: 50
+            )
         end
 
         it 'subscribes' do
