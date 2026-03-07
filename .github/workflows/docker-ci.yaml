@@ -3,23 +3,20 @@ name: docker-ci
 on:
   pull_request:
 
-permissions:
-  contents: read
-
 jobs:
   docker-ci:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - name: Checkout Code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@v6
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+        uses: docker/setup-buildx-action@v3
 
       - name: Docker metadata action
         id: meta
-        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5
+        uses: docker/metadata-action@v5
         with:
           images:
             zammad-local
@@ -28,7 +25,7 @@ jobs:
 
       - name: Build Docker image
         id: docker_build
-        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        uses: docker/build-push-action@v6
         with:
           context: .
           build-args: |
@@ -40,7 +37,7 @@ jobs:
           outputs: type=docker,dest=/tmp/zammad-local.tar
 
       - name: Checkout docker compose files
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@v6
         with:
           repository: zammad/zammad-docker-compose
           path: zammad-docker-compose
