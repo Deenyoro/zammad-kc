@@ -14,12 +14,11 @@ import {
 import { renderComponent } from '#tests/support/components/index.ts'
 import { waitForNextTick } from '#tests/support/utils.ts'
 
+import useFlatSelectOptions from '#shared/components/Form/fields/FieldTreeSelect/composables/useFlatSelectOptions.ts'
 import type { TreeSelectOption } from '#shared/components/Form/fields/FieldTreeSelect/types.ts'
 import { EnumTextDirection } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n.ts'
 import { useLocaleStore } from '#shared/stores/locale.ts'
-
-import useFlatSelectOptions from '../useFlatSelectOptions.ts'
 
 const { flattenOptions } = useFlatSelectOptions()
 
@@ -301,10 +300,14 @@ describe('Form - Field - TreeSelect - Options', () => {
 
     let selectOptions = getAllByRole(listbox, 'option')
 
-    expect(selectOptions).toHaveLength(optionsProp.length)
+    expect(selectOptions).toHaveLength(testOptions.length + 1)
 
     selectOptions.forEach((selectOption, index) => {
-      expect(selectOption).toHaveTextContent(testOptions[index].label!)
+      if (index === testOptions.length) {
+        expect(selectOption).toHaveTextContent('10')
+      } else {
+        expect(selectOption).toHaveTextContent(testOptions[index].label!)
+      }
     })
 
     optionsProp.push({
@@ -413,6 +416,66 @@ describe('Form - Field - TreeSelect - Options', () => {
       if (index === 3) expect(selectOption).toHaveTextContent('Item D')
       else expect(selectOption).toHaveTextContent(testOptions[index].label!)
     })
+  })
+
+  it('shows value as unknown when not present in historical options', async () => {
+    const wrapper = renderComponent(FormKit, {
+      ...wrapperParameters,
+      props: {
+        ...commonProps,
+        value: 10,
+        options: testOptions,
+        historicalOptions: {
+          ...keyBy(testOptions, 'value'),
+          // value 10 intentionally omitted
+        },
+      },
+    })
+
+    expect(wrapper.getByRole('listitem')).toHaveTextContent('10 (unknown)')
+
+    await wrapper.events.click(wrapper.getByLabelText('Treeselect'))
+
+    const listbox = wrapper.getByRole('listbox')
+    const selectOptions = getAllByRole(listbox, 'option')
+
+    expect(selectOptions).toHaveLength(testOptions.length + 1)
+  })
+
+  it('removes appended unknown option when it becomes available in real options', async () => {
+    const optionsProp = cloneDeep(testOptions)
+
+    const wrapper = renderComponent(FormKit, {
+      ...wrapperParameters,
+      props: {
+        ...commonProps,
+        value: 10,
+        options: optionsProp,
+      },
+    })
+
+    expect(wrapper.getByRole('listitem')).toHaveTextContent('10 (unknown)')
+
+    await wrapper.events.click(wrapper.getByLabelText('Treeselect'))
+
+    const listbox = wrapper.getByRole('listbox')
+    let selectOptions = getAllByRole(listbox, 'option')
+
+    expect(selectOptions).toHaveLength(testOptions.length + 1)
+
+    optionsProp.push({ value: 10, label: 'Item D' })
+
+    await wrapper.rerender({
+      options: optionsProp,
+    })
+
+    selectOptions = getAllByRole(listbox, 'option')
+
+    expect(selectOptions).toHaveLength(optionsProp.length)
+
+    await wrapper.events.click(wrapper.baseElement)
+
+    expect(wrapper.getByRole('listitem')).toHaveTextContent('Item D')
   })
 
   it('supports rejection of non-existent values', async () => {

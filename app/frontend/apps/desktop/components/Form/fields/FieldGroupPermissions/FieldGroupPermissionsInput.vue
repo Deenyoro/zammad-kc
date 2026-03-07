@@ -10,13 +10,12 @@ import {
   type GroupPermissionReactive,
   type GroupPermissionsContext,
 } from '#shared/components/Form/fields/FieldGroupPermissions/types.ts'
+import useFlatSelectOptions from '#shared/components/Form/fields/FieldTreeSelect/composables/useFlatSelectOptions.ts'
 import type { TreeSelectOption } from '#shared/components/Form/fields/FieldTreeSelect/types.ts'
 import { useDelegateFocus } from '#shared/composables/useDelegateFocus.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
-
-import useFlatSelectOptions from '../FieldTreeSelect/useFlatSelectOptions.ts'
 
 interface Props {
   context: GroupPermissionsContext

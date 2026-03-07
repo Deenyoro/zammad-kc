@@ -137,10 +137,14 @@ describe('Form - Field - Select - Options', () => {
 
     let selectOptions = wrapper.getAllByRole('option')
 
-    expect(selectOptions).toHaveLength(optionsProp.length)
+    expect(selectOptions).toHaveLength(optionsProp.length + 1)
 
     selectOptions.forEach((selectOption, index) => {
-      expect(selectOption).toHaveTextContent(testOptions[index].label)
+      if (index === testOptions.length) {
+        expect(selectOption).toHaveTextContent('3')
+      } else {
+        expect(selectOption).toHaveTextContent(testOptions[index].label!)
+      }
     })
 
     optionsProp.push({

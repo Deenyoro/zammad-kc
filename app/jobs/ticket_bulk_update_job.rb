@@ -54,7 +54,12 @@ class TicketBulkUpdateJob < ApplicationJob
     lock = ActiveJobLock.find_by(lock_key: "#{name}/User/#{user.id}")
     return { status: 'none' } if !lock
 
-    job = Delayed::Job.where('handler LIKE ?', "%job_id: #{lock.active_job_id}%").first
+    job = Delayed::Job
+      .where(
+        'handler LIKE :no_quotes OR handler LIKE :with_quotes',
+        no_quotes:   "%job_id: #{lock.active_job_id}%",
+        with_quotes: "%job_id: '#{lock.active_job_id}'%"
+      ).first
     return { status: 'none' } if !job
 
     arguments       = job.payload_object.job_data['arguments'].first
