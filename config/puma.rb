@@ -2,11 +2,18 @@
 
 # Support both ZAMMAD_WEB_CONCURRENCY (as recommended by the Zammad docker stack & documentation)
 #   and WEB_CONCURRENCY (Zammad and Rails default).
-worker_count = Integer(ENV['ZAMMAD_WEB_CONCURRENCY'] || ENV['WEB_CONCURRENCY'] || 0)
+
+# Rails might not be available at this point, so we can't use `.presence` here.
+def puma_env_presence(key)
+  value = ENV[key]
+  value.to_s.strip.empty? ? nil : value
+end
+
+worker_count = Integer(puma_env_presence('ZAMMAD_WEB_CONCURRENCY') || puma_env_presence('WEB_CONCURRENCY') || 0)
 workers worker_count
 
-threads_count_min = Integer(ENV['MIN_THREADS'] || 5)
-threads_count_max = Integer(ENV['MAX_THREADS'] || 30)
+threads_count_min = Integer(puma_env_presence('MIN_THREADS') || 5)
+threads_count_max = Integer(puma_env_presence('MAX_THREADS') || 30)
 threads threads_count_min, threads_count_max
 
 environment ENV.fetch('RAILS_ENV', 'development')

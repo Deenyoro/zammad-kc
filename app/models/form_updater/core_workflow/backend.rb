@@ -5,12 +5,13 @@ class FormUpdater::CoreWorkflow::Backend
     new(...).perform
   end
 
-  attr_accessor :perform_result, :result, :relation_fields
+  attr_accessor :perform_result, :result, :relation_fields, :object
 
-  def initialize(perform_result:, result:, relation_fields:)
-    @perform_result = perform_result
-    @result = result
+  def initialize(perform_result:, result:, relation_fields:, object:)
+    @perform_result  = perform_result
+    @result          = result
     @relation_fields = relation_fields
+    @object          = object
   end
 
   def perform
