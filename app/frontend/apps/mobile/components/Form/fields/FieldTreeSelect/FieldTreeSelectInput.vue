@@ -1,14 +1,14 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { computed, nextTick, ref, toRef } from 'vue'
+import { nextTick, ref, toRef } from 'vue'
 
 import type { SelectValue } from '#shared/components/CommonSelect/types.ts'
 import useValue from '#shared/components/Form/composables/useValue.ts'
+import useFlatSelectOptions from '#shared/components/Form/fields/FieldTreeSelect/composables/useFlatSelectOptions.ts'
 import type {
   FlatSelectOption,
   TreeSelectContext,
-  TreeSelectOption,
 } from '#shared/components/Form/fields/FieldTreeSelect/types.ts'
 import useSelectOptions from '#shared/composables/useSelectOptions.ts'
 import useSelectPreselect from '#shared/composables/useSelectPreselect.ts'
@@ -57,25 +57,7 @@ const clearValue = () => {
   focusOutputElement()
 }
 
-const flattenOptions = (
-  options: TreeSelectOption[],
-  parents: SelectValue[] = [],
-): FlatSelectOption[] =>
-  options &&
-  options.reduce((flatOptions: FlatSelectOption[], { children, ...option }) => {
-    flatOptions.push(
-      Object.assign(option, {
-        parents,
-        hasChildren: Boolean(children),
-      }),
-    )
-
-    if (children) flatOptions.push(...flattenOptions(children, [...parents, option.value]))
-
-    return flatOptions
-  }, [])
-
-const flatOptions = computed(() => flattenOptions(props.context.options))
+const { flatOptions, appendedTreeOptions } = useFlatSelectOptions(toRef(props.context, 'options'))
 
 const filterInput = ref(null)
 
@@ -100,7 +82,7 @@ const {
   getSelectedOptionStatus,
   getDialogFocusTargets,
   setupMissingOrDisabledOptionHandling,
-} = useSelectOptions(flatOptions, toRef(props, 'context'))
+} = useSelectOptions(flatOptions, toRef(props, 'context'), appendedTreeOptions)
 
 const openModal = () => {
   return dialog.open({

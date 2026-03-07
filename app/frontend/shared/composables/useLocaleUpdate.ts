@@ -28,7 +28,7 @@ export const useLocaleUpdate = () => {
   const { localeData, locales } = storeToRefs(localeStore)
 
   const modelCurrentLocale = computed({
-    get: () => localeData.value?.locale ?? 'en',
+    get: () => localeData.value?.locale ?? 'en-us',
     set: (locale) => {
       if (!locale || localeData.value?.locale === locale) return
       isSavingLocale.value = true

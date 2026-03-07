@@ -56,7 +56,7 @@ const getEntityValueForField = (
   ) as SelectValue | SelectValue[] | undefined
 }
 
-const addMissingEntityObjectOption = (node: FormKitNode) => {
+const addOrRemoveMissingEntityObjectOption = (node: FormKitNode) => {
   node.on('created', () => {
     const { context } = node
 
@@ -78,7 +78,43 @@ const addMissingEntityObjectOption = (node: FormKitNode) => {
         if ((!belongsToObjectField && !historicalOptions) || !initialEntityObject)
           return next(payload)
 
-        // Check if all values already exist in options
+        // Compute entity value early so we can use it for both cleanup and add logic.
+        const entityValue = getEntityValueForField(
+          node.name,
+          belongsToObjectField,
+          initialEntityObject,
+        )
+
+        // Clean up stale appended options when the entity value changes (e.g. after save/reset).
+        // We track the last known entity value to detect changes — user interactions don't alter
+        // the entity value, so appended options remain stable until an actual entity update.
+        if (
+          context._lastEntityValue !== undefined &&
+          !isEqual(context._lastEntityValue, entityValue)
+        ) {
+          const oldEntityValues: SelectValue[] = Array.isArray(context._lastEntityValue)
+            ? context._lastEntityValue
+            : [context._lastEntityValue]
+          const newEntityValues = new Set<SelectValue>(
+            Array.isArray(entityValue)
+              ? entityValue
+              : entityValue !== undefined
+                ? [entityValue]
+                : [],
+          )
+
+          if (context.removeMissingOption) {
+            for (const oldVal of oldEntityValues) {
+              if (!newEntityValues.has(oldVal)) {
+                ;(context.removeMissingOption as (value: SelectValue) => void)(oldVal)
+              }
+            }
+          }
+        }
+
+        context._lastEntityValue = entityValue
+
+        // Check if all values already exist in options.
         if (
           (Array.isArray(payload) &&
             payload.every((value) => optionValueLookup[value] !== undefined)) ||
@@ -87,14 +123,7 @@ const addMissingEntityObjectOption = (node: FormKitNode) => {
           return next(payload)
         }
 
-        // Validate payload matches entity value, because we skipping the adding of options
-        // for other situations (this should normally not happen in other situations, then something else is wrong).
-        const entityValue = getEntityValueForField(
-          node.name,
-          belongsToObjectField,
-          initialEntityObject,
-        )
-
+        // Only add missing options when the payload matches the entity value.
         if (!isEqual(payload, entityValue)) return next(payload)
 
         // Determine label extraction strategy once
@@ -111,8 +140,11 @@ const addMissingEntityObjectOption = (node: FormKitNode) => {
 
           const label = getLabelForValue(value)
 
-          if (label && context.addMissingOption) {
-            ;(context.addMissingOption as (value: SelectValue, label: string) => void)(value, label)
+          if (context.addMissingOption) {
+            ;(context.addMissingOption as (value: SelectValue, label?: string) => void)(
+              value,
+              label,
+            )
           }
         })
 
@@ -122,4 +154,4 @@ const addMissingEntityObjectOption = (node: FormKitNode) => {
   })
 }
 
-export default addMissingEntityObjectOption
+export default addOrRemoveMissingEntityObjectOption

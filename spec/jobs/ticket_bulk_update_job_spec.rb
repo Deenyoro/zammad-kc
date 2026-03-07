@@ -54,7 +54,11 @@ RSpec.describe TicketBulkUpdateJob do
     end
 
     context 'with multiple tickets', aggregate_failures: true do
-      let(:tickets) { create_list(:ticket, 250, group:) }
+      let(:tickets) { create_list(:ticket, 12, group:) }
+
+      before do
+        stub_const("#{described_class}::TICKETS_PER_JOB_COUNT", 5)
+      end
 
       it 'processes a batch of tickets' do
         allow(Service::Ticket::Bulk::SingleItemUpdate)
@@ -75,18 +79,20 @@ RSpec.describe TicketBulkUpdateJob do
 
         expect(Service::Ticket::Bulk::SingleItemUpdate)
           .to have_received(:new)
-          .with(user:, ticket: tickets[99], perform:)
+          .with(user:, ticket: tickets[4], perform:)
 
         expect(Service::Ticket::Bulk::SingleItemUpdate)
           .not_to have_received(:new)
-          .with(user:, ticket: tickets[100], perform:)
+          .with(user:, ticket: tickets[5], perform:)
       end
 
       it 'updates subscription progress every few tickets' do
+        stub_const("#{described_class}::STATUS_UPDATE_INTERVAL", 2)
+
         expect_any_instance_of(described_class).to receive(:update_subscription_progress).twice
 
         described_class
-          .perform_now(user:, perform:, ticket_ids: tickets.slice(0, 22))
+          .perform_now(user:, perform:, ticket_ids: tickets.slice(0, 5))
       end
 
       it 'enqueues next batch of tickets' do
@@ -100,9 +106,9 @@ RSpec.describe TicketBulkUpdateJob do
           .with(
             user:,
             perform:,
-            ticket_ids:        tickets.slice(100..).pluck(:id),
-            total:             250,
-            processed_count:   100,
+            ticket_ids:        tickets.slice(5..).pluck(:id),
+            total:             12,
+            processed_count:   5,
             failed_ticket_ids: []
           )
       end
@@ -124,11 +130,11 @@ RSpec.describe TicketBulkUpdateJob do
           .to receive(:trigger)
 
         described_class
-          .perform_now(user:, perform:, ticket_ids: tickets.slice(200..).pluck(:id), total: 250, processed_count: 200)
+          .perform_now(user:, perform:, ticket_ids: tickets.slice(10..).pluck(:id), total: 12, processed_count: 10)
 
         expect(Gql::Subscriptions::User::Current::Ticket::BulkUpdateStatusUpdates)
           .to have_received(:trigger)
-          .with({ status: 'succeeded', total: 250, failed_count: 0 }, scope: user.id)
+          .with({ status: 'succeeded', total: 12, failed_count: 0 }, scope: user.id)
       end
 
       it 'calls final subscription with failed ticket count if some updates in earlier batch failed' do
@@ -136,11 +142,11 @@ RSpec.describe TicketBulkUpdateJob do
           .to receive(:trigger)
 
         described_class
-          .perform_now(user:, perform:, ticket_ids: tickets.slice(200..).pluck(:id), total: 250, failed_ticket_ids: [123])
+          .perform_now(user:, perform:, ticket_ids: tickets.slice(10..).pluck(:id), total: 12, failed_ticket_ids: [123])
 
         expect(Gql::Subscriptions::User::Current::Ticket::BulkUpdateStatusUpdates)
           .to have_received(:trigger)
-          .with({ status: 'failed', total: 250, failed_count: 1 }, scope: user.id)
+          .with({ status: 'failed', total: 12, failed_count: 1 }, scope: user.id)
       end
     end
   end

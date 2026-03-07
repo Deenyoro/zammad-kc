@@ -6,6 +6,7 @@ import { escapeRegExp } from 'lodash-es'
 import { computed, nextTick, ref, toRef, watch, useTemplateRef } from 'vue'
 
 import useValue from '#shared/components/Form/composables/useValue.ts'
+import useFlatSelectOptions from '#shared/components/Form/fields/FieldTreeSelect/composables/useFlatSelectOptions.ts'
 import type {
   FlatSelectOption,
   TreeSelectContext,
@@ -20,7 +21,6 @@ import stopEvent from '#shared/utils/events.ts'
 import CommonInputSearch from '#desktop/components/CommonInputSearch/CommonInputSearch.vue'
 
 import FieldTreeSelectInputDropdown from './FieldTreeSelectInputDropdown.vue'
-import useFlatSelectOptions from './useFlatSelectOptions.ts'
 
 interface Props {
   context: TreeSelectContext & {
@@ -38,7 +38,7 @@ const {
   clearValue: clearInternalValue,
 } = useValue(contextReactive)
 
-const { flatOptions } = useFlatSelectOptions(toRef(props.context, 'options'))
+const { flatOptions, appendedTreeOptions } = useFlatSelectOptions(toRef(props.context, 'options'))
 
 const {
   sortedOptions,
@@ -49,7 +49,7 @@ const {
   getSelectedOptionLabel,
   getSelectedOptionFullPath,
   setupMissingOrDisabledOptionHandling,
-} = useSelectOptions<FlatSelectOption[]>(flatOptions, toRef(props, 'context'))
+} = useSelectOptions<FlatSelectOption[]>(flatOptions, toRef(props, 'context'), appendedTreeOptions)
 
 const currentPath = ref<FlatSelectOption[]>([])
 
