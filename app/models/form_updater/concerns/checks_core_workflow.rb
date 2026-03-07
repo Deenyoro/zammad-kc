@@ -14,7 +14,7 @@ module FormUpdater::Concerns::ChecksCoreWorkflow
 
     perform_result = CoreWorkflow.perform(payload: perform_payload, user: current_user, assets: false, form_updater: true)
 
-    FormUpdater::CoreWorkflow.perform_mapping(perform_result, result, relation_fields: relation_fields)
+    FormUpdater::CoreWorkflow.perform_mapping(perform_result, result, relation_fields:, object:)
 
     return if perform_result[:flags].blank?
 
