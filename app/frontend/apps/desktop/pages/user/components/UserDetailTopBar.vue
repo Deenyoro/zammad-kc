@@ -1,21 +1,14 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { computed, ref, toRef, type Ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useElementSize } from '@vueuse/core'
+import { computed, toRef, useTemplateRef, type Ref } from 'vue'
 
-import { useCopyToClipboard } from '#shared/composables/useCopyToClipboard.ts'
-import { useTouchDevice } from '#shared/composables/useTouchDevice.ts'
 import type { User } from '#shared/graphql/types.ts'
-import { useApplicationStore } from '#shared/stores/application.ts'
-import { useSessionStore } from '#shared/stores/session.ts'
 
-import CommonActionMenu from '#desktop/components/CommonActionMenu/CommonActionMenu.vue'
-import CommonBreadcrumb from '#desktop/components/CommonBreadcrumb/CommonBreadcrumb.vue'
-import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
-import UserInfo from '#desktop/components/User/UserInfo.vue'
 import { useElementScroll } from '#desktop/composables/useElementScroll.ts'
-import { initializeActionPlugins } from '#desktop/pages/user/components/UserDetailTopBar/actions/index.ts'
+import { useTopBarHeaderHover } from '#desktop/composables/useTopBarHeaderHover.ts'
+import TopBarHeader from '#desktop/pages/user/components/UserDetailTopBar/TopBarHeader.vue'
 
 interface Props {
   user: User
@@ -25,139 +18,61 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const breadcrumbItems = computed(() => [
-  // TODO: Adjust breadcrumbs when the navigational mechanism is in place.
-  {
-    label: __('User'),
-  },
-  {
-    label: props.userDisplayName,
-    noOptionLabelTranslation: true,
-  },
-])
+const headerElement = useTemplateRef('header')
 
-const { copyToClipboard } = useCopyToClipboard()
-
-const config = toRef(useApplicationStore(), 'config')
-
-const copyUserDisplayNameToClipboard = () => {
-  copyToClipboard([
-    new ClipboardItem({
-      'text/plain': props.userDisplayName,
-      'text/html': `<a href="${config.value.http_type}://${config.value.fqdn}/desktop/users/${props.user.internalId}">${props.userDisplayName}</a>`,
-    }),
-  ])
-}
-
-const { y } = useElementScroll(toRef(props, 'contentContainerElement') as Ref<HTMLDivElement>)
-
-const isHovering = ref(false)
-
-const { isTouchDevice } = useTouchDevice()
-
-const events = computed(() => {
-  if (isTouchDevice.value)
-    return {
-      touchstart() {
-        isHovering.value = true
-      },
-      touchend() {
-        isHovering.value = false
-      },
-    }
-
-  return {
-    mouseenter() {
-      isHovering.value = true
-    },
-    mouseleave() {
-      isHovering.value = false
-    },
-  }
+const { height: headerHeight } = useElementSize(headerElement, undefined, {
+  box: 'border-box',
 })
 
-const { topLevelActions, secondLevelActions } = initializeActionPlugins()
+const { width } = useElementSize(toRef(props, 'contentContainerElement'))
+const { y } = useElementScroll(toRef(props, 'contentContainerElement') as Ref<HTMLDivElement>)
 
-const { hasPermission } = useSessionStore()
+const { containerEventHandlers, isHovering } = useTopBarHeaderHover([headerElement])
 
-const allowedTopLevelActions = computed(() =>
-  topLevelActions.filter(
-    (item) =>
-      (item.permission ? hasPermission(item.permission) : true) &&
-      (item.show ? item.show(props.user) : true),
-  ),
-)
+const containerWidth = computed(() => (width.value ? `${width.value}px` : 'auto'))
 
-const router = useRouter()
+// Show the header earlier to always have it visible
+const NEGATIVE_PADDING = -30
+
+const absoluteContainerOffset = computed(() => {
+  const offset = y.value - (headerHeight.value + NEGATIVE_PADDING)
+  return `${offset > 0 ? 0 : offset}px`
+})
+
+const stickyContainerTop = computed(() => {
+  if (isHovering.value) return '0px'
+  if (y.value < headerHeight.value) return `-${y.value}px`
+  return `-${headerHeight.value}px`
+})
 </script>
 
 <template>
-  <header
-    class="absolute top-0 right-0 left-0 z-30 h-17 w-full border-b border-neutral-100 bg-neutral-50 p-3 dark:border-gray-900 dark:bg-gray-500"
-    :style="{
-      transform: `translateY(${y - (137 + 70) > 0 ? 0 : y - (137 + 70)}px)`,
-    }"
+  <TopBarHeader
+    class="absolute top-0 right-0 left-0 z-30 bg-neutral-50/80 backdrop-blur-2xs dark:bg-gray-500/80"
+    :class="{ '-z-10! opacity-0': isHovering }"
     aria-hidden="true"
-    v-on="events"
-  >
-    <div class="mx-auto flex w-full max-w-266">
-      <UserInfo :user="user" size="small" title-size="large" no-link />
-    </div>
-  </header>
-  <header
-    data-test-id="user-detail-top-bar"
-    class="sticky z-30 h-34 border-b border-neutral-100 bg-neutral-50 p-3 dark:border-gray-900 dark:bg-gray-500"
-    :class="{
-      'transition-[top]': isHovering,
-    }"
+    :hide-details="true"
+    :user="user"
+    :user-display-name="userDisplayName"
+    data-test-id="user-detail-top-bar-clipped-details"
     :style="{
-      top: isHovering ? '0px' : y < 137 ? `-${y}px` : '-137px',
+      transform: `translateY(${absoluteContainerOffset})`,
+      width: containerWidth,
     }"
-    v-on="events"
-  >
-    <CommonBreadcrumb :items="breadcrumbItems" size="small" emphasize-last-item>
-      <template #trailing>
-        <CommonButton
-          v-if="userDisplayName"
-          v-tooltip="$t('Copy user display name')"
-          variant="secondary"
-          icon="files"
-          size="small"
-          class="ms-1"
-          @click="copyUserDisplayNameToClipboard"
-        />
-      </template>
-    </CommonBreadcrumb>
-    <div class="mx-auto mt-3 flex h-21 w-full max-w-278 pe-17">
-      <UserInfo
-        :user="user"
-        size="normal"
-        has-organization-popover
-        title-size="xl"
-        title-class="font-medium"
-        no-link
-      >
-        <template #actions>
-          <div role="menubar" class="flex items-center gap-1.5 ltr:ml-auto rtl:mr-auto">
-            <CommonButton
-              v-for="action in allowedTopLevelActions"
-              :key="action.key"
-              role="menuitem"
-              :prefix-icon="action.icon"
-              @click="action?.onClick?.(user, router)"
-            >
-              {{ $t(action.label) }}
-            </CommonButton>
-            <CommonActionMenu
-              button-size="large"
-              role="menuitem"
-              no-single-action-mode
-              :actions="secondLevelActions"
-              :entity="user"
-            />
-          </div>
-        </template>
-      </UserInfo>
-    </div>
-  </header>
+    v-on="containerEventHandlers"
+  />
+
+  <TopBarHeader
+    ref="header"
+    class="sticky top-0 right-0 left-0 z-20 w-full bg-neutral-50/80 backdrop-blur-2xs dark:bg-gray-500/80"
+    :class="{ 'transition-[top]': isHovering }"
+    :hide-details="false"
+    :user="user"
+    :user-display-name="userDisplayName"
+    data-test-id="user-detail-top-bar"
+    :style="{
+      top: stickyContainerTop,
+    }"
+    v-on="containerEventHandlers"
+  />
 </template>

@@ -112,7 +112,7 @@ describe('Ticket detail view', () => {
 
       expect(view.getByRole('heading', { name: 'Test Ticket', level: 2 })).toBeInTheDocument()
 
-      const ticketDetailHeader = view.getByTestId('visible-ticket-detail-top-bar')
+      const ticketDetailHeader = view.getByTestId('ticket-detail-top-bar-full-details')
 
       expect(within(ticketDetailHeader).getByLabelText('Breadcrumb navigation')).toBeInTheDocument()
 

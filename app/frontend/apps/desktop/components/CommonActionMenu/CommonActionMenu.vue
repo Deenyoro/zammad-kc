@@ -128,6 +128,7 @@ const router = useRouter()
         ref="popoverTarget"
         :aria-label="$t(customMenuButtonLabel || 'Action menu button')"
         aria-haspopup="true"
+        :aria-expanded="popoverIsOpen"
         :aria-controls="popoverIsOpen ? menuId : undefined"
         :disabled="disabled"
         class="outline-offset-0!"
