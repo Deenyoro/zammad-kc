@@ -190,8 +190,9 @@ class Navigation extends App.Controller
       )
 
     content.find('.js-switchControl').replaceWith App.UiElement.switch.render(
-      name: 'desktop_beta_switch'
+      name:    'desktop_beta_switch'
       display: __('Try New BETA UI')
+      theme:   'light' # force light mode on the switch, due to bad contrast in dark mode
     )
 
     content.find('input[name="desktop_beta_switch"]')
