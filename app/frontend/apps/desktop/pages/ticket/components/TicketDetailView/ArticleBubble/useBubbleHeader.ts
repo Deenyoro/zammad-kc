@@ -3,8 +3,6 @@
 import { useTimeout } from '@vueuse/core'
 import { ref } from 'vue'
 
-import emitter from '#shared/utils/emitter.ts'
-
 export const useBubbleHeader = () => {
   const showMetaInformation = ref(false)
 
@@ -47,7 +45,6 @@ export const useBubbleHeader = () => {
       return
 
     start()
-    emitter.emit('recompute-has-reached-article-bottom')
   }
 
   return {

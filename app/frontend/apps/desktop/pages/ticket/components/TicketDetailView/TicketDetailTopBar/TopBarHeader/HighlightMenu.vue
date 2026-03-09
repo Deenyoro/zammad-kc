@@ -51,6 +51,7 @@ onMounted(() => {
     <div class="flex items-center gap-1">
       <button
         class="flex items-center gap-2 bg-(--highlight-color)"
+        :aria-expanded="isOpen"
         :style="{
           '--highlight-color': isDarkMode ? color?.value?.dark : color?.value?.light,
           background: !isActive ? 'transparent' : undefined,

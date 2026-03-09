@@ -403,7 +403,7 @@ msgstr "%s ellenőrzőlista"
 msgid "%s Group"
 msgstr "%s csoport"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:51
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:50
 msgid "%s Import Status"
 msgstr "%s importálási állapot"
 
@@ -579,7 +579,7 @@ msgid "%s object(s) will be updated."
 msgstr "%s objektum lesz frissítve."
 
 #: app/assets/javascripts/app/views/ticket_zoom/meta.jst.eco:19
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:209
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:208
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ChecklistBadgeList.vue:44
 msgid "%s of %s"
 msgstr "%s / %s"
@@ -614,6 +614,12 @@ msgstr ""
 msgid "%s required!"
 msgstr "%s kötelező!"
 
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:383
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "%s result(s) selected"
+msgstr "%s jegy kiválasztva"
+
 #: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:53
 msgid "%s selected. Use arrow keys to choose drop position, then press Space."
 msgstr ""
@@ -635,8 +641,10 @@ msgstr "%s altartomány"
 msgid "%s switched to |%s|!"
 msgstr "%s átváltott erre: |%s|!"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:70
-msgid "%s ticket selected"
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:83
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "%s ticket(s) selected"
 msgstr "%s jegy kiválasztva"
 
 #: app/assets/javascripts/app/views/ticket_zoom/meta.jst.eco:30
@@ -649,10 +657,6 @@ msgstr "%s jegy"
 #: app/frontend/apps/mobile/pages/ticket/components/TicketList/TicketList.vue:113
 msgid "%s tickets found"
 msgstr "%s jegy található"
-
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:71
-msgid "%s tickets selected"
-msgstr "%s jegy kiválasztva"
 
 #: app/assets/javascripts/app/models/ticket_article.coffee:51
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/ticket-article.ts:28
@@ -1391,8 +1395,8 @@ msgstr "Művelet menügombja a biztonsági kulcsokhoz"
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:19
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:15
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:16
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:561
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:100
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:371
 msgid "Actions"
 msgstr "Műveletek"
 
@@ -1923,6 +1927,18 @@ msgstr "Elfogadás és csatlakozás"
 msgid "Alarm"
 msgstr "Riasztás"
 
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:382
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "All %s result(s) selected"
+msgstr "%s jegy kiválasztva"
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:81
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "All %s ticket(s) selected"
+msgstr "%s jegy kiválasztva"
+
 #: app/assets/javascripts/app/views/generic/notification_matrix.jst.eco:8
 #: app/assets/javascripts/app/views/profile/notification.jst.eco:30
 msgid "All Tickets"
@@ -2122,7 +2138,7 @@ msgstr "Hiba történt: %s"
 msgid "An open-source monitoring tool."
 msgstr "Egy nyílt forráskódú felügyeleti eszköz."
 
-#: app/frontend/shared/components/Form/utils.ts:23
+#: app/frontend/shared/components/Form/utils.ts:41
 msgid "An unexpected error has occurred."
 msgstr "Váratlan hiba történt."
 
@@ -2147,6 +2163,12 @@ msgstr "Bejegyzések elemzése adott beállításokkal…"
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:123
 msgid "Analyzing structure…"
 msgstr "Szerkezet elemzése…"
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:222
+msgid ""
+"Another bulk update is currently in progress. Please wait until it is "
+"finished before starting a new one."
+msgstr ""
 
 #. This is the template file app/views/mailer/ticket_update_received_merge/en.html.erb in ERB/HTML format.
 #. Please make sure to translate it to a valid corresponding output structure.
@@ -2281,7 +2303,7 @@ msgid "Applications"
 msgstr "Alkalmazások"
 
 #: app/assets/javascripts/app/views/widget/template.jst.eco:8
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:311
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:408
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:134
 msgid "Apply"
 msgstr "Alkalmaz"
@@ -3171,11 +3193,29 @@ msgstr "Tömeges művelet végrehajtva!"
 msgid "Bulk action failed"
 msgstr "A tömeges művelet nem sikerült"
 
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:307
+#: app/frontend/apps/desktop/entities/user/current/stores/ticketBulkUpdate.ts:71
+msgid ""
+"Bulk action failed for %s ticket(s). Check attribute values and try again."
+msgstr ""
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditButton.vue:33
+#: app/frontend/apps/desktop/entities/user/current/stores/ticketBulkUpdate.ts:52
+#, fuzzy
+#| msgid "Autosave in progress…"
+msgid "Bulk action in progress…"
+msgstr "Automatikus mentés folyamatban…"
+
 #: app/assets/javascripts/app/controllers/widget/ticket_bulk_form.coffee:199
 msgid "Bulk action stopped by error(s): %s!"
 msgstr "A tömeges művelet leállt a következő hibák miatt: %s!"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditButton.vue:33
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:298
+#: app/frontend/apps/desktop/entities/user/current/stores/ticketBulkUpdate.ts:68
+msgid "Bulk action successful for %s ticket(s)."
+msgstr ""
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditButton.vue:42
 msgid "Bulk actions"
 msgstr "Tömeges műveletek"
 
@@ -3423,7 +3463,7 @@ msgstr "Mégse és kijelentkezés"
 
 #: app/frontend/apps/desktop/components/CommonDialog/CommonDialogActionFooter.vue:20
 #: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:10
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:301
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:398
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactorMethods.vue:53
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:116
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordReset.vue:118
@@ -3948,6 +3988,8 @@ msgstr "Legutóbb lezártak törlése"
 msgid "Clear search"
 msgstr "Keresés törlése"
 
+#: app/frontend/apps/desktop/components/CommonTable/CellContent/BulkCheckbox.vue:61
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:405
 #: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:640
 #: app/frontend/apps/desktop/components/Form/fields/FieldDate/FieldDateTimeInput.vue:369
 #: app/frontend/apps/desktop/components/Form/fields/FieldSelect/FieldSelectInput.vue:306
@@ -4054,6 +4096,12 @@ msgstr "Jelenlegi lap bezárása"
 #: app/frontend/apps/desktop/components/CommonDialog/CommonDialog.vue:163
 msgid "Close dialog"
 msgstr "Párbeszédablak bezárása"
+
+#: app/frontend/shared/components/CommonNotifications/CommonNotificationsItem.vue:57
+#, fuzzy
+#| msgid "Remove notification"
+msgid "Close notification"
+msgstr "Értesítés eltávolítása"
 
 #: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyout.vue:347
 msgid "Close side panel"
@@ -4864,7 +4912,7 @@ msgid "Create ticket"
 msgstr "Jegy létrehozása"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:418
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:428
 msgid "Create your first ticket"
 msgstr "Első jegy létrehozása"
 
@@ -5023,7 +5071,7 @@ msgstr ""
 "A jelenlegi felhasználónak nincs jogosultsága a „From” vagy az „X-On-Behalf-"
 "Of” használatához!"
 
-#: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:204
+#: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:203
 msgid "Currently no overview is assigned to your roles."
 msgstr "Jelenleg nincs áttekintés hozzárendelve a szerepeihez."
 
@@ -5037,14 +5085,14 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:145
 #: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:25
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:184
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:218
 #: app/frontend/apps/mobile/components/Ticket/TicketItem.vue:35
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:41
 msgid "Currently processing this ticket…"
 msgstr "A jegy feldolgozása folyamatban van…"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOverviews.vue:146
-#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:131
+#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:132
 msgid ""
 "Currently, no overviews are assigned to your roles. Please contact your "
 "administrator."
@@ -6672,12 +6720,11 @@ msgstr "Leírás"
 msgid "Description (shown as title tag for screen readers)"
 msgstr "Leírás (magyarázó szövegként jelenik meg a képernyőolvasók számára)"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:471
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:76
 msgid "Deselect all entries"
 msgstr "Összes bejegyzések kijelölésének megszüntetése"
 
-#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:36
+#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:45
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:132
 msgid "Deselect this entry"
 msgstr "A bejegyzés kijelölésének megszüntetése"
@@ -7208,7 +7255,7 @@ msgstr "Húsvéti ünnepek"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:159
 #: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/edit.ts:10
 #: app/frontend/apps/mobile/pages/home/views/Home.vue:71
-#: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:46
+#: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:52
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:54
 msgid "Edit"
 msgstr "Szerkesztés"
@@ -7259,7 +7306,7 @@ msgstr "Maszk szerkesztése"
 
 #: app/frontend/apps/desktop/entities/organization/composables/useOrganizationEdit.ts:59
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:39
-#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:76
+#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:77
 msgid "Edit organization"
 msgstr "Szervezet szerkesztése"
 
@@ -7518,7 +7565,7 @@ msgstr ""
 msgid "Empty"
 msgstr "Üres"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:425
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:435
 msgid "Empty overview"
 msgstr "Üres áttekintés"
 
@@ -9144,7 +9191,7 @@ msgstr "Vissza"
 msgid "Go home"
 msgstr "Ugrás a kezdőlapra"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:234
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:233
 msgid "Go to login"
 msgstr "Ugrás a bejelentkezéshez"
 
@@ -10015,7 +10062,7 @@ msgstr "Felhasználó importálása a Kayako API kéréséhez"
 msgid "Import User for requesting the Zendesk API"
 msgstr "Felhasználó importálása a Zendesk API kéréséhez"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:191
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:190
 msgid "Import finished successfully!"
 msgstr "Az importálás sikeresen befejeződött!"
 
@@ -10183,7 +10230,7 @@ msgstr "Másodpercek értékének növelése"
 msgid "Indent text"
 msgstr "Szöveg behúzása"
 
-#: app/frontend/apps/desktop/components/CommonProgressBar/CommonProgressBar.vue:16
+#: app/frontend/shared/components/CommonProgressBar/CommonProgressBar.vue:40
 msgid "Indicating progress"
 msgstr "Az előrehaladás jelzése"
 
@@ -10343,7 +10390,7 @@ msgstr "A letöltött WhatsApp-média integritás-ellenőrzése nem sikerült."
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:105
 #: app/assets/javascripts/app/controllers/knowledge_base/content_controller.coffee:133
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:142
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:154
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:160
 msgid "Internal"
 msgstr "Belső"
@@ -11333,7 +11380,7 @@ msgstr "A makrócsoport korlátozásai nem terjednek ki az összes jegyre"
 #: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:11
 #: app/assets/javascripts/app/controllers/macro.coffee:3
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:78
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:193
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:205
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:48
 #: db/seeds/permissions.rb:47
 msgid "Macros"
@@ -11756,6 +11803,18 @@ msgstr "Material"
 msgid "Mattermost Notifications"
 msgstr "Mattermost értesítések"
 
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:381
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "Max %s result(s) selected"
+msgstr "%s jegy kiválasztva"
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:80
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "Max %s ticket(s) selected"
+msgstr "%s jegy kiválasztva"
+
 #: app/models/object_manager/attribute/data_option_validator.rb:35
 msgid "Max length must be an integer."
 msgstr "A legnagyobb hossznak egész számnak kell lennie."
@@ -11859,7 +11918,7 @@ msgstr "A média letöltése sikeres volt."
 #: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:79
 #: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailViewContent.vue:115
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:71
-#: app/frontend/apps/mobile/components/Organization/OrganizationMembersList.vue:29
+#: app/frontend/apps/mobile/components/Organization/OrganizationMembersList.vue:36
 msgid "Members"
 msgstr "Tagok"
 
@@ -12913,7 +12972,7 @@ msgid "No organizations found"
 msgstr "Nem találhatók szervezetek"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOverviews.vue:143
-#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:128
+#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:129
 msgid "No overviews"
 msgstr "Nincsenek áttekintések"
 
@@ -13007,7 +13066,7 @@ msgstr "Még nincsenek címkék hozzáadva."
 msgid "No template created yet."
 msgstr "Még nincs sablon létrehozva."
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:426
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:436
 msgid "No tickets in this state."
 msgstr "Nincsenek ebben az állapotban lévő jegyek."
 
@@ -13155,7 +13214,7 @@ msgstr "Nem található – az erőforrás nem található"
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:38
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:54
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:47
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:102
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:114
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/note.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/note.ts:14
 #: db/seeds/object_manager_attributes.rb:1569
@@ -13928,7 +13987,7 @@ msgstr "Áttekintés navigációs listája"
 msgid "Overview order list"
 msgstr "Áttekintés rendezési listája"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:381
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:391
 msgid "Overview: %s"
 msgstr "Áttekintés: %s"
 
@@ -14333,7 +14392,7 @@ msgid "Please add categories and/or answers"
 msgstr "Adjon hozzá kategóriákat és/vagy válaszokat"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:12
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:411
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:421
 msgid "Please click on the button below to create your first one."
 msgstr "Kattintson az alábbi gombra az első létrehozásához."
 
@@ -14675,7 +14734,7 @@ msgstr "Prioritás"
 msgid "Priority"
 msgstr "Prioritás"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:79
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:105
 msgid "Priority icon"
 msgstr "Prioritás ikon"
 
@@ -14809,7 +14868,7 @@ msgid "Proxy address"
 msgstr "Proxy címe"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:109
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:137
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:149
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:165
 msgid "Public"
 msgstr "Nyilvános"
@@ -15574,7 +15633,7 @@ msgstr "Eredmény szerkezet"
 msgid "Result:"
 msgstr "Eredmény:"
 
-#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:365
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:411
 msgid "Results"
 msgstr "Eredmények"
 
@@ -15986,7 +16045,7 @@ msgstr "Görgessen le az új üzenetek megtekintéséhez"
 #: app/assets/javascripts/app/views/integration/idoit_object_selector.jst.eco:3
 #: app/assets/javascripts/app/views/knowledge_base/search_field_widget.jst.eco:1
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:4
-#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:363
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:409
 #: app/frontend/apps/desktop/pages/search/routes.ts:10
 #: app/frontend/apps/mobile/pages/search/routes.ts:8
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:220
@@ -16351,6 +16410,12 @@ msgstr ""
 "Nézze meg jegyeit kedvenc naptárából azáltal, hogy hozzáadja a feliratkozási "
 "URL-t a naptáralkalmazásához."
 
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:285
+#, fuzzy
+#| msgid "Selector"
+msgid "Select"
+msgstr "Kiválasztó"
+
 #: app/assets/javascripts/app/controllers/_plugin/electron_events.coffee:38
 msgid "Select All"
 msgstr "Összes kiválasztása"
@@ -16368,7 +16433,13 @@ msgstr "Megosztott piszkozat kiválasztása"
 msgid "Select Template"
 msgstr "Sablon kiválasztása"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:470
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:396
+#, fuzzy
+#| msgid "Select all entries"
+msgid "Select all %s results"
+msgstr "Összes bejegyzés kiválasztása"
+
+#: app/frontend/apps/desktop/components/CommonTable/CellContent/BulkCheckbox.vue:61
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:76
 msgid "Select all entries"
 msgstr "Összes bejegyzés kiválasztása"
@@ -16384,6 +16455,12 @@ msgstr "Elem kiválasztása"
 #: app/assets/javascripts/app/lib/app_post/multi_locales_row.coffee:38
 msgid "Select locale…"
 msgstr "Területi beállítás kiválasztása…"
+
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:395
+#, fuzzy
+#| msgid "Select all entries"
+msgid "Select max %s results"
+msgstr "Összes bejegyzés kiválasztása"
 
 #: app/frontend/apps/desktop/components/CommonTable/TableRow.vue:68
 msgid "Select table row"
@@ -16408,7 +16485,7 @@ msgstr "A létrehozni kívánt jegy típusának kiválasztása"
 msgid "Select this avatar"
 msgstr "A profilkép kiválasztása"
 
-#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:36
+#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:45
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:132
 msgid "Select this entry"
 msgstr "A bejegyzés kiválasztása"
@@ -16810,7 +16887,7 @@ msgstr "Megosztott piszkozat"
 
 #: app/controllers/tickets_controller.rb:89
 #: app/services/service/ticket/create.rb:180
-#: app/services/service/ticket/update.rb:72
+#: app/services/service/ticket/update.rb:71
 msgid "Shared draft cannot be selected for this ticket."
 msgstr "Megosztott piszkozat nem választható ehhez a jegyhez."
 
@@ -17046,7 +17123,7 @@ msgstr "Aláírási hiba"
 #: app/frontend/apps/mobile/pages/authentication/components/LoginRecoveryCode.vue:80
 #: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:158
 #: app/frontend/apps/mobile/pages/authentication/routes.ts:15
-#: app/frontend/apps/mobile/pages/playground/views/PlaygroundOverview.vue:475
+#: app/frontend/apps/mobile/pages/playground/views/PlaygroundOverview.vue:624
 msgid "Sign in"
 msgstr "Bejelentkezés"
 
@@ -17245,6 +17322,18 @@ msgstr "Elnézést, nem minden mező lett helyesen kitöltve."
 msgid "Sorry, there is currently no CTI backend enabled."
 msgstr "Elnézést, jelenleg nincs CTI-háttérprogram engedélyezve."
 
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:262
+#, fuzzy
+#| msgid "Sorted ascending"
+msgid "Sort by %s ascending"
+msgstr "Növekvően rendezve"
+
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:266
+#, fuzzy
+#| msgid "Sorted descending"
+msgid "Sort by %s descending"
+msgstr "Csökkenően rendezve"
+
 #: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:146
 msgid ""
 "Sortable list focused. Use up and down arrows to navigate items. Press Space "
@@ -17257,14 +17346,6 @@ msgstr ""
 #: app/frontend/apps/desktop/composables/dragAndDrop/useAccessibleDragAndDrop.ts:50
 msgid "Sorted %s in user taskbar list to position %s."
 msgstr "A felhasználói tálca listában lévő %s elem %s. pozícióra rendezve."
-
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:511
-msgid "Sorted ascending"
-msgstr "Növekvően rendezve"
-
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:512
-msgid "Sorted descending"
-msgstr "Csökkenően rendezve"
 
 #: app/assets/javascripts/app/controllers/ticket_overview/settings.coffee:40
 #: app/assets/javascripts/app/models/overview.coffee:23
@@ -17418,7 +17499,7 @@ msgstr "A Zammad indítása"
 msgid "Starting Zammad…"
 msgstr "A Zammad indítása…"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:186
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:185
 msgid "Starting import…"
 msgstr "Az importálás indítása…"
 
@@ -17439,7 +17520,7 @@ msgstr "Az importálás indítása…"
 msgid "State"
 msgstr "Állapot"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:91
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:121
 msgid "State icon"
 msgstr "Állapot ikon"
 
@@ -18010,10 +18091,6 @@ msgstr "Köszönjük, hogy csatlakozott. Az e-mail elküldve ide: „%s”."
 #: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:107
 msgid "Thanks for the feedback. Please explain what went wrong?"
 msgstr "Köszönjük a visszajelzést. Elmagyarázná, hogy milyen probléma történt?"
-
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:231
-msgid "The %s selected tickets have been updated successfully."
-msgstr "%s kiválasztott jegy sikeresen frissítve."
 
 #: lib/secure_mailing/pgp/tool/exec/agent.rb:13
 msgid "The 'gpg-agent' process could not be stopped."
@@ -19414,7 +19491,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/customer_ticket_create/sidebar_customer_default.coffee:29
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:11
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:408
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:418
 msgid "The way to communicate with us is this thing called \"ticket\"."
 msgstr "A velünk való kommunikáció módja a „jegy” nevű dolog."
 
@@ -20747,7 +20824,7 @@ msgstr "Jegyazonosító"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:119
 #: app/frontend/apps/mobile/pages/search/plugins/ticket.ts:9
 #: app/frontend/apps/mobile/pages/ticket/routes.ts:50
-#: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:159
+#: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:158
 msgid "Tickets"
 msgstr "Jegyek"
 
@@ -20766,7 +20843,7 @@ msgstr "A jegyek a következő oszlop szerint vannak rendezve: „%s” (%s)."
 msgid "Tickets assigned to me: %s of %s"
 msgstr "Hozzám rendelt jegyek: %s / %s"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:282
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:379
 msgid "Tickets bulk edit"
 msgstr "Jegyek tömeges szerkesztése"
 
@@ -21271,6 +21348,10 @@ msgstr "kedd"
 #: app/assets/javascripts/app/views/customer_chat/chat_footer.jst.eco:2
 msgid "Turn chat into ticket"
 msgstr "Csevegés jeggyé alakítása"
+
+#: app/views/init/index.html.erb app/views/init/spinner-loading.html.erb
+msgid "Turn on JavaScript to use Zammad."
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/webhook.coffee:280
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:89
@@ -22398,7 +22479,7 @@ msgstr "Jegy megtekintése"
 #: app/assets/javascripts/app/models/ticket_article.coffee:14
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/article.jst.eco:3
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/notification.jst.eco:3
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:131
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:143
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:152
 #: db/seeds/object_manager_attributes.rb:462
 msgid "Visibility"
@@ -22570,7 +22651,7 @@ msgstr "Üdvözlő üzenet"
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:2
 #: app/assets/javascripts/app/views/welcome.jst.eco:2
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupStart.vue:43
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:402
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:412
 msgid "Welcome!"
 msgstr "Üdvözöljük!"
 
@@ -23130,11 +23211,11 @@ msgstr ""
 msgid "You do not have administrator permission."
 msgstr "Nincs adminisztrátori jogosultsága."
 
-#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:41
+#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:59
 msgid "You do not have permission to update"
 msgstr "Nincs jogosultsága a frissítéshez"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:431
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:419
 msgid "You don't have more tickets to load."
 msgstr "Nincsenek további betöltendő jegyei."
 
@@ -23206,7 +23287,7 @@ msgid "You have no unread messages"
 msgstr "Nincsenek olvasatlan üzenetei"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:10
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:405
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:415
 msgid "You have not created a ticket yet."
 msgstr "Még nem hozott létre jegyet."
 
@@ -23257,7 +23338,7 @@ msgstr "Be kell állítani a Zammad-végpontokat a(z) %s webes felületén:"
 msgid "You need to configure the Zammad endpoints in the %s:"
 msgstr "Be kell állítani a Zammad-végpontokat a(z) %s rendszerben:"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:427
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:415
 msgid "You reached the table limit of %s tickets (%s remaining)."
 msgstr "Elérte a(z) %s jegyből álló táblázatkorlátot (%s van hátra)."
 
@@ -25174,6 +25255,12 @@ msgstr "…a teljes szövegterületből"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅ Várakozási idő ma"
+
+#~ msgid "%s ticket selected"
+#~ msgstr "%s jegy kiválasztva"
+
+#~ msgid "The %s selected tickets have been updated successfully."
+#~ msgstr "%s kiválasztott jegy sikeresen frissítve."
 
 #~ msgid "UI Desktop Beta Switch"
 #~ msgstr "Felhasználói felület asztalának BÉTA-kapcsolója"

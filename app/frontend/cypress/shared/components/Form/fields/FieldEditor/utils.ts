@@ -1,7 +1,8 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { mountComponent } from '#cy/utils.ts'
 import { FormKit } from '@formkit/vue'
+
+import { mountComponent } from '#cy/utils.ts'
 
 import Form from '#shared/components/Form/Form.vue'
 

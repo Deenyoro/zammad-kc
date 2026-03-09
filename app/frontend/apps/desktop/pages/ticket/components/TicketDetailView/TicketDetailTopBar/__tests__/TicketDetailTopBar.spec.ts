@@ -1,7 +1,7 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { beforeEach, describe, expect } from 'vitest'
-import { ref } from 'vue'
+import { useTemplateRef } from 'vue'
 
 import { renderComponent } from '#tests/support/components/index.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
@@ -19,16 +19,16 @@ vi.mock('#shared/composables/useCopyToClipboard.ts', async () => ({
 
 vi.mock('#desktop/pages/ticket/composables/useTicketSidebar.ts')
 
-const renderTopBar = (options = testOptionsTopBar, props?: { hideDetails: boolean }) => {
+const renderTopBar = (options = testOptionsTopBar) => {
   return renderComponent(
     {
       components: { TicketDetailTopBar },
       setup() {
         provideTicketInformationMocks(options)
-        const hideDetails = ref(!!props?.hideDetails)
-        return { hideDetails }
+        const parentElement = useTemplateRef('parent')
+        return { parentElement }
       },
-      template: `<div ref="parent"><TicketDetailTopBar :hide-details="hideDetails"  /></div>`,
+      template: `<div ref="parent"><TicketDetailTopBar :content-container-element="parentElement"  /></div>`,
     },
     { form: true, router: true },
   )
@@ -50,25 +50,6 @@ describe('TicketDetailTopBar', () => {
     const wrapper = renderTopBar()
 
     expect(wrapper.getByText('Ticket#89001')).toBeInTheDocument()
-  })
-
-  it('hides details on scroll', () => {
-    const wrapper = renderTopBar(testOptionsTopBar, { hideDetails: true })
-
-    expect(wrapper.getByText('Welcome to Zammad!')).toBeInTheDocument()
-    expect(wrapper.queryByText('Nicole Braun')).not.toBeInTheDocument()
-    expect(wrapper.queryByText('Zammad Foundation')).not.toBeInTheDocument()
-    expect(wrapper.queryByText('Highlight')).not.toBeInTheDocument()
-  })
-
-  it('shows infos about the ticket', () => {
-    const wrapper = renderTopBar()
-
-    expect(wrapper.getByText('Welcome to Zammad!')).toBeInTheDocument()
-    expect(wrapper.getByText('Nicole Braun')).toBeInTheDocument()
-    expect(wrapper.getByText('Zammad Foundation')).toBeInTheDocument()
-    expect(wrapper.getByText('Welcome to Zammad!')).toBeInTheDocument()
-    expect(wrapper.getByText('Highlight')).toBeInTheDocument()
   })
 
   describe('features', () => {
