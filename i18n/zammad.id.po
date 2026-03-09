@@ -401,7 +401,7 @@ msgstr "Daftar Periksa %s"
 msgid "%s Group"
 msgstr "Grup %s"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:51
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:50
 msgid "%s Import Status"
 msgstr "Status Impor %s"
 
@@ -573,7 +573,7 @@ msgid "%s object(s) will be updated."
 msgstr "%s objek akan diperbarui."
 
 #: app/assets/javascripts/app/views/ticket_zoom/meta.jst.eco:19
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:209
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:208
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ChecklistBadgeList.vue:44
 msgid "%s of %s"
 msgstr "%s dari %s"
@@ -608,6 +608,12 @@ msgstr ""
 msgid "%s required!"
 msgstr "%s wajib diisi!"
 
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:383
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "%s result(s) selected"
+msgstr "%s tiket dipilih"
+
 #: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:53
 msgid "%s selected. Use arrow keys to choose drop position, then press Space."
 msgstr ""
@@ -629,8 +635,10 @@ msgstr "Subdomain %s"
 msgid "%s switched to |%s|!"
 msgstr "%s beralih ke |%s|!"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:70
-msgid "%s ticket selected"
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:83
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "%s ticket(s) selected"
 msgstr "%s tiket dipilih"
 
 #: app/assets/javascripts/app/views/ticket_zoom/meta.jst.eco:30
@@ -643,10 +651,6 @@ msgstr "%s tiket"
 #: app/frontend/apps/mobile/pages/ticket/components/TicketList/TicketList.vue:113
 msgid "%s tickets found"
 msgstr "%s tiket ditemukan"
-
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:71
-msgid "%s tickets selected"
-msgstr "%s tiket dipilih"
 
 #: app/assets/javascripts/app/models/ticket_article.coffee:51
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/ticket-article.ts:28
@@ -1405,8 +1409,8 @@ msgstr "Tombol menu tindakan untuk kunci keamanan"
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:19
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:15
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:16
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:561
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:100
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:371
 msgid "Actions"
 msgstr "Tindakan"
 
@@ -1937,6 +1941,18 @@ msgstr ""
 msgid "Alarm"
 msgstr "Alarm"
 
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:382
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "All %s result(s) selected"
+msgstr "%s tiket dipilih"
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:81
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "All %s ticket(s) selected"
+msgstr "%s tiket dipilih"
+
 #: app/assets/javascripts/app/views/generic/notification_matrix.jst.eco:8
 #: app/assets/javascripts/app/views/profile/notification.jst.eco:30
 msgid "All Tickets"
@@ -2130,7 +2146,7 @@ msgstr "Terjadi kesalahan: %s"
 msgid "An open-source monitoring tool."
 msgstr "Alat pemantauan sumber terbuka."
 
-#: app/frontend/shared/components/Form/utils.ts:23
+#: app/frontend/shared/components/Form/utils.ts:41
 msgid "An unexpected error has occurred."
 msgstr "Terjadi kesalahan yang tidak terduga."
 
@@ -2155,6 +2171,12 @@ msgstr "Menganalisis entri dengan konfigurasi yang diberikan…"
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:123
 msgid "Analyzing structure…"
 msgstr "Menganalisis struktur…"
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:222
+msgid ""
+"Another bulk update is currently in progress. Please wait until it is "
+"finished before starting a new one."
+msgstr ""
 
 #. This is the template file app/views/mailer/ticket_update_received_merge/en.html.erb in ERB/HTML format.
 #. Please make sure to translate it to a valid corresponding output structure.
@@ -2289,7 +2311,7 @@ msgid "Applications"
 msgstr "Aplikasi"
 
 #: app/assets/javascripts/app/views/widget/template.jst.eco:8
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:311
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:408
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:134
 msgid "Apply"
 msgstr "Terapkan"
@@ -3189,11 +3211,29 @@ msgstr "Tindakan massal dijalankan!"
 msgid "Bulk action failed"
 msgstr "Tindakan massal gagal"
 
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:307
+#: app/frontend/apps/desktop/entities/user/current/stores/ticketBulkUpdate.ts:71
+msgid ""
+"Bulk action failed for %s ticket(s). Check attribute values and try again."
+msgstr ""
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditButton.vue:33
+#: app/frontend/apps/desktop/entities/user/current/stores/ticketBulkUpdate.ts:52
+#, fuzzy
+#| msgid "Autosave in progress…"
+msgid "Bulk action in progress…"
+msgstr "Penyimpanan otomatis sedang berlangsung…"
+
 #: app/assets/javascripts/app/controllers/widget/ticket_bulk_form.coffee:199
 msgid "Bulk action stopped by error(s): %s!"
 msgstr "Tindakan massal dihentikan oleh kesalahan: %s!"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditButton.vue:33
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:298
+#: app/frontend/apps/desktop/entities/user/current/stores/ticketBulkUpdate.ts:68
+msgid "Bulk action successful for %s ticket(s)."
+msgstr ""
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditButton.vue:42
 #, fuzzy
 #| msgid "Bulk Actions"
 msgid "Bulk actions"
@@ -3443,7 +3483,7 @@ msgstr "Batal & Keluar"
 
 #: app/frontend/apps/desktop/components/CommonDialog/CommonDialogActionFooter.vue:20
 #: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:10
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:301
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:398
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactorMethods.vue:53
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:116
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordReset.vue:118
@@ -3966,6 +4006,8 @@ msgstr "Hapus yang baru ditutup"
 msgid "Clear search"
 msgstr "Hapus pencarian"
 
+#: app/frontend/apps/desktop/components/CommonTable/CellContent/BulkCheckbox.vue:61
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:405
 #: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:640
 #: app/frontend/apps/desktop/components/Form/fields/FieldDate/FieldDateTimeInput.vue:369
 #: app/frontend/apps/desktop/components/Form/fields/FieldSelect/FieldSelectInput.vue:306
@@ -4072,6 +4114,12 @@ msgstr "Tutup tab saat ini"
 #: app/frontend/apps/desktop/components/CommonDialog/CommonDialog.vue:163
 msgid "Close dialog"
 msgstr "Tutup dialog"
+
+#: app/frontend/shared/components/CommonNotifications/CommonNotificationsItem.vue:57
+#, fuzzy
+#| msgid "Remove Notification"
+msgid "Close notification"
+msgstr "Hapus Notifikasi"
 
 #: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyout.vue:347
 msgid "Close side panel"
@@ -4892,7 +4940,7 @@ msgid "Create ticket"
 msgstr "Buat tiket"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:418
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:428
 msgid "Create your first ticket"
 msgstr "Buat tiket pertama Anda"
 
@@ -5053,7 +5101,7 @@ msgstr ""
 "Pengguna saat ini tidak memiliki izin untuk menggunakan 'From'/'X-On-Behalf-"
 "Of'!"
 
-#: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:204
+#: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:203
 msgid "Currently no overview is assigned to your roles."
 msgstr "Saat ini tidak ada ikhtisar yang ditugaskan ke peran Anda."
 
@@ -5067,14 +5115,14 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:145
 #: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:25
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:184
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:218
 #: app/frontend/apps/mobile/components/Ticket/TicketItem.vue:35
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:41
 msgid "Currently processing this ticket…"
 msgstr "Saat ini memproses tiket ini…"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOverviews.vue:146
-#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:131
+#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:132
 msgid ""
 "Currently, no overviews are assigned to your roles. Please contact your "
 "administrator."
@@ -6678,12 +6726,11 @@ msgstr "Deskripsi"
 msgid "Description (shown as title tag for screen readers)"
 msgstr "Deskripsi (ditampilkan sebagai tag judul untuk pembaca layar)"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:471
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:76
 msgid "Deselect all entries"
 msgstr "Batalkan pilihan semua entri"
 
-#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:36
+#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:45
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:132
 msgid "Deselect this entry"
 msgstr "Batalkan pilihan entri ini"
@@ -7222,7 +7269,7 @@ msgstr "Libur Paskah"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:159
 #: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/edit.ts:10
 #: app/frontend/apps/mobile/pages/home/views/Home.vue:71
-#: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:46
+#: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:52
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:54
 msgid "Edit"
 msgstr "Edit"
@@ -7275,7 +7322,7 @@ msgstr "Masker edit"
 
 #: app/frontend/apps/desktop/entities/organization/composables/useOrganizationEdit.ts:59
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:39
-#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:76
+#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:77
 #, fuzzy
 #| msgid "Edit Organization"
 msgid "Edit organization"
@@ -7547,7 +7594,7 @@ msgstr ""
 msgid "Empty"
 msgstr "Kosong"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:425
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:435
 #, fuzzy
 #| msgid "Empty Overview"
 msgid "Empty overview"
@@ -9188,7 +9235,7 @@ msgstr "Kembali"
 msgid "Go home"
 msgstr "Ke beranda"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:234
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:233
 #, fuzzy
 #| msgid "Go to Login"
 msgid "Go to login"
@@ -10054,7 +10101,7 @@ msgstr "Pengguna Impor untuk meminta API Kayako"
 msgid "Import User for requesting the Zendesk API"
 msgstr "Pengguna Impor untuk meminta API Zendesk"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:191
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:190
 msgid "Import finished successfully!"
 msgstr "Impor berhasil diselesaikan!"
 
@@ -10225,7 +10272,7 @@ msgstr "Tambah nilai detik"
 msgid "Indent text"
 msgstr "Indentasi teks"
 
-#: app/frontend/apps/desktop/components/CommonProgressBar/CommonProgressBar.vue:16
+#: app/frontend/shared/components/CommonProgressBar/CommonProgressBar.vue:40
 msgid "Indicating progress"
 msgstr "Menunjukkan kemajuan"
 
@@ -10385,7 +10432,7 @@ msgstr "Verifikasi integritas media WhatsApp yang diunduh gagal."
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:105
 #: app/assets/javascripts/app/controllers/knowledge_base/content_controller.coffee:133
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:142
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:154
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:160
 msgid "Internal"
 msgstr "Internal"
@@ -11386,7 +11433,7 @@ msgstr "Pembatasan grup makro tidak mencakup semua tiket"
 #: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:11
 #: app/assets/javascripts/app/controllers/macro.coffee:3
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:78
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:193
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:205
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:48
 #: db/seeds/permissions.rb:47
 msgid "Macros"
@@ -11809,6 +11856,18 @@ msgstr "Material"
 msgid "Mattermost Notifications"
 msgstr "Notifikasi Mattermost"
 
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:381
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "Max %s result(s) selected"
+msgstr "%s tiket dipilih"
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:80
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "Max %s ticket(s) selected"
+msgstr "%s tiket dipilih"
+
 #: app/models/object_manager/attribute/data_option_validator.rb:35
 msgid "Max length must be an integer."
 msgstr "Panjang maks harus berupa integer."
@@ -11912,7 +11971,7 @@ msgstr "Unduhan media berhasil."
 #: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:79
 #: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailViewContent.vue:115
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:71
-#: app/frontend/apps/mobile/components/Organization/OrganizationMembersList.vue:29
+#: app/frontend/apps/mobile/components/Organization/OrganizationMembersList.vue:36
 msgid "Members"
 msgstr "Anggota"
 
@@ -12988,7 +13047,7 @@ msgid "No organizations found"
 msgstr "Tidak ada organisasi yang ditemukan"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOverviews.vue:143
-#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:128
+#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:129
 #, fuzzy
 #| msgid "No Overviews"
 msgid "No overviews"
@@ -13081,7 +13140,7 @@ msgstr "Belum ada tag yang ditambahkan."
 msgid "No template created yet."
 msgstr "Belum ada template yang dibuat."
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:426
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:436
 msgid "No tickets in this state."
 msgstr "Tidak ada tiket dalam status ini."
 
@@ -13229,7 +13288,7 @@ msgstr "Tidak ditemukan - sumber daya tidak ditemukan"
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:38
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:54
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:47
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:102
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:114
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/note.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/note.ts:14
 #: db/seeds/object_manager_attributes.rb:1569
@@ -14024,7 +14083,7 @@ msgstr "Daftar navigasi ikhtisar"
 msgid "Overview order list"
 msgstr "Daftar navigasi ikhtisar"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:381
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:391
 msgid "Overview: %s"
 msgstr "Ikhtisar: %s"
 
@@ -14439,7 +14498,7 @@ msgid "Please add categories and/or answers"
 msgstr "Harap tambahkan kategori dan/atau jawaban"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:12
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:411
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:421
 msgid "Please click on the button below to create your first one."
 msgstr "Harap klik tombol di bawah ini untuk membuat yang pertama."
 
@@ -14789,7 +14848,7 @@ msgstr "Prioritas"
 msgid "Priority"
 msgstr "Prioritas"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:79
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:105
 #, fuzzy
 #| msgid "Priority Icon"
 msgid "Priority icon"
@@ -14920,7 +14979,7 @@ msgid "Proxy address"
 msgstr "Alamat proxy"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:109
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:137
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:149
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:165
 msgid "Public"
 msgstr "Publik"
@@ -15704,7 +15763,7 @@ msgstr "Struktur hasil"
 msgid "Result:"
 msgstr "Hasil:"
 
-#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:365
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:411
 msgid "Results"
 msgstr "Hasil"
 
@@ -16121,7 +16180,7 @@ msgstr "Gulir ke bawah untuk melihat pesan baru"
 #: app/assets/javascripts/app/views/integration/idoit_object_selector.jst.eco:3
 #: app/assets/javascripts/app/views/knowledge_base/search_field_widget.jst.eco:1
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:4
-#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:363
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:409
 #: app/frontend/apps/desktop/pages/search/routes.ts:10
 #: app/frontend/apps/mobile/pages/search/routes.ts:8
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:220
@@ -16485,6 +16544,12 @@ msgstr ""
 "Lihat tiket Anda dari dalam kalender favorit Anda dengan menambahkan URL "
 "langganan ke aplikasi kalender Anda."
 
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:285
+#, fuzzy
+#| msgid "Selector"
+msgid "Select"
+msgstr "Pemilih"
+
 #: app/assets/javascripts/app/controllers/_plugin/electron_events.coffee:38
 msgid "Select All"
 msgstr "Pilih Semua"
@@ -16502,7 +16567,13 @@ msgstr "Pilih Draf Bersama"
 msgid "Select Template"
 msgstr "Pilih Template"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:470
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:396
+#, fuzzy
+#| msgid "Select all entries"
+msgid "Select all %s results"
+msgstr "Pilih semua entri"
+
+#: app/frontend/apps/desktop/components/CommonTable/CellContent/BulkCheckbox.vue:61
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:76
 msgid "Select all entries"
 msgstr "Pilih semua entri"
@@ -16518,6 +16589,12 @@ msgstr "Pilih item"
 #: app/assets/javascripts/app/lib/app_post/multi_locales_row.coffee:38
 msgid "Select locale…"
 msgstr "Pilih lokal…"
+
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:395
+#, fuzzy
+#| msgid "Select all entries"
+msgid "Select max %s results"
+msgstr "Pilih semua entri"
 
 #: app/frontend/apps/desktop/components/CommonTable/TableRow.vue:68
 msgid "Select table row"
@@ -16540,7 +16617,7 @@ msgstr "Pilih tipe tiket yang Anda buat"
 msgid "Select this avatar"
 msgstr "Pilih avatar ini"
 
-#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:36
+#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:45
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:132
 msgid "Select this entry"
 msgstr "Pilih entri ini"
@@ -16962,7 +17039,7 @@ msgstr "Draf Bersama"
 
 #: app/controllers/tickets_controller.rb:89
 #: app/services/service/ticket/create.rb:180
-#: app/services/service/ticket/update.rb:72
+#: app/services/service/ticket/update.rb:71
 msgid "Shared draft cannot be selected for this ticket."
 msgstr "Draf bersama tidak dapat dipilih untuk tiket ini."
 
@@ -17201,7 +17278,7 @@ msgstr "Kesalahan tanda tangan"
 #: app/frontend/apps/mobile/pages/authentication/components/LoginRecoveryCode.vue:80
 #: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:158
 #: app/frontend/apps/mobile/pages/authentication/routes.ts:15
-#: app/frontend/apps/mobile/pages/playground/views/PlaygroundOverview.vue:475
+#: app/frontend/apps/mobile/pages/playground/views/PlaygroundOverview.vue:624
 msgid "Sign in"
 msgstr "Masuk"
 
@@ -17399,6 +17476,18 @@ msgstr "Maaf, tidak semua bidang diisi dengan benar."
 msgid "Sorry, there is currently no CTI backend enabled."
 msgstr "Maaf, saat ini tidak ada backend CTI yang diaktifkan."
 
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:262
+#, fuzzy
+#| msgid "Sorted ascending"
+msgid "Sort by %s ascending"
+msgstr "Diurutkan menaik"
+
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:266
+#, fuzzy
+#| msgid "Sorted descending"
+msgid "Sort by %s descending"
+msgstr "Diurutkan menurun"
+
 #: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:146
 #, fuzzy
 #| msgid ""
@@ -17415,14 +17504,6 @@ msgstr ""
 #: app/frontend/apps/desktop/composables/dragAndDrop/useAccessibleDragAndDrop.ts:50
 msgid "Sorted %s in user taskbar list to position %s."
 msgstr "Menyortir %s dalam daftar taskbar pengguna ke posisi %s."
-
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:511
-msgid "Sorted ascending"
-msgstr "Diurutkan menaik"
-
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:512
-msgid "Sorted descending"
-msgstr "Diurutkan menurun"
 
 #: app/assets/javascripts/app/controllers/ticket_overview/settings.coffee:40
 #: app/assets/javascripts/app/models/overview.coffee:23
@@ -17582,7 +17663,7 @@ msgstr "Memulai Zammad"
 msgid "Starting Zammad…"
 msgstr "Memulai Zammad…"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:186
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:185
 msgid "Starting import…"
 msgstr "Memulai impor…"
 
@@ -17603,7 +17684,7 @@ msgstr "Memulai impor…"
 msgid "State"
 msgstr "Status"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:91
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:121
 #, fuzzy
 #| msgid "State Icon"
 msgid "State icon"
@@ -18182,10 +18263,6 @@ msgstr "Terima kasih telah bergabung. Email dikirim ke \"%s\"."
 #: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:107
 msgid "Thanks for the feedback. Please explain what went wrong?"
 msgstr "Terima kasih atas umpan baliknya. Mohon jelaskan apa yang salah?"
-
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:231
-msgid "The %s selected tickets have been updated successfully."
-msgstr "%s tiket terpilih telah berhasil diperbarui."
 
 #: lib/secure_mailing/pgp/tool/exec/agent.rb:13
 msgid "The 'gpg-agent' process could not be stopped."
@@ -19570,7 +19647,7 @@ msgstr "Verifikasi konfigurasi metode autentikasi dua faktor gagal."
 
 #: app/assets/javascripts/app/controllers/customer_ticket_create/sidebar_customer_default.coffee:29
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:11
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:408
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:418
 msgid "The way to communicate with us is this thing called \"ticket\"."
 msgstr "Cara berkomunikasi dengan kami adalah yang disebut \"tiket\"."
 
@@ -20865,7 +20942,7 @@ msgstr "TicketID"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:119
 #: app/frontend/apps/mobile/pages/search/plugins/ticket.ts:9
 #: app/frontend/apps/mobile/pages/ticket/routes.ts:50
-#: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:159
+#: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:158
 msgid "Tickets"
 msgstr "Tiket"
 
@@ -20882,7 +20959,7 @@ msgstr "Tiket diurutkan berdasarkan kolom \"%s\" (%s)."
 msgid "Tickets assigned to me: %s of %s"
 msgstr "Tiket yang ditugaskan kepada saya: %s dari %s"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:282
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:379
 #, fuzzy
 #| msgid "Tickets Bulk Edit"
 msgid "Tickets bulk edit"
@@ -21401,6 +21478,10 @@ msgstr "Selasa"
 #: app/assets/javascripts/app/views/customer_chat/chat_footer.jst.eco:2
 msgid "Turn chat into ticket"
 msgstr "Ubah obrolan menjadi tiket"
+
+#: app/views/init/index.html.erb app/views/init/spinner-loading.html.erb
+msgid "Turn on JavaScript to use Zammad."
+msgstr ""
 
 #: app/assets/javascripts/app/controllers/webhook.coffee:280
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:89
@@ -22547,7 +22628,7 @@ msgstr "Melihat tiket"
 #: app/assets/javascripts/app/models/ticket_article.coffee:14
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/article.jst.eco:3
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/notification.jst.eco:3
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:131
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:143
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:152
 #: db/seeds/object_manager_attributes.rb:462
 msgid "Visibility"
@@ -22722,7 +22803,7 @@ msgstr "Pesan selamat datang"
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:2
 #: app/assets/javascripts/app/views/welcome.jst.eco:2
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupStart.vue:43
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:402
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:412
 msgid "Welcome!"
 msgstr "Selamat datang!"
 
@@ -23292,11 +23373,11 @@ msgstr ""
 msgid "You do not have administrator permission."
 msgstr "Anda tidak memiliki izin administrator."
 
-#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:41
+#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:59
 msgid "You do not have permission to update"
 msgstr "Anda tidak memiliki izin untuk memperbarui"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:431
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:419
 msgid "You don't have more tickets to load."
 msgstr "Anda tidak memiliki lebih banyak tiket untuk dimuat."
 
@@ -23368,7 +23449,7 @@ msgid "You have no unread messages"
 msgstr "Anda tidak memiliki pesan yang belum dibaca"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:10
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:405
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:415
 msgid "You have not created a ticket yet."
 msgstr "Anda belum membuat tiket."
 
@@ -23422,7 +23503,7 @@ msgstr "Anda perlu mengonfigurasi endpoint Zammad di antarmuka web %s:"
 msgid "You need to configure the Zammad endpoints in the %s:"
 msgstr "Anda perlu mengonfigurasi endpoint Zammad di %s:"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:427
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:415
 msgid "You reached the table limit of %s tickets (%s remaining)."
 msgstr "Anda telah mencapai batas tabel %s tiket (%s tersisa)."
 
@@ -25345,6 +25426,12 @@ msgstr "…dari seluruh area teks"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅ Waktu tunggu hari ini"
+
+#~ msgid "%s ticket selected"
+#~ msgstr "%s tiket dipilih"
+
+#~ msgid "The %s selected tickets have been updated successfully."
+#~ msgstr "%s tiket terpilih telah berhasil diperbarui."
 
 #~ msgid "UI Desktop Beta Switch"
 #~ msgstr "Beralih UI Desktop Beta"

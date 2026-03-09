@@ -72,6 +72,7 @@ class Channel::EmailParser::ContentParser
     return true if part_is_auto_generated_text_body?(part)
     return true if part_is_plain_text_body?(part)
     return true if part_is_html_alternative_in_mixed?(part, parent)
+    return true if part_is_html_body_of_singlepart_email?(part)
 
     false
   end
@@ -93,6 +94,18 @@ class Channel::EmailParser::ContentParser
     return false if part.attachment?
 
     mixed_part?(parent) && html_part?(part)
+  end
+
+  # https://github.com/zammad/zammad/issues/5992
+  # For a non-multipart text/html email the top-level mail object IS the body,
+  # but mail.html_part returns nil (Mail gem only searches sub-parts). Without
+  # this guard the part falls through to AttachmentParser and a spurious
+  # "document.html" attachment is created alongside the correct article body.
+  def part_is_html_body_of_singlepart_email?(part)
+    return false if part.attachment?
+    return false if mail.multipart?
+
+    html_part?(part)
   end
 
   def mixed_part?(part)

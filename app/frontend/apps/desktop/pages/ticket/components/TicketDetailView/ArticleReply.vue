@@ -16,12 +16,13 @@ import { useElementScroll } from '#desktop/composables/useElementScroll.ts'
 
 interface Props {
   ticket: TicketById
+  parentReachedBottomScroll: boolean
   newArticlePresent?: boolean
   createArticleType?: string | null
   ticketArticleTypes: AppSpecificTicketArticleType[]
   isTicketCustomer?: boolean
   hasInternalArticle?: boolean
-  parentReachedBottomScroll: boolean
+  newArticleCount?: number
 }
 
 const props = defineProps<Props>()
@@ -32,6 +33,7 @@ defineEmits<{
     performReply: AppSpecificTicketArticleType['performReply'],
   ]
   'discard-form': []
+  'scroll-into-view': []
 }>()
 
 const currentTicketArticleType = computed(() => {
@@ -174,12 +176,12 @@ defineExpose({
     ref="articlePanel"
     class="relative mx-auto flex w-full flex-col"
     :class="{
-      'max-w-6xl px-12 py-4': !pinned,
-      'sticky bottom-0 z-20 overflow-hidden border-t border-t-neutral-300 bg-neutral-50 dark:border-t-gray-900 dark:bg-gray-500':
+      'h-fit max-w-6xl px-12 py-4': !pinned,
+      'sticky bottom-0 z-20 self-end overflow-hidden border-t border-t-neutral-300 bg-neutral-50 backdrop-blur-2xs dark:border-t-gray-900 dark:bg-gray-500':
         pinned,
     }"
     :style="{
-      height: pinned ? `${articlePanelHeight}px` : 'auto',
+      height: pinned ? `${articlePanelHeight}px` : undefined,
     }"
     aria-labelledby="article-reply-form-title"
     role="complementary"
@@ -220,7 +222,6 @@ defineExpose({
         <div
           class="flex h-10 items-center p-3"
           :class="{
-            'bg-neutral-50 dark:bg-gray-500': pinned,
             'border-b border-b-transparent': pinned && articleFormReachedTop,
             'border-b border-b-neutral-300 dark:border-b-gray-900':
               pinned && !articleFormReachedTop,
@@ -255,31 +256,53 @@ defineExpose({
           class="grow px-3 pb-3"
           :class="{
             'overflow-y-auto': pinned,
-            'my-[5px] px-4 pt-2': hasInternalArticle && pinned,
+            'my-1.25 px-4 pt-2': hasInternalArticle && pinned,
           }"
-        ></div>
+        />
       </div>
     </div>
   </div>
   <div
     v-else-if="newArticlePresent !== undefined"
-    class="sticky bottom-0 z-20 flex w-full justify-center gap-2.5 border-t py-1.5"
+    class="sticky bottom-0 z-20 row-start-3 grid w-full grid-cols-[minmax(min-content,1fr)_1fr_minmax(min-content,1fr)] py-1.5 backdrop-blur-2xs"
     :class="{
-      'border-t-neutral-100 bg-neutral-50 dark:border-t-gray-900 dark:bg-gray-500':
-        parentReachedBottomScroll,
-      'border-t-transparent': !parentReachedBottomScroll,
+      'border-t border-t-neutral-100 bg-neutral-50/80 dark:border-t-gray-900 dark:bg-gray-500/80':
+        !parentReachedBottomScroll,
     }"
   >
-    <CommonButton
-      v-for="button in availableArticleTypes"
-      :key="button.articleType"
-      :prefix-icon="button.icon"
-      :variant="button.variant as ButtonVariant"
-      size="large"
-      @click="$emit('show-article-form', button.articleType, button.performReply)"
-    >
-      {{ $t(button.label) }}
-    </CommonButton>
+    <div v-if="newArticleCount && !parentReachedBottomScroll" class="relative w-fit self-center">
+      <CommonButton
+        v-tooltip="$t('Scroll to bottom')"
+        class="mx-2.5"
+        size="large"
+        variant="subtle"
+        icon="arrow-sm"
+        @click="$emit('scroll-into-view')"
+      />
+
+      <CommonBadge
+        size="xs"
+        class="pointer-events-none absolute -top-1.5 block! max-w-10 min-w-4 truncate rounded-full! px-1! py-0! font-bold ltr:right-0.5 rtl:left-0.5"
+        variant="highlight"
+        :aria-label="$t('Unread messages count')"
+        role="status"
+      >
+        {{ newArticleCount }}
+      </CommonBadge>
+    </div>
+
+    <div class="col-start-2 flex items-center justify-center gap-2.5 self-center">
+      <CommonButton
+        v-for="button in availableArticleTypes"
+        :key="button.articleType"
+        :prefix-icon="button.icon"
+        :variant="button.variant as ButtonVariant"
+        size="large"
+        @click="$emit('show-article-form', button.articleType, button.performReply)"
+      >
+        {{ $t(button.label) }}
+      </CommonButton>
+    </div>
   </div>
 </template>
 

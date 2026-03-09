@@ -1,11 +1,14 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { within } from '@testing-library/vue'
+import { waitFor, within } from '@testing-library/vue'
 
 import FormUpdaterUser from '#tests/graphql/factories/types/FormUpdaterUser.ts'
 import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
-import { mockFormUpdaterQuery } from '#shared/components/Form/graphql/queries/formUpdater.mocks.ts'
+import {
+  mockFormUpdaterQuery,
+  waitForFormUpdaterQueryCalls,
+} from '#shared/components/Form/graphql/queries/formUpdater.mocks.ts'
 import { mockObjectManagerFrontendAttributesQuery } from '#shared/entities/object-attributes/graphql/queries/objectManagerFrontendAttributes.mocks.ts'
 import { waitForUserAddMutationCalls } from '#shared/entities/user/graphql/mutations/add.mocks.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
@@ -69,9 +72,15 @@ describe('ticket create view - user create action', () => {
 
     const flyout = await view.findByRole('complementary', { name: 'Create new customer' })
 
+    expect(await waitForFormUpdaterQueryCalls()).toHaveLength(2) // ticket create + user edit
+
     const emailField = await within(flyout).findByLabelText('Email')
 
     await view.events.type(emailField, 'foo@customer.com')
+
+    await waitFor(async () => {
+      expect(await waitForFormUpdaterQueryCalls()).toHaveLength(3) // ticket create + user edit x2
+    })
 
     const customerSwitch = within(flyout).queryByRole('switch', {
       name: 'CustomerPeople who create Tickets ask for help.',
@@ -87,6 +96,7 @@ describe('ticket create view - user create action', () => {
     expect(calls[0].variables.input).toMatchObject({
       email: 'foo@customer.com',
     })
+
     expect(calls[0].variables.input.roleIds).toBeUndefined()
   })
 
@@ -131,9 +141,15 @@ describe('ticket create view - user create action', () => {
 
     const flyout = await view.findByRole('complementary', { name: 'Create new customer' })
 
+    expect(await waitForFormUpdaterQueryCalls()).toHaveLength(2) // ticket create + user edit
+
     const emailField = await within(flyout).findByLabelText('Email')
 
     await view.events.type(emailField, 'foo@customer.com')
+
+    await waitFor(async () => {
+      expect(await waitForFormUpdaterQueryCalls()).toHaveLength(3) // ticket create + user edit x2
+    })
 
     const customerSwitch = within(flyout).getByRole('switch', {
       name: 'CustomerPeople who create Tickets ask for help.',
@@ -142,6 +158,10 @@ describe('ticket create view - user create action', () => {
     expect(customerSwitch).toBeEnabled()
 
     await view.events.click(customerSwitch)
+
+    await waitFor(async () => {
+      expect(await waitForFormUpdaterQueryCalls()).toHaveLength(4) // ticket create + user edit x3
+    })
 
     await view.events.click(within(flyout).getByRole('button', { name: 'Create' }))
 

@@ -11,7 +11,7 @@ interface Options {
 }
 
 export const useElementScroll = (
-  scrollContainerElement: MaybeRef<HTMLElement>,
+  scrollContainerElement: MaybeRef<HTMLElement | null>,
   options?: Options,
 ) => {
   const { y, directions } = useScroll(scrollContainerElement, {
@@ -40,9 +40,11 @@ export const useElementScroll = (
       y.value - (scrollNode.value?.scrollHeight ?? 0) + (scrollNode.value?.offsetHeight ?? 0) > -1,
   )
 
-  const isScrollable = computed(
-    () => scrollNode.value?.scrollHeight > scrollNode.value?.clientHeight || y.value > 0,
-  )
+  const isScrollable = computed(() => {
+    if (!scrollNode.value) return false
+
+    return scrollNode.value?.scrollHeight > scrollNode.value?.clientHeight || y.value > 0
+  })
 
   const hasReachedThreshold = computed(() => y.value > (options?.scrollStartThreshold?.value || 0))
 

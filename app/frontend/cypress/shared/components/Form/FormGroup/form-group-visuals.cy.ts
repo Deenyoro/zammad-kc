@@ -3,8 +3,9 @@
 // To update snapshots, run `pnpm cypress:snapshots`
 // DO NOT update snapshots, when running with --open flag (Cypress GUI)
 
-import { checkFormMatchesSnapshot, mountComponent } from '#cy/utils.ts'
 import { h } from 'vue'
+
+import { checkFormMatchesSnapshot, mountComponent } from '#cy/utils.ts'
 
 import DynamicInitializer from '#shared/components/DynamicInitializer/DynamicInitializer.vue'
 import Form from '#shared/components/Form/Form.vue'
