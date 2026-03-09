@@ -195,6 +195,12 @@ $mobileNavigationWidthOpen: 220px;
   }
 }
 
+@mixin light {
+  [data-theme='light'] & {
+    @content;
+  }
+}
+
 @mixin desktop {
   @media screen and (min-width: 1260px) {
     @content;
@@ -11656,7 +11662,16 @@ output {
     box-shadow:
       0 0 0 1px rgba(0, 0, 0, 0.05),
       0 1px 3px rgba(0, 0, 0, 0.2);
-    background: var(--background-secondary);
+
+    // Lighter knob color for better visibility in dark mode.
+    //   https://github.com/zammad/zammad/issues/5983
+    @include dark {
+      background: var(--background-quaternary-alt);
+    }
+
+    @include light {
+      background: var(--background-secondary);
+    }
 
     @include rtl(transform, translateX(70%));
   }

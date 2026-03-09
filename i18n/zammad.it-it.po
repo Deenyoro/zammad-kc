@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zammad\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2026-02-27 13:09+0000\n"
+"PO-Revision-Date: 2026-03-05 06:23+0000\n"
 "Last-Translator: Random <random_r@users.noreply.translations.zammad.org>\n"
 "Language-Team: Italian <https://translations.zammad.org/projects/zammad/"
 "zammad-development/it/>\n"
@@ -402,7 +402,7 @@ msgstr "Checklist %s"
 msgid "%s Group"
 msgstr "Gruppo %s"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:51
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:50
 msgid "%s Import Status"
 msgstr "%s importa stato"
 
@@ -578,7 +578,7 @@ msgid "%s object(s) will be updated."
 msgstr "%s l'/gli oggetto/i sarà/saranno aggiornato(i)."
 
 #: app/assets/javascripts/app/views/ticket_zoom/meta.jst.eco:19
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:209
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:208
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/TicketInformation/TicketInformationBadgeList/ChecklistBadgeList.vue:44
 msgid "%s of %s"
 msgstr "%s di %s"
@@ -613,6 +613,12 @@ msgstr ""
 msgid "%s required!"
 msgstr "%s obbligatorio!"
 
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:383
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "%s result(s) selected"
+msgstr "%s ticket selezionati"
+
 #: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:53
 msgid "%s selected. Use arrow keys to choose drop position, then press Space."
 msgstr ""
@@ -634,8 +640,10 @@ msgstr "Sottodominio %s"
 msgid "%s switched to |%s|!"
 msgstr "%s è passato a |%s|!"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:70
-msgid "%s ticket selected"
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:83
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "%s ticket(s) selected"
 msgstr "%s ticket selezionati"
 
 #: app/assets/javascripts/app/views/ticket_zoom/meta.jst.eco:30
@@ -648,10 +656,6 @@ msgstr "%s ticket"
 #: app/frontend/apps/mobile/pages/ticket/components/TicketList/TicketList.vue:113
 msgid "%s tickets found"
 msgstr "%s ticket trovati"
-
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:71
-msgid "%s tickets selected"
-msgstr "%s ticket selezionati"
 
 #: app/assets/javascripts/app/models/ticket_article.coffee:51
 #: app/frontend/shared/composables/activity-message/activityMessageBuilder/builders/ticket-article.ts:28
@@ -774,7 +778,7 @@ msgstr ""
 "\n"
 "Può essere utilizzato per eliminare ticket, organizzazioni e utenti. "
 "L'assegnazione del proprietario verrà annullata nel caso in cui l'utente "
-"eliminato sia un agente.\n"
+"eliminato sia un operatore.\n"
 "\n"
 "Le attività di protezione dei dati verranno eseguite ogni 10 minuti. "
 "L'esecuzione potrebbe richiedere del tempo aggiuntivo a seconda del numero "
@@ -803,10 +807,10 @@ msgstr ""
 "avvisa.\n"
 "\n"
 "Puoi definire obiettivi per tre parametri: **tempo di risposta** (tempo tra "
-"la creazione del ticket e la prima reazione da parte di un agente), **tempo "
-"di aggiornamento** (tempo tra una richiesta di un cliente e la reazione da "
-"parte di un agente), e il **tempo di risoluzione** (tempo tra la creazione e "
-"la chiusura del ticket).\n"
+"la creazione del ticket e la prima reazione da parte di un operatore), "
+"**tempo di aggiornamento** (tempo tra una richiesta di un cliente e la "
+"reazione da parte di un operatore), e il **tempo di risoluzione** (tempo tra "
+"la creazione e la chiusura del ticket).\n"
 "\n"
 "Ogni ticket scalato (ad esempio quelli che non hanno rispettato un "
 "obiettivo) sono visualizzati in una vista diversa delle tue panoramiche. "
@@ -915,8 +919,8 @@ msgstr ""
 "ore lavorative e per inviare le notifiche relative.\n"
 "\n"
 "Definire un calendario **\"predefinito\"** che è valido per tutto il "
-"sistema. Le notifiche di escalation verranno inviate agli agenti solamente "
-"durante l'orario lavorativo.\n"
+"sistema. Le notifiche di escalation verranno inviate agli operatori "
+"solamente durante l'orario lavorativo.\n"
 "\n"
 "Se hai clienti con diversi orari lavorativi puoi creare calendari diversi. I "
 "ticket sono collegati ai calendari attraverso le **SLA**."
@@ -939,7 +943,7 @@ msgid ""
 "auto-reply"
 msgstr ""
 "L'indirizzo email di un gruppo definisce quale indirizzo debba essere usato "
-"per le email in uscita, ad esempio quando un agente compone un'email o un "
+"per le email in uscita, ad esempio quando un operatore compone un'email o un "
 "trigger invia una risposta automatica"
 
 #: db/seeds/settings.rb:4008
@@ -948,7 +952,7 @@ msgstr "Una lista di importazioni attive che vengono eseguite automaticamente."
 
 #: lib/validations/mention_validator.rb:7
 msgid "A mentioned user has no agent access to this ticket"
-msgstr "Un utente citato non ha accesso come agente a questo ticket"
+msgstr "Un utente citato non ha accesso come operatore a questo ticket"
 
 #: app/assets/javascripts/app/controllers/_plugin/session_taken_over.coffee:26
 msgid ""
@@ -1037,7 +1041,7 @@ msgstr "Operatore IA"
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/ai_agent.jst.eco:3
 #: db/seeds/permissions.rb:251
 msgid "AI Agents"
-msgstr "Agenti IA"
+msgstr "Operatori IA"
 
 #: db/seeds/permissions.rb:233
 msgid "AI Provider"
@@ -1083,7 +1087,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:33
 msgid "AI agent used in"
-msgstr "Agente IA utilizzato in"
+msgstr "Operatore IA usato in"
 
 #: app/assets/javascripts/app/models/ai_agent.coffee
 msgid ""
@@ -1091,8 +1095,8 @@ msgid ""
 "You can execute AI agents via triggers or schedulers."
 msgstr ""
 "Gli operatori IA consentono un'elaborazione ottimizzata grazie "
-"all'intelligenza artificiale. Puoi eseguire gli agenti IA tramite trigger o "
-"pianificatori."
+"all'intelligenza artificiale. Puoi eseguire gli operatori IA tramite trigger "
+"o pianificatori."
 
 #: app/services/service/ai_assistance/text_tools.rb:22
 msgid "AI assistance text tool is inactive."
@@ -1394,8 +1398,8 @@ msgstr "Pulsante menu di azione per chiavi di sicurezza"
 #: app/assets/javascripts/app/views/integration/pgp_list.jst.eco:19
 #: app/assets/javascripts/app/views/integration/smime_list.jst.eco:15
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:16
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:561
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:100
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:371
 msgid "Actions"
 msgstr "Azioni"
 
@@ -1572,7 +1576,7 @@ msgstr "Aggiungi certificato SSL"
 #: app/assets/javascripts/app/views/knowledge_base/sidebar/tags.jst.eco:19
 #: app/assets/javascripts/app/views/widget/tag.jst.eco:14
 msgid "Add Tag"
-msgstr "Aggiungi tag"
+msgstr "Aggiungi etichetta"
 
 #: app/assets/javascripts/app/controllers/_channel/telegram.coffee:109
 msgid "Add Telegram Bot"
@@ -1899,7 +1903,7 @@ msgstr "Tempo di inattività operatore"
 
 #: app/models/role.rb:151 app/models/user.rb:757
 msgid "Agent limit exceeded, please check your account settings."
-msgstr "Limite agente superato, verifica le impostazioni del tuo account."
+msgstr "Limite operatore superato, verifica le impostazioni del tuo account."
 
 #: db/seeds/permissions.rb:365
 msgid "Agent phone"
@@ -1911,7 +1915,7 @@ msgstr "Ticket dell'operatore"
 
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:115
 msgid "Agents"
-msgstr "Agenti"
+msgstr "Operatori"
 
 #: app/assets/javascripts/app/controllers/_ui_element/_application_action.coffee:514
 msgid "Agents with \"%s\" permission"
@@ -1924,6 +1928,18 @@ msgstr "Accetta e aderisci"
 #: app/assets/javascripts/app/views/profile/calendar_subscriptions.jst.eco:27
 msgid "Alarm"
 msgstr "Avviso"
+
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:382
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "All %s result(s) selected"
+msgstr "%s ticket selezionati"
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:81
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "All %s ticket(s) selected"
+msgstr "%s ticket selezionati"
 
 #: app/assets/javascripts/app/views/generic/notification_matrix.jst.eco:8
 #: app/assets/javascripts/app/views/profile/notification.jst.eco:30
@@ -2126,7 +2142,7 @@ msgstr "Si è verificato un errore: %s"
 msgid "An open-source monitoring tool."
 msgstr "Uno strumento di monitoraggio open source."
 
-#: app/frontend/shared/components/Form/utils.ts:23
+#: app/frontend/shared/components/Form/utils.ts:41
 msgid "An unexpected error has occurred."
 msgstr "Si è verificato un errore imprevisto."
 
@@ -2152,6 +2168,12 @@ msgstr "Analisi dei dati immessi con la configurazione fornita…"
 #: app/assets/javascripts/app/views/integration/ldap_wizard.jst.eco:123
 msgid "Analyzing structure…"
 msgstr "Analisi struttura…"
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:222
+msgid ""
+"Another bulk update is currently in progress. Please wait until it is "
+"finished before starting a new one."
+msgstr ""
 
 #. This is the template file app/views/mailer/ticket_update_received_merge/en.html.erb in ERB/HTML format.
 #. Please make sure to translate it to a valid corresponding output structure.
@@ -2286,7 +2308,7 @@ msgid "Applications"
 msgstr "Applicazioni"
 
 #: app/assets/javascripts/app/views/widget/template.jst.eco:8
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:311
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:408
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSharedDraftFlyout.vue:134
 msgid "Apply"
 msgstr "Applica"
@@ -2584,7 +2606,7 @@ msgid ""
 "Assignment timeout in minutes if assigned agent is not working on it. Ticket "
 "will be shown as unassigend."
 msgstr ""
-"Scadenza assegnazione in minuti quando l'agente assegnatario non ci sta "
+"Scadenza assegnazione in minuti quando l'operatore assegnatario non ci sta "
 "lavorando. Il ticket sarà indicato come non assegnato."
 
 #: app/models/user.rb:659
@@ -3170,11 +3192,29 @@ msgstr "Azione massiva eseguita!"
 msgid "Bulk action failed"
 msgstr "Azione massiva non riuscita"
 
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:307
+#: app/frontend/apps/desktop/entities/user/current/stores/ticketBulkUpdate.ts:71
+msgid ""
+"Bulk action failed for %s ticket(s). Check attribute values and try again."
+msgstr ""
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditButton.vue:33
+#: app/frontend/apps/desktop/entities/user/current/stores/ticketBulkUpdate.ts:52
+#, fuzzy
+#| msgid "Autosave in progress…"
+msgid "Bulk action in progress…"
+msgstr "Autosalvataggio in corso…"
+
 #: app/assets/javascripts/app/controllers/widget/ticket_bulk_form.coffee:199
 msgid "Bulk action stopped by error(s): %s!"
 msgstr "Azione di massa arrestata a causa di uno o più errori%s!"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditButton.vue:33
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:298
+#: app/frontend/apps/desktop/entities/user/current/stores/ticketBulkUpdate.ts:68
+msgid "Bulk action successful for %s ticket(s)."
+msgstr ""
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditButton.vue:42
 msgid "Bulk actions"
 msgstr "Azioni di massa"
 
@@ -3209,8 +3249,8 @@ msgid ""
 "Zammad can support your agents by opening either a new ticket dialogue or "
 "the user profile upon picking up a new call."
 msgstr ""
-"Mappando gli utenti Placetel SIP con i relativi agenti sui loro account "
-"utente, Zammad può supportare i tuoi agenti aprendo un nuovo ticket o il "
+"Mappando gli utenti Placetel SIP con i relativi operatori sui loro account "
+"utente, Zammad può supportare i tuoi operatori aprendo un nuovo ticket o il "
 "profilo del chiamante quando rispondono a una nuova telefonata."
 
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:117
@@ -3219,9 +3259,9 @@ msgid ""
 "can support your agents by opening either a new ticket dialogue or the user "
 "profile upon picking up a new call."
 msgstr ""
-"Mappando gli utenti sipgate ai tuoi agenti sui loro account utente, Zammad "
-"può supportare i tuoi agenti quando rispondono a una nuova chiamata aprendo "
-"un nuovo ticket o il profilo utente del chiamante."
+"Mappando gli utenti sipgate ai tuoi operatori sui loro account utente, "
+"Zammad può supportare i tuoi operatori quando rispondono a una nuova "
+"chiamata aprendo un nuovo ticket o il profilo utente del chiamante."
 
 #: app/assets/javascripts/app/views/ssl_certificates_list.jst.eco:13
 msgid "CA"
@@ -3420,7 +3460,7 @@ msgstr "Annulla ed esci"
 
 #: app/frontend/apps/desktop/components/CommonDialog/CommonDialogActionFooter.vue:20
 #: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyoutActionFooter.vue:10
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:301
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:398
 #: app/frontend/apps/desktop/pages/authentication/components/LoginTwoFactorMethods.vue:53
 #: app/frontend/apps/desktop/pages/authentication/views/AdminPasswordAuth.vue:116
 #: app/frontend/apps/desktop/pages/authentication/views/PasswordReset.vue:118
@@ -3939,6 +3979,8 @@ msgstr "Cancella i chiusi di recente"
 msgid "Clear search"
 msgstr "Pulisci ricerca"
 
+#: app/frontend/apps/desktop/components/CommonTable/CellContent/BulkCheckbox.vue:61
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:405
 #: app/frontend/apps/desktop/components/Form/fields/FieldAutoComplete/FieldAutoCompleteInput.vue:640
 #: app/frontend/apps/desktop/components/Form/fields/FieldDate/FieldDateTimeInput.vue:369
 #: app/frontend/apps/desktop/components/Form/fields/FieldSelect/FieldSelectInput.vue:306
@@ -4043,6 +4085,12 @@ msgstr "Chiudi tab corrente"
 #: app/frontend/apps/desktop/components/CommonDialog/CommonDialog.vue:163
 msgid "Close dialog"
 msgstr "Chiudi finestra"
+
+#: app/frontend/shared/components/CommonNotifications/CommonNotificationsItem.vue:57
+#, fuzzy
+#| msgid "Remove notification"
+msgid "Close notification"
+msgstr "Rimuovi notifica"
 
 #: app/frontend/apps/desktop/components/CommonFlyout/CommonFlyout.vue:347
 msgid "Close side panel"
@@ -4854,7 +4902,7 @@ msgid "Create ticket"
 msgstr "Crea un ticket"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:14
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:418
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:428
 msgid "Create your first ticket"
 msgstr "Crea il tuo primo ticket"
 
@@ -5010,7 +5058,7 @@ msgstr ""
 msgid "Current user has no permission to use 'From'/'X-On-Behalf-Of'!"
 msgstr "L'utente attuale non ha i permessi di usare 'From'/'X-On-Behalf-Of'!"
 
-#: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:204
+#: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:203
 msgid "Currently no overview is assigned to your roles."
 msgstr "Attualmente non c'è nessuna panoramica assegnata ai tuoi ruoli."
 
@@ -5024,14 +5072,14 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/attribute_bar.coffee:145
 #: app/frontend/apps/desktop/components/AiAgent/AiAgentPopoverWithTrigger.vue:25
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:184
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:218
 #: app/frontend/apps/mobile/components/Ticket/TicketItem.vue:35
 #: app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/TicketViewersDialog.vue:41
 msgid "Currently processing this ticket…"
 msgstr "Elaborazione in corso di questo ticket…"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOverviews.vue:146
-#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:131
+#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:132
 msgid ""
 "Currently, no overviews are assigned to your roles. Please contact your "
 "administrator."
@@ -5411,8 +5459,9 @@ msgid ""
 "relevant call entries and notifications."
 msgstr ""
 "Definisce le code o le destinazioni delle chiamate (qualunque cosa si adatti "
-"al tuo PBX) e mappa i tuoi agenti su di esso. In questo modo, Zammad può "
-"supportare i tuoi agenti mostrando loro solo chiamate e notifiche rilevanti."
+"al tuo PBX) e mappa i tuoi operatori su di esso. In questo modo, Zammad può "
+"supportare i tuoi operatori mostrando loro solo chiamate e notifiche "
+"rilevanti."
 
 #: db/seeds/settings.rb:2608
 msgid "Define the default agent notifications for new users."
@@ -5726,8 +5775,8 @@ msgid ""
 "Defines if the agent has to accept a confirmation dialog when changing the "
 "article visibility to \"public\"."
 msgstr ""
-"Definisce se l'agente deve accettare una finestra di conferma quando cambia "
-"la visibilità della nota in \"pubblica\"."
+"Definisce se l'operatore deve accettare una finestra di conferma quando "
+"cambia la visibilità della nota in \"pubblica\"."
 
 #: db/seeds/settings.rb:77
 msgid ""
@@ -6051,7 +6100,7 @@ msgstr "Definisce la configurazione S/MIME."
 
 #: db/seeds/settings.rb:5427
 msgid "Defines the agent limit."
-msgstr "Definisce il limite di agenti."
+msgstr "Definisce il limite di operatori."
 
 #: db/seeds/settings.rb:426
 msgid ""
@@ -6239,7 +6288,7 @@ msgid ""
 "Defines the separator between the agent's real name and the given group "
 "email address."
 msgstr ""
-"Definisce il separatore tra il nome reale dell'agente e l'indirizzo email "
+"Definisce il separatore tra il nome reale dell'operatore e l'indirizzo email "
 "del gruppo specificato."
 
 #: db/seeds/settings.rb:1108
@@ -6300,7 +6349,7 @@ msgstr "Definisce il back-end per eseguire i trigger."
 
 #: db/seeds/settings.rb:5121
 msgid "Defines the transaction backend to send agent notifications."
-msgstr "Definisce il back-end per inviare le notifiche dell'agente."
+msgstr "Definisce il back-end per inviare le notifiche dell'operatore."
 
 #: db/seeds/settings.rb:5408
 msgid ""
@@ -6617,12 +6666,11 @@ msgstr "Descrizione"
 msgid "Description (shown as title tag for screen readers)"
 msgstr "Descrizione (utilizzata come titolo per i lettori di schermo)"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:471
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:76
 msgid "Deselect all entries"
 msgstr "Deseleziona tutte le voci"
 
-#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:36
+#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:45
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:132
 msgid "Deselect this entry"
 msgstr "Deseleziona questa voce"
@@ -7149,7 +7197,7 @@ msgstr "Vacanze Pasquali"
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingTwoFactorAuth.vue:159
 #: app/frontend/apps/desktop/pages/user/components/UserDetailTopBar/actions/edit.ts:10
 #: app/frontend/apps/mobile/pages/home/views/Home.vue:71
-#: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:46
+#: app/frontend/apps/mobile/pages/organization/views/OrganizationDetailView.vue:52
 #: app/frontend/apps/mobile/pages/user/views/UserDetailView.vue:54
 msgid "Edit"
 msgstr "Modifica"
@@ -7200,7 +7248,7 @@ msgstr "Modifica maschera"
 
 #: app/frontend/apps/desktop/entities/organization/composables/useOrganizationEdit.ts:59
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:39
-#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:76
+#: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/TicketInformationOrganization.vue:77
 msgid "Edit organization"
 msgstr "Modifica organizzazione"
 
@@ -7458,7 +7506,7 @@ msgstr ""
 msgid "Empty"
 msgstr "Vuoto"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:425
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:435
 msgid "Empty overview"
 msgstr "Panoramica vuota"
 
@@ -8688,8 +8736,8 @@ msgid ""
 "For this agent to run, it needs to be used in an automation (e.g. trigger, "
 "scheduler, macro)."
 msgstr ""
-"Per poter funzionare, questo agente deve essere utilizzato in un'automazione "
-"(ad esempio, trigger, scheduler, macro)."
+"Per poter funzionare, questo operatore deve essere utilizzato in "
+"un'automazione (ad esempio, trigger, scheduler, macro)."
 
 #: app/frontend/apps/desktop/components/layout/LayoutTaskbarTabContent.vue:62
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingLinkedAccounts.vue:37
@@ -9083,7 +9131,7 @@ msgstr "Indietro"
 msgid "Go home"
 msgstr "Torna alla home"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:234
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:233
 msgid "Go to login"
 msgstr "Vai all'accesso"
 
@@ -9710,7 +9758,7 @@ msgstr "Identificatore dell'argomento chat."
 #: db/seeds/settings.rb:3599
 msgid "Idle timeout in seconds until agent is set offline automatically."
 msgstr ""
-"Timeout di inattività in secondi prima che l'agente venga messo "
+"Timeout di inattività in secondi prima che l'operatore venga messo "
 "automaticamente offline."
 
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarExternalReferences/TicketSidebarIdoit/IdoitFlyout/IdoitObjectList.vue:29
@@ -9751,7 +9799,7 @@ msgid ""
 "If the sender is an agent, set the first user in the recipient list as the "
 "customer."
 msgstr ""
-"Se il mittente è un agente, imposta il primo utente nell'elenco dei "
+"Se il mittente è un operatore, imposta il primo utente nell'elenco dei "
 "destinatari come cliente."
 
 #: db/seeds/settings.rb:3465
@@ -9947,7 +9995,7 @@ msgstr "Utente di importazione per le API di Kayako"
 msgid "Import User for requesting the Zendesk API"
 msgstr "Utente di importazione per le API Zendesk"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:191
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:190
 msgid "Import finished successfully!"
 msgstr "Importazione conclusa correttamente!"
 
@@ -10111,7 +10159,7 @@ msgstr "Aumenta il valore dei secondi"
 msgid "Indent text"
 msgstr "Indenta il testo"
 
-#: app/frontend/apps/desktop/components/CommonProgressBar/CommonProgressBar.vue:16
+#: app/frontend/shared/components/CommonProgressBar/CommonProgressBar.vue:40
 msgid "Indicating progress"
 msgstr "Indicando l'avanzamento"
 
@@ -10239,7 +10287,7 @@ msgstr "Installa app"
 
 #: app/assets/javascripts/app/views/package.jst.eco:40
 msgid "Install Package"
-msgstr "Installa Pacchetto"
+msgstr "Installa pacchetto"
 
 #: app/assets/javascripts/app/views/package.jst.eco:32
 msgid "Installed"
@@ -10274,7 +10322,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:105
 #: app/assets/javascripts/app/controllers/knowledge_base/content_controller.coffee:133
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:142
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:154
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:160
 msgid "Internal"
 msgstr "Interno"
@@ -11263,7 +11311,7 @@ msgstr "Le restrizioni per i macro gruppi non riguardano tutti i ticket"
 #: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:11
 #: app/assets/javascripts/app/controllers/macro.coffee:3
 #: app/assets/javascripts/app/views/ticket_zoom/attribute_bar.jst.eco:78
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:193
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:205
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue:48
 #: db/seeds/permissions.rb:47
 msgid "Macros"
@@ -11686,6 +11734,18 @@ msgstr "Materiale"
 msgid "Mattermost Notifications"
 msgstr "Notifiche Mattermost"
 
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:381
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "Max %s result(s) selected"
+msgstr "%s ticket selezionati"
+
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:80
+#, fuzzy
+#| msgid "%s tickets selected"
+msgid "Max %s ticket(s) selected"
+msgstr "%s ticket selezionati"
+
 #: app/models/object_manager/attribute/data_option_validator.rb:35
 msgid "Max length must be an integer."
 msgstr "La lunghezza massima deve essere un numero intero."
@@ -11787,7 +11847,7 @@ msgstr "Scaricamento del media completato."
 #: app/frontend/apps/desktop/components/Organization/OrganizationPopoverWithTrigger/OrganizationPopover.vue:79
 #: app/frontend/apps/desktop/pages/organization/components/OrganizationDetailViewContent.vue:115
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarOrganization/TicketSidebarOrganizationContent.vue:71
-#: app/frontend/apps/mobile/components/Organization/OrganizationMembersList.vue:29
+#: app/frontend/apps/mobile/components/Organization/OrganizationMembersList.vue:36
 msgid "Members"
 msgstr "Membri"
 
@@ -12431,7 +12491,7 @@ msgstr "Nuova sorgente"
 #: app/assets/javascripts/app/views/tag/index.jst.eco:14
 #: db/seeds/settings.rb:4170
 msgid "New Tags"
-msgstr "Nuovi Tag"
+msgstr "Nuove etichette"
 
 #: app/assets/javascripts/app/controllers/template.coffee:25
 msgid "New Template"
@@ -12841,7 +12901,7 @@ msgid "No organizations found"
 msgstr "Nessuna organizzazione trovata"
 
 #: app/frontend/apps/desktop/pages/personal-setting/views/PersonalSettingOverviews.vue:143
-#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:128
+#: app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue:129
 msgid "No overviews"
 msgstr "Nessuna panoramica"
 
@@ -12935,7 +12995,7 @@ msgstr "Non sono ancora stati aggiunti tag."
 msgid "No template created yet."
 msgstr "Nessun template ancora creato."
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:426
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:436
 msgid "No tickets in this state."
 msgstr "Nessun ticket in questo stato."
 
@@ -13083,7 +13143,7 @@ msgstr "Non trovato - risorsa non trovata"
 #: app/assets/javascripts/app/views/integration/cti.jst.eco:38
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:54
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:47
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:102
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:114
 #: app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/article-type/plugins/note.ts:7
 #: app/frontend/shared/entities/ticket-article/action/plugins/note.ts:14
 #: db/seeds/object_manager_attributes.rb:1569
@@ -13858,7 +13918,7 @@ msgstr "Elenco della navigazione Panoramica"
 msgid "Overview order list"
 msgstr "Elenco dell'ordine Panoramica"
 
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:381
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:391
 msgid "Overview: %s"
 msgstr "Panoramica: %s"
 
@@ -13939,12 +13999,12 @@ msgstr "POP3"
 
 #: app/assets/javascripts/app/views/package.jst.eco:2
 msgid "Package"
-msgstr "Package"
+msgstr "Pacchetto"
 
 #: app/assets/javascripts/app/controllers/package.coffee:3
 #: db/seeds/permissions.rb:317
 msgid "Packages"
-msgstr "Packages"
+msgstr "Pacchetti"
 
 #: app/assets/javascripts/app/views/generic/table_pager.jst.eco:3
 msgid "Page %s"
@@ -14187,7 +14247,7 @@ msgstr "Telefono (out)"
 #: app/assets/javascripts/app/views/integration/placetel.jst.eco:125
 #: app/assets/javascripts/app/views/integration/sipgate.jst.eco:115
 msgid "Phone Extension to Agent Mapping"
-msgstr "Corrispondenza tra interno telefonico e agente"
+msgstr "Corrispondenza tra interno telefonico e operatore"
 
 #: app/assets/javascripts/app/views/whatsapp/account_phone_number.jst.eco:14
 msgid "Phone number"
@@ -14262,7 +14322,7 @@ msgid "Please add categories and/or answers"
 msgstr "Per favore aggiungi categorie e/o risposte"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:12
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:411
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:421
 msgid "Please click on the button below to create your first one."
 msgstr "Per creare il tuo primo ticket, fai clic sul pulsante qui sotto."
 
@@ -14607,7 +14667,7 @@ msgstr "Prio"
 msgid "Priority"
 msgstr "Priorità"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:79
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:105
 msgid "Priority icon"
 msgstr "Icona priorità"
 
@@ -14723,7 +14783,7 @@ msgstr ""
 #: app/assets/javascripts/app/controllers/_ai/provider.coffee:3
 #: app/assets/javascripts/app/controllers/_channel/sms.coffee:167
 msgid "Provider"
-msgstr "Fornitore"
+msgstr "Fornitori"
 
 #: db/seeds/settings.rb:553
 msgid "Proxy Password"
@@ -14742,7 +14802,7 @@ msgid "Proxy address"
 msgstr "Indirizzo proxy"
 
 #: app/assets/javascripts/app/controllers/knowledge_base/content_can_be_published_form.coffee:109
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:137
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:149
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:165
 msgid "Public"
 msgstr "Pubblico"
@@ -15502,7 +15562,7 @@ msgstr "Struttura del risultato"
 msgid "Result:"
 msgstr "Risultato:"
 
-#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:365
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:411
 msgid "Results"
 msgstr "Risultati"
 
@@ -15908,7 +15968,7 @@ msgstr "Scorri verso il basso per vedere i nuovi messaggi"
 #: app/assets/javascripts/app/views/integration/idoit_object_selector.jst.eco:3
 #: app/assets/javascripts/app/views/knowledge_base/search_field_widget.jst.eco:1
 #: app/assets/javascripts/app/views/widget/text_module.jst.eco:4
-#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:363
+#: app/frontend/apps/desktop/pages/search/components/SearchContent.vue:409
 #: app/frontend/apps/desktop/pages/search/routes.ts:10
 #: app/frontend/apps/mobile/pages/search/routes.ts:8
 #: app/frontend/apps/mobile/pages/search/views/SearchOverview.vue:220
@@ -16274,6 +16334,12 @@ msgstr ""
 "Visualizza i tuoi ticket dall'interno del tuo calendario preferito "
 "aggiungendo l'URL di iscrizione all'app calendario."
 
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:285
+#, fuzzy
+#| msgid "Selector"
+msgid "Select"
+msgstr "Selettore"
+
 #: app/assets/javascripts/app/controllers/_plugin/electron_events.coffee:38
 msgid "Select All"
 msgstr "Seleziona tutto"
@@ -16291,7 +16357,13 @@ msgstr "Seleziona bozza condivisa"
 msgid "Select Template"
 msgstr "Seleziona Template"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:470
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:396
+#, fuzzy
+#| msgid "Select all entries"
+msgid "Select all %s results"
+msgstr "Seleziona tutte le voci"
+
+#: app/frontend/apps/desktop/components/CommonTable/CellContent/BulkCheckbox.vue:61
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:76
 msgid "Select all entries"
 msgstr "Seleziona tutte le voci"
@@ -16307,6 +16379,12 @@ msgstr "Seleziona elemento"
 #: app/assets/javascripts/app/lib/app_post/multi_locales_row.coffee:38
 msgid "Select locale…"
 msgstr "Seleziona la lingua…"
+
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:395
+#, fuzzy
+#| msgid "Select all entries"
+msgid "Select max %s results"
+msgstr "Seleziona tutte le voci"
 
 #: app/frontend/apps/desktop/components/CommonTable/TableRow.vue:68
 msgid "Select table row"
@@ -16331,7 +16409,7 @@ msgstr "Seleziona il tipo di ticket che stai creando"
 msgid "Select this avatar"
 msgstr "Seleziona questo avatar"
 
-#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:36
+#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:45
 #: app/frontend/apps/desktop/components/CommonTable/CommonSimpleTable.vue:132
 msgid "Select this entry"
 msgstr "Seleziona questa voce"
@@ -16564,7 +16642,7 @@ msgstr "Imposta un titolo per il tuo ticket"
 
 #: db/seeds/settings.rb:5424
 msgid "Set agent limit"
-msgstr "Imposta limite agente"
+msgstr "Imposta limite operatore"
 
 #: app/assets/javascripts/app/controllers/_plugin/keyboard_shortcuts.coffee:493
 msgid "Set article to internal/public"
@@ -16734,7 +16812,7 @@ msgstr "Bozza condivisa"
 
 #: app/controllers/tickets_controller.rb:89
 #: app/services/service/ticket/create.rb:180
-#: app/services/service/ticket/update.rb:72
+#: app/services/service/ticket/update.rb:71
 msgid "Shared draft cannot be selected for this ticket."
 msgstr "Le bozze condivise non possono essere utilizzate per questo ticket."
 
@@ -16967,7 +17045,7 @@ msgstr "Errore di firma"
 #: app/frontend/apps/mobile/pages/authentication/components/LoginRecoveryCode.vue:80
 #: app/frontend/apps/mobile/pages/authentication/components/LoginTwoFactor.vue:158
 #: app/frontend/apps/mobile/pages/authentication/routes.ts:15
-#: app/frontend/apps/mobile/pages/playground/views/PlaygroundOverview.vue:475
+#: app/frontend/apps/mobile/pages/playground/views/PlaygroundOverview.vue:624
 msgid "Sign in"
 msgstr "Entra"
 
@@ -17166,6 +17244,18 @@ msgstr ""
 "Spiacente, non è stata abilitata nessuna integrazione con un centralino "
 "(CTI)."
 
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:262
+#, fuzzy
+#| msgid "Sorted ascending"
+msgid "Sort by %s ascending"
+msgstr "Ordinato ascendente"
+
+#: app/frontend/apps/desktop/components/CommonTable/TableHeader.vue:266
+#, fuzzy
+#| msgid "Sorted descending"
+msgid "Sort by %s descending"
+msgstr "Ordinato discendente"
+
 #: app/frontend/apps/desktop/composables/dragAndDrop/useKeyboardKeysForDragAndDrop.ts:146
 msgid ""
 "Sortable list focused. Use up and down arrows to navigate items. Press Space "
@@ -17178,14 +17268,6 @@ msgstr ""
 #: app/frontend/apps/desktop/composables/dragAndDrop/useAccessibleDragAndDrop.ts:50
 msgid "Sorted %s in user taskbar list to position %s."
 msgstr "Ordinato %s nell'elenco della barra delle attività in posizione %s."
-
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:511
-msgid "Sorted ascending"
-msgstr "Ordinato ascendente"
-
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:512
-msgid "Sorted descending"
-msgstr "Ordinato discendente"
 
 #: app/assets/javascripts/app/controllers/ticket_overview/settings.coffee:40
 #: app/assets/javascripts/app/models/overview.coffee:23
@@ -17337,7 +17419,7 @@ msgstr "Avviando Zammad"
 msgid "Starting Zammad…"
 msgstr "Avvio di Zammad…"
 
-#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:186
+#: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupImport/GuidedSetupImportSource/GuidedSetupImportSourceStatus.vue:185
 msgid "Starting import…"
 msgstr "Avvio dell'importazione…"
 
@@ -17358,7 +17440,7 @@ msgstr "Avvio dell'importazione…"
 msgid "State"
 msgstr "Stato"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:91
+#: app/frontend/apps/desktop/components/Ticket/TicketListTable.vue:121
 msgid "State icon"
 msgstr "Icona di stato"
 
@@ -17729,7 +17811,7 @@ msgstr "L'etichetta \"%s\" esiste già."
 #: db/seeds/object_manager_attributes.rb:403 db/seeds/permissions.rb:59
 #: lib/excel_sheet/ticket.rb:33
 msgid "Tags"
-msgstr "Tag"
+msgstr "Etichette"
 
 #: db/seeds/settings.rb:3372
 msgid ""
@@ -17928,10 +18010,6 @@ msgstr "Grazie per esserti unito a noi. Email inviata a \"%s\"."
 #: app/frontend/apps/desktop/components/CommonAIFeedback/CommonAIFeedback.vue:107
 msgid "Thanks for the feedback. Please explain what went wrong?"
 msgstr "Grazie per l'opinione. Mi spieghi cosa è andato storto?"
-
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:231
-msgid "The %s selected tickets have been updated successfully."
-msgstr "I %s ticket selezionati sono stati aggiornati correttamente."
 
 #: lib/secure_mailing/pgp/tool/exec/agent.rb:13
 msgid "The 'gpg-agent' process could not be stopped."
@@ -19348,7 +19426,7 @@ msgstr ""
 
 #: app/assets/javascripts/app/controllers/customer_ticket_create/sidebar_customer_default.coffee:29
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:11
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:408
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:418
 msgid "The way to communicate with us is this thing called \"ticket\"."
 msgstr "Il modo per comunicare con noi è questa cosa chiamata \"ticket\"."
 
@@ -20196,7 +20274,7 @@ msgstr "Giovedì"
 #: app/frontend/apps/mobile/pages/ticket/views/TicketInformation/plugins/ticket.ts:6
 #: db/seeds/permissions.rb:215
 msgid "Ticket"
-msgstr "Richiesta"
+msgstr "Ticket"
 
 #: app/assets/javascripts/app/controllers/agent_ticket_create.coffee:793
 msgid "Ticket %s created!"
@@ -20372,7 +20450,7 @@ msgstr "ticket di iscrizione"
 #: app/assets/javascripts/app/views/ai/ticket_summary.jst.eco:7
 #: db/seeds/permissions.rb:239 db/seeds/settings.rb:6073
 msgid "Ticket Summary"
-msgstr "Riepilogo del ticket"
+msgstr "Riepilogo dei ticket"
 
 #: db/seeds/settings.rb:6087
 msgid "Ticket Summary Config"
@@ -20679,7 +20757,7 @@ msgstr "TicketID"
 #: app/frontend/apps/desktop/pages/ticket/components/TicketSidebar/TicketSidebarCustomer/TicketSidebarCustomerContent.vue:119
 #: app/frontend/apps/mobile/pages/search/plugins/ticket.ts:9
 #: app/frontend/apps/mobile/pages/ticket/routes.ts:50
-#: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:159
+#: app/frontend/apps/mobile/pages/ticket/views/TicketOverview.vue:158
 msgid "Tickets"
 msgstr "Richieste"
 
@@ -20698,7 +20776,7 @@ msgstr "Ticket ordinati per la colonna \"%s\" (%s)."
 msgid "Tickets assigned to me: %s of %s"
 msgstr "Ticket assegnati a me: %s su %s"
 
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:282
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:379
 msgid "Tickets bulk edit"
 msgstr "Modifica in massa dei ticket"
 
@@ -21202,6 +21280,10 @@ msgstr "Martedì"
 msgid "Turn chat into ticket"
 msgstr "Trasforma la chat in un ticket"
 
+#: app/views/init/index.html.erb app/views/init/spinner-loading.html.erb
+msgid "Turn on JavaScript to use Zammad."
+msgstr ""
+
 #: app/assets/javascripts/app/controllers/webhook.coffee:280
 #: app/assets/javascripts/app/views/channel/email_account_wizard.jst.eco:89
 #: app/assets/javascripts/app/views/channel/email_notification_wizard.jst.eco:48
@@ -21490,7 +21572,7 @@ msgstr "Inutilizzato"
 
 #: app/assets/javascripts/app/controllers/_ai/ai_agent.coffee:35
 msgid "Unused AI agent"
-msgstr "Agente IA non utilizzato"
+msgstr "Operatore IA non usato"
 
 #: app/assets/javascripts/app/views/translation/support.jst.eco:6
 msgid ""
@@ -22184,7 +22266,7 @@ msgstr ""
 "Usando le **organizzazioni** puoi **raggruppare** i clienti. Questo ha due "
 "vantaggi principali:\n"
 "\n"
-"1. Come **agente** puoi avere una panoramica non solo sui ticket di una "
+"1. Come **operatore** puoi avere una panoramica non solo sui ticket di una "
 "singola persona ma **una panoramica dell'intera organizzazione**.\n"
 "2. Come **cliente** puoi verificare i **ticket creati dai tuoi colleghi** e "
 "modificarli (se l'organizzazione è configurata come \"condivisa\")."
@@ -22328,7 +22410,7 @@ msgstr "Visualizzazione ticket"
 #: app/assets/javascripts/app/models/ticket_article.coffee:14
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/article.jst.eco:3
 #: app/assets/javascripts/app/views/generic/ticket_perform_action/notification.jst.eco:3
-#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:131
+#: app/frontend/apps/desktop/components/Ticket/TicketBulkEditFlyout/TicketBulkEditFlyout.vue:143
 #: app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts:152
 #: db/seeds/object_manager_attributes.rb:462
 msgid "Visibility"
@@ -22497,7 +22579,7 @@ msgstr "Messaggio di Benvenuto"
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:2
 #: app/assets/javascripts/app/views/welcome.jst.eco:2
 #: app/frontend/apps/desktop/pages/guided-setup/views/GuidedSetupStart.vue:43
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:402
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:412
 msgid "Welcome!"
 msgstr "Benvenuto!"
 
@@ -22839,11 +22921,11 @@ msgid ""
 "You can also create overviews and limit them to specific agents or to groups "
 "of agents."
 msgstr ""
-"Puoi creare **panoramiche** per i tuoi agenti e clienti. Questo ha vari "
-"benefici, ad esempio può diventare una to-do list per i tuoi agenti.\n"
+"Puoi creare **panoramiche** per i tuoi operatori e clienti. Questo ha vari "
+"benefici, ad esempio può diventare una to-do list per i tuoi operatori.\n"
 "\n"
-"Puoi inoltre creare panoramiche a renderle accessibili a agenti o gruppi di "
-"agenti specifici."
+"Puoi inoltre creare panoramiche a renderle accessibili a operatori o gruppi "
+"di operatori specifici."
 
 #: app/assets/javascripts/app/views/channel/chat.jst.eco:11
 msgid ""
@@ -23061,11 +23143,11 @@ msgstr ""
 msgid "You do not have administrator permission."
 msgstr "Non hai i privilegi di amministratore."
 
-#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:41
+#: app/frontend/apps/desktop/components/CommonTable/CellContent/CellCheckbox.vue:59
 msgid "You do not have permission to update"
 msgstr "Non hai l'autorizzazione ad aggiornare"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:431
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:419
 msgid "You don't have more tickets to load."
 msgstr "Non hai altri ticket da caricare."
 
@@ -23137,7 +23219,7 @@ msgid "You have no unread messages"
 msgstr "Non hai messaggi non letti"
 
 #: app/assets/javascripts/app/views/customer_not_ticket_exists.jst.eco:10
-#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:405
+#: app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue:415
 msgid "You have not created a ticket yet."
 msgstr "Non hai ancora creato un ticket."
 
@@ -23188,7 +23270,7 @@ msgstr "È necessario configurare gli endpoint Zammad nell'interfaccia web %s:"
 msgid "You need to configure the Zammad endpoints in the %s:"
 msgstr "È necessario configurare gli endpoint Zammad nel %s:"
 
-#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:427
+#: app/frontend/apps/desktop/components/CommonTable/CommonAdvancedTable.vue:415
 msgid "You reached the table limit of %s tickets (%s remaining)."
 msgstr "Hai raggiunto il limite tabellare di %s ticket (%s rimasti)."
 
@@ -23615,7 +23697,7 @@ msgstr "prima (relativo)"
 #: app/assets/javascripts/app/views/generic/sla_times.jst.eco:41
 #: app/assets/javascripts/app/views/sla/index.jst.eco:45
 msgid "between agent updates"
-msgstr "tra aggiornamenti degli agenti"
+msgstr "tra aggiornamenti degli operatori"
 
 #: app/assets/javascripts/app/controllers/cti.coffee:163
 msgid "busy"
@@ -23994,7 +24076,7 @@ msgstr "riempi elementi in bianco"
 #: app/assets/javascripts/app/views/generic/sla_times.jst.eco:50
 #: app/assets/javascripts/app/views/sla/index.jst.eco:41
 msgid "for an agent to respond"
-msgstr "per la risposta di un agente"
+msgstr "per la risposta di un operatore"
 
 #: app/assets/javascripts/app/controllers/ticket_zoom/article_action/email_reply.coffee:61
 msgid "forward"
@@ -25101,6 +25183,12 @@ msgstr "…dell'intera area di testo"
 #: app/assets/javascripts/app/views/dashboard/stats/ticket_waiting_time.jst.eco:3
 msgid "∅ Waiting time today"
 msgstr "∅ Tempi di attesa - Oggi"
+
+#~ msgid "%s ticket selected"
+#~ msgstr "%s ticket selezionati"
+
+#~ msgid "The %s selected tickets have been updated successfully."
+#~ msgstr "I %s ticket selezionati sono stati aggiornati correttamente."
 
 #~ msgid "UI Desktop Beta Switch"
 #~ msgstr "Cambio dell'UI Desktop Beta"

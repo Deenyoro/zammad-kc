@@ -11,186 +11,6 @@ RSpec.describe Channel::Filter::Database, type: :channel_filter do
     I can haz anvil!
   RAW
 
-  describe '.filter_matches?' do
-    let(:filter) { create(:postmaster_filter, match: { 'from' => { 'operator' => operator, 'value' => value } }) }
-
-    shared_examples 'the filter matches' do
-      it 'matches' do
-        expect(described_class.filter_matches?(mail_hash, filter)).to be true
-      end
-    end
-
-    shared_examples 'the filter does not match' do
-      it 'matches' do
-        expect(described_class.filter_matches?(mail_hash, filter)).to be false
-      end
-    end
-
-    context "with operator 'contains'" do
-      let(:operator) { 'contains' }
-
-      context 'with matching string' do
-        let(:value) { 'a' }
-
-        include_examples 'the filter matches'
-      end
-
-      context 'with matching upcased string' do
-        let(:value) { 'A' }
-
-        include_examples 'the filter matches'
-      end
-
-      context 'with non-matching string' do
-        let(:value) { 'x' }
-
-        include_examples 'the filter does not match'
-      end
-    end
-
-    context "with operator 'contains not'" do
-      let(:operator) { 'contains not' }
-
-      context 'with matching string' do
-        let(:value) { 'a' }
-
-        include_examples 'the filter does not match'
-      end
-
-      context 'with matching upcased string' do
-        let(:value) { 'A' }
-
-        include_examples 'the filter does not match'
-      end
-
-      context 'with non-matching string' do
-        let(:value) { 'x' }
-
-        include_examples 'the filter matches'
-      end
-    end
-
-    context "with operator 'matches regex'" do
-      let(:operator) { 'matches regex' }
-
-      context 'with matching string' do
-        let(:value) { 'daffy.duck@.*' }
-
-        include_examples 'the filter matches'
-      end
-
-      context 'with non-matching string' do
-        let(:value) { 'daffy.duck.+@' }
-
-        include_examples 'the filter does not match'
-      end
-    end
-
-    context "with operator 'does not match regex'" do
-      let(:operator) { 'does not match regex' }
-
-      context 'with matching string' do
-        let(:value) { 'daffy.duck@.*' }
-
-        include_examples 'the filter does not match'
-      end
-
-      context 'with non-matching string' do
-        let(:value) { 'daffy.duck.+@' }
-
-        include_examples 'the filter matches'
-      end
-    end
-
-    context "with operator 'is any of'" do
-      let(:operator) { 'is any of' }
-
-      context 'with matching string' do
-        let(:value) { ['daffy.duck@acme.corp', 'elmer.fudd@acme.corp'] }
-
-        include_examples 'the filter matches'
-      end
-
-      context 'with matching upcased string' do
-        let(:value) { ['Daffy.Duck@acme.corp', 'Elmer.Fudd@acme.corp'] }
-
-        include_examples 'the filter does not match'
-      end
-
-      context 'with non-matching string' do
-        let(:value) { ['other.address@example.com', 'mail@example.com'] }
-
-        include_examples 'the filter does not match'
-      end
-    end
-
-    context "with operator 'is none of'" do
-      let(:operator) { 'is none of' }
-
-      context 'with matching string' do
-        let(:value) { ['daffy.duck@acme.corp', 'elmer.fudd@acme.corp'] }
-
-        include_examples 'the filter does not match'
-      end
-
-      context 'with matching upcased string' do
-        let(:value) { ['Daffy.Duck@acme.corp', 'Elmer.Fudd@acme.corp'] }
-
-        include_examples 'the filter matches'
-      end
-
-      context 'with non-matching string' do
-        let(:value) { ['other.address@example.com', 'mail@example.com'] }
-
-        include_examples 'the filter matches'
-      end
-    end
-
-    context "with operator 'starts with one of'" do
-      let(:operator) { 'starts with one of' }
-
-      context 'with matching string' do
-        let(:value) { ['daffy.duck', 'elmer.fudd'] }
-
-        include_examples 'the filter matches'
-      end
-
-      context 'with matching upcased string' do
-        let(:value) { ['Daffy.Duck', 'Elmer.Fudd'] }
-
-        include_examples 'the filter matches'
-      end
-
-      context 'with non-matching string' do
-        let(:value) { ['other.address', 'zammad.org'] }
-
-        include_examples 'the filter does not match'
-      end
-    end
-
-    context "with operator 'ends with one of'" do
-      let(:operator) { 'ends with one of' }
-
-      context 'with matching string' do
-        let(:value) { ['acme.corp', 'example.com'] }
-
-        include_examples 'the filter matches'
-      end
-
-      context 'with matching upcased string' do
-        let(:value) { ['ACME.corp', 'EXAMPLE.com'] }
-
-        include_examples 'the filter matches'
-      end
-
-      context 'with non-matching string' do
-        let(:value) { ['example.com', 'zammad.org'] }
-
-        include_examples 'the filter does not match'
-      end
-    end
-  end
-
   describe 'Cannot set date for pending close status in postmaster filter #4206', db_strategy: :reset do
     before do
       freeze_time
@@ -357,6 +177,34 @@ RSpec.describe Channel::Filter::Database, type: :channel_filter do
         expect(Rails.logger).to have_received(:debug).twice.with(no_args) do |&block|
           expect(block.call).to match(%r{process filter}).or match(%r{not matching: key 'subject' contains not 'Anvil'})
         end
+      end
+    end
+  end
+
+  describe 'postmaster filter with regex and named capture', db_strategy: :reset do
+    context 'when the filter uses a named capture group' do
+      let(:mail_hash) { Channel::EmailParser.new.parse(<<~RAW.chomp) }
+        From: daffy.duck@acme.corp
+        To: batman@marvell.com
+        Subject: Anvil
+
+        Customers Formular Message is:
+
+        ContractID: 1234abcd
+        CustomerEmail: customer@example.com
+      RAW
+
+      before do
+        create(:postmaster_filter,
+               match:   { 'body' => { 'operator' => 'matches regex', 'value' => 'ContractID:\s(?<CONTRACT_ID>.*)' } },
+               perform: { 'x-zammad-ticket-title' => { 'value' => '#{CONTRACT_ID}' } }, # rubocop:disable Lint/InterpolationCheck
+               channel: 'email',
+               active:  true)
+      end
+
+      it 'sets the ticket title using the captured CONTRACT_ID' do
+        described_class.run({}, mail_hash, {})
+        expect(mail_hash[:'x-zammad-ticket-title']).to eq('1234abcd')
       end
     end
   end

@@ -6,7 +6,7 @@ import path from 'path'
 import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript'
 import { globalIgnores } from 'eslint/config'
 // @ts-ignore
-import importPlugin from 'eslint-plugin-import'
+import importPlugin from 'eslint-plugin-import-x'
 import oxlint from 'eslint-plugin-oxlint'
 import pluginSecurity from 'eslint-plugin-security'
 import pluginVue from 'eslint-plugin-vue'
@@ -141,6 +141,11 @@ export default defineConfigWithVueTs(
           pathGroups: [
             {
               pattern: '#tests/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '#cy/**',
               group: 'internal',
               position: 'before',
             },

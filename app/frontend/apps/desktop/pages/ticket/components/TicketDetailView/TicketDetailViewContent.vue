@@ -1,14 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import {
-  type MaybeElement,
-  useCssVar,
-  useElementSize,
-  useResizeObserver,
-  useWindowSize,
-  whenever,
-} from '@vueuse/core'
+import { useScroll, whenever } from '@vueuse/core'
 import { cloneDeep, isEqual } from 'lodash-es'
 import {
   computed,
@@ -22,7 +15,8 @@ import {
   watch,
   useTemplateRef,
   ref,
-  type ShallowRef,
+  effectScope,
+  onUnmounted,
 } from 'vue'
 
 import {
@@ -34,7 +28,6 @@ import type { FormSubmitData, FormValues } from '#shared/components/Form/types.t
 import { useForm } from '#shared/components/Form/useForm.ts'
 import { setErrors } from '#shared/components/Form/utils.ts'
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
-import { useOnEmitter } from '#shared/composables/useOnEmitter.ts'
 import {
   useTicketMacros,
   macroScreenBehaviourMapping,
@@ -59,9 +52,10 @@ import { EnumFormUpdaterId, EnumTaskbarApp, EnumUserErrorException } from '#shar
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
 import { GraphQLErrorTypes, type GraphQLHandlerError } from '#shared/types/error.ts'
-import { waitForAnimationFrame } from '#shared/utils/helpers.ts'
 
 import { useFlyout } from '#desktop/components/CommonFlyout/useFlyout.ts'
+import CommonIndicator from '#desktop/components/CommonIndicator/CommonIndicator.vue'
+import { useIndicator } from '#desktop/components/CommonIndicator/useIndicator.ts'
 import CommonLoader from '#desktop/components/CommonLoader/CommonLoader.vue'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import { usePage } from '#desktop/composables/usePage.ts'
@@ -71,7 +65,6 @@ import { useTaskbarTabStateUpdates } from '#desktop/entities/user/current/compos
 import type { TaskbarTabContext } from '#desktop/entities/user/current/types.ts'
 import TicketDetailBottomBar from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue'
 import { useTicketScreenBehavior } from '#desktop/pages/ticket/components/TicketDetailView/TicketScreenBehavior/useTicketScreenBehavior.ts'
-import { useArticleContainerScroll } from '#desktop/pages/ticket/components/TicketDetailView/useArticleContainerScroll.ts'
 
 import { ARTICLES_INFORMATION_KEY } from '../../composables/useArticleContext.ts'
 import { useTicketArticleReply } from '../../composables/useTicketArticleReply.ts'
@@ -86,6 +79,7 @@ import TicketSidebar from '../TicketSidebar.vue'
 import ArticleList from './ArticleList.vue'
 import ArticleReply from './ArticleReply.vue'
 import TicketDetailTopBar from './TicketDetailTopBar/TicketDetailTopBar.vue'
+import { useUnreadArticle } from './useUnreadArticle.ts'
 
 interface Props {
   internalId: string
@@ -95,10 +89,17 @@ const props = defineProps<Props>()
 
 const internalId = toRef(props, 'internalId')
 const isReplyPinned = ref(false)
+const contentContainerElement = useTemplateRef('content-container')
 
 const { ticket, ticketId, ...ticketInformation } = initializeTicketInformation(internalId)
 
-const onAddArticleCallback = ({ articlesQuery }: AddArticleCallbackArgs) => {
+const { isIntersecting: isReachingBottom } = useIndicator()
+const { articleCount, addUnreadArticle } = useUnreadArticle({ cleanupDependency: isReachingBottom })
+
+const onAddArticleCallback = ({ articlesQuery, updates }: AddArticleCallbackArgs) => {
+  // When we are at the end user is aware of the new article
+  if (!isReachingBottom.value) addUnreadArticle(updates?.addArticle?.id as string)
+
   return (articlesQuery as QueryHandler).refetch()
 }
 
@@ -145,19 +146,54 @@ usePage({
   metaTitle: ticketNumberWithTitle,
 })
 
-const contentContainerElement = useTemplateRef('content-container')
+const { scrollIntoView: scrollToArticle } = useScrollPosition(contentContainerElement)
 
-useScrollPosition(contentContainerElement)
+const handleScrollToArticle = async (behavior: 'smooth' | 'instant' = 'instant') =>
+  scrollToArticle('end', { behavior })
 
-const scrollToArticlesEnd = () => {
-  nextTick(() => {
-    const scrollHeight = contentContainerElement.value?.scrollHeight
-    if (scrollHeight)
-      contentContainerElement.value?.scrollTo({
-        top: scrollHeight,
-      })
-  })
+const isReplyActive = computed(() => !isLoadingArticles.value && isInitialSettled.value)
+
+const ticketDetailTopBarInstance = useTemplateRef('detail-top-bar')
+
+let scrollTimeout: NodeJS.Timeout | undefined
+const scrollScope = effectScope()
+
+const handleInitialScrollToEnd = () => {
+  const stopWatch = watch(
+    () => isReplyActive.value,
+    (visible) => {
+      if (!visible) return
+      //  It is unreliable scrolling to the end
+      // Async effects which need to run before
+      // :TODO find a better solution then setTimeout
+      scrollTimeout = setTimeout(() => {
+        handleScrollToArticle('instant')
+
+        scrollScope.run(() => {
+          const { directions } = useScroll(contentContainerElement)
+
+          // Wait for the user to initially scroll up
+          // Because when this code has run, we are at the bottom
+          whenever(
+            () => directions.top,
+            () => {
+              ticketDetailTopBarInstance.value?.hideDetails()
+              scrollScope.stop()
+            },
+          )
+        })
+
+        stopWatch()
+      }, 50)
+    },
+    { flush: 'post', immediate: true },
+  )
 }
+
+onUnmounted(() => {
+  if (scrollTimeout) clearTimeout(scrollTimeout)
+  scrollScope.stop()
+})
 
 const groupId = computed(() =>
   isInitialSettled.value && values.value.group_id
@@ -368,7 +404,7 @@ const checkSubmitEditTicket = () => {
     if (activeSidebar.value !== 'information') switchSidebar('information')
 
     if (newTicketArticlePresent.value && !isArticleFormGroupValid.value && !isReplyPinned.value)
-      scrollToArticlesEnd()
+      scrollToArticle('end')
   }
 
   formSubmit()
@@ -490,7 +526,7 @@ const submitEditTicket = async (formData: FormSubmitData<TicketUpdateFormData>) 
         timeAccountingData.value = undefined
 
         // Await subscription to update article list before we scroll to the bottom.
-        watch(articleResult, scrollToArticlesEnd, {
+        watch(articleResult, () => scrollToArticle('end'), {
           once: true,
         })
 
@@ -582,66 +618,7 @@ const onEditFormSettled = () => {
   )
 }
 
-const articleListInstance = useTemplateRef('article-list')
-
-const topBarInstance = useTemplateRef('top-bar')
-
-const { handleScroll, isHoveringOnTopBar, isHidingTicketDetails, isReachingBottom, isReachingTop } =
-  useArticleContainerScroll(ticket, contentContainerElement, articleListInstance, topBarInstance)
-
-const { height } = useWindowSize()
-
-const recalculateIsReachingBottom = async () => {
-  if (!contentContainerElement.value) return // Guard clause happens only in vitest
-
-  await nextTick()
-  await waitForAnimationFrame()
-
-  setTimeout(() => {
-    // On window resize, manually check if the article list is at the bottom.
-    const { clientHeight, scrollHeight, scrollTop } = contentContainerElement.value!
-
-    isReachingBottom.value = scrollTop + clientHeight < scrollHeight
-  }, 200) // Delay waiting for animation frame ~200 transition times
-}
-
-whenever(height, () => {
-  if (!contentContainerElement) return
-  recalculateIsReachingBottom()
-})
-
-useOnEmitter('recompute-has-reached-article-bottom', recalculateIsReachingBottom)
-
 const articleListTopPadding = ref('4rem')
-
-useResizeObserver(
-  () => topBarInstance.value?.$el,
-  (observerEntry) => {
-    if (!isReachingTop.value) return
-
-    const gap = 20
-    const topBarNode = observerEntry[observerEntry.length - 1]?.target
-
-    if (!topBarNode) return
-
-    const height = topBarNode.clientHeight
-    articleListTopPadding.value = `${(height + gap) / 16}rem`
-  },
-)
-
-const topHeaderHeightCustomProperty = useCssVar('--top-header-height')
-const { height: topHeaderHeight } = useElementSize(
-  topBarInstance as ShallowRef<MaybeElement>, // wrongly typed in vue-use
-)
-
-whenever(
-  () => [topHeaderHeight.value, isReplyPinned.value],
-  ([value, isPinned]) => {
-    // We set custom property to set it for action bar top positioning
-    topHeaderHeightCustomProperty.value = isPinned ? '0' : `${(value as number) / 16}rem`
-  },
-  { immediate: true },
-)
 </script>
 
 <template>
@@ -652,42 +629,32 @@ whenever(
     :show-sidebar="hasSidebar"
     content-alignment="center"
     no-scrollable
-    :style="{
-      '--top-header-height': topHeaderHeightCustomProperty,
-    }"
   >
     <CommonLoader class="mt-8" :loading="!ticket">
       <div
         ref="content-container"
-        class="relative grid h-full w-full overflow-y-auto"
+        data-test-id="ticket-detail-content-container"
+        class="grid w-full overflow-y-auto overscroll-contain"
         :class="{
           'grid-rows-[max-content_max-content_max-content]':
             !newTicketArticlePresent || !isReplyPinned,
           'grid-rows-[max-content_1fr_max-content]': newTicketArticlePresent && isReplyPinned,
         }"
-        @scroll.passive="handleScroll"
       >
-        <div class="sticky top-0 z-30">
-          <Transition name="slide-down">
-            <TicketDetailTopBar
-              ref="top-bar"
-              :key="`${isHidingTicketDetails}-top-bar`"
-              v-model:hover="isHoveringOnTopBar"
-              class="absolute! top-0 w-full"
-              data-test-id="visible-ticket-detail-top-bar"
-              :hide-details="isHidingTicketDetails"
-            />
-          </Transition>
-        </div>
+        <TicketDetailTopBar
+          ref="detail-top-bar"
+          :content-container-element="contentContainerElement"
+        />
 
         <ArticleList
-          ref="article-list"
           :style="{
             'padding-top': articleListTopPadding,
           }"
-          :top-bar-height="topHeaderHeight"
-          :aria-busy="isLoadingArticles"
+          :is-loading-articles="isLoadingArticles"
+          @scroll-to-end="handleInitialScrollToEnd"
         />
+
+        <CommonIndicator v-model="isReachingBottom" class="h-0.5" />
 
         <ArticleReply
           v-if="ticket?.id && isTicketEditable"
@@ -700,8 +667,10 @@ whenever(
           :is-ticket-customer="isTicketCustomer"
           :has-internal-article="hasInternalArticle"
           :parent-reached-bottom-scroll="isReachingBottom"
+          :new-article-count="articleCount"
           @show-article-form="handleShowArticleForm"
           @discard-form="discardReplyForm"
+          @scroll-into-view="handleScrollToArticle('smooth')"
         />
 
         <div id="wrapper-form-ticket-edit" class="hidden" aria-hidden="true">

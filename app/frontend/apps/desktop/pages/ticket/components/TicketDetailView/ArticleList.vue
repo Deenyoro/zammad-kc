@@ -1,11 +1,12 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
+import { whenever } from '@vueuse/shared'
 import { unionBy } from 'lodash-es'
-import { computed, ref } from 'vue'
+import { computed, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 
-import { edgesToArray, waitForElement } from '#shared/utils/helpers.ts'
+import { edgesToArray, waitForAnimationFrame, waitForElement } from '#shared/utils/helpers.ts'
 
 import ArticleBubble from '#desktop/pages/ticket/components/TicketDetailView/ArticleBubble/ArticleBubble.vue'
 import ArticleMore from '#desktop/pages/ticket/components/TicketDetailView/ArticleMore.vue'
@@ -15,12 +16,14 @@ import { useArticleContext } from '#desktop/pages/ticket/composables/useArticleC
 import { useTicketArticleRows } from '#desktop/pages/ticket/composables/useTicketArticlesRows.ts'
 
 interface Props {
-  topBarHeight?: number
+  isLoadingArticles: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  topBarHeight: 0,
-})
+defineProps<Props>()
+
+const emit = defineEmits<{
+  'scroll-to-end': []
+}>()
 
 const route = useRoute()
 const { context } = useArticleContext()
@@ -78,6 +81,7 @@ const getPreviousArticleElement = async (key: string): Promise<Element | null> =
 
 const scrollToArticle = async () => {
   let targetElement
+
   if (route.hash) {
     const articleInternalId = route.hash?.replace('#article-', '')
 
@@ -88,70 +92,72 @@ const scrollToArticle = async () => {
     const targetRow = rows.value[rows.value.length - 1]
 
     targetElement = await waitForElement(`#article-${targetRow?.key}`)
+
+    return emit('scroll-to-end')
   }
 
-  if (!targetElement) return false
+  const listScrollContainer = targetElement.closest('[class*="overflow-y-auto"]') as HTMLElement
 
-  // Account for top bar height when scrolling important for an initial load
-  if (props.topBarHeight > 0) {
-    const listScrollContainer = targetElement.closest('[class*="overflow-y-auto"]') as HTMLElement
+  if (listScrollContainer) {
+    const containerRect = listScrollContainer.getBoundingClientRect()
+    const elementRect = targetElement.getBoundingClientRect()
+    const relativeTop = elementRect.top - containerRect.top
+    const scrollTop = listScrollContainer.scrollTop + relativeTop
 
-    if (listScrollContainer) {
-      const containerRect = listScrollContainer.getBoundingClientRect()
-      const elementRect = targetElement.getBoundingClientRect()
-      const relativeTop = elementRect.top - containerRect.top
-      const scrollTop = listScrollContainer.scrollTop + relativeTop - props.topBarHeight
-
-      return listScrollContainer.scrollTo({
-        top: Math.max(0, scrollTop),
-        behavior: 'instant',
-      })
-    }
+    return listScrollContainer.scrollTo({
+      top: Math.max(0, scrollTop),
+      behavior: 'instant',
+    })
   }
+
   targetElement?.scrollIntoView({ behavior: 'instant', block: 'start' })
 }
 
-const didScrollInitially = ref(false)
-
-const setDidInitialScroll = (value: boolean) => {
-  didScrollInitially.value = value
-}
-
-defineExpose({
-  scrollToArticle,
-  rows,
-  didScrollInitially,
-  setDidInitialScroll,
-})
+// Afterwards the useScrollPosition hook takes care of the position
+whenever(
+  () => rows.value.length > 0,
+  () => {
+    nextTick(() => {
+      waitForAnimationFrame().then(() => scrollToArticle())
+    })
+  },
+  { once: true, immediate: true },
+)
 </script>
 
 <template>
   <section
-    v-if="context.articles.value?.articles.edges && rows"
     role="feed"
-    class="mx-auto w-full max-w-6xl space-y-10 px-12 py-4"
+    :aria-busy="isLoadingArticles"
+    class="mx-auto w-full max-w-6xl space-y-10 px-12 pt-4 pb-8"
   >
-    <article
-      v-for="(row, rowIndex) in rows"
-      :id="`article-${row.key}`"
-      :key="row.key"
-      :aria-setsize="totalCount"
-      :aria-posinset="rowIndex + 1"
-    >
-      <ArticleBubble v-if="row.type === 'article-bubble'" :article="row.article" />
-      <ArticleMore v-else-if="row.type === 'more'" :disabled="isLoading" @click="loadPrevious()" />
-      <DeliveryMessage
-        v-else-if="row.type === 'delivery' && row.content"
-        role="article"
-        :content="row.content"
-      />
-      <SystemMessage
-        v-else-if="row.type === 'system' && row.subject"
-        role="article"
-        :subject="row.subject"
-        :to="row.to"
-        :reaction="row.reaction"
-      />
-    </article>
+    <template v-if="context.articles.value?.articles.edges && rows">
+      <article
+        v-for="(row, rowIndex) in rows"
+        :id="`article-${row.key}`"
+        :key="row.key"
+        :aria-setsize="totalCount"
+        :aria-posinset="rowIndex + 1"
+      >
+        <ArticleBubble v-if="row.type === 'article-bubble'" :article="row.article" />
+        <ArticleMore
+          v-else-if="row.type === 'more'"
+          :disabled="isLoading"
+          @click="loadPrevious()"
+        />
+        <DeliveryMessage
+          v-else-if="row.type === 'delivery' && row.content"
+          role="article"
+          :content="row.content"
+        />
+        <SystemMessage
+          v-else-if="row.type === 'system' && row.subject"
+          role="article"
+          :subject="row.subject"
+          :to="row.to"
+          :reaction="row.reaction"
+        />
+      </article>
+    </template>
   </section>
 </template>

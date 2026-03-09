@@ -8,7 +8,6 @@ import { useHtmlInlineImages } from '#shared/composables/useHtmlInlineImages.ts'
 import { useHtmlLinks } from '#shared/composables/useHtmlLinks.ts'
 import { type ImageViewerFile } from '#shared/composables/useImageViewer.ts'
 import type { TicketArticle } from '#shared/entities/ticket/types.ts'
-import emitter from '#shared/utils/emitter.ts'
 import { textToHtml } from '#shared/utils/helpers.ts'
 
 interface Props {
@@ -52,7 +51,6 @@ const { populateInlineImages } = useHtmlInlineImages(toRef(props, 'inlineImages'
 
 const toggleShowMoreAndEmit = () => {
   toggleShowMore()
-  emitter.emit('recompute-has-reached-article-bottom')
 }
 
 watch(
