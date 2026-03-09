@@ -14,19 +14,19 @@ RSpec.describe Channel::Filter::Match::EmailRegex do
       context 'with empty string' do
         let(:sender) { '' }
 
-        it { is_expected.to be(true) }
+        it { is_expected.to be_a(MatchData) }
       end
 
       context 'and matching regex' do
         let(:sender) { 'foobar@.*' }
 
-        it { is_expected.to be(true) }
+        it { is_expected.to be_a(MatchData) }
       end
 
       context 'and non-matching regex' do
         let(:sender) { 'nagios@.*' }
 
-        it { is_expected.to be(false) }
+        it { is_expected.to be_nil }
       end
 
       context 'and invalid regex (misused ? repeat operator)' do
@@ -54,19 +54,19 @@ RSpec.describe Channel::Filter::Match::EmailRegex do
       context 'with empty string' do
         let(:sender) { '' }
 
-        it { is_expected.to be(true) }
+        it { is_expected.to be_a(MatchData) }
       end
 
       context 'and matching regex' do
         let(:sender) { 'foobar@.*' }
 
-        it { is_expected.to be(true) }
+        it { is_expected.to be_a(MatchData) }
       end
 
       context 'and non-matching regex' do
         let(:sender) { 'nagios@.*' }
 
-        it { is_expected.to be(false) }
+        it { is_expected.to be_nil }
       end
 
       context 'and invalid regex (misused ? repeat operator)' do
