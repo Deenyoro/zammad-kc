@@ -17,7 +17,7 @@ import { useUserCurrentTicketBulkUpdateStatusUpdatesSubscription } from '#deskto
 export const useTicketBulkUpdateStore = defineStore('ticketBulkUpdate', () => {
   const persistedState = ref<TicketBulkUpdateStatus | null>(null)
 
-  const { userId } = useSessionStore()
+  const { userId, hasPermission } = useSessionStore()
 
   const runningNotificationDismissed = ref(false)
 
@@ -130,9 +130,14 @@ export const useTicketBulkUpdateStore = defineStore('ticketBulkUpdate', () => {
     handleProgressUpdate()
   }
 
+  const hasAgentPermission = computed(() => hasPermission('ticket.agent'))
+
   // Subscribe to live updates pushed by the backend as the bulk operation progresses.
+  // Only active for agents, as bulk update is an agent-only feature.
   const statusSubscription = new SubscriptionHandler(
-    useUserCurrentTicketBulkUpdateStatusUpdatesSubscription(),
+    useUserCurrentTicketBulkUpdateStatusUpdatesSubscription(() => ({
+      enabled: hasAgentPermission.value,
+    })),
   )
 
   statusSubscription.onResult((result) => {
