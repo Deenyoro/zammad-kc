@@ -8,10 +8,11 @@ RSpec.describe ObjectManager::Object do
     let(:user)            { create(:user, roles: [role_attribute_permissions]) }
     let(:skip_permission) { false }
     let(:act_as_customer) { false }
+    let(:record)          { nil }
     let(:attributes) do
       described_class
         .new('Ticket')
-        .attributes(user, skip_permission:, act_as_customer:)
+        .attributes(user, record, skip_permission:, act_as_customer:)
     end
     let(:attribute) { attributes.detect { |attribute| attribute[:name] == attribute_name } }
 
@@ -25,7 +26,9 @@ RSpec.describe ObjectManager::Object do
     let(:attribute_name) { 'example_attribute' }
 
     before do
-      create(:object_manager_attribute_text, name: attribute_name, screens: screens)
+      attr = build(:object_manager_attribute_text, name: attribute_name, screens: screens)
+      attr.data_option.merge!(data_option) if defined?(data_option)
+      attr.save!
       ObjectManager::Attribute.migration_execute
     end
 
@@ -203,6 +206,123 @@ RSpec.describe ObjectManager::Object do
 
         it 'prefers customer over agent permissions' do
           expect(attribute[:screen]['create']['filter']).to eq([2, 4])
+        end
+      end
+    end
+
+    context 'with a ticket record' do
+      let(:record) { create(:ticket) }
+
+      let(:data_option) do
+        {
+          permission: ['ticket.agent', 'ticket.customer'],
+        }
+      end
+
+      let(:screens) do
+        {
+          edit: {
+            'ticket.agent':    {
+              shown: true
+            },
+            'ticket.customer': {
+              shown: true
+            }
+          }
+        }
+      end
+
+      describe 'with an agent' do
+        context 'when shown' do
+          let(:user) { create(:agent, groups: [record.group]) }
+
+          it 'applies ticket.agent screen options' do
+            expect(attribute[:screen]['edit']['shown']).to be true
+          end
+        end
+
+        context 'when not shown' do
+          let(:user)  { create(:agent) }
+
+          it 'does not include the attribute' do
+            expect(attribute).to be_nil
+          end
+        end
+      end
+
+      describe 'with an agent-customer' do
+        let(:group) { create(:group) }
+        let(:user)  { create(:agent_and_customer, groups: [group]) }
+
+        context 'when acts as an agent on the ticket' do
+          let(:record) { create(:ticket, group:) }
+
+          it 'applies ticket.agent screen options' do
+            expect(attribute[:screen]['edit']['shown']).to be true
+          end
+        end
+
+        context 'when acts as a customer on the ticket' do
+          let(:record) { create(:ticket, customer: user) }
+
+          it 'applies ticket.customer screen options' do
+            expect(attribute[:screen]['edit']['shown']).to be true
+          end
+        end
+
+        context 'when does not have access to the ticket' do
+          let(:record) { create(:ticket) }
+
+          it 'does not include the attribute' do
+            expect(attribute).to be_nil
+          end
+        end
+      end
+
+      # https://github.com/zammad/zammad/issues/5993
+      describe 'with a shared organization' do
+        let(:organization)   { create(:organization, shared: true) }
+        let(:user)           { create(:customer, organization: organization) }
+        let(:other_customer) { create(:customer, organization: organization) }
+        let(:record)         { create(:ticket, customer: other_customer, organization: organization) }
+
+        context 'when customer views own ticket' do
+          let(:record) { create(:ticket, customer: user) }
+
+          it 'includes customer-permissioned attributes' do
+            expect(attribute).to be_present
+          end
+
+          it 'applies ticket.customer screen options' do
+            expect(attribute[:screen]['edit']['shown']).to be true
+          end
+        end
+
+        context 'when customer views shared organization ticket' do
+          it 'includes customer-permissioned attributes' do
+            expect(attribute).to be_present
+          end
+
+          it 'applies ticket.customer screen options' do
+            expect(attribute[:screen]['edit']['shown']).to be true
+          end
+        end
+
+        context 'when organization is not shared' do
+          let(:organization) { create(:organization, shared: false) }
+
+          it 'does not include customer-permissioned attributes' do
+            expect(attribute).to be_nil
+          end
+        end
+
+        context 'when customer is not in the same organization' do
+          let(:other_organization) { create(:organization, shared: true) }
+          let(:other_customer) { create(:customer, organization: other_organization) }
+
+          it 'does not include customer-permissioned attributes' do
+            expect(attribute).to be_nil
+          end
         end
       end
     end
