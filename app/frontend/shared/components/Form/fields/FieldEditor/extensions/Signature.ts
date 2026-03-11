@@ -5,8 +5,6 @@ import { DOMParser, type Node as ProseNode } from '@tiptap/pm/model'
 
 import { htmlCleanup } from '#shared/utils/htmlCleanup.ts'
 
-import { getPreviousNodeFromPosition } from '../utils.ts'
-
 import type { Range } from '@tiptap/core'
 
 export default Node.create({
@@ -29,7 +27,6 @@ export default Node.create({
 
           if (!slice) return false
 
-          const leadingNode = getPreviousNodeFromPosition(editor, signature.from)
           const trailingNode = editor.state.doc.resolve(signature.from).nodeAfter
 
           const isEmptyParagraphOrHardBreak = (node?: ProseNode | null) =>
@@ -49,18 +46,21 @@ export default Node.create({
               !node.marks.length
             )
 
-          // Especially important when we use reply with selected content
-          // Also with full quotes we have the situation
-          const leadingHasSpacing =
-            isEmptyParagraphOrHardBreak(leadingNode) || hasSingleHardBreakParagraph(leadingNode)
-
           const trailingHasSpacing =
             isEmptyParagraphOrHardBreak(trailingNode) || hasSingleHardBreakParagraph(trailingNode)
 
-          // trailing br tags are getting removed in htmlCleanup -> removeTrailingLineBreaks
-          // 'before position' handles the scenario where you want to insert the signature at the top of the block instead of at the bottom
-          // e.g reply with full quotes,
-          const leadingBreak = signature.position === 'before' || !leadingHasSpacing
+          // Insert a blank paragraph before the signature for visual separation, but only
+          // when there is no empty paragraph already sitting at the insertion point.
+          // Skipping it when one exists prevents blank lines from accumulating on each
+          // remove → re-add cycle (e.g. switching groups back and forth).
+          const $from = editor.state.doc.resolve(signature.from)
+          const { nodeBefore } = $from
+          const leadingBreak = !(
+            nodeBefore &&
+            nodeBefore.type.name === 'paragraph' &&
+            !nodeBefore.content.size &&
+            !nodeBefore.marks.length
+          )
 
           // for full quote we need to add a trailing break
           const trailingBreak = signature.position === 'before' && !trailingHasSpacing
@@ -83,9 +83,14 @@ export default Node.create({
         ({ editor, chain }) => {
           const ranges: Range[] = []
           let prev: [ProseNode | null, number] = [null, 0]
-          editor.state.doc.descendants((node, pos) => {
+          editor.state.doc.descendants((node, pos, parent) => {
             if (node.type.name !== 'signature') {
               prev = [node, pos]
+              return
+            }
+
+            // Only remove top-level signatures (not inside blockquotes/quoted content)
+            if (parent?.type.name !== 'doc') {
               return
             }
 

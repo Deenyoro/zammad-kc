@@ -3,7 +3,7 @@
 require 'rails_helper'
 require_relative 'shared_examples/ping'
 
-RSpec.describe AI::Provider::ZammadAI, required_envs: %w[ZAMMAD_AI_TOKEN], use_vcr: true do
+RSpec.describe AI::Provider::ZammadAI, integration: true, required_envs: %w[ZAMMAD_AI_TOKEN], use_vcr: true do
   subject(:ai_provider) { described_class.new(options: { json_response: true }) }
 
   let(:prompt_system) { '' }
@@ -52,8 +52,10 @@ RSpec.describe AI::Provider::ZammadAI, required_envs: %w[ZAMMAD_AI_TOKEN], use_v
       metadata = ai_provider.metadata
 
       expect(metadata).to include(
-        model:          be_present,
-        total_duration: be_a(Numeric)
+        model:             be_present,
+        prompt_tokens:     be_a(Numeric),
+        completion_tokens: be_a(Numeric),
+        total_tokens:      be_a(Numeric)
       )
     end
   end

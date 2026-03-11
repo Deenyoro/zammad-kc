@@ -5,5 +5,5 @@ App.Config.set('mistral', {
   prio:   6000
   fields: ['token', 'model', 'ocr_active', 'ocr_model']
   required: ['token']
-  default_model: 'mistral-medium-latest'
+  default_model: 'mistral-large-2512'
 }, 'AIProviders')
