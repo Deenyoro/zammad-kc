@@ -70,6 +70,17 @@ const truncate = (text: string, maxLength = 200): string => {
   return `${text.slice(0, maxLength)}...`
 }
 
+// Convert a stored recipient value (string or comma-separated string) back to
+// an array for FormKit multi-select fields. Without this, FormKit iterates
+// over the string's characters, creating one tag per letter.
+const recipientToArray = (value: unknown): string[] => {
+  if (Array.isArray(value)) return value.filter((v): v is string => typeof v === 'string')
+  if (typeof value === 'string') {
+    return value.split(',').map((s) => s.trim()).filter(Boolean)
+  }
+  return []
+}
+
 const formatRecipient = (value: unknown): string | undefined => {
   if (!value) return undefined
   if (typeof value === 'string') return value
@@ -219,8 +230,8 @@ const handleEdit = async (item: (typeof scheduledArticles)['value'][number]) => 
         internal: articleData.internal ?? false,
         contentType: articleData.content_type || 'text/html',
       }
-      if (articleData.to) prefill.to = articleData.to
-      if (articleData.cc) prefill.cc = articleData.cc
+      if (articleData.to) prefill.to = recipientToArray(articleData.to)
+      if (articleData.cc) prefill.cc = recipientToArray(articleData.cc)
       if (articleData.subject) prefill.subject = articleData.subject
 
       articleNode.input(prefill)
