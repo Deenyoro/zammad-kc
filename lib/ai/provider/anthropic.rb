@@ -7,7 +7,7 @@ class AI::Provider::Anthropic < AI::Provider
 
   # default model also in app/assets/javascripts/app/lib/app_post/ai_provider/anthropic.coffee
   DEFAULT_OPTIONS = {
-    model:       'claude-3-7-sonnet-latest',
+    model:       'claude-sonnet-4-6',
     max_tokens:  1024,
     temperature: 0.0,
   }.freeze

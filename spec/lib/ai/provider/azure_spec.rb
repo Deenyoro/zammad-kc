@@ -4,7 +4,7 @@ require 'rails_helper'
 require_relative 'shared_examples/ping'
 
 # TODO: Add AZURE_URL_EMBEDDINGS when needed.
-RSpec.describe AI::Provider::Azure, required_envs: %w[AZURE_TOKEN AZURE_URL_COMPLETIONS AZURE_HOST], use_vcr: true do
+RSpec.describe AI::Provider::Azure, integration: true, required_envs: %w[AZURE_TOKEN AZURE_URL_COMPLETIONS AZURE_HOST], use_vcr: true do
   subject(:ai_provider) { described_class.new(options: { json_response: true }) }
 
   let(:prompt_system) { '' }

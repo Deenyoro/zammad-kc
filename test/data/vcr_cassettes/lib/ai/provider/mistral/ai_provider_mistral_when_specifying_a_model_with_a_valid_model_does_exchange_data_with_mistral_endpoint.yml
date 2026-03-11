@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.mistral.ai/v1/chat/completions
     body:
       encoding: UTF-8
-      string: '{"model":"mistral-medium-latest","messages":[{"role":"system","content":""},{"role":"user","content":"This
+      string: '{"model":"mistral-medium-latest","messages":[{"role":"user","content":"This
         is a connection test. Return in unprettified JSON ''{ \"connected\": \"true\"
         }'' if you got the message. Respond in plain JSON format only and do not wrap
         it in code block markers."}],"response_format":{"type":"json_object"}}'
@@ -28,7 +28,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Mon, 27 Oct 2025 10:03:25 GMT
+      - Wed, 11 Mar 2026 11:23:43 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -36,50 +36,48 @@ http_interactions:
       Connection:
       - keep-alive
       Mistral-Correlation-Id:
-      - '019a251f-6404-7d7d-bede-959fe62ec593'
+      - '019cdca3-6a80-7b55-8be6-e9f8b7c08ca6'
       X-Kong-Request-Id:
-      - '019a251f-6404-7d7d-bede-959fe62ec593'
-      X-Envoy-Upstream-Service-Time:
-      - '214'
+      - '019cdca3-6a80-7b55-8be6-e9f8b7c08ca6'
       X-Ratelimit-Limit-Tokens-Minute:
-      - '500000'
+      - '375000'
       X-Ratelimit-Remaining-Tokens-Minute:
-      - '499890'
-      X-Ratelimit-Limit-Tokens-Month:
-      - '1000000000'
-      X-Ratelimit-Remaining-Tokens-Month:
-      - '999999615'
+      - '374947'
       X-Ratelimit-Tokens-Query-Cost:
-      - '55'
+      - '53'
       X-Ratelimit-Limit-Req-Minute:
-      - '60'
+      - '25'
       X-Ratelimit-Remaining-Req-Minute:
-      - '58'
+      - '24'
+      X-Envoy-Upstream-Service-Time:
+      - '290'
       Access-Control-Allow-Origin:
       - "*"
       X-Kong-Upstream-Latency:
-      - '215'
+      - '291'
       X-Kong-Proxy-Latency:
-      - '5'
+      - '12'
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cf_bm=H3uT2gHI8b2xOPw8fdJSLvvxfaB2BH5WkBKYItWRbmU-1761559405-1.0.1.1-8v6qNbyKDgPjuocahw2qHjV16aKRzAfGVCQVGqO9KFtkSf0yfGYqC26vokJ8ylno1TT1If8RDwcVShvcyuSYjOCBpjN8GWcVo.BEd1_kerE;
-        path=/; expires=Mon, 27-Oct-25 10:33:25 GMT; domain=.mistral.ai; HttpOnly;
+      - __cf_bm=mXAZJ2604ECQzAj42cqVVvgwuuAJNSETXyN7pSTmTJo-1773228223-1.0.1.1-xQ1CBN02y_eIJetWMErlMHQscpW2CBCH2ZiKF6Pcufz4zoSqJ18ThJGjz.XRE9kgDkO7jRL7RUyvbPu6lq4LiuM1Z4kTxAvorstkbpdO2Lo;
+        path=/; expires=Wed, 11-Mar-26 11:53:43 GMT; domain=.mistral.ai; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=UP44o9D9csACN9nseYF23xdUsLohXryGFvGVecQvUNc-1761559405804-0.0.1.1-604800000;
+      - _cfuvid=sjAZOaVhWioKA82S98LHenZDZ3JxKVywxrKnUfwaWBM-1773228223423-0.0.1.1-604800000;
         path=/; domain=.mistral.ai; HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
-      - max-age=15552000; includeSubDomains
+      - max-age=15552000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
       Server:
       - cloudflare
       Cf-Ray:
-      - 99515d0cacafdba5-FRA
+      - 9daa304a39f5dbf8-FRA
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
-      string: '{"id":"6a132a8f7dea45d685cffee8f1bad6b3","created":1761559405,"model":"mistral-medium-latest","usage":{"prompt_tokens":48,"total_tokens":55,"completion_tokens":7},"object":"chat.completion","choices":[{"index":0,"finish_reason":"stop","message":{"role":"assistant","tool_calls":null,"content":"{\"connected\":
+      string: '{"id":"acf90003dae34c91b24e26949fd51af7","created":1773228223,"model":"mistral-medium-latest","usage":{"prompt_tokens":46,"total_tokens":53,"completion_tokens":7,"prompt_tokens_details":{"cached_tokens":0}},"object":"chat.completion","choices":[{"index":0,"finish_reason":"stop","message":{"role":"assistant","tool_calls":null,"content":"{\"connected\":
         \"true\"}"}}]}'
-  recorded_at: Mon, 27 Oct 2025 10:03:25 GMT
-recorded_with: VCR 6.3.1
+  recorded_at: Wed, 11 Mar 2026 11:23:43 GMT
+recorded_with: VCR 6.4.0
