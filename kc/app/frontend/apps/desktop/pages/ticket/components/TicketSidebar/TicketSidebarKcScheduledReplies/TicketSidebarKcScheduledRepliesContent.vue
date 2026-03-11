@@ -189,6 +189,56 @@ const handleCancel = async (articleId: number) => {
   if (!window.confirm(i18n.t('Cancel this scheduled reply?'))) return
   await cancelScheduledArticle(articleId)
 }
+
+const handleEdit = async (item: (typeof scheduledArticles)['value'][number]) => {
+  const articleData = item.article_data
+  if (!articleData) return
+
+  // Cancel the scheduled article
+  try {
+    await cancelScheduledArticle(item.id)
+  } catch {
+    return // notification handled by composable
+  }
+
+  // Open the compose area and pre-fill with scheduled article data
+  if (newTicketArticlePresent) {
+    newTicketArticlePresent.value = true
+  }
+
+  await nextTick()
+
+  // Pre-fill the article form with the scheduled data
+  const formRef = props.context.form
+  if (formRef) {
+    const articleNode = formRef.getNodeByName('article')
+    if (articleNode) {
+      const prefill: Record<string, unknown> = {
+        body: articleData.body || '',
+        articleType: articleData.type || 'note',
+        internal: articleData.internal ?? false,
+        contentType: articleData.content_type || 'text/html',
+      }
+      if (articleData.to) prefill.to = articleData.to
+      if (articleData.cc) prefill.cc = articleData.cc
+      if (articleData.subject) prefill.subject = articleData.subject
+
+      articleNode.input(prefill)
+    }
+  }
+
+  // Also apply ticket attribute changes if they were stored
+  if (item.ticket_attributes && formRef) {
+    await nextTick()
+    for (const [key, value] of Object.entries(item.ticket_attributes)) {
+      if (key === 'article') continue
+      const node = formRef.getNodeByName(key)
+      if (node && value !== undefined && value !== null) {
+        node.input(value)
+      }
+    }
+  }
+}
 </script>
 
 <template>
@@ -234,14 +284,22 @@ const handleCancel = async (articleId: number) => {
             >
               {{ truncate(stripHtml(item.article_data.body)) }}
             </div>
-            <button
-              v-if="isEditable"
-              type="button"
-              class="mt-1.5 text-xs text-red-500 hover:text-red-700"
-              @click="handleCancel(item.id)"
-            >
-              {{ $t('Cancel Scheduled Reply') }}
-            </button>
+            <div v-if="isEditable" class="mt-1.5 flex gap-3">
+              <button
+                type="button"
+                class="text-xs text-blue-500 hover:text-blue-700"
+                @click="handleEdit(item)"
+              >
+                {{ $t('Edit') }}
+              </button>
+              <button
+                type="button"
+                class="text-xs text-red-500 hover:text-red-700"
+                @click="handleCancel(item.id)"
+              >
+                {{ $t('Cancel') }}
+              </button>
+            </div>
           </div>
         </div>
 

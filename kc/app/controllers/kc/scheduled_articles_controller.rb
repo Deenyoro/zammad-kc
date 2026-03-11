@@ -31,13 +31,14 @@ class Kc::ScheduledArticlesController < ApplicationController
 
     result = scheduled.map do |s|
       {
-        id:            s.id,
-        ticket_id:     s.ticket_id,
-        article_data:  s.article_data,
-        scheduled_at:  s.scheduled_at,
-        status:        s.status,
-        created_by_id: s.created_by_id,
-        created_at:    s.created_at,
+        id:                s.id,
+        ticket_id:         s.ticket_id,
+        article_data:      s.article_data,
+        ticket_attributes: s.ticket_attributes,
+        scheduled_at:      s.scheduled_at,
+        status:            s.status,
+        created_by_id:     s.created_by_id,
+        created_at:        s.created_at,
       }
     end
 
