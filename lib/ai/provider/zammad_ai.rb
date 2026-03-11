@@ -80,8 +80,10 @@ class AI::Provider::ZammadAI < AI::Provider
 
   def extract_response_metadata(data)
     @response_metadata = {
-      model:          data.first['model'],
-      total_duration: data.first['total_duration'],
+      model:             data.first['model'],
+      prompt_tokens:     data.first.dig('usage', 'prompt_tokens'),
+      completion_tokens: data.first.dig('usage', 'completion_tokens'),
+      total_tokens:      data.first.dig('usage', 'total_tokens'),
     }
   end
 end

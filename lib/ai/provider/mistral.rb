@@ -9,7 +9,7 @@ class AI::Provider::Mistral < AI::Provider
   # default model also in app/assets/javascripts/app/lib/app_post/ai_provider/mistral.coffee
   DEFAULT_OPTIONS = {
     temperature:     0.1,
-    model:           'mistral-medium-latest',
+    model:           'mistral-large-2512',
     embedding_model: 'mistral-embed',
   }.freeze
 
