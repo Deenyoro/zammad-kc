@@ -21,8 +21,11 @@
             <div class="kc-scheduled-body"><%= item.body_preview %></div>
           </div>
           <div class="kc-scheduled-actions">
+            <button type="button" class="btn btn--action btn--small js-editScheduledReply" data-id="<%= item.id %>" aria-label="<%- @T('Edit Scheduled Reply') %>">
+              <%- @Icon('pen') %> <%- @T('Edit') %>
+            </button>
             <button type="button" class="btn btn--danger btn--small js-cancelScheduledReply" data-id="<%= item.id %>" aria-label="<%- @T('Cancel Scheduled Reply') %>">
-              <%- @Icon('trash') %> <%- @T('Cancel Scheduled Reply') %>
+              <%- @Icon('trash') %> <%- @T('Cancel') %>
             </button>
           </div>
         </div>
