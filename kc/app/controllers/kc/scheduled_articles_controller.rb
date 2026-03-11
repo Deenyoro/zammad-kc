@@ -60,15 +60,11 @@ class Kc::ScheduledArticlesController < ApplicationController
       return
     end
 
-    # Fail-fast: validate body is present and not oversized at creation time
+    # Fail-fast: validate body is present at creation time (not just at execution)
     article_hash = article_data_hash(article_data)
     body = article_hash[:body] || article_hash['body']
     if body.blank?
       render json: { error: __('Article body is required') }, status: :unprocessable_entity
-      return
-    end
-    if body.length > 1_500_000
-      render json: { error: __('Article body is too large (%s chars). Max 1,500,000. Remove inline images or quoted content.').gsub('%s', body.length.to_s) }, status: :unprocessable_entity
       return
     end
 
