@@ -82,19 +82,21 @@ class Kc::ExecuteScheduledArticle
     article          = Ticket::Article.new(clean_params)
     article.ticket_id = ticket.id
 
+    # Extract inline base64 images from HTML body BEFORE size check.
+    # This must run regardless of form_id — Discord bot articles have no
+    # form_id but can contain base64 images from quoted email content.
+    attachments = []
+    if article.body.present? && article.content_type&.match?(%r{text/html}i)
+      article.body, inline_attachments = HtmlSanitizer.replace_inline_images(article.body, ticket.id)
+      inline_attachments.each do |att|
+        attachments << { data: att[:data], filename: att[:filename], preferences: att[:preferences] }
+      end
+    end
+
     # Transfer attachments from UploadCache if form_id was stored
     safe_form_id = validated_form_id(form_id)
     if safe_form_id
-      cache       = UploadCache.new(safe_form_id)
-      attachments = []
-
-      # Handle inline images in HTML body
-      if article.body.present? && article.content_type&.match?(%r{text/html}i)
-        article.body, inline_attachments = HtmlSanitizer.replace_inline_images(article.body, ticket.id)
-        inline_attachments.each do |att|
-          attachments << { data: att[:data], filename: att[:filename], preferences: att[:preferences] }
-        end
-      end
+      cache = UploadCache.new(safe_form_id)
 
       # Add cached file attachments (exclude inline images already handled)
       cache.attachments.each do |att|
@@ -106,9 +108,9 @@ class Kc::ExecuteScheduledArticle
           preferences: att.preferences,
         }
       end
-
-      article.attachments = attachments if attachments.any?
     end
+
+    article.attachments = attachments if attachments.any?
 
     # Wrap all state changes in a transaction for atomicity
     ActiveRecord::Base.transaction do
