@@ -1,6 +1,11 @@
 # KC: Concern prepended into Ticket::Article to auto-transition tickets
-# from "waiting for reply" to the default follow-up state ("open") when
-# a non-agent creates an article.
+# from KC custom states back to the default follow-up state ("open")
+# when a non-agent creates an article.
+#
+# KC custom states that auto-reset on customer reply:
+#   - "waiting for reply" — agent is waiting for customer response
+#   - "on-site"           — ticket requires on-site work
+#   - "project"           — ticket is part of a longer project
 #
 # This covers the gap where articles are created via REST/GraphQL API
 # or KC integrations (Teams Chat, RingCentral SMS) — paths where the
@@ -20,6 +25,8 @@ module Kc
   module ResetsWaitingForReplyState
     extend ActiveSupport::Concern
 
+    KC_AUTO_RESET_STATES = ['waiting for reply', 'on-site', 'project'].freeze
+
     prepended do
       after_create :kc_reset_waiting_for_reply_state
     rescue => e
@@ -37,7 +44,7 @@ module Kc
       # Internal notes should not affect customer-facing state
       return if internal
 
-      # Agent articles should not reset — the agent set WFR intentionally
+      # Agent articles should not reset — the agent set the state intentionally
       sender = Ticket::Article::Sender.lookup(id: sender_id)
       return if sender.nil? || sender.name == 'Agent'
 
@@ -48,9 +55,9 @@ module Kc
       ticket = Ticket.find_by(id: ticket_id)
       return if ticket.nil?
 
-      # Only act when ticket is in "waiting for reply" state
-      wfr_state = Ticket::State.find_by(name: 'waiting for reply')
-      return if wfr_state.nil? || ticket.state_id != wfr_state.id
+      # Only act when ticket is in one of our KC custom states
+      current_state = Ticket::State.find_by(id: ticket.state_id)
+      return if current_state.nil? || KC_AUTO_RESET_STATES.exclude?(current_state.name)
 
       # Transition to the default follow-up state (typically "open")
       follow_up_state = Ticket::State.find_by(default_follow_up: true)
@@ -59,7 +66,7 @@ module Kc
       ticket.state_id = follow_up_state.id
       ticket.save!
 
-      Rails.logger.info "KC: Ticket##{ticket.id} transitioned from 'waiting for reply' to '#{follow_up_state.name}' (article ##{id} by #{sender.name})"
+      Rails.logger.info "KC: Ticket##{ticket.id} transitioned from '#{current_state.name}' to '#{follow_up_state.name}' (article ##{id} by #{sender.name})"
     rescue => e
       Rails.logger.error "KC: Failed to reset waiting-for-reply state for article #{id}: #{e.message}"
     end
