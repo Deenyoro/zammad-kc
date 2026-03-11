@@ -112,5 +112,21 @@ Rails.application.config.to_prepare do
     Rails.logger.error "KC: Failed to prepend Kc::FollowUpClosedParent into Channel::Filter::FollowUpMerged: #{e.message}"
   end
 
+  # ---------------------------------------------------------------------------
+  # Prevent time_unit-only ticket changes from triggering taskbar subscription
+  # resets. Without this, when Agent A logs time on a ticket, Agent B's draft
+  # gets nuked because the taskbar subscription fires a 'reset' event.
+  # The TicketUpdates GraphQL subscription still fires (so the UI updates the
+  # displayed time), but the TaskbarUpdateTriggerSubscriptionsJob and
+  # TransactionDispatcher are skipped for time_unit-only changes.
+  # ---------------------------------------------------------------------------
+  if (ticket_class = 'Ticket'.safe_constantize)
+    existing = ticket_class.transaction_ignore_changes_attributes_list || []
+    unless existing.include?(:time_unit)
+      ticket_class.transaction_ignore_changes_attributes_list = existing + [:time_unit]
+      Rails.logger.info 'KC: Added :time_unit to Ticket transaction_ignore_changes_attributes'
+    end
+  end
+
   Rails.logger.info 'KC: Overlay loading complete.'
 end
