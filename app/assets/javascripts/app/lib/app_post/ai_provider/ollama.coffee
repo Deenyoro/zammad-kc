@@ -6,5 +6,5 @@ App.Config.set('ollama', {
   url_placeholder: 'http://localhost:11434'
   fields: ['url', 'model', 'ocr_active', 'ocr_model']
   required: ['url']
-  default_model: 'llama3.2'
+  default_model: 'mistral-small3.2'
 }, 'AIProviders')

@@ -3,7 +3,7 @@
 require 'rails_helper'
 require_relative 'shared_examples/ping'
 
-RSpec.describe AI::Provider::Mistral, required_envs: %w[MISTRAL_API_KEY], use_vcr: true do
+RSpec.describe AI::Provider::Mistral, integration: true, required_envs: %w[MISTRAL_API_KEY], use_vcr: true do
   subject(:ai_provider) { described_class.new(options: { json_response: true }) }
 
   let(:prompt_system)       { '' }

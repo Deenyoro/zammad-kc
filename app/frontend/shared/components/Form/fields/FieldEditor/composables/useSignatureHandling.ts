@@ -17,8 +17,8 @@ const tryToUpsertSignature = (
   const { wasFocused, currentPosition } = options
   let existingSignature: { pos: number; node: ProseMirrorNode } | null = null
 
-  editor.value?.state.doc.descendants((node, pos) => {
-    if (node.type.name === 'signature') {
+  editor.value?.state.doc.descendants((node, pos, parent) => {
+    if (node.type.name === 'signature' && parent?.type.name === 'doc') {
       existingSignature = { pos, node }
       return false
     }
@@ -51,7 +51,7 @@ const tryToUpsertSignature = (
       },
     )
 
-    if (wasFocused) editor.value.commands.focus(currentPosition)
+    if (wasFocused) editor.value.commands.focus(signature.position ?? currentPosition)
 
     requestAnimationFrame(() => {
       testFlags.set('editor.signatureAdd')

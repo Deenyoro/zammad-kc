@@ -3,7 +3,7 @@
 require 'rails_helper'
 require_relative 'shared_examples/ping'
 
-RSpec.describe AI::Provider::Anthropic, required_envs: %w[ANTHROPIC_API_KEY], use_vcr: true do
+RSpec.describe AI::Provider::Anthropic, integration: true, required_envs: %w[ANTHROPIC_API_KEY], use_vcr: true do
   subject(:ai_provider) { described_class.new(options: { json_response: true }) }
 
   let(:prompt_system) { '' }
@@ -32,7 +32,7 @@ RSpec.describe AI::Provider::Anthropic, required_envs: %w[ANTHROPIC_API_KEY], us
 
     context 'with a valid model' do
       before do
-        Setting.set('ai_provider_config', Setting.get('ai_provider_config').merge(model: 'claude-3-7-sonnet-latest'))
+        Setting.set('ai_provider_config', Setting.get('ai_provider_config').merge(model: 'claude-haiku-4-5'))
       end
 
       it 'does exchange data with anthropic endpoint' do

@@ -5,5 +5,5 @@ App.Config.set('anthropic', {
   prio:   4000
   fields: ['token', 'model', 'ocr_active', 'ocr_model']
   required: ['token']
-  default_model: 'claude-3-7-sonnet-latest'
+  default_model: 'claude-sonnet-4-6'
 }, 'AIProviders')

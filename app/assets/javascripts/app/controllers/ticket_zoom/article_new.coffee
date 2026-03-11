@@ -123,6 +123,13 @@ class App.TicketZoomArticleNew extends App.Controller
       @updateSecurityOptions()
     )
 
+    # update signature when group changes
+    @controllerBind('ui::ticket::updateSignature', (data) =>
+      return if data.taskKey isnt @taskKey
+
+      @updateSignatureByGroup(data.newGroupId)
+    )
+
     # Listen to security setting changes.
     @controllerBind('config_update', (data) =>
       return if not /^(pgp|smime)_integration$/.test(data.name)
@@ -558,12 +565,17 @@ class App.TicketZoomArticleNew extends App.Controller
 
     @updateSecurityTypeToolbar()
 
-  setArticleTypePost: (type, signaturePosition = 'bottom') =>
+  setArticleTypePost: (type, signaturePosition = undefined) =>
     for localConfig in @actions()
       if localConfig && localConfig.setArticleTypePost
         localConfig.setArticleTypePost(@type, @ticket, @, signaturePosition)
 
     @evaluateAttachmentsList()
+
+  updateSignatureByGroup: (newGroupId) =>
+    for localConfig in @actions()
+      if localConfig && localConfig.updateSignatureByGroup
+        localConfig.updateSignatureByGroup(@type, @ticket, @, newGroupId)
 
   isScrolledToBottom: ->
     return @el.scrollParent().scrollTop() + @el.scrollParent().height() is @el.scrollParent().prop('scrollHeight')
