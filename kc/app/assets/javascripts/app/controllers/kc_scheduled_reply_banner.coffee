@@ -37,8 +37,9 @@ class KcScheduledReplyBanner extends App.Controller
       App.Event.bind('kc::scheduled_reply::changed', @onScheduledReplyChanged)
       App.Event.bind('ui::ticket::shown', @onTicketShown)
 
-      # Delegate cancel click
+      # Delegate cancel and edit clicks
       $(document).on('click.kcScheduledBanner', '.js-cancelScheduledReply', @onCancelClick)
+      $(document).on('click.kcScheduledBanner', '.js-editScheduledReply', @onEditClick)
     catch e
       console.warn '[KC] KcScheduledReplyBanner init failed', e
 
@@ -87,6 +88,12 @@ class KcScheduledReplyBanner extends App.Controller
     contentEl.find('.kc-scheduled-reply-container').remove()
 
     return if !scheduled || scheduled.length is 0
+
+    # Store full article data for edit functionality
+    @scheduledArticleData ?= {}
+    @scheduledArticleData[ticketId] = {}
+    for s in scheduled
+      @scheduledArticleData[ticketId][s.id] = s
 
     # Build items with preview data
     items = []
@@ -163,6 +170,95 @@ class KcScheduledReplyBanner extends App.Controller
       )
     catch e
       console.warn '[KC] onCancelClick failed', e
+
+  # ---------- Edit (cancel + load into composer) ----------
+
+  onEditClick: (e) =>
+    try
+      e.preventDefault()
+      e.stopPropagation()
+
+      scheduledId = $(e.currentTarget).data('id')
+      return if !scheduledId
+
+      bannerEl = $(e.currentTarget).closest('.kc-scheduled-reply')
+      containerEl = bannerEl.closest('.kc-scheduled-reply-container')
+      ticketId = containerEl.data('ticket-id')
+
+      if !ticketId
+        match = window.location.hash.match(/ticket\/zoom\/(\d+)/)
+        ticketId = parseInt(match[1]) if match
+
+      return if !ticketId
+
+      # Retrieve stored article data
+      articleData = @scheduledArticleData?[ticketId]?[scheduledId]?.article_data
+      if !articleData
+        @notify(type: 'error', msg: __('Could not load scheduled reply data'))
+        return
+
+      # Cancel the scheduled article first
+      @ajax(
+        id:      "kc_edit_cancel_#{scheduledId}"
+        type:    'DELETE'
+        url:     "#{@apiPath}/kc/tickets/#{ticketId}/scheduled_articles/#{scheduledId}"
+        timeout: 10000
+        success: =>
+          bannerEl.fadeOut(300, ->
+            bannerEl.remove()
+            if containerEl.find('.kc-scheduled-reply').length is 0
+              containerEl.remove()
+          )
+          App.Event.trigger('kc::scheduled_reply::changed', { ticket_id: ticketId })
+
+          # Load the content into the composer
+          @loadIntoComposer(ticketId, articleData)
+
+        error: (xhr) =>
+          errorMsg = xhr.responseJSON?.error || __('Failed to cancel scheduled reply')
+          @notify(type: 'error', msg: errorMsg)
+      )
+    catch e
+      console.warn '[KC] onEditClick failed', e
+
+  loadIntoComposer: (ticketId, articleData) =>
+    try
+      taskKey = "Ticket-#{ticketId}"
+      controller = App.TaskManager.worker(taskKey)
+      return if !controller
+
+      # Determine the article type object
+      typeName = articleData.type || 'note'
+      articleType = App.TicketArticleType.findByAttribute('name', typeName)
+
+      # Build the article params to pre-fill
+      articleNew = {
+        body:        articleData.body || ''
+        to:          articleData.to || ''
+        cc:          articleData.cc || ''
+        subject:     articleData.subject || ''
+        internal:    articleData.internal || false
+        in_reply_to: ''
+      }
+
+      if articleType
+        App.Event.trigger('ui::ticket::setArticleType', {
+          ticket:  App.Ticket.find(ticketId)
+          type:    articleType
+          article: articleNew
+        })
+      else
+        # Fallback: just set the body
+        App.Event.trigger('ui::ticket::setArticleType', {
+          ticket:  App.Ticket.find(ticketId)
+          type:    App.TicketArticleType.findByAttribute('name', 'note')
+          article: articleNew
+        })
+
+      # Scroll to the compose area
+      controller.scrollToCompose?()
+    catch e
+      console.warn '[KC] loadIntoComposer failed', e
 
   # ---------- Helpers ----------
 
