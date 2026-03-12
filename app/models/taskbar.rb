@@ -288,6 +288,8 @@ class Taskbar < ApplicationModel
   end
 
   def log_recent_close
+    return if !ActiveRecord::Base.connection.data_source_exists?('recent_closes')
+
     object = to_object
 
     return if !object
