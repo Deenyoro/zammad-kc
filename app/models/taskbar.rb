@@ -291,6 +291,7 @@ class Taskbar < ApplicationModel
     object = to_object
 
     return if !object
+    return if !User.exists?(user.id)
 
     RecentClose.upsert_closing_time!(user, to_object)
   end
