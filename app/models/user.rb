@@ -153,7 +153,7 @@ returns
 
     if name.blank? && email.present? && email_fallback
       return email
-    elsif recipient_line
+    elsif recipient_line && email.present?
       begin
         return Channel::EmailBuild.recipient_line(name, email)
       rescue
