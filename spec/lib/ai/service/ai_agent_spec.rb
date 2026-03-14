@@ -77,14 +77,17 @@ RSpec.describe AI::Service::AIAgent, :aggregate_failures do
           <option>
             <value>1</value>
             <label>1 low</label>
+            <description>Low priority</description>
           </option>
           <option>
             <value>2</value>
             <label>2 normal</label>
+            <description>Normal priority</description>
           </option>
           <option>
             <value>3</value>
             <label>3 high</label>
+            <description>High priority</description>
           </option>
         </priority_id>
       XML
@@ -119,6 +122,45 @@ RSpec.describe AI::Service::AIAgent, :aggregate_failures do
     end
 
     expect(result.content).to include('state_id' => 1, 'priority_id' => 2)
+  end
+
+  context 'when instruction_context options have no description' do
+    let(:context_data) do
+      {
+        ai_agent:            ai_agent,
+        ticket:              ticket,
+        role_description:    'Test AI Agent',
+        instruction:         'Analyze the ticket',
+        instruction_context: {
+          object_attributes: {
+            'priority_id' => {
+              label: 'Priority',
+              items: [
+                { value: 1, label: '1 low' },
+                { value: 2, label: '2 normal' },
+              ]
+            }
+          }
+        },
+        entity_context:      {
+          object_attributes: {
+            'title' => { value: 'Test Ticket' }
+          }
+        },
+        result_structure:    {
+          'state_id' => 'integer'
+        }
+      }
+    end
+
+    it 'omits description tags from the prompt' do
+      ai_service.execute
+
+      expect(mock_provider).to have_received(:ask) do |args|
+        expect(args[:prompt_system]).to include('<label>1 low</label>')
+        expect(args[:prompt_system]).not_to include('<description>')
+      end
+    end
   end
 
   context 'when entity_context has object_attributes with only values (no labels)' do
