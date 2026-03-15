@@ -68,7 +68,9 @@ Rails.application.config.to_prepare do
   kc_prepend.call('Ticket', 'Kc::MergeToClosedState')
   kc_prepend.call('Transaction::Notification', 'Kc::SuppressInternalNoteNotifications')
   kc_prepend.call('AI::Agent::Type::TicketTitleRewriter', 'Kc::TicketTitleRewriterLanguage')
-  kc_prepend.call('MicrosoftGraph::ApiError', 'Kc::MicrosoftGraphApiErrorTypeSafety')
+  # MicrosoftGraphApiErrorTypeSafety removed — upstream fixed the type-safety
+  # bug in ApiError#initialize (now wraps non-Hash inputs before calling
+  # .with_indifferent_access).  See lib/microsoft_graph/api_error.rb.
   kc_prepend.call('MicrosoftGraph', 'Kc::MicrosoftGraphErrorHandling')
   kc_prepend.call('MicrosoftGraph', 'Kc::MicrosoftGraphBccInMime')
   kc_prepend.call('TicketArticleCommunicateEmailJob', 'Kc::EmailColorStripSignal')
