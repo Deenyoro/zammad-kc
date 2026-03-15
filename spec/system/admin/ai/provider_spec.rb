@@ -35,6 +35,12 @@ RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
 
       await_empty_ajax_queue
 
+      check_switch_field_value('ai_provider', false)
+
+      set_switch_field_value('ai_provider', true)
+
+      await_empty_ajax_queue
+
       # Verify settings were saved
       expect(Setting.get('ai_provider')).to be(true)
       expect(Setting.get('ai_provider_config')).to include({ provider: 'open_ai', token: '1234111' })
@@ -119,6 +125,11 @@ RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
     end
 
     expect(page).to have_text('Update successful.')
+    check_switch_field_value('ai_provider', false)
+
+    set_switch_field_value('ai_provider', true)
+
+    expect(page).to have_text('AI provider enabled successfully.')
 
     expect(Setting.get('ai_provider')).to be(true)
     expect(Setting.get('ai_provider_config')).to include(provider: 'open_ai', token:, model:)
@@ -133,7 +144,9 @@ RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
       find('select[name=provider]').select('-')
       click '.js-provider-submit'
 
-      expect(page).to have_text('Update successful.')
+      expect(page).to have_text('AI provider disabled successfully.')
+
+      check_switch_field_value('ai_provider', false)
 
       expect(Setting.get('ai_provider')).to be(false)
       expect(Setting.get('ai_provider_config')).to be_blank
@@ -146,6 +159,7 @@ RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
 
       it 'shows the new configuration automatically' do
         within :active_content do
+          check_switch_field_value('ai_provider', true)
           check_select_field_value('provider', 'open_ai')
           expect(page).to have_field('Token', with: %r{.+})
           check_switch_field_value('ocr_active', false)
@@ -154,6 +168,7 @@ RSpec.describe 'AI > Provider', authenticated_as: :admin, type: :system do
         setup_ai_provider('zammad_ai', token: '456', ocr_active: true)
 
         within :active_content do
+          check_switch_field_value('ai_provider', true)
           check_select_field_value('provider', 'zammad_ai')
           expect(page).to have_no_field('Token')
           check_switch_field_value('ocr_active', true)
