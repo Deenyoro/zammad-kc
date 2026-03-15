@@ -137,7 +137,9 @@ jobs:
             type=sha,suffix=-arm64
 
       - name: Get incrementing Zammad version from the most recent tag
-        run: echo ZAMMAD_VERSION="$(git describe --tags | sed -e 's/-[a-z0-9]\{8,\}.*//g')" >> $GITHUB_ENV
+        # Make sure the number is always present (via --long), and pad it to four digits
+        #   for proper alphabetical sorting in tools like updatecli (e.g. 7.0.0-0000, 7.1.0-0215).
+        run: echo ZAMMAD_VERSION="$(git describe --tags --long | awk -F'-' '{printf "%s-%04d\n", $1, $(NF-1)}')" >> $GITHUB_ENV
 
       - name: Get Zammad major.minor version from the most recent tag
         run: echo ZAMMAD_VERSION_MAJOR_MINOR="$(git describe --tags | cut -f1-2 -d.)" >> $GITHUB_ENV

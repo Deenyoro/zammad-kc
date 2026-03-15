@@ -1,6 +1,13 @@
 class ChannelAiProvider extends App.ControllerTabs
   @requiredPermission: 'admin.ai_provider'
   header: __('Provider')
+  headerSwitchName: 'ai_provider'
+
+  events:
+    'change .js-header-switch input': 'didChangeHeaderSwitch'
+
+  elements:
+    '.js-header-switch input': 'aiProviderSetting'
 
   constructor: ->
     super
@@ -20,6 +27,44 @@ class ChannelAiProvider extends App.ControllerTabs
 
     @render()
 
+    @controllerBind('config_update', @aiProviderConfigHasChanged)
+
+  aiProviderConfigHasChanged: (config) =>
+    return if config.name isnt 'ai_provider'
+
+    @renderHeader(config.value)
+
+  render: =>
+    super
+    @renderHeader(App.Config.get('ai_provider'))
+
+  renderHeader: (value) =>
+    @aiProviderSetting.prop('checked', value)
+
+  didChangeHeaderSwitch: ->
+    value = @aiProviderSetting.prop('checked')
+
+    App.Setting.set('ai_provider', value, done: =>
+      # If the provider is being enabled but not yet configured, disable it again and show a warning message.
+      if value and not @controllerList[0].form?.current_provider
+        App.Setting.set('ai_provider', false, done: =>
+          @renderHeader(false)
+          @notify(
+            type: 'warning'
+            msg: __('Please set up the provider before proceeding under the settings tab.')
+          )
+        )
+        return
+
+      @notify(
+        type: 'success'
+        msg: if value
+          __('AI provider enabled successfully.')
+        else
+          __('AI provider disabled successfully.')
+      )
+    )
+
 class AiProviderSettings extends App.Controller
   @requiredPermission: 'admin.ai_provider'
   description : __('This service allows you to connect Zammad with an AI provider.')
@@ -36,7 +81,7 @@ class AiProviderSettings extends App.Controller
     @html App.view('ai/provider')(
       description: @description,
     )
-    new ProviderForm()
+    @form = new ProviderForm()
 
 class AiProviderFeedbackAndLogs extends App.Controller
   @requiredPermission: 'admin.ai_provider'
@@ -244,9 +289,9 @@ class ProviderForm extends App.Controller
 
   render: (provider) ->
     config = App.Setting.get('ai_provider_config') || {}
-    current_provider = if provider isnt undefined then provider else config['provider']
+    @current_provider = if provider isnt undefined then provider else config['provider']
 
-    configure_attributes = @providerConfiguration(current_provider, config)
+    configure_attributes = @providerConfiguration(@current_provider, config)
 
     @providerSettingsForm?.releaseController()
     @providerSettingsForm = new App.ControllerForm(
@@ -294,8 +339,24 @@ class ProviderForm extends App.Controller
     if has_provider && !params.hasOwnProperty('token') && savedProviderConfig.provider == params.provider && savedProviderConfig.token
       params.token = savedProviderConfig.token
 
-    App.Setting.set('ai_provider_config', params, done: ->
-      App.Setting.set('ai_provider', has_provider, notify: true)
+    App.Setting.set('ai_provider_config', params, done: =>
+      # If the provider configuration is being updated, do not touch the provider switch.
+      if has_provider
+        App.Event.trigger 'notify', {
+          type:    'success'
+          msg:     __('Update successful.')
+          timeout: 2000
+        }
+
+        return
+
+      # Turn off the provider switch when the provider configuration is emptied.
+      App.Setting.set('ai_provider', false, done: =>
+        @notify(
+          type: 'success'
+          msg: __('AI provider disabled successfully.')
+        )
+      )
     )
 
 App.Config.set('Provider', { prio: 1000, name: __('Provider'), parent: '#ai', target: '#ai/provider', controller: ChannelAiProvider, permission: ['admin.ai_provider'] }, 'NavBarAdmin')
