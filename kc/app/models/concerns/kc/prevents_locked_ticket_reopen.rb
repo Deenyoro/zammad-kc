@@ -1,5 +1,5 @@
 # KC: Concern prepended into Ticket to prevent locked tickets from being
-# reopened by customer activity.
+# reopened by any automated or customer activity.
 #
 # Intercepts ALL state changes at the model level via before_save, which
 # covers every entry point: email postmaster, SMS inbound, form updaters,
@@ -8,10 +8,12 @@
 # Rules:
 #   1. Only fires when state_id actually changed
 #   2. Only fires when the ORIGINAL state (before change) is a locked state
-#   3. ALLOW if transitioning to the locked state's next_state_id (scheduler)
-#   4. ALLOW if no user session (system context: triggers, macros, schedulers)
-#   5. ALLOW if current user has ticket.agent or admin permission
-#   6. BLOCK otherwise — revert state_id, log the blocked attempt
+#   3. ALLOW if transitioning to the locked state's next_state_id (scheduler
+#      moving "closed (locked until)" → "closed" after the lock expires)
+#   4. ALLOW if current user is agent/admin AND the request originates from
+#      an interactive context (web UI / API) — NOT postmaster, scheduler,
+#      or other automated pipelines
+#   5. BLOCK otherwise — revert state_id, log the blocked attempt
 #
 # The article is still created and visible to agents; only the state
 # change is prevented.
@@ -23,6 +25,11 @@ module Kc
     extend ActiveSupport::Concern
 
     LOCKED_STATE_NAMES = ['closed (locked)', 'closed (locked until)'].freeze
+
+    # Application handle prefixes that represent interactive user sessions
+    # (web UI, REST API, GraphQL).  Everything else (postmaster, scheduler,
+    # websocket callbacks, etc.) is considered automated.
+    INTERACTIVE_HANDLES = %w[application_server ai_agent_execution].freeze
 
     prepended do
       before_save :kc_prevent_locked_ticket_reopen
@@ -53,19 +60,19 @@ module Kc
       return if locked_state.nil?
 
       # ALLOW: scheduler transitioning to the configured next_state
+      # (e.g. "closed (locked until)" → "closed" when pending_time expires)
       return if locked_state.next_state_id.present? && new_state_id == locked_state.next_state_id
 
-      # ALLOW: system context (triggers, macros, schedulers) where no
-      # user session is active.  TransactionDispatcher explicitly sets
-      # UserInfo.current_user_id = nil before running backends.
-      return if UserInfo.current_user_id.nil?
-
-      # ALLOW: agents/admins can always change the state of locked tickets
-      return if kc_current_user_is_agent?
+      # ALLOW: agents/admins acting through an interactive session (web UI,
+      # REST/GraphQL API).  Automated pipelines (postmaster, scheduler,
+      # triggers, macros) are blocked even when running as an admin user.
+      return if kc_interactive_context? && kc_current_user_is_agent?
 
       # BLOCK: revert the state change
       Rails.logger.info "KC: Blocked state change on Ticket##{id} from '#{locked_state.name}' " \
-                        "to state_id=#{new_state_id} (user_id=#{UserInfo.current_user_id || 'nil'})"
+                        "to state_id=#{new_state_id} " \
+                        "(user_id=#{UserInfo.current_user_id || 'nil'}, " \
+                        "handle=#{ApplicationHandleInfo.current || 'nil'})"
       self.state_id = original_state_id
     rescue => e
       Rails.logger.error "KC: PreventsLockedTicketReopen failed for Ticket##{id}: #{e.message}"
@@ -81,6 +88,14 @@ module Kc
     rescue => e
       Rails.logger.error "KC: Failed to load locked states: #{e.message}"
       {}
+    end
+
+    # True when the current application handle indicates an interactive
+    # user session (web UI, REST API, GraphQL, AI agent execution) as
+    # opposed to an automated pipeline (postmaster, scheduler, etc.).
+    def kc_interactive_context?
+      handle = ApplicationHandleInfo.current.to_s
+      INTERACTIVE_HANDLES.any? { |prefix| handle.start_with?(prefix) }
     end
 
     def kc_current_user_is_agent?
