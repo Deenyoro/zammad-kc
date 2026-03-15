@@ -47,7 +47,7 @@ RSpec.describe 'Manage > AI > Ticket Summary', type: :system do
         within(:active_content) do
           click '.js-aiAssistanceTicketSummarySetting'
 
-          expect(page).to have_text('The provider configuration is missing. Please set up the provider before proceeding in AI > Providers.')
+          expect(page).to have_text('The provider configuration is disabled. Please set up the provider before proceeding in AI > Providers.')
         end
       end
     end
