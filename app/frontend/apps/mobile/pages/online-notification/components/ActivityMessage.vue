@@ -27,11 +27,20 @@ defineEmits<{
     :is="link ? 'CommonLink' : 'div'"
     v-if="builder"
     class="flex flex-1 border-b border-white/10 py-4"
-    :link="link"
-    @click="!activity.seen ? $emit('seen') : undefined"
+    :class="{
+      'cursor-pointer': !activity.seen,
+    }"
+    :link="link ? link : undefined"
+    :aria-label="!link ? $t('Mark as read') : undefined"
+    @click="!link && !activity.seen && $emit('seen')"
   >
     <div class="flex items-center ltr:mr-4 rtl:ml-4">
-      <CommonUserAvatar v-if="activity.createdBy" :entity="activity.createdBy" no-indicator />
+      <CommonUserAvatar
+        v-if="activity.createdBy"
+        :entity="activity.createdBy"
+        no-indicator
+        no-muted
+      />
       <CommonAvatar v-else class="bg-red-bright text-white" icon="lock" />
     </div>
 

@@ -48,6 +48,14 @@ export const OnlineNotificationsDocument = gql`
             bodyWithUrls
             preferences
           }
+          ... on OnlineNotificationStandalone {
+            id
+            internalId
+            data {
+              total
+              failedCount
+            }
+          }
         }
       }
       cursor

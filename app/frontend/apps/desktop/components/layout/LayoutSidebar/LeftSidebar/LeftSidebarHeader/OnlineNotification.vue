@@ -40,7 +40,7 @@ const {
   refetch,
 } = useOnlineNotificationList()
 
-const { markAllRead, deleteNotification } = useOnlineNotificationActions()
+const { markAllRead, deleteNotification, seenNotification } = useOnlineNotificationActions()
 
 let mutationTriggered = false
 let hasInitialCountRun = false
@@ -54,6 +54,16 @@ const handleOpenWebNotification = (notification: OnlineNotification, link?: stri
   if (link) router.push(`/${link}`)
 
   close()
+}
+
+const runMarkAsSeen = async (notification: OnlineNotification) => {
+  if (notification.seen) return
+
+  mutationTriggered = true
+
+  await seenNotification(notification.id)
+
+  mutationTriggered = false
 }
 
 const removeNotification = async (notification: OnlineNotification) =>
@@ -155,7 +165,8 @@ defineOptions({
         :loading="isLoading"
         :has-unseen-notification="hasUnseenNotification"
         :notification-list="notificationList"
-        @seen="close"
+        @visited="close"
+        @seen="runMarkAsSeen"
         @remove="removeNotification"
         @seen-all="runMarkAllRead"
       />

@@ -99,7 +99,10 @@ export const useOnlineNotificationActions = () => {
     const clonedQueryCache = cloneDeep(existingQueryCache)
 
     clonedQueryCache.onlineNotifications.edges.forEach(({ node }) => {
-      if ((node.metaObject as OnlineNotification['metaObject'])?.id === id) {
+      if (
+        (node.metaObject as OnlineNotification['metaObject'])?.id === id ||
+        (node as OnlineNotification)?.id === id
+      ) {
         node.seen = true
       }
     })

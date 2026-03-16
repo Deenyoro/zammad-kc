@@ -44,6 +44,7 @@ class TicketBulkUpdateJob < ApplicationJob
       return
     end
 
+    create_online_notification(user, total:, failed_ticket_ids:)
     finish_subscription(user, total:, failed_ticket_ids:)
   end
 
@@ -90,5 +91,18 @@ class TicketBulkUpdateJob < ApplicationJob
         { status: 'running', processed_count:, total: },
         scope: user.id
       )
+  end
+
+  def create_online_notification(user, total:, failed_ticket_ids: [])
+    OnlineNotification.add(
+      user_id:       user.id,
+      kind:          'bulk_job',
+      seen:          false,
+      data:          {
+        total:,
+        failed_count: failed_ticket_ids.count,
+      },
+      created_by_id: 1, # Show as created by system user with the instance logo
+    )
   end
 end

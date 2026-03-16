@@ -40,6 +40,14 @@ query onlineNotifications {
             bodyWithUrls
             preferences
           }
+          ... on OnlineNotificationStandalone {
+            id
+            internalId
+            data {
+              total
+              failedCount
+            }
+          }
         }
       }
       cursor
