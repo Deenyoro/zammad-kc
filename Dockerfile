@@ -17,11 +17,14 @@ ENV RAILS_ENV="production" \
     RAILS_LOG_TO_STDOUT="true"
 
 # Install base packages
-# Add official PostgreSQL apt repository to not depend on Debian's version. https://www.postgresql.org/download/linux/debian/ \
+# Add official PostgreSQL apt repository to not depend on Debian's version.
+#   https://www.postgresql.org/download/linux/debian/
+# Use `postgresql-client` meta-package to have the latest `pg_dump` that works even with the latest PostgreSQL versions.
+#   https://github.com/zammad/zammad/issues/6009
 RUN apt-get update -qq && \
     apt-get install -y postgresql-common && \
     /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y && \
-    apt-get install --no-install-recommends -y curl libimlib2 libpq5 nginx gnupg postgresql-client-17 && \
+    apt-get install --no-install-recommends -y curl libimlib2 libpq5 nginx gnupg postgresql-client && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Throw-away stage to get the node binary
