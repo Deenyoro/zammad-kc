@@ -6064,6 +6064,9 @@ Setting.create_if_not_exists(
   preferences: {
     authentication: true,
     permission:     ['admin.ai_provider'],
+    validations:    [
+      'Setting::Validation::AIProvider',
+    ],
   },
   frontend:    true,
 )

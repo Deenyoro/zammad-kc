@@ -104,7 +104,7 @@ RSpec.describe AI::Provider do
   describe '.current' do
     before do
       Setting.set('ai_provider_config', config, validate: false)
-      Setting.set('ai_provider', flag)
+      Setting.set('ai_provider', flag, validate: false)
     end
 
     context 'when config is provided' do
