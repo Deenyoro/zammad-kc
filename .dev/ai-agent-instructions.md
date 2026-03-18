@@ -23,7 +23,7 @@ Purpose: Give an AI coding agent a fast, reliable mental model of this repo to s
 - Legacy desktop-app: CoffeeScript, Spine.js, Sprockets, REST API
   (see [`../app/assets/`](../app/assets/), [`../coffeelint.json`](../coffeelint.json), QUnit in `../test/`)
 - New desktop-view and mobile apps: Vue 3, TypeScript, Pinia, Apollo Client (GraphQL), Tailwind CSS, VueUse,
-  Vitest, Testing Library, Cypress, pnpm, vite-plugin-ruby, vite-plugin-pwa, ESLint, Stylelint, Prettier
+  Vitest, Testing Library, Cypress, pnpm, vite-plugin-ruby, vite-plugin-pwa, ESLint, Stylelint, Oxfmt
   (see [`../package.json`](../package.json), [`../vite.config.mjs`](../vite.config.mjs),
   [`../tsconfig.base.json`](../tsconfig.base.json), [`../eslint.config.ts`](../eslint.config.ts))
 - Backend: Ruby on Rails, PostgreSQL, Redis, ActionCable, Delayed Job, GraphQL
@@ -86,7 +86,7 @@ Purpose: Give an AI coding agent a fast, reliable mental model of this repo to s
 - Use path aliases from [`../tsconfig.base.json`](../tsconfig.base.json).
 - Do not cross-import between desktop/mobile apps (ESLint enforces boundaries).
 - Use Vitest and Testing Library for unit/component tests ([`../app/frontend/tests/`](../app/frontend/tests/)).
-- Use Tailwind CSS utilities for styling. Lint with Stylelint and Prettier.
+- Use Tailwind CSS utilities for styling. Lint with Stylelint and Oxfmt.
 - For i18n, wrap user-facing strings and see [`../eslint.config.ts`](../eslint.config.ts) for rules.
 
 ## When in doubt

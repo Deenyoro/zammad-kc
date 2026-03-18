@@ -11,9 +11,7 @@ const renderPopover = () => {
   const wrapper = renderComponent({
     components: { CommonPopover },
     template: html`
-      <CommonPopover ref="popover" :owner="popoverTarget"
-        ><span>Example Content</span></CommonPopover
-      >
+      <CommonPopover ref="popover" :owner="popoverTarget"><span>Example Content</span></CommonPopover>
       <button ref="popoverTarget" @click="toggle">Click me</button>
     `,
     setup() {

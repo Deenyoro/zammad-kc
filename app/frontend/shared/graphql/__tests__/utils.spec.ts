@@ -20,25 +20,19 @@ describe('isGraphQLId', () => {
 
 describe('convertToGraphQLId', () => {
   it('check convertion', async () => {
-    expect(convertToGraphQLId('Organization', 1)).toBe(
-      'gid://zammad/Organization/1',
-    )
+    expect(convertToGraphQLId('Organization', 1)).toBe('gid://zammad/Organization/1')
   })
 })
 
 describe('convertToGraphQLId', () => {
   it('check convertion', async () => {
-    expect(convertToGraphQLId('Organization', 1)).toBe(
-      'gid://zammad/Organization/1',
-    )
+    expect(convertToGraphQLId('Organization', 1)).toBe('gid://zammad/Organization/1')
   })
 })
 
 describe('ensureGraphqlId', () => {
   it('check that we have always a GraphQL id', async () => {
-    expect(ensureGraphqlId('Organization', 1)).toBe(
-      'gid://zammad/Organization/1',
-    )
+    expect(ensureGraphqlId('Organization', 1)).toBe('gid://zammad/Organization/1')
   })
 
   it('check that we have always a GraphQL id (also when it has the correct format)', async () => {

@@ -101,7 +101,9 @@ describe('CommonFlyout', () => {
           showBackdrop: false,
         },
         slots: {
-          default: html`<input type="text" placeholder="test" name="test-input" />`,
+          default: html`
+            <input type="text" placeholder="test" name="test-input" />
+          `,
         },
       })
 
