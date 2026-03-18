@@ -56,6 +56,7 @@ import FormGroup from './FormGroup.vue'
 import FormLayout from './FormLayout.vue'
 import { useFormUpdaterQuery } from './graphql/queries/formUpdater.api.ts'
 import { getFormClasses } from './initializeFormClasses.ts'
+import addTranslationFunctionPlugin from './plugins/addTranslationFunctionPlugin.ts'
 import { FormHandlerExecution, FormValidationVisibility } from './types.ts'
 import { getNodeByName as getFormkitFieldNode, getNodeId, setErrors } from './utils.ts'
 
@@ -405,7 +406,7 @@ const delayedSubmitPlugin = (node: FormKitNode) => {
 }
 
 const localFormKitPlugins = computed(() => {
-  return [delayedSubmitPlugin, ...(props.formKitPlugins || [])]
+  return [delayedSubmitPlugin, addTranslationFunctionPlugin, ...(props.formKitPlugins || [])]
 })
 
 const formConfig = computed(() => {
@@ -1501,6 +1502,7 @@ export default {
     @submit-raw="onSubmitRaw"
   >
     <FormKitMessages
+      :node="formNode"
       :sections-schema="{
         messages: {
           $el: 'div',
@@ -1517,9 +1519,7 @@ export default {
               else: '$message.type',
             },
           },
-          slots: {
-            default: '$message.value',
-          },
+          children: '$fns.t($message.value)',
         },
       }"
     />
