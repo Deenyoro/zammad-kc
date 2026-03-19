@@ -6,6 +6,10 @@ class DataPrivacyTask < ApplicationModel
   include DataPrivacyTask::HasActivityStreamLog
   include ChecksClientNotification
 
+  scope :failed,     -> { where(state: 'failed') }
+  scope :in_process, -> { where(state: 'in process') }
+  scope :completed,  -> { where(state: 'completed') }
+
   store :preferences
 
   # optional because related data will get deleted and it would
@@ -31,6 +35,17 @@ class DataPrivacyTask < ApplicationModel
       .destroy_all
 
     true
+  end
+
+  def prepare_deletion_preview
+    prepare_deletion_preview_tickets
+    prepare_deletion_preview_user
+    prepare_deletion_preview_organization
+    prepare_deletion_preview_anonymize
+  end
+
+  def deletion_counts
+    preferences.slice(:owner_tickets_count, :customer_tickets_count)
   end
 
   private
@@ -96,13 +111,6 @@ class DataPrivacyTask < ApplicationModel
     return false if deletable.organization.members.count != 1
 
     true
-  end
-
-  def prepare_deletion_preview
-    prepare_deletion_preview_tickets
-    prepare_deletion_preview_user
-    prepare_deletion_preview_organization
-    prepare_deletion_preview_anonymize
   end
 
   def prepare_deletion_preview_tickets
