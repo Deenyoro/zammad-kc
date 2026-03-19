@@ -27,6 +27,7 @@ const { popover, popoverTarget, toggle, isOpen: popoverIsOpen } = usePopover()
     ref="popover"
     :owner="popoverTarget"
     :hide-arrow="collapsedState"
+    z-index="52"
     orientation="autoVertical"
     :placement="collapsedState ? 'start' : 'arrowStart'"
   >
@@ -50,6 +51,6 @@ const { popover, popoverTarget, toggle, isOpen: popoverIsOpen } = usePopover()
     aria-expanded="false"
     @click="toggle(true)"
   >
-    <CommonUserAvatar v-if="user" :entity="user" class="!flex" :size="avatarSize" personal />
+    <CommonUserAvatar v-if="user" :entity="user" class="flex!" :size="avatarSize" personal />
   </button>
 </template>

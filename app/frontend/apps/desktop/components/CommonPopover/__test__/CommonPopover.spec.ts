@@ -30,7 +30,7 @@ const renderPopover = () => {
 
 describe('CommonPopover.vue', () => {
   it('does not render when popover is not open', () => {
-    const view = renderComponent(CommonPopover, {
+    const wrapper = renderComponent(CommonPopover, {
       props: {
         owner: null,
       },
@@ -39,18 +39,18 @@ describe('CommonPopover.vue', () => {
       },
     })
 
-    expect(view.queryByText('Example Content')).not.toBeInTheDocument()
+    expect(wrapper.queryByText('Example Content')).not.toBeInTheDocument()
   })
 
   it('does toggle popover when target was clicked', async () => {
-    const view = renderPopover()
+    const wrapper = renderPopover()
 
-    await view.events.click(view.getByText('Click me'))
+    await wrapper.events.click(wrapper.getByText('Click me'))
 
-    expect(await view.findByText('Example Content')).toBeInTheDocument()
+    expect(await wrapper.findByText('Example Content')).toBeInTheDocument()
 
-    await view.events.click(view.getByText('Click me'))
+    await wrapper.events.click(wrapper.getByText('Click me'))
 
-    expect(view.queryByText('Example Content')).not.toBeInTheDocument()
+    expect(wrapper.queryByText('Example Content')).not.toBeInTheDocument()
   })
 })

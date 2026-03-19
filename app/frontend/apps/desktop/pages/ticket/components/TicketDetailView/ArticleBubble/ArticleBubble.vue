@@ -105,7 +105,7 @@ const { showPreview } = useFilePreviewViewer(
         size: 'small',
         noIndicator: true,
       }"
-      z-index="20"
+      z-index="52"
     />
 
     <div

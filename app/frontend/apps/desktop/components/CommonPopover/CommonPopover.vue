@@ -440,6 +440,15 @@ onMounted(() => {
 useOnEmitter('close-popover', () => {
   if (showPopover.value) closePopover()
 })
+
+// We have certain situation where we don't detect when the positioning is changing
+// For example when the popover was opened via long press in the top header
+// We resize the sidebar but since it is a grid we are changing css values
+// Only changes on the window size and element bounding are detected
+// In this cases we need to trigger a manual update
+useOnEmitter('resize-element', () => {
+  if (showPopover.value && targetElementBounds.value) closePopover()
+})
 </script>
 
 <template>

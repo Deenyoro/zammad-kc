@@ -159,7 +159,7 @@ defineOptions({
     <NotificationButton v-bind="$attrs" :unseen-count="unseenCount" @show="toggle(true)">
       <slot />
     </NotificationButton>
-    <CommonPopover ref="popover" orientation="right" :owner="popoverTarget">
+    <CommonPopover ref="popover" z-index="53" orientation="right" :owner="popoverTarget">
       <NotificationPopover
         :unseen-count="unseenCount"
         :loading="isLoading"
