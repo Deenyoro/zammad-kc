@@ -105,7 +105,7 @@ const submitFeedback = async (data: FeedbackFormData) => {
   await feedbackMutation.send({
     input: {
       comment: data.comment,
-      rating: +data.rating,
+      rating: Number(data.rating),
       timeSpent: timeSpendInMinutes,
       type: props.milestone
         ? EnumBetaUiFeedbackType.MilestoneQuestion
