@@ -78,6 +78,16 @@ describe('CommonButton.vue', () => {
       classes: ['bg-green-200'],
     },
     {
+      variant: 'tertiary-light',
+      classes: [
+        'bg-neutral-50',
+        'dark:bg-gray-500',
+        'border-1',
+        'border-neutral-100',
+        'dark:border-gray-900',
+      ],
+    },
+    {
       variant: 'submit',
       classes: ['bg-yellow-300'],
     },

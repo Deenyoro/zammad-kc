@@ -64,6 +64,7 @@ import { useTaskbarTab } from '#desktop/entities/user/current/composables/useTas
 import { useTaskbarTabStateUpdates } from '#desktop/entities/user/current/composables/useTaskbarTabStateUpdates.ts'
 import type { TaskbarTabContext } from '#desktop/entities/user/current/types.ts'
 import TicketDetailBottomBar from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue'
+import { items as highlightMenuItems } from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/useHighlightMenuState.ts'
 import { useTicketScreenBehavior } from '#desktop/pages/ticket/components/TicketDetailView/TicketScreenBehavior/useTicketScreenBehavior.ts'
 
 import { ARTICLES_INFORMATION_KEY } from '../../composables/useArticleContext.ts'
@@ -284,6 +285,11 @@ provideTicketInformation({
   form,
   newTicketArticlePresent,
   showTicketArticleReplyForm,
+  highlightMenu: reactive({
+    activeMenuItem: highlightMenuItems[0],
+    isActive: false,
+    isEraserActive: false,
+  }),
   ...ticketInformation,
 })
 

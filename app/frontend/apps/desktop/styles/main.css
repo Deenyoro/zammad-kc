@@ -593,6 +593,47 @@
   }
 }
 
+/*
+ * CSS Custom Highlight API – article body text highlights.
+ * ::highlight() inherits CSS custom properties from the cascade, so dark-mode
+ * overrides defined on [data-theme='dark'] are picked up automatically.
+ */
+:root {
+  --article-highlight-yellow: var(--color-yellow-200);
+  --article-highlight-green: var(--color-green-350);
+  --article-highlight-blue: var(--color-blue-550);
+  --article-highlight-pink: var(--color-pink-150);
+  --article-highlight-purple: var(--color-purple-100);
+}
+
+[data-theme='dark'] {
+  --article-highlight-yellow: var(--color-yellow-750);
+  --article-highlight-green: var(--color-green-700);
+  --article-highlight-blue: var(--color-blue-875);
+  --article-highlight-pink: var(--color-pink-700);
+  --article-highlight-purple: var(--color-purple-700);
+}
+
+::highlight(highlight-yellow) {
+  background-color: var(--article-highlight-yellow);
+}
+
+::highlight(highlight-green) {
+  background-color: var(--article-highlight-green);
+}
+
+::highlight(highlight-blue) {
+  background-color: var(--article-highlight-blue);
+}
+
+::highlight(highlight-pink) {
+  background-color: var(--article-highlight-pink);
+}
+
+::highlight(highlight-purple) {
+  background-color: var(--article-highlight-purple);
+}
+
 @keyframes progress-loading {
   50% {
     background-position-x: -115%;

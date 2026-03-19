@@ -10,6 +10,12 @@ import { type ImageViewerFile } from '#shared/composables/useImageViewer.ts'
 import type { TicketArticle } from '#shared/entities/ticket/types.ts'
 import { textToHtml } from '#shared/utils/helpers.ts'
 
+import { useAnnouncer } from '#desktop/composables/accessibility/useAnnouncer.ts'
+
+import { useArticleHighlights } from './useArticleHighlights/useArticleHighlights.ts'
+import { useArticleHighlightsA11y } from './useArticleHighlights/useArticleHighlightsA11y.ts'
+import { useArticleHighlightsSelection } from './useArticleHighlights/useArticleHighlightsSelection.ts'
+
 interface Props {
   article: TicketArticle
   showMetaInformation: boolean
@@ -49,6 +55,28 @@ const { populateInlineImages } = useHtmlInlineImages(toRef(props, 'inlineImages'
   emit('preview', props.inlineImages[index]),
 )
 
+useArticleHighlights(
+  bubbleElement,
+  computed(() => props.article.highlightedTexts ?? undefined),
+  body,
+)
+
+const { descriptionId, description } = useArticleHighlightsA11y(
+  bubbleElement,
+  computed(() => props.article.highlightedTexts ?? undefined),
+  body,
+  computed(() => props.article.internalId),
+)
+
+const { announce } = useAnnouncer()
+
+useArticleHighlightsSelection(
+  bubbleElement,
+  computed(() => props.article.highlightedTexts ?? undefined),
+  computed(() => props.article.id),
+  announce,
+)
+
 const toggleShowMoreAndEmit = () => {
   toggleShowMore()
 }
@@ -86,7 +114,6 @@ onMounted(() => {
     <div
       v-if="showAuthorInformation"
       class="absolute top-3 flex w-full px-3 ltr:left-0 rtl:right-0"
-      role="group"
       aria-describedby="author-name-and-creation-date"
     >
       <p id="author-name-and-creation-date" class="sr-only">
@@ -108,8 +135,12 @@ onMounted(() => {
       data-test-id="article-content"
       class="overflow-hidden text-sm transition-[height] duration-200"
     >
+      <!--    Never drop this inner-article-body class used for Highlight feature-->
       <!--    eslint-disable vue/no-v-html-->
-      <div class="inner-article-body" v-html="body" />
+      <div class="inner-article-body" :aria-details="descriptionId" v-html="body" />
+      <div v-if="descriptionId" :id="descriptionId" class="sr-only">
+        {{ description }}
+      </div>
     </div>
     <div
       v-if="hasShowMore"
