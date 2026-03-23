@@ -27,6 +27,7 @@ Conventions:
 
 - Use `limit: 3` for timestamp precision
 - Specify `type: :integer` for polymorphic references
+- Use `id: :integer` in `create_table` calls (Zammad uses integer primary keys, not bigint)
 - Add indexes for frequently queried columns
 
 ## Settings
