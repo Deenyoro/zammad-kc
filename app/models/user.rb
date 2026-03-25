@@ -89,7 +89,8 @@ class User < ApplicationModel
                                  :chat_agents,
                                  :data_privacy_tasks,
                                  :overviews,
-                                 :mentions
+                                 :mentions,
+                                 :recent_closes
 
   activity_stream_permission 'admin.user'
 
