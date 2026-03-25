@@ -90,7 +90,8 @@ class User < ApplicationModel
                                  :data_privacy_tasks,
                                  :overviews,
                                  :mentions,
-                                 :recent_closes
+                                 :recent_closes,
+                                 :ai_analytics_usages
 
   activity_stream_permission 'admin.user'
 
