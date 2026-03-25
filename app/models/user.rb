@@ -694,7 +694,7 @@ try to find correct name
     preferences.fetch(:locale) { Locale.default }
   end
 
-  attr_accessor :skip_ensure_uniq_email
+  attr_accessor :skip_ensure_uniq_email, :name_from_channel_import
 
   def shared_organizations?
     all_organizations.exists? shared: true
@@ -806,6 +806,8 @@ try to find correct name
 
   def check_name_apply(identifier, input)
     self[identifier] = input if input.present?
+
+    return if input.blank? && !name_from_channel_import
 
     self[identifier].capitalize! if self[identifier]&.match? %r{^([[:upper:]]+|[[:lower:]]+)$}
   end
