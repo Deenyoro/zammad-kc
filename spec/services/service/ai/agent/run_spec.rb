@@ -74,6 +74,16 @@ RSpec.describe Service::AI::Agent::Run do
           .and change { ticket.reload.state.name }.to('open')
       end
 
+      it 'dispatches triggers after applying changes' do
+        create(:trigger,
+               condition: { 'ticket.priority_id' => { 'operator' => 'is', 'value' => Ticket::Priority.lookup(name: '3 high').id.to_s } },
+               perform:   { 'ticket.tags' => { 'operator' => 'add', 'value' => 'ai-trigger-fired' } })
+
+        service.execute
+
+        expect(ticket.reload.tag_list).to include('ai-trigger-fired')
+      end
+
       context 'when AI result content does not match result structure' do
         let(:ai_result_content) { 'unexpected string content' }
 
