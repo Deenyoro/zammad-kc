@@ -599,7 +599,8 @@ const resetForm = (data: FormResetData = {}, options: FormResetOptions = {}) => 
     formNodeGroups.value.forEach((groupName: string) => {
       if (
         (!props.flattenFormGroups ||
-          (props.flattenFormGroups.includes(groupName) && nonGroupKeys.length === 0)) &&
+          !props.flattenFormGroups.includes(groupName) ||
+          nonGroupKeys.length === 0) &&
         !(groupName in valuesForReset)
       ) {
         valuesForReset[groupName] = rootNode.props._init?.[groupName] || {}
