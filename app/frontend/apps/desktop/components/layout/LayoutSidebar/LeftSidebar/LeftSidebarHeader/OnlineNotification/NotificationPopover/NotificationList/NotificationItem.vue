@@ -16,6 +16,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
+  visited: [OnlineNotification]
   seen: [OnlineNotification]
   remove: [OnlineNotification]
 }>()
@@ -23,7 +24,14 @@ const emit = defineEmits<{
 const { link, builder, highlightedMessage } = useActivityMessage(toRef(props, 'notification'))
 
 const handleLinkClick = (notification: OnlineNotification) => {
-  if (link) emit('seen', notification)
+  if (link) {
+    emit('visited', notification)
+    return
+  }
+
+  if (notification.seen) return
+
+  emit('seen', notification)
 }
 </script>
 
@@ -33,11 +41,14 @@ const handleLinkClick = (notification: OnlineNotification) => {
       <component
         :is="link ? 'CommonLink' : 'div'"
         v-if="builder"
-        class="group/link grid grid-cols-[1fr_auto] grid-rows-[auto_auto] gap-x-2 hover:no-underline!"
+        v-tooltip="!link ? $t('Mark as read') : undefined"
+        class="grid cursor-default grid-cols-[1fr_auto] grid-rows-[auto_auto] gap-x-2 hover:no-underline!"
         :class="{
+          'group/link': link,
           'opacity-30': notification.seen,
+          'cursor-pointer': !notification.seen,
         }"
-        :link="`/${link}`"
+        :link="link ? `/${link}` : undefined"
         @click="handleLinkClick(notification)"
       >
         <CommonUserAvatar
@@ -46,6 +57,7 @@ const handleLinkClick = (notification: OnlineNotification) => {
           size="small"
           class="col-start-1 row-span-2"
           no-indicator
+          no-muted
         />
         <CommonIcon
           v-else

@@ -23,7 +23,7 @@ const year = new Date().getFullYear()
 const ruleTester = new RuleTester({
   languageOptions: {
     parser: require('vue-eslint-parser'), // required to parse .vue files properly otherwise js-parser will be used
-  }
+  },
 })
 
 ruleTester.run('zammad-copyright', rule, {

@@ -48,7 +48,9 @@ const appUsage = useAppUsageStore()
 
 const { form, formNodeId } = useForm()
 
-const feedbackMutation = new MutationHandler(useBetaUiSendFeedbackMutation())
+const feedbackMutation = new MutationHandler(useBetaUiSendFeedbackMutation(), {
+  errorShowNotification: false, // display of error messages is handled by a form alert
+})
 
 const close = () => {
   props.callback?.()

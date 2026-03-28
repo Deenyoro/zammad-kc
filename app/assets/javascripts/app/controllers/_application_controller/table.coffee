@@ -693,7 +693,7 @@ class App.ControllerTable extends App.Controller
           true
         callback: (id) =>
           item = @model.find(id)
-          item.name = "Clone: #{item.name}"
+          item.name = App.i18n.translatePlain('Clone: %s', item.name)
 
           if @cloneCallback
             @cloneCallback(item)

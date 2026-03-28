@@ -103,6 +103,8 @@
     - pnpm lint:ts
     - echo "ESLint check…"
     - pnpm lint:js
+    - echo "Oxfmt check…"
+    - pnpm format:check
     - pnpm analyse:vite-bundle -t list -o ./tmp/vite-bundle-stats.yml
     - .gitlab/verify_vite_bundle_size.rb
     # Artifacts are stored for failed jobs

@@ -11,11 +11,7 @@ const startCase = require('lodash/startCase.js')
 const pascalCase = (str) => startCase(camelCase(str))
 
 const getCompositionFunctionSuffix = (name, operationType) => {
-  if (
-    name.includes('Query') ||
-    name.includes('Mutation') ||
-    name.includes('Subscription')
-  ) {
+  if (name.includes('Query') || name.includes('Mutation') || name.includes('Subscription')) {
     return ''
   }
   return pascalCase(operationType)
@@ -23,12 +19,10 @@ const getCompositionFunctionSuffix = (name, operationType) => {
 
 const getOperationSuffix = (config, node, operationType) => {
   const { omitOperationSuffix = false, dedupeOperationSuffix = false } = config
-  const operationName =
-    typeof node === 'string' ? node : node.name ? node.name.value : ''
+  const operationName = typeof node === 'string' ? node : node.name ? node.name.value : ''
   return omitOperationSuffix
     ? ''
-    : dedupeOperationSuffix &&
-        operationName.toLowerCase().endsWith(operationType.toLowerCase())
+    : dedupeOperationSuffix && operationName.toLowerCase().endsWith(operationType.toLowerCase())
       ? ''
       : operationType
 }
@@ -44,10 +38,7 @@ module.exports.plugin = (schema, documents, config) => {
     suffix,
     useTypesPrefix: false,
   })
-  const baseFile = basename(documents[0].location).replace(
-    /\.graphql$/,
-    '.api.ts',
-  )
+  const baseFile = basename(documents[0].location).replace(/\.graphql$/, '.api.ts')
 
   const documentVariableName = convertName(node, {
     suffix: config.documentVariableSuffix || 'Document',
