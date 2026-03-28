@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 import { usePermission, useWebNotification, whenever } from '@vueuse/core'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useActivityMessage } from '#shared/composables/activity-message/useActivityMessage.ts'
@@ -40,7 +40,7 @@ const {
   refetch,
 } = useOnlineNotificationList()
 
-const { markAllRead, deleteNotification } = useOnlineNotificationActions()
+const { markAllRead, deleteNotification, seenNotification } = useOnlineNotificationActions()
 
 let mutationTriggered = false
 let hasInitialCountRun = false
@@ -54,6 +54,16 @@ const handleOpenWebNotification = (notification: OnlineNotification, link?: stri
   if (link) router.push(`/${link}`)
 
   close()
+}
+
+const runMarkAsSeen = async (notification: OnlineNotification) => {
+  if (notification.seen) return
+
+  mutationTriggered = true
+
+  await seenNotification(notification.id)
+
+  mutationTriggered = false
 }
 
 const removeNotification = async (notification: OnlineNotification) =>
@@ -129,6 +139,9 @@ whenever(
   },
   { flush: 'post' },
 )
+const truncatedUnseenCount = computed(() =>
+  unseenCount.value && unseenCount.value > 99 ? '99+' : unseenCount.value,
+)
 
 onMounted(() => {
   if (isEnabled.value && !notificationPermission.value) ensurePermissions()
@@ -140,22 +153,34 @@ defineOptions({
 </script>
 
 <template>
-  <div
-    id="app-online-notification"
-    ref="popoverTarget"
-    :aria-label="$t('Notifications')"
-    class="relative"
-  >
-    <NotificationButton v-bind="$attrs" :unseen-count="unseenCount" @show="toggle(true)">
+  <div class="relative">
+    <NotificationButton
+      id="app-online-notification"
+      ref="popoverTarget"
+      v-bind="$attrs"
+      @show="toggle(true)"
+    >
       <slot />
     </NotificationButton>
-    <CommonPopover ref="popover" orientation="right" :owner="popoverTarget">
+
+    <CommonLabel
+      v-if="unseenCount && unseenCount > 0"
+      size="xs"
+      class="pointer-events-none absolute -bottom-0.75 z-20 block rounded-full border-2 border-white bg-pink-500 px-1 py-0.5 text-center font-bold text-white! ltr:left-[54%] rtl:right-[54%] dark:border-gray-500"
+      :aria-label="$t('Unseen notifications count')"
+      role="status"
+    >
+      {{ truncatedUnseenCount }}
+    </CommonLabel>
+
+    <CommonPopover ref="popover" z-index="53" orientation="right" :owner="popoverTarget">
       <NotificationPopover
         :unseen-count="unseenCount"
         :loading="isLoading"
         :has-unseen-notification="hasUnseenNotification"
         :notification-list="notificationList"
-        @seen="close"
+        @visited="close"
+        @seen="runMarkAsSeen"
         @remove="removeNotification"
         @seen-all="runMarkAllRead"
       />

@@ -79,7 +79,7 @@ useFormBlock(reactiveContext, onInputClick)
         <div
           v-for="tag of selectedTagsList"
           :key="tag"
-          class="rounded-xs bg-gray/20 px-[4px] py-[2px] text-base leading-4 text-gray uppercase"
+          class="bg-gray/20 text-gray rounded-xs px-[4px] py-[2px] text-base leading-4 uppercase"
           role="listitem"
         >
           {{ tag }}

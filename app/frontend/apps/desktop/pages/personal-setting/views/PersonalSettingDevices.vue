@@ -120,9 +120,10 @@ const tableActions: MenuItem[] = [
 
 const currentDevices = computed<TableItem[]>(() =>
   // oxlint-disable no-map-spread
-  (deviceListQueryResult.value?.userCurrentDeviceList || []).map((device) =>
-    // We can't use the original object, since it got sealed by Apollo Client to maintain immutability.
-    ({ ...device, current: device.fingerprint && device.fingerprint === fingerprint.value }),
+  (deviceListQueryResult.value?.userCurrentDeviceList || []).map(
+    (device) =>
+      // We can't use the original object, since it got sealed by Apollo Client to maintain immutability.
+      ({ ...device, current: device.fingerprint && device.fingerprint === fingerprint.value }),
   ),
 )
 

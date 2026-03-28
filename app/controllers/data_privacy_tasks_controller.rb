@@ -10,9 +10,9 @@ class DataPrivacyTasksController < ApplicationController
   def by_state
     scope = DataPrivacyTask.reorder('id DESC').limit(500)
 
-    in_process = scope.where(state: 'in process')
-    failed     = scope.where(state: 'failed')
-    completed  = scope.where(state: 'completed')
+    in_process = scope.in_process
+    failed     = scope.failed
+    completed  = scope.completed
 
     assets = ApplicationModel::CanAssets.reduce [in_process, failed, completed].flatten, {}
 

@@ -95,6 +95,17 @@ PreCommit:
     include:
       - 'app/frontend/**/*'
       - '.eslint-plugin-zammad/**/*'
+  Oxfmt:
+    required_executable: 'pnpm'
+    enabled: true
+    command: ['pnpm', 'format:check:cmd']
+    flags: ['app/frontend/', '.eslint-plugin-zammad/']
+    include:
+      - 'app/frontend/**/*.js'
+      - 'app/frontend/**/*.ts'
+      - 'app/frontend/**/*.vue'
+      - '.eslint-plugin-zammad/**/*.js'
+      - '.eslint-plugin-zammad/**/*.ts'
   Markdownlint:
     required_executable: 'pnpm'
     enabled: true

@@ -141,11 +141,9 @@ class App.TicketZoom extends App.Controller
           )
     )
 
-  load: (data, local = false, newTicketRaw = undefined) =>
+  load: (data, local = false) =>
     @previousTicketRaw = @currentTicketRaw
     @currentTicketRaw  = data.assets.Ticket[@ticket_id]
-
-    return if newTicketRaw
 
     view       = @ticket?.currentView()
     readable   = @ticket?.userGroupAccess('read')
@@ -1176,7 +1174,7 @@ class App.TicketZoom extends App.Controller
         # reset form after save
         @reset()
 
-        @load(data, false, true)
+        @load(data, false)
 
         if @sidebarWidget
           @sidebarWidget.commit()

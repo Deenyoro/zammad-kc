@@ -44,6 +44,7 @@ class TicketBulkUpdateJob < ApplicationJob
       return
     end
 
+    create_online_notification(user, total:, failed_ticket_ids:)
     finish_subscription(user, total:, failed_ticket_ids:)
   end
 
@@ -54,12 +55,7 @@ class TicketBulkUpdateJob < ApplicationJob
     lock = ActiveJobLock.find_by(lock_key: "#{name}/User/#{user.id}")
     return { status: 'none' } if !lock
 
-    job = Delayed::Job
-      .where(
-        'handler LIKE :no_quotes OR handler LIKE :with_quotes',
-        no_quotes:   "%job_id: #{lock.active_job_id}%",
-        with_quotes: "%job_id: '#{lock.active_job_id}'%"
-      ).first
+    job = lock.related_job
     return { status: 'none' } if !job
 
     arguments       = job.payload_object.job_data['arguments'].first
@@ -90,5 +86,18 @@ class TicketBulkUpdateJob < ApplicationJob
         { status: 'running', processed_count:, total: },
         scope: user.id
       )
+  end
+
+  def create_online_notification(user, total:, failed_ticket_ids: [])
+    OnlineNotification.add(
+      user_id:       user.id,
+      kind:          'bulk_job',
+      seen:          false,
+      data:          {
+        total:,
+        failed_count: failed_ticket_ids.count,
+      },
+      created_by_id: 1, # Show as created by system user with the instance logo
+    )
   end
 end

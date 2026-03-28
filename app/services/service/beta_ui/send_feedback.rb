@@ -88,13 +88,19 @@ class Service::BetaUi::SendFeedback < Service::Base
     )
 
     raise CommunicationError if !response.success?
-    raise InvalidFeedbackError, response.data if response.data.dig('ticket', 'number').blank?
+    raise InvalidFeedbackError if response.data.dig('ticket', 'number').blank?
 
     true
   end
 
-  class CommunicationError < StandardError; end
-  class InvalidTokenError < StandardError; end
-  class InvalidFeedbackError < StandardError; end
+  class SendFeedbackError < StandardError
+    def initialize
+      super(__('Sending feedback failed, please try again later.'))
+    end
+  end
+
+  class CommunicationError < SendFeedbackError; end
+  class InvalidTokenError < SendFeedbackError; end
+  class InvalidFeedbackError < SendFeedbackError; end
 
 end

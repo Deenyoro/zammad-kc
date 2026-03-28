@@ -1,6 +1,5 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-
 /**
  * @fileoverview Enforce kebab-case for Symbol descriptors
  * @author Benjamin Scharf
@@ -21,7 +20,7 @@ const rule = require('../../../lib/rules/zammad-symbol-description.js')
 const ruleTester = new RuleTester({
   languageOptions: {
     parser: require('vue-eslint-parser'), // required to parse .vue files properly otherwise js-parser will be used
-  }
+  },
 })
 
 ruleTester.run('zammad-symbol-descriptor', rule, {

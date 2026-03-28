@@ -18,7 +18,7 @@ RSpec.describe MonitoringHelper::HealthChecker::AIProviderAccessible, integratio
 
     context 'when AI integration is enabled but provider is not configured' do
       before do
-        Setting.set('ai_provider', true)
+        Setting.set('ai_provider', true, validate: false)
         Setting.set('ai_provider_config', {})
       end
 

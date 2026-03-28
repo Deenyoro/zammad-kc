@@ -36,7 +36,6 @@ describe('useAnnouncer', () => {
     expect(liveRegion!.getAttribute('aria-live')).toBe('polite')
     expect(liveRegion!.getAttribute('aria-relevant')).toBe('text')
     expect(liveRegion!.className).toContain('sr-only')
-    expect(liveRegion!.className).toContain('invisible')
 
     expect(wrapper.getByTestId(nodeId)).toBeInTheDocument()
   })

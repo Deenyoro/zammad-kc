@@ -66,6 +66,11 @@ RSpec.describe Gql::Queries::Ticket::Articles, type: :graphql do
                   encryptionSuccess
                   encryptionMessage
                 }
+                highlightedTexts {
+                  startIndex
+                  endIndex
+                  colorClass
+                }
                 body
                 bodyWithUrls
                 internal
@@ -215,6 +220,57 @@ RSpec.describe Gql::Queries::Ticket::Articles, type: :graphql do
 
           it 'includes securityStatus information' do
             expect(response_articles.first).to include({ 'securityState' => expected_security_state })
+          end
+        end
+
+        context 'with highlightedTexts information' do
+          let(:articles) do
+            create_list(
+              :ticket_article, 1, :outbound_email, ticket: ticket, to: to, cc: cc,
+              preferences: {
+                'highlight' => 'type:TextRange|0$4$1$highlight-Green$article-content-21|13$18$2$highlight-Blue$article-content-21'
+              }
+            )
+          end
+          let(:expected_highlighted_texts) do
+            [
+              { 'startIndex' => 0,  'endIndex' => 4,  'colorClass' => 'highlight-green' },
+              { 'startIndex' => 13, 'endIndex' => 18, 'colorClass' => 'highlight-blue' },
+            ]
+          end
+
+          it 'includes highlightedTexts information' do
+            expect(response_articles.first).to include({ 'highlightedTexts' => expected_highlighted_texts })
+          end
+
+          context 'with invalid highlight data' do
+            let(:articles) do
+              create_list(
+                :ticket_article, 1, :outbound_email, ticket: ticket, to: to, cc: cc,
+                preferences: {
+                  'highlight' => 'type:TextRange|',
+                }
+              )
+            end
+
+            it 'handles invalid highlight data gracefully' do
+              expect(response_articles.first).to include({ 'highlightedTexts' => [] })
+            end
+          end
+
+          context 'with empty highlight data' do
+            let(:articles) do
+              create_list(
+                :ticket_article, 1, :outbound_email, ticket: ticket, to: to, cc: cc,
+                preferences: {
+                  'highlight' => nil,
+                }
+              )
+            end
+
+            it 'handles empty highlight data gracefully' do
+              expect(response_articles.first).to include({ 'highlightedTexts' => [] })
+            end
           end
         end
 

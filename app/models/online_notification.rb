@@ -42,6 +42,9 @@ add a new online notification for this user
   end
 
   def self.add(data)
+    if data[:kind].present?
+      add_standalone(data)
+    end
 
     # lookups
     if data[:type]
@@ -67,6 +70,15 @@ add a new online notification for this user
     }
 
     OnlineNotification.create!(record)
+  end
+
+  def self.add_standalone(data)
+    standalone_notification = OnlineNotificationStandalone.create!(data.slice(:data, :kind))
+    data.except!(:data, :kind)
+
+    data[:type]   = standalone_notification.kind
+    data[:object] = OnlineNotificationStandalone.name
+    data[:o_id]   = standalone_notification.id
   end
 
 =begin
@@ -275,6 +287,18 @@ returns
 
     ApplicationModel.current_transaction.after_commit do
       trigger_subscriptions(user)
+    end
+  end
+
+  def mark_as_seen!
+    return if seen
+
+    update!(seen: true)
+
+    return if !user
+
+    ApplicationModel.current_transaction.after_commit do
+      self.class.trigger_subscriptions(user)
     end
   end
 

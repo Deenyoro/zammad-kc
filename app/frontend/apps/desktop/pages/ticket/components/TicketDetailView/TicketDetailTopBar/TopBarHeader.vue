@@ -93,7 +93,7 @@ const detailViewActiveClasses = computed(() => {
     </CommonBreadcrumb>
 
     <HighlightMenu
-      v-if="isTicketAgent && isTicketEditable && !hideDetails"
+      v-if="isTicketAgent && isTicketEditable"
       class="justify-self-end"
       :style="{ gridTemplate: 'actions' }"
     />

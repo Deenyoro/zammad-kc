@@ -11,6 +11,7 @@ interface Props {
 defineProps<Props>()
 
 defineEmits<{
+  visited: [OnlineNotification]
   seen: [OnlineNotification]
   remove: [OnlineNotification]
 }>()
@@ -26,6 +27,7 @@ defineEmits<{
         v-for="notification in list"
         :key="notification.id"
         :notification="notification"
+        @visited="$emit('visited', $event)"
         @seen="$emit('seen', $event)"
         @remove="$emit('remove', $event)"
       />

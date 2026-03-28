@@ -561,7 +561,8 @@ returns
     end
 
     Rails.logger.info "Send mail too large postmaster message to: #{reply_mail[:to]}"
-    reply_mail[:from] = EmailAddress.find_by(channel: channel).email
+    email_address = EmailAddress.find_by(channel: channel)
+    reply_mail[:from] = Channel::EmailBuild.recipient_line(email_address.name, email_address.email)
     channel.deliver(reply_mail)
   rescue => e
     Rails.logger.error "Error during sending of postmaster oversized email auto-reply: #{e.inspect}\n#{e.backtrace}"
