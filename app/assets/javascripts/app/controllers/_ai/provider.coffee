@@ -44,25 +44,33 @@ class ChannelAiProvider extends App.ControllerTabs
   didChangeHeaderSwitch: ->
     value = @aiProviderSetting.prop('checked')
 
-    App.Setting.set('ai_provider', value, done: =>
-      # If the provider is being enabled but not yet configured, disable it again and show a warning message.
-      if value and not @controllerList[0].form?.current_provider
-        App.Setting.set('ai_provider', false, done: =>
-          @renderHeader(false)
+    App.Setting.set(
+      'ai_provider',
+      value,
+      done: =>
+        @notify(
+          type: 'success'
+          msg: if value
+            __('AI provider enabled successfully.')
+          else
+            __('AI provider disabled successfully.')
+        )
+      fail: (settings, details) =>
+        # If the provider not yet configured, enabling it may fail due to invalid configuration.
+        #   Turn it off again and show a warning message.
+        @renderHeader(false)
+        @log 'error', details.error_human || details.error || details
+        if details.error is 'AI provider is missing'
           @notify(
             type: 'warning'
             msg: __('Please set up the provider before proceeding under the settings tab.')
           )
-        )
-        return
-
-      @notify(
-        type: 'success'
-        msg: if value
-          __('AI provider enabled successfully.')
         else
-          __('AI provider disabled successfully.')
-      )
+          @notify(
+            type:    'error'
+            msg:     details.error_human || details.error || __('The setting could not be updated.')
+            timeout: 6000
+          )
     )
 
 class AiProviderSettings extends App.Controller
@@ -78,6 +86,9 @@ class AiProviderSettings extends App.Controller
     App.Setting.unsubscribe(@subscribeId)
 
   render: =>
+    return if _.isEqual(@aiProviderConfigAtRender, App.Setting.get('ai_provider_config'))
+    @aiProviderConfigAtRender = App.Setting.get('ai_provider_config')
+
     @html App.view('ai/provider')(
       description: @description,
     )
@@ -289,9 +300,9 @@ class ProviderForm extends App.Controller
 
   render: (provider) ->
     config = App.Setting.get('ai_provider_config') || {}
-    @current_provider = if provider isnt undefined then provider else config['provider']
+    current_provider = if provider isnt undefined then provider else config['provider']
 
-    configure_attributes = @providerConfiguration(@current_provider, config)
+    configure_attributes = @providerConfiguration(current_provider, config)
 
     @providerSettingsForm?.releaseController()
     @providerSettingsForm = new App.ControllerForm(
@@ -340,8 +351,9 @@ class ProviderForm extends App.Controller
       params.token = savedProviderConfig.token
 
     App.Setting.set('ai_provider_config', params, done: =>
-      # If the provider configuration is being updated, do not touch the provider switch.
-      if has_provider
+      # If the provider configuration is being updated, or the provider is already disabled,
+      #   do not touch the provider switch.
+      if has_provider or not App.Config.get('ai_provider')
         App.Event.trigger 'notify', {
           type:    'success'
           msg:     __('Update successful.')

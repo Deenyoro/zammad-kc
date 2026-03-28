@@ -86,6 +86,7 @@ const { organizationDisplayName } = useOrganizationEntity(organization)
         class="rounded-sm outline-offset-1 focus-visible:outline-2!"
         :popover-config="{ orientation: 'left' }"
         :organization="user.organization"
+        z-index="52"
         trigger-link-class="self-start"
         trigger-link-active-class="outline-2! outline-blue-800! hover:outline-blue-800!"
       >

@@ -129,10 +129,12 @@ describe('correctly adds signature', { retries: 2 }, () => {
   })
 
   it('add signature before marker', () => {
-    const originalBody = html`<p dir="auto" data-marker="signature-before"></p>
+    const originalBody = html`
+      <p dir="auto" data-marker="signature-before"></p>
       <blockquote type="cite">
         <p dir="auto">Subject: Welcome to Zammad!</p>
-      </blockquote>`
+      </blockquote>
+    `
 
     mountEditor({
       value: originalBody,
@@ -194,11 +196,13 @@ describe('correctly adds signature', { retries: 2 }, () => {
   it('adds new top-level signature when quoted content already contains a signature', () => {
     // Simulate replying to an email that already contains a signature in its quoted content.
     // The signature inside the blockquote must NOT prevent the new signature from being added.
-    const originalBody = html`<p dir="auto" data-marker="signature-before"></p>
+    const originalBody = html`
+      <p dir="auto" data-marker="signature-before"></p>
       <blockquote type="cite">
         <p dir="auto">Previous email content</p>
         <div data-signature="true" data-signature-id="1">Old Signature In Quote</div>
-      </blockquote>`
+      </blockquote>
+    `
 
     mountEditor({
       value: originalBody,

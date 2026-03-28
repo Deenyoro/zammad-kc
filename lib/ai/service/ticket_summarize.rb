@@ -21,15 +21,25 @@ class AI::Service::TicketSummarize < AI::Service
     true
   end
 
+  # It can happen that in rare situations that the conversation summary is returned
+  # as a string, improve the situation with a small mapper.
+  def post_transform_result(result)
+    conversation_summary = result['conversation_summary']
+    return result if conversation_summary.is_a?(Array)
+
+    result['conversation_summary'] = Array(conversation_summary)
+    result
+  end
+
   def validate_result!(result)
     raise InvalidResultKeysError if !result.key?('language')
 
-    optional_keys = %w[
+    required_keys = %w[
       customer_request
       conversation_summary
     ]
 
-    raise InvalidResultKeysError if !optional_keys.intersect?(result.keys)
+    raise InvalidResultKeysError if !required_keys.intersect?(result.keys)
   end
 
   private

@@ -14,11 +14,12 @@ RSpec.describe AI::Provider::Anthropic, integration: true, required_envs: %w[ANT
     setting = Setting.find_by(name: 'ai_provider_config')
     setting.update!(preferences: {})
 
-    Setting.set('ai_provider', 'anthropic')
     Setting.set('ai_provider_config', {
                   token:    ENV['ANTHROPIC_API_KEY'],
                   provider: 'anthropic',
                 })
+
+    Setting.set('ai_provider', true)
   end
 
   include_examples 'provider/ping!'

@@ -96,9 +96,9 @@ class SessionsController < ApplicationController
     auth = request.env['omniauth.auth']
 
     redirect_url = if request.env['omniauth.origin']&.include?('/mobile')
-                     '/mobile'
+                     "/mobile#{omniauth_redirect_path}"
                    elsif request.env['omniauth.origin']&.include?('/desktop')
-                     '/desktop'
+                     "/desktop#{omniauth_redirect_path}"
                    else
                      '/#'
                    end
@@ -360,5 +360,9 @@ class SessionsController < ApplicationController
     render json: { url: url }
   rescue => e
     Rails.logger.error "SAML SLO failed: #{e.message}"
+  end
+
+  def omniauth_redirect_path
+    request.env['omniauth.params']['redirect'] || ''
   end
 end

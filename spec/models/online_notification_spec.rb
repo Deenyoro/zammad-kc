@@ -52,6 +52,37 @@ RSpec.describe OnlineNotification, type: :model do
         end
       end
     end
+
+    describe 'adding a standalone notification' do
+      let(:user) { create(:agent) }
+      let(:data) do
+        {
+          'total'        => 123,
+          'failed_count' => 1,
+        }
+      end
+
+      let(:notification) do
+        described_class.add(
+          user_id:       user.id,
+          kind:          'bulk_job',
+          seen:          false,
+          data:,
+          created_by_id: 1,
+        )
+      end
+
+      it 'adds a notification and related standalone record' do
+        expect(notification).to have_attributes(
+          user:,
+          seen:           false,
+          related_object: have_attributes(
+            data:,
+            kind: 'bulk_job'
+          )
+        )
+      end
+    end
   end
 
   describe '.list' do

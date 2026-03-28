@@ -17,8 +17,7 @@ const rule = require('../../../lib/rules/zammad-tailwind-ltr.js')
 // Tests
 //------------------------------------------------------------------------------
 
-const error =
-  'When positioning classes are used, they must be prefixed with ltr/rtl.'
+const error = 'When positioning classes are used, they must be prefixed with ltr/rtl.'
 
 const ruleTester = new RuleTester()
 ruleTester.run('zammad-tailwind-ltr', rule, {

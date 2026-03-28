@@ -137,6 +137,22 @@ RSpec.describe TicketBulkUpdateJob do
           .with({ status: 'succeeded', total: 12, failed_count: 0 }, scope: user.id)
       end
 
+      it 'creates online notification after all tickets are updated' do
+        described_class
+          .perform_now(user:, perform:, ticket_ids: tickets.slice(10..).pluck(:id), total: 12, processed_count: 10)
+
+        expect(OnlineNotification.where(type_lookup_id: TypeLookup.by_name('bulk_job'), user_id: user).last)
+          .to have_attributes(
+            related_object: have_attributes(
+              data: {
+                'total'        => 12,
+                'failed_count' => 0
+              },
+              kind: 'bulk_job'
+            )
+          )
+      end
+
       it 'calls final subscription with failed ticket count if some updates in earlier batch failed' do
         allow(Gql::Subscriptions::User::Current::Ticket::BulkUpdateStatusUpdates)
           .to receive(:trigger)
@@ -147,6 +163,22 @@ RSpec.describe TicketBulkUpdateJob do
         expect(Gql::Subscriptions::User::Current::Ticket::BulkUpdateStatusUpdates)
           .to have_received(:trigger)
           .with({ status: 'failed', total: 12, failed_count: 1 }, scope: user.id)
+      end
+
+      it 'creates online notification with failed ticket count if some updates in earlier batch failed' do
+        described_class
+          .perform_now(user:, perform:, ticket_ids: tickets.slice(10..).pluck(:id), total: 12, failed_ticket_ids: [123])
+
+        expect(OnlineNotification.where(type_lookup_id: TypeLookup.by_name('bulk_job'), user_id: user).last)
+          .to have_attributes(
+            related_object: have_attributes(
+              data: {
+                'total'        => 12,
+                'failed_count' => 1
+              },
+              kind: 'bulk_job'
+            )
+          )
       end
     end
   end

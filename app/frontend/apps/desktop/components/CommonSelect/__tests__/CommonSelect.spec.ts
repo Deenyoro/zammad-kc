@@ -34,10 +34,12 @@ const renderSelect = (props: Props, modelValue?: Ref) => {
       ...props,
     },
     slots: {
-      default: html` <template #default="{ open, focus }">
-        <button @click="open()">Open Select</button>
-        <button @click="focus()">Move Focus</button>
-      </template>`,
+      default: html`
+        <template #default="{ open, focus }">
+          <button @click="open()">Open Select</button>
+          <button @click="focus()">Move Focus</button>
+        </template>
+      `,
     },
     vModel: {
       modelValue,

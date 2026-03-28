@@ -546,6 +546,12 @@ class CreateBase < ActiveRecord::Migration[4.2]
     add_foreign_key :online_notifications, :users, column: :created_by_id
     add_foreign_key :online_notifications, :users, column: :updated_by_id
 
+    create_table :online_notification_standalones do |t|
+      t.jsonb 'data', null: false, default: {}
+      t.string 'kind', null: false
+      t.timestamps limit: 3, null: false
+    end
+
     create_table :schedulers do |t|
       t.string :name,                     limit: 250,   null: false
       t.string :method,                   limit: 250,   null: false

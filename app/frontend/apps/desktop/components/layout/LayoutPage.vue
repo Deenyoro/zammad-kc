@@ -92,8 +92,8 @@ const onResetWidth = () => {
       :max-width="maxSidebarWidth"
       :min-width="minSidebarWidth"
       :classes="{
-        collapseButton: 'z-60',
-        resizeLine: 'z-60',
+        collapseButton: 'z-51',
+        resizeLine: 'z-51',
       }"
       :collapsible="!isQuickSearchActive"
       resizable

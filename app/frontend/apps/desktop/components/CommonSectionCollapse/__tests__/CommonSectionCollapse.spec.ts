@@ -24,9 +24,11 @@ const renderCommonSectionCollapse = (
       modelValue,
     },
     slots: {
-      default: html` <template #default="{ headerId }">
-        <nav :aria-labelledby="headerId" />
-      </template>`,
+      default: html`
+        <template #default="{ headerId }">
+          <nav :aria-labelledby="headerId" />
+        </template>
+      `,
     },
     store: true,
   })

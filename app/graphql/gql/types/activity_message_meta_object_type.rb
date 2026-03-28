@@ -5,6 +5,7 @@ module Gql::Types
     description 'Objects used to build activity message'
     possible_types Gql::Types::UserType, Gql::Types::OrganizationType,
                    Gql::Types::DataPrivacyTaskType, Gql::Types::GroupType, Gql::Types::RoleType,
-                   Gql::Types::TicketType, Gql::Types::Ticket::ArticleType
+                   Gql::Types::TicketType, Gql::Types::Ticket::ArticleType,
+                   Gql::Types::OnlineNotificationStandaloneType
   end
 end

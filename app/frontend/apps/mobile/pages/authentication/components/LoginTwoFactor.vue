@@ -165,7 +165,7 @@ onMounted(async () => {
   >
     <CommonLoader :loading="loading" :error="error" />
 
-    <div class="pt-2 pb-2 leading-4 font-medium text-gray">
+    <div class="text-gray pt-2 pb-2 leading-4 font-medium">
       <template v-if="error && twoFactorLoginOptions.errorHelpMessage">
         {{ $t(twoFactorLoginOptions.errorHelpMessage) }}
       </template>

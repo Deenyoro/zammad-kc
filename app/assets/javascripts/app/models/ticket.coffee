@@ -120,7 +120,7 @@ class App.Ticket extends App.Model
       when 'update.received_merge'
         App.i18n.translateContent('Another ticket was merged into ticket |%s|', item.title)
       else
-        "Unknow action for (#{@objectDisplayName()}/#{item.type}), extend activityMessage() of model."
+        "Unknown action for (#{@objectDisplayName()}/#{item.type}), extend activityMessage() of model."
 
   # apply macro
   @macro: (params) ->

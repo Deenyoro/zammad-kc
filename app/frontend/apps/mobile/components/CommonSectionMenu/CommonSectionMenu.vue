@@ -60,7 +60,7 @@ const showLabel = computed(() => {
       :is="actionLink ? 'CommonLink' : 'div'"
       v-if="actionLabel"
       :link="actionLink"
-      class="cursor-pointer text-blue ltr:pr-4 rtl:pl-4"
+      class="text-blue cursor-pointer ltr:pr-4 rtl:pl-4"
       @click="clickOnAction"
     >
       {{ i18n.t(actionLabel) }}

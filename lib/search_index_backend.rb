@@ -774,8 +774,10 @@ generate url for index or document access (only for internal use)
 
     if options[:condition].present?
       selector_query = SearchIndexBackend.selector2query(index, options[:condition], {}, nil)
-      data[:query][:bool][:must] += Array.wrap(selector_query[:query][:bool][:must])
-      data[:query][:bool][:must_not] += Array.wrap(selector_query[:query][:bool][:must_not])
+      if selector_query.dig(:query, :bool).present?
+        data[:query][:bool][:must] += Array.wrap(selector_query[:query][:bool][:must])
+        data[:query][:bool][:must_not] += Array.wrap(selector_query[:query][:bool][:must_not])
+      end
     end
 
     # do not return attachments since they could contain invalid utf-8 #5575

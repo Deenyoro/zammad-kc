@@ -16,9 +16,7 @@ export const ensureGraphqlId = (type: string, id: number | string): string => {
   return convertToGraphQLId(type, id)
 }
 
-export const parseGraphqlId = (
-  id: string,
-): { relation: string; id: number } => {
+export const parseGraphqlId = (id: string): { relation: string; id: number } => {
   const [relation, idString] = id.slice('gid://zammad/'.length).split('/')
 
   return {
