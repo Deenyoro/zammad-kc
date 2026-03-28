@@ -1,0 +1,31 @@
+diff --git a/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts b/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts
+index 15e243a412..a810f2bd62 100644
+--- a/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts
++++ b/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts
+@@ -65,7 +65,7 @@ export const useTicketEditForm = (
+     }
+   })
+ 
+-  const articleTypeFields = ['to', 'cc', 'subject', 'body', 'attachments', 'security'] as const
++  const articleTypeFields = ['to', 'cc', 'bcc', 'subject', 'body', 'attachments', 'security'] as const
+ 
+   const articleTypeFieldProps = articleTypeFields.reduce((acc, field) => {
+     acc[field] = {
+@@ -194,6 +194,17 @@ export const useTicketEditForm = (
+           multiple: true,
+         },
+       },
++      {
++        if: '$currentArticleType.fields.bcc',
++        name: 'bcc',
++        label: __('BCC'),
++        type: 'recipient',
++        validation: articleTypeFieldProps.bcc.validation,
++        props: {
++          contact: recipientContact,
++          multiple: true,
++        },
++      },
+       {
+         if: '$currentArticleType.fields.subject',
+         name: 'subject',

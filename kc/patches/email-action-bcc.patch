@@ -1,0 +1,12 @@
+diff --git a/app/frontend/shared/entities/ticket-article/action/plugins/email.ts b/app/frontend/shared/entities/ticket-article/action/plugins/email.ts
+index 091fc00a92..ce15cf932a 100644
+--- a/app/frontend/shared/entities/ticket-article/action/plugins/email.ts
++++ b/app/frontend/shared/entities/ticket-article/action/plugins/email.ts
+@@ -129,6 +129,7 @@ const actionPlugin: TicketArticleActionPlugin = {
+     const fields: Partial<TicketFieldsType> = {
+       to: { required: true },
+       cc: {},
++      bcc: {}, // KC: BCC field
+       subject: {},
+       body: {
+         required: true,

@@ -32,7 +32,6 @@ export interface TicketArticleFormValues {
   body?: string
   internal?: boolean
   cc?: string[]
-  bcc?: string[]
   subtype?: string
   inReplyTo?: string
   to?: string[]
@@ -101,7 +100,6 @@ export interface TicketArticleTypeProps {
 export interface TicketFieldsType {
   to: TicketArticleTypeProps
   cc: TicketArticleTypeProps
-  bcc: TicketArticleTypeProps
   subject: TicketArticleTypeProps
   body: TicketArticleTypeProps
   attachments: TicketArticleTypeProps
@@ -112,7 +110,6 @@ export interface TicketFieldsType {
 export interface TicketArticleTypeFields {
   to: TicketArticleTypeReactiveFieldProps
   cc: TicketArticleTypeReactiveFieldProps
-  bcc: TicketArticleTypeReactiveFieldProps
   subject: TicketArticleTypeReactiveFieldProps
   body: TicketArticleTypeReactiveFieldProps
   attachments: TicketArticleTypeReactiveFieldProps
