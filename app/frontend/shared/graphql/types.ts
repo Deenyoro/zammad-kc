@@ -4263,8 +4263,6 @@ export type TicketArticleInput = {
   body?: InputMaybe<Scalars['String']['input']>;
   /** The article CC address. */
   cc?: InputMaybe<Array<Scalars['String']['input']>>;
-  /** The article BCC address. */
-  bcc?: InputMaybe<Array<Scalars['String']['input']>>;
   /** The article content type. */
   contentType?: InputMaybe<Scalars['String']['input']>;
   /** The article sender address. */

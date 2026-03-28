@@ -1,0 +1,66 @@
+diff --git a/app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue b/app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue
+index 452bf48d32..5e23647351 100644
+--- a/app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue
++++ b/app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue
+@@ -6,10 +6,12 @@ import { computed } from 'vue'
+ import { NotificationTypes } from '#shared/components/CommonNotifications/types.ts'
+ import { useNotifications } from '#shared/components/CommonNotifications/useNotifications.ts'
+ import type { FormRef } from '#shared/components/Form/types.ts'
++import { useKcPreserveTextColor } from '#shared/composables/useKcPreserveTextColor.ts'
+ import { useMacros } from '#shared/entities/macro/composables/useMacros.ts'
+ import type { MacroById } from '#shared/entities/macro/types.ts'
+ import { useTicketSharedDraftZoomCreateMutation } from '#shared/entities/ticket-shared-draft-zoom/graphql/mutations/ticketSharedDraftZoomCreate.api.ts'
+ import { MutationHandler } from '#shared/server/apollo/handler/index.ts'
++import { useApplicationStore } from '#shared/stores/application.ts'
+ 
+ import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
+ import { useDialog } from '#desktop/components/CommonDialog/useDialog.ts'
+@@ -43,6 +45,10 @@ const { macrosLoaded, macros } = useMacros(groupIds)
+ 
+ const { notify } = useNotifications()
+ 
++// KC: "Send with text color" — preserves inline color styles in outbound email
++const { setPreserveTextColor } = useKcPreserveTextColor()
++const { config } = useApplicationStore()
++
+ const groupLabels = {
+   drafts: __('Drafts'),
+   macros: __('Macros'),
+@@ -89,7 +95,20 @@ const actionItems = computed(() => {
+     },
+   }
+ 
+-  if (!macros.value) return [saveAsDraftAction]
++  // KC: "Send with text color" action — only shown when color stripping is enabled
++  const sendWithColorAction: MenuItem = {
++    label: __('Send with text color'),
++    groupLabel: __('Color'),
++    icon: 'editor-text-color',
++    key: 'send-with-color',
++    show: () => !!config.kc_strip_email_text_color && articleReplyIsPresent.value,
++    onClick: () => {
++      setPreserveTextColor()
++      emit('submit', new MouseEvent('click'))
++    },
++  }
++
++  if (!macros.value) return [saveAsDraftAction, sendWithColorAction]
+ 
+   const macroMenu: MenuItem[] = macros.value.map((macro) => ({
+     key: macro.id,
+@@ -100,13 +119,13 @@ const actionItems = computed(() => {
+     onClick: () => emit('execute-macro', macro),
+   }))
+ 
+-  return [saveAsDraftAction, ...(props.groupId ? macroMenu : [])]
++  return [saveAsDraftAction, sendWithColorAction, ...(props.groupId ? macroMenu : [])]
+ })
+ </script>
+ 
+ <template>
+   <SplitButton
+-    v-if="!macrosLoaded || canUseDraft || macros?.length"
++    v-if="!macrosLoaded || canUseDraft || macros?.length || config.kc_strip_email_text_color"
+     size="large"
+     variant="submit"
+     type="button"

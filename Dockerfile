@@ -62,8 +62,9 @@ RUN pnpm install --frozen-lockfile
 # Copy application code
 COPY . .
 
-# KC: Apply custom code overlay and install custom gems
+# KC: Apply custom code overlay, patches, and install custom gems
 RUN if [ -x kc/script/apply-overlay.sh ]; then kc/script/apply-overlay.sh; fi
+RUN if [ -x kc/script/apply-patches.sh ]; then kc/script/apply-patches.sh; fi
 RUN if [ -f Gemfile.local ]; then BUNDLE_DEPLOYMENT="" bundle install && rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache; fi
 
 # Append build information to the Zammad VERSION.

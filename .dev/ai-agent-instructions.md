@@ -134,7 +134,12 @@ See `kc/README.md` for the full developer guide with examples.
 
 ### How It Works
 
-All custom code lives in `kc/`. During Docker build, `kc/script/apply-overlay.sh` copies files into the Zammad app tree using `rsync --ignore-existing` (never overwrites upstream files, includes collision detection that aborts on conflicts). The `kc/` directory is deleted from the final image.
+All custom code lives in `kc/`. During Docker build, two scripts run in sequence:
+
+1. `kc/script/apply-overlay.sh` — copies NEW files into the Zammad app tree using `rsync --ignore-existing` (never overwrites upstream files, includes collision detection that aborts on conflicts).
+2. `kc/script/apply-patches.sh` — applies unified diffs from `kc/patches/` to EXISTING upstream files (for features like BCC, "Send with text color", and bulk merge that must modify upstream frontend code). If a patch fails to apply (e.g., upstream changed the file), the build fails loudly.
+
+The `kc/` directory is deleted from the final image.
 
 | Layer | Mechanism |
 |-------|-----------|
@@ -143,8 +148,10 @@ All custom code lives in `kc/`. During Docker build, `kc/script/apply-overlay.sh
 | Routes | `kc/config/routes/kc_routes.rb` auto-discovered by Zammad's route glob |
 | Legacy Frontend | CoffeeScript controllers registered via `App.Config.set` |
 | Modern Frontend | Vite `import.meta.glob` discovers `pages/kc/routes.ts` |
+| Frontend Patches | Unified diffs in `kc/patches/` applied at build time via `apply-patches.sh` |
 | Gems | `kc/Gemfile.local` loaded natively by Zammad's `Gemfile` |
 | Migrations | Standard Rails migrations in `kc/db/migrate/` |
+| Deploy configs | `kc/deploy/` — docker-compose.yml and .env.example (not copied to app tree) |
 
 ### Current KC Features
 
@@ -213,12 +220,15 @@ end
 
 **Legacy frontend (CoffeeScript):** Controllers extend `App.Controller` or `App.ControllerModal`. Templates are `.jst.eco` files. Navigation registered via `App.Config.set('KcFeatureName', { prio: N, ... })`. Settings accessed via `App.Setting.get('kc_setting_name')`.
 
+**Frontend patches:** When KC must modify an existing upstream TypeScript/Vue file (no `prepend` equivalent), use a unified diff in `kc/patches/`. Generate with `git diff upstream/develop HEAD -- <file>`. The build-time `apply-patches.sh` script applies these before asset compilation. After merging upstream, regenerate any broken patches.
+
 ### Key Rules
 
 1. **Never create a file in `kc/` that has the same path as an upstream Zammad file** — `rsync --ignore-existing` would silently skip it.
 2. **Always use the `Kc::` namespace** for new Ruby classes.
 3. **Register every concern prepend in `kc_loader.rb`** — it's the single source of truth for what KC modifies upstream.
 4. **Keep `kc/` self-contained** — only `Dockerfile` and `script/build/cleanup.sh` are modified outside `kc/`.
+5. **Never directly edit upstream frontend files** — use `kc/patches/` for modifications to existing upstream TypeScript/Vue files. New KC frontend files go in the overlay and are discovered via `import.meta.glob`.
 
 ## Code Style Notes
 
