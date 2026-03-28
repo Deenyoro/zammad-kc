@@ -7,7 +7,6 @@ import { transformEditorHtml } from '#shared/components/Form/fields/FieldEditor/
 import type { FormValues, FormRef, FormSubmitData } from '#shared/components/Form/types.ts'
 import { getNodeByName } from '#shared/components/Form/utils.ts'
 import { useCheckBodyAttachmentReference } from '#shared/composables/form/useCheckBodyAttachmentReference.ts'
-import { useKcPreserveTextColor } from '#shared/composables/useKcPreserveTextColor.ts'
 import { useObjectAttributeFormData } from '#shared/entities/object-attributes/composables/useObjectAttributeFormData.ts'
 import { useObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
 import { useTicketUpdateMutation } from '#shared/entities/ticket/graphql/mutations/update.api.ts'
@@ -111,32 +110,18 @@ export const useTicketEdit = (
     EnumObjectManagerObjects.Ticket,
   )
 
-  // KC: Consume the "Send with text color" flag if it was set
-  const { consumePreserveTextColor } = useKcPreserveTextColor()
-
-  const processArticle = (
-    formId: string,
-    article: TicketArticleReceivedFormValues | undefined,
-    shouldPreserveTextColor = false,
-  ) => {
+  const processArticle = (formId: string, article: TicketArticleReceivedFormValues | undefined) => {
     if (!article) return null
 
     const contentType = getNodeByName(formId, 'body')?.context?.contentType || 'text/html'
 
     if (contentType === 'text/html') article.body = transformEditorHtml(article.body)
 
-    // KC: If "Send with text color" was clicked, inject the preference so the
-    // backend skips inline color stripping for this specific article.
-    const preferences: Record<string, unknown> | undefined = shouldPreserveTextColor
-      ? { kc_preserve_text_color: true }
-      : undefined
-
     return {
       type: article.articleType,
       body: article.body,
       internal: article.internal,
       cc: article.cc,
-      bcc: article.bcc,
       to: article.to,
       subject: article.subject,
       subtype: article.subtype,
@@ -146,7 +131,6 @@ export const useTicketEdit = (
       security: article.security,
       timeUnit: article.timeUnit,
       accountedTimeTypeId: article.accountedTimeTypeId,
-      preferences,
     }
   }
 
@@ -157,9 +141,6 @@ export const useTicketEdit = (
     formData: FormSubmitData<TicketUpdateFormData>,
     meta?: TicketUpdateMetaInput,
   ) => {
-    // KC: Consume the flag immediately so it doesn't leak to subsequent submits
-    const shouldPreserveTextColor = consumePreserveTextColor()
-
     if (!ticket.value || !form.value) return undefined
 
     if (!formData.owner_id) {
@@ -176,7 +157,7 @@ export const useTicketEdit = (
       return undefined
     }
 
-    const article = processArticle(form.value.formId, formArticle, shouldPreserveTextColor)
+    const article = processArticle(form.value.formId, formArticle)
 
     const { internalObjectAttributeValues, additionalObjectAttributeValues } =
       useObjectAttributeFormData(

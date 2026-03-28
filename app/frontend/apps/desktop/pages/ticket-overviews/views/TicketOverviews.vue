@@ -9,8 +9,6 @@ import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import LayoutSidebar from '#desktop/components/layout/LayoutSidebar.vue'
 import TicketBulkEditButton from '#desktop/components/Ticket/TicketBulkEditButton.vue'
 import { useTicketBulkEdit } from '#desktop/components/Ticket/TicketBulkEditFlyout/useTicketBulkEdit.ts'
-import KcTicketBulkMergeButton from '#desktop/components/Ticket/KcTicketBulkMergeButton.vue'
-import { useKcBulkMerge } from '#desktop/components/Ticket/KcTicketBulkMergeFlyout/useKcBulkMerge.ts'
 import TicketList from '#desktop/pages/ticket-overviews/components/TicketList.vue'
 import TicketOverviewsSidebar from '#desktop/pages/ticket-overviews/components/TicketOverviewsSidebar.vue'
 import { useTicketOverviews } from '#desktop/pages/ticket-overviews/composables/useTicketOverviews.ts'
@@ -87,7 +85,6 @@ const breadcrumbItems = computed(() => [
 ])
 
 const { checkedTicketIds, openBulkEditFlyout } = useTicketBulkEdit()
-const { openBulkMergeFlyout } = useKcBulkMerge(checkedTicketIds)
 </script>
 
 <template>
@@ -109,10 +106,6 @@ const { openBulkMergeFlyout } = useKcBulkMerge(checkedTicketIds)
       content-padding
     >
       <template #headerRight>
-        <KcTicketBulkMergeButton
-          :checked-ticket-ids="checkedTicketIds"
-          @open-flyout="openBulkMergeFlyout"
-        />
         <TicketBulkEditButton
           :checked-ticket-ids="checkedTicketIds"
           :total-count="currentOverviewCount"

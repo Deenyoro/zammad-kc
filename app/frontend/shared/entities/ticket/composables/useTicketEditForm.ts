@@ -65,7 +65,7 @@ export const useTicketEditForm = (
     }
   })
 
-  const articleTypeFields = ['to', 'cc', 'bcc', 'subject', 'body', 'attachments', 'security'] as const
+  const articleTypeFields = ['to', 'cc', 'subject', 'body', 'attachments', 'security'] as const
 
   const articleTypeFieldProps = articleTypeFields.reduce((acc, field) => {
     acc[field] = {
@@ -189,17 +189,6 @@ export const useTicketEditForm = (
         label: __('CC'),
         type: 'recipient',
         validation: articleTypeFieldProps.cc.validation,
-        props: {
-          contact: recipientContact,
-          multiple: true,
-        },
-      },
-      {
-        if: '$currentArticleType.fields.bcc',
-        name: 'bcc',
-        label: __('BCC'),
-        type: 'recipient',
-        validation: articleTypeFieldProps.bcc.validation,
         props: {
           contact: recipientContact,
           multiple: true,

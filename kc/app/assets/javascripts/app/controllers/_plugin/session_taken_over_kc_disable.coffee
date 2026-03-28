@@ -1,4 +1,4 @@
-# KC: Disable session takeover — defense-in-depth frontend no-op.
+# KC: Disable session takeover, defense-in-depth frontend no-op.
 #
 # Sprockets loads files alphabetically via `require_tree ./controllers`.
 # This file (session_taken_over_kc_disable.coffee) loads after
@@ -11,6 +11,6 @@
 class SessionTakeOverKcDisable extends App.Controller
   constructor: ->
     super
-    # intentional no-op — session takeover is disabled
+    # intentional no-op, session takeover is disabled
 
 App.Config.set('session_taken_over', SessionTakeOverKcDisable, 'Plugins')
