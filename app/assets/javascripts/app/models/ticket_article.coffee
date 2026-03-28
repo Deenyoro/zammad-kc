@@ -51,7 +51,7 @@ class App.TicketArticle extends App.Model
       return App.i18n.translateContent('%s updated article for |%s|', item.created_by.displayName(), item.title)
     else if item.type is 'update.reaction'
       return App.i18n.translateContent('%s reacted with a %s to message from %s |%s|', item.objectNative.preferences?.whatsapp?.reaction?.author, item.objectNative.preferences?.whatsapp?.reaction?.emoji, item.created_by.displayName(), App.Utils.truncate(item.objectNative.body) or '-')
-    return "Unknow action for (#{@objectDisplayName()}/#{item.type}), extend activityMessage() of model."
+    return "Unknown action for (#{@objectDisplayName()}/#{item.type}), extend activityMessage() of model."
 
   @contentAttachments: (article) ->
     return [] if !article

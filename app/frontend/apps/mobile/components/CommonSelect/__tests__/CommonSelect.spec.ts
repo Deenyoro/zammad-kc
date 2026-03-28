@@ -31,9 +31,11 @@ const renderSelect = (props: Props, modelValue?: Ref) => {
   return renderComponent(CommonSelect, {
     props,
     slots: {
-      default: html` <template #default="{ open }">
-        <button @click="open()">Open select</button>
-      </template>`,
+      default: html`
+        <template #default="{ open }">
+          <button @click="open()">Open select</button>
+        </template>
+      `,
     },
     vModel: {
       modelValue,

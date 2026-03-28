@@ -1,8 +1,4 @@
-query organization(
-  $organizationId: ID!
-  $first: Int
-  $after: String
-) {
+query organization($organizationId: ID!, $first: Int, $after: String) {
   organization(organizationId: $organizationId) {
     ...organizationAttributes
     ...organizationMembersWithFetchMore

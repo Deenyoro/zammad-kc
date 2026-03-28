@@ -43,7 +43,7 @@ App.RichtextBubbleMenu =
         actionKey = actionNode.dataset.key
         activeAction = _.find(@allActions(), (item) -> item.key is actionKey)
 
-        activeAction.action(e, ce, selection, el) if activeAction
+        activeAction.action(e, ce, selection, el, closeDropdown) if activeAction
 
         return false
       )
@@ -61,8 +61,8 @@ App.RichtextBubbleMenu =
 
       setTimeout ->
         $(window).off('click.bubble-menu, keyup.bubble-menu').on 'click.bubble-menu, keyup.bubble-menu', (e) ->
-          return if e.type is 'keyup' and e.key.startsWith('Shift')
-          return if e.target.closest('.bubble-menu') # keep the bubble menu open if click is on the menu itself
+          return if not window.getSelection().isCollapsed # keep the bubble menu open if there is still a selection
+          return if e.target.closest('.bubble-menu') # keep the bubble menu open if the click is on the menu itself
 
           closeDropdown()
           $(window).off('click.bubble-menu, keyup.bubble-menu')

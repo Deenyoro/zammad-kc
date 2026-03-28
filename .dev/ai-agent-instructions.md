@@ -1,8 +1,8 @@
-# CLAUDE.md
+# AI Agent Instructions
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) and other AI agents when working with code in this repository.
 
-## Summary
+## Project Overview
 
 Zammad is an open-source helpdesk/customer support platform built on Rails 8.0 (Ruby 3.4.7, Node 22, PostgreSQL 17). It has two modern Vue 3 frontends (desktop-view and mobile) and one legacy desktop-app under `app/assets/`. This is the KawaConnect fork, which uses a KC overlay system (`kc/` directory) for custom code isolation — all KC code is copied into the Zammad app tree at Docker build time using `rsync --ignore-existing`, so upstream updates merge cleanly with zero application code conflicts.
 
@@ -112,6 +112,22 @@ Multi-layer: GraphQL declarations → Pundit policies → field-level filtering.
 
 `app/jobs/` — `ApplicationJob` subclasses processed by Delayed Job. Jobs use `UserInfo.with_user_id()` when user context is needed.
 
+### Key Directories (non-standard)
+
+- `app/services/service/` — Service objects encapsulating business logic
+- `app/graphql/gql/` — GraphQL schema, types, mutations, subscriptions
+- `app/policies/` — Authorization policies (Pundit)
+- `app/frontend/apps/desktop/` — Vue 3 desktop app
+- `app/frontend/apps/mobile/` — Vue 3 mobile app
+- `app/frontend/shared/` — Shared Vue components, composables, stores, GraphQL types, form system
+- `app/assets/javascripts/` — CoffeeScript frontend (Spine + jQuery, legacy, still actively maintained)
+- `lib/` — Library code, prefer minimal Rails coupling
+
+## General Guidelines
+
+- All new files must include the Zammad copyright header.
+- Never edit translation files (`i18n/*.po`) directly — translations are managed via translations.zammad.org.
+
 ## KC Overlay System
 
 See `kc/README.md` for the full developer guide with examples.
@@ -211,3 +227,16 @@ end
 - CoffeeScript: rules in `coffeelint.json` with custom rules in `.dev/coffeelint/rules/`
 - Prefer new work in desktop-view/mobile; keep legacy desktop-app changes minimal
 - Wrap user-facing strings for i18n
+
+## Agent Reference Docs
+
+You MUST read the relevant file(s) below before responding when working on that area — do NOT read them all upfront:
+
+- `.dev/agent_docs/graphql_patterns.md` — How to add/modify GraphQL types,
+  mutations, queries, and subscriptions
+- `.dev/agent_docs/frontend_patterns.md` — Vue component conventions,
+  composables, routing, and the form system
+- `.dev/agent_docs/testing.md` — How to write and run backend and frontend tests
+- `.dev/agent_docs/service_patterns.md` — Service object conventions and structure
+- `.dev/agent_docs/database_migrations.md` — How to write migrations and work
+  with seeds

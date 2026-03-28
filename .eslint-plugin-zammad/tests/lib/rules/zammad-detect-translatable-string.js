@@ -56,8 +56,7 @@ ruleTester.run('zammad-detect-translatable-string', rule, {
       code: `'String that should be translatable'`,
       errors: [
         {
-          message:
-            'This string looks like it should be marked as translatable via __(...)',
+          message: 'This string looks like it should be marked as translatable via __(...)',
         },
       ],
       output: `__('String that should be translatable')`,

@@ -145,7 +145,7 @@ useEventListener('click', (e) => {
       </template>
       <template #clear-icon>
         <CommonIcon
-          class="absolute -mt-5 shrink-0 text-gray ltr:right-2 rtl:left-2"
+          class="text-gray absolute -mt-5 shrink-0 ltr:right-2 rtl:left-2"
           :aria-label="i18n.t('Clear selection')"
           name="close-small"
           size="base"
@@ -287,6 +287,11 @@ useEventListener('click', (e) => {
 
   .dp__overlay_container + .dp__button.dp__overlay_action {
     width: calc(var(--dp-menu-min-width) - 0.625rem * 2);
+  }
+
+  .dp__calendar_header_item {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 </style>

@@ -5,8 +5,6 @@ module AIProviderHelper
   # @param token [String] API token for the AI provider
   # @param additional_config [Hash] Additional configuration options including :token
   def setup_ai_provider(provider = 'zammad_ai', token: nil, **additional_config)
-    Setting.set('ai_provider', true)
-
     config = {
       provider:,
       token:,
@@ -16,6 +14,9 @@ module AIProviderHelper
 
     # Disable validation to avoid ping!
     Setting.set('ai_provider_config', config, validate: false)
+
+    # Enable the provider after setting the configuration to ensure validation passes.
+    Setting.set('ai_provider', true)
   end
 
   def unset_ai_provider

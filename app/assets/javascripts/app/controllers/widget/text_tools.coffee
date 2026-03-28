@@ -78,7 +78,7 @@ class App.WidgetTextTools extends App.Controller
   @contextData: (ce) ->
     $(ce.element).data().plugin_texttools?.searchCondition or {}
 
-  @showModal: (e, ce, selection, el) ->
+  @showModal: (e, ce, selection, el, callback) ->
     textToolId = $(e.target).data('id')
 
     new App.TextToolsModal(
@@ -86,10 +86,12 @@ class App.WidgetTextTools extends App.Controller
       contextData: @contextData(ce)
       textTool: App.AITextTool.find(textToolId)
       selectedText: selection.content
-      approve: (result) -> ce.replaceSelection(selection.ranges, result)
+      approve: (result) ->
+        ce.replaceSelection(selection.ranges, result)
+        callback() if callback
     )
 
-  @renderDropdown: (e, ce, selection, el) ->
+  @renderDropdown: (e, ce, selection, el, callback) ->
     bubbleMenuElement = $(e.target).closest('.js-bubbleMenu')
     popupContainerElement = bubbleMenuElement.find('.dropup-container')
 
@@ -107,7 +109,7 @@ class App.WidgetTextTools extends App.Controller
 
     textToolsDropdown.off('mousedown.text-tools-dropdown').on 'mousedown.text-tools-dropdown', '.js-action', (e) ->
       e.preventDefault()
-      App.WidgetTextTools.showModal(e, ce, selection, el)
+      App.WidgetTextTools.showModal(e, ce, selection, el, callback)
       textToolsDropdown.removeClass('open')
       popupContainerElement.parent().removeClass('show-dropdown')
 

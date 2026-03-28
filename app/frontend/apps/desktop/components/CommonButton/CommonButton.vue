@@ -38,6 +38,18 @@ const variantClasses = computed(() => {
         'text-gray-300',
         'dark:text-neutral-400',
       ]
+    case 'tertiary-light':
+      return [
+        'border-1',
+        'dark:border-gray-900',
+        'border-neutral-100',
+        'bg-neutral-50',
+        'hover:bg-neutral-50',
+        'dark:bg-gray-500',
+        'dark:hover:bg-gray-500',
+        'text-stone-200',
+        'dark:text-neutral-500',
+      ]
     case 'submit':
       return ['bg-yellow-300', 'hover:bg-yellow-300', 'text-black']
     case 'danger':

@@ -90,6 +90,6 @@ const tooltipMessages = computed(() => {
         <CommonIcon name="tooltip" size="small" />
       </CommonTooltip>
     </div>
-    <CommonIcon v-if="draggable" name="change-order" size="small" class="shrink-0 text-gray" />
+    <CommonIcon v-if="draggable" name="change-order" size="small" class="text-gray shrink-0" />
   </div>
 </template>

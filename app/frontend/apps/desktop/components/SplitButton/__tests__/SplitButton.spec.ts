@@ -4,6 +4,7 @@ import { within } from '@testing-library/vue'
 
 import { getByIconName } from '#tests/support/components/iconQueries.ts'
 import { renderComponent } from '#tests/support/components/index.ts'
+import { waitForNextTick } from '#tests/support/utils.ts'
 
 import SplitButton, { type Props } from '../SplitButton.vue'
 
@@ -130,5 +131,43 @@ describe('SplitButton.vue', () => {
     })
 
     expect(wrapper.getByRole('button', { name: 'Macro menu' })).toBeInTheDocument()
+  })
+
+  it('uses gap wrapper class for non-tertiary variants', () => {
+    const wrapper = renderSplitButton({
+      variant: 'submit',
+    })
+
+    expect(wrapper.container.firstElementChild).toHaveClass('gap-px')
+  })
+
+  it('applies tertiary-light variant split border classes', () => {
+    const wrapper = renderSplitButton(
+      {
+        variant: 'tertiary-light',
+      },
+      {
+        default: 'Update',
+      },
+    )
+
+    const mainButton = wrapper.getByRole('button', { name: 'Update' })
+
+    expect(wrapper.container.firstElementChild).not.toHaveClass('gap-px')
+    expect(mainButton).toHaveClass('border-r-0!')
+  })
+
+  it('supports caret pointer prop', async () => {
+    // defaults to up
+    const wrapper = renderSplitButton()
+    expect(wrapper.getByIconName('chevron-up')).toBeInTheDocument()
+
+    wrapper.rerender({
+      caretPointer: 'down',
+    })
+
+    await waitForNextTick()
+
+    expect(wrapper.getByIconName('chevron-down')).toBeInTheDocument()
   })
 })

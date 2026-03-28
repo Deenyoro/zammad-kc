@@ -3,7 +3,7 @@
     <%- @item.created_by.avatar() %>
   </a>
   <div class="activity-body">
-    <a class="activity-message js-locationVerify" href="<%- @item.link %>">
+    <a class="activity-message js-locationVerify <%- if !@item.link && @item.seen then 'u-unclickable' %> " href="<%- @item.link %>">
       <span class="activity-text">
         <% if @item.objectNative && @item.objectNative.activityMessage: %>
           <%- @item.objectNative.activityMessage(@item) %>

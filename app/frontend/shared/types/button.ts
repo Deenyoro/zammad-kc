@@ -4,6 +4,7 @@ export type ButtonVariant =
   | 'primary'
   | 'secondary'
   | 'tertiary'
+  | 'tertiary-light'
   | 'submit'
   | 'danger'
   | 'remove'

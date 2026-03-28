@@ -220,7 +220,7 @@ class App.User extends App.Model
       if item.objectNative
         to = item.objectNative.displayName()
       return App.i18n.translateContent('%s ended switch to |%s|!', item.created_by.displayName(), to)
-    return "Unknow action for (#{@objectDisplayName()}/#{item.type}), extend activityMessage() of model."
+    return "Unknown action for (#{@objectDisplayName()}/#{item.type}), extend activityMessage() of model."
 
   ###
 

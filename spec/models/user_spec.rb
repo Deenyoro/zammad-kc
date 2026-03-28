@@ -387,10 +387,90 @@ RSpec.describe User, type: :model do
     end
 
     describe '#check_name' do
-      it 'guesses user first/last name with non-ASCII characters' do
-        user = create(:user, firstname: 'perkūnas ąžuolas', lastname: '')
+      shared_examples 'preserving name' do |expected_firstname, expected_lastname|
+        it 'preserves the given name' do
+          expect(user).to have_attributes(firstname: expected_firstname, lastname: expected_lastname)
+        end
+      end
 
-        expect(user).to have_attributes(firstname: 'Perkūnas', lastname: 'Ąžuolas')
+      context 'without postmaster context' do
+        context 'when only lastname is present' do
+          let(:user) { create(:user, firstname: '', lastname: lastname, email: Faker::Internet.unique.email) }
+
+          context 'with all-uppercase single word' do
+            let(:lastname) { 'TESTUSER' }
+
+            it_behaves_like 'preserving name', '', 'TESTUSER'
+          end
+
+          context 'with all-lowercase single word' do
+            let(:lastname) { 'testuser' }
+
+            it_behaves_like 'preserving name', '', 'testuser'
+          end
+
+          context 'with mixed-case single word' do
+            let(:lastname) { 'McTester' }
+
+            it_behaves_like 'preserving name', '', 'McTester'
+          end
+        end
+
+        context 'when only firstname is present' do
+          let(:user) { create(:user, firstname: firstname, lastname: '', email: Faker::Internet.unique.email) }
+
+          context 'with two words (splits and capitalizes via name_guess)' do
+            let(:firstname) { 'perkūnas ąžuolas' }
+
+            it_behaves_like 'preserving name', 'Perkūnas', 'Ąžuolas'
+          end
+        end
+
+        context 'when both names are present' do
+          let(:user) { create(:user, firstname: 'John', lastname: 'TESTUSER', email: Faker::Internet.unique.email) }
+
+          it_behaves_like 'preserving name', 'John', 'TESTUSER'
+        end
+      end
+
+      context 'with postmaster context' do
+        context 'when only firstname is present' do
+          let(:user) do
+            ApplicationHandleInfo.use('scheduler.postmaster') do
+              create(:user, firstname: firstname, lastname: '', email: Faker::Internet.unique.email)
+            end
+          end
+
+          context 'with two lowercase words (splits into first/last)' do
+            let(:firstname) { 'yann degran' }
+
+            it_behaves_like 'preserving name', 'Yann', 'Degran'
+          end
+
+          context 'with two uppercase words (splits and capitalizes)' do
+            let(:firstname) { 'YANN DEGRAN' }
+
+            it_behaves_like 'preserving name', 'Yann', 'Degran'
+          end
+
+          context 'with non-ASCII characters' do
+            let(:firstname) { 'perkūnas ąžuolas' }
+
+            it_behaves_like 'preserving name', 'Perkūnas', 'Ąžuolas'
+          end
+        end
+
+        context 'when both names are blank' do
+          context 'with firstname.lastname email' do
+            let(:user) do
+              ApplicationHandleInfo.use('scheduler.postmaster') do
+                create(:user, firstname: '', lastname: '', email: 'john.doe@example.com')
+              end
+            end
+
+            it_behaves_like 'preserving name', 'John', 'Doe'
+          end
+        end
       end
     end
   end
@@ -741,7 +821,7 @@ RSpec.describe User, type: :model do
         'Overview'                           => { 'created_by_id' => 1, 'updated_by_id' => 0 },
         'PGPKey'                             => { 'created_by_id' => 0, 'updated_by_id' => 0 },
         'AI::Agent'                          => { 'created_by_id' => 0, 'updated_by_id' => 0 },
-        'AI::Analytics::Usage'               => { 'user_id' => 0 },
+        'AI::Analytics::Usage'               => { 'user_id' => 1 },
         'AI::TextTool'                       => { 'created_by_id' => 0, 'updated_by_id' => 0 },
         'ActivityStream'                     => { 'created_by_id' => 0 },
         'StatsStore'                         => { 'created_by_id' => 0 },
@@ -779,6 +859,7 @@ RSpec.describe User, type: :model do
       user_two_factor_preference = create(:user_two_factor_preference, :authenticator_app, user: user)
       user_overview_sorting      = create(:'user/overview_sorting', user: user)
       recent_close               = create(:recent_close, user: user)
+      ai_usage                   = create(:ai_analytics_usage, user: user)
       expect(overview.reload.user_ids).to eq([user.id])
 
       # create a chat agent for admin user (id=1) before agent user
@@ -831,6 +912,7 @@ RSpec.describe User, type: :model do
       expect { user_two_factor_preference.reload }.to raise_exception(ActiveRecord::RecordNotFound)
       expect { user_overview_sorting.reload }.to raise_exception(ActiveRecord::RecordNotFound)
       expect { recent_close.reload }.to raise_exception(ActiveRecord::RecordNotFound)
+      expect { ai_usage.reload }.to raise_exception(ActiveRecord::RecordNotFound)
 
       # move ownership objects
       expect { group.reload }.to change(group, :created_by_id).to(1)

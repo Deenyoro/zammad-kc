@@ -49,6 +49,8 @@ class BackgroundServices
           end
 
           process_results(result, realtime)
+        ensure
+          ActiveSupport::CurrentAttributes.clear_all
         end
       end
 

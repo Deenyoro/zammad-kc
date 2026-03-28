@@ -19,6 +19,7 @@ interface Props {
 defineProps<Props>()
 
 defineEmits<{
+  visited: [OnlineNotification]
   seen: [OnlineNotification]
   remove: [OnlineNotification]
   'seen-all': []
@@ -43,6 +44,7 @@ const { reachedTop, isScrollable } = useElementScroll(sectionElement as Ref<HTML
       <NotificationList
         :class="{ 'ltr:pr-5 rtl:pl-5': isScrollable }"
         :list="notificationList"
+        @visited="$emit('visited', $event)"
         @seen="$emit('seen', $event)"
         @remove="$emit('remove', $event)"
       />

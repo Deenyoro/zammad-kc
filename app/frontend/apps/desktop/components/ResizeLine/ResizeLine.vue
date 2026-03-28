@@ -3,6 +3,7 @@
 import { useEventListener } from '@vueuse/core'
 import { computed, readonly, ref } from 'vue'
 
+import emitter from '#shared/utils/emitter.ts'
 import getUuid from '#shared/utils/getUuid.ts'
 
 interface Props {
@@ -61,6 +62,7 @@ const addRemoveResizingListener = (event: 'mouseup' | 'touchend') => {
 const handleMousedown = (event: MouseEvent) => {
   if (props.disabled) return
 
+  emitter.emit('resize-element')
   emit('mousedown-event', event)
   resizing.value = true
 
@@ -70,6 +72,7 @@ const handleMousedown = (event: MouseEvent) => {
 const handleTouchstart = (event: TouchEvent) => {
   if (props.disabled) return
 
+  emitter.emit('resize-element')
   emit('touchstart-event', event)
   resizing.value = true
 
@@ -79,6 +82,7 @@ const handleTouchstart = (event: TouchEvent) => {
 const handleDoubleClick = (event: MouseEvent) => {
   if (props.disabled) return
 
+  emitter.emit('resize-element')
   emit('dblclick-event', event)
   resizeLine.value?.blur()
 }

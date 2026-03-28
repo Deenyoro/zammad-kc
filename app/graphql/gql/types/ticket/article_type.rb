@@ -36,6 +36,10 @@ module Gql::Types::Ticket
     field :attachments, [Gql::Types::StoredFileType, { null: false }], null: false, description: 'All attached files as stored in the database.'
     field :attachments_without_inline, [Gql::Types::StoredFileType, { null: false }], null: false, description: 'Attachments for display, with inline images filtered out.'
 
+    internal_fields do
+      field :highlighted_texts, [Gql::Types::Ticket::Article::HighlightedTextType]
+    end
+
     belongs_to :ticket, Gql::Types::TicketType, null: false
     # belongs_to :origin_by, Gql::Types::UserType # see :author instead
 
@@ -59,6 +63,10 @@ module Gql::Types::Ticket
 
     def media_error_state
       @object.preferences&.dig('whatsapp')
+    end
+
+    def highlighted_texts
+      @object.preferences&.dig('highlight')&.split('|')&.drop(1) || []
     end
 
     private

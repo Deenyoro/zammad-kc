@@ -25,9 +25,14 @@ class OnlineNotificationPolicy < ApplicationPolicy
   def related_accessible?
     return false if !record.related_object
 
-    Pundit
-      .policy(user, record.related_object)
-      .show?
+    case record.related_object
+    when OnlineNotificationStandalone
+      true
+    else
+      Pundit
+        .policy(user, record.related_object)
+        .show?
+    end
   end
 
   def relation

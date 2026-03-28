@@ -165,12 +165,14 @@ describe('component for displaying text article', () => {
     const html = String.raw
 
     const view = renderArticleBubble({
-      content: html`<div>
-        Text
+      content: html`
         <div>
-          <div data-test-id="signature" data-signature="true">Signature</div>
+          Text
+          <div>
+            <div data-test-id="signature" data-signature="true">Signature</div>
+          </div>
         </div>
-      </div>`,
+      `,
     })
 
     const content = view.getByTestId('article-content')

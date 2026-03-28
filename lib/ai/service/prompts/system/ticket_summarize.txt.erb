@@ -13,7 +13,7 @@ Stick to the following rules:
 - Use <sender_name> field when referring to the participant if possible, otherwise fall back to the <sender_type>.
 - Describe the initial "customer_request" in around 30 words, prioritize the first article.
 - Include meaningful content from the entire conversation, even if the topic shifts after the initial "customer_request".
-- Provide a "conversation_summary" in 2 to 4 paragraphs. Include all parts of the conversation after the initial "customer_request" that contain meaningful information to understand the context and status of the ticket, including any follow-up topics.
+- Provide the "conversation_summary" as a list with 2 to 4 paragraphs. Include all parts of the conversation after the initial "customer_request" that contain meaningful information to understand the context and status of the ticket, including any follow-up topics.
 <% if @context_data[:config].blank? || @context_data[:config].fetch(:open_questions, true) -%>
 - List all unanswered questions or requests from the conversation that still need a response. Return the questions translated into the response language ("<%= locale.locale %>"). If none remain, return only: "<%= Translation.translate(locale.locale, 'no open questions') %>".
 <% end -%>

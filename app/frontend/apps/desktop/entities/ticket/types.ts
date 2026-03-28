@@ -3,7 +3,9 @@
 import type { FormRefParameter } from '#shared/components/Form/types.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
 
-import type { ComputedRef, Ref } from 'vue'
+import type { MenuState } from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/types.ts'
+
+import type { ComputedRef, Reactive, Ref } from 'vue'
 
 export interface TicketInformation {
   ticket: ComputedRef<TicketById | undefined>
@@ -13,4 +15,5 @@ export interface TicketInformation {
   form: FormRefParameter
   showTicketArticleReplyForm: () => void
   newTicketArticlePresent: Ref<boolean | undefined>
+  highlightMenu: Reactive<MenuState>
 }

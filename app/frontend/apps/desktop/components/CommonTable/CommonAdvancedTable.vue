@@ -55,7 +55,7 @@ const localAttributesLookup = computed(() => {
   return lookup
 })
 
-const findAttribute = <T,>(headerName: string, lookup: Map<string, T>) =>
+const findAttribute = <T>(headerName: string, lookup: Map<string, T>) =>
   lookup?.get(headerName) || lookup?.get(`${headerName}_id`) || lookup?.get(`${headerName}_ids`)
 
 const localHeaders = computed(() =>
