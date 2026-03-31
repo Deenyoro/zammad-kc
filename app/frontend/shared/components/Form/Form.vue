@@ -57,6 +57,7 @@ import FormLayout from './FormLayout.vue'
 import { useFormUpdaterQuery } from './graphql/queries/formUpdater.api.ts'
 import { getFormClasses } from './initializeFormClasses.ts'
 import addTranslationFunctionPlugin from './plugins/addTranslationFunctionPlugin.ts'
+import initializeFieldInitialValuesCleanupPlugin from './plugins/initializeFieldInitialValuesCleanupPlugin.ts'
 import { FormHandlerExecution, FormValidationVisibility } from './types.ts'
 import { getNodeByName as getFormkitFieldNode, getNodeId, setErrors } from './utils.ts'
 
@@ -406,7 +407,12 @@ const delayedSubmitPlugin = (node: FormKitNode) => {
 }
 
 const localFormKitPlugins = computed(() => {
-  return [delayedSubmitPlugin, addTranslationFunctionPlugin, ...(props.formKitPlugins || [])]
+  return [
+    initializeFieldInitialValuesCleanupPlugin,
+    delayedSubmitPlugin,
+    addTranslationFunctionPlugin,
+    ...(props.formKitPlugins || []),
+  ]
 })
 
 const formConfig = computed(() => {
