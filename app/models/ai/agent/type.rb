@@ -130,14 +130,17 @@ class AI::Agent::Type
       replacement_value = enrichment_data[placeholder_name] || ''
 
       # Placeholder values might contain newlines, which need to be preserved in the final rendered structure.
-      #   However, the newlines are considered control characters in JSON context, so we have to replace actual
-      #   newlines with their string representation ('\n').
-      replacement_value = replacement_value.to_s.gsub(%r{(\r\n|\n\r|\r|\n)}, '\n')
+      #   However, the newlines may contain carriage return characters, so we simplify them to just `\n`.
+      replacement_value = replacement_value.to_s.gsub(%r{(\r\n|\n\r|\r|\n)}, "\n")
 
-      # Additionally, we need to escape any double quotes for the same reason.
-      replacement_value = replacement_value.gsub('"', '\"')
+      # Additionally, we need to escape any double quotes for a similar reason. If not handled properly, these
+      #   characters can break the JSON structure. But this gets tricky since they might already be prefixed by any
+      #   number of backslashes, which are considered escape sequences in Ruby interpolation context.
+      #   Therefore, we use more generic escaping approach via a String helper.
+      replacement_value = replacement_value.json_escape
 
-      structure_string = structure_string.gsub(placeholder_pattern, replacement_value)
+      # Use the block form of `gsub` to ensure that all existing backslash sequences are preserved.
+      structure_string = structure_string.gsub(placeholder_pattern) { replacement_value }
     end
 
     structure_string
