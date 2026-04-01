@@ -75,7 +75,11 @@ class AI::Agent::Type
   end
 
   def execution_action_definition
-    transform_structure(action_definition)
+    transform_structure(action_definition_defaults.deep_merge(action_definition))
+  end
+
+  def action_definition_defaults
+    { skip_blank_values: true }
   end
 
   def transform_structure(structure)
@@ -125,7 +129,15 @@ class AI::Agent::Type
       placeholder_pattern = "\#{placeholder.#{placeholder_name}}"
       replacement_value = enrichment_data[placeholder_name] || ''
 
-      structure_string = structure_string.gsub(placeholder_pattern, replacement_value.to_s)
+      # Placeholder values might contain newlines, which need to be preserved in the final rendered structure.
+      #   However, the newlines are considered control characters in JSON context, so we have to replace actual
+      #   newlines with their string representation ('\n').
+      replacement_value = replacement_value.to_s.gsub(%r{(\r\n|\n\r|\r|\n)}, '\n')
+
+      # Additionally, we need to escape any double quotes for the same reason.
+      replacement_value = replacement_value.gsub('"', '\"')
+
+      structure_string = structure_string.gsub(placeholder_pattern, replacement_value)
     end
 
     structure_string
