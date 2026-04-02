@@ -244,6 +244,7 @@ const setFormNode = (node: FormKitNode) => {
       changeInitialValue.clear()
 
       formKitInitialNodesSettled.value = true
+      if (formNode.value) formNode.value.props._formSettled = true
 
       // Reset directly after the initial request.
       updaterChangedFields.clear()
@@ -775,8 +776,12 @@ const updateChangedFields = (
     const showField = Boolean(!schemaData.fields[fieldName].show && field.show)
     const staticShowCondition = schemaData.fields[fieldName].staticCondition
 
+    // For post-initial show-field cases, `value` alone must not become the dirty
+    // baseline — only an explicit `initialValue` represents the real initial.
+    // Reuse the pendingValueUpdate path to apply `value` via node.input() after
+    // the field is rendered (which correctly makes it dirty relative to `_init`).
     const pendingValueUpdate =
-      !showField &&
+      (!showField || formKitInitialNodesSettled.value) &&
       (!staticShowCondition || (staticShowCondition && currentCreatedFormFields.has(fieldName))) &&
       value !== undefined &&
       !isEqual(value, values.value[fieldName])
@@ -791,7 +796,11 @@ const updateChangedFields = (
     // Sometimes the value from the server is the "real" initial value, for this the `initialValue` can be used.
     handleUpdatedInitialFieldValue(
       fieldName,
-      value ?? initialValue,
+      // For post-initial show-field: only `initialValue` sets the dirty baseline in the
+      // schema. If absent, the early-return in handleUpdatedInitialFieldValue leaves
+      // field.value unset and the plugin captures the natural field default as _init.
+      // During initial load the original `value ?? initialValue` behaviour is kept.
+      showField && formKitInitialNodesSettled.value ? initialValue : (value ?? initialValue),
       showField ||
         initialValue !== undefined ||
         !!(
@@ -817,11 +826,25 @@ const updateChangedFields = (
     if (!formKitInitialNodesSettled.value) return
 
     if (pendingValueUpdate) {
-      const node = field.id ? getNode(field.id) : getNodeByName(fieldName)
-
-      // Update the value in the next tick, so that all other props are already updated.
+      // Resolve the node inside nextTick so newly shown fields (created by
+      // updateSchemaDataField above) are already registered by FormKit.
       nextTick(() => {
-        node?.input(value, false)
+        const node = field.id ? getNode(field.id) : getNodeByName(fieldName)
+
+        if (showField && node) {
+          // For newly shown fields, the node's initial empty-value commit fires
+          // before this tick and resets formUpdaterValueChange to false. Re-apply
+          // it so our input is not mistaken for a user change.
+          node.props.formUpdaterValueChange = true
+
+          // node.settled guarantees hasTicked=true inside FormKit, so the commit
+          // from node.input() will automatically trigger dirty re-evaluation.
+          // The plugin already captured _init synchronously during field creation,
+          // before settled resolves, so the baseline is correct.
+          node.settled.then(() => node.input(value, false))
+        } else {
+          node?.input(value, false)
+        }
       })
     }
   })

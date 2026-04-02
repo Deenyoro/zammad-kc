@@ -31,6 +31,15 @@ const initializeFieldInitialValuesCleanupPlugin = (node: FormKitNode) => {
   // Cleared on reset because reset() sets a fresh _init, making saved values stale.
   const savedInitValues = new Map<string, FormFieldValue>()
 
+  // Returns true once the form has completed its initial settle (i.e., after
+  // formKitInitialNodesSettled is set in Form.vue). Used to switch from the
+  // settled.then() capture strategy to synchronous capture for newly shown fields.
+  const isFormSettled = () => {
+    let root: FormKitNode = node
+    while (root.parent) root = root.parent
+    return !!root.props._formSettled
+  }
+
   // Re-evaluates the dirty state for this node and all ancestors.
   // Required because FormKit's removeChild() triggers the dirty check (touch)
   // BEFORE emitting childRemoved — so by the time our plugin cleans _init,
@@ -109,6 +118,21 @@ const initializeFieldInitialValuesCleanupPlugin = (node: FormKitNode) => {
         target[child.name] = savedValue
       })
 
+      reevaluateDirtyState()
+      return
+    }
+
+    // Post-initial new field: capture _init synchronously here, before any
+    // async form-updater value (applied via node.input() in a nextTick) can run.
+    // The settled.then() path intentionally waits for async updates — which is
+    // correct for initial setup (changeInitialValue) but wrong post-initial,
+    // where form-updater values should make the field dirty relative to _init.
+    if (isFormSettled() && node.props._init && typeof node.props._init === 'object') {
+      const initialValue = cloneAny(child.value) as FormFieldValue
+      node.props._init[child.name] = initialValue
+      walkAncestors((target) => {
+        target[child.name] = initialValue
+      })
       reevaluateDirtyState()
       return
     }
