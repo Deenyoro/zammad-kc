@@ -121,6 +121,7 @@ const { hasCheckboxId, allCheckboxRowsSelected, selectAllRowCheckboxes, handleCh
               cellAlignmentClasses[header.alignContent || 'left'],
               {
                 'max-w-32 truncate text-black dark:text-white': header.truncate,
+                'size-10': hasCheckboxColumn && header.key === 'checkbox',
               },
             ]"
           >

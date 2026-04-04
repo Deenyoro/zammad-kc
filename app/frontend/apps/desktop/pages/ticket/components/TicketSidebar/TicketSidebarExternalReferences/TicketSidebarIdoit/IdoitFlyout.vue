@@ -143,14 +143,12 @@ const schema: FormSchemaNode[] = [
   },
 ]
 
-const handleObjectSelection = (selectedRows: TableItem[]) =>
+const handleObjectSelection = (selectedRows: TableItem[] = []) =>
   updateFieldValues({
     objectIds: selectedRows
       .filter((object) => !object.disabled)
       .map(({ idoitObjectId }) => idoitObjectId) as number[],
   })
-
-const preselectedObjectIds = computed(() => props.objectIds.map((id) => id.toString()))
 
 // Only count newly added objects
 const isValid = computed(
@@ -192,7 +190,6 @@ const submitObjects = async (data: FormDataRecords) => {
       <IdoitObjectList
         class="w-full"
         :items="objectItems"
-        :disabled-checkbox-ids="preselectedObjectIds"
         @update:checked-rows="handleObjectSelection"
       />
     </CommonLoader>
