@@ -77,7 +77,7 @@ const { hasCheckboxId, allCheckboxRowsSelected, selectAllRowCheckboxes, handleCh
             "
             type="checkbox"
             :model-value="allCheckboxRowsSelected"
-            @update:model-value="selectAllRowCheckboxes"
+            @update:model-value="selectAllRowCheckboxes($event as boolean)"
           />
 
           <slot v-else :name="`column-header-${header.key}`" :header="header">
