@@ -8888,6 +8888,17 @@ a.list-group-item.active > .badge,
   padding: 4px 1px;
 }
 
+/* Fixes #6058 - Attachment delete icon disappears when filename is too long
+ * by adding ellipsis to long names and preventing it from overflowing its container
+ */
+.knowledge-base-sidebar {
+  .list-item-name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
 .list-item-delete {
   padding: 0 10px;
 
