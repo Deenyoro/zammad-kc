@@ -2,26 +2,26 @@
 
 require 'rails_helper'
 
-RSpec.describe Channel::Filter::Match::StartsWith do
+RSpec.describe FilterProcessor::Match::EndsWith do
   describe '.match' do
     subject(:match) { described_class.match(value: from, match_rule: rules) }
 
     let(:from) { 'foobar@foo.bar' }
 
-    context 'when the value starts with a matching rule' do
-      let(:rules) { ['foo'] }
+    context 'when the value ends with a matching rule' do
+      let(:rules) { ['bar'] }
 
       it { is_expected.to be(true) }
     end
 
-    context 'when the value starts with a matching rule in a different case' do
-      let(:rules) { ['Foo'] }
+    context 'with a correct beginning but upper letter matching single rule' do
+      let(:rules) { ['Bar'] }
 
       it { is_expected.to be(true) }
     end
 
-    context 'when the value does not start with any rule' do
-      let(:rules) { ['doo'] }
+    context 'when the value does not end with any rule' do
+      let(:rules) { ['far'] }
 
       it { is_expected.to be(false) }
     end

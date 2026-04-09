@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Channel::Filter::Match::Contains do
+RSpec.describe FilterProcessor::Match::Contains do
   describe '.match' do
     subject(:match) { described_class.match(value: from, match_rule: sender) }
 

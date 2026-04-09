@@ -1,7 +1,9 @@
 # Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-module Channel::Filter::Match::Contains
+module FilterProcessor::Match::Contains
   def self.match(value:, match_rule:)
+    return false if value.blank?
+
     match_rule_quoted = Regexp.quote(match_rule).gsub(%r{\\\*}, '.*')
 
     value.match?(%r{#{match_rule_quoted}}i)

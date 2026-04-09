@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Channel::Filter::Match::IsAnyOf do
+RSpec.describe FilterProcessor::Match::IsAnyOf do
   describe '.match' do
     subject(:match) { described_class.match(value: subject_value, match_rule: subject_rule) }
 

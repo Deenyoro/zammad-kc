@@ -1,6 +1,6 @@
 # Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-module Channel::Filter::Match::StartsWith
+module FilterProcessor::Match::StartsWith
   def self.match(value:, match_rule:)
     match_rule.any? { |rule_value| value.downcase.start_with?(rule_value.downcase) }
   end
