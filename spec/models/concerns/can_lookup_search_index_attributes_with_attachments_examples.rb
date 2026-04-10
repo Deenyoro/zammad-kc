@@ -88,6 +88,45 @@ RSpec.shared_examples 'CanLookupSearchIndexAttributesWithAttachments' do
           )
         end
       end
+
+      context 'when multiple individually valid attachments exceed the total payload size limit together' do
+        let(:attachment_1) do
+          create(:store,
+                 object:   described_class.name,
+                 o_id:     subject.id,
+                 data:     'a' * ((1024**2) * 0.6),
+                 filename: 'first.txt')
+        end
+
+        let(:attachment_2) do
+          create(:store,
+                 object:   described_class.name,
+                 o_id:     subject.id,
+                 data:     'b' * ((1024**2) * 0.6),
+                 filename: 'second.txt')
+        end
+
+        let(:attachment_3) do
+          create(:store,
+                 object:   described_class.name,
+                 o_id:     subject.id,
+                 data:     'Some content',
+                 filename: 'third.txt')
+        end
+
+        before do
+          Setting.set('es_total_max_size_in_mb', 1)
+        end
+
+        it 'does not include attachments that do not fit into the cumulative payload limit is reached' do
+          expect(subject.search_index_attachments_lookup(0)).to include(
+            include('_name' => 'first.txt'),
+            include('_name' => 'third.txt'),
+          ).and not_include(
+            include('_name' => 'second.txt'),
+          )
+        end
+      end
     end
   end
 end

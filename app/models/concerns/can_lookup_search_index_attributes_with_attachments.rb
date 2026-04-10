@@ -5,9 +5,13 @@ module CanLookupSearchIndexAttributesWithAttachments
 
   def search_index_attachments_lookup(current_size)
     attachments.filter_map do |attachment|
+
       next if !search_index_attachment_indexable?(attachment, current_size)
 
-      SearchIndexBackend.attachment_to_attributes(attachment)
+      attachment_attributes = SearchIndexBackend.attachment_to_attributes(attachment)
+      current_size += attachment_attributes['_size']
+
+      attachment_attributes
     end
   end
 
