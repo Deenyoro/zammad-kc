@@ -82,7 +82,20 @@ class AI::Provider
   def transform_json_response(result)
     return result if result.blank?
 
-    result.strip.sub(%r{\A`{1,3}(?:json)?\s*(.*?)\s*`{1,3}\z}m, '\1').strip
+    result = result.strip.sub(%r{\A`{1,3}(?:json)?\s*(.*?)\s*`{1,3}\z}m, '\1').strip
+
+    # LLMs often return JSON with literal control characters (newlines, tabs, etc.)
+    # inside string values, which is invalid per the JSON spec.
+    # The regex matches JSON string literals (including ones with literal control chars),
+    # then replaces only the problematic characters inside them.
+    result.gsub(%r{"(?:[^"\\]|\\.|\p{Cc})*"}m) do |json_string|
+      inner = json_string[1..-2]
+      inner = inner.gsub("\r\n", '\\n')
+                   .gsub("\r", '\\r')
+                   .gsub("\n", '\\n')
+                   .gsub("\t", '\\t')
+      "\"#{inner}\""
+    end
   end
 
   def specific_metadata

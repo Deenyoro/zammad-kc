@@ -6172,6 +6172,20 @@ Setting.create_if_not_exists(
   frontend:    true,
 )
 
+Setting.create_if_not_exists(
+  title:       __('AI Knowledge Base Answer from Ticket'),
+  name:        'ai_assistance_kb_answer_from_ticket_generation',
+  area:        'AI::Assistance',
+  description: __('Enable or disable AI generation of knowledge base answers from ticket content.'),
+  options:     {},
+  state:       false,
+  preferences: {
+    authentication: true,
+    permission:     ['admin.ai_assistance_kb_answer_from_ticket_generation'],
+  },
+  frontend:    true,
+)
+
 # TODO: Unused in desktop view, drop later.
 Setting.create_if_not_exists(
   title:       __('Richtext Bubble Menu'),

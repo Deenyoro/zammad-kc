@@ -2,6 +2,7 @@
 
 class KnowledgeBase::Answer::Translation < ApplicationModel
   include HasDefaultModelUserRelations
+  include HasOnlineNotifications
 
   include HasAgentAllowedParams
   include HasLinks
