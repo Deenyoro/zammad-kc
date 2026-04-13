@@ -5,16 +5,19 @@ require_dependency 'tasks/zammad/command.rb'
 module Tasks
   module Zammad
     module Package
-      class List < Tasks::Zammad::Command
+      class Verify < Tasks::Zammad::Command
 
         def self.description
-          'List all installed Zammad addon packages'
+          'Verfies all installed Zammad addon packages'
         end
 
         def self.task_handler
-          puts "#{'Name'.ljust(50)}#{'Vendor'.ljust(20)}Version"
+          puts 'Name'.ljust(50) + 'Status'.ljust(20)
           ::Package.all.each do |package|
-            puts package.name.ljust(50) + package.vendor.ljust(20) + package.version
+            verify = package.verify
+            status = verify.nil? ? 'OK' : "FAILED (#{verify.keys.count} issues)"
+
+            puts package.name.ljust(50) + status.ljust(20)
           end
         end
 
