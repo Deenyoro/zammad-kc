@@ -13,7 +13,7 @@ module Tasks
 
         def self.task_handler
           puts 'Name'.ljust(50) + 'Status'.ljust(20)
-          ::Package.all.each do |package|
+          ::Package.all.sort_by(&:name).each do |package|
             verify = package.verify
             status = verify.nil? ? 'OK' : "FAILED (#{verify.keys.count} issues)"
 

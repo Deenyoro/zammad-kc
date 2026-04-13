@@ -13,7 +13,7 @@ module Tasks
 
         def self.task_handler
           puts "#{'Name'.ljust(50)}#{'Vendor'.ljust(20)}Version"
-          ::Package.all.each do |package|
+          ::Package.all.sort_by(&:name).each do |package|
             puts package.name.ljust(50) + package.vendor.ljust(20) + package.version
           end
         end
