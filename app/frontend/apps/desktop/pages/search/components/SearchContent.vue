@@ -22,6 +22,8 @@ import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import { useDetailSearchLazyQuery } from '#desktop/components/Search/graphql/queries/detailSearch.api.ts'
 import { useSearchCountsLazyQuery } from '#desktop/components/Search/graphql/queries/searchCounts.api.ts'
 import { searchPluginByName, useSearchPlugins } from '#desktop/components/Search/plugins/index.ts'
+import DragAndDropBulkWrapper from '#desktop/components/Ticket/DragAndDropBulk/DragAndDropBulkWrapper.vue'
+import { useDragAndDropBulk } from '#desktop/components/Ticket/DragAndDropBulk/useDragAndDropBulk.ts'
 import TicketBulkEditButton from '#desktop/components/Ticket/TicketBulkEditButton.vue'
 import { useTicketBulkEdit } from '#desktop/components/Ticket/TicketBulkEditFlyout/useTicketBulkEdit.ts'
 import { useElementScroll } from '#desktop/composables/useElementScroll.ts'
@@ -330,7 +332,14 @@ const {
   bulkContext,
   openBulkEditFlyout,
   setOnSuccessCallback,
+  groupIds,
 } = useTicketBulkEdit()
+
+const { isActive: isDragAndDropActive, cursorPosition } = useDragAndDropBulk({
+  checkedTicketIds,
+  bulkContext,
+  bulkCount,
+})
 
 const ticketSelectionBindings = computed(() => {
   // Only the Ticket entity supports bulk actions for now
@@ -489,6 +498,15 @@ setOnSuccessCallback(() => {
           </template>
         </component>
       </div>
+
+      <DragAndDropBulkWrapper
+        v-if="isDragAndDropActive"
+        :bulk-context="bulkContext!"
+        :bulk-count="bulkCount"
+        :ticket-ids="checkedTicketIds"
+        :group-ids="groupIds"
+        :cursor-position="cursorPosition"
+      />
     </div>
   </LayoutContent>
 </template>

@@ -159,9 +159,9 @@ const userPopoverSlots: {
           <CommonTicketPriorityIndicatorIcon
             :ui-color="(item as TicketByList).priority?.uiColor"
             with-text-color
-            class="shrink-0 outline-offset-0! group-hover:text-black group-hover:dark:text-white"
+            class="shrink-0 outline-offset-0! group-hover:text-black group-active:text-white group-hover:dark:text-white group-active:dark:text-white"
             :class="{
-              'ltr:text-black rtl:text-black dark:text-white': isRowSelected,
+              'text-black! dark:text-white!': isRowSelected,
             }"
           />
         </template>
@@ -177,7 +177,7 @@ const userPopoverSlots: {
             no-trigger-link
           >
             <CommonLabel
-              class="block! shrink-0 truncate outline-offset-0! group-hover:text-black! group-hover:dark:text-white!"
+              class="block! shrink-0 truncate outline-offset-0! group-hover:text-black group-active:text-white group-hover:dark:text-white group-active:dark:text-white"
               :class="{
                 'text-black! dark:text-white!': isRowSelected,
               }"
@@ -198,7 +198,7 @@ const userPopoverSlots: {
             no-link
           >
             <CommonLabel
-              class="block! shrink-0 truncate outline-offset-0! group-hover:text-black! group-hover:dark:text-white!"
+              class="block! shrink-0 truncate outline-offset-0! group-hover:text-black group-active:text-white group-hover:dark:text-white group-active:dark:text-white"
               :class="{
                 'text-black! dark:text-white!': isRowSelected,
               }"
@@ -222,7 +222,7 @@ const userPopoverSlots: {
           />
           <CommonTicketStateIndicatorIcon
             v-else
-            class="shrink-0 outline-offset-0! group-hover:text-black group-hover:dark:text-white"
+            class="shrink-0 outline-offset-0! group-hover:text-black group-active:text-white group-hover:dark:text-white group-active:dark:text-white"
             :class="{
               'text-black! dark:text-white!': isRowSelected,
             }"

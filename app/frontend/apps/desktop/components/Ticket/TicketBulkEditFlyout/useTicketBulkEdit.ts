@@ -1,6 +1,7 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import gql from 'graphql-tag'
+import { uniq } from 'lodash-es'
 import { computed, inject, provide, ref, toRef } from 'vue'
 
 import { getApolloClient } from '#shared/server/apollo/client.ts'
@@ -43,8 +44,8 @@ export const useTicketBulkEdit = () => {
 
   const ticketIds = computed<ID[]>(() => Array.from(checkedTicketIds.value.keys()))
 
-  const groupIds = computed(() =>
-    ticketIds.value.map((ticketId) => {
+  const groupIds = computed(() => {
+    const ids = ticketIds.value.map((ticketId) => {
       const cache = apolloClient.cache.readFragment<{ group: { id: ID } }>({
         id: `Ticket:${ticketId}`,
         fragment: gql`
@@ -56,9 +57,12 @@ export const useTicketBulkEdit = () => {
           }
         `,
       })
+
       return cache?.group.id ?? ''
-    }),
-  )
+    })
+
+    return uniq(ids)
+  })
 
   const { hasPermission } = useSessionStore()
 
@@ -95,6 +99,7 @@ export const useTicketBulkEdit = () => {
     bulkEditActive,
     isBulkTaskRunning,
     checkedTicketIds,
+    groupIds,
     bulkCount,
     bulkHasMoreItems,
     bulkContext,

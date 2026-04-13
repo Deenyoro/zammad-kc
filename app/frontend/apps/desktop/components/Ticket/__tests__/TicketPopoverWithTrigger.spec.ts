@@ -83,7 +83,7 @@ describe('TicketPopoverWithTrigger', () => {
     const popover = await wrapper.findByRole('region')
 
     expect(within(popover).getByText(dummyTicket.title)).toBeVisible()
-    expect(within(popover).getByRole('status', { name: 'check-circle-no' })).toHaveAttribute(
+    expect(within(popover).getByRole('status', { name: 'open' })).toHaveAttribute(
       'aria-roledescription',
       '(ticket status: open)',
     )

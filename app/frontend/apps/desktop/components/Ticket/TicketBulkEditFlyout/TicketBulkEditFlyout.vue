@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { computed, reactive, toRef } from 'vue'
+import { computed, reactive } from 'vue'
 
 import {
   NotificationTypes,
@@ -27,6 +27,7 @@ import {
   EnumFormUpdaterId,
   EnumObjectManagerObjects,
   type TicketBulkSelectorInput,
+  type TicketMacrosSelectorInput,
   type TicketUpdateInput,
 } from '#shared/graphql/types.ts'
 import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
@@ -194,7 +195,19 @@ const processBulkEditArticle = (
   }
 }
 
-const { macrosLoaded, macros } = useMacros(toRef(props, 'groupIds'))
+const macrosSelector = computed(() => {
+  let selector: TicketMacrosSelectorInput = {}
+
+  if (props.bulkCount) {
+    if ('overviewId' in props.bulkContext) selector = { overviewId: props.bulkContext.overviewId }
+    else if ('searchQuery' in props.bulkContext)
+      selector = { searchQuery: props.bulkContext.searchQuery }
+  } else selector = { entityIds: props.groupIds }
+
+  return selector
+})
+
+const { macrosLoaded, macros } = useMacros(macrosSelector)
 const { activeMacro, executeMacro, disposeActiveMacro } = useTicketMacros(formSubmit)
 
 const macroMenuItems = computed<MenuItem[]>(
@@ -255,7 +268,7 @@ const bulkEditTickets = async (formData: FormSubmitData<TicketBulkEditFormData>)
         // eslint-disable-next-line zammad/zammad-detect-translatable-string
         'Invalid ticket bulk context: bulkCount is positive but no valid context provided',
       )
-  } else selector = { ticketIds: props.ticketIds }
+  } else selector = { entityIds: props.ticketIds }
 
   try {
     const result = await updateBulkMutation.send({

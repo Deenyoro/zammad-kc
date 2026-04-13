@@ -7,6 +7,8 @@ import { computed } from 'vue'
 import CommonEmptyMessage from '#desktop/components/CommonEmptyMessage/CommonEmptyMessage.vue'
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import LayoutSidebar from '#desktop/components/layout/LayoutSidebar.vue'
+import DragAndDropBulkWrapper from '#desktop/components/Ticket/DragAndDropBulk/DragAndDropBulkWrapper.vue'
+import { useDragAndDropBulk } from '#desktop/components/Ticket/DragAndDropBulk/useDragAndDropBulk.ts'
 import TicketBulkEditButton from '#desktop/components/Ticket/TicketBulkEditButton.vue'
 import { useTicketBulkEdit } from '#desktop/components/Ticket/TicketBulkEditFlyout/useTicketBulkEdit.ts'
 import TicketList from '#desktop/pages/ticket-overviews/components/TicketList.vue'
@@ -84,7 +86,14 @@ const breadcrumbItems = computed(() => [
   },
 ])
 
-const { checkedTicketIds, openBulkEditFlyout } = useTicketBulkEdit()
+const { checkedTicketIds, groupIds, openBulkEditFlyout, bulkContext, bulkCount } =
+  useTicketBulkEdit()
+
+const { isActive: isDragAndDropActive, cursorPosition } = useDragAndDropBulk({
+  checkedTicketIds,
+  bulkContext,
+  bulkCount,
+})
 </script>
 
 <template>
@@ -135,5 +144,14 @@ const { checkedTicketIds, openBulkEditFlyout } = useTicketBulkEdit()
         icon="exclamation-triangle"
       />
     </LayoutContent>
+
+    <DragAndDropBulkWrapper
+      v-if="isDragAndDropActive"
+      :bulk-context="bulkContext!"
+      :bulk-count="currentOverviewCount"
+      :ticket-ids="checkedTicketIds"
+      :group-ids="groupIds"
+      :cursor-position="cursorPosition"
+    />
   </div>
 </template>

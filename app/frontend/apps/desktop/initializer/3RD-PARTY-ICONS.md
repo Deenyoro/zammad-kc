@@ -1,5 +1,7 @@
 # Third Party Icons (`desktop`)
 
+- `assets/arrow-left.svg`
+- `assets/arrow-right.svg`
 - `assets/arrow-bar-left.svg`
 - `assets/arrow-bar-right.svg`
 - `assets/arrow-repeat.svg`

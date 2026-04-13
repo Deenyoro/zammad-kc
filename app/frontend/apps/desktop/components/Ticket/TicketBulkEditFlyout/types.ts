@@ -6,6 +6,7 @@ import type { ComputedRef, Ref } from 'vue'
 export interface TicketBulkEditReturn {
   bulkEditActive: ComputedRef<boolean>
   checkedTicketIds: Ref<Set<ID>>
+  groupIds: ComputedRef<Array<ID>>
   bulkCount: Ref<number>
   bulkHasMoreItems: Ref<boolean>
   bulkContext: Ref<TicketBulkOverviewContext | TicketBulkSearchContext | undefined>

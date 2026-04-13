@@ -131,7 +131,7 @@ describe('TicketBulkEditFlyout', () => {
         },
       },
       selector: {
-        ticketIds: ids,
+        entityIds: ids,
       },
     })
   })
@@ -166,7 +166,7 @@ describe('TicketBulkEditFlyout', () => {
         },
       },
       selector: {
-        ticketIds: ids,
+        entityIds: ids,
       },
     })
   })
@@ -202,7 +202,7 @@ describe('TicketBulkEditFlyout', () => {
         macroId: convertToGraphQLId('Macro', 1),
       },
       selector: {
-        ticketIds: ids,
+        entityIds: ids,
       },
     })
   })
@@ -310,7 +310,7 @@ describe('TicketBulkEditFlyout', () => {
         },
       },
       selector: {
-        ticketIds: ids,
+        entityIds: ids,
       },
     })
   })

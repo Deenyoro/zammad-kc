@@ -17248,23 +17248,15 @@
               "description": "Returns a list of macros",
               "args": [
                 {
-                  "name": "groupIds",
-                  "description": "Filter macros by group assignment, must have no group or all groups assigned.",
+                  "name": "selector",
+                  "description": "The selector for ticket macros. Macros will be filtered by group assignment, must have no group or all groups assigned.",
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,
                     "ofType": {
-                      "kind": "LIST",
-                      "name": null,
-                      "ofType": {
-                        "kind": "NON_NULL",
-                        "name": null,
-                        "ofType": {
-                          "kind": "SCALAR",
-                          "name": "ID",
-                          "ofType": null
-                        }
-                      }
+                      "kind": "INPUT_OBJECT",
+                      "name": "TicketMacrosSelectorInput",
+                      "ofType": null
                     }
                   },
                   "defaultValue": null
@@ -24269,7 +24261,7 @@
           "fields": null,
           "inputFields": [
             {
-              "name": "ticketIds",
+              "name": "entityIds",
               "description": "The tickets to be updated",
               "type": {
                 "kind": "LIST",
@@ -26309,6 +26301,55 @@
           ],
           "inputFields": null,
           "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "TicketMacrosSelectorInput",
+          "description": "Represents the selector for ticket macros query.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "entityIds",
+              "description": "The groups to be considered",
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "overviewId",
+              "description": "Ticket overview for selecting tickets and their groups",
+              "type": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "searchQuery",
+              "description": "Search query to filter tickets and their groups",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
           "enumValues": null,
           "possibleTypes": null
         },

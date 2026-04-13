@@ -107,7 +107,7 @@ describe('TicketList', () => {
 
     expect(wrapper.getByRole('cell', { name: ticket.group.name! })).toBeInTheDocument()
 
-    expect(wrapper.getByRole('cell', { name: ticket.state.name })).toBeInTheDocument()
+    expect(wrapper.getAllByRole('cell', { name: ticket.state.name })).toHaveLength(2) // state is shown as text and as color indicator
   })
 
   it('shows priority icon if flag is set', async () => {
