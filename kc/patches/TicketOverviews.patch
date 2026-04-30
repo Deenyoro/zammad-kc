@@ -1,25 +1,25 @@
 diff --git a/app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue b/app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue
-index fbef24357a..f4cc531d29 100644
+index f9d87f7832..f4e56a0605 100644
 --- a/app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue
 +++ b/app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue
 @@ -9,6 +9,8 @@ import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
  import LayoutSidebar from '#desktop/components/layout/LayoutSidebar.vue'
- import TicketBulkEditButton from '#desktop/components/Ticket/TicketBulkEditButton.vue'
- import { useTicketBulkEdit } from '#desktop/components/Ticket/TicketBulkEditFlyout/useTicketBulkEdit.ts'
+ import DragAndDropBulkWrapper from '#desktop/components/Ticket/DragAndDropBulk/DragAndDropBulkWrapper.vue'
+ import { useDragAndDropBulk } from '#desktop/components/Ticket/DragAndDropBulk/useDragAndDropBulk.ts'
 +import KcTicketBulkMergeButton from '#desktop/components/Ticket/KcTicketBulkMergeButton.vue'
 +import { useKcBulkMerge } from '#desktop/components/Ticket/KcTicketBulkMergeFlyout/useKcBulkMerge.ts'
- import TicketList from '#desktop/pages/ticket-overviews/components/TicketList.vue'
- import TicketOverviewsSidebar from '#desktop/pages/ticket-overviews/components/TicketOverviewsSidebar.vue'
- import { useTicketOverviews } from '#desktop/pages/ticket-overviews/composables/useTicketOverviews.ts'
-@@ -85,6 +87,7 @@ const breadcrumbItems = computed(() => [
+ import TicketBulkEditButton from '#desktop/components/Ticket/TicketBulkEditButton.vue'
+ import { useTicketBulkEdit } from '#desktop/components/Ticket/TicketBulkEditFlyout/useTicketBulkEdit.ts'
+ import { usePage } from '#desktop/composables/usePage.ts'
+@@ -88,6 +90,7 @@ const breadcrumbItems = computed(() => [
  ])
  
- const { checkedTicketIds, openBulkEditFlyout } = useTicketBulkEdit()
+ const { checkedTicketIds, openBulkEditFlyout, bulkSelector } = useTicketBulkEdit()
 +const { openBulkMergeFlyout } = useKcBulkMerge(checkedTicketIds)
- </script>
  
- <template>
-@@ -106,6 +109,10 @@ const { checkedTicketIds, openBulkEditFlyout } = useTicketBulkEdit()
+ const {
+   isActive: isDragAndDropActive,
+@@ -123,6 +126,10 @@ usePage({ onReactivate: reactivateListeners, onDeactivated: deactivateListeners
        content-padding
      >
        <template #headerRight>
