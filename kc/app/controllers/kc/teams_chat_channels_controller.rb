@@ -47,7 +47,7 @@ class Kc::TeamsChatChannelsController < ApplicationController
   def authorize_oauth
     graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
     if graph_class.nil?
-      render json: { error: 'Teams Chat integration not available' }, status: :unprocessable_entity
+      render json: { error: 'Teams Chat integration not available' }, status: :unprocessable_content
       return
     end
 
@@ -210,7 +210,7 @@ class Kc::TeamsChatChannelsController < ApplicationController
 
     graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
     if graph_class.nil?
-      render json: { error: 'Teams Chat integration not available' }, status: :unprocessable_entity
+      render json: { error: 'Teams Chat integration not available' }, status: :unprocessable_content
       return
     end
 
@@ -288,6 +288,6 @@ class Kc::TeamsChatChannelsController < ApplicationController
 
   def render_callback_error
     escaped_url = ERB::Util.html_escape(admin_teams_chat_url)
-    render html: "<html><body><h2>OAuth Error</h2><p>Authorization failed. Please check your Azure AD credentials and try again.</p><p><a href=\"#{escaped_url}\">Back to Teams Chat settings</a></p></body></html>".html_safe, layout: false, status: :unprocessable_entity
+    render html: "<html><body><h2>OAuth Error</h2><p>Authorization failed. Please check your Azure AD credentials and try again.</p><p><a href=\"#{escaped_url}\">Back to Teams Chat settings</a></p></body></html>".html_safe, layout: false, status: :unprocessable_content
   end
 end

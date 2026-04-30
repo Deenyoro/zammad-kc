@@ -19,7 +19,7 @@ class Kc::BulkMergeController < ApplicationController
   # POST /api/v1/kc/bulk_merge
   def create
     unless Setting.get('kc_bulk_merge')
-      render json: { error: __('Bulk merge is disabled.') }, status: :unprocessable_entity
+      render json: { error: __('Bulk merge is disabled.') }, status: :unprocessable_content
       return
     end
 
@@ -27,17 +27,17 @@ class Kc::BulkMergeController < ApplicationController
     parent_ticket_id = params[:parent_ticket_id]
 
     if !ticket_ids.is_a?(Array) || ticket_ids.blank?
-      render json: { error: __('ticket_ids must be a non-empty array.') }, status: :unprocessable_entity
+      render json: { error: __('ticket_ids must be a non-empty array.') }, status: :unprocessable_content
       return
     end
 
     if parent_ticket_id.blank?
-      render json: { error: __('parent_ticket_id is required.') }, status: :unprocessable_entity
+      render json: { error: __('parent_ticket_id is required.') }, status: :unprocessable_content
       return
     end
 
     if ticket_ids.size > MAX_TICKETS_PER_MERGE
-      render json: { error: __('Too many tickets (max %s).') % MAX_TICKETS_PER_MERGE.to_s }, status: :unprocessable_entity
+      render json: { error: __('Too many tickets (max %s).') % MAX_TICKETS_PER_MERGE.to_s }, status: :unprocessable_content
       return
     end
 
@@ -54,7 +54,7 @@ class Kc::BulkMergeController < ApplicationController
     ticket_ids = ticket_ids.map(&:to_i).uniq - [parent_ticket.id]
 
     if ticket_ids.empty?
-      render json: { error: __('No child tickets to merge (parent was the only ticket selected).') }, status: :unprocessable_entity
+      render json: { error: __('No child tickets to merge (parent was the only ticket selected).') }, status: :unprocessable_content
       return
     end
 
@@ -64,7 +64,7 @@ class Kc::BulkMergeController < ApplicationController
       ticket_ids.each do |child_id|
         child = Ticket.find_by(id: child_id)
         if child.nil?
-          raise Exceptions::UnprocessableEntity, __('Ticket #%s not found.') % child_id.to_s
+          raise Exceptions::UnprocessableContent, __('Ticket #%s not found.') % child_id.to_s
         end
 
         # Verify agent has update access to each child (uses Pundit policy)
@@ -90,8 +90,8 @@ class Kc::BulkMergeController < ApplicationController
     render json: { error: __('Not authorized to access ticket #%s.') % e.record.try(:number).to_s }, status: :forbidden
   rescue Exceptions::Forbidden => e
     render json: { error: e.message }, status: :forbidden
-  rescue Exceptions::UnprocessableEntity => e
-    render json: { error: e.message }, status: :unprocessable_entity
+  rescue Exceptions::UnprocessableContent => e
+    render json: { error: e.message }, status: :unprocessable_content
   end
 
 end

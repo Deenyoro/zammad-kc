@@ -169,17 +169,28 @@ The `kc/` directory is deleted from the final image.
 ### Current Concern Prepends (kc_loader.rb)
 
 ```
-Ticket::TimeAccounting          ← Kc::TimeAccountingAgent
-Ticket::Article                 ← Kc::EnqueueCommunicateTeamsChatJob
-Ticket::Article                 ← Kc::EnqueueCommunicateRingcentralSmsJob
-Ticket::Article                 ← Kc::FixOriginBySenderOverride
-Ticket::Article                 ← Kc::ResetsWaitingForReplyState
-Ticket                          ← Kc::PreventsLockedTicketReopen
-Transaction::Notification       ← Kc::SuppressInternalNoteNotifications
+Ticket::TimeAccounting               ← Kc::TimeAccountingAgent
+Ticket::Article                      ← Kc::EnqueueCommunicateTeamsChatJob
+Ticket::Article                      ← Kc::EnqueueCommunicateRingcentralSmsJob
+Ticket::Article                      ← Kc::FixOriginBySenderOverride
+Ticket::Article                      ← Kc::EmailFromOriginByFix
+Ticket::Article                      ← Kc::ResetsWaitingForReplyState
+Ticket                               ← Kc::PreventsLockedTicketReopen
+Ticket                               ← Kc::MergeToClosedState
+Transaction::Notification            ← Kc::SuppressInternalNoteNotifications
 AI::Agent::Type::TicketTitleRewriter ← Kc::TicketTitleRewriterLanguage
-MicrosoftGraph::ApiError        ← Kc::MicrosoftGraphApiErrorTypeSafety
-MicrosoftGraph                  ← Kc::MicrosoftGraphErrorHandling
+MicrosoftGraph                       ← Kc::MicrosoftGraphErrorHandling
+MicrosoftGraph                       ← Kc::MicrosoftGraphBccInMime
+TicketArticleCommunicateEmailJob     ← Kc::EmailColorStripSignal
+TicketArticleCommunicateEmailJob     ← Kc::EmailJobBcc
+Service::Ticket::Article::Create     ← Kc::ArticlePreprocessBcc
+Channel::Driver::BaseEmailOutbound   ← Kc::EmailOutboundBcc
+Channel::EmailBuild.singleton_class  ← Kc::StripEmailTextColor
+Channel::Filter::FollowUpMerged.singleton_class ← Kc::FollowUpClosedParent
 ```
+
+Plus: `Ticket.transaction_ignore_changes_attributes_list += [:time_unit]`
+(prevents time_unit-only changes from resetting other agents' taskbar drafts).
 
 ### KC Coding Patterns
 
