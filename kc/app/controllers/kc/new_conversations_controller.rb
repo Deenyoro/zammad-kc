@@ -36,14 +36,14 @@ class Kc::NewConversationsController < ApplicationController
     skip_send    = ActiveModel::Type::Boolean.new.cast(params[:skip_send])
 
     if phone_number.blank? || body.blank?
-      render json: { error: 'phone_number and body are required' }, status: :unprocessable_entity
+      render json: { error: 'phone_number and body are required' }, status: :unprocessable_content
       return
     end
 
     # Find the active RingCentral SMS channel (use selected, default setting, or first)
     channel = resolve_sms_channel(params[:channel_id])
     if channel.nil?
-      render json: { error: 'No active RingCentral SMS channel configured' }, status: :unprocessable_entity
+      render json: { error: 'No active RingCentral SMS channel configured' }, status: :unprocessable_content
       return
     end
 
@@ -56,7 +56,7 @@ class Kc::NewConversationsController < ApplicationController
 
     from_phone = channel.options&.dig(:phone_number)
     if from_phone.blank?
-      render json: { error: 'Channel has no phone number configured' }, status: :unprocessable_entity
+      render json: { error: 'Channel has no phone number configured' }, status: :unprocessable_content
       return
     end
 
@@ -178,14 +178,14 @@ class Kc::NewConversationsController < ApplicationController
     group_id      = params[:group_id]
 
     if teams_user_id.blank? || display_name.blank? || body.blank?
-      render json: { error: 'teams_user_id, display_name, and body are required' }, status: :unprocessable_entity
+      render json: { error: 'teams_user_id, display_name, and body are required' }, status: :unprocessable_content
       return
     end
 
     # Find the active Teams channel (use selected, default setting, or first)
     channel = resolve_teams_channel(params[:channel_id])
     if channel.nil?
-      render json: { error: 'No active Microsoft Teams channel configured' }, status: :unprocessable_entity
+      render json: { error: 'No active Microsoft Teams channel configured' }, status: :unprocessable_content
       return
     end
 
@@ -358,7 +358,7 @@ class Kc::NewConversationsController < ApplicationController
 
     channel = Channel.where(area: 'MicrosoftTeamsChat::Account', active: true).first
     if channel.nil?
-      render json: { error: 'No active Microsoft Teams channel configured' }, status: :unprocessable_entity
+      render json: { error: 'No active Microsoft Teams channel configured' }, status: :unprocessable_content
       return
     end
 

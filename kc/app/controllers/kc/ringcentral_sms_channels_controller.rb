@@ -49,7 +49,7 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
   def authorize_oauth
     rc_class = 'Kc::RingcentralApi'.safe_constantize
     if rc_class.nil?
-      render json: { error: 'RingCentral SMS integration not available' }, status: :unprocessable_entity
+      render json: { error: 'RingCentral SMS integration not available' }, status: :unprocessable_content
       return
     end
 
@@ -186,7 +186,7 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
   def complete_setup
     pending = session[:kc_ringcentral_sms_pending_setup]
     if pending.blank?
-      render json: { error: 'No pending setup found. Please start the OAuth flow again.' }, status: :unprocessable_entity
+      render json: { error: 'No pending setup found. Please start the OAuth flow again.' }, status: :unprocessable_content
       return
     end
 
@@ -195,7 +195,7 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
     selected_phone = params[:phone_number].to_s.strip
     available = (pending[:available_phones] || []).map { |p| (p[:phone_number] || p['phone_number']).to_s }
     if selected_phone.blank? || !available.include?(selected_phone)
-      render json: { error: 'Invalid phone number selection.' }, status: :unprocessable_entity
+      render json: { error: 'Invalid phone number selection.' }, status: :unprocessable_content
       return
     end
 
@@ -258,7 +258,7 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
     render json: { channel_id: channel.id }
   rescue => e
     Rails.logger.error "KC RingCentral SMS complete_setup failed: #{e.message}"
-    render json: { error: 'Failed to create channel.' }, status: :unprocessable_entity
+    render json: { error: 'Failed to create channel.' }, status: :unprocessable_content
   end
 
   # PUT /api/v1/kc/ringcentral_sms_channels/:id
@@ -303,7 +303,7 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
 
     rc_class = 'Kc::RingcentralApi'.safe_constantize
     if rc_class.nil?
-      render json: { error: 'RingCentral SMS integration not available' }, status: :unprocessable_entity
+      render json: { error: 'RingCentral SMS integration not available' }, status: :unprocessable_content
       return
     end
 
@@ -384,6 +384,6 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
   def render_callback_error(message = nil)
     escaped_url = ERB::Util.html_escape(admin_ringcentral_sms_url)
     error_text = message || 'Authorization failed. Please check your RingCentral credentials and try again.'
-    render html: "<html><body><h2>OAuth Error</h2><p>#{ERB::Util.html_escape(error_text)}</p><p><a href=\"#{escaped_url}\">Back to RingCentral SMS settings</a></p></body></html>".html_safe, layout: false, status: :unprocessable_entity
+    render html: "<html><body><h2>OAuth Error</h2><p>#{ERB::Util.html_escape(error_text)}</p><p><a href=\"#{escaped_url}\">Back to RingCentral SMS settings</a></p></body></html>".html_safe, layout: false, status: :unprocessable_content
   end
 end
