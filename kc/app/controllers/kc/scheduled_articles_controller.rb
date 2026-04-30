@@ -51,13 +51,13 @@ class Kc::ScheduledArticlesController < ApplicationController
     authorize!(ticket, :update?)
 
     if kc_model_class.nil?
-      render json: { error: __('Scheduled articles not available') }, status: :unprocessable_entity
+      render json: { error: __('Scheduled articles not available') }, status: :unprocessable_content
       return
     end
 
     article_data = params[:article_data]
     if article_data.blank?
-      render json: { error: __('Article data is required') }, status: :unprocessable_entity
+      render json: { error: __('Article data is required') }, status: :unprocessable_content
       return
     end
 
@@ -65,7 +65,7 @@ class Kc::ScheduledArticlesController < ApplicationController
     article_hash = article_data_hash(article_data)
     body = article_hash[:body] || article_hash['body']
     if body.blank?
-      render json: { error: __('Article body is required') }, status: :unprocessable_entity
+      render json: { error: __('Article body is required') }, status: :unprocessable_content
       return
     end
 
@@ -75,18 +75,18 @@ class Kc::ScheduledArticlesController < ApplicationController
       nil
     end
     if scheduled_at.nil? || scheduled_at <= Time.current
-      render json: { error: __('Scheduled time must be in the future') }, status: :unprocessable_entity
+      render json: { error: __('Scheduled time must be in the future') }, status: :unprocessable_content
       return
     end
     if scheduled_at > Time.current + MAX_SCHEDULE_WINDOW
-      render json: { error: __('Scheduled time cannot be more than 90 days in the future') }, status: :unprocessable_entity
+      render json: { error: __('Scheduled time cannot be more than 90 days in the future') }, status: :unprocessable_content
       return
     end
 
     # Rate limit: max pending per ticket
     existing_count = kc_model_class.pending.where(ticket_id: ticket.id).count
     if existing_count >= MAX_PENDING_PER_TICKET
-      render json: { error: __('Too many pending scheduled replies for this ticket (max %s)').gsub('%s', MAX_PENDING_PER_TICKET.to_s) }, status: :unprocessable_entity
+      render json: { error: __('Too many pending scheduled replies for this ticket (max %s)').gsub('%s', MAX_PENDING_PER_TICKET.to_s) }, status: :unprocessable_content
       return
     end
 
@@ -105,7 +105,7 @@ class Kc::ScheduledArticlesController < ApplicationController
 
     render json: { id: scheduled.id, scheduled_at: scheduled.scheduled_at }, status: :created
   rescue ActiveRecord::RecordInvalid => e
-    render json: { error: e.message }, status: :unprocessable_entity
+    render json: { error: e.message }, status: :unprocessable_content
   end
 
   # DELETE /api/v1/kc/tickets/:ticket_id/scheduled_articles/:id
@@ -114,7 +114,7 @@ class Kc::ScheduledArticlesController < ApplicationController
     authorize!(ticket, :update?)
 
     if kc_model_class.nil?
-      render json: { error: __('Scheduled articles not available') }, status: :unprocessable_entity
+      render json: { error: __('Scheduled articles not available') }, status: :unprocessable_content
       return
     end
 
@@ -125,7 +125,7 @@ class Kc::ScheduledArticlesController < ApplicationController
     end
 
     unless scheduled.status == 'pending'
-      render json: { error: __('Only pending scheduled replies can be cancelled') }, status: :unprocessable_entity
+      render json: { error: __('Only pending scheduled replies can be cancelled') }, status: :unprocessable_content
       return
     end
 

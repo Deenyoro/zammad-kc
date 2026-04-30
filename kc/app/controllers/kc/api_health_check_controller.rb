@@ -110,7 +110,7 @@ class Kc::ApiHealthCheckController < ApplicationController
   def check_now
     job_class = 'Kc::ApiHealthCheckJob'.safe_constantize
     if job_class.nil?
-      render json: { error: 'Health check job not available' }, status: :unprocessable_entity
+      render json: { error: 'Health check job not available' }, status: :unprocessable_content
       return
     end
 
