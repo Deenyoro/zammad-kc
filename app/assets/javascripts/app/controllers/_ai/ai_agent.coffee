@@ -171,8 +171,53 @@ AIAgentModalMixin =
 
       @placeholderObjectAttributes[fieldName] = placeholder_attribute
 
+  filterByAttributeConditions: (items = []) ->
+    # Reserved first-segment keywords route to alternative sources.
+    #   Any other first segment is treated as a placeholder attribute name.
+    resolvers =
+      app_config: (key) -> App.Config.get(key)
+
+    _.filter(items, (item) =>
+      # If no condition is specified, include the item.
+      return true if not item.condition
+
+      # Support negation in condition by prefixing with "!".
+      condition = item.condition
+      if /^!/.test(condition)
+        condition = condition.replace(/^!/, '')
+        negateCondition = true
+
+      # Parse the condition (format: "key.property").
+      conditionParts = condition.split('.')
+      return true if conditionParts.length isnt 2
+
+      [key, propertyName] = conditionParts
+
+      # Resolve against a reserved source, or fall back to placeholder attributes.
+      value = if resolvers[key]
+        resolvers[key](propertyName)
+      else
+        @placeholderObjectAttributes?[key]?[propertyName]
+
+      # Check if the value is "truthy"/"not empty".
+      #   Remember to negate the result if the condition was prefixed with "!".
+      #   `_.isEmpty` treats numeric scalars as empty, so handle numbers explicitly.
+      result = if _.isBoolean(value)
+        value
+      else if _.isNumber(value)
+        not _.isNaN(value) and value isnt 0
+      else
+        not _.isEmpty(value)
+      return result if not negateCondition
+      return not result if negateCondition
+    )
+
   steps: ->
-    _.map(@agentType?.form_schema, (item) -> item.step) or []
+    _.map(
+      # Filter steps based on attribute conditions.
+      @filterByAttributeConditions(@agentType?.form_schema),
+      (item) -> item.step
+    )
 
   firstStep: ->
     @steps()[0]
@@ -187,6 +232,10 @@ AIAgentModalMixin =
 
   stepHelp: ->
     _.find(@agentType?.form_schema, (item) => item.step is @step and item.help)?.help or ''
+
+  stepWarnings: ->
+    warnings = _.find(@agentType?.form_schema, (item) => item.step is @step and item.warnings)?.warnings or []
+    @filterByAttributeConditions(warnings)
 
   stepErrors: ->
     _.find(@agentType?.form_schema, (item) => item.step is @step and item.errors)?.errors or ''
@@ -246,23 +295,7 @@ AIAgentModalMixin =
       @setStepFields(attrs)
 
       # Filter attrs based on conditions
-      attrs = _.filter(attrs, (attr) =>
-        # If no condition is specified, include the attribute.
-        return true if not attr.condition
-
-        # Parse the condition (format: "key.property").
-        conditionParts = attr.condition.split('.')
-        return true if conditionParts.length isnt 2
-
-        [placeholderKey, propertyName] = conditionParts
-
-        # Check if the placeholder attribute exists and has the specified property.
-        placeholderAttr = @placeholderObjectAttributes?[placeholderKey]
-        return false if not placeholderAttr
-
-        # Check if the property exists and is truthy
-        return placeholderAttr[propertyName] is true
-      )
+      attrs = @filterByAttributeConditions(attrs)
 
     { configure_attributes: attrs }
 
@@ -305,6 +338,11 @@ AIAgentModalMixin =
     if helpText = @stepHelp()
       $('<p />').addClass('text-muted')
         .html(App.i18n.translateContent(helpText))
+        .prependTo(@controller.form)
+
+    for warning in @stepWarnings()
+      $('<div />').addClass('alert alert--warning')
+        .html(App.i18n.translateContent(warning.text, (warning.textPlaceholders or [])...))
         .prependTo(@controller.form)
 
     return if not errorTexts = @stepErrors()
