@@ -1,5 +1,5 @@
 diff --git a/app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue b/app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue
-index 452bf48d32..5e23647351 100644
+index 93e6d5dba1..dcc4209f1c 100644
 --- a/app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue
 +++ b/app/frontend/apps/desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketAgentUpdateButton.vue
 @@ -6,10 +6,12 @@ import { computed } from 'vue'
@@ -15,7 +15,7 @@ index 452bf48d32..5e23647351 100644
  
  import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
  import { useDialog } from '#desktop/components/CommonDialog/useDialog.ts'
-@@ -43,6 +45,10 @@ const { macrosLoaded, macros } = useMacros(groupIds)
+@@ -40,6 +42,10 @@ const { macrosLoaded, macros } = useMacros(macrosSelector)
  
  const { notify } = useNotifications()
  
@@ -26,7 +26,7 @@ index 452bf48d32..5e23647351 100644
  const groupLabels = {
    drafts: __('Drafts'),
    macros: __('Macros'),
-@@ -89,7 +95,20 @@ const actionItems = computed(() => {
+@@ -88,7 +94,20 @@ const actionItems = computed(() => {
      },
    }
  
@@ -48,7 +48,7 @@ index 452bf48d32..5e23647351 100644
  
    const macroMenu: MenuItem[] = macros.value.map((macro) => ({
      key: macro.id,
-@@ -100,13 +119,13 @@ const actionItems = computed(() => {
+@@ -99,13 +118,13 @@ const actionItems = computed(() => {
      onClick: () => emit('execute-macro', macro),
    }))
  
