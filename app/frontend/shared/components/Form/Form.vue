@@ -342,7 +342,7 @@ const afterSubmitHandling = (
       afterSubmitReset(values)
     }
 
-    // oxlint-disable-next-line eslint-plugin-promise(valid-params)
+    // oxlint-disable-next-line promise/valid-params
     submitReturn.finally?.()
 
     return
@@ -947,7 +947,7 @@ const handlesFormUpdater = (
   options?: FormUpdaterOptions,
 ) => {
   if (!props.formUpdaterId || !formUpdaterQueryHandler) return
-  // When formUpdaterInitial is set, trigger only on initial rendering and when the form was reseted.
+  // When formUpdaterInitialOnly is set, trigger only on initial rendering and when the form was reseted.
   if (
     trigger !== 'manual' &&
     trigger !== 'form-reset' &&

@@ -1510,6 +1510,15 @@ pre code {
     background: var(--ai-assist-pink);
     color: var(--text-active);
   }
+
+  &.badge--new {
+    color: hsl(45, 98%, 17%);
+    background: var(--ok-color);
+  }
+
+  &.badge--closed {
+    background: var(--supergood-color);
+  }
 }
 
 .key-value {
@@ -13932,6 +13941,35 @@ output {
 
   &.is-visible {
     display: block;
+  }
+
+  &.is-loading {
+    cursor: default;
+
+    .batch-overlay-circle,
+    .batch-overlay-cancel,
+    .batch-overlay-box {
+      visibility: hidden !important;
+    }
+  }
+
+  &-loading {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    align-items: center;
+
+    .is-loading & {
+      display: flex;
+    }
+  }
+
+  &-loading-label {
+    @include bidi-style(margin-left, 10px, margin-right, 0);
+
+    margin-top: 1px;
   }
 
   &-backdrop {

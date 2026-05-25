@@ -8,7 +8,7 @@ import {
   useWindowSize,
 } from '@vueuse/core'
 import { escapeRegExp } from 'lodash-es'
-import { useTemplateRef, computed, nextTick, ref, toRef, watch } from 'vue'
+import { useTemplateRef, computed, nextTick, onMounted, ref, toRef, watch } from 'vue'
 
 import type { SelectOption } from '#shared/components/CommonSelect/types.ts'
 import useValue from '#shared/components/Form/composables/useValue.ts'
@@ -115,6 +115,10 @@ const openSelectDropdown = () => {
     else filterInputElement.value?.focus()
   })
 }
+
+onMounted(() => {
+  if (props.context.autoOpenDropdown) openSelectDropdown()
+})
 
 const openOrMoveFocusToDropdown = (lastOption = false) => {
   if (!selectInstance.value?.isOpen) {
@@ -227,7 +231,11 @@ setupMissingOrDisabledOptionHandling()
         @blur="context.handlers.blur"
         @click.stop="handleToggleDropdown"
       >
-        <div v-if="hasValue && context.multiple" class="flex flex-wrap gap-1.5" role="list">
+        <div
+          v-if="hasValue && context.multiple"
+          class="flex max-h-19 flex-wrap gap-1.5 overflow-y-auto"
+          role="list"
+        >
           <div
             v-for="selectedValue in valueContainer"
             :key="selectedValue"
