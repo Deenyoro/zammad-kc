@@ -11,13 +11,12 @@ import DragAndDropBulkWrapper from '#desktop/components/Ticket/DragAndDropBulk/D
 import { useDragAndDropBulk } from '#desktop/components/Ticket/DragAndDropBulk/useDragAndDropBulk.ts'
 import TicketBulkEditButton from '#desktop/components/Ticket/TicketBulkEditButton.vue'
 import { useTicketBulkEdit } from '#desktop/components/Ticket/TicketBulkEditFlyout/useTicketBulkEdit.ts'
-import { usePage } from '#desktop/composables/usePage.ts'
 import TicketList from '#desktop/pages/ticket-overviews/components/TicketList.vue'
 import TicketOverviewsSidebar from '#desktop/pages/ticket-overviews/components/TicketOverviewsSidebar.vue'
 import { useTicketOverviews } from '#desktop/pages/ticket-overviews/composables/useTicketOverviews.ts'
 
 interface Props {
-  overviewLink: string
+  overviewLink?: string
 }
 
 const props = defineProps<Props>()
@@ -70,7 +69,7 @@ defineOptions({
 
 const { overviewsByLink, hasOverviews, overviewsTicketCountById } = useTicketOverviews()
 
-const currentOverview = computed(() => overviewsByLink.value[props.overviewLink])
+const currentOverview = computed(() => overviewsByLink.value[props.overviewLink || ''])
 
 const currentOverviewCount = computed(
   () => overviewsTicketCountById.value[currentOverview.value?.id],
@@ -94,14 +93,10 @@ const {
   cursorPosition,
   dragPreviewData,
   dropSuccessTargetEntity,
-  reactivateListeners,
-  deactivateListeners,
 } = useDragAndDropBulk({
   checkedTicketIds,
   bulkSelector,
 })
-
-usePage({ onReactivate: reactivateListeners, onDeactivated: deactivateListeners })
 </script>
 
 <template>

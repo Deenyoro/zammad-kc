@@ -1,5 +1,26 @@
 # Breaking Changes
 
+## 7.2
+
+### Deprecated `es-ca` locale inactivated
+
+The deprecated `es-ca` locale (Catalan) is no longer offered for selection.
+Users still set to `es-ca` are automatically migrated to the proper `ca`
+locale. Existing Knowledge Base locales referencing `es-ca` are left
+untouched and must be migrated manually due to the URL change.
+
+### Stricter default Content-Security-Policy
+
+A new `frame-ancestors 'self'` directive was added to the default
+Content-Security-Policy header.
+
+⚠️ Setups that previously allowed the Zammad web interface to be embedded in
+an `<iframe>` on a different origin by overriding the `X-Frame-Options` header
+at the reverse proxy will now be blocked again by the new `frame-ancestors 'self'`
+CSP directive. To re-enable embedding from trusted origins, the `frame-ancestors`
+directive of the `Content-Security-Policy` response header must be adjusted at
+the reverse proxy as well.
+
 ## 7.0
 
 ### MySQL support removed, database related application settings deprecated

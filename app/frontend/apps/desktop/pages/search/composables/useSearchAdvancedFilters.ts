@@ -1,0 +1,186 @@
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
+
+import { isEqual } from 'lodash-es'
+import { computed, reactive, toValue } from 'vue'
+
+import { useObjectAttributesStore } from '#shared/entities/object-attributes/stores/objectAttributes.ts'
+import type { FilterAttribute } from '#shared/entities/object-attributes/types/store.ts'
+import {
+  EnumSearchableModels,
+  type SelectorNodeInput,
+  type SelectorObjectInput,
+} from '#shared/graphql/types.ts'
+import { useSessionStore } from '#shared/stores/session.ts'
+
+import type { FilterSelectorEntry } from '#desktop/components/Form/fields/FieldFilterSelector/types.ts'
+import { useSearchPlugins } from '#desktop/components/Search/plugins/index.ts'
+import { encodeFilters } from '#desktop/pages/search/utils/searchFilterQuery.ts'
+
+import type { Ref } from 'vue'
+
+// An empty array is the natural value for a freshly added multi-select `is`
+// filter (and what remains after the user deselects every option). It carries
+// no constraint and would yield an always-empty search if forwarded, so we
+// treat it as non-meaningful alongside null/undefined/''.
+const isMeaningful = (value: unknown) => {
+  if (value === null || value === undefined || value === '') return false
+  if (Array.isArray(value) && value.length === 0) return false
+  return true
+}
+
+export const dropEmptyFilterValues = (filters: FilterSelectorEntry[]): FilterSelectorEntry[] =>
+  filters.filter((entry) => entry && isMeaningful(entry.value))
+
+export const useSearchAdvancedFilters = (
+  selectedEntity: Ref<string>,
+  initialFilters: FilterSelectorEntry[] = [],
+) => {
+  const { getObjectAttributesForObject, loadObjectAttributesForObject } = useObjectAttributesStore()
+  const { hasPermission } = useSessionStore()
+
+  const { plugins: visiblePlugins } = useSearchPlugins()
+
+  // Filter-capable plugins among the ones the user can see. `useSearchPlugins`
+  // already gates by `plugin.permissions`, so we don't reconsider it here —
+  // only the filter-specific opt-outs apply.
+  const filterPlugins = computed(() =>
+    visiblePlugins.value.filter((plugin) => {
+      if (plugin.filtersDisabled) return false
+      if (plugin.filterPermissions) return hasPermission(plugin.filterPermissions)
+      return true
+    }),
+  )
+
+  filterPlugins.value.forEach((plugin) => {
+    loadObjectAttributesForObject(plugin.object)
+  })
+
+  // Filter-plugin membership doesn't change during a session, so per-entity
+  // state initialised here from a setup-time snapshot is safe.
+  const filtersByEntity = reactive<Record<string, FilterSelectorEntry[]>>(
+    Object.fromEntries(
+      filterPlugins.value.map((plugin) => [
+        plugin.name,
+        plugin.name === selectedEntity.value ? dropEmptyFilterValues(initialFilters) : [],
+      ]),
+    ),
+  )
+
+  const selectorsByEntity = computed<Record<string, SelectorObjectInput>>(() => {
+    const entries = Object.entries(filtersByEntity).map(([entity, filters]) => {
+      const cleaned = dropEmptyFilterValues(filters).map((entry) => ({
+        name: entry.name,
+        operator: entry.operator,
+        value: entry.value,
+      }))
+
+      return [
+        entity,
+        {
+          object: entity,
+          selector: cleaned.length
+            ? // Backend-shaped condition: { operator: 'AND', conditions: { name, operator, value }[] }.
+              // The group operator is fixed to AND for now; nested groups will own their own operator later.
+              {
+                operator: 'AND',
+                conditions: cleaned,
+              }
+            : undefined,
+        },
+      ]
+    })
+
+    return Object.fromEntries(entries)
+  })
+
+  const hasActiveFilters = computed((): boolean =>
+    Object.values(filtersByEntity).some((filters) => Object.keys(filters).length),
+  )
+
+  const entityFields = computed<Record<string, FilterAttribute[]>>(() =>
+    Object.fromEntries(
+      filterPlugins.value.map((plugin) => [
+        plugin.name,
+        toValue(getObjectAttributesForObject(plugin.object)?.filterAttributes) ?? [],
+      ]),
+    ),
+  )
+
+  // Per-entity list of relation metadata for every relation-typed filterable
+  // attribute. Sent to the form-updater backend so options for group/state/
+  // priority/… sub-fields are pre-resolved on the initial form-updater call —
+  // a row added later finds its select already populated, no extra roundtrip.
+  // Mirrors how the standard Form derives top-level relation fields from its
+  // schema, just lifted to the per-entity filterAttributes list.
+  const filterRelationFieldsByEntity = computed<
+    Record<string, Array<{ name: string; relation: string }>>
+  >(() =>
+    Object.fromEntries(
+      filterPlugins.value.map((plugin) => {
+        const relationFields = (entityFields.value[plugin.name] ?? []).flatMap((attribute) =>
+          attribute.relation ? [{ name: attribute.name, relation: attribute.relation }] : [],
+        )
+        return [plugin.name, relationFields]
+      }),
+    ),
+  )
+
+  const currentFilters = computed<FilterSelectorEntry[]>(
+    () => filtersByEntity[selectedEntity.value] ?? [],
+  )
+
+  const currentFiltersQueryParams = computed<Record<string, string>>((currentValue) => {
+    const newValue = encodeFilters(dropEmptyFilterValues(currentFilters.value))
+
+    if (currentValue && isEqual(newValue, currentValue)) return currentValue
+
+    return newValue
+  })
+
+  const currentFilterSelector = computed<SelectorNodeInput | null>(
+    () => selectorsByEntity.value[selectedEntity.value]?.selector ?? null,
+  )
+
+  const hasFilters = (entity: EnumSearchableModels) => filtersByEntity[entity]?.length > 0
+  const isEntitySelected = (entity: EnumSearchableModels) => selectedEntity.value === entity
+
+  const entityFiltersSelector = computed<SelectorObjectInput[]>(() => {
+    const filterSelector = Object.values(selectorsByEntity.value).filter((selector) => {
+      return (
+        hasFilters(selector?.object) &&
+        !isEntitySelected(selector?.object) &&
+        selector.selector !== undefined
+      )
+    })
+
+    return filterSelector
+  })
+
+  const filterCount = computed(() => dropEmptyFilterValues(currentFilters.value).length)
+
+  const setEntityFilters = (entity: string, value: FilterSelectorEntry[]) => {
+    filtersByEntity[entity] = value
+  }
+
+  const clearCurrentFilters = () => setEntityFilters(selectedEntity.value, [])
+
+  const selectedEntityHasFiltersEnabled = computed(() =>
+    filterPlugins.value.some((plugin) => plugin.name === selectedEntity.value),
+  )
+
+  return {
+    filtersByEntity,
+    selectorsByEntity,
+    entityFields,
+    filterRelationFieldsByEntity,
+    currentFilters,
+    currentFiltersQueryParams,
+    currentFilterSelector,
+    entityFiltersSelector,
+    filterCount,
+    hasActiveFilters,
+    setEntityFilters,
+    clearCurrentFilters,
+    selectedEntityHasFiltersEnabled,
+  }
+}
