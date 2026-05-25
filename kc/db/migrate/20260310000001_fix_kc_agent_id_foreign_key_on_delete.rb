@@ -8,8 +8,8 @@ class FixKcAgentIdForeignKeyOnDelete < ActiveRecord::Migration[7.0]
     return unless table_exists?(:ticket_time_accountings)
     return unless column_exists?(:ticket_time_accountings, :agent_id)
 
-    # Drop the existing FK and re-add with ON DELETE SET NULL
-    remove_foreign_key :ticket_time_accountings, column: :agent_id
+    fk = foreign_keys(:ticket_time_accountings).find { |k| k.column == 'agent_id' }
+    remove_foreign_key :ticket_time_accountings, column: :agent_id if fk
     add_foreign_key :ticket_time_accountings, :users, column: :agent_id, on_delete: :nullify
   end
 
@@ -17,7 +17,8 @@ class FixKcAgentIdForeignKeyOnDelete < ActiveRecord::Migration[7.0]
     return unless table_exists?(:ticket_time_accountings)
     return unless column_exists?(:ticket_time_accountings, :agent_id)
 
-    remove_foreign_key :ticket_time_accountings, column: :agent_id
+    fk = foreign_keys(:ticket_time_accountings).find { |k| k.column == 'agent_id' }
+    remove_foreign_key :ticket_time_accountings, column: :agent_id if fk
     add_foreign_key :ticket_time_accountings, :users, column: :agent_id
   end
 end
