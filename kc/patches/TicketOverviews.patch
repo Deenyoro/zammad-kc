@@ -1,9 +1,9 @@
 diff --git a/app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue b/app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue
-index 76d2c018f7..c523178b9f 100644
+index 7d811efa5f..68fd8e7ada 100644
 --- a/app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue
 +++ b/app/frontend/apps/desktop/pages/ticket-overviews/views/TicketOverviews.vue
-@@ -9,6 +9,8 @@ import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
- import LayoutSidebar from '#desktop/components/layout/LayoutSidebar.vue'
+@@ -11,6 +11,8 @@ import LayoutSidebar from '#desktop/components/layout/LayoutSidebar.vue'
+ import { SidebarName } from '#desktop/components/layout/useSidebarDisplay.ts'
  import DragAndDropBulkWrapper from '#desktop/components/Ticket/DragAndDropBulk/DragAndDropBulkWrapper.vue'
  import { useDragAndDropBulk } from '#desktop/components/Ticket/DragAndDropBulk/useDragAndDropBulk.ts'
 +import KcTicketBulkMergeButton from '#desktop/components/Ticket/KcTicketBulkMergeButton.vue'
@@ -11,7 +11,7 @@ index 76d2c018f7..c523178b9f 100644
  import TicketBulkEditButton from '#desktop/components/Ticket/TicketBulkEditButton.vue'
  import { useTicketBulkEdit } from '#desktop/components/Ticket/TicketBulkEditFlyout/useTicketBulkEdit.ts'
  import TicketList from '#desktop/pages/ticket-overviews/components/TicketList.vue'
-@@ -87,6 +89,7 @@ const breadcrumbItems = computed(() => [
+@@ -101,6 +103,7 @@ const breadcrumbItems = computed(() => [
  ])
  
  const { checkedTicketIds, openBulkEditFlyout, bulkSelector } = useTicketBulkEdit()
@@ -19,7 +19,7 @@ index 76d2c018f7..c523178b9f 100644
  
  const {
    isActive: isDragAndDropActive,
-@@ -118,6 +121,10 @@ const {
+@@ -135,6 +138,10 @@ const {
        content-padding
      >
        <template #headerRight>
