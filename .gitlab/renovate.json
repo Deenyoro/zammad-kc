@@ -1,5 +1,16 @@
 {
-  "enabledManagers": ["bundler", "npm", "github-actions"],
+  "enabledManagers": ["bundler", "npm", "github-actions", "devcontainer", "custom.regex"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.gitlab/ci/.*\\.yml$/"
+      ],
+      "matchStrings": ["DEVCONTAINERS_CLI_VERSION: '(?<currentValue>[^']+)'"],
+      "depNameTemplate": "@devcontainers/cli",
+      "datasourceTemplate": "npm"
+    }
+  ],
   "bundler": {
     "lockFileMaintenance": {
       "enabled": true,
@@ -7,6 +18,11 @@
       "branchTopic": "lock-file-maintenance-ruby",
       "commitMessageExtra": "(Ruby)"
     }
+  },
+  "devcontainer": {
+    "managerFilePatterns": [
+      "/^\\.devcontainer/[^/]+/devcontainer\\.json$/"
+    ]
   },
   "npm": {
     "lockFileMaintenance": {
@@ -16,10 +32,11 @@
       "commitMessageExtra": "(JS)"
     }
   },
+  "minimumReleaseAge": "3 days",
   "packageRules": [
     {
-      "matchDatasources": ["npm"],
-      "minimumReleaseAge": "3 days"
+      "matchManagers": ["devcontainer"],
+      "assignees": ["fl"]
     },
     {
       "matchCategories": ["ci"],

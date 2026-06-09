@@ -56,13 +56,18 @@ describe('FieldResolverMultiselect', () => {
           d: 'd',
         },
         multiple: true,
+        // Object-keyed options need label sorting (no stable iteration order).
+        sorting: 'label',
       },
       type: 'select',
       internal: true,
     })
   })
 
-  it('provides is filter fields with multiple enabled', () => {
+  it('provides `contains one` filter operator props', () => {
+    // Multi-value selects emit `contains one` (not `is`) so the operator name
+    // matches the existing overview / trigger condition vocabulary and the
+    // backend ES + SQL selector wiring for multi-value attributes.
     const fieldResolver = new FieldResolverMultiselect(EnumObjectManagerObjects.Ticket, {
       dataType: 'multiselect',
       name: 'category',
@@ -82,8 +87,10 @@ describe('FieldResolverMultiselect', () => {
       isInternal: true,
     })
 
+    expect(fieldResolver.getFieldFilterOperators()).toEqual(['contains one'])
+
     expect(fieldResolver.getFilterOperatorProps()).toEqual({
-      is: {
+      'contains one': {
         noOptionsLabelTranslation: false,
         options: [
           { label: 'a', value: 'a' },
@@ -93,6 +100,7 @@ describe('FieldResolverMultiselect', () => {
           a: 'a',
           b: 'b',
         },
+        sorting: 'label',
       },
     })
   })

@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { useScroll, whenever } from '@vueuse/core'
+import { useLocalStorage, useScroll, whenever } from '@vueuse/core'
 import { cloneDeep, isEqual } from 'lodash-es'
 import {
   computed,
@@ -79,6 +79,7 @@ import TicketSidebar from '../TicketSidebar.vue'
 
 import ArticleList from './ArticleList.vue'
 import ArticleReply from './ArticleReply.vue'
+import TicketDetailScrollToBottomButton from './TicketDetailScrollToBottomButton.vue'
 import TicketDetailTopBar from './TicketDetailTopBar/TicketDetailTopBar.vue'
 import { useUnreadArticle } from './useUnreadArticle.ts'
 
@@ -89,7 +90,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const internalId = toRef(props, 'internalId')
-const isReplyPinned = ref(false)
+const isReplyPinned = useLocalStorage('article-reply-pinned', false)
 const contentContainerElement = useTemplateRef('content-container')
 
 const { ticket, ticketId, ...ticketInformation } = initializeTicketInformation(internalId)
@@ -267,8 +268,21 @@ const formEditAttributeLocation = computed(() => {
   return '#wrapper-form-ticket-edit'
 })
 
+// Use a separate ref that lags by one post-flush tick so the Teleport target
+// is only switched after the new sub-component has mounted, avoiding an
+// orphaned teleport when ArticleReplyPinned/Unpinned swap their form div.
+const formReplyTarget = ref(
+  isReplyPinned.value ? '#ticketArticleReplyFormPinned' : '#ticketArticleReplyForm',
+)
+watch(
+  isReplyPinned,
+  (pinned) => {
+    formReplyTarget.value = pinned ? '#ticketArticleReplyFormPinned' : '#ticketArticleReplyForm'
+  },
+  { flush: 'post' },
+)
 const formArticleReplyLocation = computed(() => {
-  if (newTicketArticlePresent.value) return '#ticketArticleReplyForm'
+  if (newTicketArticlePresent.value) return formReplyTarget.value
   return '#wrapper-form-ticket-edit'
 })
 
@@ -649,7 +663,7 @@ const articleListTopPadding = ref('4rem')
       <div
         ref="content-container"
         data-test-id="ticket-detail-content-container"
-        class="grid w-full overflow-y-auto overscroll-contain"
+        class="@container isolate grid w-full overflow-y-auto overscroll-contain"
         :class="{
           'grid-rows-[max-content_max-content_max-content]':
             !newTicketArticlePresent || !isReplyPinned,
@@ -671,22 +685,27 @@ const articleListTopPadding = ref('4rem')
 
         <CommonIndicator v-model="isReachingBottom" class="h-0.5" />
 
-        <ArticleReply
-          v-if="ticket?.id && isTicketEditable"
-          v-show="!isLoadingArticles && isInitialSettled"
-          v-model:pinned="isReplyPinned"
-          :ticket="ticket"
-          :new-article-present="newTicketArticlePresent"
-          :create-article-type="ticket.createArticleType?.name"
-          :ticket-article-types="ticketArticleTypes"
-          :is-ticket-customer="isTicketCustomer"
-          :has-internal-article="hasInternalArticle"
-          :parent-reached-bottom-scroll="isReachingBottom"
-          :new-article-count="articleCount"
-          @show-article-form="handleShowArticleForm"
-          @discard-form="discardReplyForm"
-          @scroll-into-view="handleScrollToArticle('smooth')"
+        <TicketDetailScrollToBottomButton
+          v-if="articleCount && articleCount > 0 && !isReachingBottom"
+          :count="articleCount"
+          @click="handleScrollToArticle('smooth')"
         />
+
+        <div v-show="!isLoadingArticles && isInitialSettled">
+          <ArticleReply
+            v-if="ticket?.id && isTicketEditable"
+            v-model:pinned="isReplyPinned"
+            :ticket="ticket"
+            :new-article-present="newTicketArticlePresent"
+            :create-article-type="ticket.createArticleType?.name"
+            :ticket-article-types="ticketArticleTypes"
+            :is-ticket-customer="isTicketCustomer"
+            :has-internal-article="hasInternalArticle"
+            :parent-reached-bottom-scroll="isReachingBottom"
+            @show-article-form="handleShowArticleForm"
+            @discard-form="discardReplyForm"
+          />
+        </div>
 
         <div id="wrapper-form-ticket-edit" class="hidden" aria-hidden="true">
           <Form
@@ -716,13 +735,10 @@ const articleListTopPadding = ref('4rem')
       </div>
     </CommonLoader>
     <!-- Render underlying components only when the ticket is available to avoid providing undefined ticket context -->
-    <template v-if="!!ticket" #sideBar="{ isCollapsed, toggleCollapse }">
-      <TicketSidebar
-        :is-collapsed="isCollapsed"
-        :toggle-collapse="toggleCollapse"
-        :context="sidebarContext"
-      />
+    <template v-if="!!ticket" #sideBar>
+      <TicketSidebar :context="sidebarContext" />
     </template>
+
     <template #bottomBar>
       <TicketDetailBottomBar
         :can-use-draft="canUseDraft"

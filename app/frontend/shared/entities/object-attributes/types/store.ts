@@ -43,15 +43,28 @@ export type OperatorFilterProps = Record<OperatorName, Record<string, unknown>>
 export interface FilterAttribute {
   name: string
   label: string
+  // Optional `%s` placeholders for `label`, interpolated (and themselves
+  // translated) at label output — e.g. the accounted-time unit from config.
+  labelPlaceholder?: string[]
   operators: string[]
   operatorFilterProps?: OperatorFilterProps
-  // Mutually exclusive relation signals (set by the resolver):
-  // - `relation`: form-updater-resolvable relation type (e.g. 'Group').
-  //   Server pre-resolves option lists for these.
-  // - `autocompleteFilterType`: FormKit field type for autocomplete-style
-  //   relations (e.g. 'customer' for User). Options fetched per keystroke.
+  // Two independent relation signals (set by the resolver):
+  // - `relation`: target entity name (e.g. 'User', 'Organization'). Marks the
+  //   value as a foreign-key ID — downstream code coerces such values to
+  //   integers when restoring from URL state.
+  // - `autocompleteFilterType`: FormKit field type used to *pick* the value
+  //   (e.g. 'customer', 'agent', 'tags'). Decides the UI strategy — when set,
+  //   options are fetched per keystroke instead of pre-resolved by the form
+  //   updater.
+  // The two can co-exist (customer/agent/organization carry both); tags only
+  // sets autocompleteFilterType, since tag values are strings, not IDs.
   relation?: string
   autocompleteFilterType?: string
+  // Resolved FormKit field type of the attribute (e.g. 'date', 'datetime',
+  // 'number'), straight from its FieldResolver. Lets shared operators (e.g.
+  // `in range`) pick the right value-input field type and props without a
+  // per-type operator variant.
+  attributeFieldType?: string
 }
 
 export interface ObjectAttributesObject {
