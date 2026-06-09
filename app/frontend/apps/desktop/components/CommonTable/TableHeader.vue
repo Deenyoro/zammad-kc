@@ -6,6 +6,7 @@ import { delay } from 'lodash-es'
 import {
   computed,
   nextTick,
+  onBeforeUnmount,
   onMounted,
   ref,
   type Ref,
@@ -149,6 +150,8 @@ const calculateHeaderWidths = () => {
   storeHeaderWidths(headerWidths)
 }
 
+let calculateHeaderWidthsTimer: number | undefined
+
 const initializeHeaderWidths = (storageKeyId?: string) => {
   if (storageKeyId) {
     // FIXME: This is needed because storage key as a reactive value is unsupported.
@@ -158,14 +161,22 @@ const initializeHeaderWidths = (storageKeyId?: string) => {
 
   nextTick(() => {
     setHeaderWidths()
-    delay(calculateHeaderWidths, 500)
+
+    if (calculateHeaderWidthsTimer) clearTimeout(calculateHeaderWidthsTimer)
+    calculateHeaderWidthsTimer = delay(calculateHeaderWidths, 500)
   })
 }
 
 const resetHeaderWidths = () => {
   setHeaderWidths(true)
-  delay(calculateHeaderWidths, 500)
+
+  if (calculateHeaderWidthsTimer) clearTimeout(calculateHeaderWidthsTimer)
+  calculateHeaderWidthsTimer = delay(calculateHeaderWidths, 500)
 }
+
+onBeforeUnmount(() => {
+  clearTimeout(calculateHeaderWidthsTimer)
+})
 
 // Selection state
 const selectAllActive = shallowRef(false)
@@ -276,13 +287,19 @@ onMounted(() => {
 
 useEventListener('resize', () => initializeHeaderWidths())
 
-useOnEmitter('main-sidebar-transition', () => initializeHeaderWidths())
+useOnEmitter('primary-sidebar-transition', () => initializeHeaderWidths())
 </script>
 
 <template>
   <thead ref="thead">
     <tr>
-      <th v-if="hasBulkAction" id="select-header" :aria-label="$t('Select')" class="size-10">
+      <th
+        v-if="hasBulkAction"
+        id="select-header"
+        scope="col"
+        :aria-label="$t('Select')"
+        class="size-10"
+      >
         <BulkCheckbox
           :items="items"
           :item-ids="itemIds"
@@ -295,6 +312,7 @@ useOnEmitter('main-sidebar-transition', () => initializeHeaderWidths())
         v-for="(tableAttribute, index) in tableAttributes"
         :id="`${tableAttribute.name}-header`"
         :key="tableAttribute.name"
+        scope="col"
         class="relative h-10 p-2.5 text-xs"
         :class="[tableAttribute.headerPreferences?.headerClass]"
         :aria-label="$t(tableAttribute.label, ...(tableAttribute.labelPlaceholder || []))"
@@ -311,7 +329,7 @@ useOnEmitter('main-sidebar-transition', () => initializeHeaderWidths())
           <slot :name="`column-header-${tableAttribute.name}`" :attribute="tableAttribute">
             <!-- eslint-disable vuejs-accessibility/no-static-element-interactions,vuejs-accessibility/mouse-events-have-key-events-->
             <div
-              v-tooltip.noAriaLabel="getToolbarLabel(tableAttribute)"
+              v-tooltip="getToolbarLabel(tableAttribute)"
               class="flex items-center gap-1"
               :class="[
                 cellAlignmentClasses[tableAttribute.columnPreferences?.alignContent || 'left'],
@@ -366,7 +384,7 @@ useOnEmitter('main-sidebar-transition', () => initializeHeaderWidths())
           @reset="resetHeaderWidths"
         />
       </th>
-      <th v-if="actions" class="h-10 w-0 p-2.5 text-center">
+      <th v-if="actions" id="actions-header" scope="col" class="h-10 w-0 p-2.5 text-center">
         <CommonLabel class="font-normal text-stone-200! dark:text-neutral-500!" size="small"
           >{{ $t('Actions') }}
         </CommonLabel>

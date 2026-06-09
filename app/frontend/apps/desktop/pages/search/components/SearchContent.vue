@@ -1,8 +1,8 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { watchDebounced } from '@vueuse/core'
-import { isEqual, omit } from 'lodash-es'
+import { watchThrottled } from '@vueuse/core'
+import { isEqual } from 'lodash-es'
 import { storeToRefs } from 'pinia'
 import {
   computed,
@@ -12,7 +12,6 @@ import {
   type Ref,
   nextTick,
   shallowRef,
-  onActivated,
   onBeforeMount,
 } from 'vue'
 import { stringifyQuery, useRoute, useRouter } from 'vue-router'
@@ -22,8 +21,11 @@ import {
   type DetailSearchQueryVariables,
   type EnumOrderDirection,
   EnumSearchableModels,
+  type SearchTaskbarItemStateUpdatesSubscription,
+  type UserCurrentTaskbarItemUpdateMutationVariables,
 } from '#shared/graphql/types.ts'
 import { QueryHandler } from '#shared/server/apollo/handler/index.ts'
+import SubscriptionHandler from '#shared/server/apollo/handler/SubscriptionHandler.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 
 import { useSkeletonLoadingCount } from '#desktop/components/CommonTable/composables/useSkeletonLoadingCount.ts'
@@ -31,6 +33,7 @@ import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import { useSearchTitle } from '#desktop/components/Search/composables/useSearchTitle.ts'
 import { useDetailSearchLazyQuery } from '#desktop/components/Search/graphql/queries/detailSearch.api.ts'
 import { useSearchCountsLazyQuery } from '#desktop/components/Search/graphql/queries/searchCounts.api.ts'
+import { useSearchTaskbarItemStateUpdatesSubscription } from '#desktop/components/Search/graphql/subscriptions/searchTaskbarItemStateUpdates.api.ts'
 import { searchPluginByName, useSearchPlugins } from '#desktop/components/Search/plugins/index.ts'
 import DragAndDropBulkWrapper from '#desktop/components/Ticket/DragAndDropBulk/DragAndDropBulkWrapper.vue'
 import { useDragAndDropBulk } from '#desktop/components/Ticket/DragAndDropBulk/useDragAndDropBulk.ts'
@@ -68,7 +71,8 @@ const selectedEntity = ref(
 const {
   filtersByEntity,
   entityFields,
-  filterRelationFieldsByEntity,
+  entityFieldsLoadingByEntity,
+  filterUpdaterFieldsByEntity,
   currentFilters,
   filterCount,
   currentFiltersQueryParams,
@@ -108,7 +112,16 @@ const syncFiltersFromRoute = () => {
 
   const queryEntity = (route.query.entity as EnumSearchableModels) ?? EnumSearchableModels.Ticket
 
-  const queryFilters = decodeFilters(route.query, entityFields.value[queryEntity] ?? [])
+  // Static attributes alone (e.g. ticket.created_by_id) don't form a usable
+  // validation schema for deep-link decoding — they'd drop legitimate route
+  // filters like `ticket.title`. While the GraphQL load is still in flight,
+  // skip schema validation and preserve the raw entries; the loading-watcher
+  // below re-syncs once the full schema is available.
+  const schema = entityFieldsLoadingByEntity.value[queryEntity]
+    ? []
+    : (entityFields.value[queryEntity] ?? [])
+
+  const queryFilters = decodeFilters(route.query, schema)
 
   if (selectedEntity.value !== queryEntity) selectedEntity.value = queryEntity
 
@@ -117,23 +130,22 @@ const syncFiltersFromRoute = () => {
   setEntityFilters(queryEntity, queryFilters)
 }
 
-//:TODO useLifeCycle hook when merged and useReactivation
+// First mount only — reactivation is handled by usePage's onReactivate below.
 onBeforeMount(syncFiltersFromRoute)
-onActivated(syncFiltersFromRoute)
 
-// Object attributes load asynchronously. On a fresh deep-link
-// `onBeforeMount` runs with an empty schema, so `decodeFilters` falls back
-// to its no-schema passthrough — relation values stay as strings and
-// invalid candidates aren't dropped. If the schema isn't ready yet, watch
-// for its arrival and re-sync once. Subsequent activations are handled by
-// `onActivated`, which already sees a populated schema.
+// On a fresh deep-link the object-attribute schema may still be loading, so
+// onBeforeMount's decode runs against an incomplete schema — re-sync once it's
+// ready. Later reactivations already see a populated schema.
 const initialQueryEntity =
   (route.query.entity as EnumSearchableModels) ?? EnumSearchableModels.Ticket
-if (!entityFields.value[initialQueryEntity]?.length) {
-  // Watch the length, not the array reference — `entityFields` recomputes on
-  // every store change and would otherwise fire the once-shot watcher on
-  // placeholder identity updates before the schema becomes usable.
-  watch(() => entityFields.value[initialQueryEntity]?.length, syncFiltersFromRoute, { once: true })
+if (entityFieldsLoadingByEntity.value[initialQueryEntity]) {
+  watch(
+    () => entityFieldsLoadingByEntity.value[initialQueryEntity],
+    (loading) => {
+      if (!loading) syncFiltersFromRoute()
+    },
+    { once: true },
+  )
 }
 
 const modelSearchTerm = computed({
@@ -174,49 +186,106 @@ const tabContext = computed<TaskbarTabContext>((currentContext) => {
   return newContext
 })
 
-const { currentTaskbarTab, currentTaskbarTabUpdate } = useTaskbarTab(tabContext)
+const { currentTaskbarTab, currentTaskbarTabId, currentTaskbarTabUpdate } =
+  useTaskbarTab(tabContext)
 
-watch(
-  () => currentTaskbarTab.value?.entity,
-  (updatedEntity) => {
-    if (!updatedEntity || updatedEntity.__typename !== 'UserTaskbarItemEntitySearch') return
+// Apply a search state set in another tab/device. Filters arrive pre-encoded,
+// so route them as-is and let `syncFiltersFromRoute` decode + validate.
+const applyForeignSearchEntity = (
+  entity?: {
+    __typename?: string
+    query?: string | null
+    model?: string | null
+    filters?: string | null
+  } | null,
+) => {
+  if (entity?.__typename !== 'UserTaskbarItemEntitySearch') return
 
-    const updatedQuery = updatedEntity.query ?? ''
-    const updatedModel = (updatedEntity.model ??
-      EnumSearchableModels.Ticket) as EnumSearchableModels
-    const updatedFiltersString = updatedEntity.filters ?? ''
+  const searchTerm = entity.query ?? ''
+  const model = (entity.model ?? EnumSearchableModels.Ticket) as EnumSearchableModels
+  const filtersString = entity.filters ?? ''
 
-    // When the entity update we just received originated from our own write.
-    if (
-      updatedQuery === currentSearchTerm.value &&
-      updatedModel === selectedEntity.value &&
-      updatedFiltersString === stringifyQuery(currentFiltersQueryParams.value)
-    )
-      return
+  if (
+    searchTerm === currentSearchTerm.value &&
+    model === selectedEntity.value &&
+    filtersString === stringifyQuery(currentFiltersQueryParams.value)
+  )
+    return
 
-    const updatedFilterQuery = Object.fromEntries(new URLSearchParams(updatedFiltersString))
-    const updatedFilters = decodeFilters(updatedFilterQuery, entityFields.value[updatedModel] ?? [])
-    const url = buildSearchDeepLink({
-      searchTerm: updatedQuery,
-      entity: updatedModel,
-      filters: updatedFilters,
-      baseQuery: getSearchQueryWithoutFilters(router.currentRoute.value.query),
+  router
+    .replace({
+      path: `/search/${encodeURIComponent(searchTerm)}`,
+      query: {
+        ...getSearchQueryWithoutFilters(router.currentRoute.value.query),
+        entity: model,
+        ...Object.fromEntries(new URLSearchParams(filtersString)),
+      },
     })
+    .then(syncFiltersFromRoute)
+}
 
-    router.replace(url).then(syncFiltersFromRoute)
-  },
+// Cross-tab sync: own echoes are dropped by the skip link, so we only apply
+// foreign changes. Paused while cached; usePage re-enables it on reactivate
+// and reconciles once from the (still-fresh) entity to catch up.
+const searchTaskbarSubscriptionActive = ref(true)
+
+const taskbarStateUpdatesSubscription = new SubscriptionHandler(
+  useSearchTaskbarItemStateUpdatesSubscription(
+    () => ({ taskbarItemId: currentTaskbarTabId.value! }),
+    () => ({
+      enabled: !!currentTaskbarTabId.value && searchTaskbarSubscriptionActive.value,
+      context: {
+        // Match our own echo by value (sent state vs payload), not by id — so
+        // two browser windows on the same search (shared id) don't collide.
+        skipSubscriptionCallback: (
+          variables: UserCurrentTaskbarItemUpdateMutationVariables,
+          result?: { data?: SearchTaskbarItemStateUpdatesSubscription | null },
+        ) => {
+          const sent = variables.input?.state as
+            | { query?: string; model?: string; filters?: string }
+            | undefined
+          const received = result?.data?.userCurrentTaskbarItemStateUpdates?.taskbarItem?.entity
+          if (received?.__typename !== 'UserTaskbarItemEntitySearch') return false
+
+          return (
+            sent?.query === received.query &&
+            sent?.model === received.model &&
+            sent?.filters === received.filters
+          )
+        },
+      },
+    }),
+  ),
 )
 
-watchDebounced(
+taskbarStateUpdatesSubscription.onResult((result) => {
+  applyForeignSearchEntity(result.data?.userCurrentTaskbarItemStateUpdates?.taskbarItem?.entity)
+})
+
+watchThrottled(
   tabContext,
   (newValue) => {
     if (!currentTaskbarTab.value) return
 
-    if (isEqual(newValue, omit(currentTaskbarTab.value.entity, '__typename'))) return
+    // Skip no-op writes (state we already hold): they get no echo, so the skip
+    // entry would linger and later swallow a real foreign change. Compare the
+    // search fields only — `newValue` also has `formIsDirty`, the entity doesn't.
+    const { entity } = currentTaskbarTab.value
+    if (
+      entity?.__typename === 'UserTaskbarItemEntitySearch' &&
+      newValue.query === entity.query &&
+      newValue.model === entity.model &&
+      newValue.filters === entity.filters
+    )
+      return
 
-    currentTaskbarTabUpdate(currentTaskbarTab.value, newValue)
+    // Tag the write so the skip-subscription link can recognise (and drop) its
+    // echo by comparing the sent state to the incoming payload.
+    currentTaskbarTabUpdate(currentTaskbarTab.value, newValue, {
+      context: { skipSubscription: 'searchTaskbarItemStateUpdates' },
+    })
   },
-  { debounce: 500 },
+  { throttle: 500 },
 )
 
 const { reachedTop } = useElementScroll(scrollContainerElement as Ref<HTMLElement>)
@@ -229,6 +298,15 @@ const { pageActive } = usePage({
   onReactivate: () => {
     // oxlint-disable-next-line @eslint/no-use-before-define
     refetchQueries()
+
+    // Re-enable the subscription and reconcile from the route. The search
+    // taskbar link is built from the entity, so a cross-tab change made while
+    // cached arrives here as a route change — no separate catch-up needed.
+    searchTaskbarSubscriptionActive.value = true
+    syncFiltersFromRoute()
+  },
+  onDeactivated: () => {
+    searchTaskbarSubscriptionActive.value = false
   },
 })
 
@@ -567,7 +645,7 @@ setOnSuccessCallback(() => {
         :search-tabs="searchTabs"
         :filters-by-entity="filtersByEntity"
         :entity-fields="entityFields"
-        :filter-relation-fields-by-entity="filterRelationFieldsByEntity"
+        :filter-updater-fields-by-entity="filterUpdaterFieldsByEntity"
         :filter-count="filterCount"
         :selected-entity-has-filters-enabled="selectedEntityHasFiltersEnabled"
         class="px-4"
@@ -584,7 +662,7 @@ setOnSuccessCallback(() => {
           :is="searchPlugin.detailSearchComponent"
           :key="selectedEntity"
           :table-id="`search-${selectedEntity}-table`"
-          :caption="`Search result for: ${searchPlugin.label}`"
+          :caption="$t('Search result for: %s', searchPlugin.label)"
           :items="searchResultItems"
           :headers="detailSearchHeaders"
           :total-count="searchResultTotalCount"

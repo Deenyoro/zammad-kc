@@ -106,6 +106,7 @@ const isBelowHalfScreen = computed(() => {
 
 const openSelectDropdown = () => {
   if (props.context.disabled) return
+  if (!inputElement.value) return
 
   selectInstance.value?.openDropdown(inputElementBounds, windowSize.height)
 
@@ -178,15 +179,13 @@ setupMissingOrDisabledOptionHandling()
 <template>
   <div
     ref="input"
-    class="flex h-auto min-h-10 hover:outline-1 hover:-outline-offset-1 hover:outline-blue-600 has-[output:focus,input:focus]:outline-1 has-[output:focus,input:focus]:-outline-offset-1 has-[output:focus,input:focus]:outline-blue-800 dark:hover:outline-blue-900 dark:has-[output:focus,input:focus]:outline-blue-800"
+    class="flex h-auto min-h-10 bg-blue-200 hover:outline-1 hover:-outline-offset-1 hover:outline-blue-600 has-[output:focus,input:focus]:outline-1 has-[output:focus,input:focus]:-outline-offset-1 has-[output:focus,input:focus]:outline-blue-800 dark:bg-gray-700 dark:hover:outline-blue-900 dark:has-[output:focus,input:focus]:outline-blue-800 formkit-alternative-background:bg-neutral-50 dark:formkit-alternative-background:bg-gray-500"
     :class="[
       context.classes.input,
       {
         'rounded-lg': !selectInstance?.isOpen,
         'rounded-t-lg': selectInstance?.isOpen && !isBelowHalfScreen,
         'rounded-b-lg': selectInstance?.isOpen && isBelowHalfScreen,
-        'bg-blue-200 dark:bg-gray-700': !context.alternativeBackground,
-        'bg-neutral-50 dark:bg-gray-500': context.alternativeBackground,
       },
     ]"
     data-test-id="field-select"
@@ -233,7 +232,12 @@ setupMissingOrDisabledOptionHandling()
       >
         <div
           v-if="hasValue && context.multiple"
-          class="flex max-h-19 flex-wrap gap-1.5 overflow-y-auto"
+          class="select-scroll-shadows flex flex-wrap gap-1.5 overflow-y-auto outline-hidden"
+          :class="{
+            'select-scroll-shadows--base': !context.alternativeBackground,
+            'select-scroll-shadows--alt': context.alternativeBackground,
+            'max-w-1/2 shrink-0': expanded,
+          }"
           role="list"
         >
           <div
@@ -243,11 +247,7 @@ setupMissingOrDisabledOptionHandling()
             role="listitem"
           >
             <div
-              class="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-xs text-black dark:text-white"
-              :class="{
-                'bg-white dark:bg-gray-200': !context.alternativeBackground,
-                'bg-neutral-100 dark:bg-gray-200': context.alternativeBackground,
-              }"
+              class="inline-flex items-center gap-1 rounded bg-white px-1.5 py-0.5 text-xs text-black dark:bg-gray-200 dark:text-white formkit-alternative-background:bg-neutral-100 dark:formkit-alternative-background:bg-gray-200"
             >
               <CommonIcon
                 v-if="getSelectedOptionIcon(selectedValue)"
@@ -260,13 +260,13 @@ setupMissingOrDisabledOptionHandling()
                 v-tooltip="
                   getSelectedOptionLabel(selectedValue) || i18n.t('%s (unknown)', selectedValue)
                 "
-                class="line-clamp-3 break-words whitespace-pre-wrap"
+                class="line-clamp-3 break-word"
               >
                 {{ getSelectedOptionLabel(selectedValue) || i18n.t('%s (unknown)', selectedValue) }}
               </span>
               <CommonIcon
                 :aria-label="i18n.t('Unselect option')"
-                class="shrink-0 fill-stone-200 hover:fill-black focus:outline-hidden focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:fill-neutral-500 dark:hover:fill-white"
+                class="shrink-0 fill-stone-200 hover:fill-black focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 dark:fill-neutral-500 dark:hover:fill-white"
                 name="x-lg"
                 size="xs"
                 role="button"
@@ -303,7 +303,7 @@ setupMissingOrDisabledOptionHandling()
               v-tooltip="
                 getSelectedOptionLabel(currentValue) || i18n.t('%s (unknown)', currentValue)
               "
-              class="line-clamp-3 break-words whitespace-pre-wrap"
+              class="line-clamp-3 break-word"
             >
               {{ getSelectedOptionLabel(currentValue) || i18n.t('%s (unknown)', currentValue) }}
             </span>
