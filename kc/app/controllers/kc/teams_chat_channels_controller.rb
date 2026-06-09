@@ -18,6 +18,12 @@ class Kc::TeamsChatChannelsController < ApplicationController
 
   CHANNEL_AREA = 'MicrosoftTeamsChat::Account'.freeze
 
+  # delayed_job priority for on-demand directory syncs. Lower = runs sooner.
+  # Zammad's default job priority is 200 and search reindex jobs are 300, so
+  # 100 lets an interactive "Sync Now" jump ahead of the bulk webhook/transaction
+  # storm that bulk org edits create — without starving anything important.
+  SYNC_JOB_PRIORITY = 100
+
   # GET /api/v1/kc/teams_chat_channels
   # Lists all Teams Chat channels with assets.
   def index
@@ -197,8 +203,69 @@ class Kc::TeamsChatChannelsController < ApplicationController
       return
     end
 
-    Kc::TeamsDirectorySyncJob.perform_later(channel.id)
-    render json: { message: 'Directory sync started' }
+    run = create_sync_run(channel)
+
+    job = Kc::TeamsDirectorySyncJob.set(priority: SYNC_JOB_PRIORITY).perform_later(channel.id, run&.id)
+
+    # Record the delayed_job row id so a still-queued run can be hard-canceled.
+    if run && job.respond_to?(:provider_job_id) && job.provider_job_id.present?
+      run.update(delayed_job_id: job.provider_job_id)
+    end
+
+    render json: { message: 'Directory sync started', run: run&.to_api_hash }
+  rescue => e
+    Rails.logger.error "KC Teams Chat: sync_directory failed: #{e.message}"
+    render json: { error: 'Failed to start directory sync' }, status: :unprocessable_content
+  end
+
+  # GET /api/v1/kc/teams_chat_channels/:id/sync_runs
+  # Returns recent directory-sync runs for the channel plus a snapshot of the
+  # shared delayed_job queue (so the admin can see "queued behind N jobs").
+  def sync_runs
+    channel = Channel.find_by(id: params[:id], area: CHANNEL_AREA)
+    if channel.nil?
+      render json: { error: 'Channel not found' }, status: :not_found
+      return
+    end
+
+    runs = []
+    if (run_model = sync_run_model)
+      runs = run_model.where(channel_id: channel.id).recent(25).map(&:to_api_hash)
+    end
+
+    render json: { runs: runs, queue: queue_context }
+  end
+
+  # POST /api/v1/kc/teams_chat_channels/:id/sync_runs/:run_id/cancel
+  # Requests cancellation of a sync run. A still-queued job is destroyed and
+  # marked canceled immediately; a running job is asked to stop cooperatively
+  # (the job checks cancel_requested between Graph paging batches).
+  def cancel_sync_run
+    run_model = sync_run_model
+    if run_model.nil?
+      render json: { error: 'Sync run tracking is unavailable' }, status: :unprocessable_content
+      return
+    end
+
+    run = run_model.find_by(id: params[:run_id], channel_id: params[:id])
+    if run.nil?
+      render json: { error: 'Sync run not found' }, status: :not_found
+      return
+    end
+
+    if run.terminal?
+      render json: { run: run.to_api_hash, message: 'Sync run already finished' }
+      return
+    end
+
+    run.update(cancel_requested: true)
+
+    if run.status == 'queued'
+      destroy_delayed_job(run.delayed_job_id)
+      run.update(status: 'canceled', finished_at: Time.current)
+    end
+
+    render json: { run: run.to_api_hash, message: 'Cancellation requested' }
   end
 
   # POST /api/v1/kc/teams_chat_channels/:id/reauthenticate
@@ -269,6 +336,42 @@ class Kc::TeamsChatChannelsController < ApplicationController
   end
 
   private
+
+  def sync_run_model
+    'Kc::TeamsSyncRun'.safe_constantize
+  end
+
+  def create_sync_run(channel)
+    run_model = sync_run_model
+    return nil if run_model.nil?
+
+    run_model.create(channel_id: channel.id, status: 'queued', created_by_id: current_user.id)
+  rescue => e
+    Rails.logger.warn "KC Teams Chat: create_sync_run failed: #{e.message}"
+    nil
+  end
+
+  # Snapshot of the shared delayed_job queue. "pending" = ready-to-run jobs not
+  # yet locked; "running" = currently locked by a worker. State is derived, not
+  # stored, so this is a best-effort read.
+  def queue_context
+    now = Time.current
+    {
+      pending_total: Delayed::Job.where(failed_at: nil, locked_at: nil).where(run_at: ..now).count,
+      running_total: Delayed::Job.where.not(locked_at: nil).count,
+    }
+  rescue => e
+    Rails.logger.warn "KC Teams Chat: queue_context failed: #{e.message}"
+    {}
+  end
+
+  def destroy_delayed_job(id)
+    return if id.blank?
+
+    Delayed::Job.where(id: id).destroy_all
+  rescue => e
+    Rails.logger.warn "KC Teams Chat: destroy_delayed_job(#{id}) failed: #{e.message}"
+  end
 
   def callback_url
     fqdn      = Setting.get('fqdn')

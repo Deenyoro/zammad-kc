@@ -18,6 +18,7 @@ class KcTeamsChat extends App.ControllerSubContent
     'click .js-enableAccount':  'enableAccount'
     'click .js-disableAccount': 'disableAccount'
     'click .js-syncDirectory':      'syncDirectory'
+    'click .js-viewSyncJobs':       'viewSyncJobs'
     'click .js-reauthenticate':     'reauthenticateAccount'
     'click .js-saveSettings':   'saveSettings'
 
@@ -143,6 +144,19 @@ class KcTeamsChat extends App.ControllerSubContent
       error: =>
         @notify(type: 'error', msg: __('Failed to start directory sync.'))
         btn.prop('disabled', false).text(App.i18n.translateInline('Sync Now'))
+    )
+
+  viewSyncJobs: (e) =>
+    e.preventDefault()
+    id = $(e.currentTarget).closest('[data-id]').data('id')
+    channel = App.Channel.find(id)
+    return if !channel
+
+    # Standard (body-level) modal — NOT a container modal — so Bootstrap's
+    # shown/hidden lifecycle events fire reliably. The viewer starts/stops its
+    # polling timer in onShown/onClose, which depend on those events.
+    new KcTeamsChatSyncJobs(
+      channel: channel
     )
 
   reauthenticateAccount: (e) =>
@@ -277,6 +291,125 @@ class KcTeamsChatAccountEdit extends App.ControllerModal
         data = xhr.responseJSON || {}
         @showAlert(App.Utils.htmlEscape(data.error) || __('Failed to save.'))
     )
+
+
+# ---------------------------------------------------------------------------
+# Sync Jobs modal — live view of directory-sync runs for a channel.
+#
+# Polls GET …/sync_runs every few seconds while open, shows queued / running /
+# completed / failed / canceled runs, and offers Cancel for active runs.
+# ---------------------------------------------------------------------------
+class KcTeamsChatSyncJobs extends App.ControllerModal
+  head: __('Directory Sync Jobs')
+  buttonClose: true
+  buttonCancel: false
+  buttonSubmit: false
+  large: true
+
+  POLL_INTERVAL_MS: 3000
+
+  statusMeta:
+    queued:    { label: __('Queued'),    color: '#999999' }
+    running:   { label: __('Running'),   color: '#1f8ceb' }
+    completed: { label: __('Completed'), color: '#38ad69' }
+    failed:    { label: __('Failed'),    color: '#e5450b' }
+    canceled:  { label: __('Canceled'),  color: '#b8860b' }
+
+  events:
+    'click .js-cancelRun': 'cancelRun'
+
+  content: ->
+    '<div class="js-syncJobsBody"><div class="text-muted">' +
+      App.i18n.translateInline('Loading…') + '</div></div>'
+
+  onShown: (e) =>
+    super
+    @fetch()
+    @pollTimer = setInterval(@fetch, @POLL_INTERVAL_MS)
+
+  onClose: =>
+    @stopPolling()
+
+  release: =>
+    @stopPolling()
+    super
+
+  stopPolling: =>
+    if @pollTimer
+      clearInterval(@pollTimer)
+      @pollTimer = null
+
+  fetch: =>
+    @ajax(
+      id:   "kc_teams_chat_sync_runs_#{@channel.id}"
+      type: 'GET'
+      url:  "#{@apiPath}/kc/teams_chat_channels/#{@channel.id}/sync_runs"
+      success: (data) =>
+        return if !@el or !@el.is(':visible')
+        rows = (@formatRun(r) for r in (data.runs || []))
+        @el.find('.js-syncJobsBody').html(
+          App.view('kc_teams_chat/sync_jobs')(
+            rows:  rows
+            queue: data.queue || {}
+          )
+        )
+      error: =>
+        @el.find('.js-syncJobsBody').html(
+          '<div class="alert alert--danger">' +
+          App.i18n.translateInline('Failed to load sync jobs.') + '</div>'
+        )
+    )
+
+  cancelRun: (e) =>
+    e.preventDefault()
+    runId = $(e.currentTarget).closest('[data-run-id]').data('run-id')
+    return if !runId
+    btn = $(e.currentTarget)
+    btn.prop('disabled', true).text(App.i18n.translateInline('Canceling…'))
+    @ajax(
+      id:   "kc_teams_chat_cancel_run_#{runId}"
+      type: 'POST'
+      url:  "#{@apiPath}/kc/teams_chat_channels/#{@channel.id}/sync_runs/#{runId}/cancel"
+      success: =>
+        @fetch()
+      error: =>
+        @notify(type: 'error', msg: __('Failed to cancel sync job.'))
+        @fetch()
+    )
+
+  formatRun: (r) =>
+    meta = @statusMeta[r.status] || { label: r.status, color: '#999999' }
+    active = r.status is 'queued' or r.status is 'running'
+    {
+      id:          r.id
+      label:       App.i18n.translateInline(meta.label)
+      color:       meta.color
+      active:      active
+      started:     @formatTime(r.started_at || r.created_at)
+      duration:    @formatDuration(r)
+      processed:   r.users_processed || 0
+      created:     r.users_created || 0
+      updated:     r.users_updated || 0
+      deactivated: r.users_deactivated || 0
+      error:       r.error
+    }
+
+  formatTime: (iso) =>
+    return '—' if !iso
+    try
+      new Date(iso).toLocaleString()
+    catch
+      iso
+
+  formatDuration: (r) =>
+    secs = r.duration_seconds
+    if !secs?
+      return if r.status is 'running' then App.i18n.translateInline('running…') else '—'
+    secs = Math.max(0, Math.round(secs))
+    if secs < 60
+      "#{secs}s"
+    else
+      "#{Math.floor(secs / 60)}m #{secs % 60}s"
 
 
 # ---------------------------------------------------------------------------

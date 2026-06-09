@@ -22,6 +22,8 @@ Zammad::Application.routes.draw do
     post   'teams_chat_channels/:id/disable',  to: 'kc/teams_chat_channels#disable'
     post   'teams_chat_channels/:id/reauthenticate', to: 'kc/teams_chat_channels#reauthenticate'
     post   'teams_chat_channels/:id/sync_directory', to: 'kc/teams_chat_channels#sync_directory'
+    get    'teams_chat_channels/:id/sync_runs',  to: 'kc/teams_chat_channels#sync_runs'
+    post   'teams_chat_channels/:id/sync_runs/:run_id/cancel', to: 'kc/teams_chat_channels#cancel_sync_run'
     delete 'teams_chat_channels/:id',          to: 'kc/teams_chat_channels#destroy'
 
     # Teams Chat webhook (public — no auth, validated by clientState)
