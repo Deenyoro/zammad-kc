@@ -14,22 +14,18 @@ import { useSessionStore } from '#shared/stores/session.ts'
 
 import type { FilterSelectorEntry } from '#desktop/components/Form/fields/FieldFilterSelector/types.ts'
 import { useSearchPlugins } from '#desktop/components/Search/plugins/index.ts'
-import { encodeFilters } from '#desktop/pages/search/utils/searchFilterQuery.ts'
+import {
+  encodeFilters,
+  isMeaningfulFilterValue,
+} from '#desktop/pages/search/utils/searchFilterQuery.ts'
 
 import type { Ref } from 'vue'
 
-// An empty array is the natural value for a freshly added multi-select `is`
-// filter (and what remains after the user deselects every option). It carries
-// no constraint and would yield an always-empty search if forwarded, so we
-// treat it as non-meaningful alongside null/undefined/''.
-const isMeaningful = (value: unknown) => {
-  if (value === null || value === undefined || value === '') return false
-  if (Array.isArray(value) && value.length === 0) return false
-  return true
-}
-
+// Drop rows whose value carries no constraint (empty multi-select, all-blank
+// `in range`, …) — they'd yield an always-empty search. Shares the predicate
+// with the URL encoder so both sides agree on what counts as a real filter.
 export const dropEmptyFilterValues = (filters: FilterSelectorEntry[]): FilterSelectorEntry[] =>
-  filters.filter((entry) => entry && isMeaningful(entry.value))
+  filters.filter((entry) => entry && isMeaningfulFilterValue(entry.value))
 
 export const useSearchAdvancedFilters = (
   selectedEntity: Ref<string>,
@@ -68,11 +64,13 @@ export const useSearchAdvancedFilters = (
 
   const selectorsByEntity = computed<Record<string, SelectorObjectInput>>(() => {
     const entries = Object.entries(filtersByEntity).map(([entity, filters]) => {
-      const cleaned = dropEmptyFilterValues(filters).map((entry) => ({
-        name: entry.name,
-        operator: entry.operator,
-        value: entry.value,
-      }))
+      const cleaned = dropEmptyFilterValues(filters).map((entry) => {
+        // Operator-specific extras (e.g. the `range` unit of relative
+        // operators) ride at the same level as `value`, the shape the backend
+        // selector consumes.
+        const { name, operator, value, ...extra } = entry
+        return Object.assign({ name, operator, value }, extra)
+      })
 
       return [
         entity,
@@ -106,21 +104,74 @@ export const useSearchAdvancedFilters = (
     ),
   )
 
-  // Per-entity list of relation metadata for every relation-typed filterable
-  // attribute. Sent to the form-updater backend so options for group/state/
-  // priority/… sub-fields are pre-resolved on the initial form-updater call —
-  // a row added later finds its select already populated, no extra roundtrip.
-  // Mirrors how the standard Form derives top-level relation fields from its
-  // schema, just lifted to the per-entity filterAttributes list.
-  const filterRelationFieldsByEntity = computed<
-    Record<string, Array<{ name: string; relation: string }>>
+  // Per-entity loading flag for the underlying GraphQL attributes query.
+  // Used by SearchContent to defer URL→state decoding until the *dynamic*
+  // schema has arrived — static attributes alone aren't a usable schema
+  // (e.g. they don't carry `ticket.title`), so deep-link filters would be
+  // dropped if decoded against a static-only snapshot.
+  const entityFieldsLoadingByEntity = computed<Record<string, boolean>>(() =>
+    Object.fromEntries(
+      filterPlugins.value.map((plugin) => [
+        plugin.name,
+        toValue(getObjectAttributesForObject(plugin.object)?.loading) ?? false,
+      ]),
+    ),
+  )
+
+  // Per-entity bookkeeping the form-updater needs to resolve filter-row
+  // sub-fields server-side. The two arrays describe *attributes* the form
+  // updater should help with — relation entries pre-load full option lists
+  // (group/state/priority …) so a row added later finds its select already
+  // populated, autocomplete entries prefill the single picked option (the
+  // IDs themselves come from the form's `data['filters']` payload, looked
+  // up by name on the backend).
+  //
+  // The keys mirror the meta payload exactly, so the consumer can spread
+  // an entity's entry straight into `formUpdaterAdditionalParams`. Both
+  // arrays walk the same per-entity attribute list and differ only in
+  // their per-attribute predicate: relation-typed attributes always get
+  // pre-resolved (so the dropdown is ready), autocomplete-typed ones only
+  // when a row already has a value to resolve.
+  const filterUpdaterFieldsByEntity = computed<
+    Record<
+      string,
+      {
+        filterRelationFields: Array<{ name: string; relation: string }>
+        filterAutocompleteFields: Array<{ name: string; autocompleteFilterType: string }>
+      }
+    >
   >(() =>
     Object.fromEntries(
       filterPlugins.value.map((plugin) => {
-        const relationFields = (entityFields.value[plugin.name] ?? []).flatMap((attribute) =>
-          attribute.relation ? [{ name: attribute.name, relation: attribute.relation }] : [],
+        const attributes = entityFields.value[plugin.name] ?? []
+        const filterValue = new Map(
+          (filtersByEntity[plugin.name] ?? []).map((entry) => [entry.name, entry.value]),
         )
-        return [plugin.name, relationFields]
+
+        const filterRelationFields: Array<{ name: string; relation: string }> = []
+        const filterAutocompleteFields: Array<{ name: string; autocompleteFilterType: string }> = []
+
+        for (const attribute of attributes) {
+          // `relation` and `autocompleteFilterType` can co-exist on the same
+          // attribute now (e.g. customer/owner/organization carry both), so
+          // the autocomplete path takes precedence — those values are picked
+          // per keystroke and don't need form-updater pre-resolution.
+          if (attribute.relation && !attribute.autocompleteFilterType) {
+            filterRelationFields.push({ name: attribute.name, relation: attribute.relation })
+            continue
+          }
+          if (
+            attribute.autocompleteFilterType &&
+            isMeaningfulFilterValue(filterValue.get(attribute.name))
+          ) {
+            filterAutocompleteFields.push({
+              name: attribute.name,
+              autocompleteFilterType: attribute.autocompleteFilterType,
+            })
+          }
+        }
+
+        return [plugin.name, { filterRelationFields, filterAutocompleteFields }]
       }),
     ),
   )
@@ -172,7 +223,8 @@ export const useSearchAdvancedFilters = (
     filtersByEntity,
     selectorsByEntity,
     entityFields,
-    filterRelationFieldsByEntity,
+    entityFieldsLoadingByEntity,
+    filterUpdaterFieldsByEntity,
     currentFilters,
     currentFiltersQueryParams,
     currentFilterSelector,

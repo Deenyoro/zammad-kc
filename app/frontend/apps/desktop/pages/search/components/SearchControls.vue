@@ -2,6 +2,7 @@
 
 <script setup lang="ts">
 import { watchDebounced } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
 import { computed, nextTick, onBeforeMount, shallowRef, useTemplateRef } from 'vue'
 import { onBeforeRouteUpdate } from 'vue-router'
 
@@ -9,20 +10,22 @@ import CommonBadge from '#shared/components/CommonBadge/CommonBadge.vue'
 import { useConfirmation } from '#shared/composables/useConfirmation.ts'
 import { useRecentSearches } from '#shared/composables/useRecentSearches.ts'
 import type { FilterAttribute } from '#shared/entities/object-attributes/types/store.ts'
+import { useApplicationStore } from '#shared/stores/application.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonInputSearch from '#desktop/components/CommonInputSearch/CommonInputSearch.vue'
-import CommonTabGroup from '#desktop/components/CommonTabGroup/CommonTabGroup.vue'
-import type { Tab } from '#desktop/components/CommonTabGroup/types.ts'
+import CommonTabGroup from '#desktop/components/CommonTabs/CommonTabGroup/CommonTabGroup.vue'
+import type { Tab } from '#desktop/components/CommonTabs/types.ts'
 import type { FilterSelectorEntry } from '#desktop/components/Form/fields/FieldFilterSelector/types.ts'
 import { searchPlugins } from '#desktop/components/Search/plugins/index.ts'
+import type { FilterSelectorEntityOverride } from '#desktop/components/Search/types.ts'
 import { useKeepAliveHooks } from '#desktop/composables/useKeepAliveHooks.ts'
 
 import SearchEntityFiltersForm from './SearchControls/SearchEntityFiltersForm.vue'
 
-interface FilterRelationField {
-  name: string
-  relation: string
+interface FilterUpdaterFields {
+  filterRelationFields: Array<{ name: string; relation: string }>
+  filterAutocompleteFields: Array<{ name: string; autocompleteFilterType: string }>
 }
 
 interface Props {
@@ -30,14 +33,14 @@ interface Props {
   selectedEntityHasFiltersEnabled: boolean
   filtersByEntity?: Record<string, FilterSelectorEntry[]>
   entityFields?: Record<string, FilterAttribute[]>
-  filterRelationFieldsByEntity?: Record<string, FilterRelationField[]>
+  filterUpdaterFieldsByEntity?: Record<string, FilterUpdaterFields>
   filterCount?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
   filtersByEntity: () => ({}),
   entityFields: () => ({}),
-  filterRelationFieldsByEntity: () => ({}),
+  filterUpdaterFieldsByEntity: () => ({}),
   filterCount: 0,
 })
 
@@ -53,6 +56,25 @@ const selectedEntity = defineModel<string>('selected-entity', {
 })
 
 const inputSearchInstance = useTemplateRef('search-input')
+
+const { config } = storeToRefs(useApplicationStore())
+
+// `filterAttributesOverride` may be config-driven (a function), e.g. the
+// accounted-time unit label. Resolve it per entity against the current config
+// in a computed, so it re-resolves only when the config changes — not on every
+// render — and hands stable references to the child form.
+const filterAttributesOverrideByEntity = computed<
+  Record<string, FilterSelectorEntityOverride[] | undefined>
+>(() =>
+  Object.fromEntries(
+    searchPlugins.map((plugin) => [
+      plugin.name,
+      typeof plugin.filterAttributesOverride === 'function'
+        ? plugin.filterAttributesOverride(config.value)
+        : plugin.filterAttributesOverride,
+    ]),
+  ),
+)
 
 const searchTerm = computed({
   get: () => searchParam.value,
@@ -155,7 +177,7 @@ onBeforeRouteUpdate((to, from) => {
 </script>
 
 <template>
-  <div class="space-y-3 bg-neutral-50 pb-4 dark:bg-gray-500">
+  <div class="@container space-y-3 bg-neutral-50 pb-4 dark:bg-gray-500">
     <CommonInputSearch
       ref="search-input"
       v-model="searchTerm"
@@ -188,7 +210,9 @@ dark:hover:outline-blue-900 has-[input:focus]:outline-1 has-[input:focus]:outlin
       </template>
     </CommonInputSearch>
 
-    <div class="isolate flex items-stretch justify-between">
+    <div
+      class="isolate mb-0 flex flex-col items-stretch justify-between gap-2 @lg:mb-3 @lg:flex-row"
+    >
       <CommonTabGroup
         v-show="searchTabs.length > 1"
         v-model="selectedEntity"
@@ -200,13 +224,14 @@ dark:hover:outline-blue-900 has-[input:focus]:outline-1 has-[input:focus]:outlin
       <CommonButton
         v-if="selectedEntityHasFiltersEnabled"
         :id="advancedFiltersButtonId"
-        class="sticky z-20 h-auto! bg-blue-200! -outline-offset-1! transition-[border-radius]! before:absolute before:right-0 before:bottom-0 before:h-3 before:w-full before:translate-y-full before:bg-blue-200 before:opacity-0 before:transition-opacity before:duration-0 before:ease-in-out active:scale-none! ltr:right-0 rtl:left-0 dark:bg-gray-700! dark:before:bg-gray-700"
+        class="relative z-20 h-auto! w-full! bg-blue-200! -outline-offset-1! transition-[border-radius]! before:absolute before:right-0 before:bottom-0 before:left-0 before:hidden before:h-3 before:w-full before:translate-y-full before:bg-blue-200 before:opacity-0 before:transition-opacity before:duration-0 before:ease-in-out active:scale-none! @lg:w-auto! @lg:before:block dark:bg-gray-700! dark:before:bg-gray-700"
         :class="{
-          'rounded-b-none! before:h-3 before:opacity-100': isFilterPanelsOpen,
+          'rounded-b-none! before:h-3 before:opacity-100 @lg:rounded-b-none!': isFilterPanelsOpen,
           'before:delay-200 before:duration-25': !isFilterPanelsOpen,
         }"
         :suffix-icon="isFilterPanelsOpen ? 'chevron-up' : 'chevron-down'"
         variant="secondary"
+        size="medium"
         :aria-controls="advancedFiltersSectionId"
         :aria-expanded="isFilterPanelsOpen"
         @click="toggleFilterPanel"
@@ -217,7 +242,7 @@ dark:hover:outline-blue-900 has-[input:focus]:outline-1 has-[input:focus]:outlin
     <section
       v-if="selectedEntityHasFiltersEnabled"
       :id="advancedFiltersSectionId"
-      class="grid grid-rows-[0fr] rounded-l-lg rounded-br-lg bg-blue-200 transition-[grid-template-rows] duration-300 dark:bg-gray-700"
+      class="grid grid-rows-[0fr] rounded-t-none rounded-b-lg bg-blue-200 transition-[grid-template-rows] duration-300 @lg:rounded-tr-none @lg:ltr:rounded-tl-lg @lg:rtl:rounded-tr-lg dark:bg-gray-700"
       :class="{
         'grid-rows-[1fr]': isFilterPanelsOpen,
       }"
@@ -240,8 +265,8 @@ dark:hover:outline-blue-900 has-[input:focus]:outline-1 has-[input:focus]:outlin
             :entity="plugin.name"
             :filters="filtersByEntity[plugin.name] ?? []"
             :filter-attributes="entityFields[plugin.name] ?? []"
-            :filter-attributes-override="plugin.filterAttributesOverride"
-            :filter-relation-fields="filterRelationFieldsByEntity[plugin.name] ?? []"
+            :filter-attributes-override="filterAttributesOverrideByEntity[plugin.name]"
+            :filter-updater-fields="filterUpdaterFieldsByEntity[plugin.name]"
             @filters-changed="(entity, value) => emit('entity-filters-changed', entity, value)"
           />
           <CommonLabel v-else class="p-1" size="small">{{

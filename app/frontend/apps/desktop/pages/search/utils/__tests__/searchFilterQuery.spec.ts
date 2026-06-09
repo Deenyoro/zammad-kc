@@ -175,6 +175,72 @@ describe('searchFilterQuery', () => {
 
       expect(result).toEqual([{ name: 'ticket.title', operator: 'ticket.matches', value: '🎓' }])
     })
+
+    it('coerces autocomplete-relation values from strings back to integer IDs', () => {
+      const result = decodeFilters(
+        {
+          'filter.0.name': 'ticket.owner_id',
+          'filter.0.operator': 'ticket.is',
+          'filter.0.value': ['7', '42'],
+        },
+        [
+          {
+            name: 'ticket.owner_id',
+            label: 'Owner',
+            operators: ['ticket.is'],
+            relation: 'User',
+            autocompleteFilterType: 'agent',
+          },
+        ],
+      )
+
+      expect(result).toEqual([{ name: 'ticket.owner_id', operator: 'ticket.is', value: [7, 42] }])
+    })
+
+    it('coerces a single autocomplete-relation value back to an integer ID', () => {
+      const result = decodeFilters(
+        {
+          'filter.0.name': 'ticket.customer_id',
+          'filter.0.operator': 'ticket.is',
+          'filter.0.value': '7',
+        },
+        [
+          {
+            name: 'ticket.customer_id',
+            label: 'Customer',
+            operators: ['ticket.is'],
+            relation: 'User',
+            autocompleteFilterType: 'customer',
+          },
+        ],
+      )
+
+      expect(result).toEqual([{ name: 'ticket.customer_id', operator: 'ticket.is', value: 7 }])
+    })
+
+    it('keeps tag autocomplete values as strings even when they look numeric', () => {
+      // Tags are referenced by name, not ID — a tag literally named "5" must
+      // round-trip as the string "5" so the ES `terms` query matches it.
+      const result = decodeFilters(
+        {
+          'filter.0.name': 'ticket.tags',
+          'filter.0.operator': 'ticket.contains one',
+          'filter.0.value': ['urgent', '5'],
+        },
+        [
+          {
+            name: 'ticket.tags',
+            label: 'Tags',
+            operators: ['ticket.contains one'],
+            autocompleteFilterType: 'tags',
+          },
+        ],
+      )
+
+      expect(result).toEqual([
+        { name: 'ticket.tags', operator: 'ticket.contains one', value: ['urgent', '5'] },
+      ])
+    })
   })
 
   describe('isFilterParamKey', () => {
@@ -206,6 +272,74 @@ describe('searchFilterQuery', () => {
           operator: 'ticket.between',
           value: { from: '2026-01-01', to: '2026-12-31' },
         },
+      ])
+    })
+  })
+
+  describe('in range (array value)', () => {
+    const rangeAttributes: FilterAttribute[] = [
+      {
+        name: 'ticket.escalation_count',
+        label: 'Escalation count',
+        operators: ['in range'],
+      },
+    ]
+
+    it('round-trips a [min, max] array value', () => {
+      const encoded = encodeFilters([
+        { name: 'ticket.escalation_count', operator: 'in range', value: [30, 60] },
+      ])
+
+      // qs coerces array members to strings, like every other URL value.
+      expect(decodeFilters(encoded, rangeAttributes)).toEqual([
+        { name: 'ticket.escalation_count', operator: 'in range', value: ['30', '60'] },
+      ])
+    })
+
+    it('drops an all-blank range so it never reaches the backend', () => {
+      expect(
+        encodeFilters([{ name: 'ticket.escalation_count', operator: 'in range', value: ['', ''] }]),
+      ).toEqual({})
+    })
+  })
+
+  describe('within last (relative) (range extra key)', () => {
+    const relativeAttributes: FilterAttribute[] = [
+      {
+        name: 'ticket.created_at',
+        label: 'Created at',
+        operators: ['within last (relative)'],
+        attributeFieldType: 'datetime',
+      },
+    ]
+
+    it('round-trips the range unit at the same level as the value', () => {
+      const encoded = encodeFilters([
+        { name: 'ticket.created_at', operator: 'within last (relative)', value: 5, range: 'day' },
+      ])
+
+      expect(encoded).toEqual({
+        'filter.0.name': 'ticket.created_at',
+        'filter.0.operator': 'within last (relative)',
+        'filter.0.value': '5',
+        'filter.0.range': 'day',
+      })
+
+      expect(decodeFilters(encoded, relativeAttributes)).toEqual([
+        { name: 'ticket.created_at', operator: 'within last (relative)', value: '5', range: 'day' },
+      ])
+    })
+
+    it('preserves the range unit when no attribute schema is supplied yet', () => {
+      const result = decodeFilters({
+        'filter.0.name': 'ticket.created_at',
+        'filter.0.operator': 'within last (relative)',
+        'filter.0.value': '5',
+        'filter.0.range': 'day',
+      })
+
+      expect(result).toEqual([
+        { name: 'ticket.created_at', operator: 'within last (relative)', value: '5', range: 'day' },
       ])
     })
   })
