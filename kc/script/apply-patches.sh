@@ -32,6 +32,7 @@ fi
 
 PATCH_COUNT=0
 FAIL_COUNT=0
+DRIFT_COUNT=0
 
 echo "=========================================="
 echo "KC: Applying frontend patches"
@@ -46,7 +47,23 @@ for patch_file in "${PATCHES_DIR}"/*.patch; do
 
   # Dry-run first to check if patch applies cleanly
   if patch -p1 --dry-run --directory="${APP_ROOT}" < "${patch_file}" > /dev/null 2>&1; then
-    patch -p1 --directory="${APP_ROOT}" < "${patch_file}"
+    # Apply for real, capturing output so we can detect *drift* (fuzz/offset).
+    # A patch that applies with fuzz or a large offset still succeeds today, but
+    # it means upstream has shifted the surrounding code — drift accumulates and
+    # will eventually become a hard reject. We surface it LOUDLY now so the patch
+    # can be regenerated before the next fork-sync breaks the build.
+    apply_out=$(patch -p1 --directory="${APP_ROOT}" < "${patch_file}" 2>&1)
+    echo "${apply_out}"
+
+    if echo "${apply_out}" | grep -qiE 'fuzz|offset'; then
+      echo "KC: ⚠ DRIFT WARNING — Patch applied but upstream has shifted: ${patch_name}"
+      echo "${apply_out}" | grep -iE 'fuzz|offset' | sed 's/^/KC:   /'
+      echo "KC:   This patch still applies today but is drifting toward a hard reject."
+      echo "KC:   Regenerate it before it breaks. From a tree with the KC change applied:"
+      echo "KC:     git diff -- <patched-file> > kc/patches/${patch_name}"
+      DRIFT_COUNT=$((DRIFT_COUNT + 1))
+    fi
+
     echo "KC: Applied patch: ${patch_name}"
     PATCH_COUNT=$((PATCH_COUNT + 1))
   else
@@ -69,4 +86,8 @@ fi
 
 echo "=========================================="
 echo "KC: All ${PATCH_COUNT} patch(es) applied successfully"
+if [ "${DRIFT_COUNT}" -gt 0 ]; then
+  echo "KC: ⚠ ${DRIFT_COUNT} patch(es) applied WITH DRIFT (fuzz/offset) — regenerate them soon."
+  echo "KC:   They work today but each upstream sync brings them closer to a build break."
+fi
 echo "=========================================="

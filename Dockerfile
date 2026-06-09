@@ -41,7 +41,7 @@ SHELL ["/bin/bash", "-o", "errexit", "-o", "pipefail", "-c"]
 
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libimlib2-dev libpq-dev libyaml-dev rsync && \
+    apt-get install --no-install-recommends -y build-essential git libimlib2-dev libpq-dev libyaml-dev && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install application gems
@@ -61,6 +61,13 @@ RUN pnpm install --frozen-lockfile
 
 # Copy application code
 COPY . .
+
+# KC: Install rsync (needed by apply-overlay.sh). Kept as a SEPARATE additive
+# RUN — deliberately not merged into the upstream apt-get line above — so that
+# line stays byte-identical to upstream and never conflicts on a fork sync.
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y rsync && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # KC: Apply custom code overlay, patches, and install custom gems
 RUN if [ -x kc/script/apply-overlay.sh ]; then kc/script/apply-overlay.sh; fi

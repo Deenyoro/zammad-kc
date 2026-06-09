@@ -238,8 +238,9 @@ end
 1. **Never create a file in `kc/` that has the same path as an upstream Zammad file** — `rsync --ignore-existing` would silently skip it.
 2. **Always use the `Kc::` namespace** for new Ruby classes.
 3. **Register every concern prepend in `kc_loader.rb`** — it's the single source of truth for what KC modifies upstream.
-4. **Keep `kc/` self-contained** — only `Dockerfile` and `script/build/cleanup.sh` are modified outside `kc/`.
+4. **Keep `kc/` self-contained** — only `Dockerfile` and `script/build/cleanup.sh` are modified outside `kc/`, and those edits MUST be **additive-only** (insert new lines; never change or delete an existing upstream line). This guarantees they share no line with upstream, so the GitHub "Sync fork" button never hits a merge conflict. If you need a build tool (e.g. `rsync`), install it in a separate additive KC `RUN` block — do not append to an upstream `apt-get` line.
 5. **Never directly edit upstream frontend files** — use `kc/patches/` for modifications to existing upstream TypeScript/Vue files. New KC frontend files go in the overlay and are discovered via `import.meta.glob`.
+6. **Verify sync safety before/after every fork sync** — run `kc/script/check-sync-safety.sh --fetch`. It simulates the upstream merge (`git merge-tree`) and fails if any out-of-`kc/` upstream file is modified non-additively or any unsanctioned upstream file is touched. Exit 0 = the Sync button will merge cleanly. Note: `.dockerignore` excludes `.git/`, so `git apply --3way` is NOT available at build time — patches rely on plain `patch` (see [[project_kc_patch_rebaseline]]).
 
 ## Code Style Notes
 
