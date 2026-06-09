@@ -30,8 +30,17 @@ const QS_OPTIONS: IStringifyOptions & IParseOptions = {
 export const isFilterParamKey = (key: string): boolean =>
   key === FILTER_NAMESPACE || key.startsWith(`${FILTER_NAMESPACE}.`)
 
+// Whether a filter value carries a real constraint. Arrays (e.g. the
+// `[min, max]` of `in range`) count only if some element does, so an all-blank
+// range is dropped rather than forwarded to the backend (which rejects it).
+export const isMeaningfulFilterValue = (value: unknown): boolean => {
+  if (value === null || value === undefined || value === '') return false
+  if (Array.isArray(value)) return value.some(isMeaningfulFilterValue)
+  return true
+}
+
 // Single predicate used on both sides: a filter is encodable iff it carries
-// a non-empty `name`/`operator` and a non-empty `value`. Object/array values
+// a non-empty `name`/`operator` and a meaningful `value`. Object/array values
 // pass — qs nests them under `filter.<i>.value.*` automatically.
 const isValidFilter = (entry: unknown): entry is ValidFilterCandidate => {
   if (!entry || typeof entry !== 'object') return false
@@ -40,11 +49,7 @@ const isValidFilter = (entry: unknown): entry is ValidFilterCandidate => {
   if (typeof candidate.name !== 'string' || candidate.name === '') return false
   if (typeof candidate.operator !== 'string' || candidate.operator === '') return false
 
-  const { value } = candidate
-  if (value === null || value === undefined || value === '') return false
-  if (Array.isArray(value) && value.length === 0) return false
-
-  return true
+  return isMeaningfulFilterValue(candidate.value)
 }
 
 export const encodeFilters = (filters: FilterSelectorEntry[]): Record<string, string> => {
@@ -79,11 +84,17 @@ const queryRecordToString = (query: Record<string, unknown>): string => {
   return params.toString()
 }
 
-// Form-updater-resolved relations carry integer primary-key IDs; URL query
-// params always arrive as strings. Coerce here so downstream consumers
-// (FormKit select equality, taskbar sync) see the value type the schema
-// implies. Strings that aren't integers stay as-is — they won't match a
-// valid option either way, no need to silently turn "foo" into NaN.
+// Relation-typed attributes carry integer primary-key IDs. URL query params
+// always arrive as strings, so coerce here so downstream consumers (FormKit
+// select equality, taskbar sync, autocomplete initial option lookup) see the
+// value type the schema implies. Strings that aren't integers stay as-is —
+// they won't match a valid option either way, no need to silently turn "foo"
+// into NaN.
+//
+// `attribute.relation` is the single source of truth for "value is a
+// foreign-key ID". Tag-style autocompletes deliberately leave it unset since
+// their values are strings (tag names), so a numeric-looking tag like "5"
+// round-trips as the string "5", not the integer 5.
 const coerceValueForAttribute = (value: unknown, attribute: FilterAttribute): unknown => {
   if (!attribute.relation) return value
 
@@ -106,7 +117,10 @@ const resolveAgainstSchema = (
 
   if (!attribute.operators.includes(candidate.operator)) return null
 
+  // Preserve operator extras (e.g. `range`) — only `name`/`value` are
+  // normalised against the schema; everything else rides through unchanged.
   return {
+    ...candidate,
     name: attribute.name,
     operator: candidate.operator,
     value: coerceValueForAttribute(candidate.value, attribute),
@@ -124,8 +138,9 @@ export const decodeFilters = (
   return candidates.flatMap((candidate) => {
     if (!isValidFilter(candidate)) return []
     if (attributes.length === 0) {
-      const { name, operator, value } = candidate
-      return [{ name, operator, value }]
+      // Schema not loaded yet — keep the candidate intact (incl. operator
+      // extras like `range`); it is re-resolved once attributes arrive.
+      return [{ ...candidate }]
     }
 
     const resolved = resolveAgainstSchema(candidate, attributes)

@@ -29,7 +29,7 @@ RSpec.describe 'Desktop > Ticket > Shared Drafts', app: :desktop_view, authentic
     end
 
     it 'works correctly', performs_jobs: true do
-      click_on 'Add phone call'
+      click_on 'Add internal note'
 
       wait_for_form_updater(2)
 
@@ -39,7 +39,7 @@ RSpec.describe 'Desktop > Ticket > Shared Drafts', app: :desktop_view, authentic
       end
 
       # Create draft
-      click_on('Additional ticket edit actions')
+      click_on('Drafts & macros')
       click_on('Save as draft')
 
       wait_for_gql('shared/entities/ticket-shared-draft-zoom/graphql/mutations/ticketSharedDraftZoomCreate.graphql')
@@ -87,7 +87,7 @@ RSpec.describe 'Desktop > Ticket > Shared Drafts', app: :desktop_view, authentic
         wait_for_form_to_settle("form-ticket-edit-#{ticket.id}")
 
         # Modify draft
-        click_on('Add phone call')
+        click_on('Add internal note')
 
         wait_for_form_updater(2)
 
@@ -105,7 +105,7 @@ RSpec.describe 'Desktop > Ticket > Shared Drafts', app: :desktop_view, authentic
           find_editor('Text').clear.type('article text content - now with modification')
         end
 
-        click_on('Additional ticket edit actions')
+        click_on('Drafts & macros')
         click_on('Save as draft')
         click_on('Overwrite draft')
 
@@ -146,7 +146,7 @@ RSpec.describe 'Desktop > Ticket > Shared Drafts', app: :desktop_view, authentic
       wait_for_form_to_settle("form-ticket-edit-#{ticket.id}")
 
       # Apply the draft
-      click_on('Add phone call')
+      click_on('Add internal note')
 
       wait_for_form_updater(2)
 

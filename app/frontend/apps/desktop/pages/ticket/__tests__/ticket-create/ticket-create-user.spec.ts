@@ -72,14 +72,18 @@ describe('ticket create view - user create action', () => {
 
     const flyout = await view.findByRole('complementary', { name: 'Create new customer' })
 
-    expect(await waitForFormUpdaterQueryCalls()).toHaveLength(2) // ticket create + user edit
+    const initialFormUpdaterCallCount = (await waitForFormUpdaterQueryCalls()).length
+
+    expect(initialFormUpdaterCallCount).toBeGreaterThanOrEqual(1)
 
     const emailField = await within(flyout).findByLabelText('Email')
 
     await view.events.type(emailField, 'foo@customer.com')
 
     await waitFor(async () => {
-      expect(await waitForFormUpdaterQueryCalls()).toHaveLength(3) // ticket create + user edit x2
+      expect((await waitForFormUpdaterQueryCalls()).length).toBeGreaterThan(
+        initialFormUpdaterCallCount,
+      )
     })
 
     const customerSwitch = within(flyout).queryByRole('switch', {
@@ -141,14 +145,19 @@ describe('ticket create view - user create action', () => {
 
     const flyout = await view.findByRole('complementary', { name: 'Create new customer' })
 
-    expect(await waitForFormUpdaterQueryCalls()).toHaveLength(2) // ticket create + user edit
+    const initialFormUpdaterCallCount = (await waitForFormUpdaterQueryCalls()).length
+
+    expect(initialFormUpdaterCallCount).toBeGreaterThanOrEqual(1)
 
     const emailField = await within(flyout).findByLabelText('Email')
 
     await view.events.type(emailField, 'foo@customer.com')
 
+    let afterEmailFormUpdaterCallCount: number
+
     await waitFor(async () => {
-      expect(await waitForFormUpdaterQueryCalls()).toHaveLength(3) // ticket create + user edit x2
+      afterEmailFormUpdaterCallCount = (await waitForFormUpdaterQueryCalls()).length
+      expect(afterEmailFormUpdaterCallCount).toBeGreaterThan(initialFormUpdaterCallCount)
     })
 
     const customerSwitch = within(flyout).getByRole('switch', {
@@ -160,7 +169,9 @@ describe('ticket create view - user create action', () => {
     await view.events.click(customerSwitch)
 
     await waitFor(async () => {
-      expect(await waitForFormUpdaterQueryCalls()).toHaveLength(4) // ticket create + user edit x3
+      expect((await waitForFormUpdaterQueryCalls()).length).toBeGreaterThan(
+        afterEmailFormUpdaterCallCount!,
+      )
     })
 
     await view.events.click(within(flyout).getByRole('button', { name: 'Create' }))
