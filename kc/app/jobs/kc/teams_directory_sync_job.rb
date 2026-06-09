@@ -20,16 +20,32 @@
 class Kc::TeamsDirectorySyncJob < ApplicationJob
   retry_on StandardError, wait: 30.seconds, attempts: 3
 
-  def perform(channel_id)
+  # @param channel_id [Integer] the Teams Chat channel to sync
+  # @param run_id [Integer, nil] optional Kc::TeamsSyncRun id to track progress
+  #   against. The admin controller creates a 'queued' run and passes its id;
+  #   scheduler-driven syncs pass nil and get a run created on start.
+  def perform(channel_id, run_id = nil)
+    run = nil
+
     channel = Channel.find_by(id: channel_id, area: 'MicrosoftTeamsChat::Account')
     if channel.nil?
       Rails.logger.error "KC Teams Directory Sync: Channel #{channel_id} not found"
+      finalize_run(load_run(run_id), status: 'failed', error: "Channel #{channel_id} not found")
       return
     end
+
+    run = start_run(run_id, channel)
 
     options = (channel.options || {}).with_indifferent_access
     unless options[:directory_sync]
       Rails.logger.info "KC Teams Directory Sync: Channel #{channel_id} has directory_sync disabled, skipping"
+      finalize_run(run, status: 'completed', error: 'Directory sync is disabled for this channel')
+      return
+    end
+
+    if run_canceled?(run)
+      Rails.logger.info "KC Teams Directory Sync: Channel #{channel_id} canceled before start"
+      finalize_run(run, status: 'canceled')
       return
     end
 
@@ -43,6 +59,14 @@ class Kc::TeamsDirectorySyncJob < ApplicationJob
     sync_job_title = Setting.get('kc_teams_directory_sync_job_title')
 
     graph.list_all_users do |batch|
+      # Cooperative cancellation: the admin "Cancel" button flips
+      # cancel_requested; we honor it between Graph paging batches.
+      if run_canceled?(run)
+        Rails.logger.info "KC Teams Directory Sync: Channel #{channel_id} canceled mid-run after #{synced_user_ids.length} users"
+        finalize_run(run, status: 'canceled', stats: stats, processed: synced_user_ids.length)
+        return
+      end
+
       batch.each do |ad_user|
         next if ad_user['accountEnabled'] == false
 
@@ -54,6 +78,8 @@ class Kc::TeamsDirectorySyncJob < ApplicationJob
           Rails.logger.error "KC Teams Directory Sync: Failed to sync AD user #{ad_user['id']}: #{e.message}"
         end
       end
+
+      update_run_progress(run, stats, processed: synced_user_ids.length)
     end
 
     if Setting.get('kc_teams_directory_deactivate_stale') && organization
@@ -72,11 +98,94 @@ class Kc::TeamsDirectorySyncJob < ApplicationJob
       channel.save!
     end
 
+    finalize_run(run, status: 'completed', stats: stats, processed: synced_user_ids.length)
+
     Rails.logger.info "KC Teams Directory Sync: Channel #{channel_id} complete — " \
                       "created=#{stats[:users_created]}, updated=#{stats[:users_updated]}, deactivated=#{stats[:users_deactivated]}"
+  rescue => e
+    # Record the failure on the run, then re-raise so retry_on can do its thing.
+    finalize_run(run || load_run(run_id), status: 'failed', error: e.message)
+    raise
   end
 
   private
+
+  # ---------------------------------------------------------------------------
+  # Sync-run tracking helpers. All are defensive: if the kc_teams_sync_runs
+  # table is missing or anything goes wrong, tracking is skipped and the actual
+  # directory sync proceeds unaffected.
+  # ---------------------------------------------------------------------------
+
+  def run_model
+    @run_model ||= 'Kc::TeamsSyncRun'.safe_constantize
+  end
+
+  def load_run(run_id)
+    return nil if run_id.blank? || run_model.nil?
+
+    run_model.find_by(id: run_id)
+  rescue => e
+    Rails.logger.warn "KC Teams Directory Sync: load_run(#{run_id}) failed: #{e.message}"
+    nil
+  end
+
+  # Transition an existing queued run to running, or create a fresh running run
+  # for scheduler-driven syncs that did not pre-create one.
+  def start_run(run_id, channel)
+    run = load_run(run_id)
+    if run
+      # Clear any stale terminal state from a prior retry attempt so the active
+      # run shows cleanly. cancel_requested is preserved on purpose.
+      run.update(status: 'running', started_at: Time.current, finished_at: nil, error: nil)
+      return run
+    end
+
+    return nil if run_model.nil?
+
+    run_model.create(channel_id: channel.id, status: 'running', started_at: Time.current)
+  rescue => e
+    Rails.logger.warn "KC Teams Directory Sync: start_run failed: #{e.message}"
+    nil
+  end
+
+  def run_canceled?(run)
+    return false if run.nil?
+
+    run.reload.cancel_requested
+  rescue => e
+    Rails.logger.warn "KC Teams Directory Sync: run_canceled? failed: #{e.message}"
+    false
+  end
+
+  def update_run_progress(run, stats, processed:)
+    return if run.nil?
+
+    run.update(
+      users_processed:   processed,
+      users_created:     stats[:users_created],
+      users_updated:     stats[:users_updated],
+      users_deactivated: stats[:users_deactivated],
+    )
+  rescue => e
+    Rails.logger.warn "KC Teams Directory Sync: update_run_progress failed: #{e.message}"
+  end
+
+  def finalize_run(run, status:, stats: nil, error: nil, processed: nil)
+    return if run.nil?
+
+    attrs = { status: status, finished_at: Time.current }
+    attrs[:error] = error if error.present?
+    attrs[:users_processed] = processed if processed
+    if stats
+      attrs[:users_created]     = stats[:users_created]
+      attrs[:users_updated]     = stats[:users_updated]
+      attrs[:users_deactivated] = stats[:users_deactivated]
+    end
+
+    run.update(attrs)
+  rescue => e
+    Rails.logger.warn "KC Teams Directory Sync: finalize_run failed: #{e.message}"
+  end
 
   def build_graph_client(channel)
     graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize

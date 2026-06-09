@@ -1,0 +1,51 @@
+<% if @queue and (@queue.pending_total? or @queue.running_total?): %>
+  <div class="text-muted" style="margin-bottom: 12px;">
+    <%- @T('Background queue') %>:
+    <%= @queue.running_total or 0 %> <%- @T('running') %>,
+    <%= @queue.pending_total or 0 %> <%- @T('waiting') %>
+    <p style="margin: 2px 0 0;"><%- @T('Directory syncs share this queue. A high backlog means a queued sync may wait before it runs.') %></p>
+  </div>
+<% end %>
+
+<% if not @rows.length: %>
+  <p class="text-muted"><%- @T('No directory sync jobs yet. Use "Sync Now" to start one.') %></p>
+<% else: %>
+  <table class="settings-list settings-list--stretch">
+    <thead>
+      <tr>
+        <th style="width: 110px;"><%- @T('Status') %></th>
+        <th><%- @T('Started') %></th>
+        <th style="width: 90px;"><%- @T('Duration') %></th>
+        <th style="width: 100px;"><%- @T('Progress') %></th>
+        <th><%- @T('Result') %></th>
+        <th style="width: 90px;"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for row in @rows: %>
+        <tr data-run-id="<%= row.id %>">
+          <td>
+            <span style="font-weight: 600; color: <%= row.color %>;"><%= row.label %></span>
+          </td>
+          <td><%= row.started %></td>
+          <td><%= row.duration %></td>
+          <td><%= row.processed %> <%- @T('users') %></td>
+          <td>
+            <% if row.error: %>
+              <span class="text-muted"><%= row.error %></span>
+            <% else: %>
+              <%= row.created %> <%- @T('created') %>,
+              <%= row.updated %> <%- @T('updated') %><% if row.deactivated: %>,
+              <%= row.deactivated %> <%- @T('deactivated') %><% end %>
+            <% end %>
+          </td>
+          <td>
+            <% if row.active: %>
+              <div class="btn btn--danger btn--secondary js-cancelRun"><%- @T('Cancel') %></div>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
