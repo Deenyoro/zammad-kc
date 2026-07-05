@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { within } from '@testing-library/vue'
+import { waitFor, within } from '@testing-library/vue'
 import { beforeEach, expect } from 'vitest'
 
 import createArticle from '#tests/graphql/factories/types/TicketArticle.ts'
@@ -112,7 +112,11 @@ describe('Ticket detail view', () => {
 
       const view = await visitView('/tickets/1')
 
-      expect(view.getByRole('heading', { name: 'Test Ticket', level: 2 })).toBeInTheDocument()
+      const topHeader = within(view.getByTestId('ticket-detail-top-bar-full-details'))
+
+      expect(
+        await topHeader.findByRole('heading', { name: 'Test Ticket', level: 2 }),
+      ).toBeInTheDocument()
 
       const ticketDetailHeader = view.getByTestId('ticket-detail-top-bar-full-details')
 
@@ -124,16 +128,12 @@ describe('Ticket detail view', () => {
 
       expect(await view.findByLabelText('Article meta information')).toBeInTheDocument()
 
-      vi.useFakeTimers()
-
       await view.events.click(view.getByTestId('article-bubble-body-1'))
 
-      // NB: Click handler has a built-in timeout (200ms) in order to catch double click behavior.
-      //   Advance the timer manually so we speed up the test a bit.
-      await vi.runAllTimersAsync()
-      vi.useRealTimers()
-
-      expect(view.queryByLabelText('Article meta information')).not.toBeInTheDocument()
+      // NB: Click handler has a built-in timeout (200ms) to catch double click behavior.
+      await waitFor(
+        () => expect(view.queryByLabelText('Article meta information')).toHaveClass('hidden'), //. we test for the class as in js-dom toBeVisible won't work as expected
+      )
     })
   })
 })
