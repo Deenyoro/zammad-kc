@@ -10,10 +10,52 @@
 #
 # This concern overrides MicrosoftGraph#send_message to re-inject the Bcc
 # header into the MIME string before Base64 encoding and sending.
+#
+# NOTE: unlike most KC concerns this REPLACES the upstream method body rather
+# than calling super (the Bcc must be injected into the MIME string *before*
+# it is Base64-encoded, so there is no seam to wrap). That means an upstream
+# change to send_message would be silently shadowed — the boot-time
+# fingerprint check below detects exactly that and logs loudly so the copy
+# can be re-synced.
 
 module Kc
   module MicrosoftGraphBccInMime
     extend ActiveSupport::Concern
+
+    # The upstream lines this concern's reimplementation mirrors. If any of
+    # them disappears from lib/microsoft_graph.rb, upstream has rewritten
+    # send_message and our copy is stale.
+    UPSTREAM_FINGERPRINT = [
+      'def send_message(mail)',
+      'Base64.strict_encode64',
+      'send_as_raw_body:',
+      "make_request('sendMail'"
+    ].freeze
+
+    prepended do
+      check_upstream_send_message_fingerprint
+    end
+
+    class_methods do
+      def check_upstream_send_message_fingerprint
+        upstream_file = Rails.root.join('lib/microsoft_graph.rb')
+        return unless File.exist?(upstream_file)
+
+        source = File.read(upstream_file)
+        missing = UPSTREAM_FINGERPRINT.reject { |needle| source.include?(needle) }
+
+        if missing.empty?
+          Rails.logger.info 'KC: MicrosoftGraphBccInMime — upstream send_message unchanged, override is ACTIVE.'
+        else
+          Rails.logger.warn 'KC: MicrosoftGraphBccInMime — UPSTREAM send_message CHANGED ' \
+                            "(missing: #{missing.join(' | ')}). The KC override shadows the new " \
+                            'upstream body — re-sync kc/app/models/concerns/kc/microsoft_graph_bcc_in_mime.rb ' \
+                            'with lib/microsoft_graph.rb#send_message.'
+        end
+      rescue => e
+        Rails.logger.warn "KC: MicrosoftGraphBccInMime — failed to check upstream: #{e.message}"
+      end
+    end
 
     def send_message(mail)
       mime_string = mail.to_s
