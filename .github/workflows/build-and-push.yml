@@ -16,15 +16,43 @@ on:
           - 'true'
           - 'false'
 
+concurrency:
+  group: build-and-push-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  # Fork-sync protection: upstream Zammad ships workflows (CI, docker-release,
+  # packager.io, …) that need upstream's runners/secrets and fail in this fork,
+  # leaving a red ✗ on every sync. Any workflow that is not ours gets
+  # (re-)disabled here automatically — including ones upstream adds in the
+  # future — so hitting "Sync fork" can never introduce a failing check.
+  housekeeping:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Disable foreign workflows
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          keep=".github/workflows/build-and-push.yml"
+          gh api "repos/${{ github.repository }}/actions/workflows" --paginate \
+            -q '.workflows[] | [(.id|tostring), .state, .path] | @tsv' |
+          while IFS=$'\t' read -r id state path; do
+            if [ "$path" != "$keep" ] && [ "$state" = "active" ]; then
+              echo "Disabling foreign workflow: $path"
+              gh api -X PUT "repos/${{ github.repository }}/actions/workflows/$id/disable"
+            fi
+          done
+
   build-and-push:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
@@ -36,6 +64,16 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          # Full (blobless) history so heal-patches.sh can 3-way re-anchor
+          # drifted patches against their pre-image blobs.
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Self-heal drifted KC patches
+        env:
+          HEAL_PUSH_BRANCH: ${{ github.ref_type == 'branch' && github.ref_name || '' }}
+        run: kc/script/heal-patches.sh
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
