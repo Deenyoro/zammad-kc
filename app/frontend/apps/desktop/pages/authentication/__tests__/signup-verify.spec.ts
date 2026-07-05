@@ -2,7 +2,6 @@
 
 import { flushPromises } from '@vue/test-utils'
 
-import { getByIconName } from '#tests/support/components/iconQueries.ts'
 import { getTestRouter } from '#tests/support/components/renderComponent.ts'
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
@@ -44,9 +43,9 @@ describe('signup verify view', () => {
     await flushPromises()
     await vi.advanceTimersByTimeAsync(0)
 
-    const loader = await view.findByRole('status')
+    const loader = await view.findAllByRole('progressbar')
 
-    expect(getByIconName(loader, 'spinner')).toBeInTheDocument()
+    expect(loader).toHaveLength(3)
     resolve(null)
     vi.resetAllMocks()
   })

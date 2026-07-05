@@ -10,7 +10,8 @@ import { waitFor } from '#tests/support/vitest-wrapper.ts'
 
 import { mockLogoutMutation } from '#shared/graphql/mutations/logout.mocks.ts'
 
-import { SidebarName, isSidebarCollapsed } from '#desktop/components/layout/useSidebarDisplay.ts'
+import { useSidebarDisplayStore } from '#desktop/components/layout/stores/sidebarDisplay.ts'
+import { SidebarName } from '#desktop/components/layout/types.ts'
 
 describe('Left sidebar', () => {
   beforeEach(() => {
@@ -21,8 +22,6 @@ describe('Left sidebar', () => {
       fullname: 'Nicole Braun',
       preferences: {},
     })
-
-    isSidebarCollapsed[SidebarName.Primary].value = false
   })
 
   afterEach(() => {
@@ -36,7 +35,7 @@ describe('Left sidebar', () => {
       const aside = view.getByRole('complementary')
 
       expect(aside.parentElement).toHaveStyle({
-        gridTemplateColumns: '260px 1fr',
+        '--grid-columns': '260px minmax(0, 1fr)',
       })
     })
 
@@ -47,7 +46,7 @@ describe('Left sidebar', () => {
       const aside = view.getByRole('complementary')
 
       expect(aside.parentElement).toHaveStyle({
-        gridTemplateColumns: '216px 1fr',
+        '--grid-columns': '216px minmax(0, 1fr)',
       })
     })
 
@@ -63,7 +62,7 @@ describe('Left sidebar', () => {
       await view.events.click(collapseButton)
 
       expect(aside.parentElement).toHaveStyle({
-        gridTemplateColumns: '56px 1fr',
+        '--grid-columns': '56px minmax(0, 1fr)',
       })
 
       const expandButton = getAllByRole(aside, 'button', {
@@ -73,19 +72,19 @@ describe('Left sidebar', () => {
       await view.events.click(expandButton)
 
       expect(aside.parentElement).toHaveStyle({
-        gridTemplateColumns: '260px 1fr',
+        '--grid-columns': '260px minmax(0, 1fr)',
       })
     })
 
     it('renders collapsed width when collapsed state is active', async () => {
-      isSidebarCollapsed[SidebarName.Primary].value = true
+      useSidebarDisplayStore().setCollapsed(SidebarName.Primary, true)
 
       const view = await visitView('/')
 
       const aside = view.getByRole('complementary')
 
       expect(aside.parentElement).toHaveStyle({
-        gridTemplateColumns: '56px 1fr',
+        '--grid-columns': '56px minmax(0, 1fr)',
       })
     })
 
@@ -100,7 +99,7 @@ describe('Left sidebar', () => {
       await fireEvent.mouseUp(document, { clientX: 216 })
 
       expect(aside.parentElement).toHaveStyle({
-        gridTemplateColumns: '216px 1fr',
+        '--grid-columns': '216px minmax(0, 1fr)',
       })
     })
 
@@ -115,7 +114,7 @@ describe('Left sidebar', () => {
       await view.events.dblClick(resizeHandle)
 
       expect(aside.parentElement).toHaveStyle({
-        gridTemplateColumns: '260px 1fr',
+        '--grid-columns': '260px minmax(0, 1fr)',
       })
     })
   })
@@ -130,7 +129,7 @@ describe('Left sidebar', () => {
       async ({ collapsed }) => {
         mockPermissions(['user_preferences', 'ticket.agent', 'admin'])
 
-        isSidebarCollapsed[SidebarName.Primary].value = collapsed
+        useSidebarDisplayStore().setCollapsed(SidebarName.Primary, collapsed)
 
         const expectedMenuItems = [
           'Admin documentation',

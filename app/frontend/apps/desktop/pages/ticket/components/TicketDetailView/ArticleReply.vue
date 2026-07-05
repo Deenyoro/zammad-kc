@@ -1,28 +1,36 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { toRef } from 'vue'
 
 import CommonLabel from '#shared/components/CommonLabel/CommonLabel.vue'
+import { useTicketView } from '#shared/entities/ticket/composables/useTicketView.ts'
 import type { TicketById } from '#shared/entities/ticket/types'
 import type { AppSpecificTicketArticleType } from '#shared/entities/ticket-article/action/plugins/types.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 
-import ArticleReplyPinned from './ArticleReplyPinned.vue'
-import ArticleReplyUnpinned from './ArticleReplyUnpinned.vue'
+import ArticleReplyPanel from './ArticleReplyPanel.vue'
+import { useArticleReply } from './useArticleReply.ts'
 
 interface Props {
   ticket: TicketById
   parentReachedBottomScroll: boolean
-  newArticlePresent?: boolean
-  createArticleType?: string | null
   ticketArticleTypes: AppSpecificTicketArticleType[]
-  isTicketCustomer?: boolean
+  createArticleType?: string | null
+  newArticlePresent?: boolean
   hasInternalArticle?: boolean
 }
 
 const props = defineProps<Props>()
+
+const currentTicket = toRef(props, 'ticket')
+const { isTicketCustomer } = useTicketView(currentTicket)
+
+const { noteArticleType, customerReplyArticleType } = useArticleReply(
+  currentTicket,
+  toRef(props, 'ticketArticleTypes'),
+)
 
 defineEmits<{
   'show-article-form': [
@@ -33,42 +41,6 @@ defineEmits<{
 }>()
 
 const pinned = defineModel<boolean>('pinned')
-
-const currentTicketArticleType = computed(() => {
-  if (props.isTicketCustomer) return 'web'
-  if (props.createArticleType && ['phone', 'web'].includes(props.createArticleType)) {
-    return 'email'
-  }
-  return props.createArticleType
-})
-
-const allowedArticleTypes = computed(() => {
-  return ['note', 'phone', currentTicketArticleType.value]
-})
-
-const availableArticleTypes = computed(() => {
-  const filtered = props.ticketArticleTypes.filter((type) =>
-    allowedArticleTypes.value.includes(type.value),
-  )
-
-  return filtered.map((type) => {
-    return {
-      articleType: type.value,
-      label: type.buttonLabel,
-      icon: type.icon,
-      performReply: (() =>
-        type.performReply?.(props.ticket)) as AppSpecificTicketArticleType['performReply'],
-    }
-  })
-})
-
-const noteArticleType = computed(() =>
-  availableArticleTypes.value.find((t) => t.articleType === 'note'),
-)
-
-const customerReplyArticleType = computed(() =>
-  availableArticleTypes.value.find((t) => t.articleType === 'web'),
-)
 </script>
 
 <template>
@@ -80,21 +52,18 @@ const customerReplyArticleType = computed(() =>
     v-bind="$attrs"
     :class="{ 'sticky bottom-0 z-20 self-end': pinned }"
   >
-    <ArticleReplyPinned
-      v-if="pinned"
+    <slot name="leading" />
+
+    <ArticleReplyPanel
+      :is-pinned="pinned"
       :has-internal-article="hasInternalArticle"
-      @discard-form="$emit('discard-form')"
-      @toggle-pin="pinned = !pinned"
-    />
-    <ArticleReplyUnpinned
-      v-else
-      :has-internal-article="hasInternalArticle"
+      :is-ticket-customer="isTicketCustomer"
       @discard-form="$emit('discard-form')"
       @toggle-pin="pinned = !pinned"
     />
   </div>
   <div v-else-if="newArticlePresent !== undefined">
-    <div class="mx-auto flex w-full max-w-6xl flex-col items-center gap-3 px-12 pt-4 pb-6">
+    <div class="mx-auto flex w-full max-w-4xl flex-col items-center gap-3 px-12 pt-4 pb-6">
       <CommonButton
         v-if="isTicketCustomer && customerReplyArticleType"
         variant="primary"
@@ -116,6 +85,7 @@ const customerReplyArticleType = computed(() =>
           <CommonButton
             variant="tertiary"
             size="small"
+            data-test-id="ticket-detail-show-article-form-button"
             :prefix-icon="noteArticleType.icon"
             @click="
               $emit('show-article-form', noteArticleType.articleType, noteArticleType.performReply)
