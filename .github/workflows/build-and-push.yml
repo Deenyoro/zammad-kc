@@ -39,11 +39,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          keep=".github/workflows/build-and-push.yml"
+          keep=".github/workflows/build-and-push.yml .github/workflows/sync-canary.yml"
           gh api "repos/${{ github.repository }}/actions/workflows" --paginate \
             -q '.workflows[] | [(.id|tostring), .state, .path] | @tsv' |
           while IFS=$'\t' read -r id state path; do
-            if [ "$path" != "$keep" ] && [ "$state" = "active" ]; then
+            case " $keep " in
+              *" $path "*) continue ;;
+            esac
+            if [ "$state" = "active" ]; then
               echo "Disabling foreign workflow: $path"
               gh api -X PUT "repos/${{ github.repository }}/actions/workflows/$id/disable"
             fi
