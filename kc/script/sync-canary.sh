@@ -82,6 +82,20 @@ if [ "${#PROBLEMS[@]}" -eq 0 ]; then
     fi
   done
 
+  echo "${PREFIX}: Checking upstream anchors the overlay overrides…"
+  if [ -f "${OVERLAY_DIR}/upstream-fingerprints.txt" ]; then
+    while IFS= read -r line; do
+      case "${line}" in ''|'#'*) continue ;; esac
+      file="${line%%::*}"
+      needle="${line#*::}"
+      if [ ! -f "./${file}" ]; then
+        PROBLEMS+=("ANCHOR FILE GONE: ${file} — an overlay override targets it (see ${OVERLAY_DIR}/upstream-fingerprints.txt).")
+      elif ! grep -qF "${needle}" "./${file}"; then
+        PROBLEMS+=("ANCHOR CHANGED: '${needle}' no longer in ${file} — the overlay override that mirrors/wraps it needs re-anchoring.")
+      fi
+    done < "${OVERLAY_DIR}/upstream-fingerprints.txt"
+  fi
+
   echo "${PREFIX}: Checking overlay paths for new upstream collisions…"
   while IFS= read -r -d '' overlay_file; do
     rel="${overlay_file#"${OVERLAY_DIR}"/}"

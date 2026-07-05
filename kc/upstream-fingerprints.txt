@@ -1,0 +1,50 @@
+# Upstream anchors the KC overlay depends on — verified by kc/script/sync-canary.sh
+# against the MERGED tree before every sync, so an upstream rename/rewrite of a
+# method a KC concern overrides is caught BEFORE it silently disables a feature
+# (safe_constantize in kc_loader only guards class existence, not method names).
+#
+# Format: <upstream file>::<required substring>. Lines starting with # are comments.
+# When a line fails: the named upstream code changed — review the KC concern that
+# overrides it (see kc/config/initializers/kc_loader.rb) and re-anchor.
+
+# Kc::MicrosoftGraphBccInMime replaces send_message wholesale (no super seam)
+lib/microsoft_graph.rb::def send_message(mail)
+lib/microsoft_graph.rb::send_as_raw_body:
+lib/microsoft_graph.rb::make_request('sendMail'
+
+# Kc::MicrosoftGraphErrorHandling wraps these
+lib/microsoft_graph.rb::def handle_error!(response)
+lib/microsoft_graph.rb::def parse_error(response)
+
+# Kc::FixOriginBySenderOverride replaces this (upstream bug workaround)
+app/models/ticket/article/adds_metadata_general.rb::def metadata_general_process_origin_by
+
+# Kc::EmailFromOriginByFix replaces this (upstream bug workaround)
+app/models/ticket/article/adds_metadata_email.rb::def recipient_name
+
+# Kc::MergeToClosedState wraps this
+app/models/ticket.rb::def merge_to(data)
+
+# Kc::SuppressInternalNoteNotifications wraps this
+app/models/transaction/notification.rb::def article_by_item
+
+# Kc::ArticlePreprocessBcc wraps this
+app/services/service/ticket/article/create.rb::def preprocess_to_cc
+
+# Kc::EmailOutboundBcc wraps this
+app/models/channel/driver/base_email_outbound.rb::def prepare_bcc_header
+
+# Kc::StripEmailTextColor wraps this (singleton)
+app/models/channel/email_build.rb::def self.html_complete_check
+
+# Kc::FollowUpClosedParent wraps this (singleton)
+app/models/channel/filter/follow_up_merged.rb::def self.find_merge_follow_up_ticket
+
+# Kc::EmailColorStripSignal + Kc::EmailJobBcc wrap this
+app/jobs/ticket_article_communicate_email_job.rb::def perform(article_id)
+
+# Kc::TicketTitleRewriterLanguage replaces this
+app/models/ai/agent/type/ticket_title_rewriter.rb::def instruction
+
+# kc_article_bcc.rb initializer mirrors this input type's argument style
+app/graphql/gql/types/input/ticket/article_input_type.rb::argument :cc, [String]
