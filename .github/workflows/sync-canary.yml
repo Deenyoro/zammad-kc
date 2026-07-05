@@ -1,0 +1,63 @@
+name: Upstream sync canary
+
+# Simulates the NEXT "Sync fork" every day: merge upstream, verify every
+# kc/patches diff still lands (or will self-heal), and check for overlay
+# collisions. Instead of a red ✗, a failure opens/updates a GitHub issue with
+# the exact findings — and the issue closes automatically once the next sync
+# is safe again. This gives advance warning BEFORE the sync button is pressed.
+on:
+  schedule:
+    - cron: "30 5 * * *" # daily 05:30 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: sync-canary
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  ISSUE_TITLE: "Sync canary: next upstream sync needs manual attention"
+
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Simulate next fork sync
+        id: canary
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          kc/script/sync-canary.sh 2>&1 | tee canary.log
+
+      - name: File issue with findings
+        if: steps.canary.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          body="$(printf '```\n%s\n```\n\nRe-implement the conflicting change on a tree merged with upstream, regenerate the patch (see kc/CLAUDE.md), and this issue will close itself on the next canary run.' "$(tail -n 60 canary.log)")"
+          existing="$(gh issue list --state open --json number,title -q ".[] | select(.title == \"$ISSUE_TITLE\") | .number" | head -1)"
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "$ISSUE_TITLE" --body "$body"
+          fi
+
+      - name: Close issue when safe again
+        if: steps.canary.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue list --state open --json number,title \
+            -q ".[] | select(.title == \"$ISSUE_TITLE\") | .number" |
+          while read -r number; do
+            gh issue close "$number" --comment "Canary passes again — the next upstream sync is safe."
+          done
