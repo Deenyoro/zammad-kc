@@ -4,6 +4,7 @@
 import { computed, ref, useTemplateRef } from 'vue'
 
 import ObjectAttributes from '#shared/components/ObjectAttributes/ObjectAttributes.vue'
+import { useReducedMotion } from '#shared/composables/useReducedMotion.ts'
 import { useUserDetail } from '#shared/entities/user/composables/useUserDetail.ts'
 import { useUserEntity } from '#shared/entities/user/composables/useUserEntity.ts'
 import { useUserNoteUpdateMutation } from '#shared/entities/user/graphql/mutations/noteUpdate.api.ts'
@@ -11,8 +12,12 @@ import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import SubscriptionHandler from '#shared/server/apollo/handler/SubscriptionHandler.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 import { GraphQLErrorTypes } from '#shared/types/error.ts'
+import { scrollIntoView } from '#shared/utils/dom.ts'
 import emitter from '#shared/utils/emitter.ts'
 
+import CommonFloatingToolbar from '#desktop/components/CommonFloatingToolbar/CommonFloatingToolbar.vue'
+import CommonIndicator from '#desktop/components/CommonIndicator/CommonIndicator.vue'
+import { useIndicator } from '#desktop/components/CommonIndicator/useIndicator.ts'
 import CommonLoader from '#desktop/components/CommonLoader/CommonLoader.vue'
 import CommonSectionContainer from '#desktop/components/CommonSectionContainer/CommonSectionContainer.vue'
 import CommonSimpleEntityList from '#desktop/components/CommonSimpleEntityList/CommonSimpleEntityList.vue'
@@ -23,6 +28,7 @@ import UserTicketBarChart from '#desktop/components/Ticket/TicketBarChart/UserTi
 import { usePage } from '#desktop/composables/usePage.ts'
 import { useScrollPosition } from '#desktop/composables/useScrollPosition.ts'
 import { useTicketByCustomerUpdatesSubscription } from '#desktop/entities/ticket/graphql/subscriptions/ticketByCustomerUpdates.api.ts'
+import UserDetailViewContentSkeleton from '#desktop/pages/user/components/UserDetailViewContentSkeleton.vue'
 
 import UserDetailTopBar from './UserDetailTopBar.vue'
 import UserRelatedCustomerTickets from './UserRelatedCustomerTickets.vue'
@@ -102,6 +108,17 @@ customerTicketsSubscription.onResult(({ data }) => {
 
   emitter.emit(`customer-ticket-list-refetch:${userId.value}`)
 })
+
+const { isIntersecting: isReachingBottom } = useIndicator()
+const { isIntersecting: isReachingTop } = useIndicator()
+
+const { hasReducedMotion } = useReducedMotion()
+
+const scrollTo = (position: 'start' | 'end' = 'end') => {
+  scrollIntoView(contentContainerElement.value, position, {
+    behavior: hasReducedMotion.value ? 'instant' : 'auto',
+  })
+}
 </script>
 
 <template>
@@ -112,16 +129,20 @@ customerTicketsSubscription.onResult(({ data }) => {
     content-alignment="center"
     no-scrollable
   >
-    <CommonLoader class="mt-8" :loading="loadingWithoutCachedResult">
+    <CommonLoader class="size-full" :loading="loadingWithoutCachedResult">
+      <template #skeleton>
+        <UserDetailViewContentSkeleton />
+      </template>
+
       <div ref="content-container" class="@container size-full overflow-y-auto">
+        <CommonIndicator v-model="isReachingTop" />
+
         <UserDetailTopBar
           :user="user"
           :user-display-name="userDisplayName"
           :content-container-element="contentContainerElement"
         />
-        <section
-          class="mx-auto grid w-full max-w-5xl min-w-xs grid-cols-1 gap-6 p-3 @xl:min-w-sm @xl:grid-cols-2 @xl:p-6"
-        >
+        <section class="mx-auto grid max-w-5xl grid-cols-1 gap-6 px-5.5 py-3 @2xl:grid-cols-2">
           <div class="flex flex-col gap-6 self-start">
             <CommonSectionContainer
               v-if="user?.hasSecondaryOrganizations"
@@ -156,7 +177,6 @@ customerTicketsSubscription.onResult(({ data }) => {
               hasPermission('ticket.agent') &&
               (user.ticketsCount?.open || user.ticketsCount?.closed)
             "
-            class="w-full self-start @xl:w-fit"
             :label="__('Related tickets')"
           >
             <template v-if="user.organization">
@@ -184,9 +204,20 @@ customerTicketsSubscription.onResult(({ data }) => {
             v-if="hasPermission('ticket.agent')"
             ref="chart"
             :user-id="userId"
-            class="w-fit @xl:col-span-2"
+            class="@2xl:col-span-2"
           />
         </section>
+
+        <div class="sticky bottom-3 h-0 print:hidden">
+          <CommonFloatingToolbar
+            class="absolute inset-e-3 bottom-3 print:hidden"
+            :is-reaching-bottom="isReachingBottom"
+            :is-reaching-top="isReachingTop"
+            @scroll-to-end="scrollTo()"
+            @scroll-to-start="scrollTo('start')"
+          />
+        </div>
+        <CommonIndicator v-model="isReachingBottom" />
       </div>
     </CommonLoader>
   </LayoutContent>

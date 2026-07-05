@@ -8,6 +8,7 @@ import { useHtmlInlineImages } from '#shared/composables/useHtmlInlineImages.ts'
 import { useHtmlLinks } from '#shared/composables/useHtmlLinks.ts'
 import { type ImageViewerFile } from '#shared/composables/useImageViewer.ts'
 import type { TicketArticle } from '#shared/entities/ticket/types.ts'
+import { i18n } from '#shared/i18n.ts'
 import { textToHtml, ensureImagesKeepAspectRatio } from '#shared/utils/helpers.ts'
 
 import { useAnnouncer } from '#desktop/composables/accessibility/useAnnouncer.ts'
@@ -38,6 +39,9 @@ const bodyClasses = computed(() =>
 )
 
 const body = computed(() => {
+  if (props.article.bodyRenderingError) {
+    return i18n.t(props.article.bodyWithUrls)
+  }
   if (props.article.contentType !== 'text/html') {
     return textToHtml(props.article.bodyWithUrls)
   }
@@ -102,7 +106,7 @@ onMounted(() => {
 
 <template>
   <article
-    class="Content relative overflow-hidden p-3 transition-[padding]"
+    class="Content relative overflow-hidden p-3 pb-4 transition-[padding] print:pt-3!"
     :class="[
       bodyClasses,
       {
@@ -113,7 +117,7 @@ onMounted(() => {
   >
     <div
       v-if="showAuthorInformation"
-      class="absolute top-3 flex w-full px-3 ltr:left-0 rtl:right-0"
+      class="absolute top-3 flex w-full px-3 ltr:left-0 rtl:right-0 print:hidden"
       aria-describedby="author-name-and-creation-date"
     >
       <p id="author-name-and-creation-date" class="sr-only">
@@ -133,7 +137,7 @@ onMounted(() => {
     <div
       ref="bubbleElement"
       data-test-id="article-content"
-      class="overflow-hidden text-sm transition-[height] duration-200"
+      class="overflow-hidden text-sm transition-[height] duration-200 print:h-auto! print:overflow-visible"
     >
       <!--    Never drop this inner-article-body class used for Highlight feature-->
       <!--    eslint-disable vue/no-v-html-->
@@ -145,14 +149,14 @@ onMounted(() => {
     </div>
     <div
       v-if="hasShowMore"
-      class="relative"
+      class="relative print:hidden"
       :class="{
-        BubbleGradient: hasShowMore && !shownMore,
+        BubbleGradient: !shownMore,
       }"
     />
     <CommonLink
       v-if="hasShowMore"
-      class="mb-1 inline-block! outline-transparent! hover:underline! focus-visible:outline-blue-800!"
+      class="mb-1 inline-block! outline-transparent! hover:underline! focus-visible:outline-blue-800! print:hidden!"
       role="button"
       link="#"
       size="medium"

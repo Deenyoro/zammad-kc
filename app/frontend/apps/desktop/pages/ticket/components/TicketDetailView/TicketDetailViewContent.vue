@@ -1,7 +1,7 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { useLocalStorage, useScroll, whenever } from '@vueuse/core'
+import { onKeyStroke, useLocalStorage, useScroll, whenever } from '@vueuse/core'
 import { cloneDeep, isEqual } from 'lodash-es'
 import {
   computed,
@@ -63,8 +63,9 @@ import { useScrollPosition } from '#desktop/composables/useScrollPosition.ts'
 import { useTaskbarTab } from '#desktop/entities/user/current/composables/useTaskbarTab.ts'
 import { useTaskbarTabStateUpdates } from '#desktop/entities/user/current/composables/useTaskbarTabStateUpdates.ts'
 import type { TaskbarTabContext } from '#desktop/entities/user/current/types.ts'
+import FloatingToolbar from '#desktop/pages/ticket/components/TicketDetailView/FloatingToolbar.vue'
 import TicketDetailBottomBar from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue'
-import { items as highlightMenuItems } from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/TopBarHeader/useHighlightMenuState.ts'
+import { items as highlightMenuItems } from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/composables/useHighlightMenuState.ts'
 import { useTicketScreenBehavior } from '#desktop/pages/ticket/components/TicketDetailView/TicketScreenBehavior/useTicketScreenBehavior.ts'
 
 import { ARTICLES_INFORMATION_KEY } from '../../composables/useArticleContext.ts'
@@ -78,11 +79,11 @@ import { type TicketSidebarContext, TicketSidebarScreenType } from '../../types/
 import TicketSidebar from '../TicketSidebar.vue'
 
 import ArticleList from './ArticleList.vue'
+import ArticleListSkeleton from './ArticleListSkeleton.vue'
 import ArticleReply from './ArticleReply.vue'
-import TicketDetailScrollToBottomButton from './TicketDetailScrollToBottomButton.vue'
 import TicketDetailTopBar from './TicketDetailTopBar/TicketDetailTopBar.vue'
+import TicketDetailTopBarSkeleton from './TicketDetailTopBar/TicketDetailTopBarSkeleton.vue'
 import { useUnreadArticle } from './useUnreadArticle.ts'
-
 interface Props {
   internalId: string
 }
@@ -96,7 +97,11 @@ const contentContainerElement = useTemplateRef('content-container')
 const { ticket, ticketId, ...ticketInformation } = initializeTicketInformation(internalId)
 
 const { isIntersecting: isReachingBottom } = useIndicator()
-const { articleCount, addUnreadArticle } = useUnreadArticle({ cleanupDependency: isReachingBottom })
+const { isIntersecting: isReachingTop } = useIndicator()
+
+const { articleCount, addUnreadArticle, unreadArticleIds, clearUnreadArticles } = useUnreadArticle({
+  cleanupDependency: isReachingBottom,
+})
 
 const onAddArticleCallback = ({ articlesQuery, updates }: AddArticleCallbackArgs) => {
   // When we are at the end user is aware of the new article
@@ -150,17 +155,51 @@ usePage({
 
 const { scrollIntoView: scrollToArticle } = useScrollPosition(contentContainerElement)
 
-const handleScrollToArticle = async (behavior: 'smooth' | 'instant' = 'instant') =>
-  scrollToArticle('end', { behavior })
+const handleScrollToArticleEnds = async (
+  block: 'start' | 'end' = 'end',
+  behavior: ScrollOptions['behavior'] = 'auto',
+) => scrollToArticle(block, { behavior })
+
+const articleListInstance = useTemplateRef('article-list')
+
+const handleScrollToArticle = (direction: 'next' | 'previous' | 'unread') => {
+  const movedToArticle = articleListInstance.value?.goToAdjacentArticle(direction)
+
+  if (movedToArticle) return
+
+  // We are already on the first/last article, so there is no adjacent one to
+  // jump to. Scroll all the way to the very top/bottom
+  handleScrollToArticleEnds(direction === 'previous' ? 'start' : 'end')
+}
+
+const handleScrollToUnreadArticle = () => {
+  handleScrollToArticle('unread')
+  clearUnreadArticles()
+}
+
+// Keyboard shortcuts
+onKeyStroke('ArrowLeft', (event) => {
+  // Prevent reacting when the target is on any other element e.g inputs
+  const target = event.target as HTMLElement
+  if (target !== document.body) return
+
+  handleScrollToArticle('previous')
+})
+
+onKeyStroke('ArrowRight', (event) => {
+  // Prevent reacting when the target is on any other element e.g inputs
+  const target = event.target as HTMLElement
+  if (target !== document.body) return
+
+  handleScrollToArticle('next')
+})
 
 const isReplyActive = computed(() => !isLoadingArticles.value && isInitialSettled.value)
-
-const ticketDetailTopBarInstance = useTemplateRef('detail-top-bar')
 
 let scrollTimeout: NodeJS.Timeout | undefined
 const scrollScope = effectScope()
 
-const handleInitialScrollToEnd = () => {
+const handleInitialScrollToEnd = (isPermalink = false) => {
   const stopWatch = watch(
     () => isReplyActive.value,
     (visible) => {
@@ -169,17 +208,14 @@ const handleInitialScrollToEnd = () => {
       // Async effects which need to run before
       // :TODO find a better solution then setTimeout
       scrollTimeout = setTimeout(() => {
-        handleScrollToArticle('instant')
+        if (!isPermalink) handleScrollToArticleEnds('end', 'instant')
 
         scrollScope.run(() => {
           const { directions } = useScroll(contentContainerElement)
 
-          // Wait for the user to initially scroll up
-          // Because when this code has run, we are at the bottom
           whenever(
-            () => directions.top,
+            () => (isPermalink ? directions.top || directions.bottom : directions.top),
             () => {
-              ticketDetailTopBarInstance.value?.hideDetails()
               scrollScope.stop()
             },
           )
@@ -268,21 +304,8 @@ const formEditAttributeLocation = computed(() => {
   return '#wrapper-form-ticket-edit'
 })
 
-// Use a separate ref that lags by one post-flush tick so the Teleport target
-// is only switched after the new sub-component has mounted, avoiding an
-// orphaned teleport when ArticleReplyPinned/Unpinned swap their form div.
-const formReplyTarget = ref(
-  isReplyPinned.value ? '#ticketArticleReplyFormPinned' : '#ticketArticleReplyForm',
-)
-watch(
-  isReplyPinned,
-  (pinned) => {
-    formReplyTarget.value = pinned ? '#ticketArticleReplyFormPinned' : '#ticketArticleReplyForm'
-  },
-  { flush: 'post' },
-)
 const formArticleReplyLocation = computed(() => {
-  if (newTicketArticlePresent.value) return formReplyTarget.value
+  if (newTicketArticlePresent.value) return '#ticketArticleReplyForm'
   return '#wrapper-form-ticket-edit'
 })
 
@@ -313,7 +336,9 @@ const ticketEditSchemaData = reactive({
   formEditAttributeLocation,
   formArticleReplyLocation,
   securityIntegration,
+  isTicketCustomer,
   newTicketArticlePresent,
+  isReplyPinned,
   currentArticleType: currentSchemaArticleType,
   existingAdditionalAddArticleNotes: () => {
     return Object.keys(additionalAddArticleNotes.value).length > 0
@@ -408,11 +433,8 @@ const errorCallback = (errorHandler: GraphQLHandlerError) =>
   errorHandler.type !== GraphQLErrorTypes.Forbidden &&
   errorHandler.type !== GraphQLErrorTypes.RecordNotFound
 
-const { isTicketFormGroupValid, initialTicketValue, editTicket } = useTicketEdit(
-  ticket,
-  form,
-  errorCallback,
-)
+const { isTicketFormGroupValid, initialTicketValue, editTicket, buildTicketResetValues } =
+  useTicketEdit(ticket, form, errorCallback)
 
 const { openReplyForm } = useTicketArticleReplyAction(form, showTicketArticleReplyForm)
 
@@ -561,15 +583,21 @@ const submitEditTicket = async (formData: FormSubmitData<TicketUpdateFormData>) 
 
         // Reset article form after ticket update and reset form.
         newTicketArticlePresent.value = false
+        currentArticleType.value = undefined
 
         return {
           reset: (values: FormSubmitData<TicketUpdateFormData>, formNodeValues: FormValues) => {
             nextTick(() => {
-              if (!formNodeValues) return
+              if (!formNodeValues || !ticket.value) return
 
+              // Seed the ticket group from the persisted entity, so server-side
+              // changes (e.g. the automatic new->open transition) are reflected
+              // instead of the submitted values. Only the form-only fields and
+              // the article reset come from values.
               formReset({
+                object: ticket.value,
                 values: {
-                  ticket: formNodeValues.ticket,
+                  ...buildTicketResetValues(ticket.value),
                   article: ticketArticleDefaultValues,
                 },
               })
@@ -618,13 +646,6 @@ const discardReplyForm = async () => {
   return triggerFormUpdater()
 }
 
-const handleShowArticleForm = (
-  articleType: string,
-  performReply: AppSpecificTicketArticleType['performReply'],
-) => {
-  openReplyForm({ articleType, ...performReply?.(ticket.value) })
-}
-
 const onEditFormSettled = () => {
   watch(
     () => flags.value.newArticlePresent,
@@ -647,7 +668,10 @@ const onEditFormSettled = () => {
   )
 }
 
-const articleListTopPadding = ref('4rem')
+const handleShowArticleForm = (
+  articleType: string,
+  performReply: AppSpecificTicketArticleType['performReply'],
+) => openReplyForm({ articleType, ...performReply?.(ticket.value!) })
 </script>
 
 <template>
@@ -659,81 +683,115 @@ const articleListTopPadding = ref('4rem')
     content-alignment="center"
     no-scrollable
   >
-    <CommonLoader class="mt-8" :loading="!ticket">
-      <div
-        ref="content-container"
-        data-test-id="ticket-detail-content-container"
-        class="@container isolate grid w-full overflow-y-auto overscroll-contain"
-        :class="{
-          'grid-rows-[max-content_max-content_max-content]':
-            !newTicketArticlePresent || !isReplyPinned,
-          'grid-rows-[max-content_1fr_max-content]': newTicketArticlePresent && isReplyPinned,
-        }"
-      >
-        <TicketDetailTopBar
-          ref="detail-top-bar"
-          :content-container-element="contentContainerElement"
-        />
+    <div
+      ref="content-container"
+      data-test-id="ticket-detail-content-container"
+      class="@container isolate grid size-full overflow-y-auto overscroll-contain print:h-auto print:overflow-y-visible"
+      :class="{
+        'grid-rows-[0_max-content_max-content_max-content]':
+          !newTicketArticlePresent || !isReplyPinned,
+        'grid-rows-[0_max-content_1fr_max-content]': newTicketArticlePresent && isReplyPinned,
+      }"
+    >
+      <CommonIndicator v-model="isReachingTop" />
+
+      <TicketDetailTopBarSkeleton v-if="!ticket" />
+      <TicketDetailTopBar v-else :content-container-element="contentContainerElement" />
+
+      <CommonLoader :loading="isLoadingArticles">
+        <template #skeleton>
+          <ArticleListSkeleton :article-count="ticket?.articleCount" />
+        </template>
 
         <ArticleList
-          :style="{
-            'padding-top': articleListTopPadding,
-          }"
+          ref="article-list"
           :is-loading-articles="isLoadingArticles"
+          :scroll-container="contentContainerElement"
+          :unread-article-ids="unreadArticleIds"
           @scroll-to-end="handleInitialScrollToEnd"
         />
+      </CommonLoader>
 
-        <CommonIndicator v-model="isReachingBottom" class="h-0.5" />
+      <CommonIndicator v-if="!newTicketArticlePresent" v-model="isReachingBottom" />
 
-        <TicketDetailScrollToBottomButton
-          v-if="articleCount && articleCount > 0 && !isReachingBottom"
-          :count="articleCount"
-          @click="handleScrollToArticle('smooth')"
-        />
-
-        <div v-show="!isLoadingArticles && isInitialSettled">
-          <ArticleReply
-            v-if="ticket?.id && isTicketEditable"
-            v-model:pinned="isReplyPinned"
+      <ArticleReply
+        v-show="!isLoadingArticles && isInitialSettled"
+        v-if="ticket?.id && isTicketEditable"
+        v-model:pinned="isReplyPinned"
+        class="print:hidden"
+        :ticket="ticket"
+        :ticket-article-types="ticketArticleTypes"
+        :new-article-present="newTicketArticlePresent"
+        :create-article-type="ticket.createArticleType?.name"
+        :has-internal-article="hasInternalArticle"
+        :parent-reached-bottom-scroll="isReachingBottom"
+        @show-article-form="handleShowArticleForm"
+        @discard-form="discardReplyForm"
+      >
+        <template #leading>
+          <FloatingToolbar
             :ticket="ticket"
-            :new-article-present="newTicketArticlePresent"
-            :create-article-type="ticket.createArticleType?.name"
             :ticket-article-types="ticketArticleTypes"
-            :is-ticket-customer="isTicketCustomer"
-            :has-internal-article="hasInternalArticle"
-            :parent-reached-bottom-scroll="isReachingBottom"
+            :is-reaching-top="isReachingTop"
+            :is-reaching-bottom="isReachingBottom"
+            :unread-article-count="articleCount"
+            :new-article-present="newTicketArticlePresent"
+            class="absolute inset-e-3 -top-3 -translate-y-full"
             @show-article-form="handleShowArticleForm"
-            @discard-form="discardReplyForm"
+            @scroll-to-end="handleScrollToArticleEnds('end', 'auto')"
+            @scroll-to-start="handleScrollToArticleEnds('start', 'auto')"
+            @scroll-to-unread-article="handleScrollToUnreadArticle"
           />
-        </div>
+        </template>
+      </ArticleReply>
 
-        <div id="wrapper-form-ticket-edit" class="hidden" aria-hidden="true">
-          <Form
-            v-if="ticket?.id && initialTicketValue"
-            :id="`form-ticket-edit-${internalId}`"
-            ref="form"
-            :form-id="currentTaskbarTabFormId"
-            :schema="ticketEditSchema"
-            :disabled="!isTicketEditable"
-            :flatten-form-groups="['ticket']"
-            :hidden-form-groups="hiddenFormGroups"
-            :handlers="[articleTypeHandler(), signatureHandling('body')]"
-            :form-kit-plugins="[articleTypeSelectHandler]"
-            :schema-data="ticketEditSchemaData"
-            :initial-values="initialTicketValue"
-            :initial-entity-object="ticket"
-            :form-updater-id="EnumFormUpdaterId.FormUpdaterUpdaterTicketEdit"
-            :form-updater-additional-params="formAdditionalRouteQueryParams"
-            use-object-attributes
-            :schema-component-library="{
-              Teleport: markRaw(Teleport) as unknown as Component,
-            }"
-            @submit="submitEditTicket($event as FormSubmitData<TicketUpdateFormData>)"
-            @settled="onEditFormSettled"
-          />
-        </div>
+      <CommonIndicator v-if="newTicketArticlePresent" v-model="isReachingBottom" />
+
+      <div
+        v-if="ticket && (!newTicketArticlePresent || !isReplyPinned)"
+        class="sticky bottom-3 h-0 print:hidden"
+      >
+        <FloatingToolbar
+          :ticket="ticket"
+          :ticket-article-types="ticketArticleTypes"
+          :is-reaching-bottom="isReachingBottom"
+          :is-reaching-top="isReachingTop"
+          :unread-article-count="articleCount"
+          :new-article-present="newTicketArticlePresent"
+          class="absolute inset-e-3 bottom-0"
+          @show-article-form="handleShowArticleForm"
+          @scroll-to-end="handleScrollToArticleEnds('end', 'auto')"
+          @scroll-to-start="handleScrollToArticleEnds('start', 'auto')"
+          @scroll-to-unread-article="handleScrollToUnreadArticle"
+        />
       </div>
-    </CommonLoader>
+
+      <div id="wrapper-form-ticket-edit" class="hidden" aria-hidden="true">
+        <Form
+          v-if="ticket?.id && initialTicketValue"
+          :id="`form-ticket-edit-${internalId}`"
+          ref="form"
+          :form-id="currentTaskbarTabFormId"
+          :schema="ticketEditSchema"
+          :disabled="!isTicketEditable"
+          :flatten-form-groups="['ticket']"
+          :hidden-form-groups="hiddenFormGroups"
+          :handlers="[articleTypeHandler(), signatureHandling('body')]"
+          :form-kit-plugins="[articleTypeSelectHandler]"
+          :schema-data="ticketEditSchemaData"
+          :initial-values="initialTicketValue"
+          :initial-entity-object="ticket"
+          :form-updater-id="EnumFormUpdaterId.FormUpdaterUpdaterTicketEdit"
+          :form-updater-additional-params="formAdditionalRouteQueryParams"
+          use-object-attributes
+          :schema-component-library="{
+            Teleport: markRaw(Teleport) as unknown as Component,
+          }"
+          @submit="submitEditTicket($event as FormSubmitData<TicketUpdateFormData>)"
+          @settled="onEditFormSettled"
+        />
+      </div>
+    </div>
     <!-- Render underlying components only when the ticket is available to avoid providing undefined ticket context -->
     <template v-if="!!ticket" #sideBar>
       <TicketSidebar :context="sidebarContext" />

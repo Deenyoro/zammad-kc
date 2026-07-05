@@ -17,6 +17,33 @@ class AI::Provider::Mistral < AI::Provider
     'mistral-embed' => 1024
   }.freeze
 
+  EMBEDDING_INPUT_LIMITS = {
+    'mistral-embed' => 8192
+  }.freeze
+
+  def self.ping!(config)
+    response = UserAgent.get(
+      "#{MISTRAL_API_BASE_URL}/models",
+      {},
+      {
+        **REQUEST_TIMEOUT_OPTIONS,
+        verify_ssl:   true,
+        bearer_token: config[:token],
+        json:         true,
+        log:          {
+          facility:          'AI::Provider',
+          log_only_on_error: true,
+        },
+      },
+    )
+
+    validate_response!(response)
+
+    nil
+  end
+
+  private
+
   def chat(prompt_system:, prompt_user:, prompt_image:)
     request_body = {
       model:           model_for(prompt_image:),
@@ -62,31 +89,8 @@ class AI::Provider::Mistral < AI::Provider
     )
 
     data = validate_response!(response)
-    data['data'].first['embedding']
+    data['data'].pluck('embedding')
   end
-
-  def self.ping!(config)
-    response = UserAgent.get(
-      "#{MISTRAL_API_BASE_URL}/models",
-      {},
-      {
-        **REQUEST_TIMEOUT_OPTIONS,
-        verify_ssl:   true,
-        bearer_token: config[:token],
-        json:         true,
-        log:          {
-          facility:          'AI::Provider',
-          log_only_on_error: true,
-        },
-      },
-    )
-
-    validate_response!(response)
-
-    nil
-  end
-
-  private
 
   def specific_metadata
     {

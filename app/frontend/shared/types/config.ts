@@ -8,6 +8,7 @@ export interface ConfigList {
   ai_assistance_text_tools_fixed_instructions: string
   ai_assistance_ticket_summary: boolean
   ai_assistance_ticket_summary_config: unknown
+  ai_assistance_ticket_summary_selector: unknown
   ai_provider: boolean
   api_password_access?: boolean | null
   api_token_access?: boolean | null
@@ -44,6 +45,7 @@ export interface ConfigList {
   kb_active: boolean
   kb_active_publicly: boolean
   kb_multi_lingual_support: boolean
+  kb_self_hosted_video_servers: unknown
   ldap_integration?: boolean | null
   locale_default: string
   maintenance_login: boolean
