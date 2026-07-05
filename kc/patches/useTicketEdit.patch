@@ -1,5 +1,5 @@
 diff --git a/app/frontend/shared/entities/ticket/composables/useTicketEdit.ts b/app/frontend/shared/entities/ticket/composables/useTicketEdit.ts
-index ca59cbaba7..c84437f232 100644
+index 69a25e9478..c5d85f261e 100644
 --- a/app/frontend/shared/entities/ticket/composables/useTicketEdit.ts
 +++ b/app/frontend/shared/entities/ticket/composables/useTicketEdit.ts
 @@ -7,6 +7,7 @@ import { transformEditorHtml } from '#shared/components/Form/fields/FieldEditor/
@@ -10,7 +10,7 @@ index ca59cbaba7..c84437f232 100644
  import { useObjectAttributeFormData } from '#shared/entities/object-attributes/composables/useObjectAttributeFormData.ts'
  import { useObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
  import { useTicketUpdateMutation } from '#shared/entities/ticket/graphql/mutations/update.api.ts'
-@@ -110,18 +111,32 @@ export const useTicketEdit = (
+@@ -124,18 +125,32 @@ export const useTicketEdit = (
      EnumObjectManagerObjects.Ticket,
    )
  
@@ -44,7 +44,7 @@ index ca59cbaba7..c84437f232 100644
        to: article.to,
        subject: article.subject,
        subtype: article.subtype,
-@@ -131,6 +146,7 @@ export const useTicketEdit = (
+@@ -145,6 +160,7 @@ export const useTicketEdit = (
        security: article.security,
        timeUnit: article.timeUnit,
        accountedTimeTypeId: article.accountedTimeTypeId,
@@ -52,7 +52,7 @@ index ca59cbaba7..c84437f232 100644
      }
    }
  
-@@ -144,6 +160,9 @@ export const useTicketEdit = (
+@@ -158,6 +174,9 @@ export const useTicketEdit = (
      formData: FormSubmitData<TicketUpdateFormData>,
      meta?: TicketUpdateMetaInput,
    ) => {
@@ -62,7 +62,7 @@ index ca59cbaba7..c84437f232 100644
      if (!ticket.value || !form.value) return undefined
  
      if (!formData.owner_id) {
-@@ -160,7 +179,7 @@ export const useTicketEdit = (
+@@ -174,7 +193,7 @@ export const useTicketEdit = (
        return undefined
      }
  
