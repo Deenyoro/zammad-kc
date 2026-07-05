@@ -30,6 +30,8 @@ new SubscriptionHandler(
       userId: user.value!.id,
       initial: true,
       secondaryOrganizationsCount: SECONDARY_ORGANIZATIONS_FETCH_COUNT,
+      // Prime the same fields the detail view reads, so it resolves from cache.
+      hasOrganizationCounts: true,
     }),
     () => ({
       // NB: User detail view has its own subscription handling, avoid double subscriptions.
@@ -50,6 +52,7 @@ new SubscriptionHandler(
     v-if="taskbarTabLink"
     ref="tabLinkInstance"
     class="flex grow items-center gap-2 rounded-md px-2 py-3 group-hover/tab:bg-blue-600 hover:no-underline! focus-visible:rounded-md focus-visible:outline-hidden group-hover/tab:dark:bg-blue-900"
+    :aria-current="isActive ? 'page' : undefined"
     :link="taskbarTabLink"
     :class="{
       'bg-blue-800!': taskbarTabActive,

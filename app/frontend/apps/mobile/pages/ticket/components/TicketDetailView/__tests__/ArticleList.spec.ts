@@ -1,6 +1,7 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { renderComponent } from '#tests/support/components/index.ts'
+import { nullableMock } from '#tests/support/utils.ts'
 
 import type { TicketArticle } from '#shared/entities/ticket/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
@@ -13,7 +14,7 @@ import ArticlesList from '../ArticlesList.vue'
 it('renders delivery messages', () => {
   const { ticket } = defaultTicket()
   const articles: TicketArticle[] = [
-    {
+    nullableMock<TicketArticle>({
       __typename: 'TicketArticle',
       id: convertToGraphQLId('TicketArticle', 1),
       internal: false,
@@ -26,11 +27,12 @@ it('renders delivery messages', () => {
         delivery_message: true,
       },
       attachmentsWithoutInline: [],
+      bodyRenderingError: false,
       author: {
         __typename: 'User',
         id: convertToGraphQLId('User', 1),
       },
-    },
+    }),
   ]
 
   const view = renderComponent(ArticlesList, {

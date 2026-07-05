@@ -3,6 +3,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref, watch } from 'vue'
 
+import { useReducedMotion } from '#shared/composables/useReducedMotion.ts'
 import emitter from '#shared/utils/emitter.ts'
 
 import { useTransitionConfig } from '#desktop//composables/useTransitionConfig.ts'
@@ -15,11 +16,12 @@ import type { NavigationTab } from '#desktop/components/CommonTabs/types.ts'
 import LayoutBottomBar from '#desktop/components/layout/LayoutBottomBar.vue'
 import LayoutMain from '#desktop/components/layout/LayoutMain.vue'
 import LayoutSidebar from '#desktop/components/layout/LayoutSidebar.vue'
-import { SidebarName, useSidebarDisplay } from '#desktop/components/layout/useSidebarDisplay.ts'
+import { useSidebarDisplay } from '#desktop/components/layout/useSidebarDisplay.ts'
 import { useAppBreakpoints } from '#desktop/composables/responsiveness/useAppBreakpoints.ts'
 import { useResizeGridColumns } from '#desktop/composables/useResizeGridColumns.ts'
 
 import {
+  SidebarName,
   SidebarPosition,
   type BackgroundVariant,
   type ContentAlignment,
@@ -79,7 +81,7 @@ const {
   resetSidebarWidth,
 } = useResizeGridColumns(SidebarName.TicketContent, SidebarPosition.End)
 
-const { durations } = useTransitionConfig()
+const { transitions } = useTransitionConfig()
 
 const { isSmallScreen } = useAppBreakpoints()
 // Needed to make the breakpoint detection work within the layout, which is relevant for the sidebar display behavior
@@ -92,31 +94,40 @@ const { isSidebarCollapsed: isContentSidebarCollapsed, toggleSidebar: toggleCont
 watch(isPrimaryNavSidebarCollapsed, (isCollapsed) => {
   if (!isSmallScreen.value || isCollapsed) return
 
-  toggleContentSidebar(true)
+  toggleContentSidebar(true, { storage: 'session' })
 })
 
 watch(isSmallScreen, (smallScreen) => {
   if (!smallScreen) return
 
-  if (!isContentSidebarCollapsed.value) toggleContentSidebar(true)
+  if (!isContentSidebarCollapsed.value) toggleContentSidebar(true, { storage: 'session' })
 })
 
 onBeforeMount(() => {
   // When the screen shrinks into the small viewport(<1024px) and both sidebars are open, close this one.
-  if (isSmallScreen.value) toggleContentSidebar(true)
+  if (isSmallScreen.value) toggleContentSidebar(true, { storage: 'session' })
 })
+
+const { hasReducedMotion } = useReducedMotion()
 </script>
 
 <template>
   <div class="flex h-full max-h-screen flex-col">
     <div
-      class="grid h-full duration-100"
+      :style="
+        $slots.sideBar && showSidebar
+          ? {
+              '--grid-columns': gridColumns,
+            }
+          : undefined
+      "
+      class="grid h-full duration-100 print:grid-cols-1"
       :class="{
-        'transition-none': noTransition,
+        'grid-cols-(--grid-columns)': $slots.sideBar && showSidebar,
+        'transition-none': noTransition || hasReducedMotion,
         'max-h-[calc(100%-3.5rem)]': $slots.bottomBar,
         'max-h-screen': !$slots.bottomBar,
       }"
-      :style="$slots.sideBar && showSidebar ? gridColumns : undefined"
     >
       <LayoutMain
         ref="layout-main"
@@ -126,7 +137,7 @@ onBeforeMount(() => {
       >
         <div
           data-test-id="layout-wrapper"
-          class="flex h-full grow flex-col gap-3"
+          class="flex h-full grow flex-col gap-3 print:h-auto"
           :class="contentAlignmentClass"
           :style="{ maxWidth }"
         >
@@ -160,7 +171,7 @@ onBeforeMount(() => {
             </div>
           </div>
 
-          <Transition :duration="durations.normal" name="fade" mode="out-in">
+          <Transition :name="transitions.fade" mode="out-in">
             <slot v-if="!showInlineHelp" />
             <slot v-else name="helpPage">
               <CommonHelpText :help-text="helpText" />

@@ -76,7 +76,8 @@ class Ticket::Article < ApplicationModel
     system_sender = Ticket::Article::Sender.lookup(name: 'System')
     note_type = Ticket::Article::Type.lookup(name: 'note')
 
-    where('sender_id != ? OR type_id = ?', system_sender.id, note_type.id)
+    where('sender_id != ? OR (type_id = ? AND (preferences IS NULL OR preferences NOT LIKE ?))',
+          system_sender.id, note_type.id, '%delivery_message%')
   }
 
   scope :non_system, -> { where.not(sender: Ticket::Article::Sender.lookup(name: 'System')) }
@@ -310,6 +311,7 @@ returns
     new_body, new_attachments = Ticket::Article.insert_urls(self)
     attributes['body'] = new_body
     attributes['attachments'] = new_attachments.map(&:attributes_for_display)
+    attributes['body_rendering_error'] = body_rendering_error
 
     attributes
   end
@@ -334,8 +336,15 @@ returns
 
     attributes['body'] = new_body
     attributes['attachments'] = new_attachments.map(&:attributes_for_display)
+    attributes['body_rendering_error'] = body_rendering_error
 
     attributes
+  end
+
+  def body_rendering_error
+    return true if preferences['body_rendering_error']
+
+    [HtmlSanitizer::UNPROCESSABLE_HTML_MSG, Channel::EmailParser::EXCESSIVE_LINKS_MSG].include?(body)
   end
 
   private

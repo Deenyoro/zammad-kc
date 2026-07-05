@@ -5,6 +5,7 @@ import { type MaybeElementRef, useCurrentElement, type VueInstance } from '@vueu
 import { delay } from 'lodash-es'
 import { onBeforeMount, ref, toRef, useTemplateRef, watch } from 'vue'
 
+import { useReducedMotion } from '#shared/composables/useReducedMotion.ts'
 import { useTrapTab } from '#shared/composables/useTrapTab.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 import emitter from '#shared/utils/emitter.ts'
@@ -19,7 +20,8 @@ import UserTaskbarTabs from '#desktop/components/UserTaskbarTabs/UserTaskbarTabs
 import { useAppBreakpoints } from '#desktop/composables/responsiveness/useAppBreakpoints.ts'
 import { useResizeGridColumns } from '#desktop/composables/useResizeGridColumns.ts'
 
-import { SidebarName, useSidebarDisplay } from './useSidebarDisplay.ts'
+import { SidebarName } from './types.ts'
+import { useSidebarDisplay } from './useSidebarDisplay.ts'
 
 const config = toRef(useApplicationStore(), 'config')
 
@@ -72,28 +74,32 @@ const onResetWidth = () => {
 
 onBeforeMount(() => {
   // On the smallest screen (<768px) the primary nav is collapsed by default.
-  if (isSmallestScreen.value) togglePrimaryNavSidebar(true)
+  if (isSmallestScreen.value) togglePrimaryNavSidebar(true, { storage: 'session' })
 
   // When the content sidebar expands on a small screen, collapse the primary nav.
   watch(isContentSidebarCollapsed, (isCollapsed) => {
     if (!isSmallScreen.value || isCollapsed) return
 
-    togglePrimaryNavSidebar(true)
+    togglePrimaryNavSidebar(true, { storage: 'session' })
   })
 
   watch(isSmallestScreen, (isSmallest) => {
     if (!isSmallest) return
 
-    togglePrimaryNavSidebar(true)
+    togglePrimaryNavSidebar(true, { storage: 'session' })
   })
 })
+
+const { hasReducedMotion } = useReducedMotion()
 </script>
 
 <template>
   <div
-    class="grid h-full max-h-full overflow-y-clip duration-100"
-    :class="{ 'transition-none': noTransition }"
-    :style="gridColumns"
+    :style="{
+      '--grid-columns': gridColumns,
+    }"
+    :class="{ 'transition-none': noTransition || hasReducedMotion }"
+    class="grid h-full max-h-full grid-cols-(--grid-columns) overflow-y-clip duration-100 print:h-auto print:max-h-none print:grid-cols-1 print:overflow-visible"
   >
     <LayoutSidebar
       id="primary-sidebar"

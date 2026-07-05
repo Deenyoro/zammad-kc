@@ -96,7 +96,7 @@ RSpec.describe SecureMailing::SMIME do
           let(:system_email_address) { expired_email_address }
 
           it 'raises exception' do
-            expect { build_mail }.to raise_error RuntimeError
+            expect { build_mail }.to raise_error SecureMailing::Backend::Handler::SigningError
           end
 
           it_behaves_like 'HttpLog writer', 'failed'
@@ -188,7 +188,7 @@ RSpec.describe SecureMailing::SMIME do
         end
 
         it 'raises exception' do
-          expect { build_mail }.to raise_error RuntimeError
+          expect { build_mail }.to raise_error SecureMailing::Backend::Handler::SigningError
         end
 
         it_behaves_like 'HttpLog writer', 'failed'
@@ -645,6 +645,38 @@ RSpec.describe SecureMailing::SMIME do
               expect(Rails.logger).not_to have_received(:warn).with(%r{#{Regexp.escape(ca_certificate_subject)}})
             end
           end
+        end
+      end
+
+      context 'when verification encounters an error (#6217)' do
+        let(:raw_body) do
+          <<~BODY
+            Some text
+
+            Test Admin Agent
+
+            --
+            Super Support - Waterford Business Park
+            5201 Blue Lagoon Drive - 8th Floor & 9th Floor - Miami, 33126 USA
+            Email: hot@example.com - Web: [1] http://www.example.com/
+            --
+          BODY
+        end
+
+        let(:mail) do
+          smime_mail = Rails.root.join('spec/fixtures/files/smime/wrong_mime_type.eml').read
+          mail = Channel::EmailParser.new.parse(smime_mail.to_s)
+          SecureMailing.incoming(mail)
+
+          mail
+        end
+
+        it 'fails' do
+          expect(mail[:body]).to include(raw_body)
+          expect(mail['x-zammad-article-preferences'][:security][:sign][:success]).to be false
+          expect(mail['x-zammad-article-preferences'][:security][:sign][:comment]).to eq('Error while verifying signature, please contact your administrator.')
+          expect(mail['x-zammad-article-preferences'][:security][:encryption][:success]).to be false
+          expect(mail['x-zammad-article-preferences'][:security][:encryption][:comment]).to be_nil
         end
       end
     end

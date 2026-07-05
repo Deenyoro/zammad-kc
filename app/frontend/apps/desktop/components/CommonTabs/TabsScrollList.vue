@@ -6,11 +6,12 @@ import {
   useResizeObserver,
   type UseElementVisibilityOptions,
 } from '@vueuse/core'
-import { computed, ref, toRef, useTemplateRef, watch } from 'vue'
+import { computed, onUnmounted, ref, toRef, useTemplateRef, watch } from 'vue'
 
+import { useReducedMotion } from '#shared/composables/useReducedMotion.ts'
 import { EnumTextDirection } from '#shared/graphql/types.ts'
 import { useLocaleStore } from '#shared/stores/locale.ts'
-import getUuid from '#shared/utils/getUuid.ts'
+import { waitForAnimationFrame } from '#shared/utils/helpers.ts'
 
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import type { Tab, NavigationTab, MarkerStyle } from '#desktop/components/CommonTabs/types.ts'
@@ -30,8 +31,6 @@ const props = defineProps<Props>()
 defineOptions({
   inheritAttrs: false,
 })
-
-const labelId = getUuid()
 
 const hasMarker = computed(() => !props.multiple)
 
@@ -121,18 +120,34 @@ const centerActiveTab = (behavior: ScrollBehavior) => {
 
 // We don't apply transition before we have the calculation
 // to prevent this flash of transition initially
-const enableTransitionsAfterPaint = () => {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      transitionsEnabled.value = true
-    })
-  })
+let transitionAbortController: AbortController | null = null
+
+const enableTransitionsAfterPaint = async () => {
+  transitionAbortController?.abort()
+  transitionAbortController = new AbortController()
+  const { signal } = transitionAbortController
+
+  await waitForAnimationFrame()
+  if (signal.aborted) return
+
+  await waitForAnimationFrame()
+  if (signal.aborted) return
+
+  transitionsEnabled.value = true
 }
+
+onUnmounted(() => {
+  transitionAbortController?.abort()
+})
 
 const stopWatcher = watch(selectedIndex, measureMarker, { flush: 'post' })
 if (!hasMarker.value) stopWatcher()
 
-watch(activeTabIndex, () => centerActiveTab('smooth'), { flush: 'post' })
+const { scrollBehavior } = useReducedMotion()
+
+watch(activeTabIndex, () => centerActiveTab(scrollBehavior.value), {
+  flush: 'post',
+})
 
 watch(
   () => props.tabs,
@@ -179,7 +194,10 @@ const beginScroll = (direction: 'start' | 'end') => {
     scrollAmount = -scrollAmount
   }
 
-  containerElement.value.scrollBy({ left: scrollAmount, behavior: 'smooth' })
+  containerElement.value.scrollBy({
+    left: scrollAmount,
+    behavior: scrollBehavior.value,
+  })
 }
 
 const iconNamePerDirection = (isLtr: boolean, direction: 'start' | 'end') => {
@@ -212,7 +230,6 @@ const everyTabHasIcon = computed(() => props.tabs.every((tab) => tab.icon))
     :aria-label="label"
     :role="containerRole"
     :aria-multiselectable="multiple || undefined"
-    :aria-labelledby="label ? labelId : undefined"
     class="relative isolate scroll-bar-hidden flex w-full snap-x flex-row items-center overflow-x-auto rounded-full [&>[data-tab]+[data-tab]]:ms-1"
   >
     <li ref="list-start" class="order-first shrink-0" role="presentation" />
@@ -227,7 +244,7 @@ const everyTabHasIcon = computed(() => props.tabs.every((tab) => tab.icon))
     >
       <slot
         :tab="tab"
-        tab-class="rounded-full! px-3.5 py-1 focus-visible-app-default focus-visible:-outline-offset-1"
+        tab-class="rounded-full! px-3 py-1 focus-visible-app-default focus-visible:-outline-offset-1"
         :can-display-icon-only="everyTabHasIcon"
       />
     </li>

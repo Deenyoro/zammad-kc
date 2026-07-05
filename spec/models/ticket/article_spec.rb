@@ -772,11 +772,46 @@ RSpec.describe Ticket::Article, type: :model do
     let(:article_1) { create(:ticket_article, :system_outbound_email, ticket:) }
     let(:article_2) { create(:ticket_article, :inbound_web, ticket:) }
     let(:article_3) { create(:ticket_article, :outbound_email, ticket:) }
+    let(:article_4) { create(:ticket_article, :internal_note, ticket:) }
+    let(:article_5) { create(:ticket_article, :system_note, ticket:) }
+    let(:article_6) { create(:ticket_article, :system_delivery_message, ticket:) }
 
-    before { article_1 && article_2 && article_3 }
+    before { article_1 && article_2 && article_3 && article_4 && article_5 && article_6 }
 
-    it 'filters out System articles' do
-      expect(ticket.articles.without_system_notifications).to contain_exactly(article_2, article_3)
+    it 'filters out certain system articles' do
+      expect(ticket.articles.without_system_notifications).to contain_exactly(article_2, article_3, article_4, article_5)
+    end
+  end
+
+  describe '#body_rendering_error' do
+    context 'when body_rendering_error preference is set' do
+      subject(:article) { create(:ticket_article, preferences: { 'body_rendering_error' => true }) }
+
+      it 'returns true' do
+        expect(article.body_rendering_error).to be(true)
+      end
+    end
+
+    context 'when body matches UNPROCESSABLE_HTML_MSG' do
+      subject(:article) { create(:ticket_article, body: HtmlSanitizer::UNPROCESSABLE_HTML_MSG) }
+
+      it 'returns true' do
+        expect(article.body_rendering_error).to be(true)
+      end
+    end
+
+    context 'when body matches EXCESSIVE_LINKS_MSG' do
+      subject(:article) { create(:ticket_article, body: Channel::EmailParser::EXCESSIVE_LINKS_MSG) }
+
+      it 'returns true' do
+        expect(article.body_rendering_error).to be(true)
+      end
+    end
+
+    context 'when body is normal content' do
+      it 'returns false' do
+        expect(article.body_rendering_error).to be(false)
+      end
     end
   end
 end

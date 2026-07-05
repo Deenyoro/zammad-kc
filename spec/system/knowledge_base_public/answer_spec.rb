@@ -19,6 +19,39 @@ RSpec.describe 'Public Knowledge Base answer', type: :system do
       end
     end
 
+    context 'self-hosted video content' do
+      before do
+        published_answer_with_self_hosted_video
+      end
+
+      it 'shows the embedded player for a whitelisted media server' do
+        visit help_answer_path(primary_locale.system_locale.locale, category, published_answer_with_self_hosted_video)
+
+        iframe = find('iframe')
+        expect(iframe['src']).to eq('https://video.example.com/videos/embed/uuid-1')
+      end
+    end
+
+    context 'image content' do
+      before do
+        published_answer_with_image
+      end
+
+      it 'opens inline images in a preview overlay' do
+        visit help_answer_path(primary_locale.system_locale.locale, category, published_answer_with_image)
+
+        find('.article-content img').click
+
+        within '.kb-image-preview' do
+          expect(page).to have_css('img.kb-image-preview-image')
+          expect(page).to have_link('Download')
+          click_on 'Close'
+        end
+
+        expect(page).to have_no_css('.kb-image-preview')
+      end
+    end
+
     context 'publishing time' do
       it 'shown for published item' do
         open_answer published_answer
@@ -136,6 +169,40 @@ RSpec.describe 'Public Knowledge Base answer', type: :system do
       expect(page)
         .to have_css('.attachment-size', text: '12 B')
         .and(have_no_css('.attachment-size', text: 'Byte'))
+    end
+  end
+
+  context 'previous and next answers link' do
+    before do
+      published_answer
+      published_answer_in_subcategory
+      published_answer_in_other_category
+    end
+
+    it 'has previous and next links' do
+      visit help_answer_path(locale_name, subcategory, published_answer_in_subcategory)
+
+      expect(page).to have_css('h1', text: published_answer_in_subcategory.translations.first.title)
+      expect(page).to have_no_css('.article-nav-adjacent-previous')
+
+      click '.article-nav-adjacent-next a'
+
+      expect(page).to have_css('h1', text: published_answer.translations.first.title)
+
+      expect(page).to have_text(published_answer_in_subcategory.translations.first.title)
+      expect(page).to have_text(published_answer_in_other_category.translations.first.title)
+
+      click '.article-nav-adjacent-next a'
+
+      expect(page).to have_css('h1', text: published_answer_in_other_category.translations.first.title)
+
+      expect(page).to have_text(published_answer.translations.first.title)
+      expect(page).to have_no_css('.article-nav-adjacent-next')
+
+      click '.article-nav-adjacent-previous a'
+      click '.article-nav-adjacent-previous a'
+
+      expect(page).to have_css('h1', text: published_answer_in_subcategory.translations.first.title)
     end
   end
 
