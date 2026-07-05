@@ -1,5 +1,5 @@
 diff --git a/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts b/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts
-index 311cb1bb88..f531b46a4f 100644
+index 888e4c7150..799df7647e 100644
 --- a/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts
 +++ b/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts
 @@ -81,7 +81,7 @@ export const useTicketEditForm = (
@@ -11,9 +11,9 @@ index 311cb1bb88..f531b46a4f 100644
  
    const articleTypeFieldProps = articleTypeFields.reduce((acc, field) => {
      acc[field] = {
-@@ -241,6 +241,17 @@ export const useTicketEditForm = (
-           multiple: true,
-         },
+@@ -149,6 +149,17 @@ export const useTicketEditForm = (
+         type: 'hidden',
+         name: 'shared_draft_id',
        },
 +      {
 +        if: '$currentArticleType.fields.bcc',
@@ -27,5 +27,5 @@ index 311cb1bb88..f531b46a4f 100644
 +        },
 +      },
        {
-         if: '$currentArticleType.fields.subject',
-         name: 'subject',
+         screen: 'edit',
+         object: EnumObjectManagerObjects.Ticket,

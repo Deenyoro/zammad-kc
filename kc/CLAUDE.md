@@ -139,6 +139,8 @@ All custom code lives in `kc/`. During Docker build, two scripts run in sequence
 1. `kc/script/apply-overlay.sh` — copies NEW files into the Zammad app tree using `rsync --ignore-existing` (never overwrites upstream files, includes collision detection that aborts on conflicts).
 2. `kc/script/apply-patches.sh` — applies unified diffs from `kc/patches/` to EXISTING upstream files (for features like BCC, "Send with text color", and bulk merge that must modify upstream frontend code). If a patch fails to apply (e.g., upstream changed the file), the build fails loudly.
 
+Before the Docker build, CI runs `kc/script/heal-patches.sh` (see build-and-push.yml): any patch that no longer applies exactly is automatically re-anchored with `git apply --3way` (fuzzy `patch` as last resort), regenerated as a zero-drift diff, and committed back to the repo. Fork syncs therefore stay green without manual patch maintenance; only a true conflict — upstream rewrote the very lines a patch changes — still fails the build for a human decision.
+
 The `kc/` directory is deleted from the final image.
 
 | Layer | Mechanism |
@@ -231,7 +233,7 @@ end
 
 **Legacy frontend (CoffeeScript):** Controllers extend `App.Controller` or `App.ControllerModal`. Templates are `.jst.eco` files. Navigation registered via `App.Config.set('KcFeatureName', { prio: N, ... })`. Settings accessed via `App.Setting.get('kc_setting_name')`.
 
-**Frontend patches:** When KC must modify an existing upstream TypeScript/Vue file (no `prepend` equivalent), use a unified diff in `kc/patches/`. Generate with `git diff upstream/develop HEAD -- <file>`. The build-time `apply-patches.sh` script applies these before asset compilation. After merging upstream, regenerate any broken patches.
+**Frontend patches:** When KC must modify an existing upstream TypeScript/Vue file (no `prepend` equivalent), use a unified diff in `kc/patches/`. Generate with `git diff upstream/develop HEAD -- <file>`. The build-time `apply-patches.sh` script applies these before asset compilation. Ordinary drift after a fork sync is self-healed by CI (`kc/script/heal-patches.sh`); manual work is only needed when the build fails with a real conflict — then re-implement the change against the new upstream code and regenerate the patch.
 
 ### Key Rules
 
