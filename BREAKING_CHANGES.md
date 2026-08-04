@@ -1,6 +1,35 @@
 # Breaking Changes
 
+## 7.3
+
+### Enforced maintenance mode for import_mode
+
+From Zammad 7.3 onwards, if the system is running in import mode, it will automatically also run in maintenance mode.
+
+Import mode was never intended for use in productive environments.
+
+From Zammad 7.2 onwards, you will receive a warning in the "Monitoring" section if your system is still in import mode.
+
 ## 7.2
+
+### Inline attachments will be listed separately in ticket article API responses
+
+Ticket article REST API responses (e.g. `GET /api/v1/ticket_articles/{id}`) currently include
+inline image attachments in the `attachments` list. Starting with Zammad 7.3, they will no
+longer be part of the `attachments` list and will be returned in a dedicated
+`inline_attachments` key instead.
+
+⚠️ API integrations that rely on inline attachments being part of the `attachments` list
+need to be updated to read the new `inline_attachments` key.
+
+### Deleting organizations via API by agents is deprecated
+
+`DELETE /api/v1/organizations/:id` has historically been permitted to users
+with only the `ticket.agent` permission. This is now deprecated and will be
+restricted to `admin.organization` in Zammad 7.3.
+
+⚠️ API integrations that delete organizations using an agent token should
+be updated to use an account with `admin.organization`.
 
 ### Knowledge Base search index: new `publication_state` field
 

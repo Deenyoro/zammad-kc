@@ -13,12 +13,18 @@ module ApplicationController::HandlesTransitions
     ApplicationHandleInfo.current = 'application_server'
     PushMessages.init
 
-    yield
+    # Registered as a callable because authentication has not run yet at this
+    # point - current_user is only available once a commit actually happens.
+    TransactionDispatcher.request_options = -> { transaction_dispatch_options }
 
-    TransactionDispatcher.commit(transaction_dispatch_options)
-    PushMessages.finish
+    yield
   ensure
+    TransactionDispatcher.commit
+    PushMessages.finish
+
+    TransactionDispatcher.request_options = nil
     ApplicationHandleInfo.current = nil
+    UserInfo.reset
   end
 
   def transaction_dispatch_options

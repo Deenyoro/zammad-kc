@@ -6,6 +6,8 @@
 # answer ids are resolved up front (visible_to_user, which encodes granular category access and the
 # publish/archive time window) and passed as a filter on the documents' metadata.answer_id, so the
 # search never returns answers the user is not allowed to see (rather than dropping them afterwards).
+# Archived answers are part of the vector index, so they are suggested to the users whose visibility
+# covers them (knowledge base editors, and granular editor categories) just like in the agent app.
 # Locale restriction is optional (off by default), as is excluding specific answer ids (e.g. answers
 # already linked to the ticket) — both are applied in the query so they do not eat into the limit.
 class Service::KnowledgeBase::Answer::SimilaritySearch < Service::Base
@@ -61,9 +63,18 @@ class Service::KnowledgeBase::Answer::SimilaritySearch < Service::Base
   end
 
   # The answers the user is allowed to see, identical to the regular knowledge base search
-  # (KnowledgeBase::Answer::Translation::Search#search_answer_ids_for_user).
+  # (KnowledgeBase::Answer::Translation::Search#search_answer_ids_for_user), minus the ones in a
+  # category excluded from the vector index.
+  #
+  # Excluding a category only stops *future* indexing; the documents its answers already have stay
+  # in the index until each record is touched or the index is rebuilt. Without this filter those
+  # orphans keep surfacing as suggestions, so the exclusion is enforced here too rather than trusted
+  # to the index being in sync.
   def visible_answer_ids_for_user
-    ::KnowledgeBase::Answer.visible_to_user(current_user).pluck(:id)
+    ::KnowledgeBase::Answer
+      .visible_to_user(current_user)
+      .in_vector_indexable_category
+      .pluck(:id)
   end
 
   # Returns ordered (best-first) `{ translation:, score: }` hashes.

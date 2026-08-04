@@ -89,6 +89,7 @@ module ApplicationController::HandlesErrors
   end
 
   def humanize_error(e)
+    # binding.pry
     data = { error: e.message }
 
     if (base_error = e.try(:record)&.errors&.messages&.find { |key, _| key.match? %r{[\w+.]?base} }&.last&.last)
@@ -106,6 +107,7 @@ module ApplicationController::HandlesErrors
       data[:error]       = __('Authorization failed')
       data[:error_human] = data[:error]
     elsif e.instance_of?(Exceptions::InvalidAttribute)
+      data[:error_human] = data[:error]
       data[:invalid_attribute] = { e.attribute => data[:error] }
     elsif e.is_a?(Exceptions::UnprocessableContent)
       data[:error_human] = data[:error]

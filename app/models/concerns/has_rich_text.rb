@@ -3,6 +3,8 @@
 module HasRichText
   extend ActiveSupport::Concern
 
+  include HasExcerpt
+
   included do
     class_attribute :has_rich_text_attributes
     self.has_rich_text_attributes = [].freeze
@@ -82,10 +84,19 @@ Checks if file is used inline
   def has_rich_text_pickup_attachments # rubocop:disable Naming/PredicatePrefix
     return if form_id.blank?
 
-    self.attachments = Store.list(
-      object: 'UploadCache',
-      o_id:   form_id,
-    )
+    UploadCache
+      .new(form_id)
+      .attachments
+      .reject(&:inline?)
+      .each do |att|
+      Store.create!(
+        object:      self.class.name,
+        o_id:        id,
+        data:        att.content,
+        filename:    att.filename,
+        preferences: att.preferences,
+      )
+    end
   end
 
   def has_rich_text_cleanup_unused_attachments # rubocop:disable Naming/PredicatePrefix
@@ -107,6 +118,7 @@ Checks if file is used inline
         define_method :"#{attr}_with_urls" do
           HasRichText.insert_urls(send(attr), attachments)
         end
+        has_excerpt attr
       end
     end
   end

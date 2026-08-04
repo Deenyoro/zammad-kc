@@ -4,15 +4,17 @@ class AI::Provider::ZammadAI < AI::Provider
   ZAMMAD_AI_API_BASE_URL = 'https://ai.zammad.com'.freeze
 
   DEFAULT_OPTIONS = {
-    embedding_model: 'nomic-embed-text',
+    embedding_model: 'bge-m3',
   }.freeze
 
   EMBEDDING_SIZES = {
+    'bge-m3'            => 1024,
     'nomic-embed-text'  => 768,
     'mxbai-embed-large' => 1024,
   }.freeze
 
   EMBEDDING_INPUT_LIMITS = {
+    'bge-m3'            => 8192,
     'nomic-embed-text'  => 2048,
     'mxbai-embed-large' => 512,
   }.freeze
@@ -25,7 +27,11 @@ class AI::Provider::ZammadAI < AI::Provider
     ENV['ZAMMAD_AI_TOKEN'] || config[:token]
   end
 
-  def self.ping!(config)
+  def self.supports_embeddings?
+    true
+  end
+
+  def self.ping!(config, related_object: nil)
     response = UserAgent.get(
       "#{base_url(config)}/api/v1/me",
       {},
@@ -34,10 +40,7 @@ class AI::Provider::ZammadAI < AI::Provider
         verify_ssl:   true,
         bearer_token: token(config),
         json:         true,
-        log:          {
-          facility:          'AI::Provider',
-          log_only_on_error: true,
-        },
+        log:          log_options(only_on_error: true, related_object:),
       },
     )
 
@@ -72,9 +75,7 @@ class AI::Provider::ZammadAI < AI::Provider
         verify_ssl:   true,
         bearer_token: self.class.token(config),
         json:         true,
-        log:          {
-          facility: 'AI::Provider',
-        },
+        log:          log_options,
       },
     )
 
@@ -108,9 +109,7 @@ class AI::Provider::ZammadAI < AI::Provider
         verify_ssl:   true,
         bearer_token: self.class.token(config),
         json:         true,
-        log:          {
-          facility: 'AI::Provider',
-        },
+        log:          log_options,
       },
     )
 

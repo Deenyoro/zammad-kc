@@ -26,7 +26,8 @@ describe Controllers::TagsControllerPolicy do
     context 'when user is admin' do
       let(:user) { create(:admin) }
 
-      it { is_expected.to forbid_only_actions(:add, :remove) }
+      it { is_expected.to forbid_only_actions(:add, :remove, :list) }
+      it { is_expected.to permit_actions(:search) }
     end
 
     context 'when user is admin and agent with access' do
@@ -44,7 +45,7 @@ describe Controllers::TagsControllerPolicy do
     context 'when user has no edit permission' do
       let(:user) { create(:agent) }
 
-      it { is_expected.to permit_only_actions(:list, :search) }
+      it { is_expected.to permit_only_actions(:search) }
     end
 
     context 'when user has no edit permission on this ticket' do
@@ -60,12 +61,33 @@ describe Controllers::TagsControllerPolicy do
     context 'when user is customer' do
       let(:user) { ticket.customer }
 
-      it { is_expected.to permit_only_actions(:list, :search) }
+      it { is_expected.to permit_only_actions(:list) }
+      it { is_expected.to forbid_actions(:add, :remove, :search) }
+    end
+
+    context 'when user is customer of another ticket' do
+      let(:other_ticket) { create(:ticket) }
+      let(:user)         { other_ticket.customer }
+
+      it { is_expected.to forbid_actions(:add, :remove, :list) }
+    end
+
+    context 'when user is agent' do
+      let(:user) { create(:agent) }
+
+      it { is_expected.to permit_actions(:search) }
+    end
+
+    context 'when user is kb editor without agent access' do
+      let(:role) { create(:role, permission_names: %w[knowledge_base.editor]) }
+      let(:user) { create(:customer, roles: [role]) }
+
+      it { is_expected.to permit_actions(:search) }
     end
   end
 
   context 'with knowledge base answer' do
-    let(:kb_answer) { create(:knowledge_base_answer) }
+    let(:kb_answer) { create(:knowledge_base_answer, :published) }
 
     let(:params) do
       {
@@ -90,7 +112,22 @@ describe Controllers::TagsControllerPolicy do
     context 'when user is customer' do
       let(:user) { create(:customer) }
 
-      it { is_expected.to permit_only_actions(:list, :search) }
+      it { is_expected.to permit_only_actions(:list) }
+      it { is_expected.to forbid_actions(:add, :remove, :search) }
+    end
+
+    context 'when answer is draft and user has no edit permission' do
+      let(:kb_answer) { create(:knowledge_base_answer) }
+      let(:user)      { create(:agent) }
+
+      it { is_expected.to permit_only_actions(:search) }
+    end
+
+    context 'when answer is draft and user is customer' do
+      let(:kb_answer) { create(:knowledge_base_answer) }
+      let(:user)      { create(:customer) }
+
+      it { is_expected.to forbid_actions(:add, :remove, :list, :search) }
     end
   end
 

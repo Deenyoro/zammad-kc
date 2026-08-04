@@ -133,6 +133,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.timestamps limit: 3, null: false
     end
     add_index :groups, [:name], unique: true
+    add_index :groups, :parent_id
     add_foreign_key :groups, :signatures
     add_foreign_key :groups, :email_addresses
     add_foreign_key :groups, :users, column: :created_by_id
@@ -370,8 +371,9 @@ class CreateBase < ActiveRecord::Migration[4.2]
     end
     add_index :recent_views, [:o_id]
     add_index :recent_views, [:created_by_id]
-    add_index :recent_views, [:created_at]
     add_index :recent_views, [:recent_view_object_id]
+    add_index :recent_views, [:updated_at], order: { updated_at: :desc }
+    add_index :recent_views, %i[o_id recent_view_object_id created_by_id], name: 'index_recent_views_on_object_and_user', unique: true
     add_foreign_key :recent_views, :object_lookups, column: :recent_view_object_id
     add_foreign_key :recent_views, :users, column: :created_by_id
 
@@ -653,10 +655,12 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.datetime :failed_at, limit: 3          # Set when all retries have failed (actually, by default, the record is deleted instead)
       t.string   :locked_by                    # Who is working on this object (if locked)
       t.string   :queue                        # The name of the queue this job is in
+      t.string   :active_job_id                # The ActiveJob job_id extracted from handler, used for lookups instead of `handler LIKE`
       t.timestamps limit: 3, null: false
     end
 
     add_index :delayed_jobs, %i[priority run_at], name: 'delayed_jobs_priority'
+    add_index :delayed_jobs, :active_job_id
 
     create_table :external_syncs do |t|
       t.string  :source,                 limit: 100,  null: false
@@ -745,11 +749,14 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.column :ip,                   :string, limit: 50,    null: true
       t.column :request,              :text,                 null: false
       t.column :response,             :text,                 null: false
+      t.column :related_object_type,  :string, limit: 100,   null: true
+      t.column :related_object_id,    :integer,              null: true
       t.column :updated_by_id,        :integer,              null: true
       t.column :created_by_id,        :integer,              null: true
       t.timestamps limit: 3, null: false
     end
     add_index :http_logs, [:facility]
+    add_index :http_logs, %i[related_object_type related_object_id]
     add_index :http_logs, [:created_by_id]
     add_index :http_logs, [:created_at]
     add_foreign_key :http_logs, :users, column: :created_by_id
@@ -1036,6 +1043,35 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.index %i[ai_analytics_run_id created_at], name: 'index_ai_analytics_usages_on_run_id_and_created_at'
     end
 
+    create_table :ai_provider_connections do |t|
+      t.string  :name,              limit: 250, null: false
+      t.string  :provider,          limit: 250, null: false
+      t.jsonb   :config,                        null: false, default: {}
+      t.boolean :default_chat,                  null: false, default: false
+      t.boolean :default_embedding,             null: false, default: false
+      t.boolean :default_ocr,                   null: false, default: false
+      t.jsonb   :status,                        null: false, default: {}
+
+      t.timestamps limit: 3
+
+      t.index :name, unique: true
+      t.index :default_chat
+      t.index :default_embedding
+      t.index :default_ocr
+    end
+
+    create_table :ai_feature_providers do |t|
+      t.string :identifier, null: false
+
+      t.references :provider_connection, null: false, foreign_key: { to_table: :ai_provider_connections }
+
+      t.jsonb :options, null: false, default: {}
+
+      t.timestamps limit: 3
+
+      t.index :identifier, unique: true
+    end
+
     create_table :recent_closes do |t|
       t.references :recently_closed_object, polymorphic: true, null: false, type: :integer
       t.references :user, null: false, foreign_key: true, type: :integer
@@ -1047,6 +1083,23 @@ class CreateBase < ActiveRecord::Migration[4.2]
               unique: true
 
       t.index :updated_at, order: { updated_at: :desc }
+    end
+
+    create_table :audit_logs do |t|
+      t.references :user, null: true, type: :integer
+      t.string :user_fullname, limit: 255, null: true
+      t.string :action_type, limit: 100, null: false
+      t.references :auditable, polymorphic: true, null: false, type: :integer
+      t.string :auditable_name, limit: 255, null: true
+      t.jsonb :value_from, null: false, default: {}
+      t.jsonb :value_to, null: false, default: {}
+      t.string :source_ip, limit: 50, null: true
+      t.jsonb :preferences, null: false, default: {}
+
+      t.timestamps limit: 3, null: false
+
+      t.index :action_type
+      t.index :created_at
     end
   end
 end
