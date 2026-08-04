@@ -336,14 +336,17 @@ module Kc
 
     # Fetches call log entries from the RingCentral API.
     # Options: direction ('Inbound'), result ('Missed'), date_from (ISO 8601),
-    #          per_page (default 100), type ('Voice')
-    def get_call_log(direction: nil, result: nil, date_from: nil, per_page: 100, type: nil)
+    #          per_page (default 100), type ('Voice'), page (1-based)
+    # NOTE: records are returned newest-first; use the page parameter to
+    # paginate — advancing dateFrom past the newest record does NOT work.
+    def get_call_log(direction: nil, result: nil, date_from: nil, per_page: 100, type: nil, page: nil)
       url = "#{API_BASE_URL}/restapi/v1.0/account/~/extension/~/call-log"
       params = { perPage: per_page, view: 'Simple' }
       params[:direction] = direction if direction.present?
       params[:result]    = result    if result.present?
       params[:dateFrom]  = date_from if date_from.present?
       params[:type]      = type      if type.present?
+      params[:page]      = page      if page.present?
 
       query = params.to_query
       api_get("#{url}?#{query}")

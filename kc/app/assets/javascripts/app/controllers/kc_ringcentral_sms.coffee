@@ -22,6 +22,7 @@ class KcRingcentralSms extends App.ControllerSubContent
     'click .js-reauthenticate':         'reauthenticateAccount'
     'click .js-saveSettings':           'saveSettings'
     'click .js-saveMissedCallSettings': 'saveMissedCallSettings'
+    'click .js-saveCallHistorySettings': 'saveCallHistorySettings'
 
   constructor: ->
     super
@@ -60,6 +61,7 @@ class KcRingcentralSms extends App.ControllerSubContent
         missed_call_ticket_title:     App.Setting.get('kc_ringcentral_sms_missed_call_ticket_title') ? 'Missed call from {phone}'
         missed_call_autoreply:        App.Setting.get('kc_ringcentral_sms_missed_call_autoreply') is true
         missed_call_autoreply_message: App.Setting.get('kc_ringcentral_sms_missed_call_autoreply_message') ? 'We are sorry for missing your call. A ticket has been created and our team will follow up with you shortly.'
+        call_history_ticket:          App.Setting.get('kc_ringcentral_call_history_ticket') is true
     )
 
   addAccount: (e) =>
@@ -194,6 +196,17 @@ class KcRingcentralSms extends App.ControllerSubContent
             failed = true
             @notify(type: 'error', msg: __('Failed to save missed call settings.'))
         )
+
+  saveCallHistorySettings: (e) =>
+    e.preventDefault()
+    form = $(e.currentTarget).closest('.page-content')
+
+    App.Setting.set('kc_ringcentral_call_history_ticket', form.find('[name=call_history_ticket]').is(':checked'),
+      done: =>
+        @notify(type: 'success', msg: __('Call history settings saved.'))
+      fail: =>
+        @notify(type: 'error', msg: __('Failed to save call history settings.'))
+    )
 
 
 # ---------------------------------------------------------------------------

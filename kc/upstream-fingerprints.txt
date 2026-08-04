@@ -48,3 +48,14 @@ app/models/ai/agent/type/ticket_title_rewriter.rb::def instruction
 
 # kc_article_bcc.rb initializer mirrors this input type's argument style
 app/graphql/gql/types/input/ticket/article_input_type.rb::argument :cc, [String]
+
+# Kc::PollRingcentralCallHistoryJob suppresses triggers/notifications via
+# Transaction.execute(disable: [...]) — depends on both dispatch paths
+# honoring params[:disable] (sync backends and the async TransactionJob).
+lib/transaction_dispatcher.rb::next if params[:disable]&.include?(backend)
+app/jobs/transaction_job.rb::next if params[:disable]&.include?(backend)
+
+# Call-history tickets inherit the customer's organization via this
+# upstream callback (no explicit organization_id is set at create).
+app/models/ticket.rb::def check_default_organization
+app/models/ticket.rb::self.organization_id = customer.organization_id
