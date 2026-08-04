@@ -4,11 +4,11 @@ class Controllers::TagsControllerPolicy < Controllers::ApplicationControllerPoli
   default_permit!('admin.tag')
 
   def search?
-    true
+    user.permissions?(['ticket.agent', 'admin.tag', 'knowledge_base.editor'])
   end
 
   def list?
-    true
+    object_read?
   end
 
   def add?
@@ -20,6 +20,10 @@ class Controllers::TagsControllerPolicy < Controllers::ApplicationControllerPoli
   end
 
   private
+
+  def object_read?
+    object_policy.show?
+  end
 
   def object_update?
     object_policy.agent_update_access?

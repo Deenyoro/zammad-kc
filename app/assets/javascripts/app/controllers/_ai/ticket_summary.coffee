@@ -80,6 +80,7 @@ class App.TicketSummary extends App.ControllerAIFeatureBase
     )
 
     @renderAlert()
+    @renderProviderModal('ticket_summarize')
 
   serviceOptions: (config) ->
     [

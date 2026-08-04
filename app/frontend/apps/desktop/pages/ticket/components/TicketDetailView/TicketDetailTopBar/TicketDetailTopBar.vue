@@ -5,7 +5,6 @@ import { useElementSize } from '@vueuse/core'
 import { computed, toRef, useTemplateRef, type Ref } from 'vue'
 
 import CommonAlert from '#shared/components/CommonAlert/CommonAlert.vue'
-import { useReducedMotion } from '#shared/composables/useReducedMotion.ts'
 import { useTicketChannel } from '#shared/entities/ticket/composables/useTicketChannel.ts'
 import { useTicketView } from '#shared/entities/ticket/composables/useTicketView.ts'
 
@@ -120,8 +119,6 @@ const currentVisibleHeaderHeight = computed(() => {
 })
 
 useStickyTopCalculator(currentVisibleHeaderHeight, { offset: -1 }) // avoid joining with the top bar bottom border
-
-const { hasReducedMotion } = useReducedMotion()
 </script>
 
 <template>
@@ -139,9 +136,16 @@ const { hasReducedMotion } = useReducedMotion()
         :class="[headerBaseClasses, headerBackgroundClasses(true), 'p-3']"
         :inert="!isCompactHeaderVisible"
       />
-      <CommonAlert :class="alertWithBlurClasses" :variant="channelAlert?.variant">
-        {{ $t(channelAlert?.text, channelAlert?.textPlaceholder) }}
-      </CommonAlert>
+
+      <div class="flex w-full justify-center bg-yellow-50 px-5.5 dark:bg-yellow-900">
+        <CommonAlert
+          :class="alertWithBlurClasses"
+          class="max-w-4xl px-0!"
+          :variant="channelAlert?.variant"
+        >
+          {{ $t(channelAlert?.text, channelAlert?.textPlaceholder) }}
+        </CommonAlert>
+      </div>
     </div>
 
     <div
@@ -156,14 +160,17 @@ const { hasReducedMotion } = useReducedMotion()
         :class="[headerBaseClasses, headerBackgroundClasses(false), 'p-3']"
         :inert="isCompactHeaderVisible"
       />
-      <CommonAlert
-        ref="alert"
-        class="print:hidden"
-        :class="alertBaseClasses"
-        :variant="channelAlert?.variant"
-      >
-        {{ $t(channelAlert?.text, channelAlert?.textPlaceholder) }}
-      </CommonAlert>
+
+      <div class="flex w-full justify-center bg-yellow-50 px-5.5 dark:bg-yellow-900">
+        <CommonAlert
+          ref="alert"
+          class="max-w-4xl px-0! print:hidden"
+          :class="alertBaseClasses"
+          :variant="channelAlert?.variant"
+        >
+          {{ $t(channelAlert?.text, channelAlert?.textPlaceholder) }}
+        </CommonAlert>
+      </div>
     </div>
   </template>
 
@@ -182,11 +189,7 @@ const { hasReducedMotion } = useReducedMotion()
     <TopBarHeaderFull
       ref="header"
       class="sticky inset-x-0 top-0 z-10 w-full print:static"
-      :class="[
-        headerBaseClasses,
-        headerBackgroundClasses(true),
-        { 'transition-[top]': !hasReducedMotion },
-      ]"
+      :class="[headerBaseClasses, headerBackgroundClasses(true)]"
       :inert="isCompactHeaderVisible"
       data-test-id="ticket-detail-top-bar-full-details"
       :style="{

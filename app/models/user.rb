@@ -4,6 +4,7 @@ class User < ApplicationModel
   include CanBeImported
   include HasActivityStreamLog
   include ChecksClientNotification
+  include CanSensitiveAssets
   include HasHistory
   include HasSearchIndexBackend
   include CanSelector
@@ -15,10 +16,12 @@ class User < ApplicationModel
   include HasTaskbars
   include HasTwoFactor
   include HasRecentCloses
+  include HasRecentViews
   include CanSelector
   include CanPerformChanges
   include User::Assets
   include User::Avatar
+  include User::HasAuditLogs
   include User::Search
   include User::SearchIndex
   include User::TouchesOrganization
@@ -27,6 +30,8 @@ class User < ApplicationModel
   include User::UpdatesTicketOrganization
   include User::OutOfOffice
   include User::Permissions
+
+  SENSITIVE_FIELDS = %i[password].freeze
 
   has_and_belongs_to_many :organizations,          after_add: %i[cache_update create_organization_add_history], after_remove: %i[cache_update create_organization_remove_history], before_add: %i[check_organization_uniqueness], class_name: 'Organization'
   has_and_belongs_to_many :overviews,              dependent: :nullify
@@ -45,6 +50,7 @@ class User < ApplicationModel
   has_many                :overview_sortings,      dependent: :destroy
   has_many                :created_recent_views,   class_name: 'RecentView', foreign_key: :created_by_id, dependent: :destroy, inverse_of: :created_by
   has_many                :recent_closes,          dependent: :delete_all
+  has_many                :performed_audit_logs,   class_name: 'AuditLog', dependent: nil
   has_many                :data_privacy_tasks,     as: :deletable
   has_many                :ai_analytics_usages,    class_name: 'AI::Analytics::Usage', dependent: :destroy, inverse_of: :user
   belongs_to              :organization,           inverse_of: :members, optional: true
@@ -91,7 +97,8 @@ class User < ApplicationModel
                                  :overviews,
                                  :mentions,
                                  :recent_closes,
-                                 :ai_analytics_usages
+                                 :ai_analytics_usages,
+                                 :performed_audit_logs
 
   activity_stream_permission 'admin.user'
 
@@ -153,7 +160,23 @@ returns
 =end
 
   def fullname(email_fallback: true, recipient_line: false)
-    name = "#{firstname} #{lastname}".strip
+    # Email sending: always first name last name (regardless of setting)
+    format = recipient_line ? 'first_last' : Setting.get('user_name_format')
+
+    parts, separator = case format
+                       when 'last_first'
+                         [[lastname, firstname], ' ']
+                       when 'last_first_comma'
+                         [[lastname, firstname], ', ']
+                       else
+                         [[firstname, lastname], ' ']
+                       end
+
+    name = parts
+      .map { |part| part.to_s.strip }
+      .compact_blank
+      .join(separator)
+      .strip
 
     if name.blank? && email.present? && email_fallback
       return email
@@ -344,6 +367,8 @@ returns
 
   # Find a user by mobile number, either directly or by number variants stored in the Cti::CallerIds.
   def self.by_mobile(number:)
+    return if number.blank?
+
     direct_lookup = User.where(mobile: number).reorder(:updated_at).first
     return direct_lookup if direct_lookup
 
@@ -1069,6 +1094,9 @@ raise 'At least one user need to have admin permissions'
 
   def destroy_move_dependency_ownership
     result = Models.references(self.class.to_s, id)
+
+    # audit logs are kept untouched to preserve the history of deleted users
+    result.delete('AuditLog')
 
     user_columns = %w[created_by_id updated_by_id out_of_office_replacement_id origin_by_id owner_id archived_by_id published_by_id internal_by_id]
     result.each do |class_name, references|

@@ -21,6 +21,7 @@ RSpec.describe 'Public Knowledge Base answer', type: :system do
 
     context 'self-hosted video content' do
       before do
+        Setting.set('kb_self_hosted_video_servers', [{ 'host' => 'video.example.com', 'name' => 'Example' }])
         published_answer_with_self_hosted_video
       end
 
@@ -72,7 +73,7 @@ RSpec.describe 'Public Knowledge Base answer', type: :system do
       visit '/'
 
       travel_to published_answer.published_at - 1.week do
-        published_answer.translations.first.touch
+        published_answer.translations.first.touch(:edited_at)
       end
     end
 
@@ -129,14 +130,14 @@ RSpec.describe 'Public Knowledge Base answer', type: :system do
         end
       end
 
-      it 'replaced by update time if later than publishing time' do
+      it 'replaced by editorial update time if later than publishing time' do
         translation = published_answer.translations.first
         translation.content.update! body: 'updated body'
 
         open_answer published_answer
 
         within '.article .article-meta' do
-          expect(page).to have_time_tag published_answer.translations.first.updated_at
+          expect(page).to have_time_tag published_answer.translations.first.edited_at
         end
       end
     end

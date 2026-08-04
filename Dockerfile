@@ -21,10 +21,13 @@ ENV RAILS_ENV="production" \
 #   https://www.postgresql.org/download/linux/debian/
 # Use `postgresql-client` meta-package to have the latest `pg_dump` that works even with the latest PostgreSQL versions.
 #   https://github.com/zammad/zammad/issues/6009
+# Remove sendmail binary from image, as it could receive emails that will go nowhere.
 RUN apt-get update -qq && \
     apt-get install -y postgresql-common && \
     /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y && \
-    apt-get install --no-install-recommends -y curl libimlib2 libpq5 nginx gnupg postgresql-client && \
+    apt-get install -y --no-install-recommends curl libimlib2 libpq5 nginx gnupg postgresql-client && \
+    apt-get remove -y --purge exim4-base exim4-config bsd-mailx && \
+    apt-get autoremove -y --purge && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Throw-away stage to get the node binary
@@ -111,8 +114,11 @@ RUN apt-get update -qq && \
     apt-get upgrade -y && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
+# ZAMMAD_DOCKER is used by Zammad to take decisions for containerized environments,
+#   e.g. hiding the package management interface because installed packages do not persist.
 # Application variables with defaults matching the Zammad docker stack.
-ENV POSTGRESQL_DB=zammad_production \
+ENV ZAMMAD_DOCKER=true \
+    POSTGRESQL_DB=zammad_production \
     POSTGRESQL_HOST=zammad-postgresql \
     POSTGRESQL_PORT=5432 \
     POSTGRESQL_USER=zammad \
@@ -135,6 +141,18 @@ RUN mkdir -p "/opt/zammad/storage" "/opt/zammad/tmp" && \
 # Copy built artifacts: gems, application
 COPY --chown=1000:1000 --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 COPY --chown=1000:1000 --from=build /opt/zammad /opt/zammad
+
+# Remove Ruby default/bundled gems that are superseded by Bundler-managed versions from Gemfile.lock
+#   to avoid false positives in container vulnerability scanners.
+#   https://github.com/zammad/zammad/issues/6258
+RUN ruby script/build/remove_superseded_system_gems.rb
+
+# Expose the Bundler-managed gems to RubyGems via a stable path (the real directory name
+#   depends on the Ruby ABI version), so CLI tools like irb and rake also work outside of `bundle exec`.
+RUN ln -s "${BUNDLE_PATH}/ruby/$(ruby -e 'print RbConfig::CONFIG[%q(ruby_version)]')" "${BUNDLE_PATH}/ruby/current"
+ENV GEM_PATH="${BUNDLE_PATH}/ruby/current" \
+    PATH="${BUNDLE_PATH}/ruby/current/bin:${PATH}"
+
 # Backwards compatibility for older images that used /docker-entrypoint.sh
 RUN ln -s "/opt/zammad/bin/docker-entrypoint" /docker-entrypoint.sh
 

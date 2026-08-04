@@ -253,6 +253,35 @@ Setting.create_or_update(
   state:       'relative',
   frontend:    true
 )
+Setting.create_or_update(
+  title:       __('User Name Format'),
+  name:        'user_name_format',
+  area:        'System::Branding',
+  description: __('Defines how user names are displayed in dropdowns, overviews and selection fields.'),
+  options:     {
+    form: [
+      {
+        display:   '',
+        null:      false,
+        name:      'user_name_format',
+        tag:       'select',
+        options:   {
+          first_last:       __('Firstname Lastname'),
+          last_first:       __('Lastname Firstname'),
+          last_first_comma: __('Lastname, Firstname'),
+        },
+        translate: true,
+      },
+    ],
+  },
+  preferences: {
+    render:     true,
+    prio:       11,
+    permission: ['admin.branding'],
+  },
+  state:       'first_last',
+  frontend:    true
+)
 options = {}
 (10..99).each do |item|
   options[item] = item
@@ -1777,6 +1806,19 @@ Setting.create_if_not_exists(
         name:        'app_tenant',
         tag:         'input',
         placeholder: 'common',
+      },
+      {
+        display:   __('Require verified email domain'),
+        null:      true,
+        default:   false,
+        name:      'require_verified_email_domain',
+        tag:       'boolean',
+        options:   {
+          true  => 'yes',
+          false => 'no',
+        },
+        translate: true,
+        help:      __('Requires the "xms_edov" ID token claim (along with the "email" claim) to be present and true before trusting an incoming email address for account auto-linking. Both must first be configured as optional claims on the Azure app registration. Until that is done, enabling this blocks all Microsoft 365 account auto-linking by email.'),
       },
       {
         display:  __('Your callback URL'),
@@ -6202,22 +6244,6 @@ Setting.create_if_not_exists(
 )
 
 Setting.create_if_not_exists(
-  title:       __('AI Provider Config'),
-  name:        'ai_provider_config',
-  area:        'AI::Provider',
-  description: __('Stores the AI provider configuration.'),
-  options:     {},
-  state:       {},
-  preferences: {
-    permission:  ['admin.ai_provider'],
-    validations: [
-      'Setting::Validation::AIProviderConfig',
-    ],
-  },
-  frontend:    false,
-)
-
-Setting.create_if_not_exists(
   title:       __('Ticket Summary'),
   name:        'ai_assistance_ticket_summary',
   area:        'AI::Assistance',
@@ -6335,10 +6361,10 @@ Setting.create_if_not_exists(
 )
 
 Setting.create_if_not_exists(
-  title:       __('Vector DB knowledge base categories'),
-  name:        'vectordb_knowledge_base_category_ids',
+  title:       __('Vector DB knowledge base excluded categories'),
+  name:        'vectordb_knowledge_base_excluded_category_ids',
   area:        'VectorDB::KnowledgeBase',
-  description: __('Defines which knowledge base categories are included in the vector database.'),
+  description: __('Defines which knowledge base categories are excluded from the vector database. Sub-categories of an excluded category are excluded as well. Note that the vector database has to be rebuilt after removing a category from this list, so that its answers get indexed.'),
   state:       [],
   frontend:    false,
 )
@@ -6392,4 +6418,15 @@ Setting.create_if_not_exists(
     permission: ['admin.ui'],
   },
   frontend:    true,
+)
+
+Setting.create_if_not_exists(
+  title:       __('Packages Token'),
+  name:        'packages_token',
+  area:        'Core',
+  description: __('This setting defines the token to access the support.zammad.com instance for package remote commands.'),
+  options:     {},
+  state:       '',
+  preferences: { online_service_disable: true, permission: ['admin.package'] },
+  frontend:    false,
 )

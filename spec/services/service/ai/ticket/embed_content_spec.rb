@@ -18,7 +18,7 @@ RSpec.describe Service::AI::Ticket::EmbedContent, :aggregate_failures do
       it 'returns an embedding built from the ticket title' do
         expect(service_result).to eq(embedding)
         expect(Service::AI::VectorDB::Embedding).to have_received(:execute).with(
-          input: include('Printer not working')
+          input: include('Printer not working'),
         )
       end
     end
@@ -49,7 +49,7 @@ RSpec.describe Service::AI::Ticket::EmbedContent, :aggregate_failures do
               content.exclude?('> Hello, my printer stopped working.') &&
               content.exclude?('> > I will send you the error next.') &&
               content.exclude?('> Regards')
-          }
+          },
         )
       end
     end
@@ -78,7 +78,7 @@ RSpec.describe Service::AI::Ticket::EmbedContent, :aggregate_failures do
             content.include?('It shows an error.') &&
             content.include?('Error: PC load letter') &&
               content.exclude?('My printer broke previously.')
-          }
+          },
         )
       end
     end
