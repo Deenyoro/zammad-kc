@@ -364,10 +364,13 @@ RSpec.describe 'Search', authenticated_as: :authenticate, searchindex: true, typ
       find('.table-column-title', text: 'GROUP').click
       find('.table-column-title', text: 'GROUP').click
 
-      actual_ids   = all('.js-tableBody tr.item').map { |row| row['data-id'].to_i }
-      expected_ids = [ticket_6, ticket_4, ticket_2, ticket_3, ticket_5, ticket_1].map(&:id)
+      actual_ids = all('.js-tableBody tr.item').map { |row| row['data-id'].to_i }
 
-      expect(actual_ids).to eq(expected_ids)
+      # Elasticsearch does not guarantee a stable tie-break order for tickets sharing the
+      # same group, so only assert that the groups themselves are ordered correctly (all
+      # group_2 tickets before all group_1 tickets), not the exact order within a group.
+      expect(actual_ids.first(3)).to match_array([ticket_6, ticket_4, ticket_2].map(&:id))
+      expect(actual_ids.last(3)).to match_array([ticket_3, ticket_5, ticket_1].map(&:id))
     end
 
   end
@@ -433,7 +436,9 @@ RSpec.describe 'Search', authenticated_as: :authenticate, searchindex: true, typ
       end
 
       it 'does switch search results properly' do
-        page.find('.js-search').fill_in(with: '"Testing Ticket 1"')
+        # clear: :backspace paces the clear+type sequence more naturally - the default
+        #   clear strategy has occasionally dropped the first typed character here.
+        page.find('.js-search').fill_in(with: '"Testing Ticket 1"', fill_options: { clear: :backspace })
         expect(page.find('.js-tableBody')).to have_text('Testing Ticket 1')
         expect(page.find('.js-tableBody')).to have_no_text('Testing Ticket 2')
         expect(current_url).to include('Testing%20Ticket%201')
@@ -482,6 +487,21 @@ RSpec.describe 'Search', authenticated_as: :authenticate, searchindex: true, typ
         expect(page.find('.js-tableBody')).to have_no_text('Testing Ticket 1')
         expect(current_url).to include('Testing%20Ticket%202')
       end
+    end
+  end
+
+  describe 'Sidebar gets stuck with "no match" when pressing enter too quickly #4786' do
+    let(:agent)             { create(:agent, groups: Group.all) }
+    let(:authenticate_user) { agent }
+
+    it 'does not leave a stale "no match" banner in the sidebar' do
+      find('#global-search').send_keys('zzqqxxwwvvuu', :enter)
+
+      within '.detail-search' do
+        expect(page).to have_css('.js-content table.table--placeholder')
+      end
+
+      expect(page).to have_no_css('.search.open')
     end
   end
 
@@ -627,9 +647,8 @@ RSpec.describe 'Search', authenticated_as: :authenticate, searchindex: true, typ
         find('.js-search').fill_in with: 'Nicole'
       end
 
-      within('.table-column-head', text: 'TITLE') do
-        expect(page).to have_no_css('.table-sort-arrow')
-      end
+      expect(page).to have_css('.table-column-head', text: 'TITLE')
+      expect(page).to have_no_css('.table-column-head .table-sort-arrow')
     end
 
     it 'when changing search query after navigation away-and-back clear sorting' do
@@ -641,9 +660,8 @@ RSpec.describe 'Search', authenticated_as: :authenticate, searchindex: true, typ
         find('.js-search').fill_in with: 'Nicole'
       end
 
-      within('.table-column-head', text: 'TITLE') do
-        expect(page).to have_no_css('.table-sort-arrow')
-      end
+      expect(page).to have_css('.table-column-head', text: 'TITLE')
+      expect(page).to have_no_css('.table-column-head .table-sort-arrow')
     end
   end
 

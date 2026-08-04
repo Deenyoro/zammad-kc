@@ -18,7 +18,11 @@ class Service::AI::Ticket::EmbedContent < Service::AI::Ticket::EmbedBase
     parts = [ticket.title]
 
     parts << Service::AI::Ticket::PreProcessArticleContent
-               .execute(articles: ticket.articles.without_system_notifications, skip_quotes_strip_first_article: true, skip_ocr: true, link_style: :plain)
+               .execute(
+                 articles:                        ticket.articles.without_system_notifications,
+                 skip_quotes_strip_first_article: true,
+                 link_style:                      :plain,
+               )
                .pluck(:text)
 
     parts.join("\n\n")

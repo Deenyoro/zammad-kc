@@ -1,0 +1,32 @@
+fragment knowledgeBaseAnswerTranslation on KnowledgeBaseAnswerTranslation {
+  id
+  title
+  visibility
+  categoryTreeTranslation {
+    id
+    title
+  }
+  content {
+    bodyExcerpt
+  }
+  answer {
+    id
+    archivedAt
+    publishedAt
+    internalAt
+    tags
+    category {
+      id
+      title
+      knowledgeBase {
+        id
+      }
+    }
+  }
+  kbLocale {
+    systemLocale {
+      locale
+      name
+    }
+  }
+}

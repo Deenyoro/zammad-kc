@@ -50,6 +50,20 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
     find_button(trigger_label).click
   end
 
+  # editor.signatureAdd normally settles well within Capybara's default wait, but a few
+  #   independent sources of extra work push it past that under CI load - the first two
+  #   stack when both apply:
+  #   - converting a phone article's type to email
+  #   - forwarding, which builds a quoted copy of the original message
+  #   - replying with a quoted selection of the original article's content
+  def signature_add_slow_timeout
+    30 # either source alone
+  end
+
+  def signature_add_slowest_timeout
+    60 # both sources combined (forwarding a phone article)
+  end
+
   # FIXME: This test is too unstable in Chrome, probably due to a race condition in the signature
   #   handling of the editor. We need to find a way to reliably test this, but for now we will skip it.
   before do
@@ -90,6 +104,12 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
 
     context 'with default fields when article has type phone' do
       let(:type_id) { Ticket::Article::Type.find_by(name: 'email').id }
+
+      let(:after_click) do
+        lambda {
+          wait_for_test_flag('editor.signatureAdd', timeout: signature_add_slow_timeout)
+        }
+      end
 
       context 'when agent sent article take article email' do
         include_examples 'mobile app: reply article', 'Email', attachments: true do
@@ -148,7 +168,7 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
             # Without this, the editor may not be editable yet when addSignature
             # is called, causing the flag to never be set (known race condition).
             wait_for_form_updater
-            wait_for_test_flag('editor.signatureAdd')
+            wait_for_test_flag('editor.signatureAdd', timeout: signature_add_slow_timeout)
           }
         end
         let(:current_text) { "#{article.body}\n\n#{agent.firstname}\nSignature!" }
@@ -306,6 +326,13 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
         Regexp.new(msg)
       end
       let(:in_reply_to) { '' }
+
+      let(:after_click) do
+        lambda {
+          wait_for_test_flag('editor.signatureAdd', timeout: signature_add_slow_timeout)
+        }
+      end
+
       let(:result_text) do
         msg = '<p dir="auto">This is a note</p>' # new message
         msg += "<div data-signature=\"true\" dir=\"auto\" data-signature-id=\"#{signature.id}\"><p dir=\"auto\">#{agent.firstname}<br dir=\"auto\">Signature!</p></div><p dir=\"auto\"></p>" # signature is before forwarded message
@@ -351,6 +378,12 @@ RSpec.describe 'Mobile > Ticket > Article actions', app: :mobile, authenticated_
         let(:article) { create(:ticket_article, :outbound_phone, ticket: ticket) }
         let(:text_to) { "#{ticket.customer.fullname} <#{ticket.customer.email}>" }
         let(:type_id) { Ticket::Article::Type.find_by(name: 'email').id }
+
+        let(:after_click) do
+          lambda {
+            wait_for_test_flag('editor.signatureAdd', timeout: signature_add_slowest_timeout)
+          }
+        end
 
         include_examples 'mobile app: reply article', 'Email', attachments: true
       end

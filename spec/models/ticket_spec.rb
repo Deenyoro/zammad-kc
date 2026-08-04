@@ -10,6 +10,7 @@ require 'models/concerns/has_history_examples'
 require 'models/concerns/has_tags_examples'
 require 'models/concerns/has_taskbars_examples'
 require 'models/concerns/has_recent_closes_examples'
+require 'models/concerns/has_recent_views_examples'
 require 'models/concerns/has_xss_sanitized_note_examples'
 require 'models/concerns/has_object_manager_attributes_examples'
 require 'models/tag/writes_to_ticket_history_examples'
@@ -33,6 +34,7 @@ RSpec.describe Ticket, type: :model do
   it_behaves_like 'TagWritesToTicketHistory'
   it_behaves_like 'HasTaskbars'
   it_behaves_like 'HasRecentCloses'
+  it_behaves_like 'HasRecentViews'
   it_behaves_like 'HasXssSanitizedNote', model_factory: :ticket
   it_behaves_like 'HasObjectManagerAttributes'
   it_behaves_like 'Ticket::Escalation'
@@ -757,6 +759,21 @@ RSpec.describe Ticket, type: :model do
             end
           end
         end
+
+        context 'when reopened while a permission-scoped API token is the current token (#6222)' do
+          let(:customer) { create(:customer) }
+          let(:token)    { create(:token, user: customer, permissions: ['ticket.customer']) }
+
+          before do
+            ticket.update!(state: Ticket::State.lookup(name: 'closed'))
+            allow(UserInfo).to receive_messages(current_token: token, current_user_id: customer.id)
+          end
+
+          it 'keeps the still-valid agent owner' do
+            expect { ticket.update!(state: Ticket::State.lookup(name: 'open')) }
+              .not_to change { ticket.reload.owner }
+          end
+        end
       end
     end
 
@@ -1381,7 +1398,7 @@ RSpec.describe Ticket, type: :model do
       end
 
       it 'deletes all related RecentViews on destroy' do
-        create_list(:recent_view, 3, o: ticket)
+        create_list(:agent, 3).each { |agent| create(:recent_view, o: ticket, created_by: agent) }
 
         expect { ticket.destroy }
           .to change { RecentView.exists?(recent_view_object_id: ObjectLookup.by_name('Ticket'), o_id: ticket.id) }

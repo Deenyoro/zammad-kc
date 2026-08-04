@@ -108,8 +108,10 @@ RSpec.describe 'Manage > Users', type: :system do
 
         within(:active_content) do
           find('[data-type=new]').click
+        end
 
-          find('[name=organization_id] ~ .searchableSelect-main').fill_in with: '**'
+        in_modal do
+          find('[name=organization_id] ~ .searchableSelect-main').fill_in with: '*'
           expect(page).to have_css('ul.js-optionsList > li.js-option', minimum: 2)
           expect(page).to have_css('ul.js-optionsList > li.js-option .is-inactive', count: 1)
         end
@@ -266,6 +268,33 @@ RSpec.describe 'Manage > Users', type: :system do
           have_attributes(group: group2, access: 'full')
         )
       end
+    end
+
+    it 'does not keep the entered password in the frontend store' do
+      in_modal do
+        fill_in 'password', with: 'vXqXseF9L2ab'
+        fill_in 'password_confirm', with: 'vXqXseF9L2ab'
+
+        click_on 'Submit'
+      end
+
+      password_hash = user.reload.password
+
+      within(:active_content) do
+        find("table tbody tr[data-id='#{user.id}']").click
+      end
+
+      in_modal do
+        expect(page).to have_field('password', with: '')
+        expect(page).to have_field('password_confirm', with: '')
+
+        fill_in 'firstname', with: 'NewFirstname'
+
+        click_on 'Submit'
+      end
+
+      expect(page).to have_text('NewFirstname')
+      expect(user.reload.password).to eq(password_hash)
     end
 
     it 'allows to update a user with no email/first/last/phone if login is present' do
@@ -520,6 +549,48 @@ RSpec.describe 'Manage > Users', type: :system do
         active: true,
         groups: groups,
       )
+    end
+  end
+
+  # https://github.com/zammad/zammad/issues/2332
+  describe 'role filter does not offer inactive roles' do
+    let(:inactive_role) { create(:role, permission_names: %w[admin.group], active: false) }
+
+    before do
+      inactive_role
+
+      visit '#manage/users'
+    end
+
+    it 'does not show the inactive role in the role filter' do
+      within(:active_content) do
+        expect(page).to have_css('.userSearch')
+        expect(find('.userSearch')).to have_no_text(inactive_role.name)
+      end
+    end
+  end
+
+  # Ported from test/browser/manage_test.rb: a changed last name shows up in
+  #   the user list.
+  describe 'when updating the name of a user' do
+    let(:user) { create(:customer, firstname: 'Manage', lastname: 'Lastname') }
+
+    before do
+      user
+
+      visit '#manage/users'
+    end
+
+    it 'shows the changed last name in the user list' do
+      click "tr[data-id='#{user.id}']"
+
+      in_modal do
+        fill_in 'lastname', with: '2Manage Lastname 2'
+
+        click_on 'Submit'
+      end
+
+      expect(page).to have_css('table td', text: '2Manage Lastname 2')
     end
   end
 end

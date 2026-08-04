@@ -6,7 +6,7 @@ set -o pipefail
 : "${BACKUP_DIR:=/var/tmp/zammad}"
 : "${RESTORE_DIR:=/var/tmp/zammad/restore}"
 : "${BACKUP_TIME:=03:00}"
-: "${BACKUP_ON_START:=true}"
+: "${BACKUP_ON_START:=false}"
 : "${BACKUP_ONCE:=false}"
 : "${HOLD_DAYS:=10}"
 
@@ -102,9 +102,6 @@ function perform_restore {
 
   echo "Clearing cache…"
   bundle exec rails r "Rails.cache.clear"
-
-  echo "Drop old search indexes, if any…"
-  bundle exec rake zammad:searchindex:drop || true  # Ignore failures here, e.g. if ES is not active.
 
   TIMESTAMP="$(date +'%Y%m%d%H%M%S')"
   mv "${RESTORE_DIR}" "${RESTORE_DIR}_completed_${TIMESTAMP}"
