@@ -22,7 +22,7 @@ module Service::AI::VectorDB
     private
 
     def query_embedding
-      embedding || AI::Provider.current.new.embed(input: text)
+      embedding || Service::AI::VectorDB::Embedding.execute(input: text)
     end
   end
 end

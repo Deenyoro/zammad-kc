@@ -21,11 +21,7 @@ class Service::AI::Ticket::EmbedBase < Service::Base
   end
 
   def embedding_provider
-    @embedding_provider ||= begin
-      current = AI::Provider.current
-      raise __('AI provider is not configured.') if current.nil?
-
-      current.new
-    end
+    @embedding_provider ||= AI::ProviderConnection.for_embeddings&.provider_instance ||
+                            raise(__('AI provider is not configured.'))
   end
 end

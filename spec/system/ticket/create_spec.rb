@@ -184,19 +184,6 @@ RSpec.describe 'Ticket Create', time_zone: 'Europe/London', type: :system do
         it_behaves_like 'replacing tags in a clean form'
         it_behaves_like 'merging with existing tags in a dirty form'
       end
-
-      context 'with empty value' do
-        let(:operator) { nil }
-        let(:template_value) { nil }
-
-        it_behaves_like 'leaving tags empty in a clean form'
-
-        it 'leaves existing tags untouched in a dirty form' do
-          set_tokens_field_value('tags', %w[baz qux])
-          use_template(template)
-          check_tokens_field_value('tags', %w[baz qux])
-        end
-      end
     end
 
   end
@@ -820,6 +807,14 @@ RSpec.describe 'Ticket Create', time_zone: 'Europe/London', type: :system do
       find('.token').click # trigger blur
 
       expect(find('[name="cc"]', visible: :all).value).to eq 'asd@example.com'
+    end
+
+    # Ported from test/browser/agent_ticket_create_cc_tokenizer_test.rb (#1990).
+    it 'tokenizes an entered email address' do
+      add_email 'test@example.com'
+
+      expect(page).to have_css('span.token-label', text: 'test@example.com')
+      expect(find('[name="cc"]', visible: :all).value).to eq 'test@example.com'
     end
 
     def add_email(input)

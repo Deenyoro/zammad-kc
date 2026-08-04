@@ -22,13 +22,33 @@ vi.hoisted(() => {
   globalThis.__ = (source) => {
     return source
   }
+
+  // jsdom 30 generates the `CSS` namespace as a branded interface, so its
+  // `escape()` throws "'escape' called on an object that is not a valid
+  // instance of CSS" when called detached. The `css.escape` package (used by
+  // @testing-library/jest-dom's `toHaveFormValues`) captures `CSS.escape`
+  // unbound at import time, so bind it before any import can grab it – hence
+  // the hoisted block.
+  const { CSS } = globalThis
+  if (typeof CSS?.escape === 'function') {
+    CSS.escape = CSS.escape.bind(CSS)
+  }
+
+  // Suppress Apollo's devtools-suggestion timer. The timer fires 10 s after
+  // ApolloClient construction; if the jsdom environment is torn down first,
+  // the callback throws "ReferenceError: window is not defined". Setting
+  // __DEV__ = false makes Apollo skip the timer entirely (see connectToDevTools
+  // in @apollo/client/core). loadDevMessages/loadErrorMessages are unaffected.
+  ;(globalThis as any).__DEV__ = false
 })
 
 window.sw = new ServiceWorkerHelper()
 
 configure({
   testIdAttribute: 'data-test-id',
-  asyncUtilTimeout: process.env.CI ? 30_000 : 1_000,
+  // Must stay below the outer `testTimeout` (vite.config.mjs) with real margin — see
+  // tests/support/vitest-wrapper.ts for why equal values cause misleading failures.
+  asyncUtilTimeout: process.env.CI ? 20_000 : 1_000,
 })
 
 Object.defineProperty(window, 'fetch', {

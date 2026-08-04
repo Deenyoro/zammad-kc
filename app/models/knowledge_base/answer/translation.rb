@@ -26,6 +26,8 @@ class KnowledgeBase::Answer::Translation < ApplicationModel
   validates :title,        presence: true, length: { maximum: 250 }
   validates :kb_locale_id, uniqueness: { case_sensitive: true, scope: :answer_id }
 
+  before_save :set_edited_at, if: :edited?
+
   scope :neighbours_of, ->(translation) { joins(:answer).where(knowledge_base_answers: { category_id: translation.answer&.category_id }) }
 
   alias assets_essential assets
@@ -59,15 +61,14 @@ class KnowledgeBase::Answer::Translation < ApplicationModel
   end
 
   scope :vector_index_scope, lambda {
-    relevant_category_ids = Setting.get('vectordb_knowledge_base_category_ids')
-
-    # PoC: index drafts too (not only internally-visible answers), but still exclude archived ones.
-    answer_scope = KnowledgeBase::Answer.date_later_or_nil(:archived_at, Time.zone.now)
-
-    # For now only explicitly enabled categories are indexed.
-    return answer_scope.none if relevant_category_ids.blank?
-
-    answer_scope = answer_scope.where(category: relevant_category_ids)
+    # Index every answer regardless of its publication state (drafts and archived ones included) —
+    # whether a user may receive it as a suggestion is decided by the search's permission filter
+    # (Service::KnowledgeBase::Answer::SimilaritySearch).
+    #
+    # Every category is indexed unless it (or one of its ancestors) is excluded. The bulk counterpart
+    # to #vector_indexing_for_record?: one expanded id list filters the whole reload, rather than
+    # being asked about one answer at a time.
+    answer_scope = KnowledgeBase::Answer.in_vector_indexable_category
 
     joins(:answer).merge(answer_scope).includes(:content, :kb_locale)
   }
@@ -85,27 +86,35 @@ class KnowledgeBase::Answer::Translation < ApplicationModel
     }
   end
 
-  def vector_index_content_changed?
-    # Title is prepended to every chunk as a header, so a title change requires re-embedding. The
-    # body lives on the associated content record and is invisible here, so that change arrives via
-    # the vector_index_content_dirty flag (set in Content#touch_translation). Everything else
-    # (locale, category, visibility) is metadata only and handled by the cheap update path.
-    vector_index_content_dirty || previous_changes.key?('title')
-  end
-
   def vector_indexing_for_record?
-    # PoC: index drafts too (visible_internally? guard omitted for now), but not archived answers.
-    return false if answer.archived_at&.past?
-
-    # For now only explicitly enabled categories are indexed.
-    relevant_category_ids = Setting.get('vectordb_knowledge_base_category_ids')
-    return false if relevant_category_ids.blank? || relevant_category_ids.map(&:to_i).exclude?(answer.category_id)
-
-    true
+    # Index answers of any publication state (drafts and archived ones included, so the
+    # visible_internally? guard is omitted); the search's permission filter decides who may receive
+    # them as a suggestion.
+    #
+    # Every category is indexed unless it (or one of its ancestors) is explicitly excluded. Passing
+    # the id spares this check from loading the category record just to look it up in the list.
+    KnowledgeBase::Category.vector_indexable?(answer.category_id)
   end
 
   def vector_index_chunking_strategy
     Setting.get('vectordb_knowledge_base_chunking_strategy')&.to_sym
+  end
+
+  # Answer attributes that feed this translation's vector document: category (indexing scope +
+  # metadata) and the state timestamps (drive the visible_internally metadata).
+  VECTOR_INDEX_ANSWER_ATTRIBUTES = %w[category_id internal_at published_at archived_at].freeze
+
+  # Did anything feeding the vector document change? Title/locale live here, the body on the content
+  # record, the rest on the answer — each is read off its own record's previous_changes. This works
+  # because Answer#touch_translations uses touch_later, which preserves previous_changes on a
+  # translation edited in the same transaction (an immediate touch would reset them). previous_changes
+  # can be stale on long-lived instances, which errs towards an extra (no-op) reindex, never a skip
+  # of a real change.
+  def vector_index_relevant_change?
+    return true if previous_changes.keys.intersect?(%w[title kb_locale_id])
+    return true if content&.previous_changes&.key?('body')
+
+    answer&.previous_changes&.keys&.intersect?(VECTOR_INDEX_ANSWER_ATTRIBUTES) || false
   end
 
   def inline_linked_objects
@@ -143,6 +152,16 @@ class KnowledgeBase::Answer::Translation < ApplicationModel
   }
 
   private
+
+  def edited?
+    return true if new_record?
+
+    title_changed?
+  end
+
+  def set_edited_at
+    self.edited_at = Time.zone.now
+  end
 
   def answer_publication_state
     answer.can_be_published_aasm.calculated_state

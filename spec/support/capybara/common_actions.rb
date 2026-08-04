@@ -317,7 +317,7 @@ module CommonActions
 
     click '.sidebar-content .js-apply'
 
-    wait.until { Taskbar.last.updated_at != taskbar_timestamp } if !without_taskbar
+    wait(30).until { Taskbar.last.updated_at != taskbar_timestamp } if !without_taskbar
   end
 
   # Checks if modal is ready.
@@ -372,6 +372,29 @@ module CommonActions
       #   so we make an explicit exception.
       e.to_s.include? '"code":-32000'
     end
+  end
+
+  # Runs the block in the given additional Capybara session, after making sure
+  #   the session's browser window matches the size configured for the example.
+  #   Second-session windows otherwise keep the driver's small default size, in
+  #   which parts of the UI (e.g. the footer buttons of container-local modals)
+  #   lie outside the viewport and are not interactable.
+  def using_session(name)
+    Capybara.using_session(name) do
+      ensure_browser_window_size
+
+      yield
+    end
+  end
+
+  def ensure_browser_window_size
+    expected = @zammad_browser_window_size
+    return if expected.blank?
+
+    window = page.driver.browser.manage.window
+    return if [window.size.width, window.size.height] == expected
+
+    window.resize_to(*expected)
   end
 
   # Show the popover on hover

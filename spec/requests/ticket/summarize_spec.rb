@@ -77,17 +77,17 @@ RSpec.describe 'Ticket Summarize API endpoints', authenticated_as: :user, perfor
         let(:ai_analytics_run) do
           AI::Analytics::Run.create!(
             content:         result,
-            version:         AI::Service::TicketSummarize.lookup_version({ articles: ticket.articles.without_system_notifications }, Locale.find_by(locale: user.locale)),
+            version:         Service::AI::Feature::TicketSummarize.lookup_version({ articles: ticket.articles.without_system_notifications }, Locale.find_by(locale: user.locale)),
             ai_service_name: 'TicketSummarize',
-            **AI::Service::TicketSummarize.lookup_attributes({ ticket: }, Locale.find_by(locale: user.locale)),
+            **Service::AI::Feature::TicketSummarize.lookup_attributes({ ticket: }, Locale.find_by(locale: user.locale)),
           )
         end
 
         before do
           AI::StoredResult.create!(
             content:          result,
-            version:          AI::Service::TicketSummarize.lookup_version({ articles: ticket.articles.without_system_notifications }, Locale.find_by(locale: user.locale)),
-            **AI::Service::TicketSummarize.lookup_attributes({ ticket: }, Locale.find_by(locale: user.locale)),
+            version:          Service::AI::Feature::TicketSummarize.lookup_version({ articles: ticket.articles.without_system_notifications }, Locale.find_by(locale: user.locale)),
+            **Service::AI::Feature::TicketSummarize.lookup_attributes({ ticket: }, Locale.find_by(locale: user.locale)),
             ai_analytics_run:,
           )
         end
@@ -195,6 +195,39 @@ RSpec.describe 'Ticket Summarize API endpoints', authenticated_as: :user, perfor
           make_request
 
           expect(json_response).to eq({ 'result' => nil })
+        end
+
+        context 'when passing ai_analytics_run_error_id param' do
+          context 'when the run belongs to an accessible ticket' do
+            let(:own_run) do
+              create(:ai_analytics_run,
+                     related_object: ticket,
+                     error:          { 'error_message' => 'provider error' })
+            end
+            let(:params) { { ai_analytics_run_error_id: own_run.id } }
+
+            it 'returns the error message' do
+              make_request
+
+              expect(json_response).to include('error' => true, 'error_message' => 'provider error')
+            end
+          end
+
+          context 'when the run belongs to an inaccessible ticket' do
+            let(:foreign_ticket) { create(:ticket) }
+            let(:foreign_run) do
+              create(:ai_analytics_run,
+                     related_object: foreign_ticket,
+                     error:          { 'error_message' => 'provider error' })
+            end
+            let(:params) { { ai_analytics_run_error_id: foreign_run.id } }
+
+            it 'returns forbidden' do
+              make_request
+
+              expect(response).to have_http_status(:forbidden)
+            end
+          end
         end
       end
     end

@@ -7,11 +7,12 @@ class AI::Provider::Ollama < AI::Provider
   DEFAULT_OPTIONS = {
     model:           'mistral-small3.2',
     temperature:     0.0,
-    embedding_model: 'all-minilm',
+    embedding_model: 'bge-m3',
   }.freeze
 
   EMBEDDING_SIZES = {
     'all-minilm'        => 384,
+    'bge-m3'            => 1024,
     'nomic-embed-text'  => 768,
     'mxbai-embed-large' => 1024,
   }.freeze
@@ -20,6 +21,7 @@ class AI::Provider::Ollama < AI::Provider
   # self-hosted models, so chunks must be sized against them (see Service::AI::VectorDB::Content::Chunks).
   EMBEDDING_INPUT_LIMITS = {
     'all-minilm'        => 256,
+    'bge-m3'            => 8192,
     'nomic-embed-text'  => 2048,
     'mxbai-embed-large' => 512,
   }.freeze
@@ -52,9 +54,7 @@ class AI::Provider::Ollama < AI::Provider
         **REQUEST_TIMEOUT_OPTIONS,
         verify_ssl: true,
         json:       true,
-        log:        {
-          facility: 'AI::Provider',
-        },
+        log:        log_options,
       },
     )
 
@@ -75,26 +75,30 @@ class AI::Provider::Ollama < AI::Provider
         **REQUEST_TIMEOUT_OPTIONS,
         verify_ssl: true,
         json:       true,
+        log:        log_options,
       },
     )
 
     data = validate_response!(response)
-    # /api/embed returns one vector per input as an array; #embed/#bulk_embed use it directly. Do
-    # not collapse to the first vector — that drops the rest of a batch.
-    data['response']['embeddings']
+
+    # /api/embed returns one vector per input as an array; #embed/#bulk_embed uses it directly.
+    #   Do not collapse to the first vector, as that drops the rest of the batch.
+    #   The response may have a top-level `embeddings` key in newer Ollama versions.
+    data.dig('response', 'embeddings') || data['embeddings']
   end
 
-  def self.ping!(config)
+  def self.supports_embeddings?
+    true
+  end
+
+  def self.ping!(config, related_object: nil)
     response = UserAgent.get(
       config[:url],
       {},
       {
         **REQUEST_TIMEOUT_OPTIONS,
         verify_ssl: true,
-        log:        {
-          facility:          'AI::Provider',
-          log_only_on_error: true,
-        },
+        log:        log_options(only_on_error: true, related_object:),
       },
     )
 

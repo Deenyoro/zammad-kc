@@ -10,15 +10,14 @@ module Service::AI::VectorDB
     private
 
     def embedding_size
-      provider = AI::Provider.current
+      provider = AI::ProviderConnection.for_embeddings&.provider_instance
+      raise(AI::VectorDB::MigrationError, __('The system currently has no selected AI provider for embeddings.')) if provider.nil?
 
-      embedding_sizes = provider.const_get(:EMBEDDING_SIZES)
+      embedding_model = provider.options[:embedding_model] || provider.class::DEFAULT_OPTIONS[:embedding_model]
 
-      if embedding_sizes.blank?
-        raise AI::VectorDB::MigrationError, __('The currently selected AI provider does not support embeddings.')
-      end
-
-      embedding_sizes.fetch(provider.const_get(:DEFAULT_OPTIONS)[:embedding_model])
+      provider.config[:embedding_size].presence ||
+        provider.class::EMBEDDING_SIZES[embedding_model] ||
+        raise(AI::VectorDB::MigrationError, __('The currently selected AI provider does not support embeddings.'))
     end
   end
 end

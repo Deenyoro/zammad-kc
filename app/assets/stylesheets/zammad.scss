@@ -1519,6 +1519,10 @@ pre code {
   &.badge--closed {
     background: var(--supergood-color);
   }
+
+  &.badge--ghost {
+    background: var(--ghost-color);
+  }
 }
 
 .key-value {
@@ -2805,6 +2809,10 @@ input.has-error {
   color: var(--danger-color);
   padding: 2px;
   font-size: 13px;
+
+  &.help-inline--warning {
+    color: var(--bad-color);
+  }
 }
 
 .zammad-form-modal-body {
@@ -3002,7 +3010,7 @@ input.has-error {
     top: 0;
     height: 100%;
     width: 50px;
-    z-index: 1;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -6260,6 +6268,7 @@ a.list-group-item.active > .badge,
   letter-spacing: 0.05em;
 }
 
+.popover .one-column,
 .popover .two-columns,
 .popover .three-columns {
   margin-top: -8px;
@@ -9060,6 +9069,61 @@ a.list-group-item.active > .badge,
   fill: hsl(1, 77%, 47%);
 }
 
+// Same icon-button style as .list-item-delete (geometry + muted default), but a positive green
+// hover colour instead of the destructive red — used to link an AI-suggested knowledge base answer.
+.list-item-add:hover .icon {
+  fill: var(--supergood-color);
+}
+
+// Separate the "Suggested by AI" section from the "+ Link" / "+ AI draft" controls above it.
+.kb-suggestions-title {
+  margin-top: 20px;
+}
+
+.kb-answer-excerpt {
+  display: block;
+  margin-top: 6px;
+}
+
+.tasks--standalone.kb-answer-suggestions {
+  margin: 16px 0;
+
+  .task {
+    background: var(--background-modifier-accent);
+    border-bottom: none;
+    padding: 10px;
+    margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.kb-answer-attributes {
+  margin-top: 18px;
+  row-gap: 8px;
+
+  // Dates live in their own row container, so a following attribute container continues the row
+  // rhythm instead of opening a new block.
+  + .kb-answer-attributes {
+    margin-top: 8px;
+  }
+
+  label {
+    margin-bottom: 1px;
+  }
+}
+
+// Tag list of a knowledge base answer (popover and AI draft modal). Flex, so the gap does the
+// spacing and no separator characters are needed between the tag links.
+.kb-answer-tags {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 8px;
+  row-gap: 2px;
+}
+
 li.list-item-none {
   list-style-type: none;
 }
@@ -10106,6 +10170,10 @@ li.list-item-none {
     a {
       padding: 11px 18px;
     }
+  }
+
+  .icon-checkmark {
+    fill: white;
   }
 }
 
@@ -14910,17 +14978,23 @@ body.fit {
   flex-basis: 100%;
 }
 
+.one-column,
 .two-columns,
 .three-columns,
 .wrap {
   flex-wrap: wrap;
 }
 
+.one-column,
 .two-columns,
 .three-columns {
   @include phone {
     display: block;
   }
+}
+
+.one-column > .column {
+  width: 100%;
 }
 
 .two-columns > .column {
@@ -16199,5 +16273,71 @@ div.accounted-time-value {
 
   &-acknowledgment {
     margin: 0;
+  }
+}
+
+.package {
+  &-table-heading {
+    margin-top: 30px;
+  }
+
+  &-action-header {
+    width: 100px;
+  }
+
+  &-action-cell {
+    overflow: visible !important;
+    text-align: right;
+    width: 50px;
+  }
+
+  &-action-toggle {
+    padding: 0;
+  }
+}
+
+.audit-log-diff {
+  --diff-removed-background: hsl(355, 100%, 97%);
+  --diff-removed-text: hsl(356, 73%, 41%);
+  --diff-added-background: hsl(137, 100%, 95%);
+  --diff-added-text: hsl(134, 60%, 33%);
+
+  @include dark {
+    --diff-removed-background: hsla(4, 70%, 60%, 0.15);
+    --diff-removed-text: hsl(4, 89%, 71%);
+    --diff-added-background: hsla(140, 60%, 50%, 0.15);
+    --diff-added-text: hsl(137, 55%, 62%);
+  }
+
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  overflow: auto;
+
+  &-line {
+    padding: 0 10px;
+    white-space: pre-wrap;
+
+    &--removed {
+      background: var(--diff-removed-background);
+      color: var(--diff-removed-text);
+    }
+
+    &--added {
+      background: var(--diff-added-background);
+      color: var(--diff-added-text);
+    }
+  }
+
+  &-sign {
+    display: inline-block;
+    width: 14px;
+  }
+
+  &-empty {
+    color: var(--text-muted);
+    padding: 10px;
   }
 }
