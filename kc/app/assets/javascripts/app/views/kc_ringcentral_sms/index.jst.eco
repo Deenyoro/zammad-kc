@@ -88,6 +88,23 @@
       </tr>
     </table>
     <button class="btn btn--primary js-saveMissedCallSettings" style="margin-top: 10px;"><%- @T('Save Missed Call Settings') %></button>
+
+    <h2 style="margin-top: 30px;"><%- @T('Call History Import') %></h2>
+    <p class="text-muted" style="margin-bottom: 10px;"><%- @T('Files every completed voice call as a closed phone ticket, backdated to the call time — no notifications, no agent work. Adds phone activity to per-organization ticket counts. Missed inbound calls stay with Missed Call Handling above.') %></p>
+    <table class="settings-list" style="max-width: 700px;">
+      <tr>
+        <td style="width: 280px;">
+          <span><%- @T('Import Call History as Closed Tickets') %></span>
+          <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Checked every 5 minutes from the RingCentral call log.') %></p>
+        </td>
+        <td>
+          <label class="inline-label">
+            <input type="checkbox" name="call_history_ticket" value="true" <% if @settings.call_history_ticket: %>checked<% end %>>
+          </label>
+        </td>
+      </tr>
+    </table>
+    <button class="btn btn--primary js-saveCallHistorySettings" style="margin-top: 10px;"><%- @T('Save Call History Settings') %></button>
   </div>
 
   <hr>
