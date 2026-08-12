@@ -1,8 +1,7 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { computed } from 'vue'
-
 import renderComponent from '#tests/support/components/renderComponent.ts'
+import { mockPermissions } from '#tests/support/mock-permissions.ts'
 
 import {
   EnumKnowledgeBaseVisibility,
@@ -10,21 +9,10 @@ import {
 } from '#shared/graphql/types.ts'
 import { convertToGraphQLId, getIdFromGraphQLId } from '#shared/graphql/utils.ts'
 
-import { mockKnowledgeBaseQuery } from '#desktop/entities/knowledge-base/graphql/queries/knowledgeBase.mocks.ts'
 import TicketKnowledgeBaseLinks from '#desktop/pages/ticket/components/TicketSidebar/TicketSidebarInformation/TicketSidebarInformationContent/TicketRelatedKnowledge/TicketKnowledgeBaseLinks.vue'
-import { TICKET_KEY } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
-import {
-  mockLinkRemoveMutation,
-  waitForLinkRemoveMutationCalls,
-} from '#desktop/pages/ticket/graphql/mutations/linkRemove.mocks.ts'
-import { mockLinkListQuery } from '#desktop/pages/ticket/graphql/queries/linkList.mocks.ts'
-
-const ticketId = convertToGraphQLId('Ticket', 1)
 
 const KNOWLEDGE_BASE_ID = convertToGraphQLId('KnowledgeBase', 1)
 const KNOWLEDGE_BASE_LOCALE = 'en-us'
-
-const TARGET_TYPE = 'KnowledgeBase::Answer::Translation'
 
 // The popover the trigger wraps reads the full translation, so give it a complete
 //   shape even though these tests only assert the trigger's link and icon.
@@ -75,35 +63,16 @@ const renderLinks = (
   renderComponent(TicketKnowledgeBaseLinks, {
     props: {
       linkedAnswers,
-      targetType: TARGET_TYPE,
       isTicketEditable,
     },
-    provide: [
-      [
-        TICKET_KEY,
-        {
-          ticket: computed(() => ({ id: ticketId })),
-          ticketId: computed(() => ticketId),
-          ticketInternalId: computed(() => 1),
-        },
-      ],
-    ],
     router: true,
     store: true,
   })
 
 describe('TicketKnowledgeBaseLinks', () => {
   beforeEach(() => {
-    mockLinkListQuery({ linkList: [] })
-
-    // The links are built from the browsed knowledge base (its internal id and
-    //   current locale), which the store loads via this query.
-    mockKnowledgeBaseQuery({
-      knowledgeBase: {
-        id: KNOWLEDGE_BASE_ID,
-        currentLocale: { systemLocale: { locale: KNOWLEDGE_BASE_LOCALE } },
-      },
-    })
+    // Knowledge base access decides where an answer link points to.
+    mockPermissions(['ticket.agent', 'knowledge_base.reader'])
   })
 
   it('renders every linked answer as a link with its visibility icon', async () => {
@@ -119,7 +88,7 @@ describe('TicketKnowledgeBaseLinks', () => {
     expect(first.closest('a')).toHaveAttribute(
       'href',
       expect.stringContaining(
-        `#knowledge_base/${getIdFromGraphQLId(KNOWLEDGE_BASE_ID)}/locale/${KNOWLEDGE_BASE_LOCALE}/answer/${getIdFromGraphQLId(linkedAnswer(1, '').id)}`,
+        `#knowledge_base/${getIdFromGraphQLId(KNOWLEDGE_BASE_ID)}/locale/${KNOWLEDGE_BASE_LOCALE}/answer/${getIdFromGraphQLId(linkedAnswer(1, '').answer.id)}`,
       ),
     )
 
@@ -127,22 +96,47 @@ describe('TicketKnowledgeBaseLinks', () => {
     expect(wrapper.getByIconName('kb-internal')).toBeInTheDocument()
   })
 
-  it('unlinks an answer when its unlink action is clicked', async () => {
-    mockLinkRemoveMutation({ linkRemove: { success: true } })
+  it('links to the public answer page for a user without knowledge base permission', async () => {
+    mockPermissions(['ticket.agent'])
 
+    const wrapper = renderLinks([linkedAnswer(1, 'Reset your password')])
+
+    // Only published answers are linked for them (the backend scopes the link list), so the public
+    //   help site can show them - the answer view of the agent interface cannot.
+    expect((await wrapper.findByText('Reset your password')).closest('a')).toHaveAttribute(
+      'href',
+      '/help/en-us/1/1',
+    )
+  })
+
+  it('builds the link from the answer id, not the translation id', async () => {
+    const translation = linkedAnswer(1, 'Reset your password')
+    translation.answer.id = convertToGraphQLId('KnowledgeBase::Answer', 11)
+
+    const wrapper = renderLinks([translation])
+
+    const link = (await wrapper.findByText('Reset your password')).closest('a')
+    expect(link).toHaveAttribute('href', expect.stringContaining('/answer/11'))
+  })
+
+  it('requests the unlink of an answer when its unlink action is clicked', async () => {
     const wrapper = renderLinks([linkedAnswer(1, 'Reset your password')])
 
     await wrapper.events.click(
       await wrapper.findByRole('button', { name: 'Unlink knowledge base answer' }),
     )
 
-    const calls = await waitForLinkRemoveMutationCalls()
-    expect(calls.at(-1)?.variables).toEqual({
-      input: {
-        sourceId: convertToGraphQLId('KnowledgeBase::Answer::Translation', 1),
-        targetId: ticketId,
-        type: 'normal',
-      },
-    })
+    // Removing the last link unmounts this component, so the mutation is the parent's job.
+    expect(wrapper.emitted('unlink')).toEqual([
+      [convertToGraphQLId('KnowledgeBase::Answer::Translation', 1)],
+    ])
+  })
+
+  it('hides the unlink action when the ticket is not editable', () => {
+    const wrapper = renderLinks([linkedAnswer(1, 'Reset your password')], false)
+
+    expect(
+      wrapper.queryByRole('button', { name: 'Unlink knowledge base answer' }),
+    ).not.toBeInTheDocument()
   })
 })
