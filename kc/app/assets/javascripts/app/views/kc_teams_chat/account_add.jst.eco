@@ -3,6 +3,20 @@
     <%- @T('Enter your Azure AD application credentials. You will be redirected to Microsoft to authorize access.') %>
   </p>
 
+  <% redirectUri = "#{App.Config.get('http_type') or 'https'}://#{App.Config.get('fqdn')}/api/v1/kc/teams_chat_channels/callback" %>
+  <div class="form-group" style="border: 1px solid rgba(128,128,128,0.3); border-radius: 6px; padding: 12px 14px;">
+    <label style="font-weight: 600; display: block; margin-bottom: 8px;"><%- @T('Azure App Registration — one-time setup') %></label>
+
+    <p style="margin: 0 0 4px;"><b>1.</b> <%- @T('In the Azure portal → your app → Authentication → Add a platform → Web, add this exact Redirect URI:') %></p>
+    <input type="text" class="form-control" readonly value="<%= redirectUri %>" onclick="this.select()" style="font-family: monospace; margin-bottom: 12px;" title="<%- @T('Click to select, then copy') %>">
+
+    <p style="margin: 0 0 4px;"><b>2.</b> <%- @T('Under API permissions → Microsoft Graph → Delegated, add these, then click Grant admin consent:') %></p>
+    <p style="margin: 0 0 4px; font-family: monospace; font-size: 12px; word-break: break-word;">Chat.Read &middot; Chat.ReadWrite &middot; Chat.Create &middot; ChatMessage.Send &middot; User.Read &middot; User.Read.All* &middot; UserAuthenticationMethod.Read.All* &middot; Files.Read.All* &middot; Sites.Read.All* &middot; offline_access &middot; openid &middot; profile &middot; email</p>
+    <p class="help-text" style="margin: 0 0 12px;"><%- @T('* require admin consent — sign-in works without it, but directory and file sync will fail.') %></p>
+
+    <p style="margin: 0;"><b>3.</b> <%- @T('Create a Client secret (Certificates & secrets) and enter it below, with the Client ID and Tenant ID from the app Overview page.') %></p>
+  </div>
+
   <div class="form-group">
     <label for="client_id"><%- @T('Application (Client) ID') %> <span class="text-danger">*</span></label>
     <input type="text" name="client_id" id="client_id" class="form-control" required placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
