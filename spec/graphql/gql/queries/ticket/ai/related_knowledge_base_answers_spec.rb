@@ -11,8 +11,8 @@ RSpec.describe Gql::Queries::Ticket::AI::RelatedKnowledgeBaseAnswers, authentica
   let(:variables)      { { ticketId: gql.id(ticket) } }
   let(:query) do
     <<~QUERY
-      query ticketAIRelatedKnowledgeBaseAnswers($ticketId: ID!) {
-        ticketAIRelatedKnowledgeBaseAnswers(ticketId: $ticketId) {
+      query ticketAIRelatedKnowledgeBaseAnswers($ticketId: ID!, $includeDraftsAndArchived: Boolean, $includeLinkedAnswers: Boolean) {
+        ticketAIRelatedKnowledgeBaseAnswers(ticketId: $ticketId, includeDraftsAndArchived: $includeDraftsAndArchived, includeLinkedAnswers: $includeLinkedAnswers) {
           pending
           answers {
             score
@@ -44,6 +44,29 @@ RSpec.describe Gql::Queries::Ticket::AI::RelatedKnowledgeBaseAnswers, authentica
         'answers' => [{ 'score' => 0.9, 'translation' => { 'title' => translation.title } }],
       )
     end
+
+    it 'searches only the internally visible answers that are not linked yet' do
+      expect(Service::Ticket::AI::RelatedKnowledgeBaseAnswers)
+        .to have_received(:execute).with(ticket:, include_drafts_and_archived: false, include_linked_answers: false, current_user: agent)
+    end
+  end
+
+  context 'when drafts and archived answers are requested' do
+    let(:variables) { { ticketId: gql.id(ticket), includeDraftsAndArchived: true } }
+
+    it 'hands the flag to the service' do
+      expect(Service::Ticket::AI::RelatedKnowledgeBaseAnswers)
+        .to have_received(:execute).with(ticket:, include_drafts_and_archived: true, include_linked_answers: false, current_user: agent)
+    end
+  end
+
+  context 'when the linked answers are requested' do
+    let(:variables) { { ticketId: gql.id(ticket), includeLinkedAnswers: true } }
+
+    it 'hands the flag to the service' do
+      expect(Service::Ticket::AI::RelatedKnowledgeBaseAnswers)
+        .to have_received(:execute).with(ticket:, include_drafts_and_archived: false, include_linked_answers: true, current_user: agent)
+    end
   end
 
   context 'when the ticket summary is not generated yet' do
@@ -68,8 +91,21 @@ RSpec.describe Gql::Queries::Ticket::AI::RelatedKnowledgeBaseAnswers, authentica
     end
   end
 
+  # Which answers may be suggested is up to the search (published answers only for them), so the
+  # query itself stays available.
   context 'when the agent lacks knowledge base permission' do
     let(:agent) { create(:agent, roles: [create(:role, permission_names: %w[ticket.agent])], groups: [ticket.group]) }
+
+    it 'returns the answers with their score' do
+      expect(gql.result.data).to eq(
+        'pending' => false,
+        'answers' => [{ 'score' => 0.9, 'translation' => { 'title' => translation.title } }],
+      )
+    end
+  end
+
+  context 'when the user is no agent' do
+    let(:agent) { create(:customer) }
 
     it 'is forbidden' do
       expect(gql.result.error_type).to eq(Exceptions::Forbidden)

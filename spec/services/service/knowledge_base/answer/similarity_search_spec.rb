@@ -82,13 +82,52 @@ RSpec.describe Service::KnowledgeBase::Answer::SimilaritySearch, :aggregate_fail
       expect(service).to eq([{ translation:, score: 0.95 }])
     end
 
-    it 'ignores hits below the minimum score' do
+    it 'ignores hits below the configured relevance score' do
       stub_search([
-                    hit(answer_1.translations.first, described_class::MINIMUM_SCORE),
-                    hit(answer_2.translations.first, described_class::MINIMUM_SCORE - 0.1),
+                    hit(answer_1.translations.first, described_class::DEFAULT_RELEVANCE_SCORE / 100.0),
+                    hit(answer_2.translations.first, (described_class::DEFAULT_RELEVANCE_SCORE - 10) / 100.0),
                   ])
 
       expect(service.pluck(:translation)).to eq([answer_1.translations.first])
+    end
+
+    context 'when the configured relevance score is lowered' do
+      before { Setting.set('ai_assistance_kb_answer_suggestions_relevance_score', 70) }
+
+      it 'also surfaces the previously dropped hits' do
+        stub_search([
+                      hit(answer_1.translations.first, 0.85),
+                      hit(answer_2.translations.first, 0.75),
+                    ])
+
+        expect(service.pluck(:translation)).to contain_exactly(answer_1.translations.first, answer_2.translations.first)
+      end
+    end
+
+    context 'when the configured relevance score is raised' do
+      before { Setting.set('ai_assistance_kb_answer_suggestions_relevance_score', 95) }
+
+      it 'drops hits which passed the default threshold' do
+        stub_search([
+                      hit(answer_1.translations.first, 0.98),
+                      hit(answer_2.translations.first, 0.86),
+                    ])
+
+        expect(service.pluck(:translation)).to eq([answer_1.translations.first])
+      end
+    end
+
+    context 'when the relevance score setting holds no value' do
+      before { Setting.set('ai_assistance_kb_answer_suggestions_relevance_score', nil, validate: false) }
+
+      it 'falls back to the default threshold' do
+        stub_search([
+                      hit(answer_1.translations.first, described_class::DEFAULT_RELEVANCE_SCORE / 100.0),
+                      hit(answer_2.translations.first, (described_class::DEFAULT_RELEVANCE_SCORE - 10) / 100.0),
+                    ])
+
+        expect(service.pluck(:translation)).to eq([answer_1.translations.first])
+      end
     end
   end
 
@@ -110,6 +149,20 @@ RSpec.describe Service::KnowledgeBase::Answer::SimilaritySearch, :aggregate_fail
       expect(filter[:'metadata.answer_id']).not_to include(draft_answer.id)
     end
 
+    context 'with an agent without any knowledge base permission' do
+      let(:user)            { create(:agent, roles: [create(:role, permission_names: %w[ticket.agent])]) }
+      let(:internal_answer) { create(:knowledge_base_answer, :internal) }
+
+      before { internal_answer }
+
+      it 'searches only within published answers, which they can read on the public help site' do
+        filter = captured_search_filter
+
+        expect(filter[:'metadata.answer_id']).to include(published_answer.id)
+        expect(filter[:'metadata.answer_id']).not_to include(internal_answer.id, draft_answer.id)
+      end
+    end
+
     it 'does not search at all when the user may see no answers' do
       allow(KnowledgeBase::Answer).to receive(:visible_to_user).and_return(KnowledgeBase::Answer.none)
       allow(Service::AI::VectorDB::SimilaritySearch).to receive(:execute)
@@ -119,12 +172,16 @@ RSpec.describe Service::KnowledgeBase::Answer::SimilaritySearch, :aggregate_fail
     end
   end
 
-  context 'when archived answers exist' do
+  context 'when drafts and archived answers exist' do
+    let(:draft_answer)     { create(:knowledge_base_answer, :draft) }
     let(:archived_answer)  { create(:knowledge_base_answer, :archived) }
+    let(:internal_answer)  { create(:knowledge_base_answer, :internal) }
     let(:published_answer) { create(:knowledge_base_answer, :published) }
 
     before do
+      draft_answer
       archived_answer
+      internal_answer
       published_answer
     end
 
@@ -132,19 +189,67 @@ RSpec.describe Service::KnowledgeBase::Answer::SimilaritySearch, :aggregate_fail
       let(:role) { create(:role, permission_names: %w[ticket.agent knowledge_base.editor]) }
       let(:user) { create(:agent, roles: [role]) }
 
-      it 'searches within archived answers, too' do
-        expect(captured_search_filter[:'metadata.answer_id']).to include(archived_answer.id)
+      it 'searches only within the internally visible ones' do
+        filter = captured_search_filter
+
+        expect(filter[:'metadata.answer_id']).to include(internal_answer.id, published_answer.id)
+        expect(filter[:'metadata.answer_id']).not_to include(draft_answer.id, archived_answer.id)
+      end
+
+      context 'when drafts and archived answers are requested' do
+        subject(:service) { described_class.with_current_user(user).execute(embedding:, limit:, locale:, include_drafts_and_archived: true) }
+
+        it 'searches within drafts and archived answers, too' do
+          expect(captured_search_filter[:'metadata.answer_id'])
+            .to include(draft_answer.id, archived_answer.id, internal_answer.id, published_answer.id)
+        end
       end
     end
 
-    context 'with a user who may not see archived answers' do
+    context 'with a user who may not see drafts and archived answers' do
       let(:user) { create(:agent) }
 
-      it 'excludes them from the searched ids', :aggregate_failures do
-        filter = captured_search_filter
+      context 'when drafts and archived answers are requested' do
+        subject(:service) { described_class.with_current_user(user).execute(embedding:, limit:, locale:, include_drafts_and_archived: true) }
 
-        expect(filter[:'metadata.answer_id']).to include(published_answer.id)
-        expect(filter[:'metadata.answer_id']).not_to include(archived_answer.id)
+        it 'still excludes them from the searched ids' do
+          filter = captured_search_filter
+
+          expect(filter[:'metadata.answer_id']).to include(published_answer.id)
+          expect(filter[:'metadata.answer_id']).not_to include(draft_answer.id, archived_answer.id)
+        end
+      end
+    end
+
+    # Granular permissions make visible_to_user build an OR group (see the excluded category examples
+    # below) instead of the flat relation the examples above run through, so the publication state
+    # filter has to bind as one AND over the whole group rather than as a condition on one branch.
+    context 'with granular permissions' do
+      let(:role)             { create(:role, permission_names: %w[ticket.agent knowledge_base.editor]) }
+      let(:user)             { create(:agent, roles: [role]) }
+      let(:granted_category) { draft_answer.category }
+
+      before do
+        # A non-draft answer in the same category, so the default search has ids left to run with.
+        create(:knowledge_base_answer, :published, category: granted_category)
+
+        KnowledgeBase::PermissionsUpdate.new(granted_category).update!(role => 'editor')
+      end
+
+      it 'takes the granular path' do
+        expect(KnowledgeBase.access_for_user(user)).to eq(:granular)
+      end
+
+      it 'excludes the draft answer of the granted category' do
+        expect(captured_search_filter[:'metadata.answer_id']).not_to include(draft_answer.id)
+      end
+
+      context 'when drafts and archived answers are requested' do
+        subject(:service) { described_class.with_current_user(user).execute(embedding:, limit:, locale:, include_drafts_and_archived: true) }
+
+        it 'searches within it' do
+          expect(captured_search_filter[:'metadata.answer_id']).to include(draft_answer.id)
+        end
       end
     end
   end
@@ -226,42 +331,6 @@ RSpec.describe Service::KnowledgeBase::Answer::SimilaritySearch, :aggregate_fail
 
     it 'restricts the search to the given locale' do
       expect(captured_search_filter).to include('metadata.locale': 'en-us')
-    end
-  end
-
-  context 'when excluding specific answer ids' do
-    let(:role)     { create(:role, permission_names: %w[knowledge_base.editor]) }
-    let(:user)     { create(:agent, roles: [role]) }
-    let(:excluded) { create(:knowledge_base_answer, :published) }
-    let(:kept)     { create(:knowledge_base_answer, :published) }
-
-    before do
-      excluded
-      kept
-    end
-
-    it 'drops them from the searched ids' do
-      filter = nil
-      allow(Service::AI::VectorDB::SimilaritySearch).to receive(:execute) do |**kwargs|
-        filter = kwargs[:filter]
-        { 'hits' => { 'hits' => [] } }
-      end
-
-      described_class.with_current_user(user).execute(embedding:, excluded_answer_ids: [excluded.id])
-
-      expect(filter[:'metadata.answer_id']).to include(kept.id)
-      expect(filter[:'metadata.answer_id']).not_to include(excluded.id)
-    end
-
-    it 'does not search when excluding leaves no visible answers' do
-      allow(Service::AI::VectorDB::SimilaritySearch).to receive(:execute)
-
-      result = described_class
-        .with_current_user(user)
-        .execute(embedding:, excluded_answer_ids: KnowledgeBase::Answer.pluck(:id))
-
-      expect(result).to eq([])
-      expect(Service::AI::VectorDB::SimilaritySearch).not_to have_received(:execute)
     end
   end
 

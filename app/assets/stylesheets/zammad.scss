@@ -743,12 +743,7 @@ pre code {
   }
 
   &--icon--last .icon {
-    @include bidi-style(
-      margin-left,
-      5px,
-      margin-right,
-      0
-    ); // so far only used in ticket_zoom secondaryAction dropup
+    @include bidi-style(margin-left, 5px, margin-right, 0); // so far only used in ticket_zoom secondaryAction dropup
   }
 
   &:focus {
@@ -1670,6 +1665,10 @@ td.align-right {
 
 .table > tbody > tr.u-center > td {
   vertical-align: middle;
+}
+
+.table > tbody .is-clickable {
+  cursor: pointer;
 }
 
 .table-hover > tbody > tr:hover,
@@ -3043,6 +3042,14 @@ input.has-error {
         box-shadow: 0 0 4px 0 var(--shadow-highlight) !important;
       }
     }
+
+    .searchfield-shortcut-docs {
+      color: var(--text-link);
+
+      .icon {
+        fill: currentColor;
+      }
+    }
   }
 
   &.has-shortcut .empty-search {
@@ -3050,7 +3057,7 @@ input.has-error {
   }
 
   &.has-shortcut input[type='search'] {
-    @include bidi-style(padding-right, 80px, padding-left, 0);
+    @include bidi-style(padding-right, 60px, padding-left, 0);
   }
 }
 
@@ -4938,6 +4945,11 @@ footer {
 
       @include bidi-style(margin-right, 4px, margin-left, 0);
     }
+  }
+
+  .task-addon {
+    color: var(--text-muted);
+    font-size: 13px;
   }
 }
 
@@ -9046,6 +9058,7 @@ a.list-group-item.active > .badge,
   white-space: nowrap;
 }
 
+.list-item-add,
 .list-item-delete {
   padding: 0 10px;
 
@@ -9069,10 +9082,12 @@ a.list-group-item.active > .badge,
   fill: hsl(1, 77%, 47%);
 }
 
-// Same icon-button style as .list-item-delete (geometry + muted default), but a positive green
-// hover colour instead of the destructive red — used to link an AI-suggested knowledge base answer.
-.list-item-add:hover .icon {
-  fill: var(--supergood-color);
+.list-item-add:hover {
+  color: var(--supergood-color) !important;
+
+  .icon {
+    fill: var(--supergood-color);
+  }
 }
 
 // Separate the "Suggested by AI" section from the "+ Link" / "+ AI draft" controls above it.
@@ -9083,6 +9098,17 @@ a.list-group-item.active > .badge,
 .kb-answer-excerpt {
   display: block;
   margin-top: 6px;
+}
+
+// Marks an answer link that leaves the agent interface for the public help site (agents without
+// knowledge base permission), like the accessory icon of the navigation entry does.
+.kb-answer-external-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  fill: var(--text-muted);
+
+  @include bidi-style(margin-left, 4px, margin-right, 0);
 }
 
 .tasks--standalone.kb-answer-suggestions {
@@ -14049,6 +14075,10 @@ output {
 
 .detail-search-header {
   margin: 20px 0 32px;
+
+  .searchfield input[type='search']:not(.is-empty, :placeholder-shown) ~ .searchfield-shortcut {
+    display: none;
+  }
 }
 
 .batch-overlay {
