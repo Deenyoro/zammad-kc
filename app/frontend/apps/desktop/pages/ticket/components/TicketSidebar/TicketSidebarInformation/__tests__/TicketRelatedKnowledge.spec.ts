@@ -16,8 +16,14 @@ import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
 import { TICKET_KEY } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
 import { TICKET_SIDEBAR_SYMBOL } from '#desktop/pages/ticket/composables/useTicketSidebar.ts'
+import {
+  mockLinkRemoveMutation,
+  waitForLinkRemoveMutationCalls,
+} from '#desktop/pages/ticket/graphql/mutations/linkRemove.mocks.ts'
 
-import TicketRelatedKnowledge from '../TicketSidebarInformationContent/TicketRelatedKnowledge.vue'
+import TicketRelatedKnowledge, {
+  type Props,
+} from '../TicketSidebarInformationContent/TicketRelatedKnowledge.vue'
 
 // The detailed behavior of the pieces this component wires together (AI draft generation, AI
 //   suggestions, the answer picker, linked answers) is covered by the co-located sub-component
@@ -33,17 +39,55 @@ const enableKnowledgeBaseAi = () => {
   mockApplicationConfig({
     kb_active: true,
     ai_provider: true,
+    ai_assistance_kb_answer_suggestions: true,
     ai_assistance_kb_answer_from_ticket_generation: true,
   })
 }
 
+// `answerId` defaults to the translation's own id; pass it to build a second locale of one answer.
+const buildLinkedAnswer = (
+  id: number,
+  title: string,
+  answerId = id,
+): KnowledgeBaseAnswerTranslationFragment => ({
+  __typename: 'KnowledgeBaseAnswerTranslation',
+  id: convertToGraphQLId('KnowledgeBase::Answer::Translation', id),
+  title,
+  visibility: EnumKnowledgeBaseVisibility.Published,
+  categoryTreeTranslation: [
+    {
+      __typename: 'KnowledgeBaseCategoryTranslation',
+      id: convertToGraphQLId('KnowledgeBase::Category::Translation', id),
+      title: 'Account',
+    },
+  ],
+  content: {
+    __typename: 'KnowledgeBaseAnswerTranslationContent',
+    bodyExcerpt: `Excerpt for ${title}`,
+  },
+  answer: {
+    __typename: 'KnowledgeBaseAnswer',
+    id: convertToGraphQLId('KnowledgeBase::Answer', answerId),
+    archivedAt: null,
+    publishedAt: null,
+    internalAt: null,
+    tags: null,
+    category: {
+      __typename: 'KnowledgeBaseCategory',
+      id: convertToGraphQLId('KnowledgeBase::Category', id),
+      title: 'Account',
+      knowledgeBase: { __typename: 'KnowledgeBase', id: convertToGraphQLId('KnowledgeBase', 1) },
+    },
+  },
+  kbLocale: {
+    __typename: 'KnowledgeBaseLocale',
+    systemLocale: { __typename: 'Locale', locale: 'en-us', name: 'English' },
+  },
+})
+
 const renderRelatedKnowledge = (
-  props: {
+  props: Partial<Props> & {
     isTicketEditable?: boolean
-    linkedAnswers?: KnowledgeBaseAnswerTranslationFragment[]
-    linkedAnswerIds?: string[]
-    targetType?: string
-    showAiSuggestedAnswers?: boolean
   } = {},
 ) => {
   const { isTicketEditable = true, ...componentProps } = props
@@ -54,6 +98,7 @@ const renderRelatedKnowledge = (
       linkedAnswerIds: [],
       targetType: TARGET_TYPE,
       showAiSuggestedAnswers: false,
+      showRelevanceScore: false,
       aiSuggestedAnswers: [],
       isAiSuggestedAnswersLoading: false,
       isAiSuggestedAnswersPending: false,
@@ -106,51 +151,98 @@ describe('TicketRelatedKnowledge', () => {
     mockPermissions(['ticket.agent'])
 
     const wrapper = renderRelatedKnowledge({
-      linkedAnswers: [
-        {
-          __typename: 'KnowledgeBaseAnswerTranslation',
-          id: convertToGraphQLId('KnowledgeBase::Answer::Translation', 1),
-          title: 'Reset your password',
-          visibility: EnumKnowledgeBaseVisibility.Published,
-          categoryTreeTranslation: [
-            {
-              __typename: 'KnowledgeBaseCategoryTranslation',
-              id: convertToGraphQLId('KnowledgeBase::Category::Translation', 1),
-              title: 'Account',
-            },
-          ],
-          content: {
-            __typename: 'KnowledgeBaseAnswerTranslationContent',
-            bodyExcerpt: 'Steps to reset your password.',
-          },
-          answer: {
-            __typename: 'KnowledgeBaseAnswer',
-            id: convertToGraphQLId('KnowledgeBase::Answer', 1),
-            archivedAt: null,
-            publishedAt: null,
-            internalAt: null,
-            tags: null,
-            category: {
-              __typename: 'KnowledgeBaseCategory',
-              id: convertToGraphQLId('KnowledgeBase::Category', 1),
-              title: 'Account',
-              knowledgeBase: {
-                __typename: 'KnowledgeBase',
-                id: convertToGraphQLId('KnowledgeBase', 1),
-              },
-            },
-          },
-          kbLocale: {
-            __typename: 'KnowledgeBaseLocale',
-            systemLocale: { __typename: 'Locale', locale: 'en-us', name: 'English' },
-          },
-        },
-      ],
+      linkedAnswers: [buildLinkedAnswer(1, 'Reset your password')],
       linkedAnswerIds: [convertToGraphQLId('KnowledgeBase::Answer::Translation', 1)],
     })
 
     expect(await wrapper.findByText('Linked')).toBeInTheDocument()
     expect(await wrapper.findByText('Reset your password')).toBeInTheDocument()
+  })
+
+  it('unlinks an answer and re-runs the AI suggestions search, so it can be suggested again', async () => {
+    mockPermissions(['ticket.agent'])
+    enableKnowledgeBaseAi()
+    mockLinkRemoveMutation({ linkRemove: { success: true } })
+
+    const wrapper = renderRelatedKnowledge({
+      linkedAnswers: [buildLinkedAnswer(1, 'Reset your password')],
+      linkedAnswerIds: [convertToGraphQLId('KnowledgeBase::Answer::Translation', 1)],
+      showAiSuggestedAnswers: true,
+    })
+
+    await wrapper.events.click(
+      await wrapper.findByRole('button', { name: 'Unlink knowledge base answer' }),
+    )
+
+    const calls = await waitForLinkRemoveMutationCalls()
+    expect(calls.at(-1)?.variables).toEqual({
+      input: {
+        sourceId: convertToGraphQLId('KnowledgeBase::Answer::Translation', 1),
+        targetId: ticket.id,
+        type: 'normal',
+      },
+    })
+
+    // The search runs on the server and excluded the answer while it was linked, so the
+    //   unlinked answer can only reappear under "Suggested by AI" by re-running it.
+    expect(wrapper.emitted('refresh-ai-suggested-answers')).toHaveLength(1)
+  })
+
+  it('never lists an already-linked answer as an AI suggestion', async () => {
+    mockPermissions(['ticket.agent'])
+    enableKnowledgeBaseAi()
+
+    const translation = buildLinkedAnswer(1, 'Duplicate charge on latest invoice')
+
+    // A suggestions response that was still in flight while the answer got linked carries it
+    //   along; it must not show up under both "Linked" and "Suggested by AI".
+    const wrapper = renderRelatedKnowledge({
+      linkedAnswers: [translation],
+      linkedAnswerIds: [translation.id],
+      showAiSuggestedAnswers: true,
+      aiSuggestedAnswers: [
+        {
+          __typename: 'TicketAIRelatedKnowledgeBaseAnswer',
+          score: 95,
+          translation,
+        },
+      ],
+    })
+
+    expect(await wrapper.findByText('Suggested by AI')).toBeInTheDocument()
+
+    // Listed once, under "Linked" — the suggestions fall back to their empty state.
+    expect(await wrapper.findAllByText('Duplicate charge on latest invoice')).toHaveLength(1)
+    expect(wrapper.getByText('No suggestions.')).toBeInTheDocument()
+  })
+
+  it('does not suggest another locale of an already-linked answer', async () => {
+    mockPermissions(['ticket.agent'])
+    enableKnowledgeBaseAi()
+
+    const ANSWER_ID = 7
+    const linkedTranslation = buildLinkedAnswer(1, 'Doppelte Abbuchung', ANSWER_ID)
+    const otherLocaleTranslation = buildLinkedAnswer(2, 'Duplicate charge', ANSWER_ID)
+
+    // The server excludes a linked answer in every locale, so a sibling translation is no
+    //   suggestion either — matching on the translation alone would let it slip through.
+    const wrapper = renderRelatedKnowledge({
+      linkedAnswers: [linkedTranslation],
+      linkedAnswerIds: [linkedTranslation.id],
+      showAiSuggestedAnswers: true,
+      aiSuggestedAnswers: [
+        {
+          __typename: 'TicketAIRelatedKnowledgeBaseAnswer',
+          score: 95,
+          translation: otherLocaleTranslation,
+        },
+      ],
+    })
+
+    expect(await wrapper.findByText('Suggested by AI')).toBeInTheDocument()
+    expect(await wrapper.findByText('Doppelte Abbuchung')).toBeInTheDocument()
+    expect(wrapper.queryByText('Duplicate charge')).not.toBeInTheDocument()
+    expect(wrapper.getByText('No suggestions.')).toBeInTheDocument()
   })
 
   it('hides the link action when the ticket is not editable', () => {
