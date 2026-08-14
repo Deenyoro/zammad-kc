@@ -3,10 +3,13 @@
 class AI::Provider::Anthropic < AI::Provider
   include AI::Provider::Concerns::HasConfigurableModel
   include AI::Provider::Concerns::HasModelsWithoutTemperatureFallback
+  include AI::Provider::Concerns::ListsModels
 
   ANTHROPIC_API_BASE_URL = 'https://api.anthropic.com/v1'.freeze
 
-  # default model also in app/assets/javascripts/app/lib/app_post/ai_provider/anthropic.coffee
+  # The model list is paginated; its maximum page size covers the catalogue in one request.
+  MODEL_LIST_PAGE_SIZE = 1000
+
   DEFAULT_OPTIONS = {
     model:                      'claude-sonnet-4-6',
     max_tokens:                 1024,
@@ -65,6 +68,23 @@ class AI::Provider::Anthropic < AI::Provider
     false
   end
 
+  def self.models(config, related_object: nil)
+    response = model_list_response(
+      "#{ANTHROPIC_API_BASE_URL}/models",
+      params:         { limit: MODEL_LIST_PAGE_SIZE },
+      related_object:,
+      headers:        headers(config),
+    )
+
+    data = validate_response!(response)
+
+    # Anthropic reports a display name per model, which is deliberately ignored: a model has one
+    # name everywhere, and it is the id (see Concerns::ListsModels#model_descriptor).
+    normalize_models(model_list_entries!(data), 'id') do |_entry, id|
+      model_descriptor(id:)
+    end
+  end
+
   private
 
   def chat(prompt_system:, prompt_user:, prompt_image:)
@@ -119,7 +139,9 @@ class AI::Provider::Anthropic < AI::Provider
     data = validate_response!(response)
     extract_response_metadata(data)
 
-    data['content'].first['text']
+    # Models with extended thinking return one or more 'thinking' blocks before
+    # the 'text' block, so the answer is not necessarily the first element.
+    data['content'].find { |block| block['type'] == 'text' }&.fetch('text', nil)
   end
 
   def embeddings(input:)
