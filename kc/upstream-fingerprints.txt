@@ -59,3 +59,8 @@ app/jobs/transaction_job.rb::next if params[:disable]&.include?(backend)
 # upstream callback (no explicit organization_id is set at create).
 app/models/ticket.rb::def check_default_organization
 app/models/ticket.rb::self.organization_id = customer.organization_id
+
+# Kc::MergeToClosedState (shell-target guard) and Kc::FollowUpClosedParent
+# (reroute gate) both treat the 'merged_into' history entry as the canonical
+# evidence that a ticket was merged away — merge_to must keep writing it.
+app/models/ticket.rb::'merged_into',

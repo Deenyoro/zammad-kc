@@ -77,6 +77,16 @@ class Kc::BulkMergeController < ApplicationController
           user_id:   current_user.id,
         )
 
+        # The concern swallows Ruby-level post-merge failures so a lone
+        # single-ticket merge is never undone by its KC extension — but in a
+        # bulk merge that would commit a child stuck in state "merged"
+        # (hidden from overviews, no note) while reporting success. Verify
+        # and abort the whole transaction instead.
+        child.reload
+        if child.state.state_type.name == 'merged'
+          raise Exceptions::UnprocessableContent, __('Ticket #%s was merged but could not be closed — bulk merge rolled back.') % child.number
+        end
+
         merged_count += 1
       end
     end
