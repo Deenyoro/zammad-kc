@@ -3,9 +3,11 @@
 <script setup lang="ts">
 import { toRef } from 'vue'
 
+import CommonActionMenu from '#desktop/components/CommonActionMenu/CommonActionMenu.vue'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonDropdown from '#desktop/components/CommonDropdown/CommonDropdown.vue'
 import type { DropdownItem } from '#desktop/components/CommonDropdown/types.ts'
+import CommonSkeleton from '#desktop/components/CommonSkeleton/CommonSkeleton.vue'
 
 import KnowledgeBaseBreadcrumb from './KnowledgeBaseBreadcrumb.vue'
 import { useTopBarHeader } from './useTopBarHeader.ts'
@@ -36,8 +38,21 @@ const { copyKnowledgeBaseNameToClipboard } = useTopBarHeader(toRef(props))
 </script>
 
 <template>
+  <!-- The same blocks as TopBarHeaderFullSkeleton's breadcrumb row, so a header that skeletons in
+       place looks like one that is skeletoned as a whole. -->
+  <div
+    v-if="loading"
+    class="flex h-6 items-center gap-1.5"
+    :class="{ grow: variant === 'compact' }"
+  >
+    <CommonSkeleton class="size-3.5 shrink-0" rounded />
+    <CommonSkeleton class="h-3 w-24" />
+  </div>
+
   <KnowledgeBaseBreadcrumb
-    :class="variant === 'compact' ? 'flex h-6 grow' : 'flex'"
+    v-else
+    class="flex h-6"
+    :class="{ grow: variant === 'compact' }"
     :items="breadcrumbs"
     size="small"
     emphasize-last-item
@@ -45,7 +60,7 @@ const { copyKnowledgeBaseNameToClipboard } = useTopBarHeader(toRef(props))
   >
     <template #trailing>
       <CommonButton
-        v-if="breadcrumbs.length > 1"
+        v-if="!noCopyButton && breadcrumbs.length > 1"
         v-tooltip="$t(copyLabel)"
         variant="secondary"
         icon="files"
@@ -60,6 +75,17 @@ const { copyKnowledgeBaseNameToClipboard } = useTopBarHeader(toRef(props))
     <slot name="stepper" />
 
     <CommonLink
+      v-if="searchLink"
+      v-tooltip="$t('Search the knowledge base')"
+      :link="searchLink"
+      internal
+      class="rounded-lg! bg-green-200 p-1 outline outline-offset-0! outline-neutral-100 hover:bg-green-200 hover:outline-blue-600 dark:bg-gray-600 dark:outline-gray-900 dark:hover:bg-gray-600 dark:hover:outline-blue-900 print:hidden"
+      size="small"
+    >
+      <CommonIcon size="tiny" name="search" />
+    </CommonLink>
+
+    <CommonLink
       v-if="previewUrl"
       v-tooltip="$t('View public knowledge base')"
       :link="previewUrl"
@@ -71,7 +97,14 @@ const { copyKnowledgeBaseNameToClipboard } = useTopBarHeader(toRef(props))
       <CommonIcon size="tiny" name="box-arrow-in-up-right" />
     </CommonLink>
 
-    <CommonDropdown v-model="selectedLocale" :items="locales" orientation="bottom">
+    <!-- NB: Hide the language switcher in case there is only one locale. -->
+    <!--   Declutters the UI, since the switcher serves no function in this case. -->
+    <CommonDropdown
+      v-if="locales.length > 1"
+      v-model="selectedLocale"
+      :items="locales"
+      orientation="bottom"
+    >
       <template #trigger="{ toggle, isOpen }">
         <CommonButton
           v-tooltip="$t('Change language')"
@@ -98,15 +131,16 @@ const { copyKnowledgeBaseNameToClipboard } = useTopBarHeader(toRef(props))
       </template>
     </CommonDropdown>
 
-    <!-- :TODO -->
-    <!-- <CommonActionMenu
-            button-size="medium"
-            role="presentation"
-            class="flex! h-full items-center"
-            :custom-menu-button-label="$t('Additional actions')"
-            no-single-action-mode
-            placement="end"
-            hide-arrow
-          /> -->
+    <CommonActionMenu
+      v-if="actions?.length"
+      :actions="actions"
+      button-size="medium"
+      role="presentation"
+      class="flex! h-full items-center"
+      :custom-menu-button-label="$t('Additional actions')"
+      no-single-action-mode
+      placement="end"
+      hide-arrow
+    />
   </div>
 </template>

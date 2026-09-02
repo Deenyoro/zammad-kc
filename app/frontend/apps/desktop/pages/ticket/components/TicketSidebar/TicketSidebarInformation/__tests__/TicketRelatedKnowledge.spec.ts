@@ -14,12 +14,12 @@ import {
 } from '#shared/graphql/types.ts'
 import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 
-import { TICKET_KEY } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
-import { TICKET_SIDEBAR_SYMBOL } from '#desktop/pages/ticket/composables/useTicketSidebar.ts'
 import {
   mockLinkRemoveMutation,
   waitForLinkRemoveMutationCalls,
-} from '#desktop/pages/ticket/graphql/mutations/linkRemove.mocks.ts'
+} from '#desktop/entities/link/graphql/mutations/linkRemove.mocks.ts'
+import { TICKET_KEY } from '#desktop/pages/ticket/composables/useTicketInformation.ts'
+import { TICKET_SIDEBAR_SYMBOL } from '#desktop/pages/ticket/composables/useTicketSidebar.ts'
 
 import TicketRelatedKnowledge, {
   type Props,
@@ -38,6 +38,7 @@ const TARGET_TYPE = 'KnowledgeBase::Answer::Translation'
 const enableKnowledgeBaseAi = () => {
   mockApplicationConfig({
     kb_active: true,
+    vectordb_enabled: true,
     ai_provider: true,
     ai_assistance_kb_answer_suggestions: true,
     ai_assistance_kb_answer_from_ticket_generation: true,
@@ -143,8 +144,18 @@ describe('TicketRelatedKnowledge', () => {
 
     const wrapper = renderRelatedKnowledge({ showAiSuggestedAnswers: true })
 
-    expect(await wrapper.findByText('Suggested by AI')).toBeInTheDocument()
+    expect(await wrapper.findByText('Suggested knowledge')).toBeInTheDocument()
     expect(wrapper.getByRole('button', { name: 'Add AI draft' })).toBeInTheDocument()
+  })
+
+  it('hides the AI draft action when the vector DB is disabled', () => {
+    mockPermissions(['ticket.agent', 'knowledge_base.editor'])
+    enableKnowledgeBaseAi()
+    mockApplicationConfig({ vectordb_enabled: false })
+
+    const wrapper = renderRelatedKnowledge()
+
+    expect(wrapper.queryByRole('button', { name: 'Add AI draft' })).not.toBeInTheDocument()
   })
 
   it('shows the AI suggestions but not the AI draft action for an agent without editor permission', async () => {
@@ -155,7 +166,7 @@ describe('TicketRelatedKnowledge', () => {
 
     const wrapper = renderRelatedKnowledge({ showAiSuggestedAnswers: true })
 
-    expect(await wrapper.findByText('Suggested by AI')).toBeInTheDocument()
+    expect(await wrapper.findByText('Suggested knowledge')).toBeInTheDocument()
     expect(wrapper.queryByRole('button', { name: 'Add AI draft' })).not.toBeInTheDocument()
   })
 
@@ -196,7 +207,7 @@ describe('TicketRelatedKnowledge', () => {
     })
 
     // The search runs on the server and excluded the answer while it was linked, so the
-    //   unlinked answer can only reappear under "Suggested by AI" by re-running it.
+    //   unlinked answer can only reappear under "Suggested knowledge" by re-running it.
     expect(wrapper.emitted('refresh-ai-suggested-answers')).toHaveLength(1)
   })
 
@@ -207,7 +218,7 @@ describe('TicketRelatedKnowledge', () => {
     const translation = buildLinkedAnswer(1, 'Duplicate charge on latest invoice')
 
     // A suggestions response that was still in flight while the answer got linked carries it
-    //   along; it must not show up under both "Linked" and "Suggested by AI".
+    //   along; it must not show up under both "Linked" and "Suggested knowledge".
     const wrapper = renderRelatedKnowledge({
       linkedAnswers: [translation],
       linkedAnswerIds: [translation.id],
@@ -221,7 +232,7 @@ describe('TicketRelatedKnowledge', () => {
       ],
     })
 
-    expect(await wrapper.findByText('Suggested by AI')).toBeInTheDocument()
+    expect(await wrapper.findByText('Suggested knowledge')).toBeInTheDocument()
 
     // Listed once, under "Linked" — the suggestions fall back to their empty state.
     expect(await wrapper.findAllByText('Duplicate charge on latest invoice')).toHaveLength(1)
@@ -251,7 +262,7 @@ describe('TicketRelatedKnowledge', () => {
       ],
     })
 
-    expect(await wrapper.findByText('Suggested by AI')).toBeInTheDocument()
+    expect(await wrapper.findByText('Suggested knowledge')).toBeInTheDocument()
     expect(await wrapper.findByText('Doppelte Abbuchung')).toBeInTheDocument()
     expect(wrapper.queryByText('Duplicate charge')).not.toBeInTheDocument()
     expect(wrapper.getByText('No suggestions.')).toBeInTheDocument()
@@ -272,7 +283,7 @@ describe('TicketRelatedKnowledge', () => {
 
     const wrapper = renderRelatedKnowledge()
 
-    expect(wrapper.queryByText('Suggested by AI')).not.toBeInTheDocument()
+    expect(wrapper.queryByText('Suggested knowledge')).not.toBeInTheDocument()
     expect(wrapper.queryByRole('button', { name: 'Add AI draft' })).not.toBeInTheDocument()
   })
 })

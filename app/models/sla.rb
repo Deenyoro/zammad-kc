@@ -13,13 +13,14 @@ class Sla < ApplicationModel
   include ChecksCoreWorkflow
 
   core_workflow_screens 'create', 'edit'
+  core_workflow_permission 'admin.sla'
 
   validates  :name, presence: true, uniqueness: { case_sensitive: false }
 
   validate   :cannot_have_response_and_update
 
-  store      :condition
-  store      :data
+  store :condition
+  store :data
 
   def condition_matches?(ticket)
     query_condition, bind_condition, tables = Ticket.selector2sql(condition)

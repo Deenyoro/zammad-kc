@@ -1,0 +1,54 @@
+query knowledgeBaseSearch(
+  $query: String!
+  $categoryId: ID
+  $locale: String
+  $pageSize: Int = 30
+  $cursor: String
+) {
+  knowledgeBaseSearch(
+    query: $query
+    categoryId: $categoryId
+    locale: $locale
+    first: $pageSize
+    after: $cursor
+  ) {
+    totalCount
+    edges {
+      node {
+        item {
+          ... on KnowledgeBaseAnswer {
+            id
+            title
+            visibility
+            translationMissing
+          }
+          ... on KnowledgeBaseCategory {
+            id
+            # Aliased: an answer's title is non-null while a category's is not, and GraphQL wants
+            #   one response shape per response name across the document - union members included.
+            categoryTitle: title
+            categoryIcon
+            iconSet
+            visibility
+          }
+        }
+        titlePreview {
+          text
+          highlight
+        }
+        bodyPreview {
+          text
+          highlight
+        }
+        categoryPath {
+          id
+          title
+        }
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}

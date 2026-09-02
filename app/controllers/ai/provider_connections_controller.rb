@@ -37,16 +37,20 @@ class AI::ProviderConnectionsController < ApplicationController
     connection = AI::ProviderConnection.find(params[:id])
     return render_provider_error(__('This provider does not support embeddings.')) if purpose == 'embedding' && !connection.embedding_capable
 
-    enabled = params.key?(:enabled) ? params[:enabled] : true
+    enabled       = params.key?(:enabled) ? params[:enabled] : true
+    serves_search = purpose == 'embedding' && ActiveModel::Type::Boolean.new.cast(enabled)
 
     # Serving embeddings requires a named model. Rather than reject this one-click action for a
     # connection that predates the explicit field, it gets the provider's recommendation - the same
     # rule the connection seeding follows. A provider with nothing to name still fails, with the
     # validation message telling the admin to configure a model first.
-    connection.seed_embedding_default if purpose == 'embedding' && ActiveModel::Type::Boolean.new.cast(enabled)
+    #
+    connection.seed_embedding_default if serves_search
 
     connection.update!("default_#{purpose}" => enabled)
-    model_show_render(AI::ProviderConnection, params)
+    # Render the instance that committed the change: its after-commit reconciliation result is
+    # transient response state and would be lost by model_show_render loading the record again.
+    model_item_render(connection)
   end
 
   # The models the endpoint offers, for the dialog's model dropdown, along with the defaults its
@@ -163,6 +167,12 @@ class AI::ProviderConnectionsController < ApplicationController
 
   def render_provider_error(message)
     render json: { error: message }, status: :unprocessable_content
+  end
+
+  def model_item_render_attributes(object, attrs)
+    return attrs if !object.vector_index_rebuild_started
+
+    attrs.merge('vector_index_rebuild_started' => true)
   end
 
   # Lets model_update_render's unmask_sensitive_params restore the stored token when the

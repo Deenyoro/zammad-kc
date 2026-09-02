@@ -95,7 +95,19 @@ class ProviderConnections extends App.ControllerAIFeatureBase
               display:   __('Do not use for semantic search')
               icon:      'diagonal-cross'
               available: (object) -> object.default_embedding
-              callback:  (id) => @setConnectionAsDefault(id, 'embedding', false)
+              # Nothing is re-embedded by this - the index is simply left where it is - so the backend
+              # raises no challenge for it and the warning is raised here, about what stops working.
+              # Only where something is running to stop: with semantic search switched off there is no
+              # index to keep and nothing to tell the admin they are losing.
+              callback:  (id) =>
+                apply = => @setConnectionAsDefault(id, 'embedding', false)
+
+                return apply() if !App.Config.get('vectordb_enabled')
+
+                confirmEmbeddingStop(
+                  container: @el.closest('.content')
+                  callback:  apply
+                )
             }
             {
               name:      'set-default-ocr'
@@ -155,14 +167,14 @@ class ProviderConnections extends App.ControllerAIFeatureBase
       type: 'PUT'
       url:  App.Config.get('api_path') + '/ai/provider_connections/' + id + '/set_default'
       data: JSON.stringify(default: type, enabled: enabled)
-      success: =>
+      success: (data) =>
         App.AIProviderConnection.fetchFull(
           => @genericController?.render()
           clear: true
         )
         @notify
           type: 'success'
-          msg:  __('Default provider updated successfully.')
+          msg:  if data.vector_index_rebuild_started then vectorIndexRebuildStartedMessage() else __('Default provider updated successfully.')
       error: (data) =>
         details = data.responseJSON || {}
         @notify
@@ -177,13 +189,24 @@ class ProviderConnections extends App.ControllerAIFeatureBase
 
   didChangeToggle: =>
     value = @$('.js-ai-provider-toggle input').prop('checked')
+    ui = @
+
     App.Setting.set(
       'ai_provider',
       value,
-      done: =>
-        @notify(
+      done: ->
+        vectorIndexRebuildStarted = consumeVectorIndexRebuildStarted(@, App.Setting)
+
+        message = if vectorIndexRebuildStarted
+                    vectorIndexRebuildStartedMessage()
+                  else if value
+                    __('AI provider configuration enabled successfully.')
+                  else
+                    __('AI provider configuration disabled successfully.')
+
+        ui.notify(
           type: 'success'
-          msg:  if value then __('AI provider configuration enabled successfully.') else __('AI provider configuration disabled successfully.')
+          msg:  message
         )
       fail: (settings, details) =>
         @$('.js-ai-provider-toggle input').prop('checked', !value)
@@ -210,6 +233,27 @@ EMBEDDING_METADATA_REQUEST_ID = 'ai_provider_connection_embedding_metadata'
 # The two fields that describe the embedding model in numbers. They belong to the model they
 # describe, so the model field decides what becomes of them (see #toggleEmbeddingMetadata).
 EMBEDDING_METADATA_FIELDS = ['config.embedding_size', 'config.embedding_input_limit']
+
+vectorIndexRebuildStartedMessage = ->
+  __('The vector index rebuild has started and will continue in the background.')
+
+# Spine refreshes its canonical record with the response, but calls the save callback on a clone
+# whose prototype is that record. Consume the response-only flag from both so it cannot leak into a
+# later response that correctly omits it.
+consumeVectorIndexRebuildStarted = (record, model) ->
+  started = record.vector_index_rebuild_started
+  cachedRecord = model.findNative(record.id)
+
+  delete record.vector_index_rebuild_started
+  delete cachedRecord.vector_index_rebuild_started if cachedRecord
+
+  started
+
+confirmEmbeddingStop = (options) ->
+  new App.ControllerAIEmbeddingStopConfirm(
+    container: options.container
+    callback:  options.callback
+  )
 
 # The dialog is a two step wizard - credentials first, so the model list can be fetched with them
 # before the models are offered - chained modal by modal like App.TwoFactorConfigurationModal.
@@ -514,9 +558,32 @@ ProviderConnectionFormMixin =
     @el.closest('.modal-backdrop').addClass('fade')
     @close()
 
+  # Whether saving this would leave the connection that serves semantic search on a provider that
+  # cannot embed at all - which stops semantic search just as surely as the explicit action does
+  # (AI::ProviderConnection#remove_unsupported_embedding_default clears the flag on the way in).
+  # Asked here rather than in the backend: nothing is re-embedded by it, so there is no rebuild for a
+  # validator to challenge - only something the admin should not discover afterwards. And only while
+  # semantic search is running: with the vector database off there is no index to lose.
+  embeddingStopsWithSave: (params) ->
+    return false if !@id
+    return false if !App.Config.get('vectordb_enabled')
+
+    connection = App[@genericObject].find(@id)
+    return false if !connection?.default_embedding
+
+    provider = params.provider or connection.provider
+    !App.Config.get('AIProviders')[provider]?.supports_embeddings
+
   # Persist the connection from everything the wizard collected, whichever step turned out to be
   # the last one. The id is what distinguishes creating from editing, here as everywhere else.
-  saveConnection: (e, params) ->
+  saveConnection: (e, params, embeddingStopConfirmed = false) ->
+    if !embeddingStopConfirmed and @embeddingStopsWithSave(params)
+      return confirmEmbeddingStop(
+        container: @container
+        # Confirmed once, and marked as such: the condition still holds on the way back through here.
+        callback:  => @saveConnection(e, params, true)
+      )
+
     object = if @id then App[@genericObject].find(@id) else new App[@genericObject]()
     object.load(@structureConfigParams(params))
 
@@ -525,8 +592,16 @@ ProviderConnectionFormMixin =
     ui = @
     object.save(
       done: ->
+        vectorIndexRebuildStarted = consumeVectorIndexRebuildStarted(@, App.AIProviderConnection)
+
         ui.callback?(App[ui.genericObject].fullLocal(@id))
         ui.closeWithFade()
+
+        if vectorIndexRebuildStarted
+          ui.notify(
+            type: 'success'
+            msg:  vectorIndexRebuildStartedMessage()
+          )
       fail: (settings, details) ->
         # The rejected attributes are on the local record now, so refetch: the dialog may be
         # reopened, and would otherwise show them as if they were stored.

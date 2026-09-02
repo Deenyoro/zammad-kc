@@ -791,4 +791,190 @@ RSpec.describe 'AI::ProviderConnection', :aggregate_failures, authenticated_as: 
       expect(response).to have_http_status(:forbidden)
     end
   end
+
+  describe 'vector index rebuild response' do
+    let(:connection) do
+      create(:ai_provider_connection, :default_embedding, provider: 'open_ai',
+                                                          config:   { token: 'secret-token', embedding_model: 'text-embedding-3-small' })
+    end
+    let(:index_exists) { true }
+
+    before do
+      connection
+      Setting.set('ai_provider', true)
+
+      Service::AI::VectorDB::Embedding::Configuration.record_indexed(Service::AI::VectorDB::Embedding::Configuration.current) if index_exists
+
+      Setting.set('vectordb_enabled', true)
+    end
+
+    describe '#create' do
+      def create_connection(default_embedding: true)
+        post '/api/v1/ai/provider_connections',
+             params: { name:              'created-connection',
+                       provider:          'open_ai',
+                       default_embedding:,
+                       config:            { token: 'secret-token', embedding_model: 'text-embedding-3-large' } },
+             as:     :json
+      end
+
+      it 'creates a connection taking over semantic search and reports the background rebuild', :aggregate_failures do
+        create_connection
+
+        expect(response).to have_http_status(:created)
+        expect(json_response).to include('vector_index_rebuild_started' => true)
+        expect(AI::ProviderConnection.exists?(name: 'created-connection')).to be(true)
+      end
+
+      it 'creates a connection that serves nothing without reporting a rebuild' do
+        create_connection(default_embedding: false)
+
+        expect(response).to have_http_status(:created)
+        expect(json_response).not_to include('vector_index_rebuild_started')
+      end
+
+      context 'when it is the first connection, taking the flag automatically' do
+        before { AI::ProviderConnection.destroy_all }
+
+        it 'creates it without reporting a rebuild while AI providers are disabled', :aggregate_failures do
+          create_connection(default_embedding: false)
+
+          expect(response).to have_http_status(:created)
+          expect(json_response).not_to include('vector_index_rebuild_started')
+        end
+      end
+    end
+
+    describe '#update' do
+      def edit_embedding_model
+        put "/api/v1/ai/provider_connections/#{connection.id}",
+            params: { config: { token: 'secret-token', embedding_model: 'text-embedding-3-large' } },
+            as:     :json
+      end
+
+      it 'changes the embedding model and reports the background rebuild', :aggregate_failures do
+        edit_embedding_model
+
+        expect(response).to have_http_status(:ok)
+        expect(json_response).to include(
+          'id'                           => connection.id,
+          'name'                         => connection.name,
+          'provider'                     => connection.provider,
+          'config'                       => include('embedding_model' => 'text-embedding-3-large', 'token' => '**********'),
+          'vector_index_rebuild_started' => true,
+        )
+        expect(connection.reload.config['embedding_model']).to eq('text-embedding-3-large')
+      end
+
+      it 'saves a change that leaves the embeddings alone without reporting a rebuild', :aggregate_failures do
+        put "/api/v1/ai/provider_connections/#{connection.id}", params: { name: 'renamed' }, as: :json
+
+        expect(response).to have_http_status(:ok)
+        expect(json_response).not_to include('vector_index_rebuild_started')
+        expect(connection.reload.name).to eq('renamed')
+      end
+
+      context 'when no index has been built yet' do
+        let(:index_exists) { false }
+
+        it 'reports the initial background build' do
+          edit_embedding_model
+
+          expect(response).to have_http_status(:ok)
+          expect(json_response).to include('vector_index_rebuild_started' => true)
+        end
+      end
+
+      context 'when the AI provider is switched off' do
+        before { Setting.set('ai_provider', false) }
+
+        it 'does not report a rebuild that cannot start', :aggregate_failures do
+          edit_embedding_model
+
+          expect(response).to have_http_status(:ok)
+          expect(json_response).not_to include('vector_index_rebuild_started')
+        end
+      end
+
+      context 'when the update hands semantic search over' do
+        let(:candidate) { create(:ai_provider_connection, config: { token: 'a', embedding_model: 'text-embedding-3-large' }) }
+
+        it 'hands it over and reports the background rebuild', :aggregate_failures do
+          put "/api/v1/ai/provider_connections/#{candidate.id}", params: { default_embedding: true }, as: :json
+
+          expect(response).to have_http_status(:ok)
+          expect(json_response).to include('vector_index_rebuild_started' => true)
+          expect(candidate.reload.default_embedding?).to be true
+        end
+
+        context 'when it runs on the same model' do
+          let(:candidate) { create(:ai_provider_connection, config: { token: 'a', embedding_model: 'text-embedding-3-small' }) }
+
+          it 'hands it over without reporting a rebuild', :aggregate_failures do
+            put "/api/v1/ai/provider_connections/#{candidate.id}", params: { default_embedding: true }, as: :json
+
+            expect(response).to have_http_status(:ok)
+            expect(json_response).not_to include('vector_index_rebuild_started')
+            expect(candidate.reload.default_embedding?).to be true
+          end
+        end
+      end
+
+      context 'with a connection that does not serve semantic search' do
+        let(:other) { create(:ai_provider_connection, config: { token: 'a', embedding_model: 'text-embedding-3-small' }) }
+
+        it 'saves without reporting a rebuild', :aggregate_failures do
+          put "/api/v1/ai/provider_connections/#{other.id}",
+              params: { config: { token: 'a', embedding_model: 'text-embedding-3-large' } },
+              as:     :json
+
+          expect(response).to have_http_status(:ok)
+          expect(json_response).not_to include('vector_index_rebuild_started')
+          expect(other.reload.config['embedding_model']).to eq('text-embedding-3-large')
+        end
+      end
+    end
+
+    describe '#set_default' do
+      let(:candidate_model) { 'text-embedding-3-large' }
+      let(:candidate)       { create(:ai_provider_connection, config: { token: 'a', embedding_model: candidate_model }) }
+
+      def hand_over
+        put "/api/v1/ai/provider_connections/#{candidate.id}/set_default",
+            params: { default: 'embedding', enabled: true },
+            as:     :json
+      end
+
+      it 'hands semantic search to another model and reports the background rebuild', :aggregate_failures do
+        hand_over
+
+        expect(response).to have_http_status(:ok)
+        expect(json_response).to include('vector_index_rebuild_started' => true)
+        expect(candidate.reload.default_embedding?).to be true
+      end
+
+      context 'when the connection it moves to runs on the same model' do
+        let(:candidate_model) { 'text-embedding-3-small' }
+
+        it 'hands it over without reporting a rebuild', :aggregate_failures do
+          hand_over
+
+          expect(response).to have_http_status(:ok)
+          expect(json_response).not_to include('vector_index_rebuild_started')
+          expect(candidate.reload.default_embedding?).to be true
+        end
+      end
+
+      # Semantic search simply stops; the index is left where it is.
+      it 'clears the default without reporting a rebuild', :aggregate_failures do
+        put "/api/v1/ai/provider_connections/#{connection.id}/set_default",
+            params: { default: 'embedding', enabled: false },
+            as:     :json
+
+        expect(response).to have_http_status(:ok)
+        expect(json_response).not_to include('vector_index_rebuild_started')
+        expect(connection.reload.default_embedding?).to be false
+      end
+    end
+  end
 end

@@ -13,9 +13,20 @@ import { useSessionStore } from '#shared/stores/session.ts'
 import KnowledgeBaseAnswerIcon from '#desktop/components/KnowledgeBaseAnswerIcon/KnowledgeBaseAnswerIcon.vue'
 import { visibilityMeta } from '#desktop/components/KnowledgeBaseAnswerIcon/visibilityMeta.ts'
 
-import type { KnowledgeBaseAnswerHeader } from '../../types.ts'
+import { useKnowledgeBaseAnswerReachedDates } from '../../composables/useKnowledgeBaseAnswerReachedDates.ts'
 
-const props = defineProps<{ answer: KnowledgeBaseAnswerHeader }>()
+import type { KnowledgeBaseAnswerHeaderDetailsAnswer } from './types.ts'
+
+const props = withDefaults(
+  defineProps<{
+    answer: KnowledgeBaseAnswerHeaderDetailsAnswer
+    // Off by default: the reader's header docks the very same warning as an alert bar
+    //   (KnowledgeBaseAnswerTopBarHeader's `alertMessage`), and showing both would say it twice.
+    //   The edit header has no alert of its own, so there it is this badge or nothing.
+    withTranslationWarning?: boolean
+  }>(),
+  { withTranslationWarning: false },
+)
 
 const session = useSessionStore()
 
@@ -29,6 +40,11 @@ const badgeVariants: Record<EnumKnowledgeBaseVisibility, BadgeVariant> = {
 }
 
 const visibility = computed(() => props.answer.visibility)
+
+// Only the dates the answer has actually reached: this strip says what the answer is, not what it is
+//   going to become - without the filter a draft whose publication is scheduled for next week would
+//   claim "PUBLISHED IN 1 WEEK" here, in the reader's header as much as in the editor's.
+const { reachedDates } = useKnowledgeBaseAnswerReachedDates(() => props.answer)
 
 // Deliberately a fixed value: the chip is rendered once per answer load, so it
 //   does not track elapsed time the way the CommonDateTime badges above do.
@@ -47,40 +63,63 @@ const editedLabel = computed(() => {
 
   return i18n.t('edited %s by %s', date, userDisplayName(editedBy))
 })
+
+const editedTooltip = computed(() => {
+  const { editedAt } = props.answer
+
+  return editedAt ? i18n.dateTime(editedAt) : undefined
+})
 </script>
 
 <template>
   <div class="flex max-w-full flex-wrap items-center gap-2.5 text-nowrap *:h-7">
     <CommonBadge :variant="badgeVariants[visibility]" class="gap-1 uppercase">
-      <KnowledgeBaseAnswerIcon :visibility="visibility" size="tiny" />
+      <KnowledgeBaseAnswerIcon decorative :visibility="visibility" size="tiny" />
       {{ $t(visibilityMeta[visibility].label) }}
     </CommonBadge>
 
-    <CommonBadge v-if="answer.internalAt" variant="tertiary" class="uppercase">
-      <CommonDateTime :date-time="answer.internalAt" type="relative" class="ms-1">
+    <!-- Same warning the browse view's answer card carries next to an untranslated title. -->
+    <CommonBadge
+      v-if="withTranslationWarning && answer.translationMissing"
+      v-tooltip="$t('No translation for this locale available')"
+      variant="warning"
+      size="xs"
+      rounded
+      class="flex items-center justify-center p-1!"
+    >
+      <CommonIcon name="translate" size="xs" decorative />
+    </CommonBadge>
+
+    <CommonBadge v-if="reachedDates.internalAt" variant="tertiary" class="uppercase">
+      <CommonDateTime :date-time="reachedDates.internalAt" type="relative" class="ms-1">
         <template #prefix>
-          {{ $t('Internally published at') }}
+          {{ $t('Internally published') }}
         </template>
       </CommonDateTime>
     </CommonBadge>
 
-    <CommonBadge v-if="answer.publishedAt" variant="tertiary" class="uppercase">
-      <CommonDateTime :date-time="answer.publishedAt" type="relative" class="ms-1">
+    <CommonBadge v-if="reachedDates.publishedAt" variant="tertiary" class="uppercase">
+      <CommonDateTime :date-time="reachedDates.publishedAt" type="relative" class="ms-1">
         <template #prefix>
-          {{ $t('Published at') }}
+          {{ $t('Published') }}
         </template>
       </CommonDateTime>
     </CommonBadge>
 
-    <CommonBadge v-if="answer.archivedAt" variant="tertiary" class="uppercase">
-      <CommonDateTime :date-time="answer.archivedAt" type="relative" class="ms-1">
+    <CommonBadge v-if="reachedDates.archivedAt" variant="tertiary" class="uppercase">
+      <CommonDateTime :date-time="reachedDates.archivedAt" type="relative" class="ms-1">
         <template #prefix>
-          {{ $t('Archived at') }}
+          {{ $t('Archived') }}
         </template>
       </CommonDateTime>
     </CommonBadge>
 
-    <CommonBadge v-if="editedLabel" variant="tertiary" class="uppercase">
+    <CommonBadge
+      v-if="editedLabel"
+      v-tooltip.supportive="editedTooltip"
+      variant="tertiary"
+      class="uppercase"
+    >
       {{ editedLabel }}
     </CommonBadge>
   </div>

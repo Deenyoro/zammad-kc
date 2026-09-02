@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 import { onKeyStroke, useLocalStorage, useScroll, whenever } from '@vueuse/core'
-import { cloneDeep, isEqual } from 'lodash-es'
+import { cloneDeep } from 'lodash-es'
 import {
   computed,
   toRef,
@@ -37,7 +37,6 @@ import { useTicketEdit } from '#shared/entities/ticket/composables/useTicketEdit
 import { useTicketEditForm } from '#shared/entities/ticket/composables/useTicketEditForm.ts'
 import { useTicketLiveUserList } from '#shared/entities/ticket/composables/useTicketLiveUserList.ts'
 import { useTicketNumberAndTitle } from '#shared/entities/ticket/composables/useTicketNumberAndTitle.ts'
-import { useTicketSignature } from '#shared/entities/ticket/composables/useTicketSignature.ts'
 import type {
   TicketArticleTimeAccountingFormData,
   TicketUpdateFormData,
@@ -61,8 +60,8 @@ import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 import { usePage } from '#desktop/composables/usePage.ts'
 import { useScrollPosition } from '#desktop/composables/useScrollPosition.ts'
 import { useTaskbarTab } from '#desktop/entities/user/current/composables/useTaskbarTab.ts'
+import { useTaskbarTabContext } from '#desktop/entities/user/current/composables/useTaskbarTabContext.ts'
 import { useTaskbarTabStateUpdates } from '#desktop/entities/user/current/composables/useTaskbarTabStateUpdates.ts'
-import type { TaskbarTabContext } from '#desktop/entities/user/current/types.ts'
 import FloatingToolbar from '#desktop/pages/ticket/components/TicketDetailView/FloatingToolbar.vue'
 import TicketDetailBottomBar from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailBottomBar/TicketDetailBottomBar.vue'
 import { items as highlightMenuItems } from '#desktop/pages/ticket/components/TicketDetailView/TicketDetailTopBar/composables/useHighlightMenuState.ts'
@@ -132,17 +131,12 @@ const {
   triggerFormUpdater,
 } = useForm()
 
-const tabContext = computed<TaskbarTabContext>((currentContext) => {
-  if (!isInitialSettled.value) return {}
-
-  const newContext = {
+const tabContext = useTaskbarTabContext(
+  () => ({
     formIsDirty: isDirty.value,
-  }
-
-  if (currentContext && isEqual(newContext, currentContext)) return currentContext
-
-  return newContext
-})
+  }),
+  isInitialSettled,
+)
 
 const { currentTaskbarTabId, currentTaskbarTabFormId, currentTaskbarTabNewArticlePresent } =
   useTaskbarTab(tabContext)
@@ -254,8 +248,6 @@ const {
   articleTypeSelectHandler,
   additionalAddArticleNotes,
 } = useTicketEditForm(ticket, form)
-
-const { signatureHandling } = useTicketSignature('email')
 
 const {
   isArticleFormGroupValid,
@@ -444,7 +436,7 @@ const isFormValid = computed(() => {
   return isTicketFormGroupValid.value && isArticleFormGroupValid.value
 })
 
-const formAdditionalRouteQueryParams = computed(() => ({
+const formUpdaterAdditionalParams = computed(() => ({
   taskbarId: currentTaskbarTabId.value,
 }))
 
@@ -774,13 +766,13 @@ const handleShowArticleForm = (
           :disabled="!isTicketEditable"
           :flatten-form-groups="['ticket']"
           :hidden-form-groups="hiddenFormGroups"
-          :handlers="[articleTypeHandler(), signatureHandling('body')]"
+          :handlers="[articleTypeHandler()]"
           :form-kit-plugins="[articleTypeSelectHandler]"
           :schema-data="ticketEditSchemaData"
           :initial-values="initialTicketValue"
           :initial-entity-object="ticket"
           :form-updater-id="EnumFormUpdaterId.FormUpdaterUpdaterTicketEdit"
-          :form-updater-additional-params="formAdditionalRouteQueryParams"
+          :form-updater-additional-params="formUpdaterAdditionalParams"
           use-object-attributes
           :schema-component-library="{
             Teleport: markRaw(Teleport) as unknown as Component,

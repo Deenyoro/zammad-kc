@@ -2,7 +2,7 @@
 
 class SearchIndexBackend
 
-  SUPPORTED_ES_VERSION_MINIMUM   = '7.8'.freeze
+  SUPPORTED_ES_VERSION_MINIMUM   = '8.15.0'.freeze
   SUPPORTED_ES_VERSION_LESS_THAN = '10'.freeze
 
   STORE_NAMES           = %w[preferences data].freeze
@@ -420,7 +420,10 @@ remove whole data from index
     if (fields = options.dig(:highlight_fields_by_indexes, index.to_sym)) && options[:only_total_count].blank?
       fields_for_highlight = fields.index_with { |_elem| {} }
 
-      query_data[:highlight] = { fields: fields_for_highlight }
+      # Top level highlight settings (tags, fragment size, no_match_size, ...) are inherited by
+      # every highlighted field. Callers that pass none keep Elasticsearch's defaults, i.e. up to
+      # five 100 character fragments marked with <em> - which is what the existing consumers render.
+      query_data[:highlight] = options[:highlight_options].to_h.merge(fields: fields_for_highlight)
     end
 
     if options[:only_total_count].present?
@@ -454,6 +457,14 @@ remove whole data from index
         id:   item['_id'],
         type: index,
       }
+
+      # Opt-in: the result hash is the public shape of a search, and most callers only ever read
+      # :id. Only a caller that has to merge several searches into one ranking needs the score.
+      # Note it is only comparable within one request - each index is searched separately (see
+      # .search) and the term statistics behind the score are per index.
+      if options[:with_score].present?
+        output[:score] = item['_score']
+      end
 
       if options.dig(:highlight_fields_by_indexes, index.to_sym)
         output[:highlight] = item['highlight']

@@ -64,13 +64,26 @@ RSpec.describe 'Chat Handling', type: :system do
   end
 
   def send_agent_message(message)
-    input = find('.active .chat-window .js-customerChatInput')
-    input.send_keys(message)
-    # Work around an obsure bug of send_keys sometimes not working on Firefox headless.
-    if input.text != message
-      input.execute_script("this.textContent = '#{message}'")
+    find('.active .chat-window .js-customerChatInput').send_keys(message)
+
+    # Wait until the message is verifiably present in the input before clicking
+    #   send, because ChatWindow#sendMessage silently sends nothing when the
+    #   input is empty at the time of the click.
+    #   send_keys sometimes fails to type into the contenteditable input at all
+    #   (observed on Firefox headless, but not provably limited to it) - that is
+    #   a failure of the test tooling, not product behavior, so set the text
+    #   directly in that case regardless of the driver.
+    wait.until do
+      input = find('.active .chat-window .js-customerChatInput')
+      input.execute_script('this.textContent = arguments[0]', message) if input.text != message
+      input.text == message
     end
+
+    # The send is deliberately clicked only once: a message that gets lost
+    #   although it was present in the input is a product bug that has to
+    #   surface here instead of being papered over by retyping and resending.
     click '.active .chat-window .js-send'
+    expect(page).to have_css('.active .chat-window .chat-message--agent', text: message)
   end
 
   shared_examples 'chat button is hidden after idle timeout' do
@@ -83,7 +96,7 @@ RSpec.describe 'Chat Handling', type: :system do
 
         expect(page).to have_css('.zammad-chat', visible: :all)
         expect(page).to have_css('.zammad-chat-is-hidden', visible: :all)
-        expect(page).to have_no_css('.open-zammad-chat:not([style*="display: none"]', visible: :all)
+        expect(page).to have_no_css('.open-zammad-chat:not([style*="display: none"])', visible: :all)
       end
     end
   end
@@ -385,6 +398,22 @@ RSpec.describe 'Chat Handling', type: :system do
       end
 
       check_content('.active .chat-window', 'closed the conversation')
+    end
+  end
+
+  context 'when hovering over the active agents info' do
+    it 'shows the avatar of the active agent', authenticated_as: :authenticate do
+      visit '/'
+
+      enable_agent_chat
+
+      expect(page).to have_css('.active .js-activeAgents .js-badgeActiveAgents', text: '1')
+
+      find('.active .js-activeAgents .js-info').hover
+
+      # The avatar is positioned via an inline style - Bootstrap's popover sanitizer
+      #   strips that attribute unless sanitizing is disabled, leaving a blank avatar.
+      expect(page).to have_css('.popover .userList-entry .avatar[style]')
     end
   end
 

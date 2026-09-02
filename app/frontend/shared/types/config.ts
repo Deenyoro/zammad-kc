@@ -3,6 +3,7 @@ export interface ConfigList {
   'active_storage.content_types_allowed_inline': string[]
   'auth_saml_credentials.display_name'?: string
   'auth_openid_connect_credentials.display_name'?: string
+  es_enabled?: boolean
   ai_assistance_kb_answer_from_ticket_generation: boolean
   ai_assistance_kb_answer_suggestions: boolean
   ai_assistance_kb_answer_suggestions_relevance_score: number
@@ -235,6 +236,7 @@ export interface ConfigList {
   user_lost_password?: boolean | null
   user_name_format: 'first_last' | 'last_first' | 'last_first_comma'
   user_show_password_login?: boolean | null
+  vectordb_enabled: boolean
   websocket_backend: string
   websocket_port: string
   [key: string]: unknown

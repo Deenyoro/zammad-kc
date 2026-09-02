@@ -122,7 +122,7 @@ watch(
 
 <template>
   <div
-    class="sticky top-(--top-header-height) z-30 -order-1 border-x border-t border-blue-200 bg-neutral-50 ltr:left-0 rtl:right-0 dark:border-gray-700 dark:bg-gray-500"
+    class="sticky top-(--top-header-height) z-30 -order-1 border-x border-t border-blue-200 bg-neutral-50 ltr:left-0 rtl:right-0 dark:border-gray-700 dark:bg-gray-500 formkit-alternative-background:bg-blue-200 dark:formkit-alternative-background:bg-gray-400"
   >
     <ActionToolbar
       v-show="!hideActionBarLocally"
@@ -163,7 +163,10 @@ watch(
             :key="action.id"
             class="flex grow p-2.5 focus-visible-app-default first:rounded-t-[calc(var(--radius-lg)+3px)] last:rounded-b-[calc(var(--radius-lg)+3px)] hover:bg-blue-600 focus-visible:-outline-offset-1! active:bg-blue-800! active:**:text-white! hover:dark:bg-blue-900"
             :class="{
-              'bg-blue-800! **:text-white!': isActive(action.name, action.attributes),
+              'bg-blue-800! **:text-white!': isActive(
+                action.activeName || action.name,
+                action.attributes,
+              ),
             }"
             :label-class="action.labelClass"
             :label="action.label"
