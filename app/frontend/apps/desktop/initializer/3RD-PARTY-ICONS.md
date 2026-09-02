@@ -62,6 +62,7 @@
 - `assets/info-circle.svg`
 - `assets/key.svg`
 - `assets/keyboard.svg`
+- `assets/lightbulb.svg`
 - `assets/lock.svg`
 - `assets/lock-fill.svg`
 - `assets/paperclip.svg`
@@ -72,6 +73,7 @@
 - `assets/phone.svg`
 - `assets/pin-angle.svg`
 - `assets/pin.svg`
+- `assets/play-fill.svg`
 - `assets/plus.svg`
 - `assets/plus-circle.svg`
 - `assets/plus-square.svg`
@@ -82,6 +84,7 @@
 - `assets/radio-yes.svg`
 - `assets/reply-all.svg`
 - `assets/reply.svg`
+- `assets/rss.svg`
 - `assets/search.svg`
 - `assets/shield-lock.svg`
 - `assets/sms.svg`

@@ -75,9 +75,10 @@ RSpec.describe User, type: :model do
     end
 
     it 'masks the password values and records the changed attribute' do
+      tracked_user.update!(password: 'someInitialPass123!') # so that the previous value is maskable, too
       tracked_user.update!(password: 'someSecurePass123!')
 
-      expect(audit_logs.find_by(action_type: 'update', auditable_id: tracked_user.id)).to have_attributes(
+      expect(audit_logs.where(action_type: 'update', auditable_id: tracked_user.id).last).to have_attributes(
         auditable_name: tracked_user.fullname,
         value_from:     { 'password' => SensitiveParamsHelper::SENSITIVE_MASK },
         value_to:       { 'password' => SensitiveParamsHelper::SENSITIVE_MASK },
@@ -92,10 +93,18 @@ RSpec.describe User, type: :model do
         .to change(audit_logs.where(action_type: 'update', auditable_id: admin.id), :count).by(1)
     end
 
-    it 'does not log password changes of customers' do
+    it 'does not log a customer changing their own password' do
       customer = create(:customer)
 
-      expect { customer.update!(password: 'someSecurePass123!') }.not_to change(audit_logs, :count)
+      expect { UserInfo.with_user_id(customer.id) { customer.update!(password: 'someSecurePass123!') } }
+        .not_to change(audit_logs, :count)
+    end
+
+    it 'logs a customer password change made by someone else' do
+      customer = create(:customer)
+
+      expect { UserInfo.with_user_id(admin.id) { customer.update!(password: 'someSecurePass123!') } }
+        .to change(audit_logs.where(action_type: 'update', auditable_id: customer.id), :count).by(1)
     end
   end
 

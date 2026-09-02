@@ -23,6 +23,9 @@ module Gql::Types::KnowledgeBase
     field :direct_answer_count, Integer, null: false, description: 'Number of answers visible to the current user directly in this category (its immediate level only)'
     field :direct_subcategory_count, Integer, null: false, description: 'Number of immediate child categories visible to the current user (its next level only)'
     field :breadcrumb, [Gql::Types::KnowledgeBase::CategoryType], null: false, description: 'Ancestors of this category, root first, including itself'
+    field :is_deletable, Boolean, null: false, description: 'Whether this category is empty, i.e. whether deleting it would be refused because of subcategories or answers below it'
+
+    field :policy, Gql::Types::Policy::KnowledgeBase::CategoryType, null: false, method: :itself, description: 'Which actions the current user may perform on this category'
 
     belongs_to :parent, Gql::Types::KnowledgeBase::CategoryType
     belongs_to :knowledge_base, Gql::Types::KnowledgeBaseType, null: false
@@ -54,7 +57,13 @@ module Gql::Types::KnowledgeBase
       kb_locale.present? && object.translation_to(kb_locale).nil?
     end
 
+    # The search query batches this through a map of its own rather than through `category_details`:
+    #   it needs the visibility of its category hits but none of the counts, and a details entry
+    #   holding only this key would make the non-null count fields below resolve to nil.
     def visibility
+      visibilities = context[:knowledge_base_category_visibility]
+      return visibilities[object.id] if visibilities&.key?(object.id)
+
       precomputed_detail&.dig(:visibility) || object.content_visibility(kb_locale)
     end
 
@@ -111,6 +120,20 @@ module Gql::Types::KnowledgeBase
 
     def is_visible_publicly
       object.public_content?(kb_locale)
+    end
+
+    # Deliberately not derived from `directAnswerCount` / `directSubcategoryCount`: those are counts
+    #   of what the *current user* may see, so they can read `0` for a category that `destroy!` will
+    #   still refuse to delete. It is also kept orthogonal to `policy.destroy` — the action is shown
+    #   when the user may delete, and explained when the category is not empty.
+    #
+    # Batched by the browse query, which asks this of every listed category; the fallback pair of
+    #   existence checks only runs where the type is resolved outside that flow.
+    def is_deletable
+      detail = precomputed_detail
+      return detail[:deletable] if detail
+
+      !object.children.exists? && !object.answers.exists?
     end
 
     def self.nested_access_pundit_method

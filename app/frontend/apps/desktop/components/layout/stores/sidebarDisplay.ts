@@ -15,6 +15,8 @@ const defaultCollapsedState = () => ({
   [SidebarName.TicketOverviews]: false,
   [SidebarName.PersonalSetting]: false,
   [SidebarName.KnowledgeBaseAnswer]: false,
+  [SidebarName.KnowledgeBaseAnswerCreate]: false,
+  [SidebarName.KnowledgeBaseAnswerEdit]: false,
 })
 
 export const useSidebarDisplayStore = defineStore('sidebarDisplay', () => {

@@ -9,10 +9,19 @@ fragment userCurrentTaskbarItemAttributes on UserTaskbarItem {
     ... on Ticket {
       ...ticketTaskbarTabAttributes
     }
+    ... on KnowledgeBaseAnswer {
+      ...knowledgeBaseAnswerTaskbarTabAttributes
+    }
     ... on UserTaskbarItemEntityTicketCreate {
       uid
       title
       createArticleTypeKey
+    }
+    ... on UserTaskbarItemEntityKnowledgeBaseAnswerCreate {
+      uid
+      title
+      locale
+      visibility
     }
     ... on UserTaskbarItemEntitySearch {
       query

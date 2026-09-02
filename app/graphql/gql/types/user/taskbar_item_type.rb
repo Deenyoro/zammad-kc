@@ -68,6 +68,14 @@ module Gql::Types::User
       # Ticket create is ...
       return @object.state.merge({ uid: id, type: 'TicketCreate' }) if key_prefix == 'TicketCreateScreen'
 
+      # A knowledge base answer create tab has no record either, and its key must not look like
+      #   the record key of an answer ('KnowledgeBase__Answer-42'), which the edit view uses -
+      #   hence the 'Screen' suffix, like the ticket create tab above.
+      #
+      # The params carry the locale the draft is written in, which the state cannot: one draft is
+      #   one translation, and the tab link has to be rebuildable without the form (like Search).
+      return @object.params.merge(@object.state).merge({ uid: id, type: 'KnowledgeBaseAnswerCreate' }) if key_prefix == 'KnowledgeBaseAnswerCreateScreen'
+
       # Search is ...
       return @object.params.merge(@object.state).merge({ type: 'Search' }) if key_prefix == 'Search'
 
@@ -81,8 +89,22 @@ module Gql::Types::User
         return nil
       end
 
-      entity = klass.find(id)
-      Pundit.authorize(context.current_user, entity, :show?)
+      # Not the `id` of the split above: a key may qualify the tab behind the
+      #   record id - the edit tab of a knowledge base answer carries the locale
+      #   it edits - and that qualifier is none of the record's identity.
+      entity_id = Taskbar.entity_key_id(@object.key)
+      if entity_id.nil?
+        Rails.logger.debug { "No taskbar entity id in key '#{@object.key}'." }
+
+        return nil
+      end
+
+      entity = klass.find(entity_id)
+
+      # Which query authorizes the entity depends on what the tab is for: an
+      #   edit tab is only offered to someone who may edit (see
+      #   Taskbar.entity_pundit_method).
+      Pundit.authorize(context.current_user, entity, Taskbar.entity_pundit_method(@object.callback))
 
       entity
     end
