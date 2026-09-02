@@ -73,6 +73,22 @@ describe('TopBarHeaderFull', () => {
     )
   })
 
+  it('offers a link to the knowledge base search ahead of the public knowledge base link', () => {
+    const view = renderHeader({ searchLink: '/knowledge-base/locale/en-us' })
+
+    const searchLink = view.getByRole('link', { name: 'Search the knowledge base' })
+    const previewLink = view.getByRole('link', { name: 'View public knowledge base' })
+
+    expect(searchLink).toHaveAttribute('href', '/desktop/knowledge-base/locale/en-us')
+    expect(searchLink.compareDocumentPosition(previewLink)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+  })
+
+  it('offers no search link without one', () => {
+    const view = renderHeader()
+
+    expect(view.queryByRole('link', { name: 'Search the knowledge base' })).not.toBeInTheDocument()
+  })
+
   it('emits the selected locale when a language is chosen', async () => {
     const view = renderHeader()
 
@@ -88,6 +104,37 @@ describe('TopBarHeaderFull', () => {
     await view.events.click(view.getByRole('button', { name: 'Copy knowledge base name' }))
 
     expect(copyKnowledgeBaseNameToClipboard).toHaveBeenCalled()
+  })
+
+  // While a node is being created the breadcrumb's last item is the heading, so the big title
+  //   row must not take up space above it.
+  it('renders no title row without a title', () => {
+    const view = renderHeader({ title: undefined })
+
+    expect(view.queryByText('Knowledge Base Title')).not.toBeInTheDocument()
+  })
+
+  // A node that is being created has no stored title to copy - its title is a form field.
+  it('hides the copy button when asked to', () => {
+    const view = renderHeader({ noCopyButton: true })
+
+    expect(view.queryByRole('button', { name: 'Copy knowledge base name' })).not.toBeInTheDocument()
+  })
+
+  it('offers the given actions in the action menu', async () => {
+    const view = renderHeader({
+      actions: [{ key: 'knowledge-base-feed', label: 'Set up RSS feed', icon: 'rss' }],
+    })
+
+    await view.events.click(view.getByRole('button', { name: 'Additional actions' }))
+
+    expect(view.getByRole('button', { name: 'Set up RSS feed' })).toBeInTheDocument()
+  })
+
+  it('hides the action menu without actions', () => {
+    const view = renderHeader({ actions: [] })
+
+    expect(view.queryByRole('button', { name: 'Additional actions' })).not.toBeInTheDocument()
   })
 
   // The title has to sit above the content it belongs to: the browse view's card
@@ -111,5 +158,21 @@ describe('TopBarHeaderFull', () => {
     // Breaks out of the header's own px-5.5 first, so the px-5.5 above is the
     //   header's own padding, not stacked on top of it.
     expect(title.parentElement).toHaveClass('-mx-5.5')
+  })
+
+  // The create and edit views put their title field up here, above the form column it belongs
+  //   to - so it is the field, not a title, that has to line up with the fields below it.
+  it('caps the teleport target for the title field at the form column width', () => {
+    const view = renderHeader({
+      title: undefined,
+      titleFieldTarget: 'knowledgeBaseAnswerTitleField',
+      contentWidth: 'form',
+    })
+
+    const target = view.baseElement.querySelector('#knowledgeBaseAnswerTitleField')
+
+    // Same class the create/edit form column uses, so the two stay aligned at any width.
+    expect(target).toHaveClass('max-w-270', 'px-5.5')
+    expect(target?.parentElement).toHaveClass('-mx-5.5')
   })
 })

@@ -3,9 +3,6 @@
 require 'elasticsearch'
 
 class AI::VectorDB
-  SUPPORTED_ES_VERSION_MINIMUM   = '8.11.0'.freeze
-  SUPPORTED_ES_VERSION_LESS_THAN = '10.0.0'.freeze
-
   # An Elasticsearch transport error can carry the whole response body as its message ("[400] {…}").
   # Keep that technical detail in the log and report an actionable message to callers instead.
   ERROR_MESSAGE = __('Semantic search is temporarily unavailable. Please try again later.')
@@ -23,8 +20,19 @@ class AI::VectorDB
           open_timeout: 8,
           timeout:      ENV.fetch('ZAMMAD_HTTP_ELASTICSEARCH_READ_TIMEOUT', 180).to_i,
         },
+        ssl:     ssl_options,
       },
     }
+  end
+
+  # Elasticsearch is reached through Faraday here instead of UserAgent, so the SSL setup
+  # SearchIndexBackend gets for free has to be passed explicitly: Faraday builds its own
+  # certificate store from the system CAs only and ignores the custom SSL certificates Zammad
+  # applies to the default OpenSSL context, and it defaults to verifying regardless of es_ssl_verify.
+  def ssl_options
+    return { verify: false } if !Setting.get('es_ssl_verify')
+
+    { cert_store: Certificate::ApplySSLCertificates.ensure_fresh_ssl_context }
   end
 
   def client
@@ -323,11 +331,17 @@ class AI::VectorDB
     raise AI::VectorDB::Error, __('Connection to Elasticsearch Vector DB failed')
   end
 
+  # `knn` sends the Query DSL kNN query with a `k` parameter, which Elasticsearch accepts only from
+  #   8.15 on: 8.11 rejects the query outright ("[knn] queries cannot be provided directly") and 8.12
+  #   to 8.14 reject `k` ("[knn] unknown field [k]"). That is why the overall minimum in
+  #   SearchIndexBackend is 8.15, and the range comes from there rather than being declared again
+  #   here. This check stays separate because it talks to the server through Elasticsearch::Client
+  #   and reports unavailability instead of aborting.
   def verify_es_version!
     reported = request { client.info }['version']['number']
     version = Gem::Version.new(reported)
-    minimum = Gem::Version.new(SUPPORTED_ES_VERSION_MINIMUM)
-    less_than = Gem::Version.new(SUPPORTED_ES_VERSION_LESS_THAN)
+    minimum = Gem::Version.new(SearchIndexBackend::SUPPORTED_ES_VERSION_MINIMUM)
+    less_than = Gem::Version.new(SearchIndexBackend::SUPPORTED_ES_VERSION_LESS_THAN)
     return if version >= minimum && version < less_than
 
     Rails.logger.error { "AI::VectorDB: Incompatible Elasticsearch version #{reported}" }

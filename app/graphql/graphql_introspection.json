@@ -1765,6 +1765,22 @@
               "deprecationReason": null
             },
             {
+              "name": "url",
+              "description": "Route of the answer in the desktop app, e.g. the href to write when linking it from another answer",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "value",
               "description": null,
               "args": [],
@@ -1846,6 +1862,190 @@
                     "name": "ID",
                     "ofType": null
                   }
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "AutocompleteSearchKnowledgeBaseCategoryIconEntry",
+          "description": "Type that represents an autocomplete knowledge base category icon entry. Its `value` is the codepoint stored on the category, which doubles as the sprite symbol id.",
+          "fields": [
+            {
+              "name": "disabled",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "heading",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "headingPlaceholder",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "icon",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "iconSet",
+              "description": "Icon font the entry was found in, needed to render it from the correct sprite",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "KnowledgeBaseIconSet",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "label",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "labelPlaceholder",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "value",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "AutocompleteSearchKnowledgeBaseCategoryIconInput",
+          "description": "Input fields for knowledge base category icon autocomplete searches.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "query",
+              "description": "Query from the autocomplete field",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "limit",
+              "description": "Limit for the amount of entries",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "iconSet",
+              "description": "Icon font of the knowledge base the category belongs to, selecting the catalog to search",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "KnowledgeBaseIconSet",
+                  "ofType": null
                 }
               },
               "defaultValue": null
@@ -5545,6 +5745,36 @@
               "deprecationReason": null
             },
             {
+              "name": "FormUpdater__Updater__KnowledgeBase__Answer__Create",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FormUpdater__Updater__KnowledgeBase__Answer__Edit",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FormUpdater__Updater__KnowledgeBase__Category__Create",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FormUpdater__Updater__KnowledgeBase__Category__Edit",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FormUpdater__Updater__KnowledgeBase__Edit",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "FormUpdater__Updater__Organization__Edit",
               "description": null,
               "isDeprecated": false,
@@ -5607,6 +5837,122 @@
             {
               "name": "FormUpdater__Updater__User__Notifications",
               "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "EnumKnowledgeBaseAnswerScreen",
+          "description": "The knowledge base answer screen a preference applies to",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "create",
+              "description": "The view an answer is added in.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "edit",
+              "description": "The view an existing answer is edited in.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "EnumKnowledgeBaseAnswerScreenBehavior",
+          "description": "Option to choose what happens after a knowledge base answer was saved",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "stayOnTab",
+              "description": "Keep the tab open on the saved answer. Edit screen only.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "closeTabAndOpenAnswer",
+              "description": "Close the tab and read the saved answer.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "closeTabAndOpenCategory",
+              "description": "Close the tab and return to the answer's category.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "closeTabAndAddAnother",
+              "description": "Close the tab and open a fresh form to add the next answer in the same category. Create screen only.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "EnumKnowledgeBasePermissionAccess",
+          "description": "Access level a role has on a knowledge base object",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "editor",
+              "description": "May read and edit the content.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "reader",
+              "description": "May read the content, including internally published answers.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "none",
+              "description": "Has no access at all.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "EnumKnowledgeBaseSchedulableVisibility",
+          "description": "Publication state a scheduled visibility change of knowledge base content can reach",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "internal",
+              "description": "Published internally, visible to agents.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "published",
+              "description": "Published publicly.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "archived",
+              "description": "No longer published, retained for reference.",
               "isDeprecated": false,
               "deprecationReason": null
             }
@@ -6106,6 +6452,18 @@
               "deprecationReason": null
             },
             {
+              "name": "KnowledgeBaseAnswerCreate",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "KnowledgeBaseAnswerEdit",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "Search",
               "description": null,
               "isDeprecated": false,
@@ -6518,6 +6876,12 @@
           "inputFields": null,
           "interfaces": null,
           "enumValues": [
+            {
+              "name": "Service__KnowledgeBase__Answer__Update__Validator__ConcurrentAttachmentChange__Error",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
             {
               "name": "Service__Ticket__Update__Validator__ChecklistCompleted__Error",
               "description": null,
@@ -8081,6 +8445,18 @@
               "deprecationReason": null
             },
             {
+              "name": "footerNote",
+              "description": "Footer note in the requested locale (falls back to the primary locale)",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "homepageLayout",
               "description": null,
               "args": [],
@@ -8185,6 +8561,38 @@
               "deprecationReason": null
             },
             {
+              "name": "policy",
+              "description": "Which actions the current user may perform on this knowledge base, including adding a top level category",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PolicyKnowledgeBase",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "showFeedIcon",
+              "description": "Whether the feeds are offered at all (admin setting \"Show Feed Icon\")",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "title",
               "description": "Title in the requested locale (falls back to the primary locale)",
               "args": [],
@@ -8225,7 +8633,7 @@
           "fields": [
             {
               "name": "archivedAt",
-              "description": "Only for users with internal access to the category; the public site knows publication only",
+              "description": "Only for users with internal access to the category; the public site knows publication only. Only once reached unless the user may edit the answer",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -8369,7 +8777,7 @@
             },
             {
               "name": "internalAt",
-              "description": "Only for users with internal access to the category; the public site knows publication only",
+              "description": "Only for users with internal access to the category; the public site knows publication only. Only once reached unless the user may edit the answer",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -8404,6 +8812,22 @@
               "deprecationReason": null
             },
             {
+              "name": "policy",
+              "description": "Which actions the current user may perform on this answer",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PolicyDefault",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "position",
               "description": null,
               "args": [],
@@ -8421,7 +8845,7 @@
             },
             {
               "name": "publishedAt",
-              "description": null,
+              "description": "When the answer was published; only once reached unless the user may edit it",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -8468,9 +8892,13 @@
               "description": "Title in the requested locale (falls back to the primary locale)",
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -8542,6 +8970,69 @@
                   "kind": "ENUM",
                   "name": "EnumKnowledgeBaseVisibility",
                   "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "visibilitySchedules",
+              "description": "Visibility changes the answer is going to make, in the order they take effect; only for users who may edit the answer",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "KnowledgeBaseAnswerVisibilitySchedule",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseAnswerAddPayload",
+          "description": "Autogenerated return type of KnowledgeBaseAnswerAdd.",
+          "fields": [
+            {
+              "name": "answer",
+              "description": "The created answer.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseAnswer",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
                 }
               },
               "isDeprecated": false,
@@ -8622,6 +9113,49 @@
         },
         {
           "kind": "OBJECT",
+          "name": "KnowledgeBaseAnswerDeletePayload",
+          "description": "Autogenerated return type of KnowledgeBaseAnswerDelete.",
+          "fields": [
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "success",
+              "description": "Was the mutation successful?",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "KnowledgeBaseAnswerEdge",
           "description": "An edge in a connection.",
           "fields": [
@@ -8652,6 +9186,186 @@
                   "kind": "OBJECT",
                   "name": "KnowledgeBaseAnswer",
                   "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "KnowledgeBaseAnswerKnownAttachmentInput",
+          "description": "One attachment the form was opened with, identified the only way it can be: the upload cache holds copies whose ids are not the answer's.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "name",
+              "description": "File name.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "size",
+              "description": "File size in bytes.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseAnswerLiveUser",
+          "description": "Knowledge base answer live user information",
+          "fields": [
+            {
+              "name": "apps",
+              "description": "Different apps information from the user",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "OBJECT",
+                      "name": "KnowledgeBaseAnswerLiveUserApp",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "user",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "User",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseAnswerLiveUserApp",
+          "description": "Knowledge base answer live user app information",
+          "fields": [
+            {
+              "name": "editing",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "lastInteraction",
+              "description": "Last interaction time from the user in the frontend",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ISO8601DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "name",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "EnumTaskbarApp",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseAnswerLiveUserUpdatesPayload",
+          "description": "Autogenerated return type of KnowledgeBaseAnswerLiveUserUpdates.",
+          "fields": [
+            {
+              "name": "liveUsers",
+              "description": "Current live users from the knowledge base answer.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "KnowledgeBaseAnswerLiveUser",
+                    "ofType": null
+                  }
                 }
               },
               "isDeprecated": false,
@@ -9046,6 +9760,18 @@
               "deprecationReason": null
             },
             {
+              "name": "bodyForEditing",
+              "description": "The stored body with inline image URLs resolved and nothing else rendered - what an editor loads, as opposed to `bodyWithUrls`",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "bodyWithUrls",
               "description": null,
               "args": [],
@@ -9128,6 +9854,96 @@
           "possibleTypes": null
         },
         {
+          "kind": "INPUT_OBJECT",
+          "name": "KnowledgeBaseAnswerUpdateMetaInput",
+          "description": "How to carry out a knowledge base answer update, as opposed to what to store.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "knownAttachments",
+              "description": "The attachments the form was opened with, to detect a concurrent change. Omit to skip that check.",
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "KnowledgeBaseAnswerKnownAttachmentInput",
+                    "ofType": null
+                  }
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "skipValidators",
+              "description": "Validator exceptions the caller was warned about and chooses to override.",
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "EnumUserErrorException",
+                    "ofType": null
+                  }
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseAnswerUpdatePayload",
+          "description": "Autogenerated return type of KnowledgeBaseAnswerUpdate.",
+          "fields": [
+            {
+              "name": "answer",
+              "description": "The updated answer.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseAnswer",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
           "kind": "OBJECT",
           "name": "KnowledgeBaseAnswerUpdatesPayload",
           "description": "Autogenerated return type of KnowledgeBaseAnswerUpdates.",
@@ -9140,6 +9956,135 @@
                 "kind": "OBJECT",
                 "name": "KnowledgeBaseAnswer",
                 "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseAnswerVisibilitySchedule",
+          "description": "A scheduled visibility change of a knowledge base answer",
+          "fields": [
+            {
+              "name": "scheduledAt",
+              "description": "When the answer reaches that state",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ISO8601DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "visibility",
+              "description": "Publication state the answer is going to reach",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "EnumKnowledgeBaseSchedulableVisibility",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseAnswerVisibilityScheduleAddPayload",
+          "description": "Autogenerated return type of KnowledgeBaseAnswerVisibilityScheduleAdd.",
+          "fields": [
+            {
+              "name": "answer",
+              "description": "The answer with its updated schedule.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseAnswer",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseAnswerVisibilityScheduleRemovePayload",
+          "description": "Autogenerated return type of KnowledgeBaseAnswerVisibilityScheduleRemove.",
+          "fields": [
+            {
+              "name": "answer",
+              "description": "The answer with its updated schedule.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseAnswer",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -9292,6 +10237,22 @@
               "deprecationReason": null
             },
             {
+              "name": "isDeletable",
+              "description": "Whether this category is empty, i.e. whether deleting it would be refused because of subcategories or answers below it",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "isVisiblePublicly",
               "description": "Whether this category shows published content in the requested locale on the public help site (drives the \"view public knowledge base\" link)",
               "args": [],
@@ -9331,6 +10292,22 @@
                 "kind": "OBJECT",
                 "name": "KnowledgeBaseCategory",
                 "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "policy",
+              "description": "Which actions the current user may perform on this category",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PolicyKnowledgeBaseCategory",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -9454,6 +10431,151 @@
           ],
           "inputFields": null,
           "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseCategoryAddPayload",
+          "description": "Autogenerated return type of KnowledgeBaseCategoryAdd.",
+          "fields": [
+            {
+              "name": "category",
+              "description": "The created category.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseCategory",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseCategoryDeletePayload",
+          "description": "Autogenerated return type of KnowledgeBaseCategoryDelete.",
+          "fields": [
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "success",
+              "description": "Was the mutation successful?",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "KnowledgeBaseCategoryInput",
+          "description": "Represents the knowledge base category attributes to be used in create and update.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "categoryIcon",
+              "description": "Icon of the category, from the icon set of its knowledge base. Defaults to the knowledge base default icon on create.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "parentId",
+              "description": "Category this category belongs under. Pass `null` for the top level, omit it to leave the parent unchanged.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "title",
+              "description": "Title of the category in the locale of this mutation.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "NonEmptyString",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "permissions",
+              "description": "Granular access per role, applied in the same transaction as the category itself. Omitted leaves the stored permissions alone, an empty list drops all of them (everything is then inherited).",
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "KnowledgeBaseRolePermissionInput",
+                    "ofType": null
+                  }
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
           "enumValues": null,
           "possibleTypes": null
         },
@@ -9613,6 +10735,49 @@
         },
         {
           "kind": "OBJECT",
+          "name": "KnowledgeBaseCategoryUpdatePayload",
+          "description": "Autogenerated return type of KnowledgeBaseCategoryUpdate.",
+          "fields": [
+            {
+              "name": "category",
+              "description": "The updated category.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseCategory",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "KnowledgeBaseContentUpdatesPayload",
           "description": "Autogenerated return type of KnowledgeBaseContentUpdates.",
           "fields": [
@@ -9638,7 +10803,7 @@
             },
             {
               "name": "knowledgeBase",
-              "description": "The active knowledge base",
+              "description": "The active knowledge base; null once none is active",
               "args": [],
               "type": {
                 "kind": "OBJECT",
@@ -9655,11 +10820,253 @@
           "possibleTypes": null
         },
         {
+          "kind": "INPUT_OBJECT",
+          "name": "KnowledgeBaseCreateAnswerInput",
+          "description": "Represents the knowledge base answer attributes to be used in create.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "categoryId",
+              "description": "Category to file the answer in.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "title",
+              "description": "Title of the answer in the locale of this mutation.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "NonEmptyString",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "body",
+              "description": "Rich text body of the answer in the locale of this mutation.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "formId",
+              "description": "Form the answer is submitted from. Its upload cache holds the files to attach, minus the inline images of the body.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "FormId",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "visibility",
+              "description": "Publication state to put the answer in, effective immediately.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "EnumKnowledgeBaseVisibility",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "tags",
+              "description": "Tags to assign to the answer, empty for none. A tag that does not exist yet is only created when the `tag_new` setting allows it.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseFeed",
+          "description": "Feed paths of the internal knowledge base, including the access token",
+          "fields": [
+            {
+              "name": "categoryPath",
+              "description": "Feed covering the browsed category including its sub-categories (null at the knowledge base root)",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBasePath",
+              "description": "Feed covering all updates of the knowledge base",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseFeedTokenRenewPayload",
+          "description": "Autogenerated return type of KnowledgeBaseFeedTokenRenew.",
+          "fields": [
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "feed",
+              "description": "Feed paths carrying the renewed access token",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "KnowledgeBaseFeed",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
           "kind": "SCALAR",
           "name": "KnowledgeBaseIconSet",
           "description": "Icon font a knowledge base renders its category icons from; one of FontAwesome, anticon, material, ionicons, Simple-Line-Icons",
           "fields": null,
           "inputFields": null,
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "KnowledgeBaseInput",
+          "description": "Represents the knowledge base attributes to be used in update.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "title",
+              "description": "Title of the knowledge base in the locale of this mutation.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "NonEmptyString",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "footerNote",
+              "description": "Footer note of the knowledge base in the locale of this mutation.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "NonEmptyString",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "permissions",
+              "description": "Granular access per role, applied in the same transaction as the knowledge base itself. Omitted leaves the stored permissions alone, an empty list drops all of them.",
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "KnowledgeBaseRolePermissionInput",
+                    "ofType": null
+                  }
+                }
+              },
+              "defaultValue": null
+            }
+          ],
           "interfaces": null,
           "enumValues": null,
           "possibleTypes": null
@@ -9761,6 +11168,461 @@
                   "name": "ISO8601DateTime",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "KnowledgeBaseRolePermissionInput",
+          "description": "Represents the access one role is granted on a knowledge base object.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "roleId",
+              "description": "Role the access applies to.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "access",
+              "description": "Access level to grant the role.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "EnumKnowledgeBasePermissionAccess",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "UNION",
+          "name": "KnowledgeBaseSearchItem",
+          "description": "Object found by a knowledge base search",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": [
+            {
+              "kind": "OBJECT",
+              "name": "KnowledgeBaseAnswer",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "KnowledgeBaseCategory",
+              "ofType": null
+            }
+          ]
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseSearchPathSegment",
+          "description": "One category on the path to a search result",
+          "fields": [
+            {
+              "name": "id",
+              "description": "Category id, for linking the breadcrumb",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "title",
+              "description": "Title in the requested locale (falls back to the primary locale)",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseSearchPreviewSegment",
+          "description": "One run of text in a search preview, either matched or not",
+          "fields": [
+            {
+              "name": "highlight",
+              "description": "Whether this run matched the search term and should be marked",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "text",
+              "description": "Plain text, safe to render as text",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseSearchResult",
+          "description": "One knowledge base search hit, with the previews that show why it matched",
+          "fields": [
+            {
+              "name": "bodyPreview",
+              "description": "Excerpt of the body around the match, split into matched and unmatched runs; empty for a category",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "OBJECT",
+                      "name": "KnowledgeBaseSearchPreviewSegment",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "categoryPath",
+              "description": "Categories leading to this hit, root first; empty at the top level",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "OBJECT",
+                      "name": "KnowledgeBaseSearchPathSegment",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "item",
+              "description": "The found answer or category",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "UNION",
+                  "name": "KnowledgeBaseSearchItem",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "titlePreview",
+              "description": "The title, split into matched and unmatched runs",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "OBJECT",
+                      "name": "KnowledgeBaseSearchPreviewSegment",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseSearchResultConnection",
+          "description": "The connection type for KnowledgeBaseSearchResult.",
+          "fields": [
+            {
+              "name": "edges",
+              "description": "A list of edges.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "OBJECT",
+                      "name": "KnowledgeBaseSearchResultEdge",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PageInfo",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "totalCount",
+              "description": "Indicates the total number of available records.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseSearchResultEdge",
+          "description": "An edge in a connection.",
+          "fields": [
+            {
+              "name": "cursor",
+              "description": "A cursor for use in pagination.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "node",
+              "description": "The item at the end of the edge.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "KnowledgeBaseSearchResult",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "KnowledgeBaseUpdateAnswerInput",
+          "description": "Represents the knowledge base answer attributes to be used in update.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "categoryId",
+              "description": "Category to file the answer in.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "title",
+              "description": "Title of the answer in the locale of this mutation.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "NonEmptyString",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "body",
+              "description": "Rich text body of the answer in the locale of this mutation.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "formId",
+              "description": "Form the answer is submitted from. Its upload cache holds the files to attach, minus the inline images of the body.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "FormId",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "visibility",
+              "description": "Publication state to put the answer in, effective immediately.",
+              "type": {
+                "kind": "ENUM",
+                "name": "EnumKnowledgeBaseVisibility",
+                "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseUpdatePayload",
+          "description": "Autogenerated return type of KnowledgeBaseUpdate.",
+          "fields": [
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBase",
+              "description": "The updated knowledge base.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBase",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -11402,6 +13264,74 @@
               "deprecationReason": null
             },
             {
+              "name": "knowledgeBaseAnswerAdd",
+              "description": "Create a knowledge base answer.",
+              "args": [
+                {
+                  "name": "input",
+                  "description": "The answer data.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "KnowledgeBaseCreateAnswerInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "locale",
+                  "description": "System locale code the submitted title and body belong to, and the returned answer is localized in.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseAnswerAddPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBaseAnswerDelete",
+              "description": "Delete a knowledge base answer.",
+              "args": [
+                {
+                  "name": "answerId",
+                  "description": "Answer to delete.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseAnswerDeletePayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "knowledgeBaseAnswerSuggestionContentTransform",
               "description": "Transform the content of a knowledge base answer suggestion to be usable in the frontend",
               "args": [
@@ -11437,6 +13367,364 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "KnowledgeBaseAnswerSuggestionContentTransformPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBaseAnswerUpdate",
+              "description": "Update a knowledge base answer.",
+              "args": [
+                {
+                  "name": "answerId",
+                  "description": "Answer to update.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "description": "The answer data. Every attribute is optional; an absent one leaves the stored value alone.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "KnowledgeBaseUpdateAnswerInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "locale",
+                  "description": "System locale code the submitted title and body are written into, and the returned answer is localized in.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "meta",
+                  "description": "How to carry out the update.",
+                  "type": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "KnowledgeBaseAnswerUpdateMetaInput",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseAnswerUpdatePayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBaseAnswerVisibilityScheduleAdd",
+              "description": "Schedule a visibility change of a knowledge base answer.",
+              "args": [
+                {
+                  "name": "answerId",
+                  "description": "Answer to schedule the change for.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "visibility",
+                  "description": "Publication state the answer is to reach. Replaces the change this state is already scheduled for, if any.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "EnumKnowledgeBaseSchedulableVisibility",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "scheduledAt",
+                  "description": "When the answer is to reach that state. Must be in the future.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ISO8601DateTime",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseAnswerVisibilityScheduleAddPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBaseAnswerVisibilityScheduleRemove",
+              "description": "Clear a scheduled visibility change of a knowledge base answer.",
+              "args": [
+                {
+                  "name": "answerId",
+                  "description": "Answer to clear the schedule of.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "visibility",
+                  "description": "Publication state whose scheduled change is to be cleared.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "EnumKnowledgeBaseSchedulableVisibility",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseAnswerVisibilityScheduleRemovePayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBaseCategoryAdd",
+              "description": "Create a knowledge base category.",
+              "args": [
+                {
+                  "name": "input",
+                  "description": "The category data.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "KnowledgeBaseCategoryInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "locale",
+                  "description": "System locale code the submitted title belongs to, and the returned category is localized in.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseCategoryAddPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBaseCategoryDelete",
+              "description": "Delete an empty knowledge base category.",
+              "args": [
+                {
+                  "name": "categoryId",
+                  "description": "Category to delete.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseCategoryDeletePayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBaseCategoryUpdate",
+              "description": "Update a knowledge base category.",
+              "args": [
+                {
+                  "name": "categoryId",
+                  "description": "Category to update.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "description": "The category data.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "KnowledgeBaseCategoryInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "locale",
+                  "description": "System locale code the submitted title belongs to, and the returned category is localized in.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseCategoryUpdatePayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBaseFeedTokenRenew",
+              "description": "Renew the access token of the internal knowledge base feeds, invalidating the previous feed URLs",
+              "args": [
+                {
+                  "name": "categoryId",
+                  "description": "Category to offer an additional feed for; omit for the knowledge base root",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "locale",
+                  "description": "System locale code the feeds should deliver",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseFeedTokenRenewPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBaseUpdate",
+              "description": "Update the knowledge base.",
+              "args": [
+                {
+                  "name": "input",
+                  "description": "The knowledge base data.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "KnowledgeBaseInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "locale",
+                  "description": "System locale code the submitted texts belong to, and the returned knowledge base is localized in.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseUpdatePayload",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -13693,6 +15981,47 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "UserCurrentDeviceDeletePayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "userCurrentKnowledgeBaseAnswerScreenBehavior",
+              "description": "Update what happens for the current user after a knowledge base answer was saved",
+              "args": [
+                {
+                  "name": "screen",
+                  "description": "Knowledge base answer screen to set the behavior for",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "EnumKnowledgeBaseAnswerScreen",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "behavior",
+                  "description": "Knowledge base answer screen behavior to set",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "EnumKnowledgeBaseAnswerScreenBehavior",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "UserCurrentKnowledgeBaseAnswerScreenBehaviorPayload",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -16984,6 +19313,156 @@
         },
         {
           "kind": "OBJECT",
+          "name": "PolicyKnowledgeBase",
+          "description": "Access knowledge base specific Pundit policy queries for the current object and user.",
+          "fields": [
+            {
+              "name": "update",
+              "description": "Is the user allowed to update this knowledge base?",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "PolicyKnowledgeBaseCategory",
+          "description": "Access knowledge base category specific Pundit policy queries for the current object and user.",
+          "fields": [
+            {
+              "name": "createAnswer",
+              "description": "Is the user allowed to create an answer in this category?",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "createSubcategory",
+              "description": "Is the user allowed to add a category under this category?",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "destroy",
+              "description": "Is the user allowed to delete this object?",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "destroyAnswer",
+              "description": "Is the user allowed to delete answers in this category?",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "permissions",
+              "description": "Is the user allowed to see and change the permissions of this category?",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "update",
+              "description": "Is the user allowed to update this object?",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updateAnswer",
+              "description": "Is the user allowed to edit the answers in this category?",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "PolicyMentionUserTicketAccess",
           "description": "Check Pundit policy queries for the mentioned object and user.",
           "fields": [
@@ -17777,6 +20256,45 @@
               "deprecationReason": null
             },
             {
+              "name": "autocompleteSearchKnowledgeBaseCategoryIcon",
+              "description": "Search for knowledge base category icons",
+              "args": [
+                {
+                  "name": "input",
+                  "description": "The input object for the autocomplete search",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "AutocompleteSearchKnowledgeBaseCategoryIconInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "OBJECT",
+                      "name": "AutocompleteSearchKnowledgeBaseCategoryIconEntry",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "autocompleteSearchObjectAttributeExternalDataSource",
               "description": "Search for values in object attributes for external data sources",
               "args": [
@@ -18435,6 +20953,134 @@
                 "kind": "OBJECT",
                 "name": "KnowledgeBaseCategorySubcategoriesPayload",
                 "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBaseFeed",
+              "description": "Fetch the feed paths of the internal knowledge base for the current user",
+              "args": [
+                {
+                  "name": "categoryId",
+                  "description": "Category to offer an additional feed for; omit for the knowledge base root",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "locale",
+                  "description": "System locale code the feeds should deliver",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "KnowledgeBaseFeed",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBaseSearch",
+              "description": "Search the knowledge base for answers and categories",
+              "args": [
+                {
+                  "name": "query",
+                  "description": "What to search for",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "categoryId",
+                  "description": "Restrict the search to this category and its subcategories",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "locale",
+                  "description": "System locale code used to resolve titles",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "after",
+                  "description": "Returns the elements in the list that come after the specified cursor.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "before",
+                  "description": "Returns the elements in the list that come before the specified cursor.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "first",
+                  "description": "Returns the first _n_ elements from the list.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "last",
+                  "description": "Returns the last _n_ elements from the list.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "KnowledgeBaseSearchResultConnection",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -21316,6 +23962,51 @@
               "deprecationReason": null
             },
             {
+              "name": "knowledgeBaseAnswerLiveUserUpdates",
+              "description": "Updates to knowledge base answer live users (for editors).",
+              "args": [
+                {
+                  "name": "key",
+                  "description": "Taskbar key to filter for.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "app",
+                  "description": "Taskbar app to filter for.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "EnumTaskbarApp",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "KnowledgeBaseAnswerLiveUserUpdatesPayload",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "knowledgeBaseAnswerUpdates",
               "description": "Updates to a single knowledge base answer",
               "args": [
@@ -22821,6 +25512,11 @@
           "possibleTypes": [
             {
               "kind": "OBJECT",
+              "name": "KnowledgeBaseAnswer",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
               "name": "Organization",
               "ofType": null
             },
@@ -22832,6 +25528,11 @@
             {
               "kind": "OBJECT",
               "name": "User",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "UserTaskbarItemEntityKnowledgeBaseAnswerCreate",
               "ofType": null
             },
             {
@@ -24434,6 +27135,18 @@
           "description": "Ticket articles",
           "fields": [
             {
+              "name": "accountedTimeType",
+              "description": "The activity type of the accounted time of this article.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "TicketTimeAccountingType",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "attachments",
               "description": "All attached files as stored in the database.",
               "args": [],
@@ -24813,6 +27526,18 @@
                   "name": "Ticket",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "timeUnit",
+              "description": "The accounted time of this article.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Float",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -29615,6 +32340,133 @@
         },
         {
           "kind": "OBJECT",
+          "name": "TicketTimeAccountingType",
+          "description": "Ticket time accounting activity types",
+          "fields": [
+            {
+              "name": "active",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "createdAt",
+              "description": "Create date/time of the record",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ISO8601DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "createdBy",
+              "description": "User that created this record",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "id",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "name",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "note",
+              "description": "Internal note",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updatedAt",
+              "description": "Last update date/time of the record",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ISO8601DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updatedBy",
+              "description": "Last user that updated this record",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "TicketTimeAccountingTypeSum",
           "description": "Ticket time accounting - sum per type",
           "fields": [
@@ -31990,6 +34842,53 @@
                     "name": "UserDevice",
                     "ofType": null
                   }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "UserCurrentKnowledgeBaseAnswerScreenBehaviorPayload",
+          "description": "Autogenerated return type of UserCurrentKnowledgeBaseAnswerScreenBehavior.",
+          "fields": [
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "success",
+              "description": "Whether the setting was updated successfully",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
                 }
               },
               "isDeprecated": false,
@@ -35363,6 +38262,77 @@
                 "ofType": {
                   "kind": "SCALAR",
                   "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "UserTaskbarItemEntityKnowledgeBaseAnswerCreate",
+          "description": "Entity representing taskbar item knowledge base answer create",
+          "fields": [
+            {
+              "name": "locale",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "title",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "uid",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "visibility",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "EnumKnowledgeBaseVisibility",
                   "ofType": null
                 }
               },

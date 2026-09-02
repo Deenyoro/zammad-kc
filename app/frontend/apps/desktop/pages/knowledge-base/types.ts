@@ -3,11 +3,15 @@
 import type {
   EnumKnowledgeBaseVisibility,
   KnowledgeBaseCategory,
-  Scalars,
 } from '#shared/graphql/schema-types.ts'
-import type { KnowledgeBaseAnswerQuery } from '#shared/graphql/types.ts'
+import type {
+  KnowledgeBaseAnswerQuery,
+  KnowledgeBaseCategoryPolicyFragment,
+  KnowledgeBaseSearchQuery,
+} from '#shared/graphql/types.ts'
 
 import type { BreadcrumbItem } from '#desktop/components/CommonBreadcrumb/types.ts'
+import type { KnowledgeBaseIconSet } from '#desktop/entities/knowledge-base/types.ts'
 
 export interface KnowledgeBaseLocaleCompact {
   id: string
@@ -37,6 +41,21 @@ export interface KnowledgeBaseCategoryCompact {
   answerCount: number
   subcategoryCount: number
   position: number
+  isDeletable: boolean
+  // Per-record permissions, which granular setups can narrow below the global editor
+  //   permission — the card offers its actions by these, not by the global one. Taken from
+  //   the fragment every category selection shares, so it cannot drift from what is fetched.
+  policy: KnowledgeBaseCategoryPolicyFragment['policy']
+}
+
+// What the category flyout needs to edit a category: the id addresses it, the other
+//   two prefill the fields the form updater does not resolve. Spelled out rather than
+//   picked from one of the two sources that satisfy it — the browse cards and the
+//   header breadcrumb differ on how optional the title is.
+export interface EditableKnowledgeBaseCategory {
+  id: string
+  title?: Maybe<string>
+  categoryIcon: string
 }
 
 export interface KnowledgeBaseAnswerCompact {
@@ -56,9 +75,9 @@ export type CategoryBreadcrumb = Pick<
 //   it actually fetches.
 export type KnowledgeBaseAnswerHeader = NonNullable<KnowledgeBaseAnswerQuery['knowledgeBaseAnswer']>
 
-// Derived from the schema scalar, so the icon sprite file names cannot drift
-//   from what the backend allows.
-export type KnowledgeBaseIconSet = Scalars['KnowledgeBaseIconSet']['output']
+// One search hit as the result list receives it — likewise derived from the query document.
+export type KnowledgeBaseSearchResult =
+  KnowledgeBaseSearchQuery['knowledgeBaseSearch']['edges'][number]['node']
 
 export type KnowledgeBaseBreadcrumbItem = BreadcrumbItem & {
   iconSet?: KnowledgeBaseIconSet

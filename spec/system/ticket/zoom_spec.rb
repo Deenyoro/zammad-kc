@@ -246,8 +246,8 @@ RSpec.describe 'Ticket zoom', type: :system do
 
   # https://github.com/zammad/zammad/issues/3279
   describe 'previous/next clickability when at last or first ticket' do
-    let(:ticket_a)          { create(:ticket, title: 'ticket a', group: Group.first) }
-    let(:ticket_b)          { create(:ticket, title: 'ticket b', group: Group.first) }
+    let(:ticket_a) { create(:ticket, title: 'ticket a', group: Group.first) }
+    let(:ticket_b) { create(:ticket, title: 'ticket b', group: Group.first) }
 
     before do
       ticket_a && ticket_b
@@ -255,40 +255,48 @@ RSpec.describe 'Ticket zoom', type: :system do
       visit 'ticket/view/all_unassigned'
     end
 
+    # ticket_zoom.jst.eco renders the pagination navigator twice - once for the
+    #   always-visible header (.ticketZoom-controls) and once for the sticky
+    #   scroll header (.scrollPageHeader), which is only revealed on scroll via a
+    #   CSS transform. Selenium's `displayed?` filters the latter out, but
+    #   Playwright's bounding-box visibility check does not, so a bare
+    #   '.pagination .btn--split--last' selector is ambiguous under Playwright.
+    #   Scope to the always-visible header to keep the selector unambiguous on
+    #   both drivers.
     it 'previous is not clickable for the first item' do
       open_nth_item(0)
 
-      expect(page).to have_css('.pagination .btn--split--first.is-disabled')
+      expect(page).to have_css('.ticketZoom-controls .pagination .btn--split--first.is-disabled')
     end
 
     it 'next is clickable for the first item' do
       open_nth_item(0)
 
-      expect { click '.pagination .btn--split--last' }.to change { page.find('.content.active')[:id] }
+      expect { click '.ticketZoom-controls .pagination .btn--split--last' }.to change { page.find('.content.active')[:id] }
     end
 
     it 'previous is clickable for the middle item' do
       open_nth_item(1)
 
-      expect { click '.pagination .btn--split--first' }.to change { page.find('.content.active')[:id] }
+      expect { click '.ticketZoom-controls .pagination .btn--split--first' }.to change { page.find('.content.active')[:id] }
     end
 
     it 'next is clickable for the middle item' do
       open_nth_item(1)
 
-      expect { click '.pagination .btn--split--last' }.to change { page.find('.content.active')[:id] }
+      expect { click '.ticketZoom-controls .pagination .btn--split--last' }.to change { page.find('.content.active')[:id] }
     end
 
     it 'previous is clickable for the last item' do
       open_nth_item(2)
 
-      expect { click '.pagination .btn--split--first' }.to change { page.find('.content.active')[:id] }
+      expect { click '.ticketZoom-controls .pagination .btn--split--first' }.to change { page.find('.content.active')[:id] }
     end
 
     it 'next is not clickable for the last item' do
       open_nth_item(2)
 
-      expect(page).to have_css('.pagination .btn--split--last.is-disabled')
+      expect(page).to have_css('.ticketZoom-controls .pagination .btn--split--last.is-disabled')
     end
 
     def open_nth_item(nth)
@@ -302,8 +310,8 @@ RSpec.describe 'Ticket zoom', type: :system do
 
   # https://github.com/zammad/zammad/issues/3267
   describe 'previous/next buttons are added when open ticket is opened from overview' do
-    let(:ticket_a)          { create(:ticket, title: 'ticket a', group: Group.first) }
-    let(:ticket_b)          { create(:ticket, title: 'ticket b', group: Group.first) }
+    let(:ticket_a) { create(:ticket, title: 'ticket a', group: Group.first) }
+    let(:ticket_b) { create(:ticket, title: 'ticket b', group: Group.first) }
 
     # prepare an opened ticket and go to overview
     before do
@@ -480,11 +488,16 @@ RSpec.describe 'Ticket zoom', type: :system do
     # https://github.com/zammad/zammad/issues/3414
     # https://github.com/zammad/zammad/issues/2887
     context 'when clicking timepicker component' do
+      # The y offset is 0 (i.e. the vertical center): the input is much shorter than
+      # it is wide, so the original `y: 20` landed outside its box. Playwright
+      # requires a click point to actually hit the target and kept retrying until it
+      # timed out, while Chrome's Actions API tolerated the miss. The x offsets still
+      # pick the left/right half of the field, which is what the widget reads.
       it 'in the first half, hours selected' do
         within :active_content do
           # timepicker messes with the dom, so don't cache the element and wait a bit.
           sleep 1
-          find('.js-timepicker').click(x: -10, y: 20)
+          find('.js-timepicker').click(x: -10, y: 0)
           sleep 0.5
           expect(find('.js-timepicker')).to have_selection(0..2)
         end
@@ -493,7 +506,7 @@ RSpec.describe 'Ticket zoom', type: :system do
       it 'in the second half, minutes selected' do
         within :active_content do
           sleep 1
-          find('.js-timepicker').click(x: 10, y: 20)
+          find('.js-timepicker').click(x: 10, y: 0)
           sleep 0.5
           expect(find('.js-timepicker')).to have_selection(3..5)
         end
@@ -1164,8 +1177,8 @@ RSpec.describe 'Ticket zoom', type: :system do
 
   context 'Make sidebar attachments unique #3930', authenticated_as: :authenticate do
     let(:ticket) { create(:ticket, group: Group.find_by(name: 'Users')) }
-    let(:article1)         { create(:ticket_article, ticket: ticket) }
-    let(:article2)         { create(:ticket_article, ticket: ticket) }
+    let(:article1) { create(:ticket_article, ticket: ticket) }
+    let(:article2) { create(:ticket_article, ticket: ticket) }
 
     def attachment_add(article, filename)
       create(:store,

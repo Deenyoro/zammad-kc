@@ -3,7 +3,7 @@
 import '#tests/graphql/builders/mocks.ts'
 
 import { flushPromises } from '@vue/test-utils'
-import { defineComponent, toRef } from 'vue'
+import { defineComponent, h, KeepAlive, ref, toRef } from 'vue'
 
 import renderComponent, { getTestRouter } from '#tests/support/components/renderComponent.ts'
 import { waitFor } from '#tests/support/vitest-wrapper.ts'
@@ -19,8 +19,8 @@ import {
 } from '#desktop/entities/knowledge-base/graphql/queries/knowledgeBaseAnswer.mocks.ts'
 import { getKnowledgeBaseAnswerUpdatesSubscriptionHandler } from '#desktop/entities/knowledge-base/graphql/subscriptions/knowledgeBaseAnswerUpdates.mocks.ts'
 import { getKnowledgeBaseContentUpdatesSubscriptionHandler } from '#desktop/entities/knowledge-base/graphql/subscriptions/knowledgeBaseContentUpdates.mocks.ts'
+import { useKnowledgeBaseStore } from '#desktop/entities/knowledge-base/stores/knowledgeBase.ts'
 
-import { useKnowledgeBaseStore } from '../../../../entities/knowledge-base/stores/knowledgeBase.ts'
 import { useKnowledgeBaseAnswer } from '../useKnowledgeBaseAnswer.ts'
 
 const KB_ID = convertToGraphQLId('KnowledgeBase', 1)
@@ -52,18 +52,53 @@ const TestComponent = defineComponent({
   props: {
     answerId: { type: String, default: undefined },
     locale: { type: String, default: undefined },
+    redirectOnAccessError: { type: Boolean, default: undefined },
+    withBodyForEditing: { type: Boolean, default: undefined },
+    withNavigation: { type: Boolean, default: undefined },
   },
   setup(props) {
     api = useKnowledgeBaseAnswer({
       answerId: toRef(props, 'answerId'),
       locale: toRef(props, 'locale'),
+      redirectOnAccessError: props.redirectOnAccessError,
+      withBodyForEditing: props.withBodyForEditing,
+      withNavigation: props.withNavigation,
     })
     return () => null
   },
 })
 
-const mountComposable = (props: { answerId?: string; locale?: string } = {}) =>
-  renderComponent(TestComponent, { props, router: true, routerRoutes })
+const mountComposable = (
+  props: {
+    answerId?: string
+    locale?: string
+    redirectOnAccessError?: boolean
+    withBodyForEditing?: boolean
+    withNavigation?: boolean
+  } = {},
+) => renderComponent(TestComponent, { props, router: true, routerRoutes })
+
+// The same, but inside a KeepAlive the way the layout mounts the knowledge base, so an example
+//   can put the reader in the background the user leaving it does.
+const mountKeptAlive = (props: { answerId?: string; locale?: string } = {}) => {
+  const shown = ref(true)
+
+  renderComponent(
+    { setup: () => () => h(KeepAlive, null, [shown.value ? h(TestComponent, props) : null]) },
+    { router: true, routerRoutes },
+  )
+
+  return {
+    sendToBackground: async () => {
+      shown.value = false
+      await flushPromises()
+    },
+    bringToForeground: async () => {
+      shown.value = true
+      await flushPromises()
+    },
+  }
+}
 
 // The content-updates subscription is only active while a locale is browsed, so
 //   put the router on a localized knowledge base route before emitting a ping.
@@ -120,6 +155,45 @@ describe('useKnowledgeBaseAnswer', () => {
     expect(api.answer.value?.title).toBe('Some Answer')
   })
 
+  // The baseline useKnowledgeBaseAnswerConcurrentChange measures a foreign change against, so it
+  //   must only ever be true for what the server actually said: the app queries
+  //   `cache-and-network`, and a cached answer that no round trip has confirmed is exactly what
+  //   must not become that baseline.
+  describe('answerConfirmed', () => {
+    it('is false until the server has answered', () => {
+      mountComposable({ answerId: ANSWER_ID, locale: 'en-us' })
+
+      expect(api.answerConfirmed.value).toBe(false)
+    })
+
+    it('is true once it has', async () => {
+      mountComposable({ answerId: ANSWER_ID, locale: 'en-us' })
+      await flushPromises()
+
+      expect(api.answerConfirmed.value).toBe(true)
+    })
+
+    // A cached answer whose refresh fails: Apollo keeps serving the cache entry and reports
+    //   `loading: false`, so settlement alone would confirm an answer nobody has confirmed - and
+    //   the next successful refresh would then look like somebody else's change. Reached here by a
+    //   failed refetch; a reopened tab whose first refresh fails lands in the very same state.
+    it('goes back to false when a refresh of the cached answer fails', async () => {
+      mountComposable({ answerId: ANSWER_ID, locale: 'en-us', redirectOnAccessError: false })
+      await flushPromises()
+
+      expect(api.answerConfirmed.value, 'confirmed by the first result').toBe(true)
+
+      mockKnowledgeBaseAnswerQueryError('Nope', { type: GraphQLErrorTypes.NetworkError })
+
+      await triggerContentUpdate([CATEGORY_ID])
+      await flushPromises()
+
+      expect(api.answer.value?.title, 'still served from the cache').toBe('Some Answer')
+      expect(api.knowledgeBaseAnswerQuery.operationError().value?.message).toBe('Nope')
+      expect(api.answerConfirmed.value).toBe(false)
+    })
+  })
+
   it('does not query without an answer id', async () => {
     mountComposable({ answerId: undefined, locale: 'en-us' })
     await flushPromises()
@@ -139,10 +213,59 @@ describe('useKnowledgeBaseAnswer', () => {
     //   that identity is what lets the next view render straight from the cache.
     expect(calls.map((call) => call.variables)).toEqual(
       expect.arrayContaining([
-        { answerId: PREVIOUS_ANSWER_ID, locale: 'en-us' },
-        { answerId: NEXT_ANSWER_ID, locale: 'en-us' },
+        {
+          answerId: PREVIOUS_ANSWER_ID,
+          locale: 'en-us',
+          withBodyForEditing: false,
+          withNavigation: true,
+        },
+        {
+          answerId: NEXT_ANSWER_ID,
+          locale: 'en-us',
+          withBodyForEditing: false,
+          withNavigation: true,
+        },
       ]),
     )
+  })
+
+  // Every variable is inherited, not hardcoded: a prefetch that asked for a different field set
+  //   than the view it warms would be a different operation and miss the cache entirely.
+  it('prefetches the neighbours with the same field set it was asked for', async () => {
+    mockAnswerWithNavigation(17)
+
+    mountComposable({ answerId: ANSWER_ID, locale: 'en-us', withBodyForEditing: true })
+    await flushPromises()
+
+    const calls = await waitForKnowledgeBaseAnswerQueryCalls()
+
+    expect(calls.map((call) => call.variables)).toEqual(
+      expect.arrayContaining([
+        {
+          answerId: PREVIOUS_ANSWER_ID,
+          locale: 'en-us',
+          withBodyForEditing: true,
+          withNavigation: true,
+        },
+        {
+          answerId: NEXT_ANSWER_ID,
+          locale: 'en-us',
+          withBodyForEditing: true,
+          withNavigation: true,
+        },
+      ]),
+    )
+  })
+
+  // A caller without the navigation has no stepper to warm the neighbours for - and, not having
+  //   asked for it, does not even know who they are. That is the edit view.
+  it('does not prefetch neighbours without the navigation', async () => {
+    mockAnswerWithNavigation(17)
+
+    mountComposable({ answerId: ANSWER_ID, locale: 'en-us', withNavigation: false })
+    await flushPromises()
+
+    expect(await waitForKnowledgeBaseAnswerQueryCalls()).toHaveLength(1)
   })
 
   it('does not prefetch neighbours in a single-answer category', async () => {
@@ -257,6 +380,72 @@ describe('useKnowledgeBaseAnswer', () => {
 
     mountComposable({ answerId: ANSWER_ID, locale: 'en-us' })
     await flushPromises()
+
+    expect(store.previousPath).toBe('')
+  })
+
+  // The edit route is a taskbar tab, whose own entity access already gates whether this
+  //   composable's query ever runs with a forbidden/missing answer - there is nothing left for a
+  //   race to redirect away from a second time. Checked through the same side effect the example
+  //   above checks the opposite of (Pinia stores, unlike the test router, are reset between
+  //   examples), rather than the router's own current route: `redirectToError` fires the
+  //   navigation without awaiting it, so asserting on `currentRoute` here can observe a previous
+  //   example's own (still-settling) redirect instead of this one.
+  it('does not clear the remembered path when redirectOnAccessError is false', async () => {
+    mockKnowledgeBaseAnswerQueryError('Forbidden', { type: GraphQLErrorTypes.Forbidden })
+
+    const store = useKnowledgeBaseStore()
+    store.rememberPath('/knowledge-base/locale/en-us/answer/5')
+
+    mountComposable({ answerId: ANSWER_ID, locale: 'en-us', redirectOnAccessError: false })
+    await flushPromises()
+
+    expect(store.previousPath).toBe('/knowledge-base/locale/en-us/answer/5')
+  })
+
+  // The knowledge base is a permanent page, so a reader stays mounted in the layout's KeepAlive
+  //   while the user is elsewhere. Redirecting from there pulls the page they are actually on to
+  //   the error page - which is what a content update about a deleted answer would otherwise do.
+  //   Checked through the remembered path for the reason the example above gives.
+  it('does not redirect while it sits in the background', async () => {
+    const store = useKnowledgeBaseStore()
+    store.rememberPath('/knowledge-base/locale/en-us/answer/5')
+
+    const { sendToBackground } = mountKeptAlive({ answerId: ANSWER_ID, locale: 'en-us' })
+    await flushPromises()
+
+    await sendToBackground()
+
+    mockKnowledgeBaseAnswerQueryError('Record not found', {
+      type: GraphQLErrorTypes.RecordNotFound,
+    })
+    await triggerContentUpdate([CATEGORY_ID])
+    await flushPromises()
+
+    expect(store.previousPath).toBe('/knowledge-base/locale/en-us/answer/5')
+  })
+
+  // The other half of that: the redirect is deferred rather than dropped, and nothing re-runs the
+  //   query when the view comes back to find the answer gone a second time.
+  it('redirects once it returns to the foreground', async () => {
+    const store = useKnowledgeBaseStore()
+    store.rememberPath('/knowledge-base/locale/en-us/answer/5')
+
+    const { sendToBackground, bringToForeground } = mountKeptAlive({
+      answerId: ANSWER_ID,
+      locale: 'en-us',
+    })
+    await flushPromises()
+
+    await sendToBackground()
+
+    mockKnowledgeBaseAnswerQueryError('Record not found', {
+      type: GraphQLErrorTypes.RecordNotFound,
+    })
+    await triggerContentUpdate([CATEGORY_ID])
+    await flushPromises()
+
+    await bringToForeground()
 
     expect(store.previousPath).toBe('')
   })
