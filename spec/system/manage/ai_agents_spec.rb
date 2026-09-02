@@ -74,6 +74,12 @@ RSpec.describe 'AI > AI Agents', type: :system do
         it 'shows AI agent with correct references' do
           visit '#ai/ai_agents'
 
+          # Reference changes reach the list via websocket pushes (AI::Agent touch).
+          #   Wait for the authenticated session before changing references,
+          #   otherwise the push is lost for good and the list is never updated.
+          ensure_websocket
+          wait_for_authenticated_session
+
           within ".js-tableBody tr.item[data-id='#{ai_agent_1.id}']" do
             expect(page).to have_text('AI Agent 1')
               .and have_text('Triggers (2)')
@@ -192,8 +198,7 @@ RSpec.describe 'AI > AI Agents', type: :system do
           click_on 'Back'
 
           error_message = page.find('[name="definition::instruction_context::object_attributes::group_id-required-validator"]', visible: :all)
-            .native
-            .attribute('validationMessage')
+            .evaluate_script('this.validationMessage')
 
           expect(error_message).to include('Please fill')
 

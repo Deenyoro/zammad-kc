@@ -49,9 +49,18 @@ class AI::ProviderConnection < ApplicationModel
   after_update   :ensure_default_chat, :enforce_optional_default_exclusivity
   before_destroy :protect_online_service_connection
   after_destroy  :ensure_default_chat, :disable_ai_provider_without_connections
+  # Every commit, not `on: %i[create update]`: the default maintenance above saves the record again
+  # within the create's transaction, and a save that changes nothing replaces the trigger action the
+  # `on:` filter matches - the callback would silently never run for a newly created connection. A
+  # destroy needs no special case either: nothing serving embeddings reconciles to nothing.
+  after_commit :reconcile_vector_index
 
   # Reentrancy guard for the default-maintenance callbacks' sibling saves (Ticket::State pattern).
   attr_accessor :callback_loop
+
+  # Exposed only for the controller instance that performed this save, so its successful response
+  # can tell the initiating admin about background work without persisting response state.
+  attr_reader :vector_index_rebuild_started
 
   def self.chat_connection
     all.detect(&:default_chat?)
@@ -184,6 +193,18 @@ class AI::ProviderConnection < ApplicationModel
   end
 
   private
+
+  # State-based rather than event-based: compares what the index holds (Configuration.indexed)
+  # against what is configured now (Configuration.current) and enqueues a rebuild on a mismatch. This
+  # is why it does not matter which instance or which save of the transaction runs it - a single
+  # admin action can touch two records (see #enforce_optional_default_exclusivity), and every one of
+  # them arrives at the same comparison. Hooked onto the model rather than onto the controller: the
+  # admin UI, the REST API and `rails console` all write these records, and only one of them goes
+  # through a controller. The return value records whether background reconciliation is required,
+  # including when the active-job lock folds this change into a rebuild already in progress.
+  def reconcile_vector_index
+    @vector_index_rebuild_started = Service::AI::VectorDB::Reconcile.execute == true
+  end
 
   # The provider's recommendation, unless the model listing contradicted it: a listing the dialog
   # fetched that carried models but not the one the recommendation names means the provider does

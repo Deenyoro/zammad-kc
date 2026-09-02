@@ -1818,7 +1818,7 @@ Setting.create_if_not_exists(
           false => 'no',
         },
         translate: true,
-        help:      __('Requires the "xms_edov" ID token claim (along with the "email" claim) to be present and true before trusting an incoming email address for account auto-linking. Both must first be configured as optional claims on the Azure app registration. Until that is done, enabling this blocks all Microsoft 365 account auto-linking by email.'),
+        help:      __('Requires the "xms_edov" ID token claim to be true, and the "email" claim to match the incoming email address, before trusting that address for account auto-linking. Both claims must first be configured as optional claims on the Azure app registration. Until that is done, enabling this blocks all Microsoft 365 account auto-linking by email.'),
       },
       {
         display:  __('Your callback URL'),
@@ -4430,6 +4430,15 @@ Setting.create_if_not_exists(
 )
 Setting.create_if_not_exists(
   title:       __('Defines postmaster filter.'),
+  name:        '0012_postmaster_filter_attachment_reference_remove',
+  area:        'Postmaster::PreFilter',
+  description: __('Defines postmaster filter to remove references to local attachments from incoming emails.'),
+  options:     {},
+  state:       'Channel::Filter::AttachmentReferenceRemove',
+  frontend:    false
+)
+Setting.create_if_not_exists(
+  title:       __('Defines postmaster filter.'),
   name:        '0009_postmaster_filter_out_of_office_check',
   area:        'Postmaster::PreFilter',
   description: __('Defines postmaster filter to identify out-of-office emails for follow-up detection and keeping current ticket state.'),
@@ -6400,8 +6409,18 @@ Setting.create_if_not_exists(
   options:     {},
   state:       false,
   preferences: {
-    validations: ['Setting::Validation::VectorDB'],
+    authentication: true,
+    validations:    ['Setting::Validation::VectorDB'],
   },
+  frontend:    true,
+)
+
+Setting.create_if_not_exists(
+  title:       __('Vector DB indexed embedding configuration'),
+  name:        'vectordb_indexed_embedding_configuration',
+  area:        'VectorDB',
+  description: __('Internal record of the embedding model and vector size the knowledge base index was last built with. Used to detect a stale index by comparison, without probing Elasticsearch.'),
+  state:       {},
   frontend:    false,
 )
 

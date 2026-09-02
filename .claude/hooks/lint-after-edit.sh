@@ -4,6 +4,13 @@
 # Hook: lint all changed/new files with the appropriate tools.
 # Collects modified and untracked files from git, then runs the matching linters.
 
+# Claude Code invokes this script outside of an interactive shell, so rv's
+#   PROMPT_COMMAND-based version switching never runs; re-resolve it here.
+if command -v rv >/dev/null 2>&1; then
+  RV_ENV=$(rv shell env bash) || { echo "rv shell env bash failed to resolve the Ruby environment" >&2; exit 2; }
+  eval "$RV_ENV"
+fi
+
 RUBY_FILES=()
 FRONTEND_TS_FILES=()
 FRONTEND_JS_FILES=()
@@ -17,7 +24,9 @@ while IFS= read -r file; do
   case "$file" in
     *.rb)         RUBY_FILES+=("$file") ;;
     *.ts|*.vue)   FRONTEND_TS_FILES+=("$file") ;;
-    *.js)         [[ "$file" == public/* ]] || FRONTEND_JS_FILES+=("$file") ;;
+    # Legacy/vendored assets are third-party code and outside the scope of
+    #   `pnpm lint:js`, which only covers app/frontend/ and .eslint-plugin-zammad/.
+    *.js)         [[ "$file" == public/* || "$file" == app/assets/javascripts/* ]] || FRONTEND_JS_FILES+=("$file") ;;
     *.coffee)     COFFEESCRIPT_FILES+=("$file") ;;
     *.scss|*.css) STYLE_FILES+=("$file") ;;
     *.md)         MARKDOWN_FILES+=("$file") ;;

@@ -43,11 +43,6 @@ RSpec.describe 'Desktop > Ticket > Editor and Advanced Features', app: :desktop_
     Setting.set('time_accounting_types', true)
     Setting.set('time_accounting_unit', 'minute')
 
-    # Activating full quote makes the editor add the signature for inline
-    # quotes as a side effect, which positions the cursor correctly above the
-    # quoted block instead of inside it.
-    Setting.set('ui_ticket_zoom_article_email_full_quote', true)
-
     support_type
     consulting_type
     text_module
@@ -101,6 +96,48 @@ RSpec.describe 'Desktop > Ticket > Editor and Advanced Features', app: :desktop_
     perform_enqueued_jobs
 
     expect_subscriber_avatar(agent2)
+  end
+
+  # An inline quote gets the signature above it, a full quote below it (zammad#2319).
+  it 'adds the signature after an inline quote' do
+    cite_article_text(first_cite)
+
+    wait_for_test_flag('editor.signatureAdd')
+
+    editor = find_editor('Text')
+    wait_for_editor_ready(editor)
+
+    within(reply_form) do
+      expect(page).to have_css('[data-signature="true"]', text: agent1.fullname)
+    end
+
+    expect(editor_content.index('data-signature')).to be > editor_content.index('<blockquote')
+  end
+
+  # In the default configuration (no full quote) a reply without a selection opens with an
+  # empty body, so the signature handling is the only thing that fills the editor.
+  it 'adds the signature when replying without a selection and without full quote' do
+    within "#article-#{article.id}" do
+      find('button', exact_text: 'Reply', visible: :all).click
+    end
+
+    wait_for_test_flag('editor.signatureAdd')
+
+    editor = find_editor('Text')
+    wait_for_editor_ready(editor)
+
+    within(reply_form) do
+      expect(page).to have_css('[data-signature="true"]', text: agent1.fullname)
+      expect(page).to have_no_css('blockquote')
+    end
+
+    wait_for_test_flag(editor_test_flag(editor, 'focused'))
+    editor.input_element.send_keys('Reply above the signature.')
+
+    # The cursor has to sit above the signature, not inside or after it.
+    expect(reply_form).to have_css(
+      'p:first-of-type', text: 'Reply above the signature.'
+    )
   end
 
   # TipTap on macOS does not bind Cmd+Up / Cmd+Down to "start/end of
@@ -195,16 +232,24 @@ RSpec.describe 'Desktop > Ticket > Editor and Advanced Features', app: :desktop_
     find('#ticketArticleReplyForm')
   end
 
+  def editor_content
+    page.evaluate_script(%(document.querySelector('#ticketArticleReplyForm [role="textbox"]').innerHTML))
+  end
+
   # Click an editor toolbar action by its accessible label, falling back to the
   # "Overflow menu" popover when the toolbar wraps and the action is not
   # rendered directly. The popover items appear in the body, outside the form.
   def click_editor_toolbar_action(label)
-    selector = %(button[aria-label="#{label}"])
     in_toolbar = false
     within(reply_form) do
-      if has_css?(selector, wait: 0.5)
+      # An action that wrapped out of the visible toolbar row stays in the
+      # DOM, but is disabled (ActionButton.vue) and reachable only via the
+      # overflow menu. Detect direct availability via the enabled state:
+      # Selenium reports the clipped button as invisible, Playwright as
+      # visible, but both agree on the disabled property.
+      if has_button?(label, disabled: false, wait: 0.5)
         in_toolbar = true
-        find(selector).click
+        find_button(label, disabled: false).click
       else
         find('button[aria-label="Overflow menu"]').click
       end
@@ -407,6 +452,14 @@ RSpec.describe 'Desktop > Ticket > Editor and Advanced Features', app: :desktop_
 
     # The internal note submission also opens the Time accounting flyout
     # (because time_accounting is enabled). Skip it.
+    expect(page).to have_css('#flyout-ticket-time-accounting', text: 'Time accounting')
+
+    # Wait for the flyout form to fully settle before interacting - its
+    # initial form updater response re-renders the form (see account_time
+    # above), which can otherwise pull the Skip button out from under a
+    # click that lands mid-render.
+    wait_for_form_to_settle('form-ticket-time-accounting')
+
     within '#flyout-ticket-time-accounting' do
       click_on 'Skip'
     end
@@ -417,7 +470,15 @@ RSpec.describe 'Desktop > Ticket > Editor and Advanced Features', app: :desktop_
   def click_button_when_centered(label)
     button = find('button', text: label, exact_text: true)
 
-    page.scroll_to(button, align: :center)
+    # scroll_to needs the plain Capybara element - a bare top-level find
+    # here goes through both CapybaraCustomExtensions#find and the
+    # Capybara::DSL#find it calls super into (which re-resolves the also
+    # overridden `page`), so the result is wrapped twice. #element only
+    # peels one layer, still leaving a delegator that Capybara does not
+    # recognize as an element (silently scrolls nowhere under Selenium,
+    # and the Playwright driver raises when serializing it as a script
+    # argument). #to_capybara_node unwraps any number of delegator layers.
+    page.scroll_to(button.to_capybara_node, align: :center)
     wait.until { !button.obscured? }
 
     button.click

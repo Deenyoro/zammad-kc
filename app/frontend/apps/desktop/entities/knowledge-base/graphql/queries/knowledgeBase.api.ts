@@ -10,9 +10,14 @@ export const KnowledgeBaseDocument = gql`
   knowledgeBase(locale: $locale) {
     id
     title
+    footerNote
     iconset
     isPubliclyAvailable
     isVisiblePublicly
+    policy {
+      update
+    }
+    showFeedIcon
     kbLocales {
       id
       primary
