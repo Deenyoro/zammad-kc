@@ -22,8 +22,8 @@ import CommonLabel from '#shared/components/CommonLabel/CommonLabel.vue'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import CommonFlyout from '#desktop/components/CommonFlyout/CommonFlyout.vue'
 import { closeFlyout } from '#desktop/components/CommonFlyout/useFlyout.ts'
-import type { TicketRelationAndRecentListItem } from '#desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/types.ts'
-import { useTargetTicketOptions } from '#desktop/pages/ticket/composables/useTargetTicketOptions.ts'
+import type { TicketRelationAndRecentListItem } from '#desktop/components/Ticket/TicketSimpleTable/types.ts'
+import { useTargetTicketOptions } from '#desktop/entities/ticket/composables/useTargetTicketOptions.ts'
 
 import { kcApiFetch } from '#shared/composables/useKcApi.ts'
 

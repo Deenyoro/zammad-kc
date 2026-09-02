@@ -1,8 +1,8 @@
 <!-- KC: Displays selected tickets in the bulk merge flyout using TicketSimpleTable. -->
 
 <script setup lang="ts">
-import TicketSimpleTable from '#desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/TicketSimpleTable.vue'
-import type { TicketRelationAndRecentListItem } from '#desktop/pages/ticket/components/TicketDetailView/TicketSimpleTable/types.ts'
+import TicketSimpleTable from '#desktop/components/Ticket/TicketSimpleTable/TicketSimpleTable.vue'
+import type { TicketRelationAndRecentListItem } from '#desktop/components/Ticket/TicketSimpleTable/types.ts'
 
 interface Props {
   tickets: TicketRelationAndRecentListItem[]
