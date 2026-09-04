@@ -50,7 +50,15 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
     end
 
     rc = rc_class.with_channel_tokens(channel)
-    from_phone = channel.options.with_indifferent_access[:phone_number]
+    # Send from the RC number this conversation actually lives on. A channel
+    # can front multiple numbers, so the channel-level :phone_number is only a
+    # last resort — replying from a different number than the customer texted
+    # forks the thread on their side and spawns a duplicate ticket on ours.
+    # Ticket prefs store our side as :to_phone (the customer texted TO it).
+    from_phone = article_prefs[:from_phone].presence ||
+                 sms_prefs[:to_phone].presence ||
+                 find_our_phone(ticket).presence ||
+                 channel.options.with_indifferent_access[:phone_number]
     # Convert HTML body to plain text for SMS:
     # 1. Convert <br> and block-closing tags to newlines before stripping
     # 2. Strip remaining HTML tags
@@ -108,6 +116,8 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
     article.preferences[:ringcentral_sms][:mms_message_ids]  = mms_message_ids if mms_message_ids.any?
     article.preferences[:ringcentral_sms][:delivery_status]  = 'sent'
     article.preferences[:ringcentral_sms][:sent_at]          = Time.current.iso8601
+    article.preferences[:ringcentral_sms][:from_phone]       = from_phone
+    article.preferences[:ringcentral_sms][:to_phone]         = to_phone
     article.save!
 
     Rails.logger.info "KC RingCentral SMS: Sent article #{article_id} to #{to_phone}"
@@ -133,6 +143,23 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
   end
 
   private
+
+  # Our-side number for this conversation: the number the customer's most
+  # recent inbound SMS was addressed to. Mirrors find_channel_id for old
+  # tickets whose ticket-level prefs predate conversation_key tracking.
+  def find_our_phone(ticket)
+    customer_sender = Ticket::Article::Sender.find_by(name: 'Customer')
+    return nil if customer_sender.nil?
+
+    ticket.articles
+          .where(sender_id: customer_sender.id)
+          .order(created_at: :desc)
+          .each do |art|
+      our_phone = art.preferences&.dig(:ringcentral_sms, :to_phone)
+      return our_phone if our_phone.present?
+    end
+    nil
+  end
 
   def find_channel_id(ticket)
     customer_sender = Ticket::Article::Sender.find_by(name: 'Customer')
