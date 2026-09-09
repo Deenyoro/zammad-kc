@@ -5961,6 +5961,58 @@
         },
         {
           "kind": "ENUM",
+          "name": "EnumKnowledgeBaseSearchEntity",
+          "description": "Kind of knowledge base content to search for",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "answer",
+              "description": "Answers, matched in their title, body, attachments and tags.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "category",
+              "description": "Categories, matched in their title.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "EnumKnowledgeBaseSortingMode",
+          "description": "How the content of a knowledge base node — its root or a single category — is ordered when browsed",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "manual",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "alphabetical",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "last_update",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
           "name": "EnumKnowledgeBaseVisibility",
           "description": "Publication state used for color-coding knowledge base content",
           "fields": null,
@@ -6244,6 +6296,12 @@
             },
             {
               "name": "Organization",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "KnowledgeBase__Answer__Translation",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -8101,6 +8159,11 @@
           "possibleTypes": [
             {
               "kind": "OBJECT",
+              "name": "KnowledgeBaseAnswerTranslation",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
               "name": "Organization",
               "ofType": null
             },
@@ -8357,6 +8420,22 @@
               "deprecationReason": null
             },
             {
+              "name": "categorySortingMode",
+              "description": "How the top level categories of the knowledge base are ordered when browsed",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "EnumKnowledgeBaseSortingMode",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "colorHeader",
               "description": null,
               "args": [],
@@ -8422,8 +8501,19 @@
             },
             {
               "name": "currentLocale",
-              "description": "Locale the content resolved to (requested, else user-preferred, else primary)",
-              "args": [],
+              "description": "Locale the content resolved to (given, else user-preferred, else primary)",
+              "args": [
+                {
+                  "name": "locale",
+                  "description": "System locale code to resolve for; defaults to the locale the query was resolved in",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "OBJECT",
                 "name": "KnowledgeBaseLocale",
@@ -8435,18 +8525,6 @@
             {
               "name": "customAddress",
               "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "footerNote",
-              "description": "Footer note in the requested locale (falls back to the primary locale)",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -8522,8 +8600,19 @@
             },
             {
               "name": "isVisiblePublicly",
-              "description": "Whether the public help site shows content in the requested locale (drives the \"view public knowledge base\" link)",
-              "args": [],
+              "description": "Whether the public help site shows content in the given locale (drives the \"view public knowledge base\" link)",
+              "args": [
+                {
+                  "name": "locale",
+                  "description": "System locale code to resolve for; defaults to the locale the query was resolved in",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -8593,12 +8682,23 @@
               "deprecationReason": null
             },
             {
-              "name": "title",
-              "description": "Title in the requested locale (falls back to the primary locale)",
-              "args": [],
+              "name": "translation",
+              "description": "The knowledge base in the given locale (falls back to the primary locale)",
+              "args": [
+                {
+                  "name": "locale",
+                  "description": "System locale code to resolve the translation for; defaults to the locale the query was resolved in",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseTranslation",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -8696,18 +8796,6 @@
               "deprecationReason": null
             },
             {
-              "name": "content",
-              "description": "Body of the translation in the requested locale (falls back to the primary locale, like the title)",
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "KnowledgeBaseAnswerTranslationContent",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "createdAt",
               "description": "Create date/time of the record",
               "args": [],
@@ -8726,30 +8814,6 @@
             {
               "name": "createdBy",
               "description": "User that created this record",
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "User",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "editedAt",
-              "description": "When the translation in the requested locale was last edited; only for users with internal access to the category",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "ISO8601DateTime",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "editedBy",
-              "description": "Last user that edited the translation in the requested locale; only for users with internal access to the category",
               "args": [],
               "type": {
                 "kind": "OBJECT",
@@ -8794,18 +8858,6 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "User",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "navigation",
-              "description": "Position and neighbours of this answer within its category listing",
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "KnowledgeBaseAnswerNavigation",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -8888,45 +8940,24 @@
               "deprecationReason": null
             },
             {
-              "name": "title",
-              "description": "Title in the requested locale (falls back to the primary locale)",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+              "name": "translation",
+              "description": "The answer in the given locale (falls back to the primary locale)",
+              "args": [
+                {
+                  "name": "locale",
+                  "description": "System locale code to resolve the translation for; defaults to the locale the query was resolved in",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
                 }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "translationId",
-              "description": "ID of the translation in the requested locale (falls back to the primary locale, like the title)",
-              "args": [],
+              ],
               "type": {
-                "kind": "SCALAR",
-                "name": "ID",
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseAnswerTranslation",
                 "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "translationMissing",
-              "description": "Whether the requested locale has no own translation for this answer (its title is shown from a fallback locale)",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Boolean",
-                  "ofType": null
-                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -9606,16 +9637,24 @@
             },
             {
               "name": "editedAt",
-              "description": null,
+              "description": "When this translation was last edited; only for users with internal access to the category",
               "args": [],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "ISO8601DateTime",
-                  "ofType": null
-                }
+                "kind": "SCALAR",
+                "name": "ISO8601DateTime",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "editedBy",
+              "description": "Last user that edited this translation; only for users with internal access to the category",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -9659,6 +9698,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "navigation",
+              "description": "Position and neighbours of this answer within its category listing in this locale",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseAnswerNavigation",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -10102,14 +10153,41 @@
           "fields": [
             {
               "name": "answerCount",
-              "description": "Number of answers visible to the current user in this category and its whole subtree",
-              "args": [],
+              "description": "Number of answers visible to the current user in this category and its whole subtree, in the given locale",
+              "args": [
+                {
+                  "name": "locale",
+                  "description": "System locale code to count in; defaults to the locale the query was resolved in",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
                   "kind": "SCALAR",
                   "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "answerSortingMode",
+              "description": "How the answers of this category are ordered when browsed",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "EnumKnowledgeBaseSortingMode",
                   "ofType": null
                 }
               },
@@ -10157,6 +10235,22 @@
               "deprecationReason": null
             },
             {
+              "name": "categorySortingMode",
+              "description": "How the subcategories of this category are ordered when browsed",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "EnumKnowledgeBaseSortingMode",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "createdAt",
               "description": "Create date/time of the record",
               "args": [],
@@ -10174,8 +10268,19 @@
             },
             {
               "name": "directAnswerCount",
-              "description": "Number of answers visible to the current user directly in this category (its immediate level only)",
-              "args": [],
+              "description": "Number of answers visible to the current user directly in this category (its immediate level only), in the given locale",
+              "args": [
+                {
+                  "name": "locale",
+                  "description": "System locale code to count in; defaults to the locale the query was resolved in",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -10190,8 +10295,19 @@
             },
             {
               "name": "directSubcategoryCount",
-              "description": "Number of immediate child categories visible to the current user (its next level only)",
-              "args": [],
+              "description": "Number of immediate child categories visible to the current user (its next level only), in the given locale",
+              "args": [
+                {
+                  "name": "locale",
+                  "description": "System locale code to count in; defaults to the locale the query was resolved in",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -10200,6 +10316,18 @@
                   "name": "Int",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "editedAt",
+              "description": "When the category was last edited in the requested locale, counting edits to the content below it",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "ISO8601DateTime",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -10254,8 +10382,19 @@
             },
             {
               "name": "isVisiblePublicly",
-              "description": "Whether this category shows published content in the requested locale on the public help site (drives the \"view public knowledge base\" link)",
-              "args": [],
+              "description": "Whether this category shows published content in the given locale on the public help site (drives the \"view public knowledge base\" link)",
+              "args": [
+                {
+                  "name": "locale",
+                  "description": "System locale code to resolve for; defaults to the locale the query was resolved in",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -10330,8 +10469,19 @@
             },
             {
               "name": "subcategoryCount",
-              "description": "Number of categories visible to the current user in this category and its whole subtree",
-              "args": [],
+              "description": "Number of categories visible to the current user in this category and its whole subtree, in the given locale",
+              "args": [
+                {
+                  "name": "locale",
+                  "description": "System locale code to count in; defaults to the locale the query was resolved in",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -10345,29 +10495,24 @@
               "deprecationReason": null
             },
             {
-              "name": "title",
-              "description": "Title in the requested locale (falls back to the primary locale)",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "translationMissing",
-              "description": "Whether the requested locale has no own translation for this category (its title is shown from a fallback locale)",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Boolean",
-                  "ofType": null
+              "name": "translation",
+              "description": "The category in the given locale (falls back to the primary locale)",
+              "args": [
+                {
+                  "name": "locale",
+                  "description": "System locale code to resolve the translation for; defaults to the locale the query was resolved in",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
                 }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseCategoryTranslation",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -10414,8 +10559,19 @@
             },
             {
               "name": "visibility",
-              "description": "Highest visibility of the content in this category and its subtree, in the requested locale (untranslated content counts as draft)",
-              "args": [],
+              "description": "Highest visibility of the content in this category and its subtree, in the given locale (untranslated content counts as draft)",
+              "args": [
+                {
+                  "name": "locale",
+                  "description": "System locale code to resolve for; defaults to the locale the query was resolved in",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -10650,6 +10806,22 @@
             {
               "name": "createdAt",
               "description": "Create date/time of the record",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ISO8601DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "editedAt",
+              "description": null,
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -11179,6 +11351,135 @@
           "possibleTypes": null
         },
         {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseReorderAnswersPayload",
+          "description": "Autogenerated return type of KnowledgeBaseReorderAnswers.",
+          "fields": [
+            {
+              "name": "category",
+              "description": "The category with its updated `answerSortingMode`.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseCategory",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseReorderCategoriesPayload",
+          "description": "Autogenerated return type of KnowledgeBaseReorderCategories.",
+          "fields": [
+            {
+              "name": "category",
+              "description": "The category with its updated `categorySortingMode`.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseCategory",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseReorderRootCategoriesPayload",
+          "description": "Autogenerated return type of KnowledgeBaseReorderRootCategories.",
+          "fields": [
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBase",
+              "description": "The knowledge base with its updated `categorySortingMode`.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBase",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
           "kind": "INPUT_OBJECT",
           "name": "KnowledgeBaseRolePermissionInput",
           "description": "Represents the access one role is granted on a knowledge base object.",
@@ -11261,8 +11562,19 @@
             },
             {
               "name": "title",
-              "description": "Title in the requested locale (falls back to the primary locale)",
-              "args": [],
+              "description": "Title in the given locale (falls back to the primary locale)",
+              "args": [
+                {
+                  "name": "locale",
+                  "description": "System locale code to resolve the title for; defaults to the locale the query was resolved in",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -11517,6 +11829,93 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "KnowledgeBaseSearchResult",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "KnowledgeBaseTranslation",
+          "description": "Knowledge Base Translation",
+          "fields": [
+            {
+              "name": "createdAt",
+              "description": "Create date/time of the record",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ISO8601DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "footerNote",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "id",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "title",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updatedAt",
+              "description": "Last update date/time of the record",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ISO8601DateTime",
                   "ofType": null
                 }
               },
@@ -13684,6 +14083,169 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "KnowledgeBaseFeedTokenRenewPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBaseReorderAnswers",
+              "description": "Set how the answers of a knowledge base category are ordered, and store their hand-made order. The subcategories of that category are a list of their own, unaffected by this (see KnowledgeBaseReorderCategories).",
+              "args": [
+                {
+                  "name": "categoryId",
+                  "description": "Category whose answers are reordered.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "sortingMode",
+                  "description": "How the answers of that category are to be ordered from now on.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "EnumKnowledgeBaseSortingMode",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "answerIds",
+                  "description": "All answers of that category, in the wanted order. Required with `manual`, refused with any other mode, and always complete.",
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "SCALAR",
+                        "name": "ID",
+                        "ofType": null
+                      }
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseReorderAnswersPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBaseReorderCategories",
+              "description": "Set how the subcategories of a knowledge base category are ordered, and store their hand-made order. The answers of that category are a list of their own, unaffected by this (see KnowledgeBaseReorderAnswers).",
+              "args": [
+                {
+                  "name": "parentCategoryId",
+                  "description": "Category whose subcategories are reordered.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "sortingMode",
+                  "description": "How the subcategories of that category are to be ordered from now on.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "EnumKnowledgeBaseSortingMode",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "categoryIds",
+                  "description": "All subcategories of that category, in the wanted order. Required with `manual`, refused with any other mode, and always complete.",
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "SCALAR",
+                        "name": "ID",
+                        "ofType": null
+                      }
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseReorderCategoriesPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "knowledgeBaseReorderRootCategories",
+              "description": "Set how the top level categories of the knowledge base are ordered, and store their hand-made order.",
+              "args": [
+                {
+                  "name": "sortingMode",
+                  "description": "How the top level categories are to be ordered from now on.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "EnumKnowledgeBaseSortingMode",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "categoryIds",
+                  "description": "All top level categories, in the wanted order. Required with `manual`, refused with any other mode, and always complete.",
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "SCALAR",
+                        "name": "ID",
+                        "ofType": null
+                      }
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "KnowledgeBaseReorderRootCategoriesPayload",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -20872,6 +21434,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "sortingMode",
+                  "description": "Order the answers in this mode instead of the category's stored `answerSortingMode`",
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "EnumKnowledgeBaseSortingMode",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "after",
                   "description": "Returns the elements in the list that come after the specified cursor.",
                   "type": {
@@ -20947,6 +21519,16 @@
                     "ofType": null
                   },
                   "defaultValue": null
+                },
+                {
+                  "name": "sortingMode",
+                  "description": "Order the subcategories in this mode instead of the node's stored `categorySortingMode`",
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "EnumKnowledgeBaseSortingMode",
+                    "ofType": null
+                  },
+                  "defaultValue": null
                 }
               ],
               "type": {
@@ -20996,7 +21578,7 @@
             },
             {
               "name": "knowledgeBaseSearch",
-              "description": "Search the knowledge base for answers and categories",
+              "description": "Search the knowledge base for answers or categories",
               "args": [
                 {
                   "name": "query",
@@ -21011,6 +21593,20 @@
                     }
                   },
                   "defaultValue": null
+                },
+                {
+                  "name": "entity",
+                  "description": "Which kind of content to search for; the result list holds that kind alone",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "EnumKnowledgeBaseSearchEntity",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": "answer"
                 },
                 {
                   "name": "categoryId",
@@ -25512,7 +26108,7 @@
           "possibleTypes": [
             {
               "kind": "OBJECT",
-              "name": "KnowledgeBaseAnswer",
+              "name": "KnowledgeBaseAnswerTranslation",
               "ofType": null
             },
             {

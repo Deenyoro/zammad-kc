@@ -6,9 +6,10 @@ import * as VueCompositionApi from 'vue';
 export type ReactiveFunction<TParam> = () => TParam;
 
 export const KnowledgeBaseSearchDocument = gql`
-    query knowledgeBaseSearch($query: String!, $categoryId: ID, $locale: String, $pageSize: Int = 30, $cursor: String) {
+    query knowledgeBaseSearch($query: String!, $entity: EnumKnowledgeBaseSearchEntity!, $categoryId: ID, $locale: String, $pageSize: Int = 30, $cursor: String) {
   knowledgeBaseSearch(
     query: $query
+    entity: $entity
     categoryId: $categoryId
     locale: $locale
     first: $pageSize
@@ -20,16 +21,27 @@ export const KnowledgeBaseSearchDocument = gql`
         item {
           ... on KnowledgeBaseAnswer {
             id
-            title
             visibility
-            translationMissing
+            translation(locale: $locale) {
+              id
+              title
+              kbLocale {
+                id
+                systemLocale {
+                  locale
+                }
+              }
+            }
           }
           ... on KnowledgeBaseCategory {
             id
-            categoryTitle: title
+            translation(locale: $locale) {
+              id
+              title
+            }
             categoryIcon
             iconSet
-            visibility
+            visibility(locale: $locale)
           }
         }
         titlePreview {
@@ -42,7 +54,7 @@ export const KnowledgeBaseSearchDocument = gql`
         }
         categoryPath {
           id
-          title
+          title(locale: $locale)
         }
       }
     }
