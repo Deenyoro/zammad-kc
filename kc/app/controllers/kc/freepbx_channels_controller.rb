@@ -8,6 +8,8 @@
 # from, so the admin pages can offer them as the auto-reply sender for both
 # the FreePBX and RingCentral integrations.
 class Kc::FreepbxChannelsController < ApplicationController
+  include Kc::FreepbxChannelStatus
+
   prepend_before_action :authenticate_and_authorize!
 
   CHANNEL_AREA = 'Freepbx::Account'.freeze
@@ -105,14 +107,7 @@ class Kc::FreepbxChannelsController < ApplicationController
       nil
     end
 
-    channel.with_lock do
-      channel.reload
-      channel.options.delete(:last_connection_error)
-      channel.options.delete(:last_connection_error_at)
-      channel.status_in   = 'ok'
-      channel.last_log_in = nil
-      channel.save!
-    end
+    clear_freepbx_error(channel)
 
     render json: {
       ok:              true,

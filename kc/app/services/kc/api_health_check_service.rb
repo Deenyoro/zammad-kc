@@ -4,6 +4,7 @@
 #   - Microsoft Graph Email (MicrosoftGraph::Account)
 #   - Microsoft Teams Chat (MicrosoftTeamsChat::Account)
 #   - RingCentral SMS (RingCentralSms::Account)
+#   - FreePBX PBX connector (Freepbx::Account)
 #
 # For each channel:
 #   1. Refreshes OAuth tokens
@@ -16,6 +17,7 @@
 # and configurable ticket settings (group, priority, owner).
 class Kc::ApiHealthCheckService
   include Kc::RingcentralAuthRecovery
+  include Kc::FreepbxChannelStatus
   DEDUP_WINDOW = 24.hours
 
   def execute
@@ -44,6 +46,8 @@ class Kc::ApiHealthCheckService
       check_teams_chat(channel)
     when 'RingCentralSms::Account'
       check_ringcentral_sms(channel)
+    when 'Freepbx::Account'
+      check_freepbx(channel)
     else
       Rails.logger.warn "KC HealthCheck: Unknown area '#{channel.area}' for channel #{channel.id}"
     end
@@ -140,6 +144,36 @@ class Kc::ApiHealthCheckService
   end
 
   # ---------------------------------------------------------------------------
+  # FreePBX PBX connector
+  # ---------------------------------------------------------------------------
+  def check_freepbx(channel)
+    service_name = 'FreePBX'
+    api_class = 'Kc::FreepbxApi'.safe_constantize
+
+    if api_class.nil?
+      Rails.logger.warn 'KC HealthCheck: FreepbxApi class not available'
+      return
+    end
+
+    api = api_class.for_channel(channel)
+
+    # /health is unauthenticated, so it only proves the connector is up. The
+    # token can be wrong or rotated while /health still answers, and a
+    # connection Zammad cannot read call records from is a broken connection,
+    # so follow it with one authenticated read.
+    api.health
+    api.extensions
+
+    Rails.logger.info "KC HealthCheck: #{service_name} channel #{channel.id} — OK"
+    clear_freepbx_error(channel)
+    clear_alerts(channel, service_name)
+  rescue => e
+    Rails.logger.error "KC HealthCheck: #{service_name} channel #{channel.id} — FAILED: #{e.message}"
+    store_freepbx_error(channel, e.message)
+    create_alert(channel, service_name, e.message)
+  end
+
+  # ---------------------------------------------------------------------------
   # Alert ticket management
   # ---------------------------------------------------------------------------
   def create_alert(channel, service_name, error)
@@ -208,8 +242,15 @@ class Kc::ApiHealthCheckService
   # ---------------------------------------------------------------------------
   # Ticket helpers
   # ---------------------------------------------------------------------------
+  # The title is the dedup key: find_open_alert_ticket and clear_alerts both
+  # match on it, so two channels of the same kind must never produce the same
+  # one or they share a ticket and either recovering closes the other's alert.
+  # FreePBX channels carry a :label rather than a :name, and neither is unique,
+  # so the last resort is qualified by channel id instead of being bare area.
   def alert_ticket_title(service_name, channel)
-    account_name = channel.options[:name] || channel.options[:user_display_name] || channel.options.dig(:inbound, :options, :user) || channel.area
+    opts = channel.options
+    account_name = opts[:name] || opts[:user_display_name] || opts[:label] ||
+                   opts.dig(:inbound, :options, :user) || "#{channel.area} ##{channel.id}"
     "API Health Check Failed - #{service_name} - #{account_name}"
   end
 

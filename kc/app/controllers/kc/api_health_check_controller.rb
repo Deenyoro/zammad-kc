@@ -13,12 +13,14 @@ class Kc::ApiHealthCheckController < ApplicationController
     MicrosoftGraph::Account
     MicrosoftTeamsChat::Account
     RingCentralSms::Account
+    Freepbx::Account
   ].freeze
 
   AREA_LABELS = {
     'MicrosoftGraph::Account'      => 'Microsoft Graph Email',
     'MicrosoftTeamsChat::Account'   => 'Teams Chat',
     'RingCentralSms::Account'       => 'RingCentral SMS',
+    'Freepbx::Account'              => 'FreePBX',
   }.freeze
 
   # GET /api/v1/kc/api_health_check
@@ -122,6 +124,6 @@ class Kc::ApiHealthCheckController < ApplicationController
 
   def channel_display_name(channel)
     opts = channel.options
-    opts[:name] || opts[:user_display_name] || opts[:user_email] || opts.dig(:inbound, :options, :user) || channel.area
+    opts[:name] || opts[:user_display_name] || opts[:user_email] || opts[:label] || opts.dig(:inbound, :options, :user) || channel.area
   end
 end

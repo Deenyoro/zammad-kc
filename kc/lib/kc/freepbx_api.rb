@@ -119,14 +119,30 @@ module Kc
 
     def handle(response)
       if !response.success?
-        body = response.data.is_a?(Hash) ? response.data : {}
-        message = body['error'] || body[:error] || "HTTP #{response.code}"
-        raise AuthError, "FreePBX auth rejected: #{message}" if response.code.to_i == 401
+        body    = response.data.is_a?(Hash) ? response.data : {}
+        message = body['error'] || body[:error]
+        raise AuthError, "FreePBX auth rejected: #{message || "HTTP #{response.code}"}" if response.code.to_i == 401
 
-        raise Error, "FreePBX API error (#{response.code}): #{message}"
+        # Code 0 means the request never reached the connector — refused, timed
+        # out, DNS. The transport error is the only thing that says which, and
+        # it is what an alert ticket needs to be actionable.
+        if response.code.to_i.zero?
+          raise Error, "FreePBX connector unreachable at #{base_url}: #{transport_error(response)}"
+        end
+
+        raise Error, "FreePBX API error (#{response.code}): #{message || "HTTP #{response.code}"}"
       end
 
       response.data || {}
+    end
+
+    # UserAgent hands back the exception inspect string; the class and message
+    # are the useful half of it.
+    def transport_error(response)
+      raw = response.respond_to?(:error) ? response.error.to_s : ''
+      return 'no response' if raw.blank?
+
+      raw[/\A#<([^:]+(?:::[^:]+)*):\s*(.+)>\z/m] ? "#{Regexp.last_match(1)}: #{Regexp.last_match(2)}" : raw
     end
   end
 end
