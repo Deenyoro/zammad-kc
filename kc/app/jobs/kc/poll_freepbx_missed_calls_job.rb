@@ -10,6 +10,7 @@
 # whole system. Which number it comes from is configurable and may be any
 # number in the system (Kc::OutboundSms).
 class Kc::PollFreepbxMissedCallsJob < ApplicationJob
+  include Kc::FreepbxChannelStatus
 
   # FreePBX writes a CDR row when the call ends, but a transfer can settle
   # slightly later; re-reading a small overlap is harmless because dedup is
@@ -56,9 +57,9 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
         direction:     'inbound',
         limit:         200,
       )
-      clear_connection_error(channel)
+      clear_freepbx_error(channel)
     rescue StandardError => e
-      store_connection_error(channel, e.message)
+      store_freepbx_error(channel, e.message)
       Rails.logger.error "KC FreePBX Missed Calls: Call query failed for channel #{channel.id}: #{e.message}"
       return
     end
@@ -255,33 +256,5 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
 
   def normalize(number)
     Kc::OutboundSms.normalize(number)
-  end
-
-  def store_connection_error(channel, message)
-    channel.with_lock do
-      channel.reload
-      channel.options[:last_connection_error]    = message.to_s.truncate(500)
-      channel.options[:last_connection_error_at] = Time.current.utc.iso8601
-      channel.status_in   = 'error'
-      channel.last_log_in = message.to_s.truncate(500)
-      channel.save!
-    end
-  rescue StandardError => e
-    Rails.logger.error "KC FreePBX: Failed to store connection error: #{e.message}"
-  end
-
-  def clear_connection_error(channel)
-    return if channel.options[:last_connection_error].blank? && channel.status_in != 'error'
-
-    channel.with_lock do
-      channel.reload
-      channel.options.delete(:last_connection_error)
-      channel.options.delete(:last_connection_error_at)
-      channel.status_in   = 'ok'
-      channel.last_log_in = nil
-      channel.save!
-    end
-  rescue StandardError => e
-    Rails.logger.error "KC FreePBX: Failed to clear connection error: #{e.message}"
   end
 end

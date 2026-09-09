@@ -86,6 +86,9 @@
   <button class="btn btn--primary js-saveMissedCallSettings" style="margin-top: 10px;"><%- @T('Save Missed Call Settings') %></button>
 
   <h2 style="margin-top: 30px;"><%- @T('Connections') %></h2>
+  <p class="text-muted" style="max-width: 700px;">
+    <%- @T('To be told when a connection breaks, tick it on the API Health Check page. Zammad then checks it every five minutes and opens a ticket if it stops answering, closing the ticket again once it recovers.') %>
+  </p>
   <% if @channels.length is 0: %>
     <table class="settings-list settings-list--stretch settings-list--placeholder">
       <thead><tr><th><%- @T('No FreePBX connection configured yet.') %></th></tr></thead>
