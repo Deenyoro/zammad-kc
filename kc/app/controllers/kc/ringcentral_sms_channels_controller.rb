@@ -44,10 +44,24 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
     end
 
     render json: {
-      assets:      assets,
-      channel_ids: channel_ids,
+      assets:            assets,
+      channel_ids:       channel_ids,
+      available_numbers: outbound_numbers,
     }
   end
+
+  # Every number the system can text from, so the auto-reply sender can be
+  # any of them rather than only this channel's own number.
+  def outbound_numbers
+    sms_class = 'Kc::OutboundSms'.safe_constantize
+    return [] if sms_class.nil?
+
+    sms_class.available_numbers
+  rescue StandardError => e
+    Rails.logger.error "KC RingCentral SMS: Failed to list outbound numbers: #{e.message}"
+    []
+  end
+  private :outbound_numbers
 
   # POST /api/v1/kc/ringcentral_sms_channels/authorize
   # Stores OAuth params in session and returns the RingCentral login URL.

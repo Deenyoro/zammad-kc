@@ -94,6 +94,20 @@
       </tr>
       <tr>
         <td>
+          <span><%- @T('Reply From Number') %></span>
+          <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Which of your numbers the reply is texted from.') %></p>
+        </td>
+        <td>
+          <select name="missed_call_autoreply_from" class="form-control" style="width: 300px;">
+            <option value="" <% if !@settings.missed_call_autoreply_from: %>selected<% end %>><%- @T('This account\'s own number') %></option>
+            <% for number in @numbers: %>
+              <option value="<%= number.number %>" <% if String(number.number) is @settings.missed_call_autoreply_from: %>selected<% end %>><%= number.label %></option>
+            <% end %>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
           <span><%- @T('Auto-Reply Message') %></span>
           <p class="text-muted" style="margin: 2px 0 0;"><%- @T('The SMS message sent to callers when their call is missed.') %></p>
         </td>

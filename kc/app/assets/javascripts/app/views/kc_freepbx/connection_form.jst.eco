@@ -1,0 +1,27 @@
+<div class="alert alert--danger hide" role="alert"></div>
+<form class="form-stacked">
+  <div class="form-group">
+    <label for="kc-freepbx-label"><%- @T('Name') %></label>
+    <input id="kc-freepbx-label" type="text" name="label" class="form-control" value="<%= if @channel then (@channel.options || {}).label else 'FreePBX' %>">
+    <span class="help-block"><%- @T('A label for this PBX, shown in the list.') %></span>
+  </div>
+  <div class="form-group">
+    <label for="kc-freepbx-url"><%- @T('Connector URL') %></label>
+    <input id="kc-freepbx-url" type="text" name="base_url" class="form-control" placeholder="http://10.10.13.104:8095" value="<%= if @channel then (@channel.options || {}).base_url else '' %>">
+    <span class="help-block"><%- @T('Address of the KC PBX connector running on the FreePBX host.') %></span>
+  </div>
+  <div class="form-group">
+    <label for="kc-freepbx-token"><%- @T('Token') %></label>
+    <input id="kc-freepbx-token" type="password" name="token" class="form-control" autocomplete="new-password" placeholder="<%= if @channel then '••••••••  (leave blank to keep)' else '' %>">
+    <span class="help-block"><%- @T('Bearer token from the connector on the FreePBX host.') %></span>
+  </div>
+  <div class="form-group">
+    <label for="kc-freepbx-group"><%- @T('Group') %></label>
+    <select id="kc-freepbx-group" name="group_id" class="form-control">
+      <% for group in @groups: %>
+        <option value="<%= group.id %>" <% if @channel and @channel.group_id is group.id: %>selected<% end %>><%= group.name %></option>
+      <% end %>
+    </select>
+    <span class="help-block"><%- @T('Tickets created from missed FreePBX calls land in this group.') %></span>
+  </div>
+</form>
