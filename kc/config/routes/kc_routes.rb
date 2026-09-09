@@ -41,6 +41,15 @@ Zammad::Application.routes.draw do
     post   'ringcentral_sms_channels/:id/disable',    to: 'kc/ringcentral_sms_channels#disable'
     delete 'ringcentral_sms_channels/:id',            to: 'kc/ringcentral_sms_channels#destroy'
 
+    # FreePBX phone integration (the second ring layer under RingCentral)
+    get    'freepbx_channels',                        to: 'kc/freepbx_channels#index'
+    post   'freepbx_channels',                        to: 'kc/freepbx_channels#create'
+    put    'freepbx_channels/:id',                    to: 'kc/freepbx_channels#update'
+    post   'freepbx_channels/:id/test',               to: 'kc/freepbx_channels#test'
+    post   'freepbx_channels/:id/enable',             to: 'kc/freepbx_channels#enable'
+    post   'freepbx_channels/:id/disable',            to: 'kc/freepbx_channels#disable'
+    delete 'freepbx_channels/:id',                    to: 'kc/freepbx_channels#destroy'
+
     # RingCentral SMS webhook (public — no auth, validated by subscription lookup)
     post 'ringcentral_sms_webhook', to: 'kc/ringcentral_sms_webhook#webhook'
 

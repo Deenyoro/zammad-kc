@@ -1,0 +1,110 @@
+<div class="page-header">
+  <div class="page-header-title">
+    <h1><%- @T('FreePBX') %></h1>
+  </div>
+  <div class="page-header-meta">
+    <a class="btn btn--success js-new"><%- @T('Add Connection') %></a>
+  </div>
+</div>
+
+<div class="page-content">
+  <p class="text-muted" style="max-width: 700px;">
+    <%- @T('RingCentral rings first and handles text messages. Calls it does not answer are forwarded to FreePBX, where your team rings. Zammad reads call activity from FreePBX here and replies by text through RingCentral.') %>
+  </p>
+
+  <h2 style="margin-top: 30px;"><%- @T('Missed Call Handling') %></h2>
+  <table class="settings-list" style="max-width: 700px;">
+    <tr>
+      <td style="width: 280px;">
+        <span><%- @T('Create Ticket on Missed Call') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Automatically create a ticket when your team misses an inbound call on FreePBX.') %></p>
+      </td>
+      <td>
+        <label class="inline-label">
+          <input type="checkbox" name="missed_call_ticket" value="true" <% if @settings.missed_call_ticket: %>checked<% end %>>
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Missed Call Ticket Title') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Use {phone} for the caller phone number.') %></p>
+      </td>
+      <td>
+        <input type="text" name="missed_call_ticket_title" class="form-control" value="<%= @settings.missed_call_ticket_title %>" style="width: 300px;">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Auto-Reply SMS on Missed Call') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Send an SMS to the caller when your team misses their call. Sent through RingCentral.') %></p>
+      </td>
+      <td>
+        <label class="inline-label">
+          <input type="checkbox" name="missed_call_autoreply" value="true" <% if @settings.missed_call_autoreply: %>checked<% end %>>
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Reply From Number') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Which of your numbers the reply is texted from.') %></p>
+      </td>
+      <td>
+        <select name="missed_call_autoreply_from" class="form-control" style="width: 300px;">
+          <option value="" <% if !@settings.missed_call_autoreply_from: %>selected<% end %>><%- @T('Default RingCentral number') %></option>
+          <% for number in @numbers: %>
+            <option value="<%= number.number %>" <% if String(number.number) is @settings.missed_call_autoreply_from: %>selected<% end %>><%= number.label %></option>
+          <% end %>
+        </select>
+        <% if @numbers.length is 0: %>
+          <p class="text-muted" style="margin: 4px 0 0;"><%- @T('No RingCentral numbers are available yet. Connect a RingCentral SMS account first.') %></p>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Auto-Reply Message') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('The SMS message sent to callers when their call is missed.') %></p>
+      </td>
+      <td>
+        <textarea name="missed_call_autoreply_message" class="form-control" rows="3" style="width: 300px;"><%= @settings.missed_call_autoreply_message %></textarea>
+      </td>
+    </tr>
+  </table>
+  <button class="btn btn--primary js-saveMissedCallSettings" style="margin-top: 10px;"><%- @T('Save Missed Call Settings') %></button>
+
+  <h2 style="margin-top: 30px;"><%- @T('Connections') %></h2>
+  <table class="settings-list settings-list--stretch settings-list--placeholder">
+    <% if @channels.length is 0: %>
+      <tr><td><%- @T('No FreePBX connection configured yet.') %></td></tr>
+    <% end %>
+    <% for channel in @channels: %>
+      <% options = channel.options || {} %>
+      <div class="action <% if channel.active isnt true: %>is-inactive<% end %>" data-id="<%= channel.id %>">
+        <% if options.last_connection_error: %>
+          <div class="alert alert--danger" style="margin-bottom: 8px;">
+            <strong><%- @T('Connection Error') %>:</strong> <%= options.last_connection_error %>
+          </div>
+        <% end %>
+        <div class="action-flow action-flow--row">
+          <div class="action-block action-block--flex">
+            <%- @Icon('status', if options.last_connection_error then 'error-color inline' else if channel.active then 'supergood-color inline' else 'error-color inline') %>
+            <%= options.label || 'FreePBX' %>
+            <span class="text-muted"><%= options.base_url %></span>
+          </div>
+          <div class="action-block action-block--flex">
+            <div class="btn btn--danger btn--secondary js-deleteConnection"><%- @T('Delete') %></div>
+            <% if channel.active: %>
+              <div class="btn btn--secondary js-disableConnection"><%- @T('Disable') %></div>
+            <% else: %>
+              <div class="btn btn--secondary js-enableConnection"><%- @T('Enable') %></div>
+            <% end %>
+            <div class="btn btn--secondary js-testConnection"><%- @T('Test') %></div>
+            <div class="btn js-editConnection"><%- @T('Edit') %></div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </table>
+</div>

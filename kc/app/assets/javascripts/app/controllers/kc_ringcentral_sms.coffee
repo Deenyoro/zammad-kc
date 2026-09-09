@@ -37,7 +37,8 @@ class KcRingcentralSms extends App.ControllerSubContent
       success: (data) =>
         @stopLoading()
         App.Collection.loadAssets(data.assets)
-        @channelIds = data.channel_ids || []
+        @channelIds       = data.channel_ids || []
+        @availableNumbers = data.available_numbers || []
         @render()
       error: (xhr) =>
         @stopLoading()
@@ -64,6 +65,7 @@ class KcRingcentralSms extends App.ControllerSubContent
 
     @html App.view('kc_ringcentral_sms/index')(
       channels: channels
+      numbers:  @availableNumbers || []
       settings:
         ticket_title_template:        @setting('kc_ringcentral_sms_ticket_title_template', 'SMS from {phone}')
         thread_window_hours:          @setting('kc_ringcentral_sms_thread_window_hours', 24)
@@ -72,6 +74,7 @@ class KcRingcentralSms extends App.ControllerSubContent
         missed_call_ticket:           @setting('kc_ringcentral_sms_missed_call_ticket', false) is true
         missed_call_ticket_title:     @setting('kc_ringcentral_sms_missed_call_ticket_title', 'Missed call from {phone}')
         missed_call_autoreply:        @setting('kc_ringcentral_sms_missed_call_autoreply', false) is true
+        missed_call_autoreply_from:    String(@setting('kc_ringcentral_sms_missed_call_autoreply_from', '') or '')
         missed_call_autoreply_message: @setting('kc_ringcentral_sms_missed_call_autoreply_message', 'We are sorry for missing your call. A ticket has been created and our team will follow up with you shortly.')
         call_history_ticket:          @setting('kc_ringcentral_call_history_ticket', false) is true
     )
@@ -193,6 +196,7 @@ class KcRingcentralSms extends App.ControllerSubContent
       kc_ringcentral_sms_missed_call_ticket:           form.find('[name=missed_call_ticket]').is(':checked')
       kc_ringcentral_sms_missed_call_ticket_title:     form.find('[name=missed_call_ticket_title]').val() || 'Missed call from {phone}'
       kc_ringcentral_sms_missed_call_autoreply:        form.find('[name=missed_call_autoreply]').is(':checked')
+      kc_ringcentral_sms_missed_call_autoreply_from:    form.find('[name=missed_call_autoreply_from]').val() || ''
       kc_ringcentral_sms_missed_call_autoreply_message: form.find('[name=missed_call_autoreply_message]').val() || 'We are sorry for missing your call. A ticket has been created and our team will follow up with you shortly.'
 
     pending = Object.keys(settings).length

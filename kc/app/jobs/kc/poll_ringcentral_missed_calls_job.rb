@@ -165,7 +165,7 @@ class Kc::PollRingcentralMissedCallsJob < ApplicationJob
     end
 
     if send_reply && normalized_from.present?
-      send_autoreply_sms(rc, opts, normalized_from)
+      send_autoreply_sms(opts, normalized_from)
     end
 
     # Track this session ID as processed (for auto-reply-only dedup)
@@ -278,19 +278,19 @@ class Kc::PollRingcentralMissedCallsJob < ApplicationJob
     end
   end
 
-  def send_autoreply_sms(rc, opts, to_phone)
-    from_phone = opts[:phone_number]
+  # The reply may be sent from any number configured in the system, not just
+  # the number the call happened to come in on. A blank setting keeps the old
+  # behaviour of replying from this channel's own number.
+  def send_autoreply_sms(opts, to_phone)
+    from_phone = Setting.get('kc_ringcentral_sms_missed_call_autoreply_from').to_s.presence ||
+                 opts[:phone_number]
     return if from_phone.blank?
 
     message = Setting.get('kc_ringcentral_sms_missed_call_autoreply_message').to_s.presence ||
               'We are sorry for missing your call. A ticket has been created and our team will follow up with you shortly.'
 
-    begin
-      rc.send_sms(from: from_phone, to: to_phone, text: message)
-      Rails.logger.info "KC RingCentral Missed Calls: Sent auto-reply SMS to #{to_phone}"
-    rescue StandardError => e
-      Rails.logger.error "KC RingCentral Missed Calls: Failed to send auto-reply to #{to_phone}: #{e.message}"
-    end
+    Kc::OutboundSms.deliver(to: to_phone, text: message, from: from_phone,
+                            label: 'KC RingCentral Missed Calls')
   end
 
   def find_or_create_user(phone)
