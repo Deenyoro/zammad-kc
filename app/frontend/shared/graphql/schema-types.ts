@@ -995,6 +995,21 @@ export enum EnumKnowledgeBaseSchedulableVisibility {
   Published = 'published'
 }
 
+/** Kind of knowledge base content to search for */
+export enum EnumKnowledgeBaseSearchEntity {
+  /** Answers, matched in their title, body, attachments and tags. */
+  Answer = 'answer',
+  /** Categories, matched in their title. */
+  Category = 'category'
+}
+
+/** How the content of a knowledge base node — its root or a single category — is ordered when browsed */
+export enum EnumKnowledgeBaseSortingMode {
+  Alphabetical = 'alphabetical',
+  LastUpdate = 'last_update',
+  Manual = 'manual'
+}
+
 /** Publication state used for color-coding knowledge base content */
 export enum EnumKnowledgeBaseVisibility {
   /** No longer published, retained for reference. */
@@ -1065,6 +1080,7 @@ export enum EnumPublicLinksScreen {
 
 /** All searchable models */
 export enum EnumSearchableModels {
+  KnowledgeBaseAnswerTranslation = 'KnowledgeBase__Answer__Translation',
   Organization = 'Organization',
   Ticket = 'Ticket',
   User = 'User'
@@ -1426,7 +1442,7 @@ export type ImportJob = {
 };
 
 /** Objects found by search */
-export type Item = Organization | Ticket | User;
+export type Item = KnowledgeBaseAnswerTranslation | Organization | Ticket | User;
 
 /** Jobs */
 export type Job = {
@@ -1465,22 +1481,22 @@ export type KnowledgeBase = {
   __typename?: 'KnowledgeBase';
   active: Scalars['Boolean']['output'];
   categoryLayout: Scalars['String']['output'];
+  /** How the top level categories of the knowledge base are ordered when browsed */
+  categorySortingMode: EnumKnowledgeBaseSortingMode;
   colorHeader: Scalars['String']['output'];
   colorHeaderLink: Scalars['String']['output'];
   colorHighlight: Scalars['String']['output'];
   /** Create date/time of the record */
   createdAt: Scalars['ISO8601DateTime']['output'];
-  /** Locale the content resolved to (requested, else user-preferred, else primary) */
+  /** Locale the content resolved to (given, else user-preferred, else primary) */
   currentLocale?: Maybe<KnowledgeBaseLocale>;
   customAddress?: Maybe<Scalars['String']['output']>;
-  /** Footer note in the requested locale (falls back to the primary locale) */
-  footerNote?: Maybe<Scalars['String']['output']>;
   homepageLayout: Scalars['String']['output'];
   iconset: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   /** Whether a public knowledge base with published content is reachable */
   isPubliclyAvailable: Scalars['Boolean']['output'];
-  /** Whether the public help site shows content in the requested locale (drives the "view public knowledge base" link) */
+  /** Whether the public help site shows content in the given locale (drives the "view public knowledge base" link) */
   isVisiblePublicly: Scalars['Boolean']['output'];
   /** Available locales, used for the language selector */
   kbLocales: Array<KnowledgeBaseLocale>;
@@ -1488,10 +1504,28 @@ export type KnowledgeBase = {
   policy: PolicyKnowledgeBase;
   /** Whether the feeds are offered at all (admin setting "Show Feed Icon") */
   showFeedIcon: Scalars['Boolean']['output'];
-  /** Title in the requested locale (falls back to the primary locale) */
-  title?: Maybe<Scalars['String']['output']>;
+  /** The knowledge base in the given locale (falls back to the primary locale) */
+  translation?: Maybe<KnowledgeBaseTranslation>;
   /** Last update date/time of the record */
   updatedAt: Scalars['ISO8601DateTime']['output'];
+};
+
+
+/** Knowledge Base */
+export type KnowledgeBaseCurrentLocaleArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Knowledge Base */
+export type KnowledgeBaseIsVisiblePubliclyArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Knowledge Base */
+export type KnowledgeBaseTranslationArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Knowledge Base Answer */
@@ -1505,23 +1539,15 @@ export type KnowledgeBaseAnswer = {
   attachments: Array<StoredFile>;
   /** resolver for Rails' belongs_to relationship */
   category: KnowledgeBaseCategory;
-  /** Body of the translation in the requested locale (falls back to the primary locale, like the title) */
-  content?: Maybe<KnowledgeBaseAnswerTranslationContent>;
   /** Create date/time of the record */
   createdAt: Scalars['ISO8601DateTime']['output'];
   /** User that created this record */
   createdBy?: Maybe<User>;
-  /** When the translation in the requested locale was last edited; only for users with internal access to the category */
-  editedAt?: Maybe<Scalars['ISO8601DateTime']['output']>;
-  /** Last user that edited the translation in the requested locale; only for users with internal access to the category */
-  editedBy?: Maybe<User>;
   id: Scalars['ID']['output'];
   /** Only for users with internal access to the category; the public site knows publication only. Only once reached unless the user may edit the answer */
   internalAt?: Maybe<Scalars['ISO8601DateTime']['output']>;
   /** resolver for Rails' belongs_to relationship */
   internalBy?: Maybe<User>;
-  /** Position and neighbours of this answer within its category listing */
-  navigation?: Maybe<KnowledgeBaseAnswerNavigation>;
   /** Which actions the current user may perform on this answer */
   policy: PolicyDefault;
   position: Scalars['Int']['output'];
@@ -1531,12 +1557,8 @@ export type KnowledgeBaseAnswer = {
   publishedBy?: Maybe<User>;
   /** Assigned tags */
   tags?: Maybe<Array<Scalars['String']['output']>>;
-  /** Title in the requested locale (falls back to the primary locale) */
-  title: Scalars['String']['output'];
-  /** ID of the translation in the requested locale (falls back to the primary locale, like the title) */
-  translationId?: Maybe<Scalars['ID']['output']>;
-  /** Whether the requested locale has no own translation for this answer (its title is shown from a fallback locale) */
-  translationMissing: Scalars['Boolean']['output'];
+  /** The answer in the given locale (falls back to the primary locale) */
+  translation?: Maybe<KnowledgeBaseAnswerTranslation>;
   /** Last update date/time of the record */
   updatedAt: Scalars['ISO8601DateTime']['output'];
   /** Last user that updated this record */
@@ -1545,6 +1567,12 @@ export type KnowledgeBaseAnswer = {
   visibility: EnumKnowledgeBaseVisibility;
   /** Visibility changes the answer is going to make, in the order they take effect; only for users who may edit the answer */
   visibilitySchedules?: Maybe<Array<KnowledgeBaseAnswerVisibilitySchedule>>;
+};
+
+
+/** Knowledge Base Answer */
+export type KnowledgeBaseAnswerTranslationArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Autogenerated return type of KnowledgeBaseAnswerAdd. */
@@ -1653,12 +1681,17 @@ export type KnowledgeBaseAnswerTranslation = {
   createdAt: Scalars['ISO8601DateTime']['output'];
   /** User that created this record */
   createdBy?: Maybe<User>;
-  editedAt: Scalars['ISO8601DateTime']['output'];
+  /** When this translation was last edited; only for users with internal access to the category */
+  editedAt?: Maybe<Scalars['ISO8601DateTime']['output']>;
+  /** Last user that edited this translation; only for users with internal access to the category */
+  editedBy?: Maybe<User>;
   id: Scalars['ID']['output'];
   /** resolver for Rails' belongs_to relationship */
   kbLocale: KnowledgeBaseLocale;
   /** Specified only for knowledge bases with multiple locales */
   maybeLocale?: Maybe<Scalars['String']['output']>;
+  /** Position and neighbours of this answer within its category listing in this locale */
+  navigation?: Maybe<KnowledgeBaseAnswerNavigation>;
   title: Scalars['String']['output'];
   /** Last update date/time of the record */
   updatedAt: Scalars['ISO8601DateTime']['output'];
@@ -1739,23 +1772,29 @@ export type KnowledgeBaseAnswerVisibilityScheduleRemovePayload = {
 /** Knowledge Base Category */
 export type KnowledgeBaseCategory = {
   __typename?: 'KnowledgeBaseCategory';
-  /** Number of answers visible to the current user in this category and its whole subtree */
+  /** Number of answers visible to the current user in this category and its whole subtree, in the given locale */
   answerCount: Scalars['Int']['output'];
+  /** How the answers of this category are ordered when browsed */
+  answerSortingMode: EnumKnowledgeBaseSortingMode;
   /** Ancestors of this category, root first, including itself */
   breadcrumb: Array<KnowledgeBaseCategory>;
   categoryIcon: Scalars['String']['output'];
+  /** How the subcategories of this category are ordered when browsed */
+  categorySortingMode: EnumKnowledgeBaseSortingMode;
   /** Create date/time of the record */
   createdAt: Scalars['ISO8601DateTime']['output'];
-  /** Number of answers visible to the current user directly in this category (its immediate level only) */
+  /** Number of answers visible to the current user directly in this category (its immediate level only), in the given locale */
   directAnswerCount: Scalars['Int']['output'];
-  /** Number of immediate child categories visible to the current user (its next level only) */
+  /** Number of immediate child categories visible to the current user (its next level only), in the given locale */
   directSubcategoryCount: Scalars['Int']['output'];
+  /** When the category was last edited in the requested locale, counting edits to the content below it */
+  editedAt?: Maybe<Scalars['ISO8601DateTime']['output']>;
   /** Icon font of the knowledge base this category belongs to, needed to render `categoryIcon` */
   iconSet: Scalars['KnowledgeBaseIconSet']['output'];
   id: Scalars['ID']['output'];
   /** Whether this category is empty, i.e. whether deleting it would be refused because of subcategories or answers below it */
   isDeletable: Scalars['Boolean']['output'];
-  /** Whether this category shows published content in the requested locale on the public help site (drives the "view public knowledge base" link) */
+  /** Whether this category shows published content in the given locale on the public help site (drives the "view public knowledge base" link) */
   isVisiblePublicly: Scalars['Boolean']['output'];
   /** resolver for Rails' belongs_to relationship */
   knowledgeBase: KnowledgeBase;
@@ -1764,17 +1803,57 @@ export type KnowledgeBaseCategory = {
   /** Which actions the current user may perform on this category */
   policy: PolicyKnowledgeBaseCategory;
   position: Scalars['Int']['output'];
-  /** Number of categories visible to the current user in this category and its whole subtree */
+  /** Number of categories visible to the current user in this category and its whole subtree, in the given locale */
   subcategoryCount: Scalars['Int']['output'];
-  /** Title in the requested locale (falls back to the primary locale) */
-  title?: Maybe<Scalars['String']['output']>;
-  /** Whether the requested locale has no own translation for this category (its title is shown from a fallback locale) */
-  translationMissing: Scalars['Boolean']['output'];
+  /** The category in the given locale (falls back to the primary locale) */
+  translation?: Maybe<KnowledgeBaseCategoryTranslation>;
   translations: Array<KnowledgeBaseCategoryTranslation>;
   /** Last update date/time of the record */
   updatedAt: Scalars['ISO8601DateTime']['output'];
-  /** Highest visibility of the content in this category and its subtree, in the requested locale (untranslated content counts as draft) */
+  /** Highest visibility of the content in this category and its subtree, in the given locale (untranslated content counts as draft) */
   visibility: EnumKnowledgeBaseVisibility;
+};
+
+
+/** Knowledge Base Category */
+export type KnowledgeBaseCategoryAnswerCountArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Knowledge Base Category */
+export type KnowledgeBaseCategoryDirectAnswerCountArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Knowledge Base Category */
+export type KnowledgeBaseCategoryDirectSubcategoryCountArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Knowledge Base Category */
+export type KnowledgeBaseCategoryIsVisiblePubliclyArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Knowledge Base Category */
+export type KnowledgeBaseCategorySubcategoryCountArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Knowledge Base Category */
+export type KnowledgeBaseCategoryTranslationArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Knowledge Base Category */
+export type KnowledgeBaseCategoryVisibilityArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Autogenerated return type of KnowledgeBaseCategoryAdd. */
@@ -1823,6 +1902,7 @@ export type KnowledgeBaseCategoryTranslation = {
   category: KnowledgeBaseCategory;
   /** Create date/time of the record */
   createdAt: Scalars['ISO8601DateTime']['output'];
+  editedAt: Scalars['ISO8601DateTime']['output'];
   id: Scalars['ID']['output'];
   /** resolver for Rails' belongs_to relationship */
   kbLocale: KnowledgeBaseLocale;
@@ -1908,6 +1988,33 @@ export type KnowledgeBaseLocale = {
   updatedAt: Scalars['ISO8601DateTime']['output'];
 };
 
+/** Autogenerated return type of KnowledgeBaseReorderAnswers. */
+export type KnowledgeBaseReorderAnswersPayload = {
+  __typename?: 'KnowledgeBaseReorderAnswersPayload';
+  /** The category with its updated `answerSortingMode`. */
+  category?: Maybe<KnowledgeBaseCategory>;
+  /** Errors encountered during execution of the mutation. */
+  errors?: Maybe<Array<UserError>>;
+};
+
+/** Autogenerated return type of KnowledgeBaseReorderCategories. */
+export type KnowledgeBaseReorderCategoriesPayload = {
+  __typename?: 'KnowledgeBaseReorderCategoriesPayload';
+  /** The category with its updated `categorySortingMode`. */
+  category?: Maybe<KnowledgeBaseCategory>;
+  /** Errors encountered during execution of the mutation. */
+  errors?: Maybe<Array<UserError>>;
+};
+
+/** Autogenerated return type of KnowledgeBaseReorderRootCategories. */
+export type KnowledgeBaseReorderRootCategoriesPayload = {
+  __typename?: 'KnowledgeBaseReorderRootCategoriesPayload';
+  /** Errors encountered during execution of the mutation. */
+  errors?: Maybe<Array<UserError>>;
+  /** The knowledge base with its updated `categorySortingMode`. */
+  knowledgeBase?: Maybe<KnowledgeBase>;
+};
+
 /** Represents the access one role is granted on a knowledge base object. */
 export type KnowledgeBaseRolePermissionInput = {
   /** Access level to grant the role. */
@@ -1924,8 +2031,14 @@ export type KnowledgeBaseSearchPathSegment = {
   __typename?: 'KnowledgeBaseSearchPathSegment';
   /** Category id, for linking the breadcrumb */
   id: Scalars['ID']['output'];
-  /** Title in the requested locale (falls back to the primary locale) */
+  /** Title in the given locale (falls back to the primary locale) */
   title?: Maybe<Scalars['String']['output']>;
+};
+
+
+/** One category on the path to a search result */
+export type KnowledgeBaseSearchPathSegmentTitleArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** One run of text in a search preview, either matched or not */
@@ -1968,6 +2081,18 @@ export type KnowledgeBaseSearchResultEdge = {
   cursor: Scalars['String']['output'];
   /** The item at the end of the edge. */
   node: KnowledgeBaseSearchResult;
+};
+
+/** Knowledge Base Translation */
+export type KnowledgeBaseTranslation = {
+  __typename?: 'KnowledgeBaseTranslation';
+  /** Create date/time of the record */
+  createdAt: Scalars['ISO8601DateTime']['output'];
+  footerNote?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  title: Scalars['String']['output'];
+  /** Last update date/time of the record */
+  updatedAt: Scalars['ISO8601DateTime']['output'];
 };
 
 /** Represents the knowledge base answer attributes to be used in update. */
@@ -2230,6 +2355,12 @@ export type Mutations = {
   knowledgeBaseCategoryUpdate?: Maybe<KnowledgeBaseCategoryUpdatePayload>;
   /** Renew the access token of the internal knowledge base feeds, invalidating the previous feed URLs */
   knowledgeBaseFeedTokenRenew?: Maybe<KnowledgeBaseFeedTokenRenewPayload>;
+  /** Set how the answers of a knowledge base category are ordered, and store their hand-made order. The subcategories of that category are a list of their own, unaffected by this (see KnowledgeBaseReorderCategories). */
+  knowledgeBaseReorderAnswers?: Maybe<KnowledgeBaseReorderAnswersPayload>;
+  /** Set how the subcategories of a knowledge base category are ordered, and store their hand-made order. The answers of that category are a list of their own, unaffected by this (see KnowledgeBaseReorderAnswers). */
+  knowledgeBaseReorderCategories?: Maybe<KnowledgeBaseReorderCategoriesPayload>;
+  /** Set how the top level categories of the knowledge base are ordered, and store their hand-made order. */
+  knowledgeBaseReorderRootCategories?: Maybe<KnowledgeBaseReorderRootCategoriesPayload>;
   /** Update the knowledge base. */
   knowledgeBaseUpdate?: Maybe<KnowledgeBaseUpdatePayload>;
   /** Add a link between objects */
@@ -2587,6 +2718,29 @@ export type MutationsKnowledgeBaseCategoryUpdateArgs = {
 export type MutationsKnowledgeBaseFeedTokenRenewArgs = {
   categoryId?: InputMaybe<Scalars['ID']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** All available mutations */
+export type MutationsKnowledgeBaseReorderAnswersArgs = {
+  answerIds?: InputMaybe<Array<Scalars['ID']['input']>>;
+  categoryId: Scalars['ID']['input'];
+  sortingMode: EnumKnowledgeBaseSortingMode;
+};
+
+
+/** All available mutations */
+export type MutationsKnowledgeBaseReorderCategoriesArgs = {
+  categoryIds?: InputMaybe<Array<Scalars['ID']['input']>>;
+  parentCategoryId: Scalars['ID']['input'];
+  sortingMode: EnumKnowledgeBaseSortingMode;
+};
+
+
+/** All available mutations */
+export type MutationsKnowledgeBaseReorderRootCategoriesArgs = {
+  categoryIds?: InputMaybe<Array<Scalars['ID']['input']>>;
+  sortingMode: EnumKnowledgeBaseSortingMode;
 };
 
 
@@ -3729,7 +3883,7 @@ export type Queries = {
   knowledgeBaseCategorySubcategories?: Maybe<KnowledgeBaseCategorySubcategoriesPayload>;
   /** Fetch the feed paths of the internal knowledge base for the current user */
   knowledgeBaseFeed: KnowledgeBaseFeed;
-  /** Search the knowledge base for answers and categories */
+  /** Search the knowledge base for answers or categories */
   knowledgeBaseSearch: KnowledgeBaseSearchResultConnection;
   /** List linked objects */
   linkList?: Maybe<Array<Link>>;
@@ -3967,6 +4121,7 @@ export type QueriesKnowledgeBaseAnswersArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
+  sortingMode?: InputMaybe<EnumKnowledgeBaseSortingMode>;
 };
 
 
@@ -3974,6 +4129,7 @@ export type QueriesKnowledgeBaseAnswersArgs = {
 export type QueriesKnowledgeBaseCategorySubcategoriesArgs = {
   categoryId?: InputMaybe<Scalars['ID']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
+  sortingMode?: InputMaybe<EnumKnowledgeBaseSortingMode>;
 };
 
 
@@ -3989,6 +4145,7 @@ export type QueriesKnowledgeBaseSearchArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   categoryId?: InputMaybe<Scalars['ID']['input']>;
+  entity?: EnumKnowledgeBaseSearchEntity;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -4741,7 +4898,7 @@ export type TagsInterface = {
 };
 
 /** Objects representing taskbar item entity */
-export type TaskbarItemEntity = KnowledgeBaseAnswer | Organization | Ticket | User | UserTaskbarItemEntityKnowledgeBaseAnswerCreate | UserTaskbarItemEntitySearch | UserTaskbarItemEntityTicketCreate;
+export type TaskbarItemEntity = KnowledgeBaseAnswerTranslation | Organization | Ticket | User | UserTaskbarItemEntityKnowledgeBaseAnswerCreate | UserTaskbarItemEntitySearch | UserTaskbarItemEntityTicketCreate;
 
 /** Ticket template */
 export type Template = {

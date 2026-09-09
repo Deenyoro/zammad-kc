@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { computed, onScopeDispose, type Ref } from 'vue'
+import { computed, type Ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import type { KnowledgeBaseCategoryPreInfoFragment } from '#shared/graphql/types.ts'
@@ -9,29 +9,39 @@ import { getApolloClient } from '#shared/server/apollo/client.ts'
 import QueryHandler from '#shared/server/apollo/handler/QueryHandler.ts'
 import { ErrorStatusCodes, GraphQLErrorTypes } from '#shared/types/error.ts'
 
+import { useKnowledgeBaseContentUpdates } from '#desktop/entities/knowledge-base/composables/useKnowledgeBaseContentUpdates.ts'
 import { KnowledgeBaseCategoryPreInfoFragmentDoc } from '#desktop/entities/knowledge-base/graphql/fragments/knowledgeBaseCategoryPreInfo.api.ts'
 import { useKnowledgeBaseCategorySubcategoriesQuery } from '#desktop/entities/knowledge-base/graphql/queries/knowledgeBaseCategorySubcategories.api.ts'
 import { useKnowledgeBaseStore } from '#desktop/entities/knowledge-base/stores/knowledgeBase.ts'
 import { knowledgeBaseBrowseRoute } from '#desktop/entities/knowledge-base/utils/routeLocation.ts'
+import { isTranslationMissing } from '#desktop/entities/knowledge-base/utils/translationLocale.ts'
 
-import type { CategoryBreadcrumb } from '../types.ts'
+import type { CategoryBreadcrumb, KnowledgeBaseSortingMode } from '../types.ts'
 
 export const useKnowledgeBaseCategorySubcategories = (
   options: {
     categoryId?: Ref<string | undefined>
     locale?: Ref<string | undefined>
+    // The mode the sorting bar is previewing, if any; undefined lists in the node's stored one.
+    sortingMode?: Ref<KnowledgeBaseSortingMode | undefined>
   } = {},
 ) => {
-  const { categoryId, locale } = options
+  const { categoryId, locale, sortingMode } = options
+
+  // Every argument this query is sent with, in one place: the reactive query function below reads
+  //   it, and so does each explicit refetch — those pin the current values rather than trusting
+  //   what Vue last pushed into the query (see the content update handler).
+  const queryVariables = () => ({
+    categoryId: categoryId?.value,
+    locale: locale?.value,
+    sortingMode: sortingMode?.value,
+  })
 
   const router = useRouter()
   const store = useKnowledgeBaseStore()
 
   const knowledgeBaseCategorySubcategories = new QueryHandler(
-    useKnowledgeBaseCategorySubcategoriesQuery(() => ({
-      categoryId: categoryId?.value,
-      locale: locale?.value,
-    })),
+    useKnowledgeBaseCategorySubcategoriesQuery(queryVariables),
     {
       // Opening a category the user may not browse (stale link, revoked access,
       //   a permission change) is answered with a 403 — route to the not-found
@@ -79,6 +89,11 @@ export const useKnowledgeBaseCategorySubcategories = (
     return getApolloClient().cache.readFragment<KnowledgeBaseCategoryPreInfoFragment>({
       id: `KnowledgeBaseCategory:${categoryId.value}`,
       fragment: KnowledgeBaseCategoryPreInfoFragmentDoc,
+      // The locale the fragment's fields were written under: a field is cached per argument it was
+      //   asked with, and a read without one looks for an entry nothing ever wrote - which makes
+      //   the whole fragment incomplete, so this would hand back null and the header would
+      //   skeleton instead of opening instantly.
+      variables: { locale: locale?.value },
     })
   })
 
@@ -91,9 +106,19 @@ export const useKnowledgeBaseCategorySubcategories = (
       : (content.value?.category?.breadcrumb ?? []),
   )
 
-  // Next-level count of the opened category (from the cache), to size the
-  //   skeleton while it loads.
+  // Next-level count of the opened category (from the cache), to size the grid skeleton while it
+  //   loads. The answer listing's own `totalCount` cannot size its skeleton either: it arrives
+  //   with the very query that skeleton is waiting for, which is what `directAnswerCount` below
+  //   is handed to the list for.
   const directSubcategoryCount = computed(() => cachedCategory.value?.directSubcategoryCount)
+
+  // Answers directly in the opened category and visible to this user, which decides whether
+  //   there is anything to sort here. From the response, falling back to the cached pre-info
+  //   while the category's own query is still on its way; undefined at the root, which has no
+  //   answers of its own.
+  const directAnswerCount = computed(
+    () => content.value?.category?.directAnswerCount ?? cachedCategory.value?.directAnswerCount,
+  )
 
   // Whether the opened category shows public content in the current locale, so
   //   the header can decide whether to offer its "view public knowledge base"
@@ -103,7 +128,11 @@ export const useKnowledgeBaseCategorySubcategories = (
   // Whether the opened category has no own translation in the browsed locale
   //   (its title falls back to another locale), so the browse view can warn.
   //   False at the root, where no single category is opened.
-  const translationMissing = computed(() => Boolean(content.value?.category?.translationMissing))
+  const translationMissing = computed(
+    () =>
+      Boolean(content.value?.category) &&
+      isTranslationMissing(content.value?.category?.translation, locale?.value),
+  )
 
   // Whether the opened category may be deleted at all — undefined until its own
   //   query resolves (the pre-info cache does not carry it).
@@ -114,14 +143,27 @@ export const useKnowledgeBaseCategorySubcategories = (
   //   the query resolves.
   const policy = computed(() => content.value?.category?.policy)
 
+  // The modes the opened category's two lists are stored with — what the sorting bar starts each
+  //   of its scopes from, and what it compares a picked mode against. One per list, since a
+  //   category sorts its subcategories and its answers independently. Undefined at the root,
+  //   whose own mode lives on the knowledge base, and until the query resolves.
+  const categorySortingMode = computed(() => content.value?.category?.categorySortingMode)
+  const answerSortingMode = computed(() => content.value?.category?.answerSortingMode)
+
   // Refetch on a content update only when it is relevant to what is shown: a
   //   knowledge-base-wide change (empty), or one touching the current category,
   //   a breadcrumb ancestor, or a displayed child (whose subtree counts and
   //   visibility may shift). Ancestors are in the category's breadcrumb, so a
   //   change deep in a child's subtree still lists that child.
-  const { contentUpdates } = store
+  // Caught, because QueryHandler.refetch rejects on failure and nothing awaits these: a ping
+  //   arriving while offline would otherwise raise an unhandled rejection. The handler itself
+  //   reports the failure (its `errorCallback` above), so there is nothing to do here.
+  const refetchDisplayed = (args: { categoryId?: string; locale?: string }) =>
+    knowledgeBaseCategorySubcategories.refetch(args).catch(() => {})
 
-  const { off: stopContentUpdates } = contentUpdates.onResult(({ data }) => {
+  // Handed over by useKnowledgeBaseContentUpdates rather than taken from the store directly, so a
+  //   view that is kept alive off screen does not refetch until it is looked at again.
+  useKnowledgeBaseContentUpdates((affected) => {
     // At the root there is no category id to match against, and a newly created
     //   or newly visible top-level category (e.g. after a permission change) is
     //   not yet in the displayed set — its ping carries only its own id. But any
@@ -131,15 +173,14 @@ export const useKnowledgeBaseCategorySubcategories = (
     //   a changed `categoryId`/`locale` into the underlying query on its next
     //   reactivity flush, so a ping arriving in the same tick as a category or
     //   locale switch would otherwise refetch with the args being navigated
-    //   away from.
-    const currentArgs = { categoryId: categoryId?.value, locale: locale?.value }
+    //   away from. The previewed sorting mode travels with them, so a content
+    //   update does not drop the listing back into the stored order.
+    const currentArgs = queryVariables()
 
     if (!categoryId?.value) {
-      knowledgeBaseCategorySubcategories.refetch(currentArgs)
+      refetchDisplayed(currentArgs)
       return
     }
-
-    const affected = data?.knowledgeBaseContentUpdates?.affectedCategoryIds ?? []
 
     const displayedCategoryIds = new Set([
       categoryId.value,
@@ -148,11 +189,9 @@ export const useKnowledgeBaseCategorySubcategories = (
     ])
 
     if (affected.length === 0 || affected.some((id) => displayedCategoryIds.has(id))) {
-      knowledgeBaseCategorySubcategories.refetch(currentArgs)
+      refetchDisplayed(currentArgs)
     }
   })
-
-  onScopeDispose(stopContentUpdates)
 
   return {
     knowledgeBaseCategorySubcategories,
@@ -160,9 +199,12 @@ export const useKnowledgeBaseCategorySubcategories = (
     subcategories,
     loading,
     directSubcategoryCount,
+    directAnswerCount,
     visiblePublicly,
     translationMissing,
     deletable,
     policy,
+    categorySortingMode,
+    answerSortingMode,
   }
 }

@@ -52,21 +52,23 @@ const answer = (visibilitySchedules: Schedule[]): KnowledgeBaseAnswerHeader =>
   ({
     __typename: 'KnowledgeBaseAnswer',
     id: convertToGraphQLId('KnowledgeBase::Answer', 1),
-    title: 'Some Answer',
     visibility: EnumKnowledgeBaseVisibility.Draft,
     visibilitySchedules: visibilitySchedules.map((schedule) => ({
       __typename: 'KnowledgeBaseAnswerVisibilitySchedule',
       ...schedule,
     })),
-    translationId: convertToGraphQLId('KnowledgeBase::Answer::Translation', 1),
-    translationMissing: false,
     internalAt: null,
     publishedAt: null,
     archivedAt: null,
-    editedAt: null,
-    editedBy: null,
-    navigation: null,
-    content: null,
+    translation: {
+      __typename: 'KnowledgeBaseAnswerTranslation',
+      id: convertToGraphQLId('KnowledgeBase::Answer::Translation', 1),
+      title: 'Some Answer',
+      editedAt: null,
+      editedBy: null,
+      navigation: null,
+      content: null,
+    },
     category: {
       __typename: 'KnowledgeBaseCategory',
       id: convertToGraphQLId('KnowledgeBase::Category', 1),
@@ -92,11 +94,6 @@ const internalInTwoDays = {
 const publishedInAWeek = {
   visibility: EnumKnowledgeBaseSchedulableVisibility.Published,
   scheduledAt: inDays(8),
-}
-
-const archivedInAMonth = {
-  visibility: EnumKnowledgeBaseSchedulableVisibility.Archived,
-  scheduledAt: inDays(31),
 }
 
 describe('KnowledgeBaseAnswerScheduledVisibility', () => {
@@ -133,15 +130,6 @@ describe('KnowledgeBaseAnswerScheduledVisibility', () => {
 
     expect(view.getByText('Internal')).toHaveClass('text-blue-800!')
     expect(view.getByText('Published')).toHaveClass('text-green-400!')
-  })
-
-  // `archived`'s own colour is a dim neutral - it says "inactive" on a small icon in the answer
-  //   list, and is too faint for a line of text here. So this one keeps the default label colour.
-  it('leaves an archival in the default text colour', () => {
-    const view = renderSection([archivedInAMonth])
-
-    // Nothing at all rather than a different tint: the label inherits CommonLabel's own colour.
-    expect(view.getByText('Archived').className).toBe('')
   })
 
   it('states that nothing is scheduled', () => {

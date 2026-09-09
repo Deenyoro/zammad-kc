@@ -1,8 +1,10 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import type {
+  EnumKnowledgeBaseSortingMode,
   EnumKnowledgeBaseVisibility,
   KnowledgeBaseCategory,
+  KnowledgeBaseCategoryTranslation,
 } from '#shared/graphql/schema-types.ts'
 import type {
   KnowledgeBaseAnswerQuery,
@@ -12,6 +14,27 @@ import type {
 
 import type { BreadcrumbItem } from '#desktop/components/CommonBreadcrumb/types.ts'
 import type { KnowledgeBaseIconSet } from '#desktop/entities/knowledge-base/types.ts'
+
+// The schema's own enum, built from KnowledgeBase::SORTING_MODES — so a mode the picker offers is
+//   always one the reorder mutations accept. Aliased rather than used directly, because the
+//   sorting state talks about a node's lists, not about the schema.
+export type KnowledgeBaseSortingMode = EnumKnowledgeBaseSortingMode
+
+// The two kinds of content the knowledge base holds. Whatever lists one of them - the browse
+//   page's two listings, the split search results - is keyed by these, and so is the tab control
+//   above either of them (KnowledgeBaseContentTabs).
+export type KnowledgeBaseContentScope = 'categories' | 'answers'
+
+// The two independently rearrangeable lists on a browse page. A category holds both, the
+//   knowledge base root only categories. Each carries its own sorting mode, so an editor arranges
+//   one of them at a time.
+export type KnowledgeBaseSortingScope = KnowledgeBaseContentScope
+
+// The modes a browsed node is stored with, one per list. The knowledge base root has no answers,
+//   so it fills the `categories` entry alone.
+export type KnowledgeBaseSortingModes = Partial<
+  Record<KnowledgeBaseSortingScope, KnowledgeBaseSortingMode>
+>
 
 export interface KnowledgeBaseLocaleCompact {
   id: string
@@ -34,7 +57,7 @@ export interface KnowledgeBaseCompact {
 
 export interface KnowledgeBaseCategoryCompact {
   id: string
-  title: string | null | undefined
+  title: string
   categoryIcon: string
   visibility: EnumKnowledgeBaseVisibility
   translationMissing: boolean
@@ -50,11 +73,11 @@ export interface KnowledgeBaseCategoryCompact {
 
 // What the category flyout needs to edit a category: the id addresses it, the other
 //   two prefill the fields the form updater does not resolve. Spelled out rather than
-//   picked from one of the two sources that satisfy it — the browse cards and the
-//   header breadcrumb differ on how optional the title is.
+//   picked from one of the two sources that satisfy it - the browse cards and the header
+//   breadcrumb select different field sets around these three.
 export interface EditableKnowledgeBaseCategory {
   id: string
-  title?: Maybe<string>
+  title: string
   categoryIcon: string
 }
 
@@ -66,10 +89,12 @@ export interface KnowledgeBaseAnswerCompact {
   title?: string | null
 }
 
-export type CategoryBreadcrumb = Pick<
+// The translation is named by what the breadcrumb renders of it rather than picked whole: the
+//   answer header and the browse pre-info select different parts of it.
+export type CategoryBreadcrumb = (Pick<
   KnowledgeBaseCategory,
-  'id' | 'title' | 'categoryIcon' | 'iconSet' | 'visibility'
->[]
+  'id' | 'categoryIcon' | 'iconSet' | 'visibility'
+> & { translation?: Maybe<Pick<KnowledgeBaseCategoryTranslation, 'title'>> })[]
 
 // Derived from the query document, so the answer header cannot drift from what
 //   it actually fetches.

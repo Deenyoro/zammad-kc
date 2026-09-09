@@ -29,7 +29,6 @@ const searchHit = (id: number, title: string) => ({
       id: convertToGraphQLId('KnowledgeBase::Answer', id),
       title,
       visibility: EnumKnowledgeBaseVisibility.Published,
-      translationMissing: false,
     },
     titlePreview: [
       { text: 'Printer', highlight: true },
@@ -51,11 +50,10 @@ const noPolicy = { update: false, destroy: false, createSubcategory: false }
 
 const category = (id: string, title: string) => ({
   id,
-  title,
+  translation: { title },
   categoryIcon: 'f115',
   iconSet: 'FontAwesome',
   visibility: EnumKnowledgeBaseVisibility.Published,
-  translationMissing: false,
   answerCount: 0,
   subcategoryCount: 0,
   position: 0,
@@ -75,7 +73,7 @@ describe('knowledge base search', () => {
     mockKnowledgeBaseQuery({
       knowledgeBase: {
         id: convertToGraphQLId('KnowledgeBase', 1),
-        title: 'My Knowledge Base',
+        translation: { title: 'My Knowledge Base' },
         iconset: 'default',
         isPubliclyAvailable: true,
         isVisiblePublicly: true,
@@ -103,10 +101,9 @@ describe('knowledge base search', () => {
             category: {
               id: EMPTY_CATEGORY_ID,
               isVisiblePublicly: true,
-              translationMissing: false,
               isDeletable: false,
               policy: noPolicy,
-              breadcrumb: [{ id: EMPTY_CATEGORY_ID, title: 'Empty Category' }],
+              breadcrumb: [{ id: EMPTY_CATEGORY_ID, translation: { title: 'Empty Category' } }],
             },
             subcategories: [],
           },
@@ -119,10 +116,9 @@ describe('knowledge base search', () => {
             category: {
               id: ROOT_CATEGORY_ID,
               isVisiblePublicly: true,
-              translationMissing: false,
               isDeletable: false,
               policy: noPolicy,
-              breadcrumb: [{ id: ROOT_CATEGORY_ID, title: 'Root Category' }],
+              breadcrumb: [{ id: ROOT_CATEGORY_ID, translation: { title: 'Root Category' } }],
             },
             subcategories: [],
           },
@@ -220,6 +216,130 @@ describe('knowledge base search', () => {
     expect(view.queryByText('Root Category')).not.toBeInTheDocument()
   })
 
+  describe('result tabs', () => {
+    it('shows the answers by default', async () => {
+      const view = await visitView(`${ROOT_PATH}?query=printer`)
+
+      expect(await view.findByRole('tab', { name: 'Answers' })).toHaveAttribute(
+        'aria-selected',
+        'true',
+      )
+    })
+
+    it('puts the picked kind of content into the URL', async () => {
+      const view = await visitView(`${ROOT_PATH}?query=printer`)
+
+      await view.events.click(await view.findByRole('tab', { name: 'Categories' }))
+
+      await waitFor(() =>
+        expect(getTestRouter().currentRoute.value.query).toEqual({
+          query: 'printer',
+          entity: 'category',
+        }),
+      )
+    })
+
+    it('opens the tab the URL asks for', async () => {
+      const view = await visitView(`${ROOT_PATH}?query=printer&entity=category`)
+
+      expect(await view.findByRole('tab', { name: 'Categories' })).toHaveAttribute(
+        'aria-selected',
+        'true',
+      )
+    })
+
+    // Anything the URL does not spell is the default, rather than a failed query.
+    it('falls back to the answers for a kind it does not know', async () => {
+      const view = await visitView(`${ROOT_PATH}?query=printer&entity=nonsense`)
+
+      expect(await view.findByRole('tab', { name: 'Answers' })).toHaveAttribute(
+        'aria-selected',
+        'true',
+      )
+    })
+
+    // Switching the tab writes to the URL, but it is a change to this very page - it must not
+    //   abort what is half typed the way a real navigation does.
+    it('keeps a term being typed when the tab is switched', async () => {
+      const view = await visitView(`${ROOT_PATH}?query=printer`)
+
+      const field = await findSearchField(view, 'My Knowledge Base')
+      await view.events.type(field, ' jam')
+
+      await view.events.click(await view.findByRole('tab', { name: 'Categories' }))
+
+      expect(field).toHaveValue('printer jam')
+
+      // ...and the search it was waiting to run still lands.
+      await waitFor(
+        () =>
+          expect(getTestRouter().currentRoute.value.query).toEqual({
+            query: 'printer jam',
+            entity: 'category',
+          }),
+        3000,
+      )
+    })
+
+    // Otherwise the parameter outlives the search it belongs to, and the next one would open on
+    //   the categories rather than on the answers.
+    it('drops the picked kind when the search is cleared', async () => {
+      const view = await visitView(`${ROOT_PATH}?query=printer&entity=category`)
+
+      await view.events.click(await view.findByLabelText('Clear search'))
+
+      await waitFor(() => expect(getTestRouter().currentRoute.value.fullPath).toBe(ROOT_PATH))
+    })
+
+    // It is the same search either way, so switching must not restart it - the term stays put and
+    //   the results component is not remounted.
+    it('keeps the search when the kind switches', async () => {
+      const view = await visitView(`${ROOT_PATH}?query=printer`)
+
+      await waitFor(() => expect(view.container).toHaveTextContent('Printer setup'))
+
+      await view.events.click(await view.findByRole('tab', { name: 'Categories' }))
+
+      expect(await findSearchField(view, 'My Knowledge Base')).toHaveValue('printer')
+    })
+  })
+
+  // A category found by searching opens the same page as a category found by browsing - the card
+  //   carries no search term, deliberately.
+  it('opens a category result in its browse page', async () => {
+    mockKnowledgeBaseSearchQuery({
+      knowledgeBaseSearch: {
+        totalCount: 1,
+        edges: [
+          {
+            node: {
+              item: {
+                __typename: 'KnowledgeBaseCategory' as const,
+                id: ROOT_CATEGORY_ID,
+                translation: { title: 'Printers' },
+                categoryIcon: 'f115',
+                iconSet: 'FontAwesome' as const,
+                visibility: EnumKnowledgeBaseVisibility.Published,
+              },
+              titlePreview: [{ text: 'Printers', highlight: true }],
+              bodyPreview: [],
+              categoryPath: [],
+            },
+          },
+        ],
+        pageInfo: { endCursor: null, hasNextPage: false },
+      },
+    })
+
+    const view = await visitView(`${ROOT_PATH}?query=printer&entity=category`)
+
+    await view.events.click(await view.findByRole('link', { name: /Printers/ }))
+
+    await waitFor(() =>
+      expect(getTestRouter().currentRoute.value.name).toBe('KnowledgeBaseCategory'),
+    )
+  })
+
   describe('opened result', () => {
     const ANSWER_ID = convertToGraphQLId('KnowledgeBase::Answer', 1)
     const ANSWER_PATH = `${ROOT_PATH}/answer/1`
@@ -228,13 +348,15 @@ describe('knowledge base search', () => {
       mockKnowledgeBaseAnswerQuery({
         knowledgeBaseAnswer: {
           id: ANSWER_ID,
-          title: 'Printer setup',
           visibility: EnumKnowledgeBaseVisibility.Published,
-          translationMissing: false,
-          navigation: null,
+          translation: {
+            id: convertToGraphQLId('KnowledgeBase::Answer::Translation', 1),
+            title: 'Printer setup',
+            navigation: null,
+          },
           category: {
             id: ROOT_CATEGORY_ID,
-            breadcrumb: [{ id: ROOT_CATEGORY_ID, title: 'Root Category' }],
+            breadcrumb: [{ id: ROOT_CATEGORY_ID, translation: { title: 'Root Category' } }],
           },
         },
       })

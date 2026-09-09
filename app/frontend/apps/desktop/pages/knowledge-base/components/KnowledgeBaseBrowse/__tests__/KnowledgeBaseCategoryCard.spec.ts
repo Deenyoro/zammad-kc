@@ -42,6 +42,8 @@ const renderCard = (props = {}) =>
       position: 0,
       isDeletable: true,
       policy: { update: true, destroy: true, createSubcategory: true, createAnswer: true },
+      isFocused: false,
+      isSelected: false,
       ...props,
     },
   })
@@ -80,7 +82,7 @@ describe('KnowledgeBaseCategoryCard', () => {
     const wrapper = renderCard({ translationMissing: true })
 
     expect(wrapper.getByIconName('translate')).toBeInTheDocument()
-    expect(wrapper.getByLabelText('No translation for this locale available')).toBeInTheDocument()
+    expect(wrapper.getByLabelText('No translation available for this locale')).toBeInTheDocument()
   })
 
   it('shows no translation warning when a translation exists', () => {
