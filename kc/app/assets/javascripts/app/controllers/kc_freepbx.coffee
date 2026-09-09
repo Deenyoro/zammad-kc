@@ -65,6 +65,7 @@ class KcFreepbx extends App.ControllerSubContent
         missed_call_autoreply:         @setting('kc_freepbx_missed_call_autoreply', true)
         missed_call_autoreply_message: @setting('kc_freepbx_missed_call_autoreply_message', 'We are sorry for missing your call. A ticket has been created and our team will follow up with you shortly.')
         missed_call_autoreply_from:    String(@setting('kc_freepbx_missed_call_autoreply_from', '') or '')
+        escalation_call_enabled:       @setting('kc_escalation_call_enabled', false)
     )
 
   addConnection: (e) =>
@@ -145,6 +146,7 @@ class KcFreepbx extends App.ControllerSubContent
       kc_freepbx_missed_call_autoreply:         form.find('[name=missed_call_autoreply]').is(':checked')
       kc_freepbx_missed_call_autoreply_message: form.find('[name=missed_call_autoreply_message]').val() || ''
       kc_freepbx_missed_call_autoreply_from:    form.find('[name=missed_call_autoreply_from]').val() || ''
+      kc_escalation_call_enabled:               form.find('[name=escalation_call_enabled]').is(':checked')
 
     pending = Object.keys(settings).length
     failed  = false
