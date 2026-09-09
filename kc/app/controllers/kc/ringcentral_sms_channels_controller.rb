@@ -33,7 +33,13 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
 
     # Include KC settings in assets so the frontend Spine collection has them
     # (App.Setting.get/set requires the Setting model to be loaded).
-    Setting.where("name LIKE ?", 'kc_ringcentral_sms_%').each do |setting|
+    #
+    # Both prefixes are required: the call-history settings are named
+    # kc_ringcentral_call_history_* (no "sms_" segment), so a
+    # 'kc_ringcentral_sms_%' filter alone left them out of the payload and
+    # App.Setting.get('kc_ringcentral_call_history_ticket') threw
+    # "No such setting found!", which aborted render() and blanked the page.
+    Setting.where("name LIKE 'kc_ringcentral_sms_%' OR name LIKE 'kc_ringcentral_call_history_%'").each do |setting|
       assets = setting.assets(assets)
     end
 

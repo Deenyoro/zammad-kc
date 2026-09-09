@@ -44,6 +44,17 @@ class KcRingcentralSms extends App.ControllerSubContent
         @html '<div class="alert alert--danger">' + App.i18n.translateInline('Failed to load RingCentral SMS channels.') + '</div>'
     )
 
+  # App.Setting.get() THROWS when a setting is not in the local collection,
+  # which aborts render() and leaves the admin page completely blank. Never let
+  # a single missing setting take out the whole page.
+  setting: (name, fallback) ->
+    try
+      value = App.Setting.get(name)
+      return fallback if !value?
+      value
+    catch
+      fallback
+
   render: =>
     channels = []
     for id in @channelIds
@@ -54,14 +65,14 @@ class KcRingcentralSms extends App.ControllerSubContent
     @html App.view('kc_ringcentral_sms/index')(
       channels: channels
       settings:
-        ticket_title_template:        App.Setting.get('kc_ringcentral_sms_ticket_title_template') ? 'SMS from {phone}'
-        thread_window_hours:          App.Setting.get('kc_ringcentral_sms_thread_window_hours') ? 24
-        poll_interval_seconds:        App.Setting.get('kc_ringcentral_sms_poll_interval_seconds') ? 60
-        missed_call_ticket:           App.Setting.get('kc_ringcentral_sms_missed_call_ticket') is true
-        missed_call_ticket_title:     App.Setting.get('kc_ringcentral_sms_missed_call_ticket_title') ? 'Missed call from {phone}'
-        missed_call_autoreply:        App.Setting.get('kc_ringcentral_sms_missed_call_autoreply') is true
-        missed_call_autoreply_message: App.Setting.get('kc_ringcentral_sms_missed_call_autoreply_message') ? 'We are sorry for missing your call. A ticket has been created and our team will follow up with you shortly.'
-        call_history_ticket:          App.Setting.get('kc_ringcentral_call_history_ticket') is true
+        ticket_title_template:        @setting('kc_ringcentral_sms_ticket_title_template', 'SMS from {phone}')
+        thread_window_hours:          @setting('kc_ringcentral_sms_thread_window_hours', 24)
+        poll_interval_seconds:        @setting('kc_ringcentral_sms_poll_interval_seconds', 60)
+        missed_call_ticket:           @setting('kc_ringcentral_sms_missed_call_ticket', false) is true
+        missed_call_ticket_title:     @setting('kc_ringcentral_sms_missed_call_ticket_title', 'Missed call from {phone}')
+        missed_call_autoreply:        @setting('kc_ringcentral_sms_missed_call_autoreply', false) is true
+        missed_call_autoreply_message: @setting('kc_ringcentral_sms_missed_call_autoreply_message', 'We are sorry for missing your call. A ticket has been created and our team will follow up with you shortly.')
+        call_history_ticket:          @setting('kc_ringcentral_call_history_ticket', false) is true
     )
 
   addAccount: (e) =>
